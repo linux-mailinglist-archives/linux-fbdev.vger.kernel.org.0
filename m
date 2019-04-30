@@ -2,251 +2,125 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA49F4F8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Apr 2019 13:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B1310097
+	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Apr 2019 22:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727749AbfD3LB1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 30 Apr 2019 07:01:27 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:43542 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727727AbfD3LB0 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 30 Apr 2019 07:01:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=1uDQiyuanTaEF0z9gH8IFpxzSHOrkWGsatE5ngJ5mVA=; b=ShPZGbXbWQyT3Y+WO6lJQJ9GqA
-        mlhP6wO/l2YflA+E8uxtq3aWEZebPTCu71T/zs4bhKc9q8rXA7a0dohHA9T8EBF+XS3ibe2mC9bt4
-        /7YEc6LbFD0d0eL3SGKt0qlQZXJxLH7yq+c/HKYxHqTQQnTrQ/g3LxbgEue2B0/Sm3STejrbv69OW
-        WhH/7v3urUFORpB7EwopFHKD0so0aHPsozcRxwR3FzfBuKn6FZ1YsnncVWWDor3lHLvEA+2Qsc/0l
-        X0DvJwR2UcKHzxHc49CPDBLT76mYAPFJ1ARseYjktu7bW4OgauhSHDBiC8TkqYxmTmzlVssqLIwau
-        HbWYxgNA==;
-Received: from adsl-173-228-226-134.prtc.net ([173.228.226.134] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hLQVm-0000IF-E0; Tue, 30 Apr 2019 11:01:22 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
+        id S1726105AbfD3UKr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 30 Apr 2019 16:10:47 -0400
+Received: from mail-eopbgr790130.outbound.protection.outlook.com ([40.107.79.130]:20736
+        "EHLO NAM03-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726024AbfD3UKr (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 30 Apr 2019 16:10:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=wavesemi.onmicrosoft.com; s=selector1-wavecomp-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TpyZcDxXbvSkVotzFkMyCfj5WDHtPiC8BJMokhhTj0Y=;
+ b=rqyrmEOTkXXMHdeq8q69CgmrrrQ+9Fgqq+X5XS0SuL5LucAN77lC+XrU2jlHTwXBGefGmGVcwMagNVA6MmzwFxdIonRIhxBtEPmxVwjrX/CgNmSoM18hipDWOHigbujb4Z+x4h1X7kEkqip+S4R97LIoB8e3y3W1hhpEbmRBjAk=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.174.162.17) by
+ MWHPR2201MB1135.namprd22.prod.outlook.com (10.174.171.37) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1835.13; Tue, 30 Apr 2019 20:10:43 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::b9d6:bf19:ec58:2765%7]) with mapi id 15.20.1835.018; Tue, 30 Apr 2019
+ 20:10:43 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Christoph Hellwig <hch@lst.de>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
         James Hogan <jhogan@kernel.org>,
         Ley Foon Tan <lftan@altera.com>,
         Michal Simek <monstr@monstr.eu>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 7/7] microblaze: use the generic uncached segment support in dma-direct
-Date:   Tue, 30 Apr 2019 07:00:32 -0400
-Message-Id: <20190430110032.25301-8-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190430110032.25301-1-hch@lst.de>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH 5/7] MIPS: use the generic uncached segment support in
+ dma-direct
+Thread-Topic: [PATCH 5/7] MIPS: use the generic uncached segment support in
+ dma-direct
+Thread-Index: AQHU/0QLF7/q9Iq7YkyidXRkO+31J6ZVIwmA
+Date:   Tue, 30 Apr 2019 20:10:43 +0000
+Message-ID: <20190430201041.536amvinrcvd2wua@pburton-laptop>
 References: <20190430110032.25301-1-hch@lst.de>
+ <20190430110032.25301-6-hch@lst.de>
+In-Reply-To: <20190430110032.25301-6-hch@lst.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR06CA0048.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::25) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:24::17)
+user-agent: NeoMutt/20180716
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.94.197.246]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 35a5d8c8-1a26-4e3c-c1ad-08d6cda7ec7d
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:MWHPR2201MB1135;
+x-ms-traffictypediagnostic: MWHPR2201MB1135:
+x-microsoft-antispam-prvs: <MWHPR2201MB113555E0F0052FB7F0F1CD61C13A0@MWHPR2201MB1135.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 00235A1EEF
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(7916004)(396003)(366004)(136003)(346002)(39850400004)(376002)(199004)(189003)(26005)(6486002)(11346002)(99286004)(229853002)(486006)(316002)(476003)(6436002)(478600001)(446003)(68736007)(52116002)(44832011)(7416002)(33716001)(256004)(3846002)(58126008)(8936002)(66066001)(54906003)(102836004)(6116002)(66446008)(66556008)(66476007)(6506007)(64756008)(66946007)(73956011)(386003)(71200400001)(6916009)(71190400001)(6512007)(9686003)(76176011)(53936002)(1076003)(14454004)(186003)(6246003)(81166006)(81156014)(2906002)(8676002)(97736004)(42882007)(4326008)(25786009)(305945005)(5660300002)(7736002)(41533002);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1135;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: +9J+Cn3aaCVj5xe7+TQH5xq4oPaO5heVqSkVR8aFAeIardtTcJ5USai7QKjeVnqLT0dRLRKj4EL31gCR0pyAmPKEZ2mDJFgJcrSwa0YdwN4G1Q/lrzx+e8HujouiScUDKH8LASpn1gYIkDugTTgpwB2n/jihyPYVsyAGn7dNsul/9WUqElkBxG04YOE3KQL00oVsfBh3Zgel+UGJ8gYPgvfmgfSmQY+zGiaCMyJoq9c5jykYaLJ6G1Fm1MjQdHvPP06BOmiDCCJxqjgSCbG3Cs3lV8uShxawxkIuiCzi/IGtOBhJi+WJ+3k3wagiT5fh82XUblVhJoRBpwLBYSE4sh5y6EXYgCRs83nM5nAdjy/ZY12/0/6PSov58ATY8rQ2+a1N2d0pdhPwje2qhMEr65j27W/H6+9RLldNJQvdNgM=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <D2BEEA2D04956B49845701064D9E0881@namprd22.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35a5d8c8-1a26-4e3c-c1ad-08d6cda7ec7d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2019 20:10:43.5014
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1135
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Stop providing our own arch alloc/free hooks for nommu platforms and
-just expose the segment offset and use the generic dma-direct
-allocator.
+Hi Christoph,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/microblaze/Kconfig         |  2 +
- arch/microblaze/mm/consistent.c | 97 +++++++++++++++------------------
- 2 files changed, 47 insertions(+), 52 deletions(-)
+On Tue, Apr 30, 2019 at 07:00:30AM -0400, Christoph Hellwig wrote:
+> diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-noncoheren=
+t.c
+> index f9549d2fbea3..f739f42c9d3c 100644
+> --- a/arch/mips/mm/dma-noncoherent.c
+> +++ b/arch/mips/mm/dma-noncoherent.c
+> @@ -44,33 +44,26 @@ static inline bool cpu_needs_post_dma_flush(struct de=
+vice *dev)
+>  	}
+>  }
+> =20
+> -void *arch_dma_alloc(struct device *dev, size_t size,
+> -		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+> +void arch_dma_prep_coherent(struct page *page, size_t size)
+>  {
+> -	void *ret;
+> -
+> -	ret =3D dma_direct_alloc_pages(dev, size, dma_handle, gfp, attrs);
+> -	if (ret && !(attrs & DMA_ATTR_NON_CONSISTENT)) {
+> -		dma_cache_wback_inv((unsigned long) ret, size);
+> -		ret =3D (void *)UNCAC_ADDR(ret);
+> -	}
+> +	if (!PageHighMem(page))
+> +		dma_cache_wback_inv((unsigned long)page_address(page), size);
+> +}
 
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index a51b965b3b82..b0df6b53e2bf 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -3,9 +3,11 @@ config MICROBLAZE
- 	select ARCH_32BIT_OFF_T
- 	select ARCH_NO_SWAP
- 	select ARCH_HAS_DMA_COHERENT_TO_PFN if MMU
-+	select ARCH_HAS_DMA_PREP_COHERENT
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-+	select ARCH_HAS_UNCACHED_SEGMENT if !MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_NO_COHERENT_DMA_MMAP if !MMU
- 	select ARCH_WANT_IPC_PARSE_VERSION
-diff --git a/arch/microblaze/mm/consistent.c b/arch/microblaze/mm/consistent.c
-index 3002cbca3059..a525194a754e 100644
---- a/arch/microblaze/mm/consistent.c
-+++ b/arch/microblaze/mm/consistent.c
-@@ -45,21 +45,52 @@
- #include <asm/cpuinfo.h>
- #include <asm/tlbflush.h>
- 
--#ifndef CONFIG_MMU
--/* I have to use dcache values because I can't relate on ram size */
--# define UNCACHED_SHADOW_MASK (cpuinfo.dcache_high - cpuinfo.dcache_base + 1)
--#endif
-+void arch_dma_prep_coherent(struct page *page, size_t size)
-+{
-+	phys_addr_t paddr = page_to_phys(page);
-+
-+	flush_dcache_range(paddr, paddr + size);
-+}
- 
-+#ifndef CONFIG_MMU
- /*
-- * Consistent memory allocators. Used for DMA devices that want to
-- * share uncached memory with the processor core.
-- * My crufty no-MMU approach is simple. In the HW platform we can optionally
-- * mirror the DDR up above the processor cacheable region.  So, memory accessed
-- * in this mirror region will not be cached.  It's alloced from the same
-- * pool as normal memory, but the handle we return is shifted up into the
-- * uncached region.  This will no doubt cause big problems if memory allocated
-- * here is not also freed properly. -- JW
-+ * Consistent memory allocators. Used for DMA devices that want to share
-+ * uncached memory with the processor core.  My crufty no-MMU approach is
-+ * simple.  In the HW platform we can optionally mirror the DDR up above the
-+ * processor cacheable region.  So, memory accessed in this mirror region will
-+ * not be cached.  It's alloced from the same pool as normal memory, but the
-+ * handle we return is shifted up into the uncached region.  This will no doubt
-+ * cause big problems if memory allocated here is not also freed properly. -- JW
-+ *
-+ * I have to use dcache values because I can't relate on ram size:
-  */
-+#ifdef CONFIG_XILINX_UNCACHED_SHADOW
-+#define UNCACHED_SHADOW_MASK (cpuinfo.dcache_high - cpuinfo.dcache_base + 1)
-+#else
-+#define UNCACHED_SHADOW_MASK 0
-+#endif /* CONFIG_XILINX_UNCACHED_SHADOW */
-+
-+void *uncached_kernel_address(void *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+	
-+	addr |= UNCACHED_SHADOW_MASK;
-+	if (addr > cpuinfo.dcache_base && addr < cpuinfo.dcache_high)
-+		pr_warn("ERROR: Your cache coherent area is CACHED!!!\n");
-+	return (void *)addr;
-+}
-+
-+void *cached_kernel_address(void *ptr)
-+{
-+	unsigned long addr = (unsigned long)ptr;
-+
-+	addr &= ~UNCACHED_SHADOW_MASK;
-+
-+	return (void *)addr;
-+}
-+
-+#else /* CONFIG_MMU */
-+
- void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 		gfp_t gfp, unsigned long attrs)
- {
-@@ -67,12 +98,9 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	void *ret;
- 	unsigned int i, err = 0;
- 	struct page *page, *end;
--
--#ifdef CONFIG_MMU
- 	phys_addr_t pa;
- 	struct vm_struct *area;
- 	unsigned long va;
--#endif
- 
- 	if (in_interrupt())
- 		BUG();
-@@ -89,26 +117,8 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	 * we need to ensure that there are no cachelines in use,
- 	 * or worse dirty in this area.
- 	 */
--	flush_dcache_range(virt_to_phys((void *)vaddr),
--					virt_to_phys((void *)vaddr) + size);
--
--#ifndef CONFIG_MMU
--	ret = (void *)vaddr;
--	/*
--	 * Here's the magic!  Note if the uncached shadow is not implemented,
--	 * it's up to the calling code to also test that condition and make
--	 * other arranegments, such as manually flushing the cache and so on.
--	 */
--# ifdef CONFIG_XILINX_UNCACHED_SHADOW
--	ret = (void *)((unsigned) ret | UNCACHED_SHADOW_MASK);
--# endif
--	if ((unsigned int)ret > cpuinfo.dcache_base &&
--				(unsigned int)ret < cpuinfo.dcache_high)
--		pr_warn("ERROR: Your cache coherent area is CACHED!!!\n");
-+	arch_dma_prep_coherent(virt_to_page((unsigned long)vaddr), size);
- 
--	/* dma_handle is same as physical (shadowed) address */
--	*dma_handle = (dma_addr_t)ret;
--#else
- 	/* Allocate some common virtual space to map the new pages. */
- 	area = get_vm_area(size, VM_ALLOC);
- 	if (!area) {
-@@ -120,7 +130,6 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 
- 	/* This gives us the real physical address of the first page. */
- 	*dma_handle = pa = __virt_to_phys(vaddr);
--#endif
- 
- 	/*
- 	 * free wasted pages.  We skip the first page since we know
-@@ -134,10 +143,8 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	split_page(page, order);
- 
- 	for (i = 0; i < size && err == 0; i += PAGE_SIZE) {
--#ifdef CONFIG_MMU
- 		/* MS: This is the whole magic - use cache inhibit pages */
- 		err = map_page(va + i, pa + i, _PAGE_KERNEL | _PAGE_NO_CACHE);
--#endif
- 
- 		SetPageReserved(page);
- 		page++;
-@@ -157,7 +164,6 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	return ret;
- }
- 
--#ifdef CONFIG_MMU
- static pte_t *consistent_virt_to_pte(void *vaddr)
- {
- 	unsigned long addr = (unsigned long)vaddr;
-@@ -175,7 +181,6 @@ long arch_dma_coherent_to_pfn(struct device *dev, void *vaddr,
- 
- 	return pte_pfn(*ptep);
- }
--#endif
- 
- /*
-  * free page(s) as defined by the above mapping.
-@@ -190,18 +195,6 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
- 
- 	size = PAGE_ALIGN(size);
- 
--#ifndef CONFIG_MMU
--	/* Clear SHADOW_MASK bit in address, and free as per usual */
--# ifdef CONFIG_XILINX_UNCACHED_SHADOW
--	vaddr = (void *)((unsigned)vaddr & ~UNCACHED_SHADOW_MASK);
--# endif
--	page = virt_to_page(vaddr);
--
--	do {
--		__free_reserved_page(page);
--		page++;
--	} while (size -= PAGE_SIZE);
--#else
- 	do {
- 		pte_t *ptep = consistent_virt_to_pte(vaddr);
- 		unsigned long pfn;
-@@ -219,5 +212,5 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
- 
- 	/* flush tlb */
- 	flush_tlb_all();
--#endif
- }
-+#endif /* CONFIG_MMU */
--- 
-2.20.1
+This series looks like a nice cleanup to me - the one thing that puzzles
+me is the !PageHighMem check above.
 
+As far as I can see arch_dma_prep_coherent() should never be called with
+a highmem page, so would it make more sense to either drop this check or
+perhaps wrap it in a WARN_ON()?
+
+Thanks,
+    Paul
