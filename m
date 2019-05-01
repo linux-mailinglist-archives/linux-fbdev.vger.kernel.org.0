@@ -2,92 +2,151 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C9E1107DC
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 May 2019 14:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947751082E
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 May 2019 15:13:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbfEAMTF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 1 May 2019 08:19:05 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:58058 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbfEAMTF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 May 2019 08:19:05 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x41CInFW030028;
-        Wed, 1 May 2019 07:18:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1556713129;
-        bh=9aQOi45c/EGVag76udV6doM0PRwWmZo9EP9zOsTY0/k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eLlCOI2gErzAP1SeQMBk3RLC8bHUw3IqTNbW7qY1aCEy6pK/EspZStjcFEV/8hlTj
-         9MmJn6ftIpzYuNa6jhRILkZRkVrg5phmQwqRYCZyyWRtcmOMkcUYiX4r58Uv+T37Qr
-         XOVNJracOfkqDKbYB/ZNLiQplBY6IzhY389B1/XY=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x41CIngO040408
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 1 May 2019 07:18:49 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 1 May
- 2019 07:18:49 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 1 May 2019 07:18:48 -0500
-Received: from [10.250.90.63] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x41CImd7003631;
-        Wed, 1 May 2019 07:18:48 -0500
-Subject: Re: [PATCH v3 3/3] backlight: lm3630a: add firmware node support
-To:     Pavel Machek <pavel@ucw.cz>
-CC:     Brian Masney <masneyb@onstation.org>, <lee.jones@linaro.org>,
-        <daniel.thompson@linaro.org>, <jingoohan1@gmail.com>,
-        <robh+dt@kernel.org>, <jacek.anaszewski@gmail.com>,
-        <mark.rutland@arm.com>, <b.zolnierkie@samsung.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-leds@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-fbdev@vger.kernel.org>, <jonathan@marek.ca>
-References: <20190415072905.2861-1-masneyb@onstation.org>
- <20190415072905.2861-4-masneyb@onstation.org>
- <0e5e26ba-cf98-913e-8e76-e988a86dc0d1@ti.com> <20190501082627.GA2971@amd>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <fbf41c1b-21c7-a997-f88c-3d29ccd1b42a@ti.com>
-Date:   Wed, 1 May 2019 07:18:52 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726165AbfEANN6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 May 2019 09:13:58 -0400
+Received: from verein.lst.de ([213.95.11.211]:52884 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725993AbfEANN6 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 1 May 2019 09:13:58 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 6CF0168AFE; Wed,  1 May 2019 15:13:39 +0200 (CEST)
+Date:   Wed, 1 May 2019 15:13:39 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: [PATCH 5/7 v2] MIPS: use the generic uncached segment support in
+ dma-direct
+Message-ID: <20190501131339.GA890@lst.de>
+References: <20190430110032.25301-1-hch@lst.de> <20190430110032.25301-6-hch@lst.de> <20190430201041.536amvinrcvd2wua@pburton-laptop> <20190430202947.GA30262@lst.de> <20190430211105.ielntedm46uqamca@pburton-laptop>
 MIME-Version: 1.0
-In-Reply-To: <20190501082627.GA2971@amd>
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190430211105.ielntedm46uqamca@pburton-laptop>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Pavel
+Stop providing our arch alloc/free hooks and just expose the segment
+offset instead.
 
-On 5/1/19 3:26 AM, Pavel Machek wrote:
-> Hi!
-> 
->>> @@ -396,13 +506,20 @@ static int lm3630a_probe(struct i2c_client *client,
->>>  				     GFP_KERNEL);
->>>  		if (pdata == NULL)
->>>  			return -ENOMEM;
->>> +
->>>  		/* default values */
->>> -		pdata->leda_ctrl = LM3630A_LEDA_ENABLE;
->>> -		pdata->ledb_ctrl = LM3630A_LEDB_ENABLE;
->>> +		pdata->leda_ctrl = LM3630A_LEDA_DISABLE;
->>> +		pdata->ledb_ctrl = LM3630A_LEDB_DISABLE;
->>
->> This is not needed since default is disabled and kzalloc will set these to 0
-> 
-> Let compiler do this kind of optimalizations. Code makes sense as-is.
-> 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/mips/Kconfig              |  1 +
+ arch/mips/include/asm/page.h   |  3 ---
+ arch/mips/jazz/jazzdma.c       |  6 ------
+ arch/mips/mm/dma-noncoherent.c | 26 +++++++++-----------------
+ 4 files changed, 10 insertions(+), 26 deletions(-)
 
-Yes the code makes sense but it is unnecessary.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4a5f5b0ee9a9..cde4b490f3c7 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -9,6 +9,7 @@ config MIPS
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_UNCACHED_SEGMENT
+ 	select ARCH_SUPPORTS_UPROBES
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 6b31c93b5eaa..23e0f1386e04 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -258,9 +258,6 @@ extern int __virt_addr_valid(const volatile void *kaddr);
+ 	 ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0) | \
+ 	 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
+ 
+-#define UNCAC_ADDR(addr)	(UNCAC_BASE + __pa(addr))
+-#define CAC_ADDR(addr)		((unsigned long)__va((addr) - UNCAC_BASE))
+-
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
+ 
+diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
+index bedb5047aff3..1804dc9d8136 100644
+--- a/arch/mips/jazz/jazzdma.c
++++ b/arch/mips/jazz/jazzdma.c
+@@ -575,10 +575,6 @@ static void *jazz_dma_alloc(struct device *dev, size_t size,
+ 		return NULL;
+ 	}
+ 
+-	if (!(attrs & DMA_ATTR_NON_CONSISTENT)) {
+-		dma_cache_wback_inv((unsigned long)ret, size);
+-		ret = (void *)UNCAC_ADDR(ret);
+-	}
+ 	return ret;
+ }
+ 
+@@ -586,8 +582,6 @@ static void jazz_dma_free(struct device *dev, size_t size, void *vaddr,
+ 		dma_addr_t dma_handle, unsigned long attrs)
+ {
+ 	vdma_free(dma_handle);
+-	if (!(attrs & DMA_ATTR_NON_CONSISTENT))
+-		vaddr = (void *)CAC_ADDR((unsigned long)vaddr);
+ 	dma_direct_free_pages(dev, size, vaddr, dma_handle, attrs);
+ }
+ 
+diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-noncoherent.c
+index f9549d2fbea3..ed56c6fa7be2 100644
+--- a/arch/mips/mm/dma-noncoherent.c
++++ b/arch/mips/mm/dma-noncoherent.c
+@@ -44,33 +44,25 @@ static inline bool cpu_needs_post_dma_flush(struct device *dev)
+ 	}
+ }
+ 
+-void *arch_dma_alloc(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
++void arch_dma_prep_coherent(struct page *page, size_t size)
+ {
+-	void *ret;
+-
+-	ret = dma_direct_alloc_pages(dev, size, dma_handle, gfp, attrs);
+-	if (ret && !(attrs & DMA_ATTR_NON_CONSISTENT)) {
+-		dma_cache_wback_inv((unsigned long) ret, size);
+-		ret = (void *)UNCAC_ADDR(ret);
+-	}
++	dma_cache_wback_inv((unsigned long)page_address(page), size);
++}
+ 
+-	return ret;
++void *uncached_kernel_address(void *addr)
++{
++	return (void *)(__pa(addr) + UNCAC_BASE);
+ }
+ 
+-void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
+-		dma_addr_t dma_addr, unsigned long attrs)
++void *cached_kernel_address(void *addr)
+ {
+-	if (!(attrs & DMA_ATTR_NON_CONSISTENT))
+-		cpu_addr = (void *)CAC_ADDR((unsigned long)cpu_addr);
+-	dma_direct_free_pages(dev, size, cpu_addr, dma_addr, attrs);
++	return __va(addr) - UNCAC_BASE;
+ }
+ 
+ long arch_dma_coherent_to_pfn(struct device *dev, void *cpu_addr,
+ 		dma_addr_t dma_addr)
+ {
+-	unsigned long addr = CAC_ADDR((unsigned long)cpu_addr);
+-	return page_to_pfn(virt_to_page((void *)addr));
++	return page_to_pfn(virt_to_page(cached_kernel_address(cpu_addr)));
+ }
+ 
+ pgprot_t arch_dma_mmap_pgprot(struct device *dev, pgprot_t prot,
+-- 
+2.20.1
 
-Dan
-
-> 									Pavel
-> 
