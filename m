@@ -2,96 +2,152 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13AD91189F
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 May 2019 14:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC5E7119D0
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 May 2019 15:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbfEBMBt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 2 May 2019 08:01:49 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:56203 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbfEBMBt (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 2 May 2019 08:01:49 -0400
-Received: from kresse.hi.pengutronix.de ([2001:67c:670:100:1d::2a])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.89)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1hMAPK-0007mT-Bl; Thu, 02 May 2019 14:01:46 +0200
-Message-ID: <1556798505.2590.7.camel@pengutronix.de>
-Subject: Re: [PATCH] backlight: rave-sp: don't touch initial state and
- register with correct device
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        patchwork-lst@pengutronix.de, kernel@pengutronix.de
-Date:   Thu, 02 May 2019 14:01:45 +0200
-In-Reply-To: <c23ecabd-c2ee-8c23-9ee3-13290bc4da35@linaro.org>
-References: <20190429152919.27277-1-l.stach@pengutronix.de>
-         <c23ecabd-c2ee-8c23-9ee3-13290bc4da35@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::2a
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+        id S1726278AbfEBNLh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 2 May 2019 09:11:37 -0400
+Received: from verein.lst.de ([213.95.11.211]:59207 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726203AbfEBNLh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 2 May 2019 09:11:37 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 5EEEF68AA6; Thu,  2 May 2019 15:11:19 +0200 (CEST)
+Date:   Thu, 2 May 2019 15:11:19 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH 4/7] dma-direct: provide generic support for uncached
+ kernel segments
+Message-ID: <20190502131119.GA2859@lst.de>
+References: <20190430110032.25301-1-hch@lst.de> <20190430110032.25301-5-hch@lst.de> <20190501171857.chfxqntvm6r4xrr4@pburton-laptop> <20190501172912.GA19375@lst.de> <20190501174033.6rj5aiopdeo4uqpw@pburton-laptop> <20190501174905.GA20458@lst.de> <20190502000759.4ii2wuogc6fuc3jh@pburton-laptop>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190502000759.4ii2wuogc6fuc3jh@pburton-laptop>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Daniel,
+On Thu, May 02, 2019 at 12:08:01AM +0000, Paul Burton wrote:
+> > Can you test the stack with the two updated patches and ack them if
+> > they are fine?  That would allow getting at least the infrastructure
+> > and mips in for this merge window.
+> 
+> Did you send a v2 of this patch?
+> 
+> If so it hasn't showed up in my inbox, nor on the linux-mips archive on
+> lore.kernel.org.
 
-Am Donnerstag, den 02.05.2019, 11:33 +0100 schrieb Daniel Thompson:
-> On 29/04/2019 16:29, Lucas Stach wrote:
-> > This way the backlight can be referenced through its device node and
-> > enabling/disabling can be managed through the panel driver.
-> 
-> Is it possible to implement something similar to 
-> pwm_backlight_initial_power_state() to handle this?
+I did earlier in this thread.  Here it is again:
 
-I'm not aware of any protocol to the RAVE-SP that would allow to read
-back the backlight state. AFAICS the backlight is implemented as a
-unidirectional protocol.
+---
+From 247ca658ebeb7c8d04918747ec8a0da45c36bcb8 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Sun, 28 Apr 2019 13:23:26 -0500
+Subject: dma-direct: provide generic support for uncached kernel segments
 
-Regards,
-Lucas
+A few architectures support uncached kernel segments.  In that case we get
+an uncached mapping for a given physica address by using an offset in the
+uncached segement.  Implement support for this scheme in the generic
+dma-direct code instead of duplicating it in arch hooks.
 
-> backlight drivers already suffer from too much diversity so I prefer 
-> things like this to align behaviour with the (fairly heavilyly used) PWM 
-> driver if possible.
-> 
-> 
-> Daniel.
-> 
-> 
-> > > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >   drivers/video/backlight/rave-sp-backlight.c | 4 +---
-> >   1 file changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/video/backlight/rave-sp-backlight.c b/drivers/video/backlight/rave-sp-backlight.c
-> > index 462f14a1b19d..d296bfcf4396 100644
-> > --- a/drivers/video/backlight/rave-sp-backlight.c
-> > +++ b/drivers/video/backlight/rave-sp-backlight.c
-> > @@ -48,15 +48,13 @@ static int rave_sp_backlight_probe(struct platform_device *pdev)
-> > > >   	struct device *dev = &pdev->dev;
-> > > >   	struct backlight_device *bd;
-> >   
-> > > > -	bd = devm_backlight_device_register(dev, pdev->name, dev->parent,
-> > > > +	bd = devm_backlight_device_register(dev, pdev->name, dev,
-> > > >   					    dev_get_drvdata(dev->parent),
-> > > >   					    &rave_sp_backlight_ops,
-> > > >   					    &rave_sp_backlight_props);
-> > > >   	if (IS_ERR(bd))
-> > > >   		return PTR_ERR(bd);
-> >   
-> > > > -	backlight_update_status(bd);
-> > -
-> > > >   	return 0;
-> >   }
-> >   
-> > 
-> 
-> 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/Kconfig                    |  8 ++++++++
+ include/linux/dma-noncoherent.h |  3 +++
+ kernel/dma/direct.c             | 17 +++++++++++++++--
+ 3 files changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 33687dddd86a..ea22a8c894ec 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -249,6 +249,14 @@ config ARCH_HAS_FORTIFY_SOURCE
+ config ARCH_HAS_SET_MEMORY
+ 	bool
+ 
++#
++# Select if arch has an uncached kernel segment and provides the
++# uncached_kernel_address / cached_kernel_address symbols to use it
++#
++config ARCH_HAS_UNCACHED_SEGMENT
++	select ARCH_HAS_DMA_PREP_COHERENT
++	bool
++
+ # Select if arch init_task must go in the __init_task_data section
+ config ARCH_TASK_STRUCT_ON_STACK
+        bool
+diff --git a/include/linux/dma-noncoherent.h b/include/linux/dma-noncoherent.h
+index 9741767e400f..7e0126a04e02 100644
+--- a/include/linux/dma-noncoherent.h
++++ b/include/linux/dma-noncoherent.h
+@@ -80,4 +80,7 @@ static inline void arch_dma_prep_coherent(struct page *page, size_t size)
+ }
+ #endif /* CONFIG_ARCH_HAS_DMA_PREP_COHERENT */
+ 
++void *uncached_kernel_address(void *addr);
++void *cached_kernel_address(void *addr);
++
+ #endif /* _LINUX_DMA_NONCOHERENT_H */
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 2c2772e9702a..6688e1cee7d1 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -171,6 +171,13 @@ void *dma_direct_alloc_pages(struct device *dev, size_t size,
+ 		*dma_handle = phys_to_dma(dev, page_to_phys(page));
+ 	}
+ 	memset(ret, 0, size);
++
++	if (IS_ENABLED(CONFIG_ARCH_HAS_UNCACHED_SEGMENT) &&
++	    !dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_NON_CONSISTENT)) {
++		arch_dma_prep_coherent(page, size);
++		ret = uncached_kernel_address(ret);
++	}
++
+ 	return ret;
+ }
+ 
+@@ -189,13 +196,18 @@ void dma_direct_free_pages(struct device *dev, size_t size, void *cpu_addr,
+ 
+ 	if (force_dma_unencrypted())
+ 		set_memory_encrypted((unsigned long)cpu_addr, 1 << page_order);
++
++	if (IS_ENABLED(CONFIG_ARCH_HAS_UNCACHED_SEGMENT) &&
++	    !dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_NON_CONSISTENT))
++		cpu_addr = cached_kernel_address(cpu_addr);
+ 	__dma_direct_free_pages(dev, size, virt_to_page(cpu_addr));
+ }
+ 
+ void *dma_direct_alloc(struct device *dev, size_t size,
+ 		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+ {
+-	if (!dev_is_dma_coherent(dev))
++	if (!IS_ENABLED(CONFIG_ARCH_HAS_UNCACHED_SEGMENT) &&
++	    !dev_is_dma_coherent(dev))
+ 		return arch_dma_alloc(dev, size, dma_handle, gfp, attrs);
+ 	return dma_direct_alloc_pages(dev, size, dma_handle, gfp, attrs);
+ }
+@@ -203,7 +215,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ void dma_direct_free(struct device *dev, size_t size,
+ 		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
+ {
+-	if (!dev_is_dma_coherent(dev))
++	if (!IS_ENABLED(CONFIG_ARCH_HAS_UNCACHED_SEGMENT) &&
++	    !dev_is_dma_coherent(dev))
+ 		arch_dma_free(dev, size, cpu_addr, dma_addr, attrs);
+ 	else
+ 		dma_direct_free_pages(dev, size, cpu_addr, dma_addr, attrs);
+-- 
+2.20.1
+
