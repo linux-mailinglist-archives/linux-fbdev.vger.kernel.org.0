@@ -2,107 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 489AC11789
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 May 2019 12:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13AD91189F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 May 2019 14:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbfEBKqs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 2 May 2019 06:46:48 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35993 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbfEBKqs (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 2 May 2019 06:46:48 -0400
-Received: by mail-wm1-f67.google.com with SMTP id p16so1982799wma.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 02 May 2019 03:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=upr4s3UIqgMfOrxzX8hhRFt6bzy1u9Hfi57/Qn9/txc=;
-        b=ONa1Kh3MkmzE3M+vKHgiL4PwCW7ge1VCjQn6DkjkKRFwkrOiHF5j2fYLMdPH4Rztwh
-         frXJi5Ac0BfSXIcwW2euSoiS1uDBKY0IJpY7Jyd3aX5ErqYvHEWT3Eu3eFzN3hSy+fWJ
-         xELWO3+47dApN8Evpzl5hFryTd4WopsbAivnKmbX8r7oiEXlaO6rVfvEsn81LBtm5WE4
-         l38NRQQUPmeOTieKupNNQ0ztW+qbYYsO+0PZ3v2w1nP5hqpfkzqLWBVzAS7D7iKsx2fe
-         h4gicOY03ITDlRaXt2umQf4RCP3fAPxpJZEBUxcaisPKIAho8tEnpPa2GfyFTvT7p4wx
-         miew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=upr4s3UIqgMfOrxzX8hhRFt6bzy1u9Hfi57/Qn9/txc=;
-        b=X8o/VznEBLaYcfLrYeob90hx5Ifa4QX+rVa+4nzOeQKYw/YQDp3tMY41RuukOxIR9E
-         D1OnYQTpV9PBQvn2r9IeLy1Qjf4R8dqsIYQXYNHhTfJZ20afD6RlbaKzaY7O63UH6NFA
-         G+V5Pm19/lTjIPw6Ezyow4kRFJUm7LSqu1kWL4HdEL5HksFmw/bd3aDMC9hLWZiVKzo4
-         bQkMriLB/OZ6ZPhjPAjfLxPNSD7J4muPs8MaL1rhe+By/bFwvkUnQe/04oXE7dqlUieN
-         I5hrxWQ7mmLigpwG105g3k3DOHk3R/j+CHtLkRBN8ZXs0VTd3c4ddqag4sCM48j0z9Ti
-         PILg==
-X-Gm-Message-State: APjAAAVavRBYmFDdCTsUAen02kODPiAThBsl/k4MIjhAG3PB1heLpBTe
-        JLzTWKGzQkvud/WtdlSH4rXFdA==
-X-Google-Smtp-Source: APXvYqz8ljUpeAkWeR0JjC3hksspS6xNuZxWwhyiG3PhQ+JauGvsPlF8u6dmrVg+yH7KYtohRo/pYg==
-X-Received: by 2002:a1c:e708:: with SMTP id e8mr1866607wmh.73.1556794006806;
-        Thu, 02 May 2019 03:46:46 -0700 (PDT)
-Received: from holly.lan (static-84-9-17-116.vodafonexdsl.co.uk. [84.9.17.116])
-        by smtp.gmail.com with ESMTPSA id z16sm23205477wrt.26.2019.05.02.03.46.45
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 02 May 2019 03:46:46 -0700 (PDT)
-Date:   Thu, 2 May 2019 11:46:44 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Brian Masney <masneyb@onstation.org>
-Cc:     lee.jones@linaro.org, jingoohan1@gmail.com, robh+dt@kernel.org,
-        jacek.anaszewski@gmail.com, pavel@ucw.cz, mark.rutland@arm.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dmurphy@ti.com, jonathan@marek.ca,
-        Daniel Thompson <daniel@redfelineninja.org.uk>
-Subject: Re: [PATCH v6 1/3] backlight: lm3630a: return 0 on success in
- update_status functions
-Message-ID: <20190502104644.e3eth2cdebuz2mpk@holly.lan>
-References: <20190424092505.6578-1-masneyb@onstation.org>
- <20190424092505.6578-2-masneyb@onstation.org>
- <864c1ddc-1008-0041-1559-e491ca0186ef@linaro.org>
- <20190502104239.GA24563@basecamp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190502104239.GA24563@basecamp>
-User-Agent: NeoMutt/20180716
+        id S1726267AbfEBMBt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 2 May 2019 08:01:49 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:56203 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726270AbfEBMBt (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 2 May 2019 08:01:49 -0400
+Received: from kresse.hi.pengutronix.de ([2001:67c:670:100:1d::2a])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+        (envelope-from <l.stach@pengutronix.de>)
+        id 1hMAPK-0007mT-Bl; Thu, 02 May 2019 14:01:46 +0200
+Message-ID: <1556798505.2590.7.camel@pengutronix.de>
+Subject: Re: [PATCH] backlight: rave-sp: don't touch initial state and
+ register with correct device
+From:   Lucas Stach <l.stach@pengutronix.de>
+To:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        patchwork-lst@pengutronix.de, kernel@pengutronix.de
+Date:   Thu, 02 May 2019 14:01:45 +0200
+In-Reply-To: <c23ecabd-c2ee-8c23-9ee3-13290bc4da35@linaro.org>
+References: <20190429152919.27277-1-l.stach@pengutronix.de>
+         <c23ecabd-c2ee-8c23-9ee3-13290bc4da35@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6-1+deb9u1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::2a
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, May 02, 2019 at 06:42:39AM -0400, Brian Masney wrote:
-> On Thu, May 02, 2019 at 11:07:51AM +0100, Daniel Thompson wrote:
-> > On 24/04/2019 10:25, Brian Masney wrote:
-> > > lm3630a_bank_a_update_status() and lm3630a_bank_b_update_status()
-> > > both return the brightness value if the brightness was successfully
-> > > updated. Writing to these attributes via sysfs would cause a 'Bad
-> > > address' error to be returned. These functions should return 0 on
-> > > success, so let's change it to correct that error.
-> > > 
-> > > Signed-off-by: Brian Masney <masneyb@onstation.org>
-> > > Fixes: 28e64a68a2ef ("backlight: lm3630: apply chip revision")
-> > > Acked-by: Pavel Machek <pavel@ucw.cz>
+Hi Daniel,
+
+Am Donnerstag, den 02.05.2019, 11:33 +0100 schrieb Daniel Thompson:
+> On 29/04/2019 16:29, Lucas Stach wrote:
+> > This way the backlight can be referenced through its device node and
+> > enabling/disabling can be managed through the panel driver.
+> 
+> Is it possible to implement something similar to 
+> pwm_backlight_initial_power_state() to handle this?
+
+I'm not aware of any protocol to the RAVE-SP that would allow to read
+back the backlight state. AFAICS the backlight is implemented as a
+unidirectional protocol.
+
+Regards,
+Lucas
+
+> backlight drivers already suffer from too much diversity so I prefer 
+> things like this to align behaviour with the (fairly heavilyly used) PWM 
+> driver if possible.
+> 
+> 
+> Daniel.
+> 
+> 
+> > > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > ---
+> >   drivers/video/backlight/rave-sp-backlight.c | 4 +---
+> >   1 file changed, 1 insertion(+), 3 deletions(-)
 > > 
-> > Hi Brian, sorry for the delay. For some reason your mails are being dumped
-> > before they reach me so I only discovered these patches when I paid proper
-> > attention to the replies and fetched them from patchwork.
+> > diff --git a/drivers/video/backlight/rave-sp-backlight.c b/drivers/video/backlight/rave-sp-backlight.c
+> > index 462f14a1b19d..d296bfcf4396 100644
+> > --- a/drivers/video/backlight/rave-sp-backlight.c
+> > +++ b/drivers/video/backlight/rave-sp-backlight.c
+> > @@ -48,15 +48,13 @@ static int rave_sp_backlight_probe(struct platform_device *pdev)
+> > > >   	struct device *dev = &pdev->dev;
+> > > >   	struct backlight_device *bd;
+> >   
+> > > > -	bd = devm_backlight_device_register(dev, pdev->name, dev->parent,
+> > > > +	bd = devm_backlight_device_register(dev, pdev->name, dev,
+> > > >   					    dev_get_drvdata(dev->parent),
+> > > >   					    &rave_sp_backlight_ops,
+> > > >   					    &rave_sp_backlight_props);
+> > > >   	if (IS_ERR(bd))
+> > > >   		return PTR_ERR(bd);
+> >   
+> > > > -	backlight_update_status(bd);
+> > -
+> > > >   	return 0;
+> >   }
+> >   
 > > 
-> > Hi Lee, is the same thing happening for you? ;-)
 > 
-> Huh, that's odd. I haven't ran into that issue when working with people
-> from Linaro in other subsystems.
 > 
-> As a sanity check, I used 'git send-email' to send this patch to
-> check-auth@verifier.port25.com and it verified that I still have SPF,
-> DKIM, reverse DNS, etc. all setup properly on this domain.
-> 
-> hotmail.com addresses are the only ones I've had issues with in the
-> past, but I doubt you're forwarding your email there. :)
-
-No... and strangely enough your recent e-mail sailed through just fine.
-Let's wait and see what is happening for Lee (which I suspect may not be
-until well into next week).
-
-
-Daniel.
