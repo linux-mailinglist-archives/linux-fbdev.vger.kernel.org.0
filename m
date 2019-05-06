@@ -2,135 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0257C12F16
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 May 2019 15:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6348C14AF3
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 May 2019 15:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727617AbfECN3i (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 May 2019 09:29:38 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37821 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726932AbfECN3h (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 May 2019 09:29:37 -0400
-Received: by mail-wm1-f67.google.com with SMTP id y5so6796008wma.2
-        for <linux-fbdev@vger.kernel.org>; Fri, 03 May 2019 06:29:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=UiiURwV+csCsGFRj/M2EvTMLMlk1L513hkjExJHkVEs=;
-        b=e0kosvW7YUPpY4q0WS+jyio53RdExQS62XQnEHyBmCxIHKCBWazHrqKfLNh+eOEieV
-         I2bVKlwVGg0oI3yJoOLsDsrD91dTw7V5D5/cEs/eOR9DZ5OmnPiBEuDApU4xkcXfxe2X
-         o7bJMLvk5gP59Q3seFovLewo/ILLvmgMz7b2xyr2qU5SV4kP+psmWOztcoXQQ3tSpolP
-         nOchj/xqxMmUd3yhD8nAlE0amuKDxMyFNej4nv2y5YZZt5GvQDyTzGZB5qPUQ/DBX0Qp
-         q/d/Hd3vvz6aIqXSzBmBxlFg0JULwwQfQ6rfbhB9NDIqzT/ZqfdUzhADnIqaqWQdbLeB
-         hkmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=UiiURwV+csCsGFRj/M2EvTMLMlk1L513hkjExJHkVEs=;
-        b=CWibGG5xaq8dP74T2syPQtrad0vC4hstv3YOndTjoWbx9oOMBbWzkfIElQwW99U/Tt
-         CYcbOGoEUtSyUu+ikA3JAq3H/2bV246u2e8nn1oe8h3KKF/s/weikJbo+4GYJgST5vXS
-         8b2d+5h/18ZoCDqDT+97DteDPgTE0NPFhGOi1DeLyMbylaHVtcEvsQVK4LfZzqATFzUT
-         PnnS0qZTIZuTXFFJLQIXGCA0tHLx3MZtquRGy+SS2ozQFjBV/7/zcehRExuUEefuELET
-         kVm7vtt291nnVecs2bTfG0QlYFFZf0ejDR0EDSXsgANQ1QlDYQ9Mx471wNf7pN8Naj5g
-         MpSQ==
-X-Gm-Message-State: APjAAAUfSuZiTEYkTvvtr1TzwrTfGGEsq7t7O0V09sGttbgwUn7IXT06
-        xZOIjNpuuB9a8E70bq8ZpZt7mQ==
-X-Google-Smtp-Source: APXvYqzA0vhwJpj92WdDars413IpWNcg1yQiVM9kEifAW+RTVzyZeKAKG9EQBfSsSikTgk3bWBMNUA==
-X-Received: by 2002:a1c:7610:: with SMTP id r16mr6360976wmc.15.1556890175153;
-        Fri, 03 May 2019 06:29:35 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id o6sm2901085wre.60.2019.05.03.06.29.33
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 03 May 2019 06:29:34 -0700 (PDT)
-Date:   Fri, 3 May 2019 14:29:32 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Lucas Stach <l.stach@pengutronix.de>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        patchwork-lst@pengutronix.de, kernel@pengutronix.de
-Subject: Re: [PATCH] backlight: rave-sp: don't touch initial state and
- register with correct device
-Message-ID: <20190503132932.2e3vrvlykofpexkf@holly.lan>
-References: <20190429152919.27277-1-l.stach@pengutronix.de>
- <c23ecabd-c2ee-8c23-9ee3-13290bc4da35@linaro.org>
- <1556798505.2590.7.camel@pengutronix.de>
+        id S1726046AbfEFNc6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 6 May 2019 09:32:58 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:33215 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725994AbfEFNc6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 May 2019 09:32:58 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190506133257euoutp019bb0165242669290752d09a02133710f~cG0pReyuo3208532085euoutp01J
+        for <linux-fbdev@vger.kernel.org>; Mon,  6 May 2019 13:32:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190506133257euoutp019bb0165242669290752d09a02133710f~cG0pReyuo3208532085euoutp01J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1557149577;
+        bh=fj3BPnN6nhd6wWJ2Ap4Y7Un3IQZgfbFFeQWzLYzMSZA=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=uQPVFGw1XXSjgVodmdbLfU7tY9gqB0t6OZu9c+sGAvAkQRcJA6N6qtZfAPKX1+Z9+
+         cSxpXgh6JXkf9INPdUvsdzZTXiEQGKWUEIe3VXpCzR+QZkF0rk95hkevVxocIV1qdS
+         VcllzCtVlNwFzM+xE8b4A3R4DJXt74uAasnJtAt0=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190506133256eucas1p1a28b30ff888700f20d844bf2a055f9a9~cG0orXuxD3092330923eucas1p16;
+        Mon,  6 May 2019 13:32:56 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 43.C7.04377.88730DC5; Mon,  6
+        May 2019 14:32:56 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190506133255eucas1p2f710b96c6a25d9e4ed4d1fcf2acf5060~cG0oAi9Td0514805148eucas1p2c;
+        Mon,  6 May 2019 13:32:55 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190506133255eusmtrp2e0935f878b5630390134d65272c108bf~cG0nykYfT1223612236eusmtrp2M;
+        Mon,  6 May 2019 13:32:55 +0000 (GMT)
+X-AuditID: cbfec7f4-12dff70000001119-d8-5cd03788d0d9
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id A7.B1.04146.78730DC5; Mon,  6
+        May 2019 14:32:55 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190506133255eusmtip2396f65c6cb20f925876269f230896e55~cG0nV1bJE0553405534eusmtip26;
+        Mon,  6 May 2019 13:32:55 +0000 (GMT)
+Subject: Re: [PATCH] fbcon: Don't reset logo_shown when logo is currently
+ shown
+To:     Andreas Schwab <schwab@linux-m68k.org>
+Cc:     Prarit Bhargava <prarit@redhat.com>, linux-fbdev@vger.kernel.org,
+        Yisheng Xie <ysxie@foxmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Marko Myllynen <myllynen@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Thierry Reding <treding@nvidia.com>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <4a5fe468-c153-910a-098e-3d6cff3432c8@samsung.com>
+Date:   Mon, 6 May 2019 15:32:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+        Thunderbird/45.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1556798505.2590.7.camel@pengutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <87imvwp9d4.fsf_-_@igel.home>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKKsWRmVeSWpSXmKPExsWy7djPc7od5hdiDDZt5bdY+PAus8WVr+/Z
+        LN4cn85kcaY71+JE3wdWi3UXrrBbvPvRy26xr+MBk0X/0g42i9u/+SzO70p04PaY3XCRxWPv
+        twUsHgt6zjN7tOy7xe5x6HAHo8f97uNMHr3N79g83u+7yubxeZNcAGcUl01Kak5mWWqRvl0C
+        V0bzmwUsBf0sFf/ufmJrYFzP3MXIySEhYCLR9uk/axcjF4eQwApGiX9Pr7BAOF8YJZbN7maE
+        cD4zShx5sJ0FpmVr0wRmiMRyRonGLWvZIJy3jBKH975jAqkSFgiUWLFvKpgtIqAl0TNxIlgR
+        s8B7JoljGw6xgSTYBKwkJravYgSxeQXsJDavPAm0goODRUBF4tPDDBBTVCBCov+MOkSFoMTJ
+        mU/AjuAEGvlu/Waw8cwCBhJHFs1hhbDlJba/nQN2nITALXaJ09/3MkFc7SLR87sL6gNhiVfH
+        t7BD2DIS/3fOZ4JoWMco8bfjBVT3dkaJ5ZP/sUFUWUscPn6RFeQiCQFHiasHMiBMPokbbwUh
+        FvNJTNo2nRkizCvR0SYE0agmsWHZBjaYVV07V0LD3UPiyNlpTBMYFWcheW0WkndmIXlnASPz
+        Kkbx1NLi3PTUYqO81HK94sTc4tK8dL3k/NxNjMDEdfrf8S87GHf9STrEKMDBqMTDu0DlfIwQ
+        a2JZcWXuIUYJDmYlEd7EZ+dihHhTEiurUovy44tKc1KLDzFKc7AoifNWMzyIFhJITyxJzU5N
+        LUgtgskycXBKNTC2mie7v3GasItnjl+9bWhnhWxt6By5Dym3r70uvTdp/Y917yJ5HNVPfueQ
+        KDLym8FtwZ3ZVPDnouZ757BNuwIyu+qdEw5Lim5dOvuq4Z4QDS6rm7WCy45GzPq5/uve+B2R
+        /1cnp55Zx5EbwG185ObTgu4rCz7FCO3fdePeA8nDz3Y/ZVsWteyaEktxRqKhFnNRcSIA6rSr
+        vVgDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsVy+t/xe7rt5hdiDOZdVrRY+PAus8WVr+/Z
+        LN4cn85kcaY71+JE3wdWi3UXrrBbvPvRy26xr+MBk0X/0g42i9u/+SzO70p04PaY3XCRxWPv
+        twUsHgt6zjN7tOy7xe5x6HAHo8f97uNMHr3N79g83u+7yubxeZNcAGeUnk1RfmlJqkJGfnGJ
+        rVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXkbzmwUsBf0sFf/ufmJrYFzP
+        3MXIySEhYCKxtWkCkM3FISSwlFFi2ZmLQA4HUEJG4vj6MogaYYk/17rYIGpeM0rMOHuAFSQh
+        LBAosWLfVCYQW0RAS6Jn4kSoomVMEid/XmYCcZgFPjJJ/N2wEayKTcBKYmL7KkYQm1fATmLz
+        ypMsINtYBFQkPj3MAAmLCkRI3HrYwQJRIihxcuYTMJsTaMG79ZvBxjAL6EnsuP6LFcKWl9j+
+        dg7zBEbBWUhaZiEpm4WkbAEj8ypGkdTS4tz03GJDveLE3OLSvHS95PzcTYzAeNx27OfmHYyX
+        NgYfYhTgYFTi4fVQOh8jxJpYVlyZe4hRgoNZSYQ38dm5GCHelMTKqtSi/Pii0pzU4kOMpkA/
+        TGSWEk3OB6aKvJJ4Q1NDcwtLQ3Njc2MzCyVx3g6BgzFCAumJJanZqakFqUUwfUwcnFINjC1q
+        DLGzmq7FNhdeVKn+u3nW4tQlTIHxrX5irI+4/gpsCGty6Gmwvnp8yoJTnPvS3zk/fv1yjuSr
+        QLmLOySaPx7Neqd6u/+A8i2RQ/u/lP6u2mny/9ncTr1Htl13T7QV2YZ/Xajx2jB5e1CstOjO
+        e+6iXgWXn+64Ms/p2qe1Kw+Y3zRe7hw8YYoSS3FGoqEWc1FxIgC7ihE/3QIAAA==
+X-CMS-MailID: 20190506133255eucas1p2f710b96c6a25d9e4ed4d1fcf2acf5060
+X-Msg-Generator: CA
+X-RootMTR: 20190402180939epcas4p15a2bd8dc16a3e56a5f62cdcf396a2404
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190402180939epcas4p15a2bd8dc16a3e56a5f62cdcf396a2404
+References: <20190129134350.24049-1-prarit@redhat.com>
+        <20190129134350.24049-3-prarit@redhat.com> <87ftr1ed4h.fsf@igel.home>
+        <8590ff59-a4fb-5a02-fda4-086476efcbe6@redhat.com>
+        <CGME20190402180939epcas4p15a2bd8dc16a3e56a5f62cdcf396a2404@epcas4p1.samsung.com>
+        <87imvwp9d4.fsf_-_@igel.home>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, May 02, 2019 at 02:01:45PM +0200, Lucas Stach wrote:
-> Hi Daniel,
+
+On 04/02/2019 08:09 PM, Andreas Schwab wrote:
+> When the logo is currently drawn on a virtual console, and the console
+> loglevel is reduced to quiet, logo_shown must be left alone, so that it
+> the scrolling region on that virtual console is properly reset.
 > 
-> Am Donnerstag, den 02.05.2019, 11:33 +0100 schrieb Daniel Thompson:
-> > On 29/04/2019 16:29, Lucas Stach wrote:
-> > > This way the backlight can be referenced through its device node and
-> > > enabling/disabling can be managed through the panel driver.
-> > 
-> > Is it possible to implement something similar to 
-> > pwm_backlight_initial_power_state() to handle this?
-> 
-> I'm not aware of any protocol to the RAVE-SP that would allow to read
-> back the backlight state. AFAICS the backlight is implemented as a
-> unidirectional protocol.
+> Fixes: 10993504d647 ("fbcon: Silence fbcon logo on 'quiet' boots")
+> Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
 
-That function does two things... one is read the current power state to
-ensure meta-data is correctly up to date which cannot be replicated.
-The other is to choose different behaviour depending on whether the
-backlight is standalone or has a phandle link to another device.
+Patch queued for v5.2, thanks.
 
-Does the second part apply to the rave-sp?
-
-
-Daniel.
-
-
-
-> > backlight drivers already suffer from too much diversity so I prefer 
-> > things like this to align behaviour with the (fairly heavilyly used) PWM 
-> > driver if possible.
-> > 
-> > 
-> > Daniel.
-> > 
-> > 
-> > > > > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > > ---
-> > >   drivers/video/backlight/rave-sp-backlight.c | 4 +---
-> > >   1 file changed, 1 insertion(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/video/backlight/rave-sp-backlight.c b/drivers/video/backlight/rave-sp-backlight.c
-> > > index 462f14a1b19d..d296bfcf4396 100644
-> > > --- a/drivers/video/backlight/rave-sp-backlight.c
-> > > +++ b/drivers/video/backlight/rave-sp-backlight.c
-> > > @@ -48,15 +48,13 @@ static int rave_sp_backlight_probe(struct platform_device *pdev)
-> > > > >   	struct device *dev = &pdev->dev;
-> > > > >   	struct backlight_device *bd;
-> > >   
-> > > > > -	bd = devm_backlight_device_register(dev, pdev->name, dev->parent,
-> > > > > +	bd = devm_backlight_device_register(dev, pdev->name, dev,
-> > > > >   					    dev_get_drvdata(dev->parent),
-> > > > >   					    &rave_sp_backlight_ops,
-> > > > >   					    &rave_sp_backlight_props);
-> > > > >   	if (IS_ERR(bd))
-> > > > >   		return PTR_ERR(bd);
-> > >   
-> > > > > -	backlight_update_status(bd);
-> > > -
-> > > > >   	return 0;
-> > >   }
-> > >   
-> > > 
-> > 
-> > 
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
