@@ -2,53 +2,25 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 493F917246
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 May 2019 09:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB5217452
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 May 2019 10:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbfEHHEh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 8 May 2019 03:04:37 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:41116 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725884AbfEHHEh (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 8 May 2019 03:04:37 -0400
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4874OSC126006
-        for <linux-fbdev@vger.kernel.org>; Wed, 8 May 2019 03:04:35 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2sbryukx2a-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-fbdev@vger.kernel.org>; Wed, 08 May 2019 03:04:31 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-fbdev@vger.kernel.org> from <alastair@au1.ibm.com>;
-        Wed, 8 May 2019 08:02:50 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 8 May 2019 08:02:41 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4872euL55181412
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 8 May 2019 07:02:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 130A8AE058;
-        Wed,  8 May 2019 07:02:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2C072AE053;
-        Wed,  8 May 2019 07:02:39 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed,  8 May 2019 07:02:39 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 7E655A03C4;
-        Wed,  8 May 2019 17:02:35 +1000 (AEST)
-From:   "Alastair D'Silva" <alastair@au1.ibm.com>
-To:     alastair@d-silva.org
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        id S1727083AbfEHI4g (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 8 May 2019 04:56:36 -0400
+Received: from mga01.intel.com ([192.55.52.88]:51270 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725815AbfEHI4g (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 8 May 2019 04:56:36 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 May 2019 01:56:35 -0700
+X-ExtLoop1: 1
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
+  by fmsmga001.fm.intel.com with ESMTP; 08 May 2019 01:56:27 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
@@ -76,322 +48,330 @@ Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
         ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
         devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 7/7] lib/hexdump.c: Optionally retain byte ordering
-Date:   Wed,  8 May 2019 17:01:47 +1000
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190508070148.23130-1-alastair@au1.ibm.com>
-References: <20190508070148.23130-1-alastair@au1.ibm.com>
+Subject: Re: [PATCH v2 4/7] lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
+In-Reply-To: <20190508070148.23130-5-alastair@au1.ibm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20190508070148.23130-1-alastair@au1.ibm.com> <20190508070148.23130-5-alastair@au1.ibm.com>
+Date:   Wed, 08 May 2019 11:58:34 +0300
+Message-ID: <87v9yll3ut.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19050807-4275-0000-0000-00000332844E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19050807-4276-0000-0000-00003841F1F4
-Message-Id: <20190508070148.23130-8-alastair@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-08_05:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905080046
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Alastair D'Silva <alastair@d-silva.org>
+On Wed, 08 May 2019, Alastair D'Silva <alastair@au1.ibm.com> wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+>
+> In order to support additional features in hex_dump_to_buffer, replace
+> the ascii bool parameter with flags.
+>
+> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> ---
+>  drivers/gpu/drm/i915/intel_engine_cs.c            |  2 +-
 
-The behaviour of hexdump groups is to print the data out as if
-it was a native-endian number.
+For i915,
 
-This patch tweaks the documentation to make this clear, and also
-adds the HEXDUMP_RETAIN_BYTE_ORDER flag to allow groups of
-multiple bytes to be printed without affecting the ordering
-of the printed bytes.
+Acked-by: Jani Nikula <jani.nikula@intel.com>
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- include/linux/printk.h |  1 +
- lib/hexdump.c          | 30 +++++++++++++++++----
- lib/test_hexdump.c     | 60 +++++++++++++++++++++++++++++-------------
- 3 files changed, 68 insertions(+), 23 deletions(-)
+>  drivers/isdn/hardware/mISDN/mISDNisar.c           |  6 ++++--
+>  drivers/mailbox/mailbox-test.c                    |  2 +-
+>  drivers/net/ethernet/amd/xgbe/xgbe-drv.c          |  2 +-
+>  drivers/net/ethernet/synopsys/dwc-xlgmac-common.c |  2 +-
+>  drivers/net/wireless/ath/ath10k/debug.c           |  3 ++-
+>  drivers/net/wireless/intel/iwlegacy/3945-mac.c    |  2 +-
+>  drivers/platform/chrome/wilco_ec/debugfs.c        |  2 +-
+>  drivers/scsi/scsi_logging.c                       |  8 +++-----
+>  drivers/staging/fbtft/fbtft-core.c                |  2 +-
+>  fs/seq_file.c                                     |  3 ++-
+>  include/linux/printk.h                            |  8 ++++----
+>  lib/hexdump.c                                     | 15 ++++++++-------
+>  lib/test_hexdump.c                                |  5 +++--
+>  14 files changed, 33 insertions(+), 29 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/intel_engine_cs.c b/drivers/gpu/drm/i915/intel_engine_cs.c
+> index 49fa43ff02ba..fb133e729f9a 100644
+> --- a/drivers/gpu/drm/i915/intel_engine_cs.c
+> +++ b/drivers/gpu/drm/i915/intel_engine_cs.c
+> @@ -1318,7 +1318,7 @@ static void hexdump(struct drm_printer *m, const void *buf, size_t len)
+>  		WARN_ON_ONCE(hex_dump_to_buffer(buf + pos, len - pos,
+>  						rowsize, sizeof(u32),
+>  						line, sizeof(line),
+> -						false) >= sizeof(line));
+> +						0) >= sizeof(line));
+>  		drm_printf(m, "[%04zx] %s\n", pos, line);
+>  
+>  		prev = buf + pos;
+> diff --git a/drivers/isdn/hardware/mISDN/mISDNisar.c b/drivers/isdn/hardware/mISDN/mISDNisar.c
+> index 386731ec2489..f13f34db6c17 100644
+> --- a/drivers/isdn/hardware/mISDN/mISDNisar.c
+> +++ b/drivers/isdn/hardware/mISDN/mISDNisar.c
+> @@ -84,7 +84,8 @@ send_mbox(struct isar_hw *isar, u8 his, u8 creg, u8 len, u8 *msg)
+>  
+>  			while (l < (int)len) {
+>  				hex_dump_to_buffer(msg + l, len - l, 32, 1,
+> -						   isar->log, 256, 1);
+> +						   isar->log, 256,
+> +						   HEXDUMP_ASCII);
+>  				pr_debug("%s: %s %02x: %s\n", isar->name,
+>  					 __func__, l, isar->log);
+>  				l += 32;
+> @@ -113,7 +114,8 @@ rcv_mbox(struct isar_hw *isar, u8 *msg)
+>  
+>  			while (l < (int)isar->clsb) {
+>  				hex_dump_to_buffer(msg + l, isar->clsb - l, 32,
+> -						   1, isar->log, 256, 1);
+> +						   1, isar->log, 256,
+> +						   HEXDUMP_ASCII);
+>  				pr_debug("%s: %s %02x: %s\n", isar->name,
+>  					 __func__, l, isar->log);
+>  				l += 32;
+> diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+> index 4e4ac4be6423..2f9a094d0259 100644
+> --- a/drivers/mailbox/mailbox-test.c
+> +++ b/drivers/mailbox/mailbox-test.c
+> @@ -213,7 +213,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
+>  		hex_dump_to_buffer(ptr,
+>  				   MBOX_BYTES_PER_LINE,
+>  				   MBOX_BYTES_PER_LINE, 1, touser + l,
+> -				   MBOX_HEXDUMP_LINE_LEN, true);
+> +				   MBOX_HEXDUMP_LINE_LEN, HEXDUMP_ASCII);
+>  
+>  		ptr += MBOX_BYTES_PER_LINE;
+>  		l += MBOX_HEXDUMP_LINE_LEN;
+> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> index 0cc911f928b1..e954a31cee0c 100644
+> --- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> @@ -2992,7 +2992,7 @@ void xgbe_print_pkt(struct net_device *netdev, struct sk_buff *skb, bool tx_rx)
+>  		unsigned int len = min(skb->len - i, 32U);
+>  
+>  		hex_dump_to_buffer(&skb->data[i], len, 32, 1,
+> -				   buffer, sizeof(buffer), false);
+> +				   buffer, sizeof(buffer), 0);
+>  		netdev_dbg(netdev, "  %#06x: %s\n", i, buffer);
+>  	}
+>  
+> diff --git a/drivers/net/ethernet/synopsys/dwc-xlgmac-common.c b/drivers/net/ethernet/synopsys/dwc-xlgmac-common.c
+> index eb1c6b03c329..b80adfa1f890 100644
+> --- a/drivers/net/ethernet/synopsys/dwc-xlgmac-common.c
+> +++ b/drivers/net/ethernet/synopsys/dwc-xlgmac-common.c
+> @@ -349,7 +349,7 @@ void xlgmac_print_pkt(struct net_device *netdev,
+>  		unsigned int len = min(skb->len - i, 32U);
+>  
+>  		hex_dump_to_buffer(&skb->data[i], len, 32, 1,
+> -				   buffer, sizeof(buffer), false);
+> +				   buffer, sizeof(buffer), 0);
+>  		netdev_dbg(netdev, "  %#06x: %s\n", i, buffer);
+>  	}
+>  
+> diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+> index 32d967a31c65..4c99ea03226d 100644
+> --- a/drivers/net/wireless/ath/ath10k/debug.c
+> +++ b/drivers/net/wireless/ath/ath10k/debug.c
+> @@ -2662,7 +2662,8 @@ void ath10k_dbg_dump(struct ath10k *ar,
+>  						(unsigned int)(ptr - buf));
+>  			hex_dump_to_buffer(ptr, len - (ptr - buf), 16, 1,
+>  					   linebuf + linebuflen,
+> -					   sizeof(linebuf) - linebuflen, true);
+> +					   sizeof(linebuf) - linebuflen,
+> +					   HEXDUMP_ASCII);
+>  			dev_printk(KERN_DEBUG, ar->dev, "%s\n", linebuf);
+>  		}
+>  	}
+> diff --git a/drivers/net/wireless/intel/iwlegacy/3945-mac.c b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
+> index 271977f7fbb0..acbe26d22c34 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/3945-mac.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/3945-mac.c
+> @@ -3247,7 +3247,7 @@ il3945_show_measurement(struct device *d, struct device_attribute *attr,
+>  
+>  	while (size && PAGE_SIZE - len) {
+>  		hex_dump_to_buffer(data + ofs, size, 16, 1, buf + len,
+> -				   PAGE_SIZE - len, true);
+> +				   PAGE_SIZE - len, HEXDUMP_ASCII);
+>  		len = strlen(buf);
+>  		if (PAGE_SIZE - len)
+>  			buf[len++] = '\n';
+> diff --git a/drivers/platform/chrome/wilco_ec/debugfs.c b/drivers/platform/chrome/wilco_ec/debugfs.c
+> index c090db2cd5be..26d9ae5c2dc2 100644
+> --- a/drivers/platform/chrome/wilco_ec/debugfs.c
+> +++ b/drivers/platform/chrome/wilco_ec/debugfs.c
+> @@ -174,7 +174,7 @@ static ssize_t raw_read(struct file *file, char __user *user_buf, size_t count,
+>  		fmt_len = hex_dump_to_buffer(debug_info->raw_data,
+>  					     debug_info->response_size,
+>  					     16, 1, debug_info->formatted_data,
+> -					     FORMATTED_BUFFER_SIZE, true);
+> +					     FORMATTED_BUFFER_SIZE, HEXDUMP_ASCII);
+>  		/* Only return response the first time it is read */
+>  		debug_info->response_size = 0;
+>  	}
+> diff --git a/drivers/scsi/scsi_logging.c b/drivers/scsi/scsi_logging.c
+> index bd70339c1242..fce542bb40e6 100644
+> --- a/drivers/scsi/scsi_logging.c
+> +++ b/drivers/scsi/scsi_logging.c
+> @@ -263,7 +263,7 @@ void scsi_print_command(struct scsi_cmnd *cmd)
+>  						 "CDB[%02x]: ", k);
+>  				hex_dump_to_buffer(&cmd->cmnd[k], linelen,
+>  						   16, 1, logbuf + off,
+> -						   logbuf_len - off, false);
+> +						   logbuf_len - off, 0);
+>  			}
+>  			dev_printk(KERN_INFO, &cmd->device->sdev_gendev, "%s",
+>  				   logbuf);
+> @@ -274,8 +274,7 @@ void scsi_print_command(struct scsi_cmnd *cmd)
+>  	if (!WARN_ON(off > logbuf_len - 49)) {
+>  		off += scnprintf(logbuf + off, logbuf_len - off, " ");
+>  		hex_dump_to_buffer(cmd->cmnd, cmd->cmd_len, 16, 1,
+> -				   logbuf + off, logbuf_len - off,
+> -				   false);
+> +				   logbuf + off, logbuf_len - off, 0);
+>  	}
+>  out_printk:
+>  	dev_printk(KERN_INFO, &cmd->device->sdev_gendev, "%s", logbuf);
+> @@ -354,8 +353,7 @@ scsi_log_dump_sense(const struct scsi_device *sdev, const char *name, int tag,
+>  		off = sdev_format_header(logbuf, logbuf_len,
+>  					 name, tag);
+>  		hex_dump_to_buffer(&sense_buffer[i], len, 16, 1,
+> -				   logbuf + off, logbuf_len - off,
+> -				   false);
+> +				   logbuf + off, logbuf_len - off, 0);
+>  		dev_printk(KERN_INFO, &sdev->sdev_gendev, "%s", logbuf);
+>  	}
+>  	scsi_log_release_buffer(logbuf);
+> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+> index 9b07badf4c6c..2e5df5cc9d61 100644
+> --- a/drivers/staging/fbtft/fbtft-core.c
+> +++ b/drivers/staging/fbtft/fbtft-core.c
+> @@ -61,7 +61,7 @@ void fbtft_dbg_hex(const struct device *dev, int groupsize,
+>  	va_end(args);
+>  
+>  	hex_dump_to_buffer(buf, len, 32, groupsize, text + text_len,
+> -			   512 - text_len, false);
+> +			   512 - text_len, 0);
+>  
+>  	if (len > 32)
+>  		dev_info(dev, "%s ...\n", text);
+> diff --git a/fs/seq_file.c b/fs/seq_file.c
+> index 1dea7a8a5255..a0213637af3e 100644
+> --- a/fs/seq_file.c
+> +++ b/fs/seq_file.c
+> @@ -873,7 +873,8 @@ void seq_hex_dump(struct seq_file *m, const char *prefix_str, int prefix_type,
+>  
+>  		size = seq_get_buf(m, &buffer);
+>  		ret = hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
+> -					 buffer, size, ascii);
+> +					 buffer, size,
+> +					 ascii ? HEXDUMP_ASCII : 0);
+>  		seq_commit(m, ret < size ? ret : -1);
+>  
+>  		seq_putc(m, '\n');
+> diff --git a/include/linux/printk.h b/include/linux/printk.h
+> index 938a67580d78..00a82e468643 100644
+> --- a/include/linux/printk.h
+> +++ b/include/linux/printk.h
+> @@ -480,13 +480,13 @@ enum {
+>  	DUMP_PREFIX_OFFSET
+>  };
+>  
+> -extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
+> -			      int groupsize, char *linebuf, size_t linebuflen,
+> -			      bool ascii);
+> -
+>  #define HEXDUMP_ASCII			(1 << 0)
+>  #define HEXDUMP_SUPPRESS_REPEATED	(1 << 1)
+>  
+> +extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
+> +			      int groupsize, char *linebuf, size_t linebuflen,
+> +			      u64 flags);
+> +
+>  #ifdef CONFIG_PRINTK
+>  extern void print_hex_dump_ext(const char *level, const char *prefix_str,
+>  			   int prefix_type, int rowsize, int groupsize,
+> diff --git a/lib/hexdump.c b/lib/hexdump.c
+> index d61a1e4f19fa..ddd1697e5f9b 100644
+> --- a/lib/hexdump.c
+> +++ b/lib/hexdump.c
+> @@ -85,7 +85,8 @@ EXPORT_SYMBOL(bin2hex);
+>   * @groupsize: number of bytes to print at a time (1, 2, 4, 8; default = 1)
+>   * @linebuf: where to put the converted data
+>   * @linebuflen: total size of @linebuf, including space for terminating NUL
+> - * @ascii: include ASCII after the hex output
+> + * @flags: A bitwise OR of the following flags:
+> + *	HEXDUMP_ASCII:			include ASCII after the hex output
+>   *
+>   * hex_dump_to_buffer() works on one "line" of output at a time, converting
+>   * <groupsize> bytes of input to hexadecimal (and optionally printable ASCII)
+> @@ -97,7 +98,7 @@ EXPORT_SYMBOL(bin2hex);
+>   *
+>   * E.g.:
+>   *   hex_dump_to_buffer(frame->data, frame->len, 16, 1,
+> - *			linebuf, sizeof(linebuf), true);
+> + *			linebuf, sizeof(linebuf), HEXDUMP_ASCII);
+>   *
+>   * example output buffer:
+>   * 40 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f  @ABCDEFGHIJKLMNO
+> @@ -109,7 +110,7 @@ EXPORT_SYMBOL(bin2hex);
+>   * string if enough space had been available.
+>   */
+>  int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
+> -		       char *linebuf, size_t linebuflen, bool ascii)
+> +		       char *linebuf, size_t linebuflen, u64 flags)
+>  {
+>  	const u8 *ptr = buf;
+>  	int ngroups;
+> @@ -187,7 +188,7 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
+>  		if (j)
+>  			lx--;
+>  	}
+> -	if (!ascii)
+> +	if (!(flags & HEXDUMP_ASCII))
+>  		goto nil;
+>  
+>  	while (lx < ascii_column) {
+> @@ -207,7 +208,8 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
+>  overflow2:
+>  	linebuf[lx++] = '\0';
+>  overflow1:
+> -	return ascii ? ascii_column + len : (groupsize * 2 + 1) * ngroups - 1;
+> +	return (flags & HEXDUMP_ASCII) ? ascii_column + len :
+> +					 (groupsize * 2 + 1) * ngroups - 1;
+>  }
+>  EXPORT_SYMBOL(hex_dump_to_buffer);
+>  
+> @@ -336,8 +338,7 @@ void print_hex_dump_ext(const char *level, const char *prefix_str,
+>  		}
+>  
+>  		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
+> -				   linebuf, linebuf_len,
+> -				   flags & HEXDUMP_ASCII);
+> +				   linebuf, linebuf_len, flags);
+>  
+>  		switch (prefix_type) {
+>  		case DUMP_PREFIX_ADDRESS:
+> diff --git a/lib/test_hexdump.c b/lib/test_hexdump.c
+> index 6ab75a209b43..ae340c5c1c6f 100644
+> --- a/lib/test_hexdump.c
+> +++ b/lib/test_hexdump.c
+> @@ -166,7 +166,7 @@ static void __init test_hexdump(size_t len, int rowsize, int groupsize,
+>  
+>  	memset(real, FILL_CHAR, sizeof(real));
+>  	hex_dump_to_buffer(data_b, len, rowsize, groupsize, real, sizeof(real),
+> -			   ascii);
+> +			   ascii ? HEXDUMP_ASCII : 0);
+>  
+>  	memset(test, FILL_CHAR, sizeof(test));
+>  	test_hexdump_prepare_test(len, rowsize, groupsize, test, sizeof(test),
+> @@ -204,7 +204,8 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
+>  
+>  	memset(buf, FILL_CHAR, sizeof(buf));
+>  
+> -	rc = hex_dump_to_buffer(data_b, len, rowsize, groupsize, buf, buflen, ascii);
+> +	rc = hex_dump_to_buffer(data_b, len, rowsize, groupsize, buf, buflen,
+> +				ascii ? HEXDUMP_ASCII : 0);
+>  
+>  	/*
+>  	 * Caller must provide the data length multiple of groupsize. The
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 5231a14e4593..15277d50159c 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -488,6 +488,7 @@ enum {
- #define HEXDUMP_2_GRP_SPACES		(1 << 5)
- #define HEXDUMP_4_GRP_SPACES		(1 << 6)
- #define HEXDUMP_8_GRP_SPACES		(1 << 7)
-+#define HEXDUMP_RETAIN_BYTE_ORDER	(1 << 8)
- 
- extern int hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
- 			      int groupsize, char *linebuf, size_t linebuflen,
-diff --git a/lib/hexdump.c b/lib/hexdump.c
-index febd614406d1..bfc9800630ae 100644
---- a/lib/hexdump.c
-+++ b/lib/hexdump.c
-@@ -127,7 +127,8 @@ static void separator_parameters(u64 flags, int groupsize, int *sep_chars,
-  * @buf: data blob to dump
-  * @len: number of bytes in the @buf
-  * @rowsize: number of bytes to print per line; must be a multiple of groupsize
-- * @groupsize: number of bytes to print at a time (1, 2, 4, 8; default = 1)
-+ * @groupsize: number of bytes to convert to a native endian number and print:
-+ * 	       1, 2, 4, 8; default = 1
-  * @linebuf: where to put the converted data
-  * @linebuflen: total size of @linebuf, including space for terminating NUL
-  * @flags: A bitwise OR of the following flags:
-@@ -138,6 +139,9 @@ static void separator_parameters(u64 flags, int groupsize, int *sep_chars,
-  *	HEXDUMP_2_GRP_SPACES:		insert a ' ' after every 2 groups
-  *	HEXDUMP_4_GRP_SPACES:		insert a ' ' after every 4 groups
-  *	HEXDUMP_8_GRP_SPACES:		insert a ' ' after every 8 groups
-+ *	HEXDUMP_RETAIN_BYTE_ORDER:	Retain the byte ordering of groups
-+ *					instead of treating each group as a
-+ *					native-endian number
-  *
-  * hex_dump_to_buffer() works on one "line" of output at a time, converting
-  * <groupsize> bytes of input to hexadecimal (and optionally printable ASCII)
-@@ -171,6 +175,7 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
- 	int ret;
- 	int sep_chars = 0;
- 	char sep = 0;
-+	bool big_endian = (flags & HEXDUMP_RETAIN_BYTE_ORDER) ? 1 : 0;
- 
- 	if (!is_power_of_2(groupsize) || groupsize > 8)
- 		groupsize = 1;
-@@ -202,10 +207,13 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
- 		const u64 *ptr8 = buf;
- 
- 		for (j = 0; j < ngroups; j++) {
-+			u64 val = big_endian ?
-+					be64_to_cpu(get_unaligned(ptr8 + j)) :
-+					get_unaligned(ptr8 + j);
- 			ret = snprintf(linebuf + lx, linebuflen - lx,
- 				       "%s%16.16llx",
- 				       j ? group_separator(j, flags) : "",
--				       get_unaligned(ptr8 + j));
-+				       val);
- 			if (ret >= linebuflen - lx)
- 				goto overflow1;
- 			lx += ret;
-@@ -214,10 +222,14 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
- 		const u32 *ptr4 = buf;
- 
- 		for (j = 0; j < ngroups; j++) {
-+			u32 val = big_endian ?
-+					be32_to_cpu(get_unaligned(ptr4 + j)) :
-+					get_unaligned(ptr4 + j);
-+
- 			ret = snprintf(linebuf + lx, linebuflen - lx,
- 				       "%s%8.8x",
- 				       j ? group_separator(j, flags) : "",
--				       get_unaligned(ptr4 + j));
-+				       val);
- 			if (ret >= linebuflen - lx)
- 				goto overflow1;
- 			lx += ret;
-@@ -226,10 +238,14 @@ int hex_dump_to_buffer(const void *buf, size_t len, int rowsize, int groupsize,
- 		const u16 *ptr2 = buf;
- 
- 		for (j = 0; j < ngroups; j++) {
-+			u16 val = big_endian ?
-+					be16_to_cpu(get_unaligned(ptr2 + j)) :
-+					get_unaligned(ptr2 + j);
-+
- 			ret = snprintf(linebuf + lx, linebuflen - lx,
- 				       "%s%4.4x",
- 				       j ? group_separator(j, flags) : "",
--				       get_unaligned(ptr2 + j));
-+				       val);
- 			if (ret >= linebuflen - lx)
- 				goto overflow1;
- 			lx += ret;
-@@ -331,7 +347,8 @@ static void announce_skipped(const char *level, const char *prefix_str,
-  * @prefix_type: controls whether prefix of an offset, address, or none
-  *  is printed (%DUMP_PREFIX_OFFSET, %DUMP_PREFIX_ADDRESS, %DUMP_PREFIX_NONE)
-  * @rowsize: number of bytes to print per line; must be a multiple of groupsize
-- * @groupsize: number of bytes to print at a time (1, 2, 4, 8; default = 1)
-+ * @groupsize: number of bytes to convert to a native endian number and print:
-+ * 	       1, 2, 4, 8; default = 1
-  * @buf: data blob to dump
-  * @len: number of bytes in the @buf
-  * @ascii: include ASCII after the hex output
-@@ -342,6 +359,9 @@ static void announce_skipped(const char *level, const char *prefix_str,
-  *	HEXDUMP_2_GRP_LINES:		insert a '|' after every 2 groups
-  *	HEXDUMP_4_GRP_LINES:		insert a '|' after every 4 groups
-  *	HEXDUMP_8_GRP_LINES:		insert a '|' after every 8 groups
-+ *	HEXDUMP_RETAIN_BYTE_ORDER:	Retain the byte ordering of groups
-+ *					instead of treating each group as a
-+ *					native-endian number
-  *
-  * Given a buffer of u8 data, print_hex_dump() prints a hex + ASCII dump
-  * to the kernel log at the specified kernel log level, with an optional
-diff --git a/lib/test_hexdump.c b/lib/test_hexdump.c
-index ae340c5c1c6f..1e510e934568 100644
---- a/lib/test_hexdump.c
-+++ b/lib/test_hexdump.c
-@@ -98,14 +98,15 @@ static unsigned failed_tests __initdata;
- 
- static void __init test_hexdump_prepare_test(size_t len, int rowsize,
- 					     int groupsize, char *test,
--					     size_t testlen, bool ascii)
-+					     size_t testlen, u64 flags)
- {
- 	char *p;
- 	const char * const *result;
- 	size_t l = len;
- 	int gs = groupsize, rs = rowsize;
- 	unsigned int i;
--	const bool is_be = IS_ENABLED(CONFIG_CPU_BIG_ENDIAN);
-+	const bool is_be = IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) ||
-+			(flags & HEXDUMP_RETAIN_BYTE_ORDER);
- 
- 	if (l > rs)
- 		l = rs;
-@@ -142,7 +143,7 @@ static void __init test_hexdump_prepare_test(size_t len, int rowsize,
- 		p--;
- 
- 	/* ASCII part */
--	if (ascii) {
-+	if (flags & HEXDUMP_ASCII) {
- 		do {
- 			*p++ = ' ';
- 		} while (p < test + rs * 2 + rs / gs + 1);
-@@ -157,7 +158,7 @@ static void __init test_hexdump_prepare_test(size_t len, int rowsize,
- #define TEST_HEXDUMP_BUF_SIZE		(64 * 3 + 2 + 64 + 1)
- 
- static void __init test_hexdump(size_t len, int rowsize, int groupsize,
--				bool ascii)
-+				u64 flags)
- {
- 	char test[TEST_HEXDUMP_BUF_SIZE];
- 	char real[TEST_HEXDUMP_BUF_SIZE];
-@@ -166,11 +167,11 @@ static void __init test_hexdump(size_t len, int rowsize, int groupsize,
- 
- 	memset(real, FILL_CHAR, sizeof(real));
- 	hex_dump_to_buffer(data_b, len, rowsize, groupsize, real, sizeof(real),
--			   ascii ? HEXDUMP_ASCII : 0);
-+			   flags);
- 
- 	memset(test, FILL_CHAR, sizeof(test));
- 	test_hexdump_prepare_test(len, rowsize, groupsize, test, sizeof(test),
--				  ascii);
-+				  flags);
- 
- 	if (memcmp(test, real, TEST_HEXDUMP_BUF_SIZE)) {
- 		pr_err("Len: %zu row: %d group: %d\n", len, rowsize, groupsize);
-@@ -193,7 +194,7 @@ static void __init test_hexdump_set(int rowsize, bool ascii)
- 
- static void __init test_hexdump_overflow(size_t buflen, size_t len,
- 					 int rowsize, int groupsize,
--					 bool ascii)
-+					 u64 flags)
- {
- 	char test[TEST_HEXDUMP_BUF_SIZE];
- 	char buf[TEST_HEXDUMP_BUF_SIZE];
-@@ -205,7 +206,7 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
- 	memset(buf, FILL_CHAR, sizeof(buf));
- 
- 	rc = hex_dump_to_buffer(data_b, len, rowsize, groupsize, buf, buflen,
--				ascii ? HEXDUMP_ASCII : 0);
-+				flags);
- 
- 	/*
- 	 * Caller must provide the data length multiple of groupsize. The
-@@ -222,12 +223,12 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
- 		  - 1 /* no trailing space */;
- 	}
- 
--	expected_len = (ascii) ? ascii_len : hex_len;
-+	expected_len = (flags & HEXDUMP_ASCII) ? ascii_len : hex_len;
- 
- 	fill_point = min_t(int, expected_len + 1, buflen);
- 	if (buflen) {
- 		test_hexdump_prepare_test(len, rowsize, groupsize, test,
--					  sizeof(test), ascii);
-+					  sizeof(test), flags);
- 		test[fill_point - 1] = '\0';
- 	}
- 	memset(test + fill_point, FILL_CHAR, sizeof(test) - fill_point);
-@@ -237,8 +238,8 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
- 	buf[sizeof(buf) - 1] = '\0';
- 
- 	if (!match) {
--		pr_err("rowsize: %u groupsize: %u ascii: %d Len: %zu buflen: %zu strlen: %zu\n",
--			rowsize, groupsize, ascii, len, buflen,
-+		pr_err("rowsize: %u groupsize: %u flags: %llx Len: %zu buflen: %zu strlen: %zu\n",
-+			rowsize, groupsize, flags, len, buflen,
- 			strnlen(buf, sizeof(buf)));
- 		pr_err("Result: %d '%-.*s'\n", rc, (int)buflen, buf);
- 		pr_err("Expect: %d '%-.*s'\n", expected_len, (int)buflen, test);
-@@ -247,7 +248,7 @@ static void __init test_hexdump_overflow(size_t buflen, size_t len,
- 	}
- }
- 
--static void __init test_hexdump_overflow_set(size_t buflen, bool ascii)
-+static void __init test_hexdump_overflow_set(size_t buflen, u64 flags)
- {
- 	unsigned int i = 0;
- 	int rs = (get_random_int() % 4 + 1) * 16;
-@@ -256,7 +257,7 @@ static void __init test_hexdump_overflow_set(size_t buflen, bool ascii)
- 		int gs = 1 << i;
- 		size_t len = get_random_int() % rs + gs;
- 
--		test_hexdump_overflow(buflen, rounddown(len, gs), rs, gs, ascii);
-+		test_hexdump_overflow(buflen, rounddown(len, gs), rs, gs, flags);
- 	} while (i++ < 3);
- }
- 
-@@ -264,20 +265,43 @@ static int __init test_hexdump_init(void)
- {
- 	unsigned int i;
- 	int rowsize;
-+	u64 flags;
- 
-+	flags = 0;
- 	rowsize = (get_random_int() % 4 + 1) * 16;
- 	for (i = 0; i < 16; i++)
--		test_hexdump_set(rowsize, false);
-+		test_hexdump_set(rowsize, flags);
- 
-+	flags = HEXDUMP_ASCII;
- 	rowsize = (get_random_int() % 4 + 1) * 16;
- 	for (i = 0; i < 16; i++)
--		test_hexdump_set(rowsize, true);
-+		test_hexdump_set(rowsize, flags);
- 
-+	flags = HEXDUMP_RETAIN_BYTE_ORDER;
-+	rowsize = (get_random_int() % 2 + 1) * 16;
-+	for (i = 0; i < 16; i++)
-+		test_hexdump_set(rowsize, flags);
-+
-+	flags = HEXDUMP_ASCII | HEXDUMP_RETAIN_BYTE_ORDER;
-+	rowsize = (get_random_int() % 2 + 1) * 16;
-+	for (i = 0; i < 16; i++)
-+		test_hexdump_set(rowsize, flags);
-+
-+	flags = 0;
-+	for (i = 0; i <= TEST_HEXDUMP_BUF_SIZE; i++)
-+		test_hexdump_overflow_set(i, flags);
-+
-+	flags = HEXDUMP_ASCII;
-+	for (i = 0; i <= TEST_HEXDUMP_BUF_SIZE; i++)
-+		test_hexdump_overflow_set(i, flags);
-+
-+	flags = HEXDUMP_RETAIN_BYTE_ORDER;
- 	for (i = 0; i <= TEST_HEXDUMP_BUF_SIZE; i++)
--		test_hexdump_overflow_set(i, false);
-+		test_hexdump_overflow_set(i, flags);
- 
-+	flags = HEXDUMP_ASCII | HEXDUMP_RETAIN_BYTE_ORDER;
- 	for (i = 0; i <= TEST_HEXDUMP_BUF_SIZE; i++)
--		test_hexdump_overflow_set(i, true);
-+		test_hexdump_overflow_set(i, flags);
- 
- 	if (failed_tests == 0)
- 		pr_info("all %u tests passed\n", total_tests);
 -- 
-2.21.0
-
+Jani Nikula, Intel Open Source Graphics Center
