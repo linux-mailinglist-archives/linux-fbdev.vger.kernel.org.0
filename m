@@ -2,120 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E24316187
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 May 2019 11:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB21E17238
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 May 2019 09:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726349AbfEGJxQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 May 2019 05:53:16 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:39199 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726834AbfEGJxL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 May 2019 05:53:11 -0400
-Received: by mail-wr1-f68.google.com with SMTP id v10so9119899wrt.6
-        for <linux-fbdev@vger.kernel.org>; Tue, 07 May 2019 02:53:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=tcxS/2hWpXskjofGSRtseVQHc72BiZ0p45vo0Vdka28=;
-        b=jQqWVK1unu7T2kZOE+gg87wq3FaLBBLlf79ijlqE53cIvYRlBTOVpLHtKmzgG75Uaz
-         qUGpykrKD76+xOMdprElOVqPIa03BD97ytwIq+mwM+TGIkPSdwAwZ1uahhv//mR+X23W
-         Kn5toaEsASuWW9khg23mJ3aXmivkbYcSxPH49QsSeNjur0i3t72nwda3GHlL2N+/9Yyo
-         A/dxuHpJ/VAh9F5sxGxlLyMKoFOpfJTgnYenmbAw4NQeGwteCCBUiLdJSt2WeDZMeT+7
-         sI35QOEHso5oe2aQHXF/3m9iCI4corsq29MMd0hNv4SHtAUwaNo9TFi4uSNjOd5xdvG+
-         qj9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=tcxS/2hWpXskjofGSRtseVQHc72BiZ0p45vo0Vdka28=;
-        b=Ctiu447+O6/BDsTMbksuY041XvG7W7x2Xfci7p12GdJ5OaQcz5IEz5x0/UkUu1G1Cb
-         ptrUg5xm1DeLEZIbhk1uyeNsGmAeI/nc/IkVx3ftHXk4tOEgfsGNsoQiba4N8cEhKC25
-         wRlHbNY4I5uMehMLHN3jhmQL0QESDf405zf7Sh3i8TGnPUiOnOSQKfjiXxAobXS7a8uN
-         JitHVhFx9sO1djAd+splmaLzJP9hzEAPxuCipRhGaK77NTtfFe2kF9qk7QdrhH1R8U1+
-         iaKgSZA8GSNgZaeq2S9rTIgtHSw23+M0dXySKsvsYWK7z1sYi6ZY0KBuwQMmcuLuFtbp
-         olzw==
-X-Gm-Message-State: APjAAAV7WBUYptV/Wahx8DwXAWU7X1Y55KB8+MRnc2lz7aIVEcN8oHYL
-        OAbcMXLYsKa5EdUFqio+4j3YTQ==
-X-Google-Smtp-Source: APXvYqwo3mM58fkGHxIdzaZEGdBCoVtchbx0EHRZjuaTTSmrlX26j60GrA4koYEVJwZOeYXfzyNWBg==
-X-Received: by 2002:adf:f7d0:: with SMTP id a16mr21241175wrq.211.1557222789633;
-        Tue, 07 May 2019 02:53:09 -0700 (PDT)
-Received: from dell ([2.27.167.43])
-        by smtp.gmail.com with ESMTPSA id p67sm11911297wmp.22.2019.05.07.02.53.08
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 May 2019 02:53:09 -0700 (PDT)
-Date:   Tue, 7 May 2019 10:53:07 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Brian Masney <masneyb@onstation.org>, jingoohan1@gmail.com,
-        robh+dt@kernel.org, jacek.anaszewski@gmail.com, pavel@ucw.cz,
-        mark.rutland@arm.com, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dmurphy@ti.com, jonathan@marek.ca,
-        Daniel Thompson <daniel@redfelineninja.org.uk>
-Subject: Re: [PATCH v6 1/3] backlight: lm3630a: return 0 on success in
- update_status functions
-Message-ID: <20190507095307.GE4529@dell>
-References: <20190424092505.6578-1-masneyb@onstation.org>
- <20190424092505.6578-2-masneyb@onstation.org>
- <864c1ddc-1008-0041-1559-e491ca0186ef@linaro.org>
- <20190502104239.GA24563@basecamp>
- <20190502104644.e3eth2cdebuz2mpk@holly.lan>
+        id S1726742AbfEHHCw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 8 May 2019 03:02:52 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54854 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726628AbfEHHCv (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 8 May 2019 03:02:51 -0400
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4872H0h016950
+        for <linux-fbdev@vger.kernel.org>; Wed, 8 May 2019 03:02:50 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2sbqy8xjq6-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-fbdev@vger.kernel.org>; Wed, 08 May 2019 03:02:50 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-fbdev@vger.kernel.org> from <alastair@au1.ibm.com>;
+        Wed, 8 May 2019 08:02:47 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 8 May 2019 08:02:39 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4872cSV59900032
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 8 May 2019 07:02:38 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 17E1442045;
+        Wed,  8 May 2019 07:02:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 646DD4203F;
+        Wed,  8 May 2019 07:02:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  8 May 2019 07:02:37 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 04A30A01A2;
+        Wed,  8 May 2019 17:02:35 +1000 (AEST)
+From:   "Alastair D'Silva" <alastair@au1.ibm.com>
+To:     alastair@d-silva.org
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: [PATCH v2 0/7] Hexdump Enhancements
+Date:   Wed,  8 May 2019 17:01:40 +1000
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190502104644.e3eth2cdebuz2mpk@holly.lan>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-TM-AS-GCONF: 00
+x-cbid: 19050807-4275-0000-0000-00000332844B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050807-4276-0000-0000-00003841F1F3
+Message-Id: <20190508070148.23130-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-08_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905080046
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 02 May 2019, Daniel Thompson wrote:
+From: Alastair D'Silva <alastair@d-silva.org>
 
-> On Thu, May 02, 2019 at 06:42:39AM -0400, Brian Masney wrote:
-> > On Thu, May 02, 2019 at 11:07:51AM +0100, Daniel Thompson wrote:
-> > > On 24/04/2019 10:25, Brian Masney wrote:
-> > > > lm3630a_bank_a_update_status() and lm3630a_bank_b_update_status()
-> > > > both return the brightness value if the brightness was successfully
-> > > > updated. Writing to these attributes via sysfs would cause a 'Bad
-> > > > address' error to be returned. These functions should return 0 on
-> > > > success, so let's change it to correct that error.
-> > > > 
-> > > > Signed-off-by: Brian Masney <masneyb@onstation.org>
-> > > > Fixes: 28e64a68a2ef ("backlight: lm3630: apply chip revision")
-> > > > Acked-by: Pavel Machek <pavel@ucw.cz>
-> > > 
-> > > Hi Brian, sorry for the delay. For some reason your mails are being dumped
-> > > before they reach me so I only discovered these patches when I paid proper
-> > > attention to the replies and fetched them from patchwork.
-> > > 
-> > > Hi Lee, is the same thing happening for you? ;-)
-> > 
-> > Huh, that's odd. I haven't ran into that issue when working with people
-> > from Linaro in other subsystems.
-> > 
-> > As a sanity check, I used 'git send-email' to send this patch to
-> > check-auth@verifier.port25.com and it verified that I still have SPF,
-> > DKIM, reverse DNS, etc. all setup properly on this domain.
-> > 
-> > hotmail.com addresses are the only ones I've had issues with in the
-> > past, but I doubt you're forwarding your email there. :)
-> 
-> No... and strangely enough your recent e-mail sailed through just fine.
-> Let's wait and see what is happening for Lee (which I suspect may not be
-> until well into next week).
+Apologies for the large CC list, it's a heads up for those responsible
+for subsystems where a prototype change in generic code causes a change
+in those subsystems.
 
-Just catching up now.  On first pass - only ~800 mails to go!
+This series enhances hexdump.
 
-Looks like I do have Brian's mails though.
+These improve the readability of the dumped data in certain situations
+(eg. wide terminals are available, many lines of empty bytes exist, etc).
+
+The default behaviour of hexdump is unchanged, however, the prototype
+for hex_dump_to_buffer() has changed, and print_hex_dump() has been
+renamed to print_hex_dump_ext(), with a wrapper replacing it for
+compatibility with existing code, which would have been too invasive to
+change.
+
+Hexdump selftests have be run & confirmed passed.
+
+Changelog:
+ - Fix failing selftests
+ - Fix precedence bug in 'Replace ascii bool in hex_dump_to_buffer...'
+ - Remove hardcoded new lengths & instead relax the checks in
+   hex_dump_to_buffer, allocating the buffer from the heap instead of the
+   stack.
+ - Replace the skipping of lines of 0x00/0xff with skipping lines of
+   repeated characters, announcing what has been skipped.
+ - Add spaces as an optional N-group separator
+ - Allow byte ordering to be maintained when HEXDUMP_RETAIN_BYTE_ORDERING
+   is set.
+ - Updated selftests to cover 'Relax rowsize checks' &
+   'Optionally retain byte ordering'
+
+Alastair D'Silva (7):
+  lib/hexdump.c: Fix selftests
+  lib/hexdump.c: Relax rowsize checks in hex_dump_to_buffer
+  lib/hexdump.c: Optionally suppress lines of repeated bytes
+  lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
+  lib/hexdump.c: Allow multiple groups to be separated by lines '|'
+  lib/hexdump.c: Allow multiple groups to be separated by spaces
+  lib/hexdump.c: Optionally retain byte ordering
+
+ drivers/gpu/drm/i915/intel_engine_cs.c        |   2 +-
+ drivers/isdn/hardware/mISDN/mISDNisar.c       |   6 +-
+ drivers/mailbox/mailbox-test.c                |   2 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      |   2 +-
+ .../net/ethernet/synopsys/dwc-xlgmac-common.c |   2 +-
+ drivers/net/wireless/ath/ath10k/debug.c       |   3 +-
+ .../net/wireless/intel/iwlegacy/3945-mac.c    |   2 +-
+ drivers/platform/chrome/wilco_ec/debugfs.c    |   2 +-
+ drivers/scsi/scsi_logging.c                   |   8 +-
+ drivers/staging/fbtft/fbtft-core.c            |   2 +-
+ fs/seq_file.c                                 |   3 +-
+ include/linux/printk.h                        |  34 ++-
+ lib/hexdump.c                                 | 260 +++++++++++++++---
+ lib/test_hexdump.c                            | 146 +++++++---
+ 14 files changed, 372 insertions(+), 102 deletions(-)
 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.21.0
+
