@@ -2,83 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14A6518F65
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 May 2019 19:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F673195FF
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 May 2019 02:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726914AbfEIRjl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 May 2019 13:39:41 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:59102 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726899AbfEIRjl (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 May 2019 13:39:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ze3bI7R/AWInMMM2JlDlT8P7z6aa7ltggLIal7qS1fs=; b=WKveJiy42tZa3XL3xEuRZRY2+Y
-        /wFrD9wGXNbRmW3FI4knn62zQ0lsa6/yA554tTuDxACiFGD8H04SFguP6SpPJJUTsC9tPHHKZLDUZ
-        dcrqukr1oW1BbrODPMEMDZ0F99786dV4u+ip4Mdgdg84PgQVUN5dJ4JJFag0QCQkBNkHjjgRFZnNI
-        YzHQgyhXf0ADhDO3gkNf3dFevriC+kuga/MwMBKDLxfOO4Iewqh3AVidMqdnS4JTJUoM4rtwpzh8M
-        rqzmN7vQta8y7T0YPLC/1YsWg8+sUCJgTNSr5V6Rn8UQBbQt/z2KZpcPGJehPUrW5SZtJ4cAKqFm7
-        TwsCOg/A==;
-Received: from 089144210233.atnat0019.highway.a1.net ([89.144.210.233] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hOn19-0005Lf-Nm; Thu, 09 May 2019 17:39:40 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Manuel Lauss <manuel.lauss@gmail.com>
-Cc:     linux-mips@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] jz4740_fb: fix DMA API abuse
-Date:   Thu,  9 May 2019 19:38:49 +0200
-Message-Id: <20190509173849.11825-4-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190509173849.11825-1-hch@lst.de>
-References: <20190509173849.11825-1-hch@lst.de>
+        id S1726871AbfEJAR2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 May 2019 20:17:28 -0400
+Received: from [66.55.73.32] ([66.55.73.32]:51484 "EHLO
+        ushosting.nmnhosting.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1726694AbfEJAR1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 9 May 2019 20:17:27 -0400
+Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
+        by ushosting.nmnhosting.com (Postfix) with ESMTPS id B6DC82DC0070;
+        Thu,  9 May 2019 20:17:22 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
+        s=201810a; t=1557447443;
+        bh=rJY0+D6TdRtTv0MtwykFJbYOSu46lpL7vkuRS2Zg75k=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=FgHPIPlYLmuLNtrMoQ1JdXOJBzIramXRU528FDdwgmUbYDUSurbrKOmk66MlGYzGl
+         0ruDR9MsmWn6Wa1JGtiiUa7MDmH9NnRiXxafLrfVNihMUrJYoUiQlr9ZF1I4HIM0PV
+         bZ9W5c9BAYVyzA9PfwGf5o+hGD2hYyBjKLixvrQ1vno4Whs2Nw5LmAFMtjJBE96JB5
+         3A/TpZPKlUH/LZ9QviX5sPNxejvENaMBIYUal2Z2Hup4BijYTYYiF1F+eWLEYbhMu2
+         YBrAElUv44shUa1aHwy6Pfl3sYtAppFsneNmta4kToubNSSN/EMWCAgt+GOmMNuiZU
+         dScx2/r4DfVPHVsLyA/C0IlAGJW5xx1NFqr3GJcu3u2ljmH/j2VABFWX8mKiViOjya
+         UMzCeSKOTZj7GhaZKQ4wNLMdnnGeX0xRzwZxBPPwQPpa98wFjqGa4P4+HDIkphprBS
+         cLR2rNyVdb5sI8TuETSE/d/sK5ExHhfuWol5Jk5PXVNE/IO16n6e0dCf3bBoCa8bTw
+         zs4jlO1owv47NzN5dYrbV7R3mEfn3Wk/R8zsonqePsZtnUOe/9EZUeGRp5ITrVsRIK
+         bdLoMtcOXzpm23UAwIN2Fr4caFvxOuuMjHxqg9nDMraA52HHWsxcudXZEv+JQvxYxU
+         WRl4Hh/Ieej3f+hWeieXK7mA=
+Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au [122.99.82.10] (may be forged))
+        (authenticated bits=0)
+        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x4A0GhJ3030327
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Fri, 10 May 2019 10:17:01 +1000 (AEST)
+        (envelope-from alastair@d-silva.org)
+Message-ID: <80e51facb280e96018a4220adf8efa6fac823a94.camel@d-silva.org>
+Subject: Re: [PATCH v2 3/7] lib/hexdump.c: Optionally suppress lines of
+ repeated bytes
+From:   "Alastair D'Silva" <alastair@d-silva.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-fbdev@vger.kernel.org,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Petr Mladek <pmladek@suse.com>,
+        David Airlie <airlied@linux.ie>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        dri-devel@lists.freedesktop.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
+        ath10k@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        linux-fsdevel@vger.kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Daniel Vetter <daniel@ffwll.ch>, netdev@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+Date:   Fri, 10 May 2019 10:16:42 +1000
+In-Reply-To: <dc093079-43a0-0a45-f5dd-88b20702fd93@infradead.org>
+References: <20190508070148.23130-1-alastair@au1.ibm.com>
+         <20190508070148.23130-4-alastair@au1.ibm.com>
+         <dc093079-43a0-0a45-f5dd-88b20702fd93@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.1 (3.32.1-1.fc30) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 10 May 2019 10:17:17 +1000 (AEST)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Virtual addresses return from dma(m)_alloc_coherent are opaque in what
-backs then, and drivers must not poke into them.  Switch the driver
-to use the generic DMA API mmap helper to avoid these problems.
+On Wed, 2019-05-08 at 17:58 -0700, Randy Dunlap wrote:
+> On 5/8/19 12:01 AM, Alastair D'Silva wrote:
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > Some buffers may only be partially filled with useful data, while
+> > the rest
+> > is padded (typically with 0x00 or 0xff).
+> > 
+> > This patch introduces a flag to allow the supression of lines of
+> > repeated
+> > bytes, which are replaced with '** Skipped %u bytes of value 0x%x
+> > **'
+> > 
+> > An inline wrapper function is provided for backwards compatibility
+> > with
+> > existing code, which maintains the original behaviour.
+> > 
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > ---
+> >  include/linux/printk.h | 25 +++++++++---
+> >  lib/hexdump.c          | 91 ++++++++++++++++++++++++++++++++++++
+> > ------
+> >  2 files changed, 99 insertions(+), 17 deletions(-)
+> > 
+> 
+> Hi,
+> Did you do "make htmldocs" or something similar on this?
+> 
+> > diff --git a/lib/hexdump.c b/lib/hexdump.c
+> > index 3943507bc0e9..d61a1e4f19fa 100644
+> > --- a/lib/hexdump.c
+> > +++ b/lib/hexdump.c
+> > @@ -212,8 +212,44 @@ int hex_dump_to_buffer(const void *buf, size_t
+> > len, int rowsize, int groupsize,
+> >  EXPORT_SYMBOL(hex_dump_to_buffer);
+> >  
+> >  #ifdef CONFIG_PRINTK
+> > +
+> > +/**
+> > + * Check if a buffer contains only a single byte value
+> > + * @buf: pointer to the buffer
+> > + * @len: the size of the buffer in bytes
+> > + * @val: outputs the value if if the bytes are identical
+> 
+> Does this work without a function name?
+> Documentation/doc-guide/kernel-doc.rst says the general format is:
+> 
+>   /**
+>    * function_name() - Brief description of function.
+>    * @arg1: Describe the first argument.
+>    * @arg2: Describe the second argument.
+>    *        One can provide multiple line descriptions
+>    *        for arguments.
+>    *
+> 
+> > + */
+> >  /**
+> > - * print_hex_dump - print a text hex dump to syslog for a binary
+> > blob of data
+> > + * print_hex_dump_ext: dump a binary blob of data to syslog in
+> > hexadecimal
+> 
+> Also not in the general documented format.
+> 
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/video/fbdev/jz4740_fb.c | 7 -------
- 1 file changed, 7 deletions(-)
+Thanks Randy, I'll address these.
 
-diff --git a/drivers/video/fbdev/jz4740_fb.c b/drivers/video/fbdev/jz4740_fb.c
-index b57df83fdbd3..b95cdfa9e0a1 100644
---- a/drivers/video/fbdev/jz4740_fb.c
-+++ b/drivers/video/fbdev/jz4740_fb.c
-@@ -466,7 +466,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
- {
- 	int max_videosize = 0;
- 	struct fb_videomode *mode = jzfb->pdata->modes;
--	void *page;
- 	int i;
- 
- 	for (i = 0; i < jzfb->pdata->num_modes; ++mode, ++i) {
-@@ -491,12 +490,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
- 	if (!jzfb->vidmem)
- 		goto err_free_framedesc;
- 
--	for (page = jzfb->vidmem;
--		 page < jzfb->vidmem + PAGE_ALIGN(jzfb->vidmem_size);
--		 page += PAGE_SIZE) {
--		SetPageReserved(virt_to_page(page));
--	}
--
- 	jzfb->framedesc->next = jzfb->framedesc_phys;
- 	jzfb->framedesc->addr = jzfb->vidmem_phys;
- 	jzfb->framedesc->id = 0xdeafbead;
 -- 
-2.20.1
+Alastair D'Silva           mob: 0423 762 819
+skype: alastair_dsilva    
+Twitter: @EvilDeece
+blog: http://alastair.d-silva.org
+
 
