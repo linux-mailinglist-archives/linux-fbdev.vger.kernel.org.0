@@ -2,130 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0EAC1F3FE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 May 2019 14:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3852000B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 May 2019 09:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728055AbfEOMR2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 15 May 2019 08:17:28 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:46568 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727042AbfEOMR0 (ORCPT
+        id S1726653AbfEPHPg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 May 2019 03:15:36 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:38594 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbfEPHPg (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 May 2019 08:17:26 -0400
-Received: by mail-vs1-f67.google.com with SMTP id e2so1511864vsc.13
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 May 2019 05:17:26 -0700 (PDT)
+        Thu, 16 May 2019 03:15:36 -0400
+Received: by mail-wm1-f68.google.com with SMTP id t5so913470wmh.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 May 2019 00:15:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9Jupluo6BgmV8ERwMDVbIijp69X7k5zhTVNRH5lHiVw=;
+        b=Rn4JB40uK20gd8stbzdQROylvNp3X6Mbjq8D8tnZ3DWEWDakETtICsB8NMFLYQXOVE
+         dSFrduy/vRauP18z3tGk/KLlcJlMY0uoGiRFpjkBFg2BhtthwI3Fi+d9kwNoOyJCaqjS
+         1ETpRzhBmA3rfjDIF9XSDsYkN4JQkzsC42mVFCioU0I2vhYsXlTJvfmDAUpNtcMbtDRF
+         eFPO+6A4rLSeCUyu7YiRm/UCZm1y9+gzGouNI1yhJM0zQRRJme/EOh7lFyJWBVE2zqtO
+         vTFDdI+RCCPv02ZbABk4GVB9HiIzU829G8Ayi80nixbbPkisMke3tUHO5kaq7lg011CB
+         r9JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=GoZqRtO1DJyDd5x1ykt89wHuMqf3mXxoCzfB/cokj1U=;
-        b=bbW58FpF0snFvHUWZjV6GPvBWgQILfFRTtYvZAyp0BNuRa/caV2TX7ikVb06bRdJGD
-         WyXcHXhg++A3f2KNf8UypRBrAaIlcf6ap1UMtstxu8VbgqHkpDHhF7aXQ0mvQ2U/Hm5n
-         PuAVfNLeBEcQsQo+XZ0MBtOjsfMvtzKJWZ7fHS2vWmPdF6GH5T8lHmzj12fVsTzSLsJ9
-         Y+RUezIYeBS8h4o4fxZmDoiPlsKJZQk1SPs6ilAeV7VrmWxVq5+I0B+ZnkYk8kOcRANR
-         3472JgFySNEqoTRqb23brZEaiQdRMyczAPCWaSGfXamVKzatFZz1BZJ/H8MoxJ0iJah3
-         JAtg==
-X-Gm-Message-State: APjAAAV8bQsxRUJgMKfNnvNYRA+tVA8CHENDBUBR+dWeVRyOst77LB6A
-        eiTvtwfLJb4tUsoS2fmCshgybZxYaVah+1fk1dI=
-X-Google-Smtp-Source: APXvYqw1XFiQjVa/JMiq4S60gQIlK2cXL5b+8BOXQspv8ti/3HOAAmRtxBpaHNn1XhlzBo/rYNR9VuOso144yYjW6L8=
-X-Received: by 2002:a67:7c93:: with SMTP id x141mr12143867vsc.96.1557922645694;
- Wed, 15 May 2019 05:17:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9Jupluo6BgmV8ERwMDVbIijp69X7k5zhTVNRH5lHiVw=;
+        b=Tv1fIF3U09wDXOSCfjE5NUcUXq04MytI55XWnjllcoZAXOt/xCgJLnr6JJxr9o5HC9
+         qyyfucP3cTy0d6JAkwM4szS3trtiw2X3s6tbQRWDtv4gMjv96AqeEBuSnw3xpL48u/6R
+         4Zs5al2trVbdMB1oFbsQi+qgdZFZ0qO4mGQYcIt4UGNlDza9ZmLun8B0uMAf0YbvaGov
+         /fBX5fSU12yGYPYo99MG8qAFaiPWpOGFKcaU7Xq0Qis1GFmT5nfj+uUQP4rV/n4sb7Gu
+         HeAgteT85KUyQh3KJ+N5xkkqGJYMccTZNiofo8Eu4r00uuEnxp9LlgnVrRDtGIsE/GlR
+         zNJw==
+X-Gm-Message-State: APjAAAU+EAX1XYtkT1es0zdoZuD/7jVq4Wf7/rPLGpkGmjYESlS4yjfB
+        3IxOp6xjxOaIBYq0k3C1Q/S+J/abYrEv8YtmkDw=
+X-Google-Smtp-Source: APXvYqw/5beyOmjai73LvSsdJf/uOSVzkwoCHjWB+u694a9DZ6MJhwNBAcFlB4PSI2X+D9k5CbEhgETyuMvazWjSPKk=
+X-Received: by 2002:a1c:9eca:: with SMTP id h193mr17544135wme.125.1557990934544;
+ Thu, 16 May 2019 00:15:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190117133336.19737-1-shc_work@mail.ru> <CAMuHMdXrAaZoqsnY_adE=jn-hmTrgmsvJ2tDo+5ByxZ4sz_S7Q@mail.gmail.com>
- <1557916437.354393786@f383.i.mail.ru>
-In-Reply-To: <1557916437.354393786@f383.i.mail.ru>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 15 May 2019 14:17:14 +0200
-Message-ID: <CAMuHMdXBpneVGLULk2kE0BT336BBn0+NQsEqmMnGqsSEQy5D3g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] video: lcd: Remove useless BACKLIGHT_LCD_SUPPORT
- kernel symbol
-To:     Alexander Shiyan <shc_work@mail.ru>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Received: by 2002:a5d:434c:0:0:0:0:0 with HTTP; Thu, 16 May 2019 00:15:34
+ -0700 (PDT)
+Reply-To: attorney.cavedo2@gmail.com
+From:   John Cavedo <balouki.mohammed@gmail.com>
+Date:   Thu, 16 May 2019 07:15:34 +0000
+Message-ID: <CA+UovEkGPFQ_79OnT=RjMjadNUspwgpuyFfgcdiD24haMRuicw@mail.gmail.com>
+Subject: Very urgent AREAS OF INVESTMENT.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Alexander,
-
-On Wed, May 15, 2019 at 12:34 PM Alexander Shiyan <shc_work@mail.ru> wrote:
-> Looks like you're right.
-> Can you create a patch to fix this?
-
-Thank you, done.
-
-> >Среда, 15 мая 2019, 11:57 +03:00 от Geert Uytterhoeven <geert@linux-m68k.org>:
-> >
-> >Hi Alexander,
-> >
-> >On Thu, Jan 17, 2019 at 2:39 PM Alexander Shiyan < shc_work@mail.ru > wrote:
-> >> We have two *_CLASS_DEVICE kernel config options (LCD_CLASS_DEVICE
-> >> and BACKLIGHT_LCD_DEVICE) that do the same job.
-> >> The patch removes useless BACKLIGHT_LCD_SUPPORT option
-> >> and converts LCD_CLASS_DEVICE into a menu.
-> >>
-> >> Signed-off-by: Alexander Shiyan < shc_work@mail.ru >
-> >This is now commit 8c5dc8d9f19c7992 ("video: backlight: Remove useless
-> >BACKLIGHT_LCD_SUPPORT kernel symbol").
-> >
-> >> --- a/drivers/video/backlight/Kconfig
-> >> +++ b/drivers/video/backlight/Kconfig
-> >> @@ -2,13 +2,7 @@
-> >>  # Backlight & LCD drivers configuration
-> >>  #
-> >>
-> >> -menuconfig BACKLIGHT_LCD_SUPPORT
-> >> -       bool "Backlight & LCD device support"
-> >> -       help
-> >> -         Enable this to be able to choose the drivers for controlling the
-> >> -         backlight and the LCD panel on some platforms, for example on PDAs.
-> >> -
-> >> -if BACKLIGHT_LCD_SUPPORT
-> >> +menu "Backlight & LCD device support"
-> >>
-> >>  #
-> >>  # LCD
-> >
-> >Below, we have:
-> >
-> >    config LCD_CLASS_DEVICE
-> >            tristate "Lowlevel LCD controls"
-> >            default m
-> >            help
-> >              This framework adds support for low-level control of LCD.
-> >              Some framebuffer devices connect to platform-specific LCD modules
-> >              in order to have a platform-specific way to control the flat panel
-> >              (contrast and applying power to the LCD (not to the backlight!)).
-> >
-> >and:
-> >
-> >    config BACKLIGHT_CLASS_DEVICE
-> >            tristate "Lowlevel Backlight controls"
-> >            default m
-> >            help
-> >              This framework adds support for low-level control of the LCD
-> >              backlight. This includes support for brightness and power.
-> >
-> >Hence running "make oldconfig" on a .config where
-> >CONFIG_BACKLIGHT_LCD_SUPPORT was not set leads two to new
-> >questions, where the answers default to "m".
-> >
-> >Perhaps the "default m" statements should be removed?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Sir/madam,I humbly seek your consent for an investment in your
+country.I need to invest in the following areas by your candid advice
+and supervision; industrial, petroleum energy , land farming..More
+details of this will be sent following your INVESTMENT suggestion and
+interest. I am deeply sorry for disturbing your privacy Regards,John.
