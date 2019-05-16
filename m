@@ -2,61 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3852000B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 May 2019 09:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCF4209D3
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 May 2019 16:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726653AbfEPHPg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 May 2019 03:15:36 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:38594 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbfEPHPg (ORCPT
+        id S1726790AbfEPOdw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 May 2019 10:33:52 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:45827 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726739AbfEPOdw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 May 2019 03:15:36 -0400
-Received: by mail-wm1-f68.google.com with SMTP id t5so913470wmh.3
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 May 2019 00:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=9Jupluo6BgmV8ERwMDVbIijp69X7k5zhTVNRH5lHiVw=;
-        b=Rn4JB40uK20gd8stbzdQROylvNp3X6Mbjq8D8tnZ3DWEWDakETtICsB8NMFLYQXOVE
-         dSFrduy/vRauP18z3tGk/KLlcJlMY0uoGiRFpjkBFg2BhtthwI3Fi+d9kwNoOyJCaqjS
-         1ETpRzhBmA3rfjDIF9XSDsYkN4JQkzsC42mVFCioU0I2vhYsXlTJvfmDAUpNtcMbtDRF
-         eFPO+6A4rLSeCUyu7YiRm/UCZm1y9+gzGouNI1yhJM0zQRRJme/EOh7lFyJWBVE2zqtO
-         vTFDdI+RCCPv02ZbABk4GVB9HiIzU829G8Ayi80nixbbPkisMke3tUHO5kaq7lg011CB
-         r9JQ==
+        Thu, 16 May 2019 10:33:52 -0400
+Received: by mail-vs1-f68.google.com with SMTP id o10so2432331vsp.12
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 May 2019 07:33:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=9Jupluo6BgmV8ERwMDVbIijp69X7k5zhTVNRH5lHiVw=;
-        b=Tv1fIF3U09wDXOSCfjE5NUcUXq04MytI55XWnjllcoZAXOt/xCgJLnr6JJxr9o5HC9
-         qyyfucP3cTy0d6JAkwM4szS3trtiw2X3s6tbQRWDtv4gMjv96AqeEBuSnw3xpL48u/6R
-         4Zs5al2trVbdMB1oFbsQi+qgdZFZ0qO4mGQYcIt4UGNlDza9ZmLun8B0uMAf0YbvaGov
-         /fBX5fSU12yGYPYo99MG8qAFaiPWpOGFKcaU7Xq0Qis1GFmT5nfj+uUQP4rV/n4sb7Gu
-         HeAgteT85KUyQh3KJ+N5xkkqGJYMccTZNiofo8Eu4r00uuEnxp9LlgnVrRDtGIsE/GlR
-         zNJw==
-X-Gm-Message-State: APjAAAU+EAX1XYtkT1es0zdoZuD/7jVq4Wf7/rPLGpkGmjYESlS4yjfB
-        3IxOp6xjxOaIBYq0k3C1Q/S+J/abYrEv8YtmkDw=
-X-Google-Smtp-Source: APXvYqw/5beyOmjai73LvSsdJf/uOSVzkwoCHjWB+u694a9DZ6MJhwNBAcFlB4PSI2X+D9k5CbEhgETyuMvazWjSPKk=
-X-Received: by 2002:a1c:9eca:: with SMTP id h193mr17544135wme.125.1557990934544;
- Thu, 16 May 2019 00:15:34 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Slihxl2vu/lw+Vj+9GO27pAncTe7JgO+/vPnKvGqTt8=;
+        b=Ghn75J3Co0KxA2b5jTdw6yCasByag3Z39dlHvc4zpnAQW5ELWKtzYWbRx30MVgK0vY
+         39SKMsNTld+SiWoOwA7PHrakGigIJLdO9DrBnTK4Ro0BveORY/iCTv/h+6b69VBU/eY0
+         0ZjgsXFk4Pazkr9zrZ2GPFbyuzMBgro+tH+4t8KW9XiIqVSaZWlOoQQxM3r7xgb2QY4u
+         3wItr4vDuCbamwCiitHkcqgREFXNUpIw89LXxA2UKg0tTYy5R2M7PhZgUow9tppPVRcS
+         4xZlTf6hXkk2rmanupvhEx53ka2o1Q97AswdidlR6Ezw8aQQ6SN58yQsj0ocMZ5hgNtc
+         /wTA==
+X-Gm-Message-State: APjAAAUWsTgyRGmZ5dlKmAUiyHqnUwimhCNHVbLh+eBizanSSs9D5tb0
+        mleIWLyPFWNoU/vuRdGvGA4VHY4/0Rt38ixrLVfmSA==
+X-Google-Smtp-Source: APXvYqxgqHqxcis3VM15isZ2If1AqbFf6DmtSnzpBQfJ72a0QbaXliUxxUP1ClUcF+wulx/rfEPw3PiWRRatfC9Ox+g=
+X-Received: by 2002:a67:f309:: with SMTP id p9mr22751634vsf.216.1558017231720;
+ Thu, 16 May 2019 07:33:51 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a5d:434c:0:0:0:0:0 with HTTP; Thu, 16 May 2019 00:15:34
- -0700 (PDT)
-Reply-To: attorney.cavedo2@gmail.com
-From:   John Cavedo <balouki.mohammed@gmail.com>
-Date:   Thu, 16 May 2019 07:15:34 +0000
-Message-ID: <CA+UovEkGPFQ_79OnT=RjMjadNUspwgpuyFfgcdiD24haMRuicw@mail.gmail.com>
-Subject: Very urgent AREAS OF INVESTMENT.
-To:     undisclosed-recipients:;
+References: <20190426145946.26537-1-ghalat@redhat.com>
+In-Reply-To: <20190426145946.26537-1-ghalat@redhat.com>
+From:   Grzegorz Halat <ghalat@redhat.com>
+Date:   Thu, 16 May 2019 16:33:40 +0200
+Message-ID: <CAKbGCscqbvOaXPTdmxatNLBygdu=WC0hVUKx0_WnqUR4+dj_zQ@mail.gmail.com>
+Subject: Re: [PATCH] vt/fbcon: deinitialize resources in visual_init() after
+ failed memory allocation
+To:     linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Sir/madam,I humbly seek your consent for an investment in your
-country.I need to invest in the following areas by your candid advice
-and supervision; industrial, petroleum energy , land farming..More
-details of this will be sent following your INVESTMENT suggestion and
-interest. I am deeply sorry for disturbing your privacy Regards,John.
+On Fri, 26 Apr 2019 at 16:59, Grzegorz Halat <ghalat@redhat.com> wrote:
+>
+> After memory allocation failure vc_allocate() doesn't clean up data
+> which has been initialized in visual_init(). In case of fbcon this
+> leads to divide-by-0 in fbcon_init() on next open of the same tty.
+
+Hi,
+A gentle reminder. Could you please review my patch? I've seen two
+crashes caused by this bug.
+
+--
+Grzegorz Halat
