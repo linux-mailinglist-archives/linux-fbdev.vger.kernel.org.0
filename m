@@ -2,145 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC722179F
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 May 2019 13:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC3221A48
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 May 2019 17:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728413AbfEQLYx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 May 2019 07:24:53 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:49495 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727794AbfEQLYx (ORCPT
+        id S1729148AbfEQPGE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 May 2019 11:06:04 -0400
+Received: from relay1-d.mail.gandi.net ([217.70.183.193]:39315 "EHLO
+        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728935AbfEQPGE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 May 2019 07:24:53 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190517112452euoutp02badef395399f23aaeee5ea5c4e471c47~fdK8-_gKJ2906129061euoutp02G
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 May 2019 11:24:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190517112452euoutp02badef395399f23aaeee5ea5c4e471c47~fdK8-_gKJ2906129061euoutp02G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1558092292;
-        bh=s5xn7k0/PVouqiLEPICwHZnbldv3z7LESLoslwe+Fug=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=OPimjJDfUpGJ864Co3ggSgU0rAlm/mVajf5gCTl78zCtWMk5m8RwAex8gdbHD8jia
-         2D95RJuuiuD2oD8OK4jwkhQtJA5FjMBR4XwWVaqb40RxFO96ueMprGoVO86ZsHUgk7
-         OeBUtWW/7s5NK4wNHNKVQ6+bavLP45RXP2q8cqZU=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190517112451eucas1p2cb66814f7d5b3db55da07e65459ce182~fdK8jo9Bb1635116351eucas1p2v;
-        Fri, 17 May 2019 11:24:51 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 6A.AD.04325.30A9EDC5; Fri, 17
-        May 2019 12:24:51 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190517112450eucas1p2d987b7b6bcb6058af76d435a9fe79158~fdK70Td812524425244eucas1p2d;
-        Fri, 17 May 2019 11:24:50 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190517112450eusmtrp22af6d099881ef87ee4651f77e1a3f0fa~fdK7mP8As0539105391eusmtrp2v;
-        Fri, 17 May 2019 11:24:50 +0000 (GMT)
-X-AuditID: cbfec7f5-fbbf09c0000010e5-a0-5cde9a03ce46
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2B.F6.04146.20A9EDC5; Fri, 17
-        May 2019 12:24:50 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190517112450eusmtip26bf5615b51f217ab73c7d60def838c43~fdK7SddQ02003220032eusmtip2L;
-        Fri, 17 May 2019 11:24:50 +0000 (GMT)
-Subject: Re: [PATCH] vt/fbcon: deinitialize resources in visual_init() after
- failed memory allocation
-To:     Grzegorz Halat <ghalat@redhat.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-fbdev@vger.kernel.org,
-        Oleksandr Natalenko <oleksandr@redhat.com>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <782f3255-3a25-4620-e97c-2f742e733f32@samsung.com>
-Date:   Fri, 17 May 2019 13:24:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        Fri, 17 May 2019 11:06:04 -0400
+X-Originating-IP: 90.88.22.185
+Received: from localhost.localdomain (aaubervilliers-681-1-80-185.w90-88.abo.wanadoo.fr [90.88.22.185])
+        (Authenticated sender: paul.kocialkowski@bootlin.com)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 17FCF24000F;
+        Fri, 17 May 2019 15:05:57 +0000 (UTC)
+From:   Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Subject: [PATCH] backlight: gpio-backlight: Set power state instead of brightness at probe
+Date:   Fri, 17 May 2019 17:05:46 +0200
+Message-Id: <20190517150546.4508-1-paul.kocialkowski@bootlin.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <20190426145946.26537-1-ghalat@redhat.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0iTYRjt9bvsczh5nSufzApGGQlpluDUkiKJESVFBZUjW+1jSt7avPtH
-        CS+sEFNBXVpSeS9dZs4bRhOckmlOTEu8gWWJOsELmJfy81Py33mec85z3gMvQ4iLKWcmNCKa
-        1UQow6S0kKxvX+4+RuhHFMfT8yWy8uZZJHv4soaW5RrmbGQdmXOUrK+pkJZNV/TYnKHlH4pe
-        C+TW1n5aXlPXT8rnaw9cJm8JT6nYsNBYVuPhf0cYMvIzlY5aEcY/XzEIktEUo0MMA9gLllIS
-        dUjIiHE5go6lBVqHbDeGBQRNPT48MY+gO/cV4gjOMJ79m+KJMgQpqc1bwwyCoQELyakcsRre
-        DxgJDkuwK3R9a0KciMAtCBbnxwQcQWNfeJJeuXlWhP0hy9i/aSDxYZjOL6I4vBvfgNF2A8Vr
-        HKCzYGIzwBZ7Q1pRpw2HCewE3yeeb+GDYJwpJLgwwJUCMPWuUnzRAKgtTuArOMKUuU7AYxf4
-        28h5OX01grWMX1tmI4KynHWaV/lBm7l38xCBj0JNkwe/Pgtt1jbE37eHwRkH/g32kF2fR/Br
-        EWSkiXm1KxhKDfR2rK6xgshCUv2OZvodbfQ72uj/5xYjshI5sTHacDWrPRnBxrlrleHamAi1
-        +73I8Fq08W8+rZsXG1Dr6l0TwgyS2onwxWGFmFLGahPCTQgYQioRGaxDCrFIpUxIZDWRwZqY
-        MFZrQvsYUuokSto1FiTGamU0e59lo1jNNmvD2DonI/cX8jVMfnx2YhJPHgncn+9jufL1fI6d
-        JM9887ZX3R5VaYvwdJcnq64araN9Jy1d565S8R6DRfmzj6IqgueTfiy3vIOA4T+XSlLzBA5e
-        9iXeb68pqtuDrF8sT93U6kxR495DF64Hfm4IlHpV+fU9iCtxeTNGRRfoylQpeHym7LGU1IYo
-        Pd0IjVb5D+mQp04zAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMIsWRmVeSWpSXmKPExsVy+t/xe7pMs+7FGPy8o2yxYvc7RovmxevZ
-        LKZs+MBkcaLvA6vF5V1z2CzerDzP5MDmsX/uGnaP9/uusnms33KVxePzJrkAlig9m6L80pJU
-        hYz84hJbpWhDCyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jHvPWtkKfnNVzP+9
-        gb2B8RVHFyMnh4SAicTDSS9Zuxi5OIQEljJKXPq4k72LkQMoISNxfH0ZRI2wxJ9rXWwgtpDA
-        a0aJK7sMQGxhgXSJrde3M4PYIgJqEmdu7mIEmcMssI9RYse5H1BDuxglFr45DNbNJmAlMbF9
-        FSOIzStgJzFh+1WwbhYBVYk3M+aygtiiAhESZ96vYIGoEZQ4OfMJmM0pYC7RNvckE4jNLKAu
-        8WfeJWYIW1zi1pP5UHF5ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDIsopRJLW0ODc9t9hQrzgx
-        t7g0L10vOT93EyMwwrYd+7l5B+OljcGHGAU4GJV4eAV87sYIsSaWFVfmHmKU4GBWEuHd8P52
-        jBBvSmJlVWpRfnxRaU5q8SFGU6DnJjJLiSbnA6M/ryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQ
-        QHpiSWp2ampBahFMHxMHp1QDo0rDZLaP29/ffdUQZ/xIZMqEzBcOWy6fPWIdZCDmFfl8dQ/D
-        zIQJT9s2slnJ7WWpP6z4o6z9xZ/yJWKaR4M/h3q0uEkm+Rd2qMQJrTctW/F6raBd8fP2+2Hz
-        /Z5wc+ec3yRcpnP4jVqeUscS3+dvpz3Mvnl77c669x0OMj48U5PPS549+DGVS4mlOCPRUIu5
-        qDgRANn0/lLGAgAA
-X-CMS-MailID: 20190517112450eucas1p2d987b7b6bcb6058af76d435a9fe79158
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190426145959epcas3p452b4b80025c58916331820abbb0060ed
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190426145959epcas3p452b4b80025c58916331820abbb0060ed
-References: <CGME20190426145959epcas3p452b4b80025c58916331820abbb0060ed@epcas3p4.samsung.com>
-        <20190426145946.26537-1-ghalat@redhat.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On a trivial gpio-backlight setup with a panel using the backlight but
+no boot software to enable it beforehand, we fall in a case where the
+backlight is disabled (not just blanked) and thus remains disabled when
+the panel gets enabled.
 
-On 4/26/19 4:59 PM, Grzegorz Halat wrote:
-> After memory allocation failure vc_allocate() doesn't clean up data
-> which has been initialized in visual_init(). In case of fbcon this
-> leads to divide-by-0 in fbcon_init() on next open of the same tty.
-> 
-> memory allocation in vc_allocate() may fail here:
-> 1097:     vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
-> 
-> on next open() fbcon_init() skips vc_font.data initialization:
-> 1088:     if (!p->fontdata) {
-> 
-> division by zero in fbcon_init() happens here:
-> 1149:     new_cols /= vc->vc_font.width;
-> 
-> Additional check is needed in fbcon_deinit() to prevent
-> usage of uninitialized vc_screenbuf:
-> 
-> 1251:        if (vc->vc_hi_font_mask && vc->vc_screenbuf)
-> 1252:                set_vc_hi_font(vc, false);
-> 
-> Crash:
-> 
->  #6 [ffffc90001eafa60] divide_error at ffffffff81a00be4
->     [exception RIP: fbcon_init+463]
->     RIP: ffffffff814b860f  RSP: ffffc90001eafb18  RFLAGS: 00010246
-> ...
->  #7 [ffffc90001eafb60] visual_init at ffffffff8154c36e
->  #8 [ffffc90001eafb80] vc_allocate at ffffffff8154f53c
->  #9 [ffffc90001eafbc8] con_install at ffffffff8154f624
-> ...
-> 
-> Signed-off-by: Grzegorz Halat <ghalat@redhat.com>
+Setting gbl->def_value via the device-tree prop allows enabling the
+backlight in this situation, but it will be unblanked straight away,
+in compliance with the binding. This does not work well when there was no
+boot software to display something before, since we really need to unblank
+by the time the panel is enabled, not before.
 
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Resolve the situation by setting the brightness to 1 at probe and
+managing the power state accordingly, a bit like it's done in
+pwm-backlight.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
+Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+---
+ drivers/video/backlight/gpio_backlight.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+index e470da95d806..c9cb97fa13d0 100644
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -57,6 +57,21 @@ static const struct backlight_ops gpio_backlight_ops = {
+ 	.check_fb	= gpio_backlight_check_fb,
+ };
+ 
++static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
++{
++	struct device_node *node = gbl->dev->of_node;
++
++	/* If we absolutely want the backlight enabled at boot. */
++	if (gbl->def_value)
++		return FB_BLANK_UNBLANK;
++
++	/* If there's no panel to unblank the backlight later. */
++	if (!node || !node->phandle)
++		return FB_BLANK_UNBLANK;
++
++	return FB_BLANK_POWERDOWN;
++}
++
+ static int gpio_backlight_probe_dt(struct platform_device *pdev,
+ 				   struct gpio_backlight *gbl)
+ {
+@@ -142,7 +157,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 		return PTR_ERR(bl);
+ 	}
+ 
+-	bl->props.brightness = gbl->def_value;
++	bl->props.brightness = 1;
++	bl->props.power = gpio_backlight_initial_power_state(gbl);
++
+ 	backlight_update_status(bl);
+ 
+ 	platform_set_drvdata(pdev, bl);
+-- 
+2.21.0
+
