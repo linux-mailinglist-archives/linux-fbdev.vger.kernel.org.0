@@ -2,100 +2,112 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC3221A48
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 May 2019 17:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D56321F6E
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 May 2019 23:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729148AbfEQPGE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 May 2019 11:06:04 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:39315 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728935AbfEQPGE (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 May 2019 11:06:04 -0400
-X-Originating-IP: 90.88.22.185
-Received: from localhost.localdomain (aaubervilliers-681-1-80-185.w90-88.abo.wanadoo.fr [90.88.22.185])
-        (Authenticated sender: paul.kocialkowski@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 17FCF24000F;
-        Fri, 17 May 2019 15:05:57 +0000 (UTC)
-From:   Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S1727077AbfEQVMC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 May 2019 17:12:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59958 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726771AbfEQVMC (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 17 May 2019 17:12:02 -0400
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E6F762166E;
+        Fri, 17 May 2019 21:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558127521;
+        bh=Cr5kb3G7RGw3ztcggbHW6k8d8aqqY2Qosw+W4yl+edE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=RVRGkAgCXj67cHasiMUZLXRu3M2Kh4X4/vTVb89qs8DinBil4+Da07NiNdjKUdeLK
+         aGSnp46JC6AY0I6VZhc4Vbbsb3vb4bskHFwO5oSfH+mBG33XwYktUW9GiFJVR9TEnE
+         GcSTKqn2no2O+tAuRzygt+Jwd0AXGMVeSqe/zaNU=
+Received: by mail-qt1-f171.google.com with SMTP id a17so9695780qth.3;
+        Fri, 17 May 2019 14:12:00 -0700 (PDT)
+X-Gm-Message-State: APjAAAXnLwDXCnLTwfJgAtVZVwlJSiqi5ESclrQ0g3oF8htsAeJ3+yWk
+        qzTpceGVa/24YYPC4S4aqlsvoRhCbMLUOBG9lQ==
+X-Google-Smtp-Source: APXvYqzPeJBGMQo9MUCbEz0jHdsw9NOoM2DjetgzWmPgzzxGJ8qADKNKR9tBGIvkgVO70RL7qVN1xMcR/sOzQTUX2sg=
+X-Received: by 2002:a0c:8aad:: with SMTP id 42mr48279852qvv.200.1558127520194;
+ Fri, 17 May 2019 14:12:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190424092505.6578-1-masneyb@onstation.org> <20190424092505.6578-3-masneyb@onstation.org>
+In-Reply-To: <20190424092505.6578-3-masneyb@onstation.org>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 17 May 2019 16:11:48 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLdS2SDd-dczZmqDTN3XMY7fwDjdkX5OibXbrksd7qQYA@mail.gmail.com>
+Message-ID: <CAL_JsqLdS2SDd-dczZmqDTN3XMY7fwDjdkX5OibXbrksd7qQYA@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] dt-bindings: backlight: add lm3630a bindings
+To:     Brian Masney <masneyb@onstation.org>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Mark Rutland <mark.rutland@arm.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Subject: [PATCH] backlight: gpio-backlight: Set power state instead of brightness at probe
-Date:   Fri, 17 May 2019 17:05:46 +0200
-Message-Id: <20190517150546.4508-1-paul.kocialkowski@bootlin.com>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Dan Murphy <dmurphy@ti.com>, Jonathan Marek <jonathan@marek.ca>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On a trivial gpio-backlight setup with a panel using the backlight but
-no boot software to enable it beforehand, we fall in a case where the
-backlight is disabled (not just blanked) and thus remains disabled when
-the panel gets enabled.
+On Wed, Apr 24, 2019 at 4:25 AM Brian Masney <masneyb@onstation.org> wrote:
+>
+> Add new backlight bindings for the TI LM3630A dual-string white LED.
+>
+> Signed-off-by: Brian Masney <masneyb@onstation.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+> Changes since v5:
+> - Change 'lm3630a_bl@38' in examples to 'led-controller@38'
+>
+> Changes since v4:
+> - Drop $ref from led-sources
+> - Drop description from reg of i2c address
+> - Expand description of reg for the control bank
+> - Drop status from examples
+>
+> Changes since v3:
+> - Add label. I didn't add a description for it since that'll come from
+>   the common properties once its converted.
+>
+> Changes since v2:
+> - Update description of max-brightness
+> - Add description for reg
+> - Correct typo: s/tranisiton/transition
+> - add reg to control banks
+> - add additionalProperties
+>
+>  .../leds/backlight/lm3630a-backlight.yaml     | 129 ++++++++++++++++++
+>  1 file changed, 129 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
 
-Setting gbl->def_value via the device-tree prop allows enabling the
-backlight in this situation, but it will be unblanked straight away,
-in compliance with the binding. This does not work well when there was no
-boot software to display something before, since we really need to unblank
-by the time the panel is enabled, not before.
+I'm working on getting the examples to be validated by the schema (in
+addition to just building with dtc) and there's a couple of errors:
 
-Resolve the situation by setting the brightness to 1 at probe and
-managing the power state accordingly, a bit like it's done in
-pwm-backlight.
+Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+'#address-cells', '#size-cells' do not match any of the regexes:
+'^led@[01]$', 'pinctrl-[0-9]+'
+Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+'#address-cells', '#size-cells' do not match any of the regexes:
+'^led@[01]$', 'pinctrl-[0-9]+'
 
-Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
-Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
----
- drivers/video/backlight/gpio_backlight.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+You didn't list '#address-cells' and '#size-cells'.
 
-diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-index e470da95d806..c9cb97fa13d0 100644
---- a/drivers/video/backlight/gpio_backlight.c
-+++ b/drivers/video/backlight/gpio_backlight.c
-@@ -57,6 +57,21 @@ static const struct backlight_ops gpio_backlight_ops = {
- 	.check_fb	= gpio_backlight_check_fb,
- };
- 
-+static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
-+{
-+	struct device_node *node = gbl->dev->of_node;
-+
-+	/* If we absolutely want the backlight enabled at boot. */
-+	if (gbl->def_value)
-+		return FB_BLANK_UNBLANK;
-+
-+	/* If there's no panel to unblank the backlight later. */
-+	if (!node || !node->phandle)
-+		return FB_BLANK_UNBLANK;
-+
-+	return FB_BLANK_POWERDOWN;
-+}
-+
- static int gpio_backlight_probe_dt(struct platform_device *pdev,
- 				   struct gpio_backlight *gbl)
- {
-@@ -142,7 +157,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
- 		return PTR_ERR(bl);
- 	}
- 
--	bl->props.brightness = gbl->def_value;
-+	bl->props.brightness = 1;
-+	bl->props.power = gpio_backlight_initial_power_state(gbl);
-+
- 	backlight_update_status(bl);
- 
- 	platform_set_drvdata(pdev, bl);
--- 
-2.21.0
+Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+led@0: 'ti,linear-mapping-mode' does not match any of the regexes:
+'pinctrl-[0-9]+'
+Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+led@1: 'ti,linear-mapping-mode' does not match any of the regexes:
+'pinctrl-[0-9]+'
 
+'ti,linear-mapping-mode' is not defined in the child nodes.
+
+Rob
