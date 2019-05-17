@@ -2,62 +2,145 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCF4209D3
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 May 2019 16:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC722179F
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 May 2019 13:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726790AbfEPOdw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 May 2019 10:33:52 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:45827 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726739AbfEPOdw (ORCPT
+        id S1728413AbfEQLYx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 May 2019 07:24:53 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:49495 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727794AbfEQLYx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 May 2019 10:33:52 -0400
-Received: by mail-vs1-f68.google.com with SMTP id o10so2432331vsp.12
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 May 2019 07:33:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Slihxl2vu/lw+Vj+9GO27pAncTe7JgO+/vPnKvGqTt8=;
-        b=Ghn75J3Co0KxA2b5jTdw6yCasByag3Z39dlHvc4zpnAQW5ELWKtzYWbRx30MVgK0vY
-         39SKMsNTld+SiWoOwA7PHrakGigIJLdO9DrBnTK4Ro0BveORY/iCTv/h+6b69VBU/eY0
-         0ZjgsXFk4Pazkr9zrZ2GPFbyuzMBgro+tH+4t8KW9XiIqVSaZWlOoQQxM3r7xgb2QY4u
-         3wItr4vDuCbamwCiitHkcqgREFXNUpIw89LXxA2UKg0tTYy5R2M7PhZgUow9tppPVRcS
-         4xZlTf6hXkk2rmanupvhEx53ka2o1Q97AswdidlR6Ezw8aQQ6SN58yQsj0ocMZ5hgNtc
-         /wTA==
-X-Gm-Message-State: APjAAAUWsTgyRGmZ5dlKmAUiyHqnUwimhCNHVbLh+eBizanSSs9D5tb0
-        mleIWLyPFWNoU/vuRdGvGA4VHY4/0Rt38ixrLVfmSA==
-X-Google-Smtp-Source: APXvYqxgqHqxcis3VM15isZ2If1AqbFf6DmtSnzpBQfJ72a0QbaXliUxxUP1ClUcF+wulx/rfEPw3PiWRRatfC9Ox+g=
-X-Received: by 2002:a67:f309:: with SMTP id p9mr22751634vsf.216.1558017231720;
- Thu, 16 May 2019 07:33:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190426145946.26537-1-ghalat@redhat.com>
-In-Reply-To: <20190426145946.26537-1-ghalat@redhat.com>
-From:   Grzegorz Halat <ghalat@redhat.com>
-Date:   Thu, 16 May 2019 16:33:40 +0200
-Message-ID: <CAKbGCscqbvOaXPTdmxatNLBygdu=WC0hVUKx0_WnqUR4+dj_zQ@mail.gmail.com>
+        Fri, 17 May 2019 07:24:53 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190517112452euoutp02badef395399f23aaeee5ea5c4e471c47~fdK8-_gKJ2906129061euoutp02G
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 May 2019 11:24:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190517112452euoutp02badef395399f23aaeee5ea5c4e471c47~fdK8-_gKJ2906129061euoutp02G
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1558092292;
+        bh=s5xn7k0/PVouqiLEPICwHZnbldv3z7LESLoslwe+Fug=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=OPimjJDfUpGJ864Co3ggSgU0rAlm/mVajf5gCTl78zCtWMk5m8RwAex8gdbHD8jia
+         2D95RJuuiuD2oD8OK4jwkhQtJA5FjMBR4XwWVaqb40RxFO96ueMprGoVO86ZsHUgk7
+         OeBUtWW/7s5NK4wNHNKVQ6+bavLP45RXP2q8cqZU=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190517112451eucas1p2cb66814f7d5b3db55da07e65459ce182~fdK8jo9Bb1635116351eucas1p2v;
+        Fri, 17 May 2019 11:24:51 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 6A.AD.04325.30A9EDC5; Fri, 17
+        May 2019 12:24:51 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190517112450eucas1p2d987b7b6bcb6058af76d435a9fe79158~fdK70Td812524425244eucas1p2d;
+        Fri, 17 May 2019 11:24:50 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190517112450eusmtrp22af6d099881ef87ee4651f77e1a3f0fa~fdK7mP8As0539105391eusmtrp2v;
+        Fri, 17 May 2019 11:24:50 +0000 (GMT)
+X-AuditID: cbfec7f5-fbbf09c0000010e5-a0-5cde9a03ce46
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2B.F6.04146.20A9EDC5; Fri, 17
+        May 2019 12:24:50 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190517112450eusmtip26bf5615b51f217ab73c7d60def838c43~fdK7SddQ02003220032eusmtip2L;
+        Fri, 17 May 2019 11:24:50 +0000 (GMT)
 Subject: Re: [PATCH] vt/fbcon: deinitialize resources in visual_init() after
  failed memory allocation
-To:     linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+To:     Grzegorz Halat <ghalat@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
+        Jiri Slaby <jslaby@suse.com>, linux-fbdev@vger.kernel.org,
         Oleksandr Natalenko <oleksandr@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <782f3255-3a25-4620-e97c-2f742e733f32@samsung.com>
+Date:   Fri, 17 May 2019 13:24:49 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190426145946.26537-1-ghalat@redhat.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0iTYRjt9bvsczh5nSufzApGGQlpluDUkiKJESVFBZUjW+1jSt7avPtH
+        CS+sEFNBXVpSeS9dZs4bRhOckmlOTEu8gWWJOsELmJfy81Py33mec85z3gMvQ4iLKWcmNCKa
+        1UQow6S0kKxvX+4+RuhHFMfT8yWy8uZZJHv4soaW5RrmbGQdmXOUrK+pkJZNV/TYnKHlH4pe
+        C+TW1n5aXlPXT8rnaw9cJm8JT6nYsNBYVuPhf0cYMvIzlY5aEcY/XzEIktEUo0MMA9gLllIS
+        dUjIiHE5go6lBVqHbDeGBQRNPT48MY+gO/cV4gjOMJ79m+KJMgQpqc1bwwyCoQELyakcsRre
+        DxgJDkuwK3R9a0KciMAtCBbnxwQcQWNfeJJeuXlWhP0hy9i/aSDxYZjOL6I4vBvfgNF2A8Vr
+        HKCzYGIzwBZ7Q1pRpw2HCewE3yeeb+GDYJwpJLgwwJUCMPWuUnzRAKgtTuArOMKUuU7AYxf4
+        28h5OX01grWMX1tmI4KynHWaV/lBm7l38xCBj0JNkwe/Pgtt1jbE37eHwRkH/g32kF2fR/Br
+        EWSkiXm1KxhKDfR2rK6xgshCUv2OZvodbfQ72uj/5xYjshI5sTHacDWrPRnBxrlrleHamAi1
+        +73I8Fq08W8+rZsXG1Dr6l0TwgyS2onwxWGFmFLGahPCTQgYQioRGaxDCrFIpUxIZDWRwZqY
+        MFZrQvsYUuokSto1FiTGamU0e59lo1jNNmvD2DonI/cX8jVMfnx2YhJPHgncn+9jufL1fI6d
+        JM9887ZX3R5VaYvwdJcnq64araN9Jy1d565S8R6DRfmzj6IqgueTfiy3vIOA4T+XSlLzBA5e
+        9iXeb68pqtuDrF8sT93U6kxR495DF64Hfm4IlHpV+fU9iCtxeTNGRRfoylQpeHym7LGU1IYo
+        Pd0IjVb5D+mQp04zAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMIsWRmVeSWpSXmKPExsVy+t/xe7pMs+7FGPy8o2yxYvc7RovmxevZ
+        LKZs+MBkcaLvA6vF5V1z2CzerDzP5MDmsX/uGnaP9/uusnms33KVxePzJrkAlig9m6L80pJU
+        hYz84hJbpWhDCyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jHvPWtkKfnNVzP+9
+        gb2B8RVHFyMnh4SAicTDSS9Zuxi5OIQEljJKXPq4k72LkQMoISNxfH0ZRI2wxJ9rXWwgtpDA
+        a0aJK7sMQGxhgXSJrde3M4PYIgJqEmdu7mIEmcMssI9RYse5H1BDuxglFr45DNbNJmAlMbF9
+        FSOIzStgJzFh+1WwbhYBVYk3M+aygtiiAhESZ96vYIGoEZQ4OfMJmM0pYC7RNvckE4jNLKAu
+        8WfeJWYIW1zi1pP5UHF5ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDIsopRJLW0ODc9t9hQrzgx
+        t7g0L10vOT93EyMwwrYd+7l5B+OljcGHGAU4GJV4eAV87sYIsSaWFVfmHmKU4GBWEuHd8P52
+        jBBvSmJlVWpRfnxRaU5q8SFGU6DnJjJLiSbnA6M/ryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQ
+        QHpiSWp2ampBahFMHxMHp1QDo0rDZLaP29/ffdUQZ/xIZMqEzBcOWy6fPWIdZCDmFfl8dQ/D
+        zIQJT9s2slnJ7WWpP6z4o6z9xZ/yJWKaR4M/h3q0uEkm+Rd2qMQJrTctW/F6raBd8fP2+2Hz
+        /Z5wc+ec3yRcpnP4jVqeUscS3+dvpz3Mvnl77c669x0OMj48U5PPS549+DGVS4mlOCPRUIu5
+        qDgRANn0/lLGAgAA
+X-CMS-MailID: 20190517112450eucas1p2d987b7b6bcb6058af76d435a9fe79158
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190426145959epcas3p452b4b80025c58916331820abbb0060ed
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190426145959epcas3p452b4b80025c58916331820abbb0060ed
+References: <CGME20190426145959epcas3p452b4b80025c58916331820abbb0060ed@epcas3p4.samsung.com>
+        <20190426145946.26537-1-ghalat@redhat.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 26 Apr 2019 at 16:59, Grzegorz Halat <ghalat@redhat.com> wrote:
->
+
+On 4/26/19 4:59 PM, Grzegorz Halat wrote:
 > After memory allocation failure vc_allocate() doesn't clean up data
 > which has been initialized in visual_init(). In case of fbcon this
 > leads to divide-by-0 in fbcon_init() on next open of the same tty.
+> 
+> memory allocation in vc_allocate() may fail here:
+> 1097:     vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
+> 
+> on next open() fbcon_init() skips vc_font.data initialization:
+> 1088:     if (!p->fontdata) {
+> 
+> division by zero in fbcon_init() happens here:
+> 1149:     new_cols /= vc->vc_font.width;
+> 
+> Additional check is needed in fbcon_deinit() to prevent
+> usage of uninitialized vc_screenbuf:
+> 
+> 1251:        if (vc->vc_hi_font_mask && vc->vc_screenbuf)
+> 1252:                set_vc_hi_font(vc, false);
+> 
+> Crash:
+> 
+>  #6 [ffffc90001eafa60] divide_error at ffffffff81a00be4
+>     [exception RIP: fbcon_init+463]
+>     RIP: ffffffff814b860f  RSP: ffffc90001eafb18  RFLAGS: 00010246
+> ...
+>  #7 [ffffc90001eafb60] visual_init at ffffffff8154c36e
+>  #8 [ffffc90001eafb80] vc_allocate at ffffffff8154f53c
+>  #9 [ffffc90001eafbc8] con_install at ffffffff8154f624
+> ...
+> 
+> Signed-off-by: Grzegorz Halat <ghalat@redhat.com>
 
-Hi,
-A gentle reminder. Could you please review my patch? I've seen two
-crashes caused by this bug.
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
+Best regards,
 --
-Grzegorz Halat
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
