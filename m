@@ -2,106 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 611562387F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 May 2019 15:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E96F23E0B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 May 2019 19:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389569AbfETNng (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 May 2019 09:43:36 -0400
-Received: from mail-out.m-online.net ([212.18.0.10]:52610 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389538AbfETNng (ORCPT
+        id S2392730AbfETRI3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 May 2019 13:08:29 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:51380 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390373AbfETRI2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 May 2019 09:43:36 -0400
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4570Tw3lBfz1rbLn;
-        Mon, 20 May 2019 15:43:32 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 4570Tw2yTkz1qqkM;
-        Mon, 20 May 2019 15:43:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id zV5hvlAeeHXm; Mon, 20 May 2019 15:43:31 +0200 (CEST)
-X-Auth-Info: sieePluxXh9T44WjFZcmbNHb1cH6u2pTdmEfiaRSIjY=
-Received: from [IPv6:::1] (unknown [195.140.253.167])
+        Mon, 20 May 2019 13:08:28 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Mon, 20 May 2019 15:43:31 +0200 (CEST)
-Subject: Re: [PATCH] video: fbdev: mxsfb: Remove driver
-To:     Fabio Estevam <festevam@gmail.com>, b.zolnierkie@samsung.com
-Cc:     shawnguo@kernel.org, kernel@pengutronix.de, linux-imx@nxp.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20190520130612.2214-1-festevam@gmail.com>
-From:   Marek Vasut <marex@denx.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=marex@denx.de; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <1bb6a117-dcf4-8842-0c3a-c3e015b2f0a9@denx.de>
-Date:   Mon, 20 May 2019 15:43:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 640F720087;
+        Mon, 20 May 2019 19:08:22 +0200 (CEST)
+Date:   Mon, 20 May 2019 19:08:20 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Yisheng Xie <ysxie@foxmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Peter Rosin <peda@axentia.se>
+Subject: Re: [PATCH 10/33] fbcon: call fbcon_fb_(un)registered directly
+Message-ID: <20190520170820.GA27230@ravnborg.org>
+References: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
+ <20190520082216.26273-11-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-In-Reply-To: <20190520130612.2214-1-festevam@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190520082216.26273-11-daniel.vetter@ffwll.ch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=QyXUC8HyAAAA:8
+        a=hD80L64hAAAA:8 a=20KFwNOVAAAA:8 a=ag1SF4gXAAAA:8 a=SJz97ENfAAAA:8
+        a=bDN84i_9AAAA:8 a=VwQbUJbxAAAA:8 a=AUPil0-6CJQSJ-L3P-oA:9
+        a=QEXdDO2ut3YA:10 a=Yupwre4RP9_Eg_Bd0iYG:22 a=vFet0B0WnEQeilDPIY6i:22
+        a=J2PsDwZO0S0EpbpLmD-j:22 a=AjGcO6oz07-iQ99wixmX:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 5/20/19 3:06 PM, Fabio Estevam wrote:
-> There is a DRM version of the mxsfb driver for quite some time
-> at drivers/gpu/drm/mxsfb/, so there is no need to keep maintaining
-> the fbdev version any longer.
-> 
-> Remove the fbdev mxsfb driver in favour of the DRM version.
-> 
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Hi Daniel.
 
-Acked-by: Marek Vasut <marex@denx.de>
+While browsing this nice patch series I stumbled upon a detail.
 
--- 
-Best regards,
-Marek Vasut
+On Mon, May 20, 2019 at 10:21:53AM +0200, Daniel Vetter wrote:
+> With
+> 
+> commit 6104c37094e729f3d4ce65797002112735d49cd1
+> Author: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Date:   Tue Aug 1 17:32:07 2017 +0200
+> 
+>     fbcon: Make fbcon a built-time depency for fbdev
+> 
+> we have a static dependency between fbcon and fbdev, and we can
+> replace the indirection through the notifier chain with a function
+> call.
+> 
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Noralf Trønnes" <noralf@tronnes.org>
+> Cc: Yisheng Xie <ysxie@foxmail.com>
+> Cc: Peter Rosin <peda@axentia.se>
+> Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Mikulas Patocka <mpatocka@redhat.com>
+> Cc: linux-fbdev@vger.kernel.org
+> ---
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index f52ef0ad6781..701abaf79c87 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -136,10 +136,6 @@ struct fb_cursor_user {
+>  #define FB_EVENT_RESUME			0x03
+>  /*      An entry from the modelist was removed */
+>  #define FB_EVENT_MODE_DELETE            0x04
+> -/*      A driver registered itself */
+> -#define FB_EVENT_FB_REGISTERED          0x05
+> -/*      A driver unregistered itself */
+> -#define FB_EVENT_FB_UNREGISTERED        0x06
+>  /*      CONSOLE-SPECIFIC: get console to framebuffer mapping */
+>  #define FB_EVENT_GET_CONSOLE_MAP        0x07
+>  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
+
+This breaks build of arch/arm/mach-pxa/am200epd.c thats uses
+FB_EVENT_FB_*REGISTERED:
+
+
+       if (event == FB_EVENT_FB_REGISTERED)
+                return am200_share_video_mem(info);
+        else if (event == FB_EVENT_FB_UNREGISTERED)
+                return am200_unshare_video_mem(info);
+
+
+Found while grepping for "FB_EVENT" so this is not a build
+error I triggered.
+
+	Sam
