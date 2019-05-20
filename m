@@ -2,201 +2,239 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 459CA22EB8
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 May 2019 10:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C7322F00
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 May 2019 10:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731464AbfETIW7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 May 2019 04:22:59 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:39910 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731482AbfETIW7 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 May 2019 04:22:59 -0400
-Received: by mail-ed1-f66.google.com with SMTP id e24so22526184edq.6
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 May 2019 01:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=gP9JWtZYIDChqhoaVz3EsPvoQXah1TnF7aRj3vegt3E=;
-        b=BUP+ZVHpSa6cm0eQ2i5P1I8TI4De/3rS6Ui4iYSGE+J5pYNyl3gfHlOQEBrM87Khlv
-         cmiALWLfTnw2dtMq3P7g/q1F6wThHrEk8buZl4oanGqblRMMZmgwQMeAsYNtDMNs4cwx
-         qW8Cp2AQc8vCtMxYwY4yv2TiXOCexYNIQBfi4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=gP9JWtZYIDChqhoaVz3EsPvoQXah1TnF7aRj3vegt3E=;
-        b=Wh44s9yFxUZAKnzBjpFBr1M9HWHebIUYte3ox/tul7hDiyJNuM8lnmaI83ixkIYUdU
-         SnjVwaAlkhLxUZYlc1fxiZKAozDHY00X32nU6mI3/QuyU6ELRQ45UrtfZ6R5tmlpu3ob
-         cOOZArpSVfhWG6h5GswPhLdQ4GS73SDt1sAHU/ldj1v2PoQOZPz93d+UPR6FF/RnevJm
-         HavHDekS0mpficvTWtuzqWoAtZabUIm8Jsxq5qnNkVhx8kTIXH5iG6OgSZuyjC1H0/ND
-         8esZPBvvfFG+XxPbQKzIAu7TL2Et0rdrQgc8nVIpvaIcbqKbrw1+aAbtZFUKWitUcCZN
-         EysQ==
-X-Gm-Message-State: APjAAAWpNUJtDWlULNv6lm1grcE+VUAssaV1p0ldJ/D69ali0uMdFs+4
-        81hgGShgHGqByNbUzTLFlMm5mw==
-X-Google-Smtp-Source: APXvYqzSe/uoCy8plrFShz+D+0lTuXDe8CAAGZgk03dqPaYS7lZWXOEAi0arPyI9QcUZ0NHbZhWtTQ==
-X-Received: by 2002:a17:906:8311:: with SMTP id j17mr32001014ejx.227.1558340577317;
-        Mon, 20 May 2019 01:22:57 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id t25sm3021263ejx.8.2019.05.20.01.22.56
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 May 2019 01:22:56 -0700 (PDT)
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-To:     DRI Development <dri-devel@lists.freedesktop.org>
+        id S1730424AbfETIdu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 May 2019 04:33:50 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57426 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729354AbfETIdu (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 20 May 2019 04:33:50 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 9D3FAAF8D;
+        Mon, 20 May 2019 08:33:48 +0000 (UTC)
+Subject: Re: [PATCH 10/33] fbcon: call fbcon_fb_(un)registered directly
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        DRI Development <dri-devel@lists.freedesktop.org>
 Cc:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
         Daniel Vetter <daniel.vetter@intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org
-Subject: [PATCH 30/33] vgaswitcheroo: call fbcon_remap_all directly
-Date:   Mon, 20 May 2019 10:22:13 +0200
-Message-Id: <20190520082216.26273-31-daniel.vetter@ffwll.ch>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+        Yisheng Xie <ysxie@foxmail.com>, Peter Rosin <peda@axentia.se>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        linux-fbdev@vger.kernel.org
 References: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
+ <20190520082216.26273-11-daniel.vetter@ffwll.ch>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNKFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmNvbT7CwJQEEwEIAD4W
+ IQRyF/usjOnPY0ShaOVoDcEdUwt6IwUCWznTtgIbAwUJA8JnAAULCQgHAgYVCgkICwIEFgID
+ AQIeAQIXgAAKCRBoDcEdUwt6I7D7CACBK42XW+7mCiK8ioXMEy1NzGbXC51RzGea8N83oEJS
+ 1KVUtQxrkDxgrW/WLSl/TfqHFsJpdEFOv1XubWbleun3uKPy0e5vZCd5UjZPkeNjnqfCYTDy
+ hVVsdOuFbtWDppJyJrThLqr9AgSFmoCNNUt1SVpYEEOLNE6C32BhlnSq21VLC+YXTgO/ZHTa
+ YXkq54hHj63jwrcjkBSCkXLh37kHeqnl++GHpN+3R+o3w2OpwHAlvVjdKPT27v1tVkiydsFG
+ 65Vd0n3m/ft+IOrGgxQM1C20uqKvsZGB4r3OGR50ekAybO7sjEJJ1Obl4ge/6RRqcvKz4LMb
+ tGs85D6tPIeFzsBNBFs50uABCADGJj+DP1fk+UWOWrf4O61HTbC4Vr9QD2K4fUUHnzg2B6zU
+ R1BPXqLGG0+lzK8kfYU/F5RjmEcClsIkAaFkg4kzKP14tvY1J5+AV3yNqcdg018HNtiyrSwI
+ E0Yz/qm1Ot2NMZ0DdvVBg22IMsiudQ1tx9CH9mtyTbIXgACvl3PW2o9CxiHPE/bohFhwZwh/
+ kXYYAE51lhinQ3oFEeQZA3w4OTvxSEspiQR8dg8qJJb+YOAc5IKk6sJmmM7JfFMWSr22satM
+ 23oQ3WvJb4RV6HTRTAIEyyZS7g2DhiytgMG60t0qdABG5KXSQW+OKlZRpuWwKWaLh3if/p/u
+ 69dvpanbABEBAAHCwHwEGAEIACYWIQRyF/usjOnPY0ShaOVoDcEdUwt6IwUCWznS4AIbDAUJ
+ A8JnAAAKCRBoDcEdUwt6I6X3CACJ8D+TpXBCqJE5xwog08+Dp8uBpx0T9n1wE0GQisZruACW
+ NofYn8PTX9k4wmegDLwt7YQDdKxQ4+eTfZeLNQqWg6OCftH5Kx7sjWnJ09tOgniVdROzWJ7c
+ VJ/i0okazncsJ+nq48UYvRGE1Swh3A4QRIyphWX4OADOBmTFl9ZYNPnh23eaC9WrNvFr7yP7
+ iGjMlfEW8l6Lda//EC5VpXVNza0xeae0zFNst2R9pn+bLkihwDLWxOIyifGRxTqNxoS4I1aw
+ VhxPSVztPMSpIA/sOr/N/p6JrBLn+gui2K6mP7bGb8hF+szfArYqz3T1rv1VzUWAJf5Wre5U
+ iNx9uqqx
+Message-ID: <423eba4b-15e1-f10b-ae2d-855b8a585688@suse.de>
+Date:   Mon, 20 May 2019 10:33:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190520082216.26273-11-daniel.vetter@ffwll.ch>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="10BkQrmXYiTb3owcb8YFUe0uLWcOVDCw7"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-While at it, clean up the interface a bit and push the console locking
-into fbcon.c.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--10BkQrmXYiTb3owcb8YFUe0uLWcOVDCw7
+Content-Type: multipart/mixed; boundary="4hhIUX5t4MYIJcRw4vNqCe8B7g9KtfXzI";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+Cc: Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+ LKML <linux-kernel@vger.kernel.org>, Daniel Vetter
+ <daniel.vetter@intel.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+ Yisheng Xie <ysxie@foxmail.com>, Peter Rosin <peda@axentia.se>,
+ =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+ Mikulas Patocka <mpatocka@redhat.com>, linux-fbdev@vger.kernel.org
+Message-ID: <423eba4b-15e1-f10b-ae2d-855b8a585688@suse.de>
+Subject: Re: [PATCH 10/33] fbcon: call fbcon_fb_(un)registered directly
+References: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
+ <20190520082216.26273-11-daniel.vetter@ffwll.ch>
+In-Reply-To: <20190520082216.26273-11-daniel.vetter@ffwll.ch>
 
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Yisheng Xie <ysxie@foxmail.com>
-Cc: linux-fbdev@vger.kernel.org
----
- drivers/gpu/vga/vga_switcheroo.c | 11 +++--------
- drivers/video/fbdev/core/fbcon.c | 13 +++++--------
- include/linux/fb.h               |  2 --
- include/linux/fbcon.h            |  2 ++
- 4 files changed, 10 insertions(+), 18 deletions(-)
+--4hhIUX5t4MYIJcRw4vNqCe8B7g9KtfXzI
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
-index a132c37d7334..65d7541c413a 100644
---- a/drivers/gpu/vga/vga_switcheroo.c
-+++ b/drivers/gpu/vga/vga_switcheroo.c
-@@ -35,6 +35,7 @@
- #include <linux/debugfs.h>
- #include <linux/fb.h>
- #include <linux/fs.h>
-+#include <linux/fbcon.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/pm_domain.h>
-@@ -736,14 +737,8 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
- 	if (!active->driver_power_control)
- 		set_audio_state(active->id, VGA_SWITCHEROO_OFF);
- 
--	if (new_client->fb_info) {
--		struct fb_event event;
--
--		console_lock();
--		event.info = new_client->fb_info;
--		fb_notifier_call_chain(FB_EVENT_REMAP_ALL_CONSOLE, &event);
--		console_unlock();
--	}
-+	if (new_client->fb_info)
-+		fbcon_remap_all(new_client->fb_info);
- 
- 	mutex_lock(&vgasr_priv.mux_hw_lock);
- 	ret = vgasr_priv.handler->switchto(new_client->id);
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 8cc62d340387..fd604ffb3c05 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -3146,16 +3146,16 @@ void fbcon_fb_unregistered(struct fb_info *info)
- }
- 
- /* called with console_lock held */
--static void fbcon_remap_all(int idx)
-+void fbcon_remap_all(struct fb_info *info)
- {
--	int i;
--
--	WARN_CONSOLE_UNLOCKED();
-+	int i, idx = info->node;
- 
-+	console_lock();
- 	if (deferred_takeover) {
- 		for (i = first_fb_vc; i <= last_fb_vc; i++)
- 			con2fb_map_boot[i] = idx;
- 		fbcon_map_override();
-+		console_unlock();
- 		return;
- 	}
- 
-@@ -3168,6 +3168,7 @@ static void fbcon_remap_all(int idx)
- 		       first_fb_vc + 1, last_fb_vc + 1);
- 		info_idx = idx;
- 	}
-+	console_unlock();
- }
- 
- #ifdef CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
-@@ -3333,10 +3334,6 @@ static int fbcon_event_notify(struct notifier_block *self,
- 		con2fb = event->data;
- 		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
- 		break;
--	case FB_EVENT_REMAP_ALL_CONSOLE:
--		idx = info->node;
--		fbcon_remap_all(idx);
--		break;
- 	}
- 	return ret;
- }
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 54d6bee09121..acd8daa23002 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -130,8 +130,6 @@ struct fb_cursor_user {
- #define FB_EVENT_SET_CONSOLE_MAP        0x08
- /*      A display blank is requested       */
- #define FB_EVENT_BLANK                  0x09
--/*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
--#define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
- /*      A hardware display blank early change occurred */
- #define FB_EARLY_EVENT_BLANK		0x10
- /*      A hardware display blank revert early change occurred */
-diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-index daaa97b0c9e6..3f854e803746 100644
---- a/include/linux/fbcon.h
-+++ b/include/linux/fbcon.h
-@@ -16,6 +16,7 @@ void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps);
- void fbcon_fb_blanked(struct fb_info *info, int blank);
- void fbcon_update_vcs(struct fb_info *info, bool all);
-+void fbcon_remap_all(struct fb_info *info);
- #else
- static inline void fb_console_init(void) {}
- static inline void fb_console_exit(void) {}
-@@ -31,6 +32,7 @@ void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps) {}
- void fbcon_fb_blanked(struct fb_info *info, int blank) {}
- void fbcon_update_vcs(struct fb_info *info, bool all) {}
-+void fbcon_remap_all(struct fb_info *info) {}
- #endif
- 
- #endif /* _LINUX_FBCON_H */
--- 
-2.20.1
+Hi
 
+Am 20.05.19 um 10:21 schrieb Daniel Vetter:
+=2E..
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/cor=
+e/fbmem.c
+> index fc3d34a8ea5b..ae2db31eeba7 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1660,7 +1660,6 @@ MODULE_PARM_DESC(lockless_register_fb,
+>  static int do_register_framebuffer(struct fb_info *fb_info)
+>  {
+>  	int i, ret;
+> -	struct fb_event event;
+>  	struct fb_videomode mode;
+> =20
+>  	if (fb_check_foreignness(fb_info))
+> @@ -1723,7 +1722,6 @@ static int do_register_framebuffer(struct fb_info=
+ *fb_info)
+>  	fb_add_videomode(&mode, &fb_info->modelist);
+>  	registered_fb[i] =3D fb_info;
+> =20
+> -	event.info =3D fb_info;
+>  	if (!lockless_register_fb)
+>  		console_lock();
+>  	else
+> @@ -1732,9 +1730,8 @@ static int do_register_framebuffer(struct fb_info=
+ *fb_info)
+>  		ret =3D -ENODEV;
+>  		goto unlock_console;
+>  	}
+> -	ret =3D 0;
+> =20
+> -	fb_notifier_call_chain(FB_EVENT_FB_REGISTERED, &event);
+> +	ret =3D fbcon_fb_registered(fb_info);
+
+What about backlight drivers? [1] Apparently these also use the
+notifiers. [2] From my understanding, backlight drivers would stop
+working with this change.
+
+Best regards
+Thomas
+
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
+rivers/video/backlight
+[2]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
+rivers/video/backlight/backlight.c#n40
+
+>  	unlock_fb_info(fb_info);
+>  unlock_console:
+>  	if (!lockless_register_fb)
+> @@ -1771,7 +1768,6 @@ static int __unlink_framebuffer(struct fb_info *f=
+b_info);
+> =20
+>  static int do_unregister_framebuffer(struct fb_info *fb_info)
+>  {
+> -	struct fb_event event;
+>  	int ret;
+> =20
+>  	ret =3D unbind_console(fb_info);
+> @@ -1789,9 +1785,8 @@ static int do_unregister_framebuffer(struct fb_in=
+fo *fb_info)
+>  	registered_fb[fb_info->node] =3D NULL;
+>  	num_registered_fb--;
+>  	fb_cleanup_device(fb_info);
+> -	event.info =3D fb_info;
+>  	console_lock();
+> -	fb_notifier_call_chain(FB_EVENT_FB_UNREGISTERED, &event);
+> +	fbcon_fb_unregistered(fb_info);
+>  	console_unlock();
+> =20
+>  	/* this may free fb info */
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index f52ef0ad6781..701abaf79c87 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -136,10 +136,6 @@ struct fb_cursor_user {
+>  #define FB_EVENT_RESUME			0x03
+>  /*      An entry from the modelist was removed */
+>  #define FB_EVENT_MODE_DELETE            0x04
+> -/*      A driver registered itself */
+> -#define FB_EVENT_FB_REGISTERED          0x05
+> -/*      A driver unregistered itself */
+> -#define FB_EVENT_FB_UNREGISTERED        0x06
+>  /*      CONSOLE-SPECIFIC: get console to framebuffer mapping */
+>  #define FB_EVENT_GET_CONSOLE_MAP        0x07
+>  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
+> diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
+> index f68a7db14165..94a71e9e1257 100644
+> --- a/include/linux/fbcon.h
+> +++ b/include/linux/fbcon.h
+> @@ -4,9 +4,13 @@
+>  #ifdef CONFIG_FRAMEBUFFER_CONSOLE
+>  void __init fb_console_init(void);
+>  void __exit fb_console_exit(void);
+> +int fbcon_fb_registered(struct fb_info *info);
+> +void fbcon_fb_unregistered(struct fb_info *info);
+>  #else
+>  static inline void fb_console_init(void) {}
+>  static inline void fb_console_exit(void) {}
+> +static inline int fbcon_fb_registered(struct fb_info *info) { return 0=
+; }
+> +static inline void fbcon_fb_unregistered(struct fb_info *info) {}
+>  #endif
+> =20
+>  #endif /* _LINUX_FBCON_H */
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Linux GmbH, Maxfeldstrasse 5, 90409 Nuernberg, Germany
+GF: Felix Imend=C3=B6rffer, Mary Higgins, Sri Rasiah
+HRB 21284 (AG N=C3=BCrnberg)
+
+
+--4hhIUX5t4MYIJcRw4vNqCe8B7g9KtfXzI--
+
+--10BkQrmXYiTb3owcb8YFUe0uLWcOVDCw7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAlziZmoACgkQaA3BHVML
+eiNAngf/ZQOl9FM5aGOYTl4o6aIfgLH22To1SqJNHKjRpMHr4Zh+YwCPOGzft9F6
+6Ybw9yK4Ozwzm/A9gTvgCkgw5CpSpLekcZX8Mpl+x2M8LpBwKSkZdK3chQpBtxuA
+t06+umoBi9AG1yqcXEkv/2H81ENylNFCt0IkcC7eSje0N8bbN7imqIOkBoxF2t+7
+KdrIB09zrg46OiFYz0SBUn+yim6y0GkntcPkfOD7KSvaHuvB5t7rfecY3Ckl8EYS
+99bZ7B+D97+eUENCo6e84GQGoPa4n7RkIPeRPGH9WJoq0047Z6QViyTkBqg7gH8N
+mxwBpGU9UYbpiZMsiiSB9wdiGBciyg==
+=j0QV
+-----END PGP SIGNATURE-----
+
+--10BkQrmXYiTb3owcb8YFUe0uLWcOVDCw7--
