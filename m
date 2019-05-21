@@ -2,71 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46FF1255B4
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 18:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D567F259F9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 23:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727999AbfEUQe2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 12:34:28 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:36109 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727817AbfEUQe2 (ORCPT
+        id S1727705AbfEUVbX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 17:31:23 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:35401 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727174AbfEUVbW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 12:34:28 -0400
-X-Originating-IP: 90.66.53.80
-Received: from localhost (lfbn-1-3034-80.w90-66.abo.wanadoo.fr [90.66.53.80])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 47052E000E;
-        Tue, 21 May 2019 16:34:20 +0000 (UTC)
-Date:   Tue, 21 May 2019 18:34:20 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] video: fbdev: atmel_lcdfb: add COMPILE_TEST support
-Message-ID: <20190521163420.GI3274@piout.net>
-References: <CGME20190521105217eucas1p19796d2969c1a568fecb0750818226241@eucas1p1.samsung.com>
- <f9d56fc1-3e02-9716-b764-82e9600e5919@samsung.com>
+        Tue, 21 May 2019 17:31:22 -0400
+Received: by mail-qt1-f194.google.com with SMTP id a39so22398489qtk.2
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 14:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=RGCIAU3mAoVmqMNlAb4gtH4HzGfVHBWW3yzh8ad2ias=;
+        b=ZP40X9o+9kc+r5BMR6efsDWePmQQVwCmAYBHbCha/kdFMNcrU6FrmEmsm9i7m/5aTd
+         lWgieh7R3S+cQ2sa6/hhv5cBmx5dRvs+8qI5ERiEwSsCbri9YsinV1X+QtcySd0bEe8G
+         BQ2DUC/a4tqA5VTpDETUAuHiOhpQAqp7ogxC1YfsySgvFCxRguFVQgSEXQof2mvQecf9
+         +AV28HAzKw4OfRJJIhMet3B3/wSkjM07j1VPN09p+5G/25CtfKeDP0h0qWXG0EMjHKnY
+         v/LiAhDNFfXKY3tA0kkkwHH4AYcG84ZFWICz+9d9bn0M6LCETz/bMGi6K26D7hAYX6JL
+         keLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=RGCIAU3mAoVmqMNlAb4gtH4HzGfVHBWW3yzh8ad2ias=;
+        b=sixUTeEov4qqIpPgi7yNoOWPK4JkcMXSn2ghdF/N3iOX7i66UX9amrikBnh1s0zTYO
+         6PsVfqoSTh7kGHObCQh/FvgCyb5Ug3x4HLQuy5fWzfNRcBcTOePpJkFWRLM/JzP0aLpM
+         gJG0qqBl/peTfW44SukaezVZyqqC6K6U2UlKr0pQ796rhWsHin/eSMR8KJIzh3YmDPvv
+         cYOyU68CeiPSO0n7a2teNTiXxkaYsHvBN62Bqlt/iG+oSF3Lho3z2ivhfZluAz3rGxLW
+         9VIhQhdGNI+WkmGytMJ12DE8Ieidi14Qxuw1BjO+sH2S65KdD308nnNL9yqiKGe06xdU
+         CrHQ==
+X-Gm-Message-State: APjAAAV9HrugrLhOt5FTDUcB182D5MH3AJHwWknbArSt7bBMobWgwwrO
+        jo/rgToZh01yczyKp/93FkFmmdByzQmnvBp+/4c=
+X-Google-Smtp-Source: APXvYqwWbcFoHwrHUCwuNnSnu3eRN8x/KYrAuFkatUX24buFrEO9guC1oM8IwrUuYPFrn+8ftxKgqAUC2hXshOQICG0=
+X-Received: by 2002:ac8:2479:: with SMTP id d54mr56148778qtd.348.1558474282030;
+ Tue, 21 May 2019 14:31:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9d56fc1-3e02-9716-b764-82e9600e5919@samsung.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Received: by 2002:ae9:ed91:0:0:0:0:0 with HTTP; Tue, 21 May 2019 14:31:20
+ -0700 (PDT)
+Reply-To: williamsmith@cheerful.com
+From:   William Smith <lillardmathew@gmail.com>
+Date:   Wed, 22 May 2019 03:01:20 +0530
+Message-ID: <CABtEVJ4vzQMzzDGSSMizswkvwwjhUOXiZtjAYB=7f-t40ZUdkg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 21/05/2019 12:52:17+0200, Bartlomiej Zolnierkiewicz wrote:
-> Add COMPILE_TEST support to atmel_lcdfb driver for better compile
-> testing coverage.
-> 
-> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-
-> ---
-> v2: add missing HAVE_CLK && HAS IOMEM dependencies
-> 
->  drivers/video/fbdev/Kconfig |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> Index: b/drivers/video/fbdev/Kconfig
-> ===================================================================
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -856,7 +856,8 @@ config FB_S1D13XXX
->  
->  config FB_ATMEL
->  	tristate "AT91 LCD Controller support"
-> -	depends on FB && OF && HAVE_FB_ATMEL
-> +	depends on FB && OF && HAVE_CLK && HAS_IOMEM
-> +	depends on HAVE_FB_ATMEL || COMPILE_TEST
->  	select FB_BACKLIGHT
->  	select FB_CFB_FILLRECT
->  	select FB_CFB_COPYAREA
-
 -- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Do you need a loan Yes Or No? We are a registered private money
+lender. We give out loans to firms, Individual who need to update
+their financial status all over the world, with Minimal annual
+Interest Rates of 3% reply if needed..williamsmith@cheerful.com
