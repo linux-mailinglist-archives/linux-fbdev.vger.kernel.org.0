@@ -2,276 +2,132 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A34D24F15
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 14:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F42B250ED
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 15:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728117AbfEUMnF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 08:43:05 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:44180 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728088AbfEUMnE (ORCPT
+        id S1728240AbfEUNop (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 09:44:45 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:58382 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728075AbfEUNop (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 08:43:04 -0400
-Received: by mail-ed1-f67.google.com with SMTP id b8so29146998edm.11
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 05:43:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=8iobs6bKR0V0jviIyIn94LH1ldLUcwxTRpiup8U9bVE=;
-        b=ISAP2GTdjSpoZIgSAiFoIruqS78MNxfKT0SAQ+XwvcB/3CSnjvjywTQCtIiLGS6BQ8
-         7BQdUCIuOKKJDinCsXKoDCLLcincKnHs/wTkWygThSCAroUwG51MNxnNVFmyc7LBUKVT
-         BsaCOWgE08JXWZ2W2NmgPDlsqm1AlBeXGIoMM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=8iobs6bKR0V0jviIyIn94LH1ldLUcwxTRpiup8U9bVE=;
-        b=Q0Xvbjm9pvHGacySs/svDyUXqhg8O/rTah+a+CJ/dRiwE4hs2axyuIfEPMMiw6+lYq
-         pMGV7in1k0rkMJQC2NUjl65/UI0+SBqAEHs3PbK1ObXrZGKHIUxDHSR8tCJIKk/C+DrN
-         B4DjDyhCyjcQHYEriiPyc6gpkdiZOfwFJNHYzHp1XtoYlpVUou/Vo9vAEEQqDTn5bR/t
-         FhIoQuMrI5z9FoE1eiBLHs47nMuSAAT5RcKVgXtjTVlufR68vTdrdyU7JNd2NGiZw5+D
-         amUdqOcR7nW5YbvyKyIPCrFBCtpYrKjgxU9CaYnud8aTVMd8xSCCdiGxS4l8tDUn4dU/
-         sM4Q==
-X-Gm-Message-State: APjAAAXJzFr9NoEEExk1+DhhzaDtz+WsUY2YGalKAd6u6hgZ3TguM0nO
-        OmKDvPj0cn1R4RJpMyWGAzDOuA==
-X-Google-Smtp-Source: APXvYqzMrsDdLDH5tyYyz2KdETmLHcsyneRHpQkU+94+T7ZpPF9uux7Se6P4Ws/5azkq5DgtdGvodw==
-X-Received: by 2002:a17:906:b2d3:: with SMTP id cf19mr22060657ejb.10.1558442582598;
-        Tue, 21 May 2019 05:43:02 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id a61sm6295741edf.8.2019.05.21.05.43.01
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 21 May 2019 05:43:01 -0700 (PDT)
-Date:   Tue, 21 May 2019 14:42:59 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        linux-fbdev@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Lee Jones <lee.jones@linaro.org>, Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH 29/33] fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with
- direct calls
-Message-ID: <20190521124259.GN21222@phenom.ffwll.local>
-Mail-Followup-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mikulas Patocka <mpatocka@redhat.com>, linux-fbdev@vger.kernel.org,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Lee Jones <lee.jones@linaro.org>, Peter Rosin <peda@axentia.se>
-References: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
- <20190520082216.26273-30-daniel.vetter@ffwll.ch>
- <b91a6f78-43c2-796c-62f1-f84f2973c174@linux.intel.com>
+        Tue, 21 May 2019 09:44:45 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190521134443euoutp02f394083c6eb9e8ada2fec591e8927828~gtqNfNu9g1359313593euoutp02e
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 13:44:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190521134443euoutp02f394083c6eb9e8ada2fec591e8927828~gtqNfNu9g1359313593euoutp02e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1558446283;
+        bh=RLKuvBEG6Mny/Pi7NLR0Nbvy2HIvFuNlpcTPZlMZBXk=;
+        h=To:Cc:From:Subject:Date:References:From;
+        b=Vb6ydFvKm9z1RR1Gb0tMkhE9r7REcltW89yYJLNHhCIzVRDFLCyOcsB8eTCRxIYcB
+         uSSxxREujTovpQu+wX7rhZwgTUJzFjW1wkeKD2EHIJm2tk0MOSwqTiWThVTXdkZ3JZ
+         tlHT1QwdSq/I+IF5f8U51gzvmoPLTIoFNCTjW480=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190521134443eucas1p2a0361c7efc2c3d4dee8fcee519c6addc~gtqM0XIxT3113031130eucas1p2Z;
+        Tue, 21 May 2019 13:44:43 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3B.80.04325.AC004EC5; Tue, 21
+        May 2019 14:44:42 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be~gtqL9Aldk1363313633eucas1p2s;
+        Tue, 21 May 2019 13:44:42 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190521134441eusmtrp1c9cddd818c93cd6503e93b5e28897d74~gtqLtfH792230522305eusmtrp1P;
+        Tue, 21 May 2019 13:44:41 +0000 (GMT)
+X-AuditID: cbfec7f5-fbbf09c0000010e5-f4-5ce400ca0d61
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id E0.9D.04140.9C004EC5; Tue, 21
+        May 2019 14:44:41 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190521134441eusmtip172871ea8af1b007e36dc816b66719ebe~gtqLcK_Z72907329073eusmtip1e;
+        Tue, 21 May 2019 13:44:41 +0000 (GMT)
+To:     Russell King <linux@armlinux.org.uk>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: fbdev: cyber2000fb: remove superfluous CONFIG_PCI
+ ifdef
+Message-ID: <214f05e0-a448-b1cf-7475-4fa7eeaa9949@samsung.com>
+Date:   Tue, 21 May 2019 15:44:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b91a6f78-43c2-796c-62f1-f84f2973c174@linux.intel.com>
-X-Operating-System: Linux phenom 4.14.0-3-amd64 
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRj281w8Skc+N8MXraxBkZGaTWFlDLOQEXTxV5FGW3lSy03ZvOYP
+        L4HKErHUtINUxMoU75nzkhKazktq6hCzwkwLEyQvWSg1cjta/nve58L3PPAxhIin3JloTTyn
+        1ahiJLQT2di9OuTdZzcTfsjyQCozr3ynZfXTY5SsJ2+Bko22lNKyjqI2FEQpRseGCcXkbZO9
+        4rkhTbFcv+scedHpWAQXE53IaX3lSqeopcFOh7hSJnl6pIlORx9pPXJkAPuDOXuW0iMnRoSf
+        IZjNaEXC8QOB8Va5g3AsI5h61fYv8rPXQghCGYLiiq+kVRDheQQNr5VW7Ir3Q13JGm01ETgL
+        wRfeTFkFGh+FO9kVyIrFOBQ6C7vWeYZhsRyqJxgrTeK90DXH2yzb8QWY7K61RVnsAr33Z2xv
+        EdgNJmYe2gvYE4zzpbZCgLMd4H3eO0poehKW+XxCwGKYMzU4CHgH9BfkkkKgGsGfnNmNtBFB
+        WYFlY2cgdJqGbe0I7AU1Lb4CfRzGB4doKw3YGcbnXYQSznC3sZgQaBZyskSCex/UPq2lN5/V
+        N5dvWBSQ8ZLJR3v4Lcv4Lcv4Lcv4/xUeIbICuXEJOnUkp5NquCQfnUqtS9BE+lyNVdej9R/T
+        bzGtNKH231c6EGaQZBsrm5oOF1GqRF2KugMBQ0hc2f6+z+EiNkKVcpPTxl7WJsRwug7kwZAS
+        NzbV7lOYCEeq4rkbHBfHaTdVe8bRPR0N0eLStD7lG2mhPDSgpO7skV+c40LvZIO7X/7a+Rov
+        887M00vNEcEfikPj7wUODOx+kco/YvWFwVUGsW97S9C1PPKUsrKy0cMQkpyzKO45POI5yvp7
+        n3kcUNX6tjJpVeost4taPfHtYBTbTdbl8rGZ1QH+RYvy634GY0jik7BLElIXpfI7QGh1qr8d
+        ZThcLQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsVy+t/xu7onGZ7EGPT9M7e48vU9m8Wmx9dY
+        LU70fWC1uLxrDpvFoal7GR1YPS5fu8jscb/7OJPH5iX1Hp83yQWwROnZFOWXlqQqZOQXl9gq
+        RRtaGOkZWlroGZlY6hkam8daGZkq6dvZpKTmZJalFunbJehlfDp3mL1gDkfF40s72BoY77J1
+        MXJySAiYSHw7+Y+5i5GLQ0hgKaPE3KaZTF2MHEAJGYnj68sgaoQl/lzrAqsXEnjNKHFuIzeI
+        LSKgIbFxxi82kF5mgTZGiQMzTzODJNgErCQmtq9iBLGFBQIlDk85ygoyk1fATmLdLQ6QMIuA
+        qsTRV7PASkQFIiTOvF/BAmLzCghKnJz5BMxmFlCX+DPvEjOELS5x68l8JghbXmL72znMExgF
+        ZiFpmYWkZRaSlllIWhYwsqxiFEktLc5Nzy020itOzC0uzUvXS87P3cQIjJBtx35u2cHY9S74
+        EKMAB6MSD++De49jhFgTy4orcw8xSnAwK4nwnj71KEaINyWxsiq1KD++qDQntfgQoynQQxOZ
+        pUST84HRm1cSb2hqaG5haWhubG5sZqEkztshcDBGSCA9sSQ1OzW1ILUIpo+Jg1OqgVH8SFWb
+        GF9gzut5NRcaUpKeHk1Z33knMXfTlSYfNeX4cxyatjVPrMrLwj02GvudcV8hJPa2oJKhIqXA
+        6ZwWg3he+u6Je6x9mLu/39fZeOpOZ4XfrIbXPjk75mYd33GlcieXbbaqn/NJN63s495v3rNH
+        qW74sK3v46n4yekxX443yZw2OGarr8RSnJFoqMVcVJwIANdnKJ2mAgAA
+X-CMS-MailID: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
+References: <CGME20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, May 21, 2019 at 12:56:30PM +0200, Maarten Lankhorst wrote:
-> Op 20-05-2019 om 10:22 schreef Daniel Vetter:
-> > Create a new wrapper function for this, feels like there's some
-> > refactoring room here between the two modes.
-> >
-> > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> > Cc: Lee Jones <lee.jones@linaro.org>
-> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > Cc: Hans de Goede <hdegoede@redhat.com>
-> > Cc: Yisheng Xie <ysxie@foxmail.com>
-> > Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
-> > Cc: Peter Rosin <peda@axentia.se>
-> > Cc: Mikulas Patocka <mpatocka@redhat.com>
-> > Cc: linux-fbdev@vger.kernel.org
-> > ---
-> >  drivers/video/backlight/lcd.c          |  2 --
-> >  drivers/video/fbdev/core/fbcon.c       | 15 +++++++++------
-> >  drivers/video/fbdev/core/fbmem.c       | 13 ++-----------
-> >  drivers/video/fbdev/sh_mobile_lcdcfb.c | 11 +----------
-> >  include/linux/fb.h                     |  4 ----
-> >  include/linux/fbcon.h                  |  2 ++
-> >  6 files changed, 14 insertions(+), 33 deletions(-)
-> >
-> > diff --git a/drivers/video/backlight/lcd.c b/drivers/video/backlight/lcd.c
-> > index 4b40c6a4d441..16298041b141 100644
-> > --- a/drivers/video/backlight/lcd.c
-> > +++ b/drivers/video/backlight/lcd.c
-> > @@ -32,8 +32,6 @@ static int fb_notifier_callback(struct notifier_block *self,
-> >  	/* If we aren't interested in this event, skip it immediately ... */
-> >  	switch (event) {
-> >  	case FB_EVENT_BLANK:
-> > -	case FB_EVENT_MODE_CHANGE:
-> > -	case FB_EVENT_MODE_CHANGE_ALL:
-> >  	case FB_EARLY_EVENT_BLANK:
-> >  	case FB_R_EARLY_EVENT_BLANK:
-> >  		break;
-> 
-> Below it performs a call to set_mode() if it's none of the blanking events; it can be removed. :)
+This is a PCI driver and FB_CYBER2000 depends on PCI in Kconfig so
+there is no need to check for PCI inside the driver code.
 
-Oops ... I think I'll insert a patch here to create a new MODESET event
-for backlights. We still need this one I think (maybe not for kms, but for
-old fbdev drivers). And maybe a wrapper for fb_backlight_notify on top ...
+Cc: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ drivers/video/fbdev/cyber2000fb.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-Thanks for spotting this.
--Daniel
-
-> 
-> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> > index c1a7476e980f..8cc62d340387 100644
-> > --- a/drivers/video/fbdev/core/fbcon.c
-> > +++ b/drivers/video/fbdev/core/fbcon.c
-> > @@ -3005,6 +3005,15 @@ static void fbcon_set_all_vcs(struct fb_info *info)
-> >  		fbcon_modechanged(info);
-> >  }
-> >  
-> > +
-> > +void fbcon_update_vcs(struct fb_info *info, bool all)
-> > +{
-> > +	if (all)
-> > +		fbcon_set_all_vcs(info);
-> > +	else
-> > +		fbcon_modechanged(info);
-> > +}
-> > +
-> >  int fbcon_mode_deleted(struct fb_info *info,
-> >  		       struct fb_videomode *mode)
-> >  {
-> > @@ -3314,12 +3323,6 @@ static int fbcon_event_notify(struct notifier_block *self,
-> >  	int idx, ret = 0;
-> >  
-> >  	switch(action) {
-> > -	case FB_EVENT_MODE_CHANGE:
-> > -		fbcon_modechanged(info);
-> > -		break;
-> > -	case FB_EVENT_MODE_CHANGE_ALL:
-> > -		fbcon_set_all_vcs(info);
-> > -		break;
-> >  	case FB_EVENT_SET_CONSOLE_MAP:
-> >  		/* called with console lock held */
-> >  		con2fb = event->data;
-> > diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> > index cbd58ba8a59d..55b88163edc2 100644
-> > --- a/drivers/video/fbdev/core/fbmem.c
-> > +++ b/drivers/video/fbdev/core/fbmem.c
-> > @@ -1039,17 +1039,8 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
-> >  	    !list_empty(&info->modelist))
-> >  		ret = fb_add_videomode(&mode, &info->modelist);
-> >  
-> > -	if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
-> > -		struct fb_event event;
-> > -		int evnt = (activate & FB_ACTIVATE_ALL) ?
-> > -			FB_EVENT_MODE_CHANGE_ALL :
-> > -			FB_EVENT_MODE_CHANGE;
-> > -
-> > -		info->flags &= ~FBINFO_MISC_USEREVENT;
-> > -		event.info = info;
-> > -		event.data = &mode;
-> > -		fb_notifier_call_chain(evnt, &event);
-> > -	}
-> > +	if (!ret && (flags & FBINFO_MISC_USEREVENT))
-> > +		fbcon_update_vcs(info, activate & FB_ACTIVATE_ALL);
-> >  
-> >  	return ret;
-> >  }
-> > diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > index 0d7a044852d7..bb1a610d0363 100644
-> > --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > @@ -1776,8 +1776,6 @@ static void sh_mobile_fb_reconfig(struct fb_info *info)
-> >  	struct sh_mobile_lcdc_chan *ch = info->par;
-> >  	struct fb_var_screeninfo var;
-> >  	struct fb_videomode mode;
-> > -	struct fb_event event;
-> > -	int evnt = FB_EVENT_MODE_CHANGE_ALL;
-> >  
-> >  	if (ch->use_count > 1 || (ch->use_count == 1 && !info->fbcon_par))
-> >  		/* More framebuffer users are active */
-> > @@ -1799,14 +1797,7 @@ static void sh_mobile_fb_reconfig(struct fb_info *info)
-> >  		/* Couldn't reconfigure, hopefully, can continue as before */
-> >  		return;
-> >  
-> > -	/*
-> > -	 * fb_set_var() calls the notifier change internally, only if
-> > -	 * FBINFO_MISC_USEREVENT flag is set. Since we do not want to fake a
-> > -	 * user event, we have to call the chain ourselves.
-> > -	 */
-> > -	event.info = info;
-> > -	event.data = &ch->display.mode;
-> > -	fb_notifier_call_chain(evnt, &event);
-> > +	fbcon_update_vcs(info, true);
-> >  }
-> >  
-> >  /*
-> > diff --git a/include/linux/fb.h b/include/linux/fb.h
-> > index 4b9b882f8f52..54d6bee09121 100644
-> > --- a/include/linux/fb.h
-> > +++ b/include/linux/fb.h
-> > @@ -124,16 +124,12 @@ struct fb_cursor_user {
-> >   * Register/unregister for framebuffer events
-> >   */
-> >  
-> > -/*	The resolution of the passed in fb_info about to change */ 
-> > -#define FB_EVENT_MODE_CHANGE		0x01
-> >  /*      CONSOLE-SPECIFIC: get console to framebuffer mapping */
-> >  #define FB_EVENT_GET_CONSOLE_MAP        0x07
-> >  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
-> >  #define FB_EVENT_SET_CONSOLE_MAP        0x08
-> >  /*      A display blank is requested       */
-> >  #define FB_EVENT_BLANK                  0x09
-> > -/*      Private modelist is to be replaced */
-> > -#define FB_EVENT_MODE_CHANGE_ALL	0x0B
-> >  /*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
-> >  #define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
-> >  /*      A hardware display blank early change occurred */
-> > diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-> > index 90e196c835dd..daaa97b0c9e6 100644
-> > --- a/include/linux/fbcon.h
-> > +++ b/include/linux/fbcon.h
-> > @@ -15,6 +15,7 @@ void fbcon_new_modelist(struct fb_info *info);
-> >  void fbcon_get_requirement(struct fb_info *info,
-> >  			   struct fb_blit_caps *caps);
-> >  void fbcon_fb_blanked(struct fb_info *info, int blank);
-> > +void fbcon_update_vcs(struct fb_info *info, bool all);
-> >  #else
-> >  static inline void fb_console_init(void) {}
-> >  static inline void fb_console_exit(void) {}
-> > @@ -29,6 +30,7 @@ void fbcon_new_modelist(struct fb_info *info) {}
-> >  void fbcon_get_requirement(struct fb_info *info,
-> >  			   struct fb_blit_caps *caps) {}
-> >  void fbcon_fb_blanked(struct fb_info *info, int blank) {}
-> > +void fbcon_update_vcs(struct fb_info *info, bool all) {}
-> >  #endif
-> >  
-> >  #endif /* _LINUX_FBCON_H */
-> 
-> 
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Index: b/drivers/video/fbdev/cyber2000fb.c
+===================================================================
+--- a/drivers/video/fbdev/cyber2000fb.c
++++ b/drivers/video/fbdev/cyber2000fb.c
+@@ -1642,10 +1642,6 @@ static void cyberpro_common_resume(struc
+ }
+ 
+ /*
+- * PCI specific support.
+- */
+-#ifdef CONFIG_PCI
+-/*
+  * We need to wake up the CyberPro, and make sure its in linear memory
+  * mode.  Unfortunately, this is specific to the platform and card that
+  * we are running on.
+@@ -1861,7 +1857,6 @@ static struct pci_driver cyberpro_driver
+ 	.resume		= cyberpro_pci_resume,
+ 	.id_table	= cyberpro_pci_table
+ };
+-#endif
+ 
+ /*
+  * I don't think we can use the "module_init" stuff here because
