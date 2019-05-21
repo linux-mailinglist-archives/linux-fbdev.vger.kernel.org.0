@@ -2,230 +2,71 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A463825389
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 17:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46FF1255B4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 18:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728295AbfEUPJp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 11:09:45 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:46908 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728317AbfEUPJp (ORCPT
+        id S1727999AbfEUQe2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 12:34:28 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:36109 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727817AbfEUQe2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 11:09:45 -0400
-Received: by mail-ed1-f65.google.com with SMTP id f37so29828961edb.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 08:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=kGFA98E8YUTXSd1vlNUtmMd7zWl23WEkLkg7eY2TneA=;
-        b=h1nN6R3DwWW3hI2z4yWrg3b88MlSB3Sz1499ALECkxeB07XI3zHEBAfxyBAOAKpZyh
-         ni58vX4bzcyK4Tl2UsniaPoSgsZ4HnhkTAi5IWMz7lhnWJWjI9uLkK9nOnpL65yX5eHq
-         8ZEyiszfX5wwtsgQcu2IkWyr6Vm9K/+1pmV0c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to:user-agent;
-        bh=kGFA98E8YUTXSd1vlNUtmMd7zWl23WEkLkg7eY2TneA=;
-        b=OCik6QoHRAStNVFAidPvVHqcWDA//fYit/KsiVCIOUVe31UK3/84a/NqYZdzpLuky1
-         B3KcTgQgqftP+O/iIWc3KOQ/yrRkuIYT8q3quPwZQytoP548/zJ0SmGt0/1beuneoSce
-         d+eDJinxm3QfpRWGF5+2rJA7RFESk0dQh1X2PdnLj1UgUh/62G4fkxCQLywUaJNkL18A
-         toVOeBVX8iHtPJdTk+v1aHcT96nj+TLf/6UiLoS362dUe2rSos26WXQr45tkskKCw5h4
-         ax994IWBZUMwmJRwHhyYEfy1g4OISUrO3OW1NYjbeXN7pih7F7Bak7f2EXw0jIR2t5qt
-         1h0A==
-X-Gm-Message-State: APjAAAWznUqJj53EpEJsocZVEccmP86Y6+jzIvyQmi+sVFe3c1TLqk/a
-        MhSNAkuH8tWpff3gFRFRYDUGyw==
-X-Google-Smtp-Source: APXvYqxBhBhjiZm6DIIVQclLcEYKPK25uT4p++L6X7xVUHvTJFqOSCuMzHWwvHIYKInLQrZSLpB5Zg==
-X-Received: by 2002:a17:906:1545:: with SMTP id c5mr65212434ejd.135.1558451383140;
-        Tue, 21 May 2019 08:09:43 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id v2sm6280163eds.69.2019.05.21.08.09.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 21 May 2019 08:09:42 -0700 (PDT)
-Date:   Tue, 21 May 2019 17:09:39 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
-        Yisheng Xie <ysxie@foxmail.com>, Peter Rosin <peda@axentia.se>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 10/33] fbcon: call fbcon_fb_(un)registered directly
-Message-ID: <20190521150939.GQ21222@phenom.ffwll.local>
-Mail-Followup-To: Thomas Zimmermann <tzimmermann@suse.de>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
-        Yisheng Xie <ysxie@foxmail.com>, Peter Rosin <peda@axentia.se>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Mikulas Patocka <mpatocka@redhat.com>, linux-fbdev@vger.kernel.org
-References: <20190520082216.26273-1-daniel.vetter@ffwll.ch>
- <20190520082216.26273-11-daniel.vetter@ffwll.ch>
- <423eba4b-15e1-f10b-ae2d-855b8a585688@suse.de>
- <8aecc0d8-83a3-8144-a266-441a5c1d5db5@suse.de>
+        Tue, 21 May 2019 12:34:28 -0400
+X-Originating-IP: 90.66.53.80
+Received: from localhost (lfbn-1-3034-80.w90-66.abo.wanadoo.fr [90.66.53.80])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 47052E000E;
+        Tue, 21 May 2019 16:34:20 +0000 (UTC)
+Date:   Tue, 21 May 2019 18:34:20 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] video: fbdev: atmel_lcdfb: add COMPILE_TEST support
+Message-ID: <20190521163420.GI3274@piout.net>
+References: <CGME20190521105217eucas1p19796d2969c1a568fecb0750818226241@eucas1p1.samsung.com>
+ <f9d56fc1-3e02-9716-b764-82e9600e5919@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8aecc0d8-83a3-8144-a266-441a5c1d5db5@suse.de>
-X-Operating-System: Linux phenom 4.14.0-3-amd64 
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <f9d56fc1-3e02-9716-b764-82e9600e5919@samsung.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, May 20, 2019 at 10:37:53AM +0200, Thomas Zimmermann wrote:
-> Hi
+On 21/05/2019 12:52:17+0200, Bartlomiej Zolnierkiewicz wrote:
+> Add COMPILE_TEST support to atmel_lcdfb driver for better compile
+> testing coverage.
 > 
-> Am 20.05.19 um 10:33 schrieb Thomas Zimmermann:
-> > Hi
-> > 
-> > Am 20.05.19 um 10:21 schrieb Daniel Vetter:
-> > ...
-> >> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> >> index fc3d34a8ea5b..ae2db31eeba7 100644
-> >> --- a/drivers/video/fbdev/core/fbmem.c
-> >> +++ b/drivers/video/fbdev/core/fbmem.c
-> >> @@ -1660,7 +1660,6 @@ MODULE_PARM_DESC(lockless_register_fb,
-> >>  static int do_register_framebuffer(struct fb_info *fb_info)
-> >>  {
-> >>  	int i, ret;
-> >> -	struct fb_event event;
-> >>  	struct fb_videomode mode;
-> >>  
-> >>  	if (fb_check_foreignness(fb_info))
-> >> @@ -1723,7 +1722,6 @@ static int do_register_framebuffer(struct fb_info *fb_info)
-> >>  	fb_add_videomode(&mode, &fb_info->modelist);
-> >>  	registered_fb[i] = fb_info;
-> >>  
-> >> -	event.info = fb_info;
-> >>  	if (!lockless_register_fb)
-> >>  		console_lock();
-> >>  	else
-> >> @@ -1732,9 +1730,8 @@ static int do_register_framebuffer(struct fb_info *fb_info)
-> >>  		ret = -ENODEV;
-> >>  		goto unlock_console;
-> >>  	}
-> >> -	ret = 0;
-> >>  
-> >> -	fb_notifier_call_chain(FB_EVENT_FB_REGISTERED, &event);
-> >> +	ret = fbcon_fb_registered(fb_info);
-> > 
-> > What about backlight drivers? [1] Apparently these also use the
-> > notifiers. [2] From my understanding, backlight drivers would stop
-> > working with this change.
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+
+> ---
+> v2: add missing HAVE_CLK && HAS IOMEM dependencies
 > 
-> I just saw that backlight drivers only care about blanking and
-> unblanking. Never mind then.
-
-I did screw this up for one event for the mode changes. But should be
-fixed in the next series.
-
-I also added a patch to simplify the backlight/lcd notifier, since it
-doesn't need to filter events anymore after this series - the only events
-left are the ones backlight cares about.
-
-Cheers, Daniel
-
+>  drivers/video/fbdev/Kconfig |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Best regards
-> Thomas
-> 
-> > 
-> > Best regards
-> > Thomas
-> > 
-> > [1]
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/video/backlight
-> > [2]
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/video/backlight/backlight.c#n40
-> > 
-> >>  	unlock_fb_info(fb_info);
-> >>  unlock_console:
-> >>  	if (!lockless_register_fb)
-> >> @@ -1771,7 +1768,6 @@ static int __unlink_framebuffer(struct fb_info *fb_info);
-> >>  
-> >>  static int do_unregister_framebuffer(struct fb_info *fb_info)
-> >>  {
-> >> -	struct fb_event event;
-> >>  	int ret;
-> >>  
-> >>  	ret = unbind_console(fb_info);
-> >> @@ -1789,9 +1785,8 @@ static int do_unregister_framebuffer(struct fb_info *fb_info)
-> >>  	registered_fb[fb_info->node] = NULL;
-> >>  	num_registered_fb--;
-> >>  	fb_cleanup_device(fb_info);
-> >> -	event.info = fb_info;
-> >>  	console_lock();
-> >> -	fb_notifier_call_chain(FB_EVENT_FB_UNREGISTERED, &event);
-> >> +	fbcon_fb_unregistered(fb_info);
-> >>  	console_unlock();
-> >>  
-> >>  	/* this may free fb info */
-> >> diff --git a/include/linux/fb.h b/include/linux/fb.h
-> >> index f52ef0ad6781..701abaf79c87 100644
-> >> --- a/include/linux/fb.h
-> >> +++ b/include/linux/fb.h
-> >> @@ -136,10 +136,6 @@ struct fb_cursor_user {
-> >>  #define FB_EVENT_RESUME			0x03
-> >>  /*      An entry from the modelist was removed */
-> >>  #define FB_EVENT_MODE_DELETE            0x04
-> >> -/*      A driver registered itself */
-> >> -#define FB_EVENT_FB_REGISTERED          0x05
-> >> -/*      A driver unregistered itself */
-> >> -#define FB_EVENT_FB_UNREGISTERED        0x06
-> >>  /*      CONSOLE-SPECIFIC: get console to framebuffer mapping */
-> >>  #define FB_EVENT_GET_CONSOLE_MAP        0x07
-> >>  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
-> >> diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-> >> index f68a7db14165..94a71e9e1257 100644
-> >> --- a/include/linux/fbcon.h
-> >> +++ b/include/linux/fbcon.h
-> >> @@ -4,9 +4,13 @@
-> >>  #ifdef CONFIG_FRAMEBUFFER_CONSOLE
-> >>  void __init fb_console_init(void);
-> >>  void __exit fb_console_exit(void);
-> >> +int fbcon_fb_registered(struct fb_info *info);
-> >> +void fbcon_fb_unregistered(struct fb_info *info);
-> >>  #else
-> >>  static inline void fb_console_init(void) {}
-> >>  static inline void fb_console_exit(void) {}
-> >> +static inline int fbcon_fb_registered(struct fb_info *info) { return 0; }
-> >> +static inline void fbcon_fb_unregistered(struct fb_info *info) {}
-> >>  #endif
-> >>  
-> >>  #endif /* _LINUX_FBCON_H */
-> >>
-> > 
-> 
-> -- 
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Linux GmbH, Maxfeldstrasse 5, 90409 Nuernberg, Germany
-> GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
-> HRB 21284 (AG Nürnberg)
-> 
-
-
-
+> Index: b/drivers/video/fbdev/Kconfig
+> ===================================================================
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -856,7 +856,8 @@ config FB_S1D13XXX
+>  
+>  config FB_ATMEL
+>  	tristate "AT91 LCD Controller support"
+> -	depends on FB && OF && HAVE_FB_ATMEL
+> +	depends on FB && OF && HAVE_CLK && HAS_IOMEM
+> +	depends on HAVE_FB_ATMEL || COMPILE_TEST
+>  	select FB_BACKLIGHT
+>  	select FB_CFB_FILLRECT
+>  	select FB_CFB_COPYAREA
 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
