@@ -2,132 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F42B250ED
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 15:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6762E2516A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 16:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728240AbfEUNop (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 09:44:45 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:58382 "EHLO
+        id S1728582AbfEUOCr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 10:02:47 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:37393 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728075AbfEUNop (ORCPT
+        with ESMTP id S1726750AbfEUOCr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 09:44:45 -0400
+        Tue, 21 May 2019 10:02:47 -0400
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190521134443euoutp02f394083c6eb9e8ada2fec591e8927828~gtqNfNu9g1359313593euoutp02e
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 13:44:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190521134443euoutp02f394083c6eb9e8ada2fec591e8927828~gtqNfNu9g1359313593euoutp02e
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190521140245euoutp0227b2f05d1789911a969f816ee72754af~gt58-M8Tl2405724057euoutp02C
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 14:02:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190521140245euoutp0227b2f05d1789911a969f816ee72754af~gt58-M8Tl2405724057euoutp02C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1558446283;
-        bh=RLKuvBEG6Mny/Pi7NLR0Nbvy2HIvFuNlpcTPZlMZBXk=;
+        s=mail20170921; t=1558447365;
+        bh=l6M7Kgw/u9cdmIuexWPozWhYDjVdWoz4ybdUdatYm6Q=;
         h=To:Cc:From:Subject:Date:References:From;
-        b=Vb6ydFvKm9z1RR1Gb0tMkhE9r7REcltW89yYJLNHhCIzVRDFLCyOcsB8eTCRxIYcB
-         uSSxxREujTovpQu+wX7rhZwgTUJzFjW1wkeKD2EHIJm2tk0MOSwqTiWThVTXdkZ3JZ
-         tlHT1QwdSq/I+IF5f8U51gzvmoPLTIoFNCTjW480=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        b=lCPI3x/5T0dqjhvCYEX3/aAY7ITjDsXa9B1P4m3wP5xnAdY0LjYN+0UbOk2gH5nVR
+         m12reggub/bONUUUXMm3efvFZ2pNtObqfHWGIe/7pVfXrWVA3KZaxw6N65HWm3XLp7
+         Byw/z3BOkqegk5EhW4C3/Yuc2Q/rAS5NVUik1jaE=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190521134443eucas1p2a0361c7efc2c3d4dee8fcee519c6addc~gtqM0XIxT3113031130eucas1p2Z;
-        Tue, 21 May 2019 13:44:43 +0000 (GMT)
+        20190521140245eucas1p21ffe2befeaa9f9bbeb0f706b7c6364d6~gt58pJPn41436614366eucas1p2c;
+        Tue, 21 May 2019 14:02:45 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3B.80.04325.AC004EC5; Tue, 21
-        May 2019 14:44:42 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 07.A2.04298.40504EC5; Tue, 21
+        May 2019 15:02:45 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be~gtqL9Aldk1363313633eucas1p2s;
-        Tue, 21 May 2019 13:44:42 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190521134441eusmtrp1c9cddd818c93cd6503e93b5e28897d74~gtqLtfH792230522305eusmtrp1P;
-        Tue, 21 May 2019 13:44:41 +0000 (GMT)
-X-AuditID: cbfec7f5-fbbf09c0000010e5-f4-5ce400ca0d61
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id E0.9D.04140.9C004EC5; Tue, 21
-        May 2019 14:44:41 +0100 (BST)
+        20190521140244eucas1p244e5e1306a52021a4a0c3910098c4f7c~gt57qG4jp0623806238eucas1p2d;
+        Tue, 21 May 2019 14:02:44 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190521140243eusmtrp2a771ae2ddba704f9e7a497d19c48dd58~gt57ajZT00523705237eusmtrp2B;
+        Tue, 21 May 2019 14:02:43 +0000 (GMT)
+X-AuditID: cbfec7f2-f2dff700000010ca-41-5ce405047e28
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 20.34.04146.30504EC5; Tue, 21
+        May 2019 15:02:43 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190521134441eusmtip172871ea8af1b007e36dc816b66719ebe~gtqLcK_Z72907329073eusmtip1e;
-        Tue, 21 May 2019 13:44:41 +0000 (GMT)
-To:     Russell King <linux@armlinux.org.uk>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190521140243eusmtip298bff93f3a48fc44783a5af991707dd6~gt57KOC0h0610306103eusmtip21;
+        Tue, 21 May 2019 14:02:43 +0000 (GMT)
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH] video: fbdev: cyber2000fb: remove superfluous CONFIG_PCI
- ifdef
-Message-ID: <214f05e0-a448-b1cf-7475-4fa7eeaa9949@samsung.com>
-Date:   Tue, 21 May 2019 15:44:40 +0200
+Subject: [PATCH] video: fbdev: atafb: remove superfluous function prototypes
+Message-ID: <50411fd1-9da0-aab6-709e-749d5e0ce509@samsung.com>
+Date:   Tue, 21 May 2019 16:02:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRj281w8Skc+N8MXraxBkZGaTWFlDLOQEXTxV5FGW3lSy03ZvOYP
-        L4HKErHUtINUxMoU75nzkhKazktq6hCzwkwLEyQvWSg1cjta/nve58L3PPAxhIin3JloTTyn
-        1ahiJLQT2di9OuTdZzcTfsjyQCozr3ynZfXTY5SsJ2+Bko22lNKyjqI2FEQpRseGCcXkbZO9
-        4rkhTbFcv+scedHpWAQXE53IaX3lSqeopcFOh7hSJnl6pIlORx9pPXJkAPuDOXuW0iMnRoSf
-        IZjNaEXC8QOB8Va5g3AsI5h61fYv8rPXQghCGYLiiq+kVRDheQQNr5VW7Ir3Q13JGm01ETgL
-        wRfeTFkFGh+FO9kVyIrFOBQ6C7vWeYZhsRyqJxgrTeK90DXH2yzb8QWY7K61RVnsAr33Z2xv
-        EdgNJmYe2gvYE4zzpbZCgLMd4H3eO0poehKW+XxCwGKYMzU4CHgH9BfkkkKgGsGfnNmNtBFB
-        WYFlY2cgdJqGbe0I7AU1Lb4CfRzGB4doKw3YGcbnXYQSznC3sZgQaBZyskSCex/UPq2lN5/V
-        N5dvWBSQ8ZLJR3v4Lcv4Lcv4Lcv4/xUeIbICuXEJOnUkp5NquCQfnUqtS9BE+lyNVdej9R/T
-        bzGtNKH231c6EGaQZBsrm5oOF1GqRF2KugMBQ0hc2f6+z+EiNkKVcpPTxl7WJsRwug7kwZAS
-        NzbV7lOYCEeq4rkbHBfHaTdVe8bRPR0N0eLStD7lG2mhPDSgpO7skV+c40LvZIO7X/7a+Rov
-        887M00vNEcEfikPj7wUODOx+kco/YvWFwVUGsW97S9C1PPKUsrKy0cMQkpyzKO45POI5yvp7
-        n3kcUNX6tjJpVeost4taPfHtYBTbTdbl8rGZ1QH+RYvy634GY0jik7BLElIXpfI7QGh1qr8d
-        ZThcLQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsVy+t/xu7onGZ7EGPT9M7e48vU9m8Wmx9dY
-        LU70fWC1uLxrDpvFoal7GR1YPS5fu8jscb/7OJPH5iX1Hp83yQWwROnZFOWXlqQqZOQXl9gq
-        RRtaGOkZWlroGZlY6hkam8daGZkq6dvZpKTmZJalFunbJehlfDp3mL1gDkfF40s72BoY77J1
-        MXJySAiYSHw7+Y+5i5GLQ0hgKaPE3KaZTF2MHEAJGYnj68sgaoQl/lzrAqsXEnjNKHFuIzeI
-        LSKgIbFxxi82kF5mgTZGiQMzTzODJNgErCQmtq9iBLGFBQIlDk85ygoyk1fATmLdLQ6QMIuA
-        qsTRV7PASkQFIiTOvF/BAmLzCghKnJz5BMxmFlCX+DPvEjOELS5x68l8JghbXmL72znMExgF
-        ZiFpmYWkZRaSlllIWhYwsqxiFEktLc5Nzy020itOzC0uzUvXS87P3cQIjJBtx35u2cHY9S74
-        EKMAB6MSD++De49jhFgTy4orcw8xSnAwK4nwnj71KEaINyWxsiq1KD++qDQntfgQoynQQxOZ
-        pUST84HRm1cSb2hqaG5haWhubG5sZqEkztshcDBGSCA9sSQ1OzW1ILUIpo+Jg1OqgVH8SFWb
-        GF9gzut5NRcaUpKeHk1Z33knMXfTlSYfNeX4cxyatjVPrMrLwj02GvudcV8hJPa2oJKhIqXA
-        6ZwWg3he+u6Je6x9mLu/39fZeOpOZ4XfrIbXPjk75mYd33GlcieXbbaqn/NJN63s495v3rNH
-        qW74sK3v46n4yekxX443yZw2OGarr8RSnJFoqMVcVJwIANdnKJ2mAgAA
-X-CMS-MailID: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduzneV1W1icxBt8tLK58fc9m8ezWXiaL
+        E30fWC0u75rD5sDicehwB6PH/e7jTB6fN8kFMEdx2aSk5mSWpRbp2yVwZXTcryw4xl1xv/MB
+        WwPjIc4uRk4OCQETiSlHJjB2MXJxCAmsYJRY8WsvM4TzhVFiQscydgjnM6PE093vWWBa/v14
+        wgaRWM4o0fx6PhOE85ZR4tPnv0AtHBwiAroSc34ygTQwCyRInF50D6yZTcBKYmL7KkYQW1jA
+        R+LA+UawGl4BO4k9/xtYQWwWAVWJ3eumg9miAhES949tYIWoEZQ4OfMJC8RMcYlbT+ZDzZeX
+        2P52DtjZEgKf2STuPPvCBnGpi8TXU7tYIWxhiVfHt7BD2DIS/3dCHC0hsI5R4m/HC6ju7YwS
+        yyf/g+q2ljh8/CIryDfMApoS63fpQ4QdJZqezmYDCUsI8EnceCsIcQSfxKRt05khwrwSHW1C
+        ENVqEhuWbWCDWdu1cyVUiYfEm2XCExgVZyH5bBaSz2Yh+WwWwgkLGFlWMYqnlhbnpqcWG+al
+        lusVJ+YWl+al6yXn525iBCaT0/+Of9rB+PVS0iFGAQ5GJR5ei4ePY4RYE8uKK3MPMUpwMCuJ
+        8J4+9ShGiDclsbIqtSg/vqg0J7X4EKM0B4uSOG81w4NoIYH0xJLU7NTUgtQimCwTB6dUA6Oq
+        BiPn1AmartevvuuT76q7IpIYtvxb8u+YL48emB1pkvrByeR+c7FefLqQrt+JwPiYULPYiFsX
+        A+qEzm+xj7nZuOO1wk2e5lP7As4zzmL9eapW4s7vK3rrWBvfrRB+daCKb76Wnd+pE7Ne5AWx
+        S33pZH+9QjE6eHrM5H7dinV/Sqt2FygUuiixFGckGmoxFxUnAgCanzzxIgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgkeLIzCtJLcpLzFFi42I5/e/4PV1m1icxBpe/mVtc+fqezeLZrb1M
+        Fif6PrBaXN41h82BxePQ4Q5Gj/vdx5k8Pm+SC2CO0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAz
+        MrHUMzQ2j7UyMlXSt7NJSc3JLEst0rdL0MvouF9ZcIy74n7nA7YGxkOcXYycHBICJhL/fjxh
+        62Lk4hASWMoo0bjqG3sXIwdQQkbi+PoyiBphiT/XuqBqXjNKLO2+xwRSIyKgKzHnJ5jJLJAg
+        8WxeCkg5m4CVxMT2VYwgtrCAj8SB841MIDavgJ3Env8NrCA2i4CqxO5108FsUYEIiTPvV7BA
+        1AhKnJz5BMxmFlCX+DPvEjOELS5x68l8JghbXmL72znMExgFZiFpmYWkZRaSlllIWhYwsqxi
+        FEktLc5Nzy021CtOzC0uzUvXS87P3cQIjIVtx35u3sF4aWPwIUYBDkYlHt4H9x7HCLEmlhVX
+        5h5ilOBgVhLhPX3qUYwQb0piZVVqUX58UWlOavEhRlOghyYyS4km5wPjNK8k3tDU0NzC0tDc
+        2NzYzEJJnLdD4GCMkEB6YklqdmpqQWoRTB8TB6dUA2PwaX6NJ6WTbl0zPtF7fkpj/vyFGcU/
+        BOSq0myvPPWY6eD77OvF/uqLW9jrfv82WspftW1a1v1z068piL3WXnMs4FdQvNmfM67KtZf/
+        fl4fvydoyeSfa9983LhkrbSiosR0jZz/Kmx/rVeW7FabNyHevu2PY+DTo1PXbJjeon3j3Se7
+        HWrPtu/IUWIpzkg01GIuKk4EAL1xOhebAgAA
+X-CMS-MailID: 20190521140244eucas1p244e5e1306a52021a4a0c3910098c4f7c
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
+X-RootMTR: 20190521140244eucas1p244e5e1306a52021a4a0c3910098c4f7c
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be
-References: <CGME20190521134442eucas1p2bf6236c3af24bb023f11f8d119a822be@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20190521140244eucas1p244e5e1306a52021a4a0c3910098c4f7c
+References: <CGME20190521140244eucas1p244e5e1306a52021a4a0c3910098c4f7c@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is a PCI driver and FB_CYBER2000 depends on PCI in Kconfig so
-there is no need to check for PCI inside the driver code.
+No need for them.
 
-Cc: Russell King <linux@armlinux.org.uk>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/video/fbdev/cyber2000fb.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/video/fbdev/atafb.c |   21 ---------------------
+ 1 file changed, 21 deletions(-)
 
-Index: b/drivers/video/fbdev/cyber2000fb.c
+Index: b/drivers/video/fbdev/atafb.c
 ===================================================================
---- a/drivers/video/fbdev/cyber2000fb.c
-+++ b/drivers/video/fbdev/cyber2000fb.c
-@@ -1642,10 +1642,6 @@ static void cyberpro_common_resume(struc
- }
+--- a/drivers/video/fbdev/atafb.c
++++ b/drivers/video/fbdev/atafb.c
+@@ -77,29 +77,8 @@
+ #define SWITCH_SND7 0x80
+ #define SWITCH_NONE 0x00
  
- /*
-- * PCI specific support.
-- */
--#ifdef CONFIG_PCI
--/*
-  * We need to wake up the CyberPro, and make sure its in linear memory
-  * mode.  Unfortunately, this is specific to the platform and card that
-  * we are running on.
-@@ -1861,7 +1857,6 @@ static struct pci_driver cyberpro_driver
- 	.resume		= cyberpro_pci_resume,
- 	.id_table	= cyberpro_pci_table
- };
--#endif
+-
+ #define up(x, r) (((x) + (r) - 1) & ~((r)-1))
  
- /*
-  * I don't think we can use the "module_init" stuff here because
+-	/*
+-	 * Interface to the world
+-	 */
+-
+-static int atafb_check_var(struct fb_var_screeninfo *var, struct fb_info *info);
+-static int atafb_set_par(struct fb_info *info);
+-static int atafb_setcolreg(unsigned int regno, unsigned int red, unsigned int green,
+-			   unsigned int blue, unsigned int transp,
+-			   struct fb_info *info);
+-static int atafb_blank(int blank, struct fb_info *info);
+-static int atafb_pan_display(struct fb_var_screeninfo *var,
+-			     struct fb_info *info);
+-static void atafb_fillrect(struct fb_info *info,
+-			   const struct fb_fillrect *rect);
+-static void atafb_copyarea(struct fb_info *info,
+-			   const struct fb_copyarea *region);
+-static void atafb_imageblit(struct fb_info *info, const struct fb_image *image);
+-static int atafb_ioctl(struct fb_info *info, unsigned int cmd,
+-		       unsigned long arg);
+-
+ 
+ static int default_par;		/* default resolution (0=none) */
+ 
