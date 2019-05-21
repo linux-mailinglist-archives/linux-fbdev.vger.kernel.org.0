@@ -2,157 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ED8424808
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 08:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32E6F24D1D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 12:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727635AbfEUG1y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 02:27:54 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42739 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbfEUG1y (ORCPT
+        id S1727781AbfEUKrH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 06:47:07 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:46320 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726242AbfEUKrH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 02:27:54 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l2so17090318wrb.9
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 May 2019 23:27:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=dCD1dJdG/0nLQ16mvfGU1vp0j4Tn1rC4YMsDRx2jTq0=;
-        b=LtohHst6pSj8P6W3MvjWat4OwVsvMq+GOyml3zAwhMlzsMSHlJe3NAWnIjAfXtD8Vb
-         ES152jdalEkmFm6bCYIU3XF0qWJhx5xS3ZYICJYCiMjDWDNnZjaXgeR668jEAQfDw4b3
-         o8gNJ4K7o+Qw1J+Z9prZVIsuw2es3cZ6tX1fTIG9R+PCTSWNTF6fBbGQfVdHkMxydBk/
-         zfvZ6wVnb95mQEm7L858sJeyF3ylI2qH9Cuz5T5nIEACLE1RjOgrfe5wIEAwiAD298xV
-         9fLTxAiElMP7fEK7LTSbPQRWqFR5lOK/Gdj5GCsPmKVydxl/Gg23yhx3rmN8Gc2w20gl
-         BARA==
-X-Gm-Message-State: APjAAAXx87xeVfWgRP22Fpk+wm1jM8Apn7ryAZwVtKlMU0w8y3Y9G8UO
-        00tJRoik3Ua1hDZcjpxtgppQXg==
-X-Google-Smtp-Source: APXvYqwp6x07EVQG49p3BgC/aXK1zsZJ7j3xPSToIFVel1+1/P82LoAsOXJJ9x3PUhKsQtXdfCb3OQ==
-X-Received: by 2002:adf:dc8e:: with SMTP id r14mr32869437wrj.121.1558420073023;
-        Mon, 20 May 2019 23:27:53 -0700 (PDT)
-Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id x187sm2312795wmb.33.2019.05.20.23.27.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 20 May 2019 23:27:51 -0700 (PDT)
-Date:   Tue, 21 May 2019 08:27:51 +0200
-From:   Oleksandr Natalenko <oleksandr@redhat.com>
-To:     Grzegorz Halat <ghalat@redhat.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] vt/fbcon: deinitialize resources in visual_init() after
- failed memory allocation
-Message-ID: <20190521062751.vi6hlaod2gfth7ea@butterfly.localdomain>
-References: <20190426144357.25826-1-ghalat@redhat.com>
+        Tue, 21 May 2019 06:47:07 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190521104704euoutp026c5b8c599b49122f24af4e86b21eac97~grPGmbgw_1205312053euoutp02Q
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 10:47:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190521104704euoutp026c5b8c599b49122f24af4e86b21eac97~grPGmbgw_1205312053euoutp02Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1558435624;
+        bh=vQno20hUkZmhifVARxLJWy7RbMpjq90Z0tVRxBtH4n8=;
+        h=From:Subject:To:Cc:Date:References:From;
+        b=AeDr8IS/O+lN0F3Sj2flEfE0+bmL+kZaa3S4giydP4guwkYJaD90K4o0XhX0+/zkH
+         29tlUtkZB0HkMQqmfiEtHwC9cbuhRAa/5YnVMAiFzn+bnWFbz5yHAF2FgJEr6t4it1
+         javfLc+thLvprINwEd8FE5FQRv/qAe7mE8I6uBgw=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190521104704eucas1p14b5f9ab0a0bc5e903728df820de21c68~grPF4Njr-1139911399eucas1p16;
+        Tue, 21 May 2019 10:47:04 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 92.54.04298.727D3EC5; Tue, 21
+        May 2019 11:47:03 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190521104703eucas1p2c1b6163a4ff9bb4d6caed325a4d0ee23~grPFKd54O0490104901eucas1p2s;
+        Tue, 21 May 2019 10:47:03 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190521104703eusmtrp167559fd1883421c3d769812772bf4af1~grPE61d5t1258812588eusmtrp1W;
+        Tue, 21 May 2019 10:47:03 +0000 (GMT)
+X-AuditID: cbfec7f2-3615e9c0000010ca-d5-5ce3d72752c7
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id D7.44.04140.727D3EC5; Tue, 21
+        May 2019 11:47:03 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190521104702eusmtip25d8dd0574a912089ec3d01d6ece3f592~grPEcYX2z2274322743eusmtip22;
+        Tue, 21 May 2019 10:47:02 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH v2] video: fbdev: imxfb: add COMPILE_TEST support
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Message-ID: <33fc4837-599d-0d5c-c530-58b283c4c095@samsung.com>
+Date:   Tue, 21 May 2019 12:47:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190426144357.25826-1-ghalat@redhat.com>
-User-Agent: NeoMutt/20180716
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0gUYRTt25mdHZdWxlXxZqa0ZGXlC6QmC1Hyx/jLiKJFpdpyckVdZce3
+        P9Io0+3h+7UJPjLNDUw38YUvVnIrwyzTzBSfkQZmuAkqabmOkv/Ouffcc++BS2LSbqE9Ga6K
+        ZdUqRaSMEONNvav9rkc+z4R4FA2cpD8tLxL01FAgrStoxWn9zLCQfv3ol5DWrNVi9GBbKUGv
+        N+txeq7Rjv6ak4d8xUyrdlzE6HWZBDNx3yhgXlbdYhp+tgiYrHUPxqR3PC8KEp8NZSPD41m1
+        u881sXJsuhqPKSQSF6dvo1RULNQgCxIoL8iuNIk0SExKqWcIlkseCnjyG8HG03khT0wI6u92
+        iHZGFt7NIr5Rg6Dk1TjBkwUEmsIyZFYRlDfk3NNtYWvKDwz9o7gZ21C+kD+SvbUQowYF0LPa
+        viWSUD6Qm9spMGOccoaxplLCjG0pOUz01gt5jRW8KZndMsIoOxidLRPw2AmaF0oxsylQnSJY
+        rVncHCY3iT8YMo/zZ1vDD2PjdgQH6Mt7gPP6OgTrGXPbw80IavI2CF51BnqMH4RmI4xygRdt
+        7nzZDxoqv237W8LIghV/gyXkNhVhfFkCGelSXn0Y6qvriZ21mtbabQkDjV0HstFB7a5g2l3B
+        tLuCaf+fUI5wHbJj47ioMJbzVLEJbpwiiotThbndiI7So82/6tswLrWg5Y/XDYgikWyvRJk/
+        HSIVKuK5pCgDAhKT2Uj63m6WJKGKpGRWHX1VHRfJcga0n8RldpKUPZPBUipMEctGsGwMq97p
+        CkgL+1QUMVBFflnzku1r4Cw6l5zqht+fmJrf473qGuBB3rTyHxNHP3ZdKmAPPTel+6S1Jzte
+        8JRPXszBO/RBRtWdLjrFI68YrUQ6uLQF6c4FnEqQ//0zGZyUtnJ09jL6nrhoqy72x4rL9fL+
+        7sArjMNExRNlg0XWkG2W1ll+Otm6ouySDOeUCs9jmJpT/AOgeW9rUwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsVy+t/xe7rq1x/HGHRfYba48vU9m8XDq/4W
+        q6buZLHY9Pgaq8WJvg+sFl2/VjJbXN41h83i7/ZNLBYvtohb3J44mdGBy2PnrLvsHptWdbJ5
+        3O8+zuSxeUm9x8Z3O5g8+v8aeHzeJBfAHqVnU5RfWpKqkJFfXGKrFG1oYaRnaGmhZ2RiqWdo
+        bB5rZWSqpG9nk5Kak1mWWqRvl6CXcefRMpaCaWwV7x81MTYwzmDtYuTkkBAwkXh75gljFyMX
+        h5DAUkaJOXuXMXcxcgAlZCSOry+DqBGW+HOtiw2i5jWjxMYlR1lAEmwCVhIT21cxgtjCAo4S
+        h87dAouLCDhITLkxgR2kgVngKpPEo/0LwbbxCthJTJq0jwnEZhFQlbizbQ4biC0qECFx5v0K
+        FogaQYmTM5+A2cwC6hJ/5l1ihrDFJW49mc8EYctLbH87h3kCo8AsJC2zkLTMQtIyC0nLAkaW
+        VYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmbGIHxtu3Yzy07GLveBR9iFOBgVOLhzZjyKEaINbGs
+        uDL3EKMEB7OSCO/pU0Ah3pTEyqrUovz4otKc1OJDjKZAD01klhJNzgemgrySeENTQ3MLS0Nz
+        Y3NjMwslcd4OgYMxQgLpiSWp2ampBalFMH1MHJxSDYw15yQ6Lrilxlq9PPt8vvk7p52+O771
+        /tZ7xRTH1av2sI+9YFGYAqNS6WQ77ZZfT+5eepQkyTnLTlwg7vcHwbLGZz+MdDn/8a5nM8n9
+        xf1IbjWPV9Uzpy8P1TdzFSiXbPE2ZDszNU7llE35wRdJzJ69/w/qs37r2s/Akr9z2aIXb5Z8
+        n+VSNl+JpTgj0VCLuag4EQD1VV9czQIAAA==
+X-CMS-MailID: 20190521104703eucas1p2c1b6163a4ff9bb4d6caed325a4d0ee23
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190521104703eucas1p2c1b6163a4ff9bb4d6caed325a4d0ee23
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190521104703eucas1p2c1b6163a4ff9bb4d6caed325a4d0ee23
+References: <CGME20190521104703eucas1p2c1b6163a4ff9bb4d6caed325a4d0ee23@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi.
+Add COMPILE_TEST support to imxfb driver for better compile
+testing coverage.
 
-On Fri, Apr 26, 2019 at 04:43:57PM +0200, Grzegorz Halat wrote:
-> After memory allocation failure vc_allocate() doesn't clean up data
-> which has been initialized in visual_init(). In case of fbcon this
-> leads to divide-by-0 in fbcon_init() on next open of the same tty.
-> 
-> memory allocation in vc_allocate() may fail here:
-> 1097:     vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
-> 
-> on next open() fbcon_init() skips vc_font.data initialization:
-> 1088:     if (!p->fontdata) {
-> 
-> division by zero in fbcon_init() happens here:
-> 1149:     new_cols /= vc->vc_font.width;
-> 
-> Additional check is needed in fbcon_deinit() to prevent
-> usage of uninitialized vc_screenbuf:
-> 
-> 1251:        if (vc->vc_hi_font_mask && vc->vc_screenbuf)
-> 1252:                set_vc_hi_font(vc, false);
-> 
-> Crash:
-> 
->  #6 [ffffc90001eafa60] divide_error at ffffffff81a00be4
->     [exception RIP: fbcon_init+463]
->     RIP: ffffffff814b860f  RSP: ffffc90001eafb18  RFLAGS: 00010246
-> ...
->  #7 [ffffc90001eafb60] visual_init at ffffffff8154c36e
->  #8 [ffffc90001eafb80] vc_allocate at ffffffff8154f53c
->  #9 [ffffc90001eafbc8] con_install at ffffffff8154f624
-> ...
-> 
-> Signed-off-by: Grzegorz Halat <ghalat@redhat.com>
-> ---
->  drivers/tty/vt/vt.c              | 11 +++++++++--
->  drivers/video/fbdev/core/fbcon.c |  2 +-
->  2 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-> index 650c66886c80..ec85d195678f 100644
-> --- a/drivers/tty/vt/vt.c
-> +++ b/drivers/tty/vt/vt.c
-> @@ -1056,6 +1056,13 @@ static void visual_init(struct vc_data *vc, int num, int init)
->  	vc->vc_screenbuf_size = vc->vc_rows * vc->vc_size_row;
->  }
->  
-> +
-> +static void visual_deinit(struct vc_data *vc)
-> +{
-> +	vc->vc_sw->con_deinit(vc);
-> +	module_put(vc->vc_sw->owner);
-> +}
-> +
->  int vc_allocate(unsigned int currcons)	/* return 0 on success */
->  {
->  	struct vt_notifier_param param;
-> @@ -1103,6 +1110,7 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
->  
->  	return 0;
->  err_free:
-> +	visual_deinit(vc);
->  	kfree(vc);
->  	vc_cons[currcons].d = NULL;
->  	return -ENOMEM;
-> @@ -1331,9 +1339,8 @@ struct vc_data *vc_deallocate(unsigned int currcons)
->  		param.vc = vc = vc_cons[currcons].d;
->  		atomic_notifier_call_chain(&vt_notifier_list, VT_DEALLOCATE, &param);
->  		vcs_remove_sysfs(currcons);
-> -		vc->vc_sw->con_deinit(vc);
-> +		visual_deinit(vc);
->  		put_pid(vc->vt_pid);
-> -		module_put(vc->vc_sw->owner);
->  		vc_uniscr_set(vc, NULL);
->  		kfree(vc->vc_screenbuf);
->  		vc_cons[currcons].d = NULL;
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index cd059a801662..c59b23f6e9ba 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -1248,7 +1248,7 @@ static void fbcon_deinit(struct vc_data *vc)
->  	if (free_font)
->  		vc->vc_font.data = NULL;
->  
-> -	if (vc->vc_hi_font_mask)
-> +	if (vc->vc_hi_font_mask && vc->vc_screenbuf)
->  		set_vc_hi_font(vc, false);
->  
->  	if (!con_is_bound(&fb_con))
-> -- 
-> 2.20.1
-> 
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+v2: add missing HAVE_CLK && HAS IOMEM dependencies (noted by Uwe)
 
-LGTM.
+drivers/video/fbdev/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Oleksandr Natalenko <oleksandr@redhat.com>
-
--- 
-  Best regards,
-    Oleksandr Natalenko (post-factum)
-    Senior Software Maintenance Engineer
+Index: b/drivers/video/fbdev/Kconfig
+===================================================================
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -331,7 +331,8 @@ config FB_SA1100
+ 
+ config FB_IMX
+ 	tristate "Freescale i.MX1/21/25/27 LCD support"
+-	depends on FB && ARCH_MXC
++	depends on FB && HAVE_CLK && HAS_IOMEM
++	depends on ARCH_MXC || COMPILE_TEST
+ 	select LCD_CLASS_DEVICE
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
