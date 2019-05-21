@@ -2,118 +2,157 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2915924313
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 May 2019 23:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED8424808
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 08:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbfETVqW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 May 2019 17:46:22 -0400
-Received: from mga04.intel.com ([192.55.52.120]:17285 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726023AbfETVqW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 May 2019 17:46:22 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 May 2019 14:46:21 -0700
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 20 May 2019 14:46:19 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1hSq6s-0009N1-FT; Tue, 21 May 2019 05:46:18 +0800
-Date:   Tue, 21 May 2019 05:45:53 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     kbuild-all@01.org,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [Intel-gfx] [PATCH 18/33] fbdev: make unregister/unlink
- functions not fail
-Message-ID: <201905210520.GS4ztecg%lkp@intel.com>
-References: <20190520082216.26273-19-daniel.vetter@ffwll.ch>
+        id S1727635AbfEUG1y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 02:27:54 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42739 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbfEUG1y (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 21 May 2019 02:27:54 -0400
+Received: by mail-wr1-f66.google.com with SMTP id l2so17090318wrb.9
+        for <linux-fbdev@vger.kernel.org>; Mon, 20 May 2019 23:27:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=dCD1dJdG/0nLQ16mvfGU1vp0j4Tn1rC4YMsDRx2jTq0=;
+        b=LtohHst6pSj8P6W3MvjWat4OwVsvMq+GOyml3zAwhMlzsMSHlJe3NAWnIjAfXtD8Vb
+         ES152jdalEkmFm6bCYIU3XF0qWJhx5xS3ZYICJYCiMjDWDNnZjaXgeR668jEAQfDw4b3
+         o8gNJ4K7o+Qw1J+Z9prZVIsuw2es3cZ6tX1fTIG9R+PCTSWNTF6fBbGQfVdHkMxydBk/
+         zfvZ6wVnb95mQEm7L858sJeyF3ylI2qH9Cuz5T5nIEACLE1RjOgrfe5wIEAwiAD298xV
+         9fLTxAiElMP7fEK7LTSbPQRWqFR5lOK/Gdj5GCsPmKVydxl/Gg23yhx3rmN8Gc2w20gl
+         BARA==
+X-Gm-Message-State: APjAAAXx87xeVfWgRP22Fpk+wm1jM8Apn7ryAZwVtKlMU0w8y3Y9G8UO
+        00tJRoik3Ua1hDZcjpxtgppQXg==
+X-Google-Smtp-Source: APXvYqwp6x07EVQG49p3BgC/aXK1zsZJ7j3xPSToIFVel1+1/P82LoAsOXJJ9x3PUhKsQtXdfCb3OQ==
+X-Received: by 2002:adf:dc8e:: with SMTP id r14mr32869437wrj.121.1558420073023;
+        Mon, 20 May 2019 23:27:53 -0700 (PDT)
+Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id x187sm2312795wmb.33.2019.05.20.23.27.51
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 20 May 2019 23:27:51 -0700 (PDT)
+Date:   Tue, 21 May 2019 08:27:51 +0200
+From:   Oleksandr Natalenko <oleksandr@redhat.com>
+To:     Grzegorz Halat <ghalat@redhat.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] vt/fbcon: deinitialize resources in visual_init() after
+ failed memory allocation
+Message-ID: <20190521062751.vi6hlaod2gfth7ea@butterfly.localdomain>
+References: <20190426144357.25826-1-ghalat@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190520082216.26273-19-daniel.vetter@ffwll.ch>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190426144357.25826-1-ghalat@redhat.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Daniel,
+Hi.
 
-I love your patch! Perhaps something to improve:
+On Fri, Apr 26, 2019 at 04:43:57PM +0200, Grzegorz Halat wrote:
+> After memory allocation failure vc_allocate() doesn't clean up data
+> which has been initialized in visual_init(). In case of fbcon this
+> leads to divide-by-0 in fbcon_init() on next open of the same tty.
+> 
+> memory allocation in vc_allocate() may fail here:
+> 1097:     vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
+> 
+> on next open() fbcon_init() skips vc_font.data initialization:
+> 1088:     if (!p->fontdata) {
+> 
+> division by zero in fbcon_init() happens here:
+> 1149:     new_cols /= vc->vc_font.width;
+> 
+> Additional check is needed in fbcon_deinit() to prevent
+> usage of uninitialized vc_screenbuf:
+> 
+> 1251:        if (vc->vc_hi_font_mask && vc->vc_screenbuf)
+> 1252:                set_vc_hi_font(vc, false);
+> 
+> Crash:
+> 
+>  #6 [ffffc90001eafa60] divide_error at ffffffff81a00be4
+>     [exception RIP: fbcon_init+463]
+>     RIP: ffffffff814b860f  RSP: ffffc90001eafb18  RFLAGS: 00010246
+> ...
+>  #7 [ffffc90001eafb60] visual_init at ffffffff8154c36e
+>  #8 [ffffc90001eafb80] vc_allocate at ffffffff8154f53c
+>  #9 [ffffc90001eafbc8] con_install at ffffffff8154f624
+> ...
+> 
+> Signed-off-by: Grzegorz Halat <ghalat@redhat.com>
+> ---
+>  drivers/tty/vt/vt.c              | 11 +++++++++--
+>  drivers/video/fbdev/core/fbcon.c |  2 +-
+>  2 files changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+> index 650c66886c80..ec85d195678f 100644
+> --- a/drivers/tty/vt/vt.c
+> +++ b/drivers/tty/vt/vt.c
+> @@ -1056,6 +1056,13 @@ static void visual_init(struct vc_data *vc, int num, int init)
+>  	vc->vc_screenbuf_size = vc->vc_rows * vc->vc_size_row;
+>  }
+>  
+> +
+> +static void visual_deinit(struct vc_data *vc)
+> +{
+> +	vc->vc_sw->con_deinit(vc);
+> +	module_put(vc->vc_sw->owner);
+> +}
+> +
+>  int vc_allocate(unsigned int currcons)	/* return 0 on success */
+>  {
+>  	struct vt_notifier_param param;
+> @@ -1103,6 +1110,7 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
+>  
+>  	return 0;
+>  err_free:
+> +	visual_deinit(vc);
+>  	kfree(vc);
+>  	vc_cons[currcons].d = NULL;
+>  	return -ENOMEM;
+> @@ -1331,9 +1339,8 @@ struct vc_data *vc_deallocate(unsigned int currcons)
+>  		param.vc = vc = vc_cons[currcons].d;
+>  		atomic_notifier_call_chain(&vt_notifier_list, VT_DEALLOCATE, &param);
+>  		vcs_remove_sysfs(currcons);
+> -		vc->vc_sw->con_deinit(vc);
+> +		visual_deinit(vc);
+>  		put_pid(vc->vt_pid);
+> -		module_put(vc->vc_sw->owner);
+>  		vc_uniscr_set(vc, NULL);
+>  		kfree(vc->vc_screenbuf);
+>  		vc_cons[currcons].d = NULL;
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index cd059a801662..c59b23f6e9ba 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -1248,7 +1248,7 @@ static void fbcon_deinit(struct vc_data *vc)
+>  	if (free_font)
+>  		vc->vc_font.data = NULL;
+>  
+> -	if (vc->vc_hi_font_mask)
+> +	if (vc->vc_hi_font_mask && vc->vc_screenbuf)
+>  		set_vc_hi_font(vc, false);
+>  
+>  	if (!con_is_bound(&fb_con))
+> -- 
+> 2.20.1
+> 
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v5.2-rc1 next-20190520]
-[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+LGTM.
 
-url:    https://github.com/0day-ci/linux/commits/Daniel-Vetter/fbcon-notifier-begone/20190521-021841
-reproduce:
-        # apt-get install sparse
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+Reviewed-by: Oleksandr Natalenko <oleksandr@redhat.com>
 
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-
->> drivers/staging/fbtft/fbtft-core.c:894:38: sparse: sparse: incorrect type in return expression (different base types) @@    expected int @@    got vint @@
->> drivers/staging/fbtft/fbtft-core.c:894:38: sparse:    expected int
->> drivers/staging/fbtft/fbtft-core.c:894:38: sparse:    got void
---
->> drivers/media/pci/ivtv/ivtvfb.c:1261:43: sparse: sparse: incorrect type in conditional (non-scalar type)
->> drivers/media/pci/ivtv/ivtvfb.c:1261:43: sparse:    got void
---
->> drivers/video/fbdev/neofb.c:2130:43: sparse: sparse: incorrect type in conditional (non-scalar type)
->> drivers/video/fbdev/neofb.c:2130:43: sparse:    got void
---
->> drivers/video/fbdev/savage/savagefb_driver.c:2341:43: sparse: sparse: incorrect type in conditional (non-scalar type)
->> drivers/video/fbdev/savage/savagefb_driver.c:2341:43: sparse:    got void
-
-vim +894 drivers/staging/fbtft/fbtft-core.c
-
-c296d5f9 Thomas Petazzoni 2014-12-31  877  
-c296d5f9 Thomas Petazzoni 2014-12-31  878  /**
-c296d5f9 Thomas Petazzoni 2014-12-31  879   *	fbtft_unregister_framebuffer - releases a tft frame buffer device
-c296d5f9 Thomas Petazzoni 2014-12-31  880   *	@fb_info: frame buffer info structure
-c296d5f9 Thomas Petazzoni 2014-12-31  881   *
-c296d5f9 Thomas Petazzoni 2014-12-31  882   *  Frees SPI driverdata if needed
-c296d5f9 Thomas Petazzoni 2014-12-31  883   *  Frees gpios.
-c296d5f9 Thomas Petazzoni 2014-12-31  884   *	Unregisters frame buffer device.
-c296d5f9 Thomas Petazzoni 2014-12-31  885   *
-c296d5f9 Thomas Petazzoni 2014-12-31  886   */
-c296d5f9 Thomas Petazzoni 2014-12-31  887  int fbtft_unregister_framebuffer(struct fb_info *fb_info)
-c296d5f9 Thomas Petazzoni 2014-12-31  888  {
-c296d5f9 Thomas Petazzoni 2014-12-31  889  	struct fbtft_par *par = fb_info->par;
-c296d5f9 Thomas Petazzoni 2014-12-31  890  
-c296d5f9 Thomas Petazzoni 2014-12-31  891  	if (par->fbtftops.unregister_backlight)
-c296d5f9 Thomas Petazzoni 2014-12-31  892  		par->fbtftops.unregister_backlight(par);
-c296d5f9 Thomas Petazzoni 2014-12-31  893  	fbtft_sysfs_exit(par);
-11107ffe Aya Mahfouz      2015-02-27 @894  	return unregister_framebuffer(fb_info);
-c296d5f9 Thomas Petazzoni 2014-12-31  895  }
-c296d5f9 Thomas Petazzoni 2014-12-31  896  EXPORT_SYMBOL(fbtft_unregister_framebuffer);
-c296d5f9 Thomas Petazzoni 2014-12-31  897  
-
-:::::: The code at line 894 was first introduced by commit
-:::::: 11107ffe2cd1c1dc5948713fc08a1372185be0d5 staging: fbtft: remove unused variable
-
-:::::: TO: Aya Mahfouz <mahfouz.saif.elyazal@gmail.com>
-:::::: CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+-- 
+  Best regards,
+    Oleksandr Natalenko (post-factum)
+    Senior Software Maintenance Engineer
