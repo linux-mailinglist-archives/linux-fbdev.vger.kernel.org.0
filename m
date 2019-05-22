@@ -2,61 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D567F259F9
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 May 2019 23:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFEA25B5F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 May 2019 02:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727705AbfEUVbX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 May 2019 17:31:23 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:35401 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727174AbfEUVbW (ORCPT
+        id S1727983AbfEVAyJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 May 2019 20:54:09 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:51918 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726466AbfEVAyJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 May 2019 17:31:22 -0400
-Received: by mail-qt1-f194.google.com with SMTP id a39so22398489qtk.2
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 May 2019 14:31:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=RGCIAU3mAoVmqMNlAb4gtH4HzGfVHBWW3yzh8ad2ias=;
-        b=ZP40X9o+9kc+r5BMR6efsDWePmQQVwCmAYBHbCha/kdFMNcrU6FrmEmsm9i7m/5aTd
-         lWgieh7R3S+cQ2sa6/hhv5cBmx5dRvs+8qI5ERiEwSsCbri9YsinV1X+QtcySd0bEe8G
-         BQ2DUC/a4tqA5VTpDETUAuHiOhpQAqp7ogxC1YfsySgvFCxRguFVQgSEXQof2mvQecf9
-         +AV28HAzKw4OfRJJIhMet3B3/wSkjM07j1VPN09p+5G/25CtfKeDP0h0qWXG0EMjHKnY
-         v/LiAhDNFfXKY3tA0kkkwHH4AYcG84ZFWICz+9d9bn0M6LCETz/bMGi6K26D7hAYX6JL
-         keLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=RGCIAU3mAoVmqMNlAb4gtH4HzGfVHBWW3yzh8ad2ias=;
-        b=sixUTeEov4qqIpPgi7yNoOWPK4JkcMXSn2ghdF/N3iOX7i66UX9amrikBnh1s0zTYO
-         6PsVfqoSTh7kGHObCQh/FvgCyb5Ug3x4HLQuy5fWzfNRcBcTOePpJkFWRLM/JzP0aLpM
-         gJG0qqBl/peTfW44SukaezVZyqqC6K6U2UlKr0pQ796rhWsHin/eSMR8KJIzh3YmDPvv
-         cYOyU68CeiPSO0n7a2teNTiXxkaYsHvBN62Bqlt/iG+oSF3Lho3z2ivhfZluAz3rGxLW
-         9VIhQhdGNI+WkmGytMJ12DE8Ieidi14Qxuw1BjO+sH2S65KdD308nnNL9yqiKGe06xdU
-         CrHQ==
-X-Gm-Message-State: APjAAAV9HrugrLhOt5FTDUcB182D5MH3AJHwWknbArSt7bBMobWgwwrO
-        jo/rgToZh01yczyKp/93FkFmmdByzQmnvBp+/4c=
-X-Google-Smtp-Source: APXvYqwWbcFoHwrHUCwuNnSnu3eRN8x/KYrAuFkatUX24buFrEO9guC1oM8IwrUuYPFrn+8ftxKgqAUC2hXshOQICG0=
-X-Received: by 2002:ac8:2479:: with SMTP id d54mr56148778qtd.348.1558474282030;
- Tue, 21 May 2019 14:31:22 -0700 (PDT)
+        Tue, 21 May 2019 20:54:09 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4M0rrNi104919;
+        Tue, 21 May 2019 19:53:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1558486433;
+        bh=64tMQrAiwm3hei2eRN/7GchhSAwDNydo9l0KJu+r9+U=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=dF1ZqMn2aoGlrvNL4lHcpk79UeWJYebjo1j/YywbCyhukwMNBLotx+PDPNVeUNxzb
+         mwM6HTEJZsHDJ2O8aXSG5G2tdmpfH2l5QcC6QDKbNzQJBDV8oX8BcHxZwL3Jf3duAn
+         Ufi2WPfcCaskqh9SCCAiSNLL+j0OQvP3CCjaB9VY=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4M0rr6i049645
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 21 May 2019 19:53:53 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 21
+ May 2019 19:53:53 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 21 May 2019 19:53:53 -0500
+Received: from [10.250.90.63] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4M0rq2m075698;
+        Tue, 21 May 2019 19:53:52 -0500
+Subject: Re: [PATCH] dt-bindings: backlight: lm3630a: correct schema
+ validation
+To:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     Brian Masney <masneyb@onstation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Jonathan Marek <jonathan@marek.ca>
+References: <20190520085846.22320-1-masneyb@onstation.org>
+ <CAL_JsqLcycH5e=YT-4AQFo-8O0bosjU7oagCRS5CMTfQNBLrcg@mail.gmail.com>
+ <20190520133007.gymbonmq635gp73b@holly.lan>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <6bc54c69-0c7b-69e5-6dce-aef631e20247@ti.com>
+Date:   Tue, 21 May 2019 19:53:45 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Received: by 2002:ae9:ed91:0:0:0:0:0 with HTTP; Tue, 21 May 2019 14:31:20
- -0700 (PDT)
-Reply-To: williamsmith@cheerful.com
-From:   William Smith <lillardmathew@gmail.com>
-Date:   Wed, 22 May 2019 03:01:20 +0530
-Message-ID: <CABtEVJ4vzQMzzDGSSMizswkvwwjhUOXiZtjAYB=7f-t40ZUdkg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190520133007.gymbonmq635gp73b@holly.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-Do you need a loan Yes Or No? We are a registered private money
-lender. We give out loans to firms, Individual who need to update
-their financial status all over the world, with Minimal annual
-Interest Rates of 3% reply if needed..williamsmith@cheerful.com
+
+
+On 5/20/19 8:30 AM, Daniel Thompson wrote:
+> On Mon, May 20, 2019 at 08:14:03AM -0500, Rob Herring wrote:
+>> On Mon, May 20, 2019 at 3:59 AM Brian Masney <masneyb@onstation.org> wrote:
+>>>
+>>> The '#address-cells' and '#size-cells' properties were not defined in
+>>> the lm3630a bindings and would cause the following error when
+>>> attempting to validate the examples against the schema:
+>>>
+>>> Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+>>> '#address-cells', '#size-cells' do not match any of the regexes:
+>>> '^led@[01]$', 'pinctrl-[0-9]+'
+>>>
+>>> Correct this by adding those two properties.
+>>>
+>>> While we're here, move the ti,linear-mapping-mode property to the
+>>> led@[01] child nodes to correct the following validation error:
+>>>
+>>> Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+>>> led@0: 'ti,linear-mapping-mode' does not match any of the regexes:
+>>> 'pinctrl-[0-9]+'
+>>>
+>>> Fixes: 32fcb75c66a0 ("dt-bindings: backlight: Add lm3630a bindings")
+>>> Signed-off-by: Brian Masney <masneyb@onstation.org>
+>>> Reported-by: Rob Herring <robh+dt@kernel.org>
+>>> ---
+>>>  .../leds/backlight/lm3630a-backlight.yaml     | 20 +++++++++++++------
+>>>  1 file changed, 14 insertions(+), 6 deletions(-)
+>>
+>> Reviewed-by: Rob Herring <robh@kernel.org>
+> 
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> 
+
+Acked-by: Dan Murphy <dmurphy@ti.com>
