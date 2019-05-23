@@ -2,112 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B9627EDE
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 May 2019 15:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC4727FFB
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 May 2019 16:40:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730697AbfEWNzH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 May 2019 09:55:07 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:45882 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730323AbfEWNzH (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 May 2019 09:55:07 -0400
-Received: by mail-qt1-f195.google.com with SMTP id t1so6771041qtc.12
-        for <linux-fbdev@vger.kernel.org>; Thu, 23 May 2019 06:55:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=poorly.run; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RoLH+1OrHmh/LP5/MP38zvovli5jsWEZsxOs+ayZS9U=;
-        b=N/9Y/Xl8Tt5h0I9hzt2GvLliViKn9QgrucYHB55S9E5I5mrVdLd79mPly8nQy/17PS
-         mi3RbmlM1m2zrywCX4XafL5t8O7yyUxldtCNctLSB3y0dVWf6GbEtiLlL7kB9qIkL+aO
-         RMMDASITpGDnAXFjLShvmgj4faIA/z0ZlQMkIz6sx0R351pGILRksMo3TrgV+j9MwCvz
-         Jc1onpQnoAPx5orodpyk5wEaOBP6Hapw9p+cGxIqjghJ1ZAoJu/3s5uD+v/Tg5f4QEOJ
-         /0++jL6GbsR5+csAGuIxpvivpykkcJmAqgwTR75YntjvHF5T5xR57Tr0fWzQEEsHHcPh
-         AyoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RoLH+1OrHmh/LP5/MP38zvovli5jsWEZsxOs+ayZS9U=;
-        b=slZ0vlp7M8OkuA52i1uSLuknNeJzKKASQFsFDEwsbKoVz66lOi7vckUhZU4jys9RtY
-         Lk9qZ5v4e430tKDPT216IKdFqBh3Ra9tNVnw1gkxHDnPFL3t8ssYe7JnANTYgFQvRYMp
-         8dddzftH8348WR23sEhUMUoYgq40GbHJBiTBe9ZE5kkDVUnsNZIZR2iZBBMHOgRZiEWs
-         ZFWJgvasqci2laQ6piSBRJVJfkgfdmzgEVWyElFJrIxrPBqLjHnnV0zAU9Zn5HUO5e69
-         ug1LLk+WLMiE30YVN1dahQJkwbcTbyliqg7tr7+vRjT/zb2XI35rn+CZHxdzReFMl+DA
-         PsWw==
-X-Gm-Message-State: APjAAAXwQGp+mZxOgR/Q3fdwP8VQGzF2y3RtzThTxt/G9XA25jGV5O2g
-        SzZ6j1bWztp5pkNUkkZjUWzdWg==
-X-Google-Smtp-Source: APXvYqy5IvdM4mKrSHbVmmDEPXFfC06X0nVwwJxjzFVDCmtxjWMsGKE3cQuk2yliwbN+kqQp0HtVTw==
-X-Received: by 2002:ac8:2c33:: with SMTP id d48mr8900292qta.40.1558619706337;
-        Thu, 23 May 2019 06:55:06 -0700 (PDT)
-Received: from rosewood.cam.corp.google.com ([2620:0:1013:11:89c6:2139:5435:371d])
-        by smtp.gmail.com with ESMTPSA id o13sm14808383qtk.74.2019.05.23.06.55.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 23 May 2019 06:55:05 -0700 (PDT)
-From:   Sean Paul <sean@poorly.run>
-To:     dri-devel@lists.freedesktop.org
-Cc:     Sean Paul <seanpaul@chromium.org>,
-        Uma Shankar <uma.shankar@intel.com>,
-        Shashank Sharma <shashank.sharma@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
+        id S1730904AbfEWOky (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 May 2019 10:40:54 -0400
+Received: from mga18.intel.com ([134.134.136.126]:46016 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730902AbfEWOky (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 23 May 2019 10:40:54 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 May 2019 07:40:54 -0700
+X-ExtLoop1: 1
+Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
+  by orsmga005.jf.intel.com with ESMTP; 23 May 2019 07:40:53 -0700
+Received: from fmsmsx119.amr.corp.intel.com (10.18.124.207) by
+ FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Thu, 23 May 2019 07:39:37 -0700
+Received: from bgsmsx110.gar.corp.intel.com (10.223.4.212) by
+ FMSMSX119.amr.corp.intel.com (10.18.124.207) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Thu, 23 May 2019 07:38:40 -0700
+Received: from bgsmsx104.gar.corp.intel.com ([169.254.5.115]) by
+ BGSMSX110.gar.corp.intel.com ([169.254.11.234]) with mapi id 14.03.0415.000;
+ Thu, 23 May 2019 20:08:37 +0530
+From:   "Shankar, Uma" <uma.shankar@intel.com>
+To:     Sean Paul <sean@poorly.run>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+CC:     Sean Paul <seanpaul@chromium.org>,
+        "Sharma, Shashank" <shashank.sharma@intel.com>,
+        =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org
-Subject: [PATCH] drm/edid: Fix docbook in drm_hdmi_infoframe_set_hdr_metadata()
-Date:   Thu, 23 May 2019 09:54:58 -0400
-Message-Id: <20190523135504.184354-1-sean@poorly.run>
-X-Mailer: git-send-email 2.22.0.rc1.257.g3120a18244-goog
+        "Hans Verkuil" <hansverk@cisco.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: RE: [PATCH] drm/edid: Fix docbook in
+ drm_hdmi_infoframe_set_hdr_metadata()
+Thread-Topic: [PATCH] drm/edid: Fix docbook in
+ drm_hdmi_infoframe_set_hdr_metadata()
+Thread-Index: AQHVEW8jKhswlWJD7UajKGzk9tM0xaZ4xwCA
+Date:   Thu, 23 May 2019 14:38:37 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F8203029D@BGSMSX104.gar.corp.intel.com>
+References: <20190523135504.184354-1-sean@poorly.run>
+In-Reply-To: <20190523135504.184354-1-sean@poorly.run>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZTZjNmFkODktZGIyZi00YzhiLWE2M2UtNDYxM2FlOWE5MmE1IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiSFFVd3JqRmRVTmp6V3dzUUIwZ3c4elBjNnYxRlRlc05DT1Z5MXU4Zk15WVNXOStpU2NXdDBaaHJQQVNYcTI2YiJ9
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.223.10.10]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Sean Paul <seanpaul@chromium.org>
-
-Fixes the following warnings:
-../drivers/gpu/drm/drm_edid.c:4925: warning: Function parameter or member 'conn_state' not described in 'drm_hdmi_infoframe_set_hdr_metadata'
-../drivers/gpu/drm/drm_edid.c:4925: warning: Excess function parameter 'hdr_metadata' description in 'drm_hdmi_infoframe_set_hdr_metadata'
-
-Fixes: 2cdbfd66a829 ("drm: Enable HDR infoframe support")
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Shashank Sharma <shashank.sharma@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-Cc: Hans Verkuil <hansverk@cisco.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Signed-off-by: Sean Paul <seanpaul@chromium.org>
----
- drivers/gpu/drm/drm_edid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 262510c2a670..d87f574feeca 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -4914,7 +4914,7 @@ static inline bool is_eotf_supported(u8 output_eotf, u8 sink_eotf)
-  * drm_hdmi_infoframe_set_hdr_metadata() - fill an HDMI DRM infoframe with
-  *                                         HDR metadata from userspace
-  * @frame: HDMI DRM infoframe
-- * @hdr_metadata: hdr_source_metadata info from userspace
-+ * @conn_state: Connector state containing HDR metadata
-  *
-  * Return: 0 on success or a negative error code on failure.
-  */
--- 
-Sean Paul, Software Engineer, Google / Chromium OS
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IFNlYW4gUGF1bCBbbWFpbHRv
+OnNlYW5AcG9vcmx5LnJ1bl0NCj5TZW50OiBUaHVyc2RheSwgTWF5IDIzLCAyMDE5IDc6MjUgUE0N
+Cj5UbzogZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPkNjOiBTZWFuIFBhdWwgPHNl
+YW5wYXVsQGNocm9taXVtLm9yZz47IFNoYW5rYXIsIFVtYSA8dW1hLnNoYW5rYXJAaW50ZWwuY29t
+PjsNCj5TaGFybWEsIFNoYXNoYW5rIDxzaGFzaGFuay5zaGFybWFAaW50ZWwuY29tPjsgVmlsbGUg
+U3lyasOkbMOkDQo+PHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPjsgTWFhcnRlbiBMYW5r
+aG9yc3QNCj48bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPjsgTWF4aW1lIFJpcGFy
+ZA0KPjxtYXhpbWUucmlwYXJkQGJvb3RsaW4uY29tPjsgU2VhbiBQYXVsIDxzZWFuQHBvb3JseS5y
+dW4+OyBEYXZpZCBBaXJsaWUNCj48YWlybGllZEBsaW51eC5pZT47IERhbmllbCBWZXR0ZXIgPGRh
+bmllbEBmZndsbC5jaD47IEJhcnRsb21pZWogWm9sbmllcmtpZXdpY3oNCj48Yi56b2xuaWVya2ll
+QHNhbXN1bmcuY29tPjsgSGFucyBWZXJrdWlsIDxoYW5zdmVya0BjaXNjby5jb20+OyBsaW51eC0N
+Cj5mYmRldkB2Z2VyLmtlcm5lbC5vcmcNCj5TdWJqZWN0OiBbUEFUQ0hdIGRybS9lZGlkOiBGaXgg
+ZG9jYm9vayBpbiBkcm1faGRtaV9pbmZvZnJhbWVfc2V0X2hkcl9tZXRhZGF0YSgpDQo+DQo+RnJv
+bTogU2VhbiBQYXVsIDxzZWFucGF1bEBjaHJvbWl1bS5vcmc+DQo+DQo+Rml4ZXMgdGhlIGZvbGxv
+d2luZyB3YXJuaW5nczoNCj4uLi9kcml2ZXJzL2dwdS9kcm0vZHJtX2VkaWQuYzo0OTI1OiB3YXJu
+aW5nOiBGdW5jdGlvbiBwYXJhbWV0ZXIgb3IgbWVtYmVyDQo+J2Nvbm5fc3RhdGUnIG5vdCBkZXNj
+cmliZWQgaW4gJ2RybV9oZG1pX2luZm9mcmFtZV9zZXRfaGRyX21ldGFkYXRhJw0KPi4uL2RyaXZl
+cnMvZ3B1L2RybS9kcm1fZWRpZC5jOjQ5MjU6IHdhcm5pbmc6IEV4Y2VzcyBmdW5jdGlvbiBwYXJh
+bWV0ZXINCj4naGRyX21ldGFkYXRhJyBkZXNjcmlwdGlvbiBpbiAnZHJtX2hkbWlfaW5mb2ZyYW1l
+X3NldF9oZHJfbWV0YWRhdGEnDQoNClRoYW5rcyBTZWFuIFBhdWwgZm9yIGZpeGluZyB0aGlzLg0K
+UmV2aWV3ZWQtYnk6IFVtYSBTaGFua2FyIDx1bWEuc2hhbmthckBpbnRlbC5jb20+DQoNCj5GaXhl
+czogMmNkYmZkNjZhODI5ICgiZHJtOiBFbmFibGUgSERSIGluZm9mcmFtZSBzdXBwb3J0IikNCj5D
+YzogVW1hIFNoYW5rYXIgPHVtYS5zaGFua2FyQGludGVsLmNvbT4NCj5DYzogU2hhc2hhbmsgU2hh
+cm1hIDxzaGFzaGFuay5zaGFybWFAaW50ZWwuY29tPg0KPkNjOiBWaWxsZSBTeXJqw6Rsw6QgPHZp
+bGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPkNjOiBNYWFydGVuIExhbmtob3JzdCA8bWFh
+cnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPg0KPkNjOiBNYXhpbWUgUmlwYXJkIDxtYXhp
+bWUucmlwYXJkQGJvb3RsaW4uY29tPg0KPkNjOiBTZWFuIFBhdWwgPHNlYW5AcG9vcmx5LnJ1bj4N
+Cj5DYzogRGF2aWQgQWlybGllIDxhaXJsaWVkQGxpbnV4LmllPg0KPkNjOiBEYW5pZWwgVmV0dGVy
+IDxkYW5pZWxAZmZ3bGwuY2g+DQo+Q2M6IEJhcnRsb21pZWogWm9sbmllcmtpZXdpY3ogPGIuem9s
+bmllcmtpZUBzYW1zdW5nLmNvbT4NCj5DYzogIlZpbGxlIFN5cmrDpGzDpCIgPHZpbGxlLnN5cmph
+bGFAbGludXguaW50ZWwuY29tPg0KPkNjOiBIYW5zIFZlcmt1aWwgPGhhbnN2ZXJrQGNpc2NvLmNv
+bT4NCj5DYzogZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPkNjOiBsaW51eC1mYmRl
+dkB2Z2VyLmtlcm5lbC5vcmcNCj5TaWduZWQtb2ZmLWJ5OiBTZWFuIFBhdWwgPHNlYW5wYXVsQGNo
+cm9taXVtLm9yZz4NCj4tLS0NCj4gZHJpdmVycy9ncHUvZHJtL2RybV9lZGlkLmMgfCAyICstDQo+
+IDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPg0KPmRpZmYg
+LS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vZHJtX2VkaWQuYyBiL2RyaXZlcnMvZ3B1L2RybS9kcm1f
+ZWRpZC5jIGluZGV4DQo+MjYyNTEwYzJhNjcwLi5kODdmNTc0ZmVlY2EgMTAwNjQ0DQo+LS0tIGEv
+ZHJpdmVycy9ncHUvZHJtL2RybV9lZGlkLmMNCj4rKysgYi9kcml2ZXJzL2dwdS9kcm0vZHJtX2Vk
+aWQuYw0KPkBAIC00OTE0LDcgKzQ5MTQsNyBAQCBzdGF0aWMgaW5saW5lIGJvb2wgaXNfZW90Zl9z
+dXBwb3J0ZWQodTggb3V0cHV0X2VvdGYsIHU4DQo+c2lua19lb3RmKQ0KPiAgKiBkcm1faGRtaV9p
+bmZvZnJhbWVfc2V0X2hkcl9tZXRhZGF0YSgpIC0gZmlsbCBhbiBIRE1JIERSTSBpbmZvZnJhbWUg
+d2l0aA0KPiAgKiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSERSIG1l
+dGFkYXRhIGZyb20gdXNlcnNwYWNlDQo+ICAqIEBmcmFtZTogSERNSSBEUk0gaW5mb2ZyYW1lDQo+
+LSAqIEBoZHJfbWV0YWRhdGE6IGhkcl9zb3VyY2VfbWV0YWRhdGEgaW5mbyBmcm9tIHVzZXJzcGFj
+ZQ0KPisgKiBAY29ubl9zdGF0ZTogQ29ubmVjdG9yIHN0YXRlIGNvbnRhaW5pbmcgSERSIG1ldGFk
+YXRhDQo+ICAqDQo+ICAqIFJldHVybjogMCBvbiBzdWNjZXNzIG9yIGEgbmVnYXRpdmUgZXJyb3Ig
+Y29kZSBvbiBmYWlsdXJlLg0KPiAgKi8NCj4tLQ0KPlNlYW4gUGF1bCwgU29mdHdhcmUgRW5naW5l
+ZXIsIEdvb2dsZSAvIENocm9taXVtIE9TDQoNCg==
