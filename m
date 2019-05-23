@@ -2,116 +2,112 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8DA275E7
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 May 2019 08:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B9627EDE
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 May 2019 15:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726081AbfEWGN2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 May 2019 02:13:28 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:10953 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725873AbfEWGN1 (ORCPT
+        id S1730697AbfEWNzH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 May 2019 09:55:07 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:45882 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730323AbfEWNzH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 May 2019 02:13:27 -0400
-X-UUID: fbae2d38e97c4c139052c44cb752bc31-20190523
-X-UUID: fbae2d38e97c4c139052c44cb752bc31-20190523
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <ck.hu@mediatek.com>)
-        (mhqrelay.mediatek.com ESMTP with TLS)
-        with ESMTP id 281682636; Thu, 23 May 2019 14:13:21 +0800
-Received: from mtkcas09.mediatek.inc (172.21.101.178) by
- mtkmbs02n1.mediatek.inc (172.21.101.77) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Thu, 23 May 2019 14:13:20 +0800
-Received: from [172.21.77.4] (172.21.77.4) by mtkcas09.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Thu, 23 May 2019 14:13:20 +0800
-Message-ID: <1558592000.552.3.camel@mtksdaap41>
-Subject: Re: [PATCH] drm/mediatek: Fix warning about unhandled enum value
-From:   CK Hu <ck.hu@mediatek.com>
-To:     Sean Paul <sean@poorly.run>
-CC:     <dri-devel@lists.freedesktop.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Hans Verkuil <hansverk@cisco.com>,
-        David Airlie <airlied@linux.ie>,
+        Thu, 23 May 2019 09:55:07 -0400
+Received: by mail-qt1-f195.google.com with SMTP id t1so6771041qtc.12
+        for <linux-fbdev@vger.kernel.org>; Thu, 23 May 2019 06:55:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=poorly.run; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RoLH+1OrHmh/LP5/MP38zvovli5jsWEZsxOs+ayZS9U=;
+        b=N/9Y/Xl8Tt5h0I9hzt2GvLliViKn9QgrucYHB55S9E5I5mrVdLd79mPly8nQy/17PS
+         mi3RbmlM1m2zrywCX4XafL5t8O7yyUxldtCNctLSB3y0dVWf6GbEtiLlL7kB9qIkL+aO
+         RMMDASITpGDnAXFjLShvmgj4faIA/z0ZlQMkIz6sx0R351pGILRksMo3TrgV+j9MwCvz
+         Jc1onpQnoAPx5orodpyk5wEaOBP6Hapw9p+cGxIqjghJ1ZAoJu/3s5uD+v/Tg5f4QEOJ
+         /0++jL6GbsR5+csAGuIxpvivpykkcJmAqgwTR75YntjvHF5T5xR57Tr0fWzQEEsHHcPh
+         AyoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RoLH+1OrHmh/LP5/MP38zvovli5jsWEZsxOs+ayZS9U=;
+        b=slZ0vlp7M8OkuA52i1uSLuknNeJzKKASQFsFDEwsbKoVz66lOi7vckUhZU4jys9RtY
+         Lk9qZ5v4e430tKDPT216IKdFqBh3Ra9tNVnw1gkxHDnPFL3t8ssYe7JnANTYgFQvRYMp
+         8dddzftH8348WR23sEhUMUoYgq40GbHJBiTBe9ZE5kkDVUnsNZIZR2iZBBMHOgRZiEWs
+         ZFWJgvasqci2laQ6piSBRJVJfkgfdmzgEVWyElFJrIxrPBqLjHnnV0zAU9Zn5HUO5e69
+         ug1LLk+WLMiE30YVN1dahQJkwbcTbyliqg7tr7+vRjT/zb2XI35rn+CZHxdzReFMl+DA
+         PsWw==
+X-Gm-Message-State: APjAAAXwQGp+mZxOgR/Q3fdwP8VQGzF2y3RtzThTxt/G9XA25jGV5O2g
+        SzZ6j1bWztp5pkNUkkZjUWzdWg==
+X-Google-Smtp-Source: APXvYqy5IvdM4mKrSHbVmmDEPXFfC06X0nVwwJxjzFVDCmtxjWMsGKE3cQuk2yliwbN+kqQp0HtVTw==
+X-Received: by 2002:ac8:2c33:: with SMTP id d48mr8900292qta.40.1558619706337;
+        Thu, 23 May 2019 06:55:06 -0700 (PDT)
+Received: from rosewood.cam.corp.google.com ([2620:0:1013:11:89c6:2139:5435:371d])
+        by smtp.gmail.com with ESMTPSA id o13sm14808383qtk.74.2019.05.23.06.55.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 May 2019 06:55:05 -0700 (PDT)
+From:   Sean Paul <sean@poorly.run>
+To:     dri-devel@lists.freedesktop.org
+Cc:     Sean Paul <seanpaul@chromium.org>,
         Uma Shankar <uma.shankar@intel.com>,
-        "Sean Paul" <seanpaul@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        <linux-mediatek@lists.infradead.org>,
-        Ville =?ISO-8859-1?Q?Syrj=E4l=E4?= 
+        Shashank Sharma <shashank.sharma@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
         <ville.syrjala@linux.intel.com>,
-        "Shashank Sharma" <shashank.sharma@intel.com>
-Date:   Thu, 23 May 2019 14:13:20 +0800
-In-Reply-To: <20190522202207.223110-1-sean@poorly.run>
-References: <20190522202207.223110-1-sean@poorly.run>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org
+Subject: [PATCH] drm/edid: Fix docbook in drm_hdmi_infoframe_set_hdr_metadata()
+Date:   Thu, 23 May 2019 09:54:58 -0400
+Message-Id: <20190523135504.184354-1-sean@poorly.run>
+X-Mailer: git-send-email 2.22.0.rc1.257.g3120a18244-goog
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MTK:  N
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, Sean:
+From: Sean Paul <seanpaul@chromium.org>
 
-On Wed, 2019-05-22 at 16:21 -0400, Sean Paul wrote:
-> From: Sean Paul <seanpaul@chromium.org>
-> 
-> Fixes the following build warning:
-> drivers/gpu/drm/mediatek/mtk_hdmi.c:327:2: warning: enumeration value ‘HDMI_INFOFRAME_TYPE_DRM’ not handled in switch [-Wswitch]
-> 
-> Introduced with the addition of HDMI_INFOFRAME_TYPE_DRM in the commit
-> below, but the code really should have been future-proofed from the
-> start.
+Fixes the following warnings:
+../drivers/gpu/drm/drm_edid.c:4925: warning: Function parameter or member 'conn_state' not described in 'drm_hdmi_infoframe_set_hdr_metadata'
+../drivers/gpu/drm/drm_edid.c:4925: warning: Excess function parameter 'hdr_metadata' description in 'drm_hdmi_infoframe_set_hdr_metadata'
 
-Acked-by: CK Hu <ck.hu@mediatek.com>
+Fixes: 2cdbfd66a829 ("drm: Enable HDR infoframe support")
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Shashank Sharma <shashank.sharma@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Hans Verkuil <hansverk@cisco.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+---
+ drivers/gpu/drm/drm_edid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> Fixes: 2cdbfd66a829 ("drm: Enable HDR infoframe support")
-
-I think "drm: Enable HDR infoframe support" exist only in drm-misc tree,
-could you just merge this patch to "drm: Enable HDR infoframe support"?
-
-Regards,
-CK
-
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Shashank Sharma <shashank.sharma@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-> Cc: Sean Paul <sean@poorly.run>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
-> Cc: Hans Verkuil <hansverk@cisco.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Signed-off-by: Sean Paul <seanpaul@chromium.org>
-> ---
->  drivers/gpu/drm/mediatek/mtk_hdmi.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-> index e04e6c293d39..10cc9910f164 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-> @@ -341,6 +341,9 @@ static void mtk_hdmi_hw_send_info_frame(struct mtk_hdmi *hdmi, u8 *buffer,
->  		ctrl_frame_en = VS_EN;
->  		ctrl_reg = GRL_ACP_ISRC_CTRL;
->  		break;
-> +	default:
-> +		dev_err(hdmi->dev, "Unknown infoframe type %d\n", frame_type);
-> +		return;
->  	}
->  	mtk_hdmi_clear_bits(hdmi, ctrl_reg, ctrl_frame_en);
->  	mtk_hdmi_write(hdmi, GRL_INFOFRM_TYPE, frame_type);
-
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index 262510c2a670..d87f574feeca 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -4914,7 +4914,7 @@ static inline bool is_eotf_supported(u8 output_eotf, u8 sink_eotf)
+  * drm_hdmi_infoframe_set_hdr_metadata() - fill an HDMI DRM infoframe with
+  *                                         HDR metadata from userspace
+  * @frame: HDMI DRM infoframe
+- * @hdr_metadata: hdr_source_metadata info from userspace
++ * @conn_state: Connector state containing HDR metadata
+  *
+  * Return: 0 on success or a negative error code on failure.
+  */
+-- 
+Sean Paul, Software Engineer, Google / Chromium OS
 
