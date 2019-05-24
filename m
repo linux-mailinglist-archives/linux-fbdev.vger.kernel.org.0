@@ -2,289 +2,228 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 646D6297BE
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 May 2019 13:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0F9D298A9
+	for <lists+linux-fbdev@lfdr.de>; Fri, 24 May 2019 15:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391403AbfEXL6n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 24 May 2019 07:58:43 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:43474 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391235AbfEXL6m (ORCPT
+        id S2391519AbfEXNO7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 24 May 2019 09:14:59 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:34649 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391408AbfEXNO7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 24 May 2019 07:58:42 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190524115841euoutp02471928fd037582b77a0302c48acb2757~hnJeel0Hf2584625846euoutp02F
-        for <linux-fbdev@vger.kernel.org>; Fri, 24 May 2019 11:58:40 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190524115841euoutp02471928fd037582b77a0302c48acb2757~hnJeel0Hf2584625846euoutp02F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1558699121;
-        bh=Sf8ZhnMAfsbeP6S3yEjJ583D1xTFd6vdafcy+8uGB6I=;
-        h=From:Subject:To:Date:References:From;
-        b=sZrWwyxNYqWBcTOFo5JpkxhIVANp3jCDb1bXHJXuTt5sXHwvA0+hJVQP41KRfpnVj
-         xsUOsUh41sJwEZ3tNcdx3fswpzZ9dMeWM1uOphB3ssxUExfFoaqpRJRm+FjFdj5W4b
-         OjWYnDFhakYpHok4pIsFVqSluCn7rQxhcFiu+zrk=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190524115840eucas1p130f43e49052abedfd67df94aa17fc0ec~hnJd9nypr2422524225eucas1p1c;
-        Fri, 24 May 2019 11:58:40 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 6F.F7.04298.07CD7EC5; Fri, 24
-        May 2019 12:58:40 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190524115839eucas1p135f0a6814fa1a163d903c60e602723f6~hnJdIHups1135211352eucas1p1h;
-        Fri, 24 May 2019 11:58:39 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190524115839eusmtrp2322c404afe6f08b8401c89e8fb92a560~hnJc6I9_A2432224322eusmtrp2r;
-        Fri, 24 May 2019 11:58:39 +0000 (GMT)
-X-AuditID: cbfec7f2-f2dff700000010ca-2f-5ce7dc70e139
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 42.B2.04140.F6CD7EC5; Fri, 24
-        May 2019 12:58:39 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190524115839eusmtip1d65e42812df16d0e2a17475726e55777~hnJcqhcvP3051530515eusmtip1N;
-        Fri, 24 May 2019 11:58:39 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH v3 2/2] video: fbdev: pvr2fb: add COMPILE_TEST support
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <e59b45f6-b8a5-ed99-f294-072df1a1d222@samsung.com>
-Date:   Fri, 24 May 2019 13:58:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        Fri, 24 May 2019 09:14:59 -0400
+Received: by mail-wm1-f66.google.com with SMTP id e19so1911784wme.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 24 May 2019 06:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Jxhy/ZRQVu0N4aJfmO4/71R3nY5TFqXIBTeivwXcm7c=;
+        b=oODzF+T/DBIACYMaX7aHy66ZJ0K51vFiAnrjhIknXiU2IQxFg913Gu6Cg+FlRRfiuh
+         S5GUjihxQFm4xR1q+lidtwGrtLoYHDoRB9hOBOrlcGKDVlDGAmF1tjgPI4gIsGWyCfpU
+         kj9Fx6b6VMOCHWPFMrUPO4naNdGs2tipdpQbor14GkrMjZ9fVkRgrjJcHI70rfk8C6Xs
+         sgKAF0Ya9dy5GL+WK2/X7yT2JGMT53WKaWWlnMxgWYNNOFCs4n2WABHH265It5ZteviM
+         p51rXRXpCbHSTYRfHtMmHnMNccAMNwDcckfWvui/KRYnthGnbUDkPRRMp0QrMty72Sip
+         +vWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Jxhy/ZRQVu0N4aJfmO4/71R3nY5TFqXIBTeivwXcm7c=;
+        b=cl1qKZrl5APEOsy2TnJJMliKa9HUKNnHC/+ecCwnsGY1bao7jKy1BD83kbFSSoyqBU
+         uZUnIFLWPydJDs3yUqWEsvQb2cYD5iqJ4p9lKIQJcd6Yva2qffEnxsHM7OK+HXXAdNzR
+         66FijzzoxWjeQBtFzLaXAgeCfPQk57q+hirxVpTioXtK14EP82NpCGp0rIkqp5tJHxeM
+         +hU0H0GjaTb8u9MidlQbGOBRJUyNrYU1axbeBS760zeFsDy7vb4qQlq1ncygjI0E6GOV
+         KdZfaE4Wg26VvH+VH1xJbTDCoMmjbhMgyMeGmS1S0Eltujd47uiTtCl9oRFuw7j4rVeB
+         nNJQ==
+X-Gm-Message-State: APjAAAULC6chNVUtX33QUiGU4/Yt/jctJ60k7LhGqFmKG8Mbg2DfKC3Y
+        YI+6GR82tP8Q333xAe+bpA/x8g==
+X-Google-Smtp-Source: APXvYqwi0SONwzrBG+bKNWxlmxVsSZIFFN9uvG5c+wwCuUu9sceMvEKZ4iR2jWYn7FUUKI4fD4enyw==
+X-Received: by 2002:a7b:cb84:: with SMTP id m4mr3870520wmi.50.1558703695698;
+        Fri, 24 May 2019 06:14:55 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id v184sm3859002wma.6.2019.05.24.06.14.54
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 24 May 2019 06:14:54 -0700 (PDT)
+Date:   Fri, 24 May 2019 14:14:53 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Richard Purdie <rpurdie@rpsys.net>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 24/33] Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
+Message-ID: <20190524131453.e6mefygqyg46jeuf@holly.lan>
+References: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
+ <20190524085354.27411-25-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpjleLIzCtJLcpLzFFi42LZduzned2CO89jDFau4be48vU9m8WJvg+s
-        Fpd3zWFzYPa4332cyePzJrkApigum5TUnMyy1CJ9uwSujBdnJzIV7NarWH6gi7mB8aRqFyMn
-        h4SAicTayYuZuhi5OIQEVjBK/Jj2nAXC+cIoseTZcSjnM6PE3hm32WBaXs+czw5iCwksZ5T4
-        cN8aougto8Sj3Q1MIAk2ASuJie2rGEFsYQE3iTW3L4LFRQQSJFZMnwEW5xWwk7i/4yEziM0i
-        oCrxYcMWsLioQITE/WMbWCFqBCVOznzCAmIzC4hL3HoynwnClpfY/nYOM8RBt9kkLh706mLk
-        ALJdJK50uUKEhSVeHd/CDmHLSPzfOR/sTQmBdYwSfzteMEM42xkllk/+B/WZtcTh4xdZQQYx
-        C2hKrN+lDxF2lHi2agoTxHw+iRtvBSFO4JOYtG06M0SYV6KjTQiiWk1iw7INbDBru3auhLrS
-        Q2JT80I2SLDFSpxs/8I8gVFhFpInZyF5chaSJ2ch3LOAkWUVo3hqaXFuemqxYV5quV5xYm5x
-        aV66XnJ+7iZGYOo4/e/4px2MXy8lHWIU4GBU4uFNuPw8Rog1say4MvcQowQHs5IIb+z+ZzFC
-        vCmJlVWpRfnxRaU5qcWHGKU5WJTEeasZHkQLCaQnlqRmp6YWpBbBZJk4OKUaGCN9mfo+VV4y
-        +xDW3CGk+Wha6jLl2pWnr1v/adD62CZS36++2GB2Q+uSfT8dUhiKCr4febo8vt9utalRhExR
-        ZcKj3LwtEUwLWd7k7pveG9z7l39m7yaHZ6ekuLZ3bnw2S8dH8/n2irNpoX1pDsYndXasPTux
-        ueH+2/snyz5y/0mUk93A5aMfoMRSnJFoqMVcVJwIACJzcVkZAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKLMWRmVeSWpSXmKPExsVy+t/xu7r5d57HGJzZLmRx5et7NosTfR9Y
-        LS7vmsPmwOxxv/s4k8fnTXIBTFF6NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkam
-        Svp2NimpOZllqUX6dgl6GS/OTmQq2K1XsfxAF3MD40nVLkZODgkBE4nXM+ezdzFycQgJLGWU
-        6Ft0n62LkQMoISNxfH0ZRI2wxJ9rXWwQNa8ZJTqXbWcGSbAJWElMbF/FCGILC7hJrLl9kQnE
-        FhFIkHj6ej4biM0rYCdxf8dDsHoWAVWJDxu2gNWLCkRInHm/ggWiRlDi5MwnYDazgLrEn3mX
-        mCFscYlbT+YzQdjyEtvfzmGewMg/C0nLLCQts5C0zELSsoCRZRWjSGppcW56brGRXnFibnFp
-        Xrpecn7uJkZgkG879nPLDsaud8GHGAU4GJV4eBMuP48RYk0sK67MPcQowcGsJMIbu/9ZjBBv
-        SmJlVWpRfnxRaU5q8SFGU6CHJjJLiSbnAyMwryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQQHpi
-        SWp2ampBahFMHxMHp1QDo8hDwb7pseqcmunOC68UXP/Pt1vb/JqQg1Tg3tRJXDkWwXGqu/fk
-        tLHe+Fx59/S/HbK3T59w7q2yZnh8RfuQK0tG0PsprZaTDbbs73WYK7J/La8em7r1NNFFc7nW
-        3zhz5vWWjekeHjuOzbzztZ99U87pIyyZKjyXO2dFJ8y/o8TU7eg0/6uLhxJLcUaioRZzUXEi
-        AGN2KFOIAgAA
-X-CMS-MailID: 20190524115839eucas1p135f0a6814fa1a163d903c60e602723f6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190524115839eucas1p135f0a6814fa1a163d903c60e602723f6
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190524115839eucas1p135f0a6814fa1a163d903c60e602723f6
-References: <CGME20190524115839eucas1p135f0a6814fa1a163d903c60e602723f6@eucas1p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190524085354.27411-25-daniel.vetter@ffwll.ch>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add COMPILE_TEST support to pvr2fb driver for better compile
-testing coverage.
+On Fri, May 24, 2019 at 10:53:45AM +0200, Daniel Vetter wrote:
+> This reverts commit 994efacdf9a087b52f71e620b58dfa526b0cf928.
+> 
+> The justification is that if hw blanking fails (i.e. fbops->fb_blank)
+> fails, then we still want to shut down the backlight. Which is exactly
+> _not_ what fb_blank() does and so rather inconsistent if we end up
+> with different behaviour between fbcon and direct fbdev usage. Given
+> that the entire notifier maze is getting in the way anyway I figured
+> it's simplest to revert this not well justified commit.
+> 
+> v2: Add static inline to the dummy version.
+> 
+> Cc: Richard Purdie <rpurdie@rpsys.net>
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: Yisheng Xie <ysxie@foxmail.com>
+> Cc: linux-fbdev@vger.kernel.org
 
-While at it:
+Hi Daniel
 
-- mark pvr2fb_interrupt() and pvr2fb_common_init() with
-  __maybe_unused tag (to silence build warnings when
-  !SH_DREAMCAST)
+When this goes round again could you add me to the covering letter?
 
-- convert mmio_base in struct pvr2fb_par to 'void __iomem *'
-  from 'unsigned long' (needed to silence build warnings on
-  ARM).
+I looked at all three of the patches and no objections on my side but
+I'm reluctant to send out acks because I'm not sure I understood the
+wider picture well enough.
 
-- split pvr2_get_param() on pvr2_get_param_name() and
-  pvr2_get_param_val() (needed to silence build warnings on
-  x86).
 
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
-v3: fix 'space prohibited before that close parenthesis ')'
-    checkpatch errors
-v2: fix build warnings on x86 reported by kbuild test robot
+Daniel.
 
-patch #1/2 is unchanged so I'm not sending it again
 
- drivers/video/fbdev/Kconfig  |    3 +-
- drivers/video/fbdev/pvr2fb.c |   61 +++++++++++++++++++++++--------------------
- 2 files changed, 36 insertions(+), 28 deletions(-)
-
-Index: b/drivers/video/fbdev/Kconfig
-===================================================================
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -807,7 +807,8 @@ config FB_XVR1000
- 
- config FB_PVR2
- 	tristate "NEC PowerVR 2 display support"
--	depends on FB && SH_DREAMCAST
-+	depends on FB && HAS_IOMEM
-+	depends on SH_DREAMCAST || COMPILE_TEST
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-Index: b/drivers/video/fbdev/pvr2fb.c
-===================================================================
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -139,7 +139,7 @@ static struct pvr2fb_par {
- 	unsigned char is_doublescan;	/* Are scanlines output twice? (doublescan) */
- 	unsigned char is_lowres;	/* Is horizontal pixel-doubling enabled? */
- 
--	unsigned long mmio_base;	/* MMIO base */
-+	void __iomem *mmio_base;	/* MMIO base */
- 	u32 palette[16];
- } *currentpar;
- 
-@@ -325,9 +325,9 @@ static int pvr2fb_setcolreg(unsigned int
-  * anything if the cable type has been overidden (via "cable:XX").
-  */
- 
--#define PCTRA 0xff80002c
--#define PDTRA 0xff800030
--#define VOUTC 0xa0702c00
-+#define PCTRA ((void __iomem *)0xff80002c)
-+#define PDTRA ((void __iomem *)0xff800030)
-+#define VOUTC ((void __iomem *)0xa0702c00)
- 
- static int pvr2_init_cable(void)
- {
-@@ -619,7 +619,7 @@ static void pvr2_do_blank(void)
- 	is_blanked = do_blank > 0 ? do_blank : 0;
- }
- 
--static irqreturn_t pvr2fb_interrupt(int irq, void *dev_id)
-+static irqreturn_t __maybe_unused pvr2fb_interrupt(int irq, void *dev_id)
- {
- 	struct fb_info *info = dev_id;
- 
-@@ -722,23 +722,30 @@ static struct fb_ops pvr2fb_ops = {
- 	.fb_imageblit	= cfb_imageblit,
- };
- 
--static int pvr2_get_param(const struct pvr2_params *p, const char *s, int val,
--			  int size)
-+static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
-+			      int size)
- {
- 	int i;
- 
--	for (i = 0 ; i < size ; i++ ) {
--		if (s != NULL) {
--			if (!strncasecmp(p[i].name, s, strlen(s)))
--				return p[i].val;
--		} else {
--			if (p[i].val == val)
--				return (int)p[i].name;
--		}
-+	for (i = 0 ; i < size; i++) {
-+		if (!strncasecmp(p[i].name, s, strlen(s)))
-+			return p[i].val;
- 	}
- 	return -1;
- }
- 
-+static char *pvr2_get_param_name(const struct pvr2_params *p, int val,
-+			  int size)
-+{
-+	int i;
-+
-+	for (i = 0 ; i < size; i++) {
-+		if (p[i].val == val)
-+			return p[i].name;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * pvr2fb_common_init
-  *
-@@ -757,7 +764,7 @@ static int pvr2_get_param(const struct p
-  * in for flexibility anyways. Who knows, maybe someone has tv-out on a
-  * PCI-based version of these things ;-)
-  */
--static int pvr2fb_common_init(void)
-+static int __maybe_unused pvr2fb_common_init(void)
- {
- 	struct pvr2fb_par *par = currentpar;
- 	unsigned long modememused, rev;
-@@ -770,8 +777,8 @@ static int pvr2fb_common_init(void)
- 		goto out_err;
- 	}
- 
--	par->mmio_base = (unsigned long)ioremap_nocache(pvr2_fix.mmio_start,
--							pvr2_fix.mmio_len);
-+	par->mmio_base = ioremap_nocache(pvr2_fix.mmio_start,
-+					 pvr2_fix.mmio_len);
- 	if (!par->mmio_base) {
- 		printk(KERN_ERR "pvr2fb: Failed to remap mmio space\n");
- 		goto out_err;
-@@ -819,8 +826,8 @@ static int pvr2fb_common_init(void)
- 		fb_info->var.xres, fb_info->var.yres,
- 		fb_info->var.bits_per_pixel,
- 		get_line_length(fb_info->var.xres, fb_info->var.bits_per_pixel),
--		(char *)pvr2_get_param(cables, NULL, cable_type, 3),
--		(char *)pvr2_get_param(outputs, NULL, video_output, 3));
-+		pvr2_get_param_name(cables, cable_type, 3),
-+		pvr2_get_param_name(outputs, video_output, 3));
- 
- #ifdef CONFIG_SH_STORE_QUEUES
- 	fb_notice(fb_info, "registering with SQ API\n");
-@@ -838,7 +845,7 @@ out_err:
- 	if (fb_info->screen_base)
- 		iounmap(fb_info->screen_base);
- 	if (par->mmio_base)
--		iounmap((void *)par->mmio_base);
-+		iounmap(par->mmio_base);
- 
- 	return -ENXIO;
- }
-@@ -905,8 +912,8 @@ static void __exit pvr2fb_dc_exit(void)
- 		fb_info->screen_base = NULL;
- 	}
- 	if (currentpar->mmio_base) {
--		iounmap((void *)currentpar->mmio_base);
--		currentpar->mmio_base = 0;
-+		iounmap(currentpar->mmio_base);
-+		currentpar->mmio_base = NULL;
- 	}
- 
- 	free_irq(HW_EVENT_VSYNC, fb_info);
-@@ -955,8 +962,8 @@ static void pvr2fb_pci_remove(struct pci
- 		fb_info->screen_base = NULL;
- 	}
- 	if (currentpar->mmio_base) {
--		iounmap((void *)currentpar->mmio_base);
--		currentpar->mmio_base = 0;
-+		iounmap(currentpar->mmio_base);
-+		currentpar->mmio_base = NULL;
- 	}
- 
- 	pci_release_regions(pdev);
-@@ -1027,9 +1034,9 @@ static int __init pvr2fb_setup(char *opt
- 	}
- 
- 	if (*cable_arg)
--		cable_type = pvr2_get_param(cables, cable_arg, 0, 3);
-+		cable_type = pvr2_get_param_val(cables, cable_arg, 3);
- 	if (*output_arg)
--		video_output = pvr2_get_param(outputs, output_arg, 0, 3);
-+		video_output = pvr2_get_param_val(outputs, output_arg, 3);
- 
- 	return 0;
- }
+> ---
+>  drivers/video/backlight/backlight.c |  2 +-
+>  drivers/video/fbdev/core/fbcon.c    | 14 +-------------
+>  drivers/video/fbdev/core/fbmem.c    |  1 +
+>  include/linux/fb.h                  |  4 +---
+>  include/linux/fbcon.h               |  2 ++
+>  5 files changed, 6 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/backlight.c b/drivers/video/backlight/backlight.c
+> index deb824bef6e2..c55590ec0057 100644
+> --- a/drivers/video/backlight/backlight.c
+> +++ b/drivers/video/backlight/backlight.c
+> @@ -46,7 +46,7 @@ static int fb_notifier_callback(struct notifier_block *self,
+>  	int fb_blank = 0;
+>  
+>  	/* If we aren't interested in this event, skip it immediately ... */
+> -	if (event != FB_EVENT_BLANK && event != FB_EVENT_CONBLANK)
+> +	if (event != FB_EVENT_BLANK)
+>  		return 0;
+>  
+>  	bd = container_of(self, struct backlight_device, fb_notif);
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index 259cdd118475..d9f545f1a81b 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -2350,8 +2350,6 @@ static int fbcon_switch(struct vc_data *vc)
+>  static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+>  				int blank)
+>  {
+> -	struct fb_event event;
+> -
+>  	if (blank) {
+>  		unsigned short charmask = vc->vc_hi_font_mask ?
+>  			0x1ff : 0xff;
+> @@ -2362,13 +2360,6 @@ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+>  		fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
+>  		vc->vc_video_erase_char = oldc;
+>  	}
+> -
+> -
+> -	lock_fb_info(info);
+> -	event.info = info;
+> -	event.data = &blank;
+> -	fb_notifier_call_chain(FB_EVENT_CONBLANK, &event);
+> -	unlock_fb_info(info);
+>  }
+>  
+>  static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch)
+> @@ -3240,7 +3231,7 @@ int fbcon_fb_registered(struct fb_info *info)
+>  	return ret;
+>  }
+>  
+> -static void fbcon_fb_blanked(struct fb_info *info, int blank)
+> +void fbcon_fb_blanked(struct fb_info *info, int blank)
+>  {
+>  	struct fbcon_ops *ops = info->fbcon_par;
+>  	struct vc_data *vc;
+> @@ -3344,9 +3335,6 @@ static int fbcon_event_notify(struct notifier_block *self,
+>  		con2fb = event->data;
+>  		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
+>  		break;
+> -	case FB_EVENT_BLANK:
+> -		fbcon_fb_blanked(info, *(int *)event->data);
+> -		break;
+>  	case FB_EVENT_REMAP_ALL_CONSOLE:
+>  		idx = info->node;
+>  		fbcon_remap_all(idx);
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index ddc0c16b8bbf..9366fbe99a58 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1068,6 +1068,7 @@ fb_blank(struct fb_info *info, int blank)
+>  	event.data = &blank;
+>  
+>  	early_ret = fb_notifier_call_chain(FB_EARLY_EVENT_BLANK, &event);
+> +	fbcon_fb_blanked(info, blank);
+>  
+>  	if (info->fbops->fb_blank)
+>   		ret = info->fbops->fb_blank(blank, info);
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index 0d86aa31bf8d..1e66fac3124f 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -137,12 +137,10 @@ struct fb_cursor_user {
+>  #define FB_EVENT_GET_CONSOLE_MAP        0x07
+>  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
+>  #define FB_EVENT_SET_CONSOLE_MAP        0x08
+> -/*      A hardware display blank change occurred */
+> +/*      A display blank is requested       */
+>  #define FB_EVENT_BLANK                  0x09
+>  /*      Private modelist is to be replaced */
+>  #define FB_EVENT_MODE_CHANGE_ALL	0x0B
+> -/*	A software display blank change occurred */
+> -#define FB_EVENT_CONBLANK               0x0C
+>  /*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
+>  #define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
+>  /*      A hardware display blank early change occurred */
+> diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
+> index 305e4f2eddac..d67d7ec51ef9 100644
+> --- a/include/linux/fbcon.h
+> +++ b/include/linux/fbcon.h
+> @@ -14,6 +14,7 @@ int fbcon_mode_deleted(struct fb_info *info,
+>  void fbcon_new_modelist(struct fb_info *info);
+>  void fbcon_get_requirement(struct fb_info *info,
+>  			   struct fb_blit_caps *caps);
+> +void fbcon_fb_blanked(struct fb_info *info, int blank);
+>  #else
+>  static inline void fb_console_init(void) {}
+>  static inline void fb_console_exit(void) {}
+> @@ -27,6 +28,7 @@ static inline int fbcon_mode_deleted(struct fb_info *info,
+>  static inline void fbcon_new_modelist(struct fb_info *info) {}
+>  static inline void fbcon_get_requirement(struct fb_info *info,
+>  					 struct fb_blit_caps *caps) {}
+> +static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
+>  #endif
+>  
+>  #endif /* _LINUX_FBCON_H */
+> -- 
+> 2.20.1
+> 
