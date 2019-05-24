@@ -2,207 +2,287 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6438293DE
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 May 2019 10:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27943297B2
+	for <lists+linux-fbdev@lfdr.de>; Fri, 24 May 2019 13:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390224AbfEXIym (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 24 May 2019 04:54:42 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:34392 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390202AbfEXIyl (ORCPT
+        id S2391118AbfEXLz4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 24 May 2019 07:55:56 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:42666 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390743AbfEXLz4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 24 May 2019 04:54:41 -0400
-Received: by mail-ed1-f66.google.com with SMTP id p27so13377691eda.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 24 May 2019 01:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yvJfpAYuex1ZzOWAPU6Riy4B+TLlFKSikZdtVIlcEvw=;
-        b=HUdmHgmj6xKTF/IjmxdZCCQ8CBeV1rzmE0mINDeSFn9Qneug/fJWEvLp96IRv6kfvC
-         945nj1FkujWD3gaC8/RWS8thQOvrVBUhwZvbngFiPZohDzX0b7uHbmyyJhdhJ29mwuwx
-         FLVEnq5iGLC4vngpjPDvEq9wcH4Tf/lzfBzOs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yvJfpAYuex1ZzOWAPU6Riy4B+TLlFKSikZdtVIlcEvw=;
-        b=SmYhzAMTwJifcLjDFupWbxoR6nJ5/pzhBkL9Vfn8zMO34gcXhPrbV6WLx2iwxVJObU
-         1W7+EaFSzhIGU//MqyJJa+GqI+rA5tJf5caKLRvUxoBMr3KTui5tHDErYP/xX7bXKNGQ
-         hgQwfUTK0lRIBCSp5ZUClWaUUAhBWY31LzNBHHZwi8OdHDNEciHMBsK6iEsVqm3zQ8IP
-         scWtUfP/96/sHH7olF97EB7fYPVaPoKjVOd+SszaQbkfd1CkaPpb4QN6C6WVlbR616DV
-         nb4awAuNB0cj9cYzg/NuTF4/Q+9mVcT8IVRoGjpz+QqgHALgJ66lK+lh+QvErRCNa+/V
-         CZQA==
-X-Gm-Message-State: APjAAAWGAvgNEPePH0Ll4gshJVuIzbZG1ibLqtms9KTkGFdmvD8DPv2a
-        aQ29dFACUsLkYj3RQjEEEWQrsQ==
-X-Google-Smtp-Source: APXvYqyxJ3OtlgIvW239dvLOeioh8c4KEAqEFm7ic6IPrLWep6WRTnj3exef/quNNUVmDRuYnFB2hA==
-X-Received: by 2002:a17:906:25c5:: with SMTP id n5mr49943586ejb.110.1558688079930;
-        Fri, 24 May 2019 01:54:39 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id 96sm567082edq.68.2019.05.24.01.54.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 May 2019 01:54:39 -0700 (PDT)
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Lukas Wunner <lukas@wunner.de>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org
-Subject: [PATCH 29/33] vgaswitcheroo: call fbcon_remap_all directly
-Date:   Fri, 24 May 2019 10:53:50 +0200
-Message-Id: <20190524085354.27411-30-daniel.vetter@ffwll.ch>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
-References: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
+        Fri, 24 May 2019 07:55:56 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190524115554euoutp021137a3b42cb47a6170f57030c57acc3e~hnHDkAqbV2383523835euoutp02P
+        for <linux-fbdev@vger.kernel.org>; Fri, 24 May 2019 11:55:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190524115554euoutp021137a3b42cb47a6170f57030c57acc3e~hnHDkAqbV2383523835euoutp02P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1558698954;
+        bh=ABqkO9dr5QlBiYgkJtRqhKZ1Tq/7+M7c1WoLkY6X0TA=;
+        h=From:Subject:To:Date:References:From;
+        b=EwweVXR/iraj7fHUZ/Aq+2ldY0PRx9OTDsPbNrEKFvv/2Kb4bMVsnY5ejFxNyHlxl
+         50h+sulwUeXrSZdQABX8kS4iD5Fp0UfAvnXj3CyArYRlX0jrMc6PpeUFioFABkjSB3
+         YB3eWVct/dpMj+BKHhZ+v97hzBIgyc1mbTKBEeEU=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190524115554eucas1p12a4c4b881103feb9d0a9f51facecaeaa~hnHDPn_jL1979619796eucas1p1b;
+        Fri, 24 May 2019 11:55:54 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 02.F6.04377.ACBD7EC5; Fri, 24
+        May 2019 12:55:54 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190524115553eucas1p2f900901e65f06ec33e478d433f96e34f~hnHCSHdSq0669206692eucas1p2D;
+        Fri, 24 May 2019 11:55:53 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190524115553eusmtrp23fa8bd166566a05d1dfba220843011ae~hnHCEHcGg2266222662eusmtrp2U;
+        Fri, 24 May 2019 11:55:53 +0000 (GMT)
+X-AuditID: cbfec7f4-12dff70000001119-a8-5ce7dbca658b
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id C2.D5.04146.9CBD7EC5; Fri, 24
+        May 2019 12:55:53 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190524115552eusmtip1478386dc08562181a9dfba06b617e1b4~hnHB3sWDl2814828148eusmtip1C;
+        Fri, 24 May 2019 11:55:52 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH v2 2/2] video: fbdev: pvr2fb: add COMPILE_TEST support
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Message-ID: <a8ba0a36-b9b3-4039-5f49-ddc1d900a9d1@samsung.com>
+Date:   Fri, 24 May 2019 13:55:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgleLIzCtJLcpLzFFi42LZduznOd1Tt5/HGPz7xW5x5et7NosTfR9Y
+        LS7vmsPmwOxxv/s4k8fnTXIBTFFcNimpOZllqUX6dglcGfN2mRW81K34t3oScwNjm2oXIyeH
+        hICJRO+JvcxdjFwcQgIrGCX2/ellhXC+MEoc/PkdKvOZUWLFzpfMMC2rvqxjgUgsZ5R43boY
+        quUto8SZzlXsIFVsAlYSE9tXMYLYwgJuEqfm7AGLiwgkSKyYPgMszitgJzH3yzGwOIuAqsSx
+        459ZQGxRgQiJ+8c2sELUCEqcnPkELM4sIC5x68l8JghbXmL72zlg50kI3GaT+DhzCiPEeS4S
+        e39PYIWwhSVeHd/CDmHLSPzfCdIM0rCOUeJvxwuo7u2MEssn/2ODqLKWOHz8IlA3B9AKTYn1
+        u/Qhwo4S0468YQYJSwjwSdx4KwhxBJ/EpG3TocK8Eh1tQhDVahIblm1gg1nbtXMlNOQ8JLqe
+        3waLCwnESux+95V1AqPCLCRvzkLy5iwkb85CuGcBI8sqRvHU0uLc9NRio7zUcr3ixNzi0rx0
+        veT83E2MwPRx+t/xLzsYd/1JOsQowMGoxMObcPl5jBBrYllxZe4hRgkOZiUR3tj9z2KEeFMS
+        K6tSi/Lji0pzUosPMUpzsCiJ81YzPIgWEkhPLEnNTk0tSC2CyTJxcEo1MGq+FZvqPfd5nHPP
+        eqa28wwr9xQ3e2dy3SvL+5ygdDuM7+WGqf8si/5Ie3W/etrZtftbfOHC6jylbW6LyypuR0g1
+        fzbP0Fzvy98esOXIo86vFmePfU8RjGma+ONR4Sf+PRbrt7ssOmvT9vdI5O3yU3JlNe1FwQ8Y
+        Vvp1xjXm/vpl+/voWbHMRUosxRmJhlrMRcWJAGpuuiobAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrCLMWRmVeSWpSXmKPExsVy+t/xu7onbz+PMXh+j9Xiytf3bBYn+j6w
+        WlzeNYfNgdnjfvdxJo/Pm+QCmKL0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxM
+        lfTtbFJSczLLUov07RL0MubtMit4qVvxb/Uk5gbGNtUuRk4OCQETiVVf1rF0MXJxCAksZZTY
+        dqWDqYuRAyghI3F8fRlEjbDEn2tdbBA1rxkl3n25xASSYBOwkpjYvooRxBYWcJM4NWcPO4gt
+        IpAg8fT1fDYQm1fATmLul2NgcRYBVYljxz+zgNiiAhESZ96vYIGoEZQ4OfMJmM0soC7xZ94l
+        ZghbXOLWk/lMELa8xPa3c5gnMPLPQtIyC0nLLCQts5C0LGBkWcUoklpanJueW2yoV5yYW1ya
+        l66XnJ+7iREY4tuO/dy8g/HSxuBDjAIcjEo8vAmXn8cIsSaWFVfmHmKU4GBWEuGN3f8sRog3
+        JbGyKrUoP76oNCe1+BCjKdBDE5mlRJPzgfGXVxJvaGpobmFpaG5sbmxmoSTO2yFwMEZIID2x
+        JDU7NbUgtQimj4mDU6qBUaGvX37t2dcaD+cyZsktsGU49uWl7r49Gy1nNUyvP7KzoUu64b2l
+        0uuk3Zrn0l/yGQdbfkpacuDMjm2HFESVO4qCl9XsTOeIFrL6sl9ttchEZvfZtowPVqd9l9Nh
+        ObhiUatPzLfHsi9PRLvVTndgF5oePCuiSnP16i9XZH1/K/1RFNm2lMXysBJLcUaioRZzUXEi
+        AMIc+qOHAgAA
+X-CMS-MailID: 20190524115553eucas1p2f900901e65f06ec33e478d433f96e34f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190524115553eucas1p2f900901e65f06ec33e478d433f96e34f
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190524115553eucas1p2f900901e65f06ec33e478d433f96e34f
+References: <CGME20190524115553eucas1p2f900901e65f06ec33e478d433f96e34f@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-While at it, clean up the interface a bit and push the console locking
-into fbcon.c.
+Add COMPILE_TEST support to pvr2fb driver for better compile
+testing coverage.
 
-v2: Remove now outdated comment (Lukas).
+While at it:
 
-v3: Forgot to add static inline to the dummy function.
+- mark pvr2fb_interrupt() and pvr2fb_common_init() with
+  __maybe_unused tag (to silence build warnings when
+  !SH_DREAMCAST)
 
-Acked-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Yisheng Xie <ysxie@foxmail.com>
-Cc: linux-fbdev@vger.kernel.org
+- convert mmio_base in struct pvr2fb_par to 'void __iomem *'
+  from 'unsigned long' (needed to silence build warnings on
+  ARM).
+
+- split pvr2_get_param() on pvr2_get_param_name() and
+  pvr2_get_param_val() (needed to silence build warnings on
+  x86).
+
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/gpu/vga/vga_switcheroo.c | 11 +++--------
- drivers/video/fbdev/core/fbcon.c | 14 +++++---------
- include/linux/fb.h               |  2 --
- include/linux/fbcon.h            |  2 ++
- 4 files changed, 10 insertions(+), 19 deletions(-)
+v2: fix build warnings on x86 reported by kbuild test robot
 
-diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
-index a132c37d7334..65d7541c413a 100644
---- a/drivers/gpu/vga/vga_switcheroo.c
-+++ b/drivers/gpu/vga/vga_switcheroo.c
-@@ -35,6 +35,7 @@
- #include <linux/debugfs.h>
- #include <linux/fb.h>
- #include <linux/fs.h>
-+#include <linux/fbcon.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/pm_domain.h>
-@@ -736,14 +737,8 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
- 	if (!active->driver_power_control)
- 		set_audio_state(active->id, VGA_SWITCHEROO_OFF);
+patch #1/2 is unchanged so I'm not sending it again
+
+ drivers/video/fbdev/Kconfig  |    3 +-
+ drivers/video/fbdev/pvr2fb.c |   61 +++++++++++++++++++++++--------------------
+ 2 files changed, 36 insertions(+), 28 deletions(-)
+
+Index: b/drivers/video/fbdev/Kconfig
+===================================================================
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -807,7 +807,8 @@ config FB_XVR1000
  
--	if (new_client->fb_info) {
--		struct fb_event event;
--
--		console_lock();
--		event.info = new_client->fb_info;
--		fb_notifier_call_chain(FB_EVENT_REMAP_ALL_CONSOLE, &event);
--		console_unlock();
--	}
-+	if (new_client->fb_info)
-+		fbcon_remap_all(new_client->fb_info);
+ config FB_PVR2
+ 	tristate "NEC PowerVR 2 display support"
+-	depends on FB && SH_DREAMCAST
++	depends on FB && HAS_IOMEM
++	depends on SH_DREAMCAST || COMPILE_TEST
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+Index: b/drivers/video/fbdev/pvr2fb.c
+===================================================================
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -139,7 +139,7 @@ static struct pvr2fb_par {
+ 	unsigned char is_doublescan;	/* Are scanlines output twice? (doublescan) */
+ 	unsigned char is_lowres;	/* Is horizontal pixel-doubling enabled? */
  
- 	mutex_lock(&vgasr_priv.mux_hw_lock);
- 	ret = vgasr_priv.handler->switchto(new_client->id);
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index a07c261da53a..e08e984e2511 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -3149,17 +3149,16 @@ void fbcon_fb_unregistered(struct fb_info *info)
- 		do_unregister_con_driver(&fb_con);
- }
+-	unsigned long mmio_base;	/* MMIO base */
++	void __iomem *mmio_base;	/* MMIO base */
+ 	u32 palette[16];
+ } *currentpar;
  
--/* called with console_lock held */
--static void fbcon_remap_all(int idx)
-+void fbcon_remap_all(struct fb_info *info)
+@@ -325,9 +325,9 @@ static int pvr2fb_setcolreg(unsigned int
+  * anything if the cable type has been overidden (via "cable:XX").
+  */
+ 
+-#define PCTRA 0xff80002c
+-#define PDTRA 0xff800030
+-#define VOUTC 0xa0702c00
++#define PCTRA ((void __iomem *)0xff80002c)
++#define PDTRA ((void __iomem *)0xff800030)
++#define VOUTC ((void __iomem *)0xa0702c00)
+ 
+ static int pvr2_init_cable(void)
  {
--	int i;
--
--	WARN_CONSOLE_UNLOCKED();
-+	int i, idx = info->node;
- 
-+	console_lock();
- 	if (deferred_takeover) {
- 		for (i = first_fb_vc; i <= last_fb_vc; i++)
- 			con2fb_map_boot[i] = idx;
- 		fbcon_map_override();
-+		console_unlock();
- 		return;
- 	}
- 
-@@ -3172,6 +3171,7 @@ static void fbcon_remap_all(int idx)
- 		       first_fb_vc + 1, last_fb_vc + 1);
- 		info_idx = idx;
- 	}
-+	console_unlock();
+@@ -619,7 +619,7 @@ static void pvr2_do_blank(void)
+ 	is_blanked = do_blank > 0 ? do_blank : 0;
  }
  
- #ifdef CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
-@@ -3337,10 +3337,6 @@ static int fbcon_event_notify(struct notifier_block *self,
- 		con2fb = event->data;
- 		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
- 		break;
--	case FB_EVENT_REMAP_ALL_CONSOLE:
--		idx = info->node;
--		fbcon_remap_all(idx);
--		break;
- 	}
- 	return ret;
- }
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index f9c212f9b661..25e4b885f5b3 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -139,8 +139,6 @@ struct fb_cursor_user {
- #define FB_EVENT_SET_CONSOLE_MAP        0x08
- /*      A display blank is requested       */
- #define FB_EVENT_BLANK                  0x09
--/*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
--#define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
- /*      A hardware display blank early change occurred */
- #define FB_EARLY_EVENT_BLANK		0x10
- /*      A hardware display blank revert early change occurred */
-diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-index de31eeb22c97..69f900d289b2 100644
---- a/include/linux/fbcon.h
-+++ b/include/linux/fbcon.h
-@@ -16,6 +16,7 @@ void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps);
- void fbcon_fb_blanked(struct fb_info *info, int blank);
- void fbcon_update_vcs(struct fb_info *info, bool all);
-+void fbcon_remap_all(struct fb_info *info);
- #else
- static inline void fb_console_init(void) {}
- static inline void fb_console_exit(void) {}
-@@ -31,6 +32,7 @@ static inline void fbcon_get_requirement(struct fb_info *info,
- 					 struct fb_blit_caps *caps) {}
- static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
- static inline void fbcon_update_vcs(struct fb_info *info, bool all) {}
-+static inline void fbcon_remap_all(struct fb_info *info) {}
- #endif
+-static irqreturn_t pvr2fb_interrupt(int irq, void *dev_id)
++static irqreturn_t __maybe_unused pvr2fb_interrupt(int irq, void *dev_id)
+ {
+ 	struct fb_info *info = dev_id;
  
- #endif /* _LINUX_FBCON_H */
--- 
-2.20.1
-
+@@ -722,23 +722,30 @@ static struct fb_ops pvr2fb_ops = {
+ 	.fb_imageblit	= cfb_imageblit,
+ };
+ 
+-static int pvr2_get_param(const struct pvr2_params *p, const char *s, int val,
+-			  int size)
++static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
++			      int size)
+ {
+ 	int i;
+ 
+-	for (i = 0 ; i < size ; i++ ) {
+-		if (s != NULL) {
+-			if (!strncasecmp(p[i].name, s, strlen(s)))
+-				return p[i].val;
+-		} else {
+-			if (p[i].val == val)
+-				return (int)p[i].name;
+-		}
++	for (i = 0 ; i < size; i++ ) {
++		if (!strncasecmp(p[i].name, s, strlen(s)))
++			return p[i].val;
+ 	}
+ 	return -1;
+ }
+ 
++static char *pvr2_get_param_name(const struct pvr2_params *p, int val,
++			  int size)
++{
++	int i;
++
++	for (i = 0 ; i < size; i++ ) {
++		if (p[i].val == val)
++			return p[i].name;
++	}
++	return NULL;
++}
++
+ /**
+  * pvr2fb_common_init
+  *
+@@ -757,7 +764,7 @@ static int pvr2_get_param(const struct p
+  * in for flexibility anyways. Who knows, maybe someone has tv-out on a
+  * PCI-based version of these things ;-)
+  */
+-static int pvr2fb_common_init(void)
++static int __maybe_unused pvr2fb_common_init(void)
+ {
+ 	struct pvr2fb_par *par = currentpar;
+ 	unsigned long modememused, rev;
+@@ -770,8 +777,8 @@ static int pvr2fb_common_init(void)
+ 		goto out_err;
+ 	}
+ 
+-	par->mmio_base = (unsigned long)ioremap_nocache(pvr2_fix.mmio_start,
+-							pvr2_fix.mmio_len);
++	par->mmio_base = ioremap_nocache(pvr2_fix.mmio_start,
++					 pvr2_fix.mmio_len);
+ 	if (!par->mmio_base) {
+ 		printk(KERN_ERR "pvr2fb: Failed to remap mmio space\n");
+ 		goto out_err;
+@@ -819,8 +826,8 @@ static int pvr2fb_common_init(void)
+ 		fb_info->var.xres, fb_info->var.yres,
+ 		fb_info->var.bits_per_pixel,
+ 		get_line_length(fb_info->var.xres, fb_info->var.bits_per_pixel),
+-		(char *)pvr2_get_param(cables, NULL, cable_type, 3),
+-		(char *)pvr2_get_param(outputs, NULL, video_output, 3));
++		pvr2_get_param_name(cables, cable_type, 3),
++		pvr2_get_param_name(outputs, video_output, 3));
+ 
+ #ifdef CONFIG_SH_STORE_QUEUES
+ 	fb_notice(fb_info, "registering with SQ API\n");
+@@ -838,7 +845,7 @@ out_err:
+ 	if (fb_info->screen_base)
+ 		iounmap(fb_info->screen_base);
+ 	if (par->mmio_base)
+-		iounmap((void *)par->mmio_base);
++		iounmap(par->mmio_base);
+ 
+ 	return -ENXIO;
+ }
+@@ -905,8 +912,8 @@ static void __exit pvr2fb_dc_exit(void)
+ 		fb_info->screen_base = NULL;
+ 	}
+ 	if (currentpar->mmio_base) {
+-		iounmap((void *)currentpar->mmio_base);
+-		currentpar->mmio_base = 0;
++		iounmap(currentpar->mmio_base);
++		currentpar->mmio_base = NULL;
+ 	}
+ 
+ 	free_irq(HW_EVENT_VSYNC, fb_info);
+@@ -955,8 +962,8 @@ static void pvr2fb_pci_remove(struct pci
+ 		fb_info->screen_base = NULL;
+ 	}
+ 	if (currentpar->mmio_base) {
+-		iounmap((void *)currentpar->mmio_base);
+-		currentpar->mmio_base = 0;
++		iounmap(currentpar->mmio_base);
++		currentpar->mmio_base = NULL;
+ 	}
+ 
+ 	pci_release_regions(pdev);
+@@ -1027,9 +1034,9 @@ static int __init pvr2fb_setup(char *opt
+ 	}
+ 
+ 	if (*cable_arg)
+-		cable_type = pvr2_get_param(cables, cable_arg, 0, 3);
++		cable_type = pvr2_get_param_val(cables, cable_arg, 3);
+ 	if (*output_arg)
+-		video_output = pvr2_get_param(outputs, output_arg, 0, 3);
++		video_output = pvr2_get_param_val(outputs, output_arg, 3);
+ 
+ 	return 0;
+ }
