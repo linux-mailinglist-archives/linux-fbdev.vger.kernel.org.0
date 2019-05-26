@@ -2,254 +2,38 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7135229B03
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 May 2019 17:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89582A7BC
+	for <lists+linux-fbdev@lfdr.de>; Sun, 26 May 2019 05:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389370AbfEXP3I (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 24 May 2019 11:29:08 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:33545 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389203AbfEXP3I (ORCPT
+        id S1727567AbfEZDcf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 25 May 2019 23:32:35 -0400
+Received: from sonic306-3.consmr.mail.bf2.yahoo.com ([74.6.132.42]:40747 "EHLO
+        sonic306-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727546AbfEZDcf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 24 May 2019 11:29:08 -0400
-Received: by mail-oi1-f194.google.com with SMTP id q186so7348521oia.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 24 May 2019 08:29:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=j6LiUDHmLNMJL+4xOXVrl0KZSP8UQ3q/8v3HIeXZa4Q=;
-        b=GZKgxYfvHViJg+GtXwZ63fb7Dtz+Gjazeal6NuCQl2rUlXAfsTzlUEvaxh7I2OLJRf
-         YGY6yqA6TZMJZVrxXRjk4Ogst5lN4hu7A80NXg65pod4C4wybftsuawGIL6J8Tepki+2
-         JJahQAwZbkF5isJJaGopDaLgbbQmxgiqedFFk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j6LiUDHmLNMJL+4xOXVrl0KZSP8UQ3q/8v3HIeXZa4Q=;
-        b=Z/5Vn9UAAFfNV/UscSdodf4nKdwgAMJiQM8Cew2FljGcng3lhbZ7wDB15NBCqvbHs5
-         8brNtHzplMmRr6WK5v78HjmayUY7SLaBbx/bKegcx1OYaBR2asdZBiMw3JyUPTufndwJ
-         322TgrFdOdPbC23wED+sBJVv3UoKFNr9LWgM4oE3l32G1OpSA8sPRCJ85X+oeZ10G79H
-         qgLE6q+JevckKKJ0wKgB/IT74ZtNv2CG3R8bhywTgwf7jD70y7j6Kig3U5Mv1Nyd7xq4
-         g/LYtBELxGw4fRnCaV3wtddsjh7QRDIPpPFDj+JtcWVZf0NsjiImXLdTCseFPWBcGx24
-         y8kg==
-X-Gm-Message-State: APjAAAWZK2iEoImMRrny5Fao4XfRwAt4/TNn/Epwoxqe6c7VcYT0wTSi
-        3ufjYOt1UNvGezQlMxT7bXrhjaMHMw36O+xqBG/tGA==
-X-Google-Smtp-Source: APXvYqxjAsxFJCzVTzFeKEiRjH5+dMurmhe6r4m4LS2anjP6J9CYiIQ4sgwxd0Kso3jQalJcQzcR9nGcQ+0bqRBz6ZE=
-X-Received: by 2002:aca:e4c8:: with SMTP id b191mr6978691oih.110.1558711747225;
- Fri, 24 May 2019 08:29:07 -0700 (PDT)
+        Sat, 25 May 2019 23:32:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1558841554; bh=F+kNJ6zo9H8bC59Ft83jy6EG9V1Sjm04KRFjgN3T4V4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=a/3LKZed8slOaTRy+wKNLH0t6/jg4+ft3hEm/heK15SrCNAhdOH3KildxczNjQ0GhbT4Px3EJhEoDhwi5c8rLR2+m4vckZbK/QMYVBdJnUGIas6CenqvXHT3qaOSjs2YDiys0dREvg1zhbSxyOqwwcvBfdOVh/FRgFMqlpMoT8AxP9I5nB22nzZh6ZybiJHzCGq+ysGcnQ9wW1ZA8MY14WNn0StzVlktI42cl6hXlFvVtbbfAm0Pv83BgX+vR4QodtpKyGLOJTYA7/M45SgWZjKxQckf702hyvw2lRPHwMaczSGx5vr3lQ0uChwN27pUqAEL1Sh3ZDUubRQeAGl7nw==
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.bf2.yahoo.com with HTTP; Sun, 26 May 2019 03:32:34 +0000
+Date:   Sun, 26 May 2019 03:22:28 +0000 (UTC)
+From:   Mr Monisha Panickar <mrmonishapanickar@gmail.com>
+Reply-To: Mr Monisha Panickar <mrmonishapanickar@hotmail.com>
+Message-ID: <2071742715.4922985.1558840948583@mail.yahoo.com>
+Subject: Dear Friend,  My Name is Mr Monisha Panickar,
 MIME-Version: 1.0
-References: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
- <20190524085354.27411-25-daniel.vetter@ffwll.ch> <20190524131453.e6mefygqyg46jeuf@holly.lan>
-In-Reply-To: <20190524131453.e6mefygqyg46jeuf@holly.lan>
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-Date:   Fri, 24 May 2019 17:28:55 +0200
-Message-ID: <CAKMK7uHWOY97FqyJ6FU1SYTgegKxm2A+R+X6Vjs0_zn1QGN3KQ@mail.gmail.com>
-Subject: Re: [PATCH 24/33] Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Richard Purdie <rpurdie@rpsys.net>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2071742715.4922985.1558840948583.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.13634 YahooMailBasic Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Daniel,
+Dear Friend,
 
-On Fri, May 24, 2019 at 3:14 PM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
->
-> On Fri, May 24, 2019 at 10:53:45AM +0200, Daniel Vetter wrote:
-> > This reverts commit 994efacdf9a087b52f71e620b58dfa526b0cf928.
-> >
-> > The justification is that if hw blanking fails (i.e. fbops->fb_blank)
-> > fails, then we still want to shut down the backlight. Which is exactly
-> > _not_ what fb_blank() does and so rather inconsistent if we end up
-> > with different behaviour between fbcon and direct fbdev usage. Given
-> > that the entire notifier maze is getting in the way anyway I figured
-> > it's simplest to revert this not well justified commit.
-> >
-> > v2: Add static inline to the dummy version.
-> >
-> > Cc: Richard Purdie <rpurdie@rpsys.net>
-> > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> > Cc: Lee Jones <lee.jones@linaro.org>
-> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > Cc: Hans de Goede <hdegoede@redhat.com>
-> > Cc: Yisheng Xie <ysxie@foxmail.com>
-> > Cc: linux-fbdev@vger.kernel.org
->
-> Hi Daniel
->
-> When this goes round again could you add me to the covering letter?
->
-> I looked at all three of the patches and no objections on my side but
-> I'm reluctant to send out acks because I'm not sure I understood the
-> wider picture well enough.
+My Name is Mr Monisha Panickar, i have a business transaction. I will be very glad if you can
+assist me to receive this sum of ( $22 Million dollars.) into your
+bank account for the benefit of our both families, reply me if you are interested in this business.
 
-It's one of these patch series with some many different subsystems and
-people you can't cc the cover to all of them or mailing lists start
-rejecting you because too many recipients. I tried to spam sufficient
-mailng lists, but I guess not enough.
-
-Cover letter of version one, which tries to explain the full big picture:
-
-https://lists.freedesktop.org/archives/dri-devel/2019-May/218362.html
-
-tldr; I have a multi-year plan to improve fbcon locking, because the
-current thing is a bit a mess.
-
-Cover letter of this version, where I detail a bit more the details
-fixed in this one here:
-
-https://lists.freedesktop.org/archives/dri-devel/2019-May/218984.html
-
-I can also bounce these to you if you want.
-
-Thanks, Daniel
-
->
->
-> Daniel.
->
->
-> > ---
-> >  drivers/video/backlight/backlight.c |  2 +-
-> >  drivers/video/fbdev/core/fbcon.c    | 14 +-------------
-> >  drivers/video/fbdev/core/fbmem.c    |  1 +
-> >  include/linux/fb.h                  |  4 +---
-> >  include/linux/fbcon.h               |  2 ++
-> >  5 files changed, 6 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/drivers/video/backlight/backlight.c b/drivers/video/backlight/backlight.c
-> > index deb824bef6e2..c55590ec0057 100644
-> > --- a/drivers/video/backlight/backlight.c
-> > +++ b/drivers/video/backlight/backlight.c
-> > @@ -46,7 +46,7 @@ static int fb_notifier_callback(struct notifier_block *self,
-> >       int fb_blank = 0;
-> >
-> >       /* If we aren't interested in this event, skip it immediately ... */
-> > -     if (event != FB_EVENT_BLANK && event != FB_EVENT_CONBLANK)
-> > +     if (event != FB_EVENT_BLANK)
-> >               return 0;
-> >
-> >       bd = container_of(self, struct backlight_device, fb_notif);
-> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> > index 259cdd118475..d9f545f1a81b 100644
-> > --- a/drivers/video/fbdev/core/fbcon.c
-> > +++ b/drivers/video/fbdev/core/fbcon.c
-> > @@ -2350,8 +2350,6 @@ static int fbcon_switch(struct vc_data *vc)
-> >  static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
-> >                               int blank)
-> >  {
-> > -     struct fb_event event;
-> > -
-> >       if (blank) {
-> >               unsigned short charmask = vc->vc_hi_font_mask ?
-> >                       0x1ff : 0xff;
-> > @@ -2362,13 +2360,6 @@ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
-> >               fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
-> >               vc->vc_video_erase_char = oldc;
-> >       }
-> > -
-> > -
-> > -     lock_fb_info(info);
-> > -     event.info = info;
-> > -     event.data = &blank;
-> > -     fb_notifier_call_chain(FB_EVENT_CONBLANK, &event);
-> > -     unlock_fb_info(info);
-> >  }
-> >
-> >  static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch)
-> > @@ -3240,7 +3231,7 @@ int fbcon_fb_registered(struct fb_info *info)
-> >       return ret;
-> >  }
-> >
-> > -static void fbcon_fb_blanked(struct fb_info *info, int blank)
-> > +void fbcon_fb_blanked(struct fb_info *info, int blank)
-> >  {
-> >       struct fbcon_ops *ops = info->fbcon_par;
-> >       struct vc_data *vc;
-> > @@ -3344,9 +3335,6 @@ static int fbcon_event_notify(struct notifier_block *self,
-> >               con2fb = event->data;
-> >               con2fb->framebuffer = con2fb_map[con2fb->console - 1];
-> >               break;
-> > -     case FB_EVENT_BLANK:
-> > -             fbcon_fb_blanked(info, *(int *)event->data);
-> > -             break;
-> >       case FB_EVENT_REMAP_ALL_CONSOLE:
-> >               idx = info->node;
-> >               fbcon_remap_all(idx);
-> > diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> > index ddc0c16b8bbf..9366fbe99a58 100644
-> > --- a/drivers/video/fbdev/core/fbmem.c
-> > +++ b/drivers/video/fbdev/core/fbmem.c
-> > @@ -1068,6 +1068,7 @@ fb_blank(struct fb_info *info, int blank)
-> >       event.data = &blank;
-> >
-> >       early_ret = fb_notifier_call_chain(FB_EARLY_EVENT_BLANK, &event);
-> > +     fbcon_fb_blanked(info, blank);
-> >
-> >       if (info->fbops->fb_blank)
-> >               ret = info->fbops->fb_blank(blank, info);
-> > diff --git a/include/linux/fb.h b/include/linux/fb.h
-> > index 0d86aa31bf8d..1e66fac3124f 100644
-> > --- a/include/linux/fb.h
-> > +++ b/include/linux/fb.h
-> > @@ -137,12 +137,10 @@ struct fb_cursor_user {
-> >  #define FB_EVENT_GET_CONSOLE_MAP        0x07
-> >  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
-> >  #define FB_EVENT_SET_CONSOLE_MAP        0x08
-> > -/*      A hardware display blank change occurred */
-> > +/*      A display blank is requested       */
-> >  #define FB_EVENT_BLANK                  0x09
-> >  /*      Private modelist is to be replaced */
-> >  #define FB_EVENT_MODE_CHANGE_ALL     0x0B
-> > -/*   A software display blank change occurred */
-> > -#define FB_EVENT_CONBLANK               0x0C
-> >  /*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
-> >  #define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
-> >  /*      A hardware display blank early change occurred */
-> > diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-> > index 305e4f2eddac..d67d7ec51ef9 100644
-> > --- a/include/linux/fbcon.h
-> > +++ b/include/linux/fbcon.h
-> > @@ -14,6 +14,7 @@ int fbcon_mode_deleted(struct fb_info *info,
-> >  void fbcon_new_modelist(struct fb_info *info);
-> >  void fbcon_get_requirement(struct fb_info *info,
-> >                          struct fb_blit_caps *caps);
-> > +void fbcon_fb_blanked(struct fb_info *info, int blank);
-> >  #else
-> >  static inline void fb_console_init(void) {}
-> >  static inline void fb_console_exit(void) {}
-> > @@ -27,6 +28,7 @@ static inline int fbcon_mode_deleted(struct fb_info *info,
-> >  static inline void fbcon_new_modelist(struct fb_info *info) {}
-> >  static inline void fbcon_get_requirement(struct fb_info *info,
-> >                                        struct fb_blit_caps *caps) {}
-> > +static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
-> >  #endif
-> >
-> >  #endif /* _LINUX_FBCON_H */
-> > --
-> > 2.20.1
-> >
-
-
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
+Mr Monisha Panickar
