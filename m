@@ -2,179 +2,169 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A72F2AD7C
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 May 2019 06:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91FCD2B29B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 May 2019 12:59:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725908AbfE0ENo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 May 2019 00:13:44 -0400
-Received: from mga05.intel.com ([192.55.52.43]:2278 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725847AbfE0ENo (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 May 2019 00:13:44 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 May 2019 21:13:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,517,1549958400"; 
-   d="scan'208";a="178711127"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 26 May 2019 21:13:42 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1hV713-000ANz-PE; Mon, 27 May 2019 12:13:41 +0800
-Date:   Mon, 27 May 2019 12:13:39 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     kbuild-all@01.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] video: fbdev: pvr2fb: add COMPILE_TEST support
-Message-ID: <201905271244.WaVc5BQS%lkp@intel.com>
-References: <2d2b283e-a5c5-3c94-423c-8cb085492921@samsung.com>
+        id S1725996AbfE0K7o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 May 2019 06:59:44 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:36147 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725991AbfE0K7o (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 27 May 2019 06:59:44 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190527105942euoutp01bfac35c8da8b8557cfc73284d7669c81~ihR2DtUaJ2434524345euoutp01P
+        for <linux-fbdev@vger.kernel.org>; Mon, 27 May 2019 10:59:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190527105942euoutp01bfac35c8da8b8557cfc73284d7669c81~ihR2DtUaJ2434524345euoutp01P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1558954782;
+        bh=vmoddjQAdwfgajrjwjND/Fdm1rXcy9qvQd8vjTNxPS4=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=aBkH5UdgElHKDGMRk0CD0ZI+ILLNuxJNsZoFac21zBKRO5nVZFsQslA+XznbIsTtD
+         rHJhEFU6wfx6MAFvfFK+ltS3oqIAlLa5m74JfQNlAITYxbRHFTLfaGTK0nR0fRi8no
+         RoLqCeUl5cJtXTqiZKCgvLQ9QQBplhGItf9C2wuE=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190527105941eucas1p1a7d6c4eee1b1a4bc0d209195ba7c3c68~ihR1PIMxF0679606796eucas1p1b;
+        Mon, 27 May 2019 10:59:41 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id BD.2D.04325.D13CBEC5; Mon, 27
+        May 2019 11:59:41 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190527105941eucas1p12ed78aa5300b3c9275e33e67a4399fc7~ihR0d2C961963919639eucas1p1x;
+        Mon, 27 May 2019 10:59:41 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190527105940eusmtrp1db8c587aca936b183bbeeab353dfbcd2~ihR0PsEKM2396923969eusmtrp1Q;
+        Mon, 27 May 2019 10:59:40 +0000 (GMT)
+X-AuditID: cbfec7f5-fbbf09c0000010e5-10-5cebc31db9f8
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 12.96.04140.C13CBEC5; Mon, 27
+        May 2019 11:59:40 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190527105940eusmtip23c0a8f60802c4d3b70ae41d6701100cb~ihRzvRTRR0654906549eusmtip2F;
+        Mon, 27 May 2019 10:59:40 +0000 (GMT)
+Subject: Re: [PATCH 24/33] Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Richard Purdie <rpurdie@rpsys.net>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <ee90a071-74b4-e9f0-03f9-2e959c333b1f@samsung.com>
+Date:   Mon, 27 May 2019 12:59:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d2b283e-a5c5-3c94-423c-8cb085492921@samsung.com>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <CAKMK7uHWOY97FqyJ6FU1SYTgegKxm2A+R+X6Vjs0_zn1QGN3KQ@mail.gmail.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRju2zk7O45NjtPyzbJiUOC9i9JJQyqDTkFk/eoi1dKTipva5jXJ
+        NCTNS2hS4pRcBGkK09TUzak40xlqlplIZFpamRdm6Cq7aLqj5L/ney7v+z7wkZhkkO9EhkfG
+        sMpImVxKCPG6jvleD+e2yaCdjQYXuntqSEA/+DCE0aXdWozut5gJespUwKOLcmt4dNlcoYAe
+        trQjuvP2DJ9+rS8m6Eb9Jz7dq5cdEDFN3zU4o8nuxRidekjAPDR85THvBgwEM5xl4jHm5jcE
+        Yyj5yWdmq7cE2pwV7g9h5eFxrNLL/6Iw7H2ZGYt+aJegudHJS0F5tpnIhgTKG1rT27FMJCQl
+        VBkC7XiTYFmQUHMIjAYfTphFUNt9V7CaKNK24pxQiqBuckTAPaYRGNp/WF321DF4MTONL2MH
+        yhUyFtOsCYwax6A79Qm2LBCUL+Sll6NlLKb8oaXnvhXj1HYw32mw4vXUaRjuqOJzHjt4Xjhm
+        HWpDnYS01ArrHIxyhLdjJTwOb4X66WJrIaAsAigdrcS5uw9Da4FupYM9TJhqV/Bm6MrPxrmA
+        FsHfjPGVdD2C0vwFgnP5QZvp1dIZ5NIKF6jUe3H0QZjM+WKlgbKFwWk77ghbuFNXgHG0GDJu
+        Sjj3Dqh6VEWsrs3UPcZykVS9ppp6TR31mjrq/3s1CC9HjmysShHKqvZEsvGeKplCFRsZ6hkc
+        pahGS/+ta8FkaUDNfy4ZEUUiqUgc3TsRJOHL4lSJCiMCEpM6iH1qlyhxiCzxKquMuqCMlbMq
+        I9pE4lJHcdK6kXMSKlQWw0awbDSrXFV5pI1TCpJMNTfmeZTNtfSYvEM+Bwj6Liuc5bxBd+Tk
+        fEg3fMVTGbW4wW9gI3E054z5mpt+W/nHZwPZFgfb8wF7jyTo3LXKIEV8ya/dnX3NoorW0RMR
+        j04Fh9XsC05+KXI77jhvvFdwhHna3u/le0xo/iZMrg2IdkmypGXZy/uv36oJFP3OkuKqMNku
+        V0ypkv0DQyS7tmsDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRmVeSWpSXmKPExsVy+t/xe7oyh1/HGFy7bGJx5s1ddouFD+8y
+        Wyw/s47Z4srX92wWb45PZ7KYPWEzk8WKLzPZLe5/PcpocaLvA6vF5V1z2Cx273rKanF+V6ID
+        j8febwtYPBb0nGf22DnrLrvH4j0vmTzuXNvD5nG/+ziTx/t9V9k89sz/werxeZNcAGeUnk1R
+        fmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXsa9Fe+ZCxYL
+        VixoOsHUwDiRr4uRk0NCwERi9rqDLF2MXBxCAksZJZa8PwLkcAAlZCSOry+DqBGW+HOtiw2i
+        5jWjxM9DC1hBEsICXhLnPrxlAbFFBLQkOv63gA1iFnjBLPHv7FtWiI7tTBIHTl5nB6liE7CS
+        mNi+ihHE5hWwk9h/dh6YzSKgKvF+0g4wW1QgQuLM+xUsEDWCEidnPgGzOQUCJVoaVzOD2MwC
+        6hJ/5l2CssUlbj2ZzwRhy0tsfzuHeQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrF
+        ibnFpXnpesn5uZsYgfG87djPLUD3vQs+xCjAwajEw1tw/lWMEGtiWXFl7iFGCQ5mJRFe0y1A
+        Id6UxMqq1KL8+KLSnNTiQ4ymQM9NZJYSTc4Hppq8knhDU0NzC0tDc2NzYzMLJXHeDoGDMUIC
+        6YklqdmpqQWpRTB9TBycUg2MDC015/zLzv2cH+XnKbpsKdOuZ/+l18XcvCZyc4r5kuYZcWJh
+        FUVSd2dqZq3ecIf3kXVsf0RpUfbF1QuM1rG92vYi6tMpkSWNs0Le8ln5zQotb4orF2QpLeae
+        +LX3YXiV9HJ7pfkff/i6GTFM611qJt7CNnF60yIuz+fPvTaaG7523Ce4u4VJiaU4I9FQi7mo
+        OBEAdCV2KP0CAAA=
+X-CMS-MailID: 20190527105941eucas1p12ed78aa5300b3c9275e33e67a4399fc7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4
+References: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
+        <20190524085354.27411-25-daniel.vetter@ffwll.ch>
+        <20190524131453.e6mefygqyg46jeuf@holly.lan>
+        <CGME20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4@epcas2p3.samsung.com>
+        <CAKMK7uHWOY97FqyJ6FU1SYTgegKxm2A+R+X6Vjs0_zn1QGN3KQ@mail.gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Bartlomiej,
 
-I love your patch! Perhaps something to improve:
+On 5/24/19 5:28 PM, Daniel Vetter wrote:
+> Hi Daniel,
+> 
+> On Fri, May 24, 2019 at 3:14 PM Daniel Thompson
+> <daniel.thompson@linaro.org> wrote:
+>>
+>> On Fri, May 24, 2019 at 10:53:45AM +0200, Daniel Vetter wrote:
+>>> This reverts commit 994efacdf9a087b52f71e620b58dfa526b0cf928.
+>>>
+>>> The justification is that if hw blanking fails (i.e. fbops->fb_blank)
+>>> fails, then we still want to shut down the backlight. Which is exactly
+>>> _not_ what fb_blank() does and so rather inconsistent if we end up
+>>> with different behaviour between fbcon and direct fbdev usage. Given
+>>> that the entire notifier maze is getting in the way anyway I figured
+>>> it's simplest to revert this not well justified commit.
+>>>
+>>> v2: Add static inline to the dummy version.
+>>>
+>>> Cc: Richard Purdie <rpurdie@rpsys.net>
+>>> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+>>> Cc: Lee Jones <lee.jones@linaro.org>
+>>> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+>>> Cc: Jingoo Han <jingoohan1@gmail.com>
+>>> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+>>> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+>>> Cc: Hans de Goede <hdegoede@redhat.com>
+>>> Cc: Yisheng Xie <ysxie@foxmail.com>
+>>> Cc: linux-fbdev@vger.kernel.org
+>>
+>> Hi Daniel
+>>
+>> When this goes round again could you add me to the covering letter?
+>>
+>> I looked at all three of the patches and no objections on my side but
+>> I'm reluctant to send out acks because I'm not sure I understood the
+>> wider picture well enough.
+> 
+> It's one of these patch series with some many different subsystems and
+> people you can't cc the cover to all of them or mailing lists start
+> rejecting you because too many recipients. I tried to spam sufficient
+> mailng lists, but I guess not enough.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v5.2-rc2 next-20190524]
-[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+BTW Not all relevant patches were posted to linux-fbdev and me (i.e.
+"[PATCH 05/33] fbdev/sa1100fb: Remove dead code") - I found them on
+other mailing lists but it requires some additional work from me to
+find / process them. If possible please Cc: linux-fbdev & me on all
+patches in the patchset. Thanks!
 
-url:    https://github.com/0day-ci/linux/commits/Bartlomiej-Zolnierkiewicz/video-fbdev-pvr2fb-remove-function-prototypes/20190524-145925
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-smatch warnings:
-drivers/video/fbdev/pvr2fb.c:467 pvr2fb_check_var() warn: unsigned 'var->xoffset' is never less than zero.
-drivers/video/fbdev/pvr2fb.c:467 pvr2fb_check_var() warn: unsigned 'var->yoffset' is never less than zero.
-
-vim +467 drivers/video/fbdev/pvr2fb.c
-
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  430  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  431  static int pvr2fb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  432  {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  433  	struct pvr2fb_par *par = (struct pvr2fb_par *)info->par;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  434  	unsigned int vtotal, hsync_total;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  435  	unsigned long line_length;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  436  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  437  	if (var->pixclock != TV_CLK && var->pixclock != VGA_CLK) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  438  		pr_debug("Invalid pixclock value %d\n", var->pixclock);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  439  		return -EINVAL;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  440  	}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  441  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  442  	if (var->xres < 320)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  443  		var->xres = 320;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  444  	if (var->yres < 240)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  445  		var->yres = 240;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  446  	if (var->xres_virtual < var->xres)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  447  		var->xres_virtual = var->xres;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  448  	if (var->yres_virtual < var->yres)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  449  		var->yres_virtual = var->yres;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  450  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  451  	if (var->bits_per_pixel <= 16)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  452  		var->bits_per_pixel = 16;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  453  	else if (var->bits_per_pixel <= 24)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  454  		var->bits_per_pixel = 24;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  455  	else if (var->bits_per_pixel <= 32)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  456  		var->bits_per_pixel = 32;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  457  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  458  	set_color_bitfields(var);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  459  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  460  	if (var->vmode & FB_VMODE_YWRAP) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  461  		if (var->xoffset || var->yoffset < 0 ||
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  462  		    var->yoffset >= var->yres_virtual) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  463  			var->xoffset = var->yoffset = 0;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  464  		} else {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  465  			if (var->xoffset > var->xres_virtual - var->xres ||
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  466  			    var->yoffset > var->yres_virtual - var->yres ||
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16 @467  			    var->xoffset < 0 || var->yoffset < 0)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  468  				var->xoffset = var->yoffset = 0;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  469  		}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  470  	} else {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  471  		var->xoffset = var->yoffset = 0;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  472  	}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  473  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  474  	/*
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  475  	 * XXX: Need to be more creative with this (i.e. allow doublecan for
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  476  	 * PAL/NTSC output).
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  477  	 */
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  478  	if (var->yres < 480 && video_output == VO_VGA)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  479  		var->vmode |= FB_VMODE_DOUBLE;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  480  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  481  	if (video_output != VO_VGA) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  482  		var->sync |= FB_SYNC_BROADCAST;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  483  		var->vmode |= FB_VMODE_INTERLACED;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  484  	} else {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  485  		var->sync &= ~FB_SYNC_BROADCAST;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  486  		var->vmode &= ~FB_VMODE_INTERLACED;
-fcb1fec7 drivers/video/pvr2fb.c Paul Mundt     2008-03-06  487  		var->vmode |= FB_VMODE_NONINTERLACED;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  488  	}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  489  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  490  	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_TEST) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  491  		var->right_margin = par->borderstop_h -
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  492  				   (par->diwstart_h + var->xres);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  493  		var->left_margin  = par->diwstart_h - par->borderstart_h;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  494  		var->hsync_len    = par->borderstart_h +
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  495  		                   (par->hsync_total - par->borderstop_h);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  496  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  497  		var->upper_margin = par->diwstart_v - par->borderstart_v;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  498  		var->lower_margin = par->borderstop_v -
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  499  				   (par->diwstart_v + var->yres);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  500  		var->vsync_len    = par->borderstop_v +
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  501  				   (par->vsync_total - par->borderstop_v);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  502  	}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  503  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  504  	hsync_total = var->left_margin + var->xres + var->right_margin +
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  505  		      var->hsync_len;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  506  	vtotal = var->upper_margin + var->yres + var->lower_margin +
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  507  		 var->vsync_len;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  508  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  509  	if (var->sync & FB_SYNC_BROADCAST) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  510  		if (var->vmode & FB_VMODE_INTERLACED)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  511  			vtotal /= 2;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  512  		if (vtotal > (PAL_VTOTAL + NTSC_VTOTAL)/2) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  513  			/* PAL video output */
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  514  			/* XXX: Should be using a range here ... ? */
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  515  			if (hsync_total != PAL_HTOTAL) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  516  				pr_debug("invalid hsync total for PAL\n");
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  517  				return -EINVAL;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  518  			}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  519  		} else {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  520  			/* NTSC video output */
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  521  			if (hsync_total != NTSC_HTOTAL) {
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  522  				pr_debug("invalid hsync total for NTSC\n");
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  523  				return -EINVAL;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  524  			}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  525  		}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  526  	}
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  527  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  528  	/* Check memory sizes */
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  529  	line_length = get_line_length(var->xres_virtual, var->bits_per_pixel);
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  530  	if (line_length * var->yres_virtual > info->fix.smem_len)
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  531  		return -ENOMEM;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  532  
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  533  	return 0;
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  534  }
-^1da177e drivers/video/pvr2fb.c Linus Torvalds 2005-04-16  535  
-
-:::::: The code at line 467 was first introduced by commit
-:::::: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 Linux-2.6.12-rc2
-
-:::::: TO: Linus Torvalds <torvalds@ppc970.osdl.org>
-:::::: CC: Linus Torvalds <torvalds@ppc970.osdl.org>
-
----
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
