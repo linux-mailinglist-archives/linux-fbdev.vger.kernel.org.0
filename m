@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 889852C23E
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279862C243
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727267AbfE1JDz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 May 2019 05:03:55 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:38172 "EHLO
+        id S1726830AbfE1JEP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 May 2019 05:04:15 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:43723 "EHLO
         mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726830AbfE1JDz (ORCPT
+        with ESMTP id S1726650AbfE1JD4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 May 2019 05:03:55 -0400
-Received: by mail-ed1-f67.google.com with SMTP id g13so838078edu.5
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:53 -0700 (PDT)
+        Tue, 28 May 2019 05:03:56 -0400
+Received: by mail-ed1-f67.google.com with SMTP id w33so27265435edb.10
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=cIvSBS1B4MGUlvtXGtjMOQmcHlrlcr23oBPyjEdIMqw=;
-        b=kEX1dBYsfLZqMz1zXWP5urOCL4wj3GR50ijZkMz53o+IqxGumJznNh5bWHFqzz/57F
-         g2GIL+FYqK5zeRJoDlXmOwePs6wvEYLvE/nkB5jnXi45FLkvBnGQbiXCyV5IfNvHSdoU
-         Rfo20w4pFvtVPLYS9Hx6btvQPMdK9n+DhCJB0=
+        bh=xl+FmsN1b/Z0dRTg7/MTehgEAqXNH21CIN1ZETZQ/L8=;
+        b=P1BhmTk1hbE5r2B+QiA3mLyctcrzMOPiA0FF2afph9QwuSqbe+7Vg34nWxGic2cpIp
+         Dr+njroxLWdPZ8tRtVTzw7pvAOF3qky5AKxB+uMoKHv18H6B828Ycb17qHIsW/Sdilgp
+         hFjFysr93tlnN9Xyxj9PNyqSg4WYWz899PxWI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=cIvSBS1B4MGUlvtXGtjMOQmcHlrlcr23oBPyjEdIMqw=;
-        b=Q5kKkXok1rFKfPFCnF80Ewv7Dvx9sXr0PQltHX1qpz1dkaOKDO8zy3nnZps2BvAfaE
-         cCj0P9GbzwcPHP2iQBxWp1arw5KhDJns2S05gKFubjD56Y5Q8ZpTmhbyeD+4IjMDEYfE
-         Btc7qxDaZa+IWPIaa+wWL/hbS3+HSIe1aoJP2TlQDp38Ikp3qVNac27opZeqNi8DBfic
-         VtvlnrkLk+rnpKyRHgIOxFS3QhQI6wMpW7qro7AQPmJx0zNUtxxgrSPiSqCAqaT1JUeS
-         BG52R7FKBXCVmblICxlAzFtQSb576AysrgIJMIhJocMSu5ZSKFSjMnh22fQGaAnx/fRp
-         sVgA==
-X-Gm-Message-State: APjAAAUWz9Z/gzUzHc36PHOZEz48rzBhdtmswrb25zDVgqPrv9XhWPhK
-        3/jL7eWKFxGyDSwxfJfw4DglZQ==
-X-Google-Smtp-Source: APXvYqzrT5yIPISvSHUclVX4EyZRCO+vxYwOVOnyeJaJPQCsiQ0H7rBwVIiiDjjc89dl8HybwqjL5A==
-X-Received: by 2002:a17:906:f14a:: with SMTP id gw10mr94060688ejb.158.1559034233120;
-        Tue, 28 May 2019 02:03:53 -0700 (PDT)
+        bh=xl+FmsN1b/Z0dRTg7/MTehgEAqXNH21CIN1ZETZQ/L8=;
+        b=Kw/f9xBD4FOcWp7Ex/mTzVFkqqcXK/j+Sk1tDC9l+ucCcYXS4uFb1wvQWuJiFcfEeN
+         z66qESFFCfcsWRjye+VOcvv3RquibpogUosmHjZyZnPW3GP0XqTtBGW5Hw8MM+Jde/I9
+         JbUydNw+ZsmRHwomkPd5RWDHH3AKOrrjERwp7D/Jzx3OEww6wXJj8ru+5SgieiHfMXIu
+         mYl+ez6j2ecxLbOEB1oOGsEq27FaAZ0eCE4/X7h7VP9rl/Xs4Ibqr5bOKZQovI9Udtx1
+         65idoPFo9TlrTb+toAlimvXypNW2g0XJWaftG+7P/iiLo6s4ozsT9W2hrVw59UbvKPhQ
+         pwPw==
+X-Gm-Message-State: APjAAAVdSfSFCVSUnCJZr2a4+1sq//Tfcg4129vdzC1cpGqZFOcxC8h4
+        ui2NrDWc9pGiMIIMigcIradmhA==
+X-Google-Smtp-Source: APXvYqzRA7UP0UMRngIGDlfV8DR7R4CLDWGwCYwpTvM3Dr/srd+AZ3tufkvaM/d//bxX/fxuu4blxg==
+X-Received: by 2002:a50:fa4a:: with SMTP id c10mr3181724edq.35.1559034234601;
+        Tue, 28 May 2019 02:03:54 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.51
+        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.53
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 02:03:52 -0700 (PDT)
+        Tue, 28 May 2019 02:03:53 -0700 (PDT)
 From:   Daniel Vetter <daniel.vetter@ffwll.ch>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
@@ -50,161 +50,262 @@ Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Lukas Wunner <lukas@wunner.de>,
         Daniel Vetter <daniel.vetter@intel.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>,
         Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>
-Subject: [PATCH 29/33] vgaswitcheroo: call fbcon_remap_all directly
-Date:   Tue, 28 May 2019 11:03:00 +0200
-Message-Id: <20190528090304.9388-30-daniel.vetter@ffwll.ch>
+        Yisheng Xie <ysxie@foxmail.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        Peter Rosin <peda@axentia.se>,
+        Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 30/33] fbcon: Call con2fb_map functions directly
+Date:   Tue, 28 May 2019 11:03:01 +0200
+Message-Id: <20190528090304.9388-31-daniel.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
 References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-While at it, clean up the interface a bit and push the console locking
-into fbcon.c.
+These are actually fbcon ioctls which just happen to be exposed
+through /dev/fb*. They completely ignore which fb_info they're called
+on, and I think the userspace tool even hardcodes to /dev/fb0.
 
-v2: Remove now outdated comment (Lukas).
+Hence just forward the entire thing to fbcon.c wholesale.
 
-v3: Forgot to add static inline to the dummy function.
+Note that this patch drops the fb_lock/unlock on the set side. Since
+the ioctl can operate on any fb (as passed in through
+con2fb.framebuffer) this is bogus. Also note that fbcon.c in general
+never calls fb_lock on anything, so this has been badly broken
+already.
 
-Acked-by: Lukas Wunner <lukas@wunner.de>
+With this the last user of the fbcon notifier callback is gone, and we
+can garbage collect that too.
+
+v2: add missing uaccess.h include (alpha fails to compile otherwise),
+reported by kbuild.
+
+v3: Remember to also drop the #defines (Maarten)
+
+v4: Add the static inline to dummy functions.
+
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Sean Paul <sean@poorly.run>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: Yisheng Xie <ysxie@foxmail.com>
-Cc: linux-fbdev@vger.kernel.org
+Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+Cc: Peter Rosin <peda@axentia.se>
+Cc: Mikulas Patocka <mpatocka@redhat.com>
 ---
- drivers/gpu/vga/vga_switcheroo.c | 11 +++--------
- drivers/video/fbdev/core/fbcon.c | 14 +++++---------
- include/linux/fb.h               |  2 --
- include/linux/fbcon.h            |  2 ++
- 4 files changed, 10 insertions(+), 19 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 59 +++++++++++++++++++-------------
+ drivers/video/fbdev/core/fbmem.c | 34 ++----------------
+ include/linux/fb.h               |  4 ---
+ include/linux/fbcon.h            |  4 +++
+ 4 files changed, 42 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
-index a132c37d7334..65d7541c413a 100644
---- a/drivers/gpu/vga/vga_switcheroo.c
-+++ b/drivers/gpu/vga/vga_switcheroo.c
-@@ -35,6 +35,7 @@
- #include <linux/debugfs.h>
- #include <linux/fb.h>
- #include <linux/fs.h>
-+#include <linux/fbcon.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/pm_domain.h>
-@@ -736,14 +737,8 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
- 	if (!active->driver_power_control)
- 		set_audio_state(active->id, VGA_SWITCHEROO_OFF);
- 
--	if (new_client->fb_info) {
--		struct fb_event event;
--
--		console_lock();
--		event.info = new_client->fb_info;
--		fb_notifier_call_chain(FB_EVENT_REMAP_ALL_CONSOLE, &event);
--		console_unlock();
--	}
-+	if (new_client->fb_info)
-+		fbcon_remap_all(new_client->fb_info);
- 
- 	mutex_lock(&vgasr_priv.mux_hw_lock);
- 	ret = vgasr_priv.handler->switchto(new_client->id);
 diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index e98551f96138..158b9d5233e1 100644
+index 158b9d5233e1..fbd28aeff307 100644
 --- a/drivers/video/fbdev/core/fbcon.c
 +++ b/drivers/video/fbdev/core/fbcon.c
-@@ -3149,17 +3149,16 @@ void fbcon_fb_unregistered(struct fb_info *info)
- 		do_unregister_con_driver(&fb_con);
+@@ -76,6 +76,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/crc32.h> /* For counting font checksums */
++#include <linux/uaccess.h>
+ #include <asm/fb.h>
+ #include <asm/irq.h>
+ 
+@@ -3318,29 +3319,47 @@ void fbcon_get_requirement(struct fb_info *info,
+ 	}
  }
  
--/* called with console_lock held */
--static void fbcon_remap_all(int idx)
-+void fbcon_remap_all(struct fb_info *info)
+-static int fbcon_event_notify(struct notifier_block *self,
+-			      unsigned long action, void *data)
++int fbcon_set_con2fb_map_ioctl(void __user *argp)
  {
--	int i;
--
--	WARN_CONSOLE_UNLOCKED();
-+	int i, idx = info->node;
+-	struct fb_event *event = data;
+-	struct fb_info *info = event->info;
+-	struct fb_con2fbmap *con2fb;
+-	int idx, ret = 0;
++	struct fb_con2fbmap con2fb;
++	int ret;
  
-+	console_lock();
- 	if (deferred_takeover) {
- 		for (i = first_fb_vc; i <= last_fb_vc; i++)
- 			con2fb_map_boot[i] = idx;
- 		fbcon_map_override();
-+		console_unlock();
- 		return;
- 	}
- 
-@@ -3172,6 +3171,7 @@ static void fbcon_remap_all(int idx)
- 		       first_fb_vc + 1, last_fb_vc + 1);
- 		info_idx = idx;
- 	}
-+	console_unlock();
- }
- 
- #ifdef CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
-@@ -3337,10 +3337,6 @@ static int fbcon_event_notify(struct notifier_block *self,
- 		con2fb = event->data;
- 		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
- 		break;
--	case FB_EVENT_REMAP_ALL_CONSOLE:
--		idx = info->node;
--		fbcon_remap_all(idx);
+-	switch(action) {
+-	case FB_EVENT_SET_CONSOLE_MAP:
+-		/* called with console lock held */
+-		con2fb = event->data;
+-		ret = set_con2fb_map(con2fb->console - 1,
+-				     con2fb->framebuffer, 1);
 -		break;
+-	case FB_EVENT_GET_CONSOLE_MAP:
+-		con2fb = event->data;
+-		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
+-		break;
++	if (copy_from_user(&con2fb, argp, sizeof(con2fb)))
++		return -EFAULT;
++	if (con2fb.console < 1 || con2fb.console > MAX_NR_CONSOLES)
++		return -EINVAL;
++	if (con2fb.framebuffer >= FB_MAX)
++		return -EINVAL;
++	if (!registered_fb[con2fb.framebuffer])
++		request_module("fb%d", con2fb.framebuffer);
++	if (!registered_fb[con2fb.framebuffer]) {
++		return -EINVAL;
  	}
++
++	console_lock();
++	ret = set_con2fb_map(con2fb.console - 1,
++			     con2fb.framebuffer, 1);
++	console_unlock();
++
  	return ret;
  }
+ 
++int fbcon_get_con2fb_map_ioctl(void __user *argp)
++{
++	struct fb_con2fbmap con2fb;
++
++	if (copy_from_user(&con2fb, argp, sizeof(con2fb)))
++		return -EFAULT;
++	if (con2fb.console < 1 || con2fb.console > MAX_NR_CONSOLES)
++		return -EINVAL;
++
++	console_lock();
++	con2fb.framebuffer = con2fb_map[con2fb.console - 1];
++	console_unlock();
++
++	return copy_to_user(argp, &con2fb, sizeof(con2fb)) ? -EFAULT : 0;
++}
++
+ /*
+  *  The console `switch' structure for the frame buffer based console
+  */
+@@ -3372,10 +3391,6 @@ static const struct consw fb_con = {
+ 	.con_debug_leave	= fbcon_debug_leave,
+ };
+ 
+-static struct notifier_block fbcon_event_notifier = {
+-	.notifier_call	= fbcon_event_notify,
+-};
+-
+ static ssize_t store_rotate(struct device *device,
+ 			    struct device_attribute *attr, const char *buf,
+ 			    size_t count)
+@@ -3648,7 +3663,6 @@ void __init fb_console_init(void)
+ 	int i;
+ 
+ 	console_lock();
+-	fb_register_client(&fbcon_event_notifier);
+ 	fbcon_device = device_create(fb_class, NULL, MKDEV(0, 0), NULL,
+ 				     "fbcon");
+ 
+@@ -3684,7 +3698,6 @@ static void __exit fbcon_deinit_device(void)
+ void __exit fb_console_exit(void)
+ {
+ 	console_lock();
+-	fb_unregister_client(&fbcon_event_notifier);
+ 	fbcon_deinit_device();
+ 	device_destroy(fb_class, MKDEV(0, 0));
+ 	fbcon_exit();
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index dd1a708df1a7..64dd732021d8 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1092,10 +1092,8 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+ 	struct fb_ops *fb;
+ 	struct fb_var_screeninfo var;
+ 	struct fb_fix_screeninfo fix;
+-	struct fb_con2fbmap con2fb;
+ 	struct fb_cmap cmap_from;
+ 	struct fb_cmap_user cmap;
+-	struct fb_event event;
+ 	void __user *argp = (void __user *)arg;
+ 	long ret = 0;
+ 
+@@ -1157,38 +1155,10 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+ 		ret = -EINVAL;
+ 		break;
+ 	case FBIOGET_CON2FBMAP:
+-		if (copy_from_user(&con2fb, argp, sizeof(con2fb)))
+-			return -EFAULT;
+-		if (con2fb.console < 1 || con2fb.console > MAX_NR_CONSOLES)
+-			return -EINVAL;
+-		con2fb.framebuffer = -1;
+-		event.data = &con2fb;
+-		lock_fb_info(info);
+-		event.info = info;
+-		fb_notifier_call_chain(FB_EVENT_GET_CONSOLE_MAP, &event);
+-		unlock_fb_info(info);
+-		ret = copy_to_user(argp, &con2fb, sizeof(con2fb)) ? -EFAULT : 0;
++		ret = fbcon_get_con2fb_map_ioctl(argp);
+ 		break;
+ 	case FBIOPUT_CON2FBMAP:
+-		if (copy_from_user(&con2fb, argp, sizeof(con2fb)))
+-			return -EFAULT;
+-		if (con2fb.console < 1 || con2fb.console > MAX_NR_CONSOLES)
+-			return -EINVAL;
+-		if (con2fb.framebuffer >= FB_MAX)
+-			return -EINVAL;
+-		if (!registered_fb[con2fb.framebuffer])
+-			request_module("fb%d", con2fb.framebuffer);
+-		if (!registered_fb[con2fb.framebuffer]) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		event.data = &con2fb;
+-		console_lock();
+-		lock_fb_info(info);
+-		event.info = info;
+-		ret = fb_notifier_call_chain(FB_EVENT_SET_CONSOLE_MAP, &event);
+-		unlock_fb_info(info);
+-		console_unlock();
++		ret = fbcon_set_con2fb_map_ioctl(argp);
+ 		break;
+ 	case FBIOBLANK:
+ 		console_lock();
 diff --git a/include/linux/fb.h b/include/linux/fb.h
-index f9c212f9b661..25e4b885f5b3 100644
+index 25e4b885f5b3..303771264644 100644
 --- a/include/linux/fb.h
 +++ b/include/linux/fb.h
-@@ -139,8 +139,6 @@ struct fb_cursor_user {
- #define FB_EVENT_SET_CONSOLE_MAP        0x08
+@@ -133,10 +133,6 @@ struct fb_cursor_user {
+ #define FB_EVENT_FB_UNREGISTERED        0x06
+ #endif
+ 
+-/*      CONSOLE-SPECIFIC: get console to framebuffer mapping */
+-#define FB_EVENT_GET_CONSOLE_MAP        0x07
+-/*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
+-#define FB_EVENT_SET_CONSOLE_MAP        0x08
  /*      A display blank is requested       */
  #define FB_EVENT_BLANK                  0x09
--/*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
--#define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
  /*      A hardware display blank early change occurred */
- #define FB_EARLY_EVENT_BLANK		0x10
- /*      A hardware display blank revert early change occurred */
 diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-index de31eeb22c97..69f900d289b2 100644
+index 69f900d289b2..ff5596dd30f8 100644
 --- a/include/linux/fbcon.h
 +++ b/include/linux/fbcon.h
-@@ -16,6 +16,7 @@ void fbcon_get_requirement(struct fb_info *info,
- 			   struct fb_blit_caps *caps);
+@@ -17,6 +17,8 @@ void fbcon_get_requirement(struct fb_info *info,
  void fbcon_fb_blanked(struct fb_info *info, int blank);
  void fbcon_update_vcs(struct fb_info *info, bool all);
-+void fbcon_remap_all(struct fb_info *info);
+ void fbcon_remap_all(struct fb_info *info);
++int fbcon_set_con2fb_map_ioctl(void __user *argp);
++int fbcon_get_con2fb_map_ioctl(void __user *argp);
  #else
  static inline void fb_console_init(void) {}
  static inline void fb_console_exit(void) {}
-@@ -31,6 +32,7 @@ static inline void fbcon_get_requirement(struct fb_info *info,
- 					 struct fb_blit_caps *caps) {}
+@@ -33,6 +35,8 @@ static inline void fbcon_get_requirement(struct fb_info *info,
  static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
  static inline void fbcon_update_vcs(struct fb_info *info, bool all) {}
-+static inline void fbcon_remap_all(struct fb_info *info) {}
+ static inline void fbcon_remap_all(struct fb_info *info) {}
++static inline int fbcon_set_con2fb_map_ioctl(void __user *argp) { return 0; }
++static inline int fbcon_get_con2fb_map_ioctl(void __user *argp) { return 0; }
  #endif
  
  #endif /* _LINUX_FBCON_H */
