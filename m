@@ -2,169 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91FCD2B29B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 May 2019 12:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB36F2C03C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 09:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbfE0K7o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 May 2019 06:59:44 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:36147 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbfE0K7o (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 May 2019 06:59:44 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190527105942euoutp01bfac35c8da8b8557cfc73284d7669c81~ihR2DtUaJ2434524345euoutp01P
-        for <linux-fbdev@vger.kernel.org>; Mon, 27 May 2019 10:59:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190527105942euoutp01bfac35c8da8b8557cfc73284d7669c81~ihR2DtUaJ2434524345euoutp01P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1558954782;
-        bh=vmoddjQAdwfgajrjwjND/Fdm1rXcy9qvQd8vjTNxPS4=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=aBkH5UdgElHKDGMRk0CD0ZI+ILLNuxJNsZoFac21zBKRO5nVZFsQslA+XznbIsTtD
-         rHJhEFU6wfx6MAFvfFK+ltS3oqIAlLa5m74JfQNlAITYxbRHFTLfaGTK0nR0fRi8no
-         RoLqCeUl5cJtXTqiZKCgvLQ9QQBplhGItf9C2wuE=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190527105941eucas1p1a7d6c4eee1b1a4bc0d209195ba7c3c68~ihR1PIMxF0679606796eucas1p1b;
-        Mon, 27 May 2019 10:59:41 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id BD.2D.04325.D13CBEC5; Mon, 27
-        May 2019 11:59:41 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190527105941eucas1p12ed78aa5300b3c9275e33e67a4399fc7~ihR0d2C961963919639eucas1p1x;
-        Mon, 27 May 2019 10:59:41 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190527105940eusmtrp1db8c587aca936b183bbeeab353dfbcd2~ihR0PsEKM2396923969eusmtrp1Q;
-        Mon, 27 May 2019 10:59:40 +0000 (GMT)
-X-AuditID: cbfec7f5-fbbf09c0000010e5-10-5cebc31db9f8
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 12.96.04140.C13CBEC5; Mon, 27
-        May 2019 11:59:40 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190527105940eusmtip23c0a8f60802c4d3b70ae41d6701100cb~ihRzvRTRR0654906549eusmtip2F;
-        Mon, 27 May 2019 10:59:40 +0000 (GMT)
-Subject: Re: [PATCH 24/33] Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Richard Purdie <rpurdie@rpsys.net>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <ee90a071-74b4-e9f0-03f9-2e959c333b1f@samsung.com>
-Date:   Mon, 27 May 2019 12:59:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        id S1727527AbfE1Hjz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 May 2019 03:39:55 -0400
+Received: from mail-eopbgr740080.outbound.protection.outlook.com ([40.107.74.80]:43750
+        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727261AbfE1Hjz (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 28 May 2019 03:39:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector1-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gWdImhCfyTIUCYzNfD1iIQYARnPSsxhTsT74g8CuXY0=;
+ b=Hq4eM0+YUiVIoYHYAGGuEpOyjhWPdcPFHxn0lkng78s7kuN0jDXksfvZQE0kEOvNPTuar+4Cwfyt9c47tyog14C+ba401xryJ9s5hnJiPDekCnghCGKZj4HeQKs4EbPbnH2B4kKA0p9wn6It0lmbB4CJ95H2YYd7PUpoLM2vyVQ=
+Received: from BN6PR03CA0012.namprd03.prod.outlook.com (2603:10b6:404:23::22)
+ by BL2PR03MB545.namprd03.prod.outlook.com (2a01:111:e400:c23::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1922.15; Tue, 28 May
+ 2019 07:39:47 +0000
+Received: from BL2NAM02FT030.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::202) by BN6PR03CA0012.outlook.office365.com
+ (2603:10b6:404:23::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1922.16 via Frontend
+ Transport; Tue, 28 May 2019 07:39:47 +0000
+Authentication-Results: spf=pass (sender IP is 137.71.25.55)
+ smtp.mailfrom=analog.com; lists.freedesktop.org; dkim=none (message not
+ signed) header.d=none;lists.freedesktop.org; dmarc=bestguesspass action=none
+ header.from=analog.com;
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.55 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.55; helo=nwd2mta1.analog.com;
+Received: from nwd2mta1.analog.com (137.71.25.55) by
+ BL2NAM02FT030.mail.protection.outlook.com (10.152.77.172) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.1922.16
+ via Frontend Transport; Tue, 28 May 2019 07:39:46 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta1.analog.com (8.13.8/8.13.8) with ESMTP id x4S7dkpQ023241
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Tue, 28 May 2019 00:39:46 -0700
+Received: from saturn.analog.com (10.50.1.244) by NWD2HUBCAS7.ad.analog.com
+ (10.64.69.107) with Microsoft SMTP Server id 14.3.408.0; Tue, 28 May 2019
+ 03:39:45 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <intel-gfx@lists.freedesktop.org>, <linux-omap@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <linux-usb@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-integrity@vger.kernel.org>, <alsa-devel@alsa-project.org>
+CC:     <heikki.krogerus@linux.intel.com>, <gregkh@linuxfoundation.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH 1/3][V2] lib: fix match_string() helper on -1 array size
+Date:   Tue, 28 May 2019 10:39:30 +0300
+Message-ID: <20190528073932.25365-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190508112842.11654-1-alexandru.ardelean@analog.com>
+References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-In-Reply-To: <CAKMK7uHWOY97FqyJ6FU1SYTgegKxm2A+R+X6Vjs0_zn1QGN3KQ@mail.gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRju2zk7O45NjtPyzbJiUOC9i9JJQyqDTkFk/eoi1dKTipva5jXJ
-        NCTNS2hS4pRcBGkK09TUzak40xlqlplIZFpamRdm6Cq7aLqj5L/ney7v+z7wkZhkkO9EhkfG
-        sMpImVxKCPG6jvleD+e2yaCdjQYXuntqSEA/+DCE0aXdWozut5gJespUwKOLcmt4dNlcoYAe
-        trQjuvP2DJ9+rS8m6Eb9Jz7dq5cdEDFN3zU4o8nuxRidekjAPDR85THvBgwEM5xl4jHm5jcE
-        Yyj5yWdmq7cE2pwV7g9h5eFxrNLL/6Iw7H2ZGYt+aJegudHJS0F5tpnIhgTKG1rT27FMJCQl
-        VBkC7XiTYFmQUHMIjAYfTphFUNt9V7CaKNK24pxQiqBuckTAPaYRGNp/WF321DF4MTONL2MH
-        yhUyFtOsCYwax6A79Qm2LBCUL+Sll6NlLKb8oaXnvhXj1HYw32mw4vXUaRjuqOJzHjt4Xjhm
-        HWpDnYS01ArrHIxyhLdjJTwOb4X66WJrIaAsAigdrcS5uw9Da4FupYM9TJhqV/Bm6MrPxrmA
-        FsHfjPGVdD2C0vwFgnP5QZvp1dIZ5NIKF6jUe3H0QZjM+WKlgbKFwWk77ghbuFNXgHG0GDJu
-        Sjj3Dqh6VEWsrs3UPcZykVS9ppp6TR31mjrq/3s1CC9HjmysShHKqvZEsvGeKplCFRsZ6hkc
-        pahGS/+ta8FkaUDNfy4ZEUUiqUgc3TsRJOHL4lSJCiMCEpM6iH1qlyhxiCzxKquMuqCMlbMq
-        I9pE4lJHcdK6kXMSKlQWw0awbDSrXFV5pI1TCpJMNTfmeZTNtfSYvEM+Bwj6Liuc5bxBd+Tk
-        fEg3fMVTGbW4wW9gI3E054z5mpt+W/nHZwPZFgfb8wF7jyTo3LXKIEV8ya/dnX3NoorW0RMR
-        j04Fh9XsC05+KXI77jhvvFdwhHna3u/le0xo/iZMrg2IdkmypGXZy/uv36oJFP3OkuKqMNku
-        V0ypkv0DQyS7tmsDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFIsWRmVeSWpSXmKPExsVy+t/xe7oyh1/HGFy7bGJx5s1ddouFD+8y
-        Wyw/s47Z4srX92wWb45PZ7KYPWEzk8WKLzPZLe5/PcpocaLvA6vF5V1z2Cx273rKanF+V6ID
-        j8febwtYPBb0nGf22DnrLrvH4j0vmTzuXNvD5nG/+ziTx/t9V9k89sz/werxeZNcAGeUnk1R
-        fmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXsa9Fe+ZCxYL
-        VixoOsHUwDiRr4uRk0NCwERi9rqDLF2MXBxCAksZJZa8PwLkcAAlZCSOry+DqBGW+HOtiw2i
-        5jWjxM9DC1hBEsICXhLnPrxlAbFFBLQkOv63gA1iFnjBLPHv7FtWiI7tTBIHTl5nB6liE7CS
-        mNi+ihHE5hWwk9h/dh6YzSKgKvF+0g4wW1QgQuLM+xUsEDWCEidnPgGzOQUCJVoaVzOD2MwC
-        6hJ/5l2CssUlbj2ZzwRhy0tsfzuHeQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrF
-        ibnFpXnpesn5uZsYgfG87djPLUD3vQs+xCjAwajEw1tw/lWMEGtiWXFl7iFGCQ5mJRFe0y1A
-        Id6UxMqq1KL8+KLSnNTiQ4ymQM9NZJYSTc4Hppq8knhDU0NzC0tDc2NzYzMLJXHeDoGDMUIC
-        6YklqdmpqQWpRTB9TBycUg2MDC015/zLzv2cH+XnKbpsKdOuZ/+l18XcvCZyc4r5kuYZcWJh
-        FUVSd2dqZq3ecIf3kXVsf0RpUfbF1QuM1rG92vYi6tMpkSWNs0Le8ln5zQotb4orF2QpLeae
-        +LX3YXiV9HJ7pfkff/i6GTFM611qJt7CNnF60yIuz+fPvTaaG7523Ce4u4VJiaU4I9FQi7mo
-        OBEAdCV2KP0CAAA=
-X-CMS-MailID: 20190527105941eucas1p12ed78aa5300b3c9275e33e67a4399fc7
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4
-References: <20190524085354.27411-1-daniel.vetter@ffwll.ch>
-        <20190524085354.27411-25-daniel.vetter@ffwll.ch>
-        <20190524131453.e6mefygqyg46jeuf@holly.lan>
-        <CGME20190524152910epcas2p30be74545e6e0570ea42cef8e0b5b7da4@epcas2p3.samsung.com>
-        <CAKMK7uHWOY97FqyJ6FU1SYTgegKxm2A+R+X6Vjs0_zn1QGN3KQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.55;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(1496009)(376002)(396003)(39860400002)(136003)(346002)(2980300002)(54534003)(189003)(199004)(70586007)(70206006)(2441003)(8936002)(47776003)(7416002)(107886003)(316002)(2201001)(8676002)(14444005)(2906002)(2870700001)(86362001)(356004)(51416003)(6666004)(7696005)(26005)(305945005)(7636002)(1076003)(478600001)(36756003)(4326008)(110136005)(2616005)(126002)(44832011)(54906003)(76176011)(48376002)(486006)(476003)(106002)(50466002)(446003)(11346002)(186003)(50226002)(7406005)(426003)(336012)(53416004)(5660300002)(77096007)(246002)(921003)(1121003)(83996005)(2101003);DIR:OUT;SFP:1101;SCL:1;SRVR:BL2PR03MB545;H:nwd2mta1.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail10.analog.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6c76f02a-34d6-47de-ba0c-08d6e33fa89e
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(4709054)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:BL2PR03MB545;
+X-MS-TrafficTypeDiagnostic: BL2PR03MB545:
+X-Microsoft-Antispam-PRVS: <BL2PR03MB545CA0A06BB0E64A1EFBE91F91E0@BL2PR03MB545.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 00514A2FE6
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: WYQoPPTo42AknDYSpY9w/xftF7FT7SRtXtbzi4SohjgnHD5P3hVPp3WTmUFaLfcDpBMThORg4NphooGNDC9igOh5UCY+z/qJehstorHN6dXF0JXfvmEyhD606e1CCgn1vUccxto/xRVdXdjRcRHavbu1mYcyAlmvTmEDKuQrxdfC1Vrm8H9/tkgoumu/npzY4P0Eyoj1Hwx3z5/P2OctimPreVyglKaTNX/j7lM7XosmVhLrWYt/TLXycti79mDqjngT5xwxZMvszzx4GLzrMAGI+oe486mPjGQdr4mkGPORfalJMEV5ae4/UIaivCRaqH3nuCzPeZes99dzedzF7DJd9vUvbhN8XxbI4NVjhC5LKkww2k/x2hqF8pFkOcddaQzB5rfbyVzu+jJvUQ8J9ZT6v/eq/Une//VX7JZ43bw=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2019 07:39:46.9658
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c76f02a-34d6-47de-ba0c-08d6e33fa89e
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.55];Helo=[nwd2mta1.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2PR03MB545
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+The documentation the `_match_string()` helper mentions that `n`
+should be:
+ * @n: number of strings in the array or -1 for NULL terminated arrays
 
-On 5/24/19 5:28 PM, Daniel Vetter wrote:
-> Hi Daniel,
-> 
-> On Fri, May 24, 2019 at 3:14 PM Daniel Thompson
-> <daniel.thompson@linaro.org> wrote:
->>
->> On Fri, May 24, 2019 at 10:53:45AM +0200, Daniel Vetter wrote:
->>> This reverts commit 994efacdf9a087b52f71e620b58dfa526b0cf928.
->>>
->>> The justification is that if hw blanking fails (i.e. fbops->fb_blank)
->>> fails, then we still want to shut down the backlight. Which is exactly
->>> _not_ what fb_blank() does and so rather inconsistent if we end up
->>> with different behaviour between fbcon and direct fbdev usage. Given
->>> that the entire notifier maze is getting in the way anyway I figured
->>> it's simplest to revert this not well justified commit.
->>>
->>> v2: Add static inline to the dummy version.
->>>
->>> Cc: Richard Purdie <rpurdie@rpsys.net>
->>> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
->>> Cc: Lee Jones <lee.jones@linaro.org>
->>> Cc: Daniel Thompson <daniel.thompson@linaro.org>
->>> Cc: Jingoo Han <jingoohan1@gmail.com>
->>> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
->>> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
->>> Cc: Hans de Goede <hdegoede@redhat.com>
->>> Cc: Yisheng Xie <ysxie@foxmail.com>
->>> Cc: linux-fbdev@vger.kernel.org
->>
->> Hi Daniel
->>
->> When this goes round again could you add me to the covering letter?
->>
->> I looked at all three of the patches and no objections on my side but
->> I'm reluctant to send out acks because I'm not sure I understood the
->> wider picture well enough.
-> 
-> It's one of these patch series with some many different subsystems and
-> people you can't cc the cover to all of them or mailing lists start
-> rejecting you because too many recipients. I tried to spam sufficient
-> mailng lists, but I guess not enough.
+The behavior of the function is different, in the sense that it exits on
+the first NULL element in the array, regardless of whether `n` is -1 or a
+positive number.
 
-BTW Not all relevant patches were posted to linux-fbdev and me (i.e.
-"[PATCH 05/33] fbdev/sa1100fb: Remove dead code") - I found them on
-other mailing lists but it requires some additional work from me to
-find / process them. If possible please Cc: linux-fbdev & me on all
-patches in the patchset. Thanks!
+This patch changes the behavior, to exit the loop when a NULL element is
+found and n == -1. Essentially, this aligns the behavior with the
+doc-string.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+There are currently many users of `match_string()`, and so, in order to go
+through them, the next patches in the series will focus on doing some
+cosmetic changes, which are aimed at grouping the users of
+`match_string()`.
+
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+
+Changelog v1 -> v2:
+* split the initial series into just 3 patches that fix the
+  `match_string()` helper and start introducing a new version of this
+  helper, which computes array-size of static arrays
+
+ lib/string.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/lib/string.c b/lib/string.c
+index 6016eb3ac73d..e2cf5acc83bd 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -681,8 +681,11 @@ int match_string(const char * const *array, size_t n, const char *string)
+ 
+ 	for (index = 0; index < n; index++) {
+ 		item = array[index];
+-		if (!item)
++		if (!item) {
++			if (n != (size_t)-1)
++				continue;
+ 			break;
++		}
+ 		if (!strcmp(item, string))
+ 			return index;
+ 	}
+-- 
+2.20.1
+
