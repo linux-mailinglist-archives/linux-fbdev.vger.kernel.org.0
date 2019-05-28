@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 751312C247
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6EF12C224
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:03:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727229AbfE1JEY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 May 2019 05:04:24 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:45824 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727228AbfE1JDv (ORCPT
+        id S1727266AbfE1JDy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 May 2019 05:03:54 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:36046 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726650AbfE1JDy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 May 2019 05:03:51 -0400
-Received: by mail-ed1-f66.google.com with SMTP id g57so15793059edc.12
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:51 -0700 (PDT)
+        Tue, 28 May 2019 05:03:54 -0400
+Received: by mail-ed1-f68.google.com with SMTP id a8so30640782edx.3
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=iiVfim/c+lvRDBMKUU1Yj60R+0JeKrGf/yz70RKA77g=;
-        b=JYsGFCPLw0HGmIgkl4SP/xcs7QXPG5ftMgs45iq0et9pU5+4wFqKw0dMai5DrVT4u4
-         ld5Zz32T14l/6/XAhMdSVqkawzt+gu1WCverQZqTaHCNFsxOdC8/bZymAAf4ztZDQMtu
-         30rpeKzEEOmbclY0qvZTWQ38AcfubFsdxhkq4=
+        bh=SgQWN7Qy07XY45PDKbsaea7nHd8fOh7HY7vqc9lDDrs=;
+        b=YhveFO6obxkf1L+jx+Db6oCLojH8CuDk3NDP3lgx0zz5NWc5nsbUOdsUIehgIeM1BN
+         WBWnqZTWmwGNFioJLhLKku7J2HgapnGW/0sSUYT1PcRDKQ2e+WNt4i+aF9S/ndAkM4f4
+         M8HqFzn+hYlkOTc0lkNvpclW85IFdksfD5yyo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=iiVfim/c+lvRDBMKUU1Yj60R+0JeKrGf/yz70RKA77g=;
-        b=Fp7zDW6rtTmxMs+WGX9izRSuZx1XWNgFvL+3hvnxkHhVH1didmXHR0JEe/FnTuNpG4
-         yezdPAlIjaIR8ckU0NIasYNFx/+x2Np2wgSeb1o0zLCSLLlsTIAzMWiXoo7y9VpejFQO
-         CqbuJDNo6LWvKvqaTctvkkwsJhbc2dNhjw0fSf8PQno3U3pPerFs4hC1tHqswC0xBPBE
-         vws2htiXzwXoXxLmiQP54Sl2jf0VRJLIfWhmBi1HdWCJ/BDCtTrxJ4jafFdQm9NMUyEk
-         RH+5k6+7O1DA5fn5T0PKYPe+Kx1ks6uw+XzibJQiquxQGFKe9gFUnPjAj9ECv7WPfgU2
-         7N+A==
-X-Gm-Message-State: APjAAAWKnvqtoCkA9CT/YIJmHJYUb5eP7M/dt1a+57hJyRZyc9zg9xm8
-        z5/S08c4hLtBzNtnLfziloPkMw==
-X-Google-Smtp-Source: APXvYqw2LqUX9K5HB5JJb1MV5fYYcTI5zm8X5V8jSfDpsJbxV2t3AOoInz4qZFPA7VbBrQW+eH0NZA==
-X-Received: by 2002:a05:6402:1256:: with SMTP id l22mr10497147edw.22.1559034230490;
-        Tue, 28 May 2019 02:03:50 -0700 (PDT)
+        bh=SgQWN7Qy07XY45PDKbsaea7nHd8fOh7HY7vqc9lDDrs=;
+        b=au9Yq9lBPVyZ64HZgHugcASs0aBbAa2+ZCMVm7O3dApvw1/CgcRk849Kc+ZFwD2I6S
+         pw3gKqFAyrcdQaKdXr4iTwK6HXmmVvualAy8YscLPOajMiQwM0mxHFoqjAy/3kU/AGzL
+         3cuOqTWRjkVznaXNJzMQreVeYKAc+eaVg+yihrlRCnFBEdP+sLg6pVais8dnLQNiGEh0
+         HZzLWbs+RzfeKzaRYxLFWN7G+YQy6XAdz5X3tJmPoDcKaRspnwN01cfVe4HHgoJm+f+b
+         THtUwWdHse/UsDg5tWTTEu58hQeWOEmNRmK289pgt7YK3RoZ3hne5Mw2rNauo5E1RJ/3
+         udsg==
+X-Gm-Message-State: APjAAAVjaFdsRkFcje3+oWEiKZbRTosVlTczqkvonVchWfFYLxqzuaOg
+        rBiE4PZu73TVk3vgEonSxFFXYw==
+X-Google-Smtp-Source: APXvYqxVTZUIX6lxXo/QeyQ8pL9p1Nq12n0SxFCxYKtzi01dHjTvu+RQjNbAYck6bJqcamIfge9zxA==
+X-Received: by 2002:a17:906:5390:: with SMTP id g16mr93483147ejo.12.1559034231783;
+        Tue, 28 May 2019 02:03:51 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.49
+        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.50
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 02:03:49 -0700 (PDT)
+        Tue, 28 May 2019 02:03:51 -0700 (PDT)
 From:   Daniel Vetter <daniel.vetter@ffwll.ch>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
@@ -50,16 +50,19 @@ Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Daniel Vetter <daniel.vetter@intel.com>,
         Sam Ravnborg <sam@ravnborg.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>,
         =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         Peter Rosin <peda@axentia.se>,
-        Hans de Goede <hdegoede@redhat.com>,
         Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 27/33] fb: Flatten control flow in fb_set_var
-Date:   Tue, 28 May 2019 11:02:58 +0200
-Message-Id: <20190528090304.9388-28-daniel.vetter@ffwll.ch>
+Subject: [PATCH 28/33] fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls
+Date:   Tue, 28 May 2019 11:02:59 +0200
+Message-Id: <20190528090304.9388-29-daniel.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
 References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
@@ -71,191 +74,203 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Instead of wiring almost everything down to the very last line using
-goto soup (but not consistently, where would the fun be otherwise)
-drop out early when checks fail. This allows us to flatten the huge
-indent levels to just 1.
+Create a new wrapper function for this, feels like there's some
+refactoring room here between the two modes.
 
-Aside: If a driver doesn't set ->fb_check_var, then FB_ACTIVATE_NOW
-does nothing. This bug exists ever since this code was extracted as a
-common helper in 2002, hence I decided against fixing it. Everyone
-just better have a fb_check_var to make sure things work correctly.
+v2: backlight notifier is also interested in the mode change event,
+it calls lcd->set_mode, of which there are 3 implementations. Thanks
+to Maarten for spotting this. So we keep that. We can ditch the differentiation
+between mode change and all mode changes (because backlight notifier
+doesn't care), and we can drop the FBINFO_MISC_USEREVENT stuff too,
+because that's just to prevent recursion between fbmem.c and fbcon.c.
 
+While at it flatten the control flow a bit.
+
+v3: Need to add a static inline to the dummy function.
+
+v4: Add missing #include <fbcon.h> to sh_mob (Sam).
+
+Cc: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
 Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Yisheng Xie <ysxie@foxmail.com>
 Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
 Cc: Peter Rosin <peda@axentia.se>
-Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: Mikulas Patocka <mpatocka@redhat.com>
+Cc: linux-fbdev@vger.kernel.org
 ---
- drivers/video/fbdev/core/fbmem.c | 126 +++++++++++++++----------------
- 1 file changed, 63 insertions(+), 63 deletions(-)
+ drivers/video/backlight/lcd.c          |  1 -
+ drivers/video/fbdev/core/fbcon.c       | 15 +++++++++------
+ drivers/video/fbdev/core/fbmem.c       | 21 ++++++++++-----------
+ drivers/video/fbdev/sh_mobile_lcdcfb.c | 12 ++----------
+ include/linux/fb.h                     |  2 --
+ include/linux/fbcon.h                  |  2 ++
+ 6 files changed, 23 insertions(+), 30 deletions(-)
 
+diff --git a/drivers/video/backlight/lcd.c b/drivers/video/backlight/lcd.c
+index 151b18776add..ecdda06989d0 100644
+--- a/drivers/video/backlight/lcd.c
++++ b/drivers/video/backlight/lcd.c
+@@ -34,7 +34,6 @@ static int fb_notifier_callback(struct notifier_block *self,
+ 	switch (event) {
+ 	case FB_EVENT_BLANK:
+ 	case FB_EVENT_MODE_CHANGE:
+-	case FB_EVENT_MODE_CHANGE_ALL:
+ 	case FB_EARLY_EVENT_BLANK:
+ 	case FB_R_EARLY_EVENT_BLANK:
+ 		break;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index b5ee89f16d6c..e98551f96138 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -3009,6 +3009,15 @@ static void fbcon_set_all_vcs(struct fb_info *info)
+ 		fbcon_modechanged(info);
+ }
+ 
++
++void fbcon_update_vcs(struct fb_info *info, bool all)
++{
++	if (all)
++		fbcon_set_all_vcs(info);
++	else
++		fbcon_modechanged(info);
++}
++
+ int fbcon_mode_deleted(struct fb_info *info,
+ 		       struct fb_videomode *mode)
+ {
+@@ -3318,12 +3327,6 @@ static int fbcon_event_notify(struct notifier_block *self,
+ 	int idx, ret = 0;
+ 
+ 	switch(action) {
+-	case FB_EVENT_MODE_CHANGE:
+-		fbcon_modechanged(info);
+-		break;
+-	case FB_EVENT_MODE_CHANGE_ALL:
+-		fbcon_set_all_vcs(info);
+-		break;
+ 	case FB_EVENT_SET_CONSOLE_MAP:
+ 		/* called with console lock held */
+ 		con2fb = event->data;
 diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 25ae466ba593..96805fe85332 100644
+index 96805fe85332..dd1a708df1a7 100644
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -954,6 +954,9 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
- {
- 	int flags = info->flags;
- 	int ret = 0;
-+	u32 activate;
-+	struct fb_var_screeninfo old_var;
-+	struct fb_videomode mode;
+@@ -957,6 +957,7 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 	u32 activate;
+ 	struct fb_var_screeninfo old_var;
+ 	struct fb_videomode mode;
++	struct fb_event event;
  
  	if (var->activate & FB_ACTIVATE_INV_MODE) {
  		struct fb_videomode mode1, mode2;
-@@ -970,87 +973,84 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
- 			fb_delete_videomode(&mode1, &info->modelist);
+@@ -1039,19 +1040,17 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 	    !list_empty(&info->modelist))
+ 		ret = fb_add_videomode(&mode, &info->modelist);
  
- 
--		ret = (ret) ? -EINVAL : 0;
--		goto done;
-+		return ret ? -EINVAL : 0;
- 	}
- 
--	if ((var->activate & FB_ACTIVATE_FORCE) ||
--	    memcmp(&info->var, var, sizeof(struct fb_var_screeninfo))) {
--		u32 activate = var->activate;
-+	if (!(var->activate & FB_ACTIVATE_FORCE) &&
-+	    !memcmp(&info->var, var, sizeof(struct fb_var_screeninfo)))
-+		return 0;
- 
--		/* When using FOURCC mode, make sure the red, green, blue and
--		 * transp fields are set to 0.
--		 */
--		if ((info->fix.capabilities & FB_CAP_FOURCC) &&
--		    var->grayscale > 1) {
--			if (var->red.offset     || var->green.offset    ||
--			    var->blue.offset    || var->transp.offset   ||
--			    var->red.length     || var->green.length    ||
--			    var->blue.length    || var->transp.length   ||
--			    var->red.msb_right  || var->green.msb_right ||
--			    var->blue.msb_right || var->transp.msb_right)
--				return -EINVAL;
--		}
-+	activate = var->activate;
- 
--		if (!info->fbops->fb_check_var) {
--			*var = info->var;
--			goto done;
--		}
-+	/* When using FOURCC mode, make sure the red, green, blue and
-+	 * transp fields are set to 0.
-+	 */
-+	if ((info->fix.capabilities & FB_CAP_FOURCC) &&
-+	    var->grayscale > 1) {
-+		if (var->red.offset     || var->green.offset    ||
-+		    var->blue.offset    || var->transp.offset   ||
-+		    var->red.length     || var->green.length    ||
-+		    var->blue.length    || var->transp.length   ||
-+		    var->red.msb_right  || var->green.msb_right ||
-+		    var->blue.msb_right || var->transp.msb_right)
-+			return -EINVAL;
-+	}
- 
--		ret = info->fbops->fb_check_var(var, info);
-+	if (!info->fbops->fb_check_var) {
-+		*var = info->var;
-+		return 0;
-+	}
- 
--		if (ret)
--			goto done;
-+	ret = info->fbops->fb_check_var(var, info);
- 
--		if ((var->activate & FB_ACTIVATE_MASK) == FB_ACTIVATE_NOW) {
--			struct fb_var_screeninfo old_var;
--			struct fb_videomode mode;
+-	if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
+-		struct fb_event event;
+-		int evnt = (activate & FB_ACTIVATE_ALL) ?
+-			FB_EVENT_MODE_CHANGE_ALL :
+-			FB_EVENT_MODE_CHANGE;
 +	if (ret)
 +		return ret;
  
--			if (info->fbops->fb_get_caps) {
--				ret = fb_check_caps(info, var, activate);
-+	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_NOW)
-+		return 0;
+-		info->flags &= ~FBINFO_MISC_USEREVENT;
+-		event.info = info;
+-		event.data = &mode;
+-		fb_notifier_call_chain(evnt, &event);
+-	}
++	event.info = info;
++	event.data = &mode;
++	fb_notifier_call_chain(FB_EVENT_MODE_CHANGE, &event);
  
--				if (ret)
--					goto done;
--			}
-+	if (info->fbops->fb_get_caps) {
-+		ret = fb_check_caps(info, var, activate);
- 
--			old_var = info->var;
--			info->var = *var;
-+		if (ret)
-+			return ret;
-+	}
- 
--			if (info->fbops->fb_set_par) {
--				ret = info->fbops->fb_set_par(info);
-+	old_var = info->var;
-+	info->var = *var;
- 
--				if (ret) {
--					info->var = old_var;
--					printk(KERN_WARNING "detected "
--						"fb_set_par error, "
--						"error code: %d\n", ret);
--					goto done;
--				}
--			}
-+	if (info->fbops->fb_set_par) {
-+		ret = info->fbops->fb_set_par(info);
+-	return ret;
++	if (flags & FBINFO_MISC_USEREVENT)
++		fbcon_update_vcs(info, activate & FB_ACTIVATE_ALL);
 +
-+		if (ret) {
-+			info->var = old_var;
-+			printk(KERN_WARNING "detected "
-+				"fb_set_par error, "
-+				"error code: %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
--			fb_pan_display(info, &info->var);
--			fb_set_cmap(&info->cmap, info);
--			fb_var_to_videomode(&mode, &info->var);
-+	fb_pan_display(info, &info->var);
-+	fb_set_cmap(&info->cmap, info);
-+	fb_var_to_videomode(&mode, &info->var);
- 
--			if (info->modelist.prev && info->modelist.next &&
--			    !list_empty(&info->modelist))
--				ret = fb_add_videomode(&mode, &info->modelist);
-+	if (info->modelist.prev && info->modelist.next &&
-+	    !list_empty(&info->modelist))
-+		ret = fb_add_videomode(&mode, &info->modelist);
- 
--			if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
--				struct fb_event event;
--				int evnt = (activate & FB_ACTIVATE_ALL) ?
--					FB_EVENT_MODE_CHANGE_ALL :
--					FB_EVENT_MODE_CHANGE;
-+	if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
-+		struct fb_event event;
-+		int evnt = (activate & FB_ACTIVATE_ALL) ?
-+			FB_EVENT_MODE_CHANGE_ALL :
-+			FB_EVENT_MODE_CHANGE;
- 
--				info->flags &= ~FBINFO_MISC_USEREVENT;
--				event.info = info;
--				event.data = &mode;
--				fb_notifier_call_chain(evnt, &event);
--			}
--		}
-+		info->flags &= ~FBINFO_MISC_USEREVENT;
-+		event.info = info;
-+		event.data = &mode;
-+		fb_notifier_call_chain(evnt, &event);
- 	}
- 
-- done:
- 	return ret;
++	return 0;
  }
  EXPORT_SYMBOL(fb_set_var);
+ 
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index 015a02a29d37..b8454424910d 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -15,6 +15,7 @@
+ #include <linux/ctype.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/delay.h>
++#include <linux/fbcon.h>
+ #include <linux/gpio.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -1757,8 +1758,6 @@ static void sh_mobile_fb_reconfig(struct fb_info *info)
+ 	struct sh_mobile_lcdc_chan *ch = info->par;
+ 	struct fb_var_screeninfo var;
+ 	struct fb_videomode mode;
+-	struct fb_event event;
+-	int evnt = FB_EVENT_MODE_CHANGE_ALL;
+ 
+ 	if (ch->use_count > 1 || (ch->use_count == 1 && !info->fbcon_par))
+ 		/* More framebuffer users are active */
+@@ -1780,14 +1779,7 @@ static void sh_mobile_fb_reconfig(struct fb_info *info)
+ 		/* Couldn't reconfigure, hopefully, can continue as before */
+ 		return;
+ 
+-	/*
+-	 * fb_set_var() calls the notifier change internally, only if
+-	 * FBINFO_MISC_USEREVENT flag is set. Since we do not want to fake a
+-	 * user event, we have to call the chain ourselves.
+-	 */
+-	event.info = info;
+-	event.data = &ch->display.mode;
+-	fb_notifier_call_chain(evnt, &event);
++	fbcon_update_vcs(info, true);
+ }
+ 
+ /*
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 1e66fac3124f..f9c212f9b661 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -139,8 +139,6 @@ struct fb_cursor_user {
+ #define FB_EVENT_SET_CONSOLE_MAP        0x08
+ /*      A display blank is requested       */
+ #define FB_EVENT_BLANK                  0x09
+-/*      Private modelist is to be replaced */
+-#define FB_EVENT_MODE_CHANGE_ALL	0x0B
+ /*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
+ #define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
+ /*      A hardware display blank early change occurred */
+diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
+index d67d7ec51ef9..de31eeb22c97 100644
+--- a/include/linux/fbcon.h
++++ b/include/linux/fbcon.h
+@@ -15,6 +15,7 @@ void fbcon_new_modelist(struct fb_info *info);
+ void fbcon_get_requirement(struct fb_info *info,
+ 			   struct fb_blit_caps *caps);
+ void fbcon_fb_blanked(struct fb_info *info, int blank);
++void fbcon_update_vcs(struct fb_info *info, bool all);
+ #else
+ static inline void fb_console_init(void) {}
+ static inline void fb_console_exit(void) {}
+@@ -29,6 +30,7 @@ static inline void fbcon_new_modelist(struct fb_info *info) {}
+ static inline void fbcon_get_requirement(struct fb_info *info,
+ 					 struct fb_blit_caps *caps) {}
+ static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
++static inline void fbcon_update_vcs(struct fb_info *info, bool all) {}
+ #endif
+ 
+ #endif /* _LINUX_FBCON_H */
 -- 
 2.20.1
 
