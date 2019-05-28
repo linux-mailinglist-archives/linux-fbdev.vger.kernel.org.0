@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5334B2C2A6
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA352C2A0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:06:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbfE1JDU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 May 2019 05:03:20 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:37233 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726506AbfE1JDT (ORCPT
+        id S1726779AbfE1JGq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 May 2019 05:06:46 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:41371 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726895AbfE1JDW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 May 2019 05:03:19 -0400
-Received: by mail-ed1-f65.google.com with SMTP id w37so30608367edw.4
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:17 -0700 (PDT)
+        Tue, 28 May 2019 05:03:22 -0400
+Received: by mail-ed1-f67.google.com with SMTP id m4so30615600edd.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=2XhY37QKiJG0yVeCBJVjNjQRjgX7g+zT5YuLsuJlT/0=;
-        b=HUmM6fWW1Qkokcj/zd5Ot2If+OrST6LgqHbbva3UHFF9eJkoMa8t9wN30uRB3Hil7i
-         Hc91q9/ULJ947zUpmJgPZwcZmOAeI2WYWWQPocRGWKVj2wKtRnHlrfxXz9WfvOVZabyR
-         oBmw1pFE2OHFz+mZds0Vm6nwXAK2VxZ9stb/w=
+        bh=Wpi1xWPy33lj9mKcPzFNSCGKIPsIrM24U07obZg4Bbk=;
+        b=HRwgYNCSeirp12RNt1fyc5OhQoszF2Uo7tDWacf52/s+HTFiZCUvyKuqcMcCFLqTo7
+         osyTlqilBk3yRLl/Vm39fichaec5uHYWxg/SR+yE+xqDXUsKId+uFHmCikQYi4P9iErW
+         GcKPar6d/CdwBiFSNkAYtg+09d1NA/M8qXEg4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=2XhY37QKiJG0yVeCBJVjNjQRjgX7g+zT5YuLsuJlT/0=;
-        b=mAz9FLxObQEv3lN8E4AC110fKI4kVjFALv6f1FnpnqTOzKnvjizcHjE2YZqRGR+kOE
-         RJY7WO7biRcilg7VnkDqfKL3kxvn3rS5iHrkkgC5Gu1JXEadMZsMlDuxJq2DyXrSf/tn
-         nLgy+h3qhTCW44flkaUfiunfkwOLKuyp7qZRJnZRFbHwC5amLdDVNj5S02KPsEV0uykW
-         oaJ1mt0yx/OX5d/OJUjYpoI0yvF4cyNV6t4AaPhQx/yLbSFB6GOC8B9zuWqA5RX/sz9s
-         k+N9BR7fv/3WxCbM/uWVdRCyXn1bBrIfqyQn1w82iuUvQ5lzwCbrfkG5lyt8JFVKDDBq
-         prpg==
-X-Gm-Message-State: APjAAAVGBFlHGuBjyj/GwjI2LKv47XzlfRvYafQ0dvQS+diG3WdB1Rvb
-        gEwq9ta/rTdIg9CdoO+alm/kBw==
-X-Google-Smtp-Source: APXvYqysJqma/Cwd8MeT0Rq/SJ2o0DZ5nqO5ai6mqVm0Hq+p9CdMzlw4b+pi8PAdwAc8N8a+yr7I9w==
-X-Received: by 2002:a50:991d:: with SMTP id k29mr126603128edb.29.1559034197127;
-        Tue, 28 May 2019 02:03:17 -0700 (PDT)
+        bh=Wpi1xWPy33lj9mKcPzFNSCGKIPsIrM24U07obZg4Bbk=;
+        b=j25j9nOQvhGV0ZvWgi7IP4aAIWv7N2Dv3hS3IK9UrkuYRij222C/0IAZ2xZRQbY4kU
+         wgM/GnjEjJM8psg/pdr2qZk0igWEzRFw6NyHGM1zlb0/ucb2hVPIvsk9qigGpoWjwnqt
+         tuBd2GzJBIWhRjvxL4hSlVvmAXoQR+482PBkKPKojmR9BePM+WUEei8x7IeFcMRDdKr4
+         rdp93OmleqsKwEfB1GEHd2dZxtqZPsypwSkJ4xTCm7oaNOlREF83l59u43HCiLV40ln1
+         pG0RmnaWbYDpSirQpuju3mLR389dgWctakY2Qb4GjZYakmLq7M2YNDKrptgbc9L148Ua
+         BIsA==
+X-Gm-Message-State: APjAAAVv52RZ7uRM8Go7Cou4a+rTw+kk++H4/7Q8wzYfOjcVUn4TC6dc
+        vyRhbaRG5BkJKgOP0tA/JSWwtg==
+X-Google-Smtp-Source: APXvYqyMZ+XP/DYBnT+b0/bEtV1bg4DZ2v7pGi2tkNPgOMj6ozhRdzLU/jwSi0kUA3Q+ESL/hNZuXg==
+X-Received: by 2002:a50:ad98:: with SMTP id a24mr127149884edd.235.1559034200289;
+        Tue, 28 May 2019 02:03:20 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.15
+        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.17
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 02:03:16 -0700 (PDT)
+        Tue, 28 May 2019 02:03:17 -0700 (PDT)
 From:   Daniel Vetter <daniel.vetter@ffwll.ch>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
@@ -52,10 +52,12 @@ Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         Daniel Vetter <daniel.vetter@intel.com>,
         Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH 05/33] fbdev/sa1100fb: Remove dead code
-Date:   Tue, 28 May 2019 11:02:36 +0200
-Message-Id: <20190528090304.9388-6-daniel.vetter@ffwll.ch>
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 06/33] fbdev/cyber2000: Remove struct display
+Date:   Tue, 28 May 2019 11:02:37 +0200
+Message-Id: <20190528090304.9388-7-daniel.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
 References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
@@ -66,58 +68,29 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Motivated because it contains a struct display, which is a fbcon
-internal data structure that I want to rename. It seems to have been
-formerly used in drivers, but that's very long time ago.
+Entirely unused.
 
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/video/fbdev/sa1100fb.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ drivers/video/fbdev/cyber2000fb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
-index 15ae50063296..f7f8dee044b1 100644
---- a/drivers/video/fbdev/sa1100fb.c
-+++ b/drivers/video/fbdev/sa1100fb.c
-@@ -974,35 +974,10 @@ static void sa1100fb_task(struct work_struct *w)
-  */
- static unsigned int sa1100fb_min_dma_period(struct sa1100fb_info *fbi)
- {
--#if 0
--	unsigned int min_period = (unsigned int)-1;
--	int i;
--
--	for (i = 0; i < MAX_NR_CONSOLES; i++) {
--		struct display *disp = &fb_display[i];
--		unsigned int period;
--
--		/*
--		 * Do we own this display?
--		 */
--		if (disp->fb_info != &fbi->fb)
--			continue;
--
--		/*
--		 * Ok, calculate its DMA period
--		 */
--		period = sa1100fb_display_dma_period(&disp->var);
--		if (period < min_period)
--			min_period = period;
--	}
--
--	return min_period;
--#else
- 	/*
- 	 * FIXME: we need to verify _all_ consoles.
- 	 */
- 	return sa1100fb_display_dma_period(&fbi->fb.var);
--#endif
- }
- 
- /*
+diff --git a/drivers/video/fbdev/cyber2000fb.c b/drivers/video/fbdev/cyber2000fb.c
+index 9a5751cb4e16..452ef07b3a06 100644
+--- a/drivers/video/fbdev/cyber2000fb.c
++++ b/drivers/video/fbdev/cyber2000fb.c
+@@ -61,7 +61,6 @@
+ struct cfb_info {
+ 	struct fb_info		fb;
+ 	struct display_switch	*dispsw;
+-	struct display		*display;
+ 	unsigned char		__iomem *region;
+ 	unsigned char		__iomem *regs;
+ 	u_int			id;
 -- 
 2.20.1
 
