@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A70D82C258
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 751312C247
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 May 2019 11:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726768AbfE1JEY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1727229AbfE1JEY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Tue, 28 May 2019 05:04:24 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:42035 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727212AbfE1JDu (ORCPT
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:45824 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727228AbfE1JDv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 May 2019 05:03:50 -0400
-Received: by mail-ed1-f67.google.com with SMTP id g24so2700027eds.9
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:49 -0700 (PDT)
+        Tue, 28 May 2019 05:03:51 -0400
+Received: by mail-ed1-f66.google.com with SMTP id g57so15793059edc.12
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 May 2019 02:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=xdSAzTv9tDPr6PTxvMhXZVM/Er2L9zs7q0S7NNjW/ok=;
-        b=XG2Xk6QdQnFvZNtT1FJSbJRUie40rMANdM0srLaNSg5DjS2kagtuP2RFgL4VendVOT
-         BabNgErILkSIbHiZbTBTMTYqlOuoHuDBbXOVrWrUlgwpokq6/Wf0htlfVQ/vZhH8sFl9
-         dkgrYC8vItg/cnP9Ums7sqMpu0F3/0mku30MA=
+        bh=iiVfim/c+lvRDBMKUU1Yj60R+0JeKrGf/yz70RKA77g=;
+        b=JYsGFCPLw0HGmIgkl4SP/xcs7QXPG5ftMgs45iq0et9pU5+4wFqKw0dMai5DrVT4u4
+         ld5Zz32T14l/6/XAhMdSVqkawzt+gu1WCverQZqTaHCNFsxOdC8/bZymAAf4ztZDQMtu
+         30rpeKzEEOmbclY0qvZTWQ38AcfubFsdxhkq4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=xdSAzTv9tDPr6PTxvMhXZVM/Er2L9zs7q0S7NNjW/ok=;
-        b=MUxjjXCRHS2KUhqdQWlItR/cbfBZJjWFvGoOoImdOCQk2uFfOB92jlyyNc0q1PTY+x
-         I0DngRVaBPixwkLm/X2FcEOA2IgGPqqc1zgjx96Qbc43CDP94qfzoiajQTwmt3jWLApZ
-         B53cnxNc/qYrZYP48tasBSfCkrdm1bB93rNiL0s3lSo0HzNr38czGp5Hg9AYreCtccHc
-         L+vnGm92RXsGdbwVp9s6E/d6N4SAcRw1teCMtdNyxgiIKxN5L+XFydcGlImn6R3vNaV/
-         aYj/Hl2PydwUPLpR1Z2QwmdHkdbUDlipv+TZnnpYCxFDuwkbKuA25dsgV3FFC8hECUOt
-         YJ/g==
-X-Gm-Message-State: APjAAAXw0ucw0inYeIdigMFsG1YxBg6TSXfiZF/z2coOS2/gz+rIh1RM
-        iX0FV3iD0FWi1MIuLlS9SXjZpg==
-X-Google-Smtp-Source: APXvYqz7N+WGbx3CGIzAcTP4j/O/T91KOj5m1m+2vfXlGhtH0z7XZhnZ1uDp1ATj69H/KzvnZS3Kaw==
-X-Received: by 2002:a50:f4fb:: with SMTP id v56mr128756589edm.13.1559034228987;
-        Tue, 28 May 2019 02:03:48 -0700 (PDT)
+        bh=iiVfim/c+lvRDBMKUU1Yj60R+0JeKrGf/yz70RKA77g=;
+        b=Fp7zDW6rtTmxMs+WGX9izRSuZx1XWNgFvL+3hvnxkHhVH1didmXHR0JEe/FnTuNpG4
+         yezdPAlIjaIR8ckU0NIasYNFx/+x2Np2wgSeb1o0zLCSLLlsTIAzMWiXoo7y9VpejFQO
+         CqbuJDNo6LWvKvqaTctvkkwsJhbc2dNhjw0fSf8PQno3U3pPerFs4hC1tHqswC0xBPBE
+         vws2htiXzwXoXxLmiQP54Sl2jf0VRJLIfWhmBi1HdWCJ/BDCtTrxJ4jafFdQm9NMUyEk
+         RH+5k6+7O1DA5fn5T0PKYPe+Kx1ks6uw+XzibJQiquxQGFKe9gFUnPjAj9ECv7WPfgU2
+         7N+A==
+X-Gm-Message-State: APjAAAWKnvqtoCkA9CT/YIJmHJYUb5eP7M/dt1a+57hJyRZyc9zg9xm8
+        z5/S08c4hLtBzNtnLfziloPkMw==
+X-Google-Smtp-Source: APXvYqw2LqUX9K5HB5JJb1MV5fYYcTI5zm8X5V8jSfDpsJbxV2t3AOoInz4qZFPA7VbBrQW+eH0NZA==
+X-Received: by 2002:a05:6402:1256:: with SMTP id l22mr10497147edw.22.1559034230490;
+        Tue, 28 May 2019 02:03:50 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
-        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.47
+        by smtp.gmail.com with ESMTPSA id x49sm4072656edm.25.2019.05.28.02.03.49
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 28 May 2019 02:03:48 -0700 (PDT)
+        Tue, 28 May 2019 02:03:49 -0700 (PDT)
 From:   Daniel Vetter <daniel.vetter@ffwll.ch>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
@@ -53,15 +53,13 @@ Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         Daniel Vetter <daniel.vetter@intel.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>,
         =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         Peter Rosin <peda@axentia.se>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Rob Clark <robdclark@gmail.com>
-Subject: [PATCH 26/33] fbdev: remove FBINFO_MISC_USEREVENT around fb_blank
-Date:   Tue, 28 May 2019 11:02:57 +0200
-Message-Id: <20190528090304.9388-27-daniel.vetter@ffwll.ch>
+        Hans de Goede <hdegoede@redhat.com>,
+        Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 27/33] fb: Flatten control flow in fb_set_var
+Date:   Tue, 28 May 2019 11:02:58 +0200
+Message-Id: <20190528090304.9388-28-daniel.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
 References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
@@ -73,72 +71,191 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-With the recursion broken in the previous patch we can drop the
-FBINFO_MISC_USEREVENT flag around calls to fb_blank - recursion
-prevention was it's only job.
+Instead of wiring almost everything down to the very last line using
+goto soup (but not consistently, where would the fun be otherwise)
+drop out early when checks fail. This allows us to flatten the huge
+indent levels to just 1.
+
+Aside: If a driver doesn't set ->fb_check_var, then FB_ACTIVATE_NOW
+does nothing. This bug exists ever since this code was extracted as a
+common helper in 2002, hence I decided against fixing it. Everyone
+just better have a fb_check_var to make sure things work correctly.
 
 Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Yisheng Xie <ysxie@foxmail.com>
 Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
 Cc: Peter Rosin <peda@axentia.se>
+Cc: Hans de Goede <hdegoede@redhat.com>
 Cc: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Rob Clark <robdclark@gmail.com>
 ---
- drivers/video/fbdev/core/fbcon.c   | 5 ++---
- drivers/video/fbdev/core/fbmem.c   | 3 ---
- drivers/video/fbdev/core/fbsysfs.c | 2 --
- 3 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 126 +++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index a4617067ff24..b5ee89f16d6c 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2386,9 +2386,8 @@ static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch)
- 			fbcon_cursor(vc, blank ? CM_ERASE : CM_DRAW);
- 			ops->cursor_flash = (!blank);
- 
--			if (!(info->flags & FBINFO_MISC_USEREVENT))
--				if (fb_blank(info, blank))
--					fbcon_generic_blank(vc, info, blank);
-+			if (fb_blank(info, blank))
-+				fbcon_generic_blank(vc, info, blank);
- 		}
- 
- 		if (!blank)
 diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index d6713dce9e31..25ae466ba593 100644
+index 25ae466ba593..96805fe85332 100644
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1194,10 +1194,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
- 	case FBIOBLANK:
- 		console_lock();
- 		lock_fb_info(info);
--		info->flags |= FBINFO_MISC_USEREVENT;
- 		ret = fb_blank(info, arg);
--		info->flags &= ~FBINFO_MISC_USEREVENT;
--
- 		/* might again call into fb_blank */
- 		fbcon_fb_blanked(info, arg);
- 		unlock_fb_info(info);
-diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
-index 252d4f52d2a5..882b471d619e 100644
---- a/drivers/video/fbdev/core/fbsysfs.c
-+++ b/drivers/video/fbdev/core/fbsysfs.c
-@@ -310,9 +310,7 @@ static ssize_t store_blank(struct device *device,
+@@ -954,6 +954,9 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ {
+ 	int flags = info->flags;
+ 	int ret = 0;
++	u32 activate;
++	struct fb_var_screeninfo old_var;
++	struct fb_videomode mode;
  
- 	arg = simple_strtoul(buf, &last, 0);
- 	console_lock();
--	fb_info->flags |= FBINFO_MISC_USEREVENT;
- 	err = fb_blank(fb_info, arg);
--	fb_info->flags &= ~FBINFO_MISC_USEREVENT;
- 	/* might again call into fb_blank */
- 	fbcon_fb_blanked(fb_info, arg);
- 	console_unlock();
+ 	if (var->activate & FB_ACTIVATE_INV_MODE) {
+ 		struct fb_videomode mode1, mode2;
+@@ -970,87 +973,84 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 			fb_delete_videomode(&mode1, &info->modelist);
+ 
+ 
+-		ret = (ret) ? -EINVAL : 0;
+-		goto done;
++		return ret ? -EINVAL : 0;
+ 	}
+ 
+-	if ((var->activate & FB_ACTIVATE_FORCE) ||
+-	    memcmp(&info->var, var, sizeof(struct fb_var_screeninfo))) {
+-		u32 activate = var->activate;
++	if (!(var->activate & FB_ACTIVATE_FORCE) &&
++	    !memcmp(&info->var, var, sizeof(struct fb_var_screeninfo)))
++		return 0;
+ 
+-		/* When using FOURCC mode, make sure the red, green, blue and
+-		 * transp fields are set to 0.
+-		 */
+-		if ((info->fix.capabilities & FB_CAP_FOURCC) &&
+-		    var->grayscale > 1) {
+-			if (var->red.offset     || var->green.offset    ||
+-			    var->blue.offset    || var->transp.offset   ||
+-			    var->red.length     || var->green.length    ||
+-			    var->blue.length    || var->transp.length   ||
+-			    var->red.msb_right  || var->green.msb_right ||
+-			    var->blue.msb_right || var->transp.msb_right)
+-				return -EINVAL;
+-		}
++	activate = var->activate;
+ 
+-		if (!info->fbops->fb_check_var) {
+-			*var = info->var;
+-			goto done;
+-		}
++	/* When using FOURCC mode, make sure the red, green, blue and
++	 * transp fields are set to 0.
++	 */
++	if ((info->fix.capabilities & FB_CAP_FOURCC) &&
++	    var->grayscale > 1) {
++		if (var->red.offset     || var->green.offset    ||
++		    var->blue.offset    || var->transp.offset   ||
++		    var->red.length     || var->green.length    ||
++		    var->blue.length    || var->transp.length   ||
++		    var->red.msb_right  || var->green.msb_right ||
++		    var->blue.msb_right || var->transp.msb_right)
++			return -EINVAL;
++	}
+ 
+-		ret = info->fbops->fb_check_var(var, info);
++	if (!info->fbops->fb_check_var) {
++		*var = info->var;
++		return 0;
++	}
+ 
+-		if (ret)
+-			goto done;
++	ret = info->fbops->fb_check_var(var, info);
+ 
+-		if ((var->activate & FB_ACTIVATE_MASK) == FB_ACTIVATE_NOW) {
+-			struct fb_var_screeninfo old_var;
+-			struct fb_videomode mode;
++	if (ret)
++		return ret;
+ 
+-			if (info->fbops->fb_get_caps) {
+-				ret = fb_check_caps(info, var, activate);
++	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_NOW)
++		return 0;
+ 
+-				if (ret)
+-					goto done;
+-			}
++	if (info->fbops->fb_get_caps) {
++		ret = fb_check_caps(info, var, activate);
+ 
+-			old_var = info->var;
+-			info->var = *var;
++		if (ret)
++			return ret;
++	}
+ 
+-			if (info->fbops->fb_set_par) {
+-				ret = info->fbops->fb_set_par(info);
++	old_var = info->var;
++	info->var = *var;
+ 
+-				if (ret) {
+-					info->var = old_var;
+-					printk(KERN_WARNING "detected "
+-						"fb_set_par error, "
+-						"error code: %d\n", ret);
+-					goto done;
+-				}
+-			}
++	if (info->fbops->fb_set_par) {
++		ret = info->fbops->fb_set_par(info);
++
++		if (ret) {
++			info->var = old_var;
++			printk(KERN_WARNING "detected "
++				"fb_set_par error, "
++				"error code: %d\n", ret);
++			return ret;
++		}
++	}
+ 
+-			fb_pan_display(info, &info->var);
+-			fb_set_cmap(&info->cmap, info);
+-			fb_var_to_videomode(&mode, &info->var);
++	fb_pan_display(info, &info->var);
++	fb_set_cmap(&info->cmap, info);
++	fb_var_to_videomode(&mode, &info->var);
+ 
+-			if (info->modelist.prev && info->modelist.next &&
+-			    !list_empty(&info->modelist))
+-				ret = fb_add_videomode(&mode, &info->modelist);
++	if (info->modelist.prev && info->modelist.next &&
++	    !list_empty(&info->modelist))
++		ret = fb_add_videomode(&mode, &info->modelist);
+ 
+-			if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
+-				struct fb_event event;
+-				int evnt = (activate & FB_ACTIVATE_ALL) ?
+-					FB_EVENT_MODE_CHANGE_ALL :
+-					FB_EVENT_MODE_CHANGE;
++	if (!ret && (flags & FBINFO_MISC_USEREVENT)) {
++		struct fb_event event;
++		int evnt = (activate & FB_ACTIVATE_ALL) ?
++			FB_EVENT_MODE_CHANGE_ALL :
++			FB_EVENT_MODE_CHANGE;
+ 
+-				info->flags &= ~FBINFO_MISC_USEREVENT;
+-				event.info = info;
+-				event.data = &mode;
+-				fb_notifier_call_chain(evnt, &event);
+-			}
+-		}
++		info->flags &= ~FBINFO_MISC_USEREVENT;
++		event.info = info;
++		event.data = &mode;
++		fb_notifier_call_chain(evnt, &event);
+ 	}
+ 
+- done:
+ 	return ret;
+ }
+ EXPORT_SYMBOL(fb_set_var);
 -- 
 2.20.1
 
