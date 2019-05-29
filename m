@@ -2,196 +2,246 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 512472E316
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 May 2019 19:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809642E558
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 May 2019 21:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726033AbfE2RXH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 May 2019 13:23:07 -0400
-Received: from mga18.intel.com ([134.134.136.126]:61250 "EHLO mga18.intel.com"
+        id S1725956AbfE2Tbg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 May 2019 15:31:36 -0400
+Received: from mga05.intel.com ([192.55.52.43]:62414 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726240AbfE2RXH (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 May 2019 13:23:07 -0400
+        id S1725917AbfE2Tbg (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 May 2019 15:31:36 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 May 2019 10:23:06 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 May 2019 12:31:35 -0700
 X-ExtLoop1: 1
-Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
-  by orsmga006.jf.intel.com with ESMTP; 29 May 2019 10:23:05 -0700
-Received: from fmsmsx157.amr.corp.intel.com (10.18.116.73) by
- FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Wed, 29 May 2019 10:23:05 -0700
-Received: from bgsmsx110.gar.corp.intel.com (10.223.4.212) by
- FMSMSX157.amr.corp.intel.com (10.18.116.73) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Wed, 29 May 2019 10:23:04 -0700
-Received: from bgsmsx104.gar.corp.intel.com ([169.254.5.115]) by
- BGSMSX110.gar.corp.intel.com ([169.254.11.234]) with mapi id 14.03.0415.000;
- Wed, 29 May 2019 22:53:01 +0530
-From:   "Shankar, Uma" <uma.shankar@intel.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-CC:     intel-gfx <intel-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "Sharma, Shashank" <shashank.sharma@intel.com>,
-        =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+Received: from linuxpresi1-desktop.iind.intel.com ([10.223.74.121])
+  by fmsmga008.fm.intel.com with ESMTP; 29 May 2019 12:31:30 -0700
+From:   Uma Shankar <uma.shankar@intel.com>
+To:     intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     maarten.lankhorst@linux.intel.com, ville.syrjala@linux.intel.com,
+        shashank.sharma@intel.com, emil.l.velikov@gmail.com,
+        brian.starkey@arm.com, dcastagna@chromium.org,
+        seanpaul@chromium.org, matthew.d.roper@intel.com, jonas@kwiboo.se,
+        daniel@ffwll.ch, Uma Shankar <uma.shankar@intel.com>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans Verkuil <hansverk@cisco.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Subject: RE: [PATCH] drm: Fix docbook warnings in hdr metadata helper
- structures
-Thread-Topic: [PATCH] drm: Fix docbook warnings in hdr metadata helper
- structures
-Thread-Index: AQHVFikeiV5iioS10EW0VptxP2R9AaaB1haAgABmHUA=
-Date:   Wed, 29 May 2019 17:23:01 +0000
-Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F820336E0@BGSMSX104.gar.corp.intel.com>
-References: <1559141030-4386-1-git-send-email-uma.shankar@intel.com>
- <CAKMK7uEoZD3m9cgfBo93jOuei2VB68+9fBTrcduQ=Aybc-PKOw@mail.gmail.com>
-In-Reply-To: <CAKMK7uEoZD3m9cgfBo93jOuei2VB68+9fBTrcduQ=Aybc-PKOw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ctpclassification: CTP_NT
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiODdlZjAwMTAtMDgzZS00ZWM3LTkwMzktYjdmNzAxNDE4YjJiIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRkdMZWsxbW1ZRmFzUHEyVlwvVGJqRklNVVVBemNKSnppYnNJa3dGaW1EVFhZeWlXMFVUdDJkVHZPTWR1TXh3R0IifQ==
-dlp-product: dlpe-windows
-dlp-version: 11.0.600.7
-dlp-reaction: no-action
-x-originating-ip: [10.223.10.10]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org
+Subject: [PATCH 2/4] drm: Fix docbook warnings in hdr metadata helper structures
+Date:   Thu, 30 May 2019 01:29:02 +0530
+Message-Id: <1559159944-21103-3-git-send-email-uma.shankar@intel.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1559159944-21103-1-git-send-email-uma.shankar@intel.com>
+References: <1559159944-21103-1-git-send-email-uma.shankar@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IERhbmllbCBWZXR0ZXIgW21h
-aWx0bzpkYW5pZWxAZmZ3bGwuY2hdDQo+U2VudDogV2VkbmVzZGF5LCBNYXkgMjksIDIwMTkgODoz
-MSBQTQ0KPlRvOiBTaGFua2FyLCBVbWEgPHVtYS5zaGFua2FyQGludGVsLmNvbT4NCj5DYzogaW50
-ZWwtZ2Z4IDxpbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPjsgZHJpLWRldmVsIDxkcmkt
-DQo+ZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPjsgU2hhcm1hLCBTaGFzaGFuayA8c2hhc2hh
-bmsuc2hhcm1hQGludGVsLmNvbT47DQo+VmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxp
-bnV4LmludGVsLmNvbT47IE1hYXJ0ZW4gTGFua2hvcnN0DQo+PG1hYXJ0ZW4ubGFua2hvcnN0QGxp
-bnV4LmludGVsLmNvbT47IE1heGltZSBSaXBhcmQNCj48bWF4aW1lLnJpcGFyZEBib290bGluLmNv
-bT47IFNlYW4gUGF1bCA8c2VhbkBwb29ybHkucnVuPjsgRGF2aWQgQWlybGllDQo+PGFpcmxpZWRA
-bGludXguaWU+OyBCYXJ0bG9taWVqIFpvbG5pZXJraWV3aWN6IDxiLnpvbG5pZXJraWVAc2Ftc3Vu
-Zy5jb20+OyBIYW5zDQo+VmVya3VpbCA8aGFuc3ZlcmtAY2lzY28uY29tPjsgTGludXggRmJkZXYg
-ZGV2ZWxvcG1lbnQgbGlzdCA8bGludXgtDQo+ZmJkZXZAdmdlci5rZXJuZWwub3JnPg0KPlN1Ympl
-Y3Q6IFJlOiBbUEFUQ0hdIGRybTogRml4IGRvY2Jvb2sgd2FybmluZ3MgaW4gaGRyIG1ldGFkYXRh
-IGhlbHBlciBzdHJ1Y3R1cmVzDQo+DQo+T24gV2VkLCBNYXkgMjksIDIwMTkgYXQgNDoxNiBQTSBV
-bWEgU2hhbmthciA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPiB3cm90ZToNCj4+DQo+PiBGaXhlcyB0
-aGUgZm9sbG93aW5nIHdhcm5pbmdzOg0KPj4gLi9pbmNsdWRlL2RybS9kcm1fbW9kZV9jb25maWcu
-aDo4NDE6IHdhcm5pbmc6IEluY29ycmVjdCB1c2Ugb2YNCj4+IGtlcm5lbC1kb2MgZm9ybWF0OiAg
-ICAgICAgICAqIGhkcl9vdXRwdXRfbWV0YWRhdGFfcHJvcGVydHk6IENvbm5lY3Rvcg0KPj4gcHJv
-cGVydHkgY29udGFpbmluZyBoZHINCj4+IC4vaW5jbHVkZS9kcm0vZHJtX21vZGVfY29uZmlnLmg6
-OTE4OiB3YXJuaW5nOiBGdW5jdGlvbiBwYXJhbWV0ZXIgb3IgbWVtYmVyDQo+J2hkcl9vdXRwdXRf
-bWV0YWRhdGFfcHJvcGVydHknIG5vdCBkZXNjcmliZWQgaW4gJ2RybV9tb2RlX2NvbmZpZycNCj4+
-IC4vaW5jbHVkZS9kcm0vZHJtX2Nvbm5lY3Rvci5oOjEyNTE6IHdhcm5pbmc6IEZ1bmN0aW9uIHBh
-cmFtZXRlciBvciBtZW1iZXINCj4naGRyX291dHB1dF9tZXRhZGF0YScgbm90IGRlc2NyaWJlZCBp
-biAnZHJtX2Nvbm5lY3RvcicNCj4+IC4vaW5jbHVkZS9kcm0vZHJtX2Nvbm5lY3Rvci5oOjEyNTE6
-IHdhcm5pbmc6IEZ1bmN0aW9uIHBhcmFtZXRlciBvciBtZW1iZXINCj4naGRyX3NpbmtfbWV0YWRh
-dGEnIG5vdCBkZXNjcmliZWQgaW4gJ2RybV9jb25uZWN0b3InDQo+Pg0KPj4gQWxzbyBhZGRzIHNv
-bWUgcHJvcGVydHkgZG9jdW1lbnRhdGlvbiBmb3IgSERSIE1ldGFkYXRhIENvbm5lY3Rvcg0KPj4g
-UHJvcGVydHkgaW4gY29ubmVjdG9yIHByb3BlcnR5IGNyZWF0ZSBmdW5jdGlvbi4NCj4+DQo+PiBD
-YzogU2hhc2hhbmsgU2hhcm1hIDxzaGFzaGFuay5zaGFybWFAaW50ZWwuY29tPg0KPj4gQ2M6IFZp
-bGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+PiBDYzogTWFh
-cnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4ubGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4NCj4+IENj
-OiBNYXhpbWUgUmlwYXJkIDxtYXhpbWUucmlwYXJkQGJvb3RsaW4uY29tPg0KPj4gQ2M6IFNlYW4g
-UGF1bCA8c2VhbkBwb29ybHkucnVuPg0KPj4gQ2M6IERhdmlkIEFpcmxpZSA8YWlybGllZEBsaW51
-eC5pZT4NCj4+IENjOiBEYW5pZWwgVmV0dGVyIDxkYW5pZWxAZmZ3bGwuY2g+DQo+PiBDYzogQmFy
-dGxvbWllaiBab2xuaWVya2lld2ljeiA8Yi56b2xuaWVya2llQHNhbXN1bmcuY29tPg0KPj4gQ2M6
-ICJWaWxsZSBTeXJqw6Rsw6QiIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4+IENj
-OiBIYW5zIFZlcmt1aWwgPGhhbnN2ZXJrQGNpc2NvLmNvbT4NCj4+IENjOiBkcmktZGV2ZWxAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnDQo+PiBDYzogbGludXgtZmJkZXZAdmdlci5rZXJuZWwub3JnDQo+
-PiBTaWduZWQtb2ZmLWJ5OiBVbWEgU2hhbmthciA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPg0KPj4g
-LS0tDQo+PiAgZHJpdmVycy9ncHUvZHJtL2RybV9jb25uZWN0b3IuYyB8IDggKysrKysrKysNCj4+
-ICBpbmNsdWRlL2RybS9kcm1fY29ubmVjdG9yLmggICAgIHwgMyArKy0NCj4+ICBpbmNsdWRlL2Ry
-bS9kcm1fbW9kZV9jb25maWcuaCAgIHwgMiArLQ0KPj4gIGluY2x1ZGUvbGludXgvaGRtaS5oICAg
-ICAgICAgICAgfCAxICsNCj4+ICA0IGZpbGVzIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKyksIDIg
-ZGVsZXRpb25zKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fY29u
-bmVjdG9yLmMNCj4+IGIvZHJpdmVycy9ncHUvZHJtL2RybV9jb25uZWN0b3IuYyBpbmRleCBjOWFj
-OGI5Li43MDIzMDdjIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL2RybV9jb25uZWN0
-b3IuYw0KPj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2RybV9jb25uZWN0b3IuYw0KPj4gQEAgLTEw
-MDMsNiArMTAwMywxNCBAQCBpbnQgZHJtX2Rpc3BsYXlfaW5mb19zZXRfYnVzX2Zvcm1hdHMoc3Ry
-dWN0DQo+ZHJtX2Rpc3BsYXlfaW5mbyAqaW5mbywNCj4+ICAgKiAgICAgY2FuIGFsc28gZXhwb3Nl
-IHRoaXMgcHJvcGVydHkgdG8gZXh0ZXJuYWwgb3V0cHV0cywgaW4gd2hpY2ggY2FzZSB0aGV5DQo+
-PiAgICogICAgIG11c3Qgc3VwcG9ydCAiTm9uZSIsIHdoaWNoIHNob3VsZCBiZSB0aGUgZGVmYXVs
-dCAoc2luY2UgZXh0ZXJuYWwgc2NyZWVucw0KPj4gICAqICAgICBoYXZlIGEgYnVpbHQtaW4gc2Nh
-bGVyKS4NCj4+ICsgKg0KPj4gKyAqIEhEUl9PVVRQVVRfTUVUQURBVEE6DQo+PiArICogICAgIENv
-bm5lY3RvciBwcm9wZXJ0eSB0byBlbmFibGUgdXNlcnNwYWNlIHRvIHNlbmQgSERSIE1ldGFkYXRh
-IHRvIGRyaXZlci4NCj4+ICsgKiAgICAgVGhpcyBtZXRhZGF0YSBpcyBiYXNlZCBvbiB0aGUgY29t
-cG9zaXRpb24gYW5kIGJsZW5kaW5nIHBvbGljaWVzIGRlY2lkZWQNCj4+ICsgKiAgICAgYnkgdXNl
-ciwgdGFraW5nIGludG8gYWNjb3VudCB0aGUgaGFyZHdhcmUgYW5kIHNpbmsgY2FwYWJpbHRpZXMu
-DQo+PiArICogICAgIFRoZSBkcml2ZXIgZ2V0cyB0aGlzIG1ldGFkYXRhIGFuZCBjcmVhdGVzIGEg
-RHluYW1pYyBSYW5nZSBhbmQgTWFzdGVyaW5nDQo+PiArICogICAgIEluZm9mcmFtZSAoRFJNKSB3
-aGljaCBpcyB0aGVuIHNlbnQgdG8gc2luay4gVGhpcyBub3RpZmllcyB0aGUgc2luayBvZg0KPj4g
-KyAqICAgICB0aGUgdXBjb21pbmcgZnJhbWUncyBDb2xvciBFbmNvZGluZyBhbmQgTHVtaW5hbmNl
-IHBhcmFtZXRlcnMuDQo+PiAgICovDQo+DQo+QXNzdW1pbmcgSSdtIGFwcGx5aW5nIHRoaXMgY29y
-cmVjdGx5IHlvdXIgYWRkaW5nIHRoaXMgdG8gdGhlICJsY2QgcGFuZWwgcHJvcGVydGllcyINCj5z
-ZWN0aW9uLiBUaGF0IGRvZXNuJ3QgbWFrZSBzZW5zZSB0byBtZS4gSSB0aGluayB3ZSBhbHJlYWR5
-IGhhdmUgYSBzZWN0aW9uIGZvciBoZG1pDQo+cHJvcGVydGllcyBzb21ld2hlcmUsIHdvdWxkIGZp
-dCBiZXR0ZXIgdGhlcmUuDQoNClRoaXMgaXMgZ2VuZXJpYyAoYXBwbGllcyBmb3IgSERNSSBhcyB3
-ZWxsIGFzIERQKS4gSSB3aWxsIG1vdmUgdGhpcyBhYm92ZSBhbmQgbmVhciB0byBHZW5lcmFsDQpw
-cm9wZXJ0aWVzIGxpa2UgRURJRC4NCg0KPlRoaXMgc2hvdWxkIGFsc28gY29udGFpbiBhIGJpdCBt
-b3JlIGFib3V0IGhvdyB0aGlzIGlzIHN1cHBvc2VkIHRvIHdvcmssIGhvdyBpdCdzIHNldA0KPnVw
-IGZyb20gYSBkcml2ZXIgcG92IChzcHJpbmtsZSBsaW5rcyBhbGwgb3ZlciBpdCkgYW5kIGhvdyB1
-c2Vyc3BhY2UgaXQgc3VwcG9zZWQgdG8gdXNlIGl0Lg0KDQpPSywgd2lsbCBhZGQgZWxhYm9yYXRl
-IHRoaXMgYWRkaW5nIHRoZXNlIGRldGFpbHMgYXMgd2VsbC4NCg0KPkkgdGhpbmsgc2luY2UgdGhp
-cyBpcyBhIHVzaW5nIGEgcmF0aGVyIGNvbXBsaWNhdGVkIHN0cnVjdCBJIHRoaW5rIHdlIG5lZWQg
-dG8gZnVsbHkNCj5kb2N1bWVudCB0aGF0IHN0cnVjdHVyZSB0b28uIEF0bSB1YXBpL2RybV9tb2Rl
-LmggaXNuJ3QgcHVsbGVkIGludG8gYW55d2hlcmUsIHNvIHdlDQo+bmVlZCB0byBmaXggdGhhdCAo
-YSBuZXcgY2hhcHRlciB0aXRsZWQgIlVzZXJzcGFjZSBBUEkgU3RydWN0dXJlcyIgaW4gZHJtLXVh
-cGkucnN0IHdvdWxkDQo+YmUgZ29vZCwgY3Jvc3MtbGlua3Mgd2lsbCB3b3JrKS4NCg0KT2ssIHdp
-bGwgYWRkIHRoaXMgbmV3IHNlY3Rpb24gYW5kIGxpbmsgdGhlIEhEUiBzdHJ1Y3R1cmUgZGVmaW5p
-dGlvbnMgdG8gdGhpcy4NCg0KPj4NCj4+ICBpbnQgZHJtX2Nvbm5lY3Rvcl9jcmVhdGVfc3RhbmRh
-cmRfcHJvcGVydGllcyhzdHJ1Y3QgZHJtX2RldmljZSAqZGV2KQ0KPj4gZGlmZiAtLWdpdCBhL2lu
-Y2x1ZGUvZHJtL2RybV9jb25uZWN0b3IuaCBiL2luY2x1ZGUvZHJtL2RybV9jb25uZWN0b3IuaA0K
-Pj4gaW5kZXggZjhmNDAwMy4uZjIyNmVmMCAxMDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvZHJtL2Ry
-bV9jb25uZWN0b3IuaA0KPj4gKysrIGIvaW5jbHVkZS9kcm0vZHJtX2Nvbm5lY3Rvci5oDQo+PiBA
-QCAtMTI0NCw4ICsxMjQ0LDkgQEAgc3RydWN0IGRybV9jb25uZWN0b3Igew0KPj4gICAgICAgICAg
-Ki8NCj4+ICAgICAgICAgc3RydWN0IGxsaXN0X25vZGUgZnJlZV9ub2RlOw0KPj4NCj4+IC0gICAg
-ICAgLyogSERSIG1ldGRhdGEgKi8NCj4+ICsgICAgICAgLyoqIEBoZHJfb3V0cHV0X21ldGFkYXRh
-OiBIRFIgTWV0YWRhdGEgdG8gYmUgc2VudCB0byBzaW5rICovDQo+PiAgICAgICAgIHN0cnVjdCBo
-ZHJfb3V0cHV0X21ldGFkYXRhIGhkcl9vdXRwdXRfbWV0YWRhdGE7DQo+DQo+VWgsIGlzIHRoaXMg
-ZXZlbiB1c2VkPyBJdCB3b3VsZCBiZSBhIGJ1ZyBpZiBzbywgc2luY2UgdGhlIHN0YXRlIHVzZXJz
-cGFjZSBjYW4gc2V0IG11c3QNCj5iZSBzdG9yZWQgaW4gZHJtX2Nvbm5lY3Rvcl9zdGF0ZSwgbm90
-IGluIGRybV9jb25uZWN0b3IuIE9ubHkgcmVhZC1vbmx5IHN0dWZmIGNhbiBiZQ0KPmluIHRoZXJl
-Lg0KDQpZZWFoLCB0aGlzIGlzIG5vdCByZXF1aXJlZC4gV2UgaGF2ZSB0aGUgbWV0YWRhdGEgaGFu
-ZGxlZCBhcyBwYXJ0IG9mIGRybV9jb25uZWN0b3Jfc3RhdGUuDQpXaWxsIGRyb3AgdGhpcyBmcm9t
-IGhlcmUuIFRoYW5rcyBmb3Igc3BvdHRpbmcgdGhpcy4NCg0KPlBsZWFzZSBkb24ndCBqdXN0IGJs
-aW5kbHkgdHlwZSBkb2NzLCB0cnkgdG8gbWFrZSBzdXJlIHRoYXQgd2hhdCB5b3UncmUgZG9jdW1l
-bnRpbmcNCj5hY3R1YWxseSBtYWtlcyBzZW5zZS4gQWxzbywgc2hvdWxkIGhhdmUgYmVlbiBhIGNs
-ZWFyIHNpZ24gdGhhdCB5b3UndmUgZm9yZ290dGVuIHRvDQo+ZG9jdW1lbnQgb25lIG9mIHRoZSBw
-cm9wZXJ0aWVzIGluIHRoZSBlbnVtZXJhdGlvbiBhYm92ZS4NCg0KT2sgU3VyZSwgd2lsbCB0cnkg
-dG8gYmUgY2FyZWZ1bCB3aXRoIHJlc3BlY3QgdG8gdGhlIHNlY3Rpb25zIHdoZXJlIHRoaW5ncyBn
-ZXQgcGxhY2VkLg0KVGhhbmtzIGZvciBhbGwgeW91ciBpbnB1dHMgYW5kIGZlZWRiYWNrLiBXaWxs
-IHNlbmQgb3V0IHRoZSBjaGFuZ2VzIHNvb24uDQoNClJlZ2FyZHMsDQpVbWEgU2hhbmthcg0KDQo+
-LURhbmllbA0KPg0KPj4gKyAgICAgICAvKiogQGhkcl9zaW5rX21ldGFkYXRhOiBIRFIgTWV0YWRh
-dGEgSW5mb3JtYXRpb24gcmVhZCBmcm9tDQo+PiArIHNpbmsgKi8NCj4+ICAgICAgICAgc3RydWN0
-IGhkcl9zaW5rX21ldGFkYXRhIGhkcl9zaW5rX21ldGFkYXRhOyAgfTsNCj4+DQo+PiBkaWZmIC0t
-Z2l0IGEvaW5jbHVkZS9kcm0vZHJtX21vZGVfY29uZmlnLmgNCj4+IGIvaW5jbHVkZS9kcm0vZHJt
-X21vZGVfY29uZmlnLmggaW5kZXggNGY4OGNjOS4uMGIxODBlMCAxMDA2NDQNCj4+IC0tLSBhL2lu
-Y2x1ZGUvZHJtL2RybV9tb2RlX2NvbmZpZy5oDQo+PiArKysgYi9pbmNsdWRlL2RybS9kcm1fbW9k
-ZV9jb25maWcuaA0KPj4gQEAgLTgzNyw3ICs4MzcsNyBAQCBzdHJ1Y3QgZHJtX21vZGVfY29uZmln
-IHsNCj4+ICAgICAgICAgc3RydWN0IGRybV9wcm9wZXJ0eSAqd3JpdGViYWNrX291dF9mZW5jZV9w
-dHJfcHJvcGVydHk7DQo+Pg0KPj4gICAgICAgICAvKioNCj4+IC0gICAgICAgICogaGRyX291dHB1
-dF9tZXRhZGF0YV9wcm9wZXJ0eTogQ29ubmVjdG9yIHByb3BlcnR5IGNvbnRhaW5pbmcgaGRyDQo+
-PiArICAgICAgICAqIEBoZHJfb3V0cHV0X21ldGFkYXRhX3Byb3BlcnR5OiBDb25uZWN0b3IgcHJv
-cGVydHkNCj4+ICsgY29udGFpbmluZyBoZHINCj4+ICAgICAgICAgICogbWV0YXRkYS4gVGhpcyB3
-aWxsIGJlIHByb3ZpZGVkIGJ5IHVzZXJzcGFjZSBjb21wb3NpdG9ycyBiYXNlZA0KPj4gICAgICAg
-ICAgKiBvbiBIRFIgY29udGVudA0KPj4gICAgICAgICAgKi8NCj4+IGRpZmYgLS1naXQgYS9pbmNs
-dWRlL2xpbnV4L2hkbWkuaCBiL2luY2x1ZGUvbGludXgvaGRtaS5oIGluZGV4DQo+PiBlZTU1YmE1
-Li5lYTU4NThlIDEwMDY0NA0KPj4gLS0tIGEvaW5jbHVkZS9saW51eC9oZG1pLmgNCj4+ICsrKyBi
-L2luY2x1ZGUvbGludXgvaGRtaS5oDQo+PiBAQCAtMzk4LDYgKzM5OCw3IEBAIHNzaXplX3QgaGRt
-aV92ZW5kb3JfaW5mb2ZyYW1lX3BhY2tfb25seShjb25zdCBzdHJ1Y3QNCj5oZG1pX3ZlbmRvcl9p
-bmZvZnJhbWUgKmZyYW0NCj4+ICAgKiBAc3BkOiBzcGQgaW5mb2ZyYW1lDQo+PiAgICogQHZlbmRv
-cjogdW5pb24gb2YgYWxsIHZlbmRvciBpbmZvZnJhbWVzDQo+PiAgICogQGF1ZGlvOiBhdWRpbyBp
-bmZvZnJhbWUNCj4+ICsgKiBAZHJtOiBEUk0gaW5mb2ZyYW1lDQo+PiAgICoNCj4+ICAgKiBUaGlz
-IGlzIHVzZWQgYnkgdGhlIGdlbmVyaWMgcGFjayBmdW5jdGlvbi4gVGhpcyB3b3JrcyBzaW5jZSBh
-bGwgaW5mb2ZyYW1lcw0KPj4gICAqIGhhdmUgdGhlIHNhbWUgaGVhZGVyIHdoaWNoIGFsc28gaW5k
-aWNhdGVzIHdoaWNoIHR5cGUgb2YgaW5mb2ZyYW1lDQo+PiBzaG91bGQgYmUNCj4+IC0tDQo+PiAx
-LjkuMQ0KPj4NCj4NCj4NCj4tLQ0KPkRhbmllbCBWZXR0ZXINCj5Tb2Z0d2FyZSBFbmdpbmVlciwg
-SW50ZWwgQ29ycG9yYXRpb24NCj4rNDEgKDApIDc5IDM2NSA1NyA0OCAtIGh0dHA6Ly9ibG9nLmZm
-d2xsLmNoDQo=
+Fixes the following warnings:
+./include/drm/drm_mode_config.h:841: warning: Incorrect use of
+kernel-doc format:          * hdr_output_metadata_property: Connector
+property containing hdr
+./include/drm/drm_mode_config.h:918: warning: Function parameter or member 'hdr_output_metadata_property' not described in 'drm_mode_config'
+./include/drm/drm_connector.h:1251: warning: Function parameter or member 'hdr_output_metadata' not described in 'drm_connector'
+./include/drm/drm_connector.h:1251: warning: Function parameter or member 'hdr_sink_metadata' not described in 'drm_connector'
+
+Also adds some property documentation for HDR Metadata Connector
+Property in connector property create function.
+
+v2: Fixed Sean Paul's review comments.
+
+v3: Fixed Daniel Vetter's review comments, added the UAPI structure
+definition section in kernel docs.
+
+Cc: Shashank Sharma <shashank.sharma@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Cc: Hans Verkuil <hansverk@cisco.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Reviewed-by: Sean Paul <sean@poorly.run>
+Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+---
+ Documentation/gpu/drm-uapi.rst  |  9 +++++++++
+ drivers/gpu/drm/drm_connector.c | 31 +++++++++++++++++++++++++++++++
+ include/drm/drm_connector.h     |  1 +
+ include/drm/drm_mode_config.h   |  4 ++--
+ include/linux/hdmi.h            |  1 +
+ include/uapi/drm/drm_mode.h     | 37 ++++++++++++++++++++++++++++++++++++-
+ 6 files changed, 80 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/gpu/drm-uapi.rst b/Documentation/gpu/drm-uapi.rst
+index 05874d0..6b39e2c 100644
+--- a/Documentation/gpu/drm-uapi.rst
++++ b/Documentation/gpu/drm-uapi.rst
+@@ -329,3 +329,12 @@ DRM_IOCTL_MODESET_CTL
+     mode setting, since on many devices the vertical blank counter is
+     reset to 0 at some point during modeset. Modern drivers should not
+     call this any more since with kernel mode setting it is a no-op.
++
++Userspace API Structures
++========================
++
++.. kernel-doc:: include/uapi/drm/drm_mode.h
++   :doc: overview
++
++.. kernel-doc:: include/uapi/drm/drm_mode.h
++   :internal:
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index c9ac8b9..6a93527 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -956,6 +956,37 @@ int drm_display_info_set_bus_formats(struct drm_display_info *info,
+  *	  is no longer protected and userspace should take appropriate action
+  *	  (whatever that might be).
+  *
++ * HDR_OUTPUT_METADATA:
++ *	Connector property to enable userspace to send HDR Metadata to
++ *	driver. This metadata is based on the composition and blending
++ *	policies decided by user, taking into account the hardware and
++ *	sink capabilities. The driver gets this metadata and creates a
++ *	Dynamic Range and Mastering Infoframe (DRM) in case of HDMI,
++ *	SDP packet (Non-audio INFOFRAME SDP v1.3) for DP. This is then
++ *	sent to sink. This notifies the sink of the upcoming frame's Color
++ *	Encoding and Luminance parameters.
++ *
++ *	Userspace first need to detect the HDR capabilities of sink by
++ *	reading and parsing the EDID. Details of HDR metadata for HDMI
++ *	are added in CTA 861.G spec. For DP , its defined in VESA DP
++ *	Standard v1.4. It needs to then get the metadata information
++ *	of the video/game/app content which are encoded in HDR (basically
++ *	using HDR transfer functions). With this information it needs to
++ *	decide on a blending policy and compose the relevant
++ *	layers/overlays into a common format. Once this blending is done,
++ *	userspace will be aware of the metadata of the composed frame to
++ *	be send to sink. It then uses this property to communicate this
++ *	metadata to driver which then make a Infoframe packet and sends
++ *	to sink based on the type of encoder connected.
++ *
++ *	Userspace will be responsible to do Tone mapping operation in case:
++ *		- Some layers are HDR and others are SDR
++ *		- HDR layers luminance is not same as sink
++ *	It will even need to do colorspace conversion and get all layers
++ *	to one common colorspace for blending. It can use either GL, Media
++ *	or display engine to get this done based on the capabilties of the
++ *	associated hardware.
++ *
+  * max bpc:
+  *	This range property is used by userspace to limit the bit depth. When
+  *	used the driver would limit the bpc in accordance with the valid range
+diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
+index 5476561..47e749b 100644
+--- a/include/drm/drm_connector.h
++++ b/include/drm/drm_connector.h
+@@ -1244,6 +1244,7 @@ struct drm_connector {
+ 	 */
+ 	struct llist_node free_node;
+ 
++	/** @hdr_sink_metadata: HDR Metadata Information read from sink */
+ 	struct hdr_sink_metadata hdr_sink_metadata;
+ };
+ 
+diff --git a/include/drm/drm_mode_config.h b/include/drm/drm_mode_config.h
+index 4f88cc9..759d462 100644
+--- a/include/drm/drm_mode_config.h
++++ b/include/drm/drm_mode_config.h
+@@ -837,8 +837,8 @@ struct drm_mode_config {
+ 	struct drm_property *writeback_out_fence_ptr_property;
+ 
+ 	/**
+-	 * hdr_output_metadata_property: Connector property containing hdr
+-	 * metatda. This will be provided by userspace compositors based
++	 * @hdr_output_metadata_property: Connector property containing hdr
++	 * metatada. This will be provided by userspace compositors based
+ 	 * on HDR content
+ 	 */
+ 	struct drm_property *hdr_output_metadata_property;
+diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
+index ee55ba5..55c6db5 100644
+--- a/include/linux/hdmi.h
++++ b/include/linux/hdmi.h
+@@ -398,6 +398,7 @@ ssize_t hdmi_vendor_infoframe_pack_only(const struct hdmi_vendor_infoframe *fram
+  * @spd: spd infoframe
+  * @vendor: union of all vendor infoframes
+  * @audio: audio infoframe
++ * @drm: Dynamic Range and Mastering infoframe
+  *
+  * This is used by the generic pack function. This works since all infoframes
+  * have the same header which also indicates which type of infoframe should be
+diff --git a/include/uapi/drm/drm_mode.h b/include/uapi/drm/drm_mode.h
+index 997a7e0..5d3964f 100644
+--- a/include/uapi/drm/drm_mode.h
++++ b/include/uapi/drm/drm_mode.h
+@@ -33,6 +33,15 @@
+ extern "C" {
+ #endif
+ 
++/**
++ * DOC: overview
++ *
++ * DRM exposes many UAPI and structure definition to have a consistent
++ * and standardized interface with user.
++ * Userspace can refer to these structure definitions and UAPI formats
++ * to communicate to driver
++ */
++
+ #define DRM_CONNECTOR_NAME_LEN	32
+ #define DRM_DISPLAY_MODE_LEN	32
+ #define DRM_PROP_NAME_LEN	32
+@@ -630,7 +639,26 @@ struct drm_color_lut {
+ 	__u16 reserved;
+ };
+ 
+-/* HDR Metadata Infoframe as per 861.G spec */
++/**
++ * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
++ * @eotf: Electro-Optical Transfer Function (EOTF) used in the stream.
++ * @metadata_type: Static_Metadata_Descriptor_ID.
++ * @display_primaries: Color Primaries of the Data.
++ * @display_primaries.x: X cordinate of color primary.
++ * @display_primaries.y: Y cordinate of color primary.
++ * @white_point: White Point of Colorspace Data.
++ * @white_point.x: X cordinate of whitepoint of color primary.
++ * @white_point.y: Y cordinate of whitepoint of color primary.
++ * @max_display_mastering_luminance: Max Mastering Display Luminance.
++ * @min_display_mastering_luminance: Min Mastering Display Luminance.
++ * @max_cll: Max Content Light Level.
++ * @max_fall: Max Frame Average Light Level.
++ *
++ * With drm subsystem using struct drm_rect to manage rectangular area this
++ * export it to user-space.
++ *
++ * Currently used by drm_mode_atomic blob property FB_DAMAGE_CLIPS.
++ */
+ struct hdr_metadata_infoframe {
+ 	__u8 eotf;
+ 	__u8 metadata_type;
+@@ -646,6 +674,13 @@ struct hdr_metadata_infoframe {
+ 	__u16 max_fall;
+ };
+ 
++/**
++ * struct hdr_output_metadata - HDR output metadata
++ *
++ * Metadata Information to be passed from userspace
++ * @metadata_type: Static_Metadata_Descriptor_ID.
++ * @hdmi_metadata_type1: HDR Metadata Infoframe.
++ */
+ struct hdr_output_metadata {
+ 	__u32 metadata_type;
+ 	union {
+-- 
+1.9.1
+
