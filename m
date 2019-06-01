@@ -2,47 +2,39 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0539531F0B
-	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jun 2019 15:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB95131D69
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jun 2019 15:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728101AbfFANTJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 1 Jun 2019 09:19:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46334 "EHLO mail.kernel.org"
+        id S1729881AbfFAN1A (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jun 2019 09:27:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57520 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728079AbfFANTJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:19:09 -0400
+        id S1729231AbfFAN07 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:26:59 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D359E272BE;
-        Sat,  1 Jun 2019 13:19:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4FBB6273CD;
+        Sat,  1 Jun 2019 13:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395148;
-        bh=xgM/0zR1Re+p+SRvP4V+6y1AYNCntVtbaaDoL2WYHZE=;
+        s=default; t=1559395619;
+        bh=Y/+Qb5iD+NbGfigAdcJh/DDFmWZpuiR+gDcuExZeFrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MzQz/d6JZ0fGaGgiXttBtPEp1PWguJ5M/RBlqAXN8rKfgU+5YlESuECYRM1p3xHfE
-         g6AdKjp9OngYiOM1MxLxlAYj0Z6wcHZMDoBBB2aUYwLo60NaQm/H2+z7rufOvUcp2t
-         lV8yrKRwjkOaMs422mfvugl+KGUKOUPi9inqOi4E=
+        b=l9X3qUcBLTMWn25dwRxRtzJmpyhoAZAMV228WIIHWwBU80zmWsNYzN9JflzL2WCp8
+         qz9B7Q5xvVbrMhlMyzD24umX9ZEGlMudn8cCijIRKPp61DKsuhk6JzTteTCLc3N9NK
+         6NA8L1NqiPNNH+ldh9rMEZgwZd0KdeaLFfOpXBeI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andreas Schwab <schwab@linux-m68k.org>,
-        Prarit Bhargava <prarit@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Marko Myllynen <myllynen@redhat.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thierry Reding <treding@nvidia.com>,
+Cc:     Jiufei Xue <jiufei.xue@linux.alibaba.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 065/186] fbcon: Don't reset logo_shown when logo is currently shown
-Date:   Sat,  1 Jun 2019 09:14:41 -0400
-Message-Id: <20190601131653.24205-65-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 33/56] fbdev: fix WARNING in __alloc_pages_nodemask bug
+Date:   Sat,  1 Jun 2019 09:25:37 -0400
+Message-Id: <20190601132600.27427-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
-References: <20190601131653.24205-1-sashal@kernel.org>
+In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
+References: <20190601132600.27427-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -52,43 +44,53 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Jiufei Xue <jiufei.xue@linux.alibaba.com>
 
-[ Upstream commit 3c5a1b111373e669c8220803464c3a508a87e254 ]
+[ Upstream commit 8c40292be9169a9cbe19aadd1a6fc60cbd1af82f ]
 
-When the logo is currently drawn on a virtual console, and the console
-loglevel is reduced to quiet, logo_shown must be left alone, so that it
-the scrolling region on that virtual console is properly reset.
+Syzkaller hit 'WARNING in __alloc_pages_nodemask' bug.
 
-Fixes: 10993504d647 ("fbcon: Silence fbcon logo on 'quiet' boots")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Cc: Prarit Bhargava <prarit@redhat.com>
-Cc: Yisheng Xie <ysxie@foxmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Marko Myllynen <myllynen@redhat.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Thierry Reding <treding@nvidia.com>
+WARNING: CPU: 1 PID: 1473 at mm/page_alloc.c:4377
+__alloc_pages_nodemask+0x4da/0x2130
+Kernel panic - not syncing: panic_on_warn set ...
+
+Call Trace:
+ alloc_pages_current+0xb1/0x1e0
+ kmalloc_order+0x1f/0x60
+ kmalloc_order_trace+0x1d/0x120
+ fb_alloc_cmap_gfp+0x85/0x2b0
+ fb_set_user_cmap+0xff/0x370
+ do_fb_ioctl+0x949/0xa20
+ fb_ioctl+0xdd/0x120
+ do_vfs_ioctl+0x186/0x1070
+ ksys_ioctl+0x89/0xa0
+ __x64_sys_ioctl+0x74/0xb0
+ do_syscall_64+0xc8/0x550
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+This is a warning about order >= MAX_ORDER and the order is from
+userspace ioctl. Add flag __NOWARN to silence this warning.
+
+Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcmap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index cd059a801662e..786f9aab55df6 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1069,7 +1069,7 @@ static void fbcon_init(struct vc_data *vc, int init)
+diff --git a/drivers/video/fbdev/core/fbcmap.c b/drivers/video/fbdev/core/fbcmap.c
+index 68a113594808f..2811c4afde01c 100644
+--- a/drivers/video/fbdev/core/fbcmap.c
++++ b/drivers/video/fbdev/core/fbcmap.c
+@@ -94,6 +94,8 @@ int fb_alloc_cmap_gfp(struct fb_cmap *cmap, int len, int transp, gfp_t flags)
+ 	int size = len * sizeof(u16);
+ 	int ret = -ENOMEM;
  
- 	cap = info->flags;
- 
--	if (console_loglevel <= CONSOLE_LOGLEVEL_QUIET)
-+	if (logo_shown < 0 && console_loglevel <= CONSOLE_LOGLEVEL_QUIET)
- 		logo_shown = FBCON_LOGO_DONTSHOW;
- 
- 	if (vc != svc || logo_shown == FBCON_LOGO_DONTSHOW ||
++	flags |= __GFP_NOWARN;
++
+ 	if (cmap->len != len) {
+ 		fb_dealloc_cmap(cmap);
+ 		if (!len)
 -- 
 2.20.1
 
