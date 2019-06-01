@@ -2,154 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B012FB93
-	for <lists+linux-fbdev@lfdr.de>; Thu, 30 May 2019 14:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0539531F0B
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jun 2019 15:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfE3MaU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 30 May 2019 08:30:20 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:40134 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726285AbfE3MaT (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 30 May 2019 08:30:19 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190530123017euoutp0145a7e2752a00b4aa6b44729f0a9e4aa0~jdcygkIjC1556815568euoutp01Y
-        for <linux-fbdev@vger.kernel.org>; Thu, 30 May 2019 12:30:17 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190530123017euoutp0145a7e2752a00b4aa6b44729f0a9e4aa0~jdcygkIjC1556815568euoutp01Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1559219417;
-        bh=rRfb4nIQIlulai7VhUp6tUgeds7+T13bxgzJ6lGHQr0=;
-        h=From:Subject:To:Cc:Date:References:From;
-        b=HTnrnE85RKKW4euGLPzcyYUYxL/R+LhA6OJiSSo1VrdcnvSUHr2qAy8nsdo43L+zP
-         BnVorvltXUY0QdH0KIhkqh61tS82mHxtNAp5hCQoeWwZ6PgB1iOcP9UWab9jyC6Kt3
-         hGgK3F0cIpGhX5mswgfuE9plJUAXGbLRdofQ9M3M=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190530123017eucas1p2c5af602281ac3b3f30663bd705a5986f~jdcx3d3852345123451eucas1p2P;
-        Thu, 30 May 2019 12:30:17 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 19.2F.04325.8DCCFEC5; Thu, 30
-        May 2019 13:30:16 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190530123016eucas1p2e18747b8ac1d156657232eab52876a61~jdcxGWxd90451604516eucas1p2a;
-        Thu, 30 May 2019 12:30:16 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190530123015eusmtrp195d81c13e4784a1c2aef07b057426f84~jdcw22ISC1402014020eusmtrp17;
-        Thu, 30 May 2019 12:30:15 +0000 (GMT)
-X-AuditID: cbfec7f5-fbbf09c0000010e5-4b-5cefccd852ad
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id B7.88.04146.7DCCFEC5; Thu, 30
-        May 2019 13:30:15 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190530123015eusmtip2b655394a251cc6ef2a9636882a39000a~jdcwYkvkm2162821628eusmtip2H;
-        Thu, 30 May 2019 12:30:15 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH v3] video: fbdev: atmel_lcdfb: add COMPILE_TEST support
-To:     Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Message-ID: <69cd6b8b-1fd1-86fa-2070-99d0ce15a868@samsung.com>
-Date:   Thu, 30 May 2019 14:30:19 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        id S1728101AbfFANTJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jun 2019 09:19:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46334 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728079AbfFANTJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:19:09 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D359E272BE;
+        Sat,  1 Jun 2019 13:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559395148;
+        bh=xgM/0zR1Re+p+SRvP4V+6y1AYNCntVtbaaDoL2WYHZE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=MzQz/d6JZ0fGaGgiXttBtPEp1PWguJ5M/RBlqAXN8rKfgU+5YlESuECYRM1p3xHfE
+         g6AdKjp9OngYiOM1MxLxlAYj0Z6wcHZMDoBBB2aUYwLo60NaQm/H2+z7rufOvUcp2t
+         lV8yrKRwjkOaMs422mfvugl+KGUKOUPi9inqOi4E=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andreas Schwab <schwab@linux-m68k.org>,
+        Prarit Bhargava <prarit@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Marko Myllynen <myllynen@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sasha Levin <sashal@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 065/186] fbcon: Don't reset logo_shown when logo is currently shown
+Date:   Sat,  1 Jun 2019 09:14:41 -0400
+Message-Id: <20190601131653.24205-65-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
+References: <20190601131653.24205-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFKsWRmVeSWpSXmKPExsWy7djP87o3zryPMehaqmvR/m4Zu8WVr+/Z
-        LDY9vsZqcaLvA6vF5V1z2CxerL3OarF980JmB3aPeWuqPe53H2fy2Lyk3uPOj6WMHp83yQWw
-        RnHZpKTmZJalFunbJXBlHP2xmK3gFn/F/c5JzA2M83m7GDk5JARMJO7+bmfpYuTiEBJYwSjR
-        /Og/E4TzhVHi9srprBDOZ0aJNe+72WBaJlzrZYNILGeUOPXtB1TVW0aJV5OnsoJUsQlYSUxs
-        X8UIYgsLuEu8bfkMNJeDQ0RAX+JPlyJIPbPAJ0aJ9llrwWp4Bewkfp1bCraBRUBVonHnPxYQ
-        W1QgQuL+sQ2sEDWCEidnPgGLMwuIS9x6Mp8JwpaX2P52DjPIUAmB6ewSD1q2s0Kc6iKx7cVa
-        JghbWOLV8S3sELaMxOnJPSwQDesYJf52vIDq3s4osXzyP6hHrSUOH7/ICnI2s4CmxPpd+hBh
-        R4kfXR8ZQcISAnwSN94KQhzBJzFp23RmiDCvREebEES1msSGZRvYYNZ27VzJDGF7SLzY+YZ1
-        AqPiLCSvzULy2iwkr81CuGEBI8sqRvHU0uLc9NRi47zUcr3ixNzi0rx0veT83E2MwBR0+t/x
-        rzsY9/1JOsQowMGoxMMrcPB9jBBrYllxZe4hRgkOZiUR3p/L38UI8aYkVlalFuXHF5XmpBYf
-        YpTmYFES561meBAtJJCeWJKanZpakFoEk2Xi4JRqYEzblCu+7eCjLJPZUgu7n7Ht8m9bPtFG
-        uWJeBe/Bsxp+bXf39z6/o1F86JfY1/ZP3rZ+ffq+6de3NO9TD9EW2fGOc3n3j35LkVMS01xi
-        qzK/Mz7b7VEx460jz9yj6ivcXi9XFrJfp+g8z2HqmfgqY/dcZwXVLT88jsTMSGs5I/pu6veI
-        Sx7JD5RYijMSDbWYi4oTAbcRiMo9AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsVy+t/xe7rXz7yPMZi339ii/d0ydosrX9+z
-        WWx6fI3V4kTfB1aLy7vmsFm8WHud1WL75oXMDuwe89ZUe9zvPs7ksXlJvcedH0sZPT5vkgtg
-        jdKzKcovLUlVyMgvLrFVija0MNIztLTQMzKx1DM0No+1MjJV0rezSUnNySxLLdK3S9DLOPpj
-        MVvBLf6K+52TmBsY5/N2MXJySAiYSEy41svWxcjFISSwlFFiZ+Me9i5GDqCEjMTx9WUQNcIS
-        f651QdW8ZpTYun8DK0iCTcBKYmL7KkYQW1jAXeJty2cmkF4RAX2JP12KIPXMAp8YJX49bwer
-        4RWwk/h1bikbiM0ioCrRuPMfC4gtKhAhceb9ChaIGkGJkzOfgNnMAuoSf+ZdYoawxSVuPZnP
-        BGHLS2x/O4d5AqPALCQts5C0zELSMgtJywJGllWMIqmlxbnpucWGesWJucWleel6yfm5mxiB
-        8bPt2M/NOxgvbQw+xCjAwajEwytw8H2MEGtiWXFl7iFGCQ5mJRHen8vfxQjxpiRWVqUW5ccX
-        leakFh9iNAV6aCKzlGhyPjC280riDU0NzS0sDc2NzY3NLJTEeTsEDsYICaQnlqRmp6YWpBbB
-        9DFxcEo1MOavrM9Tz6twK9dhe+n6QnzP5X+PXUoeHVTp5mMOUeL5+H5Ni4RlymG22nkKveFX
-        eZX/t0tHVd8SO7lZ2+XKyVVPv9ZYm/zce93pLsMV501X153fvDMtXfRNdMbribNUjZQutvBM
-        m/j2iEZMCAvT9Gc1ZRJn2GKPaBXnfPd/9HX2UgVv1cyWJUosxRmJhlrMRcWJAIrKAuG1AgAA
-X-CMS-MailID: 20190530123016eucas1p2e18747b8ac1d156657232eab52876a61
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190530123016eucas1p2e18747b8ac1d156657232eab52876a61
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190530123016eucas1p2e18747b8ac1d156657232eab52876a61
-References: <CGME20190530123016eucas1p2e18747b8ac1d156657232eab52876a61@eucas1p2.samsung.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add COMPILE_TEST support to atmel_lcdfb driver for better compile
-testing coverage.
+From: Andreas Schwab <schwab@linux-m68k.org>
 
-While at it fix improper use of UL (to silence build warnings on
-x86_64).
+[ Upstream commit 3c5a1b111373e669c8220803464c3a508a87e254 ]
 
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+When the logo is currently drawn on a virtual console, and the console
+loglevel is reduced to quiet, logo_shown must be left alone, so that it
+the scrolling region on that virtual console is properly reset.
+
+Fixes: 10993504d647 ("fbcon: Silence fbcon logo on 'quiet' boots")
+Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
+Cc: Prarit Bhargava <prarit@redhat.com>
+Cc: Yisheng Xie <ysxie@foxmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Marko Myllynen <myllynen@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v3: fix build warnings on x86_64
+ drivers/video/fbdev/core/fbcon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: add missing HAVE_CLK && HAS IOMEM dependencies
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index cd059a801662e..786f9aab55df6 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1069,7 +1069,7 @@ static void fbcon_init(struct vc_data *vc, int init)
+ 
+ 	cap = info->flags;
+ 
+-	if (console_loglevel <= CONSOLE_LOGLEVEL_QUIET)
++	if (logo_shown < 0 && console_loglevel <= CONSOLE_LOGLEVEL_QUIET)
+ 		logo_shown = FBCON_LOGO_DONTSHOW;
+ 
+ 	if (vc != svc || logo_shown == FBCON_LOGO_DONTSHOW ||
+-- 
+2.20.1
 
- drivers/video/fbdev/Kconfig       |    3 ++-
- drivers/video/fbdev/atmel_lcdfb.c |    4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-Index: b/drivers/video/fbdev/Kconfig
-===================================================================
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -855,7 +855,8 @@ config FB_S1D13XXX
- 
- config FB_ATMEL
- 	tristate "AT91 LCD Controller support"
--	depends on FB && OF && HAVE_FB_ATMEL
-+	depends on FB && OF && HAVE_CLK && HAS_IOMEM
-+	depends on HAVE_FB_ATMEL || COMPILE_TEST
- 	select FB_BACKLIGHT
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
-Index: b/drivers/video/fbdev/atmel_lcdfb.c
-===================================================================
---- a/drivers/video/fbdev/atmel_lcdfb.c
-+++ b/drivers/video/fbdev/atmel_lcdfb.c
-@@ -673,7 +673,7 @@ static int atmel_lcdfb_set_par(struct fb
- 	lcdc_writel(sinfo, ATMEL_LCDC_MVAL, 0);
- 
- 	/* Disable all interrupts */
--	lcdc_writel(sinfo, ATMEL_LCDC_IDR, ~0UL);
-+	lcdc_writel(sinfo, ATMEL_LCDC_IDR, ~0U);
- 	/* Enable FIFO & DMA errors */
- 	lcdc_writel(sinfo, ATMEL_LCDC_IER, ATMEL_LCDC_UFLWI | ATMEL_LCDC_OWRI | ATMEL_LCDC_MERI);
- 
-@@ -1291,7 +1291,7 @@ static int atmel_lcdfb_suspend(struct pl
- 	 * We don't want to handle interrupts while the clock is
- 	 * stopped. It may take forever.
- 	 */
--	lcdc_writel(sinfo, ATMEL_LCDC_IDR, ~0UL);
-+	lcdc_writel(sinfo, ATMEL_LCDC_IDR, ~0U);
- 
- 	sinfo->saved_lcdcon = lcdc_readl(sinfo, ATMEL_LCDC_CONTRAST_CTR);
- 	lcdc_writel(sinfo, ATMEL_LCDC_CONTRAST_CTR, 0);
