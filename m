@@ -2,36 +2,38 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB95131D69
-	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jun 2019 15:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 993AB31D7B
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jun 2019 15:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729881AbfFAN1A (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 1 Jun 2019 09:27:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57520 "EHLO mail.kernel.org"
+        id S1729140AbfFAN3A (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jun 2019 09:29:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729231AbfFAN07 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:26:59 -0400
+        id S1729346AbfFAN1M (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:27:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FBB6273CD;
-        Sat,  1 Jun 2019 13:26:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BE48273CB;
+        Sat,  1 Jun 2019 13:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395619;
-        bh=Y/+Qb5iD+NbGfigAdcJh/DDFmWZpuiR+gDcuExZeFrI=;
+        s=default; t=1559395631;
+        bh=IL/nGdSKktqzepUO//InfHWaBEuu+eKO2x3C+X1hdKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l9X3qUcBLTMWn25dwRxRtzJmpyhoAZAMV228WIIHWwBU80zmWsNYzN9JflzL2WCp8
-         qz9B7Q5xvVbrMhlMyzD24umX9ZEGlMudn8cCijIRKPp61DKsuhk6JzTteTCLc3N9NK
-         6NA8L1NqiPNNH+ldh9rMEZgwZd0KdeaLFfOpXBeI=
+        b=nFCnXe6h5bvw6Ml7fasxMni6fxhJye9X7orj/1VzigUA8zMp2Rt0gsq+s5DamHI/s
+         7evynRJ4czZ3Ed2kFxHjF5NZIk1+NwXU9Fvn0HgXiNHxhHnyNpm+kFsWzoCO+1Ky4u
+         kYkGfwSmnX/1atPAggrcZWzboSy32D0a0TpcAQxM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jiufei Xue <jiufei.xue@linux.alibaba.com>,
+Cc:     Yifeng Li <tomli@tomli.me>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sasha Levin <sashal@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 33/56] fbdev: fix WARNING in __alloc_pages_nodemask bug
-Date:   Sat,  1 Jun 2019 09:25:37 -0400
-Message-Id: <20190601132600.27427-33-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 4.4 41/56] fbdev: sm712fb: fix crashes and garbled display during DPMS modesetting
+Date:   Sat,  1 Jun 2019 09:25:45 -0400
+Message-Id: <20190601132600.27427-41-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
 References: <20190601132600.27427-1-sashal@kernel.org>
@@ -44,53 +46,142 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+From: Yifeng Li <tomli@tomli.me>
 
-[ Upstream commit 8c40292be9169a9cbe19aadd1a6fc60cbd1af82f ]
+[ Upstream commit f627caf55b8e735dcec8fa6538e9668632b55276 ]
 
-Syzkaller hit 'WARNING in __alloc_pages_nodemask' bug.
+On a Thinkpad s30 (Pentium III / i440MX, Lynx3DM), blanking the display
+or starting the X server will crash and freeze the system, or garble the
+display.
 
-WARNING: CPU: 1 PID: 1473 at mm/page_alloc.c:4377
-__alloc_pages_nodemask+0x4da/0x2130
-Kernel panic - not syncing: panic_on_warn set ...
+Experiments showed this problem can mostly be solved by adjusting the
+order of register writes. Also, sm712fb failed to consider the difference
+of clock frequency when unblanking the display, and programs the clock for
+SM712 to SM720.
 
-Call Trace:
- alloc_pages_current+0xb1/0x1e0
- kmalloc_order+0x1f/0x60
- kmalloc_order_trace+0x1d/0x120
- fb_alloc_cmap_gfp+0x85/0x2b0
- fb_set_user_cmap+0xff/0x370
- do_fb_ioctl+0x949/0xa20
- fb_ioctl+0xdd/0x120
- do_vfs_ioctl+0x186/0x1070
- ksys_ioctl+0x89/0xa0
- __x64_sys_ioctl+0x74/0xb0
- do_syscall_64+0xc8/0x550
- entry_SYSCALL_64_after_hwframe+0x49/0xbe
+Fix them by adjusting the order of register writes, and adding an
+additional check for SM720 for programming the clock frequency.
 
-This is a warning about order >= MAX_ORDER and the order is from
-userspace ioctl. Add flag __NOWARN to silence this warning.
-
-Signed-off-by: Jiufei Xue <jiufei.xue@linux.alibaba.com>
+Signed-off-by: Yifeng Li <tomli@tomli.me>
+Tested-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+Cc: <stable@vger.kernel.org>  # v4.4+
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/sm712fb.c | 64 +++++++++++++++++++++--------------
+ 1 file changed, 38 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcmap.c b/drivers/video/fbdev/core/fbcmap.c
-index 68a113594808f..2811c4afde01c 100644
---- a/drivers/video/fbdev/core/fbcmap.c
-+++ b/drivers/video/fbdev/core/fbcmap.c
-@@ -94,6 +94,8 @@ int fb_alloc_cmap_gfp(struct fb_cmap *cmap, int len, int transp, gfp_t flags)
- 	int size = len * sizeof(u16);
- 	int ret = -ENOMEM;
+diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
+index 86ae1d4556fc1..2539c1e6facb4 100644
+--- a/drivers/video/fbdev/sm712fb.c
++++ b/drivers/video/fbdev/sm712fb.c
+@@ -827,67 +827,79 @@ static inline unsigned int chan_to_field(unsigned int chan,
  
-+	flags |= __GFP_NOWARN;
+ static int smtc_blank(int blank_mode, struct fb_info *info)
+ {
++	struct smtcfb_info *sfb = info->par;
 +
- 	if (cmap->len != len) {
- 		fb_dealloc_cmap(cmap);
- 		if (!len)
+ 	/* clear DPMS setting */
+ 	switch (blank_mode) {
+ 	case FB_BLANK_UNBLANK:
+ 		/* Screen On: HSync: On, VSync : On */
++
++		switch (sfb->chip_id) {
++		case 0x710:
++		case 0x712:
++			smtc_seqw(0x6a, 0x16);
++			smtc_seqw(0x6b, 0x02);
++		case 0x720:
++			smtc_seqw(0x6a, 0x0d);
++			smtc_seqw(0x6b, 0x02);
++			break;
++		}
++
++		smtc_seqw(0x23, (smtc_seqr(0x23) & (~0xc0)));
+ 		smtc_seqw(0x01, (smtc_seqr(0x01) & (~0x20)));
+-		smtc_seqw(0x6a, 0x16);
+-		smtc_seqw(0x6b, 0x02);
+ 		smtc_seqw(0x21, (smtc_seqr(0x21) & 0x77));
+ 		smtc_seqw(0x22, (smtc_seqr(0x22) & (~0x30)));
+-		smtc_seqw(0x23, (smtc_seqr(0x23) & (~0xc0)));
+-		smtc_seqw(0x24, (smtc_seqr(0x24) | 0x01));
+ 		smtc_seqw(0x31, (smtc_seqr(0x31) | 0x03));
++		smtc_seqw(0x24, (smtc_seqr(0x24) | 0x01));
+ 		break;
+ 	case FB_BLANK_NORMAL:
+ 		/* Screen Off: HSync: On, VSync : On   Soft blank */
++		smtc_seqw(0x24, (smtc_seqr(0x24) | 0x01));
++		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
++		smtc_seqw(0x23, (smtc_seqr(0x23) & (~0xc0)));
+ 		smtc_seqw(0x01, (smtc_seqr(0x01) & (~0x20)));
++		smtc_seqw(0x22, (smtc_seqr(0x22) & (~0x30)));
+ 		smtc_seqw(0x6a, 0x16);
+ 		smtc_seqw(0x6b, 0x02);
+-		smtc_seqw(0x22, (smtc_seqr(0x22) & (~0x30)));
+-		smtc_seqw(0x23, (smtc_seqr(0x23) & (~0xc0)));
+-		smtc_seqw(0x24, (smtc_seqr(0x24) | 0x01));
+-		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
+ 		break;
+ 	case FB_BLANK_VSYNC_SUSPEND:
+ 		/* Screen On: HSync: On, VSync : Off */
++		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
++		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
++		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0x20));
+ 		smtc_seqw(0x01, (smtc_seqr(0x01) | 0x20));
+-		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+-		smtc_seqw(0x6a, 0x0c);
+-		smtc_seqw(0x6b, 0x02);
+ 		smtc_seqw(0x21, (smtc_seqr(0x21) | 0x88));
++		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+ 		smtc_seqw(0x22, ((smtc_seqr(0x22) & (~0x30)) | 0x20));
+-		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0x20));
+-		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
+-		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
+ 		smtc_seqw(0x34, (smtc_seqr(0x34) | 0x80));
++		smtc_seqw(0x6a, 0x0c);
++		smtc_seqw(0x6b, 0x02);
+ 		break;
+ 	case FB_BLANK_HSYNC_SUSPEND:
+ 		/* Screen On: HSync: Off, VSync : On */
++		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
++		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
++		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0xD8));
+ 		smtc_seqw(0x01, (smtc_seqr(0x01) | 0x20));
+-		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+-		smtc_seqw(0x6a, 0x0c);
+-		smtc_seqw(0x6b, 0x02);
+ 		smtc_seqw(0x21, (smtc_seqr(0x21) | 0x88));
++		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+ 		smtc_seqw(0x22, ((smtc_seqr(0x22) & (~0x30)) | 0x10));
+-		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0xD8));
+-		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
+-		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
+ 		smtc_seqw(0x34, (smtc_seqr(0x34) | 0x80));
++		smtc_seqw(0x6a, 0x0c);
++		smtc_seqw(0x6b, 0x02);
+ 		break;
+ 	case FB_BLANK_POWERDOWN:
+ 		/* Screen On: HSync: Off, VSync : Off */
++		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
++		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
++		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0xD8));
+ 		smtc_seqw(0x01, (smtc_seqr(0x01) | 0x20));
+-		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+-		smtc_seqw(0x6a, 0x0c);
+-		smtc_seqw(0x6b, 0x02);
+ 		smtc_seqw(0x21, (smtc_seqr(0x21) | 0x88));
++		smtc_seqw(0x20, (smtc_seqr(0x20) & (~0xB0)));
+ 		smtc_seqw(0x22, ((smtc_seqr(0x22) & (~0x30)) | 0x30));
+-		smtc_seqw(0x23, ((smtc_seqr(0x23) & (~0xc0)) | 0xD8));
+-		smtc_seqw(0x24, (smtc_seqr(0x24) & (~0x01)));
+-		smtc_seqw(0x31, ((smtc_seqr(0x31) & (~0x07)) | 0x00));
+ 		smtc_seqw(0x34, (smtc_seqr(0x34) | 0x80));
++		smtc_seqw(0x6a, 0x0c);
++		smtc_seqw(0x6b, 0x02);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 -- 
 2.20.1
 
