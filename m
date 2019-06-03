@@ -2,79 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA1FE3237D
-	for <lists+linux-fbdev@lfdr.de>; Sun,  2 Jun 2019 16:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 835FD328CB
+	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Jun 2019 08:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726084AbfFBOLh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 2 Jun 2019 10:11:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45226 "EHLO mail.kernel.org"
+        id S1727057AbfFCGtW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 3 Jun 2019 02:49:22 -0400
+Received: from verein.lst.de ([213.95.11.211]:54901 "EHLO newverein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725939AbfFBOLh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 2 Jun 2019 10:11:37 -0400
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BFB5827939;
-        Sun,  2 Jun 2019 14:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559484697;
-        bh=XWIQtRm3YBgJzMgx47r1GeU6a0hziX3Bayzxz7HYHDU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2C6Lsyqjl1lq8cMl5HmJSDmhu68WMgHeXo8d7wvsyLcWYJhTi3LKPzGrDF2N57jni
-         RNWBGChMzbkjHSvYFxIzqNjCcgNBi4laBkGooBA61hNXEU13ngYQSa7o5xsteZNDwV
-         8n+4BWuAsTcEVS99GcQHNLzJgFGdsGYaHTIessyE=
-Date:   Sun, 2 Jun 2019 10:11:35 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Kangjie Lu <kjlu@umn.edu>, Aditya Pakki <pakki001@umn.edu>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Rob Herring <robh@kernel.org>,
+        id S1726618AbfFCGtW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 3 Jun 2019 02:49:22 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 9F53A68B05; Mon,  3 Jun 2019 08:48:55 +0200 (CEST)
+Date:   Mon, 3 Jun 2019 08:48:55 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Paul Burton <paul.burton@mips.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Michal Simek <monstr@monstr.eu>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH AUTOSEL 4.4 44/56] video: imsttfb: fix potential NULL
- pointer dereferences
-Message-ID: <20190602141135.GP12898@sasha-vm>
-References: <20190601132600.27427-1-sashal@kernel.org>
- <20190601132600.27427-44-sashal@kernel.org>
- <20190601161929.GA5028@kroah.com>
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH 5/7 v2] MIPS: use the generic uncached segment support
+ in dma-direct
+Message-ID: <20190603064855.GA22023@lst.de>
+References: <20190430110032.25301-1-hch@lst.de> <20190430110032.25301-6-hch@lst.de> <20190430201041.536amvinrcvd2wua@pburton-laptop> <20190430202947.GA30262@lst.de> <20190430211105.ielntedm46uqamca@pburton-laptop> <20190501131339.GA890@lst.de> <20190501171355.7wnrutfnax5djkpx@pburton-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190601161929.GA5028@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190501171355.7wnrutfnax5djkpx@pburton-laptop>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jun 01, 2019 at 09:19:29AM -0700, Greg Kroah-Hartman wrote:
->On Sat, Jun 01, 2019 at 09:25:48AM -0400, Sasha Levin wrote:
->> From: Kangjie Lu <kjlu@umn.edu>
->>
->> [ Upstream commit 1d84353d205a953e2381044953b7fa31c8c9702d ]
->>
->> In case ioremap fails, the fix releases resources and returns
->> -ENOMEM to avoid NULL pointer dereferences.
->>
->> Signed-off-by: Kangjie Lu <kjlu@umn.edu>
->> Cc: Aditya Pakki <pakki001@umn.edu>
->> Cc: Finn Thain <fthain@telegraphics.com.au>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> [b.zolnierkie: minor patch summary fixup]
->> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  drivers/video/fbdev/imsttfb.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->
->Why only 4.4.y?  Shouldn't this be queued up for everything or none?
+On Wed, May 01, 2019 at 05:13:57PM +0000, Paul Burton wrote:
+> Hi Christoph,
+> 
+> On Wed, May 01, 2019 at 03:13:39PM +0200, Christoph Hellwig wrote:
+> > Stop providing our arch alloc/free hooks and just expose the segment
+> > offset instead.
+> > 
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  arch/mips/Kconfig              |  1 +
+> >  arch/mips/include/asm/page.h   |  3 ---
+> >  arch/mips/jazz/jazzdma.c       |  6 ------
+> >  arch/mips/mm/dma-noncoherent.c | 26 +++++++++-----------------
+> >  4 files changed, 10 insertions(+), 26 deletions(-)
+> 
+> This one looks good to me now, for patches 1 & 5:
+> 
+>   Acked-by: Paul Burton <paul.burton@mips.com>
 
-It's on all branches. Something weird happened with git-send-email and
-mail.kernel.org, and apparently the rest of the branches didn't get all
-their mails sent out. Sadly I don't have the logs for that :(
-
---
-Thanks,
-Sasha
+Thanks, I've merged thos into the dma-mapping tree.
