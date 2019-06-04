@@ -2,22 +2,22 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5944033008
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Jun 2019 14:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A85344C4
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jun 2019 12:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727442AbfFCMo3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 Jun 2019 08:44:29 -0400
-Received: from mga05.intel.com ([192.55.52.43]:9651 "EHLO mga05.intel.com"
+        id S1727157AbfFDKwa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Jun 2019 06:52:30 -0400
+Received: from mga07.intel.com ([134.134.136.100]:62281 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727438AbfFCMo3 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 3 Jun 2019 08:44:29 -0400
+        id S1727107AbfFDKwa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 4 Jun 2019 06:52:30 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 05:44:28 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 03:52:29 -0700
 X-ExtLoop1: 1
 Received: from linuxpresi1-desktop.iind.intel.com ([10.223.74.143])
-  by orsmga004.jf.intel.com with ESMTP; 03 Jun 2019 05:44:23 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 04 Jun 2019 03:52:25 -0700
 From:   Uma Shankar <uma.shankar@intel.com>
 To:     intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     maarten.lankhorst@linux.intel.com, ville.syrjala@linux.intel.com,
@@ -28,12 +28,12 @@ Cc:     maarten.lankhorst@linux.intel.com, ville.syrjala@linux.intel.com,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org
-Subject: [v2 2/3] drm: Fix docbook warnings in hdr metadata helper structures
-Date:   Mon,  3 Jun 2019 18:38:49 +0530
-Message-Id: <1559567330-25182-3-git-send-email-uma.shankar@intel.com>
+Subject: [v3 2/3] drm: Fix docbook warnings in hdr metadata helper structures
+Date:   Tue,  4 Jun 2019 16:47:02 +0530
+Message-Id: <1559647022-7336-1-git-send-email-uma.shankar@intel.com>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1559567330-25182-1-git-send-email-uma.shankar@intel.com>
-References: <1559567330-25182-1-git-send-email-uma.shankar@intel.com>
+In-Reply-To: <20190603082316.GI21222@phenom.ffwll.local>
+References: <20190603082316.GI21222@phenom.ffwll.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -60,6 +60,8 @@ definition section in kernel docs.
 
 v4: Fixed Daniel Vetter's review comments.
 
+v5: Added structure member references as per Daniel's suggestion.
+
 Cc: Shashank Sharma <shashank.sharma@intel.com>
 Cc: Ville Syrjä <ville.syrjala@linux.intel.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
@@ -75,18 +77,18 @@ Cc: linux-fbdev@vger.kernel.org
 Reviewed-by: Sean Paul <sean@poorly.run>
 Signed-off-by: Uma Shankar <uma.shankar@intel.com>
 ---
- drivers/gpu/drm/drm_connector.c | 37 +++++++++++++++++++++
+ drivers/gpu/drm/drm_connector.c | 39 ++++++++++++++++++++++
  include/drm/drm_connector.h     |  1 +
  include/drm/drm_mode_config.h   |  4 +--
  include/linux/hdmi.h            | 12 +++++++
  include/uapi/drm/drm_mode.h     | 74 ++++++++++++++++++++++++++++++++++++++++-
- 5 files changed, 125 insertions(+), 3 deletions(-)
+ 5 files changed, 127 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index c9ac8b9..c445d57 100644
+index c9ac8b9..d371f5c 100644
 --- a/drivers/gpu/drm/drm_connector.c
 +++ b/drivers/gpu/drm/drm_connector.c
-@@ -956,6 +956,43 @@ int drm_display_info_set_bus_formats(struct drm_display_info *info,
+@@ -956,6 +956,45 @@ int drm_display_info_set_bus_formats(struct drm_display_info *info,
   *	  is no longer protected and userspace should take appropriate action
   *	  (whatever that might be).
   *
@@ -122,10 +124,12 @@ index c9ac8b9..c445d57 100644
 + *	associated hardware.
 + *
 + *	Driver expects metadata to be put in &hdr_output_metadata structure
-+ *	from userspace. It parses EDID and saves the sink metadata in
-+ *	&hdr_sink_metadata. Driver uses &drm_hdmi_infoframe_set_hdr_metadata
-+ *	helper to set the HDR metadata, &hdmi_drm_infoframe_pack to pack the
-+ *	infoframe as per spec, in case of HDMI encoder.
++ *	from userspace. This is received as blob and stored in
++ *	&drm_connector_state.hdr_output_metadata. It parses EDID and saves the
++ *	sink metadata in &hdr_sink_metadata, as &drm_connector.hdr_sink_metadata.
++ *	Driver uses &drm_hdmi_infoframe_set_hdr_metadata helper to set the HDR
++ *	metadata, &hdmi_drm_infoframe_pack to pack the infoframe as per spec,
++ *	in case of HDMI encoder.
 + *
   * max bpc:
   *	This range property is used by userspace to limit the bit depth. When
