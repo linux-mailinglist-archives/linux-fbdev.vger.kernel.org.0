@@ -2,306 +2,115 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A85344C4
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jun 2019 12:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516293548A
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Jun 2019 01:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727157AbfFDKwa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Jun 2019 06:52:30 -0400
-Received: from mga07.intel.com ([134.134.136.100]:62281 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727107AbfFDKwa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 4 Jun 2019 06:52:30 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 03:52:29 -0700
-X-ExtLoop1: 1
-Received: from linuxpresi1-desktop.iind.intel.com ([10.223.74.143])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Jun 2019 03:52:25 -0700
-From:   Uma Shankar <uma.shankar@intel.com>
-To:     intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     maarten.lankhorst@linux.intel.com, ville.syrjala@linux.intel.com,
-        shashank.sharma@intel.com, daniel@ffwll.ch, seanpaul@chromium.org,
-        emil.l.velikov@gmail.com, brian.starkey@arm.com, jonas@kwiboo.se,
-        Uma Shankar <uma.shankar@intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org
-Subject: [v3 2/3] drm: Fix docbook warnings in hdr metadata helper structures
-Date:   Tue,  4 Jun 2019 16:47:02 +0530
-Message-Id: <1559647022-7336-1-git-send-email-uma.shankar@intel.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <20190603082316.GI21222@phenom.ffwll.local>
-References: <20190603082316.GI21222@phenom.ffwll.local>
+        id S1726427AbfFDXyr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Jun 2019 19:54:47 -0400
+Received: from gateway34.websitewelcome.com ([192.185.148.164]:44495 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726317AbfFDXyr (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 4 Jun 2019 19:54:47 -0400
+X-Greylist: delayed 1359 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Jun 2019 19:54:47 EDT
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id B0855615C7
+        for <linux-fbdev@vger.kernel.org>; Tue,  4 Jun 2019 18:32:07 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id YIuVhQtVZ2PzOYIuVhlSca; Tue, 04 Jun 2019 18:32:07 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.127.120] (port=46282 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.91)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1hYIuU-000mO4-N5; Tue, 04 Jun 2019 18:32:06 -0500
+Date:   Tue, 4 Jun 2019 18:32:05 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] video: fbdev-MMP: Use struct_size() in devm_kzalloc()
+Message-ID: <20190604233205.GA5377@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.127.120
+X-Source-L: No
+X-Exim-ID: 1hYIuU-000mO4-N5
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.127.120]:46282
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 13
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fixes the following warnings:
-./include/drm/drm_mode_config.h:841: warning: Incorrect use of
-kernel-doc format:          * hdr_output_metadata_property: Connector
-property containing hdr
-./include/drm/drm_mode_config.h:918: warning: Function parameter or member 'hdr_output_metadata_property' not described in 'drm_mode_config'
-./include/drm/drm_connector.h:1251: warning: Function parameter or member 'hdr_output_metadata' not described in 'drm_connector'
-./include/drm/drm_connector.h:1251: warning: Function parameter or member 'hdr_sink_metadata' not described in 'drm_connector'
+One of the more common cases of allocation size calculations is finding
+the size of a structure that has a zero-sized array at the end, along
+with memory for some number of elements for that array. For example:
 
-Also adds some property documentation for HDR Metadata Connector
-Property in connector property create function.
+struct foo {
+    int stuff;
+    struct boo entry[];
+};
 
-v2: Fixed Sean Paul's review comments.
+size = sizeof(struct foo) + count * sizeof(struct boo);
+instance = devm_kzalloc(dev, size, GFP_KERNEL);
 
-v3: Fixed Daniel Vetter's review comments, added the UAPI structure
-definition section in kernel docs.
+Instead of leaving these open-coded and prone to type mistakes, we can
+now use the new struct_size() helper:
 
-v4: Fixed Daniel Vetter's review comments.
+instance = devm_kzalloc(dev, struct_size(instance, entry, count), GFP_KERNEL);
 
-v5: Added structure member references as per Daniel's suggestion.
+Notice that, in this case, variable size is not necessary, hence it
+is removed.
 
-Cc: Shashank Sharma <shashank.sharma@intel.com>
-Cc: Ville Syrjä <ville.syrjala@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: "Ville Syrjä" <ville.syrjala@linux.intel.com>
-Cc: Hans Verkuil <hansverk@cisco.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Reviewed-by: Sean Paul <sean@poorly.run>
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+This code was detected with the help of Coccinelle.
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/gpu/drm/drm_connector.c | 39 ++++++++++++++++++++++
- include/drm/drm_connector.h     |  1 +
- include/drm/drm_mode_config.h   |  4 +--
- include/linux/hdmi.h            | 12 +++++++
- include/uapi/drm/drm_mode.h     | 74 ++++++++++++++++++++++++++++++++++++++++-
- 5 files changed, 127 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/mmp/hw/mmp_ctrl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index c9ac8b9..d371f5c 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -956,6 +956,45 @@ int drm_display_info_set_bus_formats(struct drm_display_info *info,
-  *	  is no longer protected and userspace should take appropriate action
-  *	  (whatever that might be).
-  *
-+ * HDR_OUTPUT_METADATA:
-+ *	Connector property to enable userspace to send HDR Metadata to
-+ *	driver. This metadata is based on the composition and blending
-+ *	policies decided by user, taking into account the hardware and
-+ *	sink capabilities. The driver gets this metadata and creates a
-+ *	Dynamic Range and Mastering Infoframe (DRM) in case of HDMI,
-+ *	SDP packet (Non-audio INFOFRAME SDP v1.3) for DP. This is then
-+ *	sent to sink. This notifies the sink of the upcoming frame's Color
-+ *	Encoding and Luminance parameters.
-+ *
-+ *	Userspace first need to detect the HDR capabilities of sink by
-+ *	reading and parsing the EDID. Details of HDR metadata for HDMI
-+ *	are added in CTA 861.G spec. For DP , its defined in VESA DP
-+ *	Standard v1.4. It needs to then get the metadata information
-+ *	of the video/game/app content which are encoded in HDR (basically
-+ *	using HDR transfer functions). With this information it needs to
-+ *	decide on a blending policy and compose the relevant
-+ *	layers/overlays into a common format. Once this blending is done,
-+ *	userspace will be aware of the metadata of the composed frame to
-+ *	be send to sink. It then uses this property to communicate this
-+ *	metadata to driver which then make a Infoframe packet and sends
-+ *	to sink based on the type of encoder connected.
-+ *
-+ *	Userspace will be responsible to do Tone mapping operation in case:
-+ *		- Some layers are HDR and others are SDR
-+ *		- HDR layers luminance is not same as sink
-+ *	It will even need to do colorspace conversion and get all layers
-+ *	to one common colorspace for blending. It can use either GL, Media
-+ *	or display engine to get this done based on the capabilties of the
-+ *	associated hardware.
-+ *
-+ *	Driver expects metadata to be put in &hdr_output_metadata structure
-+ *	from userspace. This is received as blob and stored in
-+ *	&drm_connector_state.hdr_output_metadata. It parses EDID and saves the
-+ *	sink metadata in &hdr_sink_metadata, as &drm_connector.hdr_sink_metadata.
-+ *	Driver uses &drm_hdmi_infoframe_set_hdr_metadata helper to set the HDR
-+ *	metadata, &hdmi_drm_infoframe_pack to pack the infoframe as per spec,
-+ *	in case of HDMI encoder.
-+ *
-  * max bpc:
-  *	This range property is used by userspace to limit the bit depth. When
-  *	used the driver would limit the bpc in accordance with the valid range
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index 5476561..47e749b 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -1244,6 +1244,7 @@ struct drm_connector {
- 	 */
- 	struct llist_node free_node;
+diff --git a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+index 87d943f15a12..17174cd7a5bb 100644
+--- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
++++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+@@ -433,7 +433,7 @@ static int mmphw_probe(struct platform_device *pdev)
+ {
+ 	struct mmp_mach_plat_info *mi;
+ 	struct resource *res;
+-	int ret, i, size, irq;
++	int ret, i, irq;
+ 	struct mmphw_path_plat *path_plat;
+ 	struct mmphw_ctrl *ctrl = NULL;
  
-+	/** @hdr_sink_metadata: HDR Metadata Information read from sink */
- 	struct hdr_sink_metadata hdr_sink_metadata;
- };
+@@ -461,9 +461,9 @@ static int mmphw_probe(struct platform_device *pdev)
+ 	}
  
-diff --git a/include/drm/drm_mode_config.h b/include/drm/drm_mode_config.h
-index 4f88cc9..759d462 100644
---- a/include/drm/drm_mode_config.h
-+++ b/include/drm/drm_mode_config.h
-@@ -837,8 +837,8 @@ struct drm_mode_config {
- 	struct drm_property *writeback_out_fence_ptr_property;
- 
- 	/**
--	 * hdr_output_metadata_property: Connector property containing hdr
--	 * metatda. This will be provided by userspace compositors based
-+	 * @hdr_output_metadata_property: Connector property containing hdr
-+	 * metatada. This will be provided by userspace compositors based
- 	 * on HDR content
- 	 */
- 	struct drm_property *hdr_output_metadata_property;
-diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
-index ee55ba5..9918a6c 100644
---- a/include/linux/hdmi.h
-+++ b/include/linux/hdmi.h
-@@ -367,8 +367,19 @@ struct hdr_static_metadata {
- 	__u16 min_cll;
- };
- 
-+/**
-+ * struct hdr_sink_metadata - HDR sink metadata
-+ *
-+ * Metadata Information read from Sink's EDID
-+ */
- struct hdr_sink_metadata {
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
- 	__u32 metadata_type;
-+	/**
-+	 * @hdmi_type1: HDR Metadata Infoframe.
-+	 */
- 	union {
- 		struct hdr_static_metadata hdmi_type1;
- 	};
-@@ -398,6 +409,7 @@ ssize_t hdmi_vendor_infoframe_pack_only(const struct hdmi_vendor_infoframe *fram
-  * @spd: spd infoframe
-  * @vendor: union of all vendor infoframes
-  * @audio: audio infoframe
-+ * @drm: Dynamic Range and Mastering infoframe
-  *
-  * This is used by the generic pack function. This works since all infoframes
-  * have the same header which also indicates which type of infoframe should be
-diff --git a/include/uapi/drm/drm_mode.h b/include/uapi/drm/drm_mode.h
-index 19b5cf3..5ab331e 100644
---- a/include/uapi/drm/drm_mode.h
-+++ b/include/uapi/drm/drm_mode.h
-@@ -33,6 +33,15 @@
- extern "C" {
- #endif
- 
-+/**
-+ * DOC: overview
-+ *
-+ * DRM exposes many UAPI and structure definition to have a consistent
-+ * and standardized interface with user.
-+ * Userspace can refer to these structure definitions and UAPI formats
-+ * to communicate to driver
-+ */
-+
- #define DRM_CONNECTOR_NAME_LEN	32
- #define DRM_DISPLAY_MODE_LEN	32
- #define DRM_PROP_NAME_LEN	32
-@@ -630,24 +639,87 @@ struct drm_color_lut {
- 	__u16 reserved;
- };
- 
--/* HDR Metadata Infoframe as per 861.G spec */
-+/**
-+ * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
-+ *
-+ * HDR Metadata Infoframe as per CTA 861.G spec. This is expected
-+ * to match exactly with the spec.
-+ *
-+ * Userspace is expected to pass the metadata information as per
-+ * the format described in this structure.
-+ */
- struct hdr_metadata_infoframe {
-+	/**
-+	 * @eotf: Electro-Optical Transfer Function (EOTF)
-+	 * used in the stream.
-+	 */
- 	__u8 eotf;
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
- 	__u8 metadata_type;
-+	/**
-+	 * @display_primaries: Color Primaries of the Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @display_primaries.x: X cordinate of color primary.
-+	 * @display_primaries.y: Y cordinate of color primary.
-+	 */
- 	struct {
- 		__u16 x, y;
- 		} display_primaries[3];
-+	/**
-+	 * @white_point: White Point of Colorspace Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @white_point.x: X cordinate of whitepoint of color primary.
-+	 * @white_point.y: Y cordinate of whitepoint of color primary.
-+	 */
- 	struct {
- 		__u16 x, y;
- 		} white_point;
-+	/**
-+	 * @max_display_mastering_luminance: Max Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
- 	__u16 max_display_mastering_luminance;
-+	/**
-+	 * @min_display_mastering_luminance: Min Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of
-+	 * 0.0001 cd/m2, where 0x0001 represents 0.0001 cd/m2 and 0xFFFF
-+	 * represents 6.5535 cd/m2.
-+	 */
- 	__u16 min_display_mastering_luminance;
-+	/**
-+	 * @max_cll: Max Content Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
- 	__u16 max_cll;
-+	/**
-+	 * @max_fall: Max Frame Average Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
- 	__u16 max_fall;
- };
- 
-+/**
-+ * struct hdr_output_metadata - HDR output metadata
-+ *
-+ * Metadata Information to be passed from userspace
-+ */
- struct hdr_output_metadata {
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
- 	__u32 metadata_type;
-+	/**
-+	 * @hdmi_metadata_type1: HDR Metadata Infoframe.
-+	 */
- 	union {
- 		struct hdr_metadata_infoframe hdmi_metadata_type1;
- 	};
+ 	/* allocate */
+-	size = sizeof(struct mmphw_ctrl) + sizeof(struct mmphw_path_plat) *
+-	       mi->path_num;
+-	ctrl = devm_kzalloc(&pdev->dev, size, GFP_KERNEL);
++	ctrl = devm_kzalloc(&pdev->dev,
++			    struct_size(ctrl, path_plats, mi->path_num),
++			    GFP_KERNEL);
+ 	if (!ctrl) {
+ 		ret = -ENOMEM;
+ 		goto failed;
 -- 
-1.9.1
+2.21.0
 
