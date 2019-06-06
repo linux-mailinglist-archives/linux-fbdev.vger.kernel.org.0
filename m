@@ -2,99 +2,158 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DA1370A8
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2019 11:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9238137150
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2019 12:11:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728204AbfFFJrn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Jun 2019 05:47:43 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:43141 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbfFFJrm (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jun 2019 05:47:42 -0400
-Received: by mail-lf1-f66.google.com with SMTP id j29so1051462lfk.10
-        for <linux-fbdev@vger.kernel.org>; Thu, 06 Jun 2019 02:47:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NsVvPiBY4yVAfgVoOW5rwqcEUi8304y5zEW51I3/QB0=;
-        b=Wdoh2MpFPPwEGDiEjo9yNWPvFiF5rNlEHiZaJf0n9Vg6FS4VUU2cc68GaQl4o2gqwy
-         4dbJ3g7WEmat/ufCpfazLVbgV6ySmza2gxaYFAenGQnggpEoKYT0NNP+fPKzDviOplly
-         V4mMdAPS/XxX37EVSGdaX+UcmhdKT4IrRkVpNMAbgC2gt8VMNs9PsvD/GD6B5RuHKt5c
-         t/UzHJLvzB8BJNgCgTBSJ9KsV9zFkV8hfU8Yx2nTgZ+yWZl6uY6MS8YPGXRBG1hDMj9x
-         L4RXjgeGsIVpXYaTYCaIyZyu1UZI8FSwWNUppmzZdyqw0fFmoG4R/pcy23fAlNtrw2K/
-         yzkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NsVvPiBY4yVAfgVoOW5rwqcEUi8304y5zEW51I3/QB0=;
-        b=e8lFpt4wTDe9sdY+T15XYHgB24U44eCfu9HB4AJ2ST4dSPsQKowQ4hRPKW+penSXH6
-         W6+3CeG05WDZsgzf4SE93LBhBUmZzqFNEqlHdfDG6OcfbBq6+G75XXDMkn4w9hEZNUra
-         ioWtRcILDyZeNpHwDO83QdKQYY1tQZFQ9kAtWS+YXBBt2+QR4l6wXCfne0YbeieDrgtT
-         bqOH6YxGzcW8Q4+lhH9Y3hZJ1BiX8ScJNSil1uC1BZwgC78B8IcTSZPoz6oIPyUiH7dM
-         PfkmFwElzFRKimElEPn8Muqom2BxAUAc21pAN+HER8iXMk5KgvwVQvn3votcw9It0g8O
-         87Pg==
-X-Gm-Message-State: APjAAAVhMUw5mt3gQ3WXn7onXP7x8zigvC8pRH5BWQinu/UbDOgkqRQA
-        Kz/EQWG3HVXwJ6f+x/ppz3E3Zw==
-X-Google-Smtp-Source: APXvYqwC1lw0i+elxeAauVlnzExuJPoAeIohV6gRyR/H/KWYyVWxRDSoL1E/QIVDRnsweZyms/BPzA==
-X-Received: by 2002:ac2:4ac5:: with SMTP id m5mr22449224lfp.95.1559814460755;
-        Thu, 06 Jun 2019 02:47:40 -0700 (PDT)
-Received: from localhost (c-1c3670d5.07-21-73746f28.bbcust.telenor.se. [213.112.54.28])
-        by smtp.gmail.com with ESMTPSA id d23sm258143ljj.38.2019.06.06.02.47.40
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 06 Jun 2019 02:47:40 -0700 (PDT)
-From:   Anders Roxell <anders.roxell@linaro.org>
-To:     lgirdwood@gmail.com, broonie@kernel.org
+        id S1727740AbfFFKLU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 6 Jun 2019 06:11:20 -0400
+Received: from casper.infradead.org ([85.118.1.10]:53770 "EHLO
+        casper.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727469AbfFFKLU (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jun 2019 06:11:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=ntYG98vIw8SBks2+iwma4fYIuw+qJBNTLrhwVKHXBpE=; b=WzStA+HhR1uA1MUXet6UrpqTpy
+        6OWCYEZ2rzB7yeao3BJZlP9JARMqc03xXe16Pze/mZN+VfJDR3l+j6MblckY71dbh01iCmrk6hyEp
+        +TZ6ORl3qXfMGqCUwdk35jbb0lL+KzwQjxxYAbqa0MIXMzsvMKc2SB5RkSyLfPl64EbpLBN3FGBkH
+        06sOh9Ey2LlY65ZqrAjIDR7ZftncTdYx/5Dbv+f96ihOwBj+QMA+48U3ZdNDs1AsSN5zrKAhrJxS6
+        itveatFisKOxU6ltd2vsRJlfF2MzVklRTyxpj4f2ZXJhq7R6aNn1BeD4lVtW/gyLKbnNjMo9edQBO
+        edOlIAVA==;
+Received: from [179.182.172.34] (helo=coco.lan)
+        by casper.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hYpMM-0005DZ-4y; Thu, 06 Jun 2019 10:11:02 +0000
+Date:   Thu, 6 Jun 2019 07:10:52 -0300
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+To:     Anders Roxell <anders.roxell@linaro.org>
 Cc:     andrew@lunn.ch, vivien.didelot@gmail.com, f.fainelli@gmail.com,
         marex@denx.de, stefan@agner.ch, airlied@linux.ie, daniel@ffwll.ch,
         shawnguo@kernel.org, s.hauer@pengutronix.de,
-        b.zolnierkie@samsung.com, a.hajda@samsung.com, mchehab@kernel.org,
+        b.zolnierkie@samsung.com, a.hajda@samsung.com,
         p.zabel@pengutronix.de, hkallweit1@gmail.com, lee.jones@linaro.org,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        lgirdwood@gmail.com, broonie@kernel.org, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
         linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 8/8] drivers: regulator: 88pm800: fix warning same module names
-Date:   Thu,  6 Jun 2019 11:47:36 +0200
-Message-Id: <20190606094736.23970-1-anders.roxell@linaro.org>
-X-Mailer: git-send-email 2.20.1
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH 0/8] fix warnings for same module names
+Message-ID: <20190606071052.412a766d@coco.lan>
+In-Reply-To: <20190606094657.23612-1-anders.roxell@linaro.org>
+References: <20190606094657.23612-1-anders.roxell@linaro.org>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When building with CONFIG_MFD_88PM800 and CONFIG_REGULATOR_88PM800
-enabled as loadable modules, we see the following warning:
+Em Thu,  6 Jun 2019 11:46:57 +0200
+Anders Roxell <anders.roxell@linaro.org> escreveu:
 
-warning: same module names found:
-  drivers/regulator/88pm800.ko
-  drivers/mfd/88pm800.ko
+> Hi,
+> 
+> This patch set addresses warnings that module names are named the
+> same, this may lead to a problem that wrong module gets loaded or if one
+> of the two same-name modules exports a symbol, this can confuse the
+> dependency resolution. and the build may fail.
+> 
+> 
+> Patch "drivers: net: dsa: realtek: fix warning same module names" and
+> "drivers: net: phy: realtek: fix warning same module names" resolves the
+> name clatch realtek.ko.
+> 
+> warning: same module names found:
+>   drivers/net/phy/realtek.ko
+>   drivers/net/dsa/realtek.ko
+> 
+> 
+> Patch  "drivers: (video|gpu): fix warning same module names" resolves
+> the name clatch mxsfb.ko.
+> 
+> warning: same module names found:
+>   drivers/video/fbdev/mxsfb.ko
+>   drivers/gpu/drm/mxsfb/mxsfb.ko
+> 
+> Patch "drivers: media: i2c: fix warning same module names" resolves the
+> name clatch adv7511.ko however, it seams to refer to the same device
+> name in i2c_device_id, does anyone have any guidance how that should be
+> solved?
+> 
+> warning: same module names found:
+>   drivers/gpu/drm/bridge/adv7511/adv7511.ko
+>   drivers/media/i2c/adv7511.ko
+> 
+> 
+> Patch "drivers: media: coda: fix warning same module names" resolves the
+> name clatch coda.ko.
+> 
+> warning: same module names found:
+>   fs/coda/coda.ko
+>   drivers/media/platform/coda/coda.ko
 
-Rework to rename the name.
+Media change look ok, and probably the other patches too, but the
+problem here is: who will apply it and when.
 
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
----
- drivers/regulator/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The way you grouped the changes makes harder for subsystem maintainers
+to pick, as the same patch touches multiple subsystems.
 
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 76e78fa449a2..6906938071f5 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -11,7 +11,8 @@ obj-$(CONFIG_REGULATOR_VIRTUAL_CONSUMER) += virtual.o
- obj-$(CONFIG_REGULATOR_USERSPACE_CONSUMER) += userspace-consumer.o
- 
- obj-$(CONFIG_REGULATOR_88PG86X) += 88pg86x.o
--obj-$(CONFIG_REGULATOR_88PM800) += 88pm800.o
-+obj-$(CONFIG_REGULATOR_88PM800) += 88pm800-regulator.o
-+88pm800-regulator-objs		:= 88pm800.o
- obj-$(CONFIG_REGULATOR_88PM8607) += 88pm8607.o
- obj-$(CONFIG_REGULATOR_CPCAP) += cpcap-regulator.o
- obj-$(CONFIG_REGULATOR_AAT2870) += aat2870-regulator.o
--- 
-2.20.1
+On the other hand, if this gets picked by someone else, it has the
+potential to cause conflicts between linux-next and the maintainer's
+tree.
 
+So, the best would be if you re-arrange this series to submit one
+patch per subsystem.
+
+
+> 
+> 
+> Patch "drivers: net: phy: fix warning same module names" resolves the
+> name clatch asix.ko.
+> 
+> warning: same module names found:
+>   drivers/net/phy/asix.ko
+>   drivers/net/usb/asix.ko
+> 
+> Patch "drivers: mfd: 88pm800: fix warning same module names" and
+> "drivers: regulator: 88pm800: fix warning same module names" resolves
+> the name clatch 88pm800.ko.
+> 
+> warning: same module names found:
+>   drivers/regulator/88pm800.ko
+>   drivers/mfd/88pm800.ko
+> 
+> 
+> Cheers,
+> Anders
+> 
+> Anders Roxell (8):
+>   drivers: net: dsa: realtek: fix warning same module names
+>   drivers: net: phy: realtek: fix warning same module names
+>   drivers: (video|gpu): fix warning same module names
+>   drivers: media: i2c: fix warning same module names
+>   drivers: media: coda: fix warning same module names
+>   drivers: net: phy: fix warning same module names
+>   drivers: mfd: 88pm800: fix warning same module names
+>   drivers: regulator: 88pm800: fix warning same module names
+> 
+>  drivers/gpu/drm/bridge/adv7511/Makefile | 10 +++++-----
+>  drivers/gpu/drm/mxsfb/Makefile          |  4 ++--
+>  drivers/media/i2c/Makefile              |  3 ++-
+>  drivers/media/platform/coda/Makefile    |  4 ++--
+>  drivers/mfd/Makefile                    |  7 +++++--
+>  drivers/net/dsa/Makefile                |  4 ++--
+>  drivers/net/phy/Makefile                |  6 ++++--
+>  drivers/regulator/Makefile              |  3 ++-
+>  drivers/video/fbdev/Makefile            |  3 ++-
+>  9 files changed, 26 insertions(+), 18 deletions(-)
+> 
+
+
+
+Thanks,
+Mauro
