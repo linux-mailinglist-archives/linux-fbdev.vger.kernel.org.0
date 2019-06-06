@@ -2,194 +2,153 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4806B36D74
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2019 09:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64023708F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2019 11:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725769AbfFFHit (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Jun 2019 03:38:49 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:39278 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726077AbfFFHit (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jun 2019 03:38:49 -0400
-Received: by mail-oi1-f196.google.com with SMTP id m202so896074oig.6
-        for <linux-fbdev@vger.kernel.org>; Thu, 06 Jun 2019 00:38:48 -0700 (PDT)
+        id S1727875AbfFFJrJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 6 Jun 2019 05:47:09 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:33582 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727540AbfFFJrJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jun 2019 05:47:09 -0400
+Received: by mail-lf1-f66.google.com with SMTP id y17so1084272lfe.0
+        for <linux-fbdev@vger.kernel.org>; Thu, 06 Jun 2019 02:47:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=utp5nI6WKyrTwwRbD4tMOT1+pcd3XgcqW3fhQwEE6xA=;
-        b=ek/M+WnYPApHYeBvxMRpQo0ARYWtpWrbqYEuHuOyZGrII2exYTYHQdRVyTG9hNS17h
-         3IzPv+Fb4Lr1HN2Cfle5W/bwWVT2szRuqKa9vzDoXNIswL/p4VyiiPN5D3mhVb9TPsPT
-         +0JVDAmhWxD5H5B03ZHUUkUGDC/NnDzfss2dU=
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZUJtTHTXNxu11uFgApSggUR6FUDtGDSUrwD5+2c4fw4=;
+        b=fjWTs+v9sRcacPTkE7/eRu/9lwuTPBz6IVARKm6m4Eq7OW7fr63Dg12tQgHVVCRbol
+         X9xJuP/JqN3cXHjJiC6f8ejkT+eMEcvNjqmDsSgH22spBK04YFEiIlwrHageUyfQp0xt
+         Dr0W1fN4Dhoc4Vs0e2dMfi84pDucPLYspHEx1qyBDNLoCiJIDHxXk89F7LxCZQIsKONd
+         8my/z5+M+Fr/vICw5e12GUeEZWFVwbkdPpr56GF9RuHraCzJOfRPTERnTkxQX5WMo6cS
+         EP4xY+CInGYsGcd/8/b+F6qjYG5PezinP4T3p0CCu/MDQ46QsZOu/D1w+p5MJ3axD+dR
+         KU2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=utp5nI6WKyrTwwRbD4tMOT1+pcd3XgcqW3fhQwEE6xA=;
-        b=JOdhjvm/pkDGcKpk9LrxZHLbf2IiEVsqRk4U7z/LOIIgi6YtQYtGJ8aQ9ie+gz65UY
-         O8Guw/40cmC/8YDLiYOlqIkC6NDnHm8kCDjRLIDNovpV+0M/LNgvBGDrdNtOr1j44s+4
-         gGLl02WcMT6SzyNetJrsLF/rpLoeCKKPD6i5/XPPdhDGcjaTM59ZBo2qbvvhC5pWZaPr
-         6bO30ICtrQrtcDztw72ptB2oCsiNMTEBP1AdZJTSZxH8FlhSqYB2DZF9c/mI9XlbQ4va
-         Wb0mvsSyq2UxKz179h5jiCwXMWBQxgeTs3F/9VedUz0CZx/IOJ6B3AJduxWEigh9L5XK
-         6z4A==
-X-Gm-Message-State: APjAAAWJtkd9TsjbPa2zvTjSlU1AYhPiQU9F/dxLAlijAFzQNMVibf25
-        xgKDN8cQNPwNIo8UExzBjW/eSWSw2GFnMnBAKiS0YQ==
-X-Google-Smtp-Source: APXvYqz+wo/fhXqhpOEXpmnP4dE+gKWaXY0NuvFubmj3puGKVyBuNSHEvZXxTzqyVKCA2WM6H7A+ckI0nqFn8dUL48M=
-X-Received: by 2002:aca:ef88:: with SMTP id n130mr7241969oih.132.1559806728167;
- Thu, 06 Jun 2019 00:38:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZUJtTHTXNxu11uFgApSggUR6FUDtGDSUrwD5+2c4fw4=;
+        b=YucSo1eU++uFc7OYxpXfjIji5suGhv3cevbeLsTrWINB68QgrHePPfvxBcffJQkx2y
+         tVYy/uXgQxteeBc9jLShkmjvFmN8Ff8BMNcFG4P1saB5u3HwsIXU3EFyCp3SojBhRqDN
+         d5Ou9+8RTbV+5i2vQILsuavlioR3yDQ825UuGUMaN7M5cMlsv1DQZbIZOnANT93O6294
+         bkEPoyiz0eTuveZWrM51QIWcgybAGSzIqX5NHZyoI5Ew3vvJ/R7tbYVJgb/F4renlzE9
+         wlCWcYDLuUFOqreJ/ElrWPPHKQqw9+aRGcF2If7FLYD2kYTGh72kK2GILaRePwHP2a6d
+         /eOA==
+X-Gm-Message-State: APjAAAV0ZCgWir0GsZ4MBREP46fOWODKqnUvlpYNutHvF2Ov2IuSTVwG
+        sBlftpB61U7TXSLiT5XhP2U3gg==
+X-Google-Smtp-Source: APXvYqyfSm4WZqLlK2FuAsUFqx7p2Ew9DH+2Np2QIeyhi9dQlGG8JR0BxiRPugpDfNWGd0YdYSALPA==
+X-Received: by 2002:ac2:5609:: with SMTP id v9mr15271221lfd.27.1559814426775;
+        Thu, 06 Jun 2019 02:47:06 -0700 (PDT)
+Received: from localhost (c-1c3670d5.07-21-73746f28.bbcust.telenor.se. [213.112.54.28])
+        by smtp.gmail.com with ESMTPSA id e8sm241763lfc.27.2019.06.06.02.47.05
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 06 Jun 2019 02:47:06 -0700 (PDT)
+From:   Anders Roxell <anders.roxell@linaro.org>
+To:     andrew@lunn.ch, vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        marex@denx.de, stefan@agner.ch, airlied@linux.ie, daniel@ffwll.ch,
+        shawnguo@kernel.org, s.hauer@pengutronix.de,
+        b.zolnierkie@samsung.com, a.hajda@samsung.com, mchehab@kernel.org,
+        p.zabel@pengutronix.de, hkallweit1@gmail.com, lee.jones@linaro.org,
+        lgirdwood@gmail.com, broonie@kernel.org, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+        linux-media@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 0/8] fix warnings for same module names
+Date:   Thu,  6 Jun 2019 11:46:57 +0200
+Message-Id: <20190606094657.23612-1-anders.roxell@linaro.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Thu, 6 Jun 2019 09:38:36 +0200
-Message-ID: <CAKMK7uHneUFYPiRr10X9xfWTkGtaoQBB=niDMGkAgJ-fgo5=mA@mail.gmail.com>
-Subject: Re: [PATCH 00/33] fbcon notifier begone v3!
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Bart,
+Hi,
 
-On Tue, May 28, 2019 at 11:02:31AM +0200, Daniel Vetter wrote:
-> Hi all,
->
-> I think we're slowly getting there. Previous cover letters with more
-> context:
->
-> https://lists.freedesktop.org/archives/dri-devel/2019-May/218362.html
->
-> tldr; I have a multi-year plan to improve fbcon locking, because the
-> current thing is a bit a mess.
->
-> Cover letter of this version, where I detail a bit more the details
-> fixed in this one here:
->
-> https://lists.freedesktop.org/archives/dri-devel/2019-May/218984.html
->
-> Note that the locking plan in this one is already outdated, I overlooked a
-> few fun issues around any printk() going back to console_lock.
->
-> I think remaining bits:
->
-> - Ack from Daniel Thompson for the backlight bits, he wanted to check the
->   big picture.
-
-I think Daniel is still on vacation until next week or so.
-
-> - Hash out actual merge plan.
-
-I'd like to stuff this into drm.git somehow, I guess topic branch works
-too.
-
-Long term I think we need to reconsider how we handle fbdev, at least the
-core/fbcon pieces. Since a few years all the work in that area has been
-motivated by drm, and pushed by drm contributors. Having that maintained
-in a separate tree that doesn't regularly integrate imo doesn't make much
-sense, and we ended up merging almost everything through some drm tree.
-That one time we didn't (for some panel rotation stuff) it resulted in
-some good suprises.
-
-I think best solution is if we put the core and fbcon bits into drm-misc,
-as group maintained infrastructure piece. All the other gfx infra pieces
-are maintained in there already too. You'd obviously get commit rights.
-I think that would include
-- drivers/video/fbdev
-- drivers/video/*c
-- drivers/video/console
-
-I don't really care about what happens with the actual fbdev drivers
-(aside from the drm one in drm_fb_helper.c, but that's already maintained
-as part of drm). I guess we could also put those into drm-misc, or as a
-separate tree, depending what you want.
-
-Thoughts?
-
-Cheers, Daniel
+This patch set addresses warnings that module names are named the
+same, this may lead to a problem that wrong module gets loaded or if one
+of the two same-name modules exports a symbol, this can confuse the
+dependency resolution. and the build may fail.
 
 
->
-> I'm also cc'ing the entire pile to a lot more people on request.
->
-> Thanks, Daniel
->
-> Daniel Vetter (33):
->   dummycon: Sprinkle locking checks
->   fbdev: locking check for fb_set_suspend
->   vt: might_sleep() annotation for do_blank_screen
->   vt: More locking checks
->   fbdev/sa1100fb: Remove dead code
->   fbdev/cyber2000: Remove struct display
->   fbdev/aty128fb: Remove dead code
->   fbcon: s/struct display/struct fbcon_display/
->   fbcon: Remove fbcon_has_exited
->   fbcon: call fbcon_fb_(un)registered directly
->   fbdev/sh_mobile: remove sh_mobile_lcdc_display_notify
->   fbdev/omap: sysfs files can't disappear before the device is gone
->   fbdev: sysfs files can't disappear before the device is gone
->   staging/olpc: lock_fb_info can't fail
->   fbdev/atyfb: lock_fb_info can't fail
->   fbdev: lock_fb_info cannot fail
->   fbcon: call fbcon_fb_bind directly
->   fbdev: make unregister/unlink functions not fail
->   fbdev: unify unlink_framebuffer paths
->   fbdev/sh_mob: Remove fb notifier callback
->   fbdev: directly call fbcon_suspended/resumed
->   fbcon: Call fbcon_mode_deleted/new_modelist directly
->   fbdev: Call fbcon_get_requirement directly
->   Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
->   fbmem: pull fbcon_fb_blanked out of fb_blank
->   fbdev: remove FBINFO_MISC_USEREVENT around fb_blank
->   fb: Flatten control flow in fb_set_var
->   fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls
->   vgaswitcheroo: call fbcon_remap_all directly
->   fbcon: Call con2fb_map functions directly
->   fbcon: Document what I learned about fbcon locking
->   staging/olpc_dcon: Add drm conversion to TODO
->   backlight: simplify lcd notifier
->
->  arch/arm/mach-pxa/am200epd.c                  |  13 +-
->  drivers/gpu/vga/vga_switcheroo.c              |  11 +-
->  drivers/media/pci/ivtv/ivtvfb.c               |   6 +-
->  drivers/staging/fbtft/fbtft-core.c            |   4 +-
->  drivers/staging/olpc_dcon/TODO                |   7 +
->  drivers/staging/olpc_dcon/olpc_dcon.c         |   6 +-
->  drivers/tty/vt/vt.c                           |  18 +
->  drivers/video/backlight/backlight.c           |   2 +-
->  drivers/video/backlight/lcd.c                 |  12 -
->  drivers/video/console/dummycon.c              |   6 +
->  drivers/video/fbdev/aty/aty128fb.c            |  64 ---
->  drivers/video/fbdev/aty/atyfb_base.c          |   3 +-
->  drivers/video/fbdev/core/fbcmap.c             |   6 +-
->  drivers/video/fbdev/core/fbcon.c              | 313 ++++++--------
->  drivers/video/fbdev/core/fbcon.h              |   6 +-
->  drivers/video/fbdev/core/fbmem.c              | 399 +++++++-----------
->  drivers/video/fbdev/core/fbsysfs.c            |  20 +-
->  drivers/video/fbdev/cyber2000fb.c             |   1 -
->  drivers/video/fbdev/neofb.c                   |   9 +-
->  .../video/fbdev/omap2/omapfb/omapfb-sysfs.c   |  21 +-
->  drivers/video/fbdev/sa1100fb.c                |  25 --
->  drivers/video/fbdev/savage/savagefb_driver.c  |   9 +-
->  drivers/video/fbdev/sh_mobile_lcdcfb.c        | 132 +-----
->  drivers/video/fbdev/sh_mobile_lcdcfb.h        |   5 -
->  include/linux/console_struct.h                |   5 +-
->  include/linux/fb.h                            |  45 +-
->  include/linux/fbcon.h                         |  30 ++
->  27 files changed, 396 insertions(+), 782 deletions(-)
->
-> --
-> 2.20.1
->
+Patch "drivers: net: dsa: realtek: fix warning same module names" and
+"drivers: net: phy: realtek: fix warning same module names" resolves the
+name clatch realtek.ko.
 
---
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+warning: same module names found:
+  drivers/net/phy/realtek.ko
+  drivers/net/dsa/realtek.ko
+
+
+Patch  "drivers: (video|gpu): fix warning same module names" resolves
+the name clatch mxsfb.ko.
+
+warning: same module names found:
+  drivers/video/fbdev/mxsfb.ko
+  drivers/gpu/drm/mxsfb/mxsfb.ko
+
+Patch "drivers: media: i2c: fix warning same module names" resolves the
+name clatch adv7511.ko however, it seams to refer to the same device
+name in i2c_device_id, does anyone have any guidance how that should be
+solved?
+
+warning: same module names found:
+  drivers/gpu/drm/bridge/adv7511/adv7511.ko
+  drivers/media/i2c/adv7511.ko
+
+
+Patch "drivers: media: coda: fix warning same module names" resolves the
+name clatch coda.ko.
+
+warning: same module names found:
+  fs/coda/coda.ko
+  drivers/media/platform/coda/coda.ko
+
+
+Patch "drivers: net: phy: fix warning same module names" resolves the
+name clatch asix.ko.
+
+warning: same module names found:
+  drivers/net/phy/asix.ko
+  drivers/net/usb/asix.ko
+
+Patch "drivers: mfd: 88pm800: fix warning same module names" and
+"drivers: regulator: 88pm800: fix warning same module names" resolves
+the name clatch 88pm800.ko.
+
+warning: same module names found:
+  drivers/regulator/88pm800.ko
+  drivers/mfd/88pm800.ko
+
+
+Cheers,
+Anders
+
+Anders Roxell (8):
+  drivers: net: dsa: realtek: fix warning same module names
+  drivers: net: phy: realtek: fix warning same module names
+  drivers: (video|gpu): fix warning same module names
+  drivers: media: i2c: fix warning same module names
+  drivers: media: coda: fix warning same module names
+  drivers: net: phy: fix warning same module names
+  drivers: mfd: 88pm800: fix warning same module names
+  drivers: regulator: 88pm800: fix warning same module names
+
+ drivers/gpu/drm/bridge/adv7511/Makefile | 10 +++++-----
+ drivers/gpu/drm/mxsfb/Makefile          |  4 ++--
+ drivers/media/i2c/Makefile              |  3 ++-
+ drivers/media/platform/coda/Makefile    |  4 ++--
+ drivers/mfd/Makefile                    |  7 +++++--
+ drivers/net/dsa/Makefile                |  4 ++--
+ drivers/net/phy/Makefile                |  6 ++++--
+ drivers/regulator/Makefile              |  3 ++-
+ drivers/video/fbdev/Makefile            |  3 ++-
+ 9 files changed, 26 insertions(+), 18 deletions(-)
+
+-- 
+2.20.1
+
