@@ -2,91 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E39863859A
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jun 2019 09:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2B95385D3
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jun 2019 09:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727677AbfFGHqe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 7 Jun 2019 03:46:34 -0400
-Received: from smtp4.iitb.ac.in ([103.21.127.18]:50026 "EHLO smtp1.iitb.ac.in"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727267AbfFGHqe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 7 Jun 2019 03:46:34 -0400
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-        by smtp1.iitb.ac.in (Postfix) with SMTP id 188031050DD8
-        for <linux-fbdev@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
- Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
-        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
-X-Spam-Pyzor: Reported 1 times.
-X-Envelope-From: rws@aero.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
-        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
-        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
-Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
-From:   Martins Henry <rws@aero.iitb.ac.in>
-Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
-Subject: Thanks and I wait for your answer
+        id S1727019AbfFGH5d (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 7 Jun 2019 03:57:33 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:47048 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbfFGH5d (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jun 2019 03:57:33 -0400
+Received: by mail-ed1-f66.google.com with SMTP id h10so1668903edi.13
+        for <linux-fbdev@vger.kernel.org>; Fri, 07 Jun 2019 00:57:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1Y0dqNgN5GRlPumwnSwim+P7xV+jz6U0uadHjVytHrk=;
+        b=KW+UbysjArNVACv4q6+549r7+cTv3EkG+0hIgp5Gzs8ersC7PVJ/arg0EbqcKW/BDT
+         7m/td0oX1nSkgEGBxV+/rFF94cYaaujJuBaZbnkb6j43aX9EoDSuUh2jbUn90a72Q1m6
+         wWSpptOZ5QJhMjkYz1VNG/I1tEoevoc3dgNZE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=1Y0dqNgN5GRlPumwnSwim+P7xV+jz6U0uadHjVytHrk=;
+        b=rMNfYXPe988rcNlW8QCBcApn7s7PfGH4Oa/J18kn0Paawn8aEyHzCQRpG+5rjq4AqW
+         Oxvxrst7n4HuW1EqAYRHjzg+NJbKol974n4zDmT4Ds5K0ZKKucSFFiJ2VG2EG+qHe7do
+         5jiHIyb+BEHmfkRdFY/+XROCVHtlKwUtjIrD1tY+wVkyxRic8yrovA/Usqz663/l3dnb
+         pa7l5xud8p6zeb87beC8Px/ac6lvjhM45/1A7Hd7w4054pzZ+SU/84spiXAycAgwt11L
+         V1NHQcvD0BsLIFXz4Hb1Wb+5umcAjHx17Xd46kG/h8KRvjZnG8PEUlKOYQ1c2RYfdDd/
+         Cuqg==
+X-Gm-Message-State: APjAAAX4yB4fl1/qBXKmI6SQXp0l/vnY/K9gBDCg1AB9Dii7A3DbPZzi
+        k8/xj0D0YKofqEbutmlYTF0NIQ==
+X-Google-Smtp-Source: APXvYqxb9k77uDmPH+x6SZW7m5DzVGO6PSl0oSp7JXNVVPERM605KEjklDJiu0Eyo4Ib14+dHcCJGA==
+X-Received: by 2002:a17:906:4f8f:: with SMTP id o15mr45250693eju.129.1559894251343;
+        Fri, 07 Jun 2019 00:57:31 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id f3sm241948ejc.15.2019.06.07.00.57.29
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 07 Jun 2019 00:57:30 -0700 (PDT)
+Date:   Fri, 7 Jun 2019 09:57:28 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Anders Roxell <anders.roxell@linaro.org>
+Cc:     marex@denx.de, stefan@agner.ch, airlied@linux.ie, daniel@ffwll.ch,
+        shawnguo@kernel.org, s.hauer@pengutronix.de,
+        b.zolnierkie@samsung.com, andrew@lunn.ch, vivien.didelot@gmail.com,
+        f.fainelli@gmail.com, a.hajda@samsung.com, mchehab@kernel.org,
+        p.zabel@pengutronix.de, hkallweit1@gmail.com, lee.jones@linaro.org,
+        lgirdwood@gmail.com, broonie@kernel.org, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH 3/8] drivers: (video|gpu): fix warning same module names
+Message-ID: <20190607075728.GE21222@phenom.ffwll.local>
+Mail-Followup-To: Anders Roxell <anders.roxell@linaro.org>, marex@denx.de,
+        stefan@agner.ch, airlied@linux.ie, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, b.zolnierkie@samsung.com, andrew@lunn.ch,
+        vivien.didelot@gmail.com, f.fainelli@gmail.com, a.hajda@samsung.com,
+        mchehab@kernel.org, p.zabel@pengutronix.de, hkallweit1@gmail.com,
+        lee.jones@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+        linux-media@vger.kernel.org
+References: <20190606094712.23715-1-anders.roxell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.101.1.5]
-X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
-Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
-Thread-Topic: Thanks and I wait for your answer
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190606094712.23715-1-anders.roxell@linaro.org>
+X-Operating-System: Linux phenom 4.14.0-3-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Thu, Jun 06, 2019 at 11:47:12AM +0200, Anders Roxell wrote:
+> When building with CONFIG_DRM_MXSFB and CONFIG_FB_MXS enabled as
+> loadable modules, we see the following warning:
+> 
+> warning: same module names found:
+>   drivers/video/fbdev/mxsfb.ko
+>   drivers/gpu/drm/mxsfb/mxsfb.ko
+> 
+> Rework so the names matches the config fragment.
+> 
+> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
 
-I am Martin Henry, An American Citizen; I am the personal secretary to
-Mr. Donald Railton, the controller of a Lottery Company. Please I am
-having big problem now, I have a 6yrs old daughter who has leukemia, a
-disease of the blood, and she needs a bone marrow transplant or she
-will die.
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-Please I am only asking for your help and you will benefit from it
-also. As an insider with Lottery Firm, working as the personal
-secretary to the controller, I want you to send me your name to play,
-I have some numbers that are going to win, stored in his secret data
-system in the office. The Lottery is an online entry with credit card
-anywhere with a name and address. All I want you to do is to send your
-name to play it and I will send confirmation to you.
+I'm assuming Bart will pick this one up for fbdev.
+-Daniel
 
-I will play with my card on your name and the Prize will be shared
-equally between us. Immediately the results are released they will
-contact you for payment as the oversea winner. The lotto can be played
-with 9.00 dollars, or 50 dollars but the prize will be Millions.
-Remember that I am playing on your name with my card; I just want to
-front you for this, because I need this money to save the life of my
-little daughter.
+> ---
+>  drivers/gpu/drm/mxsfb/Makefile | 4 ++--
+>  drivers/video/fbdev/Makefile   | 3 ++-
+>  2 files changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/mxsfb/Makefile b/drivers/gpu/drm/mxsfb/Makefile
+> index ff6e358088fa..5d49d7548e66 100644
+> --- a/drivers/gpu/drm/mxsfb/Makefile
+> +++ b/drivers/gpu/drm/mxsfb/Makefile
+> @@ -1,3 +1,3 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -mxsfb-y := mxsfb_drv.o mxsfb_crtc.o mxsfb_out.o
+> -obj-$(CONFIG_DRM_MXSFB)	+= mxsfb.o
+> +drm-mxsfb-y := mxsfb_drv.o mxsfb_crtc.o mxsfb_out.o
+> +obj-$(CONFIG_DRM_MXSFB)	+= drm-mxsfb.o
+> diff --git a/drivers/video/fbdev/Makefile b/drivers/video/fbdev/Makefile
+> index 655f2537cac1..7ee967525af2 100644
+> --- a/drivers/video/fbdev/Makefile
+> +++ b/drivers/video/fbdev/Makefile
+> @@ -131,7 +131,8 @@ obj-$(CONFIG_FB_VGA16)            += vga16fb.o
+>  obj-$(CONFIG_FB_OF)               += offb.o
+>  obj-$(CONFIG_FB_MX3)		  += mx3fb.o
+>  obj-$(CONFIG_FB_DA8XX)		  += da8xx-fb.o
+> -obj-$(CONFIG_FB_MXS)		  += mxsfb.o
+> +obj-$(CONFIG_FB_MXS)		  += fb-mxs.o
+> +fb-mxs-objs			  := mxsfb.o
+>  obj-$(CONFIG_FB_SSD1307)	  += ssd1307fb.o
+>  obj-$(CONFIG_FB_SIMPLE)           += simplefb.o
+>  
+> -- 
+> 2.20.1
+> 
 
-Thanks and I wait for your answer
-Martin Henry.
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
