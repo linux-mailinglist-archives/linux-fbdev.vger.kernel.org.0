@@ -2,88 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA44E37256
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2019 13:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E39863859A
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jun 2019 09:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727097AbfFFLAK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Jun 2019 07:00:10 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:49996 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727026AbfFFLAK (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jun 2019 07:00:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oYOXjRQFx1z+6E0ax1Zx11BDYlrCjP+RsMwp6EKLiOI=; b=VBDtL01GAkY/Njk3N1+4YBarr
-        nqRuHuFxIQzaLsab8s4rUGOZcri4e+qIwZxuPxc/OLVKZZzNQpWNmtVd6VDXKqxpf8FWnFUmG8ZDo
-        3zKZWtwFZqHgv4VDrv/7IdbEHbB5FChNwmygerYfXaq13TpYL7RuwPZVk2n19X0vEUpiA=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hYq7f-0005Nj-Pk; Thu, 06 Jun 2019 10:59:55 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 450A6440046; Thu,  6 Jun 2019 11:59:55 +0100 (BST)
-Date:   Thu, 6 Jun 2019 11:59:54 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     lgirdwood@gmail.com, andrew@lunn.ch, vivien.didelot@gmail.com,
-        f.fainelli@gmail.com, marex@denx.de, stefan@agner.ch,
-        airlied@linux.ie, daniel@ffwll.ch, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, b.zolnierkie@samsung.com,
-        a.hajda@samsung.com, mchehab@kernel.org, p.zabel@pengutronix.de,
-        hkallweit1@gmail.com, lee.jones@linaro.org, davem@davemloft.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH 8/8] drivers: regulator: 88pm800: fix warning same module
- names
-Message-ID: <20190606105954.GZ2456@sirena.org.uk>
-References: <20190606094736.23970-1-anders.roxell@linaro.org>
+        id S1727677AbfFGHqe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 7 Jun 2019 03:46:34 -0400
+Received: from smtp4.iitb.ac.in ([103.21.127.18]:50026 "EHLO smtp1.iitb.ac.in"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727267AbfFGHqe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:46:34 -0400
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id 188031050DD8
+        for <linux-fbdev@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
+X-Spam-Pyzor: Reported 1 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
+        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
+        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="JbpSbCMiCLmwdpgc"
-Content-Disposition: inline
-In-Reply-To: <20190606094736.23970-1-anders.roxell@linaro.org>
-X-Cookie: The other line moves faster.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Hello,
 
---JbpSbCMiCLmwdpgc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
 
-On Thu, Jun 06, 2019 at 11:47:36AM +0200, Anders Roxell wrote:
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
 
->  obj-$(CONFIG_REGULATOR_88PG86X) += 88pg86x.o
-> -obj-$(CONFIG_REGULATOR_88PM800) += 88pm800.o
-> +obj-$(CONFIG_REGULATOR_88PM800) += 88pm800-regulator.o
-> +88pm800-regulator-objs		:= 88pm800.o
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
 
-Don't do this, no need for this driver to look different to all the
-others in the Makefile - just rename the whole file.
-
---JbpSbCMiCLmwdpgc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz48ioACgkQJNaLcl1U
-h9CG4wf+KwJtkqXwPsGULtOJI6nSm5LEkmrz72NfdgOqj1WW7rLXjWvVzFh/6QR4
-Yx2iXClMJ3RT5wsgfK/nlN0mPPVrA7hVeHFDLig5RdvadGQZd0UdN6BgUYcZpZat
-5jUkB6rgNxVOe+6kO4onKQn4RWHwkF3Sy7xlN0adWD2b2qqoZPMy3Sc62S+JtAb7
-KcHORRkbS49Q1xEtsikUD7SZY3cgJOqjQ6ZQcd9dr1iEXZr8wQ3A8wAnBtqm+OEQ
-ptNlJi9FmLI9Ihk1Ps82hCwgTT8hWRdQU0JxFV5ybOtLv5y24PoXCvdo2NNtRcdr
-ysZl+LpymLjvpEgM2ByRehnnqcnyuQ==
-=2HyU
------END PGP SIGNATURE-----
-
---JbpSbCMiCLmwdpgc--
+Thanks and I wait for your answer
+Martin Henry.
