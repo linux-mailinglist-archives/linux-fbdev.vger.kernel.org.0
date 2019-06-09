@@ -2,245 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B3338D94
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jun 2019 16:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E503A442
+	for <lists+linux-fbdev@lfdr.de>; Sun,  9 Jun 2019 09:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729088AbfFGOoH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 7 Jun 2019 10:44:07 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:35387 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728699AbfFGOoH (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jun 2019 10:44:07 -0400
-Received: by mail-oi1-f195.google.com with SMTP id y6so1616839oix.2
-        for <linux-fbdev@vger.kernel.org>; Fri, 07 Jun 2019 07:44:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8/YG1pNvMhtPq+4D/wbH72srnMWO5h0vGaK5D7ISjxM=;
-        b=hkUGAWYiwktyF8XAUCRFTlr4xI1gbzfNuHnL0ZqV5wgdQRoVHoHBe17OW7ICbSF8+G
-         S3ubc5pB3To8JxlIx+K78TmL0YjqIkQ3qYe2A3H9VFxJ79fYxq/GFKTijf7DCWWHkw9/
-         EbaBsS2uMISNW1W4S9xao+K8J0akEMyZ/HaMU=
+        id S1727284AbfFIHyo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 9 Jun 2019 03:54:44 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:44321 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725850AbfFIHyo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 9 Jun 2019 03:54:44 -0400
+Received: by mail-lf1-f65.google.com with SMTP id r15so4500821lfm.11;
+        Sun, 09 Jun 2019 00:54:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8/YG1pNvMhtPq+4D/wbH72srnMWO5h0vGaK5D7ISjxM=;
-        b=pMJMBXHgYzoCH7SF+KMzmCPqBsl0k4tOXxb5IntQc1n4lr1H9hs683aJAMrla7EjOz
-         L+Ks/fF92+8a/+FiyvZHgtgxkv5FRrJEmmpbP5L3nHb3VJu618sIkyugQWJA9+djfVHy
-         mbTKUCAIMyXkQJYnmWDlw2Lfzsd3uSFWXulMgM7VyqmUvqAivIFCz+kJQ1q0/E2pvIKa
-         iRJNkefFdIx91w+/vwqXhxkg16HX2Vv+Av2SEkAd507J1uwEnZwur5OARSHr879+xPo4
-         CxHcUkOA8fBECRz0kaPD6fidcljJESCSDdO1CDm9tDY4nJxU3bMquJg1AifRewkZrwfB
-         aJ8w==
-X-Gm-Message-State: APjAAAWId42uZjbfBdg/ULnU7Zgg5VfCNNPMC3uMrZTw3Z+BOVid3KYc
-        t/ogp3G+9iaAi7OYTvI68SnpBUVW9j5hUVoFPuHV+g==
-X-Google-Smtp-Source: APXvYqyWzzjaSAsBe1eXBlUeemEQQMcPTFSvrjgyAA6IyzSW6eAQ89KOXjY91ifZBRMzVd+/veIXrDJHvZ3uiLJsYls=
-X-Received: by 2002:aca:62c2:: with SMTP id w185mr4176522oib.110.1559918646230;
- Fri, 07 Jun 2019 07:44:06 -0700 (PDT)
+        bh=/Qx4/qdUcALjIorcXjs7AxmiMGoinkmfGOdHptpmwpU=;
+        b=VnzhNd6w7mHyqWKZiqP7zGC4ONUcth8yhbe0Lo90zLDFCwzJhrLUZo05SR4S44EuWy
+         wlABAZfEcB+gwGXPPGaVpP/Yrv6+3l7c2DqoQTeqFmGPs+gdOJZ93sNzROR8cSmWoJo+
+         5IIzrQHR8M5tj9D2fJAPYiT0N90UZike0AHTHYDoEHRsqREudfpy/V7mctr/tnI93R/T
+         esG2bVjT5/dzfokupaehnxuO+ePdfcW8MMuoyuDJg5NKnD36yk+tDCM4CRrG9wx6nCqV
+         ZpPSBiQdbcuSQplQO1KVJ14Tgzq5lwj5avVhIbKN8A71EAPPIhauw2ML8pjSFMLYknZk
+         j65w==
+X-Gm-Message-State: APjAAAWkWw6Ab6aDE7UnNc2a/HEzGa5HmTnHkPe84Xpu0F0t4FhgEYMr
+        QZszusJh8ovp0mZZFM+cHbSm4Vstcc0KsOoa0V0=
+X-Google-Smtp-Source: APXvYqwAkUTnyc4orITPqql8Dcq/2FZxVHDXSWXEX68+M70BfTiu1lPz3E0qFz5+GRtrzFsL1+dJET1c4NH3BB9tQiI=
+X-Received: by 2002:ac2:5467:: with SMTP id e7mr7954978lfn.23.1560066881888;
+ Sun, 09 Jun 2019 00:54:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190528090304.9388-1-daniel.vetter@ffwll.ch> <CGME20190606073852epcas2p27b586b93869a30e4658581c290960fee@epcas2p2.samsung.com>
- <CAKMK7uHneUFYPiRr10X9xfWTkGtaoQBB=niDMGkAgJ-fgo5=mA@mail.gmail.com> <f848b4de-abab-116f-ad68-23348f1a4b76@samsung.com>
-In-Reply-To: <f848b4de-abab-116f-ad68-23348f1a4b76@samsung.com>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Fri, 7 Jun 2019 16:43:54 +0200
-Message-ID: <CAKMK7uFpOVGm1TEJfbPM14joPRqgYha5c_xDng+MOOusMc1Hdw@mail.gmail.com>
-Subject: Re: [PATCH 00/33] fbcon notifier begone v3!
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+References: <cover.1560045490.git.mchehab+samsung@kernel.org> <f7f9c692a870f836e5657b8a763d751b6ac0e86e.1560045490.git.mchehab+samsung@kernel.org>
+In-Reply-To: <f7f9c692a870f836e5657b8a763d751b6ac0e86e.1560045490.git.mchehab+samsung@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Sun, 9 Jun 2019 09:54:29 +0200
+Message-ID: <CAMuHMdUyvZ89=P4GOY-BkyS45cj66STgZe9gN3q0L+sj-Wc+wg@mail.gmail.com>
+Subject: Re: [PATCH v3 10/33] docs: fb: convert docs to ReST and rename to *.rst
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maik Broemme <mbroemme@libmpq.org>,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        Bernie Thompson <bernie@plugable.com>,
+        Michal Januszewski <spock@gentoo.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
         DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Jun 7, 2019 at 12:07 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
+Hi Mauro,
+
+On Sun, Jun 9, 2019 at 4:29 AM Mauro Carvalho Chehab
+<mchehab+samsung@kernel.org> wrote:
+> The conversion is actually:
+>   - add blank lines and identation in order to identify paragraphs;
+>   - fix tables markups;
+>   - add some lists markups;
+>   - mark literal blocks;
+>   - adjust title markups.
 >
+> At its new index.rst, let's add a :orphan: while this is not linked to
+> the main index.rst file, in order to avoid build warnings.
 >
-> On 6/6/19 9:38 AM, Daniel Vetter wrote:
-> > Hi Bart,
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+
+Thanks!
+
+> --- a/Documentation/fb/framebuffer.txt
+> +++ b/Documentation/fb/framebuffer.rst
+> @@ -1,5 +1,6 @@
+> -                       The Frame Buffer Device
+> -                       -----------------------
+> +=======================
+> +The Frame Buffer Device
+> +=======================
 >
-> Hi Daniel,
->
-> > On Tue, May 28, 2019 at 11:02:31AM +0200, Daniel Vetter wrote:
-> >> Hi all,
-> >>
-> >> I think we're slowly getting there. Previous cover letters with more
-> >> context:
-> >>
-> >> https://lists.freedesktop.org/archives/dri-devel/2019-May/218362.html
-> >>
-> >> tldr; I have a multi-year plan to improve fbcon locking, because the
-> >> current thing is a bit a mess.
-> >>
-> >> Cover letter of this version, where I detail a bit more the details
-> >> fixed in this one here:
-> >>
-> >> https://lists.freedesktop.org/archives/dri-devel/2019-May/218984.html
-> >>
-> >> Note that the locking plan in this one is already outdated, I overlooked a
-> >> few fun issues around any printk() going back to console_lock.
-> >>
-> >> I think remaining bits:
-> >>
-> >> - Ack from Daniel Thompson for the backlight bits, he wanted to check the
-> >>   big picture.
-> >
-> > I think Daniel is still on vacation until next week or so.
-> >
-> >> - Hash out actual merge plan.
-> >
-> > I'd like to stuff this into drm.git somehow, I guess topic branch works
-> > too.
->
-> I would like to have topic branch for this patchset.
+>  Maintained by Geert Uytterhoeven <geert@linux-m68k.org>
 
-Do you plan to prep that, or should I? Doesn't really matter to me,
-and assuming Daniel Thompson doesn't have any last minute concerns
-should still be enough time to get it all sorted and have a few weeks
-of testing left before the merge window.
+I'm happy to see this line dropped ;-)
 
-> > Long term I think we need to reconsider how we handle fbdev, at least the
-> > core/fbcon pieces. Since a few years all the work in that area has been
-> > motivated by drm, and pushed by drm contributors. Having that maintained
-> > in a separate tree that doesn't regularly integrate imo doesn't make much
-> > sense, and we ended up merging almost everything through some drm tree.
-> > That one time we didn't (for some panel rotation stuff) it resulted in
-> > some good suprises.
-> >
-> > I think best solution is if we put the core and fbcon bits into drm-misc,
-> > as group maintained infrastructure piece. All the other gfx infra pieces
-> > are maintained in there already too. You'd obviously get commit rights.
-> > I think that would include
-> > - drivers/video/fbdev
-> > - drivers/video/*c
-> > - drivers/video/console
->
-> Sounds fine to me.
->
-> > I don't really care about what happens with the actual fbdev drivers
-> > (aside from the drm one in drm_fb_helper.c, but that's already maintained
-> > as part of drm). I guess we could also put those into drm-misc, or as a
-> > separate tree, depending what you want.
-> >
-> > Thoughts?
->
-> I would like to handle fbdev changes for v5.3 merge window using fbdev
-> tree but after that everything (including changes to fbdev drivers) can go
-> through drm-misc tree.
-
-Fully agreed, no need to rush anything here. For the drm-misc account
-you need to request an SSH legacy account here by filing a issue:
-
-https://gitlab.freedesktop.org/freedesktop/freedesktop/issues/new
-
-Select the "New SSH account" template, it has instructions with
-everything that's needed.
-
-For the getting started howto, see
-https://drm.pages.freedesktop.org/maintainer-tools/getting-started.html
-
-If that all looks good and you're set up I think best to test-drive
-the entire process with the MAINTAINERS patch to change the git repo
-for 5.4.
-
-Cheers, Daniel
+>  Last revised: May 10, 2001
 
 
-> Best regards,
-> --
-> Bartlomiej Zolnierkiewicz
-> Samsung R&D Institute Poland
-> Samsung Electronics
->
-> > Cheers, Daniel
-> >
-> >
-> >>
-> >> I'm also cc'ing the entire pile to a lot more people on request.
-> >>
-> >> Thanks, Daniel
-> >>
-> >> Daniel Vetter (33):
-> >>   dummycon: Sprinkle locking checks
-> >>   fbdev: locking check for fb_set_suspend
-> >>   vt: might_sleep() annotation for do_blank_screen
-> >>   vt: More locking checks
-> >>   fbdev/sa1100fb: Remove dead code
-> >>   fbdev/cyber2000: Remove struct display
-> >>   fbdev/aty128fb: Remove dead code
-> >>   fbcon: s/struct display/struct fbcon_display/
-> >>   fbcon: Remove fbcon_has_exited
-> >>   fbcon: call fbcon_fb_(un)registered directly
-> >>   fbdev/sh_mobile: remove sh_mobile_lcdc_display_notify
-> >>   fbdev/omap: sysfs files can't disappear before the device is gone
-> >>   fbdev: sysfs files can't disappear before the device is gone
-> >>   staging/olpc: lock_fb_info can't fail
-> >>   fbdev/atyfb: lock_fb_info can't fail
-> >>   fbdev: lock_fb_info cannot fail
-> >>   fbcon: call fbcon_fb_bind directly
-> >>   fbdev: make unregister/unlink functions not fail
-> >>   fbdev: unify unlink_framebuffer paths
-> >>   fbdev/sh_mob: Remove fb notifier callback
-> >>   fbdev: directly call fbcon_suspended/resumed
-> >>   fbcon: Call fbcon_mode_deleted/new_modelist directly
-> >>   fbdev: Call fbcon_get_requirement directly
-> >>   Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
-> >>   fbmem: pull fbcon_fb_blanked out of fb_blank
-> >>   fbdev: remove FBINFO_MISC_USEREVENT around fb_blank
-> >>   fb: Flatten control flow in fb_set_var
-> >>   fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls
-> >>   vgaswitcheroo: call fbcon_remap_all directly
-> >>   fbcon: Call con2fb_map functions directly
-> >>   fbcon: Document what I learned about fbcon locking
-> >>   staging/olpc_dcon: Add drm conversion to TODO
-> >>   backlight: simplify lcd notifier
-> >>
-> >>  arch/arm/mach-pxa/am200epd.c                  |  13 +-
-> >>  drivers/gpu/vga/vga_switcheroo.c              |  11 +-
-> >>  drivers/media/pci/ivtv/ivtvfb.c               |   6 +-
-> >>  drivers/staging/fbtft/fbtft-core.c            |   4 +-
-> >>  drivers/staging/olpc_dcon/TODO                |   7 +
-> >>  drivers/staging/olpc_dcon/olpc_dcon.c         |   6 +-
-> >>  drivers/tty/vt/vt.c                           |  18 +
-> >>  drivers/video/backlight/backlight.c           |   2 +-
-> >>  drivers/video/backlight/lcd.c                 |  12 -
-> >>  drivers/video/console/dummycon.c              |   6 +
-> >>  drivers/video/fbdev/aty/aty128fb.c            |  64 ---
-> >>  drivers/video/fbdev/aty/atyfb_base.c          |   3 +-
-> >>  drivers/video/fbdev/core/fbcmap.c             |   6 +-
-> >>  drivers/video/fbdev/core/fbcon.c              | 313 ++++++--------
-> >>  drivers/video/fbdev/core/fbcon.h              |   6 +-
-> >>  drivers/video/fbdev/core/fbmem.c              | 399 +++++++-----------
-> >>  drivers/video/fbdev/core/fbsysfs.c            |  20 +-
-> >>  drivers/video/fbdev/cyber2000fb.c             |   1 -
-> >>  drivers/video/fbdev/neofb.c                   |   9 +-
-> >>  .../video/fbdev/omap2/omapfb/omapfb-sysfs.c   |  21 +-
-> >>  drivers/video/fbdev/sa1100fb.c                |  25 --
-> >>  drivers/video/fbdev/savage/savagefb_driver.c  |   9 +-
-> >>  drivers/video/fbdev/sh_mobile_lcdcfb.c        | 132 +-----
-> >>  drivers/video/fbdev/sh_mobile_lcdcfb.h        |   5 -
-> >>  include/linux/console_struct.h                |   5 +-
-> >>  include/linux/fb.h                            |  45 +-
-> >>  include/linux/fbcon.h                         |  30 ++
-> >>  27 files changed, 396 insertions(+), 782 deletions(-)
-> >>
-> >> --
-> >> 2.20.1
-> >>
-> >
-> > --
-> > Daniel Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
+Gr{oetje,eeting}s,
 
-
+                        Geert
 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
