@@ -2,103 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E503A442
-	for <lists+linux-fbdev@lfdr.de>; Sun,  9 Jun 2019 09:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B48943A9FF
+	for <lists+linux-fbdev@lfdr.de>; Sun,  9 Jun 2019 19:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727284AbfFIHyo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 9 Jun 2019 03:54:44 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:44321 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725850AbfFIHyo (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 9 Jun 2019 03:54:44 -0400
-Received: by mail-lf1-f65.google.com with SMTP id r15so4500821lfm.11;
-        Sun, 09 Jun 2019 00:54:42 -0700 (PDT)
+        id S1731348AbfFIRPE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 9 Jun 2019 13:15:04 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:40894 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732853AbfFIQzy (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 9 Jun 2019 12:55:54 -0400
+Received: by mail-vs1-f65.google.com with SMTP id a186so2071722vsd.7
+        for <linux-fbdev@vger.kernel.org>; Sun, 09 Jun 2019 09:55:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=eQPSw6wSWEEyD1ONj0SLbZFofw77tD+AcKDeSb+k88M=;
+        b=dLtii5aFoAdHvyGpVLik+ncbZ7qhAE16PS0CDbJeRRmtb19VeOOy5waNszonp86d1y
+         vMPHNRWdA24Yn7Cr22CFufDxIG1uOy4ljnu7h7UOLiS2/fETzW5KUBXXX1orDIXJHhJf
+         0C+EKMJFAgg7jM4IS/X9Xpw4Jz6sNHXtBwVOOAqGfNhyhvde+RWRvv9dXBFzZM4ym+fp
+         MSdqDj7W4F/GDBn76CMmC6G34CZVatu9dT/VTHAc1Z/9GbJk910B7hx19cJQomaS9/gm
+         ++wc91HQXoGILGSEN2qdhHha5tDPPrzyGiRiwl3qQIu+jJ3TeT92lzhlkBCHVgManV6L
+         P9xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/Qx4/qdUcALjIorcXjs7AxmiMGoinkmfGOdHptpmwpU=;
-        b=VnzhNd6w7mHyqWKZiqP7zGC4ONUcth8yhbe0Lo90zLDFCwzJhrLUZo05SR4S44EuWy
-         wlABAZfEcB+gwGXPPGaVpP/Yrv6+3l7c2DqoQTeqFmGPs+gdOJZ93sNzROR8cSmWoJo+
-         5IIzrQHR8M5tj9D2fJAPYiT0N90UZike0AHTHYDoEHRsqREudfpy/V7mctr/tnI93R/T
-         esG2bVjT5/dzfokupaehnxuO+ePdfcW8MMuoyuDJg5NKnD36yk+tDCM4CRrG9wx6nCqV
-         ZpPSBiQdbcuSQplQO1KVJ14Tgzq5lwj5avVhIbKN8A71EAPPIhauw2ML8pjSFMLYknZk
-         j65w==
-X-Gm-Message-State: APjAAAWkWw6Ab6aDE7UnNc2a/HEzGa5HmTnHkPe84Xpu0F0t4FhgEYMr
-        QZszusJh8ovp0mZZFM+cHbSm4Vstcc0KsOoa0V0=
-X-Google-Smtp-Source: APXvYqwAkUTnyc4orITPqql8Dcq/2FZxVHDXSWXEX68+M70BfTiu1lPz3E0qFz5+GRtrzFsL1+dJET1c4NH3BB9tQiI=
-X-Received: by 2002:ac2:5467:: with SMTP id e7mr7954978lfn.23.1560066881888;
- Sun, 09 Jun 2019 00:54:41 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=eQPSw6wSWEEyD1ONj0SLbZFofw77tD+AcKDeSb+k88M=;
+        b=FWqkR667Mcf28YsmzFYqoj00Wof+dYp8ubvAkGT8kIPmfWgn+FPIFyG85aRPrlyzDE
+         gb/DMuKVip/KTqF5z1qhmQ26LYesLc/6vOUKDkK8cNgHWnGSTcERbJoq27iz60kh0Jqh
+         +6Hl1r1gMsUZGVebwtOiZzu7vV5DWd2WeRK5axl34Y5frGvJd2REM37kzfDdmtzZ+svb
+         mYD16JNEjAQFdTBa/Wyn2lYZrkug7WGn97/u6tSTm9NBh6eLVnHKnkfAQd6CFPvSyrK0
+         Kw2NWlEhwBcvI+UYqcf1EtT889/KxS7EytbdzLMV3lH4jDq4+6xYl+BjArvI6bfvsPGH
+         XtIg==
+X-Gm-Message-State: APjAAAWrK5wJ7II/UFeXOsl4De7uVEUgzg2QxALmzt0SEw4zX6BHkD+s
+        OkSR6n96Kqh6Hv+yWSQmC9IidCK8a3oyy2BeGcE=
+X-Google-Smtp-Source: APXvYqxmgrfnd+Ji8L6rMT8zIlOkGEmt1pv4ih11SCKu+7YhhRJyMD4THdnBrLQEw/RHGkwwD61vx11jw+nHkvy+MK0=
+X-Received: by 2002:a67:b14c:: with SMTP id z12mr3029917vsl.11.1560099353619;
+ Sun, 09 Jun 2019 09:55:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1560045490.git.mchehab+samsung@kernel.org> <f7f9c692a870f836e5657b8a763d751b6ac0e86e.1560045490.git.mchehab+samsung@kernel.org>
-In-Reply-To: <f7f9c692a870f836e5657b8a763d751b6ac0e86e.1560045490.git.mchehab+samsung@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sun, 9 Jun 2019 09:54:29 +0200
-Message-ID: <CAMuHMdUyvZ89=P4GOY-BkyS45cj66STgZe9gN3q0L+sj-Wc+wg@mail.gmail.com>
-Subject: Re: [PATCH v3 10/33] docs: fb: convert docs to ReST and rename to *.rst
-To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maik Broemme <mbroemme@libmpq.org>,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Bernie Thompson <bernie@plugable.com>,
-        Michal Januszewski <spock@gentoo.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Reply-To: godwiii@hotmail.fr
+Received: by 2002:ab0:6856:0:0:0:0:0 with HTTP; Sun, 9 Jun 2019 09:55:52 -0700 (PDT)
+From:   Godwin Pete <godwinpeter127@gmail.com>
+Date:   Sun, 9 Jun 2019 09:55:52 -0700
+X-Google-Sender-Auth: HAbqcH207Ir-YCbKq59Z_sfdpy0
+Message-ID: <CAEb5uCc4wOhX3b1u_b5ob+sYPN-LN7DNDvoROO-xmP7-8nOZGg@mail.gmail.com>
+Subject: I want to prove to you
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Mauro,
+This is to inform you that I've succeeded in transferring the funds. I
+am happy to inform you that with the help of an Indian businessman,
+the funds has successfully transferred. I am currently investing with
+my own share in India. But at the same time, I did not forget that I
+have contacted you to transfer these funds, even though it did not
+succeed. But my greatest happiness is that, you maintained its secrecy
+before I successfully transfer the funds.
 
-On Sun, Jun 9, 2019 at 4:29 AM Mauro Carvalho Chehab
-<mchehab+samsung@kernel.org> wrote:
-> The conversion is actually:
->   - add blank lines and identation in order to identify paragraphs;
->   - fix tables markups;
->   - add some lists markups;
->   - mark literal blocks;
->   - adjust title markups.
->
-> At its new index.rst, let's add a :orphan: while this is not linked to
-> the main index.rst file, in order to avoid build warnings.
->
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Now, I want to prove to you that I am an impeccable person. I've
+deposited the sum of ($800,000,00), to be transferred to you and they
+told me that they will be sending it to you via an (ATM) card. Now
+contact my secretary Ms. Micheline Ekwe, to send the card to you.
 
-Thanks!
+Her address are:
 
-> --- a/Documentation/fb/framebuffer.txt
-> +++ b/Documentation/fb/framebuffer.rst
-> @@ -1,5 +1,6 @@
-> -                       The Frame Buffer Device
-> -                       -----------------------
-> +=======================
-> +The Frame Buffer Device
-> +=======================
->
->  Maintained by Geert Uytterhoeven <geert@linux-m68k.org>
+Ms. Micheline Ekwe
 
-I'm happy to see this line dropped ;-)
+Email: mikelekwee@gmail.com
 
->  Last revised: May 10, 2001
+Address: Burkina Faso.
 
+Thanks,
 
-Gr{oetje,eeting}s,
+Your good brother,
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Godwin Peter,
