@@ -2,182 +2,118 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 735213D241
-	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2019 18:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F5E3D332
+	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2019 19:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391613AbfFKQ2v (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 11 Jun 2019 12:28:51 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:41560 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbfFKQ2v (ORCPT
+        id S2405146AbfFKRBf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 11 Jun 2019 13:01:35 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:42533 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404882AbfFKRB1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 11 Jun 2019 12:28:51 -0400
-Received: by mail-lf1-f66.google.com with SMTP id 136so9786960lfa.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 09:28:49 -0700 (PDT)
+        Tue, 11 Jun 2019 13:01:27 -0400
+Received: by mail-pf1-f195.google.com with SMTP id q10so7795704pff.9
+        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 10:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RgyPf7xhx0YF0w9Kty/80UkxGW/cNJhmecxkZGC4Svg=;
-        b=Wy6GLE/bRjVgzVg3lTBzcxvgONy0/gxFk0wNAyFPNhLKb1zkqgi7IORqDn/A5oMhNs
-         P1N7dtfcmcAozuWE5Eb3UlefyJfoLU/vDMgiMI3gdS0x+DBehpksepzE3rG6XpxcTQTL
-         dgguk5hn73V7XtY9m418kM424zKdGmSeZiwHBMjROl0RJXauPuHC4yXQZJhkON6lbL4x
-         8yP5dVjBuymlWB96zkGHGcjBVzztPUFGpPcNcVrKQyhj8zt9gsA+MYw/a7H4tw2+tBeS
-         72NhJJT+iv7ymfMLyx7RYScRS52teqvNNZh+H661tbd0KCYPYAwPMSB88JYKm6t07qyn
-         5NRA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=D/6K52cqkgjun9QL50SRby3oaZewpSvBQVwA1lCewfo=;
+        b=XtFdaHCTpTDf0qQhQfuAjHKGqAns0vrUqrQg02/8jVmR8p0ZzKKlHKnR9VJJBokSNm
+         ZgAQrr+A/h9J30599wfzOGisk8Qu8DlWAbSCBG5dzc6KA8829UtBGHKxwnkcRV2MXxbW
+         ILseuhOSbtocL+Hw4Y3nT83V4Ab6Y2qlkb2SU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RgyPf7xhx0YF0w9Kty/80UkxGW/cNJhmecxkZGC4Svg=;
-        b=hdABTK46E/5Q7PxR7ytMG33ZIPo0c/sDOoTjrW6UkIrh6olyPMGPMbRFgPKWIcB4aQ
-         6LPs2Vhwm4NDBtjdKAbHTPD/aKPoNt6iYb4g8GWnwIO2VOnr5494b3O9durHEZMR6Utq
-         voUGgZ8xoyp/c53KDJ5JcWGtzdNjllB7vDLgaPQHTFZQpqc6tN/zDqM6azIxRGev6UOg
-         QduD05zJV13DYyk0Poaqg+4PXOi/HvZ51cs5PIMGa2PsLRpMWjK2UzZBbyS+ti1kFIrW
-         hqqu5yQHMEMdkgZNDndrYsaIo3rvo8kzjGbcgqY3ISXO89PKSfIG5Fxunj11BTA13SFr
-         6s9g==
-X-Gm-Message-State: APjAAAUlrWZnItKGjAH4wXiHMMkN066CRJ8GYzCPaagwQxeVZtgiC7D9
-        etQli0H0VBap9eakcCZ1vX5HxNu4KVByeFN9e9wbOQ==
-X-Google-Smtp-Source: APXvYqz+8HsvC2fZeq6JGexwZBxWKw0IGtco6wwqGIYyL/OdqZf9E69/kPyFOQ1Wtpf5LQTIPeOKLiFAWfBQYsb8+YM=
-X-Received: by 2002:a19:c383:: with SMTP id t125mr31681402lff.89.1560270528359;
- Tue, 11 Jun 2019 09:28:48 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=D/6K52cqkgjun9QL50SRby3oaZewpSvBQVwA1lCewfo=;
+        b=oe4bA76KgDdLGH9bYJxtOIMO1o6HR5d3APa+1ZF+15kjxp0bGw5fCtxsJRrJ9jOTRA
+         lN3+a+zUYh8XNsyuEXZ7UVlSJd5e3+Y+/deZLO2qqtlupicoo41Yt7z+QvLXaln2gi4j
+         YYXQeyUqjQlYqlYM+d7Qt59vGYR+u9eLXwRDAvUPn5D5lWitpVU9niJsOLIGo8SeD3Hd
+         +rfVpvYJ3SBS5bQyp0wHX7fm067FXjTZWXZz8MCn5yd2R/+R92j/M2pQFvBVNN9WFOku
+         cEwFHMLi8YAH7OKaYEDFVqxGW+ryZrC0TyYA7VPsrMO5m4rqkS0UsAQAZY3ezTHCW95M
+         uDfQ==
+X-Gm-Message-State: APjAAAXYrqMAlzdO99JSIWUYubWF2uy/XgsjBZdm8CdJ6KrZNXDPS92m
+        3JikIeVuGdNkfOBBVj2XMefNRQ==
+X-Google-Smtp-Source: APXvYqwqnW/JGe6b0ykApW2Df5C6hfjZci1Q+jK6X2Ei83loTkx83Y/j5N8snl0nAtPHXvq5b2N3cg==
+X-Received: by 2002:a63:4e10:: with SMTP id c16mr20869964pgb.214.1560272486514;
+        Tue, 11 Jun 2019 10:01:26 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id p1sm5962781pff.74.2019.06.11.10.01.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 10:01:25 -0700 (PDT)
+Date:   Tue, 11 Jun 2019 10:01:23 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>
+Subject: Re: [PATCH 2/2] backlight: pwm_bl: Get number of brightness levels
+ for CIE 1931 from the device tree
+Message-ID: <20190611170123.GD137143@google.com>
+References: <20190610233739.29477-1-mka@chromium.org>
+ <20190610233739.29477-2-mka@chromium.org>
+ <20190611153314.cj6j6l4kcl4kk4t2@holly.lan>
 MIME-Version: 1.0
-References: <20190606094722.23816-1-anders.roxell@linaro.org>
- <d6b79ee0-07c6-ad81-16b0-8cf929cc214d@xs4all.nl> <CADYN=9KY5=FzrkC7MKj9QnG-eM1NVuL00w8Xv4yU2r05rhr7WQ@mail.gmail.com>
- <c2ff2c77-5c14-4bc4-f59c-7012d272ec76@thinci.com> <1560240943.13886.1.camel@pengutronix.de>
- <221c8ef8-7adc-4383-93c9-9031dca590f0@xs4all.nl> <CADYN=9K7GwPGM_Eh5q-OZ9rcEPAjXw4BXy-m3a=QxmGuVruCUw@mail.gmail.com>
- <CAAEAJfC9vja5WwsNc5+MTVHLFg_P3zG=OZt_CuRR5eG-3iWD9Q@mail.gmail.com>
-In-Reply-To: <CAAEAJfC9vja5WwsNc5+MTVHLFg_P3zG=OZt_CuRR5eG-3iWD9Q@mail.gmail.com>
-From:   Anders Roxell <anders.roxell@linaro.org>
-Date:   Tue, 11 Jun 2019 18:28:37 +0200
-Message-ID: <CADYN=9L36CadXu2csbQhvey=20NTte-a+a8i08w=pP-+VdTuLA@mail.gmail.com>
-Subject: Re: [PATCH 5/8] drivers: media: coda: fix warning same module names
-To:     Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Matt Redfearn <matt.redfearn@thinci.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "andrew@lunn.ch" <andrew@lunn.ch>,
-        "vivien.didelot@gmail.com" <vivien.didelot@gmail.com>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "marex@denx.de" <marex@denx.de>,
-        "stefan@agner.ch" <stefan@agner.ch>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
-        "a.hajda@samsung.com" <a.hajda@samsung.com>,
-        "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190611153314.cj6j6l4kcl4kk4t2@holly.lan>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 11 Jun 2019 at 18:18, Ezequiel Garcia
-<ezequiel@vanguardiasur.com.ar> wrote:
->
->
->
-> On Tue, Jun 11, 2019, 1:01 PM Anders Roxell <anders.roxell@linaro.org> wrote:
->>
->> On Tue, 11 Jun 2019 at 10:21, Hans Verkuil <hverkuil@xs4all.nl> wrote:
->> >
->> > On 6/11/19 10:15 AM, Philipp Zabel wrote:
->> > > Hi,
->> > >
->> > > On Mon, 2019-06-10 at 13:14 +0000, Matt Redfearn wrote:
->> > >>
->> > >> On 10/06/2019 14:03, Anders Roxell wrote:
->> > >>> On Thu, 6 Jun 2019 at 12:13, Hans Verkuil <hverkuil@xs4all.nl> wrote:
->> > >>>>
->> > >>>> On 6/6/19 11:47 AM, Anders Roxell wrote:
->> > >>>>> When building with CONFIG_VIDEO_CODA and CONFIG_CODA_FS enabled as
->> > >>>>> loadable modules, we see the following warning:
->> > >>>>>
->> > >>>>> warning: same module names found:
->> > >>>>>    fs/coda/coda.ko
->> > >>>>>    drivers/media/platform/coda/coda.ko
->> > >>>>>
->> > >>>>> Rework so media coda matches the config fragment. Leaving CODA_FS as is
->> > >>>>> since thats a well known module.
->> > >>>>>
->> > >>>>> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
->> > >>>>> ---
->> > >>>>>   drivers/media/platform/coda/Makefile | 4 ++--
->> > >>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
->> > >>>>>
->> > >>>>> diff --git a/drivers/media/platform/coda/Makefile b/drivers/media/platform/coda/Makefile
->> > >>>>> index 54e9a73a92ab..588e6bf7c190 100644
->> > >>>>> --- a/drivers/media/platform/coda/Makefile
->> > >>>>> +++ b/drivers/media/platform/coda/Makefile
->> > >>>>> @@ -1,6 +1,6 @@
->> > >>>>>   # SPDX-License-Identifier: GPL-2.0-only
->> > >>>>>
->> > >>>>> -coda-objs := coda-common.o coda-bit.o coda-gdi.o coda-h264.o coda-mpeg2.o coda-mpeg4.o coda-jpeg.o
->> > >>>>> +video-coda-objs := coda-common.o coda-bit.o coda-gdi.o coda-h264.o coda-mpeg2.o coda-mpeg4.o coda-jpeg.o
->> > >>>>>
->> > >>>>> -obj-$(CONFIG_VIDEO_CODA) += coda.o
->> > >>>>> +obj-$(CONFIG_VIDEO_CODA) += video-coda.o
->> > >>>>
->> > >>>> How about imx-coda? video-coda suggests it is part of the video subsystem,
->> > >>>> which it isn't.
->> > >>>
->> > >>> I'll resend a v2 shortly with imx-coda instead.
->> > >
->> > > I'd be in favor of calling it "coda-vpu" instead.
->> >
->> > Fine by me!
->> >
->> > >
->> > >> What about other vendor SoCs implementing the Coda IP block which are
->> > >> not an imx? I'd prefer a more generic name - maybe media-coda.
->> > >
->> > > Right, this driver can be used on other SoCs [1].
->> >
->> > Good point.
->>
->> OK, so I'll change it to 'media-coda'.
->>
->>
->>
->
-> As suggested by Philipp, coda-vpu seems the most accurate name.
+Hi Daniel,
 
-urgh, that correct.
+On Tue, Jun 11, 2019 at 04:33:14PM +0100, Daniel Thompson wrote:
+> On Mon, Jun 10, 2019 at 04:37:39PM -0700, Matthias Kaehlcke wrote:
+> > Commit 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED
+> > linearly to human eye") uses pwm_period / hweight32(pwm_period) as
+> > as heuristic to determine the number of brightness levels when the DT
+> > doesn't provide a brightness level table. This heuristic is broken
+> > and can result in excessively large brightness tables.
+> > 
+> > Instead of using the heuristic try to retrieve the number of
+> > brightness levels from the device tree (property 'max-brightness'
+> > + 1). If the value is not specified use a default of 256 levels.
+> 
+> I'll look at the code tomorrow but why 256?
+> 
+> To me it feels simultaneously too big for a simple 8-bit PWM and too
+> small for animated backlight effects.
 
-Thanks,
-Anders
+I agree there is no one-size-fits-it-all default, 256 seemed like a
+possible compromise.
 
->
-> Thanks,
-> Ezequiel
->
->
->
->> Cheers,
->> Anders
->>
->> >
->> > Regards,
->> >
->> >         Hans
->> >
->> > >
->> > > [1] https://www.mail-archive.com/linux-media@vger.kernel.org/msg146498.html
->> > >
->> > > regards
->> > > Philipp
->> > >
->> >
+> I certainly agree that an override could be useful but I'm not clear why
+> deriving a default based on the period is bogus (and the description is
+> merely concerned about uselessly big tables).
+
+Maybe it's not necessarily bogus, but the current heuristic that
+counts the number of set bits (hweight()) in the period certainly is.
+
+IIUC the period provides a clue about the PWM resolution, because it
+would be hard/impossible to accomodate the high resolution in shorter
+periods.
+
+> /*
+>  * Once we have 4096 levels there's little point going much higher...
+>  * neither interactive sliders nor animation benefits from having
+>  * more values in the table.
+>  */
+> max_brightness = min(DIV_ROUND_UP(period, ffs(period), 4096);
+
+I was also considering something along these lines, but wasn't sure
+if there is indeed a relation between the period and the PWM
+resolution. I take your suggestion as a confirmation :)
