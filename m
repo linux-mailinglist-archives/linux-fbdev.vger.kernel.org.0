@@ -2,226 +2,280 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A85C3D0DB
-	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2019 17:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA773D117
+	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2019 17:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404967AbfFKPdT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 11 Jun 2019 11:33:19 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:53544 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404960AbfFKPdT (ORCPT
+        id S2405039AbfFKPjV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 11 Jun 2019 11:39:21 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:36773 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388168AbfFKPjV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 11 Jun 2019 11:33:19 -0400
-Received: by mail-wm1-f65.google.com with SMTP id x15so3447725wmj.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 08:33:17 -0700 (PDT)
+        Tue, 11 Jun 2019 11:39:21 -0400
+Received: by mail-ed1-f67.google.com with SMTP id k21so17423714edq.3
+        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 08:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=FmwHZkaa1R0JoHSUEfjn8cTTt9MbvZmF4XV1+i5dOJs=;
-        b=ANnVaIBDr6Rb5Xsy1nMlf077F1PNYlhLezpJGfv7aBrYbK22g3kJp6XwGIux1Kh8n6
-         V7ZOcLfjxLSjhmpy9ZfRr4eDyLiQxBKFVgdMtC9ojjT3tceGUlFRWriQP3cOyOQA2vlm
-         GMYqOabbuikmafaZWNZ8njzM1O0vfh4ZLrt7JRPZjPr+TQH8N6d9O3Q7NxhbTFMXtEdP
-         Jl1/zTxFFKlLoH999beuymasml+5nggdIFRQs6ud2BqCAb8h+uro7JnWsTuLOJIN3EOP
-         VmEbBti4O3KodEQEXhxcn/8dUFgrxd+cgGJpJf3A8AR3428B8ltO2mTuZ+qYNQhW0Afl
-         8ITg==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=YCKJrlHJ2rcgM7LbwO8NTE67CMy/Nc+h2uBoKNkjaRk=;
+        b=fk+KKf4/mJFPrmi+CjAX8He/QrYRyFausqaG8WXXLijeZtmoapPjbk8/3poke78a8d
+         Cs5Ty7LPFsllXjnzAopJxRjbcUoJy42GhKnZDrvw+rgAEsjz0KRoHjfLowGKf1vDuoOl
+         0rGSjXcQB/2YYSoTBUQdZ7WJRMW8xLzD8UGy4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FmwHZkaa1R0JoHSUEfjn8cTTt9MbvZmF4XV1+i5dOJs=;
-        b=mOIeeyB23xxcDW93ojKwFq5PppIILne66Jq+oiEVnaLaJqdHszUe5ZMhXDM5RPbz/8
-         XP9ZcIXazGCMXNGKGAE4SEA3MFiFueRfECAUoGLiKk9cgAdU5g0zjqfZaDPWKD7NkS4r
-         PCg7tYB0YodrHTZYTJ70+CcV8aolfL5JUEuX0nWK7nlmLwFSyU1ugqxPeD20ofAeXJYH
-         CjLrH7AdbcrpjoLGezTmXfdNf+m1escjRYcMDqjFmt9zOt2rcSKoSgjBe236IRkzIRXl
-         dprIjVtDyXYxcHta4P+TmlnuKlYgf9TFegq7R4az4gTkkXX8EJk0qbRvzN505GP42kuv
-         790g==
-X-Gm-Message-State: APjAAAU4A5ObX4/Q68vzJZ5wuO815YmlQWHvlchkf9lrkijYTt2ImP5o
-        ufQMgI89iSFOrbI2ofAMB1Wq0A==
-X-Google-Smtp-Source: APXvYqydNj7AmRzG+3Qq8PgQaX6j7i/7O6nhWJxUKhU1e4OKdBd242MaaJf6tFbi0H/lTqVYqTGtUA==
-X-Received: by 2002:a7b:c455:: with SMTP id l21mr18854700wmi.114.1560267196506;
-        Tue, 11 Jun 2019 08:33:16 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id u25sm3379121wmc.3.2019.06.11.08.33.15
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=YCKJrlHJ2rcgM7LbwO8NTE67CMy/Nc+h2uBoKNkjaRk=;
+        b=jT2oq6oX602P4FDsmjcdZOxuqd0Ic5B2s4TlaQWXXco4mnQe8wZO5wPQnz2DV++0n5
+         PPChVXr37+CrQwwjVAWBYTAmdHKFI1m0VcYwQ457scyJvGwnhLu8IQSC6P4i1aRBhBzQ
+         /vFC3nzcP5Avu2y8rATAKQdTSYAzW+/Jh0E56QMvJvQ1Hr2DRayhgFFZGRPDwt5bSmiV
+         YOKV0b/QcIQTdASKRt8e76skrGa8xUSGt8mf2+0/IZ5K0lf9s9vE7POvW4dLswvlsoYx
+         KQ1kmKFrVOR5Yy+LaFo8pBFJ4bCbifCZ8rmxlL3fHHX5wMQXvlNkORTa1iOBIQjC+rAU
+         r+vA==
+X-Gm-Message-State: APjAAAX6rkgru28NSIUqFmUR/PCa2RT9GXCEFcjqKZrs1u615q8t+qMp
+        Qv+Tt5pK3CHUeBJIHE7n23a7k+Z8Osc=
+X-Google-Smtp-Source: APXvYqz88cWBUDjUoBHGn72GG1IyGH9mqwTxUwQrWTQmkl1DXXjou7JenyuL9kCKyi44a1l24BxmOA==
+X-Received: by 2002:a17:906:8d8:: with SMTP id o24mr65720732eje.235.1560267558194;
+        Tue, 11 Jun 2019 08:39:18 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id b10sm2350986ejb.30.2019.06.11.08.39.16
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 11 Jun 2019 08:33:15 -0700 (PDT)
-Date:   Tue, 11 Jun 2019 16:33:14 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        Tue, 11 Jun 2019 08:39:17 -0700 (PDT)
+Date:   Tue, 11 Jun 2019 17:39:14 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        LKML <linux-kernel@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>
-Subject: Re: [PATCH 2/2] backlight: pwm_bl: Get number of brightness levels
- for CIE 1931 from the device tree
-Message-ID: <20190611153314.cj6j6l4kcl4kk4t2@holly.lan>
-References: <20190610233739.29477-1-mka@chromium.org>
- <20190610233739.29477-2-mka@chromium.org>
+        Richard Purdie <rpurdie@rpsys.net>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>
+Subject: Re: [PATCH 24/33] Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
+Message-ID: <20190611153914.GF2458@phenom.ffwll.local>
+Mail-Followup-To: Daniel Thompson <daniel.thompson@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Richard Purdie <rpurdie@rpsys.net>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>, Jingoo Han <jingoohan1@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>
+References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
+ <20190528090304.9388-25-daniel.vetter@ffwll.ch>
+ <20190611140929.ufkz3rz3pjw75qgy@holly.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190610233739.29477-2-mka@chromium.org>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190611140929.ufkz3rz3pjw75qgy@holly.lan>
+X-Operating-System: Linux phenom 4.14.0-3-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 04:37:39PM -0700, Matthias Kaehlcke wrote:
-> Commit 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED
-> linearly to human eye") uses pwm_period / hweight32(pwm_period) as
-> as heuristic to determine the number of brightness levels when the DT
-> doesn't provide a brightness level table. This heuristic is broken
-> and can result in excessively large brightness tables.
+On Tue, Jun 11, 2019 at 03:09:29PM +0100, Daniel Thompson wrote:
+> On Tue, May 28, 2019 at 11:02:55AM +0200, Daniel Vetter wrote:
+> > This reverts commit 994efacdf9a087b52f71e620b58dfa526b0cf928.
+> > 
+> > The justification is that if hw blanking fails (i.e. fbops->fb_blank)
+> > fails, then we still want to shut down the backlight. Which is exactly
+> > _not_ what fb_blank() does and so rather inconsistent if we end up
+> > with different behaviour between fbcon and direct fbdev usage. Given
+> > that the entire notifier maze is getting in the way anyway I figured
+> > it's simplest to revert this not well justified commit.
+> > 
+> > v2: Add static inline to the dummy version.
+> > 
+> > Cc: Richard Purdie <rpurdie@rpsys.net>
+> > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> > Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> > Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: Lee Jones <lee.jones@linaro.org>
+> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> > Cc: Jingoo Han <jingoohan1@gmail.com>
+> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > Cc: Hans de Goede <hdegoede@redhat.com>
+> > Cc: Yisheng Xie <ysxie@foxmail.com>
+> > Cc: linux-fbdev@vger.kernel.org
 > 
-> Instead of using the heuristic try to retrieve the number of
-> brightness levels from the device tree (property 'max-brightness'
-> + 1). If the value is not specified use a default of 256 levels.
+> This was the main patch where I wanted the bigger picture ;-) and TBH
+> I'm still in two minds here. I don't personally view fbcon as
+> inconsistent, more that, as an in-kernel service it might have to do
+> more that something more complicated than freak out and let userspace
+> decide what to do next.
 
-I'll look at the code tomorrow but why 256?
+I think the story is even worse, at least for drm-based drivers:
 
-To me it feels simultaneously too big for a simple 8-bit PWM and too
-small for animated backlight effects.
+- We have the fbcon code here, which did something slightly different than
+  fbdev modesets called through /dev/fb*.
 
-I certainly agree that an override could be useful but I'm not clear why
-deriving a default based on the period is bogus (and the description is
-merely concerned about uselessly big tables).
+- For most x86 drivers the expectations is that userspace handles the
+  backlight over modesets (enabling/disabling as needed), and the rules
+  for which backlight to pick extremely arcane: There's no link in sysfs
+  or anywhere else from a drm connector to the corresponding backlight
+  device.
 
-/*
- * Once we have 4096 levels there's little point going much higher...
- * neither interactive sliders nor animation benefits from having
- * more values in the table.
- */
-max_brightness = min(DIV_ROUND_UP(period, ffs(period), 4096);
+- But some other drivers, mostly on the soc side, handle backlight
+  enabling/disabling themselves, as part of the usual drm modeset
+  sequence. And I suspect that at least some drm userspace more geared
+  towards userspace doesn't bother handling the backlight on its own.
 
+I don't have any plan yet how to get us out of this whole, but figured
+this patch here should at least simplifiy things a bit.
 
-Daniel.
+Just fyi a bit more context here, I think there's more work to do :-/
+-Daniel
 
+> However... since I'm struggling to make up my mind, I can't think of
+> many products that would ship reliant exclusively on fbcon *and* this
+> patch is more about fbcon than backlight then I figure that, from a
+> backlight perspective:
 > 
-> Fixes: 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED linearly to human eye")
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> ---
->  drivers/video/backlight/pwm_bl.c | 59 ++++++++++++--------------------
->  1 file changed, 21 insertions(+), 38 deletions(-)
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 > 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index fb45f866b923..2913cbe9cfcb 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -194,38 +194,19 @@ int pwm_backlight_brightness_default(struct device *dev,
->  				     struct platform_pwm_backlight_data *data,
->  				     unsigned int period)
->  {
-> -	unsigned int counter = 0;
-> -	unsigned int i, n;
-> +	unsigned int i;
-> +	unsigned int nlevels = data->max_brightness + 1;
->  	u64 retval;
->  
-> -	/*
-> -	 * Count the number of bits needed to represent the period number. The
-> -	 * number of bits is used to calculate the number of levels used for the
-> -	 * brightness-levels table, the purpose of this calculation is have a
-> -	 * pre-computed table with enough levels to get linear brightness
-> -	 * perception. The period is divided by the number of bits so for a
-> -	 * 8-bit PWM we have 255 / 8 = 32 brightness levels or for a 16-bit PWM
-> -	 * we have 65535 / 16 = 4096 brightness levels.
-> -	 *
-> -	 * Note that this method is based on empirical testing on different
-> -	 * devices with PWM of 8 and 16 bits of resolution.
-> -	 */
-> -	n = period;
-> -	while (n) {
-> -		counter += n % 2;
-> -		n >>= 1;
-> -	}
-> -
-> -	data->max_brightness = DIV_ROUND_UP(period, counter);
-> -	data->levels = devm_kcalloc(dev, data->max_brightness,
-> +	data->levels = devm_kcalloc(dev, nlevels,
->  				    sizeof(*data->levels), GFP_KERNEL);
->  	if (!data->levels)
->  		return -ENOMEM;
->  
->  	/* Fill the table using the cie1931 algorithm */
-> -	for (i = 0; i < data->max_brightness; i++) {
-> +	for (i = 0; i < nlevels; i++) {
->  		retval = cie1931((i * PWM_LUMINANCE_SCALE) /
-> -				 data->max_brightness, PWM_LUMINANCE_SCALE) *
-> +				 nlevels, PWM_LUMINANCE_SCALE) *
->  				 period;
->  		retval = DIV_ROUND_CLOSEST_ULL(retval, PWM_LUMINANCE_SCALE);
->  		if (retval > UINT_MAX)
-> @@ -233,8 +214,7 @@ int pwm_backlight_brightness_default(struct device *dev,
->  		data->levels[i] = (unsigned int)retval;
->  	}
->  
-> -	data->dft_brightness = data->max_brightness / 2;
-> -	data->max_brightness--;
-> +	data->dft_brightness = nlevels / 2;
->  
->  	return 0;
->  }
-> @@ -272,8 +252,13 @@ static int pwm_backlight_parse_dt(struct device *dev,
->  	 * set a default table of brightness levels will be used.
->  	 */
->  	prop = of_find_property(node, "brightness-levels", &length);
-> -	if (!prop)
-> +	if (!prop) {
-> +		if (of_property_read_u32(node, "max-brightness",
-> +					 &data->max_brightness))
-> +			data->max_brightness = 255;
-> +
->  		return 0;
-> +	}
->  
->  	data->max_brightness = length / sizeof(u32);
->  
-> @@ -565,13 +550,10 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  
->  			pb->levels = data->levels;
->  		}
-> -	} else if (!data->max_brightness) {
-> +	} else if (node) {
->  		/*
-> -		 * If no brightness levels are provided and max_brightness is
-> -		 * not set, use the default brightness table. For the DT case,
-> -		 * max_brightness is set to 0 when brightness levels is not
-> -		 * specified. For the non-DT case, max_brightness is usually
-> -		 * set to some value.
-> +		 * If no brightness levels are provided use the default
-> +		 * brightness table.
->  		 */
->  
->  		/* Get the PWM period (in nanoseconds) */
-> @@ -591,12 +573,13 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  
->  			pb->levels = data->levels;
->  		}
-> -	} else {
-> -		/*
-> -		 * That only happens for the non-DT case, where platform data
-> -		 * sets the max_brightness value.
-> -		 */
-> +	} else if (data->max_brightness) {
-> +		/* non-DT case, max_brightness value set in platform data. */
->  		pb->scale = data->max_brightness;
-> +	} else {
-> +		dev_err(&pdev->dev, "max brightness is not specified\n");
-> +		ret = -EINVAL;
-> +		goto err_alloc;
->  	}
->  
->  	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-> -- 
-> 2.22.0.rc2.383.gf4fbbf30c2-goog
 > 
+> Daniel.
+> 
+> 
+> > ---
+> >  drivers/video/backlight/backlight.c |  2 +-
+> >  drivers/video/fbdev/core/fbcon.c    | 14 +-------------
+> >  drivers/video/fbdev/core/fbmem.c    |  1 +
+> >  include/linux/fb.h                  |  4 +---
+> >  include/linux/fbcon.h               |  2 ++
+> >  5 files changed, 6 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/drivers/video/backlight/backlight.c b/drivers/video/backlight/backlight.c
+> > index 1ef8b6fd62ac..5dc07106a59e 100644
+> > --- a/drivers/video/backlight/backlight.c
+> > +++ b/drivers/video/backlight/backlight.c
+> > @@ -47,7 +47,7 @@ static int fb_notifier_callback(struct notifier_block *self,
+> >  	int fb_blank = 0;
+> >  
+> >  	/* If we aren't interested in this event, skip it immediately ... */
+> > -	if (event != FB_EVENT_BLANK && event != FB_EVENT_CONBLANK)
+> > +	if (event != FB_EVENT_BLANK)
+> >  		return 0;
+> >  
+> >  	bd = container_of(self, struct backlight_device, fb_notif);
+> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> > index ef69bd4ad343..a4617067ff24 100644
+> > --- a/drivers/video/fbdev/core/fbcon.c
+> > +++ b/drivers/video/fbdev/core/fbcon.c
+> > @@ -2350,8 +2350,6 @@ static int fbcon_switch(struct vc_data *vc)
+> >  static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+> >  				int blank)
+> >  {
+> > -	struct fb_event event;
+> > -
+> >  	if (blank) {
+> >  		unsigned short charmask = vc->vc_hi_font_mask ?
+> >  			0x1ff : 0xff;
+> > @@ -2362,13 +2360,6 @@ static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
+> >  		fbcon_clear(vc, 0, 0, vc->vc_rows, vc->vc_cols);
+> >  		vc->vc_video_erase_char = oldc;
+> >  	}
+> > -
+> > -
+> > -	lock_fb_info(info);
+> > -	event.info = info;
+> > -	event.data = &blank;
+> > -	fb_notifier_call_chain(FB_EVENT_CONBLANK, &event);
+> > -	unlock_fb_info(info);
+> >  }
+> >  
+> >  static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch)
+> > @@ -3240,7 +3231,7 @@ int fbcon_fb_registered(struct fb_info *info)
+> >  	return ret;
+> >  }
+> >  
+> > -static void fbcon_fb_blanked(struct fb_info *info, int blank)
+> > +void fbcon_fb_blanked(struct fb_info *info, int blank)
+> >  {
+> >  	struct fbcon_ops *ops = info->fbcon_par;
+> >  	struct vc_data *vc;
+> > @@ -3344,9 +3335,6 @@ static int fbcon_event_notify(struct notifier_block *self,
+> >  		con2fb = event->data;
+> >  		con2fb->framebuffer = con2fb_map[con2fb->console - 1];
+> >  		break;
+> > -	case FB_EVENT_BLANK:
+> > -		fbcon_fb_blanked(info, *(int *)event->data);
+> > -		break;
+> >  	case FB_EVENT_REMAP_ALL_CONSOLE:
+> >  		idx = info->node;
+> >  		fbcon_remap_all(idx);
+> > diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> > index ddc0c16b8bbf..9366fbe99a58 100644
+> > --- a/drivers/video/fbdev/core/fbmem.c
+> > +++ b/drivers/video/fbdev/core/fbmem.c
+> > @@ -1068,6 +1068,7 @@ fb_blank(struct fb_info *info, int blank)
+> >  	event.data = &blank;
+> >  
+> >  	early_ret = fb_notifier_call_chain(FB_EARLY_EVENT_BLANK, &event);
+> > +	fbcon_fb_blanked(info, blank);
+> >  
+> >  	if (info->fbops->fb_blank)
+> >   		ret = info->fbops->fb_blank(blank, info);
+> > diff --git a/include/linux/fb.h b/include/linux/fb.h
+> > index 0d86aa31bf8d..1e66fac3124f 100644
+> > --- a/include/linux/fb.h
+> > +++ b/include/linux/fb.h
+> > @@ -137,12 +137,10 @@ struct fb_cursor_user {
+> >  #define FB_EVENT_GET_CONSOLE_MAP        0x07
+> >  /*      CONSOLE-SPECIFIC: set console to framebuffer mapping */
+> >  #define FB_EVENT_SET_CONSOLE_MAP        0x08
+> > -/*      A hardware display blank change occurred */
+> > +/*      A display blank is requested       */
+> >  #define FB_EVENT_BLANK                  0x09
+> >  /*      Private modelist is to be replaced */
+> >  #define FB_EVENT_MODE_CHANGE_ALL	0x0B
+> > -/*	A software display blank change occurred */
+> > -#define FB_EVENT_CONBLANK               0x0C
+> >  /*      CONSOLE-SPECIFIC: remap all consoles to new fb - for vga_switcheroo */
+> >  #define FB_EVENT_REMAP_ALL_CONSOLE      0x0F
+> >  /*      A hardware display blank early change occurred */
+> > diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
+> > index 305e4f2eddac..d67d7ec51ef9 100644
+> > --- a/include/linux/fbcon.h
+> > +++ b/include/linux/fbcon.h
+> > @@ -14,6 +14,7 @@ int fbcon_mode_deleted(struct fb_info *info,
+> >  void fbcon_new_modelist(struct fb_info *info);
+> >  void fbcon_get_requirement(struct fb_info *info,
+> >  			   struct fb_blit_caps *caps);
+> > +void fbcon_fb_blanked(struct fb_info *info, int blank);
+> >  #else
+> >  static inline void fb_console_init(void) {}
+> >  static inline void fb_console_exit(void) {}
+> > @@ -27,6 +28,7 @@ static inline int fbcon_mode_deleted(struct fb_info *info,
+> >  static inline void fbcon_new_modelist(struct fb_info *info) {}
+> >  static inline void fbcon_get_requirement(struct fb_info *info,
+> >  					 struct fb_blit_caps *caps) {}
+> > +static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
+> >  #endif
+> >  
+> >  #endif /* _LINUX_FBCON_H */
+> > -- 
+> > 2.20.1
+> > 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
