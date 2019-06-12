@@ -2,120 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 099DF417F0
-	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 00:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D365F41BFD
+	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 08:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436731AbfFKWLw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 11 Jun 2019 18:11:52 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:33199 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405700AbfFKWLv (ORCPT
+        id S1730884AbfFLGJe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 12 Jun 2019 02:09:34 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:32816 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726538AbfFLGJd (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 11 Jun 2019 18:11:51 -0400
-Received: by mail-pl1-f193.google.com with SMTP id g21so5720259plq.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 15:11:51 -0700 (PDT)
+        Wed, 12 Jun 2019 02:09:33 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n9so15507541wru.0
+        for <linux-fbdev@vger.kernel.org>; Tue, 11 Jun 2019 23:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=8vFvJ8V6ajJREADlkWcQGOvk5dqkkgFT9ytOdn/LZ6s=;
-        b=hPfeNzhq51hsmDu/JK7bh3qIFlI5DoZS5suqWw3uFdum9RZoZ2kLpg+CG3WfwtzWqG
-         wUsWqTNqS4DVwjG3bZ5K061mHFseBicQAv9ZBnZKQCzCbAd+m0Wm71AVkht6a9BHwRBP
-         mH/ugMZuWCy/YaFsK+qaD6od1aOotlirFt6fw=
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=jNHpo9jnwtLQwuoRcj9Ch+fhiSgA7li7+xLd+t9vX0c=;
+        b=m8hJ2c0e3XNePvN0CW1AiuPtb6Tsm06LSMqOrEr8m/J+EAR2QK9ql0ebHsCP92aYtm
+         6mqLiXGOBxsAgcaVMen9cmq1ZpkUojqFwNGKIwtxFMW7WyZKtUN5lpGdRMe0Gas16jpj
+         LAT07r46pjG8q0yGqgzQizG+DFkTulNQjXqCIVy7uFbfJvOqkXl0LUGpPnKAlJyZ69qZ
+         ukRc/AgAIoYDjFv5PLPBWCkh0YO8NkXsGen4B1A4NvEPVvnuVFSFyNnX14GS+Aa3aiBB
+         tkgCuX8/fXozn76HmTNJ00VbrHdXvIAdJJGEGk3lkGLF5stuCF/piv6JjYoIPvT2lIhL
+         Mw2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=8vFvJ8V6ajJREADlkWcQGOvk5dqkkgFT9ytOdn/LZ6s=;
-        b=s5ol/Nnoou11qAE2uIf4x2YzqYztZ32UCkDfjYmNysthAaaDeWU/pTrSJQo6nug+45
-         ZVUYLtAZXOQrgftyMoBLMHGRlk3KMLh1B8OcFDwA8CSUdXeO+rHzXaLs29bIdmKRUmL9
-         DTrvA9r69u47o26K0KIMiC/mNL4VOVylPK8UHflNcElQlki24okIMDiZ7XekhAwpExKQ
-         l4vxirmhIvIwUWtnWTznXk2juUq4zdJnyZC7itHb9L5LMAK8XXHBHtFk9JJdj2Sn6YL/
-         3AGPoHOmsZIcOWrZ2SKmSwWWSudqpKY5ulg4dextA30DG4zZt69gaQub8bx/gP/blXuM
-         kpZw==
-X-Gm-Message-State: APjAAAV0E7QKOM/uJQDxiwY/DdmOvhcWHXVcEscJIG/N9ma90cwcN42n
-        6rqveHmF+hHI6e2vcYmiCjWYoA==
-X-Google-Smtp-Source: APXvYqwEviZoSj03YwFf0xshEB8pQdCuQy4uEVw4wDJoV5zm7LJ8rVpZzWCRBK0Mj4y2Dqy1neX5Aw==
-X-Received: by 2002:a17:902:e58b:: with SMTP id cl11mr57462355plb.24.1560291110514;
-        Tue, 11 Jun 2019 15:11:50 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id u4sm17102828pfu.26.2019.06.11.15.11.48
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Jun 2019 15:11:49 -0700 (PDT)
-Date:   Tue, 11 Jun 2019 15:11:47 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>
-Subject: Re: [PATCH 1/2] dt-bindings: pwm-backlight: Add 'max-brightness'
- property
-Message-ID: <20190611221147.GG137143@google.com>
-References: <20190610233739.29477-1-mka@chromium.org>
- <00220cd7-ed4b-5250-d448-cf83ed4c2012@gmail.com>
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=jNHpo9jnwtLQwuoRcj9Ch+fhiSgA7li7+xLd+t9vX0c=;
+        b=p19r8qRN4BfBK5K6tU+9Fz8aNKlTyewEXIib8XrHAezHjWGLgtf2Pgywc03WixsOFV
+         qMxBZsyltXu0lqCz3qnlDM8TSkqoB97IbAeZUWgwuMi3awUO0Q6QDyjRtVI+G5Zz2qup
+         nKvUnIzPmbbUmJkZZfAf3dIl8g/utzq9Mhtn/E85LfMR5R3WwkuyVLQvP6KKVfRGkd5l
+         Ws2BOG+ZeoevxOYZD3CcjpFXwvZxQGgJABT0JVYAz2vTvdAprXuYIFtWLpHbolo26N9m
+         me3UH2yla4XXzxiYlF05QRCr+wqqypbspkDO/6Ob6vkJVKAiQr/OxF98WXywHDT6Mlmn
+         h0IQ==
+X-Gm-Message-State: APjAAAVnomw+UKDX0ijR69e5XWuGFnSOdPhP0Bt5Mj3ZkrXGDJ5LhEdV
+        qpV+9b7vHu0t77lqXbO5e6arDw==
+X-Google-Smtp-Source: APXvYqyfYkZe1DnheBkxB3YZco+J1bRcMmIGxS+HOyR0Pfaq+SvAfBz+F8jQnAiX9kHfVifedeh39g==
+X-Received: by 2002:adf:db02:: with SMTP id s2mr17167183wri.326.1560319771955;
+        Tue, 11 Jun 2019 23:09:31 -0700 (PDT)
+Received: from dell ([2.27.35.243])
+        by smtp.gmail.com with ESMTPSA id x16sm4926192wmj.4.2019.06.11.23.09.30
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 11 Jun 2019 23:09:31 -0700 (PDT)
+Date:   Wed, 12 Jun 2019 07:09:29 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        LKML <linux-kernel@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: Re: [PATCH 00/33] fbcon notifier begone v3!
+Message-ID: <20190612060929.GR4797@dell>
+References: <20190528090304.9388-1-daniel.vetter@ffwll.ch>
+ <CGME20190606073852epcas2p27b586b93869a30e4658581c290960fee@epcas2p2.samsung.com>
+ <CAKMK7uHneUFYPiRr10X9xfWTkGtaoQBB=niDMGkAgJ-fgo5=mA@mail.gmail.com>
+ <f848b4de-abab-116f-ad68-23348f1a4b76@samsung.com>
+ <20190611141635.rowolr37vhalophr@holly.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <00220cd7-ed4b-5250-d448-cf83ed4c2012@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190611141635.rowolr37vhalophr@holly.lan>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Jacek,
-
-On Tue, Jun 11, 2019 at 10:02:23PM +0200, Jacek Anaszewski wrote:
-> Hi Matthias,
-> 
-> On 6/11/19 1:37 AM, Matthias Kaehlcke wrote:
-> > Add an optional 'max-brightness' property, which is used to specify
-> > the number of brightness levels (max-brightness + 1) when the node
-> > has no 'brightness-levels' table.
+On Tue, 11 Jun 2019, Daniel Thompson wrote:
+> On Fri, Jun 07, 2019 at 12:07:55PM +0200, Bartlomiej Zolnierkiewicz wrote:
+> > On 6/6/19 9:38 AM, Daniel Vetter wrote:
 > > 
-> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> > ---
-> >   .../devicetree/bindings/leds/backlight/pwm-backlight.txt       | 3 +++
-> >   1 file changed, 3 insertions(+)
+> > >> - Hash out actual merge plan.
+> > > 
+> > > I'd like to stuff this into drm.git somehow, I guess topic branch works
+> > > too.
 > > 
-> > diff --git a/Documentation/devicetree/bindings/leds/backlight/pwm-backlight.txt b/Documentation/devicetree/bindings/leds/backlight/pwm-backlight.txt
-> > index 64fa2fbd98c9..98f4ba626054 100644
-> > --- a/Documentation/devicetree/bindings/leds/backlight/pwm-backlight.txt
-> > +++ b/Documentation/devicetree/bindings/leds/backlight/pwm-backlight.txt
-> > @@ -27,6 +27,9 @@ Optional properties:
-> >                               resolution pwm duty cycle can be used without
-> >                               having to list out every possible value in the
-> >                               brightness-level array.
-> > +  - max-brightness: Maximum brightness value. Used to specify the number of
-> > +                    brightness levels (max-brightness + 1) when the node
-> > +                    has no 'brightness-levels' table.
+> > I would like to have topic branch for this patchset.
 > 
-> In the LED subsystem we have led-max-microamp property which seems to
-> better describe hardware capabilities. It says just: this is the current
-> level the LED can withstand. max-brightness does not implicitly convey
-> this kind of information.
+> From a backlight perspective its Lee Jones who hoovers up the patches
+> and worries about hiding merge conflicts from Linus.
 > 
-> Why the need for the property at all? If for the reasons other than
-> hardware capabilities than it should be more likely handled
-> by userspace.
+> I'll let him follow up if needed but I suspect he'd like an immutable
+> branch to work from also.
 
-The driver needs to know how many brightness levels to expose to
-userspace. It currently uses a heuristic for that which is broken:
+Yes please.  Happy to either create one, or receive one.
 
-https://elixir.bootlin.com/linux/v5.1.9/source/drivers/video/backlight/pwm_bl.c#L234
-https://lore.kernel.org/patchwork/patch/1086777/#1282610
-
-In any case it seems the discussion is going into the direction of
-fixing the heuristic (apparently using the period as an indicator of
-the PWM resolution has more merit than I was initially aware of), if
-that moves forward the property wouldn't be needed.
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
