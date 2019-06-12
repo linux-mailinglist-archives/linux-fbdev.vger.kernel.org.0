@@ -2,127 +2,142 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C584288C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 16:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3399842E39
+	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 20:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729432AbfFLOPK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 12 Jun 2019 10:15:10 -0400
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:3175 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbfFLOPK (ORCPT
+        id S1728579AbfFLSAM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 12 Jun 2019 14:00:12 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:44239 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728124AbfFLSAM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 12 Jun 2019 10:15:10 -0400
-Received-SPF: Pass (esa4.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa4.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa4.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-X-IronPort-AV: E=Sophos;i="5.63,366,1557212400"; 
-   d="scan'208";a="36650836"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Jun 2019 07:15:09 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex01.mchp-main.com (10.10.87.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 12 Jun 2019 07:14:56 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Wed, 12 Jun 2019 07:14:56 -0700
-Date:   Wed, 12 Jun 2019 16:13:56 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Nicolas Ferre - M43238 <Nicolas.Ferre@microchip.com>
-CC:     Colin King <colin.king@canonical.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] video: fbdev: atmel_lcdfb: remove redundant
- initialization to variable ret
-Message-ID: <20190612141356.riiesqub4zvxafh3@M43218.corp.atmel.com>
-Mail-Followup-To: Nicolas Ferre - M43238 <Nicolas.Ferre@microchip.com>,
-        Colin King <colin.king@canonical.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20190611170913.20913-1-colin.king@canonical.com>
- <37ac8530-6601-a1a0-37e0-8c6d5d1702cd@microchip.com>
+        Wed, 12 Jun 2019 14:00:12 -0400
+Received: by mail-pl1-f196.google.com with SMTP id t7so4324944plr.11
+        for <linux-fbdev@vger.kernel.org>; Wed, 12 Jun 2019 11:00:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=m17jcxzIUWgBG3pTTkNAHaWLFrUkZn/F2jLeWBAwk/I=;
+        b=K9ECcdPpoHNdUO2vD2Dylfi36k+JOk+4YD8Cfgm4Bn3VTPQdmcyN78WXD7L3d/HO0s
+         hBdUSzi4DPjwEJ/logkQnM3DpJ+UFfFYykyjVso6WnixS6vlIlfMi6BeZJkZPIjx/bHO
+         Dd9kFBgl1ab6JdR3Fm+FtrF4Nn2Y8//52ybEM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=m17jcxzIUWgBG3pTTkNAHaWLFrUkZn/F2jLeWBAwk/I=;
+        b=H+9iaYofVvRVyOabhk3Fm2cORpEoyJoVFWiLNCVMK5F5LzJF1+c+0MEraIabieeSge
+         SnRRqXcsDcEPbiWpGwgmFyofJW0FSicFIhOmKHZvJk+Ik9MvZ3i09oF5NIYkRWSbRLar
+         IDugR4C4yBUqNIT1eqXgRohtvQXwwP4eOSrO84DBZqiFFKBO+JLcALrnTp3xEOdMTs6F
+         0RpT5CPs+ilxZBkhmLUByAsBjRMezis0RMXbYVWGNTsGGx6POT8ZL3Bp2HLbUbC5TyQN
+         Z8ZE7U7x7PgKsgcIpMubkx4v8VtjJvfZ92nf8HN3jsh82rYvZ5naEaffgbKOkz9ymzGv
+         0lYw==
+X-Gm-Message-State: APjAAAUeAxs543agMd+zODo8c5IZNgUo9xwKkYoOoIvo9G256s4QR7AZ
+        jCXy6MwnfZFC4bgk0I0u8x1rMg==
+X-Google-Smtp-Source: APXvYqx+SYfjf3qHKIePuC+ovfW0Z/QkZdT+QlY9I+ubfQA4/smq+JtaGNSKh6quVM8FvVoa9qFIKw==
+X-Received: by 2002:a17:902:2006:: with SMTP id n6mr25655685pla.232.1560362411522;
+        Wed, 12 Jun 2019 11:00:11 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id m6sm180932pgr.18.2019.06.12.11.00.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 12 Jun 2019 11:00:10 -0700 (PDT)
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>
+Subject: [PATCH] backlight: pwm_bl: Fix heuristic to determine number of brightness levels
+Date:   Wed, 12 Jun 2019 11:00:03 -0700
+Message-Id: <20190612180003.161966-1-mka@chromium.org>
+X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <37ac8530-6601-a1a0-37e0-8c6d5d1702cd@microchip.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 09:55:30AM +0200, Nicolas Ferre - M43238 wrote:
-> On 11/06/2019 at 19:09, Colin King wrote:
-> > External E-Mail
-> > 
-> > 
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Currently variable ret is being initialized with -ENOENT however that
-> > value is never read and ret is being re-assigned later on. Hence this
-> > assignment is redundant and can be removed.
-> > 
-> > Addresses-Coverity: ("Unused value")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Indeed:
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+With commit 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of
+LED linearly to human eye") the number of set bits (aka hweight())
+in the PWM period is used in the heuristic to determine the number
+of brightness levels, when the brightness table isn't specified in
+the DT. The number of set bits doesn't provide a reliable clue about
+the length of the period, instead change the heuristic to:
 
-Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
+ nlevels = period / fls(period)
 
-Thanks
+Also limit the maximum number of brightness levels to 4096 to avoid
+excessively large tables.
 
-> 
-> Thanks, best regards,
->    Nicolas
-> 
-> 
-> > ---
-> >   drivers/video/fbdev/atmel_lcdfb.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-> > index fb117ccbeab3..930cc3f92e01 100644
-> > --- a/drivers/video/fbdev/atmel_lcdfb.c
-> > +++ b/drivers/video/fbdev/atmel_lcdfb.c
-> > @@ -950,7 +950,7 @@ static int atmel_lcdfb_of_init(struct atmel_lcdfb_info *sinfo)
-> >   	struct fb_videomode fb_vm;
-> >   	struct gpio_desc *gpiod;
-> >   	struct videomode vm;
-> > -	int ret = -ENOENT;
-> > +	int ret;
-> >   	int i;
-> >   
-> >   	sinfo->config = (struct atmel_lcdfb_config*)
-> > 
-> 
-> 
-> -- 
-> Nicolas Ferre
+With this the number of levels increases monotonically with the PWM
+period, until the maximum of 4096 levels is reached:
+
+period (ns)    # levels
+
+100    	       16
+500	       62
+1000	       111
+5000	       416
+10000	       769
+50000	       3333
+100000	       4096
+
+Fixes: 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED linearly to human eye")
+Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+---
+ drivers/video/backlight/pwm_bl.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index fb45f866b923..0b7152fa24f7 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -194,29 +194,17 @@ int pwm_backlight_brightness_default(struct device *dev,
+ 				     struct platform_pwm_backlight_data *data,
+ 				     unsigned int period)
+ {
+-	unsigned int counter = 0;
+-	unsigned int i, n;
++	unsigned int i;
+ 	u64 retval;
+ 
+ 	/*
+-	 * Count the number of bits needed to represent the period number. The
+-	 * number of bits is used to calculate the number of levels used for the
+-	 * brightness-levels table, the purpose of this calculation is have a
+-	 * pre-computed table with enough levels to get linear brightness
+-	 * perception. The period is divided by the number of bits so for a
+-	 * 8-bit PWM we have 255 / 8 = 32 brightness levels or for a 16-bit PWM
+-	 * we have 65535 / 16 = 4096 brightness levels.
+-	 *
+-	 * Note that this method is based on empirical testing on different
+-	 * devices with PWM of 8 and 16 bits of resolution.
++	 * Once we have 4096 levels there's little point going much higher...
++	 * neither interactive sliders nor animation benefits from having
++	 * more values in the table.
+ 	 */
+-	n = period;
+-	while (n) {
+-		counter += n % 2;
+-		n >>= 1;
+-	}
++	data->max_brightness =
++		min((int)DIV_ROUND_UP(period, fls(period)), 4096);
+ 
+-	data->max_brightness = DIV_ROUND_UP(period, counter);
+ 	data->levels = devm_kcalloc(dev, data->max_brightness,
+ 				    sizeof(*data->levels), GFP_KERNEL);
+ 	if (!data->levels)
+-- 
+2.22.0.rc2.383.gf4fbbf30c2-goog
+
