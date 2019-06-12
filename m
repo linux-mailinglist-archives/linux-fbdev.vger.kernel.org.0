@@ -2,74 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 530BD42771
-	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 15:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C584288C
+	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Jun 2019 16:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731486AbfFLN1E (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 12 Jun 2019 09:27:04 -0400
-Received: from ns.iliad.fr ([212.27.33.1]:45468 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728977AbfFLN1D (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 12 Jun 2019 09:27:03 -0400
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id 311D5202EC;
-        Wed, 12 Jun 2019 15:27:02 +0200 (CEST)
-Received: from [192.168.108.49] (freebox.vlq16.iliad.fr [213.36.7.13])
-        by ns.iliad.fr (Postfix) with ESMTP id 1A9AC1FF7C;
-        Wed, 12 Jun 2019 15:27:02 +0200 (CEST)
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     DRI <dri-devel@lists.freedesktop.org>,
-        fbdev <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Antonino Daplas <adaplas@gmail.com>
-From:   Marc Gonzalez <marc.w.gonzalez@free.fr>
-Subject: [PATCH v1] backlight: Don't build support by default
-Message-ID: <70bd61f9-8fc5-75b1-9f32-7a5826ce6b48@free.fr>
-Date:   Wed, 12 Jun 2019 15:27:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1729432AbfFLOPK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 12 Jun 2019 10:15:10 -0400
+Received: from esa4.microchip.iphmx.com ([68.232.154.123]:3175 "EHLO
+        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726357AbfFLOPK (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 12 Jun 2019 10:15:10 -0400
+Received-SPF: Pass (esa4.microchip.iphmx.com: domain of
+  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="Ludovic.Desroches@microchip.com";
+  x-conformance=spf_only; x-record-type="v=spf1";
+  x-record-text="v=spf1 mx a:ushub1.microchip.com
+  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+  a:mx2.microchip.iphmx.com include:servers.mcsv.net
+  include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa4.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa4.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa4.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
+X-IronPort-AV: E=Sophos;i="5.63,366,1557212400"; 
+   d="scan'208";a="36650836"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 12 Jun 2019 07:15:09 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex01.mchp-main.com (10.10.87.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 12 Jun 2019 07:14:56 -0700
+Received: from localhost (10.10.85.251) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
+ Transport; Wed, 12 Jun 2019 07:14:56 -0700
+Date:   Wed, 12 Jun 2019 16:13:56 +0200
+From:   Ludovic Desroches <ludovic.desroches@microchip.com>
+To:     Nicolas Ferre - M43238 <Nicolas.Ferre@microchip.com>
+CC:     Colin King <colin.king@canonical.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] video: fbdev: atmel_lcdfb: remove redundant
+ initialization to variable ret
+Message-ID: <20190612141356.riiesqub4zvxafh3@M43218.corp.atmel.com>
+Mail-Followup-To: Nicolas Ferre - M43238 <Nicolas.Ferre@microchip.com>,
+        Colin King <colin.king@canonical.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20190611170913.20913-1-colin.king@canonical.com>
+ <37ac8530-6601-a1a0-37e0-8c6d5d1702cd@microchip.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Wed Jun 12 15:27:02 2019 +0200 (CEST)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <37ac8530-6601-a1a0-37e0-8c6d5d1702cd@microchip.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-b20c5249aa6a ("backlight: Fix compile error if CONFIG_FB is unset")
-added 'default m' for BACKLIGHT_CLASS_DEVICE and LCD_CLASS_DEVICE.
+On Wed, Jun 12, 2019 at 09:55:30AM +0200, Nicolas Ferre - M43238 wrote:
+> On 11/06/2019 at 19:09, Colin King wrote:
+> > External E-Mail
+> > 
+> > 
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently variable ret is being initialized with -ENOENT however that
+> > value is never read and ret is being re-assigned later on. Hence this
+> > assignment is redundant and can be removed.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> Indeed:
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-Let's go back to not building support by default.
+Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
 
-Signed-off-by: Marc Gonzalez <marc.w.gonzalez@free.fr>
----
- drivers/video/backlight/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+Thanks
 
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 8b081d61773e..40676be2e46a 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -10,7 +10,6 @@ menu "Backlight & LCD device support"
- #
- config LCD_CLASS_DEVICE
-         tristate "Lowlevel LCD controls"
--	default m
- 	help
- 	  This framework adds support for low-level control of LCD.
- 	  Some framebuffer devices connect to platform-specific LCD modules
-@@ -143,7 +142,6 @@ endif # LCD_CLASS_DEVICE
- #
- config BACKLIGHT_CLASS_DEVICE
-         tristate "Lowlevel Backlight controls"
--	default m
- 	help
- 	  This framework adds support for low-level control of the LCD
-           backlight. This includes support for brightness and power.
--- 
-2.17.1
+> 
+> Thanks, best regards,
+>    Nicolas
+> 
+> 
+> > ---
+> >   drivers/video/fbdev/atmel_lcdfb.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
+> > index fb117ccbeab3..930cc3f92e01 100644
+> > --- a/drivers/video/fbdev/atmel_lcdfb.c
+> > +++ b/drivers/video/fbdev/atmel_lcdfb.c
+> > @@ -950,7 +950,7 @@ static int atmel_lcdfb_of_init(struct atmel_lcdfb_info *sinfo)
+> >   	struct fb_videomode fb_vm;
+> >   	struct gpio_desc *gpiod;
+> >   	struct videomode vm;
+> > -	int ret = -ENOENT;
+> > +	int ret;
+> >   	int i;
+> >   
+> >   	sinfo->config = (struct atmel_lcdfb_config*)
+> > 
+> 
+> 
+> -- 
+> Nicolas Ferre
