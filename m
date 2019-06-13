@@ -2,127 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B18B43E58
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2019 17:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D01C5439E7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2019 17:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389182AbfFMPsw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 Jun 2019 11:48:52 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:52428 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731710AbfFMJPD (ORCPT
+        id S1732364AbfFMPRa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 13 Jun 2019 11:17:30 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:37424 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732485AbfFMPRa (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 Jun 2019 05:15:03 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 73D26260CB2
-Subject: Re: [PATCH] backlight: pwm_bl: Fix heuristic to determine number of
- brightness levels
-To:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-References: <20190612180003.161966-1-mka@chromium.org>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <fd554750-7ec6-73e1-be3a-5bac0749fa0b@collabora.com>
-Date:   Thu, 13 Jun 2019 11:14:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Thu, 13 Jun 2019 11:17:30 -0400
+Received: by mail-qt1-f193.google.com with SMTP id y57so23017034qtk.4
+        for <linux-fbdev@vger.kernel.org>; Thu, 13 Jun 2019 08:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=poorly.run; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bGNK1d0Xv7GxXmH2bfhCnv3hSiuIxOQH6M80YrpAFbg=;
+        b=gfgLShrOdv+5kNqWdz8F30pzoMJbuuG3vdPsovlgP+y+yxT/DYd4jTFhAXjOCnSUFv
+         /gHuVdby5VwMdO70Q5obBp2iABib6ipvIY4nk5FhobueWFsmGq00n3hNcOuR7+SjTmtC
+         Nvtlu8phwW8zeXXQK40f27sncCYzxcbiO8moKR7pne7LUSydLtnfOU+5GSRysChCgdAL
+         6z5gt1XYC4RvqmUGxgDmNgtP0s1BQBPozVKcwYwUo8zCndZ9nqZt6ShUcPCE0NLpHkkg
+         LutIvq/su8KGiXD4ColOKvf96sNaUHLC7NFboOq0wvqMR/r1ZdT43GS5iTTIRxhsTs5l
+         4p/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bGNK1d0Xv7GxXmH2bfhCnv3hSiuIxOQH6M80YrpAFbg=;
+        b=nfuC8TGZt9kAjlOEzpyeWVzACb205tZoLKh98E6OyWvTKhILwN4iEjhDo4Z4yy1PJF
+         uPb+7gnEEQboRs709xQPPmWu30iPDe2j7vm0QAT7YRG51nyV4WLy8/TvTfRk6HnwpKqu
+         W5MBq9sVWw2jy4iI8Xqd8qEr6ZEoZkL7kmraFMnslgA+tsNIKgQ/5r3Wlc0SfiF7SKvv
+         GB7jv4hBEsWoeCgB2CiWwI7el42jVwju9QbHEaA0y1RUPWc9g86vzvVITN/94YOaaDmi
+         CsIUWwXfb4LyeOmK/g7t7eQkHW3IHP9TpUD78vH64btezBf/G/8VCDvouzJXeFXrHHqs
+         /8Jg==
+X-Gm-Message-State: APjAAAXDJggV5FpP495akAdcC7AwwJIncdkdt+SJvFzYLOHgsetUktDV
+        mxp+zVNgTJSWe2nBofATWjMO6A==
+X-Google-Smtp-Source: APXvYqzccEYb3lN3E8mI+ddJiTi8WFUyrc0/SlwYQBbc+d8kJiOZ9Eaf6pD5QdwwSLK8oIKtzIbx9g==
+X-Received: by 2002:ac8:2b10:: with SMTP id 16mr57217884qtu.351.1560439049086;
+        Thu, 13 Jun 2019 08:17:29 -0700 (PDT)
+Received: from rosewood.cam.corp.google.com ([2620:0:1013:11:89c6:2139:5435:371d])
+        by smtp.gmail.com with ESMTPSA id v186sm1688779qkc.36.2019.06.13.08.17.28
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 13 Jun 2019 08:17:28 -0700 (PDT)
+From:   Sean Paul <sean@poorly.run>
+To:     dri-devel@lists.freedesktop.org
+Cc:     Sean Paul <seanpaul@chromium.org>,
+        Shashank Sharma <shashank.sharma@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4?= <ville.syrjala@linux.intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans Verkuil <hansverk@cisco.com>, linux-fbdev@vger.kernel.org,
+        Uma Shankar <uma.shankar@intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH] drm/connector: Fix kerneldoc warning in HDR_OUTPUT_METADATA description
+Date:   Thu, 13 Jun 2019 11:17:23 -0400
+Message-Id: <20190613151727.133696-1-sean@poorly.run>
+X-Mailer: git-send-email 2.22.0.rc2.383.gf4fbbf30c2-goog
 MIME-Version: 1.0
-In-Reply-To: <20190612180003.161966-1-mka@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Matthias,
+From: Sean Paul <seanpaul@chromium.org>
 
-On 12/6/19 20:00, Matthias Kaehlcke wrote:
-> With commit 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of
-> LED linearly to human eye") the number of set bits (aka hweight())
-> in the PWM period is used in the heuristic to determine the number
-> of brightness levels, when the brightness table isn't specified in
-> the DT. The number of set bits doesn't provide a reliable clue about
-> the length of the period, instead change the heuristic to:
-> 
->  nlevels = period / fls(period)
-> 
-> Also limit the maximum number of brightness levels to 4096 to avoid
-> excessively large tables.
-> 
-> With this the number of levels increases monotonically with the PWM
-> period, until the maximum of 4096 levels is reached:
-> 
-> period (ns)    # levels
-> 
-> 100    	       16
-> 500	       62
-> 1000	       111
-> 5000	       416
-> 10000	       769
-> 50000	       3333
-> 100000	       4096
-> 
-> Fixes: 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED linearly to human eye")
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+Fixes the following warning:
+../drivers/gpu/drm/drm_connector.c:981: WARNING: Definition list ends without a blank line; unexpected unindent.
 
-Tested on Samsung Chromebook Plus (16-bit pwm)
+Fixes: a09db883e5d9 ("drm: Fix docbook warnings in hdr metadata helper structures")
+Cc: Shashank Sharma <shashank.sharma@intel.com>
+Cc: Ville Syrjä <ville.syrjala@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: "Ville Syrjä" <ville.syrjala@linux.intel.com>
+Cc: Hans Verkuil <hansverk@cisco.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: Sean Paul <sean@poorly.run> (v1)
+Cc: Uma Shankar <uma.shankar@intel.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: "Ville Syrjälä" <ville.syrjala@linux.intel.com>
+Signed-off-by: Sean Paul <seanpaul@chromium.org>
+---
+ drivers/gpu/drm/drm_connector.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index a598a5eb48d21..3ccdcf3dfcde2 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -978,6 +978,7 @@ static const struct drm_prop_enum_list hdmi_colorspaces[] = {
+  *	Userspace will be responsible to do Tone mapping operation in case:
+  *		- Some layers are HDR and others are SDR
+  *		- HDR layers luminance is not same as sink
++ *
+  *	It will even need to do colorspace conversion and get all layers
+  *	to one common colorspace for blending. It can use either GL, Media
+  *	or display engine to get this done based on the capabilties of the
+-- 
+Sean Paul, Software Engineer, Google / Chromium OS
 
-
-> ---
->  drivers/video/backlight/pwm_bl.c | 24 ++++++------------------
->  1 file changed, 6 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index fb45f866b923..0b7152fa24f7 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -194,29 +194,17 @@ int pwm_backlight_brightness_default(struct device *dev,
->  				     struct platform_pwm_backlight_data *data,
->  				     unsigned int period)
->  {
-> -	unsigned int counter = 0;
-> -	unsigned int i, n;
-> +	unsigned int i;
->  	u64 retval;
->  
->  	/*
-> -	 * Count the number of bits needed to represent the period number. The
-> -	 * number of bits is used to calculate the number of levels used for the
-> -	 * brightness-levels table, the purpose of this calculation is have a
-> -	 * pre-computed table with enough levels to get linear brightness
-> -	 * perception. The period is divided by the number of bits so for a
-> -	 * 8-bit PWM we have 255 / 8 = 32 brightness levels or for a 16-bit PWM
-> -	 * we have 65535 / 16 = 4096 brightness levels.
-> -	 *
-> -	 * Note that this method is based on empirical testing on different
-> -	 * devices with PWM of 8 and 16 bits of resolution.
-> +	 * Once we have 4096 levels there's little point going much higher...
-> +	 * neither interactive sliders nor animation benefits from having
-> +	 * more values in the table.
->  	 */
-> -	n = period;
-> -	while (n) {
-> -		counter += n % 2;
-> -		n >>= 1;
-> -	}
-> +	data->max_brightness =
-> +		min((int)DIV_ROUND_UP(period, fls(period)), 4096);
->  
-> -	data->max_brightness = DIV_ROUND_UP(period, counter);
->  	data->levels = devm_kcalloc(dev, data->max_brightness,
->  				    sizeof(*data->levels), GFP_KERNEL);
->  	if (!data->levels)
-> 
