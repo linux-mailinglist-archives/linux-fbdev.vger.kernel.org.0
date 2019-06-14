@@ -2,151 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D344588D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 11:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAD6245ACA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 12:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfFNJZi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jun 2019 05:25:38 -0400
-Received: from mga04.intel.com ([192.55.52.120]:53486 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbfFNJZi (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jun 2019 05:25:38 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 02:25:37 -0700
-X-ExtLoop1: 1
-Received: from mtayar-mobl.ger.corp.intel.com (HELO [10.252.34.38]) ([10.252.34.38])
-  by orsmga002.jf.intel.com with ESMTP; 14 Jun 2019 02:25:32 -0700
-From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc:     Dave Airlie <airlied@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Sean Paul <sean@poorly.run>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        dim-tools@lists.freedesktop.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>
-Subject: [PULL] topic/remove-fbcon-notifiers for v5.3
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Lee Jones <lee.jones@linaro.org>
-Message-ID: <887603f2-57a4-5a15-faa3-62634fe4b296@linux.intel.com>
-Date:   Fri, 14 Jun 2019 11:25:31 +0200
+        id S1726873AbfFNKn7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jun 2019 06:43:59 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:52091 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727018AbfFNKn6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 14 Jun 2019 06:43:58 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190614104356euoutp017b4699b580aaba37895eef0b6cb0c51c~oCrNudj5v0337103371euoutp01B
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 10:43:56 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190614104356euoutp017b4699b580aaba37895eef0b6cb0c51c~oCrNudj5v0337103371euoutp01B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1560509036;
+        bh=Zl7VnI5bsj4BuaNyNNSUeOVR4pqArffBJEh0eJbRbws=;
+        h=To:Cc:From:Subject:Date:References:From;
+        b=Ae1H5KsQQy+rjpQC3oXOlZ+Knk4zza9lc3lwkZLGm/7ikJQDgHtbwc68M4hPrztoV
+         5/9FrpF0R5LfHEmSbpL/xKp9f0xHwxkHj0Ag8ce1K+ZqtTK8UeizwyPbKsFCzWVwBP
+         PwvubvsZmNQhLEqozi7lIvS4wRSQDFzf3Z16cFyQ=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190614104355eucas1p217c5dacecfec33cfdbd7887519d2a78a~oCrNGFicf1341513415eucas1p2Y;
+        Fri, 14 Jun 2019 10:43:55 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id C1.B6.04377.B6A730D5; Fri, 14
+        Jun 2019 11:43:55 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190614104355eucas1p236ecb70b6d48f37508f3837cee49b19f~oCrMSQjgh1341513415eucas1p2W;
+        Fri, 14 Jun 2019 10:43:55 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190614104354eusmtrp276153a14cefbc37a839d65795e31ef03~oCrMCznpo1815618156eusmtrp2v;
+        Fri, 14 Jun 2019 10:43:54 +0000 (GMT)
+X-AuditID: cbfec7f4-12dff70000001119-70-5d037a6bf500
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id F3.C6.04146.A6A730D5; Fri, 14
+        Jun 2019 11:43:54 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190614104354eusmtip1e5cff7dccf3f6757a4b7145d8b5ae8e8~oCrL0oNKa1678516785eusmtip1h;
+        Fri, 14 Jun 2019 10:43:54 +0000 (GMT)
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Cc:     Stephen Rothwell <sfr@canb.auug.org.au>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: fbdev: pvr2fb: fix build warning when compiling as
+ module
+Message-ID: <2376f0a7-2511-b52d-c0d1-9162382f8693@samsung.com>
+Date:   Fri, 14 Jun 2019 12:43:56 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEKsWRmVeSWpSXmKPExsWy7djP87rZVcyxBte2aFlc+fqezeJE3wdW
+        i8u75rBZbN17ld2BxaPxxg02j/vdx5k8Pm+SC2CO4rJJSc3JLEst0rdL4Mp4Nv8Za8EM9orz
+        0xwbGH+zdjFyckgImEj8WPWaqYuRi0NIYAWjxMmXbxghnC+MEm2vdjJDOJ8ZJc7vusUG03Kr
+        7whUy3JGiQUHtrNAOG8ZJbqfn2MHqRIRSJBYMX0GI4jNLKAt0fv2PTOIzSZgJTGxfRVYXFgg
+        WGLHv0awQ3gF7CS+XW8Ds1kEVCWWbz/HAmKLCkRI3D+2AapGUOLkzCcsEDPFJW49mc8EYctL
+        bH87B+xUCYHPbBJ/ni5jhDjVReLr3MssELawxKvjW9ghbBmJ/zvnM0E0rGOU+NvxAqp7O6PE
+        8sn/oB61ljh8/CLQag6gFZoS63fpQ4QdJQ5v/cgGEpYQ4JO48VYQ4gg+iUnbpjNDhHklOtqE
+        IKrVJDYs28AGs7Zr50pmCNtDYkbzCqYJjIqzkLw2C8lrs5C8NgvhhgWMLKsYxVNLi3PTU4uN
+        8lLL9YoTc4tL89L1kvNzNzECU8rpf8e/7GDc9SfpEKMAB6MSD+8BK6ZYIdbEsuLK3EOMEhzM
+        SiK886yZY4V4UxIrq1KL8uOLSnNSiw8xSnOwKInzVjM8iBYSSE8sSc1OTS1ILYLJMnFwSjUw
+        rrp3fR2rvvlkSevDqhlVqY9OfdIw+LRpbd9V+2kHrk3cc8ZL9un7vk/Pdn6/1rd1a6Semuz2
+        +BqLWx4lnJ+4q6Ll5x1PM3656mP2iWaLrnt7GapC8g4k/ZgWoLI0wsDz4I0T+Tukvlo5Zrpb
+        VUfZx8aviX4ay2w70dv2aH1tCf+Fg0HS1ek5SizFGYmGWsxFxYkApOjzlyUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupikeLIzCtJLcpLzFFi42I5/e/4Xd2sKuZYg70vjSyufH3PZnGi7wOr
+        xeVdc9gstu69yu7A4tF44wabx/3u40wenzfJBTBH6dkU5ZeWpCpk5BeX2CpFG1oY6RlaWugZ
+        mVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GU8m/+MtWAGe8X5aY4NjL9Zuxg5OSQETCRu9R1h
+        6mLk4hASWMoo8WXiIbYuRg6ghIzE8fVlEDXCEn+udbFB1LxmlFh0+z0bSEJEIEHi6ev5YDaz
+        gLZE79v3zCA2m4CVxMT2VYwgtrBAsMSOf41gy3gF7CS+XW8Ds1kEVCWWbz/HAmKLCkRInHm/
+        ggWiRlDi5MwnLBAz1SX+zLvEDGGLS9x6Mp8JwpaX2P52DvMERoFZSFpmIWmZhaRlFpKWBYws
+        qxhFUkuLc9Nziw31ihNzi0vz0vWS83M3MQLjYduxn5t3MF7aGHyIUYCDUYmH94AVU6wQa2JZ
+        cWXuIUYJDmYlEd551syxQrwpiZVVqUX58UWlOanFhxhNgR6ayCwlmpwPjNW8knhDU0NzC0tD
+        c2NzYzMLJXHeDoGDMUIC6YklqdmpqQWpRTB9TBycUg2MRhVfHBUuTVK57xH3W9rR61jrP+bU
+        A+ey9x7Ty2NPdtLY/F/T8+oVa009bT3j1XcmvQrRkfwfcl3NSzlpDU+keuij8pe8bL0J+1Qn
+        V+WfFFyiE2S9V+H+gktX9t65vmz25p9P+TY99P3Jdd9h16Xd7pI+5xiVv0yKuB+wu/tYpV/Q
+        /otMP6KNlFiKMxINtZiLihMBpVOgjZ0CAAA=
+X-CMS-MailID: 20190614104355eucas1p236ecb70b6d48f37508f3837cee49b19f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190614104355eucas1p236ecb70b6d48f37508f3837cee49b19f
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190614104355eucas1p236ecb70b6d48f37508f3837cee49b19f
+References: <CGME20190614104355eucas1p236ecb70b6d48f37508f3837cee49b19f@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi all,
+Add missing #ifndef MODULE around pvr2_get_param_val().
 
-As discussed with Daniel V, I'm just doing the paperwork here as drm-misc maintainer.
+Fixes: 0f5a5712ad1e ("video: fbdev: pvr2fb: add COMPILE_TEST support")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ drivers/video/fbdev/pvr2fb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-This is the topic pull request for the fbdev notifier removal.
-
-Bar, please make a final check and pull into your fbdev tree.
-
-Lee, please make a final check and pull into your backlight tree.
-
-Greg, this is just fyi, you already acked all the vt and staging patches in here
-to land through other trees.
-
-I'll pull this into drm-misc-next once Bart & Lee acked it.
-
-Cheers, Maarten.
-
-topic/remove-fbcon-notifiers-2019-06-14-1:
-----------------------------------------------------------------
-topic/remove-fbcon-notifiers:
-- remove fbdev notifier usage for fbcon, as prep work to clean up the fbcon locking
-- assorted locking checks in vt/console code
-- assorted notifier and cleanups in fbdev and backlight code
-
-The following changes since commit d1fdb6d8f6a4109a4263176c84b899076a5f8008:
-
-  Linux 5.2-rc4 (2019-06-08 20:24:46 -0700)
-
-are available in the Git repository at:
-
-  git://anongit.freedesktop.org/drm/drm-misc tags/topic/remove-fbcon-notifiers-2019-06-14-1
-
-for you to fetch changes up to 1dcff4ae65185e8c0300972f6d8d39d9a9db2bda:
-
-  backlight: simplify lcd notifier (2019-06-13 10:07:20 +0200)
-
-----------------------------------------------------------------
-Daniel Vetter (33):
-      dummycon: Sprinkle locking checks
-      fbdev: locking check for fb_set_suspend
-      vt: might_sleep() annotation for do_blank_screen
-      vt: More locking checks
-      fbdev/sa1100fb: Remove dead code
-      fbdev/cyber2000: Remove struct display
-      fbdev/aty128fb: Remove dead code
-      fbcon: s/struct display/struct fbcon_display/
-      fbcon: Remove fbcon_has_exited
-      fbcon: call fbcon_fb_(un)registered directly
-      fbdev/sh_mobile: remove sh_mobile_lcdc_display_notify
-      fbdev/omap: sysfs files can't disappear before the device is gone
-      fbdev: sysfs files can't disappear before the device is gone
-      staging/olpc: lock_fb_info can't fail
-      fbdev/atyfb: lock_fb_info can't fail
-      fbdev: lock_fb_info cannot fail
-      fbcon: call fbcon_fb_bind directly
-      fbdev: make unregister/unlink functions not fail
-      fbdev: unify unlink_framebuffer paths
-      fbdev/sh_mob: Remove fb notifier callback
-      fbdev: directly call fbcon_suspended/resumed
-      fbcon: Call fbcon_mode_deleted/new_modelist directly
-      fbdev: Call fbcon_get_requirement directly
-      Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
-      fbmem: pull fbcon_fb_blanked out of fb_blank
-      fbdev: remove FBINFO_MISC_USEREVENT around fb_blank
-      fb: Flatten control flow in fb_set_var
-      fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls
-      vgaswitcheroo: call fbcon_remap_all directly
-      fbcon: Call con2fb_map functions directly
-      fbcon: Document what I learned about fbcon locking
-      staging/olpc_dcon: Add drm conversion to TODO
-      backlight: simplify lcd notifier
-
- arch/arm/mach-pxa/am200epd.c                    |  13 +-
- drivers/gpu/vga/vga_switcheroo.c                |  11 +-
- drivers/media/pci/ivtv/ivtvfb.c                 |   6 +-
- drivers/staging/fbtft/fbtft-core.c              |   4 +-
- drivers/staging/olpc_dcon/TODO                  |   7 +
- drivers/staging/olpc_dcon/olpc_dcon.c           |   6 +-
- drivers/tty/vt/vt.c                             |  18 ++
- drivers/video/backlight/backlight.c             |   2 +-
- drivers/video/backlight/lcd.c                   |  12 -
- drivers/video/console/dummycon.c                |   6 +
- drivers/video/fbdev/aty/aty128fb.c              |  64 ----
- drivers/video/fbdev/aty/atyfb_base.c            |   3 +-
- drivers/video/fbdev/core/fbcmap.c               |   6 +-
- drivers/video/fbdev/core/fbcon.c                | 313 ++++++++-----------
- drivers/video/fbdev/core/fbcon.h                |   6 +-
- drivers/video/fbdev/core/fbmem.c                | 399 +++++++++---------------
- drivers/video/fbdev/core/fbsysfs.c              |  20 +-
- drivers/video/fbdev/cyber2000fb.c               |   1 -
- drivers/video/fbdev/neofb.c                     |   9 +-
- drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c |  21 +-
- drivers/video/fbdev/sa1100fb.c                  |  25 --
- drivers/video/fbdev/savage/savagefb_driver.c    |   9 +-
- drivers/video/fbdev/sh_mobile_lcdcfb.c          | 132 +-------
- drivers/video/fbdev/sh_mobile_lcdcfb.h          |   5 -
- include/linux/console_struct.h                  |   5 +-
- include/linux/fb.h                              |  45 +--
- include/linux/fbcon.h                           |  30 ++
- 27 files changed, 396 insertions(+), 782 deletions(-)
+Index: b/drivers/video/fbdev/pvr2fb.c
+===================================================================
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -722,6 +722,7 @@ static struct fb_ops pvr2fb_ops = {
+ 	.fb_imageblit	= cfb_imageblit,
+ };
+ 
++#ifndef MODULE
+ static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
+ 			      int size)
+ {
+@@ -733,6 +734,7 @@ static int pvr2_get_param_val(const stru
+ 	}
+ 	return -1;
+ }
++#endif
+ 
+ static char *pvr2_get_param_name(const struct pvr2_params *p, int val,
+ 			  int size)
