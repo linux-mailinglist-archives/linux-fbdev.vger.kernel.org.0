@@ -2,161 +2,120 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0B945BDA
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 13:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC6146168
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 16:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727793AbfFNLyC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jun 2019 07:54:02 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:36510 "EHLO
+        id S1728256AbfFNOqj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jun 2019 10:46:39 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:34385 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727700AbfFNLxy (ORCPT
+        with ESMTP id S1728233AbfFNOqh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jun 2019 07:53:54 -0400
+        Fri, 14 Jun 2019 10:46:37 -0400
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190614115352euoutp0219ac77458769c870c31f3daf9b2facf6~oDoRK5UyC1624516245euoutp02K
-        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 11:53:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190614115352euoutp0219ac77458769c870c31f3daf9b2facf6~oDoRK5UyC1624516245euoutp02K
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190614144635euoutp029fb261ff3211c07232945b7e7531325c~oF-E4WKWp0813808138euoutp02g
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 14:46:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190614144635euoutp029fb261ff3211c07232945b7e7531325c~oF-E4WKWp0813808138euoutp02g
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1560513232;
-        bh=KHTiRK+Do903GTePR+8iFRbvLoOOlqVUQSYPbURGrlg=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=VoRH75GljoPBi+/Bm7asKD9clEjqdYvw1ijfSZCWXNpYIFMHxnUl8mnBMV7rS4MFM
-         BiZ2f1C1X5lAdAeFhmxLZ8DrU07mwoqxA7B0ujUcye0iYMZRKR9wsgZM/ZpPQNKw74
-         45Q3CUuv1l/1yJ2/+rwke+WrgDVJ1Kj1f3fd/jQA=
+        s=mail20170921; t=1560523595;
+        bh=edGrKerInuyqgGn3ETDAt2iEy82hinQGhNb+6fYCtcU=;
+        h=From:Subject:To:Cc:Date:References:From;
+        b=TS7kM82q6hQJjJbje5WzdFCxB8dwooDceDWlvxgUuqAdll7hFzqQlGsEH0o90K3ZF
+         FSlxvnha6ucuQBMK8j8rsZq8HfXmlD5V09Nkz0Ysld0g0SyegFbfJ4jML4VtoTmld0
+         1CVNqt2BRG6+po6wxSUYRNDEKxwnN16F0FvqY34s=
 Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190614115351eucas1p14fc730d70b7cf2eef754ab66a726322f~oDoQaNJ0S2595825958eucas1p11;
-        Fri, 14 Jun 2019 11:53:51 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 43.0F.04377.FCA830D5; Fri, 14
-        Jun 2019 12:53:51 +0100 (BST)
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190614144635eucas1p28ee07a5d9cdfdaad65acfe24a5ebeead~oF-EYApa_1628416284eucas1p2D;
+        Fri, 14 Jun 2019 14:46:35 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id FB.B4.04377.A43B30D5; Fri, 14
+        Jun 2019 15:46:34 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190614115350eucas1p282c9670fc70fad90d3406013e9105106~oDoPt7VgC2104921049eucas1p2n;
-        Fri, 14 Jun 2019 11:53:50 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b~oF-DiByud2594525945eucas1p1i;
+        Fri, 14 Jun 2019 14:46:34 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190614115350eusmtrp102cde45164532f7ca26702f66788680a~oDoPeQfLu1827218272eusmtrp1k;
-        Fri, 14 Jun 2019 11:53:50 +0000 (GMT)
-X-AuditID: cbfec7f4-12dff70000001119-06-5d038acf965d
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 98.B9.04140.ECA830D5; Fri, 14
-        Jun 2019 12:53:50 +0100 (BST)
+        20190614144633eusmtrp125c1f4b0e707a8b9c37c4f82f4ea609f~oF-DShgZ32478124781eusmtrp1l;
+        Fri, 14 Jun 2019 14:46:33 +0000 (GMT)
+X-AuditID: cbfec7f4-113ff70000001119-56-5d03b34aff7d
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 63.7E.04140.943B30D5; Fri, 14
+        Jun 2019 15:46:33 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190614115349eusmtip1a88bda5808c4fa198655701f9bc9625b~oDoO8goMx2619626196eusmtip10;
-        Fri, 14 Jun 2019 11:53:49 +0000 (GMT)
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190614144633eusmtip2c1e4bdf527f13540f414f141abcab773~oF-DDsfl72665126651eusmtip2b;
+        Fri, 14 Jun 2019 14:46:33 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH] video: fbdev: imxfb: fix sparse warnings about using
- incorrect types
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc:     Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        kbuild test robot <lkp@intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Message-ID: <8520d744-cebc-c76a-e51a-ff6a471af57d@samsung.com>
-Date:   Fri, 14 Jun 2019 13:53:52 +0200
+Subject: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jingoo Han <jingoohan1@gmail.com>
+Message-ID: <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
+Date:   Fri, 14 Jun 2019 16:46:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <33fc4837-599d-0d5c-c530-58b283c4c095@samsung.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djPc7rnu5hjDVo+c1hc+fqezeLhVX+L
-        VVN3slhsenyN1eJE3wdWi65fK5ktLu+aw2bxqvkRm8Xf7ZtYLF5sEbe4PXEyowO3x85Zd9k9
-        Fu95yeSxaVUnm8f97uNMHpuX1HtsfLeDyaP/r4HH501yARxRXDYpqTmZZalF+nYJXBlNLxoY
-        C7byVxx7t5uxgXEibxcjJ4eEgIlEw6LFrF2MXBxCAisYJXa9WcwC4XxhlFj5+BcThPOZUWLv
-        5TNsMC2fdzxhhkgsZ5R4PvEJVP9bRon527aygFSxCVhJTGxfxQhiCwuES/w5dYQVxBYRcJCY
-        cmMCO0gDs8APJonubevAingF7CSmvN8EVsQioCpx5eZ5sLioQITE/WMbWCFqBCVOznwCtoBT
-        wF7i7aX5zCA2s4C4xK0n85kgbHmJ5q2zwc6TEHjELnFlSh/U3S4S+xpuQNnCEq+Ob2GHsGUk
-        Tk/uYYFoWMco8bfjBVT3dkaJ5ZP/QXVYSxw+fhHoDA6gFZoS63fpQ4QdJS7M/s0OEpYQ4JO4
-        8VYQ4gg+iUnbpjNDhHklOtqEIKrVJDYs28AGs7Zr50rmCYxKs5C8NgvJO7OQvDMLYe8CRpZV
-        jOKppcW56anFRnmp5XrFibnFpXnpesn5uZsYgWns9L/jX3Yw7vqTdIhRgINRiYf3gBVTrBBr
-        YllxZe4hRgkOZiUR3nnWzLFCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeasZHkQLCaQnlqRmp6YW
-        pBbBZJk4OKUaGJlfWXKr3ctMeyK2+6mI9aI9lS3RFxc/zdtmVWHo0rV/Q1jpuaxOr+c611oX
-        e/2YmdOzx2FveueCuPCVfrceaSel160NnLL+aXDE1VopXc2vC6z2z78s0vX4Xs9t6RsbCnbv
-        Zvh4cErUj+tvuv1qOlaolW//6dTbwj7jo+fHCZtNOi0sUng+1ymxFGckGmoxFxUnAgCCp3mq
-        XwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDIsWRmVeSWpSXmKPExsVy+t/xu7rnuphjDb4fEra48vU9m8XDq/4W
-        q6buZLHY9Pgaq8WJvg+sFl2/VjJbXN41h83iVfMjNou/2zexWLzYIm5xe+JkRgduj52z7rJ7
-        LN7zkslj06pONo/73ceZPDYvqffY+G4Hk0f/XwOPz5vkAjii9GyK8ktLUhUy8otLbJWiDS2M
-        9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DKaXjQwFmzlrzj2bjdjA+NE3i5GTg4J
-        AROJzzueMHcxcnEICSxllOi9cZyti5EDKCEjcXx9GUSNsMSfa11sEDWvGSVudb1hAUmwCVhJ
-        TGxfxQhiCwuES/w5dYQVxBYRcJCYcmMCO0gDs8APJomlc/6BJYQE7CQ239zBDmLzAtlT3m8C
-        i7MIqEpcuXkebJCoQITEmfcrWCBqBCVOznwCZnMK2Eu8vTSfGcRmFlCX+DPvEpQtLnHryXwm
-        CFteonnrbOYJjEKzkLTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgTG
-        7LZjP7fsYOx6F3yIUYCDUYmH94AVU6wQa2JZcWXuIUYJDmYlEd551syxQrwpiZVVqUX58UWl
-        OanFhxhNgZ6byCwlmpwPTCd5JfGGpobmFpaG5sbmxmYWSuK8HQIHY4QE0hNLUrNTUwtSi2D6
-        mDg4pRoY+/bMbHn9+YRmYPDc2j7vY4snCEXctRcwKWg7WvhIeU7tH91ZbFyZH2P+tIT/y/Z1
-        MD5TZ9Y7saHQoO1DoOj5iFs7g1i7Lm99kKKy94NfiXby+/bJ7a3S+ZFRlk2vj+RF5DLNr7hW
-        Xv8xx3z93q0Hl3Des3NU/CVvGPv8GkfPj58b5Db9Z7qlxFKckWioxVxUnAgA5xKiIu8CAAA=
-X-CMS-MailID: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMKsWRmVeSWpSXmKPExsWy7djP87pem5ljDX716Ftc+fqezWLFl5ns
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcxWWTkpqTWZZapG+XwJWx7VcXa8EytooP
+        j04yNzCuYe1i5OSQEDCReD7zHUsXIxeHkMAKRom/y5ayQjhfGCVOne+Gcj4zSvxumsMO07Jk
+        4zVmiMRyRomD8y4yQThvgVrW/2cCqWITsJKY2L6KEcQWFrCXOPfxMjOILSKQILFi+gywOLOA
+        qsSu5qVgNq+AnUTjhwtgG1iA4icn/mABsUUFIiTuH9vAClEjKHFy5hMWiF5xiVtP5jNB2PIS
+        29/OAbtIQuAzm8Smr8vYIE51kWi7cwHKFpZ4dXwL1AsyEqcn97BANKwD+rrjBVT3dkaJ5ZP/
+        QXVYSxw+fhFoNQfQCk2J9bv0IcKOEpsmfWYDCUsI8EnceCsIcQSfxKRt05khwrwSHW1CENVq
+        EhuWbWCDWdu1cyUzhO0hcfzCbdYJjIqzkLw2C8lrs5C8NgvhhgWMLKsYxVNLi3PTU4uN8lLL
+        9YoTc4tL89L1kvNzNzECk8rpf8e/7GDc9SfpEKMAB6MSD++MPuZYIdbEsuLK3EOMEhzMSiK8
+        86yBQrwpiZVVqUX58UWlOanFhxilOViUxHmrGR5ECwmkJ5akZqemFqQWwWSZODilGhiLpTi8
+        qrir9/U7cxRcWZwjJlWimii+8M3dC4vDFpyz582uLDTcJPPI3qcjUtV7x/3qGQYnJZWCCgIy
+        TBJfFJ0+nL/Lb2bBteInV5qanre9SX8n6RNb3jh5w2THWvVH55J+O/zedyJr7aLfopONA0p8
+        9W1YFd8o/SjI/ZubUBFf5j5hww6HJ0osxRmJhlrMRcWJAADZtJMmAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmkeLIzCtJLcpLzFFi42I5/e/4PV3PzcyxBvuPW1lc+fqezWLFl5ns
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
+        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJex7VcXa8EytooPj04yNzCuYe1i5OSQEDCRWLLx
+        GnMXIxeHkMBSRonFEx4BORxACRmJ4+vLIGqEJf5c62KDqHnNKPFl8UEmkASbgJXExPZVjCC2
+        sIC9xLmPl5lBbBGBBImnr+ezgdjMAqoSu5qXgtXwCthJNH64wA5iswDFT078wQJiiwpESJx5
+        v4IFokZQ4uTMJywQveoSf+ZdYoawxSVuPZnPBGHLS2x/O4d5AqPALCQts5C0zELSMgtJywJG
+        llWMIqmlxbnpucVGesWJucWleel6yfm5mxiBEbHt2M8tOxi73gUfYhTgYFTi4Z3RxxwrxJpY
+        VlyZe4hRgoNZSYR3njVQiDclsbIqtSg/vqg0J7X4EKMp0EMTmaVEk/OB0ZpXEm9oamhuYWlo
+        bmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoHxclSB3XpJjtALbt42StKZha8srRab
+        5jY7dHO5Cx86Fv339P+0GULvLZ+ZLPOO3SwSsHTRNnFnYaMJBpb32G9Nk78rudtYKqrmef6t
+        Xy4tG1ccDfjCXuPCcPTDRBbRF0H1b1Yyv9H8GO5x0ujtyakr697t8+U85/pud8qaKzP9vuj8
+        Eety/BirxFKckWioxVxUnAgA5gf4Y54CAAA=
+X-CMS-MailID: 20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
+X-RootMTR: 20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
-References: <33fc4837-599d-0d5c-c530-58b283c4c095@samsung.com>
-        <CGME20190614115350eucas1p282c9670fc70fad90d3406013e9105106@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b
+References: <CGME20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b@eucas1p1.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Use ->screen_buffer instead of ->screen_base to fix sparse warnings.
+Add COMPILE_TEST support to s3c-fb driver for better compile
+testing coverage.
 
-[ Please see commit 17a7b0b4d974 ("fb.h: Provide alternate screen_base
-  pointer") for details. ]
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/video/fbdev/imxfb.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/Kconfig |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Index: b/drivers/video/fbdev/imxfb.c
+Index: b/drivers/video/fbdev/Kconfig
 ===================================================================
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -974,9 +974,8 @@ static int imxfb_probe(struct platform_d
- 	}
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -1877,7 +1877,8 @@ config FB_TMIO_ACCELL
  
- 	fbi->map_size = PAGE_ALIGN(info->fix.smem_len);
--	info->screen_base = dma_alloc_wc(&pdev->dev, fbi->map_size,
--					 &fbi->map_dma, GFP_KERNEL);
--
-+	info->screen_buffer = dma_alloc_wc(&pdev->dev, fbi->map_size,
-+					   &fbi->map_dma, GFP_KERNEL);
- 	if (!info->screen_base) {
- 		dev_err(&pdev->dev, "Failed to allocate video RAM: %d\n", ret);
- 		ret = -ENOMEM;
-@@ -1046,7 +1045,7 @@ failed_cmap:
- 	if (pdata && pdata->exit)
- 		pdata->exit(fbi->pdev);
- failed_platform_init:
--	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_base,
-+	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
- 		    fbi->map_dma);
- failed_map:
- 	iounmap(fbi->regs);
-@@ -1077,7 +1076,7 @@ static int imxfb_remove(struct platform_
- 	pdata = dev_get_platdata(&pdev->dev);
- 	if (pdata && pdata->exit)
- 		pdata->exit(fbi->pdev);
--	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_base,
-+	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
- 		    fbi->map_dma);
- 	iounmap(fbi->regs);
- 	release_mem_region(res->start, resource_size(res));
-
+ config FB_S3C
+ 	tristate "Samsung S3C framebuffer support"
+-	depends on FB && (CPU_S3C2416 || ARCH_S3C64XX)
++	depends on FB && HAVE_CLK && HAS_IOMEM
++	depends on (CPU_S3C2416 || ARCH_S3C64XX) || COMPILE_TEST
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
