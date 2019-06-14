@@ -2,58 +2,161 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6A5745B36
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 13:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0B945BDA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 13:55:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727166AbfFNLNB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jun 2019 07:13:01 -0400
-Received: from qf-corp.com ([43.252.215.172]:51703 "EHLO server1.qf-corp.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727119AbfFNLNA (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jun 2019 07:13:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=qf-corp.com
-        ; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=x+wk2oDUMoo/hQHPqS9UCKstzOaLw+EthDvW07j7+BE=; b=SN0Rg4YYEzTdSxNRFX515sISRy
-        k26/yFY0cMMYe8f6VtiBUEiRAp5tlFZ5KvCDnWasorEIFWLTZbP1t/8mYeIlb+1RzllrauA8cIVQN
-        pcU63iqsLwTRtVjCkUQovMEWjDRvR3jI4zlOOXASfcz9J8Me5mZDXoOxeAKoZwF2XuHF3tazYY7fX
-        kReCKED2QCNy3DDXhrhKUmVuJ7mWaTITw5uwZkDxQwSWxPxb/CmNY5pan9JWcXcZVKcGZnjjQ9n5q
-        x6IfFGGIL/6B3KqGY1hfXiVmw30xAHdE+snpgVJL1pEp3XHE6UUwAr8WVnctOpAildgmMK7i0qmr8
-        uit2uoVA==;
-Received: from [::1] (port=56834 helo=server1.qf-corp.com)
-        by server1.qf-corp.com with esmtpa (Exim 4.92)
-        (envelope-from <admin@qf-corp.com>)
-        id 1hbk6y-0000ZG-7g; Fri, 14 Jun 2019 19:11:12 +0800
+        id S1727793AbfFNLyC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jun 2019 07:54:02 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:36510 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727700AbfFNLxy (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 14 Jun 2019 07:53:54 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190614115352euoutp0219ac77458769c870c31f3daf9b2facf6~oDoRK5UyC1624516245euoutp02K
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 11:53:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190614115352euoutp0219ac77458769c870c31f3daf9b2facf6~oDoRK5UyC1624516245euoutp02K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1560513232;
+        bh=KHTiRK+Do903GTePR+8iFRbvLoOOlqVUQSYPbURGrlg=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=VoRH75GljoPBi+/Bm7asKD9clEjqdYvw1ijfSZCWXNpYIFMHxnUl8mnBMV7rS4MFM
+         BiZ2f1C1X5lAdAeFhmxLZ8DrU07mwoqxA7B0ujUcye0iYMZRKR9wsgZM/ZpPQNKw74
+         45Q3CUuv1l/1yJ2/+rwke+WrgDVJ1Kj1f3fd/jQA=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190614115351eucas1p14fc730d70b7cf2eef754ab66a726322f~oDoQaNJ0S2595825958eucas1p11;
+        Fri, 14 Jun 2019 11:53:51 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 43.0F.04377.FCA830D5; Fri, 14
+        Jun 2019 12:53:51 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190614115350eucas1p282c9670fc70fad90d3406013e9105106~oDoPt7VgC2104921049eucas1p2n;
+        Fri, 14 Jun 2019 11:53:50 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190614115350eusmtrp102cde45164532f7ca26702f66788680a~oDoPeQfLu1827218272eusmtrp1k;
+        Fri, 14 Jun 2019 11:53:50 +0000 (GMT)
+X-AuditID: cbfec7f4-12dff70000001119-06-5d038acf965d
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 98.B9.04140.ECA830D5; Fri, 14
+        Jun 2019 12:53:50 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190614115349eusmtip1a88bda5808c4fa198655701f9bc9625b~oDoO8goMx2619626196eusmtip10;
+        Fri, 14 Jun 2019 11:53:49 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: fbdev: imxfb: fix sparse warnings about using
+ incorrect types
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc:     Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        kbuild test robot <lkp@intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Message-ID: <8520d744-cebc-c76a-e51a-ff6a471af57d@samsung.com>
+Date:   Fri, 14 Jun 2019 13:53:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+In-Reply-To: <33fc4837-599d-0d5c-c530-58b283c4c095@samsung.com>
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Date:   Fri, 14 Jun 2019 19:11:12 +0800
-From:   Herr David Williams <admin@qf-corp.com>
-To:     undisclosed-recipients:;
-Subject: dringender Kredit
-Reply-To: davidloaninvestment12@gmail.com
-Mail-Reply-To: davidloaninvestment12@gmail.com
-Message-ID: <8efb54332809e20fa1de23583e067ec8@qf-corp.com>
-X-Sender: admin@qf-corp.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server1.qf-corp.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - qf-corp.com
-X-Get-Message-Sender-Via: server1.qf-corp.com: authenticated_id: admin@qf-corp.com
-X-Authenticated-Sender: server1.qf-corp.com: admin@qf-corp.com
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djPc7rnu5hjDVo+c1hc+fqezeLhVX+L
+        VVN3slhsenyN1eJE3wdWi65fK5ktLu+aw2bxqvkRm8Xf7ZtYLF5sEbe4PXEyowO3x85Zd9k9
+        Fu95yeSxaVUnm8f97uNMHpuX1HtsfLeDyaP/r4HH501yARxRXDYpqTmZZalF+nYJXBlNLxoY
+        C7byVxx7t5uxgXEibxcjJ4eEgIlEw6LFrF2MXBxCAisYJXa9WcwC4XxhlFj5+BcThPOZUWLv
+        5TNsMC2fdzxhhkgsZ5R4PvEJVP9bRon527aygFSxCVhJTGxfxQhiCwuES/w5dYQVxBYRcJCY
+        cmMCO0gDs8APJonubevAingF7CSmvN8EVsQioCpx5eZ5sLioQITE/WMbWCFqBCVOznwCtoBT
+        wF7i7aX5zCA2s4C4xK0n85kgbHmJ5q2zwc6TEHjELnFlSh/U3S4S+xpuQNnCEq+Ob2GHsGUk
+        Tk/uYYFoWMco8bfjBVT3dkaJ5ZP/QXVYSxw+fhHoDA6gFZoS63fpQ4QdJS7M/s0OEpYQ4JO4
+        8VYQ4gg+iUnbpjNDhHklOtqEIKrVJDYs28AGs7Zr50rmCYxKs5C8NgvJO7OQvDMLYe8CRpZV
+        jOKppcW56anFRnmp5XrFibnFpXnpesn5uZsYgWns9L/jX3Yw7vqTdIhRgINRiYf3gBVTrBBr
+        YllxZe4hRgkOZiUR3nnWzLFCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeasZHkQLCaQnlqRmp6YW
+        pBbBZJk4OKUaGJlfWXKr3ctMeyK2+6mI9aI9lS3RFxc/zdtmVWHo0rV/Q1jpuaxOr+c611oX
+        e/2YmdOzx2FveueCuPCVfrceaSel160NnLL+aXDE1VopXc2vC6z2z78s0vX4Xs9t6RsbCnbv
+        Zvh4cErUj+tvuv1qOlaolW//6dTbwj7jo+fHCZtNOi0sUng+1ymxFGckGmoxFxUnAgCCp3mq
+        XwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDIsWRmVeSWpSXmKPExsVy+t/xu7rnuphjDb4fEra48vU9m8XDq/4W
+        q6buZLHY9Pgaq8WJvg+sFl2/VjJbXN41h83iVfMjNou/2zexWLzYIm5xe+JkRgduj52z7rJ7
+        LN7zkslj06pONo/73ceZPDYvqffY+G4Hk0f/XwOPz5vkAjii9GyK8ktLUhUy8otLbJWiDS2M
+        9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DKaXjQwFmzlrzj2bjdjA+NE3i5GTg4J
+        AROJzzueMHcxcnEICSxllOi9cZyti5EDKCEjcXx9GUSNsMSfa11sEDWvGSVudb1hAUmwCVhJ
+        TGxfxQhiCwuES/w5dYQVxBYRcJCYcmMCO0gDs8APJomlc/6BJYQE7CQ239zBDmLzAtlT3m8C
+        i7MIqEpcuXkebJCoQITEmfcrWCBqBCVOznwCZnMK2Eu8vTSfGcRmFlCX+DPvEpQtLnHryXwm
+        CFteonnrbOYJjEKzkLTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgTG
+        7LZjP7fsYOx6F3yIUYCDUYmH94AVU6wQa2JZcWXuIUYJDmYlEd551syxQrwpiZVVqUX58UWl
+        OanFhxhNgZ6byCwlmpwPTCd5JfGGpobmFpaG5sbmxmYWSuK8HQIHY4QE0hNLUrNTUwtSi2D6
+        mDg4pRoY+/bMbHn9+YRmYPDc2j7vY4snCEXctRcwKWg7WvhIeU7tH91ZbFyZH2P+tIT/y/Z1
+        MD5TZ9Y7saHQoO1DoOj5iFs7g1i7Lm99kKKy94NfiXby+/bJ7a3S+ZFRlk2vj+RF5DLNr7hW
+        Xv8xx3z93q0Hl3Des3NU/CVvGPv8GkfPj58b5Db9Z7qlxFKckWioxVxUnAgA5xKiIu8CAAA=
+X-CMS-MailID: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190614115350eucas1p282c9670fc70fad90d3406013e9105106
+References: <33fc4837-599d-0d5c-c530-58b283c4c095@samsung.com>
+        <CGME20190614115350eucas1p282c9670fc70fad90d3406013e9105106@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Use ->screen_buffer instead of ->screen_base to fix sparse warnings.
 
+[ Please see commit 17a7b0b4d974 ("fb.h: Provide alternate screen_base
+  pointer") for details. ]
 
--- 
-Benötigen Sie dringend einen Kredit? Wenn ja, antworten Sie für weitere 
-Details
+Reported-by: kbuild test robot <lkp@intel.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ drivers/video/fbdev/imxfb.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+Index: b/drivers/video/fbdev/imxfb.c
+===================================================================
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -974,9 +974,8 @@ static int imxfb_probe(struct platform_d
+ 	}
+ 
+ 	fbi->map_size = PAGE_ALIGN(info->fix.smem_len);
+-	info->screen_base = dma_alloc_wc(&pdev->dev, fbi->map_size,
+-					 &fbi->map_dma, GFP_KERNEL);
+-
++	info->screen_buffer = dma_alloc_wc(&pdev->dev, fbi->map_size,
++					   &fbi->map_dma, GFP_KERNEL);
+ 	if (!info->screen_base) {
+ 		dev_err(&pdev->dev, "Failed to allocate video RAM: %d\n", ret);
+ 		ret = -ENOMEM;
+@@ -1046,7 +1045,7 @@ failed_cmap:
+ 	if (pdata && pdata->exit)
+ 		pdata->exit(fbi->pdev);
+ failed_platform_init:
+-	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_base,
++	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
+ 		    fbi->map_dma);
+ failed_map:
+ 	iounmap(fbi->regs);
+@@ -1077,7 +1076,7 @@ static int imxfb_remove(struct platform_
+ 	pdata = dev_get_platdata(&pdev->dev);
+ 	if (pdata && pdata->exit)
+ 		pdata->exit(fbi->pdev);
+-	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_base,
++	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
+ 		    fbi->map_dma);
+ 	iounmap(fbi->regs);
+ 	release_mem_region(res->start, resource_size(res));
+
