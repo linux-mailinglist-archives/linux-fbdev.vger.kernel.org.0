@@ -2,119 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B34E74616E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 16:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F072A46179
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 16:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728850AbfFNOri (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jun 2019 10:47:38 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:44298 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728788AbfFNOrh (ORCPT
+        id S1728495AbfFNOs0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jun 2019 10:48:26 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:34814 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728290AbfFNOs0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jun 2019 10:47:37 -0400
+        Fri, 14 Jun 2019 10:48:26 -0400
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190614144736euoutp0108a90409b0fff191625bf5d15fead26a~oF-9xs40z3159931599euoutp01k
-        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 14:47:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190614144736euoutp0108a90409b0fff191625bf5d15fead26a~oF-9xs40z3159931599euoutp01k
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190614144825euoutp025d629cc86e2a539ea1b925017d049187~oGAq-211_0963509635euoutp02C
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jun 2019 14:48:25 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190614144825euoutp025d629cc86e2a539ea1b925017d049187~oGAq-211_0963509635euoutp02C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1560523656;
-        bh=vg+p7zFanCSl59yGXY1FnQrt4BBpQ9tRwbXks+s9a6E=;
+        s=mail20170921; t=1560523705;
+        bh=KbnWEYsgqMns3fL1M6bl1WXvL0vvlacarWBlX2so54A=;
         h=From:Subject:To:Cc:Date:References:From;
-        b=UNVz0eKIrTACreITW2rj3dlOXmVE6+9N+ayNEIL0zRXBtVbdUBuzNrCCHzpnIwb4l
-         MR+y/J9htxNEAxZBb5Gb+vIesBrGxX0FxXMHQYlvEYLKuiJl+IYO+aa7ia8UUoCGr7
-         KXdd8DCT2axob+TE/2EsHP5MT9wcgHIqQxarqHXA=
+        b=u17c7vknApsshx78VtoHa92DcoTtt2IZwmtq/UlDVTUB5kYKwl4mVkZRgWJJ5aUL4
+         EOv2RAeXCPaF3ojqnEMDNU79R8O9bbkpW2bApSvydSIpl7xfgvne6Rs+5CAd5qrHxY
+         nWCPZcMo4C2dEEs4r2IhRM2fiM5uZ9DSbHVg/q5w=
 Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190614144736eucas1p1ebd03828cac1313ee6e22643239db5b8~oF-9aNJpH0266602666eucas1p1j;
-        Fri, 14 Jun 2019 14:47:36 +0000 (GMT)
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190614144824eucas1p28ce4a766238335181118b38c84e7adf9~oGAqZwRvZ1842218422eucas1p2w;
+        Fri, 14 Jun 2019 14:48:24 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 52.86.04325.883B30D5; Fri, 14
-        Jun 2019 15:47:36 +0100 (BST)
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 74.96.04325.8B3B30D5; Fri, 14
+        Jun 2019 15:48:24 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f~oF-8OTpdS2290822908eucas1p2k;
-        Fri, 14 Jun 2019 14:47:35 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190614144823eucas1p1f6d5ed1905350e9933f4d7fec0a3419f~oGApS6j7R3210832108eucas1p1V;
+        Fri, 14 Jun 2019 14:48:23 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190614144734eusmtrp1a401b19e4b67fc9ef5457d24e0ff6682~oF-7_0lfM2548325483eusmtrp1E;
-        Fri, 14 Jun 2019 14:47:34 +0000 (GMT)
-X-AuditID: cbfec7f5-b75ff700000010e5-66-5d03b3889aec
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id AC.8E.04140.683B30D5; Fri, 14
-        Jun 2019 15:47:34 +0100 (BST)
+        20190614144823eusmtrp175a283449c6243ce6a6c4150a43377d9~oGApDaKRT2548325483eusmtrp1J;
+        Fri, 14 Jun 2019 14:48:23 +0000 (GMT)
+X-AuditID: cbfec7f5-b75ff700000010e5-d8-5d03b3b8da7f
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 32.AE.04140.7B3B30D5; Fri, 14
+        Jun 2019 15:48:23 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190614144734eusmtip2c8392ac0206644617e2e70c76871a259~oF-7tv3032993929939eusmtip2L;
-        Fri, 14 Jun 2019 14:47:34 +0000 (GMT)
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190614144822eusmtip18c6f39ce9009c2c74240f5194e9a9ae9~oGAoz5tG92907529075eusmtip1F;
+        Fri, 14 Jun 2019 14:48:22 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH 1/3] video: fbdev: s3c-fb: return -ENOMEM on
+Subject: [PATCH 2/3] video: fbdev: intelfb: return -ENOMEM on
  framebuffer_alloc() failure
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org
-Cc:     Jingoo Han <jingoohan1@gmail.com>
-Message-ID: <bbf32fbc-b4bc-39fc-e8dd-db9f0cd0d83f@samsung.com>
-Date:   Fri, 14 Jun 2019 16:47:34 +0200
+Cc:     Maik Broemme <mbroemme@libmpq.org>
+Message-ID: <a659cb04-b16c-a3a0-30f4-b2f90b0d7196@samsung.com>
+Date:   Fri, 14 Jun 2019 16:48:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG++9cdhxOjlPxxS7SKKEgrQwaGVIRNPCLHxSjMDfzMJduyua8
-        ZKAk6FpDM1PntJyBOVe0ecHLCsMlHktUIrFIRDMpzWbBFBHU8niU/PZ7n/d9+D8P/ClMUkmE
-        UWptDqPTKjOlpAjvGlwbPWHswJJPvvGRsvGV36TMvlwnlA2V/yFkH90N5AVc3mudEsqn77MC
-        ua/9UDx2TXQ+jclU5zK6qFiFKN3Y3SrM7iPyBx6zeDEawU3IjwL6DLTUWAQmJKIktB1BrbNs
-        Z1hG8KmexfjBh6B5cZXYtVQ8txD8ogXB+JBXwC0ktBfBWE04xyR9DirLHMiEKCqIvgauhQxO
-        DqYVYK+1II4x+ii4S5q3WUzHgmd2UsgxvqU/Wq3GOA6hr8L0oIvgbwLhXd0czntD4ctco4Dn
-        cOj2NmwHBdpHQuNs5063y1Be3yTkOQh+sp07fACGq8w4b3iJYMM4v+PuRtBStUnyVzHwlv1A
-        cA0w+hg43VG8fBGWNqeEnAx0AHz2BvIhAuBhVy3Gy2Iwlkr46whwPXORu8+aelsxnuXQMe/E
-        H6DD1j3VrHuqWfdUs/7PYEO4A4UyBr1GxeijtUxepF6p0Ru0qsibWZp2tPVRhjfZlR7Ut57q
-        QTSFpP5iSzmWLCGUufoCjQcBhUmDxU9itiRxmrLgNqPLStEZMhm9B+2ncGmouHDfzHUJrVLm
-        MBkMk83odrcCyi+sGJ0eYWxrE4ljVRG5hTaz/BtbNGUH/2F5/UycOUTnmPAZ7rgX816bl1S3
-        nCn9P0ZLD4YUxh1JHWhKYBon4zHN35LWpwsJN5IS2QrrWXVPwK/qpOT8MUaxflc87pPP9H9v
-        iO63NSM6o9IX9X6jbbXI+1Vhv/LK0fZitq1UfemeFNenK08dx3R65T+PgPCNJAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupikeLIzCtJLcpLzFFi42I5/e/4Pd22zcyxBtPW6Vtc+fqezWLFl5ns
-        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
-        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJfRsX0le8E+1oojc4+zNDCeZeli5OSQEDCR6F89
-        g7WLkYtDSGApo0TDqXfMXYwcQAkZiePryyBqhCX+XOtig6h5zShxovk5K0iCTcBKYmL7KkaQ
-        emGBKIkNL7NBwiICCRJPX89nA7GZBVQldjUvZQSxeQXsJA49us0OYrMAxad8n8oMYosKREic
-        eb+CBaJGUOLkzCcsEL3qEn/mXWKGsMUlbj2ZzwRhy0tsfzuHeQKjwCwkLbOQtMxC0jILScsC
-        RpZVjCKppcW56bnFRnrFibnFpXnpesn5uZsYgfGw7djPLTsYu94FH2IU4GBU4uGd0cccK8Sa
-        WFZcmXuIUYKDWUmEd541UIg3JbGyKrUoP76oNCe1+BCjKdBDE5mlRJPzgbGaVxJvaGpobmFp
-        aG5sbmxmoSTO2yFwMEZIID2xJDU7NbUgtQimj4mDU6qB8eSMKcIh3GHvioXm78zy3cx5+VdY
-        2gaN9MJN5w/zpr8QTrouWqFqbO5dXjmn9Nw+9tXablUT1sulONcs6C791fB9k8rrL4eljr5q
-        kNI4Pz1Wb0e95vZrjq+DD13VnHh5vlbEGTWzpZ8r3HbvsLvY7rec/8aVjhd+62pYe+ZkiN9V
-        e1y85I9brhJLcUaioRZzUXEiABylbRydAgAA
-X-CMS-MailID: 20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduznOd0dm5ljDSY+Fra48vU9m8WJvg+s
+        Fpd3zWGz+HWSyYHF4/rPG0we97uPM3l83iQXwBzFZZOSmpNZllqkb5fAlXHv4lzGghNsFU86
+        DzI1MF5g7WLk5JAQMJG4/6+FrYuRi0NIYAWjRPvTPewQzhdGiUlrJrJAOJ8ZJaY0LmCEaXm/
+        +QJU1XJGiY/H77GBJIQE3jJKrG5TArHZBKwkJravAmrg4BAWiJb4N8cLJCwikCCxYvoMsDCz
+        gJrE9UXVIGFeATuJQ12XmEBsFgFVid6v25lBbFGBCIn7xzawQtQISpyc+YQFxGYWEJe49WQ+
+        E4QtL7H97RxmkHMkBD6zSez60soCcaeLxK2tPUwQtrDEq+Nb2CFsGYnTk3tYIBrWMUr87XgB
+        1b2dUWL55H9sEFXWEoePX2SFuFRTYv0ufYiwo8S5I5tZQMISAnwSN94KQhzBJzFp23RmiDCv
+        REebEES1msSGZRvYYNZ27VzJDGF7SFy+OZdlAqPiLCSvzULy2iwkr81CuGEBI8sqRvHU0uLc
+        9NRi47zUcr3ixNzi0rx0veT83E2MwGRy+t/xrzsY9/1JOsQowMGoxMM7o485Vog1say4MvcQ
+        owQHs5II7zxroBBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeaoYH0UIC6YklqdmpqQWpRTBZJg5O
+        qQZGP+dFx87cVe/2Ln99m/ekmJrOF4N7OxslI+xk/E/Puh5w9RGXy4x3VX01bHM3+GuWqdzb
+        KDv1mekKRZ9nZ11fsqYemR2gyC0rsv2Ki9X66VpNZ5qZNQJEek3OHCt5ffHMVf7Op/KbNmXn
+        tZZpNcU/SiivTA+O2TUtcON2xRl3zhxPYQtv+eytxFKckWioxVxUnAgAk1mLPiIDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgkeLIzCtJLcpLzFFi42I5/e/4Xd3tm5ljDRrbeSyufH3PZnGi7wOr
+        xeVdc9gsfp1kcmDxuP7zBpPH/e7jTB6fN8kFMEfp2RTll5akKmTkF5fYKkUbWhjpGVpa6BmZ
+        WOoZGpvHWhmZKunb2aSk5mSWpRbp2yXoZdy7OJex4ARbxZPOg0wNjBdYuxg5OSQETCTeb77A
+        3sXIxSEksJRR4suzjyxdjBxACRmJ4+vLIGqEJf5c62KDqHnNKPH7YAdYM5uAlcTE9lWMIPXC
+        AtES/+Z4gYRFBBIknr6ezwYSZhZQk7i+qBokzCtgJ3Go6xITiM0ioCrR+3U7M4gtKhAhceb9
+        ChaIGkGJkzOfgNnMAuoSf+ZdYoawxSVuPZnPBGHLS2x/O4d5AqPALCQts5C0zELSMgtJywJG
+        llWMIqmlxbnpucVGesWJucWleel6yfm5mxiBsbDt2M8tOxi73gUfYhTgYFTi4Z3RxxwrxJpY
+        VlyZe4hRgoNZSYR3njVQiDclsbIqtSg/vqg0J7X4EKMp0EMTmaVEk/OBcZpXEm9oamhuYWlo
+        bmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoFxB8cOpog0E0+OuM4p4q6yL70c+zo+
+        LdTaueT+6QlqyqICa7nYHZgn6a59v9IlbevEOf0PmH4eN39wdp7OjLbf5z8U7xFY5vp+8/3H
+        4VN29Oo8KPM49OaF+dIzB/a9m/Ln65S0Hcv0bfIfmiip83pG6+0MWsRSyp+gUpoz14ax58/K
+        RWbcF//bKbEUZyQaajEXFScCALvnrPmbAgAA
+X-CMS-MailID: 20190614144823eucas1p1f6d5ed1905350e9933f4d7fec0a3419f
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f
+X-RootMTR: 20190614144823eucas1p1f6d5ed1905350e9933f4d7fec0a3419f
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f
-References: <CGME20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20190614144823eucas1p1f6d5ed1905350e9933f4d7fec0a3419f
+References: <CGME20190614144823eucas1p1f6d5ed1905350e9933f4d7fec0a3419f@eucas1p1.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix error code from -ENOENT to -ENOMEM.
+Fix error code from -ENODEV to -ENOMEM.
 
-Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Maik Broemme <mbroemme@libmpq.org>
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/video/fbdev/s3c-fb.c |    2 +-
+ drivers/video/fbdev/intelfb/intelfbdrv.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: b/drivers/video/fbdev/s3c-fb.c
+Index: b/drivers/video/fbdev/intelfb/intelfbdrv.c
 ===================================================================
---- a/drivers/video/fbdev/s3c-fb.c
-+++ b/drivers/video/fbdev/s3c-fb.c
-@@ -1191,7 +1191,7 @@ static int s3c_fb_probe_win(struct s3c_f
- 				   palette_size * sizeof(u32), sfb->dev);
- 	if (!fbinfo) {
- 		dev_err(sfb->dev, "failed to allocate framebuffer\n");
--		return -ENOENT;
+--- a/drivers/video/fbdev/intelfb/intelfbdrv.c
++++ b/drivers/video/fbdev/intelfb/intelfbdrv.c
+@@ -493,7 +493,7 @@ static int intelfb_pci_register(struct p
+ 	info = framebuffer_alloc(sizeof(struct intelfb_info), &pdev->dev);
+ 	if (!info) {
+ 		ERR_MSG("Could not allocate memory for intelfb_info.\n");
+-		return -ENODEV;
 +		return -ENOMEM;
  	}
- 
- 	windata = sfb->pdata->win[win_no];
+ 	if (fb_alloc_cmap(&info->cmap, 256, 1) < 0) {
+ 		ERR_MSG("Could not allocate cmap for intelfb_info.\n");
