@@ -2,58 +2,76 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4802846618
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jun 2019 19:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 789254716B
+	for <lists+linux-fbdev@lfdr.de>; Sat, 15 Jun 2019 19:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbfFNRsW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jun 2019 13:48:22 -0400
-Received: from smtp2.ono.com ([62.42.230.179]:38699 "EHLO smtp2.ono.com"
+        id S1725796AbfFORdF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 15 Jun 2019 13:33:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726082AbfFNRsW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jun 2019 13:48:22 -0400
-X-Junkmail-Premium-Raw: score=26/50,refid=2.7.2:2019.6.14.164816:17:26.894,ip=62.42.230.134,rules=__HAS_MSGID,
- __SANE_MSGID, MSGID_JMAIL_DEFAULT, INVALID_MSGID_NO_FQDN, __HAS_FROM,
- FROM_NAME_PHRASE, FROM_NAME_ALLCAPS, __HAS_REPLYTO, __FRAUD_WEBMAIL_REPLYTO,
- BLANK_SUBJECT, __MIME_VERSION, __CT, __CT_TEXT_PLAIN, __CTE, MISSING_HEADERS,
- __ANY_URI, __FRAUD_BODY_WEBMAIL, __URI_NO_WWW, __NO_HTML_TAG_RAW,
- BODYTEXTP_SIZE_400_LESS, BODY_SIZE_200_299, BODYTEXTP_SIZE_3000_LESS,
- __MIME_TEXT_P1, __MIME_TEXT_ONLY, __URI_NS, HTML_00_01, HTML_00_10,
- BODY_SIZE_5000_LESS, __FRAUD_WEBMAIL, WEBMAIL_REPLYTO_NOT_FROM,
- FRAUD_WEBMAIL_R_NOT_F, __MIME_TEXT_P, FRAUD_LITTLE_BODY,
- __PHISH_SPEAR_STRUCTURE_1, BODY_SIZE_1000_LESS, BODY_SIZE_2000_LESS,
- SMALL_BODY, __PHISH_SPEAR_STRUCTURE_2, REPLYTO_FROM_DIFF_ADDY, NO_URI_HTTPS,
- BODY_SIZE_7000_LESS, TO_MALFORMED
-Received: from resprs04 (62.42.230.134) by smtp2.ono.com (9.0.019.09-1)
-        id 5CAF0F5D033A9A92; Fri, 14 Jun 2019 19:48:18 +0200
-Received: from (149.126.75.1) by webmailcpr04n.ono.com;  Fri, 14 Jun 2019 19:48:17 +0200
-Message-ID: <33296203.262531560534497614.JavaMail.defaultUser@defaultHost>
-Date:   Fri, 14 Jun 2019 19:48:17 +0200 (CEST)
-From:   DR ALBERT ZONGO <rjpd@ono.com>
-Reply-To: dralbertddzongo@gmail.com
-Subject: 
+        id S1725270AbfFORdF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 15 Jun 2019 13:33:05 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8BA2A21841;
+        Sat, 15 Jun 2019 17:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560619985;
+        bh=WGXI8jXG0pKfq2SJo5cutcD1R3GEYJqxwZCDZAfx5/Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vhyOA3qKzYPZ7gnbY9LxRLHZl5uU4g7RBi63PuoHo/ljxYZz0uMtZJ5dVVwMBtc7L
+         rUfN8DBIZhRsl4vpkJYFgIRCNlGjwBoz+tmwrVncGcXdi6WREwYzpg5ViH7+cPnv+Y
+         IhxZPapatIjP86VWnebmCvJ9ZcAtv3l2xOxKJRM4=
+Date:   Sat, 15 Jun 2019 19:33:02 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Shobhit Kukreti <shobhitkukreti@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: Fix checkpatch ERROR: space prohibited
+ before that close parenthesis ')'
+Message-ID: <20190615173302.GB4914@kroah.com>
+References: <20190614023225.GA27938@t-1000>
 MIME-Version: 1.0
-Content-Type: text/plain;charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614023225.GA27938@t-1000>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Thu, Jun 13, 2019 at 07:32:28PM -0700, Shobhit Kukreti wrote:
+> Cleaned up code to resolve  the checkpatch error
+> ERROR: space prohibited before that close parenthesis ')'
+> from the file:
+> 
+> fbtft/fbtft-bus.c
+> 
+> Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
+> ---
+>  drivers/staging/fbtft/fbtft-bus.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
+> index 2ea814d..2b43bc2 100644
+> --- a/drivers/staging/fbtft/fbtft-bus.c
+> +++ b/drivers/staging/fbtft/fbtft-bus.c
+> @@ -62,9 +62,9 @@ out:									      \
+>  }                                                                             \
+>  EXPORT_SYMBOL(func);
+>  
+> -define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
+> +define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8,)
+>  define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
+> -define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
+> +define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16,)
 
+Will this still build?  I thought I remember some old versions of gcc
+not liking this...
 
+Did you test this patch out?
 
---
-Greetings,
+thanks,
 
-I have an intending proposal for you please i need you to contact my 
-private
-
- E-mail (dralbertddzongo@gmail.com) for more updates,
-
-Best Wishes.
-
-DR ALBERT ZONGO
-
---
-
+greg k-h
