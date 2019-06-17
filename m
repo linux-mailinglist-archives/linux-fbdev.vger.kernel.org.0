@@ -2,107 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1C147B1F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 09:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FCFE47BD2
+	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 10:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbfFQHhH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 17 Jun 2019 03:37:07 -0400
-Received: from mga14.intel.com ([192.55.52.115]:55174 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726189AbfFQHhG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 17 Jun 2019 03:37:06 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Jun 2019 00:37:06 -0700
-X-ExtLoop1: 1
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Jun 2019 00:36:57 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 4/7] lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
-In-Reply-To: <20190617020430.8708-5-alastair@au1.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20190617020430.8708-1-alastair@au1.ibm.com> <20190617020430.8708-5-alastair@au1.ibm.com>
-Date:   Mon, 17 Jun 2019 10:39:53 +0300
-Message-ID: <87imt4vewm.fsf@intel.com>
+        id S1725983AbfFQIGy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 17 Jun 2019 04:06:54 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43433 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725862AbfFQIGy (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 17 Jun 2019 04:06:54 -0400
+Received: by mail-lf1-f65.google.com with SMTP id j29so5781602lfk.10
+        for <linux-fbdev@vger.kernel.org>; Mon, 17 Jun 2019 01:06:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UBAIYgr3qMK7KPe2vk2HnkrCN8Z499UT+fyGo5dytmg=;
+        b=PeiQD7ucu6ttWMmG1WUhfQKedVRpBzDvgC7nLN33W740jH8McmcV8/PiKVWlLOLLvo
+         uelNath+qcbvdpiNwNqUc+uFnEn3T0gPVMrBwIxESI3mYZDk2hrMshx+9GNb2ZWcVFNN
+         1bygO0ujsboXZT8p88gh+UQSWgccqUkhYesNm0NJKnM2gnNEFcavWFHy8RRwKUZJ8F4Q
+         dKkm+RgnAUyrPdhjhZZWCyshJ0GzdEHjorsZtOkQHrOfWEo6qFOT7J4Lk9qzzuBpuYVM
+         4eGIXa3gX7nti5Gkq7n5DKmX3eOcDIJ/X+d2JI4sZnYqTL9sZ500x27K64vWwYMWVrbJ
+         fu0g==
+X-Gm-Message-State: APjAAAUVJWM9ySpldwCztH/oktRpY72M3Mp5v4lUOS3bIqRujeDpbDqg
+        vxB6J251oW8qSh+vmjHpWkdN73WK6Cfaeh+wpV8=
+X-Google-Smtp-Source: APXvYqxsNaI0j7ZDK/oBDGI+JMsaCwWe50htav7v93pfnpqy1paFPPZWjCEXJWv9iX6EQ2tFXHlJ785TORXA5arqirk=
+X-Received: by 2002:ac2:546a:: with SMTP id e10mr7058679lfn.75.1560758812459;
+ Mon, 17 Jun 2019 01:06:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190614023225.GA27938@t-1000>
+In-Reply-To: <20190614023225.GA27938@t-1000>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 17 Jun 2019 10:06:39 +0200
+Message-ID: <CAMuHMdW0iHNuS2Q1n4jynVGrgcnOPrLWX08ffWdT3GUGaidt-g@mail.gmail.com>
+Subject: Re: [PATCH] staging: fbtft: Fix checkpatch ERROR: space prohibited
+ before that close parenthesis ')'
+To:     Shobhit Kukreti <shobhitkukreti@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Andy Whitcroft <apw@canonical.com>,
+        Joe Perches <joe@perches.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 17 Jun 2019, "Alastair D'Silva" <alastair@au1.ibm.com> wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
+Hi Shobhit,
+
+Thanks for your patch!
+
+On Fri, Jun 14, 2019 at 4:34 AM Shobhit Kukreti
+<shobhitkukreti@gmail.com> wrote:
+> Cleaned up code to resolve  the checkpatch error
+> ERROR: space prohibited before that close parenthesis ')'
+> from the file:
 >
-> In order to support additional features in hex_dump_to_buffer, replace
-> the ascii bool parameter with flags.
->
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> fbtft/fbtft-bus.c
+
+IMHO that is a bogus checkpatch error...
+
+> Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
 > ---
->  drivers/gpu/drm/i915/intel_engine_cs.c            |  2 +-
->  drivers/isdn/hardware/mISDN/mISDNisar.c           |  6 ++++--
->  drivers/mailbox/mailbox-test.c                    |  2 +-
->  drivers/net/ethernet/amd/xgbe/xgbe-drv.c          |  2 +-
->  drivers/net/ethernet/synopsys/dwc-xlgmac-common.c |  2 +-
->  drivers/net/wireless/ath/ath10k/debug.c           |  3 ++-
->  drivers/net/wireless/intel/iwlegacy/3945-mac.c    |  2 +-
->  drivers/platform/chrome/wilco_ec/debugfs.c        |  2 +-
->  drivers/scsi/scsi_logging.c                       |  8 +++-----
->  drivers/staging/fbtft/fbtft-core.c                |  2 +-
->  fs/seq_file.c                                     |  3 ++-
->  include/linux/printk.h                            |  8 ++++----
->  lib/hexdump.c                                     | 15 ++++++++-------
->  lib/test_hexdump.c                                |  5 +++--
->  14 files changed, 33 insertions(+), 29 deletions(-)
+>  drivers/staging/fbtft/fbtft-bus.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/i915/intel_engine_cs.c b/drivers/gpu/drm/i915/intel_engine_cs.c
-> index eea9bec04f1b..5df5fffdb848 100644
-> --- a/drivers/gpu/drm/i915/intel_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/intel_engine_cs.c
-> @@ -1340,7 +1340,7 @@ static void hexdump(struct drm_printer *m, const void *buf, size_t len)
->  		WARN_ON_ONCE(hex_dump_to_buffer(buf + pos, len - pos,
->  						rowsize, sizeof(u32),
->  						line, sizeof(line),
-> -						false) >= sizeof(line));
-> +						0) >= sizeof(line));
->  		drm_printf(m, "[%04zx] %s\n", pos, line);
->  
->  		prev = buf + pos;
+> diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
+> index 2ea814d..2b43bc2 100644
+> --- a/drivers/staging/fbtft/fbtft-bus.c
+> +++ b/drivers/staging/fbtft/fbtft-bus.c
+> @@ -62,9 +62,9 @@ out:                                                                        \
+>  }                                                                             \
+>  EXPORT_SYMBOL(func);
+>
+> -define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
+> +define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8,)
+>  define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
+> -define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
+> +define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16,)
 
-On i915,
+... as the space is the (mandatory) separator between the comma and the
+(empty) last parameter value.
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Checkpatch has some limitations when parsing the C preprocessor macro
+languagage.
 
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
