@@ -2,108 +2,162 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A14F47356
-	for <lists+linux-fbdev@lfdr.de>; Sun, 16 Jun 2019 07:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95185477DF
+	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 04:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725795AbfFPFya (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 16 Jun 2019 01:54:30 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:36199 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725773AbfFPFya (ORCPT
+        id S1727477AbfFQCG4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 16 Jun 2019 22:06:56 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:52244 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727322AbfFQCGz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 16 Jun 2019 01:54:30 -0400
-Received: by mail-pg1-f196.google.com with SMTP id f21so3943973pgi.3
-        for <linux-fbdev@vger.kernel.org>; Sat, 15 Jun 2019 22:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=cO4Uu9l8/14KA60VnT20K6kxZTiYScPHxYXqS8cUj1Y=;
-        b=oJy6wAILXG5XXDF7BqvaIIslFpvreRsURJ349wTXd6E8u3yzB/zsnAeP1ByNGOr/q1
-         7iJxhRQ1Q3YD2MiwJzR9A3zB5ZGEbSPHoG7lcxZxJ8pksViZKqhHdSRI5saBC5jKPrn+
-         biELiNd6G0h+iA9sl2l/xuKmaNK/IS4TpZYCABkxMdsah745uWxD+wDeFHsBfQd1enVe
-         Wh4bwH/Xnyb7AKHVc37B4ORnULcrkPXh67xR0SVimQT1B6RQN2fH1GgOdF2HL55fL/Rt
-         B7boVBkGVoMzgjZfUBlOafIfsbybmaD6rXAf2lMs8dHneV3P/EG8+kJLOunRIHk4l+xc
-         1bnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=cO4Uu9l8/14KA60VnT20K6kxZTiYScPHxYXqS8cUj1Y=;
-        b=NC1pfSGrtZnvlM8aerZFbYV673LANDoi68Tdc0WxEFbnO8nTvWA2NGZHSnJQhQp0yj
-         kKA5vrL0HT2M4DYG5Y5gEsLwmedjdpold20XdOwNE9kssr0EDD9rTnhGPCQa34+VQGXo
-         foIkUtcVSU2uJ8YB0DtZ/+4gw+CsjYpARxr5kxwdY3lCBs5GfsaVquNYyqTU8KM7ZKdz
-         SZA+NgcM9B/t5zVQcke963lxi6aIGXWcFnZMLpwk6Ad8xqWlzJZYXoa9JddpBaXr2JFK
-         w89GXWo3VVOPFrRnJflbv6sJG4JTyuWtMecNAN+a5CWyn9DvAfPSE1NBxKinPSBh+bOU
-         vOmw==
-X-Gm-Message-State: APjAAAX9uKY+XumlnkEw2pQZtLLlVuT7aSVu95jlQen/9gDUUNQdqOgk
-        4R7cvZcd4z8BFpTQLzGELVEgFn59otU=
-X-Google-Smtp-Source: APXvYqyE31dqao1iOV0g2rcBg/sjS3exQKNiDuAwYomijphgZtZyQlqwtwWrIEqT4Eu5e69OGoItXQ==
-X-Received: by 2002:a63:e709:: with SMTP id b9mr42033753pgi.209.1560664469649;
-        Sat, 15 Jun 2019 22:54:29 -0700 (PDT)
-Received: from t-1000 (c-98-210-58-162.hsd1.ca.comcast.net. [98.210.58.162])
-        by smtp.gmail.com with ESMTPSA id w4sm7891097pfw.97.2019.06.15.22.54.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 15 Jun 2019 22:54:28 -0700 (PDT)
-Date:   Sat, 15 Jun 2019 22:54:26 -0700
-From:   Shobhit Kukreti <shobhitkukreti@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: Fix checkpatch ERROR: space prohibited
- before that close parenthesis ')'
-Message-ID: <20190616055425.GA6051@t-1000>
-References: <20190614023225.GA27938@t-1000>
- <20190615173302.GB4914@kroah.com>
+        Sun, 16 Jun 2019 22:06:55 -0400
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5H26smW108410
+        for <linux-fbdev@vger.kernel.org>; Sun, 16 Jun 2019 22:06:54 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2t5x9dw1gr-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-fbdev@vger.kernel.org>; Sun, 16 Jun 2019 22:06:54 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-fbdev@vger.kernel.org> from <alastair@au1.ibm.com>;
+        Mon, 17 Jun 2019 03:06:51 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 17 Jun 2019 03:06:42 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5H26fB547644892
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 17 Jun 2019 02:06:41 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 6AEE95204E;
+        Mon, 17 Jun 2019 02:06:41 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C05DD52052;
+        Mon, 17 Jun 2019 02:06:40 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C8445A0208;
+        Mon, 17 Jun 2019 12:06:37 +1000 (AEST)
+From:   "Alastair D'Silva" <alastair@au1.ibm.com>
+To:     alastair@d-silva.org
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: [PATCH v3 0/7] Hexdump Enhancements
+Date:   Mon, 17 Jun 2019 12:04:23 +1000
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190615173302.GB4914@kroah.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19061702-0012-0000-0000-00000329AB17
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061702-0013-0000-0000-00002162C068
+Message-Id: <20190617020430.8708-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-17_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906170019
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jun 15, 2019 at 07:33:02PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Jun 13, 2019 at 07:32:28PM -0700, Shobhit Kukreti wrote:
-> > Cleaned up code to resolve  the checkpatch error
-> > ERROR: space prohibited before that close parenthesis ')'
-> > from the file:
-> > 
-> > fbtft/fbtft-bus.c
-> > 
-> > Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
-> > ---
-> >  drivers/staging/fbtft/fbtft-bus.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
-> > index 2ea814d..2b43bc2 100644
-> > --- a/drivers/staging/fbtft/fbtft-bus.c
-> > +++ b/drivers/staging/fbtft/fbtft-bus.c
-> > @@ -62,9 +62,9 @@ out:									      \
-> >  }                                                                             \
-> >  EXPORT_SYMBOL(func);
-> >  
-> > -define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
-> > +define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8,)
-> >  define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
-> > -define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
-> > +define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16,)
-> 
-> Will this still build?  I thought I remember some old versions of gcc
-> not liking this...
-I was able to build it with Ubuntu/Linaro GCC-5.4.0
-> 
-> Did you test this patch out?
-I booted the kernel on qemu-2.12 and insmod of fbtft drivers did not 
-return any errors. I did not test on actual display hardware. 
-If that is mandatory, I can drop the patch. 
-> 
-> thanks,
-> 
-> greg k-h
+From: Alastair D'Silva <alastair@d-silva.org>
 
-Thank you for your patience and feedback.
+Apologies for the large CC list, it's a heads up for those responsible
+for subsystems where a prototype change in generic code causes a change
+in those subsystems.
 
-Shobhit Kukreti
+This series enhances hexdump.
+
+These improve the readability of the dumped data in certain situations
+(eg. wide terminals are available, many lines of empty bytes exist, etc).
+
+The default behaviour of hexdump is unchanged, however, the prototype
+for hex_dump_to_buffer() has changed, and print_hex_dump() has been
+renamed to print_hex_dump_ext(), with a wrapper replacing it for
+compatibility with existing code, which would have been too invasive to
+change.
+
+Hexdump selftests have be run & confirmed passed.
+
+Changelog:
+V3:
+ - Fix inline documention
+ - use BIT macros
+ - use u32 rather than u64 for flags
+V2:
+ - Fix failing selftests
+ - Fix precedence bug in 'Replace ascii bool in hex_dump_to_buffer...'
+ - Remove hardcoded new lengths & instead relax the checks in
+   hex_dump_to_buffer, allocating the buffer from the heap instead of the
+   stack.
+ - Replace the skipping of lines of 0x00/0xff with skipping lines of
+   repeated characters, announcing what has been skipped.
+ - Add spaces as an optional N-group separator
+ - Allow byte ordering to be maintained when HEXDUMP_RETAIN_BYTE_ORDERING
+   is set.
+ - Updated selftests to cover 'Relax rowsize checks' &
+   'Optionally retain byte ordering'
+
+Alastair D'Silva (7):
+  lib/hexdump.c: Fix selftests
+  lib/hexdump.c: Relax rowsize checks in hex_dump_to_buffer
+  lib/hexdump.c: Optionally suppress lines of repeated bytes
+  lib/hexdump.c: Replace ascii bool in hex_dump_to_buffer with flags
+  lib/hexdump.c: Allow multiple groups to be separated by lines '|'
+  lib/hexdump.c: Allow multiple groups to be separated by spaces
+  lib/hexdump.c: Optionally retain byte ordering
+
+ drivers/gpu/drm/i915/intel_engine_cs.c        |   2 +-
+ drivers/isdn/hardware/mISDN/mISDNisar.c       |   6 +-
+ drivers/mailbox/mailbox-test.c                |   2 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      |   2 +-
+ .../net/ethernet/synopsys/dwc-xlgmac-common.c |   2 +-
+ drivers/net/wireless/ath/ath10k/debug.c       |   3 +-
+ .../net/wireless/intel/iwlegacy/3945-mac.c    |   2 +-
+ drivers/platform/chrome/wilco_ec/debugfs.c    |   2 +-
+ drivers/scsi/scsi_logging.c                   |   8 +-
+ drivers/staging/fbtft/fbtft-core.c            |   2 +-
+ fs/seq_file.c                                 |   3 +-
+ include/linux/printk.h                        |  34 ++-
+ lib/hexdump.c                                 | 260 +++++++++++++++---
+ lib/test_hexdump.c                            | 146 +++++++---
+ 14 files changed, 372 insertions(+), 102 deletions(-)
+
+-- 
+2.21.0
+
