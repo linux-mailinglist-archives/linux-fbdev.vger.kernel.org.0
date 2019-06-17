@@ -2,82 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DADD482EE
-	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 14:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC644483AE
+	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 15:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726584AbfFQMsX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 17 Jun 2019 08:48:23 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:35837 "EHLO
+        id S1726243AbfFQNQs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 17 Jun 2019 09:16:48 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:41529 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725973AbfFQMsX (ORCPT
+        with ESMTP id S1725884AbfFQNQs (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 17 Jun 2019 08:48:23 -0400
+        Mon, 17 Jun 2019 09:16:48 -0400
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1M5PyX-1hbTbo3fxl-001Ome; Mon, 17 Jun 2019 14:48:01 +0200
+ (mreue106 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MrPVJ-1iNDSv3rCJ-00oWs2; Mon, 17 Jun 2019 15:16:27 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Mike Marshall <hubcap@omnibond.com>,
-        YueHaibing <yuehaibing@huawei.com>,
+Cc:     Arnd Bergmann <arnd@arndb.de>, YueHaibing <yuehaibing@huawei.com>,
         Ira Weiny <ira.weiny@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] video: fbdev: pvr2fb: fix compile-testing as module
-Date:   Mon, 17 Jun 2019 14:47:36 +0200
-Message-Id: <20190617124758.1252449-1-arnd@arndb.de>
+Subject: [PATCH] video: fbdev: pvr2fb: fix link error for pvr2fb_pci_exit
+Date:   Mon, 17 Jun 2019 15:16:12 +0200
+Message-Id: <20190617131624.2382303-1-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:fQtLcNbtFadlnuLEAq66p6lty3m3sCianAYbjFY5chYptpALFcP
- 4TxA6KG53CIq6rdVgC2Kw5nD2IaMXJ9u2BJNWuVDUJEgJ1UZ7GJu0qTunRJs6pVBchRVHN4
- 6/SGL8y9THk7xyJslKbKJ5xTKGBxXsBnkJr8gaAoXGZvwc1iK9Xywo/doP/QGHF3pzhceof
- kh4RdN+3fsW0iy/E4G7aQ==
+X-Provags-ID: V03:K1:Qe2+Mxqk7UNlW2kImG4dBpHk395qN3F7QKua6gNeiC02qC4dv/0
+ KyGHOwqMvARphB1xFvw1ZRVnRDGdoympCDhOCPbmLGZJ65qH0XZlGS8W5o8zpfeTn8G0p+j
+ U9ORexC2jg0VRUZbYphRu24L2mh7wPWzgPsqGF1zvefqLjoNciY31NbZSG5iTrZbcLPIGOz
+ abWHduBRPpuRTmnm5s9lA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NPqdFaKRhec=:lkKoHx6wdLb5r5g14ioiy1
- uwH9a3rmaAwmHLYZGcFd7m67zqtsWFr6xzqJAXKqkl0T1laFSLypRhCug/yHZbNyO6xuGYPMj
- liNdVhD4poaIJSkG5UsQfXvYfLUNGtOk2G23+cjDJhhsdFXgyE3uswykw4yMedtlojfb6fjot
- hZ9qYQuXhQzAje+Lf1iY6rf6k9npIa7e9LQukSn76TWe9gCvOeqefKSKW1vCEqqu2OELO3ZkL
- du4t2tjwc12ZyMGfT5pvlO41awVTRrpuxRlNbfgtM1g9LQyNkhF9/dAV8iM5QLuKYGi7/2TQV
- k4AathpPl5Fty7Er23WgsVkLjT47mEGB4EDYly6mYWxfB9y7q2VwjsFTH0mX4UYlwZuQQdHFC
- 3sYlbZVzHpKdsXe+LEHdI+cOFr/OVL3I7f+C20gayOOfRSEXw0IB7xMZnUoNfd5UglXL2D2A9
- JWJj4fPdpB2IcxUKjOo4VSWXi2kTYBVYgym6AX4+MZwGKP/89gBG8dq5T8sRqiBiV+yTgUR94
- Tq2jvVXyaaQUznlxOVi1gE5zu68cZ1IqPSBaPadTunaM4dTsZCDAeOZNXHSR3p2ad0LcgBOjk
- mGAYcQVb1d64vwwAd8eGIZP2+adfBBedct4G2WfAWWW91BiweyqFd4dRbtwm1r1nb+nEyY6Rd
- lzDOEX4sxeTU62xDnO99nVuRvGLgHlz8Cmz1stGzayK8+xWfvIaOkCru5mvDpX1utmzdpk7oi
- ejdZRUC4AlthUaR6bdgaY5kj0z1rHqVauKxVaA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:H9A3Z1xLXVI=:eEoA67w9aBjQBcOJXDFqN9
+ /iPd9cib0USpQoPAxAgbr+tggKDwCqcHbtEd/RLlOqzgrcZg5La4xZ5LdT1EfW25hW9Ph4Xw6
+ RuC7sLlSXHw6P1f6UIJTz3bzlpt51WmCGjmd149e4GOZzD20TGerjeo2jUM0OHJiw8D7zO+1y
+ QyisIco/v5yYKC6aWgfujquqXdoSONt/L2UseizZ9xDAoXV2IQViMJGjZSogVb2YDOSgphU3U
+ SNU7fWESOViEn+FgCQSyC6IzDt4OZ19kcga4I/J3Em4FTUo6ibpWArH8fuwf4+287IbBU6A4c
+ +3EPuAjBwvDY1chWV0mxutSdWWw5780fYoYj0LtRkodIQ3E2aZew6zz5zaMvos49Hlj7Pp54B
+ U8WoS3QGbiytFpUlWHXAJJFdu7ms4neA11pQ76qMJuYVQbslqm1UpW1XPG2AdgIVafv/ty9ai
+ BY8maX8WzpyIfziRRvzQF6IsmZNgO/9v/DqCfUbpZLvs5kcnO7w6yyNNPqS3daxKosKAi+eIR
+ K5EsGbyK28TR6BORQzhdEMSa8iNDiIahXXWRh3QQSSmKxRmMuq6LMMs7U+AVDdzxe1SQ6nTPb
+ b8STQpqH9i6DejA9h00x5u3iDuxumt9mZQw+QGVQjqVu6z4Z2I4pLn0kgaYbRzdZGSJUDmqnU
+ IzFDQ2E0jWnqGNw5TzI9Aijz/2EyccZ8ugOgnnCK1Eg9IGF03w0MsLD9r4rZfxJfz/3YKfQnZ
+ anbQI8kXmNSznPe3mn5FG6wHjRu4hxB9lGjAfw==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Building an allmodconfig kernel now produces a harmless warning:
+When the driver is built-in for PCI, we reference the exit function
+after discarding it:
 
-drivers/video/fbdev/pvr2fb.c:726:12: error: unused function 'pvr2_get_param_val' [-Werror,-Wunused-function]
+`pvr2fb_pci_exit' referenced in section `.ref.data' of drivers/video/fbdev/pvr2fb.o: defined in discarded section `.exit.text' of drivers/video/fbdev/pvr2fb.o
 
-Shut this up the same way as we do for other unused functions
-in the same file, using the __maybe_unused attribute.
+Just remove the __exit annotation as the easiest workaround.
 
 Fixes: 0f5a5712ad1e ("video: fbdev: pvr2fb: add COMPILE_TEST support")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/video/fbdev/pvr2fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/pvr2fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
-index 59c59b3a67cb..cf9cfdc5e685 100644
+index 299ea7db9220..cf9cfdc5e685 100644
 --- a/drivers/video/fbdev/pvr2fb.c
 +++ b/drivers/video/fbdev/pvr2fb.c
-@@ -723,8 +723,8 @@ static struct fb_ops pvr2fb_ops = {
- 	.fb_imageblit	= cfb_imageblit,
- };
+@@ -990,7 +990,7 @@ static int __init pvr2fb_pci_init(void)
+ 	return pci_register_driver(&pvr2fb_pci_driver);
+ }
  
--static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
--			      int size)
-+static int __maybe_unused pvr2_get_param_val(const struct pvr2_params *p,
-+					     const char *s, int size)
+-static void __exit pvr2fb_pci_exit(void)
++static void pvr2fb_pci_exit(void)
  {
- 	int i;
- 
+ 	pci_unregister_driver(&pvr2fb_pci_driver);
+ }
 -- 
 2.20.0
 
