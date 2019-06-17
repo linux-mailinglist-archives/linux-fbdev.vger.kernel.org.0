@@ -2,100 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FCFE47BD2
-	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 10:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DADD482EE
+	for <lists+linux-fbdev@lfdr.de>; Mon, 17 Jun 2019 14:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725983AbfFQIGy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 17 Jun 2019 04:06:54 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:43433 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbfFQIGy (ORCPT
+        id S1726584AbfFQMsX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 17 Jun 2019 08:48:23 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:35837 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725973AbfFQMsX (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 17 Jun 2019 04:06:54 -0400
-Received: by mail-lf1-f65.google.com with SMTP id j29so5781602lfk.10
-        for <linux-fbdev@vger.kernel.org>; Mon, 17 Jun 2019 01:06:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UBAIYgr3qMK7KPe2vk2HnkrCN8Z499UT+fyGo5dytmg=;
-        b=PeiQD7ucu6ttWMmG1WUhfQKedVRpBzDvgC7nLN33W740jH8McmcV8/PiKVWlLOLLvo
-         uelNath+qcbvdpiNwNqUc+uFnEn3T0gPVMrBwIxESI3mYZDk2hrMshx+9GNb2ZWcVFNN
-         1bygO0ujsboXZT8p88gh+UQSWgccqUkhYesNm0NJKnM2gnNEFcavWFHy8RRwKUZJ8F4Q
-         dKkm+RgnAUyrPdhjhZZWCyshJ0GzdEHjorsZtOkQHrOfWEo6qFOT7J4Lk9qzzuBpuYVM
-         4eGIXa3gX7nti5Gkq7n5DKmX3eOcDIJ/X+d2JI4sZnYqTL9sZ500x27K64vWwYMWVrbJ
-         fu0g==
-X-Gm-Message-State: APjAAAUVJWM9ySpldwCztH/oktRpY72M3Mp5v4lUOS3bIqRujeDpbDqg
-        vxB6J251oW8qSh+vmjHpWkdN73WK6Cfaeh+wpV8=
-X-Google-Smtp-Source: APXvYqxsNaI0j7ZDK/oBDGI+JMsaCwWe50htav7v93pfnpqy1paFPPZWjCEXJWv9iX6EQ2tFXHlJ785TORXA5arqirk=
-X-Received: by 2002:ac2:546a:: with SMTP id e10mr7058679lfn.75.1560758812459;
- Mon, 17 Jun 2019 01:06:52 -0700 (PDT)
+        Mon, 17 Jun 2019 08:48:23 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1M5PyX-1hbTbo3fxl-001Ome; Mon, 17 Jun 2019 14:48:01 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Mike Marshall <hubcap@omnibond.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] video: fbdev: pvr2fb: fix compile-testing as module
+Date:   Mon, 17 Jun 2019 14:47:36 +0200
+Message-Id: <20190617124758.1252449-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-References: <20190614023225.GA27938@t-1000>
-In-Reply-To: <20190614023225.GA27938@t-1000>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 17 Jun 2019 10:06:39 +0200
-Message-ID: <CAMuHMdW0iHNuS2Q1n4jynVGrgcnOPrLWX08ffWdT3GUGaidt-g@mail.gmail.com>
-Subject: Re: [PATCH] staging: fbtft: Fix checkpatch ERROR: space prohibited
- before that close parenthesis ')'
-To:     Shobhit Kukreti <shobhitkukreti@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Andy Whitcroft <apw@canonical.com>,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:fQtLcNbtFadlnuLEAq66p6lty3m3sCianAYbjFY5chYptpALFcP
+ 4TxA6KG53CIq6rdVgC2Kw5nD2IaMXJ9u2BJNWuVDUJEgJ1UZ7GJu0qTunRJs6pVBchRVHN4
+ 6/SGL8y9THk7xyJslKbKJ5xTKGBxXsBnkJr8gaAoXGZvwc1iK9Xywo/doP/QGHF3pzhceof
+ kh4RdN+3fsW0iy/E4G7aQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NPqdFaKRhec=:lkKoHx6wdLb5r5g14ioiy1
+ uwH9a3rmaAwmHLYZGcFd7m67zqtsWFr6xzqJAXKqkl0T1laFSLypRhCug/yHZbNyO6xuGYPMj
+ liNdVhD4poaIJSkG5UsQfXvYfLUNGtOk2G23+cjDJhhsdFXgyE3uswykw4yMedtlojfb6fjot
+ hZ9qYQuXhQzAje+Lf1iY6rf6k9npIa7e9LQukSn76TWe9gCvOeqefKSKW1vCEqqu2OELO3ZkL
+ du4t2tjwc12ZyMGfT5pvlO41awVTRrpuxRlNbfgtM1g9LQyNkhF9/dAV8iM5QLuKYGi7/2TQV
+ k4AathpPl5Fty7Er23WgsVkLjT47mEGB4EDYly6mYWxfB9y7q2VwjsFTH0mX4UYlwZuQQdHFC
+ 3sYlbZVzHpKdsXe+LEHdI+cOFr/OVL3I7f+C20gayOOfRSEXw0IB7xMZnUoNfd5UglXL2D2A9
+ JWJj4fPdpB2IcxUKjOo4VSWXi2kTYBVYgym6AX4+MZwGKP/89gBG8dq5T8sRqiBiV+yTgUR94
+ Tq2jvVXyaaQUznlxOVi1gE5zu68cZ1IqPSBaPadTunaM4dTsZCDAeOZNXHSR3p2ad0LcgBOjk
+ mGAYcQVb1d64vwwAd8eGIZP2+adfBBedct4G2WfAWWW91BiweyqFd4dRbtwm1r1nb+nEyY6Rd
+ lzDOEX4sxeTU62xDnO99nVuRvGLgHlz8Cmz1stGzayK8+xWfvIaOkCru5mvDpX1utmzdpk7oi
+ ejdZRUC4AlthUaR6bdgaY5kj0z1rHqVauKxVaA==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Shobhit,
+Building an allmodconfig kernel now produces a harmless warning:
 
-Thanks for your patch!
+drivers/video/fbdev/pvr2fb.c:726:12: error: unused function 'pvr2_get_param_val' [-Werror,-Wunused-function]
 
-On Fri, Jun 14, 2019 at 4:34 AM Shobhit Kukreti
-<shobhitkukreti@gmail.com> wrote:
-> Cleaned up code to resolve  the checkpatch error
-> ERROR: space prohibited before that close parenthesis ')'
-> from the file:
->
-> fbtft/fbtft-bus.c
+Shut this up the same way as we do for other unused functions
+in the same file, using the __maybe_unused attribute.
 
-IMHO that is a bogus checkpatch error...
+Fixes: 0f5a5712ad1e ("video: fbdev: pvr2fb: add COMPILE_TEST support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/video/fbdev/pvr2fb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
-> ---
->  drivers/staging/fbtft/fbtft-bus.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
-> index 2ea814d..2b43bc2 100644
-> --- a/drivers/staging/fbtft/fbtft-bus.c
-> +++ b/drivers/staging/fbtft/fbtft-bus.c
-> @@ -62,9 +62,9 @@ out:                                                                        \
->  }                                                                             \
->  EXPORT_SYMBOL(func);
->
-> -define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
-> +define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8,)
->  define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
-> -define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
-> +define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16,)
-
-... as the space is the (mandatory) separator between the comma and the
-(empty) last parameter value.
-
-Checkpatch has some limitations when parsing the C preprocessor macro
-languagage.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
+index 59c59b3a67cb..cf9cfdc5e685 100644
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -723,8 +723,8 @@ static struct fb_ops pvr2fb_ops = {
+ 	.fb_imageblit	= cfb_imageblit,
+ };
+ 
+-static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
+-			      int size)
++static int __maybe_unused pvr2_get_param_val(const struct pvr2_params *p,
++					     const char *s, int size)
+ {
+ 	int i;
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.20.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
