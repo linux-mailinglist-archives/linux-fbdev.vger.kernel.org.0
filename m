@@ -2,109 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A7549A5A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADDA349AC9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbfFRHUZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jun 2019 03:20:25 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:43483 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726091AbfFRHUZ (ORCPT
+        id S1726248AbfFRHlw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jun 2019 03:41:52 -0400
+Received: from mail-wr1-f97.google.com ([209.85.221.97]:46277 "EHLO
+        mail-wr1-f97.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725900AbfFRHlw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jun 2019 03:20:25 -0400
-Received: by mail-pg1-f193.google.com with SMTP id f25so7162382pgv.10;
-        Tue, 18 Jun 2019 00:20:24 -0700 (PDT)
+        Tue, 18 Jun 2019 03:41:52 -0400
+Received: by mail-wr1-f97.google.com with SMTP id n4so12711875wrw.13
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jun 2019 00:41:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
-         :references:in-reply-to:accept-language:content-language
-         :content-transfer-encoding:mime-version;
-        bh=CslQ849M1Db5mIkFJ5eazlY+Ewel3BYfmjuNnmrj/MI=;
-        b=JkcgKMLTMU+vFlyJCX1IAHOQVfTUgSvxB/uXYZ+Fzf8u5b18vf5TD943h7ewSaaXEV
-         uoUShHPyNYhT627H/qDUtc0F3u096CARV5Bfu7Be5z+qGWwCac/+zExkU8+ZcW4nfTxm
-         fbIpMHXog4vGxizzJPc3nV5Iy7Gby9gvD6qWQJwhsOk3awqCoF+tb7BAlaCTr8So6yRR
-         9FlD/Ej7afPkPZEEjaerBLcR3sBoEdYSlU/e2w7uz0hs+FeLiMl/hfup9RXca/auwpOF
-         mb1vkLl6ruUUFFP39/zhkFDtAq8yAL+FLgIAgsJ7jDZwpL+JCVoaNJD2AZUT4iiZGDNU
-         aDAg==
+        d=okoko.fi; s=okoko;
+        h=from:to:cc:subject:date:message-id;
+        bh=TcaLpkr7BrB6h5k/fFe5VxsiPI+n9NLSNDwWnvmzuGA=;
+        b=f00Dh/O46hmUfacv++d2NLddEDx10ZY8ZiTRN4baj57YhzsMxlrzWtI3dBq00FvxP3
+         v7vxxqBoSCmY3KE3mJhBfQTNl9JiYsZ5CCo4Mmg0R6+uQ8pekPTaXBvMRzarzV01JC6R
+         PpaoUu81imcci5U35+0rUahFy84wYPR+lYSOQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
-         :date:message-id:references:in-reply-to:accept-language
-         :content-language:content-transfer-encoding:mime-version;
-        bh=CslQ849M1Db5mIkFJ5eazlY+Ewel3BYfmjuNnmrj/MI=;
-        b=D7blKfpxFHs8EUh9sPFDwOydomoYN32C0GGbfOoFYdW8g0zPmgJIaA+cdMcPzQs91D
-         mqd8j7E6FQCHPH3E0G/9ChsELRnpNNBcLmgNYglNsS2oSevXWUVCto2ruu26n6rpsh7O
-         abEBDts1mAammtUbE3+8Lj1tMauaOr2yQhNc06HgEFEnV+vMIkRht+S1hqvNtJ+0Ghps
-         HhfgVFZnVlzjHzQ9CyFAt1GVdL08XFtLFyS9YP2xeGPEALOcxKnJoeraYZJ7NstT9+xp
-         IbGoyrpIUW9gkD3GsNW95rC+4yRCtha9sPMF1n/NoN5I4o+OFmClfMbEcbKV4L5Mje7d
-         hMXw==
-X-Gm-Message-State: APjAAAUugAANKgKKcHcIS/Rc3YGOw/Exc1nBAFZLK7nH3jwQ00Vw+44U
-        6OjK8+gZzyPBSMF2Lup+1dGpFJqe
-X-Google-Smtp-Source: APXvYqwnbdU5BnubJLJ+WVxXv1g0uES3n9SY7KAofvwe3MkKrQE7902pC5oMAwymmXxHNasC8jVJsQ==
-X-Received: by 2002:aa7:9254:: with SMTP id 20mr1688580pfp.212.1560838420984;
-        Mon, 17 Jun 2019 23:13:40 -0700 (PDT)
-Received: from PSXP216MB0662.KORP216.PROD.OUTLOOK.COM ([40.100.44.181])
-        by smtp.gmail.com with ESMTPSA id 196sm10334598pfy.167.2019.06.17.23.13.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 23:13:40 -0700 (PDT)
-From:   Jingoo Han <jingoohan1@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Han Jingoo <jingoohan1@gmail.com>
-Subject: Re: [PATCH 1/3] video: fbdev: s3c-fb: return -ENOMEM on
- framebuffer_alloc() failure
-Thread-Topic: [PATCH 1/3] video: fbdev: s3c-fb: return -ENOMEM on
- framebuffer_alloc() failure
-Thread-Index: AWZkMnA0HIwkbu1fGnDQIvP1wx9CWGYwZDNj2lFR4qc=
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date:   Tue, 18 Jun 2019 06:13:29 +0000
-Message-ID: <PSXP216MB066270BD6566CA5CDCEB1C7AAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
-References: <CGME20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f@eucas1p2.samsung.com>
- <bbf32fbc-b4bc-39fc-e8dd-db9f0cd0d83f@samsung.com>
-In-Reply-To: <bbf32fbc-b4bc-39fc-e8dd-db9f0cd0d83f@samsung.com>
-Accept-Language: ko-KR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=TcaLpkr7BrB6h5k/fFe5VxsiPI+n9NLSNDwWnvmzuGA=;
+        b=LknT0bx9CUAKclKXEd9HvOkDhj/+z54k1wwsIsSph8sE+v07T6oEsOUunpZdmfxXp2
+         OvetIIB2e1MvIS3z685Y/2dCCL33xKeOqO2afAXFb00Rh7ZJ8H2lXlVM4Nm7hC/Oebmm
+         LYBT8eUKb8m8E6uKglcNPjvJfZMp2gtUChjALIm29xzPaDQrOEY5F5R3zEZzEn0hVC4Q
+         tFoTPg8WT92SIQN75TVjE7zd8URKImXi79hMQuyoFsUAhFLYBne2zlzZBaZCYYVGJ1bU
+         6vokgqXaRrq7nl9JS/gs0omn9iNFPetnfR/I8kLfZ2oAREdmZ4myH6wTdT5AqKQTeYZl
+         3wfQ==
+X-Gm-Message-State: APjAAAXgMNZBAYLRXD5BI325FhOcOuCRlx6YHJN6ZTTlswPjulhRWlCr
+        irJS3Yd1hjjKQYHazCVhfzpESPTVQdl9ttElmf6CW1q2huZ/fg==
+X-Google-Smtp-Source: APXvYqzow8GoPJC+En04+NCBYrUu0w+fEr5jV/VXyg8XMEXtqBhw1OEsNThbpc9r0JizrrVw2kts9Y2dzEZ6
+X-Received: by 2002:a5d:5607:: with SMTP id l7mr50973455wrv.228.1560843710723;
+        Tue, 18 Jun 2019 00:41:50 -0700 (PDT)
+Received: from localhost.localdomain (46-163-209-30.blcnet.fi. [46.163.209.30])
+        by smtp-relay.gmail.com with ESMTPS id l18sm212063wrn.66.2019.06.18.00.41.49
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 18 Jun 2019 00:41:50 -0700 (PDT)
+X-Relaying-Domain: okoko.fi
+From:   Marko Kohtala <marko.kohtala@okoko.fi>
+To:     linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+        Marko Kohtala <marko.kohtala@okoko.fi>
+Subject: [PATCH 0/6] video: ssd1307fb: Support more displays
+Date:   Tue, 18 Jun 2019 10:41:05 +0300
+Message-Id: <20190618074111.9309-1-marko.kohtala@okoko.fi>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 6/14/19, 11:47 PM, Bartlomiej Zolnierkiewicz wrote:
->=20
-> Fix error code from -ENOENT to -ENOMEM.
->
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
+The kernel driver for ssd1307fb did not allow for all proper
+initialization for a Densitron 128x36 display. The trend in the driver
+has been to add devicetree properties for the controller initialization
+and these patches continue on that trend.
 
-Best regards,
-Jingoo Han
+There also were some sparse and Coccinelle errors.
 
-> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> ---
->  drivers/video/fbdev/s3c-fb.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> Index: b/drivers/video/fbdev/s3c-fb.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- a/drivers/video/fbdev/s3c-fb.c
-> +++ b/drivers/video/fbdev/s3c-fb.c
-> @@ -1191,7 +1191,7 @@ static int s3c_fb_probe_win(struct s3c_f
->  				   palette_size * sizeof(u32), sfb->dev);
->  	if (!fbinfo) {
->  		dev_err(sfb->dev, "failed to allocate framebuffer\n");
-> -		return -ENOENT;
-> +		return -ENOMEM;
->  	}
-> =20
->  	windata =3D sfb->pdata->win[win_no];
+A small bug causing scrolling on display updates with nonzero page_offset
+was a bit surprising. It would seem the driver has only been used with
+page_offset set to zero. Bug has been there since commit
+301bc0675b677a98475187050d56cd2b39ff0acf ("video: ssd1307fb: Make use of
+horizontal addressing mode").
+
+Marko Kohtala (6):
+  video: ssd1307fb: Use screen_buffer instead of screen_base
+  video: ssd1307fb: Remove unneeded semicolons
+  video: ssd1307fb: Start page range at page_offset
+  video: ssd1307fb: Handle width and height that are not multiple of 8
+  dt-bindings: display: ssd1307fb: Add initialization properties
+  video: ssd1307fb: Add devicetree configuration of display setup
+
+ .../devicetree/bindings/display/ssd1307fb.txt |  10 ++
+ drivers/video/fbdev/ssd1307fb.c               | 130 ++++++++++++------
+ 2 files changed, 101 insertions(+), 39 deletions(-)
+
+-- 
+2.17.1
+
