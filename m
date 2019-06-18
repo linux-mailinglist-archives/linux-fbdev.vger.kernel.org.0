@@ -2,159 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D29F049679
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 02:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1E949A3D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726088AbfFRA5d (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 17 Jun 2019 20:57:33 -0400
-Received: from ushosting.nmnhosting.com ([66.55.73.32]:35430 "EHLO
-        ushosting.nmnhosting.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725829AbfFRA5d (ORCPT
+        id S1726543AbfFRHRf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jun 2019 03:17:35 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:33985 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725955AbfFRHRf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 17 Jun 2019 20:57:33 -0400
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-        by ushosting.nmnhosting.com (Postfix) with ESMTPS id 2797C2DC0096;
-        Mon, 17 Jun 2019 20:57:31 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-        s=201810a; t=1560819452;
-        bh=u7VpYNn8JpTLdyHPUljh2Z7wehVtDH+n9nHQNgN6N2A=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=jvSabEdrNHOl7NlBGL5YcdZQfi+fpB9BO+GaqBWlR/PP+V/1JX3MOC/vdfprE+d4q
-         W0UTx/depws8/q6fCe4qsmxzaHqtVkUa+v+Mp2PYjaUrKq1XeKLKJ3TPmwKDKYb7Ix
-         tm9Ggg2c204E7SWf1Kzm3b7UURvQRUF+YtE1qaFXWb7M1bSsECs2dxPGyAy4TwdTwu
-         YrzjrIAdGWVZDKXuSQHyDOqmmePgS4sV2lw+tlA9IZJRT1DXVvYEFcSGBy5FTId/0l
-         fqkDcrBYmDhMWn+3CZbnwx7qgnLFWM0LDHsbAyxHAnRZtM+pOmK0XpTf0aiYcsAURz
-         JAHTKkLHxAgXWfC3qIJOHW9mN0wLp5AYzfNmMC3C5ks7bZYsWq3PGnPXMMgDkMzyop
-         xeuPVBo2+37GGuWiHd1PVStu6wl0eKfSBJgyWJvhXbnAdDsbuqzYFH9Boz+O6C1oWT
-         2Stkwa1MvSezs7en91awfFUNUzrvwbjOv/IZIK0ZFoGni+dz4kIbQSJzdLLHGKQkgV
-         TVlkQn6TAJU90DRRiC92kuMldKfElutBjDwzhohJifPcEvF9T9IrE1SS4Zaz3ft2Rz
-         ho6zF2/9j+ouJCRd5AcHglBo4L8CMDItufZhI5pCGZ7PhbKy0bPXekMmqRlgelk8er
-         vDFIJF20+9ye5cMw79l/tHxg=
-Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au [122.99.82.10] (may be forged))
-        (authenticated bits=0)
-        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x5I0v17n063106
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Tue, 18 Jun 2019 10:57:17 +1000 (AEST)
-        (envelope-from alastair@d-silva.org)
-Message-ID: <b2651117ca8a55d94b7e14e273d25199515039c3.camel@d-silva.org>
-Subject: Re: [PATCH v3 2/7] lib/hexdump.c: Relax rowsize checks in
- hex_dump_to_buffer
-From:   "Alastair D'Silva" <alastair@d-silva.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Karsten Keil <isdn@linux-pingi.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Date:   Tue, 18 Jun 2019 10:57:00 +1000
-In-Reply-To: <94413756-c927-a4ca-dd59-47e3cc87d58d@infradead.org>
-References: <20190617020430.8708-1-alastair@au1.ibm.com>
-         <20190617020430.8708-3-alastair@au1.ibm.com>
-         <94413756-c927-a4ca-dd59-47e3cc87d58d@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+        Tue, 18 Jun 2019 03:17:35 -0400
+Received: by mail-pl1-f196.google.com with SMTP id i2so5316851plt.1;
+        Tue, 18 Jun 2019 00:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
+         :references:in-reply-to:accept-language:content-language
+         :content-transfer-encoding:mime-version;
+        bh=6ls+i1u+lWJagjHM7534F8Uv5sC5LPRBjSxm2ecigcI=;
+        b=WUyn0HUpRkDvaQuENXAK0PGnCB5TxeJa5MJFSJVY5qlfM2PUnK5Rh65Uup9Zxg+KlC
+         Sd7mPCIvGKAePXHwuo+zAEW9XGDehg/1O3k+rWNlq4dsrDKDlTqcZ7Krh/T2g686FARo
+         Y92y/YV8KouEjNRAqpL94FZuxw3zyVxYzezozpU8W826c6QXnef6F2C45Pvx/FX4i23d
+         7wHDKsUcvU7W4QE2h3LvEKfROtqzhJB0WnLsRhzQn6x2sAR+arNrGkHwRn7UeY+dOm3r
+         jWWxUQXsgdp9BpXZVBvrscdbNgS4iVXRHYv2mvojh4ZIfG8xhb+7MV44tCh8qitjES6f
+         buoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
+         :date:message-id:references:in-reply-to:accept-language
+         :content-language:content-transfer-encoding:mime-version;
+        bh=6ls+i1u+lWJagjHM7534F8Uv5sC5LPRBjSxm2ecigcI=;
+        b=BjWqy5hwAU2Rh7ung8oxvWkXNhO+Dtfc5oY8XOp+tfyU6OydjjHbs1j/HsYjebCBZg
+         cCvkHivt+Bc3RosICDP5FMrvd9Z+q1wUGZZnPIdfHJztptFD5UVEt07qPCQRwRA199NY
+         +tLtCOxCpgKNTuNwjbBfKu33TaOadPdvM1Fka6333McHUoivGTcy6ESSxpMiExbJLtqq
+         nAgD/OXkUNxtDapV1m0rfKzuozwc02bqZ1XAFIpCWGXIFx69A4d9U2jnO3doy4zackcr
+         4htfFP5l9nAfo4JMIYaDdLHdDXej9O0FZfrm5fwOW+o52GT6EQAVonXCjXRlYcn1q7Ab
+         nZXw==
+X-Gm-Message-State: APjAAAVRnu+UMabGw3tS6C0Ngc3ydJO6Y+oNq9kQev8ryq3rQwU8CKFG
+        GYekJQSFcgwi/ClIXSR8YOYrcpFE
+X-Google-Smtp-Source: APXvYqyINnOm+mjTZ+CUFcz86nookJ6AW/68jaX/bNlGiAR7RzP3b1FIxJN6D1gmjwWmvIHE04lGQA==
+X-Received: by 2002:a17:902:a504:: with SMTP id s4mr42724651plq.117.1560838363437;
+        Mon, 17 Jun 2019 23:12:43 -0700 (PDT)
+Received: from PSXP216MB0662.KORP216.PROD.OUTLOOK.COM ([40.100.44.181])
+        by smtp.gmail.com with ESMTPSA id m96sm1195616pjb.1.2019.06.17.23.12.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Jun 2019 23:12:42 -0700 (PDT)
+From:   Jingoo Han <jingoohan1@gmail.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+CC:     Han Jingoo <jingoohan1@gmail.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
+Thread-Topic: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
+Thread-Index: AWIzNHA0y3vT+npVfJhuNQKkYC3mSWVjM2Fi4rm3H+w=
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date:   Tue, 18 Jun 2019 06:12:27 +0000
+Message-ID: <PSXP216MB0662B10864E4DDEC1EC1823CAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
+References: <CGME20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b@eucas1p1.samsung.com>
+ <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
+In-Reply-To: <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
+Accept-Language: ko-KR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: 
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Tue, 18 Jun 2019 10:57:27 +1000 (AEST)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 2019-06-17 at 15:47 -0700, Randy Dunlap wrote:
-> Hi,
-> Just a comment style nit below...
-> 
-> On 6/16/19 7:04 PM, Alastair D'Silva wrote:
-> > From: Alastair D'Silva <alastair@d-silva.org>
-> > 
-> > This patch removes the hardcoded row limits and allows for
-> > other lengths. These lengths must still be a multiple of
-> > groupsize.
-> > 
-> > This allows structs that are not 16/32 bytes to display on
-> > a single line.
-> > 
-> > This patch also expands the self-tests to test row sizes
-> > up to 64 bytes (though they can now be arbitrarily long).
-> > 
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > ---
-> >  lib/hexdump.c      | 48 ++++++++++++++++++++++++++++--------------
-> >  lib/test_hexdump.c | 52 ++++++++++++++++++++++++++++++++++++++--
-> > ------
-> >  2 files changed, 75 insertions(+), 25 deletions(-)
-> > 
-> > diff --git a/lib/hexdump.c b/lib/hexdump.c
-> > index 81b70ed37209..3943507bc0e9 100644
-> > --- a/lib/hexdump.c
-> > +++ b/lib/hexdump.c
-> > @@ -246,17 +248,29 @@ void print_hex_dump(const char *level, const
-> > char *prefix_str, int prefix_type,
-> >  {
-> >  	const u8 *ptr = buf;
-> >  	int i, linelen, remaining = len;
-> > -	unsigned char linebuf[32 * 3 + 2 + 32 + 1];
-> > +	unsigned char *linebuf;
-> > +	unsigned int linebuf_len;
-> >  
-> > -	if (rowsize != 16 && rowsize != 32)
-> > -		rowsize = 16;
-> > +	if (rowsize % groupsize)
-> > +		rowsize -= rowsize % groupsize;
-> > +
-> > +	/* Worst case line length:
-> > +	 * 2 hex chars + space per byte in, 2 spaces, 1 char per byte
-> > in, NULL
-> > +	 */
-> 
-> According to Documentation/process/coding-style.rst:
-> 
-> The preferred style for long (multi-line) comments is:
-> 
-> .. code-block:: c
-> 
-> 	/*
-> 	 * This is the preferred style for multi-line
-> 	 * comments in the Linux kernel source code.
-> 	 * Please use it consistently.
-> 	 *
-> 	 * Description:  A column of asterisks on the left side,
-> 	 * with beginning and ending almost-blank lines.
-> 	 */
-> 
-
-Thanks Randy, I'll address this.
-
-
--- 
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva    
-Twitter: @EvilDeece
-blog: http://alastair.d-silva.org
-
-
+On 6/14/19, 11:46 PM, Bartlomiej Zolnierkiewicz wrote:
+>=20
+> Add COMPILE_TEST support to s3c-fb driver for better compile
+> testing coverage.
+>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+Acked-by: Jingoo Han <jingoohan1@gmail.com>
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> ---
+>  drivers/video/fbdev/Kconfig |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> Index: b/drivers/video/fbdev/Kconfig
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -1877,7 +1877,8 @@ config FB_TMIO_ACCELL
+> =20
+>  config FB_S3C
+>  	tristate "Samsung S3C framebuffer support"
+> -	depends on FB && (CPU_S3C2416 || ARCH_S3C64XX)
+> +	depends on FB && HAVE_CLK && HAS_IOMEM
+> +	depends on (CPU_S3C2416 || ARCH_S3C64XX) || COMPILE_TEST
+>  	select FB_CFB_FILLRECT
+>  	select FB_CFB_COPYAREA
+>  	select FB_CFB_IMAGEBLIT
