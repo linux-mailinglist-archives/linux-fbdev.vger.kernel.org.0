@@ -2,66 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1E949A3D
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83A7549A5A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726543AbfFRHRf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jun 2019 03:17:35 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:33985 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725955AbfFRHRf (ORCPT
+        id S1726643AbfFRHUZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jun 2019 03:20:25 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:43483 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbfFRHUZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jun 2019 03:17:35 -0400
-Received: by mail-pl1-f196.google.com with SMTP id i2so5316851plt.1;
-        Tue, 18 Jun 2019 00:17:34 -0700 (PDT)
+        Tue, 18 Jun 2019 03:20:25 -0400
+Received: by mail-pg1-f193.google.com with SMTP id f25so7162382pgv.10;
+        Tue, 18 Jun 2019 00:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:thread-topic:thread-index:date:message-id
          :references:in-reply-to:accept-language:content-language
          :content-transfer-encoding:mime-version;
-        bh=6ls+i1u+lWJagjHM7534F8Uv5sC5LPRBjSxm2ecigcI=;
-        b=WUyn0HUpRkDvaQuENXAK0PGnCB5TxeJa5MJFSJVY5qlfM2PUnK5Rh65Uup9Zxg+KlC
-         Sd7mPCIvGKAePXHwuo+zAEW9XGDehg/1O3k+rWNlq4dsrDKDlTqcZ7Krh/T2g686FARo
-         Y92y/YV8KouEjNRAqpL94FZuxw3zyVxYzezozpU8W826c6QXnef6F2C45Pvx/FX4i23d
-         7wHDKsUcvU7W4QE2h3LvEKfROtqzhJB0WnLsRhzQn6x2sAR+arNrGkHwRn7UeY+dOm3r
-         jWWxUQXsgdp9BpXZVBvrscdbNgS4iVXRHYv2mvojh4ZIfG8xhb+7MV44tCh8qitjES6f
-         buoQ==
+        bh=CslQ849M1Db5mIkFJ5eazlY+Ewel3BYfmjuNnmrj/MI=;
+        b=JkcgKMLTMU+vFlyJCX1IAHOQVfTUgSvxB/uXYZ+Fzf8u5b18vf5TD943h7ewSaaXEV
+         uoUShHPyNYhT627H/qDUtc0F3u096CARV5Bfu7Be5z+qGWwCac/+zExkU8+ZcW4nfTxm
+         fbIpMHXog4vGxizzJPc3nV5Iy7Gby9gvD6qWQJwhsOk3awqCoF+tb7BAlaCTr8So6yRR
+         9FlD/Ej7afPkPZEEjaerBLcR3sBoEdYSlU/e2w7uz0hs+FeLiMl/hfup9RXca/auwpOF
+         mb1vkLl6ruUUFFP39/zhkFDtAq8yAL+FLgIAgsJ7jDZwpL+JCVoaNJD2AZUT4iiZGDNU
+         aDAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
          :date:message-id:references:in-reply-to:accept-language
          :content-language:content-transfer-encoding:mime-version;
-        bh=6ls+i1u+lWJagjHM7534F8Uv5sC5LPRBjSxm2ecigcI=;
-        b=BjWqy5hwAU2Rh7ung8oxvWkXNhO+Dtfc5oY8XOp+tfyU6OydjjHbs1j/HsYjebCBZg
-         cCvkHivt+Bc3RosICDP5FMrvd9Z+q1wUGZZnPIdfHJztptFD5UVEt07qPCQRwRA199NY
-         +tLtCOxCpgKNTuNwjbBfKu33TaOadPdvM1Fka6333McHUoivGTcy6ESSxpMiExbJLtqq
-         nAgD/OXkUNxtDapV1m0rfKzuozwc02bqZ1XAFIpCWGXIFx69A4d9U2jnO3doy4zackcr
-         4htfFP5l9nAfo4JMIYaDdLHdDXej9O0FZfrm5fwOW+o52GT6EQAVonXCjXRlYcn1q7Ab
-         nZXw==
-X-Gm-Message-State: APjAAAVRnu+UMabGw3tS6C0Ngc3ydJO6Y+oNq9kQev8ryq3rQwU8CKFG
-        GYekJQSFcgwi/ClIXSR8YOYrcpFE
-X-Google-Smtp-Source: APXvYqyINnOm+mjTZ+CUFcz86nookJ6AW/68jaX/bNlGiAR7RzP3b1FIxJN6D1gmjwWmvIHE04lGQA==
-X-Received: by 2002:a17:902:a504:: with SMTP id s4mr42724651plq.117.1560838363437;
-        Mon, 17 Jun 2019 23:12:43 -0700 (PDT)
+        bh=CslQ849M1Db5mIkFJ5eazlY+Ewel3BYfmjuNnmrj/MI=;
+        b=D7blKfpxFHs8EUh9sPFDwOydomoYN32C0GGbfOoFYdW8g0zPmgJIaA+cdMcPzQs91D
+         mqd8j7E6FQCHPH3E0G/9ChsELRnpNNBcLmgNYglNsS2oSevXWUVCto2ruu26n6rpsh7O
+         abEBDts1mAammtUbE3+8Lj1tMauaOr2yQhNc06HgEFEnV+vMIkRht+S1hqvNtJ+0Ghps
+         HhfgVFZnVlzjHzQ9CyFAt1GVdL08XFtLFyS9YP2xeGPEALOcxKnJoeraYZJ7NstT9+xp
+         IbGoyrpIUW9gkD3GsNW95rC+4yRCtha9sPMF1n/NoN5I4o+OFmClfMbEcbKV4L5Mje7d
+         hMXw==
+X-Gm-Message-State: APjAAAUugAANKgKKcHcIS/Rc3YGOw/Exc1nBAFZLK7nH3jwQ00Vw+44U
+        6OjK8+gZzyPBSMF2Lup+1dGpFJqe
+X-Google-Smtp-Source: APXvYqwnbdU5BnubJLJ+WVxXv1g0uES3n9SY7KAofvwe3MkKrQE7902pC5oMAwymmXxHNasC8jVJsQ==
+X-Received: by 2002:aa7:9254:: with SMTP id 20mr1688580pfp.212.1560838420984;
+        Mon, 17 Jun 2019 23:13:40 -0700 (PDT)
 Received: from PSXP216MB0662.KORP216.PROD.OUTLOOK.COM ([40.100.44.181])
-        by smtp.gmail.com with ESMTPSA id m96sm1195616pjb.1.2019.06.17.23.12.40
+        by smtp.gmail.com with ESMTPSA id 196sm10334598pfy.167.2019.06.17.23.13.38
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2019 23:12:42 -0700 (PDT)
+        Mon, 17 Jun 2019 23:13:40 -0700 (PDT)
 From:   Jingoo Han <jingoohan1@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-CC:     Han Jingoo <jingoohan1@gmail.com>,
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
         "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
-Thread-Topic: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
-Thread-Index: AWIzNHA0y3vT+npVfJhuNQKkYC3mSWVjM2Fi4rm3H+w=
+CC:     Han Jingoo <jingoohan1@gmail.com>
+Subject: Re: [PATCH 1/3] video: fbdev: s3c-fb: return -ENOMEM on
+ framebuffer_alloc() failure
+Thread-Topic: [PATCH 1/3] video: fbdev: s3c-fb: return -ENOMEM on
+ framebuffer_alloc() failure
+Thread-Index: AWZkMnA0HIwkbu1fGnDQIvP1wx9CWGYwZDNj2lFR4qc=
 X-MS-Exchange-MessageSentRepresentingType: 1
-Date:   Tue, 18 Jun 2019 06:12:27 +0000
-Message-ID: <PSXP216MB0662B10864E4DDEC1EC1823CAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
-References: <CGME20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b@eucas1p1.samsung.com>
- <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
-In-Reply-To: <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
+Date:   Tue, 18 Jun 2019 06:13:29 +0000
+Message-ID: <PSXP216MB066270BD6566CA5CDCEB1C7AAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
+References: <CGME20190614144735eucas1p2f71313b752ae4ea841ddd4ea502fd79f@eucas1p2.samsung.com>
+ <bbf32fbc-b4bc-39fc-e8dd-db9f0cd0d83f@samsung.com>
+In-Reply-To: <bbf32fbc-b4bc-39fc-e8dd-db9f0cd0d83f@samsung.com>
 Accept-Language: ko-KR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -76,31 +78,33 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 6/14/19, 11:46 PM, Bartlomiej Zolnierkiewicz wrote:
+On 6/14/19, 11:47 PM, Bartlomiej Zolnierkiewicz wrote:
 >=20
-> Add COMPILE_TEST support to s3c-fb driver for better compile
-> testing coverage.
+> Fix error code from -ENOENT to -ENOMEM.
 >
 > Cc: Jingoo Han <jingoohan1@gmail.com>
 Acked-by: Jingoo Han <jingoohan1@gmail.com>
+
+Best regards,
+Jingoo Han
+
 > Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 > ---
->  drivers/video/fbdev/Kconfig |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/video/fbdev/s3c-fb.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Index: b/drivers/video/fbdev/Kconfig
+> Index: b/drivers/video/fbdev/s3c-fb.c
 > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -1877,7 +1877,8 @@ config FB_TMIO_ACCELL
+> --- a/drivers/video/fbdev/s3c-fb.c
+> +++ b/drivers/video/fbdev/s3c-fb.c
+> @@ -1191,7 +1191,7 @@ static int s3c_fb_probe_win(struct s3c_f
+>  				   palette_size * sizeof(u32), sfb->dev);
+>  	if (!fbinfo) {
+>  		dev_err(sfb->dev, "failed to allocate framebuffer\n");
+> -		return -ENOENT;
+> +		return -ENOMEM;
+>  	}
 > =20
->  config FB_S3C
->  	tristate "Samsung S3C framebuffer support"
-> -	depends on FB && (CPU_S3C2416 || ARCH_S3C64XX)
-> +	depends on FB && HAVE_CLK && HAS_IOMEM
-> +	depends on (CPU_S3C2416 || ARCH_S3C64XX) || COMPILE_TEST
->  	select FB_CFB_FILLRECT
->  	select FB_CFB_COPYAREA
->  	select FB_CFB_IMAGEBLIT
+>  	windata =3D sfb->pdata->win[win_no];
