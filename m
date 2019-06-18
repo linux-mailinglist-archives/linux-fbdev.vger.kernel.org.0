@@ -2,260 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2E549AD8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DE549CF5
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 11:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729076AbfFRHmC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jun 2019 03:42:02 -0400
-Received: from mail-wr1-f100.google.com ([209.85.221.100]:35349 "EHLO
-        mail-wr1-f100.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728989AbfFRHl5 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jun 2019 03:41:57 -0400
-Received: by mail-wr1-f100.google.com with SMTP id m3so12768040wrv.2
-        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jun 2019 00:41:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=okoko.fi; s=okoko;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=rNkk0KsbO3YcUF9ymJ/Izy+/IeIKEUGythTLywp5Ihs=;
-        b=NpcJqVJ7oMwCHKq+K8XtNKFwzz/R4irs1neyzPkukpQlNYfqk2jXuCPYslO9Vbtia1
-         JGSC72YgcwPtuvPeMMLK/JyeNzFLssUmOFSR9ZTaoKXz9yFfgrgNtYgjoz6jfBI1Ol90
-         3NZeKgHz4geTHcmiwj/VFOnOfmm6DpVODx9eg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=rNkk0KsbO3YcUF9ymJ/Izy+/IeIKEUGythTLywp5Ihs=;
-        b=UW6DnAzQMlj6bWL1U8cvd3DHgjXntL41XE2CL6eq/5Y/9iiDpwl2VWH6guxZIAQ39V
-         3UUDFJceWKaMGkOpkoAwkT3lokiYf9fxOh4ANTrJqCgzeZ4rZ3ME6BK9RQcPkq0kclmK
-         MOKIG8/SH/r1JNVBbnVZsbtOHz/6sHKEfv0/MOfEdd1rxA+8BGkdxLQmAeih7CHjNpL+
-         xGHWSqwnb0ZiOs/Z+86db3GwkeEZguk7WnVQrF1HsU6WvhufVvbetO45erBgRbT8fWm3
-         +B0zP4XjcgWgxfHrwxWuo1XAH99o6+V5BIB5whNNQRP5pU+TpzKyOadEvc9vsiyZCEpr
-         pUgQ==
-X-Gm-Message-State: APjAAAW/ScFJC8aD1ERSbi+TCc8Zs3N853f9lGOaTYymufEsHVadL/zS
-        8pEpWn95fVbgDS5UQddNSyxjVsN+4azEHtloOh3MNMJSJ/UoYA==
-X-Google-Smtp-Source: APXvYqzAuwJZzHjJO+VMYRz/onGA03PFgeWDiSBswwI4SsuQTJYCfILB3zo1KrRCnyTMFgUxJOpzvnc+lfbZ
-X-Received: by 2002:a5d:6449:: with SMTP id d9mr23754483wrw.192.1560843715707;
-        Tue, 18 Jun 2019 00:41:55 -0700 (PDT)
-Received: from localhost.localdomain (46-163-209-30.blcnet.fi. [46.163.209.30])
-        by smtp-relay.gmail.com with ESMTPS id l18sm212063wrn.66.2019.06.18.00.41.54
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 18 Jun 2019 00:41:55 -0700 (PDT)
-X-Relaying-Domain: okoko.fi
-From:   Marko Kohtala <marko.kohtala@okoko.fi>
-To:     linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
-        Marko Kohtala <marko.kohtala@okoko.fi>
-Subject: [PATCH 6/6] video: ssd1307fb: Add devicetree configuration of display setup
-Date:   Tue, 18 Jun 2019 10:41:11 +0300
-Message-Id: <20190618074111.9309-7-marko.kohtala@okoko.fi>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190618074111.9309-1-marko.kohtala@okoko.fi>
-References: <20190618074111.9309-1-marko.kohtala@okoko.fi>
+        id S1729257AbfFRJUX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jun 2019 05:20:23 -0400
+Received: from mga03.intel.com ([134.134.136.65]:56595 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729256AbfFRJUW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 18 Jun 2019 05:20:22 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Jun 2019 02:20:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,388,1557212400"; 
+   d="scan'208";a="159999513"
+Received: from unknown (HELO [10.249.33.40]) ([10.249.33.40])
+  by fmsmga008.fm.intel.com with ESMTP; 18 Jun 2019 02:20:18 -0700
+Subject: Re: [PULL] topic/remove-fbcon-notifiers for v5.3
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Lee Jones <lee.jones@linaro.org>
+Cc:     Dave Airlie <airlied@gmail.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Sean Paul <sean@poorly.run>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+        dim-tools@lists.freedesktop.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>
+References: <887603f2-57a4-5a15-faa3-62634fe4b296@linux.intel.com>
+From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <ed2d0c16-807d-ddfb-eb96-4131d9daa47d@linux.intel.com>
+Date:   Tue, 18 Jun 2019 11:20:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <887603f2-57a4-5a15-faa3-62634fe4b296@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Various displays have differences that only mean initializing the display
-driver IC with different fixed register values. Defining these in
-devicetree offers easier way to adapt the driver to new displays than
-requiring a patch to the kernel.
+Op 14-06-2019 om 11:25 schreef Maarten Lankhorst:
+> Hi all,
+>
+> As discussed with Daniel V, I'm just doing the paperwork here as drm-misc maintainer.
+>
+> This is the topic pull request for the fbdev notifier removal.
+>
+> Bar, please make a final check and pull into your fbdev tree.
+>
+> Lee, please make a final check and pull into your backlight tree.
+>
+> Greg, this is just fyi, you already acked all the vt and staging patches in here
+> to land through other trees.
+>
+> I'll pull this into drm-misc-next once Bart & Lee acked it.
+>
+> Cheers, Maarten.
 
-This adds devicetree properties needed to make the initialization match
-the example setup as offered by Densitron for their 128x36 display.
+Bart, Lee, ping?
 
-It also makes some old one bit parameter handling a little cleaner.
 
-Signed-off-by: Marko Kohtala <marko.kohtala@okoko.fi>
----
- drivers/video/fbdev/ssd1307fb.c | 80 ++++++++++++++++++++++++++-------
- 1 file changed, 64 insertions(+), 16 deletions(-)
+> topic/remove-fbcon-notifiers-2019-06-14-1:
+> ----------------------------------------------------------------
+> topic/remove-fbcon-notifiers:
+> - remove fbdev notifier usage for fbcon, as prep work to clean up the fbcon locking
+> - assorted locking checks in vt/console code
+> - assorted notifier and cleanups in fbdev and backlight code
+>
+> The following changes since commit d1fdb6d8f6a4109a4263176c84b899076a5f8008:
+>
+>   Linux 5.2-rc4 (2019-06-08 20:24:46 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://anongit.freedesktop.org/drm/drm-misc tags/topic/remove-fbcon-notifiers-2019-06-14-1
+>
+> for you to fetch changes up to 1dcff4ae65185e8c0300972f6d8d39d9a9db2bda:
+>
+>   backlight: simplify lcd notifier (2019-06-13 10:07:20 +0200)
+>
+> ----------------------------------------------------------------
+> Daniel Vetter (33):
+>       dummycon: Sprinkle locking checks
+>       fbdev: locking check for fb_set_suspend
+>       vt: might_sleep() annotation for do_blank_screen
+>       vt: More locking checks
+>       fbdev/sa1100fb: Remove dead code
+>       fbdev/cyber2000: Remove struct display
+>       fbdev/aty128fb: Remove dead code
+>       fbcon: s/struct display/struct fbcon_display/
+>       fbcon: Remove fbcon_has_exited
+>       fbcon: call fbcon_fb_(un)registered directly
+>       fbdev/sh_mobile: remove sh_mobile_lcdc_display_notify
+>       fbdev/omap: sysfs files can't disappear before the device is gone
+>       fbdev: sysfs files can't disappear before the device is gone
+>       staging/olpc: lock_fb_info can't fail
+>       fbdev/atyfb: lock_fb_info can't fail
+>       fbdev: lock_fb_info cannot fail
+>       fbcon: call fbcon_fb_bind directly
+>       fbdev: make unregister/unlink functions not fail
+>       fbdev: unify unlink_framebuffer paths
+>       fbdev/sh_mob: Remove fb notifier callback
+>       fbdev: directly call fbcon_suspended/resumed
+>       fbcon: Call fbcon_mode_deleted/new_modelist directly
+>       fbdev: Call fbcon_get_requirement directly
+>       Revert "backlight/fbcon: Add FB_EVENT_CONBLANK"
+>       fbmem: pull fbcon_fb_blanked out of fb_blank
+>       fbdev: remove FBINFO_MISC_USEREVENT around fb_blank
+>       fb: Flatten control flow in fb_set_var
+>       fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls
+>       vgaswitcheroo: call fbcon_remap_all directly
+>       fbcon: Call con2fb_map functions directly
+>       fbcon: Document what I learned about fbcon locking
+>       staging/olpc_dcon: Add drm conversion to TODO
+>       backlight: simplify lcd notifier
+>
+>  arch/arm/mach-pxa/am200epd.c                    |  13 +-
+>  drivers/gpu/vga/vga_switcheroo.c                |  11 +-
+>  drivers/media/pci/ivtv/ivtvfb.c                 |   6 +-
+>  drivers/staging/fbtft/fbtft-core.c              |   4 +-
+>  drivers/staging/olpc_dcon/TODO                  |   7 +
+>  drivers/staging/olpc_dcon/olpc_dcon.c           |   6 +-
+>  drivers/tty/vt/vt.c                             |  18 ++
+>  drivers/video/backlight/backlight.c             |   2 +-
+>  drivers/video/backlight/lcd.c                   |  12 -
+>  drivers/video/console/dummycon.c                |   6 +
+>  drivers/video/fbdev/aty/aty128fb.c              |  64 ----
+>  drivers/video/fbdev/aty/atyfb_base.c            |   3 +-
+>  drivers/video/fbdev/core/fbcmap.c               |   6 +-
+>  drivers/video/fbdev/core/fbcon.c                | 313 ++++++++-----------
+>  drivers/video/fbdev/core/fbcon.h                |   6 +-
+>  drivers/video/fbdev/core/fbmem.c                | 399 +++++++++---------------
+>  drivers/video/fbdev/core/fbsysfs.c              |  20 +-
+>  drivers/video/fbdev/cyber2000fb.c               |   1 -
+>  drivers/video/fbdev/neofb.c                     |   9 +-
+>  drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c |  21 +-
+>  drivers/video/fbdev/sa1100fb.c                  |  25 --
+>  drivers/video/fbdev/savage/savagefb_driver.c    |   9 +-
+>  drivers/video/fbdev/sh_mobile_lcdcfb.c          | 132 +-------
+>  drivers/video/fbdev/sh_mobile_lcdcfb.h          |   5 -
+>  include/linux/console_struct.h                  |   5 +-
+>  include/linux/fb.h                              |  45 +--
+>  include/linux/fbcon.h                           |  30 ++
+>  27 files changed, 396 insertions(+), 782 deletions(-)
 
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index 4f4a1b99d17d..fca1e91d03d9 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -29,6 +29,7 @@
- #define SSD1307FB_SET_COL_RANGE		0x21
- #define SSD1307FB_SET_PAGE_RANGE	0x22
- #define SSD1307FB_CONTRAST		0x81
-+#define SSD1307FB_SET_LOOKUP_TABLE	0x91
- #define	SSD1307FB_CHARGE_PUMP		0x8d
- #define SSD1307FB_SEG_REMAP_ON		0xa1
- #define SSD1307FB_DISPLAY_OFF		0xae
-@@ -37,6 +38,7 @@
- #define SSD1307FB_START_PAGE_ADDRESS	0xb0
- #define SSD1307FB_SET_DISPLAY_OFFSET	0xd3
- #define	SSD1307FB_SET_CLOCK_FREQ	0xd5
-+#define	SSD1307FB_SET_AREA_COLOR_MODE	0xd8
- #define	SSD1307FB_SET_PRECHARGE_PERIOD	0xd9
- #define	SSD1307FB_SET_COM_PINS_CONFIG	0xda
- #define	SSD1307FB_SET_VCOMH		0xdb
-@@ -59,10 +61,14 @@ struct ssd1307fb_deviceinfo {
- };
- 
- struct ssd1307fb_par {
--	u32 com_invdir;
--	u32 com_lrremap;
-+	unsigned area_color_enable : 1;
-+	unsigned com_invdir : 1;
-+	unsigned com_lrremap : 1;
-+	unsigned com_seq : 1;
-+	unsigned lookup_table_set : 1;
-+	unsigned low_power : 1;
-+	unsigned seg_remap : 1;
- 	u32 com_offset;
--	u32 com_seq;
- 	u32 contrast;
- 	u32 dclk_div;
- 	u32 dclk_frq;
-@@ -70,6 +76,7 @@ struct ssd1307fb_par {
- 	struct i2c_client *client;
- 	u32 height;
- 	struct fb_info *info;
-+	u8 lookup_table[4];
- 	u32 page_offset;
- 	u32 prechargep1;
- 	u32 prechargep2;
-@@ -77,7 +84,6 @@ struct ssd1307fb_par {
- 	u32 pwm_period;
- 	struct gpio_desc *reset;
- 	struct regulator *vbat_reg;
--	u32 seg_remap;
- 	u32 vcomh;
- 	u32 width;
- };
-@@ -99,6 +105,9 @@ static const struct fb_fix_screeninfo ssd1307fb_fix = {
- 
- static const struct fb_var_screeninfo ssd1307fb_var = {
- 	.bits_per_pixel	= 1,
-+	.red = { .length = 1 },
-+	.green = { .length = 1 },
-+	.blue = { .length = 1 },
- };
- 
- static struct ssd1307fb_array *ssd1307fb_alloc_array(u32 len, u8 type)
-@@ -335,7 +344,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	}
- 
- 	/* Set COM direction */
--	com_invdir = 0xc0 | (par->com_invdir & 0x1) << 3;
-+	com_invdir = 0xc0 | par->com_invdir << 3;
- 	ret = ssd1307fb_write_cmd(par->client,  com_invdir);
- 	if (ret < 0)
- 		return ret;
-@@ -368,6 +377,22 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Set Set Area Color Mode ON/OFF & Low Power Display Mode */
-+	if (par->area_color_enable || par->low_power) {
-+		u32 mode;
-+
-+		ret = ssd1307fb_write_cmd(par->client,
-+					  SSD1307FB_SET_AREA_COLOR_MODE);
-+		if (ret < 0)
-+			return ret;
-+
-+		mode = (par->area_color_enable ? 0x30 : 0) |
-+			(par->low_power ? 5 : 0);
-+		ret = ssd1307fb_write_cmd(par->client, mode);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	/* Set precharge period in number of ticks from the internal clock */
- 	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_PRECHARGE_PERIOD);
- 	if (ret < 0)
-@@ -383,8 +408,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	if (ret < 0)
- 		return ret;
- 
--	compins = 0x02 | !(par->com_seq & 0x1) << 4
--				   | (par->com_lrremap & 0x1) << 5;
-+	compins = 0x02 | !par->com_seq << 4 | par->com_lrremap << 5;
- 	ret = ssd1307fb_write_cmd(par->client, compins);
- 	if (ret < 0)
- 		return ret;
-@@ -408,6 +432,28 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Set lookup table */
-+	if (par->lookup_table_set) {
-+		int i;
-+
-+		ret = ssd1307fb_write_cmd(par->client,
-+					  SSD1307FB_SET_LOOKUP_TABLE);
-+		if (ret < 0)
-+			return ret;
-+
-+		for (i = 0; i < ARRAY_SIZE(par->lookup_table); ++i) {
-+			u8 val = par->lookup_table[i];
-+
-+			if (val < 31 || val > 63)
-+				dev_warn(&par->client->dev,
-+					"lookup table index %d value out of range 31 <= %d <= 63\n",
-+					i, val);
-+			ret = ssd1307fb_write_cmd(par->client, val);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
-+
- 	/* Switch to horizontal addressing mode */
- 	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SET_ADDRESS_MODE);
- 	if (ret < 0)
-@@ -610,17 +656,26 @@ static int ssd1307fb_probe(struct i2c_client *client,
- 	if (of_property_read_u32(node, "solomon,prechargep2", &par->prechargep2))
- 		par->prechargep2 = 2;
- 
-+	if (!of_property_read_u8_array(node, "solomon,lookup-table",
-+		par->lookup_table, ARRAY_SIZE(par->lookup_table)))
-+		par->lookup_table_set = 1;
-+
- 	par->seg_remap = !of_property_read_bool(node, "solomon,segment-no-remap");
- 	par->com_seq = of_property_read_bool(node, "solomon,com-seq");
- 	par->com_lrremap = of_property_read_bool(node, "solomon,com-lrremap");
- 	par->com_invdir = of_property_read_bool(node, "solomon,com-invdir");
-+	par->area_color_enable =
-+		of_property_read_bool(node, "solomon,area-color-enable");
-+	par->low_power = of_property_read_bool(node, "solomon,low-power");
- 
- 	par->contrast = 127;
- 	par->vcomh = par->device_info->default_vcomh;
- 
- 	/* Setup display timing */
--	par->dclk_div = par->device_info->default_dclk_div;
--	par->dclk_frq = par->device_info->default_dclk_frq;
-+	if (of_property_read_u32(node, "solomon,dclk-div", &par->dclk_div))
-+		par->dclk_div = par->device_info->default_dclk_div;
-+	if (of_property_read_u32(node, "solomon,dclk-frq", &par->dclk_frq))
-+		par->dclk_frq = par->device_info->default_dclk_frq;
- 
- 	vmem_size = DIV_ROUND_UP(par->width, 8) * par->height;
- 
-@@ -654,13 +709,6 @@ static int ssd1307fb_probe(struct i2c_client *client,
- 	info->var.yres = par->height;
- 	info->var.yres_virtual = par->height;
- 
--	info->var.red.length = 1;
--	info->var.red.offset = 0;
--	info->var.green.length = 1;
--	info->var.green.offset = 0;
--	info->var.blue.length = 1;
--	info->var.blue.offset = 0;
--
- 	info->screen_buffer = vmem;
- 	info->fix.smem_start = __pa(vmem);
- 	info->fix.smem_len = vmem_size;
--- 
-2.17.1
 
