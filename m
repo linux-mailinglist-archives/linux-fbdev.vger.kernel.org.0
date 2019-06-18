@@ -2,45 +2,45 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2908049ACA
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C38449ACD
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jun 2019 09:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbfFRHlx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jun 2019 03:41:53 -0400
-Received: from mail-wm1-f97.google.com ([209.85.128.97]:53578 "EHLO
-        mail-wm1-f97.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725934AbfFRHlx (ORCPT
+        id S1728742AbfFRHly (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jun 2019 03:41:54 -0400
+Received: from mail-wr1-f100.google.com ([209.85.221.100]:42175 "EHLO
+        mail-wr1-f100.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725900AbfFRHly (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jun 2019 03:41:53 -0400
-Received: by mail-wm1-f97.google.com with SMTP id x15so2029355wmj.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jun 2019 00:41:52 -0700 (PDT)
+        Tue, 18 Jun 2019 03:41:54 -0400
+Received: by mail-wr1-f100.google.com with SMTP id x17so12738642wrl.9
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jun 2019 00:41:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=okoko.fi; s=okoko;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=t0Vqi/RB6vd3sTFj8r0XFtYp6zxmyWgaP1RbCqpMuHg=;
-        b=IsxmHO8pbbaTDMMhZXGehcVjKzvL6pC8soL58WAW8Ieg7BqyKeSgr9E/W7QLo/HCPq
-         9rABZnNUxf/Ka6yoa2Apt6EwSl3CBmEVF8yd7MBvbyZYiu/J70IQ6tI4r7tywLwWdtlh
-         5w99AgJ6Tjhws4M+bacGgFhWaQ0/FgvNoa+zE=
+        bh=RJV2c/yp+5Do5r3i0Oh53aiXsFA5fZSjKFxBZIwxxB4=;
+        b=d0+0frtSg952+lM6f0nBtK47869GFo/kZ49bF9nda2IzhOwtCpAxPQQKkPzzfvPy7D
+         4eY4ARuUNqbPQwctLijpvGklj6NQIdAQo0vMwPAoFiVihX1737VFcv+1WPV8x0kO0nX5
+         DbqE8tyTJHeLE2P/sdmVxB4dYR2ze9fzb51iw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=t0Vqi/RB6vd3sTFj8r0XFtYp6zxmyWgaP1RbCqpMuHg=;
-        b=sp08X98FFIKj/g3hgapa2nxpOa4h0lIh3RTf7Porz7wR7rZeCLPR8e1zJFJ23MgGZW
-         6QKZ3ZlImeox0tVY5GgR//S4BnX2tTCTNodm1rgzmmlEd8fId32mAaOYAwS1xIlKtqbU
-         fxUcdLmbFxrlLASUl4sqYl3sgyav+DUUuFqw7vtX6qpRzYL5jEuc3Z8Fj/GcHZLqNl9t
-         W6UVOBLapANsOPVKhhjcQuU92cjkVQugbO3LvrRgN27sp1inaDe1k7vpFfj8Z1qPMVr0
-         4AKl42q96aNTYri73FwNiogMj2H2jIqgkEEKCmwmIURIiUHfolIsHueqlC7CUsJo3N0U
-         5c1Q==
-X-Gm-Message-State: APjAAAViMzBET9ROG1vZxPjXnsmOSQE/t0V/up42BcRf2hW/1RyGRpam
-        NyVVtrOBeDwfmUNISB++x9rH1apsLRs6U4ZWIUpr8RDbRCZ2lA==
-X-Google-Smtp-Source: APXvYqydFUxa82KvmETVUZcfjM8PkupOirGSVC5mbNqfnR0pyyVWNFLzIVX6nRu9w3pplClHEc3GhFeBPlpa
-X-Received: by 2002:a1c:6641:: with SMTP id a62mr2039009wmc.175.1560843711554;
-        Tue, 18 Jun 2019 00:41:51 -0700 (PDT)
+        bh=RJV2c/yp+5Do5r3i0Oh53aiXsFA5fZSjKFxBZIwxxB4=;
+        b=dY30h1L97bb4gxxTMDn59/yBOIAZr9aThCF+q6VIJaOZbZ7AAS7dg27X6gum9kntqG
+         XK53zns9BjgjNg5bWWFRb3piF8M7fvgescDl4rPt0dPotiBueBgn/XZOa8j8qXhSKpg4
+         QuzRNfqSd+mOm9frQ04lvaKBaVIv3m8G1/+kR8nPZs59ulKc16IRY3GAL3C7JZybmaxp
+         dHoxzkTcRNuJMX8StgcPNBAGXTN18753e0xT+a7+VKcrhe+pI1gTN14raRHfi8FZbR2R
+         BhD+/WWkMq1cxbPwG0ReuTUv8CInRNKI9sicDkMLRUs3//e6ncz6jgjguOCvQnrCbezh
+         FJ1Q==
+X-Gm-Message-State: APjAAAWYBVT05nKcs15xbGsqyLmmvE6KCRjyvOgJgPyCYBULRHKsDK+G
+        fYmuRuGNlM/kTRuCMGmN55CfrGpJsuwOQ1F5xtFiLEOyBBkzow==
+X-Google-Smtp-Source: APXvYqzJtYYrIsIVjU6HwCxdrP51kOs3TdA56llOXfWqnnEnzoFlKNoTYyUl5l8w6i5sbjU9eoegASs4TVgl
+X-Received: by 2002:a5d:53c2:: with SMTP id a2mr27917903wrw.8.1560843712369;
+        Tue, 18 Jun 2019 00:41:52 -0700 (PDT)
 Received: from localhost.localdomain (46-163-209-30.blcnet.fi. [46.163.209.30])
-        by smtp-relay.gmail.com with ESMTPS id l18sm212063wrn.66.2019.06.18.00.41.50
+        by smtp-relay.gmail.com with ESMTPS id l18sm212063wrn.66.2019.06.18.00.41.51
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 18 Jun 2019 00:41:51 -0700 (PDT)
+        Tue, 18 Jun 2019 00:41:52 -0700 (PDT)
 X-Relaying-Domain: okoko.fi
 From:   Marko Kohtala <marko.kohtala@okoko.fi>
 To:     linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org,
@@ -52,9 +52,9 @@ Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         David Airlie <airlied@linux.ie>,
         =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
         Marko Kohtala <marko.kohtala@okoko.fi>
-Subject: [PATCH 1/6] video: ssd1307fb: Use screen_buffer instead of screen_base
-Date:   Tue, 18 Jun 2019 10:41:06 +0300
-Message-Id: <20190618074111.9309-2-marko.kohtala@okoko.fi>
+Subject: [PATCH 2/6] video: ssd1307fb: Remove unneeded semicolons
+Date:   Tue, 18 Jun 2019 10:41:07 +0300
+Message-Id: <20190618074111.9309-3-marko.kohtala@okoko.fi>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190618074111.9309-1-marko.kohtala@okoko.fi>
 References: <20190618074111.9309-1-marko.kohtala@okoko.fi>
@@ -63,64 +63,53 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-sparse reported incorrect type due to different address spaces.
-The screen_base is __iomem, but the memory is not from a device so we can
-use screen_buffer instead and avoid some type casts.
+coccicheck reported unneeded semicolons. Remove them.
 
 Signed-off-by: Marko Kohtala <marko.kohtala@okoko.fi>
 ---
- drivers/video/fbdev/ssd1307fb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/ssd1307fb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index 3b361bc9feb8..6c2980331ffd 100644
+index 6c2980331ffd..9ab00e0dadc7 100644
 --- a/drivers/video/fbdev/ssd1307fb.c
 +++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -150,7 +150,7 @@ static inline int ssd1307fb_write_cmd(struct i2c_client *client, u8 cmd)
- static void ssd1307fb_update_display(struct ssd1307fb_par *par)
- {
- 	struct ssd1307fb_array *array;
--	u8 *vmem = par->info->screen_base;
-+	u8 *vmem = par->info->screen_buffer;
- 	int i, j, k;
+@@ -313,7 +313,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
  
- 	array = ssd1307fb_alloc_array(par->width * par->height / 8,
-@@ -213,7 +213,7 @@ static ssize_t ssd1307fb_write(struct fb_info *info, const char __user *buf,
- 	struct ssd1307fb_par *par = info->par;
- 	unsigned long total_size;
- 	unsigned long p = *ppos;
--	u8 __iomem *dst;
-+	void *dst;
+ 		dev_dbg(&par->client->dev, "Using PWM%d with a %dns period.\n",
+ 			par->pwm->pwm, par->pwm_period);
+-	};
++	}
  
- 	total_size = info->fix.smem_len;
+ 	/* Set initial contrast */
+ 	ret = ssd1307fb_write_cmd(par->client, SSD1307FB_CONTRAST);
+@@ -329,7 +329,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+ 		ret = ssd1307fb_write_cmd(par->client, SSD1307FB_SEG_REMAP_ON);
+ 		if (ret < 0)
+ 			return ret;
+-	};
++	}
  
-@@ -226,7 +226,7 @@ static ssize_t ssd1307fb_write(struct fb_info *info, const char __user *buf,
- 	if (!count)
- 		return -EINVAL;
- 
--	dst = (void __force *) (info->screen_base + p);
-+	dst = info->screen_buffer + p;
- 
- 	if (copy_from_user(dst, buf, count))
- 		return -EFAULT;
-@@ -547,7 +547,7 @@ static int ssd1307fb_probe(struct i2c_client *client,
- 	struct fb_deferred_io *ssd1307fb_defio;
- 	u32 vmem_size;
- 	struct ssd1307fb_par *par;
--	u8 *vmem;
-+	void *vmem;
- 	int ret;
- 
- 	if (!node) {
-@@ -657,7 +657,7 @@ static int ssd1307fb_probe(struct i2c_client *client,
- 	info->var.blue.length = 1;
- 	info->var.blue.offset = 0;
- 
--	info->screen_base = (u8 __force __iomem *)vmem;
-+	info->screen_buffer = vmem;
- 	info->fix.smem_start = __pa(vmem);
- 	info->fix.smem_len = vmem_size;
- 
+ 	/* Set COM direction */
+ 	com_invdir = 0xc0 | (par->com_invdir & 0x1) << 3;
+@@ -716,7 +716,7 @@ static int ssd1307fb_probe(struct i2c_client *client,
+ 	if (par->device_info->need_pwm) {
+ 		pwm_disable(par->pwm);
+ 		pwm_put(par->pwm);
+-	};
++	}
+ regulator_enable_error:
+ 	if (par->vbat_reg)
+ 		regulator_disable(par->vbat_reg);
+@@ -740,7 +740,7 @@ static int ssd1307fb_remove(struct i2c_client *client)
+ 	if (par->device_info->need_pwm) {
+ 		pwm_disable(par->pwm);
+ 		pwm_put(par->pwm);
+-	};
++	}
+ 	fb_deferred_io_cleanup(info);
+ 	__free_pages(__va(info->fix.smem_start), get_order(info->fix.smem_len));
+ 	framebuffer_release(info);
 -- 
 2.17.1
 
