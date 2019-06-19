@@ -2,94 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6FE54B4C8
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Jun 2019 11:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA59D4B527
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Jun 2019 11:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731166AbfFSJRO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 19 Jun 2019 05:17:14 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:39152 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730996AbfFSJRO (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Jun 2019 05:17:14 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: eballetbo)
-        with ESMTPSA id 2284B286272
-Subject: Re: [PATCH 3/4] backlight: pwm_bl: Set scale type for CIE 1931 curves
-To:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
+        id S1727067AbfFSJoN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 19 Jun 2019 05:44:13 -0400
+Received: from mga06.intel.com ([134.134.136.31]:19303 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726958AbfFSJoN (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 19 Jun 2019 05:44:13 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jun 2019 02:44:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; 
+   d="scan'208";a="358562827"
+Received: from taniyasi-mobl.ger.corp.intel.com (HELO [10.252.35.15]) ([10.252.35.15])
+  by fmsmga006.fm.intel.com with ESMTP; 19 Jun 2019 02:44:08 -0700
+Subject: Re: [PATCH] fbcon: Export fbcon_update_vcs
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     kbuild test robot <lkp@intel.com>, Sam Ravnborg <sam@ravnborg.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-References: <20190613194326.180889-1-mka@chromium.org>
- <20190613194326.180889-4-mka@chromium.org>
-From:   Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Message-ID: <3ef89251-146c-c4e4-91c8-19ae855824ac@collabora.com>
-Date:   Wed, 19 Jun 2019 11:17:07 +0200
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Peter Rosin <peda@axentia.se>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        linux-fbdev@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lukas Wunner <lukas@wunner.de>, dri-devel@lists.freedesktop.org
+References: <20190619081115.27921-1-daniel.vetter@ffwll.ch>
+From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <2849b344-5cdb-a06f-5998-075cf91e15ed@linux.intel.com>
+Date:   Wed, 19 Jun 2019 11:44:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190613194326.180889-4-mka@chromium.org>
+In-Reply-To: <20190619081115.27921-1-daniel.vetter@ffwll.ch>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Matthias,
-
-On 13/6/19 21:43, Matthias Kaehlcke wrote:
-> For backlight curves calculated with the CIE 1931 algorithm set
-> the brightness scale type property accordingly. This makes the
-> scale type available to userspace via the 'scale' sysfs attribute.
-> 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-
-Tested on Samsung Chromebook Plus which uses the CIE 1931 algorithm.
-
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-
+Op 19-06-2019 om 10:11 schreef Daniel Vetter:
+> I failed to spot this while compile-testing. Oops.
+>
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Fixes: 9e1467002630 ("fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls")
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: Yisheng Xie <ysxie@foxmail.com>
+> Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+> Cc: Peter Rosin <peda@axentia.se>
+> Cc: Mikulas Patocka <mpatocka@redhat.com>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: dri-devel@lists.freedesktop.org
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
 > ---
->  drivers/video/backlight/pwm_bl.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index fb45f866b923..f067fe7aa35d 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -553,6 +553,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  		goto err_alloc;
->  	}
+>  drivers/video/fbdev/core/fbcon.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index b8067e07f8a8..c9235a2f42f8 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -3037,6 +3037,7 @@ void fbcon_update_vcs(struct fb_info *info, bool all)
+>  	else
+>  		fbcon_modechanged(info);
+>  }
+> +EXPORT_SYMBOL(fbcon_update_vcs);
 >  
-> +	memset(&props, 0, sizeof(struct backlight_properties));
-> +
->  	if (data->levels) {
->  		/*
->  		 * For the DT case, only when brightness levels is defined
-> @@ -591,6 +593,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  
->  			pb->levels = data->levels;
->  		}
-> +
-> +		props.scale = BACKLIGHT_SCALE_CIE1931;
->  	} else {
->  		/*
->  		 * That only happens for the non-DT case, where platform data
-> @@ -601,7 +605,6 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  
->  	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
->  
-> -	memset(&props, 0, sizeof(struct backlight_properties));
->  	props.type = BACKLIGHT_RAW;
->  	props.max_brightness = data->max_brightness;
->  	bl = backlight_device_register(dev_name(&pdev->dev), &pdev->dev, pb,
-> 
+>  int fbcon_mode_deleted(struct fb_info *info,
+>  		       struct fb_videomode *mode)
+
+Thanks, pushed to topic branch. :)
+
