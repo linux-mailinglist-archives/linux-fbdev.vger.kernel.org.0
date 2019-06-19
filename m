@@ -2,35 +2,44 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86CA14BE5E
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Jun 2019 18:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 312184C402
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jun 2019 01:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729098AbfFSQhU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 19 Jun 2019 12:37:20 -0400
-Received: from smtprelay0254.hostedemail.com ([216.40.44.254]:35276 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726197AbfFSQhU (ORCPT
+        id S1726479AbfFSXQ3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 19 Jun 2019 19:16:29 -0400
+Received: from ushosting.nmnhosting.com ([66.55.73.32]:42028 "EHLO
+        ushosting.nmnhosting.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726251AbfFSXQ3 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Jun 2019 12:37:20 -0400
-X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Wed, 19 Jun 2019 12:37:19 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave04.hostedemail.com (Postfix) with ESMTP id 2672C1800B894;
-        Wed, 19 Jun 2019 16:31:34 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id D3FFA1801A0B4;
-        Wed, 19 Jun 2019 16:31:31 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 
-X-HE-Tag: cakes27_80e37c98d9d58
-X-Filterd-Recvd-Size: 3106
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Wed, 19 Jun 2019 16:31:25 +0000 (UTC)
-Message-ID: <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
+        Wed, 19 Jun 2019 19:16:29 -0400
+Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
+        by ushosting.nmnhosting.com (Postfix) with ESMTPS id 5F37E2DC005B;
+        Wed, 19 Jun 2019 19:16:28 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
+        s=201810a; t=1560986188;
+        bh=P+nFrCYIAy9nbAT3inDjyh5Nu1AGlpkuYDjYYSTo8SU=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=UMKHysbwL4zdfy50KqutmgBEIg3sB7A1AG+8ItwZQtNEjbw3/kefwvZoa3HJ/qPue
+         FtHy3iQpmn+NaSFA3Mu2gOfCMETJuOCnHShThOrTrRi0524godGZCgjbLwEXdIrujV
+         xDt+bXPG551xLU30DowKCzCX4sh2ZLCYlpwKny3nSfu6TdTO04XxEEAerz4PtGaObB
+         mK5WkSsuK3ES4PAPxgZb+pSYtoFroMpH18T3PLybvLGSjfjyn/CtIMs+blM8XYmdPJ
+         TvkZW6Ca8pzYT9RsBfJRAJWjf4qfNG6J0j+xJvEaD7SP/MIMGo1VZ5d/zw4b3FdeYt
+         JetXAd65Zd6yavahdde3VtkKoryPECl8+glQZ+N2eRG9ycQ1RafCdpTqdv72F0hGkL
+         4apz6zp0SeF0J1KA9qT4u68PJKa7dlMEnKXEomd5VE+2hLj+H2XT6HltLJdB5+pK9G
+         cMe1+bLK+ayAWxIXuyZ1/r/oJ5pzAFraInvomTVKBkCfLFy8CdlSIihUmPfej/4psJ
+         72/lVeYRJl+IifxxJ9hEA9A+QWlY8W986ROsAQ5xOTxmaRzXMnnZRdFLVPZt5axFGD
+         EQ+IOd3b5ZUWjk3U7T3wAvcchJQaqLNw/Njxg2yMVkYsKSYnAMuX4DYn+A7LJX3oLF
+         sv3nSS3HZsRxp6mS1j36fWkI=
+Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au [122.99.82.10] (may be forged))
+        (authenticated bits=0)
+        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x5JNFxcT078663
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 20 Jun 2019 09:16:14 +1000 (AEST)
+        (envelope-from alastair@d-silva.org)
+Message-ID: <c68cb819257f251cbb66f8998a95c31cebe2d72e.camel@d-silva.org>
 Subject: Re: [PATCH v3 0/7] Hexdump Enhancements
-From:   Joe Perches <joe@perches.com>
-To:     Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org
+From:   "Alastair D'Silva" <alastair@d-silva.org>
+To:     Joe Perches <joe@perches.com>
 Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
@@ -60,43 +69,59 @@ Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
         ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
         devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
-Date:   Wed, 19 Jun 2019 09:31:24 -0700
-In-Reply-To: <20190617020430.8708-1-alastair@au1.ibm.com>
+Date:   Thu, 20 Jun 2019 09:15:58 +1000
+In-Reply-To: <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
 References: <20190617020430.8708-1-alastair@au1.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+         <9a000734375c0801fc16b71f4be1235f9b857772.camel@perches.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Thu, 20 Jun 2019 09:16:24 +1000 (AEST)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 2019-06-17 at 12:04 +1000, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
+On Wed, 2019-06-19 at 09:31 -0700, Joe Perches wrote:
+> On Mon, 2019-06-17 at 12:04 +1000, Alastair D'Silva wrote:
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > Apologies for the large CC list, it's a heads up for those
+> > responsible
+> > for subsystems where a prototype change in generic code causes a
+> > change
+> > in those subsystems.
+> > 
+> > This series enhances hexdump.
 > 
-> Apologies for the large CC list, it's a heads up for those responsible
-> for subsystems where a prototype change in generic code causes a change
-> in those subsystems.
+> Still not a fan of these patches.
+
+I'm afraid there's not too much action I can take on that, I'm happy to
+address specific issues though.
+
 > 
-> This series enhances hexdump.
-
-Still not a fan of these patches.
-
-> These improve the readability of the dumped data in certain situations
-> (eg. wide terminals are available, many lines of empty bytes exist, etc).
-
-Changing hexdump's last argument from bool to int is odd.
-
-Perhaps a new function should be added instead of changing
-the existing hexdump.
-
-> The default behaviour of hexdump is unchanged, however, the prototype
-> for hex_dump_to_buffer() has changed, and print_hex_dump() has been
-> renamed to print_hex_dump_ext(), with a wrapper replacing it for
-> compatibility with existing code, which would have been too invasive to
-> change.
+> > These improve the readability of the dumped data in certain
+> > situations
+> > (eg. wide terminals are available, many lines of empty bytes exist,
+> > etc).
 > 
-> Hexdump selftests have be run & confirmed passed.
+> Changing hexdump's last argument from bool to int is odd.
+> 
+
+Think of it as replacing a single boolean with many booleans.
+
+> Perhaps a new function should be added instead of changing
+> the existing hexdump.
+> 
+
+There's only a handful of consumers, I don't think there is a value-add 
+in creating more wrappers vs updating the existing callers.
+
+-- 
+Alastair D'Silva           mob: 0423 762 819
+skype: alastair_dsilva    
+Twitter: @EvilDeece
+blog: http://alastair.d-silva.org
 
 
