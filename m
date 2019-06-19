@@ -2,97 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA59D4B527
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Jun 2019 11:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90654B6AC
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Jun 2019 13:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbfFSJoN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 19 Jun 2019 05:44:13 -0400
-Received: from mga06.intel.com ([134.134.136.31]:19303 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726958AbfFSJoN (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Jun 2019 05:44:13 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jun 2019 02:44:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; 
-   d="scan'208";a="358562827"
-Received: from taniyasi-mobl.ger.corp.intel.com (HELO [10.252.35.15]) ([10.252.35.15])
-  by fmsmga006.fm.intel.com with ESMTP; 19 Jun 2019 02:44:08 -0700
-Subject: Re: [PATCH] fbcon: Export fbcon_update_vcs
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     kbuild test robot <lkp@intel.com>, Sam Ravnborg <sam@ravnborg.org>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        id S1731566AbfFSLGA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 19 Jun 2019 07:06:00 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:52059 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727552AbfFSLF6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 19 Jun 2019 07:05:58 -0400
+Received: by mail-wm1-f67.google.com with SMTP id 207so1280913wma.1
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Jun 2019 04:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=xl41q9hNOc/g9EYGMDVv6e3kqykgA8u4AjfGsUyaRHQ=;
+        b=JdBKTLDrjuc2YV4PWxdd20VcvL3iFMegCFa3Q6/uzxvqugEYTjmLnyj3TVyv5+lys4
+         PVN+wGlTXU/nam3nxiTvzOWWzj9hPkoHQ+xbPGb+E3B8NyUvnBV/CfvX4yvCMHuiSmFt
+         3AqbNmYSEqL1Es3/1h3AwunxKHbRwcaLzPU1yKE6dk5/1OO04B5XEPyBvkL2tpm1Flem
+         EFAI8EhR6ft5+W4a1Rcw04rvaT/1+0dFW8gjs1eG/PoBy2xi+eySWVD8tVEPwTsoKRwn
+         F9bSd1N5bhkLh+fdtRtGYuKSbiqJP1LG/v1NxcE+PbhV/JwyBeI09YxUpy7B5UiSy2q3
+         Vipg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xl41q9hNOc/g9EYGMDVv6e3kqykgA8u4AjfGsUyaRHQ=;
+        b=aMRRhLLA0yd8VAdLaZm1iMQvuKD1nPrS5fYxegt7D0Iu6bB46BfBleC7dI414h9cge
+         xSK+cgWRjt05uX9pJDVUgHQwhTuuacEhMu/qPuIBEB4kBtQkLsjy82hCphNHKjcwkfOJ
+         4SLctlKHcDaj5XIICbY5QQbVi4MUi8NGDKkQFNE6CK3KGO9Obi13GYKkJ8J+Wwh4M7Nf
+         nt4gu3O3Q2xou4t+J+0HNcnvaXMgL5EaVDLTqZ2pewkjdw5q8N1prE3EbE4ZKi9d4UrE
+         pSWyqMwJpl4erbuuyT6L1kdkIq5G626RVRmykvC3ngRTAAngqxaM4X2V1LLaDY6YLabW
+         cstw==
+X-Gm-Message-State: APjAAAVkqH3vBgsNKLxUQdu0S4VtOD+3jqWdQJwCCOoKaZK1J40YPtBf
+        sCGP2+nsyHNppibPdML/2BPeLg==
+X-Google-Smtp-Source: APXvYqy0Vj4gusY17LcUMJkB9rXJuNIK1DSDRJXpXkTwo5jvGI4HfycfIswmjX9F29RGTZ3uyd8gDw==
+X-Received: by 2002:a7b:c313:: with SMTP id k19mr7615451wmj.2.1560942356321;
+        Wed, 19 Jun 2019 04:05:56 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id u6sm1599073wml.9.2019.06.19.04.05.55
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 19 Jun 2019 04:05:55 -0700 (PDT)
+Date:   Wed, 19 Jun 2019 12:05:53 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Matthias Kaehlcke <mka@chromium.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Peter Rosin <peda@axentia.se>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        linux-fbdev@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lukas Wunner <lukas@wunner.de>, dri-devel@lists.freedesktop.org
-References: <20190619081115.27921-1-daniel.vetter@ffwll.ch>
-From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <2849b344-5cdb-a06f-5998-075cf91e15ed@linux.intel.com>
-Date:   Wed, 19 Jun 2019 11:44:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: Re: [PATCH 1/4] MAINTAINERS: Add entry for stable backlight sysfs
+ ABI documentation
+Message-ID: <20190619110553.zyz3jqshscqxqtum@holly.lan>
+References: <20190613194326.180889-1-mka@chromium.org>
+ <20190613194326.180889-2-mka@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <20190619081115.27921-1-daniel.vetter@ffwll.ch>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190613194326.180889-2-mka@chromium.org>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Op 19-06-2019 om 10:11 schreef Daniel Vetter:
-> I failed to spot this while compile-testing. Oops.
->
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Fixes: 9e1467002630 ("fbcon: replace FB_EVENT_MODE_CHANGE/_ALL with direct calls")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Daniel Vetter <daniel.vetter@intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: Hans de Goede <hdegoede@redhat.com>
-> Cc: Yisheng Xie <ysxie@foxmail.com>
-> Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
-> Cc: Peter Rosin <peda@axentia.se>
-> Cc: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+On Thu, Jun 13, 2019 at 12:43:23PM -0700, Matthias Kaehlcke wrote:
+> Add an entry for the stable backlight sysfs ABI to the MAINTAINERS
+> file.
+> 
+> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+
+Well spotted. Thanks!
+
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+
+
+Daniel.
+
 > ---
->  drivers/video/fbdev/core/fbcon.c | 1 +
+>  MAINTAINERS | 1 +
 >  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index b8067e07f8a8..c9235a2f42f8 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -3037,6 +3037,7 @@ void fbcon_update_vcs(struct fb_info *info, bool all)
->  	else
->  		fbcon_modechanged(info);
->  }
-> +EXPORT_SYMBOL(fbcon_update_vcs);
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 57f496cff999..d51e74340870 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2857,6 +2857,7 @@ F:	drivers/video/backlight/
+>  F:	include/linux/backlight.h
+>  F:	include/linux/pwm_backlight.h
+>  F:	Documentation/devicetree/bindings/leds/backlight
+> +F:	Documentation/ABI/stable/sysfs-class-backlight
 >  
->  int fbcon_mode_deleted(struct fb_info *info,
->  		       struct fb_videomode *mode)
-
-Thanks, pushed to topic branch. :)
-
+>  BATMAN ADVANCED
+>  M:	Marek Lindner <mareklindner@neomailbox.ch>
+> -- 
+> 2.22.0.rc2.383.gf4fbbf30c2-goog
+> 
