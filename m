@@ -2,173 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9924CFAD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jun 2019 15:56:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8DE65930B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 06:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbfFTN4a (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Jun 2019 09:56:30 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:51416 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726777AbfFTN4a (ORCPT
+        id S1726707AbfF1Ex7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 00:53:59 -0400
+Received: from mail-pg1-f231.google.com ([209.85.215.231]:34308 "EHLO
+        mail-pg1-f231.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726713AbfF1Ex6 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Jun 2019 09:56:30 -0400
-Received: by mail-wm1-f67.google.com with SMTP id 207so3202240wma.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 20 Jun 2019 06:56:28 -0700 (PDT)
+        Fri, 28 Jun 2019 00:53:58 -0400
+Received: by mail-pg1-f231.google.com with SMTP id p10so2034787pgn.1
+        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=lFm7NdIa2HHNh0HHo0ufCJYY4GiimW3KQmJfZuX/+1A=;
-        b=Ke6yJck4jVgEhh/tKvRzf4ORtRvDLepDlBQG7G/hYzHQMzbUIg7HdjRx50Eut9YlBw
-         XY4sV2dTy/Xj36F66LMAAEym59Oa53iPPeBZJXoKXqxrnOUH+dOUJd32WQGYDfM7opNG
-         J3AjnSL2NiTS/ThA75UTKJa/nPmqpEnSbFnhay98AkR/l4+yfCNwdC5HNQ+/4YTQl8Wr
-         Y68y8KszF3i3UrkHx0aWzS8lD9GISUTkuGIzCvCgEnXLAHz93/VkIhqB+tBasCXhJ5WC
-         4GIPtssQwjmmvH3+bRDbRGyrgyJTcexbC8Xb10toGo0T4GB4mgKNHy4+gIGl6fV5wWBZ
-         auMA==
+        d=ctcd-edu.20150623.gappssmtp.com; s=20150623;
+        h=from:subject:thread-topic:thread-index:date:message-id
+         :accept-language:content-language:content-transfer-encoding
+         :mime-version;
+        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
+        b=yoeySuHZ2sejtG818TC1O/sRk49+/vQ3CbN+Cdo+UHW9L5funzQd2Q0pE2uLs0b0US
+         3ooTACMRlY79vI4FLzqFZKHKKrxPTrXgXaWMcqe8jgbG9TaDTNtilkTZRtg6VlUGiKdp
+         KbTF2mzomGYMgE4bQnu5VDh7bapfFBiT2qYBZJe7YG5LbyDWz/Eh/rPZUG+Ac0xjJxZH
+         W3mbIfopUIqlT0EL+QWT7o/xSZm5JFZCL+eCmMMNv60Jnl/aFltkCdOXb5SlSsjXYCQB
+         Nb4cLYVjYvOUfUwx9XO2NitclNXqBV9hkxd1YcPbhSzExvM/+lHPAma8+4zL50ilre/p
+         2Ulg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lFm7NdIa2HHNh0HHo0ufCJYY4GiimW3KQmJfZuX/+1A=;
-        b=p3qOmo+cUmEAA+pz1ul3fOHsr685ITcStcLCXdfFZa1cCW2QjPVjC6eKAUXV7uEGPm
-         Ceg9hkzcOmYAHQNyR0SwSUoTa9a2nLXIie//oxf0fx8xBwZA98jM9r3aFiE4jcciv0s4
-         sxOzeuvwNvwpcGf7624yG6mWqCnpOEry4A9YKOMWrJ/Oak4K2J7Cmq9YAyX5KfaXl1Tj
-         +khOG8fvo/k+pNun9p0ebyjbTlYoyCCnOeXaoW1RS7BnkWAc9mtdE+bJiB7Xa1pSfa5K
-         MbH4ytUI7tUp9iFcEB77f2cVwwnv/+fMpJhQiXDvr0B15oa7o02jvEWZYpzwtoodmheR
-         6S6A==
-X-Gm-Message-State: APjAAAU10hyMeGGLdVHmFqqO5jvkxWox1q8xzUL+ejjDYXEoTXLL+fIe
-        zeZLJIb+EhL8LANYOo/Kw3fStw==
-X-Google-Smtp-Source: APXvYqw2i7LeGM36+7/WxrmFj2jyg/Rfps966Iqc9Kr0ftD/oKO7Uqgzi6rVFaEgRy0R5VxDX5/biw==
-X-Received: by 2002:a1c:6156:: with SMTP id v83mr3145978wmb.81.1561038987399;
-        Thu, 20 Jun 2019 06:56:27 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.googlemail.com with ESMTPSA id d18sm36948937wrb.90.2019.06.20.06.56.26
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2019 06:56:26 -0700 (PDT)
-Subject: Re: Re: [PATCH] backlight: gpio-backlight: Set power state instead of
- brightness at probe
-To:     Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-References: <20190517150546.4508-1-paul.kocialkowski@bootlin.com>
- <bee40295b2c6b489468d4e1fc12d7a1ac122cb9b.camel@bootlin.com>
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-Message-ID: <29712212-0567-702b-fbc9-c0f37806d84c@linaro.org>
-Date:   Thu, 20 Jun 2019 14:56:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <bee40295b2c6b489468d4e1fc12d7a1ac122cb9b.camel@bootlin.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        h=x-gm-message-state:from:subject:thread-topic:thread-index:date
+         :message-id:accept-language:content-language
+         :content-transfer-encoding:mime-version;
+        bh=uja0RKLj8/ZClYB7/xee4WJU8BS3tEVS8HkeIEY1v6o=;
+        b=HVBqeoq2aiXoP/6+7pRAv9nh/0kPpIed7IePTFuh+voJB/96iQQrvOYPcCzqvTXQh6
+         ENay3NrWr2g8T+QlyUpm9pFKNpkjFzsv0b6WUfA6RYDELNrCJ9n9VlBnDV+9am49ykTh
+         cce72hXv6urnKd5ZyeO+npPA1aZqPnRxZYCEjOGGOBQB99g8Gy+qr9CzEpil6G9fpvwx
+         nYloikWtj0YpzJDybZIjy6Zhn9OkYs2OFgNMYVVvfmQGgC909hI/BSt9rBakftNHe6TD
+         Ae8v5ka2zfQNErDj1wxSJaOmdlANJx7zgbyrzU5kSK1AkCp53w0SBFlK3Dggniaz9Tzg
+         8/tw==
+X-Gm-Message-State: APjAAAUlmq4N/TmJ60v4zp/bbs2+ijZQJ0bGYJJeoqnh/3LGQvvbYPDS
+        KEN4jnzhT8/doigwiRQuEfWP87dadgGMtMkQxmVp935dcrcT1w==
+X-Google-Smtp-Source: APXvYqxJkYMp/D0/TOWa0cF+M2QrMgL6Fs/241l24lc+p+ZxC69PNEQYyCft/PgXL83TNevq6R0mSpDU13C7
+X-Received: by 2002:a17:90a:20c6:: with SMTP id f64mr10700090pjg.57.1561697638054;
+        Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
+Received: from mail.ctcd.edu (rrcs-67-79-90-89.sw.biz.rr.com. [67.79.90.89])
+        by smtp-relay.gmail.com with ESMTPS id n69sm110753pjb.9.2019.06.27.21.53.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jun 2019 21:53:58 -0700 (PDT)
+X-Relaying-Domain: ctcd.edu
+Received: from CTCEmail02.campus.ctcd.org (172.17.139.89) by
+ CTCEmail01.campus.ctcd.org (172.17.139.87) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.845.34; Thu, 20 Jun 2019 09:20:21 -0500
+Received: from CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800]) by
+ CTCEmail02.campus.ctcd.org ([fe80::a0bb:ad1f:8c21:8800%2]) with mapi id
+ 15.01.0845.034; Thu, 20 Jun 2019 09:20:21 -0500
+From:   "Chambers, Marcine" <MChambers@ctcd.edu>
+Subject: GOOD DAY
+Thread-Topic: GOOD DAY
+Thread-Index: AQHVJ3NH8MyJd8SpTkSfWerfM/UxGQ==
+Date:   Thu, 20 Jun 2019 14:20:21 +0000
+Message-ID: <1bcebb25cbc54329a424613008b7d525@ctcd.edu>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.17.139.254]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 18/06/2019 13:58, Paul Kocialkowski wrote:
-> Hi,
-> 
-> On Fri, 2019-05-17 at 17:05 +0200, Paul Kocialkowski wrote:
->> On a trivial gpio-backlight setup with a panel using the backlight but
->> no boot software to enable it beforehand, we fall in a case where the
->> backlight is disabled (not just blanked) and thus remains disabled when
->> the panel gets enabled.
->>
->> Setting gbl->def_value via the device-tree prop allows enabling the
->> backlight in this situation, but it will be unblanked straight away,
->> in compliance with the binding. This does not work well when there was no
->> boot software to display something before, since we really need to unblank
->> by the time the panel is enabled, not before.
->>
->> Resolve the situation by setting the brightness to 1 at probe and
->> managing the power state accordingly, a bit like it's done in
->> pwm-backlight.
-> 
-> Any feedback on this? I was under the impression that it could be quite
-> controversial, as it implies that the backlight can no longer be
-> enabled without a bound panel (which IMO makes good sense but could be
-> a matter to debate).
+I am Vice Chairman of Hang Seng Bank, I have Important Matter to Discuss wi=
+th you concerning my late client, Died without a NEXT OF KIN. Send me your =
+private email for full details information. email me at (chienkraymond@outl=
+ook.com)
 
-My apologies. This patch brought on such severe deja-vu I got rather 
-confused. Then when I went digging I've also dropped the ball on the 
-same feature previously.
+Mail:infocarfer@aim.com
 
-Peter Ujfalusi provided a similar patch to yours but with a slightly 
-different implementation:
-https://lore.kernel.org/patchwork/patch/1002359/
-
-On the whole I think it is important to read the GPIO pin since 
-otherwise we swap problems when there bootloader does setup the 
-backlight for problems where it does not.
-
-The thing I don't get is why both patches try to avoid setting the 
-backlight brightness from def_value. Simple displays, especially 
-monochrome ones are perfectly readable with the backlight off... zero 
-brightness is not a "bad" value.
-
-Not sure if Peter is still willing to rev his version of this code 
-(given how badly we neglected him previously) or whether you want to try 
-and combine both ideas.
-
-
-Daniel.
-
-
-> 
-> Cheers,
-> 
-> Paul
-> 
->> Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
->> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
->> ---
->>   drivers/video/backlight/gpio_backlight.c | 19 ++++++++++++++++++-
->>   1 file changed, 18 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
->> index e470da95d806..c9cb97fa13d0 100644
->> --- a/drivers/video/backlight/gpio_backlight.c
->> +++ b/drivers/video/backlight/gpio_backlight.c
->> @@ -57,6 +57,21 @@ static const struct backlight_ops gpio_backlight_ops = {
->>   	.check_fb	= gpio_backlight_check_fb,
->>   };
->>   
->> +static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
->> +{
->> +	struct device_node *node = gbl->dev->of_node;
->> +
->> +	/* If we absolutely want the backlight enabled at boot. */
->> +	if (gbl->def_value)
->> +		return FB_BLANK_UNBLANK;
->> +
->> +	/* If there's no panel to unblank the backlight later. */
->> +	if (!node || !node->phandle)
->> +		return FB_BLANK_UNBLANK;
->> +
->> +	return FB_BLANK_POWERDOWN;
->> +}
->> +
->>   static int gpio_backlight_probe_dt(struct platform_device *pdev,
->>   				   struct gpio_backlight *gbl)
->>   {
->> @@ -142,7 +157,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->>   		return PTR_ERR(bl);
->>   	}
->>   
->> -	bl->props.brightness = gbl->def_value;
->> +	bl->props.brightness = 1;
->> +	bl->props.power = gpio_backlight_initial_power_state(gbl);
->> +
->>   	backlight_update_status(bl);
->>   
->>   	platform_set_drvdata(pdev, bl);
+Regards
+Dr.Raymond Chien Kuo Fung
 
