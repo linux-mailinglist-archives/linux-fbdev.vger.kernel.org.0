@@ -2,67 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0EA4CEB2
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jun 2019 15:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9924CFAD
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jun 2019 15:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbfFTNcD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Jun 2019 09:32:03 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:50857 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726491AbfFTNcC (ORCPT
+        id S1726798AbfFTN4a (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Jun 2019 09:56:30 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:51416 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726777AbfFTN4a (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Jun 2019 09:32:02 -0400
-Received: by mail-wm1-f66.google.com with SMTP id c66so3130336wmf.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 20 Jun 2019 06:32:01 -0700 (PDT)
+        Thu, 20 Jun 2019 09:56:30 -0400
+Received: by mail-wm1-f67.google.com with SMTP id 207so3202240wma.1
+        for <linux-fbdev@vger.kernel.org>; Thu, 20 Jun 2019 06:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=s4mJvF/EBCi9urzBjDVk6HyByyO2EXSJJe+w8Mr6PqE=;
-        b=fcQ2LGsvLhMHenQaR0fPJrheg/Ke4ddcB5Wu7YfIryVJUo9ToV0DrbYLLy5uEKt+Te
-         2eAlQZaWMnmihwnpB4DJYMLeVliQetctkognWmabqg2/bsj8vtTQ3Wdrk+/7DO4VmNG3
-         idw+XcIFBhIqZqB++Mw/O8IMVCpYutg5pJSVKzdMLiLzmItHKlz0b8OfrR7rtZ9kG3B0
-         PKKZxH1aruGECIB8MkZB2p8I+nWXXn5inX9QgpLCSUp9zSeHDaxhypHI8x4Pe1hjvwhw
-         vzzKpP408bHesT24rsySd1QPusV0TiHkwQeIkwFsr0iPxO7OVyk0/rcCLNTy7QcBcnmw
-         lOEQ==
+        bh=lFm7NdIa2HHNh0HHo0ufCJYY4GiimW3KQmJfZuX/+1A=;
+        b=Ke6yJck4jVgEhh/tKvRzf4ORtRvDLepDlBQG7G/hYzHQMzbUIg7HdjRx50Eut9YlBw
+         XY4sV2dTy/Xj36F66LMAAEym59Oa53iPPeBZJXoKXqxrnOUH+dOUJd32WQGYDfM7opNG
+         J3AjnSL2NiTS/ThA75UTKJa/nPmqpEnSbFnhay98AkR/l4+yfCNwdC5HNQ+/4YTQl8Wr
+         Y68y8KszF3i3UrkHx0aWzS8lD9GISUTkuGIzCvCgEnXLAHz93/VkIhqB+tBasCXhJ5WC
+         4GIPtssQwjmmvH3+bRDbRGyrgyJTcexbC8Xb10toGo0T4GB4mgKNHy4+gIGl6fV5wWBZ
+         auMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=s4mJvF/EBCi9urzBjDVk6HyByyO2EXSJJe+w8Mr6PqE=;
-        b=JCw7d98NhDR91mbsoD90a00rRrMuYxSHoCu5zKOiUqFsSZApIYnv3XHDtgQ8XnU6+V
-         y7V9rVEtyl5zwRT/JeV8sgfIANQmGPfThkV9Ig7wQ3yZBPkqsIoeV45+V2jo3OntGgrb
-         mTj27ykQaUiP0v8rTCfS0qTlVSWxo/+69Naxn+r/Py8XptHBbhA6lNXb1lUBXwHRdMw/
-         3juk38nqR4U07PooUqgrg4x0/hO6yZ0WRkab6Noyk7Njh1+P+uDuT6Zx3HV45JKlz7u1
-         7zVdST0lj2ZjpbTx0JvFXjauNkFpCKiWvT0Ud6RrYizerP1nPynrujtfrTQhy/OBADu/
-         R7SQ==
-X-Gm-Message-State: APjAAAX/N9hCi5/4IP082i3EKjXv87dxfy8F44imo8U/Mm4AsT1qV2fq
-        hKN0GAPoEuCnWb+wCmJpbnX75w==
-X-Google-Smtp-Source: APXvYqyZ+XwqzkDzsOqDlRPJBWJqgVr7mKBJlSUjoZoLBHrCLh8eDBez55m86Gy5WHroG5f6vyKnPA==
-X-Received: by 2002:a1c:cb0c:: with SMTP id b12mr2974917wmg.93.1561037520557;
-        Thu, 20 Jun 2019 06:32:00 -0700 (PDT)
+        bh=lFm7NdIa2HHNh0HHo0ufCJYY4GiimW3KQmJfZuX/+1A=;
+        b=p3qOmo+cUmEAA+pz1ul3fOHsr685ITcStcLCXdfFZa1cCW2QjPVjC6eKAUXV7uEGPm
+         Ceg9hkzcOmYAHQNyR0SwSUoTa9a2nLXIie//oxf0fx8xBwZA98jM9r3aFiE4jcciv0s4
+         sxOzeuvwNvwpcGf7624yG6mWqCnpOEry4A9YKOMWrJ/Oak4K2J7Cmq9YAyX5KfaXl1Tj
+         +khOG8fvo/k+pNun9p0ebyjbTlYoyCCnOeXaoW1RS7BnkWAc9mtdE+bJiB7Xa1pSfa5K
+         MbH4ytUI7tUp9iFcEB77f2cVwwnv/+fMpJhQiXDvr0B15oa7o02jvEWZYpzwtoodmheR
+         6S6A==
+X-Gm-Message-State: APjAAAU10hyMeGGLdVHmFqqO5jvkxWox1q8xzUL+ejjDYXEoTXLL+fIe
+        zeZLJIb+EhL8LANYOo/Kw3fStw==
+X-Google-Smtp-Source: APXvYqw2i7LeGM36+7/WxrmFj2jyg/Rfps966Iqc9Kr0ftD/oKO7Uqgzi6rVFaEgRy0R5VxDX5/biw==
+X-Received: by 2002:a1c:6156:: with SMTP id v83mr3145978wmb.81.1561038987399;
+        Thu, 20 Jun 2019 06:56:27 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.googlemail.com with ESMTPSA id l19sm2782480wmj.33.2019.06.20.06.31.59
+        by smtp.googlemail.com with ESMTPSA id d18sm36948937wrb.90.2019.06.20.06.56.26
         (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2019 06:31:59 -0700 (PDT)
-Subject: Re: [PATCH v1] backlight: Don't build support by default
-To:     Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Lee Jones <lee.jones@linaro.org>,
+        Thu, 20 Jun 2019 06:56:26 -0700 (PDT)
+Subject: Re: Re: [PATCH] backlight: gpio-backlight: Set power state instead of
+ brightness at probe
+To:     Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     DRI <dri-devel@lists.freedesktop.org>,
-        fbdev <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Antonino Daplas <adaplas@gmail.com>
-References: <70bd61f9-8fc5-75b1-9f32-7a5826ce6b48@free.fr>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+References: <20190517150546.4508-1-paul.kocialkowski@bootlin.com>
+ <bee40295b2c6b489468d4e1fc12d7a1ac122cb9b.camel@bootlin.com>
 From:   Daniel Thompson <daniel.thompson@linaro.org>
-Message-ID: <7958bf6a-5c2e-1330-1800-f9dbce3c01c6@linaro.org>
-Date:   Thu, 20 Jun 2019 14:31:58 +0100
+Message-ID: <29712212-0567-702b-fbc9-c0f37806d84c@linaro.org>
+Date:   Thu, 20 Jun 2019 14:56:25 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <70bd61f9-8fc5-75b1-9f32-7a5826ce6b48@free.fr>
+In-Reply-To: <bee40295b2c6b489468d4e1fc12d7a1ac122cb9b.camel@bootlin.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -71,57 +74,101 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 12/06/2019 14:27, Marc Gonzalez wrote:
-> b20c5249aa6a ("backlight: Fix compile error if CONFIG_FB is unset")
-> added 'default m' for BACKLIGHT_CLASS_DEVICE and LCD_CLASS_DEVICE.
+On 18/06/2019 13:58, Paul Kocialkowski wrote:
+> Hi,
+> 
+> On Fri, 2019-05-17 at 17:05 +0200, Paul Kocialkowski wrote:
+>> On a trivial gpio-backlight setup with a panel using the backlight but
+>> no boot software to enable it beforehand, we fall in a case where the
+>> backlight is disabled (not just blanked) and thus remains disabled when
+>> the panel gets enabled.
+>>
+>> Setting gbl->def_value via the device-tree prop allows enabling the
+>> backlight in this situation, but it will be unblanked straight away,
+>> in compliance with the binding. This does not work well when there was no
+>> boot software to display something before, since we really need to unblank
+>> by the time the panel is enabled, not before.
+>>
+>> Resolve the situation by setting the brightness to 1 at probe and
+>> managing the power state accordingly, a bit like it's done in
+>> pwm-backlight.
+> 
+> Any feedback on this? I was under the impression that it could be quite
+> controversial, as it implies that the backlight can no longer be
+> enabled without a bound panel (which IMO makes good sense but could be
+> a matter to debate).
 
-It took me some little while until I realized this patch is from 2005 
-which explains why I couldn't find it in the modern git repo!
+My apologies. This patch brought on such severe deja-vu I got rather 
+confused. Then when I went digging I've also dropped the ball on the 
+same feature previously.
 
+Peter Ujfalusi provided a similar patch to yours but with a slightly 
+different implementation:
+https://lore.kernel.org/patchwork/patch/1002359/
 
-> Let's go back to not building support by default.
+On the whole I think it is important to read the GPIO pin since 
+otherwise we swap problems when there bootloader does setup the 
+backlight for problems where it does not.
 
-At first glance disabling this by default looks like it would cause some 
-existing defconfig files to disable useful drivers.
+The thing I don't get is why both patches try to avoid setting the 
+backlight brightness from def_value. Simple displays, especially 
+monochrome ones are perfectly readable with the backlight off... zero 
+brightness is not a "bad" value.
 
-For backlight I think this isn't true (because both DRM and FB_BACKLIGHT 
-have a "select" on BACKLIGHT_CLASS_DEVICE).
-
-However for LCD it is not nearly as clear cut. Commit message needs to 
-explain why this won't cause unacceptable problems for existinng 
-defconfig files.
+Not sure if Peter is still willing to rev his version of this code 
+(given how badly we neglected him previously) or whether you want to try 
+and combine both ideas.
 
 
 Daniel.
 
 
-
-
 > 
-> Signed-off-by: Marc Gonzalez <marc.w.gonzalez@free.fr>
-> ---
->   drivers/video/backlight/Kconfig | 2 --
->   1 file changed, 2 deletions(-)
+> Cheers,
 > 
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index 8b081d61773e..40676be2e46a 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -10,7 +10,6 @@ menu "Backlight & LCD device support"
->   #
->   config LCD_CLASS_DEVICE
->           tristate "Lowlevel LCD controls"
-> -	default m
->   	help
->   	  This framework adds support for low-level control of LCD.
->   	  Some framebuffer devices connect to platform-specific LCD modules
-> @@ -143,7 +142,6 @@ endif # LCD_CLASS_DEVICE
->   #
->   config BACKLIGHT_CLASS_DEVICE
->           tristate "Lowlevel Backlight controls"
-> -	default m
->   	help
->   	  This framework adds support for low-level control of the LCD
->             backlight. This includes support for brightness and power.
+> Paul
 > 
+>> Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
+>> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+>> ---
+>>   drivers/video/backlight/gpio_backlight.c | 19 ++++++++++++++++++-
+>>   1 file changed, 18 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+>> index e470da95d806..c9cb97fa13d0 100644
+>> --- a/drivers/video/backlight/gpio_backlight.c
+>> +++ b/drivers/video/backlight/gpio_backlight.c
+>> @@ -57,6 +57,21 @@ static const struct backlight_ops gpio_backlight_ops = {
+>>   	.check_fb	= gpio_backlight_check_fb,
+>>   };
+>>   
+>> +static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
+>> +{
+>> +	struct device_node *node = gbl->dev->of_node;
+>> +
+>> +	/* If we absolutely want the backlight enabled at boot. */
+>> +	if (gbl->def_value)
+>> +		return FB_BLANK_UNBLANK;
+>> +
+>> +	/* If there's no panel to unblank the backlight later. */
+>> +	if (!node || !node->phandle)
+>> +		return FB_BLANK_UNBLANK;
+>> +
+>> +	return FB_BLANK_POWERDOWN;
+>> +}
+>> +
+>>   static int gpio_backlight_probe_dt(struct platform_device *pdev,
+>>   				   struct gpio_backlight *gbl)
+>>   {
+>> @@ -142,7 +157,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+>>   		return PTR_ERR(bl);
+>>   	}
+>>   
+>> -	bl->props.brightness = gbl->def_value;
+>> +	bl->props.brightness = 1;
+>> +	bl->props.power = gpio_backlight_initial_power_state(gbl);
+>> +
+>>   	backlight_update_status(bl);
+>>   
+>>   	platform_set_drvdata(pdev, bl);
 
