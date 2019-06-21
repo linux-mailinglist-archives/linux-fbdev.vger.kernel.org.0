@@ -2,228 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A90EB4E759
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 13:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEED4E7C1
+	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 14:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726232AbfFULvb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Jun 2019 07:51:31 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:45652 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726229AbfFULva (ORCPT
+        id S1726707AbfFUMGf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 21 Jun 2019 08:06:35 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:58404 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726360AbfFUMGe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Jun 2019 07:51:30 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190621115128euoutp0218a129ad57172a8138bdc55080da7ec5~qNHLRhFur0852308523euoutp02-
-        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 11:51:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190621115128euoutp0218a129ad57172a8138bdc55080da7ec5~qNHLRhFur0852308523euoutp02-
+        Fri, 21 Jun 2019 08:06:34 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190621120633euoutp01fa7f0afeeee0f5c0c571f69458d5b5fa~qNUV11_Ez0386803868euoutp01B
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 12:06:33 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190621120633euoutp01fa7f0afeeee0f5c0c571f69458d5b5fa~qNUV11_Ez0386803868euoutp01B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1561117888;
-        bh=XJeb/E4Wo7LWp+22aVT0OLPeEV+cSszzsoV1+hK0A1w=;
+        s=mail20170921; t=1561118793;
+        bh=wGGB2gDtNWG7yizzChvNAFBQWnf3VqAELSTaAtE7vS4=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=M7XOrK8tswYkOsDKNa3cQU7YYZnDR0HtdlrLDN5ktAgO0JHRh15XMQ0oYQNveWYRW
-         vfTc6zGgHgkS8OOh6mZad3ABrp8M8VY394quVj2AeqTyMS/OEcqMg51dieAY8OLTYk
-         uE8+sbhQ2yoR7uauJb81FHgx3KKXjtDUgHi/84PY=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        b=dZY/zS5xyTSzY4Fw1J6fjICFzrSSXBGkvtiMgbYHPLeP5fQlv23R0afqRQ/cKP4Hc
+         DD0TpkZlMPM1qPNX8IGx1EzNR30d2lhnNdtZ551rQCgDDNxc51NlLKaQGGwxJ32Z0c
+         WN6+oriMBtb2EW+RuuKRB09vCjd/bMEGvWigavGg=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190621115128eucas1p2a2030f671508005e9ff3f9dd1cef5cd3~qNHK7K_xj0549905499eucas1p29;
-        Fri, 21 Jun 2019 11:51:28 +0000 (GMT)
+        20190621120632eucas1p24898bee4b69c79fb4754857af9460303~qNUVWL4Gl1704417044eucas1p2D;
+        Fri, 21 Jun 2019 12:06:32 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 40.90.04377.FB4CC0D5; Fri, 21
-        Jun 2019 12:51:27 +0100 (BST)
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 83.21.04325.848CC0D5; Fri, 21
+        Jun 2019 13:06:32 +0100 (BST)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190621115127eucas1p2048b000ce4cf96a452f7d2fac33a92e3~qNHKFSwKu0099500995eucas1p2e;
-        Fri, 21 Jun 2019 11:51:27 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190621120631eucas1p1e60ddd1453700646cd5047ad827bc4d4~qNUUiC8Qq1150611506eucas1p1m;
+        Fri, 21 Jun 2019 12:06:31 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190621115127eusmtrp28259ffaf7983a1151e7999a603172d51~qNHJ3T6xw2782927829eusmtrp28;
-        Fri, 21 Jun 2019 11:51:27 +0000 (GMT)
-X-AuditID: cbfec7f4-113ff70000001119-65-5d0cc4bf3cb8
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 43.BF.04146.EB4CC0D5; Fri, 21
-        Jun 2019 12:51:27 +0100 (BST)
+        20190621120631eusmtrp223f06cc93abf6e2f27356ccb6bf424ee~qNUUT_oGx0548605486eusmtrp2L;
+        Fri, 21 Jun 2019 12:06:31 +0000 (GMT)
+X-AuditID: cbfec7f5-b8fff700000010e5-48-5d0cc8480065
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 58.21.04146.748CC0D5; Fri, 21
+        Jun 2019 13:06:31 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190621115126eusmtip1671e9e7b6ab6f8f1dc7bfbbd393a78f4~qNHJncJHi2698826988eusmtip1H;
-        Fri, 21 Jun 2019 11:51:26 +0000 (GMT)
-Subject: Re: [PATCH v2] video: fbdev: Fix Warning comparing pointer to 0
- reported by coccicheck
-To:     Mathieu Malaterre <malat@debian.org>,
-        Shobhit Kukreti <shobhitkukreti@gmail.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190621120631eusmtip2f1b4a55176fe14258383b48918d52a15~qNUT6JzGS0297302973eusmtip2i;
+        Fri, 21 Jun 2019 12:06:31 +0000 (GMT)
+Subject: Re: [PATCH][next] video: fbdev: atmel_lcdfb: remove redundant
+ initialization to variable ret
+To:     Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <Nicolas.Ferre@microchip.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <35abcd17-fff4-49e7-5331-00354818f9f7@samsung.com>
-Date:   Fri, 21 Jun 2019 13:51:24 +0200
+Message-ID: <fae5c288-cf9b-5b54-1aeb-06126f140b84@samsung.com>
+Date:   Fri, 21 Jun 2019 14:06:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CA+7wUswkGyBrnbAZrA57PcxTb1jB=dLkv9SYXT05A2fX8Mb0jw@mail.gmail.com>
+In-Reply-To: <20190612141356.riiesqub4zvxafh3@M43218.corp.atmel.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBKsWRmVeSWpSXmKPExsWy7djPc7r7j/DEGkw6ZWlx5et7NosTfR9Y
-        Lc5uestiMXvLPHYHFo9fbXOZPXbOusvucb/7OJPH501yASxRXDYpqTmZZalF+nYJXBlfD+9l
-        KpivUHHj6D72BsbFkl2MnBwSAiYSD7/1MnYxcnEICaxglLh07isLhPOFUeJI4wko5zOjxI2z
-        j5hhWtacWs0KkVjOKPGru4UdwnnLKNG15xQjSJWwQKLEwukbmUBsEYEwib6ny8C6mQVyJd4t
-        fMACYrMJWElMbF8FVs8rYCdxfeUNNhCbRUBV4uqcGewgtqhAhMT9YxtYIWoEJU7OfALWyykQ
-        KLF83hQWiJniEreezGeCsOUltr+dwwxykITAdHaJz7cnMUGc7SLxrOM5O4QtLPHq+BYoW0bi
-        /06QZpCGdYwSfzteQHVvZ5RYPvkfG0SVtcTh4xeBzuAAWqEpsX6XPkTYUeLznu8sIGEJAT6J
-        G28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJa7OQvDMLyTuzEPYuYGRZ
-        xSieWlqcm55abJSXWq5XnJhbXJqXrpecn7uJEZheTv87/mUH464/SYcYBTgYlXh4D8zijhVi
-        TSwrrsw9xCjBwawkwsuTwxMrxJuSWFmVWpQfX1Sak1p8iFGag0VJnLea4UG0kEB6Yklqdmpq
-        QWoRTJaJg1OqgbG246MlZ+P9N0KP5u9zsn9zidlAzibGJlXh8cPVgUl9B6ybNN+vYJkVtv+T
-        1pkL3J47FT6cfM0Tn+Zuf1zqzXXHjAgNw0kHjyt+4U2zXKDF4CRqcaT1tNG+LJ+XfNyJUg+v
-        MbUffpH67Ey4y/9Lxao2hzp+Z19WVzCb+sRg2n4vPnHjcysVRZRYijMSDbWYi4oTAY9TMI4r
-        AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrJIsWRmVeSWpSXmKPExsVy+t/xu7r7j/DEGvRtY7S48vU9m8WJvg+s
-        Fmc3vWWxmL1lHrsDi8evtrnMHjtn3WX3uN99nMnj8ya5AJYoPZui/NKSVIWM/OISW6VoQwsj
-        PUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYyvh/cyFcxXqLhxdB97A+NiyS5GTg4J
-        AROJNadWs3YxcnEICSxllJj/ZwZTFyMHUEJG4vj6MogaYYk/17rYIGpeM0ocPziDFSQhLJAo
-        sXD6RiYQW0QgTGL+8xtsIDazQK7El9+XmSEaVjFJfFvSClbEJmAlMbF9FSOIzStgJ3F9JUQD
-        i4CqxNU5M9hBbFGBCIkz71ewQNQISpyc+QTM5hQIlFg+bwoLxAJ1iT/zLjFD2OISt57MZ4Kw
-        5SW2v53DPIFRaBaS9llIWmYhaZmFpGUBI8sqRpHU0uLc9NxiQ73ixNzi0rx0veT83E2MwGja
-        duzn5h2MlzYGH2IU4GBU4uE9MIs7Vog1say4MvcQowQHs5IIL08OT6wQb0piZVVqUX58UWlO
-        avEhRlOg5yYyS4km5wMjPa8k3tDU0NzC0tDc2NzYzEJJnLdD4GCMkEB6YklqdmpqQWoRTB8T
-        B6dUA6Nu4cuEurQKy4+uq/7N0vmkcunHT4WXEerss49NfV1c/SWueoazx9ojRrwTRcXkUzzX
-        PraVsGU27N/2VTXGO26NuPP78wX3A9IXLN8l8aXu4aFWu4QZD6Jr/nVYOW65t2HXveiZTJpq
-        vlqXtp4q9jGLuzxd0szaR0PnZ+LV21UvYgVN+0/ECCmxFGckGmoxFxUnAgAUxImOvAIAAA==
-X-CMS-MailID: 20190621115127eucas1p2048b000ce4cf96a452f7d2fac33a92e3
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJKsWRmVeSWpSXmKPExsWy7djPc7oeJ3hiDZ5OlbZof7eM3eL36l42
+        iytf37NZbL0lbbHp8TVWixN9H1gtLu+aw2bxYu11VovtmxcyO3B6zFtT7TGroZfN4373cSaP
+        zUvqPe78WMro8XmTXABbFJdNSmpOZllqkb5dAlfG77mzWAtOslX07L7A1sC4nbWLkYNDQsBE
+        4tguni5GLg4hgRWMEm2d65kgnC+MErs2v2CDcD4zSvw4upe9i5ETrGP/+mPMEInljBJX+p+x
+        QjhvGSW2v/kMViUskC7xet5PFpCEiEAv0Kw/U8AcZoFpzBLtMxewglSxCVhJTGxfxQhi8wrY
+        SeydtIENxGYRUJVYcvcXE4gtKhAhcf/YBlaIGkGJkzOfsIDYnAIuEh+n7wKrYRYQl7j1ZD6U
+        LS+x/e0csPskBE6xS1x9s4AN4nAXia9XF7JA2MISr45vgXpIRuL/zvlMEA3rGCX+dryA6t7O
+        KLF88j+obmuJw8cvggONWUBTYv0ufYiwo8SKU6uYIGHJJ3HjrSDEEXwSk7ZNZ4YI80p0tAlB
+        VKtJbFi2gQ1mbdfOlcwTGJVmIXltFpJ3ZiF5ZxbC3gWMLKsYxVNLi3PTU4uN81LL9YoTc4tL
+        89L1kvNzNzECE9Tpf8e/7mDc9yfpEKMAB6MSD++BWdyxQqyJZcWVuYcYJTiYlUR4eXJ4YoV4
+        UxIrq1KL8uOLSnNSiw8xSnOwKInzVjM8iBYSSE8sSc1OTS1ILYLJMnFwSjUwzo2zuFO8+thT
+        2Qurs459TI1a+Ga22BYFSw+GPJ9nOyst94XIVve/Mjq2fMkk175zNn2rwhZZPPqs3rZOtTrx
+        ZqDA6csMIsYT1k74JaS/3XTfc1G2TXGxoqrWn+PXH172SP/5jINlXDLS6eLK7kZOjftbV94X
+        dcsXSSl6/GK63ML17cyMvTc/KLEUZyQaajEXFScCAB1Prw9MAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNIsWRmVeSWpSXmKPExsVy+t/xe7ruJ3hiDU7vVbFof7eM3eL36l42
+        iytf37NZbL0lbbHp8TVWixN9H1gtLu+aw2bxYu11VovtmxcyO3B6zFtT7TGroZfN4373cSaP
+        zUvqPe78WMro8XmTXABblJ5NUX5pSapCRn5xia1StKGFkZ6hpYWekYmlnqGxeayVkamSvp1N
+        SmpOZllqkb5dgl7G77mzWAtOslX07L7A1sC4nbWLkZNDQsBEYv/6Y8xdjFwcQgJLGSVad39k
+        6mLkAErISBxfXwZRIyzx51oXG0TNa0aJ9utr2EASwgLpEq/n/WQBSYgI9DNKTF4yHaqqiUli
+        35QnYA6zwDRmiRnLf7CAtLAJWElMbF/FCGLzCthJ7J20AWwUi4CqxJK7v5hAbFGBCIkz71ew
+        QNQISpyc+QTM5hRwkfg4fRdYDbOAusSfeZeYIWxxiVtP5kPF5SW2v53DPIFRaBaS9llIWmYh
+        aZmFpGUBI8sqRpHU0uLc9NxiQ73ixNzi0rx0veT83E2MwIjcduzn5h2MlzYGH2IU4GBU4uE9
+        MIs7Vog1say4MvcQowQHs5IIL08OT6wQb0piZVVqUX58UWlOavEhRlOg5yYyS4km5wOTRV5J
+        vKGpobmFpaG5sbmxmYWSOG+HwMEYIYH0xJLU7NTUgtQimD4mDk6pBsaOK8nPPCbG7DLUNrQ4
+        fvmG6XpRX4s1DoFnFqq3ZUxfs1nb0IqXY57V+7M/FhRvYUo/zGmo0RP1ODYpbaYUzyHBhgKp
+        OWuOr/1SElNXJMJ09ag/2xnOU+0uuyd5KFZt0ky5sPiK+sJvmy/XPD7hfHX/V8teByWG9/3b
+        /54UzGYqPHU5zTMs9ooSS3FGoqEWc1FxIgBPO8a23gIAAA==
+X-CMS-MailID: 20190621120631eucas1p1e60ddd1453700646cd5047ad827bc4d4
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190603115729epcas1p40bbcc113fd0813e328a6ffbc464751c4
+X-RootMTR: 20190612141513epcas2p32873b9574f918732b4cf8a6838cdd54d
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190603115729epcas1p40bbcc113fd0813e328a6ffbc464751c4
-References: <CA+7wUswLsZ7PF6Pi8Oz=9287UYZQeKCFJHP7FDtPf1Cq8PO7ag@mail.gmail.com>
-        <1559560752-12314-1-git-send-email-shobhitkukreti@gmail.com>
-        <CGME20190603115729epcas1p40bbcc113fd0813e328a6ffbc464751c4@epcas1p4.samsung.com>
-        <CA+7wUswkGyBrnbAZrA57PcxTb1jB=dLkv9SYXT05A2fX8Mb0jw@mail.gmail.com>
+X-CMS-RootMailID: 20190612141513epcas2p32873b9574f918732b4cf8a6838cdd54d
+References: <20190611170913.20913-1-colin.king@canonical.com>
+        <37ac8530-6601-a1a0-37e0-8c6d5d1702cd@microchip.com>
+        <CGME20190612141513epcas2p32873b9574f918732b4cf8a6838cdd54d@epcas2p3.samsung.com>
+        <20190612141356.riiesqub4zvxafh3@M43218.corp.atmel.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 6/3/19 1:57 PM, Mathieu Malaterre wrote:
-> On Mon, Jun 3, 2019 at 1:21 PM <shobhitkukreti@gmail.com> wrote:
+On 6/12/19 4:13 PM, Ludovic Desroches wrote:
+> On Wed, Jun 12, 2019 at 09:55:30AM +0200, Nicolas Ferre - M43238 wrote:
+>> On 11/06/2019 at 19:09, Colin King wrote:
+>>> External E-Mail
+>>>
+>>>
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> Currently variable ret is being initialized with -ENOENT however that
+>>> value is never read and ret is being re-assigned later on. Hence this
+>>> assignment is redundant and can be removed.
+>>>
+>>> Addresses-Coverity: ("Unused value")
+>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 >>
->> From: Shobhit Kukreti <shobhitkukreti@gmail.com>
->>
->> Fixed Warning Comparing Pointer to 0. Changed return value to -ENOMEM to
->> report kzalloc failure
->>
->> drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
->> drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
->> drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
->>
->> Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
->> ---
->> Changes in v2:
->>  - Modified commit message to report change in return type
->>
->>  drivers/video/fbdev/controlfb.c | 8 ++++----
->>  1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
->> index 7af8db2..07907c5 100644
->> --- a/drivers/video/fbdev/controlfb.c
->> +++ b/drivers/video/fbdev/controlfb.c
->> @@ -182,7 +182,7 @@ int init_module(void)
->>         int ret = -ENXIO;
->>
->>         dp = of_find_node_by_name(NULL, "control");
->> -       if (dp != 0 && !control_of_init(dp))
->> +       if (dp != NULL && !control_of_init(dp))
->>                 ret = 0;
->>         of_node_put(dp);
->>
->> @@ -580,7 +580,7 @@ static int __init control_init(void)
->>         control_setup(option);
->>
->>         dp = of_find_node_by_name(NULL, "control");
->> -       if (dp != 0 && !control_of_init(dp))
->> +       if (dp != NULL && !control_of_init(dp))
->>                 ret = 0;
->>         of_node_put(dp);
->>
->> @@ -683,8 +683,8 @@ static int __init control_of_init(struct device_node *dp)
->>                 return -ENXIO;
->>         }
->>         p = kzalloc(sizeof(*p), GFP_KERNEL);
->> -       if (p == 0)
->> -               return -ENXIO;
->> +       if (p == NULL)
+>> Indeed:
+>> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 > 
-> nit: I would have use `!p` (same for the others above). Maybe
-> checkpatch with --strict would warn for those (can't remember from top
-> of my head).
-> 
-> Anyway:
-> 
-> Reviewed-by: Mathieu Malaterre <malat@debian.org>
-> 
->> +               return -ENOMEM;
->>         control_fb = p; /* save it for cleanups */
->>
->>         /* Map in frame buffer and registers */
-Patch queued (with some fixups, please see below) for v5.3, thanks.
+> Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
+
+Patch queued for v5.3, thanks.
 
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
-
-
-From: Shobhit Kukreti <shobhitkukreti@gmail.com>
-Subject: [PATCH] video: fbdev: controlfb: fix warnings about comparing pointer to 0
-
-Fix warnings aboout comparing pointer to 0 reported by coccicheck:
-
-drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
-drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
-drivers/video/fbdev/controlfb.c: WARNING comparing pointer to 0
-
-Also while at it change return value to -ENOMEM on kzalloc() failure.
-
-Signed-off-by: Shobhit Kukreti <shobhitkukreti@gmail.com>
-Reviewed-by: Mathieu Malaterre <malat@debian.org>
-[b.zolnierkie: minor fixups]
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/video/fbdev/controlfb.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-Index: b/drivers/video/fbdev/controlfb.c
-===================================================================
---- a/drivers/video/fbdev/controlfb.c
-+++ b/drivers/video/fbdev/controlfb.c
-@@ -182,7 +182,7 @@ int init_module(void)
- 	int ret = -ENXIO;
- 
- 	dp = of_find_node_by_name(NULL, "control");
--	if (dp != 0 && !control_of_init(dp))
-+	if (dp && !control_of_init(dp))
- 		ret = 0;
- 	of_node_put(dp);
- 
-@@ -580,7 +580,7 @@ static int __init control_init(void)
- 	control_setup(option);
- 
- 	dp = of_find_node_by_name(NULL, "control");
--	if (dp != 0 && !control_of_init(dp))
-+	if (dp && !control_of_init(dp))
- 		ret = 0;
- 	of_node_put(dp);
- 
-@@ -683,8 +683,8 @@ static int __init control_of_init(struct
- 		return -ENXIO;
- 	}
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
--	if (p == 0)
--		return -ENXIO;
-+	if (!p)
-+		return -ENOMEM;
- 	control_fb = p;	/* save it for cleanups */
- 
- 	/* Map in frame buffer and registers */
