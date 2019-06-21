@@ -2,62 +2,28 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61ECF4DAC9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jun 2019 21:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DB2557CD
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 21:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbfFTTzq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Jun 2019 15:55:46 -0400
-Received: from ms.lwn.net ([45.79.88.28]:47476 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726002AbfFTTzq (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Jun 2019 15:55:46 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id AA6829B0;
-        Thu, 20 Jun 2019 19:55:45 +0000 (UTC)
-Date:   Thu, 20 Jun 2019 13:55:44 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-doc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: fb: Add TER16x32 to the available font names
-Message-ID: <20190620135544.4a56b62a@lwn.net>
-In-Reply-To: <20190619053943.6320-1-tiwai@suse.de>
-References: <20190619053943.6320-1-tiwai@suse.de>
-Organization: LWN.net
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+        id S1727078AbfFYTcT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 15:32:19 -0400
+Received: from tako.kondi.net ([192.166.219.46]:48094 "EHLO
+        grzegorz.bedra.webh.me" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726393AbfFYTcT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 25 Jun 2019 15:32:19 -0400
+Received: from tako.kondi.net (localhost [IPv6:::1])
+        by grzegorz.bedra.webh.me (Postfix) with SMTP id BAEA72535B7D
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 06:52:43 +0200 (CEST)
+From:   linux-fbdev@vger.kernel.org
+To:     Jy0jSe3rlinux-fbdev@vger.kernel.org
+Reply-To: prodawez@armyspy.com
+Subject: Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.
+Message-Id: <20190621045243.BAEA72535B7D@grzegorz.bedra.webh.me>
+Date:   Fri, 21 Jun 2019 06:52:43 +0200 (CEST)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 19 Jun 2019 07:39:43 +0200
-Takashi Iwai <tiwai@suse.de> wrote:
-
-> The new font is available since recently.
-> 
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> ---
->  Documentation/fb/fbcon.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/fb/fbcon.rst b/Documentation/fb/fbcon.rst
-> index cfb9f7c38f18..1da65b9000de 100644
-> --- a/Documentation/fb/fbcon.rst
-> +++ b/Documentation/fb/fbcon.rst
-> @@ -82,7 +82,7 @@ C. Boot options
->  
->  	Select the initial font to use. The value 'name' can be any of the
->  	compiled-in fonts: 10x18, 6x10, 7x14, Acorn8x8, MINI4x6,
-> -	PEARL8x8, ProFont6x11, SUN12x22, SUN8x16, VGA8x16, VGA8x8.
-> +	PEARL8x8, ProFont6x11, SUN12x22, SUN8x16, TER16x32, VGA8x16, VGA8x8.
-
-Applied, thanks.
-
-jon
+Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.
