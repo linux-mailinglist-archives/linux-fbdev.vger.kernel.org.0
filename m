@@ -2,132 +2,151 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 798CD4E70F
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 13:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748AD4E721
+	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 13:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726414AbfFULXk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Jun 2019 07:23:40 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:37012 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726232AbfFULXj (ORCPT
+        id S1726438AbfFULcW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 21 Jun 2019 07:32:22 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:47532 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726229AbfFULcV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Jun 2019 07:23:39 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190621112338euoutp026213313703296b06594fa3bf14116199~qMu3t6bSo2709827098euoutp02H
-        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 11:23:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190621112338euoutp026213313703296b06594fa3bf14116199~qMu3t6bSo2709827098euoutp02H
+        Fri, 21 Jun 2019 07:32:21 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190621113219euoutp011bd05a6b23a4b1ace64945e9aec6b0dc~qM2dg0jH51349013490euoutp01E
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 11:32:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190621113219euoutp011bd05a6b23a4b1ace64945e9aec6b0dc~qM2dg0jH51349013490euoutp01E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1561116218;
-        bh=9WXJOsmsdpNjqD2mqazjYllrCAaz0beIZ+leLl14Ekg=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=FAzewMiXZBYrAWvx++nVCLwM1srZNuSPqfPQnH/H4L3VkhlwVdCVlcyLJETA/hszj
-         HoM5UaqiNtwrd42hacgWXwWXt1v2x/uiAOyS66vqQf1LjlqAcTgeOsF8Eq7DlIZivE
-         nCivZQwoqwkZImgV5NVU8tFYYQz0ziN1nv2xG5K0=
+        s=mail20170921; t=1561116739;
+        bh=Ijmfi8RUSvMgpsjjHQ/yJewJXt4xh1RJuge4v7u+ECk=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=ehX2A7XeV19TIiDly41XBKqRqxZgmW92U9TKI2VQNBs5Wt7GKbute+dqN0PfaKQEi
+         eTAvaYgERX05qaJJ8nMQhBd0JLLuS79AGqiI4flP5qd7SzZkLhAiHfgLk/mcMmkWGl
+         kI0V4qWaSqnIwyIJ7QvNE1umD9TkiYwm+TGyzaZY=
 Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190621112337eucas1p13a38adba7ca38ac2372c2dd23145a8b8~qMu3EFE6W2737227372eucas1p1f;
-        Fri, 21 Jun 2019 11:23:37 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 24.6C.04325.93EBC0D5; Fri, 21
-        Jun 2019 12:23:37 +0100 (BST)
+        20190621113219eucas1p1aeb21479f3091c8d8116abb3defd0e8b~qM2dLOaqb0442904429eucas1p1B;
+        Fri, 21 Jun 2019 11:32:19 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 35.5D.04325.340CC0D5; Fri, 21
+        Jun 2019 12:32:19 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190621112336eucas1p2c3730a3a45ab0c47cf15e8794464dc06~qMu2UpgN41885518855eucas1p20;
-        Fri, 21 Jun 2019 11:23:36 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190621113218eucas1p14650c1edefb2bb338c392714f6893bed~qM2ccSc1u1864218642eucas1p1j;
+        Fri, 21 Jun 2019 11:32:18 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190621112336eusmtrp13053b6817d1ea4f644ee5476ad65c0d1~qMu2GngNn1174011740eusmtrp10;
-        Fri, 21 Jun 2019 11:23:36 +0000 (GMT)
-X-AuditID: cbfec7f5-b75ff700000010e5-58-5d0cbe394270
+        20190621113218eusmtrp1e8f98e0a54335937eda7932acfada604~qM2cOQOQJ1786817868eusmtrp1Q;
+        Fri, 21 Jun 2019 11:32:18 +0000 (GMT)
+X-AuditID: cbfec7f5-b75ff700000010e5-b1-5d0cc043dd0c
 Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 6E.CC.04146.83EBC0D5; Fri, 21
-        Jun 2019 12:23:36 +0100 (BST)
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 67.E6.04140.240CC0D5; Fri, 21
+        Jun 2019 12:32:18 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190621112336eusmtip1cea6d5fa1d3eda4575b6c7d309ed8555~qMu1wQQTv1114311143eusmtip1M;
-        Fri, 21 Jun 2019 11:23:36 +0000 (GMT)
-Subject: Re: [PATCH] video: fbdev: pvr2fb: fix link error for
- pvr2fb_pci_exit
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        20190621113218eusmtip1591448ffaa7e94e186e2368a6e2d5eee~qM2b8IEeH1705317053eusmtip1N;
+        Fri, 21 Jun 2019 11:32:18 +0000 (GMT)
+Subject: Re: [PATCH 3/3] jz4740_fb: fix DMA API abuse
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <cabdf0c8-8c8a-aa40-37ed-d3d11c9d3bb8@samsung.com>
-Date:   Fri, 21 Jun 2019 13:23:33 +0200
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Manuel Lauss <manuel.lauss@gmail.com>, linux-mips@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <16211aea-cd48-2d68-7ba9-d81b126d81cf@samsung.com>
+Date:   Fri, 21 Jun 2019 13:32:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a3qTCnJn7X1msg03Av71aZmmN8YB=WNs0JfzYoMH+uL-w@mail.gmail.com>
+In-Reply-To: <8a149d05-047b-6df1-28fc-184dae9c32df@samsung.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAKsWRmVeSWpSXmKPExsWy7djP87qW+3hiDS7O4LeYs34Nm8XfScfY
-        La58fc9msf/pcxaLE30fWC0u75rDZnHn63MWB3aP378mMXq0HHnL6rF4z0smjxMzfrN43O8+
-        zuTxeZNcAFsUl01Kak5mWWqRvl0CV0bflBXsBWfYKk5Oe8TYwLiNtYuRk0NCwETi2MedjF2M
-        XBxCAisYJf68+s8M4XxhlJi9pI8FwvnMKLFw5W5GmJZ3U99BtSxnlFg9aT+U85ZRYkXPRSaQ
-        KmEBf4m239fYQGwRAUWJqS+egc1lFpjLJPHxxgqwUWwCVhIT21eB2bwCdhJXrp4AKuLgYBFQ
-        lTj2TwgkLCoQIXH/2AZWiBJBiZMzn7CA2JwCgRLLbz1iBrGZBcQlbj2ZzwRhy0tsfzuHGeLS
-        Q+wS9555QtguEld3L4b6QFji1fEt7BC2jMTpyT1gb0oIrGOU+NvxghnC2c4osXzyPzaIKmuJ
-        w8cvsoIcxyygKbF+lz5E2FFi1fatTCBhCQE+iRtvBSFu4JOYtG06M0SYV6KjTQiiWk1iw7IN
-        bDBru3auZJ7AqDQLyWezkHwzC8k3sxD2LmBkWcUonlpanJueWmycl1quV5yYW1yal66XnJ+7
-        iRGYjk7/O/51B+O+P0mHGAU4GJV4eA/M4o4VYk0sK67MPcQowcGsJMLLk8MTK8SbklhZlVqU
-        H19UmpNafIhRmoNFSZy3muFBtJBAemJJanZqakFqEUyWiYNTqoGxcnre4WkLv/3JdCiY8Gj3
-        uU5H7blxVyPMH3/6uOn2tvkq8nfSbzzJM89j7vrrPVujSTVOylF6aVy9qsfrG69sJzac3uZ6
-        S3WT7Avn09/4tUp/Ovld3lA/tUA5pNJWQv/TtHybP2EGZqpvP00Nbo//vir9a5HMk/MLZ8ao
-        b2v/f52npD/54Dd7JZbijERDLeai4kQAdTenmkMDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEIsWRmVeSWpSXmKPExsVy+t/xu7oW+3hiDXYcUrCYs34Nm8XfScfY
-        La58fc9msf/pcxaLE30fWC0u75rDZnHn63MWB3aP378mMXq0HHnL6rF4z0smjxMzfrN43O8+
-        zuTxeZNcAFuUnk1RfmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqR
-        vl2CXkbflBXsBWfYKk5Oe8TYwLiNtYuRk0NCwETi3dR3jF2MXBxCAksZJWbcns7excgBlJCR
-        OL6+DKJGWOLPtS42iJrXjBI9PQ/ZQBLCAr4SM978ZgexRQQUJaa+eMYMUsQsMJdJ4u7KHhaI
-        jhYmiZ6jv5lAqtgErCQmtq9iBLF5Bewkrlw9wQyyjUVAVeLYPyGQsKhAhMSZ9ytYIEoEJU7O
-        fAJmcwoESiy/9YgZxGYWUJf4M+8SlC0ucevJfCYIW15i+9s5zBMYhWYhaZ+FpGUWkpZZSFoW
-        MLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIy/bcd+bt7BeGlj8CFGAQ5GJR7eA7O4Y4VY
-        E8uKK3MPMUpwMCuJ8PLk8MQK8aYkVlalFuXHF5XmpBYfYjQF+m0is5Rocj4wNeSVxBuaGppb
-        WBqaG5sbm1koifN2CByMERJITyxJzU5NLUgtgulj4uCUamD0cD+gdufuxGmBdxs0np45vKf4
-        7Oc9D9+zbLwz1Xpi+KUZxyVNr2cmZhRk957e0u66PeNBFWfwPxcxof/P7zIVifxmuMO1wGeO
-        9Xp/h7lxzVYMd0x//i85Y3r5daPvy7+WZaaWZxlL9pb71yx8rta7++Kh587Trhvv5NML/Xmh
-        +WlI3Zd9E2YpKrEUZyQaajEXFScCAK5PMuDVAgAA
-X-CMS-MailID: 20190621112336eucas1p2c3730a3a45ab0c47cf15e8794464dc06
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJKsWRmVeSWpSXmKPExsWy7djPc7rOB3hiDb5t47FYufook8WJvg+s
+        Fpd3zWGz6Ny0ldHi2pdH7A6sHjtn3WX32H2zgc3j8ya5AOYoLpuU1JzMstQifbsEroy5nw6z
+        Faznq9jyfAdzA+M97i5GTg4JAROJV2svs3QxcnEICaxglGg8fZQZwvnCKHH39yomCOczo8Sb
+        R22MMC1vH7RCJZYzSpxb0AnV/5ZR4vasDlaQKmEBU4n7Z2czgdhsAlYSE9tXgXWLCChJPH11
+        lhGkgVmgCWjsufnMIAleATuJyZ3H2UBsFgFViR2TH4HZogIREvePbWCFqBGUODnzCQuIzSlg
+        L/Hs414wm1lAXOLWk/lMELa8xPa3c8CekBCYxy5xr+0KE8TdLhKv9m2CsoUlXh3fwg5hy0ic
+        ntzDAtGwjlHib8cLqO7tjBLLJ/9jg6iyljh8/CLQGRxAKzQl1u/Shwg7Sjy73ccMEpYQ4JO4
+        8VYQ4gg+iUnbpkOFeSU62oQgqtUkNizbwAaztmvnSuYJjEqzkLw2C8k7s5C8Mwth7wJGllWM
+        4qmlxbnpqcXGeanlesWJucWleel6yfm5mxiBCeb0v+NfdzDu+5N0iFGAg1GJh/fALO5YIdbE
+        suLK3EOMEhzMSiK8PDk8sUK8KYmVValF+fFFpTmpxYcYpTlYlMR5qxkeRAsJpCeWpGanphak
+        FsFkmTg4pRoYlaao3uSv+iN46nKEkJrVpS3Bl9sDbl5c5xP0RZ+X99N2K4evbhdvBnOb6dwV
+        +shqEv4k9fUXC4UeGdnbB+IdLX/Oz9CsDS4o+N/otsn7yO8pu4rr3MPnq1ns3zT/sfztNxck
+        T/0+zzh1u8adza1NDvPE96202PqNf/7p1N6/jxR93F7NXDyLS4mlOCPRUIu5qDgRAKzPre8s
+        AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFIsWRmVeSWpSXmKPExsVy+t/xu7pOB3hiDabulLNYufook8WJvg+s
+        Fpd3zWGz6Ny0ldHi2pdH7A6sHjtn3WX32H2zgc3j8ya5AOYoPZui/NKSVIWM/OISW6VoQwsj
+        PUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYy5nw6zFaznq9jyfAdzA+M97i5GTg4J
+        AROJtw9amboYuTiEBJYySnR8uszexcgBlJCROL6+DKJGWOLPtS42iJrXjBJdPZPZQRLCAqYS
+        98/OZgKx2QSsJCa2r2IEsUUElCSevjrLCNLALNDEKNE7dylU9z1GiXkz5zCDVPEK2ElM7jzO
+        BmKzCKhK7Jj8CMwWFYiQOPN+BQtEjaDEyZlPwGxOAXuJZx/3gtnMAuoSf+ZdYoawxSVuPZnP
+        BGHLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucVGesWJucWleel6yfm5mxiB
+        8bTt2M8tOxi73gUfYhTgYFTi4T0wiztWiDWxrLgy9xCjBAezkggvTw5PrBBvSmJlVWpRfnxR
+        aU5q8SFGU6DnJjJLiSbnA2M9ryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQQHpiSWp2ampBahFM
+        HxMHp1QDY8/P3nj79BcPk19GLJmUdfXkUw53ofkzlm/4vkE68nAIU9qh5vkLL8V7vX605rK/
+        2I4720x5hW93Xgy90Wy7MrNnznLbi5F7Yz+8u7jzUPopz/Nu8aWXk45Fth0L7bt0ZKJK7JOv
+        9Uc29n+/fetg36kOn4jQ7MaNFteu8Tl+2xvjGNZ1cl20mrISS3FGoqEWc1FxIgBc5QvOvQIA
+        AA==
+X-CMS-MailID: 20190621113218eucas1p14650c1edefb2bb338c392714f6893bed
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190617131645epcas1p3340c80f9e83af93bcbb4c68128b1ea44
+X-RootMTR: 20190509173943epcas2p27a7106894d5a235a405a94e84340b416
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190617131645epcas1p3340c80f9e83af93bcbb4c68128b1ea44
-References: <CGME20190617131645epcas1p3340c80f9e83af93bcbb4c68128b1ea44@epcas1p3.samsung.com>
-        <20190617131624.2382303-1-arnd@arndb.de>
-        <1628618a-7cf6-506e-9d87-c0966a99fbea@samsung.com>
-        <CAK8P3a3qTCnJn7X1msg03Av71aZmmN8YB=WNs0JfzYoMH+uL-w@mail.gmail.com>
+X-CMS-RootMailID: 20190509173943epcas2p27a7106894d5a235a405a94e84340b416
+References: <20190509173849.11825-1-hch@lst.de>
+        <CGME20190509173943epcas2p27a7106894d5a235a405a94e84340b416@epcas2p2.samsung.com>
+        <20190509173849.11825-4-hch@lst.de>
+        <8a149d05-047b-6df1-28fc-184dae9c32df@samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 6/21/19 1:05 PM, Arnd Bergmann wrote:
-> On Fri, Jun 21, 2019 at 12:58 PM Bartlomiej Zolnierkiewicz
-> <b.zolnierkie@samsung.com> wrote:
->>
->> On 6/17/19 3:16 PM, Arnd Bergmann wrote:
->>> When the driver is built-in for PCI, we reference the exit function
->>> after discarding it:
->>>
->>> `pvr2fb_pci_exit' referenced in section `.ref.data' of drivers/video/fbdev/pvr2fb.o: defined in discarded section `.exit.text' of drivers/video/fbdev/pvr2fb.o
->>>
->>> Just remove the __exit annotation as the easiest workaround.
->>
->> Don't we also need to fix pvr2fb_dc_exit() for CONFIG_SH_DREAMCAST=y case?
+Hi,
+
+On 6/7/19 2:21 PM, Bartlomiej Zolnierkiewicz wrote:
 > 
-> I think that's correct, yes. Can you fix that up when applying the patch?
+> On 5/9/19 7:38 PM, Christoph Hellwig wrote:
+>> Virtual addresses return from dma(m)_alloc_coherent are opaque in what
+>> backs then, and drivers must not poke into them.  Switch the driver
+>> to use the generic DMA API mmap helper to avoid these problems.
+> Change itself looks fine but the patch description doesn't match what
+> the patch is actually doing (there is no conversion to DMA API helper
+> because the driver is already using it). Please correct it. Thank you.
 
-Sure.
+I've just removed the "Switch the driver.." sentence myself from
+the patch description and applied the change, thanks!
 
-I've queued the patch for v5.3, thanks!
-
+>> Signed-off-by: Christoph Hellwig <hch@lst.de>
+>> ---
+>>  drivers/video/fbdev/jz4740_fb.c | 7 -------
+>>  1 file changed, 7 deletions(-)
+>> diff --git a/drivers/video/fbdev/jz4740_fb.c b/drivers/video/fbdev/jz4740_fb.c
+>> index b57df83fdbd3..b95cdfa9e0a1 100644
+>> --- a/drivers/video/fbdev/jz4740_fb.c
+>> +++ b/drivers/video/fbdev/jz4740_fb.c
+>> @@ -466,7 +466,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
+>>  {
+>>  	int max_videosize = 0;
+>>  	struct fb_videomode *mode = jzfb->pdata->modes;
+>> -	void *page;
+>>  	int i;
+>>  
+>>  	for (i = 0; i < jzfb->pdata->num_modes; ++mode, ++i) {
+>> @@ -491,12 +490,6 @@ static int jzfb_alloc_devmem(struct jzfb *jzfb)
+>>  	if (!jzfb->vidmem)
+>>  		goto err_free_framedesc;
+>>  
+>> -	for (page = jzfb->vidmem;
+>> -		 page < jzfb->vidmem + PAGE_ALIGN(jzfb->vidmem_size);
+>> -		 page += PAGE_SIZE) {
+>> -		SetPageReserved(virt_to_page(page));
+>> -	}
+>> -
+>>  	jzfb->framedesc->next = jzfb->framedesc_phys;
+>>  	jzfb->framedesc->addr = jzfb->vidmem_phys;
+>>  	jzfb->framedesc->id = 0xdeafbead;
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
