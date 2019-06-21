@@ -2,156 +2,58 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 574F24E89F
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 15:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2321A4E9DB
+	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 15:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbfFUNKX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Jun 2019 09:10:23 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:40774 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726852AbfFUNKX (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Jun 2019 09:10:23 -0400
-Received: by mail-wm1-f65.google.com with SMTP id v19so6541533wmj.5
-        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 06:10:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zWWuR+34CKSqeHNm3DAPIfBogtgjv1yPdEZeTsKzETc=;
-        b=sYlMGLg6ofrBMB6etYJLvDsNE5GKSrdcKhDZuMxtsWNYhzpHM6Uy+v9WkmTMKC9TuH
-         1BgOvayYHCsQ3pSt95VOMUAD69bfUn5Hf0vJ44o+ofRUSzCZPeO+QfbDh5fPsROQ3HBo
-         y5iBhArohMB4DGOLR+RH8I1mXpsm2L+hfGSQ+k1wx/vLYpq4o3U7snuZuSkGlinhlmDl
-         z4cb29V1wDixND0F3ai2WMCO5MGx0E09t400/uCxSYi+U1rmXTdett8MgyCzGRNIwzkc
-         mQuXyWXkFWeIpz3epAvNkd/D3gGUreOjHWwFCpIfilLjZ8TykTObi5CN5gmQIiUa8fw0
-         YuWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zWWuR+34CKSqeHNm3DAPIfBogtgjv1yPdEZeTsKzETc=;
-        b=SYDgKbsvXraH6qdMUgWwmjWlsH+t2WwV3w4wBASnks7ukQiDkAoooCUJHZxlgkvn19
-         yGCaFkj1NJ1zm2fa4J5RCimfcrJDqpqvbtji693IbG09U3GDZe0aZY4X6Bs59I93iMHr
-         fZnY3dIniaFlpUrIPcb/jUaP7p9q5AcK1O9VyswrT/vAxZSUjrWyBBR5Shr6xC4dllzZ
-         VqE3pbmN6gUYUWvw6WsylxcLWf12cEo74F8JwOY0ZRihmzt+LaMRdwITqX/wQsWLGM2g
-         ez2G7WEzczu2/aqL6hb+sodr7gVCWMaWehVIRVJTJww1KVMDr2mqCygEYbqUA0jRQjj2
-         QE4A==
-X-Gm-Message-State: APjAAAUt3Eh+T/PuYRl0erP1TtEanSJbWwnFjuskQk/v3haeydZDxrAM
-        toPfuaWpKOEhhnkH8THQe9bP1Q==
-X-Google-Smtp-Source: APXvYqxugcFhasT6oqykCSfSXIx0XEa8A82CS0oO38cZlbubwFnhNoEfk4Ul2IhYgZbeXiAhzedHNg==
-X-Received: by 2002:a1c:e0c4:: with SMTP id x187mr3959660wmg.177.1561122621229;
-        Fri, 21 Jun 2019 06:10:21 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.googlemail.com with ESMTPSA id 5sm4910909wrc.76.2019.06.21.06.10.19
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Jun 2019 06:10:20 -0700 (PDT)
-Subject: Re: [PATCH 4/4] backlight: pwm_bl: Set scale type for brightness
- curves specified in the DT
-To:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-References: <20190613194326.180889-1-mka@chromium.org>
- <20190613194326.180889-5-mka@chromium.org>
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-Message-ID: <9ea1bb40-95a6-7a67-a8a6-ecc77a70e547@linaro.org>
-Date:   Fri, 21 Jun 2019 14:10:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726010AbfFUNsp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 21 Jun 2019 09:48:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53432 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725985AbfFUNsp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 21 Jun 2019 09:48:45 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id ED744206B7;
+        Fri, 21 Jun 2019 13:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561124924;
+        bh=rI3c1BOmsczqHXJN6hvv4bgjJQdjsSyfRhzndKaR1so=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=1f2JM+sOwZwawmkvWu37ujbWtD2T1HlcBG9j72f0CLmpgLBRpmjvQteXZQPHxpgS5
+         CsqGEbTjAp8Kd3J/r34AAQw+XRAwXwaiOE3LR1IU9K+YEdJz5nln8wdejeqNARO8Pd
+         lZrvKScl8baWWKF4m7thzkL80KUkCtRjHfFFNgE0=
+Date:   Fri, 21 Jun 2019 15:48:41 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jslaby@suse.com>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 06/29] docs: console.txt: convert docs to ReST and
+ rename to *.rst
+Message-ID: <20190621134841.GA26766@kroah.com>
+References: <cover.1560890800.git.mchehab+samsung@kernel.org>
+ <00ddb1bc19e07b7ce4d1e7cda457733a37cf1693.1560890800.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190613194326.180889-5-mka@chromium.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <00ddb1bc19e07b7ce4d1e7cda457733a37cf1693.1560890800.git.mchehab+samsung@kernel.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 13/06/2019 20:43, Matthias Kaehlcke wrote:
-> Check if a brightness curve specified in the device tree is linear or
-> not and set the corresponding property accordingly. This makes the
-> scale type available to userspace via the 'scale' sysfs attribute.
+On Tue, Jun 18, 2019 at 05:53:24PM -0300, Mauro Carvalho Chehab wrote:
+> Convert this small file to ReST in preparation for adding it to
+> the driver-api book.
 > 
-> To determine if a curve is linear it is compared to a interpolated linear
-> curve between min and max brightness. The curve is considered linear if
-> no value deviates more than +/-5% of ${brightness_range} from their
-> interpolated value.
+> While this is not part of the driver-api book, mark it as
+> :orphan:, in order to avoid build warnings.
 > 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> ---
->   drivers/video/backlight/pwm_bl.c | 25 +++++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
-> 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index f067fe7aa35d..912407b6d67f 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -404,6 +404,26 @@ int pwm_backlight_brightness_default(struct device *dev,
->   }
->   #endif
->   
-> +static bool pwm_backlight_is_linear(struct platform_pwm_backlight_data *data)
-> +{
-> +	unsigned int nlevels = data->max_brightness + 1;
-> +	unsigned int min_val = data->levels[0];
-> +	unsigned int max_val = data->levels[nlevels - 1];
-> +	unsigned int slope = (100 * (max_val - min_val)) / nlevels;
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 
-Why 100 (rather than a power of 2)?
-
-It would also be good to have a comment here saying what the maximum 
-quantization error is. Doesn't have to be over complex just mentioning 
-something like the following (assuming you agree that its true ;-) ):
-
-   Multiplying by XXX means that even in pathalogical cases such as
-   (max_val - min_val) == nlevels then the error at max_val is less than
-   1%.
-
-With a suitable comment in the fixed point code:
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-
-Daniel.
-
-
-> +	unsigned int margin = (max_val - min_val) / 20; /* 5% */
-> +	int i;
-> +
-> +	for (i = 1; i < nlevels; i++) {
-> +		unsigned int linear_value = min_val + ((i * slope) / 100);
-> +		unsigned int delta = abs(linear_value - data->levels[i]);
-> +
-> +		if (delta > margin)
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->   static int pwm_backlight_initial_power_state(const struct pwm_bl_data *pb)
->   {
->   	struct device_node *node = pb->dev->of_node;
-> @@ -567,6 +587,11 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->   
->   			pb->levels = data->levels;
->   		}
-> +
-> +		if (pwm_backlight_is_linear(data))
-> +			props.scale = BACKLIGHT_SCALE_LINEAR;
-> +		else
-> +			props.scale = BACKLIGHT_SCALE_NON_LINEAR;
->   	} else if (!data->max_brightness) {
->   		/*
->   		 * If no brightness levels are provided and max_brightness is
-> 
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
