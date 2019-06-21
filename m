@@ -2,117 +2,143 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A5C44E6C4
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 13:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A04F4E6E2
+	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jun 2019 13:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726250AbfFULIn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Jun 2019 07:08:43 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:40128 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726285AbfFULIn (ORCPT
+        id S1726299AbfFULPG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 21 Jun 2019 07:15:06 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:34602 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726218AbfFULPG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Jun 2019 07:08:43 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190621110841euoutp01ae16dfb7b78190089960856ab4bfe121~qMh06adex2736927369euoutp01F
-        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 11:08:41 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190621110841euoutp01ae16dfb7b78190089960856ab4bfe121~qMh06adex2736927369euoutp01F
+        Fri, 21 Jun 2019 07:15:06 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190621111505euoutp02f7e4248ab4bcde0f84099b7585997f45~qMnZ9R6NY2216022160euoutp02C
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jun 2019 11:15:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190621111505euoutp02f7e4248ab4bcde0f84099b7585997f45~qMnZ9R6NY2216022160euoutp02C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1561115321;
-        bh=PYvYB4jlbXD7L5rJUgTIrBKgUBZKDmc11MRjrtdc1iE=;
+        s=mail20170921; t=1561115705;
+        bh=s+UrBPQaVR3tcbqs3Ol/m34bGN/nZjeSUNnxd+RCh/w=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=edKs/tC2dkeoN2tNVQtwyy8+AB1ACspQ+TuTF9QFdd3qxXPZYaocB/yCaM8XPL6k/
-         ShB80tGgYXKV58xClP0TsdH8hePbibXVb46AFNMOk9vFbEF82JjUGdj6g0vYzWjhrJ
-         f2hVejPZeuLr5QKvBz2vR5j/v+zi16dgjEYe5tSU=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        b=Gku07hFQ9DkB9j5Dh9oBBcbRE57oOmbW8bmDePpXGZN8PrDzY8Zi9rarPD0B16Wy3
+         fTgf3GhKDk2Z4rXuWMfDzHRcWWzu2sz5Cgs+uTbT0JMMeYicZ737vJ/zYhAIG5sZNB
+         Jg7+rUJd9flCI2ciZWlLx2OQ4PDSwkIK4m/Vh89I=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190621110841eucas1p2d780574dd42abd5179866b099d50a484~qMh0oXayg2380823808eucas1p2a;
-        Fri, 21 Jun 2019 11:08:41 +0000 (GMT)
+        20190621111504eucas1p24f641ba01defb3d4090372c1cc47fc24~qMnZeAsNo3122131221eucas1p2j;
+        Fri, 21 Jun 2019 11:15:04 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id EF.DA.04325.9BABC0D5; Fri, 21
-        Jun 2019 12:08:41 +0100 (BST)
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 2B.7C.04377.83CBC0D5; Fri, 21
+        Jun 2019 12:15:04 +0100 (BST)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190621110840eucas1p1aec34b78eac2350995b86009d4300884~qMhz23QDu2778927789eucas1p13;
-        Fri, 21 Jun 2019 11:08:40 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190621111503eucas1p2dfbd7cd8b9e3eb1a2f7f36f178fdf92d~qMnYohBvW0269402694eucas1p2p;
+        Fri, 21 Jun 2019 11:15:03 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190621110840eusmtrp2ccd2a7951bb3f1f1cd01398e1839dc66~qMhzo2kGb0212802128eusmtrp2v;
-        Fri, 21 Jun 2019 11:08:40 +0000 (GMT)
-X-AuditID: cbfec7f5-b8fff700000010e5-9b-5d0cbab95ae5
+        20190621111503eusmtrp244fb004c79e5e18732496dd5c877925e~qMnYaeHtn0599205992eusmtrp2U;
+        Fri, 21 Jun 2019 11:15:03 +0000 (GMT)
+X-AuditID: cbfec7f4-113ff70000001119-9e-5d0cbc38c3c4
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id FB.4B.04146.8BABC0D5; Fri, 21
-        Jun 2019 12:08:40 +0100 (BST)
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 8F.25.04140.73CBC0D5; Fri, 21
+        Jun 2019 12:15:03 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190621110840eusmtip2e6b769a2cb106d236136233df2e35453~qMhzXTGaV3226132261eusmtip2U;
-        Fri, 21 Jun 2019 11:08:40 +0000 (GMT)
-Subject: Re: [PATCH] video: fbdev: s3c-fb: add COMPILE_TEST support
-To:     Jingoo Han <jingoohan1@gmail.com>
-Cc:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        20190621111503eusmtip23118a0d64fb6a8e431a10b4eca01fb80~qMnYA7gST0528405284eusmtip2b;
+        Fri, 21 Jun 2019 11:15:03 +0000 (GMT)
+Subject: Re: [PATCH] video: fbdev: pvr2fb: fix compile-testing as module
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Mike Marshall <hubcap@omnibond.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <421308e1-a4b0-f294-e581-79fb4ef811b3@samsung.com>
-Date:   Fri, 21 Jun 2019 13:08:38 +0200
+Message-ID: <3ee91294-044d-9bcd-0c4c-3365c0c97604@samsung.com>
+Date:   Fri, 21 Jun 2019 13:15:00 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <PSXP216MB0662B10864E4DDEC1EC1823CAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
+In-Reply-To: <20190617124758.1252449-1-arnd@arndb.de>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTYRiGfT1nZ8e1xes0fbAyGBgpflLQ1NBKfyx/+TOqUSsPKm3TNrWs
-        JINKW5Jl+TUtJXJ+UY6VHxtlOmlzJEpoZYUoohXh/GATM2rm2VHy3/0+z3Xz3De8NCGu4IXQ
-        2eo8RqNWKCWUgOyyrQ5HmS1CeexSc5B0bHmBkra4a/nSwbuLPOmopZ46TMrM+gm+bPKO3Vfm
-        MoWmEycEhzIYZXYBo4lJOiPI8nwykLlzxKXbDb/4xUhP6JAfDfgAlFimkA4JaDFuQdDdOU5w
-        DzeCodqyjY0LQfvDTt6mpaGmmmK1GDcjaJrncZATgeFZD6lDNB2AU8D4+SrLBOIwKB5xeBkC
-        2xFUfh9F7ILCCXC/pM2rRTgJOldm+awm1w0dc43efDvwcZi0GXkc4w+O2hmS1X74FNQ4Hnt5
-        AgfDl5kGX07vgW5nvbcC4HI+PJr9uJE6FWzl8ySnA+Cn/SWf07tgzcyaWcNzBH9Lf2y4uxE0
-        P/BQHJUIA/b3PLYagcOhwxLDjY+AqcJFsWPA22Hc6c+F2A4VXdUENxZB6S0xR+8Fo8FIbZ7V
-        mVuJe0ii31JNv6WOfksd/f+7jYhsQ8FMvlaVyWj3q5mL0VqFSpuvzow+l6MyofWf8s5jX+5B
-        vX/OWhGmkUQo6tNvk4t5igJtocqKgCYkgSKhUigXizIUhZcZTc5pTb6S0VrRTpqUBIuu+Eyd
-        FONMRR5znmFyGc3m1pf2CylGpokby5F+JVPHWiPfxIe3WyJ8xpNldekp4Qb7waoJT+XXCN2a
-        5Vvoi1cJF/hLv21F2F03NGKOix0XpBpWHOqnpvgox8pIUNXRZJfg7fTYqjw7zbK7dtp5s8/d
-        lDhf1N/vY1pcsJYWRg30pw32LlOvqWu+ZdefrA4OQ5hmdN8HCanNUsRFEBqt4h/18tbPJQMA
-        AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsVy+t/xe7o7dvHEGnx/Jm9x5et7NosVX2ay
-        W5zo+8BqcXnXHDYHFo+ds+6ye9zvPs7k8XmTXABzlJ5NUX5pSapCRn5xia1StKGFkZ6hpYWe
-        kYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7Gv+vLWAreMFd0zv/B3sA4i7mLkZNDQsBEYv6M
-        6WwgtpDAUkaJSeutuxg5gOIyEsfXl0GUCEv8udYFVMIFVPKaUeLp9O1sIDXCAs4SG27WgNSI
-        CKhKNJw/yQpSwyxwnFFiy+V5TBANTxglfvxoYwGpYhOwkpjYvooRxOYVsJPY+v0pO4jNAtS9
-        /s0CsINEBSIkzrxfwQJRIyhxcuYTMJtTIEZixsl5YPXMAuoSf+ZdYoawxSVuPZnPBGHLS2x/
-        O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucWGesWJucWleel6yfm5mxiBEbTt2M/N
-        OxgvbQw+xCjAwajEw3tgFnesEGtiWXFl7iFGCQ5mJRFenhyeWCHelMTKqtSi/Pii0pzU4kOM
-        pkDPTWSWEk3OB0Z3Xkm8oamhuYWlobmxubGZhZI4b4fAwRghgfTEktTs1NSC1CKYPiYOTqkG
-        xjKzS+Ums0+yef88nKL5kVtnjeFfDZWEup9uQcvnX7XO6TM2D+h8mfbfL3VtjPy62gmqUj/a
-        lG8031V9P/e5hNWGNR3p10X33Wi22txz87qVNqvFa7nOlFImNVnb3QJiTF3eK68faT5/9S1z
-        j8r7XufcZeKiy29odFz9UeNcPPfDib8rrAN5lFiKMxINtZiLihMBjRGi1bYCAAA=
-X-CMS-MailID: 20190621110840eucas1p1aec34b78eac2350995b86009d4300884
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0hTcRjtt7vd3c3NrtPYh0rDSYVWmj1gWZhF0P4MghBr1S0vajq1Xd/+
+        Y2U+FolNLJziA0lLQecqzTHILJzOB6ZZpjaVli8SK52QpuW8Sv53vu87h3MOfAQmMfI8iei4
+        RFoTR8XKcSG3qf1370GFWaQ6VJ/ro1jVtfMVHxzzuCLnSz5H8frbFFfRkf+DpxgwleKKUccU
+        N5SvXFnWIWXWuzmesso8w1GO3bdwlMsjozzlgnH3eTxceDKCjo1OpjWBIdeEUVN5Njyh2yV1
+        wj7Ez0RvBFokIIA8Cqu6So4WCQkJ+RRB5+zg5rCIoNBsQuywgMD0s4q7JSkbb+exhxoEVeOP
+        +Owwh6B4pYzjZLmTShi0DmBO7EH6QNH0JOYkYWQ3ArPVukHCyWB4mFOLnFhMhoChro/vxFxy
+        DxgNXRviXWQYjLUbeCzHDTqL7RsxBOQxeJL3EXdijJTCsL2cw2IZNM+VbpgB2cYHbUkTxuY+
+        Cw1L85sd3GHW8oLPYm/421LOYQX1CFZzpzfVzQhqCtdwlnUC3lrer8cg1i38oMEUyK5PQ8Hz
+        MuRcA+kKQ3NubAhX0DU9xti1GHKzJSx7LxiqDfiWrbblGVaA5Ppt1fTb6ui31dH/961A3Fok
+        pZMYdSTNHI6jUwIYSs0kxUUG3IhXG9H6J3WtWRZfIdOf622IJJBcJG7Vu6gkPCqZSVO3ISAw
+        uYdYFCtSScQRVFo6rYm/qkmKpZk25EVw5VJxxo7xSxIykkqkY2g6gdZsXTmEwDMTpc42CvJa
+        9x2XfQ1zpJz7ZaOWxlJbLySEk7dtVN3MgZRAeV1lVmNJU0HJTf+ZBa3w1Ej/pEfvSHxRn+zy
+        Wr/j85UHMcMd+1+GqpeCvncVtvjecmOU2T3edyfuSe/E+Pp52e1FWemq/DM7y0NmLpptE8EZ
+        1iPNQv6nIFm1X4W0Z1LOZaKoIH9Mw1D/AO08n/pFAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrMIsWRmVeSWpSXmKPExsVy+t/xe7rme3hiDX7tUbL4O+kYu8WVr+/Z
+        LNrv9jFZ7H/6nMXiRN8HVovLu+awWdz5+pzFgd3j969JjB4tR96yeize85LJ4373cSaPX7fv
+        sHp83iQXwBalZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZllqk
+        b5egl/G88x5bwRnuiodPbrA3MB7k7GLk5JAQMJGY9+AYaxcjF4eQwFJGieW/zgE5HEAJGYnj
+        68sgaoQl/lzrYoOoec0o8WnTCTaQhLCAh8TVU5eZQWwRAUWJqS+eMYMUMQucYZR4uuIL1NQO
+        Ron2SVNYQarYBKwkJravYgSxeQXsJDasvsAOYrMIqEps2nAabJKoQITEmfcrWCBqBCVOznwC
+        ZnMKmEos7bwGtplZQF3iz7xLzBC2uMStJ/OZIGx5ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDI
+        sopRJLW0ODc9t9hIrzgxt7g0L10vOT93EyMwArcd+7llB2PXu+BDjAIcjEo8vAdmcccKsSaW
+        FVfmHmKU4GBWEuHlyeGJFeJNSaysSi3Kjy8qzUktPsRoCvTcRGYp0eR8YHLIK4k3NDU0t7A0
+        NDc2NzazUBLn7RA4GCMkkJ5YkpqdmlqQWgTTx8TBKdXAWLznx8N116POSGTuynn2vzBkxs6f
+        h17HVz6R3+t84S7Pt2VX2uvLO2aduNIVaH/e6umsW1cUT6ZdUJzUa/RjTqXLkcUvi3yPiZ6M
+        vtT5VXZKRs/14MTEmhYDCYV47R9q17a3n9E7P2tZ47vXe/+mhVv8LfJt/1+9pcX5/ZOnBQe/
+        hYs3hC20eqXEUpyRaKjFXFScCAAXu4PR1gIAAA==
+X-CMS-MailID: 20190621111503eucas1p2dfbd7cd8b9e3eb1a2f7f36f178fdf92d
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b
+X-RootMTR: 20190617124822epcas2p2c93d6cec3b60d08d85f228945d5c7623
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b
-References: <CGME20190614144634eucas1p1b04dcfcc040c3c886d2b33592c501d3b@eucas1p1.samsung.com>
-        <e771b89b-0e38-a712-b635-8d53cbf95a8e@samsung.com>
-        <PSXP216MB0662B10864E4DDEC1EC1823CAAEA0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
+X-CMS-RootMailID: 20190617124822epcas2p2c93d6cec3b60d08d85f228945d5c7623
+References: <CGME20190617124822epcas2p2c93d6cec3b60d08d85f228945d5c7623@epcas2p2.samsung.com>
+        <20190617124758.1252449-1-arnd@arndb.de>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 6/18/19 8:12 AM, Jingoo Han wrote:
-> On 6/14/19, 11:46 PM, Bartlomiej Zolnierkiewicz wrote:
->>
->> Add COMPILE_TEST support to s3c-fb driver for better compile
->> testing coverage.
->>
->> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Acked-by: Jingoo Han <jingoohan1@gmail.com>
->> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+On 6/17/19 2:47 PM, Arnd Bergmann wrote:
+> Building an allmodconfig kernel now produces a harmless warning:
+> 
+> drivers/video/fbdev/pvr2fb.c:726:12: error: unused function 'pvr2_get_param_val' [-Werror,-Wunused-function]
+> 
+> Shut this up the same way as we do for other unused functions
+> in the same file, using the __maybe_unused attribute.
+> 
+> Fixes: 0f5a5712ad1e ("video: fbdev: pvr2fb: add COMPILE_TEST support")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Thanks, I queued the patch for v5.3.
+Thanks but I've fixed it already by adding #ifndef MODULE (since other
+functions in the same file using __maybe_unused depend on either PCI or
+SH_DREAMCAST I've preferred not to use this attribute):
+
+https://marc.info/?l=linux-fbdev&m=156050904010778&w=2
+
+> ---
+>  drivers/video/fbdev/pvr2fb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
+> index 59c59b3a67cb..cf9cfdc5e685 100644
+> --- a/drivers/video/fbdev/pvr2fb.c
+> +++ b/drivers/video/fbdev/pvr2fb.c
+> @@ -723,8 +723,8 @@ static struct fb_ops pvr2fb_ops = {
+>  	.fb_imageblit	= cfb_imageblit,
+>  };
+>  
+> -static int pvr2_get_param_val(const struct pvr2_params *p, const char *s,
+> -			      int size)
+> +static int __maybe_unused pvr2_get_param_val(const struct pvr2_params *p,
+> +					     const char *s, int size)
+>  {
+>  	int i;
 
 Best regards,
 --
