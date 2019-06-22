@@ -2,55 +2,43 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0492C4F4FE
-	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Jun 2019 11:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4683B4F6DD
+	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Jun 2019 18:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfFVJv6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 22 Jun 2019 05:51:58 -0400
-Received: from eposta.erbakan.edu.tr ([95.183.198.3]:26688 "EHLO
-        eposta.erbakan.edu.tr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbfFVJv6 (ORCPT
+        id S1726379AbfFVQ2x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 22 Jun 2019 12:28:53 -0400
+Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:40518 "EHLO
+        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726353AbfFVQ2u (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 22 Jun 2019 05:51:58 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id 384AE1217D0A7;
-        Sat, 22 Jun 2019 12:46:00 +0300 (+03)
-Received: from eposta.erbakan.edu.tr ([127.0.0.1])
-        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id U0x-Rnktec2H; Sat, 22 Jun 2019 12:45:59 +0300 (+03)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id C37621217D0FE;
-        Sat, 22 Jun 2019 12:45:57 +0300 (+03)
-DKIM-Filter: OpenDKIM Filter v2.10.3 eposta.erbakan.edu.tr C37621217D0FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=erbakan.edu.tr;
-        s=9A114B22-0D17-11E9-AE7D-5CB170D0BDE7; t=1561196758;
-        bh=7gPtLH2IfInUtCVySpji1swR+cf+cxpGTko9mBBSIuM=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=iHluHzDnHE0ZdnE146o8lu5hGRJeFKZ8xk4h2iGmQUUeQqP9DawhKS8Af/Ovu1lS0
-         N7T/t63GyUU1Kxp17zxoXrmH84AZ1GwJ+5gTcTsWiutqaSnGguFHU/0aRcTsUUqneJ
-         pdDG6yeQ0/O5TWCXj7c5y2M63WmuJzwHCnBHLESDlY7UmsxJqYbJ2RvQ4p6f/m4CIS
-         Sf31qJ+W5Mg06xCQpJeRephS/Q+QogeQNXN4c0mlUVUulp3/cmaBSK2lQGYLssjzc5
-         qb98CScYMARlGGQ+x+ShD2YmbIMO4PEoyvpdQ6Y42Y5jqI9/4oJbyz7EoGBIvFoBDq
-         E0bM8UirBbk1g==
-X-Virus-Scanned: amavisd-new at eposta.erbakan.edu.tr
-Received: from eposta.erbakan.edu.tr ([127.0.0.1])
-        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id cqjKKj3j0_Fc; Sat, 22 Jun 2019 12:45:57 +0300 (+03)
-Received: from eposta.erbakan.edu.tr (eposta.konya.edu.tr [172.42.44.72])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id CCBA01217D042;
-        Sat, 22 Jun 2019 12:45:51 +0300 (+03)
-Date:   Sat, 22 Jun 2019 12:45:51 +0300 (EET)
-From:   =?utf-8?B?QsO2bMO8bQ==?= Sekreteri <fatihyilmaz@erbakan.edu.tr>
-Reply-To: EDDIE <eddiejimephra@gmail.com>
-Message-ID: <1137039133.8530219.1561196751518.JavaMail.zimbra@erbakan.edu.tr>
-Subject: SPENDE
+        Sat, 22 Jun 2019 12:28:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
+X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
+ lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
+ 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
+ b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
+ lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
+ 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
+ 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
+ O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
+ RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
+ 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
+ q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
+ P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
+ BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
+ ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
+ FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
+ ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
+ 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
+Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.217.171.24]
-X-Mailer: Zimbra 8.8.11_GA_3799 (zclient/8.8.11_GA_3799)
-Thread-Index: VeZXq40rLabu6yscaCzcY1LVsS/huA==
-Thread-Topic: SPENDE
 To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -59,4 +47,20 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
 
-Ich habe eine Spende in H&ouml;he von 3,1 Millionen Euro f&uuml;r Sie. Ich bin zurzeit an Krebs erkrankt und meine Gesundheit wird nicht besser. Ich habe eine Lotterie gewonnen und seitdem habe ich mein Leben und ich m&ouml;chte den Armen helfen.( eddiejimephra@gmail.com)
+From:Miss: Fatima Yusuf.
+
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
+
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
+
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
