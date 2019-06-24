@@ -2,125 +2,63 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A060B51DDD
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 00:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1969B51E6A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 00:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725921AbfFXWCW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Jun 2019 18:02:22 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:46185 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726524AbfFXWCS (ORCPT
+        id S1726576AbfFXWhb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Jun 2019 18:37:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54765 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726413AbfFXWhb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Jun 2019 18:02:18 -0400
-Received: by mail-lj1-f193.google.com with SMTP id v24so14100003ljg.13
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jun 2019 15:02:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4XtbMn3xFs7FmnICFe6DhpFIKouWcZNSxkCHmQ/+Ylc=;
-        b=izb2Z46NzMUkEEC4KRpeTZxTRLJ0GQ/RzhAb8ief9AuLtSRsxtyGojyTaRXUHuLRF1
-         Y1K1Hj+ItpQFmYCDMraMDoN6XKefXr/fA2S8lixYzb6lN+40iNMZAwugGK8wDaIMlihe
-         GnpLw8qtECPRTbWEMTN4v6XVwOgmV0JI/tyVx9mdyNZyMPiICLek7nR5F+BVEJ6kQcqU
-         ZPQK7vlfl2br4pdVVLyjIF2wmIT5LthddzXtyklfp3JOeQBYHHElDedyH9Pfi4UkF1mQ
-         QU0A3nRr+NuNXpcAu8UNX2jUf/t5J1gt+oqip44qh7spUrxSVnv6owch92cePWrvXSMi
-         c6gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4XtbMn3xFs7FmnICFe6DhpFIKouWcZNSxkCHmQ/+Ylc=;
-        b=OXfGqYEymzX5OQIz1ir14YYlhQbUiCtu5VffWp0RDFOAoxxuWwTkIq7YbR7b4gIB5b
-         SWd07vyNJ/9cR0Vd9XbFOrB7XJCll7qhp+IfP76nHzKbsGgP5J4JqplwevcpvTJEW6BK
-         7FyVMlEBdAhcwKzrQRkLya0U6cTjhoUI/AwbmzACBP4ri1nyc/hz7/i/jdNz4Gt9i8Cf
-         nX1pfwwzxmrNip7qmINfE8SbrU1jWkcgOpxdEv8c01EacA/XwnEf4g8VYhtNAwSLA3E7
-         Nxqz1Y8FuT8wKbW+HYG2bO7bnUQ6HB5Dvddk6eQ7u9JCcLED/eGm0HMgMjYsW79x+IGJ
-         LBcw==
-X-Gm-Message-State: APjAAAWP01JCkNQihQeqtBMfhVZ17bEISdwmGnkFucSpQw+W/62SYidC
-        weaDr5TGbdMVHjTm+17l2ZwHw8jdelqC0izPpepVSA==
-X-Google-Smtp-Source: APXvYqz94aRYtRYpNe6kqWgritXzE0c6aWIYSvz2gxrGE8hvN+/7y7do5SKF1vQxUBqEL72NonVRvHe+q4JNPmoe7sI=
-X-Received: by 2002:a2e:81d8:: with SMTP id s24mr31105577ljg.37.1561413735780;
- Mon, 24 Jun 2019 15:02:15 -0700 (PDT)
+        Mon, 24 Jun 2019 18:37:31 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hfXaY-0001El-FV; Mon, 24 Jun 2019 22:37:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] fbmem: remove redundant assignment to err
+Date:   Mon, 24 Jun 2019 23:37:24 +0100
+Message-Id: <20190624223724.13629-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190522163428.7078-1-paul@crapouillou.net> <5b0f8bb3-e7b0-52c1-1f2f-9709992b76fc@linaro.org>
- <20190621135608.GB11839@ulmo>
-In-Reply-To: <20190621135608.GB11839@ulmo>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 25 Jun 2019 00:02:02 +0200
-Message-ID: <CACRpkdY4xgtYVto8fM-TSGWbDEsJpj=Fx2zXHPaZTJ6m1JuWQw@mail.gmail.com>
-Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered down
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        od@zcrc.me, linux-pwm@vger.kernel.org,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 3:56 PM Thierry Reding <thierry.reding@gmail.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> I'm not sure this would actually work because I think the way that
-> pinctrl handles states both "init" and "idle" would be the same pointer
-> values and therefore pinctrl_init_done() would think the driver didn't
-> change away from the "init" state because it is the same pointer value
-> as the "idle" state that the driver selected.
+Variable err is initialized to a value that is never read and it
+is re-assigned later.  The initialization is redundant and can
+be removed.
 
-Right.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/video/fbdev/core/fbmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> One way to work around
-> that would be to duplicate the "idle" state definition and associate one
-> instance of it with the "idle" state and the other with the "init"
-> state. At that point both states should be different (different pointer
-> values) and we'd get the init state selected automatically before probe,
-> select "idle" during probe and then the core will leave it alone. That's
-> of course ugly because we duplicate the pinctrl state in DT, but perhaps
-> it's the least ugly solution.
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index dd1a708df1a7..ae044a1325ca 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1987,7 +1987,7 @@ int fb_new_modelist(struct fb_info *info)
+ 	struct list_head *pos, *n;
+ 	struct fb_modelist *modelist;
+ 	struct fb_videomode *m, mode;
+-	int err = 1;
++	int err;
+ 
+ 	list_for_each_safe(pos, n, &info->modelist) {
+ 		modelist = list_entry(pos, struct fb_modelist, list);
+-- 
+2.20.1
 
-If something needs special mockery and is not generic, I'd just
-come up with whatever string PWM needs, like
-"pwm-idle", "pwm-sleep", "pwm-init" etc instead of
-complicating the stuff done before probe(). These states are
-only handled there to make probe() simple in simple cases.
-
-> Adding Linus for visibility. Perhaps he can share some insight.
-
-I think Paul hashed it out. Or will.
-
-> On that note, I'm wondering if perhaps it'd make sense for pinctrl to
-> support some mode where a device would start out in idle mode. That is,
-> where pinctrl_bind_pins() would select the "idle" mode as the default
-> before probe. With something like that we could easily support this
-> use-case without glitching.
-
-I would say the driver can come up with whatever state it need for
-that and handle it explicitly. When there are so many of them that
-it warrants growing the device core, we can move it into
-drivers/base/pinctrl.c. But no upfront design.
-
-> I suppose yet another variant would be for the PWM backlight to not use
-> any of the standard pinctrl states at all. Instead it could just define
-> custom states, say "active" and "inactive".
-
-I would suggest doing that.
-
-> Looking at the code that
-> would prevent pinctrl_bind_pins() from doing anything with pinctrl
-> states and given the driver exact control over when each of the states
-> will be selected. That's somewhat suboptimal because we can't make use
-> of the pinctrl PM helpers and it'd require more boilerplate.
-
-The helpers are just for the dirt-simple cases anyway.
-At one point one developer thought that the "default" set up
-before probe would be the only thing any system would ever
-want to do with pin control. It seems like not.
-
-Yours,
-Linus Walleij
