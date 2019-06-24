@@ -2,74 +2,223 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAC250E41
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2019 16:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C6350EB4
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2019 16:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbfFXOeA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Jun 2019 10:34:00 -0400
-Received: from mail-lj1-f174.google.com ([209.85.208.174]:41876 "EHLO
-        mail-lj1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728055AbfFXOd7 (ORCPT
+        id S1726891AbfFXOj4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Jun 2019 10:39:56 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:38916 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726381AbfFXOjz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Jun 2019 10:33:59 -0400
-Received: by mail-lj1-f174.google.com with SMTP id 205so4049456ljj.8
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jun 2019 07:33:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=xSpymy4ZTK3msmD6QPXvPjkGa6ZhkmzkIxcVPzCGxpI=;
-        b=QGTO8c3QN8+3nJ6ZPj+Co29LncuwH5Pfy5MFId62l5peJ/SHD77xx3rMtVzaB215am
-         3i9WCFgoKaANXH6XMQR98/9yOErBSz905NJJAXz9qpTOI+SGEYqj5tYWGng1bfc2KrlK
-         X/5GQELHNdCn1STMy2HVrsQZ62WwRfQGB60OH8RCpJ6Hy7TBF3ldDOVmjNBsP50K/MmG
-         mgJR6QJuvL7NCuA/oLJFGFpaBXyMbldfP6ujSbrSwOmONUMTGmKmVrif8VTdSGFLxs4i
-         lh9k0E/T4p0VsGblCBpFymIwi4KmIWGO1n65TCPkGAWhsQ7VFvn3ONQb425FYCZSdSco
-         60BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=xSpymy4ZTK3msmD6QPXvPjkGa6ZhkmzkIxcVPzCGxpI=;
-        b=hQ/nv827yIyegOAPhUH8PXHZf13S7mrHIcKi/YQdx91ytLzWSYM04Ipnpqb8oXp7yD
-         goQUIcE8xLTI9ghwhHwTuiV5O/9Kw0o1AyPyqT7K7VVucm7Y8SXK56UJtRxtRgoRPh9G
-         hScDxofxd3AvvxxbtfJSOVXPyfIF0B5WrcEncP0VvocKtpNr1kVlo5C9+sK/lbuyu/5/
-         4BUPFXOmnj6CWSUBdxv/x8CQou3frW0eugOAEauuDAfnQn0XZgddQjaMbKyDfSgK38h6
-         eHEtn03ji0KvLYI0r0fBplJ6SExqinFOox00vYb2KVVKthbMK6Pma4KT+Y6GL4YLKM5O
-         SYRQ==
-X-Gm-Message-State: APjAAAXJTe15NuUDQI29pAlqxLzsIvP42o/iqrf4K6ZRUwRS/KXXrir1
-        PB1zK+uKQQtMrE3a1SSdwWQJtLXRCs3t3+0QMAL2KOIOwG4=
-X-Google-Smtp-Source: APXvYqxgEoRCCUwjmyBPx8cyo6SjzC60gWjKCFHo8krOv2Gjgbm/gjLukqSZ5U9yaRATAlgviRnLFhzowi29ughduYU=
-X-Received: by 2002:a2e:81d8:: with SMTP id s24mr30054331ljg.37.1561386838014;
- Mon, 24 Jun 2019 07:33:58 -0700 (PDT)
+        Mon, 24 Jun 2019 10:39:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1561387193; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2QvYrE3ls/QXOBjihXF5hG/izh16IQcN2h5MrNGxNC8=;
+        b=Bhigd78ANkGaYmYI+0oAYzU8YmsKJKpGucWHCgAFcpgfWaU3meL5LseFh10NK0JeR5KmaM
+        12aEdcqwu8iiOZlWEOUx6HTENsi+bWOCqdoD7FO+fT75BOEoG6IBkftSspiT9/Scfd69v3
+        BqpepJB6H/+J64wFIT4/1DgXmX4rXVg=
+Date:   Mon, 24 Jun 2019 16:39:46 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered
+ down
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        od@zcrc.me, linux-pwm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-Id: <1561387186.20436.1@crapouillou.net>
+In-Reply-To: <20190621135608.GB11839@ulmo>
+References: <20190522163428.7078-1-paul@crapouillou.net>
+        <5b0f8bb3-e7b0-52c1-1f2f-9709992b76fc@linaro.org>
+        <20190621135608.GB11839@ulmo>
 MIME-Version: 1.0
-From:   =?UTF-8?Q?Ricardo_B=C3=A1nffy?= <rbanffy@gmail.com>
-Date:   Mon, 24 Jun 2019 15:33:47 +0100
-Message-ID: <CA+NZatLi=KdC+BnNz8egzDinGv+g9zYMPfn2yyKkFC40fnP5qQ@mail.gmail.com>
-Subject: Character attributes in fb console
-To:     linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi foilks,
 
-I'm starting to look into the fb console code and I have a couple questions=
-:
 
-- Is this the right list to ask questions about architecture and features?
-- Do we have a roadmap of things we want to add/remove/refactor?
-- Is there a comprehensive set of documents about the API,
-architecture and expected behavior?
+Le ven. 21 juin 2019 =E0 15:56, Thierry Reding=20
+<thierry.reding@gmail.com> a =E9crit :
+> On Fri, Jun 21, 2019 at 01:41:45PM +0100, Daniel Thompson wrote:
+>>  On 22/05/2019 17:34, Paul Cercueil wrote:
+>>  > When the driver probes, the PWM pin is automatically configured=20
+>> to its
+>>  > default state, which should be the "pwm" function.
+>>=20
+>>  At which point in the probe... and by who?
+>=20
+> The driver core will select the "default" state of a device right=20
+> before
+> calling the driver's probe, see:
+>=20
+> 	drivers/base/pinctrl.c: pinctrl_bind_pins()
+>=20
+> which is called from:
+>=20
+> 	drivers/base/dd.c: really_probe()
+>=20
+>>  > However, at this
+>>  > point we don't know the actual level of the pin, which may be=20
+>> active or
+>>  > inactive. As a result, if the driver probes without enabling the
+>>  > backlight, the PWM pin might be active, and the backlight would be
+>>  > lit way before being officially enabled.
+>>  >
+>>  > To work around this, if the probe function doesn't enable the=20
+>> backlight,
+>>  > the pin is set to its sleep state instead of the default one,=20
+>> until the
+>>  > backlight is enabled. Whenk the backlight is disabled, the pin is=20
+>> reset
+>>  > to its sleep state.
+>>  Doesn't this workaround result in a backlight flash between=20
+>> whatever enables
+>>  it and the new code turning it off again?
+>=20
+> Yeah, I think it would. I guess if you're very careful on how you set=20
+> up
+> the device tree you might be able to work around it. Besides the=20
+> default
+> and idle standard pinctrl states, there's also the "init" state. The
+> core will select that instead of the default state if available.=20
+> However
+> there's also pinctrl_init_done() which will try again to switch to the
+> default state after probe has finished and the driver didn't switch=20
+> away
+> from the init state.
+>=20
+> So you could presumably set up the device tree such that you have=20
+> three
+> states defined: "default" would be the one where the PWM pin is=20
+> active,
+> "idle" would be used when backlight is off (PWM pin inactive) and then
+> another "init" state that would be the same as "idle" to be used=20
+> during
+> probe. During probe the driver could then switch to the "idle" state=20
+> so
+> that the pin shouldn't glitch.
 
-I guess I am looking for a developer getting started path.
+That's exactly what I'm doing, yes (with the minor difference that your
+"idle" state is my "sleep" state).
 
-Cheers,
+> I'm not sure this would actually work because I think the way that
+> pinctrl handles states both "init" and "idle" would be the same=20
+> pointer
+> values and therefore pinctrl_init_done() would think the driver didn't
+> change away from the "init" state because it is the same pointer value
+> as the "idle" state that the driver selected. One way to work around
+> that would be to duplicate the "idle" state definition and associate=20
+> one
+> instance of it with the "idle" state and the other with the "init"
+> state. At that point both states should be different (different=20
+> pointer
+> values) and we'd get the init state selected automatically before=20
+> probe,
+> select "idle" during probe and then the core will leave it alone.=20
+> That's
+> of course ugly because we duplicate the pinctrl state in DT, but=20
+> perhaps
+> it's the least ugly solution.
 
-Ricardo
+That works perfectly on my side. I didn't have to duplicate the states=20
+in DT.
 
---
-Ricardo B=C3=A1nffy
-http://about.me/rbanffy
+> Adding Linus for visibility. Perhaps he can share some insight.
+>=20
+> On that note, I'm wondering if perhaps it'd make sense for pinctrl to
+> support some mode where a device would start out in idle mode. That=20
+> is,
+> where pinctrl_bind_pins() would select the "idle" mode as the default
+> before probe. With something like that we could easily support this
+> use-case without glitching.
+
+You'd still need the driver to switch back between "default" and "idle"
+states, and switching to the "idle" state in the probe is a one-liner,
+so probably not worth the trouble, unless I don't understand the whole
+picture.
+
+Thanks,
+-Paul
+
+> I suppose yet another variant would be for the PWM backlight to not=20
+> use
+> any of the standard pinctrl states at all. Instead it could just=20
+> define
+> custom states, say "active" and "inactive". Looking at the code that
+> would prevent pinctrl_bind_pins() from doing anything with pinctrl
+> states and given the driver exact control over when each of the states
+> will be selected. That's somewhat suboptimal because we can't make use
+> of the pinctrl PM helpers and it'd require more boilerplate.
+>=20
+> Thierry
+>=20
+>>  > Signed-off-by: Paul Cercueil <paul@crapouillou.net> > ---
+>>  >   drivers/video/backlight/pwm_bl.c | 9 +++++++++
+>>  >   1 file changed, 9 insertions(+)
+>>  >
+>>  > diff --git a/drivers/video/backlight/pwm_bl.c=20
+>> b/drivers/video/backlight/pwm_bl.c
+>>  > index fb45f866b923..422f7903b382 100644
+>>  > --- a/drivers/video/backlight/pwm_bl.c
+>>  > +++ b/drivers/video/backlight/pwm_bl.c
+>>  > @@ -16,6 +16,7 @@
+>>  >   #include <linux/module.h>
+>>  >   #include <linux/kernel.h>
+>>  >   #include <linux/init.h>
+>>  > +#include <linux/pinctrl/consumer.h>
+>>  >   #include <linux/platform_device.h>
+>>  >   #include <linux/fb.h>
+>>  >   #include <linux/backlight.h>
+>>  > @@ -50,6 +51,8 @@ static void pwm_backlight_power_on(struct=20
+>> pwm_bl_data *pb)
+>>  >   	struct pwm_state state;
+>>  >   	int err;
+>>  > +	pinctrl_pm_select_default_state(pb->dev);
+>>  > +
+>>  >   	pwm_get_state(pb->pwm, &state);
+>>  >   	if (pb->enabled)
+>>  >   		return;
+>>  > @@ -90,6 +93,8 @@ static void pwm_backlight_power_off(struct=20
+>> pwm_bl_data *pb)
+>>  >   	regulator_disable(pb->power_supply);
+>>  >   	pb->enabled =3D false;
+>>  > +
+>>  > +	pinctrl_pm_select_sleep_state(pb->dev);
+>>  >   }
+>>  >   static int compute_duty_cycle(struct pwm_bl_data *pb, int=20
+>> brightness)
+>>  > @@ -626,6 +631,10 @@ static int pwm_backlight_probe(struct=20
+>> platform_device *pdev)
+>>  >   	backlight_update_status(bl);
+>>  >   	platform_set_drvdata(pdev, bl);
+>>  > +
+>>  > +	if (bl->props.power =3D=3D FB_BLANK_POWERDOWN)
+>>  > +		pinctrl_pm_select_sleep_state(&pdev->dev);
+>>=20
+>>  Didn't backlight_update_status(bl) already do this?
+>>=20
+>>=20
+>>  Daniel.
+>>=20
+>>=20
+>>  > +
+>>  >   	return 0;
+>>  >   err_alloc:
+>>  >
+>>=20
+
+=
+
