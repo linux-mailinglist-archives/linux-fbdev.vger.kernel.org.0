@@ -2,65 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4683B4F6DD
-	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Jun 2019 18:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5819F5049B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2019 10:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726379AbfFVQ2x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 22 Jun 2019 12:28:53 -0400
-Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:40518 "EHLO
-        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726353AbfFVQ2u (ORCPT
+        id S1726557AbfFXIdD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Jun 2019 04:33:03 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:37208 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726546AbfFXIdD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 22 Jun 2019 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
-X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
- lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
- 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
- b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
- lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
- 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
- 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
- O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
- RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
- 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
- q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
- P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
- BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
- ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
- FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
- ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
- 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
-Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        Mon, 24 Jun 2019 04:33:03 -0400
+Received: by mail-ed1-f65.google.com with SMTP id w13so20569894eds.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jun 2019 01:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rhq/A+Wmeu0M0xpQ5ggr38wrWajMw16Fcl2eXJ2cqCM=;
+        b=Xl/UEKe4ZlQUG9JziPsm9bJPu2EwUbCisCgv19ADkWt/skBEuSaOrDxTyNaRZz7YyX
+         4T1ON3POCGbrp06bokoC9KhzKCaNrCKtOjDsn0kqroRsiAqSl9aCec7I50oZT34BhC36
+         2Nw5U0uZUXfzcDRYP5lBEypT/89qU86eBX/7w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rhq/A+Wmeu0M0xpQ5ggr38wrWajMw16Fcl2eXJ2cqCM=;
+        b=ipKCk6jxYi3hFZe+Z7N5JEa0kmOwccDbnVgP+DZb+dU38cWjIh7/p9Ta0/kBQ+LQlY
+         gmBGw/XUDMNVDW26t6ZnRuIo4lAnB+T3GSEip22gy1Tkqk8lHCWPZ91kyiZgDIN+hyq8
+         i2hB/q5V7+8aXPTZjVgYgItVsQ7pAi04cgtKi+1AqxigbtQ8ZJ/Bw+Ga6an8ElmPrIyp
+         omf8CtIniK/khLYb/5kIMf5Pmv8xO3Co28P9WrObOgcNSfzTFQHTA96N0AjEIdu0R9Md
+         cKkBzVDYN3OJdHjOGksc6jBPcC4HZYevjyVLGPxXK8AYQKtLFQ5EDnt0ZzRh7uxC2sBM
+         bneQ==
+X-Gm-Message-State: APjAAAXdwJBxw5bOsus5X5dUGPmMsXGHEUlrpV5zW1IaOwpxpM4Hwt4/
+        qsch6K/GGoGvQyreFsgR0Z440Q==
+X-Google-Smtp-Source: APXvYqyxQqcCOaClByMhs9zg429dU19NX8iT7BNkF349mthFHC5Eqv9G8GiIgew05iugGCQJDye1Bg==
+X-Received: by 2002:a50:e612:: with SMTP id y18mr160702738edm.143.1561365181654;
+        Mon, 24 Jun 2019 01:33:01 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id s5sm3431668edh.3.2019.06.24.01.33.00
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 24 Jun 2019 01:33:00 -0700 (PDT)
+From:   Daniel Vetter <daniel.vetter@ffwll.ch>
+To:     DRI Development <dri-devel@lists.freedesktop.org>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        kbuild test robot <lkp@intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH] fbcon: Export fbcon_remap_all
+Date:   Mon, 24 Jun 2019 10:32:55 +0200
+Message-Id: <20190624083255.13235-1-daniel.vetter@ffwll.ch>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Fixes linking fail when fbcon/fbdev is moduler and vgaswitcheroo is
+enabled:
 
+x86_64-linux-gnu-ld: drivers/gpu/vga/vga_switcheroo.o: in function `vga_switchto_stage2':
+vga_switcheroo.c:(.text+0x997): undefined reference to `fbcon_remap_all'
 
-From:Miss: Fatima Yusuf.
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Reported-by: kbuild test robot <lkp@intel.com>
+Fixes: 1cd51b5d200d ("vgaswitcheroo: call fbcon_remap_all directly")
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Yisheng Xie <ysxie@foxmail.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+--
+wrt merging probably best if Maarten adds this to the topic branch we
+have already and sends out an updated pull request.
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+Apologies for the mess.
+-Daniel
+---
+ drivers/video/fbdev/core/fbcon.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index c9235a2f42f8..199ca723c768 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -3194,6 +3194,7 @@ void fbcon_remap_all(struct fb_info *info)
+ 	}
+ 	console_unlock();
+ }
++EXPORT_SYMBOL(fbcon_remap_all);
+ 
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
+ static void fbcon_select_primary(struct fb_info *info)
+-- 
+2.20.1
 
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
-
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
-
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
