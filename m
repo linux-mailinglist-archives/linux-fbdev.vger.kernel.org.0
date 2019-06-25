@@ -2,49 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7E155494
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14EB95549C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:35:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730134AbfFYQfE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 12:35:04 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:40123 "EHLO
+        id S1730235AbfFYQfV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 12:35:21 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55057 "EHLO
         mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730545AbfFYQfE (ORCPT
+        with ESMTP id S1731363AbfFYQfE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Tue, 25 Jun 2019 12:35:04 -0400
-Received: by mail-wm1-f65.google.com with SMTP id v19so3618320wmj.5
-        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:35:02 -0700 (PDT)
+Received: by mail-wm1-f65.google.com with SMTP id g135so3506373wme.4
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:35:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=pPfiVDgc5mzijoolmBgAn7nj9hFIGXkNoey2vIeezPw=;
-        b=PH6PJoOty745v5HCYWGPCWBeeSNGmb9UwwqkfUOiMl1dAeUCOfW64MYeP65AJk34q9
-         QVGkrvI13TaiQUcKO3PAzYhR+SlYTOCGOCEmHOZl8pzZnDrgU3OgL2F4sF4t8Wuu45bI
-         O0s/CEA9VySw6B9MT6SnlA85lLwIQMHTWKRdJ5dPWzlthv0Mp9kYKxLDYTI2NT9eAsHs
-         9Bzih0UeynmsFxiAwYLqO5DU6VEut6rYd9k7eNOqFJNdg09L0b6P5zp0kJwKKrUMpgTh
-         0ABqdJwysPXZFSMGHbolipLeMxh0463L8lROsmZybF2G0ckfGkRbbW/NOxebpA6Ut4Ft
-         dJyg==
+        bh=q8CTKhWBWFU1fqIPJGLSNQd9vJ1aS8JWPNlYGCmcN8g=;
+        b=jrA5ZxxSlBscH60wVMRBFqwb9J9maa3kZ+JU/Fp6J34myN9KJoXuFwMIV3ZMmz7DNl
+         JG1+U+oqjwTTtkfTBwVSTD9L0stYYQBCQZkkcL3caSVFgC7U6RXMgCV/zfQrx45vdTPR
+         ayJ9TIWzXGPqIe9iL9vtxCexuyN/YsuaVdU4T1Q4mDvSPLx+u2zB3+l0GtmMMSE7vAuY
+         HbLhX9dVYD7+9Iarnn6PZ2NDdK94xvM49thFHPfOOqjj+zAUG4SbHrwUzjnbuK/64XdC
+         3fSgoI3x6TSweLX2gY1e5b8i24ts0cvG/7te0F0uN7yuIYRTLlPHbaTRofncPw/XoXFE
+         Gz/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=pPfiVDgc5mzijoolmBgAn7nj9hFIGXkNoey2vIeezPw=;
-        b=EfNjDO+zc0QxuRQEOwJmbPVbhJYYyif1hHXL/zywNKstRporCCVMrVU54X5NaJMJtM
-         a94XA1goN/xWAdf1/6BpQSNbZcQzVEOdLATvYKi+6NzmJRwUlrAwkRkPljoNCvtpUcuO
-         yUC66eeY+yQKMzSbxz+UwEHI4TnOGTGQ13MjDaQin3l6unpQJLCXdcsGFO3rVy9md+Pb
-         jl4PSm0uuLe21aGtpUqUCFqwbs2DjSh0ngOTqfIdSZzzH+cwdhZf6Lx7dpqGmBgrkYtD
-         UX89a4wfm4TZd2oyxM7+MSL49vPPo55YhwQ2kzmGQNNqJ7lV6RCz88W568TrzzjqUtQ0
-         gGCA==
-X-Gm-Message-State: APjAAAVwqwVV9fonwC2+TAlWLHYU3NFtahiF+j4RLgi5++C8nlJO8jIL
-        VQhpZ4dr4dTrU7/ORoqovSJJGg==
-X-Google-Smtp-Source: APXvYqxt8oVzolPe1n9o8Uiv/T6+/noYyCssxvgjcGdkHFXUOpA/NNpR2yPO4gsel41nlJ0REFrQ8Q==
-X-Received: by 2002:a1c:a842:: with SMTP id r63mr20223185wme.117.1561480501837;
-        Tue, 25 Jun 2019 09:35:01 -0700 (PDT)
+        bh=q8CTKhWBWFU1fqIPJGLSNQd9vJ1aS8JWPNlYGCmcN8g=;
+        b=V8B6lVKb941os1Kkz/otb3BgDG/CSAMWXHZxP34R55pDHyp5LvWd3Kv3+3EjZ1M3D/
+         qm5D1TbHsaRuPc/wl3KhniD2LbbXlKBhGIZsZ7VnOxCBddOZ9Hb/OHouD0V9zAGiJ/nP
+         VO5X1qxnARfxagubZ1mO5RSIorntJxcbnaNx7qbQOwZrWSkMSGHEvQXU1QNYGtsBiEPS
+         t1BJ9542o01zot3NUbM+nKKxAjE3sGaQWtnbha3Wb6RSE1OV4ovXCCUWZ/tXONVS1bTy
+         VwzlJWSxD18LGVWsrYm+uWnT8kKmXbM9+8wRhkw5hxV/iSMGBuwDrQc78FquOgnChkTy
+         jxPQ==
+X-Gm-Message-State: APjAAAXci9qUFmWvQnyAhjqWAqxN4wAaqF9I1V2nw1eEdyFcXPS/pxBs
+        VVfAOEy5fWHpIMgdK7tKnUinFw==
+X-Google-Smtp-Source: APXvYqy9vA8JJyTM1z74NApjY88ZDcDlQT7HuRw6dubZNjHezxo9Xp8wOa5eR0G69DpWTbPZXt+I1w==
+X-Received: by 2002:a1c:40c6:: with SMTP id n189mr19922351wma.118.1561480502950;
+        Tue, 25 Jun 2019 09:35:02 -0700 (PDT)
 Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.35.00
+        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.35.01
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 09:35:01 -0700 (PDT)
+        Tue, 25 Jun 2019 09:35:02 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
@@ -56,9 +56,9 @@ To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 08/12] ARM: davinci: da850-evm: switch to using a fixed regulator for lcdc
-Date:   Tue, 25 Jun 2019 18:34:30 +0200
-Message-Id: <20190625163434.13620-9-brgl@bgdev.pl>
+Subject: [PATCH 09/12] fbdev: da8xx: remove panel_power_ctrl() callback from platform data
+Date:   Tue, 25 Jun 2019 18:34:31 +0200
+Message-Id: <20190625163434.13620-10-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190625163434.13620-1-brgl@bgdev.pl>
 References: <20190625163434.13620-1-brgl@bgdev.pl>
@@ -71,112 +71,105 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Now that the da8xx fbdev driver supports power control with an actual
-regulator, switch to using a fixed power supply for da850-evm.
+There are no more users of panel_power_ctrl(). Remove it from the
+driver.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- arch/arm/mach-davinci/board-da850-evm.c | 62 ++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/da8xx-fb.c | 25 +++++--------------------
+ include/video/da8xx-fb.h       |  1 -
+ 2 files changed, 5 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/board-da850-evm.c b/arch/arm/mach-davinci/board-da850-evm.c
-index ffda623bb543..d26950f605f4 100644
---- a/arch/arm/mach-davinci/board-da850-evm.c
-+++ b/arch/arm/mach-davinci/board-da850-evm.c
-@@ -802,12 +802,6 @@ static const short da850_evm_mmcsd0_pins[] __initconst = {
- 	-1
+diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
+index 4fa99ff79f3b..328de29c4933 100644
+--- a/drivers/video/fbdev/da8xx-fb.c
++++ b/drivers/video/fbdev/da8xx-fb.c
+@@ -165,7 +165,6 @@ struct da8xx_fb_par {
+ 	struct notifier_block	freq_transition;
+ #endif
+ 	unsigned int		lcdc_clk_rate;
+-	void (*panel_power_ctrl)(int);
+ 	struct regulator	*lcd_supply;
+ 	u32 pseudo_palette[16];
+ 	struct fb_videomode	mode;
+@@ -1076,9 +1075,7 @@ static int fb_remove(struct platform_device *dev)
+ #ifdef CONFIG_CPU_FREQ
+ 		lcd_da8xx_cpufreq_deregister(par);
+ #endif
+-		if (par->panel_power_ctrl) {
+-			par->panel_power_ctrl(0);
+-		} else if (par->lcd_supply) {
++		if (par->lcd_supply) {
+ 			ret = regulator_disable(par->lcd_supply);
+ 			if (ret)
+ 				return ret;
+@@ -1187,9 +1184,7 @@ static int cfb_blank(int blank, struct fb_info *info)
+ 	case FB_BLANK_UNBLANK:
+ 		lcd_enable_raster();
+ 
+-		if (par->panel_power_ctrl) {
+-			par->panel_power_ctrl(1);
+-		} else if (par->lcd_supply) {
++		if (par->lcd_supply) {
+ 			ret = regulator_enable(par->lcd_supply);
+ 			if (ret)
+ 				return ret;
+@@ -1199,9 +1194,7 @@ static int cfb_blank(int blank, struct fb_info *info)
+ 	case FB_BLANK_VSYNC_SUSPEND:
+ 	case FB_BLANK_HSYNC_SUSPEND:
+ 	case FB_BLANK_POWERDOWN:
+-		if (par->panel_power_ctrl) {
+-			par->panel_power_ctrl(0);
+-		} else if (par->lcd_supply) {
++		if (par->lcd_supply) {
+ 			ret = regulator_disable(par->lcd_supply);
+ 			if (ret)
+ 				return ret;
+@@ -1414,10 +1407,6 @@ static int fb_probe(struct platform_device *device)
+ 	par->dev = &device->dev;
+ 	par->lcdc_clk = tmp_lcdc_clk;
+ 	par->lcdc_clk_rate = clk_get_rate(par->lcdc_clk);
+-	if (fb_pdata->panel_power_ctrl) {
+-		par->panel_power_ctrl = fb_pdata->panel_power_ctrl;
+-		par->panel_power_ctrl(1);
+-	}
+ 
+ 	par->lcd_supply = devm_regulator_get_optional(&device->dev, "lcd");
+ 	if (IS_ERR(par->lcd_supply)) {
+@@ -1639,9 +1628,7 @@ static int fb_suspend(struct device *dev)
+ 	int ret;
+ 
+ 	console_lock();
+-	if (par->panel_power_ctrl) {
+-		par->panel_power_ctrl(0);
+-	} else if (par->lcd_supply) {
++	if (par->lcd_supply) {
+ 		ret = regulator_disable(par->lcd_supply);
+ 		if (ret)
+ 			return ret;
+@@ -1667,9 +1654,7 @@ static int fb_resume(struct device *dev)
+ 	if (par->blank == FB_BLANK_UNBLANK) {
+ 		lcd_enable_raster();
+ 
+-		if (par->panel_power_ctrl) {
+-			par->panel_power_ctrl(1);
+-		} else if (par->lcd_supply) {
++		if (par->lcd_supply) {
+ 			ret = regulator_enable(par->lcd_supply);
+ 			if (ret)
+ 				return ret;
+diff --git a/include/video/da8xx-fb.h b/include/video/da8xx-fb.h
+index efed3c3383d6..1d19ae62b844 100644
+--- a/include/video/da8xx-fb.h
++++ b/include/video/da8xx-fb.h
+@@ -32,7 +32,6 @@ struct da8xx_lcdc_platform_data {
+ 	const char manu_name[10];
+ 	void *controller_data;
+ 	const char type[25];
+-	void (*panel_power_ctrl)(int);
  };
  
--static void da850_panel_power_ctrl(int val)
--{
--	/* lcd power */
--	gpio_set_value(DA850_LCD_PWR_PIN, val);
--}
--
- static struct property_entry da850_lcd_backlight_props[] = {
- 	PROPERTY_ENTRY_BOOL("default-on"),
- 	{ }
-@@ -827,28 +821,61 @@ static const struct platform_device_info da850_lcd_backlight_info = {
- 	.properties	= da850_lcd_backlight_props,
- };
- 
-+static struct regulator_consumer_supply da850_lcd_supplies[] = {
-+	REGULATOR_SUPPLY("lcd", NULL),
-+};
-+
-+static struct regulator_init_data da850_lcd_supply_data = {
-+	.consumer_supplies	= da850_lcd_supplies,
-+	.num_consumer_supplies	= ARRAY_SIZE(da850_lcd_supplies),
-+	.constraints    = {
-+		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-+	},
-+};
-+
-+static struct fixed_voltage_config da850_lcd_supply = {
-+	.supply_name		= "lcd",
-+	.microvolts		= 33000000,
-+	.init_data		= &da850_lcd_supply_data,
-+};
-+
-+static struct platform_device da850_lcd_supply_device = {
-+	.name			= "reg-fixed-voltage",
-+	.id			= 1, /* Dummy fixed regulator is 0 */
-+	.dev			= {
-+		.platform_data = &da850_lcd_supply,
-+	},
-+};
-+
-+static struct gpiod_lookup_table da850_lcd_supply_gpio_table = {
-+	.dev_id			= "reg-fixed-voltage.1",
-+	.table = {
-+		GPIO_LOOKUP("davinci_gpio", DA850_LCD_PWR_PIN, NULL, 0),
-+		{ }
-+	},
-+};
-+
-+static struct gpiod_lookup_table *da850_lcd_gpio_lookups[] = {
-+	&da850_lcd_backlight_gpio_table,
-+	&da850_lcd_supply_gpio_table,
-+};
-+
- static int da850_lcd_hw_init(void)
- {
- 	struct platform_device *backlight;
- 	int status;
- 
--	gpiod_add_lookup_table(&da850_lcd_backlight_gpio_table);
-+	gpiod_add_lookup_tables(da850_lcd_gpio_lookups,
-+				ARRAY_SIZE(da850_lcd_gpio_lookups));
-+
- 	backlight = platform_device_register_full(&da850_lcd_backlight_info);
- 	if (IS_ERR(backlight))
- 		return PTR_ERR(backlight);
- 
--	status = gpio_request(DA850_LCD_PWR_PIN, "lcd pwr");
--	if (status < 0)
-+	status = platform_device_register(&da850_lcd_supply_device);
-+	if (status)
- 		return status;
- 
--	gpio_direction_output(DA850_LCD_PWR_PIN, 0);
--
--	/* Switch off panel power */
--	da850_panel_power_ctrl(0);
--
--	/* Switch on panel power */
--	da850_panel_power_ctrl(1);
--
- 	return 0;
- }
- 
-@@ -1458,7 +1485,6 @@ static __init void da850_evm_init(void)
- 	if (ret)
- 		pr_warn("%s: LCD initialization failed: %d\n", __func__, ret);
- 
--	sharp_lk043t1dg01_pdata.panel_power_ctrl = da850_panel_power_ctrl,
- 	ret = da8xx_register_lcdc(&sharp_lk043t1dg01_pdata);
- 	if (ret)
- 		pr_warn("%s: LCDC registration failed: %d\n", __func__, ret);
+ struct lcd_ctrl_config {
 -- 
 2.21.0
 
