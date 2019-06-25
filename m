@@ -2,162 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D78955499
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13D255528
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:52:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731640AbfFYQfR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 12:35:17 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38954 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731670AbfFYQfI (ORCPT
+        id S1727287AbfFYQw2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 12:52:28 -0400
+Received: from smtprelay0164.hostedemail.com ([216.40.44.164]:50128 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726599AbfFYQw2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jun 2019 12:35:08 -0400
-Received: by mail-wr1-f67.google.com with SMTP id x4so18611636wrt.6
-        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ga+YwIrD2LqYZ2tJvuqiZTtIXkFbIASL3x6BxdYUV7E=;
-        b=AHkej/B1mfm2h6OHO9LRjul+QcnubPRDTF056QLWkadd6YmPrnjIQ0undO3cGCLteJ
-         vDiXd6NaEvKkuA/Ov1EU6GibR2fq54JcogmaTLJSE1w8VxFhBCKMQa6nMSc7ama2AQUQ
-         MXjYRzIQXao10HPHfkljNhFskfJ1miN0PiAO2WXQdrS+ZTVMirEH1Q6Xpg47b+c9njcv
-         +AACxr8d7oedC2TVbLqVhCM7LVV6mcxDlsoJqTfbUea3qLJwtE8gHdguCFLj0gCiAbWC
-         v37fEvz+TIlhi8gACKPDc1wJUhIQBhzZpszZhnPvYhMiEv2bxIIzjLBufGN9GEE3sxzT
-         cfTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ga+YwIrD2LqYZ2tJvuqiZTtIXkFbIASL3x6BxdYUV7E=;
-        b=lSgIfZYQl9NjPj8V5dvxGbXer5YeNYx7cw9ukj/hqUvIxn1eXtKQQJH00NAbW1BnJW
-         LaTGZ/nmPSUhmtnm6n7Rr0LWjyk3uEI2VxgdGOC8S2y5c61Jq9Cj6PM8M7y0/ac+mkxF
-         75pnpHtH97OxfkysASTrmTwVWCPBiCypDHxmqhVUAGqPS6RD41N9Hkd1/Fx1JUXj4ajw
-         R1l87SewZyJzHzYGyWL/JR0MowmTB34G0UwBiMmDjv/NJdV/G+rmyBjEsh6GJEVYCpNx
-         RB+pjXkYh0fmyBPqoCPBAQaAJt/PyKs0OTXUQLtqun9h56yguHmcc9JoUm/oZRjRl/qq
-         sOdQ==
-X-Gm-Message-State: APjAAAVBHUIe1pOz4TOsHbXImhOLi1on5rx6TSTjN8aLUsTZQ+D4OL3T
-        TbR7e39OepO8+114nuH0s5iQmw==
-X-Google-Smtp-Source: APXvYqyvWx9JbKk03RcDjA3pShyMvYT0hK97AL2s1HrAwQ3kyP6xBm3hM8uqoOdedFI3inNXlGh+zw==
-X-Received: by 2002:a5d:528b:: with SMTP id c11mr299403wrv.25.1561480506602;
-        Tue, 25 Jun 2019 09:35:06 -0700 (PDT)
-Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.35.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 09:35:06 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        Tue, 25 Jun 2019 12:52:28 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 4C3435000;
+        Tue, 25 Jun 2019 16:52:26 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2693:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3870:3871:3872:3873:4321:5007:8527:8545:8660:8879:10004:10400:10848:11232:11658:11914:12043:12297:12555:12679:12740:12760:12895:13069:13148:13230:13311:13357:13439:14096:14097:14659:14721:21080:21627:30054:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:25,LUA_SUMMARY:none
+X-HE-Tag: tramp21_4f3996ed0ab50
+X-Filterd-Recvd-Size: 2131
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf07.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 25 Jun 2019 16:52:24 +0000 (UTC)
+Message-ID: <2bdbbd7909c5c4ad96d32c0c5be4690292132a34.camel@perches.com>
+Subject: Re: [PATCH] video: fbdev: s3c-fb: Mark expected switch fall-throughs
+From:   Joe Perches <joe@perches.com>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 12/12] fbdev: da8xx: use resource management for dma
-Date:   Tue, 25 Jun 2019 18:34:34 +0200
-Message-Id: <20190625163434.13620-13-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190625163434.13620-1-brgl@bgdev.pl>
-References: <20190625163434.13620-1-brgl@bgdev.pl>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>
+Date:   Tue, 25 Jun 2019 09:52:23 -0700
+In-Reply-To: <20190625160103.GA13133@embeddedor>
+References: <20190625160103.GA13133@embeddedor>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Tue, 2019-06-25 at 11:01 -0500, Gustavo A. R. Silva wrote:
+> In preparation to enabling -Wimplicit-fallthrough, mark switch
+> cases where we are expecting to fall through.
+[]
+> This patch is part of the ongoing efforts to enable
+> -Wimplicit-fallthrough.
 
-Use managed variants of dma alloc functions in the da8xx fbdev driver.
+Just enable the thing already.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+If you stopped trying to do it all yourself, others
+will help resolve any new build warnings.
+
+For instance: a build of -next x86/64 defconfig has 2.  nbd.
 ---
- drivers/video/fbdev/da8xx-fb.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
-index 6b11a8108108..22f79b3c2326 100644
---- a/drivers/video/fbdev/da8xx-fb.c
-+++ b/drivers/video/fbdev/da8xx-fb.c
-@@ -1087,10 +1087,6 @@ static int fb_remove(struct platform_device *dev)
+diff --git a/Makefile b/Makefile
+index 5102b2bbd224..df909ffdfcdb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -690,6 +690,7 @@ endif # may-sync-config
+ endif # $(dot-config)
  
- 	unregister_framebuffer(info);
- 	fb_dealloc_cmap(&info->cmap);
--	dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
--			  par->p_palette_base);
--	dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
--			  par->vram_phys);
- 	pm_runtime_put_sync(&dev->dev);
- 	pm_runtime_disable(&dev->dev);
- 	framebuffer_release(info);
-@@ -1428,10 +1424,10 @@ static int fb_probe(struct platform_device *device)
- 	par->vram_size = roundup(par->vram_size/8, ulcm);
- 	par->vram_size = par->vram_size * LCD_NUM_BUFFERS;
- 
--	par->vram_virt = dma_alloc_coherent(par->dev,
--					    par->vram_size,
--					    &par->vram_phys,
--					    GFP_KERNEL | GFP_DMA);
-+	par->vram_virt = dmam_alloc_coherent(par->dev,
-+					     par->vram_size,
-+					     &par->vram_phys,
-+					     GFP_KERNEL | GFP_DMA);
- 	if (!par->vram_virt) {
- 		dev_err(&device->dev,
- 			"GLCD: kmalloc for frame buffer failed\n");
-@@ -1449,20 +1445,20 @@ static int fb_probe(struct platform_device *device)
- 		da8xx_fb_fix.line_length - 1;
- 
- 	/* allocate palette buffer */
--	par->v_palette_base = dma_alloc_coherent(par->dev, PALETTE_SIZE,
--						 &par->p_palette_base,
--						 GFP_KERNEL | GFP_DMA);
-+	par->v_palette_base = dmam_alloc_coherent(par->dev, PALETTE_SIZE,
-+						  &par->p_palette_base,
-+						  GFP_KERNEL | GFP_DMA);
- 	if (!par->v_palette_base) {
- 		dev_err(&device->dev,
- 			"GLCD: kmalloc for palette buffer failed\n");
- 		ret = -EINVAL;
--		goto err_release_fb_mem;
-+		goto err_release_fb;
- 	}
- 
- 	par->irq = platform_get_irq(device, 0);
- 	if (par->irq < 0) {
- 		ret = -ENOENT;
--		goto err_release_pl_mem;
-+		goto err_release_fb;
- 	}
- 
- 	da8xx_fb_var.grayscale =
-@@ -1480,7 +1476,7 @@ static int fb_probe(struct platform_device *device)
- 
- 	ret = fb_alloc_cmap(&da8xx_fb_info->cmap, PALETTE_SIZE, 0);
- 	if (ret)
--		goto err_release_pl_mem;
-+		goto err_release_fb;
- 	da8xx_fb_info->cmap.len = par->palette_sz;
- 
- 	/* initialize var_screeninfo */
-@@ -1534,14 +1530,6 @@ static int fb_probe(struct platform_device *device)
- err_dealloc_cmap:
- 	fb_dealloc_cmap(&da8xx_fb_info->cmap);
- 
--err_release_pl_mem:
--	dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
--			  par->p_palette_base);
--
--err_release_fb_mem:
--	dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
--		          par->vram_phys);
--
- err_release_fb:
- 	framebuffer_release(da8xx_fb_info);
- 
--- 
-2.21.0
+ KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
++KBUILD_CFLAGS	+= $(call cc-option, -Wimplicit-fallthrough)
+ KBUILD_CFLAGS	+= $(call cc-disable-warning,frame-address,)
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-truncation)
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
+
 
