@@ -2,94 +2,158 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F02065589B
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 22:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5DA255BAC
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 00:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726576AbfFYUSZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 16:18:25 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:41002 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726420AbfFYUSZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jun 2019 16:18:25 -0400
-Received: by mail-pf1-f196.google.com with SMTP id m30so10045588pff.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 13:18:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=C3759lLg28N5SzA+DaR8TOro6guhAa3AkyxeMVNWlaA=;
-        b=DBNWTvbkUEl+Q82QyMlUAQZxbfMrPJ21nxvTJc4A4oyXIBct+mV2AWriOS8GrtDjct
-         fQ/AWfICuixUtS077KPF0Fam3new/bWEO5cg2HUyNMzH2e6PhYunULc3SmTZ4/V38o+3
-         AV5a0gsaJhdI4JNfpn96j+xOPq6/exWqVlEf4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=C3759lLg28N5SzA+DaR8TOro6guhAa3AkyxeMVNWlaA=;
-        b=TVwx9oh6mRFqOwtQloyQMcfvksacooZp0MdvIkU5uWiveOFUd2NH25PDZJvpOp1TKV
-         PLBil4pBlphLQX3v+zNqwblrO2pnDRo5btWFGg+CbVnhyo5OozgPO4+HqnLWtMc7C91V
-         FXw9OLMs2ed/Tgn4Iv9t1Y5Kbuhk8QponsF9dNjzIY5wxWwCTOI/rk3ZNgy6QDKrMZYc
-         0dOqqd1LqdFg3YUjfVq8MNk/XNxZjhFXFysnFNu+5ClhDYzIvE7+WwaeLn2Fy8GTdpun
-         YYlyo7kmbxji7VUkxrbaGnuRcNV2oG8J/tzAXLiCzGtY+954zE+zIUaqTLeT5ebZeFc/
-         joBQ==
-X-Gm-Message-State: APjAAAXG5L4OtLigwY24Yu0/CAGOqN+uN2EsgRwHMcCW1DFBZseeu+vh
-        5ZhQDHC/c9+UkpuRrJG6G2s7wg==
-X-Google-Smtp-Source: APXvYqwGPlu4RGTZXOO9Hg/R9LKbkgnouJNijjTn5OH6GixTNWAzeh5U8DZXqqavq0InyO3HJemICA==
-X-Received: by 2002:a65:42cd:: with SMTP id l13mr39845860pgp.72.1561493904625;
-        Tue, 25 Jun 2019 13:18:24 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id h62sm20824588pgc.54.2019.06.25.13.18.23
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 25 Jun 2019 13:18:23 -0700 (PDT)
-Date:   Tue, 25 Jun 2019 13:18:22 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH] video: fbdev: s3c-fb: Mark expected switch fall-throughs
-Message-ID: <201906251312.5059C51334@keescook>
-References: <20190625160103.GA13133@embeddedor>
- <2bdbbd7909c5c4ad96d32c0c5be4690292132a34.camel@perches.com>
- <201906251029.08B862130@keescook>
- <9c0d4ed622d6b8e47e040d398f764d52a9ac396d.camel@perches.com>
+        id S1726379AbfFYWxP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 18:53:15 -0400
+Received: from mga03.intel.com ([134.134.136.65]:27018 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726357AbfFYWxP (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 25 Jun 2019 18:53:15 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Jun 2019 15:53:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,417,1557212400"; 
+   d="scan'208";a="188447174"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 25 Jun 2019 15:53:08 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1hfuJH-000Cwq-Tu; Wed, 26 Jun 2019 06:53:07 +0800
+Date:   Wed, 26 Jun 2019 06:52:59 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Alastair D'Silva <alastair@au1.ibm.com>
+Cc:     kbuild-all@01.org, alastair@d-silva.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Karsten Keil <isdn@linux-pingi.de>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v4 4/7] lib/hexdump.c: Replace ascii bool in
+ hex_dump_to_buffer with flags
+Message-ID: <201906260657.2cnctJGF%lkp@intel.com>
+References: <20190625031726.12173-5-alastair@au1.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9c0d4ed622d6b8e47e040d398f764d52a9ac396d.camel@perches.com>
+In-Reply-To: <20190625031726.12173-5-alastair@au1.ibm.com>
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 10:49:01AM -0700, Joe Perches wrote:
-> On Tue, 2019-06-25 at 10:31 -0700, Kees Cook wrote:
-> > On Tue, Jun 25, 2019 at 09:52:23AM -0700, Joe Perches wrote:
-> > > On Tue, 2019-06-25 at 11:01 -0500, Gustavo A. R. Silva wrote:
-> > > > In preparation to enabling -Wimplicit-fallthrough, mark switch
-> > > > cases where we are expecting to fall through.
-> > > []
-> > > > This patch is part of the ongoing efforts to enable
-> > > > -Wimplicit-fallthrough.
-> > > 
-> > > Just enable the thing already.
-> > 
-> > Linus has been pretty clear about not wanting warning options enabled
-> > without first fixing all the cases it warns about first.
-> 
-> Hey Kees.
-> 
-> I don't recall that particular tidbit.  Got a link?  
+Hi Alastair,
 
-It was spread out over the discussion around removing __deprecated,
-about enabling -Wvla, and in person at the kernel summit when asking
-what approach to take for -Wimplicit-fallthrough.
+Thank you for the patch! Perhaps something to improve:
 
--- 
-Kees Cook
+[auto build test WARNING on linus/master]
+[also build test WARNING on v5.2-rc6 next-20190625]
+[if your patch is applied to the wrong git tree, please drop us a note to help improve the system]
+
+url:    https://github.com/0day-ci/linux/commits/Alastair-D-Silva/Hexdump-Enhancements/20190625-224046
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-rc1-7-g2b96cd8-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+   sound/soc/intel/skylake/skl-debug.c:191:34: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *to @@    got eref] <asn:2> *to @@
+   sound/soc/intel/skylake/skl-debug.c:191:34: sparse:    expected void [noderef] <asn:2> *to
+   sound/soc/intel/skylake/skl-debug.c:191:34: sparse:    got unsigned char *
+   sound/soc/intel/skylake/skl-debug.c:191:51: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void const *from @@    got void [noderef] <asn:2> void const *from @@
+   sound/soc/intel/skylake/skl-debug.c:191:51: sparse:    expected void const *from
+   sound/soc/intel/skylake/skl-debug.c:191:51: sparse:    got void [noderef] <asn:2> *[assigned] fw_reg_addr
+>> sound/soc/intel/skylake/skl-debug.c:195:35: sparse: sparse: too many arguments for function hex_dump_to_buffer
+--
+>> drivers/gpu/drm/tinydrm/core/tinydrm-helpers.c:93:27: sparse: sparse: too many arguments for function hex_dump_to_buffer
+--
+>> sound/soc/sof/xtensa/core.c:125:35: sparse: sparse: too many arguments for function hex_dump_to_buffer
+
+vim +195 sound/soc/intel/skylake/skl-debug.c
+
+d14700a0 Vinod Koul  2017-06-30  170  
+bdd0384a Vunny Sodhi 2017-06-30  171  static ssize_t fw_softreg_read(struct file *file, char __user *user_buf,
+bdd0384a Vunny Sodhi 2017-06-30  172  			       size_t count, loff_t *ppos)
+bdd0384a Vunny Sodhi 2017-06-30  173  {
+bdd0384a Vunny Sodhi 2017-06-30  174  	struct skl_debug *d = file->private_data;
+bdd0384a Vunny Sodhi 2017-06-30  175  	struct sst_dsp *sst = d->skl->skl_sst->dsp;
+bdd0384a Vunny Sodhi 2017-06-30  176  	size_t w0_stat_sz = sst->addr.w0_stat_sz;
+bdd0384a Vunny Sodhi 2017-06-30  177  	void __iomem *in_base = sst->mailbox.in_base;
+bdd0384a Vunny Sodhi 2017-06-30  178  	void __iomem *fw_reg_addr;
+bdd0384a Vunny Sodhi 2017-06-30  179  	unsigned int offset;
+bdd0384a Vunny Sodhi 2017-06-30  180  	char *tmp;
+bdd0384a Vunny Sodhi 2017-06-30  181  	ssize_t ret = 0;
+bdd0384a Vunny Sodhi 2017-06-30  182  
+bdd0384a Vunny Sodhi 2017-06-30  183  	tmp = kzalloc(FW_REG_BUF, GFP_KERNEL);
+bdd0384a Vunny Sodhi 2017-06-30  184  	if (!tmp)
+bdd0384a Vunny Sodhi 2017-06-30  185  		return -ENOMEM;
+bdd0384a Vunny Sodhi 2017-06-30  186  
+bdd0384a Vunny Sodhi 2017-06-30  187  	fw_reg_addr = in_base - w0_stat_sz;
+bdd0384a Vunny Sodhi 2017-06-30  188  	memset(d->fw_read_buff, 0, FW_REG_BUF);
+bdd0384a Vunny Sodhi 2017-06-30  189  
+bdd0384a Vunny Sodhi 2017-06-30  190  	if (w0_stat_sz > 0)
+bdd0384a Vunny Sodhi 2017-06-30 @191  		__iowrite32_copy(d->fw_read_buff, fw_reg_addr, w0_stat_sz >> 2);
+bdd0384a Vunny Sodhi 2017-06-30  192  
+bdd0384a Vunny Sodhi 2017-06-30  193  	for (offset = 0; offset < FW_REG_SIZE; offset += 16) {
+bdd0384a Vunny Sodhi 2017-06-30  194  		ret += snprintf(tmp + ret, FW_REG_BUF - ret, "%#.4x: ", offset);
+bdd0384a Vunny Sodhi 2017-06-30 @195  		hex_dump_to_buffer(d->fw_read_buff + offset, 16, 16, 4,
+bdd0384a Vunny Sodhi 2017-06-30  196  				   tmp + ret, FW_REG_BUF - ret, 0);
+bdd0384a Vunny Sodhi 2017-06-30  197  		ret += strlen(tmp + ret);
+bdd0384a Vunny Sodhi 2017-06-30  198  
+bdd0384a Vunny Sodhi 2017-06-30  199  		/* print newline for each offset */
+bdd0384a Vunny Sodhi 2017-06-30  200  		if (FW_REG_BUF - ret > 0)
+bdd0384a Vunny Sodhi 2017-06-30  201  			tmp[ret++] = '\n';
+bdd0384a Vunny Sodhi 2017-06-30  202  	}
+bdd0384a Vunny Sodhi 2017-06-30  203  
+bdd0384a Vunny Sodhi 2017-06-30  204  	ret = simple_read_from_buffer(user_buf, count, ppos, tmp, ret);
+bdd0384a Vunny Sodhi 2017-06-30  205  	kfree(tmp);
+bdd0384a Vunny Sodhi 2017-06-30  206  
+bdd0384a Vunny Sodhi 2017-06-30  207  	return ret;
+bdd0384a Vunny Sodhi 2017-06-30  208  }
+bdd0384a Vunny Sodhi 2017-06-30  209  
+
+:::::: The code at line 195 was first introduced by commit
+:::::: bdd0384a5ada8bb5745e5f29c10a5ba88827efad ASoC: Intel: Skylake: Add support to read firmware registers
+
+:::::: TO: Vunny Sodhi <vunnyx.sodhi@intel.com>
+:::::: CC: Mark Brown <broonie@kernel.org>
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
