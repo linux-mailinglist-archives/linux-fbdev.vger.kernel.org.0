@@ -2,137 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E62955465
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:25:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB5DC5548E
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbfFYQZN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 12:25:13 -0400
-Received: from gateway32.websitewelcome.com ([192.185.145.1]:49796 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726740AbfFYQZN (ORCPT
+        id S1729177AbfFYQey (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 12:34:54 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:41762 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726420AbfFYQex (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jun 2019 12:25:13 -0400
-X-Greylist: delayed 1203 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Jun 2019 12:25:13 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id 5ECA131C7AF6
-        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 11:01:05 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id fnsXhKmQ8YTGMfnsXhFGnt; Tue, 25 Jun 2019 11:01:05 -0500
-X-Authority-Reason: nr=8
-Received: from cablelink-187-160-61-213.pcs.intercable.net ([187.160.61.213]:30726 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hfnsW-001MjO-AX; Tue, 25 Jun 2019 11:01:04 -0500
-Date:   Tue, 25 Jun 2019 11:01:03 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH] video: fbdev: s3c-fb: Mark expected switch fall-throughs
-Message-ID: <20190625160103.GA13133@embeddedor>
+        Tue, 25 Jun 2019 12:34:53 -0400
+Received: by mail-wr1-f65.google.com with SMTP id c2so18613395wrm.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RNjXZTa0eehs8U6TXIJ1xtY97Iu/6Eek+y81QQNtjK4=;
+        b=B8LuQu66bgMmpBHn0CbN+gVJmLWy3c3N7z8bxuh0JXGKTw6PWfsSrpdrk5mrFYRvmt
+         CeUcFrYqeCPgbiCJ+jIiEUE2NbmgnQFalb/wUcSM8ab3BddXyQ02/10RO9om9ObUS8VI
+         sGVmk+ffQ8YrqfA7m/lbU2K1B/9/tczAwT7KMOOrh4Sd13TAzAhT66t4CKX4s9yQH1PU
+         l8BYKVJU3d61u7wZ4h/eYquVn0tk1mbumj6t91PAzxrKbo2uiCe1uu/MMQkGxLylJ/5D
+         zHz02i20yGrgLom/qdpFn5k25qlFJq2s36M/p6mmBeIaxkvGXx1yijivOajz10lQ2ZDo
+         hrMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RNjXZTa0eehs8U6TXIJ1xtY97Iu/6Eek+y81QQNtjK4=;
+        b=SlgRTRsfN6Kry9KsdSDhw/IPcUuWH4LPAxOaTJlTGMSTUPX+1pfTK1qZukPcoJAMbO
+         qHucQW5+Nn91U5YjJtbRyIMaQ1WADY5znMdLKIkQECh+BgyFth2/dKdaGznzJ+w6itJH
+         0G5BMOmdLui6kh9CghRcjFP2fs+P8wcKW+/ilSqGT+SPJNvm7EvZmfCrmeF04/qFpwuX
+         Q54t5e0dMxszWz2dBK9lMVJpeIuX1CWfahxlOshH8bHl7ipQxzE8ye5SKkFWVoupb4G1
+         6tAmt9ir6HfQq+enPgoRsy9iir0VuBMQXDVCRHy/GDcZ00OEu89pE+yC8V3mPwoUngV2
+         YYvw==
+X-Gm-Message-State: APjAAAWFfDaK6Ixxx/qXrjDjOXnf0j/23J8rIEdVfIDadhfVhggEZk0Q
+        +YlCQ5ArXmnGXgVLRu8veHDpPg==
+X-Google-Smtp-Source: APXvYqwGZ61fCCBpD9shDosEmPm3n3rtBVEJAron1RaBsQFJZuBhiFZxaTmMz81yYUZI1bSgnfdGEg==
+X-Received: by 2002:a5d:5446:: with SMTP id w6mr106263069wrv.164.1561480491732;
+        Tue, 25 Jun 2019 09:34:51 -0700 (PDT)
+Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
+        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.34.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Jun 2019 09:34:51 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        David Lechner <david@lechnology.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH 00/12] ARM: davinci: da850-evm: remove more legacy GPIO calls
+Date:   Tue, 25 Jun 2019 18:34:22 +0200
+Message-Id: <20190625163434.13620-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.160.61.213
-X-Source-L: No
-X-Exim-ID: 1hfnsW-001MjO-AX
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: cablelink-187-160-61-213.pcs.intercable.net (embeddedor) [187.160.61.213]:30726
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In preparation to enabling -Wimplicit-fallthrough, mark switch
-cases where we are expecting to fall through.
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-This patch fixes the following warnings:
+This is another small step on the path to liberating davinci from legacy
+GPIO API calls and shrinking the davinci GPIO driver by not having to
+support the base GPIO number anymore.
 
-drivers/video/fbdev/s3c-fb.c: In function ‘s3c_fb_blank’:
-drivers/video/fbdev/s3c-fb.c:811:16: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   sfb->enabled &= ~(1 << index);
-   ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
-drivers/video/fbdev/s3c-fb.c:814:2: note: here
-  case FB_BLANK_NORMAL:
-  ^~~~
-  LD [M]  drivers/staging/greybus/gb-light.o
-  CC [M]  drivers/gpu/drm/nouveau/nvkm/subdev/secboot/gp10b.o
-drivers/video/fbdev/s3c-fb.c: In function ‘s3c_fb_check_var’:
-drivers/video/fbdev/s3c-fb.c:286:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   var->transp.length = 1;
-   ~~~~~~~~~~~~~~~~~~~^~~
-drivers/video/fbdev/s3c-fb.c:288:2: note: here
-  case 18:
-  ^~~~
-drivers/video/fbdev/s3c-fb.c:314:22: warning: this statement may fall through [-Wimplicit-fallthrough=]
-   var->transp.offset = 24;
-   ~~~~~~~~~~~~~~~~~~~^~~~
-drivers/video/fbdev/s3c-fb.c:316:2: note: here
-  case 24:
-  ^~~~
+This time we're removing the legacy calls used indirectly by the LCDC
+fbdev driver.
 
-Warning level 3 was used: -Wimplicit-fallthrough=3
+The first three patches modify the GPIO backlight driver. The first
+of them adds the necessary functionality, the other two are just
+tweaks and cleanups.
 
-Notice that, in this particular case, the code comments are modified
-in accordance with what GCC is expecting to find.
+Next two patches enable the GPIO backlight driver in
+davinci_all_defconfig.
 
-This patch is part of the ongoing efforts to enable
--Wimplicit-fallthrough.
+Patch 6/12 models the backlight GPIO as an actual GPIO backlight device.
 
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/video/fbdev/s3c-fb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Patches 7-9 extend the fbdev driver with regulator support and convert
+the da850-evm board file to using it.
 
-diff --git a/drivers/video/fbdev/s3c-fb.c b/drivers/video/fbdev/s3c-fb.c
-index 288300035164..f0b0643ab195 100644
---- a/drivers/video/fbdev/s3c-fb.c
-+++ b/drivers/video/fbdev/s3c-fb.c
-@@ -284,7 +284,7 @@ static int s3c_fb_check_var(struct fb_var_screeninfo *var,
- 		/* 666 with one bit alpha/transparency */
- 		var->transp.offset	= 18;
- 		var->transp.length	= 1;
--		/* drop through */
-+		/* fall through */
- 	case 18:
- 		var->bits_per_pixel	= 32;
- 
-@@ -312,7 +312,7 @@ static int s3c_fb_check_var(struct fb_var_screeninfo *var,
- 	case 25:
- 		var->transp.length	= var->bits_per_pixel - 24;
- 		var->transp.offset	= 24;
--		/* drop through */
-+		/* fall through */
- 	case 24:
- 		/* our 24bpp is unpacked, so 32bpp */
- 		var->bits_per_pixel	= 32;
-@@ -809,7 +809,7 @@ static int s3c_fb_blank(int blank_mode, struct fb_info *info)
- 	case FB_BLANK_POWERDOWN:
- 		wincon &= ~WINCONx_ENWIN;
- 		sfb->enabled &= ~(1 << index);
--		/* fall through to FB_BLANK_NORMAL */
-+		/* fall through - to FB_BLANK_NORMAL */
- 
- 	case FB_BLANK_NORMAL:
- 		/* disable the DMA and display 0x0 (black) */
+Last three patches are improvements to the da8xx fbdev driver since
+we're already touching it in this series.
+
+Bartosz Golaszewski (12):
+  backlight: gpio: allow to probe non-pdata devices from board files
+  backlight: gpio: use a helper variable for &pdev->dev
+  backlight: gpio: pull the non-pdata device probing code into probe()
+  ARM: davinci: refresh davinci_all_defconfig
+  ARM: davinci_all_defconfig: enable GPIO backlight
+  ARM: davinci: da850-evm: model the backlight GPIO as an actual device
+  fbdev: da8xx: add support for a regulator
+  ARM: davinci: da850-evm: switch to using a fixed regulator for lcdc
+  fbdev: da8xx: remove panel_power_ctrl() callback from platform data
+  fbdev: da8xx-fb: use devm_platform_ioremap_resource()
+  fbdev: da8xx-fb: drop a redundant if
+  fbdev: da8xx: use resource management for dma
+
+ arch/arm/configs/davinci_all_defconfig   |  28 +++---
+ arch/arm/mach-davinci/board-da850-evm.c  |  90 ++++++++++++-----
+ drivers/video/backlight/gpio_backlight.c |  67 +++++--------
+ drivers/video/fbdev/da8xx-fb.c           | 118 +++++++++++++----------
+ include/video/da8xx-fb.h                 |   1 -
+ 5 files changed, 165 insertions(+), 139 deletions(-)
+
 -- 
 2.21.0
 
