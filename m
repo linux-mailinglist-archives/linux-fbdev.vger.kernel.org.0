@@ -2,49 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 460BA5549B
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C65895549A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 18:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731684AbfFYQfH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 12:35:07 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37422 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731439AbfFYQfG (ORCPT
+        id S1731670AbfFYQfS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 12:35:18 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:36558 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731514AbfFYQfH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jun 2019 12:35:06 -0400
-Received: by mail-wm1-f67.google.com with SMTP id f17so3645195wme.2
-        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:35:04 -0700 (PDT)
+        Tue, 25 Jun 2019 12:35:07 -0400
+Received: by mail-wr1-f67.google.com with SMTP id n4so17428935wrs.3
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 09:35:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=xjvgqiqZzglCEryM8XBbJiMmioEThPc/Ew98mkOW+30=;
-        b=dsz03gRN+B8sj18/khuc/IOGJ4ZAac3MpDKb3Zv/Bc9PoYBZsScWcIBR66+WT13q4A
-         tN8EW3Vfjzl0srOYa1HtJEj4YWDxKeLJeFxcOpAU1yqzULbgKdw7lI1k9uJYS2TLwLfq
-         nJu10QxZk+xzeoc8TdS7m0YAZ+oQffTcRYbFO9YXz55433gHQs5zlWTN1V3cyKJa1Q2A
-         iPJuT54NssEe53FbS36r8nVdcdRnBqTyep+QMieQHsg6JfL23Iqv4l0ggpRn13oHMR0p
-         AZG9QARW/pNBZ52Cg4cBykzft5A+BRios2hbeleUvawVzlsiZYnAcBm99WZBoCSgvzcU
-         PqsA==
+        bh=bAOkVHO1BfkTnSJLTBWlqsTsKKDk8gdZ6nODPU4c1tE=;
+        b=i50TzhxoE0EVWRZb7FuSgJwILA4rx2iPG77Mv3xcrrEJhVN4B/h7MPBBWVugqYxWp2
+         z/toOghI0xFLzo4j20BFkcTCK+t9oS1ur5Zxjuv68/EUxdI7HLW8oC2Nj9IGNwbxlkcf
+         ppV6VXclq/A8Z0b+pcsB0R3xp2T8dBZGYEgPFrzfJRHQCawfFi+1EpUaRPuEwp5oe/TE
+         cjUFukQoM00ogBXYvTqt763tfq4G+xwbOAaEuus8bhR4jpNdbtNk1PP3kxzDeiAC6IY4
+         zhd+wjbHvP1qPE3kwpdpje4Jp/GVei4mLQW7Kg6+P3xNN65ClIzjaWSbuQstQ63Hv5H+
+         570A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=xjvgqiqZzglCEryM8XBbJiMmioEThPc/Ew98mkOW+30=;
-        b=LCj5jqEUXxd5X3j7H4BvlS2ieCtUEbN/0K6QLYD6WOw8Oga1mDQrjhAK8gjY7hXgLX
-         Xx9etNnUfjjM1f6OzgGHUUJ+JNNKciqoATfBO29AwF4DHwtkMxLNIGqYC7YSuAxhmn7y
-         5xcCW9g8KPHWvycSX55GYYt3p67qtWvBpd0rvoVjVDOo18zZEWbKgqLrZBC/fyPIIbj2
-         f+WHaC+82FF2KVvNw84zs7LtfIMDeufnf7eceeJQ5r3C94y29IUqIXSw+3lVDAjPdB4H
-         wrpQwEgj6ey/Dg6Lw6kc2fXbkNwVwxgHloAYkk9hP02NBokcN+NLLL2QdBG3mHEWiZ8S
-         rN7g==
-X-Gm-Message-State: APjAAAVdjmFA+InyuJqBBVqwQp6uNO4QgZbsYvSdWlkNVt2s39fldsvp
-        Bjtq3NXCFqSlRPU3N7B32iRpcQ==
-X-Google-Smtp-Source: APXvYqz13wXYAnILJ9E9trPlEzD6Yeo7CCy/mNFNreUVqazy0miJn87+1vh+k2XQcsjx0bfSNxAnqA==
-X-Received: by 2002:a1c:c74a:: with SMTP id x71mr20501151wmf.121.1561480504153;
-        Tue, 25 Jun 2019 09:35:04 -0700 (PDT)
+        bh=bAOkVHO1BfkTnSJLTBWlqsTsKKDk8gdZ6nODPU4c1tE=;
+        b=LIeKzJNmcxse1iFAN22BQqGxsi6c7xd2w1e0otzMeGbVpOqGZ1S7etdQr7sib/DxeD
+         X8U4woWLqMIX0CyKFuq+oCLNoj+510qwvFUqZznxBEmHyhcfyFUbAUvwJe0TjkSc6ovb
+         cPtlBswFMVeZXdOQuqxS64JL0w5Xc9eFjPQoVKOMAUTO5YVJBU6cQ50ncdr3j/YY2Ja5
+         mDW4lvW+8dy5wk7C1xyaYOL7lzBFZcuOlrDPxefsCCKSxaAe4TRvMS1NAXvkdUu6WiWw
+         7KU4M87RXglyUOdxAsbAFsZPshj3kN3VzLkuyuJhwDgEOnB8IYuBvY0XguGq+gKKS3AO
+         yxEw==
+X-Gm-Message-State: APjAAAVF0PIabp3A5JxQV3HLmWM8WF+ab2B43Gxwm6nudrohHlpdVOFP
+        ukO57UtRou0cjRJNlS5Toj9Qww==
+X-Google-Smtp-Source: APXvYqytytlRfo6YGBjwFJZaCuSVzWH7Bv4+NP+iZBeBXrfYOEHyoR/Ueaj3FUGfeHDYPIHfHNmD2A==
+X-Received: by 2002:adf:e691:: with SMTP id r17mr62365819wrm.67.1561480505225;
+        Tue, 25 Jun 2019 09:35:05 -0700 (PDT)
 Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.35.03
+        by smtp.gmail.com with ESMTPSA id g8sm2683795wme.20.2019.06.25.09.35.04
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 09:35:03 -0700 (PDT)
+        Tue, 25 Jun 2019 09:35:04 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
@@ -56,9 +56,9 @@ To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 10/12] fbdev: da8xx-fb: use devm_platform_ioremap_resource()
-Date:   Tue, 25 Jun 2019 18:34:32 +0200
-Message-Id: <20190625163434.13620-11-brgl@bgdev.pl>
+Subject: [PATCH 11/12] fbdev: da8xx-fb: drop a redundant if
+Date:   Tue, 25 Jun 2019 18:34:33 +0200
+Message-Id: <20190625163434.13620-12-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190625163434.13620-1-brgl@bgdev.pl>
 References: <20190625163434.13620-1-brgl@bgdev.pl>
@@ -71,35 +71,76 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Shrink the code a bit by using the new helper wrapping the calls to
-platform_get_resource() and devm_ioremap_resource() together.
+The driver data is always set in probe. The remove() callback won't be
+called if probe failed which is the only way for it to be NULL. Remove
+the redundant if.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- drivers/video/fbdev/da8xx-fb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/da8xx-fb.c | 43 ++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
-index 328de29c4933..4dda194d6b8f 100644
+index 4dda194d6b8f..6b11a8108108 100644
 --- a/drivers/video/fbdev/da8xx-fb.c
 +++ b/drivers/video/fbdev/da8xx-fb.c
-@@ -1339,7 +1339,6 @@ static int fb_probe(struct platform_device *device)
+@@ -1067,37 +1067,34 @@ static void lcd_da8xx_cpufreq_deregister(struct da8xx_fb_par *par)
+ static int fb_remove(struct platform_device *dev)
  {
- 	struct da8xx_lcdc_platform_data *fb_pdata =
- 						dev_get_platdata(&device->dev);
--	struct resource *lcdc_regs;
- 	struct lcd_ctrl_config *lcd_cfg;
- 	struct fb_videomode *lcdc_info;
- 	struct fb_info *da8xx_fb_info;
-@@ -1357,8 +1356,7 @@ static int fb_probe(struct platform_device *device)
- 	if (lcdc_info == NULL)
- 		return -ENODEV;
+ 	struct fb_info *info = dev_get_drvdata(&dev->dev);
++	struct da8xx_fb_par *par = info->par;
+ 	int ret;
  
--	lcdc_regs = platform_get_resource(device, IORESOURCE_MEM, 0);
--	da8xx_fb_reg_base = devm_ioremap_resource(&device->dev, lcdc_regs);
-+	da8xx_fb_reg_base = devm_platform_ioremap_resource(device, 0);
- 	if (IS_ERR(da8xx_fb_reg_base))
- 		return PTR_ERR(da8xx_fb_reg_base);
+-	if (info) {
+-		struct da8xx_fb_par *par = info->par;
+-
+ #ifdef CONFIG_CPU_FREQ
+-		lcd_da8xx_cpufreq_deregister(par);
++	lcd_da8xx_cpufreq_deregister(par);
+ #endif
+-		if (par->lcd_supply) {
+-			ret = regulator_disable(par->lcd_supply);
+-			if (ret)
+-				return ret;
+-		}
++	if (par->lcd_supply) {
++		ret = regulator_disable(par->lcd_supply);
++		if (ret)
++			return ret;
++	}
+ 
+-		lcd_disable_raster(DA8XX_FRAME_WAIT);
+-		lcdc_write(0, LCD_RASTER_CTRL_REG);
++	lcd_disable_raster(DA8XX_FRAME_WAIT);
++	lcdc_write(0, LCD_RASTER_CTRL_REG);
+ 
+-		/* disable DMA  */
+-		lcdc_write(0, LCD_DMA_CTRL_REG);
++	/* disable DMA  */
++	lcdc_write(0, LCD_DMA_CTRL_REG);
+ 
+-		unregister_framebuffer(info);
+-		fb_dealloc_cmap(&info->cmap);
+-		dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
+-				  par->p_palette_base);
+-		dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
+-				  par->vram_phys);
+-		pm_runtime_put_sync(&dev->dev);
+-		pm_runtime_disable(&dev->dev);
+-		framebuffer_release(info);
++	unregister_framebuffer(info);
++	fb_dealloc_cmap(&info->cmap);
++	dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
++			  par->p_palette_base);
++	dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
++			  par->vram_phys);
++	pm_runtime_put_sync(&dev->dev);
++	pm_runtime_disable(&dev->dev);
++	framebuffer_release(info);
+ 
+-	}
+ 	return 0;
+ }
  
 -- 
 2.21.0
