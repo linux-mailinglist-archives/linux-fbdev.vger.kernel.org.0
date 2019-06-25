@@ -2,149 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64628557B5
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 21:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02065589B
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jun 2019 22:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbfFYTUC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jun 2019 15:20:02 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54169 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726857AbfFYTUC (ORCPT
+        id S1726576AbfFYUSZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jun 2019 16:18:25 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:41002 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726420AbfFYUSZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jun 2019 15:20:02 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hfqyv-0001Al-5M; Tue, 25 Jun 2019 21:19:53 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hfqys-0004bj-3v; Tue, 25 Jun 2019 21:19:50 +0200
-Date:   Tue, 25 Jun 2019 21:19:50 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        Tue, 25 Jun 2019 16:18:25 -0400
+Received: by mail-pf1-f196.google.com with SMTP id m30so10045588pff.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jun 2019 13:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=C3759lLg28N5SzA+DaR8TOro6guhAa3AkyxeMVNWlaA=;
+        b=DBNWTvbkUEl+Q82QyMlUAQZxbfMrPJ21nxvTJc4A4oyXIBct+mV2AWriOS8GrtDjct
+         fQ/AWfICuixUtS077KPF0Fam3new/bWEO5cg2HUyNMzH2e6PhYunULc3SmTZ4/V38o+3
+         AV5a0gsaJhdI4JNfpn96j+xOPq6/exWqVlEf4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=C3759lLg28N5SzA+DaR8TOro6guhAa3AkyxeMVNWlaA=;
+        b=TVwx9oh6mRFqOwtQloyQMcfvksacooZp0MdvIkU5uWiveOFUd2NH25PDZJvpOp1TKV
+         PLBil4pBlphLQX3v+zNqwblrO2pnDRo5btWFGg+CbVnhyo5OozgPO4+HqnLWtMc7C91V
+         FXw9OLMs2ed/Tgn4Iv9t1Y5Kbuhk8QponsF9dNjzIY5wxWwCTOI/rk3ZNgy6QDKrMZYc
+         0dOqqd1LqdFg3YUjfVq8MNk/XNxZjhFXFysnFNu+5ClhDYzIvE7+WwaeLn2Fy8GTdpun
+         YYlyo7kmbxji7VUkxrbaGnuRcNV2oG8J/tzAXLiCzGtY+954zE+zIUaqTLeT5ebZeFc/
+         joBQ==
+X-Gm-Message-State: APjAAAXG5L4OtLigwY24Yu0/CAGOqN+uN2EsgRwHMcCW1DFBZseeu+vh
+        5ZhQDHC/c9+UkpuRrJG6G2s7wg==
+X-Google-Smtp-Source: APXvYqwGPlu4RGTZXOO9Hg/R9LKbkgnouJNijjTn5OH6GixTNWAzeh5U8DZXqqavq0InyO3HJemICA==
+X-Received: by 2002:a65:42cd:: with SMTP id l13mr39845860pgp.72.1561493904625;
+        Tue, 25 Jun 2019 13:18:24 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id h62sm20824588pgc.54.2019.06.25.13.18.23
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 25 Jun 2019 13:18:23 -0700 (PDT)
+Date:   Tue, 25 Jun 2019 13:18:22 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        od@zcrc.me, linux-pwm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered
- down
-Message-ID: <20190625191950.2rvvputus4uavyjn@pengutronix.de>
-References: <20190522163428.7078-1-paul@crapouillou.net>
- <20190625074220.ckj7e7gwbszwknaa@pengutronix.de>
- <20190625095821.GD1516@ulmo>
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH] video: fbdev: s3c-fb: Mark expected switch fall-throughs
+Message-ID: <201906251312.5059C51334@keescook>
+References: <20190625160103.GA13133@embeddedor>
+ <2bdbbd7909c5c4ad96d32c0c5be4690292132a34.camel@perches.com>
+ <201906251029.08B862130@keescook>
+ <9c0d4ed622d6b8e47e040d398f764d52a9ac396d.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190625095821.GD1516@ulmo>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+In-Reply-To: <9c0d4ed622d6b8e47e040d398f764d52a9ac396d.camel@perches.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 11:58:21AM +0200, Thierry Reding wrote:
-> On Tue, Jun 25, 2019 at 09:42:20AM +0200, Uwe Kleine-König wrote:
-> > On Wed, May 22, 2019 at 06:34:28PM +0200, Paul Cercueil wrote:
-> > > When the driver probes, the PWM pin is automatically configured to its
-> > > default state, which should be the "pwm" function. However, at this
-> > > point we don't know the actual level of the pin, which may be active or
-> > > inactive. As a result, if the driver probes without enabling the
-> > > backlight, the PWM pin might be active, and the backlight would be
-> > > lit way before being officially enabled.
+On Tue, Jun 25, 2019 at 10:49:01AM -0700, Joe Perches wrote:
+> On Tue, 2019-06-25 at 10:31 -0700, Kees Cook wrote:
+> > On Tue, Jun 25, 2019 at 09:52:23AM -0700, Joe Perches wrote:
+> > > On Tue, 2019-06-25 at 11:01 -0500, Gustavo A. R. Silva wrote:
+> > > > In preparation to enabling -Wimplicit-fallthrough, mark switch
+> > > > cases where we are expecting to fall through.
+> > > []
+> > > > This patch is part of the ongoing efforts to enable
+> > > > -Wimplicit-fallthrough.
+> > > 
+> > > Just enable the thing already.
 > > 
-> > I'm not sure I understand the problem completely here. Let me try to
-> > summarize the problem you solve here:
-> > 
-> > The backlight device's default pinctrl contains the PWM function of the
-> > PWM pin. As the PWM is (or at least might be) in an undefined state the
-> > default pinctrl should only be switched to when it's clear if the
-> > backlight should be on or off.
-> > 
-> > So you use the "init"-pinctrl to keep the PWM pin in some (undriven?)
-> > state and by switching to "sleep" you prevent "default" getting active.
-> > 
-> > Did I get this right? If not, please correct me.
-> > 
-> > What is the PWM pin configured to in "init" in your case? Is the pinctrl
-> > just empty? Or is it a gpio-mode (together with a gpio-hog)?
-> > 
-> > My thoughts to this is are:
-> > 
-> >  a) This is a general problem that applies (I think) to most if not all
-> >     PWM consumers. If the PWM drives a motor, or makes your mobile
-> >     vibrate, or drives an LED, or a clk, the PWM shouldn't start
-> >     to do something before its consumer is ready.
+> > Linus has been pretty clear about not wanting warning options enabled
+> > without first fixing all the cases it warns about first.
 > 
-> Yes, it shouldn't start before it is explicitly told to do so by the
-> consumer. One exception is if the PWM was already set up by firmware
-> to run. So I think in general terms we always want the PWM to remain
-> in the current state upon probe.
-
-In the end this means that also pinmuxing should not be touched when the
-PWM device probes.
-
-> The atomic PWM API was designed with that in mind. The original use-
-> case was to allow seamlessly taking over from a PWM regulator. In order
-> to do so, the driver needs to be able to read back the hardware state
-> and *not* initialize the PWM to some default state.
+> Hey Kees.
 > 
-> I think that same approach can be extended to backlights. The driver's
-> probe needs to determine what the current state of the backlight is and
-> preferable not touch it. And that basically propagates all the way to
-> the display driver, which ultimately needs to determine whether or not
-> the display configuration (including the backlight) is enabled.
+> I don't recall that particular tidbit.  Got a link?  
 
-Are you ambitious enough to handle cases like: PWM is running (maybe
-because it cannot be disabled), but the pin is muxed to an "unconnected"
-configuration such that the pin doesn't oscillate? In this case you'd
-need an inspection function for pinmuxing.
-
-> >  b) Thierry made it quite clear[1] that the PWM pin should be configured
-> >     in a pinctrl of the pwm device, not the backlight (or more general:
-> >     the consumer) device.
-> > 
-> > While I don't entirely agree with b) I think that even a) alone
-> > justifies to think a bit more about the problem and preferably come up
-> > with a solution that helps other consumers, too. Ideally if the
-> > bootloader sets up the PWM to do something sensible, probing the
-> > lowlevel PWM driver and the consumer driver should not interfere with
-> > the bootloader's intention until the situation reaches a controlled
-> > state. (I.e. if the backlight was left on by the bootloader to show a
-> > nice logo, it should not flicker until a userspace program takes over
-> > the display device.)
-> 
-> Yes, exactly that.
-> 
-> > A PWM is special in contrast to other devices as its intended behaviour
-> > is only fixed once a consumer is present. Without a consumer it is
-> > unknown if the PWM is inverted or not. And so the common approach that
-> > pinctrl is setup by the device core only doesn't work without drawbacks
-> > for PWMs.
-> 
-> Actually I don't think PWMs are special in this regard. A GPIO, for
-> example, can also be active-low or active-high, and without a consumer
-> there's not enough context to determine which one it should be.
-
-Right, PWMs are more similar to GPIOs than to (say) backlight devices.
-With your request to configure the pinmux for a PWM pin with the PWM
-device instead of its consumer you're making some things more difficult.
-For GPIOs it's quite common that they are muxed from their consumer
-because there the same problems are present.
-
-Best regards
-Uwe
+It was spread out over the discussion around removing __deprecated,
+about enabling -Wvla, and in person at the kernel summit when asking
+what approach to take for -Wimplicit-fallthrough.
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Kees Cook
