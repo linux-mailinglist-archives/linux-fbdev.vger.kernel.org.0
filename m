@@ -2,116 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1303C564B6
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 10:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76A2D564F7
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 10:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbfFZIhX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Jun 2019 04:37:23 -0400
-Received: from mga01.intel.com ([192.55.52.88]:22783 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725379AbfFZIhX (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Jun 2019 04:37:23 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jun 2019 01:37:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,419,1557212400"; 
-   d="scan'208";a="170006863"
-Received: from ccrisan-mobl.ger.corp.intel.com (HELO [10.249.33.85]) ([10.249.33.85])
-  by FMSMGA003.fm.intel.com with ESMTP; 26 Jun 2019 01:37:19 -0700
-Subject: Re: [PATCH] vga_switcheroo: Depend upon fbcon being built-in, if
- enabled
-To:     Daniel Vetter <daniel@ffwll.ch>,
-        DRI Development <dri-devel@lists.freedesktop.org>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        kbuild test robot <lkp@intel.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>,
+        id S1725379AbfFZI6h (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Jun 2019 04:58:37 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:37325 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726077AbfFZI6g (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 26 Jun 2019 04:58:36 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hg3l8-0006dR-FY; Wed, 26 Jun 2019 10:58:30 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hg3l5-0008VO-Se; Wed, 26 Jun 2019 10:58:27 +0200
+Date:   Wed, 26 Jun 2019 10:58:27 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>
-References: <20190624092153.23375-1-daniel.vetter@ffwll.ch>
- <20190626083541.GJ12905@phenom.ffwll.local>
-From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <68ca07a2-d130-e87b-0ad8-f17c5d15163d@linux.intel.com>
-Date:   Wed, 26 Jun 2019 10:37:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        od@zcrc.me, linux-pwm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered
+ down
+Message-ID: <20190626085827.fija4kfzb5uhwosi@pengutronix.de>
+References: <20190522163428.7078-1-paul@crapouillou.net>
+ <5b0f8bb3-e7b0-52c1-1f2f-9709992b76fc@linaro.org>
+ <20190621135608.GB11839@ulmo>
+ <20190624112844.fmwbfpdxjkst3u7r@holly.lan>
+ <20190625093839.GB1516@ulmo>
 MIME-Version: 1.0
-In-Reply-To: <20190626083541.GJ12905@phenom.ffwll.local>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190625093839.GB1516@ulmo>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Op 26-06-2019 om 10:35 schreef Daniel Vetter:
-> On Mon, Jun 24, 2019 at 11:21:53AM +0200, Daniel Vetter wrote:
->> Fixes linking fail when fbcon/fbdev is modular and vgaswitcheroo is
->> enabled:
->>
->> x86_64-linux-gnu-ld: drivers/gpu/vga/vga_switcheroo.o: in function `vga_switchto_stage2':
->> vga_switcheroo.c:(.text+0x997): undefined reference to `fbcon_remap_all'
->>
->> v2: I first tried to fix this with an EXPORT_SYMBOL, but vga_switcheroo is
->> never a module, so this doesn't work.
->>
->> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
->> Reported-by: kbuild test robot <lkp@intel.com>
->> Fixes: 1cd51b5d200d ("vgaswitcheroo: call fbcon_remap_all directly")
->> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
->> Cc: Lukas Wunner <lukas@wunner.de>
->> Cc: Daniel Vetter <daniel.vetter@intel.com>
->> Cc: Sam Ravnborg <sam@ravnborg.org>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: David Airlie <airlied@linux.ie>
->> Cc: Daniel Vetter <daniel@ffwll.ch>
->> Cc: Maxime Ripard <maxime.ripard@bootlin.com>
->> Cc: Sean Paul <sean@poorly.run>
->> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
->> Cc: Hans de Goede <hdegoede@redhat.com>
->> Cc: Yisheng Xie <ysxie@foxmail.com>
->> Cc: linux-fbdev@vger.kernel.org
->> Cc: Daniel Thompson <daniel.thompson@linaro.org>
->> Cc: Lee Jones <lee.jones@linaro.org>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: linux-fbdev@vger.kernel.org
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
->
->> --
->> wrt merging probably best if Maarten adds this to the topic branch we
->> have already and sends out an updated pull request.
->>
->> Apologies for the mess.
->> -Daniel
->> ---
->>  drivers/gpu/vga/Kconfig | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/gpu/vga/Kconfig b/drivers/gpu/vga/Kconfig
->> index 84ab482d0db6..c8c770b05ed9 100644
->> --- a/drivers/gpu/vga/Kconfig
->> +++ b/drivers/gpu/vga/Kconfig
->> @@ -23,6 +23,7 @@ config VGA_SWITCHEROO
->>  	depends on X86
->>  	depends on ACPI
->>  	depends on PCI
->> +	depends on (FRAMEBUFFER_CONSOLE=n || FB=y)
->>  	select VGA_ARB
->>  	help
->>  	  Many laptops released in 2008/9/10 have two GPUs with a multiplexer
->> -- 
->> 2.20.1
->>
-Thanks, pushed. :)
+On Tue, Jun 25, 2019 at 11:38:39AM +0200, Thierry Reding wrote:
+> On Mon, Jun 24, 2019 at 12:28:44PM +0100, Daniel Thompson wrote:
+> > [...] although given pwm-backlight is essentially a wrapper driver
+> > round a PWM I wondered why the pinctrl was on the backlight node
+> > (rather than the PWM node).
+> 
+> I agree with this. We're defining the pin control state for the PWM pin,
+> so in my opinion it should be the PWM driver that controls it.
+> 
+> One reason why I think this is important is if we ever end up with a
+> device that requires pins from two different controllers to be
+> configured at runtime, then how would we model that? Since pin control
+> states cannot be aggregated, so you'd have to have multiple "default"
+> states, each for the pins that they control.
 
+I thought you can do:
+
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_in_first_pincontroller>, <&pinctrl_in_another_controller>;
+
+if two (or more) controllers are involved.
+ 
+> On the other hand if we associate the pin control states with each of
+> the resources that need those states, then when those resources are
+> controlled, they will automatically know how to deal with the states.
+> The top-level device (i.e. backlight) doesn't need to concern itself
+> with those details.
+
+So the options are:
+
+ a) put "active" and "inactive" pinctrls into the pwm-node, and nothing
+    related to the involved PWM pins in the consumer
+
+ b) put the PWM pin config in the consumer's "default" pinctrl (and
+    maybe leave it out int "init" if you want smooth taking over).
+
+(Or maybe use "enabled" and "disabled" in a) to match the pwm_states
+.enabled?)
+
+The advantages I see in b) over a) are:
+
+ - "default" and "init" are a known pinctrl concept that most people
+   should have understood.
+
+ - You have all pinctrl config for the backlight in a single place.
+
+ - none of the involved driver must explicitly handle pinctrl stuff
+
+You presume that b) being commonly done is a sign of "our device trees
+and kernel subsystems still maturing". But maybe it's only that the
+capabilities provided by pinctrl subsystem without extra effort is good
+enough?
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
