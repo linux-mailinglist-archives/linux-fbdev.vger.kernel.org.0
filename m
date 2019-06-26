@@ -2,159 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC18156675
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 12:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8353256CEB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 16:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbfFZKQa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Jun 2019 06:16:30 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:37789 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbfFZKQa (ORCPT
+        id S1726984AbfFZO4V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Jun 2019 10:56:21 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:42482 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726029AbfFZO4U (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Jun 2019 06:16:30 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hg4yR-0007BU-Qo; Wed, 26 Jun 2019 12:16:19 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hg4yP-0003Ft-Ng; Wed, 26 Jun 2019 12:16:17 +0200
-Date:   Wed, 26 Jun 2019 12:16:17 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
+        Wed, 26 Jun 2019 10:56:20 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 5369E807BA; Wed, 26 Jun 2019 16:56:07 +0200 (CEST)
+Date:   Wed, 26 Jun 2019 16:56:11 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Matthias Kaehlcke <mka@chromium.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        od@zcrc.me, linux-pwm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered
- down
-Message-ID: <20190626101617.u7d3zgs7d4utdpk5@pengutronix.de>
-References: <20190522163428.7078-1-paul@crapouillou.net>
- <5b0f8bb3-e7b0-52c1-1f2f-9709992b76fc@linaro.org>
- <20190621135608.GB11839@ulmo>
- <20190624112844.fmwbfpdxjkst3u7r@holly.lan>
- <20190625093839.GB1516@ulmo>
- <20190626085827.fija4kfzb5uhwosi@pengutronix.de>
- <20190626095844.GA6362@ulmo>
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: Re: [PATCH v2 2/4] backlight: Expose brightness curve type through
+ sysfs
+Message-ID: <20190626145611.GA22348@xo-6d-61-c0.localdomain>
+References: <20190624203114.93277-1-mka@chromium.org>
+ <20190624203114.93277-3-mka@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190626095844.GA6362@ulmo>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+In-Reply-To: <20190624203114.93277-3-mka@chromium.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 11:58:44AM +0200, Thierry Reding wrote:
-> On Wed, Jun 26, 2019 at 10:58:27AM +0200, Uwe Kleine-König wrote:
-> > On Tue, Jun 25, 2019 at 11:38:39AM +0200, Thierry Reding wrote:
-> > > On Mon, Jun 24, 2019 at 12:28:44PM +0100, Daniel Thompson wrote:
-> > > > [...] although given pwm-backlight is essentially a wrapper driver
-> > > > round a PWM I wondered why the pinctrl was on the backlight node
-> > > > (rather than the PWM node).
-> > > 
-> > > I agree with this. We're defining the pin control state for the PWM pin,
-> > > so in my opinion it should be the PWM driver that controls it.
-> > > 
-> > > One reason why I think this is important is if we ever end up with a
-> > > device that requires pins from two different controllers to be
-> > > configured at runtime, then how would we model that? Since pin control
-> > > states cannot be aggregated, so you'd have to have multiple "default"
-> > > states, each for the pins that they control.
-> > 
-> > I thought you can do:
-> > 
-> > 	pinctrl-names = "default";
-> > 	pinctrl-0 = <&pinctrl_in_first_pincontroller>, <&pinctrl_in_another_controller>;
-> > 
-> > if two (or more) controllers are involved.
-> 
-> You're right. Both the bindings say that this can be done and the code
-> is also there to parse multiple states per pinctrl-* entry.
-> 
-> > > On the other hand if we associate the pin control states with each of
-> > > the resources that need those states, then when those resources are
-> > > controlled, they will automatically know how to deal with the states.
-> > > The top-level device (i.e. backlight) doesn't need to concern itself
-> > > with those details.
-> > 
-> > So the options are:
-> > 
-> >  a) put "active" and "inactive" pinctrls into the pwm-node, and nothing
-> >     related to the involved PWM pins in the consumer
-> > 
-> >  b) put the PWM pin config in the consumer's "default" pinctrl (and
-> >     maybe leave it out int "init" if you want smooth taking over).
-> 
-> You can't put it into the "default" state because that state is applied
-> before the consumer driver's ->probe().
+Hi!
 
-If you do:
+> Export the type of the brightness curve via the new sysfs attribute
+> 'scale'. The value of the attribute may be a simple string like
+> 'linear' or 'non-linear', or a composite string similar to
+> 'compatible' strings of the device tree. A composite string consists
+> of different elements separated by commas, starting with the
+> most-detailed description and ending with the least-detailed one. An
+> example for a composite string is "cie-1931,perceptual,non-linear"
+> This brightness curve was generated with the CIE 1931 algorithm, it
+> is perceptually linear, but not actually linear in terms of the
+> emitted light. If userspace doesn't know about 'cie-1931' or
+> 'perceptual' it should at least be able to interpret the 'non-linear'
+> part.
 
-	mybacklight {
-		pinctrl-names = "init", "default";
-		pinctrl-0 = <&pinctrl_without_pwm>
-		pinctrl-1 = <&pinctrl_with_pwm>;
-		...
-	};
+I'm not sure the comma-separated thing is a good idea. If it is, it should 
+go to the Documentation, not to changelog.
 
-Then nothing is done before probing of the backlight and only when the
-probing is done and the pwm is taken over, the PWM-pinctrl is applied.
+> +What:		/sys/class/backlight/<backlight>/scale
+> +Date:		June 2019
+> +KernelVersion:	5.4
+> +Contact:	Daniel Thompson <daniel.thompson@linaro.org>
+> +Description:
+> +		Description of the scale of the brightness curve. The
+> +		description consists of one or more elements separated by
+> +		commas, from the most detailed to the least detailed
+> +		description.
+> +
+> +		Possible values are:
+> +
+> +		unknown
+> +		  The scale of the brightness curve is unknown.
+> +
+> +		linear
+> +		  The brightness changes linearly in terms of the emitted
+> +		  light, changes are perceived as non-linear by the human eye.
+> +
+> +		non-linear
+> +		  The brightness changes non-linearly in terms of the emitted
+> +		  light, changes might be perceived as linear by the human eye.
 
-The only ugly thing here I can identify is that probe() might exit with
-the PWM running and then enabling the pinmux for the PWM pin results in
-an incomplete period at the beginning. But this happens only in some
-corner cases that might not matter. (i.e. if the bootloader enabled the
-PWM but didn't setup the pinmux; and if .probe enabled the PWM which we
-agreed it probably shouldn't on it's own.)
- 
-> > (Or maybe use "enabled" and "disabled" in a) to match the pwm_states
-> > .enabled?)
-> 
-> Yeah, I think this is what we'll need to do in order to implement the
-> explicit behaviour that we need here.
-> 
-> > The advantages I see in b) over a) are:
-> > 
-> >  - "default" and "init" are a known pinctrl concept that most people
-> >    should have understood.
-> 
-> The problem is that they won't work in this case. The "init" state will
-> be applied before the consumer driver's ->probe() if it exists. If it
-> doesn't then "default" will be applied instead. Both cases are not
-> something that we want if we want to take over the existing
-> configuration.
-> 
-> >  - You have all pinctrl config for the backlight in a single place.
-> 
-> Depending on your point of view this could be considered a disadvantage.
+non-linear is not too useful as described.
 
-Yeah, right, this is subjective.
+> +		perceptual,non-linear
+> +		  The brightness changes non-linearly in terms of the emitted
+> +		  light, changes should be perceived as linear by the human eye.
+> +
+> +		cie-1931,perceptual,non-linear
+> +		  The brightness curve was calculated with the CIE 1931
+> +		  algorithm. Brightness changes non-linearly in terms of the
+> +		  emitted light, changes should be perceived as linear by the
+> +		  human eye.
 
-> [...]
-> Like I pointed out above, I don't think that's the case. But I don't
-> want to overcomplicate things, so if you can prove that it can be done
-> with the existing pinctrl helpers, I'd be happy to be proven wrong.
+Is it useful to know difference between perceptual, and cie-1931?
 
-I tried, see above :-)
+Would it be useful to export absolute values in some well-known units?
 
-Best regards
-Uwe
+If I'm in dark room, I may want 100mW/m^2 of backlight... And it would
+be nice if I could set same backlight intensity on all my devices easily.
 
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+								Pavel
