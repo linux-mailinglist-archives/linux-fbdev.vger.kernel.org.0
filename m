@@ -2,77 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC6E156307
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 09:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2B76564AD
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jun 2019 10:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbfFZHRZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Jun 2019 03:17:25 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:37290 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725876AbfFZHRZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Jun 2019 03:17:25 -0400
-Received: by mail-wm1-f65.google.com with SMTP id f17so899122wme.2;
-        Wed, 26 Jun 2019 00:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RERYcPC3soW1Vk8htH1oyJ3L3Gz0OePkhqi35k0/p0I=;
-        b=OYdbHp6ktNPuS0z/WMYn7B2z7aZw5V6gZdgMOUxyCZTagqn4f5ClzVq4NELVY3G1qp
-         Myo58k+xbuxDbfFrqJIHWc3nqEsQipwsUs1PjtNgFAqook+ApL8c6LLKaaYPs8bOCkJD
-         BpQEEBVkE8HU1idCaM9tlTHsjEbdemWTB3qV5hqlHnpFuNWh3Xc2TN9zR2ulem/II+Jy
-         NkNUls8ZHdL07Tb4HbhoCxPTApdB74/2KsD1LB5G8XqW7VvnqDv/45li3v1P3hg5PVFp
-         fSZNP3HqKvGXM/uFLzFqcbr9659XfFLOdbgGzOwWn0h/KkzSnm46gfTi6r6acFtB+CUr
-         tU6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RERYcPC3soW1Vk8htH1oyJ3L3Gz0OePkhqi35k0/p0I=;
-        b=H3uFMGbpxBPjAOoQ/stzrJtEDlMUBTgtXTvLDXQ72ZUJ1iHbs43Q5JfN/nUAXbNhVu
-         yS5OxGaGUEsX+iVNk27RFz2/w7Kb8rpPBeyigVbzayH7iAgw2qneWith3UgueFngWpER
-         CDG0eDRC+buojszTuYTWEskH9b2JafltKCjzV3k+TabcMjKhXWs1GE45v9lw0BTndNVs
-         YjWv4sY9dXgFoAfekZhF0pR4GmXTkpgdPMigGMjQcfLhQPJRvJs59hZdyt0hDRvd+8nb
-         WGz9jbgIdQ/9edMKDuy4kkHwm6rZNZwzeqtnifXibp2a4cse1GzD6PgKd0/S4FnLZ5aQ
-         Itzg==
-X-Gm-Message-State: APjAAAXJbds/PvcNw6864RQTX/+8Jqtsp/5DW+yOsN8E9Q589KOaWT8d
-        SGrhjLml60lrz0LKzL5Qitjj9ESQGEmeZdPWgio=
-X-Google-Smtp-Source: APXvYqwU9UitzhmKJ5t/pfR8HxsTFi/sqtvSVbTXtdDxS2SooK3ATbTGPoFE8wuP0Gr+BGzKdjZRLixWxlUEFzSUG/Q=
-X-Received: by 2002:a7b:c313:: with SMTP id k19mr1470647wmj.2.1561533442305;
- Wed, 26 Jun 2019 00:17:22 -0700 (PDT)
+        id S1726104AbfFZIeV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Jun 2019 04:34:21 -0400
+Received: from mga17.intel.com ([192.55.52.151]:11270 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725876AbfFZIeV (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 26 Jun 2019 04:34:21 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jun 2019 01:34:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,419,1557212400"; 
+   d="scan'208";a="170006475"
+Received: from ccrisan-mobl.ger.corp.intel.com (HELO [10.249.33.85]) ([10.249.33.85])
+  by FMSMGA003.fm.intel.com with ESMTP; 26 Jun 2019 01:34:16 -0700
+Subject: Re: [PATCH] vga_switcheroo: Depend upon fbcon being built-in, if
+ enabled
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        kbuild test robot <lkp@intel.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Yisheng Xie <ysxie@foxmail.com>, linux-fbdev@vger.kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>
+References: <20190624092153.23375-1-daniel.vetter@ffwll.ch>
+ <8cb8c728-3ace-04e0-f6d5-215ffd7879c9@linux.intel.com>
+ <20190624140321.GP12905@phenom.ffwll.local>
+From:   Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <53b6572f-520e-2dcb-f761-71ee7163e286@linux.intel.com>
+Date:   Wed, 26 Jun 2019 10:34:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-References: <20190625121321.10197-1-hch@lst.de>
-In-Reply-To: <20190625121321.10197-1-hch@lst.de>
-From:   Manuel Lauss <manuel.lauss@gmail.com>
-Date:   Wed, 26 Jun 2019 09:16:46 +0200
-Message-ID: <CAOLZvyF0NsB6_e0=Vat48Mq1r-Qy45z509jAgQczG7RoaOqjBA@mail.gmail.com>
-Subject: Re: [PATCH] au1200fb: don't use DMA_ATTR_NON_CONSISTENT
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux-MIPS <linux-mips@vger.kernel.org>,
-        linux-fbdev <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190624140321.GP12905@phenom.ffwll.local>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 2:13 PM Christoph Hellwig <hch@lst.de> wrote:
+Op 24-06-2019 om 16:03 schreef Daniel Vetter:
+> On Mon, Jun 24, 2019 at 03:07:26PM +0200, Maarten Lankhorst wrote:
+>> Op 24-06-2019 om 11:21 schreef Daniel Vetter:
+>>> Fixes linking fail when fbcon/fbdev is modular and vgaswitcheroo is
+>>> enabled:
+>>>
+>>> x86_64-linux-gnu-ld: drivers/gpu/vga/vga_switcheroo.o: in function `vga_switchto_stage2':
+>>> vga_switcheroo.c:(.text+0x997): undefined reference to `fbcon_remap_all'
+>>>
+>>> v2: I first tried to fix this with an EXPORT_SYMBOL, but vga_switcheroo is
+>>> never a module, so this doesn't work.
+>>>
+>>> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>>> Reported-by: kbuild test robot <lkp@intel.com>
+>>> Fixes: 1cd51b5d200d ("vgaswitcheroo: call fbcon_remap_all directly")
+>>> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+>>> Cc: Lukas Wunner <lukas@wunner.de>
+>>> Cc: Daniel Vetter <daniel.vetter@intel.com>
+>>> Cc: Sam Ravnborg <sam@ravnborg.org>
+>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>> Cc: David Airlie <airlied@linux.ie>
+>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>> Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+>>> Cc: Sean Paul <sean@poorly.run>
+>>> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+>>> Cc: Hans de Goede <hdegoede@redhat.com>
+>>> Cc: Yisheng Xie <ysxie@foxmail.com>
+>>> Cc: linux-fbdev@vger.kernel.org
+>>> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+>>> Cc: Lee Jones <lee.jones@linaro.org>
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> Cc: linux-fbdev@vger.kernel.org
+>>> --
+>>> wrt merging probably best if Maarten adds this to the topic branch we
+>>> have already and sends out an updated pull request.
+>>>
+>>> Apologies for the mess.
+>>> -Daniel
+>>> ---
+>>>  drivers/gpu/vga/Kconfig | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/gpu/vga/Kconfig b/drivers/gpu/vga/Kconfig
+>>> index 84ab482d0db6..c8c770b05ed9 100644
+>>> --- a/drivers/gpu/vga/Kconfig
+>>> +++ b/drivers/gpu/vga/Kconfig
+>>> @@ -23,6 +23,7 @@ config VGA_SWITCHEROO
+>>>  	depends on X86
+>>>  	depends on ACPI
+>>>  	depends on PCI
+>>> +	depends on (FRAMEBUFFER_CONSOLE=n || FB=y)
+>>>  	select VGA_ARB
+>>>  	help
+>>>  	  Many laptops released in 2008/9/10 have two GPUs with a multiplexer
+>> In a default allmodconfig we disable vgaswitcheroo then. Not sure it's an issue. Just worth noting. :)
+> If you haven't applied yet, might be good to add that note to the commit
+> message when you merge.
 >
-> au1200fb allocates DMA memory using DMA_ATTR_NON_CONSISTENT, but never
-> calls dma_cache_sync to synchronize the memory between the CPU and the
-> device.  If it was use on a not cache coherent bus that would be fatal,
-> but as far as I can tell from the naming and the mips platform
-> implementation it always is used in cache coherent systems.  Remove
-> the DMA_ATTR_NON_CONSISTENT flag, which is a no-op in that case.
+> Thanks, Daniel
 
-Very early au1200 chips, on which this driver apparently was developed on,
-had issues with cache coherency, but this was fixed in a later step,
-none of the 3 steppings I have access to exhibit any problems
-with this patch applied.
+Thanks, pushed. :)
 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-By: Manuel Lauss <manuel.lauss@gmail.com>
