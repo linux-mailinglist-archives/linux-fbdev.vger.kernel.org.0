@@ -2,133 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34C5C57F48
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 11:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B948058136
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 13:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbfF0JY6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 05:24:58 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:40001 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726660AbfF0JY5 (ORCPT
+        id S1726445AbfF0LPM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 07:15:12 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:36016 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726429AbfF0LPL (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 05:24:57 -0400
-Received: by mail-wr1-f66.google.com with SMTP id p11so1674467wre.7
-        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 02:24:56 -0700 (PDT)
+        Thu, 27 Jun 2019 07:15:11 -0400
+Received: by mail-lj1-f193.google.com with SMTP id i21so1929717ljj.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 04:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=LDEo8sY3vpdehIJiLNOJb41+3SEg4OJB1McKdbsbLIA=;
-        b=rxjj862CxQk8EcoCFKXxBXec7q2dUTnfV23dSWU3s6L44wRwVyzKQI9LaItmJJBCYr
-         CCunUbf0DyHes+96gfl0uMFK7u1ofaigi6tzk8foroRtjW67UkxmOjGR6pS8kxcMHMQf
-         gfDC+UhYjbyEUkiMyFnCXp19uDzY8x/EIFJkHM36kWk82KVh6kEh17ORV4Ap0dqDjQeP
-         eodW+lpOR5ylkyFRmF441elJYxUkOm61ILlY1XXEY0Qjg+u0/dV1FxmGel1jFTcSljsA
-         mWoLPSgxDbcZ1/DraVDtzbuYhHkXnZ+w/hbhz5oruBYDlQJrnauT9rMlNjkp6tmEGn5i
-         i8sg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5TqvPz8DpORGx1+vi8ExXWSK0FXpNg/HXwHTY32b52w=;
+        b=Oh8LTD8m7IDgDorBBc7V+VvCco9ShEfKtubYx65x1T5UADxUHneIwXm5D34fbeGt8A
+         ixjCx/VH3pF/bQ6ZHMg9PHCQmjkpCAiXVk/t5qsh/Qqm5tx9SPGzVhjOT8gQTzjQQrfi
+         lAGtQ9fEG9oF9K1v8oeREAXC0uuw/SL0BJN950l/xiDxO5+wGYpYmT+5VPl0QUp7nSue
+         aAMKG7ngQmAlBgnfr7IMamGqNGSDVnT6ZsHyoFmoAYfgNHCqJ4qfQ4AxjZkWYV30/+vx
+         p6K15ZkS7XsSbBvwsLCURk/PDZbWbvX4UVyTadC7wxBwmODusUKB4z9LZEZdJG1mVlPF
+         JTEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=LDEo8sY3vpdehIJiLNOJb41+3SEg4OJB1McKdbsbLIA=;
-        b=XMKzoIUY5MmLm73YsozUYtSKzgl0tvuajv6eGGUAYICqYE60DlYhEgQs5B3lQC8X4n
-         mpOLEKtEBlHD1OSKKlDVBG9geBXjnHKlaWNzxnKEvgs+MbmSqk8wFvB4YqNOG2KtntFi
-         urV1Ktvr3Wz38FekHUdDbrK/v/AxtoYJtYyyAE7kk/frSAHVISBZ7FU4T6rNbh8XbYQk
-         jRT8YdvupUkQhdH5vRBqe5epz72TuWhMfS4YuWqtkGRgyQK/RjQIRBvwKk/E6UtPuLdh
-         FWKwkoL6oJnYmcyUFbvwl8HCOUU/VTf4hcmxr/3eiXAz/CbbG45dCHgcfL+8UC48aVpZ
-         An5Q==
-X-Gm-Message-State: APjAAAVnTxvKlV83JFCON1RBCYg9m3Ehas6vKpFuv/XtiX7wfGKC2jC4
-        bBaxBtmaFQkxL6gYrmDG13f1Jg==
-X-Google-Smtp-Source: APXvYqwlvlqQ9PBpwP6Ua8UBVUJ+rHq8wSy378IO2LZ07NL/lYMF4gUKV993A67XO9U+QjopyAUeqg==
-X-Received: by 2002:adf:cc85:: with SMTP id p5mr2224711wrj.47.1561627496119;
-        Thu, 27 Jun 2019 02:24:56 -0700 (PDT)
-Received: from dell ([2.27.35.164])
-        by smtp.gmail.com with ESMTPSA id h84sm5790048wmf.43.2019.06.27.02.24.55
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 27 Jun 2019 02:24:55 -0700 (PDT)
-Date:   Thu, 27 Jun 2019 10:24:53 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5TqvPz8DpORGx1+vi8ExXWSK0FXpNg/HXwHTY32b52w=;
+        b=lwunVBDNEOcWkKoqdJOdM8GYYDEdUYxgmsf1dtMgedFgn+qr5zcBw0uEdEeMivkEA/
+         jWqma/vATzgzyFAOivSEf/3vwSk4u7B5uYc0+JuY6RQIDDZnzoVLJTJNa4uUN1xy7j+P
+         BSJWoYogKRQkCq9f8w8/cji10aiBGfSOCbhLJd+sOn7PNdi+3RM5audFA10nzWnR618D
+         kwfmLKoLOyTqTemEUzs8GXGrpZjuiLWoB5wELhaCT4h1BbLkEA5mx/ErxMkMYy6Z50JY
+         2BndVe+1MsT+5F4+WRtoHhQyXQkfhMSN51Fg6jvfFGfU0SNb8m1u6769utRYOxr51fX2
+         zkZg==
+X-Gm-Message-State: APjAAAUsm8R+ZVWiUy7CIRvF+LpQmYFc5CXcjvhulCXRI7Pgr3QbQV5e
+        rYj1di6SCMce2nGtTrDBcEJXf72+BRE44T3IgttsUA==
+X-Google-Smtp-Source: APXvYqyVA9C7Y1iH92FooDzDgEr3HQuytpfeJym/aOuE5hBX0/swTw0Rz9L0rgrDIJ1qob4Es/otbtAluqfU9XSMIXs=
+X-Received: by 2002:a2e:a0cf:: with SMTP id f15mr2303238ljm.180.1561634109728;
+ Thu, 27 Jun 2019 04:15:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190625163434.13620-1-brgl@bgdev.pl> <20190625163434.13620-4-brgl@bgdev.pl>
+In-Reply-To: <20190625163434.13620-4-brgl@bgdev.pl>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 27 Jun 2019 12:14:58 +0100
+Message-ID: <CACRpkdZm35HOxBqDN0dfAyiMPFAPOguPrzuPUwS14kZM-VJV4A@mail.gmail.com>
+Subject: Re: [PATCH 03/12] backlight: gpio: pull the non-pdata device probing
+ code into probe()
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH 3/4] backlight: pwm_bl: Set scale type for CIE 1931 curves
-Message-ID: <20190627092453.GB2000@dell>
-References: <20190613194326.180889-1-mka@chromium.org>
- <20190613194326.180889-4-mka@chromium.org>
- <61ed137c-31bb-c695-4174-0484fe667d6c@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <61ed137c-31bb-c695-4174-0484fe667d6c@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        David Lechner <david@lechnology.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 21 Jun 2019, Daniel Thompson wrote:
+On Tue, Jun 25, 2019 at 5:34 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> On 13/06/2019 20:43, Matthias Kaehlcke wrote:
-> > For backlight curves calculated with the CIE 1931 algorithm set
-> > the brightness scale type property accordingly. This makes the
-> > scale type available to userspace via the 'scale' sysfs attribute.
-> > 
-> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> 
-> I'd like to keep discussion on patch 2 open a bit longer (it's not part of
-> the thread below patch 2 but Pavel had concerns about the sysfs interface)
-> so this ack won't really push things forward but FWIW:
-> 
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>
+> There's no good reason to have the generic probing code in a separate
+> routine. This function is short and is inlined by the compiler anyway.
+> Move it into probe under the pdata-specific part.
+>
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Does this depend on patch 2, or is it orthogonal?
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> > ---
-> >   drivers/video/backlight/pwm_bl.c | 5 ++++-
-> >   1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> > index fb45f866b923..f067fe7aa35d 100644
-> > --- a/drivers/video/backlight/pwm_bl.c
-> > +++ b/drivers/video/backlight/pwm_bl.c
-> > @@ -553,6 +553,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> >   		goto err_alloc;
-> >   	}
-> > +	memset(&props, 0, sizeof(struct backlight_properties));
-> > +
-> >   	if (data->levels) {
-> >   		/*
-> >   		 * For the DT case, only when brightness levels is defined
-> > @@ -591,6 +593,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> >   			pb->levels = data->levels;
-> >   		}
-> > +
-> > +		props.scale = BACKLIGHT_SCALE_CIE1931;
-> >   	} else {
-> >   		/*
-> >   		 * That only happens for the non-DT case, where platform data
-> > @@ -601,7 +605,6 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> >   	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-> > -	memset(&props, 0, sizeof(struct backlight_properties));
-> >   	props.type = BACKLIGHT_RAW;
-> >   	props.max_brightness = data->max_brightness;
-> >   	bl = backlight_device_register(dev_name(&pdev->dev), &pdev->dev, pb,
-> > 
-> 
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Yours,
+Linus Walleij
