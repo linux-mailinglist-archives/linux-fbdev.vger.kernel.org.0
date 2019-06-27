@@ -2,109 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4B558260
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 14:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1451758292
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 14:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726375AbfF0MTV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 08:19:21 -0400
-Received: from faui03.informatik.uni-erlangen.de ([131.188.30.103]:52472 "EHLO
-        faui03.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726308AbfF0MTV (ORCPT
+        id S1726308AbfF0M1Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 08:27:25 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:57688 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726059AbfF0M1Z (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 08:19:21 -0400
-X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 08:19:19 EDT
-Received: from faui01a.informatik.uni-erlangen.de (faui01a.informatik.uni-erlangen.de [131.188.60.127])
-        by faui03.informatik.uni-erlangen.de (Postfix) with ESMTP id 1D51F241569;
-        Thu, 27 Jun 2019 14:12:51 +0200 (CEST)
-Received: by faui01a.informatik.uni-erlangen.de (Postfix, from userid 30063)
-        id 080D0F40079; Thu, 27 Jun 2019 14:12:50 +0200 (CEST)
-From:   Lukas Schneider <lukas.s.schneider@fau.de>
-To:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
+        Thu, 27 Jun 2019 08:27:25 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5RCOvkT118930;
+        Thu, 27 Jun 2019 12:27:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=zN2Zg/SRNDfb3CjVSZPYtadej8e83QgIVYu0JKeZv2M=;
+ b=LSSz5tEtvsn30+kW/ZMiVwWDJhDNdEbl4poSKdZ6DVKP1endvdQmtuPDqeV23SQIBFkd
+ 5x8uTEvWLyalfQF4XuVXqkWPiriKoX2qJR1Jye3znYRIpgGRLWP/2MkIcTcqLHREv4DB
+ 1HVzRKRdb7zZo799JKRZiEfm5ruRNm5sg3Z2t8dy77Axr5myTjHWnACRGxDWoa7yXycz
+ MnV/ak611NQwjovqYd/fIQyt9A9kSrH4XpwO65SFV+a6kuEVTXw22p+DDY7wGq07NzXw
+ lxNf+rwwwCaVfCdBBAr4jPRq/2HyRzZVJ8Hquft/pvK58SzPZdtcPw9MCLAZq/qccR14 lg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t9cyqqwsm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 12:27:02 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5RCPYKS034383;
+        Thu, 27 Jun 2019 12:27:01 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2t9acd7c4c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 12:27:01 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5RCQrMe001253;
+        Thu, 27 Jun 2019 12:26:53 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 27 Jun 2019 05:26:52 -0700
+Date:   Thu, 27 Jun 2019 15:26:43 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lukas Schneider <lukas.s.schneider@fau.de>
+Cc:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
         bhanusreemahesh@gmail.com, daniel.vetter@ffwll.ch,
         der_wolf_@web.de, payal.s.kshirsagar.98@gmail.com,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Cc:     Lukas Schneider <lukas.s.schneider@fau.de>,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
         Jannik Moritz <jannik.moritz@fau.de>, linux-kernel@i4.cs.fau.de
-Subject: [PATCH] fbtft: Cleanup line over 80 character warnings
-Date:   Thu, 27 Jun 2019 14:12:40 +0200
-Message-Id: <20190627121240.31584-1-lukas.s.schneider@fau.de>
-X-Mailer: git-send-email 2.19.1
+Subject: Re: [PATCH] fbtft: Cleanup line over 80 character warnings
+Message-ID: <20190627122643.GB19015@kadam>
+References: <20190627121240.31584-1-lukas.s.schneider@fau.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190627121240.31584-1-lukas.s.schneider@fau.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906270146
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906270147
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Cleanup the line over 80 character warnings, reported by checkpatch
+Sorry, I don't feel like this makes it more readable.
 
-Signed-off-by: Lukas Schneider <lukas.s.schneider@fau.de>
-Signed-off-by: Jannik Moritz <jannik.moritz@fau.de>
-Cc: <linux-kernel@i4.cs.fau.de>
----
- drivers/staging/fbtft/fbtft-sysfs.c |  3 ++-
- drivers/staging/fbtft/fbtft.h       | 26 ++++++++++++++++++++++----
- 2 files changed, 24 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
-index 2a5c630dab87..78d2b81ea2e7 100644
---- a/drivers/staging/fbtft/fbtft-sysfs.c
-+++ b/drivers/staging/fbtft/fbtft-sysfs.c
-@@ -68,7 +68,8 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
- 			ret = get_next_ulong(&curve_p, &val, " ", 16);
- 			if (ret)
- 				goto out;
--			curves[curve_counter * par->gamma.num_values + value_counter] = val;
-+			curves[curve_counter * par->gamma.num_values
-+				+ value_counter] = val;
- 			value_counter++;
- 		}
- 		if (value_counter != par->gamma.num_values) {
-diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-index 9b6bdb62093d..cddbfd4ffa10 100644
---- a/drivers/staging/fbtft/fbtft.h
-+++ b/drivers/staging/fbtft/fbtft.h
-@@ -348,9 +348,25 @@ module_exit(fbtft_driver_module_exit);
- 
- /* shorthand debug levels */
- #define DEBUG_LEVEL_1	DEBUG_REQUEST_GPIOS
--#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 | DEBUG_DRIVER_INIT_FUNCTIONS | DEBUG_TIME_FIRST_UPDATE)
--#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 | DEBUG_RESET | DEBUG_INIT_DISPLAY | DEBUG_BLANK | DEBUG_REQUEST_GPIOS | DEBUG_FREE_GPIOS | DEBUG_VERIFY_GPIOS | DEBUG_BACKLIGHT | DEBUG_SYSFS)
--#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 | DEBUG_FB_READ | DEBUG_FB_WRITE | DEBUG_FB_FILLRECT | DEBUG_FB_COPYAREA | DEBUG_FB_IMAGEBLIT | DEBUG_FB_BLANK)
-+#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 |		\
-+			 DEBUG_DRIVER_INIT_FUNCTIONS |	\
-+			 DEBUG_TIME_FIRST_UPDATE)
-+#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 |		\
-+			 DEBUG_RESET |			\
-+			 DEBUG_INIT_DISPLAY |		\
-+			 DEBUG_BLANK |			\
-+			 DEBUG_REQUEST_GPIOS |		\
-+			 DEBUG_FREE_GPIOS |		\
-+			 DEBUG_VERIFY_GPIOS |		\
-+			 DEBUG_BACKLIGHT |		\
-+			 DEBUG_SYSFS)
-+#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 |		\
-+			 DEBUG_FB_READ |		\
-+			 DEBUG_FB_WRITE |		\
-+			 DEBUG_FB_FILLRECT |		\
-+			 DEBUG_FB_COPYAREA |		\
-+			 DEBUG_FB_IMAGEBLIT |		\
-+			 DEBUG_FB_BLANK)
- #define DEBUG_LEVEL_5	(DEBUG_LEVEL_3 | DEBUG_UPDATE_DISPLAY)
- #define DEBUG_LEVEL_6	(DEBUG_LEVEL_4 | DEBUG_LEVEL_5)
- #define DEBUG_LEVEL_7	0xFFFFFFFF
-@@ -392,7 +408,9 @@ module_exit(fbtft_driver_module_exit);
- #define fbtft_init_dbg(dev, format, arg...)                  \
- do {                                                         \
- 	if (unlikely((dev)->platform_data &&                 \
--	    (((struct fbtft_platform_data *)(dev)->platform_data)->display.debug & DEBUG_DRIVER_INIT_FUNCTIONS))) \
-+		(((struct fbtft_platform_data *)	     \
-+		(dev)->platform_data)->display.debug	     \
-+		& DEBUG_DRIVER_INIT_FUNCTIONS)))	     \
- 		dev_info(dev, format, ##arg);                \
- } while (0)
- 
--- 
-2.19.1
+regards,
+dan carpenter
 
