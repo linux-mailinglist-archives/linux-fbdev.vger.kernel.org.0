@@ -2,80 +2,145 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1451758292
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 14:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0123E58302
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 14:58:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726308AbfF0M1Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 08:27:25 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:57688 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726059AbfF0M1Z (ORCPT
+        id S1726505AbfF0M6G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 08:58:06 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:35830 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726443AbfF0M6G (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 08:27:25 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5RCOvkT118930;
-        Thu, 27 Jun 2019 12:27:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=zN2Zg/SRNDfb3CjVSZPYtadej8e83QgIVYu0JKeZv2M=;
- b=LSSz5tEtvsn30+kW/ZMiVwWDJhDNdEbl4poSKdZ6DVKP1endvdQmtuPDqeV23SQIBFkd
- 5x8uTEvWLyalfQF4XuVXqkWPiriKoX2qJR1Jye3znYRIpgGRLWP/2MkIcTcqLHREv4DB
- 1HVzRKRdb7zZo799JKRZiEfm5ruRNm5sg3Z2t8dy77Axr5myTjHWnACRGxDWoa7yXycz
- MnV/ak611NQwjovqYd/fIQyt9A9kSrH4XpwO65SFV+a6kuEVTXw22p+DDY7wGq07NzXw
- lxNf+rwwwCaVfCdBBAr4jPRq/2HyRzZVJ8Hquft/pvK58SzPZdtcPw9MCLAZq/qccR14 lg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2t9cyqqwsm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 27 Jun 2019 12:27:02 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5RCPYKS034383;
-        Thu, 27 Jun 2019 12:27:01 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2t9acd7c4c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 27 Jun 2019 12:27:01 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5RCQrMe001253;
-        Thu, 27 Jun 2019 12:26:53 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 27 Jun 2019 05:26:52 -0700
-Date:   Thu, 27 Jun 2019 15:26:43 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lukas Schneider <lukas.s.schneider@fau.de>
-Cc:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
-        bhanusreemahesh@gmail.com, daniel.vetter@ffwll.ch,
-        der_wolf_@web.de, payal.s.kshirsagar.98@gmail.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Jannik Moritz <jannik.moritz@fau.de>, linux-kernel@i4.cs.fau.de
-Subject: Re: [PATCH] fbtft: Cleanup line over 80 character warnings
-Message-ID: <20190627122643.GB19015@kadam>
-References: <20190627121240.31584-1-lukas.s.schneider@fau.de>
+        Thu, 27 Jun 2019 08:58:06 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190627125804euoutp0237b33b2e2477949bce2cf6fdf60eae77~sD5CqoJAe1515715157euoutp02I
+        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 12:58:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190627125804euoutp0237b33b2e2477949bce2cf6fdf60eae77~sD5CqoJAe1515715157euoutp02I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1561640284;
+        bh=fgQPkZ+qNSfjVPEvknAlGgFpuJaobLYqy/q5w+0niyc=;
+        h=From:Subject:To:Cc:Date:References:From;
+        b=V7Uh1+8OCd7DU5GBWm4ds1WVWfRKXD8bzOlWl6WMKe09th6oVWdAyyIZGkJXd0b0R
+         WaYKUDGmlZT+ITMf8F6Vq2fC460404vvTWmhAXh5ftSHyPgujR+eiErAvoEwNIpzrf
+         7DOcCIWNAzqE6KbXATfghCpuO6dU6I6eEcHiEmzk=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190627125804eucas1p179796d899992baa418afa5ccb5c94114~sD5CLmXTJ0314703147eucas1p1f;
+        Thu, 27 Jun 2019 12:58:04 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id CB.7B.04377.B5DB41D5; Thu, 27
+        Jun 2019 13:58:03 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5~sD5BVZ0ad1266112661eucas1p1t;
+        Thu, 27 Jun 2019 12:58:03 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190627125803eusmtrp16e6dbba330708606e66c4b391ccbc292~sD5BUyRWI0648206482eusmtrp1S;
+        Thu, 27 Jun 2019 12:58:03 +0000 (GMT)
+X-AuditID: cbfec7f4-113ff70000001119-ae-5d14bd5b2501
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 12.73.04140.B5DB41D5; Thu, 27
+        Jun 2019 13:58:03 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190627125803eusmtip1017d6b7cd9a96311891678170d0aefdb~sD5BEy9-Z0970609706eusmtip1_;
+        Thu, 27 Jun 2019 12:58:03 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: fbdev: s3c-fb: fix sparse warnings about using
+ incorrect types
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jingoo Han <jingoohan1@gmail.com>
+Message-ID: <908fc26e-3bfa-c204-6c32-7d814fdcb37b@samsung.com>
+Date:   Thu, 27 Jun 2019 14:58:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190627121240.31584-1-lukas.s.schneider@fau.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906270146
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906270147
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIKsWRmVeSWpSXmKPExsWy7djPc7rRe0ViDT5eN7e48vU9m8WKLzPZ
+        LU70fWC1uLxrDpsDi8fOWXfZPe53H2fy+LxJLoA5issmJTUnsyy1SN8ugStj0sNe9oINPBX3
+        T51kbmBcz9XFyMkhIWAiselTC1MXIxeHkMAKRon+b0uZIZwvjBKfN05ng3A+M0psXbSBCaZl
+        78ludojEckaJ95eOM0I4bxklFrf/YAepYhOwkpjYvgoowcEhLBAhseKHCkhYRCBBYsX0GYwg
+        NrOAqsSu5qVgJbwCdhJ7ZrCAhFmAwi9PXmIGsUWBOu8f28AKYvMKCEqcnPmEBaJVXOLWk/lM
+        ELa8xPa3c8CulhD4zCax5dlpVohDXSSOXvvHAmELS7w6voUdwpaROD25hwWiYR2jxN+OF1Dd
+        2xkllk/+xwZRZS1x+PhFVpDrmAU0Jdbv0ocIO0o0zj3HBhKWEOCTuPFWEOIIPolJ26YzQ4R5
+        JTrahCCq1SQ2LNvABrO2a+dKZgjbQ2LVng7GCYyKs5C8NgvJa7OQvDYL4YYFjCyrGMVTS4tz
+        01OLjfJSy/WKE3OLS/PS9ZLzczcxAhPK6X/Hv+xg3PUn6RCjAAejEg+vwk6RWCHWxLLiytxD
+        jBIczEoivPlhQCHelMTKqtSi/Pii0pzU4kOM0hwsSuK81QwPooUE0hNLUrNTUwtSi2CyTByc
+        Ug2MIZ9ythfKflbk32T1rbbQlfOE81/rKlfzJncfqz1Xl5ueUIpo/ZPe7iL6Zce2GcUGDg8S
+        +1Nn/rW6kbjA8XKuj/b7ST+ONrKeWOuldpbZcMWuvOQzJjZfl7+1mNBxUX17xsUL05xWGNy4
+        7rdA23L6qU1fLjZ+q4885lV0X++bsEWJTOlzdUkNJZbijERDLeai4kQAiDCosiQDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgkeLIzCtJLcpLzFFi42I5/e/4Xd3ovSKxBisnCltc+fqezWLFl5ns
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
+        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJcx6WEve8EGnor7p04yNzCu5+pi5OSQEDCR2Huy
+        mx3EFhJYyijxbGphFyMHUFxG4vj6MogSYYk/17rYuhi5gEpeM0ocOLyHCSTBJmAlMbF9FSNI
+        vbBAhMSKHyogYRGBBImnr+ezgdjMAqoSu5qXgpXwCthJ7JnBAhJmAQq/PHmJGcQWBeo8834F
+        WJxXQFDi5MwnLBCt6hJ/5kHUMAuIS9x6Mp8JwpaX2P52DvMERoFZSFpmIWmZhaRlFpKWBYws
+        qxhFUkuLc9Nzi430ihNzi0vz0vWS83M3MQJjYduxn1t2MHa9Cz7EKMDBqMTDq7BTJFaINbGs
+        uDL3EKMEB7OSCG9+GFCINyWxsiq1KD++qDQntfgQoynQQxOZpUST84FxmlcSb2hqaG5haWhu
+        bG5sZqEkztshcDBGSCA9sSQ1OzW1ILUIpo+Jg1OqgVFyySIOtQvPD2ztKVpsVH7oe7TIgkmq
+        aVP3ls32XdnsVu7cWBtwfeNf4wC/jzWHncX3WK1UOxnA/+FYxcHUKbdY99nnWL2+vlG+sb8x
+        r/a7xYy+Js6CvY+81xzVPtrKorW3ddfOvF28942e/W7itj5+7PLVkEt6XUs2hGeVsShZv/gh
+        NTMjZ5YSS3FGoqEWc1FxIgCo9uCVmwIAAA==
+X-CMS-MailID: 20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5
+References: <CGME20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5@eucas1p1.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Sorry, I don't feel like this makes it more readable.
+Use ->screen_buffer instead of ->screen_base to fix sparse warnings.
 
-regards,
-dan carpenter
+[ Please see commit 17a7b0b4d974 ("fb.h: Provide alternate screen_base
+  pointer") for details. ]
 
+Reported-by: kbuild test robot <lkp@intel.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ drivers/video/fbdev/s3c-fb.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+Index: b/drivers/video/fbdev/s3c-fb.c
+===================================================================
+--- a/drivers/video/fbdev/s3c-fb.c
++++ b/drivers/video/fbdev/s3c-fb.c
+@@ -1105,14 +1105,14 @@ static int s3c_fb_alloc_memory(struct s3
+ 
+ 	dev_dbg(sfb->dev, "want %u bytes for window\n", size);
+ 
+-	fbi->screen_base = dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNEL);
+-	if (!fbi->screen_base)
++	fbi->screen_buffer = dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNEL);
++	if (!fbi->screen_buffer)
+ 		return -ENOMEM;
+ 
+ 	dev_dbg(sfb->dev, "mapped %x to %p\n",
+-		(unsigned int)map_dma, fbi->screen_base);
++		(unsigned int)map_dma, fbi->screen_buffer);
+ 
+-	memset(fbi->screen_base, 0x0, size);
++	memset(fbi->screen_buffer, 0x0, size);
+ 	fbi->fix.smem_start = map_dma;
+ 
+ 	return 0;
+@@ -1129,9 +1129,9 @@ static void s3c_fb_free_memory(struct s3
+ {
+ 	struct fb_info *fbi = win->fbinfo;
+ 
+-	if (fbi->screen_base)
++	if (fbi->screen_buffer)
+ 		dma_free_wc(sfb->dev, PAGE_ALIGN(fbi->fix.smem_len),
+-		            fbi->screen_base, fbi->fix.smem_start);
++			    fbi->screen_buffer, fbi->fix.smem_start);
+ }
+ 
+ /**
