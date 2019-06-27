@@ -2,144 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3874587A4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 18:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A29588D2
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 19:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726579AbfF0Qvc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 12:51:32 -0400
-Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:49857 "EHLO
-        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726524AbfF0Qvb (ORCPT
+        id S1726561AbfF0RlT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 13:41:19 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:43501 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726405AbfF0RlT (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 12:51:31 -0400
-X-Greylist: delayed 430 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 12:51:31 EDT
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailnew.west.internal (Postfix) with ESMTP id AA8634DA;
-        Thu, 27 Jun 2019 12:44:18 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Thu, 27 Jun 2019 12:44:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=rDFUjydPbLgsHZHBEgoxvpKuMK6
-        XbRLR5IiACkCmvT4=; b=I6vSO2VNuWrji3LYrrKcLmA3Q16/Y9vYiMp0qg0Mj77
-        9Fswf/GESw2QATxuYhgU6oCyeuTyu5Rk+1UfNEHnpkAZvufipskhyjlaYHB5LbiV
-        6gkNkkYSrJ60fbIjq4PYNONXcRsxKT+n7WCOYW3UHpgfp+Gb+PqwPMpgIuADysVl
-        U6WPAB5CS60jXFWoCp2W2FnSdgime72a3nfYaWtPLgnv/JQ0eie8luIW8SGxmUqt
-        qNhRKd2dkaCPqXwGGdH787SSEqW80UZKaWybROp6o4HY/gOI6smT6igm42wdZ3g4
-        kw6DEHA+m1znV0ednrwwCbpxow+ZzcHKBytAmpN+ItQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=rDFUjy
-        dPbLgsHZHBEgoxvpKuMK6XbRLR5IiACkCmvT4=; b=dD+Jzon7HcqaRUKKnkcOM4
-        YQRPum6RVEfVcDAAWl0cP+tzyFjoNvnJvkmjHd2Dmb6uBd6ZVlD9ydpM9ikJ/tqM
-        xH2zE50xMaliPVN+/YJcswyH6eQsI7ijUWVaduvqeErNDfu89t+G0ueDNhy3r/r4
-        hrwvo/x3+ndHySevhQsMz8Z7fcsZBrK1YdcRA0ENWruQb2ot76qkuw/KVMjxcSL1
-        UIiVTuV2tzDrsReKysASZxKdhYtn0J0XWF53WoOvlbPANg/Oyn0ezbiRQbZhPQRT
-        DBZEX9I7hC/bobjuWOKbinSXnYTfxWK0nfiCoA0lKyH8BcuCUsqbX7MADUuAKmtg
-        ==
-X-ME-Sender: <xms:YPIUXbYz4uVGFicZm3E9vkxFiL3Rnb1y33-oei5-NMQC0Ry8t_jSwg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudekgddutdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeekledrvddthedrudefie
-    drvddvieenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-    necuvehluhhsthgvrhfuihiivgepud
-X-ME-Proxy: <xmx:YPIUXaH2RT0o7koS1e1MTdG5EPWVoCCfhzUYeD48Qp5tJzbj9EMmYg>
-    <xmx:YPIUXT5baNsKQ6c7ZrAWhcCbG3NQ8Wxn441MKOqoNeSh_xvW4THzww>
-    <xmx:YPIUXb5JOEZTj6f6GhQWmppFXc6zeguxWnlUBcaVv11m1nJkay0Dyw>
-    <xmx:YvIUXfUlsC41Jaz8cDTMImQFCmkzxexJJ-a15g7no7P8OQEtze1zHFaB5L4>
-Received: from localhost (unknown [89.205.136.226])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 9ED34380083;
-        Thu, 27 Jun 2019 12:44:15 -0400 (EDT)
-Date:   Fri, 28 Jun 2019 00:44:05 +0800
-From:   Greg KH <greg@kroah.com>
-To:     Lukas Schneider <lukas.s.schneider@fau.de>
-Cc:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
-        bhanusreemahesh@gmail.com, daniel.vetter@ffwll.ch,
-        der_wolf_@web.de, payal.s.kshirsagar.98@gmail.com,
+        Thu, 27 Jun 2019 13:41:19 -0400
+Received: by mail-pl1-f193.google.com with SMTP id cl9so1664309plb.10;
+        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
+        b=sBPEu6SKdGSe3KC2j9VKeyQAWYZFWhUaBNyBzY50g1OX35jQJxTbR1eIVKhJ3wYYlg
+         8TZ3auYUbbo76pqTOESCWFq4s+l7qWu54nsy1UmsNN0MQrwPy2bEcKXplRK1ALMgDBdn
+         Lo0Sv7JieRzOtAKtg0uvcuOIVVf/m+L9hlgzna2q40pDU536YVS70rhWUpXg59jINrii
+         aIR69ZEUmRWqLKpZODOA93V2ehqAwgJt6+YCzA9K9645HfSUXdfjmeus6hJEQb3DEXAR
+         VRKEMUKYya9WK+kUgqpf6Ill88GLTde84hbbCZgsi+0ADWTGa+AgvSD6yhK2AY70va4u
+         GERA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
+        b=SpkQ3UH4BU9uAQTfg9OdrBimvhj1k9cR0pjmVW7B5XKSMS99V7vIPMqmtbgCq6owWF
+         PoU511phm2QjVUloLinF7bJEIs3Z6qlNlU8KSkxhB2wpnpqPfPBzMIamtYmSLeUC1CWw
+         gQWq8l1hmS7kP26DsCK7o5ZQYEbRX5wzDIL/kFy+vYFBKvAaRHaRn9Gy9pLVb6Y90RvT
+         2eIMmt5H4LzAgb1N1PRH4z6NrXgy/8/sUHpdxxuwQyUUZPXeaIklFyEaxJPusZV4spmZ
+         oA7FwoAw2KYWQoVdUDOPSDzgWB4Mdp4pN9D199LYJeppNrVbXgTFH9rbzLQ9opaSbAB9
+         ME/w==
+X-Gm-Message-State: APjAAAUdYcrOZrgKc4+SrPQ0AiMNltj4cnEwD2zoeSpBkwgOqerDqIKj
+        /+A37NLMQ92HHh/tcRfYSWM=
+X-Google-Smtp-Source: APXvYqzgLCO90CGyAwGqPwTMFiEbXZce1PzG6M5RXLVuf6Fyllzefu3WCmJL+Xt1cxzzZq5XfM4oYQ==
+X-Received: by 2002:a17:902:2862:: with SMTP id e89mr6076022plb.258.1561657278472;
+        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id y17sm3052099pfe.148.2019.06.27.10.41.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Fuqian Huang <huangfq.daxian@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Allison Randal <allison@lohutok.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        Jannik Moritz <jannik.moritz@fau.de>, linux-kernel@i4.cs.fau.de
-Subject: Re: [PATCH] fbtft: Cleanup line over 80 character warnings
-Message-ID: <20190627164405.GB9692@kroah.com>
-References: <20190627121240.31584-1-lukas.s.schneider@fau.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190627121240.31584-1-lukas.s.schneider@fau.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 45/87] fbdev: mmp: remove memset after dma_alloc_coherent in mmpfb.c
+Date:   Fri, 28 Jun 2019 01:41:09 +0800
+Message-Id: <20190627174110.4345-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jun 27, 2019 at 02:12:40PM +0200, Lukas Schneider wrote:
-> Cleanup the line over 80 character warnings, reported by checkpatch
-> 
-> Signed-off-by: Lukas Schneider <lukas.s.schneider@fau.de>
-> Signed-off-by: Jannik Moritz <jannik.moritz@fau.de>
-> Cc: <linux-kernel@i4.cs.fau.de>
-> ---
->  drivers/staging/fbtft/fbtft-sysfs.c |  3 ++-
->  drivers/staging/fbtft/fbtft.h       | 26 ++++++++++++++++++++++----
->  2 files changed, 24 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
-> index 2a5c630dab87..78d2b81ea2e7 100644
-> --- a/drivers/staging/fbtft/fbtft-sysfs.c
-> +++ b/drivers/staging/fbtft/fbtft-sysfs.c
-> @@ -68,7 +68,8 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
->  			ret = get_next_ulong(&curve_p, &val, " ", 16);
->  			if (ret)
->  				goto out;
-> -			curves[curve_counter * par->gamma.num_values + value_counter] = val;
-> +			curves[curve_counter * par->gamma.num_values
-> +				+ value_counter] = val;
+In commit af7ddd8a627c
+("Merge tag 'dma-mapping-4.21' of git://git.infradead.org/users/hch/dma-mapping"),
+dma_alloc_coherent has already zeroed the memory.
+So memset is not needed.
 
-Ick, that's horrible to read now, right?
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+ drivers/video/fbdev/mmp/fb/mmpfb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
->  			value_counter++;
->  		}
->  		if (value_counter != par->gamma.num_values) {
-> diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-> index 9b6bdb62093d..cddbfd4ffa10 100644
-> --- a/drivers/staging/fbtft/fbtft.h
-> +++ b/drivers/staging/fbtft/fbtft.h
-> @@ -348,9 +348,25 @@ module_exit(fbtft_driver_module_exit);
->  
->  /* shorthand debug levels */
->  #define DEBUG_LEVEL_1	DEBUG_REQUEST_GPIOS
-> -#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 | DEBUG_DRIVER_INIT_FUNCTIONS | DEBUG_TIME_FIRST_UPDATE)
-> -#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 | DEBUG_RESET | DEBUG_INIT_DISPLAY | DEBUG_BLANK | DEBUG_REQUEST_GPIOS | DEBUG_FREE_GPIOS | DEBUG_VERIFY_GPIOS | DEBUG_BACKLIGHT | DEBUG_SYSFS)
-> -#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 | DEBUG_FB_READ | DEBUG_FB_WRITE | DEBUG_FB_FILLRECT | DEBUG_FB_COPYAREA | DEBUG_FB_IMAGEBLIT | DEBUG_FB_BLANK)
-> +#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 |		\
-> +			 DEBUG_DRIVER_INIT_FUNCTIONS |	\
-> +			 DEBUG_TIME_FIRST_UPDATE)
-> +#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 |		\
-> +			 DEBUG_RESET |			\
-> +			 DEBUG_INIT_DISPLAY |		\
-> +			 DEBUG_BLANK |			\
-> +			 DEBUG_REQUEST_GPIOS |		\
-> +			 DEBUG_FREE_GPIOS |		\
-> +			 DEBUG_VERIFY_GPIOS |		\
-> +			 DEBUG_BACKLIGHT |		\
-> +			 DEBUG_SYSFS)
-> +#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 |		\
-> +			 DEBUG_FB_READ |		\
-> +			 DEBUG_FB_WRITE |		\
-> +			 DEBUG_FB_FILLRECT |		\
-> +			 DEBUG_FB_COPYAREA |		\
-> +			 DEBUG_FB_IMAGEBLIT |		\
-> +			 DEBUG_FB_BLANK)
->  #define DEBUG_LEVEL_5	(DEBUG_LEVEL_3 | DEBUG_UPDATE_DISPLAY)
->  #define DEBUG_LEVEL_6	(DEBUG_LEVEL_4 | DEBUG_LEVEL_5)
->  #define DEBUG_LEVEL_7	0xFFFFFFFF
+diff --git a/drivers/video/fbdev/mmp/fb/mmpfb.c b/drivers/video/fbdev/mmp/fb/mmpfb.c
+index e5b56f2199df..47bc7c59bbd8 100644
+--- a/drivers/video/fbdev/mmp/fb/mmpfb.c
++++ b/drivers/video/fbdev/mmp/fb/mmpfb.c
+@@ -612,7 +612,6 @@ static int mmpfb_probe(struct platform_device *pdev)
+ 		ret = -ENOMEM;
+ 		goto failed_destroy_mutex;
+ 	}
+-	memset(fbi->fb_start, 0, fbi->fb_size);
+ 	dev_info(fbi->dev, "fb %dk allocated\n", fbi->fb_size/1024);
+ 
+ 	/* fb power on */
+-- 
+2.11.0
 
-All of these special debug "levels" need to go away now that the drivers
-are working, and just use the in-kernel debugging macros instead.
-
-thanks,
-
-greg k-h
