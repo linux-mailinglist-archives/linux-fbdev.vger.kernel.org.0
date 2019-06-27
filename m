@@ -2,81 +2,109 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4E25814F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 13:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4B558260
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 14:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726671AbfF0LSf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 07:18:35 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:45068 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbfF0LSf (ORCPT
+        id S1726375AbfF0MTV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 08:19:21 -0400
+Received: from faui03.informatik.uni-erlangen.de ([131.188.30.103]:52472 "EHLO
+        faui03.informatik.uni-erlangen.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726308AbfF0MTV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 07:18:35 -0400
-Received: by mail-lj1-f193.google.com with SMTP id m23so1896131lje.12
-        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 04:18:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8n9+wAZmn5Fd4Bzu+75sf62mEboo0TEMxpHy4S/JDDc=;
-        b=cEL9oCZ+zomWJ2LmSGc4fuxflwhDPejxyVo6c+Rrs/G5ajtyDASQo492gEPQbHBHeC
-         kq2jja8VgsqeyP+QTo5k9C1iud716f33VVhYiaF0S1ifrCTPqGBA3agxt3h4qp8PogBb
-         HAjqSFBfrIo3Brf1SoGU3Lrycq3Z/djnv+/ohRmtMo8JSvOptyWZ4wR2DbecRgcyamsL
-         sAkedb2FQ4o9w3DtYSfbMDvQNMVvQ36osCybYA/9i+32Df7OcVRSOfvO1IubOE+6SGOy
-         pCkSz7JgrJFkWpR8mCBCB7y10iOSH5pbaz+CXHodmK0K3BaNNWlRFQbn954OwIf5nzV0
-         hYUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8n9+wAZmn5Fd4Bzu+75sf62mEboo0TEMxpHy4S/JDDc=;
-        b=qMtiQwCfdLn2jAW7+J559s/9n2jzVBXHXAOqeK1BW70iAVKOWkX0rS3zHTAxTfo8Te
-         PYQu9jUo8bGb5wrkZKwTlwREKIsOzNAQPLvzDvTkHL13XwOKaQM4LFC6thKaKr6XVyNx
-         Zzm6EjfjuCrohh4+SSaEylESX5L5mXfB9GABMeLzr4qOL4ZgDDxut/nWXycs3vYQZRB0
-         Ao/NFnvtP4qwraPvidF2RtcJ9WA+WQIsdiMNTpLPjOaeohVA7rtgSImXJ2d775NWpTY5
-         KbCM7HezKrK4jdfOLDUX3PzIBIcamPBzCEycdftbat98UGRWTLoQXA1qs0vCQbTHUhFa
-         H0qA==
-X-Gm-Message-State: APjAAAUc9LSXt9QR9Hb0VsNnU6cnzxMcQdkzGCLZitugLWmHt55Hk7Dz
-        uasMhEhHT5etU/Zok1ZvRqEUsTAVGKk+mwRXPngMRA==
-X-Google-Smtp-Source: APXvYqyJgd2+Ftd/iJyvgwExAYZa4Qg2yTKy4cVImG+ErCp4ffuDePBsvOgPaNQqma8bvu1LdZ28/ackt3s9WUPQPiw=
-X-Received: by 2002:a2e:2c14:: with SMTP id s20mr2275133ljs.54.1561634312954;
- Thu, 27 Jun 2019 04:18:32 -0700 (PDT)
+        Thu, 27 Jun 2019 08:19:21 -0400
+X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 08:19:19 EDT
+Received: from faui01a.informatik.uni-erlangen.de (faui01a.informatik.uni-erlangen.de [131.188.60.127])
+        by faui03.informatik.uni-erlangen.de (Postfix) with ESMTP id 1D51F241569;
+        Thu, 27 Jun 2019 14:12:51 +0200 (CEST)
+Received: by faui01a.informatik.uni-erlangen.de (Postfix, from userid 30063)
+        id 080D0F40079; Thu, 27 Jun 2019 14:12:50 +0200 (CEST)
+From:   Lukas Schneider <lukas.s.schneider@fau.de>
+To:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
+        bhanusreemahesh@gmail.com, daniel.vetter@ffwll.ch,
+        der_wolf_@web.de, payal.s.kshirsagar.98@gmail.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Cc:     Lukas Schneider <lukas.s.schneider@fau.de>,
+        Jannik Moritz <jannik.moritz@fau.de>, linux-kernel@i4.cs.fau.de
+Subject: [PATCH] fbtft: Cleanup line over 80 character warnings
+Date:   Thu, 27 Jun 2019 14:12:40 +0200
+Message-Id: <20190627121240.31584-1-lukas.s.schneider@fau.de>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-References: <20190625163434.13620-1-brgl@bgdev.pl> <20190625163434.13620-9-brgl@bgdev.pl>
-In-Reply-To: <20190625163434.13620-9-brgl@bgdev.pl>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 27 Jun 2019 12:18:21 +0100
-Message-ID: <CACRpkdanZPmKrRwY9nvEGx=BzoVFxzU7ENgvoOzH+0u=-YTC0A@mail.gmail.com>
-Subject: Re: [PATCH 08/12] ARM: davinci: da850-evm: switch to using a fixed
- regulator for lcdc
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Lechner <david@lechnology.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 5:35 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+Cleanup the line over 80 character warnings, reported by checkpatch
 
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
->
-> Now that the da8xx fbdev driver supports power control with an actual
-> regulator, switch to using a fixed power supply for da850-evm.
->
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Signed-off-by: Lukas Schneider <lukas.s.schneider@fau.de>
+Signed-off-by: Jannik Moritz <jannik.moritz@fau.de>
+Cc: <linux-kernel@i4.cs.fau.de>
+---
+ drivers/staging/fbtft/fbtft-sysfs.c |  3 ++-
+ drivers/staging/fbtft/fbtft.h       | 26 ++++++++++++++++++++++----
+ 2 files changed, 24 insertions(+), 5 deletions(-)
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
+index 2a5c630dab87..78d2b81ea2e7 100644
+--- a/drivers/staging/fbtft/fbtft-sysfs.c
++++ b/drivers/staging/fbtft/fbtft-sysfs.c
+@@ -68,7 +68,8 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
+ 			ret = get_next_ulong(&curve_p, &val, " ", 16);
+ 			if (ret)
+ 				goto out;
+-			curves[curve_counter * par->gamma.num_values + value_counter] = val;
++			curves[curve_counter * par->gamma.num_values
++				+ value_counter] = val;
+ 			value_counter++;
+ 		}
+ 		if (value_counter != par->gamma.num_values) {
+diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
+index 9b6bdb62093d..cddbfd4ffa10 100644
+--- a/drivers/staging/fbtft/fbtft.h
++++ b/drivers/staging/fbtft/fbtft.h
+@@ -348,9 +348,25 @@ module_exit(fbtft_driver_module_exit);
+ 
+ /* shorthand debug levels */
+ #define DEBUG_LEVEL_1	DEBUG_REQUEST_GPIOS
+-#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 | DEBUG_DRIVER_INIT_FUNCTIONS | DEBUG_TIME_FIRST_UPDATE)
+-#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 | DEBUG_RESET | DEBUG_INIT_DISPLAY | DEBUG_BLANK | DEBUG_REQUEST_GPIOS | DEBUG_FREE_GPIOS | DEBUG_VERIFY_GPIOS | DEBUG_BACKLIGHT | DEBUG_SYSFS)
+-#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 | DEBUG_FB_READ | DEBUG_FB_WRITE | DEBUG_FB_FILLRECT | DEBUG_FB_COPYAREA | DEBUG_FB_IMAGEBLIT | DEBUG_FB_BLANK)
++#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 |		\
++			 DEBUG_DRIVER_INIT_FUNCTIONS |	\
++			 DEBUG_TIME_FIRST_UPDATE)
++#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 |		\
++			 DEBUG_RESET |			\
++			 DEBUG_INIT_DISPLAY |		\
++			 DEBUG_BLANK |			\
++			 DEBUG_REQUEST_GPIOS |		\
++			 DEBUG_FREE_GPIOS |		\
++			 DEBUG_VERIFY_GPIOS |		\
++			 DEBUG_BACKLIGHT |		\
++			 DEBUG_SYSFS)
++#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 |		\
++			 DEBUG_FB_READ |		\
++			 DEBUG_FB_WRITE |		\
++			 DEBUG_FB_FILLRECT |		\
++			 DEBUG_FB_COPYAREA |		\
++			 DEBUG_FB_IMAGEBLIT |		\
++			 DEBUG_FB_BLANK)
+ #define DEBUG_LEVEL_5	(DEBUG_LEVEL_3 | DEBUG_UPDATE_DISPLAY)
+ #define DEBUG_LEVEL_6	(DEBUG_LEVEL_4 | DEBUG_LEVEL_5)
+ #define DEBUG_LEVEL_7	0xFFFFFFFF
+@@ -392,7 +408,9 @@ module_exit(fbtft_driver_module_exit);
+ #define fbtft_init_dbg(dev, format, arg...)                  \
+ do {                                                         \
+ 	if (unlikely((dev)->platform_data &&                 \
+-	    (((struct fbtft_platform_data *)(dev)->platform_data)->display.debug & DEBUG_DRIVER_INIT_FUNCTIONS))) \
++		(((struct fbtft_platform_data *)	     \
++		(dev)->platform_data)->display.debug	     \
++		& DEBUG_DRIVER_INIT_FUNCTIONS)))	     \
+ 		dev_info(dev, format, ##arg);                \
+ } while (0)
+ 
+-- 
+2.19.1
 
-Yours,
-Linus Walleij
