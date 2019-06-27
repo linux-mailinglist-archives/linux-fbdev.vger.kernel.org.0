@@ -2,141 +2,144 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B8F658643
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 17:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3874587A4
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 18:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbfF0PtZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 11:49:25 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37550 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726519AbfF0PtZ (ORCPT
+        id S1726579AbfF0Qvc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 12:51:32 -0400
+Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:49857 "EHLO
+        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726524AbfF0Qvb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 11:49:25 -0400
-Received: by mail-wr1-f65.google.com with SMTP id v14so3157605wrr.4
-        for <linux-fbdev@vger.kernel.org>; Thu, 27 Jun 2019 08:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=44Mu8dUj9L0ids6Sb6CWNDIoEklnO4VYTdbwKc4aKyc=;
-        b=LnfYL9dENRWp68RK7vG0qlql3IoqqpP/rxklMtbkkjRQYXe39yb7G4ucSqJIgltNt4
-         XhSr8NGEnd2Oag74G7xFEbVqtPwuaPpyHD7J8B2GHjzh5DiKFrDPFdQORgv1maS6vjcs
-         KX41MbperZUATOEY2X29oQFxm0MvGxCKGw93sVcHgSpilZHjtAGxOU+uYwlvdQe81hqr
-         evEnE2CcXdGYVoFT8OFTIqPE+AmdmGtIK7Av7XSSfUnuWJANIeqDkkMDeqwFFAPVW6mq
-         CfALUOifrtw7WkfXULktuWj6djEi59osVSAET/syisCCbdFgO44iRn+3Cay10GR1smxJ
-         l81A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=44Mu8dUj9L0ids6Sb6CWNDIoEklnO4VYTdbwKc4aKyc=;
-        b=GYZqPE55isxWNqIKCGMbSSQuLc/rQEuWA1P5WeJj1FCQV52EDQS/Rbors/ryzD9czp
-         yDYW6/PYWR1q/EYwiISBHmLYcPIRw1DbaSkhfxazmpkeccopMbq7ikm/n5CqgCW/0/gp
-         fe/+A7mWkBVGNIM94wOnyKI5F7gJE7ka9ABhhr0JuJb1T6nVTQLM9Ov3DpW97LcOuey7
-         QP70oZ7foTlupma3R6ev5DUeLrLAsK5kI/CI8dfhNidAsRpHkKGxZOyo3+VGh8Iid1Nf
-         dTyx6we4fzNZPkh/sWqoQbm1eZ7uRmqYwRLyMPv7M3e3L7tUC1c/O8qEsJDJKcfqGo+6
-         RnqQ==
-X-Gm-Message-State: APjAAAXTw5F0k4f5H5ApfHS85o8RfZuUJt47cvn1EwkNNlYPxP3zdz86
-        uuiABmPCaWyvLL+qXOfIepnUdA==
-X-Google-Smtp-Source: APXvYqysjCQU6AMMnWNSo+srDbMEz+UGbQKDPhC9Sr5nPHf9OFgk/UI30HaXEVLBgefpPDnGRYn9Fw==
-X-Received: by 2002:adf:afe8:: with SMTP id y40mr3651106wrd.328.1561650563346;
-        Thu, 27 Jun 2019 08:49:23 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id 35sm3904679wrj.87.2019.06.27.08.49.22
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 27 Jun 2019 08:49:22 -0700 (PDT)
-Date:   Thu, 27 Jun 2019 16:49:20 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH 3/4] backlight: pwm_bl: Set scale type for CIE 1931 curves
-Message-ID: <20190627154920.aucjtaguatd5yd4m@holly.lan>
-References: <20190613194326.180889-1-mka@chromium.org>
- <20190613194326.180889-4-mka@chromium.org>
- <61ed137c-31bb-c695-4174-0484fe667d6c@linaro.org>
- <20190627092453.GB2000@dell>
+        Thu, 27 Jun 2019 12:51:31 -0400
+X-Greylist: delayed 430 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 12:51:31 EDT
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.west.internal (Postfix) with ESMTP id AA8634DA;
+        Thu, 27 Jun 2019 12:44:18 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 27 Jun 2019 12:44:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=rDFUjydPbLgsHZHBEgoxvpKuMK6
+        XbRLR5IiACkCmvT4=; b=I6vSO2VNuWrji3LYrrKcLmA3Q16/Y9vYiMp0qg0Mj77
+        9Fswf/GESw2QATxuYhgU6oCyeuTyu5Rk+1UfNEHnpkAZvufipskhyjlaYHB5LbiV
+        6gkNkkYSrJ60fbIjq4PYNONXcRsxKT+n7WCOYW3UHpgfp+Gb+PqwPMpgIuADysVl
+        U6WPAB5CS60jXFWoCp2W2FnSdgime72a3nfYaWtPLgnv/JQ0eie8luIW8SGxmUqt
+        qNhRKd2dkaCPqXwGGdH787SSEqW80UZKaWybROp6o4HY/gOI6smT6igm42wdZ3g4
+        kw6DEHA+m1znV0ednrwwCbpxow+ZzcHKBytAmpN+ItQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=rDFUjy
+        dPbLgsHZHBEgoxvpKuMK6XbRLR5IiACkCmvT4=; b=dD+Jzon7HcqaRUKKnkcOM4
+        YQRPum6RVEfVcDAAWl0cP+tzyFjoNvnJvkmjHd2Dmb6uBd6ZVlD9ydpM9ikJ/tqM
+        xH2zE50xMaliPVN+/YJcswyH6eQsI7ijUWVaduvqeErNDfu89t+G0ueDNhy3r/r4
+        hrwvo/x3+ndHySevhQsMz8Z7fcsZBrK1YdcRA0ENWruQb2ot76qkuw/KVMjxcSL1
+        UIiVTuV2tzDrsReKysASZxKdhYtn0J0XWF53WoOvlbPANg/Oyn0ezbiRQbZhPQRT
+        DBZEX9I7hC/bobjuWOKbinSXnYTfxWK0nfiCoA0lKyH8BcuCUsqbX7MADUuAKmtg
+        ==
+X-ME-Sender: <xms:YPIUXbYz4uVGFicZm3E9vkxFiL3Rnb1y33-oei5-NMQC0Ry8t_jSwg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudekgddutdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjfgesthdtredttdervdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecukfhppeekledrvddthedrudefie
+    drvddvieenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+    necuvehluhhsthgvrhfuihiivgepud
+X-ME-Proxy: <xmx:YPIUXaH2RT0o7koS1e1MTdG5EPWVoCCfhzUYeD48Qp5tJzbj9EMmYg>
+    <xmx:YPIUXT5baNsKQ6c7ZrAWhcCbG3NQ8Wxn441MKOqoNeSh_xvW4THzww>
+    <xmx:YPIUXb5JOEZTj6f6GhQWmppFXc6zeguxWnlUBcaVv11m1nJkay0Dyw>
+    <xmx:YvIUXfUlsC41Jaz8cDTMImQFCmkzxexJJ-a15g7no7P8OQEtze1zHFaB5L4>
+Received: from localhost (unknown [89.205.136.226])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 9ED34380083;
+        Thu, 27 Jun 2019 12:44:15 -0400 (EDT)
+Date:   Fri, 28 Jun 2019 00:44:05 +0800
+From:   Greg KH <greg@kroah.com>
+To:     Lukas Schneider <lukas.s.schneider@fau.de>
+Cc:     leobras.c@gmail.com, digholebhagyashri@gmail.com,
+        bhanusreemahesh@gmail.com, daniel.vetter@ffwll.ch,
+        der_wolf_@web.de, payal.s.kshirsagar.98@gmail.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        Jannik Moritz <jannik.moritz@fau.de>, linux-kernel@i4.cs.fau.de
+Subject: Re: [PATCH] fbtft: Cleanup line over 80 character warnings
+Message-ID: <20190627164405.GB9692@kroah.com>
+References: <20190627121240.31584-1-lukas.s.schneider@fau.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190627092453.GB2000@dell>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190627121240.31584-1-lukas.s.schneider@fau.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jun 27, 2019 at 10:24:53AM +0100, Lee Jones wrote:
-> On Fri, 21 Jun 2019, Daniel Thompson wrote:
+On Thu, Jun 27, 2019 at 02:12:40PM +0200, Lukas Schneider wrote:
+> Cleanup the line over 80 character warnings, reported by checkpatch
 > 
-> > On 13/06/2019 20:43, Matthias Kaehlcke wrote:
-> > > For backlight curves calculated with the CIE 1931 algorithm set
-> > > the brightness scale type property accordingly. This makes the
-> > > scale type available to userspace via the 'scale' sysfs attribute.
-> > > 
-> > > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> > 
-> > I'd like to keep discussion on patch 2 open a bit longer (it's not part of
-> > the thread below patch 2 but Pavel had concerns about the sysfs interface)
-> > so this ack won't really push things forward but FWIW:
-> > 
-> > Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Signed-off-by: Lukas Schneider <lukas.s.schneider@fau.de>
+> Signed-off-by: Jannik Moritz <jannik.moritz@fau.de>
+> Cc: <linux-kernel@i4.cs.fau.de>
+> ---
+>  drivers/staging/fbtft/fbtft-sysfs.c |  3 ++-
+>  drivers/staging/fbtft/fbtft.h       | 26 ++++++++++++++++++++++----
+>  2 files changed, 24 insertions(+), 5 deletions(-)
 > 
-> Does this depend on patch 2, or is it orthogonal?
+> diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
+> index 2a5c630dab87..78d2b81ea2e7 100644
+> --- a/drivers/staging/fbtft/fbtft-sysfs.c
+> +++ b/drivers/staging/fbtft/fbtft-sysfs.c
+> @@ -68,7 +68,8 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
+>  			ret = get_next_ulong(&curve_p, &val, " ", 16);
+>  			if (ret)
+>  				goto out;
+> -			curves[curve_counter * par->gamma.num_values + value_counter] = val;
+> +			curves[curve_counter * par->gamma.num_values
+> +				+ value_counter] = val;
 
-IIRC it depends on patch 2 (since that't what introduces props.scale ).
+Ick, that's horrible to read now, right?
 
+>  			value_counter++;
+>  		}
+>  		if (value_counter != par->gamma.num_values) {
+> diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
+> index 9b6bdb62093d..cddbfd4ffa10 100644
+> --- a/drivers/staging/fbtft/fbtft.h
+> +++ b/drivers/staging/fbtft/fbtft.h
+> @@ -348,9 +348,25 @@ module_exit(fbtft_driver_module_exit);
+>  
+>  /* shorthand debug levels */
+>  #define DEBUG_LEVEL_1	DEBUG_REQUEST_GPIOS
+> -#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 | DEBUG_DRIVER_INIT_FUNCTIONS | DEBUG_TIME_FIRST_UPDATE)
+> -#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 | DEBUG_RESET | DEBUG_INIT_DISPLAY | DEBUG_BLANK | DEBUG_REQUEST_GPIOS | DEBUG_FREE_GPIOS | DEBUG_VERIFY_GPIOS | DEBUG_BACKLIGHT | DEBUG_SYSFS)
+> -#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 | DEBUG_FB_READ | DEBUG_FB_WRITE | DEBUG_FB_FILLRECT | DEBUG_FB_COPYAREA | DEBUG_FB_IMAGEBLIT | DEBUG_FB_BLANK)
+> +#define DEBUG_LEVEL_2	(DEBUG_LEVEL_1 |		\
+> +			 DEBUG_DRIVER_INIT_FUNCTIONS |	\
+> +			 DEBUG_TIME_FIRST_UPDATE)
+> +#define DEBUG_LEVEL_3	(DEBUG_LEVEL_2 |		\
+> +			 DEBUG_RESET |			\
+> +			 DEBUG_INIT_DISPLAY |		\
+> +			 DEBUG_BLANK |			\
+> +			 DEBUG_REQUEST_GPIOS |		\
+> +			 DEBUG_FREE_GPIOS |		\
+> +			 DEBUG_VERIFY_GPIOS |		\
+> +			 DEBUG_BACKLIGHT |		\
+> +			 DEBUG_SYSFS)
+> +#define DEBUG_LEVEL_4	(DEBUG_LEVEL_2 |		\
+> +			 DEBUG_FB_READ |		\
+> +			 DEBUG_FB_WRITE |		\
+> +			 DEBUG_FB_FILLRECT |		\
+> +			 DEBUG_FB_COPYAREA |		\
+> +			 DEBUG_FB_IMAGEBLIT |		\
+> +			 DEBUG_FB_BLANK)
+>  #define DEBUG_LEVEL_5	(DEBUG_LEVEL_3 | DEBUG_UPDATE_DISPLAY)
+>  #define DEBUG_LEVEL_6	(DEBUG_LEVEL_4 | DEBUG_LEVEL_5)
+>  #define DEBUG_LEVEL_7	0xFFFFFFFF
 
-Daniel.
+All of these special debug "levels" need to go away now that the drivers
+are working, and just use the in-kernel debugging macros instead.
 
-> 
-> > > ---
-> > >   drivers/video/backlight/pwm_bl.c | 5 ++++-
-> > >   1 file changed, 4 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> > > index fb45f866b923..f067fe7aa35d 100644
-> > > --- a/drivers/video/backlight/pwm_bl.c
-> > > +++ b/drivers/video/backlight/pwm_bl.c
-> > > @@ -553,6 +553,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> > >   		goto err_alloc;
-> > >   	}
-> > > +	memset(&props, 0, sizeof(struct backlight_properties));
-> > > +
-> > >   	if (data->levels) {
-> > >   		/*
-> > >   		 * For the DT case, only when brightness levels is defined
-> > > @@ -591,6 +593,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> > >   			pb->levels = data->levels;
-> > >   		}
-> > > +
-> > > +		props.scale = BACKLIGHT_SCALE_CIE1931;
-> > >   	} else {
-> > >   		/*
-> > >   		 * That only happens for the non-DT case, where platform data
-> > > @@ -601,7 +605,6 @@ static int pwm_backlight_probe(struct platform_device *pdev)
-> > >   	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-> > > -	memset(&props, 0, sizeof(struct backlight_properties));
-> > >   	props.type = BACKLIGHT_RAW;
-> > >   	props.max_brightness = data->max_brightness;
-> > >   	bl = backlight_device_register(dev_name(&pdev->dev), &pdev->dev, pb,
-> > > 
-> > 
-> 
-> -- 
-> Lee Jones [李琼斯]
-> Linaro Services Technical Lead
-> Linaro.org │ Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+thanks,
+
+greg k-h
