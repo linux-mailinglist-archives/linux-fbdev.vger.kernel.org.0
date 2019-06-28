@@ -2,138 +2,135 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EC9A59C05
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 14:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0C159C20
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 14:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbfF1MyI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Jun 2019 08:54:08 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:35511 "EHLO
+        id S1726822AbfF1MzS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 08:55:18 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:35897 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbfF1MyI (ORCPT
+        with ESMTP id S1726660AbfF1MzR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Jun 2019 08:54:08 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190628125405euoutp017585b9f9397f3152d7945eb8a635792c~sXe2ay7hQ3247532475euoutp01E;
-        Fri, 28 Jun 2019 12:54:05 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190628125405euoutp017585b9f9397f3152d7945eb8a635792c~sXe2ay7hQ3247532475euoutp01E
+        Fri, 28 Jun 2019 08:55:17 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190628125514euoutp014edf00165e92c79c70efc940b797771c~sXf2Vz_jf3234532345euoutp013;
+        Fri, 28 Jun 2019 12:55:14 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190628125514euoutp014edf00165e92c79c70efc940b797771c~sXf2Vz_jf3234532345euoutp013
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1561726445;
-        bh=qzxIRvVGx/3VyHnGbR9j5H6ALGHkn1ZSDXlE5FAdkwI=;
+        s=mail20170921; t=1561726514;
+        bh=GrXQNTXN4I9JHpQIL9zEkPq5zel3LSoEW3EB5ycEB2s=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=ADzWQAhWUQ+KOYVTlCHl+rTDW1I7O0wa+1i03JfoOum+541/Fg80mGMRbZaq9WzRS
-         Vx636CdlmOCjtahPKbaaJa+7C9d4mvxObv2wRPluDMrmNC0mfmQwXj6RmcaIdgDzLw
-         zgy8jD9s28ngU4LtDmxfsbSWD542++qrS/c1xkYQ=
+        b=Ng/LpVIzRsZ7uGyNkWHy/60hDS9y3MXaKxN/pLMXMT/Bss+fscGXO4sT151M0V6LW
+         QnUUmI4ALzkM6LrKmpH2V91CL0TahcMQc1lrHnHJeNV17Pp51zvLwJ2S4ssCIqcPRr
+         XOw/LyfRj5xsOxagZmKVtqZMHmRvG41kFNIfuAHc=
 Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190628125405eucas1p19d9de132c7c507269bd5260f8650ca2c~sXe12_QGn2787027870eucas1p10;
-        Fri, 28 Jun 2019 12:54:05 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 9A.C4.04298.CED061D5; Fri, 28
-        Jun 2019 13:54:04 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190628125404eucas1p2da9a38ced35daa959456b0d0f244d7a2~sXe08o7rC0406704067eucas1p2z;
-        Fri, 28 Jun 2019 12:54:04 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190628125404eusmtrp20e45f3155f71e3978c0ccf59fde6c45a~sXe0tyTrQ0425604256eusmtrp29;
-        Fri, 28 Jun 2019 12:54:04 +0000 (GMT)
-X-AuditID: cbfec7f2-f2dff700000010ca-af-5d160dec4e13
+        20190628125514eucas1p1fd4db9f4161cfcae44ce131fc32d78ff~sXf19jycg2330223302eucas1p1v;
+        Fri, 28 Jun 2019 12:55:14 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 60.05.04298.13E061D5; Fri, 28
+        Jun 2019 13:55:13 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190628125513eucas1p149cf5397774d31921b4eee030d2d8500~sXf1JHVEo3050330503eucas1p1G;
+        Fri, 28 Jun 2019 12:55:13 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190628125512eusmtrp1f2e2177567d58a7c6fc5cb876c1efe21~sXf06je0q1299212992eusmtrp1O;
+        Fri, 28 Jun 2019 12:55:12 +0000 (GMT)
+X-AuditID: cbfec7f2-f13ff700000010ca-72-5d160e310d01
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 4C.93.04140.BED061D5; Fri, 28
-        Jun 2019 13:54:03 +0100 (BST)
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2E.CA.04146.03E061D5; Fri, 28
+        Jun 2019 13:55:12 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190628125402eusmtip2b672e4f40a25f69d3c8db9a125b40c5c~sXezJFTjm0418304183eusmtip2w;
-        Fri, 28 Jun 2019 12:54:02 +0000 (GMT)
-Subject: Re: [PATCH 28/39] docs: admin-guide: add a series of orphaned
- documents
+        20190628125511eusmtip2334885dcd96bf89cc8f0faa1cb1e303f~sXfzmDhKC0126701267eusmtip2m;
+        Fri, 28 Jun 2019 12:55:11 +0000 (GMT)
+Subject: Re: [PATCH 37/39] docs: adds some directories to the main
+ documentation index
 To:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Willy Tarreau <willy@haproxy.com>,
-        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
-        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Martin Mares <mj@ucw.cz>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Moritz Fischer <mdf@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-ntfs-dev@lists.sourceforge.net, linux-rtc@vger.kernel.org,
-        linux-video@atrey.karlin.mff.cuni.cz,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-block@vger.kernel.org
+        linux-fpga@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, live-patching@vger.kernel.org,
+        netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-watchdog@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <be37b10b-81e1-8258-e149-a27942e98173@samsung.com>
-Date:   Fri, 28 Jun 2019 14:54:01 +0200
+Message-ID: <a89ef0db-211c-1880-e60c-dc599b36feb7@samsung.com>
+Date:   Fri, 28 Jun 2019 14:55:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <7ee0e33575633f689203f582259c2cbdce477176.1561724493.git.mchehab+samsung@kernel.org>
+In-Reply-To: <b26fc645cb2c81fe88ab13616c65664d2c3cead5.1561724493.git.mchehab+samsung@kernel.org>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02TbUxTZxTHfXpfaSi7FqTPfNliDSZKgBnMcjadm2Zud5lLFreYRe1YHXdo
-        pEhaYVO/kOEoghQpirFUBCG8yWgppLwoCUEttmZIARXqtNOi2dwqXbGZyITR3pDx7XfO+T05
-        //PhYQl5CbOcPZB1WNBmqTOVtJS0O6ZvJf0li1e9VWV/B+rctxmwuBwE6J/VMzAXuIzgldHB
-        wKX7pTRMWWdpmOjTI6iZfkmB+dZxErzBewh6n1VSMBqapCG/1kJD8dOVUNGmgLZSFnweLwPV
-        p/QM2Hx3KOj1JIL3wbQEagrqSCh46EFwwxCgYKTHTIO+0IzgkWtIAo5LozSY/z1NwB8NNQj6
-        z/QimAyekECX6yIBw33VEsi/No6g2m5AUNAWQpDnbKSg3XaGgNN9ZSS8sPoo8Bp7JR8k8v/8
-        ZCD5kTtugp95aUR868kmiq9qOcZ3NI1L+ID9IeK7TfcZPvD317y9L4GvMLpo3n6vi+DbG9fz
-        I7/k8LbmEzQ/WBkgP39jt3RzupB5IFfQpmz5RrrfU/VZtnP1D62GSioPuXERimIxtxE//tFC
-        FCEpK+caEfZ52hixeI5wZaGVDFtybgrhntGPFl40THWSotSA8Lg/RIuFH+GW8jEqbMVyO/G0
-        oZ4Icxz3NnYOXo9IBFcSjc8ZRpnwgObexWX6ZhRmGbcF5110RZjkEnCJbyziLOO+wl6HlRKd
-        pdh5biISKYpT45ba8xGH4BTYM3FBIvKbuNNvJsSowSg8d1kl8oe4znKTFDkWPx3oYEReiee6
-        w2+l89yK8KvC3wmx6ES4oXyWFq1N+OqAez4FO79hHbb0pIjtrXgmUEyG25iLwWP+pWKGGGy0
-        nyXEtgwXFshFey221lvphbVF3U3EKaQ0LbrMtOga06JrTP/vrUZkM1IIOTpNhqDbkCV8n6xT
-        a3Q5WRnJ3x7S2ND8J7k5OxDsQqHhff2IY5EyWvYiOl4lp9S5uiOafoRZQhkne30wTiWXpauP
-        HBW0h9K0OZmCrh+tYEmlQnZsyW975FyG+rBwUBCyBe3CVMJGLc9DpXefFH9yctZ29L3Vrgdz
-        M6FtqyoUf6peg9xVyVL/ryh2q7tiaFfoxoTgtHxRtm/Xxu3fpW7ae/tC6qfBj6loz5d3Q8uW
-        aDYnBScnj6ddX+sM/Tyz4qxJI82VxhgPduxIeX/78/g99uHQtr2pLbsfX0m6Eps9tOaJv7Ym
-        rTxx3aP0hPx2Janbr96wntDq1P8BW8Xj/CAEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SX0xTZxiH851/Lcxux4ryjZipNWQZxkIL2BfXkSW7ORebW3QXZhPdCZwA
-        G21dT8vmnKMTR2sdVRjqLB226hAQRVAraJpg43CtwoYg0RppXHFT2aCD4KwDGbRZwt2T/J7n
-        4k1eKSl3M2nSUr1JMOr5MgWTTF1/fm147ahsWUHW9a+1cKL/lgTagj0kWMcaJTAbvYxgprZH
-        Aqfu7Wdg8uxzBka6rQg8sWc0uH7ZQ0F44i4C31g9DYNT4wxUHm9jYN/j5XCoPRXa90shEgpL
-        wH3AKoGOyBANvtAaCA/HCPBUnaCg6n4Iwc+OKA0Dl1wMWG0uBL8FfyWg59QgA67pOhIenfQg
-        8B/0IRif2EtAZ/AYCTe73QRUXr2DwO11IKhqn0JgCTTRcK7jIAl13TUUPD0boSFc6yPeXMP9
-        842D4gaG+knu32e1iDvzbTPNNbTu5M433yG4qPc+4rqc9yRc9O+tnLc7nTtUG2Q4791OkjvX
-        lMEN9Jq5jpa9DNdXH6Xee+UDpdZoMJuElSUG0fSG4kMVqJWqPFCqc/KUqmxNwXp1riIzX1sk
-        lJWWC8bM/I+UJaGGd7YHVn1+xlFPW1A/tqMkKWZz8MnJi5QdJUvl7I8I93qihB1J54bl+Fpb
-        ecJZgqeH7EzCGUV4ZjKM5ocl7EYcczSS85zCrsOBvp/iEsnWLMKePyuJRPEQ4T+qL8cLhl2P
-        a6wtcZax+dhyLBhnik3H1ZHbknleym7GN8abqISzGAeOjMQ5ieVx6/Ef4g7JvoqnG26SCU7F
-        oZGjRIJX4It/ucgDSO5ckDsXJM4FiXNB4kZUC0oRzKKuWCeqlSKvE836YmWhQdeB5r7T2xM7
-        34nsY5v8iJUixSKZO3lZgZzmy8UdOj/CUlKRInu5L6VALivid3whGA3bjOYyQfSj3Lnjasi0
-        pYWGuV/Xm7apclUayFNpsjXZ60CRKrOxV7bI2WLeJHwiCNsF4/8dIU1Ks6A940erA7df+LLC
-        3/J4w7u3KqD0Qeh0ZMsR34Wn+fzVreizqV1Xvl+RseElC/NkKLgylGXjWh/oJxa/1be6d5UJ
-        5Xw14LHNxpJGX9NGbxxGzbt279zXZftdNqh6Upel70r7+HWNOtD0qfvS7HeFD9/Xvpja7glm
-        zpwu3N34dnpR1qPhCgUllvCqDNIo8v8Bq/m1rrMDAAA=
-X-CMS-MailID: 20190628125404eucas1p2da9a38ced35daa959456b0d0f244d7a2
+X-Brightmail-Tracker: H4sIAAAAAAAAA01TbUxTZxTee796qRavlcE7YRqbOZVkCnMuZ36NJcu8WWJCjGaLjGDVOzDQ
+        anqpU7dkuPBZOnQyQ6hMwA8ooNAVggXEdWhbFKyTrwFaWCqLQlIRK9vcFKW9NePfc97nec55
+        zklellROMYvZfdpMQadVZ6gYOdXsfOp+Jz48MjnO54iDCXs+gjrPMQbG7HkIym5lU9A3PcnA
+        sCsHQUljLQP2p50ITD+2E1CZe46CzqJHNHhL/5aB0+Yl4FmrjYDe1jIG/N9fQ1D4u42BR0Yv
+        A4P1V2RQkT0rHqvsJqD71xEGql0zBHjMgwRMPi4gwHbjDAnlR7dAZXcSOCsi4c6JEgo8NxwM
+        vLg3TUN3Vw8NOed9BDRaT5Jwb3yGhPYRP0pYzjfVDBH8by3z+BaTR8Y3mmP5s5fHCb73pp63
+        1hYw/EO3W8bXXLhA86OFLoI/W1RM857cjfzUn8MUf7H9AeInr/QzfFN/HpUYuVO+ca+Qse+g
+        oFuzeZc8bWDkLnOgPvxQ07VSlIXG5QbEsph7DztdjAHJWSVnRvi8LQcZUNhs8QThbG+I8CNs
+        f36fChABg3f6JCER1Qg/6x8JFT6Es9oMREC1iPsct/tdwVYR3Pv4utsRbEVyZjnus1iZAMFw
+        6/EPebVBkYLbjP+q66UDmOKW46vmJ8H312cbjTottKRZiK+XjgVjhHFqbGm2BDUkF4WHx8oJ
+        CS/Fl3xlZGAY5txh2PrCwki5P8Y/TxpDeBGecDXJJByDu4qNlGSoR/h5/oOQ+xLC1cUzIccG
+        fNV1mw6cjORW4YbWNdL1PsLe776QYDge9C2UMoTjE80lpPSswPm5SqnH29hS9SpNDDa01JDH
+        kco0ZzPTnG1Mc7Yx/T+2AlG1KErQi5pUQYzXCl+tFtUaUa9NXb1nv8aKZj9C14zrsQ1N9+zu
+        QByLVPMV/8yPTFbS6oPiYU0HwiypilC84Y5IVir2qg8fEXT7U3T6DEHsQNEspYpSfP3aH0lK
+        LlWdKaQLwgFB94ol2LDFWShae5NOO5Ikq4J3V/z06b9Lb0/E9C375uK2hzvyKrVl8nl6cUG5
+        55fEUwkNsdF1H9hHp/xbfY5vNVXpQ5syNp26ZVnXdvqzO+v6MpfVpXBrV705evytgi93e7Ya
+        h6jeDwdSEnYuaXD0VGyLK7q/stCY0ro91TxwbAl39ND6zk/aEv+rTl+posQ0dXwsqRPVLwFc
+        V6c/BAQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTVxiAPd+tpVvNZ0U4AzO2JmYGY7Ug9oUgarZlJ7qo0T9kjGjFz2Kk
+        revXEi/ZohnX4mVOCWnDBogECnijTIsRqFWpl1oNeIPRLqldYiWKjrGFBNlKGxP+PXnf5znJ
+        SV4prSjnUqR7DGbBZNCWKDkZc2/GG1y+cn5S4crQOw28dFch6Aic4CDsrkRQ/6CMgUeT4xyM
+        eMsR1DnbOXBP3UZgP91LQVPFWQZuH3/DQsj2rwQGXCEKpq+6KBi6Ws/BxLGbCGqeujh4czTE
+        wbPzfRJoLIvK4SYfBb7rQQ5avTMUBNqeUTD+VzUFrrtnaGg48hU0+QpgoDEJfv+5joHA3Vsc
+        /Pd8kgXfvUEWylteUeDsqqXheWSGht7gBFq3hHQ7hinysOcD0mMPSIizLZ00X4tQZOi+hXS1
+        V3Pktd8vIY7OTpb8UeOlSPPxUywJVOSSt3+OMORc7wtExvsec6T7cSWzJekbVa7JaDELnxQb
+        RfMaZYEaMlTqbFBlrMpWqTM1hTkZWcoVebm7hJI9pYJpRd4OVfGT4Ci37/z8/d03begwisis
+        KEGK+VU4NFlLWZFMquBbEO7zldFWJI0uFmPvhdK4sxBPP7FycWcM4arhLsnsYiGfj3snvGiW
+        E/nV+I7/Vkyi+U4Z7q9zS+LFi2jR8wsza3F8Dj5Z2R4r5Hwe/qdjiJ1lhl+Cb7T9HZsvir7q
+        G29j4s4CfMcWjnECr8UXL1+MOTT/GZ7+dZCOczIeCTdQcU7DV17V0z8hhX1Obp+T2Ock9jlJ
+        I2LaUaJgEfU6vahWiVq9aDHoVEVGfReKnuDlgSmnCw1e2uZBvBQpP5Q3ypIKFay2VDyg9yAs
+        pZWJ8o/8iYUK+S7tgYOCybjdZCkRRA/Kin7uJJ2yqMgYPWiDebs6S62BbLUmU5O5GpTJ8ir+
+        +rcKXqc1C3sFYZ9get9R0oSUwyh5mH3KTKUZ0z3XPs1yr2leN+/jo+sP5m5eLCdLjwymOmq+
+        eLTpzIndG1ULfjgkidTd77SNtTglX6Y/WMsWdFTrUn/bWSF/2O8Yae1/t9xtHW7J9+SMVjmV
+        59ytjilD+OuNNvx9td0478eI45LuuyvBDa+DwWJ/Q9qy0VTaXFu09XMlIxZr1em0SdT+Dxpi
+        Ik6YAwAA
+X-CMS-MailID: 20190628125513eucas1p149cf5397774d31921b4eee030d2d8500
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190628123124epcas2p3edc3c3a64edf324948a9ec1f9e41b974
+X-RootMTR: 20190628123051epcas3p35e0cb4a5a1159dac19bde504ae21b0f3
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190628123124epcas2p3edc3c3a64edf324948a9ec1f9e41b974
+X-CMS-RootMailID: 20190628123051epcas3p35e0cb4a5a1159dac19bde504ae21b0f3
 References: <cover.1561724493.git.mchehab+samsung@kernel.org>
-        <CGME20190628123124epcas2p3edc3c3a64edf324948a9ec1f9e41b974@epcas2p3.samsung.com>
-        <7ee0e33575633f689203f582259c2cbdce477176.1561724493.git.mchehab+samsung@kernel.org>
+        <CGME20190628123051epcas3p35e0cb4a5a1159dac19bde504ae21b0f3@epcas3p3.samsung.com>
+        <b26fc645cb2c81fe88ab13616c65664d2c3cead5.1561724493.git.mchehab+samsung@kernel.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
@@ -141,75 +138,43 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
 On 6/28/19 2:30 PM, Mauro Carvalho Chehab wrote:
-> There are lots of documents that belong to the admin-guide but
-> are on random places (most under Documentation root dir).
+> The contents of those directories were orphaned at the documentation
+> body.
 > 
-> Move them to the admin guide.
+> While those directories could likely be moved to be inside some guide,
+> I'm opting to just adding their indexes to the main one, removing the
+> :orphan: and adding the SPDX header.
+> 
+> For the drivers, the rationale is that the documentation contains
+> a mix of Kernelspace, uAPI and admin-guide. So, better to keep them on
+> separate directories, as we've be doing with similar subsystem-specific
+> docs that were not split yet.
+> 
+> For the others, well... I'm too lazy to do the move. Also, it
+> seems to make sense to keep at least some of those at the main
+> dir (like kbuild, for example). In any case, a latter patch
+> could do the move.
 > 
 > Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 
 Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
 > ---
->  Documentation/ABI/stable/sysfs-devices-node     |  2 +-
->  Documentation/ABI/testing/procfs-diskstats      |  2 +-
->  Documentation/ABI/testing/sysfs-block           |  2 +-
->  .../ABI/testing/sysfs-devices-system-cpu        |  4 ++--
->  .../{btmrvl.txt => admin-guide/btmrvl.rst}      |  0
->  .../clearing-warn-once.rst}                     |  0
->  .../{cpu-load.txt => admin-guide/cpu-load.rst}  |  0
->  .../cputopology.rst}                            |  0
->  .../admin-guide/device-mapper/statistics.rst    |  4 ++--
->  .../{efi-stub.txt => admin-guide/efi-stub.rst}  |  0
->  .../{highuid.txt => admin-guide/highuid.rst}    |  0
->  Documentation/admin-guide/hw-vuln/l1tf.rst      |  2 +-
->  .../hw_random.rst}                              |  0
->  Documentation/admin-guide/index.rst             | 17 +++++++++++++++++
->  .../{iostats.txt => admin-guide/iostats.rst}    |  0
->  Documentation/admin-guide/kernel-parameters.txt |  2 +-
->  .../kernel-per-CPU-kthreads.rst}                |  0
->  .../lcd-panel-cgram.rst                         |  2 --
->  Documentation/{ldm.txt => admin-guide/ldm.rst}  |  0
->  .../lockup-watchdogs.rst}                       |  0
->  .../mm/cma_debugfs.rst}                         |  2 --
->  Documentation/admin-guide/mm/index.rst          |  1 +
->  .../{numastat.txt => admin-guide/numastat.rst}  |  0
->  Documentation/{pnp.txt => admin-guide/pnp.rst}  |  0
->  Documentation/{rtc.txt => admin-guide/rtc.rst}  |  0
->  .../{svga.txt => admin-guide/svga.rst}          |  0
->  Documentation/admin-guide/sysctl/kernel.rst     |  2 +-
->  .../video-output.rst}                           |  0
->  Documentation/fb/vesafb.rst                     |  2 +-
->  Documentation/x86/topology.rst                  |  2 +-
->  MAINTAINERS                                     | 12 ++++++------
->  arch/arm/Kconfig                                |  2 +-
->  arch/parisc/Kconfig                             |  2 +-
->  arch/sh/Kconfig                                 |  2 +-
->  arch/sparc/Kconfig                              |  2 +-
->  arch/x86/Kconfig                                |  4 ++--
->  block/partitions/Kconfig                        |  2 +-
->  drivers/char/Kconfig                            |  4 ++--
->  drivers/char/hw_random/core.c                   |  2 +-
->  include/linux/hw_random.h                       |  2 +-
->  40 files changed, 47 insertions(+), 33 deletions(-)
->  rename Documentation/{btmrvl.txt => admin-guide/btmrvl.rst} (100%)
->  rename Documentation/{clearing-warn-once.txt => admin-guide/clearing-warn-once.rst} (100%)
->  rename Documentation/{cpu-load.txt => admin-guide/cpu-load.rst} (100%)
->  rename Documentation/{cputopology.txt => admin-guide/cputopology.rst} (100%)
->  rename Documentation/{efi-stub.txt => admin-guide/efi-stub.rst} (100%)
->  rename Documentation/{highuid.txt => admin-guide/highuid.rst} (100%)
->  rename Documentation/{hw_random.txt => admin-guide/hw_random.rst} (100%)
->  rename Documentation/{iostats.txt => admin-guide/iostats.rst} (100%)
->  rename Documentation/{kernel-per-CPU-kthreads.txt => admin-guide/kernel-per-CPU-kthreads.rst} (100%)
->  rename Documentation/{auxdisplay => admin-guide}/lcd-panel-cgram.rst (99%)
->  rename Documentation/{ldm.txt => admin-guide/ldm.rst} (100%)
->  rename Documentation/{lockup-watchdogs.txt => admin-guide/lockup-watchdogs.rst} (100%)
->  rename Documentation/{cma/debugfs.rst => admin-guide/mm/cma_debugfs.rst} (98%)
->  rename Documentation/{numastat.txt => admin-guide/numastat.rst} (100%)
->  rename Documentation/{pnp.txt => admin-guide/pnp.rst} (100%)
->  rename Documentation/{rtc.txt => admin-guide/rtc.rst} (100%)
->  rename Documentation/{svga.txt => admin-guide/svga.rst} (100%)
->  rename Documentation/{video-output.txt => admin-guide/video-output.rst} (100%)
+>  Documentation/cdrom/index.rst           |  2 +-
+>  Documentation/fault-injection/index.rst |  2 +-
+>  Documentation/fb/index.rst              |  2 +-
+>  Documentation/fpga/index.rst            |  2 +-
+>  Documentation/ide/index.rst             |  2 +-
+>  Documentation/index.rst                 | 14 ++++++++++++++
+>  Documentation/kbuild/index.rst          |  2 +-
+>  Documentation/livepatch/index.rst       |  2 +-
+>  Documentation/netlabel/index.rst        |  2 +-
+>  Documentation/pcmcia/index.rst          |  2 +-
+>  Documentation/power/index.rst           |  2 +-
+>  Documentation/target/index.rst          |  2 +-
+>  Documentation/timers/index.rst          |  2 +-
+>  Documentation/watchdog/index.rst        |  2 +-
+>  14 files changed, 27 insertions(+), 13 deletions(-)
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
