@@ -2,126 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C23559C8E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 15:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FD95A518
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 21:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726672AbfF1NGI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Jun 2019 09:06:08 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:39968 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726619AbfF1NGI (ORCPT
+        id S1726565AbfF1TWl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 15:22:41 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38334 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726497AbfF1TWl (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Jun 2019 09:06:08 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190628130607euoutp01763dcd4fa2b1e0d8c1276220b12107ae~sXpWSJgVN0843308433euoutp01c
-        for <linux-fbdev@vger.kernel.org>; Fri, 28 Jun 2019 13:06:07 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190628130607euoutp01763dcd4fa2b1e0d8c1276220b12107ae~sXpWSJgVN0843308433euoutp01c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1561727167;
-        bh=LNtMGok1x3cjZg39LfQejzodC8B1D/r3TRp6k46vC1Q=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=PqbXjhZBV0ES/q2SAFhj5bo1RwnGEeRCfgkfdqg4ZvG5li/g4aWD8qS+U4LgyR5BR
-         5Hl8UUrpntuN8yJV1JWXEU4UdDhhHUgN8hW3XppSAVOLFXLDCeLvQkQCjxZMdOwaJB
-         B67zO17m8xHkxwQ+mNH0XP1sHosWu33vQm75iCf4=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190628130606eucas1p2dcc7beeaf924327bf9d0a7f4c9c90138~sXpViTct90578905789eucas1p2J;
-        Fri, 28 Jun 2019 13:06:06 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 24.6B.04377.EB0161D5; Fri, 28
-        Jun 2019 14:06:06 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190628130605eucas1p1fd85f471fd86a6914ea887604efca6b4~sXpU5tKWO0890808908eucas1p1b;
-        Fri, 28 Jun 2019 13:06:05 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190628130605eusmtrp1262afc22988935ca9709960c4a14470b~sXpUmdApT2189221892eusmtrp1D;
-        Fri, 28 Jun 2019 13:06:05 +0000 (GMT)
-X-AuditID: cbfec7f4-113ff70000001119-fe-5d1610be0f8c
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 3A.55.04140.DB0161D5; Fri, 28
-        Jun 2019 14:06:05 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190628130604eusmtip257086c7bb5aa31f0e0ef95b53c86ea90~sXpUETlEF1247912479eusmtip2s;
-        Fri, 28 Jun 2019 13:06:04 +0000 (GMT)
-Subject: Re: [PATCH 12/12] fbdev: da8xx: use resource management for dma
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <84ef4c04-430d-0545-ff81-567f366fe035@samsung.com>
-Date:   Fri, 28 Jun 2019 15:06:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        Fri, 28 Jun 2019 15:22:41 -0400
+Received: by mail-io1-f68.google.com with SMTP id j6so14835735ioa.5;
+        Fri, 28 Jun 2019 12:22:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=SV3UaGLoeKUQCI7wGZiOfbddOtsjqVsakZX22AHysxE=;
+        b=AfS92IuksD4AqsR+XNQaGaqAbBSKk/Ot7d+SNdIKKF5RIa0dQWPBfoZHWqwcqehPvo
+         GGqJpQd8X91Vdj0GpfEJiSHcwGfSfgAkmVaHj/WpLG5GshlmejcX17GaOh9LJy7SByPN
+         K+E+pFsmgs1JQjNqWNtqYcAEPLH2itf3TudSmUGIbZYjd+ofPKIcOSyVyyuUpSENnRmJ
+         2ZitEvjq+cWl9m6jhTdRegKea7LxSkzBLT1xjxh/Ks+NPm22AjAfJDrqQ8rO2AnuFmYe
+         xJxh5hrq/jqsNpZc9e2Qokqd8eBm/ADG7rGD5yGG4GswsInyrwh1WEGonQfzBIm/3v0U
+         RLjg==
+X-Gm-Message-State: APjAAAV4rJo22fDnSMMH1hZxqV8WRTxmq+piH0wNOcFUrPX+0QTb+stF
+        aboOIT/R1724axJRNEwv2Q==
+X-Google-Smtp-Source: APXvYqzFAiaMqX9Kc+pU35sAZ092vTl08ulqOCvMY9sGS0us9aZUSx2qrN6swZfkkImylaZ6IpC8fg==
+X-Received: by 2002:a5d:9bc6:: with SMTP id d6mr1291115ion.160.1561749759989;
+        Fri, 28 Jun 2019 12:22:39 -0700 (PDT)
+Received: from localhost ([64.188.179.243])
+        by smtp.gmail.com with ESMTPSA id c23sm2720600iod.11.2019.06.28.12.22.38
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 28 Jun 2019 12:22:39 -0700 (PDT)
+Date:   Fri, 28 Jun 2019 13:22:38 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Brian Masney <masneyb@onstation.org>
+Cc:     robh+dt@kernel.org, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, mark.rutland@arm.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dmurphy@ti.com, jonathan@marek.ca
+Subject: Re: [PATCH] dt-bindings: backlight: lm3630a: correct schema
+ validation
+Message-ID: <20190628192238.GA8617@bogus>
+References: <20190520085846.22320-1-masneyb@onstation.org>
 MIME-Version: 1.0
-In-Reply-To: <20190625163434.13620-13-brgl@bgdev.pl>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SWUwTURT1zdahYXBaEC51i40LbizGj4kLwYSP+dEY0ShCxSoTILJoCygq
-        oSooFnfcaDSiEtYEajEUGlmEQEWBgCgBBKmIUQlEgWLUIEoZiPyd++4595yTPBqX20gFHRUb
-        L2hi1dFKSkqUNfxqWV/Fuqt873xnOPv9lwRnsZVRXNNQr4R7pHPn3ox/o7h8e5aE+1T6EeP6
-        xusRd3MiD+NMHztI7sWV7yTXbrlHcdWXjVgAw3/rTJPwjzvekXyFoVfCmwovUvzo1UaS7+l4
-        RvF9GVaML81J4a2dZowfMy3ZKd0v3RIuREclChof/4PSyIbPduroI/yEoTREhz5geuREA7sR
-        fp3NQXokpeVsPgLDjzFCHOwIRobNpDiMIah4bUOzEn21bYaVh6D/4ciMfhhBS/cA4WC5sjx0
-        3uqbVrixqyC7+D3mIOFsPQ5f24sox4JiN8H1C4XTJIb1B9vYV4kDE+wKKKrpnj60gN0HfQ1G
-        UuTIoDFLNHCaimHMPDONcdYDugceYCJeCubhe7jDDNgzNLxoLpupGgifUg2EiF1h0PpUIuJF
-        8CrzEiEKihH8Sf8yozYjyMucpETWZqiztk3FoKcsVkOJxccBgd0GuRnHROgCncMyMYML3Ci7
-        g4vPDKSfl4s3VoIx10jNuuorCvBrSGmY08wwp41hThvDf9tsRBQiDyFBGxMhaDfECse9teoY
-        bUJshPfhuBgTmvp3ryat9nJkmThUi1gaKZ2ZbKm7Sk6qE7VJMbUIaFzpxni2uKnkTLg66aSg
-        iQvTJEQL2lq0kCaUHsypebYQORuhjheOCMJRQTO7xWgnhQ65nW72XbtYx/SGoT1e5t1FWdvL
-        XW6Pyo5Z3iYPpRYu0z2g0WvPwORKv+S2nvDg0NbxoP5KRU/53Upyx+LPXXrFLs+gGplH3TLT
-        tabg1Byvh7InSa2Jvn8rnzceWD4/YOvv/tCQn0NVqgtBewtU67pKU4Y+dAVdjbp+rtF5MK2E
-        72lREtpItd8aXKNV/wNKnIshcwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrIIsWRmVeSWpSXmKPExsVy+t/xe7p7BcRiDWYcl7b4MvcUi8WuB9vY
-        LM68uctusahBzOLK1/dsFiu+zGS3eLr5MZPF/a9HGS2m/FnOZLHp8TVWixN9H1gtLu+aw2ax
-        v3cDkwOvx/sbrewei6/dZvXYOesuu8emVZ1sHp/6T7J63Lm2h83jfvdxJo/NS+o9jt/YzuTx
-        eZNcAFeUnk1RfmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2C
-        Xsax51/YChYxV8zaHN3A+JCpi5GTQ0LARKJr/wMWEFtIYCmjxNwNoV2MHEBxGYnj68sgSoQl
-        /lzrYuti5AIqec0ocXzSSjaQhLCAh8SNqfcZQWwRAXWJBevuMYEUMQscZ5ZY+GIKVMcGRomX
-        Wy+DbWMTsJKY2L4KrINXwE7iweeX7CA2i4CqxOoDt8CuEBWIkDjzfgULRI2gxMmZT8BsTqBL
-        N0xuBLOZgbb9mXeJGcIWl7j1ZD4ThC0vsf3tHOYJjEKzkLTPQtIyC0nLLCQtCxhZVjGKpJYW
-        56bnFhvpFSfmFpfmpesl5+duYgRG97ZjP7fsYOx6F3yIUYCDUYmHdwGXWKwQa2JZcWXuIUYJ
-        DmYlEV7JcyKxQrwpiZVVqUX58UWlOanFhxhNgZ6byCwlmpwPTDx5JfGGpobmFpaG5sbmxmYW
-        SuK8HQIHY4QE0hNLUrNTUwtSi2D6mDg4pRoYz3kvurpw4tywY0YTjN7mOxz0Lkvft8YvyFvz
-        ietxra/fYrYwR91X5b1xx/rM/yoLgXUmW3XYbk/lkrjKId3jXpTLFDT7OP/3UuXbfAl3ZZtn
-        9bpmRr/8nDq19NjE29LzuB2szy0UUmvtds0w2skhxXu4Y+JfG2XZ7U675qaLmf/bO9mmLfaD
-        EktxRqKhFnNRcSIALXftgQQDAAA=
-X-CMS-MailID: 20190628130605eucas1p1fd85f471fd86a6914ea887604efca6b4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190625163514epcas3p3b094a54f96c59c38b94ce56b6fc08f63
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190625163514epcas3p3b094a54f96c59c38b94ce56b6fc08f63
-References: <20190625163434.13620-1-brgl@bgdev.pl>
-        <CGME20190625163514epcas3p3b094a54f96c59c38b94ce56b6fc08f63@epcas3p3.samsung.com>
-        <20190625163434.13620-13-brgl@bgdev.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190520085846.22320-1-masneyb@onstation.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
-On 6/25/19 6:34 PM, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Mon, 20 May 2019 04:58:46 -0400, Brian Masney wrote:
+> The '#address-cells' and '#size-cells' properties were not defined in
+> the lm3630a bindings and would cause the following error when
+> attempting to validate the examples against the schema:
 > 
-> Use managed variants of dma alloc functions in the da8xx fbdev driver.
+> Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+> '#address-cells', '#size-cells' do not match any of the regexes:
+> '^led@[01]$', 'pinctrl-[0-9]+'
 > 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Correct this by adding those two properties.
+> 
+> While we're here, move the ti,linear-mapping-mode property to the
+> led@[01] child nodes to correct the following validation error:
+> 
+> Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.example.dt.yaml:
+> led@0: 'ti,linear-mapping-mode' does not match any of the regexes:
+> 'pinctrl-[0-9]+'
+> 
+> Fixes: 32fcb75c66a0 ("dt-bindings: backlight: Add lm3630a bindings")
+> Signed-off-by: Brian Masney <masneyb@onstation.org>
+> Reported-by: Rob Herring <robh+dt@kernel.org>
+> ---
+>  .../leds/backlight/lm3630a-backlight.yaml     | 20 +++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
 
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Applied, thanks.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Rob
