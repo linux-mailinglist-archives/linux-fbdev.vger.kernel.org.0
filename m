@@ -2,49 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE4D859A9E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 14:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8889359B13
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 14:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbfF1MUr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Jun 2019 08:20:47 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:58798 "EHLO
+        id S1727317AbfF1MbH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 08:31:07 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39816 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726810AbfF1MUq (ORCPT
+        with ESMTP id S1727180AbfF1Mas (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Jun 2019 08:20:46 -0400
+        Fri, 28 Jun 2019 08:30:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Sender:Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=oOwOSCxbZh/8uQiBXY+7QLjNRJOPdEk2ewzEqFQcDtU=; b=p5kvvJ+rs+cLmQ+c0oXFGTXbL4
-        rmUqAfjducYKYD6conb47hi0BDJrU+kLj2HAzG0XTR8a960cy8waVhBKgVFEIgmeY+NQPRZbXIglk
-        vA37C/K49ysh+9Gtf7WIt0BIxqDsaKK1X9ybULB1/DsuBOWhu6BHcVJG+YNY4ir4HbriROod1oEPc
-        wwXV6eIIrG5ChE4YhULSUVZ18E4DJKeAHv71PodC5DHzuOfG9m8TGUYiNY3vDhyp76xczxyyPtpxf
-        V2ettC5wrN8c3CTsEp86XImKdnb/KB4h7Ge0fZcXHgilw2W1hfR3M+AqxTtQMQYtAt86NibUWSYxl
-        aouz/TlA==;
+        bh=t2SlvlYO6vN68ooBWcFQh21aLIzOtka8Klr/M76soBU=; b=GPcFupf5dzfyT165XdM5l7atm7
+        NpunVR4RVyW430xRFKelq2/bs7dtPeXB4qL/NAe4wUu90z3hkDS/UIfIGdcLRgNR2UNHiStAIHDWk
+        b5ipZ/rh5zP1MANqlxnbENYD/fVy7fINuTz8hI/7Xxd5uRjSAc/v12+G6v77fOA6pvH51AXLu2qLr
+        m1H6iZl3askKHReK+jify63bqpxZ2aZmSjKnEi33cR7epWYwKUNyxM6iw0XhbwlMf1Q1R8eIlnGAY
+        g2vrko1I5YdrDNVcbwUdqvarlbeC++auL6Ldh/LGX2VSxCdN+UgvNr4MOiHvRW17Y0Xbs+VJlMxkY
+        FFszEwYQ==;
 Received: from [186.213.242.156] (helo=bombadil.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hgprv-00009y-8k; Fri, 28 Jun 2019 12:20:43 +0000
+        id 1hgq1U-00055h-OB; Fri, 28 Jun 2019 12:30:37 +0000
 Received: from mchehab by bombadil.infradead.org with local (Exim 4.92)
         (envelope-from <mchehab@bombadil.infradead.org>)
-        id 1hgprt-00057f-Ae; Fri, 28 Jun 2019 09:20:41 -0300
+        id 1hgq1S-0005TB-Lz; Fri, 28 Jun 2019 09:30:34 -0300
 From:   Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
         Mauro Carvalho Chehab <mchehab@infradead.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Willy Tarreau <willy@haproxy.com>,
+        Ksenija Stanojevic <ksenija.stanojevic@gmail.com>,
+        "Richard Russon (FlatCap)" <ldm@flatcap.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Martin Mares <mj@ucw.cz>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>, Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH 11/43] docs: console.txt: convert docs to ReST and rename to *.rst
-Date:   Fri, 28 Jun 2019 09:20:07 -0300
-Message-Id: <e8cee712026b042eacf3e003a57578d963f24ad8.1561723980.git.mchehab+samsung@kernel.org>
+        linux-efi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-ntfs-dev@lists.sourceforge.net, linux-rtc@vger.kernel.org,
+        linux-video@atrey.karlin.mff.cuni.cz,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-block@vger.kernel.org
+Subject: [PATCH 28/39] docs: admin-guide: add a series of orphaned documents
+Date:   Fri, 28 Jun 2019 09:30:21 -0300
+Message-Id: <7ee0e33575633f689203f582259c2cbdce477176.1561724493.git.mchehab+samsung@kernel.org>
 X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1561723979.git.mchehab+samsung@kernel.org>
-References: <cover.1561723979.git.mchehab+samsung@kernel.org>
+In-Reply-To: <cover.1561724493.git.mchehab+samsung@kernel.org>
+References: <cover.1561724493.git.mchehab+samsung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -52,197 +78,543 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Convert this small file to ReST in preparation for adding it to
-the driver-api book.
+There are lots of documents that belong to the admin-guide but
+are on random places (most under Documentation root dir).
 
-While this is not part of the driver-api book, mark it as
-:orphan:, in order to avoid build warnings.
+Move them to the admin guide.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../console/{console.txt => console.rst}      | 63 ++++++++++---------
- Documentation/fb/fbcon.rst                    |  4 +-
- drivers/tty/Kconfig                           |  2 +-
- 3 files changed, 38 insertions(+), 31 deletions(-)
- rename Documentation/console/{console.txt => console.rst} (80%)
+ Documentation/ABI/stable/sysfs-devices-node     |  2 +-
+ Documentation/ABI/testing/procfs-diskstats      |  2 +-
+ Documentation/ABI/testing/sysfs-block           |  2 +-
+ .../ABI/testing/sysfs-devices-system-cpu        |  4 ++--
+ .../{btmrvl.txt => admin-guide/btmrvl.rst}      |  0
+ .../clearing-warn-once.rst}                     |  0
+ .../{cpu-load.txt => admin-guide/cpu-load.rst}  |  0
+ .../cputopology.rst}                            |  0
+ .../admin-guide/device-mapper/statistics.rst    |  4 ++--
+ .../{efi-stub.txt => admin-guide/efi-stub.rst}  |  0
+ .../{highuid.txt => admin-guide/highuid.rst}    |  0
+ Documentation/admin-guide/hw-vuln/l1tf.rst      |  2 +-
+ .../hw_random.rst}                              |  0
+ Documentation/admin-guide/index.rst             | 17 +++++++++++++++++
+ .../{iostats.txt => admin-guide/iostats.rst}    |  0
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ .../kernel-per-CPU-kthreads.rst}                |  0
+ .../lcd-panel-cgram.rst                         |  2 --
+ Documentation/{ldm.txt => admin-guide/ldm.rst}  |  0
+ .../lockup-watchdogs.rst}                       |  0
+ .../mm/cma_debugfs.rst}                         |  2 --
+ Documentation/admin-guide/mm/index.rst          |  1 +
+ .../{numastat.txt => admin-guide/numastat.rst}  |  0
+ Documentation/{pnp.txt => admin-guide/pnp.rst}  |  0
+ Documentation/{rtc.txt => admin-guide/rtc.rst}  |  0
+ .../{svga.txt => admin-guide/svga.rst}          |  0
+ Documentation/admin-guide/sysctl/kernel.rst     |  2 +-
+ .../video-output.rst}                           |  0
+ Documentation/fb/vesafb.rst                     |  2 +-
+ Documentation/x86/topology.rst                  |  2 +-
+ MAINTAINERS                                     | 12 ++++++------
+ arch/arm/Kconfig                                |  2 +-
+ arch/parisc/Kconfig                             |  2 +-
+ arch/sh/Kconfig                                 |  2 +-
+ arch/sparc/Kconfig                              |  2 +-
+ arch/x86/Kconfig                                |  4 ++--
+ block/partitions/Kconfig                        |  2 +-
+ drivers/char/Kconfig                            |  4 ++--
+ drivers/char/hw_random/core.c                   |  2 +-
+ include/linux/hw_random.h                       |  2 +-
+ 40 files changed, 47 insertions(+), 33 deletions(-)
+ rename Documentation/{btmrvl.txt => admin-guide/btmrvl.rst} (100%)
+ rename Documentation/{clearing-warn-once.txt => admin-guide/clearing-warn-once.rst} (100%)
+ rename Documentation/{cpu-load.txt => admin-guide/cpu-load.rst} (100%)
+ rename Documentation/{cputopology.txt => admin-guide/cputopology.rst} (100%)
+ rename Documentation/{efi-stub.txt => admin-guide/efi-stub.rst} (100%)
+ rename Documentation/{highuid.txt => admin-guide/highuid.rst} (100%)
+ rename Documentation/{hw_random.txt => admin-guide/hw_random.rst} (100%)
+ rename Documentation/{iostats.txt => admin-guide/iostats.rst} (100%)
+ rename Documentation/{kernel-per-CPU-kthreads.txt => admin-guide/kernel-per-CPU-kthreads.rst} (100%)
+ rename Documentation/{auxdisplay => admin-guide}/lcd-panel-cgram.rst (99%)
+ rename Documentation/{ldm.txt => admin-guide/ldm.rst} (100%)
+ rename Documentation/{lockup-watchdogs.txt => admin-guide/lockup-watchdogs.rst} (100%)
+ rename Documentation/{cma/debugfs.rst => admin-guide/mm/cma_debugfs.rst} (98%)
+ rename Documentation/{numastat.txt => admin-guide/numastat.rst} (100%)
+ rename Documentation/{pnp.txt => admin-guide/pnp.rst} (100%)
+ rename Documentation/{rtc.txt => admin-guide/rtc.rst} (100%)
+ rename Documentation/{svga.txt => admin-guide/svga.rst} (100%)
+ rename Documentation/{video-output.txt => admin-guide/video-output.rst} (100%)
 
-diff --git a/Documentation/console/console.txt b/Documentation/console/console.rst
-similarity index 80%
-rename from Documentation/console/console.txt
-rename to Documentation/console/console.rst
-index d73c2ab4beda..b374141b027e 100644
---- a/Documentation/console/console.txt
-+++ b/Documentation/console/console.rst
-@@ -1,3 +1,6 @@
-+:orphan:
-+
-+===============
- Console Drivers
- ===============
+diff --git a/Documentation/ABI/stable/sysfs-devices-node b/Documentation/ABI/stable/sysfs-devices-node
+index f7ce68fbd4b9..df8413cf1468 100644
+--- a/Documentation/ABI/stable/sysfs-devices-node
++++ b/Documentation/ABI/stable/sysfs-devices-node
+@@ -61,7 +61,7 @@ Date:		October 2002
+ Contact:	Linux Memory Management list <linux-mm@kvack.org>
+ Description:
+ 		The node's hit/miss statistics, in units of pages.
+-		See Documentation/numastat.txt
++		See Documentation/admin-guide/numastat.rst
  
-@@ -17,25 +20,26 @@ of driver occupying the consoles.) They can only take over the console that is
- occupied by the system driver. In the same token, if the modular driver is
- released by the console, the system driver will take over.
+ What:		/sys/devices/system/node/nodeX/distance
+ Date:		October 2002
+diff --git a/Documentation/ABI/testing/procfs-diskstats b/Documentation/ABI/testing/procfs-diskstats
+index abac31d216de..2c44b4f1b060 100644
+--- a/Documentation/ABI/testing/procfs-diskstats
++++ b/Documentation/ABI/testing/procfs-diskstats
+@@ -29,4 +29,4 @@ Description:
+ 		17 - sectors discarded
+ 		18 - time spent discarding
  
--Modular drivers, from the programmer's point of view, have to call:
-+Modular drivers, from the programmer's point of view, have to call::
+-		For more details refer to Documentation/iostats.txt
++		For more details refer to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/ABI/testing/sysfs-block b/Documentation/ABI/testing/sysfs-block
+index dfad7427817c..f8c7c7126bb1 100644
+--- a/Documentation/ABI/testing/sysfs-block
++++ b/Documentation/ABI/testing/sysfs-block
+@@ -15,7 +15,7 @@ Description:
+ 		 9 - I/Os currently in progress
+ 		10 - time spent doing I/Os (ms)
+ 		11 - weighted time spent doing I/Os (ms)
+-		For more details refer Documentation/iostats.txt
++		For more details refer Documentation/admin-guide/iostats.rst
  
- 	 do_take_over_console() - load and bind driver to console layer
- 	 give_up_console() - unload driver; it will only work if driver
- 			     is fully unbound
  
--In newer kernels, the following are also available:
-+In newer kernels, the following are also available::
+ What:		/sys/block/<disk>/<part>/stat
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index d404603c6b52..5f7d7b14fa44 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -34,7 +34,7 @@ Description:	CPU topology files that describe kernel limits related to
+ 		present: cpus that have been identified as being present in
+ 		the system.
  
- 	 do_register_con_driver()
- 	 do_unregister_con_driver()
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
  
- If sysfs is enabled, the contents of /sys/class/vtconsole can be
- examined. This shows the console backends currently registered by the
--system which are named vtcon<n> where <n> is an integer from 0 to 15. Thus:
-+system which are named vtcon<n> where <n> is an integer from 0 to 15.
-+Thus::
  
-        ls /sys/class/vtconsole
-        .  ..  vtcon0  vtcon1
+ What:		/sys/devices/system/cpu/probe
+@@ -103,7 +103,7 @@ Description:	CPU topology files that describe a logical CPU's relationship
+ 		thread_siblings_list: human-readable list of cpu#'s hardware
+ 		threads within the same core as cpu#
  
--Each directory in /sys/class/vtconsole has 3 files:
-+Each directory in /sys/class/vtconsole has 3 files::
+-		See Documentation/cputopology.txt for more information.
++		See Documentation/admin-guide/cputopology.rst for more information.
  
-      ls /sys/class/vtconsole/vtcon0
-      .  ..  bind  name  uevent
-@@ -46,27 +50,29 @@ What do these files signify?
-         read, or acts to bind or unbind the driver to the virtual consoles
-         when written to. The possible values are:
  
--	0 - means the driver is not bound and if echo'ed, commands the driver
-+	0
-+	  - means the driver is not bound and if echo'ed, commands the driver
- 	    to unbind
+ What:		/sys/devices/system/cpu/cpuidle/current_driver
+diff --git a/Documentation/btmrvl.txt b/Documentation/admin-guide/btmrvl.rst
+similarity index 100%
+rename from Documentation/btmrvl.txt
+rename to Documentation/admin-guide/btmrvl.rst
+diff --git a/Documentation/clearing-warn-once.txt b/Documentation/admin-guide/clearing-warn-once.rst
+similarity index 100%
+rename from Documentation/clearing-warn-once.txt
+rename to Documentation/admin-guide/clearing-warn-once.rst
+diff --git a/Documentation/cpu-load.txt b/Documentation/admin-guide/cpu-load.rst
+similarity index 100%
+rename from Documentation/cpu-load.txt
+rename to Documentation/admin-guide/cpu-load.rst
+diff --git a/Documentation/cputopology.txt b/Documentation/admin-guide/cputopology.rst
+similarity index 100%
+rename from Documentation/cputopology.txt
+rename to Documentation/admin-guide/cputopology.rst
+diff --git a/Documentation/admin-guide/device-mapper/statistics.rst b/Documentation/admin-guide/device-mapper/statistics.rst
+index 3d80a9f850cc..41ded0bc5933 100644
+--- a/Documentation/admin-guide/device-mapper/statistics.rst
++++ b/Documentation/admin-guide/device-mapper/statistics.rst
+@@ -13,7 +13,7 @@ the range specified.
  
--        1 - means the driver is bound and if echo'ed, commands the driver to
-+        1
-+	  - means the driver is bound and if echo'ed, commands the driver to
- 	    bind
+ The I/O statistics counters for each step-sized area of a region are
+ in the same format as `/sys/block/*/stat` or `/proc/diskstats` (see:
+-Documentation/iostats.txt).  But two extra counters (12 and 13) are
++Documentation/admin-guide/iostats.rst).  But two extra counters (12 and 13) are
+ provided: total time spent reading and writing.  When the histogram
+ argument is used, the 14th parameter is reported that represents the
+ histogram of latencies.  All these counters may be accessed by sending
+@@ -151,7 +151,7 @@ Messages
+ 	  The first 11 counters have the same meaning as
+ 	  `/sys/block/*/stat or /proc/diskstats`.
  
--     2. name - read-only file. Shows the name of the driver in this format:
-+     2. name - read-only file. Shows the name of the driver in this format::
+-	  Please refer to Documentation/iostats.txt for details.
++	  Please refer to Documentation/admin-guide/iostats.rst for details.
  
--	cat /sys/class/vtconsole/vtcon0/name
--	(S) VGA+
-+	  cat /sys/class/vtconsole/vtcon0/name
-+	  (S) VGA+
+ 	  1. the number of reads completed
+ 	  2. the number of reads merged
+diff --git a/Documentation/efi-stub.txt b/Documentation/admin-guide/efi-stub.rst
+similarity index 100%
+rename from Documentation/efi-stub.txt
+rename to Documentation/admin-guide/efi-stub.rst
+diff --git a/Documentation/highuid.txt b/Documentation/admin-guide/highuid.rst
+similarity index 100%
+rename from Documentation/highuid.txt
+rename to Documentation/admin-guide/highuid.rst
+diff --git a/Documentation/admin-guide/hw-vuln/l1tf.rst b/Documentation/admin-guide/hw-vuln/l1tf.rst
+index 656aee262e23..f83212fae4d5 100644
+--- a/Documentation/admin-guide/hw-vuln/l1tf.rst
++++ b/Documentation/admin-guide/hw-vuln/l1tf.rst
+@@ -241,7 +241,7 @@ Guest mitigation mechanisms
+    For further information about confining guests to a single or to a group
+    of cores consult the cpusets documentation:
  
--	    '(S)' stands for a (S)ystem driver, i.e., it cannot be directly
--	    commanded to bind or unbind
-+	      '(S)' stands for a (S)ystem driver, i.e., it cannot be directly
-+	      commanded to bind or unbind
+-   https://www.kernel.org/doc/Documentation/cgroup-v1/cpusets.rst
++   https://www.kernel.org/doc/Documentation/admin-guide/cgroup-v1/cpusets.rst
  
--	    'VGA+' is the name of the driver
-+	      'VGA+' is the name of the driver
+ .. _interrupt_isolation:
  
--	cat /sys/class/vtconsole/vtcon1/name
--	(M) frame buffer device
-+	  cat /sys/class/vtconsole/vtcon1/name
-+	  (M) frame buffer device
+diff --git a/Documentation/hw_random.txt b/Documentation/admin-guide/hw_random.rst
+similarity index 100%
+rename from Documentation/hw_random.txt
+rename to Documentation/admin-guide/hw_random.rst
+diff --git a/Documentation/admin-guide/index.rst b/Documentation/admin-guide/index.rst
+index d5064f1802c1..2c20607e90cd 100644
+--- a/Documentation/admin-guide/index.rst
++++ b/Documentation/admin-guide/index.rst
+@@ -84,8 +84,25 @@ configure specific aspects of kernel behavior to your liking.
+    perf-security
+    acpi/index
+    aoe/index
++   btmrvl
++   clearing-warn-once
++   cpu-load
++   cputopology
+    device-mapper/index
++   efi-stub
++   highuid
++   hw_random
++   iostats
++   kernel-per-CPU-kthreads
+    laptops/index
++   lcd-panel-cgram
++   ldm
++   lockup-watchdogs
++   numastat
++   pnp
++   rtc
++   svga
++   video-output
  
--	    In this case, '(M)' stands for a (M)odular driver, one that can be
--	    directly commanded to bind or unbind.
-+	      In this case, '(M)' stands for a (M)odular driver, one that can be
-+	      directly commanded to bind or unbind.
+ .. only::  subproject and html
  
-      3. uevent - ignore this file
+diff --git a/Documentation/iostats.txt b/Documentation/admin-guide/iostats.rst
+similarity index 100%
+rename from Documentation/iostats.txt
+rename to Documentation/admin-guide/iostats.rst
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e833133c8897..713d6f378fbe 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5092,7 +5092,7 @@
  
-@@ -75,14 +81,17 @@ driver takes over the consoles vacated by the driver. Binding, on the other
- hand, will bind the driver to the consoles that are currently occupied by a
- system driver.
- 
--NOTE1: Binding and unbinding must be selected in Kconfig. It's under:
-+NOTE1:
-+  Binding and unbinding must be selected in Kconfig. It's under::
- 
--Device Drivers -> Character devices -> Support for binding and unbinding
--console drivers
-+    Device Drivers ->
-+	Character devices ->
-+		Support for binding and unbinding console drivers
- 
--NOTE2: If any of the virtual consoles are in KD_GRAPHICS mode, then binding or
--unbinding will not succeed. An example of an application that sets the console
--to KD_GRAPHICS is X.
-+NOTE2:
-+  If any of the virtual consoles are in KD_GRAPHICS mode, then binding or
-+  unbinding will not succeed. An example of an application that sets the
-+  console to KD_GRAPHICS is X.
- 
- How useful is this feature? This is very useful for console driver
- developers. By unbinding the driver from the console layer, one can unload the
-@@ -92,10 +101,10 @@ framebuffer console to VGA console and vice versa, this feature also makes
- this possible. (NOTE NOTE NOTE: Please read fbcon.txt under Documentation/fb
- for more details.)
- 
--Notes for developers:
--=====================
-+Notes for developers
-+====================
- 
--do_take_over_console() is now broken up into:
-+do_take_over_console() is now broken up into::
- 
-      do_register_con_driver()
-      do_bind_con_driver() - private function
-@@ -104,7 +113,7 @@ give_up_console() is a wrapper to do_unregister_con_driver(), and a driver must
- be fully unbound for this call to succeed. con_is_bound() will check if the
- driver is bound or not.
- 
--Guidelines for console driver writers:
-+Guidelines for console driver writers
- =====================================
- 
- In order for binding to and unbinding from the console to properly work,
-@@ -140,6 +149,4 @@ The current crop of console drivers should still work correctly, but binding
- and unbinding them may cause problems. With minimal fixes, these drivers can
- be made to work correctly.
- 
--==========================
- Antonino Daplas <adaplas@pol.net>
+ 	vga=		[BOOT,X86-32] Select a particular video mode
+ 			See Documentation/x86/boot.rst and
+-			Documentation/svga.txt.
++			Documentation/admin-guide/svga.rst.
+ 			Use vga=ask for menu.
+ 			This is actually a boot loader parameter; the value is
+ 			passed to the kernel using a special protocol.
+diff --git a/Documentation/kernel-per-CPU-kthreads.txt b/Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+similarity index 100%
+rename from Documentation/kernel-per-CPU-kthreads.txt
+rename to Documentation/admin-guide/kernel-per-CPU-kthreads.rst
+diff --git a/Documentation/auxdisplay/lcd-panel-cgram.rst b/Documentation/admin-guide/lcd-panel-cgram.rst
+similarity index 99%
+rename from Documentation/auxdisplay/lcd-panel-cgram.rst
+rename to Documentation/admin-guide/lcd-panel-cgram.rst
+index dfef50286018..a3eb00c62f53 100644
+--- a/Documentation/auxdisplay/lcd-panel-cgram.rst
++++ b/Documentation/admin-guide/lcd-panel-cgram.rst
+@@ -1,5 +1,3 @@
+-:orphan:
 -
-diff --git a/Documentation/fb/fbcon.rst b/Documentation/fb/fbcon.rst
-index 1da65b9000de..26bc5cdaabab 100644
---- a/Documentation/fb/fbcon.rst
-+++ b/Documentation/fb/fbcon.rst
-@@ -187,7 +187,7 @@ the hardware. Thus, in a VGA console::
- Assuming the VGA driver can be unloaded, one must first unbind the VGA driver
- from the console layer before unloading the driver.  The VGA driver cannot be
- unloaded if it is still bound to the console layer. (See
--Documentation/console/console.txt for more information).
-+Documentation/console/console.rst for more information).
+ ======================================
+ Parallel port LCD/Keypad Panel support
+ ======================================
+diff --git a/Documentation/ldm.txt b/Documentation/admin-guide/ldm.rst
+similarity index 100%
+rename from Documentation/ldm.txt
+rename to Documentation/admin-guide/ldm.rst
+diff --git a/Documentation/lockup-watchdogs.txt b/Documentation/admin-guide/lockup-watchdogs.rst
+similarity index 100%
+rename from Documentation/lockup-watchdogs.txt
+rename to Documentation/admin-guide/lockup-watchdogs.rst
+diff --git a/Documentation/cma/debugfs.rst b/Documentation/admin-guide/mm/cma_debugfs.rst
+similarity index 98%
+rename from Documentation/cma/debugfs.rst
+rename to Documentation/admin-guide/mm/cma_debugfs.rst
+index 518fe401b5ee..4e06ffabd78a 100644
+--- a/Documentation/cma/debugfs.rst
++++ b/Documentation/admin-guide/mm/cma_debugfs.rst
+@@ -1,5 +1,3 @@
+-:orphan:
+-
+ =====================
+ CMA Debugfs Interface
+ =====================
+diff --git a/Documentation/admin-guide/mm/index.rst b/Documentation/admin-guide/mm/index.rst
+index 5f61a6c429e0..11db46448354 100644
+--- a/Documentation/admin-guide/mm/index.rst
++++ b/Documentation/admin-guide/mm/index.rst
+@@ -26,6 +26,7 @@ the Linux memory management.
+    :maxdepth: 1
  
- This is more complicated in the case of the framebuffer console (fbcon),
- because fbcon is an intermediate layer between the console and the drivers::
-@@ -204,7 +204,7 @@ fbcon. Thus, there is no need to explicitly unbind the fbdev drivers from
- fbcon.
+    concepts
++   cma_debugfs
+    hugetlbpage
+    idle_page_tracking
+    ksm
+diff --git a/Documentation/numastat.txt b/Documentation/admin-guide/numastat.rst
+similarity index 100%
+rename from Documentation/numastat.txt
+rename to Documentation/admin-guide/numastat.rst
+diff --git a/Documentation/pnp.txt b/Documentation/admin-guide/pnp.rst
+similarity index 100%
+rename from Documentation/pnp.txt
+rename to Documentation/admin-guide/pnp.rst
+diff --git a/Documentation/rtc.txt b/Documentation/admin-guide/rtc.rst
+similarity index 100%
+rename from Documentation/rtc.txt
+rename to Documentation/admin-guide/rtc.rst
+diff --git a/Documentation/svga.txt b/Documentation/admin-guide/svga.rst
+similarity index 100%
+rename from Documentation/svga.txt
+rename to Documentation/admin-guide/svga.rst
+diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+index a0c1d4ce403a..032c7cd3cede 100644
+--- a/Documentation/admin-guide/sysctl/kernel.rst
++++ b/Documentation/admin-guide/sysctl/kernel.rst
+@@ -327,7 +327,7 @@ when a hard lockup is detected.
+    0 - don't panic on hard lockup
+    1 - panic on hard lockup
  
- So, how do we unbind fbcon from the console? Part of the answer is in
--Documentation/console/console.txt. To summarize:
-+Documentation/console/console.rst. To summarize:
+-See Documentation/lockup-watchdogs.txt for more information.  This can
++See Documentation/admin-guide/lockup-watchdogs.rst for more information.  This can
+ also be set using the nmi_watchdog kernel parameter.
  
- Echo a value to the bind file that represents the framebuffer console
- driver. So assuming vtcon1 represents fbcon, then::
-diff --git a/drivers/tty/Kconfig b/drivers/tty/Kconfig
-index 0e3e4dacbc12..1cb50f19d58c 100644
---- a/drivers/tty/Kconfig
-+++ b/drivers/tty/Kconfig
-@@ -93,7 +93,7 @@ config VT_HW_CONSOLE_BINDING
-          select the console driver that will serve as the backend for the
-          virtual terminals.
  
--	 See <file:Documentation/console/console.txt> for more
-+	 See <file:Documentation/console/console.rst> for more
- 	 information. For framebuffer console users, please refer to
- 	 <file:Documentation/fb/fbcon.rst>.
+diff --git a/Documentation/video-output.txt b/Documentation/admin-guide/video-output.rst
+similarity index 100%
+rename from Documentation/video-output.txt
+rename to Documentation/admin-guide/video-output.rst
+diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
+index 2ed0dfb661cf..6821c87b7893 100644
+--- a/Documentation/fb/vesafb.rst
++++ b/Documentation/fb/vesafb.rst
+@@ -30,7 +30,7 @@ How to use it?
+ ==============
  
+ Switching modes is done using the vga=... boot parameter.  Read
+-Documentation/svga.txt for details.
++Documentation/admin-guide/svga.rst for details.
+ 
+ You should compile in both vgacon (for text mode) and vesafb (for
+ graphics mode). Which of them takes over the console depends on
+diff --git a/Documentation/x86/topology.rst b/Documentation/x86/topology.rst
+index 8e9704f61017..e29739904e37 100644
+--- a/Documentation/x86/topology.rst
++++ b/Documentation/x86/topology.rst
+@@ -9,7 +9,7 @@ representation in the kernel. Update/change when doing changes to the
+ respective code.
+ 
+ The architecture-agnostic topology definitions are in
+-Documentation/cputopology.txt. This file holds x86-specific
++Documentation/admin-guide/cputopology.rst. This file holds x86-specific
+ differences/specialities which must not necessarily apply to the generic
+ definitions. Thus, the way to read up on Linux topology on x86 is to start
+ with the generic one and look at this one in parallel for the x86 specifics.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 82222aa618c5..76b52a20663e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6054,7 +6054,7 @@ M:	Ard Biesheuvel <ard.biesheuvel@linaro.org>
+ L:	linux-efi@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git
+ S:	Maintained
+-F:	Documentation/efi-stub.txt
++F:	Documentation/admin-guide/efi-stub.rst
+ F:	arch/*/kernel/efi.c
+ F:	arch/x86/boot/compressed/eboot.[ch]
+ F:	arch/*/include/asm/efi.h
+@@ -7033,7 +7033,7 @@ M:	Herbert Xu <herbert@gondor.apana.org.au>
+ L:	linux-crypto@vger.kernel.org
+ S:	Odd fixes
+ F:	Documentation/devicetree/bindings/rng/
+-F:	Documentation/hw_random.txt
++F:	Documentation/admin-guide/hw_random.rst
+ F:	drivers/char/hw_random/
+ F:	include/linux/hw_random.h
+ 
+@@ -9347,7 +9347,7 @@ M:	"Richard Russon (FlatCap)" <ldm@flatcap.org>
+ L:	linux-ntfs-dev@lists.sourceforge.net
+ W:	http://www.linux-ntfs.org/content/view/19/37/
+ S:	Maintained
+-F:	Documentation/ldm.txt
++F:	Documentation/admin-guide/ldm.rst
+ F:	block/partitions/ldm.*
+ 
+ LSILOGIC MPT FUSION DRIVERS (FC/SAS/SPI)
+@@ -12000,7 +12000,7 @@ PARALLEL LCD/KEYPAD PANEL DRIVER
+ M:	Willy Tarreau <willy@haproxy.com>
+ M:	Ksenija Stanojevic <ksenija.stanojevic@gmail.com>
+ S:	Odd Fixes
+-F:	Documentation/auxdisplay/lcd-panel-cgram.rst
++F:	Documentation/admin-guide/lcd-panel-cgram.rst
+ F:	drivers/auxdisplay/panel.c
+ 
+ PARALLEL PORT SUBSYSTEM
+@@ -13419,7 +13419,7 @@ Q:	http://patchwork.ozlabs.org/project/rtc-linux/list/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux.git
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/rtc/
+-F:	Documentation/rtc.txt
++F:	Documentation/admin-guide/rtc.rst
+ F:	drivers/rtc/
+ F:	include/linux/rtc.h
+ F:	include/uapi/linux/rtc.h
+@@ -15248,7 +15248,7 @@ SVGA HANDLING
+ M:	Martin Mares <mj@ucw.cz>
+ L:	linux-video@atrey.karlin.mff.cuni.cz
+ S:	Maintained
+-F:	Documentation/svga.txt
++F:	Documentation/admin-guide/svga.rst
+ F:	arch/x86/boot/video*
+ 
+ SWIOTLB SUBSYSTEM
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d5bd4350fcbd..b1ab350b9d60 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1286,7 +1286,7 @@ config SMP
+ 	  will run faster if you say N here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://tldp.org/HOWTO/SMP-HOWTO.html>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 42875ff15671..6d732e451071 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -277,7 +277,7 @@ config SMP
+ 	  machines, but will use only one CPU of a multiprocessor machine.
+ 	  On a uniprocessor machine, the kernel will run faster if you say N.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index c2858ac6a46a..6b1b5941b618 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -679,7 +679,7 @@ config SMP
+ 	  People using multiprocessor machines who say Y here should also say
+ 	  Y to "Enhanced Real Time Clock Support", below.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index e9f5d62e9817..7926a2e11bdc 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -180,7 +180,7 @@ config SMP
+ 	  Y to "Enhanced Real Time Clock Support", below. The "Advanced Power
+ 	  Management" code will be disabled if you say Y here.
+ 
+-	  See also <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO
++	  See also <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO
+ 	  available at <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 489fd833b980..2ca471ae6756 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -402,7 +402,7 @@ config SMP
+ 	  Management" code will be disabled if you say Y here.
+ 
+ 	  See also <file:Documentation/x86/i386/IO-APIC.rst>,
+-	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
++	  <file:Documentation/admin-guide/lockup-watchdogs.rst> and the SMP-HOWTO available at
+ 	  <http://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+@@ -1959,7 +1959,7 @@ config EFI_STUB
+           This kernel feature allows a bzImage to be loaded directly
+ 	  by EFI firmware without the use of a bootloader.
+ 
+-	  See Documentation/efi-stub.txt for more information.
++	  See Documentation/admin-guide/efi-stub.rst for more information.
+ 
+ config EFI_MIXED
+ 	bool "EFI mixed-mode support"
+diff --git a/block/partitions/Kconfig b/block/partitions/Kconfig
+index 37b9710cc80a..702689a628f0 100644
+--- a/block/partitions/Kconfig
++++ b/block/partitions/Kconfig
+@@ -194,7 +194,7 @@ config LDM_PARTITION
+ 	  Normal partitions are now called Basic Disks under Windows 2000, XP,
+ 	  and Vista.
+ 
+-	  For a fuller description read <file:Documentation/ldm.txt>.
++	  For a fuller description read <file:Documentation/admin-guide/ldm.rst>.
+ 
+ 	  If unsure, say N.
+ 
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 442403abd73a..3e866885a405 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -291,7 +291,7 @@ config RTC
+ 	  and set the RTC in an SMP compatible fashion.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+@@ -313,7 +313,7 @@ config JS_RTC
+ 	  /dev/rtc.
+ 
+ 	  If you think you have a use for such a device (such as periodic data
+-	  sampling), then say Y here, and read <file:Documentation/rtc.txt>
++	  sampling), then say Y here, and read <file:Documentation/admin-guide/rtc.rst>
+ 	  for details.
+ 
+ 	  To compile this driver as a module, choose M here: the
+diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
+index 95be7228f327..9044d31ab1a1 100644
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006 Michael Buesch <m@bues.ch>
+  * Copyright 2005 (c) MontaVista Software, Inc.
+  *
+- * Please read Documentation/hw_random.txt for details on use.
++ * Please read Documentation/admin-guide/hw_random.rst for details on use.
+  *
+  * This software may be used and distributed according to the terms
+  * of the GNU General Public License, incorporated herein by reference.
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index c0b93e0ff0c0..8e6dd908da21 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -1,7 +1,7 @@
+ /*
+ 	Hardware Random Number Generator
+ 
+-	Please read Documentation/hw_random.txt for details on use.
++	Please read Documentation/admin-guide/hw_random.rst for details on use.
+ 
+ 	----------------------------------------------------------
+ 	This software may be used and distributed according to the terms
 -- 
 2.21.0
 
