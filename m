@@ -2,138 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36661593A5
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 07:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFF359567
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 09:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726572AbfF1FuT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Jun 2019 01:50:19 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:46174 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfF1FuT (ORCPT
+        id S1726431AbfF1HzW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 03:55:22 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:41794 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726426AbfF1HzW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Jun 2019 01:50:19 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 81so2380015pfy.13;
-        Thu, 27 Jun 2019 22:50:18 -0700 (PDT)
+        Fri, 28 Jun 2019 03:55:22 -0400
+Received: by mail-wr1-f67.google.com with SMTP id c2so5196588wrm.8
+        for <linux-fbdev@vger.kernel.org>; Fri, 28 Jun 2019 00:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
-         :references:in-reply-to:accept-language:content-language
-         :content-transfer-encoding:mime-version;
-        bh=xbpQAYAfjyjoMDDuLtpqjMT1F1sFH7826ZzTz/6Eg7M=;
-        b=Sfyw3tVO4AFVG/7BVg2T241CKDlF/1Zid8ewZ3ulAjc2WpWrCgHwG4uBsS1HbKUy1g
-         jkGCkwVmb3i1Q9ZPnTLxoLNQYG/zGomGe4ffKDzoTgDPO0pCxcRZG34k3mO5BqgQuqTy
-         ejNmP+i1GtpLDU7k5QMoigeAWRFcRz/BoVX+5l/gk+PrAJDlu0U0OLgfds+wEZvUWAl2
-         uNE4iByyv9YlZa8I1t8AkmJ8Rf95Nn8TeybSrLYzrwuoNo+qXAHkzqLSnm8860jef/Mf
-         WpSKcTGnHHdaHj3DYI1KL/ylKYiYXNbYyirWZ7uzKsxD0CNyczo4YKRpCS2KS/U3fv7x
-         07wA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=28q0p8mfEjo9y2tYGYE8ojhpf6JJn4oHqxDJM4Zwywo=;
+        b=YVeJdSjXyGRCdF2WmpC/ewATk5iXIkwZ/JIJisZIjk5xmVj1kn09bt61Ahn1Qe/lQg
+         5i5n55RmnCX1F8SIlclZUlQA4bK9puQRh2BbQg84wLDjunKlJsXFuPcZksEstlRD35mP
+         iAiT17WBFT6EcmLfR/CaS269KYwqzXA+RG0+X/74V3JcYWFQNCrKLewc8YAlk4cptNAy
+         rPWHJUWZ0NRDAs79yjPu2rW2AF0Khj2gwSQiNBMmQ1lkRs2cEbOyKFxOwL1GWUXY3a4E
+         1pJmhaHTGO1ODS9pjBs9K/Kkjv3AX/xWVEkTMQq310+vE/rwmqQse3mvc4C4Pp73yn5Z
+         p8+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
-         :date:message-id:references:in-reply-to:accept-language
-         :content-language:content-transfer-encoding:mime-version;
-        bh=xbpQAYAfjyjoMDDuLtpqjMT1F1sFH7826ZzTz/6Eg7M=;
-        b=a52/6Ky0qvgut2HuWuy7NSIMqRlHzC643cR3Ewdli+uNWh859nMSA9xWC1ujKIAnWS
-         ZMuLepDsOG4hVfilD/G+F28RKoK501pUzpfhXtBcPP+BLpvXfhPz2wgMRze9HosSELg2
-         bQJKn6iWwDIjRV+zMhWP43ufJE9/oeHxt5Xism5y6fqgVPfH2j42o4OuXI75YuM1m3tS
-         cyNOv3VmYW5bY+1zz2tOaxJXFkGZg3BSIASIHQKSzmjDIMi9O8OwnwEWEZZMNawmRQCu
-         O0KCcS/tsUvC2YG7HncS+9dUHeMQTGlgLlQNdirGANZY5tmCAx/az5vWsWfKu1TiTGcO
-         XJoA==
-X-Gm-Message-State: APjAAAVTM/iFY1KzW6af5cB2z/eVua5hjXBTUo1alPS3QOIFNY+QrcjT
-        iKHGU6Ocxf2dIwN7LFyi9Wg=
-X-Google-Smtp-Source: APXvYqzgw/8wuWG+WuTQBp4hYNRYShg5QTTEVCWWBpWSbXf28XwMbhz39DkDwz/PRD6nsFKyvtwKbw==
-X-Received: by 2002:a17:90a:2706:: with SMTP id o6mr11134402pje.62.1561701018502;
-        Thu, 27 Jun 2019 22:50:18 -0700 (PDT)
-Received: from PSXP216MB0662.KORP216.PROD.OUTLOOK.COM ([40.100.44.181])
-        by smtp.gmail.com with ESMTPSA id o95sm902089pjb.4.2019.06.27.22.50.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Jun 2019 22:50:17 -0700 (PDT)
-From:   Jingoo Han <jingoohan1@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Han Jingoo <jingoohan1@gmail.com>
-Subject: Re: [PATCH] video: fbdev: s3c-fb: fix sparse warnings about using
- incorrect types
-Thread-Topic: [PATCH] video: fbdev: s3c-fb: fix sparse warnings about using
- incorrect types
-Thread-Index: ATVhYXAyfWPTBNepn2TaTOmvIy9arGI0M2NlvIaGNxM=
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date:   Fri, 28 Jun 2019 05:50:12 +0000
-Message-ID: <PSXP216MB0662D369EFFABF260394F179AAFC0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
-References: <CGME20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5@eucas1p1.samsung.com>
- <908fc26e-3bfa-c204-6c32-7d814fdcb37b@samsung.com>
-In-Reply-To: <908fc26e-3bfa-c204-6c32-7d814fdcb37b@samsung.com>
-Accept-Language: ko-KR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator: 
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=28q0p8mfEjo9y2tYGYE8ojhpf6JJn4oHqxDJM4Zwywo=;
+        b=CGO7pABUSPk0PXTBscT8MGqgTN7i5y0HMePzPo0/LsQW3wEO/D77EGgUnCuBjBsQav
+         Tab03AZFtyLvrVfET9XAM1OOBeVebbceCAd5QRHElyb4B6lRG7S7+Rk5jquGJ788BMMP
+         eVQIJrDDJLX7ES+3EzxrG/vxz5nbbGYJHm92S1P70YyNDGkD100CLzghAkYbZznI9PCs
+         5B8Fg3lZGKJKGC9UJTFdwMvS0s2wlSR/nINeZFg6sl+3QHCVawcSWZ7uoSbxzS83+/pK
+         xTylJPo2tyi2Dr/PehbkeCqB2NSkUMp0Etv6PryRJ5jpdmx1gecG8B0DPkGSWSeO2Cn2
+         CraA==
+X-Gm-Message-State: APjAAAWE5Le93K+1beArKJ2e7CUH1BZgy/96HG7MVTBy9BU9VVB6/YYX
+        Xx1UJaUTOms5MrsnwEZLkHMXHA==
+X-Google-Smtp-Source: APXvYqyHwucMhMiFSR2RCdWM5dLpObReYHRWk+PK0l6xFWUQ6oTBpk/rv/91P2HAonWQM7F7VS+UgQ==
+X-Received: by 2002:a5d:6190:: with SMTP id j16mr6969556wru.49.1561708519895;
+        Fri, 28 Jun 2019 00:55:19 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id u2sm8474802wmc.3.2019.06.28.00.55.17
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 28 Jun 2019 00:55:18 -0700 (PDT)
+Date:   Fri, 28 Jun 2019 08:55:16 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Matthias Kaehlcke <mka@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: Re: [PATCH v2 4/4] backlight: pwm_bl: Set scale type for brightness
+ curves specified in the DT
+Message-ID: <20190628075516.dwev7fxz7kmox2i2@holly.lan>
+References: <20190624203114.93277-1-mka@chromium.org>
+ <20190624203114.93277-5-mka@chromium.org>
+ <20190626145617.GB22348@xo-6d-61-c0.localdomain>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190626145617.GB22348@xo-6d-61-c0.localdomain>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 6/27/19, 9:58 PM, Bartlomiej Zolnierkiewicz wrote:
->=20
-> Use ->screen_buffer instead of ->screen_base to fix sparse warnings.
->
-> [ Please see commit 17a7b0b4d974 ("fb.h: Provide alternate screen_base
->   pointer") for details. ]
->
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
+On Wed, Jun 26, 2019 at 04:56:18PM +0200, Pavel Machek wrote:
+> On Mon 2019-06-24 13:31:13, Matthias Kaehlcke wrote:
+> > Check if a brightness curve specified in the device tree is linear or
+> > not and set the corresponding property accordingly. This makes the
+> > scale type available to userspace via the 'scale' sysfs attribute.
+> > 
+> > To determine if a curve is linear it is compared to a interpolated linear
+> > curve between min and max brightness. The curve is considered linear if
+> > no value deviates more than +/-5% of ${brightness_range} from their
+> > interpolated value.
+> 
+> I don't think this works. Some hardware does takes brightness in perceptual units,
+> converting it in the LED controller.
 
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
+This check is exclusive to PWM backlights so I'd like to double check
+that you are thinking specifically of hardware that takes it's signal
+from the PWM and works in perceptual units?
 
-Best regards,
-Jingoo Han
+I don't recall any examples being offered when we reviewed the
+auto-generated CIE tables (although since that can be overriden by DT it
+was not of the same gravity and this example).
 
-> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> ---
->  drivers/video/fbdev/s3c-fb.c |   12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> Index: b/drivers/video/fbdev/s3c-fb.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- a/drivers/video/fbdev/s3c-fb.c
-> +++ b/drivers/video/fbdev/s3c-fb.c
-> @@ -1105,14 +1105,14 @@ static int s3c_fb_alloc_memory(struct s3
-> =20
->  	dev_dbg(sfb->dev, "want %u bytes for window\n", size);
-> =20
-> -	fbi->screen_base =3D dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNEL)=
-;
-> -	if (!fbi->screen_base)
-> +	fbi->screen_buffer =3D dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNE=
-L);
-> +	if (!fbi->screen_buffer)
->  		return -ENOMEM;
-> =20
->  	dev_dbg(sfb->dev, "mapped %x to %p\n",
-> -		(unsigned int)map_dma, fbi->screen_base);
-> +		(unsigned int)map_dma, fbi->screen_buffer);
-> =20
-> -	memset(fbi->screen_base, 0x0, size);
-> +	memset(fbi->screen_buffer, 0x0, size);
->  	fbi->fix.smem_start =3D map_dma;
-> =20
->  	return 0;
-> @@ -1129,9 +1129,9 @@ static void s3c_fb_free_memory(struct s3
->  {
->  	struct fb_info *fbi =3D win->fbinfo;
-> =20
-> -	if (fbi->screen_base)
-> +	if (fbi->screen_buffer)
->  		dma_free_wc(sfb->dev, PAGE_ALIGN(fbi->fix.smem_len),
-> -		            fbi->screen_base, fbi->fix.smem_start);
-> +			    fbi->screen_buffer, fbi->fix.smem_start);
->  }
-> =20
->  /**
+
+Daniel.
