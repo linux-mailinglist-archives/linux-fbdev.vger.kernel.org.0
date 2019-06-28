@@ -2,60 +2,59 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A29588D2
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Jun 2019 19:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27356591AF
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 04:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbfF0RlT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 13:41:19 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:43501 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726405AbfF0RlT (ORCPT
+        id S1726741AbfF1Cu2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Jun 2019 22:50:28 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:38175 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726441AbfF1Cu1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 13:41:19 -0400
-Received: by mail-pl1-f193.google.com with SMTP id cl9so1664309plb.10;
-        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+        Thu, 27 Jun 2019 22:50:27 -0400
+Received: by mail-pf1-f195.google.com with SMTP id y15so2198006pfn.5;
+        Thu, 27 Jun 2019 19:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
         bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
-        b=sBPEu6SKdGSe3KC2j9VKeyQAWYZFWhUaBNyBzY50g1OX35jQJxTbR1eIVKhJ3wYYlg
-         8TZ3auYUbbo76pqTOESCWFq4s+l7qWu54nsy1UmsNN0MQrwPy2bEcKXplRK1ALMgDBdn
-         Lo0Sv7JieRzOtAKtg0uvcuOIVVf/m+L9hlgzna2q40pDU536YVS70rhWUpXg59jINrii
-         aIR69ZEUmRWqLKpZODOA93V2ehqAwgJt6+YCzA9K9645HfSUXdfjmeus6hJEQb3DEXAR
-         VRKEMUKYya9WK+kUgqpf6Ill88GLTde84hbbCZgsi+0ADWTGa+AgvSD6yhK2AY70va4u
-         GERA==
+        b=qeAMWzlrKSDx6Q/RRzQ4353QIEhM0VyBhhUnC1wyQkMGls5gBSuviEwbJazRlOBTMP
+         jwC4bCg5bzKqWjBFjptrl6tQ9iA3S2OVKq9bsy9faiLXvEq8GzGjxXeZjB9Ny80MKKDN
+         W8vOwnepdtxDJJ2rBZr8LsrUAqitVJRvvLFH9r8C1PLGYYelNJnQlEkTq1EdzQZMbr4H
+         p4o1N2hPPhSX0v/QDs3dLY4oowijenSWg3AK/mE8AwoJ4runi7BvLowlsBYFcfSF2FmW
+         tuSQok5Nuj+3gkv9ipd0BPVc0vG53orNw/I2GbCrOb//PPOBDRFNhQ0bP+kidjA6+esn
+         cZnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
         bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
-        b=SpkQ3UH4BU9uAQTfg9OdrBimvhj1k9cR0pjmVW7B5XKSMS99V7vIPMqmtbgCq6owWF
-         PoU511phm2QjVUloLinF7bJEIs3Z6qlNlU8KSkxhB2wpnpqPfPBzMIamtYmSLeUC1CWw
-         gQWq8l1hmS7kP26DsCK7o5ZQYEbRX5wzDIL/kFy+vYFBKvAaRHaRn9Gy9pLVb6Y90RvT
-         2eIMmt5H4LzAgb1N1PRH4z6NrXgy/8/sUHpdxxuwQyUUZPXeaIklFyEaxJPusZV4spmZ
-         oA7FwoAw2KYWQoVdUDOPSDzgWB4Mdp4pN9D199LYJeppNrVbXgTFH9rbzLQ9opaSbAB9
-         ME/w==
-X-Gm-Message-State: APjAAAUdYcrOZrgKc4+SrPQ0AiMNltj4cnEwD2zoeSpBkwgOqerDqIKj
-        /+A37NLMQ92HHh/tcRfYSWM=
-X-Google-Smtp-Source: APXvYqzgLCO90CGyAwGqPwTMFiEbXZce1PzG6M5RXLVuf6Fyllzefu3WCmJL+Xt1cxzzZq5XfM4oYQ==
-X-Received: by 2002:a17:902:2862:: with SMTP id e89mr6076022plb.258.1561657278472;
-        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+        b=d/0TeO8SThTeX2ugxUwyKeTlqa+vwxULsDzbRXDDyLVfDsQEQhlBqkf8GQzj+didMs
+         KhOaih8vp4pCxUVVwuoINgBIgtjyku2ADhtVW33Wuor8/ULfgZ+XRtdmZ8ncPoi+5wRr
+         W+qC8dH45tZWZzqeT1Amq+LYOLp7aNvwf4EbEFGQZ2qGqtrxpthh2y/Q31bdogIIC4lE
+         O+QxxBAjRlOAU2yBbOWYPAB/XbBLuALZh85jpnWkcSgUejl/eUhMgIcKrPHKXarVP3pX
+         8pC2h8+XeJ7eZf+TpKJOnODM0WXFEr6intywl+qdfi1ERjqdgyLx0mXXpqveNTX54e9+
+         AKUA==
+X-Gm-Message-State: APjAAAV0PrA0o1xA2Tf8fG5wZ0+04PnrxlozuFJ1Di0zXdGfKGbMBqvv
+        ntF/08jq8kTp5TZRLBDB5Wc=
+X-Google-Smtp-Source: APXvYqxOMn3XXjIavfVVVOqWwhv7qSskxdyUtP1LwXecHil9rj6KtvpibgLg5zqF2qKy3hz2y5R0Rw==
+X-Received: by 2002:a17:90a:2768:: with SMTP id o95mr10104027pje.37.1561690227303;
+        Thu, 27 Jun 2019 19:50:27 -0700 (PDT)
 Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.googlemail.com with ESMTPSA id y17sm3052099pfe.148.2019.06.27.10.41.15
+        by smtp.googlemail.com with ESMTPSA id b37sm551587pjc.15.2019.06.27.19.50.23
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Jun 2019 10:41:18 -0700 (PDT)
+        Thu, 27 Jun 2019 19:50:26 -0700 (PDT)
 From:   Fuqian Huang <huangfq.daxian@gmail.com>
 Cc:     Fuqian Huang <huangfq.daxian@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        Allison Randal <allison@lohutok.net>,
         Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 45/87] fbdev: mmp: remove memset after dma_alloc_coherent in mmpfb.c
-Date:   Fri, 28 Jun 2019 01:41:09 +0800
-Message-Id: <20190627174110.4345-1-huangfq.daxian@gmail.com>
+Subject: [PATCH v2 23/27] video: fbdev: remove unneeded memset after dma_alloc_coherent
+Date:   Fri, 28 Jun 2019 10:50:17 +0800
+Message-Id: <20190628025019.16026-1-huangfq.daxian@gmail.com>
 X-Mailer: git-send-email 2.11.0
 To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
