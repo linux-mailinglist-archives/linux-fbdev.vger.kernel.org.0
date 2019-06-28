@@ -2,88 +2,138 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27356591AF
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 04:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36661593A5
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2019 07:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbfF1Cu2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Jun 2019 22:50:28 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:38175 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfF1Cu1 (ORCPT
+        id S1726572AbfF1FuT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jun 2019 01:50:19 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:46174 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbfF1FuT (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Jun 2019 22:50:27 -0400
-Received: by mail-pf1-f195.google.com with SMTP id y15so2198006pfn.5;
-        Thu, 27 Jun 2019 19:50:27 -0700 (PDT)
+        Fri, 28 Jun 2019 01:50:19 -0400
+Received: by mail-pf1-f193.google.com with SMTP id 81so2380015pfy.13;
+        Thu, 27 Jun 2019 22:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
-        b=qeAMWzlrKSDx6Q/RRzQ4353QIEhM0VyBhhUnC1wyQkMGls5gBSuviEwbJazRlOBTMP
-         jwC4bCg5bzKqWjBFjptrl6tQ9iA3S2OVKq9bsy9faiLXvEq8GzGjxXeZjB9Ny80MKKDN
-         W8vOwnepdtxDJJ2rBZr8LsrUAqitVJRvvLFH9r8C1PLGYYelNJnQlEkTq1EdzQZMbr4H
-         p4o1N2hPPhSX0v/QDs3dLY4oowijenSWg3AK/mE8AwoJ4runi7BvLowlsBYFcfSF2FmW
-         tuSQok5Nuj+3gkv9ipd0BPVc0vG53orNw/I2GbCrOb//PPOBDRFNhQ0bP+kidjA6+esn
-         cZnA==
+        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
+         :references:in-reply-to:accept-language:content-language
+         :content-transfer-encoding:mime-version;
+        bh=xbpQAYAfjyjoMDDuLtpqjMT1F1sFH7826ZzTz/6Eg7M=;
+        b=Sfyw3tVO4AFVG/7BVg2T241CKDlF/1Zid8ewZ3ulAjc2WpWrCgHwG4uBsS1HbKUy1g
+         jkGCkwVmb3i1Q9ZPnTLxoLNQYG/zGomGe4ffKDzoTgDPO0pCxcRZG34k3mO5BqgQuqTy
+         ejNmP+i1GtpLDU7k5QMoigeAWRFcRz/BoVX+5l/gk+PrAJDlu0U0OLgfds+wEZvUWAl2
+         uNE4iByyv9YlZa8I1t8AkmJ8Rf95Nn8TeybSrLYzrwuoNo+qXAHkzqLSnm8860jef/Mf
+         WpSKcTGnHHdaHj3DYI1KL/ylKYiYXNbYyirWZ7uzKsxD0CNyczo4YKRpCS2KS/U3fv7x
+         07wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=2vqCu+MS+Img9r2z6/QFX/3aEGn5jsBEl1RMM1fPhso=;
-        b=d/0TeO8SThTeX2ugxUwyKeTlqa+vwxULsDzbRXDDyLVfDsQEQhlBqkf8GQzj+didMs
-         KhOaih8vp4pCxUVVwuoINgBIgtjyku2ADhtVW33Wuor8/ULfgZ+XRtdmZ8ncPoi+5wRr
-         W+qC8dH45tZWZzqeT1Amq+LYOLp7aNvwf4EbEFGQZ2qGqtrxpthh2y/Q31bdogIIC4lE
-         O+QxxBAjRlOAU2yBbOWYPAB/XbBLuALZh85jpnWkcSgUejl/eUhMgIcKrPHKXarVP3pX
-         8pC2h8+XeJ7eZf+TpKJOnODM0WXFEr6intywl+qdfi1ERjqdgyLx0mXXpqveNTX54e9+
-         AKUA==
-X-Gm-Message-State: APjAAAV0PrA0o1xA2Tf8fG5wZ0+04PnrxlozuFJ1Di0zXdGfKGbMBqvv
-        ntF/08jq8kTp5TZRLBDB5Wc=
-X-Google-Smtp-Source: APXvYqxOMn3XXjIavfVVVOqWwhv7qSskxdyUtP1LwXecHil9rj6KtvpibgLg5zqF2qKy3hz2y5R0Rw==
-X-Received: by 2002:a17:90a:2768:: with SMTP id o95mr10104027pje.37.1561690227303;
-        Thu, 27 Jun 2019 19:50:27 -0700 (PDT)
-Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.googlemail.com with ESMTPSA id b37sm551587pjc.15.2019.06.27.19.50.23
+        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
+         :date:message-id:references:in-reply-to:accept-language
+         :content-language:content-transfer-encoding:mime-version;
+        bh=xbpQAYAfjyjoMDDuLtpqjMT1F1sFH7826ZzTz/6Eg7M=;
+        b=a52/6Ky0qvgut2HuWuy7NSIMqRlHzC643cR3Ewdli+uNWh859nMSA9xWC1ujKIAnWS
+         ZMuLepDsOG4hVfilD/G+F28RKoK501pUzpfhXtBcPP+BLpvXfhPz2wgMRze9HosSELg2
+         bQJKn6iWwDIjRV+zMhWP43ufJE9/oeHxt5Xism5y6fqgVPfH2j42o4OuXI75YuM1m3tS
+         cyNOv3VmYW5bY+1zz2tOaxJXFkGZg3BSIASIHQKSzmjDIMi9O8OwnwEWEZZMNawmRQCu
+         O0KCcS/tsUvC2YG7HncS+9dUHeMQTGlgLlQNdirGANZY5tmCAx/az5vWsWfKu1TiTGcO
+         XJoA==
+X-Gm-Message-State: APjAAAVTM/iFY1KzW6af5cB2z/eVua5hjXBTUo1alPS3QOIFNY+QrcjT
+        iKHGU6Ocxf2dIwN7LFyi9Wg=
+X-Google-Smtp-Source: APXvYqzgw/8wuWG+WuTQBp4hYNRYShg5QTTEVCWWBpWSbXf28XwMbhz39DkDwz/PRD6nsFKyvtwKbw==
+X-Received: by 2002:a17:90a:2706:: with SMTP id o6mr11134402pje.62.1561701018502;
+        Thu, 27 Jun 2019 22:50:18 -0700 (PDT)
+Received: from PSXP216MB0662.KORP216.PROD.OUTLOOK.COM ([40.100.44.181])
+        by smtp.gmail.com with ESMTPSA id o95sm902089pjb.4.2019.06.27.22.50.15
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 27 Jun 2019 19:50:26 -0700 (PDT)
-From:   Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     Fuqian Huang <huangfq.daxian@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 23/27] video: fbdev: remove unneeded memset after dma_alloc_coherent
-Date:   Fri, 28 Jun 2019 10:50:17 +0800
-Message-Id: <20190628025019.16026-1-huangfq.daxian@gmail.com>
-X-Mailer: git-send-email 2.11.0
-To:     unlisted-recipients:; (no To-header on input)
+        Thu, 27 Jun 2019 22:50:17 -0700 (PDT)
+From:   Jingoo Han <jingoohan1@gmail.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     Han Jingoo <jingoohan1@gmail.com>
+Subject: Re: [PATCH] video: fbdev: s3c-fb: fix sparse warnings about using
+ incorrect types
+Thread-Topic: [PATCH] video: fbdev: s3c-fb: fix sparse warnings about using
+ incorrect types
+Thread-Index: ATVhYXAyfWPTBNepn2TaTOmvIy9arGI0M2NlvIaGNxM=
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date:   Fri, 28 Jun 2019 05:50:12 +0000
+Message-ID: <PSXP216MB0662D369EFFABF260394F179AAFC0@PSXP216MB0662.KORP216.PROD.OUTLOOK.COM>
+References: <CGME20190627125803eucas1p1eb6a37f5fa96fd732e41ab1501367de5@eucas1p1.samsung.com>
+ <908fc26e-3bfa-c204-6c32-7d814fdcb37b@samsung.com>
+In-Reply-To: <908fc26e-3bfa-c204-6c32-7d814fdcb37b@samsung.com>
+Accept-Language: ko-KR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: 
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In commit af7ddd8a627c
-("Merge tag 'dma-mapping-4.21' of git://git.infradead.org/users/hch/dma-mapping"),
-dma_alloc_coherent has already zeroed the memory.
-So memset is not needed.
+On 6/27/19, 9:58 PM, Bartlomiej Zolnierkiewicz wrote:
+>=20
+> Use ->screen_buffer instead of ->screen_base to fix sparse warnings.
+>
+> [ Please see commit 17a7b0b4d974 ("fb.h: Provide alternate screen_base
+>   pointer") for details. ]
+>
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
 
-Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
----
- drivers/video/fbdev/mmp/fb/mmpfb.c | 1 -
- 1 file changed, 1 deletion(-)
+Acked-by: Jingoo Han <jingoohan1@gmail.com>
 
-diff --git a/drivers/video/fbdev/mmp/fb/mmpfb.c b/drivers/video/fbdev/mmp/fb/mmpfb.c
-index e5b56f2199df..47bc7c59bbd8 100644
---- a/drivers/video/fbdev/mmp/fb/mmpfb.c
-+++ b/drivers/video/fbdev/mmp/fb/mmpfb.c
-@@ -612,7 +612,6 @@ static int mmpfb_probe(struct platform_device *pdev)
- 		ret = -ENOMEM;
- 		goto failed_destroy_mutex;
- 	}
--	memset(fbi->fb_start, 0, fbi->fb_size);
- 	dev_info(fbi->dev, "fb %dk allocated\n", fbi->fb_size/1024);
- 
- 	/* fb power on */
--- 
-2.11.0
+Best regards,
+Jingoo Han
 
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> ---
+>  drivers/video/fbdev/s3c-fb.c |   12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> Index: b/drivers/video/fbdev/s3c-fb.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- a/drivers/video/fbdev/s3c-fb.c
+> +++ b/drivers/video/fbdev/s3c-fb.c
+> @@ -1105,14 +1105,14 @@ static int s3c_fb_alloc_memory(struct s3
+> =20
+>  	dev_dbg(sfb->dev, "want %u bytes for window\n", size);
+> =20
+> -	fbi->screen_base =3D dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNEL)=
+;
+> -	if (!fbi->screen_base)
+> +	fbi->screen_buffer =3D dma_alloc_wc(sfb->dev, size, &map_dma, GFP_KERNE=
+L);
+> +	if (!fbi->screen_buffer)
+>  		return -ENOMEM;
+> =20
+>  	dev_dbg(sfb->dev, "mapped %x to %p\n",
+> -		(unsigned int)map_dma, fbi->screen_base);
+> +		(unsigned int)map_dma, fbi->screen_buffer);
+> =20
+> -	memset(fbi->screen_base, 0x0, size);
+> +	memset(fbi->screen_buffer, 0x0, size);
+>  	fbi->fix.smem_start =3D map_dma;
+> =20
+>  	return 0;
+> @@ -1129,9 +1129,9 @@ static void s3c_fb_free_memory(struct s3
+>  {
+>  	struct fb_info *fbi =3D win->fbinfo;
+> =20
+> -	if (fbi->screen_base)
+> +	if (fbi->screen_buffer)
+>  		dma_free_wc(sfb->dev, PAGE_ALIGN(fbi->fix.smem_len),
+> -		            fbi->screen_base, fbi->fix.smem_start);
+> +			    fbi->screen_buffer, fbi->fix.smem_start);
+>  }
+> =20
+>  /**
