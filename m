@@ -2,163 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1EAD5CC6D
-	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 11:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ECCA5CC78
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 11:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbfGBJLT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 2 Jul 2019 05:11:19 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:51492 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbfGBJLT (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 05:11:19 -0400
-Received: by mail-wm1-f65.google.com with SMTP id 207so97808wma.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 02 Jul 2019 02:11:18 -0700 (PDT)
+        id S1725868AbfGBJOV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jul 2019 05:14:21 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:34716 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726283AbfGBJOP (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 05:14:15 -0400
+Received: by mail-wr1-f65.google.com with SMTP id u18so361952wru.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 02 Jul 2019 02:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YL/v7kwpoAOgfrWESvYJW+oEOt7FvpXlkjkTWAE20U0=;
-        b=g8XO7GiaR9I/8MSq8vNOC8n9Zjdf9iwOmT25kQ4xcSoHEFAaUVXiioDJpXSFEGM/FX
-         QiRHrnXy4C3eZbMS/HKHHHjfTNbwQKYvjDzOAeoK37i9GxcyCUnr7oP3jMf/093uPLP2
-         gIexxaR99d8BsZFHxFMms0ILgNIgHYtwtUJD9vCPbgRPpY1aIQTsTiokf3xlDM3IT+Hf
-         hr0Bq9xF4PbuQR81x6ZodSzm+rS6cI/6wQH1K7/J9qs9v06RUDnqh0t/3VINH2ZWbg50
-         DVfRErAm0zplGE9wp8ZiAFxl11rqLvItVbBQWxNu3NOE0Qfq4H/BPMrUo0RpkwlRjL45
-         XhqQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=6nWtimC5vfxHX2tOLxULF1wu4CgPYNHaQ1h3AGat0sA=;
+        b=v6R8xmxsb/AndlwuFoQmzCOZYeIpaKKWUPcKbfKDsWt30n4UhwuycxTefwW+hlDUo6
+         mrmd+B/LOMTuu17R32eKM003sgTx2mfbJHrA4+H+JmCHvJZfo6XCj+VQRi+RvyaYZbYW
+         2yqCao4iTsKNLNehd6zbTv5zBKMK5SUesgiWlBlM/3l3v3GcSApzIxhkWfMjPCC87gY9
+         aKbEqrt4KolHKumR1H6Dfqz0BtJgxgSezBquF0s6Fl6HmOa6RDYJ5W7ks2vodJrltPKZ
+         2BzCzKoAv9oWyGT4Kc/yqszCMboD0W4jiaC9IJJucx8ogkgCcji60W2+xYSlrbBZsrsm
+         5N/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YL/v7kwpoAOgfrWESvYJW+oEOt7FvpXlkjkTWAE20U0=;
-        b=fV2cLXgVJEvkOTvlWrQVqu8QAud5cT84xL/OHQtwvFQzti0D+9vXhHnwd3EvHX2qlq
-         f0UBCa8A/tlHkMQxEnXycfcrmsdpX0azU0XYKpe3Cs9/2ojU8he5Axj5w+cFOLBo/WBt
-         f5qUh0WaLjkwrap3dQqnd0GvIQAGpWfOnRYvyPGRrTzagwFDvlTdci7wyC74QVZ8ywYd
-         nFDgxOx/o61IutKtIjfJ8iNsmoFjkqcYpOU17om6UZXVgPYUDBLKZJhQEslgqe14OhnZ
-         Aebnaif0xmJlIRORk2YZCoSW5U7HS9hfsnTiR9gVOBJAXMvzFLDVn69oG7PJJIBx1ob7
-         H4SQ==
-X-Gm-Message-State: APjAAAULY9SUmt/pUpJaKXUVxXNEDWuBy7KUigbY915NJ+S5kBZCbSNV
-        7i7k51MzASwIK7zkmeJ4krSrEQ==
-X-Google-Smtp-Source: APXvYqyixyro0WIMqI0C7CGaQ2nlzq7IOMfvK1UOk36VvkyNl9VTipL9Hb/JJxMLaV9Nrsw90+v0Yg==
-X-Received: by 2002:a7b:cd84:: with SMTP id y4mr779871wmj.79.1562058677297;
-        Tue, 02 Jul 2019 02:11:17 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6nWtimC5vfxHX2tOLxULF1wu4CgPYNHaQ1h3AGat0sA=;
+        b=K5JsWbSPmsG87DsiH38WYwU4bmVTJ4c8zmbL4ZuFAgvIVovoOGDaOgmqMTU+m4D4iY
+         nP3AH8eWGLqtTmafjxTW81YhlUUFocfGcC2zjiBitk0QTaqr7rEuBIxfMcjUpr1X68wh
+         p/r262eqxJpnZ9NX8aoSWatYXyB+gtqd1c7wElEuY7+zcvvbna6nwuw5c+slJ2I7PDVJ
+         xlqPucjoagmalHdfaDaFaB4x+10l9vAu8q7mwVkoSMRezvgF6/hkfoDs56c9CTzC8yjn
+         s3Cf7k0hFrAMxJCtl6GqoDpcnJELpnGih2IUvqMkvKkIg6CoxV0cpsIzhUOX3oqD8Onk
+         Elbw==
+X-Gm-Message-State: APjAAAUd4mw+yR8wiGIXu2kiKE2HITxgdZW7MBZZ/KmyJwycLZFxsuSe
+        Yux9URAiTQTl+jqZ1sfUqPnF2Q==
+X-Google-Smtp-Source: APXvYqznZQBIjc1cAANXlkANOuREA/yPD5X3rI575uAvrvEEMizzCcfvwLbK+9SYuOOWnUAgxECFCA==
+X-Received: by 2002:adf:f581:: with SMTP id f1mr23425665wro.179.1562058853606;
+        Tue, 02 Jul 2019 02:14:13 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.googlemail.com with ESMTPSA id t15sm12269862wrx.84.2019.07.02.02.11.16
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jul 2019 02:11:16 -0700 (PDT)
-Subject: Re: [PATCH 03/12] backlight: gpio: pull the non-pdata device probing
- code into probe()
-To:     Bartosz Golaszewski <brgl@bgdev.pl>, Sekhar Nori <nsekhar@ti.com>,
-        Kevin Hilman <khilman@kernel.org>,
+        by smtp.gmail.com with ESMTPSA id p11sm12254821wrm.53.2019.07.02.02.14.12
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 02 Jul 2019 02:14:13 -0700 (PDT)
+Date:   Tue, 2 Jul 2019 10:14:11 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-References: <20190625163434.13620-1-brgl@bgdev.pl>
- <20190625163434.13620-4-brgl@bgdev.pl>
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-Message-ID: <920a5359-d662-5111-8b3d-4f5c63b2afb6@linaro.org>
-Date:   Tue, 2 Jul 2019 10:11:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+Subject: Re: [PATCH RFT 0/4] backlight: gpio: simplify the driver
+Message-ID: <20190702091411.vk3q5zhqh6xh7uyd@holly.lan>
+References: <20190628100253.8385-1-brgl@bgdev.pl>
+ <CACRpkdZqsgXoZcHv9z+7oVrf=i9WPSHG=93qhfA=0SkR0Mdfxg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190625163434.13620-4-brgl@bgdev.pl>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdZqsgXoZcHv9z+7oVrf=i9WPSHG=93qhfA=0SkR0Mdfxg@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 25/06/2019 17:34, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Fri, Jun 28, 2019 at 11:15:10AM +0100, Linus Walleij wrote:
+> On Fri, Jun 28, 2019 at 11:03 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 > 
-> There's no good reason to have the generic probing code in a separate
-> routine. This function is short and is inlined by the compiler anyway.
-> Move it into probe under the pdata-specific part.
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> >
+> > While working on my other series related to gpio-backlight[1] I noticed
+> > that we could simplify the driver if we made the only user of platform
+> > data use GPIO lookups and device properties. This series tries to do
+> > that.
+> >
+> > The first patch sets up all the required structures in the board file,
+> > the second modifies the backlight driver, the third and fourth remove
+> > the leftovers.
+> >
+> > This series depends on the three first patches from [1].
+> >
+> > I don't have access to this HW but hopefully this works. Only compile
+> > tested.
 > 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> This series:
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> Excellent work!
 
-Like the others, this will need to be respun to match latest code but 
-when it comes round again:
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Ditto!
+
+Hope to see this come around again alongside the other GPIO clean ups.
 
 
 Daniel.
-
-
-> ---
->   drivers/video/backlight/gpio_backlight.c | 39 ++++++++----------------
->   1 file changed, 13 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 8adbc8d75097..89e10bccfd3c 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -54,30 +54,6 @@ static const struct backlight_ops gpio_backlight_ops = {
->   	.check_fb	= gpio_backlight_check_fb,
->   };
->   
-> -static int gpio_backlight_probe_prop(struct platform_device *pdev,
-> -				     struct gpio_backlight *gbl)
-> -{
-> -	struct device *dev = &pdev->dev;
-> -	enum gpiod_flags flags;
-> -	int ret;
-> -
-> -	gbl->def_value = device_property_read_bool(dev, "default-on");
-> -	flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
-> -
-> -	gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
-> -	if (IS_ERR(gbl->gpiod)) {
-> -		ret = PTR_ERR(gbl->gpiod);
-> -
-> -		if (ret != -EPROBE_DEFER) {
-> -			dev_err(dev,
-> -				"Error: The gpios parameter is missing or invalid.\n");
-> -		}
-> -		return ret;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->   static int gpio_backlight_probe(struct platform_device *pdev)
->   {
->   	struct gpio_backlight_platform_data *pdata =
-> @@ -86,6 +62,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->   	struct device *dev = &pdev->dev;
->   	struct backlight_device *bl;
->   	struct gpio_backlight *gbl;
-> +	enum gpiod_flags flags;
->   	int ret;
->   
->   	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
-> @@ -116,9 +93,19 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->   		if (!gbl->gpiod)
->   			return -EINVAL;
->   	} else {
-> -		ret = gpio_backlight_probe_prop(pdev, gbl);
-> -		if (ret)
-> +		gbl->def_value = device_property_read_bool(dev, "default-on");
-> +		flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
-> +
-> +		gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
-> +		if (IS_ERR(gbl->gpiod)) {
-> +			ret = PTR_ERR(gbl->gpiod);
-> +
-> +			if (ret != -EPROBE_DEFER) {
-> +				dev_err(dev,
-> +					"Error: The gpios parameter is missing or invalid.\n");
-> +			}
->   			return ret;
-> +		}
->   	}
->   
->   	memset(&props, 0, sizeof(props));
-> 
-
