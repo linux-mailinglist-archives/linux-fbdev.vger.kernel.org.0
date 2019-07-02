@@ -2,189 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F9F5C17F
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jul 2019 18:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2057F5C962
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 08:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729624AbfGAQz3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Jul 2019 12:55:29 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33364 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727563AbfGAQz2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jul 2019 12:55:28 -0400
-Received: by mail-pf1-f195.google.com with SMTP id x15so6875345pfq.0
-        for <linux-fbdev@vger.kernel.org>; Mon, 01 Jul 2019 09:55:28 -0700 (PDT)
+        id S1725845AbfGBGg6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jul 2019 02:36:58 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:44155 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbfGBGg6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 02:36:58 -0400
+Received: by mail-wr1-f67.google.com with SMTP id e3so6791639wrs.11
+        for <linux-fbdev@vger.kernel.org>; Mon, 01 Jul 2019 23:36:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xDSI42+k7oV3eNOdMjBIpymPAXqrgf6nD9EQGoEDOSQ=;
-        b=lRaikns7k0uCZd5C9Ln4pFCafvvy3X3J1z3IOKuS6jl6hcBL6bV2bF/9yEndlBwiut
-         VSDmQY3n9WohNZyarR2lVtR/uCDI3dEyNmWB6NXRX16l+AlIqu+kYx5bpkmFUNpj4PmD
-         4WJtWiEUnvCoQuD2X2/ZiwMj36GFejsjvm2gw=
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=kL52YKQhFRfe3VLS8UGs1QL98Cpg/XLkHXZMM+/zcyM=;
+        b=YZV+d5gqyzrP4gJNY5WwDuXGyrmn0m0DVdTv+9ppXaeW71PBbeOby+m1eElOIBixjX
+         bkEre9t6nF7NUX9U965KXC/EJ8N98Cru9PsOJGSjGF9gFnwp8/QzBDy5LTRHXHi9aqrI
+         zW9Z41R0hL7APL7VK5m6sYCxRpZfFKvd1bTVN0BR21ivFK/UZmgSRk9ygU2x48NnBA8X
+         AcBGEN/Jh0clFSqBDXkVTpFBncTcdw03s0bRc1OCI9d189YVkL5re+bSQrm+0KZ0TqmV
+         AWij6o1bxNwElPFN+PCnj2zJDkewnveeiEIoypEZ0ljdMwx5LuxyF3hah2RwmITTiE2x
+         w1Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xDSI42+k7oV3eNOdMjBIpymPAXqrgf6nD9EQGoEDOSQ=;
-        b=Xd0kt3pZ3A4qTdm4PbapZximxG65lW+0/AMXnudfRQne/LqMvhopTew2C60EQdcuAo
-         J8qaGRnLD6pxI+XP1iCI9X3j8aimCg+65qNU6/fsZYjKXu8++cPZaDedLLMGtgF5qCdC
-         UlBHgK6BE3XbdZAOmhIZ6wqtvFh59nyvaBtVInrcIMzlb+zz5nncax5mlG/WPen6w0zu
-         6mcW+67JivJ2IBdht0fHgB+pCUo82uiHxZV57UACgA7UtT4m5D+IN4geKtwSq/j8vgBd
-         aW2R/jk4W7bDi2NSUyByX1Cqf5sB/9/VYuR2BCsTDS8dRkoPk9Oara/GtkE39FYZbi6w
-         UK6A==
-X-Gm-Message-State: APjAAAXU6CILUCnHuVVoPu0BQW8uk0wmkLxMGvWD75WGIIs6pSOkdSCa
-        BdiGcpSOWrd3VdIOOoMS4K1phA==
-X-Google-Smtp-Source: APXvYqxwphdbl0NMiWm88UC1X5R0XR+EGB+EX9ncZxUKCYgnZV3kX08POr1D29GjDrjDNRrLjmPDTQ==
-X-Received: by 2002:a17:90a:a404:: with SMTP id y4mr311822pjp.58.1562000127976;
-        Mon, 01 Jul 2019 09:55:27 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id d2sm12367553pgo.0.2019.07.01.09.55.26
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Jul 2019 09:55:27 -0700 (PDT)
-Date:   Mon, 1 Jul 2019 09:55:23 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=kL52YKQhFRfe3VLS8UGs1QL98Cpg/XLkHXZMM+/zcyM=;
+        b=cHIU1E8RTSjHR8NFJNEXkpep9O8ITTtNiLl1/mwobVyIPaNs4C0Z2XK6qw4iH8g4RE
+         12REBcNJuqdpl2RsXPtVC0chInzspFko8Iqydv8AjT7LoN+wmc7nooGGEHOHFNG20Q6p
+         aWAx7cjXpcdWWEcvCB0c3kp67elYjvM5VH/m0O6b0oXAjLp72apgGjeAmoM6PIdKPann
+         ugvy8rng4k6MmIBGJbR7ISPx2IvpUgcVVCKq9M5eVjnyI6Q7iTht5gMgX+vy0XrEXuGB
+         5MY/RchiuGNU2sAbbk493uypWyRiAC6ztBMkEbe0diKvfXO3EcSSjEufdaVsZLRtof0V
+         7UFg==
+X-Gm-Message-State: APjAAAX0OyigeO/8Q2acIKN0joGEI7aYe2ck40he7U3amwl0RqHPawEb
+        T3x72C9aw4ikBblFV8Pjrf4Wuw==
+X-Google-Smtp-Source: APXvYqyNIADHpitNQlVYgOHrVqbwIkf6QAAdkpRA5Xs8300TxHIp8LjNRmcFL/fWRjeA4UT1R1Qr1A==
+X-Received: by 2002:a05:6000:1285:: with SMTP id f5mr7035937wrx.315.1562049416043;
+        Mon, 01 Jul 2019 23:36:56 -0700 (PDT)
+Received: from dell ([2.27.35.164])
+        by smtp.gmail.com with ESMTPSA id h133sm1648236wme.28.2019.07.01.23.36.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 01 Jul 2019 23:36:55 -0700 (PDT)
+Date:   Tue, 2 Jul 2019 07:36:53 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Sekhar Nori <nsekhar@ti.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Kevin Hilman <khilman@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH v2 2/4] backlight: Expose brightness curve type through
- sysfs
-Message-ID: <20190701165523.GD137143@google.com>
-References: <20190624203114.93277-1-mka@chromium.org>
- <20190624203114.93277-3-mka@chromium.org>
- <20190626145611.GA22348@xo-6d-61-c0.localdomain>
- <20190628083452.tlgcylwo34lxi4s6@holly.lan>
+        David Lechner <david@lechnology.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH 00/12] ARM: davinci: da850-evm: remove more legacy GPIO
+ calls
+Message-ID: <20190702063653.GC4652@dell>
+References: <20190625163434.13620-1-brgl@bgdev.pl>
+ <fe42c0e1-2bfb-2b1c-2c38-0e176e88ec6e@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190628083452.tlgcylwo34lxi4s6@holly.lan>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fe42c0e1-2bfb-2b1c-2c38-0e176e88ec6e@ti.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+On Mon, 01 Jul 2019, Sekhar Nori wrote:
 
-On Fri, Jun 28, 2019 at 09:34:52AM +0100, Daniel Thompson wrote:
-> On Wed, Jun 26, 2019 at 04:56:11PM +0200, Pavel Machek wrote:
-> > Hi!
+> Hi Lee, Daniel, Jingoo,
+> 
+> On 25/06/19 10:04 PM, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > > 
-> > > Export the type of the brightness curve via the new sysfs attribute
-> > > 'scale'. The value of the attribute may be a simple string like
-> > > 'linear' or 'non-linear', or a composite string similar to
-> > > 'compatible' strings of the device tree. A composite string consists
-> > > of different elements separated by commas, starting with the
-> > > most-detailed description and ending with the least-detailed one. An
-> > > example for a composite string is "cie-1931,perceptual,non-linear"
-> > > This brightness curve was generated with the CIE 1931 algorithm, it
-> > > is perceptually linear, but not actually linear in terms of the
-> > > emitted light. If userspace doesn't know about 'cie-1931' or
-> > > 'perceptual' it should at least be able to interpret the 'non-linear'
-> > > part.
+> > This is another small step on the path to liberating davinci from legacy
+> > GPIO API calls and shrinking the davinci GPIO driver by not having to
+> > support the base GPIO number anymore.
 > > 
-> > I'm not sure the comma-separated thing is a good idea. If it is, it should 
-> > go to the Documentation, not to changelog.
-> 
-> So I viewed the comma-separated thing as allow us to describe facts about
-> the scale used.
-> 
-> In particular I suspect that some controllers will be non-linear *and*
-> non-perceptual and that some userspaces, particularly those that animate
-> backlight changes, may care enough about the difference to ask us to add
-> another fact to the set that describes that scale.
-> 
-> Having said that I do share your concern that the comma-separated list
-> is overengineered and that all userspaces will end up implementing
-> something like:
-> 
-> if (strstr("non-linear", scale) {
->   mode = PERCEPTUAL;
-> } else if (strstr("unknown", scale) {
->   mode = use_existing_hueristic();
-> } else {
->   mode = LINEAR;
-> }
-
-I agree that this is not unlikely ...
-
-So let's just make it 'linear', 'non-linear' and 'unknown'?
-
-> > > +What:		/sys/class/backlight/<backlight>/scale
-> > > +Date:		June 2019
-> > > +KernelVersion:	5.4
-> > > +Contact:	Daniel Thompson <daniel.thompson@linaro.org>
-> > > +Description:
-> > > +		Description of the scale of the brightness curve. The
-> > > +		description consists of one or more elements separated by
-> > > +		commas, from the most detailed to the least detailed
-> > > +		description.
-> > > +
-> > > +		Possible values are:
-> > > +
-> > > +		unknown
-> > > +		  The scale of the brightness curve is unknown.
-> > > +
-> > > +		linear
-> > > +		  The brightness changes linearly in terms of the emitted
-> > > +		  light, changes are perceived as non-linear by the human eye.
-> > > +
-> > > +		non-linear
-> > > +		  The brightness changes non-linearly in terms of the emitted
-> > > +		  light, changes might be perceived as linear by the human eye.
+> > This time we're removing the legacy calls used indirectly by the LCDC
+> > fbdev driver.
 > > 
-> > non-linear is not too useful as described.
+> > The first three patches modify the GPIO backlight driver. The first
+> > of them adds the necessary functionality, the other two are just
+> > tweaks and cleanups.
 > 
-> Agree.
-> 
-> The idea is that allows a userspace with simple backlight needs to
-> simple map the brightness property directly to a slider using the
-> approach above without worrying about perceptual or (possible future)
-> logarithmic scales. Such an approach won't be perfect but it
-> probably won't feel horrible for the user either.
-> 
-> Arguably the descriptions should move away from the raw factual
-> approach and describe what advise the kernel of offering the
-> userspace.
+> Can you take the first three patches for v5.3 - if its not too late? I
+> think that will make it easy for rest of patches to make into subsequent
+> kernel releases.
 
-ok, I'll change it in the next revision
+It's already too late in the cycle (-rc7) for that.  I require patches
+of this nature to have a good soak in -next before being merged. There
+shouldn't be an issue with getting them into v5.4 though.
 
-> > > +		perceptual,non-linear
-> > > +		  The brightness changes non-linearly in terms of the emitted
-> > > +		  light, changes should be perceived as linear by the human eye.
-> > > +
-> > > +		cie-1931,perceptual,non-linear
-> > > +		  The brightness curve was calculated with the CIE 1931
-> > > +		  algorithm. Brightness changes non-linearly in terms of the
-> > > +		  emitted light, changes should be perceived as linear by the
-> > > +		  human eye.
+> > Next two patches enable the GPIO backlight driver in
+> > davinci_all_defconfig.
 > > 
-> > Is it useful to know difference between perceptual, and cie-1931?
-> 
-> Depends how assertive the userspaces are!
-> 
-> If they follow the "fix kernel bugs in the kernel" mantra rather than
-> implement workarounds and heuristics then I suspect it would not be used
-> much.
-> 
-> 
-> > Would it be useful to export absolute values in some well-known units?
+> > Patch 6/12 models the backlight GPIO as an actual GPIO backlight device.
 > > 
-> > If I'm in dark room, I may want 100mW/m^2 of backlight... And it would
-> > be nice if I could set same backlight intensity on all my devices
-> > easily.
+> > Patches 7-9 extend the fbdev driver with regulator support and convert
+> > the da850-evm board file to using it.
+> > 
+> > Last three patches are improvements to the da8xx fbdev driver since
+> > we're already touching it in this series.
 > 
-> I'm a little sceptical that we could calibrate an absolute scale on
-> enough devices for such a property to be useful. I think it would be
-> "unknown" on almost every system.
+> Thanks,
+> Sekhar
+> 
 
-I share your scepticism and would expect most devices to remain
-"unknown"
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
