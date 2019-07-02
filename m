@@ -2,122 +2,168 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2057F5C962
-	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 08:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A778C5CC4B
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 11:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725845AbfGBGg6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 2 Jul 2019 02:36:58 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44155 "EHLO
+        id S1727035AbfGBJCH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jul 2019 05:02:07 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:44470 "EHLO
         mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725775AbfGBGg6 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 02:36:58 -0400
-Received: by mail-wr1-f67.google.com with SMTP id e3so6791639wrs.11
-        for <linux-fbdev@vger.kernel.org>; Mon, 01 Jul 2019 23:36:56 -0700 (PDT)
+        with ESMTP id S1725868AbfGBJCH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 05:02:07 -0400
+Received: by mail-wr1-f67.google.com with SMTP id e3so7289989wrs.11
+        for <linux-fbdev@vger.kernel.org>; Tue, 02 Jul 2019 02:02:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=kL52YKQhFRfe3VLS8UGs1QL98Cpg/XLkHXZMM+/zcyM=;
-        b=YZV+d5gqyzrP4gJNY5WwDuXGyrmn0m0DVdTv+9ppXaeW71PBbeOby+m1eElOIBixjX
-         bkEre9t6nF7NUX9U965KXC/EJ8N98Cru9PsOJGSjGF9gFnwp8/QzBDy5LTRHXHi9aqrI
-         zW9Z41R0hL7APL7VK5m6sYCxRpZfFKvd1bTVN0BR21ivFK/UZmgSRk9ygU2x48NnBA8X
-         AcBGEN/Jh0clFSqBDXkVTpFBncTcdw03s0bRc1OCI9d189YVkL5re+bSQrm+0KZ0TqmV
-         AWij6o1bxNwElPFN+PCnj2zJDkewnveeiEIoypEZ0ljdMwx5LuxyF3hah2RwmITTiE2x
-         w1Kw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UYqevnI0spcyedfiOLJ3vdJN7KeUhPxc6owycWTRKgQ=;
+        b=kNZfMLh00xnDEGdyC0iMBLY3n5hKUNwtHEhscIYyRu5QdBU8iXikuYKclzZ4F+RGCK
+         S6LNIhsKN0ymzqyVPrK9D4krSgW29DhsBIMN8qLF13phqddvbHbk3QsIowLUof5CiE3W
+         Adhoe3+1xqurjhsFfPGGjmFerkhGU8fxZHZZ83yVnrtCXpMli/vgDurTNBYZYzIrK189
+         ll8jNF8I6Ry98ZCfRnt3Luin+fFFYxhHCS3vDGnefmmSsVhe7w42q0IRzxQ3DrWrWBSy
+         6Wv5vwS9v8z/uz7RDdfqT/GI1sdH96WAO0YFRg960KbLyx3V81mfc5Y2fr5RzWHcdzym
+         nZdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=kL52YKQhFRfe3VLS8UGs1QL98Cpg/XLkHXZMM+/zcyM=;
-        b=cHIU1E8RTSjHR8NFJNEXkpep9O8ITTtNiLl1/mwobVyIPaNs4C0Z2XK6qw4iH8g4RE
-         12REBcNJuqdpl2RsXPtVC0chInzspFko8Iqydv8AjT7LoN+wmc7nooGGEHOHFNG20Q6p
-         aWAx7cjXpcdWWEcvCB0c3kp67elYjvM5VH/m0O6b0oXAjLp72apgGjeAmoM6PIdKPann
-         ugvy8rng4k6MmIBGJbR7ISPx2IvpUgcVVCKq9M5eVjnyI6Q7iTht5gMgX+vy0XrEXuGB
-         5MY/RchiuGNU2sAbbk493uypWyRiAC6ztBMkEbe0diKvfXO3EcSSjEufdaVsZLRtof0V
-         7UFg==
-X-Gm-Message-State: APjAAAX0OyigeO/8Q2acIKN0joGEI7aYe2ck40he7U3amwl0RqHPawEb
-        T3x72C9aw4ikBblFV8Pjrf4Wuw==
-X-Google-Smtp-Source: APXvYqyNIADHpitNQlVYgOHrVqbwIkf6QAAdkpRA5Xs8300TxHIp8LjNRmcFL/fWRjeA4UT1R1Qr1A==
-X-Received: by 2002:a05:6000:1285:: with SMTP id f5mr7035937wrx.315.1562049416043;
-        Mon, 01 Jul 2019 23:36:56 -0700 (PDT)
-Received: from dell ([2.27.35.164])
-        by smtp.gmail.com with ESMTPSA id h133sm1648236wme.28.2019.07.01.23.36.55
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 01 Jul 2019 23:36:55 -0700 (PDT)
-Date:   Tue, 2 Jul 2019 07:36:53 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Sekhar Nori <nsekhar@ti.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UYqevnI0spcyedfiOLJ3vdJN7KeUhPxc6owycWTRKgQ=;
+        b=ps30yVEY3oVS/MaFEw/jXT6lObtvdTe38G6jv+DgBThEnMsuVLW9M1IJAx2Tf7mgHn
+         S89ibjsxAYqCIRBsBez1VETRts+qXtE2pN6VpCNS2E6vqzLBr4xEY70CM0C1sZLwORn9
+         Hyi+YYuCrQYLFiGFVIuCKkvU2iNgg9/N3p85LsWFx3+ZfAJwrOfsqe7/bGpNy87eqPb1
+         qpUKKCirY3l5yUE+hQM27vnAGrWk7nVrAGJJUvvn9ilDn12yClUBtcp1dJG+Eyz+s9gV
+         gYt/5tkAxuBk2klB/WCxxRcuqKWNIaWhkLt11T7QoG22gvbYxatDFc4DdINs4vp6tZDK
+         XrKw==
+X-Gm-Message-State: APjAAAVpPwHZy1ZP+F+TWjU0KrxnqjZHUq4GmkLZmiV9PZNB/cKlTg+5
+        ERUokY9DXrq35sPqqAGZt0b17A==
+X-Google-Smtp-Source: APXvYqwe8Sm/0nT25qcnzu4by7nlxEbs2dugrf6wEZ/ThBZTX0iMnPIhJfIGmRRbZlCWJVwSZilmew==
+X-Received: by 2002:a5d:5450:: with SMTP id w16mr13519041wrv.128.1562058125256;
+        Tue, 02 Jul 2019 02:02:05 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.googlemail.com with ESMTPSA id z5sm11056873wrh.16.2019.07.02.02.02.04
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 02 Jul 2019 02:02:04 -0700 (PDT)
+Subject: Re: [PATCH 01/12] backlight: gpio: allow to probe non-pdata devices
+ from board files
+To:     Bartosz Golaszewski <brgl@bgdev.pl>, Sekhar Nori <nsekhar@ti.com>,
         Kevin Hilman <khilman@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH 00/12] ARM: davinci: da850-evm: remove more legacy GPIO
- calls
-Message-ID: <20190702063653.GC4652@dell>
 References: <20190625163434.13620-1-brgl@bgdev.pl>
- <fe42c0e1-2bfb-2b1c-2c38-0e176e88ec6e@ti.com>
+ <20190625163434.13620-2-brgl@bgdev.pl>
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+Message-ID: <57229b83-c876-1042-2866-1a63e6654bd4@linaro.org>
+Date:   Tue, 2 Jul 2019 10:02:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fe42c0e1-2bfb-2b1c-2c38-0e176e88ec6e@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190625163434.13620-2-brgl@bgdev.pl>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 01 Jul 2019, Sekhar Nori wrote:
-
-> Hi Lee, Daniel, Jingoo,
+On 25/06/2019 17:34, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> On 25/06/19 10:04 PM, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > 
-> > This is another small step on the path to liberating davinci from legacy
-> > GPIO API calls and shrinking the davinci GPIO driver by not having to
-> > support the base GPIO number anymore.
-> > 
-> > This time we're removing the legacy calls used indirectly by the LCDC
-> > fbdev driver.
-> > 
-> > The first three patches modify the GPIO backlight driver. The first
-> > of them adds the necessary functionality, the other two are just
-> > tweaks and cleanups.
-> 
-> Can you take the first three patches for v5.3 - if its not too late? I
-> think that will make it easy for rest of patches to make into subsequent
-> kernel releases.
+> Currently we can only probe devices that either use device tree or pass
+> platform data to probe(). Rename gpio_backlight_probe_dt() to
+> gpio_backlight_probe_prop() and use generic device properties instead
+> of OF specific helpers.
 
-It's already too late in the cycle (-rc7) for that.  I require patches
-of this nature to have a good soak in -next before being merged. There
-shouldn't be an issue with getting them into v5.4 though.
+This has already been done in (which IIRC did get queued for the next 
+release):
+https://www.spinics.net/lists/dri-devel/msg215050.html
 
-> > Next two patches enable the GPIO backlight driver in
-> > davinci_all_defconfig.
-> > 
-> > Patch 6/12 models the backlight GPIO as an actual GPIO backlight device.
-> > 
-> > Patches 7-9 extend the fbdev driver with regulator support and convert
-> > the da850-evm board file to using it.
-> > 
-> > Last three patches are improvements to the da8xx fbdev driver since
-> > we're already touching it in this series.
+> Reverse the logic checking the presence of
+> platform data in probe(). This way we can probe devices() registered
+> from machine code that neither have a DT node nor use platform data.
+
+Andy's patch did not reverse this logic... but it does check 
+pdev->dev.fwnode rather than of_node .
+
+
+Daniel.
+
+
 > 
-> Thanks,
-> Sekhar
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> ---
+>   drivers/video/backlight/gpio_backlight.c | 24 ++++++++----------------
+>   1 file changed, 8 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+> index b9300f3e1ee6..654c19d3a81d 100644
+> --- a/drivers/video/backlight/gpio_backlight.c
+> +++ b/drivers/video/backlight/gpio_backlight.c
+> @@ -54,15 +54,14 @@ static const struct backlight_ops gpio_backlight_ops = {
+>   	.check_fb	= gpio_backlight_check_fb,
+>   };
+>   
+> -static int gpio_backlight_probe_dt(struct platform_device *pdev,
+> -				   struct gpio_backlight *gbl)
+> +static int gpio_backlight_probe_prop(struct platform_device *pdev,
+> +				     struct gpio_backlight *gbl)
+>   {
+>   	struct device *dev = &pdev->dev;
+> -	struct device_node *np = dev->of_node;
+>   	enum gpiod_flags flags;
+>   	int ret;
+>   
+> -	gbl->def_value = of_property_read_bool(np, "default-on");
+> +	gbl->def_value = device_property_read_bool(dev, "default-on");
+>   	flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
+>   
+>   	gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
+> @@ -86,26 +85,15 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+>   	struct backlight_properties props;
+>   	struct backlight_device *bl;
+>   	struct gpio_backlight *gbl;
+> -	struct device_node *np = pdev->dev.of_node;
+>   	int ret;
+>   
+> -	if (!pdata && !np) {
+> -		dev_err(&pdev->dev,
+> -			"failed to find platform data or device tree node.\n");
+> -		return -ENODEV;
+> -	}
+> -
+>   	gbl = devm_kzalloc(&pdev->dev, sizeof(*gbl), GFP_KERNEL);
+>   	if (gbl == NULL)
+>   		return -ENOMEM;
+>   
+>   	gbl->dev = &pdev->dev;
+>   
+> -	if (np) {
+> -		ret = gpio_backlight_probe_dt(pdev, gbl);
+> -		if (ret)
+> -			return ret;
+> -	} else {
+> +	if (pdata) {
+>   		/*
+>   		 * Legacy platform data GPIO retrieveal. Do not expand
+>   		 * the use of this code path, currently only used by one
+> @@ -126,6 +114,10 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+>   		gbl->gpiod = gpio_to_desc(pdata->gpio);
+>   		if (!gbl->gpiod)
+>   			return -EINVAL;
+> +	} else {
+> +		ret = gpio_backlight_probe_prop(pdev, gbl);
+> +		if (ret)
+> +			return ret;
+>   	}
+>   
+>   	memset(&props, 0, sizeof(props));
 > 
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
