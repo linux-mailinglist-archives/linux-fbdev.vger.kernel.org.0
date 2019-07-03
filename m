@@ -2,135 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3422B5CD4C
-	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jul 2019 12:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA915E044
+	for <lists+linux-fbdev@lfdr.de>; Wed,  3 Jul 2019 10:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbfGBKGu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 2 Jul 2019 06:06:50 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:51724 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbfGBKGu (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jul 2019 06:06:50 -0400
-Received: by mail-wm1-f66.google.com with SMTP id 207so267265wma.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 02 Jul 2019 03:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=IPhxNdYQv1IO45V1N89WkeYw72yq7YkYbzXa74/qLm8=;
-        b=TmcjfCcxp9A8p09QuoZGu11Tfov1i2w+va27tjKlP+UMLAP9yOMJJmoYEsh6iIKPXW
-         msQS1R0Vph9Wj+ScXIqkevVlPoxzL1HHYEnL0H2gqmnJ7GS8yuphQVdojxjDby/fnzqh
-         iIKFUsFtpKGPWwSUsSgmtl07V6KTaUluSQ5tQYCKwUwjc3Q5IQfEJBVH6DJYu/677awV
-         IlHuPJslNPQamm0aYo9JmdAJhR+kyipkS/zZM93qGpMREddffT/vUybnRw+4iSTpjxOC
-         8zyfIrQE+miGNfNstjUZCVlvoYaIGoEeAVlmi724OpGlxR6bdJYkAvraWA3+o22qkLzb
-         LxBw==
+        id S1726670AbfGCIyY convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 3 Jul 2019 04:54:24 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:35597 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726400AbfGCIyX (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 3 Jul 2019 04:54:23 -0400
+Received: by mail-qt1-f194.google.com with SMTP id d23so1719730qto.2;
+        Wed, 03 Jul 2019 01:54:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=IPhxNdYQv1IO45V1N89WkeYw72yq7YkYbzXa74/qLm8=;
-        b=IPFoc4n9f7S79345NwLdXw8MBoSIz4Eqg4yvjJUnBRP1nEg5fLsIuNORXAO7Zx7NFc
-         l2VKLH+gz4kMy7X2K0ky53NEcdzKtogPH8TSVhQADWmc9m4/LnHbit7+DTunmo5L0aa9
-         43pCTN462vlqLD8hRfUOsVrHqRBxlojFdhxZ5rP50OgJRlYZkq6cF6107kSHvVZd9B7t
-         l7XVkgtqedr2j5Y6bmKs9TaWX+Fw/LjrblUfBrMP/Sdy6AiJmBO1xJtnmhDZ5Z1aGY2n
-         d3qraRmZ5OhuY8nZOBYtL7Q6W1PHQ8nuHnmYApFALEzangF+yOy83TSs7DdbfBnnIk/r
-         6XmQ==
-X-Gm-Message-State: APjAAAVV80F0kS1atX+5GHwtS6+V5iNFsA38EuTzjF60k5J44iJjQUyi
-        0fv03ow0nOG81PQ36ZQ0LC5f5Q==
-X-Google-Smtp-Source: APXvYqwdjByD+ebiA2jaUAfMZ0F44rSTtYAIiX/eLfpUiDzg2avALCgxqEFC+Vkzsv/GOweWWbSJqA==
-X-Received: by 2002:a1c:a654:: with SMTP id p81mr2771343wme.36.1562062008717;
-        Tue, 02 Jul 2019 03:06:48 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id m24sm2055652wmi.39.2019.07.02.03.06.47
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 02 Jul 2019 03:06:48 -0700 (PDT)
-Date:   Tue, 2 Jul 2019 11:06:46 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Sekhar Nori <nsekhar@ti.com>, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kevin Hilman <khilman@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH 00/12] ARM: davinci: da850-evm: remove more legacy GPIO
- calls
-Message-ID: <20190702100646.q3wgzgacvp67m6xv@holly.lan>
-References: <20190625163434.13620-1-brgl@bgdev.pl>
- <fe42c0e1-2bfb-2b1c-2c38-0e176e88ec6e@ti.com>
- <20190702063653.GC4652@dell>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=MSjZcZaarsSFJ2hu2ClYcmZVIX7oo4qCsiK4ex6LbOI=;
+        b=rpJJNYR8pHarR3zG2F7L9hmYg0ADqULRTwBnnfisItIg4Y9v4IPIAT4ftXyKCvrAGC
+         CSCwr2YDpqfAoHh0mkQ9JBfgDbt9w01AEwZ9MT6bjfs0o4AShkKByDGg9Q1XApfAMvr7
+         OmAcsdu1cpavEm4BdC9dfEf4N9gPFUphSOMDQEdWt3MtWceCcMBO5FzN5z2CiSPlL45G
+         qYAJAHuLgdp3p6kxYFJ3Wg0AvTaVtdhi4jxIbBrClTRCd8ITaHYCkBGlEoGqZi0JWD9X
+         btT5/VdMiZgFty7TZJd7qLtv89hxjloHgM2x43/v691eeLRyCetIdFTb3Mf5fm/yMdvV
+         rtmQ==
+X-Gm-Message-State: APjAAAWZg9pjaNgHsirVvrj/cqLN520rZvGtkWQIJCHO5n4qEZuLy1Rz
+        DBGgbVRJkcrBoCMTIamKxBSk9YpqURe7fo4UNqI=
+X-Google-Smtp-Source: APXvYqwUYSO3x//KZTXG6yv2dZ3NcZk20NbjruJN9Xn8+zo86d+e94GBeKk5SizQIKzkTw9NBTZSnlR8ipikN2uBVs8=
+X-Received: by 2002:a0c:b88e:: with SMTP id y14mr29883517qvf.93.1562144062650;
+ Wed, 03 Jul 2019 01:54:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190702063653.GC4652@dell>
-User-Agent: NeoMutt/20180716
+References: <20190430110032.25301-1-hch@lst.de> <20190430110032.25301-6-hch@lst.de>
+ <20190430201041.536amvinrcvd2wua@pburton-laptop> <20190430202947.GA30262@lst.de>
+ <20190430211105.ielntedm46uqamca@pburton-laptop> <20190501131339.GA890@lst.de>
+ <20190501171355.7wnrutfnax5djkpx@pburton-laptop> <20190603064855.GA22023@lst.de>
+In-Reply-To: <20190603064855.GA22023@lst.de>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 3 Jul 2019 10:54:05 +0200
+Message-ID: <CAK8P3a0+mmc_DsHZZeM85xGUUB8zc50ROUu3=i3UN1XwD8UGeQ@mail.gmail.com>
+Subject: Re: [PATCH 5/7 v2] MIPS: use the generic uncached segment support in dma-direct
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>,
+        Ley Foon Tan <lftan@altera.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jul 02, 2019 at 07:36:53AM +0100, Lee Jones wrote:
-> On Mon, 01 Jul 2019, Sekhar Nori wrote:
-> 
-> > Hi Lee, Daniel, Jingoo,
-> > 
-> > On 25/06/19 10:04 PM, Bartosz Golaszewski wrote:
-> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > 
-> > > This is another small step on the path to liberating davinci from legacy
-> > > GPIO API calls and shrinking the davinci GPIO driver by not having to
-> > > support the base GPIO number anymore.
-> > > 
-> > > This time we're removing the legacy calls used indirectly by the LCDC
-> > > fbdev driver.
-> > > 
-> > > The first three patches modify the GPIO backlight driver. The first
-> > > of them adds the necessary functionality, the other two are just
-> > > tweaks and cleanups.
-> > 
-> > Can you take the first three patches for v5.3 - if its not too late? I
-> > think that will make it easy for rest of patches to make into subsequent
-> > kernel releases.
-> 
-> It's already too late in the cycle (-rc7) for that.  I require patches
-> of this nature to have a good soak in -next before being merged. There
-> shouldn't be an issue with getting them into v5.4 though.
+On Mon, Jun 3, 2019 at 8:50 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Wed, May 01, 2019 at 05:13:57PM +0000, Paul Burton wrote:
+> > Hi Christoph,
+> >
+> > On Wed, May 01, 2019 at 03:13:39PM +0200, Christoph Hellwig wrote:
+> > > Stop providing our arch alloc/free hooks and just expose the segment
+> > > offset instead.
+> > >
+> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > > ---
+> > >  arch/mips/Kconfig              |  1 +
+> > >  arch/mips/include/asm/page.h   |  3 ---
+> > >  arch/mips/jazz/jazzdma.c       |  6 ------
+> > >  arch/mips/mm/dma-noncoherent.c | 26 +++++++++-----------------
+> > >  4 files changed, 10 insertions(+), 26 deletions(-)
+> >
+> > This one looks good to me now, for patches 1 & 5:
+> >
+> >   Acked-by: Paul Burton <paul.burton@mips.com>
+>
+> Thanks, I've merged thos into the dma-mapping tree.
 
-On the other hand I think we did take a patch that did much the same 
-thing as patch 1/12 in this series:
-https://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight.git/commit/?h=for-backlight-next&id=98b7404eb7d64e55f8fdd419cb3965a8abf0e217
+I think this is the cause of some kernelci failures in current
+linux-next builds:
 
-I'm not 100% sure but I think that might allow the patchset to be split
-into two that are independent (one for Davinci and one for gpio
-backlight improvements).
+https://kernelci.org/build/next/branch/master/kernel/next-20190702/
 
+bigsur_defconfig ‐ mips3 warnings — 1 error
+cavium_octeon_defconfig ‐ mips3 warnings — 1 error
+ip27_defconfig ‐ mips3 warnings — 1 error
+loongson3_defconfig ‐ mips3 warnings — 1 error
+mips_paravirt_defconfig ‐ mips3 warnings — 1 error
+nlm_xlp_defconfig ‐ mips3 warnings — 1 error
+nlm_xlr_defconfig ‐ mips1 warning — 1 error
 
-Daniel.
+/home/buildslave/workspace/workspace/kernel-build@8/linux/build/../kernel/dma/direct.c:144:
+undefined reference to `arch_dma_prep_coherent'
+2/home/buildslave/workspace/kernel-build/linux/build/../kernel/dma/direct.c:144:
+undefined reference to `arch_dma_prep_coherent'
+2(.text+0xafc): undefined reference to `arch_dma_prep_coherent'
+1direct.c:(.text+0x934): undefined reference to `arch_dma_prep_coherent'
+1(.text+0xb84): undefined reference to `arch_dma_prep_coherent'
 
-> 
-> > > Next two patches enable the GPIO backlight driver in
-> > > davinci_all_defconfig.
-> > > 
-> > > Patch 6/12 models the backlight GPIO as an actual GPIO backlight device.
-> > > 
-> > > Patches 7-9 extend the fbdev driver with regulator support and convert
-> > > the da850-evm board file to using it.
-> > > 
-> > > Last three patches are improvements to the da8xx fbdev driver since
-> > > we're already touching it in this series.
-> > 
-> > Thanks,
-> > Sekhar
-> > 
-> 
-> -- 
-> Lee Jones [李琼斯]
-> Linaro Services Technical Lead
-> Linaro.org │ Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+I haven't looked into the details, but I suspect all machines
+with cache-coherent DMA are broken.
+
+       Arnd
