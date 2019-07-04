@@ -2,56 +2,40 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20C2A5F4C1
-	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Jul 2019 10:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89675F4DA
+	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Jul 2019 10:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbfGDIqb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 4 Jul 2019 04:46:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53392 "EHLO mail.kernel.org"
+        id S1727370AbfGDIrG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 4 Jul 2019 04:47:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54392 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727046AbfGDIqb (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 4 Jul 2019 04:46:31 -0400
+        id S1727395AbfGDIrF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 4 Jul 2019 04:47:05 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE44B2189E;
-        Thu,  4 Jul 2019 08:46:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 090A3218BC;
+        Thu,  4 Jul 2019 08:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562229990;
-        bh=tC7+gI4m6/FmoXDFgw+iYQurMimFbVLSYsLJZsEwswo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=k1z/iZmhkgL1+r5CK+JywKsx41uolSAz0o6l9oruBRWsCwsK3uP7NC8yhwHmkRfmT
-         uYnpWBIafyLG3LbrauXyApoKrbN+r0LhrfsET7Ma07/BKj/2HPxh7h3pjP8QOCjSuk
-         V1ZrAdjygpzHO7Js27pZu/f0TdYw+0Cvmc/N3ge8=
+        s=default; t=1562230024;
+        bh=zxScwFkLjiixqdeZRh7a5dXv8jDdQ8T3PHXavOyUF88=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Dv6zzAeEQOLrSruoBnVNVkmd1VvWZ2P/o3R8uv4G3LheVuxIeaLnayVa+Wg0bHN40
+         Vzq//RNvbEZmNAWyoAv35LneKIUggwAXGlWL5w34unYMha2SjdH34WS2Vg6+MY6SYz
+         NJzaOTuLMWTPi+zxqcoS2IylbU2vM4unYytSg4X0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andy Shevchenko <andy@infradead.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Slaby <jslaby@suse.com>,
-        Mans Rullgard <mans@mansr.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Richard Gong <richard.gong@linux.intel.com>,
-        Romain Izard <romain.izard.pro@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
         Tony Prisk <linux@prisktech.co.nz>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-serial@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: [PATCH 00/11] Platform drivers, provide a way to add sysfs groups easily
-Date:   Thu,  4 Jul 2019 10:46:06 +0200
-Message-Id: <20190704084617.3602-1-gregkh@linuxfoundation.org>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH 08/11] video: fbdev: w100fb: convert platform driver to use dev_groups
+Date:   Thu,  4 Jul 2019 10:46:14 +0200
+Message-Id: <20190704084617.3602-9-gregkh@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190704084617.3602-1-gregkh@linuxfoundation.org>
+References: <20190704084617.3602-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -59,48 +43,75 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If a platform driver wants to add a sysfs group, it has to do so in a
-racy way, adding it after the driver is bound.  To resolve this issue,
-have the platform driver core do this for the driver, making the
-individual drivers logic smaller and simpler, and solving the race at
-the same time.
+Platform drivers now have the option to have the platform core create
+and remove any needed sysfs attribute files.  So take advantage of that
+and do not register "by hand" a bunch of sysfs files.
 
-All of these patches depend on the first patch.  I'll take the first one
-through my driver-core tree, and any subsystem maintainer can either ack
-their individul patch and I will be glad to also merge it, or they can
-wait until after 5.3-rc1 when the core patch hits Linus's tree and then
-take it, it's up to them.
+Cc: Tony Prisk <linux@prisktech.co.nz>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/video/fbdev/w100fb.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-Thank to Richard Gong for the idea and the testing of the platform
-driver patch.
-
-Greg Kroah-Hartman (11):
-  Platform: add a dev_groups pointer to struct platform_driver
-  uio: uio_fsl_elbc_gpcm: convert platform driver to use dev_groups
-  serial: sh-sci: use driver core functions, not sysfs ones.
-  firmware: arm_scpi: convert platform driver to use dev_groups
-  olpc: x01: convert platform driver to use dev_groups
-  platform: x86: hp-wmi: convert platform driver to use dev_groups
-  video: fbdev: wm8505fb: convert platform driver to use dev_groups
-  video: fbdev: w100fb: convert platform driver to use dev_groups
-  video: fbdev: sm501fb: convert platform driver to use dev_groups
-  input: keyboard: gpio_keys: convert platform driver to use dev_groups
-  input: axp20x-pek: convert platform driver to use dev_groups
-
- arch/x86/platform/olpc/olpc-xo1-sci.c | 17 ++++------
- drivers/base/platform.c               | 40 +++++++++++++++--------
- drivers/firmware/arm_scpi.c           |  5 +--
- drivers/input/keyboard/gpio_keys.c    | 13 ++------
- drivers/input/misc/axp20x-pek.c       | 15 ++-------
- drivers/platform/x86/hp-wmi.c         | 47 +++++++--------------------
- drivers/tty/serial/sh-sci.c           | 22 +++++--------
- drivers/uio/uio_fsl_elbc_gpcm.c       | 23 +++++--------
- drivers/video/fbdev/sm501fb.c         | 37 +++++----------------
- drivers/video/fbdev/w100fb.c          | 23 ++++++-------
- drivers/video/fbdev/wm8505fb.c        | 13 ++++----
- include/linux/platform_device.h       |  1 +
- 12 files changed, 94 insertions(+), 162 deletions(-)
-
+diff --git a/drivers/video/fbdev/w100fb.c b/drivers/video/fbdev/w100fb.c
+index 696106ecdff0..4be3afcc1c93 100644
+--- a/drivers/video/fbdev/w100fb.c
++++ b/drivers/video/fbdev/w100fb.c
+@@ -168,6 +168,15 @@ static ssize_t fastpllclk_store(struct device *dev, struct device_attribute *att
+ 
+ static DEVICE_ATTR_RW(fastpllclk);
+ 
++static struct attribute *w100fb_attrs[] = {
++	&dev_attr_fastpllclk.attr,
++	&dev_attr_reg_read.attr,
++	&dev_attr_reg_write.attr,
++	&dev_attr_flip.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(w100fb);
++
+ /*
+  * Some touchscreens need hsync information from the video driver to
+  * function correctly. We export it here.
+@@ -756,14 +765,6 @@ int w100fb_probe(struct platform_device *pdev)
+ 		goto out;
+ 	}
+ 
+-	err = device_create_file(&pdev->dev, &dev_attr_fastpllclk);
+-	err |= device_create_file(&pdev->dev, &dev_attr_reg_read);
+-	err |= device_create_file(&pdev->dev, &dev_attr_reg_write);
+-	err |= device_create_file(&pdev->dev, &dev_attr_flip);
+-
+-	if (err != 0)
+-		fb_warn(info, "failed to register attributes (%d)\n", err);
+-
+ 	fb_info(info, "%s frame buffer device\n", info->fix.id);
+ 	return 0;
+ out:
+@@ -788,11 +789,6 @@ static int w100fb_remove(struct platform_device *pdev)
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 	struct w100fb_par *par=info->par;
+ 
+-	device_remove_file(&pdev->dev, &dev_attr_fastpllclk);
+-	device_remove_file(&pdev->dev, &dev_attr_reg_read);
+-	device_remove_file(&pdev->dev, &dev_attr_reg_write);
+-	device_remove_file(&pdev->dev, &dev_attr_flip);
+-
+ 	unregister_framebuffer(info);
+ 
+ 	vfree(par->saved_intmem);
+@@ -1630,6 +1626,7 @@ static struct platform_driver w100fb_driver = {
+ 	.driver		= {
+ 		.name	= "w100fb",
+ 	},
++	.dev_groups	= w100fb_groups,
+ };
+ 
+ module_platform_driver(w100fb_driver);
 -- 
 2.22.0
 
