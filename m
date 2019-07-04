@@ -2,95 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2755F4CD
-	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Jul 2019 10:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F7F5F5E7
+	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Jul 2019 11:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727185AbfGDIqo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 4 Jul 2019 04:46:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53700 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727046AbfGDIqm (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 4 Jul 2019 04:46:42 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 626A0218A6;
-        Thu,  4 Jul 2019 08:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562230001;
-        bh=/nscaZ8tOKoA1xhpKbG/KBNAKedrtqbPGjp5wJ1TSpQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I+DCsUahJo9iDLvMN0Xcu4HnNamjXiAT94J/+uj5N3iNe97RaB4mbBXXducoiirEQ
-         9SeyP2XeHF8q+au1V8zq5T3zJ5GQXBFD9ndhdnYrrDIQRlPEFKdmUcbbvpsZ3DwoIv
-         P5TLC/YESUEnwbFOB7AJWeQG22osfis4URZS4F78=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1727502AbfGDJqI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 4 Jul 2019 05:46:08 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:49842 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727433AbfGDJqH (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 4 Jul 2019 05:46:07 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 89A0C282A6D9B3730D51;
+        Thu,  4 Jul 2019 17:46:03 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 4 Jul 2019 17:45:57 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 10/11] input: keyboard: gpio_keys: convert platform driver to use dev_groups
-Date:   Thu,  4 Jul 2019 10:46:16 +0200
-Message-Id: <20190704084617.3602-11-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190704084617.3602-1-gregkh@linuxfoundation.org>
-References: <20190704084617.3602-1-gregkh@linuxfoundation.org>
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-fbdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] video: fbdev: imxfb: fix a typo in imxfb_probe()
+Date:   Thu, 4 Jul 2019 09:52:25 +0000
+Message-ID: <20190704095225.143177-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Platform drivers now have the option to have the platform core create
-and remove any needed sysfs attribute files.  So take advantage of that
-and do not register "by hand" a bunch of sysfs files.
+Fix the return value check which testing the wrong variable
+in imxfb_probe().
 
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 739a6439c2bf ("video: fbdev: imxfb: fix sparse warnings about using incorrect types")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/input/keyboard/gpio_keys.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/video/fbdev/imxfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index 6cd199e8a370..1f6547440edb 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -354,10 +354,7 @@ static struct attribute *gpio_keys_attrs[] = {
- 	&dev_attr_disabled_switches.attr,
- 	NULL,
- };
--
--static const struct attribute_group gpio_keys_attr_group = {
--	.attrs = gpio_keys_attrs,
--};
-+ATTRIBUTE_GROUPS(gpio_keys);
- 
- static void gpio_keys_gpio_report_event(struct gpio_button_data *bdata)
- {
-@@ -856,13 +853,6 @@ static int gpio_keys_probe(struct platform_device *pdev)
- 
- 	fwnode_handle_put(child);
- 
--	error = devm_device_add_group(dev, &gpio_keys_attr_group);
--	if (error) {
--		dev_err(dev, "Unable to export keys/switches, error: %d\n",
--			error);
--		return error;
--	}
--
- 	error = input_register_device(input);
- 	if (error) {
- 		dev_err(dev, "Unable to register input device, error: %d\n",
-@@ -1025,6 +1015,7 @@ static void gpio_keys_shutdown(struct platform_device *pdev)
- }
- 
- static struct platform_driver gpio_keys_device_driver = {
-+	.dev_groups	= gpio_keys_groups,
- 	.probe		= gpio_keys_probe,
- 	.shutdown	= gpio_keys_shutdown,
- 	.driver		= {
--- 
-2.22.0
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index 8d1053e9ef9f..b3286d1fa543 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -976,7 +976,7 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	fbi->map_size = PAGE_ALIGN(info->fix.smem_len);
+ 	info->screen_buffer = dma_alloc_wc(&pdev->dev, fbi->map_size,
+ 					   &fbi->map_dma, GFP_KERNEL);
+-	if (!info->screen_base) {
++	if (!info->screen_buffer) {
+ 		dev_err(&pdev->dev, "Failed to allocate video RAM: %d\n", ret);
+ 		ret = -ENOMEM;
+ 		goto failed_map;
+
+
 
