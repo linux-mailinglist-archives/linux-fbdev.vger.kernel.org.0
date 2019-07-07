@@ -2,143 +2,248 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D7EA60940
-	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Jul 2019 17:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F0D61379
+	for <lists+linux-fbdev@lfdr.de>; Sun,  7 Jul 2019 04:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbfGEP0y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 5 Jul 2019 11:26:54 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:60536 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726012AbfGEP0y (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 Jul 2019 11:26:54 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190705152651euoutp01fd5a0e79c2dd33a58180392925c3b44a~ujFO1gF0T0749107491euoutp017
-        for <linux-fbdev@vger.kernel.org>; Fri,  5 Jul 2019 15:26:51 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190705152651euoutp01fd5a0e79c2dd33a58180392925c3b44a~ujFO1gF0T0749107491euoutp017
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1562340411;
-        bh=pYuFsx7cHi1vXY+tY4Fc6WSu6NjqYr65RWHF2eerspo=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=NsKp2RUYdWlneWqbL9h7UxrN0QgB8U/cbPlUcBx2QFiV30ORxjXV3P3WTx4WjPo8h
-         Ph41K0shMHTgoG/dykr/gZUYrpHYh1VLAjXoVQGUmkdFH224hJjTxeAWegFNJxGilg
-         rp4MIEwmeJj4oa8n+31X2SfvUDDByu+L9JTp1Oyg=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190705152651eucas1p22d53e5b2ee96cc5bc188134435df1200~ujFOKJlcs0666606666eucas1p2P;
-        Fri,  5 Jul 2019 15:26:51 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 34.1C.04298.A3C6F1D5; Fri,  5
-        Jul 2019 16:26:50 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20190705152650eucas1p18489d01b339d75aefa8be6cc30b48bad~ujFNV84U51867618676eucas1p14;
-        Fri,  5 Jul 2019 15:26:50 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190705152650eusmtrp21dea3bcfe879dde7c20e0e3e8cc8f60e~ujFNHw1d90470504705eusmtrp2k;
-        Fri,  5 Jul 2019 15:26:50 +0000 (GMT)
-X-AuditID: cbfec7f2-f13ff700000010ca-f5-5d1f6c3aa82b
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id A9.A1.04140.93C6F1D5; Fri,  5
-        Jul 2019 16:26:49 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190705152649eusmtip190b4235f512004d88494fd92ca9cff0f~ujFMpypu73046930469eusmtip1d;
-        Fri,  5 Jul 2019 15:26:49 +0000 (GMT)
-Subject: Re: [PATCH -next] video: fbdev: imxfb: fix a typo in imxfb_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <2b579d3f-a441-39c9-fdb7-6089edea3cb1@samsung.com>
-Date:   Fri, 5 Jul 2019 17:26:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        id S1727128AbfGGCNm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 6 Jul 2019 22:13:42 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:36960 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727127AbfGGCNm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 6 Jul 2019 22:13:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1562465617; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fznRMUZAZm3iHbL6qyuoO4hMPI4FOSHJ7kLY24FuOZI=;
+        b=meQffMhT7/byhhbXYDtJprcmMUATZqkEpI4hd/tl1CTIQpbwPpKL89XDPJuGJoZs1xXYOl
+        Ll9syGbefwxlBQmfKwnalmU4Phk/ERo+/kUKCFpZNrPFfY7s6C5i0V1XXjsm/WPD0yd+L8
+        V/7mBH4OZfdNPMa2cY/1IwKj2Q3cOKQ=
+Date:   Sat, 06 Jul 2019 22:13:13 -0400
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] backlight: pwm_bl: Set pin to sleep state when powered
+ down
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        od@zcrc.me, linux-pwm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-Id: <1562465593.2019.0@crapouillou.net>
+In-Reply-To: <20190625094756.GC1516@ulmo>
+References: <20190522163428.7078-1-paul@crapouillou.net>
+        <5b0f8bb3-e7b0-52c1-1f2f-9709992b76fc@linaro.org>
+        <20190621135608.GB11839@ulmo> <20190624112844.fmwbfpdxjkst3u7r@holly.lan>
+        <1561386717.20436.0@crapouillou.net> <20190625094756.GC1516@ulmo>
 MIME-Version: 1.0
-In-Reply-To: <20190704095225.143177-1-weiyongjun1@huawei.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCKsWRmVeSWpSXmKPExsWy7djPc7pWOfKxBouazSyufH3PZvHwqr/F
-        1lvSFqum7mSx2PT4GqvFib4PrBZdv1YyW/zdvonF4sUWcYvDX3axOXB57Jx1l92j5chbVo9N
-        qzrZPO53H2fy2Lyk3mPjux1MHv1/DTw+b5IL4IjisklJzcksSy3St0vgyuhZ+YmlYBZXxe0T
-        OQ2M2zi6GDk5JARMJK6//M3WxcjFISSwglFi1dK3zBDOF0aJR01PGCGcz4wS+zZfYIRpmXFh
-        BlTLckaJRd0XmSCct4wSfXv3soNUCQt4S2z5+YMZxBYR0JDYcvkO2ChmgQtMEst2b2cBSbAJ
-        WElMbF8FNpZXwE6i4WUXE4jNIqAisejgJrBBogIREvePbWCFqBGUODnzCVgvp4CtxLlrB8AW
-        MAuIS9x6Mp8JwpaX2P52DtgTEgLX2CXezH8BdbeLxJQ7O9kgbGGJV8e3sEPYMhL/d85ngmhY
-        xyjxt+MFVPd2Ronlk/9BdVhLHD5+EegMDqAVmhLrd+mDmBICjhLXNslDmHwSN94KQtzAJzFp
-        23RmiDCvREebEMQMNYkNyzawwWzt2rmSeQKj0iwkn81C8s0sJN/MQli7gJFlFaN4amlxbnpq
-        sWFearlecWJucWleul5yfu4mRmDaOv3v+KcdjF8vJR1iFOBgVOLhPeEkHyvEmlhWXJl7iFGC
-        g1lJhDcxCCjEm5JYWZValB9fVJqTWnyIUZqDRUmct5rhQbSQQHpiSWp2ampBahFMlomDU6qB
-        UfDA8h2MLto6d68e2Bnl8YA/93CF6rTo7va9TVyP4tvLJZ9Pz826zveD74Did54VEUorJ99W
-        33x8hd6lXRZTwvUuTHyZ3JTItNSv+eX9Zu2+T87t09tzSz9zH9Vs61nXorXixIP5vEqFral7
-        z1f9yJ+w5ziX6C8usVQO9gdtxhzXpi5euOjpEiWW4oxEQy3mouJEAIFq8EtXAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrGIsWRmVeSWpSXmKPExsVy+t/xu7qWOfKxBl//2Fhc+fqezeLhVX+L
-        rbekLVZN3clisenxNVaLE30fWC26fq1ktvi7fROLxYst4haHv+xic+Dy2DnrLrtHy5G3rB6b
-        VnWyedzvPs7ksXlJvcfGdzuYPPr/Gnh83iQXwBGlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdk
-        YqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl9Gz8hNLwSyuitsnchoYt3F0MXJySAiYSMy4MIOt
-        i5GLQ0hgKaPE+Zm7mLoYOYASMhLH15dB1AhL/LnWBVXzmlFi28yNrCAJYQFviS0/fzCD2CIC
-        GhJbLt9hBCliFrjEJPHp5HZmiI4JjBL/zt9hB6liE7CSmNi+ihHE5hWwk2h42cUEYrMIqEgs
-        OrgJrEZUIELizPsVLBA1ghInZz4BszkFbCXOXTsAto1ZQF3iz7xLULa4xK0n85kgbHmJ7W/n
-        ME9gFJqFpH0WkpZZSFpmIWlZwMiyilEktbQ4Nz232EivODG3uDQvXS85P3cTIzBOtx37uWUH
-        Y9e74EOMAhyMSjy8J5zkY4VYE8uKK3MPMUpwMCuJ8CYGAYV4UxIrq1KL8uOLSnNSiw8xmgI9
-        N5FZSjQ5H5hC8kriDU0NzS0sDc2NzY3NLJTEeTsEDsYICaQnlqRmp6YWpBbB9DFxcEo1MAZa
-        zzz7XOY8/+kj3jW+ygXnaqSnn/oRdMFF9qCBYsFqLVVlZummoiPVWZ3/eESnTS1MKlg+9fun
-        vA9962s9NrdfbLvZlJeysPDW+khDoZpCeVW/Y9zarZqL3m/UVrKQKYmcePgzn+heo81dbu28
-        W4veyvtMflXI2S7jzN+4dP1E/fLE7zXPlViKMxINtZiLihMBuxluAukCAAA=
-X-CMS-MailID: 20190705152650eucas1p18489d01b339d75aefa8be6cc30b48bad
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190704094615epcas2p30e66b919c33afcfa233c9218eae892b7
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190704094615epcas2p30e66b919c33afcfa233c9218eae892b7
-References: <CGME20190704094615epcas2p30e66b919c33afcfa233c9218eae892b7@epcas2p3.samsung.com>
-        <20190704095225.143177-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 7/4/19 11:52 AM, Wei Yongjun wrote:
-> Fix the return value check which testing the wrong variable
-> in imxfb_probe().
 
-I added following comment while merging the patch:
+Le mar. 25 juin 2019 =E0 5:47, Thierry Reding <thierry.reding@gmail.com>=20
+a =E9crit :
+> On Mon, Jun 24, 2019 at 04:31:57PM +0200, Paul Cercueil wrote:
+>>=20
+>>=20
+>>  Le lun. 24 juin 2019 =E0 13:28, Daniel Thompson=20
+>> <daniel.thompson@linaro.org> a
+>>  =E9crit :
+>>  > On Fri, Jun 21, 2019 at 03:56:08PM +0200, Thierry Reding wrote:
+>>  > >  On Fri, Jun 21, 2019 at 01:41:45PM +0100, Daniel Thompson=20
+>> wrote:
+>>  > >  > On 22/05/2019 17:34, Paul Cercueil wrote:
+>>  > >  > > When the driver probes, the PWM pin is automatically=20
+>> configured
+>>  > > to its
+>>  > >  > > default state, which should be the "pwm" function.
+>>  > >  >
+>>  > >  > At which point in the probe... and by who?
+>>  > >
+>>  > >  The driver core will select the "default" state of a device=20
+>> right
+>>  > > before
+>>  > >  calling the driver's probe, see:
+>>  > >
+>>  > >  	drivers/base/pinctrl.c: pinctrl_bind_pins()
+>>  > >
+>>  > >  which is called from:
+>>  > >
+>>  > >  	drivers/base/dd.c: really_probe()
+>>  > >
+>>  >
+>>  > Thanks. I assumed it would be something like that... although=20
+>> given
+>>  > pwm-backlight is essentially a wrapper driver round a PWM I=20
+>> wondered why
+>>  > the pinctrl was on the backlight node (rather than the PWM node).
+>>  >
+>>  > Looking at the DTs in the upstream kernel it looks like ~20% of=20
+>> the
+>>  > backlight drivers have pinctrl on the backlight node. Others=20
+>> presumable
+>>  > have none or have it on the PWM node (and it looks like support=20
+>> for
+>>  > sleeping the pins is *very* rare amoung the PWM drivers).
+>>=20
+>>  If your PWM driver has more than one channel and has the pinctrl=20
+>> node, you
+>>  cannot fine-tune the state of individual pins. They all share the=20
+>> same
+>>  state.
+>=20
+> But that's something that could be changed, right? We could for=20
+> example
+> extend the PWM bindings to allow describing each PWM instance via a=20
+> sub-
+> node of the controller node. Pin control states could be described on=20
+> a
+> per-channel basis that way.
 
-b.zolnierkie: please note that ->screen_base and ->screen_buffer
-are equivalent (they are part of unnamed union in struct fb_info)
+There could be an API to dynamically add/remove pin groups to a given
+pinctrl state. The PWM driver would start with an empty (no groups)
+"default" state, then when enabling e.g. PWM1, the driver would call
+a function to add the "pwm1" pin group to the "default" state.
 
-> Fixes: 739a6439c2bf ("video: fbdev: imxfb: fix sparse warnings about using incorrect types")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Does that sound like a good idea?
 
-Patch queued for v5.3, thanks.
+Thanks,
+-Paul
 
-> ---
->  drivers/video/fbdev/imxfb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-> index 8d1053e9ef9f..b3286d1fa543 100644
-> --- a/drivers/video/fbdev/imxfb.c
-> +++ b/drivers/video/fbdev/imxfb.c
-> @@ -976,7 +976,7 @@ static int imxfb_probe(struct platform_device *pdev)
->  	fbi->map_size = PAGE_ALIGN(info->fix.smem_len);
->  	info->screen_buffer = dma_alloc_wc(&pdev->dev, fbi->map_size,
->  					   &fbi->map_dma, GFP_KERNEL);
-> -	if (!info->screen_base) {
-> +	if (!info->screen_buffer) {
->  		dev_err(&pdev->dev, "Failed to allocate video RAM: %d\n", ret);
->  		ret = -ENOMEM;
->  		goto failed_map;
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+>>  > >  > > However, at this
+>>  > >  > > point we don't know the actual level of the pin, which may=20
+>> be
+>>  > > active or
+>>  > >  > > inactive. As a result, if the driver probes without=20
+>> enabling the
+>>  > >  > > backlight, the PWM pin might be active, and the backlight=20
+>> would
+>>  > > be
+>>  > >  > > lit way before being officially enabled.
+>>  > >  > >
+>>  > >  > > To work around this, if the probe function doesn't enable=20
+>> the
+>>  > > backlight,
+>>  > >  > > the pin is set to its sleep state instead of the default=20
+>> one,
+>>  > > until the
+>>  > >  > > backlight is enabled. Whenk the backlight is disabled, the=20
+>> pin
+>>  > > is reset
+>>  > >  > > to its sleep state.
+>>  > >  > Doesn't this workaround result in a backlight flash between
+>>  > > whatever enables
+>>  > >  > it and the new code turning it off again?
+>>  > >
+>>  > >  Yeah, I think it would. I guess if you're very careful on how=20
+>> you
+>>  > > set up
+>>  > >  the device tree you might be able to work around it. Besides=20
+>> the
+>>  > > default
+>>  > >  and idle standard pinctrl states, there's also the "init"=20
+>> state. The
+>>  > >  core will select that instead of the default state if=20
+>> available.
+>>  > > However
+>>  > >  there's also pinctrl_init_done() which will try again to=20
+>> switch to
+>>  > > the
+>>  > >  default state after probe has finished and the driver didn't=20
+>> switch
+>>  > > away
+>>  > >  from the init state.
+>>  > >
+>>  > >  So you could presumably set up the device tree such that you=20
+>> have
+>>  > > three
+>>  > >  states defined: "default" would be the one where the PWM pin is
+>>  > > active,
+>>  > >  "idle" would be used when backlight is off (PWM pin inactive)=20
+>> and
+>>  > > then
+>>  > >  another "init" state that would be the same as "idle" to be=20
+>> used
+>>  > > during
+>>  > >  probe. During probe the driver could then switch to the "idle"
+>>  > > state so
+>>  > >  that the pin shouldn't glitch.
+>>  > >
+>>  > >  I'm not sure this would actually work because I think the way=20
+>> that
+>>  > >  pinctrl handles states both "init" and "idle" would be the same
+>>  > > pointer
+>>  > >  values and therefore pinctrl_init_done() would think the driver
+>>  > > didn't
+>>  > >  change away from the "init" state because it is the same=20
+>> pointer
+>>  > > value
+>>  > >  as the "idle" state that the driver selected. One way to work=20
+>> around
+>>  > >  that would be to duplicate the "idle" state definition and
+>>  > > associate one
+>>  > >  instance of it with the "idle" state and the other with the=20
+>> "init"
+>>  > >  state. At that point both states should be different (different
+>>  > > pointer
+>>  > >  values) and we'd get the init state selected automatically=20
+>> before
+>>  > > probe,
+>>  > >  select "idle" during probe and then the core will leave it=20
+>> alone.
+>>  > > That's
+>>  > >  of course ugly because we duplicate the pinctrl state in DT,=20
+>> but
+>>  > > perhaps
+>>  > >  it's the least ugly solution.
+>>  > >  Adding Linus for visibility. Perhaps he can share some insight.
+>>  >
+>>  > To be honest I'm happy to summarize in my head as "if it flashes=20
+>> then
+>>  > it's not
+>>  > a pwm_bl.c's problem" ;-).
+>>=20
+>>  It does not flash. But the backlight lits way too early, so we have=20
+>> a 1-2
+>>  seconds
+>>  of "white screen" before the panel driver starts.
+>=20
+> I think this always goes both ways. If you set the sleep state for the
+> PWM on backlight probe with this patch, you may be able to work around
+> the problem of the backlight lighting up too early. But what if your
+> bootloader had already enabled the backlight and is showing a splash
+> screen during boot? Your patch would turn off the backlight and then=20
+> it
+> would turn on again after everything else was initialized. That's one
+> type of flashing.
+>=20
+> What we need in this case are explicit pin control states that will
+> enable fine-grained control over what happens. Anything implicit is
+> bound to fail because it bakes in an assumption (either that the
+> backlight is off during boot, or that it has been turned on already).
+>=20
+> Ideally we'd need to detect that the backlight is on and if it is we
+> just don't do anything with it. Actually, I think that's what we want
+> even if the backlight is off. During probe the backlight state should
+> not be modified. You only want to modify it when you know that some
+> display driver is going to take over. If you can't seamlessly=20
+> transition
+> to the kernel display driver, flashing may be okay. If your display
+> driver can take over seamlessly, then the backlight is likely already=20
+> in
+> the desired state anyway.
+>=20
+> Thierry
+
+=
+
