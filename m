@@ -2,69 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A906B64A52
-	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Jul 2019 18:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B25F64BC3
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Jul 2019 19:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727750AbfGJQAq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 10 Jul 2019 12:00:46 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:35975 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727476AbfGJQAq (ORCPT
+        id S1727347AbfGJR6g (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 10 Jul 2019 13:58:36 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:41006 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727222AbfGJR6g (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 10 Jul 2019 12:00:46 -0400
-Received: by mail-qt1-f195.google.com with SMTP id z4so2996438qtc.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 10 Jul 2019 09:00:46 -0700 (PDT)
+        Wed, 10 Jul 2019 13:58:36 -0400
+Received: by mail-pf1-f193.google.com with SMTP id m30so1442092pff.8;
+        Wed, 10 Jul 2019 10:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AC+JysO1v7hiMPuJ82baaEu63vs9RmmoelhSWD247e8=;
-        b=cKWtCK4IF4SHJ9KhOVsP8PjAORTWuRU89I7H86Oy4xnJcIrvIsG1blaDlW3M+eL8Cv
-         LQXWgeQBPVPSB+0G4bm+PT18UCl6giugCvqbIgPIX6SDw3lqocz5emu6y6d5a5GQL2Vt
-         uI/ifHnWF4AlRVJd1SLEN4Nu79tTn1SKGG6yBSNHHYJDkCuWYvMw/Sanb/m8/QIpHE8v
-         uefOazWLlv8INC6PA7bucp1mUEjSSq5kfHUZmCPO5TGlsz83KgFS90kJAn/pMQHWchXJ
-         jqz9v/S1joyCLiV8wsOWSEfuGJtiDu9xZYzNdVhJLYjE2yzFncKRdNzDfxNpNIqPk8jr
-         0oHA==
+        h=from:to:cc:subject:date:message-id;
+        bh=1Yptoe5D085BWh+Bibq1x1Qze0BUntRJjyskqFEUkv4=;
+        b=tTn+t77vdNkoiG8Ypss8Jb1MN9bCLyC0qtR8XfCrzNdJsuOVuvNQ1DdLEOL4u005Ba
+         cvHdj6+6PfRyKhHzkljerHrTWMEJfGtZikAG5SfDWxACqVQE8+Y+eXa9vgTs0j1YF6Aq
+         /bMlRektpHJiHrSm510ZZ5mlnrI8SHO+tmimjswCuuqgyDF7E7IYHATkGjN8SvLAazha
+         QviZGyYzNYCC9M/jzuS2U2gyY7aQqLhwpwNlhWlxSG4yGM+z+3lDk1cl3bVfELADuaPX
+         63SX5w2hhXtLZlgH6EYie38nh4MEot/F8DynKZH6pqqn4fSJa3aW4lYui6YIg4Uclt5K
+         nrXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AC+JysO1v7hiMPuJ82baaEu63vs9RmmoelhSWD247e8=;
-        b=nSGLwUmtaw0+RqshoZZk7UlUktNlzSrdsPOmMNhaaJ9//2fayS8zTRZDP1yRjwYGXM
-         sDIJyXgLKreeGmyfJxcgEj+oWbb9d6N7EEY00HUyOHWgCVe+PWM5GswWEoaXPP/SiI2r
-         NCDU+lzis4rjm4/BHjUUNeUP5VH7XJZysA/MldDJgUD8WWVdmGsyrQI+xkGF26li9o5K
-         TxCpPdFe2XGwExulIRs2zfHMU9OyVlFTmOKpNOwHNUqxFclILyYjpPaQnNR8Gx7lk2Q8
-         /biKbqW/klP2c7pC6GjIivflMAyZGJV0P2Nx+JDyAUR4po7fOFXHz+zUxtRIa1yz+azj
-         Rhlw==
-X-Gm-Message-State: APjAAAWM6l1uO4RRRFbWx3qt9QJdf39bzo2RYhC6o2X7MEOhogKv4R9s
-        ucxO26GO6gYGul86c3iZq+Ot6Tm9Iwh953xjrbA=
-X-Google-Smtp-Source: APXvYqw5t0wiDGrG8i1jBYSFvFOktslmFEbuixQf+LGcVwXuhGtQASrLXs0/4sbGv+OwTij8VlDPxVRXAHELP/8SLP0=
-X-Received: by 2002:a0c:ae6d:: with SMTP id z42mr25548293qvc.8.1562774445890;
- Wed, 10 Jul 2019 09:00:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a0c:d684:0:0:0:0:0 with HTTP; Wed, 10 Jul 2019 09:00:45
- -0700 (PDT)
-Reply-To: eddywilliam0003@gmail.com
-From:   eddy william <kagnalex@gmail.com>
-Date:   Wed, 10 Jul 2019 18:00:45 +0200
-Message-ID: <CACemp=4mAaepgGr1XuueXxXwf2P0M-7DMC57uKMRYGhWCvzMbQ@mail.gmail.com>
-Subject: hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1Yptoe5D085BWh+Bibq1x1Qze0BUntRJjyskqFEUkv4=;
+        b=bdAsHaX0UrtUsbK74YJLb3pl0Dd9p7K76kIrus9+qfQxQR3hVxcluqgsgJZ0EvgLx/
+         OzYlXumNM3X8RQ0wctUnOA3i4fisJkn+nQcNPdanum/6y8zzpQVGkg7Ss3xhMrKe8xsa
+         CH/eMH4zEVNt//JJbYEl2eS0k/T4TZE61ud03BzA3gZER8ugRCtHJUEcmnnvVdtaCqEy
+         6+6QzO1Hpvi+uP9APZHB8CUjv9aisW39ZjyXk/q0VwZ07L8m0qf8iY7aPjeotWKLx5eH
+         8G9X3TdPHW/lMHYvBEfVHl0BOBTf4w1D4KJrsqLXkcGGz7M2qTpFIDzeGfl5i16isrPC
+         GgRg==
+X-Gm-Message-State: APjAAAWGnkiYLN3dMRHm552PaqLtXyPJpOc9K6dAcWZOY7INskZpnfAC
+        +15J9GAdTD9W7xtoRbQ3nMU=
+X-Google-Smtp-Source: APXvYqzRIoVFWzhS+1VgbH8QHWcdl6FPoGRrTAD67T9udDa+FcsMUPzpD2OL7tIqAgpvpAzvnDPj7A==
+X-Received: by 2002:a17:90b:8e:: with SMTP id bb14mr8433814pjb.19.1562781515699;
+        Wed, 10 Jul 2019 10:58:35 -0700 (PDT)
+Received: from jordon-HP-15-Notebook-PC.domain.name ([106.51.16.82])
+        by smtp.gmail.com with ESMTPSA id a6sm2460536pjs.31.2019.07.10.10.58.32
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 10 Jul 2019 10:58:34 -0700 (PDT)
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+To:     adaplas@gmail.com, b.zolnierkie@samsung.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, sabyasachi.linux@gmail.com,
+        Souptick Joarder <jrdr.linux@gmail.com>
+Subject: [PATCH] video: fbdev: nvidia: Remove extra return
+Date:   Wed, 10 Jul 2019 23:33:15 +0530
+Message-Id: <1562781795-3494-1-git-send-email-jrdr.linux@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello
+Minor cleanup to remove extra return statement.
 
-My name is Eddy William I am a lawyer by profession. I wish to offer you
-the next of kin to my client. You will inherit the sum of ($14.2 Million)
-dollars my client left in the bank before his death.
+Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+---
+ drivers/video/fbdev/nvidia/nv_backlight.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-My client is a citizen of your country who died in auto crash with his wife
-and only son. I will be entitled with 50% of the total fund while 50% will
-be for you.
-Please contact my private email here for more details:eddywilliam0003gmail.com
+diff --git a/drivers/video/fbdev/nvidia/nv_backlight.c b/drivers/video/fbdev/nvidia/nv_backlight.c
+index e705a78..2ce5352 100644
+--- a/drivers/video/fbdev/nvidia/nv_backlight.c
++++ b/drivers/video/fbdev/nvidia/nv_backlight.c
+@@ -123,8 +123,6 @@ void nvidia_bl_init(struct nvidia_par *par)
+ 
+ 	printk("nvidia: Backlight initialized (%s)\n", name);
+ 
+-	return;
+-
+ error:
+ 	return;
+ }
+-- 
+1.9.1
 
-Many thanks in advance,
-Mr.Eddy William ,
