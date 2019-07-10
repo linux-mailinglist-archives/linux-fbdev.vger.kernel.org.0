@@ -2,81 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B25F64BC3
-	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Jul 2019 19:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B86864BE9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Jul 2019 20:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbfGJR6g (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 10 Jul 2019 13:58:36 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41006 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727222AbfGJR6g (ORCPT
+        id S1727193AbfGJSLC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 10 Jul 2019 14:11:02 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:43192 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727466AbfGJSLC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 10 Jul 2019 13:58:36 -0400
-Received: by mail-pf1-f193.google.com with SMTP id m30so1442092pff.8;
-        Wed, 10 Jul 2019 10:58:36 -0700 (PDT)
+        Wed, 10 Jul 2019 14:11:02 -0400
+Received: by mail-pl1-f194.google.com with SMTP id cl9so1602088plb.10;
+        Wed, 10 Jul 2019 11:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=1Yptoe5D085BWh+Bibq1x1Qze0BUntRJjyskqFEUkv4=;
-        b=tTn+t77vdNkoiG8Ypss8Jb1MN9bCLyC0qtR8XfCrzNdJsuOVuvNQ1DdLEOL4u005Ba
-         cvHdj6+6PfRyKhHzkljerHrTWMEJfGtZikAG5SfDWxACqVQE8+Y+eXa9vgTs0j1YF6Aq
-         /bMlRektpHJiHrSm510ZZ5mlnrI8SHO+tmimjswCuuqgyDF7E7IYHATkGjN8SvLAazha
-         QviZGyYzNYCC9M/jzuS2U2gyY7aQqLhwpwNlhWlxSG4yGM+z+3lDk1cl3bVfELADuaPX
-         63SX5w2hhXtLZlgH6EYie38nh4MEot/F8DynKZH6pqqn4fSJa3aW4lYui6YIg4Uclt5K
-         nrXQ==
+        bh=tkiQUH7jKLkTwFwCHjeNvDKd8Do7Dj+FovhMf1Vuvic=;
+        b=eHNzvQHZfuEWGmRvlZNBGGtTB7xHUpJw6zdvQOKaJTkoQY/Ik8OyEfgE6TapG82OLm
+         CXlSWeNtwDVj7Sty7PQnddjjMsvJN61sj1IcUgQYBTl/ieHiZTORfxjM9CX7lL2dv9mE
+         0kXrYzOhVqovdKceYEl2el/h8Ewk3HnuBW6VS6xhJQxy9TErXviuRpRFXKOgzT9sLeTy
+         ww3ONk/P1aC69XA5pmvE6JtKQugquHjEA3rwwuqh6JEmRp2ajpvAGJ4SNldP54Xs9chQ
+         WeGZh3TnRh3LXF935EacLaoNy1PcnmHntbjCf+VSXBTFPRxpu5gcia+ETnAh+78bTMAe
+         9UqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=1Yptoe5D085BWh+Bibq1x1Qze0BUntRJjyskqFEUkv4=;
-        b=bdAsHaX0UrtUsbK74YJLb3pl0Dd9p7K76kIrus9+qfQxQR3hVxcluqgsgJZ0EvgLx/
-         OzYlXumNM3X8RQ0wctUnOA3i4fisJkn+nQcNPdanum/6y8zzpQVGkg7Ss3xhMrKe8xsa
-         CH/eMH4zEVNt//JJbYEl2eS0k/T4TZE61ud03BzA3gZER8ugRCtHJUEcmnnvVdtaCqEy
-         6+6QzO1Hpvi+uP9APZHB8CUjv9aisW39ZjyXk/q0VwZ07L8m0qf8iY7aPjeotWKLx5eH
-         8G9X3TdPHW/lMHYvBEfVHl0BOBTf4w1D4KJrsqLXkcGGz7M2qTpFIDzeGfl5i16isrPC
-         GgRg==
-X-Gm-Message-State: APjAAAWGnkiYLN3dMRHm552PaqLtXyPJpOc9K6dAcWZOY7INskZpnfAC
-        +15J9GAdTD9W7xtoRbQ3nMU=
-X-Google-Smtp-Source: APXvYqzRIoVFWzhS+1VgbH8QHWcdl6FPoGRrTAD67T9udDa+FcsMUPzpD2OL7tIqAgpvpAzvnDPj7A==
-X-Received: by 2002:a17:90b:8e:: with SMTP id bb14mr8433814pjb.19.1562781515699;
-        Wed, 10 Jul 2019 10:58:35 -0700 (PDT)
+        bh=tkiQUH7jKLkTwFwCHjeNvDKd8Do7Dj+FovhMf1Vuvic=;
+        b=t5gc0lornCnVgCo+3AvRTrvELpsvA8JkIYd+ySmigjyF8EyF0T6OpiUdPVy2UxLjNp
+         5cYx09KjFUIpIc0RL84srYGQRz/UM1SUu1tuV87PP5M8jGncrTvPTdDtkPzvPjujY2aV
+         B2iUVcPITCn08dbWfJkgRa6++8PXRbi5tXW/70qkXolH9gqEGDuLUXc/KKprHs32DOnz
+         eT0UUohtHPXgnzrlpgIRjk4W6zj4TVtjdj+Awep0z7wWlbUtvgfbAqVZ8ErWdufGBUmy
+         Y9a6cUW8V+ezk/b0lg8KPnFQ4LH0ZEaJ6lHSXghtgY3XtmIVBtt0tcm8KlijHhsJG7Gj
+         bqaQ==
+X-Gm-Message-State: APjAAAWq0kpNgVU7XUgapE5Nfo2KszKeL+J7R7AOiQmbyP2aAS0623F+
+        exvCToqCaSKZC9d1NB+AywM=
+X-Google-Smtp-Source: APXvYqyIm7dBPHQaeOhsZwKT4qMnmJ4MiYO6k+j5Dggp01zUoz5MZTRxBxhAwOD7Z0Ja+Sa3bMGAqw==
+X-Received: by 2002:a17:902:9a95:: with SMTP id w21mr40075670plp.126.1562782262024;
+        Wed, 10 Jul 2019 11:11:02 -0700 (PDT)
 Received: from jordon-HP-15-Notebook-PC.domain.name ([106.51.16.82])
-        by smtp.gmail.com with ESMTPSA id a6sm2460536pjs.31.2019.07.10.10.58.32
+        by smtp.gmail.com with ESMTPSA id s193sm8046179pgc.32.2019.07.10.11.10.58
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 10 Jul 2019 10:58:34 -0700 (PDT)
+        Wed, 10 Jul 2019 11:11:01 -0700 (PDT)
 From:   Souptick Joarder <jrdr.linux@gmail.com>
 To:     adaplas@gmail.com, b.zolnierkie@samsung.com
 Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, sabyasachi.linux@gmail.com,
         Souptick Joarder <jrdr.linux@gmail.com>
-Subject: [PATCH] video: fbdev: nvidia: Remove extra return
-Date:   Wed, 10 Jul 2019 23:33:15 +0530
-Message-Id: <1562781795-3494-1-git-send-email-jrdr.linux@gmail.com>
+Subject: [PATCH] video: fbdev: nvidia: Remove dead code
+Date:   Wed, 10 Jul 2019 23:46:26 +0530
+Message-Id: <1562782586-3994-1-git-send-email-jrdr.linux@gmail.com>
 X-Mailer: git-send-email 1.9.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Minor cleanup to remove extra return statement.
+This is dead code since 3.15. If there is no plan to use it
+further, this can be removed forever.
 
 Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
 ---
- drivers/video/fbdev/nvidia/nv_backlight.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/video/fbdev/nvidia/nv_setup.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/drivers/video/fbdev/nvidia/nv_backlight.c b/drivers/video/fbdev/nvidia/nv_backlight.c
-index e705a78..2ce5352 100644
---- a/drivers/video/fbdev/nvidia/nv_backlight.c
-+++ b/drivers/video/fbdev/nvidia/nv_backlight.c
-@@ -123,8 +123,6 @@ void nvidia_bl_init(struct nvidia_par *par)
- 
- 	printk("nvidia: Backlight initialized (%s)\n", name);
- 
--	return;
--
- error:
- 	return;
+diff --git a/drivers/video/fbdev/nvidia/nv_setup.c b/drivers/video/fbdev/nvidia/nv_setup.c
+index b17acd2..2fa6866 100644
+--- a/drivers/video/fbdev/nvidia/nv_setup.c
++++ b/drivers/video/fbdev/nvidia/nv_setup.c
+@@ -119,34 +119,10 @@ u8 NVReadMiscOut(struct nvidia_par *par)
+ {
+ 	return (VGA_RD08(par->PVIO, VGA_MIS_R));
  }
+-#if 0
+-void NVEnablePalette(struct nvidia_par *par)
+-{
+-	volatile u8 tmp;
+-
+-	tmp = VGA_RD08(par->PCIO, par->IOBase + 0x0a);
+-	VGA_WR08(par->PCIO, VGA_ATT_IW, 0x00);
+-	par->paletteEnabled = 1;
+-}
+-void NVDisablePalette(struct nvidia_par *par)
+-{
+-	volatile u8 tmp;
+-
+-	tmp = VGA_RD08(par->PCIO, par->IOBase + 0x0a);
+-	VGA_WR08(par->PCIO, VGA_ATT_IW, 0x20);
+-	par->paletteEnabled = 0;
+-}
+-#endif  /*  0  */
+ void NVWriteDacMask(struct nvidia_par *par, u8 value)
+ {
+ 	VGA_WR08(par->PDIO, VGA_PEL_MSK, value);
+ }
+-#if 0
+-u8 NVReadDacMask(struct nvidia_par *par)
+-{
+-	return (VGA_RD08(par->PDIO, VGA_PEL_MSK));
+-}
+-#endif  /*  0  */
+ void NVWriteDacReadAddr(struct nvidia_par *par, u8 value)
+ {
+ 	VGA_WR08(par->PDIO, VGA_PEL_IR, value);
 -- 
 1.9.1
 
