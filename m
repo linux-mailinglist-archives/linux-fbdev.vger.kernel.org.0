@@ -2,143 +2,146 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E09163B9A
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Jul 2019 21:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0836643A4
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Jul 2019 10:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727763AbfGITAY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 9 Jul 2019 15:00:24 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:43108 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729004AbfGITAT (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 Jul 2019 15:00:19 -0400
-Received: by mail-pl1-f195.google.com with SMTP id cl9so10533381plb.10
-        for <linux-fbdev@vger.kernel.org>; Tue, 09 Jul 2019 12:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7VTnoQhILwKHLps+gGfkisxkuSKBxEyo68mEBQUHAaY=;
-        b=kfV/7/kvbkaJ7UsIzdsFDRlAMdzpK6L6mf+hCSJgo/ppqnLdG493pA1TwsgBo8gqI+
-         4m8IhLpUYafypQV62VutcuQ/xBvf5+Qfw9xSrUk4r15c6IIY+l2X2T26Z72GsIoqOOBe
-         J11qlTxGksNKv6aSrfL+fr+Nca1CmutGbOxRA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7VTnoQhILwKHLps+gGfkisxkuSKBxEyo68mEBQUHAaY=;
-        b=gcuuXprw5w1u5IvCRscZStmmKrdsYlfVfAYyYlPn3h5StBG5RxhSAzBDLMeJoJS6zX
-         Jiu0HLgKJ7kyL1gx+OwY/O5pEzqtmHWqiCmaoWmC4voXK6b/S9adFmg8AzpctBv1APaP
-         7WSJEUXxr6k+p64aQcuFquKq97FzjxAfwwVXG6b/gfPTQ7DBgIX6b+VWT5bJTQ+cjQ97
-         KnAUljttJTYC0tnaM4KHHWT3ww1sp+o9hefTMhzZ/rPvFfWyvZXpxKnilHKPnhRX6ry+
-         3VLPxUJScYmousxgPJ8qxUuDRwJV2qa64EkDyWZ8V6ExLCeuI5Z62IYGA8k2duTdcBqu
-         +9Xg==
-X-Gm-Message-State: APjAAAW2oMVnGQtXA1ObbRU8jUyOUG01Ik1FBDsrOCcVBAoZ3ugbVtms
-        osXNY68OXhFTC4BJtsT/RyXqNQ==
-X-Google-Smtp-Source: APXvYqyFxcn+t9rWGoWrMrwk7IGCCiVhSunnF0u4fJQLec9Z7/8us2QIzzEsGo2V3Ixk/lZr9QooRQ==
-X-Received: by 2002:a17:902:29e6:: with SMTP id h93mr32447140plb.297.1562698818959;
-        Tue, 09 Jul 2019 12:00:18 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id v63sm8391683pfv.174.2019.07.09.12.00.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 09 Jul 2019 12:00:18 -0700 (PDT)
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>
-Subject: [PATCH v3 4/4] backlight: pwm_bl: Set scale type for brightness curves specified in the DT
-Date:   Tue,  9 Jul 2019 12:00:07 -0700
-Message-Id: <20190709190007.91260-5-mka@chromium.org>
-X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
-In-Reply-To: <20190709190007.91260-1-mka@chromium.org>
-References: <20190709190007.91260-1-mka@chromium.org>
+        id S1727267AbfGJIh7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 10 Jul 2019 04:37:59 -0400
+Received: from anchovy2.45ru.net.au ([203.30.46.146]:51193 "EHLO
+        anchovy2.45ru.net.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726097AbfGJIh7 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 10 Jul 2019 04:37:59 -0400
+X-Greylist: delayed 401 seconds by postgrey-1.27 at vger.kernel.org; Wed, 10 Jul 2019 04:37:58 EDT
+Received: (qmail 7225 invoked by uid 5089); 10 Jul 2019 08:31:15 -0000
+Received: by simscan 1.2.0 ppid: 7139, pid: 7140, t: 0.0724s
+         scanners: regex: 1.2.0 attach: 1.2.0 clamav: 0.88.3/m:40/d:1950
+Received: from unknown (HELO ?192.168.0.128?) (preid@electromag.com.au@203.59.235.95)
+  by anchovy3.45ru.net.au with ESMTPA; 10 Jul 2019 08:31:15 -0000
+To:     Nishad Kamdar <nishadkamdar@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        thomas.petazzoni@free-electrons.com, devel@driverdev.osuosl.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+From:   Phil Reid <preid@electromag.com.au>
+Subject: BUG: Staging: fbtft: Switch to the gpio descriptor interface
+Message-ID: <3ca02376-631b-d159-7070-7c50403126de@electromag.com.au>
+Date:   Wed, 10 Jul 2019 16:31:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-AU
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Check if a brightness curve specified in the device tree is linear or
-not and set the corresponding property accordingly. This makes the
-scale type available to userspace via the 'scale' sysfs attribute.
+G'day Nishad,
 
-To determine if a curve is linear it is compared to a interpolated linear
-curve between min and max brightness. The curve is considered linear if
-no value deviates more than +/-5% of ${brightness_range} from their
-interpolated value.
+I'm just wondering if the commit
+c440eee1a7a1d0f "Staging: fbtft: Switch to the gpio descriptor interface"
+was tested on anything.
 
-Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
----
-Changes in v3:
-- none
+I've had to apply the following patch to get my display functioning again.
 
-Changes in v2:
-- use 128 (power of two) instead of 100 as factor for the slope
-- add comment about max quantization error
-- added Daniel's 'Acked-by' tag
----
- drivers/video/backlight/pwm_bl.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+in particular the devm_gpiod_get_index using dev->driver->name for the gpio lookup seems
+wrong.
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index 7c6dfc4a601d..fef98beb8b7e 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -404,6 +404,31 @@ int pwm_backlight_brightness_default(struct device *dev,
- }
- #endif
- 
-+static bool pwm_backlight_is_linear(struct platform_pwm_backlight_data *data)
-+{
-+	unsigned int nlevels = data->max_brightness + 1;
-+	unsigned int min_val = data->levels[0];
-+	unsigned int max_val = data->levels[nlevels - 1];
-+	/*
-+	 * Multiplying by 128 means that even in pathological cases such
-+	 * as (max_val - min_val) == nlevels the error at max_val is less
-+	 * than 1%.
-+	 */
-+	unsigned int slope = (128 * (max_val - min_val)) / nlevels;
-+	unsigned int margin = (max_val - min_val) / 20; /* 5% */
-+	int i;
-+
-+	for (i = 1; i < nlevels; i++) {
-+		unsigned int linear_value = min_val + ((i * slope) / 128);
-+		unsigned int delta = abs(linear_value - data->levels[i]);
-+
-+		if (delta > margin)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int pwm_backlight_initial_power_state(const struct pwm_bl_data *pb)
- {
- 	struct device_node *node = pb->dev->of_node;
-@@ -567,6 +592,11 @@ static int pwm_backlight_probe(struct platform_device *pdev)
- 
- 			pb->levels = data->levels;
- 		}
-+
-+		if (pwm_backlight_is_linear(data))
-+			props.scale = BACKLIGHT_SCALE_LINEAR;
-+		else
-+			props.scale = BACKLIGHT_SCALE_NON_LINEAR;
- 	} else if (!data->max_brightness) {
- 		/*
- 		 * If no brightness levels are provided and max_brightness is
--- 
-2.22.0.410.gd8fdbe21b5-goog
+Also I've had to invert the polarity of the reset-gpios in the DT file for the display to function.
+
+this code:
+	gpiod_set_value_cansleep(par->gpio.reset, 0);
+	usleep_range(20, 40);
+	gpiod_set_value_cansleep(par->gpio.reset, 1);
+
+could be read as deasserting the reset line and then asserting it.
+So I've had to specify and active high reset line in the DT.
+
+Regards
+Phil
+
+
+
+
+
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 9b07bad..6fe7cb5 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -79,18 +79,16 @@ static int fbtft_request_one_gpio(struct fbtft_par *par,
+  	struct device_node *node = dev->of_node;
+  	int ret = 0;
+
+-	if (of_find_property(node, name, NULL)) {
+-		*gpiop = devm_gpiod_get_index(dev, dev->driver->name, index,
+-					      GPIOD_OUT_HIGH);
+-		if (IS_ERR(*gpiop)) {
+-			ret = PTR_ERR(*gpiop);
+-			dev_err(dev,
+-				"Failed to request %s GPIO:%d\n", name, ret);
+-			return ret;
+-		}
+-		fbtft_par_dbg(DEBUG_REQUEST_GPIOS, par, "%s: '%s' GPIO\n",
+-			      __func__, name);
++	*gpiop = devm_gpiod_get_index_optional(dev, name, index,
++				      GPIOD_OUT_HIGH);
++	if (IS_ERR(*gpiop)) {
++		ret = PTR_ERR(*gpiop);
++		dev_err(dev,
++			"Failed to request %s GPIO: (%d)\n", name, ret);
++		return ret;
+  	}
++	fbtft_par_dbg(DEBUG_REQUEST_GPIOS, par, "%s: '%s' GPIO\n",
++		      __func__, name);
+
+  	return ret;
+  }
+@@ -103,34 +101,34 @@ static int fbtft_request_gpios_dt(struct fbtft_par *par)
+  	if (!par->info->device->of_node)
+  		return -EINVAL;
+
+-	ret = fbtft_request_one_gpio(par, "reset-gpios", 0, &par->gpio.reset);
++	ret = fbtft_request_one_gpio(par, "reset", 0, &par->gpio.reset);
+  	if (ret)
+  		return ret;
+-	ret = fbtft_request_one_gpio(par, "dc-gpios", 0, &par->gpio.dc);
++	ret = fbtft_request_one_gpio(par, "dc", 0, &par->gpio.dc);
+  	if (ret)
+  		return ret;
+-	ret = fbtft_request_one_gpio(par, "rd-gpios", 0, &par->gpio.rd);
++	ret = fbtft_request_one_gpio(par, "rd", 0, &par->gpio.rd);
+  	if (ret)
+  		return ret;
+-	ret = fbtft_request_one_gpio(par, "wr-gpios", 0, &par->gpio.wr);
++	ret = fbtft_request_one_gpio(par, "wr", 0, &par->gpio.wr);
+  	if (ret)
+  		return ret;
+-	ret = fbtft_request_one_gpio(par, "cs-gpios", 0, &par->gpio.cs);
++	ret = fbtft_request_one_gpio(par, "cs", 0, &par->gpio.cs);
+  	if (ret)
+  		return ret;
+-	ret = fbtft_request_one_gpio(par, "latch-gpios", 0, &par->gpio.latch);
++	ret = fbtft_request_one_gpio(par, "latch", 0, &par->gpio.latch);
+  	if (ret)
+  		return ret;
+  	for (i = 0; i < 16; i++) {
+-		ret = fbtft_request_one_gpio(par, "db-gpios", i,
++		ret = fbtft_request_one_gpio(par, "db", i,
+  					     &par->gpio.db[i]);
+  		if (ret)
+  			return ret;
+-		ret = fbtft_request_one_gpio(par, "led-gpios", i,
++		ret = fbtft_request_one_gpio(par, "led", i,
+  					     &par->gpio.led[i]);
+  		if (ret)
+  			return ret;
+-		ret = fbtft_request_one_gpio(par, "aux-gpios", i,
++		ret = fbtft_request_one_gpio(par, "aux", i,
+  					     &par->gpio.aux[i]);
+  		if (ret)
+  			return ret;
+
+
+
 
