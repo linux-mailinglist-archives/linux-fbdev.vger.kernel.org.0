@@ -2,35 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 806C96734B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 12 Jul 2019 18:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D41D767454
+	for <lists+linux-fbdev@lfdr.de>; Fri, 12 Jul 2019 19:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbfGLQa6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 12 Jul 2019 12:30:58 -0400
-Received: from [185.130.227.65] ([185.130.227.65]:52122 "EHLO
-        localhost.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726977AbfGLQa5 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 12 Jul 2019 12:30:57 -0400
-X-Greylist: delayed 44316 seconds by postgrey-1.27 at vger.kernel.org; Fri, 12 Jul 2019 12:30:57 EDT
-Received: from localhost (localhost [IPv6:::1])
-        by localhost.localdomain (Postfix) with SMTP id 96E366F472F2
-        for <linux-fbdev@vger.kernel.org>; Fri, 12 Jul 2019 12:00:19 +0800 (+08)
-From:   linux-fbdev@vger.kernel.org
-Reply-To: prodawez@armyspy.com
-To:     iEXdEgO866pbRlinux-fbdev@vger.kernel.org
-Subject: =?utf-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg?=
-        =?utf-8?B?0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQu9C40LXQvdGC?=
-        =?utf-8?B?0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw==?=
+        id S1727028AbfGLRea (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 12 Jul 2019 13:34:30 -0400
+Received: from ms.lwn.net ([45.79.88.28]:59320 "EHLO ms.lwn.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726976AbfGLRea (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 12 Jul 2019 13:34:30 -0400
+Received: from lwn.net (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id B29512CC;
+        Fri, 12 Jul 2019 17:34:28 +0000 (UTC)
+Date:   Fri, 12 Jul 2019 11:34:27 -0600
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Alex Shi <alex.shi@linux.alibaba.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH 01/12] Documentation: move architectures together
+Message-ID: <20190712113427.62fa7ffc@lwn.net>
+In-Reply-To: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
+References: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8";
-Content-Transfer-Encoding: base64
-Message-Id: <20190712040019.96E366F472F2@localhost.localdomain>
-Date:   Fri, 12 Jul 2019 12:00:19 +0800 (+08)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQ
-u9C40LXQvdGC0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw0K
+On Fri, 12 Jul 2019 10:20:07 +0800
+Alex Shi <alex.shi@linux.alibaba.com> wrote:
+
+> There are many different archs in Documentation/ dir, it's better to
+> move them together in 'Documentation/arch' which follows from kernel source.
+
+So this seems certain to collide badly with Mauro's RST-conversion monster
+patch set.
+
+More to the point, though...if we are going to thrash up things this
+badly, we want to be sure that we're doing it right so we don't end up
+renaming everything again.  Grouping stuff into a new arch/ subdirectory
+adds a bit of order, but it doesn't do much toward trying to organize our
+documentation for its readers, and it doesn't help us to modernize the
+docs and get rid of the old, useless stuff.  A quick check shows that many
+of these files have seen no changes other than typo fixes since the
+beginning of the Git era.
+
+So, in my mind, this needs some thought.  Maybe we want a
+Documentation/arch in the end, but I'm not convinced that we should just
+create it and fill it with a snow shovel.  This might be a good thing to
+discuss at the kernel summit in September.
+
+Thanks,
+
+jon
