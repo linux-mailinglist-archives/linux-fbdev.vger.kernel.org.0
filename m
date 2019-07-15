@@ -2,82 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D315367FBB
-	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Jul 2019 17:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D8F682AD
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jul 2019 05:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbfGNPVJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 14 Jul 2019 11:21:09 -0400
-Received: from out4437.biz.mail.alibaba.com ([47.88.44.37]:40350 "EHLO
-        out4437.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726403AbfGNPVJ (ORCPT
+        id S1729067AbfGODUY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 14 Jul 2019 23:20:24 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:46390 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729165AbfGODUY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 14 Jul 2019 11:21:09 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=alex.shi@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0TWrpoRa_1563117663;
-Received: from IT-FVFX43SYHV2H.lan(mailfrom:alex.shi@linux.alibaba.com fp:SMTPD_---0TWrpoRa_1563117663)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sun, 14 Jul 2019 23:21:03 +0800
-Subject: Re: [PATCH 01/12] Documentation: move architectures together
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-sh@vger.kernel.org
-References: <20190712022018.27989-1-alex.shi@linux.alibaba.com>
- <20190712113427.62fa7ffc@lwn.net>
-From:   Alex Shi <alex.shi@linux.alibaba.com>
-Message-ID: <36c522c5-975e-e38e-daad-0f3d9f93b186@linux.alibaba.com>
-Date:   Sun, 14 Jul 2019 23:21:03 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <20190712113427.62fa7ffc@lwn.net>
-Content-Type: text/plain; charset=gbk
-Content-Transfer-Encoding: 8bit
+        Sun, 14 Jul 2019 23:20:24 -0400
+Received: by mail-pg1-f194.google.com with SMTP id i8so6982462pgm.13;
+        Sun, 14 Jul 2019 20:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=KmjmTx0cDkAe4BsoggF2c5USLaF9+w472czn75Hcufo=;
+        b=GqJNyAPxH0Ml0g59SFjtNPvfI/nMwwEmQBiMDuIUmbJNxGEbQuUvp4UuHCxkb4848N
+         mc8GAIRsEBzwiVFxp9+2z7sHhc2s6zCZY6p+z8V0oyeg5YjWZml7szMhxsuWYg5Kg8eJ
+         7npQPI4AQEPuRJFUOjSIlLO+/pp32+xG+DZcylLjOlwElP60UxNrf8UGavSWXMtW4Maq
+         /DBhmtm6BqdCNXAUc0g9J7267V2BPQ7BDPwOFG/EYl6r8K/sszLtpIroCvoh6ld1FuFP
+         eFsVynfcUM/U9ebG1AZlUJ+GaLXNlfBCCD0Q0NY3xzeLdZOenyGS9aF/bGerjin5toUG
+         fPiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=KmjmTx0cDkAe4BsoggF2c5USLaF9+w472czn75Hcufo=;
+        b=uadVYlPi8lNEx7JDazBmOXLp10bd/VXf3ignAeRhS5JbI6VVAhJ24UprMJwp6OE/lA
+         zdBF17dwq89gylTBMDJTtgrAocsuvvv2IX6beUJhHChmLsWaeb4UH4Z5XQHQ/9H+96E+
+         Z44sjBCeC7HFYtHrdksuEnCwb/K2lip5nuSgmUQOWUkEVKYMnxWf5XDqB8Bhvwmu8z2j
+         BAIG7cqD75Ni+Yz0+ZE+RQjjQgaL5ucYpRQDDgZudfYblzZ2MeCRbjHyJdCPfHWNqUON
+         g7Hsn1tSzdMVh9i/DZf10LJA85ZK4QFapNjfciPXNIbpq7QnKGXVebT25RboLuNSP2Ms
+         rWTA==
+X-Gm-Message-State: APjAAAUq4QPIvMQb+FeYxHyjqTAVOXhLpvqd4Q3I2rf9yM7TQresSZHv
+        l3Y9/hM2IG8qNMpPNEGXaUI=
+X-Google-Smtp-Source: APXvYqxHjzkaC+srO/ESTpNfjkimIX2OQWbqnxpKFEiSNS/7wssDV6FtTvwkIFT9kcz81LQd/+4Uhw==
+X-Received: by 2002:a17:90b:8d8:: with SMTP id ds24mr26449164pjb.135.1563160823209;
+        Sun, 14 Jul 2019 20:20:23 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id x1sm14037462pjo.4.2019.07.14.20.20.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 14 Jul 2019 20:20:22 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Subject: [PATCH v3 24/24] video: fbdev-MMP: Remove call to memset after dma_alloc_coherent
+Date:   Mon, 15 Jul 2019 11:20:17 +0800
+Message-Id: <20190715032017.7311-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Jon,
+In commit 518a2f1925c3
+("dma-mapping: zero memory returned from dma_alloc_*"),
+dma_alloc_coherent has already zeroed the memory.
+So memset is not needed.
 
-Thanks for quick response!
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
+---
+Changes in v3:
+  - Use actual commit rather than the merge commit in the commit message
 
-ÔÚ 2019/7/13 ÉÏÎç1:34, Jonathan Corbet Ð´µÀ:
-> On Fri, 12 Jul 2019 10:20:07 +0800
-> Alex Shi <alex.shi@linux.alibaba.com> wrote:
-> 
->> There are many different archs in Documentation/ dir, it's better to
->> move them together in 'Documentation/arch' which follows from kernel source.
-> 
-> So this seems certain to collide badly with Mauro's RST-conversion monster
-> patch set.
+ drivers/video/fbdev/mmp/fb/mmpfb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I don't mean that, sorry, and we can figure out if both of them are worthy to be picked up.
+diff --git a/drivers/video/fbdev/mmp/fb/mmpfb.c b/drivers/video/fbdev/mmp/fb/mmpfb.c
+index e5b56f2199df..47bc7c59bbd8 100644
+--- a/drivers/video/fbdev/mmp/fb/mmpfb.c
++++ b/drivers/video/fbdev/mmp/fb/mmpfb.c
+@@ -612,7 +612,6 @@ static int mmpfb_probe(struct platform_device *pdev)
+ 		ret = -ENOMEM;
+ 		goto failed_destroy_mutex;
+ 	}
+-	memset(fbi->fb_start, 0, fbi->fb_size);
+ 	dev_info(fbi->dev, "fb %dk allocated\n", fbi->fb_size/1024);
+ 
+ 	/* fb power on */
+-- 
+2.11.0
 
-> 
-> More to the point, though...if we are going to thrash up things this
-> badly, we want to be sure that we're doing it right so we don't end up
-> renaming everything again.  Grouping stuff into a new arch/ subdirectory
-> adds a bit of order, but it doesn't do much toward trying to organize our
-> documentation for its readers, and it doesn't help us to modernize the
-> docs and get rid of the old, useless stuff.  A quick check shows that many
-> of these files have seen no changes other than typo fixes since the
-> beginning of the Git era.
-
-Right, there is some docs which need to be update or even drop, and a reorder would be a timing to push each of arch maintainer to do something, isn't it? Anyway, reordering  documents like kernel source dir could be one of choices. :)
-
-> 
-> So, in my mind, this needs some thought.  Maybe we want a
-> Documentation/arch in the end, but I'm not convinced that we should just
-> create it and fill it with a snow shovel.  This might be a good thing to
-> discuss at the kernel summit in September.
-
-Thanks for considering, anyway, it could be a good start to get hands dirty whether the arch dir is needed. 
-
-Thanks
-Alex
