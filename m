@@ -2,85 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0521D6872C
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jul 2019 12:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E03687AA
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jul 2019 13:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729755AbfGOKkx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 15 Jul 2019 06:40:53 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:38845 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729487AbfGOKkx (ORCPT
+        id S1729922AbfGOLDh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 15 Jul 2019 07:03:37 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34949 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729833AbfGOLDh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 15 Jul 2019 06:40:53 -0400
-Received: by mail-wm1-f65.google.com with SMTP id s15so14670477wmj.3;
-        Mon, 15 Jul 2019 03:40:51 -0700 (PDT)
+        Mon, 15 Jul 2019 07:03:37 -0400
+Received: by mail-pg1-f193.google.com with SMTP id s1so1232615pgr.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 15 Jul 2019 04:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9uBhlIU2szBotflkNdAmaBH8KE8ZJQBhkw7CUx5y0fo=;
-        b=hCO/Lu8LiB+cld8yeqGPNjY7w/9KgXng4ECiHyBd4FH2qOmfuaXjOcQfltENZAr+qo
-         oJlvvcT4zEi5rJxL042/5zXaDQVxjbcRXsXzl9CMMdA5PQAf0wpmwZZDva7D6x7WmukC
-         aeRDA/uRTNi4e3CVtqpPwKwBzPfAzsHlJSKimLAsKtI7pAHNP2E9TU0igyzie5m4637o
-         MNecrY2M6akN1QTJwEq1VHO43Z0WevQQ1RtQvvxLPZgKR3buFiS2QzLstC+AJwbqPzvF
-         Klm4ks1OWpTP3gvUVM3U0ypTbRbZGkry/YOkDr6Iz1CWDXkcLpBfKIkO4HLcf39LepYK
-         6XEA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=QRb1GBodFoBhFvJPBdxPE4VAqCl+I+T1SKUDc8YhKIcP8qXLNKmtBmeLwjLs/FO9lZ
+         75gCGAxY+YSs9c6HnUneWVQ5Kuc7cIu7HA1ZwTW36nCFWmVeEdZxTARPq/JJ6pFyLQCC
+         i5F57UJ0HSPfhhGiuIoSnyQ2CEuZZYzSvF/92SwjNSSKKvpKVbRgR8KxSyIf95yOdirX
+         vUpU9SAkZRrnMLlykrQni0TuHswl2ZAFQk4VFvbGPWK0ElKuMbgEj9smyMqgESRQW96Z
+         0AILN2JphlyIDpV3m3PpFXakYu3MGnxotH6bOcGMyGpkv5udFQwKTslRRPJv+1YEgJFw
+         GLhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9uBhlIU2szBotflkNdAmaBH8KE8ZJQBhkw7CUx5y0fo=;
-        b=U4/uo3FDppybpgULJjybwtxEgitqY+ZN9nEffoT7bp5KLQ7yoLmzqRwDVLXWc0vRNT
-         lReK60fhOaMuQMhLZjNIZEQM3e/qo+wn3brAPFr7uG712t+/AomOoEVfq9ku2zpRu5n9
-         txMmekiDrD8mIrJ7AnP/4OML83OD2leUkOhIcKAPZTSrKLvgxC5B9qh8U0WFLXdTMZv0
-         wHaCKf1+tFB/S60kJKzLd+h4USjdgeciWw86shFRMVvm0V8zbwHh9tBLIBr4OOrjc+cA
-         ps6jzGpK77m8pptrF4OX71nVqhkcUvO6sUMmSdMQfObkiF/pPxR2G55WB6JBROGCJ6mc
-         MEFg==
-X-Gm-Message-State: APjAAAXEhYME7EzcrJr9j3XnaA7psr9ZmNXeB+iv8VsDVGDLHIepr8X+
-        mCxof4820wRvF+nHVZzq3uSzt7Ay
-X-Google-Smtp-Source: APXvYqyob/S8uNsVUwjk6Ce53GygAkmpira++H3AiLt8ALVqVysp39ciacNI0RAf3DgVc9jeNDkegQ==
-X-Received: by 2002:a7b:ce01:: with SMTP id m1mr23986491wmc.1.1563187251053;
-        Mon, 15 Jul 2019 03:40:51 -0700 (PDT)
-Received: from arch-x1c3 ([2a00:5f00:102:0:9665:9cff:feee:aa4d])
-        by smtp.gmail.com with ESMTPSA id f17sm14917117wmf.27.2019.07.15.03.40.50
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 15 Jul 2019 03:40:50 -0700 (PDT)
-Date:   Mon, 15 Jul 2019 11:40:49 +0100
-From:   Emil Velikov <emil.l.velikov@gmail.com>
-To:     Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v3 24/24] video: fbdev-MMP: Remove call to memset after
- dma_alloc_coherent
-Message-ID: <20190715104049.GC20839@arch-x1c3>
-References: <20190715032017.7311-1-huangfq.daxian@gmail.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=HKsKreaEy3+C3o/sQ+OabH2lkAl5Vp0npR4LSeazg+S6HrqO7soBChqmnfrznR+aAP
+         CFY57b+EWF5MLZdPXGTzgNynUBI8iQFLhW7XNhNXZNArhtj/v2162bfZIvM6h3+86dZl
+         w844wDVOVoyXbHyzJNXE52TZxjxVymxQbScwH54+RwQrsukeGFE9RYy+6/IrhLR1lzq0
+         OF/C5MOkcrMrcGLCerXvPJfpgQZGs+boo7V7i7RbS0BqVAqAKmzkOmyhzozjcs7Pp1eK
+         YLLgWnAKUndnCh0aPpPyaK8Sv7jZD5RvQDtKLcXG7S7e7zGeXSAoZI0CzcbX2owJw0zF
+         WxXQ==
+X-Gm-Message-State: APjAAAVo+J2NE39OgBKgZt+KLHNljyJjtl0ZwARYuE3GeXFbdIUcTzxr
+        iC/Iyr+plpDE+zc+8pTxjliBFd+u19reCDjYM9o=
+X-Google-Smtp-Source: APXvYqzZtOEA+O4p1z4qZpCetbNMVF7GlYWpoUrGzFqj2Xbxoz/rNpVURYzRILo4We5FvCDz7WNaWyJleYBMiLbsRiY=
+X-Received: by 2002:a17:90a:9903:: with SMTP id b3mr28453816pjp.80.1563188616818;
+ Mon, 15 Jul 2019 04:03:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190715032017.7311-1-huangfq.daxian@gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:03:36
+ -0700 (PDT)
+From:   Donald Douglas <ddouglasng@gmail.com>
+Date:   Mon, 15 Jul 2019 04:03:36 -0700
+Message-ID: <CALVR28EtFZG5M72gg5535c6GQgjUkrOmnToQem=_bwo5pu8tgQ@mail.gmail.com>
+Subject: Kindly Respond
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2019/07/15, Fuqian Huang wrote:
-> In commit 518a2f1925c3
-> ("dma-mapping: zero memory returned from dma_alloc_*"),
-> dma_alloc_coherent has already zeroed the memory.
-> So memset is not needed.
-> 
-> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
-> ---
-> Changes in v3:
->   - Use actual commit rather than the merge commit in the commit message
-> 
->  drivers/video/fbdev/mmp/fb/mmpfb.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
+Hello,
+I am Barr Fredrick Mbogo a business consultant i have a lucrative
+business to discuss with you from the Eastern part of Africa Uganda to
+be precise aimed at agreed percentage upon your acceptance of my hand
+in business and friendship. Kindly respond to me if you are interested
+to partner with me for an update. Very important.
 
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-
--Emil
-
+Yours Sincerely,
+Donald Douglas,
+For,
+Barr Frederick Mbogo
+Legal Consultant.
+Reply to: barrfredmbogo@consultant.com
