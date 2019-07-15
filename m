@@ -2,67 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E03687AA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jul 2019 13:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 244F769147
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jul 2019 16:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729922AbfGOLDh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 15 Jul 2019 07:03:37 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:34949 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729833AbfGOLDh (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 15 Jul 2019 07:03:37 -0400
-Received: by mail-pg1-f193.google.com with SMTP id s1so1232615pgr.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 15 Jul 2019 04:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=QRb1GBodFoBhFvJPBdxPE4VAqCl+I+T1SKUDc8YhKIcP8qXLNKmtBmeLwjLs/FO9lZ
-         75gCGAxY+YSs9c6HnUneWVQ5Kuc7cIu7HA1ZwTW36nCFWmVeEdZxTARPq/JJ6pFyLQCC
-         i5F57UJ0HSPfhhGiuIoSnyQ2CEuZZYzSvF/92SwjNSSKKvpKVbRgR8KxSyIf95yOdirX
-         vUpU9SAkZRrnMLlykrQni0TuHswl2ZAFQk4VFvbGPWK0ElKuMbgEj9smyMqgESRQW96Z
-         0AILN2JphlyIDpV3m3PpFXakYu3MGnxotH6bOcGMyGpkv5udFQwKTslRRPJv+1YEgJFw
-         GLhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
-        b=HKsKreaEy3+C3o/sQ+OabH2lkAl5Vp0npR4LSeazg+S6HrqO7soBChqmnfrznR+aAP
-         CFY57b+EWF5MLZdPXGTzgNynUBI8iQFLhW7XNhNXZNArhtj/v2162bfZIvM6h3+86dZl
-         w844wDVOVoyXbHyzJNXE52TZxjxVymxQbScwH54+RwQrsukeGFE9RYy+6/IrhLR1lzq0
-         OF/C5MOkcrMrcGLCerXvPJfpgQZGs+boo7V7i7RbS0BqVAqAKmzkOmyhzozjcs7Pp1eK
-         YLLgWnAKUndnCh0aPpPyaK8Sv7jZD5RvQDtKLcXG7S7e7zGeXSAoZI0CzcbX2owJw0zF
-         WxXQ==
-X-Gm-Message-State: APjAAAVo+J2NE39OgBKgZt+KLHNljyJjtl0ZwARYuE3GeXFbdIUcTzxr
-        iC/Iyr+plpDE+zc+8pTxjliBFd+u19reCDjYM9o=
-X-Google-Smtp-Source: APXvYqzZtOEA+O4p1z4qZpCetbNMVF7GlYWpoUrGzFqj2Xbxoz/rNpVURYzRILo4We5FvCDz7WNaWyJleYBMiLbsRiY=
-X-Received: by 2002:a17:90a:9903:: with SMTP id b3mr28453816pjp.80.1563188616818;
- Mon, 15 Jul 2019 04:03:36 -0700 (PDT)
+        id S1732456AbfGOO1t (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 15 Jul 2019 10:27:49 -0400
+Received: from mx2.suse.de ([195.135.220.15]:53058 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2389699AbfGOO1s (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:27:48 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 24AF8AF10;
+        Mon, 15 Jul 2019 14:27:47 +0000 (UTC)
+Message-ID: <481382385e1916edef81cd1219d695b045e0a20a.camel@suse.de>
+Subject: Re: [PATCH 0/2] Staging: fbtft: Fix probing of gpio descriptor
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Phil Reid <preid@electromag.com.au>, gregkh@linuxfoundation.org,
+        bhanusreemahesh@gmail.com, leobras.c@gmail.com,
+        nishadkamdar@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org
+Date:   Mon, 15 Jul 2019 16:27:44 +0200
+In-Reply-To: <1562833913-10510-1-git-send-email-preid@electromag.com.au>
+References: <1562833913-10510-1-git-send-email-preid@electromag.com.au>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-gKBUbqe+P9k3BDYCtp9q"
+User-Agent: Evolution 3.32.3 
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:03:36
- -0700 (PDT)
-From:   Donald Douglas <ddouglasng@gmail.com>
-Date:   Mon, 15 Jul 2019 04:03:36 -0700
-Message-ID: <CALVR28EtFZG5M72gg5535c6GQgjUkrOmnToQem=_bwo5pu8tgQ@mail.gmail.com>
-Subject: Kindly Respond
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
-I am Barr Fredrick Mbogo a business consultant i have a lucrative
-business to discuss with you from the Eastern part of Africa Uganda to
-be precise aimed at agreed percentage upon your acceptance of my hand
-in business and friendship. Kindly respond to me if you are interested
-to partner with me for an update. Very important.
 
-Yours Sincerely,
-Donald Douglas,
-For,
-Barr Frederick Mbogo
-Legal Consultant.
-Reply to: barrfredmbogo@consultant.com
+--=-gKBUbqe+P9k3BDYCtp9q
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2019-07-11 at 16:31 +0800, Phil Reid wrote:
+> GPIO probing and reset polarity are broken.
+> Fix them.
+>=20
+> Fixes: c440eee1a7a1 ("Staging: fbtft: Switch to the gpio descriptor
+> interface")
+>=20
+> Phil Reid (2):
+>   Staging: fbtft: Fix probing of gpio descriptor
+>   Staging: fbtft: Fix reset assertion when using gpio descriptor
+>=20
+>  drivers/staging/fbtft/fbtft-core.c | 43 ++++++++++++++++++--------------=
+-----
+> -
+>  1 file changed, 20 insertions(+), 23 deletions(-)
+>=20
+
+You can add my:
+
+Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Tested-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+
+The only issue I see is in the second patch, who should also have the same
+'Fixes' tag.
+
+BTW, while testing I found another issue, I'll send a fix shortly.
+
+Kind regards,
+Nicolas
+
+
+--=-gKBUbqe+P9k3BDYCtp9q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl0sjWAACgkQlfZmHno8
+x/7ChAgAnqe9gOqVqsH2hZYK+itU2ED7RijpJpZvjzGHFbAKc6LK7YYhCkT6yUBG
+uo98pK18pjUtaTdvhrnToLWqU1Utr87sDjVfwIdduDSmAnyM36P26NVtXPtr+atl
+iL9BpNNhkG0/ZveKtm3zv1ql0kfDxgCfcSrAWnAo/nJ83jmeObEOrZHJY4EVZwB1
+kQc4McdlGxqrmuvuY12a+ixc73AdlUArDJCWsbu/n1TKER3J6X5zFkZmZWDRqGZS
+8i61Iz2TNQl+k9J/ts0Y5S3RguweADMj+Q+rMmTmdMsGduOp5T6KpXfQoq89HAtc
+fO7UVjl6ssxy8EDCh6bO02G+Enw2+A==
+=0/r6
+-----END PGP SIGNATURE-----
+
+--=-gKBUbqe+P9k3BDYCtp9q--
+
