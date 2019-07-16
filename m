@@ -2,125 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1227C6A8AD
-	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Jul 2019 14:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F24656AAEC
+	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Jul 2019 16:52:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731589AbfGPM02 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 16 Jul 2019 08:26:28 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:60042 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727796AbfGPM02 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 16 Jul 2019 08:26:28 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190716122626euoutp011fe2afb9167ac9089c63fdd5f9ec3551~x4t2ROpbU0054600546euoutp01e
-        for <linux-fbdev@vger.kernel.org>; Tue, 16 Jul 2019 12:26:26 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190716122626euoutp011fe2afb9167ac9089c63fdd5f9ec3551~x4t2ROpbU0054600546euoutp01e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1563279986;
-        bh=zf1SxDfLXmgU3SgPoMi4phv/xSiFjD1yiDoP1x528pM=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=YSmMgIBz+rHlm1zkYCS17b12g9ITonMB9b9IIieZ+VQY8PwwpemiZcJbrOGJb4PRr
-         qLOxStIc06kPTCu657DSKpfYzcxhfGMLEYsvQUS9B3C0ON83mEOZmIjnrKu4iZVILE
-         s3zEfnCPDgHlBfV6g7UxJEnDtfoaJ+uXHFY3cvvQ=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190716122626eucas1p2f58b6b1dacae0847ccce4b90920c47ca~x4t1_BREm0474304743eucas1p21;
-        Tue, 16 Jul 2019 12:26:26 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 23.CA.04325.272CD2D5; Tue, 16
-        Jul 2019 13:26:26 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190716122625eucas1p2093f157267d4ad2ca6757496ed690c90~x4t1Om64q0474304743eucas1p20;
-        Tue, 16 Jul 2019 12:26:25 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190716122625eusmtrp1a78971d80d5d4e90aec24b9c60961235~x4t1AjR941461614616eusmtrp1w;
-        Tue, 16 Jul 2019 12:26:25 +0000 (GMT)
-X-AuditID: cbfec7f5-b75ff700000010e5-b5-5d2dc2727795
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 98.74.04146.172CD2D5; Tue, 16
-        Jul 2019 13:26:25 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190716122625eusmtip111edf3643d3e89b35d888fc00283dbb9~x4t0qttZP1205612056eusmtip1E;
-        Tue, 16 Jul 2019 12:26:25 +0000 (GMT)
-Subject: Re: [PATCH 03/10] video: pxafb: Remove cpufreq policy notifier
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>, linux-pm@vger.kernel.org,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <648e2ab5-afd7-3b9c-de8b-1e14c0be83e2@samsung.com>
-Date:   Tue, 16 Jul 2019 14:26:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        id S2387649AbfGPOvS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 16 Jul 2019 10:51:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41986 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728470AbfGPOvS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 16 Jul 2019 10:51:18 -0400
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3614B2173C;
+        Tue, 16 Jul 2019 14:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563288677;
+        bh=sonO2Wj/dB2WVkbnigGOIptZBiYzU9g2oAVvNNhm8N0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=cJpVGUzwvpQrBfw5VxnjM7fZDMqN8buukyY5uNJV0ilBSNzK8xmxbSP8KeFgOPVGk
+         CdhPYLcquPdpNPv9IfGMnbk93gK1YgS3rEW3NEieCmVZ/yyatbJnN9K/XZrO4tC0sv
+         vpJ81lt0Z15VjbKndmSpPGS7eGfx6pNckGHuM6H8=
+Received: by mail-oi1-f178.google.com with SMTP id w196so15751312oie.7;
+        Tue, 16 Jul 2019 07:51:17 -0700 (PDT)
+X-Gm-Message-State: APjAAAUzNDjM6CkTAVBj689g9/0ymmtl7lnTF+3weDk1ZY69iWxZD8Fb
+        YeSU/Sse0VxX7EvIzce7nrEzXEfu1SiFQCQa6NU=
+X-Google-Smtp-Source: APXvYqznotTEvyaymhJh/wAMu0w2H5gcuDv5j22SZvycyNMyxsk7XBmOnJ7QXnjodYkrV1FF1kduEHzUtbpafqpVCNU=
+X-Received: by 2002:aca:1b0c:: with SMTP id b12mr2605814oib.123.1563288676578;
+ Tue, 16 Jul 2019 07:51:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <e69d47b1d497bdbd8c988754d98714e78ddc0a80.1563270828.git.viresh.kumar@linaro.org>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrCKsWRmVeSWpSXmKPExsWy7djPc7pFh3RjDaa8Fba48vU9m8WJvg+s
-        Fpd3zWGz+Nx7hNHizOlLrBYdR74xW2z86uHA7nHn2h42j/vdx5k8tlxtZ/H4vEkugCWKyyYl
-        NSezLLVI3y6BK+PWjwvMBc9YKm4c/sfewPiHuYuRk0NCwERi96uv7F2MXBxCAisYJab8Wc0G
-        4XxhlDjYO50ZwvnMKPFh/n64lrMzrzNCJJYzSsy9/REsISTwllHi54RUEFtYwF1i7dttTF2M
-        HBwiAloSL2+ChZkFzjFKnL3pC2KzCVhJTGxfxQhi8wrYSRzedZkFxGYRUJV4/3YrWFxUIELi
-        /rENrBA1ghInZz4Bq+EUiJP4u3cGO8RMcYlbT+YzQdjyEtvfzgE7WkJgHbvE+/uPmCCOdpFY
-        +GAmO4QtLPHq+BYoW0bi9OQeFqgGRom/HS+gurczSiyf/I8Nospa4vDxi6wg3zALaEqs36UP
-        EXaUePXwECNIWEKAT+LGW0GII/gkJm0DhRxImFeio00IolpNYsOyDWwwa7t2rmSewKg0C8lr
-        s5C8MwvJO7MQ9i5gZFnFKJ5aWpybnlpsnJdarlecmFtcmpeul5yfu4kRmHZO/zv+dQfjvj9J
-        hxgFOBiVeHhP7NGJFWJNLCuuzD3EKMHBrCTCa/tVO1aINyWxsiq1KD++qDQntfgQozQHi5I4
-        bzXDg2ghgfTEktTs1NSC1CKYLBMHp1QDY+ydsN2i11Z8LrvmayWfqbntrVN+/1QB/TWbMxJ6
-        DnMxCR3+EyXBlO8b3/EwIG26QbD2sbxJ13b6xAtElflNFBM2uRDiwcwy4VLF6VAW/azLj6+t
-        XRW3tJSl6Hjcm5eq72coJ+4rO+adpRL+dm9k/uIG14R+pRPnX7Es7+3m+twqednrvlqIEktx
-        RqKhFnNRcSIA3wqUrTcDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOIsWRmVeSWpSXmKPExsVy+t/xu7qFh3RjDZ6vUrC48vU9m8WJvg+s
-        Fpd3zWGz+Nx7hNHizOlLrBYdR74xW2z86uHA7nHn2h42j/vdx5k8tlxtZ/H4vEkugCVKz6Yo
-        v7QkVSEjv7jEVina0MJIz9DSQs/IxFLP0Ng81srIVEnfziYlNSezLLVI3y5BL+PWjwvMBc9Y
-        Km4c/sfewPiHuYuRk0NCwETi7MzrjF2MXBxCAksZJY69msLWxcgBlJCROL6+DKJGWOLPtS42
-        iJrXjBInPk5nAUkIC7hLrH27jQmkXkRAS+LlzVSQGmaBC4wSsz60QQ3tY5R49ewFK0gDm4CV
-        xMT2VYwgNq+AncThXZfBBrEIqEq8f7sVLC4qECFx5v0KFogaQYmTM5+A2ZwCcRJ/985gB7GZ
-        BdQl/sy7xAxhi0vcejKfCcKWl9j+dg7zBEahWUjaZyFpmYWkZRaSlgWMLKsYRVJLi3PTc4sN
-        9YoTc4tL89L1kvNzNzECI23bsZ+bdzBe2hh8iFGAg1GJh/fEHp1YIdbEsuLK3EOMEhzMSiK8
-        tl+1Y4V4UxIrq1KL8uOLSnNSiw8xmgI9N5FZSjQ5H5gE8kriDU0NzS0sDc2NzY3NLJTEeTsE
-        DsYICaQnlqRmp6YWpBbB9DFxcEo1MLqk8E+O3rSY8USCbJHVX3lZ/pyELfvc+vOsJ7Y9M566
-        6NyfaWfL12lvPySdeHvrS6UZNfwnU1jCI5T8JraGL9V50X7vY4DA537dhfn+y8Pl/rqtzuTS
-        60w/qy48X3qD5NaQKHdWh+oNgh6TviT1ZH2KmJhfHe18/fvfmdd3sM/zyr/X5l/yWomlOCPR
-        UIu5qDgRADDAAcfKAgAA
-X-CMS-MailID: 20190716122625eucas1p2093f157267d4ad2ca6757496ed690c90
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190716122625eucas1p2093f157267d4ad2ca6757496ed690c90
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190716122625eucas1p2093f157267d4ad2ca6757496ed690c90
-References: <cover.1563270828.git.viresh.kumar@linaro.org>
-        <e69d47b1d497bdbd8c988754d98714e78ddc0a80.1563270828.git.viresh.kumar@linaro.org>
-        <CGME20190716122625eucas1p2093f157267d4ad2ca6757496ed690c90@eucas1p2.samsung.com>
+References: <20190712022018.27989-1-alex.shi@linux.alibaba.com> <20190712022018.27989-2-alex.shi@linux.alibaba.com>
+In-Reply-To: <20190712022018.27989-2-alex.shi@linux.alibaba.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Tue, 16 Jul 2019 16:51:05 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
+Message-ID: <CAJKOXPcnMM=h9-MW4qg4OTxaY5eBQ=4tH=Gbd3tSuckFvSOPcw@mail.gmail.com>
+Subject: Re: [PATCH 02/12] Documentation/arm: repointer docs to Documentation/arch/arm
+To:     Alex Shi <alex.shi@linux.alibaba.com>
+Cc:     linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-sh@vger.kernel.org,
+        Kukjin Kim <kgene@kernel.org>, linux-crypto@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-serial@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Fri, 12 Jul 2019 at 04:20, Alex Shi <alex.shi@linux.alibaba.com> wrote:
+>
+> Since we move 'arm/arm64' docs to Documentation/arch/{arm,arm64} dir,
+> redirect the doc pointer to them.
+>
+> Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Kukjin Kim <kgene@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-serial@vger.kernel.org
+> ---
+>  Documentation/arch/arm/Samsung-S3C24XX/GPIO.txt    |  2 +-
+>  .../arch/arm/Samsung-S3C24XX/Overview.txt          |  6 +++---
+>  Documentation/arch/arm/Samsung/GPIO.txt            |  2 +-
+>  Documentation/arch/arm/Samsung/Overview.txt        |  4 ++--
+>  Documentation/devicetree/bindings/arm/xen.txt      |  2 +-
+>  Documentation/devicetree/booting-without-of.txt    |  4 ++--
+>  Documentation/translations/zh_CN/arm/Booting       |  4 ++--
+>  .../translations/zh_CN/arm/kernel_user_helpers.txt |  4 ++--
+>  MAINTAINERS                                        |  6 +++---
 
-On 7/16/19 11:54 AM, Viresh Kumar wrote:
-> The cpufreq policy notifier's CPUFREQ_ADJUST notification is going to
-> get removed soon.
-> 
-> The notifier callback pxafb_freq_policy() isn't doing anything apart
-> from printing a debug message on CPUFREQ_ADJUST notification. There is
-> no point in keeping an otherwise empty callback and registering the
-> notifier.
-> 
-> Remove it.
-> 
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+I assume it will go through doc tree, so for Samsung:
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+Krzysztof
