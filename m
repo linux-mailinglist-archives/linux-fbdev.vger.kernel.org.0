@@ -2,111 +2,129 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24FA96A688
-	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Jul 2019 12:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFDE26A8AA
+	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Jul 2019 14:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732756AbfGPK17 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 16 Jul 2019 06:27:59 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:33134 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732319AbfGPK17 (ORCPT
+        id S1732565AbfGPMZw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 16 Jul 2019 08:25:52 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:59751 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732373AbfGPMZw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 16 Jul 2019 06:27:59 -0400
-Received: by mail-ot1-f68.google.com with SMTP id q20so20470120otl.0;
-        Tue, 16 Jul 2019 03:27:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=InV49k/g4n8kkX89qOOPmJMNqj/Q2fuW/aBD6hhUrXA=;
-        b=LP9UCFk/txz+8PX9fFtv/tFMlGmWO8p/SA855m/EOd/YAEFUGuqISAykuCTSFZjPWr
-         eyb4/WBRLWZytdBG90l4K5smP29fTIINGjnQCE8qD9v8khA6CuYYnHyA8lYpRMwjYZOi
-         L+lJzASL07W2Ko9IolEPteOZqGDXKrVhyBHxViB1aKO+lvViVtXKUEdsf313850UosI3
-         FvWzz79zOo06xaLvaUwqQ4t4HU9d2alXcgK11I/eWak+k/qWRLCwfwCUX+AI2XJVDpZ8
-         QQaLzvh7DPqpkJKskGCC2UbPYLxDsNSDckCmd5yWo58q7MK5TgXumw74lcSqmyNnH0wL
-         7Apg==
-X-Gm-Message-State: APjAAAVOs1jCA+1qM2yVYeNozrlAU4wThENjruPto7PDM9QAnPCuX3t7
-        An4o2h11KWH5DMji4D6pk9XQMf/V3L/yaXef1NY=
-X-Google-Smtp-Source: APXvYqwNxa4ESy69KwPnztnMj6Vvcz27ajFqshxcVQs8WVfJTe1ykblJ31kt949Zta05jFdEjaTLyPSqql/gvXR4C4Y=
-X-Received: by 2002:a05:6830:8a:: with SMTP id a10mr18446800oto.167.1563272877613;
- Tue, 16 Jul 2019 03:27:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1563269894.git.viresh.kumar@linaro.org> <CAJZ5v0iqYHNt6NQy3Fi1B=XtjNOm2x0mX3+7eWBREgFZRpUS+w@mail.gmail.com>
- <20190716101416.ntk353cfnrcykoek@vireshk-i7>
-In-Reply-To: <20190716101416.ntk353cfnrcykoek@vireshk-i7>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 16 Jul 2019 12:27:46 +0200
-Message-ID: <CAJZ5v0jZfmXN=juHX11vmSFj=vxS2Mu_b-OZprB9S+3LJjDb+g@mail.gmail.com>
-Subject: Re: [PATCH 00/10] cpufreq: Migrate users of policy notifiers to QoS requests
+        Tue, 16 Jul 2019 08:25:52 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190716122550euoutp01b6ea13a3ed8eed30a3f0d173488d0369~x4tUqF9If0042900429euoutp01D
+        for <linux-fbdev@vger.kernel.org>; Tue, 16 Jul 2019 12:25:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190716122550euoutp01b6ea13a3ed8eed30a3f0d173488d0369~x4tUqF9If0042900429euoutp01D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1563279950;
+        bh=8dxkZGheuXcwqu+8751Obi1RgIchRJd6UNRg3xcUhVs=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=beB6fxJGOZp7/6yovKJephHOmkUOJiv5AmsjvY/Y3fHObUFK+nqsvNWG1UCXcujRA
+         /1Nse0QddKyDCEaxDasugN6YEuuW1m3hRWIX7BL+aVyhJLhb4RzI1CXZpwM29uU4+7
+         xM7ZZOj8nxTpIwb1RyIi5+bQaWj7csgnS3xQLPvA=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190716122550eucas1p21fd5c85a08af29b5815f294a48464b03~x4tUFrQ4I0472904729eucas1p2f;
+        Tue, 16 Jul 2019 12:25:50 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 3B.CE.04298.D42CD2D5; Tue, 16
+        Jul 2019 13:25:49 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190716122549eucas1p2c757e92ae6b02f02123f2510415372d8~x4tTbuNjs0470704707eucas1p2Y;
+        Tue, 16 Jul 2019 12:25:49 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190716122549eusmtrp1c5e8222906bc800df7be15a267224311~x4tTNtNcz1452614526eusmtrp1J;
+        Tue, 16 Jul 2019 12:25:49 +0000 (GMT)
+X-AuditID: cbfec7f2-3615e9c0000010ca-f6-5d2dc24d841c
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 21.64.04146.D42CD2D5; Tue, 16
+        Jul 2019 13:25:49 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190716122548eusmtip17c4b9af73f748791f459f12dc1abb5fe~x4tS2CZlL1043210432eusmtip1x;
+        Tue, 16 Jul 2019 12:25:48 +0000 (GMT)
+Subject: Re: [PATCH 02/10] video: sa1100fb: Remove cpufreq policy notifier
 To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Erik Schmauss <erik.schmauss@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Javi Merino <javi.merino@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>, linux-pm@vger.kernel.org,
         Vincent Guittot <vincent.guittot@linaro.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <8b0f9adf-8462-eeba-afd1-52201f4e7f47@samsung.com>
+Date:   Tue, 16 Jul 2019 14:25:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <7163e57cfa1780d42732fa6b5ec424c24d1d4dc8.1563270828.git.viresh.kumar@linaro.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrKKsWRmVeSWpSXmKPExsWy7djPc7q+h3RjDU68sbS48vU9m8WJvg+s
+        Fpd3zWGz+Nx7hNHizOlLrBYdR74xW2z86uHA7nHn2h42j/vdx5k8tlxtZ/H4vEkugCWKyyYl
+        NSezLLVI3y6BK2PxlnksBQtZK5ZtXMPUwLiCpYuRk0NCwETiUNMspi5GLg4hgRWMEkeutTJD
+        OF8YJV5tuscG4XxmlLi18ToTTMvsG4/ZIRLLGSWa75+D6n/LKDHp/RWwKmEBL4ne/0tZuxg5
+        OEQEtCRe3kwFCTMLnGOUOHvTF8RmE7CSmNi+ihHE5hWwk3h7Zy/YTSwCqhIrtjcxg9iiAhES
+        949tYIWoEZQ4OfMJWA2nQJzEpA2X2SFmikvcejKfCcKWl9j+dg7YCxICm9gl/s/bwwhxtYvE
+        24WroZ4Wlnh1fAs7hC0jcXpyDwtEwzpGib8dL6C6tzNKLJ/8jw2iylri8PGLYN8wC2hKrN+l
+        DxF2lNh34BcLSFhCgE/ixltBiCP4JCZtm84MEeaV6GgTgqhWk9iwbAMbzNqunSuZJzAqzULy
+        2iwk78xC8s4shL0LGFlWMYqnlhbnpqcWG+allusVJ+YWl+al6yXn525iBCae0/+Of9rB+PVS
+        0iFGAQ5GJR7eE3t0YoVYE8uKK3MPMUpwMCuJ8Np+1Y4V4k1JrKxKLcqPLyrNSS0+xCjNwaIk
+        zlvN8CBaSCA9sSQ1OzW1ILUIJsvEwSnVwBjsO7lt3Ru7+7qPG5ddXVPqlnK4sHbb5kvnnp5L
+        DlU9bVmxqMZC+Hey6s0N3/90T3gnwG9cvmS5KUcut0PaY5sDk+W/vk1sLTOVS0v5KCe91E1/
+        6wFH2x8Rydc6RLo6hVfvc9zrZV1wzFeN5dGpfW8L/JWK//drbD7wre6Eqrdym/9q6SuPKpRY
+        ijMSDbWYi4oTAR1DDzw4AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOIsWRmVeSWpSXmKPExsVy+t/xu7q+h3RjDW485bG48vU9m8WJvg+s
+        Fpd3zWGz+Nx7hNHizOlLrBYdR74xW2z86uHA7nHn2h42j/vdx5k8tlxtZ/H4vEkugCVKz6Yo
+        v7QkVSEjv7jEVina0MJIz9DSQs/IxFLP0Ng81srIVEnfziYlNSezLLVI3y5BL2PxlnksBQtZ
+        K5ZtXMPUwLiCpYuRk0NCwERi9o3H7F2MXBxCAksZJa5fXcDWxcgBlJCROL6+DKJGWOLPtS42
+        iJrXjBJ/3rSwgySEBbwkev8vZQWpFxHQknh5MxWkhlngAqPErA9tjBANfYwSF1ZNYANpYBOw
+        kpjYvooRxOYVsJN4e2cv2BUsAqoSK7Y3MYPYogIREmfeQ1zHKyAocXLmEzCbUyBOYtKGy2CL
+        mQXUJf7Mu8QMYYtL3HoynwnClpfY/nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz03OL
+        DfWKE3OLS/PS9ZLzczcxAiNt27Gfm3cwXtoYfIhRgINRiYf3xB6dWCHWxLLiytxDjBIczEoi
+        vLZftWOFeFMSK6tSi/Lji0pzUosPMZoCPTeRWUo0OR+YBPJK4g1NDc0tLA3Njc2NzSyUxHk7
+        BA7GCAmkJ5akZqemFqQWwfQxcXBKNTCqzNz0hG+/lJbwg+wHh5Mq+/iEZ3HoF+Vu5+WsWPcj
+        cYXFbYeJBhz+LHkN63PymnyDKrnuahzTlL/4qT3HPkDrVm937e+qC6bp28/ZTomxabnyoad3
+        2q6fZ70dvKed2PRu6+sf1l/5a3492J3+SpB/SWim/UmLhVdOs7memmTJ/WoKp8XTLzpKLMUZ
+        iYZazEXFiQD3EvhWygIAAA==
+X-CMS-MailID: 20190716122549eucas1p2c757e92ae6b02f02123f2510415372d8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190716122549eucas1p2c757e92ae6b02f02123f2510415372d8
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190716122549eucas1p2c757e92ae6b02f02123f2510415372d8
+References: <cover.1563270828.git.viresh.kumar@linaro.org>
+        <7163e57cfa1780d42732fa6b5ec424c24d1d4dc8.1563270828.git.viresh.kumar@linaro.org>
+        <CGME20190716122549eucas1p2c757e92ae6b02f02123f2510415372d8@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jul 16, 2019 at 12:14 PM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 16-07-19, 12:06, Rafael J. Wysocki wrote:
-> > On Tue, Jul 16, 2019 at 11:49 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > >
-> > > Hello,
-> > >
-> > > Now that cpufreq core supports taking QoS requests for min/max cpu
-> > > frequencies, lets migrate rest of the users to using them instead of the
-> > > policy notifiers.
-> >
-> > Technically, this still is linux-next only. :-)
->
-> True :)
->
-> > > The CPUFREQ_NOTIFY and CPUFREQ_ADJUST events of the policy notifiers are
-> > > removed as a result, but we have to add CPUFREQ_CREATE_POLICY and
-> > > CPUFREQ_REMOVE_POLICY events to it for the acpi stuff specifically. So
-> > > the policy notifiers aren't completely removed.
-> >
-> > That's not entirely accurate, because arch_topology is going to use
-> > CPUFREQ_CREATE_POLICY now too.
->
-> Yeah, I thought about that while writing this patchset and
-> coverletter. But had it not been required for ACPI, I would have done
-> it differently for the arch-topology code. Maybe direct calling of
-> arch-topology routine from cpufreq core. I wanted to get rid of the
-> policy notifiers completely but I couldn't find a better way of doing
-> it for ACPI stuff.
->
-> > > Boot tested on my x86 PC and ARM hikey board. Nothing looked broken :)
-> > >
-> > > This has already gone through build bot for a few days now.
-> >
-> > So I'd prefer patches [5-8] to go right after the first one and then
-> > do the cleanups on top of that, as somebody may want to backport the
-> > essential changes without the cleanups.
->
-> In the exceptional case where nobody finds anything wrong with the
-> patches (highly unlikely), do you want me to resend with reordering or
-> you can reorder them while applying? There are no dependencies between
-> those patches anyway.
 
-Please resend the reordered set when the merge window closes.
+Hi Viresh,
+
+Please always Cc: me on fbdev patches.
+
+On 7/16/19 11:54 AM, Viresh Kumar wrote:
+> The cpufreq policy notifier's CPUFREQ_ADJUST notification is going to
+> get removed soon.
+> 
+> The notifier callback sa1100fb_freq_policy() isn't doing anything apart
+> from printing a debug message on CPUFREQ_ADJUST notification. There is
+> no point in keeping an otherwise empty callback and registering the
+> notifier.
+> 
+> Remove it.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
