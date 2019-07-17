@@ -2,157 +2,241 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DD086BE23
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jul 2019 16:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3666BE75
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jul 2019 16:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726598AbfGQOXf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 17 Jul 2019 10:23:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:28356 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726081AbfGQOXe (ORCPT
+        id S1727151AbfGQOlr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 17 Jul 2019 10:41:47 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:34609 "EHLO
+        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726452AbfGQOlr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 17 Jul 2019 10:23:34 -0400
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6HEHuLu125512
-        for <linux-fbdev@vger.kernel.org>; Wed, 17 Jul 2019 10:23:33 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2tt38bxask-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-fbdev@vger.kernel.org>; Wed, 17 Jul 2019 10:23:33 -0400
-Received: from localhost
-        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-fbdev@vger.kernel.org> from <jremus@linux.ibm.com>;
-        Wed, 17 Jul 2019 15:23:31 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Wed, 17 Jul 2019 15:23:27 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6HENQCl49938456
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 17 Jul 2019 14:23:26 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 125BB11C075;
-        Wed, 17 Jul 2019 14:23:26 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B35A211C070;
-        Wed, 17 Jul 2019 14:23:25 +0000 (GMT)
-Received: from [9.152.97.218] (unknown [9.152.97.218])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Wed, 17 Jul 2019 14:23:25 +0000 (GMT)
-From:   Jens Remus <jremus@linux.ibm.com>
-Subject: WARNING in con_is_bound
-To:     Daniel Vetter <daniel.vetter@intel.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-s390@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        Martin Hostettler <textshell@uchuujin.de>,
-        Adam Borowski <kilobyte@angband.pl>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Mikulas Patocka <mpatocka@redhat.com>
-Organization: IBM Deutschland Research & Development GmbH
-Date:   Wed, 17 Jul 2019 16:23:25 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Wed, 17 Jul 2019 10:41:47 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.west.internal (Postfix) with ESMTP id 7630C447;
+        Wed, 17 Jul 2019 10:41:45 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 17 Jul 2019 10:41:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.net; h=
+        from:subject:to:cc:references:message-id:date:mime-version
+        :in-reply-to:content-type:content-transfer-encoding; s=fm3; bh=r
+        //nzcRetFe1mQcf2ZScBZlmXMRRWgYkY3HhEVoUW5g=; b=QjDKjunKNKXsQdGTK
+        YGMgsIKhOOuhTj5HoZEACFt97Cu6KgNCEUO1tzlGKozWGUg+YCktXX73+KyK6q1D
+        tK/KCna0OHHdCyXwkFQZ4YMVEbqpyaH1hqJRmY1Y5vOLddFEcSLCtu6hr0fSZNuj
+        11WCVYgtovJmbVmttPIbw//sDu9V7zJpzBrhwrLzXiZgCUR173wgJjQBrJh3GIc6
+        n+aMEmHnHCIqTkrg9PFcjonsVy9Celj/DrsM6yj3q4I62r11+pwRiyJqZbzcSEAT
+        BVXHhP6/jiXvoMlias5zHAXXPudpxkhYjg1Y9N91p5/iHXxeOBMiaozyQwZ1QLVe
+        VedSQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=r//nzcRetFe1mQcf2ZScBZlmXMRRWgYkY3HhEVoUW
+        5g=; b=HorNKpy4Kd2hLgdJW84OOMnn5hD7jq8EZORqyd+rnO7jr3eLuFtNUT7nH
+        q3eIhgsIft8vm/73afzJOF8WP6e9UDCC/7D4nu4duBRh7uUjJZZJJgZhoAh4c0Kp
+        oCwC1PkqPdV01+KPntd60ycCAmyyVXjZqI/bRYqwHXvxf+90dKvvCqOwxqK4Tq3h
+        ahRXIUupan7r9SIVcZEyfNX9EvQk7qZDjzjCpk8BVcbOIo64XrSYOXRqGiaPX4qM
+        Yd1KWKkgaF/EYuaERDJkX1+9LRSVJ2ZsT9w77J0EVG9pAcqhoJI8y8VnJZ5nh8jH
+        7SJwwYlWTWkVKBcrt5RqusLmYTBdA==
+X-ME-Sender: <xms:pjMvXRRe3-Kzp_k7PsuSWDICiSFroLqpAdt6tOOU9bcogU1dHPThWQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrieefgdehhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenog
+    etfedtuddqtdduucdludehmdenucfjughrpefhuffvfhfkffgfgggjtgfgsehtkeertddt
+    feehnecuhfhrohhmpeflrghnpgfuvggsrghsthhirghnpgfinphtthgvuceolhhinhhugi
+    esjhgrshgvghdrnhgvtheqnecukfhppeeitddrjedurdeifedrjeehnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpehlihhnuhigsehjrghsvghgrdhnvghtnecuvehluhhsthgvrhfuih
+    iivgeptd
+X-ME-Proxy: <xmx:pjMvXX7DJo_hodvFt5Yft56QLLNvvak47rBn7LT2N5SQzMXBxMuivw>
+    <xmx:pjMvXV3KSEdHv5hYxzAyZjuHEB0HHfDalLT7xYKvqrr0TGrLjGu9AQ>
+    <xmx:pjMvXaD_wkn3P1eBlAlw8VUl_0QSxZrbZzpk8ss_KMyKJsTB_gzNmA>
+    <xmx:qTMvXT0DuJp9IqC2S0OSsgmVrTb2XdvFbtk5NKyNXaLprMgpFMzxtg>
+Received: from [10.137.0.16] (softbank060071063075.bbtec.net [60.71.63.75])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 31D5580060;
+        Wed, 17 Jul 2019 10:41:40 -0400 (EDT)
+From:   =?UTF-8?Q?Jan_Sebastian_G=c3=b6tte?= <linux@jaseg.net>
+Subject: [PATCH v2] Staging: fbtft: Fix GPIO handling
+To:     =?UTF-8?Q?Jan_Sebastian_G=c3=b6tte?= <linux@jaseg.net>
+Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Phil Reid <preid@electromag.com.au>,
+        dri-devel@lists.freedesktop.org, nishadkamdar@gmail.com,
+        bhanusreemahesh@gmail.com, leobras.c@gmail.com,
+        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org
+References: <20190715143003.12819-1-nsaenzjulienne@suse.de>
+ <7b8242ab-cc0c-d90b-60af-ff1c53789e44@opensynergy.com>
+ <5a77c18f-7338-888f-2379-12171b6a545e@jaseg.net>
+Message-ID: <75ada52f-afa1-08bc-d0ce-966fc1110e70@jaseg.net>
+Date:   Wed, 17 Jul 2019 23:41:37 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <5a77c18f-7338-888f-2379-12171b6a545e@jaseg.net>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19071714-4275-0000-0000-0000034E26D2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071714-4276-0000-0000-0000385E3D1A
-Message-Id: <84012ee0-e1e3-2eef-b927-b865fd141f78@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-17_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=799 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907170170
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello!
+Commit c440eee1a7a1 ("Staging: fbtft: Switch to the gpio descriptor
+interface") breaks GPIO handling. In several places, checks to only set
+a GPIO if it was configured ended up backwards.
+I have tested this fix. The fixed driver works with a ili9486
+display connected to a raspberry pi via SPI.
 
-Our CI on s390x constantly triggers the following warning in function con_is_bound() when reading the SysFS attribute /sys/class/vtconsole/vtcon0/bind.
-I verified this to be the case since WARN_CONSOLE_UNLOCKED() was introduced in function con_is_bound() with commit ddde3c18b700 ("vt: More locking checks"), which has recently been merged into Linus' master branch.
+Fixes: commit c440eee1a7a1d ("Staging: fbtft: Switch to the gpio descriptor interface")
+Tested-by: Jan Sebastian Götte <linux@jaseg.net>
+Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Signed-off-by: Jan Sebastian Götte <linux@jaseg.net>
+---
+ drivers/staging/fbtft/fb_bd663474.c  | 2 +-
+ drivers/staging/fbtft/fb_ili9163.c   | 2 +-
+ drivers/staging/fbtft/fb_ili9325.c   | 2 +-
+ drivers/staging/fbtft/fb_s6d1121.c   | 2 +-
+ drivers/staging/fbtft/fb_ssd1289.c   | 2 +-
+ drivers/staging/fbtft/fb_ssd1331.c   | 4 ++--
+ drivers/staging/fbtft/fb_upd161704.c | 2 +-
+ drivers/staging/fbtft/fbtft-bus.c    | 2 +-
+ drivers/staging/fbtft/fbtft-core.c   | 4 ++--
+ 9 files changed, 11 insertions(+), 11 deletions(-)
 
-
-From CI with recent Linus' master branch built with arch/s390/configs/defconfig. dump2tar is a utility we use to collect the whole SysFS as tar archive for problem determination.
-
-WARNING: CPU: 7 PID: 47758 at drivers/tty/vt/vt.c:3825 con_is_bound+0x8e/0x98
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 7 PID: 47758 Comm: dump2tar Tainted: G           OE     5.3.0-20190715.rc0.git0.1d039859330b.301.fc30.s390x+git #1
-Hardware name: IBM ... (z/VM 7.1.0)
-Call Trace:
-([<00000000291b7b46>] show_stack+0x8e/0xd0)
- [<0000000029b82242>] dump_stack+0x7a/0xa8
- [<00000000291e9aea>] panic+0x112/0x308
- [<00000000291e991a>] __warn+0xc2/0x118
- [<0000000029b81312>] report_bug+0xfa/0x158
- [<00000000291a534c>] do_report_trap+0xc4/0xe0
- [<00000000291a5522>] illegal_op+0x13a/0x150
- [<0000000029ba2a1c>] pgm_check_handler+0x1c8/0x220
- [<0000000029877626>] con_is_bound+0x8e/0x98
-([<000000008fed2820>] 0x8fed2820)
- [<0000000029878502>] show_bind+0x32/0x58
- [<00000000298f46f4>] dev_attr_show+0x2c/0x70
- [<00000000294d57ac>] sysfs_kf_seq_show+0xac/0x158
- [<00000000294565a0>] seq_read+0xe0/0x478
- [<000000002942774c>] vfs_read+0x94/0x150
- [<0000000029427b10>] ksys_read+0x68/0xf8
- [<0000000029ba2624>] system_call+0xd8/0x2c8
-
-
-From verification with Kernel based on commit ddde3c18b700 ("vt: More locking checks") built with arch/s390/configs/performance_defconfig. I used cat /sys/class/vtconsole/vtcon0/bind to trigger the warning.
-
-WARNING: CPU: 0 PID: 923 at drivers/tty/vt/vt.c:3825 con_is_bound+0x8e/0x98
-Modules linked in: ...
-CPU: 0 PID: 923 Comm: cat Not tainted 5.2.0-rc4-00004-gddde3c18b700 #2
-Hardware name: IBM 3906 M03 703 (z/VM 7.1.0)
-Krnl PSW : 0704c00180000000 0000000041418856 (con_is_bound+0x8e/0x98)
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-Krnl GPRS: 000000003d6a4000 0000000000000000 0000000000000000 0000000041b3cd88
-           000000007aba3000 0000000041493378 000000007b52b428 0000000000000000
-           000003e000abfef8 0000000078dc6540 0000000041bbe310 0000000041bbbf10
-           000000007ac4a000 000000007b52b440 0000000041418842 000003e000abfca8
-Krnl Code: 000000004141884c: 1612                or      %r1,%r2
-           000000004141884e: a774ffd5            brc     7,414187f8
-          #0000000041418852: a7f40001            brc     15,41418854
-          >0000000041418856: a7f4ffd1            brc     15,414187f8
-           000000004141885a: 0707                bcr     0,%r7
-           000000004141885c: 0707                bcr     0,%r7
-           000000004141885e: 0707                bcr     0,%r7
-           0000000041418860: c00400000000        brcl    0,41418860
-Call Trace:
-([<000003e000abfca0>] 0x3e000abfca0)
- [<0000000041419732>] show_bind+0x32/0x58
- [<00000000414933a8>] dev_attr_show+0x30/0x70
- [<00000000410798e8>] sysfs_kf_seq_show+0xb0/0x158
- [<0000000040ffa95c>] seq_read+0xe4/0x478
- [<0000000040fcbe84>] vfs_read+0x94/0x150
- [<0000000040fcc248>] ksys_read+0x68/0xf8
- [<0000000041733530>] system_call+0xdc/0x2c8
-Last Breaking-Event-Address:
- [<0000000041418852>] con_is_bound+0x8a/0x98
----[ end trace 80e05e05ec2ee660 ]---
-
-
-Thanks and regards,
-Jens Remus
+diff --git a/drivers/staging/fbtft/fb_bd663474.c b/drivers/staging/fbtft/fb_bd663474.c
+index b6c6d66e4eb1..e2c7646588f8 100644
+--- a/drivers/staging/fbtft/fb_bd663474.c
++++ b/drivers/staging/fbtft/fb_bd663474.c
+@@ -24,7 +24,7 @@
+ 
+ static int init_display(struct fbtft_par *par)
+ {
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	par->fbtftops.reset(par);
+diff --git a/drivers/staging/fbtft/fb_ili9163.c b/drivers/staging/fbtft/fb_ili9163.c
+index d609a2b67db9..fd32376700e2 100644
+--- a/drivers/staging/fbtft/fb_ili9163.c
++++ b/drivers/staging/fbtft/fb_ili9163.c
+@@ -77,7 +77,7 @@ static int init_display(struct fbtft_par *par)
+ {
+ 	par->fbtftops.reset(par);
+ 
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	write_reg(par, MIPI_DCS_SOFT_RESET); /* software reset */
+diff --git a/drivers/staging/fbtft/fb_ili9325.c b/drivers/staging/fbtft/fb_ili9325.c
+index b090e7ab6fdd..85e54a10ed72 100644
+--- a/drivers/staging/fbtft/fb_ili9325.c
++++ b/drivers/staging/fbtft/fb_ili9325.c
+@@ -85,7 +85,7 @@ static int init_display(struct fbtft_par *par)
+ {
+ 	par->fbtftops.reset(par);
+ 
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	bt &= 0x07;
+diff --git a/drivers/staging/fbtft/fb_s6d1121.c b/drivers/staging/fbtft/fb_s6d1121.c
+index b3d0701880fe..5a129b1352cc 100644
+--- a/drivers/staging/fbtft/fb_s6d1121.c
++++ b/drivers/staging/fbtft/fb_s6d1121.c
+@@ -29,7 +29,7 @@ static int init_display(struct fbtft_par *par)
+ {
+ 	par->fbtftops.reset(par);
+ 
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	/* Initialization sequence from Lib_UTFT */
+diff --git a/drivers/staging/fbtft/fb_ssd1289.c b/drivers/staging/fbtft/fb_ssd1289.c
+index bbf75f795234..88a5b6925901 100644
+--- a/drivers/staging/fbtft/fb_ssd1289.c
++++ b/drivers/staging/fbtft/fb_ssd1289.c
+@@ -28,7 +28,7 @@ static int init_display(struct fbtft_par *par)
+ {
+ 	par->fbtftops.reset(par);
+ 
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	write_reg(par, 0x00, 0x0001);
+diff --git a/drivers/staging/fbtft/fb_ssd1331.c b/drivers/staging/fbtft/fb_ssd1331.c
+index 4cfe9f8535d0..37622c9462aa 100644
+--- a/drivers/staging/fbtft/fb_ssd1331.c
++++ b/drivers/staging/fbtft/fb_ssd1331.c
+@@ -81,7 +81,7 @@ static void write_reg8_bus8(struct fbtft_par *par, int len, ...)
+ 	va_start(args, len);
+ 
+ 	*buf = (u8)va_arg(args, unsigned int);
+-	if (!par->gpio.dc)
++	if (par->gpio.dc)
+ 		gpiod_set_value(par->gpio.dc, 0);
+ 	ret = par->fbtftops.write(par, par->buf, sizeof(u8));
+ 	if (ret < 0) {
+@@ -104,7 +104,7 @@ static void write_reg8_bus8(struct fbtft_par *par, int len, ...)
+ 			return;
+ 		}
+ 	}
+-	if (!par->gpio.dc)
++	if (par->gpio.dc)
+ 		gpiod_set_value(par->gpio.dc, 1);
+ 	va_end(args);
+ }
+diff --git a/drivers/staging/fbtft/fb_upd161704.c b/drivers/staging/fbtft/fb_upd161704.c
+index 564a38e34440..c77832ae5e5b 100644
+--- a/drivers/staging/fbtft/fb_upd161704.c
++++ b/drivers/staging/fbtft/fb_upd161704.c
+@@ -26,7 +26,7 @@ static int init_display(struct fbtft_par *par)
+ {
+ 	par->fbtftops.reset(par);
+ 
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	/* Initialization sequence from Lib_UTFT */
+diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
+index 2ea814d0dca5..63c65dd67b17 100644
+--- a/drivers/staging/fbtft/fbtft-bus.c
++++ b/drivers/staging/fbtft/fbtft-bus.c
+@@ -135,7 +135,7 @@ int fbtft_write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
+ 	remain = len / 2;
+ 	vmem16 = (u16 *)(par->info->screen_buffer + offset);
+ 
+-	if (!par->gpio.dc)
++	if (par->gpio.dc)
+ 		gpiod_set_value(par->gpio.dc, 1);
+ 
+ 	/* non buffered write */
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index bc750250ccd6..5127de922f6a 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -916,7 +916,7 @@ static int fbtft_init_display_dt(struct fbtft_par *par)
+ 		return -EINVAL;
+ 
+ 	par->fbtftops.reset(par);
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	while (p) {
+@@ -1007,7 +1007,7 @@ int fbtft_init_display(struct fbtft_par *par)
+ 	}
+ 
+ 	par->fbtftops.reset(par);
+-	if (!par->gpio.cs)
++	if (par->gpio.cs)
+ 		gpiod_set_value(par->gpio.cs, 0);  /* Activate chip */
+ 
+ 	i = 0;
 -- 
-Linux on Z and z/VSE Development & Service (D3229)
-IBM Systems & Technology Group, Pure Systems & Modular Software Development
-
-IBM Data Privacy Statement: https://www.ibm.com/privacy/us/en/
-
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Matthias Hartmann
-GeschÃ¤ftsfÃ¼hrung: Dirk Wittkopp
-Sitz der Gesellschaft: Boeblingen
-Registergericht: Amtsgericht Stuttgart, HRB 243294
+2.21.0
 
