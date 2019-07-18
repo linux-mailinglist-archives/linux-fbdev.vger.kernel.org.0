@@ -2,119 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E266CDC9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jul 2019 14:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEFE06D10B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jul 2019 17:25:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbfGRMCk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 18 Jul 2019 08:02:40 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49102 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726608AbfGRMCk (ORCPT
+        id S1727623AbfGRPYz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 18 Jul 2019 11:24:55 -0400
+Received: from sonic314-20.consmr.mail.ne1.yahoo.com ([66.163.189.146]:42550
+        "EHLO sonic314-20.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726513AbfGRPYy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 18 Jul 2019 08:02:40 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6IC2bB6015828
-        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jul 2019 08:02:39 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2ttpxcuksw-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jul 2019 08:02:38 -0400
-Received: from localhost
-        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-fbdev@vger.kernel.org> from <jremus@linux.ibm.com>;
-        Thu, 18 Jul 2019 13:02:28 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 18 Jul 2019 13:02:24 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6IC2Ahe29557076
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 18 Jul 2019 12:02:10 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D05D65206C;
-        Thu, 18 Jul 2019 12:02:23 +0000 (GMT)
-Received: from [9.152.224.207] (unknown [9.152.224.207])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 7030552077;
-        Thu, 18 Jul 2019 12:02:23 +0000 (GMT)
-Subject: Re: [PATCH] vt: Grab console_lock around con_is_bound in show_bind
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>
-Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Pitre <nicolas.pitre@linaro.org>,
-        Martin Hostettler <textshell@uchuujin.de>,
-        Adam Borowski <kilobyte@angband.pl>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-References: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
-From:   Jens Remus <jremus@linux.ibm.com>
-Organization: IBM Deutschland Research & Development GmbH
-Date:   Thu, 18 Jul 2019 14:02:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Thu, 18 Jul 2019 11:24:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1563463493; bh=09HtrnZ2OgwPAyHgjdE4MANxe9VnkLUPuZ+9ieVJihY=; h=Date:From:Reply-To:Subject:From:Subject; b=Te1KjoMCkJXT/NQ/mC/0xiGuZ8WvBATK78ung77D5PaGXOtWZ8yC6T/jc0DseRu+IF4SfHXCfKNq51AFxQwYMLSAnAV+ciQLk9u6ftbFEb1reflrH4UPZMzYRzEbyxdghIatyK/A2e/bN4N/V03NfllrWLo4se/tL8taCR6XV5ROkK4RbZ+AkyoSsMdSa8WZnmOKzFTrUhyurN8jPK19zGvO1e1SAdTenuh7xIX+xm/pIl5qZ/VL9kHvebN/DrC4qLJgEEX9YE/UTk/tFAYFYo+MXOej67Bmk3BP2gzzECSF+t65Bk4a32GXGJFlbN7i6pOLAS3H3to0w12VIbncZw==
+X-YMail-OSG: hGj14bAVM1mCg.feHvn_1WcOhBWyOyTKkd8ruGmRWIc2PiAvb185gVlEphHeJYA
+ .KtdN_kcpXZCD05ea6IxBxVfFv3.EmrYkRjy_wI2n._VdO8rHv99hQV3NnhUUbzPQWlTvYOWK0AD
+ ClM1adj_NgFwZ57Ix3W9RHFVCZ.QHf1ptpeSyvOUJuGmCHhkAhNtY0q5J5f7WRLlyscuKlvuWdOv
+ Q7b2cAXPFxbf29CWh30QN5REOeHqM6UIxiRmTorZAWNMdGE8VWW4yYvKXqqExdQBSjVOxSoysZHq
+ ErHoNzts3wcBqPjP9eyttFj3wewDDQgoU_XG2HnSEo_gyTVTWaDnaTdO.GtRrNdVhRaghkMJ30QO
+ MthsgRUusMD9g5ADvYRmCxteYJDY1Hh30zLFLZUmimh54J0FButNpkyWnxKP5VvQyCSFngqjkQeY
+ UfTY2deeBiXRghSAPnxDGZpq01PkraOObp5ZHdvUepJr2IOVXC37Cx5gfbq.ciG4VflNZEB29sx1
+ Wap390OfBaTKdsWYHhBDaBiFRWVOy80x_WGG3H1xg2j0rCyHjgwxF.YfIgTyHFWcbELt.VnXR.IS
+ ZIoeXr64MAwMslnQQ3sLqiriJLoD4gJBSoX_LCFijb7Mr1KXH8gRseJm2HPy5ySbmB34aBHrwyP6
+ mmmmnOm1PGVXug4.c2g5cNayITYWi2CeaHrvLjscJZwiyXd0dcsnzxhuex.7qUxqnRd7mkVtOprI
+ p2FdpWozenSxJ7eL8n2xFHoiKlNuv3qpaDgVSjqvtAt6cCjrdH8DVcFdG0d7oxF0SENTA3K2HT3E
+ rQfjJgp_ydlVl7rws0tTFfTwuA9dclQ4X26RUHWLCTp7WRMnR82vE2OJ8Wk0e6uh46hdfoBG0VgV
+ p.MxZOEgQBv6CchW7J73RY3Yv21LedtwxRq0ZristeF7uN2Ay1mf.1sckl0tldBPe5Izg9uTqsPZ
+ vQfz83SZcR9PpyBGub6tOqM3lMNATTTxi90MKzkDk6Zr.KAu2kVQ.xoiVaFBlYB1ucm9ky6canRP
+ pM41AK.gbsuhsvlyP5131bEvNomczg6fNWjlyoSyA8C3Y4jk_l7jkPPZzHU9aw4JhZsQqrnA8Viz
+ An5SKySA_qxDWeSnvIppvK_DSC9mpBGVwaQhT92jlfcjwgqW_MPrbnmo5_CzYZOJyaXnqkrwmqLW
+ Oos5lBVnh_DO_PB7SsNAt5Bv3lbKwPnyiBd6i_ENsfkSQmYhEA.2aSG6U6I9UXFjXyWrp0QNEd1D
+ OPDCQTIo-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Thu, 18 Jul 2019 15:24:52 +0000
+Date:   Thu, 18 Jul 2019 15:24:48 +0000 (UTC)
+From:   "Mrs. Nicoles Maoris" <mrsmimnicolas02@gmx.com>
+Reply-To: mrs.nicolesaaoris@gmail.com
+Message-ID: <96426742.3834977.1563463488261@mail.yahoo.com>
+Subject: Hello Dear.
 MIME-Version: 1.0
-In-Reply-To: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19071812-0012-0000-0000-000003340C87
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071812-0013-0000-0000-0000216D8E5C
-Message-Id: <d242e41d-04cf-ba0e-2d81-9ed1a9c52195@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-18_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907180129
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Am 18.07.2019 um 10:09 schrieb Daniel Vetter:
-> Not really harmful not to, but also not harm in grabbing the lock. And
-> this shuts up a new WARNING I introduced in commit ddde3c18b700 ("vt:
-> More locking checks").
-> 
-> Reported-by: Jens Remus <jremus@linux.ibm.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
-> Cc: Martin Hostettler <textshell@uchuujin.de>
-> Cc: Adam Borowski <kilobyte@angband.pl>
-> Cc: Mikulas Patocka <mpatocka@redhat.com>
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> ---
->   drivers/tty/vt/vt.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+Hello Dear.
+I=E2=80=99m Mrs. Nicole Marois a manger in  HSBC  bank  of  Spain Madrid, I=
+ am sending
+this brief letter  to seek for  your partnership and long term relationship=
+, I have an important and urgent  issue I want to discuss with you privatel=
+y about transaction fund  worth the sum of $9.5m America dollars left by mo=
+st of the greedy Asia Kuwait politician in our bank here in Spain Madrid.
 
-Thank you for the quick fix! Looks fine to me. Did test with cat as well 
-as our dump2tar utility. The warning is gone.
+If you know that you can invest this fund into profitable business in your =
+country by the end we shall have 50%50 share each,  kindly get back to me f=
+or more detail and procedures .
 
-Tested-by: Jens Remus <jremus@linux.ibm.com>
-
-Regards,
-Jens Remus
--- 
-Linux on Z and z/VSE Development & Service (D3229)
-IBM Systems & Technology Group, Pure Systems & Modular Software Development
-
-IBM Data Privacy Statement: https://www.ibm.com/privacy/us/en/
-
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Matthias Hartmann
-Geschäftsführung: Dirk Wittkopp
-Sitz der Gesellschaft: Boeblingen
-Registergericht: Amtsgericht Stuttgart, HRB 243294
-
+Your urgent respond will be highly appreciated
+Awaiting to hear from you asap.
+My Regard.
+Mrs. Nicole Maoris
+Email: mmiminicolas20@gmail.com
+Email: mrs.nicolesaaoris@gmail.com
+Phone Number:  +34(62) 768 5146
