@@ -2,76 +2,85 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F70E6CCE0
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jul 2019 12:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E266CDC9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jul 2019 14:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbfGRKhd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 18 Jul 2019 06:37:33 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:47058 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726423AbfGRKhd (ORCPT
+        id S1726715AbfGRMCk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 18 Jul 2019 08:02:40 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:49102 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726608AbfGRMCk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 18 Jul 2019 06:37:33 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 0121980335;
-        Thu, 18 Jul 2019 12:37:27 +0200 (CEST)
-Date:   Thu, 18 Jul 2019 12:37:26 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Jens Remus <jremus@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Thu, 18 Jul 2019 08:02:40 -0400
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6IC2bB6015828
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jul 2019 08:02:39 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ttpxcuksw-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jul 2019 08:02:38 -0400
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-fbdev@vger.kernel.org> from <jremus@linux.ibm.com>;
+        Thu, 18 Jul 2019 13:02:28 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 18 Jul 2019 13:02:24 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6IC2Ahe29557076
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 18 Jul 2019 12:02:10 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D05D65206C;
+        Thu, 18 Jul 2019 12:02:23 +0000 (GMT)
+Received: from [9.152.224.207] (unknown [9.152.224.207])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 7030552077;
+        Thu, 18 Jul 2019 12:02:23 +0000 (GMT)
+Subject: Re: [PATCH] vt: Grab console_lock around con_is_bound in show_bind
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>
+Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org, linux-s390@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Nicolas Pitre <nicolas.pitre@linaro.org>,
         Martin Hostettler <textshell@uchuujin.de>,
         Adam Borowski <kilobyte@angband.pl>,
         Mikulas Patocka <mpatocka@redhat.com>,
-        Daniel Vetter <daniel.vetter@intel.com>
-Subject: Re: [PATCH] vt: Grab console_lock around con_is_bound in show_bind
-Message-ID: <20190718103726.GA17341@ravnborg.org>
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>
 References: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
+From:   Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+Date:   Thu, 18 Jul 2019 14:02:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8
-        a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=e5mUnYsNAAAA:8 a=ag1SF4gXAAAA:8
-        a=KKAkSRfTAAAA:8 a=20KFwNOVAAAA:8 a=QyXUC8HyAAAA:8 a=II7inwo8ijMyP0ieMOUA:9
-        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=AjGcO6oz07-iQ99wixmX:22
-        a=Vxmtnl_E_bksehYqCbjh:22 a=Yupwre4RP9_Eg_Bd0iYG:22
-        a=cvBusfyB2V15izCimMoJ:22
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19071812-0012-0000-0000-000003340C87
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071812-0013-0000-0000-0000216D8E5C
+Message-Id: <d242e41d-04cf-ba0e-2d81-9ed1a9c52195@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-18_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907180129
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Daniel.
-
-Patch looks good. You can add my:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-
-For good measure I checked all other users of con_is_bound()
-and they looked good from a locking perspective.
-Then I looked a bit more for missing locking and lost
-the overview.
-
-On Thu, Jul 18, 2019 at 10:09:03AM +0200, Daniel Vetter wrote:
+Am 18.07.2019 um 10:09 schrieb Daniel Vetter:
 > Not really harmful not to, but also not harm in grabbing the lock. And
 > this shuts up a new WARNING I introduced in commit ddde3c18b700 ("vt:
 > More locking checks").
-
-Maybe add the warning that Jens reported to the changelog, in case
-someone hits something that looks like this warning.
-Mainly for google fodder, but also in case changelogs are searched.
-
-	Sam
 > 
 > Reported-by: Jens Remus <jremus@linux.ibm.com>
 > Cc: linux-kernel@vger.kernel.org
@@ -87,25 +96,25 @@ Mainly for google fodder, but also in case changelogs are searched.
 > Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 > Cc: Sam Ravnborg <sam@ravnborg.org>
 > ---
->  drivers/tty/vt/vt.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-> index ec92f36ab5c4..34aa39d1aed9 100644
-> --- a/drivers/tty/vt/vt.c
-> +++ b/drivers/tty/vt/vt.c
-> @@ -3771,7 +3771,11 @@ static ssize_t show_bind(struct device *dev, struct device_attribute *attr,
->  			 char *buf)
->  {
->  	struct con_driver *con = dev_get_drvdata(dev);
-> -	int bind = con_is_bound(con->con);
-> +	int bind;
-> +
-> +	console_lock();
-> +	bind = con_is_bound(con->con);
-> +	console_unlock();
->  
->  	return snprintf(buf, PAGE_SIZE, "%i\n", bind);
->  }
-> -- 
-> 2.20.1
+>   drivers/tty/vt/vt.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+
+Thank you for the quick fix! Looks fine to me. Did test with cat as well 
+as our dump2tar utility. The warning is gone.
+
+Tested-by: Jens Remus <jremus@linux.ibm.com>
+
+Regards,
+Jens Remus
+-- 
+Linux on Z and z/VSE Development & Service (D3229)
+IBM Systems & Technology Group, Pure Systems & Modular Software Development
+
+IBM Data Privacy Statement: https://www.ibm.com/privacy/us/en/
+
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Matthias Hartmann
+Geschäftsführung: Dirk Wittkopp
+Sitz der Gesellschaft: Boeblingen
+Registergericht: Amtsgericht Stuttgart, HRB 243294
+
