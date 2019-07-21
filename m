@@ -2,76 +2,76 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E1D6F59F
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jul 2019 22:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 467666F693
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 01:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725796AbfGUUjA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 21 Jul 2019 16:39:00 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:39500 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726457AbfGUUi7 (ORCPT
+        id S1726115AbfGUXA6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 21 Jul 2019 19:00:58 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57806 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726022AbfGUXA5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 21 Jul 2019 16:38:59 -0400
-Received: by mail-lj1-f194.google.com with SMTP id v18so35443606ljh.6
-        for <linux-fbdev@vger.kernel.org>; Sun, 21 Jul 2019 13:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VFhbBpOoZTNy9EMhjzpqd/YuAOOhoH6s3ZbDQhN/5VM=;
-        b=EYyAu5FNL7gKp0HuaHxd3VFhuw6OMNQ1ynqqj6BKsVxhnlAOQzaSgoqA2/t5l63YVC
-         UK7L9wQH/n7peWeSk05TUKDMFY6v8Jwp73ku2LrkRQvdJHt7ULoCbcRQ5wDFhLLVzafi
-         fWcVH07bkb/MP62sTSMXJXpR9LaasGZFbWyfk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VFhbBpOoZTNy9EMhjzpqd/YuAOOhoH6s3ZbDQhN/5VM=;
-        b=Lrn+ElVw/A4/bH1LyptLuvZY3BKEg0kRJAftDWA+aiJdzwE6EgQH1hDrjOzb+TLGTx
-         WflJ32Cm757ZdnUqfUiun8tBm6AKf10cRv8PS3NOLQCxw7cywgGoVfo+SWWcTOfNh2qC
-         wCibSfFzKK6wsbQoGdQAiWxb4ZHMn3UVgT47AYkNfKMJEPAN2Etcdfp2jD5IuEFTgoaY
-         1lc8FGh6bOhHqjY7x9wFuRNGf3V0QJkBTkuX3zc3OT3Ep0tfktTTjgezWTODjcywfNna
-         MMUYcoTd7aygLqXyeixufkc1S99EF/GfhfzCE5rVg5uzJnnyETx/UUxvCP+BDxAKAm06
-         plmg==
-X-Gm-Message-State: APjAAAWCaK3+6/18PW7CjYzbaHDKCLwADu2/02005D124lsqU42E0nZ7
-        g0/arci93CdyjgNv12RZQY4l2onpeUY=
-X-Google-Smtp-Source: APXvYqxzugf52kyuOSwfj5jDNVSJuDFyOpzh3Xw7GXrvioaXyvOgdYFEcYezuEICQ8eMsuptHEW2/w==
-X-Received: by 2002:a2e:730d:: with SMTP id o13mr16350587ljc.81.1563741536876;
-        Sun, 21 Jul 2019 13:38:56 -0700 (PDT)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
-        by smtp.gmail.com with ESMTPSA id j3sm5750523lfp.34.2019.07.21.13.38.55
-        for <linux-fbdev@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Sun, 21 Jul 2019 13:38:56 -0700 (PDT)
-Received: by mail-lf1-f47.google.com with SMTP id s19so25109648lfb.9
-        for <linux-fbdev@vger.kernel.org>; Sun, 21 Jul 2019 13:38:55 -0700 (PDT)
-X-Received: by 2002:ac2:5601:: with SMTP id v1mr30384046lfd.106.1563741535585;
- Sun, 21 Jul 2019 13:38:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190721201956.941-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20190721201956.941-1-daniel.vetter@ffwll.ch>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 21 Jul 2019 13:38:39 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
-Message-ID: <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
-Subject: Re: [PATCH] fbdev: Ditch fb_edid_add_monspecs
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Tavis Ormandy <taviso@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@intel.com>
+        Sun, 21 Jul 2019 19:00:57 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: ezequiel)
+        with ESMTPSA id 7E59628A24F
+Message-ID: <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
+Subject: Re: [PATCH] Enable backlight when trigger is activated
+From:   Ezequiel Garcia <ezequiel@collabora.com>
+To:     Pavel Machek <pavel@ucw.cz>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        jacek.anaszewski@gmail.com, linux-leds@vger.kernel.org,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Date:   Sun, 21 Jul 2019 20:00:44 -0300
+In-Reply-To: <20190718190849.GA11409@amd>
+References: <20190718190849.GA11409@amd>
+Organization: Collabora
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Jul 21, 2019 at 1:20 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> It's dead code ever since
+Hi Pavel,
 
-Lovely. Ack.
+The commit log is lacking the proper "leds: triggers: ".
 
-               Linus
+Also...
+
+On Thu, 2019-07-18 at 21:08 +0200, Pavel Machek wrote:
+> Configuring backlight trigger from dts results in backlight off during
+> boot. Machine looks dead upon boot, which is not good.
+> 
+> Fix that by enabling LED on trigger activation.
+> 
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> 
+> diff --git a/drivers/leds/trigger/ledtrig-backlight.c b/drivers/leds/trigger/ledtrig-backlight.c
+> index 487577d..6e6bc78 100644
+> --- a/drivers/leds/trigger/ledtrig-backlight.c
+> +++ b/drivers/leds/trigger/ledtrig-backlight.c
+> @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *led)
+>  	n->old_status = UNBLANK;
+>  	n->notifier.notifier_call = fb_notifier_callback;
+>  
+> +	led_set_brightness(led, LED_ON);
+> +
+
+This looks fishy.
+
+Maybe you should use a default-state = "keep" instead? (and you'll have
+to support it in the LED driver).
+
+That'll give you proper "don't touch the LED if it was turned on" behavior,
+which is what you seem to want.
+
+Regards,
+Eze
+
