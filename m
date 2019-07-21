@@ -2,92 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F82B6F121
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jul 2019 02:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E443E6F232
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jul 2019 09:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbfGUAeh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 20 Jul 2019 20:34:37 -0400
-Received: from mail-pf1-f171.google.com ([209.85.210.171]:42704 "EHLO
-        mail-pf1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725812AbfGUAeg (ORCPT
+        id S1726129AbfGUHt7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 21 Jul 2019 03:49:59 -0400
+Received: from condef-07.nifty.com ([202.248.20.72]:52395 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725933AbfGUHt7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 20 Jul 2019 20:34:36 -0400
-Received: by mail-pf1-f171.google.com with SMTP id q10so15706391pff.9
-        for <linux-fbdev@vger.kernel.org>; Sat, 20 Jul 2019 17:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=resent-from:resent-date:resent-message-id:resent-to:date:from:to
-         :subject:message-id:mime-version:content-disposition:user-agent;
-        bh=fPe+bDHjpOgFrpj21dr8vqo6XOJjSR6MsyQZPdCCxzM=;
-        b=SlyGx0YEHS1nDL/pf3p/eUCOMjH+vvqwFom+xhbsvcamJgifHpSlP6mKNsKKdaO2Kb
-         0Nw4fKkYMdzy4SpetlzXIdktDjW9ROmjryKeUXShUESoYjj9GRQ4dN/K4LIPoUJCZRB4
-         JaT1e4h8fDMEG+YuKRz5ELdiDT7UhpDb8q2cyWCoGoY4cNu5H2JGkGdhwHWkR4zx+aSG
-         4fwH8cggP1Mrrl2UTxfKrLbernN4BW0LdHc/zKFCnROMjokd2bv1F2nKdZTaT66HV4F2
-         JEYN0rRTI8BvCZxsMCHQ1VpidMiXb7gAclZnFTPuG9UxdaLZvOpCcxmr2+ORO5wURNNa
-         GvSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:resent-from:resent-date:resent-message-id
-         :resent-to:date:from:to:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=fPe+bDHjpOgFrpj21dr8vqo6XOJjSR6MsyQZPdCCxzM=;
-        b=SK+C/cB6ERW+/QTj8peEygkMCRjT/unEhzFrXSzduht9RWaXTxJBkTJ6kUrb5BQqJn
-         OWQ2Vfzuc/4rZDNtdR7M6YgOefL3QCLVCeqeDfjK5OtiVKHzIG4IeukzQ5628QpTE68W
-         Z/6mPj4GynV7MGEtzsj2XskPLqAgs3RlKeYmb8vM4bBmbPvsMe2kzXmipLJMWDBW9aVc
-         gH8FYoyYUgm45Qbe+S55b17SyPpnwF4tzUQgENL8lRbbMd5pA9ZoF0jY8fmjxQttok+n
-         hUCJkxgzLXURBIv/mkxpGADJrWjhdKSkreUTJ5CSor39IAwTdXClrODhey7L3iy8V7iR
-         t5yw==
-X-Gm-Message-State: APjAAAXzAva4KsrNB656dg9B6uFzjzLmz9JFF330w31awFjqw1O5l9dR
-        Abz6ac7eyAuCOfkLbS5wrhh6UkOJhJc=
-X-Google-Smtp-Source: APXvYqyCjtOsnLS0eNHVt8jrzwYbKFtM1UoOjjROQctXJBOp9YMqnJmSBFZ0leDwT5EzDPEzI0pLng==
-X-Received: by 2002:a65:654f:: with SMTP id a15mr61250566pgw.73.1563669275690;
-        Sat, 20 Jul 2019 17:34:35 -0700 (PDT)
-Received: from thinkstation (c-73-189-236-31.hsd1.ca.comcast.net. [73.189.236.31])
-        by smtp.gmail.com with ESMTPSA id p67sm42828905pfg.124.2019.07.20.17.34.34
-        for <linux-fbdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 20 Jul 2019 17:34:35 -0700 (PDT)
-Received: from thinkstation (c-73-189-236-31.hsd1.ca.comcast.net. [73.189.236.31])
-        by smtp.gmail.com with ESMTPSA id h2sm25088477pgs.17.2019.07.19.07.03.45
-        for <oss-security@lists.openwall.com>
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 19 Jul 2019 07:03:45 -0700 (PDT)
-Date:   Fri, 19 Jul 2019 07:03:43 -0700
-From:   Tavis Ormandy <taviso@gmail.com>
-To:     oss-security@lists.openwall.com
-Subject: stack buffer overflow in fbdev
-Message-ID: <20190719140343.GA12952@thinkstation>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        Sun, 21 Jul 2019 03:49:59 -0400
+X-Greylist: delayed 384 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Jul 2019 03:49:57 EDT
+Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-07.nifty.com with ESMTP id x6L7eL9d019340
+        for <linux-fbdev@vger.kernel.org>; Sun, 21 Jul 2019 16:40:21 +0900
+Received: from grover.flets-west.jp (softbank126026094249.bbtec.net [126.26.94.249]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id x6L7did6032459;
+        Sun, 21 Jul 2019 16:39:45 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com x6L7did6032459
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1563694785;
+        bh=W0RUjdCqSIfb8kJEGYHindDEe89Kcz2+NHbUKHueqzc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XAJuBIGZ21ReoDh6CZlT/2Sh/YRKG/vB22kdveU1dNeOC1kP38EjuChgisNKIVrOw
+         nP0mTnaux9Vc7IwAb79qiFVDk6PSB9LrZokQqd9jw6smAresbU8xv06eVzbpSDLc4S
+         fehvQyXWPn3fdcTWAshQ32TgF7FyBabdgfbtVSK4wsZeT0W712INelHMpqzzhyDMQW
+         lWP+YKTKNarlwoj24ACDAgVTGUrpd/qvNJ3J+aOVkleLJL5UeRp+lTx1Bt1nka7nvg
+         mveHMD/kMimOPZ/0BR+Z12zrY3GEf96L2rxL4P8SW3v6Tz+J2O0ZQz5umGzJRXAmHR
+         +hneKraGoJl2g==
+X-Nifty-SrcIP: [126.26.94.249]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] backlight: add include guards to platform_lcd.h and ili9320.h
+Date:   Sun, 21 Jul 2019 16:39:40 +0900
+Message-Id: <20190721073940.11422-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello, during a conversation on twitter we noticed a stack buffer
-overflow in fbdev with malicious edid data:
+Add header include guards just in case.
 
-https://github.com/torvalds/linux/blob/22051d9c4a57d3b4a8b5a7407efc80c71c7bfb16/drivers/video/fbdev/core/fbmon.c#L1033
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
 
-There is enough space to have 52 1-byte length values, which makes svd_n
-52, then make the final value length 0x1f (the maximum), which makes
-svd_n 83 and overflows the 64 byte stack buffer svd[] with controlled
-data.
+ include/video/ili9320.h      | 4 ++++
+ include/video/platform_lcd.h | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-This requires a malicious monitor / projector / etc, so pretty low impact.
-
-I pulled out the code to make a demo (I removed the checksum, but it
-doesnt prevent the bug):
-
-https://gist.github.com/taviso/923776e633cb8fb1ab847cce761a0f10
-
-This was discovered by Nico Waisman of Semmle.
-
-Tavis.
-
+diff --git a/include/video/ili9320.h b/include/video/ili9320.h
+index 62f424f0bc52..b76a0b8f16fc 100644
+--- a/include/video/ili9320.h
++++ b/include/video/ili9320.h
+@@ -9,6 +9,9 @@
+  * http://armlinux.simtec.co.uk/
+ */
+ 
++#ifndef _VIDEO_ILI9320_H
++#define _VIDEO_ILI9320_H
++
+ #define ILI9320_REG(x)	(x)
+ 
+ #define ILI9320_INDEX			ILI9320_REG(0x00)
+@@ -196,3 +199,4 @@ struct ili9320_platdata {
+ 	unsigned short	interface6;
+ };
+ 
++#endif /* _VIDEO_ILI9320_H */
+diff --git a/include/video/platform_lcd.h b/include/video/platform_lcd.h
+index 6a95184a28c1..c68f3f45b5c1 100644
+--- a/include/video/platform_lcd.h
++++ b/include/video/platform_lcd.h
+@@ -7,6 +7,9 @@
+  * Generic platform-device LCD power control interface.
+ */
+ 
++#ifndef _VIDEO_PLATFORM_LCD_H
++#define _VIDEO_PLATFORM_LCD_H
++
+ struct plat_lcd_data;
+ struct fb_info;
+ 
+@@ -16,3 +19,4 @@ struct plat_lcd_data {
+ 	int	(*match_fb)(struct plat_lcd_data *, struct fb_info *);
+ };
+ 
++#endif /* _VIDEO_PLATFORM_LCD_H */
 -- 
--------------------------------------
-taviso@sdf.lonestar.org | finger me for my pgp key.
--------------------------------------------------------
+2.17.1
+
