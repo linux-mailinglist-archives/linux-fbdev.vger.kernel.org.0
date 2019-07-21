@@ -2,95 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E443E6F232
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jul 2019 09:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA386F35F
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jul 2019 15:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbfGUHt7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 21 Jul 2019 03:49:59 -0400
-Received: from condef-07.nifty.com ([202.248.20.72]:52395 "EHLO
-        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbfGUHt7 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 21 Jul 2019 03:49:59 -0400
-X-Greylist: delayed 384 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Jul 2019 03:49:57 EDT
-Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-07.nifty.com with ESMTP id x6L7eL9d019340
-        for <linux-fbdev@vger.kernel.org>; Sun, 21 Jul 2019 16:40:21 +0900
-Received: from grover.flets-west.jp (softbank126026094249.bbtec.net [126.26.94.249]) (authenticated)
-        by conuserg-09.nifty.com with ESMTP id x6L7did6032459;
-        Sun, 21 Jul 2019 16:39:45 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com x6L7did6032459
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1563694785;
-        bh=W0RUjdCqSIfb8kJEGYHindDEe89Kcz2+NHbUKHueqzc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=XAJuBIGZ21ReoDh6CZlT/2Sh/YRKG/vB22kdveU1dNeOC1kP38EjuChgisNKIVrOw
-         nP0mTnaux9Vc7IwAb79qiFVDk6PSB9LrZokQqd9jw6smAresbU8xv06eVzbpSDLc4S
-         fehvQyXWPn3fdcTWAshQ32TgF7FyBabdgfbtVSK4wsZeT0W712INelHMpqzzhyDMQW
-         lWP+YKTKNarlwoj24ACDAgVTGUrpd/qvNJ3J+aOVkleLJL5UeRp+lTx1Bt1nka7nvg
-         mveHMD/kMimOPZ/0BR+Z12zrY3GEf96L2rxL4P8SW3v6Tz+J2O0ZQz5umGzJRXAmHR
-         +hneKraGoJl2g==
-X-Nifty-SrcIP: [126.26.94.249]
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] backlight: add include guards to platform_lcd.h and ili9320.h
-Date:   Sun, 21 Jul 2019 16:39:40 +0900
-Message-Id: <20190721073940.11422-1-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726399AbfGUNTW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 21 Jul 2019 09:19:22 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:38100 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726275AbfGUNTW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 21 Jul 2019 09:19:22 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 9DA4D308FE9A;
+        Sun, 21 Jul 2019 13:19:21 +0000 (UTC)
+Received: from shalem.localdomain.com (ovpn-116-49.ams2.redhat.com [10.36.116.49])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2A4D660BFB;
+        Sun, 21 Jul 2019 13:19:20 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Peter Jones <pjones@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] efifb: BGRT: Improve efifb_bgrt_sanity_check
+Date:   Sun, 21 Jul 2019 15:19:18 +0200
+Message-Id: <20190721131918.10115-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Sun, 21 Jul 2019 13:19:22 +0000 (UTC)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add header include guards just in case.
+For various reasons, at least with x86 EFI firmwares, the xoffset and
+yoffset in the BGRT info are not always reliable.
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Extensive testing has shown that when the info is correct, the
+BGRT image is always exactly centered horizontally (the yoffset variable
+is more variable and not always predictable).
+
+This commit simplifies / improves the bgrt_sanity_check to simply
+check that the BGRT image is exactly centered horizontally and skips
+(re)drawing it when it is not.
+
+This fixes the BGRT image sometimes being drawn in the wrong place.
+
+Cc: stable@vger.kernel.org
+Fixes: 88fe4ceb2447 ("efifb: BGRT: Do not copy the boot graphics for non native resolutions")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
+ drivers/video/fbdev/efifb.c | 27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
- include/video/ili9320.h      | 4 ++++
- include/video/platform_lcd.h | 4 ++++
- 2 files changed, 8 insertions(+)
-
-diff --git a/include/video/ili9320.h b/include/video/ili9320.h
-index 62f424f0bc52..b76a0b8f16fc 100644
---- a/include/video/ili9320.h
-+++ b/include/video/ili9320.h
-@@ -9,6 +9,9 @@
-  * http://armlinux.simtec.co.uk/
- */
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index dfa8dd47d19d..5b3cef9bf794 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -122,28 +122,13 @@ static void efifb_copy_bmp(u8 *src, u32 *dst, int width, struct screen_info *si)
+  */
+ static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
+ {
+-	static const int default_resolutions[][2] = {
+-		{  800,  600 },
+-		{ 1024,  768 },
+-		{ 1280, 1024 },
+-	};
+-	u32 i, right_margin;
+-
+-	for (i = 0; i < ARRAY_SIZE(default_resolutions); i++) {
+-		if (default_resolutions[i][0] == si->lfb_width &&
+-		    default_resolutions[i][1] == si->lfb_height)
+-			break;
+-	}
+-	/* If not a default resolution used for textmode, this should be fine */
+-	if (i >= ARRAY_SIZE(default_resolutions))
+-		return true;
+-
+-	/* If the right margin is 5 times smaller then the left one, reject */
+-	right_margin = si->lfb_width - (bgrt_tab.image_offset_x + bmp_width);
+-	if (right_margin < (bgrt_tab.image_offset_x / 5))
+-		return false;
++	/*
++	 * All x86 firmwares horizontally center the image (the yoffset
++	 * calculations differ between boards, but xoffset is predictable).
++	 */
++	u32 expected_xoffset = (si->lfb_width - bmp_width) / 2;
  
-+#ifndef _VIDEO_ILI9320_H
-+#define _VIDEO_ILI9320_H
-+
- #define ILI9320_REG(x)	(x)
- 
- #define ILI9320_INDEX			ILI9320_REG(0x00)
-@@ -196,3 +199,4 @@ struct ili9320_platdata {
- 	unsigned short	interface6;
- };
- 
-+#endif /* _VIDEO_ILI9320_H */
-diff --git a/include/video/platform_lcd.h b/include/video/platform_lcd.h
-index 6a95184a28c1..c68f3f45b5c1 100644
---- a/include/video/platform_lcd.h
-+++ b/include/video/platform_lcd.h
-@@ -7,6 +7,9 @@
-  * Generic platform-device LCD power control interface.
- */
- 
-+#ifndef _VIDEO_PLATFORM_LCD_H
-+#define _VIDEO_PLATFORM_LCD_H
-+
- struct plat_lcd_data;
- struct fb_info;
- 
-@@ -16,3 +19,4 @@ struct plat_lcd_data {
- 	int	(*match_fb)(struct plat_lcd_data *, struct fb_info *);
- };
- 
-+#endif /* _VIDEO_PLATFORM_LCD_H */
+-	return true;
++	return bgrt_tab.image_offset_x == expected_xoffset;
+ }
+ #else
+ static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
 -- 
-2.17.1
+2.21.0
 
