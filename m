@@ -2,160 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 633917018C
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 15:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B84701BF
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 15:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730753AbfGVNov (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Jul 2019 09:44:51 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55857 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730711AbfGVNou (ORCPT
+        id S1730317AbfGVNxF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 Jul 2019 09:53:05 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:33122 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728602AbfGVNxF (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Jul 2019 09:44:50 -0400
-Received: by mail-wm1-f68.google.com with SMTP id a15so35231945wmj.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 06:44:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jWheGXALa3QU6XJ4okjj1TMSdfEv0wcU+XMDpAi/P/4=;
-        b=rVd3UGYLpnpiE7d7YNlI3ET5cbhQAhoqJOLIqM567rXb8R0JuSNY+GZ12K9dSNKFZ4
-         dl5s5Jx5CpB5SVRzWyOMoTxhRuQ486dDy+IOe5n7GRP60Z/QxdFNnFTZq+X2qWesd+tQ
-         68xC09YKoAIjDOa30G0pN5Wdl1aYP05UC/xJr1YOuir73Ug3MH+21e4Wuc8zXvn+LPoN
-         MPGKQJSOoUPFhnonqd1vSWZtmNxpr0QdnqfZT/PRoV9YpazFmIObAyyTcj1GgdAHJdQM
-         gmp068N6OqASdUbiM9rb03eyh0yElND1TFAVSEnQXvniCrOLzl+Y0bTbvr7Jjx6wbIoz
-         HI6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jWheGXALa3QU6XJ4okjj1TMSdfEv0wcU+XMDpAi/P/4=;
-        b=MO+pDj5K8RKNaB56Wqf5VqB2YFodBjQJeUIQ3c8xx0dpK+xeeQW9ixRc4TLZDovb/d
-         AEFz7DWNPhP68bRrpLHlo39nlT+wvOqFyw+WXc9ZUohaoLoTLVrrhmNdijG8eY7xgTSn
-         MFrLIpPVrBdy5ooxXLOMTcT2i2wLvXWNfZEibwJt1f+x7AzBLBD2+j54LBU1ZH2MyMl5
-         ghIYiSK1jc6t76czdPjdusdaSVnxCcTaemCBOKgMLHg7vH9Z6s1rZ5oZ5TRoo8DCo644
-         WIPX2pfc+tueY9UjWrawRbbR07mCqGA5109YGOMCdpw5A1r5A9qFa/yxK6881MJRw9+M
-         tOOA==
-X-Gm-Message-State: APjAAAXl5R08n2qi5dW9VTkoJh8Vo71OcOa8GkYK+CDhIOAbhiYdhxnJ
-        AoynnpTD/O6IP8Yq7P/LaoY=
-X-Google-Smtp-Source: APXvYqxCpsWqQ4zm4VmmUJy0WYCbbplgVH9qEJJDDHs04LIzglwRSQkeaNmUKXyrghagMF9BDt0qtA==
-X-Received: by 2002:a1c:b604:: with SMTP id g4mr65271331wmf.111.1563803088790;
-        Mon, 22 Jul 2019 06:44:48 -0700 (PDT)
-Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
-        by smtp.gmail.com with ESMTPSA id p6sm40652484wrq.97.2019.07.22.06.44.47
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 22 Jul 2019 06:44:48 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Sekhar Nori <nsekhar@ti.com>, Kevin Hilman <khilman@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Lechner <david@lechnology.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v2 9/9] fbdev: da8xx: use resource management for dma
-Date:   Mon, 22 Jul 2019 15:44:23 +0200
-Message-Id: <20190722134423.26555-10-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190722134423.26555-1-brgl@bgdev.pl>
-References: <20190722134423.26555-1-brgl@bgdev.pl>
+        Mon, 22 Jul 2019 09:53:05 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190722135303euoutp01832fb4213d3484dd651b0b28619b5d3f~zvxLvs3Qo0573105731euoutp01n
+        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 13:53:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190722135303euoutp01832fb4213d3484dd651b0b28619b5d3f~zvxLvs3Qo0573105731euoutp01n
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1563803583;
+        bh=+3Tk5iOm0W8JTrOZ9SZseZOnDzDIJpQ/TXOX8kSrdoM=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=hocfqtSLdVtdb2QdoYbroYl+heWxAt5OEryMZfJyLAO+IHgstdynpaO858P4Fzea5
+         4J9CmLADZIXX0GTNrw/ec8w88l8Nw6AkRHH56NSzb+qYbhLPFats296yq/u/M+Y5m9
+         PagsTEjuHWcr/wHJlYA60XxDcqGqHJGriIcmmX1g=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190722135302eucas1p139956bc07fe600afda0a47e37a1c3284~zvxKx6Xc_1319113191eucas1p1c;
+        Mon, 22 Jul 2019 13:53:02 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id C7.63.04325.EBFB53D5; Mon, 22
+        Jul 2019 14:53:02 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190722135301eucas1p2190b3f28552030bbf267dc9963059ddc~zvxJ4X6Cy1061410614eucas1p2h;
+        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190722135301eusmtrp17b1d49a54131d28f1ebda2550054bf25~zvxJp-FDe2902729027eusmtrp1Q;
+        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
+X-AuditID: cbfec7f5-b8fff700000010e5-5b-5d35bfbe93e2
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 40.5C.04140.DBFB53D5; Mon, 22
+        Jul 2019 14:53:01 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190722135301eusmtip2c6e087dac5a78ef9e173e306f366c339~zvxJVpDHE3197731977eusmtip23;
+        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
+Subject: Re: [PATCH] fbdev: Ditch fb_edid_add_monspecs
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Tavis Ormandy <taviso@gmail.com>, linux-fbdev@vger.kernel.org,
+        Daniel Vetter <daniel.vetter@intel.com>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <8d925bb9-0769-bc1a-20df-a7fa33e84bae@samsung.com>
+Date:   Mon, 22 Jul 2019 15:52:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPKsWRmVeSWpSXmKPExsWy7djP87r79pvGGiyeJGax8OFdZovlZ9Yx
+        W1z5+p7N4kTfB1aLy7vmsFksa57PaPGo7y27A7vH3m8LWDx2zrrL7rF4z0smjxMzfrN43O8+
+        zuTxeZNcAFsUl01Kak5mWWqRvl0CV0b3lkVMBXeYKl7um8vewDiZqYuRk0NCwETi6PM37F2M
+        XBxCAisYJc7MeMEG4XxhlOiY9RHK+cwose9pMzNMy+WPJ9lBbCGB5YwS8x5VQhS9ZZTYe+Q8
+        WJGwgJnEjMs3WUFsEYEYiWW7VzCCFDELHGOUmHymlwUkwSZgJTGxfRUjiM0rYCfR39gJ1MzB
+        wSKgKvHptg1IWFQgQuL+sQ2sECWCEidnPgFr5RQIlHgzaSkbiM0sIC5x68l8JghbXmL72znM
+        ILskBPaxS7zf9YcdZKaEgIvE1D9WEA8IS7w6voUdwpaROD25hwWifh2jxN+OF1DN2xkllk/+
+        xwZRZS1x+PhFVpBBzAKaEut36UOEHSUWzr7DBDGfT+LGW0GIG/gkJm2bzgwR5pXoaBOCqFaT
+        2LBsAxvM2q6dK5knMCrNQvLZLCTfzELyzSyEvQsYWVYxiqeWFuempxYb56WW6xUn5haX5qXr
+        JefnbmIEJqPT/45/3cG470/SIUYBDkYlHt4Ne0xjhVgTy4orcw8xSnAwK4nw5hkAhXhTEiur
+        Uovy44tKc1KLDzFKc7AoifNWMzyIFhJITyxJzU5NLUgtgskycXBKNTDWnpwf/OjdigZV1gUS
+        kubzcuUEGURCmm+sel9h4SLduSAq6qbmtn47nbs6i2Qyt8pyGBVqvn4yvZI9+8PRd/ckt793
+        ypO0uy5j9bD1qDVfz8PuqjnTWm5PDlI8oOT9/kO6oPa5NWLq1Yn+taf//c187mhguXaKwWd3
+        lgcrFvKy9/fmVTWknFJiKc5INNRiLipOBADarBCQQgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEIsWRmVeSWpSXmKPExsVy+t/xe7p795vGGjSslbRY+PAus8XyM+uY
+        La58fc9mcaLvA6vF5V1z2CyWNc9ntHjU95bdgd1j77cFLB47Z91l91i85yWTx4kZv1k87ncf
+        Z/L4vEkugC1Kz6Yov7QkVSEjv7jEVina0MJIz9DSQs/IxFLP0Ng81srIVEnfziYlNSezLLVI
+        3y5BL6N7yyKmgjtMFS/3zWVvYJzM1MXIySEhYCJx+eNJ9i5GLg4hgaWMEsvWLAdKcAAlZCSO
+        ry+DqBGW+HOtiw2i5jWjxKMf25hBEsICZhIzLt9kBbFFBGIk7l79DDaIWeAYo0R/2xeojiuM
+        Eptmz2cBqWITsJKY2L6KEcTmFbCT6G/sZAbZxiKgKvHptg1IWFQgQuLM+xUsECWCEidnPgGz
+        OQUCJd5MWsoGYjMLqEv8mXeJGcIWl7j1ZD4ThC0vsf3tHOYJjEKzkLTPQtIyC0nLLCQtCxhZ
+        VjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgTG37ZjP7fsYOx6F3yIUYCDUYmHd8Me01gh1sSy
+        4srcQ4wSHMxKIrx5BkAh3pTEyqrUovz4otKc1OJDjKZAv01klhJNzgemhrySeENTQ3MLS0Nz
+        Y3NjMwslcd4OgYMxQgLpiSWp2ampBalFMH1MHJxSDYzNvMGp0tKrsyeYTOvr3ywmcdVsqbxk
+        nVkLqwWX9s6jZhMnPV4puebN2XMnF0nePSvHabChb/LEw96H3JmMN1k5Gh5Uid0pef/SX+Hn
+        pef+6D0XW28j1hO996OE3y8J5d/zJS8f6JaoaX0TaKvBtNd+Cf+bz3efM21Y8WC+WqnN/pLd
+        Gnv7G0KUWIozEg21mIuKEwHCwBB01QIAAA==
+X-CMS-MailID: 20190722135301eucas1p2190b3f28552030bbf267dc9963059ddc
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91
+References: <20190721201956.941-1-daniel.vetter@ffwll.ch>
+        <CGME20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91@epcas2p2.samsung.com>
+        <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Use managed variants of dma alloc functions in the da8xx fbdev driver.
+On 7/21/19 10:38 PM, Linus Torvalds wrote:
+> On Sun, Jul 21, 2019 at 1:20 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+>>
+>> It's dead code ever since
+> 
+> Lovely. Ack.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/video/fbdev/da8xx-fb.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+Good catch indeed.
 
-diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
-index d14ea6f91371..2d3dcc52fcf3 100644
---- a/drivers/video/fbdev/da8xx-fb.c
-+++ b/drivers/video/fbdev/da8xx-fb.c
-@@ -1087,10 +1087,6 @@ static int fb_remove(struct platform_device *dev)
- 
- 	unregister_framebuffer(info);
- 	fb_dealloc_cmap(&info->cmap);
--	dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
--			  par->p_palette_base);
--	dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
--			  par->vram_phys);
- 	pm_runtime_put_sync(&dev->dev);
- 	pm_runtime_disable(&dev->dev);
- 	framebuffer_release(info);
-@@ -1427,10 +1423,10 @@ static int fb_probe(struct platform_device *device)
- 	par->vram_size = roundup(par->vram_size/8, ulcm);
- 	par->vram_size = par->vram_size * LCD_NUM_BUFFERS;
- 
--	par->vram_virt = dma_alloc_coherent(par->dev,
--					    par->vram_size,
--					    &par->vram_phys,
--					    GFP_KERNEL | GFP_DMA);
-+	par->vram_virt = dmam_alloc_coherent(par->dev,
-+					     par->vram_size,
-+					     &par->vram_phys,
-+					     GFP_KERNEL | GFP_DMA);
- 	if (!par->vram_virt) {
- 		dev_err(&device->dev,
- 			"GLCD: kmalloc for frame buffer failed\n");
-@@ -1448,20 +1444,20 @@ static int fb_probe(struct platform_device *device)
- 		da8xx_fb_fix.line_length - 1;
- 
- 	/* allocate palette buffer */
--	par->v_palette_base = dma_alloc_coherent(par->dev, PALETTE_SIZE,
--						 &par->p_palette_base,
--						 GFP_KERNEL | GFP_DMA);
-+	par->v_palette_base = dmam_alloc_coherent(par->dev, PALETTE_SIZE,
-+						  &par->p_palette_base,
-+						  GFP_KERNEL | GFP_DMA);
- 	if (!par->v_palette_base) {
- 		dev_err(&device->dev,
- 			"GLCD: kmalloc for palette buffer failed\n");
- 		ret = -EINVAL;
--		goto err_release_fb_mem;
-+		goto err_release_fb;
- 	}
- 
- 	par->irq = platform_get_irq(device, 0);
- 	if (par->irq < 0) {
- 		ret = -ENOENT;
--		goto err_release_pl_mem;
-+		goto err_release_fb;
- 	}
- 
- 	da8xx_fb_var.grayscale =
-@@ -1479,7 +1475,7 @@ static int fb_probe(struct platform_device *device)
- 
- 	ret = fb_alloc_cmap(&da8xx_fb_info->cmap, PALETTE_SIZE, 0);
- 	if (ret)
--		goto err_release_pl_mem;
-+		goto err_release_fb;
- 	da8xx_fb_info->cmap.len = par->palette_sz;
- 
- 	/* initialize var_screeninfo */
-@@ -1533,14 +1529,6 @@ static int fb_probe(struct platform_device *device)
- err_dealloc_cmap:
- 	fb_dealloc_cmap(&da8xx_fb_info->cmap);
- 
--err_release_pl_mem:
--	dma_free_coherent(par->dev, PALETTE_SIZE, par->v_palette_base,
--			  par->p_palette_base);
--
--err_release_fb_mem:
--	dma_free_coherent(par->dev, par->vram_size, par->vram_virt,
--		          par->vram_phys);
--
- err_release_fb:
- 	framebuffer_release(da8xx_fb_info);
- 
--- 
-2.21.0
+Thanks Daniel, I'll queue it for v5.4 later.
 
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
