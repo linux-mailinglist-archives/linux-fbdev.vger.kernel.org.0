@@ -2,94 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A005870AFD
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 23:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F007770DD0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 01:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730636AbfGVVEK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Jul 2019 17:04:10 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:56026 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729059AbfGVVEK (ORCPT
+        id S1731778AbfGVX73 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 Jul 2019 19:59:29 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:46297 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730445AbfGVX73 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Jul 2019 17:04:10 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 1FA5880410; Mon, 22 Jul 2019 23:03:55 +0200 (CEST)
-Date:   Mon, 22 Jul 2019 23:04:07 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc:     Ezequiel Garcia <ezequiel@collabora.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        linux-leds@vger.kernel.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Enable backlight when trigger is activated
-Message-ID: <20190722210407.GA25617@amd>
-References: <20190718190849.GA11409@amd>
- <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
- <20190722075032.GA27524@amd>
- <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
+        Mon, 22 Jul 2019 19:59:29 -0400
+Received: by mail-pg1-f194.google.com with SMTP id i8so18405512pgm.13
+        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 16:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=yKJpc6b5YDtH8HQ6uiATAFLuSozdZCVilkIngvbXM5A=;
+        b=BwwNgGULwWCLx8dsVMfholYHHZtahSRNI4WRi8GeRE1cTEnEj7+QLHRFtS1OwD7OfL
+         PBhCf2HLH/xHTCrVy2tXcVrzcxjy/X/9XS3xE3DB5oNwZDSgYT1w2T1voSeXQoCgP+lE
+         YAbbno9nOKjFkhoG+ymLqQNzmX7kqXLBCtzVc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=yKJpc6b5YDtH8HQ6uiATAFLuSozdZCVilkIngvbXM5A=;
+        b=izXAZh7QSOYwDlQUH778nxxknrL4qBb6GNvqo4fqtHEZgLCDueF+9ukW9gmKEv2dbb
+         F9Ir7WnzGj0WEH3nvr3OH8e/rwaoUW6E+K6feHlyepxZE9cGwiVw1Rw+IMP1/3voqKQD
+         79aueETp3WK8KVvHGun2nnNSbe4OGX/tM1Jm7DK6QqhLddpluA65HzwNsGxniBrA6ihj
+         1QBLfSLQ0A7fb5SXpVBI5mJ6VCTcYxlLV9q9cCT+6CRGVrIvnS7KpRRWtejclXhqiK34
+         nYUU+Vk8Vhgv+IeCqlLkfHmrDiq8eblQNEanxVOteyiZ18yhyhJPm4/fur+/DHqn/+7Q
+         7xTg==
+X-Gm-Message-State: APjAAAXALTCi/0ayZl/qMKHDJLcSmk27rHlm8cnRPYXyJrDCblg4wO4j
+        mQKQzYuPOOpjYePQKfXvrfhCdw==
+X-Google-Smtp-Source: APXvYqylBuVwl7XZwxbVNxqA1DcLvAlMOG8gWbqhX7r0RR7aDWH3sQ/kfj0iiNgQmQOUzrSpDH2+kA==
+X-Received: by 2002:a63:4e60:: with SMTP id o32mr75155489pgl.68.1563839968519;
+        Mon, 22 Jul 2019 16:59:28 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id f88sm40294971pjg.5.2019.07.22.16.59.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 22 Jul 2019 16:59:27 -0700 (PDT)
+Date:   Mon, 22 Jul 2019 16:59:26 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Subject: Re: [PATCH v3 0/4] backlight: Expose brightness curve type through
+ sysfs
+Message-ID: <20190722235926.GA250418@google.com>
+References: <20190709190007.91260-1-mka@chromium.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="SLDf9lqlvOQaIe6s"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190709190007.91260-1-mka@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Tue, Jul 09, 2019 at 12:00:03PM -0700, Matthias Kaehlcke wrote:
+> Backlight brightness curves can have different shapes. The two main
+> types are linear and non-linear curves. The human eye doesn't
+> perceive linearly increasing/decreasing brightness as linear (see
+> also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
+> linearly to human eye"), hence many backlights use non-linear (often
+> logarithmic) brightness curves. The type of curve is currently opaque
+> to userspace, so userspace often relies on more or less reliable
+> heuristics (like the number of brightness levels) to decide whether
+> to treat a backlight device as linear or non-linear.
+> 
+> Export the type of the brightness curve via a new sysfs attribute.
+> 
+> Matthias Kaehlcke (4):
+>   MAINTAINERS: Add entry for stable backlight sysfs ABI documentation
+>   backlight: Expose brightness curve type through sysfs
+>   backlight: pwm_bl: Set scale type for CIE 1931 curves
+>   backlight: pwm_bl: Set scale type for brightness curves specified in
+>     the DT
+> 
+>  .../ABI/testing/sysfs-class-backlight         | 26 ++++++++++++++
+>  MAINTAINERS                                   |  2 ++
+>  drivers/video/backlight/backlight.c           | 19 ++++++++++
+>  drivers/video/backlight/pwm_bl.c              | 35 ++++++++++++++++++-
+>  include/linux/backlight.h                     |  8 +++++
+>  5 files changed, 89 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-backlight
 
---SLDf9lqlvOQaIe6s
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ping, any comments on v3?
 
-Hi!
+Thanks
 
-> >> This looks fishy.
-> >>
-> >> Maybe you should use a default-state =3D "keep" instead? (and you'll h=
-ave
-> >> to support it in the LED driver).
-> >>
-> >> That'll give you proper "don't touch the LED if it was turned on" beha=
-vior,
-> >> which is what you seem to want.
-> >=20
-> > Actually no, that's not what I want. LED should go on if the display
-> > is active, as soon as trigger is activated.
-> >=20
-> > Unfortunately, I have see no good way to tell if the display is
-> > active (and display is usually active when trigger is activated).
->=20
-> default-state DT property can be also set to "on"
-> (see Documentation/devicetree/bindings/leds/common.txt).
-
-Ok, thanks for the hint, that could work. (I thought we were using
-default trigger to set the LED "on").
-
-Now...this gives me option of 0% or 100% brightness, while best would
-be 10% brightness.... but I guess we can live with that ;-).
-
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---SLDf9lqlvOQaIe6s
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl02JMcACgkQMOfwapXb+vI4ugCeInwKolmtAnBHOQNVsMS09AdN
-Kr8AnAq4ihyjYP61ghzcLq9l2lbwoALF
-=guhn
------END PGP SIGNATURE-----
-
---SLDf9lqlvOQaIe6s--
+Matthias
