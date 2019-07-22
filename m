@@ -2,122 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B84701BF
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 15:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396DC702F9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 17:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730317AbfGVNxF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Jul 2019 09:53:05 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:33122 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728602AbfGVNxF (ORCPT
+        id S1727240AbfGVPDS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 Jul 2019 11:03:18 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:32771 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727090AbfGVPDS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Jul 2019 09:53:05 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190722135303euoutp01832fb4213d3484dd651b0b28619b5d3f~zvxLvs3Qo0573105731euoutp01n
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 13:53:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190722135303euoutp01832fb4213d3484dd651b0b28619b5d3f~zvxLvs3Qo0573105731euoutp01n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1563803583;
-        bh=+3Tk5iOm0W8JTrOZ9SZseZOnDzDIJpQ/TXOX8kSrdoM=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=hocfqtSLdVtdb2QdoYbroYl+heWxAt5OEryMZfJyLAO+IHgstdynpaO858P4Fzea5
-         4J9CmLADZIXX0GTNrw/ec8w88l8Nw6AkRHH56NSzb+qYbhLPFats296yq/u/M+Y5m9
-         PagsTEjuHWcr/wHJlYA60XxDcqGqHJGriIcmmX1g=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190722135302eucas1p139956bc07fe600afda0a47e37a1c3284~zvxKx6Xc_1319113191eucas1p1c;
-        Mon, 22 Jul 2019 13:53:02 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id C7.63.04325.EBFB53D5; Mon, 22
-        Jul 2019 14:53:02 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190722135301eucas1p2190b3f28552030bbf267dc9963059ddc~zvxJ4X6Cy1061410614eucas1p2h;
-        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190722135301eusmtrp17b1d49a54131d28f1ebda2550054bf25~zvxJp-FDe2902729027eusmtrp1Q;
-        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
-X-AuditID: cbfec7f5-b8fff700000010e5-5b-5d35bfbe93e2
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 40.5C.04140.DBFB53D5; Mon, 22
-        Jul 2019 14:53:01 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20190722135301eusmtip2c6e087dac5a78ef9e173e306f366c339~zvxJVpDHE3197731977eusmtip23;
-        Mon, 22 Jul 2019 13:53:01 +0000 (GMT)
-Subject: Re: [PATCH] fbdev: Ditch fb_edid_add_monspecs
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Tavis Ormandy <taviso@gmail.com>, linux-fbdev@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@intel.com>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <8d925bb9-0769-bc1a-20df-a7fa33e84bae@samsung.com>
-Date:   Mon, 22 Jul 2019 15:52:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.6.1
+        Mon, 22 Jul 2019 11:03:18 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n9so39864059wru.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 08:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdufiTePFKOcw3PXCBBvJkARSPrI+OCusBaTYJELEjQ=;
+        b=TsqapSCFfaQBoVbpHKI/m+obmflr41GlOM1rPFV007j2Zv7OerhmRuJG21pozO+P1A
+         jTOHiU/zOVdxrV2v/bG8njldvSpnDW/pU1d6WXmgBNL+ZAnPJupgIR2OUZFCHmVY5JRO
+         NC6gJyFpSSdFodmwdDchaBFsttM8pha0dZkeDgf/TnHgkD16mDRERvJpAH/bTYE0OjoE
+         VlXyqbWGtjvdZfwHscynD/iZnEqcFwQZhNU5rNIDzLMje3EkV/XxY8ZMvwv/X28jazwS
+         NBASzJ6jmaUrYhaiWMIHR1bEPDSX8z4JsW9XGg0EN2DqxVK3oKAYiXwjq+EHr1zxllVK
+         pNCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdufiTePFKOcw3PXCBBvJkARSPrI+OCusBaTYJELEjQ=;
+        b=J877jEDSDzlJupqsDECGgHXrl9bvw2Ax+0S317DcO7bvBh0FgxJuitNn/Pit40/xxc
+         vpVHRclfYc0p4RL8HAmnT+blDiVLne5RR3VTgPL3uQZIDNkF0ZgJTmyJUrAZNS/UBei2
+         1YzM3lbg7SG9yedYHV0KEDlk0Io6w6wuk1Cn2D/UdfUQIXlqgP+v/0EtsE6CRY5DHkjT
+         456RAdkzH/ioCeD4WpK08JWNd7AMtj85BHg7qEH25tquB4Ie9RsVjFIPEu2/qkqI/qRm
+         SO4I7/woaeFQPWYm/XF5EA9MO6O+cNmiVrZA3xa4ATg6C8HeLC3sMWnan1YGZ3b7hjHX
+         QiPw==
+X-Gm-Message-State: APjAAAVpRotuAYkaNVBHdmX4BqPZijNgB1Z9GbiHzaOjKZYmQBoSjsPZ
+        RK3AnI4hMs9yFOB1qs3Rvw8=
+X-Google-Smtp-Source: APXvYqwoKpD/MpcmzIu1lOX2+THt1HzZrurirW2Y9G174HfbVtdYjcEwBdY78NR/Z3UWvwPmL5JvNA==
+X-Received: by 2002:a5d:5303:: with SMTP id e3mr60089734wrv.239.1563807795684;
+        Mon, 22 Jul 2019 08:03:15 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
+        by smtp.gmail.com with ESMTPSA id v23sm36310460wmj.32.2019.07.22.08.03.14
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 22 Jul 2019 08:03:15 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [PATCH v2 0/7] backlight: gpio: simplify the driver
+Date:   Mon, 22 Jul 2019 17:02:55 +0200
+Message-Id: <20190722150302.29526-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPKsWRmVeSWpSXmKPExsWy7djP87r79pvGGiyeJGax8OFdZovlZ9Yx
-        W1z5+p7N4kTfB1aLy7vmsFksa57PaPGo7y27A7vH3m8LWDx2zrrL7rF4z0smjxMzfrN43O8+
-        zuTxeZNcAFsUl01Kak5mWWqRvl0CV0b3lkVMBXeYKl7um8vewDiZqYuRk0NCwETi6PM37F2M
-        XBxCAisYJc7MeMEG4XxhlOiY9RHK+cwose9pMzNMy+WPJ9lBbCGB5YwS8x5VQhS9ZZTYe+Q8
-        WJGwgJnEjMs3WUFsEYEYiWW7VzCCFDELHGOUmHymlwUkwSZgJTGxfRUjiM0rYCfR39gJ1MzB
-        wSKgKvHptg1IWFQgQuL+sQ2sECWCEidnPgFr5RQIlHgzaSkbiM0sIC5x68l8JghbXmL72znM
-        ILskBPaxS7zf9YcdZKaEgIvE1D9WEA8IS7w6voUdwpaROD25hwWifh2jxN+OF1DN2xkllk/+
-        xwZRZS1x+PhFVpBBzAKaEut36UOEHSUWzr7DBDGfT+LGW0GIG/gkJm2bzgwR5pXoaBOCqFaT
-        2LBsAxvM2q6dK5knMCrNQvLZLCTfzELyzSyEvQsYWVYxiqeWFuempxYb56WW6xUn5haX5qXr
-        JefnbmIEJqPT/45/3cG470/SIUYBDkYlHt4Ne0xjhVgTy4orcw8xSnAwK4nw5hkAhXhTEiur
-        Uovy44tKc1KLDzFKc7AoifNWMzyIFhJITyxJzU5NLUgtgskycXBKNTDWnpwf/OjdigZV1gUS
-        kubzcuUEGURCmm+sel9h4SLduSAq6qbmtn47nbs6i2Qyt8pyGBVqvn4yvZI9+8PRd/ckt793
-        ypO0uy5j9bD1qDVfz8PuqjnTWm5PDlI8oOT9/kO6oPa5NWLq1Yn+taf//c187mhguXaKwWd3
-        lgcrFvKy9/fmVTWknFJiKc5INNRiLipOBADarBCQQgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEIsWRmVeSWpSXmKPExsVy+t/xe7p795vGGjSslbRY+PAus8XyM+uY
-        La58fc9mcaLvA6vF5V1z2CyWNc9ntHjU95bdgd1j77cFLB47Z91l91i85yWTx4kZv1k87ncf
-        Z/L4vEkugC1Kz6Yov7QkVSEjv7jEVina0MJIz9DSQs/IxFLP0Ng81srIVEnfziYlNSezLLVI
-        3y5BL6N7yyKmgjtMFS/3zWVvYJzM1MXIySEhYCJx+eNJ9i5GLg4hgaWMEsvWLAdKcAAlZCSO
-        ry+DqBGW+HOtiw2i5jWjxKMf25hBEsICZhIzLt9kBbFFBGIk7l79DDaIWeAYo0R/2xeojiuM
-        Eptmz2cBqWITsJKY2L6KEcTmFbCT6G/sZAbZxiKgKvHptg1IWFQgQuLM+xUsECWCEidnPgGz
-        OQUCJd5MWsoGYjMLqEv8mXeJGcIWl7j1ZD4ThC0vsf3tHOYJjEKzkLTPQtIyC0nLLCQtCxhZ
-        VjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgTG37ZjP7fsYOx6F3yIUYCDUYmHd8Me01gh1sSy
-        4srcQ4wSHMxKIrx5BkAh3pTEyqrUovz4otKc1OJDjKZAv01klhJNzgemhrySeENTQ3MLS0Nz
-        Y3NjMwslcd4OgYMxQgLpiSWp2ampBalFMH1MHJxSDYzNvMGp0tKrsyeYTOvr3ywmcdVsqbxk
-        nVkLqwWX9s6jZhMnPV4puebN2XMnF0nePSvHabChb/LEw96H3JmMN1k5Gh5Uid0pef/SX+Hn
-        pef+6D0XW28j1hO996OE3y8J5d/zJS8f6JaoaX0TaKvBtNd+Cf+bz3efM21Y8WC+WqnN/pLd
-        Gnv7G0KUWIozEg21mIuKEwHCwBB01QIAAA==
-X-CMS-MailID: 20190722135301eucas1p2190b3f28552030bbf267dc9963059ddc
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91
-References: <20190721201956.941-1-daniel.vetter@ffwll.ch>
-        <CGME20190721203902epcas2p22e8ac33f84bcfb1a414c02d6c8770d91@epcas2p2.samsung.com>
-        <CAHk-=wiaHB_0bS_x=p-xeyp7bW7bGgkZ9QkXe6SS9axu7OP95w@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-On 7/21/19 10:38 PM, Linus Torvalds wrote:
-> On Sun, Jul 21, 2019 at 1:20 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->>
->> It's dead code ever since
-> 
-> Lovely. Ack.
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
 
-Good catch indeed.
+The first patch adds all necessary data structures to ecovec24. Patch
+2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+3-4/7 remove unused platform data fields. Last three patches contain
+additional improvements for the GPIO backlight driver while we're already
+modifying it.
 
-Thanks Daniel, I'll queue it for v5.4 later.
+I don't have access to this HW but hopefully this works. Only compile
+tested.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+[1] https://lkml.org/lkml/2019/6/25/900
+
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
+
+Bartosz Golaszewski (7):
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: remove dev from struct gpio_backlight
+  backlight: gpio: remove def_value from struct gpio_backlight
+  backlight: gpio: use a helper variable for &pdev->dev
+
+ arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+ drivers/video/backlight/gpio_backlight.c     | 87 ++++++--------------
+ include/linux/platform_data/gpio_backlight.h |  3 -
+ 3 files changed, 48 insertions(+), 75 deletions(-)
+
+-- 
+2.21.0
+
