@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 041F770878
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 20:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B07A7087B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 20:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731963AbfGVSZH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Jul 2019 14:25:07 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:37862 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731905AbfGVSZG (ORCPT
+        id S1731880AbfGVSZK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 Jul 2019 14:25:10 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:38480 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731943AbfGVSZH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Jul 2019 14:25:06 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 19so17774386pfa.4
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 11:25:06 -0700 (PDT)
+        Mon, 22 Jul 2019 14:25:07 -0400
+Received: by mail-pf1-f194.google.com with SMTP id y15so17777643pfn.5
+        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 11:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=phxXam+NzCk41fkXQIfIPhu7NO3JuGp0Zqj7GYLvO5g=;
-        b=VORIvKvZyl9su9iT0PV3CqryHSefcsep6woCoAACriNyyj1wpAq19jNBW1BYF5IpQo
-         US79nuEXwDfYRquImLevsgou9blTecCzbQdIRW8MvRGuCKdw8QN2iYCtNEWGFwhJ26xY
-         CNEJ+PxvFxXS8ph5Wzk31pOD2MWnCapWoZQok=
+        bh=qfwsnuJ0Fo+yki7MwdfIhdjj83zSVUakcOxDUEqYWuw=;
+        b=BMAJB7zCPWaxxlsIZhliKtF/Of3RCfBU19X2PdSfplILj6yScV53dJKd9GpZMW00sX
+         21AvgBuU29a+7Tczy51BqeRf390trbirmAtQOeTwHaDaAgO71WXOqgW9qVG4I/0QwhsF
+         fHbjC8EReFF044ivDo+ipVHhRsr2EV6EnYpNY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=phxXam+NzCk41fkXQIfIPhu7NO3JuGp0Zqj7GYLvO5g=;
-        b=EyrYzZi7+1chfjhlqueaqPlADO4k12H4b9aR0ZIONyLGit7dWpal0uhoRepEjhefdu
-         UjNJFhEfsJHGat4JLtvBP/n6T1MPpznh2qd/8WRxSsqWwUoXWjYvx1aFna8/gmZHDb52
-         pfTBl8HpkwdR1tYIeae4Wi6viPP+BRUkjbQGEev8ytYZoncmZ0JJAhc1EuYkZsssSceP
-         sqkh0g4mA9uiCQABxnKQ5amJYHlwPR12sZJikaAiKmVmhixj39FWTTvXWkhP7RTmYTdL
-         HSmzSwIwUsNpq0CMA1e3dnA5vUfYDI6YUgyjwazOMcuKtvf3LlAg42y0hQaDM0hSPsC0
-         EcQA==
-X-Gm-Message-State: APjAAAXoz5KRReWJpeV3t5a/nKKM/8z2x71yRTdVqEmfpkE+yC3PQsLd
-        aGaF/E2sFm9JCZYobtLbwKMwTQ==
-X-Google-Smtp-Source: APXvYqxIok6j9SpyTOOUPPOSMw74gGma9eXYYBqZ20kYDDJq6S+wqATyE6oe5vdgxNJaBlFiNXuY1g==
-X-Received: by 2002:a62:1883:: with SMTP id 125mr1535738pfy.178.1563819905974;
-        Mon, 22 Jul 2019 11:25:05 -0700 (PDT)
+        bh=qfwsnuJ0Fo+yki7MwdfIhdjj83zSVUakcOxDUEqYWuw=;
+        b=laTT5AEYi2zzpK4lxr15AXcC0Z5ZRXb/zQhC5CZPVTCPhPl1w7MDIKyg8GdTYYhz4X
+         dKMAr+yDIj3Zve+n0g4fKjUPcqdh0Bkby/WVbuRmTexUL9bLJmUNSx4ISj1r+jBOmfMv
+         RpKcxrTtQ/l8kyYweYZVmaudbpVUFrj5gCYPtrDmQyppedEGbDoDXnqR9bPlfrsDTPtv
+         zG29SUzrl8dHLfaQP+9jTvfptvjcHC/5dYum8q/RF2FH9FcaS9nZk6o8M7kmCfNwW78J
+         pF3/slETJSm/bERtmNI9Ck2X+HO9m1N61j3515ATnlyoM5N8DgBp4TCKOELvlnCYhTQI
+         MLig==
+X-Gm-Message-State: APjAAAUMN6CMWbr7f6OReNRCTWunbHgASZ/WPJmvaSO/X9Av4r9HHqOq
+        WoidaS0R/ZN6o8x3M0KSbYpGgg==
+X-Google-Smtp-Source: APXvYqyEp+PIjudMUc2kzpn+Zl2EC+eIJeevs//E8DRu5CFrWzPYRAgF8677H9fM7Q0RWCkvTACSQA==
+X-Received: by 2002:a17:90a:23ce:: with SMTP id g72mr47354809pje.77.1563819906950;
+        Mon, 22 Jul 2019 11:25:06 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id a3sm36117683pfl.145.2019.07.22.11.25.04
+        by smtp.gmail.com with ESMTPSA id a3sm36117683pfl.145.2019.07.22.11.25.06
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 22 Jul 2019 11:25:05 -0700 (PDT)
+        Mon, 22 Jul 2019 11:25:06 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -55,9 +55,9 @@ Cc:     David Airlie <airlied@linux.ie>, linux-fbdev@vger.kernel.org,
         Daniel Vetter <daniel@ffwll.ch>,
         Douglas Anderson <dianders@chromium.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] video: of: display_timing: Don't yell if no timing node is present
-Date:   Mon, 22 Jul 2019 11:24:37 -0700
-Message-Id: <20190722182439.44844-3-dianders@chromium.org>
+Subject: [PATCH 3/4] drm: panel-lvds: Spout an error if of_get_display_timing() gives an error
+Date:   Mon, 22 Jul 2019 11:24:38 -0700
+Message-Id: <20190722182439.44844-4-dianders@chromium.org>
 X-Mailer: git-send-email 2.22.0.657.g960e92d24f-goog
 In-Reply-To: <20190722182439.44844-1-dianders@chromium.org>
 References: <20190722182439.44844-1-dianders@chromium.org>
@@ -68,37 +68,38 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There may be cases (like in panel-simple.c) where we have a sane
-fallback if no timings are specified in the device tree.  Let's get
-rid of the unconditional pr_err().  We can add error messages in
-individual drivers if it makes sense.
+In the patch ("video: of: display_timing: Don't yell if no timing node
+is present") we'll stop spouting an error directly in
+of_get_display_timing() if no node is present.  Presumably panel-lvds
+should take charge of spouting its own error now.
 
-NOTE: we'll still print errors if the node is present but there are
-problems parsing the timings.
+NOTE: we'll print two errors if the node was present but there were
+problems parsing the timing node (one in of_parse_display_timing() and
+this new one).  Since this is a fatal error for the driver's probe
+(and presumably someone will be debugging), this should be OK.
 
-Fixes: b8a2948fa2b3 ("drm/panel: simple: Add ability to override typical timing")
-Reported-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
- drivers/video/of_display_timing.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-lvds.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
-index 5eedae0799f0..abc9ada798ee 100644
---- a/drivers/video/of_display_timing.c
-+++ b/drivers/video/of_display_timing.c
-@@ -125,10 +125,8 @@ int of_get_display_timing(const struct device_node *np, const char *name,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/panel/panel-lvds.c b/drivers/gpu/drm/panel/panel-lvds.c
+index 1ec57d0806a8..ad47cc95459e 100644
+--- a/drivers/gpu/drm/panel/panel-lvds.c
++++ b/drivers/gpu/drm/panel/panel-lvds.c
+@@ -147,8 +147,11 @@ static int panel_lvds_parse_dt(struct panel_lvds *lvds)
+ 	int ret;
  
- 	timing_np = of_get_child_by_name(np, name);
--	if (!timing_np) {
--		pr_err("%pOF: could not find node '%s'\n", np, name);
-+	if (!timing_np)
- 		return -ENOENT;
--	}
+ 	ret = of_get_display_timing(np, "panel-timing", &timing);
+-	if (ret < 0)
++	if (ret < 0) {
++		dev_err(lvds->dev, "%pOF: problems parsing panel-timing (%d)\n",
++			np, ret);
+ 		return ret;
++	}
  
- 	ret = of_parse_display_timing(timing_np, dt);
+ 	videomode_from_timing(&timing, &lvds->video_mode);
  
 -- 
 2.22.0.657.g960e92d24f-goog
