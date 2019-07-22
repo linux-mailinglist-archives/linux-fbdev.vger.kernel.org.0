@@ -2,97 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6416FAB2
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 09:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E236FB3F
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Jul 2019 10:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfGVHuh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Jul 2019 03:50:37 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:36781 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbfGVHug (ORCPT
+        id S1726236AbfGVI0l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 Jul 2019 04:26:41 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:35761 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726120AbfGVI0l (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Jul 2019 03:50:36 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 803AE80317; Mon, 22 Jul 2019 09:50:21 +0200 (CEST)
-Date:   Mon, 22 Jul 2019 09:50:32 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Ezequiel Garcia <ezequiel@collabora.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        jacek.anaszewski@gmail.com, linux-leds@vger.kernel.org,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Enable backlight when trigger is activated
-Message-ID: <20190722075032.GA27524@amd>
-References: <20190718190849.GA11409@amd>
- <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
+        Mon, 22 Jul 2019 04:26:41 -0400
+Received: by mail-lf1-f65.google.com with SMTP id p197so25946094lfa.2;
+        Mon, 22 Jul 2019 01:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qfvfkEyZd+DLJr7SlSsxk5CR4wqlGHyDi7qXTnWxyjM=;
+        b=qU5ZgH7lnaBzI3Nk5qQNMvhVjMl1vZtjvP9SIy4aOn1q2RIFIL5sAukQ+3bhdueGsf
+         gF8gLTsZT604maLq0+AppwcO65gamoxEZLGspJOmgg4gf0xYYZ8jBYG5qwrYKk/BXyRJ
+         KOPx7ak3bgjRRiylLqULa2Dgx8dDTnjDL81skNMbTQktuIrwOxJUPGx4WI7O0GGObHJC
+         7ubrWYDhzeHI50ALl8xoEgp/omFiEBRd7mHRj5mB42vvJUoHH6GF3YybSOuAgSTSAxCO
+         gBb6cTwH9guFxUqHNDSlFxGiwrMrCoGUKv28FutneKRZuXRl8o3ZRFgKBxjx+VvqE2aY
+         msPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qfvfkEyZd+DLJr7SlSsxk5CR4wqlGHyDi7qXTnWxyjM=;
+        b=WMyN8m16HWBYr3crDlY2wSxBTWhWZWTDFUf+jzSz3eua0XsHKX1DbmJf4hrexOvP5+
+         hKXhA+u5CN7Hdqh/NA9XMSt0VBexfn2TEXosC6isT/OXmeeOdiSPiplwjL/YPCyWh0Y4
+         6LLdRDvzM39i+X2CAvXpiGRdvHwwTGgKzkiy71H+dzHR2xONeYOzpSrwZF8coZSEo2V3
+         Jm386ikwilOgcocVZ54SqUDI0XO8fWwK0z+FweTpNXxgssaq2POdxIL22W2JilMN7LL6
+         3JgFXueRwZTHgcv8qrYncDA36epZ8tMqexz/Bn+5WCP79afa0P2Mx+dcyb7aM/hbS4bo
+         THOQ==
+X-Gm-Message-State: APjAAAUczZppSdTwr2b+rDwLwJKUg0WSrZA68hoST1kwzGFO85ogPPkC
+        DZw9TqMbS3NczcXDgDfG60M10yLLPGpqLRo8+ns=
+X-Google-Smtp-Source: APXvYqwdhc62rde+BTL3HtJEfabYZbOQO1FtvdIwx9Mc0UCkMBYiG0Q9xBEQCHEmk0uZ9+MEutmP0pVQlvGMwM821Q8=
+X-Received: by 2002:ac2:568e:: with SMTP id 14mr31838975lfr.189.1563783998994;
+ Mon, 22 Jul 2019 01:26:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ZPt4rx8FFjLCG7dd"
-Content-Disposition: inline
-In-Reply-To: <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <1562781795-3494-1-git-send-email-jrdr.linux@gmail.com>
+In-Reply-To: <1562781795-3494-1-git-send-email-jrdr.linux@gmail.com>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Mon, 22 Jul 2019 13:56:27 +0530
+Message-ID: <CAFqt6zb-LmG4PrWCXfmDqor2bgxyFJRt5Yg0vmNgE9zvaw+S3Q@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev: nvidia: Remove extra return
+To:     adaplas@gmail.com, b.zolnierkie@samsung.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Sabyasachi Gupta <sabyasachi.linux@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Wed, Jul 10, 2019 at 11:28 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>
+> Minor cleanup to remove extra return statement.
+>
 
---ZPt4rx8FFjLCG7dd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Any comment on this patch ?
 
-Hi!
-
-> > Configuring backlight trigger from dts results in backlight off during
-> > boot. Machine looks dead upon boot, which is not good.
-> >=20
-> > Fix that by enabling LED on trigger activation.
-
-> > +++ b/drivers/leds/trigger/ledtrig-backlight.c
-> > @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *le=
-d)
-> >  	n->old_status =3D UNBLANK;
-> >  	n->notifier.notifier_call =3D fb_notifier_callback;
-> > =20
-> > +	led_set_brightness(led, LED_ON);
-> > +
->=20
-> This looks fishy.
->=20
-> Maybe you should use a default-state =3D "keep" instead? (and you'll have
-> to support it in the LED driver).
->=20
-> That'll give you proper "don't touch the LED if it was turned on" behavio=
-r,
-> which is what you seem to want.
-
-Actually no, that's not what I want. LED should go on if the display
-is active, as soon as trigger is activated.
-
-Unfortunately, I have see no good way to tell if the display is
-active (and display is usually active when trigger is activated).
-
-Thanks,
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---ZPt4rx8FFjLCG7dd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl01asgACgkQMOfwapXb+vK9lgCbBcUNDD1pNFmswZowkerycBcz
-v80AoK7Dv7JR0+GNLhozQBGFuNFWTOIt
-=oVmU
------END PGP SIGNATURE-----
-
---ZPt4rx8FFjLCG7dd--
+> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> ---
+>  drivers/video/fbdev/nvidia/nv_backlight.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/nvidia/nv_backlight.c b/drivers/video/fbdev/nvidia/nv_backlight.c
+> index e705a78..2ce5352 100644
+> --- a/drivers/video/fbdev/nvidia/nv_backlight.c
+> +++ b/drivers/video/fbdev/nvidia/nv_backlight.c
+> @@ -123,8 +123,6 @@ void nvidia_bl_init(struct nvidia_par *par)
+>
+>         printk("nvidia: Backlight initialized (%s)\n", name);
+>
+> -       return;
+> -
+>  error:
+>         return;
+>  }
+> --
+> 1.9.1
+>
