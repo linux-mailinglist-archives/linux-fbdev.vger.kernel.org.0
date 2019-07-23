@@ -2,101 +2,136 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2579711E8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 08:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED3471314
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 09:38:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732211AbfGWGaE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 23 Jul 2019 02:30:04 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:37510 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732073AbfGWGaD (ORCPT
+        id S1731630AbfGWHi2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Jul 2019 03:38:28 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:34557 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731579AbfGWHi0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 23 Jul 2019 02:30:03 -0400
-Received: by mail-io1-f68.google.com with SMTP id q22so79453137iog.4
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
+        Tue, 23 Jul 2019 03:38:26 -0400
+Received: by mail-ed1-f68.google.com with SMTP id s49so8062624edb.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 23 Jul 2019 00:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
-        b=N8Pla93TcEziqi3X9Xjj4jVFB6FXqFhyq+3mUxlpciUlrARDlvGyjeKc8SeQnuargV
-         FN6ErDmNUCoDrH38zU3JHuoPpuMAZNLdPp31tlj7ewshoZqqtBcK4IcRQdbsI1CnMMnf
-         5hA4bFDG/lArM1NQncuEu6rCSt6B3ndlw72yX0NSAbnaljYkk7CEAllPFu0SIId5I1sR
-         U4Gz0rRgvvvgcQ0Z2hH1/E5sC3rwRaUiZNNJSe6iPAruMUZ1eoSTZcqyBloG9heNAprb
-         mq31Yh74BQ+6PWAPc/rKE5g3B2XGRnySLEyQi2Wwan8kv19qIdLhvRoPKkKlTaKDka6Z
-         z+Ew==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7B0kZX39j3W386MkiBK5UtIQjJKLhUJXGNvhcv6FvJM=;
+        b=UotmLHtjCylIkscSMrotfIX1/Li5qjbBU2wYwaOu2++8uyWsR2wviLhrtbk9D81NUV
+         qfa1fZFnhwaoyKSsCHzf2q6gHNnlF2Q9F6c8BH4WjbNV5Ijw7ivhNnyrmBrOWELPOkXL
+         67diRvPht3Ri71Ku1n1tB/k+cTWzW/xAZUqiw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
-        b=FWq9WE7WlQNMAFKkgpT/pW5jYVnT7F5Y2v6oGaGudWOuV3YRNmS3IOkZrl/qKwTWBK
-         PrlW1G350T8tQVBkluiVJTwVrmIUcjsYwA0Q3s2LilcUinkMxxcqxMRzxF+yN247XYP2
-         fUmln0KmNWlnSvKkjCV9AdLbYv5PtwpIES4XIfwWf4tpjLZYACzPu2HT6RuriRTb3L7T
-         Oz0HpRr+maYQV5+1VWjD36GBr+lUh0CbPbkL+iZoG6ulWTmKdmpcDJfVCdwIpRpO8AJX
-         v36IssDe38b57SXySXGR9a48qnWkYC/gjpDX4yzQD4wHCysbW0j+LRqgDDGEiZYGrbXM
-         nrEw==
-X-Gm-Message-State: APjAAAWjPHM1+izqIj+Hw7zXaOzBYk0nyxsVDy7hta5ZEud/hAdgXF5S
-        JJgAGNOXuiaVwegZNPeQnYC+/fPmmVfDwhugRuo=
-X-Google-Smtp-Source: APXvYqyvfBNIqjWIKreeMWxm6LxZ+e3NprufUy8Guv6wiY3P0Y5Y92XxFkqxlQycu+lO//vYesMKWVBa1nEhSzksv28=
-X-Received: by 2002:a02:c916:: with SMTP id t22mr21391578jao.24.1563863403112;
- Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-8-brgl@bgdev.pl>
- <20190722160908.GZ9224@smile.fi.intel.com>
-In-Reply-To: <20190722160908.GZ9224@smile.fi.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 23 Jul 2019 08:29:52 +0200
-Message-ID: <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] backlight: gpio: use a helper variable for &pdev->dev
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=7B0kZX39j3W386MkiBK5UtIQjJKLhUJXGNvhcv6FvJM=;
+        b=hJJ0D4/kMvUePb4i2Cx4llqna57uYvRnOgbw5cP/huCee4+mtpqlpU2tIBcL/Xn8y1
+         T6Ppe0QSjJlok8+dArCPCRmBx0nWn8ws/ND4oMnX6XQH4gb7DeZxo2b9rMwV5hUHjfHU
+         LT5UkTLKal4IE9AYWr9sstXsJskDYgwf4LkaUqXe3G23d4rM7FHRsqZwLPZKUlI7lXLd
+         EWAXKTaJYESdO/8fpAPNlAg0HFdE9z9mIH6Qlt+w2cx044wE0UqEhTaamNXzoEUdmofK
+         nH5i1/JKw3Gsa2zdLzGXicV/xZEexmVszK4w2+JmPx0PNPKz/bjkGMDbuGiC80o9ZOvg
+         5HhA==
+X-Gm-Message-State: APjAAAWjp+63mWV9zzwTN5L63pGW/CgBAkFkM8FqIYcQObSUQ8t0Xi9l
+        Yn1KzzSiU0plXmxqc7drj8ZLCDmzLmE=
+X-Google-Smtp-Source: APXvYqwF4gFYfyab0NSDDcoxUf0q4mq+1/ft/cvJV0XQFBad+3aIdLa/PEUi1UMzB5ntGyuBECBlJw==
+X-Received: by 2002:a50:fa05:: with SMTP id b5mr63382580edq.269.1563867503924;
+        Tue, 23 Jul 2019 00:38:23 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id q50sm12035831edd.91.2019.07.23.00.38.22
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 23 Jul 2019 00:38:22 -0700 (PDT)
+Date:   Tue, 23 Jul 2019 09:38:20 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Jens Remus <jremus@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Martin Hostettler <textshell@uchuujin.de>,
+        Adam Borowski <kilobyte@angband.pl>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH] vt: Grab console_lock around con_is_bound in show_bind
+Message-ID: <20190723073820.GU15868@phenom.ffwll.local>
+Mail-Followup-To: Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-s390@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicolas Pitre <nicolas.pitre@linaro.org>,
+        Martin Hostettler <textshell@uchuujin.de>,
+        Adam Borowski <kilobyte@angband.pl>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+References: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190718080903.22622-1-daniel.vetter@ffwll.ch>
+X-Operating-System: Linux phenom 4.19.0-5-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-pon., 22 lip 2019 o 18:09 Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
->
-> On Mon, Jul 22, 2019 at 05:03:02PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > Instead of dereferencing pdev each time, use a helper variable for
-> > the associated device pointer.
->
-> >  static int gpio_backlight_probe(struct platform_device *pdev)
-> >  {
-> > -     struct gpio_backlight_platform_data *pdata =3D
-> > -             dev_get_platdata(&pdev->dev);
-> > +     struct gpio_backlight_platform_data *pdata;
-> >       struct backlight_properties props;
-> >       struct backlight_device *bl;
-> >       struct gpio_backlight *gbl;
-> >       enum gpiod_flags flags;
-> > +     struct device *dev;
->
-> Can't we do
->
->         struct device dev =3D &pdev->dev;
->         struct gpio_backlight_platform_data *pdata =3D dev_get_platdata(d=
-ev);
->
-> ? It fits 80 nicely.
->
+Hi Greg,
 
-IMO it's more readable like that with the reverse christmas tree layout.
+Do you plan to pick this up in your console/vt/whatever-fixes branch?
+There's no reason for me to route this through drm-fixes.
+-Daniel
 
-Bart
+On Thu, Jul 18, 2019 at 10:09:03AM +0200, Daniel Vetter wrote:
+> Not really harmful not to, but also not harm in grabbing the lock. And
+> this shuts up a new WARNING I introduced in commit ddde3c18b700 ("vt:
+> More locking checks").
+> 
+> Reported-by: Jens Remus <jremus@linux.ibm.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
+> Cc: Martin Hostettler <textshell@uchuujin.de>
+> Cc: Adam Borowski <kilobyte@angband.pl>
+> Cc: Mikulas Patocka <mpatocka@redhat.com>
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/tty/vt/vt.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+> index ec92f36ab5c4..34aa39d1aed9 100644
+> --- a/drivers/tty/vt/vt.c
+> +++ b/drivers/tty/vt/vt.c
+> @@ -3771,7 +3771,11 @@ static ssize_t show_bind(struct device *dev, struct device_attribute *attr,
+>  			 char *buf)
+>  {
+>  	struct con_driver *con = dev_get_drvdata(dev);
+> -	int bind = con_is_bound(con->con);
+> +	int bind;
+> +
+> +	console_lock();
+> +	bind = con_is_bound(con->con);
+> +	console_unlock();
+>  
+>  	return snprintf(buf, PAGE_SIZE, "%i\n", bind);
+>  }
+> -- 
+> 2.20.1
+> 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
