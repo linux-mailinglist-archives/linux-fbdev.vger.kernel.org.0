@@ -2,86 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8158713F6
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 10:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0EE371412
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 10:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730172AbfGWI1n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 23 Jul 2019 04:27:43 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:36276 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728083AbfGWI1n (ORCPT
+        id S1731784AbfGWIiy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Jul 2019 04:38:54 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:43510 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727801AbfGWIiy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 23 Jul 2019 04:27:43 -0400
-Received: by mail-lj1-f194.google.com with SMTP id i21so40221789ljj.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 23 Jul 2019 01:27:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aQWbT+LvRZmTZPbHcNwKkhIKABtN7PWcJhZVigHFt6k=;
-        b=J1lPzwkO9q3MgVFAKEgQWTdHzLfR0r4/dqf8Q19MSVI88smbj773m6rwndjcBQKakb
-         IY8TIqOd4v8dpT+r3Dzzl0fLN7WxVaVXMhHOvd2xdMTAhKTMEVCBZ1KooyYMEu0GQ5RC
-         H8/NZxL6bNh4KE4mf9JhUuy16amuG3/nCp9E+T1GdkmvywkuZ7yfWQgjJmfSQWUSHpSK
-         O0GR3MGZ7OtRjtdDMEDcl5xVVwSdxCOo+MFnvtCXuxiSQM0HuG7Av917+OltWBpMC35D
-         vXRLmwzCgBpd8r/+gDYK8xAM3oEzqExKtlZvmxleii2S+GXaKtYCsmH0nmLqEwhTgy0B
-         /MGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aQWbT+LvRZmTZPbHcNwKkhIKABtN7PWcJhZVigHFt6k=;
-        b=uMlhbaTC+CQXW9o/BmxygH5KCUT58YkXJkSThhfLZG2Ch1/8szClvnfqfzOMGw7IjN
-         +JJfxd9Ty50jWFm7DqCQQ2nE+DTf4srozcYzl8pvBULWgiLvnKNvmjeCaPQbzdQUY+9F
-         GDklEO8PYK4gNsC1NVdkakhOmuxxI4whjVE4/TgPlNKqIN+xv2aLyvV/w0DpSpJWKcfK
-         u6Yq+nKW7RqHDvNzI2qF7Bd/+fEyFJmW9GCnXIXAPDcDCtnwqQWzhN7cdGQzUt24B6ST
-         +nFkQWh/Vyq9Nvpl38B6s53bBKAYqaHS0cVvc4OFxDMa+t007xbJzPUKHLvsfs5GItOa
-         HQZA==
-X-Gm-Message-State: APjAAAW4vRqRFxb+oWIwMDqgzwhtG/oecXOyrz16uztme+Vbz70nQZxx
-        EJlrDuqvKRbkC1ZVM7U8VZozdDdObbHe1scgUMbfwA==
-X-Google-Smtp-Source: APXvYqz0HX8OQPx3GnS5yBtViFQ3wpO4poIOD2WGxx5DZxgrR64F2LQUSTYoiFWfPKuh/Y6BgHMP3tBxrfw7ADilUIk=
-X-Received: by 2002:a2e:2c14:: with SMTP id s20mr21488965ljs.54.1563870461161;
- Tue, 23 Jul 2019 01:27:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190722182439.44844-1-dianders@chromium.org> <20190722182439.44844-5-dianders@chromium.org>
-In-Reply-To: <20190722182439.44844-5-dianders@chromium.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 23 Jul 2019 10:27:30 +0200
-Message-ID: <CACRpkdazAx_5rxwYbKwMs_a7G2K5ETnxj0nUQ7TGarsv6bAv5A@mail.gmail.com>
-Subject: Re: [PATCH 4/4] video: amba-clcd: Spout an error if
- of_get_display_timing() gives an error
+        Tue, 23 Jul 2019 04:38:54 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id BF6A080480;
+        Tue, 23 Jul 2019 10:38:48 +0200 (CEST)
+Date:   Tue, 23 Jul 2019 10:38:47 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
 To:     Douglas Anderson <dianders@chromium.org>
 Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>, linux-fbdev@vger.kernel.org,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        dri-devel@lists.freedesktop.org,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Russell King <linux@armlinux.org.uk>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 0/4] video: of: display_timing: Adjust err printing of
+ of_get_display_timing()
+Message-ID: <20190723083847.GA32268@ravnborg.org>
+References: <20190722182439.44844-1-dianders@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190722182439.44844-1-dianders@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=VwQbUJbxAAAA:8
+        a=7gkXJVJtAAAA:8 a=j5P04vaaSkZOzqOPo0QA:9 a=CjuIK1q_8ugA:10
+        a=AjGcO6oz07-iQ99wixmX:22 a=E9Po1WZjFZOl8hwRPBS3:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 8:25 PM Douglas Anderson <dianders@chromium.org> wrote:
+Hi Dough.
 
-> In the patch ("video: of: display_timing: Don't yell if no timing node
-> is present") we'll stop spouting an error directly in
-> of_get_display_timing() if no node is present.  Presumably amba-clcd
-> should take charge of spouting its own error now.
->
-> NOTE: we'll print two errors if the node was present but there were
-> problems parsing the timing node (one in of_parse_display_timing() and
-> this new one).  Since this is a fatal error for the driver's probe
-> (and presumably someone will be debugging), this should be OK.
->
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+On Mon, Jul 22, 2019 at 11:24:35AM -0700, Douglas Anderson wrote:
+> As reported by Sam Ravnborg [1], after commit b8a2948fa2b3
+> ("drm/panel: simple: Add ability to override typical timing") we now
+> see a pointless error message printed on every boot for many systems.
+> Let's fix that by adjusting who is responsible for printing error
+> messages when of_get_display_timing() is used.
+> 
+> Most certainly we can bikeshed the topic about whether this is the
+> right fix or we should instead add logic to panel_simple_probe() to
+> avoid calling of_get_display_timing() in the case where there is no
+> "panel-timing" sub-node.  If there is consensus that I should move the
+> fix to panel_simple_probe() I'm happy to spin this series.  In that
+> case we probably should _remove_ the extra prints that were already
+> present in the other two callers of of_get_display_timing().
+> 
+> While at it, fix a missing of_node_put() found by code inspection.
+> 
+> NOTE: amba-clcd and panel-lvds were only compile-tested.
+> 
+> [1] https://lkml.kernel.org/r/20190721093815.GA4375@ravnborg.org
+> 
+> 
+> Douglas Anderson (4):
+>   video: of: display_timing: Add of_node_put() in
+>     of_get_display_timing()
+>   video: of: display_timing: Don't yell if no timing node is present
+>   drm: panel-lvds: Spout an error if of_get_display_timing() gives an
+>     error
+>   video: amba-clcd: Spout an error if of_get_display_timing() gives an
+>     error
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Series looks good - thanks.
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
-Yours,
-Linus Walleij
+You could consider silencing display_timing as the last patch, but thats
+a very small detail.
+
+How do we apply these fixes - to drm-misc-next? Bartlomiej?
+
+No need to go in via drm-misc-fixes as the offending commit is only in
+drm-misc-next.
+
+	Sam
