@@ -2,125 +2,136 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CF971BD0
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 17:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E697371BD8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 17:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728809AbfGWPhK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 23 Jul 2019 11:37:10 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:51395 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729638AbfGWPhK (ORCPT
+        id S1727266AbfGWPiS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Jul 2019 11:38:18 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:42660 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727598AbfGWPiR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 23 Jul 2019 11:37:10 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190723153709euoutp019a015da8092ec12f6f59d6897e7185fe~0E1WuYzh-1173611736euoutp01G
-        for <linux-fbdev@vger.kernel.org>; Tue, 23 Jul 2019 15:37:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190723153709euoutp019a015da8092ec12f6f59d6897e7185fe~0E1WuYzh-1173611736euoutp01G
+        Tue, 23 Jul 2019 11:38:17 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190723153816euoutp0256baac69319a94548c2e616e85e041b0~0E2VIENVd1039110391euoutp02L
+        for <linux-fbdev@vger.kernel.org>; Tue, 23 Jul 2019 15:38:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190723153816euoutp0256baac69319a94548c2e616e85e041b0~0E2VIENVd1039110391euoutp02L
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1563896229;
-        bh=0+TsZ8zwQrMvUeWW/gzsV+tlOaK1iDbp8TpeojVf4Vk=;
+        s=mail20170921; t=1563896296;
+        bh=VjovTDiMt97xdGE3WlxPMJBYNl8cS2ld4czh4ywLQes=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=gu/tmpuw2lFF5tap0jOIm2jEtPnysyn/fOggbbiTgUY0l0Rq3ToK8O0sivWaAYQyX
-         6EJpqglfAy0+/chCQ79U5PGQ3r6aD+YxL0iZdBKTQ9On8btk73U8bKGj/0j0sJaqOL
-         y6kig4FJTBrOi/NjM23e7LR2gaeUxoI9k6JWuiKg=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        b=Fw/By5gb+Pvx3XHO0t9yo5Gd9XnioBXd+skD+fbX575MrlfciU1Vn4L34odu/7W9u
+         3+tLaEhTYxWs1njR95YvklWDgFCZX35Ysq7XaeRvMs+gqlYuSHAKVSjipWM3NE19o9
+         SXiqyNcREoSv+V6QFbfboXP6tC/CRdnZSwwTcDgo=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190723153708eucas1p2d9faecbed408e947a960034ce5086c74~0E1WW4p102709827098eucas1p2E;
-        Tue, 23 Jul 2019 15:37:08 +0000 (GMT)
+        20190723153815eucas1p20869e6ec0af05080bbd994a9b05de046~0E2UgeTqu2709827098eucas1p29;
+        Tue, 23 Jul 2019 15:38:15 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 6B.36.04377.4A9273D5; Tue, 23
-        Jul 2019 16:37:08 +0100 (BST)
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 94.EE.04325.7E9273D5; Tue, 23
+        Jul 2019 16:38:15 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190723153708eucas1p218eb08397f9939db7a81478a5e51e79e~0E1VtUQno2709727097eucas1p2C;
-        Tue, 23 Jul 2019 15:37:08 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190723153814eucas1p118ce10061c55ca4b9bf71c69b8430367~0E2Twm9u_3017730177eucas1p1h;
+        Tue, 23 Jul 2019 15:38:14 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20190723153707eusmtrp1105be7ebcedd5acc33c460afb36c6768~0E1VZ-eDG2308223082eusmtrp1g;
-        Tue, 23 Jul 2019 15:37:07 +0000 (GMT)
-X-AuditID: cbfec7f4-12dff70000001119-a4-5d3729a43c11
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 15.E1.04140.3A9273D5; Tue, 23
-        Jul 2019 16:37:07 +0100 (BST)
+        20190723153814eusmtrp1ea731f0262c19150a1d3a7a930df52aa~0E2Tihy5c2369023690eusmtrp1q;
+        Tue, 23 Jul 2019 15:38:14 +0000 (GMT)
+X-AuditID: cbfec7f5-b8fff700000010e5-eb-5d3729e77f68
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id BF.F1.04140.6E9273D5; Tue, 23
+        Jul 2019 16:38:14 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190723153707eusmtip140edcd8c0add74c5baa56194b6284bfc~0E1VFrwCM1278412784eusmtip1Y;
-        Tue, 23 Jul 2019 15:37:07 +0000 (GMT)
-Subject: Re: [PATCH v3 24/24] video: fbdev-MMP: Remove call to memset after
- dma_alloc_coherent
-To:     Emil Velikov <emil.l.velikov@gmail.com>,
-        Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190723153814eusmtip2e135b2a37969fc61461c312583c20cae~0E2TF_Uaz0852608526eusmtip2i;
+        Tue, 23 Jul 2019 15:38:14 +0000 (GMT)
+Subject: Re: [PATCH 0/6] video: ssd1307fb: Support more displays
+To:     Marko Kohtala <marko.kohtala@okoko.fi>
+Cc:     linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <e66d213d-7a66-6c53-d453-6f4bbfa79c52@samsung.com>
-Date:   Tue, 23 Jul 2019 17:37:06 +0200
+Message-ID: <f0d8be30-4980-7e7c-dcbb-3bd7621cff08@samsung.com>
+Date:   Tue, 23 Jul 2019 17:38:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190715104049.GC20839@arch-x1c3>
+In-Reply-To: <20190618074111.9309-1-marko.kohtala@okoko.fi>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRmVeSWpSXmKPExsWy7djP87pLNM1jDW7cUbO48vU9m8Weq/eY
-        LJadOslqcaLvA6vF5V1z2BxYPXbOusvucb/7OJPH501yAcxRXDYpqTmZZalF+nYJXBmru26y
-        Fexmrdj/9B5rA+Nuli5GTg4JAROJ6xtmsHUxcnEICaxglLh7dQ0ThPOFUWL5m8dQmc+MEt//
-        /ATKcIC1LD2dDxFfzihxtvMMK4TzllFifd8+JpC5wgIJEju2nASzRQTCJL7tnMQKYjMDxf+f
-        3wkWZxOwkpjYvooRZCivgJ3EprN2IGEWAVWJc2v2MIPYogIREvePbQBr5RUQlDg58wnY2ZwC
-        +hLvjy9mhBgpLnHryXwmCFteYvvbOcwg90gITGeXOPjwKNSfLhJnznxlhrCFJV4d38IOYctI
-        nJ7cwwLRsI5R4m/HC6ju7UD/T/7HBlFlLXH4+EVWkEuZBTQl1u/Shwg7Siz/vJ8ZEip8Ejfe
-        CkIcwScxadt0qDCvREebEES1msSGZRvYYNZ27VzJPIFRaRaS12YheWcWkndmIexdwMiyilE8
-        tbQ4Nz212CgvtVyvODG3uDQvXS85P3cTIzC1nP53/MsOxl1/kg4xCnAwKvHwVjCZxwqxJpYV
-        V+YeYpTgYFYS4Q1sMIsV4k1JrKxKLcqPLyrNSS0+xCjNwaIkzlvN8CBaSCA9sSQ1OzW1ILUI
-        JsvEwSnVwKh0tmNpehWXhG5rrkrf6WNWkaKzzl3axHl+v97enTN4y192y9+XqbLkP7rbTE87
-        XujGMp+Jfk2fTiQk1+0TF5OOYe7MO7f8e8qrGicLhvrsKy/mnl1XNyF5Sljn+RXMqWaB4Ud6
-        3vg6HM40mH4nc9IvpXuyjA+n96yV/Rfcl7w2wG/h7R+TliqxFGckGmoxFxUnAgAzkNA3KQMA
-        AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xu7qLNc1jDY69NbS48vU9m8Weq/eY
-        LJadOslqcaLvA6vF5V1z2BxYPXbOusvucb/7OJPH501yAcxRejZF+aUlqQoZ+cUltkrRhhZG
-        eoaWFnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehmru26yFexmrdj/9B5rA+Nuli5GDg4J
-        AROJpafzuxg5OYQEljJKXDwqBRGWkTi+vgwkLCEgLPHnWhdbFyMXUMlrRonjc16xgCSEBRIk
-        dmw5yQRiiwiESbyfsRkszgwU37yykRmiYSujxPanv1lBEmwCVhIT21cxgizgFbCT2HTWDiTM
-        IqAqcW7NHmYQW1QgQuLM+xVgc3gFBCVOznwCZnMK6Eu8P76YEWK+usSfeZeYIWxxiVtP5jNB
-        2PIS29/OYZ7AKDQLSfssJC2zkLTMQtKygJFlFaNIamlxbnpusZFecWJucWleul5yfu4mRmAc
-        bTv2c8sOxq53wYcYBTgYlXh4K5jMY4VYE8uKK3MPMUpwMCuJ8AY2mMUK8aYkVlalFuXHF5Xm
-        pBYfYjQFem4is5Rocj4wxvNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQWwfQx
-        cXBKNTCeORbtkHriXpOypLP4y3XF318lXWUSCeIqUNxhK/Imkiecb+aWV/UBLlNOf+s5bVna
-        a68aeWJlwezYyTy6hTV2j++ZtLdLz5/G7Ppq76+sj09uh+0/lJsU2dx9f78Jf2Km53wDD4Od
-        m7ZYFRV2i7tN3/1joXdy3iXZL6Hyu247z+metfP/5Y1KLMUZiYZazEXFiQBo5QxsuQIAAA==
-X-CMS-MailID: 20190723153708eucas1p218eb08397f9939db7a81478a5e51e79e
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKKsWRmVeSWpSXmKPExsWy7djP87rPNc1jDX7Ml7DoPXeSyeL/tonM
+        FvOPnGO1uPL1PZvFib4PrBZLr19kslh9eAGLxf/PT1gtWvceYXfg9Fgzbw2jx95vC1g8Nq3q
+        ZPPY/u0Bq8f97uNMHj+XLWXx+LxJzuPl3w/MARxRXDYpqTmZZalF+nYJXBkPZrczFvRwV+x7
+        1MzWwPifo4uRk0NCwETi083XzF2MXBxCAisYJU6u/MYC4XxhlJiz+y4rhPOZUWJC931WmJav
+        77azgdhCAssZJbrWyEAUvWWU2HVnMSNIQljAQeLsi21MILaIgJbEixdtYJOYBVYwSZztagTr
+        ZhOwkpjYvgqsgVfATmLHiiYwm0VAVWLJrh9gNaICERL3j21ghagRlDg58wkLiM0pYC3xo6OJ
+        HcRmFhCXuPVkPhOELS+x/e0csIckBK6xS0x9f4kd4mwXiVU7vjFB2MISr45vgYrLSJye3MMC
+        0bCOUeJvxwuo7u2MEssn/2ODqLKWOHz8ItAZHEArNCXW79KHCDtKPGtbxQ4SlhDgk7jxVhDi
+        CD6JSdumM0OEeSU62oQgqtUkNizbwAaztmvnSuYJjEqzkLw2C8k7s5C8Mwth7wJGllWM4qml
+        xbnpqcXGeanlesWJucWleel6yfm5mxiBiev0v+NfdzDu+5N0iFGAg1GJh7eCyTxWiDWxrLgy
+        9xCjBAezkghvYINZrBBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeaoYH0UIC6YklqdmpqQWpRTBZ
+        Jg5OqQbGg7y7c7dIbuEP2OOTY6X/vDHb8KS/zktngxJHk42Ll38oOPPhcMpi/f3/NzbonJ1j
+        U8/6a61JyKQQttfMSh8jfLwqq2uSz/RM2bZBaadHvssTN0u/rrnrdvy9djRmrdOGqv8Ty4Tj
+        XA993a+QnNKz1Vl6i+kSgzW2/crL5/3h0qnM3NvCuKhCiaU4I9FQi7moOBEAYNZPulgDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrKIsWRmVeSWpSXmKPExsVy+t/xe7rPNM1jDZ5tUrDoPXeSyeL/tonM
+        FvOPnGO1uPL1PZvFib4PrBZLr19kslh9eAGLxf/PT1gtWvceYXfg9Fgzbw2jx95vC1g8Nq3q
+        ZPPY/u0Bq8f97uNMHj+XLWXx+LxJzuPl3w/MARxRejZF+aUlqQoZ+cUltkrRhhZGeoaWFnpG
+        JpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehkPZrczFvRwV+x71MzWwPifo4uRk0NCwETi67vt
+        bF2MXBxCAksZJTYcu8fYxcgBlJCROL6+DKJGWOLPtS6omteMEouXdrCCJIQFHCTOvtjGBGKL
+        CGhJvHjRBhZnFljBJPFuuzCILSTQxyix5wjYMjYBK4mJ7asYQWxeATuJHSuawGwWAVWJJbt+
+        sIHYogIREmfer2CBqBGUODnzCZjNKWAt8aOjiR1ivrrEn3mXmCFscYlbT+YzQdjyEtvfzmGe
+        wCg0C0n7LCQts5C0zELSsoCRZRWjSGppcW56brGRXnFibnFpXrpecn7uJkZglG479nPLDsau
+        d8GHGAU4GJV4eCuYzGOFWBPLiitzDzFKcDArifAGNpjFCvGmJFZWpRblxxeV5qQWH2I0BXpu
+        IrOUaHI+MIHklcQbmhqaW1gamhubG5tZKInzdggcjBESSE8sSc1OTS1ILYLpY+LglGpgXCXN
+        Xnj02CpjzXcaT3ca+n7hmyXKUCzqlt2n3pJQFNq+asZJJ+XD69027j+eJ/s8dHeSQrCmRyl/
+        Yad19Q2mEyb707YZeN+Pf/lFsOe7asLdGeUl0+TW6Kh5Cy/aG3BpY+5mjqIHK/Z7WR16GlLz
+        pe3ego5pH0OMCrilXNvrDdR3Tbdz+39HiaU4I9FQi7moOBEAmpnqkugCAAA=
+X-CMS-MailID: 20190723153814eucas1p118ce10061c55ca4b9bf71c69b8430367
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190715104058epcas1p2da7ed04b6c6d0d9e81c75e2b118d2dcb
+X-RootMTR: 20190618074155epcas1p3fcfe7cf1058162c11e4b1780987ca394
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190715104058epcas1p2da7ed04b6c6d0d9e81c75e2b118d2dcb
-References: <20190715032017.7311-1-huangfq.daxian@gmail.com>
-        <CGME20190715104058epcas1p2da7ed04b6c6d0d9e81c75e2b118d2dcb@epcas1p2.samsung.com>
-        <20190715104049.GC20839@arch-x1c3>
+X-CMS-RootMailID: 20190618074155epcas1p3fcfe7cf1058162c11e4b1780987ca394
+References: <CGME20190618074155epcas1p3fcfe7cf1058162c11e4b1780987ca394@epcas1p3.samsung.com>
+        <20190618074111.9309-1-marko.kohtala@okoko.fi>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 7/15/19 12:40 PM, Emil Velikov wrote:
-> On 2019/07/15, Fuqian Huang wrote:
->> In commit 518a2f1925c3
->> ("dma-mapping: zero memory returned from dma_alloc_*"),
->> dma_alloc_coherent has already zeroed the memory.
->> So memset is not needed.
->>
->> Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
->> ---
->> Changes in v3:
->>   - Use actual commit rather than the merge commit in the commit message
->>
->>  drivers/video/fbdev/mmp/fb/mmpfb.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
+On 6/18/19 9:41 AM, Marko Kohtala wrote:
+> The kernel driver for ssd1307fb did not allow for all proper
+> initialization for a Densitron 128x36 display. The trend in the driver
+> has been to add devicetree properties for the controller initialization
+> and these patches continue on that trend.
 > 
-> Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Patch queued for v5.4, thanks.
+> There also were some sparse and Coccinelle errors.
+> 
+> A small bug causing scrolling on display updates with nonzero page_offset
+> was a bit surprising. It would seem the driver has only been used with
+> page_offset set to zero. Bug has been there since commit
+> 301bc0675b677a98475187050d56cd2b39ff0acf ("video: ssd1307fb: Make use of
+> horizontal addressing mode").
+> 
+> Marko Kohtala (6):
+>   video: ssd1307fb: Use screen_buffer instead of screen_base
+>   video: ssd1307fb: Remove unneeded semicolons
+>   video: ssd1307fb: Start page range at page_offset
+>   video: ssd1307fb: Handle width and height that are not multiple of 8
+>   dt-bindings: display: ssd1307fb: Add initialization properties
+>   video: ssd1307fb: Add devicetree configuration of display setup
+> 
+>  .../devicetree/bindings/display/ssd1307fb.txt |  10 ++
+>  drivers/video/fbdev/ssd1307fb.c               | 130 ++++++++++++------
+>  2 files changed, 101 insertions(+), 39 deletions(-)
+Patch series queued for v5.4, thanks.
 
 Best regards,
 --
