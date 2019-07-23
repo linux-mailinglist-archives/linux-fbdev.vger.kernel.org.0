@@ -2,53 +2,53 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B923711E2
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 08:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2579711E8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Jul 2019 08:30:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730171AbfGWG2M (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 23 Jul 2019 02:28:12 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:35240 "EHLO
+        id S1732211AbfGWGaE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Jul 2019 02:30:04 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:37510 "EHLO
         mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729847AbfGWG2M (ORCPT
+        with ESMTP id S1732073AbfGWGaD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 23 Jul 2019 02:28:12 -0400
-Received: by mail-io1-f68.google.com with SMTP id m24so79495507ioo.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 23:28:12 -0700 (PDT)
+        Tue, 23 Jul 2019 02:30:03 -0400
+Received: by mail-io1-f68.google.com with SMTP id q22so79453137iog.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=0GXgbin1wM5tD9QHab0bjxqBxoyIQnKJbxMwrdj3eAo=;
-        b=AkGT7f1yp79PR71yxcX0rmm7mn9Z79r5K4cPrbEDACL9FDwSVMGs0ASUkteU8pEZyU
-         V2uPiHHOlPEy05sWQhcen9i60a5WApuQkPTvMdbhNfXCScSJlWK5Ftvpo+KwtQ+IvVMx
-         EH6BFUQyBsKwbnYnkRjGakuqODnMf9YNpP9paDvwbtk5bL8j0ruMNJygjLDmdLea83BR
-         +vt0S97OasXyEI0jhBs81RbiaJWlYLS70TSoZyzpaN5TF0VnDN5dCgHJtsnshqKIYXcn
-         YUeR6wczHn3AYJNWm3IeS7Uv/hmywYMSI4GjP5nHCeDNmaSAaymEU2cLJUBNAEpfmavs
-         lvjg==
+        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
+        b=N8Pla93TcEziqi3X9Xjj4jVFB6FXqFhyq+3mUxlpciUlrARDlvGyjeKc8SeQnuargV
+         FN6ErDmNUCoDrH38zU3JHuoPpuMAZNLdPp31tlj7ewshoZqqtBcK4IcRQdbsI1CnMMnf
+         5hA4bFDG/lArM1NQncuEu6rCSt6B3ndlw72yX0NSAbnaljYkk7CEAllPFu0SIId5I1sR
+         U4Gz0rRgvvvgcQ0Z2hH1/E5sC3rwRaUiZNNJSe6iPAruMUZ1eoSTZcqyBloG9heNAprb
+         mq31Yh74BQ+6PWAPc/rKE5g3B2XGRnySLEyQi2Wwan8kv19qIdLhvRoPKkKlTaKDka6Z
+         z+Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=0GXgbin1wM5tD9QHab0bjxqBxoyIQnKJbxMwrdj3eAo=;
-        b=LiBMNRAkXpVrxCV+byPGhr1iHsUCZHv5kFXW1eIgq8s5W39xvNmWx4LP2+FDU5jBMh
-         4iVbQlMYOJZSzbjoINf0bhmyGiKhwV5AyO5LBrX88ZzGRc9V49dBQDcHOicVVLREcKte
-         kBKL5nI3wnsgdzBniecucIIWsuUQRclfWu5ZiyaNVvf4qCPY907zVt3qYOhMtuY7JOfu
-         tX57t1X9i5PCW2hIq0mDzRIBnKtGO3IKm+dh0gkdofVeWVFnB7H9b80Tm2618Wn30D1C
-         GNTSLEvcyx2GLV7EnlO10ipw4vjgqy6p6JOk9a1bciGTmkkif7LHHbSOlAd9sPtNoouX
-         /fAQ==
-X-Gm-Message-State: APjAAAUmv4H7BNfkeojHXX61ECqMb5ktViGgfPGBn7BuF6anKmDN35c8
-        EnvwrzflqAp81OrviBJLVm3SdCOBC4EboAIuCcU=
-X-Google-Smtp-Source: APXvYqz6WM6llZIcZ4uWt1BEXw5VYzdaK/anRXzoGyvRQ8j3uF6YDTFTrHInVfg3NOC4vy7BIyJLo2b2xJVTaI/v58A=
-X-Received: by 2002:a5d:9c46:: with SMTP id 6mr9784584iof.6.1563863291632;
- Mon, 22 Jul 2019 23:28:11 -0700 (PDT)
+        bh=j31K/zZs/r0C+pUWsqptIpZI42gK74CrCWxKrCU84XI=;
+        b=FWq9WE7WlQNMAFKkgpT/pW5jYVnT7F5Y2v6oGaGudWOuV3YRNmS3IOkZrl/qKwTWBK
+         PrlW1G350T8tQVBkluiVJTwVrmIUcjsYwA0Q3s2LilcUinkMxxcqxMRzxF+yN247XYP2
+         fUmln0KmNWlnSvKkjCV9AdLbYv5PtwpIES4XIfwWf4tpjLZYACzPu2HT6RuriRTb3L7T
+         Oz0HpRr+maYQV5+1VWjD36GBr+lUh0CbPbkL+iZoG6ulWTmKdmpcDJfVCdwIpRpO8AJX
+         v36IssDe38b57SXySXGR9a48qnWkYC/gjpDX4yzQD4wHCysbW0j+LRqgDDGEiZYGrbXM
+         nrEw==
+X-Gm-Message-State: APjAAAWjPHM1+izqIj+Hw7zXaOzBYk0nyxsVDy7hta5ZEud/hAdgXF5S
+        JJgAGNOXuiaVwegZNPeQnYC+/fPmmVfDwhugRuo=
+X-Google-Smtp-Source: APXvYqyvfBNIqjWIKreeMWxm6LxZ+e3NprufUy8Guv6wiY3P0Y5Y92XxFkqxlQycu+lO//vYesMKWVBa1nEhSzksv28=
+X-Received: by 2002:a02:c916:: with SMTP id t22mr21391578jao.24.1563863403112;
+ Mon, 22 Jul 2019 23:30:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-3-brgl@bgdev.pl>
- <20190722160603.GY9224@smile.fi.intel.com>
-In-Reply-To: <20190722160603.GY9224@smile.fi.intel.com>
+References: <20190722150302.29526-1-brgl@bgdev.pl> <20190722150302.29526-8-brgl@bgdev.pl>
+ <20190722160908.GZ9224@smile.fi.intel.com>
+In-Reply-To: <20190722160908.GZ9224@smile.fi.intel.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Tue, 23 Jul 2019 08:28:00 +0200
-Message-ID: <CAMRc=Mfuvh6byfPhPdB51dy_YbAS5scJQT3n3pL_5VZLCjB3Hw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/7] backlight: gpio: simplify the platform data handling
+Date:   Tue, 23 Jul 2019 08:29:52 +0200
+Message-ID: <CAMRc=McGTk+i0SzWN7AvGu3deYbXX_rJX=7+dKRpKFPKM_qxDA@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] backlight: gpio: use a helper variable for &pdev->dev
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -68,53 +68,35 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-pon., 22 lip 2019 o 18:06 Andy Shevchenko
+pon., 22 lip 2019 o 18:09 Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> napisa=C5=82(a):
 >
-> On Mon, Jul 22, 2019 at 05:02:57PM +0200, Bartosz Golaszewski wrote:
+> On Mon, Jul 22, 2019 at 05:03:02PM +0200, Bartosz Golaszewski wrote:
 > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > >
-> > Now that the last user of platform data (sh ecovec24) defines a proper
-> > GPIO lookup and sets the 'default-on' device property, we can drop the
-> > platform_data-specific GPIO handling and unify a big chunk of code.
-> >
-> > The only field used from the platform data is now the fbdev pointer.
+> > Instead of dereferencing pdev each time, use a helper variable for
+> > the associated device pointer.
 >
-> > -static int gpio_backlight_probe_dt(struct platform_device *pdev,
-> > -                                struct gpio_backlight *gbl)
-> > -{
-> > -     struct device *dev =3D &pdev->dev;
-> > -     enum gpiod_flags flags;
-> > -     int ret;
-> > -
-> > -     gbl->def_value =3D device_property_read_bool(dev, "default-on");
-> > -     flags =3D gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
-> > -
-> > -     gbl->gpiod =3D devm_gpiod_get(dev, NULL, flags);
-> > -     if (IS_ERR(gbl->gpiod)) {
-> > -             ret =3D PTR_ERR(gbl->gpiod);
-> > -
-> > -             if (ret !=3D -EPROBE_DEFER) {
-> > -                     dev_err(dev,
-> > -                             "Error: The gpios parameter is missing or=
- invalid.\n");
-> > -             }
-> > -             return ret;
-> > -     }
-> > -
-> > -     return 0;
-> > -}
+> >  static int gpio_backlight_probe(struct platform_device *pdev)
+> >  {
+> > -     struct gpio_backlight_platform_data *pdata =3D
+> > -             dev_get_platdata(&pdev->dev);
+> > +     struct gpio_backlight_platform_data *pdata;
+> >       struct backlight_properties props;
+> >       struct backlight_device *bl;
+> >       struct gpio_backlight *gbl;
+> >       enum gpiod_flags flags;
+> > +     struct device *dev;
 >
-> Why not leave this function (perhaps with different name)?
+> Can't we do
 >
-> --
-> With Best Regards,
-> Andy Shevchenko
+>         struct device dev =3D &pdev->dev;
+>         struct gpio_backlight_platform_data *pdata =3D dev_get_platdata(d=
+ev);
 >
+> ? It fits 80 nicely.
 >
 
-Why would we do that if the entire probe() function is now less than
-50 lines long? Also: it gets inlined by the compiler anyway. It
-doesn't make sense IMO.
+IMO it's more readable like that with the reverse christmas tree layout.
 
 Bart
