@@ -2,146 +2,231 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D0172D2A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jul 2019 13:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0709F72DA8
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jul 2019 13:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726960AbfGXLOE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 24 Jul 2019 07:14:04 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:37087 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727402AbfGXLOD (ORCPT
+        id S1727310AbfGXLcy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 24 Jul 2019 07:32:54 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:40614 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726514AbfGXLcy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 24 Jul 2019 07:14:03 -0400
-Received: by mail-wm1-f68.google.com with SMTP id f17so41230860wme.2
-        for <linux-fbdev@vger.kernel.org>; Wed, 24 Jul 2019 04:14:02 -0700 (PDT)
+        Wed, 24 Jul 2019 07:32:54 -0400
+Received: by mail-ed1-f66.google.com with SMTP id k8so46791610eds.7
+        for <linux-fbdev@vger.kernel.org>; Wed, 24 Jul 2019 04:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7NyRu0tx3w+dLLQ6/dneDxJh1D9iVMTSGGH2CPUAo/c=;
-        b=ufYYjVec/kvhmg39Q3zq/jFjiLdLC9vtny5aJgVO4Lp225heuEYfYuddTPewKY68GB
-         GFd9hONJsyc/pjx7948e2iiOHpwjxBH1adsyByDlp2IVTXsmBc5J/T2Q13mP4Je306Ah
-         whztj9zZujrWsLF/GxRhou1EKUfVQDIs4rhTUix2oaCIlIXcFEK7YVAGTTNpgg1S3bcc
-         cTG22FbrfXPgn1yleXnMI4R3t7xJeEXNJ42G4rL0u1j+slO9cBA/AeIeUBd4PW1SQ3EE
-         GvXB6ePJhAsLZCprxL28nuwbJtvJZvpQlsOm/o+9bMvbOG8wD/nXyunAit68PGMWKZEh
-         CkoA==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=TvSR1GpinYnKFFXwv578d5HhS8RV+3u62GnTeJTmtmc=;
+        b=YcuRj4I9i6dm/t6tgeYA+PUccQwEzcnh5uvVdXJw0vcUPJBs8tm559+V+FB8zRt73S
+         pcdrDTHbz1p6rfIC4/eC4JZCUFaXf/3pRdbyITnJb6jnUKUzmwNsbglEUC2MXDiUQ8EW
+         8Ir4FlUf5A3PycpUVgLa+PpVoBvOzO68HlXCY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7NyRu0tx3w+dLLQ6/dneDxJh1D9iVMTSGGH2CPUAo/c=;
-        b=B7tbzCXe6YAWO5bUG7lSr/hNaoqmJ1aYotAZxZz200nv6hIPWzkmC2F6kJgYF9Hq6K
-         m94cl6HReyzxy3zcVm+WTQRDqO4rRLRQA71qVYRRZwNZoJERaEJFuAQBmiC3KZWTkWzA
-         YbEt/Frpzr/zgB1t58mJxLQGNuo7EsgEf+LTou03a5hSjCGoNHKJrcNq5W10PsJfiVJX
-         cOB1HPaPEdAe6+U01Q8jWPLJ7ZL5exQyX10pTyMnrLEvR/Hn5NcZhi9VsaDafBbYuNtn
-         LqI8fSqeHE4shKmuZscCAnzQhQYfUe+7Wl9/RaCU1rrJuWX0xRVXVZUbNC/7C8c49xwc
-         KMrw==
-X-Gm-Message-State: APjAAAWVxslujWfmTM0LqVhoDuBeYNedoJNy/YaE4jDQ1zFuIM+pIFRp
-        3MlYcVDipLGmOOQ56HP4PkgqzQ==
-X-Google-Smtp-Source: APXvYqzfMApTQXYMpBScWR9bk4kJ2771Xs86B/GfU/9afdNHqXHh096SssyjdsJTlYUpAz1NrlsIJg==
-X-Received: by 2002:a1c:c742:: with SMTP id x63mr78332968wmf.0.1563966841429;
-        Wed, 24 Jul 2019 04:14:01 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id u13sm54703536wrq.62.2019.07.24.04.14.00
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=TvSR1GpinYnKFFXwv578d5HhS8RV+3u62GnTeJTmtmc=;
+        b=p/5d/RZS9Jtwd3U8bPqqtiUTeMp4ApIdQ1MCn7tYv0K1jsrCtmZNwGvC4zUyuOZyXm
+         oLwGKNefFkEVym5wla20f1ltAocT9s+ihMj4KfX6//dSf2ocxHvfghzO7hK2s6J1F/Td
+         WdbESOMZUcHKrxLARXfdEtea+CulaYInQQdJZ/ZvVYlJRzUbRXpucubigsOID0AFD6hE
+         XGSGEIDHn587myTp90rTz3mEExDB8uUrEKbe0NgqV0YYh2sYVVtACVlpR1aodsyQBTgE
+         o/AMJq+6uDZPtkORDq0GS0Tlkfjmto+vp9CNoolaCpbW3hwM0FcNWPoSqcUFP6Rs7akY
+         3liw==
+X-Gm-Message-State: APjAAAUVlZoKcxgKAno0W0qR9wUR3tZ/GpGgC60qKLqfGZVgp0K3IqPR
+        E4KDahKdXaPm6dGlFseKoxc=
+X-Google-Smtp-Source: APXvYqxWaQE17/WDZTYKtz7xpkpuC+BPEMbX1bQL5F9KMn7LzJ4wlYmnQt/j5rqYlW4hxzGHECPzZw==
+X-Received: by 2002:a17:906:e241:: with SMTP id gq1mr61539404ejb.265.1563967971810;
+        Wed, 24 Jul 2019 04:32:51 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id i18sm13003069ede.65.2019.07.24.04.32.50
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Jul 2019 04:14:00 -0700 (PDT)
-Date:   Wed, 24 Jul 2019 12:13:59 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v3 7/7] backlight: gpio: use a helper variable for
- &pdev->dev
-Message-ID: <20190724111359.c262dcwwikn3j7fu@holly.lan>
-References: <20190724082508.27617-1-brgl@bgdev.pl>
- <20190724082508.27617-8-brgl@bgdev.pl>
+        Wed, 24 Jul 2019 04:32:50 -0700 (PDT)
+Date:   Wed, 24 Jul 2019 13:32:48 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Zenghui Yu <yuzenghui@huawei.com>
+Cc:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, daniel.vetter@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, sam@ravnborg.org,
+        linux-kernel@vger.kernel.org, wanghaibin.wang@huawei.com,
+        zhang.zhanghailiang@huawei.com, yezengruan@huawei.com,
+        Feng Tiantian <fengtiantian@huawei.com>
+Subject: Re: [RFC PATCH] fbcon: fix ypos over boundary issue
+Message-ID: <20190724113248.GW15868@phenom.ffwll.local>
+Mail-Followup-To: Zenghui Yu <yuzenghui@huawei.com>,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, maarten.lankhorst@linux.intel.com,
+        sam@ravnborg.org, linux-kernel@vger.kernel.org,
+        wanghaibin.wang@huawei.com, zhang.zhanghailiang@huawei.com,
+        yezengruan@huawei.com, Feng Tiantian <fengtiantian@huawei.com>
+References: <1562901216-9916-1-git-send-email-yuzenghui@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190724082508.27617-8-brgl@bgdev.pl>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <1562901216-9916-1-git-send-email-yuzenghui@huawei.com>
+X-Operating-System: Linux phenom 4.19.0-5-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jul 24, 2019 at 10:25:08AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Fri, Jul 12, 2019 at 03:13:36AM +0000, Zenghui Yu wrote:
+> From: Feng Tiantian <fengtiantian@huawei.com>
 > 
-> Instead of dereferencing pdev each time, use a helper variable for
-> the associated device pointer.
+> While using "top" on a CentOS guest's VNC-client, then continuously press
+> "Shift+PgUp", the guest kernel will get panic! Backtrace is attached below.
+> We tested it on 5.2.0, and the issue remains.
 > 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
+> [   66.946362] Unable to handle kernel paging request at virtual address ffff00000e240840
+> [   66.946363] Mem abort info:
+> [   66.946364]   Exception class = DABT (current EL), IL = 32 bits
+> [   66.946365]   SET = 0, FnV = 0
+> [   66.946366]   EA = 0, S1PTW = 0
+> [   66.946367] Data abort info:
+> [   66.946368]   ISV = 0, ISS = 0x00000047
+> [   66.946368]   CM = 0, WnR = 1
+> [   66.946370] swapper pgtable: 64k pages, 48-bit VAs, pgd = ffff000009660000
+> [   66.946372] [ffff00000e240840] *pgd=000000023ffe0003, *pud=000000023ffe0003, *pmd=000000023ffd0003, *pte=0000000000000000
+> [   66.946378] Internal error: Oops: 96000047 [#1] SMP
+> [   66.946379] Modules linked in: vfat fat crc32_ce ghash_ce sg sha2_ce sha256_arm64 virtio_balloon virtio_net sha1_ce ip_tables ext4 mbcache jbd2 virtio_gpu drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops ttm drm i2c_core virtio_scsi virtio_pci virtio_mmio virtio_ring virtio
+> [   66.946403] CPU: 0 PID: 1035 Comm: top Not tainted 4.14.0-49.el7a.aarch64 #1
+> [   66.946404] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+> [   66.946405] task: ffff8001c18fdc00 task.stack: ffff00000d4e0000
+> [   66.946409] PC is at sys_imageblit+0x40c/0x10000 [sysimgblt]
+> [   66.946431] LR is at drm_fb_helper_sys_imageblit+0x28/0x4c [drm_kms_helper]
+> [   66.946433] pc : [<ffff0000020a040c>] lr : [<ffff000002202e74>] pstate: 00000005
+> [   66.946433] sp : ffff00000d4ef7f0
+> [   66.946434] x29: ffff00000d4ef7f0 x28: 00000000000001ff
+> [   66.946436] x27: ffff8001c1c88100 x26: 0000000000000001
+> [   66.946438] x25: 00000000000001f0 x24: 0000000000000018
+> [   66.946440] x23: 0000000000000000 x22: ffff00000d4ef978
+> [   66.946442] x21: ffff00000e240840 x20: 0000000000000000
+> [   66.946444] x19: ffff8001c98c9000 x18: 0000fffff9d56670
+> [   66.946445] x17: 0000000000000000 x16: 0000000000000000
+> [   66.946447] x15: 0000000000000008 x14: 1b20202020202020
+> [   66.946449] x13: 00000000000001f0 x12: 000000000000003e
+> [   66.946450] x11: 000000000000000f x10: ffff8001c8400000
+> [   66.946452] x9 : 0000000000aaaaaa x8 : 0000000000000001
+> [   66.946454] x7 : ffff0000020b0090 x6 : 0000000000000001
+> [   66.946456] x5 : 0000000000000000 x4 : 0000000000000000
+> [   66.946457] x3 : ffff8001c8400000 x2 : ffff00000e240840
+> [   66.946459] x1 : 00000000000001ef x0 : 0000000000000007
+> [   66.946461] Process top (pid: 1035, stack limit = 0xffff00000d4e0000)
+> [   66.946462] Call trace:
+> [   66.946464] Exception stack(0xffff00000d4ef6b0 to 0xffff00000d4ef7f0)
+> [   66.946465] f6a0:                                   0000000000000007 00000000000001ef
+> [   66.946467] f6c0: ffff00000e240840 ffff8001c8400000 0000000000000000 0000000000000000
+> [   66.946468] f6e0: 0000000000000001 ffff0000020b0090 0000000000000001 0000000000aaaaaa
+> [   66.946470] f700: ffff8001c8400000 000000000000000f 000000000000003e 00000000000001f0
+> [   66.946471] f720: 1b20202020202020 0000000000000008 0000000000000000 0000000000000000
+> [   66.946472] f740: 0000fffff9d56670 ffff8001c98c9000 0000000000000000 ffff00000e240840
+> [   66.946474] f760: ffff00000d4ef978 0000000000000000 0000000000000018 00000000000001f0
+> [   66.946475] f780: 0000000000000001 ffff8001c1c88100 00000000000001ff ffff00000d4ef7f0
+> [   66.946476] f7a0: ffff000002202e74 ffff00000d4ef7f0 ffff0000020a040c 0000000000000005
+> [   66.946478] f7c0: ffff00000d4ef7e0 ffff0000080ea614 0001000000000000 ffff000008152f08
+> [   66.946479] f7e0: ffff00000d4ef7f0 ffff0000020a040c
+> [   66.946481] [<ffff0000020a040c>] sys_imageblit+0x40c/0x10000 [sysimgblt]
+> [   66.946501] [<ffff000002202e74>] drm_fb_helper_sys_imageblit+0x28/0x4c [drm_kms_helper]
+> [   66.946510] [<ffff0000022a12dc>] virtio_gpu_3d_imageblit+0x2c/0x78 [virtio_gpu]
+> [   66.946515] [<ffff00000847f458>] bit_putcs+0x288/0x49c
+> [   66.946517] [<ffff00000847ad24>] fbcon_putcs+0x114/0x148
+> [   66.946519] [<ffff0000084fe92c>] do_update_region+0x118/0x19c
+> [   66.946521] [<ffff00000850413c>] do_con_trol+0x114c/0x1314
+> [   66.946523] [<ffff0000085044dc>] do_con_write.part.22+0x1d8/0x890
+> [   66.946525] [<ffff000008504c88>] con_write+0x84/0x8c
+> [   66.946527] [<ffff0000084ec7f0>] n_tty_write+0x19c/0x408
+> [   66.946529] [<ffff0000084e9120>] tty_write+0x150/0x270
+> [   66.946532] [<ffff00000829d558>] __vfs_write+0x58/0x180
+> [   66.946534] [<ffff00000829d880>] vfs_write+0xa8/0x1a0
+> [   66.946536] [<ffff00000829db40>] SyS_write+0x60/0xc0
+> [   66.946537] Exception stack(0xffff00000d4efec0 to 0xffff00000d4f0000)
+> [   66.946539] fec0: 0000000000000001 0000000000457958 0000000000000800 0000000000000000
+> [   66.946540] fee0: 00000000fbad2885 0000000000000bd0 0000ffff8556add4 0000000000000000
+> [   66.946541] ff00: 0000000000000040 0000000000000000 0000000000434a88 0000000000000012
+> [   66.946543] ff20: 0000000100000000 0000fffff9d564f0 0000fffff9d564a0 0000000000000008
+> [   66.946544] ff40: 0000000000000000 0000ffff85593b1c 0000fffff9d56670 0000000000000800
+> [   66.946546] ff60: 0000000000457958 0000ffff856a1158 0000000000000800 0000ffff85720000
+> [   66.946547] ff80: 0000000000000000 0000ffff856f604c 0000000000000000 0000000000436000
+> [   66.946548] ffa0: 000000001c90a160 0000fffff9d56f20 0000ffff855965f4 0000fffff9d56f20
+> [   66.946549] ffc0: 0000ffff855f12c8 0000000020000000 0000000000000001 0000000000000040
+> [   66.946551] ffe0: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [   66.946554] [<ffff00000808359c>] __sys_trace_return+0x0/0x4
+> [   66.946556] Code: 0a080084 b86478e4 0a040124 4a050084 (b9000044)
+> [   66.946561] ---[ end trace 32d49c68b19c4796 ]---
+> [   66.946562] Kernel panic - not syncing: Fatal exception
+> [   66.946564] SMP: stopping secondary CPUs
+> [   66.946596] Kernel Offset: disabled
+> [   66.946598] CPU features: 0x1802008
+> [   66.946598] Memory Limit: none
+> [   67.092353] ---[ end Kernel panic - not syncing: Fatal exception
+> 
+> From our non-expert analysis, fbcon ypos will sometimes over boundary and
+> then fbcon_putcs() access invalid VGA framebuffer address. We modify the
+> real_y() to make sure fbcon ypos is always less than rows.
+> 
+> Reported-by: Zengruan Ye <yezengruan@huawei.com>
+> Signed-off-by: Feng Tiantian <fengtiantian@huawei.com>
+> Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
 > ---
->  drivers/video/backlight/gpio_backlight.c | 19 +++++++++----------
->  1 file changed, 9 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index cd6a75bca9cc..7dc4f90d926b 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -54,29 +54,29 @@ static const struct backlight_ops gpio_backlight_ops = {
+> Hi Bartlomiej,
+> 
+> Zengruan had reported this issue [1] but received no reply. Does it make
+> sense to fix this issue? Could you please take a look into this patch?
+> 
+> Thanks,
+> zenghui
+> 
+> [1] https://lkml.org/lkml/2018/11/27/639
+> 
+>  drivers/video/fbdev/core/fbcon.h | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+> index 20dea85..b1aa00e 100644
+> --- a/drivers/video/fbdev/core/fbcon.h
+> +++ b/drivers/video/fbdev/core/fbcon.h
+> @@ -230,7 +230,10 @@ static inline int real_y(struct fbcon_display *p, int ypos)
+>  	int rows = p->vrows;
 >  
->  static int gpio_backlight_probe(struct platform_device *pdev)
->  {
-> -	struct gpio_backlight_platform_data *pdata =
-> -		dev_get_platdata(&pdev->dev);
-> +	struct device *dev = &pdev->dev;
-> +	struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
->  	struct backlight_properties props;
->  	struct backlight_device *bl;
->  	struct gpio_backlight *gbl;
->  	enum gpiod_flags flags;
->  	int ret, def_value;
+>  	ypos += p->yscroll;
+> -	return ypos < rows ? ypos : ypos - rows;
+> +	if (rows == 0)
+> +		return ypos;
+
+p->vrows == 0 looks like something that really should be impossible. Is
+this really needed to fix your bug?
+
+> +	else
+> +		return ypos < rows ? ypos : ypos % rows;
+
+This part here makes sense, but means that the ypos rollover somewhere
+else in fbcon.c is buggy or racy. I think the right fix would be to adjust
+ywrap_up and ywrap_down to not just substract/add p->vcrows once, but do
+the modulus like you do here.
+
+Probably same issue with ypan_up and ypan_up/down(_redraw). Doing a
+
+	count %= p->vrows;
+
+or
+	
+	count %= p->vrows - vc->vc_rows;
+
+first should fix this.
+-Daniel
+
+>  }
 >  
-> -	gbl = devm_kzalloc(&pdev->dev, sizeof(*gbl), GFP_KERNEL);
-> +	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
->  	if (gbl == NULL)
->  		return -ENOMEM;
->  
->  	if (pdata)
->  		gbl->fbdev = pdata->fbdev;
->  
-> -	def_value = device_property_read_bool(&pdev->dev, "default-on");
-> +	def_value = device_property_read_bool(dev, "default-on");
->  	flags = def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
->  
-> -	gbl->gpiod = devm_gpiod_get(&pdev->dev, NULL, flags);
-> +	gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
->  	if (IS_ERR(gbl->gpiod)) {
->  		ret = PTR_ERR(gbl->gpiod);
->  		if (ret != -EPROBE_DEFER) {
-> -			dev_err(&pdev->dev,
-> +			dev_err(dev,
->  				"Error: The gpios parameter is missing or invalid.\n");
->  		}
->  		return ret;
-> @@ -85,11 +85,10 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->  	memset(&props, 0, sizeof(props));
->  	props.type = BACKLIGHT_RAW;
->  	props.max_brightness = 1;
-> -	bl = devm_backlight_device_register(&pdev->dev, dev_name(&pdev->dev),
-> -					&pdev->dev, gbl, &gpio_backlight_ops,
-> -					&props);
-> +	bl = devm_backlight_device_register(dev, dev_name(dev), dev, gbl,
-> +					    &gpio_backlight_ops, &props);
->  	if (IS_ERR(bl)) {
-> -		dev_err(&pdev->dev, "failed to register backlight\n");
-> +		dev_err(dev, "failed to register backlight\n");
->  		return PTR_ERR(bl);
->  	}
 >  
 > -- 
-> 2.21.0
+> 1.8.3.1
 > 
+> 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
