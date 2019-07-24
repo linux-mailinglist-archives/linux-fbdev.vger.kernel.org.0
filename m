@@ -2,58 +2,57 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ABAF72FAC
-	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jul 2019 15:17:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9B472FB7
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jul 2019 15:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728513AbfGXNRv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 24 Jul 2019 09:17:51 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:42632 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727368AbfGXNRv (ORCPT
+        id S1727532AbfGXNTG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 24 Jul 2019 09:19:06 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:39188 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727528AbfGXNTG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 24 Jul 2019 09:17:51 -0400
-Received: by mail-pf1-f193.google.com with SMTP id q10so20944627pff.9;
-        Wed, 24 Jul 2019 06:17:50 -0700 (PDT)
+        Wed, 24 Jul 2019 09:19:06 -0400
+Received: by mail-pg1-f196.google.com with SMTP id u17so21230409pgi.6;
+        Wed, 24 Jul 2019 06:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=ynlMYwwbUrHc4SOrISDzcpXFXjwRYIJ/NcSOEUlhS+4=;
-        b=uolqLFiJouhYH33CRrKgT+//sVZzPIrfc59iUU6EgZhr00v4l0ptOaDu0hPc/o53ar
-         JZj8TTCyFEPxSh4IbMhxTQPCNR9ipqji3s6auZzfK791eBXTBiBs3gguqcYHBBozrHiO
-         W/HqJYp5H/1iQycbJ1Wpy0ZgNnFmvHyspQOT2z8E2W6ViulHCH/ANPwCvlwVuqWzgp1v
-         zDAOQuScR4t07QwfXSmBD4F/lUQexdNp9KWNKzwmbYXIDOhu57YXEtttk1lxL4c/RXq2
-         NUInL4ZGIogVQqnGOmM6Ly/AxqhqdA0RrNWOdXUgUEE8QKXW5AwBQ7m8tC26h6QogKTy
-         GkTg==
+        bh=187+tifTVmT8+OOjO9Brc7YUyKXShVPSiDjBCP8NPi4=;
+        b=N8bju59PXmAonbSc85iXGzLL6y3xg2uZwJKtZPnFLv2O7xjuyo9lHS8oDnWzmq4ncq
+         0o8YIkXVsfExVs9ti4kRZJ3/TCeFj37VJoH6+hI0pGlIgW3mkjTuiZNpKxltae0N6KiL
+         RXKBrP2eZX5p1zCL/os4C9yuaav6QIabBWUAOfjrmiZplNtGdFLaCFalUkp6TumrfJrP
+         81AMW8WP9t9LQ487Y2BP/a4Ip3pQqkZkLJ317FXDwta6EUMVlnFTuW1e6hQpF2lW501Z
+         4oN2b2VSNda87QCtFOHyKWHS/jmg7bCH/GIUI/zgfN6A1xNFvWEkMssC6kwI+u3fWG8g
+         QQfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=ynlMYwwbUrHc4SOrISDzcpXFXjwRYIJ/NcSOEUlhS+4=;
-        b=YUV7a+LqwrHSmLbFTdLVLpyb/1CBJQ9g3JimJWND6YghInlhuBenraz2IOPSSBlRIh
-         t64MNcRB3uYT8/ZKo0e/rp1eX07DSf/Dq9iaTK3nhAQxev4AGRgbOYHdIy4HKTtbbNbS
-         aX8b1LvFjGKXWkUh7McyDlyJpWLmXAM3Hz8ZFVROFZytN7+0ZLMKwKbh64JxwmFdAKCR
-         gSIkmwCuGo/8Pgi73QVyZYCLjSr0mj1Kpi4XCstXBR2tAKQl4W8jmzshvPIUAPo+o4OF
-         iLBshK5QDZSiVWfDFbxaW9ooti0RMDRyOGAaiJnMXxPEpJLQgQNEMtnOIZckbOLXN8Pm
-         j9Pg==
-X-Gm-Message-State: APjAAAXOrcovfnymutJHIWF6HSd5xJNa0HbT7nIV81D57vSZ36XoUysy
-        uwTd52ViFBCZDxMnPX0siFw=
-X-Google-Smtp-Source: APXvYqxe+3Q32Rp5kuQ5S3t50hpt5vPn7SU/JGnCM+q6dfXdaWCHHt6DzrAraogN/MLgkzva0xgd5A==
-X-Received: by 2002:a63:8a43:: with SMTP id y64mr80625585pgd.104.1563974270480;
-        Wed, 24 Jul 2019 06:17:50 -0700 (PDT)
+        bh=187+tifTVmT8+OOjO9Brc7YUyKXShVPSiDjBCP8NPi4=;
+        b=e05SLjwj0eVf+IjVyOkXy6WBeVtY/yxB/Eu4vYzKWJNaFC/Uj5oMwxeV/mS7j+eHaR
+         hh4iJEyXuMCiicCCR5bS+TONXBppUWs7+/KpgPWL3i4pkFfNesYtttcEzXfpjvXEcBtl
+         ZJDUxUGdDZumpCwiGBZDS0buxWIbW4rsBqcWjJVF7NUuP+ce7c2cmx9mfojRCQIYmEhk
+         kWyJrLHfDbuIuP/EoGM5or308lCQ+tiF/+x3UtC0jUtGFMw4NfQuyLxVyRvQsivwHJMl
+         la9ALEUw2iF1yozU7kavo8r/FkasKu32/RvY6ZYHgJSQbdh+fZ7ok+OhURwdNKQ0QdvT
+         A2Og==
+X-Gm-Message-State: APjAAAWUtOqVmarkGVNnEWg5E5W/k6VyS/GEOc9wxl1jyvDUckDetN9k
+        jh0tjIEWaWY8V3v+vZVPwA0=
+X-Google-Smtp-Source: APXvYqx0xnEr8N9RRGfndLrAHVr4nivY1lnSIq0jSryfTg4ogib6Ugw9VmUngELr/aWPiMAGKtw5SQ==
+X-Received: by 2002:a17:90a:3344:: with SMTP id m62mr87950008pjb.135.1563974345617;
+        Wed, 24 Jul 2019 06:19:05 -0700 (PDT)
 Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
-        by smtp.gmail.com with ESMTPSA id 143sm67567613pgc.6.2019.07.24.06.17.47
+        by smtp.gmail.com with ESMTPSA id a5sm39888253pjv.21.2019.07.24.06.19.03
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 24 Jul 2019 06:17:49 -0700 (PDT)
+        Wed, 24 Jul 2019 06:19:05 -0700 (PDT)
 From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] fbdev: sm712fb: Use dev_get_drvdata
-Date:   Wed, 24 Jul 2019 21:17:44 +0800
-Message-Id: <20190724131744.1709-1-hslester96@gmail.com>
+Subject: [PATCH] video: fbdev: aty: Use dev_get_drvdata
+Date:   Wed, 24 Jul 2019 21:19:00 +0800
+Message-Id: <20190724131900.2039-1-hslester96@gmail.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,37 +67,33 @@ use dev_get_drvdata to make code simpler.
 
 Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/video/fbdev/sm712fb.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/aty/radeon_base.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
-index 7b1b0d8d27a7..207d0add684b 100644
---- a/drivers/video/fbdev/sm712fb.c
-+++ b/drivers/video/fbdev/sm712fb.c
-@@ -1694,10 +1694,8 @@ static void smtcfb_pci_remove(struct pci_dev *pdev)
- 
- static int __maybe_unused smtcfb_pci_suspend(struct device *device)
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index 6f891d82eebe..5d042653e9bd 100644
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -2217,8 +2217,7 @@ static ssize_t radeon_show_edid1(struct file *filp, struct kobject *kobj,
+ 				 char *buf, loff_t off, size_t count)
  {
--	struct pci_dev *pdev = to_pci_dev(device);
--	struct smtcfb_info *sfb;
-+	struct smtcfb_info *sfb = dev_get_drvdata(device);
+ 	struct device *dev = container_of(kobj, struct device, kobj);
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-        struct fb_info *info = pci_get_drvdata(pdev);
++		struct fb_info *info = dev_get_drvdata(dev);
+         struct radeonfb_info *rinfo = info->par;
  
--	sfb = pci_get_drvdata(pdev);
- 
- 	/* set the hw in sleep mode use external clock and self memory refresh
- 	 * so that we can turn off internal PLLs later on
-@@ -1717,10 +1715,8 @@ static int __maybe_unused smtcfb_pci_suspend(struct device *device)
- 
- static int __maybe_unused smtcfb_pci_resume(struct device *device)
+ 	return radeon_show_one_edid(buf, off, count, rinfo->mon1_EDID);
+@@ -2230,8 +2229,7 @@ static ssize_t radeon_show_edid2(struct file *filp, struct kobject *kobj,
+ 				 char *buf, loff_t off, size_t count)
  {
--	struct pci_dev *pdev = to_pci_dev(device);
--	struct smtcfb_info *sfb;
-+	struct smtcfb_info *sfb = dev_get_drvdata(device);
+ 	struct device *dev = container_of(kobj, struct device, kobj);
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-        struct fb_info *info = pci_get_drvdata(pdev);
++		struct fb_info *info = dev_get_drvdata(dev);
+         struct radeonfb_info *rinfo = info->par;
  
--	sfb = pci_get_drvdata(pdev);
- 
- 	/* reinit hardware */
- 	sm7xx_init_hw();
+ 	return radeon_show_one_edid(buf, off, count, rinfo->mon2_EDID);
 -- 
 2.20.1
 
