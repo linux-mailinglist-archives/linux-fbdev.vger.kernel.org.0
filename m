@@ -2,33 +2,48 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 115F77571A
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jul 2019 20:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0233759FB
+	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Jul 2019 00:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726126AbfGYSkC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 25 Jul 2019 14:40:02 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:22196 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726120AbfGYSkC (ORCPT
+        id S1726828AbfGYWCf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 25 Jul 2019 18:02:35 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:47126 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726723AbfGYWCe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 25 Jul 2019 14:40:02 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d13 with ME
-        id h6fu2000Y4n7eLC036fwcM; Thu, 25 Jul 2019 20:40:00 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 25 Jul 2019 20:40:00 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     gregkh@linuxfoundation.org, nishadkamdar@gmail.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] Staging: fbtft: Fix some typo. pdc8544 --> pcd8544
-Date:   Thu, 25 Jul 2019 20:38:56 +0200
-Message-Id: <20190725183856.17616-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Thu, 25 Jul 2019 18:02:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1564092151; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:references; bh=heKcREY22PalpQ/9p8Cd9d1zdSepPrb23urjeSbGB5s=;
+        b=mFrG2QDIrMMa1N2Z2OVlTuF1yYZ3LchMkFWqDfMspQ9nIQIHt+4ryyS8D1eO043/xYvhbR
+        N2FT54nOWkY/RPgX2yiBHDmmzZM/1mmRTn9qpQrY04TflmjGu4/L1JyZ5aAqdEOpvFe+8V
+        Dwl76dgF+6zF8aB9BWW/YLBVr0ngLbU=
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paul.burton@mips.com>,
+        James Hogan <jhogan@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     od@zcrc.me, devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: [PATCH 00/11] JZ4740 SoC cleanup
+Date:   Thu, 25 Jul 2019 18:02:04 -0400
+Message-Id: <20190725220215.460-1-paul@crapouillou.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -36,37 +51,28 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver is related to 'pcd8544'.
-However, 2 strings are about pdc8544 (c and d switched)
-Fix it.
+Hi,
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is only theorical. It is based on the fact that a part of the
-filename (i.e. pcd8544) looks misspelled in the file itself.
-I don't know the implication of FBTFT_REGISTER_DRIVER and MODULE_ALIAS and
-if additional adjustments are needed.
----
- drivers/staging/fbtft/fb_pcd8544.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patchset converts the Qi LB60 MIPS board to devicetree and makes it
+use all the shiny new drivers that have been developed or updated
+recently.
 
-diff --git a/drivers/staging/fbtft/fb_pcd8544.c b/drivers/staging/fbtft/fb_pcd8544.c
-index ad49973ad594..08f8a4bb8772 100644
---- a/drivers/staging/fbtft/fb_pcd8544.c
-+++ b/drivers/staging/fbtft/fb_pcd8544.c
-@@ -157,10 +157,10 @@ static struct fbtft_display display = {
- 	.backlight = 1,
- };
- 
--FBTFT_REGISTER_DRIVER(DRVNAME, "philips,pdc8544", &display);
-+FBTFT_REGISTER_DRIVER(DRVNAME, "philips,pcd8544", &display);
- 
- MODULE_ALIAS("spi:" DRVNAME);
--MODULE_ALIAS("spi:pdc8544");
-+MODULE_ALIAS("spi:pcd8544");
- 
- MODULE_DESCRIPTION("FB driver for the PCD8544 LCD Controller");
- MODULE_AUTHOR("Noralf Tronnes");
--- 
-2.20.1
+All the crappy old drivers and custom code can be dropped since they
+have been replaced by better alternatives.
+
+Some of these alternatives are not yet in 5.3-rc1 but have already been
+accepted by their respective maintainer for inclusion in 5.4-rc1.
+
+To upstream this patchset, I think that as soon as MIPS maintainers
+agree to take patches 01-03/11 and 11/11, the other patches can go
+through their respective maintainer's tree.
+
+Note for MIPS maintainers:
+Patch 11/11 may conflict with the TCU patchset v15, should this one be
+accepted upstream, but the conflict is tiny and easy to fix. Should this
+case appear, don't hesitate to bother me about it.
+
+Thanks,
+-Paul
+
 
