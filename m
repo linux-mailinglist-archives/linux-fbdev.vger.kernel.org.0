@@ -2,116 +2,71 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1FA75536
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jul 2019 19:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 115F77571A
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jul 2019 20:40:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725945AbfGYRRb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 25 Jul 2019 13:17:31 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:36898 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbfGYRRa (ORCPT
+        id S1726126AbfGYSkC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 25 Jul 2019 14:40:02 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:22196 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726120AbfGYSkC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 25 Jul 2019 13:17:30 -0400
-Received: by mail-pl1-f195.google.com with SMTP id b3so23670839plr.4
-        for <linux-fbdev@vger.kernel.org>; Thu, 25 Jul 2019 10:17:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tPVqVnzmvlRxnAy1nlx0FuoHgdEqnAev2P/iqrvyRAA=;
-        b=Gzmt01iVIH1Bred1XXVjQaOCqWazRRFK9XDsc7huxBWzN5+Wk20p62OgxhtyDEfCjH
-         m4OjvYBjArWhuK+l4JVeBEcLcy1ACe9AyZBHhkrE8Zw9EbZjPhD/aFMWJQCRguVdoNfj
-         Y2/KhTuUR487XJzbutf1bxfnR2xCz1ZysJxLs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tPVqVnzmvlRxnAy1nlx0FuoHgdEqnAev2P/iqrvyRAA=;
-        b=dRpuvfl9C/hjrSpKsnpWYk4Y5MPBmKvHkCw4fjAM5crPGYUdzEGpFmPBfzawDpDbwk
-         3XmdyYrfYdjrAB9LhBqm6/GC+Aj38BtZLtH6UOgRqKPNQ46mv40ulYjTxBuSV6+vueJ4
-         GsaOr3mFduuLnynSf3IUCVrlNqFph02loJ/fPNgg/wuzejCO+PVloWU9L/PvGAvpSRLm
-         2Q18aSLSesthEnIW3SgOPbHQlJPkbnjNuzhd4q1/F/6of5VJF2AA2f/7tQdiC4llnLzE
-         /0DI2Il07dHJtqbReR2o0lpaCoweX3ASlN7vIZVLh7Znbmqy7RL413absWnBegfAW8LM
-         aB7w==
-X-Gm-Message-State: APjAAAWnCAEv+ye/xL12QEnM4K05V835ogB6VpFQFU8LM5M0tthzJwfj
-        WGxlYoWbkyPB4vko9L1K3KKjQQ==
-X-Google-Smtp-Source: APXvYqws5odlydH4ebEFOkZgM8ILSO3F0QORLUvSUh4M4JwkPcu4YkyXn+XUbv1ErfBXv358RQkmHg==
-X-Received: by 2002:a17:902:934a:: with SMTP id g10mr93724757plp.18.1564075050259;
-        Thu, 25 Jul 2019 10:17:30 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id q126sm6606292pfb.56.2019.07.25.10.17.28
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Jul 2019 10:17:28 -0700 (PDT)
-Date:   Thu, 25 Jul 2019 10:17:26 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH v3 0/4] backlight: Expose brightness curve type through
- sysfs
-Message-ID: <20190725171726.GD250418@google.com>
-References: <20190709190007.91260-1-mka@chromium.org>
- <20190722235926.GA250418@google.com>
- <20190725111541.GA23883@dell>
+        Thu, 25 Jul 2019 14:40:02 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d13 with ME
+        id h6fu2000Y4n7eLC036fwcM; Thu, 25 Jul 2019 20:40:00 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 25 Jul 2019 20:40:00 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     gregkh@linuxfoundation.org, nishadkamdar@gmail.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] Staging: fbtft: Fix some typo. pdc8544 --> pcd8544
+Date:   Thu, 25 Jul 2019 20:38:56 +0200
+Message-Id: <20190725183856.17616-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190725111541.GA23883@dell>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 12:15:41PM +0100, Lee Jones wrote:
-> On Mon, 22 Jul 2019, Matthias Kaehlcke wrote:
-> 
-> > On Tue, Jul 09, 2019 at 12:00:03PM -0700, Matthias Kaehlcke wrote:
-> > > Backlight brightness curves can have different shapes. The two main
-> > > types are linear and non-linear curves. The human eye doesn't
-> > > perceive linearly increasing/decreasing brightness as linear (see
-> > > also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
-> > > linearly to human eye"), hence many backlights use non-linear (often
-> > > logarithmic) brightness curves. The type of curve is currently opaque
-> > > to userspace, so userspace often relies on more or less reliable
-> > > heuristics (like the number of brightness levels) to decide whether
-> > > to treat a backlight device as linear or non-linear.
-> > > 
-> > > Export the type of the brightness curve via a new sysfs attribute.
-> > > 
-> > > Matthias Kaehlcke (4):
-> > >   MAINTAINERS: Add entry for stable backlight sysfs ABI documentation
-> > >   backlight: Expose brightness curve type through sysfs
-> > >   backlight: pwm_bl: Set scale type for CIE 1931 curves
-> > >   backlight: pwm_bl: Set scale type for brightness curves specified in
-> > >     the DT
-> > > 
-> > >  .../ABI/testing/sysfs-class-backlight         | 26 ++++++++++++++
-> > >  MAINTAINERS                                   |  2 ++
-> > >  drivers/video/backlight/backlight.c           | 19 ++++++++++
-> > >  drivers/video/backlight/pwm_bl.c              | 35 ++++++++++++++++++-
-> > >  include/linux/backlight.h                     |  8 +++++
-> > >  5 files changed, 89 insertions(+), 1 deletion(-)
-> > >  create mode 100644 Documentation/ABI/testing/sysfs-class-backlight
-> > 
-> > ping, any comments on v3?
-> 
-> Looks like PATCH 2/4 still needs seeing to.
+The driver is related to 'pcd8544'.
+However, 2 strings are about pdc8544 (c and d switched)
+Fix it.
 
-The patch currently doesn't have any comments.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is only theorical. It is based on the fact that a part of the
+filename (i.e. pcd8544) looks misspelled in the file itself.
+I don't know the implication of FBTFT_REGISTER_DRIVER and MODULE_ALIAS and
+if additional adjustments are needed.
+---
+ drivers/staging/fbtft/fb_pcd8544.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Do you see any specific things that need improvement? If so, could you
-comment on the patch?
+diff --git a/drivers/staging/fbtft/fb_pcd8544.c b/drivers/staging/fbtft/fb_pcd8544.c
+index ad49973ad594..08f8a4bb8772 100644
+--- a/drivers/staging/fbtft/fb_pcd8544.c
++++ b/drivers/staging/fbtft/fb_pcd8544.c
+@@ -157,10 +157,10 @@ static struct fbtft_display display = {
+ 	.backlight = 1,
+ };
+ 
+-FBTFT_REGISTER_DRIVER(DRVNAME, "philips,pdc8544", &display);
++FBTFT_REGISTER_DRIVER(DRVNAME, "philips,pcd8544", &display);
+ 
+ MODULE_ALIAS("spi:" DRVNAME);
+-MODULE_ALIAS("spi:pdc8544");
++MODULE_ALIAS("spi:pcd8544");
+ 
+ MODULE_DESCRIPTION("FB driver for the PCD8544 LCD Controller");
+ MODULE_AUTHOR("Noralf Tronnes");
+-- 
+2.20.1
 
-Thanks
-
-Matthias
