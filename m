@@ -2,117 +2,186 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5E974CAF
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jul 2019 13:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 800DD75138
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jul 2019 16:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391692AbfGYLQE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 25 Jul 2019 07:16:04 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:51590 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391693AbfGYLQA (ORCPT
+        id S2387499AbfGYOcb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 25 Jul 2019 10:32:31 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:36256 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387532AbfGYOcb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 25 Jul 2019 07:16:00 -0400
-Received: by mail-wm1-f66.google.com with SMTP id 207so44625218wma.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 25 Jul 2019 04:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=QF+7Jm8pJkonsuJf5bcYYdklp7SuR7E7WLX/qpmLIMY=;
-        b=JPcCwXhG2xYcAxickSomrOJkvgTBB5DjGLN3ImW41oQin65O47uBJez5y6QHqPi4CR
-         R7p/PX3cBDvjHCCXcAM73DTDSepGGTQQ2CN2Mn3M7v7z93rwWzHrKJCmJY9wOEvBDKq2
-         NpiyRbMo36jxYlVEKnTElXwIE0Y6sqOOKYRQcc+CbQLpWYGGyF1vhlYKPIneuigp7lER
-         g/uEtUrvKDd1sm7FXHFVMcoPSdQ6TQYr3xRhUnqsEI0ABKQ9ZgKAV5U2smgQQPt2O5M5
-         Inroyadx6ibMupV0tHIR/8R1NUETYkUXGcS33jsQ20wFt42RB7EmtkbcaAmdRw7W/QHJ
-         31MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=QF+7Jm8pJkonsuJf5bcYYdklp7SuR7E7WLX/qpmLIMY=;
-        b=N8duiNOQi8WbMGeZnFaWHw/UgYQZKSbThMg1sStlW9WWmZNYFXTCkKdixpf8rJDZY6
-         qSHPhwm8qdJI6VrGDaY9AeeFunjZpFjcwGpqPZ/Hi6L256Qho0bqWglfFvAUK8IwaMoI
-         jFmwAepwLF/AYEedx1kas+gM7rMeHb00kG9ZvodPEx3v/ecJzyhWj9V0kGu88IQu045/
-         pPFS2RegFCb2KZnuGyxSOCqMaVfzSB0wv2U7NgQ12uypzDpivBKUlWWb8OBljCVtU+4v
-         IuqhZYsrwOYLkn5Kd3nHsLoOkYf8oofKenTHPdfg7IJOHafq8KhkifC2nbkQwSq2GarG
-         Q86g==
-X-Gm-Message-State: APjAAAViqps2MvaTiDxCILSEatNdlWi+3evSnLpuzXc9H9109b6DXFKB
-        2lkj4Msra9tcfqZOsOujEtJZqw==
-X-Google-Smtp-Source: APXvYqwHJQvJFZHzw1frET7Zmr1qdyEsn845eWjpbVigiDXyd3xqohC1yA+q2+bnBWLbG0Uze50N5Q==
-X-Received: by 2002:a1c:3c04:: with SMTP id j4mr74612867wma.37.1564053358224;
-        Thu, 25 Jul 2019 04:15:58 -0700 (PDT)
-Received: from dell ([2.27.35.164])
-        by smtp.gmail.com with ESMTPSA id y16sm100988574wrg.85.2019.07.25.04.15.47
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Jul 2019 04:15:57 -0700 (PDT)
-Date:   Thu, 25 Jul 2019 12:15:41 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Thu, 25 Jul 2019 10:32:31 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id C94DF804EF;
+        Thu, 25 Jul 2019 16:32:25 +0200 (CEST)
+Date:   Thu, 25 Jul 2019 16:32:24 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH v3 0/4] backlight: Expose brightness curve type through
- sysfs
-Message-ID: <20190725111541.GA23883@dell>
-References: <20190709190007.91260-1-mka@chromium.org>
- <20190722235926.GA250418@google.com>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Jingoo Han <jingoohan1@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Peter Rosin <peda@axentia.se>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v1 1/1] backlight: drop EARLY_EVENT_BLANK support
+Message-ID: <20190725143224.GB31803@ravnborg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190722235926.GA250418@google.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=IkcTkHD0fZMA:10 a=7gkXJVJtAAAA:8 a=KKAkSRfTAAAA:8 a=pGLkceISAAAA:8
+        a=hD80L64hAAAA:8 a=QyXUC8HyAAAA:8 a=20KFwNOVAAAA:8 a=e5mUnYsNAAAA:8
+        a=VwQbUJbxAAAA:8 a=_UGc_VUiAAAA:8 a=ncPXX6QU26INqb4OGQsA:9
+        a=QEXdDO2ut3YA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=cvBusfyB2V15izCimMoJ:22
+        a=Vxmtnl_E_bksehYqCbjh:22 a=AjGcO6oz07-iQ99wixmX:22
+        a=x1x7-7IuMbAoE1UvoNSZ:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 22 Jul 2019, Matthias Kaehlcke wrote:
+There was no users left - so drop the code to support EARLY_FB_BLANK.
+This patch removes the support in backlight,
+and drop the notifier in fbmem.
 
-> On Tue, Jul 09, 2019 at 12:00:03PM -0700, Matthias Kaehlcke wrote:
-> > Backlight brightness curves can have different shapes. The two main
-> > types are linear and non-linear curves. The human eye doesn't
-> > perceive linearly increasing/decreasing brightness as linear (see
-> > also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
-> > linearly to human eye"), hence many backlights use non-linear (often
-> > logarithmic) brightness curves. The type of curve is currently opaque
-> > to userspace, so userspace often relies on more or less reliable
-> > heuristics (like the number of brightness levels) to decide whether
-> > to treat a backlight device as linear or non-linear.
-> > 
-> > Export the type of the brightness curve via a new sysfs attribute.
-> > 
-> > Matthias Kaehlcke (4):
-> >   MAINTAINERS: Add entry for stable backlight sysfs ABI documentation
-> >   backlight: Expose brightness curve type through sysfs
-> >   backlight: pwm_bl: Set scale type for CIE 1931 curves
-> >   backlight: pwm_bl: Set scale type for brightness curves specified in
-> >     the DT
-> > 
-> >  .../ABI/testing/sysfs-class-backlight         | 26 ++++++++++++++
-> >  MAINTAINERS                                   |  2 ++
-> >  drivers/video/backlight/backlight.c           | 19 ++++++++++
-> >  drivers/video/backlight/pwm_bl.c              | 35 ++++++++++++++++++-
-> >  include/linux/backlight.h                     |  8 +++++
-> >  5 files changed, 89 insertions(+), 1 deletion(-)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-class-backlight
-> 
-> ping, any comments on v3?
+That EARLY_FB_BLANK is not used can be verified that no driver set any of:
 
-Looks like PATCH 2/4 still needs seeing to.
+    lcd_ops.early_set_power()
+    lcd_ops.r_early_set_power()
 
+Noticed while browsing backlight code for other reasons.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+Cc: Peter Rosin <peda@axentia.se>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+---
+
+Build tested with various architectures, configs.
+
+Lee, Daniel - OK to commit to drm-misc-next where fbdev stuff is
+maintained today?
+
+Patch needs ack from Bartlomiej first of course.
+
+	Sam
+
+ drivers/video/backlight/lcd.c    |  8 --------
+ drivers/video/fbdev/core/fbmem.c | 12 +-----------
+ include/linux/fb.h               |  4 ----
+ include/linux/lcd.h              | 10 ----------
+ 4 files changed, 1 insertion(+), 33 deletions(-)
+
+diff --git a/drivers/video/backlight/lcd.c b/drivers/video/backlight/lcd.c
+index d6b653aa4ee9..78b033358625 100644
+--- a/drivers/video/backlight/lcd.c
++++ b/drivers/video/backlight/lcd.c
+@@ -39,14 +39,6 @@ static int fb_notifier_callback(struct notifier_block *self,
+ 		if (event == FB_EVENT_BLANK) {
+ 			if (ld->ops->set_power)
+ 				ld->ops->set_power(ld, *(int *)evdata->data);
+-		} else if (event == FB_EARLY_EVENT_BLANK) {
+-			if (ld->ops->early_set_power)
+-				ld->ops->early_set_power(ld,
+-						*(int *)evdata->data);
+-		} else if (event == FB_R_EARLY_EVENT_BLANK) {
+-			if (ld->ops->r_early_set_power)
+-				ld->ops->r_early_set_power(ld,
+-						*(int *)evdata->data);
+ 		} else {
+ 			if (ld->ops->set_mode)
+ 				ld->ops->set_mode(ld, evdata->data);
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 00fe0efeaee9..e6a1c805064f 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1058,7 +1058,7 @@ int
+ fb_blank(struct fb_info *info, int blank)
+ {	
+ 	struct fb_event event;
+-	int ret = -EINVAL, early_ret;
++	int ret = -EINVAL;
+ 
+  	if (blank > FB_BLANK_POWERDOWN)
+  		blank = FB_BLANK_POWERDOWN;
+@@ -1066,21 +1066,11 @@ fb_blank(struct fb_info *info, int blank)
+ 	event.info = info;
+ 	event.data = &blank;
+ 
+-	early_ret = fb_notifier_call_chain(FB_EARLY_EVENT_BLANK, &event);
+-
+ 	if (info->fbops->fb_blank)
+  		ret = info->fbops->fb_blank(blank, info);
+ 
+ 	if (!ret)
+ 		fb_notifier_call_chain(FB_EVENT_BLANK, &event);
+-	else {
+-		/*
+-		 * if fb_blank is failed then revert effects of
+-		 * the early blank event.
+-		 */
+-		if (!early_ret)
+-			fb_notifier_call_chain(FB_R_EARLY_EVENT_BLANK, &event);
+-	}
+ 
+  	return ret;
+ }
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 50948e519897..756706b666a1 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -135,10 +135,6 @@ struct fb_cursor_user {
+ 
+ /*      A display blank is requested       */
+ #define FB_EVENT_BLANK                  0x09
+-/*      A hardware display blank early change occurred */
+-#define FB_EARLY_EVENT_BLANK		0x10
+-/*      A hardware display blank revert early change occurred */
+-#define FB_R_EARLY_EVENT_BLANK		0x11
+ 
+ struct fb_event {
+ 	struct fb_info *info;
+diff --git a/include/linux/lcd.h b/include/linux/lcd.h
+index 851eee8fff25..238fb1dfed98 100644
+--- a/include/linux/lcd.h
++++ b/include/linux/lcd.h
+@@ -41,16 +41,6 @@ struct lcd_ops {
+ 	/* Get the LCD panel power status (0: full on, 1..3: controller
+ 	   power on, flat panel power off, 4: full off), see FB_BLANK_XXX */
+ 	int (*get_power)(struct lcd_device *);
+-	/*
+-	 * Enable or disable power to the LCD(0: on; 4: off, see FB_BLANK_XXX)
+-	 * and this callback would be called proir to fb driver's callback.
+-	 *
+-	 * P.S. note that if early_set_power is not NULL then early fb notifier
+-	 *	would be registered.
+-	 */
+-	int (*early_set_power)(struct lcd_device *, int power);
+-	/* revert the effects of the early blank event. */
+-	int (*r_early_set_power)(struct lcd_device *, int power);
+ 	/* Enable or disable power to the LCD (0: on; 4: off, see FB_BLANK_XXX) */
+ 	int (*set_power)(struct lcd_device *, int power);
+ 	/* Get the current contrast setting (0-max_contrast) */
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.20.1
+
