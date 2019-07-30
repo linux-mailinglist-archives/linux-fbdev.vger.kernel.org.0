@@ -2,230 +2,162 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 823B87B16F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Jul 2019 20:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7BA37B2EE
+	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Jul 2019 21:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388101AbfG3SQj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 30 Jul 2019 14:16:39 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:41622 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388093AbfG3SQi (ORCPT
+        id S2387893AbfG3TIs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 30 Jul 2019 15:08:48 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:37429 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387403AbfG3TIs (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 30 Jul 2019 14:16:38 -0400
-Received: by mail-pg1-f195.google.com with SMTP id x15so20131389pgg.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 30 Jul 2019 11:16:37 -0700 (PDT)
+        Tue, 30 Jul 2019 15:08:48 -0400
+Received: by mail-pf1-f193.google.com with SMTP id 19so30325757pfa.4;
+        Tue, 30 Jul 2019 12:08:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=nPhDfjxW/VqkltTfokj9fJ6/qREHMvH5O4AA+8mxaUw=;
-        b=NMzARui867kGdB9A1UYs4zbCXT3RjzMlWWT7kvvFXXaz5/vfwU02qjop8UMwz8/TnX
-         NnKda0EyH8SlHsr+/6bNxInRvbF8MYuf+Pa6qiUJkO1Yj6zE2Uvw6c3jCjjBtMr5n8nJ
-         xy0P8QaPvniobYF5/gIKwaFnSpgFElmSTiA6E=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=RwScSV2tOJrhTcKuLdNlPuzxyeuThbTOgSuSjKvnN1g=;
+        b=XQWasVmxIMhThkuU7Gh1OJvZv2+json5GP9QnFWuixG9f7fDcct19H9If6CEMnD7eW
+         9nzRzPiKC+QQOAPtxX3Mw1tKt8mOaqjco4tHGn0Ht/L1zN5l8U3Fbd4F2xBWS7xBH/4t
+         eGvo6uTJ0MxSkEPEd550gteKyHxCGIqYZ84d6Au6Oyu61Hp0hCH5FHQmUVCgnVPKNWlD
+         nf7FXr2idHirHJvP4WNMCf61pOB2ddar7LA40NHi5nvEQUZuNhRrFmESYCI3lSfQ0kgG
+         tkhmVEAWnDIAsICM14mn0wKTkIylFYZR8pw8Yfi8Ps2il0H8c6VqRyTcaJ1BR8ZawE20
+         lq2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=nPhDfjxW/VqkltTfokj9fJ6/qREHMvH5O4AA+8mxaUw=;
-        b=F0ykGELtKOWbqrLzHLYzBOY0rMagTcjlHw57Gw+P+MMinvACUluOmckF12Sc1boH/s
-         4NLRfZjT38IXZveIxLWVX7Xrdx6R4ySfgp9BwbIj3gp+TBkkRGtMT7R/q6kcKJgGH/fV
-         rqOYZA2IZqgO16h/MMpycfcT7efNVLTlp20rwb1Iqt0L6so1o7FlHXHjNWkrO8IiXfZH
-         o3hT5Uabw6+p8wX+Q+vkMU+kUNkkX3J2Hu+AaCkH1F3ZLbEf1hvepzlzFCxNBPlW7lNZ
-         MB2i0QvX9BVYxz4pRyqwORWBl17vV+W3HA+T0O7PVbHR1kAj1yvrYrb1QGRwSG88A2Ga
-         zhrw==
-X-Gm-Message-State: APjAAAW/kyYHlqsCmaOP3btgtut7wq8wIOwKjIkTJy8CAqmE6xmzHg//
-        6IBOrUTOzS7PI1rsuX1mtU4EZQ==
-X-Google-Smtp-Source: APXvYqw19MihHg/lZICk2Z6Mer8w0uXAamqYkW9qwe9AgnCF26fFuoRNzw9fB3+j11R0Q+UGDxqeLA==
-X-Received: by 2002:a17:90a:1785:: with SMTP id q5mr117320027pja.106.1564510597533;
-        Tue, 30 Jul 2019 11:16:37 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:1:fa53:7765:582b:82b9])
-        by smtp.gmail.com with ESMTPSA id g1sm106744083pgg.27.2019.07.30.11.16.36
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 30 Jul 2019 11:16:37 -0700 (PDT)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v6 47/57] video: Remove dev_err() usage after platform_get_irq()
-Date:   Tue, 30 Jul 2019 11:15:47 -0700
-Message-Id: <20190730181557.90391-48-swboyd@chromium.org>
-X-Mailer: git-send-email 2.22.0.709.g102302147b-goog
-In-Reply-To: <20190730181557.90391-1-swboyd@chromium.org>
-References: <20190730181557.90391-1-swboyd@chromium.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=RwScSV2tOJrhTcKuLdNlPuzxyeuThbTOgSuSjKvnN1g=;
+        b=iZZcFaM2oX7R1uPJ4CpaO6FFUwcbjYwlf9GcFuyqr8BlN7KxhJVdhEvO8xq98TKcnX
+         p8CPq2R3T1EppIJCoHVR82bWnof7PkWNTJYY2VC0RHl7CmoPO51eLDsm3hyHQN97aWiV
+         xlIUQh9p9Be8gtDvJP1n4lOJtnQ424J9FQpr1hOWkCADzVA8V/TcVzG14sBahcSuni/4
+         kVRC1LP5UrwJRvsW0WwVKXhj+7bwDX4wr/GqLDrxRgHT74lynwRETIzVmUzKB4GY7nTF
+         a0XsW8Jk1dbaBo+dEFLRJhhvvn6f5JfNCOlXPguDyS94XUhfPowIvLHu7j6wSP/tQGUf
+         cq7A==
+X-Gm-Message-State: APjAAAUtmBK/pN+v5gHNSzDhAOrHbEbLkOeLFuV2redbOV+eq0sUc0AK
+        sEx2cFFvbFtucmun7kglnjIvGVsL
+X-Google-Smtp-Source: APXvYqxZziQLkWNns8ll7Je6JLU0I//8d41DN01Gya+68dE0jvgoh8GXeFrG3iABxQMHIz6CCgFpEQ==
+X-Received: by 2002:a17:90a:2506:: with SMTP id j6mr84913057pje.129.1564513727854;
+        Tue, 30 Jul 2019 12:08:47 -0700 (PDT)
+Received: from jordon-HP-15-Notebook-PC.domain.name ([106.51.16.0])
+        by smtp.gmail.com with ESMTPSA id c12sm53416324pgb.83.2019.07.30.12.08.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 30 Jul 2019 12:08:47 -0700 (PDT)
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+To:     paulus@samba.org, b.zolnierkie@samsung.com, davem@davemloft.net,
+        mpatocka@redhat.com, syrjala@sci.fi, sam@ravnborg.org,
+        daniel.vetter@ffwll.ch
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Souptick Joarder <jrdr.linux@gmail.com>
+Subject: [PATCH] video/fbdev/aty128fb: Remove dead code
+Date:   Wed, 31 Jul 2019 00:44:13 +0530
+Message-Id: <1564514053-4571-1-git-send-email-jrdr.linux@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-We don't need dev_err() messages when platform_get_irq() fails now that
-platform_get_irq() prints an error message itself when something goes
-wrong. Let's remove these prints with a simple semantic patch.
+This is dead code since 3.15. If there is no plan to use it
+further, this can be removed forever.
 
-// <smpl>
-@@
-expression ret;
-struct platform_device *E;
-@@
-
-ret =
-(
-platform_get_irq(E, ...)
-|
-platform_get_irq_byname(E, ...)
-);
-
-if ( \( ret < 0 \| ret <= 0 \) )
-{
-(
--if (ret != -EPROBE_DEFER)
--{ ...
--dev_err(...);
--... }
-|
-...
--dev_err(...);
-)
-...
-}
-// </smpl>
-
-While we're here, remove braces on if statements that only have one
-statement (manually).
-
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
 ---
+ drivers/video/fbdev/aty/aty128fb.c   | 18 ------------------
+ drivers/video/fbdev/aty/atyfb_base.c | 29 -----------------------------
+ 2 files changed, 47 deletions(-)
 
-Please apply directly to subsystem trees
-
- drivers/video/fbdev/atmel_lcdfb.c     | 1 -
- drivers/video/fbdev/mmp/hw/mmp_ctrl.c | 1 -
- drivers/video/fbdev/nuc900fb.c        | 4 +---
- drivers/video/fbdev/pxa168fb.c        | 4 +---
- drivers/video/fbdev/pxa3xx-gcu.c      | 4 +---
- drivers/video/fbdev/pxafb.c           | 1 -
- drivers/video/fbdev/s3c2410fb.c       | 4 +---
- drivers/video/fbdev/vt8500lcdfb.c     | 1 -
- 8 files changed, 4 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-index 5ff8e0320d95..4a16354d65c8 100644
---- a/drivers/video/fbdev/atmel_lcdfb.c
-+++ b/drivers/video/fbdev/atmel_lcdfb.c
-@@ -1114,7 +1114,6 @@ static int __init atmel_lcdfb_probe(struct platform_device *pdev)
- 
- 	sinfo->irq_base = platform_get_irq(pdev, 0);
- 	if (sinfo->irq_base < 0) {
--		dev_err(dev, "unable to get irq\n");
- 		ret = sinfo->irq_base;
- 		goto stop_clk;
+diff --git a/drivers/video/fbdev/aty/aty128fb.c b/drivers/video/fbdev/aty/aty128fb.c
+index 8504e19..fc1e45d 100644
+--- a/drivers/video/fbdev/aty/aty128fb.c
++++ b/drivers/video/fbdev/aty/aty128fb.c
+@@ -487,11 +487,6 @@ static int aty128_encode_var(struct fb_var_screeninfo *var,
+                              const struct aty128fb_par *par);
+ static int aty128_decode_var(struct fb_var_screeninfo *var,
+                              struct aty128fb_par *par);
+-#if 0
+-static void aty128_get_pllinfo(struct aty128fb_par *par, void __iomem *bios);
+-static void __iomem *aty128_map_ROM(struct pci_dev *pdev,
+-				    const struct aty128fb_par *par);
+-#endif
+ static void aty128_timings(struct aty128fb_par *par);
+ static void aty128_init_engine(struct aty128fb_par *par);
+ static void aty128_reset_engine(const struct aty128fb_par *par);
+@@ -1665,19 +1660,6 @@ static void aty128_st_pal(u_int regno, u_int red, u_int green, u_int blue,
+ 			  struct aty128fb_par *par)
+ {
+ 	if (par->chip_gen == rage_M3) {
+-#if 0
+-		/* Note: For now, on M3, we set palette on both heads, which may
+-		 * be useless. Can someone with a M3 check this ?
+-		 * 
+-		 * This code would still be useful if using the second CRTC to 
+-		 * do mirroring
+-		 */
+-
+-		aty_st_le32(DAC_CNTL, aty_ld_le32(DAC_CNTL) |
+-			    DAC_PALETTE_ACCESS_CNTL);
+-		aty_st_8(PALETTE_INDEX, regno);
+-		aty_st_le32(PALETTE_DATA, (red<<16)|(green<<8)|blue);
+-#endif
+ 		aty_st_le32(DAC_CNTL, aty_ld_le32(DAC_CNTL) &
+ 			    ~DAC_PALETTE_ACCESS_CNTL);
  	}
-diff --git a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-index 17174cd7a5bb..d6124976139b 100644
---- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-+++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-@@ -447,7 +447,6 @@ static int mmphw_probe(struct platform_device *pdev)
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 72bcfbe..6dda5d8 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -1188,19 +1188,6 @@ static int aty_crtc_to_var(const struct crtc *crtc,
+ 		(c_sync ? FB_SYNC_COMP_HIGH_ACT : 0);
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
--		dev_err(&pdev->dev, "%s: no IRQ defined\n", __func__);
- 		ret = -ENOENT;
- 		goto failed;
- 	}
-diff --git a/drivers/video/fbdev/nuc900fb.c b/drivers/video/fbdev/nuc900fb.c
-index 4fd851598584..c4606c734f44 100644
---- a/drivers/video/fbdev/nuc900fb.c
-+++ b/drivers/video/fbdev/nuc900fb.c
-@@ -526,10 +526,8 @@ static int nuc900fb_probe(struct platform_device *pdev)
- 	display = mach_info->displays + mach_info->default_display;
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "no irq for device\n");
-+	if (irq < 0)
- 		return -ENOENT;
--	}
- 
- 	fbinfo = framebuffer_alloc(sizeof(struct nuc900fb_info), &pdev->dev);
- 	if (!fbinfo)
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index 1410f476e135..d9e5258503f0 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -625,10 +625,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "no IRQ defined\n");
-+	if (irq < 0)
- 		return -ENOENT;
--	}
- 
- 	info = framebuffer_alloc(sizeof(struct pxa168fb_info), &pdev->dev);
- 	if (info == NULL) {
-diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
-index 74ffb446e00c..07414d43cb3f 100644
---- a/drivers/video/fbdev/pxa3xx-gcu.c
-+++ b/drivers/video/fbdev/pxa3xx-gcu.c
-@@ -614,10 +614,8 @@ static int pxa3xx_gcu_probe(struct platform_device *pdev)
- 
- 	/* request the IRQ */
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(dev, "no IRQ defined: %d\n", irq);
-+	if (irq < 0)
- 		return irq;
--	}
- 
- 	ret = devm_request_irq(dev, irq, pxa3xx_gcu_handle_irq,
- 			       0, DRV_NAME, priv);
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 4282cb117b92..b44f402ce552 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2353,7 +2353,6 @@ static int pxafb_probe(struct platform_device *dev)
- 
- 	irq = platform_get_irq(dev, 0);
- 	if (irq < 0) {
--		dev_err(&dev->dev, "no IRQ defined\n");
- 		ret = -ENODEV;
- 		goto failed_free_mem;
- 	}
-diff --git a/drivers/video/fbdev/s3c2410fb.c b/drivers/video/fbdev/s3c2410fb.c
-index a702da89910b..2a846fd5da2a 100644
---- a/drivers/video/fbdev/s3c2410fb.c
-+++ b/drivers/video/fbdev/s3c2410fb.c
-@@ -849,10 +849,8 @@ static int s3c24xxfb_probe(struct platform_device *pdev,
- 	display = mach_info->displays + mach_info->default_display;
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "no irq for device\n");
-+	if (irq < 0)
- 		return -ENOENT;
--	}
- 
- 	fbinfo = framebuffer_alloc(sizeof(struct s3c2410fb_info), &pdev->dev);
- 	if (!fbinfo)
-diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
-index be8d9702cbb2..a10088e1cdb0 100644
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -372,7 +372,6 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
--		dev_err(&pdev->dev, "no IRQ defined\n");
- 		ret = -ENODEV;
- 		goto failed_free_palette;
- 	}
+ 	switch (pix_width) {
+-#if 0
+-	case CRTC_PIX_WIDTH_4BPP:
+-		bpp = 4;
+-		var->red.offset = 0;
+-		var->red.length = 8;
+-		var->green.offset = 0;
+-		var->green.length = 8;
+-		var->blue.offset = 0;
+-		var->blue.length = 8;
+-		var->transp.offset = 0;
+-		var->transp.length = 0;
+-		break;
+-#endif
+ 	case CRTC_PIX_WIDTH_8BPP:
+ 		bpp = 8;
+ 		var->red.offset = 0;
+@@ -1466,11 +1453,6 @@ static int atyfb_set_par(struct fb_info *info)
+ 		var->bits_per_pixel,
+ 		par->crtc.vxres * var->bits_per_pixel / 8);
+ #endif /* CONFIG_BOOTX_TEXT */
+-#if 0
+-	/* switch to accelerator mode */
+-	if (!(par->crtc.gen_cntl & CRTC_EXT_DISP_EN))
+-		aty_st_le32(CRTC_GEN_CNTL, par->crtc.gen_cntl | CRTC_EXT_DISP_EN, par);
+-#endif
+ #ifdef DEBUG
+ {
+ 	/* dump non shadow CRTC, pll, LCD registers */
+@@ -2396,17 +2378,6 @@ static int aty_init(struct fb_info *info)
+ 			par->pll_ops = &aty_pll_ibm514;
+ 			break;
+ #endif
+-#if 0 /* dead code */
+-		case CLK_STG1703:
+-			par->pll_ops = &aty_pll_stg1703;
+-			break;
+-		case CLK_CH8398:
+-			par->pll_ops = &aty_pll_ch8398;
+-			break;
+-		case CLK_ATT20C408:
+-			par->pll_ops = &aty_pll_att20c408;
+-			break;
+-#endif
+ 		default:
+ 			PRINTKI("aty_init: CLK type not implemented yet!");
+ 			par->pll_ops = &aty_pll_unsupported;
 -- 
-Sent by a computer through tubes
+1.9.1
 
