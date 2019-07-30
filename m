@@ -2,123 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 547047B355
-	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Jul 2019 21:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A1087B3D4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Jul 2019 22:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388341AbfG3T3j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 30 Jul 2019 15:29:39 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:39316 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727169AbfG3T3i (ORCPT
+        id S1727088AbfG3UAb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 30 Jul 2019 16:00:31 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:53185 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726804AbfG3UAb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 30 Jul 2019 15:29:38 -0400
-Received: by mail-pf1-f193.google.com with SMTP id f17so26363299pfn.6;
-        Tue, 30 Jul 2019 12:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Y+Z4pnc0JucsBU6cBRK5vZR18lsIs+7jdcMlSRJldAM=;
-        b=J3J6fSLgyRAglDa91wM/WVpOub0dsDIGNqdsu1Tea+QoDMMw2jma8/oHcfiQ674cxV
-         SGM7oWPI9HxiZD/zSFxrolfjn7ArdtnRmmMU+e9BgYatHIQBpxtcR++ss8iB6UHaq69T
-         0ANSCqVVCNzXEKPO5jeo3kbhlSzMhZJipJNOmcNRU2FeHa4Ugjn2ZFEVEw2zF1xI/YMu
-         os/CS4b8e8cLNF43RyPEXshPbDam8jORD/qqygREThewtg1ghM/f8AKfNYZLkXDfVs1+
-         NVSlY+R1xu/gK7xGenjd36jma6jr6N2VOXQ4GT+0j1PHdAdwqbJT+tk4SvWjJE8b/NHo
-         hd9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Y+Z4pnc0JucsBU6cBRK5vZR18lsIs+7jdcMlSRJldAM=;
-        b=RDu5znhBvXJIjkE8Ie0OBJTNNJYdCVvssOE8LM+KMv4G5TQJ5HnLxYR9WBTBtST+Ov
-         2iV80V186lochZghik2koEG6gvKwSZCh70NzvFinKROH93e6YlsOG5TI7xIzdi8XKVK9
-         aOPtFF5k1CL13Slv/edRwkCby1+cfvhNlOS9PSVXR4G/Wz1JoP9ECHbAP/Ze9Ha6PB4b
-         ug6xbGySM9fumttiD85fEEeqzcWB+dhDVAJ7ub1U4WP02OA0zN3IlPFK3qQgZueMAHkn
-         Kymeve+fatgj4fGnsxbypV3cJYHyAo2RDstHuNnmA6e868x8RbweWlThpVhxn63dc34m
-         DllQ==
-X-Gm-Message-State: APjAAAX0yfw2+Dtvi+4Il+IhxuLgSQsHGtMkaGgBCaPyXDXXgIBvJJ9/
-        aXd9ijQCqFgDY5ofUP2nq58=
-X-Google-Smtp-Source: APXvYqzjX6/N73oQ92lnyuPiSRKxYuv2wQ9u6FtCOsJTd7+yl6rJuIeKSmKph3ilFfN340WUgdjYKw==
-X-Received: by 2002:aa7:8817:: with SMTP id c23mr43961590pfo.146.1564514978219;
-        Tue, 30 Jul 2019 12:29:38 -0700 (PDT)
-Received: from jordon-HP-15-Notebook-PC.domain.name ([106.51.16.0])
-        by smtp.gmail.com with ESMTPSA id o32sm62411228pje.9.2019.07.30.12.29.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 30 Jul 2019 12:29:37 -0700 (PDT)
-From:   Souptick Joarder <jrdr.linux@gmail.com>
-To:     FlorianSchandinat@gmx.de, b.zolnierkie@samsung.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Souptick Joarder <jrdr.linux@gmail.com>
-Subject: [PATCH] video: fbdev:via: Remove dead code
-Date:   Wed, 31 Jul 2019 01:03:20 +0530
-Message-Id: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        Tue, 30 Jul 2019 16:00:31 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MLAF0-1hbZdd1VJq-00IAlM; Tue, 30 Jul 2019 22:00:15 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v5 16/29] compat_ioctl: move ATYFB_CLK handling to atyfb driver
+Date:   Tue, 30 Jul 2019 21:55:32 +0200
+Message-Id: <20190730195819.901457-4-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+In-Reply-To: <20190730195819.901457-1-arnd@arndb.de>
+References: <20190730192552.4014288-1-arnd@arndb.de>
+ <20190730195819.901457-1-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:0ZxSBrz/L44EWNzbRv73eLZ9rL3i0WOjEqW3ByO+yWHlG5mb1W7
+ uZYyt/mHnDhNF5/3cHikieXcTxoRI9SKCP3A6kV/mnrd3IZNBwdIIPy5ag5HJSr5fmja9AP
+ ngK564Niy37kfuJ33rToKE5tPXHU8NZustU3CCj6664tSYM2jhcIpvCic+w3qXngEh036DL
+ 3Q9yzWdV07Rb2faSlGosA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9fZ+4C+PBKw=:dsFl5vdmzgFilRAMPDWfF8
+ n1bCvRStU4hPhqCc9cfPEQEwarWf8HuJUn5UZqPeQUVRZUSvzeoa0e/b/Bsdr6kPYtLQKDl86
+ hT0/hqP4pYp89gNPZqPYDKtqfDKRGn8FwLqHG3d0b/6kCiUetQ79BjTleg50jEeJz4CwzczDP
+ JCscKWrDAXqGeqY9ir13K18HEIbm9ZCC2jja+6XO2UuVrcNWbxyZOVA0mpW1TDcAouEAAODx6
+ FGzi5u2ASC6nj3JWICwb7QbXkXIABd/zYsxjRWyiXvckzthwJmC+0xCYYWDpEy22z/qaJ5HLR
+ pzbkaCrc97F5plaH+udhDlF1ev7aIpuh+guFDlq+k9be8Wdy3HZcmWQdbTNrhK+5Hrf1CpKXK
+ yDvyHEwWnRgXoTtKRIg3s+do7xpeNgpsYH7pg42vb29baat8FJHwRVJgyQJAwx6dehVRECiD0
+ M1JwtDP78bzH0wITzb79yHNP9ldb3jOEgSljUAOl1GSLReyTZqs8CnI0I/WswLpKdi3ontffL
+ W/zpL4zEinmxkerkcEg9r68QlJXVFC35/Qz27JPLg2fBd5rClltlnZR/l/lDbvUumzfLHevLV
+ jWoWTj8c5+cTswTNznndye5ftcUhx7F0e5Zh9kj2acOdhrSqbOaEGIZxiosbuziS4ZaB6Y31D
+ iTj6VRNq5x2O/ACd1YiEDpugSWVpPRY+fdQOmx7Bxy/Te+e15vcQbVWUN0sQWnT4M98daRpks
+ 5SrWZpLrM0rNjYM8gtXpWszwMTjxd512fD0deQ==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is dead code since 3.15. If there is no plan to use
-it further, this can be removed forever.
+These are two obscure ioctl commands, in a driver that only
+has compatible commands, so just let the driver handle this
+itself.
 
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/video/fbdev/via/via-core.c | 43 --------------------------------------
- 1 file changed, 43 deletions(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 12 +++++++++++-
+ fs/compat_ioctl.c                    |  2 --
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/via/via-core.c b/drivers/video/fbdev/via/via-core.c
-index e2b2062..ffa2ca2 100644
---- a/drivers/video/fbdev/via/via-core.c
-+++ b/drivers/video/fbdev/via/via-core.c
-@@ -221,49 +221,6 @@ void viafb_release_dma(void)
- }
- EXPORT_SYMBOL_GPL(viafb_release_dma);
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 72bcfbe42e49..63bc76a1b2f9 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -48,7 +48,7 @@
+ 
+ ******************************************************************************/
  
 -
--#if 0
--/*
-- * Copy a single buffer from FB memory, synchronously.  This code works
-- * but is not currently used.
-- */
--void viafb_dma_copy_out(unsigned int offset, dma_addr_t paddr, int len)
--{
--	unsigned long flags;
--	int csr;
--
--	mutex_lock(&viafb_dma_lock);
--	init_completion(&viafb_dma_completion);
--	/*
--	 * Program the controller.
--	 */
--	spin_lock_irqsave(&global_dev.reg_lock, flags);
--	viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_DONE);
--	/* Enable ints; must happen after CSR0 write! */
--	viafb_mmio_write(VDMA_MR0, VDMA_MR_TDIE);
--	viafb_mmio_write(VDMA_MARL0, (int) (paddr & 0xfffffff0));
--	viafb_mmio_write(VDMA_MARH0, (int) ((paddr >> 28) & 0xfff));
--	/* Data sheet suggests DAR0 should be <<4, but it lies */
--	viafb_mmio_write(VDMA_DAR0, offset);
--	viafb_mmio_write(VDMA_DQWCR0, len >> 4);
--	viafb_mmio_write(VDMA_TMR0, 0);
--	viafb_mmio_write(VDMA_DPRL0, 0);
--	viafb_mmio_write(VDMA_DPRH0, 0);
--	viafb_mmio_write(VDMA_PMR0, 0);
--	csr = viafb_mmio_read(VDMA_CSR0);
--	viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_START);
--	spin_unlock_irqrestore(&global_dev.reg_lock, flags);
--	/*
--	 * Now we just wait until the interrupt handler says
--	 * we're done.
--	 */
--	wait_for_completion_interruptible(&viafb_dma_completion);
--	viafb_mmio_write(VDMA_MR0, 0); /* Reset int enable */
--	mutex_unlock(&viafb_dma_lock);
--}
--EXPORT_SYMBOL_GPL(viafb_dma_copy_out);
--#endif
--
- /*
-  * Do a scatter/gather DMA copy from FB memory.  You must have done
-  * a successful call to viafb_request_dma() first.
++#include <linux/compat.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/kernel.h>
+@@ -235,6 +235,13 @@ static int atyfb_pan_display(struct fb_var_screeninfo *var,
+ 			     struct fb_info *info);
+ static int atyfb_blank(int blank, struct fb_info *info);
+ static int atyfb_ioctl(struct fb_info *info, u_int cmd, u_long arg);
++#ifdef CONFIG_COMPAT
++static int atyfb_compat_ioctl(struct fb_info *info, u_int cmd, u_long arg)
++{
++	return atyfb_ioctl(info, cmd, (u_long)compat_ptr(arg));
++}
++#endif
++
+ #ifdef __sparc__
+ static int atyfb_mmap(struct fb_info *info, struct vm_area_struct *vma);
+ #endif
+@@ -290,6 +297,9 @@ static struct fb_ops atyfb_ops = {
+ 	.fb_pan_display	= atyfb_pan_display,
+ 	.fb_blank	= atyfb_blank,
+ 	.fb_ioctl	= atyfb_ioctl,
++#ifdef CONFIG_COMPAT
++	.fb_compat_ioctl = atyfb_compat_ioctl,
++#endif
+ 	.fb_fillrect	= atyfb_fillrect,
+ 	.fb_copyarea	= atyfb_copyarea,
+ 	.fb_imageblit	= atyfb_imageblit,
+diff --git a/fs/compat_ioctl.c b/fs/compat_ioctl.c
+index b65eef3d4787..a4e8fb7da968 100644
+--- a/fs/compat_ioctl.c
++++ b/fs/compat_ioctl.c
+@@ -696,8 +696,6 @@ COMPATIBLE_IOCTL(CAPI_CLR_FLAGS)
+ COMPATIBLE_IOCTL(CAPI_NCCI_OPENCOUNT)
+ COMPATIBLE_IOCTL(CAPI_NCCI_GETUNIT)
+ /* Misc. */
+-COMPATIBLE_IOCTL(0x41545900)		/* ATYIO_CLKR */
+-COMPATIBLE_IOCTL(0x41545901)		/* ATYIO_CLKW */
+ COMPATIBLE_IOCTL(PCIIOC_CONTROLLER)
+ COMPATIBLE_IOCTL(PCIIOC_MMAP_IS_IO)
+ COMPATIBLE_IOCTL(PCIIOC_MMAP_IS_MEM)
 -- 
-1.9.1
+2.20.0
 
