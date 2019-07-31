@@ -2,131 +2,114 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B897C1E2
-	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2019 14:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FDAC7C300
+	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2019 15:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387510AbfGaMoG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 31 Jul 2019 08:44:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36354 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387466AbfGaMoG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 31 Jul 2019 08:44:06 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D3CD6208E3;
-        Wed, 31 Jul 2019 12:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564577045;
-        bh=dOauvtVe9yCPSP0ChARSYwAi6eemkfSk00etuTmxP94=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rDjo31Gp98T2gFdLY039cbiyj4PAacUBKvstkRQIB1ZAszuZ1lLwgJ4RrJkSdwedK
-         d8bygUyV0zt4ievvAetFIsLr45vONXfpE6cNuMsj1/U+1gbVbvEBKFFUFaOlfvJR9x
-         E8ronTcaI/nWIQomapLDtcVwHuImfvVG+Qvtqmtk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org,
+        id S2388209AbfGaNKu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 31 Jul 2019 09:10:50 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:38618 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387696AbfGaNKu (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 31 Jul 2019 09:10:50 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y15so31861676pfn.5;
+        Wed, 31 Jul 2019 06:10:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rt+guMwNhJRHRn5IfYwFQ/sgOXInz6KxTo8lw7aiy5o=;
+        b=gs78//H7LNShCsnjSw8NmM/oTXR89tctjqExwGarNFR1HPDda39C7FVxzEan5zMHdK
+         6cB24JjcjAbQy8XtUkZodo4u6df686F71Mv/q7oDld/FoFf/tUwpH8Ya396ePXCTfD0o
+         Dvgu62a6MeZYYZInpUcG3Fb+JTJxaZenxvpq3gvsy/xll4qitJKWbPeGlVPtgYnCNQLR
+         EPlshKNhjkQhbqyB0pQFFls299RawuFj12qdOUx2n+J0Ko7JvNfb1x0RR0EIG+LYodIQ
+         anMWP0EuZVFFnYgh1OC+Xwui/N0TFC1OY/jUToGF5CcotzxoYJGX807D8jgfAJdSfeIG
+         A3ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rt+guMwNhJRHRn5IfYwFQ/sgOXInz6KxTo8lw7aiy5o=;
+        b=AKNGKz1NtvTBgOAbu8I2A5LswhiiCsbRGQo1k0WuPz+zduq/1J1WGhxG+qAQ2JUqR2
+         MXI+EiUVYJo62eLJ1gc1oJECx1+16LeD+WaUc/JV5bETsTRQiawmw6J2wt5GihJI/7gf
+         R2UaYKegKDa9K6jkhHx2HwJX+1J7X/9+Wzg6XCSdWDXWGYx+pbO/ji+2P4hMRIDTe8QS
+         8bCoRqhdfVzhnxipUpOCv7davMDbPNEmYNxKTzJ4UBaPS0vVvye8IDwgNGcImndr8RsU
+         SETIypH1VSr0BMQ9lS1oRaaoyFVSMJVub8rhkKdW/39EZb7jjLmy49rWZpzAVCU08CXz
+         0/DQ==
+X-Gm-Message-State: APjAAAWSYtsBZ7sJmtWhURZmTWbNtCJf6wkbjZybXoEHSsXcze9ImAfQ
+        IhWEXnlpSBiAuY4+qBC5fTQ=
+X-Google-Smtp-Source: APXvYqw6zrs3C36FlP+BQfVYwpgNJ/uT+OXNK7FouVI0RYpGcs21O7mEWzL/gYHEOWg9kiuYl3v9Hg==
+X-Received: by 2002:a17:90a:b908:: with SMTP id p8mr2967626pjr.94.1564578649195;
+        Wed, 31 Jul 2019 06:10:49 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id r12sm47427239pgb.73.2019.07.31.06.10.47
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 31 Jul 2019 06:10:48 -0700 (PDT)
+Date:   Wed, 31 Jul 2019 06:10:45 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org,
         Richard Gong <richard.gong@linux.intel.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH v2 10/10] video: fbdev: sm501fb: convert platform driver to use dev_groups
-Date:   Wed, 31 Jul 2019 14:43:49 +0200
-Message-Id: <20190731124349.4474-11-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190731124349.4474-1-gregkh@linuxfoundation.org>
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Darren Hart <dvhart@infradead.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v2 00/10] drivers, provide a way to add sysfs groups
+ easily
+Message-ID: <20190731131045.GB147138@dtor-ws>
 References: <20190731124349.4474-1-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190731124349.4474-1-gregkh@linuxfoundation.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Platform drivers now have the option to have the platform core create
-and remove any needed sysfs attribute files.  So take advantage of that
-and do not register "by hand" a bunch of sysfs files.
+On Wed, Jul 31, 2019 at 02:43:39PM +0200, Greg Kroah-Hartman wrote:
+> This patch originally started out just as a way for platform drivers to
+> easily add a sysfs group in a race-free way, but thanks to Dmitry's
+> patch, this series now is for all drivers in the kernel (hey, a unified
+> driver model works!!!)
+> 
+> I've only converted a few platform drivers here in this series to show
+> how it works, but other busses can be converted after the first patch
+> goes into the tree.
+> 
+> Here's the original 00 message, for people to get an idea of what is
+> going on here:
+> 
+> If a platform driver wants to add a sysfs group, it has to do so in a
+> racy way, adding it after the driver is bound.  To resolve this issue,
+> have the platform driver core do this for the driver, making the
+> individual drivers logic smaller and simpler, and solving the race at
+> the same time.
+> 
+> All of these patches depend on the first patch.  I'll take the first one
+> through my driver-core tree, and any subsystem maintainer can either ack
+> their individul patch and I will be glad to also merge it, or they can
+> wait until after 5.4-rc1 when the core patch hits Linus's tree and then
+> take it, it's up to them.
 
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/video/fbdev/sm501fb.c | 37 +++++++++--------------------------
- 1 file changed, 9 insertions(+), 28 deletions(-)
+Maybe make an immutable branch off 5.2 with just patch 1/10 so that
+subsystems (and the driver core tree itself) could pull it in at their
+leisure into their "*-next" branches and did not have to wait till 5.4
+or risk merge clashes?
 
-diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
-index 6edb4492e675..3dd1b1d76e98 100644
---- a/drivers/video/fbdev/sm501fb.c
-+++ b/drivers/video/fbdev/sm501fb.c
-@@ -1271,6 +1271,14 @@ static ssize_t sm501fb_debug_show_pnl(struct device *dev,
- 
- static DEVICE_ATTR(fbregs_pnl, 0444, sm501fb_debug_show_pnl, NULL);
- 
-+static struct attribute *sm501fb_attrs[] = {
-+	&dev_attr_crt_src.attr,
-+	&dev_attr_fbregs_pnl.attr,
-+	&dev_attr_fbregs_crt.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sm501fb);
-+
- /* acceleration operations */
- static int sm501fb_sync(struct fb_info *info)
- {
-@@ -2011,33 +2019,9 @@ static int sm501fb_probe(struct platform_device *pdev)
- 		goto err_started_crt;
- 	}
- 
--	/* create device files */
--
--	ret = device_create_file(dev, &dev_attr_crt_src);
--	if (ret)
--		goto err_started_panel;
--
--	ret = device_create_file(dev, &dev_attr_fbregs_pnl);
--	if (ret)
--		goto err_attached_crtsrc_file;
--
--	ret = device_create_file(dev, &dev_attr_fbregs_crt);
--	if (ret)
--		goto err_attached_pnlregs_file;
--
- 	/* we registered, return ok */
- 	return 0;
- 
--err_attached_pnlregs_file:
--	device_remove_file(dev, &dev_attr_fbregs_pnl);
--
--err_attached_crtsrc_file:
--	device_remove_file(dev, &dev_attr_crt_src);
--
--err_started_panel:
--	unregister_framebuffer(info->fb[HEAD_PANEL]);
--	sm501_free_init_fb(info, HEAD_PANEL);
--
- err_started_crt:
- 	unregister_framebuffer(info->fb[HEAD_CRT]);
- 	sm501_free_init_fb(info, HEAD_CRT);
-@@ -2067,10 +2051,6 @@ static int sm501fb_remove(struct platform_device *pdev)
- 	struct fb_info	   *fbinfo_crt = info->fb[0];
- 	struct fb_info	   *fbinfo_pnl = info->fb[1];
- 
--	device_remove_file(&pdev->dev, &dev_attr_fbregs_crt);
--	device_remove_file(&pdev->dev, &dev_attr_fbregs_pnl);
--	device_remove_file(&pdev->dev, &dev_attr_crt_src);
--
- 	sm501_free_init_fb(info, HEAD_CRT);
- 	sm501_free_init_fb(info, HEAD_PANEL);
- 
-@@ -2234,6 +2214,7 @@ static struct platform_driver sm501fb_driver = {
- 	.resume		= sm501fb_resume,
- 	.driver		= {
- 		.name	= "sm501-fb",
-+		.dev_groups	= sm501fb_groups,
- 	},
- };
- 
+Thanks.
+
 -- 
-2.22.0
-
+Dmitry
