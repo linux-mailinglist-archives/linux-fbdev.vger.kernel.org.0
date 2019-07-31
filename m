@@ -2,119 +2,155 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A1087B3D4
-	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Jul 2019 22:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 764EB7BBE3
+	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2019 10:40:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727088AbfG3UAb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 30 Jul 2019 16:00:31 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:53185 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726804AbfG3UAb (ORCPT
+        id S1727732AbfGaIkV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 31 Jul 2019 04:40:21 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:35098 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726168AbfGaIkV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 30 Jul 2019 16:00:31 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MLAF0-1hbZdd1VJq-00IAlM; Tue, 30 Jul 2019 22:00:15 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v5 16/29] compat_ioctl: move ATYFB_CLK handling to atyfb driver
-Date:   Tue, 30 Jul 2019 21:55:32 +0200
-Message-Id: <20190730195819.901457-4-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20190730195819.901457-1-arnd@arndb.de>
-References: <20190730192552.4014288-1-arnd@arndb.de>
- <20190730195819.901457-1-arnd@arndb.de>
+        Wed, 31 Jul 2019 04:40:21 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6V8eFfc078983;
+        Wed, 31 Jul 2019 03:40:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1564562415;
+        bh=f8OILjK+4xrFtumGGFPWPDxRCqrguz9p6urLvVz00sU=;
+        h=From:To:CC:Subject:Date;
+        b=j3PTc/Xcx9hTMnjgCer63vG17POH5udTLqEDNcL7ONFZFvIXCJVJLP5kzIGg7FLEA
+         KndqyFc5myT8luPQYO/k/kOH7Ns6nR9mK5Lksp60mHMOnjL7uweKXLnrUSotuSJKLP
+         8Fe8+VB6nfgo2URujZLmogYjukgy+uNa9s64fEH0=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6V8eFnW016389
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 31 Jul 2019 03:40:15 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 31
+ Jul 2019 03:40:14 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 31 Jul 2019 03:40:14 -0500
+Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6V8eCSn048437;
+        Wed, 31 Jul 2019 03:40:13 -0500
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+To:     <lee.jones@linaro.org>, <jingoohan1@gmail.com>,
+        <daniel.thompson@linaro.org>
+CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <paul.kocialkowski@bootlin.com>
+Subject: [PATCH v3] backlight: gpio-backlight: Correct initial power state handling
+Date:   Wed, 31 Jul 2019 11:40:18 +0300
+Message-ID: <20190731084018.5318-1-peter.ujfalusi@ti.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:0ZxSBrz/L44EWNzbRv73eLZ9rL3i0WOjEqW3ByO+yWHlG5mb1W7
- uZYyt/mHnDhNF5/3cHikieXcTxoRI9SKCP3A6kV/mnrd3IZNBwdIIPy5ag5HJSr5fmja9AP
- ngK564Niy37kfuJ33rToKE5tPXHU8NZustU3CCj6664tSYM2jhcIpvCic+w3qXngEh036DL
- 3Q9yzWdV07Rb2faSlGosA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9fZ+4C+PBKw=:dsFl5vdmzgFilRAMPDWfF8
- n1bCvRStU4hPhqCc9cfPEQEwarWf8HuJUn5UZqPeQUVRZUSvzeoa0e/b/Bsdr6kPYtLQKDl86
- hT0/hqP4pYp89gNPZqPYDKtqfDKRGn8FwLqHG3d0b/6kCiUetQ79BjTleg50jEeJz4CwzczDP
- JCscKWrDAXqGeqY9ir13K18HEIbm9ZCC2jja+6XO2UuVrcNWbxyZOVA0mpW1TDcAouEAAODx6
- FGzi5u2ASC6nj3JWICwb7QbXkXIABd/zYsxjRWyiXvckzthwJmC+0xCYYWDpEy22z/qaJ5HLR
- pzbkaCrc97F5plaH+udhDlF1ev7aIpuh+guFDlq+k9be8Wdy3HZcmWQdbTNrhK+5Hrf1CpKXK
- yDvyHEwWnRgXoTtKRIg3s+do7xpeNgpsYH7pg42vb29baat8FJHwRVJgyQJAwx6dehVRECiD0
- M1JwtDP78bzH0wITzb79yHNP9ldb3jOEgSljUAOl1GSLReyTZqs8CnI0I/WswLpKdi3ontffL
- W/zpL4zEinmxkerkcEg9r68QlJXVFC35/Qz27JPLg2fBd5rClltlnZR/l/lDbvUumzfLHevLV
- jWoWTj8c5+cTswTNznndye5ftcUhx7F0e5Zh9kj2acOdhrSqbOaEGIZxiosbuziS4ZaB6Y31D
- iTj6VRNq5x2O/ACd1YiEDpugSWVpPRY+fdQOmx7Bxy/Te+e15vcQbVWUN0sQWnT4M98daRpks
- 5SrWZpLrM0rNjYM8gtXpWszwMTjxd512fD0deQ==
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-These are two obscure ioctl commands, in a driver that only
-has compatible commands, so just let the driver handle this
-itself.
+The default-on property - or the def_value via legacy pdata) should be
+handled as:
+if it is 1, the backlight must be enabled (kept enabled)
+if it is 0, the backlight must be disabled (kept disabled)
 
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+This only works for the case when default-on is set. If it is not set then
+the brightness of the backlight is set to 0. Now if the backlight is
+enabled by external driver (graphics) the backlight will stay disabled since
+the brightness is configured as 0. The backlight will not turn on.
+
+In order to minimize screen flickering during device boot:
+
+The initial brightness should be set to 1.
+
+If booted in non DT mode or no phandle link to the backlight node:
+follow the def_value/default-on to select UNBLANK or POWERDOWN
+
+If in DT boot we have phandle link then leave the GPIO in a state which the
+bootloader left it and let the user of the backlight to configure it
+further.
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/video/fbdev/aty/atyfb_base.c | 12 +++++++++++-
- fs/compat_ioctl.c                    |  2 --
- 2 files changed, 11 insertions(+), 3 deletions(-)
+Hi,
 
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index 72bcfbe42e49..63bc76a1b2f9 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -48,7 +48,7 @@
+sorry for the delay, but got distracted a bit with the resend of this...
+Let's try again ;)
+
+Changes since v2 (https://lore.kernel.org/patchwork/patch/1002359/):
+- Rebased on drm-next
+
+Changes since v1:
+- Implement similiar initial power state handling as pwm backlight have
+
+Regards,
+Peter
+
+ drivers/video/backlight/gpio_backlight.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+index e84f3087e29f..18e053e4716c 100644
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -59,13 +59,11 @@ static int gpio_backlight_probe_dt(struct platform_device *pdev,
+ 				   struct gpio_backlight *gbl)
+ {
+ 	struct device *dev = &pdev->dev;
+-	enum gpiod_flags flags;
+ 	int ret;
  
- ******************************************************************************/
+ 	gbl->def_value = device_property_read_bool(dev, "default-on");
+-	flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
  
--
-+#include <linux/compat.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/kernel.h>
-@@ -235,6 +235,13 @@ static int atyfb_pan_display(struct fb_var_screeninfo *var,
- 			     struct fb_info *info);
- static int atyfb_blank(int blank, struct fb_info *info);
- static int atyfb_ioctl(struct fb_info *info, u_int cmd, u_long arg);
-+#ifdef CONFIG_COMPAT
-+static int atyfb_compat_ioctl(struct fb_info *info, u_int cmd, u_long arg)
+-	gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
++	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
+ 	if (IS_ERR(gbl->gpiod)) {
+ 		ret = PTR_ERR(gbl->gpiod);
+ 
+@@ -79,6 +77,22 @@ static int gpio_backlight_probe_dt(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
++static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
 +{
-+	return atyfb_ioctl(info, cmd, (u_long)compat_ptr(arg));
-+}
-+#endif
++	struct device_node *node = gbl->dev->of_node;
 +
- #ifdef __sparc__
- static int atyfb_mmap(struct fb_info *info, struct vm_area_struct *vma);
- #endif
-@@ -290,6 +297,9 @@ static struct fb_ops atyfb_ops = {
- 	.fb_pan_display	= atyfb_pan_display,
- 	.fb_blank	= atyfb_blank,
- 	.fb_ioctl	= atyfb_ioctl,
-+#ifdef CONFIG_COMPAT
-+	.fb_compat_ioctl = atyfb_compat_ioctl,
-+#endif
- 	.fb_fillrect	= atyfb_fillrect,
- 	.fb_copyarea	= atyfb_copyarea,
- 	.fb_imageblit	= atyfb_imageblit,
-diff --git a/fs/compat_ioctl.c b/fs/compat_ioctl.c
-index b65eef3d4787..a4e8fb7da968 100644
---- a/fs/compat_ioctl.c
-+++ b/fs/compat_ioctl.c
-@@ -696,8 +696,6 @@ COMPATIBLE_IOCTL(CAPI_CLR_FLAGS)
- COMPATIBLE_IOCTL(CAPI_NCCI_OPENCOUNT)
- COMPATIBLE_IOCTL(CAPI_NCCI_GETUNIT)
- /* Misc. */
--COMPATIBLE_IOCTL(0x41545900)		/* ATYIO_CLKR */
--COMPATIBLE_IOCTL(0x41545901)		/* ATYIO_CLKW */
- COMPATIBLE_IOCTL(PCIIOC_CONTROLLER)
- COMPATIBLE_IOCTL(PCIIOC_MMAP_IS_IO)
- COMPATIBLE_IOCTL(PCIIOC_MMAP_IS_MEM)
++	/* Not booted with device tree or no phandle link to the node */
++	if (!node || !node->phandle)
++		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
++
++	/* if the enable GPIO is disabled, do not enable the backlight */
++	if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
++		return FB_BLANK_POWERDOWN;
++
++	return FB_BLANK_UNBLANK;
++}
++
++
+ static int gpio_backlight_probe(struct platform_device *pdev)
+ {
+ 	struct gpio_backlight_platform_data *pdata =
+@@ -136,7 +150,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 		return PTR_ERR(bl);
+ 	}
+ 
+-	bl->props.brightness = gbl->def_value;
++	bl->props.power = gpio_backlight_initial_power_state(gbl);
++	bl->props.brightness = 1;
++
+ 	backlight_update_status(bl);
+ 
+ 	platform_set_drvdata(pdev, bl);
 -- 
-2.20.0
+Peter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 
