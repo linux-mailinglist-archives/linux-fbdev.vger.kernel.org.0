@@ -2,125 +2,132 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 596DB800EB
-	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Aug 2019 21:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9378010E
+	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Aug 2019 21:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404888AbfHBT0l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 2 Aug 2019 15:26:41 -0400
-Received: from hqemgate14.nvidia.com ([216.228.121.143]:17220 "EHLO
-        hqemgate14.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404439AbfHBT0l (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 2 Aug 2019 15:26:41 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5d448e710000>; Fri, 02 Aug 2019 12:26:41 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Fri, 02 Aug 2019 12:26:39 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Fri, 02 Aug 2019 12:26:39 -0700
-Received: from [10.2.171.217] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 2 Aug
- 2019 19:26:39 +0000
-Subject: Re: [PATCH 20/34] xen: convert put_page() to put_user_page*()
-To:     "Weiny, Ira" <ira.weiny@intel.com>,
-        Juergen Gross <jgross@suse.com>,
-        "john.hubbard@gmail.com" <john.hubbard@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        Dave Chinner <david@fromorbit.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rpi-kernel@lists.infradead.org" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "devel@lists.orangefs.org" <devel@lists.orangefs.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        Jan Kara <jack@suse.cz>,
-        "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-References: <20190802022005.5117-1-jhubbard@nvidia.com>
- <20190802022005.5117-21-jhubbard@nvidia.com>
- <4471e9dc-a315-42c1-0c3c-55ba4eeeb106@suse.com>
- <d5140833-e9ee-beb5-ff0a-2d13a4fe819f@nvidia.com>
- <d4931311-db01-e8c3-0f8c-d64685dc2143@suse.com>
- <2807E5FD2F6FDA4886F6618EAC48510E79E66216@CRSMSX101.amr.corp.intel.com>
-X-Nvconfidentiality: public
-From:   John Hubbard <jhubbard@nvidia.com>
-Message-ID: <746b2412-f48a-9722-2763-253a1b9c899d@nvidia.com>
-Date:   Fri, 2 Aug 2019 12:25:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2406033AbfHBThR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 2 Aug 2019 15:37:17 -0400
+Received: from gateway33.websitewelcome.com ([192.185.145.82]:31203 "EHLO
+        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2403792AbfHBThR (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 2 Aug 2019 15:37:17 -0400
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway33.websitewelcome.com (Postfix) with ESMTP id C4486147E1
+        for <linux-fbdev@vger.kernel.org>; Fri,  2 Aug 2019 14:15:44 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id td1khvmMM2PzOtd1kh0b4r; Fri, 02 Aug 2019 14:15:44 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=oc4AOSiWl2lCiQnPdkuEFM9SDJW1XSDtDJ29fXEPlhM=; b=XDEIu4eu/j9WOOXkZ01OOBh6hM
+        aTPH9Y69Pjb/5SEGg9xCm0PFJs1pnlEiy9UQOwgqbaLQbL3W14G83xmdN/GxM3enfu+/kPWguQ4V+
+        JB2k6IyHnydpveoNrSXMzNYhboBwdflY3x3ZdVPvOUH3n0kA1enCOuTpPiuwugAG8imKN0k6VGrYP
+        R7Ku0eMHPbQProwP7aLhOEetU4ucRuqc0OYF/Yg5ijLFu4OMMN2jfKPxWOYpKKblV5b4s3/WbM87J
+        7z6+H6qUr5CnauHlYua5HqEqbWfD6BodqRsHzRk27/r+2jDXWnrbXHVrd1HI/BFVVOdGTIHSApkbv
+        P9kSmEiw==;
+Received: from [187.192.11.120] (port=33024 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1htd1j-002zj8-JL; Fri, 02 Aug 2019 14:15:43 -0500
+Date:   Fri, 2 Aug 2019 14:15:42 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH] video: fbdev: omapfb_main: Mark expected switch fall-throughs
+Message-ID: <20190802191542.GA32751@embeddedor>
 MIME-Version: 1.0
-In-Reply-To: <2807E5FD2F6FDA4886F6618EAC48510E79E66216@CRSMSX101.amr.corp.intel.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL104.nvidia.com (172.18.146.11) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1564774001; bh=rRhheBqnK3+cjDjuz6CHnpsz5YflbO5z8PXp1A2YK5w=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=byi/JLB7CNtV06561y8XoJ3SAPfLWvMAReG7pbHQL4vyYMWIeKNh0N7pvRnXFQG1L
-         qdrcKeqyYLdfyHlBvNt3iltX04f4l9yslTmpDdtWvq1t3b7bkuO+rrbkZHys+WsmhV
-         6Aa9W+8qQAz5X83c7tyDcDc6Mg36wKOuzq27pabbfn+69ez0SBMHEuaNtlKh20Fcaj
-         gTip6LdymKj+uFDjnVTxb7sYVNWRS9rebCu5gBiFOf/CT8TUXKtD/8+Sk9b10OKO7l
-         1Y0kk6maXEh1JdSy6qqRDc1JYyIdeVQu9Kdnt4cKXn6PzYq3IXSks/FI+pwJb3dRVj
-         9ZhtT6T5hfRNQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.192.11.120
+X-Source-L: No
+X-Exim-ID: 1htd1j-002zj8-JL
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [187.192.11.120]:33024
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 2
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 8/2/19 9:09 AM, Weiny, Ira wrote:
->>
->> On 02.08.19 07:48, John Hubbard wrote:
->>> On 8/1/19 9:36 PM, Juergen Gross wrote:
->>>> On 02.08.19 04:19, john.hubbard@gmail.com wrote:
->>>>> From: John Hubbard <jhubbard@nvidia.com>
->>> ...
->>> If that's not the case (both here, and in 3 or 4 other patches in this
->>> series, then as you said, I should add NULL checks to put_user_pages()
->>> and put_user_pages_dirty_lock().
->>
->> In this case it is not correct, but can easily be handled. The NULL case can
->> occur only in an error case with the pages array filled partially or not at all.
->>
->> I'd prefer something like the attached patch here.
-> 
-> I'm not an expert in this code and have not looked at it carefully but that patch does seem to be the better fix than forcing NULL checks on everyone.
-> 
+Mark switch cases where we are expecting to fall through.
 
-OK, I'll use Juergen's approach, and also check for that pattern in the
-other patches.
+This patch fixes the following warning (Building: omap1_defconfig arm):
 
+drivers/video/fbdev/omap/omapfb_main.c:449:23: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1549:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1547:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1545:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1543:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1540:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1538:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
+drivers/video/fbdev/omap/omapfb_main.c:1535:3: warning: this statement may fall through [-Wimplicit-fallthrough=]
 
-thanks,
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/video/fbdev/omap/omapfb_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 90eca64e3144..702cca59bda1 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -447,6 +447,7 @@ static int set_color_mode(struct omapfb_plane_struct *plane,
+ 		return 0;
+ 	case 12:
+ 		var->bits_per_pixel = 16;
++		/* fall through */
+ 	case 16:
+ 		if (plane->fbdev->panel->bpp == 12)
+ 			plane->color_mode = OMAPFB_COLOR_RGB444;
+@@ -1534,20 +1535,27 @@ static void omapfb_free_resources(struct omapfb_device *fbdev, int state)
+ 	case OMAPFB_ACTIVE:
+ 		for (i = 0; i < fbdev->mem_desc.region_cnt; i++)
+ 			unregister_framebuffer(fbdev->fb_info[i]);
++		/* fall through */
+ 	case 7:
+ 		omapfb_unregister_sysfs(fbdev);
++		/* fall through */
+ 	case 6:
+ 		if (fbdev->panel->disable)
+ 			fbdev->panel->disable(fbdev->panel);
++		/* fall through */
+ 	case 5:
+ 		omapfb_set_update_mode(fbdev, OMAPFB_UPDATE_DISABLED);
++		/* fall through */
+ 	case 4:
+ 		planes_cleanup(fbdev);
++		/* fall through */
+ 	case 3:
+ 		ctrl_cleanup(fbdev);
++		/* fall through */
+ 	case 2:
+ 		if (fbdev->panel->cleanup)
+ 			fbdev->panel->cleanup(fbdev->panel);
++		/* fall through */
+ 	case 1:
+ 		dev_set_drvdata(fbdev->dev, NULL);
+ 		kfree(fbdev);
 -- 
-John Hubbard
-NVIDIA
+2.22.0
+
