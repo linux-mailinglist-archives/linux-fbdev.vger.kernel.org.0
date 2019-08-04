@@ -2,48 +2,48 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C01AA80D0C
-	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Aug 2019 00:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771F480D13
+	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Aug 2019 00:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727221AbfHDWtf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 4 Aug 2019 18:49:35 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:38477 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727169AbfHDWtb (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 4 Aug 2019 18:49:31 -0400
-Received: by mail-pl1-f196.google.com with SMTP id az7so35652696plb.5;
-        Sun, 04 Aug 2019 15:49:30 -0700 (PDT)
+        id S1727373AbfHDWtm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 4 Aug 2019 18:49:42 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:42533 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726837AbfHDWtl (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 4 Aug 2019 18:49:41 -0400
+Received: by mail-pf1-f196.google.com with SMTP id q10so38581762pff.9;
+        Sun, 04 Aug 2019 15:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=o2GwgSJoRuvPfZ2J7Awdgxw+WyrY01QvDnyFb1fV9Xk=;
-        b=IixwRKA1QE3hWrmSzVu2XYy+JWLjNAQrucyf3NmNwYmsVM90KnIP/Y31YnkjOev47U
-         W5BLgfFrXSW8PROIAFlomTaKNpVy1Vu5By67adxMe4BBJxN/wVE8FkT1LMOB065Mk0v2
-         mSKCOGzenGHlXCxavESBy8UzJUM5v3SbHyYItPfvN0BCRa3ugcdFoCHED6cZcBJjkH8M
-         ktZ6/qTMPJteWEcAIxyF4khSUAdUalV8iDMz2BZGmRYRaKNynSgB+6FWP696OD7W7rKp
-         ihl6Zic4VgOX9hVo+fby0upSQX/BJURRdR3g7cpl9a4Zd0ppOamvzLqwtGuG3Jg66+lE
-         8+nQ==
+        bh=60C6UutqWDg70MnmR2wOYRHcozVv05mGJual4EWfkd0=;
+        b=dlbSsRNX77Ei4qlHR7ScPLtFWbFA/wSFhYs9NQOll92MElLIHH0XM5uWEMJZOCpSZn
+         fw6jxIpOESniygQ2CP+jqWxww/Yc9BpBnk334qu29zs2vzmgy87c6XuHVe23RKpRZPxO
+         jThG9GtjK3Wnrebfh/rbMsq7112krYjWlIxKkWaUHxL2oFoS1RUMIQu8ytggftTKUFm3
+         IZx5EXAb50Ed18W0N5uy/HOdcsYR51BeefJ+gL6tmEuCp3+fjY6YxhqUW4uaaLKgEtr0
+         EwxJMkmMabXGRdUgV0PB/zPRqhRIlzaqolidM2g4cvymDIwFa+iZFzPQhAPl2KRAIsyu
+         jBAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=o2GwgSJoRuvPfZ2J7Awdgxw+WyrY01QvDnyFb1fV9Xk=;
-        b=fazagvQGxc1Kbxqacf/SEM68Pv3C//zZ3yHayiBvzApv3vp/CvJZ621kyak0Z62fdX
-         /R+E4kSf8mdox2y/raPcKICGnrSIy7rt46NiI7FbZxuIvzxG3xIG2b5zYlXZzA1zj13E
-         NUIsH8aNW19ksxbAuvPAQgnHGovE4iPH24So0LOx3v4GfQI1Mf13Hw0iR2ErSGyY8AgA
-         TmPAllthoPolQpLtwcLHpdH7c+j/6U0qlx/1HRNeXeK772a03yhOIyBNj1qQ/yH95Urr
-         qmtvu0U0o2Sj5xkOHYN2vbPPktBc81qB6GxqL/4Cv2IK5At2zd6QnEfy2ha4jvk9KVAx
-         2dDA==
-X-Gm-Message-State: APjAAAXzh9bSEBgIlTQoc7+0FJwIAT5/Cf/JLCc1c2+Vd9YoTjWh7C5o
-        lQfRmogpYUlW6m6fPElgdlE=
-X-Google-Smtp-Source: APXvYqzkwKiNRyTGG1wY4vsK+VenpXGpZnU+FOR0NniR/kq9Ywi59tDMXfkUVow9nHIhYFHAcQFleQ==
-X-Received: by 2002:a17:902:e282:: with SMTP id cf2mr143340556plb.301.1564958970256;
-        Sun, 04 Aug 2019 15:49:30 -0700 (PDT)
+        bh=60C6UutqWDg70MnmR2wOYRHcozVv05mGJual4EWfkd0=;
+        b=VXRIvQiD73GG/l8ggnZH3DORLY4330RzDfbUCB4ROO0WQh/wWtNqPl15Uv9eC2ZBch
+         QhZFXtF4m6UvdjDKMdmHIiuqwULZnnx0nr4BMruYh+HPzq5wGJvf00qZ/8FuEqkMiK2J
+         BD7pJS6Lzb7ITV2Q/Hc193ao6cGph1qEDI8E3r/joodSSu3xdVpVYqngdlPQbCxY3Oyh
+         GNr8F/Ot5rhFCFBKgzhF7JAwPARyy7k06bnyJIDKWhyo5KOM8aD0Pd3Q9QGNhd4kBnTL
+         yyc46mipxTgjMT/WlAVRcZb7B0+v/AJ85IjPZ8cGUMCxbMQZcmxb8s7y6yhaJ7sdIUux
+         ZYNA==
+X-Gm-Message-State: APjAAAWX/8c2rUfpPrDoKXd9YIKPTBX4YG0UdLpz043kmJgjZ2ng9wt9
+        EUZKwtpRF8wYX1nr/aIKlOY=
+X-Google-Smtp-Source: APXvYqxgxAYQpO8e4Spo4W3ynw/PKZNsgndpQrQdEvTtqBpVU8mbg8ThNNd4XLW1NQVXChaVjFCWhA==
+X-Received: by 2002:a05:6a00:4c:: with SMTP id i12mr70639006pfk.134.1564958979908;
+        Sun, 04 Aug 2019 15:49:39 -0700 (PDT)
 Received: from blueforge.nvidia.com (searspoint.nvidia.com. [216.228.112.21])
-        by smtp.gmail.com with ESMTPSA id r6sm35946836pjb.22.2019.08.04.15.49.28
+        by smtp.gmail.com with ESMTPSA id r6sm35946836pjb.22.2019.08.04.15.49.38
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 04 Aug 2019 15:49:29 -0700 (PDT)
+        Sun, 04 Aug 2019 15:49:39 -0700 (PDT)
 From:   john.hubbard@gmail.com
 X-Google-Original-From: jhubbard@nvidia.com
 To:     Andrew Morton <akpm@linux-foundation.org>
@@ -67,18 +67,21 @@ Cc:     Christoph Hellwig <hch@infradead.org>,
         netdev@vger.kernel.org, rds-devel@oss.oracle.com,
         sparclinux@vger.kernel.org, x86@kernel.org,
         xen-devel@lists.xenproject.org, John Hubbard <jhubbard@nvidia.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>
-Subject: [PATCH v2 07/34] drm/radeon: convert put_page() to put_user_page*()
-Date:   Sun,  4 Aug 2019 15:48:48 -0700
-Message-Id: <20190804224915.28669-8-jhubbard@nvidia.com>
+        Matt Porter <mporter@kernel.crashing.org>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Ioan Nicu <ioan.nicu.ext@nokia.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: [PATCH v2 13/34] rapidio: convert put_page() to put_user_page*()
+Date:   Sun,  4 Aug 2019 15:48:54 -0700
+Message-Id: <20190804224915.28669-14-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.22.0
 In-Reply-To: <20190804224915.28669-1-jhubbard@nvidia.com>
 References: <20190804224915.28669-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -95,30 +98,58 @@ release_pages().
 This is part a tree-wide conversion, as described in commit fc1d8e7cca2d
 ("mm: introduce put_user_page*(), placeholder versions").
 
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: David (ChunMing) Zhou <David1.Zhou@amd.com>
-Cc: David Airlie <airlied@linux.ie>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Ioan Nicu <ioan.nicu.ext@nokia.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 ---
- drivers/gpu/drm/radeon/radeon_ttm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rapidio/devices/rio_mport_cdev.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_ttm.c b/drivers/gpu/drm/radeon/radeon_ttm.c
-index fb3696bc616d..4c9943fa10df 100644
---- a/drivers/gpu/drm/radeon/radeon_ttm.c
-+++ b/drivers/gpu/drm/radeon/radeon_ttm.c
-@@ -540,7 +540,7 @@ static int radeon_ttm_tt_pin_userptr(struct ttm_tt *ttm)
- 	kfree(ttm->sg);
+diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
+index 8155f59ece38..0e8ea0e5a89e 100644
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -572,14 +572,12 @@ static void dma_req_free(struct kref *ref)
+ 	struct mport_dma_req *req = container_of(ref, struct mport_dma_req,
+ 			refcount);
+ 	struct mport_cdev_priv *priv = req->priv;
+-	unsigned int i;
  
- release_pages:
--	release_pages(ttm->pages, pinned);
-+	put_user_pages(ttm->pages, pinned);
- 	return r;
- }
+ 	dma_unmap_sg(req->dmach->device->dev,
+ 		     req->sgt.sgl, req->sgt.nents, req->dir);
+ 	sg_free_table(&req->sgt);
+ 	if (req->page_list) {
+-		for (i = 0; i < req->nr_pages; i++)
+-			put_page(req->page_list[i]);
++		put_user_pages(req->page_list, req->nr_pages);
+ 		kfree(req->page_list);
+ 	}
  
+@@ -815,7 +813,7 @@ rio_dma_transfer(struct file *filp, u32 transfer_mode,
+ 	struct mport_dma_req *req;
+ 	struct mport_dev *md = priv->md;
+ 	struct dma_chan *chan;
+-	int i, ret;
++	int ret;
+ 	int nents;
+ 
+ 	if (xfer->length == 0)
+@@ -946,8 +944,7 @@ rio_dma_transfer(struct file *filp, u32 transfer_mode,
+ 
+ err_pg:
+ 	if (!req->page_list) {
+-		for (i = 0; i < nr_pages; i++)
+-			put_page(page_list[i]);
++		put_user_pages(page_list, nr_pages);
+ 		kfree(page_list);
+ 	}
+ err_req:
 -- 
 2.22.0
 
