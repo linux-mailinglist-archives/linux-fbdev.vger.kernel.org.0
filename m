@@ -2,72 +2,99 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8B482609
-	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Aug 2019 22:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D1F8269D
+	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Aug 2019 23:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728870AbfHEU34 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 5 Aug 2019 16:29:56 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:44702 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727802AbfHEU34 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Aug 2019 16:29:56 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id BE1C78034E;
-        Mon,  5 Aug 2019 22:29:52 +0200 (CEST)
-Date:   Mon, 5 Aug 2019 22:29:51 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH v1 1/1] backlight: drop EARLY_EVENT_BLANK support
-Message-ID: <20190805202951.GA18148@ravnborg.org>
-References: <20190725143224.GB31803@ravnborg.org>
- <20190726095016.wsj7jnni5zdh37dl@holly.lan>
- <20190726112724.GB20065@ravnborg.org>
- <20190805103600.GF4739@dell>
+        id S1730698AbfHEVMZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 5 Aug 2019 17:12:25 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:33614 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730036AbfHEVMY (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Aug 2019 17:12:24 -0400
+Received: by mail-lf1-f68.google.com with SMTP id x3so59267719lfc.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 05 Aug 2019 14:12:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=52Df7UYy5EhBLL4bv/P+/OnUf70c8jTeH6mJgj5Nc6s=;
+        b=HvwClAPwJG3Pi3R4ysSHdSnZra19G+8lxf4u1AX3bm8UTIL32r5/3r4AQDUUnJ/o3L
+         dpaHikb4ucEdmircjNP99G70agmxOPDPQMJwswRiDJ0anTMpviFli3+46wzjbxWNr1qH
+         dghsq9SmMx3LQM+G8BVjUzYIiqSKOMRrvkiKT79W6AoIWk+5Pip47CWTOVU0kk2YNmU+
+         0Izo3RTcKcBjeZveVRbI9DDa6X/mc1vAauC8y3m2avmDY+FIHe/0IazV0HkXFcr81ler
+         t8S7rjmV2wXa1V+9Jsr6Shx95cI1Kl0lZoh/K5dH9RDgTkaryuZnjn+7/Z/NwST+Y+HQ
+         WbKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=52Df7UYy5EhBLL4bv/P+/OnUf70c8jTeH6mJgj5Nc6s=;
+        b=VTaFiIRZEdzdsfqI7lnVaqun4jx2ZwIVF8kG31tr+HWBHygzaBVgJ200YHVq9Ijr7Z
+         ySUM6A6ephtetj6cdF3PTmknxYHt5pd2X1fx4HGhA1MMII4JLUywXHXkjNFcwpki0BRt
+         Rbi9Y71sALvhbnzJlxOfHy18xgwX89nTu+ZqB/3hx91MRfIwI6kn/I3D2OhAA42MlkG/
+         gcU3AV1XmuMUmTsPQmhwv88O6kIBs+qZl+c3dY0JN0Hl77AKf6mNZevTR/sG1mFEHH6C
+         F9TVfl3noGrAZJHOdbHe6ijx55+z5UPqNLRe7kbaMYigSuvV3vjSGmYaZ8Suv6g/j8LJ
+         nSpQ==
+X-Gm-Message-State: APjAAAXfx6sy6VFzPBZNkViCKgpIpM/3Ox6AMCeOiIXZ/GOiG7OtQOLR
+        ut8Bf8qvdaJ6ORfzpYjmwDsfkVjgGujzHUTq3T7lhw==
+X-Google-Smtp-Source: APXvYqyKCE9i41W7XXqJZ+YQ19WTxKlx1r3Tj3XoIOE9+3G2LGoa7zZV9WsUtd9BV0if5aOUW/6qAi6Sf9CuvXhzjNg=
+X-Received: by 2002:a19:e006:: with SMTP id x6mr71138714lfg.165.1565039542766;
+ Mon, 05 Aug 2019 14:12:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190805103600.GF4739@dell>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=KKAkSRfTAAAA:8
-        a=gSw8uvwejDmJeGKncQQA:9 a=CjuIK1q_8ugA:10 a=cvBusfyB2V15izCimMoJ:22
+References: <20190724082508.27617-1-brgl@bgdev.pl>
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 5 Aug 2019 23:12:10 +0200
+Message-ID: <CACRpkdZBqxBKrLi+QskNpC8LPxY9OFOVL0K0pVBOkc61+ZXzGg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-sh@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Lee.
+On Wed, Jul 24, 2019 at 10:25 AM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-On Mon, Aug 05, 2019 at 11:36:00AM +0100, Lee Jones wrote:
-> On Fri, 26 Jul 2019, Sam Ravnborg wrote:
-> 
-> > Hi Daniel.
-> > 
-> > On Fri, Jul 26, 2019 at 10:50:16AM +0100, Daniel Thompson wrote:
-> > > On Thu, Jul 25, 2019 at 04:32:24PM +0200, Sam Ravnborg wrote:
-> > > > There was no users left - so drop the code to support EARLY_FB_BLANK.
-> > > 
-> > > Why are we using a different noun for the subject and description?
-> > I fat-fingered the description.
-> 
-> > Will fix when I apply - or send out a v2 if requested.
-> 
-> Okay, just apply it then:
-> 
-> Acked-by: Lee Jones <lee.jones@linaro.org>
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+>
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+>
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+>
+> [1] https://lkml.org/lkml/2019/6/25/900
+>
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+>
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local vars
 
-Fixed changelog and applied to drm-misc-next.
+The series:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-	Sam
+Yours,
+Linus Walleij
