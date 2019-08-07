@@ -2,97 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F31B841D7
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Aug 2019 03:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A9A841F9
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Aug 2019 03:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728980AbfHGBt6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 6 Aug 2019 21:49:58 -0400
-Received: from hqemgate15.nvidia.com ([216.228.121.64]:13872 "EHLO
-        hqemgate15.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727788AbfHGBt6 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 6 Aug 2019 21:49:58 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5d4a2e4e0000>; Tue, 06 Aug 2019 18:50:06 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Tue, 06 Aug 2019 18:49:56 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Tue, 06 Aug 2019 18:49:56 -0700
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 7 Aug
- 2019 01:49:55 +0000
-Subject: Re: [PATCH v3 00/39] put_user_pages(): miscellaneous call sites
-To:     <john.hubbard@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-CC:     Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        <amd-gfx@lists.freedesktop.org>, <ceph-devel@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>, <devel@lists.orangefs.org>,
-        <dri-devel@lists.freedesktop.org>,
-        <intel-gfx@lists.freedesktop.org>, <kvm@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-block@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-fbdev@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-nfs@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-xfs@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <rds-devel@oss.oracle.com>, <sparclinux@vger.kernel.org>,
-        <x86@kernel.org>, <xen-devel@lists.xenproject.org>
-References: <20190807013340.9706-1-jhubbard@nvidia.com>
-From:   John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <912eb2bd-4102-05c1-5571-c261617ad30b@nvidia.com>
-Date:   Tue, 6 Aug 2019 18:49:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727869AbfHGBx7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 6 Aug 2019 21:53:59 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42451 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727765AbfHGBx7 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 6 Aug 2019 21:53:59 -0400
+Received: by mail-lj1-f194.google.com with SMTP id t28so83906994lje.9
+        for <linux-fbdev@vger.kernel.org>; Tue, 06 Aug 2019 18:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=hUcKlTjR1HIw/YzjCQ7WTvYjftRSq8rHNjYT9AykjRQ=;
+        b=kah7o9S+0EZF7wkGPPyX/xlvPSva5NHE952JLt/WDxa78e+ZmCX0zFLHqdBWn6E57z
+         E6s29ZGizcDt1f15wIGlngwg2xCG/HCsHNOEjok4NuzojKO5uVq0sHH3czckvh7O9kpm
+         KlJqc42B7tCYqbqhvJ757aWUPFs+FvjDrS5aV313I3WxMXc65qCA1Czw07me1k/WPzKL
+         YVYVgYABJCaY+Aj8Pk6O6yHA9bIOdphYFb3RSCPF3ZTkHekUtveifxHfVYQBP/6r9c0p
+         kmKF4JG0U7VS3NiVuoFNd492CNFpDHm6ZG0ui/yOx9KTOm1h+PM1eglDNqpFq3cx6M+v
+         ow6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=hUcKlTjR1HIw/YzjCQ7WTvYjftRSq8rHNjYT9AykjRQ=;
+        b=FS6DnmhSBKsD5S0Ku8flY2YouAf1XcFfCU79Rxy+ugIqSSJ80E7rhGMLmoa8GDNvVz
+         3DT8HcV72JL4hUHuqGSV8sM7wcWRauNiZED2k1ViTd2KkDpj+7rCQRxfExOF8TYlIzyX
+         a4m29QBhx3bUCsN3sHxNdUC/4rmqLeVpPdnykl/auL6Nj7zG0si1B+/fbb9fQHQh+Cka
+         aev7whetwO168HKTVF8ibzK0SvGnbcPG94JC1bI+lnaFrqXJsVM5mMzap4cWOP2CthsN
+         4ECQIeMzqSIMiOnW01Oi7AmEjZRGrR04EN28aH6e/P75gOBbWl6BZ0KsRi9fg+tDlFDU
+         0FSA==
+X-Gm-Message-State: APjAAAWh9fUKQ4YOCpX952iDYxgpFLwj46RFagGNOzqH5cah7O2q5NJW
+        ruw88WJ/zfbPPQR9JctkJTc9dTua1slXLd4uzkY=
+X-Google-Smtp-Source: APXvYqyWeGzQQtIoUyLjbwdon+d+qFuaRNSoQkhlkDTwaOlLuw9RrR8JAWWrmH8kjxDcvnqXvs0a4odUm1MZ4hMg/cA=
+X-Received: by 2002:a2e:9753:: with SMTP id f19mr3380527ljj.113.1565142837514;
+ Tue, 06 Aug 2019 18:53:57 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190807013340.9706-1-jhubbard@nvidia.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL104.nvidia.com (172.18.146.11) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1565142606; bh=Dn5BKjZ7JEBRqWgfa18GnM7OhUXy8yDZwMN3JIIxlGw=;
-        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=Ikr1Z0QmiSe2izYZJH1uqOSC6icnToC0RNMEpxuB23chpfLBCzP3w/AieqLXvDTl5
-         WiAJO8Q4P7LqaICg9w9tXQj3/iPr6N76Dc9IbqJMajQoyinrqFfwgCWwW9UnKbczaL
-         GaLoALYFsFwWv8Sy+VSzQYK1xKYCINe6tMld2WSk4jzjh2UDaUm/4PS/zoETIOvAHY
-         Cv7DiogcZErrjHQstqfLwjbbIS2N4ESoffKtD4ugOTExuz4uGt5TgMT8y01S0TheeO
-         6qVWyeW6YYVimOARtYB9SW21zJJlrmRpt7UH+8pXV98uEPUBYTW77sxtUkB504xqpb
-         D9OLrQ7tTourQ==
+Received: by 2002:a2e:7507:0:0:0:0:0 with HTTP; Tue, 6 Aug 2019 18:53:56 -0700 (PDT)
+Reply-To: beronsimon69@gmail.com
+From:   Simon Beron <agbej57@gmail.com>
+Date:   Wed, 7 Aug 2019 03:53:56 +0200
+Message-ID: <CAPE2HD0=9UmG-pKgg6vN0z03dHfUa8zGU8yac39eTy_t=41rhw@mail.gmail.com>
+Subject: PARTNERSHIP REQUEST,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 8/6/19 6:32 PM, john.hubbard@gmail.com wrote:
-> From: John Hubbard <jhubbard@nvidia.com>
-> ...
-> 
-> John Hubbard (38):
->   mm/gup: add make_dirty arg to put_user_pages_dirty_lock()
-...
->  54 files changed, 191 insertions(+), 323 deletions(-)
-> 
-ahem, yes, apparently this is what happens if I add a few patches while editing
-the cover letter... :) 
+Dear Friend,
 
-The subject line should read "00/41", and the list of files affected here is
-therefore under-reported in this cover letter. However, the patch series itself is 
-intact and ready for submission.
+I need you to please let me know if there are fast growing investments
+in your country in which i can invest money in. I have access to a
+huge amount of money, which i want to invest in your country, i want
+to know if you can be an agent/partner to me and i will give you a
+commission of 30% only If you agree to assist me, i will like to know
+if the commission is ok for you, also i would love to know more about
+you too. Get Back to me without delay if you are interested
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+
+Yours Faithfully
+
+Simon Beron.
