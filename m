@@ -2,138 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 935A6847AA
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Aug 2019 10:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A009847C7
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Aug 2019 10:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728327AbfHGIhb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 7 Aug 2019 04:37:31 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51764 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727753AbfHGIhb (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 7 Aug 2019 04:37:31 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id F237BAF41;
-        Wed,  7 Aug 2019 08:37:26 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id 9D5DC1E3551; Wed,  7 Aug 2019 10:37:26 +0200 (CEST)
-Date:   Wed, 7 Aug 2019 10:37:26 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     John Hubbard <jhubbard@nvidia.com>
-Cc:     Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>, john.hubbard@gmail.com,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
-        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
-        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 00/34] put_user_pages(): miscellaneous call sites
-Message-ID: <20190807083726.GA14658@quack2.suse.cz>
-References: <20190802022005.5117-1-jhubbard@nvidia.com>
- <20190802091244.GD6461@dhcp22.suse.cz>
- <20190802124146.GL25064@quack2.suse.cz>
- <20190802142443.GB5597@bombadil.infradead.org>
- <20190802145227.GQ25064@quack2.suse.cz>
- <076e7826-67a5-4829-aae2-2b90f302cebd@nvidia.com>
+        id S1728373AbfHGIll (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 7 Aug 2019 04:41:41 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:41649 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728202AbfHGIll (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 7 Aug 2019 04:41:41 -0400
+Received: by mail-lj1-f195.google.com with SMTP id d24so84670887ljg.8;
+        Wed, 07 Aug 2019 01:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eYs/hQ3Y9LNfDGfBwcEVi7jKWGv89xUHBEJ8ouLAv+k=;
+        b=kQ0RgEnpAFC5CMzVJfhYi9nPHrh0w5+cXUjSBBYDhgTZ8497vE2tCTzV/bQ4HlC8LS
+         vHu8ar8KSPjGI3fz819BSYQjXu9sLeuNcK1JCyLfeNOEEl5gUo3uq4l9Spc3SZ0qNLWX
+         RRKcRRPsHVI8ZrWf6KgQ49/PH6BslLzpM8MEUWsM7IyrAMHmXOcwIJ+k4Vp8x1A6q4db
+         wjnA9URJbuaAhiO93dKv6xhmv2gI73DPxoJG2a11fDNkS8YzmV+6ihxCHs1s6F/RUKy6
+         pPtVh3AyTgL5MzM9xqRJv6KlPtsQdJQmPOEmoJjPro5Zf1h9wziybDyGzc/1y49nqCZG
+         Ay6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eYs/hQ3Y9LNfDGfBwcEVi7jKWGv89xUHBEJ8ouLAv+k=;
+        b=JUWb+01G7sWTqwAW33YTLEr89KTa7UFKaJz1RAxdqRP20t1YdiG1zoN2/n+F2V5GuF
+         zvJOGFg7SeKQgT6pS6eJG0QcqFiHQrLvG065oecAVaERoqEiMCUUX/3yOw2wusdZebe8
+         X1BUgnHV4dRvdf0hEch7I1ClgjkcqqGrYUzQ7YPUS0xiYGNd/ZNALVW/btwa1JkQhqtN
+         g6hBdukKwYHVbt+nYsnOrMESlfd77c9imr+C3AqufDNkIXxFMUVSkyyUq46muaKQpz4V
+         fuaFtR7xgKVVxIwNLtl6jVISpz9hhxmw8PxVxEfmA76gJ5tgk4SvzYpzYEUc95Wi7ANV
+         1/vA==
+X-Gm-Message-State: APjAAAVXnKP/WN/8kVdJb07JozyTSrHHfoLhZogt9aNr6zkY8CWljFx1
+        Mj0q23khzyhMBcErQ78T7PICKVL8KbTBK+gqBSQ=
+X-Google-Smtp-Source: APXvYqyVOVGtiZzZb0C8zEOAb896AFsHxLnvz2H4GMAhBW2sjDWWEslMf/XyRcI9iSzv92vqZUIs05pv6SdtEdUML4I=
+X-Received: by 2002:a2e:93cc:: with SMTP id p12mr4278994ljh.11.1565167299490;
+ Wed, 07 Aug 2019 01:41:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <076e7826-67a5-4829-aae2-2b90f302cebd@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com>
+In-Reply-To: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Wed, 7 Aug 2019 14:11:27 +0530
+Message-ID: <CAFqt6zb5ySDbkHVpPkOKHTrF8jFuNh=dXtnwPKO6TuEHBCkYgg@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev:via: Remove dead code
+To:     FlorianSchandinat@gmx.de, b.zolnierkie@samsung.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri 02-08-19 12:14:09, John Hubbard wrote:
-> On 8/2/19 7:52 AM, Jan Kara wrote:
-> > On Fri 02-08-19 07:24:43, Matthew Wilcox wrote:
-> > > On Fri, Aug 02, 2019 at 02:41:46PM +0200, Jan Kara wrote:
-> > > > On Fri 02-08-19 11:12:44, Michal Hocko wrote:
-> > > > > On Thu 01-08-19 19:19:31, john.hubbard@gmail.com wrote:
-> > > > > [...]
-> > > > > > 2) Convert all of the call sites for get_user_pages*(), to
-> > > > > > invoke put_user_page*(), instead of put_page(). This involves dozens of
-> > > > > > call sites, and will take some time.
-> > > > > 
-> > > > > How do we make sure this is the case and it will remain the case in the
-> > > > > future? There must be some automagic to enforce/check that. It is simply
-> > > > > not manageable to do it every now and then because then 3) will simply
-> > > > > be never safe.
-> > > > > 
-> > > > > Have you considered coccinele or some other scripted way to do the
-> > > > > transition? I have no idea how to deal with future changes that would
-> > > > > break the balance though.
-> 
-> Hi Michal,
-> 
-> Yes, I've thought about it, and coccinelle falls a bit short (it's not smart
-> enough to know which put_page()'s to convert). However, there is a debug
-> option planned: a yet-to-be-posted commit [1] uses struct page extensions
-> (obviously protected by CONFIG_DEBUG_GET_USER_PAGES_REFERENCES) to add
-> a redundant counter. That allows:
-> 
-> void __put_page(struct page *page)
-> {
-> 	...
-> 	/* Someone called put_page() instead of put_user_page() */
-> 	WARN_ON_ONCE(atomic_read(&page_ext->pin_count) > 0);
-> 
-> > > > 
-> > > > Yeah, that's why I've been suggesting at LSF/MM that we may need to create
-> > > > a gup wrapper - say vaddr_pin_pages() - and track which sites dropping
-> > > > references got converted by using this wrapper instead of gup. The
-> > > > counterpart would then be more logically named as unpin_page() or whatever
-> > > > instead of put_user_page().  Sure this is not completely foolproof (you can
-> > > > create new callsite using vaddr_pin_pages() and then just drop refs using
-> > > > put_page()) but I suppose it would be a high enough barrier for missed
-> > > > conversions... Thoughts?
-> 
-> The debug option above is still a bit simplistic in its implementation
-> (and maybe not taking full advantage of the data it has), but I think
-> it's preferable, because it monitors the "core" and WARNs.
-> 
-> Instead of the wrapper, I'm thinking: documentation and the passage of
-> time, plus the debug option (perhaps enhanced--probably once I post it
-> someone will notice opportunities), yes?
+On Wed, Jul 31, 2019 at 12:59 AM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>
+> This is dead code since 3.15. If there is no plan to use
+> it further, this can be removed forever.
+>
 
-So I think your debug option and my suggested renaming serve a bit
-different purposes (and thus both make sense). If you do the renaming, you
-can just grep to see unconverted sites. Also when someone merges new GUP
-user (unaware of the new rules) while you switch GUP to use pins instead of
-ordinary references, you'll get compilation error in case of renaming
-instead of hard to debug refcount leak without the renaming. And such
-conflict is almost bound to happen given the size of GUP patch set... Also
-the renaming serves against the "coding inertia" - i.e., GUP is around for
-ages so people just use it without checking any documentation or comments.
-After switching how GUP works, what used to be correct isn't anymore so
-renaming the function serves as a warning that something has really
-changed.
+Any comment on this patch ?
 
-Your refcount debug patches are good to catch bugs in the conversions done
-but that requires you to be able to excercise the code path in the first
-place which may require particular HW or so, and you also have to enable
-the debug option which means you already aim at verifying the GUP
-references are treated properly.
-
-								Honza
-
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> ---
+>  drivers/video/fbdev/via/via-core.c | 43 --------------------------------------
+>  1 file changed, 43 deletions(-)
+>
+> diff --git a/drivers/video/fbdev/via/via-core.c b/drivers/video/fbdev/via/via-core.c
+> index e2b2062..ffa2ca2 100644
+> --- a/drivers/video/fbdev/via/via-core.c
+> +++ b/drivers/video/fbdev/via/via-core.c
+> @@ -221,49 +221,6 @@ void viafb_release_dma(void)
+>  }
+>  EXPORT_SYMBOL_GPL(viafb_release_dma);
+>
+> -
+> -#if 0
+> -/*
+> - * Copy a single buffer from FB memory, synchronously.  This code works
+> - * but is not currently used.
+> - */
+> -void viafb_dma_copy_out(unsigned int offset, dma_addr_t paddr, int len)
+> -{
+> -       unsigned long flags;
+> -       int csr;
+> -
+> -       mutex_lock(&viafb_dma_lock);
+> -       init_completion(&viafb_dma_completion);
+> -       /*
+> -        * Program the controller.
+> -        */
+> -       spin_lock_irqsave(&global_dev.reg_lock, flags);
+> -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_DONE);
+> -       /* Enable ints; must happen after CSR0 write! */
+> -       viafb_mmio_write(VDMA_MR0, VDMA_MR_TDIE);
+> -       viafb_mmio_write(VDMA_MARL0, (int) (paddr & 0xfffffff0));
+> -       viafb_mmio_write(VDMA_MARH0, (int) ((paddr >> 28) & 0xfff));
+> -       /* Data sheet suggests DAR0 should be <<4, but it lies */
+> -       viafb_mmio_write(VDMA_DAR0, offset);
+> -       viafb_mmio_write(VDMA_DQWCR0, len >> 4);
+> -       viafb_mmio_write(VDMA_TMR0, 0);
+> -       viafb_mmio_write(VDMA_DPRL0, 0);
+> -       viafb_mmio_write(VDMA_DPRH0, 0);
+> -       viafb_mmio_write(VDMA_PMR0, 0);
+> -       csr = viafb_mmio_read(VDMA_CSR0);
+> -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_START);
+> -       spin_unlock_irqrestore(&global_dev.reg_lock, flags);
+> -       /*
+> -        * Now we just wait until the interrupt handler says
+> -        * we're done.
+> -        */
+> -       wait_for_completion_interruptible(&viafb_dma_completion);
+> -       viafb_mmio_write(VDMA_MR0, 0); /* Reset int enable */
+> -       mutex_unlock(&viafb_dma_lock);
+> -}
+> -EXPORT_SYMBOL_GPL(viafb_dma_copy_out);
+> -#endif
+> -
+>  /*
+>   * Do a scatter/gather DMA copy from FB memory.  You must have done
+>   * a successful call to viafb_request_dma() first.
+> --
+> 1.9.1
+>
