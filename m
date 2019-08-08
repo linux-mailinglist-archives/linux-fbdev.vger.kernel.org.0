@@ -2,131 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BAA8689B
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 20:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C94FE86C40
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 23:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390137AbfHHSSw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Aug 2019 14:18:52 -0400
-Received: from hqemgate14.nvidia.com ([216.228.121.143]:14243 "EHLO
-        hqemgate14.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731038AbfHHSSw (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 14:18:52 -0400
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5d4c678b0000>; Thu, 08 Aug 2019 11:18:52 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate102.nvidia.com (PGP Universal service);
-  Thu, 08 Aug 2019 11:18:50 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate102.nvidia.com on Thu, 08 Aug 2019 11:18:50 -0700
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 8 Aug
- 2019 18:18:49 +0000
-Subject: Re: [PATCH 00/34] put_user_pages(): miscellaneous call sites
-To:     "Weiny, Ira" <ira.weiny@intel.com>,
-        Michal Hocko <mhocko@kernel.org>
-CC:     Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "devel@lists.orangefs.org" <devel@lists.orangefs.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-rpi-kernel@lists.infradead.org" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
-References: <20190802022005.5117-1-jhubbard@nvidia.com>
- <20190802091244.GD6461@dhcp22.suse.cz>
- <20190802124146.GL25064@quack2.suse.cz>
- <20190802142443.GB5597@bombadil.infradead.org>
- <20190802145227.GQ25064@quack2.suse.cz>
- <076e7826-67a5-4829-aae2-2b90f302cebd@nvidia.com>
- <20190807083726.GA14658@quack2.suse.cz>
- <20190807084649.GQ11812@dhcp22.suse.cz>
- <20190808023637.GA1508@iweiny-DESK2.sc.intel.com>
- <e648a7f3-6a1b-c9ea-1121-7ab69b6b173d@nvidia.com>
- <2807E5FD2F6FDA4886F6618EAC48510E79E79644@CRSMSX101.amr.corp.intel.com>
-X-Nvconfidentiality: public
-From:   John Hubbard <jhubbard@nvidia.com>
-Message-ID: <b1b33292-d929-f9ff-dd75-02828228f35e@nvidia.com>
-Date:   Thu, 8 Aug 2019 11:18:49 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2390151AbfHHVXg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Aug 2019 17:23:36 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:36315 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733295AbfHHVXg (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 17:23:36 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MnFps-1icdKs0qea-00jKxt; Thu, 08 Aug 2019 23:23:10 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 01/22] ARM: omap1: innovator: pass lcd control address as pdata
+Date:   Thu,  8 Aug 2019 23:22:10 +0200
+Message-Id: <20190808212234.2213262-2-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
+References: <20190808212234.2213262-1-arnd@arndb.de>
 MIME-Version: 1.0
-In-Reply-To: <2807E5FD2F6FDA4886F6618EAC48510E79E79644@CRSMSX101.amr.corp.intel.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1565288332; bh=JXH0z+PATu5ChINAttu0xw8NI7VYrjVhdTogRmB3Q5s=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=Ne1ScLdQ+tu5qOaISiLlk/MzD+D0tWGCUEcW8KATp/99KORz80qhTvSS0MA86k71v
-         1gG74XZNfpVRbFXyQsXs+wV66Ly/i7Omeym8buU22OwtUh/B674iBCJPOoXFe5hxmV
-         1e7OUBsDbdwXkl/h4Pjx1eOWT4qAVANZ24jESe93raeMkGLORABLpzcfJ+l/YUvFr/
-         bUBCYBUk9JXLyxcXRRJ6Qo5DLPNTbuOY1/JVx8JLOWf78tx+O5w4P2ZxYGmo4q53CG
-         aum+FjJWUhUsxhssDMyUyjXEHRPMBfcGtXYtpdJqmbhfodN4x0QDM6mw3fwyew2GF4
-         p5OXETBP5SbRg==
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:gYQzCnwbWs8mL7daViFjHUrU0375LB2jW2jmopnOztbOKCOlUH9
+ wzr6xMzlYNNwM9kds2mG3qevqDGBNAJ3ckfUEAJNYKK2tsSbQCiKiSG2zIoL5FigrrtryXb
+ Y4gOJjw9g/rplk35Su3pjCxkNftH4wqexHHFCHXeHNLLb4peZcfvWmcPJIjtkK+3FpiI1uO
+ R3+EaCP0c583jcXIH3TLw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+scwJx1aJ24=:fzzjaWEd6UPfzIwJQkEsjs
+ 3PTOJzPRcySccl4YgEgKXsQSYLtgS3T1hlqg3ZG2nwTEaklnDQd1wsErnSVNJ2YjuNtkgEUNh
+ iLJMSmvFG/ccgp/BsS5ghJUtr6n8vBlVcGNIvumQMiY/5sE2/504mNQ2uAI03GlBW3LmYwjcL
+ cYCUmNpBsQfxoatS96SDmS+0c56C8BdC5Cs2QkPQ5Zo3VG7V98t2Th5OYJ8U7dD3mEs8wKAau
+ +3mXwnpIAvpMCQ4+862wyYMuYn+63CjZgS/J+sdQEqioMPPONV3Cl5u0Kf07S/WtLpvrrkHpz
+ Fie4Uaa4YHh+u1hpgJyZUkMl8yDDXLwLPhGWtWFfTGVHALI0RwN12IWuUjFYbXDGLn6hSHYyF
+ n11jgojUqdWQF59bUBi7NqCEuGwKXCvylQbWaW1eLg79pLVjw9SZmBgAjoxkEcAuRf/PMfTVb
+ 93uOK5qGjcH/0VJDhP4u5EQNPEkLjhXYrs7f0fGWQIxH2awjzUHHhBaO8E8TZcuCmY7XR/sZw
+ fouqZmyBUeyGE9kyGsRTjLpIisj1GhWIqDXQFQHnaI5xn9abxsiGjPdGL4t507DJ/g2puzCYz
+ mO5yy+hPpJ/V44WQbdwNgmuU61K3Ol0StT+Go+tfZLZu5CGGp1cY8F/dZPnyy3fDcfguqzXsq
+ 3VUbPE24+i8zOqaZL1+UCpVISxqc7h6WID356sPIluGWaulaS4+f6xXxbT5cy3ejlJejzCobv
+ pXs4GXE031dxuO+xu0W3giaP84+bJ+pQrG0nMQ==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 8/8/19 9:25 AM, Weiny, Ira wrote:
->>
->> On 8/7/19 7:36 PM, Ira Weiny wrote:
->>> On Wed, Aug 07, 2019 at 10:46:49AM +0200, Michal Hocko wrote:
->>>> On Wed 07-08-19 10:37:26, Jan Kara wrote:
->>>>> On Fri 02-08-19 12:14:09, John Hubbard wrote:
->>>>>> On 8/2/19 7:52 AM, Jan Kara wrote:
->>>>>>> On Fri 02-08-19 07:24:43, Matthew Wilcox wrote:
->>>>>>>> On Fri, Aug 02, 2019 at 02:41:46PM +0200, Jan Kara wrote:
->>>>>>>>> On Fri 02-08-19 11:12:44, Michal Hocko wrote:
->>>>>>>>>> On Thu 01-08-19 19:19:31, john.hubbard@gmail.com wrote:
->>   [...]
-> Yep I can do this.  I did not realize that Andrew had accepted any of this work.  I'll check out his tree.  But I don't think he is going to accept this series through his tree.  So what is the ETA on that landing in Linus' tree?
-> 
+To avoid using the mach/omap1510.h header file, pass the correct
+address as platform data.
 
-I'd expect it to go into 5.4, according to my understanding of how
-the release cycles are arranged.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/mach-omap1/board-innovator.c  | 3 +++
+ drivers/video/fbdev/omap/lcd_inn1510.c | 7 +++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-
-> To that point I'm still not sure who would take all this as I am now touching mm, procfs, rdma, ext4, and xfs.
-> 
-> I just thought I would chime in with my progress because I'm to a point where things are working and so I can submit the code but I'm not sure what I can/should depend on landing...  Also, now that 0day has run overnight it has found issues with this rebase so I need to clean those up...  Perhaps I will base on Andrew's tree prior to doing that...
-
-I'm certainly not the right person to answer, but in spite of that, I'd think
-Andrew's tree is a reasonable place for it. Sort of.
-
-thanks,
+diff --git a/arch/arm/mach-omap1/board-innovator.c b/arch/arm/mach-omap1/board-innovator.c
+index cbe093f969d5..2425f1bacb33 100644
+--- a/arch/arm/mach-omap1/board-innovator.c
++++ b/arch/arm/mach-omap1/board-innovator.c
+@@ -194,6 +194,9 @@ static struct platform_device innovator1510_smc91x_device = {
+ static struct platform_device innovator1510_lcd_device = {
+ 	.name		= "lcd_inn1510",
+ 	.id		= -1,
++	.dev	= {
++		.platform_data = (void __force *)OMAP1510_FPGA_LCD_PANEL_CONTROL,
++	}
+ };
+ 
+ static struct platform_device innovator1510_spi_device = {
+diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
+index 776e7f8d656e..37ed0c14aa5a 100644
+--- a/drivers/video/fbdev/omap/lcd_inn1510.c
++++ b/drivers/video/fbdev/omap/lcd_inn1510.c
+@@ -14,15 +14,17 @@
+ 
+ #include "omapfb.h"
+ 
++static void __iomem *omap1510_fpga_lcd_panel_control;
++
+ static int innovator1510_panel_enable(struct lcd_panel *panel)
+ {
+-	__raw_writeb(0x7, OMAP1510_FPGA_LCD_PANEL_CONTROL);
++	__raw_writeb(0x7, omap1510_fpga_lcd_panel_control);
+ 	return 0;
+ }
+ 
+ static void innovator1510_panel_disable(struct lcd_panel *panel)
+ {
+-	__raw_writeb(0x0, OMAP1510_FPGA_LCD_PANEL_CONTROL);
++	__raw_writeb(0x0, omap1510_fpga_lcd_panel_control);
+ }
+ 
+ static struct lcd_panel innovator1510_panel = {
+@@ -48,6 +50,7 @@ static struct lcd_panel innovator1510_panel = {
+ 
+ static int innovator1510_panel_probe(struct platform_device *pdev)
+ {
++	omap1510_fpga_lcd_panel_control = (void __iomem *)pdev->dev.platform_data;
+ 	omapfb_register_panel(&innovator1510_panel);
+ 	return 0;
+ }
 -- 
-John Hubbard
-NVIDIA
+2.20.0
+
