@@ -2,85 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37547859E6
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 07:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2907385C9E
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 10:17:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730962AbfHHFmp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Aug 2019 01:42:45 -0400
-Received: from ozlabs.org ([203.11.71.1]:56463 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725868AbfHHFmp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 8 Aug 2019 01:42:45 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 463y252c4Xz9sN1;
-        Thu,  8 Aug 2019 15:42:37 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     john.hubbard@gmail.com, Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?utf-8?B?SsOpcsO0?= =?utf-8?B?bWU=?= Glisse 
-        <jglisse@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
-        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
-        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org, John Hubbard <jhubbard@nvidia.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christoph Hellwig <hch@lst.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 38/41] powerpc: convert put_page() to put_user_page*()
-In-Reply-To: <20190807013340.9706-39-jhubbard@nvidia.com>
-References: <20190807013340.9706-1-jhubbard@nvidia.com> <20190807013340.9706-39-jhubbard@nvidia.com>
-Date:   Thu, 08 Aug 2019 15:42:34 +1000
-Message-ID: <87k1botdpx.fsf@concordia.ellerman.id.au>
+        id S1731837AbfHHIRM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Aug 2019 04:17:12 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:35162 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731763AbfHHIRM (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 04:17:12 -0400
+Received: by mail-ot1-f67.google.com with SMTP id j19so38603060otq.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 08 Aug 2019 01:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=dNM5N57Ioc8DGeTZqQ0rAIXdhWsFh5H0j1dVFwmVmb4=;
+        b=gtTvn2IndIxQCjjyBbjHq+P0txQocLhuW0xeMXqj5eVcDPoq6BuVqI7IpQwk2ignJU
+         8DyRLC//uN/6s4e1rWXVDWevrneTBo4+Q9LtC2vL7AMkKhAOJx/zCw92RkkPUkwDWzSg
+         Z6NT0FKxGa9xWPFOpGlnTaPTBu2ViA8/jlzJ2yIIPPoicWJH3Z0vbjMwPgB7EacgrSfH
+         bY5qy+QwCAe8+Cb4SG0+Ennjuw3jVUeJKC/t8B+QMcMwMz8hVDhbiATUYO+l5pkzllhX
+         iA98x/+0bobd6W0fdIaTCHrNOytdTCvT5jvTWdGy1E0GmN3OM+5b5NAV4IwZjrFZhUek
+         SK6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=dNM5N57Ioc8DGeTZqQ0rAIXdhWsFh5H0j1dVFwmVmb4=;
+        b=sOqACVAPYftPojb4fWFEZq5WIpT6NAlOcjBVpWxdfJM2LbpGgDRhEFzs1hx8ibehdV
+         b+nOpqXK6yeW36eHhwtXEkp96GJz++bFcu8YUu+mph/r/4qkrz/JcDGBSfGXNuD132Jb
+         iYku6iIP6P1qvxPXZN3tltvxpgOCDzkcqy2iYY8LspeCo4ECts8mN+UNffP8RahHa/El
+         K4IIwM1Fh86qq4Y1m414fvwHArd6N39UGSZMfGNAJRyiLfyZhPHktFOPVMcFNivkafbB
+         O+7niM0P9xPCD3ahq2ef5nCKnQdx+wbBy2vcQotOK4qYDvwpPxJEDZ7vIhr/MzWqEHAg
+         IT7Q==
+X-Gm-Message-State: APjAAAXn8Y7QMcPbwEQVMT4I+an8dJEWAnEkgsoC2/7PW4UZg/sXOljY
+        CMzb7nojPdswPzbuGXjbkb4YdjkB8OyaTF8jo1QOrg==
+X-Google-Smtp-Source: APXvYqwRT6RNZjkYIS7Txd9d/bJwV7lSsUOLdoji98fPLPn7Ri1bmULRrvDu/Ajv9YIyI8JGyUg6MQO3Oo7ThI1tBJc=
+X-Received: by 2002:a6b:f80b:: with SMTP id o11mr13530588ioh.40.1565252231701;
+ Thu, 08 Aug 2019 01:17:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20190724082508.27617-1-brgl@bgdev.pl>
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Thu, 8 Aug 2019 10:17:00 +0200
+Message-ID: <CAMRc=Mex_Ricd+C4F7nGLmpBggO-hWwJDB6duX8kFpPEeaTDjQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>
+Cc:     linux-sh@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi John,
+=C5=9Br., 24 lip 2019 o 10:25 Bartosz Golaszewski <brgl@bgdev.pl> napisa=C5=
+=82(a):
+>
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+>
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+>
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+>
+> [1] https://lkml.org/lkml/2019/6/25/900
+>
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+>
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local v=
+ars
+>
+> Bartosz Golaszewski (7):
+>   sh: ecovec24: add additional properties to the backlight device
+>   backlight: gpio: simplify the platform data handling
+>   sh: ecovec24: don't set unused fields in platform data
+>   backlight: gpio: remove unused fields from platform data
+>   backlight: gpio: remove dev from struct gpio_backlight
+>   backlight: gpio: remove def_value from struct gpio_backlight
+>   backlight: gpio: use a helper variable for &pdev->dev
+>
+>  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+>  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+>  include/linux/platform_data/gpio_backlight.h |  3 -
+>  3 files changed, 44 insertions(+), 74 deletions(-)
+>
+> --
+> 2.21.0
+>
 
-john.hubbard@gmail.com writes:
-> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
-> index b056cae3388b..e126193ba295 100644
-> --- a/arch/powerpc/mm/book3s64/iommu_api.c
-> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
-> @@ -203,6 +202,7 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
->  {
->  	long i;
->  	struct page *page = NULL;
-> +	bool dirty = false;
+Hi Rich, Yoshinori,
 
-I don't think you need that initialisation do you?
+can you ack the sh patches in this series?
 
->  	if (!mem->hpas)
->  		return;
-> @@ -215,10 +215,9 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
->  		if (!page)
->  			continue;
->  
-> -		if (mem->hpas[i] & MM_IOMMU_TABLE_GROUP_PAGE_DIRTY)
-> -			SetPageDirty(page);
-> +		dirty = mem->hpas[i] & MM_IOMMU_TABLE_GROUP_PAGE_DIRTY;
-> -		put_page(page);
-> +		put_user_pages_dirty_lock(&page, 1, dirty);
->  		mem->hpas[i] = 0;
->  	}
->  }
-
-cheers
+Bart
