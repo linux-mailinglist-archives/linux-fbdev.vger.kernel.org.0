@@ -2,113 +2,225 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C94FE86C40
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 23:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23BDA86C6F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 23:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390151AbfHHVXg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Aug 2019 17:23:36 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:36315 "EHLO
+        id S2390446AbfHHVbR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Aug 2019 17:31:17 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:42593 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733295AbfHHVXg (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 17:23:36 -0400
+        with ESMTP id S1728020AbfHHVbR (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 17:31:17 -0400
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
  (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MnFps-1icdKs0qea-00jKxt; Thu, 08 Aug 2019 23:23:10 +0200
+ 1MRVy9-1hhrWF2GCz-00NOKO; Thu, 08 Aug 2019 23:30:54 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Tony Lindgren <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH 01/22] ARM: omap1: innovator: pass lcd control address as pdata
-Date:   Thu,  8 Aug 2019 23:22:10 +0200
-Message-Id: <20190808212234.2213262-2-arnd@arndb.de>
+        Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 09/22] fbdev: omap: avoid using mach/*.h files
+Date:   Thu,  8 Aug 2019 23:22:18 +0200
+Message-Id: <20190808212234.2213262-10-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
 References: <20190808212234.2213262-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:gYQzCnwbWs8mL7daViFjHUrU0375LB2jW2jmopnOztbOKCOlUH9
- wzr6xMzlYNNwM9kds2mG3qevqDGBNAJ3ckfUEAJNYKK2tsSbQCiKiSG2zIoL5FigrrtryXb
- Y4gOJjw9g/rplk35Su3pjCxkNftH4wqexHHFCHXeHNLLb4peZcfvWmcPJIjtkK+3FpiI1uO
- R3+EaCP0c583jcXIH3TLw==
+X-Provags-ID: V03:K1:88szA/Fo8mKxxZtSI6a/3DryoEp3R0RLjKS0a4qc6cmQ6XF/WLN
+ W6t9LZZrLHyweQaVq4It4vpP6q85bngaTLNjJhSu5Zs2FGsc54mk16/FUff6KabydJOjjCe
+ gSmfFkLusQj3C1K+t2nV3Wqk3CMDq1pgtV+FfUcRXuvH8yvWc3/+WkYXaDaoJQ/KokIL5Gr
+ xffTou6CcBEBFvrAC7+Ag==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+scwJx1aJ24=:fzzjaWEd6UPfzIwJQkEsjs
- 3PTOJzPRcySccl4YgEgKXsQSYLtgS3T1hlqg3ZG2nwTEaklnDQd1wsErnSVNJ2YjuNtkgEUNh
- iLJMSmvFG/ccgp/BsS5ghJUtr6n8vBlVcGNIvumQMiY/5sE2/504mNQ2uAI03GlBW3LmYwjcL
- cYCUmNpBsQfxoatS96SDmS+0c56C8BdC5Cs2QkPQ5Zo3VG7V98t2Th5OYJ8U7dD3mEs8wKAau
- +3mXwnpIAvpMCQ4+862wyYMuYn+63CjZgS/J+sdQEqioMPPONV3Cl5u0Kf07S/WtLpvrrkHpz
- Fie4Uaa4YHh+u1hpgJyZUkMl8yDDXLwLPhGWtWFfTGVHALI0RwN12IWuUjFYbXDGLn6hSHYyF
- n11jgojUqdWQF59bUBi7NqCEuGwKXCvylQbWaW1eLg79pLVjw9SZmBgAjoxkEcAuRf/PMfTVb
- 93uOK5qGjcH/0VJDhP4u5EQNPEkLjhXYrs7f0fGWQIxH2awjzUHHhBaO8E8TZcuCmY7XR/sZw
- fouqZmyBUeyGE9kyGsRTjLpIisj1GhWIqDXQFQHnaI5xn9abxsiGjPdGL4t507DJ/g2puzCYz
- mO5yy+hPpJ/V44WQbdwNgmuU61K3Ol0StT+Go+tfZLZu5CGGp1cY8F/dZPnyy3fDcfguqzXsq
- 3VUbPE24+i8zOqaZL1+UCpVISxqc7h6WID356sPIluGWaulaS4+f6xXxbT5cy3ejlJejzCobv
- pXs4GXE031dxuO+xu0W3giaP84+bJ+pQrG0nMQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6N8ZFBB2B8Y=:wwhyQ2dKFdjd+6txhxm6GB
+ r5EWrXStpxQkas/tMQjlyNgIuWpDTVEGNewKIx4571rKYanefuhEZP0pD3j2pjFRdNzg5UgW+
+ IW7CzqHLPdUm85HJLglUX7OqEOcVEbgGAI1kCxHvXS1uOvbmi7D2v1c7w/yFoBi+vwWVS8LMC
+ aDov4Mh+N2gS8ZThs48vRk+9QD7cxwEEL8X/KY9uzByDaCWMzl/TCZ3Jh6fDzEz8gLit7wkEv
+ 4JZLpB3hartGRTwG+xBsKnN88mk4uf/CDeVnuk7PPbUHKr24BUHqNIqEZL5xsH6QHc5aAR7Hz
+ gRGxaUH6+xvfrWQsKR+4BVWyHEWi3DK7jRLdTDHoA9G0e9QOSV2qwxXqDKyLbuYsjUKFLnRLR
+ HnxedBZ1eZoQXa7u0JGSC3gTvrZODSrSNLszP37JOJu5YYZ2Xk3Z/89TeOGvfjXQHd+pY3I+a
+ qgQxEoY3gquwky6+fW1cac+0CMNSLt0rLsz4B/FSaOPcpddCWCFi7g56CFoGYRWStLTdMI3ku
+ VsedmQ+8yonko1eXRZbay8pU8N/GF4B7zrZKut9GQYn0tU3zh3gak2KJPmQQ3rxDT2ay263OF
+ GKprQYzYiToguAEYLSmF0fj+PvLCyShLqvTE0X9bwMYJ74sQrNCo7ua2Qs9aDs+Lb4jZ8A34Q
+ g6EE4OlJUTq14Pq3PRMnoKSvhNov8EeS6ihQ6jSwX2ds7twSs2Uvp3NvVraWllP7kdtbLG4ZL
+ CY7+25N0BR2fUkAk9y/nUxS35Oa1K3St34qBFQ==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-To avoid using the mach/omap1510.h header file, pass the correct
-address as platform data.
+All the headers we actually need are now in include/linux/soc,
+so use those versions instead and allow compile-testing on
+other architectures.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/mach-omap1/board-innovator.c  | 3 +++
- drivers/video/fbdev/omap/lcd_inn1510.c | 7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/video/backlight/Kconfig          | 4 ++--
+ drivers/video/backlight/omap1_bl.c       | 4 ++--
+ drivers/video/fbdev/omap/Kconfig         | 4 ++--
+ drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
+ drivers/video/fbdev/omap/lcd_dma.c       | 3 ++-
+ drivers/video/fbdev/omap/lcd_inn1510.c   | 2 +-
+ drivers/video/fbdev/omap/lcd_osk.c       | 4 ++--
+ drivers/video/fbdev/omap/lcdc.c          | 2 ++
+ drivers/video/fbdev/omap/omapfb_main.c   | 3 +--
+ drivers/video/fbdev/omap/sossi.c         | 1 +
+ 10 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-innovator.c b/arch/arm/mach-omap1/board-innovator.c
-index cbe093f969d5..2425f1bacb33 100644
---- a/arch/arm/mach-omap1/board-innovator.c
-+++ b/arch/arm/mach-omap1/board-innovator.c
-@@ -194,6 +194,9 @@ static struct platform_device innovator1510_smc91x_device = {
- static struct platform_device innovator1510_lcd_device = {
- 	.name		= "lcd_inn1510",
- 	.id		= -1,
-+	.dev	= {
-+		.platform_data = (void __force *)OMAP1510_FPGA_LCD_PANEL_CONTROL,
-+	}
- };
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index 8b081d61773e..195c71130827 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -213,8 +213,8 @@ config BACKLIGHT_LOCOMO
  
- static struct platform_device innovator1510_spi_device = {
-diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
-index 776e7f8d656e..37ed0c14aa5a 100644
---- a/drivers/video/fbdev/omap/lcd_inn1510.c
-+++ b/drivers/video/fbdev/omap/lcd_inn1510.c
-@@ -14,15 +14,17 @@
+ config BACKLIGHT_OMAP1
+ 	tristate "OMAP1 PWL-based LCD Backlight"
+-	depends on ARCH_OMAP1
+-	default y
++	depends on ARCH_OMAP1 || COMPILE_TEST
++	default ARCH_OMAP1
+ 	help
+ 	  This driver controls the LCD backlight level and power for
+ 	  the PWL module of OMAP1 processors.  Say Y if your board
+diff --git a/drivers/video/backlight/omap1_bl.c b/drivers/video/backlight/omap1_bl.c
+index 74263021b1b3..69a49384b3de 100644
+--- a/drivers/video/backlight/omap1_bl.c
++++ b/drivers/video/backlight/omap1_bl.c
+@@ -14,8 +14,8 @@
+ #include <linux/slab.h>
+ #include <linux/platform_data/omap1_bl.h>
+ 
+-#include <mach/hardware.h>
+-#include <mach/mux.h>
++#include <linux/soc/ti/omap1-io.h>
++#include <linux/soc/ti/omap1-mux.h>
+ 
+ #define OMAPBL_MAX_INTENSITY		0xff
+ 
+diff --git a/drivers/video/fbdev/omap/Kconfig b/drivers/video/fbdev/omap/Kconfig
+index df2a5d0d4aa2..b1786cf1b486 100644
+--- a/drivers/video/fbdev/omap/Kconfig
++++ b/drivers/video/fbdev/omap/Kconfig
+@@ -2,7 +2,7 @@
+ config FB_OMAP
+ 	tristate "OMAP frame buffer support"
+ 	depends on FB
+-	depends on ARCH_OMAP1
++	depends on ARCH_OMAP1 || (ARM && COMPILE_TEST)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -42,7 +42,7 @@ config FB_OMAP_LCD_MIPID
+ 
+ config FB_OMAP_LCD_H3
+ 	bool "TPS65010 LCD controller on OMAP-H3"
+-	depends on MACH_OMAP_H3
++	depends on MACH_OMAP_H3 || COMPILE_TEST
+ 	depends on TPS65010=y
+ 	default y
+ 	help
+diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
+index 8e54aae544a0..da2e32615abe 100644
+--- a/drivers/video/fbdev/omap/lcd_ams_delta.c
++++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
+@@ -14,7 +14,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/lcd.h>
+ 
+-#include <mach/hardware.h>
++#include <linux/soc/ti/omap1-io.h>
  
  #include "omapfb.h"
  
-+static void __iomem *omap1510_fpga_lcd_panel_control;
-+
- static int innovator1510_panel_enable(struct lcd_panel *panel)
- {
--	__raw_writeb(0x7, OMAP1510_FPGA_LCD_PANEL_CONTROL);
-+	__raw_writeb(0x7, omap1510_fpga_lcd_panel_control);
- 	return 0;
- }
+diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
+index 867a63c06f42..f85817635a8c 100644
+--- a/drivers/video/fbdev/omap/lcd_dma.c
++++ b/drivers/video/fbdev/omap/lcd_dma.c
+@@ -25,7 +25,8 @@
  
- static void innovator1510_panel_disable(struct lcd_panel *panel)
- {
--	__raw_writeb(0x0, OMAP1510_FPGA_LCD_PANEL_CONTROL);
-+	__raw_writeb(0x0, omap1510_fpga_lcd_panel_control);
- }
+ #include <linux/omap-dma.h>
  
- static struct lcd_panel innovator1510_panel = {
-@@ -48,6 +50,7 @@ static struct lcd_panel innovator1510_panel = {
+-#include <mach/hardware.h>
++#include <linux/soc/ti/omap1-soc.h>
++#include <linux/soc/ti/omap1-io.h>
  
- static int innovator1510_panel_probe(struct platform_device *pdev)
- {
-+	omap1510_fpga_lcd_panel_control = (void __iomem *)pdev->dev.platform_data;
- 	omapfb_register_panel(&innovator1510_panel);
- 	return 0;
- }
+ #include "lcdc.h"
+ #include "lcd_dma.h"
+diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
+index 37ed0c14aa5a..bb915637e9b6 100644
+--- a/drivers/video/fbdev/omap/lcd_inn1510.c
++++ b/drivers/video/fbdev/omap/lcd_inn1510.c
+@@ -10,7 +10,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+ 
+-#include <mach/hardware.h>
++#include <linux/soc/ti/omap1-soc.h>
+ 
+ #include "omapfb.h"
+ 
+diff --git a/drivers/video/fbdev/omap/lcd_osk.c b/drivers/video/fbdev/omap/lcd_osk.c
+index 5d5762128c8d..8168ba0d47fd 100644
+--- a/drivers/video/fbdev/omap/lcd_osk.c
++++ b/drivers/video/fbdev/omap/lcd_osk.c
+@@ -11,8 +11,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/gpio.h>
+ 
+-#include <mach/hardware.h>
+-#include <mach/mux.h>
++#include <linux/soc/ti/omap1-io.h>
++#include <linux/soc/ti/omap1-mux.h>
+ 
+ #include "omapfb.h"
+ 
+diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
+index 65953b7fbdb9..3af758f12afd 100644
+--- a/drivers/video/fbdev/omap/lcdc.c
++++ b/drivers/video/fbdev/omap/lcdc.c
+@@ -17,6 +17,8 @@
+ #include <linux/clk.h>
+ #include <linux/gfp.h>
+ 
++#include <linux/soc/ti/omap1-io.h>
++#include <linux/soc/ti/omap1-soc.h>
+ #include <linux/omap-dma.h>
+ 
+ #include <asm/mach-types.h>
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index dc06057de91d..af73a3f9ac53 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -19,8 +19,7 @@
+ 
+ #include <linux/omap-dma.h>
+ 
+-#include <mach/hardware.h>
+-
++#include <linux/soc/ti/omap1-soc.h>
+ #include "omapfb.h"
+ #include "lcdc.h"
+ 
+diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
+index ade9d452254c..6b99d89fbe6e 100644
+--- a/drivers/video/fbdev/omap/sossi.c
++++ b/drivers/video/fbdev/omap/sossi.c
+@@ -13,6 +13,7 @@
+ #include <linux/interrupt.h>
+ 
+ #include <linux/omap-dma.h>
++#include <linux/soc/ti/omap1-io.h>
+ 
+ #include "omapfb.h"
+ #include "lcd_dma.h"
 -- 
 2.20.0
 
