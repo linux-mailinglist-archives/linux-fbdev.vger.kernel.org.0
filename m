@@ -2,88 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D736879C7
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Aug 2019 14:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 635F687C49
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Aug 2019 16:07:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406779AbfHIMUw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Aug 2019 08:20:52 -0400
-Received: from ozlabs.org ([203.11.71.1]:35801 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406730AbfHIMUw (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 9 Aug 2019 08:20:52 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 464kpy5K69z9sBF;
-        Fri,  9 Aug 2019 22:20:42 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     John Hubbard <jhubbard@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?utf-8?B?SsOpcsO0?= =?utf-8?B?bWU=?= Glisse 
-        <jglisse@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
-        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
-        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christoph Hellwig <hch@lst.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 38/41] powerpc: convert put_page() to put_user_page*()
-In-Reply-To: <248c9ab2-93cc-6d8b-606d-d85b83e791e5@nvidia.com>
-References: <20190807013340.9706-1-jhubbard@nvidia.com> <20190807013340.9706-39-jhubbard@nvidia.com> <87k1botdpx.fsf@concordia.ellerman.id.au> <248c9ab2-93cc-6d8b-606d-d85b83e791e5@nvidia.com>
-Date:   Fri, 09 Aug 2019 22:20:40 +1000
-Message-ID: <875zn6ttrb.fsf@concordia.ellerman.id.au>
+        id S2406692AbfHIOHj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Aug 2019 10:07:39 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:39274 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726261AbfHIOHj (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Aug 2019 10:07:39 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190809140737euoutp015faba6e7ba21a404bdcf4507122d583c~5RlCrTSUs1181511815euoutp01B
+        for <linux-fbdev@vger.kernel.org>; Fri,  9 Aug 2019 14:07:37 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190809140737euoutp015faba6e7ba21a404bdcf4507122d583c~5RlCrTSUs1181511815euoutp01B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1565359657;
+        bh=Jnk5qUmdXGpY8skMtfaeEbiGzPLM3WRl+KTAG/hBkhY=;
+        h=From:Subject:To:Cc:Date:References:From;
+        b=Laxjw3SDHUL7GG2dcBV9rXwSFRQzBDbMH0VPReBaVc0EaxUCbpbRmB0mAO8Loisw/
+         TuT61sDwACqbYGYUo1VOe1pYJIqHhdhPveHKoKRM39WxR4HKjmo1QxZqolyXvH0wdZ
+         skPaIAAMRcixGCsXl5VbD/vnMynbmtOGWND0kQhI=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190809140737eucas1p1e959583176472bdb9eefd482d81cbb9c~5RlCXT8yp2256822568eucas1p1i;
+        Fri,  9 Aug 2019 14:07:37 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 12.05.04374.92E7D4D5; Fri,  9
+        Aug 2019 15:07:37 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190809140736eucas1p2b14d3205aa7268cd1a6bba15ebd81066~5RlBifsfV1267712677eucas1p2R;
+        Fri,  9 Aug 2019 14:07:36 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190809140736eusmtrp25a5aa358440e2c8dbce4df151fe11564~5RlBUf1m11842018420eusmtrp2L;
+        Fri,  9 Aug 2019 14:07:36 +0000 (GMT)
+X-AuditID: cbfec7f5-4f7ff70000001116-31-5d4d7e2931fe
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 9E.2F.04117.82E7D4D5; Fri,  9
+        Aug 2019 15:07:36 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190809140735eusmtip1a7fdab549a7159935ceec23e0249cfa8~5RlBBJkpv1392113921eusmtip1H;
+        Fri,  9 Aug 2019 14:07:35 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [GIT PULL] fbdev fix for v5.3-rc4
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Message-ID: <22bfe177-272e-afe8-31d1-75bc0cf852c7@samsung.com>
+Date:   Fri, 9 Aug 2019 16:07:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsWy7djPc7qadb6xBps+c1lc+fqezeJE3wdW
+        i8u75rBZPOp7y+7A4nFixm8Wj/vdx5k8Pm+SC2CO4rJJSc3JLEst0rdL4MpYtvYAc8Fejoob
+        R7wbGHvYuxg5OSQETCS2buxn6mLk4hASWMEoMXXDSzYI5wujxMdbFxghnM+MEhvmfGGBaZnx
+        bg5UYjmjRE97JwuE85ZRYvnRLWCD2QSsJCa2r2IEsYUFtCQOrpjBDGKLCBhJfH5xhRXEZhZI
+        kPhy8zNQnIODV8BO4sZVfZAwi4CKxI1DH5lAbFGBCIn7xzaAlfMKCEqcnPmEBaJVXOLWk/lM
+        ELa8xPa3c5hBbpAQ+M4mseZpJyvEpS4SF3ctYIawhSVeHd8C9bSMxP+d85kgGtYxSvzteAHV
+        vR3og8n/2CCqrCUOH7/ICnIds4CmxPpd+iCmhICjxN1VwRAmn8SNt4IQN/BJTNo2nRkizCvR
+        0SYEMUNNYsOyDWwwW7t2roS6xkOi98VZ9gmMirOQfDYLyWezkHw2C+GEBYwsqxjFU0uLc9NT
+        i43zUsv1ihNzi0vz0vWS83M3MQLTyel/x7/uYNz3J+kQowAHoxIPb4OiT6wQa2JZcWXuIUYJ
+        DmYlEd4rHL6xQrwpiZVVqUX58UWlOanFhxilOViUxHmrGR5ECwmkJ5akZqemFqQWwWSZODil
+        Ghgrbx/mq59VnF1gNbmIw2thZMqV39zln9+py2We9VXKXS9eFDxz27yZieyOlzO/a7EJx4ZP
+        PhSs6MfhZ1+74Iy7z/8Eo5XbD13L+Jj6Jr2nU6e9/K7F89WmNw1+nH904seXZHOPld35bqpT
+        BL7EnyuyeXV4457DP8qO3lz+qm/3sy7Ht3vzF7EosRRnJBpqMRcVJwIAqDr+hiMDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgkeLIzCtJLcpLzFFi42I5/e/4XV2NOt9Yg1ePeCyufH3PZnGi7wOr
+        xeVdc9gsHvW9ZXdg8Tgx4zeLx/3u40wenzfJBTBH6dkU5ZeWpCpk5BeX2CpFG1oY6RlaWugZ
+        mVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GUsW3uAuWAvR8WNI94NjD3sXYycHBICJhIz3s1h
+        BLGFBJYySrybkNbFyAEUl5E4vr4MokRY4s+1LrYuRi6gkteMEieeLWcDSbAJWElMbF8F1iss
+        oCVxcMUMZhBbRMBI4vOLK6wgNrNAgsSm+1PZQGbyCthJ3LiqDxJmEVCRuHHoIxOILSoQIXHm
+        /QoWEJtXQFDi5MwnLBCt6hJ/5l1ihrDFJW49mc8EYctLbH87h3kCo8AsJC2zkLTMQtIyC0nL
+        AkaWVYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmbGIGxsO3Yzy07GLveBR9iFOBgVOLh1ZD3iRVi
+        TSwrrsw9xCjBwawkwnuFwzdWiDclsbIqtSg/vqg0J7X4EKMp0EMTmaVEk/OBcZpXEm9oamhu
+        YWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoFRNTFv8gHBd3M5/624OdV91dzY
+        1ttm7mEXt3ksCtr+36+nl+nonj33+JyW3H/0Z0G654+7Z0uZWx+WrT/FXZcrfZbl+saJolHr
+        Pf3u2384N0/q6OoF23uaVGSzb/Wynzv/4XL/gXfiG+bPqdWUmOG6Yum27ARVVjfv07tdmlUD
+        i5dJb319SznguhJLcUaioRZzUXEiAOfAZqibAgAA
+X-CMS-MailID: 20190809140736eucas1p2b14d3205aa7268cd1a6bba15ebd81066
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190809140736eucas1p2b14d3205aa7268cd1a6bba15ebd81066
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190809140736eucas1p2b14d3205aa7268cd1a6bba15ebd81066
+References: <CGME20190809140736eucas1p2b14d3205aa7268cd1a6bba15ebd81066@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-John Hubbard <jhubbard@nvidia.com> writes:
-> On 8/7/19 10:42 PM, Michael Ellerman wrote:
->> Hi John,
->> 
->> john.hubbard@gmail.com writes:
->>> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
->>> index b056cae3388b..e126193ba295 100644
->>> --- a/arch/powerpc/mm/book3s64/iommu_api.c
->>> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
->>> @@ -203,6 +202,7 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
->>>  {
->>>  	long i;
->>>  	struct page *page = NULL;
->>> +	bool dirty = false;
->> 
->> I don't think you need that initialisation do you?
->> 
->
-> Nope, it can go. Fixed locally, thanks.
 
-Thanks.
+Hi Linus,
 
-> Did you get a chance to look at enough of the other bits to feel comfortable 
-> with the patch, overall?
+Please pull fbdev fix for v5.3-rc4 (fbdev patches will now go to
+upstream through drm-misc tree for improved maintainership and
+better integration testing so update MAINTAINERS file accordingly).
 
-Mostly :) It's not really my area, but all the conversions looked
-correct to me as best as I could tell.
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
 
-So I'm fine for it to go in as part of the series:
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+The following changes since commit e21a712a9685488f5ce80495b37b9fdbe96c230d:
 
-cheers
+  Linux 5.3-rc3 (2019-08-04 18:40:12 -0700)
+
+are available in the git repository at:
+
+  https://github.com/bzolnier/linux.git tags/fbdev-v5.3-rc4
+
+for you to fetch changes up to 6a7553e8d84d5322d883cb83bb9888c49a0f04e0:
+
+  MAINTAINERS: handle fbdev changes through drm-misc tree (2019-08-09 15:46:40 +0200)
+
+----------------------------------------------------------------
+fbdev fix for v5.3-rc4:
+
+- update fbdev git tree in MAINTAINERS file
+
+----------------------------------------------------------------
+Bartlomiej Zolnierkiewicz (1):
+      MAINTAINERS: handle fbdev changes through drm-misc tree
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
