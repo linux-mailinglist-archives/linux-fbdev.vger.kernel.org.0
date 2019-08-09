@@ -2,132 +2,178 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70F688743A
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Aug 2019 10:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2277587895
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Aug 2019 13:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405904AbfHIIel (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Aug 2019 04:34:41 -0400
-Received: from mx2.suse.de ([195.135.220.15]:38264 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726054AbfHIIek (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 9 Aug 2019 04:34:40 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id DD89FAE49;
-        Fri,  9 Aug 2019 08:34:36 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id DC04B1E437E; Fri,  9 Aug 2019 10:34:35 +0200 (CEST)
-Date:   Fri, 9 Aug 2019 10:34:35 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Ira Weiny <ira.weiny@intel.com>
-Cc:     Michal Hocko <mhocko@kernel.org>, Jan Kara <jack@suse.cz>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Matthew Wilcox <willy@infradead.org>, john.hubbard@gmail.com,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx@lists.freedesktop.org, ceph-devel@vger.kernel.org,
-        devel@driverdev.osuosl.org, devel@lists.orangefs.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-block@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, linux-xfs@vger.kernel.org,
-        netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-        sparclinux@vger.kernel.org, x86@kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH 00/34] put_user_pages(): miscellaneous call sites
-Message-ID: <20190809083435.GA17568@quack2.suse.cz>
-References: <20190802022005.5117-1-jhubbard@nvidia.com>
- <20190802091244.GD6461@dhcp22.suse.cz>
- <20190802124146.GL25064@quack2.suse.cz>
- <20190802142443.GB5597@bombadil.infradead.org>
- <20190802145227.GQ25064@quack2.suse.cz>
- <076e7826-67a5-4829-aae2-2b90f302cebd@nvidia.com>
- <20190807083726.GA14658@quack2.suse.cz>
- <20190807084649.GQ11812@dhcp22.suse.cz>
- <20190808023637.GA1508@iweiny-DESK2.sc.intel.com>
+        id S2406592AbfHILaF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Aug 2019 07:30:05 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:56364 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405723AbfHILaE (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Aug 2019 07:30:04 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190809113003euoutp02cbee310fc55a9d3bb2589a70ba542a07~5PbdTJ66b2011320113euoutp02L
+        for <linux-fbdev@vger.kernel.org>; Fri,  9 Aug 2019 11:30:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190809113003euoutp02cbee310fc55a9d3bb2589a70ba542a07~5PbdTJ66b2011320113euoutp02L
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1565350203;
+        bh=bTGInlSVhmUeSw5kWsgCeWb8NpQFnLIH+2lya/64BK8=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=Yho+5J3ctjkUpQmg6yU0ySm2Zc6G4n62d1d1Tqce4VwWxg83/Z6NnM4Q+Hi+QCG4q
+         EhmRg8PPyVZ2i/njSBI+AZFFwyQ6VpleOdEC+edzN6/MjDxYYkpcpxMGHtX2KlQ0Lk
+         lLqlSjfURsGLrGYMWqpyuyqaNmT+TsQxynem7sjY=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190809113002eucas1p21f587e91f425ab1fb27e14da3eaa6c69~5PbclTNt50338603386eucas1p2B;
+        Fri,  9 Aug 2019 11:30:02 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 6C.85.04309.9395D4D5; Fri,  9
+        Aug 2019 12:30:01 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190809113001eucas1p2b5ec955fb6968ef7ba052989c1a025a5~5PbbmQD0_1441114411eucas1p2O;
+        Fri,  9 Aug 2019 11:30:01 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190809113001eusmtrp26cd3c65b5c16274b6c9d0dd72bedae4f~5PbbYJpwN0289302893eusmtrp2F;
+        Fri,  9 Aug 2019 11:30:01 +0000 (GMT)
+X-AuditID: cbfec7f4-ae1ff700000010d5-7b-5d4d593901f8
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 62.AE.04117.8395D4D5; Fri,  9
+        Aug 2019 12:30:00 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190809113000eusmtip140190a6266d6eba38570fd1f7fce7976~5Pba42m7F0288202882eusmtip1Y;
+        Fri,  9 Aug 2019 11:30:00 +0000 (GMT)
+Subject: Re: [PATCH 01/22] ARM: omap1: innovator: pass lcd control address
+ as pdata
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <af560012-053e-b439-8c6a-8d3f05ff1ef7@samsung.com>
+Date:   Fri, 9 Aug 2019 13:29:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190808023637.GA1508@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190808212234.2213262-2-arnd@arndb.de>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrAKsWRmVeSWpSXmKPExsWy7djPc7qWkb6xBof7rCzWvHCw+DvpGLvF
+        la/v2SyaF69ns5jyZzmTxabH11gtTvR9YLW4vGsOm8XsJf0sFuvn32Kz2H/Fy4Hb4/evSYwe
+        375OYvE4/HUhi8eda3vYPPbPXcPucb/7OJPH5iX1HsdvbGfy+LxJLoAzissmJTUnsyy1SN8u
+        gStjW98P5oKrghVz5n1mb2B8ydfFyMkhIWAi8abhE0sXIxeHkMAKRonX33rYIJwvjBIrV16D
+        ynxmlLgybw8TTEvjjX3sILaQwHJGiQ+7vSCK3jJKnP+9EaxIWCBU4kPvLDBbREBRYuqLZ8wg
+        RcwCX5kkGjp2M4Ik2ASsJCa2rwKzeQXsJJpe3QGzWQRUJC413gFrFhWIkLh/bAMrRI2gxMmZ
+        T1hAbE4BU4lNfS1g9cwC4hK3nsxngrDlJba/nQO2TELgI7vE4o1zoc52kVj64CY7hC0s8er4
+        FihbRuL/TpBmkIZ1jBJ/O15AdW9nlFg++R8bRJW1xOHjF4HO4ABaoSmxfpc+iCkh4CixYK0e
+        hMknceOtIMQNfBKTtk1nhgjzSnS0CUHMUJPYsGwDG8zWrp0rmScwKs1C8tksJN/MQvLNLIS1
+        CxhZVjGKp5YW56anFhvlpZbrFSfmFpfmpesl5+duYgSms9P/jn/ZwbjrT9IhRgEORiUe3gZF
+        n1gh1sSy4srcQ4wSHMxKIrxXOHxjhXhTEiurUovy44tKc1KLDzFKc7AoifNWMzyIFhJITyxJ
+        zU5NLUgtgskycXBKNTAK1MvnrOi1enc2aFbZVP34m6d2BicWPlOvFp8a92LdjReBPb7f1yQ9
+        e/FotULdoUX79Oy4lxSefMbSIqflI+9upSD1ZU70zdf8q/7PjV9X8vbAxWWGb+4IrDhmpzlV
+        eabEeddqkUlSmbZiIkK/dCf4lxXxMc7fslf00ZH22fzRr17kMAitSPNVYinOSDTUYi4qTgQA
+        REp+JWMDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMIsWRmVeSWpSXmKPExsVy+t/xu7oWkb6xBo8nW1mseeFg8XfSMXaL
+        K1/fs1k0L17PZjHlz3Imi02Pr7FanOj7wGpxedccNovZS/pZLNbPv8Vmsf+KlwO3x+9fkxg9
+        vn2dxOJx+OtCFo871/aweeyfu4bd4373cSaPzUvqPY7f2M7k8XmTXABnlJ5NUX5pSapCRn5x
+        ia1StKGFkZ6hpYWekYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7Gtr4fzAVXBSvmzPvM3sD4
+        kq+LkZNDQsBEovHGPvYuRi4OIYGljBIN8+eydTFyACVkJI6vL4OoEZb4c62LDaLmNaPE3ZW7
+        WUASwgKhEqd+zmYHsUUEFCWmvnjGDFLELPCVSWLGrV9MEB2bGSVOPGwB62ATsJKY2L6KEcTm
+        FbCTaHp1B8xmEVCRuNR4hwnEFhWIkDjzfgULRI2gxMmZT8BsTgFTiU19LWD1zALqEn/mXWKG
+        sMUlbj2ZzwRhy0tsfzuHeQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrFibnFpXnp
+        esn5uZsYgRG87djPLTsYu94FH2IU4GBU4uHVkPeJFWJNLCuuzD3EKMHBrCTCe4XDN1aINyWx
+        siq1KD++qDQntfgQoynQcxOZpUST84HJJa8k3tDU0NzC0tDc2NzYzEJJnLdD4GCMkEB6Yklq
+        dmpqQWoRTB8TB6dUA6PDe4aJsTsiIzJvBB4QmmAuzxSs7nfN+7Bau9u8KNt/7v/e7o+JORn2
+        RiyFa/+eU4p6nnMPrFhVL/KwbsZfcUnOn+eWRZy4+6Thj1G9wKOJ94IU2I4XPiksVdk5+YCk
+        S++ljefTWd+kpZsxHjvOOS+vQ+/T7fxtMm0O7Xlv3N7EeVwq/rh25n4lluKMREMt5qLiRABW
+        xS779gIAAA==
+X-CMS-MailID: 20190809113001eucas1p2b5ec955fb6968ef7ba052989c1a025a5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190808212328epcas1p36ee1f5a956c54d665dbe0c80d912e6b3
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190808212328epcas1p36ee1f5a956c54d665dbe0c80d912e6b3
+References: <20190808212234.2213262-1-arnd@arndb.de>
+        <CGME20190808212328epcas1p36ee1f5a956c54d665dbe0c80d912e6b3@epcas1p3.samsung.com>
+        <20190808212234.2213262-2-arnd@arndb.de>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed 07-08-19 19:36:37, Ira Weiny wrote:
-> On Wed, Aug 07, 2019 at 10:46:49AM +0200, Michal Hocko wrote:
-> > > So I think your debug option and my suggested renaming serve a bit
-> > > different purposes (and thus both make sense). If you do the renaming, you
-> > > can just grep to see unconverted sites. Also when someone merges new GUP
-> > > user (unaware of the new rules) while you switch GUP to use pins instead of
-> > > ordinary references, you'll get compilation error in case of renaming
-> > > instead of hard to debug refcount leak without the renaming. And such
-> > > conflict is almost bound to happen given the size of GUP patch set... Also
-> > > the renaming serves against the "coding inertia" - i.e., GUP is around for
-> > > ages so people just use it without checking any documentation or comments.
-> > > After switching how GUP works, what used to be correct isn't anymore so
-> > > renaming the function serves as a warning that something has really
-> > > changed.
-> > 
-> > Fully agreed!
-> 
-> Ok Prior to this I've been basing all my work for the RDMA/FS DAX stuff in
-> Johns put_user_pages()...  (Including when I proposed failing truncate with a
-> lease in June [1])
-> 
-> However, based on the suggestions in that thread it became clear that a new
-> interface was going to need to be added to pass in the "RDMA file" information
-> to GUP to associate file pins with the correct processes...
-> 
-> I have many drawings on my white board with "a whole lot of lines" on them to
-> make sure that if a process opens a file, mmaps it, pins it with RDMA, _closes_
-> it, and ummaps it; that the resulting file pin can still be traced back to the
-> RDMA context and all the processes which may have access to it....  No matter
-> where the original context may have come from.  I believe I have accomplished
-> that.
-> 
-> Before I go on, I would like to say that the "imbalance" of get_user_pages()
-> and put_page() bothers me from a purist standpoint...  However, since this
-> discussion cropped up I went ahead and ported my work to Linus' current master
-> (5.3-rc3+) and in doing so I only had to steal a bit of Johns code...  Sorry
-> John...  :-(
-> 
-> I don't have the commit messages all cleaned up and I know there may be some
-> discussion on these new interfaces but I wanted to throw this series out there
-> because I think it may be what Jan and Michal are driving at (or at least in
-> that direction.
-> 
-> Right now only RDMA and DAX FS's are supported.  Other users of GUP will still
-> fail on a DAX file and regular files will still be at risk.[2]
-> 
-> I've pushed this work (based 5.3-rc3+ (33920f1ec5bf)) here[3]:
-> 
-> https://github.com/weiny2/linux-kernel/tree/linus-rdmafsdax-b0-v3
-> 
-> I think the most relevant patch to this conversation is:
-> 
-> https://github.com/weiny2/linux-kernel/commit/5d377653ba5cf11c3b716f904b057bee6641aaf6
-> 
-> I stole Jans suggestion for a name as the name I used while prototyping was
-> pretty bad...  So Thanks Jan...  ;-)
 
-For your function, I'd choose a name like vaddr_pin_leased_pages() so that
-association with a lease is clear from the name :) Also I'd choose the
-counterpart to be vaddr_unpin_leased_page[s](). Especially having put_page in
-the name looks confusing to me...
+On 8/8/19 11:22 PM, Arnd Bergmann wrote:
+> To avoid using the mach/omap1510.h header file, pass the correct
+> address as platform data.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-								Honza
+For fbdev part:
 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> ---
+>  arch/arm/mach-omap1/board-innovator.c  | 3 +++
+>  drivers/video/fbdev/omap/lcd_inn1510.c | 7 +++++--
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap1/board-innovator.c b/arch/arm/mach-omap1/board-innovator.c
+> index cbe093f969d5..2425f1bacb33 100644
+> --- a/arch/arm/mach-omap1/board-innovator.c
+> +++ b/arch/arm/mach-omap1/board-innovator.c
+> @@ -194,6 +194,9 @@ static struct platform_device innovator1510_smc91x_device = {
+>  static struct platform_device innovator1510_lcd_device = {
+>  	.name		= "lcd_inn1510",
+>  	.id		= -1,
+> +	.dev	= {
+> +		.platform_data = (void __force *)OMAP1510_FPGA_LCD_PANEL_CONTROL,
+> +	}
+>  };
+>  
+>  static struct platform_device innovator1510_spi_device = {
+> diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
+> index 776e7f8d656e..37ed0c14aa5a 100644
+> --- a/drivers/video/fbdev/omap/lcd_inn1510.c
+> +++ b/drivers/video/fbdev/omap/lcd_inn1510.c
+> @@ -14,15 +14,17 @@
+>  
+>  #include "omapfb.h"
+>  
+> +static void __iomem *omap1510_fpga_lcd_panel_control;
+> +
+>  static int innovator1510_panel_enable(struct lcd_panel *panel)
+>  {
+> -	__raw_writeb(0x7, OMAP1510_FPGA_LCD_PANEL_CONTROL);
+> +	__raw_writeb(0x7, omap1510_fpga_lcd_panel_control);
+>  	return 0;
+>  }
+>  
+>  static void innovator1510_panel_disable(struct lcd_panel *panel)
+>  {
+> -	__raw_writeb(0x0, OMAP1510_FPGA_LCD_PANEL_CONTROL);
+> +	__raw_writeb(0x0, omap1510_fpga_lcd_panel_control);
+>  }
+>  
+>  static struct lcd_panel innovator1510_panel = {
+> @@ -48,6 +50,7 @@ static struct lcd_panel innovator1510_panel = {
+>  
+>  static int innovator1510_panel_probe(struct platform_device *pdev)
+>  {
+> +	omap1510_fpga_lcd_panel_control = (void __iomem *)pdev->dev.platform_data;
+>  	omapfb_register_panel(&innovator1510_panel);
+>  	return 0;
+>  }
