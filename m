@@ -2,225 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23BDA86C6F
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Aug 2019 23:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEE7486F43
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Aug 2019 03:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390446AbfHHVbR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Aug 2019 17:31:17 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:42593 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728020AbfHHVbR (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 17:31:17 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MRVy9-1hhrWF2GCz-00NOKO; Thu, 08 Aug 2019 23:30:54 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/22] fbdev: omap: avoid using mach/*.h files
-Date:   Thu,  8 Aug 2019 23:22:18 +0200
-Message-Id: <20190808212234.2213262-10-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
-References: <20190808212234.2213262-1-arnd@arndb.de>
+        id S2405160AbfHIB0p (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Aug 2019 21:26:45 -0400
+Received: from hqemgate14.nvidia.com ([216.228.121.143]:16697 "EHLO
+        hqemgate14.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405142AbfHIB0o (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Aug 2019 21:26:44 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5d4ccbd50000>; Thu, 08 Aug 2019 18:26:45 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Thu, 08 Aug 2019 18:26:43 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Thu, 08 Aug 2019 18:26:43 -0700
+Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 9 Aug
+ 2019 01:26:42 +0000
+Subject: Re: [PATCH v3 38/41] powerpc: convert put_page() to put_user_page*()
+To:     Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>
+CC:     Christoph Hellwig <hch@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, Jan Kara <jack@suse.cz>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <ceph-devel@vger.kernel.org>,
+        <devel@driverdev.osuosl.org>, <devel@lists.orangefs.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <intel-gfx@lists.freedesktop.org>, <kvm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-block@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-nfs@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <linux-xfs@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <rds-devel@oss.oracle.com>, <sparclinux@vger.kernel.org>,
+        <x86@kernel.org>, <xen-devel@lists.xenproject.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christoph Hellwig <hch@lst.de>, <linuxppc-dev@lists.ozlabs.org>
+References: <20190807013340.9706-1-jhubbard@nvidia.com>
+ <20190807013340.9706-39-jhubbard@nvidia.com>
+ <87k1botdpx.fsf@concordia.ellerman.id.au>
+From:   John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <248c9ab2-93cc-6d8b-606d-d85b83e791e5@nvidia.com>
+Date:   Thu, 8 Aug 2019 18:26:42 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:88szA/Fo8mKxxZtSI6a/3DryoEp3R0RLjKS0a4qc6cmQ6XF/WLN
- W6t9LZZrLHyweQaVq4It4vpP6q85bngaTLNjJhSu5Zs2FGsc54mk16/FUff6KabydJOjjCe
- gSmfFkLusQj3C1K+t2nV3Wqk3CMDq1pgtV+FfUcRXuvH8yvWc3/+WkYXaDaoJQ/KokIL5Gr
- xffTou6CcBEBFvrAC7+Ag==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6N8ZFBB2B8Y=:wwhyQ2dKFdjd+6txhxm6GB
- r5EWrXStpxQkas/tMQjlyNgIuWpDTVEGNewKIx4571rKYanefuhEZP0pD3j2pjFRdNzg5UgW+
- IW7CzqHLPdUm85HJLglUX7OqEOcVEbgGAI1kCxHvXS1uOvbmi7D2v1c7w/yFoBi+vwWVS8LMC
- aDov4Mh+N2gS8ZThs48vRk+9QD7cxwEEL8X/KY9uzByDaCWMzl/TCZ3Jh6fDzEz8gLit7wkEv
- 4JZLpB3hartGRTwG+xBsKnN88mk4uf/CDeVnuk7PPbUHKr24BUHqNIqEZL5xsH6QHc5aAR7Hz
- gRGxaUH6+xvfrWQsKR+4BVWyHEWi3DK7jRLdTDHoA9G0e9QOSV2qwxXqDKyLbuYsjUKFLnRLR
- HnxedBZ1eZoQXa7u0JGSC3gTvrZODSrSNLszP37JOJu5YYZ2Xk3Z/89TeOGvfjXQHd+pY3I+a
- qgQxEoY3gquwky6+fW1cac+0CMNSLt0rLsz4B/FSaOPcpddCWCFi7g56CFoGYRWStLTdMI3ku
- VsedmQ+8yonko1eXRZbay8pU8N/GF4B7zrZKut9GQYn0tU3zh3gak2KJPmQQ3rxDT2ay263OF
- GKprQYzYiToguAEYLSmF0fj+PvLCyShLqvTE0X9bwMYJ74sQrNCo7ua2Qs9aDs+Lb4jZ8A34Q
- g6EE4OlJUTq14Pq3PRMnoKSvhNov8EeS6ihQ6jSwX2ds7twSs2Uvp3NvVraWllP7kdtbLG4ZL
- CY7+25N0BR2fUkAk9y/nUxS35Oa1K3St34qBFQ==
+In-Reply-To: <87k1botdpx.fsf@concordia.ellerman.id.au>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1565314005; bh=mIo2y95DYwpm5TwfN0ChMwsAj72bzfnkFfj+rLdjqVU=;
+        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+         Content-Transfer-Encoding;
+        b=sN/0osHqfMASG3Gn5uYJsmBevNgkDITrwy5z0XhYDRnSVjTtczC6Zn93vXUVACtgl
+         zsE5J5OQn1U0e8RQtUv/QuY5iXNoztc7U7xk0b8D/XTbbdQX85oERprBP+FlchEBmH
+         cDA/Z0zP30Are5EcBXQtJgaAWOYtGMQytxGRabpoiJwuifLVi+3nH2crRLrU8L/jsz
+         NjANrKoFZE22mpOq52s3fZ9ut+mKAUlAXHfdi2WiqPjr5KVieTASv9oPdSZ5QUx628
+         sL0qbeXqIPI+CnsO9wdJm+9w+qSRY9+X67MIO8EOa4e3TPJTGVb16/VuBW7YteYrzL
+         bdoBRcdIA11ng==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-All the headers we actually need are now in include/linux/soc,
-so use those versions instead and allow compile-testing on
-other architectures.
+On 8/7/19 10:42 PM, Michael Ellerman wrote:
+> Hi John,
+> 
+> john.hubbard@gmail.com writes:
+>> diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
+>> index b056cae3388b..e126193ba295 100644
+>> --- a/arch/powerpc/mm/book3s64/iommu_api.c
+>> +++ b/arch/powerpc/mm/book3s64/iommu_api.c
+>> @@ -203,6 +202,7 @@ static void mm_iommu_unpin(struct mm_iommu_table_group_mem_t *mem)
+>>  {
+>>  	long i;
+>>  	struct page *page = NULL;
+>> +	bool dirty = false;
+> 
+> I don't think you need that initialisation do you?
+> 
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/video/backlight/Kconfig          | 4 ++--
- drivers/video/backlight/omap1_bl.c       | 4 ++--
- drivers/video/fbdev/omap/Kconfig         | 4 ++--
- drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
- drivers/video/fbdev/omap/lcd_dma.c       | 3 ++-
- drivers/video/fbdev/omap/lcd_inn1510.c   | 2 +-
- drivers/video/fbdev/omap/lcd_osk.c       | 4 ++--
- drivers/video/fbdev/omap/lcdc.c          | 2 ++
- drivers/video/fbdev/omap/omapfb_main.c   | 3 +--
- drivers/video/fbdev/omap/sossi.c         | 1 +
- 10 files changed, 16 insertions(+), 13 deletions(-)
+Nope, it can go. Fixed locally, thanks.
 
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 8b081d61773e..195c71130827 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -213,8 +213,8 @@ config BACKLIGHT_LOCOMO
- 
- config BACKLIGHT_OMAP1
- 	tristate "OMAP1 PWL-based LCD Backlight"
--	depends on ARCH_OMAP1
--	default y
-+	depends on ARCH_OMAP1 || COMPILE_TEST
-+	default ARCH_OMAP1
- 	help
- 	  This driver controls the LCD backlight level and power for
- 	  the PWL module of OMAP1 processors.  Say Y if your board
-diff --git a/drivers/video/backlight/omap1_bl.c b/drivers/video/backlight/omap1_bl.c
-index 74263021b1b3..69a49384b3de 100644
---- a/drivers/video/backlight/omap1_bl.c
-+++ b/drivers/video/backlight/omap1_bl.c
-@@ -14,8 +14,8 @@
- #include <linux/slab.h>
- #include <linux/platform_data/omap1_bl.h>
- 
--#include <mach/hardware.h>
--#include <mach/mux.h>
-+#include <linux/soc/ti/omap1-io.h>
-+#include <linux/soc/ti/omap1-mux.h>
- 
- #define OMAPBL_MAX_INTENSITY		0xff
- 
-diff --git a/drivers/video/fbdev/omap/Kconfig b/drivers/video/fbdev/omap/Kconfig
-index df2a5d0d4aa2..b1786cf1b486 100644
---- a/drivers/video/fbdev/omap/Kconfig
-+++ b/drivers/video/fbdev/omap/Kconfig
-@@ -2,7 +2,7 @@
- config FB_OMAP
- 	tristate "OMAP frame buffer support"
- 	depends on FB
--	depends on ARCH_OMAP1
-+	depends on ARCH_OMAP1 || (ARM && COMPILE_TEST)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-@@ -42,7 +42,7 @@ config FB_OMAP_LCD_MIPID
- 
- config FB_OMAP_LCD_H3
- 	bool "TPS65010 LCD controller on OMAP-H3"
--	depends on MACH_OMAP_H3
-+	depends on MACH_OMAP_H3 || COMPILE_TEST
- 	depends on TPS65010=y
- 	default y
- 	help
-diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
-index 8e54aae544a0..da2e32615abe 100644
---- a/drivers/video/fbdev/omap/lcd_ams_delta.c
-+++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
-@@ -14,7 +14,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/lcd.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-io.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-index 867a63c06f42..f85817635a8c 100644
---- a/drivers/video/fbdev/omap/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -25,7 +25,8 @@
- 
- #include <linux/omap-dma.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-soc.h>
-+#include <linux/soc/ti/omap1-io.h>
- 
- #include "lcdc.h"
- #include "lcd_dma.h"
-diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
-index 37ed0c14aa5a..bb915637e9b6 100644
---- a/drivers/video/fbdev/omap/lcd_inn1510.c
-+++ b/drivers/video/fbdev/omap/lcd_inn1510.c
-@@ -10,7 +10,7 @@
- #include <linux/platform_device.h>
- #include <linux/io.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-soc.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcd_osk.c b/drivers/video/fbdev/omap/lcd_osk.c
-index 5d5762128c8d..8168ba0d47fd 100644
---- a/drivers/video/fbdev/omap/lcd_osk.c
-+++ b/drivers/video/fbdev/omap/lcd_osk.c
-@@ -11,8 +11,8 @@
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- 
--#include <mach/hardware.h>
--#include <mach/mux.h>
-+#include <linux/soc/ti/omap1-io.h>
-+#include <linux/soc/ti/omap1-mux.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
-index 65953b7fbdb9..3af758f12afd 100644
---- a/drivers/video/fbdev/omap/lcdc.c
-+++ b/drivers/video/fbdev/omap/lcdc.c
-@@ -17,6 +17,8 @@
- #include <linux/clk.h>
- #include <linux/gfp.h>
- 
-+#include <linux/soc/ti/omap1-io.h>
-+#include <linux/soc/ti/omap1-soc.h>
- #include <linux/omap-dma.h>
- 
- #include <asm/mach-types.h>
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index dc06057de91d..af73a3f9ac53 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -19,8 +19,7 @@
- 
- #include <linux/omap-dma.h>
- 
--#include <mach/hardware.h>
--
-+#include <linux/soc/ti/omap1-soc.h>
- #include "omapfb.h"
- #include "lcdc.h"
- 
-diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
-index ade9d452254c..6b99d89fbe6e 100644
---- a/drivers/video/fbdev/omap/sossi.c
-+++ b/drivers/video/fbdev/omap/sossi.c
-@@ -13,6 +13,7 @@
- #include <linux/interrupt.h>
- 
- #include <linux/omap-dma.h>
-+#include <linux/soc/ti/omap1-io.h>
- 
- #include "omapfb.h"
- #include "lcd_dma.h"
+Did you get a chance to look at enough of the other bits to feel comfortable 
+with the patch, overall?
+
+thanks,
 -- 
-2.20.0
-
+John Hubbard
+NVIDIA
