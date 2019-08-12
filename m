@@ -2,105 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4579C89965
-	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 11:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F7789DA9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 14:10:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbfHLJGn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 12 Aug 2019 05:06:43 -0400
-Received: from foss.arm.com ([217.140.110.172]:46194 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727233AbfHLJGn (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 12 Aug 2019 05:06:43 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6039915A2;
-        Mon, 12 Aug 2019 02:06:42 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACD743F718;
-        Mon, 12 Aug 2019 02:06:41 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 10:06:40 +0100
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     Denis Efremov <efremov@linux.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Sebastian Ott <sebott@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Peter Jones <pjones@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        netdev@vger.kernel.org, x86@kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] Add definition for the number of standard PCI BARs
-Message-ID: <20190812090639.GX56241@e119886-lin.cambridge.arm.com>
-References: <20190811150802.2418-1-efremov@linux.com>
+        id S1727994AbfHLMHr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 12 Aug 2019 08:07:47 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:38578 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728517AbfHLMHm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 12 Aug 2019 08:07:42 -0400
+Received: by mail-lf1-f66.google.com with SMTP id h28so73976444lfj.5;
+        Mon, 12 Aug 2019 05:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4qOdEFC2M11gWaSPmcjDghbM0bbwUm04RK0v5uO2apg=;
+        b=bm6JFeaJrLhrdxvwrgL87KoQHBHCewBcUoT2U/byVHVE3ObbAAy6bppBP1Nqiz4YWx
+         PVT3ypwO0OkqNOcD5zyOeig2OqXTGd5gPHpwB+zawhlvxf5Or9WyAvnfeyPUOUtk7bGM
+         3FtpbcGVEaSca+wwR7PRR0ZR7n1a82+rJl2EAVaPQaJRxJs9AffhXzO9UQGoWge/o9jh
+         DhnJH2brcwMuBHEZObqjDOtHMb4ilsbmt6DkRoJYS25kZd9Fbc3JGSveoVNZ0750p8mm
+         T0lShpIinpgE8k0zgEE9/+Bn7xgnnFf5qoKooFWRigATHI93FlUhCn9fp8Zkik4Q/+n6
+         GgrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4qOdEFC2M11gWaSPmcjDghbM0bbwUm04RK0v5uO2apg=;
+        b=CQiWhA+thKLQ+L9c29gGP5Hcf3388jlTIZ8hWruFG6WFrDmbEU+tosF/wnBxdyCdke
+         NffvkzMlL/ZK/KyrJi+0/eB/prF7DU7xEELrJEcrUy2nEB37nMJdcOJIcIdH55zHDG3a
+         qRiBtLApGhm31dK3fuuPEXBFhyU3mf/8mYVfkkmzqlKJxuvHut9IO1eid/Rr/fIL+M06
+         3qgBuxP1OV53ik4A3a4ONsFW3Rs3lLdnSyjupYecnBQLxRh0I+FypBW/zudINpf7ASdL
+         eydaWOwftuVTOhJ8pN7YdnewEe3o0ClouNR/KnDDXrgzWtM3AGACQfqLOuegeAjgO4Ww
+         pmwQ==
+X-Gm-Message-State: APjAAAXvdUi755WIY4k/MZHoeLHpwaRDxUwuvYJYON5hWi/9A+VumS6n
+        0QKn7F+GBvfX4YIlaAQ8CPxE6NyEkYF8uf/mFOnTWA==
+X-Google-Smtp-Source: APXvYqz3B/76maiN8iU2SHYGuDc8LbEmLoZtKd5InqL2eR3IO1G+3shPVco9MXX/jUMEsG+IcnjuF7rHRLMod6Vfdq4=
+X-Received: by 2002:ac2:484e:: with SMTP id 14mr19367643lfy.50.1565611659997;
+ Mon, 12 Aug 2019 05:07:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190811150802.2418-1-efremov@linux.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+References: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com> <CAFqt6zb5ySDbkHVpPkOKHTrF8jFuNh=dXtnwPKO6TuEHBCkYgg@mail.gmail.com>
+In-Reply-To: <CAFqt6zb5ySDbkHVpPkOKHTrF8jFuNh=dXtnwPKO6TuEHBCkYgg@mail.gmail.com>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Mon, 12 Aug 2019 17:37:28 +0530
+Message-ID: <CAFqt6zYsA_0YpZcZ8+LrMEjeWDJ5mwUDJNvqOW1H4ewgKbp+aQ@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev:via: Remove dead code
+To:     FlorianSchandinat@gmx.de, b.zolnierkie@samsung.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Aug 11, 2019 at 06:07:55PM +0300, Denis Efremov wrote:
-> Code that iterates over all standard PCI BARs typically uses
-> PCI_STD_RESOURCE_END, but this is error-prone because it requires
-> "i <= PCI_STD_RESOURCE_END" rather than something like
-> "i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
-> way PCI_SRIOV_NUM_BARS is used. There is already the definition
-> PCI_BAR_COUNT for s390 only. Thus, this patchset introduces it globally.
-> 
-> The patch is splitted into 7 parts for different drivers/subsystems for
-> easy readability.
-> 
-> Denis Efremov (7):
->   PCI: Add define for the number of standard PCI BARs
->   s390/pci: Replace PCI_BAR_COUNT with PCI_STD_NUM_BARS
->   x86/PCI: Use PCI_STD_NUM_BARS in loops instead of PCI_STD_RESOURCE_END
->   PCI/net: Use PCI_STD_NUM_BARS in loops instead of PCI_STD_RESOURCE_END
->   rapidio/tsi721: use PCI_STD_NUM_BARS in loops instead of
->     PCI_STD_RESOURCE_END
->   efifb: Use PCI_STD_NUM_BARS in loops instead of PCI_STD_RESOURCE_END
->   vfio_pci: Use PCI_STD_NUM_BARS in loops instead of
->     PCI_STD_RESOURCE_END
-> 
->  arch/s390/include/asm/pci.h                      |  5 +----
->  arch/s390/include/asm/pci_clp.h                  |  6 +++---
->  arch/s390/pci/pci.c                              | 16 ++++++++--------
->  arch/s390/pci/pci_clp.c                          |  6 +++---
->  arch/x86/pci/common.c                            |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c |  4 ++--
->  drivers/net/ethernet/synopsys/dwc-xlgmac-pci.c   |  2 +-
->  drivers/pci/quirks.c                             |  2 +-
->  drivers/rapidio/devices/tsi721.c                 |  2 +-
->  drivers/vfio/pci/vfio_pci.c                      |  4 ++--
->  drivers/vfio/pci/vfio_pci_config.c               |  2 +-
->  drivers/vfio/pci/vfio_pci_private.h              |  4 ++--
->  drivers/video/fbdev/efifb.c                      |  2 +-
->  include/linux/pci.h                              |  2 +-
->  include/uapi/linux/pci_regs.h                    |  1 +
+On Wed, Aug 7, 2019 at 2:11 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>
+> On Wed, Jul 31, 2019 at 12:59 AM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+> >
+> > This is dead code since 3.15. If there is no plan to use
+> > it further, this can be removed forever.
+> >
+>
+> Any comment on this patch ?
 
-Hi Denis,
+Any comment on this patch ?
 
-You could also fix up a few cases where the number of BARs is hard coded in
-loops, e.g.
-
-drivers/pci/controller/pci-hyperv.c - look for uses of probed_bar in loops
-drivers/pci/pci.c - pci_release_selected_regions and __pci_request_selected_regions
-drivers/pci/quirks.c - quirk_alder_ioapic
-
-Thanks,
-
-Andrew Murray
-
->  15 files changed, 29 insertions(+), 31 deletions(-)
-> 
-> -- 
-> 2.21.0
-> 
+>
+> > Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> > ---
+> >  drivers/video/fbdev/via/via-core.c | 43 --------------------------------------
+> >  1 file changed, 43 deletions(-)
+> >
+> > diff --git a/drivers/video/fbdev/via/via-core.c b/drivers/video/fbdev/via/via-core.c
+> > index e2b2062..ffa2ca2 100644
+> > --- a/drivers/video/fbdev/via/via-core.c
+> > +++ b/drivers/video/fbdev/via/via-core.c
+> > @@ -221,49 +221,6 @@ void viafb_release_dma(void)
+> >  }
+> >  EXPORT_SYMBOL_GPL(viafb_release_dma);
+> >
+> > -
+> > -#if 0
+> > -/*
+> > - * Copy a single buffer from FB memory, synchronously.  This code works
+> > - * but is not currently used.
+> > - */
+> > -void viafb_dma_copy_out(unsigned int offset, dma_addr_t paddr, int len)
+> > -{
+> > -       unsigned long flags;
+> > -       int csr;
+> > -
+> > -       mutex_lock(&viafb_dma_lock);
+> > -       init_completion(&viafb_dma_completion);
+> > -       /*
+> > -        * Program the controller.
+> > -        */
+> > -       spin_lock_irqsave(&global_dev.reg_lock, flags);
+> > -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_DONE);
+> > -       /* Enable ints; must happen after CSR0 write! */
+> > -       viafb_mmio_write(VDMA_MR0, VDMA_MR_TDIE);
+> > -       viafb_mmio_write(VDMA_MARL0, (int) (paddr & 0xfffffff0));
+> > -       viafb_mmio_write(VDMA_MARH0, (int) ((paddr >> 28) & 0xfff));
+> > -       /* Data sheet suggests DAR0 should be <<4, but it lies */
+> > -       viafb_mmio_write(VDMA_DAR0, offset);
+> > -       viafb_mmio_write(VDMA_DQWCR0, len >> 4);
+> > -       viafb_mmio_write(VDMA_TMR0, 0);
+> > -       viafb_mmio_write(VDMA_DPRL0, 0);
+> > -       viafb_mmio_write(VDMA_DPRH0, 0);
+> > -       viafb_mmio_write(VDMA_PMR0, 0);
+> > -       csr = viafb_mmio_read(VDMA_CSR0);
+> > -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_START);
+> > -       spin_unlock_irqrestore(&global_dev.reg_lock, flags);
+> > -       /*
+> > -        * Now we just wait until the interrupt handler says
+> > -        * we're done.
+> > -        */
+> > -       wait_for_completion_interruptible(&viafb_dma_completion);
+> > -       viafb_mmio_write(VDMA_MR0, 0); /* Reset int enable */
+> > -       mutex_unlock(&viafb_dma_lock);
+> > -}
+> > -EXPORT_SYMBOL_GPL(viafb_dma_copy_out);
+> > -#endif
+> > -
+> >  /*
+> >   * Do a scatter/gather DMA copy from FB memory.  You must have done
+> >   * a successful call to viafb_request_dma() first.
+> > --
+> > 1.9.1
+> >
