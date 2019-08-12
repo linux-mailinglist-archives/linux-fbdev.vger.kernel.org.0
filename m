@@ -2,25 +2,42 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E7768A837
-	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 22:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7766C8A8C9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 23:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727501AbfHLULg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 12 Aug 2019 16:11:36 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60662 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727163AbfHLULf (ORCPT
+        id S1727156AbfHLVAl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 12 Aug 2019 17:00:41 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38841 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727148AbfHLVAl (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 12 Aug 2019 16:11:35 -0400
-Received: from p200300ddd71876867e7a91fffec98e25.dip0.t-ipconnect.de ([2003:dd:d718:7686:7e7a:91ff:fec9:8e25])
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1hxGf2-0005KS-ES; Mon, 12 Aug 2019 22:11:20 +0200
-Date:   Mon, 12 Aug 2019 22:11:14 +0200 (CEST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-cc:     Denis Efremov <efremov@linux.com>,
+        Mon, 12 Aug 2019 17:00:41 -0400
+Received: by mail-wr1-f67.google.com with SMTP id g17so105789482wrr.5;
+        Mon, 12 Aug 2019 14:00:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NZE7gxGeoCir/+Hfqml4ihIDyfwgVKWckPdmovjOEYs=;
+        b=oEql7aVdyfMmemmh5fcs9k9Hshch5Tz3oPsF1kQ4wEfaUqtg/mpc9xU2RK134KdLTr
+         nZCsxCPXEDyU4yQzVzJwfZDdd+hh4PkhiI4g0pPxvGVOWBmY5QghdMgE2GBqmUdaPiHV
+         oWsVvaRKZwYOV1/LmKoY/l/moJ1/LNT2LqiMf6UfRZkYGbzRNarxewx4RGzR+zJqCs00
+         H4whjeovuQJG/VTpMbdvDbdMxd6hyJrkH38NPdJa8L7o84xXauA2kniUKZUBFvNbBVY0
+         DPG2vYrzl92MkfcxAUPaoiYTmJnApVHnErYEkhbL17JB5b4TLNGZn/C4WqWbaNaje5dI
+         +zsg==
+X-Gm-Message-State: APjAAAXPB2Vq/slrmzl9IjzmIuRCchgYfk0rvt7fqakjxKpZCrjTKMDS
+        PYwQAjUzgpg6cEEaRN4Bu3OBgcW+3SI=
+X-Google-Smtp-Source: APXvYqwZIENuhetBQFWDkGbLZGQwjmnmtJwGSJ8aLLbVv6q00tpIINFgPIuZbSt++bfrwgo+lXVc5w==
+X-Received: by 2002:adf:ce05:: with SMTP id p5mr42381291wrn.197.1565643638256;
+        Mon, 12 Aug 2019 14:00:38 -0700 (PDT)
+Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.gmail.com with ESMTPSA id f23sm510930wmj.37.2019.08.12.14.00.36
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Aug 2019 14:00:37 -0700 (PDT)
+Subject: Re: [PATCH 0/7] Add definition for the number of standard PCI BARs
+To:     Andrew Murray <andrew.murray@arm.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
         Sebastian Ott <sebott@linux.ibm.com>,
         Gerald Schaefer <gerald.schaefer@de.ibm.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
@@ -35,44 +52,38 @@ cc:     Denis Efremov <efremov@linux.com>,
         kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
         netdev@vger.kernel.org, x86@kernel.org, linux-s390@vger.kernel.org,
         linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] Add definition for the number of standard PCI BARs
-In-Reply-To: <20190812200134.GB11785@google.com>
-Message-ID: <alpine.DEB.2.21.1908122210300.7324@nanos.tec.linutronix.de>
-References: <20190811150802.2418-1-efremov@linux.com> <20190812200134.GB11785@google.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+References: <20190811150802.2418-1-efremov@linux.com>
+ <20190812090639.GX56241@e119886-lin.cambridge.arm.com>
+From:   Denis Efremov <efremov@linux.com>
+Message-ID: <4a8e0b95-192b-335e-653a-5a973f18ba2e@linux.com>
+Date:   Tue, 13 Aug 2019 00:00:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+In-Reply-To: <20190812090639.GX56241@e119886-lin.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 12 Aug 2019, Bjorn Helgaas wrote:
-
-> On Sun, Aug 11, 2019 at 06:07:55PM +0300, Denis Efremov wrote:
-> > Code that iterates over all standard PCI BARs typically uses
-> > PCI_STD_RESOURCE_END, but this is error-prone because it requires
-> > "i <= PCI_STD_RESOURCE_END" rather than something like
-> > "i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
-> > way PCI_SRIOV_NUM_BARS is used. There is already the definition
-> > PCI_BAR_COUNT for s390 only. Thus, this patchset introduces it globally.
-> > 
-> > The patch is splitted into 7 parts for different drivers/subsystems for
-> > easy readability.
+On 12.08.2019 12:06, Andrew Murray wrote:
 > 
-> This looks good.  I can take all these together, since they all depend
-> on the first patch.  I have a few comments on the individual patches.
+> Hi Denis,
+
+Hi!
+
 > 
-> > Denis Efremov (7):
-> >   PCI: Add define for the number of standard PCI BARs
-> >   s390/pci: Replace PCI_BAR_COUNT with PCI_STD_NUM_BARS
-> >   x86/PCI: Use PCI_STD_NUM_BARS in loops instead of PCI_STD_RESOURCE_END
+> You could also fix up a few cases where the number of BARs is hard coded in
+> loops, e.g.
+> 
+> drivers/pci/controller/pci-hyperv.c - look for uses of probed_bar in loops
+> drivers/pci/pci.c - pci_release_selected_regions and __pci_request_selected_regions
+> drivers/pci/quirks.c - quirk_alder_ioapic
+> 
 
-Fine with me for the x86 part. That's your turf anyway :)
+Thanks for pointing me on that. I will take this into account in v2.
 
-Thanks,
-
-	tglx
+Denis
