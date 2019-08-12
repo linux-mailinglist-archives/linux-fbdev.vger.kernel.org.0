@@ -2,222 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7697897DE
-	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 09:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B6089867
+	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 10:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726895AbfHLHa0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 12 Aug 2019 03:30:26 -0400
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:54496 "EHLO
-        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726811AbfHLHa0 (ORCPT
+        id S1726931AbfHLIFK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 12 Aug 2019 04:05:10 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:36735 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726921AbfHLIFK (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 12 Aug 2019 03:30:26 -0400
-Received: from ramsan ([84.194.98.4])
-        by baptiste.telenet-ops.be with bizsmtp
-        id o7WN2000105gfCL017WN0K; Mon, 12 Aug 2019 09:30:22 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1hx4mb-0007Nm-VU; Mon, 12 Aug 2019 09:30:21 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1hx4mb-0004yw-Sd; Mon, 12 Aug 2019 09:30:21 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     linux-m68k@lists.linux-m68k.org
-Cc:     kbuild test robot <lkp@intel.com>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] m68k: atari: Rename shifter to shifter_st to avoid conflict
-Date:   Mon, 12 Aug 2019 09:30:20 +0200
-Message-Id: <20190812073020.19109-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.17.1
+        Mon, 12 Aug 2019 04:05:10 -0400
+Received: by mail-wm1-f68.google.com with SMTP id g67so10926533wme.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 12 Aug 2019 01:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=ufGKwBzHzNSFgdcOablNE0vz1Z8KtfQ2TuFP4lhH54s=;
+        b=OY9w3Qb2FPL1d33M1cJQ78ypsj3wJgGSSLa58LntOr6i8+Y/csGOZbC4Ker6pqyPs2
+         mDavytQZlhhFhYAVgAjmMWni2VyzsDAx5zM+gi0AwjXuxGATwlfNCG4Ky9P0UNf8vpdJ
+         KzQdyR7xciH9PyWU15yjV6Hk7icax2SIkpEvzxgQ3SNr78oaiNIPf8ywfJaBcMp/A9Ks
+         Hba2yrD6v3GPn3Uxu+GHDXDrZ64Yp8ZwL4+CnvsWoXAYegzGZTJa872+hxrBlCaT4qrw
+         8wI3Ln5V9zkazaJs5Fc/iZRNFAsiZ/oOh1PrtjstePthVp1CFTDR7x3a0WTj4WuOwcpu
+         WbYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=ufGKwBzHzNSFgdcOablNE0vz1Z8KtfQ2TuFP4lhH54s=;
+        b=ADboNUQTJH2+Aqk1vQZblSv//xisnUPRO7Y/sFK4PHqkjrIyTyGpLQ8kTR7PftmP8R
+         1dJA/9fm/koxftwAQS5MHlliPggsIRRe8U8u2jlOwJw94wFTtCVTH4HNJTn8aL+c/K5y
+         6x7MTdF9mvLT3nPR06jSNuNH+aNzP5WLtiVZ61t9HgoVlkV0YvdjV58VaX5FsrTy7IA2
+         YWQxzjezDOJURGOITp2y3klKoFZIJlPJIJkozvIWn/Mh5nNIz+amdrDHtyjKejCw/SFW
+         neTMuvjHtREx22VRXkf0DKxLl/3SPSWcIwDVb4yBPH5D4xnjpaQYIp+uKv9RPsl7SJUv
+         jirg==
+X-Gm-Message-State: APjAAAWmukdPojFhHAynARrTmYcHoNDElfnOvM8dquX/srHHtrlWBH87
+        jhKRapMt0hBYepAl9daiAFqf7Q==
+X-Google-Smtp-Source: APXvYqz6EhFotsYU49z2I1UAbp0US62x0A/jBhKf/LnRcG4G8QeOE3aQJV2P+8AsQawnjG/Y2744Aw==
+X-Received: by 2002:a05:600c:d9:: with SMTP id u25mr3152884wmm.26.1565597108741;
+        Mon, 12 Aug 2019 01:05:08 -0700 (PDT)
+Received: from dell ([2.27.35.255])
+        by smtp.gmail.com with ESMTPSA id a142sm10918918wme.2.2019.08.12.01.05.07
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 12 Aug 2019 01:05:08 -0700 (PDT)
+Date:   Mon, 12 Aug 2019 09:05:06 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] backlight: lms283gf05: Fix a typo in the description
+ passed to 'devm_gpio_request_one()'
+Message-ID: <20190812080506.GH4594@dell>
+References: <20190724213828.16916-1-christophe.jaillet@wanadoo.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190724213828.16916-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When test-compiling the BCM2835 pin control driver on m68k:
+On Wed, 24 Jul 2019, Christophe JAILLET wrote:
 
-    In file included from arch/m68k/include/asm/io_mm.h:32:0,
-                     from arch/m68k/include/asm/io.h:8,
-                     from include/linux/io.h:13,
-                     from include/linux/irq.h:20,
-                     from include/linux/gpio/driver.h:7,
-                     from drivers/pinctrl/bcm/pinctrl-bcm2835.c:17:
-    drivers/pinctrl/bcm/pinctrl-bcm2835.c: In function 'bcm2711_pull_config_set':
-    arch/m68k/include/asm/atarihw.h:190:22: error: expected identifier or '(' before 'volatile'
-     # define shifter ((*(volatile struct SHIFTER *)SHF_BAS))
+> The description passed to 'devm_gpio_request_one()' should be related to
+> LMS283GF05, not LMS285GF05.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/video/backlight/lms283gf05.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-"shifter" is a too generic name for a global definition.
+Applied, thanks.
 
-As the corresponding definition for Atari TT is already called
-"shifter_tt", fix this by renaming the definition for Atari ST to
-"shifter_st".
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Suggested-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-To be queued in the m68k tree for v5.4.
-
- arch/m68k/atari/config.c        |  6 ++---
- arch/m68k/include/asm/atarihw.h |  4 ++--
- drivers/video/fbdev/atafb.c     | 42 ++++++++++++++++-----------------
- 3 files changed, 26 insertions(+), 26 deletions(-)
-
-diff --git a/arch/m68k/atari/config.c b/arch/m68k/atari/config.c
-index 902255e7b5b2ad56..73bf5ea9ee1bf1cf 100644
---- a/arch/m68k/atari/config.c
-+++ b/arch/m68k/atari/config.c
-@@ -246,9 +246,9 @@ void __init config_atari(void)
- 	} else if (hwreg_present(tt_palette)) {
- 		ATARIHW_SET(TT_SHIFTER);
- 		pr_cont(" TT_SHIFTER");
--	} else if (hwreg_present(&shifter.bas_hi)) {
--		if (hwreg_present(&shifter.bas_lo) &&
--		    (shifter.bas_lo = 0x0aau, shifter.bas_lo == 0x0aau)) {
-+	} else if (hwreg_present(&shifter_st.bas_hi)) {
-+		if (hwreg_present(&shifter_st.bas_lo) &&
-+		    (shifter_st.bas_lo = 0x0aau, shifter_st.bas_lo == 0x0aau)) {
- 			ATARIHW_SET(EXTD_SHIFTER);
- 			pr_cont(" EXTD_SHIFTER");
- 		} else {
-diff --git a/arch/m68k/include/asm/atarihw.h b/arch/m68k/include/asm/atarihw.h
-index 533008262b691ad9..13828dcc45ff79ac 100644
---- a/arch/m68k/include/asm/atarihw.h
-+++ b/arch/m68k/include/asm/atarihw.h
-@@ -170,7 +170,7 @@ static inline void dma_cache_maintenance( unsigned long paddr,
- #define TT_HIGH 6
- 
- #define SHF_BAS (0xffff8200)
--struct SHIFTER
-+struct SHIFTER_ST
-  {
- 	u_char pad1;
- 	u_char bas_hi;
-@@ -187,7 +187,7 @@ struct SHIFTER
- 	u_char pad7;
- 	u_char bas_lo;
-  };
--# define shifter ((*(volatile struct SHIFTER *)SHF_BAS))
-+# define shifter_st ((*(volatile struct SHIFTER_ST *)SHF_BAS))
- 
- #define SHF_FBAS (0xffff820e)
- struct SHIFTER_F030
-diff --git a/drivers/video/fbdev/atafb.c b/drivers/video/fbdev/atafb.c
-index fc9dfb0a95afc03e..51f5d1c56fd9c675 100644
---- a/drivers/video/fbdev/atafb.c
-+++ b/drivers/video/fbdev/atafb.c
-@@ -763,17 +763,17 @@ static void tt_get_par(struct atafb_par *par)
- {
- 	unsigned long addr;
- 	par->hw.tt.mode = shifter_tt.tt_shiftmode;
--	par->hw.tt.sync = shifter.syncmode;
--	addr = ((shifter.bas_hi & 0xff) << 16) |
--	       ((shifter.bas_md & 0xff) << 8)  |
--	       ((shifter.bas_lo & 0xff));
-+	par->hw.tt.sync = shifter_st.syncmode;
-+	addr = ((shifter_st.bas_hi & 0xff) << 16) |
-+	       ((shifter_st.bas_md & 0xff) << 8)  |
-+	       ((shifter_st.bas_lo & 0xff));
- 	par->screen_base = atari_stram_to_virt(addr);
- }
- 
- static void tt_set_par(struct atafb_par *par)
- {
- 	shifter_tt.tt_shiftmode = par->hw.tt.mode;
--	shifter.syncmode = par->hw.tt.sync;
-+	shifter_st.syncmode = par->hw.tt.sync;
- 	/* only set screen_base if really necessary */
- 	if (current_par.screen_base != par->screen_base)
- 		fbhw->set_screen_base(par->screen_base);
-@@ -1543,7 +1543,7 @@ static void falcon_get_par(struct atafb_par *par)
- 	hw->f_shift = videl.f_shift;
- 	hw->vid_control = videl.control;
- 	hw->vid_mode = videl.mode;
--	hw->sync = shifter.syncmode & 0x1;
-+	hw->sync = shifter_st.syncmode & 0x1;
- 	hw->xoffset = videl.xoffset & 0xf;
- 	hw->hht = videl.hht;
- 	hw->hbb = videl.hbb;
-@@ -1558,9 +1558,9 @@ static void falcon_get_par(struct atafb_par *par)
- 	hw->vde = videl.vde;
- 	hw->vss = videl.vss;
- 
--	addr = (shifter.bas_hi & 0xff) << 16 |
--	       (shifter.bas_md & 0xff) << 8  |
--	       (shifter.bas_lo & 0xff);
-+	addr = (shifter_st.bas_hi & 0xff) << 16 |
-+	       (shifter_st.bas_md & 0xff) << 8  |
-+	       (shifter_st.bas_lo & 0xff);
- 	par->screen_base = atari_stram_to_virt(addr);
- 
- 	/* derived parameters */
-@@ -1605,7 +1605,7 @@ static irqreturn_t falcon_vbl_switcher(int irq, void *dummy)
- 			/* Turn off external clocks. Read sets all output bits to 1. */
- 			*(volatile unsigned short *)0xffff9202;
- 		}
--		shifter.syncmode = hw->sync;
-+		shifter_st.syncmode = hw->sync;
- 
- 		videl.hht = hw->hht;
- 		videl.hbb = hw->hbb;
-@@ -1952,18 +1952,18 @@ static void stste_get_par(struct atafb_par *par)
- {
- 	unsigned long addr;
- 	par->hw.st.mode = shifter_tt.st_shiftmode;
--	par->hw.st.sync = shifter.syncmode;
--	addr = ((shifter.bas_hi & 0xff) << 16) |
--	       ((shifter.bas_md & 0xff) << 8);
-+	par->hw.st.sync = shifter_st.syncmode;
-+	addr = ((shifter_st.bas_hi & 0xff) << 16) |
-+	       ((shifter_st.bas_md & 0xff) << 8);
- 	if (ATARIHW_PRESENT(EXTD_SHIFTER))
--		addr |= (shifter.bas_lo & 0xff);
-+		addr |= (shifter_st.bas_lo & 0xff);
- 	par->screen_base = atari_stram_to_virt(addr);
- }
- 
- static void stste_set_par(struct atafb_par *par)
- {
- 	shifter_tt.st_shiftmode = par->hw.st.mode;
--	shifter.syncmode = par->hw.st.sync;
-+	shifter_st.syncmode = par->hw.st.sync;
- 	/* only set screen_base if really necessary */
- 	if (current_par.screen_base != par->screen_base)
- 		fbhw->set_screen_base(par->screen_base);
-@@ -2018,10 +2018,10 @@ static void stste_set_screen_base(void *s_base)
- 	unsigned long addr;
- 	addr = atari_stram_to_phys(s_base);
- 	/* Setup Screen Memory */
--	shifter.bas_hi = (unsigned char)((addr & 0xff0000) >> 16);
--	shifter.bas_md = (unsigned char)((addr & 0x00ff00) >> 8);
-+	shifter_st.bas_hi = (unsigned char)((addr & 0xff0000) >> 16);
-+	shifter_st.bas_md = (unsigned char)((addr & 0x00ff00) >> 8);
- 	if (ATARIHW_PRESENT(EXTD_SHIFTER))
--		shifter.bas_lo = (unsigned char)(addr & 0x0000ff);
-+		shifter_st.bas_lo = (unsigned char)(addr & 0x0000ff);
- }
- 
- #endif /* ATAFB_STE */
-@@ -2265,9 +2265,9 @@ static void set_screen_base(void *s_base)
- 
- 	addr = atari_stram_to_phys(s_base);
- 	/* Setup Screen Memory */
--	shifter.bas_hi = (unsigned char)((addr & 0xff0000) >> 16);
--	shifter.bas_md = (unsigned char)((addr & 0x00ff00) >> 8);
--	shifter.bas_lo = (unsigned char)(addr & 0x0000ff);
-+	shifter_st.bas_hi = (unsigned char)((addr & 0xff0000) >> 16);
-+	shifter_st.bas_md = (unsigned char)((addr & 0x00ff00) >> 8);
-+	shifter_st.bas_lo = (unsigned char)(addr & 0x0000ff);
- }
- 
- static int pan_display(struct fb_var_screeninfo *var, struct fb_info *info)
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
