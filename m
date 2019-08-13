@@ -2,111 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B76928B9ED
-	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Aug 2019 15:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDBDB8BA2D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Aug 2019 15:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728656AbfHMNUD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 13 Aug 2019 09:20:03 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:33203 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729005AbfHMNUC (ORCPT
+        id S1726993AbfHMNaf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 13 Aug 2019 09:30:35 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:51575 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728232AbfHMNae (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 13 Aug 2019 09:20:02 -0400
-Received: by mail-wm1-f66.google.com with SMTP id p77so1067404wme.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 13 Aug 2019 06:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xfLZK+aLXf7IAAQGT9kpcQjUA//C9TO1nW5nQQ+lsfA=;
-        b=HHI7V9VWxdEm2ldMnuSEETf9TtQRRvw0u9IpAnbFdEDIldH0obuMMaRec5Agi5HTUa
-         5IW6bcvigEZ8VrczojbBgrCbpZx2BecDQoam7fTeIDEgcnUem6nskJgAs3Z2oqzXxqID
-         fI1giGDh1UEvzwuXJqe8vE/Ffyw+loocGo/rm8EmKNGyoz7QnMWQzpbYZ0x4/Rwpev8I
-         FE2xzCTqbj/+xYrlcb4PnJZVB0DNbOv0IulMGdy/Yifvnur34UyvGrDqYU5JeqHGz00R
-         O3LewDnqlT66dXkbyGQk+3uviMvG6EZ6SgIRA8KX1hSAP/JykmwXkxfDQls710u+6arZ
-         CaRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xfLZK+aLXf7IAAQGT9kpcQjUA//C9TO1nW5nQQ+lsfA=;
-        b=oYIuf1Pw0qEuvkukN+5e1WB7lJVD717ihPSw7GnYEzD+7OHfHmefa1aK6azAtBdWTS
-         8ebiZduYgpIVM/+XWWg0XKq04E4rS36DtgatdpeQKeULGqB9aOYvtILDRLemAA4wa5gU
-         PEztqjVDtEJ4bcj3gSUnjM18MvEKyZDScTOYdAbzf6vaqxcZFqRsJ+w3tkZaeNIb8QZz
-         npTD+/PZuZJQeKnIB0tUR4mr960oZ9BCEozqs7pMnwNKg5kDWIilZUQDt/Ia2L2IUsuW
-         EsRZ/+M1Tu+tx4kqXA31Oon5xP+iNyusyDdKHwYEFpgqD8Wj4BTsFOPlKYOJM4YlGYqC
-         hsXQ==
-X-Gm-Message-State: APjAAAUABaQyNmw5bHElviF9IWLiUyoizovpe+Aw+lBiSNOiIwEQu1Ml
-        Dw093EwfsKg+ERO4DVkFUdclOA==
-X-Google-Smtp-Source: APXvYqxD9JIaAO8mg/yD2uQuL4bLr+ORAdUW5lgxOkILCPRyLV+UcWdOnX80lXIzt9mo7IA3xJko4w==
-X-Received: by 2002:a7b:ce0b:: with SMTP id m11mr3274136wmc.151.1565702400644;
-        Tue, 13 Aug 2019 06:20:00 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id d207sm1225341wmd.0.2019.08.13.06.19.59
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 13 Aug 2019 06:20:00 -0700 (PDT)
-Date:   Tue, 13 Aug 2019 14:19:58 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Alexander Shiyan <shc_work@mail.ru>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH resend] video: backlight: Drop default m for
- {LCD,BACKLIGHT_CLASS_DEVICE}
-Message-ID: <20190813131958.y3fgzeeuzhsfddbh@holly.lan>
-References: <20190813115853.30329-1-geert@linux-m68k.org>
+        Tue, 13 Aug 2019 09:30:34 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190813133033euoutp02d9c6c380db01ab6d301c2cfc9fd02e9c~6fpz0eNhG3051430514euoutp02h
+        for <linux-fbdev@vger.kernel.org>; Tue, 13 Aug 2019 13:30:33 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190813133033euoutp02d9c6c380db01ab6d301c2cfc9fd02e9c~6fpz0eNhG3051430514euoutp02h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1565703033;
+        bh=jHLfqOUF0tHmhW0YtJIRsW8aaDK4tyJuMECOn3sKdck=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=O8D9k3hOLGAhh5eQS3fY6v1csmE52fobX7YmVh+WH5nwLMOCV86OINI0dmj0w2T0X
+         9RhR4V8ZG3q4WHdi94kyvTjwF9X8fDt02a/Acd0/JDHNLcWI1tLH/yu+v+XD6J4SAJ
+         2LKcke0f/YOxsWkSLudDpWkO6joMX89a7YTdQl1M=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190813133032eucas1p23eec325b72a4db20801126d9312b19fb~6fpzGl_3S1030310303eucas1p2g;
+        Tue, 13 Aug 2019 13:30:32 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id F0.DF.04469.77BB25D5; Tue, 13
+        Aug 2019 14:30:31 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190813133031eucas1p18e366022ea9fffdfcbf46ef861e32042~6fpyR-aZ63121731217eucas1p1q;
+        Tue, 13 Aug 2019 13:30:31 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190813133031eusmtrp2177d46a66897df044aae036871f2f4ec~6fpyCfj2i1093610936eusmtrp2K;
+        Tue, 13 Aug 2019 13:30:31 +0000 (GMT)
+X-AuditID: cbfec7f2-569ff70000001175-5b-5d52bb77c772
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id E3.37.04166.77BB25D5; Tue, 13
+        Aug 2019 14:30:31 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190813133030eusmtip189c92098638cc37e3935c84922b8c942~6fpxxPojJ2926929269eusmtip1d;
+        Tue, 13 Aug 2019 13:30:30 +0000 (GMT)
+Subject: Re: [PATCH 09/16] fbdev: remove w90x900/nuc900 platform drivers
+To:     Arnd Bergmann <arnd@arndb.de>, soc@kernel.org
+Cc:     linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <cc732000-a147-bec2-1082-7bf58ee8f309@samsung.com>
+Date:   Tue, 13 Aug 2019 15:30:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190813115853.30329-1-geert@linux-m68k.org>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190809202749.742267-10-arnd@arndb.de>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBKsWRmVeSWpSXmKPExsWy7djPc7rlu4NiDY48tbL4O+kYu8WVr+/Z
+        LE70fWC1uLxrDpvF4+t/2BxYPX7/msTosWlVJ5vH/e7jTB6fN8kFsERx2aSk5mSWpRbp2yVw
+        Zfxa18xaMI+rYtbExWwNjD/Zuxg5OSQETCSmbLnHCGILCaxglLi1Q7SLkQvI/sIoMf3KaTYI
+        5zOjxM79L1hgOr5faWaESCxnlFh+YiorhPOWUWLyr1tAGQ4OYQEPifal4iCmiIChROdMfhCT
+        WSBBYvciM5AxbAJWEhPbV4Et5hWwk3i8+iLYQSwCqhLTfp4Hs0UFIiTuH9vAClEjKHFy5hMW
+        kDGcAqYSk8+Ig4SZBcQlbj2ZzwRhy0tsfzuHGeQYCYF57BKLlh5hhjjZRaLp2XEmCFtY4tXx
+        LVDPy0j83wnSDNKwjlHib8cLqO7tQH9N/scGUWUtcfj4RVaIBzQl1u/Shwg7Stz8NJkZJCwh
+        wCdx460gxBF8EpO2TYcK80p0tAlBVKtJbFi2gQ1mbdfOlcwTGJVmIflsFpJ3ZiF5ZxbC3gWM
+        LKsYxVNLi3PTU4sN81LL9YoTc4tL89L1kvNzNzEC08vpf8c/7WD8einpEKMAB6MSD2/AlqBY
+        IdbEsuLK3EOMEhzMSiK8l0yAQrwpiZVVqUX58UWlOanFhxilOViUxHmrGR5ECwmkJ5akZqem
+        FqQWwWSZODilGhidcsWdNy5nTVD5lX19KuOGLxVbZouvWtt5afaRpMDiplNK5f3HPn5cNWvP
+        sbKDMy7/vPpOa8KzY7IOv5Y2lRzZ/Y8vaeY06zP7Q7JS3yYflVnwea1FXt5Z3UgBkVdPpy1W
+        WRZc5CIas+Dmw20rlz2dmze7W/RS1aX6HNtTl72PbPvTOsH//eWSWUosxRmJhlrMRcWJAN+u
+        PQ8rAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsVy+t/xu7rlu4NiDdpesVr8nXSM3eLK1/ds
+        Fif6PrBaXN41h83i8fU/bA6sHr9/TWL02LSqk83jfvdxJo/Pm+QCWKL0bIryS0tSFTLyi0ts
+        laINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mn6ta2YtmMdVMWviYrYGxp/s
+        XYycHBICJhLfrzQzdjFycQgJLGWUuHBgNnMXIwdQQkbi+PoyiBphiT/Xutggal4zSuy6NY8F
+        pEZYwEOifak4iCkiYCjROZMfpJxZIEFixdt2VojyTYwS9ycuZwFJsAlYSUxsX8UIYvMK2Ek8
+        Xn0R7AYWAVWJaT/Pg9miAhESZ96vYIGoEZQ4OfMJ2CpOAVOJyWfEIearS/yZd4kZwhaXuPVk
+        PhOELS+x/e0c5gmMQrOQdM9C0jILScssJC0LGFlWMYqklhbnpucWG+oVJ+YWl+al6yXn525i
+        BEbUtmM/N+9gvLQx+BCjAAejEg9vwJagWCHWxLLiytxDjBIczEoivJdMgEK8KYmVValF+fFF
+        pTmpxYcYTYF+m8gsJZqcD4z2vJJ4Q1NDcwtLQ3Njc2MzCyVx3g6BgzFCAumJJanZqakFqUUw
+        fUwcnFINjJzuv1KPlL8PVCjzXn/2a8/nNUenWud/ebXr/Y3FBfPS3RQDH/xNianMMeQNe9H5
+        18rlBtNNMb/0nwdMp300yQx4tVja/kxTS4TRhF1ds55cWjXDyXj3zL9pV4zln8pPiyr7caDv
+        9/MP19ljG6/tzWoVzNCdpHJskYb7N4HzPj4SUuEyNn3rriqxFGckGmoxFxUnAgDaMNmZvgIA
+        AA==
+X-CMS-MailID: 20190813133031eucas1p18e366022ea9fffdfcbf46ef861e32042
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190809202857epcas2p14ab10d8ce2e50647671ab8c0ded385a8
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190809202857epcas2p14ab10d8ce2e50647671ab8c0ded385a8
+References: <20190809202749.742267-1-arnd@arndb.de>
+        <CGME20190809202857epcas2p14ab10d8ce2e50647671ab8c0ded385a8@epcas2p1.samsung.com>
+        <20190809202749.742267-10-arnd@arndb.de>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 01:58:53PM +0200, Geert Uytterhoeven wrote:
-> When running "make oldconfig" on a .config where
-> CONFIG_BACKLIGHT_LCD_SUPPORT is not set, two new config options
-> ("Lowlevel LCD controls" and "Lowlevel Backlight controls") appear, both
-> defaulting to "m".
-> 
-> Drop the "default m", as options should default to disabled, and because
-> several driver config options already select LCD_CLASS_DEVICE or
-> BACKLIGHT_CLASS_DEVICE when needed.
-> 
-> Fixes: 8c5dc8d9f19c7992 ("video: backlight: Remove useless BACKLIGHT_LCD_SUPPORT kernel symbol")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+On 8/9/19 10:27 PM, Arnd Bergmann wrote:
+> The ARM w90x900 platform is getting removed, so this driver is obsolete.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-> ---
->  drivers/video/backlight/Kconfig | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index 8b081d61773e21eb..40676be2e46aae61 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -10,7 +10,6 @@ menu "Backlight & LCD device support"
->  #
->  config LCD_CLASS_DEVICE
->          tristate "Lowlevel LCD controls"
-> -	default m
->  	help
->  	  This framework adds support for low-level control of LCD.
->  	  Some framebuffer devices connect to platform-specific LCD modules
-> @@ -143,7 +142,6 @@ endif # LCD_CLASS_DEVICE
->  #
->  config BACKLIGHT_CLASS_DEVICE
->          tristate "Lowlevel Backlight controls"
-> -	default m
->  	help
->  	  This framework adds support for low-level control of the LCD
->            backlight. This includes support for brightness and power.
-> -- 
-> 2.17.1
-> 
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+BTW there is a very minor issue with internal bisectability of
+this patch series (non-issue in reality because it affects only
+configs with ARCH_W90X900=y and such are now gone, just FYI):
+
+arch/arm/mach-w90x900/dev.c (which stays in tree until patch #16
+("ARM: remove w90x900 platform") uses include/linux/platform_data/
+files removed in patches #7 (spi), #9 (fbdev) and #10 (keyboard).
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+>  drivers/video/fbdev/Kconfig                  |  14 -
+>  drivers/video/fbdev/Makefile                 |   1 -
+>  drivers/video/fbdev/nuc900fb.c               | 760 -------------------
+>  drivers/video/fbdev/nuc900fb.h               |  51 --
+>  include/Kbuild                               |   1 -
+>  include/linux/platform_data/video-nuc900fb.h |  79 --
+>  6 files changed, 906 deletions(-)
+>  delete mode 100644 drivers/video/fbdev/nuc900fb.c
+>  delete mode 100644 drivers/video/fbdev/nuc900fb.h
+>  delete mode 100644 include/linux/platform_data/video-nuc900fb.h
