@@ -2,88 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7766C8A8C9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 12 Aug 2019 23:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C78AD8AEAC
+	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Aug 2019 07:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbfHLVAl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 12 Aug 2019 17:00:41 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38841 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727148AbfHLVAl (ORCPT
+        id S1725820AbfHMFYq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 13 Aug 2019 01:24:46 -0400
+Received: from mout.kundenserver.de ([217.72.192.73]:39199 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbfHMFYq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 12 Aug 2019 17:00:41 -0400
-Received: by mail-wr1-f67.google.com with SMTP id g17so105789482wrr.5;
-        Mon, 12 Aug 2019 14:00:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NZE7gxGeoCir/+Hfqml4ihIDyfwgVKWckPdmovjOEYs=;
-        b=oEql7aVdyfMmemmh5fcs9k9Hshch5Tz3oPsF1kQ4wEfaUqtg/mpc9xU2RK134KdLTr
-         nZCsxCPXEDyU4yQzVzJwfZDdd+hh4PkhiI4g0pPxvGVOWBmY5QghdMgE2GBqmUdaPiHV
-         oWsVvaRKZwYOV1/LmKoY/l/moJ1/LNT2LqiMf6UfRZkYGbzRNarxewx4RGzR+zJqCs00
-         H4whjeovuQJG/VTpMbdvDbdMxd6hyJrkH38NPdJa8L7o84xXauA2kniUKZUBFvNbBVY0
-         DPG2vYrzl92MkfcxAUPaoiYTmJnApVHnErYEkhbL17JB5b4TLNGZn/C4WqWbaNaje5dI
-         +zsg==
-X-Gm-Message-State: APjAAAXPB2Vq/slrmzl9IjzmIuRCchgYfk0rvt7fqakjxKpZCrjTKMDS
-        PYwQAjUzgpg6cEEaRN4Bu3OBgcW+3SI=
-X-Google-Smtp-Source: APXvYqwZIENuhetBQFWDkGbLZGQwjmnmtJwGSJ8aLLbVv6q00tpIINFgPIuZbSt++bfrwgo+lXVc5w==
-X-Received: by 2002:adf:ce05:: with SMTP id p5mr42381291wrn.197.1565643638256;
-        Mon, 12 Aug 2019 14:00:38 -0700 (PDT)
-Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.gmail.com with ESMTPSA id f23sm510930wmj.37.2019.08.12.14.00.36
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Aug 2019 14:00:37 -0700 (PDT)
-Subject: Re: [PATCH 0/7] Add definition for the number of standard PCI BARs
-To:     Andrew Murray <andrew.murray@arm.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Sebastian Ott <sebott@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Peter Jones <pjones@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        netdev@vger.kernel.org, x86@kernel.org, linux-s390@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190811150802.2418-1-efremov@linux.com>
- <20190812090639.GX56241@e119886-lin.cambridge.arm.com>
-From:   Denis Efremov <efremov@linux.com>
-Message-ID: <4a8e0b95-192b-335e-653a-5a973f18ba2e@linux.com>
-Date:   Tue, 13 Aug 2019 00:00:34 +0300
+        Tue, 13 Aug 2019 01:24:46 -0400
+Received: from [192.168.178.60] ([109.104.47.130]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MPGiR-1hevT50O45-00PbYR; Tue, 13 Aug 2019 07:23:46 +0200
+Subject: Re: [PATCH v2 15/34] staging/vc04_services: convert put_page() to
+ put_user_page*()
+To:     john.hubbard@gmail.com, Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-fbdev@vger.kernel.org, Jan Kara <jack@suse.cz>,
+        kvm@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Chinner <david@fromorbit.com>,
+        dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+        sparclinux@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>,
+        ceph-devel@vger.kernel.org, devel@driverdev.osuosl.org,
+        rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org,
+        Suniel Mahesh <sunil.m@techveda.org>, x86@kernel.org,
+        amd-gfx@lists.freedesktop.org,
+        Christoph Hellwig <hch@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mihaela Muraru <mihaela.muraru21@gmail.com>,
+        xen-devel@lists.xenproject.org, devel@lists.orangefs.org,
+        linux-media@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+        intel-gfx@lists.freedesktop.org,
+        Kishore KP <kishore.p@techveda.org>,
+        linux-block@vger.kernel.org,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        linux-rpi-kernel@lists.infradead.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Sidong Yang <realwakka@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
+        Eric Anholt <eric@anholt.net>, netdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, linux-xfs@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+References: <20190804224915.28669-1-jhubbard@nvidia.com>
+ <20190804224915.28669-16-jhubbard@nvidia.com>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+Message-ID: <f92a9b35-072c-a452-3248-ded047a9ee7e@i2se.com>
+Date:   Tue, 13 Aug 2019 07:23:36 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190812090639.GX56241@e119886-lin.cambridge.arm.com>
+In-Reply-To: <20190804224915.28669-16-jhubbard@nvidia.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:WLtnGHSdIdsSOgSCw9gLWN/He07a3vhG8P/jw9q/ZsKCLbsJUeS
+ 5llVNlt7KE/tvHn+5EOmDYYv4pX1cHVWKOXHtrw4HQWAHuCkTohFsgxlEY0fExapDm8vR8t
+ zVIsUr/Bms6Kvxj5sCY8IbKiNL01LBum+j6x95pPZHXG9iG9KDUI7QIiVK2/58tc3NB1jnX
+ y7VHJG/KIA+fGCfAbINIQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:e2tiG/LoUCE=:MfCllk8c06iYHLUWJWcKAL
+ cdQ1fi1ypP4tC6pu8XAt4M+fU5mGlkjM5ziFPw9nAP5+ICbjFLhxsiDLATVpll3xwUgna69cS
+ Ev9bpFgmBYRqbHsiOVM335kNgAU19xY/LXN/GzEuigzotpDhc5IdC4FGsNTdqmIYi0Bx4dgCw
+ bLM/SrMXG40Mg1UArtxdqWQvHnINj7yK6JacwPswBAo33CV5S5U4U1PS67DpEMKA7dX0oduGb
+ 5fQtkN1kvCZEg2/ekJnnb+PAR6KRS8Eu0zqK7cwQwWxs+nxHFNvcdfFolT7waPuKj24rhpnjW
+ ZntPcErm15w8EJ72vFuARtCUk4Lh4jU+zYNtoDE6B8RJqr/+yxycmwEDucEbNXrujkaPH72RU
+ fWCHjlXjsJS29DRMlBs91cqiKMaK/ktbzSpegz+iLEJq/HkDuPh/jiz/b8w2crkMXTYEXfcIb
+ WqkuI5hHrAdEh99xa/X99FupD8F6iZ52Pv/g2glNHL9WlKL41btCn/KodqBqy/glIqHZeYzq2
+ SXjRol/t4oy36qgSCQmUGiCt1lssYLkBWOzcxjui5lZUL2V9O7wn91tHl7G+DbqjQzgMyVtBP
+ 60iHHkwkWe3su3M3o+o4m8sWd9OG5XIToU/4cSDhBQohrRIKKqoUbXAyCJH96bxaYdq/zseIf
+ oMsHaN/31pBaLs6MtsAa2tu5PRj9qlBX5kso+Y5up4mj5gl7CfIWyGwpM4gPWtVKv1En5k3ZR
+ HR/0MJ6spaP8P86u5+VALfxj2aM5bbcj+ZVczoVE2BIVl4lPQEesVoHHwFc=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 12.08.2019 12:06, Andrew Murray wrote:
-> 
-> Hi Denis,
-
-Hi!
-
-> 
-> You could also fix up a few cases where the number of BARs is hard coded in
-> loops, e.g.
-> 
-> drivers/pci/controller/pci-hyperv.c - look for uses of probed_bar in loops
-> drivers/pci/pci.c - pci_release_selected_regions and __pci_request_selected_regions
-> drivers/pci/quirks.c - quirk_alder_ioapic
-> 
-
-Thanks for pointing me on that. I will take this into account in v2.
-
-Denis
+On 05.08.19 00:48, john.hubbard@gmail.com wrote:
+> From: John Hubbard <jhubbard@nvidia.com>
+>
+> For pages that were retained via get_user_pages*(), release those pages
+> via the new put_user_page*() routines, instead of via put_page() or
+> release_pages().
+>
+> This is part a tree-wide conversion, as described in commit fc1d8e7cca2d
+> ("mm: introduce put_user_page*(), placeholder versions").
+>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+> Cc: Eric Anholt <eric@anholt.net>
+> Cc: Stefan Wahren <stefan.wahren@i2se.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Mihaela Muraru <mihaela.muraru21@gmail.com>
+> Cc: Suniel Mahesh <sunil.m@techveda.org>
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Cc: Sidong Yang <realwakka@gmail.com>
+> Cc: Kishore KP <kishore.p@techveda.org>
+> Cc: linux-rpi-kernel@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: devel@driverdev.osuosl.org
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
