@@ -2,37 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD638EB8E
-	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Aug 2019 14:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5958C8FEDD
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 11:24:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731425AbfHOMaQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 15 Aug 2019 08:30:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54002 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731022AbfHOMaQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 15 Aug 2019 08:30:16 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17CF42083B;
-        Thu, 15 Aug 2019 12:30:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565872215;
-        bh=fcSMZ1hJLe1SylXpsIiEI19jNgj4Ja71oWB1pvH9mE0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=iCyeKbRHojiJhhwZiRC9bCk1k8tH4WmyxMoMLzl9zNRaKr2F33UYtutxdiliP+MtA
-         SD4T8YiQs4wtpIigV47cAxXUwpy9ltZTfqtJoxElPIYuLiYq4AFgEhmZRqh4d9l7Oy
-         qkINkjsbMNu0GR9YZnBO//iSzWFtTfRpxfTY6BNM=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     devel@driverdev.osuosl.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH] staging: sm750fb: fix odd license text
-Date:   Thu, 15 Aug 2019 14:30:09 +0200
-Message-Id: <20190815123009.16499-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.22.1
+        id S1726936AbfHPJY5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 16 Aug 2019 05:24:57 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:41642 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726879AbfHPJY5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 16 Aug 2019 05:24:57 -0400
+Received: by mail-wr1-f66.google.com with SMTP id j16so890377wrr.8;
+        Fri, 16 Aug 2019 02:24:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/VxpV6HL/eaLGj7FsELgy9XZqdi/XB/wlgbntskeVnQ=;
+        b=IbAKXSF5R1mr1Ot5O0SVLwAG2d11xlP91LdIq3kT56OXCfcZQpdGKIylwQP3f1bF5V
+         cj+htenCqB1qBD1rvN+lyZF9nXCUCaeeJ0rSyIw3uuCrFgH7rGaf1+QIgKbEuGRdOjzh
+         criNKo5Du8irVDnbTXz7vicG14NNNWilRuwW0LUjrPCMYxazCc+DczVaDj5GXf3r3Miu
+         q5Hf+xL4WVFY9W+0XERsk+zkFtddPw2URZewd5zzvDjPcOdYRCqdjVfl4K1Zw9Op4zpR
+         0zwzM3zhWiRRFZ+i2PxOn4fn2725rRu/cwlHN0nttr8XcJiQT4Xn1pfhzkRJyFCVYVRK
+         yhWg==
+X-Gm-Message-State: APjAAAVtDI8tsSHPbZTPV4bguM28TsQVTUXOL7oqYePXixGMBsnPLfdz
+        qUdpugQy7H7Kp+Jc0NjAzU0=
+X-Google-Smtp-Source: APXvYqyy6pgFa+BB7KaySmOfpgsDcaufflSKyMcUlSVwwJjnZb2uc2ckVujWGkNfhMrvbZguRjo1Mw==
+X-Received: by 2002:adf:eac3:: with SMTP id o3mr8886853wrn.264.1565947494195;
+        Fri, 16 Aug 2019 02:24:54 -0700 (PDT)
+Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id q20sm16521138wrc.79.2019.08.16.02.24.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 16 Aug 2019 02:24:53 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, Sebastian Ott <sebott@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Andrew Murray <andrew.murray@arm.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>, kvm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
+        x86@kernel.org, linux-s390@vger.kernel.org
+Subject: [PATCH v2 00/10] Add definition for the number of standard PCI BARs
+Date:   Fri, 16 Aug 2019 12:24:27 +0300
+Message-Id: <20190816092437.31846-1-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -40,64 +63,50 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There is some "confusing" license text in some of the sm750fb driver
-files.  After discussing it with the company, it turns out to have been
-a mistake and these lines can be safely removed.  The files are all to
-be licensed under the GPLv2 license.
+Code that iterates over all standard PCI BARs typically uses
+PCI_STD_RESOURCE_END, but this is error-prone because it requires
+"i <= PCI_STD_RESOURCE_END" rather than something like
+"i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
+way PCI_SRIOV_NUM_BARS is used. There is already the definition
+PCI_BAR_COUNT for s390 only. Thus, this patchset introduces it globally.
 
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc: Teddy Wang <teddy.wang@siliconmotion.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: devel@driverdev.osuosl.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/staging/sm750fb/ddk750.h       | 3 ---
- drivers/staging/sm750fb/ddk750_swi2c.c | 3 ---
- drivers/staging/sm750fb/ddk750_swi2c.h | 3 ---
- 3 files changed, 9 deletions(-)
+Changes in v2:
+  - Reverse checks in pci_iomap_range,pci_iomap_wc_range.
+  - Refactor loops in vfio_pci to keep PCI_STD_RESOURCES.
+  - Add 2 new patches to replace the magic constant with new define.
+  - Split net patch in v1 to separate stmmac and dwc-xlgmac patches.
 
-diff --git a/drivers/staging/sm750fb/ddk750.h b/drivers/staging/sm750fb/ddk750.h
-index 482c1c6ba422..64ef4d258a91 100644
---- a/drivers/staging/sm750fb/ddk750.h
-+++ b/drivers/staging/sm750fb/ddk750.h
-@@ -2,9 +2,6 @@
- /*
-  *         Copyright (c) 2007 by Silicon Motion, Inc. (SMI)
-  *
-- *  All rights are reserved. Reproduction or in part is prohibited
-- *  without the written consent of the copyright owner.
-- *
-  *  RegSC.h --- SM718 SDK
-  *  This file contains the definitions for the System Configuration registers.
-  */
-diff --git a/drivers/staging/sm750fb/ddk750_swi2c.c b/drivers/staging/sm750fb/ddk750_swi2c.c
-index 5c0ac747ea2b..0ef8d4ff2ef9 100644
---- a/drivers/staging/sm750fb/ddk750_swi2c.c
-+++ b/drivers/staging/sm750fb/ddk750_swi2c.c
-@@ -2,9 +2,6 @@
- /*
-  *         Copyright (c) 2007 by Silicon Motion, Inc. (SMI)
-  *
-- *  All rights are reserved. Reproduction or in part is prohibited
-- *  without the written consent of the copyright owner.
-- *
-  *  swi2c.c --- SM750/SM718 DDK
-  *  This file contains the source code for I2C using software
-  *  implementation.
-diff --git a/drivers/staging/sm750fb/ddk750_swi2c.h b/drivers/staging/sm750fb/ddk750_swi2c.h
-index 5868feea791b..dfa166060da7 100644
---- a/drivers/staging/sm750fb/ddk750_swi2c.h
-+++ b/drivers/staging/sm750fb/ddk750_swi2c.h
-@@ -2,9 +2,6 @@
- /*
-  *         Copyright (c) 2007 by Silicon Motion, Inc. (SMI)
-  *
-- *  All rights are reserved. Reproduction or in part is prohibited
-- *  without the written consent of the copyright owner.
-- *
-  *  swi2c.h --- SM750/SM718 DDK
-  *  This file contains the definitions for i2c using software
-  *  implementation.
+Denis Efremov (10):
+  PCI: Add define for the number of standard PCI BARs
+  s390/pci: Loop using PCI_STD_NUM_BARS
+  x86/PCI: Loop using PCI_STD_NUM_BARS
+  stmmac: pci: Loop using PCI_STD_NUM_BARS
+  net: dwc-xlgmac: Loop using PCI_STD_NUM_BARS
+  rapidio/tsi721: Loop using PCI_STD_NUM_BARS
+  efifb: Loop using PCI_STD_NUM_BARS
+  vfio_pci: Loop using PCI_STD_NUM_BARS
+  PCI: hv: Use PCI_STD_NUM_BARS
+  PCI: Use PCI_STD_NUM_BARS
+
+ arch/s390/include/asm/pci.h                      |  5 +----
+ arch/s390/include/asm/pci_clp.h                  |  6 +++---
+ arch/s390/pci/pci.c                              | 16 ++++++++--------
+ arch/s390/pci/pci_clp.c                          |  6 +++---
+ arch/x86/pci/common.c                            |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c |  4 ++--
+ drivers/net/ethernet/synopsys/dwc-xlgmac-pci.c   |  2 +-
+ drivers/pci/controller/pci-hyperv.c              | 10 +++++-----
+ drivers/pci/pci.c                                | 11 ++++++-----
+ drivers/pci/quirks.c                             |  4 ++--
+ drivers/rapidio/devices/tsi721.c                 |  2 +-
+ drivers/vfio/pci/vfio_pci.c                      | 11 +++++++----
+ drivers/vfio/pci/vfio_pci_config.c               | 10 ++++++----
+ drivers/vfio/pci/vfio_pci_private.h              |  4 ++--
+ drivers/video/fbdev/efifb.c                      |  2 +-
+ include/linux/pci.h                              |  2 +-
+ include/uapi/linux/pci_regs.h                    |  1 +
+ 17 files changed, 51 insertions(+), 47 deletions(-)
+
 -- 
-2.22.1
+2.21.0
 
