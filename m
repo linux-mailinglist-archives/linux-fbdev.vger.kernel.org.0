@@ -2,28 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5453190633
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 18:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7460790743
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 19:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726875AbfHPQv4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 16 Aug 2019 12:51:56 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:40045 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726497AbfHPQvz (ORCPT
+        id S1727518AbfHPRwG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 16 Aug 2019 13:52:06 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:46557 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727504AbfHPRwG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Aug 2019 12:51:55 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hyfSA-0002eU-Cf; Fri, 16 Aug 2019 18:51:50 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hyfS8-00027l-G7; Fri, 16 Aug 2019 18:51:48 +0200
-Date:   Fri, 16 Aug 2019 18:51:48 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Matthias Kaehlcke <mka@chromium.org>
+        Fri, 16 Aug 2019 13:52:06 -0400
+Received: by mail-pg1-f194.google.com with SMTP id m3so2695321pgv.13
+        for <linux-fbdev@vger.kernel.org>; Fri, 16 Aug 2019 10:52:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=xjxlB0B/JZnHNwu9yzdxZFE3he1ESE8+7aIO3e2RkyQ=;
+        b=NWmOxTmlwuqvYepW/pFP8VjWfNcBSeaFJiXDcL0o6v7Rvz8TLVtdKnwCd8I/2FMoMs
+         78S4FIuhOe1aIEuZ/RxhcqKOfVuhGptQBHAw3i/dj3GvfGe2XVrRPMoi1FV9rxsP40Gi
+         aOcF7Niwzy0kmnSzlnHcurkXlpMbOhRfTDSyQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=xjxlB0B/JZnHNwu9yzdxZFE3he1ESE8+7aIO3e2RkyQ=;
+        b=Onw7QvfNKtkH2ajxa5A4UQwl7zyKJ2pGND0MGdaKpbrA/kUzexL36+T6w79+iCW3RG
+         lhsOZQawEDpXwZwk7Ir53NdIsyhKAiQsLNeLNqcLT1J9FNSg7AxcXL6E8X15ee421hx5
+         a4wG5T5NkL2YFE9W4lcVUhPjkZnkbyyoXNUoav8vTPm+JfkMBKqZXWzv6zheCWsG2nBC
+         zKUikcSHLO7QIZHKSHdKg9QlJOmAfPiwm5TeYq2MGZpQ7dJso7tbbF5DCuJdSrqgUbX9
+         ikc6g79Yi/VQ/gU7ES0zaXAQBTg3mRP6SC+Hyn9FhQ+3vwhyjrZY7V0FzJ8P8zdn+16V
+         xiAQ==
+X-Gm-Message-State: APjAAAVfK77nUFFPlbQotF+UyJd72lYNlzMEsdCjwdkJAxlA9voFvSpg
+        WsrTmOiccQaNZd32fkpk1/z9jQ==
+X-Google-Smtp-Source: APXvYqwQomJ4VDkW8Ugkil0/0Fx0afChPTSA24OHMr8FpMJsdU6v6T3IhgWzwQyyDkhwbqMSnFaCYg==
+X-Received: by 2002:aa7:8102:: with SMTP id b2mr12049391pfi.105.1565977925626;
+        Fri, 16 Aug 2019 10:52:05 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id 16sm10735880pfc.66.2019.08.16.10.52.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 16 Aug 2019 10:52:05 -0700 (PDT)
+Date:   Fri, 16 Aug 2019 10:51:57 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -38,48 +61,51 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jacek Anaszewski <jacek.anaszewski@gmail.com>
 Subject: Re: [PATCH v3 2/4] backlight: Expose brightness curve type through
  sysfs
-Message-ID: <20190816165148.7keg45fmlndr22fl@pengutronix.de>
+Message-ID: <20190816175157.GT250418@google.com>
 References: <20190709190007.91260-1-mka@chromium.org>
  <20190709190007.91260-3-mka@chromium.org>
+ <20190816165148.7keg45fmlndr22fl@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190709190007.91260-3-mka@chromium.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+In-Reply-To: <20190816165148.7keg45fmlndr22fl@pengutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jul 09, 2019 at 12:00:05PM -0700, Matthias Kaehlcke wrote:
-> Backlight brightness curves can have different shapes. The two main
-> types are linear and non-linear curves. The human eye doesn't
-> perceive linearly increasing/decreasing brightness as linear (see
-> also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
-> linearly to human eye"), hence many backlights use non-linear (often
-> logarithmic) brightness curves. The type of curve currently is opaque
-> to userspace, so userspace often uses more or less reliable heuristics
-> (like the number of brightness levels) to decide whether to treat a
-> backlight device as linear or non-linear.
+Hi Uwe,
+
+On Fri, Aug 16, 2019 at 06:51:48PM +0200, Uwe Kleine-KÃ¶nig wrote:
+> On Tue, Jul 09, 2019 at 12:00:05PM -0700, Matthias Kaehlcke wrote:
+> > Backlight brightness curves can have different shapes. The two main
+> > types are linear and non-linear curves. The human eye doesn't
+> > perceive linearly increasing/decreasing brightness as linear (see
+> > also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
+> > linearly to human eye"), hence many backlights use non-linear (often
+> > logarithmic) brightness curves. The type of curve currently is opaque
+> > to userspace, so userspace often uses more or less reliable heuristics
+> > (like the number of brightness levels) to decide whether to treat a
+> > backlight device as linear or non-linear.
+> > 
+> > Export the type of the brightness curve via the new sysfs attribute
+> > 'scale'. The value of the attribute can be 'linear', 'non-linear' or
+> > 'unknown'. For devices that don't provide information about the scale
+> > of their brightness curve the value of the 'scale' attribute is 'unknown'.
+> > 
+> > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
 > 
-> Export the type of the brightness curve via the new sysfs attribute
-> 'scale'. The value of the attribute can be 'linear', 'non-linear' or
-> 'unknown'. For devices that don't provide information about the scale
-> of their brightness curve the value of the 'scale' attribute is 'unknown'.
-> 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> I wonder what kind of problem you are solving here. Can you describe
+> that in a few words?
 
-I wonder what kind of problem you are solving here. Can you describe
-that in a few words?
+The human eye perceives brightness in a logarithmic manner. For
+backlights with a linear brightness curve brightness controls like
+sliders need to use a mapping to achieve a behavior that is perceived
+as linear-ish (more details: http://www.pathwaylighting.com/products/downloads/brochure/technical_materials_1466797044_Linear+vs+Logarithmic+Dimming+White+Paper.pdf)
 
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+As of now userspace doesn't have information about the type of the
+brightness curve, and often uses heuristics to make a guess, which may
+be right most of the time, but not always. The new attribute eliminates
+the need to guess.
