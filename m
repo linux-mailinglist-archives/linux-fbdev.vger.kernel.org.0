@@ -2,128 +2,111 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31124904F0
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 17:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EFA90500
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 17:54:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbfHPPse (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 16 Aug 2019 11:48:34 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:32858 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727345AbfHPPse (ORCPT
+        id S1727374AbfHPPyW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 16 Aug 2019 11:54:22 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36247 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727359AbfHPPyW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Aug 2019 11:48:34 -0400
-Received: by mail-io1-f66.google.com with SMTP id z3so7083828iog.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 16 Aug 2019 08:48:34 -0700 (PDT)
+        Fri, 16 Aug 2019 11:54:22 -0400
+Received: by mail-wr1-f66.google.com with SMTP id r3so2007447wrt.3
+        for <linux-fbdev@vger.kernel.org>; Fri, 16 Aug 2019 08:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=/rVwYCxqOr6nRrp3LvLIcdjfULOr8AyFlrBXkong6Uc=;
-        b=fXFbSidYUWUDlCh4xn1T/uZ5jLY9vlVpMj5VEkuiqHXz+qMOCKxapObfLA3nEgPC7R
-         vbKAhlMWcM4J+Eji7i5R6bwo4AeGu9fnIYkpCAzv8oSULwGLPD3LqKmsHrjooKwmPZlg
-         CPFFPDdRWkrJe6ua3OTZ34Gz1O0O8vSQoh64ZKeWJzsOfIgCrQ5x1SjgRLt2BFPW6eno
-         miP6aVQIgyGJOM2QklUITTu5iuxab7KfiAgaTBKrd+U5OvNlNtDzA+RPScqKLXahRxhU
-         onl3wAUB2zIim3HOXqpJCz4CfO6R/P8hrD8OguzyI92HPBSdWK0xd3s2kHKgHsp4TiYl
-         +oyQ==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=rjwwQvzZbTAd0PumZ0fpI2ighfSvLNEfTeslgBS5o3c=;
+        b=zen5hFriKrgrhQt7tOYMXw7q1geHpYj6bLTDvLzZgHS0RFMztkPu7eDcJ4HcIIRAC1
+         hTOFeDGYZJGX1SduUZSPtAMY4MkoCurIJoEpeCyQmGXOzkqkx0eF/BYnoJx1htseHBTl
+         B22l2v/Fop1oAl5vXRu6cyfUmoLJ+ZbHwP1fj2+vbjLiYnukTeWjb+s/V3FjHnYGlG2P
+         yYQ9qOQpjRFYJY/douTgJDCGa+t1O6dJ5seBUADnRGBkVeOodHv0EbUYtzkahW06UXqR
+         2UEr841WsMPDcTXJccy8ruUHjE/gih5Rvnw0gMduC4KP3KoUn5co2MFMaFUI37r4nR4Q
+         I+4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=/rVwYCxqOr6nRrp3LvLIcdjfULOr8AyFlrBXkong6Uc=;
-        b=Ut5Wnrk8aJzqF+T/zfPfAbxOS9P4CMPHkCRkMNSDCVk00IfLX3iB+IDCvJIlfYWa1w
-         1S7STw+MXZ2DSFWKgFS1N+yHfJLisGDVAzSv9n/ddibiwZjUvvqzvFJ83useP2TDczRv
-         vvPmiPWXsP2kFsvJHn8nDi9lSj3C7a54gKIkgv3OvT+0+2gRpC4YNZkJ40cQstNXtBZy
-         dt3Nzv46xK7YH3aYAVkUm/GnpRgMkxc7sAMgqt6+bA/AxqN5KaV9UXDU7X2T9v1TAOz0
-         Kr75GO7lXJNSuWxVbfyULDRk1uT/yu0qb5DfmFc1zkSCXFROxCMxCG1m4XqbVT3D15Fy
-         9Rgg==
-X-Gm-Message-State: APjAAAUFG9xT1/9eUQOeRyhvwo8SfaLnv8wpKxuGoT1qa8v/Pbbx2CNC
-        Y0uk+TVCHXoJFa2PmxApFy7aIEL+kCuSwsRgiq7TIQ==
-X-Google-Smtp-Source: APXvYqxDOUjXB1ulEsmlyPghWdRmlQ4HyP8nZKAkjmZq4xfy7xXlP40N1L/haF2XUbz+0fYOxJqch8oW/Je12YfPMR8=
-X-Received: by 2002:a5d:8457:: with SMTP id w23mr472306ior.189.1565970513627;
- Fri, 16 Aug 2019 08:48:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190724082508.27617-1-brgl@bgdev.pl> <CAMRc=Mex_Ricd+C4F7nGLmpBggO-hWwJDB6duX8kFpPEeaTDjQ@mail.gmail.com>
-In-Reply-To: <CAMRc=Mex_Ricd+C4F7nGLmpBggO-hWwJDB6duX8kFpPEeaTDjQ@mail.gmail.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 16 Aug 2019 17:48:22 +0200
-Message-ID: <CAMRc=Mci4ncbDmns=0uL8hsAGz1Wvd5bgK4yxTF8QQQitXDv0g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=rjwwQvzZbTAd0PumZ0fpI2ighfSvLNEfTeslgBS5o3c=;
+        b=Eh2HM3xnk0D0X8Za1Vwmxc6tLf5xTevBAn2ifHd8Rz8pWtrBpa613TlOawlS6z2qYO
+         89j0Ac0cdxMSXlEVKZTPwWJaEJrA2H422sws4HTSgZ1gJOPLoiCZI2GlmGtdLr3fhi6h
+         jXfnH9w8IHfRyK8zXDjXBzurO3L30GV2pgm9SZvIbXOyFuGv7uvsFnKwbB+mvBaB2HgL
+         liS9YIuqi7cF/1RmrGrOmQAogDip9Fjoc+yHUbP0zDbzGOJexxXlpvxeBKbhAzb5oBHm
+         jwW9SrbVa3qCRO9reT4xsnSMz2XWEUNnEKXAVMIRRAlP1S4P4oQxkSc/lLEVrdEILxCK
+         q9dg==
+X-Gm-Message-State: APjAAAXgqnn3QHYJhvo9dT5PNN+VWu5wf9OLDYiclKd9sYmWWrd5XrgY
+        88Q6gPOLb5DT3+ybrwPi0rLZhw==
+X-Google-Smtp-Source: APXvYqyQJCwfn9usponeAbAoxdPMgcDAMy29vLoOMKWyIeyL5+AvPp3pVd4OiYXh5ns0XltF0conlw==
+X-Received: by 2002:a5d:4946:: with SMTP id r6mr12650102wrs.266.1565970860895;
+        Fri, 16 Aug 2019 08:54:20 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.googlemail.com with ESMTPSA id a64sm5352000wmf.1.2019.08.16.08.54.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Aug 2019 08:54:19 -0700 (PDT)
+Subject: Re: Re: [PATCH v3 2/4] backlight: Expose brightness curve type
+ through sysfs
+To:     Matthias Kaehlcke <mka@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+References: <20190709190007.91260-1-mka@chromium.org>
+ <20190709190007.91260-3-mka@chromium.org>
+ <20190807201528.GO250418@google.com>
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+Message-ID: <510f6d8a-71a0-fa6e-33ea-c4a4bfa96607@linaro.org>
+Date:   Fri, 16 Aug 2019 16:54:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190807201528.GO250418@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-czw., 8 sie 2019 o 10:17 Bartosz Golaszewski <brgl@bgdev.pl> napisa=C5=82(a=
-):
->
-> =C5=9Br., 24 lip 2019 o 10:25 Bartosz Golaszewski <brgl@bgdev.pl> napisa=
-=C5=82(a):
-> >
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > While working on my other series related to gpio-backlight[1] I noticed
-> > that we could simplify the driver if we made the only user of platform
-> > data use GPIO lookups and device properties. This series tries to do
-> > that.
-> >
-> > The first patch adds all necessary data structures to ecovec24. Patch
-> > 2/7 unifies much of the code for both pdata and non-pdata cases. Patche=
-s
-> > 3-4/7 remove unused platform data fields. Last three patches contain
-> > additional improvements for the GPIO backlight driver while we're alrea=
-dy
-> > modifying it.
-> >
-> > I don't have access to this HW but hopefully this works. Only compile
-> > tested.
-> >
-> > [1] https://lkml.org/lkml/2019/6/25/900
-> >
-> > v1 -> v2:
-> > - rebased on top of v5.3-rc1 and adjusted to the recent changes from An=
-dy
-> > - added additional two patches with minor improvements
-> >
-> > v2 -> v3:
-> > - in patch 7/7: used initializers to set values for pdata and dev local=
- vars
-> >
-> > Bartosz Golaszewski (7):
-> >   sh: ecovec24: add additional properties to the backlight device
-> >   backlight: gpio: simplify the platform data handling
-> >   sh: ecovec24: don't set unused fields in platform data
-> >   backlight: gpio: remove unused fields from platform data
-> >   backlight: gpio: remove dev from struct gpio_backlight
-> >   backlight: gpio: remove def_value from struct gpio_backlight
-> >   backlight: gpio: use a helper variable for &pdev->dev
-> >
-> >  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
-> >  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
-> >  include/linux/platform_data/gpio_backlight.h |  3 -
-> >  3 files changed, 44 insertions(+), 74 deletions(-)
-> >
-> > --
-> > 2.21.0
-> >
->
-> Hi Rich, Yoshinori,
->
-> can you ack the sh patches in this series?
->
-> Bart
+On 07/08/2019 21:15, Matthias Kaehlcke wrote:
+> On Tue, Jul 09, 2019 at 12:00:05PM -0700, Matthias Kaehlcke wrote:
+>> Backlight brightness curves can have different shapes. The two main
+>> types are linear and non-linear curves. The human eye doesn't
+>> perceive linearly increasing/decreasing brightness as linear (see
+>> also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
+>> linearly to human eye"), hence many backlights use non-linear (often
+>> logarithmic) brightness curves. The type of curve currently is opaque
+>> to userspace, so userspace often uses more or less reliable heuristics
+>> (like the number of brightness levels) to decide whether to treat a
+>> backlight device as linear or non-linear.
+>>
+>> Export the type of the brightness curve via the new sysfs attribute
+>> 'scale'. The value of the attribute can be 'linear', 'non-linear' or
+>> 'unknown'. For devices that don't provide information about the scale
+>> of their brightness curve the value of the 'scale' attribute is 'unknown'.
+>>
+>> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> 
+> Daniel (et al): do you have any more comments on this patch/series or
+> is it ready to land?
 
-Ping.
+I decided to leave it for a long while for others to review since I'm 
+still a tiny bit uneasy about the linear/non-linear terminology.
+
+However that's my only concern, its fairly minor and I've dragged by 
+feet for more then long enough, so:
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+
+
+Daniel.
+
