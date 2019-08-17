@@ -2,136 +2,131 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A401390A05
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Aug 2019 23:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E6A290F87
+	for <lists+linux-fbdev@lfdr.de>; Sat, 17 Aug 2019 10:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727715AbfHPVKz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 16 Aug 2019 17:10:55 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:43780 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727548AbfHPVKz (ORCPT
+        id S1726048AbfHQIk4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 17 Aug 2019 04:40:56 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:40690 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbfHQIk4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Aug 2019 17:10:55 -0400
-Received: by mail-pf1-f195.google.com with SMTP id v12so3716534pfn.10
-        for <linux-fbdev@vger.kernel.org>; Fri, 16 Aug 2019 14:10:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=omJ8IItzAJQAPO3tmBsIeieU2u668VutyYMbYeYnfXY=;
-        b=njDzsoq5Y3wMuR1vIA+MGdo+BzO+B/f9SdopkAr0xFHgrStJXA7Ik/UCP8qP6cVwv4
-         lzcubXnyj8uqy6qltZibMeg3xHuVhU5Jzu2yjdBrpex1+Y5E/vNWNcIBdyff7zVFbDPv
-         S7ia2p8XxRtlv61pL9/W76ViOPP2pTn+6Amts=
+        Sat, 17 Aug 2019 04:40:56 -0400
+Received: by mail-ed1-f66.google.com with SMTP id h8so7070724edv.7
+        for <linux-fbdev@vger.kernel.org>; Sat, 17 Aug 2019 01:40:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=omJ8IItzAJQAPO3tmBsIeieU2u668VutyYMbYeYnfXY=;
-        b=GCWjwlEykIRgFSXVimzvcLt6Z6ZfLMH7yTwGtQ5syyQt86n0HGN2E9V9ZeeQLb0gSR
-         wLdUlU3i1n6sAAukz5y5OmStuPtKKp5VmWxzY3l0hveU0dUg7TAsuna0E4Q74VMffGON
-         nbQu8GpckRtExKMid8MxuH7UqBRMoqu1HwWHVxCBiKL0+uZrOA0Oexib4aaV/qiO+qX6
-         dRuGHjRVh0KCPOwU3cSxszT7LhovMqiJ3e9vEna07/EhxnOl2P+L3YXFF4rq67/0SsmA
-         Q+PYaXXSVTtATzLHNFhEGj0kM8J54EoV2WEh5fJB7vOD3vlhaSWpoNgLGKVkoz5gzYkJ
-         0NXw==
-X-Gm-Message-State: APjAAAVIKyWyjQKnvB7FDTO2wXtSJwUHXmA0yU4lb8ji5h5j21QKvxXq
-        kjmLdCP1yQEgS2LHnWmA4Ym4Sg==
-X-Google-Smtp-Source: APXvYqx/9biztZysWMeW6sR50lVpQxokVJNMUldAOC4JXEFv4e9JNEnzqyrf//WtPwGuqvJWoi3P2A==
-X-Received: by 2002:aa7:9293:: with SMTP id j19mr13113379pfa.90.1565989854997;
-        Fri, 16 Aug 2019 14:10:54 -0700 (PDT)
-Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
-        by smtp.gmail.com with ESMTPSA id c71sm7437581pfc.106.2019.08.16.14.10.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 16 Aug 2019 14:10:54 -0700 (PDT)
-Date:   Fri, 16 Aug 2019 14:10:51 -0700
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH v3 2/4] backlight: Expose brightness curve type through
- sysfs
-Message-ID: <20190816211051.GV250418@google.com>
-References: <20190709190007.91260-1-mka@chromium.org>
- <20190709190007.91260-3-mka@chromium.org>
- <20190816165148.7keg45fmlndr22fl@pengutronix.de>
- <20190816175157.GT250418@google.com>
- <20190816194754.ldzjqy2yjonfvaat@pengutronix.de>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qRs++cUPWqE7h71iD/NyfIih5j7NXZt7bjbEdWqVzho=;
+        b=ILm1Ad6iOX6KcEEXxJmsjkliWmV+j/y7UJyRCeKVuqj8Va6/o0cWmfe3Fd15IEJexj
+         cy3WuMJjd/pDRKjdaQfoST0zrZSt34FRJlF7U5KMxD722UNwGbgzfTw2Y14QBYCS9j4L
+         PaAyf2fiDpESTQI29Wt2uYRf1vMPWsX+bdKLMCWN3PhcMscrsKOdqiGQDAMPGriny6La
+         +SMrEmm280erfsYGyINAjQidMq5rPXK/c4XhGKS5eWSabd2qxPcDb0VEWIKxGB7QWV6X
+         q5WYUXOMd0lz4Oj+SpPEq/Ue3fMv05yiYUP2BTxFG3vukVbu24biQUk+57aBjvODX1fH
+         o7Qw==
+X-Gm-Message-State: APjAAAWnwFkQlFMOSskFymq9GSIrH/Lfu/9sp3+/YTs3KtT0e+wQoRAr
+        aW42s3GnYk2wmN3+E8YNcXng2Q==
+X-Google-Smtp-Source: APXvYqyVeGWshlkAN3hcVFd4OniDjXvWk5lT+Wx1OL/j+MklrUymZoMYlJwTuyfs+e6TUmXM+MwbzQ==
+X-Received: by 2002:a50:90c4:: with SMTP id d4mr15291715eda.107.1566031255204;
+        Sat, 17 Aug 2019 01:40:55 -0700 (PDT)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id e24sm1136686ejb.53.2019.08.17.01.40.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Aug 2019 01:40:54 -0700 (PDT)
+Subject: Re: [PATCH] efifb: BGRT: Improve efifb_bgrt_sanity_check
+To:     Peter Jones <pjones@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20190721131918.10115-1-hdegoede@redhat.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <a94c96de-16a5-7b52-a964-f8974e867a65@redhat.com>
+Date:   Sat, 17 Aug 2019 10:40:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190816194754.ldzjqy2yjonfvaat@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190721131918.10115-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Aug 16, 2019 at 09:47:54PM +0200, Uwe Kleine-König wrote:
-> On Fri, Aug 16, 2019 at 10:51:57AM -0700, Matthias Kaehlcke wrote:
-> > Hi Uwe,
-> > 
-> > On Fri, Aug 16, 2019 at 06:51:48PM +0200, Uwe Kleine-König wrote:
-> > > On Tue, Jul 09, 2019 at 12:00:05PM -0700, Matthias Kaehlcke wrote:
-> > > > Backlight brightness curves can have different shapes. The two main
-> > > > types are linear and non-linear curves. The human eye doesn't
-> > > > perceive linearly increasing/decreasing brightness as linear (see
-> > > > also 88ba95bedb79 "backlight: pwm_bl: Compute brightness of LED
-> > > > linearly to human eye"), hence many backlights use non-linear (often
-> > > > logarithmic) brightness curves. The type of curve currently is opaque
-> > > > to userspace, so userspace often uses more or less reliable heuristics
-> > > > (like the number of brightness levels) to decide whether to treat a
-> > > > backlight device as linear or non-linear.
-> > > > 
-> > > > Export the type of the brightness curve via the new sysfs attribute
-> > > > 'scale'. The value of the attribute can be 'linear', 'non-linear' or
-> > > > 'unknown'. For devices that don't provide information about the scale
-> > > > of their brightness curve the value of the 'scale' attribute is 'unknown'.
-> > > > 
-> > > > Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> > > 
-> > > I wonder what kind of problem you are solving here. Can you describe
-> > > that in a few words?
-> > 
-> > The human eye perceives brightness in a logarithmic manner. For
-> > backlights with a linear brightness curve brightness controls like
-> > sliders need to use a mapping to achieve a behavior that is perceived
-> > as linear-ish (more details: http://www.pathwaylighting.com/products/downloads/brochure/technical_materials_1466797044_Linear+vs+Logarithmic+Dimming+White+Paper.pdf)
-> > 
-> > As of now userspace doesn't have information about the type of the
-> > brightness curve, and often uses heuristics to make a guess, which may
-> > be right most of the time, but not always. The new attribute eliminates
-> > the need to guess.
+Hi,
+
+On 21-07-19 15:19, Hans de Goede wrote:
+> For various reasons, at least with x86 EFI firmwares, the xoffset and
+> yoffset in the BGRT info are not always reliable.
 > 
-> This is about backlights right? So the kernel provides to userspace an
-> interval [0, x] for some x and depending on the physics of the the
-> backlight configuring x/2 (probably?) either means 50% measured light or
-> 50% perceived light, right?
+> Extensive testing has shown that when the info is correct, the
+> BGRT image is always exactly centered horizontally (the yoffset variable
+> is more variable and not always predictable).
+> 
+> This commit simplifies / improves the bgrt_sanity_check to simply
+> check that the BGRT image is exactly centered horizontally and skips
+> (re)drawing it when it is not.
+> 
+> This fixes the BGRT image sometimes being drawn in the wrong place.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 88fe4ceb2447 ("efifb: BGRT: Do not copy the boot graphics for non native resolutions")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-correct
+ping? I do not see this one in -next yet, what is the status of this
+patch?
 
-> I wonder if it would be possible instead of giving different backlight
-> implementations the freedom to use either linear or logarithmic (or
-> quadratic?) scaling and tell userspace which of the options were picked
-> require the drivers to provide a (say) linear scaling and then userspace
-> wouldn't need to care about the exact physics.
+Regards,
 
-In an ideal world the backlight interface would be consistent as you
-suggest, however there are plenty of existing devices which use the
-'other' scaling (regardless of which is chosen as the 'correct'
-one). Userspace still has to deal with these. And changing previously
-'logarithmic' drivers to linear (or viceversa) may 'break' userspace,
-when it keeps using its 'old' scaling, which now isn't correct anymore.
+Hans
 
 
+
+
+> ---
+>   drivers/video/fbdev/efifb.c | 27 ++++++---------------------
+>   1 file changed, 6 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+> index dfa8dd47d19d..5b3cef9bf794 100644
+> --- a/drivers/video/fbdev/efifb.c
+> +++ b/drivers/video/fbdev/efifb.c
+> @@ -122,28 +122,13 @@ static void efifb_copy_bmp(u8 *src, u32 *dst, int width, struct screen_info *si)
+>    */
+>   static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
+>   {
+> -	static const int default_resolutions[][2] = {
+> -		{  800,  600 },
+> -		{ 1024,  768 },
+> -		{ 1280, 1024 },
+> -	};
+> -	u32 i, right_margin;
+> -
+> -	for (i = 0; i < ARRAY_SIZE(default_resolutions); i++) {
+> -		if (default_resolutions[i][0] == si->lfb_width &&
+> -		    default_resolutions[i][1] == si->lfb_height)
+> -			break;
+> -	}
+> -	/* If not a default resolution used for textmode, this should be fine */
+> -	if (i >= ARRAY_SIZE(default_resolutions))
+> -		return true;
+> -
+> -	/* If the right margin is 5 times smaller then the left one, reject */
+> -	right_margin = si->lfb_width - (bgrt_tab.image_offset_x + bmp_width);
+> -	if (right_margin < (bgrt_tab.image_offset_x / 5))
+> -		return false;
+> +	/*
+> +	 * All x86 firmwares horizontally center the image (the yoffset
+> +	 * calculations differ between boards, but xoffset is predictable).
+> +	 */
+> +	u32 expected_xoffset = (si->lfb_width - bmp_width) / 2;
+>   
+> -	return true;
+> +	return bgrt_tab.image_offset_x == expected_xoffset;
+>   }
+>   #else
+>   static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
+> 
