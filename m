@@ -2,131 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E6A290F87
-	for <lists+linux-fbdev@lfdr.de>; Sat, 17 Aug 2019 10:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C319A9181B
+	for <lists+linux-fbdev@lfdr.de>; Sun, 18 Aug 2019 19:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726048AbfHQIk4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 17 Aug 2019 04:40:56 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:40690 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725911AbfHQIk4 (ORCPT
+        id S1727117AbfHRQ7x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 18 Aug 2019 12:59:53 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:47025 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727119AbfHRQ7x (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 17 Aug 2019 04:40:56 -0400
-Received: by mail-ed1-f66.google.com with SMTP id h8so7070724edv.7
-        for <linux-fbdev@vger.kernel.org>; Sat, 17 Aug 2019 01:40:55 -0700 (PDT)
+        Sun, 18 Aug 2019 12:59:53 -0400
+Received: by mail-lf1-f67.google.com with SMTP id n19so7235519lfe.13;
+        Sun, 18 Aug 2019 09:59:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=V1XLrmrHnxtun5E7MsD/TIJ4RWoKU+eFXlhCg4SB19I=;
+        b=rhnqbmSuOY+3ZUyzlxvqIAPQ1XFULeoa/WbnYJFklorm8v700suEGO7RolfnDsPu0j
+         0sVcYqTlNxP6GIcJigTatwt/g2ces8dcLQZJoZyO4grYu9m4TdhvYOIpZ4kd7KMtW0OR
+         JRrgrKRO61SLRaACmkHAfRujvGQOpqeio/GD+vRfSdVsqqr0FZDEWmhXrP6WUzeBWj17
+         wi/JKS2nekHQTnjdpktZ//KtAKa2QVmU0gvkwAle+NZSOoq/7+4/B6llPitWvk24UmTx
+         YIGjzdzYj3s5xu5+2FB/tLFTfBlRNXS7qifdvOV2G7jNt602TzRGwvIETkne1JYutvwF
+         yoJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qRs++cUPWqE7h71iD/NyfIih5j7NXZt7bjbEdWqVzho=;
-        b=ILm1Ad6iOX6KcEEXxJmsjkliWmV+j/y7UJyRCeKVuqj8Va6/o0cWmfe3Fd15IEJexj
-         cy3WuMJjd/pDRKjdaQfoST0zrZSt34FRJlF7U5KMxD722UNwGbgzfTw2Y14QBYCS9j4L
-         PaAyf2fiDpESTQI29Wt2uYRf1vMPWsX+bdKLMCWN3PhcMscrsKOdqiGQDAMPGriny6La
-         +SMrEmm280erfsYGyINAjQidMq5rPXK/c4XhGKS5eWSabd2qxPcDb0VEWIKxGB7QWV6X
-         q5WYUXOMd0lz4Oj+SpPEq/Ue3fMv05yiYUP2BTxFG3vukVbu24biQUk+57aBjvODX1fH
-         o7Qw==
-X-Gm-Message-State: APjAAAWnwFkQlFMOSskFymq9GSIrH/Lfu/9sp3+/YTs3KtT0e+wQoRAr
-        aW42s3GnYk2wmN3+E8YNcXng2Q==
-X-Google-Smtp-Source: APXvYqyVeGWshlkAN3hcVFd4OniDjXvWk5lT+Wx1OL/j+MklrUymZoMYlJwTuyfs+e6TUmXM+MwbzQ==
-X-Received: by 2002:a50:90c4:: with SMTP id d4mr15291715eda.107.1566031255204;
-        Sat, 17 Aug 2019 01:40:55 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id e24sm1136686ejb.53.2019.08.17.01.40.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Aug 2019 01:40:54 -0700 (PDT)
-Subject: Re: [PATCH] efifb: BGRT: Improve efifb_bgrt_sanity_check
-To:     Peter Jones <pjones@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20190721131918.10115-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <a94c96de-16a5-7b52-a964-f8974e867a65@redhat.com>
-Date:   Sat, 17 Aug 2019 10:40:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=V1XLrmrHnxtun5E7MsD/TIJ4RWoKU+eFXlhCg4SB19I=;
+        b=U72Zqg4/J+yhb+XdDtVuX6EG3LfhI3YX5dVPU9KDmk72v2Il/C1A2Gu4zGPONKSK4x
+         GGkrNBq6H4Eh2LnpVpHZGbNzyyb/qyIEitzPmLzs/ay/8aKSxAvNhP5mcjyGQbDGQLfb
+         U8Tr0hNHVc8+yfWE4A42uNTmA8NOw7okWPjH/9TxcVB0Z71QfW51qDrH505R5I39Aak4
+         FTnapV6cnsvbB6c+Fyt1+ESVZI5XhOGDIifsakmqzaCxItHkxlpPJPAR43MpYBgYFGMl
+         MvhBxLb8ECTqh2XeSXLFoNXNbvOA3oHoyV/eIEc50hcV7HVBql0cRhzOEPTCIwfFpDsi
+         7QBA==
+X-Gm-Message-State: APjAAAXNPqAG2ToeDJvale1gdyWVh+UQHnouSWI8q0cDni9ZaSWPLMNw
+        nLyshX1K+uapxjC3Sw8YpconykHFAyUeU7AfUHk=
+X-Google-Smtp-Source: APXvYqwokMINd0UH74GIpnd7io2ObKo5H7IBPFeCJ0QR+2t7jvX04nrJBuQQCcAlAVBzKURgEstM9cKCJfuNVAKHFNo=
+X-Received: by 2002:ac2:484e:: with SMTP id 14mr9995204lfy.50.1566147590405;
+ Sun, 18 Aug 2019 09:59:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190721131918.10115-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com>
+ <CAFqt6zb5ySDbkHVpPkOKHTrF8jFuNh=dXtnwPKO6TuEHBCkYgg@mail.gmail.com> <CAFqt6zYsA_0YpZcZ8+LrMEjeWDJ5mwUDJNvqOW1H4ewgKbp+aQ@mail.gmail.com>
+In-Reply-To: <CAFqt6zYsA_0YpZcZ8+LrMEjeWDJ5mwUDJNvqOW1H4ewgKbp+aQ@mail.gmail.com>
+From:   Souptick Joarder <jrdr.linux@gmail.com>
+Date:   Sun, 18 Aug 2019 22:29:38 +0530
+Message-ID: <CAFqt6zYrX-5d8yYVwesYBPWQZK4iXPPv=2w7dqBtHvF9c1WJHA@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev:via: Remove dead code
+To:     FlorianSchandinat@gmx.de, b.zolnierkie@samsung.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+On Mon, Aug 12, 2019 at 5:37 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>
+> On Wed, Aug 7, 2019 at 2:11 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+> >
+> > On Wed, Jul 31, 2019 at 12:59 AM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+> > >
+> > > This is dead code since 3.15. If there is no plan to use
+> > > it further, this can be removed forever.
+> > >
+> >
+> > Any comment on this patch ?
+>
+> Any comment on this patch ?
 
-On 21-07-19 15:19, Hans de Goede wrote:
-> For various reasons, at least with x86 EFI firmwares, the xoffset and
-> yoffset in the BGRT info are not always reliable.
-> 
-> Extensive testing has shown that when the info is correct, the
-> BGRT image is always exactly centered horizontally (the yoffset variable
-> is more variable and not always predictable).
-> 
-> This commit simplifies / improves the bgrt_sanity_check to simply
-> check that the BGRT image is exactly centered horizontally and skips
-> (re)drawing it when it is not.
-> 
-> This fixes the BGRT image sometimes being drawn in the wrong place.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 88fe4ceb2447 ("efifb: BGRT: Do not copy the boot graphics for non native resolutions")
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+If no comment can we get this in queue for 5.4 ?
 
-ping? I do not see this one in -next yet, what is the status of this
-patch?
-
-Regards,
-
-Hans
-
-
-
-
-> ---
->   drivers/video/fbdev/efifb.c | 27 ++++++---------------------
->   1 file changed, 6 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-> index dfa8dd47d19d..5b3cef9bf794 100644
-> --- a/drivers/video/fbdev/efifb.c
-> +++ b/drivers/video/fbdev/efifb.c
-> @@ -122,28 +122,13 @@ static void efifb_copy_bmp(u8 *src, u32 *dst, int width, struct screen_info *si)
->    */
->   static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
->   {
-> -	static const int default_resolutions[][2] = {
-> -		{  800,  600 },
-> -		{ 1024,  768 },
-> -		{ 1280, 1024 },
-> -	};
-> -	u32 i, right_margin;
-> -
-> -	for (i = 0; i < ARRAY_SIZE(default_resolutions); i++) {
-> -		if (default_resolutions[i][0] == si->lfb_width &&
-> -		    default_resolutions[i][1] == si->lfb_height)
-> -			break;
-> -	}
-> -	/* If not a default resolution used for textmode, this should be fine */
-> -	if (i >= ARRAY_SIZE(default_resolutions))
-> -		return true;
-> -
-> -	/* If the right margin is 5 times smaller then the left one, reject */
-> -	right_margin = si->lfb_width - (bgrt_tab.image_offset_x + bmp_width);
-> -	if (right_margin < (bgrt_tab.image_offset_x / 5))
-> -		return false;
-> +	/*
-> +	 * All x86 firmwares horizontally center the image (the yoffset
-> +	 * calculations differ between boards, but xoffset is predictable).
-> +	 */
-> +	u32 expected_xoffset = (si->lfb_width - bmp_width) / 2;
->   
-> -	return true;
-> +	return bgrt_tab.image_offset_x == expected_xoffset;
->   }
->   #else
->   static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
-> 
+>
+> >
+> > > Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
+> > > ---
+> > >  drivers/video/fbdev/via/via-core.c | 43 --------------------------------------
+> > >  1 file changed, 43 deletions(-)
+> > >
+> > > diff --git a/drivers/video/fbdev/via/via-core.c b/drivers/video/fbdev/via/via-core.c
+> > > index e2b2062..ffa2ca2 100644
+> > > --- a/drivers/video/fbdev/via/via-core.c
+> > > +++ b/drivers/video/fbdev/via/via-core.c
+> > > @@ -221,49 +221,6 @@ void viafb_release_dma(void)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(viafb_release_dma);
+> > >
+> > > -
+> > > -#if 0
+> > > -/*
+> > > - * Copy a single buffer from FB memory, synchronously.  This code works
+> > > - * but is not currently used.
+> > > - */
+> > > -void viafb_dma_copy_out(unsigned int offset, dma_addr_t paddr, int len)
+> > > -{
+> > > -       unsigned long flags;
+> > > -       int csr;
+> > > -
+> > > -       mutex_lock(&viafb_dma_lock);
+> > > -       init_completion(&viafb_dma_completion);
+> > > -       /*
+> > > -        * Program the controller.
+> > > -        */
+> > > -       spin_lock_irqsave(&global_dev.reg_lock, flags);
+> > > -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_DONE);
+> > > -       /* Enable ints; must happen after CSR0 write! */
+> > > -       viafb_mmio_write(VDMA_MR0, VDMA_MR_TDIE);
+> > > -       viafb_mmio_write(VDMA_MARL0, (int) (paddr & 0xfffffff0));
+> > > -       viafb_mmio_write(VDMA_MARH0, (int) ((paddr >> 28) & 0xfff));
+> > > -       /* Data sheet suggests DAR0 should be <<4, but it lies */
+> > > -       viafb_mmio_write(VDMA_DAR0, offset);
+> > > -       viafb_mmio_write(VDMA_DQWCR0, len >> 4);
+> > > -       viafb_mmio_write(VDMA_TMR0, 0);
+> > > -       viafb_mmio_write(VDMA_DPRL0, 0);
+> > > -       viafb_mmio_write(VDMA_DPRH0, 0);
+> > > -       viafb_mmio_write(VDMA_PMR0, 0);
+> > > -       csr = viafb_mmio_read(VDMA_CSR0);
+> > > -       viafb_mmio_write(VDMA_CSR0, VDMA_C_ENABLE|VDMA_C_START);
+> > > -       spin_unlock_irqrestore(&global_dev.reg_lock, flags);
+> > > -       /*
+> > > -        * Now we just wait until the interrupt handler says
+> > > -        * we're done.
+> > > -        */
+> > > -       wait_for_completion_interruptible(&viafb_dma_completion);
+> > > -       viafb_mmio_write(VDMA_MR0, 0); /* Reset int enable */
+> > > -       mutex_unlock(&viafb_dma_lock);
+> > > -}
+> > > -EXPORT_SYMBOL_GPL(viafb_dma_copy_out);
+> > > -#endif
+> > > -
+> > >  /*
+> > >   * Do a scatter/gather DMA copy from FB memory.  You must have done
+> > >   * a successful call to viafb_request_dma() first.
+> > > --
+> > > 1.9.1
+> > >
