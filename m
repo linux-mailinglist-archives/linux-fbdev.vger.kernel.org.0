@@ -2,103 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6DB925BA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55EB2925BC
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727354AbfHSOCU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Aug 2019 10:02:20 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33894 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727368AbfHSOCU (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Aug 2019 10:02:20 -0400
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id AD180793FF
-        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:02:19 +0000 (UTC)
-Received: by mail-wr1-f71.google.com with SMTP id j16so5294094wrn.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 07:02:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=PUIjNZIKR9LCnddltfWlb7W4sRr7FHdtzbFD6nc+9Kw=;
-        b=ThvEBdL3Ss4fEXN9Il7lgSfJ6Nf/6rEacvRi9wLMeo9uecfJKyDQZnwb5qL+8QLU57
-         JyQ0T4G0cjRi1Lrj9eH2QfeeQHRH3yev2+7zTsopBqWWu6nX4+GDQHQH99P28XmtDud4
-         QLxED+Ix7Ljs2h0V3t6FfGbhsqjPbOYB4b9qaBQRXm0t22zjAjPDGnle8rqli1k7asKk
-         +UZdjFHL4LYgFagws6GewXCYEKdiDn+QPSkxD6h6oonHmf8nS+q0gg2raiRvm3br1ajg
-         hvneo8Xy8fCBYqgvWq8CheDRGwWe9I8lPo+kVS0IarIY7TQFS0FGxEacibhmj40iefk8
-         rkUA==
-X-Gm-Message-State: APjAAAUaLTlMTrhnHJxFDew7omp/AQwmdsSUuhEjlM0EWLpk7UpG+GWg
-        x0bVisHivTLoM7hvxiQmbw2YRRHan4mhilAWKM2e9/KqAwFVAtvjdRCbZ8pZQ4lMPra1bnPTilR
-        himgOwge4rHbYlDC1Q5nSFJk=
-X-Received: by 2002:a7b:c947:: with SMTP id i7mr21323297wml.77.1566223337910;
-        Mon, 19 Aug 2019 07:02:17 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqw3IF0kXS9esJmdxJ0xt2LFC6UgPAqOlxQ49z0GzdlVFp83a7DxuX7k+SUbSlwpyckWuDZKNQ==
-X-Received: by 2002:a7b:c947:: with SMTP id i7mr21323271wml.77.1566223337666;
-        Mon, 19 Aug 2019 07:02:17 -0700 (PDT)
-Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
-        by smtp.gmail.com with ESMTPSA id q20sm48314455wrc.79.2019.08.19.07.02.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2019 07:02:17 -0700 (PDT)
-Subject: Re: [PATCH] efifb: BGRT: Improve efifb_bgrt_sanity_check
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Peter Jones <pjones@redhat.com>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, stable@vger.kernel.org
-References: <20190721131918.10115-1-hdegoede@redhat.com>
- <CGME20190817084100epcas3p15bc1b42c02d8d86969a4a403896d6fee@epcas3p1.samsung.com>
- <a94c96de-16a5-7b52-a964-f8974e867a65@redhat.com>
- <9da1b656-4640-fe16-9def-fe6c069ed39e@samsung.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <7a2f6fed-c059-6d56-52e5-326f0e44bc6f@redhat.com>
-Date:   Mon, 19 Aug 2019 16:02:15 +0200
+        id S1727746AbfHSOC2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Aug 2019 10:02:28 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:43840 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727368AbfHSOC1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 19 Aug 2019 10:02:27 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190819140226euoutp02c978b223658c3e62077ea0eddf228a31~8V9XHdP790064800648euoutp02O
+        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:02:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190819140226euoutp02c978b223658c3e62077ea0eddf228a31~8V9XHdP790064800648euoutp02O
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1566223346;
+        bh=jVgWyfwh3DFFBSBvPWE28F27h1CfoutZzZUgQq+jAik=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=BYJgNmKlDl1UgIDktTWZkfincciHXaJNloevc2qD0jGUxEGTbpG1HJuIqcIW7Ie/N
+         WK9hDmJB+3mYAsm5Z5rg4aHVK4FXEgLm6zIRBxO60VAFn3RdLSMk1eCF25Txe9vt7N
+         VoOxREo5c/VoRwkgFRd3aNYGxpUvShNwlKJzOcjs=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190819140225eucas1p13d915e6b8251ee484c7d1b0b9bbdbca9~8V9WoHy-b1971019710eucas1p1B;
+        Mon, 19 Aug 2019 14:02:25 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id F7.E5.04469.1FBAA5D5; Mon, 19
+        Aug 2019 15:02:25 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190819140224eucas1p2f31f721b2ba3bcc3f561c9ee7236422a~8V9V1fEAB1286512865eucas1p2a;
+        Mon, 19 Aug 2019 14:02:24 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190819140224eusmtrp2fbefb65aaacdc43ea3f7d34d472b9793~8V9V07Wfx3080230802eusmtrp2X;
+        Mon, 19 Aug 2019 14:02:24 +0000 (GMT)
+X-AuditID: cbfec7f2-54fff70000001175-4c-5d5aabf1a5e3
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 8D.D4.04117.0FBAA5D5; Mon, 19
+        Aug 2019 15:02:24 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190819140224eusmtip11f2a1b73203fe1055117a8fd78c48298~8V9Ves0B_0431304313eusmtip1-;
+        Mon, 19 Aug 2019 14:02:24 +0000 (GMT)
+Subject: Re: [PATCH] fbdev: sm712fb: Use dev_get_drvdata
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <a7de5851-1b7c-bab5-4e3a-4d1fd5f6b65e@samsung.com>
+Date:   Mon, 19 Aug 2019 16:02:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <9da1b656-4640-fe16-9def-fe6c069ed39e@samsung.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20190724131744.1709-1-hslester96@gmail.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEKsWRmVeSWpSXmKPExsWy7djPc7ofV0fFGjz4wWVx5et7NovZh14y
+        W5zo+8BqcXnXHDaLA6enMFusWbKH0YHNY+esu+we97uPM3k8v/+UzePzJrkAligum5TUnMyy
+        1CJ9uwSujNe/1jMXHGWqmDg/pIGxh6mLkZNDQsBEonFnI5DNxSEksIJR4v2GsywQzhdGiX07
+        2tghnM+MEuvuzGWHadl9+ShUYjmjxPfPG9ggnLeMEv/vXwOrEhawkHjf/BPMFhFQl/i8aydY
+        B7PAbkaJlQ9fsYIk2ASsJCa2r2IEsXkF7CS23ZoIFmcRUJXYtm4KM4gtKhAhcf/YBlaIGkGJ
+        kzOfsIDYnAKWEr0zQTZzAg0Vl7j1ZD4ThC0vsf3tHGaQZRICy9glft7byAZxt4vEp+0XGCFs
+        YYlXx7dA/SMj8X/nfCaIhnWMEn87XkB1b2eUWD75H1S3tcTh4xeBzuAAWqEpsX6XPkTYUeJC
+        /zU2kLCEAJ/EjbeCEEfwSUzaNp0ZIswr0dEmBFGtJrFh2QY2mLVdO1cyT2BUmoXktVlI3pmF
+        5J1ZCHsXMLKsYhRPLS3OTU8tNsxLLdcrTswtLs1L10vOz93ECEw5p/8d/7SD8eulpEOMAhyM
+        Sjy8HtOiYoVYE8uKK3MPMUpwMCuJ8FbMAQrxpiRWVqUW5ccXleakFh9ilOZgURLnrWZ4EC0k
+        kJ5YkpqdmlqQWgSTZeLglGpgjNHkPiq0ttmQk53/AO9WRU/2WwYFi5wXXNcXdxOfuj7aSGTK
+        2/kcrL+Vfj+KuM+odUQzvn59lMNV08f5r00k5048aLfl8FGltElHl7kWvCq9+yi5pSppQnSh
+        QWD9r3KWmzM6v6clL9JjS86eV1GR9M9Suk6Z37HXvqzds3PPnJo1DMteZl5UYinOSDTUYi4q
+        TgQAXLrWBjUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMIsWRmVeSWpSXmKPExsVy+t/xu7ofVkfFGqx5o2Zx5et7NovZh14y
+        W5zo+8BqcXnXHDaLA6enMFusWbKH0YHNY+esu+we97uPM3k8v/+UzePzJrkAlig9m6L80pJU
+        hYz84hJbpWhDCyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jNe/1jMXHGWqmDg/
+        pIGxh6mLkZNDQsBEYvflo+xdjFwcQgJLGSUO3ZkH5HAAJWQkjq8vg6gRlvhzrYsNouY1o8Tf
+        E+uYQRLCAhYS75t/soPYIgLqEp937QQbxCywm1Hi+O3PzBAdPYwSRxauAatiE7CSmNi+ihHE
+        5hWwk9h2ayIriM0ioCqxbd0UsKmiAhESZ96vYIGoEZQ4OfMJmM0pYCnRO3MDG4jNDLTtz7xL
+        zBC2uMStJ/OZIGx5ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDIsopRJLW0ODc9t9hIrzgxt7g0
+        L10vOT93EyMwwrYd+7llB2PXu+BDjAIcjEo8vB7TomKFWBPLiitzDzFKcDArifBWzAEK8aYk
+        VlalFuXHF5XmpBYfYjQFem4is5Rocj4w+vNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5ak
+        ZqemFqQWwfQxcXBKNTBKrZKe9ZPzgKxzt6yle/KZk2n9fEc3SKapBnm9kti/LZdpgmb/sTR1
+        x+mK1/if84VfC+O1zvdQqv/rYrVgT+sql02f533ys+q2OydvfqylPzLqzJNXkZk+YrNTvzjX
+        rLXgairg+KVj/FDm0NfDjmd6KxeX/WyVcfyyJvO87O2lR27vrt31/KASS3FGoqEWc1FxIgBK
+        i/amxgIAAA==
+X-CMS-MailID: 20190819140224eucas1p2f31f721b2ba3bcc3f561c9ee7236422a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190724131753epcas2p421536b8d2d873766882bea0e3ea4f351
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190724131753epcas2p421536b8d2d873766882bea0e3ea4f351
+References: <CGME20190724131753epcas2p421536b8d2d873766882bea0e3ea4f351@epcas2p4.samsung.com>
+        <20190724131744.1709-1-hslester96@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
 
-On 19-08-19 16:01, Bartlomiej Zolnierkiewicz wrote:
+On 7/24/19 3:17 PM, Chuhong Yuan wrote:
+> Instead of using to_pci_dev + pci_get_drvdata,
+> use dev_get_drvdata to make code simpler.
 > 
-> On 8/17/19 10:40 AM, Hans de Goede wrote:
->> Hi,
-> 
-> Hi Hans,
-> 
->> On 21-07-19 15:19, Hans de Goede wrote:
->>> For various reasons, at least with x86 EFI firmwares, the xoffset and
->>> yoffset in the BGRT info are not always reliable.
->>>
->>> Extensive testing has shown that when the info is correct, the
->>> BGRT image is always exactly centered horizontally (the yoffset variable
->>> is more variable and not always predictable).
->>>
->>> This commit simplifies / improves the bgrt_sanity_check to simply
->>> check that the BGRT image is exactly centered horizontally and skips
->>> (re)drawing it when it is not.
->>>
->>> This fixes the BGRT image sometimes being drawn in the wrong place.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 88fe4ceb2447 ("efifb: BGRT: Do not copy the boot graphics for non native resolutions")
->>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>
->> ping? I do not see this one in -next yet, what is the status of this
->> patch?
-> Patch queued for v5.4, thanks and sorry for the delay.
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Patch queued for v5.4, thanks.
 
-No problem, thank you all the maintainer work you do on fbdev.
-
-Regards,
-
-Hans
-
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
