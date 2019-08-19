@@ -2,127 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDE7C9262B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E36092631
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:10:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbfHSOKG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Aug 2019 10:10:06 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:36386 "EHLO
+        id S1726211AbfHSOKk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Aug 2019 10:10:40 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:36597 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfHSOKF (ORCPT
+        with ESMTP id S1726028AbfHSOKk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Aug 2019 10:10:05 -0400
+        Mon, 19 Aug 2019 10:10:40 -0400
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190819141004euoutp01643469491906ccb041fcabf577966ae7~8WECMTyAK1960019600euoutp01K
-        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:10:04 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190819141004euoutp01643469491906ccb041fcabf577966ae7~8WECMTyAK1960019600euoutp01K
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190819141038euoutp019fb8127254560567bd0955926a23fd23~8WEh2Daa91959819598euoutp01i
+        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:10:38 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190819141038euoutp019fb8127254560567bd0955926a23fd23~8WEh2Daa91959819598euoutp01i
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1566223804;
-        bh=eusqD32C53reMcLpq4AspXVI02zzuSAGpVBrYE+jreg=;
+        s=mail20170921; t=1566223838;
+        bh=T/LjUcSz1eg/3smCmPpW2tdKhExF4rDrtpcLfInnC94=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=svGCRGfQ1466A0x/4rdHfYOG5oKZH4aSvSrL95BLr4bLwQQ+dtYwN3KR/d5glhSAX
-         4Duti7Wn3AbmyE11nEW9MXACf9vkdycbLNp58Lz6y0y1V0ASToCJPY/veO18Zw9xsT
-         Oa2/OqeBLaJnEVTGVW/TWfcrfpRFiKBTm7k/CvZo=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        b=VO6i5gbJ1jslWsxi5KUVbeD7owESC0SS8BOr0/I3+s5LfQ4K1/7kZyCQj5XZPZibq
+         70BtcX2GpYb75d87PRPp3IgToTclKrehqxuAaNE4DdWY157Idcwr5XVQICdMiGn6az
+         fr0+T4axEvtDrm43jO6f9wCgsNMcq+BlY8cQh2vI=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20190819141004eucas1p2dcc2143c30cc81316c2fb8b8fcfe5848~8WEBswXLW2973429734eucas1p22;
-        Mon, 19 Aug 2019 14:10:04 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 24.D9.04309.BBDAA5D5; Mon, 19
-        Aug 2019 15:10:03 +0100 (BST)
+        20190819141038eucas1p216e744fa1802e46452432bbd6a7fd868~8WEhe_8RV0319403194eucas1p2g;
+        Mon, 19 Aug 2019 14:10:38 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 18.15.04374.DDDAA5D5; Mon, 19
+        Aug 2019 15:10:37 +0100 (BST)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190819141003eucas1p270a7faa948afa3434b7ee9cab924cd85~8WEA5bieK3113031130eucas1p2K;
-        Mon, 19 Aug 2019 14:10:03 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190819141037eucas1p11f27f71e69d208915c80085e9964c78c~8WEgs5mpZ0501305013eucas1p1U;
+        Mon, 19 Aug 2019 14:10:37 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190819141003eusmtrp237fa8ed0433bc960718f0de4de43ef22~8WEA47JTs0194801948eusmtrp2b;
-        Mon, 19 Aug 2019 14:10:03 +0000 (GMT)
-X-AuditID: cbfec7f4-ae1ff700000010d5-3e-5d5aadbbaab3
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 01.E5.04117.BBDAA5D5; Mon, 19
-        Aug 2019 15:10:03 +0100 (BST)
+        20190819141037eusmtrp2def4531a2e43b9852e642cd5ba24ec74~8WEgeKDeE0231102311eusmtrp2r;
+        Mon, 19 Aug 2019 14:10:37 +0000 (GMT)
+X-AuditID: cbfec7f5-4f7ff70000001116-63-5d5aadddeb48
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 7F.04.04166.DDDAA5D5; Mon, 19
+        Aug 2019 15:10:37 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190819141002eusmtip1543c5d7a7def16c95b911c333cbb6b08~8WEAjZN8l1055510555eusmtip1W;
-        Mon, 19 Aug 2019 14:10:02 +0000 (GMT)
-Subject: Re: [PATCH] video: fbdev/mmp/core: Use struct_size() in kzalloc()
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190819141036eusmtip2e851cbf849f4390fc03a66136fd83d07~8WEgJxRfj1045110451eusmtip2b;
+        Mon, 19 Aug 2019 14:10:36 +0000 (GMT)
+Subject: Re: [PATCH] udlfb: Make dlfb_ops constant
+To:     Nishka Dasgupta <nishkadg.linux@gmail.com>
+Cc:     bernie@plugable.com, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <d2b32f0f-307d-b286-22b5-2316c9de1d93@samsung.com>
-Date:   Mon, 19 Aug 2019 16:10:01 +0200
+Message-ID: <7def8a0f-b634-ba89-0f01-476c37e9a27d@samsung.com>
+Date:   Mon, 19 Aug 2019 16:10:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190807161312.GA26835@embeddedor>
+In-Reply-To: <20190819075236.1051-1-nishkadg.linux@gmail.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjleLIzCtJLcpLzFFi42LZduznOd3da6NiDX4sN7C48vU9m8XWPaoW
-        J/o+sFpc3jWHzYHFY91BVY/73ceZPD5vkgtgjuKySUnNySxLLdK3S+DKaLh5n7ngI3vFgU3L
-        2RoYF7J1MXJySAiYSJyZs5Cxi5GLQ0hgBaPE8UV32CCcL4wSB2b+gcp8ZpS42zmLEaZlZcdT
-        qMRyRomZT1+xgySEBN4ySkzbxwFiCwt4Sfw7f4kVxBYRMJKYPaMbzGYWSJA4vegeC4jNJmAl
-        MbF9FdhQXgE7iTULbgLFOThYBFQlFu+vAgmLCkRI3D+2gRWiRFDi5MwnYK2cAgYST8/8YYQY
-        KS5x68l8JghbXmL72znMEHe2s0ucmCEPYbtIvLx0kgXCFpZ4dXwLO4QtI/F/J0gvF5C9jlHi
-        b8cLZghnO6PE8sn/oIFkLXH4+EVWkOOYBTQl1u/Shwg7Skze08UMEpYQ4JO48VYQ4gY+iUnb
-        pkOFeSU62oQgqtUkNizbwAaztmvnSuYJjEqzkHw2C8k3s5B8Mwth7wJGllWM4qmlxbnpqcVG
-        eanlesWJucWleel6yfm5mxiBqeT0v+NfdjDu+pN0iFGAg1GJh9djWlSsEGtiWXFl7iFGCQ5m
-        JRHeijlAId6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzVDA+ihQTSE0tSs1NTC1KLYLJMHJxSDYzt
-        C3mXFx1jqE3cEsE8ic/0b46ypO1Ojtn9vF6vLhnci9369QJrmfS7Xe5GW7ZoCJj+urHOLixG
-        hDnmZNcx59+h9ffPXT+4blHutjqT276O03mVXzqd4LN2tS9cnawutYnnmNw+paUZ1TNWHCtt
-        NTYODdS7tIW7vuhN/hZzwaQDS22b+ZmDVZRYijMSDbWYi4oTAY3XKkAhAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprPIsWRmVeSWpSXmKPExsVy+t/xu7q710bFGnw4wGVx5et7Noute1Qt
-        TvR9YLW4vGsOmwOLx7qDqh73u48zeXzeJBfAHKVnU5RfWpKqkJFfXGKrFG1oYaRnaGmhZ2Ri
-        qWdobB5rZWSqpG9nk5Kak1mWWqRvl6CX0XDzPnPBR/aKA5uWszUwLmTrYuTkkBAwkVjZ8ZQR
-        xBYSWMooseySWhcjB1BcRuL4+jKIEmGJP9e6gMq5gEpeM0r82n6AHSQhLOAl8e/8JVYQW0TA
-        SGL2jG5WkF5mgQSJZ/NSIOqbGSWmnXgGNp9NwEpiYvsqMJtXwE5izYKbLCD1LAKqEov3V4GE
-        RQUiJM68X8ECUSIocXLmEzCbU8BA4umZP2CtzALqEn/mXWKGsMUlbj2ZzwRhy0tsfzuHeQKj
-        0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrFibnFpXnpesn5uZsYgZGz7djPLTsYu94F
-        H2IU4GBU4uH1mBYVK8SaWFZcmXuIUYKDWUmEt2IOUIg3JbGyKrUoP76oNCe1+BCjKdBvE5ml
-        RJPzgVGdVxJvaGpobmFpaG5sbmxmoSTO2yFwMEZIID2xJDU7NbUgtQimj4mDU6qBUTrVvdLp
-        18bVnAoxsxpKUvynV/2+84dZujC92mBCfq78189K93X3Xg7ievbF7FPS84PbRCL23bd7e4XB
-        qX6VSH1syL4FWhbRf8P3MbN94v4Tz7Hx0j/9jUcX6Tmbr9k6T81G/O7sp8ujnrc9nZamseeo
-        hNq5vMy4opVPfpyb7sIW5nB/mYa1hhJLcUaioRZzUXEiAMNwK9iyAgAA
-X-CMS-MailID: 20190819141003eucas1p270a7faa948afa3434b7ee9cab924cd85
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djP87p310bFGpw8am1x8f43FosrX9+z
+        WZzo+8BqsWFGC7MDi8fOWXfZPe53H2fyeDq1i83j8ya5AJYoLpuU1JzMstQifbsErozHO8ML
+        jjBXLJ37nrmB8StTFyMnh4SAicTi2Q2sILaQwApGifWbnbsYuYDsL4wSfYd/sUM4nxklln2/
+        zgrTcX3pS3aIjuWMEg+65CGK3jJKvOv5wQaSEBYwklhzZx6YLSKgJzF/7kVGEJtZIFziwsV7
+        YIPYBKwkJravAovzCthJbGw+A3YSi4CqxMa198EWiApESNw/toEVokZQ4uTMJywgNqeArcS3
+        t2+ZIWaKS9x6Mp8JwpaX2P52DjPEof3sErsulEDYLhK3v22DekBY4tXxLewQtozE/50gvVxA
+        9jpGib8dL5ghnO2MEssn/2ODqLKWOHz8IlA3B9AGTYn1u/Qhwo4SPX8OMIGEJQT4JG68FYS4
+        gU9i0rbpzBBhXomONiGIajWJDcs2sMGs7dq5knkCo9IsJJ/NQvLNLCTfzELYu4CRZRWjeGpp
+        cW56arFxXmq5XnFibnFpXrpecn7uJkZgWjn97/jXHYz7/iQdYhTgYFTi4fWYFhUrxJpYVlyZ
+        e4hRgoNZSYS3Yg5QiDclsbIqtSg/vqg0J7X4EKM0B4uSOG81w4NoIYH0xJLU7NTUgtQimCwT
+        B6dUA+O0mm2nT71WSrmz7BfXLd1jd2RDT886InNwcT/XXyeOxjePj3Oee9AR4vhR17vUqMts
+        FrPNG1WRLrcy0yvzpriy6ntHlycHvfAN+aB4Y4tT0mypN5+s5O9GqQnwHTFI/5Qb9kcx8bTE
+        Nf/q3qKz1xdU2zkzXTGz3xX0kNE1rv05z9dgAaXcH0osxRmJhlrMRcWJAKmyZrAnAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrBIsWRmVeSWpSXmKPExsVy+t/xe7p310bFGvzZyGZx8f43FosrX9+z
+        WZzo+8BqsWFGC7MDi8fOWXfZPe53H2fyeDq1i83j8ya5AJYoPZui/NKSVIWM/OISW6VoQwsj
+        PUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYzHO8MLjjBXLJ37nrmB8StTFyMnh4SA
+        icT1pS/Zuxi5OIQEljJKPNy7DcjhAErISBxfXwZRIyzx51oXG0TNa0aJSf1X2EASwgJGEmvu
+        zAOzRQT0JObPvcgIUTSBUeJR+wlGkASzQLjE/d61rCA2m4CVxMT2VWBxXgE7iY3NZ8CuYBFQ
+        ldi49j47iC0qECFx5v0KFogaQYmTM5+A2ZwCthLf3r5lhpipLvFn3iUoW1zi1pP5TBC2vMT2
+        t3OYJzAKzULSPgtJyywkLbOQtCxgZFnFKJJaWpybnltsqFecmFtcmpeul5yfu4kRGEvbjv3c
+        vIPx0sbgQ4wCHIxKPLwe06JihVgTy4orcw8xSnAwK4nwVswBCvGmJFZWpRblxxeV5qQWH2I0
+        BXpuIrOUaHI+MM7zSuINTQ3NLSwNzY3Njc0slMR5OwQOxggJpCeWpGanphakFsH0MXFwSjUw
+        ih7tmbn4TUpeiR53TF96jbzYwe2mcac93x0+df5SsNGXa0dzdgskvT1jlf6Z/QJnvsOOVNv0
+        DyrXzu75sq48WsXp/a8pid3pVomTMqSDP3CdOR3ffWlR/+/m30G7ow6dcRPXC7XyWqQ9t6f5
+        3+y7WV9F3B/cvJ6qf7G39NxUpkkCvCuerbt3TYmlOCPRUIu5qDgRAOQlXqm7AgAA
+X-CMS-MailID: 20190819141037eucas1p11f27f71e69d208915c80085e9964c78c
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190807161320epcas2p1457bd16d94c3f746543130153a472696
+X-RootMTR: 20190819075250epcas3p207fe8748142f91b3d2d7df7c0803ed2e
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190807161320epcas2p1457bd16d94c3f746543130153a472696
-References: <CGME20190807161320epcas2p1457bd16d94c3f746543130153a472696@epcas2p1.samsung.com>
-        <20190807161312.GA26835@embeddedor>
+X-CMS-RootMailID: 20190819075250epcas3p207fe8748142f91b3d2d7df7c0803ed2e
+References: <CGME20190819075250epcas3p207fe8748142f91b3d2d7df7c0803ed2e@epcas3p2.samsung.com>
+        <20190819075236.1051-1-nishkadg.linux@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 8/7/19 6:13 PM, Gustavo A. R. Silva wrote:
-> One of the more common cases of allocation size calculations is finding
-> the size of a structure that has a zero-sized array at the end, along
-> with memory for some number of elements for that array. For example:
+On 8/19/19 9:52 AM, Nishka Dasgupta wrote:
+> Static structure dlfb_ops, of type fb_ops, is not used except to be
+> copied into another variable. Hence make dlfb_ops constant to protect it
+> from unintended modification.
+> Issue found with Coccinelle.
 > 
-> struct mmp_path {
-> 	...
->         struct mmp_overlay overlays[0];
-> };
-> 
-> size = sizeof(struct mmp_path) + count * sizeof(struct mmp_overlay);
-> instance = kzalloc(size, GFP_KERNEL)
-> 
-> Instead of leaving these open-coded and prone to type mistakes, we can
-> now use the new struct_size() helper:
-> 
-> instance = kzalloc(struct_size(instance, overlays, count), GFP_KERNEL)
-> 
-> Notice that, in this case, variable size is not necessary, hence it
-> is removed.
-> 
-> This code was detected with the help of Coccinelle.
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Signed-off-by: Nishka Dasgupta <nishkadg.linux@gmail.com>
 Patch queued for v5.4, thanks.
 
 Best regards,
