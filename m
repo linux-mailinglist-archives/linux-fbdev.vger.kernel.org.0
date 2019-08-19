@@ -2,97 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A629224E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 13:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 946A59236E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 14:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727403AbfHSL1z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Aug 2019 07:27:55 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44088 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726703AbfHSL1y (ORCPT
+        id S1727128AbfHSM3W (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Aug 2019 08:29:22 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:57303 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726852AbfHSM3W (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Aug 2019 07:27:54 -0400
-Received: by mail-ot1-f65.google.com with SMTP id w4so1300397ote.11;
-        Mon, 19 Aug 2019 04:27:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uMUy9HNheFvwhhF3MADVvVYEpMXC6JEt3gWUCnpdKDA=;
-        b=td3uxq5d/qQFX4wmwAuChzuPe5T+4vwhxsqnOuidZND1TDYxy0FGovx1DAihx8vN7f
-         RXZ6cOSF0r/gCVeVl+bjUGOn4yK0TQywNSBrFSft3EHfNfbPhLOS+QCy5eIM5Wq92wnb
-         W/QuVJlk4g+hedhIyLXktGA71OWaR/8w4aOpHbgmuEo7R7Y+ez9sxmdmTRC2jJ5oPG1q
-         IPNn95dl1uHWM5i2hdu/KnZMKDCSZCCNPgiOQwU5Nqd6fn4EE9LOD+UGm3s6D7ZiWaH8
-         xKq8ID2Zzgmn1yrxQllkaR6B0a67PZjaMb2oOpc7WwtjjFnUjdooX5+t+LbX4wAJ93wZ
-         Abtg==
-X-Gm-Message-State: APjAAAUN0nJtMP1GQkCUaGq5Xw8uxCsphZPEhj+NPd/e3kSSr6c/TG+q
-        NoQ4aL/lWXU3O9XefRMBxlcf1Wzc6pQ21tFg38k=
-X-Google-Smtp-Source: APXvYqxrOczXTrII7JUM0WsLXJcGzNChGOnjbL1P4OV4KmdM204hxVGZqXFBc07ZeeAjByx07XUyWRQtuVerMvQqAI4=
-X-Received: by 2002:a9d:7a90:: with SMTP id l16mr18460120otn.297.1566214073839;
- Mon, 19 Aug 2019 04:27:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190812073020.19109-1-geert@linux-m68k.org> <CACRpkdZAA8N6igrNaXcT5m62Fz2irRL-tyRZnjWgsxfacB2aow@mail.gmail.com>
-In-Reply-To: <CACRpkdZAA8N6igrNaXcT5m62Fz2irRL-tyRZnjWgsxfacB2aow@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 19 Aug 2019 13:27:41 +0200
-Message-ID: <CAMuHMdVv=i5nffbN2vZjvHfeV_w74PvZD7ZLuf623H9pnyK14A@mail.gmail.com>
-Subject: Re: [PATCH] m68k: atari: Rename shifter to shifter_st to avoid conflict
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        kbuild test robot <lkp@intel.com>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Michael Schmitz <schmitzmic@gmail.com>,
+        Mon, 19 Aug 2019 08:29:22 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hzgmj-0002vD-DX; Mon, 19 Aug 2019 14:29:17 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hzgmh-0007dT-8g; Mon, 19 Aug 2019 14:29:15 +0200
+Date:   Mon, 19 Aug 2019 14:29:15 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Matthias Kaehlcke <mka@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        kernel@pengutronix.de
+Subject: Re: [PATCH v3 2/4] backlight: Expose brightness curve type through
+ sysfs
+Message-ID: <20190819122915.icjszuvnwyjpa75n@pengutronix.de>
+References: <20190709190007.91260-1-mka@chromium.org>
+ <20190709190007.91260-3-mka@chromium.org>
+ <20190816165148.7keg45fmlndr22fl@pengutronix.de>
+ <20190816175157.GT250418@google.com>
+ <20190816194754.ldzjqy2yjonfvaat@pengutronix.de>
+ <20190816211051.GV250418@google.com>
+ <20190819054628.asw3cxp46w3rpml7@pengutronix.de>
+ <20190819095037.h3gig3quyhnzshm7@holly.lan>
+ <20190819102127.wqudnbngottjakf5@pengutronix.de>
+ <20190819111613.2kkn25tmjgyjhbip@holly.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190819111613.2kkn25tmjgyjhbip@holly.lan>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 10:28 AM Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Mon, Aug 12, 2019 at 9:30 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > When test-compiling the BCM2835 pin control driver on m68k:
-> >
-> >     In file included from arch/m68k/include/asm/io_mm.h:32:0,
-> >                      from arch/m68k/include/asm/io.h:8,
-> >                      from include/linux/io.h:13,
-> >                      from include/linux/irq.h:20,
-> >                      from include/linux/gpio/driver.h:7,
-> >                      from drivers/pinctrl/bcm/pinctrl-bcm2835.c:17:
-> >     drivers/pinctrl/bcm/pinctrl-bcm2835.c: In function 'bcm2711_pull_config_set':
-> >     arch/m68k/include/asm/atarihw.h:190:22: error: expected identifier or '(' before 'volatile'
-> >      # define shifter ((*(volatile struct SHIFTER *)SHF_BAS))
-> >
-> > "shifter" is a too generic name for a global definition.
-> >
-> > As the corresponding definition for Atari TT is already called
-> > "shifter_tt", fix this by renaming the definition for Atari ST to
-> > "shifter_st".
-> >
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> > Suggested-by: Michael Schmitz <schmitzmic@gmail.com>
-> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> Finally we can use the sh pfc pin controller on our m68k Atari.
->
-> Now if I can only resolder the capacitors on my Atari TT ST
-> before the board self-destructs I will one day test this.
->
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+On Mon, Aug 19, 2019 at 12:16:13PM +0100, Daniel Thompson wrote:
+> On Mon, Aug 19, 2019 at 12:21:27PM +0200, Uwe Kleine-König wrote:
+> > > > > In an ideal world the backlight interface would be consistent as you
+> > > > > suggest, however there are plenty of existing devices which use the
+> > > > > 'other' scaling (regardless of which is chosen as the 'correct'
+> > > > > one). Userspace still has to deal with these. And changing previously
+> > > > > 'logarithmic' drivers to linear (or viceversa) may 'break' userspace,
+> > > > > when it keeps using its 'old' scaling, which now isn't correct anymore.
+> > > > 
+> > > > It might be subjective, or maybe I'm just too optimistic, but I think if
+> > > > there was no policy before about the meaning of
+> > > > 
+> > > > 	echo 17 > brightness
+> > > > 
+> > > > other than "brighter than lower values and darker than higher ones"
+> > > > introducing (say) the scale is intended to represent a linear brightness
+> > > > curve is ok.
+> > > > 
+> > > > Unless userspace jumps through hoops and tries to identify the actual
+> > > > device it is running on it is wrong on some machines anyhow and we're
+> > > > only shifting the set of affected machines with a tighter policy (until
+> > > > that userspace application is fixed).
+> > > 
+> > > I believe that there are two common approaches by userspace at present:
+> > > 
+> > > 1. Assume the scale is perceptual and we can directly map a slider
+> > >    to the backlight value. This is common simply because most ACPI
+> > >    backlights are perceptual and therefore when tested in a laptop
+> > >    it works OK.
+> > > 
+> > > 2. Assume that is max brightness is small (e.g. ACPI) then the
+> > >    scale is perceptual and if the max brightness is large (e.g.
+> > >    a PWM) then the scale is linear and apply a correction
+> > >    function between the slider and the control.
+> > > 
+> > > That historic baggage makes is diffcult to "just define a standardized
+> > > scale"... especially given that if we selected a standardized scale we
+> > > would probably want a perceptual scale with lots of steps (e.g. break
+> > > the heuristic).
+> > 
+> > With "perceptual" you mean that logarithmic stuff, right?
+> 
+> Human perception is fairly complex so it depends how strict you want to
+> get. At the end of the day what it means is you can map a slider UI
+> component directly to the backlight range and it will feel right. Thus
+> a userspace that maps directly to a slider *is* assuming the scale
+> is perceptual.
 
-Thanks, applied and queued for v5.4.
+I have problems to declare something as "the right thing to do" that
+depends on feeling of users. I much prefer to make a technical device
+authoritative here (in this case a device that measures emitted light).
 
-Gr{oetje,eeting}s,
+Other than that I don't have enough experience with backlights to judge
+the decisions that have to be done and so will stop my participation in
+this thread now.
 
-                        Geert
+Best regards
+Uwe
 
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
