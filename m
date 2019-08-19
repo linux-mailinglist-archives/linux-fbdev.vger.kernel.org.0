@@ -2,128 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 946A59236E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 14:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5EF925B2
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfHSM3W (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Aug 2019 08:29:22 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:57303 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726852AbfHSM3W (ORCPT
+        id S1727525AbfHSOB1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Aug 2019 10:01:27 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:33056 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727512AbfHSOB0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Aug 2019 08:29:22 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hzgmj-0002vD-DX; Mon, 19 Aug 2019 14:29:17 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hzgmh-0007dT-8g; Mon, 19 Aug 2019 14:29:15 +0200
-Date:   Mon, 19 Aug 2019 14:29:15 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Matthias Kaehlcke <mka@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v3 2/4] backlight: Expose brightness curve type through
- sysfs
-Message-ID: <20190819122915.icjszuvnwyjpa75n@pengutronix.de>
-References: <20190709190007.91260-1-mka@chromium.org>
- <20190709190007.91260-3-mka@chromium.org>
- <20190816165148.7keg45fmlndr22fl@pengutronix.de>
- <20190816175157.GT250418@google.com>
- <20190816194754.ldzjqy2yjonfvaat@pengutronix.de>
- <20190816211051.GV250418@google.com>
- <20190819054628.asw3cxp46w3rpml7@pengutronix.de>
- <20190819095037.h3gig3quyhnzshm7@holly.lan>
- <20190819102127.wqudnbngottjakf5@pengutronix.de>
- <20190819111613.2kkn25tmjgyjhbip@holly.lan>
+        Mon, 19 Aug 2019 10:01:26 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190819140124euoutp017e2119e8062235c6327eeef012f4f410~8V8eFrwAf1473514735euoutp01E
+        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:01:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190819140124euoutp017e2119e8062235c6327eeef012f4f410~8V8eFrwAf1473514735euoutp01E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1566223284;
+        bh=DgHvpJWbm0WzTKh+WEF0vbm6R4E6LRefSnXkInKW9uc=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=FBEJIpNazIcQFqjGM/HoduuNIM3IRKrJ8aNtSo3dTASTCO69PjMBlQ6ybuTJBx+9l
+         2TX5oFxtEJvVLdcmMFuBFZa5Ap/EcKBrGEdKgBFGVfA0o/qEPpEr2VxNyNxmVQLA05
+         wKFsRKJTOAXHEni7m2mvmRQIOnDW5yceEWSo/yNM=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190819140124eucas1p1229d9a6cb71d5408021d97d2d0ecdee0~8V8duZWPy0860508605eucas1p1J;
+        Mon, 19 Aug 2019 14:01:24 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 2F.B3.04374.4BBAA5D5; Mon, 19
+        Aug 2019 15:01:24 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190819140123eucas1p16849c86d3ff450edcf8f40bef6b86e35~8V8c_noNn3132031320eucas1p1I;
+        Mon, 19 Aug 2019 14:01:23 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190819140123eusmtrp10a8790cabff1469f0d94247e0909582e~8V8cvr5Lt3050930509eusmtrp1S;
+        Mon, 19 Aug 2019 14:01:23 +0000 (GMT)
+X-AuditID: cbfec7f5-4ddff70000001116-aa-5d5aabb4cd3c
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 7E.D2.04166.3BBAA5D5; Mon, 19
+        Aug 2019 15:01:23 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190819140123eusmtip188cca4227a1d1a79fbf927aa62662f88~8V8cfV9x90664206642eusmtip1R;
+        Mon, 19 Aug 2019 14:01:23 +0000 (GMT)
+Subject: Re: [PATCH] efifb: BGRT: Improve efifb_bgrt_sanity_check
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Peter Jones <pjones@redhat.com>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, stable@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <9da1b656-4640-fe16-9def-fe6c069ed39e@samsung.com>
+Date:   Mon, 19 Aug 2019 16:01:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190819111613.2kkn25tmjgyjhbip@holly.lan>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+In-Reply-To: <a94c96de-16a5-7b52-a964-f8974e867a65@redhat.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djP87pbVkfFGuzdxGtx5et7Nos3x6cz
+        WZzo+8Bq0bXwBrvFgo2PGB1YPe53H2fyeL/vKpvH501yAcxRXDYpqTmZZalF+nYJXBkfr85j
+        LnjAUTH34BnmBsZm9i5GTg4JAROJX6v2MXYxcnEICaxglOhauJENJCEk8IVRon+9NoT9mVFi
+        5oaaLkYOsIbuy9EQ9csZJTb232WFcN4ySvx+8wesWVjAUeJb1wZmEFtEQF1iakcPWJxZoFri
+        wppDYHE2ASuJie2rGEFsXgE7iVud89lBFrAIqEqsP64DEhYViJC4f2wDK0SJoMTJmU9YQGxO
+        oPJPzTeZIUaKS9x6Mp8JwpaX2P52DjPIPRICk9klmm/vZ4T40kXi48Y2ZghbWOLV8S1Q38tI
+        nJ7cwwLRsI5R4m/HC6ju7YwSyyf/Y4OospY4fPwiK8h1zAKaEut36UOEHSWmLVzLBgkVPokb
+        bwUhjuCTmLRtOjNEmFeio00IolpNYsOyDWwwa7t2rmSewKg0C8lrs5C8MwvJO7MQ9i5gZFnF
+        KJ5aWpybnlpsnJdarlecmFtcmpeul5yfu4kRmFZO/zv+dQfjvj9JhxgFOBiVeHg9pkXFCrEm
+        lhVX5h5ilOBgVhLhrZgDFOJNSaysSi3Kjy8qzUktPsQozcGiJM5bzfAgWkggPbEkNTs1tSC1
+        CCbLxMEp1cDY6MIXqjXT1uDw159Xf3VI1Wmdfu11/E/15nalOk21DcdOzt1e9jEx1GHbO+a7
+        S3bdVOvbJ/nPWOzS9S3x9VEnHK9tO1u3hu2YifRCj3diPjt8bY7dt1rU/F3hrt1xh6OfOXui
+        Qo9t7mne2KvBV7dO6V+dzv0AAYX+WfInZxy705fjVjb5e88pJZbijERDLeai4kQAKrh8ficD
+        AAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xu7qbV0fFGtzZLGlx5et7Nos3x6cz
+        WZzo+8Bq0bXwBrvFgo2PGB1YPe53H2fyeL/vKpvH501yAcxRejZF+aUlqQoZ+cUltkrRhhZG
+        eoaWFnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehkfr85jLnjAUTH34BnmBsZm9i5GDg4J
+        AROJ7svRXYxcHEICSxklLmx8wQYRl5E4vr6si5ETyBSW+HOtiw2i5jWjRE/HFRaQhLCAo8S3
+        rg3MILaIgLrE1I4eNhCbWaBaYvbJm6wgtpDAAUaJncuLQWw2ASuJie2rGEFsXgE7iVud88Fu
+        YBFQlVh/XAckLCoQIXHm/QoWiBJBiZMzn4DZnEDln5pvMkOMV5f4M+8SlC0ucevJfCYIW15i
+        +9s5zBMYhWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIyjbcd+
+        bt7BeGlj8CFGAQ5GJR5ej2lRsUKsiWXFlbmHGCU4mJVEeCvmAIV4UxIrq1KL8uOLSnNSiw8x
+        mgL9NpFZSjQ5HxjjeSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1KzU1MLUotg+pg4OKUa
+        GNvn2Kazme3llH65T2HxgSBumbsfzdu5+y5sFyzd/s1EQnLOep37z9zeujO+vW3FPTHUr/x0
+        yuzza+SUY+bWZNuLeO/a4+/mvi6F+//6W4pdTuJr7/85L7ByXfjLVa4Hvy10izt85uJDWY6L
+        ZU8SDU3ublFRmvzr4cr0u4+eT65+ufwN98tD5xWVWIozEg21mIuKEwFiBIEvuQIAAA==
+X-CMS-MailID: 20190819140123eucas1p16849c86d3ff450edcf8f40bef6b86e35
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190817084100epcas3p15bc1b42c02d8d86969a4a403896d6fee
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190817084100epcas3p15bc1b42c02d8d86969a4a403896d6fee
+References: <20190721131918.10115-1-hdegoede@redhat.com>
+        <CGME20190817084100epcas3p15bc1b42c02d8d86969a4a403896d6fee@epcas3p1.samsung.com>
+        <a94c96de-16a5-7b52-a964-f8974e867a65@redhat.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 12:16:13PM +0100, Daniel Thompson wrote:
-> On Mon, Aug 19, 2019 at 12:21:27PM +0200, Uwe Kleine-König wrote:
-> > > > > In an ideal world the backlight interface would be consistent as you
-> > > > > suggest, however there are plenty of existing devices which use the
-> > > > > 'other' scaling (regardless of which is chosen as the 'correct'
-> > > > > one). Userspace still has to deal with these. And changing previously
-> > > > > 'logarithmic' drivers to linear (or viceversa) may 'break' userspace,
-> > > > > when it keeps using its 'old' scaling, which now isn't correct anymore.
-> > > > 
-> > > > It might be subjective, or maybe I'm just too optimistic, but I think if
-> > > > there was no policy before about the meaning of
-> > > > 
-> > > > 	echo 17 > brightness
-> > > > 
-> > > > other than "brighter than lower values and darker than higher ones"
-> > > > introducing (say) the scale is intended to represent a linear brightness
-> > > > curve is ok.
-> > > > 
-> > > > Unless userspace jumps through hoops and tries to identify the actual
-> > > > device it is running on it is wrong on some machines anyhow and we're
-> > > > only shifting the set of affected machines with a tighter policy (until
-> > > > that userspace application is fixed).
-> > > 
-> > > I believe that there are two common approaches by userspace at present:
-> > > 
-> > > 1. Assume the scale is perceptual and we can directly map a slider
-> > >    to the backlight value. This is common simply because most ACPI
-> > >    backlights are perceptual and therefore when tested in a laptop
-> > >    it works OK.
-> > > 
-> > > 2. Assume that is max brightness is small (e.g. ACPI) then the
-> > >    scale is perceptual and if the max brightness is large (e.g.
-> > >    a PWM) then the scale is linear and apply a correction
-> > >    function between the slider and the control.
-> > > 
-> > > That historic baggage makes is diffcult to "just define a standardized
-> > > scale"... especially given that if we selected a standardized scale we
-> > > would probably want a perceptual scale with lots of steps (e.g. break
-> > > the heuristic).
-> > 
-> > With "perceptual" you mean that logarithmic stuff, right?
+
+On 8/17/19 10:40 AM, Hans de Goede wrote:
+> Hi,
+
+Hi Hans,
+
+> On 21-07-19 15:19, Hans de Goede wrote:
+>> For various reasons, at least with x86 EFI firmwares, the xoffset and
+>> yoffset in the BGRT info are not always reliable.
+>>
+>> Extensive testing has shown that when the info is correct, the
+>> BGRT image is always exactly centered horizontally (the yoffset variable
+>> is more variable and not always predictable).
+>>
+>> This commit simplifies / improves the bgrt_sanity_check to simply
+>> check that the BGRT image is exactly centered horizontally and skips
+>> (re)drawing it when it is not.
+>>
+>> This fixes the BGRT image sometimes being drawn in the wrong place.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 88fe4ceb2447 ("efifb: BGRT: Do not copy the boot graphics for non native resolutions")
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > 
-> Human perception is fairly complex so it depends how strict you want to
-> get. At the end of the day what it means is you can map a slider UI
-> component directly to the backlight range and it will feel right. Thus
-> a userspace that maps directly to a slider *is* assuming the scale
-> is perceptual.
+> ping? I do not see this one in -next yet, what is the status of this
+> patch?
+Patch queued for v5.4, thanks and sorry for the delay.
 
-I have problems to declare something as "the right thing to do" that
-depends on feeling of users. I much prefer to make a technical device
-authoritative here (in this case a device that measures emitted light).
-
-Other than that I don't have enough experience with backlights to judge
-the decisions that have to be done and so will stop my participation in
-this thread now.
-
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
