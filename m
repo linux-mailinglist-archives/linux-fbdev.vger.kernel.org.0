@@ -2,130 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2FE7925D9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C841592614
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Aug 2019 16:06:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbfHSOEK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Aug 2019 10:04:10 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:34310 "EHLO
+        id S1726810AbfHSOF7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Aug 2019 10:05:59 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:34968 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726828AbfHSOEK (ORCPT
+        with ESMTP id S1726888AbfHSOF6 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Aug 2019 10:04:10 -0400
+        Mon, 19 Aug 2019 10:05:58 -0400
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190819140409euoutp01a4035def9ce9dfb16ddbd6e51fd76ada~8V_3Bm8Rn1739317393euoutp01K
-        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:04:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190819140409euoutp01a4035def9ce9dfb16ddbd6e51fd76ada~8V_3Bm8Rn1739317393euoutp01K
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20190819140557euoutp01e7b3fd861e0bf5854b21b86924a218e3~8WAcCVuMI1739317393euoutp01P
+        for <linux-fbdev@vger.kernel.org>; Mon, 19 Aug 2019 14:05:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20190819140557euoutp01e7b3fd861e0bf5854b21b86924a218e3~8WAcCVuMI1739317393euoutp01P
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1566223449;
-        bh=IVGVScXvON25oAq1ZXeeLkXi4ylwf9qGe3dfQULgQ2I=;
+        s=mail20170921; t=1566223557;
+        bh=98R+ncZrf3D3LHlzj47ZHJE47dDbcFjIanWT4RkYYs8=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=RtQjCBceG9CWPNsiEsdUGcOhjMQ4u5ZkoLudtB0y+z92gBWgaIopdhhUCs+vXzMM7
-         QYXNTbN/FrNsW0vTQbhCGTDAYfTfihA4PapxbRv12D909BVblh5AmIxk9YCUp+vFCn
-         QbAoz3aTdvkuoFckA3CVDoBzlRw4hYZiF6Zx9JQ0=
+        b=qK1akU1SlNAlThXPnvVK8aWJu2JU9APlCLI5PyQNEtpTrq99h/JwvsZOMQdKnK4Nv
+         sc/ZYkUFvWfqBLeOPFOr/8iCL9CN3S1K3CauqcYNKXldxv5TkzA00ubk/n2N6DZqw8
+         D/PhBWaslyEUOEGfeAZChpJSwHBSHGcKhkznpr+0=
 Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20190819140408eucas1p14658360375590d19b1408d95715d7d88~8V_2e72dd0604506045eucas1p18;
-        Mon, 19 Aug 2019 14:04:08 +0000 (GMT)
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190819140557eucas1p2bcf8dc2a0a8c16dbaef13d2ae8ee11ff~8WAbtqphz0936409364eucas1p2_;
+        Mon, 19 Aug 2019 14:05:57 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 17.24.04374.85CAA5D5; Mon, 19
-        Aug 2019 15:04:08 +0100 (BST)
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 08.64.04374.4CCAA5D5; Mon, 19
+        Aug 2019 15:05:56 +0100 (BST)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20190819140407eucas1p2b07b9917af8a5610b99568e2ae17b362~8V_1yy3Dd0246202462eucas1p2E;
-        Mon, 19 Aug 2019 14:04:07 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190819140556eucas1p1c0dd0c9e196e16a5684ede4a57a16172~8WAa_yS8e1875818758eucas1p1K;
+        Mon, 19 Aug 2019 14:05:56 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20190819140407eusmtrp2c784d48eeed6011d8b8af17bbb042294~8V_1kDeJC3145831458eusmtrp2i;
-        Mon, 19 Aug 2019 14:04:07 +0000 (GMT)
-X-AuditID: cbfec7f5-4ddff70000001116-e2-5d5aac58de80
+        20190819140556eusmtrp21804a7ef133f7c76e2973a9f1882a8d3~8WAav-qZr3227232272eusmtrp2B;
+        Mon, 19 Aug 2019 14:05:56 +0000 (GMT)
+X-AuditID: cbfec7f5-4f7ff70000001116-2e-5d5aacc43762
 Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 64.15.04117.75CAA5D5; Mon, 19
-        Aug 2019 15:04:07 +0100 (BST)
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 08.55.04117.4CCAA5D5; Mon, 19
+        Aug 2019 15:05:56 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20190819140407eusmtip1b1360e1158bdbf1d2b1ab5376a56e06f~8V_1NvHfZ0843608436eusmtip1E;
-        Mon, 19 Aug 2019 14:04:07 +0000 (GMT)
-Subject: Re: [PATCH v2] video: fbdev: Mark expected switch fall-through
-To:     Anders Roxell <anders.roxell@linaro.org>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, gustavo@embeddedor.com
+        20190819140555eusmtip1eeaef4dc2e639d3ba5a5fc7adeb794c3~8WAaboXs80802708027eusmtip1i;
+        Mon, 19 Aug 2019 14:05:55 +0000 (GMT)
+Subject: Re: [PATCH] video: fbdev:via: Remove dead code
+To:     Souptick Joarder <jrdr.linux@gmail.com>
+Cc:     FlorianSchandinat@gmx.de, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <270684a4-ce22-ebb8-73a8-c004674c8f5d@samsung.com>
-Date:   Mon, 19 Aug 2019 16:04:06 +0200
+Message-ID: <0a2fd868-322a-d0cd-ac24-97a36c5af54e@samsung.com>
+Date:   Mon, 19 Aug 2019 16:05:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190730152530.3055-1-anders.roxell@linaro.org>
+In-Reply-To: <CAFqt6zYrX-5d8yYVwesYBPWQZK4iXPPv=2w7dqBtHvF9c1WJHA@mail.gmail.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprFKsWRmVeSWpSXmKPExsWy7djP87oRa6JiDRo/cVvcmvKbyeLK1/ds
-        Flv3qFqc6PvAanF51xw2B1aPdQdVPe5c28Pmcb/7OJPH501yASxRXDYpqTmZZalF+nYJXBnz
-        V21gLFjDWfH0/ne2BsYf7F2MnBwSAiYSx660M3UxcnEICaxglNjQNYMZwvnCKNH36QwLhPOZ
-        UWLz3o0sMC1/75yHalnOKDH32klmkISQwFtGiZPHeUBsYQF3ibOrJoLtEBHQkZj7+jxYDbNA
-        hcTso5sYQWw2ASuJie2rwGxeATuJWZdms4HYLAKqEsf2HwWLiwpESNw/toEVokZQ4uTMJ2BH
-        cArYSrz68ZwNYqa4xK0n85kgbHmJ5q2zwV6QEJjHLnHy4SdmiKtdJC7samSDsIUlXh3fAg0A
-        GYn/O+czQTSsY5T42/ECqns7o8Tyyf+gOqwlDh+/CHQGB9AKTYn1u/Qhwo4SP/c9YwQJSwjw
-        Sdx4KwhxBJ/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27VzJfMERqVZSF6bheSdWUjemYWwdwEj
-        yypG8dTS4tz01GLjvNRyveLE3OLSvHS95PzcTYzAFHP63/GvOxj3/Uk6xCjAwajEw+sxLSpW
-        iDWxrLgy9xCjBAezkghvxRygEG9KYmVValF+fFFpTmrxIUZpDhYlcd5qhgfRQgLpiSWp2amp
-        BalFMFkmDk6pBsbSqd6vZlq+StNmdDj2y2uul/H1r2c+pP767RniVltkPuGR1FqZy48Lt/2c
-        csNLYab/14B5x/rnHpu35Ejckpr7E20O1+78m+UnaRBrd32G3Qmu3Pdb+7JcM917mBYv1rn9
-        jXdO5XrNHbPe7n/HclvwrWGQydEPpUnJalfZp9l8nXBji9mWylOFSizFGYmGWsxFxYkA6cZO
-        Wy0DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsVy+t/xu7rha6JiDdpPSlrcmvKbyeLK1/ds
-        Flv3qFqc6PvAanF51xw2B1aPdQdVPe5c28Pmcb/7OJPH501yASxRejZF+aUlqQoZ+cUltkrR
-        hhZGeoaWFnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehnzV21gLFjDWfH0/ne2BsYf7F2M
-        nBwSAiYSf++cZ+pi5OIQEljKKPFk+jS2LkYOoISMxPH1ZRA1whJ/rnWxQdS8ZpQ4+3cnE0hC
-        WMBd4uyqiWCDRAR0JOa+Ps8MYjMLVEgcf9/NCmILCUxglFh1ygTEZhOwkpjYvooRxOYVsJOY
-        dWk2G4jNIqAqcWz/UbC4qECExJn3K1ggagQlTs58AmZzCthKvPrxnA1ivrrEn3mXoHaJS9x6
-        Mp8JwpaXaN46m3kCo9AsJO2zkLTMQtIyC0nLAkaWVYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmb
-        GIERte3Yzy07GLveBR9iFOBgVOLh9ZgWFSvEmlhWXJl7iFGCg1lJhLdiDlCINyWxsiq1KD++
-        qDQntfgQoynQcxOZpUST84HRnlcSb2hqaG5haWhubG5sZqEkztshcDBGSCA9sSQ1OzW1ILUI
-        po+Jg1OqgfHIJNbpr1T/hC9vnVGYUPDi8YtVf5e43QpLXXk3fOc63/OKt/K3zZpwJfri7B9+
-        P5jsNtzkZpmwN6cgW/7Di4vazpNt77Pfs8yuV4neZ60TVJHQJpxTI2TW+kpp7sKTdrPy/Ji5
-        sjUmLlaZeOfyw58hh3ifRQq//O+yne3GJc41ue8lNH7sePNDiaU4I9FQi7moOBEAN5yYSr4C
-        AAA=
-X-CMS-MailID: 20190819140407eucas1p2b07b9917af8a5610b99568e2ae17b362
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNKsWRmVeSWpSXmKPExsWy7djP87pH1kTFGnz5bm5x5et7NovOmdcY
+        La5dbWC2ONH3gdXi8q45bA6sHjtn3WX3+PAxzuN+93Emj8+b5AJYorhsUlJzMstSi/TtErgy
+        jj5eyFjwi7Xi2bEprA2Md1i6GDk5JARMJBqmvWfqYuTiEBJYwSgx7cV9ZgjnC6NEx52rjBDO
+        Z0aJ03dPssO03FxxG6xdSGA5o8TbyeEQRW8ZJZYfWs4KkhAWMJc4e+w2E4gtIqAtMffwL2YQ
+        m1mgSmLN8y1gNWwCVhIT21cxgti8AnYS1y6vZAOxWQRUJa50bwBbICoQIXH/2AZWiBpBiZMz
+        n4DFOQUCJWbcPsoGMVNc4taT+UwQtrzE9rdzwF6QEJjMLnHs0nSoR10k1t3/ywRhC0u8Or4F
+        6hsZif875zNBNKxjlPjb8QKqezvQO5P/sUFUWUscPn4R6AwOoBWaEut36UOEHSWWnFzNDBKW
+        EOCTuPFWEOIIPolJ26ZDhXklOtqEIKrVJDYs28AGs7Zr50rmCYxKs5C8NgvJO7OQvDMLYe8C
+        RpZVjOKppcW56anFxnmp5XrFibnFpXnpesn5uZsYgUnm9L/jX3cw7vuTdIhRgINRiYfXY1pU
+        rBBrYllxZe4hRgkOZiUR3oo5QCHelMTKqtSi/Pii0pzU4kOM0hwsSuK81QwPooUE0hNLUrNT
+        UwtSi2CyTBycUg2MHEWdPkHGF6vYVzDtOL6iIyfxd5TG08VX9KoOHv/alXdC7b7ThHk/m9do
+        7HnxTPbyT0Zjo0mB76yXifhuE5TXN5Za8CxSadex7kafgypc3kvXMPPunHX5neAib50+d7Z3
+        /qHyt0646z6SMM9l9+u/rnCxuU/2oWPywZl/+NerKsc+fvnw004fJZbijERDLeai4kQAa5EB
+        BS4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsVy+t/xu7pH1kTFGnRvZrO48vU9m0XnzGuM
+        FteuNjBbnOj7wGpxedccNgdWj52z7rJ7fPgY53G/+ziTx+dNcgEsUXo2RfmlJakKGfnFJbZK
+        0YYWRnqGlhZ6RiaWeobG5rFWRqZK+nY2Kak5mWWpRfp2CXoZRx8vZCz4xVrx7NgU1gbGOyxd
+        jJwcEgImEjdX3AazhQSWMkp83qXWxcgBFJeROL6+DKJEWOLPtS42iJLXjBKr+4tAbGEBc4mz
+        x24zgdgiAtoScw//YgaxmQWqJM7OugJkcwHVv2GS2L1mMSNIgk3ASmJi+yowm1fATuLa5ZVg
+        Q1kEVCWudG8Au0FUIELizPsVLBA1ghInZz4BszkFAiVm3D7KBrFAXeLPvEtQy8Qlbj2ZzwRh
+        y0tsfzuHeQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFRnrFibnFpXnpesn5uZsYgRG1
+        7djPLTsYu94FH2IU4GBU4uH1mBYVK8SaWFZcmXuIUYKDWUmEt2IOUIg3JbGyKrUoP76oNCe1
+        +BCjKdBzE5mlRJPzgdGeVxJvaGpobmFpaG5sbmxmoSTO2yFwMEZIID2xJDU7NbUgtQimj4mD
+        U6qB8bCTi77a3TU9n5qCJ/gWdjk8nXsmdvEVw49ZGnazK3yyr62/Okle9UmfkZK0dArDHn9D
+        OyabaT7n1k/X4xE9UbhwU7DLjDKdC66ef6w4VfRc9x1h8ZkQ8C55aq/gClNPd0btt27tc002
+        CkX8cmK/oHzTwXp+eGrtpGURL6QWrUnXfir3LHSeEktxRqKhFnNRcSIA1AlZcb4CAAA=
+X-CMS-MailID: 20190819140556eucas1p1c0dd0c9e196e16a5684ede4a57a16172
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190730152542epcas2p46c9b1c2e97c0b33df072e4fa1328f8d0
+X-RootMTR: 20190818165955epcas2p4d3c25b533b9ca5419c3a6e397be56139
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190730152542epcas2p46c9b1c2e97c0b33df072e4fa1328f8d0
-References: <CGME20190730152542epcas2p46c9b1c2e97c0b33df072e4fa1328f8d0@epcas2p4.samsung.com>
-        <20190730152530.3055-1-anders.roxell@linaro.org>
+X-CMS-RootMailID: 20190818165955epcas2p4d3c25b533b9ca5419c3a6e397be56139
+References: <1564515200-5020-1-git-send-email-jrdr.linux@gmail.com>
+        <CAFqt6zb5ySDbkHVpPkOKHTrF8jFuNh=dXtnwPKO6TuEHBCkYgg@mail.gmail.com>
+        <CAFqt6zYsA_0YpZcZ8+LrMEjeWDJ5mwUDJNvqOW1H4ewgKbp+aQ@mail.gmail.com>
+        <CGME20190818165955epcas2p4d3c25b533b9ca5419c3a6e397be56139@epcas2p4.samsung.com>
+        <CAFqt6zYrX-5d8yYVwesYBPWQZK4iXPPv=2w7dqBtHvF9c1WJHA@mail.gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 7/30/19 5:25 PM, Anders Roxell wrote:
-> Now that -Wimplicit-fallthrough is passed to GCC by default, the
-> following warnings shows up:
+On 8/18/19 6:59 PM, Souptick Joarder wrote:
+> On Mon, Aug 12, 2019 at 5:37 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>>
+>> On Wed, Aug 7, 2019 at 2:11 PM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>>>
+>>> On Wed, Jul 31, 2019 at 12:59 AM Souptick Joarder <jrdr.linux@gmail.com> wrote:
+>>>>
+>>>> This is dead code since 3.15. If there is no plan to use
+>>>> it further, this can be removed forever.
+>>>>
+>>>
+>>> Any comment on this patch ?
+>>
+>> Any comment on this patch ?
 > 
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c: In function ‘sh_mobile_lcdc_channel_fb_init’:
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c:2086:22: warning: this statement may fall
->  through [-Wimplicit-fallthrough=]
->    info->fix.ypanstep = 2;
->    ~~~~~~~~~~~~~~~~~~~^~~
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c:2087:2: note: here
->   case V4L2_PIX_FMT_NV16:
->   ^~~~
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c: In function ‘sh_mobile_lcdc_overlay_fb_init’:
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c:1596:22: warning: this statement may fall
->  through [-Wimplicit-fallthrough=]
->    info->fix.ypanstep = 2;
->    ~~~~~~~~~~~~~~~~~~~^~~
-> ../drivers/video/fbdev/sh_mobile_lcdcfb.c:1597:2: note: here
->   case V4L2_PIX_FMT_NV16:
->   ^~~~
+> If no comment can we get this in queue for 5.4 ?
 > 
-> Rework to address a warnings due to the enablement of
-> -Wimplicit-fallthrough.
-> 
-> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+>>
+>>>
+>>>> Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
 
 Patch queued for v5.4, thanks.
 
