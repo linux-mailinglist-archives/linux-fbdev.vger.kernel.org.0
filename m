@@ -2,87 +2,118 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C04D9970A6
-	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Aug 2019 06:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB36970B9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Aug 2019 06:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725268AbfHUECI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 21 Aug 2019 00:02:08 -0400
-Received: from condef-03.nifty.com ([202.248.20.68]:47864 "EHLO
-        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727065AbfHUECI (ORCPT
+        id S1726701AbfHUEGr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 21 Aug 2019 00:06:47 -0400
+Received: from conssluserg-03.nifty.com ([210.131.2.82]:53128 "EHLO
+        conssluserg-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfHUEGq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 21 Aug 2019 00:02:08 -0400
-Received: from conuserg-07.nifty.com ([10.126.8.70])by condef-03.nifty.com with ESMTP id x7L3tuqe020946
-        for <linux-fbdev@vger.kernel.org>; Wed, 21 Aug 2019 12:55:56 +0900
-Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
-        by conuserg-07.nifty.com with ESMTP id x7L3tQp4016439;
-        Wed, 21 Aug 2019 12:55:28 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com x7L3tQp4016439
+        Wed, 21 Aug 2019 00:06:46 -0400
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id x7L46Mfm004949;
+        Wed, 21 Aug 2019 13:06:22 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com x7L46Mfm004949
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1566359729;
-        bh=6fHkMxqT3+v0CE4zyYlxI6pTvIRPi8TKT8Z20L42FeY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CGTM9Ip8o61zeqHGDHeQK9RgclVA0dIXBS0WTjDmQzDmdx6VqjNALxNsUNKVlLh/s
-         wQHaHeqEOTciWRofraKElz+DdJTipiVlPP50NKlLPgWLJrV9ny/9Ja7dAh5XudxAIS
-         JLi3xQG00ucSqQwts31QadViT0zDqYJoUWEohMiDxynNpGmKR8ybqAmOOwlpnnFvQC
-         cNe0MQsqEvIXeRP6yD7BTt+VM0yh9xgK6hIwDAyMoW8BmLBaKBw82B//jbgKYBBBTw
-         oqx7PkXwOM93RByfRyHrPGHjRcRq4aEkjc7IKp0K7zrqekUX9s7dPUUr1Nga8nMRc1
-         9Hr24AH+ql5mQ==
-X-Nifty-SrcIP: [153.142.97.92]
+        s=dec2015msa; t=1566360383;
+        bh=muuXnYLKetb5cxC3kfdv57DMCKDIXml15bwOXhq/nJs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mIVjIYDxZc9Lbo+4Rn79AO8sNgIFjPug562CXh6JT/1+QQoJrDq0RZqPqa5OyYTxB
+         IQzNZdOH6Eo4H7Q2o9vMv9+M6AUh3QtB3n09xY3D3oln30lNJY+fzYn9tS7f1MVE74
+         wDCGQ+SuiSiaZH5rqEpXzH+27/fwcIP5I6aUvrlKr5H6PC7o/EUx6EmpGaRXCi0jpD
+         XNlC3xqnW1gNpH63f12U1BtwfCQiwfjDFaIj3xmKK1wVN1p+Y3SanSgEMrgM+cU1HP
+         7GQZBmBtn8l2CM24dqlNC+knxlXE5bzNrOl4AIYIwJYB7yEXLtBOGOvFQC6HSW/p/j
+         yTkUu7oxybCdg==
+X-Nifty-SrcIP: [209.85.217.45]
+Received: by mail-vs1-f45.google.com with SMTP id j25so452434vsq.12;
+        Tue, 20 Aug 2019 21:06:22 -0700 (PDT)
+X-Gm-Message-State: APjAAAXbKsU3X5JsLp5O+EnyT45yOl1ME5GdhBfGgFJ+TlB7jLtUSPCw
+        yxPt7t6iKRDmU69MlpWzjOalixsKI3xKxpvNi1k=
+X-Google-Smtp-Source: APXvYqylf5YzGmVfQP1Y/aLizQEgiqcXur6luFADCkGp19zMapciICFm2B+UioaZMTg4uUM9pqSaSmGNw+RRsCvvZ4k=
+X-Received: by 2002:a67:fe12:: with SMTP id l18mr4861186vsr.54.1566360381493;
+ Tue, 20 Aug 2019 21:06:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190821035517.21671-1-yamada.masahiro@socionext.com> <20190821035517.21671-3-yamada.masahiro@socionext.com>
+In-Reply-To: <20190821035517.21671-3-yamada.masahiro@socionext.com>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Wed, 21 Aug 2019 13:05:45 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAROtaGR4fqrCcocmv8eO1GcAS4FKCLiS_wQqrjEjMMBBg@mail.gmail.com>
+Message-ID: <CAK7LNAROtaGR4fqrCcocmv8eO1GcAS4FKCLiS_wQqrjEjMMBBg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] video/logo: fix unneeded generation of font C files
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] video/logo: simplify cmd_logo
-Date:   Wed, 21 Aug 2019 12:55:15 +0900
-Message-Id: <20190821035517.21671-4-yamada.masahiro@socionext.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190821035517.21671-1-yamada.masahiro@socionext.com>
-References: <20190821035517.21671-1-yamada.masahiro@socionext.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Shorten the code. It still works in the same way.
+On Wed, Aug 21, 2019 at 12:56 PM Masahiro Yamada
+<yamada.masahiro@socionext.com> wrote:
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
+I will replace 'font' -> 'logo'.
+(My brain was corrupted.)
 
- drivers/video/logo/Makefile | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/logo/Makefile b/drivers/video/logo/Makefile
-index 16f60c1e1766..7d672d40bf01 100644
---- a/drivers/video/logo/Makefile
-+++ b/drivers/video/logo/Makefile
-@@ -22,20 +22,15 @@ pnmtologo := scripts/pnmtologo
- 
- # Create commands like "pnmtologo -t mono -n logo_mac_mono -o ..."
- quiet_cmd_logo = LOGO    $@
--	cmd_logo = $(pnmtologo) \
--			-t $(patsubst $*_%,%,$(notdir $(basename $<))) \
--			-n $(notdir $(basename $<)) -o $@ $<
-+      cmd_logo = $(pnmtologo) -t $(lastword $(subst _, ,$*)) -n $* -o $@ $<
- 
--$(obj)/%_mono.c: $(src)/%_mono.pbm $(pnmtologo) FORCE
-+$(obj)/%.c: $(src)/%.pbm $(pnmtologo) FORCE
- 	$(call if_changed,logo)
- 
--$(obj)/%_vga16.c: $(src)/%_vga16.ppm $(pnmtologo) FORCE
-+$(obj)/%.c: $(src)/%.ppm $(pnmtologo) FORCE
- 	$(call if_changed,logo)
- 
--$(obj)/%_clut224.c: $(src)/%_clut224.ppm $(pnmtologo) FORCE
--	$(call if_changed,logo)
--
--$(obj)/%_gray256.c: $(src)/%_gray256.pgm $(pnmtologo) FORCE
-+$(obj)/%.c: $(src)/%.pgm $(pnmtologo) FORCE
- 	$(call if_changed,logo)
- 
- # generated C files
+
+> Currently, all the font C files are generated irrespective of CONFIG
+> options. Adding them to extra-y is wrong. What we need to do here is
+> to add them to 'targets' so that if_changed works properly.
+>
+> All files listed in 'targets' are cleaned, so clean-files is unneeded.
+>
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+>
+>  drivers/video/logo/Makefile | 21 ++-------------------
+>  1 file changed, 2 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/video/logo/Makefile b/drivers/video/logo/Makefile
+> index 10b75ce3ce09..16f60c1e1766 100644
+> --- a/drivers/video/logo/Makefile
+> +++ b/drivers/video/logo/Makefile
+> @@ -18,23 +18,6 @@ obj-$(CONFIG_SPU_BASE)                       += logo_spe_clut224.o
+>
+>  # How to generate logo's
+>
+> -# Use logo-cfiles to retrieve list of .c files to be built
+> -logo-cfiles = $(notdir $(patsubst %.$(2), %.c, \
+> -              $(wildcard $(srctree)/$(src)/*$(1).$(2))))
+> -
+> -
+> -# Mono logos
+> -extra-y += $(call logo-cfiles,_mono,pbm)
+> -
+> -# VGA16 logos
+> -extra-y += $(call logo-cfiles,_vga16,ppm)
+> -
+> -# 224 Logos
+> -extra-y += $(call logo-cfiles,_clut224,ppm)
+> -
+> -# Gray 256
+> -extra-y += $(call logo-cfiles,_gray256,pgm)
+> -
+>  pnmtologo := scripts/pnmtologo
+>
+>  # Create commands like "pnmtologo -t mono -n logo_mac_mono -o ..."
+> @@ -55,5 +38,5 @@ $(obj)/%_clut224.c: $(src)/%_clut224.ppm $(pnmtologo) FORCE
+>  $(obj)/%_gray256.c: $(src)/%_gray256.pgm $(pnmtologo) FORCE
+>         $(call if_changed,logo)
+>
+> -# Files generated that shall be removed upon make clean
+> -clean-files := *_mono.c *_vga16.c *_clut224.c *_gray256.c
+> +# generated C files
+> +targets += *_mono.c *_vga16.c *_clut224.c *_gray256.c
+> --
+> 2.17.1
+>
+
+
 -- 
-2.17.1
-
+Best Regards
+Masahiro Yamada
