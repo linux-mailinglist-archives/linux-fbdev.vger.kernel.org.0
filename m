@@ -2,169 +2,156 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6627597C06
-	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Aug 2019 16:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D4197C4C
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Aug 2019 16:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729014AbfHUOE7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 21 Aug 2019 10:04:59 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:41733 "EHLO
+        id S1729253AbfHUOQX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 21 Aug 2019 10:16:23 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:37642 "EHLO
         mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728929AbfHUOE7 (ORCPT
+        with ESMTP id S1729247AbfHUOQW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 21 Aug 2019 10:04:59 -0400
-Received: by mail-wr1-f66.google.com with SMTP id j16so2165701wrr.8
-        for <linux-fbdev@vger.kernel.org>; Wed, 21 Aug 2019 07:04:57 -0700 (PDT)
+        Wed, 21 Aug 2019 10:16:22 -0400
+Received: by mail-wr1-f66.google.com with SMTP id z11so2221042wrt.4
+        for <linux-fbdev@vger.kernel.org>; Wed, 21 Aug 2019 07:16:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Ep3pc90vpoVG0Lq8JYK4R2Sa69WJp1f9mSFS+lsduu0=;
-        b=CMLmpdVrYckFsCp7XcD4I5fsNQE83lkhqKBvYVnwzZc1V2q5+GmgP396fcmaJ7NSKu
-         /IKfoU5FDuJidTSGvV5vAROimcrCuS/GNN0EM9JI0yymk9228JEMAkFV6poxxjj+/OuP
-         PpxUF1n6buUWwfMT808oS62Hnx8TfhNIV79aaiXiGIyenVzccqpdngz57BNzI9NRwoDB
-         R5R+vU9xdiYso82A7HHmwJ2WCDiAM6o5f4fDWsBdHMKzIMyBJQsiYozECbPPO+xlCmBP
-         KtInRJXJqhrlAYeAYLnwkj09ig3XVXSWb+zTHeD23nULW3fUApzAwTQt7VSrYPy3IF75
-         eDdw==
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=cdtuJEJPiRHYBRkWLphaMlBKW6Qllc1jRrn7Evl95W0=;
+        b=jmZFwO7aPbSPs4T3u6HFT7/UzQEynyx3CLoy6cPRt8GFo+A0DNBZKk7hz3rjw22uVC
+         uJadNeGBW0V5GinSEgjuPf3kwqOUTeenRZvKcchdVxltfYwFSCRv0tWFoYws6SLI5hUf
+         RUzh2AMZp4k+OkvBYlRTcvH/evX96Zb20+IupWV+atHwY9RS5NoM0+/03tP7MYVjfIMo
+         0Af1Xka7SljkMAGPasYem64gsOBd+9foTNIpBUu2Duybs1OqZAosGxlUqHumHbYp9C3E
+         NMx3eiNgPewmBOVXvNhD4WWzws5NHWBEP4KY8S/GVTWk3DdNPq9yLsLk67u3Z/u7vQpE
+         Bdow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Ep3pc90vpoVG0Lq8JYK4R2Sa69WJp1f9mSFS+lsduu0=;
-        b=ZhElyz9NP2eSN5Po79Z3evBTgcHWNCLrZAqDzLOTmCzvFRO2k1ggztODgROrANyS3t
-         OYb1d8SB15jnDXCu0UqS6wh3uxki/6X30c6TiuozUeXGHap9GJApIuOD67K8wG7n6xC+
-         L/X3blGxUwcBTAYFrr5pBl9b3DUVRj/quErSWigwHOteY1+06KSUJEIYQGKLmerWApwe
-         PVjHBhBkc+Uyofs5hujQr0Q/eh5awpSnJhnktqPhWRNvzhYICG9+NKsxWkhjs9WqxCjB
-         j8abfMkoiH5AGu/cpgBwr9iI5F8igAI4xvjfpcAMbyZmdpYpX2mjEYMwb7galXoC5iGr
-         VK4A==
-X-Gm-Message-State: APjAAAWFkyNB8ePe/k3Gul2pbUhV/SadPFbyivJYkKFlXcTk86ONI+dR
-        2gYKgfSA+79fbnbOWvuMNdjoEg==
-X-Google-Smtp-Source: APXvYqxrz8Ujd13xWs6w1FryN9ooB1DKKEmYD6a2FiUUfYXMxGKxC+LyrbLFp+qi9lq4FrP/caQyrA==
-X-Received: by 2002:adf:f48d:: with SMTP id l13mr43516861wro.190.1566396296807;
-        Wed, 21 Aug 2019 07:04:56 -0700 (PDT)
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=cdtuJEJPiRHYBRkWLphaMlBKW6Qllc1jRrn7Evl95W0=;
+        b=b5Pme4NOp0xcuxtDsJ0t0yrOiF3krunA0+w35p4BKUeMLO0iDEbgouIXdu2Oiqt+Lo
+         adcoRGYsJQm6gaht6yp1tezReQSFm7pNfetvKZWaIawEyMqklOj10qlK72wVz0GfB321
+         3YIRJtXEy5QgNt7zk5NvTjRgIs/S0ZtP8CXi2VLhbalvC2dzCSL/QFNcfk2zLlEWgJZE
+         lSmfPsmdOJDfUfwrgv35GBDq7b+pPY4cWC/oJPM0RsClvrMVXGsaYU2owINwo4rjfCpw
+         Bw5VIZuw1iuhAj+fn0Rxih6Q7VvHEfsLb8GWm2OjKsaGw4SjzK3Tj9XSiFhnCE9rucCe
+         or5w==
+X-Gm-Message-State: APjAAAW3oTrN0oRaY7W9FcUKKqbvZBuNm6E9DlAOo3Q6QBCWcDH4jaZ8
+        +O2ZfekP1zrgp+Y5Jna8GEnS5A==
+X-Google-Smtp-Source: APXvYqyWXU+FCJwHRqtC9ZXeDqIM9kre79CXAhUyQKtWQkywMQ1AtsuSunZHdIngi7gFPJHEJ0plDw==
+X-Received: by 2002:adf:82d4:: with SMTP id 78mr38474896wrc.85.1566396980736;
+        Wed, 21 Aug 2019 07:16:20 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id m6sm16729440wrq.95.2019.08.21.07.04.55
+        by smtp.gmail.com with ESMTPSA id g7sm203936wmg.8.2019.08.21.07.16.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2019 07:04:55 -0700 (PDT)
-Date:   Wed, 21 Aug 2019 15:04:54 +0100
+        Wed, 21 Aug 2019 07:16:19 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 15:16:17 +0100
 From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, paul.kocialkowski@bootlin.com
-Subject: Re: [PATCH v3] backlight: gpio-backlight: Correct initial power
- state handling
-Message-ID: <20190821140454.6uuquwx7bkyx656e@holly.lan>
-References: <20190731084018.5318-1-peter.ujfalusi@ti.com>
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        linux-pwm <linux-pwm@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v3 2/4] backlight: Expose brightness curve type through
+ sysfs
+Message-ID: <20190821141617.e5avfbyvooddixcd@holly.lan>
+References: <20190709190007.91260-1-mka@chromium.org>
+ <20190709190007.91260-3-mka@chromium.org>
+ <20190816165148.7keg45fmlndr22fl@pengutronix.de>
+ <20190816175157.GT250418@google.com>
+ <20190816194754.ldzjqy2yjonfvaat@pengutronix.de>
+ <20190816211051.GV250418@google.com>
+ <20190819054628.asw3cxp46w3rpml7@pengutronix.de>
+ <20190819095037.h3gig3quyhnzshm7@holly.lan>
+ <CAKMK7uEJptKgoAwTO+OuN0HrBiMMG21w0QAdgD=pHBLoKLi38Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20190731084018.5318-1-peter.ujfalusi@ti.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKMK7uEJptKgoAwTO+OuN0HrBiMMG21w0QAdgD=pHBLoKLi38Q@mail.gmail.com>
 User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jul 31, 2019 at 11:40:18AM +0300, Peter Ujfalusi wrote:
-> The default-on property - or the def_value via legacy pdata) should be
-> handled as:
-> if it is 1, the backlight must be enabled (kept enabled)
-> if it is 0, the backlight must be disabled (kept disabled)
+On Tue, Aug 20, 2019 at 04:49:21PM +0200, Daniel Vetter wrote:
+> On Mon, Aug 19, 2019 at 11:50 AM Daniel Thompson
+> <daniel.thompson@linaro.org> wrote:
+> > On Mon, Aug 19, 2019 at 07:46:28AM +0200, Uwe Kleine-König wrote:
+> > > And the big upside is that in the end (i.e. when all kernel drivers and
+> > > userspace applications are adapted to provide/consume the "correct"
+> > > curve) the result is simpler.
+> >
+> > My view is that this convergence will eventually be achieved but it will
+> > happen through the obsolescence of the backlight sysfs interface. The
+> > sysfs interface has other flaws, in particular no integration with the
+> > DRM connector API.
+> >
+> > Thus I would expect an alternative interface to emerge, most likely as
+> > part of the DRM connector API. I'd expect such a new API to a
+> > perceptual scale and to have a fixed max brightness with enough
+> > steps to support animated backlight effects (IIRC 0..100 has been
+> > proposed in the past)
+> >
+> > In the mean time getting the existing collection of backlight drivers
+> > marked up as linear/logarithmic/etc will ease the introduction of that
+> > API because, within the kernel, we might have gathered enough knowledge
+> > to have some hope of correctly mapping each backlight onto a
+> > standardized scale.
 > 
-> This only works for the case when default-on is set. If it is not set then
-> the brightness of the backlight is set to 0. Now if the backlight is
-> enabled by external driver (graphics) the backlight will stay disabled since
-> the brightness is configured as 0. The backlight will not turn on.
+> In case people wonder why the drm connector based backlight interface
+> hasn't happened ages ago, some more context:
 > 
-> In order to minimize screen flickering during device boot:
+> - userspace (well libbacklight) selects the right backlight, using
+> some priority search. Plus blacklists in drivers to make sure they're
+> not overriding the real backlight driver (e.g. acpi has higher
+> priority in libbacklight, but on modern system it's not the backlight
+> driver you want. If we move that into the kernel it's going to be
+> somewhat a mess, since defacto you never know when loading is complete
+> and you actually have the right backlight driver.
 > 
-> The initial brightness should be set to 1.
+> This isn't a problem on DT platforms, but really just for x86/acpi
+> platforms. But if we don't fix them, then userspace adoption of these
+> new interfaces will likely be too low to matter.
 > 
-> If booted in non DT mode or no phandle link to the backlight node:
-> follow the def_value/default-on to select UNBLANK or POWERDOWN
+> - second issue is that right now the kms client is supposed to handle
+> backlight around modeset, like fbdev does through the fb notifier.
+> Except for drivers which do handle the backlight across modesets, but
+> maybe not the right backlight. If we move the backlight interface to
+> drm connectors then the right thing would be for the drm driver to
+> handle backlight enable/disable across modesets. But to make that
+> work, userspace needs to stop touching it (otherwise userspace first
+> disables, then the kernel and then on restore the two fight and
+> usually black screen wins), and that's a bit a tricky uapi problem of
+> not breaking existing userspace.
 > 
-> If in DT boot we have phandle link then leave the GPIO in a state which the
-> bootloader left it and let the user of the backlight to configure it
-> further.
+> - finally there's some userspace which assumes the lowest backlight
+> setting is actually off, and uses that to do fast modesets. This
+> doesn't work on most ACPI backlights, so I think that problem isn't
+> widespread.
 > 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Anyway from watching from afar, I think this clarification on what the
+> backlight scale means internally should at least help us somewhat in
+> the long term. But the long term solution itself needs someone with
+> way too much time I fear, so lets not hold up anything on that.
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Thanks for sharing your views on this.
 
 
-> ---
-> Hi,
-> 
-> sorry for the delay, but got distracted a bit with the resend of this...
-> Let's try again ;)
-> 
-> Changes since v2 (https://lore.kernel.org/patchwork/patch/1002359/):
-> - Rebased on drm-next
-> 
-> Changes since v1:
-> - Implement similiar initial power state handling as pwm backlight have
-> 
-> Regards,
-> Peter
-> 
->  drivers/video/backlight/gpio_backlight.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index e84f3087e29f..18e053e4716c 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -59,13 +59,11 @@ static int gpio_backlight_probe_dt(struct platform_device *pdev,
->  				   struct gpio_backlight *gbl)
->  {
->  	struct device *dev = &pdev->dev;
-> -	enum gpiod_flags flags;
->  	int ret;
->  
->  	gbl->def_value = device_property_read_bool(dev, "default-on");
-> -	flags = gbl->def_value ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
->  
-> -	gbl->gpiod = devm_gpiod_get(dev, NULL, flags);
-> +	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
->  	if (IS_ERR(gbl->gpiod)) {
->  		ret = PTR_ERR(gbl->gpiod);
->  
-> @@ -79,6 +77,22 @@ static int gpio_backlight_probe_dt(struct platform_device *pdev,
->  	return 0;
->  }
->  
-> +static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
-> +{
-> +	struct device_node *node = gbl->dev->of_node;
-> +
-> +	/* Not booted with device tree or no phandle link to the node */
-> +	if (!node || !node->phandle)
-> +		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
-> +
-> +	/* if the enable GPIO is disabled, do not enable the backlight */
-> +	if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
-> +		return FB_BLANK_POWERDOWN;
-> +
-> +	return FB_BLANK_UNBLANK;
-> +}
-> +
-> +
->  static int gpio_backlight_probe(struct platform_device *pdev)
->  {
->  	struct gpio_backlight_platform_data *pdata =
-> @@ -136,7 +150,9 @@ static int gpio_backlight_probe(struct platform_device *pdev)
->  		return PTR_ERR(bl);
->  	}
->  
-> -	bl->props.brightness = gbl->def_value;
-> +	bl->props.power = gpio_backlight_initial_power_state(gbl);
-> +	bl->props.brightness = 1;
-> +
->  	backlight_update_status(bl);
->  
->  	platform_set_drvdata(pdev, bl);
-> -- 
-> Peter
-> 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Daniel.
