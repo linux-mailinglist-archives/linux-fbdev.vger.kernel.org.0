@@ -2,137 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 356BF98EC1
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Aug 2019 11:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E05993C6
+	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Aug 2019 14:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732952AbfHVJG6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 22 Aug 2019 05:06:58 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:29615 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732927AbfHVJG6 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 22 Aug 2019 05:06:58 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 03B7930872C5;
-        Thu, 22 Aug 2019 09:06:58 +0000 (UTC)
-Received: from sirius.home.kraxel.org (ovpn-116-60.ams2.redhat.com [10.36.116.60])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0EDAF7E43;
-        Thu, 22 Aug 2019 09:06:48 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id 13DB259EC; Thu, 22 Aug 2019 11:06:46 +0200 (CEST)
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     Gerd Hoffmann <kraxel@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 1/3] fbdev: drop res_id parameter from remove_conflicting_pci_framebuffers
-Date:   Thu, 22 Aug 2019 11:06:43 +0200
-Message-Id: <20190822090645.25410-2-kraxel@redhat.com>
-In-Reply-To: <20190822090645.25410-1-kraxel@redhat.com>
-References: <20190822090645.25410-1-kraxel@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Thu, 22 Aug 2019 09:06:58 +0000 (UTC)
+        id S2387705AbfHVMeD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 22 Aug 2019 08:34:03 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:46471 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387660AbfHVMeD (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 22 Aug 2019 08:34:03 -0400
+Received: by mail-lj1-f193.google.com with SMTP id f9so5341844ljc.13
+        for <linux-fbdev@vger.kernel.org>; Thu, 22 Aug 2019 05:34:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=Rbh3JsGIh2x+jDuVbneOEsdobwGn2xF3k9KTKgjnK8Dyd2ODu1sdAQZQ15vVyYnqdt
+         7E9K7FhpCx9S2Dr1Ddo93q8TQvnmC/kE524CSoK66UbjC0Keqf53qhQ3yEqx3HAqneCK
+         QJH+OsNLuiNr6NKxEeJtactPjxkq0IA/anzWTZbfxsdGDFNukm8hCNfpT4lameBjcg1P
+         vMEErESY7RDQugMc/b/MZ0+sk5n2uzgwjXg1V0nNdJsVb5O6VyZacEb0HGljYN7+OPri
+         sm6Rp5BE3EkVBy2/1k5KenPYcnLllMAdQCixAZH/6rT6ERxgPTfrELU8FhhN52TrBApt
+         4Cxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=lpLQLjhzvRB3KJGkSS/RUcFk2EbsucMCBWG5bcdGXuIgoiETbD9LRQMnQF4THN2gDA
+         110rR9UvcBS/encc8dznuchNMk00T9Qyi4TsgdSS8Mo9yQFDH2P0H4BxMMkUBbQwkBbY
+         AuDfJ+PdtRgm2gxXO0TeNmrPte+qxTByUrdbSFCaVcyP9gPKOijyqA5rENdiIiNVMY8P
+         cZcZCGbyEbUYExiaubZ/H8NBQgclwtWRh0S5CLxSuuTIYNp+kUjy9UGrACBlzdN9DEtf
+         WexVdo70f3tV8gtPm0Hw1gY3QqbttYBfJ6ipqBWmmczUzSY2d5p9OamAttPALupEFge7
+         UI2g==
+X-Gm-Message-State: APjAAAVyDMbxeSSpZmkZReZ9VWakyxjF5yc9alohYt0Yo3DNzdKsKxmg
+        eDUsNiE+NtxMcg72R/ztUYdkKv9Zh04wuRWXNCk=
+X-Google-Smtp-Source: APXvYqz3MRqWqCJljuYvGs7Z39vR8szuBA98XmfHPUkBGUeOj4vI/x4jHKyZ57W6CcLrF9xDbGoqKi5bbRMPFZ+Cc3Y=
+X-Received: by 2002:a2e:9a44:: with SMTP id k4mr17910876ljj.96.1566477241520;
+ Thu, 22 Aug 2019 05:34:01 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:34:01
+ -0700 (PDT)
+Reply-To: eku.lawfirm@gmail.com
+From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
+Date:   Thu, 22 Aug 2019 12:34:01 +0000
+Message-ID: <CAN-_bTZ726ayFtAv4dpjhKOuZFqgxZg3rZFa8VV4nXz4ZvjT-Q@mail.gmail.com>
+Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Since commit b0e999c95581 ("fbdev: list all pci memory bars as
-conflicting apertures") the parameter was used for some sanity checks
-only, to make sure we detect any issues with the new approach to just
-list all memory bars as apertures.
+--=20
+Dear,
+With due respect this is not spam or Scam mail, because I have
+contacted you before and there was no response from you,I apologise if
+the contents of this mail are contrary to your moral ethics, which I
+feel may be of great disturbance to your person, but please treat this
+with absolute confidentiality, believing that this email reaches you
+in good faith. My contacting you is not a mistake or a coincidence
+because God can use any person known or unknown to accomplish great
+things.
+I am a lawyer and I have an investment business proposal to offer you.
+It is not official but should be considered as legal and confidential
+business. I have a customer's deposit of $US25 million dollars ready
+to be moved for investment if you can partner with us. We are ready to
+offer you 10% of this total amount as your compensation for supporting
+the transaction to completion. If you are interested to help me please
+reply me with your full details as stated below:
+(1) Your full names:
+(2) Your address:
+(3) Your occupation:
+(4) Your mobile telephone number:
+(5) Your nationality:
+(6) Your present location:
+(7) Your age:
+So that I will provide you more details on what to do and what is
+required for successful completion.
+Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
+MENTIONED DETAILS
 
-No issues turned up so far, so continue to cleanup:  Drop the res_id
-parameter, drop the sanity checks.  Also downgrade the logging from
-"info" level to "debug" level and update documentation.
-
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- include/drm/drm_fb_helper.h      |  2 +-
- include/linux/fb.h               |  2 +-
- drivers/video/fbdev/core/fbmem.c | 17 +++++------------
- 3 files changed, 7 insertions(+), 14 deletions(-)
-
-diff --git a/include/drm/drm_fb_helper.h b/include/drm/drm_fb_helper.h
-index c8a8ae2a678a..5a5f4b1d8241 100644
---- a/include/drm/drm_fb_helper.h
-+++ b/include/drm/drm_fb_helper.h
-@@ -560,7 +560,7 @@ drm_fb_helper_remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
- 	 * otherwise the vga fbdev driver falls over.
- 	 */
- #if IS_REACHABLE(CONFIG_FB)
--	ret = remove_conflicting_pci_framebuffers(pdev, resource_id, name);
-+	ret = remove_conflicting_pci_framebuffers(pdev, name);
- #endif
- 	if (ret == 0)
- 		ret = vga_remove_vgacon(pdev);
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 756706b666a1..41e0069eca0a 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -607,7 +607,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
- extern int register_framebuffer(struct fb_info *fb_info);
- extern void unregister_framebuffer(struct fb_info *fb_info);
- extern void unlink_framebuffer(struct fb_info *fb_info);
--extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id,
-+extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
- 					       const char *name);
- extern int remove_conflicting_framebuffers(struct apertures_struct *a,
- 					   const char *name, bool primary);
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index e6a1c805064f..95c32952fa8a 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1758,21 +1758,19 @@ EXPORT_SYMBOL(remove_conflicting_framebuffers);
- /**
-  * remove_conflicting_pci_framebuffers - remove firmware-configured framebuffers for PCI devices
-  * @pdev: PCI device
-- * @res_id: index of PCI BAR configuring framebuffer memory
-  * @name: requesting driver name
-  *
-  * This function removes framebuffer devices (eg. initialized by firmware)
-- * using memory range configured for @pdev's BAR @res_id.
-+ * using memory range configured for any of @pdev's memory bars.
-  *
-  * The function assumes that PCI device with shadowed ROM drives a primary
-  * display and so kicks out vga16fb.
-  */
--int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const char *name)
-+int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, const char *name)
- {
- 	struct apertures_struct *ap;
- 	bool primary = false;
- 	int err, idx, bar;
--	bool res_id_found = false;
- 
- 	for (idx = 0, bar = 0; bar < PCI_ROM_RESOURCE; bar++) {
- 		if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
-@@ -1789,16 +1787,11 @@ int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const
- 			continue;
- 		ap->ranges[idx].base = pci_resource_start(pdev, bar);
- 		ap->ranges[idx].size = pci_resource_len(pdev, bar);
--		pci_info(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
--			 (unsigned long)pci_resource_start(pdev, bar),
--			 (unsigned long)pci_resource_end(pdev, bar));
-+		pci_dbg(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
-+			(unsigned long)pci_resource_start(pdev, bar),
-+			(unsigned long)pci_resource_end(pdev, bar));
- 		idx++;
--		if (res_id == bar)
--			res_id_found = true;
- 	}
--	if (!res_id_found)
--		pci_warn(pdev, "%s: passed res_id (%d) is not a memory bar\n",
--			 __func__, res_id);
- 
- #ifdef CONFIG_X86
- 	primary = pdev->resource[PCI_ROM_RESOURCE].flags &
--- 
-2.18.1
-
+Sinc=C3=A8rement v=C3=B4tre,
+Avocat Etienne Eku Esq.(Lawfirm)
+Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
+=E2=80=99ouest.
+Skype:westafricalawfirm
