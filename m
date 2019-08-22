@@ -2,92 +2,181 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E05993C6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Aug 2019 14:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729A99947E
+	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Aug 2019 15:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387705AbfHVMeD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 22 Aug 2019 08:34:03 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:46471 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387660AbfHVMeD (ORCPT
+        id S2388870AbfHVNIf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 22 Aug 2019 09:08:35 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45711 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725857AbfHVNIe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 22 Aug 2019 08:34:03 -0400
-Received: by mail-lj1-f193.google.com with SMTP id f9so5341844ljc.13
-        for <linux-fbdev@vger.kernel.org>; Thu, 22 Aug 2019 05:34:02 -0700 (PDT)
+        Thu, 22 Aug 2019 09:08:34 -0400
+Received: by mail-ed1-f68.google.com with SMTP id x19so7810322eda.12
+        for <linux-fbdev@vger.kernel.org>; Thu, 22 Aug 2019 06:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=Rbh3JsGIh2x+jDuVbneOEsdobwGn2xF3k9KTKgjnK8Dyd2ODu1sdAQZQ15vVyYnqdt
-         7E9K7FhpCx9S2Dr1Ddo93q8TQvnmC/kE524CSoK66UbjC0Keqf53qhQ3yEqx3HAqneCK
-         QJH+OsNLuiNr6NKxEeJtactPjxkq0IA/anzWTZbfxsdGDFNukm8hCNfpT4lameBjcg1P
-         vMEErESY7RDQugMc/b/MZ0+sk5n2uzgwjXg1V0nNdJsVb5O6VyZacEb0HGljYN7+OPri
-         sm6Rp5BE3EkVBy2/1k5KenPYcnLllMAdQCixAZH/6rT6ERxgPTfrELU8FhhN52TrBApt
-         4Cxw==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=02CnF/oWum6EvkbDCiosLBlondS4OglCjhZywUsed8k=;
+        b=Tz3518yn5WWULcFmtdPHCt2A7d5ApDMbK6MopGvul1So7VZJrxGoVd1hyvCU0FgAig
+         ye563cwx7GI5x5B4BWPNRLocDhkAh5WkywQKqm+Jr2kFLFdo6ZvrAiASzH4UPpqYcvIR
+         UI/6Ne7TBMI+JfwpqwiLplhtxJXXL3xRjQvNk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=lpLQLjhzvRB3KJGkSS/RUcFk2EbsucMCBWG5bcdGXuIgoiETbD9LRQMnQF4THN2gDA
-         110rR9UvcBS/encc8dznuchNMk00T9Qyi4TsgdSS8Mo9yQFDH2P0H4BxMMkUBbQwkBbY
-         AuDfJ+PdtRgm2gxXO0TeNmrPte+qxTByUrdbSFCaVcyP9gPKOijyqA5rENdiIiNVMY8P
-         cZcZCGbyEbUYExiaubZ/H8NBQgclwtWRh0S5CLxSuuTIYNp+kUjy9UGrACBlzdN9DEtf
-         WexVdo70f3tV8gtPm0Hw1gY3QqbttYBfJ6ipqBWmmczUzSY2d5p9OamAttPALupEFge7
-         UI2g==
-X-Gm-Message-State: APjAAAVyDMbxeSSpZmkZReZ9VWakyxjF5yc9alohYt0Yo3DNzdKsKxmg
-        eDUsNiE+NtxMcg72R/ztUYdkKv9Zh04wuRWXNCk=
-X-Google-Smtp-Source: APXvYqz3MRqWqCJljuYvGs7Z39vR8szuBA98XmfHPUkBGUeOj4vI/x4jHKyZ57W6CcLrF9xDbGoqKi5bbRMPFZ+Cc3Y=
-X-Received: by 2002:a2e:9a44:: with SMTP id k4mr17910876ljj.96.1566477241520;
- Thu, 22 Aug 2019 05:34:01 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=02CnF/oWum6EvkbDCiosLBlondS4OglCjhZywUsed8k=;
+        b=Vv9bcvJE+XUveenPGAyUC/+HsLY7BtiNiLDP7beHuUWq0uw9dspz/vsQnIV6uaI6Gp
+         wvZf+NIZd8D2a1IkM9WjvjGbO6t539OBifSZ7xepXxP1wF8o8vOsG0iVfxfcsqIbXBNh
+         a7dBxAqeqMgszOh1rgbhH0QIXbRhftajP6AkUNrA+YZW8KEXFUBI0xEu4WxeGlR6la4j
+         IACYcmkAqPfj5N7zuD3DD18tTNcSD2IC+eVLFGdIw/yBB5OY+QNUa21hBOE8NwLEM3Mo
+         etTWBLihjcZd9Hw1toup05DNW26Yne1tsCkILgUlBVIMxg9gGA/fmcp6fAJLNoL8AwQH
+         H6Zw==
+X-Gm-Message-State: APjAAAWn9bXcct+SAlWUsBMYpAseOXaH/1KC7gs2vir1vlLgQAxZcVm1
+        IEOyXvl0KZ4wReBSX24/Qo9/izRXFA1wkA==
+X-Google-Smtp-Source: APXvYqxNoo1owvPn0PSkGZksrLAGZl5I2D27njFoLTJGpyXSzyHhr2Krz6ugzkijunzf7H69CY/wkg==
+X-Received: by 2002:a17:906:e0cd:: with SMTP id gl13mr35138284ejb.52.1566479312351;
+        Thu, 22 Aug 2019 06:08:32 -0700 (PDT)
+Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
+        by smtp.gmail.com with ESMTPSA id w3sm4735338edu.4.2019.08.22.06.08.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2019 06:08:31 -0700 (PDT)
+Date:   Thu, 22 Aug 2019 15:08:29 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Gerd Hoffmann <kraxel@redhat.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] fbdev: drop res_id parameter from
+ remove_conflicting_pci_framebuffers
+Message-ID: <20190822130829.GV11147@phenom.ffwll.local>
+Mail-Followup-To: Gerd Hoffmann <kraxel@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20190822090645.25410-1-kraxel@redhat.com>
+ <20190822090645.25410-2-kraxel@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:34:01
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:34:01 +0000
-Message-ID: <CAN-_bTZ726ayFtAv4dpjhKOuZFqgxZg3rZFa8VV4nXz4ZvjT-Q@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190822090645.25410-2-kraxel@redhat.com>
+X-Operating-System: Linux phenom 5.2.0-2-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+On Thu, Aug 22, 2019 at 11:06:43AM +0200, Gerd Hoffmann wrote:
+> Since commit b0e999c95581 ("fbdev: list all pci memory bars as
+> conflicting apertures") the parameter was used for some sanity checks
+> only, to make sure we detect any issues with the new approach to just
+> list all memory bars as apertures.
+> 
+> No issues turned up so far, so continue to cleanup:  Drop the res_id
+> parameter, drop the sanity checks.  Also downgrade the logging from
+> "info" level to "debug" level and update documentation.
+> 
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+> ---
+>  include/drm/drm_fb_helper.h      |  2 +-
+>  include/linux/fb.h               |  2 +-
+>  drivers/video/fbdev/core/fbmem.c | 17 +++++------------
+>  3 files changed, 7 insertions(+), 14 deletions(-)
+> 
+> diff --git a/include/drm/drm_fb_helper.h b/include/drm/drm_fb_helper.h
+> index c8a8ae2a678a..5a5f4b1d8241 100644
+> --- a/include/drm/drm_fb_helper.h
+> +++ b/include/drm/drm_fb_helper.h
+> @@ -560,7 +560,7 @@ drm_fb_helper_remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
+>  	 * otherwise the vga fbdev driver falls over.
+>  	 */
+>  #if IS_REACHABLE(CONFIG_FB)
+> -	ret = remove_conflicting_pci_framebuffers(pdev, resource_id, name);
+> +	ret = remove_conflicting_pci_framebuffers(pdev, name);
+>  #endif
+>  	if (ret == 0)
+>  		ret = vga_remove_vgacon(pdev);
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index 756706b666a1..41e0069eca0a 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -607,7 +607,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
+>  extern int register_framebuffer(struct fb_info *fb_info);
+>  extern void unregister_framebuffer(struct fb_info *fb_info);
+>  extern void unlink_framebuffer(struct fb_info *fb_info);
+> -extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id,
+> +extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
+>  					       const char *name);
+>  extern int remove_conflicting_framebuffers(struct apertures_struct *a,
+>  					   const char *name, bool primary);
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index e6a1c805064f..95c32952fa8a 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1758,21 +1758,19 @@ EXPORT_SYMBOL(remove_conflicting_framebuffers);
+>  /**
+>   * remove_conflicting_pci_framebuffers - remove firmware-configured framebuffers for PCI devices
+>   * @pdev: PCI device
+> - * @res_id: index of PCI BAR configuring framebuffer memory
+>   * @name: requesting driver name
+>   *
+>   * This function removes framebuffer devices (eg. initialized by firmware)
+> - * using memory range configured for @pdev's BAR @res_id.
+> + * using memory range configured for any of @pdev's memory bars.
+>   *
+>   * The function assumes that PCI device with shadowed ROM drives a primary
+>   * display and so kicks out vga16fb.
+>   */
+> -int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const char *name)
+> +int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, const char *name)
+>  {
+>  	struct apertures_struct *ap;
+>  	bool primary = false;
+>  	int err, idx, bar;
+> -	bool res_id_found = false;
+>  
+>  	for (idx = 0, bar = 0; bar < PCI_ROM_RESOURCE; bar++) {
+>  		if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
+> @@ -1789,16 +1787,11 @@ int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const
+>  			continue;
+>  		ap->ranges[idx].base = pci_resource_start(pdev, bar);
+>  		ap->ranges[idx].size = pci_resource_len(pdev, bar);
+> -		pci_info(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
+> -			 (unsigned long)pci_resource_start(pdev, bar),
+> -			 (unsigned long)pci_resource_end(pdev, bar));
+> +		pci_dbg(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
+> +			(unsigned long)pci_resource_start(pdev, bar),
+> +			(unsigned long)pci_resource_end(pdev, bar));
+>  		idx++;
+> -		if (res_id == bar)
+> -			res_id_found = true;
+>  	}
+> -	if (!res_id_found)
+> -		pci_warn(pdev, "%s: passed res_id (%d) is not a memory bar\n",
+> -			 __func__, res_id);
+>  
+>  #ifdef CONFIG_X86
+>  	primary = pdev->resource[PCI_ROM_RESOURCE].flags &
+> -- 
+> 2.18.1
+> 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
