@@ -2,181 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 729A99947E
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Aug 2019 15:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302E19AA95
+	for <lists+linux-fbdev@lfdr.de>; Fri, 23 Aug 2019 10:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388870AbfHVNIf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 22 Aug 2019 09:08:35 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:45711 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725857AbfHVNIe (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 22 Aug 2019 09:08:34 -0400
-Received: by mail-ed1-f68.google.com with SMTP id x19so7810322eda.12
-        for <linux-fbdev@vger.kernel.org>; Thu, 22 Aug 2019 06:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=02CnF/oWum6EvkbDCiosLBlondS4OglCjhZywUsed8k=;
-        b=Tz3518yn5WWULcFmtdPHCt2A7d5ApDMbK6MopGvul1So7VZJrxGoVd1hyvCU0FgAig
-         ye563cwx7GI5x5B4BWPNRLocDhkAh5WkywQKqm+Jr2kFLFdo6ZvrAiASzH4UPpqYcvIR
-         UI/6Ne7TBMI+JfwpqwiLplhtxJXXL3xRjQvNk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=02CnF/oWum6EvkbDCiosLBlondS4OglCjhZywUsed8k=;
-        b=Vv9bcvJE+XUveenPGAyUC/+HsLY7BtiNiLDP7beHuUWq0uw9dspz/vsQnIV6uaI6Gp
-         wvZf+NIZd8D2a1IkM9WjvjGbO6t539OBifSZ7xepXxP1wF8o8vOsG0iVfxfcsqIbXBNh
-         a7dBxAqeqMgszOh1rgbhH0QIXbRhftajP6AkUNrA+YZW8KEXFUBI0xEu4WxeGlR6la4j
-         IACYcmkAqPfj5N7zuD3DD18tTNcSD2IC+eVLFGdIw/yBB5OY+QNUa21hBOE8NwLEM3Mo
-         etTWBLihjcZd9Hw1toup05DNW26Yne1tsCkILgUlBVIMxg9gGA/fmcp6fAJLNoL8AwQH
-         H6Zw==
-X-Gm-Message-State: APjAAAWn9bXcct+SAlWUsBMYpAseOXaH/1KC7gs2vir1vlLgQAxZcVm1
-        IEOyXvl0KZ4wReBSX24/Qo9/izRXFA1wkA==
-X-Google-Smtp-Source: APXvYqxNoo1owvPn0PSkGZksrLAGZl5I2D27njFoLTJGpyXSzyHhr2Krz6ugzkijunzf7H69CY/wkg==
-X-Received: by 2002:a17:906:e0cd:: with SMTP id gl13mr35138284ejb.52.1566479312351;
-        Thu, 22 Aug 2019 06:08:32 -0700 (PDT)
-Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
-        by smtp.gmail.com with ESMTPSA id w3sm4735338edu.4.2019.08.22.06.08.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2019 06:08:31 -0700 (PDT)
-Date:   Thu, 22 Aug 2019 15:08:29 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     dri-devel@lists.freedesktop.org,
+        id S1731886AbfHWIri (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 23 Aug 2019 04:47:38 -0400
+Received: from mail-eopbgr20124.outbound.protection.outlook.com ([40.107.2.124]:34310
+        "EHLO EUR02-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732418AbfHWIri (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 23 Aug 2019 04:47:38 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wq1+JMt7sXjPTQT/GTtOc+viAVDFHcAFaFi5o09LMypeFdSfQB8loVolBzYzy0Fxx9CGTwcmpjb8XNql9CMfoCHnezoEB6OfaC1gcqWSPly6HqsOk0laEU0orOrO9p+i//INDmW2CZHtuIfqf58X4ZEvbMIOA99KmD5q11WyWRXi8tWw21n8Zf1/7TFMymVE2O2YriXvrRoVnohZZX94llQ2ewS+RVy4bdf+JSloA/k1YvwwYHT59Bab4oZatCj8c2IUQIo4GOyiWl6ZkQKiZAkUDjvd0eHUDWTRpklv9OMyvMw2BuWXVV2CJJiaZ9JwJOogf6n/EPWCwodLtGKLmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q+XxbCn9n99C2q5/webEDiPCnjhg/SXsjfOw/mOvU6g=;
+ b=hva7x5vR6E62Q+u9SvjCu3SkU5H2b/Pi3hdyZ43GkJMxRtYTHpHmmsUnmmbTxPRvMLl3P2Z+UUoa+p1GR5QU0oO6Exej7evHsCavA//ssaZs3xVJK9D2JvI2nBIQ1FIVqPDxEDDJzBOQvmCuMgxVbb5m0BOclmdiU+w/ZDecVzpMbAI9FMTOi+mbd9Q59kc4fIsEULDF26tsjMgUtnXCHTfNipXWdDmwhipBBlxx5/SIEvGy+OUmysWe1rLStI6DP/kpRE7XQyb+S7p8hvPU31KeynoSpKLZZ6ZkQjRd3qaeTx0yzQ7Q5DHrVIdZZ95ONGjId0c0jyJa23Er8MPX9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q+XxbCn9n99C2q5/webEDiPCnjhg/SXsjfOw/mOvU6g=;
+ b=TvtC6AP3t12QiZmcvBIUKcPPAaJAuJPQ6FrhnuYkTeueLNAdDnh03iuCzSWdsiqpO1uRNAfyNmPaBmAPaz4Ifx/rU4hRmayZVWPxLWZqBQk0UYb/KMwmZim3Lv9JYQ6RXXwTNtGd1QfDYZu8EPq5XRgsW69s2+J9XgfRMZ72xjU=
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com (52.134.66.158) by
+ DB3PR0202MB3322.eurprd02.prod.outlook.com (52.134.66.161) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Fri, 23 Aug 2019 08:47:33 +0000
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::a0df:d7d9:f95e:f3ea]) by DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::a0df:d7d9:f95e:f3ea%3]) with mapi id 15.20.2178.020; Fri, 23 Aug 2019
+ 08:47:33 +0000
+From:   Peter Rosin <peda@axentia.se>
+To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     Peter Rosin <peda@axentia.se>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] fbdev: drop res_id parameter from
- remove_conflicting_pci_framebuffers
-Message-ID: <20190822130829.GV11147@phenom.ffwll.local>
-Mail-Followup-To: Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20190822090645.25410-1-kraxel@redhat.com>
- <20190822090645.25410-2-kraxel@redhat.com>
+        Jonathan Corbet <corbet@lwn.net>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: [PATCH 0/2] Add possibility to specify the number of displayed logos
+Thread-Topic: [PATCH 0/2] Add possibility to specify the number of displayed
+ logos
+Thread-Index: AQHVWY9nGTFic++gsUyrSu+1jjFGlQ==
+Date:   Fri, 23 Aug 2019 08:47:33 +0000
+Message-ID: <20190823084725.4271-1-peda@axentia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.11.0
+x-originating-ip: [213.112.138.100]
+x-clientproxiedby: HE1PR0401CA0084.eurprd04.prod.outlook.com
+ (2603:10a6:3:19::52) To DB3PR0202MB3434.eurprd02.prod.outlook.com
+ (2603:10a6:8:5::30)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=peda@axentia.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c1e1a3ab-5a7d-4bc0-a679-08d727a689ea
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(5600166)(711020)(4605104)(1401327)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(2017052603328)(7193020);SRVR:DB3PR0202MB3322;
+x-ms-traffictypediagnostic: DB3PR0202MB3322:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB3PR0202MB3322C72BAF832713A7C47369BCA40@DB3PR0202MB3322.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 0138CD935C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(366004)(346002)(376002)(396003)(39830400003)(189003)(199004)(2501003)(2351001)(86362001)(66066001)(36756003)(71190400001)(6512007)(71200400001)(2906002)(3846002)(4326008)(14444005)(53936002)(256004)(25786009)(7736002)(26005)(305945005)(6486002)(6916009)(186003)(1076003)(102836004)(6506007)(386003)(6436002)(99286004)(52116002)(8936002)(6116002)(476003)(2616005)(50226002)(486006)(81156014)(81166006)(508600001)(8676002)(14454004)(5660300002)(4744005)(66446008)(66946007)(5640700003)(54906003)(64756008)(316002)(66476007)(66556008);DIR:OUT;SFP:1102;SCL:1;SRVR:DB3PR0202MB3322;H:DB3PR0202MB3434.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: axentia.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: 2uKnoCyNFGRIV/1gmsD+vTELafSKMJavSdQieOKMPtrFF4IdSdYhn2HNYKy1OoigRX8UtxAfAp4D+QKDmW/cmO8p17gYp8BCKnMhkjIwxdriV8EY6lXr02Hfq4G1R+FiSPcCkGU9TiqWpEFlf9KCBVxwVYxEkpqSQ+wD4bisHpXQZU2CUOSSefG9SueflP0go+FOzHAK9zgKUMr+j5b0u8xUnSwW/KH/SijmDtkrvjDs8pmFVVH1L1SLELjhvdze94WTb170dcYnQvnRGeZnbCBweZNXm4SYcDwoMdtsiovvccuetWnYlham0IUO9tETATcfaSGQw4imtKWt3mdPPi5IS5uJRwlkQaucVULlOU6vkbK/f6gp3SOKPLl5DBXkdQkhGRywB6cWC4tR8BT5iZzUhP1adbUUzevv+P0mrZk=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190822090645.25410-2-kraxel@redhat.com>
-X-Operating-System: Linux phenom 5.2.0-2-amd64 
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1e1a3ab-5a7d-4bc0-a679-08d727a689ea
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Aug 2019 08:47:33.5911
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MuoCl/9/chbh6finhWWf4mcXNYXz4O9hEjYqfXwThMgxcMX6NqHjrQBEr7ydNTnm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB3322
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 11:06:43AM +0200, Gerd Hoffmann wrote:
-> Since commit b0e999c95581 ("fbdev: list all pci memory bars as
-> conflicting apertures") the parameter was used for some sanity checks
-> only, to make sure we detect any issues with the new approach to just
-> list all memory bars as apertures.
-> 
-> No issues turned up so far, so continue to cleanup:  Drop the res_id
-> parameter, drop the sanity checks.  Also downgrade the logging from
-> "info" level to "debug" level and update documentation.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Hi!
 
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+The first patch fixes the fact that there are two items numbered "4" in
+the list of fbcon options. This bug is a teenager...
 
-> ---
->  include/drm/drm_fb_helper.h      |  2 +-
->  include/linux/fb.h               |  2 +-
->  drivers/video/fbdev/core/fbmem.c | 17 +++++------------
->  3 files changed, 7 insertions(+), 14 deletions(-)
-> 
-> diff --git a/include/drm/drm_fb_helper.h b/include/drm/drm_fb_helper.h
-> index c8a8ae2a678a..5a5f4b1d8241 100644
-> --- a/include/drm/drm_fb_helper.h
-> +++ b/include/drm/drm_fb_helper.h
-> @@ -560,7 +560,7 @@ drm_fb_helper_remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
->  	 * otherwise the vga fbdev driver falls over.
->  	 */
->  #if IS_REACHABLE(CONFIG_FB)
-> -	ret = remove_conflicting_pci_framebuffers(pdev, resource_id, name);
-> +	ret = remove_conflicting_pci_framebuffers(pdev, name);
->  #endif
->  	if (ret == 0)
->  		ret = vga_remove_vgacon(pdev);
-> diff --git a/include/linux/fb.h b/include/linux/fb.h
-> index 756706b666a1..41e0069eca0a 100644
-> --- a/include/linux/fb.h
-> +++ b/include/linux/fb.h
-> @@ -607,7 +607,7 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
->  extern int register_framebuffer(struct fb_info *fb_info);
->  extern void unregister_framebuffer(struct fb_info *fb_info);
->  extern void unlink_framebuffer(struct fb_info *fb_info);
-> -extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id,
-> +extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
->  					       const char *name);
->  extern int remove_conflicting_framebuffers(struct apertures_struct *a,
->  					   const char *name, bool primary);
-> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> index e6a1c805064f..95c32952fa8a 100644
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -1758,21 +1758,19 @@ EXPORT_SYMBOL(remove_conflicting_framebuffers);
->  /**
->   * remove_conflicting_pci_framebuffers - remove firmware-configured framebuffers for PCI devices
->   * @pdev: PCI device
-> - * @res_id: index of PCI BAR configuring framebuffer memory
->   * @name: requesting driver name
->   *
->   * This function removes framebuffer devices (eg. initialized by firmware)
-> - * using memory range configured for @pdev's BAR @res_id.
-> + * using memory range configured for any of @pdev's memory bars.
->   *
->   * The function assumes that PCI device with shadowed ROM drives a primary
->   * display and so kicks out vga16fb.
->   */
-> -int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const char *name)
-> +int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, const char *name)
->  {
->  	struct apertures_struct *ap;
->  	bool primary = false;
->  	int err, idx, bar;
-> -	bool res_id_found = false;
->  
->  	for (idx = 0, bar = 0; bar < PCI_ROM_RESOURCE; bar++) {
->  		if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
-> @@ -1789,16 +1787,11 @@ int remove_conflicting_pci_framebuffers(struct pci_dev *pdev, int res_id, const
->  			continue;
->  		ap->ranges[idx].base = pci_resource_start(pdev, bar);
->  		ap->ranges[idx].size = pci_resource_len(pdev, bar);
-> -		pci_info(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
-> -			 (unsigned long)pci_resource_start(pdev, bar),
-> -			 (unsigned long)pci_resource_end(pdev, bar));
-> +		pci_dbg(pdev, "%s: bar %d: 0x%lx -> 0x%lx\n", __func__, bar,
-> +			(unsigned long)pci_resource_start(pdev, bar),
-> +			(unsigned long)pci_resource_end(pdev, bar));
->  		idx++;
-> -		if (res_id == bar)
-> -			res_id_found = true;
->  	}
-> -	if (!res_id_found)
-> -		pci_warn(pdev, "%s: passed res_id (%d) is not a memory bar\n",
-> -			 __func__, res_id);
->  
->  #ifdef CONFIG_X86
->  	primary = pdev->resource[PCI_ROM_RESOURCE].flags &
-> -- 
-> 2.18.1
-> 
+The second patch extends that list with a new option that allows the
+user to display any number of logos (that fits on the screen). I need it
+to limit the display to only one logo instead of one for each CPU core.
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Cheers,
+Peter
+
+Peter Rosin (2):
+  fbdev: fix numbering of fbcon options
+  fbdev: fbmem: allow overriding the number of bootup logos
+
+ Documentation/fb/fbcon.rst       | 13 +++++++++----
+ drivers/video/fbdev/core/fbcon.c |  7 +++++++
+ drivers/video/fbdev/core/fbmem.c |  5 ++++-
+ include/linux/fb.h               |  1 +
+ 4 files changed, 21 insertions(+), 5 deletions(-)
+
+--=20
+2.11.0
+
