@@ -2,62 +2,65 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FC1F9AB44
-	for <lists+linux-fbdev@lfdr.de>; Fri, 23 Aug 2019 11:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3EC9BE8B
+	for <lists+linux-fbdev@lfdr.de>; Sat, 24 Aug 2019 17:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730771AbfHWJX1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 23 Aug 2019 05:23:27 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:37069 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728150AbfHWJX0 (ORCPT
+        id S1727604AbfHXPeu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 24 Aug 2019 11:34:50 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:50316 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727638AbfHXPeu (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 23 Aug 2019 05:23:26 -0400
-Received: by mail-lj1-f195.google.com with SMTP id t14so8244641lji.4
-        for <linux-fbdev@vger.kernel.org>; Fri, 23 Aug 2019 02:23:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=QR7q1RL4DI6APn3G7YvNKSpCKmsCQj7uf4B72sB8i84=;
-        b=Z/xNOrG9zeZ634DUdhSh4YAPy310K3SlvxlW7xu4oNgvWIkTWd9v4DbaHW+E3yvvuI
-         jlxWzKGWca07Z1Yo/sgQb9yXdfYlMoIYprdqdENBpB0ipU+EH4kQSxtjPMigakMhBLVs
-         H/r6zkXxPvQH3pUj3+Q/XX/PWYuE6Q6OY+o2564yB7AKhC9kGaZ57FUXrRCkneV0LV85
-         bMcOYlQc77R2T1d3AsFf+ORIp1WgeViSn8OoIcK06GakoLHR75gifqq37Ii9bcN1UjIB
-         dOBzJNTA0X7M2f9XUjszlBs5lPwbnn9tARAM2DLq5LN1I5BhrVi3jNggLg7KMbBIp5AW
-         SHVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=QR7q1RL4DI6APn3G7YvNKSpCKmsCQj7uf4B72sB8i84=;
-        b=nYSbNXEnDXjH+fHCQLhxlfRnsTLKw8cjsiZV/W6D2D+G86kK1xMswZl261JXULVL/w
-         vIu/q0aCBosa/mEeYR26h3tWxDTD91nkqBmGJtFOW55Ct0MADK1slksPzwOmemtcBdUS
-         yP3RSTE3cWPS8WAeN92ayrHTioVAjrGoz08yH8URobtOZUyc9m6Lmj8E2TrD7f6S0siQ
-         En5TWPFBfZIiXEmjji7TSemCukCS7b4KqaiJvBLXLY1gpmOk6hnTRjt38Xzy8OFPDmdR
-         ipge36AG99VlwenRV7O0kgXsznm/DQFdPAFcsGA7UlOV55F6YkqWaHkUD7F6A7C/S4MP
-         M0Lw==
-X-Gm-Message-State: APjAAAVrKAemYSoQbkIZCO9sx9EhtC61V+GuXmJQWqH9YvVMqNx7RgEk
-        YB0dfUpIKG05jZAMYL3v6hHNxt2BB3nRY6+a9d4=
-X-Google-Smtp-Source: APXvYqyPjQ3LqO/1v7n2J1Kv64WDdSt9T4tHjecl1CQW+9XMyOQYU40iwLt12XGwEyNRQfCQypxCxmd0untD8ZuFGiU=
-X-Received: by 2002:a05:651c:1135:: with SMTP id e21mr2322917ljo.83.1566552205310;
- Fri, 23 Aug 2019 02:23:25 -0700 (PDT)
+        Sat, 24 Aug 2019 11:34:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=W1bsgj1Sca3htwVdYIWXqEWmqM9LY1dN32Kg3V5BUGw=; b=pVH267jYHrY9C0dLkasvLQUnv
+        XRUmXAshW9tv13hBRLy6H/LTmuONxFCE1hCZ7p0i6yViURRqo1N1o/+7MCuRv79mXq0MXoJMxo31y
+        emLqD40QOZAgz/bhxWHJN8Fp1B/S5AkjLnLQo0mpSHgzfKfTASJruuOTG0q9z7HWlqmn6YB1iHq6s
+        ZBcRwJ2QjQ1ZWnOAeKpRof+T3azgnSHinCmKikmWMjJK/NgvkObBUBilSHC0OtoIV8UeWh+Lp/caq
+        9yxJLeTNvkDCfA8LzBRE7YeJ06G8VItQoaUth8bBNK39VMuZRr6YwuQx/q7mC5kz2WFK7BzVS4e+V
+        bWcJxPprw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1i1Y3y-00048Y-Gc; Sat, 24 Aug 2019 15:34:46 +0000
+Date:   Sat, 24 Aug 2019 08:34:46 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 2/2] fbdev: fbmem: allow overriding the number of bootup
+ logos
+Message-ID: <20190824153446.GB28002@bombadil.infradead.org>
+References: <20190823084725.4271-1-peda@axentia.se>
+ <20190823084725.4271-3-peda@axentia.se>
 MIME-Version: 1.0
-Received: by 2002:ab3:5b1d:0:0:0:0:0 with HTTP; Fri, 23 Aug 2019 02:23:25
- -0700 (PDT)
-Reply-To: joycesmithloanlendercompany@gmail.com
-From:   "Ms. joyce" <texasfloridaohio@gmail.com>
-Date:   Fri, 23 Aug 2019 10:23:25 +0100
-Message-ID: <CAOutoAh0HGS6qP+v9-e0q0jDvmJ0pmTSEZHEnzqVy=CyCsoT8Q@mail.gmail.com>
-Subject: Dringender Kredit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190823084725.4271-3-peda@axentia.se>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Interessieren Sie sich immer noch f=C3=BCr die =C3=9Cberweisung, da die Ban=
-k
-immer noch darauf wartet, von Ihnen zu h=C3=B6ren?
+On Fri, Aug 23, 2019 at 08:47:47AM +0000, Peter Rosin wrote:
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -56,6 +56,9 @@ EXPORT_SYMBOL(num_registered_fb);
+>  bool fb_center_logo __read_mostly;
+>  EXPORT_SYMBOL(fb_center_logo);
+>  
+> +unsigned int fb_logo_count __read_mostly;
+> +EXPORT_SYMBOL(fb_logo_count);
+
+Why does this symbol need to be exported?  As I read the Makefile, fbcon
+and fbmem are combined into the same module, so while the symbol needs
+to be non-static, it doesn't need to be exported to other modules.
+
