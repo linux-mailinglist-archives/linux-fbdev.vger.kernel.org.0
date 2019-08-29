@@ -2,118 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94ED3A1250
-	for <lists+linux-fbdev@lfdr.de>; Thu, 29 Aug 2019 09:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E02A1BB0
+	for <lists+linux-fbdev@lfdr.de>; Thu, 29 Aug 2019 15:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727315AbfH2HIc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 29 Aug 2019 03:08:32 -0400
-Received: from mail-eopbgr140129.outbound.protection.outlook.com ([40.107.14.129]:28142
-        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726889AbfH2HIc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 29 Aug 2019 03:08:32 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KGfwNhFcIk3qQa9AkVViXimtlsZ+hAetSmt7xRFbGpcB5Jct7QGMRUg/yugNnjyJU/Ow6JC+X7BV6c84B3NWDS1BzfmMeBFwHKISDt99afOMeTde2igF4mHEoHh3k41H/vU3CAfWeAMyA30j/uylEZzGze6rFewzSxAxlDIiVNYxJJi2IEMccPOf7TuqVXLcMJznKnHT/2pHaFuFOUpy103716g0IW723Ze/GaqV+h10m9gzCN1LrEKjc94WuA2oV0opFexwbak2Sj8avCwlxNj8SxHjqszGVJX02RRWaOcv4CpKC4xX9CilzGttcXP7ROspIW1O0RBoDROSKySOBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T3bZCDKJeJ+GZufTwyzF6KKK9+Ey+RD/JkmbaGPhfik=;
- b=bWl3yczjXJ2M36ulGoNWqc9N43TT7ofGbeZcOWfrC1Jf9u8tGHUlWFzM9VTbjbUFlrjqa7pm6j7ULZ50gxlW1ITeXQoY6tY0nB844viOS+jT+9d5VX5hBtUYSKauFjYOIoEPkbAuSzuZ7P9aj+ouqr4yqz2SzCpC8sX3oxvtwzRYzLKb7n2Aku4Zcjyo5ochVOqwPVhXxJfnmqRo+nluYbgrB5hJ05GuQXILDb10AWa4iTttyXuw6eYp5F/hY3G0wz+ZnILGyyfjrXIZaYpmeYoD3lD7vo4waZV5Vf/D6KjAIX4UyMIyAOGswAyajBSr2O/nigmtXV8GPqV2jE45HA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
- dkim=pass header.d=axentia.se; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T3bZCDKJeJ+GZufTwyzF6KKK9+Ey+RD/JkmbaGPhfik=;
- b=LN8GkmPQp0yWJ2TZNhLME0caqyJPtv/niEREoQRjoWQ8vUP84kALI0ZKm4wrQY0sXNO5mG1df1MGtaDtjXMz8xsWr2AXHZ9NmH1u+uPtGq1j3cXQOf9tJwUmq/WWDg/yotRRDo8Z1OzflVbfR9e0n4OG6tR4iOWYYh1jLlNEJl4=
-Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com (52.134.66.158) by
- DB3PR0202MB3356.eurprd02.prod.outlook.com (52.134.68.155) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2199.21; Thu, 29 Aug 2019 07:08:27 +0000
-Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com
- ([fe80::a0df:d7d9:f95e:f3ea]) by DB3PR0202MB3434.eurprd02.prod.outlook.com
- ([fe80::a0df:d7d9:f95e:f3ea%3]) with mapi id 15.20.2199.021; Thu, 29 Aug 2019
- 07:08:27 +0000
-From:   Peter Rosin <peda@axentia.se>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v3 3/3] fbdev: fbmem: avoid exporting fb_center_logo
-Thread-Topic: [PATCH v3 3/3] fbdev: fbmem: avoid exporting fb_center_logo
-Thread-Index: AQHVXMfjb9HuvMXdNUO0R8iyHBP+3qcO3XKAgALaFgA=
-Date:   Thu, 29 Aug 2019 07:08:26 +0000
-Message-ID: <6cb5ec1b-ae60-5ca4-f0d9-1414f52fed73@axentia.se>
-References: <20190827110854.12574-1-peda@axentia.se>
- <20190827110854.12574-4-peda@axentia.se>
- <CAMuHMdVkqX7x_D5nf01s-kE=o+y5OLM-5fd3q=2RDKGTcpCfHg@mail.gmail.com>
-In-Reply-To: <CAMuHMdVkqX7x_D5nf01s-kE=o+y5OLM-5fd3q=2RDKGTcpCfHg@mail.gmail.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-x-originating-ip: [213.112.138.100]
-x-clientproxiedby: HE1PR05CA0218.eurprd05.prod.outlook.com
- (2603:10a6:3:fa::18) To DB3PR0202MB3434.eurprd02.prod.outlook.com
- (2603:10a6:8:5::30)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=peda@axentia.se; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 42dd0384-1e27-4376-e533-08d72c4fb051
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:DB3PR0202MB3356;
-x-ms-traffictypediagnostic: DB3PR0202MB3356:
-x-microsoft-antispam-prvs: <DB3PR0202MB3356E418B8E4FBB6D5569C2CBCA20@DB3PR0202MB3356.eurprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 0144B30E41
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(346002)(396003)(136003)(376002)(39830400003)(189003)(199004)(6916009)(305945005)(229853002)(25786009)(5660300002)(6512007)(53936002)(508600001)(6246003)(2906002)(8676002)(81156014)(14454004)(81166006)(8936002)(256004)(53546011)(6506007)(86362001)(71190400001)(7736002)(71200400001)(54906003)(58126008)(6436002)(386003)(316002)(4326008)(6486002)(66946007)(31686004)(486006)(476003)(76176011)(2616005)(52116002)(66476007)(64756008)(26005)(186003)(66446008)(3846002)(31696002)(446003)(11346002)(36756003)(102836004)(66556008)(65806001)(65956001)(6116002)(66066001)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:DB3PR0202MB3356;H:DB3PR0202MB3434.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: axentia.se does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: WtRfi917UieKwBot5FgZVczZsuHriU4cMK7joE+4+OKUBX+qTQ6CfzobNpo63bCMRSNAvldGL44J04kNFtVjsGxQLC0MGxcjYBwMlp6YTNGyOjDt/n5Eat8ht4QNsv06NmaIMRaw2cVi39B0irhtyA9kuKHcijL1uTX76YbUCOqiPcjFvSvfJw4LpeeDc0oN9Hj974W3sDer+Bmh1IKtLpNrs22K+m2C2tMcdtSkIq2ZJoPtfMP1MHULrIWFN5WCANN3lbzNEAC22ExN+Dz3une1ObYgfqmMzsxxqUpe8QTN5WeEjBN2sC2Xc6IM4/bRZ2kvJUd7yONoOxBeWw4QM8/SKW4Cbs+Z9+LczIKnO9Q1o8sJYGuXOvbMPTZTA9LHsTWid9S/naNBzZWg+CA2UP4HrGwXabeDW+5wtb9F6No=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D9E405F063191F4593B2660CF485CDC6@eurprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1727008AbfH2NnN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 29 Aug 2019 09:43:13 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:50588 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbfH2NnM (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 29 Aug 2019 09:43:12 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190829134310euoutp02ca14ff3f7a949aa6e89b64709b3f7d00~-aJZ2r1P31872218722euoutp02f
+        for <linux-fbdev@vger.kernel.org>; Thu, 29 Aug 2019 13:43:10 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190829134310euoutp02ca14ff3f7a949aa6e89b64709b3f7d00~-aJZ2r1P31872218722euoutp02f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1567086190;
+        bh=SCznab7J6ry5ABzOP+Jykqx8YqoZ9vnjULjnBcxD5hU=;
+        h=From:Subject:To:Cc:Date:References:From;
+        b=kTsGF8P3tuaxM8dCEagQsMXNzuzMp1EHZs3nF4p8Q29yfEhkgHLRjeXktgYSCwavR
+         l8xxKGmxk3wl+lxpt2lSQEGPCdajWzJNGaNwF+ahKjxTc9ONzXFbqkUzbYudKyLLRm
+         n42zXu/wX4TOSqEk202dtX+X12r2ZZJsn0ppwBNc=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190829134310eucas1p21ade97e0886aee12a8f0166a515d78b7~-aJZgSV3R1502715027eucas1p2q;
+        Thu, 29 Aug 2019 13:43:10 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id CC.BD.04469.D66D76D5; Thu, 29
+        Aug 2019 14:43:10 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190829134309eucas1p236b628cd1e268d93c0cb40eef577366b~-aJYpVvOD1976019760eucas1p2F;
+        Thu, 29 Aug 2019 13:43:09 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20190829134309eusmtrp2ceba15f230fcc3b2680a295a493d2de5~-aJYazJLb2474524745eusmtrp2T;
+        Thu, 29 Aug 2019 13:43:09 +0000 (GMT)
+X-AuditID: cbfec7f2-54fff70000001175-02-5d67d66de176
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id C5.8B.04117.D66D76D5; Thu, 29
+        Aug 2019 14:43:09 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20190829134309eusmtip17194130c7a158011708c395af10bd2fb~-aJYPY3Br1513615136eusmtip1f;
+        Thu, 29 Aug 2019 13:43:09 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: no handling of fbdev patches by me till 23.09
+To:     linux-fbdev@vger.kernel.org
+Cc:     dri-devel@lists.freedesktop.org
+Message-ID: <e40392d0-c0d4-0875-018e-3dd0b9716979@samsung.com>
+Date:   Thu, 29 Aug 2019 15:43:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42dd0384-1e27-4376-e533-08d72c4fb051
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2019 07:08:26.9959
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MLoA3G0rfiSllDc7YT83kGR605Yd5+UBK/Tq08HeHH64tj7Wxb53YAJgg0SalEBL
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB3356
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpkleLIzCtJLcpLzFFi42LZduzned28a+mxBhc0LK58fc9mcaLvA6sD
+        k8f97uNMHp83yQUwRXHZpKTmZJalFunbJXBl3Nm3lr3gNWPF7kmfWRoY9zJ2MXJySAiYSKxZ
+        84+ti5GLQ0hgBaPEtFVLWSGcL4wSXxc0MUM4nxkleu5cYYFp2f92I1i7kMByRoml10wh7LeM
+        En8OyoLYbAJWEhPbV4HVCAuYSXx+NYsNxBYRkJfY09/OBGIzCyhLfDv8AqyGV8BOYsmMZawg
+        NouAqsTlHU/A6kUFIiTuH9vAClEjKHFy5hMWiF5xiVtP5kPNkZfY/nYO2KESArfZJO5cPMsK
+        caiLxIc5N5ghbGGJV8e3sEPYMhL/d4I0gzSsY5T42/ECqns7o8Tyyf/YIKqsJQ4fvwg0iQNo
+        habE+l36EGFHiXc7v7GDhCUE+CRuvBWEOIJPYtK26cwQYV6JjjYhiGo1iQ3LNrDBrO3auRLq
+        HA+J75tWM01gVJyF5LVZSF6bheS1WQg3LGBkWcUonlpanJueWmyYl1quV5yYW1yal66XnJ+7
+        iRGYME7/O/5pB+PXS0mHGAU4GJV4eGccSI8VYk0sK67MPcQowcGsJML7SCU1Vog3JbGyKrUo
+        P76oNCe1+BCjNAeLkjhvNcODaCGB9MSS1OzU1ILUIpgsEwenVAOjmKpju+yFkLrLES9WKj4s
+        mGv960JYYLnAhagXf5j+sn1xCnpnnzGT+UXYvPXTU/993bZ0Ov/tz3MsW+7ZKNeqvG/+M2Wp
+        VlZUefGpWTe/Ofqot9jP5c7Y6V7LP8dG7qZp7eHuGZt8F8RbaRy8sDsxYyHPte/1Tw98Xumv
+        faAj/PjhZ6sK5xq9UGIpzkg01GIuKk4EAN5m2eIUAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDLMWRmVeSWpSXmKPExsVy+t/xu7q519JjDY4/57G48vU9m8WJvg+s
+        Dkwe97uPM3l83iQXwBSlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OS
+        mpNZllqkb5egl3Fn31r2gteMFbsnfWZpYNzL2MXIySEhYCKx/+1GIJuLQ0hgKaPEnKPzgBwO
+        oISMxPH1ZRA1whJ/rnWxQdS8ZpRY9XUVM0iCTcBKYmL7KrBBwgJmEp9fzWIDsUUE5CX29Lcz
+        gdjMAsoS3w6/AKvhFbCTWDJjGSuIzSKgKnF5xxOwelGBCIkz71ewQNQISpyc+YQFoldd4s+8
+        S8wQtrjErSfzoWbKS2x/O4d5AqPALCQts5C0zELSMgtJywJGllWMIqmlxbnpucVGesWJucWl
+        eel6yfm5mxiBIb/t2M8tOxi73gUfYhTgYFTi4bXYnh4rxJpYVlyZe4hRgoNZSYT3kUpqrBBv
+        SmJlVWpRfnxRaU5q8SFGU6CHJjJLiSbnA+MxryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQQHpi
+        SWp2ampBahFMHxMHp1QD48I/cmvC2ec7rYysOzFLff7DJ28kzFM+bkhub2eoioxRYLrRafnv
+        QknIWg4RrbCe/eZ/7qdJBi7dUG86Y4/c78gJv3VEvW/En3t90yJQqfXbK1XuwDnXM248CE6W
+        Z167+Yvms6h/v9Vtq27ceBVxp+CqIs9nIZNjT0MO3D+7RGu1T+jsz8d93ZRYijMSDbWYi4oT
+        AeCJ4nOPAgAA
+X-CMS-MailID: 20190829134309eucas1p236b628cd1e268d93c0cb40eef577366b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190829134309eucas1p236b628cd1e268d93c0cb40eef577366b
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190829134309eucas1p236b628cd1e268d93c0cb40eef577366b
+References: <CGME20190829134309eucas1p236b628cd1e268d93c0cb40eef577366b@eucas1p2.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-T24gMjAxOS0wOC0yNyAxMzozNSwgR2VlcnQgVXl0dGVyaG9ldmVuIHdyb3RlOg0KPiBIaSBQZXRl
-ciwNCj4gDQo+IE9uIFR1ZSwgQXVnIDI3LCAyMDE5IGF0IDE6MDkgUE0gUGV0ZXIgUm9zaW4gPHBl
-ZGFAYXhlbnRpYS5zZT4gd3JvdGU6DQo+PiBUaGUgdmFyaWFibGUgaXMgb25seSBldmVyIHVzZWQg
-ZnJvbSBmYmNvbi5jIHdoaWNoIGlzIGxpbmtlZCBpbnRvIHRoZQ0KPj4gc2FtZSBtb2R1bGUuIFRo
-ZXJlZm9yZSwgdGhlIGV4cG9ydCBpcyBub3QgbmVlZGVkLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6
-IFBldGVyIFJvc2luIDxwZWRhQGF4ZW50aWEuc2U+DQo+IA0KPiBSZXZpZXdlZC1ieTogR2VlcnQg
-VXl0dGVyaG9ldmVuIDxnZWVydEBsaW51eC1tNjhrLm9yZz4NCj4gDQo+IEJ1dCBub3RlIHRoYXQg
-dGhlIHNhbWUgaXMgdHJ1ZSBmb3IgZmJfY2xhc3MsIHNvIHBlcmhhcHMgaXQgY2FuIGJlIGFkZGVk
-DQo+IChvciBiZXR0ZXIsIHJlbW92ZWQgOy0pPw0KDQpSaWdodC4gU29tZW9uZSBwbGVhc2UgbGV0
-IG1lIGtub3cgaWYgMy8zIG5lZWRzIHRvIGJlIGV4dGVuZGVkLiBJJ20gYWxzbw0KaGFwcHkgdG8g
-anVzdCBkcm9wIGl0Li4uDQoNCj4gT25jZSBkcml2ZXJzL3N0YWdpbmcvb2xwY19kY29uL29scGNf
-ZGNvbi5jIHN0b3BzIGFidXNpbmcgcmVnaXN0ZXJlZF9mYltdDQo+IGFuZCBudW1fcmVnaXN0ZXJl
-ZF9mYiwgdGhvc2UgY2FuIGdvLCB0b28uDQo+IA0KPiBEb2VzIGFueW9uZSByZW1lbWJlIHdoeSBh
-dTEyMDBmYiBjYWxscyBmYl9wcmVwYXJlX2xvZ28oKSBhbmQgZmJfc2hvd19sb2dvKCkNCj4gaXRz
-ZWxmPw0KDQpNYXliZSB0aGVyZSBzaG91bGQgYmUgYSBzbWFsbCBkcml2ZXJzL3ZpZGVvL2ZiZGV2
-L2NvcmUvZmJtZW0uaCBmaWxlIChvcg0Kc29tZXRoaW5nKSB3aXRoIHRoZXNlICJpbnRlcm5hbCIg
-ZGVjbGFyYXRpb25zLCB0byBoaWRlIHNvbWUgY2x1dHRlciBjdXJyZW50bHkNCmluIGluY2x1ZGUv
-bGludXgvZmIuaD8NCg0KRmVlbHMgbGlrZSB0aGF0IGNvdWxkIGJlIGRvbmUgbGF0ZXIsIGFmdGVy
-IHRoZXNlIG90aGVyIGNsZWFudXBzIHlvdSBtZW50aW9uLA0Kc28gdGhhdCB0aGUgbmV3IGZpbGUg
-aGFzIGEgZmV3IG1vcmUgdGhpbmdzIHRvIGRlY2xhcmUuDQoNCkNoZWVycywNClBldGVyDQo=
+Hi,
+
+I will be traveling / busy with other things / without access to my
+development setup till 23.09. Sorry for the inconvenience.
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
