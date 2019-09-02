@@ -2,114 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5134A5295
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 11:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B832A52D6
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 11:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730015AbfIBJLi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 Sep 2019 05:11:38 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:40324 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730117AbfIBJLe (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 05:11:34 -0400
-Received: by mail-wm1-f65.google.com with SMTP id t9so13743779wmi.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 02 Sep 2019 02:11:33 -0700 (PDT)
+        id S1730446AbfIBJbm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Sep 2019 05:31:42 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:37420 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730427AbfIBJbm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 05:31:42 -0400
+Received: by mail-wm1-f68.google.com with SMTP id d16so13821581wme.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 02 Sep 2019 02:31:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=8oqJdBiHyKqAlISuPnLa2MGGfZJDAaKp4XjFcqqHTI8=;
-        b=DIHmB+MhpRayg6spOmLydYJ01PHT4VKTWXLlYhvJPb+LIBpWOOgWnzwVP9Emq17Spb
-         8lPzi2/StfEbpYNaD3ubpzc+CkNRKgTx0mPxR56ZaqRQ2hZqkPMbtu790XYGirmaYKIB
-         ShOSAq5oxixfW/1idndxBdzTSy0fCMrA1dsEEHQauEwpO+USJiaw0r4acOgDtxUpovnk
-         sCRsT5siGKSqyshqIeIE/0CFUbmTbr2iaDvAGstjGPD1k9vkNiX5GM/QwUsdIOJeQw3y
-         y4hoirYqZgpW/jo3rscQSbPHqKBMeO4KAorS2upSf46AV+2Ta85G4U69DxF7exqggh8f
-         kOOQ==
+        bh=r8AwJSmMaHIEN05eTIkJ4SIO7fhuuHmNGUIve5f+2G0=;
+        b=Bt1VuYPsJX1pxqRR6NEEzZF0cAq3QqZSMeTnegdO8wAJVFRb/Jr0Ly4BgdgOysPSWb
+         IZVVibSQpS0gOBIr0OUQUsZUwFVf97qS4uto28oZHVLLEWbqLvQ/+C9xlwxydZuudplm
+         81UaLsko8zsLIGQXBw/VgDV7HZkHqUWUkEUWbs1UvWxFqMMsnxf+J2SceviM8fe7Ws7D
+         QYXzlFLYLoRmtUnbMXQLOVXJVHdGzIcoMqNyU2TC4Psa6PULLHTj9RdtGxZtxSu3bTkm
+         cnU2J3ip/ZBkcrqgo6YoEsJv/uU/p04nUgNpCOBqikubhWlYP2WpFFKnrv4ETvEbbXKA
+         p5Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=8oqJdBiHyKqAlISuPnLa2MGGfZJDAaKp4XjFcqqHTI8=;
-        b=UQ9qEpUQ60YgNAkMwnRPQ3QCE3+7JcIUilZnOm4jNUBPb8WDACFaDXvlx7Kk9bSIDI
-         60l5HQOGx4M6l+OKZ9wegCZb79fdA6so69jk4tZDMevlneDP8Oaz4UGuIQjxPV8nh0Qt
-         sTmvL/z0/lhs6+7gYBfHu56YABZheibtLnzA0SMmkiBXPMOJC1cK6ew7ZqBYDlR8j/xg
-         sQ2RQwlU4HdT2I0qiF3LKBLndEHJM0bAYMwHRdab9ty1Q98PpUEudGf/d6Mrokj0y1uu
-         /OD2jF4S587TxMKN4sa8wA+1llFNL4rI4TEboJwVqlB7B+/EvfheYxXql/7vjbCcM/9t
-         s1/Q==
-X-Gm-Message-State: APjAAAWUyYCQ+Mo3fqm/Mm8fI8CgtuPl2JrRY28ublMFXiYx8u9gJVrr
-        6vR1Zpiyp/1exsfaEw2zcpg3uw==
-X-Google-Smtp-Source: APXvYqz6zTE3+7Cab43jkjP1vZUcgAoMSLfW1kYAvqHXdmLYBFVgNKWMXsb5YhZZGLOZta3H6WSVOg==
-X-Received: by 2002:a1c:7619:: with SMTP id r25mr299001wmc.153.1567415492632;
-        Mon, 02 Sep 2019 02:11:32 -0700 (PDT)
+        bh=r8AwJSmMaHIEN05eTIkJ4SIO7fhuuHmNGUIve5f+2G0=;
+        b=PVRp61S3rqChL0XSF518Tl5ovvh++a5ka4Lm4p4AA3WHpEpX/GVA/7qnjNjAcGbQ4H
+         A/qOkYkt8P3g5qLW40ZR6AqyQoZUgEHk+AEQysqhmmCAMIXN3Wu2BRfAVHK8TUozdXDk
+         OAsQ3MareFE7pd5OlD5coxe/ceFLM02To1NmPcF5TLdX2X1ymbTbe3ylp9+4rD6SeHN3
+         tTSmfS5sWOw/5DV84k7qrLgHWMsGWD4MeznJoVETiN7V0g7KSC7hTRRuuIM48VzwwAjB
+         Tx52GtMtUvbQCILyh3Ug+EuMMr6ELDkskobJEBfh+rNmFU2QE8NxJ8GwAZmknRrhcNso
+         98nQ==
+X-Gm-Message-State: APjAAAUb38desIMlwL20fzGfSV124ZMgZxAAeHgbBZO5IdFPwdngeIUJ
+        Qfz9ByNpu1LH+U5+PUNWmv/YIA==
+X-Google-Smtp-Source: APXvYqwSoSdzmSThKSMRUEmWnqBIzy3JLEQjsMsy3WU0XrIZvapOFxa+yJldgHFiQ3VCIhTfJdp9Wg==
+X-Received: by 2002:a1c:1f89:: with SMTP id f131mr33287131wmf.140.1567416699794;
+        Mon, 02 Sep 2019 02:31:39 -0700 (PDT)
 Received: from dell ([95.147.198.93])
-        by smtp.gmail.com with ESMTPSA id s15sm6398842wmh.12.2019.09.02.02.11.31
+        by smtp.gmail.com with ESMTPSA id v186sm33030150wmb.5.2019.09.02.02.31.38
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 02 Sep 2019 02:11:32 -0700 (PDT)
-Date:   Mon, 2 Sep 2019 10:11:30 +0100
+        Mon, 02 Sep 2019 02:31:39 -0700 (PDT)
+Date:   Mon, 2 Sep 2019 10:31:37 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     jingoohan1@gmail.com, daniel.thompson@linaro.org,
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, paul.kocialkowski@bootlin.com
-Subject: Re: [PATCH v3] backlight: gpio-backlight: Correct initial power
- state handling
-Message-ID: <20190902091130.GG32232@dell>
-References: <20190731084018.5318-1-peter.ujfalusi@ti.com>
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v3 0/7] backlight: gpio: simplify the driver
+Message-ID: <20190902093137.GI32232@dell>
+References: <20190724082508.27617-1-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190731084018.5318-1-peter.ujfalusi@ti.com>
+In-Reply-To: <20190724082508.27617-1-brgl@bgdev.pl>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 31 Jul 2019, Peter Ujfalusi wrote:
+On Wed, 24 Jul 2019, Bartosz Golaszewski wrote:
 
-> The default-on property - or the def_value via legacy pdata) should be
-> handled as:
-> if it is 1, the backlight must be enabled (kept enabled)
-> if it is 0, the backlight must be disabled (kept disabled)
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> This only works for the case when default-on is set. If it is not set then
-> the brightness of the backlight is set to 0. Now if the backlight is
-> enabled by external driver (graphics) the backlight will stay disabled since
-> the brightness is configured as 0. The backlight will not turn on.
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
 > 
-> In order to minimize screen flickering during device boot:
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
 > 
-> The initial brightness should be set to 1.
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
 > 
-> If booted in non DT mode or no phandle link to the backlight node:
-> follow the def_value/default-on to select UNBLANK or POWERDOWN
+> [1] https://lkml.org/lkml/2019/6/25/900
 > 
-> If in DT boot we have phandle link then leave the GPIO in a state which the
-> bootloader left it and let the user of the backlight to configure it
-> further.
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
 > 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> ---
-> Hi,
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local vars
 > 
-> sorry for the delay, but got distracted a bit with the resend of this...
-> Let's try again ;)
+> Bartosz Golaszewski (7):
+>   sh: ecovec24: add additional properties to the backlight device
+>   backlight: gpio: simplify the platform data handling
+>   sh: ecovec24: don't set unused fields in platform data
+>   backlight: gpio: remove unused fields from platform data
+>   backlight: gpio: remove dev from struct gpio_backlight
+>   backlight: gpio: remove def_value from struct gpio_backlight
+>   backlight: gpio: use a helper variable for &pdev->dev
 > 
-> Changes since v2 (https://lore.kernel.org/patchwork/patch/1002359/):
-> - Rebased on drm-next
-> 
-> Changes since v1:
-> - Implement similiar initial power state handling as pwm backlight have
-> 
-> Regards,
-> Peter
-> 
->  drivers/video/backlight/gpio_backlight.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
+>  arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+>  drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+>  include/linux/platform_data/gpio_backlight.h |  3 -
+>  3 files changed, 44 insertions(+), 74 deletions(-)
 
-Applied, thanks.
+Can you collect all your Acks and re-submit please?
 
 -- 
 Lee Jones [李琼斯]
