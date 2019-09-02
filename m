@@ -2,84 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF99A43DE
-	for <lists+linux-fbdev@lfdr.de>; Sat, 31 Aug 2019 12:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D824CA5204
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 10:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727299AbfHaKAh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 31 Aug 2019 06:00:37 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:48984 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726650AbfHaKAg (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 31 Aug 2019 06:00:36 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d13 with ME
-        id vm0V2000c3xPcdm03m0WGA; Sat, 31 Aug 2019 12:00:33 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 31 Aug 2019 12:00:33 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     b.zolnierkie@samsung.com, lkundrak@v3.sk, yuehaibing@huawei.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] pxa168fb: Fix the function used to release some memory in an error handling path
-Date:   Sat, 31 Aug 2019 12:00:24 +0200
-Message-Id: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1729849AbfIBIkf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Sep 2019 04:40:35 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:55009 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730728AbfIBIk2 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 04:40:28 -0400
+Received: by mail-wm1-f66.google.com with SMTP id k2so12117322wmj.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 02 Sep 2019 01:40:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=xl3Ai/AmJFR6ZhTztzr3SBL0HsX+mzfXY2ojYs65AK8=;
+        b=GjeWNFh0qzJtRNv2HvHvICds/YkS4LdvROFX4CYEyI+4pLuL3eNmjv3XCtsie8gXNe
+         UptA6Vkinbxf2B4m2QNS2dJHMEtorZsE7he4AlyM6kxnQkbxQ1f7tXSrgZUlCujENiiQ
+         KbDmM6mjgN1X8aIchZswmgojxyWJM8ZqFivrjFpBFHNiFl0ZK7dp2qGlBzByaJTsVy2O
+         z02Ylk8HPjyWcmTuIKetoNU+djS6Hrh5wyc9L0icwNq/d6/cUgz5YMLD9DL24TFF7m0f
+         G4YU3dPXlkUJVnHG/Nn0VffzjL7K/0IPs2J4ObsxpAclJ2CtmHwogXVcuk3OqX95oeqZ
+         P57g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=xl3Ai/AmJFR6ZhTztzr3SBL0HsX+mzfXY2ojYs65AK8=;
+        b=c8PTvnxCixzj+C8rs928VFfkkxeaYJNf0629EGTrMPQjheHpARZIgBlSGaf5cIIV3V
+         bA62Bgpbl1fRrzbQiWbHp6w0hsHMoQhZgut1p1PpKkMH+QAs44D14woC+vjctiId2+q3
+         8ucIh/aUju0GqL2hgsnanlWpgXERr0OCe63xD8PWOTETXvra81/6pIbFd+4OiM7DHN3E
+         2yEmCVJ/s6aD7kefVCfSA31SKdBSi7RSRIC3iHyordPlo4tDA5qj9zVnx9CvSkQVQzs+
+         Pr2Td6ju94wpobCVzvr8POKeXsThnAJsWvr8CU5MjF3shXtyj0i1MBB6plnPUd10fvgN
+         uOQA==
+X-Gm-Message-State: APjAAAX6ZbE7jyf336aSjUv2td8co9CF8KHkhal38Toy4itpfegIWO9v
+        Wo1GmzsIaOwn9fOY5KitVzhEfw==
+X-Google-Smtp-Source: APXvYqxQxojiBDTKZPusJic1q3Feb7uYrPchzyphP+/xVK/9HREqN30l5NNGO3CqPCl1x/VhD0itdQ==
+X-Received: by 2002:a1c:a383:: with SMTP id m125mr34928752wme.57.1567413626783;
+        Mon, 02 Sep 2019 01:40:26 -0700 (PDT)
+Received: from dell ([95.147.198.93])
+        by smtp.gmail.com with ESMTPSA id v186sm32753984wmb.5.2019.09.02.01.40.25
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 02 Sep 2019 01:40:26 -0700 (PDT)
+Date:   Mon, 2 Sep 2019 09:40:24 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Alexander Shiyan <shc_work@mail.ru>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH resend] video: backlight: Drop default m for
+ {LCD,BACKLIGHT_CLASS_DEVICE}
+Message-ID: <20190902084024.GR4804@dell>
+References: <20190813115853.30329-1-geert@linux-m68k.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190813115853.30329-1-geert@linux-m68k.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In the probe function, some resources are allocated using 'dma_alloc_wc()',
-they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
+On Tue, 13 Aug 2019, Geert Uytterhoeven wrote:
 
-We already use 'dma_free_wc()' in the remove function, but not in the
-error handling path of the probe function.
+> When running "make oldconfig" on a .config where
+> CONFIG_BACKLIGHT_LCD_SUPPORT is not set, two new config options
+> ("Lowlevel LCD controls" and "Lowlevel Backlight controls") appear, both
+> defaulting to "m".
+> 
+> Drop the "default m", as options should default to disabled, and because
+> several driver config options already select LCD_CLASS_DEVICE or
+> BACKLIGHT_CLASS_DEVICE when needed.
+> 
+> Fixes: 8c5dc8d9f19c7992 ("video: backlight: Remove useless BACKLIGHT_LCD_SUPPORT kernel symbol")
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> ---
+>  drivers/video/backlight/Kconfig | 2 --
+>  1 file changed, 2 deletions(-)
 
-Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
-PAGE_ALIGNed.
+Applied, thanks.
 
-Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-The change about PAGE_ALIGN should probably be part of a separate commit.
-However, git history for this driver is really quiet. If you think it
-REALLY deserves a separate patch, either split it by yourself or axe this
-part of the patch. I won't bother resubmitting for this lonely cleanup.
-Hoping for your understanding.
----
- drivers/video/fbdev/pxa168fb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index 1410f476e135..1fc50fc0694b 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
- failed_free_clk:
- 	clk_disable_unprepare(fbi->clk);
- failed_free_fbmem:
--	dma_free_coherent(fbi->dev, info->fix.smem_len,
--			info->screen_base, fbi->fb_start_dma);
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
-+		    info->screen_base, fbi->fb_start_dma);
- failed_free_info:
- 	kfree(info);
- 
-@@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
- 
- 	irq = platform_get_irq(pdev, 0);
- 
--	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
- 		    info->screen_base, info->fix.smem_start);
- 
- 	clk_disable_unprepare(fbi->clk);
 -- 
-2.20.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
