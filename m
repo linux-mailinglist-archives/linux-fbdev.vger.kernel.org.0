@@ -2,109 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D18A531A
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 11:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A91A5626
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 14:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730696AbfIBJmP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 Sep 2019 05:42:15 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:37634 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730678AbfIBJmP (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 05:42:15 -0400
-Received: by mail-wm1-f67.google.com with SMTP id d16so13858031wme.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 02 Sep 2019 02:42:13 -0700 (PDT)
+        id S1730331AbfIBMey (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Sep 2019 08:34:54 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:38547 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730127AbfIBMex (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 08:34:53 -0400
+Received: by mail-wm1-f68.google.com with SMTP id o184so14424685wme.3
+        for <linux-fbdev@vger.kernel.org>; Mon, 02 Sep 2019 05:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=iK4LKa2PqlS0Y5u4Gjl7mrzOSTmztak1fj4wGqVsFy4=;
-        b=S/WMwjjBsYD6eC5+gEOI58+jRpAry6yXwLdfqno73t/WpmJzLCQpqM2O2mTs/aiwQR
-         TCGv+n2vwxgVgIx+fPgz4pHjr9PA1fIL+38d3IdqZWTS9Tyg0SCxGxy5hC9PnOHU0A6S
-         6S6nOWcPZFNCZ2aIevsy5XbQrn1qE0XwXbaXnXNnt6jhsNbdKuXnJjHv+pVAVFGLna0+
-         YU/tKj9qpFXh/951Jev2PUuDzIubEmF24MUyCESqrgAuuraAsPwd1+e18ZC6zmc4eaRi
-         cQ7yC7GHWkx6zeRgTvQrH97fL7TXhIoW0isOYDcSdW/bYVSopm5JEQjiBCDxmVrFQc+/
-         YUuA==
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=pVkk4EQb8Rw026QE2F67s/FRBhwcF2RyAloU19aASKmT4dLQntoYwfHzxQIV3lDTlX
+         J2UPXFD2FdccyDHwI9GOSoMmWyKK6AWhN6uJu6eBjE9aq51c03XadnQfVpnCbnNsk4Pq
+         Re8CdR5aYt1pqNEFBLX7O4Moo6VmqLxp/bu0REWCEuoPLedggkakQpNbB+m2zXBae4hd
+         flGcAQIcc9FgyB3wsG4o+RhkuyJHlpVoaM+swKs0Zjxs27c/6T6SnaQ5wHSIn9/9E9h8
+         WdgXWvWlzbDhxolhuq+K5d4TvZYiuFKKCjxnIXK3nv/yQrvryc5SByyykXN9SPHDVF65
+         mUIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=iK4LKa2PqlS0Y5u4Gjl7mrzOSTmztak1fj4wGqVsFy4=;
-        b=uGtuSboLQQoG5QxMYSFgkMigazcVMwKvrh3mPExMGMeXnrKABNYpU/GlEtdqrVwI6l
-         OLxWRreb/CD6qxIP4ZreoQWN+NpY4eDUy1IqhVfOt//mgK+KhBIe8hOAhcJ1SZLVg9/d
-         TCLk2MgJKrc7lv0uSdaWWrTpHG+oVcdA3RefgcO8vu4fiWADWxyhmm654TNEC7YCxWC1
-         jr4LGie8MR6ChvEzrl7+3DxSxVfc+s9vTKAXV29z89yHjdBTqy9zD0W/I9Uu7r5I4hKW
-         qM4+p97Y1TPjn6tRL72CWrCE+eZOeIc1F4WYAFUhzqeKx2XYTl4AxhW6AbEt5EeQqe3n
-         N12w==
-X-Gm-Message-State: APjAAAUwTkHQoGoij5EiqSiY6dOhCYOg+J4YWpGkDAjOtLMHpvUbIpvG
-        lWWMOLReF4XMPDyUMr0BmGzLIw==
-X-Google-Smtp-Source: APXvYqzNZJNoxLswvc9p2LnkDfvzZJYlWCgpWeM7LW0HaPoM2ddXbfzMbv9rhLZWFOa3XTsnVAB6og==
-X-Received: by 2002:a7b:c019:: with SMTP id c25mr35998457wmb.116.1567417333221;
-        Mon, 02 Sep 2019 02:42:13 -0700 (PDT)
-Received: from dell ([95.147.198.93])
-        by smtp.gmail.com with ESMTPSA id k9sm16402618wrq.15.2019.09.02.02.42.12
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 02 Sep 2019 02:42:12 -0700 (PDT)
-Date:   Mon, 2 Sep 2019 10:42:11 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XtfVe2y0PV6JCnkWUgt29BFtDKrtsJ9asmKj1fX6iHM=;
+        b=pDPWM3y5dJiYcTrRf/OfSxddl7FgWVpr+/djhiwjgwnC7mw++JPuMl8Z5VNgls1gOR
+         OhG2+5Tyb2/bfb1MDWZSyDotkvazOEhkkYwxIiSRd+0KKBSeC0o9Q2M6M3SNUINJlcSf
+         Yvvv/p3wLxWz9V744eDxdsABZFi4yFC3v6giOa5RvsC50ppeLbGNap39pXz5HwNMLbP5
+         IzC3nQ7noBvmFmOBVaW6uj5ZT48OTqlou5URDVkXdre6Nr2fF60qX9wba8ZyD8uLiMMc
+         53GkmyJaW4/IvYXhlFa+txiI5E0wwdRJ3T9ZjcrBKK0pV3UMU0KfQihATextPEIouCVX
+         cmLg==
+X-Gm-Message-State: APjAAAUUiPUV3Tx00kZEG88Wt78nTAhebryAmOLqGs+jwNtcB/ZoatIh
+        qGCAQkURoEUfQnMU4JnxO/p9MA==
+X-Google-Smtp-Source: APXvYqyrnPWYmmZIE808s52Grv7xJXO5wACPj/78PCA7WIfz+B6gplbNIrHaV5BnZvS7GkbDFMpz5A==
+X-Received: by 2002:a1c:7513:: with SMTP id o19mr34854254wmc.126.1567427691708;
+        Mon, 02 Sep 2019 05:34:51 -0700 (PDT)
+Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
+        by smtp.gmail.com with ESMTPSA id k9sm22645759wrd.7.2019.09.02.05.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2019 05:34:50 -0700 (PDT)
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Subject: Re: [PATCH v3 4/4] backlight: pwm_bl: Set scale type for brightness
- curves specified in the DT
-Message-ID: <20190902094211.GO32232@dell>
-References: <20190709190007.91260-1-mka@chromium.org>
- <20190709190007.91260-5-mka@chromium.org>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: [RESEND PATCH v3 0/7] backlight: gpio: simplify the driver
+Date:   Mon,  2 Sep 2019 14:34:37 +0200
+Message-Id: <20190902123444.19924-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190709190007.91260-5-mka@chromium.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 09 Jul 2019, Matthias Kaehlcke wrote:
+From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-> Check if a brightness curve specified in the device tree is linear or
-> not and set the corresponding property accordingly. This makes the
-> scale type available to userspace via the 'scale' sysfs attribute.
-> 
-> To determine if a curve is linear it is compared to a interpolated linear
-> curve between min and max brightness. The curve is considered linear if
-> no value deviates more than +/-5% of ${brightness_range} from their
-> interpolated value.
-> 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-> ---
-> Changes in v3:
-> - none
-> 
-> Changes in v2:
-> - use 128 (power of two) instead of 100 as factor for the slope
-> - add comment about max quantization error
-> - added Daniel's 'Acked-by' tag
-> ---
->  drivers/video/backlight/pwm_bl.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+While working on my other series related to gpio-backlight[1] I noticed
+that we could simplify the driver if we made the only user of platform
+data use GPIO lookups and device properties. This series tries to do
+that.
 
-Applied, thanks.
+The first patch adds all necessary data structures to ecovec24. Patch
+2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+3-4/7 remove unused platform data fields. Last three patches contain
+additional improvements for the GPIO backlight driver while we're already
+modifying it.
+
+I don't have access to this HW but hopefully this works. Only compile
+tested.
+
+[1] https://lkml.org/lkml/2019/6/25/900
+
+v1 -> v2:
+- rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+- added additional two patches with minor improvements
+
+v2 -> v3:
+- in patch 7/7: used initializers to set values for pdata and dev local vars
+
+Bartosz Golaszewski (7):
+  sh: ecovec24: add additional properties to the backlight device
+  backlight: gpio: simplify the platform data handling
+  sh: ecovec24: don't set unused fields in platform data
+  backlight: gpio: remove unused fields from platform data
+  backlight: gpio: remove dev from struct gpio_backlight
+  backlight: gpio: remove def_value from struct gpio_backlight
+  backlight: gpio: use a helper variable for &pdev->dev
+
+ arch/sh/boards/mach-ecovec24/setup.c         | 33 ++++++--
+ drivers/video/backlight/gpio_backlight.c     | 82 +++++---------------
+ include/linux/platform_data/gpio_backlight.h |  3 -
+ 3 files changed, 44 insertions(+), 74 deletions(-)
 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.21.0
+
