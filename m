@@ -2,93 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BAEA5678
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Sep 2019 14:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AFD2A6DF1
+	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Sep 2019 18:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729893AbfIBMnO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 Sep 2019 08:43:14 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:39076 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729690AbfIBMnO (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Sep 2019 08:43:14 -0400
-Received: by mail-pg1-f194.google.com with SMTP id u17so7430699pgi.6;
-        Mon, 02 Sep 2019 05:43:13 -0700 (PDT)
+        id S1730077AbfICQT2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Sep 2019 12:19:28 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:40392 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727810AbfICQT1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 3 Sep 2019 12:19:27 -0400
+Received: by mail-wm1-f66.google.com with SMTP id t9so125816wmi.5
+        for <linux-fbdev@vger.kernel.org>; Tue, 03 Sep 2019 09:19:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Ooe5z12tf4eCBGCVXGJZdyU61lnZf8UxozrPAtJtqFg=;
-        b=LyO2ylq1hMvJP8HhT7mG3uunF78cZErvlO24NmDxqyhxNiCdYGt6pNgVCw1Jxd9HtE
-         2gLGK6oFjGGUNacqqhFzoTnVtYoVhI1eP8mHDf2fEY9kSmDDGKqG9tCN00JhEw/uoxWw
-         NKw+ZSlhqJnxG5HRQDmIhgAeiBcHi8Qt5xYB+EqzGfeIFHSwzpiIztN/Y33b8qq3zHH1
-         dc11/UPJEVWoCK1awbsKTd/NBn0v/c6kBXk4CbcDli9aeug4q0uJc9wLIYhG1Zo4nQ3z
-         Ll9kbCP93B+XX6aytGvWmNweWxpbawacxilTi4M4GSiIL6ddW8l+0OE0Xv2FcwOH/BHt
-         Ogag==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=sgA6tCvJaTRg35lxvETEOk42SQwlvhDmgf9L2xbY5u4=;
+        b=tLxBO+vZGBMg+VdcasGIrVZS+MBaiDkZCgH8CYS8Vn4yPSdv2G2ASG9PHOinlSjtrC
+         9MP7SC4nS9fdtZCAeQoO1gr1HlOyTs87kEObp4+KybmWIQEUwbuJj+wnpdUCjCwrAMNC
+         KbkU/ETPNgFX4R+JlPZqBxzwSEQ7C9LB2S+P/JmalJ0UXXiiRYqJks/VegJqesuidOBw
+         cqsGOuV4jjv90cPC4g9pCVSyCIps4vDw5RgKPt1eUOJXl4BH7oKPGNL6z5QESlQfWih2
+         8INIRFBx8gEvKhFRWOf+grRSCZtLFVusbJmr9tB8JScL01hAHMEICQLAVCirJ/OJuMG4
+         vXgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Ooe5z12tf4eCBGCVXGJZdyU61lnZf8UxozrPAtJtqFg=;
-        b=O4rpQgJqk57mzAoSKz5554iYsXSBg0ff8vKbNIfugvIWyna+4u1VbxA2aQRWHIXIQb
-         OWhkdh7U7XL/SGxYnSNWFucFXNhpA81CU0PGQ5c4HbwBOre8c6Vj7CQwoK+IQSrNlS0D
-         KeWZ2+uUCAZ5dJtyH0tR/axJIQbsm5zCJjxmz1JBVRnafFLN7S2o6PYS6kOGpJe2eunF
-         50fyT6NjdRxqu+FdD2orUJuBUuF0+0CDCphId5feaJBy2MKWkO7bUHaXFLd+SdkeFvLv
-         +BR0CXOFkNqaoAfL2vPj6u2UhQWRmxw0c6YoZ7EDPQ1JPa/3Ov6yppzu6Qb7CYD74TIK
-         ZC8Q==
-X-Gm-Message-State: APjAAAUDnn51rMH5Y+FChwhXj84LmulQ9hQPqkrgZYd+k1QNo9RXKDud
-        J6mRglmJKCoqKBByvMR17sE=
-X-Google-Smtp-Source: APXvYqyLyzHI4G7B5pK37XIuveSiZGZ9agj2nr+S8QgtKm0qzaCDTZJG50/mG2xYaudRpo8bEPEpEw==
-X-Received: by 2002:a62:e30d:: with SMTP id g13mr13849175pfh.42.1567428193475;
-        Mon, 02 Sep 2019 05:43:13 -0700 (PDT)
-Received: from jordon-HP-15-Notebook-PC.domain.name ([49.207.50.39])
-        by smtp.gmail.com with ESMTPSA id m102sm2126286pje.5.2019.09.02.05.43.10
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Mon, 02 Sep 2019 05:43:12 -0700 (PDT)
-From:   Souptick Joarder <jrdr.linux@gmail.com>
-To:     b.zolnierkie@samsung.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, sabyasachi.linux@gmail.com,
-        Souptick Joarder <jrdr.linux@gmail.com>
-Subject: [PATCH] video/fbdev/68328fb: Remove dead code
-Date:   Mon,  2 Sep 2019 18:19:04 +0530
-Message-Id: <1567428544-8620-1-git-send-email-jrdr.linux@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=sgA6tCvJaTRg35lxvETEOk42SQwlvhDmgf9L2xbY5u4=;
+        b=LenrJAT263dmCN5iubM4ufKlXVD4BHeqNL9uYIxLWL8GgEQxDYGQ1RX2ueQuR9ug5v
+         uG/wp581z2JI+ihkhmPQ5CczmaEWetrW/OXRffQwuexLHMqWAsGRyYGZQjojRNnQEyNd
+         gVdq9SR8dzpPJyg62VPRu/oqGveMAVx7+vICMDAxHX+8a6XYhd3RgQliqjUCr8kjP/zY
+         dCFDKm3NTiDueFdRAkDPSsrJbdOMEvutmuYPGKVL3KIgQophblE+a+IucUPvU18kFA1t
+         sI2Q3vC5sLdvwoCWYDZhVk5Flqau4ikfgEPCjh3oj7u8NRoJZdYdkWa5tyGdfJYMFthv
+         l9ug==
+X-Gm-Message-State: APjAAAWbazZc9EivgAxFjCMmzdVOVo65DY/YTqTWt5eg780Jfzjfdhgk
+        EWnXdH5Udu1Pp+YHCbJIiPyCwA==
+X-Google-Smtp-Source: APXvYqyAzHLUCAmUnjAuDzEzve0pETSkr021EixF0mi07mhQ0Ag3dJ64DWhOZaitzgpCSVqus+IyyA==
+X-Received: by 2002:a1c:ef13:: with SMTP id n19mr144292wmh.48.1567527566178;
+        Tue, 03 Sep 2019 09:19:26 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id u8sm46851wmj.3.2019.09.03.09.19.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2019 09:19:25 -0700 (PDT)
+Date:   Tue, 3 Sep 2019 17:19:23 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Nishka Dasgupta <nishkadg.linux@gmail.com>
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] backlight: ipaq_micro: Make structure micro_bl_props
+ constant
+Message-ID: <20190903161923.5d2fvrwpvgims4va@holly.lan>
+References: <20190813085855.8302-1-nishkadg.linux@gmail.com>
+ <20190813091251.2nyxtivsvp47aahp@holly.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190813091251.2nyxtivsvp47aahp@holly.lan>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is dead code since 3.15. If their is no plan to
-use it further, these can be removed forever.
+On Tue, Aug 13, 2019 at 10:12:51AM +0100, Daniel Thompson wrote:
+> On Tue, Aug 13, 2019 at 02:28:55PM +0530, Nishka Dasgupta wrote:
+> > Static structure micro_bl_props, having type backlight_properties, is
+> > used only once, when it is passed as the last argument to function
+> > devm_backlight_device_register(). devm_backlight_device_register() is
+> > defined with its last parameter being declared constant. Hence make
+> > micro_bl_props itself constant as well.
+> > Issue found with Coccinelle.
+> 
+> Did you do any review to see if this pattern occurs in other backlight
+> drivers (it looks to me like the same pattern appears in
+> rave-sp-backlight.c... do the tools bring that one out as well).
 
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
----
- drivers/video/fbdev/68328fb.c | 12 ------------
- 1 file changed, 12 deletions(-)
+Ping?
 
-diff --git a/drivers/video/fbdev/68328fb.c b/drivers/video/fbdev/68328fb.c
-index d48e960..02d22b7 100644
---- a/drivers/video/fbdev/68328fb.c
-+++ b/drivers/video/fbdev/68328fb.c
-@@ -405,20 +405,8 @@ static int mc68x328fb_mmap(struct fb_info *info, struct vm_area_struct *vma)
- 
- int __init mc68x328fb_setup(char *options)
- {
--#if 0
--	char *this_opt;
--#endif
--
- 	if (!options || !*options)
- 		return 1;
--#if 0
--	while ((this_opt = strsep(&options, ",")) != NULL) {
--		if (!*this_opt)
--			continue;
--		if (!strncmp(this_opt, "disable", 7))
--			mc68x328fb_enable = 0;
--	}
--#endif
- 	return 1;
- }
- 
--- 
-1.9.1
 
+Daniel.
+
+
+> > Signed-off-by: Nishka Dasgupta <nishkadg.linux@gmail.com>
+> > ---
+> >  drivers/video/backlight/ipaq_micro_bl.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/video/backlight/ipaq_micro_bl.c b/drivers/video/backlight/ipaq_micro_bl.c
+> > index 1123f67c12b3..85b16cc82878 100644
+> > --- a/drivers/video/backlight/ipaq_micro_bl.c
+> > +++ b/drivers/video/backlight/ipaq_micro_bl.c
+> > @@ -44,7 +44,7 @@ static const struct backlight_ops micro_bl_ops = {
+> >  	.update_status  = micro_bl_update_status,
+> >  };
+> >  
+> > -static struct backlight_properties micro_bl_props = {
+> > +static const struct backlight_properties micro_bl_props = {
+> >  	.type = BACKLIGHT_RAW,
+> >  	.max_brightness = 255,
+> >  	.power = FB_BLANK_UNBLANK,
+> > -- 
+> > 2.19.1
+> > 
