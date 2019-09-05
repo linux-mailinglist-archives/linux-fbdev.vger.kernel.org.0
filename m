@@ -2,151 +2,159 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 206F3AA578
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Sep 2019 16:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC4BAABA0
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Sep 2019 21:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729444AbfIEOKx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 Sep 2019 10:10:53 -0400
-Received: from mail-eopbgr690109.outbound.protection.outlook.com ([40.107.69.109]:53926
-        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726048AbfIEOKw (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 5 Sep 2019 10:10:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gc2xlkOqytAeLMKpn61dP5axvSx7pPnFfyYyJf4zeiHbOW6O5o2xJ/O3oFmhHKQ1fkx//h74lLZXu7svD6FTPfL3criE0jxsqlHrWbeo1vKIM+vxD6SGNPjH9Nr4jXLNIjRRwyEUv/YtfO6uZ+c707hIfFt2ZNiVo3KpOQ+Dk6jhNku3Ts3HRQGQ4cAAmeD0+6nZ036edioi9pcfRtjLEgRX0coWNYdXTn2PE6vEDAUSkjv0jXjZLi1lSSsiv8amdwpaP6yFL/4OkvMbJOe6WFZYyQoZUisSGd6ooAQTBJilyG2geZO2DIyWLMkp4RRwpE2wevQn1xtuYyxoB80hhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PCzz6TGh5YDPu0fhXRfVHreDzkPAZGnwIzndkFxf26w=;
- b=YqqB+VLxhK7Y1LzTBAY5R6Oi2QFdfNVFvS2yA+s5V1r1Ze8pFsfYdVgqM8AuEX5Nrq/jYp25BJtvCsEbViJcnZULhablpyyFtj4h/Y177ISkt24hr0VTunuv29LnPMbrb8znnOk6MDOFplc6xf2c9VGqsN3oc6yJNtl4lKW7DUP/6c3zTyU+zy5So+wVY9DUDVGAlSqjPdBjibQM6zRg5nEprE+pVHrj4RG1CDrEx8NioJRovRKQO+If90bCACd8Q7ZuErrqK3GNEGYhQtBWE4S011hhbHammPIB+nUucuVkaOIxot2XlIB1ZLs8bD+zwf3UglKGmH0BUor9ss9wCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PCzz6TGh5YDPu0fhXRfVHreDzkPAZGnwIzndkFxf26w=;
- b=IndvI/B4KcMnmklozIRtXTT5B3ZeGLUPakyGKwl9AtEtDhAW/pGJUA3LQ7zaK7z0U7r+mfmCw5ZbpTCkHv3DF4T88Njv93y849wg4HQ+Q8n+OyUjH9Uvx8kIkuSsRvxowpLe7lzz/yLb2Capy7nRGHIinQZ4S/8CrkPTUDo8ywA=
-Received: from DM5PR21MB0137.namprd21.prod.outlook.com (10.173.173.12) by
- DM5PR21MB0843.namprd21.prod.outlook.com (10.173.172.141) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2263.7; Thu, 5 Sep 2019 14:10:10 +0000
-Received: from DM5PR21MB0137.namprd21.prod.outlook.com
- ([fe80::c437:6219:efcc:fb8a]) by DM5PR21MB0137.namprd21.prod.outlook.com
- ([fe80::c437:6219:efcc:fb8a%7]) with mapi id 15.20.2263.004; Thu, 5 Sep 2019
- 14:10:10 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Wei Hu <weh@microsoft.com>,
-        "rdunlap@infradead.org" <rdunlap@infradead.org>,
-        "shc_work@mail.ru" <shc_work@mail.ru>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
-        "fthain@telegraphics.com.au" <fthain@telegraphics.com.au>,
-        "info@metux.net" <info@metux.net>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "sashal@kernel.org" <sashal@kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>
-Subject: RE: [PATCH v3] video: hyperv: hyperv_fb: Support deferred IO for
- Hyper-V frame buffer driver
-Thread-Topic: [PATCH v3] video: hyperv: hyperv_fb: Support deferred IO for
- Hyper-V frame buffer driver
-Thread-Index: AQHVY8PxCEaneStSU0CIK0oNOZcaZ6cdH2Xg
-Date:   Thu, 5 Sep 2019 14:10:10 +0000
-Message-ID: <DM5PR21MB0137437661B0B2DDAC94DD5FD7BB0@DM5PR21MB0137.namprd21.prod.outlook.com>
-References: <20190905082816.3612-1-weh@microsoft.com>
-In-Reply-To: <20190905082816.3612-1-weh@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-09-05T14:10:08.5288979Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=54748b5f-44b5-4b28-b4ca-905de987b8bf;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=mikelley@microsoft.com; 
-x-originating-ip: [24.22.167.197]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8a58408b-0837-45f9-50f4-08d7320ac359
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DM5PR21MB0843;
-x-ms-traffictypediagnostic: DM5PR21MB0843:|DM5PR21MB0843:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR21MB0843E24321351C97B1365504D7BB0@DM5PR21MB0843.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4714;
-x-forefront-prvs: 015114592F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(136003)(376002)(346002)(396003)(39860400002)(199004)(189003)(2201001)(86362001)(478600001)(7416002)(6636002)(81166006)(10290500003)(6506007)(33656002)(52536014)(229853002)(8676002)(81156014)(8936002)(66066001)(76176011)(14454004)(99286004)(1511001)(5660300002)(186003)(486006)(25786009)(476003)(10090500001)(2906002)(6246003)(14444005)(3846002)(53936002)(9686003)(446003)(55016002)(7696005)(256004)(2501003)(11346002)(6436002)(66556008)(1250700005)(26005)(305945005)(71190400001)(71200400001)(6116002)(316002)(7736002)(102836004)(8990500004)(110136005)(22452003)(66476007)(64756008)(66946007)(66446008)(76116006)(74316002)(921003)(1121003);DIR:OUT;SFP:1102;SCL:1;SRVR:DM5PR21MB0843;H:DM5PR21MB0137.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: okqGSiKVXw0DOoJAbUyST77SX+6y0vC6jixf7w6wQPrLujlDibbOyK14JeIQSB1tstFEXyNGaGvTa8SCKqMNhS/f2BUHzQRcYQfl9XaqbVIkkv3dQiklV9aCssqNwTWlROiVUZpXLH6QnRlURsdO5gTysD5SWRl7cc8yTC4B1kJ8tl4PcK8H0R9uXx2kxWak1s4FY3XPMik0hFBc+qPi0BHdgw25dGufJfCl0HOo5qQFgioW5JQJTvzK2n/GqbjThVpVwtV6e//60IoT/7KetcdVTSk87B8oDI3md36GN3gPzYVFsyG/hLNpHFF4oSpspq98aHo7fyxQYHu62ByGY4oFlvY/zxjTc6v30RyYug+Gxw+zMij48LYLXhJqQd/N0Ragg/RbGT8Lb4TWh4HnHJXwZbMUFTy8tAuqTAPpm0g=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S2388892AbfIETCT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Sep 2019 15:02:19 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:44988 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388876AbfIETCT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Sep 2019 15:02:19 -0400
+Received: by mail-ed1-f68.google.com with SMTP id p2so2570566edx.11;
+        Thu, 05 Sep 2019 12:02:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=v4l9+uLQJWURusV4drj/K/JT9G0Yx+NFjnv0KyB59Ic=;
+        b=PnvOvkJDFNg+acQrpzjam3LrhWcZUIbSV03EXhQ9SgNbgVR/AqtMhjbwuZ8GDXBab3
+         ouBdHhiZCSRrmT2gHqDdanSS6HIFRf/nXPryS9H8+kvwoMp2PAnGnDO/+cJvgywYy2Za
+         JeFkKSzL5kUSupSwMvaxqd82u/l1fPg2nzvaKVrbzCG14Q20EaOycbVhfaizWgyJJB5K
+         m9FjaMKFN6JUSiJi+bZA1mdxIrlUBOFg/tZowzXyIs3eWkJWbnuwRnHKYQumEFbSZZUg
+         f2ERshrDuYFC6s8QkTCd8ZjXuBljgZkySCK/glC+0VyfDHo6MtSQX39kYHAT5Ffbt4K0
+         Z1gA==
+X-Gm-Message-State: APjAAAUgp9GMIoRuVgBWGV8XOfl7FXGalJGgHLLokoRsw03bJoW/bIi3
+        yHqTZQnrW1Zq0jG6uRSSc5G5O671j/o=
+X-Google-Smtp-Source: APXvYqxzTd47MqlgRCViKZrBRfYIigl7s3wz0sbueSZHBfhnmYPyF1bujYRjHD25yQvX/uZoFR+sVg==
+X-Received: by 2002:a17:906:4e12:: with SMTP id z18mr4200348eju.187.1567710136067;
+        Thu, 05 Sep 2019 12:02:16 -0700 (PDT)
+Received: from [10.68.32.192] (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.gmail.com with ESMTPSA id t22sm520533edd.79.2019.09.05.12.02.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Sep 2019 12:02:15 -0700 (PDT)
+Subject: Re: [PATCH v2 00/10] Add definition for the number of standard PCI
+ BARs
+To:     Andrew Murray <andrew.murray@arm.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, Sebastian Ott <sebott@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Peter Jones <pjones@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>, kvm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
+        x86@kernel.org, linux-s390@vger.kernel.org
+References: <20190816092437.31846-1-efremov@linux.com>
+ <20190816105128.GD14111@e119886-lin.cambridge.arm.com>
+From:   Denis Efremov <efremov@linux.com>
+Message-ID: <5d8cdc6b-f8c9-c3f1-e11d-13b3a7eb5b26@linux.com>
+Date:   Thu, 5 Sep 2019 22:02:13 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.0
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a58408b-0837-45f9-50f4-08d7320ac359
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2019 14:10:10.3607
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0SVHRfwKLtk9micMfM1dXprJnUjPgfovM7XSYofh42mdlKTYnC8sGb/U5NzVttP70P6TWBHyofVZ8RiJC4ptgKqj/FORWS74XAXSyhDtLqs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR21MB0843
+In-Reply-To: <20190816105128.GD14111@e119886-lin.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Wei Hu <weh@microsoft.com> Sent: Thursday, September 5, 2019 1:29 AM
->=20
-> Without deferred IO support, hyperv_fb driver informs the host to refresh
-> the entire guest frame buffer at fixed rate, e.g. at 20Hz, no matter ther=
-e
-> is screen update or not. This patch supports deferred IO for screens in
-> graphics mode and also enables the frame buffer on-demand refresh. The
-> highest refresh rate is still set at 20Hz.
->=20
-> Currently Hyper-V only takes a physical address from guest as the startin=
-g
-> address of frame buffer. This implies the guest must allocate contiguous
-> physical memory for frame buffer. In addition, Hyper-V Gen 2 VMs only
-> accept address from MMIO region as frame buffer address. Due to these
-> limitations on Hyper-V host, we keep a shadow copy of frame buffer
-> in the guest. This means one more copy of the dirty rectangle inside
-> guest when doing the on-demand refresh. This can be optimized in the
-> future with help from host. For now the host performance gain from deferr=
-ed
-> IO outweighs the shadow copy impact in the guest.
->=20
-> Signed-off-by: Wei Hu <weh@microsoft.com>
-> ---
->     v2: Incorporated review comments from Michael Kelley
->     - Increased dirty rectangle by one row in deferred IO case when sendi=
-ng
->     to Hyper-V.
->     - Corrected the dirty rectangle size in the text mode.
->     - Added more comments.
->     - Other minor code cleanups.
->=20
->     v3: Incorporated more review comments
->     - Removed a few unnecessary variable tests
->=20
->  drivers/video/fbdev/Kconfig     |   1 +
->  drivers/video/fbdev/hyperv_fb.c | 216 +++++++++++++++++++++++++++++---
->  2 files changed, 197 insertions(+), 20 deletions(-)
->=20
 
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+
+On 16.08.2019 13:51, Andrew Murray wrote:
+> On Fri, Aug 16, 2019 at 12:24:27PM +0300, Denis Efremov wrote:
+>> Code that iterates over all standard PCI BARs typically uses
+>> PCI_STD_RESOURCE_END, but this is error-prone because it requires
+>> "i <= PCI_STD_RESOURCE_END" rather than something like
+>> "i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
+>> way PCI_SRIOV_NUM_BARS is used. There is already the definition
+>> PCI_BAR_COUNT for s390 only. Thus, this patchset introduces it globally.
+>>
+>> Changes in v2:
+>>   - Reverse checks in pci_iomap_range,pci_iomap_wc_range.
+>>   - Refactor loops in vfio_pci to keep PCI_STD_RESOURCES.
+>>   - Add 2 new patches to replace the magic constant with new define.
+>>   - Split net patch in v1 to separate stmmac and dwc-xlgmac patches.
+>>
+>> Denis Efremov (10):
+>>   PCI: Add define for the number of standard PCI BARs
+>>   s390/pci: Loop using PCI_STD_NUM_BARS
+>>   x86/PCI: Loop using PCI_STD_NUM_BARS
+>>   stmmac: pci: Loop using PCI_STD_NUM_BARS
+>>   net: dwc-xlgmac: Loop using PCI_STD_NUM_BARS
+>>   rapidio/tsi721: Loop using PCI_STD_NUM_BARS
+>>   efifb: Loop using PCI_STD_NUM_BARS
+>>   vfio_pci: Loop using PCI_STD_NUM_BARS
+>>   PCI: hv: Use PCI_STD_NUM_BARS
+>>   PCI: Use PCI_STD_NUM_BARS
+>>
+>>  arch/s390/include/asm/pci.h                      |  5 +----
+>>  arch/s390/include/asm/pci_clp.h                  |  6 +++---
+>>  arch/s390/pci/pci.c                              | 16 ++++++++--------
+>>  arch/s390/pci/pci_clp.c                          |  6 +++---
+>>  arch/x86/pci/common.c                            |  2 +-
+>>  drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c |  4 ++--
+>>  drivers/net/ethernet/synopsys/dwc-xlgmac-pci.c   |  2 +-
+>>  drivers/pci/controller/pci-hyperv.c              | 10 +++++-----
+>>  drivers/pci/pci.c                                | 11 ++++++-----
+>>  drivers/pci/quirks.c                             |  4 ++--
+>>  drivers/rapidio/devices/tsi721.c                 |  2 +-
+>>  drivers/vfio/pci/vfio_pci.c                      | 11 +++++++----
+>>  drivers/vfio/pci/vfio_pci_config.c               | 10 ++++++----
+>>  drivers/vfio/pci/vfio_pci_private.h              |  4 ++--
+>>  drivers/video/fbdev/efifb.c                      |  2 +-
+>>  include/linux/pci.h                              |  2 +-
+>>  include/uapi/linux/pci_regs.h                    |  1 +
+>>  17 files changed, 51 insertions(+), 47 deletions(-)
+> 
+> I've come across a few more places where this change can be made. There
+> may be multiple instances in the same file, but only the first is shown
+> below:
+> 
+> drivers/misc/pci_endpoint_test.c:       for (bar = BAR_0; bar <= BAR_5; bar++) {
+> drivers/net/ethernet/intel/e1000/e1000_main.c:          for (i = BAR_1; i <= BAR_5; i++) {
+> drivers/net/ethernet/intel/ixgb/ixgb_main.c:    for (i = BAR_1; i <= BAR_5; i++) {
+> drivers/pci/controller/dwc/pci-dra7xx.c:        for (bar = BAR_0; bar <= BAR_5; bar++)
+> drivers/pci/controller/dwc/pci-layerscape-ep.c: for (bar = BAR_0; bar <= BAR_5; bar++)
+> drivers/pci/controller/dwc/pcie-artpec6.c:      for (bar = BAR_0; bar <= BAR_5; bar++)
+> drivers/pci/controller/dwc/pcie-designware-plat.c:      for (bar = BAR_0; bar <= BAR_5; bar++)
+> drivers/pci/endpoint/functions/pci-epf-test.c:  for (bar = BAR_0; bar <= BAR_5; bar++) {
+> include/linux/pci-epc.h:        u64     bar_fixed_size[BAR_5 + 1];
+> drivers/scsi/pm8001/pm8001_hwi.c:       for (bar = 0; bar < 6; bar++) {
+> drivers/scsi/pm8001/pm8001_init.c:      for (bar = 0; bar < 6; bar++) {
+> drivers/ata/sata_nv.c:  for (bar = 0; bar < 6; bar++)
+> drivers/video/fbdev/core/fbmem.c:       for (idx = 0, bar = 0; bar < PCI_ROM_RESOURCE; bar++) {
+> drivers/staging/gasket/gasket_core.c:   for (i = 0; i < GASKET_NUM_BARS; i++) {
+> drivers/tty/serial/8250/8250_pci.c:     for (i = 0; i < PCI_NUM_BAR_RESOURCES; i++) { <-----------
+> 
+> It looks like BARs are often iterated with PCI_NUM_BAR_RESOURCES, there
+> are a load of these too found with:
+> 
+> git grep PCI_ROM_RESOURCE | grep "< "
+> 
+> I'm happy to share patches if preferred.
+> 
+
+I'm not sure about lib/devres.c
+265:#define PCIM_IOMAP_MAX      PCI_ROM_RESOURCE
+268:    void __iomem *table[PCIM_IOMAP_MAX];
+277:    for (i = 0; i < PCIM_IOMAP_MAX; i++)
+324:    BUG_ON(bar >= PCIM_IOMAP_MAX);
+352:    for (i = 0; i < PCIM_IOMAP_MAX; i++)
+455:    for (i = 0; i < PCIM_IOMAP_MAX; i++) {
+
+Is it worth changing?
+#define PCIM_IOMAP_MAX  PCI_STD_NUM_BARS
+
+Thanks,
+Denis
