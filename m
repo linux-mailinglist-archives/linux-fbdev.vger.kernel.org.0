@@ -2,92 +2,166 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26379ABBF7
-	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Sep 2019 17:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE8BABC80
+	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Sep 2019 17:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732090AbfIFPNd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Sep 2019 11:13:33 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:42545 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729088AbfIFPNd (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Sep 2019 11:13:33 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1M1aQN-1i8BbC4BGV-0036MD; Fri, 06 Sep 2019 17:13:10 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        id S2389508AbfIFPa4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 6 Sep 2019 11:30:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49954 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727670AbfIFPaz (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Sep 2019 11:30:55 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6GCL-0003KH-3u; Fri, 06 Sep 2019 15:30:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] fbdev/sa1100fb: Remove even more dead code
-Date:   Fri,  6 Sep 2019 17:13:00 +0200
-Message-Id: <20190906151307.1127187-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: fbtft: make several arrays static const, makes object smaller
+Date:   Fri,  6 Sep 2019 16:30:52 +0100
+Message-Id: <20190906153052.31846-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:I6rpL7gCiCsYUlp6FQGbVholK0223LnZWj/mxxwbsh2wD5HPO0Y
- MgVBcVUFLW1dBmdRHCg4XJVf13q17fakxkds8ehcBiRyzFyuzAUTxekyquLBSQNqi73GnuK
- sZ1vOwTnwrszmg9WFHWB62ED8ONFwcWv3gEjZGuyAsYaw9u5kWcwqrkY49JhR48ELym/ShX
- ICERUva5XHQeD9P6oD39g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KwBM+j6sNhA=:23ZTg/QTnEz4XrkmDljwtB
- MBdqWImY+6RZZCY1helSoVRJQZLQtlx5auA31z4ZCkerN2bGZpU1wJzHJyS3eYxPG3j8s1cQD
- fwfXNzSeCwMmx/WjnOUNHcoCdV4+0gdvurE0600hcdX36SAuuDPb39EvvtNkQn9nCUlv3cviV
- o1q20+yQjrQMmNgBeF/vknJhKykartW1vGh8Go+HJMheA49YbbEP5jT2f6IaGHKQ+7wMUB5HD
- EV3WDLIEnB7WWU1NqamJj2LKye4Q64TKReDxf4krxrJ2ACBRdI5TqFGwOhUv3opeDxrJBkun6
- eru8GRr9+SV18fjXTaYfQmDR0HFFn29T6v9fyddJGpyiu8ou2tYFrm7o5mTsjoLa8sV2Ga6eQ
- Eptf6a90avgIWO1+exad423axv8jx+SqSBZgcgsDogwLoyJ8a3N7xN1Z9SWHpQv8HclVxBcyJ
- 5+8PcsWHxGtm+TL3aXhbz4yX471/4N7MC93cHi4RRdow7KtK/0ZdOWHJmD8Gwv56KzXcu1XB7
- tohcl6x0mR/GV+7S0mt/6CoKp/jIrBvH7AkMP5pDk7+1e3nLdFyGeHo0Sjk43MsrGjrV35k6W
- 90mdy/DlvYvQ031hrGQPt1PDYmTEIDjRj10g+X3euhe7eJoZBgRU+nM1bMSUBZ3nALhfOB23K
- C+DXCT5KqzCzX1msEBVRROa50EsIZdnaGgn2PJVgF7kfbLNhpj9ZpkVoj89XFuguvAriVISPe
- 0JB8/EcOeSJWhIzpcv3pe6G3s1sE3xH9t6aNDZWlG2LNjoLkvDpei0IwViHbimKzmXngWNfs8
- e6r4WtvvxVl0i9gPzIkF1IjltyWgQ==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This function lost its only call site as part of
-earlier dead code removal, so remove it as well:
+From: Colin Ian King <colin.king@canonical.com>
 
-drivers/video/fbdev/sa1100fb.c:975:21: error: unused function 'sa1100fb_min_dma_period' [-Werror,-Wunused-function]
+Don't populate the arrays on the stack but instead make them
+static const. Makes the object code smaller by 1329 bytes.
 
-Fixes: 390e5de11284 ("fbdev/sa1100fb: Remove dead code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Before:
+   text	   data	    bss	    dec	    hex	filename
+   5581	   1488	     64	   7133	   1bdd	drivers/staging/fbtft/fb_hx8340bn.o
+   5444	   1264	      0	   6708	   1a34	drivers/staging/fbtft/fb_hx8347d.o
+   3581	   1360	      0	   4941	   134d	drivers/staging/fbtft/fb_ili9163.o
+   7154	   1552	      0	   8706	   2202	drivers/staging/fbtft/fb_ili9320.o
+   7478	   2544	      0	  10022	   2726	drivers/staging/fbtft/fb_ili9325.o
+   6327	   1424	      0	   7751	   1e47	drivers/staging/fbtft/fb_s6d1121.o
+   6498	   1776	      0	   8274	   2052	drivers/staging/fbtft/fb_ssd1289.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+   5376	   1584	     64	   7024	   1b70	drivers/staging/fbtft/fb_hx8340bn.o
+   5276	   1328	      0	   6604	   19cc	drivers/staging/fbtft/fb_hx8347d.o
+   3581	   1360	      0	   4941	   134d	drivers/staging/fbtft/fb_ili9163.o
+   6905	   1616	      0	   8521	   2149	drivers/staging/fbtft/fb_ili9320.o
+   7229	   2608	      0	   9837	   266d	drivers/staging/fbtft/fb_ili9325.o
+   6030	   1488	      0	   7518	   1d5e	drivers/staging/fbtft/fb_s6d1121.o
+   6249	   1872	      0	   8121	   1fb9	drivers/staging/fbtft/fb_ssd1289.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/video/fbdev/sa1100fb.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/staging/fbtft/fb_hx8340bn.c | 2 +-
+ drivers/staging/fbtft/fb_hx8347d.c  | 2 +-
+ drivers/staging/fbtft/fb_ili9163.c  | 2 +-
+ drivers/staging/fbtft/fb_ili9320.c  | 2 +-
+ drivers/staging/fbtft/fb_ili9325.c  | 2 +-
+ drivers/staging/fbtft/fb_s6d1121.c  | 2 +-
+ drivers/staging/fbtft/fb_ssd1289.c  | 2 +-
+ 7 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
-index ae2bcfee338a..81ad3aa1ca06 100644
---- a/drivers/video/fbdev/sa1100fb.c
-+++ b/drivers/video/fbdev/sa1100fb.c
-@@ -967,19 +967,6 @@ static void sa1100fb_task(struct work_struct *w)
- }
- 
- #ifdef CONFIG_CPU_FREQ
--/*
-- * Calculate the minimum DMA period over all displays that we own.
-- * This, together with the SDRAM bandwidth defines the slowest CPU
-- * frequency that can be selected.
-- */
--static unsigned int sa1100fb_min_dma_period(struct sa1100fb_info *fbi)
--{
--	/*
--	 * FIXME: we need to verify _all_ consoles.
--	 */
--	return sa1100fb_display_dma_period(&fbi->fb.var);
--}
--
- /*
-  * CPU clock speed change handler.  We need to adjust the LCD timing
-  * parameters when the CPU clock is adjusted by the power management
+diff --git a/drivers/staging/fbtft/fb_hx8340bn.c b/drivers/staging/fbtft/fb_hx8340bn.c
+index d47dcf31fffb..2fd7b87ea0ce 100644
+--- a/drivers/staging/fbtft/fb_hx8340bn.c
++++ b/drivers/staging/fbtft/fb_hx8340bn.c
+@@ -151,7 +151,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x0f, 0x0f, 0x1f, 0x0f, 0x0f, 0x0f, 0x1f, 0x07, 0x07, 0x07,
+ 		0x07, 0x07, 0x07, 0x03, 0x03, 0x0f, 0x0f, 0x1f, 0x0f, 0x0f,
+ 		0x0f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x00, 0x00,
+diff --git a/drivers/staging/fbtft/fb_hx8347d.c b/drivers/staging/fbtft/fb_hx8347d.c
+index 3427a858d17c..37eaf0862c5b 100644
+--- a/drivers/staging/fbtft/fb_hx8347d.c
++++ b/drivers/staging/fbtft/fb_hx8347d.c
+@@ -95,7 +95,7 @@ static void set_addr_win(struct fbtft_par *par, int xs, int ys, int xe, int ye)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x7f, 0x7f, 0x1f, 0x1f,
+ 		0x1f, 0x1f, 0x1f, 0x0f,
+ 	};
+diff --git a/drivers/staging/fbtft/fb_ili9163.c b/drivers/staging/fbtft/fb_ili9163.c
+index fd32376700e2..05648c3ffe47 100644
+--- a/drivers/staging/fbtft/fb_ili9163.c
++++ b/drivers/staging/fbtft/fb_ili9163.c
+@@ -195,7 +195,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int gamma_adj(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+ 		0x1f, 0x3f, 0x0f, 0x0f, 0x7f, 0x1f,
+ 		0x3F, 0x3F, 0x3F, 0x3F, 0x3F};
+diff --git a/drivers/staging/fbtft/fb_ili9320.c b/drivers/staging/fbtft/fb_ili9320.c
+index ea6e001288ce..f2e72d14431d 100644
+--- a/drivers/staging/fbtft/fb_ili9320.c
++++ b/drivers/staging/fbtft/fb_ili9320.c
+@@ -214,7 +214,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 	};
+diff --git a/drivers/staging/fbtft/fb_ili9325.c b/drivers/staging/fbtft/fb_ili9325.c
+index 85e54a10ed72..c9aa4cb43123 100644
+--- a/drivers/staging/fbtft/fb_ili9325.c
++++ b/drivers/staging/fbtft/fb_ili9325.c
+@@ -208,7 +208,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 	};
+diff --git a/drivers/staging/fbtft/fb_s6d1121.c b/drivers/staging/fbtft/fb_s6d1121.c
+index 5a129b1352cc..8c7de3290343 100644
+--- a/drivers/staging/fbtft/fb_s6d1121.c
++++ b/drivers/staging/fbtft/fb_s6d1121.c
+@@ -123,7 +123,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f,
+ 		0x3f, 0x3f, 0x1f, 0x1f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f,
+ 		0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x1f, 0x1f,
+diff --git a/drivers/staging/fbtft/fb_ssd1289.c b/drivers/staging/fbtft/fb_ssd1289.c
+index 88a5b6925901..7a3fe022cc69 100644
+--- a/drivers/staging/fbtft/fb_ssd1289.c
++++ b/drivers/staging/fbtft/fb_ssd1289.c
+@@ -129,7 +129,7 @@ static int set_var(struct fbtft_par *par)
+ #define CURVE(num, idx)  curves[(num) * par->gamma.num_values + (idx)]
+ static int set_gamma(struct fbtft_par *par, u32 *curves)
+ {
+-	unsigned long mask[] = {
++	static const unsigned long mask[] = {
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 		0x1f, 0x1f, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
+ 	};
 -- 
-2.20.0
+2.20.1
 
