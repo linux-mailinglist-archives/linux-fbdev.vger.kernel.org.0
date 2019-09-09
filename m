@@ -2,77 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C05D9AD0BC
-	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Sep 2019 23:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45DF3AD188
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Sep 2019 03:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730500AbfIHVRj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 8 Sep 2019 17:17:39 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:37300 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726080AbfIHVRj (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 8 Sep 2019 17:17:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=kpo4GcGSp/p9xK4M107Cs6yDAMCz9KA0m/IM/ACOm4E=; b=DU6vwmH4jkv/uSyC72u75opOru
-        tJiAe0zAqAhQf8OWs+pSXGzo6uHU3Ab+7u5Byz3emvyTlLRzJuasaqMGR+n/1e6R0V/r6fL69nCRd
-        TdEg4gpjSwZR97wFCRmmK5S6+FYXuE2J8xM3wGCEM0/TNagoJCLVOXbKseWO14fHBaAc=;
-Received: from p200300ccff4729001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff47:2900:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1i73vq-0000wT-5M; Sun, 08 Sep 2019 22:37:10 +0200
-Received: from andi by aktux with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1i73vp-0007rT-Sv; Sun, 08 Sep 2019 22:37:09 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
-        jingoohan1@gmail.com, jacek.anaszewski@gmail.com, pavel@ucw.cz,
-        dmurphy@ti.com, robh+dt@kernel.org, mark.rutland@arm.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH 2/2] dt-bindings: backlight: lm3630a: add enable_gpios
-Date:   Sun,  8 Sep 2019 22:37:04 +0200
-Message-Id: <20190908203704.30147-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190908203704.30147-1-andreas@kemnade.info>
-References: <20190908203704.30147-1-andreas@kemnade.info>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
+        id S1732162AbfIIB0T (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 8 Sep 2019 21:26:19 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:33237 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731552AbfIIB0T (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Sep 2019 21:26:19 -0400
+Received: by mail-ot1-f65.google.com with SMTP id g25so9669243otl.0;
+        Sun, 08 Sep 2019 18:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=5Ov2d6Pnm9u+Qu6MuAf8jhV3xMMR4SjQUGOpB2HvBj0=;
+        b=jeBGCxRNn+pUIGhwRwVpQqdTM/IILqqr3/4As4imoqUasPXfypeW3HUH1otXbg9JYv
+         52fimVWUxuIKNuYMya5fLjh0r0X0AJ5nPFSRsCiM3UYxsE8f3xv+iyJ0zhdvrxBjYSNW
+         iQzYT1+lVrbyzlaWpWOwWET0fSPBpZ3ic4F9V+KlNoXmwKA94nVgdj0je7ZZiaPQ6KuQ
+         WucSJpugiVN84M01w7/gTq4VyAt6SbNlFkfy3xPRGy4bRp4BPP3xRDY3V2ddEYknnngU
+         HXbuBusFEpN6kMfHXwJbobmpEAAkQd4vKgZ5h2kurvofmG/jlM3dIH+mu5rlItBQtWQU
+         kVMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=5Ov2d6Pnm9u+Qu6MuAf8jhV3xMMR4SjQUGOpB2HvBj0=;
+        b=FZZl9ymd8E626JGA51vNuB/Z86JiMEXAdHXV+IMK65d5sQTR/qkSI9DnRYwf4MGdhi
+         eFSpxEWsQ2m9HKcN1jI+zP1ialCDP/8WxujppjelG0fWSgwfD52lg2nPl9e0iVMYGk4X
+         gPsVMw+/93YDHVdlXF+oinuuqJDDY8A891GVyZ7jmkiPfOh4ufXecOID7EpNRPTg6muM
+         9EehYHEUvyKNj9CzlXO+hnqw/qnD2jM/AYlqwoLFXaYt3JWqXaHl7E2yDss0hKYg3+xq
+         GoXBtrXrrNuBxNO0LP3pJwyLzEEzNzIEaH/pFpxvB4vIXlse5Vrt3cqeeL+o8LYT2uEt
+         9d7Q==
+X-Gm-Message-State: APjAAAVdE5va8qSXgZPX/8HU7ZrSbT2SPPVrdNBvOeDhN93FX7lcocnz
+        cqrsdw7ERSPzK5+pniUU3GU=
+X-Google-Smtp-Source: APXvYqxREF5U+6iLM0y+RqBU1gb9iyKo78SFJJdiLHDsba6Zy60Pv8GzxsKEmTWJ0FnmUHdON9IdBA==
+X-Received: by 2002:a9d:7ac8:: with SMTP id m8mr13140172otn.172.1567992376680;
+        Sun, 08 Sep 2019 18:26:16 -0700 (PDT)
+Received: from sreeram-MS-7B98 (cpe-173-174-83-82.austin.res.rr.com. [173.174.83.82])
+        by smtp.gmail.com with ESMTPSA id d24sm4898419otf.78.2019.09.08.18.26.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2019 18:26:16 -0700 (PDT)
+From:   Sreeram Veluthakkal <srrmvlt@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     nishadkamdar@gmail.com, jeremy@azazel.net,
+        thomas.petazzoni@free-electrons.com,
+        payal.s.kshirsagar.98@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org,
+        Sreeram Veluthakkal <srrmvlt@gmail.com>
+Subject: [PATCH] FBTFT: fb_agm1264k: usleep_range is preferred over udelay
+Date:   Sun,  8 Sep 2019 20:26:05 -0500
+Message-Id: <20190909012605.15051-1-srrmvlt@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-add enable-gpios to describe HWEN pin
+This patch fixes the issue:
+FILE: drivers/staging/fbtft/fb_agm1264k-fl.c:88:
+CHECK: usleep_range is preferred over udelay; see Documentation/timers/timers-howto.rst
++       udelay(20);
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Sreeram Veluthakkal <srrmvlt@gmail.com>
 ---
- .../devicetree/bindings/leds/backlight/lm3630a-backlight.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/staging/fbtft/fb_agm1264k-fl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
-index dc129d9a329e..a9656d72b668 100644
---- a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
-+++ b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
-@@ -29,6 +29,10 @@ properties:
-   '#size-cells':
-     const: 0
+diff --git a/drivers/staging/fbtft/fb_agm1264k-fl.c b/drivers/staging/fbtft/fb_agm1264k-fl.c
+index eeeeec97ad27..2dece71fd3b5 100644
+--- a/drivers/staging/fbtft/fb_agm1264k-fl.c
++++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
+@@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
+ 	dev_dbg(par->info->device, "%s()\n", __func__);
  
-+  enable-gpios:
-+    description: GPIO to use to enable/disable the backlight (HWEN pin).
-+    maxItems: 1
-+
- required:
-   - compatible
-   - reg
+ 	gpiod_set_value(par->gpio.reset, 0);
+-	udelay(20);
++	usleep_range(20, 40);
+ 	gpiod_set_value(par->gpio.reset, 1);
+ 	mdelay(120);
+ }
 -- 
-2.20.1
+2.17.1
 
