@@ -2,123 +2,186 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0162AE4FF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Sep 2019 10:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B00FAE7ED
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Sep 2019 12:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728691AbfIJIAC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Sep 2019 04:00:02 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41417 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727205AbfIJIAC (ORCPT
+        id S1726231AbfIJKWB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Sep 2019 06:22:01 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:38694 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729299AbfIJKWB (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Sep 2019 04:00:02 -0400
-Received: by mail-ot1-f66.google.com with SMTP id g16so1899804otp.8;
-        Tue, 10 Sep 2019 01:00:02 -0700 (PDT)
+        Tue, 10 Sep 2019 06:22:01 -0400
+Received: by mail-wr1-f65.google.com with SMTP id l11so19011030wrx.5
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Sep 2019 03:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Wpr2coDySs9Rh34jajBcihEANouoWM4tiMrDCeWl8sg=;
+        b=OWD1IplSbH+Uj6fRnvAWQMTtgsLhiEt+qYbKjXaLSulXC/QfZK1S8iBbPUxjl80LQs
+         Sxa/NOEYbyoMdACAwtywuw45EkqtZ4cwdzmxnQTw9JieI26ywI5teAX/795GB6Jtqmp9
+         SK1E4X5R8xry3MoVaEDSWL3tNsjqoxoGYqC+m1t6M9u5PG5TtnU76MQiPPj/ch8FZCVh
+         VNAkXR11i4Q+SFgNCBjUbiUoEY9M8+hM44rio0gVfl4Q1Eof5sap2IoUobfy8txXXqGa
+         SdF6Z2HV1FVkF11y1n4OqbppwEtKiDW3lebmGQ+6jAoCKHsYYEQQTXBbwSvCj25uPmQ+
+         BMfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7L737Jm0wUHbnu/Pe3llxROQ1ln1ETh1uPMKDGHXXWU=;
-        b=pAuKv2uWe68+OrEJZBhOgjxmqrDUBSvzSEwaSkY1o+XBhpoNCU8rrWJ1wwyvjywpYO
-         MIztXBiT3XlvB8bB4e0XsglqlbJww1dWL8jSs8Ewln6mSsBdhFtfh/RiSM1GyZy7AL5L
-         bcaF6ilFQmRxXkola8ZjuS397fYcGxhtd4/B8NgT8Ng8ws7SK5l18/gfTYYFsDB+ZKhG
-         PzRSnnfd2Y8FzByrbMSHbRdkrmaWisX9dxaHKULLwAuu9GSpbvuUvSWjLbaUkTx34vGI
-         iSGNAaAzcpHONTRXhdpXn2UcnTXLhbx8Q8c2P3Cyzb7A5unTq1sgXfeOH+i3ZAFEDyRP
-         uA0A==
-X-Gm-Message-State: APjAAAXXIr4P6qghoItD0Xt4nMsR/ZRa44gtDSBbYSpkfFJvbQaoqcnZ
-        bklt7SYly/+c4037voUoMvhm8qNwK0UTHqLDNJhvfF/I
-X-Google-Smtp-Source: APXvYqx+ZYhRUi69F2qvCMAq3GzxxBTk+IErSzk0oKplNMkzm1lwOtKf9GkZhd5n8JtQlhUnVL2qrnsx8/SENkFM0f0=
-X-Received: by 2002:a9d:32a1:: with SMTP id u30mr19940081otb.107.1568102401646;
- Tue, 10 Sep 2019 01:00:01 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Wpr2coDySs9Rh34jajBcihEANouoWM4tiMrDCeWl8sg=;
+        b=DhoI7vZEaL/0ozLH6bqvAKdhYl0UVkOK2seP33KvObspHMCW8FwdpuUP2dA8PQUoUk
+         z+DB4oucOguo8wsaPik0HeiHdOtYsyblUGid74DMYxIzM3mT9bpw7A8An9Ycmv/Nk7UZ
+         GSFcrRIwetzhWKvl7vSzkWqNN2LmPRcGiPNlEIu3wwMa1iUxIzPXXxbBqS2wmRiLditZ
+         eqdagWB5E/3GXDxGqm2W618ZrlI4djsvfQHrWVV1GRHWQj18AoAZ4ObPxV3bXGFB1xKO
+         6EUDxwosWavSG4wX7hzyix19MV1bvJPz61yy75r9T6HEFdW3Wr8h5LKb6Q/fapF39VBa
+         R+eA==
+X-Gm-Message-State: APjAAAWiAKEkliyKKhQPPpUQjjw3hvCy5oG9NOtbwVsNy9t30agrWZKz
+        U98PR1NfVA5X36oJnI6oNUNgqQ==
+X-Google-Smtp-Source: APXvYqzG45USjR48kMX2kVZsXNO4YuCGkE3qBxH6BwrxuV+lwOeTtCvs9XVNlmc/kSobyXOtgJDQdA==
+X-Received: by 2002:adf:f04f:: with SMTP id t15mr13262934wro.250.1568110919018;
+        Tue, 10 Sep 2019 03:21:59 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id o19sm23744301wro.50.2019.09.10.03.21.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2019 03:21:58 -0700 (PDT)
+Date:   Tue, 10 Sep 2019 11:21:56 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, dmurphy@ti.com,
+        robh+dt@kernel.org, mark.rutland@arm.com, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH 1/2] backlight: lm3630a: add an enable gpio for the HWEN
+ pin
+Message-ID: <20190910102156.vmprsjebmlphkv34@holly.lan>
+References: <20190908203704.30147-1-andreas@kemnade.info>
+ <20190908203704.30147-2-andreas@kemnade.info>
+ <20190909105729.w5552rtop7rhghy2@holly.lan>
+ <20190909221349.46ca5a1f@aktux>
 MIME-Version: 1.0
-References: <20190909012605.15051-1-srrmvlt@gmail.com> <20190909095625.GB17624@kroah.com>
- <20190909115006.GB3437@sreeram-MS-7B98>
-In-Reply-To: <20190909115006.GB3437@sreeram-MS-7B98>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 10 Sep 2019 09:59:50 +0200
-Message-ID: <CAMuHMdXz568p=GFJmz6MfuxDxA_QkLMrGcK2hG3C99ReL1fH5A@mail.gmail.com>
-Subject: Re: [PATCH] FBTFT: fb_agm1264k: usleep_range is preferred over udelay
-To:     Sreeram Veluthakkal <srrmvlt@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        driverdevel <devel@driverdev.osuosl.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        nishadkamdar@gmail.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        payal.s.kshirsagar.98@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190909221349.46ca5a1f@aktux>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sreeram,
+On Mon, Sep 09, 2019 at 10:13:49PM +0200, Andreas Kemnade wrote:
+> On Mon, 9 Sep 2019 11:57:29 +0100
+> Daniel Thompson <daniel.thompson@linaro.org> wrote:
+> 
+> > On Sun, Sep 08, 2019 at 10:37:03PM +0200, Andreas Kemnade wrote:
+> > > For now just enable it in the probe function to allow i2c
+> > > access and disable it on remove. Disabling also means resetting
+> > > the register values to default.
+> > > 
+> > > Tested on Kobo Clara HD.
+> > > 
+> > > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > > ---
+> > >  drivers/video/backlight/lm3630a_bl.c | 18 ++++++++++++++++++
+> > >  1 file changed, 18 insertions(+)
+> > > 
+> > > diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
+> > > index b04b35d007a2..3b45a1733198 100644
+> > > --- a/drivers/video/backlight/lm3630a_bl.c
+> > > +++ b/drivers/video/backlight/lm3630a_bl.c
+> > > @@ -12,6 +12,8 @@
+> > >  #include <linux/uaccess.h>
+> > >  #include <linux/interrupt.h>
+> > >  #include <linux/regmap.h>
+> > > +#include <linux/gpio/consumer.h>
+> > > +#include <linux/gpio.h>
+> > >  #include <linux/pwm.h>
+> > >  #include <linux/platform_data/lm3630a_bl.h>
+> > >  
+> > > @@ -48,6 +50,7 @@ struct lm3630a_chip {
+> > >  	struct lm3630a_platform_data *pdata;
+> > >  	struct backlight_device *bleda;
+> > >  	struct backlight_device *bledb;
+> > > +	struct gpio_desc *enable_gpio;
+> > >  	struct regmap *regmap;
+> > >  	struct pwm_device *pwmd;
+> > >  };
+> > > @@ -506,6 +509,14 @@ static int lm3630a_probe(struct i2c_client *client,
+> > >  		return -ENOMEM;
+> > >  	pchip->dev = &client->dev;
+> > >  
+> > > +	pchip->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
+> > > +						GPIOD_ASIS);  
+> > 
+> > Initializing GPIOD_ASIS doesn't look right to me.
+> > 
+> > If you initialize ASIS then the driver must configure the pin as an
+> > output... far easier just to set GPIOD_OUT_HIGH during the get.
+> > 
+> > Note also that the call to this function should also be moved *below*
+> > the calls parse the DT.
+> > 
+> oops, must have forgotten that, and had good luck here.
+> > 
+> > > +	if (IS_ERR(pchip->enable_gpio)) {
+> > > +		rval = PTR_ERR(pchip->enable_gpio);
+> > > +		return rval;
+> > > +	}
+> > > +
+> > > +
+> > >  	pchip->regmap = devm_regmap_init_i2c(client, &lm3630a_regmap);
+> > >  	if (IS_ERR(pchip->regmap)) {
+> > >  		rval = PTR_ERR(pchip->regmap);
+> > > @@ -535,6 +546,10 @@ static int lm3630a_probe(struct i2c_client *client,
+> > >  	}
+> > >  	pchip->pdata = pdata;
+> > >  
+> > > +	if (pchip->enable_gpio) {
+> > > +		gpiod_set_value_cansleep(pchip->enable_gpio, 1);  
+> > 
+> > Not needed, use GPIOD_OUT_HIGH instead.
+> > 
+> > 
+> > > +		usleep_range(1000, 2000);  
+> > 
+> > Not needed, this sleep is already part of lm3630a_chip_init().
+> > 
+> you are right.
+> > 
+> > > +	}
+> > >  	/* chip initialize */
+> > >  	rval = lm3630a_chip_init(pchip);
+> > >  	if (rval < 0) {
+> > > @@ -586,6 +601,9 @@ static int lm3630a_remove(struct i2c_client *client)
+> > >  	if (rval < 0)
+> > >  		dev_err(pchip->dev, "i2c failed to access register\n");
+> > >  
+> > > +	if (pchip->enable_gpio)
+> > > +		gpiod_set_value_cansleep(pchip->enable_gpio, 0);
+> > > +  
+> > 
+> > Is this needed?
+> > 
+> > This is a remove path, not a power management path, and we have no idea
+> > what the original status of the pin was anyway?
+> > 
+> 
+> Looking at Ishdn on page 5 of the datasheet, switching it off everytime
+> possible seems not needed. We would need to call chip_init() everytime
+> we enable the gpio or live with default values.
+> Therefore I did decide to not put it into any power management path.
+> But switching it on and not switching it off feels so unbalanced. 
 
-On Tue, Sep 10, 2019 at 2:25 AM Sreeram Veluthakkal <srrmvlt@gmail.com> wrote:
-> On Mon, Sep 09, 2019 at 10:56:25AM +0100, Greg KH wrote:
-> > On Sun, Sep 08, 2019 at 08:26:05PM -0500, Sreeram Veluthakkal wrote:
-> > > This patch fixes the issue:
-> > > FILE: drivers/staging/fbtft/fb_agm1264k-fl.c:88:
-> > > CHECK: usleep_range is preferred over udelay; see Documentation/timers/timers-howto.rst
-> > > +       udelay(20);
-> > >
-> > > Signed-off-by: Sreeram Veluthakkal <srrmvlt@gmail.com>
+Either the power consumed by the controller when strings aren't lit up
+matters, in which case the driver should implement proper power
+management or it doesn't matter and changing the pin state isn't needed.
 
-Thanks for your patch!
+I'm happy with either of the above but this looks like a third way,
+where eager users could hack in a bit of extra power management by
+forcing drivers to unbind. 
 
-> > > --- a/drivers/staging/fbtft/fb_agm1264k-fl.c
-> > > +++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
-> > > @@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
-> > >     dev_dbg(par->info->device, "%s()\n", __func__);
-> > >
-> > >     gpiod_set_value(par->gpio.reset, 0);
-> > > -   udelay(20);
-> > > +   usleep_range(20, 40);
-> >
-> > Is it "safe" to wait 40?  This kind of change you can only do if you
-> > know this is correct.  Have you tested this with hardware?
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> Hi Greg, No I haven't tested it, I don't have the hw. I dug depeer in to the usleep_range
->
-> https://github.com/torvalds/linux/blob/master/kernel/time/timer.c#L1993
->         u64 delta = (u64)(max - min) * NSEC_PER_USEC;
->
->  * The @delta argument gives the kernel the freedom to schedule the
->  * actual wakeup to a time that is both power and performance friendly.
->  * The kernel give the normal best effort behavior for "@expires+@delta",
->  * but may decide to fire the timer earlier, but no earlier than @expires.
->
-> My understanding is that keeping delta 0 (min=max=20) would be equivalent.
-> I can revise the patch to usleep_range(20, 20) or usleep_range(20, 21) for a 1 usec delta.
-> What do you suggest?
 
-Please read the comment above the line you're referring to:
-
- * In non-atomic context where the exact wakeup time is flexible, use
- * usleep_range() instead of udelay().  The sleep improves responsiveness
- * by avoiding the CPU-hogging busy-wait of udelay(), and the range reduces
- * power usage by allowing hrtimers to take advantage of an already-
- * scheduled interrupt instead of scheduling a new one just for this sleep.
-
-Is this function always called in non-atomic context?
-If it  may be called in atomic context, replacing the udelay() call by a
-usleep*() call will break the driver.
-
-See also "the first and most important question" in
-Documentation/timers/timers-howto.rst, as referred to by the checkpatch.pl
-message.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Daniel.
