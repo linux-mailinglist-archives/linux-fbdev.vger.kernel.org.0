@@ -2,108 +2,115 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 276D0B0293
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 19:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D35B03CF
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 20:44:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729616AbfIKRVi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Sep 2019 13:21:38 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:45738 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729130AbfIKRVi (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Sep 2019 13:21:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=sPMO8vcrRK/jL3rN+4QkorWNycje82WGvrWvZkHcz44=; b=nQIeaSRKdjHALYED3UM4qdoZaj
-        ay1z5xTneTJmZeyPryoIfinTJ7Wa2z7azMYWQHLs4Sq+6Xoh9/zr8lMELMLwGMA8HD1OnMEmmvnsv
-        Am+q25RuMlzHUpmF3HDg0AFOx+q4GjftewUadKNHpwEsJKVgMGEkex/C99DpuZ78XkSk=;
-Received: from p200300ccff0b59001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:5900:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1i86J7-0006kp-9U; Wed, 11 Sep 2019 19:21:29 +0200
-Received: from andi by aktux with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1i86J7-0003M5-0o; Wed, 11 Sep 2019 19:21:29 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
-        jingoohan1@gmail.com, jacek.anaszewski@gmail.com, pavel@ucw.cz,
-        dmurphy@ti.com, robh+dt@kernel.org, mark.rutland@arm.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        id S1730026AbfIKSoh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Sep 2019 14:44:37 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:32794 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729994AbfIKSoh (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 11 Sep 2019 14:44:37 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8BIi2Jl011385;
+        Wed, 11 Sep 2019 13:44:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1568227442;
+        bh=BOqEWOsrdu0X1JsJVt3OgXpcdPXFlSvGPSUfjNqw9dQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Wi/twvAL12qufysWGszW8BVjS4jU82o51dv3hlho8PnLShrKplFUNbYT/EXiAW50k
+         a1Q0Yt7t2W+AjUk18Prrg9uauG41/3RuiVXzWUkDbB/Yc97d74rbeh7n1j63COuFrG
+         H7Fcc6i61XTuU7SMyMK9YqtOu8Ba/FO/X3HFlfQ8=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8BIi2uo096292
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 11 Sep 2019 13:44:02 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 11
+ Sep 2019 13:44:02 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 11 Sep 2019 13:44:02 -0500
+Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8BIi15j122843;
+        Wed, 11 Sep 2019 13:44:01 -0500
+Subject: Re: [PATCH v2 1/2] dt-bindings: backlight: lm3630a: add enable_gpios
+To:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Andreas Kemnade <andreas@kemnade.info>
+CC:     <lee.jones@linaro.org>, <jingoohan1@gmail.com>,
+        <jacek.anaszewski@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <b.zolnierkie@samsung.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-leds@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v3 2/2] backlight: lm3630a: add an enable gpio for the HWEN pin
-Date:   Wed, 11 Sep 2019 19:21:06 +0200
-Message-Id: <20190911172106.12843-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190911172106.12843-1-andreas@kemnade.info>
-References: <20190911172106.12843-1-andreas@kemnade.info>
+References: <20190910212909.18095-1-andreas@kemnade.info>
+ <20190910212909.18095-2-andreas@kemnade.info>
+ <20190911100851.f4rnldghtmly26oo@holly.lan>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <3d8237d0-4e36-3787-6050-b0e75f2fa8c3@ti.com>
+Date:   Wed, 11 Sep 2019 13:44:01 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20190911100851.f4rnldghtmly26oo@holly.lan>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-For now just enable it in the probe function to allow i2c
-access. Disabling also means resetting the register values
-to default and according to the datasheet does not give
-power savings.
+Andreas
 
-Tested on Kobo Clara HD.
+On 9/11/19 5:08 AM, Daniel Thompson wrote:
+> On Tue, Sep 10, 2019 at 11:29:08PM +0200, Andreas Kemnade wrote:
+>> add enable-gpios to describe HWEN pin
+>>
+>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+>
+>> ---
+>> changes in v2: add example
+>>   .../bindings/leds/backlight/lm3630a-backlight.yaml           | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+>> index dc129d9a329e..1fa83feffe16 100644
+>> --- a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+>> +++ b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+>> @@ -29,6 +29,10 @@ properties:
+>>     '#size-cells':
+>>       const: 0
+>>   
+>> +  enable-gpios:
+>> +    description: GPIO to use to enable/disable the backlight (HWEN pin).
+>> +    maxItems: 1
+>> +
+>>   required:
+>>     - compatible
+>>     - reg
+>> @@ -92,6 +96,7 @@ examples:
+>>       i2c {
+>>           #address-cells = <1>;
+>>           #size-cells = <0>;
+>> +        enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
-changes in v2:
-- simplification
-- correct gpio direction initialisation
+This is in the wrong place.  This is implying that the gpio is for the 
+i2c parent
 
-changes in v3:
-- removed legacy include
+This needs to go under the led-controller node below
 
- drivers/video/backlight/lm3630a_bl.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Dan
 
-diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-index 8f84f3684f04..d9e67b9b2571 100644
---- a/drivers/video/backlight/lm3630a_bl.c
-+++ b/drivers/video/backlight/lm3630a_bl.c
-@@ -12,6 +12,7 @@
- #include <linux/uaccess.h>
- #include <linux/interrupt.h>
- #include <linux/regmap.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/pwm.h>
- #include <linux/platform_data/lm3630a_bl.h>
- 
-@@ -48,6 +49,7 @@ struct lm3630a_chip {
- 	struct lm3630a_platform_data *pdata;
- 	struct backlight_device *bleda;
- 	struct backlight_device *bledb;
-+	struct gpio_desc *enable_gpio;
- 	struct regmap *regmap;
- 	struct pwm_device *pwmd;
- };
-@@ -535,6 +537,13 @@ static int lm3630a_probe(struct i2c_client *client,
- 	}
- 	pchip->pdata = pdata;
- 
-+	pchip->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
-+						GPIOD_OUT_HIGH);
-+	if (IS_ERR(pchip->enable_gpio)) {
-+		rval = PTR_ERR(pchip->enable_gpio);
-+		return rval;
-+	}
-+
- 	/* chip initialize */
- 	rval = lm3630a_chip_init(pchip);
- 	if (rval < 0) {
--- 
-2.20.1
-
+>>   
+>>           led-controller@38 {
+>>                   compatible = "ti,lm3630a";
+>> -- 
+>> 2.20.1
+>>
