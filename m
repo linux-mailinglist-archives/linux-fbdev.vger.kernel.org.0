@@ -2,131 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B2DAF58A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 07:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ADC7AF9FA
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 12:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726579AbfIKF6T (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Sep 2019 01:58:19 -0400
-Received: from gateway36.websitewelcome.com ([192.185.193.119]:23599 "EHLO
-        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725616AbfIKF6T (ORCPT
+        id S1727558AbfIKKI6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Sep 2019 06:08:58 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:45856 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727090AbfIKKI5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Sep 2019 01:58:19 -0400
-X-Greylist: delayed 1297 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Sep 2019 01:58:18 EDT
-Received: from cm14.websitewelcome.com (cm14.websitewelcome.com [100.42.49.7])
-        by gateway36.websitewelcome.com (Postfix) with ESMTP id 99F96400C84CD
-        for <linux-fbdev@vger.kernel.org>; Wed, 11 Sep 2019 00:03:21 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 7vJ2ivw6U2qH77vJ2iq2Dw; Wed, 11 Sep 2019 00:36:40 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=QW8Cjbds0p1BI81ZMmirUfnVh51hLTx7oCbg0nDi9BU=; b=C08mn0247w1HM7YgYgPU9P42ln
-        lgAo+3lCI6Jcv/4DS7qbd+aKdAq82wyLPlZ/bM9w2GFID6wTc/iu1lYnLE4AWLs0oO38KLd64JPtV
-        NZllHTqjWdv6dLptdCtG8k3o2yhWvntuvqRz80lYJP9RbVTvlxwiaB0JFz3B1pIfz8d1b9BkG0u94
-        5SV2efmrHsg5iehwFVmci5pIj3Hn5/oP2t4Gm5Y743UdGJzLCpOqS5cOiA8bJs/xFCFhfBqplKyyf
-        hA4V1SQRY7k/tLmnYxHFLMBY+bEvmnvf3lrbFLkeF+36AX63BKUGaASrryeta3n7tHdO+v1icAhT0
-        /v4pvLUw==;
-Received: from [148.69.85.38] (port=52756 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1i7vJ1-003qzX-C1; Wed, 11 Sep 2019 00:36:39 -0500
-Date:   Wed, 11 Sep 2019 06:36:04 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Timur Tabi <timur@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] video: fbdev: fsl-diu-fb: mark expected switch fall-throughs
-Message-ID: <20190911113604.GA31512@embeddedor>
+        Wed, 11 Sep 2019 06:08:57 -0400
+Received: by mail-wr1-f65.google.com with SMTP id l16so23742248wrv.12
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 Sep 2019 03:08:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VDs4QBH4rsd9WApRFewbfBpAla/8JjMokOT6RslkOmM=;
+        b=NHM6VwFJgk9JP6K9tIa+qvaxn5+Ogzc7cDz8+F43SM8S6lFWNT0g/1L9XZBSVwaola
+         kZatLw3ohMiWvKK1iMWcap3jFwco0hBhy93RhTuCBarNbZP5Zi66A2/LNsXnwDrKyuPO
+         cWfXRoIHoq9VEqG/3oP4hGClbNkeNBPXy3Q7YepKlI2br1az4hA5lc1Qjt5yrgzKTsEo
+         CA3paIui1sOrvQKRKI8XBt4tGDOfdrw/DWSsAFggd6V/zfcMbx7N1jRIcp/dU2unHVdM
+         aDQ0BivD+hvha25GecLASN4k9C8wMNJdyuwmnls6pmJu2H5brulQUp5+CdOPOYcnBFE+
+         2lBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VDs4QBH4rsd9WApRFewbfBpAla/8JjMokOT6RslkOmM=;
+        b=bCoX+2mD95P/TM7T5d3kYXNkgV19vELy2XyhGnuSF6ulFAbryTq2qJ0m96uxwzx3Z1
+         FIdFdKepN5qCLPpY55ue1GOHOif9woZhklUDRcOJkAr2MXd7IpF4GbTHw65tXVvsE8cC
+         mi6HG+AktbWkWvE5JflRcVQ7j4lqf8lUrfByH0FsaNmPHhvcebVGNMIkutvvqF4s/wlb
+         OgQJmte1nDTmCrICjR34bJPB05saVLGWy1pKC1CGyOQfaOyN7+puirM3pT3+hye2OX2n
+         QeBJVo8BpWsv/vMdeX+hP4giqlSQdIcM5CmnLEfAHZWKvRx5pLeKZpdPenqrHEgGCwvA
+         5Xeg==
+X-Gm-Message-State: APjAAAUMNNa8Uc9m44XYGCnU++l1fv6oRfieUWdRve4HEcxIzuO0IFU4
+        fi2T95Uh/N84tx49bpoQnrstCw==
+X-Google-Smtp-Source: APXvYqwwO7ms6cDK74/Pkx8Q/GbwMaXoYLDIpo3xME5YnvIM2YoARQAWfaF+MWOS/r+pfR+2cwba4A==
+X-Received: by 2002:adf:8444:: with SMTP id 62mr23305991wrf.202.1568196533899;
+        Wed, 11 Sep 2019 03:08:53 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id z189sm3551152wmc.25.2019.09.11.03.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2019 03:08:53 -0700 (PDT)
+Date:   Wed, 11 Sep 2019 11:08:51 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, dmurphy@ti.com,
+        robh+dt@kernel.org, mark.rutland@arm.com, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: backlight: lm3630a: add enable_gpios
+Message-ID: <20190911100851.f4rnldghtmly26oo@holly.lan>
+References: <20190910212909.18095-1-andreas@kemnade.info>
+ <20190910212909.18095-2-andreas@kemnade.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 148.69.85.38
-X-Source-L: No
-X-Exim-ID: 1i7vJ1-003qzX-C1
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [148.69.85.38]:52756
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+In-Reply-To: <20190910212909.18095-2-andreas@kemnade.info>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Mark switch cases where we are expecting to fall through.
+On Tue, Sep 10, 2019 at 11:29:08PM +0200, Andreas Kemnade wrote:
+> add enable-gpios to describe HWEN pin
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-Fix the following warnings (Building: mpc512x_defconfig powerpc):
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-drivers/video/fbdev/fsl-diu-fb.c: In function ‘fsl_diu_ioctl’:
-./include/linux/device.h:1750:2: warning: this statement may fall through [-Wimplicit-fallthrough=]
-  _dev_warn(dev, dev_fmt(fmt), ##__VA_ARGS__)
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/video/fbdev/fsl-diu-fb.c:1287:3: note: in expansion of macro ‘dev_warn’
-   dev_warn(info->dev,
-   ^~~~~~~~
-drivers/video/fbdev/fsl-diu-fb.c:1290:2: note: here
-  case MFB_SET_PIXFMT:
-  ^~~~
-In file included from ./include/linux/acpi.h:15:0,
-                 from ./include/linux/i2c.h:13,
-                 from ./include/uapi/linux/fb.h:6,
-                 from ./include/linux/fb.h:6,
-                 from drivers/video/fbdev/fsl-diu-fb.c:20:
-./include/linux/device.h:1750:2: warning: this statement may fall through [-Wimplicit-fallthrough=]
-  _dev_warn(dev, dev_fmt(fmt), ##__VA_ARGS__)
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/video/fbdev/fsl-diu-fb.c:1296:3: note: in expansion of macro ‘dev_warn’
-   dev_warn(info->dev,
-   ^~~~~~~~
-drivers/video/fbdev/fsl-diu-fb.c:1299:2: note: here
-  case MFB_GET_PIXFMT:
-  ^~~~
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/video/fbdev/fsl-diu-fb.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-index d19f58263b4e..3e410b9eb272 100644
---- a/drivers/video/fbdev/fsl-diu-fb.c
-+++ b/drivers/video/fbdev/fsl-diu-fb.c
-@@ -1287,6 +1287,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
- 		dev_warn(info->dev,
- 			 "MFB_SET_PIXFMT value of 0x%08x is deprecated.\n",
- 			 MFB_SET_PIXFMT_OLD);
-+		/* fall through */
- 	case MFB_SET_PIXFMT:
- 		if (copy_from_user(&pix_fmt, buf, sizeof(pix_fmt)))
- 			return -EFAULT;
-@@ -1296,6 +1297,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
- 		dev_warn(info->dev,
- 			 "MFB_GET_PIXFMT value of 0x%08x is deprecated.\n",
- 			 MFB_GET_PIXFMT_OLD);
-+		/* fall through */
- 	case MFB_GET_PIXFMT:
- 		pix_fmt = ad->pix_fmt;
- 		if (copy_to_user(buf, &pix_fmt, sizeof(pix_fmt)))
--- 
-2.23.0
-
+> ---
+> changes in v2: add example
+>  .../bindings/leds/backlight/lm3630a-backlight.yaml           | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> index dc129d9a329e..1fa83feffe16 100644
+> --- a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> +++ b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> @@ -29,6 +29,10 @@ properties:
+>    '#size-cells':
+>      const: 0
+>  
+> +  enable-gpios:
+> +    description: GPIO to use to enable/disable the backlight (HWEN pin).
+> +    maxItems: 1
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -92,6 +96,7 @@ examples:
+>      i2c {
+>          #address-cells = <1>;
+>          #size-cells = <0>;
+> +        enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
+>  
+>          led-controller@38 {
+>                  compatible = "ti,lm3630a";
+> -- 
+> 2.20.1
+> 
