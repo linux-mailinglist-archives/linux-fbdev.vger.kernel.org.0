@@ -2,137 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC9CB03E7
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 20:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB5EB04D6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 22:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730105AbfIKStG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Sep 2019 14:49:06 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:41896 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730069AbfIKStF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Sep 2019 14:49:05 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8BImcY7051732;
-        Wed, 11 Sep 2019 13:48:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1568227718;
-        bh=1xSERSqIkAtP/bLDu3RUnmyzW6/XzR17kn4wt0JSzQE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=LdwUSNv6ZbXANbfxNoJYEDv5rETOOMt04lMlvG8RYbaxYrQHBgvNg3m/RdnpG5lq2
-         Yjj10rCiVfbF39DafaKdYQ1v6fluk0Bw4dMFmGqNwMCLhe7HBe0KyxPFnkmi3pGYvI
-         6TMFbQLtFu+VsK3BApMVojHliBROeOnBpSjZJAI4=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8BImbgv068137
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 11 Sep 2019 13:48:37 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 11
- Sep 2019 13:48:37 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 11 Sep 2019 13:48:37 -0500
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8BImaxV119829;
-        Wed, 11 Sep 2019 13:48:36 -0500
-Subject: Re: [PATCH v2 2/2] backlight: lm3630a: add an enable gpio for the
- HWEN pin
-To:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>
-CC:     <lee.jones@linaro.org>, <jingoohan1@gmail.com>,
+        id S1729188AbfIKUZ1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Sep 2019 16:25:27 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:35838 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729054AbfIKUZ1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 11 Sep 2019 16:25:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=KHbCcZ8BvWWbKPSh5z+H7SgPQzQ4ifBlCer1pX9BQL0=; b=hf05DHewho7GMIGCsH6/PGeoio
+        TGv5pVTLJKtBGYQuR9O23JhXG5QQBFQf0V2+KLqVOFIomAerLdkInBvA12Nh22VovQPgot39NQJJF
+        064uTu5vshQfNEAFAkSfKJs+GTMkN5eWl7TkiwuP9es2KdReiUOZjp8+XSaY1uEhNT6s=;
+Received: from p200300ccff0b59001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:5900:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1i89Aw-0003L7-B7; Wed, 11 Sep 2019 22:25:14 +0200
+Date:   Wed, 11 Sep 2019 22:25:13 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Dan Murphy <dmurphy@ti.com>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        <lee.jones@linaro.org>, <jingoohan1@gmail.com>,
         <jacek.anaszewski@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
         <mark.rutland@arm.com>, <b.zolnierkie@samsung.com>,
         <dri-devel@lists.freedesktop.org>, <linux-leds@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-fbdev@vger.kernel.org>,
         "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH v2 2/2] backlight: lm3630a: add an enable gpio for the
+ HWEN pin
+Message-ID: <20190911222513.489b5235@aktux>
+In-Reply-To: <a3f10318-11f4-3b78-47e5-d9add8a46791@ti.com>
 References: <20190910212909.18095-1-andreas@kemnade.info>
- <20190910212909.18095-3-andreas@kemnade.info>
- <20190911102533.not4ta3xwgm6bhjo@holly.lan>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <a3f10318-11f4-3b78-47e5-d9add8a46791@ti.com>
-Date:   Wed, 11 Sep 2019 13:48:36 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        <20190910212909.18095-3-andreas@kemnade.info>
+        <20190911102533.not4ta3xwgm6bhjo@holly.lan>
+        <a3f10318-11f4-3b78-47e5-d9add8a46791@ti.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190911102533.not4ta3xwgm6bhjo@holly.lan>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0 (-)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Wed, 11 Sep 2019 13:48:36 -0500
+Dan Murphy <dmurphy@ti.com> wrote:
 
-On 9/11/19 5:25 AM, Daniel Thompson wrote:
-> On Tue, Sep 10, 2019 at 11:29:09PM +0200, Andreas Kemnade wrote:
->> For now just enable it in the probe function to allow i2c
->> access. Disabling also means resetting the register values
->> to default and according to the datasheet does not give
->> power savings
->>
->> Tested on Kobo Clara HD.
->>
->> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->> ---
->> changes in v2:
->> - simplification
->> - correct gpio direction initialisation
->>
->>   drivers/video/backlight/lm3630a_bl.c | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
->> diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
->> index 8f84f3684f04..9d0639d4202d 100644
->> --- a/drivers/video/backlight/lm3630a_bl.c
->> +++ b/drivers/video/backlight/lm3630a_bl.c
->> @@ -12,6 +12,8 @@
->>   #include <linux/uaccess.h>
->>   #include <linux/interrupt.h>
->>   #include <linux/regmap.h>
->> +#include <linux/gpio/consumer.h>
->> +#include <linux/gpio.h>
-> Nitpicking... but I don't think linux/gpio.h is used anymore.
+
+> >> @@ -535,6 +538,13 @@ static int lm3630a_probe(struct i2c_client *clien=
+t,
+> >>   	}
+> >>   	pchip->pdata =3D pdata;
+> >>  =20
+> >> +	pchip->enable_gpio =3D devm_gpiod_get_optional(&client->dev, "enable=
+",
+> >> +						GPIOD_OUT_HIGH);
+> >> +	if (IS_ERR(pchip->enable_gpio)) {
+> >> +		rval =3D PTR_ERR(pchip->enable_gpio);
+> >> +		return rval; =20
+>=20
+> the enable gpio is optional so if it fails you log the error and move on
 >
->
->>   #include <linux/pwm.h>
->>   #include <linux/platform_data/lm3630a_bl.h>
->>   
->> @@ -48,6 +50,7 @@ struct lm3630a_chip {
->>   	struct lm3630a_platform_data *pdata;
->>   	struct backlight_device *bleda;
->>   	struct backlight_device *bledb;
->> +	struct gpio_desc *enable_gpio;
->>   	struct regmap *regmap;
->>   	struct pwm_device *pwmd;
->>   };
->> @@ -535,6 +538,13 @@ static int lm3630a_probe(struct i2c_client *client,
->>   	}
->>   	pchip->pdata = pdata;
->>   
->> +	pchip->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
->> +						GPIOD_OUT_HIGH);
->> +	if (IS_ERR(pchip->enable_gpio)) {
->> +		rval = PTR_ERR(pchip->enable_gpio);
->> +		return rval;
+well, if the gpio is not there, then it returns NULL.
+It might return e.g. -EDEFER. So I need to check for errors here.
+=20
+> Also on driver removal did you want to set the GPIO to low to disable=20
+> the device to save power?
+>=20
+page 5 of the datasheet says:
 
-the enable gpio is optional so if it fails you log the error and move on
+Ishdn =3D Typ. 1=C2=B5A max. 4=C2=B5A.
+For HWEN=3DVin, I2c shutdown  (I guess this means outputs powered off)
+ond for HWEN=3DGND.
 
-Also on driver removal did you want to set the GPIO to low to disable 
-the device to save power?
+So are we really saving something here?
 
-Dan
-
-
->> +	}
->> +
->>   	/* chip initialize */
->>   	rval = lm3630a_chip_init(pchip);
->>   	if (rval < 0) {
->> -- 
->> 2.20.1
->>
+Regards,
+Andreas
