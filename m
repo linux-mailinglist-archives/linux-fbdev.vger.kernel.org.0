@@ -2,130 +2,102 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4240AFA47
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 12:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64EAEAFAD1
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Sep 2019 12:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727682AbfIKKZh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Sep 2019 06:25:37 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36185 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726724AbfIKKZh (ORCPT
+        id S1726702AbfIKKvy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Sep 2019 06:51:54 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:50471 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727342AbfIKKvy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Sep 2019 06:25:37 -0400
-Received: by mail-wm1-f68.google.com with SMTP id p13so2844951wmh.1
-        for <linux-fbdev@vger.kernel.org>; Wed, 11 Sep 2019 03:25:36 -0700 (PDT)
+        Wed, 11 Sep 2019 06:51:54 -0400
+Received: by mail-wm1-f67.google.com with SMTP id c10so2871231wmc.0
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 Sep 2019 03:51:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=cVytbu5aDeImYPKa8pGIMJDrGZ6PUWapgttWO1YNSWo=;
-        b=WbGo5Hmz09242kK2X2Ks5uKjFCYXNT2i6lWaWWpoIN+qvvLyXoNLqTsd/1nDidIfV2
-         DQVN4B+puM2xskQIoKsxbaSQMlx9AiUrOLwVDieIgFbBoCitWqznFjicK88E/v9xXS3K
-         BN25w/Fa6IfYNrZLdGgUIYPdCBhRgedhJ/2rGI2IPa0QIANFJ5kDHIWvhJOGlaWJb2aV
-         w6whG54hVEfGCDgCh4JWZz3XIQN8XzZiMzmPQohhgPvGydLLkQGve+NqCWI7yeFo9olm
-         CelxyfcqCEsPYLNMEvfPEQA+NH12WAoyHPk8tORRcyaFb0AOnBbf6TX6tapfMVeOj2to
-         danw==
+        bh=Uryc0/pqdqKJAZc5VoGKLbUrzv2t7H2FdK8rw8hlLgg=;
+        b=YeChDvIWXEB0TstAMgYAD4rorZ17PMeVJH48y0XNFopRTKZkFqUzX25bM6/kDkwlSB
+         viruUn+aG6aBu7i775BC0uPh+Nsgx/H/fOmG9216rwKNJhReVC/5NFTPYosGl7ssOqXf
+         Ip70bQ66StWipRujTpPgoTIYal+mCceDScD4Xpm6y026t3KvdNv8aQG0AX1QCn4xSqqg
+         J2DFJGyp8hAvpPJxNa+g/OKeKf5D0HyIxw3JdyOMhYjvFneVT7aV2X+MA1yMM361/1py
+         /X/tC/wr7UCCvVd8QF24ZWpp+8FpWc8i3kUAx2gpGTztEI/E2jSfyarbbeJ/q9Js94L+
+         T3Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=cVytbu5aDeImYPKa8pGIMJDrGZ6PUWapgttWO1YNSWo=;
-        b=XQ1rudp5CyLq6YgVFdPvCRy3IL6KmpFg9eXBDVBX+BSUaQgCWpkqhxW035Hz/+9ILs
-         1IMT5wcqJgysZyIG6iElPTOfZkeFZAmcWjp3jLuC3d6Nalo5aFAPfndFNSEGuyv7npWj
-         UqtKo3ZqIB1MK4nfwgqnzMY5eb+t5MldZT6M6GS0rpfSZpLHDMVSKFZw4rCAWGkahUbV
-         3MgVvx+2lwF1ypy9H0/Q+qCVfMZihQiU8RhFl96M5uE9Z10KaVzBriJxbgQUURp4wlcK
-         pzrPKipQgVR28IAMqUNZQ/ecOwzpfx0rJdCmVC0hqK46CzUyt06s8+FBq+enpekYsMED
-         huvA==
-X-Gm-Message-State: APjAAAVX82OahtwmCp3orqyfp+nzsqYz199Bcn1kq5EqfrtyVgHOL11i
-        HQfbsu62vFkKXR0DvfNaKBhjwg==
-X-Google-Smtp-Source: APXvYqzVMF0R+kyeDNgLI4QVwcAzQuyJbImC6/3qU7I+I0w6fwpvAl/Ay1oUpkLuzSS/Uus7LaWquA==
-X-Received: by 2002:a1c:f607:: with SMTP id w7mr3358169wmc.84.1568197535579;
-        Wed, 11 Sep 2019 03:25:35 -0700 (PDT)
+        bh=Uryc0/pqdqKJAZc5VoGKLbUrzv2t7H2FdK8rw8hlLgg=;
+        b=ZOFaLN58Bh4mSUlBoO+oyth+rUPajLNYKFdlo3Z1ci3KAFAF+xyWt6q5FFKoZYzKnE
+         hNBneTsXzstIq+OL3HSUCGiEE01pjwmdBZY/gZVooi14H7gqIYBo9gsuui1jl4j0mHTl
+         QcOse8M+EPsF2QKCVx+CyHePf2YbucVvcbhjCFzF5k5Fmt1pJWqlqP8CsCDtqaReX2CM
+         6F75lToxfQ41OkTIIS7QP7Q+Wj6RliH7DxT5EhjGK+hyYtkmeyvFRAmJsc+IJ6hd4FNK
+         9KsuM9WzWNa07PpI1jxsKq1JssbmeMeMRuC+ZuJbhkx9tUBwnAaRk/3/ibmlbSSFIOdF
+         pj8Q==
+X-Gm-Message-State: APjAAAXoHJNpbbUcrOdDN2UV3ItjeA2eZPUCSkSvN4O1RvkMWIoCLcuO
+        JXdR6oqPwxgmZODes5udsbvfYw==
+X-Google-Smtp-Source: APXvYqxQ+TkhPae6YnwpETNmnZCKnGfRVMJswmmeya3cK+zZE7nfR1qS/48jxDEUAMDXwJhtaDBYyw==
+X-Received: by 2002:a1c:110:: with SMTP id 16mr3544521wmb.88.1568199110456;
+        Wed, 11 Sep 2019 03:51:50 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id e20sm2583505wme.3.2019.09.11.03.25.34
+        by smtp.gmail.com with ESMTPSA id b144sm2485131wmb.3.2019.09.11.03.51.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2019 03:25:34 -0700 (PDT)
-Date:   Wed, 11 Sep 2019 11:25:33 +0100
+        Wed, 11 Sep 2019 03:51:49 -0700 (PDT)
+Date:   Wed, 11 Sep 2019 11:51:48 +0100
 From:   Daniel Thompson <daniel.thompson@linaro.org>
 To:     Andreas Kemnade <andreas@kemnade.info>
 Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
-        jacek.anaszewski@gmail.com, pavel@ucw.cz, dmurphy@ti.com,
-        robh+dt@kernel.org, mark.rutland@arm.com, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [PATCH v2 2/2] backlight: lm3630a: add an enable gpio for the
- HWEN pin
-Message-ID: <20190911102533.not4ta3xwgm6bhjo@holly.lan>
-References: <20190910212909.18095-1-andreas@kemnade.info>
- <20190910212909.18095-3-andreas@kemnade.info>
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hns@goldelico.com
+Subject: Re: [PATCH] backlight: lm3630a: fix module aliases
+Message-ID: <20190911105148.4prmcr2f2r36sgrf@holly.lan>
+References: <20190910152359.7448-1-andreas@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190910212909.18095-3-andreas@kemnade.info>
+In-Reply-To: <20190910152359.7448-1-andreas@kemnade.info>
 User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Sep 10, 2019 at 11:29:09PM +0200, Andreas Kemnade wrote:
-> For now just enable it in the probe function to allow i2c
-> access. Disabling also means resetting the register values
-> to default and according to the datasheet does not give
-> power savings
-> 
-> Tested on Kobo Clara HD.
+On Tue, Sep 10, 2019 at 05:23:59PM +0200, Andreas Kemnade wrote:
+> Devicetree aliases are missing, so that module autoloading
+> does not work properly.
 > 
 > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+
+
 > ---
-> changes in v2:
-> - simplification
-> - correct gpio direction initialisation
-> 
->  drivers/video/backlight/lm3630a_bl.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  drivers/video/backlight/lm3630a_bl.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-> index 8f84f3684f04..9d0639d4202d 100644
+> index 3b45a1733198..9d67c07db2f2 100644
 > --- a/drivers/video/backlight/lm3630a_bl.c
 > +++ b/drivers/video/backlight/lm3630a_bl.c
-> @@ -12,6 +12,8 @@
->  #include <linux/uaccess.h>
->  #include <linux/interrupt.h>
->  #include <linux/regmap.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/gpio.h>
-
-Nitpicking... but I don't think linux/gpio.h is used anymore.
-
-
->  #include <linux/pwm.h>
->  #include <linux/platform_data/lm3630a_bl.h>
->  
-> @@ -48,6 +50,7 @@ struct lm3630a_chip {
->  	struct lm3630a_platform_data *pdata;
->  	struct backlight_device *bleda;
->  	struct backlight_device *bledb;
-> +	struct gpio_desc *enable_gpio;
->  	struct regmap *regmap;
->  	struct pwm_device *pwmd;
+> @@ -617,12 +617,14 @@ static const struct i2c_device_id lm3630a_id[] = {
+>  	{}
 >  };
-> @@ -535,6 +538,13 @@ static int lm3630a_probe(struct i2c_client *client,
->  	}
->  	pchip->pdata = pdata;
 >  
-> +	pchip->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
-> +						GPIOD_OUT_HIGH);
-> +	if (IS_ERR(pchip->enable_gpio)) {
-> +		rval = PTR_ERR(pchip->enable_gpio);
-> +		return rval;
-> +	}
+> +MODULE_DEVICE_TABLE(i2c, lm3630a_id);
 > +
->  	/* chip initialize */
->  	rval = lm3630a_chip_init(pchip);
->  	if (rval < 0) {
+>  static const struct of_device_id lm3630a_match_table[] = {
+>  	{ .compatible = "ti,lm3630a", },
+>  	{ },
+>  };
+>  
+> -MODULE_DEVICE_TABLE(i2c, lm3630a_id);
+> +MODULE_DEVICE_TABLE(of, lm3630a_match_table);
+>  
+>  static struct i2c_driver lm3630a_i2c_driver = {
+>  	.driver = {
 > -- 
-> 2.20.1
+> 2.11.0
 > 
