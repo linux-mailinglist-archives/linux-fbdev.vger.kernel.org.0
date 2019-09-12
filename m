@@ -2,97 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5421DB0C6C
-	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Sep 2019 12:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4803FB0E15
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Sep 2019 13:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730742AbfILKP4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 12 Sep 2019 06:15:56 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:52395 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730581AbfILKP4 (ORCPT
+        id S1731435AbfILLkW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 12 Sep 2019 07:40:22 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:47976 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731429AbfILLkW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 12 Sep 2019 06:15:56 -0400
-Received: by mail-wm1-f66.google.com with SMTP id x2so1480800wmj.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 12 Sep 2019 03:15:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=qV/8aDUA0K+Uc5KBI6c3mxsT5gQYmiuGy0QNU9fogWY=;
-        b=HLjGOu+sn5ATRNqb1gwBenUe3YEznyBNgtpyNgD/hKYBSs2QWWj3q18VgmisjNAewd
-         RNmV62/glB9NMWlTYreMQ8i988/9Jjm214Dz5RAkH7cCtvhHHfw6Mk1ERT6Y8GPhYORJ
-         kd5DxajIDHvhtYq5FeINW0DJ8J718ZDT2WY7pioOc9NiqXhScZdwWhwh55PVYqwP2G5L
-         r6CVnpKMGSH2XwHnGVwwKW7BcDOS6lDh1FgQh/PaZGipA+5obnd/Z7NiIpVfV/jd9AmP
-         zSnrZZdWYVO8Qq4DzJt0TaurCl50dJKbmXbH2HFzmR7RUFq/JBMlDLx8PHTD9pQjeZYE
-         eL2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qV/8aDUA0K+Uc5KBI6c3mxsT5gQYmiuGy0QNU9fogWY=;
-        b=cNieS8qPGRi9IV8nE3J7/BwypmJPhAxR6jY5l8k8+5jkVuqrqNikYFTlMx8B2mrqEm
-         VmtvVA/bqR4vXdnU4+YoITMxzqUMMBkKCn5HA+d6XXO8P4/EXxaH+e8FBpCcNXqvO7S4
-         FPg2acXW06zDCmiyuEhwNQfA0ExPzC+V8m2La/oNL5v+RzlgJsbOCcjlpoVXaXbTE6pi
-         FAEfSWHDHkLwOAftCpXqkdGNRsfMiXeKJWzBbpleOaj/kTATpCfMJO1qlJADUx8ejudP
-         HRVuGmXQWh9AbXfqXoh4TZjZk5/RbewZGOFXPUO1HcmDmkUb5sni2NWCGul3Qccexv4J
-         6tdw==
-X-Gm-Message-State: APjAAAV8s+LhLM6dCuG1yIT9eGTfiAZd9Eno8XVtmSHK7JcMohLOF9QE
-        o4iy+7LlxJSniFrSB/2wc8eNEPDfqb8KWA==
-X-Google-Smtp-Source: APXvYqwEOebgxZSBp13laDErgGyI2+sHKBFq4eelialn4eIjvYIachYOGeJu7mTeLm3/dq7MUiKVsw==
-X-Received: by 2002:a1c:1d4:: with SMTP id 203mr7626852wmb.104.1568283354131;
-        Thu, 12 Sep 2019 03:15:54 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id q9sm4061169wmq.15.2019.09.12.03.15.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2019 03:15:53 -0700 (PDT)
-Date:   Thu, 12 Sep 2019 11:15:51 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Nishka Dasgupta <nishkadg.linux@gmail.com>
-Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] backlight: ipaq_micro: Make structure micro_bl_props
- constant
-Message-ID: <20190912101551.7uwu23o3dqyon35p@holly.lan>
-References: <20190813085855.8302-1-nishkadg.linux@gmail.com>
+        Thu, 12 Sep 2019 07:40:22 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8CBdpeK074141;
+        Thu, 12 Sep 2019 06:39:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1568288391;
+        bh=S3Uw7YV4iduTm2oKlG6534ijPPVci6yUlAzgg9rmfq8=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=GeL8p8ROhUPfObNUFk/PLBiwXl4tBAb2eJPfeob4pLukY7J5A74Wet9FPQ604ClwE
+         rpAL1zeAz19IimtEarFIGg8wkgxTmJXiAhsoH6QHTlRvWXoYz+tCcVIP6HuZq0wpV6
+         Lr956nAtEz5pNjR6KzKPBoZ6ilx+yMGFpWnRn6As=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8CBdpqu008220
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Sep 2019 06:39:51 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 12
+ Sep 2019 06:39:50 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 12 Sep 2019 06:39:50 -0500
+Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8CBdoVV107454;
+        Thu, 12 Sep 2019 06:39:50 -0500
+Subject: Re: [PATCH v3 1/2] dt-bindings: backlight: lm3630a: add enable_gpios
+To:     Andreas Kemnade <andreas@kemnade.info>, <lee.jones@linaro.org>,
+        <daniel.thompson@linaro.org>, <jingoohan1@gmail.com>,
+        <jacek.anaszewski@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <b.zolnierkie@samsung.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-leds@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+References: <20190911172106.12843-1-andreas@kemnade.info>
+ <20190911172106.12843-2-andreas@kemnade.info>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <ff410d6c-e1e8-7c96-e8f7-0a0deb816f6a@ti.com>
+Date:   Thu, 12 Sep 2019 06:39:50 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190813085855.8302-1-nishkadg.linux@gmail.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190911172106.12843-2-andreas@kemnade.info>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Aug 13, 2019 at 02:28:55PM +0530, Nishka Dasgupta wrote:
-> Static structure micro_bl_props, having type backlight_properties, is
-> used only once, when it is passed as the last argument to function
-> devm_backlight_device_register(). devm_backlight_device_register() is
-> defined with its last parameter being declared constant. Hence make
-> micro_bl_props itself constant as well.
-> Issue found with Coccinelle.
-> 
-> Signed-off-by: Nishka Dasgupta <nishkadg.linux@gmail.com>
+Andreas
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
+On 9/11/19 12:21 PM, Andreas Kemnade wrote:
+> add enable-gpios to describe HWEN pin
+>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 > ---
->  drivers/video/backlight/ipaq_micro_bl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/ipaq_micro_bl.c b/drivers/video/backlight/ipaq_micro_bl.c
-> index 1123f67c12b3..85b16cc82878 100644
-> --- a/drivers/video/backlight/ipaq_micro_bl.c
-> +++ b/drivers/video/backlight/ipaq_micro_bl.c
-> @@ -44,7 +44,7 @@ static const struct backlight_ops micro_bl_ops = {
->  	.update_status  = micro_bl_update_status,
->  };
->  
-> -static struct backlight_properties micro_bl_props = {
-> +static const struct backlight_properties micro_bl_props = {
->  	.type = BACKLIGHT_RAW,
->  	.max_brightness = 255,
->  	.power = FB_BLANK_UNBLANK,
-> -- 
-> 2.19.1
+> changes in v2: added example
+> changes in v3: added Acked-by
+>   .../bindings/leds/backlight/lm3630a-backlight.yaml           | 5 +++++
+>   1 file changed, 5 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> index dc129d9a329e..1fa83feffe16 100644
+> --- a/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> +++ b/Documentation/devicetree/bindings/leds/backlight/lm3630a-backlight.yaml
+> @@ -29,6 +29,10 @@ properties:
+>     '#size-cells':
+>       const: 0
+>   
+> +  enable-gpios:
+> +    description: GPIO to use to enable/disable the backlight (HWEN pin).
+> +    maxItems: 1
+> +
+>   required:
+>     - compatible
+>     - reg
+> @@ -92,6 +96,7 @@ examples:
+>       i2c {
+>           #address-cells = <1>;
+>           #size-cells = <0>;
+> +        enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
+>   
+>           led-controller@38 {
+>                   compatible = "ti,lm3630a";
+
+Looks good to me
+
+Reviewed-by: Dan Murphy <dmurphy@ti.com>
+
