@@ -2,129 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B78DCB0E1A
-	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Sep 2019 13:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C145B10E4
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Sep 2019 16:16:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730982AbfILLko (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 12 Sep 2019 07:40:44 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:58868 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726952AbfILLko (ORCPT
+        id S1732625AbfILOQj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 12 Sep 2019 10:16:39 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:38336 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732444AbfILOQj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 12 Sep 2019 07:40:44 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8CBePBm024620;
-        Thu, 12 Sep 2019 06:40:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1568288425;
-        bh=JAbUfkXS1yEg2PX6HE2Q/UJubwObycdqS5f0+MTrqI8=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=wUS2FXnjRMRb7nbux+n8VSR2S+QdV9Fa9p8pUDFqVPSwvbqhilzjFXWtVJlCnJesl
-         oxX6owTH+yAb4R2D2Xn5kNI5aT5dvwiYKBMv1nvTt9VM+KVjf6tYnwkzQSs0R6XsVw
-         r9mS2gdQ5iImyK6GMPxAN/Q5JPZMIG/GYLaCW6AI=
-Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8CBePTt013823
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Sep 2019 06:40:25 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 12
- Sep 2019 06:40:24 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 12 Sep 2019 06:40:24 -0500
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8CBeOl4035179;
-        Thu, 12 Sep 2019 06:40:24 -0500
-Subject: Re: [PATCH v3 2/2] backlight: lm3630a: add an enable gpio for the
- HWEN pin
-To:     Andreas Kemnade <andreas@kemnade.info>, <lee.jones@linaro.org>,
-        <daniel.thompson@linaro.org>, <jingoohan1@gmail.com>,
-        <jacek.anaszewski@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
-        <mark.rutland@arm.com>, <b.zolnierkie@samsung.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-leds@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-fbdev@vger.kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-References: <20190911172106.12843-1-andreas@kemnade.info>
- <20190911172106.12843-3-andreas@kemnade.info>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <4b3407bb-d171-6a70-8252-573a4afbd056@ti.com>
-Date:   Thu, 12 Sep 2019 06:40:24 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Thu, 12 Sep 2019 10:16:39 -0400
+Received: by mail-oi1-f193.google.com with SMTP id 7so17232738oip.5
+        for <linux-fbdev@vger.kernel.org>; Thu, 12 Sep 2019 07:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oIyyL2k+Kx6gsc2VZuXgLDADDM5sLHRH4QY8N90RTy0=;
+        b=Bh5S6jpMcDMnohDqG7F2D2IiQX6/7FgnU83O6cFY3YVDT47gg1McCB2kf4HEifNGOM
+         ddty2v0fvhzTn8nqhpQ4YmSfiuati/FXHiaYhCby0UAji83fJehIFx38SaRjFPPcZKI2
+         Ez+6pkDhzxgxpCnaJ8JLKwYi+VFwWLtkSXeJ/+HTukmYLygkWiU403LPCl965qrQw0tt
+         JoC9H+BLS5lcMgrz0+U36MKPBtjN5FKNEp7iEj03rIKxYfo+98KTEJdK+Cp+Ogzkq4gF
+         GmlvzjQA/X/wUbVmxzzc9pQewTbuZKlvfvoBOOBHsZTxGW5xtd5HxQwkUSufsxuj/12h
+         joWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=oIyyL2k+Kx6gsc2VZuXgLDADDM5sLHRH4QY8N90RTy0=;
+        b=T/gOVCDGQpHO0GHBLaMaVCo01x7k7XhzuFCmow7EauNDcmCEUxPcndNpu4oKG4YxyP
+         AgvoOK0m7m2559PNocw5qrB0VizvC3o9hO2wEuGlB8eGdirtjAreo+5WbyZ1MYUgGHwS
+         svbIc83jpLPakPxppaPraQmw/Z+6lGL4OmWunLjfWhhRpioIMciE3M/p4CtYqi9R+6Jr
+         vwb+laLpBiPzBLS/3JKI/WmLv1wK2FyhpDnXQrw/X354idDkAGMhYw4rwP1GqPPujXBb
+         JrclXgQC4gl4AysZ/sRObO+pn5PhazIkCYCr/ex36isSqREYbats67bacShYp2piu4um
+         OJdA==
+X-Gm-Message-State: APjAAAUYNcv5EkYTe9Ven//Ycr7e0mag+TmwOdcOxcQYCEJOCyvyCN7w
+        AMtv8LyytWk7yXr72FRnG7mv22oo0Xg6fWcS1Mo=
+X-Google-Smtp-Source: APXvYqyS8lae6uOKVBZ6HA136iUmb8nuyaJzZjv7KBOKfmqpTJrcMkvPMSa+ZLR5u2tRQxfMHyUzXkU1G582aQHV7V0=
+X-Received: by 2002:a05:6808:13:: with SMTP id u19mr212881oic.63.1568297798424;
+ Thu, 12 Sep 2019 07:16:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190911172106.12843-3-andreas@kemnade.info>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Received: by 2002:a9d:170d:0:0:0:0:0 with HTTP; Thu, 12 Sep 2019 07:16:38
+ -0700 (PDT)
+Reply-To: joeakaba00@gmail.com
+From:   joe akaba <barrimurphy1965@gmail.com>
+Date:   Thu, 12 Sep 2019 16:16:38 +0200
+Message-ID: <CAGZA+7oiYa-zOGePcqwdX=RGx+EwS89drq28Oh85tW7UiFeM1g@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Andreas
+Hallo
 
-On 9/11/19 12:21 PM, Andreas Kemnade wrote:
-> For now just enable it in the probe function to allow i2c
-> access. Disabling also means resetting the register values
-> to default and according to the datasheet does not give
-> power savings.
->
-> Tested on Kobo Clara HD.
->
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
-> changes in v2:
-> - simplification
-> - correct gpio direction initialisation
->
-> changes in v3:
-> - removed legacy include
->
->   drivers/video/backlight/lm3630a_bl.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
->
-> diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-> index 8f84f3684f04..d9e67b9b2571 100644
-> --- a/drivers/video/backlight/lm3630a_bl.c
-> +++ b/drivers/video/backlight/lm3630a_bl.c
-> @@ -12,6 +12,7 @@
->   #include <linux/uaccess.h>
->   #include <linux/interrupt.h>
->   #include <linux/regmap.h>
-> +#include <linux/gpio/consumer.h>
->   #include <linux/pwm.h>
->   #include <linux/platform_data/lm3630a_bl.h>
->   
-> @@ -48,6 +49,7 @@ struct lm3630a_chip {
->   	struct lm3630a_platform_data *pdata;
->   	struct backlight_device *bleda;
->   	struct backlight_device *bledb;
-> +	struct gpio_desc *enable_gpio;
->   	struct regmap *regmap;
->   	struct pwm_device *pwmd;
->   };
-> @@ -535,6 +537,13 @@ static int lm3630a_probe(struct i2c_client *client,
->   	}
->   	pchip->pdata = pdata;
->   
-> +	pchip->enable_gpio = devm_gpiod_get_optional(&client->dev, "enable",
-> +						GPIOD_OUT_HIGH);
-> +	if (IS_ERR(pchip->enable_gpio)) {
-> +		rval = PTR_ERR(pchip->enable_gpio);
-> +		return rval;
-> +	}
-> +
->   	/* chip initialize */
->   	rval = lm3630a_chip_init(pchip);
->   	if (rval < 0) {
+Mein Name ist Joe Akaba. Ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte
+Ihnen anbieten
+die n=C3=A4chsten Verwandten zu meinem Klienten. Sie erben die Summe von
+(8,5 Millionen US-Dollar)
+Dollar, die mein Kunde vor seinem Tod in der Bank gelassen hat.
 
-Thanks for the explanation
+Mein Mandant ist ein Staatsb=C3=BCrger Ihres Landes, der mit seiner Frau
+bei einem Autounfall ums Leben gekommen ist
+und nur Sohn. Ich werde mit 50% des Gesamtfonds berechtigt sein, w=C3=A4hre=
+nd 50%
+sein f=C3=BCr dich.
+Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
+Informationen: joeakaba00@gmail.com
 
-It looks good to me
+Vielen Dank im Voraus,
+Mr.Joe Akaba
 
-Reviewed-by: Dan Murphy <dmurphy@ti.com>
 
+
+
+Hello
+
+My name is Joe Akaba I am a lawyer by profession. I wish to offer you
+the next of kin to my client. You will inherit the sum of ($8.5 Million)
+dollars my client left in the bank before his death.
+
+My client is a citizen of your country who died in auto crash with his wife
+and only son. I will be entitled with 50% of the total fund while 50% will
+be for you.
+Please contact my private email here for more details:joeakaba00@gmail.com
+
+Many thanks in advance,
+Mr.Joe Akaba
