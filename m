@@ -2,35 +2,40 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EC1AB7CE5
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Sep 2019 16:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50720B7D6D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Sep 2019 17:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732051AbfISOdj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 19 Sep 2019 10:33:39 -0400
-Received: from mout.web.de ([212.227.15.4]:47237 "EHLO mout.web.de"
+        id S2390785AbfISPBn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 19 Sep 2019 11:01:43 -0400
+Received: from mout.web.de ([212.227.15.4]:41845 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727273AbfISOdj (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 19 Sep 2019 10:33:39 -0400
+        id S2388350AbfISPBn (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 19 Sep 2019 11:01:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568903607;
-        bh=KlVZn4jdldjRZHie3WxJ1mEWUSWaQHuHR7KqEx5FTCI=;
+        s=dbaedf251592; t=1568905268;
+        bh=u2ovSWunxy9woIqBvZsHHuYvMbTrtREDqeUgpPJUF+Q=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=IiWKGESFMor/ZlzngA16YSQUR7ru02g9YzIATlqARt4hWciy9Z7xVMVZ32TTF8dSG
-         h3/5LVF0aKN4bSGHD3xyZ3eOgORdsiQwmiqLmrYrYyTA9i85grgehNfw1jhn5d1Vdh
-         x/3rf4Nx7HbEQg9tu/c/LOCsA5o18lfGtXCxPJOE=
+        b=k6Yx1GPosRG5DH4dGC24VKIBHqJ9oV7UJjavEdRO9oq00replubxs7LFvDVuheqvr
+         CNRRZrUNzsIpesEmE8IywRevk/KoPJrKsDkOMTdYfJSRj4QQaVs6g7iNylbg8h5PUR
+         cBAjg2WO4ztYJ/ob/1ZU1cadrf7s8nHu0JIK1n5A=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtX9Q-1i3EEk3lwq-010wBx; Thu, 19
- Sep 2019 16:33:27 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8hhT-1hwrLz2DVj-00wFZO; Thu, 19
+ Sep 2019 17:01:08 +0200
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        YueHaibing <yuehaibing@huawei.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Himanshu Jha <himanshujha199640@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] video: ocfb: Use devm_platform_ioremap_resource() in
- ocfb_probe()
+Subject: [PATCH] video: pxafb: Use devm_platform_ioremap_resource() in
+ pxafb_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,45 +79,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
-Date:   Thu, 19 Sep 2019 16:33:25 +0200
+Message-ID: <a1b804b1-43c2-327a-d6d1-df49aebec680@web.de>
+Date:   Thu, 19 Sep 2019 17:01:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HWCoQy7xwCffpBW0QWKAATOSMz1+twSQxpS9BC5xkiG9J68cyZq
- SxMl/SPFZ3Vzy3r0yi3Siq7pHz3n9FB0b2RbKJQRXpXue7dhxTKTlq+p9MVcFSR1hdoDgZQ
- +bSQE9zlugsjsieLXZ89w7u1EoBXJDAuDOqlkh70cQ6MI8wSUmElIDN/BkxYQGHL0kXOq2Q
- NUKQmp121GYhQI9vBTPTA==
+X-Provags-ID: V03:K1:GrKDkEUMXLoBldX1avxLfVJzh5A9CLC6e6YKXbC8kO+UVNS6N5F
+ dyesIWm1P8pt1HihyBzR8SS+eY2PERRnhMkL4VV0XKIqGe+HFZGwtmfFvuktbP6pi/7nEOm
+ MUXbuJ0VeVmZhrzrKkmk1hv5evmQnhE7QRbHYYLiyMaEXsvI91Sd6bXgCMcB4+LyKlWsS7h
+ IiTHKiM1JYwiNd0fZWHoQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HxDsb8263r0=:oSFR2BWoc5DgIAI8Sdp9Fq
- c/cFKK+Wit8lPcZ0g8mdbkRl7H1uedDHPi/4kyDKv/yKccD+qHtjdlVUn6R/gCRdt4moFATvg
- RcBUf/qfTAxNK7E1L7r5Bmm8HsLpm3FRRG17ys066aA14jzMkYnqcpbcwNk/UU0Jmx/tdjBWS
- vLj1doIcePrnLUE7fCkZCrpIKLkD7/zP7GblHr4WMKZO7D+mj4YjN40OLPrYec6zrzf39EaIu
- ta0DqCDxLZ/tAhpSvT3Ues41RkxpIlWYSotKY7/H6riSWPhTt4jLFqFsn5awwWk76cX8t+518
- HTjRYbW18z+vivUvaqcEqPvrdK4qZiDvWaqkS+c+lGTQiVsqxCQrShFjMbXGMTZef9LAlIyWc
- s97/dB9/SJLifhczA3K2Rf8FB35eTmsOrpmWj8LOnvNgmDVQOLEfTq1rKK+4bTWSEvL0Va1CD
- 7TEp9+KI4THbs6ZzFvldRiDkrHjmx0bmuKz3WHKZotpumFtAyLaoWQCsIDbPeUZqL98xnfsKA
- 4hBaIam5Ivutpbm4H9yp4/+DZ3THoxe03YgbgDiL12fwlCcQ14eWi0P4iAKEkxoHGhrskA91b
- 1JQdWA/t3RXJQJNcBXkIjvdvwUnkoGxPSRbeo+2McYCJiz2JoBRyroVr0AUGgyezkDvcpVtoa
- qHQpQqcAiWCXwwNcqtmR2kpsfHj5UsqPrB4f3S3ieIPZ4AOWohu/eA9JhU1lHhc/KAf7DIYgq
- dpDbA8VkLLtyCEMCGj7qf7gTgVSTxBug5mQ+hi+BBUK/2ROFNCpWxD+t57Wv+RntKMM0sjljt
- LV0dbq/D9xzJT53irzjCI/R/WiOTgO/F0wwcWJpAyTkr2uHZKrmBGLyQHhf7kIvo6xSSTBcPu
- BFTKmXWwWWs30+0yEjQyqHfoeHMED6yl4+TaJ+wvFUsIoRYWalAHcH5BJlHTkPfIA8AgSmCjb
- gSUqQmT69j4fjATcR+/2cm3T/vVtXHCncgSONO32giRyyTNQoA63opzsnQVgyfk9PAS88TB8p
- GioYLPDRr7ScEDnmeDPfGe5yVrt83cWR1Wm1DFwJA3e2CrIl7kIKLvc1Fk4bTD4RV3EtfdSUQ
- ckQjJwE7Q+1xB49sSnB70csWPItMzXZqXwQsiPp+4Apx+0buK9zDdB2oLdruV5cmlwWvvsiI5
- SglczD/K3ZfLSs8avxerAEit6sZE+VsrruewGvqw1G09hAFsUO+golXbzRlBHicmzIh25UjQf
- MTBxioOZAZVst6yCbfumLvae+hvT8BuzPZSwuA70xgATlt+6xfzD9JZ1czaQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:B8nBfBYkohA=:oRm+2mcW0XSB725MmbvJws
+ Q0q/udRo19sSg24j0CXCEufY7FDLq3wkJnSEyMyq0xgQMjhpI+T2RzJGKJDBiqnlZ/jmjvpa4
+ QsziN78u7/3S3bydWNtpyyudUUGv9RA3c2c4aIi62qM3bh8vj9/o/r2xLrLlV7TmzABEkKlc2
+ d1l3tqJFLZJ0x4pvgVH05VJ0ZrSIlTUCrKWOW3UCwq9f/oFCl8dOTvkeG4M14klNg6z6Pcy5C
+ BeU07A7HQAmKDN5EbGu+OUF3sAnvfxad7OLM9nMjV5tX63MXiuSeAI8tQSFE8Dp9/JmExi+PW
+ zU3iUQYTAcTZM/jmQgsxZYw+fvofkscd01MGhV7xNOlw97J/0BUeJ/IgrQNC8RJwI6yeG9mcZ
+ cdl2A0RM4Xtue883N9ZzD4HZLOT0PwuyUiSLldG2MRQnpOrVqVxb47Jr1dWYfT6k96EducUCu
+ z1m9j2TV+gtGe9EgIlconbITPRiHUWBIDIoN5RNWTN5vWRZVlqeLZojI5AP4pH2xBGEuKm4Jd
+ jvjz90AbRsb9SWdOtgV3LXNJoulz1QD9yDfR1DJDLktWA54MGdpYDh8iLYIkAp+O3yrjCGU19
+ hfl1lAMv32xGkhsEova5aFPDf7/ZJOkHeHbc4DhbrpxBSVfC6P7JofQbt+DenHtMOkW+gsR5C
+ WoiMz5sZGXlDYwTM8/kOPk+RZeq83BHBv76jT2abatL1y8MkNGlyUjTLc1yOfuX2zDOPJNoJJ
+ 6hK9UUFPDPUj3hO/6VPvaI6+wPstYWQAO3+bspQZ+gT+dRPZs1W+zWTndMdUNE+BJMRy/sMRR
+ JdGUNW9qQlELKx7r5YON4AdfofuRUDqqDJhbm1fh7+5s/e+RelH1LgJode8e6q7z9RtTrxwUV
+ YVeitXO72xKJt+wY944aM0LjW+jJ/Cv8WgxQv375DffX/8dwd2D2PfgGQvafQkv2F1MlObFMe
+ yMys5pVUDf30OSnmhZwRWHzifXWhkAiU1+0KZbuqrSV2ECuM2m8rxEbsVQeu3uex62FyqEez9
+ +OeS8WEm/gXQ1rHb1+ZVy181CeVNPcAelRn2KOXmKmp3Hun/Jim05hBVrBuB4aY1x4bzkhYTN
+ wvRA2uhgo+KdrbAN3keae+dJ/s/UqTIpUGOLLzOWXB48jtLAFUXVPwG/+bsRb05Se4AgfjQpN
+ 867sE1Gc1TEnLePPkLkRlGxiMlFrENtieFPD2+FnRBZBDVb2PstG1m7HHvE1jyuNSQnDN6rKd
+ BdpxBuiOcz5lx0qiYppU7zYfg29wAuo9RlFznOisNQ680y9FjfhCmUPvMLIU=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 19 Sep 2019 16:26:56 +0200
+Date: Thu, 19 Sep 2019 16:51:38 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -120,36 +125,37 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/video/fbdev/ocfb.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/video/fbdev/pxafb.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/video/fbdev/ocfb.c b/drivers/video/fbdev/ocfb.c
-index a970edc2a6f8..be308b4dc91d 100644
-=2D-- a/drivers/video/fbdev/ocfb.c
-+++ b/drivers/video/fbdev/ocfb.c
-@@ -297,7 +297,6 @@ static int ocfb_probe(struct platform_device *pdev)
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index f70c9f79622e..237f8f436fdb 100644
+=2D-- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2237,7 +2237,6 @@ static int pxafb_probe(struct platform_device *dev)
  {
- 	int ret =3D 0;
- 	struct ocfb_dev *fbdev;
--	struct resource *res;
- 	int fbsize;
+ 	struct pxafb_info *fbi;
+ 	struct pxafb_mach_info *inf, *pdata;
+-	struct resource *r;
+ 	int i, irq, ret;
 
- 	fbdev =3D devm_kzalloc(&pdev->dev, sizeof(*fbdev), GFP_KERNEL);
-@@ -319,13 +318,7 @@ static int ocfb_probe(struct platform_device *pdev)
- 	ocfb_init_var(fbdev);
- 	ocfb_init_fix(fbdev);
+ 	dev_dbg(&dev->dev, "pxafb_probe\n");
+@@ -2303,14 +2302,7 @@ static int pxafb_probe(struct platform_device *dev)
+ 		fbi->lcd_supply =3D NULL;
+ 	}
 
--	/* Request I/O resource */
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "I/O resource request failed\n");
--		return -ENXIO;
+-	r =3D platform_get_resource(dev, IORESOURCE_MEM, 0);
+-	if (r =3D=3D NULL) {
+-		dev_err(&dev->dev, "no I/O memory resource defined\n");
+-		ret =3D -ENODEV;
+-		goto failed;
 -	}
--	fbdev->regs =3D devm_ioremap_resource(&pdev->dev, res);
-+	fbdev->regs =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(fbdev->regs))
- 		return PTR_ERR(fbdev->regs);
-
+-
+-	fbi->mmio_base =3D devm_ioremap_resource(&dev->dev, r);
++	fbi->mmio_base =3D devm_platform_ioremap_resource(dev, 0);
+ 	if (IS_ERR(fbi->mmio_base)) {
+ 		dev_err(&dev->dev, "failed to get I/O memory\n");
+ 		ret =3D -EBUSY;
 =2D-
 2.23.0
 
