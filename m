@@ -2,82 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE59B8AD4
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2019 08:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A87AB8E50
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2019 12:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388712AbfITGJN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 20 Sep 2019 02:09:13 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:57860 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2437347AbfITGJN (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 20 Sep 2019 02:09:13 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 17052DF32EB6709A75B7;
-        Fri, 20 Sep 2019 14:09:12 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 20 Sep 2019 14:09:05 +0800
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-To:     Joe Perches <joe@perches.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Alexei Starovoitov" <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Petr Mladek <pmladek@suse.com>, Arnd Bergmann <arnd@arndb.de>,
-        <linux-kernel@vger.kernel.org>
-CC:     <wangkefeng.wang@huawei.com>,
+        id S2393375AbfITKOR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 20 Sep 2019 06:14:17 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:40851 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393229AbfITKOR (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 20 Sep 2019 06:14:17 -0400
+Received: by mail-wr1-f65.google.com with SMTP id l3so6141633wru.7
+        for <linux-fbdev@vger.kernel.org>; Fri, 20 Sep 2019 03:14:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=5ZARvlMGzUOLlDd3Qz++HvoWRZDtFBjq+Ck4U0kIZJ0=;
+        b=W6nzOE9+ubRnrXYaddn4a21F2+zaZqCfW5jYKljj9XjJqQ9t+UHwh8ByKvVJeZxs5T
+         fNr6h9fu1qTNCNjta8Tngtiah1PSd0me8UgBwWXGumP+jzpGVEOQpqPhj9CAHNXJK+qn
+         7KxxqKGRYpmRQ3h4qyXCfzUQqGIW73rHtkObqsExqBGkjXiD2JXOALqcc/ijZdPdBNa5
+         mxzZ7u4kFImnnhqGHksmDkJxGROJvZoq2mtAx08mC2DufbIbzt0vcRYodcdpV/tU4iBL
+         tjLELQ+Av7uCHUQLoUEKytOxo2cjZfLqKTf7grg7HYe+CmvC9NOxOmKh4bs3A2g1SBlT
+         OO8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=5ZARvlMGzUOLlDd3Qz++HvoWRZDtFBjq+Ck4U0kIZJ0=;
+        b=JDWNiUmzQCDW7YescKq23SqYg2yRB4e+UQaxTgwOLTLME6YkMn8iNoDxIn5j2NmoRV
+         ds+M0cowJ8LqRWmeLZ2AGnPdRCG3LVYmnIQ1YKEzHrCtDUOOT4rKvJEcynn62KzIynka
+         KABq0tIEJidmz3JQ8Dyl8CPPXh/fRkOQrlDTl9o6JdBQryEkJvnGGolCBiYxfqDHGD/X
+         LAH3eL9lzQd/GpLn4SUFCtxEvpcpeltqVDtC4Bz9HD/n/YisrdhxKqSY0RZQP4jQa3H8
+         Gh10UXpCL68ArEuCfgTn840N9Oii/XFn+ZYjZUFQrnuZpSfrYkl5zkAww0RrpR4eF7kK
+         t15A==
+X-Gm-Message-State: APjAAAW+HBeoOVKNYDcimj7ITNkRERJEy7wpNt3oW/MSOWwGKQm/OZEU
+        15mXYFSf18eDqmCo8aIIDHfe1A==
+X-Google-Smtp-Source: APXvYqyKLOgmfl8hv9NLxhkcUW8cJq4QiBvFCFxi3sIHPyIEplkcQ/E1SKt7/3vCOBdKqIxZ7o8nBQ==
+X-Received: by 2002:a5d:4742:: with SMTP id o2mr11160970wrs.253.1568974455339;
+        Fri, 20 Sep 2019 03:14:15 -0700 (PDT)
+Received: from holly.lan (82-132-212-65.dab.02.net. [82.132.212.65])
+        by smtp.gmail.com with ESMTPSA id z9sm2200313wrp.26.2019.09.20.03.14.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Sep 2019 03:14:14 -0700 (PDT)
+Date:   Fri, 20 Sep 2019 11:14:05 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <linux-fbdev@vger.kernel.org>
-Subject: [PATCH 23/32] vgacon: Use pr_warn instead of pr_warning
-Date:   Fri, 20 Sep 2019 14:25:35 +0800
-Message-ID: <20190920062544.180997-24-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
-References: <20190920062544.180997-1-wangkefeng.wang@huawei.com>
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] backlight: pwm_bl: fix cie1913 comments and constant
+Message-ID: <20190920101405.yuu4bymublj45kd4@holly.lan>
+References: <20190919140620.32407-1-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190919140620.32407-1-linux@rasmusvillemoes.dk>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-As said in commit f2c2cbcc35d4 ("powerpc: Use pr_warn instead of
-pr_warning"), removing pr_warning so all logging messages use a
-consistent <prefix>_warn style. Let's do it.
+Hi Rasmus
 
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: linux-fbdev@vger.kernel.org
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- drivers/video/console/vgacon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Has something gone wrong with the mail out for this patch set. I didn't
+get a covering letter or patch 5/5?
 
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index c6b3bdbbdbc9..de7b8382aba9 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -113,9 +113,9 @@ static int __init text_mode(char *str)
- {
- 	vgacon_text_mode_force = true;
- 
--	pr_warning("You have booted with nomodeset. This means your GPU drivers are DISABLED\n");
--	pr_warning("Any video related functionality will be severely degraded, and you may not even be able to suspend the system properly\n");
--	pr_warning("Unless you actually understand what nomodeset does, you should reboot without enabling it\n");
-+	pr_warn("You have booted with nomodeset. This means your GPU drivers are DISABLED\n");
-+	pr_warn("Any video related functionality will be severely degraded, and you may not even be able to suspend the system properly\n");
-+	pr_warn("Unless you actually understand what nomodeset does, you should reboot without enabling it\n");
- 
- 	return 1;
- }
--- 
-2.20.1
 
+Daniel.
