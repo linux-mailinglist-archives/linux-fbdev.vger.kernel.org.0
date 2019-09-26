@@ -2,47 +2,45 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C48BEFA0
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 12:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF07BEFFB
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 12:45:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725890AbfIZKax (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 26 Sep 2019 06:30:53 -0400
-Received: from condef-03.nifty.com ([202.248.20.68]:27414 "EHLO
-        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725208AbfIZKax (ORCPT
+        id S1725848AbfIZKp4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 26 Sep 2019 06:45:56 -0400
+Received: from conssluserg-02.nifty.com ([210.131.2.81]:61224 "EHLO
+        conssluserg-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725813AbfIZKp4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 26 Sep 2019 06:30:53 -0400
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-03.nifty.com with ESMTP id x8QAPmUk024411
-        for <linux-fbdev@vger.kernel.org>; Thu, 26 Sep 2019 19:25:48 +0900
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46]) (authenticated)
-        by conssluserg-01.nifty.com with ESMTP id x8QAPiZX026387;
-        Thu, 26 Sep 2019 19:25:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x8QAPiZX026387
+        Thu, 26 Sep 2019 06:45:56 -0400
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x8QAjhr9003477;
+        Thu, 26 Sep 2019 19:45:43 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x8QAjhr9003477
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1569493544;
-        bh=4gNfylHHZtdgndSad6PjJXSwxIOR9alrhtPtj8B7110=;
+        s=dec2015msa; t=1569494744;
+        bh=2bqFCD9HY4bOSAdbvQuBhAL+OdjKk61eDEgGU6Vtqck=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=VinczihnWCDBrgvoLP2kh5fTytrGSEoNtQk40bdmi4GDG5IIpShIqMdnNlzt2kiFt
-         2N65b4GeXMV6VQPXgYcU1CIGc8tXfRCQdgtgd2aOkFQa+01xE/x2GQUIUKR/SHNNre
-         NCTiw3vbhHgYaFneTON8+Erl4Q78APXKXU+wGXaM3C6Ja31BIp+qqtkEn4FCTAhNVt
-         hQQZSwgqopq9slaI9tSyg4TSxVwU5jACP3ZwJDUlaeeT357sqWaLKvsLq1c64N4RJ7
-         Mv2TSeZsU6DA2+zpeWPIOuUIDAXJsoetGen8N6y7CzkhW1MCRhr8kQyc6ob7SW1fp5
-         3SdgKiScRbF1g==
-X-Nifty-SrcIP: [209.85.217.46]
-Received: by mail-vs1-f46.google.com with SMTP id d3so1251842vsr.1;
-        Thu, 26 Sep 2019 03:25:44 -0700 (PDT)
-X-Gm-Message-State: APjAAAVaqQdyOaS/0nwjUNRk77rUoqQ7K1iu+MOtVnQwX9nQmJLJfAOK
-        I9b+qzAXn69XMhHV8VqfR6tJWs5yKQx9Z9fS22M=
-X-Google-Smtp-Source: APXvYqyeIspKm3xk+JKqX7PSS7gDWlcm9BZdyqAWf+X9fC0of2bjx1GwXyPr283EhOahiarlzOo3vv0bAZkcr7AOlSE=
-X-Received: by 2002:a67:1a41:: with SMTP id a62mr1750823vsa.54.1569493543459;
- Thu, 26 Sep 2019 03:25:43 -0700 (PDT)
+        b=MGH/PDa0fPS4hDwlv5O/+6Pv/I+M0Ihx7N+qCcjMpIu4hvGN7nL80VD8z6Re9ijAJ
+         yMOj5tPD6gG17+vUCK+9uxHTUYzsGiaW5HrzHbHVGcNlzQEz/IIxU/LAn6MRFmgOiX
+         sPx6wE4YMa6SgxQPoow1CA7QvEi/lmgNb+552BfSu2CyavfAsd8gf1KAD+giQxc6Z/
+         y3vEjpc/AcJ5ICRI+cHesOhcmHkEtfe+hU2rbzlLhqA4GZZsaGcgdxRq0T2dJIUd+S
+         y43pK4BH9uj6pfZoEIaymNW1eyoOdbIcsgpZgLamCn4iVKhKQSZkox/fmV/fg7N1H4
+         TEjp/yp/Ct50Q==
+X-Nifty-SrcIP: [209.85.221.179]
+Received: by mail-vk1-f179.google.com with SMTP id d66so337950vka.2;
+        Thu, 26 Sep 2019 03:45:43 -0700 (PDT)
+X-Gm-Message-State: APjAAAVzIHx64jZ5aNo4tTjfLe72+XgiZN/u/Hzg6UBTVYSGBMgdWQEj
+        Fx31NRgp8p0ngFpMjdr/BYLStDDXDyT6VvujWec=
+X-Google-Smtp-Source: APXvYqxq9EI9rMORFaFNyb4BmeKb4WK6iS2aILn0tGeI53ICeWzEirtOjlv7ijdHOlZYtmjDCl7+cULA0UzUmkBvYiM=
+X-Received: by 2002:a1f:60c2:: with SMTP id u185mr1298856vkb.0.1569494742579;
+ Thu, 26 Sep 2019 03:45:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190926101312.32218-1-geert@linux-m68k.org>
 In-Reply-To: <20190926101312.32218-1-geert@linux-m68k.org>
 From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 26 Sep 2019 19:25:07 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARTk5yE1=WsxdYpEw6EYXMmq8cW5QBEse2WWhTJ0y=iMA@mail.gmail.com>
-Message-ID: <CAK7LNARTk5yE1=WsxdYpEw6EYXMmq8cW5QBEse2WWhTJ0y=iMA@mail.gmail.com>
+Date:   Thu, 26 Sep 2019 19:45:06 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATN5QyC+-_VRZm_ZysYd8Z8aWU0Ys0cTpU2GUdEdrXvPg@mail.gmail.com>
+Message-ID: <CAK7LNATN5QyC+-_VRZm_ZysYd8Z8aWU0Ys0cTpU2GUdEdrXvPg@mail.gmail.com>
 Subject: Re: [PATCH -next] fbdev: c2p: Fix link failure on non-inlining
 To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
@@ -71,11 +69,37 @@ On Thu, Sep 26, 2019 at 7:13 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 >
 > Reported-by: noreply@ellerman.id.au
 > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> ---
+> Fixes: 025f072e5823947c ("compiler: enable CONFIG_OPTIMIZE_INLINING forcibly")
+>
+> As this is a patch in akpm's tree, the commit ID in the Fixes tag is not
+> stable.
+
+BTW, that Fixes tag is incorrect.
+
+Irrespective of 025f072e5823947c, you could manually enable
+CONFIG_OPTIMIZE_INLINING from menuconfig etc.
+
+So, this build error would have been found much earlier
+if somebody had been running randconfig tests on m68k.
+
+It is impossible to detect this error on other architectures
+because the driver config options are guarded by
+'depends on ATARI' or 'depends on AMIGA'.
 
 
-Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+The correct tag is:
+
+Fixes: 9012d011660e ("compiler: allow all arches to enable
+CONFIG_OPTIMIZE_INLINING")
+
+The commit id is stable.
 
 
+
+As an additional work,
+depends on (AMIGA || COMPILE_TEST)
+would be nice unless this driver contains m68k-specific code.
 
 
 -- 
