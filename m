@@ -2,88 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 265A8BCF47
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Sep 2019 19:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F96EBEF55
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 12:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731367AbfIXQyY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Sep 2019 12:54:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45952 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2441631AbfIXQwR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Sep 2019 12:52:17 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BF233217D9;
-        Tue, 24 Sep 2019 16:52:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569343937;
-        bh=kLpdyiyaKSkUkZH7ucq8Vfr+n9PdgsA9ejhy5q8h7sA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ZhlMhWi5DRpUkZx2gw2YCuntEkBFmq6i23mgMmjImaRzm1TJeEScNOaSpn7DR+5HB
-         3C91kL6eq6DAy3RszKtrsSIjOBYaQG9Dfs4Yy9TAJ90l4v+MGGtRA8HztJXGFkQUT5
-         VSJ2JBZhFvy6Gm55heRkGeYtOnOBjGpztA5wlFVM=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Marko Kohtala <marko.kohtala@okoko.fi>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sasha Levin <sashal@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 01/14] video: ssd1307fb: Start page range at page_offset
-Date:   Tue, 24 Sep 2019 12:51:59 -0400
-Message-Id: <20190924165214.28857-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1726260AbfIZKNS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 26 Sep 2019 06:13:18 -0400
+Received: from albert.telenet-ops.be ([195.130.137.90]:50884 "EHLO
+        albert.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfIZKNS (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 26 Sep 2019 06:13:18 -0400
+Received: from ramsan ([84.194.98.4])
+        by albert.telenet-ops.be with bizsmtp
+        id 6ADF2100505gfCL06ADF4l; Thu, 26 Sep 2019 12:13:15 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iDQlu-0001q2-Ar; Thu, 26 Sep 2019 12:13:14 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iDQlu-0008ON-8M; Thu, 26 Sep 2019 12:13:14 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH -next] fbdev: c2p: Fix link failure on non-inlining
+Date:   Thu, 26 Sep 2019 12:13:12 +0200
+Message-Id: <20190926101312.32218-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Marko Kohtala <marko.kohtala@okoko.fi>
+When the compiler decides not to inline the Chunky-to-Planar core
+functions, the build fails with:
 
-[ Upstream commit dd9782834dd9dde3624ff1acea8859f3d3e792d4 ]
+    c2p_planar.c:(.text+0xd6): undefined reference to `c2p_unsupported'
+    c2p_planar.c:(.text+0x1dc): undefined reference to `c2p_unsupported'
+    c2p_iplan2.c:(.text+0xc4): undefined reference to `c2p_unsupported'
+    c2p_iplan2.c:(.text+0x150): undefined reference to `c2p_unsupported'
 
-The page_offset was only applied to the end of the page range. This caused
-the display updates to cause a scrolling effect on the display because the
-amount of data written to the display did not match the range display
-expected.
+Fix this by marking the functions __always_inline.
 
-Fixes: 301bc0675b67 ("video: ssd1307fb: Make use of horizontal addressing mode")
-Signed-off-by: Marko Kohtala <marko.kohtala@okoko.fi>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Michal Vokáč <michal.vokac@ysoft.com>
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20190618074111.9309-4-marko.kohtala@okoko.fi
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: noreply@ellerman.id.au
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- drivers/video/fbdev/ssd1307fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes: 025f072e5823947c ("compiler: enable CONFIG_OPTIMIZE_INLINING forcibly")
 
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index fa3480815cdb6..88e0763edcc72 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -421,7 +421,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	if (ret < 0)
- 		return ret;
+As this is a patch in akpm's tree, the commit ID in the Fixes tag is not
+stable.
+---
+ drivers/video/fbdev/c2p_core.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/video/fbdev/c2p_core.h b/drivers/video/fbdev/c2p_core.h
+index e1035a865fb945f0..45a6d895a7d7208e 100644
+--- a/drivers/video/fbdev/c2p_core.h
++++ b/drivers/video/fbdev/c2p_core.h
+@@ -29,7 +29,7 @@ static inline void _transp(u32 d[], unsigned int i1, unsigned int i2,
  
--	ret = ssd1307fb_write_cmd(par->client, 0x0);
-+	ret = ssd1307fb_write_cmd(par->client, par->page_offset);
- 	if (ret < 0)
- 		return ret;
+ extern void c2p_unsupported(void);
+ 
+-static inline u32 get_mask(unsigned int n)
++static __always_inline u32 get_mask(unsigned int n)
+ {
+ 	switch (n) {
+ 	case 1:
+@@ -57,7 +57,7 @@ static inline u32 get_mask(unsigned int n)
+      *  Transpose operations on 8 32-bit words
+      */
+ 
+-static inline void transp8(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp8(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
+ 
+@@ -99,7 +99,7 @@ static inline void transp8(u32 d[], unsigned int n, unsigned int m)
+      *  Transpose operations on 4 32-bit words
+      */
+ 
+-static inline void transp4(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp4(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
+ 
+@@ -126,7 +126,7 @@ static inline void transp4(u32 d[], unsigned int n, unsigned int m)
+      *  Transpose operations on 4 32-bit words (reverse order)
+      */
+ 
+-static inline void transp4x(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp4x(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
  
 -- 
-2.20.1
+2.17.1
 
