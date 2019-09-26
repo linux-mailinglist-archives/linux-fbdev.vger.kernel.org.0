@@ -2,42 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 304C4BF200
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 13:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D31BBBF228
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 13:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbfIZLn3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 26 Sep 2019 07:43:29 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44858 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbfIZLn3 (ORCPT
+        id S1725882AbfIZLwx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 26 Sep 2019 07:52:53 -0400
+Received: from conssluserg-05.nifty.com ([210.131.2.90]:31598 "EHLO
+        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725877AbfIZLww (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 26 Sep 2019 07:43:29 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 21so1668439otj.11;
-        Thu, 26 Sep 2019 04:43:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4NJdVMhLCeR2qiK+ps5K2jQQOjDIRz/+T2QEFlJumLo=;
-        b=ID9IoPJJTSGf5si0CLomZFSVVrRwR+mdL0qANNE3/Batj1CZJiqlbl7ViKb7S1YmAk
-         Cp4J1i7oaVpKqmksPFEyjoPfo/ufSXidJtiT+KG+K1TfDIkaBbzKuC2f11Tfsw5caR6/
-         Lxv6WVUmchDpw7ztr785bfYMItHvVQyGult5jH12UMOzyxFgCYr32sBvj7X2g9xyWyzb
-         xU5NbiYGcT/7l6n2+lYBm1TVgByJv/X9AVZm+H7luChUScDpumgL3GXTj9CjR9gmYgO+
-         v6ydzZlF96RYc75sABGbNMa3k19JUrS91dLCV6eKlCUgVZHIKGhzufyNKAAHGUcLe5VE
-         jFcw==
-X-Gm-Message-State: APjAAAWAiQVGhlmdUOlCMuOxLlfmbmom7R1eR78/oIc8m9jVnmrgwwPo
-        b7CzxspEMssWShNIF+NnibKTNEzFF5aNwZXGVqvTSVQt
-X-Google-Smtp-Source: APXvYqwrzHBwDdOQwaGyp+5fyfQIfQ0z97+Qu0pah+x251meUloMW93t4iddIxB6GsMhyGbNpuoyECgs8nMgvL16kGA=
-X-Received: by 2002:a9d:193:: with SMTP id e19mr2139993ote.107.1569498208192;
- Thu, 26 Sep 2019 04:43:28 -0700 (PDT)
+        Thu, 26 Sep 2019 07:52:52 -0400
+X-Greylist: delayed 5224 seconds by postgrey-1.27 at vger.kernel.org; Thu, 26 Sep 2019 07:52:51 EDT
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47]) (authenticated)
+        by conssluserg-05.nifty.com with ESMTP id x8QBqf8K015871;
+        Thu, 26 Sep 2019 20:52:41 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x8QBqf8K015871
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1569498762;
+        bh=+62D9236cTgE1YamYRIBdf579l4q6GlpGs0F5mD3z3A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=J2oDXDPoVVEXXHrxAHeI7IBq2Hmp24rzZqdMjsQspLnCh+NrDl4ezyl16DbDpadhd
+         P/0P8LU/JkBmjYP/Xmy8uLgtc9mJRXJmUy/KXG2FjSK1voNaP1kRtv88tSXLdqbrH8
+         YqgztBTupmXBCTjUZdJJr8OJKv/XX7Yzx9q8e48HDndhybVmTrStx1GD7N0DYWx7uH
+         MiEFZoiPCeSXAHHiopInxiROzc+L0tzeEETRzsxJPFVDdMBI8q4lilgVp3cXEbYEVp
+         ZJ+Uqq7VsqMRbq8+JpJmyX0xyey+3m/t157xs0BtmFCZOWnzr82KKjSJ4zZDcwldYq
+         8UYSmFaJSyzig==
+X-Nifty-SrcIP: [209.85.217.47]
+Received: by mail-vs1-f47.google.com with SMTP id d204so1360590vsc.12;
+        Thu, 26 Sep 2019 04:52:41 -0700 (PDT)
+X-Gm-Message-State: APjAAAWoVXjgaNY7lxkY/3cQs7Fbsd6YlcJKxWk/HyQ0KlSvxgiRgS7i
+        KhVUeDrs5iHKV9jO8TCVoXqfvVTYqWSUfwczNhs=
+X-Google-Smtp-Source: APXvYqzl4Bl4cH3IQmKL+GgyuH5KFHMny1Q8PPwuMn/uW2v5G/87/SwlwldHycNcU6DS/BrJ+KjFTt6W/O79v4O1284=
+X-Received: by 2002:a67:ec09:: with SMTP id d9mr1431105vso.215.1569498760483;
+ Thu, 26 Sep 2019 04:52:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190926101312.32218-1-geert@linux-m68k.org> <CAK7LNATN5QyC+-_VRZm_ZysYd8Z8aWU0Ys0cTpU2GUdEdrXvPg@mail.gmail.com>
-In-Reply-To: <CAK7LNATN5QyC+-_VRZm_ZysYd8Z8aWU0Ys0cTpU2GUdEdrXvPg@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Sep 2019 13:43:16 +0200
-Message-ID: <CAMuHMdU3T83z1iZ7O2-5eRkawdGm50Auw5o0K9+J5Q7+oev62g@mail.gmail.com>
+ <CAMuHMdU3T83z1iZ7O2-5eRkawdGm50Auw5o0K9+J5Q7+oev62g@mail.gmail.com>
+In-Reply-To: <CAMuHMdU3T83z1iZ7O2-5eRkawdGm50Auw5o0K9+J5Q7+oev62g@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Thu, 26 Sep 2019 20:52:04 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAShZJw4K4kDURPyJ1_NGQt50cBA-aB2HZCzK7LOdNSaKA@mail.gmail.com>
+Message-ID: <CAK7LNAShZJw4K4kDURPyJ1_NGQt50cBA-aB2HZCzK7LOdNSaKA@mail.gmail.com>
 Subject: Re: [PATCH -next] fbdev: c2p: Fix link failure on non-inlining
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
@@ -50,76 +57,47 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Yamada-san,
+Hi Geert,
 
-On Thu, Sep 26, 2019 at 12:45 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
-> On Thu, Sep 26, 2019 at 7:13 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > When the compiler decides not to inline the Chunky-to-Planar core
-> > functions, the build fails with:
-> >
-> >     c2p_planar.c:(.text+0xd6): undefined reference to `c2p_unsupported'
-> >     c2p_planar.c:(.text+0x1dc): undefined reference to `c2p_unsupported'
-> >     c2p_iplan2.c:(.text+0xc4): undefined reference to `c2p_unsupported'
-> >     c2p_iplan2.c:(.text+0x150): undefined reference to `c2p_unsupported'
-> >
-> > Fix this by marking the functions __always_inline.
-> >
-> > Reported-by: noreply@ellerman.id.au
-> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > ---
-> > Fixes: 025f072e5823947c ("compiler: enable CONFIG_OPTIMIZE_INLINING forcibly")
-> >
-> > As this is a patch in akpm's tree, the commit ID in the Fixes tag is not
-> > stable.
+On Thu, Sep 26, 2019 at 8:43 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+
 >
-> BTW, that Fixes tag is incorrect.
+> BTW, does randconfig randomize choices these days?
+> I remember it didn't use to do that.
+
+randconfig does randomize choices.
+
+
+masahiro@pug:~/ref/linux$ make -s randconfig ; grep OPTIMIZE_FOR .config
+KCONFIG_SEED=0x75F1F6C8
+CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
+# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+masahiro@pug:~/ref/linux$ make -s randconfig ; grep OPTIMIZE_FOR .config
+KCONFIG_SEED=0x8FDFC7FC
+# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+
+
+all{yes,mod}config always takes the default in the choice.
+So, you cannot enable CONFIG_CC_OPTIMIZE_FOR_SIZE by all{yes,mod}config.
+
+
+
+
+
+> The Amiga and Atari frame buffer drivers need <asm/{amiga,atari}hw.h>,
+> and the Atari driver contains inline asm.
 >
-> Irrespective of 025f072e5823947c, you could manually enable
-> CONFIG_OPTIMIZE_INLINING from menuconfig etc.
+> The C2P code could be put behind its own Kconfig symbol, I guess.
 
-Merely enabling that doesn't help.
-You also need CONFIG_CC_OPTIMIZE_FOR_SIZE=y, while the
-default is CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y.
-Which is why my all{mod,yes}config builds never caught that :-(
+OK, then.
 
-> So, this build error would have been found much earlier
-> if somebody had been running randconfig tests on m68k.
 
-It's been a while I did that...
+Thanks.
 
-BTW, does randconfig randomize choices these days?
-I remember it didn't use to do that.
 
-> It is impossible to detect this error on other architectures
-> because the driver config options are guarded by
-> 'depends on ATARI' or 'depends on AMIGA'.
->
-> The correct tag is:
->
-> Fixes: 9012d011660e ("compiler: allow all arches to enable
-> CONFIG_OPTIMIZE_INLINING")
->
-> The commit id is stable.
 
-Thanks, will update.
-
-> As an additional work,
-> depends on (AMIGA || COMPILE_TEST)
-> would be nice unless this driver contains m68k-specific code.
-
-The Amiga and Atari frame buffer drivers need <asm/{amiga,atari}hw.h>,
-and the Atari driver contains inline asm.
-
-The C2P code could be put behind its own Kconfig symbol, I guess.
-
-Gr{oetje,eeting}s,
-
-                        Geert
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best Regards
+Masahiro Yamada
