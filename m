@@ -2,102 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D31BBBF228
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Sep 2019 13:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD4BC02A2
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Sep 2019 11:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725882AbfIZLwx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 26 Sep 2019 07:52:53 -0400
-Received: from conssluserg-05.nifty.com ([210.131.2.90]:31598 "EHLO
-        conssluserg-05.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbfIZLww (ORCPT
+        id S1726030AbfI0JrN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Sep 2019 05:47:13 -0400
+Received: from laurent.telenet-ops.be ([195.130.137.89]:33892 "EHLO
+        laurent.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbfI0JrN (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 26 Sep 2019 07:52:52 -0400
-X-Greylist: delayed 5224 seconds by postgrey-1.27 at vger.kernel.org; Thu, 26 Sep 2019 07:52:51 EDT
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id x8QBqf8K015871;
-        Thu, 26 Sep 2019 20:52:41 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com x8QBqf8K015871
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1569498762;
-        bh=+62D9236cTgE1YamYRIBdf579l4q6GlpGs0F5mD3z3A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=J2oDXDPoVVEXXHrxAHeI7IBq2Hmp24rzZqdMjsQspLnCh+NrDl4ezyl16DbDpadhd
-         P/0P8LU/JkBmjYP/Xmy8uLgtc9mJRXJmUy/KXG2FjSK1voNaP1kRtv88tSXLdqbrH8
-         YqgztBTupmXBCTjUZdJJr8OJKv/XX7Yzx9q8e48HDndhybVmTrStx1GD7N0DYWx7uH
-         MiEFZoiPCeSXAHHiopInxiROzc+L0tzeEETRzsxJPFVDdMBI8q4lilgVp3cXEbYEVp
-         ZJ+Uqq7VsqMRbq8+JpJmyX0xyey+3m/t157xs0BtmFCZOWnzr82KKjSJ4zZDcwldYq
-         8UYSmFaJSyzig==
-X-Nifty-SrcIP: [209.85.217.47]
-Received: by mail-vs1-f47.google.com with SMTP id d204so1360590vsc.12;
-        Thu, 26 Sep 2019 04:52:41 -0700 (PDT)
-X-Gm-Message-State: APjAAAWoVXjgaNY7lxkY/3cQs7Fbsd6YlcJKxWk/HyQ0KlSvxgiRgS7i
-        KhVUeDrs5iHKV9jO8TCVoXqfvVTYqWSUfwczNhs=
-X-Google-Smtp-Source: APXvYqzl4Bl4cH3IQmKL+GgyuH5KFHMny1Q8PPwuMn/uW2v5G/87/SwlwldHycNcU6DS/BrJ+KjFTt6W/O79v4O1284=
-X-Received: by 2002:a67:ec09:: with SMTP id d9mr1431105vso.215.1569498760483;
- Thu, 26 Sep 2019 04:52:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190926101312.32218-1-geert@linux-m68k.org> <CAK7LNATN5QyC+-_VRZm_ZysYd8Z8aWU0Ys0cTpU2GUdEdrXvPg@mail.gmail.com>
- <CAMuHMdU3T83z1iZ7O2-5eRkawdGm50Auw5o0K9+J5Q7+oev62g@mail.gmail.com>
-In-Reply-To: <CAMuHMdU3T83z1iZ7O2-5eRkawdGm50Auw5o0K9+J5Q7+oev62g@mail.gmail.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Thu, 26 Sep 2019 20:52:04 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAShZJw4K4kDURPyJ1_NGQt50cBA-aB2HZCzK7LOdNSaKA@mail.gmail.com>
-Message-ID: <CAK7LNAShZJw4K4kDURPyJ1_NGQt50cBA-aB2HZCzK7LOdNSaKA@mail.gmail.com>
-Subject: Re: [PATCH -next] fbdev: c2p: Fix link failure on non-inlining
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Fri, 27 Sep 2019 05:47:13 -0400
+Received: from ramsan ([84.194.98.4])
+        by laurent.telenet-ops.be with bizsmtp
+        id 6ZnA2100Q05gfCL01ZnA3C; Fri, 27 Sep 2019 11:47:10 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iDmqE-0000jM-A5; Fri, 27 Sep 2019 11:47:10 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1iDmqE-00031E-70; Fri, 27 Sep 2019 11:47:10 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v2] fbdev: c2p: Fix link failure on non-inlining
+Date:   Fri, 27 Sep 2019 11:47:08 +0200
+Message-Id: <20190927094708.11563-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Geert,
+When the compiler decides not to inline the Chunky-to-Planar core
+functions, the build fails with:
 
-On Thu, Sep 26, 2019 at 8:43 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+    c2p_planar.c:(.text+0xd6): undefined reference to `c2p_unsupported'
+    c2p_planar.c:(.text+0x1dc): undefined reference to `c2p_unsupported'
+    c2p_iplan2.c:(.text+0xc4): undefined reference to `c2p_unsupported'
+    c2p_iplan2.c:(.text+0x150): undefined reference to `c2p_unsupported'
 
->
-> BTW, does randconfig randomize choices these days?
-> I remember it didn't use to do that.
+Fix this by marking the functions __always_inline.
 
-randconfig does randomize choices.
+While this could be triggered before by manually enabling both
+CONFIG_OPTIMIZE_INLINING and CONFIG_CC_OPTIMIZE_FOR_SIZE, it was exposed
+in the m68k defconfig by commit ac7c3e4ff401b304 ("compiler: enable
+CONFIG_OPTIMIZE_INLINING forcibly").
 
+Fixes: 9012d011660ea5cf ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
+Reported-by: noreply@ellerman.id.au
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+---
+This is a fix for v5.4-rc1.
 
-masahiro@pug:~/ref/linux$ make -s randconfig ; grep OPTIMIZE_FOR .config
-KCONFIG_SEED=0x75F1F6C8
-CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
-masahiro@pug:~/ref/linux$ make -s randconfig ; grep OPTIMIZE_FOR .config
-KCONFIG_SEED=0x8FDFC7FC
-# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+v2:
+  - Add Reviewed-by,
+  - Fix Fixes,
+  - Add more explanation.
+---
+ drivers/video/fbdev/c2p_core.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-
-all{yes,mod}config always takes the default in the choice.
-So, you cannot enable CONFIG_CC_OPTIMIZE_FOR_SIZE by all{yes,mod}config.
-
-
-
-
-
-> The Amiga and Atari frame buffer drivers need <asm/{amiga,atari}hw.h>,
-> and the Atari driver contains inline asm.
->
-> The C2P code could be put behind its own Kconfig symbol, I guess.
-
-OK, then.
-
-
-Thanks.
-
-
-
-
+diff --git a/drivers/video/fbdev/c2p_core.h b/drivers/video/fbdev/c2p_core.h
+index e1035a865fb945f0..45a6d895a7d7208e 100644
+--- a/drivers/video/fbdev/c2p_core.h
++++ b/drivers/video/fbdev/c2p_core.h
+@@ -29,7 +29,7 @@ static inline void _transp(u32 d[], unsigned int i1, unsigned int i2,
+ 
+ extern void c2p_unsupported(void);
+ 
+-static inline u32 get_mask(unsigned int n)
++static __always_inline u32 get_mask(unsigned int n)
+ {
+ 	switch (n) {
+ 	case 1:
+@@ -57,7 +57,7 @@ static inline u32 get_mask(unsigned int n)
+      *  Transpose operations on 8 32-bit words
+      */
+ 
+-static inline void transp8(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp8(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
+ 
+@@ -99,7 +99,7 @@ static inline void transp8(u32 d[], unsigned int n, unsigned int m)
+      *  Transpose operations on 4 32-bit words
+      */
+ 
+-static inline void transp4(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp4(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
+ 
+@@ -126,7 +126,7 @@ static inline void transp4(u32 d[], unsigned int n, unsigned int m)
+      *  Transpose operations on 4 32-bit words (reverse order)
+      */
+ 
+-static inline void transp4x(u32 d[], unsigned int n, unsigned int m)
++static __always_inline void transp4x(u32 d[], unsigned int n, unsigned int m)
+ {
+ 	u32 mask = get_mask(n);
+ 
 -- 
-Best Regards
-Masahiro Yamada
+2.17.1
+
