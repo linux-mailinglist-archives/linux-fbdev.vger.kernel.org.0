@@ -2,113 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68ABCC1A49
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Sep 2019 05:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80135C1B87
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Sep 2019 08:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728853AbfI3DKA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Sep 2019 23:10:00 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:35206 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726360AbfI3DKA (ORCPT
+        id S1729765AbfI3GkQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Sep 2019 02:40:16 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41822 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729754AbfI3GkQ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Sep 2019 23:10:00 -0400
-Received: by mail-io1-f66.google.com with SMTP id q10so34394834iop.2;
-        Sun, 29 Sep 2019 20:09:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=JdWTb1V4IhUUMb47mN6yAdg27zy2bK0W+qF3wp30fYo=;
-        b=hetnKUgsD2zSGDpE7xOLnzeBpXHQYJEYYEqnzJSwcvWeNhdWPsdlC6/Pbtswtb+2tg
-         ReMBVDCg9wXGCrev7wYoFfActSDTXjhCrs0vGHKXQNlzmnTvodwpgC8GReVyUTL0cUH6
-         jPTCtsx6gOP9iFcUzUyy2V77UQAkJPNLpN/9ZFmSxBsi6rCppsNdoC3ciTBBpVHYGV8Z
-         Myyx7ePbg+RWklM9om4+N+eOelSbT4G5BFWA9tPOKtxcimECtmLWNhuAU4sZY3PA7GSi
-         2E2BiHEuooVd+tzXxgBWNKKeiMaqgI0bZFAkItESu2W1K44vsybFpfUDwksMtW2XWFcq
-         p/mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=JdWTb1V4IhUUMb47mN6yAdg27zy2bK0W+qF3wp30fYo=;
-        b=qTA1OPG01dk3OU3azeHvSXJuynJuWzybyqS87C0xIBx9iOw1L7ccEs6gKcwAMC+2fR
-         rdFfSav6f2CdYqr33H2BSDB7zCWtUf1gq/xatdozyZ79oixLhBbaX/YF56lYqg6qLgvs
-         gSEc7bhLKfwYPi1shq+GBRZz6b8F8XLB4yCiGGOTsAmnFQXN6sP31bukhioFskm8TdXd
-         AhRmkgLaobATUQG79w4oPjMkdFFe97y0RsMV7JX965F1t2pAPiphN/J59GLHxhLnCK2n
-         5A/vMi22vYjsM4nXYUtDUv1DcNj9gy5xojhUK95nrfLzVYVb07/p77EojqhGCA4yhimI
-         2q4w==
-X-Gm-Message-State: APjAAAWGEH1bitG6HOuvyYajlEkFPJuF99oGanczrPuP1hmHFBpKZBEa
-        CVczJtBMYkbExgcmb6xF9UU=
-X-Google-Smtp-Source: APXvYqw9S4icJAA3Iim6bEKEOhPYCZHJFDUjRkHAKLayY1qZ/8t7tcsSVHOGYMUZdwQB5yUeCahPEQ==
-X-Received: by 2002:a5d:9349:: with SMTP id i9mr3190833ioo.101.1569812999347;
-        Sun, 29 Sep 2019 20:09:59 -0700 (PDT)
-Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
-        by smtp.googlemail.com with ESMTPSA id r22sm5444086ilb.85.2019.09.29.20.09.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2019 20:09:58 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Bhanusree Pola <bhanusreemahesh@gmail.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        =?UTF-8?q?Jan=20Sebastian=20G=C3=B6tte?= <linux@jaseg.net>,
-        Nishad Kamdar <nishadkamdar@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Staging: fbtft: fix memory leak in fbtft_framebuffer_alloc
-Date:   Sun, 29 Sep 2019 22:09:45 -0500
-Message-Id: <20190930030949.28615-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
-To:     unlisted-recipients:; (no To-header on input)
+        Mon, 30 Sep 2019 02:40:16 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1FE1B611BE; Mon, 30 Sep 2019 06:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569825615;
+        bh=OMqRx5N2rWXTmv93+Wi9xzjrf7Um3LYjyZ6ahSUawb0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=BLxxa52GtpY6nvByOFCQCUpZFyuZ1DYeAeRbq8ObXB3z1FhXhCf9qMaJuNuHGeyVO
+         cKpJP+Wp7MwA4BveOKECBi4RHqwfqeW3CCdV9W3xCZ9AO80OjqM6x5f1lRKjdvLStK
+         RMjm2YyzIwDMCsPftRS1zcXnG2KuFikWDu9hDQa0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from kgunda-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kgunda@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01D5560128;
+        Mon, 30 Sep 2019 06:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569825613;
+        bh=OMqRx5N2rWXTmv93+Wi9xzjrf7Um3LYjyZ6ahSUawb0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=cJVsXzcFVqliWkEFvHj7th7mM6/KLtxjSndaN758PIUWK4RsVTWLMeJxrl/r7U03g
+         TcEJiZcU8fUCwTjqi/ME7upsZ38+Sa9rdUA0VlAOFEmObgopPsOe4p+bhTsW5wtCCe
+         bmxaKSFJwp4Cy4JNIDXgCNaFhSf5+lJdZc5XxslI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01D5560128
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kgunda@codeaurora.org
+From:   Kiran Gunda <kgunda@codeaurora.org>
+To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dan Murphy <dmurphy@ti.com>, Andy Gross <agross@kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc:     Kiran Gunda <kgunda@codeaurora.org>
+Subject: [PATCH V6 1/8] backlight: qcom-wled: Rename pm8941-wled.c to qcom-wled.c
+Date:   Mon, 30 Sep 2019 12:09:06 +0530
+Message-Id: <1569825553-26039-2-git-send-email-kgunda@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1569825553-26039-1-git-send-email-kgunda@codeaurora.org>
+References: <1569825553-26039-1-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In fbtft_framebuffer_alloc the error handling path should take care of
-releasing frame buffer after it is allocated via framebuffer_alloc, too.
-Therefore, in two failure cases the goto destination is changed to
-address this issue.
+pm8941-wled.c driver is supporting the WLED peripheral
+on pm8941. Rename it to qcom-wled.c so that it can support
+WLED on multiple PMICs.
 
-Fixes: c296d5f9957c ("staging: fbtft: core support")
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/staging/fbtft/fbtft-core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt}    | 2 +-
+ drivers/video/backlight/Kconfig                                   | 8 ++++----
+ drivers/video/backlight/Makefile                                  | 2 +-
+ drivers/video/backlight/{pm8941-wled.c => qcom-wled.c}            | 0
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+ rename Documentation/devicetree/bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt} (95%)
+ rename drivers/video/backlight/{pm8941-wled.c => qcom-wled.c} (100%)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index cf5700a2ea66..a0a67aa517f0 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -714,7 +714,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
- 	if (par->gamma.curves && gamma) {
- 		if (fbtft_gamma_parse_str(par, par->gamma.curves, gamma,
- 					  strlen(gamma)))
--			goto alloc_fail;
-+			goto release_framebuf;
- 	}
+diff --git a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+similarity index 95%
+rename from Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
+rename to Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+index e5b294d..fb39e32 100644
+--- a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
++++ b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+@@ -1,4 +1,4 @@
+-Binding for Qualcomm PM8941 WLED driver
++Binding for Qualcomm Technologies, Inc. WLED driver
  
- 	/* Transmit buffer */
-@@ -731,7 +731,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
- 	if (txbuflen > 0) {
- 		txbuf = devm_kzalloc(par->info->device, txbuflen, GFP_KERNEL);
- 		if (!txbuf)
--			goto alloc_fail;
-+			goto release_framebuf;
- 		par->txbuf.buf = txbuf;
- 		par->txbuf.len = txbuflen;
- 	}
-@@ -753,6 +753,9 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
+ Required properties:
+ - compatible: should be "qcom,pm8941-wled"
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index 8b081d6..6ff3176 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -284,12 +284,12 @@ config BACKLIGHT_TOSA
+ 	  If you have an Sharp SL-6000 Zaurus say Y to enable a driver
+ 	  for its backlight
  
- 	return info;
+-config BACKLIGHT_PM8941_WLED
+-	tristate "Qualcomm PM8941 WLED Driver"
++config BACKLIGHT_QCOM_WLED
++	tristate "Qualcomm PMIC WLED Driver"
+ 	select REGMAP
+ 	help
+-	  If you have the Qualcomm PM8941, say Y to enable a driver for the
+-	  WLED block.
++	  If you have the Qualcomm PMIC, say Y to enable a driver for the
++	  WLED block. Currently it supports PM8941 and PMI8998.
  
-+release_framebuf:
-+	framebuffer_release(info);
-+
- alloc_fail:
- 	vfree(vmem);
- 
+ config BACKLIGHT_SAHARA
+ 	tristate "Tabletkiosk Sahara Touch-iT Backlight Driver"
+diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+index 63c507c..6f87770 100644
+--- a/drivers/video/backlight/Makefile
++++ b/drivers/video/backlight/Makefile
+@@ -48,8 +48,8 @@ obj-$(CONFIG_BACKLIGHT_OMAP1)		+= omap1_bl.o
+ obj-$(CONFIG_BACKLIGHT_OT200)		+= ot200_bl.o
+ obj-$(CONFIG_BACKLIGHT_PANDORA)		+= pandora_bl.o
+ obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
+-obj-$(CONFIG_BACKLIGHT_PM8941_WLED)	+= pm8941-wled.o
+ obj-$(CONFIG_BACKLIGHT_PWM)		+= pwm_bl.o
++obj-$(CONFIG_BACKLIGHT_QCOM_WLED)	+= qcom-wled.o
+ obj-$(CONFIG_BACKLIGHT_SAHARA)		+= kb3886_bl.o
+ obj-$(CONFIG_BACKLIGHT_SKY81452)	+= sky81452-backlight.o
+ obj-$(CONFIG_BACKLIGHT_TOSA)		+= tosa_bl.o
+diff --git a/drivers/video/backlight/pm8941-wled.c b/drivers/video/backlight/qcom-wled.c
+similarity index 100%
+rename from drivers/video/backlight/pm8941-wled.c
+rename to drivers/video/backlight/qcom-wled.c
 -- 
-2.17.1
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+ a Linux Foundation Collaborative Project
 
