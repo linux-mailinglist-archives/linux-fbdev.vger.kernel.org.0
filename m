@@ -2,89 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAA9C405F
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Oct 2019 20:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F5EC4447
+	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 01:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725884AbfJASsa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Oct 2019 14:48:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36952 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725844AbfJASsa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 1 Oct 2019 14:48:30 -0400
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52F3120B7C;
-        Tue,  1 Oct 2019 18:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569955709;
-        bh=GNgNrUswTuvHulo9vmyBNdCcYSawvC+U+jdWFB0IKyA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=erK6Grjo4aC6WkHaCceBQ+bGig2oyXgyMli+uxdawFNMuoPz3ptlHI20zYnrieCdU
-         DH7OOYU9vc/9njBGuy7uy4PfYeLd9Uh8a+RY1FFmytt9TO1CwQHXQsyOdJ04V8Ogsu
-         DpqPyFfJN64LOCdPZCl/4MKpJVDaxghK2+7Ki9Hw=
-Date:   Tue, 1 Oct 2019 14:48:28 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Michael Kelley <mikelley@microsoft.com>
-Cc:     Wei Hu <weh@microsoft.com>,
-        "rdunlap@infradead.org" <rdunlap@infradead.org>,
-        "shc_work@mail.ru" <shc_work@mail.ru>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
-        "info@metux.net" <info@metux.net>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Dexuan Cui <decui@microsoft.com>
-Subject: Re: [PATHC v6] video: hyperv: hyperv_fb: Support deferred IO for
- Hyper-V frame buffer driver
-Message-ID: <20191001184828.GF8171@sasha-vm>
-References: <20190918060227.6834-1-weh@microsoft.com>
- <DM5PR21MB0137DA408FE59E8C1171CFFCD78E0@DM5PR21MB0137.namprd21.prod.outlook.com>
- <DM5PR21MB01375E8543451D4550D622CDD7880@DM5PR21MB0137.namprd21.prod.outlook.com>
+        id S1729061AbfJAX3b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Oct 2019 19:29:31 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:34392 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729057AbfJAX3b (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Oct 2019 19:29:31 -0400
+Received: by mail-pg1-f195.google.com with SMTP id y35so10820725pgl.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 01 Oct 2019 16:29:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EcVg9u8V8Uf/idldytEF3NgOMyW0OU8oijTXHZJkyVg=;
+        b=LoLWuA/zt6wQo9niY6rS50WlST0jKh8TXiLphIX/HwUpy05ohub5qr5fmX/ajPIl38
+         XXY9DeDYzLb3r6VQgb82GF+lkIrTF0YatAYRiWTOyE0EbZ19L9ZzOE4ZksI8EWzk99qF
+         HppXuMICfou5mYFPWkwYg/UF2L+14P67qumf0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EcVg9u8V8Uf/idldytEF3NgOMyW0OU8oijTXHZJkyVg=;
+        b=M73dGZ9OPNjjIRzj/szWWw1o5sag+ZVZBlB+DLE45fROb4+I7vQN1E0S5FiUoCVITn
+         +OatmSdjLUk9egH4kfNWQxQymnbcQnY/AYGEcCs/jpmwm35VSfRNLcdm0gbx6I8PGJMV
+         ITbC8kmdRHLeKOkO5c/iCfVcIuiKWwXat0Yb5hW/nczYOozHk4BUHhWcBQ8/j9/VhZMg
+         fA5DFMR0H6VrezshLC8Z/D7MA9Kp7o/RPOxn11uq9CVnibGUxhRXhbxrNV37iZH7Dl3W
+         xIcOCVS+kWCqJwJqBZ3vAq+0Gp2qlR+5rWto+oPQ1Dxtqws3nMytdUIqOxhClw6OPC2A
+         0Aeg==
+X-Gm-Message-State: APjAAAUHO8y+SqNkAor5XbQ1YeJ4tcqzRUbjJjosQoHlzKv5Ola+EgHW
+        79AHJRdZlMZkyd2Spz0likqWUw==
+X-Google-Smtp-Source: APXvYqyttY662qaZ9at4NRsqD7ukXbj1wr2h7SXDVAWfKw7gZzdYntUGCR2evMFpv1BqiZxzO5THcw==
+X-Received: by 2002:a62:fc46:: with SMTP id e67mr1005912pfh.153.1569972568837;
+        Tue, 01 Oct 2019 16:29:28 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:4fff:7a6b:a335:8fde])
+        by smtp.gmail.com with ESMTPSA id c8sm20990266pga.42.2019.10.01.16.29.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2019 16:29:28 -0700 (PDT)
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Matthias Kaehlcke <mka@chromium.org>, linux-pwm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] backlight: pwm_bl: Don't assign levels table repeatedly
+Date:   Tue,  1 Oct 2019 16:29:24 -0700
+Message-Id: <20191001162835.1.I4f2ede1f55ddd1c72b0303b7fd7f73a782fa33e5@changeid>
+X-Mailer: git-send-email 2.23.0.444.g18eeb5a265-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <DM5PR21MB01375E8543451D4550D622CDD7880@DM5PR21MB0137.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 05:26:34PM +0000, Michael Kelley wrote:
->From: Michael Kelley <mikelley@microsoft.com>  Sent: Wednesday, September 18, 2019 2:48 PM
->> >
->> > Without deferred IO support, hyperv_fb driver informs the host to refresh
->> > the entire guest frame buffer at fixed rate, e.g. at 20Hz, no matter there
->> > is screen update or not. This patch supports deferred IO for screens in
->> > graphics mode and also enables the frame buffer on-demand refresh. The
->> > highest refresh rate is still set at 20Hz.
->> >
->> > Currently Hyper-V only takes a physical address from guest as the starting
->> > address of frame buffer. This implies the guest must allocate contiguous
->> > physical memory for frame buffer. In addition, Hyper-V Gen 2 VMs only
->> > accept address from MMIO region as frame buffer address. Due to these
->> > limitations on Hyper-V host, we keep a shadow copy of frame buffer
->> > in the guest. This means one more copy of the dirty rectangle inside
->> > guest when doing the on-demand refresh. This can be optimized in the
->> > future with help from host. For now the host performance gain from deferred
->> > IO outweighs the shadow copy impact in the guest.
->> >
->> > Signed-off-by: Wei Hu <weh@microsoft.com>
->
->Sasha -- this patch and one other from Wei Hu for the Hyper-V frame buffer
->driver should be ready.  Both patches affect only the Hyper-V frame buffer
->driver so can go through the Hyper-V tree.  Can you pick these up?  Thx.
+pwm_backlight_probe() re-assigns pb->levels for every brightness
+level. This is not needed and was likely not intended, since
+neither side of the assignment changes during the loop. Assign
+the field only once.
 
-I can't get this to apply anywhere, what tree is it based on?
+Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+---
 
---
-Thanks,
-Sasha
+ drivers/video/backlight/pwm_bl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index 746eebc411df..959436b9e92b 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -564,6 +564,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+ 	memset(&props, 0, sizeof(struct backlight_properties));
+ 
+ 	if (data->levels) {
++		pb->levels = data->levels;
++
+ 		/*
+ 		 * For the DT case, only when brightness levels is defined
+ 		 * data->levels is filled. For the non-DT case, data->levels
+@@ -572,8 +574,6 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+ 		for (i = 0; i <= data->max_brightness; i++) {
+ 			if (data->levels[i] > pb->scale)
+ 				pb->scale = data->levels[i];
+-
+-			pb->levels = data->levels;
+ 		}
+ 
+ 		if (pwm_backlight_is_linear(data))
+-- 
+2.23.0.444.g18eeb5a265-goog
+
