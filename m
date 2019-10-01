@@ -2,88 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A5DC3525
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Oct 2019 15:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9788C35CF
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Oct 2019 15:35:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbfJANGd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Oct 2019 09:06:33 -0400
-Received: from mga17.intel.com ([192.55.52.151]:35228 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725821AbfJANGd (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 1 Oct 2019 09:06:33 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 06:06:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,571,1559545200"; 
-   d="scan'208";a="190586702"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga008.fm.intel.com with ESMTP; 01 Oct 2019 06:06:29 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iFHrH-0000aJ-OG; Tue, 01 Oct 2019 16:06:27 +0300
-Date:   Tue, 1 Oct 2019 16:06:27 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
+        id S2388242AbfJANfX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Oct 2019 09:35:23 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:40298 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388126AbfJANfW (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Oct 2019 09:35:22 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91DXiR3058353;
+        Tue, 1 Oct 2019 13:35:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=2S6v0Da0UQZgNufjPiiwLYA37zV4TkfepApDSqjUYWM=;
+ b=MkmSdRxckjXVch/Lb4V5fl6dWFO1n6k24LEg/MHve2pTIE8NKgqipnzP+PK51UQLisPT
+ nb1dJ+eBDCTaUNmlO03g7I7A3maiFvx0rDDmXF4zoohocPSZ1XRpBTGzEmmEGsMKLIa1
+ ycaCAlB5+jLCHjLJvYFGVT6dme359igny3P7+xCCMRPeAjUBNCReE2Ktx3Jrg176f1Ro
+ aRfAXAmXWysgJdKK9ZYH7ug+djbZRAI+SY0GOD7OWk+Dk4l0J9loTm9Y9tQ+srMpn0L5
+ LzrFhOe6ycli7WaNrXqHcpk1fg8Q6UbeKE29LCyX2rngRDuJvdMybm23h+hLFVBGwHp4 Uw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2va05rntuv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 13:35:00 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91DXZLj116417;
+        Tue, 1 Oct 2019 13:34:59 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2vbsm2048s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 13:34:59 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x91DYq9J004937;
+        Tue, 1 Oct 2019 13:34:53 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 01 Oct 2019 06:34:52 -0700
+Date:   Tue, 1 Oct 2019 16:34:43 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>
+Cc:     Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.net>,
+        devel@driverdev.osuosl.org, linux-fbdev@vger.kernel.org,
+        Nishad Kamdar <nishadkamdar@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kjlu@umn.edu,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v4 1/7] backlight: gpio: remove unneeded include
-Message-ID: <20191001130627.GO32742@smile.fi.intel.com>
-References: <20191001125837.4472-1-brgl@bgdev.pl>
- <20191001125837.4472-2-brgl@bgdev.pl>
+        Daniel Vetter <daniel.vetter@ffwll.ch>, emamd001@umn.edu,
+        Bhanusree Pola <bhanusreemahesh@gmail.com>, smccaman@umn.edu,
+        Phil Reid <preid@electromag.com.au>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH] Staging: fbtft: fix memory leak in
+ fbtft_framebuffer_alloc
+Message-ID: <20191001133408.GG22609@kadam>
+References: <20190930030949.28615-1-navid.emamdoost@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191001125837.4472-2-brgl@bgdev.pl>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190930030949.28615-1-navid.emamdoost@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910010123
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910010123
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 02:58:31PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Sun, Sep 29, 2019 at 10:09:45PM -0500, Navid Emamdoost wrote:
+> In fbtft_framebuffer_alloc the error handling path should take care of
+> releasing frame buffer after it is allocated via framebuffer_alloc, too.
+> Therefore, in two failure cases the goto destination is changed to
+> address this issue.
 > 
+> Fixes: c296d5f9957c ("staging: fbtft: core support")
+> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Looks good.
 
-> We no longer use any symbols from of_gpio.h. Remove this include.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> ---
->  drivers/video/backlight/gpio_backlight.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 18e053e4716c..7e1990199fae 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -12,7 +12,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_gpio.h>
->  #include <linux/platform_data/gpio_backlight.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> -- 
-> 2.23.0
-> 
+Reviewed-by: Dan Carpenter <dan.carpenter@gmail.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+regards,
+dan carpenter
 
