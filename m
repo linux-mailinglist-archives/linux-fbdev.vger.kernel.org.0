@@ -2,101 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF409C374D
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Oct 2019 16:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6CCBC386C
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Oct 2019 17:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727137AbfJAO3Y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Oct 2019 10:29:24 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36984 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727181AbfJAO3Y (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Oct 2019 10:29:24 -0400
-Received: by mail-wm1-f68.google.com with SMTP id f22so3509360wmc.2
-        for <linux-fbdev@vger.kernel.org>; Tue, 01 Oct 2019 07:29:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Zbs/Q3MsdenwE0g7FlmKiMlk/SOvniNFvpDInB7/8lg=;
-        b=Ab78udnPe3CRWuo1p82gth5GZPwVCa619kuHOdLyJPwlTZWd8o67QnPGzfD0g5txa/
-         Hgmc/jnJuqVkWi7VwGXZ8lnqFcojAh6LTJrrJsydA11V+jKR6g2nJ0wuW/S4lTboC/SW
-         bKo1z1nPOemI8ZG34YVv5PlBByBjHVtciX91NVR8dL7DIiy+x5UgDPi2wQ1vDO2VxRbo
-         /LSQmlDGgjSUsQ9KL2o+b0G21XyHl0ICmPWF5a+VKrekFyLvwoa18e0ac+vetvM4EHav
-         V6wM6F4HzCA1IGEfa0dNVeVcb5gPTSNz9p4iL163mCfdf3Xyy3seTMimN6B43VNWdJQD
-         8H5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Zbs/Q3MsdenwE0g7FlmKiMlk/SOvniNFvpDInB7/8lg=;
-        b=j96k/p57SMs2h9yRTReLaNLFH/actbULmNNmxmIBv3ZpeYaLErUINuXbIV/VIsxbyX
-         sLbYzNgoAQseWUQN9EoFMhNQGlMyoTD1I9KSSGdIijdvCcARWSqfHg3Y62QTgLYkdi6k
-         p3yfQIzU7PJpFcmIZtZ3JkKm1KtqHxvbSJxDHjytUXGNio9yIVjzBw4KKw/c80mTxePi
-         pdEuJp36U8SbsSSKbqS4tMffsTsEe4P26YV8yJr6HK7xw9uzI2b2QGfgtEt2mChomm09
-         58232AjihRA8adlZMvmDHM+c5dCmHEIhz1KJ3u6LH/I1y1o2s+B3QbZZvivwh1S3aGAN
-         2/BQ==
-X-Gm-Message-State: APjAAAWOLoqUGqriZf0etjy8yp1qaEfsaTSAXnEsRAlk5xqxPxzi5xs7
-        IEji9vHdfo6BsGhQBZXFfy591g==
-X-Google-Smtp-Source: APXvYqxXALWaJtwvVfsLlZFYYua2CQBoHGuUym/bKHxQZ190WXx8BwxxVFOpKgosan9NU4AewmAYlQ==
-X-Received: by 2002:a05:600c:2290:: with SMTP id 16mr805781wmf.161.1569940160774;
-        Tue, 01 Oct 2019 07:29:20 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id l18sm15404308wrc.18.2019.10.01.07.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 07:29:20 -0700 (PDT)
-Date:   Tue, 1 Oct 2019 15:29:18 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v4 1/7] backlight: gpio: remove unneeded include
-Message-ID: <20191001142918.gjifvlkz574dbihr@holly.lan>
-References: <20191001125837.4472-1-brgl@bgdev.pl>
- <20191001125837.4472-2-brgl@bgdev.pl>
+        id S1727185AbfJAPDN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Oct 2019 11:03:13 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:43366 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726987AbfJAPDN (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Oct 2019 11:03:13 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x91F2tBo017997;
+        Tue, 1 Oct 2019 10:02:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1569942175;
+        bh=FtGKw7kQQovEcABguQcARfmvU81jXg7GbjUfgsdw1Q4=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=f8M2abPJ5E2aPEAh8yZeVPhhazCotY06RboI3cv1WILlrmTEBfP4Mg331gud3ggIu
+         sKf/jLzbNpsnvvV1kbHR6GzbhnKOS5pX83i9/nQjXYx65/DW9J7ndM17sktKdcG5k5
+         lwn04f+tpDpmFR/k7cCrgSRN2vfToIiYb5dftpKo=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x91F2tJE014138
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Oct 2019 10:02:55 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 1 Oct
+ 2019 10:02:55 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 1 Oct 2019 10:02:45 -0500
+Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x91F2swW029639;
+        Tue, 1 Oct 2019 10:02:55 -0500
+Subject: Re: [PATCH V6 1/8] backlight: qcom-wled: Rename pm8941-wled.c to
+ qcom-wled.c
+To:     Kiran Gunda <kgunda@codeaurora.org>, <bjorn.andersson@linaro.org>,
+        <jingoohan1@gmail.com>, <lee.jones@linaro.org>,
+        <b.zolnierkie@samsung.com>, <dri-devel@lists.freedesktop.org>,
+        <daniel.thompson@linaro.org>, <jacek.anaszewski@gmail.com>,
+        <pavel@ucw.cz>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <linux-leds@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+References: <1569825553-26039-1-git-send-email-kgunda@codeaurora.org>
+ <1569825553-26039-2-git-send-email-kgunda@codeaurora.org>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <3cbc14db-9d6d-f60f-eb92-4b4d80d3774d@ti.com>
+Date:   Tue, 1 Oct 2019 10:03:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191001125837.4472-2-brgl@bgdev.pl>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <1569825553-26039-2-git-send-email-kgunda@codeaurora.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 02:58:31PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> We no longer use any symbols from of_gpio.h. Remove this include.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Kiran
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
+On 9/30/19 1:39 AM, Kiran Gunda wrote:
+> pm8941-wled.c driver is supporting the WLED peripheral
+> on pm8941. Rename it to qcom-wled.c so that it can support
+> WLED on multiple PMICs.
+>
+> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Acked-by: Rob Herring <robh@kernel.org>
+> Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Acked-by: Pavel Machek <pavel@ucw.cz>
 > ---
->  drivers/video/backlight/gpio_backlight.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 18e053e4716c..7e1990199fae 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -12,7 +12,6 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_gpio.h>
->  #include <linux/platform_data/gpio_backlight.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> -- 
-> 2.23.0
-> 
+>   .../bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt}    | 2 +-
+
+Instead of renaming this file would it be more maintainable to indicate 
+in the pm8941-wled.txt
+
+to reference the qcom-wled.txt file for complete description?
+
+I will let Rob comment on maintainability.
+
+Dan
+
+>   drivers/video/backlight/Kconfig                                   | 8 ++++----
+>   drivers/video/backlight/Makefile                                  | 2 +-
+>   drivers/video/backlight/{pm8941-wled.c => qcom-wled.c}            | 0
+>   4 files changed, 6 insertions(+), 6 deletions(-)
+>   rename Documentation/devicetree/bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt} (95%)
+>   rename drivers/video/backlight/{pm8941-wled.c => qcom-wled.c} (100%)
+>
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+> similarity index 95%
+> rename from Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
+> rename to Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+> index e5b294d..fb39e32 100644
+> --- a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
+> +++ b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+> @@ -1,4 +1,4 @@
+> -Binding for Qualcomm PM8941 WLED driver
+> +Binding for Qualcomm Technologies, Inc. WLED driver
+>   
+>   Required properties:
+>   - compatible: should be "qcom,pm8941-wled"
+> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+> index 8b081d6..6ff3176 100644
+> --- a/drivers/video/backlight/Kconfig
+> +++ b/drivers/video/backlight/Kconfig
+> @@ -284,12 +284,12 @@ config BACKLIGHT_TOSA
+>   	  If you have an Sharp SL-6000 Zaurus say Y to enable a driver
+>   	  for its backlight
+>   
+> -config BACKLIGHT_PM8941_WLED
+> -	tristate "Qualcomm PM8941 WLED Driver"
+> +config BACKLIGHT_QCOM_WLED
+> +	tristate "Qualcomm PMIC WLED Driver"
+>   	select REGMAP
+>   	help
+> -	  If you have the Qualcomm PM8941, say Y to enable a driver for the
+> -	  WLED block.
+> +	  If you have the Qualcomm PMIC, say Y to enable a driver for the
+> +	  WLED block. Currently it supports PM8941 and PMI8998.
+>   
+>   config BACKLIGHT_SAHARA
+>   	tristate "Tabletkiosk Sahara Touch-iT Backlight Driver"
+> diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+> index 63c507c..6f87770 100644
+> --- a/drivers/video/backlight/Makefile
+> +++ b/drivers/video/backlight/Makefile
+> @@ -48,8 +48,8 @@ obj-$(CONFIG_BACKLIGHT_OMAP1)		+= omap1_bl.o
+>   obj-$(CONFIG_BACKLIGHT_OT200)		+= ot200_bl.o
+>   obj-$(CONFIG_BACKLIGHT_PANDORA)		+= pandora_bl.o
+>   obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
+> -obj-$(CONFIG_BACKLIGHT_PM8941_WLED)	+= pm8941-wled.o
+>   obj-$(CONFIG_BACKLIGHT_PWM)		+= pwm_bl.o
+> +obj-$(CONFIG_BACKLIGHT_QCOM_WLED)	+= qcom-wled.o
+>   obj-$(CONFIG_BACKLIGHT_SAHARA)		+= kb3886_bl.o
+>   obj-$(CONFIG_BACKLIGHT_SKY81452)	+= sky81452-backlight.o
+>   obj-$(CONFIG_BACKLIGHT_TOSA)		+= tosa_bl.o
+> diff --git a/drivers/video/backlight/pm8941-wled.c b/drivers/video/backlight/qcom-wled.c
+> similarity index 100%
+> rename from drivers/video/backlight/pm8941-wled.c
+> rename to drivers/video/backlight/qcom-wled.c
