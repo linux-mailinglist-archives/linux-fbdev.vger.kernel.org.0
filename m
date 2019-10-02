@@ -2,190 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA17C8788
-	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 13:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF30C88C4
+	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 14:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfJBLq3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 2 Oct 2019 07:46:29 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:33560 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbfJBLq3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Oct 2019 07:46:29 -0400
-Received: by mail-io1-f68.google.com with SMTP id z19so56239350ior.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 02 Oct 2019 04:46:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Lh5QxEdgvHoHF5Kz6XaPdjsoiPWGW9FM0Kf+u5LlWyg=;
-        b=Q5Qfdh7fI7j00zuYn+3Gvvh3U82Zj6uRr+9t+BfK+QrN6GksTsq1TtHlWVSl3DUc/+
-         KICkXd3QUhZFpe0w3wAfln7jgkv7gbMfFyG9fjM2V98eIGe3r3Gng/xkExa+eJEFFilu
-         E15hdttybPJelTM62xKCQWTnZbv7QjtcbEnLaCqCktZpjN59SdX2dYOtnQ/wc+v0t2zu
-         Z60M1o7opM5Y6bF/275R2KooX4xy51xnRv1hzx06KJKXKTdmdvkrexBDIvQoo7fX23JK
-         JdQfSCs2jHEui+2UrN44EqlEtaVfgEtssfzfXCF4hdHKwb59nnOUY2wEhzYHMnDt+aS1
-         bpmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Lh5QxEdgvHoHF5Kz6XaPdjsoiPWGW9FM0Kf+u5LlWyg=;
-        b=M7qDkgjrPakp2OQXCBwBUlvNemBUnOIdJHCC5IIAGypkk7Eo0oVebzxbzdm3K2zt1j
-         JU6KXYSVqCqHrVlrx6rBqIVw7vSZgucbOd90HmnI0mNWZY+fm2yoVeYU3UEZmE0e+tq9
-         JKxGMe6r/8AHFY6dKJAkKqnkISKSM8kqwasX4K7IweUgL2AvJqpJpWb42eGInPFCwGEv
-         vJkKXQ+mQc0O1LycrXAS3PAm2qUvCzPOK/nuIzodp+ww1XQHWWv9NTX6BKlixIA8homs
-         P68DfqnRzzhN7n0ariWfQ3OoC5WuoGnZoqJJN8ulzhR/cjlx9iOIOrcldPm4s/hZqZwK
-         3/SA==
-X-Gm-Message-State: APjAAAWkB4wFk0MgKrG3h7mkL1SaFQbEkNxvcxQUYPcM/NzerYF165Yw
-        UcnJ9f7gTvbhABSsISJmZfaArZkkmGBrOPR6WjxaCg==
-X-Google-Smtp-Source: APXvYqwXVEvFlzog8KQO34/KztiH9WkMTSYCCR8KfOcAkvzoP5pNsY8XDceXykJ+ii5hdUUGdRQ24Jdi2x774Jju/0E=
-X-Received: by 2002:a5d:8911:: with SMTP id b17mr2872420ion.287.1570016788323;
- Wed, 02 Oct 2019 04:46:28 -0700 (PDT)
+        id S1726326AbfJBMio (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 2 Oct 2019 08:38:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35422 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726152AbfJBMin (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 2 Oct 2019 08:38:43 -0400
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CD21B21920;
+        Wed,  2 Oct 2019 12:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570019923;
+        bh=HQMmTzo9+zvRqR/nVhQaW+N2GPTpVZp7d3nBoEoTmPE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SFPxZuRdNvktOe4qMXQU9eQM9VwnajP5nw/OAfYArBagDdU9ddNNwUwZE7y0o+YNO
+         tcw0hZklpBDfeIfzvpgKDFuhg72ZJLk7qHdIW07NH5CA7aaRyHzzpeaOxTbUjanSrr
+         gUV3+b1accmguO0oYIXi7OGVYjxVI74VXVSc3/CA=
+Date:   Wed, 2 Oct 2019 08:38:41 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Dexuan Cui <decui@microsoft.com>
+Cc:     Michael Kelley <mikelley@microsoft.com>,
+        Wei Hu <weh@microsoft.com>,
+        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Iouri Tarassov <iourit@microsoft.com>
+Subject: Re: [PATCH v4] video: hyperv: hyperv_fb: Obtain screen resolution
+ from Hyper-V host
+Message-ID: <20191002123841.GK17454@sasha-vm>
+References: <20190905091120.16761-1-weh@microsoft.com>
+ <DM5PR21MB0137D40DF705CDB372497266D7BB0@DM5PR21MB0137.namprd21.prod.outlook.com>
+ <PU1P153MB0169656B3EC48BFCF4D8C134BFB30@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-References: <20191001125837.4472-1-brgl@bgdev.pl> <20191001125837.4472-8-brgl@bgdev.pl>
- <20191002103318.6owxberhml6mbtxm@holly.lan>
-In-Reply-To: <20191002103318.6owxberhml6mbtxm@holly.lan>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 2 Oct 2019 13:46:17 +0200
-Message-ID: <CAMRc=Me8RmYLh9WKYma7XE1H7tEZ8Jd-wsFyKVv_etO0T92zwg@mail.gmail.com>
-Subject: Re: [PATCH v4 7/7] backlight: gpio: pull gpio_backlight_initial_power_state()
- into probe
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <PU1P153MB0169656B3EC48BFCF4D8C134BFB30@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-=C5=9Br., 2 pa=C5=BA 2019 o 12:33 Daniel Thompson <daniel.thompson@linaro.o=
-rg> napisa=C5=82(a):
+On Fri, Sep 13, 2019 at 06:38:42AM +0000, Dexuan Cui wrote:
+>> From: Michael Kelley <mikelley@microsoft.com>
+>> Sent: Thursday, September 5, 2019 7:06 AM
+>>
+>> From: Wei Hu <weh@microsoft.com> Sent: Thursday, September 5, 2019 2:12
+>> AM
+>> >
+>> > Beginning from Windows 10 RS5+, VM screen resolution is obtained from
+>> host.
+>> > The "video=hyperv_fb" boot time option is not needed, but still can be
+>> > used to overwrite what the host specifies. The VM resolution on the host
+>> > could be set by executing the powershell "set-vmvideo" command.
+>> >
+>> > Signed-off-by: Iouri Tarassov <iourit@microsoft.com>
+>> > Signed-off-by: Wei Hu <weh@microsoft.com>
+>> > ---
+>> >     v2:
+>> >     - Implemented fallback when version negotiation failed.
+>> >     - Defined full size for supported_resolution array.
+>> >
+>> >     v3:
+>> >     - Corrected the synthvid major and minor version comparison problem.
+>> >
+>> >     v4:
+>> >     - Changed function name to synthvid_ver_ge().
+>> >
+>> >  drivers/video/fbdev/hyperv_fb.c | 159
+>> +++++++++++++++++++++++++++++---
+>> >  1 file changed, 147 insertions(+), 12 deletions(-)
+>> >
+>>
+>> Reviewed-by: Michael Kelley <mikelley@microsoft.com>
 >
-> On Tue, Oct 01, 2019 at 02:58:37PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > The probe function in the gpio-backlight driver is quite short. If we
-> > pull gpio_backlight_initial_power_state() into probe we can drop two
-> > more fields from struct gpio_backlight and shrink the driver code.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > ---
-> >  drivers/video/backlight/gpio_backlight.c | 36 ++++++++----------------
-> >  1 file changed, 12 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/b=
-acklight/gpio_backlight.c
-> > index 6247687b6330..37ec184f0c5c 100644
-> > --- a/drivers/video/backlight/gpio_backlight.c
-> > +++ b/drivers/video/backlight/gpio_backlight.c
-> > @@ -17,11 +17,8 @@
-> >  #include <linux/slab.h>
-> >
-> >  struct gpio_backlight {
-> > -     struct device *dev;
-> >       struct device *fbdev;
-> > -
-> >       struct gpio_desc *gpiod;
-> > -     int def_value;
-> >  };
-> >
-> >  static int gpio_backlight_update_status(struct backlight_device *bl)
-> > @@ -53,41 +50,24 @@ static const struct backlight_ops gpio_backlight_op=
-s =3D {
-> >       .check_fb       =3D gpio_backlight_check_fb,
-> >  };
-> >
-> > -static int gpio_backlight_initial_power_state(struct gpio_backlight *g=
-bl)
+>Looks good to me.
 >
-> I'm inclined to view deleting this function as removing a comment (e.g.
-> the function name helps us to read the code)!
->
+>Reviewed-by: Dexuan Cui <decui@microsoft.com>
 
-Right, but why not just add a comment then? The probe function is 50
-lines long, there's really no need to split it. This will get inlined
-anyway too.
+Queued up for hyperv-next, thank you.
 
-Bart
-
-> Removing the variables from the context structure is good but why not
-> just pass them to the function and let the compiler decided whether or
-> not to inline.
->
->
-> Daniel.
->
->
-> > -{
-> > -     struct device_node *node =3D gbl->dev->of_node;
-> > -
-> > -     /* Not booted with device tree or no phandle link to the node */
-> > -     if (!node || !node->phandle)
-> > -             return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWER=
-DOWN;
-> > -
-> > -     /* if the enable GPIO is disabled, do not enable the backlight */
-> > -     if (gpiod_get_value_cansleep(gbl->gpiod) =3D=3D 0)
-> > -             return FB_BLANK_POWERDOWN;
-> > -
-> > -     return FB_BLANK_UNBLANK;
-> > -}
-> > -
-> > -
-> >  static int gpio_backlight_probe(struct platform_device *pdev)
-> >  {
-> >       struct device *dev =3D &pdev->dev;
-> >       struct gpio_backlight_platform_data *pdata =3D dev_get_platdata(d=
-ev);
-> > +     struct device_node *of_node =3D dev->of_node;
-> >       struct backlight_properties props;
-> >       struct backlight_device *bl;
-> >       struct gpio_backlight *gbl;
-> > -     int ret;
-> > +     int ret, def_value;
-> >
-> >       gbl =3D devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
-> >       if (gbl =3D=3D NULL)
-> >               return -ENOMEM;
-> >
-> > -     gbl->dev =3D dev;
-> > -
-> >       if (pdata)
-> >               gbl->fbdev =3D pdata->fbdev;
-> >
-> > -     gbl->def_value =3D device_property_read_bool(dev, "default-on");
-> > +     def_value =3D device_property_read_bool(dev, "default-on");
-> >
-> >       gbl->gpiod =3D devm_gpiod_get(dev, NULL, GPIOD_ASIS);
-> >       if (IS_ERR(gbl->gpiod)) {
-> > @@ -109,7 +89,15 @@ static int gpio_backlight_probe(struct platform_dev=
-ice *pdev)
-> >               return PTR_ERR(bl);
-> >       }
-> >
-> > -     bl->props.power =3D gpio_backlight_initial_power_state(gbl);
-> > +     /* Not booted with device tree or no phandle link to the node */
-> > +     if (!of_node || !of_node->phandle)
-> > +             bl->props.power =3D def_value ? FB_BLANK_UNBLANK
-> > +                                         : FB_BLANK_POWERDOWN;
-> > +     else if (gpiod_get_value_cansleep(gbl->gpiod) =3D=3D 0)
-> > +             bl->props.power =3D FB_BLANK_POWERDOWN;
-> > +     else
-> > +             bl->props.power =3D FB_BLANK_UNBLANK;
-> > +
-> >       bl->props.brightness =3D 1;
-> >
-> >       backlight_update_status(bl);
-> > --
-> > 2.23.0
-> >
+--
+Thanks,
+Sasha
