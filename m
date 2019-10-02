@@ -2,113 +2,204 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF943C88CF
-	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 14:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86B5AC8B6E
+	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 16:40:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbfJBMkF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 2 Oct 2019 08:40:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35818 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726325AbfJBMkF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 2 Oct 2019 08:40:05 -0400
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 430082133F;
-        Wed,  2 Oct 2019 12:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570020003;
-        bh=C27WP3WjY83XjqK00FA77hEI/TbJNxmgHsX3G7ohuJY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r1ISHHmlUa3ArxhsAN1rIrYFbdp7E9Nft088x4rC2BWSc1rug9fMRZiNAEvlaN9sk
-         psxK5zJ4K0fRIworDS+q3PHxoLSWsTxwjQE2GdAQfEPZ2BVH804MSe+aysCm4f7xwy
-         KNwsXlVW8+wyrVavZo30CoO4tzHc6UVNjBTRJcfA=
-Date:   Wed, 2 Oct 2019 08:40:02 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Dexuan Cui <decui@microsoft.com>
-Cc:     Michael Kelley <mikelley@microsoft.com>,
-        Wei Hu <weh@microsoft.com>,
-        "rdunlap@infradead.org" <rdunlap@infradead.org>,
-        "shc_work@mail.ru" <shc_work@mail.ru>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "lee.jones@linaro.org" <lee.jones@linaro.org>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>,
-        "info@metux.net" <info@metux.net>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>
-Subject: Re: [PATHC v6] video: hyperv: hyperv_fb: Support deferred IO for
- Hyper-V frame buffer driver
-Message-ID: <20191002124002.GL17454@sasha-vm>
-References: <20190918060227.6834-1-weh@microsoft.com>
- <DM5PR21MB0137DA408FE59E8C1171CFFCD78E0@DM5PR21MB0137.namprd21.prod.outlook.com>
- <DM5PR21MB01375E8543451D4550D622CDD7880@DM5PR21MB0137.namprd21.prod.outlook.com>
- <20191001184828.GF8171@sasha-vm>
- <PU1P153MB0169811097EA55DF795888B2BF9C0@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
+        id S1728149AbfJBOkd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 2 Oct 2019 10:40:33 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:35229 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727259AbfJBOkd (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Oct 2019 10:40:33 -0400
+Received: by mail-wr1-f66.google.com with SMTP id v8so20002734wrt.2
+        for <linux-fbdev@vger.kernel.org>; Wed, 02 Oct 2019 07:40:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=xuPflzsn/0nMabRW/MT553ev9ccDXsf7U9hGD8MKLiQ=;
+        b=fOezBZRIOhBkH0+vOGOc3bn1f17r8HHWo8A5N5YSHRzL4/NECJx88ValUy/FtgO38s
+         wrpkjJPcQaNWYASNYWewe6y7sx5LBiDuBUM7dG+3P/DOmLVVVtfPpbzSc3lGVvsuitsH
+         pt+zI5lzIvDBkRvauPQlVLyDxzXBETF5eU5vGfr6XVPiKCgbd1QHVop9rag2R7cTAXPr
+         XO0RBqOh9es8AVuKG1hWJL4vtGMVZSb1P/uRxHo6L0B7y04cf8gvl+cpjIdE8uOkNlzo
+         i8xMJi8/uES3znh5rQyWSpRNdcbndC0ts2GFvEQPTsvIksQQW3WsfUSbFFT20Srw8Q5R
+         Kxcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=xuPflzsn/0nMabRW/MT553ev9ccDXsf7U9hGD8MKLiQ=;
+        b=iGeEi6eXa1hyq5JDAzX69eO1bj44D3A4gaGXBg9J+XfQHoTzMwo4y0CGlPgSkEgtCn
+         Wh8siX81d350M32/s8JLpDNB71BOUsRXmzGxawMR+bTwV/TZg7id8JBxSFbda6hnpsko
+         5xIaA3WJLxGL4aFNjgwahzjR2dEC3Es0m5QsygTlKp7dgExXtgq/0OVKlAi5Ss17XXEK
+         hxAWVNMXgBC3fH1TPZ68WfDV/faquYLeOKGHiYKCxZO60cX6CIhFpTu0hHG8YU66yRSH
+         9kEC0HUXopUsvVn2jUiN8Spso1T6RPQVcD8f/H5Lw0vzSyU19Dd2CCVDjK5PJ9NzSbVb
+         r3sg==
+X-Gm-Message-State: APjAAAVNp8QnJLKGR2X7lDt27WEDokDZ7Z2UpLOdm/R6TiozbPrLosCm
+        FGCIZ5VVn2LZe35moQCQy+8oWQ==
+X-Google-Smtp-Source: APXvYqxQzBe+7CgqDzvsjEknR8XWWPUStRqOZFa+eeAeIp6SkL1kb0FfgkR6tRNbregbg88YHzUFfg==
+X-Received: by 2002:adf:e64e:: with SMTP id b14mr3258477wrn.16.1570027231302;
+        Wed, 02 Oct 2019 07:40:31 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id u10sm5853717wmm.0.2019.10.02.07.40.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2019 07:40:30 -0700 (PDT)
+Date:   Wed, 2 Oct 2019 15:40:28 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v4 7/7] backlight: gpio: pull
+ gpio_backlight_initial_power_state() into probe
+Message-ID: <20191002144028.6lljre76zxd52oui@holly.lan>
+References: <20191001125837.4472-1-brgl@bgdev.pl>
+ <20191001125837.4472-8-brgl@bgdev.pl>
+ <20191002103318.6owxberhml6mbtxm@holly.lan>
+ <CAMRc=Me8RmYLh9WKYma7XE1H7tEZ8Jd-wsFyKVv_etO0T92zwg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <PU1P153MB0169811097EA55DF795888B2BF9C0@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Me8RmYLh9WKYma7XE1H7tEZ8Jd-wsFyKVv_etO0T92zwg@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Oct 02, 2019 at 08:09:41AM +0000, Dexuan Cui wrote:
->> -----Original Message-----
->> From: Sasha Levin <sashal@kernel.org>
->> Sent: Tuesday, October 1, 2019 11:48 AM
->>
->> On Fri, Sep 20, 2019 at 05:26:34PM +0000, Michael Kelley wrote:
->> >From: Michael Kelley <mikelley@microsoft.com>  Sent: Wednesday,
->> September 18, 2019 2:48 PM
->> >> >
->> >> > Without deferred IO support, hyperv_fb driver informs the host to refresh
->> >> > the entire guest frame buffer at fixed rate, e.g. at 20Hz, no matter there
->> >> > is screen update or not. This patch supports deferred IO for screens in
->> >> > graphics mode and also enables the frame buffer on-demand refresh. The
->> >> > highest refresh rate is still set at 20Hz.
->> >> >
->> >> > Currently Hyper-V only takes a physical address from guest as the starting
->> >> > address of frame buffer. This implies the guest must allocate contiguous
->> >> > physical memory for frame buffer. In addition, Hyper-V Gen 2 VMs only
->> >> > accept address from MMIO region as frame buffer address. Due to these
->> >> > limitations on Hyper-V host, we keep a shadow copy of frame buffer
->> >> > in the guest. This means one more copy of the dirty rectangle inside
->> >> > guest when doing the on-demand refresh. This can be optimized in the
->> >> > future with help from host. For now the host performance gain from
->> deferred
->> >> > IO outweighs the shadow copy impact in the guest.
->> >> >
->> >> > Signed-off-by: Wei Hu <weh@microsoft.com>
->> >
->> >Sasha -- this patch and one other from Wei Hu for the Hyper-V frame buffer
->> >driver should be ready.  Both patches affect only the Hyper-V frame buffer
->> >driver so can go through the Hyper-V tree.  Can you pick these up?  Thx.
->>
->> I can't get this to apply anywhere, what tree is it based on?
->>
->> --
->> Thanks,
->> Sasha
->
->Hi Sasha,
->Today's hyperv/linux.git's hyperv-next branch's top commit is
->    48b72a2697d5 ("hv_netvsc: Add the support of hibernation").
->
->Please pick up two patches from Wei Hu:
->#1: [PATCH v4] video: hyperv: hyperv_fb: Obtain screen resolution from Hyper-V host
->#2: [PATHC v6] video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver
+On Wed, Oct 02, 2019 at 01:46:17PM +0200, Bartosz Golaszewski wrote:
+> śr., 2 paź 2019 o 12:33 Daniel Thompson <daniel.thompson@linaro.org> napisał(a):
+> >
+> > On Tue, Oct 01, 2019 at 02:58:37PM +0200, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > >
+> > > The probe function in the gpio-backlight driver is quite short. If we
+> > > pull gpio_backlight_initial_power_state() into probe we can drop two
+> > > more fields from struct gpio_backlight and shrink the driver code.
+> > >
+> > > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > > ---
+> > >  drivers/video/backlight/gpio_backlight.c | 36 ++++++++----------------
+> > >  1 file changed, 12 insertions(+), 24 deletions(-)
+> > >
+> > > diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+> > > index 6247687b6330..37ec184f0c5c 100644
+> > > --- a/drivers/video/backlight/gpio_backlight.c
+> > > +++ b/drivers/video/backlight/gpio_backlight.c
+> > > @@ -17,11 +17,8 @@
+> > >  #include <linux/slab.h>
+> > >
+> > >  struct gpio_backlight {
+> > > -     struct device *dev;
+> > >       struct device *fbdev;
+> > > -
+> > >       struct gpio_desc *gpiod;
+> > > -     int def_value;
+> > >  };
+> > >
+> > >  static int gpio_backlight_update_status(struct backlight_device *bl)
+> > > @@ -53,41 +50,24 @@ static const struct backlight_ops gpio_backlight_ops = {
+> > >       .check_fb       = gpio_backlight_check_fb,
+> > >  };
+> > >
+> > > -static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
+> >
+> > I'm inclined to view deleting this function as removing a comment (e.g.
+> > the function name helps us to read the code)!
+> >
+> 
+> Right, but why not just add a comment then?
 
-Ah, I guess I was missing the first one. I've queued both for
-hyperv-next, thanks!
+I guess you could add a comment but keeping it pulled out in a function
+makes it easier to compare against equivalent code in other drivers
+(such as pwm_bl).
 
---
-Thanks,
-Sasha
+
+Daniel.
+
+
+> The probe function is 50
+> lines long, there's really no need to split it. This will get inlined
+> anyway too.
+> 
+> Bart
+> 
+> > Removing the variables from the context structure is good but why not
+> > just pass them to the function and let the compiler decided whether or
+> > not to inline.
+> >
+> >
+> > Daniel.
+> >
+> >
+> > > -{
+> > > -     struct device_node *node = gbl->dev->of_node;
+> > > -
+> > > -     /* Not booted with device tree or no phandle link to the node */
+> > > -     if (!node || !node->phandle)
+> > > -             return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
+> > > -
+> > > -     /* if the enable GPIO is disabled, do not enable the backlight */
+> > > -     if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
+> > > -             return FB_BLANK_POWERDOWN;
+> > > -
+> > > -     return FB_BLANK_UNBLANK;
+> > > -}
+> > > -
+> > > -
+> > >  static int gpio_backlight_probe(struct platform_device *pdev)
+> > >  {
+> > >       struct device *dev = &pdev->dev;
+> > >       struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
+> > > +     struct device_node *of_node = dev->of_node;
+> > >       struct backlight_properties props;
+> > >       struct backlight_device *bl;
+> > >       struct gpio_backlight *gbl;
+> > > -     int ret;
+> > > +     int ret, def_value;
+> > >
+> > >       gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
+> > >       if (gbl == NULL)
+> > >               return -ENOMEM;
+> > >
+> > > -     gbl->dev = dev;
+> > > -
+> > >       if (pdata)
+> > >               gbl->fbdev = pdata->fbdev;
+> > >
+> > > -     gbl->def_value = device_property_read_bool(dev, "default-on");
+> > > +     def_value = device_property_read_bool(dev, "default-on");
+> > >
+> > >       gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
+> > >       if (IS_ERR(gbl->gpiod)) {
+> > > @@ -109,7 +89,15 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+> > >               return PTR_ERR(bl);
+> > >       }
+> > >
+> > > -     bl->props.power = gpio_backlight_initial_power_state(gbl);
+> > > +     /* Not booted with device tree or no phandle link to the node */
+> > > +     if (!of_node || !of_node->phandle)
+> > > +             bl->props.power = def_value ? FB_BLANK_UNBLANK
+> > > +                                         : FB_BLANK_POWERDOWN;
+> > > +     else if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
+> > > +             bl->props.power = FB_BLANK_POWERDOWN;
+> > > +     else
+> > > +             bl->props.power = FB_BLANK_UNBLANK;
+> > > +
+> > >       bl->props.brightness = 1;
+> > >
+> > >       backlight_update_status(bl);
+> > > --
+> > > 2.23.0
+> > >
