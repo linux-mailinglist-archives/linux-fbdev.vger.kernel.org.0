@@ -2,110 +2,179 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F24D3C4AFA
-	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 12:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1767C4B79
+	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Oct 2019 12:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725765AbfJBKHn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 2 Oct 2019 06:07:43 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:39672 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726455AbfJBKHn (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Oct 2019 06:07:43 -0400
-Received: by mail-wr1-f68.google.com with SMTP id r3so18957738wrj.6
-        for <linux-fbdev@vger.kernel.org>; Wed, 02 Oct 2019 03:07:40 -0700 (PDT)
+        id S1726109AbfJBKdY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 2 Oct 2019 06:33:24 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:37784 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727273AbfJBKdX (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Oct 2019 06:33:23 -0400
+Received: by mail-wm1-f68.google.com with SMTP id f22so6409509wmc.2
+        for <linux-fbdev@vger.kernel.org>; Wed, 02 Oct 2019 03:33:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=8215o5L5rg8Jn8PvXMpKTkwp0UWQ7G/wTp1RzC1miWw=;
-        b=DTOctIKi3TC2V8YqzjCVfP8yozCtDlf8lmDyvwawFn4uwT6vW3n9HK5xwOA1/PeVkj
-         hYjrjyDHa35kI9OABP5WohPSLTGuWvoY+OPWGhLf/fqyJR7HyQiSJSHoGwlmN+Ah4k44
-         1i3zI4m+GCjKqaVunXUELVhlFNbSqi677sTPrZIJMJP2GJtwwme1oHWKFVMePdL8KZyE
-         8H6j8VnX/Y6ZNU1tjewA/nS8T5eFlr9UEWKHJERc0ocvqo1pKobJllgI75ZNnChUQ3pF
-         pMCRm4IjIUSyaQ8DHqx2EBwPQhYBZeb5c575NSy4GaTQWrNWyVKOCu3zogO8bywGoc2j
-         OnYg==
+        bh=wUZHS/G+/EfCLIw5f+SykywrhoRFuqH9n5f7oduoqzw=;
+        b=aPJlKuY+eRR4q5p4jV4qCpE0b1aKVkj4+PZrZUlv5v56zXOetpNPtg02as20aFegDv
+         7TeZz7ikn+LWA9jblA9+VZiAVm1XySTwn2milAAYnC2Rzv7xJY//GDYipTlAoQ3KMQ4R
+         CwpYuupqRmGdKbHBvIqoOJDP6OlRiysRgy9YYBruBRJvud2PD7QBdtZ7f2ujAweX5ku2
+         ssysEGjpCUtCqvPzBNgRpqRR3fDgveWyhWxUpQ3dreoWvdrLvl7FOJeJIR3Wx/Q+SQnc
+         IB1CtCW//A0NqLofsKyy8Il33UA302qkDIijV1Rcz7nCZXrsqmtcBOv+PpAGlO4pRa2N
+         zHuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=8215o5L5rg8Jn8PvXMpKTkwp0UWQ7G/wTp1RzC1miWw=;
-        b=JfhXkAlfouqGB+hdGBAtn92ERVta+ONDnJZcGsQkbIA0qqoj6uvIpvLFIHoG2qx+p7
-         iRrw1LMjRLYAAsN7YBgtewmzHsfPqCFWX3huItwXog9AzNXQ1/Dd91d6wRwBsKJE0rTi
-         K0FFcI/l//9g+AEWMEXtXRj77z0yXEl89xkhSJg91nxbUpvbQqBNVNOiSTM6McXl9LoD
-         A4QuEHdUoDJ0PHocGAd3Zye0JCAiCX998RXWBHPZrFE2/0yPn6aycpbiZoazTYNWqNJC
-         Qpuenq1aBAeLhmml1t7/AIXfTtCwLkMyJqlCNNSckfdpfUHQP72fPnp2oOqliCu0fO4O
-         e0UQ==
-X-Gm-Message-State: APjAAAVJ/N6O8k6f8YPzSCxXzSYub1Q1AGJPvmPDHu1DJfdR/TCVhVGx
-        CYAzJ3BVpCAyNfY3T8UlRfpLVw==
-X-Google-Smtp-Source: APXvYqw0Eb6miBPDCyV5NBM+w1t6VFTHTfOhXpGWg3xUNG7gHtmXzQM6vSPoLjFnSHzsdhPQlt+sug==
-X-Received: by 2002:adf:dbce:: with SMTP id e14mr1946992wrj.56.1570010859481;
-        Wed, 02 Oct 2019 03:07:39 -0700 (PDT)
+        bh=wUZHS/G+/EfCLIw5f+SykywrhoRFuqH9n5f7oduoqzw=;
+        b=CfsDafy0PB6W4h7S7KJq8B4pUkFOamm9S1Uk5ANq/b4CnFT0SrliOQjLsGrUjyYoW8
+         npdgImV/JrItWxKfTGXetRdMdCmHMFOPRoXY9M8/vSwpxcVpxXgbUhwNrEy+LgHvXogG
+         IUwiWXl2ni314tQjr6LeRaKPIKztYBzx7fh5Br4SGTRKOeOGqMmSqCshmk5DlKQ+hCbo
+         bqwPO2aQmUtbDotGRVgwnl+qv9C1I+BGzO+PeJr3j6ShD4B07vIRF0ylS9CBnhuzJiBZ
+         Y5396mYKUYSaPSupbM4QBZcop/v/aqbfi03RQd9cFyGpXCsoyrv8ZQlHwN59fMTuYZsr
+         bv7A==
+X-Gm-Message-State: APjAAAU6R902kYVq7Ur+QmeQwqYYPhBYi3Wi2zp05YouqbcN228EbIPd
+        KblBmeIIDn8fGlYZq3wHiDKq2kAJa5g=
+X-Google-Smtp-Source: APXvYqxcIUrjme+4/WrQIVIVSQ0R4d5tae6DJjxe9DjuXTy5Z9r8cXcOD8GRy4ZpWXRQoBkLG0CdNQ==
+X-Received: by 2002:a1c:2bc7:: with SMTP id r190mr2439604wmr.143.1570012400648;
+        Wed, 02 Oct 2019 03:33:20 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id g4sm25657217wrw.9.2019.10.02.03.07.38
+        by smtp.gmail.com with ESMTPSA id l10sm26838984wrh.20.2019.10.02.03.33.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2019 03:07:38 -0700 (PDT)
-Date:   Wed, 2 Oct 2019 11:07:37 +0100
+        Wed, 02 Oct 2019 03:33:20 -0700 (PDT)
+Date:   Wed, 2 Oct 2019 11:33:18 +0100
 From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: pwm_bl: Don't assign levels table repeatedly
-Message-ID: <20191002100737.orm5ghpnw6oe6b3r@holly.lan>
-References: <20191001162835.1.I4f2ede1f55ddd1c72b0303b7fd7f73a782fa33e5@changeid>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v4 7/7] backlight: gpio: pull
+ gpio_backlight_initial_power_state() into probe
+Message-ID: <20191002103318.6owxberhml6mbtxm@holly.lan>
+References: <20191001125837.4472-1-brgl@bgdev.pl>
+ <20191001125837.4472-8-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191001162835.1.I4f2ede1f55ddd1c72b0303b7fd7f73a782fa33e5@changeid>
+In-Reply-To: <20191001125837.4472-8-brgl@bgdev.pl>
 User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 04:29:24PM -0700, Matthias Kaehlcke wrote:
-> pwm_backlight_probe() re-assigns pb->levels for every brightness
-> level. This is not needed and was likely not intended, since
-> neither side of the assignment changes during the loop. Assign
-> the field only once.
+On Tue, Oct 01, 2019 at 02:58:37PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+> The probe function in the gpio-backlight driver is quite short. If we
+> pull gpio_backlight_initial_power_state() into probe we can drop two
+> more fields from struct gpio_backlight and shrink the driver code.
+> 
+> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> ---
+>  drivers/video/backlight/gpio_backlight.c | 36 ++++++++----------------
+>  1 file changed, 12 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+> index 6247687b6330..37ec184f0c5c 100644
+> --- a/drivers/video/backlight/gpio_backlight.c
+> +++ b/drivers/video/backlight/gpio_backlight.c
+> @@ -17,11 +17,8 @@
+>  #include <linux/slab.h>
+>  
+>  struct gpio_backlight {
+> -	struct device *dev;
+>  	struct device *fbdev;
+> -
+>  	struct gpio_desc *gpiod;
+> -	int def_value;
+>  };
+>  
+>  static int gpio_backlight_update_status(struct backlight_device *bl)
+> @@ -53,41 +50,24 @@ static const struct backlight_ops gpio_backlight_ops = {
+>  	.check_fb	= gpio_backlight_check_fb,
+>  };
+>  
+> -static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
 
-Makes sense but this should probably be dropping the curly braces too.
+I'm inclined to view deleting this function as removing a comment (e.g.
+the function name helps us to read the code)!
+
+Removing the variables from the context structure is good but why not
+just pass them to the function and let the compiler decided whether or
+not to inline.
 
 
 Daniel.
 
-> ---
-> 
->  drivers/video/backlight/pwm_bl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index 746eebc411df..959436b9e92b 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -564,6 +564,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  	memset(&props, 0, sizeof(struct backlight_properties));
->  
->  	if (data->levels) {
-> +		pb->levels = data->levels;
-> +
->  		/*
->  		 * For the DT case, only when brightness levels is defined
->  		 * data->levels is filled. For the non-DT case, data->levels
-> @@ -572,8 +574,6 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  		for (i = 0; i <= data->max_brightness; i++) {
->  			if (data->levels[i] > pb->scale)
->  				pb->scale = data->levels[i];
+
+> -{
+> -	struct device_node *node = gbl->dev->of_node;
 > -
-> -			pb->levels = data->levels;
->  		}
+> -	/* Not booted with device tree or no phandle link to the node */
+> -	if (!node || !node->phandle)
+> -		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
+> -
+> -	/* if the enable GPIO is disabled, do not enable the backlight */
+> -	if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
+> -		return FB_BLANK_POWERDOWN;
+> -
+> -	return FB_BLANK_UNBLANK;
+> -}
+> -
+> -
+>  static int gpio_backlight_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+>  	struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
+> +	struct device_node *of_node = dev->of_node;
+>  	struct backlight_properties props;
+>  	struct backlight_device *bl;
+>  	struct gpio_backlight *gbl;
+> -	int ret;
+> +	int ret, def_value;
 >  
->  		if (pwm_backlight_is_linear(data))
+>  	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
+>  	if (gbl == NULL)
+>  		return -ENOMEM;
+>  
+> -	gbl->dev = dev;
+> -
+>  	if (pdata)
+>  		gbl->fbdev = pdata->fbdev;
+>  
+> -	gbl->def_value = device_property_read_bool(dev, "default-on");
+> +	def_value = device_property_read_bool(dev, "default-on");
+>  
+>  	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
+>  	if (IS_ERR(gbl->gpiod)) {
+> @@ -109,7 +89,15 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+>  		return PTR_ERR(bl);
+>  	}
+>  
+> -	bl->props.power = gpio_backlight_initial_power_state(gbl);
+> +	/* Not booted with device tree or no phandle link to the node */
+> +	if (!of_node || !of_node->phandle)
+> +		bl->props.power = def_value ? FB_BLANK_UNBLANK
+> +					    : FB_BLANK_POWERDOWN;
+> +	else if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
+> +		bl->props.power = FB_BLANK_POWERDOWN;
+> +	else
+> +		bl->props.power = FB_BLANK_UNBLANK;
+> +
+>  	bl->props.brightness = 1;
+>  
+>  	backlight_update_status(bl);
 > -- 
-> 2.23.0.444.g18eeb5a265-goog
+> 2.23.0
 > 
