@@ -2,102 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD948C9D9B
-	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Oct 2019 13:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D583BCB136
+	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Oct 2019 23:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730232AbfJCLms (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 3 Oct 2019 07:42:48 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:35286 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730185AbfJCLms (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 3 Oct 2019 07:42:48 -0400
-Received: by mail-wr1-f66.google.com with SMTP id v8so2598623wrt.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 03 Oct 2019 04:42:47 -0700 (PDT)
+        id S2387506AbfJCVfI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 3 Oct 2019 17:35:08 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41379 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387486AbfJCVfH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 3 Oct 2019 17:35:07 -0400
+Received: by mail-pg1-f195.google.com with SMTP id s1so2502741pgv.8
+        for <linux-fbdev@vger.kernel.org>; Thu, 03 Oct 2019 14:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=jT+9een9mM2KMQc2NI2nr4Y5VakV7H0J0wclQgkUils=;
-        b=fwQKUaUFQ6a/78eZtJv4rTrh8NiDMuR7wU5XIhUa32e5TXH0+uEfqBrFFkdozLykq1
-         GQSrne3+R37jhPKfIGFJf311r73w02PYfez7FjwTcAvND4U6++vYOlaw9c7WX4E2oyY2
-         nikycED8a/vkMoQonBwpaQpGZVVqHZtSoxd6HWOawqobtNEPaBTphaIe8FghuMyKs8M7
-         Si1Ey/dynw5twF+TVb6+G/a0w5QVMtNTUe+ZkLXqRKR5eM/AqOW7nzpR5fVSezqZ8q7p
-         32T39Ez4eEhSJ4vkH30VuovExTH5yDqeqWSaWP4tiMu+75u2sBIPXVp+uzQum8/3hiUN
-         VJwg==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7AHHcEKrWBM5y9wBFl/C7jzA4xtd9EY/YdeDi/hosms=;
+        b=ASTwwcBDLKFauBJRi7fwuLBmPbFmPW/3m9tG2zvZzcpcFnfrephyeKAqsoDz/Gbc66
+         sNU/cLXRpwM2QQGC5Tx0G9jDeC8pwZEfAnjhJVs59CzNawD20uQqRrHq58tGrC/fQblp
+         hNqMsIa+vM2uuIefpEywLO5YYokaczyteqWGA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=jT+9een9mM2KMQc2NI2nr4Y5VakV7H0J0wclQgkUils=;
-        b=TjE1HjS7R7nYS77aTkS6JjpDJvZAkvo+bGcoSMqxo523EV8/ESxdM06CQpOawpFp3c
-         xKGMx71OpHIliDjgYsXvv31sokQLKDNmCqfmxK16BM+6jk/xYuSjpN/TDpH7YKReqIMm
-         gvFQ8dEL2zyvv8K6QgLwGuMA7pwH+SXs39ajqG3IQKBZmu0bhI/hPN0wmadwomHXn/M+
-         rjHkV2boyF73A4EkVQYSI2CQV/zaWdIG/fuDigfmVZPIWkW+HpA7LR20n7XWHNRaYL2+
-         OawsMaHvbJTmbs+NeLsL09lzDWZAW5Vq7sPoIdJ6n1kI1VJ8kqkHYc2twukKp8H/S8V6
-         iaSg==
-X-Gm-Message-State: APjAAAVyQfaMOKnKdZZ9Dz/Fk4JGxiYU/tWrMeKW0enF2JXvfOPfMIj3
-        mKPJPsOgKSTaElUkwphEHcokJQ==
-X-Google-Smtp-Source: APXvYqz82V76dcSOpmIIaTo777Rc74WPo1TLzktFeak8EAx8pWm//EW5b77wEGmszSGc+Q2Gg+GDIw==
-X-Received: by 2002:a5d:6704:: with SMTP id o4mr6839593wru.365.1570102966533;
-        Thu, 03 Oct 2019 04:42:46 -0700 (PDT)
-Received: from dell ([2.27.167.122])
-        by smtp.gmail.com with ESMTPSA id 36sm3014735wrp.30.2019.10.03.04.42.44
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 03 Oct 2019 04:42:46 -0700 (PDT)
-Date:   Thu, 3 Oct 2019 12:42:42 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        jacek.anaszewski@gmail.com, pavel@ucw.cz, dmurphy@ti.com,
-        robh+dt@kernel.org, mark.rutland@arm.com, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] backlight: lm3630a: Add an enable gpio for the
- HWEN pin
-Message-ID: <20191003114242.GE21172@dell>
-References: <20190912213257.24147-1-andreas@kemnade.info>
- <20190912213257.24147-3-andreas@kemnade.info>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7AHHcEKrWBM5y9wBFl/C7jzA4xtd9EY/YdeDi/hosms=;
+        b=qHU6H/KeCHjCpBaMTIpXWDlqDl2jlucfze352GqijG251NVniNp8p04NybHoelTVYm
+         EtDxR55DQo5OqRB1v9Ya86psje/Ijb/QfO53C2AGMg75vLoVFcK90y+eMeJrI8iqgjDB
+         6s6GklhyealaamJqImVf2agNWN6u4mcOv4RZqrIOw/fx6Vpx3g8/bCj2sysx2P3IjFs/
+         gE0OhT4nNkF4J1L1bIgre8V0rkfe/rIa2/dSV7d0ZkpG4dc7F+2/ohK2SmRQPFjXN6mT
+         hwi2Pe5iwDFVMLwKpdnYjawBoVuuk2bdtJsbSW1Qz3/pLjTEo8w+tdVF3HxfS4VOyamF
+         IygQ==
+X-Gm-Message-State: APjAAAVZ77eB2UscqZH9bSd8PS4ZtquMEW8w0FbbwUq5F2zToY1GzkVf
+        AJ0mQTQwGzAx8xx/Dls9Nwq3gg==
+X-Google-Smtp-Source: APXvYqwzXDfyh4cXIWrG9bwfnxsIwKRIIusw5EU7eFwaLpQRN0oyj60CNEvRM3XFeIwxxnCXAkV7kA==
+X-Received: by 2002:a63:4d4e:: with SMTP id n14mr11552757pgl.88.1570138505256;
+        Thu, 03 Oct 2019 14:35:05 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:4fff:7a6b:a335:8fde])
+        by smtp.gmail.com with ESMTPSA id 30sm3240647pjk.25.2019.10.03.14.35.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Oct 2019 14:35:04 -0700 (PDT)
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Matthias Kaehlcke <mka@chromium.org>, linux-pwm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] backlight: pwm_bl: Add missing curly branches in else branch
+Date:   Thu,  3 Oct 2019 14:35:02 -0700
+Message-Id: <20191003213502.102110-1-mka@chromium.org>
+X-Mailer: git-send-email 2.23.0.444.g18eeb5a265-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190912213257.24147-3-andreas@kemnade.info>
-User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 12 Sep 2019, Andreas Kemnade wrote:
+Add curly braces to an 'else' branch in pwm_backlight_update_status()
+to match the corresponding 'if' branch.
 
-> For now just enable it in the probe function to allow I2C
-> access. Disabling also means resetting the register values
-> to default and according to the datasheet does not give
-> power savings.
-> 
-> Tested on Kobo Clara HD.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> Reviewed-by: Dan Murphy <dmurphy@ti.com>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> ---
-> changes in v2:
-> - simplification
-> - correct gpio direction initialisation
-> 
-> changes in v3:
-> - removed legacy include
-> 
->  drivers/video/backlight/lm3630a_bl.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+---
 
-Applied, thanks.
+ drivers/video/backlight/pwm_bl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index 746eebc411df..130abff2705f 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -125,8 +125,9 @@ static int pwm_backlight_update_status(struct backlight_device *bl)
+ 		state.duty_cycle = compute_duty_cycle(pb, brightness);
+ 		pwm_apply_state(pb->pwm, &state);
+ 		pwm_backlight_power_on(pb);
+-	} else
++	} else {
+ 		pwm_backlight_power_off(pb);
++	}
+ 
+ 	if (pb->notify_after)
+ 		pb->notify_after(pb->dev, brightness);
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.23.0.444.g18eeb5a265-goog
+
