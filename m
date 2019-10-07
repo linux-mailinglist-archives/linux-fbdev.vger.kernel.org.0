@@ -2,103 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9497923BACE
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Aug 2020 14:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD73223C261
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Aug 2020 01:52:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725856AbgHDM6y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Aug 2020 08:58:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33168 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726210AbgHDM6v (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 4 Aug 2020 08:58:51 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 362202075A;
-        Tue,  4 Aug 2020 12:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596545930;
-        bh=5GcDtKxhBv4ldUHvEV1E+xCRSF0zyL6ugmx1l+H+odY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UD6lC1ixvriONP18vGEUxhXmLbyj9SDymf5tE5y6s4XvcPhmj++RndYdRtMCbvHtJ
-         lt6CzbrJsFBSnZJlHWxSA46j8NgHvlTiVoOc6P6NGCnA7OIJjSeiGm9W1NALcIi+Ae
-         /fIt1MqW/euxPAu0TGCDEdlxn7M0FkzLSgdkyMHY=
-Date:   Tue, 4 Aug 2020 14:58:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Jiri Slaby <jslaby@suse.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        syzbot <syzbot+9116ecc1978ca3a12f43@syzkaller.appspotmail.com>
-Subject: Re: [PATCH] vt: defer kfree() of vc_screenbuf in vc_do_resize()
-Message-ID: <20200804125831.GA221149@kroah.com>
-References: <1596034621-4714-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
- <0c9d8003-ba3f-8f2d-7c5a-56c5ca7db750@i-love.sakura.ne.jp>
+        id S1727842AbgHDXw3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Aug 2020 19:52:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59272 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgHDXw2 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Aug 2020 19:52:28 -0400
+X-Greylist: delayed 86248 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Aug 2020 16:52:27 PDT
+Received: from dockerbox (unknown [IPv6:2001:4800:7817:101:be76:4eff:fe04:a215])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC72FC061756;
+        Tue,  4 Aug 2020 16:52:27 -0700 (PDT)
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by dockerbox (Postfix) with SMTP id 6F4DA5EC5A;
+        Mon,  7 Oct 2019 19:30:12 -0500 (CDT)
+Received: from [32.188.209.113] by 127.0.0.1 with SMTP; Mon, 07 Oct 2019 18:22:17 -0600
+Message-ID: <80v-q$4-o4pqyq0@6eeih174.p55>
+From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+To:     linkos@binet.lv
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
+Date:   Mon, 07 Oct 19 18:22:17 GMT
+X-Mailer: Microsoft Outlook Express 5.00.2615.200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0c9d8003-ba3f-8f2d-7c5a-56c5ca7db750@i-love.sakura.ne.jp>
+Content-Type: multipart/alternative;
+        boundary="_.A4476ECDD73A3"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Aug 04, 2020 at 08:15:43PM +0900, Tetsuo Handa wrote:
-> Do you think this approach is acceptable? Or, do we need to modify set_origin() ?
-> 
-> On 2020/07/29 23:57, Tetsuo Handa wrote:
-> > syzbot is reporting UAF bug in set_origin() from vc_do_resize() [1], for
-> > vc_do_resize() calls kfree(vc->vc_screenbuf) before calling set_origin().
-> > 
-> > Unfortunately, in set_origin(), vc->vc_sw->con_set_origin() might access
-> > vc->vc_pos when scroll is involved in order to manipulate cursor, but
-> > vc->vc_pos refers already released vc->vc_screenbuf until vc->vc_pos gets
-> > updated based on the result of vc->vc_sw->con_set_origin().
-> > 
-> > Preserving old buffer and tolerating outdated vc members until set_origin()
-> > completes would be easier than preventing vc->vc_sw->con_set_origin() from
-> > accessing outdated vc members.
-> > 
-> > [1] https://syzkaller.appspot.com/bug?id=6649da2081e2ebdc65c0642c214b27fe91099db3
-> > 
-> > Reported-by: syzbot <syzbot+9116ecc1978ca3a12f43@syzkaller.appspotmail.com>
-> > Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> > ---
-> >  drivers/tty/vt/vt.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-> > index 42d8c67..c9ee8e9 100644
-> > --- a/drivers/tty/vt/vt.c
-> > +++ b/drivers/tty/vt/vt.c
-> > @@ -1196,7 +1196,7 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
-> >  	unsigned int old_rows, old_row_size, first_copied_row;
-> >  	unsigned int new_cols, new_rows, new_row_size, new_screen_size;
-> >  	unsigned int user;
-> > -	unsigned short *newscreen;
-> > +	unsigned short *oldscreen, *newscreen;
-> >  	struct uni_screen *new_uniscr = NULL;
-> >  
-> >  	WARN_CONSOLE_UNLOCKED();
-> > @@ -1294,10 +1294,11 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
-> >  	if (new_scr_end > new_origin)
-> >  		scr_memsetw((void *)new_origin, vc->vc_video_erase_char,
-> >  			    new_scr_end - new_origin);
-> > -	kfree(vc->vc_screenbuf);
-> > +	oldscreen = vc->vc_screenbuf;
-> >  	vc->vc_screenbuf = newscreen;
-> >  	vc->vc_screenbuf_size = new_screen_size;
-> >  	set_origin(vc);
-> > +	kfree(oldscreen);
-> >  
-> >  	/* do part of a reset_terminal() */
-> >  	vc->vc_top = 0;
 
-I think what you have here is fine, as cleaning up set_orgin() might be
-hard to do at this point in time.
+--_.A4476ECDD73A3
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+Greetings
 
-greg k-h
+My name is Barrister Hans Erich.
+
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
+
+Your full names --------
+
+
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+CONTACT: hanserich9helmut@gmail.com
+
+--_.A4476ECDD73A3--
+
