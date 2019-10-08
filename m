@@ -2,137 +2,130 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79511CF936
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Oct 2019 14:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92C66D01B9
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Oct 2019 21:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730946AbfJHMFa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Oct 2019 08:05:30 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:41153 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730926AbfJHMF3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Oct 2019 08:05:29 -0400
-Received: by mail-lj1-f195.google.com with SMTP id f5so17230332ljg.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 08 Oct 2019 05:05:28 -0700 (PDT)
+        id S1730467AbfJHTzh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Oct 2019 15:55:37 -0400
+Received: from mail-ed1-f42.google.com ([209.85.208.42]:40718 "EHLO
+        mail-ed1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730614AbfJHTzT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Oct 2019 15:55:19 -0400
+Received: by mail-ed1-f42.google.com with SMTP id v38so16813036edm.7
+        for <linux-fbdev@vger.kernel.org>; Tue, 08 Oct 2019 12:55:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=TptQKMAgu40zPvzhQ1Z31J/pJlahQ9zU95/IQSGlotQ=;
-        b=EQxxLJPuv5kKROn32XBozgwjwLwg89RorArcZU/g8cItI4zFmL7g+GBxM/Ahg/onYr
-         /Qq6eZw1P0LGp4IiWbUpBRj0wt8o58C+ixmMvDPdQyY9ckNxJ8fwVC+8j5r3oWi+ocMe
-         bAPIcSJt4aI9G1QMFztBqZWK5BjdSrlZzfkn0=
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
+        b=aMQQgi7dIXVBnmVMSSMCLgb3oXTzeafbZdgWl2Y7dgh9d3yilS1+9yTnvWoS7+GzUk
+         LWbTYKnbDzuBJ3/U6U4a0Txwis4unkVKDohWYyBjnKYrTLghN7laSYeGp1/FcmznDyEO
+         GS9pgiMN+uT0qCjbihaa5wuvtHOM98vqOW8UVjJ7Cv+EprgLSNS8LJdhrjnJyNqQEN56
+         5sfOyU15h4kpoOXNgzNljIz5N8IZnpl4XHLYJYLCwvTOpHMRDfM3ywlgrk+4Qs+isMtv
+         bwWMXB9P8rpPXCaQx70qpw2S2sG0Q07XznOIe3PPQ9uFVdh7+iWMtRM+rtyrWFblwrYM
+         wXZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=TptQKMAgu40zPvzhQ1Z31J/pJlahQ9zU95/IQSGlotQ=;
-        b=YypwsKUguC8til46lz9AZDEmaLvpePLNl3PxsGv8KX7q1N4uJ+WZMTT01N5LwUaYxJ
-         hUDZcjQ6sCeY/BSvHn8fvKx9ECKHw1rIA7kb1ZXX+yBce6ZnH2Y2RHpj4ypuLkyiCWhV
-         fJjkn0+5yqTBBlEnKKwiH5sKVfukvcGepxaRBvIO/FB++ZKLWE4PBBwfp3KcWh5ItgJT
-         kei36qjRN8z8Ml3hLWZeKEwlyWpbm3IYETKycpyMPi6SA3hVfFdblTcNYMkujPtiS+cE
-         8jNozlUzJls/2ujtOBKPIs2X3fi2bL6ltdLpXjLLctfDEzrvVDPYFWW6aKe1/Ulehiki
-         isrQ==
-X-Gm-Message-State: APjAAAXsBjE983MRhFwa0n+gD0alMUYBtFTB41E9k28ehVWIP74O3ZqW
-        iXUDR0gxCjvigfZ3nOfB0npOvA==
-X-Google-Smtp-Source: APXvYqz1ZVV6abC07XSZS+ewKWoIdZcZT75MUkfMcioX26MZiIhkt3Y7dE8w+s+hfv7TsUNPdK5xaw==
-X-Received: by 2002:a2e:b045:: with SMTP id d5mr22159030ljl.105.1570536327398;
-        Tue, 08 Oct 2019 05:05:27 -0700 (PDT)
-Received: from prevas-ravi.prevas.se ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id z18sm3918033ljh.17.2019.10.08.05.05.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2019 05:05:25 -0700 (PDT)
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] backlight: pwm_bl: switch to power-of-2 base for fixed-point math
-Date:   Tue,  8 Oct 2019 14:03:27 +0200
-Message-Id: <20191008120327.24208-5-linux@rasmusvillemoes.dk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191008120327.24208-1-linux@rasmusvillemoes.dk>
-References: <20191008120327.24208-1-linux@rasmusvillemoes.dk>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
+        b=BeXjpRTCf62aFynYP2v4cU3i28tx8wsbsd8af+Kk+5owTgw+K4O7lmPfXnpAIJ0krU
+         HNE/oxefv+GvjoB9wpI6/RptiWjpmUtUb+145UXjYPhtLyWyceINj6q4HAMxpaKXzVI6
+         sYSWO6jViaOauaAzRcWk3vT0bJxvZHbwO0dfwHtMxbsW+yC+g1Xwuwcjt/Mr1i5ikw5y
+         +RQqWi1FgrVUQb9jhwjlUVJPTwNkkpjIgSI37Ol60H5Fy6xNhuX+TaHGJgWKDf96Vi8D
+         ChfDEo1Zmicx+f8qrjjrS6tkt5QKevuk+K24DKDr3CfK0oO3WYQbp+37siOU6ojglGwO
+         HvJg==
+X-Gm-Message-State: APjAAAWFxXG68znhpKy2R6lub2W+KM0F38nPgDlJhrxdd9TKF9YbZFrw
+        VIPFNMpiCfhGxIBHhIeKQe55ow5uJAmXSk1rOJ8=
+X-Google-Smtp-Source: APXvYqxaZfvXk0/G1PfPN40JEbEfue6b7v2Lk/SQWmnUxoxmnZyxXwpPNC4UPIh9mJw4kQ9atMHeHG1Orcb22TWXOSk=
+X-Received: by 2002:a50:c306:: with SMTP id a6mr36339639edb.108.1570564517490;
+ Tue, 08 Oct 2019 12:55:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:906:cc89:0:0:0:0 with HTTP; Tue, 8 Oct 2019 12:55:16
+ -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   MONEY GRAM <currency1000000@gmail.com>
+Date:   Tue, 8 Oct 2019 20:55:16 +0100
+Message-ID: <CAPqfnSEO==O6BEtBbcMMZfh3qcY4Bz0qndhCqbcLqZx4DCs44A@mail.gmail.com>
+Subject: HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE M.T.C.N:78393135
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Using a power-of-2 instead of power-of-10 base makes the computations
-much cheaper. 2^16 is safe; retval never becomes more than 2^48 +
-2^32/2. On a 32 bit platform, the very expensive 64/32 division at the
-end of cie1931() instead becomes essentially free (a shift by 32 is
-just a register rename).
+HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE
+M.T.C.N:78393135
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
----
- drivers/video/backlight/pwm_bl.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+Attn: Beneficiary,
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index 273d3fb628a0..a99c2210c935 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -148,7 +148,8 @@ static const struct backlight_ops pwm_backlight_ops = {
- };
- 
- #ifdef CONFIG_OF
--#define PWM_LUMINANCE_SCALE	10000 /* luminance scale */
-+#define PWM_LUMINANCE_SHIFT	16
-+#define PWM_LUMINANCE_SCALE	(1 << PWM_LUMINANCE_SHIFT) /* luminance scale */
- 
- /*
-  * CIE lightness to PWM conversion.
-@@ -165,23 +166,25 @@ static const struct backlight_ops pwm_backlight_ops = {
-  * The following function does the fixed point maths needed to implement the
-  * above formula.
-  */
--static u64 cie1931(unsigned int lightness, unsigned int scale)
-+static u64 cie1931(unsigned int lightness)
- {
- 	u64 retval;
- 
- 	/*
- 	 * @lightness is given as a number between 0 and 1, expressed
--	 * as a fixed-point number in scale @scale. Convert to a
--	 * percentage, still expressed as a fixed-point number, so the
--	 * above formulas can be applied.
-+	 * as a fixed-point number in scale
-+	 * PWM_LUMINANCE_SCALE. Convert to a percentage, still
-+	 * expressed as a fixed-point number, so the above formulas
-+	 * can be applied.
- 	 */
- 	lightness *= 100;
--	if (lightness <= (8 * scale)) {
-+	if (lightness <= (8 * PWM_LUMINANCE_SCALE)) {
- 		retval = DIV_ROUND_CLOSEST(lightness * 10, 9033);
- 	} else {
--		retval = (lightness + (16 * scale)) / 116;
-+		retval = (lightness + (16 * PWM_LUMINANCE_SCALE)) / 116;
- 		retval *= retval * retval;
--		retval = DIV_ROUND_CLOSEST_ULL(retval, (scale * scale));
-+		retval += 1ULL << (2*PWM_LUMINANCE_SHIFT - 1);
-+		retval >>= 2*PWM_LUMINANCE_SHIFT;
- 	}
- 
- 	return retval;
-@@ -215,8 +218,7 @@ int pwm_backlight_brightness_default(struct device *dev,
- 	/* Fill the table using the cie1931 algorithm */
- 	for (i = 0; i < data->max_brightness; i++) {
- 		retval = cie1931((i * PWM_LUMINANCE_SCALE) /
--				 data->max_brightness, PWM_LUMINANCE_SCALE) *
--				 period;
-+				 data->max_brightness) * period;
- 		retval = DIV_ROUND_CLOSEST_ULL(retval, PWM_LUMINANCE_SCALE);
- 		if (retval > UINT_MAX)
- 			return -EINVAL;
--- 
-2.20.1
+This is to inform you that the America Embassy office was instructed
+to transfer your fund $980,000.00 U.S Dollars compensating all the
+SCAM VICTIMS and your email was found as one of the VICTIMS. by
+America security leading team and America representative officers so
+between today the 8th of October till 1ST Of December 2019 you will
+be receiving MONEY GRAM the sum of $6,000 dollars per day. However be informed
+that we have already sent the $6,000 dollars this morning to avoid
+cancellation of your payment, remain the total sum of $980,000.00.
 
+You have only six hours to call this office upon the receipt of this
+email the maximum amount you will be receiving per a day starting from
+today's $6,000 and the Money Transfer Control Number of today is
+below.
+
+NOTE; The sent $6,000 is on hold because of the instruction from IMF
+office, they asked us to place it on hold by requesting the (Clean
+Bill Record Certificate) which will cost you $25 in order to fulfill
+all the necessary obligation to avoid any hitches while sending you
+the payment through MONEY GRAM money transfer, the necessary
+obligation I mean here is to obtain the (Clean Bill Record
+Certificate)
+
+Below is the information of today track it in our
+
+websitehttps://moneygarm.com/asp/orderStatus.asp?country=global
+to see is available to pick up by the receiver, but if we didn't here
+from you soon we'll pickup it up from line for security reason to
+avoid hackers stealing the money online.
+
+Money Transfer Control Number M.T.C.N)::78393135
+SENDERS FIRST NAME: John
+SENDERS LAST NAME: Chun
+SENDERS COUNTRY...BENIN REPUBLIC
+TEXT QUESTION: A
+ANSWER: B
+AMOUNT: $6,000
+
+We need the below details from you, to enable us place the payment to
+your name and transfer the fund to you.
+
+(Full Receivers name)...................
+(You're Country)................................
+(Address)......................................
+(Phone NuMBER-...............................
+(You're Age)............................
+(OCCUPATION)..REAL ESTATE..................
+(A Copy of Your ID CARD).SEE ATTACHMENTS.............
+
+HOWEVER YOU HAVE TO PAY $25 FOR THE (Clean Bill Record Certificate)
+AND THAT IS ALL YOU HAVE TO DO ASAP.
+
+The payment will be sending to below information, such as:
+
+Receiver.............. ALAN UDE
+Country................Benin Republic
+Amount: ....................$25
+Question: .....................A
+Answer:................... B
+Sender...............Name:
+MTCN :..............
+
+According to the instruction and order we received from IMF the their
+requested $25 must be made directly to the above info's.
+
+Furthermore you are advised to call us as the instruction was passed
+that within 6hours without hearing from you, Count your payment
+canceled. Number to call is below listed manager director office of
+release order:
+DR.ALAN UDE
+Director MONEY GRAM-Benin
