@@ -2,101 +2,118 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05385CF6B2
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Oct 2019 12:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EECA4CF75B
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Oct 2019 12:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730188AbfJHKCL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Oct 2019 06:02:11 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:44308 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730026AbfJHKCL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Oct 2019 06:02:11 -0400
-Received: by mail-lj1-f194.google.com with SMTP id m13so16817441ljj.11
-        for <linux-fbdev@vger.kernel.org>; Tue, 08 Oct 2019 03:02:10 -0700 (PDT)
+        id S1730177AbfJHKnQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Oct 2019 06:43:16 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:33178 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730389AbfJHKnQ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Oct 2019 06:43:16 -0400
+Received: by mail-wm1-f68.google.com with SMTP id r17so2074536wme.0
+        for <linux-fbdev@vger.kernel.org>; Tue, 08 Oct 2019 03:43:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=GqzTqyowvPAvUQbXgGnvR7I0v85sKzoqVofmPdE4wrQ=;
-        b=Wq+k9y3cqefVkZ1tL1Y6xqcaD3CqIz8/tHswdPC7vEhgEGm1vMawqMRWqG0DJywGT4
-         8fmOpR2baz2OYprCPC1aEY2/tk0YjGKyKnNmrKJqXnyYPhOuLyW9yuN/Nl6uxfwS4oBi
-         k7PN8yNJCpnN5dt7uymncpWz1kmBiGAfGidf4=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=kNT0uravG5d+lNDf6zaLGqaWiN2XpE5JXyYmizVBilE=;
+        b=K9H4eDofUQAKZFM6o8SaI1fDGTLc4h7zvLiQ1+kb/3hl9KTydNTP7sOmaT6ZOvOy+h
+         qCDq8mzBa37VmuqcmWj5VvjaBvps+QwcM68guyWqS7cr9uaOY134H4lb7mkzoSRr4Buc
+         MoeRrevZYD2M/FEAhj2Pmft/ekWeOstHP3Qd7drNLISZ3UzzZWZWJrRbTlsAaqGTlbMn
+         zlC88mSLkqFcvForhTUElc0Tk8aobntBt2kXJ7UPWhnu9ZKaS1Q5JYKqELXmOkI4xbf4
+         4yCCbqemhFWRxC1rFNomOZHXO8jgNt7JK20q4ZEL/O60BOBasjqAhiJtzqMKkGJNHJHP
+         hZBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=GqzTqyowvPAvUQbXgGnvR7I0v85sKzoqVofmPdE4wrQ=;
-        b=p5Oay9SbhjuGF/ChtHyZ6PQtfhM8//XsPBX4TgrJ5G7Oeo5M60GddXdZzxuSHRlRdT
-         v8SobBNt0ldoCBI0GIdU1CpTSKMFYU4BER26PzNgwoG3MA/aAYBL5YLmRa7f7RmOsDR5
-         HKYTC/3tZ1cBBhCjRkQH/dhCi9puxImStwucu8chi1yfAtl35pI/356XRXednUmSQEaf
-         C8sF+K85PTPmDkkchhL2XPVzklZD7bZDjDTZg5Qs/GaJXry5MTJbakiO7ykcaRV821CN
-         IwfSQcR1PYHvCMsQJxxsjW42nYiMNdDifjjGgdJFbdM/5uHWSRyw0yjEGrr1ZYa9yQSU
-         CKBg==
-X-Gm-Message-State: APjAAAWn9x3nYKcUoCb5Vfn7gyGPBvhxd7jxYZcjZ1QS/4XWwAIXX+GE
-        u0yTMNM8HjsD7V42sDGnOi3+RQ==
-X-Google-Smtp-Source: APXvYqwvUV0ApYMZHzivst3YYWRXTTQ6OC4spgiYQAFuQFqWZDioKWemwjZ7KV+AIcEc9czHUR3KkQ==
-X-Received: by 2002:a2e:7c17:: with SMTP id x23mr15734325ljc.210.1570528929703;
-        Tue, 08 Oct 2019 03:02:09 -0700 (PDT)
-Received: from [172.16.11.28] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id f21sm4366420lfm.90.2019.10.08.03.02.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 08 Oct 2019 03:02:09 -0700 (PDT)
-Subject: Re: [PATCH 3/5] backlight: pwm_bl: drop use of int_pow()
-To:     Daniel Thompson <daniel.thompson@linaro.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=kNT0uravG5d+lNDf6zaLGqaWiN2XpE5JXyYmizVBilE=;
+        b=jOT9xTZRXPHQ9c6Dpa2Dq7u5ik3kbGNumu5QxJMptfmXeXzwewBEd51e4Re4cuqvMS
+         60sj8esGZI7FedOSRVhKsMmzVAWXsfJhWBOXmfNk7YqyPUaMvDzSCHKD/WNJFkQm0bFf
+         hp0VUq+eIiTTHJrqxU6UEEqe6ud7FzgSVgJkHb2nJbp46URi9hOV/Bb+dvKN68uihtai
+         JBOg9IWBH8T5j5qZQyAsn0XPleohOSEBhWNeUWuzjLkaCCBlP8CdqrLkmBMC10hysrWx
+         9GtL8JlEQlm27XlROXSDemYpFFJu5owc15ws42ZhyHueuNYmYbWVWTxYVdLQnQxbEpLK
+         MPvQ==
+X-Gm-Message-State: APjAAAXKp18oS1HI0dx1ooXmw2O4NKhVZdsqfTAFxy7cLXDrcHboJYLi
+        RwZmK2zzSwqPUBup4vFgEL9y7g==
+X-Google-Smtp-Source: APXvYqwDdhuAhHaQJXOqUmc7Qcgp2Qnp21uhE7Cr0GMQdE2+Bt2iLHZCWbFgdquKZmjYilbrPc3XeA==
+X-Received: by 2002:a7b:c7d4:: with SMTP id z20mr3278073wmk.145.1570531394197;
+        Tue, 08 Oct 2019 03:43:14 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id b62sm4548867wmc.13.2019.10.08.03.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2019 03:43:13 -0700 (PDT)
+Date:   Tue, 8 Oct 2019 11:43:11 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] backlight: pwm_bl: drop use of int_pow()
+Message-ID: <20191008104311.s4k5syr7gd7tb55w@holly.lan>
 References: <20190919140620.32407-1-linux@rasmusvillemoes.dk>
  <20190919140620.32407-3-linux@rasmusvillemoes.dk>
  <20191007152800.3nhbf7h7knumriz4@holly.lan>
  <5f19e307-29c4-f077-568d-b2bd6ae74608@rasmusvillemoes.dk>
  <20191008093145.kgx6ytkbycmmkist@holly.lan>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <9bf6baf9-46be-771c-7e26-527b117c998a@rasmusvillemoes.dk>
-Date:   Tue, 8 Oct 2019 12:02:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <9bf6baf9-46be-771c-7e26-527b117c998a@rasmusvillemoes.dk>
 MIME-Version: 1.0
-In-Reply-To: <20191008093145.kgx6ytkbycmmkist@holly.lan>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bf6baf9-46be-771c-7e26-527b117c998a@rasmusvillemoes.dk>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 08/10/2019 11.31, Daniel Thompson wrote:
-> On Mon, Oct 07, 2019 at 08:43:31PM +0200, Rasmus Villemoes wrote:
->> On 07/10/2019 17.28, Daniel Thompson wrote:
->>> On Thu, Sep 19, 2019 at 04:06:18PM +0200, Rasmus Villemoes wrote:
->>>
->>> It feels like there is some rationale missing in the description here.
->>>
->>
->> Apart from the function call overhead (and resulting register pressure
->> etc.), using int_pow is less efficient (for an exponent of 3, it ends up
->> doing four 64x64 multiplications instead of just two). But feel free to
->> drop it, I'm not going to pursue it further - it just seemed like a
->> sensible thing to do while I was optimizing the code anyway.
->>
->> [At the time I wrote the patch, this was also the only user of int_pow
->> in the tree, so it also allowed removing int_pow altogether.]
+On Tue, Oct 08, 2019 at 12:02:07PM +0200, Rasmus Villemoes wrote:
+> On 08/10/2019 11.31, Daniel Thompson wrote:
+> > On Mon, Oct 07, 2019 at 08:43:31PM +0200, Rasmus Villemoes wrote:
+> >> On 07/10/2019 17.28, Daniel Thompson wrote:
+> >>> On Thu, Sep 19, 2019 at 04:06:18PM +0200, Rasmus Villemoes wrote:
+> >>>
+> >>> It feels like there is some rationale missing in the description here.
+> >>>
+> >>
+> >> Apart from the function call overhead (and resulting register pressure
+> >> etc.), using int_pow is less efficient (for an exponent of 3, it ends up
+> >> doing four 64x64 multiplications instead of just two). But feel free to
+> >> drop it, I'm not going to pursue it further - it just seemed like a
+> >> sensible thing to do while I was optimizing the code anyway.
+> >>
+> >> [At the time I wrote the patch, this was also the only user of int_pow
+> >> in the tree, so it also allowed removing int_pow altogether.]
+> > 
+> > To be honest the change is fine but the patch description doesn't make
+> > sense if the only current purpose of the patch is as a optimization.
 > 
-> To be honest the change is fine but the patch description doesn't make
-> sense if the only current purpose of the patch is as a optimization.
+> Agreed. Do you want me to resend the series with patch 3 updated to read
+> 
+> "For a fixed small exponent of 3, it is more efficient to simply use two
+> explicit multiplications rather than calling the int_pow() library
+> function: Aside from the function call overhead, its implementation
+> using repeated squaring means it ends up doing four 64x64 multiplications."
+> 
+> (and obviously patch 5 dropped)?
 
-Agreed. Do you want me to resend the series with patch 3 updated to read
+Yes, please.
 
-"For a fixed small exponent of 3, it is more efficient to simply use two
-explicit multiplications rather than calling the int_pow() library
-function: Aside from the function call overhead, its implementation
-using repeated squaring means it ends up doing four 64x64 multiplications."
+When you resend you can add my R-B: to all patches:
 
-(and obviously patch 5 dropped)?
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Rasmus
+
+Daniel.
+
+
+PS Don't mind either way but I wondered the following is clearer than
+   the slightly funky multiply-and-assign expression (which isn't wrong
+   but isn't very common either so my brain won't speed read it):
+
+		retval = DIV_ROUND_CLOSEST_ULL(retval * retval * retval,
+		 			       scale * scale);
