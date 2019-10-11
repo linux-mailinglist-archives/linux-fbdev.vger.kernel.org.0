@@ -2,719 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 751C8D32ED
-	for <lists+linux-fbdev@lfdr.de>; Thu, 10 Oct 2019 22:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47613D3628
+	for <lists+linux-fbdev@lfdr.de>; Fri, 11 Oct 2019 02:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbfJJUvn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 10 Oct 2019 16:51:43 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:49391 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725867AbfJJUvn (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 10 Oct 2019 16:51:43 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1N0Ip5-1huf6e3dHr-00xL2L; Thu, 10 Oct 2019 22:51:19 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 28/36] fbdev: s3c2410fb: remove mach header dependency
-Date:   Thu, 10 Oct 2019 22:30:12 +0200
-Message-Id: <20191010203043.1241612-28-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20191010203043.1241612-1-arnd@arndb.de>
-References: <20191010202802.1132272-1-arnd@arndb.de>
- <20191010203043.1241612-1-arnd@arndb.de>
+        id S1726096AbfJKAhY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 10 Oct 2019 20:37:24 -0400
+Received: from mx6.ucr.edu ([138.23.62.71]:65178 "EHLO mx6.ucr.edu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727699AbfJKAhY (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 10 Oct 2019 20:37:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1570754242; x=1602290242;
+  h=mime-version:references:in-reply-to:from:date:message-id:
+   subject:to:cc;
+  bh=uXv2UQ3LODrzT9UfKJz+VhFwzGfiQWvz0Klpty0YInQ=;
+  b=m8x+hKa4K0wS9q71aRam5CJu8pE7no+UxIhC7lu20IS7gFISlD9gmAmy
+   XQeots17UT9hyO61SAP+nGWqy/TUSHldNgcEtMY5rmkeIrd/Efq+r9Vus
+   ybjArvOxtmLf01PRVHx222/5sqDHPic6XHOCKUAe/Kv99ycp75uHVLH3H
+   lz/Fm3/HN+pRozgdo9aiLifA10dgfuPHt/Oo6PmmXDuscYz+isLrjPkxx
+   4hXzgbsvYKWBZCtjmlzhCMqXLUJJ7K06RMoevjFDFq36km6tIruoQdW8p
+   rPPe8D5ijgjsYlUtunMYIWVd8KLBhW1tHclFe9gcajZPXM1mYGEHN/0wG
+   Q==;
+IronPort-SDR: XZKp7e5vlB015EXJUHGG3pTn3inJYNZZmGsuYqE57RoL2x0dHmH+UZXSiwT74qkfhJqN8a0nfp
+ KTzmnBMXZG4RhzZiNfb3Kcec2xL8Ie1SsA6CTWbTkueVvaujBe7l3HE8HieDbhyYcgupchecMC
+ xpJ4j4zp2pOeK+737NgG7vzv3PIM5u+vCDX5g1zy4rifUp6OL/fLqoYE1fQ76nQeyGS1Pz+FIX
+ 5waAdNaZUw8O8TVuJPeeolITC6R8MAZnEsV7iMpmttU8S/RUQ/9DvkjG7wEsxcJscmCQOnJd04
+ Tg4=
+IronPort-PHdr: =?us-ascii?q?9a23=3Ae2mB3RSuTfZ3dWnnAEWdtSt/E9psv+yvbD5Q0Y?=
+ =?us-ascii?q?Iujvd0So/mwa69bBeN2/xhgRfzUJnB7Loc0qyK6vumBzBLusvJmUtBWaQEbw?=
+ =?us-ascii?q?UCh8QSkl5oK+++Imq/EsTXaTcnFt9JTl5v8iLzG0FUHMHjew+a+SXqvnYdFR?=
+ =?us-ascii?q?rlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5+MRu7oR/Qu8QZjodvJKY8wQ?=
+ =?us-ascii?q?bVr3VVfOhb2XlmLk+JkRbm4cew8p9j8yBOtP8k6sVNT6b0cbkmQLJBFDgpPH?=
+ =?us-ascii?q?w768PttRnYUAuA/WAcXXkMkhpJGAfK8hf3VYrsvyTgt+p93C6aPdDqTb0xRD?=
+ =?us-ascii?q?+v4btnRAPuhSwaLDMy7n3ZhdJsg6JauBKhpgJww4jIYIGOKfFyerrRcc4GSW?=
+ =?us-ascii?q?ZdW8pcUTFKDIGhYIsVF+cOMuhYoIv9qVUArhWwGBeiC//0xz9UmnP7x7E23/?=
+ =?us-ascii?q?g9HQzE2gErAtIAsG7TrNXwLKodU+G1zajIzTXeaPNdxDTy6IjSfRAgvPqBWr?=
+ =?us-ascii?q?JxcMvRyUY1FgPJkkmcpIL+MjOIyusNqXKX4PR9WuKykmMqrRx6rDu3xso0lI?=
+ =?us-ascii?q?XFmoYYxkrH+Ch52oo5O8G0RU1hbdK5FJZdsyeXPJZsTMw4WWFnoiM6x6UDuZ?=
+ =?us-ascii?q?68YScF1owqxwXaa/yba4iI5Q/jVPqJLTd4mn1lfLW/ig638Ue6y+38UtC40F?=
+ =?us-ascii?q?JIriZYi9XMuG0B2hjX58SdRft9+UCh2TmL1w/N8O1LPUc0la/DJ54gxL4/iI?=
+ =?us-ascii?q?YTvFzdEiPqnEj6lqybe0U+9uS29+jqYa/qqoKYOoJwkg3+N74hms27AeQ2KA?=
+ =?us-ascii?q?gOWG2b9Py81bzi/U32WrRKguEqnqTXq53aONgUprSjDwBLz4kj9g6zDy2639?=
+ =?us-ascii?q?QAgXkHMFVFdQqDj4joPVHOPf/5Ae6xg1u3jThk2e7GM6b/ApXCMHfDiq3tfb?=
+ =?us-ascii?q?Vj5E5Gzgo809Rf64hTCrEbL/KgEnP24fDRCFcSOhaszuD7Bc81go8XXySEC7?=
+ =?us-ascii?q?WBPaXOvEWg4fgmKO2BIoQSvWCuBeIi4qvfjG05hFhVT6mg3NNDeWK4F/U+ex?=
+ =?us-ascii?q?6xfHH2xNoNDDFZ7UIFUOX2hQjaAnZobHGoUvd5v2ljBQ=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2F7AAAwzp9dh8fQVdFmHAEBAQEBBwE?=
+ =?us-ascii?q?BEQEEBAEBgWoEAQELAYQQKoQjjl2CD5slAQgBAQEOLwEBhEACgl0jNwYOAgM?=
+ =?us-ascii?q?JAQEFAQEBAQEFBAEBAhABAQEIDQkIKYVAgjopAYM9AQEBAxIRVhALCw0CAiY?=
+ =?us-ascii?q?CAiISAQUBHAYTIoMAgngFpUaBAzyLJoEyiGIBCQ2BSBJ6KAGMDYIXhCM+h1K?=
+ =?us-ascii?q?CXgSBOQEBAZUvllcBBgKCEBSMVIhFG5lAp3wPI4FFgXwzGiV/BmeBTlAQFIF?=
+ =?us-ascii?q?pjkwkMJB2AQE?=
+X-IPAS-Result: =?us-ascii?q?A2F7AAAwzp9dh8fQVdFmHAEBAQEBBwEBEQEEBAEBgWoEA?=
+ =?us-ascii?q?QELAYQQKoQjjl2CD5slAQgBAQEOLwEBhEACgl0jNwYOAgMJAQEFAQEBAQEFB?=
+ =?us-ascii?q?AEBAhABAQEIDQkIKYVAgjopAYM9AQEBAxIRVhALCw0CAiYCAiISAQUBHAYTI?=
+ =?us-ascii?q?oMAgngFpUaBAzyLJoEyiGIBCQ2BSBJ6KAGMDYIXhCM+h1KCXgSBOQEBAZUvl?=
+ =?us-ascii?q?lcBBgKCEBSMVIhFG5lAp3wPI4FFgXwzGiV/BmeBTlAQFIFpjkwkMJB2AQE?=
+X-IronPort-AV: E=Sophos;i="5.67,282,1566889200"; 
+   d="scan'208";a="81589197"
+Received: from mail-lj1-f199.google.com ([209.85.208.199])
+  by smtpmx6.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Oct 2019 17:37:15 -0700
+Received: by mail-lj1-f199.google.com with SMTP id y28so1385843ljn.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 10 Oct 2019 17:37:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZcWxfPlnGPAO2yo7t6F26rix4NWYfye93UCn2ZNXKJ8=;
+        b=p9UlalBiwBxf4apxhcqUNc7U+6iSyMmKkfxGcuKiD9dR6W6WBAc79S/Qytww1TP7gU
+         r6tMmyHhRc5H9Rehl1Cw3EELB3hb+3gk9iaWkGIwmigagxojHSSgGhMtCc+DsvMdXTw4
+         GcXS+Z/y4/0SmulUo43pfubMpcFIjqLoyeF4kYI248f6pgk06QPxwgOGKybax02hPGFe
+         L4KC4ZvLqJQfpSvq9jgPkzLth+jDsfpSR9hjdDHGDLrIlnJv/D0m0Brh0woAFA3ns+xP
+         VQHuOMru1VYXMbx+gma+7VWvr+N303U/pXh0Cl/OTci0LicEufqIAub5Z4/L17IBS9XV
+         Ysvw==
+X-Gm-Message-State: APjAAAXExJl8aLqfRWL9mcT35pIycmhY/mx2xImVOkmaXh3NAnhUzuFa
+        cWt0PO0XKJAXACerORYAcTnBMvUWfDwfyh+1Gp27M0DM4Ltk7xapBqkjNBjhTpRFxv54xgqIGky
+        R9hm8bq79v/axjHzf/DCPvQZEHipsPPYD/OoXGvn/
+X-Received: by 2002:a19:ee08:: with SMTP id g8mr2680861lfb.117.1570754235351;
+        Thu, 10 Oct 2019 17:37:15 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwbqzp9i04wuktQmil7d0bMJlOGaeRnmQG5uBtRDRKLB00XbM3BrsBPCdcJjoQsH+RggVfxOXKBguWYLkvp+gg=
+X-Received: by 2002:a19:ee08:: with SMTP id g8mr2680852lfb.117.1570754235067;
+ Thu, 10 Oct 2019 17:37:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:OUQluCCJcOKxMHsF8OM8OZ8VCi0umfco1zKmRMX2ggK4J5znDuD
- NFw7lpmM0IZM4hapeEzhy3DAzFJX0ukoVgVTgsxG2ZdJA4LgmQc0FO6zfjuaKaZe7GI8eKM
- i4Gr/v31/9HnR7XWYXkKrpmTX8DiElBZwDN87ofYwy72LiaomKJ2zMBniqrFRaRqvRbRzS9
- DOoO3XUppYTAPeZr76S0Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mY4Zu1y4c/w=:eAilr4Bvz50Tky4fCZDG3L
- KN6TUmFIJBJaWIPRXFuCAJuI8Y4T7zQuXNCTQDNB/VSbkpKFTwSQiquOnnX+DT/n6DRCXSE4P
- DhNGfgRztL1a90blVfLSFHdnY0rJ2ZU707fp90JJzcCFvkGkm1pfUYMT6HVC4O4TdIXvkRMMa
- 9pve7/LetClb6hmhEiAiTWtnnpOBEyYkVuhOjqiwMxhwg+kXwjbEGbbId4JTRC/KTBT8d/QP1
- u3JQ7uVFU9Xg0FZ1YWddrQ4NpGFjnl1EPzeqQdzmsmUKAiNKgenfCRvlVDQ8q4aqp2EGXWPYa
- HZkNVaVn0/WzlGM5fJv4g2MCxplCcC3T675NydLyONOUaSuC6EJEAYnbpYjEz04r4PxlG0nju
- lTiSrmADwci1BAMJ+wZ+XaVppezFd6oOKVEhkF0CeO8UXNWLW5r4cpKE41RQEfkI7J4+C6ISN
- 5QrIMBuDL+RVAXSjFEQZfXY4yNcs0DqARzGvJrNbpTsHticD3xl6zqHCa1Lp6yfZmkrGxMC7G
- SmzPWuSeIsJVVG+HnCcwLzerLC6058ZR4AAUCb3GR+KsY5l6uQevNYRIGsMCA2esF60EB8plg
- mT52moqxFeveKcaBRB+DJsoEIlGfHf9Ut88q/cgRzTj9H21gVr4Iegqf0/swWWuRvWnPKGnGO
- OxR5DdW17ZuKWVXPE0GGE1uFdkKmDtOV0McVhy4oDrQOlhf0iCC0vT8Gt+6T8JV+FztfR1CPz
- ONIq0vP5KN3/ALUfzbJfT9uW/G82P0DSnOWJxv1q+MFpG04CuD29/dTmAyEqEk6kr42ahNCJq
- LxjPssm4uPljfmevWMIksaFtSMDZ+TPj39YfNW/r7V6S8UD68PpkjFtHxUVuMLYFhh5gKWtaj
- HodS4iKxuipoZ94TrqPA==
+References: <20191010043809.27594-1-yzhai003@ucr.edu> <20191010091834.GG20470@kadam>
+In-Reply-To: <20191010091834.GG20470@kadam>
+From:   Yizhuo Zhai <yzhai003@ucr.edu>
+Date:   Thu, 10 Oct 2019 17:37:56 -0700
+Message-ID: <CABvMjLQ+_rRJT_yeKE9AKJaxhSU5LbcZdenbOr8CdPoD+4Oprw@mail.gmail.com>
+Subject: Re: [PATCH] staging: sm750fb: Potential uninitialized field in "pll"
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     devel@driverdev.osuosl.org, linux-fbdev@vger.kernel.org,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The s3c2410fb driver is too deeply intertwined with the s3c24xx
-platform code. Change it in a way that avoids the use of platform
-header files but having all interface data in a platform_data
-header, and the private register definitions next to the driver
-itself.
+Sorry about that, let me resend it .
 
-One ugly bit here is that the driver pokes directly into gpio
-registers, which are owned by another driver. Passing the
-mapped addresses in platform_data is somewhat suboptimal, but
-it is a small improvement over the previous version.
+On Thu, Oct 10, 2019 at 2:53 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> On Wed, Oct 09, 2019 at 09:38:08PM -0700, Yizhuo wrote:
+> > Inside function set_chip_clock(), struct pll is supposed to be
+> > initialized in sm750_calc_pll_value(), if condition
+> > "diff < mini_diff" in sm750_calc_pll_value() cannot be fulfilled,
+> > then some field of pll will not be initialized but used in
+> > function sm750_format_pll_reg(), which is potentially unsafe.
+> >
+> > Signed-off-by: Yizhuo <yzhai003@ucr.edu>
+>
+> The patch is correct, but it doesn't apply to linux-next any more.  Can
+> you re-write it on top of the most recent staging-next and resend?
+>
+> regards,
+> dan carpenter
+>
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/mach-s3c24xx/include/mach/fb.h       |  2 --
- arch/arm/mach-s3c24xx/mach-amlm5900.c         |  7 ++--
- arch/arm/mach-s3c24xx/mach-anubis.c           |  1 -
- arch/arm/mach-s3c24xx/mach-at2440evb.c        |  3 +-
- arch/arm/mach-s3c24xx/mach-bast.c             |  3 +-
- arch/arm/mach-s3c24xx/mach-gta02.c            |  2 +-
- arch/arm/mach-s3c24xx/mach-h1940.c            |  7 ++--
- arch/arm/mach-s3c24xx/mach-jive.c             | 10 ++++--
- arch/arm/mach-s3c24xx/mach-mini2440.c         |  9 +++--
- arch/arm/mach-s3c24xx/mach-n30.c              |  3 +-
- arch/arm/mach-s3c24xx/mach-osiris.c           |  1 -
- arch/arm/mach-s3c24xx/mach-qt2410.c           |  3 +-
- arch/arm/mach-s3c24xx/mach-rx1950.c           |  8 +++--
- arch/arm/mach-s3c24xx/mach-rx3715.c           |  7 ++--
- arch/arm/mach-s3c24xx/mach-smdk2413.c         |  3 +-
- arch/arm/mach-s3c24xx/mach-smdk2416.c         |  1 -
- arch/arm/mach-s3c24xx/mach-smdk2440.c         |  8 +++--
- arch/arm/mach-s3c24xx/mach-smdk2443.c         |  3 +-
- arch/arm/mach-s3c24xx/mach-vstms.c            |  3 +-
- arch/arm/plat-samsung/devs.c                  |  2 +-
- .../video/fbdev/s3c2410fb-regs-lcd.h          | 28 ++++------------
- drivers/video/fbdev/s3c2410fb.c               | 16 +++++----
- .../linux/platform_data}/fb-s3c2410.h         | 33 ++++++++++++++++++-
- 23 files changed, 98 insertions(+), 65 deletions(-)
- delete mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
- rename arch/arm/mach-s3c24xx/include/mach/regs-lcd.h => drivers/video/fbdev/s3c2410fb-regs-lcd.h (84%)
- rename {arch/arm/plat-samsung/include/plat => include/linux/platform_data}/fb-s3c2410.h (57%)
 
-diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-s3c24xx/include/mach/fb.h
-deleted file mode 100644
-index 4e539cb8b884..000000000000
---- a/arch/arm/mach-s3c24xx/include/mach/fb.h
-+++ /dev/null
-@@ -1,2 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#include <plat/fb-s3c2410.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-amlm5900.c b/arch/arm/mach-s3c24xx/mach-amlm5900.c
-index 40ad23b52bc0..ef6de1b1d0c6 100644
---- a/arch/arm/mach-s3c24xx/mach-amlm5900.c
-+++ b/arch/arm/mach-s3c24xx/mach-amlm5900.c
-@@ -30,9 +30,8 @@
- #include <mach/hardware.h>
- #include <asm/irq.h>
- #include <asm/mach-types.h>
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
--#include <mach/regs-lcd.h>
- #include <mach/regs-gpio.h>
- #include <mach/gpio-samsung.h>
- 
-@@ -194,13 +193,17 @@ static struct s3c2410fb_mach_info __initdata amlm5900_fb_info = {
- 
- 	.gpccon =	0xaaaaaaaa,
- 	.gpccon_mask =	0xffffffff,
-+	.gpccon_reg =	S3C2410_GPCCON,
- 	.gpcup =	0x0000ffff,
- 	.gpcup_mask =	0xffffffff,
-+	.gpcup_reg =	S3C2410_GPCUP,
- 
- 	.gpdcon =	0xaaaaaaaa,
- 	.gpdcon_mask =	0xffffffff,
-+	.gpdcon_reg =	S3C2410_GPDCON,
- 	.gpdup =	0x0000ffff,
- 	.gpdup_mask =	0xffffffff,
-+	.gpdup_reg =	S3C2410_GPDUP,
- };
- #endif
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-anubis.c b/arch/arm/mach-s3c24xx/mach-anubis.c
-index 072966dcad78..e1a73274e90b 100644
---- a/arch/arm/mach-s3c24xx/mach-anubis.c
-+++ b/arch/arm/mach-s3c24xx/mach-anubis.c
-@@ -29,7 +29,6 @@
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <linux/platform_data/mtd-nand-s3c2410.h>
- #include <linux/platform_data/i2c-s3c2410.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-at2440evb.c b/arch/arm/mach-s3c24xx/mach-at2440evb.c
-index b2199906e678..bfda6dd2a9d5 100644
---- a/arch/arm/mach-s3c24xx/mach-at2440evb.c
-+++ b/arch/arm/mach-s3c24xx/mach-at2440evb.c
-@@ -25,12 +25,11 @@
- #include <asm/mach/irq.h>
- 
- #include <mach/hardware.h>
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <asm/irq.h>
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <linux/platform_data/mtd-nand-s3c2410.h>
- #include <linux/platform_data/i2c-s3c2410.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-bast.c b/arch/arm/mach-s3c24xx/mach-bast.c
-index a7c3955ae8f6..cc941b5030ea 100644
---- a/arch/arm/mach-s3c24xx/mach-bast.c
-+++ b/arch/arm/mach-s3c24xx/mach-bast.c
-@@ -40,10 +40,9 @@
- #include <asm/mach/irq.h>
- #include <asm/mach-types.h>
- 
--#include <mach/fb.h>
- #include <mach/hardware.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- 
- #include <plat/cpu.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-gta02.c b/arch/arm/mach-s3c24xx/mach-gta02.c
-index 61b8c6badeb8..1e42782dbd30 100644
---- a/arch/arm/mach-s3c24xx/mach-gta02.c
-+++ b/arch/arm/mach-s3c24xx/mach-gta02.c
-@@ -57,8 +57,8 @@
- #include <linux/platform_data/touchscreen-s3c2410.h>
- #include <linux/platform_data/usb-ohci-s3c2410.h>
- #include <linux/platform_data/usb-s3c2410_udc.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
--#include <mach/fb.h>
- #include <mach/hardware.h>
- #include <mach/regs-gpio.h>
- #include <mach/regs-irq.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-h1940.c b/arch/arm/mach-s3c24xx/mach-h1940.c
-index 446891e23511..d56e3befa459 100644
---- a/arch/arm/mach-s3c24xx/mach-h1940.c
-+++ b/arch/arm/mach-s3c24xx/mach-h1940.c
-@@ -47,11 +47,10 @@
- 
- #include <sound/uda1380.h>
- 
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <mach/hardware.h>
- #include <mach/regs-clock.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- 
- #include <plat/cpu.h>
-@@ -211,12 +210,16 @@ static struct s3c2410fb_mach_info h1940_fb_info __initdata = {
- 	.lpcsel =	0x02,
- 	.gpccon =	0xaa940659,
- 	.gpccon_mask =	0xffffc0f0,
-+	.gpccon_reg =	S3C2410_GPCCON,
- 	.gpcup =	0x0000ffff,
- 	.gpcup_mask =	0xffffffff,
-+	.gpcup_reg =	S3C2410_GPCUP,
- 	.gpdcon =	0xaa84aaa0,
- 	.gpdcon_mask =	0xffffffff,
-+	.gpdcon_reg =	S3C2410_GPDCON,
- 	.gpdup =	0x0000faff,
- 	.gpdup_mask =	0xffffffff,
-+	.gpdup_reg =	S3C2410_GPDUP,
- };
- 
- static int power_supply_init(struct device *dev)
-diff --git a/arch/arm/mach-s3c24xx/mach-jive.c b/arch/arm/mach-s3c24xx/mach-jive.c
-index 885e8f12e4b9..3b33132b2334 100644
---- a/arch/arm/mach-s3c24xx/mach-jive.c
-+++ b/arch/arm/mach-s3c24xx/mach-jive.c
-@@ -32,8 +32,7 @@
- #include <linux/platform_data/i2c-s3c2410.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <mach/gpio-samsung.h>
- 
- #include <asm/mach-types.h>
-@@ -321,6 +320,7 @@ static struct s3c2410fb_mach_info jive_lcd_config = {
- 	 * data. */
- 
- 	.gpcup		= (0xf << 1) | (0x3f << 10),
-+	.gpcup_reg =	S3C2410_GPCUP,
- 
- 	.gpccon		= (S3C2410_GPC1_VCLK   | S3C2410_GPC2_VLINE |
- 			   S3C2410_GPC3_VFRAME | S3C2410_GPC4_VM |
-@@ -334,8 +334,12 @@ static struct s3c2410fb_mach_info jive_lcd_config = {
- 			   S3C2410_GPCCON_MASK(12) | S3C2410_GPCCON_MASK(13) |
- 			   S3C2410_GPCCON_MASK(14) | S3C2410_GPCCON_MASK(15)),
- 
-+	.gpccon_reg =	S3C2410_GPCCON,
-+
- 	.gpdup		= (0x3f << 2) | (0x3f << 10),
- 
-+	.gpdup_reg =	S3C2410_GPDUP,
-+
- 	.gpdcon		= (S3C2410_GPD2_VD10  | S3C2410_GPD3_VD11 |
- 			   S3C2410_GPD4_VD12  | S3C2410_GPD5_VD13 |
- 			   S3C2410_GPD6_VD14  | S3C2410_GPD7_VD15 |
-@@ -349,6 +353,8 @@ static struct s3c2410fb_mach_info jive_lcd_config = {
- 			   S3C2410_GPDCON_MASK(10) | S3C2410_GPDCON_MASK(11)|
- 			   S3C2410_GPDCON_MASK(12) | S3C2410_GPDCON_MASK(13)|
- 			   S3C2410_GPDCON_MASK(14) | S3C2410_GPDCON_MASK(15)),
-+
-+	.gpdcon_reg =	S3C2410_GPDCON,
- };
- 
- /* ILI9320 support. */
-diff --git a/arch/arm/mach-s3c24xx/mach-mini2440.c b/arch/arm/mach-s3c24xx/mach-mini2440.c
-index d73167f615b8..2301e07c7d64 100644
---- a/arch/arm/mach-s3c24xx/mach-mini2440.c
-+++ b/arch/arm/mach-s3c24xx/mach-mini2440.c
-@@ -30,13 +30,12 @@
- #include <asm/mach/arch.h>
- #include <asm/mach/map.h>
- 
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <mach/hardware.h>
--#include <mach/fb.h>
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
- #include <linux/platform_data/leds-s3c24xx.h>
--#include <mach/regs-lcd.h>
- #include <mach/irqs.h>
- #include <mach/gpio-samsung.h>
- #include <linux/platform_data/mtd-nand-s3c2410.h>
-@@ -215,6 +214,9 @@ static struct s3c2410fb_mach_info mini2440_fb_info __initdata = {
- 			   S3C2410_GPCCON_MASK(12) | S3C2410_GPCCON_MASK(13) |
- 			   S3C2410_GPCCON_MASK(14) | S3C2410_GPCCON_MASK(15)),
- 
-+	.gpccon_reg =	S3C2410_GPCCON,
-+	.gpcup_reg =	S3C2410_GPCUP,
-+
- 	.gpdup		= (0x3f << 2) | (0x3f << 10),
- 
- 	.gpdcon		= (S3C2410_GPD2_VD10  | S3C2410_GPD3_VD11 |
-@@ -230,6 +232,9 @@ static struct s3c2410fb_mach_info mini2440_fb_info __initdata = {
- 			   S3C2410_GPDCON_MASK(10) | S3C2410_GPDCON_MASK(11)|
- 			   S3C2410_GPDCON_MASK(12) | S3C2410_GPDCON_MASK(13)|
- 			   S3C2410_GPDCON_MASK(14) | S3C2410_GPDCON_MASK(15)),
-+
-+	.gpdcon_reg =	S3C2410_GPDCON,
-+	.gpdup_reg =	S3C2410_GPDUP,
- };
- 
- /* MMC/SD  */
-diff --git a/arch/arm/mach-s3c24xx/mach-n30.c b/arch/arm/mach-s3c24xx/mach-n30.c
-index f283abab0761..6b8ee5ba00ca 100644
---- a/arch/arm/mach-s3c24xx/mach-n30.c
-+++ b/arch/arm/mach-s3c24xx/mach-n30.c
-@@ -31,10 +31,9 @@
- #include <asm/irq.h>
- #include <asm/mach-types.h>
- 
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <linux/platform_data/leds-s3c24xx.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <plat/gpio-cfg.h>
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-osiris.c b/arch/arm/mach-s3c24xx/mach-osiris.c
-index ee3630cb236a..262e77bd48de 100644
---- a/arch/arm/mach-s3c24xx/mach-osiris.c
-+++ b/arch/arm/mach-s3c24xx/mach-osiris.c
-@@ -44,7 +44,6 @@
- 
- #include <mach/hardware.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- 
- #include "common.h"
-diff --git a/arch/arm/mach-s3c24xx/mach-qt2410.c b/arch/arm/mach-s3c24xx/mach-qt2410.c
-index 9b47b8434f10..1d0f5d65e7e5 100644
---- a/arch/arm/mach-s3c24xx/mach-qt2410.c
-+++ b/arch/arm/mach-s3c24xx/mach-qt2410.c
-@@ -33,8 +33,7 @@
- #include <asm/mach-types.h>
- 
- #include <linux/platform_data/leds-s3c24xx.h>
--#include <mach/regs-lcd.h>
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <linux/platform_data/mtd-nand-s3c2410.h>
- #include <linux/platform_data/usb-s3c2410_udc.h>
- #include <linux/platform_data/i2c-s3c2410.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-rx1950.c b/arch/arm/mach-s3c24xx/mach-rx1950.c
-index 7752203fd9cd..ee4a0992339f 100644
---- a/arch/arm/mach-s3c24xx/mach-rx1950.c
-+++ b/arch/arm/mach-s3c24xx/mach-rx1950.c
-@@ -42,12 +42,11 @@
- #include <linux/platform_data/mtd-nand-s3c2410.h>
- #include <linux/platform_data/touchscreen-s3c2410.h>
- #include <linux/platform_data/usb-s3c2410_udc.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
- #include <sound/uda1380.h>
- 
--#include <mach/fb.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- 
- #include <plat/cpu.h>
-@@ -361,14 +360,17 @@ static struct s3c2410fb_mach_info rx1950_lcd_cfg = {
- 	.lpcsel = 0x02,
- 	.gpccon = 0xaa9556a9,
- 	.gpccon_mask = 0xffc003fc,
-+	.gpccon_reg =	S3C2410_GPCCON,
- 	.gpcup = 0x0000ffff,
- 	.gpcup_mask = 0xffffffff,
-+	.gpcup_reg =	S3C2410_GPCUP,
- 
- 	.gpdcon = 0xaa90aaa1,
- 	.gpdcon_mask = 0xffc0fff0,
-+	.gpdcon_reg =	S3C2410_GPDCON,
- 	.gpdup = 0x0000fcfd,
- 	.gpdup_mask = 0xffffffff,
--
-+	.gpdup_reg =	S3C2410_GPDUP,
- };
- 
- static struct pwm_lookup rx1950_pwm_lookup[] = {
-diff --git a/arch/arm/mach-s3c24xx/mach-rx3715.c b/arch/arm/mach-s3c24xx/mach-rx3715.c
-index 2542c523ad46..87f3274241b2 100644
---- a/arch/arm/mach-s3c24xx/mach-rx3715.c
-+++ b/arch/arm/mach-s3c24xx/mach-rx3715.c
-@@ -30,14 +30,13 @@
- #include <asm/mach/map.h>
- 
- #include <linux/platform_data/mtd-nand-s3c2410.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
- #include <asm/irq.h>
- #include <asm/mach-types.h>
- 
--#include <mach/fb.h>
- #include <mach/hardware.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <plat/gpio-cfg.h>
- 
-@@ -126,13 +125,17 @@ static struct s3c2410fb_mach_info rx3715_fb_info __initdata = {
- 
- 	.gpccon =	0xaa955699,
- 	.gpccon_mask =	0xffc003cc,
-+	.gpccon_reg =	S3C2410_GPCCON,
- 	.gpcup =	0x0000ffff,
- 	.gpcup_mask =	0xffffffff,
-+	.gpcup_reg =	S3C2410_GPCUP,
- 
- 	.gpdcon =	0xaa95aaa1,
- 	.gpdcon_mask =	0xffc0fff0,
-+	.gpdcon_reg =	S3C2410_GPDCON,
- 	.gpdup =	0x0000faff,
- 	.gpdup_mask =	0xffffffff,
-+	.gpdup_reg =	S3C2410_GPDUP,
- };
- 
- static struct mtd_partition __initdata rx3715_nand_part[] = {
-diff --git a/arch/arm/mach-s3c24xx/mach-smdk2413.c b/arch/arm/mach-s3c24xx/mach-smdk2413.c
-index 2bba4f1fa7ee..eec0d3dc4bb1 100644
---- a/arch/arm/mach-s3c24xx/mach-smdk2413.c
-+++ b/arch/arm/mach-s3c24xx/mach-smdk2413.c
-@@ -31,12 +31,11 @@
- 
- //#include <asm/debug-ll.h>
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- 
- #include <linux/platform_data/usb-s3c2410_udc.h>
- #include <linux/platform_data/i2c-s3c2410.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <mach/gpio-samsung.h>
--#include <mach/fb.h>
- #include <plat/gpio-cfg.h>
- 
- #include <plat/devs.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-smdk2416.c b/arch/arm/mach-s3c24xx/mach-smdk2416.c
-index 61c3e45898d3..fbd3a8d96f94 100644
---- a/arch/arm/mach-s3c24xx/mach-smdk2416.c
-+++ b/arch/arm/mach-s3c24xx/mach-smdk2416.c
-@@ -30,7 +30,6 @@
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/regs-s3c2443-clock.h>
- #include <mach/gpio-samsung.h>
- 
-diff --git a/arch/arm/mach-s3c24xx/mach-smdk2440.c b/arch/arm/mach-s3c24xx/mach-smdk2440.c
-index f0fceda3e8e6..b9b0f2a8c904 100644
---- a/arch/arm/mach-s3c24xx/mach-smdk2440.c
-+++ b/arch/arm/mach-s3c24xx/mach-smdk2440.c
-@@ -28,11 +28,10 @@
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <plat/gpio-cfg.h>
- 
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <linux/platform_data/i2c-s3c2410.h>
- 
- #include <plat/devs.h>
-@@ -139,6 +138,11 @@ static struct s3c2410fb_mach_info smdk2440_fb_info __initdata = {
- 	.gpdcon_mask	= 0xffffffff,
- 	.gpdup		= 0x0000faff,
- 	.gpdup_mask	= 0xffffffff,
-+
-+	.gpccon_reg =	S3C2410_GPCCON,
-+	.gpcup_reg =	S3C2410_GPCUP,
-+	.gpdcon_reg =	S3C2410_GPDCON,
-+	.gpdup_reg =	S3C2410_GPDUP,
- #endif
- 
- 	.lpcsel		= ((0xCE6) & ~7) | 1<<4,
-diff --git a/arch/arm/mach-s3c24xx/mach-smdk2443.c b/arch/arm/mach-s3c24xx/mach-smdk2443.c
-index 2358ed5ed7be..a4c1022678a9 100644
---- a/arch/arm/mach-s3c24xx/mach-smdk2443.c
-+++ b/arch/arm/mach-s3c24xx/mach-smdk2443.c
-@@ -27,9 +27,8 @@
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- 
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <linux/platform_data/i2c-s3c2410.h>
- 
- #include <plat/devs.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-vstms.c b/arch/arm/mach-s3c24xx/mach-vstms.c
-index f333ca05de68..08acc556879b 100644
---- a/arch/arm/mach-s3c24xx/mach-vstms.c
-+++ b/arch/arm/mach-s3c24xx/mach-vstms.c
-@@ -30,11 +30,10 @@
- #include <asm/mach-types.h>
- 
- #include <mach/regs-gpio.h>
--#include <mach/regs-lcd.h>
- #include <mach/gpio-samsung.h>
- #include <plat/gpio-cfg.h>
- 
--#include <mach/fb.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
- #include <linux/platform_data/i2c-s3c2410.h>
- #include <linux/platform_data/mtd-nand-s3c2410.h>
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index c0739bda060b..92b36bc71a06 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -50,7 +50,7 @@
- #include <linux/soc/samsung/s3c-adc.h>
- #include <linux/platform_data/ata-samsung_cf.h>
- #include <plat/fb.h>
--#include <plat/fb-s3c2410.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- #include <linux/platform_data/hwmon-s3c.h>
- #include <linux/platform_data/i2c-s3c2410.h>
- #include <plat/keypad.h>
-diff --git a/arch/arm/mach-s3c24xx/include/mach/regs-lcd.h b/drivers/video/fbdev/s3c2410fb-regs-lcd.h
-similarity index 84%
-rename from arch/arm/mach-s3c24xx/include/mach/regs-lcd.h
-rename to drivers/video/fbdev/s3c2410fb-regs-lcd.h
-index 4c3434f261bb..1e46f7a788e5 100644
---- a/arch/arm/mach-s3c24xx/include/mach/regs-lcd.h
-+++ b/drivers/video/fbdev/s3c2410fb-regs-lcd.h
-@@ -7,6 +7,13 @@
- #ifndef ___ASM_ARCH_REGS_LCD_H
- #define ___ASM_ARCH_REGS_LCD_H
- 
-+/*
-+ * a couple of values are used as platform data in
-+ * include/linux/platform_data/fb-s3c2410.h and not
-+ * duplicated here.
-+ */
-+#include <linux/platform_data/fb-s3c2410.h>
-+
- #define S3C2410_LCDREG(x)	(x)
- 
- /* LCD control registers */
-@@ -29,13 +36,6 @@
- #define S3C2410_LCDCON1_STN8BPP	   (3<<1)
- #define S3C2410_LCDCON1_STN12BPP   (4<<1)
- 
--#define S3C2410_LCDCON1_TFT1BPP	   (8<<1)
--#define S3C2410_LCDCON1_TFT2BPP	   (9<<1)
--#define S3C2410_LCDCON1_TFT4BPP	   (10<<1)
--#define S3C2410_LCDCON1_TFT8BPP	   (11<<1)
--#define S3C2410_LCDCON1_TFT16BPP   (12<<1)
--#define S3C2410_LCDCON1_TFT24BPP   (13<<1)
--
- #define S3C2410_LCDCON1_ENVID	   (1)
- 
- #define S3C2410_LCDCON1_MODEMASK    0x1E
-@@ -66,20 +66,6 @@
- 
- #define S3C2410_LCDCON4_GET_HSPW(x) ( ((x) >>  0) & 0xFF)
- 
--#define S3C2410_LCDCON5_BPP24BL	    (1<<12)
--#define S3C2410_LCDCON5_FRM565	    (1<<11)
--#define S3C2410_LCDCON5_INVVCLK	    (1<<10)
--#define S3C2410_LCDCON5_INVVLINE    (1<<9)
--#define S3C2410_LCDCON5_INVVFRAME   (1<<8)
--#define S3C2410_LCDCON5_INVVD	    (1<<7)
--#define S3C2410_LCDCON5_INVVDEN	    (1<<6)
--#define S3C2410_LCDCON5_INVPWREN    (1<<5)
--#define S3C2410_LCDCON5_INVLEND	    (1<<4)
--#define S3C2410_LCDCON5_PWREN	    (1<<3)
--#define S3C2410_LCDCON5_ENLEND	    (1<<2)
--#define S3C2410_LCDCON5_BSWP	    (1<<1)
--#define S3C2410_LCDCON5_HWSWP	    (1<<0)
--
- /* framebuffer start addressed */
- #define S3C2410_LCDSADDR1   S3C2410_LCDREG(0x14)
- #define S3C2410_LCDSADDR2   S3C2410_LCDREG(0x18)
-diff --git a/drivers/video/fbdev/s3c2410fb.c b/drivers/video/fbdev/s3c2410fb.c
-index a702da89910b..3e5b91c72f5b 100644
---- a/drivers/video/fbdev/s3c2410fb.c
-+++ b/drivers/video/fbdev/s3c2410fb.c
-@@ -29,19 +29,18 @@
- #include <linux/clk.h>
- #include <linux/cpufreq.h>
- #include <linux/io.h>
-+#include <linux/platform_data/fb-s3c2410.h>
- 
- #include <asm/div64.h>
- 
- #include <asm/mach/map.h>
--#include <mach/regs-lcd.h>
--#include <mach/regs-gpio.h>
--#include <mach/fb.h>
- 
- #ifdef CONFIG_PM
- #include <linux/pm.h>
- #endif
- 
- #include "s3c2410fb.h"
-+#include "s3c2410fb-regs-lcd.h"
- 
- /* Debugging stuff */
- #ifdef CONFIG_FB_S3C2410_DEBUG
-@@ -676,6 +675,9 @@ static inline void modify_gpio(void __iomem *reg,
- {
- 	unsigned long tmp;
- 
-+	if (!reg)
-+		return;
-+
- 	tmp = readl(reg) & ~mask;
- 	writel(tmp | set, reg);
- }
-@@ -706,10 +708,10 @@ static int s3c2410fb_init_registers(struct fb_info *info)
- 
- 	/* modify the gpio(s) with interrupts set (bjd) */
- 
--	modify_gpio(S3C2410_GPCUP,  mach_info->gpcup,  mach_info->gpcup_mask);
--	modify_gpio(S3C2410_GPCCON, mach_info->gpccon, mach_info->gpccon_mask);
--	modify_gpio(S3C2410_GPDUP,  mach_info->gpdup,  mach_info->gpdup_mask);
--	modify_gpio(S3C2410_GPDCON, mach_info->gpdcon, mach_info->gpdcon_mask);
-+	modify_gpio(mach_info->gpcup_reg,  mach_info->gpcup,  mach_info->gpcup_mask);
-+	modify_gpio(mach_info->gpccon_reg, mach_info->gpccon, mach_info->gpccon_mask);
-+	modify_gpio(mach_info->gpdup_reg,  mach_info->gpdup,  mach_info->gpdup_mask);
-+	modify_gpio(mach_info->gpdcon_reg, mach_info->gpdcon, mach_info->gpdcon_mask);
- 
- 	local_irq_restore(flags);
- 
-diff --git a/arch/arm/plat-samsung/include/plat/fb-s3c2410.h b/include/linux/platform_data/fb-s3c2410.h
-similarity index 57%
-rename from arch/arm/plat-samsung/include/plat/fb-s3c2410.h
-rename to include/linux/platform_data/fb-s3c2410.h
-index 614240d768b4..10c11e6316d6 100644
---- a/arch/arm/plat-samsung/include/plat/fb-s3c2410.h
-+++ b/include/linux/platform_data/fb-s3c2410.h
-@@ -8,6 +8,8 @@
- #ifndef __ASM_PLAT_FB_S3C2410_H
- #define __ASM_PLAT_FB_S3C2410_H __FILE__
- 
-+#include <linux/compiler_types.h>
-+
- struct s3c2410fb_hw {
- 	unsigned long	lcdcon1;
- 	unsigned long	lcdcon2;
-@@ -20,6 +22,17 @@ struct s3c2410fb_hw {
- struct s3c2410fb_display {
- 	/* LCD type */
- 	unsigned type;
-+#define S3C2410_LCDCON1_DSCAN4	   (0<<5)
-+#define S3C2410_LCDCON1_STN4	   (1<<5)
-+#define S3C2410_LCDCON1_STN8	   (2<<5)
-+#define S3C2410_LCDCON1_TFT	   (3<<5)
-+
-+#define S3C2410_LCDCON1_TFT1BPP	   (8<<1)
-+#define S3C2410_LCDCON1_TFT2BPP	   (9<<1)
-+#define S3C2410_LCDCON1_TFT4BPP	   (10<<1)
-+#define S3C2410_LCDCON1_TFT8BPP	   (11<<1)
-+#define S3C2410_LCDCON1_TFT16BPP   (12<<1)
-+#define S3C2410_LCDCON1_TFT24BPP   (13<<1)
- 
- 	/* Screen size */
- 	unsigned short width;
-@@ -40,6 +53,19 @@ struct s3c2410fb_display {
- 
- 	/* lcd configuration registers */
- 	unsigned long	lcdcon5;
-+#define S3C2410_LCDCON5_BPP24BL	    (1<<12)
-+#define S3C2410_LCDCON5_FRM565	    (1<<11)
-+#define S3C2410_LCDCON5_INVVCLK	    (1<<10)
-+#define S3C2410_LCDCON5_INVVLINE    (1<<9)
-+#define S3C2410_LCDCON5_INVVFRAME   (1<<8)
-+#define S3C2410_LCDCON5_INVVD	    (1<<7)
-+#define S3C2410_LCDCON5_INVVDEN	    (1<<6)
-+#define S3C2410_LCDCON5_INVPWREN    (1<<5)
-+#define S3C2410_LCDCON5_INVLEND	    (1<<4)
-+#define S3C2410_LCDCON5_PWREN	    (1<<3)
-+#define S3C2410_LCDCON5_ENLEND	    (1<<2)
-+#define S3C2410_LCDCON5_BSWP	    (1<<1)
-+#define S3C2410_LCDCON5_HWSWP	    (1<<0)
- };
- 
- struct s3c2410fb_mach_info {
-@@ -59,10 +85,15 @@ struct s3c2410fb_mach_info {
- 	unsigned long	gpdcon;
- 	unsigned long	gpdcon_mask;
- 
-+	void __iomem *  gpccon_reg;
-+	void __iomem *  gpcup_reg;
-+	void __iomem *  gpdcon_reg;
-+	void __iomem *  gpdup_reg;
-+
- 	/* lpc3600 control register */
- 	unsigned long	lpcsel;
- };
- 
--extern void __init s3c24xx_fb_set_platdata(struct s3c2410fb_mach_info *);
-+extern void s3c24xx_fb_set_platdata(struct s3c2410fb_mach_info *);
- 
- #endif /* __ASM_PLAT_FB_S3C2410_H */
 -- 
-2.20.0
+Kind Regards,
 
+Yizhuo Zhai
+
+Computer Science, Graduate Student
+University of California, Riverside
