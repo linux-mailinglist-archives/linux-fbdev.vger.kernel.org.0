@@ -2,133 +2,137 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47613D3628
-	for <lists+linux-fbdev@lfdr.de>; Fri, 11 Oct 2019 02:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6D0D3E63
+	for <lists+linux-fbdev@lfdr.de>; Fri, 11 Oct 2019 13:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726096AbfJKAhY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 10 Oct 2019 20:37:24 -0400
-Received: from mx6.ucr.edu ([138.23.62.71]:65178 "EHLO mx6.ucr.edu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727699AbfJKAhY (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 10 Oct 2019 20:37:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1570754242; x=1602290242;
-  h=mime-version:references:in-reply-to:from:date:message-id:
-   subject:to:cc;
-  bh=uXv2UQ3LODrzT9UfKJz+VhFwzGfiQWvz0Klpty0YInQ=;
-  b=m8x+hKa4K0wS9q71aRam5CJu8pE7no+UxIhC7lu20IS7gFISlD9gmAmy
-   XQeots17UT9hyO61SAP+nGWqy/TUSHldNgcEtMY5rmkeIrd/Efq+r9Vus
-   ybjArvOxtmLf01PRVHx222/5sqDHPic6XHOCKUAe/Kv99ycp75uHVLH3H
-   lz/Fm3/HN+pRozgdo9aiLifA10dgfuPHt/Oo6PmmXDuscYz+isLrjPkxx
-   4hXzgbsvYKWBZCtjmlzhCMqXLUJJ7K06RMoevjFDFq36km6tIruoQdW8p
-   rPPe8D5ijgjsYlUtunMYIWVd8KLBhW1tHclFe9gcajZPXM1mYGEHN/0wG
-   Q==;
-IronPort-SDR: XZKp7e5vlB015EXJUHGG3pTn3inJYNZZmGsuYqE57RoL2x0dHmH+UZXSiwT74qkfhJqN8a0nfp
- KTzmnBMXZG4RhzZiNfb3Kcec2xL8Ie1SsA6CTWbTkueVvaujBe7l3HE8HieDbhyYcgupchecMC
- xpJ4j4zp2pOeK+737NgG7vzv3PIM5u+vCDX5g1zy4rifUp6OL/fLqoYE1fQ76nQeyGS1Pz+FIX
- 5waAdNaZUw8O8TVuJPeeolITC6R8MAZnEsV7iMpmttU8S/RUQ/9DvkjG7wEsxcJscmCQOnJd04
- Tg4=
-IronPort-PHdr: =?us-ascii?q?9a23=3Ae2mB3RSuTfZ3dWnnAEWdtSt/E9psv+yvbD5Q0Y?=
- =?us-ascii?q?Iujvd0So/mwa69bBeN2/xhgRfzUJnB7Loc0qyK6vumBzBLusvJmUtBWaQEbw?=
- =?us-ascii?q?UCh8QSkl5oK+++Imq/EsTXaTcnFt9JTl5v8iLzG0FUHMHjew+a+SXqvnYdFR?=
- =?us-ascii?q?rlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5+MRu7oR/Qu8QZjodvJKY8wQ?=
- =?us-ascii?q?bVr3VVfOhb2XlmLk+JkRbm4cew8p9j8yBOtP8k6sVNT6b0cbkmQLJBFDgpPH?=
- =?us-ascii?q?w768PttRnYUAuA/WAcXXkMkhpJGAfK8hf3VYrsvyTgt+p93C6aPdDqTb0xRD?=
- =?us-ascii?q?+v4btnRAPuhSwaLDMy7n3ZhdJsg6JauBKhpgJww4jIYIGOKfFyerrRcc4GSW?=
- =?us-ascii?q?ZdW8pcUTFKDIGhYIsVF+cOMuhYoIv9qVUArhWwGBeiC//0xz9UmnP7x7E23/?=
- =?us-ascii?q?g9HQzE2gErAtIAsG7TrNXwLKodU+G1zajIzTXeaPNdxDTy6IjSfRAgvPqBWr?=
- =?us-ascii?q?JxcMvRyUY1FgPJkkmcpIL+MjOIyusNqXKX4PR9WuKykmMqrRx6rDu3xso0lI?=
- =?us-ascii?q?XFmoYYxkrH+Ch52oo5O8G0RU1hbdK5FJZdsyeXPJZsTMw4WWFnoiM6x6UDuZ?=
- =?us-ascii?q?68YScF1owqxwXaa/yba4iI5Q/jVPqJLTd4mn1lfLW/ig638Ue6y+38UtC40F?=
- =?us-ascii?q?JIriZYi9XMuG0B2hjX58SdRft9+UCh2TmL1w/N8O1LPUc0la/DJ54gxL4/iI?=
- =?us-ascii?q?YTvFzdEiPqnEj6lqybe0U+9uS29+jqYa/qqoKYOoJwkg3+N74hms27AeQ2KA?=
- =?us-ascii?q?gOWG2b9Py81bzi/U32WrRKguEqnqTXq53aONgUprSjDwBLz4kj9g6zDy2639?=
- =?us-ascii?q?QAgXkHMFVFdQqDj4joPVHOPf/5Ae6xg1u3jThk2e7GM6b/ApXCMHfDiq3tfb?=
- =?us-ascii?q?Vj5E5Gzgo809Rf64hTCrEbL/KgEnP24fDRCFcSOhaszuD7Bc81go8XXySEC7?=
- =?us-ascii?q?WBPaXOvEWg4fgmKO2BIoQSvWCuBeIi4qvfjG05hFhVT6mg3NNDeWK4F/U+ex?=
- =?us-ascii?q?6xfHH2xNoNDDFZ7UIFUOX2hQjaAnZobHGoUvd5v2ljBQ=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2F7AAAwzp9dh8fQVdFmHAEBAQEBBwE?=
- =?us-ascii?q?BEQEEBAEBgWoEAQELAYQQKoQjjl2CD5slAQgBAQEOLwEBhEACgl0jNwYOAgM?=
- =?us-ascii?q?JAQEFAQEBAQEFBAEBAhABAQEIDQkIKYVAgjopAYM9AQEBAxIRVhALCw0CAiY?=
- =?us-ascii?q?CAiISAQUBHAYTIoMAgngFpUaBAzyLJoEyiGIBCQ2BSBJ6KAGMDYIXhCM+h1K?=
- =?us-ascii?q?CXgSBOQEBAZUvllcBBgKCEBSMVIhFG5lAp3wPI4FFgXwzGiV/BmeBTlAQFIF?=
- =?us-ascii?q?pjkwkMJB2AQE?=
-X-IPAS-Result: =?us-ascii?q?A2F7AAAwzp9dh8fQVdFmHAEBAQEBBwEBEQEEBAEBgWoEA?=
- =?us-ascii?q?QELAYQQKoQjjl2CD5slAQgBAQEOLwEBhEACgl0jNwYOAgMJAQEFAQEBAQEFB?=
- =?us-ascii?q?AEBAhABAQEIDQkIKYVAgjopAYM9AQEBAxIRVhALCw0CAiYCAiISAQUBHAYTI?=
- =?us-ascii?q?oMAgngFpUaBAzyLJoEyiGIBCQ2BSBJ6KAGMDYIXhCM+h1KCXgSBOQEBAZUvl?=
- =?us-ascii?q?lcBBgKCEBSMVIhFG5lAp3wPI4FFgXwzGiV/BmeBTlAQFIFpjkwkMJB2AQE?=
-X-IronPort-AV: E=Sophos;i="5.67,282,1566889200"; 
-   d="scan'208";a="81589197"
-Received: from mail-lj1-f199.google.com ([209.85.208.199])
-  by smtpmx6.ucr.edu with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Oct 2019 17:37:15 -0700
-Received: by mail-lj1-f199.google.com with SMTP id y28so1385843ljn.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 10 Oct 2019 17:37:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZcWxfPlnGPAO2yo7t6F26rix4NWYfye93UCn2ZNXKJ8=;
-        b=p9UlalBiwBxf4apxhcqUNc7U+6iSyMmKkfxGcuKiD9dR6W6WBAc79S/Qytww1TP7gU
-         r6tMmyHhRc5H9Rehl1Cw3EELB3hb+3gk9iaWkGIwmigagxojHSSgGhMtCc+DsvMdXTw4
-         GcXS+Z/y4/0SmulUo43pfubMpcFIjqLoyeF4kYI248f6pgk06QPxwgOGKybax02hPGFe
-         L4KC4ZvLqJQfpSvq9jgPkzLth+jDsfpSR9hjdDHGDLrIlnJv/D0m0Brh0woAFA3ns+xP
-         VQHuOMru1VYXMbx+gma+7VWvr+N303U/pXh0Cl/OTci0LicEufqIAub5Z4/L17IBS9XV
-         Ysvw==
-X-Gm-Message-State: APjAAAXExJl8aLqfRWL9mcT35pIycmhY/mx2xImVOkmaXh3NAnhUzuFa
-        cWt0PO0XKJAXACerORYAcTnBMvUWfDwfyh+1Gp27M0DM4Ltk7xapBqkjNBjhTpRFxv54xgqIGky
-        R9hm8bq79v/axjHzf/DCPvQZEHipsPPYD/OoXGvn/
-X-Received: by 2002:a19:ee08:: with SMTP id g8mr2680861lfb.117.1570754235351;
-        Thu, 10 Oct 2019 17:37:15 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwbqzp9i04wuktQmil7d0bMJlOGaeRnmQG5uBtRDRKLB00XbM3BrsBPCdcJjoQsH+RggVfxOXKBguWYLkvp+gg=
-X-Received: by 2002:a19:ee08:: with SMTP id g8mr2680852lfb.117.1570754235067;
- Thu, 10 Oct 2019 17:37:15 -0700 (PDT)
+        id S1727581AbfJKLY6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 11 Oct 2019 07:24:58 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:26282 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727549AbfJKLY6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 11 Oct 2019 07:24:58 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9BBNKSo032535;
+        Fri, 11 Oct 2019 07:24:38 -0400
+Received: from nam03-by2-obe.outbound.protection.outlook.com (mail-by2nam03lp2055.outbound.protection.outlook.com [104.47.42.55])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ver39tsun-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Fri, 11 Oct 2019 07:24:37 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QAbV6NHFjcLoxeX/xfoa868GN/ZftgQbxd+IliAx3awL70FEXDf1rM6gB2qFqiTTC7dnvVe65Tg5wPQBnUXWPHoP3p7FlTj4kjPR/M+k5qm1AQyLrShpoo45BOwjrDSjMm3gqwT6/vMQsQ62SGAN0ejXezTp36t2xOVwBEb3qXv3sOXnp6ufOJXPlk49ig7IDkhKcovJj/+zWNXPmey1F/rhF2qMmNEksP5zAKgVcplIT0ZleSRBZqMdrr+gf3zIlPXXHFF+xR1c9wuK9fPaFT7MqUVkUUM21uHOyBL83z8LsXmi4hHDgioLkitoh9gqO0eN5YuFWQAl+U6DAHnNCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UecsuwIlDuMt6hY26F++j0IJTG/Ss49mpjPSgf6brqA=;
+ b=aL4k+y3xSytd1x2UEL7995779Eyyaexm0Ii1KMqgbDcMyiQCna6wFciy8AVV851yDcnCyykBSc/TZL27/p4AnKvo/l3dd5AnGYrozvMDSz0YYleidLdyJuGlMuToZvDhX8OrWcSAGIDvh+1JxvHUgUoawMm+rVP9lV5cpm8FVl4mzS2rmPxqqswccPtXu8wYxe7aX5WEy5OJwv1zxk/gXH90H6XvPtOoZXrbFFTrslK5NifzOXz70H0oiVsKk2xfqrMxQH7RFgL6UnVw4Au4VPH9dzzMn3MG0qdsgfIgY3H9IgZoRy5HHqJgyJDNkEPQYoRYAPgkkoo/h/EkVbTrmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UecsuwIlDuMt6hY26F++j0IJTG/Ss49mpjPSgf6brqA=;
+ b=B+FAPzZIwSbVOHEqJ6w6AxXCdAjGwGilaSjeleAHuuqdhOFhSFlnYT0aqY8bGAKt/0HD9Bi2e9dSJmuMBdYLuVwxhJu03Fm9KNfbdP/7MOkisp5uqE6jdeewTzvndd7oFZtMScbcKpnYh4UWd/13hwMhSRm9v4zg7nLJAxye7vg=
+Received: from CY4PR03CA0084.namprd03.prod.outlook.com (2603:10b6:910:4d::25)
+ by BL0PR03MB4244.namprd03.prod.outlook.com (2603:10b6:208:6b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.16; Fri, 11 Oct
+ 2019 11:24:36 +0000
+Received: from BL2NAM02FT004.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by CY4PR03CA0084.outlook.office365.com
+ (2603:10b6:910:4d::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2347.16 via Frontend
+ Transport; Fri, 11 Oct 2019 11:24:35 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ BL2NAM02FT004.mail.protection.outlook.com (10.152.76.168) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2347.16
+ via Frontend Transport; Fri, 11 Oct 2019 11:24:35 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x9BBOYVW007663
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Fri, 11 Oct 2019 04:24:34 -0700
+Received: from saturn.ad.analog.com (10.48.65.112) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Fri, 11 Oct 2019 07:24:34 -0400
+From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
+To:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
+        <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>
+CC:     <gregkh@linuxfoundation.org>, <bhanusreemahesh@gmail.com>,
+        <preid@electromag.com.au>, <daniel.vetter@ffwll.ch>,
+        <nishadkamdar@gmail.com>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] staging: fbtft: fbtft-core: Fix last line displayed on fbcon
+Date:   Fri, 11 Oct 2019 14:24:41 +0300
+Message-ID: <20191011112441.31003-1-alexandru.ardelean@analog.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20191010043809.27594-1-yzhai003@ucr.edu> <20191010091834.GG20470@kadam>
-In-Reply-To: <20191010091834.GG20470@kadam>
-From:   Yizhuo Zhai <yzhai003@ucr.edu>
-Date:   Thu, 10 Oct 2019 17:37:56 -0700
-Message-ID: <CABvMjLQ+_rRJT_yeKE9AKJaxhSU5LbcZdenbOr8CdPoD+4Oprw@mail.gmail.com>
-Subject: Re: [PATCH] staging: sm750fb: Potential uninitialized field in "pll"
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     devel@driverdev.osuosl.org, linux-fbdev@vger.kernel.org,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(39860400002)(396003)(346002)(136003)(376002)(199004)(189003)(476003)(14444005)(305945005)(186003)(7636002)(4744005)(48376002)(107886003)(44832011)(478600001)(50466002)(5660300002)(86362001)(47776003)(54906003)(7696005)(486006)(8936002)(2906002)(2201001)(246002)(110136005)(336012)(316002)(126002)(106002)(50226002)(356004)(51416003)(8676002)(4326008)(36756003)(1076003)(2616005)(26005)(426003)(2870700001)(70586007)(6666004)(70206006);DIR:OUT;SFP:1101;SCL:1;SRVR:BL0PR03MB4244;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 575679d8-49d4-4c6c-7d38-08d74e3d98b4
+X-MS-TrafficTypeDiagnostic: BL0PR03MB4244:
+X-Microsoft-Antispam-PRVS: <BL0PR03MB4244C69F05785428EE31546EF9970@BL0PR03MB4244.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2512;
+X-Forefront-PRVS: 0187F3EA14
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ezdf7aAyn33UfCeeB6mk4ltlw26Q6i34+0L2Z4xwTb8n41oLt1EezEAO0D3w8a3gJ5oIIZ44sYplV6Sr3cNZpZ96a2yF17ocXnS7vAcZBD3VHB6wp4sZqMWN/YoI8IflxWwm8DWban45fKQ09uPPhqevQoBMoY/fWY0vOpc7wVX+7oGuaq863QAJWDeVA5BauoqQK41xT0nSJYn/4uijHxIT5F7QbGWrOiefQUJR/uLP+5RgxU/36T9QWe7LU7eGwIcSn7jITIZfPUtsnUU5u8HSsiU2O2E6cTmBEJHh/Tr87erUuEVQQRJoG14irctJB3LZO7FPqBCPBF6D2P9r9fnD2bKWwrZELnaLfOBy9piBstD7C8qaYgdyBYFX5mxxWWs64nEL+iHZKJF6VKZGuj8t870CrUcpmwQQogmJpJ8=
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2019 11:24:35.7651
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 575679d8-49d4-4c6c-7d38-08d74e3d98b4
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR03MB4244
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-11_07:2019-10-10,2019-10-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 phishscore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910110109
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Sorry about that, let me resend it .
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-On Thu, Oct 10, 2019 at 2:53 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Wed, Oct 09, 2019 at 09:38:08PM -0700, Yizhuo wrote:
-> > Inside function set_chip_clock(), struct pll is supposed to be
-> > initialized in sm750_calc_pll_value(), if condition
-> > "diff < mini_diff" in sm750_calc_pll_value() cannot be fulfilled,
-> > then some field of pll will not be initialized but used in
-> > function sm750_format_pll_reg(), which is potentially unsafe.
-> >
-> > Signed-off-by: Yizhuo <yzhai003@ucr.edu>
->
-> The patch is correct, but it doesn't apply to linux-next any more.  Can
-> you re-write it on top of the most recent staging-next and resend?
->
-> regards,
-> dan carpenter
->
+For the special case when fbtft_mkdirty() is called with with -1 for the y
+coordinate, the height is truncated by 1.
 
+This isn't required, and causes the last line to not update.
 
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/staging/fbtft/fbtft-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index cf5700a2ea66..90eec45d11fc 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -317,7 +317,7 @@ static void fbtft_mkdirty(struct fb_info *info, int y, int height)
+ 	/* special case, needed ? */
+ 	if (y == -1) {
+ 		y = 0;
+-		height = info->var.yres - 1;
++		height = info->var.yres;
+ 	}
+ 
+ 	/* Mark display lines/area as dirty */
 -- 
-Kind Regards,
+2.20.1
 
-Yizhuo Zhai
-
-Computer Science, Graduate Student
-University of California, Riverside
