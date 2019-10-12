@@ -2,69 +2,154 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12807D4C0C
-	for <lists+linux-fbdev@lfdr.de>; Sat, 12 Oct 2019 04:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9577CD4D42
+	for <lists+linux-fbdev@lfdr.de>; Sat, 12 Oct 2019 07:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728596AbfJLCNL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 11 Oct 2019 22:13:11 -0400
-Received: from smtprelay0121.hostedemail.com ([216.40.44.121]:57272 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728587AbfJLCNL (ORCPT
+        id S1726891AbfJLFll (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 12 Oct 2019 01:41:41 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:43267 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726671AbfJLFll (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 11 Oct 2019 22:13:11 -0400
-X-Greylist: delayed 359 seconds by postgrey-1.27 at vger.kernel.org; Fri, 11 Oct 2019 22:13:10 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave07.hostedemail.com (Postfix) with ESMTP id 5B16618014EA1
-        for <linux-fbdev@vger.kernel.org>; Sat, 12 Oct 2019 02:07:12 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 8DE79182CED2A;
-        Sat, 12 Oct 2019 02:07:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 80,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1381:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:4321:4605:5007:8957:10004:10400:11232:11658:11914:12043:12048:12296:12297:12740:12760:12895:13069:13311:13357:13439:14096:14097:14659:14721:21080:21451:21627:30003:30054:30091,0,RBL:23.242.70.174:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:28,LUA_SUMMARY:none
-X-HE-Tag: bite17_4300371d6934
-X-Filterd-Recvd-Size: 2049
-Received: from XPS-9350 (cpe-23-242-70-174.socal.res.rr.com [23.242.70.174])
-        (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 12 Oct 2019 02:07:08 +0000 (UTC)
-Message-ID: <8886b98ca936e7150abf36aa3c9d167073eaba86.camel@perches.com>
-Subject: Re: [PATCH] staging: sm750fb: align arguments with open parenthesis
-From:   Joe Perches <joe@perches.com>
-To:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>,
-        outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
+        Sat, 12 Oct 2019 01:41:41 -0400
+X-IronPort-AV: E=Sophos;i="5.67,286,1566856800"; 
+   d="scan'208";a="405849016"
+Received: from 81-65-53-202.rev.numericable.fr (HELO hadrien) ([81.65.53.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Oct 2019 07:41:38 +0200
+Date:   Sat, 12 Oct 2019 07:41:37 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+cc:     outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
         teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
         linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
         linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org,
         trivial@kernel.org
-Date:   Fri, 11 Oct 2019 19:07:06 -0700
+Subject: Re: [Outreachy kernel] [PATCH] staging: sm750fb: align arguments
+ with open parenthesis
 In-Reply-To: <20191012011956.9452-1-gabrielabittencourt00@gmail.com>
+Message-ID: <alpine.DEB.2.21.1910120738540.2637@hadrien>
 References: <20191012011956.9452-1-gabrielabittencourt00@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 2019-10-11 at 22:19 -0300, Gabriela Bittencourt wrote:
+
+
+On Fri, 11 Oct 2019, Gabriela Bittencourt wrote:
+
 > Cleans up checks of "Alignment should match open parenthesis" in tree sm750fb
-[]
+>
+> Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+> ---
+>  drivers/staging/sm750fb/ddk750_display.c |  2 +-
+>  drivers/staging/sm750fb/sm750_accel.c    |  2 +-
+>  drivers/staging/sm750fb/sm750_accel.h    |  8 ++++----
+>  drivers/staging/sm750fb/sm750_cursor.h   | 10 +++++-----
+>  4 files changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/staging/sm750fb/ddk750_display.c b/drivers/staging/sm750fb/ddk750_display.c
+> index 887ea8aef43f..8be98a1058d6 100644
+> --- a/drivers/staging/sm750fb/ddk750_display.c
+> +++ b/drivers/staging/sm750fb/ddk750_display.c
+> @@ -148,7 +148,7 @@ void ddk750_set_logical_disp_out(enum disp_output output)
+>  	if (output & PNL_SEQ_USAGE) {
+>  		/* set  panel sequence */
+>  		sw_panel_power_sequence((output & PNL_SEQ_MASK) >> PNL_SEQ_OFFSET,
+> -		4);
+> +					4);
+>  	}
+>
+>  	if (output & DAC_USAGE)
 > diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
-[]
+> index dbcbbd1055da..1a9555bb9edd 100644
+> --- a/drivers/staging/sm750fb/sm750_accel.c
+> +++ b/drivers/staging/sm750fb/sm750_accel.c
 > @@ -289,7 +289,7 @@ static unsigned int deGetTransparency(struct lynx_accel *accel)
 >  }
->  
+>
 >  int sm750_hw_imageblit(struct lynx_accel *accel,
 > -		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
 > +		       const char *pSrcbuf, /* pointer to start of source buffer in system memory */
 >  		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
-
-checkpatch only warns on the first unaligned argument, but
-all statement lines are meant to align to the open parenthesis.
-
 >  		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
 >  		 u32 dBase,    /* Address of destination: offset in frame buffer */
 
+It is strange that the change is only does for the firsr parameter, and
+not for all of them.
 
+The kernel also uses a doc format for describing function patameters in a
+single comment before the function.  Look around in other files to see the
+format.  That would look much nicer than these comments going over 80
+columns.
+
+
+> diff --git a/drivers/staging/sm750fb/sm750_accel.h b/drivers/staging/sm750fb/sm750_accel.h
+> index c4f42002a50f..8fb79b09fdd0 100644
+> --- a/drivers/staging/sm750fb/sm750_accel.h
+> +++ b/drivers/staging/sm750fb/sm750_accel.h
+> @@ -190,9 +190,9 @@ void sm750_hw_set2dformat(struct lynx_accel *accel, int fmt);
+>  void sm750_hw_de_init(struct lynx_accel *accel);
+>
+>  int sm750_hw_fillrect(struct lynx_accel *accel,
+> -				u32 base, u32 pitch, u32 Bpp,
+> -				u32 x, u32 y, u32 width, u32 height,
+> -				u32 color, u32 rop);
+> +		      u32 base, u32 pitch, u32 Bpp,
+> +		      u32 x, u32 y, u32 width, u32 height,
+> +		      u32 color, u32 rop);
+>
+>  int sm750_hw_copyarea(
+>  struct lynx_accel *accel,
+> @@ -210,7 +210,7 @@ unsigned int height, /* width and height of rectangle in pixel value */
+>  unsigned int rop2);
+>
+>  int sm750_hw_imageblit(struct lynx_accel *accel,
+> -		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
+> +		       const char *pSrcbuf, /* pointer to start of source buffer in system memory */
+>  		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
+>  		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
+>  		 u32 dBase,    /* Address of destination: offset in frame buffer */
+
+Same here.
+
+> diff --git a/drivers/staging/sm750fb/sm750_cursor.h b/drivers/staging/sm750fb/sm750_cursor.h
+> index 16ac07eb58d6..039ebfdf0bd9 100644
+> --- a/drivers/staging/sm750fb/sm750_cursor.h
+> +++ b/drivers/staging/sm750fb/sm750_cursor.h
+> @@ -6,13 +6,13 @@
+>  void sm750_hw_cursor_enable(struct lynx_cursor *cursor);
+>  void sm750_hw_cursor_disable(struct lynx_cursor *cursor);
+>  void sm750_hw_cursor_setSize(struct lynx_cursor *cursor,
+> -						int w, int h);
+> +			     int w, int h);
+>  void sm750_hw_cursor_setPos(struct lynx_cursor *cursor,
+> -						int x, int y);
+> +			    int x, int y);
+
+Perhaps these could just be all on one line?
+
+julia
+
+>  void sm750_hw_cursor_setColor(struct lynx_cursor *cursor,
+> -						u32 fg, u32 bg);
+> +			      u32 fg, u32 bg);
+>  void sm750_hw_cursor_setData(struct lynx_cursor *cursor,
+> -			u16 rop, const u8 *data, const u8 *mask);
+> +			     u16 rop, const u8 *data, const u8 *mask);
+>  void sm750_hw_cursor_setData2(struct lynx_cursor *cursor,
+> -			u16 rop, const u8 *data, const u8 *mask);
+> +			      u16 rop, const u8 *data, const u8 *mask);
+>  #endif
+> --
+> 2.20.1
+>
+> --
+> You received this message because you are subscribed to the Google Groups "outreachy-kernel" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to outreachy-kernel+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/outreachy-kernel/20191012011956.9452-1-gabrielabittencourt00%40gmail.com.
+>
