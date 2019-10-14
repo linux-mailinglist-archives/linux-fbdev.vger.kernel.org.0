@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18ED8D5C5F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 09:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36703D5C64
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 09:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728957AbfJNH1j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 03:27:39 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:38199 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbfJNH1i (ORCPT
+        id S1730350AbfJNH1u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 03:27:50 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:45048 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729054AbfJNH1t (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 03:27:38 -0400
-Received: by mail-wr1-f68.google.com with SMTP id y18so8898505wrn.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 14 Oct 2019 00:27:37 -0700 (PDT)
+        Mon, 14 Oct 2019 03:27:49 -0400
+Received: by mail-wr1-f66.google.com with SMTP id z9so18344888wrl.11
+        for <linux-fbdev@vger.kernel.org>; Mon, 14 Oct 2019 00:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=Lsu4fhje736plADrPfFak7Hyuvi8ToLdp9rnCK4hwgE=;
-        b=QAeR6xlIwruriMfHuFp2cv0YcQ7dfUCPQKWO3lSStColxpeElXzjO1pIuQnkS1TUZN
-         cty42z8g8KK99VaGUqB/ZKPZqONUVjGeeKHaO7U/ZeaPF/37YP+WnTh+wZVEllLcTG7w
-         JQWbBUZoVWjxcHApwBnUGZGGLTX9yOvDPZDrs9WfgOL76QsRx9nGg4GgBGDJNp7H0VNL
-         ndbPJ0Tv48BYDmb3RoNgWP2uo3DBciF1dy4MU724NcdBreSG4GtL9V6VplxrcEZdM5bi
-         d5sPeIPQDBqskiN+LDOq4H1eHwwsSO34kxUg/hgSYldiDuEN2bNCl0bBPIeHsn8M84kI
-         c+ZA==
+        bh=Q5BHsZHxaQuBnsC0n/rsVoiaHAm2VXfTTXiC030BJgs=;
+        b=K8uBglN/gYVEhhG9uvD0jxpL+kBC7VMC3W6M/I1GYQtLwoF+9PBzncmew5ihD7lRR/
+         TNfGGegf5VdqF1Bz+s6k/sVm2IVvUeOPyQsiHPQ0px5gkz9Rd9s6Pm6s0Rnl8GdvL1pt
+         sCt23Tm3/dh+zeCrWdDNF2Mxmt3Ok4iwrRpVu3+vJCEi4yulCnHktAiOkCRJjIFBcq9m
+         eKdm5Op2XTuFc4d0ys4Jqpxa6y1uZlSo9BAgkCq7WwhELcX0kF2OB+OB+k7UhSEjrxU+
+         QrLa9LQ8Urk0ltRsYf74NGzLUvIPrvWYHhtlZuuLXN7ZVXrtxOxZGzYVJ4z+xf+D/Q6m
+         CMQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=Lsu4fhje736plADrPfFak7Hyuvi8ToLdp9rnCK4hwgE=;
-        b=D3gjzELgfZfeG7h3lMZzGVDJtIiIPrCkhLd9We1vq9gk18+3WzZGRHYPqJo/63eZuA
-         0/h+UWHAGa2otHtnlFWcMdoM7GK/kY8oyjr5CMXn0lhvL59UoZ29oAAz1fLgUmxc3xQ7
-         LPU11yD04YD3ZJwaQtkdGI30mFHF+WMBDqhU1eFrWuNbEdmuPBHTPBrc/PRtdEjO0RM9
-         oTnLBSGPMmyy46tk3HSJcDBkWTpcc7Ys2sTj+pPpt/nddeXsYHvgOg+U7UBd7xOfkbAC
-         vV8Pl0+d6NXnrNkqVjz8c+pVmhehQU04uHLYko0G9lvyt1Pzv3LfEr/6r4TYqwC3Pkas
-         s4dQ==
-X-Gm-Message-State: APjAAAWRAFMwTRuhvfJN/HIyRdsuEC5XrvRuktcXm553lTAvHGFAbzDb
-        xBhu7//zn0P5Iwt+g5Hed7akwQ==
-X-Google-Smtp-Source: APXvYqzw9fkcyJEo4AQK7M4LJ3HxW6G4IjmVLs+xsK03nZjv0Pw9xmGK1kAVONlnHG2VAyBzoqVlSg==
-X-Received: by 2002:adf:e705:: with SMTP id c5mr23614156wrm.375.1571038056779;
-        Mon, 14 Oct 2019 00:27:36 -0700 (PDT)
+        bh=Q5BHsZHxaQuBnsC0n/rsVoiaHAm2VXfTTXiC030BJgs=;
+        b=YdTTdk5LO+j/1lPzC+59U2z/sSi+gzZTyvypvUVSwAP/mvXB6r/Rl89HmgAFjg/gzc
+         rmoFiYaXz80gNerpXwCjMWTHi73A3d4VXkwo7K3HOze5G1hAijVRqDp0kb4NehNofFgp
+         7THUBTl2ESIduMZnEshOP/IxYfGn7bRs5z4dIjg7m+M4OhqRnd6+pie6GSwRW+dkad3W
+         Ag9j2gB2icRJbJ1/yPnr+ABDTYBj9/j2S+bg889fd3IAPaVzxgcFC+/YO4oGEmfXbbPI
+         /DG9VrXPrcbw7EpH2WfeJE2YvbAY6+gJc47dZ0tyinf+j4x7b6n55DxiYEA8zg0AmD1k
+         ldRw==
+X-Gm-Message-State: APjAAAWm77D5XynRATqiE0jEB3PuWZ1X3FEnEQU0miTT6IDeAS7xj67i
+        xPB5gtTklO0MOx4TLy48rXP2mw==
+X-Google-Smtp-Source: APXvYqwDm2Pu3gF5wLWhDaqvm22UpUh6vWq/BlOq37ZQHR6R8Ub8u3VH4fE0xrIa7I5M58b1ImJhUQ==
+X-Received: by 2002:a5d:540d:: with SMTP id g13mr20624080wrv.8.1571038067578;
+        Mon, 14 Oct 2019 00:27:47 -0700 (PDT)
 Received: from dell ([2.27.167.11])
-        by smtp.gmail.com with ESMTPSA id f20sm14187442wmb.6.2019.10.14.00.27.36
+        by smtp.gmail.com with ESMTPSA id n3sm7073653wrr.50.2019.10.14.00.27.46
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 14 Oct 2019 00:27:36 -0700 (PDT)
-Date:   Mon, 14 Oct 2019 08:27:34 +0100
+        Mon, 14 Oct 2019 00:27:47 -0700 (PDT)
+Date:   Mon, 14 Oct 2019 08:27:45 +0100
 From:   Lee Jones <lee.jones@linaro.org>
 To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
@@ -58,15 +58,16 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] backlight: pwm_bl: drop use of int_pow()
-Message-ID: <20191014072734.GG4545@dell>
+Subject: Re: [PATCH v2 4/4] backlight: pwm_bl: switch to power-of-2 base for
+ fixed-point math
+Message-ID: <20191014072745.GH4545@dell>
 References: <20191008120327.24208-1-linux@rasmusvillemoes.dk>
- <20191008120327.24208-4-linux@rasmusvillemoes.dk>
+ <20191008120327.24208-5-linux@rasmusvillemoes.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191008120327.24208-4-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191008120327.24208-5-linux@rasmusvillemoes.dk>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -75,17 +76,17 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 On Tue, 08 Oct 2019, Rasmus Villemoes wrote:
 
-> For a fixed small exponent of 3, it is more efficient to simply use
-> two explicit multiplications rather than calling the int_pow() library
-> function: Aside from the function call overhead, its implementation
-> using repeated squaring means it ends up doing four 64x64
-> multiplications.
+> Using a power-of-2 instead of power-of-10 base makes the computations
+> much cheaper. 2^16 is safe; retval never becomes more than 2^48 +
+> 2^32/2. On a 32 bit platform, the very expensive 64/32 division at the
+> end of cie1931() instead becomes essentially free (a shift by 32 is
+> just a register rename).
 > 
 > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 > ---
->  drivers/video/backlight/pwm_bl.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/video/backlight/pwm_bl.c | 22 ++++++++++++----------
+>  1 file changed, 12 insertions(+), 10 deletions(-)
 
 Applied, thanks.
 
