@@ -2,18 +2,18 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0EFD649C
+	by mail.lfdr.de (Postfix) with ESMTP id E0F24D649F
 	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732389AbfJNOEZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 10:04:25 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50874 "EHLO mx1.suse.de"
+        id S1732448AbfJNOE0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 10:04:26 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50908 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732435AbfJNOEZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 10:04:25 -0400
+        id S1732339AbfJNOE0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Oct 2019 10:04:26 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 6F636B1A3;
+        by mx1.suse.de (Postfix) with ESMTP id E22BDB1A8;
         Mon, 14 Oct 2019 14:04:22 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 07/15] drm/fbconv: Add modesetting infrastructure
-Date:   Mon, 14 Oct 2019 16:04:08 +0200
-Message-Id: <20191014140416.28517-8-tzimmermann@suse.de>
+Subject: [PATCH v2 08/15] drm/fbconv: Add plane-state check and update
+Date:   Mon, 14 Oct 2019 16:04:09 +0200
+Message-Id: <20191014140416.28517-9-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,510 +36,630 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Modesetting for fbconv supports a single display pipeline with CRTC,
-primary plane, encoder and connector. It's implementation is based on
-struct drm_simple_display_pipe, which fits this use case nicely.
+For the update of the primary plane, we copy the content of a SHMEM buffer
+object to the hardware's on-screen buffer; doing a format conversion if
+necessary. This is able to support all combinations of framebuffers and
+hardware, and should work with any fbdev driver.
+
+Occasionally, fbdev drivers require an update of the hardware's gamma
+tables to not show distorted colors. We also do this during the plane
+update.
+
+There's no support for horizontal panning, as fbdev drivers vary widely
+in their capability to do this. Vertical panning is supported to the
+extend allowed by available video ram. However, this whole functionality
+is more interesting for porting drivers and not directly required by
+fbconv itself.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_fbconv_helper.c | 382 ++++++++++++++++++++++++++++
- include/drm/drm_fbconv_helper.h     |  78 ++++++
- 2 files changed, 460 insertions(+)
+ drivers/gpu/drm/Kconfig             |   1 +
+ drivers/gpu/drm/drm_fbconv_helper.c | 500 +++++++++++++++++++++++++++-
+ include/drm/drm_fbconv_helper.h     |   9 +
+ 3 files changed, 507 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index ed689201ec81..2ce7749c3157 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -160,6 +160,7 @@ config DRM_DP_CEC
+ config DRM_FBCONV_HELPER
+ 	tristate "Enable fbdev conversion helpers"
+ 	depends on DRM
++	select DRM_GEM_SHMEM_HELPER
+ 	help
+ 	  Provides helpers for running DRM on top of fbdev drivers. Choose
+ 	  this option if you're converting an fbdev driver to DRM. The
 diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
-index e5a58a361ae9..4cda1f15e072 100644
+index 4cda1f15e072..cf218016ac05 100644
 --- a/drivers/gpu/drm/drm_fbconv_helper.c
 +++ b/drivers/gpu/drm/drm_fbconv_helper.c
-@@ -4,8 +4,13 @@
- 
+@@ -5,12 +5,17 @@
  #include <linux/fb.h>
  
-+#include <drm/drm_atomic_helper.h>
+ #include <drm/drm_atomic_helper.h>
++#include <drm/drm_damage_helper.h>
  #include <drm/drm_fbconv_helper.h>
-+#include <drm/drm_fb_helper.h>
-+#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fb_helper.h>
++#include <drm/drm_format_helper.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
++#include <drm/drm_gem_shmem_helper.h>
  #include <drm/drm_modes.h>
-+#include <drm/drm_modeset_helper_vtables.h>
-+#include <drm/drm_probe_helper.h>
+ #include <drm/drm_modeset_helper_vtables.h>
++#include <drm/drm_print.h>
+ #include <drm/drm_probe_helper.h>
++#include <drm/drm_vblank.h>
  
  /*
   * Format conversion helpers
-@@ -635,3 +640,380 @@ void drm_fbconv_init_fb_var_screeninfo_from_mode(
- 	drm_fbconv_update_fb_var_screeninfo_from_mode(fb_var, mode);
+@@ -728,10 +733,192 @@ static const struct drm_connector_funcs connector_funcs = {
+ 	.atomic_print_state = NULL
+ };
+ 
++/*
++ * Colormap updates
++ */
++
++/* provides a default colormap for palette modes */
++static int create_palette_cmap(struct fb_cmap *cmap,
++			       const struct fb_var_screeninfo *fb_var)
++{
++	__u32 len;
++	const struct fb_cmap *default_cmap;
++	int ret;
++
++	len = max3(fb_var->red.length,
++		   fb_var->green.length,
++		   fb_var->blue.length);
++	if (!len || (len > 31)) {
++		DRM_ERROR("fbconv: Gamma LUT has invalid bit count of %u\n",
++			  (unsigned int)len);
++		return -EINVAL;
++	}
++
++	default_cmap = fb_default_cmap(1ul << len);
++	if (!default_cmap) {
++		DRM_ERROR("fbconv: fb_default_cmap() failed\n");
++		return -EINVAL;
++	}
++
++	ret = fb_alloc_cmap(cmap, default_cmap->len, 0);
++	if (ret) {
++		DRM_ERROR("fbconv: fb_alloc_cmap() failed: %d\n", ret);
++		return ret;
++	}
++	ret = fb_copy_cmap(default_cmap, cmap);
++	if (ret) {
++		DRM_ERROR("fbconv: fb_copy_cmap() failed: %d\n", ret);
++		goto err_fb_dealloc_cmap;
++	}
++
++	return 0;
++
++err_fb_dealloc_cmap:
++	fb_dealloc_cmap(cmap);
++	return ret;
++}
++
++/* provides a linear color ramp for RGB modes */
++static int create_linear_cmap(struct fb_cmap *cmap,
++			      const struct fb_var_screeninfo *fb_var)
++{
++	int ret;
++	size_t i;
++	unsigned int j;
++	u16 *lut;
++	u16 incr;
++	u16 *gamma_lut[3];
++	__u32 len;
++	const __u32 gamma_len[3] = {
++		fb_var->red.length,
++		fb_var->green.length,
++		fb_var->blue.length
++	};
++
++	len = max3(gamma_len[0], gamma_len[1], gamma_len[2]);
++	if (!len || (len > 8)) {
++		DRM_ERROR("fbconv: gamma LUT has invalid bit count of %u\n",
++			  (unsigned int)len);
++		return -EINVAL;
++	}
++
++	ret = fb_alloc_cmap(cmap, 1ul << len, 0);
++	if (ret) {
++		DRM_ERROR("fbconv: fb_alloc_cmap() failed: %d\n", ret);
++		return ret;
++	}
++
++	gamma_lut[0] = cmap->red;
++	gamma_lut[1] = cmap->green;
++	gamma_lut[2] = cmap->blue;
++
++	for (i = 0; i < ARRAY_SIZE(gamma_lut); ++i) {
++		lut = gamma_lut[i];
++		len = 1ul << gamma_len[i];
++		incr = 0x10000u >> gamma_len[i];
++		for (j = 0; j < len; ++j, ++lut)
++			*lut = incr * j;
++
++		/* In order to have no intensity at index 0 and full
++		 * intensity at the final index of the LUT, we fix-up the
++		 * table's final entries. The fix-up makes intensity grow
++		 * faster near the final entries of the gamma LUT. The human
++		 * eye is more sensitive to changes to the lower intensities,
++		 * so this is probably not directly perceivable.
++		 */
++		for (lut -= gamma_len[i], j = gamma_len[i]; j > 0; ++lut) {
++			--j;
++			/* subtract 1 to not overflow the LUT's final entry */
++			*lut += (incr >> j) - 1;
++		}
++	}
++
++	return 0;
++}
++
++static int set_cmap(struct fb_info *fb_info)
++{
++	struct fb_cmap cmap;
++	int ret;
++
++	memset(&cmap, 0, sizeof(cmap));
++
++	switch (fb_info->fix.visual) {
++	case FB_VISUAL_PSEUDOCOLOR:
++		ret = create_palette_cmap(&cmap, &fb_info->var);
++		break;
++	case FB_VISUAL_DIRECTCOLOR:
++		ret = create_linear_cmap(&cmap, &fb_info->var);
++		break;
++	default:
++		return 0;
++	}
++	if (ret)
++		return ret;
++
++	ret = fb_set_cmap(&cmap, fb_info);
++	if (ret) {
++		DRM_ERROR("fbconv: fb_set_cmap() failed: %d\n", ret);
++		goto err_fb_dealloc_cmap;
++	}
++	fb_dealloc_cmap(&cmap);
++
++	return 0;
++
++err_fb_dealloc_cmap:
++	fb_dealloc_cmap(&cmap);
++	return ret;
++}
++
+ /*
+  * Simple display pipe
+  */
+ 
++static void drm_fbconv_update_fb_var_screeninfo_from_crtc_state(
++	struct fb_var_screeninfo *fb_var, struct drm_crtc_state *crtc_state)
++{
++	drm_fbconv_update_fb_var_screeninfo_from_mode(
++		fb_var, &crtc_state->adjusted_mode);
++}
++
++static int drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
++	struct fb_var_screeninfo *fb_var, struct drm_framebuffer *fb,
++	size_t vram_size)
++{
++	unsigned int width, pitch;
++	uint64_t cpp, lines;
++	int ret;
++
++	/* Our virtual screen covers all the graphics memory (sans some
++	 * trailing bytes). This allows for setting the scanout buffer's
++	 * address with fb_pan_display().
++	 */
++
++	width = fb->pitches[0];
++	cpp = fb->format[0].cpp[0];
++	do_div(width, cpp);
++
++	if (width > (__u32)-1)
++		return -EINVAL; /* would overflow fb_var->xres_virtual */
++
++	pitch = fb->pitches[0];
++	lines = vram_size;
++	do_div(lines, pitch);
++
++	if (lines > (__u32)-1)
++		return -EINVAL; /* would overflow fb_var->yres_virtual */
++
++	fb_var->xres_virtual = width;
++	fb_var->yres_virtual = lines;
++
++	ret = drm_fbconv_update_fb_var_screeninfo_from_format(
++		fb_var, fb->format[0].format);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
+ /**
+  * drm_fbconv_simple_display_pipe_mode_valid - default implementation for
+  *	struct drm_simple_display_pipe_funcs.mode_valid
+@@ -767,6 +954,52 @@ bool drm_fbconv_simple_display_pipe_mode_fixup(
  }
- EXPORT_SYMBOL(drm_fbconv_init_fb_var_screeninfo_from_mode);
-+
-+/*
-+ * Connector
-+ */
-+
-+static int connector_helper_get_modes(struct drm_connector *connector)
-+{
-+	return 0;
-+}
-+
-+static int connector_helper_detect_ctx(struct drm_connector *connector,
-+				       struct drm_modeset_acquire_ctx *ctx,
-+				       bool force)
-+{
-+	return connector_status_connected;
-+}
-+
-+static enum drm_mode_status connector_helper_mode_valid(
-+	struct drm_connector *connector, struct drm_display_mode *mode)
-+{
-+	return MODE_OK;
-+}
-+
-+static int connector_helper_atomic_check(struct drm_connector *connector,
-+					 struct drm_atomic_state *state)
-+{
-+	return 0;
-+}
-+
-+static void connector_helper_atomic_commit(struct drm_connector *connector,
-+					   struct drm_connector_state *state)
-+{ }
-+
-+static const struct drm_connector_helper_funcs connector_helper_funcs = {
-+	.get_modes = connector_helper_get_modes,
-+	.detect_ctx = connector_helper_detect_ctx,
-+	.mode_valid = connector_helper_mode_valid,
-+	.best_encoder = NULL, /* use default */
-+	.atomic_best_encoder = NULL, /* use best_encoder instead */
-+	.atomic_check = connector_helper_atomic_check,
-+	.atomic_commit = connector_helper_atomic_commit
-+};
-+
-+static enum drm_connector_status connector_detect(
-+	struct drm_connector *connector, bool force)
-+{
-+	return connector_status_connected;
-+}
-+
-+static void connector_force(struct drm_connector *connector)
-+{ }
-+
-+static void connector_destroy(struct drm_connector *connector)
-+{ }
-+
-+static int connector_atomic_set_property(struct drm_connector *connector,
-+					 struct drm_connector_state *state,
-+					 struct drm_property *property,
-+					 uint64_t val)
-+{
-+	return -EINVAL;
-+}
-+
-+static int connector_atomic_get_property(
-+	struct drm_connector *connector,
-+	const struct drm_connector_state *state, struct drm_property *property,
-+	uint64_t *val)
-+{
-+	return -EINVAL;
-+}
-+
-+static const struct drm_connector_funcs connector_funcs = {
-+	.dpms = NULL, /* not used by atomic drivers */
-+	.reset = drm_atomic_helper_connector_reset,
-+	.detect = connector_detect,
-+	.force = connector_force,
-+	.fill_modes = drm_helper_probe_single_connector_modes,
-+	.set_property = NULL,
-+	.late_register = NULL,
-+	.early_unregister = NULL,
-+	.destroy = connector_destroy,
-+	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
-+	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
-+	.atomic_set_property = connector_atomic_set_property,
-+	.atomic_get_property = connector_atomic_get_property,
-+	.atomic_print_state = NULL
-+};
-+
-+/*
-+ * Simple display pipe
-+ */
-+
+ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_mode_fixup);
+ 
 +/**
-+ * drm_fbconv_simple_display_pipe_mode_valid - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.mode_valid
-+ * @crtc:	the DRM CRTC structure
-+ * @mode:	the display mode to validate
-+ * Returns:
-+ *	MODE_OK on success, or
-+ *	a MODE constant otherwise
-+ */
-+enum drm_mode_status
-+drm_fbconv_simple_display_pipe_mode_valid(struct drm_crtc *crtc,
-+					  const struct drm_display_mode *mode)
-+{
-+	return MODE_OK;
-+}
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_mode_valid);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_mode_fixup - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.mode_fixup
-+ * @crtc:		the DRM CRTC structure
-+ * @mode:		the display mode
-+ * @adjusted_mode:	the adjusted display mode
-+ * Returns:
-+ *	true on success, or
-+ *	false otherwise
-+ */
-+bool drm_fbconv_simple_display_pipe_mode_fixup(
-+	struct drm_crtc *crtc, const struct drm_display_mode *mode,
-+	struct drm_display_mode *adjusted_mode)
-+{
-+	return true;
-+}
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_mode_fixup);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_enable - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.enable
-+ * @pipe:		the display pipe structure
-+ * @crtc_state:		the new CRTC state
-+ * @plane_state:	the new plane state
-+ */
-+void
-+drm_fbconv_simple_display_pipe_enable(struct drm_simple_display_pipe *pipe,
-+				      struct drm_crtc_state *crtc_state,
-+				      struct drm_plane_state *plane_state)
-+{ }
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_enable);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_disable - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.disable
-+ * @pipe:		the display pipe structure
-+ */
-+void
-+drm_fbconv_simple_display_pipe_disable(struct drm_simple_display_pipe *pipe)
-+{ }
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_disable);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_check - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.check
-+ * @pipe:		the display pipe structure
-+ * @plane_state:	the new plane state
-+ * @crtc_state:		the new CRTC state
-+ */
-+int
-+drm_fbconv_simple_display_pipe_check(struct drm_simple_display_pipe *pipe,
-+				     struct drm_plane_state *plane_state,
-+				     struct drm_crtc_state *crtc_state)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_check);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_mode_update - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.update
-+ * @pipe:		the display pipe structure
-+ * @old_plane_state:	the old plane state
-+ */
-+void
-+drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
-+				      struct drm_plane_state *old_plane_state)
-+{ }
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_update);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_prepare_fb - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.prepare_fb
-+ * @pipe:		the display pipe structure
-+ * @plane_state:	the new plane state
++ * drm_fbconv_blit_rect - copy an area of pixel data from a framebuffer
++ *	to the hardware buffer
++ * @dst:	the on-screen hardware buffer
++ * @vaddr:	the source buffer in kernel address space
++ * @fb:		the framebuffer of the source buffer
++ * @rect:	the area to copy
 + * Returns:
 + *	0 on success, or
 + *	a negative error code otherwise.
 + *
-+ * The implementation of struct drm_simple_display_pipe_funcs.prepare_fb
-+ * maps the framebuffer's buffer object and the fbdev's screen memory, if
-+ * necessary. After converting the fbdev driver to DRM, only the buffer-object
-+ * mapping should remaing. See drm_fbconv_simple_display_pipe_cleanup_fb() for
-+ * the corresponding clean-up helper.
++ * This function copies the pixel data from a DRM framebuffer to a hardware
++ * buffer; doing necessary format conversion in the process. Not all
++ * combinations of source and destination formats are currently supported.
 + */
-+int
-+drm_fbconv_simple_display_pipe_prepare_fb(struct drm_simple_display_pipe *pipe,
-+					  struct drm_plane_state *plane_state)
-+{ }
-+EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_prepare_fb);
-+
-+/**
-+ * drm_fbconv_simple_display_pipe_cleanup_fb - default implementation for
-+ *	struct drm_simple_display_pipe_funcs.cleanup_fb
-+ * @pipe:		the display pipe structure
-+ * @plane_state:	the old plane state
-+ *
-+ * This function cleans up the framebuffer state after a plane update. See
-+ * drm_fbconv_simple_display_pipe_prepare_fb() for the corresponding prepare
-+ * helper.
-+ */
-+void
-+drm_fbconv_simple_display_pipe_cleanup_fb(struct drm_simple_display_pipe *pipe,
-+					  struct drm_plane_state *plane_state)
-+{ }
-+
-+static const struct drm_simple_display_pipe_funcs simple_display_pipe_funcs = {
-+	.mode_valid = drm_fbconv_simple_display_pipe_mode_valid,
-+	.mode_fixup = drm_fbconv_simple_display_pipe_mode_fixup,
-+	.enable	    = drm_fbconv_simple_display_pipe_enable,
-+	.disable    = drm_fbconv_simple_display_pipe_disable,
-+	.check	    = drm_fbconv_simple_display_pipe_check,
-+	.update	    = drm_fbconv_simple_display_pipe_update,
-+	.prepare_fb = drm_fbconv_simple_display_pipe_prepare_fb,
-+	.cleanup_fb = drm_fbconv_simple_display_pipe_cleanup_fb,
-+};
-+
-+/*
-+ * Mode config
-+ */
-+
-+static enum drm_mode_status mode_config_mode_valid(
-+	struct drm_device *dev, const struct drm_display_mode *mode)
++int drm_fbconv_blit_rect(void *dst, void *vaddr, struct drm_framebuffer *fb,
++			 struct drm_rect *rect)
 +{
-+	return MODE_OK;
-+}
++	struct drm_device *dev = fb->dev;
 +
-+static const struct drm_mode_config_funcs mode_config_funcs = {
-+	.fb_create = drm_gem_fb_create_with_dirty,
-+	.get_format_info = NULL,
-+	/* DRM porting notes: the output_poll_changed callback is used by
-+	 * fb helpers to implement fbdev emulation. If you're porting an
-+	 * fbdev driver to DRM and enable fbdev emulation, this callback
-+	 * will become useful.
-+	 */
-+	.output_poll_changed = drm_fb_helper_output_poll_changed,
-+	.mode_valid = mode_config_mode_valid,
-+	.atomic_check = drm_atomic_helper_check,
-+	.atomic_commit = drm_atomic_helper_commit,
-+	.atomic_state_alloc = NULL,
-+	.atomic_state_clear = NULL,
-+	.atomic_state_free = NULL
-+};
++	if (!vaddr)
++		return 0; /* no framebuffer set for plane; no error */
 +
-+/**
-+ * drm_fbconv_modeset_init - initializes an fbconv modesetting structure
-+ * @modeset:		the fbconv modesetting structure to initialize
-+ * @dev:		the DRM device
-+ * @fb_info:		the fbdev driver's fb_info structure
-+ * @max_width:		the maximum display width that is supported by
-+ *                      the device
-+ * @max_height:		the maximum display height that is supported by
-+ *                      the device
-+ * @preferred_depth:	the device's preferred color depth
-+ * Returns:
-+ *	0 on success, or
-+ *	a negative error code otherwise
-+ *
-+ * This function initializes an instance of struct drm_fbconv_modeset. The
-+ * supplied values for max_width, max_height, and max_depth should match the
-+ * devices capabilities and be supported by the fbdev driver. DRM helpers
-+ * will use these to auto-configure and validate display settings.
-+ */
-+int drm_fbconv_modeset_init(struct drm_fbconv_modeset *modeset,
-+			    struct drm_device *dev, struct fb_info *fb_info,
-+			    unsigned int max_width, unsigned int max_height,
-+			    unsigned int preferred_depth)
-+{
-+	struct drm_mode_config *mode_config = &dev->mode_config;
++	if (dev->mode_config.preferred_depth == (fb->format->cpp[0] * 8))
++		drm_fb_memcpy_dstclip(dst, vaddr, fb, rect);
 +
-+	modeset->dev = dev;
-+	modeset->fb_info = fb_info;
++	else if (fb->format->cpp[0] == 4 &&
++		 dev->mode_config.preferred_depth == 16)
++		drm_fb_xrgb8888_to_rgb565_dstclip(dst, fb->pitches[0],
++						  vaddr, fb, rect, false);
 +
-+	drm_mode_config_init(dev);
++	else if (fb->format->cpp[0] == 4 &&
++		 dev->mode_config.preferred_depth == 24)
++		drm_fb_xrgb8888_to_rgb888_dstclip(dst, fb->pitches[0],
++						  vaddr, fb, rect);
 +
-+	mode_config->max_width = (int)max_width;
-+	mode_config->max_height = (int)max_height;
-+	mode_config->fb_base = fb_info->fix.smem_start;
-+	mode_config->preferred_depth = preferred_depth;
-+	mode_config->prefer_shadow_fbdev = true;
-+	mode_config->funcs = &mode_config_funcs;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(drm_fbconv_modeset_init);
-+
-+/**
-+ * drm_fbconv_modeset_cleanup - Cleans up an fbconv modesetting structure
-+ * @modeset:	the fbconv modesetting structure to clean up
-+ */
-+void drm_fbconv_modeset_cleanup(struct drm_fbconv_modeset *modeset)
-+{
-+	drm_mode_config_cleanup(modeset->dev);
-+}
-+EXPORT_SYMBOL(drm_fbconv_modeset_cleanup);
-+
-+/**
-+ * drm_fbconv_modeset_setup_pipe - sets up the display pipeline for fbconv
-+ * @modeset:		an fbconv modesetting structure
-+ * @funcs:		an implementation of
-+ *                      struct drm_simple_display_pipe_funcs, or NULL
-+ * @formats:		the device's supported display formats
-+ * @format_count:	the number of entries in @formats
-+ * @format_modifiers:	DRM format modifiers, or NULL
-+ * @connector:		the DRM connector, or NULL
-+ * Returns:
-+ *	0 on success, or
-+ *	a negative error code otherwise
-+ *
-+ * This function sets up the display pipeline for an initialized instance of
-+ * struct drm_fbconv_modeset. For maximum compatibility with userspace, the
-+ * provided list of formats should contain at least DRM_FORMAT_XRGB8888 and
-+ * DRM_FORMAT_RGB565. The necessary conversion to the hardware's actual
-+ * configuration can be performed by drm_fbconv_simple_display_pipe_update().
-+ *
-+ * The values for @funcs, @format_modifiers, and @connector should be NULL
-+ * by default. Explicitly settings these parameters will only be helpful for
-+ * refactoring an fbdev driver into a DRM driver.
-+ */
-+int
-+drm_fbconv_modeset_setup_pipe(struct drm_fbconv_modeset *modeset,
-+			      const struct drm_simple_display_pipe_funcs *funcs,
-+			      const uint32_t *formats,
-+			      unsigned int format_count,
-+			      const uint64_t *format_modifiers,
-+			      struct drm_connector *connector)
-+{
-+	int ret;
-+
-+	/* DRM porting note: Now let's enable the display pipeline. If
-+	 * you're porting a framebuffer driver to DRM, you may want to
-+	 * set the correct connector type or replace the simple display
-+	 * pipeline with something more sophisticated.
-+	 */
-+
-+	if (!funcs)
-+		funcs = &simple_display_pipe_funcs;
-+
-+	if (!connector) {
-+		connector = &modeset->connector;
-+
-+		ret = drm_connector_init(modeset->dev, connector,
-+					 &connector_funcs,
-+					 DRM_MODE_CONNECTOR_Unknown);
-+		if (ret)
-+			return ret;
-+		drm_connector_helper_add(connector, &connector_helper_funcs);
-+
-+		ret = drm_connector_register(connector);
-+		if (ret < 0)
-+			return ret;
-+
++	else {
++		/* TODO: add the missing conversion */
++		DRM_ERROR("fbconv: mismatching pixel formats\n");
++		return -EINVAL;
 +	}
 +
-+	ret = drm_simple_display_pipe_init(modeset->dev, &modeset->pipe,
-+					   funcs, formats, format_count,
-+					   format_modifiers, connector);
-+	if (ret)
-+		return ret;
-+
-+	/* Final step: resetting the device's mode config creates
-+	 * state for all objects in the mode-setting pipeline.
-+	 */
-+	drm_mode_config_reset(modeset->dev);
-+
 +	return 0;
 +}
-+EXPORT_SYMBOL(drm_fbconv_modeset_setup_pipe);
++EXPORT_SYMBOL(drm_fbconv_blit_rect);
++
+ /**
+  * drm_fbconv_simple_display_pipe_enable - default implementation for
+  *	struct drm_simple_display_pipe_funcs.enable
+@@ -803,6 +1036,100 @@ drm_fbconv_simple_display_pipe_check(struct drm_simple_display_pipe *pipe,
+ 				     struct drm_plane_state *plane_state,
+ 				     struct drm_crtc_state *crtc_state)
+ {
++	struct drm_fbconv_modeset *modeset;
++	struct fb_videomode fb_mode, fb_var_mode;
++	int ret;
++	struct fb_var_screeninfo fb_var;
++
++	/*
++	 * CRTC check
++	 */
++
++	modeset = drm_fbconv_modeset_of_pipe(pipe);
++
++	/* DRM porting notes: when fbcon takes over the console, it regularly
++	 * changes the display mode. Where's apparently no way to detect this
++	 * directly from fbcon itself. DRM's mode information might therefore
++	 * be out of data, after it takes over the display at a later time.
++	 * Here, we test the CRTC's current mode with the fbdev state. If they
++	 * do not match, we request a mode change from DRM. If you port an
++	 * fbdev driver to DRM, you can remove this code section, DRM will
++	 * be in full control of the display device and doesn't have to react
++	 * to changes from external sources.
++	 */
++
++	if (!crtc_state->mode_changed && crtc_state->adjusted_mode.clock) {
++		drm_fbconv_init_fb_videomode_from_mode(
++			&fb_mode, &crtc_state->adjusted_mode);
++		fb_var_to_videomode(&fb_var_mode, &modeset->fb_info->var);
++		if (!fb_mode_is_equal(&fb_mode, &fb_var_mode))
++			crtc_state->mode_changed = true;
++	}
++
++	/* TODO: The vblank interrupt is currently not supported. We set
++	 * the corresponding flag as a workaround. Some fbdev drivers
++	 * support FBIO_WAITFORVSYNC, which we might use for querying
++	 * vblanks.
++	 *
++	 * DRM porting notes: if you're porting an fbdev driver to DRM,
++	 * remove this line and instead signal a vblank event from the
++	 * interrupt handler.
++	 */
++	crtc_state->no_vblank = true;
++
++	/*
++	 * Plane check
++	 */
++
++	if (!plane_state->crtc)
++		return 0;
++
++	ret = drm_atomic_helper_check_plane_state(plane_state, crtc_state,
++						  1 << 16, 1 << 16,
++						  false, true);
++	if (ret < 0)
++		return ret;
++
++	if (!plane_state->visible || !plane_state->fb)
++		return 0;
++
++	/* Virtual screen sizes are not supported.
++	 */
++
++	if (drm_rect_width(&plane_state->dst) != plane_state->fb->width ||
++	    drm_rect_height(&plane_state->dst) != plane_state->fb->height) {
++		DRM_ERROR("fbconv: virtual screen sizes not supported\n");
++		return -EINVAL;
++	}
++	if (plane_state->dst.x1 || plane_state->dst.y1) {
++		DRM_ERROR("fbconv: virtual screen offset not supported\n");
++		return -EINVAL;
++	}
++
++	/* Pixel formats have to be compatible with fbdev. This is
++	 * usually some variation of XRGB.
++	 */
++
++	if (!pipe->plane.state ||
++	    !pipe->plane.state->fb ||
++	    pipe->plane.state->fb->format[0].format !=
++		plane_state->fb->format[0].format) {
++
++		if (modeset->fb_info->fbops->fb_check_var) {
++			memcpy(&fb_var, &modeset->fb_info->var,
++			       sizeof(fb_var));
++			drm_fbconv_update_fb_var_screeninfo_from_crtc_state(
++				&fb_var, crtc_state);
++			drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
++				&fb_var, plane_state->fb,
++				modeset->fb_info->fix.smem_len);
++			ret = modeset->fb_info->fbops->fb_check_var(
++				&fb_var, modeset->fb_info);
++			if (ret < 0)
++				return ret;
++		}
++	}
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_check);
+@@ -816,7 +1143,119 @@ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_check);
+ void
+ drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
+ 				      struct drm_plane_state *old_plane_state)
+-{ }
++{
++	struct drm_fbconv_modeset *modeset;
++	uint32_t format;
++	struct fb_var_screeninfo fb_var;
++	int ret;
++	bool do_blit;
++	struct drm_rect rect;
++	struct drm_crtc *crtc = &pipe->crtc;
++
++	/*
++	 * Plane update
++	 */
++
++	modeset = drm_fbconv_modeset_of_pipe(pipe);
++
++	format = drm_fbconv_format_of_fb_info(modeset->fb_info);
++
++	/* DRM porting notes: Some fbdev drivers report alpha channels for
++	 * their framebuffer, even though they don't support transparent
++	 * primary planes. For the format test below, we ignore the alpha
++	 * channel and use the non-transparent equivalent of the pixel format.
++	 * If you're porting an fbdev driver to DRM, remove this switch
++	 * statement and report the correct format instead.
++	 */
++	switch (format) {
++	case DRM_FORMAT_ARGB8888:
++		format = DRM_FORMAT_XRGB8888;
++		break;
++	case DRM_FORMAT_ABGR8888:
++		format = DRM_FORMAT_XBGR8888;
++		break;
++	case DRM_FORMAT_RGBA8888:
++		format = DRM_FORMAT_RGBX8888;
++		break;
++	case DRM_FORMAT_BGRA8888:
++		format = DRM_FORMAT_BGRX8888;
++		break;
++	default:
++		break;
++	}
++
++	if (!pipe->plane.state->fb) {
++		/* No framebuffer installed; blank display. */
++		fb_blank(modeset->fb_info, FB_BLANK_NORMAL);
++		return;
++	}
++
++	if ((format != pipe->plane.state->fb->format[0].format) ||
++	    (modeset->fb_info->var.xres_virtual !=
++	    pipe->plane.state->fb->width)) {
++
++		/* Pixel format changed, update fb_info accordingly
++		 */
++
++		memcpy(&fb_var, &modeset->fb_info->var, sizeof(fb_var));
++		ret = drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
++			&fb_var, pipe->plane.state->fb,
++			modeset->fb_info->fix.smem_len);
++		if (ret)
++			return;
++
++		fb_var.activate = FB_ACTIVATE_NOW;
++
++		ret = fb_set_var(modeset->fb_info, &fb_var);
++		if (ret) {
++			DRM_ERROR("fbconv: fb_set_var() failed: %d\n", ret);
++			return;
++		}
++	}
++
++	if (!old_plane_state->fb || /* first-time update */
++	    (format != pipe->plane.state->fb->format[0].format)) {
++
++		/* DRM porting notes: Below we set the LUTs for palette and
++		 * gamma correction. This is required by some fbdev drivers,
++		 * such as nvidiafb and atyfb, which don't initialize the
++		 * table to pass-through the framebuffer values unchanged. This
++		 * is actually CRTC state, but the respective function
++		 * crtc_helper_mode_set_nofb() is only called when a CRTC
++		 * property changes, changes in color formats are not handled
++		 * there. When you're porting a fbdev driver to DRM, remove
++		 * the call. Gamma LUTs are CRTC properties and should be
++		 * handled there. Either remove gamma correction or set up
++		 * the respective CRTC properties for userspace.
++		 */
++		set_cmap(modeset->fb_info);
++	}
++
++	memcpy(&fb_var, &modeset->fb_info->var, sizeof(fb_var));
++	fb_var.xoffset = 0;
++	fb_var.yoffset = 0;
++
++	ret = fb_pan_display(modeset->fb_info, &fb_var);
++	if (ret) {
++		DRM_ERROR("fbconv: fb_pan_display() failed: %d\n", ret);
++		return;
++	}
++
++	do_blit = drm_atomic_helper_damage_merged(old_plane_state,
++						  pipe->plane.state,
++						  &rect);
++	if (do_blit)
++		drm_fbconv_blit_rect(modeset->blit.screen_base,
++				     modeset->blit.vmap, pipe->plane.state->fb,
++				     &rect);
++
++	if (crtc->state->event) {
++		spin_lock_irq(&crtc->dev->event_lock);
++		drm_crtc_send_vblank_event(crtc, crtc->state->event);
++		crtc->state->event = NULL;
++		spin_unlock_irq(&crtc->dev->event_lock);
++	}
++}
+ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_update);
+ 
+ /**
+@@ -837,7 +1276,48 @@ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_update);
+ int
+ drm_fbconv_simple_display_pipe_prepare_fb(struct drm_simple_display_pipe *pipe,
+ 					  struct drm_plane_state *plane_state)
+-{ }
++{
++	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
++	struct fb_info *fb_info = modeset->fb_info;
++	struct drm_framebuffer *fb = plane_state->fb;
++	bool unmap_screen_base = false;
++	void *screen_base;
++	void *vmap;
++	int ret;
++
++	if (!fb)
++		return 0;
++
++	screen_base = fb_info->screen_base;
++
++	if (!screen_base) {
++		screen_base = ioremap(fb_info->fix.smem_start,
++				      fb_info->fix.smem_len);
++		if (!screen_base) {
++			DRM_ERROR("fbconv: ioremap() failed\n");
++			return -ENOMEM;
++		}
++		unmap_screen_base = true;
++	}
++
++	vmap = drm_gem_shmem_vmap(fb->obj[0]);
++	if (!vmap) {
++		DRM_ERROR("fbconv: drm_gem_shmem_vmap() failed\n");
++		ret = -ENOMEM;
++		goto err_iounmap;
++	}
++
++	modeset->blit.vmap = vmap;
++	modeset->blit.screen_base = screen_base;
++	modeset->blit.unmap_screen_base = unmap_screen_base;
++
++	return 0;
++
++err_iounmap:
++	if (unmap_screen_base)
++		iounmap(screen_base);
++	return ret;
++}
+ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_prepare_fb);
+ 
+ /**
+@@ -853,7 +1333,21 @@ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_prepare_fb);
+ void
+ drm_fbconv_simple_display_pipe_cleanup_fb(struct drm_simple_display_pipe *pipe,
+ 					  struct drm_plane_state *plane_state)
+-{ }
++{
++	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
++	struct drm_framebuffer *fb = plane_state->fb;
++
++	if (!fb)
++		return;
++
++	drm_gem_shmem_vunmap(fb->obj[0], modeset->blit.vmap);
++
++	if (modeset->blit.unmap_screen_base)
++		iounmap(modeset->blit.screen_base);
++
++	memset(&modeset->blit, 0, sizeof(modeset->blit));
++}
++EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_cleanup_fb);
+ 
+ static const struct drm_simple_display_pipe_funcs simple_display_pipe_funcs = {
+ 	.mode_valid = drm_fbconv_simple_display_pipe_mode_valid,
 diff --git a/include/drm/drm_fbconv_helper.h b/include/drm/drm_fbconv_helper.h
-index cbb13228c76c..79716af687c1 100644
+index 79716af687c1..3e62b5e80af6 100644
 --- a/include/drm/drm_fbconv_helper.h
 +++ b/include/drm/drm_fbconv_helper.h
-@@ -3,7 +3,11 @@
- #ifndef DRM_FBCONV_HELPER_H
- #define DRM_FBCONV_HELPER_H
+@@ -92,6 +92,9 @@ void
+ drm_fbconv_simple_display_pipe_cleanup_fb(struct drm_simple_display_pipe *pipe,
+ 					  struct drm_plane_state *plane_state);
  
-+#include <drm/drm_connector.h>
-+#include <drm/drm_crtc.h>
-+#include <drm/drm_encoder.h>
- #include <drm/drm_fourcc.h>
-+#include <drm/drm_simple_kms_helper.h>
++int drm_fbconv_blit_rect(void *dst, void *vaddr, struct drm_framebuffer *fb,
++			 struct drm_rect *rect);
++
+ /*
+  * Modeset helpers
+  */
+@@ -107,6 +110,12 @@ struct drm_fbconv_modeset {
+ 	struct drm_connector connector;
+ 	struct drm_simple_display_pipe pipe;
  
- struct drm_device;
- struct drm_display_mode;
-@@ -51,4 +55,78 @@ void drm_fbconv_update_fb_var_screeninfo_from_mode(
- void drm_fbconv_init_fb_var_screeninfo_from_mode(
- 	struct fb_var_screeninfo *var, const struct drm_display_mode *mode);
- 
-+/*
-+ * Simple display pipe
-+ */
++	struct {
++		void *vmap;
++		void *screen_base;
++		bool unmap_screen_base;
++	} blit;
 +
-+enum drm_mode_status
-+drm_fbconv_simple_display_pipe_mode_valid(struct drm_crtc *crtc,
-+					  const struct drm_display_mode *mode);
-+
-+bool drm_fbconv_simple_display_pipe_mode_fixup(
-+	struct drm_crtc *crtc, const struct drm_display_mode *mode,
-+	struct drm_display_mode *adjusted_mode);
-+
-+void
-+drm_fbconv_simple_display_pipe_enable(struct drm_simple_display_pipe *pipe,
-+				      struct drm_crtc_state *crtc_state,
-+				      struct drm_plane_state *plane_state);
-+
-+void
-+drm_fbconv_simple_display_pipe_disable(struct drm_simple_display_pipe *pipe);
-+
-+int
-+drm_fbconv_simple_display_pipe_check(struct drm_simple_display_pipe *pipe,
-+				     struct drm_plane_state *plane_state,
-+				     struct drm_crtc_state *crtc_state);
-+
-+void
-+drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
-+				      struct drm_plane_state *old_plane_state);
-+
-+int
-+drm_fbconv_simple_display_pipe_prepare_fb(struct drm_simple_display_pipe *pipe,
-+					  struct drm_plane_state *plane_state);
-+
-+void
-+drm_fbconv_simple_display_pipe_cleanup_fb(struct drm_simple_display_pipe *pipe,
-+					  struct drm_plane_state *plane_state);
-+
-+/*
-+ * Modeset helpers
-+ */
-+
-+/**
-+ * struct drm_fbconv_modeset - contains state for fbconv modesetting
-+ * @connector:	the DRM connector
-+ * @pipe:	the modesetting pipeline
-+ * @dev:	the DRM device
-+ * @fb_info:	the fbdev driver's fb_info structure
-+ */
-+struct drm_fbconv_modeset {
-+	struct drm_connector connector;
-+	struct drm_simple_display_pipe pipe;
-+
-+	struct drm_device *dev;
-+	struct fb_info *fb_info;
-+};
-+
-+static inline struct drm_fbconv_modeset *drm_fbconv_modeset_of_pipe(
-+	struct drm_simple_display_pipe *pipe)
-+{
-+	return container_of(pipe, struct drm_fbconv_modeset, pipe);
-+}
-+
-+int drm_fbconv_modeset_init(struct drm_fbconv_modeset *modeset,
-+			    struct drm_device *dev, struct fb_info *fb_info,
-+			    unsigned int max_width, unsigned int max_height,
-+			    unsigned int preferred_depth);
-+void drm_fbconv_modeset_cleanup(struct drm_fbconv_modeset *modeset);
-+
-+int drm_fbconv_modeset_setup_pipe(
-+	struct drm_fbconv_modeset *modeset,
-+	const struct drm_simple_display_pipe_funcs *funcs,
-+	const uint32_t *formats, unsigned int format_count,
-+	const uint64_t *format_modifiers, struct drm_connector *connector);
-+
- #endif
+ 	struct drm_device *dev;
+ 	struct fb_info *fb_info;
+ };
 -- 
 2.23.0
 
