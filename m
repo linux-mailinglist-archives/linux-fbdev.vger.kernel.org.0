@@ -2,93 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36703D5C64
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 09:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97174D5D2D
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 10:12:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730350AbfJNH1u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 03:27:50 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:45048 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729054AbfJNH1t (ORCPT
+        id S1729953AbfJNIMZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 04:12:25 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:35156 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726637AbfJNIMY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 03:27:49 -0400
-Received: by mail-wr1-f66.google.com with SMTP id z9so18344888wrl.11
-        for <linux-fbdev@vger.kernel.org>; Mon, 14 Oct 2019 00:27:48 -0700 (PDT)
+        Mon, 14 Oct 2019 04:12:24 -0400
+Received: by mail-wm1-f66.google.com with SMTP id y21so15747323wmi.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 14 Oct 2019 01:12:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=Q5BHsZHxaQuBnsC0n/rsVoiaHAm2VXfTTXiC030BJgs=;
-        b=K8uBglN/gYVEhhG9uvD0jxpL+kBC7VMC3W6M/I1GYQtLwoF+9PBzncmew5ihD7lRR/
-         TNfGGegf5VdqF1Bz+s6k/sVm2IVvUeOPyQsiHPQ0px5gkz9Rd9s6Pm6s0Rnl8GdvL1pt
-         sCt23Tm3/dh+zeCrWdDNF2Mxmt3Ok4iwrRpVu3+vJCEi4yulCnHktAiOkCRJjIFBcq9m
-         eKdm5Op2XTuFc4d0ys4Jqpxa6y1uZlSo9BAgkCq7WwhELcX0kF2OB+OB+k7UhSEjrxU+
-         QrLa9LQ8Urk0ltRsYf74NGzLUvIPrvWYHhtlZuuLXN7ZVXrtxOxZGzYVJ4z+xf+D/Q6m
-         CMQw==
+        bh=+deUZXsERBoIwuF8w37rkTqOJuJ0YNPkmp+VXhLAItk=;
+        b=LD7yH42N59JCCaLRFfXRFerOH8rkSLiF+LkhxjTWD8eNTeij5IMQn1woDobFZE2iCw
+         T7PRQ5NqIOzxbidAmveDF27g/uRI4cYMXqKO/PiT6vh6oSEh5FGBE6Qpt93GBWqnaEGH
+         lmBXwIYnLtN3udyc40lT+rQqfc2okHAYI2K6oBmuKA/w4jSTcX3jV3q0ApsAULz+4gmY
+         VlAEmK5rk0W33jfbswlq2l3XI2DuvEvHpgXpf26c0IXqlDSe7GMgnINcA03sbbgoQM7N
+         T1vcoiZ56aqBt+IXEp1ThrluAiAOm+Bm/XI852XhW4XdnC238NJb/RqDGBbxXyCEc5Yf
+         dWwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=Q5BHsZHxaQuBnsC0n/rsVoiaHAm2VXfTTXiC030BJgs=;
-        b=YdTTdk5LO+j/1lPzC+59U2z/sSi+gzZTyvypvUVSwAP/mvXB6r/Rl89HmgAFjg/gzc
-         rmoFiYaXz80gNerpXwCjMWTHi73A3d4VXkwo7K3HOze5G1hAijVRqDp0kb4NehNofFgp
-         7THUBTl2ESIduMZnEshOP/IxYfGn7bRs5z4dIjg7m+M4OhqRnd6+pie6GSwRW+dkad3W
-         Ag9j2gB2icRJbJ1/yPnr+ABDTYBj9/j2S+bg889fd3IAPaVzxgcFC+/YO4oGEmfXbbPI
-         /DG9VrXPrcbw7EpH2WfeJE2YvbAY6+gJc47dZ0tyinf+j4x7b6n55DxiYEA8zg0AmD1k
-         ldRw==
-X-Gm-Message-State: APjAAAWm77D5XynRATqiE0jEB3PuWZ1X3FEnEQU0miTT6IDeAS7xj67i
-        xPB5gtTklO0MOx4TLy48rXP2mw==
-X-Google-Smtp-Source: APXvYqwDm2Pu3gF5wLWhDaqvm22UpUh6vWq/BlOq37ZQHR6R8Ub8u3VH4fE0xrIa7I5M58b1ImJhUQ==
-X-Received: by 2002:a5d:540d:: with SMTP id g13mr20624080wrv.8.1571038067578;
-        Mon, 14 Oct 2019 00:27:47 -0700 (PDT)
+        bh=+deUZXsERBoIwuF8w37rkTqOJuJ0YNPkmp+VXhLAItk=;
+        b=YvK16ROV4MmfIGkLV7LQy1wW8idenyFOnGbG+TZ+++bEQoH7xi3Lfh6OZ4dATGyzYQ
+         lcg0a7IQ2CBuSDNKzhGA1isYa3sO8RuZg3zYzvYB/aaPpvGQwT8eYDiHy6Y21AxWYMkJ
+         TlcZOcKezDLF+P4EAn+QTQHU4Sm/jnas3Co5il47kOz1WR9UgEWx0jiucAUYNp8hAdKd
+         ktRkid5MDpv/sASu/2LP6xgIPITnRiqSu6XGwDG6Ws13rlTGEkCNFfS+GLUNBMsPk655
+         C+FUQAoQHrXu0RYZD4AsZKO+4Gx/cC3g9IY+6THvEgTui1qTZxSy0pjfPz/filuj7W1S
+         EeYQ==
+X-Gm-Message-State: APjAAAVX+E0n27aQCAaHr6o5jJeKsCi2xIGcuwk3HrzKNwERMDxHdmg8
+        gXXjSMrOb70gRTGy7beD/uD05tVa25U=
+X-Google-Smtp-Source: APXvYqzzMPmMnU/mdIbw3oXsYhkR72iWEBpRtwUxn8lSxoffzDIn8VIjfySG7MOoXzNCS5f6xEQ2pA==
+X-Received: by 2002:a7b:ce89:: with SMTP id q9mr13965770wmj.2.1571040743235;
+        Mon, 14 Oct 2019 01:12:23 -0700 (PDT)
 Received: from dell ([2.27.167.11])
-        by smtp.gmail.com with ESMTPSA id n3sm7073653wrr.50.2019.10.14.00.27.46
+        by smtp.gmail.com with ESMTPSA id c9sm16087692wrt.7.2019.10.14.01.12.21
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 14 Oct 2019 00:27:47 -0700 (PDT)
-Date:   Mon, 14 Oct 2019 08:27:45 +0100
+        Mon, 14 Oct 2019 01:12:22 -0700 (PDT)
+Date:   Mon, 14 Oct 2019 09:12:20 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] backlight: pwm_bl: switch to power-of-2 base for
- fixed-point math
-Message-ID: <20191014072745.GH4545@dell>
-References: <20191008120327.24208-1-linux@rasmusvillemoes.dk>
- <20191008120327.24208-5-linux@rasmusvillemoes.dk>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
+Message-ID: <20191014081220.GK4545@dell>
+References: <20191007033200.13443-1-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191008120327.24208-5-linux@rasmusvillemoes.dk>
+In-Reply-To: <20191007033200.13443-1-brgl@bgdev.pl>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 08 Oct 2019, Rasmus Villemoes wrote:
+On Mon, 07 Oct 2019, Bartosz Golaszewski wrote:
 
-> Using a power-of-2 instead of power-of-10 base makes the computations
-> much cheaper. 2^16 is safe; retval never becomes more than 2^48 +
-> 2^32/2. On a 32 bit platform, the very expensive 64/32 division at the
-> end of cie1931() instead becomes essentially free (a shift by 32 is
-> just a register rename).
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
->  drivers/video/backlight/pwm_bl.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
+> While working on my other series related to gpio-backlight[1] I noticed
+> that we could simplify the driver if we made the only user of platform
+> data use GPIO lookups and device properties. This series tries to do
+> that.
+> 
+> The first patch adds all necessary data structures to ecovec24. Patch
+> 2/7 unifies much of the code for both pdata and non-pdata cases. Patches
+> 3-4/7 remove unused platform data fields. Last three patches contain
+> additional improvements for the GPIO backlight driver while we're already
+> modifying it.
+> 
+> I don't have access to this HW but hopefully this works. Only compile
+> tested.
+> 
+> [1] https://lkml.org/lkml/2019/6/25/900
+> 
+> v1 -> v2:
+> - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
+> - added additional two patches with minor improvements
+> 
+> v2 -> v3:
+> - in patch 7/7: used initializers to set values for pdata and dev local vars
+> 
+> v3 -> v4:
+> - rebased on top of v5.4-rc1
+> - removed changes that are no longer relevant after commit ec665b756e6f
+>   ("backlight: gpio-backlight: Correct initial power state handling")
+> - added patch 7/7
+> 
+> v4 ->V5:
+> - in patch 7/7: added a comment replacing the name of the function being
+>   pulled into probe()
+> 
+> Bartosz Golaszewski (7):
+>   backlight: gpio: remove unneeded include
+>   sh: ecovec24: add additional properties to the backlight device
+>   backlight: gpio: simplify the platform data handling
+>   sh: ecovec24: don't set unused fields in platform data
+>   backlight: gpio: remove unused fields from platform data
+>   backlight: gpio: use a helper variable for &pdev->dev
+>   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
+> 
+>  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
 
-Applied, thanks.
+I guess we're just waiting for the SH Acks now?
+
+>  drivers/video/backlight/gpio_backlight.c     | 108 +++++--------------
+>  include/linux/platform_data/gpio_backlight.h |   3 -
+>  3 files changed, 53 insertions(+), 91 deletions(-)
+> 
 
 -- 
 Lee Jones [李琼斯]
