@@ -2,18 +2,18 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0DC2D64A1
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABD9D64A0
 	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732450AbfJNOE1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 10:04:27 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50960 "EHLO mx1.suse.de"
+        id S1732449AbfJNOE0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 10:04:26 -0400
+Received: from mx2.suse.de ([195.135.220.15]:51034 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732382AbfJNOE0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        id S1732441AbfJNOE0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
         Mon, 14 Oct 2019 10:04:26 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 5F8F2B219;
+        by mx1.suse.de (Postfix) with ESMTP id CFC80B206;
         Mon, 14 Oct 2019 14:04:23 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 09/15] drm/fbconv: Mode-setting pipeline enable / disable
-Date:   Mon, 14 Oct 2019 16:04:10 +0200
-Message-Id: <20191014140416.28517-10-tzimmermann@suse.de>
+Subject: [PATCH v2 10/15] drm/fbconv: Reimplement several fbdev interfaces
+Date:   Mon, 14 Oct 2019 16:04:11 +0200
+Message-Id: <20191014140416.28517-11-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,39 +36,272 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The display mode is set by converting the DRM display mode to an
-fb_info state and handling it to the fbdev driver's fb_setvar()
-function. This also requires a color depth, which we take from the
-value of struct drm_mode_config.preferred_depth
+This patch reimplements fb_blank(), fb_pan_display(), fb_set_cmap() and
+fb_set_var() for fbconv helpers. The goal is to have all calls to driver
+callback functions located within fbconv and to reduce the amount of
+contained work to a minimum.
+
+Some noteable differences to fbdev include:
+
+  * Code related to fbcon has been left out. Console support is
+    emulated by DRM and the drivers don't interact directly with
+    it.
+
+  * No events are sent out. As the fbconv helpers are not part of
+    the fbdev framework, there are no event listeners anyway.
+
+  * Code related to ioctl and user-space has been left out as
+    well. User-space interfaces are provided by DRM.
+
+  * Error messages have been added.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_fbconv_helper.c | 113 +++++++++++++++++++++++++++-
- include/drm/drm_fbconv_helper.h     |   2 +
- 2 files changed, 113 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_fbconv_helper.c | 240 +++++++++++++++++++++++++---
+ 1 file changed, 220 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
-index cf218016ac05..ca8b43c91266 100644
+index ca8b43c91266..f7f247e30a3d 100644
 --- a/drivers/gpu/drm/drm_fbconv_helper.c
 +++ b/drivers/gpu/drm/drm_fbconv_helper.c
-@@ -919,6 +919,24 @@ static int drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
+@@ -737,6 +737,55 @@ static const struct drm_connector_funcs connector_funcs = {
+  * Colormap updates
+  */
+ 
++static int drm_fbconv_set_cmap(struct fb_cmap *cmap, struct fb_info *fb_info)
++{
++	int i, start, res;
++	u16 *red, *green, *blue, *transp;
++	u_int hred, hgreen, hblue, htransp = 0xffff;
++
++	red = cmap->red;
++	green = cmap->green;
++	blue = cmap->blue;
++	transp = cmap->transp;
++	start = cmap->start;
++
++	if (start < 0 || (!fb_info->fbops->fb_setcolreg &&
++			  !fb_info->fbops->fb_setcmap)) {
++		DRM_ERROR("fbconv: Palette not supported.\n");
++		return -EINVAL;
++	}
++
++	if (fb_info->fbops->fb_setcmap) {
++		res = fb_info->fbops->fb_setcmap(cmap, fb_info);
++		if (res) {
++			DRM_ERROR("fbconv: fbops->fb_setcmap() failed: %d\n",
++				  res);
++			return res;
++		}
++	} else {
++		for (i = 0; i < cmap->len; i++) {
++			hred = *red++;
++			hgreen = *green++;
++			hblue = *blue++;
++			if (transp)
++				htransp = *transp++;
++			res = fb_info->fbops->fb_setcolreg(start++,
++							   hred, hgreen, hblue,
++							   htransp, fb_info);
++			if (res) {
++				DRM_ERROR("fbconv: fbops->fb_setcolreg() failed: %d\n",
++					  res);
++				/* cmap handling is a mess; don't err here */
++				break;
++			}
++		}
++	}
++
++	fb_copy_cmap(cmap, &fb_info->cmap);
++
++	return 0;
++}
++
+ /* provides a default colormap for palette modes */
+ static int create_palette_cmap(struct fb_cmap *cmap,
+ 			       const struct fb_var_screeninfo *fb_var)
+@@ -856,11 +905,9 @@ static int set_cmap(struct fb_info *fb_info)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = fb_set_cmap(&cmap, fb_info);
+-	if (ret) {
+-		DRM_ERROR("fbconv: fb_set_cmap() failed: %d\n", ret);
++	ret = drm_fbconv_set_cmap(&cmap, fb_info);
++	if (ret)
+ 		goto err_fb_dealloc_cmap;
+-	}
+ 	fb_dealloc_cmap(&cmap);
+ 
+ 	return 0;
+@@ -891,7 +938,7 @@ static int drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
+ 
+ 	/* Our virtual screen covers all the graphics memory (sans some
+ 	 * trailing bytes). This allows for setting the scanout buffer's
+-	 * address with fb_pan_display().
++	 * address with drm_fbconv_pan_display().
+ 	 */
+ 
+ 	width = fb->pitches[0];
+@@ -937,6 +984,165 @@ static int drm_fbconv_update_fb_var_screeninfo_from_simple_display_pipe(
  	return 0;
  }
  
-+static int drm_fbconv_update_fb_var_screeninfo_from_simple_display_pipe(
-+	struct fb_var_screeninfo *fb_var, struct drm_simple_display_pipe *pipe)
++static int drm_fbconv_blank(struct fb_info *fb_info, int blank)
 +{
-+	struct drm_plane *primary = pipe->crtc.primary;
-+	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
++	int ret = -EINVAL;
 +
-+	if (primary && primary->state && primary->state->fb)
-+		return drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
-+			fb_var, primary->state->fb,
-+			modeset->fb_info->fix.smem_len);
++	if (fb_info->fbops->fb_blank) {
++		ret = fb_info->fbops->fb_blank(blank, fb_info);
++		if (ret) {
++			DRM_ERROR("fbconv: fbops->fb_blank() failed: %d\n",
++				  ret);
++		}
++	}
++	return ret;
++}
 +
-+	fb_var->xres_virtual = fb_var->xres;
-+	fb_var->yres_virtual = fb_var->yres;
-+	fb_var->bits_per_pixel = modeset->dev->mode_config.preferred_depth;
++static int drm_fbconv_pan_display(struct fb_info *fb_info,
++				  struct fb_var_screeninfo *var)
++{
++	struct fb_fix_screeninfo *fix = &fb_info->fix;
++	unsigned int yres = fb_info->var.yres;
++	int err;
++
++	if (var->yoffset > 0) {
++		if (var->vmode & FB_VMODE_YWRAP) {
++			if (!fix->ywrapstep ||
++			    (var->yoffset % fix->ywrapstep)) {
++				DRM_ERROR("fbconv: Invalid fix->ywrapstep: %d\n",
++					  fix->ywrapstep);
++				return -EINVAL;
++			}
++			yres = 0;
++		} else if (!fix->ypanstep || (var->yoffset % fix->ypanstep)) {
++			DRM_ERROR("fbconv: Invalid fix->ypanstep: %d\n",
++				  fix->ypanstep);
++			return -EINVAL;
++		}
++	}
++
++	if (var->xoffset > 0) {
++		if (!fix->xpanstep || (var->xoffset % fix->xpanstep)) {
++			DRM_ERROR("fbconv: Invalid fix->xpanstep: %d\n",
++				  fix->xpanstep);
++			return -EINVAL;
++		}
++	}
++
++	if (!fb_info->fbops->fb_pan_display ||
++	    var->yoffset > fb_info->var.yres_virtual - yres ||
++	    var->xoffset > fb_info->var.xres_virtual - fb_info->var.xres) {
++		DRM_ERROR("fbconv: Display panning unsupported\n");
++		return -EINVAL;
++	}
++
++	err = fb_info->fbops->fb_pan_display(var, fb_info);
++	if (err) {
++		DRM_ERROR("fbconv: fbops->pan_display() failed: %d", err);
++		return err;
++	}
++
++	fb_info->var.xoffset = var->xoffset;
++	fb_info->var.yoffset = var->yoffset;
++
++	if (var->vmode & FB_VMODE_YWRAP)
++		fb_info->var.vmode |= FB_VMODE_YWRAP;
++	else
++		fb_info->var.vmode &= ~FB_VMODE_YWRAP;
++
++	return 0;
++}
++
++static int drm_fbconv_set_var(struct fb_info *fb_info,
++			      struct fb_var_screeninfo *var)
++{
++	int ret = 0;
++	u32 activate;
++	struct fb_var_screeninfo old_var;
++	struct fb_videomode mode;
++
++	if (var->activate & FB_ACTIVATE_INV_MODE) {
++		struct fb_videomode mode1, mode2;
++
++		fb_var_to_videomode(&mode1, var);
++		fb_var_to_videomode(&mode2, &fb_info->var);
++		/* make sure we don't delete the videomode of current var */
++		ret = fb_mode_is_equal(&mode1, &mode2);
++		if (ret) {
++			DRM_ERROR("fbconv: fb_mode_is_equal() failed: %d\n",
++				  ret);
++			return -EINVAL;
++		}
++
++		fb_delete_videomode(&mode1, &fb_info->modelist);
++
++		return 0;
++	}
++
++	if (!(var->activate & FB_ACTIVATE_FORCE) &&
++	    !memcmp(&fb_info->var, var, sizeof(*var)))
++		return 0;
++
++	activate = var->activate;
++
++	/* When using FOURCC mode, make sure the red, green, blue and
++	 * transp fields are set to 0.
++	 */
++	if ((fb_info->fix.capabilities & FB_CAP_FOURCC) && var->grayscale > 1) {
++		if (var->red.offset     || var->green.offset    ||
++		    var->blue.offset    || var->transp.offset   ||
++		    var->red.length     || var->green.length    ||
++		    var->blue.length    || var->transp.length   ||
++		    var->red.msb_right  || var->green.msb_right ||
++		    var->blue.msb_right || var->transp.msb_right) {
++			DRM_ERROR("fbconv: Invalid color offsets in FOURCC mode\n");
++			return -EINVAL;
++		}
++	}
++
++	if (!fb_info->fbops->fb_check_var) {
++		*var = fb_info->var;
++		return 0;
++	}
++
++	ret = fb_info->fbops->fb_check_var(var, fb_info);
++	if (ret) {
++		DRM_ERROR("fbconv: fbops->fb_check_var() failed: %d\n", ret);
++		return ret;
++	}
++
++	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_NOW)
++		return 0;
++
++	old_var = fb_info->var;
++	fb_info->var = *var;
++
++	if (fb_info->fbops->fb_set_par) {
++		ret = fb_info->fbops->fb_set_par(fb_info);
++		if (ret) {
++			fb_info->var = old_var;
++			DRM_ERROR("fbconv: fbops->fb_set_par() failed: %d\n",
++				  ret);
++			return ret;
++		}
++	}
++
++	drm_fbconv_pan_display(fb_info, &fb_info->var);
++	drm_fbconv_set_cmap(&fb_info->cmap, fb_info);
++	fb_var_to_videomode(&mode, &fb_info->var);
++
++	if (fb_info->modelist.prev && fb_info->modelist.next &&
++	    !list_empty(&fb_info->modelist))
++		ret = fb_add_videomode(&mode, &fb_info->modelist);
++
++	if (ret) {
++		DRM_ERROR("fbconv: fb_add_videomode() failed: %d\n", ret);
++		return ret;
++	}
 +
 +	return 0;
 +}
@@ -76,142 +309,69 @@ index cf218016ac05..ca8b43c91266 100644
  /**
   * drm_fbconv_simple_display_pipe_mode_valid - default implementation for
   *	struct drm_simple_display_pipe_funcs.mode_valid
-@@ -950,6 +968,28 @@ bool drm_fbconv_simple_display_pipe_mode_fixup(
- 	struct drm_crtc *crtc, const struct drm_display_mode *mode,
- 	struct drm_display_mode *adjusted_mode)
- {
-+	struct drm_simple_display_pipe *pipe =
-+		container_of(crtc, struct drm_simple_display_pipe, crtc);
-+	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
-+	struct fb_var_screeninfo fb_var;
-+	int ret;
-+
-+	if (!modeset->fb_info->fbops->fb_check_var)
-+		return true;
-+
-+	drm_fbconv_init_fb_var_screeninfo_from_mode(&fb_var, mode);
-+
-+	ret = drm_fbconv_update_fb_var_screeninfo_from_simple_display_pipe(
-+		&fb_var, &modeset->pipe);
+@@ -1105,13 +1311,11 @@ drm_fbconv_simple_display_pipe_enable(struct drm_simple_display_pipe *pipe,
+ 
+ 	fb_var.activate = FB_ACTIVATE_NOW;
+ 
+-	ret = fb_set_var(modeset->fb_info, &fb_var);
+-	if (ret) {
+-		DRM_ERROR("fbconv: fb_set_var() failed: %d\n", ret);
++	ret = drm_fbconv_set_var(modeset->fb_info, &fb_var);
 +	if (ret)
-+		return true;
-+
-+	ret = modeset->fb_info->fbops->fb_check_var(&fb_var, modeset->fb_info);
-+	if (ret < 0)
-+		return false;
-+
-+	drm_mode_update_from_fb_var_screeninfo(adjusted_mode, &fb_var);
-+
- 	return true;
- }
- EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_mode_fixup);
-@@ -1000,6 +1040,32 @@ int drm_fbconv_blit_rect(void *dst, void *vaddr, struct drm_framebuffer *fb,
- }
- EXPORT_SYMBOL(drm_fbconv_blit_rect);
+ 		return;
+-	}
  
-+/**
-+ * drm_fbconv_blit_fullscreen - copy all pixel data from a framebuffer
-+ *	to the hardware buffer
-+ * @dst:	the on-screen hardware buffer
-+ * @vaddr:	the source buffer in kernel address space
-+ * @fb:		the framebuffer of the source buffer
-+ * Returns:
-+ *	0 on success, or
-+ *	a negative error code otherwise.
-+ *
-+ * This function is equivalent to drm_fbconv_blit_rect(), but copies the
-+ * framebuffer's complete content.
-+ */
-+int drm_fbconv_blit_fullscreen(void *dst, void *vaddr,
-+			       struct drm_framebuffer *fb)
-+{
-+	struct drm_rect fullscreen = {
-+		.x1 = 0,
-+		.x2 = fb->width,
-+		.y1 = 0,
-+		.y2 = fb->height,
-+	};
-+	return drm_fbconv_blit_rect(dst, vaddr, fb, &fullscreen);
-+}
-+EXPORT_SYMBOL(drm_fbconv_blit_fullscreen);
-+
- /**
-  * drm_fbconv_simple_display_pipe_enable - default implementation for
-  *	struct drm_simple_display_pipe_funcs.enable
-@@ -1011,7 +1077,46 @@ void
- drm_fbconv_simple_display_pipe_enable(struct drm_simple_display_pipe *pipe,
- 				      struct drm_crtc_state *crtc_state,
- 				      struct drm_plane_state *plane_state)
--{ }
-+{
-+	struct drm_fbconv_modeset *modeset;
-+	struct fb_var_screeninfo fb_var;
-+	int ret;
-+
-+	/* As this is atomic mode setting, any function call is not
-+	 * allowed to fail. If it does, an additional test should be
-+	 * added to simple_display_pipe_check().
-+	 */
-+
-+	modeset = drm_fbconv_modeset_of_pipe(pipe);
-+
-+	drm_fbconv_init_fb_var_screeninfo_from_mode(
-+		&fb_var, &crtc_state->adjusted_mode);
-+
-+	if (plane_state && plane_state->fb) {
-+		ret = drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
-+			&fb_var, plane_state->fb,
-+			modeset->fb_info->fix.smem_len);
-+		if (ret)
-+			return;
-+	} else {
-+		fb_var.xres_virtual = fb_var.xres;
-+		fb_var.yres_virtual = fb_var.yres;
-+	}
-+
-+	fb_var.activate = FB_ACTIVATE_NOW;
-+
-+	ret = fb_set_var(modeset->fb_info, &fb_var);
-+	if (ret) {
-+		DRM_ERROR("fbconv: fb_set_var() failed: %d\n", ret);
-+		return;
-+	}
-+
-+	fb_blank(modeset->fb_info, FB_BLANK_UNBLANK);
-+
-+	drm_fbconv_blit_fullscreen(modeset->blit.screen_base,
-+				   modeset->blit.vmap,
-+				   plane_state->fb);
-+}
- EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_enable);
+-	fb_blank(modeset->fb_info, FB_BLANK_UNBLANK);
++	drm_fbconv_blank(modeset->fb_info, FB_BLANK_UNBLANK);
  
- /**
-@@ -1021,7 +1126,11 @@ EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_enable);
-  */
- void
- drm_fbconv_simple_display_pipe_disable(struct drm_simple_display_pipe *pipe)
--{ }
-+{
-+	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
-+
-+	fb_blank(modeset->fb_info, FB_BLANK_POWERDOWN);
-+}
+ 	drm_fbconv_blit_fullscreen(modeset->blit.screen_base,
+ 				   modeset->blit.vmap,
+@@ -1129,7 +1333,7 @@ drm_fbconv_simple_display_pipe_disable(struct drm_simple_display_pipe *pipe)
+ {
+ 	struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
+ 
+-	fb_blank(modeset->fb_info, FB_BLANK_POWERDOWN);
++	drm_fbconv_blank(modeset->fb_info, FB_BLANK_POWERDOWN);
+ }
  EXPORT_SYMBOL(drm_fbconv_simple_display_pipe_disable);
  
- /**
-diff --git a/include/drm/drm_fbconv_helper.h b/include/drm/drm_fbconv_helper.h
-index 3e62b5e80af6..c7d211f40462 100644
---- a/include/drm/drm_fbconv_helper.h
-+++ b/include/drm/drm_fbconv_helper.h
-@@ -94,6 +94,8 @@ drm_fbconv_simple_display_pipe_cleanup_fb(struct drm_simple_display_pipe *pipe,
+@@ -1295,7 +1499,7 @@ drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
  
- int drm_fbconv_blit_rect(void *dst, void *vaddr, struct drm_framebuffer *fb,
- 			 struct drm_rect *rect);
-+int drm_fbconv_blit_fullscreen(void *dst, void *vaddr,
-+			       struct drm_framebuffer *fb);
+ 	if (!pipe->plane.state->fb) {
+ 		/* No framebuffer installed; blank display. */
+-		fb_blank(modeset->fb_info, FB_BLANK_NORMAL);
++		drm_fbconv_blank(modeset->fb_info, FB_BLANK_NORMAL);
+ 		return;
+ 	}
  
- /*
-  * Modeset helpers
+@@ -1315,11 +1519,9 @@ drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
+ 
+ 		fb_var.activate = FB_ACTIVATE_NOW;
+ 
+-		ret = fb_set_var(modeset->fb_info, &fb_var);
+-		if (ret) {
+-			DRM_ERROR("fbconv: fb_set_var() failed: %d\n", ret);
++		ret = drm_fbconv_set_var(modeset->fb_info, &fb_var);
++		if (ret)
+ 			return;
+-		}
+ 	}
+ 
+ 	if (!old_plane_state->fb || /* first-time update */
+@@ -1344,11 +1546,9 @@ drm_fbconv_simple_display_pipe_update(struct drm_simple_display_pipe *pipe,
+ 	fb_var.xoffset = 0;
+ 	fb_var.yoffset = 0;
+ 
+-	ret = fb_pan_display(modeset->fb_info, &fb_var);
+-	if (ret) {
+-		DRM_ERROR("fbconv: fb_pan_display() failed: %d\n", ret);
++	ret = drm_fbconv_pan_display(modeset->fb_info, &fb_var);
++	if (ret)
+ 		return;
+-	}
+ 
+ 	do_blit = drm_atomic_helper_damage_merged(old_plane_state,
+ 						  pipe->plane.state,
 -- 
 2.23.0
 
