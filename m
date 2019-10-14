@@ -2,19 +2,19 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C16D649A
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0973D6498
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732437AbfJNOEX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 10:04:23 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50722 "EHLO mx1.suse.de"
+        id S1732370AbfJNOEW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 10:04:22 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50760 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732339AbfJNOEX (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 10:04:23 -0400
+        id S1732389AbfJNOEW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Oct 2019 10:04:22 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 83FCEB112;
-        Mon, 14 Oct 2019 14:04:20 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 08B0FB12D;
+        Mon, 14 Oct 2019 14:04:21 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
         maarten.lankhorst@linux.intel.com, mripard@kernel.org,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 03/15] drm/simple-kms-helper: Add mode_fixup() to simple display pipe
-Date:   Mon, 14 Oct 2019 16:04:04 +0200
-Message-Id: <20191014140416.28517-4-tzimmermann@suse.de>
+Subject: [PATCH v2 04/15] drm: Add fbconv helper module
+Date:   Mon, 14 Oct 2019 16:04:05 +0200
+Message-Id: <20191014140416.28517-5-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,104 +36,58 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The mode fix-up function for simple display helpers is equivalent to the
-regular pipeline's CRTC mode fix-up function. It's called to adjust the
-CRTC's display mode for the encoder. Add this function for DRM fbconv
-helpers.
+This adds fbconv helpers for DRM to the build infrastructure. The
+configuration symbol is DRM_FBCONV_HELPERS. Drivers should select
+it if they wish to use fbconv.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_simple_kms_helper.c | 15 +++++++++
- include/drm/drm_simple_kms_helper.h     | 43 +++++++++++++++++++++++++
- 2 files changed, 58 insertions(+)
+ drivers/gpu/drm/Kconfig             | 10 ++++++++++
+ drivers/gpu/drm/Makefile            |  1 +
+ drivers/gpu/drm/drm_fbconv_helper.c |  1 +
+ 3 files changed, 12 insertions(+)
+ create mode 100644 drivers/gpu/drm/drm_fbconv_helper.c
 
-diff --git a/drivers/gpu/drm/drm_simple_kms_helper.c b/drivers/gpu/drm/drm_simple_kms_helper.c
-index 046055719245..acd9b79bf92a 100644
---- a/drivers/gpu/drm/drm_simple_kms_helper.c
-+++ b/drivers/gpu/drm/drm_simple_kms_helper.c
-@@ -46,6 +46,20 @@ drm_simple_kms_crtc_mode_valid(struct drm_crtc *crtc,
- 	return pipe->funcs->mode_valid(crtc, mode);
- }
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 9591bd720e56..ed689201ec81 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -157,6 +157,16 @@ config DRM_DP_CEC
+ 	  Note: not all adapters support this feature, and even for those
+ 	  that do support this they often do not hook up the CEC pin.
  
-+static bool
-+drm_simple_kms_crtc_mode_fixup(struct drm_crtc *crtc,
-+			       const struct drm_display_mode *mode,
-+			       struct drm_display_mode *adjusted_mode)
-+{
-+	struct drm_simple_display_pipe *pipe;
++config DRM_FBCONV_HELPER
++	tristate "Enable fbdev conversion helpers"
++	depends on DRM
++	help
++	  Provides helpers for running DRM on top of fbdev drivers. Choose
++	  this option if you're converting an fbdev driver to DRM. The
++	  helpers provide conversion functions for fbdev data structures
++	  and allow to build a basic DRM driver on top of the fbdev
++	  interfaces.
 +
-+	pipe = container_of(crtc, struct drm_simple_display_pipe, crtc);
-+	if (!pipe->funcs || !pipe->funcs->mode_fixup)
-+		return true;
-+
-+	return pipe->funcs->mode_fixup(crtc, mode, adjusted_mode);
-+}
-+
- static int drm_simple_kms_crtc_check(struct drm_crtc *crtc,
- 				     struct drm_crtc_state *state)
- {
-@@ -87,6 +101,7 @@ static void drm_simple_kms_crtc_disable(struct drm_crtc *crtc,
+ config DRM_TTM
+ 	tristate
+ 	depends on DRM && MMU
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index 9f1c7c486f88..a7178245d938 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -52,6 +52,7 @@ drm_kms_helper-$(CONFIG_DRM_FBDEV_EMULATION) += drm_fb_helper.o
+ drm_kms_helper-$(CONFIG_DRM_KMS_CMA_HELPER) += drm_fb_cma_helper.o
+ drm_kms_helper-$(CONFIG_DRM_DP_AUX_CHARDEV) += drm_dp_aux_dev.o
+ drm_kms_helper-$(CONFIG_DRM_DP_CEC) += drm_dp_cec.o
++drm_kms_helper-$(CONFIG_DRM_FBCONV_HELPER) += drm_fbconv_helper.o
  
- static const struct drm_crtc_helper_funcs drm_simple_kms_crtc_helper_funcs = {
- 	.mode_valid = drm_simple_kms_crtc_mode_valid,
-+	.mode_fixup = drm_simple_kms_crtc_mode_fixup,
- 	.atomic_check = drm_simple_kms_crtc_check,
- 	.atomic_enable = drm_simple_kms_crtc_enable,
- 	.atomic_disable = drm_simple_kms_crtc_disable,
-diff --git a/include/drm/drm_simple_kms_helper.h b/include/drm/drm_simple_kms_helper.h
-index 4d89cd0a60db..1b975ab67144 100644
---- a/include/drm/drm_simple_kms_helper.h
-+++ b/include/drm/drm_simple_kms_helper.h
-@@ -52,6 +52,49 @@ struct drm_simple_display_pipe_funcs {
- 	enum drm_mode_status (*mode_valid)(struct drm_crtc *crtc,
- 					   const struct drm_display_mode *mode);
- 
-+	/**
-+	 * @mode_fixup:
-+	 *
-+	 * This callback is used to validate a mode. The parameter mode is the
-+	 * display mode that userspace requested, adjusted_mode is the mode the
-+	 * encoders need to be fed with. Note that this is the inverse semantics
-+	 * of the meaning for the &drm_encoder and &drm_bridge_funcs.mode_fixup
-+	 * vfunc. If the CRTC of the simple display pipe cannot support the
-+	 * requested conversion from mode to adjusted_mode it should reject the
-+	 * modeset.
-+	 *
-+	 * This function is optional.
-+	 *
-+	 * NOTE:
-+	 *
-+	 * This function is called in the check phase of atomic modesets, which
-+	 * can be aborted for any reason (including on userspace's request to
-+	 * just check whether a configuration would be possible). Atomic drivers
-+	 * MUST NOT touch any persistent state (hardware or software) or data
-+	 * structures except the passed in adjusted_mode parameter.
-+	 *
-+	 * Atomic drivers which need to inspect and adjust more state should
-+	 * instead use the @atomic_check callback, but note that they're not
-+	 * perfectly equivalent: @mode_valid is called from
-+	 * drm_atomic_helper_check_modeset(), but @atomic_check is called from
-+	 * drm_atomic_helper_check_planes(), because originally it was meant for
-+	 * plane update checks only.
-+	 *
-+	 * Also beware that userspace can request its own custom modes, neither
-+	 * core nor helpers filter modes to the list of probe modes reported by
-+	 * the GETCONNECTOR IOCTL and stored in &drm_connector.modes. To ensure
-+	 * that modes are filtered consistently put any CRTC constraints and
-+	 * limits checks into @mode_valid.
-+	 *
-+	 * RETURNS:
-+	 *
-+	 * True if an acceptable configuration is possible, false if the modeset
-+	 * operation should be rejected.
-+	 */
-+	bool (*mode_fixup)(struct drm_crtc *crtc,
-+			   const struct drm_display_mode *mode,
-+			   struct drm_display_mode *adjusted_mode);
-+
- 	/**
- 	 * @enable:
- 	 *
+ obj-$(CONFIG_DRM_KMS_HELPER) += drm_kms_helper.o
+ obj-$(CONFIG_DRM_DEBUG_SELFTEST) += selftests/
+diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
+new file mode 100644
+index 000000000000..0cb46d2c98c3
+--- /dev/null
++++ b/drivers/gpu/drm/drm_fbconv_helper.c
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 -- 
 2.23.0
 
