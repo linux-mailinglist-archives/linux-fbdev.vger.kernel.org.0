@@ -2,145 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3751D5D3B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 10:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0874FD6499
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730053AbfJNIQG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 04:16:06 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:41795 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729918AbfJNIQF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 04:16:05 -0400
-Received: by mail-io1-f66.google.com with SMTP id n26so36017359ioj.8
-        for <linux-fbdev@vger.kernel.org>; Mon, 14 Oct 2019 01:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=t44CqyvdXypuwtzNTJ7ymJovfCkTaCpIACjq52B13FE=;
-        b=JK9+D8JY6bxWRDbYtmDx//zrK7L0P5ZaJiOA1u2JTy/ek0rC1FVjF5jbx8SF6OPnwM
-         y36p/5at+welqaHGrpeciApYazXiC0HEwjfvfqfT75fnauattpvVQgA5+JjHIIw5Epe+
-         BFm5EzGuJgp3mNjZOZTQrvS0bqwWhoOVOOhDa7eYnntod0vH1L3sRwunV3OTS7MhWLLR
-         bdBgCHLnxqmC6n+VjUzcb/2EDArfWypGehE2YtuxWMKu51XpQg4M8+T5JmjUUPVxT/eV
-         scRYIVaE5rhUNQtV8KHYgGmvdShVcQqKfqdI907x6Kf447HKopmeuc22GHcH8S+3lmxp
-         6hfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=t44CqyvdXypuwtzNTJ7ymJovfCkTaCpIACjq52B13FE=;
-        b=Vtn5AqRDaHBR6fR2J/ohOGWRQ5t98CWby5/A5udBesIQ5/+04W9nvP8jAoAalOQ6n/
-         7rmyHB9wnOeHSJ7ahloD4uzJKYKu86jaw/2Yk740l1fPZunZbUIOWIvQd5w4gpavAEL/
-         rvITewLrhJVtJTVfMnPx+m3yi0u3GXbYuV6vrzwWVTphebixxERlahW/crf7Ocw3Nji8
-         xKsKZGwJTWNcEv7csSirmHXiRHg4Ri8QVW67rMU6hKHKHE26mOMqzBTmT1xca6Brfm+I
-         97gyjEcZX4hg4RrEzIafkco0UxRmVOpZO2LTpbgxVeCn7eCBgNeFmjk3fYyf2R9DhnjP
-         Cm+g==
-X-Gm-Message-State: APjAAAVKEuvzvKoTgxtqIrgrn3ccNW3wVJqbhad86NwWGCdabXy3qCJM
-        tKi3MuNdTjG8DRh2YAu7XxfnKTJviNa+cIxv499jvw==
-X-Google-Smtp-Source: APXvYqwLQ8EL+87kFnJZAnOI6uFthuTZJqtrvmnMJN6wDA31bnQPrVHdctZs00tKOaFLcdTgP9uegvfD+UtrZuLktaY=
-X-Received: by 2002:a05:6602:248e:: with SMTP id g14mr19829138ioe.6.1571040964440;
- Mon, 14 Oct 2019 01:16:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191007033200.13443-1-brgl@bgdev.pl> <20191014081220.GK4545@dell>
-In-Reply-To: <20191014081220.GK4545@dell>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 14 Oct 2019 10:15:53 +0200
-Message-ID: <CAMRc=MfSiJY-85ZHM_aSxUDc6LkbG1FidRFgTHtbZy6hHiQ+iw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
-To:     Lee Jones <lee.jones@linaro.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1732439AbfJNOEX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 10:04:23 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50718 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732382AbfJNOEX (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Oct 2019 10:04:23 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 7676CAF9F;
+        Mon, 14 Oct 2019 14:04:20 +0000 (UTC)
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     airlied@linux.ie, daniel@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        sean@poorly.run, b.zolnierkie@samsung.com, ajax@redhat.com,
+        ville.syrjala@linux.intel.com, malat@debian.org, michel@daenzer.net
+Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/15] DRM fbconv helpers for converting fbdev drivers
+Date:   Mon, 14 Oct 2019 16:04:01 +0200
+Message-Id: <20191014140416.28517-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-pon., 14 pa=C5=BA 2019 o 10:12 Lee Jones <lee.jones@linaro.org> napisa=C5=
-=82(a):
->
-> On Mon, 07 Oct 2019, Bartosz Golaszewski wrote:
->
-> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> >
-> > While working on my other series related to gpio-backlight[1] I noticed
-> > that we could simplify the driver if we made the only user of platform
-> > data use GPIO lookups and device properties. This series tries to do
-> > that.
-> >
-> > The first patch adds all necessary data structures to ecovec24. Patch
-> > 2/7 unifies much of the code for both pdata and non-pdata cases. Patche=
-s
-> > 3-4/7 remove unused platform data fields. Last three patches contain
-> > additional improvements for the GPIO backlight driver while we're alrea=
-dy
-> > modifying it.
-> >
-> > I don't have access to this HW but hopefully this works. Only compile
-> > tested.
-> >
-> > [1] https://lkml.org/lkml/2019/6/25/900
-> >
-> > v1 -> v2:
-> > - rebased on top of v5.3-rc1 and adjusted to the recent changes from An=
-dy
-> > - added additional two patches with minor improvements
-> >
-> > v2 -> v3:
-> > - in patch 7/7: used initializers to set values for pdata and dev local=
- vars
-> >
-> > v3 -> v4:
-> > - rebased on top of v5.4-rc1
-> > - removed changes that are no longer relevant after commit ec665b756e6f
-> >   ("backlight: gpio-backlight: Correct initial power state handling")
-> > - added patch 7/7
-> >
-> > v4 ->V5:
-> > - in patch 7/7: added a comment replacing the name of the function bein=
-g
-> >   pulled into probe()
-> >
-> > Bartosz Golaszewski (7):
-> >   backlight: gpio: remove unneeded include
-> >   sh: ecovec24: add additional properties to the backlight device
-> >   backlight: gpio: simplify the platform data handling
-> >   sh: ecovec24: don't set unused fields in platform data
-> >   backlight: gpio: remove unused fields from platform data
-> >   backlight: gpio: use a helper variable for &pdev->dev
-> >   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
-> >
-> >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
->
-> I guess we're just waiting for the SH Acks now?
->
+(was: DRM driver for fbdev devices)
 
-We've been waiting for them for a couple months now - the sh patches
-haven't changed since v1...
+This is version 2 of the fbdev conversion helpers. It's more or less a
+rewrite of the original patchset.
 
-Rich, Yoshinori - could you ack this so that it can go in for v5.5?
+The fbdev subsystem is considered legacy and will probably be removed at
+some point. This would mean the loss of a signifanct number of drivers.
+Some of the affected hardware is not in use any longer, but some hardware
+is still around and provides good(-enough) framebuffers.
 
-Thanks,
-Bartosz
+The fbconv helpers allow for running the current DRM stack on top of fbdev
+drivers. It's a set of functions that convert between fbdev interfaces and
+DRM interfaces. Based on SHMEM and simple KMS helpers, it only offers the
+basic functionality of a framebuffer, but should be compatible with most
+existing fbdev drivers.
 
-> >  drivers/video/backlight/gpio_backlight.c     | 108 +++++--------------
-> >  include/linux/platform_data/gpio_backlight.h |   3 -
-> >  3 files changed, 53 insertions(+), 91 deletions(-)
-> >
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+A DRM driver using fbconv helpers consists of
+
+  * DRM stub code that calls into fbconv helpers, and
+  * the original fbdev driver code.
+
+The fbdev driver code has to be modified to register itself with the
+stub driver instead of the fbdev core framework. A tutorial on how to use
+the helpers is part of this patchset. The resulting driver hybrid can be
+refactored into a first-class DRM driver. The fbconv helpers contain a
+number of comments, labeled 'DRM porting note', which explain the required
+steps.
+
+I tested the current patchset with the following drivers: atyfb, aty128fb,
+matroxfb, pm2fb, pm3fb, rivafb, s3fb, savagefb, sisfb, tdfxfb and tridentfb.
+With each, I was able to successfully start with fbcon enabled, run weston and
+X11. The drivers are available at [1]. For reference, the patchset includes
+the Matrox stub driver.
+
+v2:
+	* rename to fbconv helpers
+	* rewrite as helper library
+	* switch over to simple KMS helpers
+	* switch over to SHMEM
+	* add documentation
+
+[1] https://gitlab.freedesktop.org/tzimmermann/linux/commits/fbconv-plus-drivers
+
+Thomas Zimmermann (15):
+  fbdev: Export fb_check_foreignness()
+  fbdev: Export FBPIXMAPSIZE
+  drm/simple-kms-helper: Add mode_fixup() to simple display pipe
+  drm: Add fbconv helper module
+  drm/fbconv: Add DRM <-> fbdev pixel-format conversion
+  drm/fbconv: Add mode conversion DRM <-> fbdev
+  drm/fbconv: Add modesetting infrastructure
+  drm/fbconv: Add plane-state check and update
+  drm/fbconv: Mode-setting pipeline enable / disable
+  drm/fbconv: Reimplement several fbdev interfaces
+  drm/fbconv: Add helpers for init and cleanup of fb_info structures
+  drm/fbconv: Add helper documentation
+  staging: Add mgakms driver
+  staging/mgakms: Import matroxfb driver source code
+  staging/mgakms: Update matroxfb driver code for DRM
+
+ Documentation/gpu/drm-kms-helpers.rst     |   12 +
+ Documentation/gpu/todo.rst                |   15 +
+ drivers/gpu/drm/Kconfig                   |   11 +
+ drivers/gpu/drm/Makefile                  |    1 +
+ drivers/gpu/drm/drm_fbconv_helper.c       | 2126 +++++++++++++++++
+ drivers/gpu/drm/drm_simple_kms_helper.c   |   15 +
+ drivers/staging/Kconfig                   |    2 +
+ drivers/staging/Makefile                  |    1 +
+ drivers/staging/mgakms/Kconfig            |   18 +
+ drivers/staging/mgakms/Makefile           |   17 +
+ drivers/staging/mgakms/g450_pll.c         |  539 +++++
+ drivers/staging/mgakms/g450_pll.h         |   13 +
+ drivers/staging/mgakms/i2c-matroxfb.c     |  238 ++
+ drivers/staging/mgakms/matroxfb_DAC1064.c | 1082 +++++++++
+ drivers/staging/mgakms/matroxfb_DAC1064.h |  174 ++
+ drivers/staging/mgakms/matroxfb_Ti3026.c  |  746 ++++++
+ drivers/staging/mgakms/matroxfb_Ti3026.h  |   10 +
+ drivers/staging/mgakms/matroxfb_accel.c   |  519 +++++
+ drivers/staging/mgakms/matroxfb_accel.h   |    9 +
+ drivers/staging/mgakms/matroxfb_base.c    | 2592 +++++++++++++++++++++
+ drivers/staging/mgakms/matroxfb_base.h    |  700 ++++++
+ drivers/staging/mgakms/matroxfb_crtc2.h   |   35 +
+ drivers/staging/mgakms/matroxfb_g450.c    |  640 +++++
+ drivers/staging/mgakms/matroxfb_g450.h    |   10 +
+ drivers/staging/mgakms/matroxfb_maven.h   |   21 +
+ drivers/staging/mgakms/matroxfb_misc.c    |  815 +++++++
+ drivers/staging/mgakms/matroxfb_misc.h    |   22 +
+ drivers/staging/mgakms/mga_device.c       |   68 +
+ drivers/staging/mgakms/mga_device.h       |   30 +
+ drivers/staging/mgakms/mga_drv.c          |  129 +
+ drivers/staging/mgakms/mga_drv.h          |   14 +
+ drivers/video/fbdev/core/fbmem.c          |    5 +-
+ include/drm/drm_fbconv_helper.h           |  150 ++
+ include/drm/drm_simple_kms_helper.h       |   43 +
+ include/linux/fb.h                        |    3 +
+ 35 files changed, 10822 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/gpu/drm/drm_fbconv_helper.c
+ create mode 100644 drivers/staging/mgakms/Kconfig
+ create mode 100644 drivers/staging/mgakms/Makefile
+ create mode 100644 drivers/staging/mgakms/g450_pll.c
+ create mode 100644 drivers/staging/mgakms/g450_pll.h
+ create mode 100644 drivers/staging/mgakms/i2c-matroxfb.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_DAC1064.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_DAC1064.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_Ti3026.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_Ti3026.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_accel.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_accel.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_base.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_base.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_crtc2.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_g450.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_g450.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_maven.h
+ create mode 100644 drivers/staging/mgakms/matroxfb_misc.c
+ create mode 100644 drivers/staging/mgakms/matroxfb_misc.h
+ create mode 100644 drivers/staging/mgakms/mga_device.c
+ create mode 100644 drivers/staging/mgakms/mga_device.h
+ create mode 100644 drivers/staging/mgakms/mga_drv.c
+ create mode 100644 drivers/staging/mgakms/mga_drv.h
+ create mode 100644 include/drm/drm_fbconv_helper.h
+
+--
+2.23.0
+
