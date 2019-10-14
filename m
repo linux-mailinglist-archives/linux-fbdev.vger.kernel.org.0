@@ -2,18 +2,18 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB04D649E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB264D649B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732435AbfJNOEZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1732447AbfJNOEZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Mon, 14 Oct 2019 10:04:25 -0400
-Received: from mx2.suse.de ([195.135.220.15]:50860 "EHLO mx1.suse.de"
+Received: from mx2.suse.de ([195.135.220.15]:50858 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732434AbfJNOEZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        id S1732389AbfJNOEZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
         Mon, 14 Oct 2019 10:04:25 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 772C6B17A;
+        by mx1.suse.de (Postfix) with ESMTP id ED784B190;
         Mon, 14 Oct 2019 14:04:21 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 05/15] drm/fbconv: Add DRM <-> fbdev pixel-format conversion
-Date:   Mon, 14 Oct 2019 16:04:06 +0200
-Message-Id: <20191014140416.28517-6-tzimmermann@suse.de>
+Subject: [PATCH v2 06/15] drm/fbconv: Add mode conversion DRM <-> fbdev
+Date:   Mon, 14 Oct 2019 16:04:07 +0200
+Message-Id: <20191014140416.28517-7-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,487 +36,281 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-DRM uses FOURCC constants to describe pixel formats, fbdev uses a
-per-component bitfield structure. The functions in this patch convert
-between the two.
+DRM uses struct drm_display_mode to describe a display mode. The
+conversion functions fill it from fbdev data strucutures, and vice
+versa.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_fbconv_helper.c | 435 ++++++++++++++++++++++++++++
- include/drm/drm_fbconv_helper.h     |  23 ++
- 2 files changed, 458 insertions(+)
- create mode 100644 include/drm/drm_fbconv_helper.h
+ drivers/gpu/drm/drm_fbconv_helper.c | 201 ++++++++++++++++++++++++++++
+ include/drm/drm_fbconv_helper.h     |  31 +++++
+ 2 files changed, 232 insertions(+)
 
 diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
-index 0cb46d2c98c3..af45358a156a 100644
+index af45358a156a..e5a58a361ae9 100644
 --- a/drivers/gpu/drm/drm_fbconv_helper.c
 +++ b/drivers/gpu/drm/drm_fbconv_helper.c
-@@ -1 +1,436 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <asm/byteorder.h>
-+
-+#include <linux/fb.h>
-+
-+#include <drm/drm_fbconv_helper.h>
+@@ -5,6 +5,7 @@
+ #include <linux/fb.h>
+ 
+ #include <drm/drm_fbconv_helper.h>
++#include <drm/drm_modes.h>
+ 
+ /*
+  * Format conversion helpers
+@@ -434,3 +435,203 @@ int drm_fbconv_update_fb_var_screeninfo_from_format(
+ 	return 0;
+ }
+ EXPORT_SYMBOL(drm_fbconv_update_fb_var_screeninfo_from_format);
 +
 +/*
-+ * Format conversion helpers
++ * Mode conversion helpers
 + */
-+
-+static bool is_c8(const struct fb_var_screeninfo *fb_var)
-+{
-+	return fb_var->bits_per_pixel == 8;
-+}
-+
-+static bool is_rgb565(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 16) &&
-+	       (fb_var->red.offset == 11) &&
-+	       (fb_var->red.length == 5) &&
-+	       (fb_var->green.offset == 5) &&
-+	       (fb_var->green.length == 6) &&
-+	       (fb_var->blue.offset == 0) &&
-+	       (fb_var->blue.length == 5);
-+}
-+
-+static bool is_bgr565(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 16) &&
-+	       (fb_var->red.offset == 0) &&
-+	       (fb_var->red.length == 5) &&
-+	       (fb_var->green.offset == 5) &&
-+	       (fb_var->green.length == 6) &&
-+	       (fb_var->blue.offset == 11) &&
-+	       (fb_var->blue.length == 5);
-+}
-+
-+static bool is_rgb888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 24) &&
-+	       (fb_var->red.offset == 16) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 0) &&
-+	       (fb_var->blue.length == 8);
-+}
-+
-+static bool is_bgr888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 24) &&
-+	       (fb_var->red.offset == 0) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 16) &&
-+	       (fb_var->blue.length == 8);
-+}
-+
-+static bool is_xrgb8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 16) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 0) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.length == 0);
-+}
-+
-+static bool is_xbgr8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 0) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 16) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.length == 0);
-+}
-+
-+static bool is_rgbx8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 24) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 16) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 8) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.length == 0);
-+}
-+
-+static bool is_bgrx8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 8) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 16) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 24) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.length == 0);
-+}
-+
-+static bool is_argb8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 16) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 0) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.offset == 24) &&
-+	       (fb_var->transp.length == 8);
-+}
-+
-+static bool is_abgr8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 0) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 8) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 16) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.offset == 24) &&
-+	       (fb_var->transp.length == 8);
-+}
-+
-+static bool is_rgba8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 24) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 16) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 8) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.offset == 0) &&
-+	       (fb_var->transp.length == 8);
-+}
-+
-+static bool is_bgra8888(const struct fb_var_screeninfo *fb_var)
-+{
-+	return (fb_var->bits_per_pixel == 32) &&
-+	       (fb_var->red.offset == 8) &&
-+	       (fb_var->red.length == 8) &&
-+	       (fb_var->green.offset == 16) &&
-+	       (fb_var->green.length == 8) &&
-+	       (fb_var->blue.offset == 24) &&
-+	       (fb_var->blue.length == 8) &&
-+	       (fb_var->transp.offset == 0) &&
-+	       (fb_var->transp.length == 8);
-+}
-+
-+struct format_map {
-+	bool (*is_format)(const struct fb_var_screeninfo *fb_var);
-+	uint32_t format;
-+};
 +
 +/**
-+ * drm_fbconv_format_of_fb_var_screeninfo - Returns a DRM_FORMAT constant
-+ *	from an fb_var_screeninfo structure
-+ * @fb_info:	the fb_var_screeninfo structure
-+ * Returns:
-+ *	A DRM_FORMAT constant on success, or
-+ *	DRM_FORMAT_INVALID otherwise.
++ * drm_mode_update_from_fb_videomode - Sets a drm_display mode struecture
++ *	from an fb_videomode structure
++ * @mode:	the DRM display mode structure to update
++ * @fb_mode:	an fb_videomode structure
 + */
-+uint32_t
-+drm_fbconv_format_of_fb_var_screeninfo(const struct fb_var_screeninfo *fb_var)
++void drm_mode_update_from_fb_videomode(struct drm_display_mode *mode,
++				       const struct fb_videomode *fb_mode)
 +{
-+	static const struct format_map map[] = {
-+		{ is_c8,       DRM_FORMAT_C8 }, /* 256-color palette */
-+		{ is_rgb565,   DRM_FORMAT_RGB565 },
-+		{ is_bgr565,   DRM_FORMAT_BGR565 },
-+		{ is_rgb888,   DRM_FORMAT_RGB888 },
-+		{ is_bgr888,   DRM_FORMAT_BGR888 },
-+		{ is_xrgb8888, DRM_FORMAT_XRGB8888 },
-+		{ is_xbgr8888, DRM_FORMAT_XBGR8888 },
-+		{ is_rgbx8888, DRM_FORMAT_RGBX8888 },
-+		{ is_bgrx8888, DRM_FORMAT_BGRX8888 },
-+		{ is_argb8888, DRM_FORMAT_ARGB8888 },
-+		{ is_abgr8888, DRM_FORMAT_ABGR8888 },
-+		{ is_rgba8888, DRM_FORMAT_RGBA8888 },
-+		{ is_bgra8888, DRM_FORMAT_BGRA8888 }
-+	};
++	mode->type = DRM_MODE_TYPE_DRIVER;
 +
-+	size_t i;
++	mode->clock = PICOS2KHZ(fb_mode->pixclock);
 +
-+	if (fb_var->bits_per_pixel < 8)
-+		goto err; /* at least 8-bit color required */
-+	if (fb_var->grayscale == 1)
-+		goto err; /* grayscale output is not supported */
++	mode->hdisplay = fb_mode->xres;
++	mode->hsync_start = mode->hdisplay + fb_mode->right_margin;
++	mode->hsync_end = mode->hsync_start + fb_mode->hsync_len;
++	mode->htotal = mode->hsync_end + fb_mode->left_margin;
++	mode->hskew = 0;
 +
-+	for (i = 0; i < ARRAY_SIZE(map); ++i) {
-+		if (map[i].is_format(fb_var))
-+			return map[i].format;
++	mode->vdisplay = fb_mode->yres;
++	mode->vsync_start = mode->vdisplay + fb_mode->lower_margin;
++	mode->vsync_end = mode->vsync_start + fb_mode->vsync_len;
++	mode->vtotal = mode->vsync_end + fb_mode->upper_margin;
++	mode->vscan = 0;
++
++	mode->flags = 0;
++
++	if (fb_mode->sync & FB_SYNC_HOR_HIGH_ACT)
++		mode->flags |= DRM_MODE_FLAG_PHSYNC;
++	else
++		mode->flags |= DRM_MODE_FLAG_NHSYNC;
++
++	if (fb_mode->sync & FB_SYNC_VERT_HIGH_ACT)
++		mode->flags |= DRM_MODE_FLAG_PVSYNC;
++	else
++		mode->flags |= DRM_MODE_FLAG_NVSYNC;
++
++	if (fb_mode->sync & FB_SYNC_COMP_HIGH_ACT)
++		mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_PCSYNC;
++
++	if (fb_mode->vmode & FB_VMODE_INTERLACED)
++		mode->flags |= DRM_MODE_FLAG_INTERLACE;
++
++	if (fb_mode->vmode & FB_VMODE_DOUBLE)
++		mode->flags |= DRM_MODE_FLAG_DBLSCAN;
++
++	mode->width_mm = 0;
++	mode->height_mm = 0;
++
++	mode->vrefresh = fb_mode->refresh;
++	mode->hsync = mode->clock / mode->vtotal;
++
++	/* final step; depends on previous setup */
++	if (fb_mode->name) {
++		strncpy(mode->name, fb_mode->name, sizeof(mode->name) - 1);
++		mode->name[sizeof(mode->name) - 1] = '\0';
++	} else {
++		drm_mode_set_name(mode);
 +	}
-+
-+err:
-+	return DRM_FORMAT_INVALID;
 +}
-+EXPORT_SYMBOL(drm_fbconv_format_of_fb_var_screeninfo);
++EXPORT_SYMBOL(drm_mode_update_from_fb_videomode);
 +
 +/**
-+ * drm_fbconv_format_of_fb_info - Returns a DRM_FORMAT constant from
-+ *	an fb_info structure
-+ * @fb_info:	the fb_info structure
-+ * Returns:
-+ *	A DRM_FORMAT constant on success, or
-+ *	DRM_FORMAT_INVALID otherwise.
++ * drm_mode_update_from_fb_var_screeninfo - Sets a drm_display mode structure
++ *	from an fb_var_screenmode structure
++ * @mode:	the DRM display mode structure to update
++ * @fb_var:	an fb_var_screeninfo structure
 + */
-+uint32_t drm_fbconv_format_of_fb_info(const struct fb_info *fb_info)
++void drm_mode_update_from_fb_var_screeninfo(
++	struct drm_display_mode *mode, const struct fb_var_screeninfo *fb_var)
 +{
-+	if (fb_info->fix.type != FB_TYPE_PACKED_PIXELS)
-+		return DRM_FORMAT_INVALID; /* no multi-plane formats */
++	struct fb_videomode fb_mode;
 +
-+	return drm_fbconv_format_of_fb_var_screeninfo(&fb_info->var);
++	fb_var_to_videomode(&fb_mode, fb_var);
++	drm_mode_update_from_fb_videomode(mode, &fb_mode);
 +}
-+EXPORT_SYMBOL(drm_fbconv_format_of_fb_info);
-+
-+static void set_fb_bitfield(struct fb_bitfield *bits, __u32 offset,
-+			    __u32 length)
-+{
-+	bits->offset = offset;
-+	bits->length = length;
-+	bits->msb_right = 0;
-+}
-+
-+static void set_c8(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 8;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    0, 8);
-+	set_fb_bitfield(&fb_var->green,  0, 8);
-+	set_fb_bitfield(&fb_var->blue,   0, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_rgb565(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 16;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,   11, 5);
-+	set_fb_bitfield(&fb_var->green,  5, 6);
-+	set_fb_bitfield(&fb_var->blue,   0, 5);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_bgr565(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 16;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    0, 5);
-+	set_fb_bitfield(&fb_var->green,  5, 6);
-+	set_fb_bitfield(&fb_var->blue,  11, 5);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_rgb888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 24;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,   16, 8);
-+	set_fb_bitfield(&fb_var->green,  8, 8);
-+	set_fb_bitfield(&fb_var->blue,   0, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_bgr888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 24;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    0, 8);
-+	set_fb_bitfield(&fb_var->green,  8, 8);
-+	set_fb_bitfield(&fb_var->blue,  16, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_xrgb8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    16, 8);
-+	set_fb_bitfield(&fb_var->green,   8, 8);
-+	set_fb_bitfield(&fb_var->blue,    0, 8);
-+	set_fb_bitfield(&fb_var->transp, 24, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_xbgr8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,     0, 8);
-+	set_fb_bitfield(&fb_var->green,   8, 8);
-+	set_fb_bitfield(&fb_var->blue,   16, 8);
-+	set_fb_bitfield(&fb_var->transp, 24, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_rgbx8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,   24, 8);
-+	set_fb_bitfield(&fb_var->green, 16, 8);
-+	set_fb_bitfield(&fb_var->blue,   8, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_bgrx8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    8, 8);
-+	set_fb_bitfield(&fb_var->green, 16, 8);
-+	set_fb_bitfield(&fb_var->blue,  24, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 0);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_argb8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    16, 8);
-+	set_fb_bitfield(&fb_var->green,   8, 8);
-+	set_fb_bitfield(&fb_var->blue,    0, 8);
-+	set_fb_bitfield(&fb_var->transp, 24, 8);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_abgr8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,     0, 8);
-+	set_fb_bitfield(&fb_var->green,   8, 8);
-+	set_fb_bitfield(&fb_var->blue,   16, 8);
-+	set_fb_bitfield(&fb_var->transp, 24, 8);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_rgba8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,   24, 8);
-+	set_fb_bitfield(&fb_var->green, 16, 8);
-+	set_fb_bitfield(&fb_var->blue,   8, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 8);
-+	fb_var->nonstd = 0;
-+}
-+
-+static void set_bgra8888(struct fb_var_screeninfo *fb_var)
-+{
-+	fb_var->bits_per_pixel = 32;
-+	fb_var->grayscale = 0;
-+	set_fb_bitfield(&fb_var->red,    8, 8);
-+	set_fb_bitfield(&fb_var->green, 16, 8);
-+	set_fb_bitfield(&fb_var->blue,  24, 8);
-+	set_fb_bitfield(&fb_var->transp, 0, 8);
-+	fb_var->nonstd = 0;
-+}
++EXPORT_SYMBOL(drm_mode_update_from_fb_var_screeninfo);
 +
 +/**
-+ * drm_fbconv_update_fb_var_screen_info_from_format - sets the pixel format
-+ *	of a fb_var_screeninfo structure from a DRM_FORMAT constant
++ * drm_mode_create_from_fb_videomode - Creates a drm_display mode structure
++ *	from an fb_videomode structure
++ * @dev:	the new mode's DRM device
++ * @fb_mode:	an fb_videomode structure
++ * Returns:
++ *	A newly allocated DRM display mode structure on success, or
++ *	NULL otherwise
++ */
++struct drm_display_mode * drm_mode_create_from_fb_videomode(
++	struct drm_device *dev, const struct fb_videomode *fb_mode)
++{
++	/* cleared to '0' */
++	struct drm_display_mode *mode;
++
++	mode = drm_mode_create(dev);
++	if (!mode)
++		return NULL;
++
++	drm_mode_update_from_fb_videomode(mode, fb_mode);
++
++	return mode;
++}
++EXPORT_SYMBOL(drm_mode_create_from_fb_videomode);
++
++/**
++ * drm_fbconv_update_fb_videomode_from_mode - updates an fb_videomode
++ *	structure from a DRM display mode
++ * @fb_mode:	the fb_videomode structure to update
++ * @mode:	a DRM display mode
++ */
++void
++drm_fbconv_update_fb_videomode_from_mode(struct fb_videomode *fb_mode,
++					 const struct drm_display_mode *mode)
++{
++	fb_mode->name = NULL;
++	fb_mode->refresh = mode->vrefresh;
++	fb_mode->xres = mode->hdisplay;
++	fb_mode->yres = mode->vdisplay;
++	fb_mode->pixclock = KHZ2PICOS(mode->clock);
++	fb_mode->left_margin = mode->htotal - mode->hsync_end;
++	fb_mode->right_margin = mode->hsync_start - mode->hdisplay;
++	fb_mode->upper_margin = mode->vtotal - mode->vsync_end;
++	fb_mode->lower_margin = mode->vsync_start - mode->vdisplay;
++	fb_mode->hsync_len = mode->hsync_end - mode->hsync_start;
++	fb_mode->vsync_len = mode->vsync_end - mode->vsync_start;
++
++	fb_mode->sync = 0;
++	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
++		fb_mode->sync |= FB_SYNC_HOR_HIGH_ACT;
++	if (mode->flags & DRM_MODE_FLAG_PVSYNC)
++		fb_mode->sync |= FB_SYNC_VERT_HIGH_ACT;
++	if (mode->flags & (DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_PCSYNC))
++		fb_mode->sync |= FB_SYNC_COMP_HIGH_ACT;
++
++	fb_mode->vmode = 0;
++	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
++		fb_mode->vmode |= FB_VMODE_INTERLACED;
++	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
++		fb_mode->vmode |= FB_VMODE_DOUBLE;
++
++	fb_mode->flag = 0;
++}
++EXPORT_SYMBOL(drm_fbconv_update_fb_videomode_from_mode);
++
++/**
++ * drm_fbconv_init_fb_videomode_from_mode - initializes an fb_videomode
++ *	structure from a DRM display mode
++ * @fb_mode:	the fb_videomode structure to update
++ * @mode:	a DRM display mode
++ *
++ * This is the same as drm_fbconv_update_fb_videomode_from_mode(), but
++ * first clears the fb_screeninfo structure to 0.
++ */
++void drm_fbconv_init_fb_videomode_from_mode(
++	struct fb_videomode *fb_mode, const struct drm_display_mode *mode)
++{
++	memset(fb_mode, 0, sizeof(*fb_mode));
++	drm_fbconv_update_fb_videomode_from_mode(fb_mode, mode);
++}
++EXPORT_SYMBOL(drm_fbconv_init_fb_videomode_from_mode);
++
++/**
++ * drm_fbconv_update_fb_var_screeninfo_from_mode - updates an
++ *	fb_var_screeninfo structure from a DRM display mode
 + * @fb_var:	the fb_var_screeninfo structure to update
-+ * @format:	a DRM_FORMAT constant
-+ * Returns:
-+ *	0 on success, or
-+ *	a negative error code otherwise.
++ * @mode:	a DRM display mode
 + */
-+int drm_fbconv_update_fb_var_screeninfo_from_format(
-+	struct fb_var_screeninfo *fb_var, uint32_t format)
++void drm_fbconv_update_fb_var_screeninfo_from_mode(
++	struct fb_var_screeninfo *fb_var, const struct drm_display_mode *mode)
 +{
-+	switch (format) {
-+	case DRM_FORMAT_C8:
-+		set_c8(fb_var);
-+		break;
-+	case DRM_FORMAT_RGB565:
-+		set_rgb565(fb_var);
-+		break;
-+	case DRM_FORMAT_BGR565:
-+		set_bgr565(fb_var);
-+		break;
-+	case DRM_FORMAT_RGB888:
-+		set_rgb888(fb_var);
-+		break;
-+	case DRM_FORMAT_BGR888:
-+		set_bgr888(fb_var);
-+		break;
-+	case DRM_FORMAT_XRGB8888:
-+		set_xrgb8888(fb_var);
-+		break;
-+	case DRM_FORMAT_XBGR8888:
-+		set_xbgr8888(fb_var);
-+		break;
-+	case DRM_FORMAT_RGBX8888:
-+		set_rgbx8888(fb_var);
-+		break;
-+	case DRM_FORMAT_BGRX8888:
-+		set_bgrx8888(fb_var);
-+		break;
-+	case DRM_FORMAT_ARGB8888:
-+		set_argb8888(fb_var);
-+		break;
-+	case DRM_FORMAT_ABGR8888:
-+		set_abgr8888(fb_var);
-+		break;
-+	case DRM_FORMAT_RGBA8888:
-+		set_rgba8888(fb_var);
-+		break;
-+	case DRM_FORMAT_BGRA8888:
-+		set_bgra8888(fb_var);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	return 0;
++	struct fb_videomode fb_mode;
++
++	drm_fbconv_init_fb_videomode_from_mode(&fb_mode, mode);
++	fb_videomode_to_var(fb_var, &fb_mode);
++
++	fb_var->height = mode->height_mm;
++	fb_var->width = mode->width_mm;
 +}
-+EXPORT_SYMBOL(drm_fbconv_update_fb_var_screeninfo_from_format);
++EXPORT_SYMBOL(drm_fbconv_update_fb_var_screeninfo_from_mode);
++
++/**
++ * drm_fbconv_init_fb_var_screeninfo_from_mode - initialize an
++ *	fb_var_screeninfo structure from a DRM display mode
++ * @fb_var:	the fb_var_screeninfo structure to update
++ * @mode:	a DRM display mode
++ *
++ * This is the same as drm_fbconv_update_fb_var_screeninfo_from_mode(), but
++ * first clears the fb_screeninfo structure to 0.
++ */
++void drm_fbconv_init_fb_var_screeninfo_from_mode(
++	struct fb_var_screeninfo *fb_var, const struct drm_display_mode *mode)
++{
++	memset(fb_var, 0, sizeof(*fb_var));
++	drm_fbconv_update_fb_var_screeninfo_from_mode(fb_var, mode);
++}
++EXPORT_SYMBOL(drm_fbconv_init_fb_var_screeninfo_from_mode);
 diff --git a/include/drm/drm_fbconv_helper.h b/include/drm/drm_fbconv_helper.h
-new file mode 100644
-index 000000000000..6b2ed12b579a
---- /dev/null
+index 6b2ed12b579a..cbb13228c76c 100644
+--- a/include/drm/drm_fbconv_helper.h
 +++ b/include/drm/drm_fbconv_helper.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef DRM_FBCONV_HELPER_H
-+#define DRM_FBCONV_HELPER_H
-+
-+#include <drm/drm_fourcc.h>
-+
-+struct fb_info;
+@@ -5,8 +5,12 @@
+ 
+ #include <drm/drm_fourcc.h>
+ 
++struct drm_device;
++struct drm_display_mode;
+ struct fb_info;
+ struct fb_var_screeninfo;
 +struct fb_var_screeninfo;
-+
++struct fb_videomode;
+ 
+ /*
+  * Format conversion helpers
+@@ -20,4 +24,31 @@ uint32_t drm_fbconv_format_of_fb_info(const struct fb_info *fb_info);
+ int drm_fbconv_update_fb_var_screeninfo_from_format(
+ 	struct fb_var_screeninfo *fb_var, uint32_t format);
+ 
 +/*
-+ * Format conversion helpers
++ * Mode conversion helpers
 + */
 +
-+uint32_t
-+drm_fbconv_format_of_fb_var_screeninfo(const struct fb_var_screeninfo *fb_var);
++void drm_mode_update_from_fb_videomode(struct drm_display_mode *mode,
++				       const struct fb_videomode *fb_mode);
 +
-+uint32_t drm_fbconv_format_of_fb_info(const struct fb_info *fb_info);
++void drm_mode_update_from_fb_var_screeninfo(
++	struct drm_display_mode *mode, const struct fb_var_screeninfo *fb_var);
 +
-+int drm_fbconv_update_fb_var_screeninfo_from_format(
-+	struct fb_var_screeninfo *fb_var, uint32_t format);
++struct drm_display_mode * drm_mode_create_from_fb_videomode(
++	struct drm_device *dev, const struct fb_videomode *fb_mode);
 +
-+#endif
++void
++drm_fbconv_update_fb_videomode_from_mode(struct fb_videomode *fb_mode,
++					 const struct drm_display_mode *mode);
++
++void
++drm_fbconv_init_fb_videomode_from_mode(struct fb_videomode *fb_mode,
++				       const struct drm_display_mode *mode);
++
++void drm_fbconv_update_fb_var_screeninfo_from_mode(
++	struct fb_var_screeninfo *var, const struct drm_display_mode *mode);
++
++void drm_fbconv_init_fb_var_screeninfo_from_mode(
++	struct fb_var_screeninfo *var, const struct drm_display_mode *mode);
++
+ #endif
 -- 
 2.23.0
 
