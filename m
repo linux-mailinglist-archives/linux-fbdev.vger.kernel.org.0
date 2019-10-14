@@ -2,18 +2,18 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4458D64A2
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C294D64A3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732339AbfJNOE0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Oct 2019 10:04:26 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51084 "EHLO mx1.suse.de"
+        id S1732382AbfJNOE2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Oct 2019 10:04:28 -0400
+Received: from mx2.suse.de ([195.135.220.15]:51130 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732444AbfJNOE0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 10:04:26 -0400
+        id S1732445AbfJNOE1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Oct 2019 10:04:27 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 51359B25A;
+        by mx1.suse.de (Postfix) with ESMTP id BEA72B255;
         Mon, 14 Oct 2019 14:04:24 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 11/15] drm/fbconv: Add helpers for init and cleanup of fb_info structures
-Date:   Mon, 14 Oct 2019 16:04:12 +0200
-Message-Id: <20191014140416.28517-12-tzimmermann@suse.de>
+Subject: [PATCH v2 12/15] drm/fbconv: Add helper documentation
+Date:   Mon, 14 Oct 2019 16:04:13 +0200
+Message-Id: <20191014140416.28517-13-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,178 +36,252 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The implementation of drm_fbconv_fill_fb_info() sets up an fbdev driver's
-fb_info structure for use. It's similar to register_framebuffer(), but does
-not create device files, register the driver with the fbdev code or create
-a console. drm_fbconv_cleanup_fb_info() does the inverse.
+There's now a tutorial on how to create a DRM driver on top of fbconv
+helpers. The DRM TODO list contains an entry for converting fbdev
+drivers over to DRM.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_fbconv_helper.c | 123 ++++++++++++++++++++++++++++
- include/drm/drm_fbconv_helper.h     |   7 ++
- 2 files changed, 130 insertions(+)
+ Documentation/gpu/drm-kms-helpers.rst |  12 ++
+ Documentation/gpu/todo.rst            |  15 +++
+ drivers/gpu/drm/drm_fbconv_helper.c   | 181 ++++++++++++++++++++++++++
+ 3 files changed, 208 insertions(+)
 
+diff --git a/Documentation/gpu/drm-kms-helpers.rst b/Documentation/gpu/drm-kms-helpers.rst
+index 9668a7fe2408..1232a3ef24ff 100644
+--- a/Documentation/gpu/drm-kms-helpers.rst
++++ b/Documentation/gpu/drm-kms-helpers.rst
+@@ -411,3 +411,15 @@ SHMEM GEM Helper Reference
+ 
+ .. kernel-doc:: drivers/gpu/drm/drm_gem_shmem_helper.c
+    :export:
++
++fbdev Conversion Helper Reference
++=================================
++
++.. kernel-doc:: drivers/gpu/drm/drm_fbconv_helper.c
++   :doc: fbconv helpers
++
++.. kernel-doc:: include/drm/drm_fbconv_helper.h
++   :internal:
++
++.. kernel-doc:: drivers/gpu/drm/drm_fbconv_helper.c
++   :export:
+diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
+index 79785559d711..1be44a17f3e8 100644
+--- a/Documentation/gpu/todo.rst
++++ b/Documentation/gpu/todo.rst
+@@ -462,3 +462,18 @@ Contact: Sam Ravnborg
+ 
+ Outside DRM
+ ===========
++
++Convert fbdev drivers to DRM
++----------------------------
++
++There are plenty of fbdev drivers for old hardware. With fbconv helpers, we
++have a simple and clean way of transitioning fbdev drivers to DRM. Set up a
++simple DRM driver that builds onto the fbconv helpers, copy over the fbdev
++driver and connect both. This should result in a basic DRM driver that can
++run X11 and Weston.  There's a tutorial for this process with example source
++code in the fbconv documentation.
++
++From there, refactor the driver source code into a clean DRM driver that
++requires neither fbdev nor fbconv helpers.
++
++Contact: Thomas Zimmermann
 diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
-index f7f247e30a3d..7d7e4da2a29e 100644
+index 7d7e4da2a29e..1fa240a4789f 100644
 --- a/drivers/gpu/drm/drm_fbconv_helper.c
 +++ b/drivers/gpu/drm/drm_fbconv_helper.c
-@@ -3,6 +3,7 @@
- #include <asm/byteorder.h>
+@@ -18,6 +18,187 @@
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
  
- #include <linux/fb.h>
-+#include <linux/major.h>
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_damage_helper.h>
-@@ -1722,6 +1723,9 @@ int drm_fbconv_modeset_init(struct drm_fbconv_modeset *modeset,
- {
- 	struct drm_mode_config *mode_config = &dev->mode_config;
- 
-+	if (WARN_ON(fb_info->node != FB_MAX))
-+		return -EINVAL; /* forgot to run drm_fbconv_fill_fb_info()? */
-+
- 	modeset->dev = dev;
- 	modeset->fb_info = fb_info;
- 
-@@ -1820,3 +1824,122 @@ drm_fbconv_modeset_setup_pipe(struct drm_fbconv_modeset *modeset,
- 	return 0;
- }
- EXPORT_SYMBOL(drm_fbconv_modeset_setup_pipe);
-+
-+/*
-+ * Helpers for struct fb_info
-+ *
-+ * This is the setup and cleanup code for struct fb_info. It has been
-+ * adapted from the fbdev core modules.
-+ *
-+ * The original implementation in fbdev also handles device files, console,
-+ * and framebuffer events. As DRM drivers use DRM's framebuffer emulation,
-+ * the respective code has been removed here.
-+ *
-+ * In contrast to the fbdev core, we don't need locking here. These don't
-+ * interact with fbdev's internal state.
-+ */
-+
-+static bool is_matroxfb(const struct fb_info *fb_info)
-+{
-+	return !!(fb_info->fix.accel & (FB_ACCEL_MATROX_MGA2064W |
-+					FB_ACCEL_MATROX_MGA1064SG |
-+					FB_ACCEL_MATROX_MGA2164W |
-+					FB_ACCEL_MATROX_MGA2164W_AGP |
-+					FB_ACCEL_MATROX_MGAG100 |
-+					FB_ACCEL_MATROX_MGAG200 |
-+					FB_ACCEL_MATROX_MGAG400));
-+}
-+
 +/**
-+ * drm_fbconv_fill_fb_info - prepares an fbdev driver's fb_info structure
-+ *	for use
-+ * @fb_info:	the fb_info structure to set up
-+ * Returns:
-+ *	0 on success, or
-+ *	a negative error code otherwise.
++ * DOC: fbconv helpers
 + *
-+ * The fbdev driver provides fbconv helpers with an fb_info structure. Before
-+ * use, the structure has to be set up correctly. In fbdev core,
-+ * register_framebuffer() does this; here it's provided by
-+ * drm_fbconv_fill_fb_info().
++ * The Linux kernel's fbdev subsystem provides a wide range of drivers for
++ * older graphics hardware. Except for these existng drivers, fbdev is
++ * deprecated and expected to be removed at some point in the future. All new
++ * development happens in DRM. Some of the fbdev drivers are worth carrying
++ * forward. The fbconv helper functions provide a framework for porting fbdev
++ * drivers to DRM.
 + *
-+ * Call drm_fbconv_cleanup_fb_info() during shutdown to clean up the fb_info
-+ * structure.
++ * When porting over fbdev drivers to DRM, the most significant problem is the
++ * difference in how the internal driver interfaces work. Fbdev has a single
++ * function, struct fb_ops.fb_set_par(), to set video mode and framebuffer
++ * format. DRM use a much more fine-grained interface. In fbdev, framebuffer
++ * memory is managed by a single client, while in DRM multiple clients can
++ * hold buffers with framebuffer data.
++ *
++ * The fbconv helper library provides a set of data structures and functions
++ * that connect DRM and fbdev. The resulting DRM driver maps DRM operations
++ * to fbdev interfaces and uses an fbdev driver for its hardware operations.
++ * Such a driver is not intended to be merged into DRM as-is. It does,
++ * however, provide a starting point for refactoring the fbdev driver's
++ * implementation into first-class DRM code.
++ *
++ * As an example, we create a DRM driver from vesafb, fbdev's generic
++ * vesa driver. We begin by creating a DRM stub driver vesadrm. Please keep
++ * in mind that the provided code is for illustrative purposes and requires
++ * error handling.
++ *
++ * .. code-block:: c
++ *
++ *	DEFINE_DRM_GEM_SHMEM_FOPS(vesadrm_file_operations);
++ *
++ *	static struct drm_driver vesadrm_driver = {
++ *		.major = 1,
++ *		.minor = 0,
++ *		.patchlevel = 0,
++ *		.name = "vesadrm",
++ *		.desc = "DRM VESA driver",
++ *		.date = "01/01/1970",
++ *		.driver_features = DRIVER_ATOMIC |
++ *				   DRIVER_GEM |
++ *				   DRIVER_MODESET,
++ *		.fops = &vesadrm_file_operations,
++ *		DRM_GEM_SHMEM_DRIVER_OPS,
++ *	};
++ *
++ * Fbconv uses SHMEM, so we set up the structures accordingly.
++ *
++ * The fbdev code usually calls register_framebuffer() and
++ * unregister_framebuffer() to connect and disconnect itself to the fbdev
++ * core code. In our case, we replace these calls with
++ * vesadrm_register_framebuffer() and vesadrm_unregister_framebuffer(), which
++ * serve as entry points for vesafb.
++ *
++ * .. code-block:: c
++ *
++ *	#include <drm/drm/fbconv_helper.h>
++ *
++ *	struct vesadrm_device {
++ *		struct drm_device dev;
++ *		struct fb_info *fb_info;
++ *
++ *		struct drm_fbconv_modeset modeset;
++ *	};
++ *
++ *	struct vesadrm_device* vesadrm_register_framebuffer(struct fb_info *fb_info)
++ *	{
++ *		struct vesadrm *vdev;
++ *
++ *		drm_fbconv_fill_fb_info(fb_info);
++ *
++ *		vdev = kzalloc(sizeof(*vdev), GFP_KERNEL);
++ *		vesadrm_device_init(vdev, &vesadrm_driver, fb_info)
++ *
++ *		drm_dev_register(&vdev->dev, 0);
++ *
++ *		return vdev;
++ *	}
++ *
++ * Here, we have the first references to fbconf helpers. The instance
++ * of struct drm_fbconv_modeset is the central data structure for fbconv.
++ * Built upon struct drm_simple_display_pipe, it stores most state for the
++ * DRM driver.
++ *
++ * The function vesadrm_register_framebuffer() will later be called by
++ * vesafb code with the fbdev driver's fb_info structure. In core fbdev,
++ * register_framebuffer() would fill fb_info with general state and complete
++ * registration. With fbconv helpers, drm_fbconv_fill_fb_info() does this.
++ * It's a simplified version of the fbdev setup process, without device file
++ * creation, registration, or events. No console is created either.
++ * Finally vesadrm_register_framebuffer() initializes the vesadrm device and
++ * registers the DRM device. At this point, vesadrm is completely initialized.
++ *
++ * For completeness, here's the implementation of
++ * vesadrm_unregister_framebuffer(), which shuts the device down.
++ *
++ * .. code-block:: c
++ *
++ *	void vesadrm_unregister_framebuffer(struct vesadrm_device *vdev)
++ *	{
++ *		struct fb_info *fb_info = vdev->fb_info;
++ *
++ *		vesadrm_device_cleanup(vdev);
++ *		kfree(vdev);
++ *		drm_fbconv_cleanup_fb_info(fb_info);
++ *	}
++ *
++ * Next we need an implementation of vesadrm_device_init() and
++ * vesadrm_device_cleanup(). These functions handle the details of
++ * device configuration and console setup. As all this functionality
++ * is provided by helpers, the actual implementation is fairly small.
++ *
++ * .. code-block:: c
++ *
++ *	static int vesadrm_device_init(struct vesadrm_device *vdev,
++ *				       struct drm_driver *drv,
++ *				       struct fb_info *fb_info)
++ *	{
++ *		static const uint32_t formats[] = {
++ *			DRM_FORMAT_XRGB8888,
++ *			DRM_FORMAT_RGB565
++ *		};
++ *		static unsigned int max_width = 1600;
++ *		static unsigned int max_height = 1200;
++ *		static unsigned int preferred_depth = 32;
++ *
++ *		drm_dev_init(&vdev->dev, drv, fb_info->device);
++ *
++ *		vdev->dev.dev_private = vdev;
++ *		vdev->dev.pdev = container_of(fb_info->device, struct pci_dev, dev);
++ *		vdev->fb_info = fb_info;
++ *
++ *		drm_fbconv_modeset_init(&vdev->modeset, &vdev->dev, fb_info,
++ *					max_width, max_height, preferred_depth);
++ *
++ *		drm_fbconv_modeset_setup_pipe(&vdev->modeset, NULL, formats,
++ *					      ARRAY_SIZE(formats), NULL, NULL);
++ *
++ *		drm_fbdev_generic_setup(&vdev->dev, 0);
++ *
++ *		return 0;
++ *	}
++ *
++ *	static void vesadrm_device_cleanup(struct vesadrm_device *vdev)
++ *	{
++ *		struct drm_device *dev = &vdev->dev;
++ *
++ *		drm_fbconv_modeset_cleanup(&vdev->modeset);
++ *
++ *		drm_dev_fini(dev);
++ *		dev->dev_private = NULL;
++ *	}
++ *
++ * In vesadrm_device_init(), several device-specific constants are declared.
++ * Depending on the hardware, drivers should set them accordingly.
++ * The call to drm_fbconv_modeset_init() initializes fbconv modesetting
++ * helpers with these device constants.
++ *
++ * The drm_fbconv_modeset_setup_pipe() creates the simple display pipe with
++ * the specified color formats. By default, everything is set up
++ * automatically. But the function also accepts format modifiers, a DRM
++ * connector, and call-back functions for struct drm_simple_display_pipe.
++ * So each of these can be refactored individually later on.
++ *
++ * After setting up the fbconv helpers, there's is a call to
++ * drm_fbdev_generic_setup(), which set an initial mode and creates a
++ * framebuffer console.
++ *
++ * The implementation of vesadrm_device_cleanup() is the inverse of the
++ * init function. It cleans up the fbconv modesetting helper and releases
++ * the DRM device.
++ *
++ * What is left is connecting vesafb to vesadrm. As a first step, we need a
++ * copy the vesafb source files into the vesadrm driver and make them compile.
++ * Once this is done, we have to replace the call to register_framebuffer()
++ * with a call to vesadrm_register_framebuffer(), and unregister_framebuffer()
++ * with vesadrm_unregister_framebuffer(). We have now disconnected vesafb from
++ * the fbdev core and run it as part of DRM.
 + */
-+int drm_fbconv_fill_fb_info(struct fb_info *fb_info)
-+{
-+	struct fb_videomode mode;
 +
-+	/* Returing -ENOSYS on error is technically wrong, but it's
-+	 * what the fbdev core code would do. So we do the same.
-+	 */
-+	if (fb_check_foreignness(fb_info))
-+		return -ENOSYS;
-+
-+	fb_info->node = FB_MAX; /* not registered; filled by fbconv helpers */
-+	atomic_set(&fb_info->count, 1);
-+	mutex_init(&fb_info->lock);
-+	mutex_init(&fb_info->mm_lock);
-+
-+	fb_info->dev = NULL; /* device file not needed for fbconv. */
-+
-+	if (fb_info->pixmap.addr == NULL) {
-+		fb_info->pixmap.addr = kmalloc(FBPIXMAPSIZE, GFP_KERNEL);
-+		if (fb_info->pixmap.addr) {
-+			fb_info->pixmap.size = FBPIXMAPSIZE;
-+			fb_info->pixmap.buf_align = 1;
-+			fb_info->pixmap.scan_align = 1;
-+			fb_info->pixmap.access_align = 32;
-+			fb_info->pixmap.flags = FB_PIXMAP_DEFAULT;
-+		}
-+	}
-+	fb_info->pixmap.offset = 0;
-+
-+	if (!fb_info->pixmap.blit_x)
-+		fb_info->pixmap.blit_x = ~(u32)0;
-+
-+	if (!fb_info->pixmap.blit_y)
-+		fb_info->pixmap.blit_y = ~(u32)0;
-+
-+	if (!fb_info->modelist.prev || !fb_info->modelist.next)
-+		INIT_LIST_HEAD(&fb_info->modelist);
-+
-+	fb_var_to_videomode(&mode, &fb_info->var);
-+	fb_add_videomode(&mode, &fb_info->modelist);
-+
-+	/* matroxfb: Requries a call to fb_set_par() to initialize
-+	 * fbinfo->fix.{smem_start,smem_len}. Otherwise, we won't be
-+	 * able to initialize framebuffer memory management.
-+	 */
-+	if (is_matroxfb(fb_info)) {
-+		if (fb_info->fbops->fb_set_par)
-+			fb_info->fbops->fb_set_par(fb_info);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(drm_fbconv_fill_fb_info);
-+
-+/**
-+ * drm_fbconv_cleanup_fb_info - cleans up an fbdev driver's fb_info structure
-+ *	after use
-+ * @fb_info:	the fb_info structure to clean up
-+ */
-+void drm_fbconv_cleanup_fb_info(struct fb_info *fb_info)
-+{
-+	if (fb_info->node != FB_MAX)
-+		return;
-+
-+	if (fb_info->pixmap.addr &&
-+	    (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
-+		kfree(fb_info->pixmap.addr);
-+
-+	fb_destroy_modelist(&fb_info->modelist);
-+
-+	if (!atomic_dec_and_test(&fb_info->count))
-+		return;
-+
-+	if (fb_info->fbops->fb_destroy)
-+		fb_info->fbops->fb_destroy(fb_info);
-+}
-+EXPORT_SYMBOL(drm_fbconv_cleanup_fb_info);
-diff --git a/include/drm/drm_fbconv_helper.h b/include/drm/drm_fbconv_helper.h
-index c7d211f40462..23d17ad14b81 100644
---- a/include/drm/drm_fbconv_helper.h
-+++ b/include/drm/drm_fbconv_helper.h
-@@ -140,4 +140,11 @@ int drm_fbconv_modeset_setup_pipe(
- 	const uint32_t *formats, unsigned int format_count,
- 	const uint64_t *format_modifiers, struct drm_connector *connector);
- 
-+/*
-+ * Helpers for struct fb_info
-+ */
-+
-+int drm_fbconv_fill_fb_info(struct fb_info *fb_info);
-+void drm_fbconv_cleanup_fb_info(struct fb_info *fb_info);
-+
- #endif
+ /*
+  * Format conversion helpers
+  */
 -- 
 2.23.0
 
