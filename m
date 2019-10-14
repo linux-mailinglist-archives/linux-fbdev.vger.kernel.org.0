@@ -2,19 +2,19 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C294D64A3
+	by mail.lfdr.de (Postfix) with ESMTP id CC80FD64A4
 	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Oct 2019 16:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732382AbfJNOE2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1732452AbfJNOE2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Mon, 14 Oct 2019 10:04:28 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51130 "EHLO mx1.suse.de"
+Received: from mx2.suse.de ([195.135.220.15]:50858 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732445AbfJNOE1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Oct 2019 10:04:27 -0400
+        id S1732434AbfJNOE2 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Oct 2019 10:04:28 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id BEA72B255;
-        Mon, 14 Oct 2019 14:04:24 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id 4320AAF92;
+        Mon, 14 Oct 2019 14:04:25 +0000 (UTC)
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     airlied@linux.ie, daniel@ffwll.ch,
         maarten.lankhorst@linux.intel.com, mripard@kernel.org,
@@ -23,9 +23,9 @@ To:     airlied@linux.ie, daniel@ffwll.ch,
 Cc:     corbet@lwn.net, gregkh@linuxfoundation.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 12/15] drm/fbconv: Add helper documentation
-Date:   Mon, 14 Oct 2019 16:04:13 +0200
-Message-Id: <20191014140416.28517-13-tzimmermann@suse.de>
+Subject: [PATCH v2 13/15] staging: Add mgakms driver
+Date:   Mon, 14 Oct 2019 16:04:14 +0200
+Message-Id: <20191014140416.28517-14-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191014140416.28517-1-tzimmermann@suse.de>
 References: <20191014140416.28517-1-tzimmermann@suse.de>
@@ -36,252 +36,344 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There's now a tutorial on how to create a DRM driver on top of fbconv
-helpers. The DRM TODO list contains an entry for converting fbdev
-drivers over to DRM.
+The mgakms driver uses DRM's fbconv helpers to provide a DRM driver
+for Matrox chipsets. This will allow matroxfb to be refactored into
+a first-class DRM driver.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- Documentation/gpu/drm-kms-helpers.rst |  12 ++
- Documentation/gpu/todo.rst            |  15 +++
- drivers/gpu/drm/drm_fbconv_helper.c   | 181 ++++++++++++++++++++++++++
- 3 files changed, 208 insertions(+)
+ drivers/staging/Kconfig             |   2 +
+ drivers/staging/Makefile            |   1 +
+ drivers/staging/mgakms/Kconfig      |  13 +++
+ drivers/staging/mgakms/Makefile     |   6 ++
+ drivers/staging/mgakms/mga_device.c |  68 +++++++++++++++
+ drivers/staging/mgakms/mga_device.h |  30 +++++++
+ drivers/staging/mgakms/mga_drv.c    | 129 ++++++++++++++++++++++++++++
+ drivers/staging/mgakms/mga_drv.h    |  14 +++
+ 8 files changed, 263 insertions(+)
+ create mode 100644 drivers/staging/mgakms/Kconfig
+ create mode 100644 drivers/staging/mgakms/Makefile
+ create mode 100644 drivers/staging/mgakms/mga_device.c
+ create mode 100644 drivers/staging/mgakms/mga_device.h
+ create mode 100644 drivers/staging/mgakms/mga_drv.c
+ create mode 100644 drivers/staging/mgakms/mga_drv.h
 
-diff --git a/Documentation/gpu/drm-kms-helpers.rst b/Documentation/gpu/drm-kms-helpers.rst
-index 9668a7fe2408..1232a3ef24ff 100644
---- a/Documentation/gpu/drm-kms-helpers.rst
-+++ b/Documentation/gpu/drm-kms-helpers.rst
-@@ -411,3 +411,15 @@ SHMEM GEM Helper Reference
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index 6f1fa4c849a1..fd25596813c5 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -125,4 +125,6 @@ source "drivers/staging/exfat/Kconfig"
  
- .. kernel-doc:: drivers/gpu/drm/drm_gem_shmem_helper.c
-    :export:
-+
-+fbdev Conversion Helper Reference
-+=================================
-+
-+.. kernel-doc:: drivers/gpu/drm/drm_fbconv_helper.c
-+   :doc: fbconv helpers
-+
-+.. kernel-doc:: include/drm/drm_fbconv_helper.h
-+   :internal:
-+
-+.. kernel-doc:: drivers/gpu/drm/drm_fbconv_helper.c
-+   :export:
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index 79785559d711..1be44a17f3e8 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -462,3 +462,18 @@ Contact: Sam Ravnborg
+ source "drivers/staging/qlge/Kconfig"
  
- Outside DRM
- ===========
++source "drivers/staging/mgakms/Kconfig"
 +
-+Convert fbdev drivers to DRM
-+----------------------------
+ endif # STAGING
+diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
+index a90f9b308c8d..4c98b028ee99 100644
+--- a/drivers/staging/Makefile
++++ b/drivers/staging/Makefile
+@@ -53,3 +53,4 @@ obj-$(CONFIG_UWB)		+= uwb/
+ obj-$(CONFIG_USB_WUSB)		+= wusbcore/
+ obj-$(CONFIG_EXFAT_FS)		+= exfat/
+ obj-$(CONFIG_QLGE)		+= qlge/
++obj-$(CONFIG_DRM_MGAKMS)	+= mgakms/
+diff --git a/drivers/staging/mgakms/Kconfig b/drivers/staging/mgakms/Kconfig
+new file mode 100644
+index 000000000000..de23e76317bd
+--- /dev/null
++++ b/drivers/staging/mgakms/Kconfig
+@@ -0,0 +1,13 @@
++config DRM_MGAKMS
++	tristate "Matrox g200/g400"
++	depends on DRM && PCI
++	select DRM_FBCONV_HELPER
++	select DRM_GEM_SHMEM_HELPER
++	select DRM_KMS_HELPER
++	help
++	  Choose this option if you have a Matrox Millennium,
++	  Matrox Millennium II, Matrox Mystique, Matrox Mystique 220,
++	  Matrox Productiva G100, Matrox Mystique G200,
++	  Matrox Millennium G200, Matrox Marvel G200 video, Matrox G400,
++	  G450 or G550 card. If M is selected, the module will be called mga.
++	  AGP support is required for this driver to work.
+diff --git a/drivers/staging/mgakms/Makefile b/drivers/staging/mgakms/Makefile
+new file mode 100644
+index 000000000000..65695f04eb7f
+--- /dev/null
++++ b/drivers/staging/mgakms/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
 +
-+There are plenty of fbdev drivers for old hardware. With fbconv helpers, we
-+have a simple and clean way of transitioning fbdev drivers to DRM. Set up a
-+simple DRM driver that builds onto the fbconv helpers, copy over the fbdev
-+driver and connect both. This should result in a basic DRM driver that can
-+run X11 and Weston.  There's a tutorial for this process with example source
-+code in the fbconv documentation.
++mgakms-y	:= mga_device.o \
++		   mga_drv.o
 +
-+From there, refactor the driver source code into a clean DRM driver that
-+requires neither fbdev nor fbconv helpers.
++obj-$(CONFIG_DRM_MGAKMS)	+= mgakms.o
+diff --git a/drivers/staging/mgakms/mga_device.c b/drivers/staging/mgakms/mga_device.c
+new file mode 100644
+index 000000000000..34b3bb1ed8a5
+--- /dev/null
++++ b/drivers/staging/mgakms/mga_device.c
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+Contact: Thomas Zimmermann
-diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
-index 7d7e4da2a29e..1fa240a4789f 100644
---- a/drivers/gpu/drm/drm_fbconv_helper.c
-+++ b/drivers/gpu/drm/drm_fbconv_helper.c
-@@ -18,6 +18,187 @@
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
- 
-+/**
-+ * DOC: fbconv helpers
-+ *
-+ * The Linux kernel's fbdev subsystem provides a wide range of drivers for
-+ * older graphics hardware. Except for these existng drivers, fbdev is
-+ * deprecated and expected to be removed at some point in the future. All new
-+ * development happens in DRM. Some of the fbdev drivers are worth carrying
-+ * forward. The fbconv helper functions provide a framework for porting fbdev
-+ * drivers to DRM.
-+ *
-+ * When porting over fbdev drivers to DRM, the most significant problem is the
-+ * difference in how the internal driver interfaces work. Fbdev has a single
-+ * function, struct fb_ops.fb_set_par(), to set video mode and framebuffer
-+ * format. DRM use a much more fine-grained interface. In fbdev, framebuffer
-+ * memory is managed by a single client, while in DRM multiple clients can
-+ * hold buffers with framebuffer data.
-+ *
-+ * The fbconv helper library provides a set of data structures and functions
-+ * that connect DRM and fbdev. The resulting DRM driver maps DRM operations
-+ * to fbdev interfaces and uses an fbdev driver for its hardware operations.
-+ * Such a driver is not intended to be merged into DRM as-is. It does,
-+ * however, provide a starting point for refactoring the fbdev driver's
-+ * implementation into first-class DRM code.
-+ *
-+ * As an example, we create a DRM driver from vesafb, fbdev's generic
-+ * vesa driver. We begin by creating a DRM stub driver vesadrm. Please keep
-+ * in mind that the provided code is for illustrative purposes and requires
-+ * error handling.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	DEFINE_DRM_GEM_SHMEM_FOPS(vesadrm_file_operations);
-+ *
-+ *	static struct drm_driver vesadrm_driver = {
-+ *		.major = 1,
-+ *		.minor = 0,
-+ *		.patchlevel = 0,
-+ *		.name = "vesadrm",
-+ *		.desc = "DRM VESA driver",
-+ *		.date = "01/01/1970",
-+ *		.driver_features = DRIVER_ATOMIC |
-+ *				   DRIVER_GEM |
-+ *				   DRIVER_MODESET,
-+ *		.fops = &vesadrm_file_operations,
-+ *		DRM_GEM_SHMEM_DRIVER_OPS,
-+ *	};
-+ *
-+ * Fbconv uses SHMEM, so we set up the structures accordingly.
-+ *
-+ * The fbdev code usually calls register_framebuffer() and
-+ * unregister_framebuffer() to connect and disconnect itself to the fbdev
-+ * core code. In our case, we replace these calls with
-+ * vesadrm_register_framebuffer() and vesadrm_unregister_framebuffer(), which
-+ * serve as entry points for vesafb.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	#include <drm/drm/fbconv_helper.h>
-+ *
-+ *	struct vesadrm_device {
-+ *		struct drm_device dev;
-+ *		struct fb_info *fb_info;
-+ *
-+ *		struct drm_fbconv_modeset modeset;
-+ *	};
-+ *
-+ *	struct vesadrm_device* vesadrm_register_framebuffer(struct fb_info *fb_info)
-+ *	{
-+ *		struct vesadrm *vdev;
-+ *
-+ *		drm_fbconv_fill_fb_info(fb_info);
-+ *
-+ *		vdev = kzalloc(sizeof(*vdev), GFP_KERNEL);
-+ *		vesadrm_device_init(vdev, &vesadrm_driver, fb_info)
-+ *
-+ *		drm_dev_register(&vdev->dev, 0);
-+ *
-+ *		return vdev;
-+ *	}
-+ *
-+ * Here, we have the first references to fbconf helpers. The instance
-+ * of struct drm_fbconv_modeset is the central data structure for fbconv.
-+ * Built upon struct drm_simple_display_pipe, it stores most state for the
-+ * DRM driver.
-+ *
-+ * The function vesadrm_register_framebuffer() will later be called by
-+ * vesafb code with the fbdev driver's fb_info structure. In core fbdev,
-+ * register_framebuffer() would fill fb_info with general state and complete
-+ * registration. With fbconv helpers, drm_fbconv_fill_fb_info() does this.
-+ * It's a simplified version of the fbdev setup process, without device file
-+ * creation, registration, or events. No console is created either.
-+ * Finally vesadrm_register_framebuffer() initializes the vesadrm device and
-+ * registers the DRM device. At this point, vesadrm is completely initialized.
-+ *
-+ * For completeness, here's the implementation of
-+ * vesadrm_unregister_framebuffer(), which shuts the device down.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	void vesadrm_unregister_framebuffer(struct vesadrm_device *vdev)
-+ *	{
-+ *		struct fb_info *fb_info = vdev->fb_info;
-+ *
-+ *		vesadrm_device_cleanup(vdev);
-+ *		kfree(vdev);
-+ *		drm_fbconv_cleanup_fb_info(fb_info);
-+ *	}
-+ *
-+ * Next we need an implementation of vesadrm_device_init() and
-+ * vesadrm_device_cleanup(). These functions handle the details of
-+ * device configuration and console setup. As all this functionality
-+ * is provided by helpers, the actual implementation is fairly small.
-+ *
-+ * .. code-block:: c
-+ *
-+ *	static int vesadrm_device_init(struct vesadrm_device *vdev,
-+ *				       struct drm_driver *drv,
-+ *				       struct fb_info *fb_info)
-+ *	{
-+ *		static const uint32_t formats[] = {
-+ *			DRM_FORMAT_XRGB8888,
-+ *			DRM_FORMAT_RGB565
-+ *		};
-+ *		static unsigned int max_width = 1600;
-+ *		static unsigned int max_height = 1200;
-+ *		static unsigned int preferred_depth = 32;
-+ *
-+ *		drm_dev_init(&vdev->dev, drv, fb_info->device);
-+ *
-+ *		vdev->dev.dev_private = vdev;
-+ *		vdev->dev.pdev = container_of(fb_info->device, struct pci_dev, dev);
-+ *		vdev->fb_info = fb_info;
-+ *
-+ *		drm_fbconv_modeset_init(&vdev->modeset, &vdev->dev, fb_info,
-+ *					max_width, max_height, preferred_depth);
-+ *
-+ *		drm_fbconv_modeset_setup_pipe(&vdev->modeset, NULL, formats,
-+ *					      ARRAY_SIZE(formats), NULL, NULL);
-+ *
-+ *		drm_fbdev_generic_setup(&vdev->dev, 0);
-+ *
-+ *		return 0;
-+ *	}
-+ *
-+ *	static void vesadrm_device_cleanup(struct vesadrm_device *vdev)
-+ *	{
-+ *		struct drm_device *dev = &vdev->dev;
-+ *
-+ *		drm_fbconv_modeset_cleanup(&vdev->modeset);
-+ *
-+ *		drm_dev_fini(dev);
-+ *		dev->dev_private = NULL;
-+ *	}
-+ *
-+ * In vesadrm_device_init(), several device-specific constants are declared.
-+ * Depending on the hardware, drivers should set them accordingly.
-+ * The call to drm_fbconv_modeset_init() initializes fbconv modesetting
-+ * helpers with these device constants.
-+ *
-+ * The drm_fbconv_modeset_setup_pipe() creates the simple display pipe with
-+ * the specified color formats. By default, everything is set up
-+ * automatically. But the function also accepts format modifiers, a DRM
-+ * connector, and call-back functions for struct drm_simple_display_pipe.
-+ * So each of these can be refactored individually later on.
-+ *
-+ * After setting up the fbconv helpers, there's is a call to
-+ * drm_fbdev_generic_setup(), which set an initial mode and creates a
-+ * framebuffer console.
-+ *
-+ * The implementation of vesadrm_device_cleanup() is the inverse of the
-+ * init function. It cleans up the fbconv modesetting helper and releases
-+ * the DRM device.
-+ *
-+ * What is left is connecting vesafb to vesadrm. As a first step, we need a
-+ * copy the vesafb source files into the vesadrm driver and make them compile.
-+ * Once this is done, we have to replace the call to register_framebuffer()
-+ * with a call to vesadrm_register_framebuffer(), and unregister_framebuffer()
-+ * with vesadrm_unregister_framebuffer(). We have now disconnected vesafb from
-+ * the fbdev core and run it as part of DRM.
++#include <linux/fb.h>
++#include <linux/pci.h>
++
++#include <drm/drm_drv.h>
++#include <drm/drm_fb_helper.h>
++#include <drm/drm_modeset_helper.h>
++
++#include "mga_device.h"
++
++/*
++ * struct mga_device
 + */
 +
- /*
-  * Format conversion helpers
-  */
++int mga_device_init(struct mga_device *mdev, struct drm_driver *drv,
++		    struct fb_info *fb_info)
++{
++	static const uint32_t formats[] = {
++		DRM_FORMAT_XRGB8888,
++		DRM_FORMAT_RGB565
++	};
++	static unsigned int max_width = 2048;
++	static unsigned int max_height = 2048;
++	static unsigned int preferred_depth = 32;
++
++	int ret;
++
++	ret = drm_dev_init(&mdev->dev, drv, fb_info->device);
++	if (ret)
++		return ret;
++	mdev->dev.dev_private = mdev;
++	mdev->dev.pdev = container_of(fb_info->device, struct pci_dev, dev);
++	mdev->fb_info = fb_info;
++
++	ret = drm_fbconv_modeset_init(&mdev->modeset, &mdev->dev, fb_info,
++				      max_width, max_height, preferred_depth);
++	if (ret)
++		goto err_drm_dev_fini;
++
++	ret = drm_fbconv_modeset_setup_pipe(&mdev->modeset, NULL, formats,
++					    ARRAY_SIZE(formats), NULL, NULL);
++	if (ret)
++		goto err_drm_fbconv_modeset_cleanup;
++
++	ret = drm_fbdev_generic_setup(&mdev->dev, 0);
++	if (ret)
++		goto err_drm_fbconv_modeset_cleanup;
++
++	return 0;
++
++err_drm_fbconv_modeset_cleanup:
++	/* cleans up all mode-setting structures */
++	drm_fbconv_modeset_cleanup(&mdev->modeset);
++err_drm_dev_fini:
++	drm_dev_fini(&mdev->dev);
++	return ret;
++}
++
++void mga_device_cleanup(struct mga_device *mdev)
++{
++	struct drm_device *dev = &mdev->dev;
++
++	drm_fbconv_modeset_cleanup(&mdev->modeset);
++
++	drm_dev_fini(dev);
++	dev->dev_private = NULL;
++}
+diff --git a/drivers/staging/mgakms/mga_device.h b/drivers/staging/mgakms/mga_device.h
+new file mode 100644
+index 000000000000..442effbf37bc
+--- /dev/null
++++ b/drivers/staging/mgakms/mga_device.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef MGA_DEVICE_H
++#define MGA_DEVICE_H
++
++#include <linux/kernel.h>
++
++#include <drm/drm_device.h>
++#include <drm/drm_fbconv_helper.h>
++
++struct drm_driver;
++struct fb_info;
++
++struct mga_device {
++	struct drm_device dev;
++	struct fb_info *fb_info;
++
++	struct drm_fbconv_modeset modeset;
++};
++
++static inline struct mga_device *mga_device_of_dev(struct drm_device *dev)
++{
++	return container_of(dev, struct mga_device, dev);
++}
++
++int mga_device_init(struct mga_device *mdev, struct drm_driver *drv,
++		    struct fb_info *fb_info);
++void mga_device_cleanup(struct mga_device *mdev);
++
++#endif
+diff --git a/drivers/staging/mgakms/mga_drv.c b/drivers/staging/mgakms/mga_drv.c
+new file mode 100644
+index 000000000000..75e26d3046f3
+--- /dev/null
++++ b/drivers/staging/mgakms/mga_drv.c
+@@ -0,0 +1,129 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/fb.h>
++#include <linux/pci.h>
++
++#include <drm/drm_drv.h>
++#include <drm/drm_fbconv_helper.h>
++#include <drm/drm_fb_helper.h>
++#include <drm/drm_file.h>
++#include <drm/drm_gem_shmem_helper.h>
++#include <drm/drm_ioctl.h>
++
++#include "mga_device.h"
++#include "mga_drv.h"
++
++#define DRIVER_AUTHOR		"Thomas Zimmermann <tzimmermann@suse.de>"
++#define DRIVER_NAME		"mgakms"
++#define DRIVER_DESCRIPTION	"DRM driver for Matrox graphics chipsets"
++#define DRIVER_LICENSE		"GPL"
++#define DRIVER_DATE		"20190301"
++#define DRIVER_MAJOR		0
++#define DRIVER_MINOR		0
++#define DRIVER_PATCHLEVEL	1
++
++/*
++ * DRM driver
++ */
++
++DEFINE_DRM_GEM_SHMEM_FOPS(mga_file_operations);
++
++static struct drm_driver mga_driver = {
++	.major = DRIVER_MAJOR,
++	.minor = DRIVER_MINOR,
++	.patchlevel = DRIVER_PATCHLEVEL,
++	.name = DRIVER_NAME,
++	.desc = DRIVER_DESCRIPTION,
++	.date = DRIVER_DATE,
++	.driver_features = DRIVER_ATOMIC |
++			   DRIVER_GEM |
++			   DRIVER_MODESET,
++	.fops = &mga_file_operations,
++	DRM_GEM_SHMEM_DRIVER_OPS,
++};
++
++static void mga_remove_conflicting_framebuffers(struct pci_dev *pdev)
++{
++	struct apertures_struct *ap;
++	bool primary = false;
++
++	ap = alloc_apertures(1);
++	if (!ap)
++		return;
++
++	ap->ranges[0].base = pci_resource_start(pdev, 1);
++	ap->ranges[0].size = pci_resource_len(pdev, 1);
++
++#ifdef CONFIG_X86
++	primary = pdev->resource[PCI_ROM_RESOURCE].flags &
++		IORESOURCE_ROM_SHADOW;
++#endif
++	drm_fb_helper_remove_conflicting_framebuffers(ap, DRIVER_NAME,
++						      primary);
++	kfree(ap);
++}
++
++static struct mga_device *mga_create_device(struct fb_info *fb_info)
++{
++	struct mga_device *mdev;
++	int ret;
++
++	mdev = devm_kzalloc(fb_info->device, sizeof(*mdev), GFP_KERNEL);
++	if (!mdev)
++		return ERR_PTR(-ENOMEM);
++	ret = mga_device_init(mdev, &mga_driver, fb_info);
++	if (ret)
++		goto err_devm_kfree;
++	return mdev;
++
++err_devm_kfree:
++	devm_kfree(fb_info->device, mdev);
++	return ERR_PTR(ret);
++}
++
++static void mga_destroy_device(struct mga_device *mdev)
++{
++	struct device *dev = mdev->fb_info->device;
++
++	mga_device_cleanup(mdev);
++	devm_kfree(dev, mdev);
++}
++
++struct mga_device *mga_register_framebuffer(struct fb_info *fb_info,
++					    struct pci_dev *pdev)
++{
++	int ret;
++	struct mga_device *mdev;
++
++	mga_remove_conflicting_framebuffers(pdev);
++
++	ret = drm_fbconv_fill_fb_info(fb_info);
++	if (ret)
++		return ERR_PTR(ret);
++
++	mdev = mga_create_device(fb_info);
++	if (IS_ERR(mdev)) {
++		ret = PTR_ERR(mdev);
++		goto err_drm_fbconv_cleanup_fb_info;
++	}
++
++	ret = drm_dev_register(&mdev->dev, 0);
++	if (ret)
++		goto err_mga_destroy_device;
++
++	return mdev;
++
++err_mga_destroy_device:
++	mga_destroy_device(mdev);
++err_drm_fbconv_cleanup_fb_info:
++	drm_fbconv_cleanup_fb_info(fb_info);
++	return ERR_PTR(ret);
++}
++
++void mga_unregister_framebuffer(struct mga_device *mdev)
++{
++	struct fb_info *fb_info = mdev->fb_info;
++
++	mga_destroy_device(mdev);
++	drm_fbconv_cleanup_fb_info(fb_info);
++}
+diff --git a/drivers/staging/mgakms/mga_drv.h b/drivers/staging/mgakms/mga_drv.h
+new file mode 100644
+index 000000000000..d214719516c0
+--- /dev/null
++++ b/drivers/staging/mgakms/mga_drv.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef MGA_DRV_H
++#define MGA_DRV_H
++
++struct fb_info;
++struct mga_device;
++struct pci_dev;
++
++struct mga_device *mga_register_framebuffer(struct fb_info *fb_info,
++					    struct pci_dev *pdev);
++void mga_unregister_framebuffer(struct mga_device *mdev);
++
++#endif
 -- 
 2.23.0
 
