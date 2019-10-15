@@ -2,374 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B8D3D7DB7
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2019 19:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7E3D7DBF
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2019 19:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730912AbfJOR2v (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 15 Oct 2019 13:28:51 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35712 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730203AbfJOR2v (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 15 Oct 2019 13:28:51 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id CE1ADAD49;
-        Tue, 15 Oct 2019 17:28:47 +0000 (UTC)
-Subject: Re: [PATCH v2 00/15] DRM fbconv helpers for converting fbdev drivers
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     airlied@linux.ie, maarten.lankhorst@linux.intel.com,
-        mripard@kernel.org, sean@poorly.run, b.zolnierkie@samsung.com,
-        ajax@redhat.com, ville.syrjala@linux.intel.com, malat@debian.org,
-        michel@daenzer.net, corbet@lwn.net, gregkh@linuxfoundation.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20191014140416.28517-1-tzimmermann@suse.de>
- <20191015143318.GP11828@phenom.ffwll.local>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <5241e699-f66a-d212-03a5-bb736639e66b@suse.de>
-Date:   Tue, 15 Oct 2019 19:28:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S2388776AbfJOR32 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 15 Oct 2019 13:29:28 -0400
+Received: from mga14.intel.com ([192.55.52.115]:17513 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730734AbfJOR32 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 15 Oct 2019 13:29:28 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 10:29:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,300,1566889200"; 
+   d="scan'208";a="208221415"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 15 Oct 2019 10:29:24 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1iKQdQ-000H71-0W; Wed, 16 Oct 2019 01:29:24 +0800
+Date:   Wed, 16 Oct 2019 01:28:50 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     kbuild-all@lists.01.org, airlied@linux.ie, daniel@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        sean@poorly.run, b.zolnierkie@samsung.com, ajax@redhat.com,
+        ville.syrjala@linux.intel.com, malat@debian.org,
+        michel@daenzer.net, gregkh@linuxfoundation.org,
+        linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        dri-devel@lists.freedesktop.org, corbet@lwn.net
+Subject: Re: [PATCH v2 08/15] drm/fbconv: Add plane-state check and update
+Message-ID: <201910160147.NR8eNv8Z%lkp@intel.com>
+References: <20191014140416.28517-9-tzimmermann@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <20191015143318.GP11828@phenom.ffwll.local>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="5VUqdQIYROeNHXTUMY64yOuiNULBt7IlO"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191014140416.28517-9-tzimmermann@suse.de>
+X-Patchwork-Hint: ignore
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---5VUqdQIYROeNHXTUMY64yOuiNULBt7IlO
-Content-Type: multipart/mixed; boundary="vetiopZEuHfbchxGZNIHeDlrkz6zMaIOr";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Daniel Vetter <daniel@ffwll.ch>
-Cc: airlied@linux.ie, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- sean@poorly.run, b.zolnierkie@samsung.com, ajax@redhat.com,
- ville.syrjala@linux.intel.com, malat@debian.org, michel@daenzer.net,
- corbet@lwn.net, gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org
-Message-ID: <5241e699-f66a-d212-03a5-bb736639e66b@suse.de>
-Subject: Re: [PATCH v2 00/15] DRM fbconv helpers for converting fbdev drivers
-References: <20191014140416.28517-1-tzimmermann@suse.de>
- <20191015143318.GP11828@phenom.ffwll.local>
-In-Reply-To: <20191015143318.GP11828@phenom.ffwll.local>
+Hi Thomas,
 
---vetiopZEuHfbchxGZNIHeDlrkz6zMaIOr
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch! Perhaps something to improve:
 
-Hi Daniel
+[auto build test WARNING on linus/master]
+[cannot apply to v5.4-rc3 next-20191014]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-Am 15.10.19 um 16:33 schrieb Daniel Vetter:
-> Hi Thomas,
->=20
-> On Mon, Oct 14, 2019 at 04:04:01PM +0200, Thomas Zimmermann wrote:
->> (was: DRM driver for fbdev devices)
->>
->> This is version 2 of the fbdev conversion helpers. It's more or less a=
+url:    https://github.com/0day-ci/linux/commits/Thomas-Zimmermann/DRM-fbconv-helpers-for-converting-fbdev-drivers/20191015-152231
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
->> rewrite of the original patchset.
->>
->> The fbdev subsystem is considered legacy and will probably be removed =
-at
->> some point. This would mean the loss of a signifanct number of drivers=
-=2E
->> Some of the affected hardware is not in use any longer, but some hardw=
-are
->> is still around and provides good(-enough) framebuffers.
->>
->> The fbconv helpers allow for running the current DRM stack on top of f=
-bdev
->> drivers. It's a set of functions that convert between fbdev interfaces=
- and
->> DRM interfaces. Based on SHMEM and simple KMS helpers, it only offers =
-the
->> basic functionality of a framebuffer, but should be compatible with mo=
-st
->> existing fbdev drivers.
->>
->> A DRM driver using fbconv helpers consists of
->>
->>   * DRM stub code that calls into fbconv helpers, and
->>   * the original fbdev driver code.
->>
->> The fbdev driver code has to be modified to register itself with the
->> stub driver instead of the fbdev core framework. A tutorial on how to =
-use
->> the helpers is part of this patchset. The resulting driver hybrid can =
-be
->> refactored into a first-class DRM driver. The fbconv helpers contain a=
-
->> number of comments, labeled 'DRM porting note', which explain the requ=
-ired
->> steps.
->>
->> I tested the current patchset with the following drivers: atyfb, aty12=
-8fb,
->> matroxfb, pm2fb, pm3fb, rivafb, s3fb, savagefb, sisfb, tdfxfb and trid=
-entfb.
->> With each, I was able to successfully start with fbcon enabled, run we=
-ston and
->> X11. The drivers are available at [1]. For reference, the patchset inc=
-ludes
->> the Matrox stub driver.
->=20
-> So I really don't want to rain on the parade here, since if you think t=
-his
-> is useful when converting fbdev drivers I'll buy that, and I'm all for
-> getting more modern drivers into drm.
->=20
-> But I have a bunch of concerns with the approach you're proposing here:=
-
->=20
-> - we've tried staging for drm driver refactoring, it hurts. Separate tr=
-ee
->   plus the quick pace in refactoring create lots of pains. And for smal=
-l
->   drivers refacotoring before it's not buying you anything above
->   refactoring in your own personal tree. And for big drivers we're fair=
-ly
->   lenient with merging drivers that aren't fully polished yet, if there=
-'s
->   a team serious enough with cleaning up the mess. I think even merging=
-
->   partial drivers directly under drivers/gpu (but behind CONFIG_BROKEN)=
- is
->   better than staging.
-
-I mostly put this into staging, because it's the kind of code you'd
-expect there.
-
-> - we've had conversion helpers before (for the legacy kms -> atomic
->   upgrade). They constantly broke, pretty much every release when someo=
-ne
->   wanted to use them they first had to fix them up again. I think havin=
-g
->   those helpers is good, but better to just have them in some branch
->   somewhere where it's clear that they might not work anymore on latest=
-
->   upstream.
->=20
-> - especially for some of these simple fbdev drivers I feel like just
->   typing a new driver from scratch might be simpler.
->=20
-> A few more concerns specifically for your mga example:
->=20
-> - We already have a mga driver. Might be better to integrate support fo=
-r
->   older mgas into that than have a parallel driver.
-
-Two colleagues of mine, Takashi and Egbert, send a patch that added
-support for desktop G200s to mgag200. [1] But it was rejected because
-the devices are two old and not relevant any longer. If that opinion has
-changed in the meantime, I wouldn't mind adding support for desktop GPUs
-to the driver.
-
-> - Your helper is based on simple display pipe, and I think for these ol=
-d
->   mga chips (especially the dual pipe mga 450 and 550) simple display p=
-ipe
->   helper is more a hindering detour than actual help. From a quick read=
-
->   through the code (especially all the custom ioctls) you definitely wa=
-nt
->   separate TV-out connector to expose all the tv mode properties (inste=
-ad
->   of the custom ioctls).
-
-Around the G100, there's something like a change in generation. Before,
-devices had only a single output and less than 8 MiB of RAM. This works
-well with GEM SHMEM and simple KMS. Afterwards, devices have 8 MiB or
-more and multiple outputs. GEM VRAM and the full set of helpers fit this
-much better. Maybe having 2 drivers that share common code (or 3 with
-the Server Engine chipsets) makes most sense.
-
->=20
-> - On the topic of ioctls, looks like we could add FBIOGET_VBLANK to our=
-
->   generic implementation in the fbdev helpers.
->=20
-> So here's my alternative proposal:
->=20
-> - You push this as a branch onto a gitlab repo (freedesktop.org or
->   wherever you feel like).
->=20
-> - You add a gitlab CI target to autobuild the very nice kerneldoc you'v=
-e
->   created. Feel free to also do this with anything else you're familiar=
-
->   with, it's just I know gitlab and it's real simple to get a few docs
->   autogenerated and published with it.
->=20
-> - We add a todo.rst patch linking to your branch and the docs and a few=
-
->   lines on how to best convert an fbdev driver over to kms/atomic.
-
-Yes we can do that.
-
-Best regards
-Thomas
-
-[1] https://lists.freedesktop.org/archives/dri-devel/2017-July/147868.htm=
-l
-
->=20
-> And all the drivers would land the usual way, like any of the other
-> drivers we've added to drivers/gpu/drm over the past few years.
->=20
-> Thoughts?
->=20
-> Cheers, Daniel
->>
->> v2:
->> 	* rename to fbconv helpers
->> 	* rewrite as helper library
->> 	* switch over to simple KMS helpers
->> 	* switch over to SHMEM
->> 	* add documentation
->>
->> [1] https://gitlab.freedesktop.org/tzimmermann/linux/commits/fbconv-pl=
-us-drivers
->>
->> Thomas Zimmermann (15):
->>   fbdev: Export fb_check_foreignness()
->>   fbdev: Export FBPIXMAPSIZE
->>   drm/simple-kms-helper: Add mode_fixup() to simple display pipe
->>   drm: Add fbconv helper module
->>   drm/fbconv: Add DRM <-> fbdev pixel-format conversion
->>   drm/fbconv: Add mode conversion DRM <-> fbdev
->>   drm/fbconv: Add modesetting infrastructure
->>   drm/fbconv: Add plane-state check and update
->>   drm/fbconv: Mode-setting pipeline enable / disable
->>   drm/fbconv: Reimplement several fbdev interfaces
->>   drm/fbconv: Add helpers for init and cleanup of fb_info structures
->>   drm/fbconv: Add helper documentation
->>   staging: Add mgakms driver
->>   staging/mgakms: Import matroxfb driver source code
->>   staging/mgakms: Update matroxfb driver code for DRM
->>
->>  Documentation/gpu/drm-kms-helpers.rst     |   12 +
->>  Documentation/gpu/todo.rst                |   15 +
->>  drivers/gpu/drm/Kconfig                   |   11 +
->>  drivers/gpu/drm/Makefile                  |    1 +
->>  drivers/gpu/drm/drm_fbconv_helper.c       | 2126 +++++++++++++++++
->>  drivers/gpu/drm/drm_simple_kms_helper.c   |   15 +
->>  drivers/staging/Kconfig                   |    2 +
->>  drivers/staging/Makefile                  |    1 +
->>  drivers/staging/mgakms/Kconfig            |   18 +
->>  drivers/staging/mgakms/Makefile           |   17 +
->>  drivers/staging/mgakms/g450_pll.c         |  539 +++++
->>  drivers/staging/mgakms/g450_pll.h         |   13 +
->>  drivers/staging/mgakms/i2c-matroxfb.c     |  238 ++
->>  drivers/staging/mgakms/matroxfb_DAC1064.c | 1082 +++++++++
->>  drivers/staging/mgakms/matroxfb_DAC1064.h |  174 ++
->>  drivers/staging/mgakms/matroxfb_Ti3026.c  |  746 ++++++
->>  drivers/staging/mgakms/matroxfb_Ti3026.h  |   10 +
->>  drivers/staging/mgakms/matroxfb_accel.c   |  519 +++++
->>  drivers/staging/mgakms/matroxfb_accel.h   |    9 +
->>  drivers/staging/mgakms/matroxfb_base.c    | 2592 ++++++++++++++++++++=
-+
->>  drivers/staging/mgakms/matroxfb_base.h    |  700 ++++++
->>  drivers/staging/mgakms/matroxfb_crtc2.h   |   35 +
->>  drivers/staging/mgakms/matroxfb_g450.c    |  640 +++++
->>  drivers/staging/mgakms/matroxfb_g450.h    |   10 +
->>  drivers/staging/mgakms/matroxfb_maven.h   |   21 +
->>  drivers/staging/mgakms/matroxfb_misc.c    |  815 +++++++
->>  drivers/staging/mgakms/matroxfb_misc.h    |   22 +
->>  drivers/staging/mgakms/mga_device.c       |   68 +
->>  drivers/staging/mgakms/mga_device.h       |   30 +
->>  drivers/staging/mgakms/mga_drv.c          |  129 +
->>  drivers/staging/mgakms/mga_drv.h          |   14 +
->>  drivers/video/fbdev/core/fbmem.c          |    5 +-
->>  include/drm/drm_fbconv_helper.h           |  150 ++
->>  include/drm/drm_simple_kms_helper.h       |   43 +
->>  include/linux/fb.h                        |    3 +
->>  35 files changed, 10822 insertions(+), 3 deletions(-)
->>  create mode 100644 drivers/gpu/drm/drm_fbconv_helper.c
->>  create mode 100644 drivers/staging/mgakms/Kconfig
->>  create mode 100644 drivers/staging/mgakms/Makefile
->>  create mode 100644 drivers/staging/mgakms/g450_pll.c
->>  create mode 100644 drivers/staging/mgakms/g450_pll.h
->>  create mode 100644 drivers/staging/mgakms/i2c-matroxfb.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_DAC1064.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_DAC1064.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_Ti3026.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_Ti3026.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_accel.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_accel.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_base.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_base.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_crtc2.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_g450.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_g450.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_maven.h
->>  create mode 100644 drivers/staging/mgakms/matroxfb_misc.c
->>  create mode 100644 drivers/staging/mgakms/matroxfb_misc.h
->>  create mode 100644 drivers/staging/mgakms/mga_device.c
->>  create mode 100644 drivers/staging/mgakms/mga_device.h
->>  create mode 100644 drivers/staging/mgakms/mga_drv.c
->>  create mode 100644 drivers/staging/mgakms/mga_drv.h
->>  create mode 100644 include/drm/drm_fbconv_helper.h
->>
->> --
->> 2.23.0
->>
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
 
---vetiopZEuHfbchxGZNIHeDlrkz6zMaIOr--
+sparse warnings: (new ones prefixed by >>)
 
---5VUqdQIYROeNHXTUMY64yOuiNULBt7IlO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+>> drivers/gpu/drm/drm_fbconv_helper.c:981:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *dst @@    got n:2> *dst @@
+>> drivers/gpu/drm/drm_fbconv_helper.c:981:39: sparse:    expected void [noderef] <asn:2> *dst
+>> drivers/gpu/drm/drm_fbconv_helper.c:981:39: sparse:    got void *dst
+   drivers/gpu/drm/drm_fbconv_helper.c:985:51: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *dst @@    got n:2> *dst @@
+   drivers/gpu/drm/drm_fbconv_helper.c:985:51: sparse:    expected void [noderef] <asn:2> *dst
+   drivers/gpu/drm/drm_fbconv_helper.c:985:51: sparse:    got void *dst
+   drivers/gpu/drm/drm_fbconv_helper.c:990:51: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *dst @@    got n:2> *dst @@
+   drivers/gpu/drm/drm_fbconv_helper.c:990:51: sparse:    expected void [noderef] <asn:2> *dst
+   drivers/gpu/drm/drm_fbconv_helper.c:990:51: sparse:    got void *dst
+>> drivers/gpu/drm/drm_fbconv_helper.c:1291:21: sparse: sparse: incorrect type in assignment (different address spaces) @@    expected void *screen_base @@    got char [noderef] <asvoid *screen_base @@
+>> drivers/gpu/drm/drm_fbconv_helper.c:1291:21: sparse:    expected void *screen_base
+>> drivers/gpu/drm/drm_fbconv_helper.c:1291:21: sparse:    got char [noderef] <asn:2> *screen_base
+>> drivers/gpu/drm/drm_fbconv_helper.c:1294:29: sparse: sparse: incorrect type in assignment (different address spaces) @@    expected void *screen_base @@    got void [noderef] <asvoid *screen_base @@
+   drivers/gpu/drm/drm_fbconv_helper.c:1294:29: sparse:    expected void *screen_base
+>> drivers/gpu/drm/drm_fbconv_helper.c:1294:29: sparse:    got void [noderef] <asn:2> *
+>> drivers/gpu/drm/drm_fbconv_helper.c:1318:25: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
+>> drivers/gpu/drm/drm_fbconv_helper.c:1318:25: sparse:    expected void volatile [noderef] <asn:2> *addr
+>> drivers/gpu/drm/drm_fbconv_helper.c:1318:25: sparse:    got void *screen_base
+   drivers/gpu/drm/drm_fbconv_helper.c:1346:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
+   drivers/gpu/drm/drm_fbconv_helper.c:1346:38: sparse:    expected void volatile [noderef] <asn:2> *addr
+   drivers/gpu/drm/drm_fbconv_helper.c:1346:38: sparse:    got void *screen_base
 
------BEGIN PGP SIGNATURE-----
+vim +981 drivers/gpu/drm/drm_fbconv_helper.c
 
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl2mAcoACgkQaA3BHVML
-eiOV9Af/UHqAiq+XxZfRBxD2KFdgxR5gFwI5RPyqr6oZGNstsfqJp6OFlvhlbO0H
-pK69aUgAgAf5oS9HW9c8qkL6emPHt+iyGd23KwPkj9cChpVEpaj5XpHNH0xylthx
-TCCANLBpMcZ7F7F7vPz4HiSACS0Ud6BBa5J48WpinZcLYz/OAA1oo873NdnoTKSI
-SWBf79V+5db3T6tXcMp0N0tjLXBtWHH4EI9j8Ksv+I5AEh0NK2EdwHS0d+IZdpWS
-J9uX5PA9J6k2hnCzV33weo7GRo1sqWWYx0SCQsbYtd5BrC8EsGBwFh1irW9eQALG
-sjlKooKNzLgSMivU/cMAL9kb68htNg==
-=l58t
------END PGP SIGNATURE-----
+   956	
+   957	/**
+   958	 * drm_fbconv_blit_rect - copy an area of pixel data from a framebuffer
+   959	 *	to the hardware buffer
+   960	 * @dst:	the on-screen hardware buffer
+   961	 * @vaddr:	the source buffer in kernel address space
+   962	 * @fb:		the framebuffer of the source buffer
+   963	 * @rect:	the area to copy
+   964	 * Returns:
+   965	 *	0 on success, or
+   966	 *	a negative error code otherwise.
+   967	 *
+   968	 * This function copies the pixel data from a DRM framebuffer to a hardware
+   969	 * buffer; doing necessary format conversion in the process. Not all
+   970	 * combinations of source and destination formats are currently supported.
+   971	 */
+   972	int drm_fbconv_blit_rect(void *dst, void *vaddr, struct drm_framebuffer *fb,
+   973				 struct drm_rect *rect)
+   974	{
+   975		struct drm_device *dev = fb->dev;
+   976	
+   977		if (!vaddr)
+   978			return 0; /* no framebuffer set for plane; no error */
+   979	
+   980		if (dev->mode_config.preferred_depth == (fb->format->cpp[0] * 8))
+ > 981			drm_fb_memcpy_dstclip(dst, vaddr, fb, rect);
+   982	
+   983		else if (fb->format->cpp[0] == 4 &&
+   984			 dev->mode_config.preferred_depth == 16)
+ > 985			drm_fb_xrgb8888_to_rgb565_dstclip(dst, fb->pitches[0],
+   986							  vaddr, fb, rect, false);
+   987	
+   988		else if (fb->format->cpp[0] == 4 &&
+   989			 dev->mode_config.preferred_depth == 24)
+ > 990			drm_fb_xrgb8888_to_rgb888_dstclip(dst, fb->pitches[0],
+   991							  vaddr, fb, rect);
+   992	
+   993		else {
+   994			/* TODO: add the missing conversion */
+   995			DRM_ERROR("fbconv: mismatching pixel formats\n");
+   996			return -EINVAL;
+   997		}
+   998	
+   999		return 0;
+  1000	}
+  1001	EXPORT_SYMBOL(drm_fbconv_blit_rect);
+  1002	
 
---5VUqdQIYROeNHXTUMY64yOuiNULBt7IlO--
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
