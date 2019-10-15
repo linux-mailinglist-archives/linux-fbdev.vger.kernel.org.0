@@ -2,36 +2,34 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C157D6F4F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2019 07:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC04FD6F6B
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2019 08:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725890AbfJOFs5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 15 Oct 2019 01:48:57 -0400
-Received: from mx2.suse.de ([195.135.220.15]:59912 "EHLO mx1.suse.de"
+        id S1726575AbfJOGLM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 15 Oct 2019 02:11:12 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45644 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725810AbfJOFs5 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 15 Oct 2019 01:48:57 -0400
+        id S1726101AbfJOGLM (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 15 Oct 2019 02:11:12 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 501C8B48C;
-        Tue, 15 Oct 2019 05:48:55 +0000 (UTC)
-Subject: Re: [PATCH v2 05/15] drm/fbconv: Add DRM <-> fbdev pixel-format
- conversion
+        by mx1.suse.de (Postfix) with ESMTP id 214D9AF86;
+        Tue, 15 Oct 2019 06:11:10 +0000 (UTC)
+Subject: Re: [PATCH v2 00/15] DRM fbconv helpers for converting fbdev drivers
 To:     Sam Ravnborg <sam@ravnborg.org>
 Cc:     linux-fbdev@vger.kernel.org, b.zolnierkie@samsung.com,
         airlied@linux.ie, gregkh@linuxfoundation.org, michel@daenzer.net,
         corbet@lwn.net, malat@debian.org, dri-devel@lists.freedesktop.org,
         sean@poorly.run
 References: <20191014140416.28517-1-tzimmermann@suse.de>
- <20191014140416.28517-6-tzimmermann@suse.de>
- <20191014203007.GA4373@ravnborg.org>
+ <20191014203644.GB4373@ravnborg.org>
 From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <9f0e6195-eac3-7055-c1ec-5157f8411e15@suse.de>
-Date:   Tue, 15 Oct 2019 07:48:52 +0200
+Message-ID: <9633ac37-00c3-f699-9fb6-e2ecae0d1905@suse.de>
+Date:   Tue, 15 Oct 2019 08:11:08 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <20191014203007.GA4373@ravnborg.org>
+In-Reply-To: <20191014203644.GB4373@ravnborg.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -42,77 +40,78 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Hi
 
-Am 14.10.19 um 22:30 schrieb Sam Ravnborg:
+Am 14.10.19 um 22:36 schrieb Sam Ravnborg:
 > Hi Thomas.
 > 
-> On Mon, Oct 14, 2019 at 04:04:06PM +0200, Thomas Zimmermann wrote:
->> DRM uses FOURCC constants to describe pixel formats, fbdev uses a
->> per-component bitfield structure. The functions in this patch convert
->> between the two.
+> On Mon, Oct 14, 2019 at 04:04:01PM +0200, Thomas Zimmermann wrote:
+>> (was: DRM driver for fbdev devices)
 >>
-> 
-> A few nits below.
-> 
-> 
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> ---
->>   drivers/gpu/drm/drm_fbconv_helper.c | 435 ++++++++++++++++++++++++++++
->>   include/drm/drm_fbconv_helper.h     |  23 ++
->>   2 files changed, 458 insertions(+)
->>   create mode 100644 include/drm/drm_fbconv_helper.h
+>> This is version 2 of the fbdev conversion helpers. It's more or less a
+>> rewrite of the original patchset.
 >>
->> diff --git a/drivers/gpu/drm/drm_fbconv_helper.c b/drivers/gpu/drm/drm_fbconv_helper.c
->> index 0cb46d2c98c3..af45358a156a 100644
->> --- a/drivers/gpu/drm/drm_fbconv_helper.c
->> +++ b/drivers/gpu/drm/drm_fbconv_helper.c
->> @@ -1 +1,436 @@
->>   // SPDX-License-Identifier: GPL-2.0-or-later
->> +
->> +#include <asm/byteorder.h>
->> +
->> +#include <linux/fb.h>
+>> The fbdev subsystem is considered legacy and will probably be removed at
+>> some point. This would mean the loss of a signifanct number of drivers.
+>> Some of the affected hardware is not in use any longer, but some hardware
+>> is still around and provides good(-enough) framebuffers.
+>>
+>> The fbconv helpers allow for running the current DRM stack on top of fbdev
+>> drivers. It's a set of functions that convert between fbdev interfaces and
+>> DRM interfaces. Based on SHMEM and simple KMS helpers, it only offers the
+>> basic functionality of a framebuffer, but should be compatible with most
+>> existing fbdev drivers.
+>>
+>> A DRM driver using fbconv helpers consists of
+>>
+>>    * DRM stub code that calls into fbconv helpers, and
+>>    * the original fbdev driver code.
+>>
+>> The fbdev driver code has to be modified to register itself with the
+>> stub driver instead of the fbdev core framework. A tutorial on how to use
+>> the helpers is part of this patchset. The resulting driver hybrid can be
+>> refactored into a first-class DRM driver. The fbconv helpers contain a
+>> number of comments, labeled 'DRM porting note', which explain the required
+>> steps.
+>>
+>> I tested the current patchset with the following drivers: atyfb, aty128fb,
+>> matroxfb, pm2fb, pm3fb, rivafb, s3fb, savagefb, sisfb, tdfxfb and tridentfb.
+>> With each, I was able to successfully start with fbcon enabled, run weston and
+>> X11. The drivers are available at [1]. For reference, the patchset includes
+>> the Matrox stub driver.
 > 
-> <asm/*> after <linux/*>
-> So we in this way pick the more general include file first.
+> In general I like the idea of modernizing the existing fbdev drivers.
+> What I fail to read in your intro above is if this allows us to phase
+> out the migrated fbdev drivers sooner?
+> Or do we end up with two drivers to maintain?
 
-Ok.
+The idea is that an fbdev driver is converted over to DRM and, once 
+ready, the original fbdev driver gets removed. When a hybrid driver gets 
+added, I'd want to see the rsp developer actually clean up and refactor 
+the code. There shouldn't be multiple drivers for long.
 
->> +
->> +struct format_map {
->> +	bool (*is_format)(const struct fb_var_screeninfo *fb_var);
->> +	uint32_t format;
->> +};
-> We are in the kernel - where I think u32 is preferred over the longer
-> uint32_t.
-> If I grep in drm/* then they seems be be equally popular, so feel free
-> to ignore this comment.
+But most of the fbdev drivers appear to be unmaintained anyway. I 
+wouldn't expect having two drivers for a few releases would make much of 
+a difference.
 
-I generally use types that are used by related interfaces. Here it's 
-uint32_t because most other places use uint32_t for storing DRM_FORMAT 
-constants.
-
+> Obviously a full migration to a DRM driver was preferred - but this may
+> serve as a step in that direction.
+> But we should not end up with two drivers doing almost the same.
 > 
->> +static void set_fb_bitfield(struct fb_bitfield *bits, __u32 offset,
->> +			    __u32 length)
-> 
-> This is not uapi - so u32 is preferred.
+> Another general question. Do we want the modernized DRM drivers to end
+> up in staging? Why should they not go direct into drm/*
+> I know they are not fully atomic but this is not new drivers so maybe
+> they can be excused.
+> Problem is that drm drivers in staging live a secret nonvisible life
+> where they are easy to forget when we change interfaces and such.
 
-Same as above. The __u32 comes from the fb_bitfield structure.
+True. OTOH putting them next to the regular DRM code sends the message 
+that the driver is already complete and in good shape. Those hybrid 
+drivers are limited in functionality and don't really live up to 
+anyone's requirements for code quality. It's the kind of code one would 
+expect in staging.
 
 Best regards
 Thomas
 
-> Both comments apply to the whole file.
-> 
-> I did not see that this was wired into the kernel-doc in Documentation/
-> but maybe I just missed it.
-> 
-> With my comments considered you can add:
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> All code looks sane, but as I have not grasped the bigger picture
-> this can hardly be a review.
-> 
 > 	Sam
 > _______________________________________________
 > dri-devel mailing list
