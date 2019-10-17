@@ -2,265 +2,479 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40440DAAAA
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 12:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87339DAAD1
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 13:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409179AbfJQK7Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Oct 2019 06:59:25 -0400
-Received: from uho.ysoft.cz ([81.19.3.130]:58584 "EHLO uho.ysoft.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409037AbfJQK7Z (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Oct 2019 06:59:25 -0400
-Received: from [10.1.8.111] (unknown [10.1.8.111])
-        by uho.ysoft.cz (Postfix) with ESMTP id 75D1DA385F;
-        Thu, 17 Oct 2019 12:59:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
-        s=20160406-ysoft-com; t=1571309960;
-        bh=AGv9vLAQlMiuhqBtdNcQ+30BcWRtQ9ivxHwKeF48j3Q=;
-        h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
-        b=g+WlJfxqcYbuHCYObhZx9jvRSkN2vuxQuhY7VH5jFH0j49rluRQUQv8Qvom4NJmak
-         BinlPrb79MSGbhX5QtWfHCLBzTBeTjS4fzsAgtWfdCYbYoPswi2Rc0ynshZ+EoAc00
-         Dobwc56CJO9LjflCpcjNjYjUujbwzpwzT5lqPyyo=
-Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight
- toggle
-From:   =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Adam Ford <aford173@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, kernel@pengutronix.de
-References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
- <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com>
-Message-ID: <4f9594e5-f99b-f17d-531a-37d4c4161203@ysoft.com>
-Date:   Thu, 17 Oct 2019 12:59:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2393628AbfJQLGl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 07:06:41 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:36621 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728316AbfJQLGi (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 17 Oct 2019 07:06:38 -0400
+Received: by mail-wm1-f65.google.com with SMTP id m18so2095517wmc.1
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Oct 2019 04:06:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=jroNoKF9t5Dt8TQ3WBW+pAAiXkGDYC72fglWrhgf6Cs=;
+        b=hTHY5k6a/PjHDDK1J70B1wn3qaKIdw79Gfl+jhxUr40LQ2xuSzwTFBMx+0hldN8OKD
+         xoPPl7jSG7QQqMPJ6fbr9b376cXVUcWowG9AQVt2B2PfKfe0ka+K4A53nceLSd3GRBdT
+         JraYiGh+g/shedIT0kyQh6b/Or8xxr/RRbs1+aBfjjshI19NsLXIvj/YEUfJsGZKVWHR
+         Yt+ueHOa/04mld+RmZPdutU69hVkw3I3P+PdOOAkJFb5MSZxonRkMAPQSDehqprtaqxi
+         r+uE4Wu3LJY4h5mtOkhifiMRZU+eOc/8Y4PtTh+ZImNZP/WrxV1Kz1vuuyiqrQkl9QFg
+         Amag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=jroNoKF9t5Dt8TQ3WBW+pAAiXkGDYC72fglWrhgf6Cs=;
+        b=rlhey3nhPEvqTXgWkwMctg5UUfq2UG7AcwcB/mkbysKdntIobAjG9bwhqGWwYSx4b4
+         X88Bxl7cGPPzSsUFmy+LIl3fx6PHS4z4vN1jjqTqhaROzl69UHfiUzUWGmzSxhmAw98Y
+         z+PH1Z1gJNso/518GMXKdwqSv5JNn/oaE/51FnTq0GrK+OIREbEzb/F3VRjRKZ6dl0Zi
+         70opdEHSzIKHVVAvl7fdolKT25XZ9xdiMh0T9M0JKfk0yTPXRW066dBHfoBXSvuj73/7
+         fP2Wr9jezpdi8s0Yw+9vp9kX8ObBdQJER159ZXG4IkdfGPyX0zlrV+DR7Ls8yyLG5ph4
+         jB7g==
+X-Gm-Message-State: APjAAAUcapH7prD0E7nqHpAaGE9LvK3xgBfRSMwODZy0aghhFmqcgYkp
+        5Rp3GYghx/Vlqc0YUTgsNHpyUQ==
+X-Google-Smtp-Source: APXvYqxqP0n6o9QGr20fRtK32RRN5Vgq2y69nf2ehMUVS3+DsiDDeNS7OM+haS6x3slhjh3kS90v4w==
+X-Received: by 2002:a7b:c313:: with SMTP id k19mr2533449wmj.6.1571310394024;
+        Thu, 17 Oct 2019 04:06:34 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id j19sm608571wre.0.2019.10.17.04.06.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2019 04:06:32 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 12:06:31 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Kiran Gunda <kgunda@codeaurora.org>
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH V7 4/6] backlight: qcom-wled: Add support for WLED4
+ peripheral.
+Message-ID: <20191017110631.k2u254jjcza6ngzt@holly.lan>
+References: <1571220826-7740-1-git-send-email-kgunda@codeaurora.org>
+ <1571220826-7740-5-git-send-email-kgunda@codeaurora.org>
 MIME-Version: 1.0
-In-Reply-To: <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1571220826-7740-5-git-send-email-kgunda@codeaurora.org>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 17. 10. 19 11:48, Michal Vokáč wrote:
-> On 17. 10. 19 10:10, Uwe Kleine-König wrote:
->> A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
->> pwm_get_state() return the last implemented state")) changed the
->> semantic of pwm_get_state() and disclosed an (as it seems) common
->> problem in lowlevel PWM drivers. By not relying on the period and duty
->> cycle being retrievable from a disabled PWM this type of problem is
->> worked around.
->>
->> Apart from this issue only calling the pwm_get_state/pwm_apply_state
->> combo once is also more effective.
->>
->> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->> ---
->> Hello,
->>
->> There are now two reports about 01ccf903edd6 breaking a backlight. As
->> far as I understand the problem this is a combination of the backend pwm
->> driver yielding surprising results and the pwm-bl driver doing things
->> more complicated than necessary.
->>
->> So I guess this patch works around these problems. Still it would be
->> interesting to find out the details in the imx driver that triggers the
->> problem. So Adam, can you please instrument the pwm-imx27 driver to
->> print *state at the beginning of pwm_imx27_apply() and the end of
->> pwm_imx27_get_state() and provide the results?
->>
->> Note I only compile tested this change.
-> 
-> Hi Uwe,
-> I was just about to respond to the "pwm_bl on i.MX6Q broken on 5.4-RC1+"
-> thread that I have a similar problem when you submitted this patch.
-> 
-> So here are my few cents:
+On Wed, Oct 16, 2019 at 03:43:44PM +0530, Kiran Gunda wrote:
+> WLED4 peripheral is present on some PMICs like pmi8998 and
+> pm660l. It has a different register map and configurations
+> are also different. Add support for it.
 
-Once again with updated and more detailed debug messages.
+There is code buried in this patch that looks like it changes the name
+that will be handed to the backlight sub-system.
 
-> My setup is as follows:
->   - imx6dl-yapp4-draco with i.MX6Solo
->   - backlight is controlled with inverted PWM signal
->   - max brightness level = 32, default brightness level set to 32 in DT.
-> 
-> 1. Almost correct backlight behavior before 01ccf903edd6 ("pwm: Let
->     pwm_get_state() return the last implemented state):
-> 
->   - System boots to userspace and backlight is enabled all the time from
->     power up.
-> 
-     -  $ dmesg | grep pwm_
-       [    1.761546] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.012352] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-       [    5.021143] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 0
-       [    5.030182] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 1
-> 
->   - $ cat brightness
->     32
-> 
->   - $ echo 32 > brightness # nothing happens, max. brightness
-> 
->   - $ echo 1 > brightness # backlight goes down to lowest level
-       [   93.976354] pwm_imx27_apply: period: 500000, duty: 7843, polarity: 1, enabled: 1
-> 
->   - $ echo 0 > brightness # backlight goes up to max. level, this is
->                           # problem of the inverted PWM on i.MX we attempted
->                           # to solve some time ago.
-       [  115.496350] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
->
-> 2. Backlight behavior on v5.4-rc3:
-> 
->   - System boots to userspace and backlight is enabled all the time from
->     power up.
-> 
-     - $ dmesg | grep pwm_
-       [    1.774071] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.003961] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-       [    5.012649] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.021694] pwm_imx27_apply: period: 992970, duty: 992970, polarity: 0, enabled: 0
-       [    5.030732] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.039643] pwm_imx27_apply: period: 992970, duty: 0, polarity: 0, enabled: 1
-       [    5.049605] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 1
-> 
->   - $ cat brightness
->     32
-> 
->   - $ echo 32 > brightness # backlight goes down
-       [  707.946970] pwm_imx27_apply: period: 992970, duty: 992970, polarity: 0, enabled: 1
-       [  707.958551] pwm_imx27_get_state: period: 992970, duty: 992970, polarity: 0, enabled: 1
-> 
->   - $ echo 1 > brightness # backlight goes up to high level
-       [  757.516845] pwm_imx27_apply: period: 992970, duty: 15576, polarity: 0, enabled: 1
-       [  757.528438] pwm_imx27_get_state: period: 992970, duty: 15576, polarity: 0, enabled: 1
-> 
->   - $ echo 0 > brightness # backlight goes up to highest level
-       [  783.386838] pwm_imx27_apply: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [  783.398025] pwm_imx27_get_state: period: 496485, duty: 0, polarity: 0, enabled: 0
-> 
-> So the behavior is clearly inverted to how it worked prior to 01ccf903edd6
-> with the weird exception that the initial brightness level 32 is
-> not applied.
-> 
-> 3. Backlight behavior on v5.4-rc3 + this patch:
-> 
->   - System boots with backlight enabled. In the middle of kernel boot
->     backlight is disabled.
-> 
->   - $ dmesg | grep state
-       [    1.773099] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.002532] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-       [    5.011263] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [    5.020307] pwm_imx27_apply: period: 992970, duty: 992970, polarity: 0, enabled: 1
-       [    5.031066] pwm_imx27_get_state: period: 992970, duty: 992970, polarity: 0, enabled: 1
-> 
->   - $ cat brightness
->     32
-> 
->   - $ echo 32 > brightness # nothing happens, backlight is down
-> 
->   - $ echo 1 > brightness # backlight goes to high level
-       [   73.786926] pwm_imx27_apply: period: 992970, duty: 15576, polarity: 0, enabled: 1
-       [   73.798469] pwm_imx27_get_state: period: 992970, duty: 15576, polarity: 0, enabled: 1
-> 
->   - $ echo 0 > brightness # backlight goes to max brightness
-       [  104.636908] pwm_imx27_apply: period: 992970, duty: 0, polarity: 0, enabled: 0
-       [  104.648093] pwm_imx27_get_state: period: 496485, duty: 0, polarity: 0, enabled: 0
-> 
-> Same behavior as (2) but the default state from DT is apparently applied.
-> 
-> I only did this experiments. I did not delve into the code to track what is
-> going on in there yet.
-> 
-> Hopefully this helps you a bit and feel free to request other experiments,
-> Michal
-> 
->>   drivers/video/backlight/pwm_bl.c | 34 +++++++++++---------------------
->>   1 file changed, 12 insertions(+), 22 deletions(-)
->>
->> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
->> index 746eebc411df..ddebd62b3978 100644
->> --- a/drivers/video/backlight/pwm_bl.c
->> +++ b/drivers/video/backlight/pwm_bl.c
->> @@ -42,10 +42,8 @@ struct pwm_bl_data {
->>   static void pwm_backlight_power_on(struct pwm_bl_data *pb)
->>   {
->> -    struct pwm_state state;
->>       int err;
->> -    pwm_get_state(pb->pwm, &state);
->>       if (pb->enabled)
->>           return;
->> @@ -53,9 +51,6 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb)
->>       if (err < 0)
->>           dev_err(pb->dev, "failed to enable power supply\n");
->> -    state.enabled = true;
->> -    pwm_apply_state(pb->pwm, &state);
->> -
->>       if (pb->post_pwm_on_delay)
->>           msleep(pb->post_pwm_on_delay);
->> @@ -67,40 +62,27 @@ static void pwm_backlight_power_on(struct pwm_bl_data *pb)
->>   static void pwm_backlight_power_off(struct pwm_bl_data *pb)
->>   {
->> -    struct pwm_state state;
->> -
->> -    pwm_get_state(pb->pwm, &state);
->> -    if (!pb->enabled)
->> -        return;
->> -
->>       if (pb->enable_gpio)
->>           gpiod_set_value_cansleep(pb->enable_gpio, 0);
->>       if (pb->pwm_off_delay)
->>           msleep(pb->pwm_off_delay);
->> -    state.enabled = false;
->> -    state.duty_cycle = 0;
->> -    pwm_apply_state(pb->pwm, &state);
->> -
->>       regulator_disable(pb->power_supply);
->>       pb->enabled = false;
->>   }
->> -static int compute_duty_cycle(struct pwm_bl_data *pb, int brightness)
->> +static int compute_duty_cycle(struct pwm_bl_data *pb, int brightness, struct pwm_state *state)
->>   {
->>       unsigned int lth = pb->lth_brightness;
->> -    struct pwm_state state;
->>       u64 duty_cycle;
->> -    pwm_get_state(pb->pwm, &state);
->> -
->>       if (pb->levels)
->>           duty_cycle = pb->levels[brightness];
->>       else
->>           duty_cycle = brightness;
->> -    duty_cycle *= state.period - lth;
->> +    duty_cycle *= state->period - lth;
->>       do_div(duty_cycle, pb->scale);
->>       return duty_cycle + lth;
->> @@ -122,12 +104,20 @@ static int pwm_backlight_update_status(struct backlight_device *bl)
->>       if (brightness > 0) {
->>           pwm_get_state(pb->pwm, &state);
->> -        state.duty_cycle = compute_duty_cycle(pb, brightness);
->> +        state.duty_cycle = compute_duty_cycle(pb, brightness, &state);
->> +        state.enabled = true;
->>           pwm_apply_state(pb->pwm, &state);
->> +
->>           pwm_backlight_power_on(pb);
->> -    } else
->> +    } else {
->>           pwm_backlight_power_off(pb);
->> +        pwm_get_state(pb->pwm, &state);
->> +        state.enabled = false;
->> +        state.duty_cycle = 0;
->> +        pwm_apply_state(pb->pwm, &state);
->> +    }
->> +
->>       if (pb->notify_after)
->>           pb->notify_after(pb->dev, brightness);
->>
-> 
+It's purpose needs to be explained in the patch description (or the code
+moved to a new patch).
 
+
+Daniel.
+
+> 
+> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> ---
+>  drivers/video/backlight/qcom-wled.c | 263 +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 257 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+> index 45eeda4..2807b4b 100644
+> --- a/drivers/video/backlight/qcom-wled.c
+> +++ b/drivers/video/backlight/qcom-wled.c
+> @@ -17,7 +17,7 @@
+>  
+>  #define WLED3_SINK_REG_BRIGHT_MAX			0xFFF
+>  
+> -/* WLED3 control registers */
+> +/* WLED3/WLED4 control registers */
+>  #define WLED3_CTRL_REG_MOD_EN				0x46
+>  #define  WLED3_CTRL_REG_MOD_EN_MASK			BIT(7)
+>  #define  WLED3_CTRL_REG_MOD_EN_SHIFT			7
+> @@ -31,7 +31,7 @@
+>  #define WLED3_CTRL_REG_ILIMIT				0x4e
+>  #define  WLED3_CTRL_REG_ILIMIT_MASK			GENMASK(2, 0)
+>  
+> -/* WLED3 sink registers */
+> +/* WLED3/WLED4 sink registers */
+>  #define WLED3_SINK_REG_SYNC				0x47
+>  #define  WLED3_SINK_REG_SYNC_CLEAR			0x00
+>  
+> @@ -56,6 +56,28 @@
+>  #define WLED3_SINK_REG_STR_CABC(n)			(0x66 + (n * 0x10))
+>  #define  WLED3_SINK_REG_STR_CABC_MASK			BIT(7)
+>  
+> +/* WLED4 specific sink registers */
+> +#define WLED4_SINK_REG_CURR_SINK			0x46
+> +#define  WLED4_SINK_REG_CURR_SINK_MASK			GENMASK(7, 4)
+> +#define  WLED4_SINK_REG_CURR_SINK_SHFT			4
+> +
+> +/* WLED4 specific per-'string' registers below */
+> +#define WLED4_SINK_REG_STR_MOD_EN(n)			(0x50 + (n * 0x10))
+> +#define  WLED4_SINK_REG_STR_MOD_MASK			BIT(7)
+> +
+> +#define WLED4_SINK_REG_STR_FULL_SCALE_CURR(n)		(0x52 + (n * 0x10))
+> +#define  WLED4_SINK_REG_STR_FULL_SCALE_CURR_MASK	GENMASK(3, 0)
+> +
+> +#define WLED4_SINK_REG_STR_MOD_SRC(n)			(0x53 + (n * 0x10))
+> +#define  WLED4_SINK_REG_STR_MOD_SRC_MASK		BIT(0)
+> +#define  WLED4_SINK_REG_STR_MOD_SRC_INT			0x00
+> +#define  WLED4_SINK_REG_STR_MOD_SRC_EXT			0x01
+> +
+> +#define WLED4_SINK_REG_STR_CABC(n)			(0x56 + (n * 0x10))
+> +#define  WLED4_SINK_REG_STR_CABC_MASK			BIT(7)
+> +
+> +#define WLED4_SINK_REG_BRIGHT(n)			(0x57 + (n * 0x10))
+> +
+>  struct wled_var_cfg {
+>  	const u32 *values;
+>  	u32 (*fn)(u32);
+> @@ -90,6 +112,7 @@ struct wled {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+>  	u16 ctrl_addr;
+> +	u16 sink_addr;
+>  	u16 max_string_count;
+>  	u32 brightness;
+>  	u32 max_brightness;
+> @@ -116,6 +139,29 @@ static int wled3_set_brightness(struct wled *wled, u16 brightness)
+>  	return 0;
+>  }
+>  
+> +static int wled4_set_brightness(struct wled *wled, u16 brightness)
+> +{
+> +	int rc, i;
+> +	u16 low_limit = wled->max_brightness * 4 / 1000;
+> +	u8 v[2];
+> +
+> +	/* WLED4's lower limit of operation is 0.4% */
+> +	if (brightness > 0 && brightness < low_limit)
+> +		brightness = low_limit;
+> +
+> +	v[0] = brightness & 0xff;
+> +	v[1] = (brightness >> 8) & 0xf;
+> +
+> +	for (i = 0;  i < wled->cfg.num_strings; ++i) {
+> +		rc = regmap_bulk_write(wled->regmap, wled->sink_addr +
+> +				       WLED4_SINK_REG_BRIGHT(i), v, 2);
+> +		if (rc < 0)
+> +			return rc;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int wled_module_enable(struct wled *wled, int val)
+>  {
+>  	int rc;
+> @@ -267,6 +313,120 @@ static int wled3_setup(struct wled *wled)
+>  	.enabled_strings = {0, 1, 2, 3},
+>  };
+>  
+> +static int wled4_setup(struct wled *wled)
+> +{
+> +	int rc, temp, i, j;
+> +	u16 addr;
+> +	u8 sink_en = 0;
+> +	u32 sink_cfg = 0;
+> +
+> +	rc = regmap_update_bits(wled->regmap,
+> +				wled->ctrl_addr + WLED3_CTRL_REG_OVP,
+> +				WLED3_CTRL_REG_OVP_MASK, wled->cfg.ovp);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = regmap_update_bits(wled->regmap,
+> +				wled->ctrl_addr + WLED3_CTRL_REG_ILIMIT,
+> +				WLED3_CTRL_REG_ILIMIT_MASK,
+> +				wled->cfg.boost_i_limit);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = regmap_update_bits(wled->regmap,
+> +				wled->ctrl_addr + WLED3_CTRL_REG_FREQ,
+> +				WLED3_CTRL_REG_FREQ_MASK,
+> +				wled->cfg.switch_freq);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = regmap_read(wled->regmap, wled->sink_addr +
+> +			 WLED4_SINK_REG_CURR_SINK, &sink_cfg);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	for (i = 0; i < wled->cfg.num_strings; i++) {
+> +		j = wled->cfg.enabled_strings[i];
+> +		temp = j + WLED4_SINK_REG_CURR_SINK_SHFT;
+> +		sink_en |= 1 << temp;
+> +	}
+> +
+> +	if (sink_cfg == sink_en)
+> +		return 0;
+> +
+> +	rc = regmap_update_bits(wled->regmap,
+> +				wled->sink_addr + WLED4_SINK_REG_CURR_SINK,
+> +				WLED4_SINK_REG_CURR_SINK_MASK, 0);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
+> +				WLED3_CTRL_REG_MOD_EN,
+> +				WLED3_CTRL_REG_MOD_EN_MASK, 0);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	/* Per sink/string configuration */
+> +	for (i = 0; i < wled->cfg.num_strings; i++) {
+> +		j = wled->cfg.enabled_strings[i];
+> +
+> +		addr = wled->sink_addr +
+> +				WLED4_SINK_REG_STR_MOD_EN(j);
+> +		rc = regmap_update_bits(wled->regmap, addr,
+> +					WLED4_SINK_REG_STR_MOD_MASK,
+> +					WLED4_SINK_REG_STR_MOD_MASK);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		addr = wled->sink_addr +
+> +				WLED4_SINK_REG_STR_FULL_SCALE_CURR(j);
+> +		rc = regmap_update_bits(wled->regmap, addr,
+> +					WLED4_SINK_REG_STR_FULL_SCALE_CURR_MASK,
+> +					wled->cfg.string_i_limit);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		addr = wled->sink_addr +
+> +				WLED4_SINK_REG_STR_CABC(j);
+> +		rc = regmap_update_bits(wled->regmap, addr,
+> +					WLED4_SINK_REG_STR_CABC_MASK,
+> +					wled->cfg.cabc ?
+> +					WLED4_SINK_REG_STR_CABC_MASK : 0);
+> +		if (rc < 0)
+> +			return rc;
+> +	}
+> +
+> +	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
+> +				WLED3_CTRL_REG_MOD_EN,
+> +				WLED3_CTRL_REG_MOD_EN_MASK,
+> +				WLED3_CTRL_REG_MOD_EN_MASK);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = regmap_update_bits(wled->regmap,
+> +				wled->sink_addr + WLED4_SINK_REG_CURR_SINK,
+> +				WLED4_SINK_REG_CURR_SINK_MASK, sink_en);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	rc = wled_sync_toggle(wled);
+> +	if (rc < 0) {
+> +		dev_err(wled->dev, "Failed to toggle sync reg rc:%d\n", rc);
+> +		return rc;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct wled_config wled4_config_defaults = {
+> +	.boost_i_limit = 4,
+> +	.string_i_limit = 10,
+> +	.ovp = 1,
+> +	.num_strings = 4,
+> +	.switch_freq = 11,
+> +	.cabc = false,
+> +};
+> +
+>  static const u32 wled3_boost_i_limit_values[] = {
+>  	105, 385, 525, 805, 980, 1260, 1400, 1680,
+>  };
+> @@ -276,6 +436,15 @@ static int wled3_setup(struct wled *wled)
+>  	.size = ARRAY_SIZE(wled3_boost_i_limit_values),
+>  };
+>  
+> +static const u32 wled4_boost_i_limit_values[] = {
+> +	105, 280, 450, 620, 970, 1150, 1300, 1500,
+> +};
+> +
+> +static const struct wled_var_cfg wled4_boost_i_limit_cfg = {
+> +	.values = wled4_boost_i_limit_values,
+> +	.size = ARRAY_SIZE(wled4_boost_i_limit_values),
+> +};
+> +
+>  static const u32 wled3_ovp_values[] = {
+>  	35, 32, 29, 27,
+>  };
+> @@ -285,6 +454,15 @@ static int wled3_setup(struct wled *wled)
+>  	.size = ARRAY_SIZE(wled3_ovp_values),
+>  };
+>  
+> +static const u32 wled4_ovp_values[] = {
+> +	31100, 29600, 19600, 18100,
+> +};
+> +
+> +static const struct wled_var_cfg wled4_ovp_cfg = {
+> +	.values = wled4_ovp_values,
+> +	.size = ARRAY_SIZE(wled4_ovp_values),
+> +};
+> +
+>  static u32 wled3_num_strings_values_fn(u32 idx)
+>  {
+>  	return idx + 1;
+> @@ -295,6 +473,11 @@ static u32 wled3_num_strings_values_fn(u32 idx)
+>  	.size = 3,
+>  };
+>  
+> +static const struct wled_var_cfg wled4_num_strings_cfg = {
+> +	.fn = wled3_num_strings_values_fn,
+> +	.size = 4,
+> +};
+> +
+>  static u32 wled3_switch_freq_values_fn(u32 idx)
+>  {
+>  	return 19200 / (2 * (1 + idx));
+> @@ -309,10 +492,24 @@ static u32 wled3_switch_freq_values_fn(u32 idx)
+>  	.size = 26,
+>  };
+>  
+> +static const u32 wled4_string_i_limit_values[] = {
+> +	0, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000,
+> +	22500, 25000, 27500, 30000,
+> +};
+> +
+> +static const struct wled_var_cfg wled4_string_i_limit_cfg = {
+> +	.values = wled4_string_i_limit_values,
+> +	.size = ARRAY_SIZE(wled4_string_i_limit_values),
+> +};
+> +
+>  static const struct wled_var_cfg wled3_string_cfg = {
+>  	.size = 8,
+>  };
+>  
+> +static const struct wled_var_cfg wled4_string_cfg = {
+> +	.size = 16,
+> +};
+> +
+>  static u32 wled_values(const struct wled_var_cfg *cfg, u32 idx)
+>  {
+>  	if (idx >= cfg->size)
+> @@ -361,6 +558,34 @@ static int wled_configure(struct wled *wled, int version)
+>  		},
+>  	};
+>  
+> +	const struct wled_u32_opts wled4_opts[] = {
+> +		{
+> +			.name = "qcom,current-boost-limit",
+> +			.val_ptr = &cfg->boost_i_limit,
+> +			.cfg = &wled4_boost_i_limit_cfg,
+> +		},
+> +		{
+> +			.name = "qcom,current-limit-microamp",
+> +			.val_ptr = &cfg->string_i_limit,
+> +			.cfg = &wled4_string_i_limit_cfg,
+> +		},
+> +		{
+> +			.name = "qcom,ovp-millivolt",
+> +			.val_ptr = &cfg->ovp,
+> +			.cfg = &wled4_ovp_cfg,
+> +		},
+> +		{
+> +			.name = "qcom,switching-freq",
+> +			.val_ptr = &cfg->switch_freq,
+> +			.cfg = &wled3_switch_freq_cfg,
+> +		},
+> +		{
+> +			.name = "qcom,num-strings",
+> +			.val_ptr = &cfg->num_strings,
+> +			.cfg = &wled4_num_strings_cfg,
+> +		},
+> +	};
+> +
+>  	const struct wled_bool_opts bool_opts[] = {
+>  		{ "qcom,cs-out", &cfg->cs_out_en, },
+>  		{ "qcom,ext-gen", &cfg->ext_gen, },
+> @@ -374,10 +599,6 @@ static int wled_configure(struct wled *wled, int version)
+>  	}
+>  	wled->ctrl_addr = be32_to_cpu(*prop_addr);
+>  
+> -	rc = of_property_read_string(dev->of_node, "label", &wled->name);
+> -	if (rc)
+> -		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
+> -
+>  	switch (version) {
+>  	case 3:
+>  		u32_opts = wled3_opts;
+> @@ -385,6 +606,22 @@ static int wled_configure(struct wled *wled, int version)
+>  		*cfg = wled3_config_defaults;
+>  		wled->wled_set_brightness = wled3_set_brightness;
+>  		wled->max_string_count = 3;
+> +		wled->sink_addr = wled->ctrl_addr;
+> +		break;
+> +
+> +	case 4:
+> +		u32_opts = wled4_opts;
+> +		size = ARRAY_SIZE(wled4_opts);
+> +		*cfg = wled4_config_defaults;
+> +		wled->wled_set_brightness = wled4_set_brightness;
+> +		wled->max_string_count = 4;
+> +
+> +		prop_addr = of_get_address(dev->of_node, 1, NULL, NULL);
+> +		if (!prop_addr) {
+> +			dev_err(wled->dev, "invalid IO resources\n");
+> +			return -EINVAL;
+> +		}
+> +		wled->sink_addr = be32_to_cpu(*prop_addr);
+>  		break;
+>  
+>  	default:
+> @@ -392,6 +629,10 @@ static int wled_configure(struct wled *wled, int version)
+>  		return -EINVAL;
+>  	}
+>  
+> +	rc = of_property_read_string(dev->of_node, "label", &wled->name);
+> +	if (rc)
+> +		wled->name = dev->of_node->name;
+> +
+>  	for (i = 0; i < size; ++i) {
+>  		rc = of_property_read_u32(dev->of_node, u32_opts[i].name, &val);
+>  		if (rc == -EINVAL) {
+> @@ -483,6 +724,14 @@ static int wled_probe(struct platform_device *pdev)
+>  		}
+>  		break;
+>  
+> +	case 4:
+> +		rc = wled4_setup(wled);
+> +		if (rc) {
+> +			dev_err(&pdev->dev, "wled4_setup failed\n");
+> +			return rc;
+> +		}
+> +		break;
+> +
+>  	default:
+>  		dev_err(wled->dev, "Invalid WLED version\n");
+>  		break;
+> @@ -503,6 +752,8 @@ static int wled_probe(struct platform_device *pdev)
+>  
+>  static const struct of_device_id wled_match_table[] = {
+>  	{ .compatible = "qcom,pm8941-wled", .data = (void *)3 },
+> +	{ .compatible = "qcom,pmi8998-wled", .data = (void *)4 },
+> +	{ .compatible = "qcom,pm660l-wled", .data = (void *)4 },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, wled_match_table);
+> -- 
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+>  a Linux Foundation Collaborative Project
+> 
