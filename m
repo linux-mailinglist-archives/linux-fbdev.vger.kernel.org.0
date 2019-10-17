@@ -2,266 +2,409 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 621D3DAEEB
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 15:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71B3DAF08
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 16:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437357AbfJQN74 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Oct 2019 09:59:56 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:35307 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437275AbfJQN74 (ORCPT
+        id S2439791AbfJQOCl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 10:02:41 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:39090 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727542AbfJQOCk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Oct 2019 09:59:56 -0400
-Received: by mail-il1-f194.google.com with SMTP id j9so2134573ilr.2;
-        Thu, 17 Oct 2019 06:59:55 -0700 (PDT)
+        Thu, 17 Oct 2019 10:02:40 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9HDwSGw010429;
+        Thu, 17 Oct 2019 10:02:28 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2vk8pb068v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Oct 2019 10:02:25 -0400
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id x9HE2O0e007859;
+        Thu, 17 Oct 2019 10:02:24 -0400
+Received: from nam05-co1-obe.outbound.protection.outlook.com (mail-co1nam05lp2059.outbound.protection.outlook.com [104.47.48.59])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2vk8pb068s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Oct 2019 10:02:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C+YvpDK7nKj6PX0KVGIKxCALP2Firuv2+tUqYYc1Bat1DqKZtZzN+PvSI07TGKtaj/D2z8UNkCoB1NW98OYTlpzOuuxoCLp51Xb1b+uy/EwpZj+HDqi+k7iKInwiAAIFzJjVK/06nYzKtRKEQi1UxTZ7iIzX7bakRCDuFlmKroKF0zFtTAhu0+5bxN9ea+9o7tQFfzmxI7K7AcpRPI2RHgBEpF65fQ+l0j6GfTE3MsWFLH+k0ubfNiCjAWrihwJhrHvBODZtYC02asydjKm2TxirDGFYfI6nlvslVM9MvjK83WQeLhZn210+/EBNt1snzCwxMp4lBacujRHEJeeyOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q/7dtWyDCMdyPrdY2vqBH/9RVkCLq+RVOzGwT0vSqlI=;
+ b=Q62rWPtuFtaQbCoP3nKLzQ2IAdZckwkJ6WPDSdLPdzFOFb+j+qmy+/XYXn/rZzeX7h0EISxkbYiYh2UPmMZsFqHEcFqmqgeKd0JRlvN5HC3s+OaLW5kR7T2VnvZ2V+vstycoLxwY+QS1PEpqbwTWCrP64Ktjku5lA7TakEUcXaTvwXHbeB8FEaTv0RiuqmIPWk6zSbFM3plsXmtv4r1DdOIc6Cwvosc5EIG2/N34n0hoLDiaOXh2XB6m8fnYtujy4aEQfd54reoB/AevX2xKc8iqmmo3jK+HjVG9guEcI2mf3ePp55g2tQBQpuygRu+kWtb+1WEgo4UaEdgwnmg03w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 137.71.25.57) smtp.rcpttodomain=huawei.com smtp.mailfrom=analog.com;
+ dmarc=bestguesspass action=none header.from=analog.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QFNNmg9wRzJREtA5JfZT3aTANg+99p30/ASMbM2gTbk=;
-        b=EOcziOiT26brwCbh2/387S62d+bKBylBjKUf76UxmYjGCpSO8rmDDBw8ExidKYnRed
-         52jAMlNG9fvXdoSOR4CkoriYL/umXPiDwQ0VamZwZsGSOTK5877Ci7z8+qhVvf2nRHl1
-         eoGHMSndeCxYMpaa3wkLM2tSaJZXCaJcP0PYjFL+iilP5SD0tQ9/EhObK+qIiCVE78MV
-         7l76k/MvqwZHB6y9eiJVi1cyqNacl6PWRV5VqryqNIDaIYiLZJ/vdSBoMohEJV5KyHYx
-         IUZ5cB/dBZV/bUmDWpW+dXjvMu6p5Smfd5DdtbqqFVXmH+jQpmcLbP+jbs92r+y8PY7T
-         kadQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QFNNmg9wRzJREtA5JfZT3aTANg+99p30/ASMbM2gTbk=;
-        b=Cq8ZDIP4g+iitOIQGu6qlHIolGhim3NtrfGiB/6jAi9nIF8jPcTTxkcQ4Yy0iQmsCP
-         lAB9eAjfu8KK1ZJ5f0wsFA3HdTTgbeFdREcr68nk3aGYusluWFqcx8xPzrpIK/S2QyKp
-         IdR9kVj5EGVU1qWcpN8ml/QaPsIILnD+b1zT2ybi6+F72vFBjxP446mN8AikH85zC4gI
-         Y56wtYcTY3rgK4eRLOe48V3iafAb2CU/BFLdKCRXH9ZT14/um9bgAoBJ7FdfpB3iDcp5
-         cfVNxzZhWh2AzoJW8ILffmM8MfkfhqLfyDeGeYHOEGfRb2sVteFr1YPbAHZvi4h763VV
-         Uv1g==
-X-Gm-Message-State: APjAAAU8B+DfrFaa0bW6wF80q7CGvZDQ2QgMXwKTD/p8ojIgrt6z+GIa
-        ysmjTUp4ei1+yHg6XWH3dmSvC13W38pn6f2et8k=
-X-Google-Smtp-Source: APXvYqw+BtxpGQtTsloek31AbUPnMKu/Kn8Vc4hziPEgSfPimRNfZnFAvRT0zQCLEhijvkflTduF+aWioXGeM06vXa8=
-X-Received: by 2002:a92:6a04:: with SMTP id f4mr3920482ilc.205.1571320794610;
- Thu, 17 Oct 2019 06:59:54 -0700 (PDT)
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q/7dtWyDCMdyPrdY2vqBH/9RVkCLq+RVOzGwT0vSqlI=;
+ b=tl136InvvGQ141xqCk2Tq22BcMmMT4TIlYahRpu6v2tM33cKRYa5ZBFGhW5TLDZY02j9LwTwDt7hTi6vNSE5AndVWMJfQSexcEg6HpvNVUphz525nHEX7QD1EKQ6Caaz7ePBUDGoGawlQW2JLmHlsmSDbYwcEs/DwoQgwjxQ9UA=
+Received: from DM3PR03CA0012.namprd03.prod.outlook.com (2603:10b6:0:50::22) by
+ BY5PR03MB5252.namprd03.prod.outlook.com (2603:10b6:a03:224::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.17; Thu, 17 Oct
+ 2019 14:02:22 +0000
+Received: from BL2NAM02FT024.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by DM3PR03CA0012.outlook.office365.com
+ (2603:10b6:0:50::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.16 via Frontend
+ Transport; Thu, 17 Oct 2019 14:02:22 +0000
+Received-SPF: Pass (protection.outlook.com: domain of analog.com designates
+ 137.71.25.57 as permitted sender) receiver=protection.outlook.com;
+ client-ip=137.71.25.57; helo=nwd2mta2.analog.com;
+Received: from nwd2mta2.analog.com (137.71.25.57) by
+ BL2NAM02FT024.mail.protection.outlook.com (10.152.77.62) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2367.14
+ via Frontend Transport; Thu, 17 Oct 2019 14:02:21 +0000
+Received: from NWD2HUBCAS7.ad.analog.com (nwd2hubcas7.ad.analog.com [10.64.69.107])
+        by nwd2mta2.analog.com (8.13.8/8.13.8) with ESMTP id x9HE2K2a014669
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
+        Thu, 17 Oct 2019 07:02:20 -0700
+Received: from ben-Latitude-E6540.ad.analog.com (10.48.65.163) by
+ NWD2HUBCAS7.ad.analog.com (10.64.69.107) with Microsoft SMTP Server id
+ 14.3.408.0; Thu, 17 Oct 2019 10:02:20 -0400
+From:   Beniamin Bia <beniamin.bia@analog.com>
+To:     <gregkh@linuxfoundation.org>
+CC:     <mchehab+samsung@kernel.org>, <davem@davemloft.net>,
+        <Jonathan.Cameron@huawei.com>, <michal.simek@xilinx.com>,
+        <paulmck@linux.ibm.com>, <linux-kernel@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
+        <devel@driverdev.osuosl.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Beniamin Bia <beniamin.bia@analog.com>
+Subject: [PATCH] drivers/staging/fbtft/fb_seps525: New driver for SEPS525 (Syncoam) LCD Controllers
+Date:   Thu, 17 Oct 2019 20:02:03 +0300
+Message-ID: <20191017170203.11999-1-beniamin.bia@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
- <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com> <20191017101116.3d5okxmto5coecad@pengutronix.de>
- <20191017111131.GB3122066@ulmo> <CAHCN7xJmUiMRfYqgB+mkPVtoL20=RwXJHvzzJum4YcgUEHizsg@mail.gmail.com>
-In-Reply-To: <CAHCN7xJmUiMRfYqgB+mkPVtoL20=RwXJHvzzJum4YcgUEHizsg@mail.gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Thu, 17 Oct 2019 08:59:42 -0500
-Message-ID: <CAHCN7xJc_WxE-cuJgCcX3_5JWOoXfYreGpPUvhmPiUBWdCnFXg@mail.gmail.com>
-Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight toggle
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-pwm@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org, Sascha Hauer <kernel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:137.71.25.57;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(136003)(376002)(346002)(396003)(39860400002)(199004)(189003)(36756003)(478600001)(16586007)(50466002)(5660300002)(126002)(486006)(8676002)(44832011)(86362001)(246002)(476003)(6666004)(356004)(1076003)(336012)(50226002)(47776003)(2616005)(966005)(8936002)(48376002)(426003)(6916009)(316002)(2906002)(54906003)(305945005)(7416002)(7636002)(14444005)(7696005)(70586007)(2351001)(51416003)(70206006)(4326008)(106002)(26005)(107886003)(6306002)(186003)(2004002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY5PR03MB5252;H:nwd2mta2.analog.com;FPR:;SPF:Pass;LANG:en;PTR:nwd2mail11.analog.com;A:1;MX:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 38c08431-2e7c-42f6-1044-08d7530aa176
+X-MS-TrafficTypeDiagnostic: BY5PR03MB5252:
+X-MS-Exchange-PUrlCount: 1
+X-Microsoft-Antispam-PRVS: <BY5PR03MB5252B6396DF3587CE6A11C8AF06D0@BY5PR03MB5252.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Forefront-PRVS: 01930B2BA8
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8FvH4mHEjVF4pnoqQ0Yvlj2M+nuNY31+W5aAEgQcSC6SqEsLhNxb5KDa/e9ETAj6TJePz3Z4aVCuA0JuwFkWZnOTewfqitJiAcb2nGta5RJwuuONEFgzjbVmiLJN4PjAda6hRCQBbM7ZPmpVAWrLbyb+psUy2irYnuDRiJLKO3vxsR/YqQi/tYuT7uaqZA0IlbYyXJW7+V5WecDHOKNqv3YuFiW3jMqkggTAJbmhhyzhqRaFhPxyL5PdEEeIMdUSvVWs9P/J+XDGjkzzzexxsiHIh7uByDTZl83HMX6EkcsW/DLfx6AnXt/4pareW1HCkGNFi+41UFaFhY4eD0/RViyw1HQ9FqxWe0qlqDD/LEmkFLyibr14Fs7fYtfQH47eGmlftnjblwuBYHvWOXAtT0rgAOeGSFl3HNijkw93pZcGxPuUllEQSrhMNgq6oeJwnPdleY6bLxJO/Kov0gHZ5g==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2019 14:02:21.8711
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38c08431-2e7c-42f6-1044-08d7530aa176
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=eaa689b4-8f87-40e0-9c6f-7228de4d754a;Ip=[137.71.25.57];Helo=[nwd2mta2.analog.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB5252
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-17_05:2019-10-17,2019-10-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 clxscore=1011 mlxscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910170125
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 8:30 AM Adam Ford <aford173@gmail.com> wrote:
->
-> On Thu, Oct 17, 2019 at 6:11 AM Thierry Reding <thierry.reding@gmail.com>=
- wrote:
-> >
-> > On Thu, Oct 17, 2019 at 12:11:16PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Thu, Oct 17, 2019 at 11:48:08AM +0200, Michal Vok=C3=A1=C4=8D wrot=
-e:
-> > > > On 17. 10. 19 10:10, Uwe Kleine-K=C3=B6nig wrote:
-> > > > > A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
-> > > > > pwm_get_state() return the last implemented state")) changed the
-> > > > > semantic of pwm_get_state() and disclosed an (as it seems) common
-> > > > > problem in lowlevel PWM drivers. By not relying on the period and=
- duty
-> > > > > cycle being retrievable from a disabled PWM this type of problem =
-is
-> > > > > worked around.
-> > > > >
-> > > > > Apart from this issue only calling the pwm_get_state/pwm_apply_st=
-ate
-> > > > > combo once is also more effective.
-> > > > >
-> > > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix=
-.de>
-> > > > > ---
-> > > > > Hello,
-> > > > >
-> > > > > There are now two reports about 01ccf903edd6 breaking a backlight=
-. As
-> > > > > far as I understand the problem this is a combination of the back=
-end pwm
-> > > > > driver yielding surprising results and the pwm-bl driver doing th=
-ings
-> > > > > more complicated than necessary.
-> > > > >
-> > > > > So I guess this patch works around these problems. Still it would=
- be
-> > > > > interesting to find out the details in the imx driver that trigge=
-rs the
-> > > > > problem. So Adam, can you please instrument the pwm-imx27 driver =
-to
-> > > > > print *state at the beginning of pwm_imx27_apply() and the end of
-> > > > > pwm_imx27_get_state() and provide the results?
-> > > > >
-> > > > > Note I only compile tested this change.
-> > > >
-> > > > Hi Uwe,
-> > > > I was just about to respond to the "pwm_bl on i.MX6Q broken on 5.4-=
-RC1+"
-> > > > thread that I have a similar problem when you submitted this patch.
-> > > >
-> > > > So here are my few cents:
-> > > >
-> > > > My setup is as follows:
-> > > >  - imx6dl-yapp4-draco with i.MX6Solo
-> > > >  - backlight is controlled with inverted PWM signal
-> > > >  - max brightness level =3D 32, default brightness level set to 32 =
-in DT.
-> > > >
-> > > > 1. Almost correct backlight behavior before 01ccf903edd6 ("pwm: Let
-> > > >    pwm_get_state() return the last implemented state):
-> > > >
-> > > >  - System boots to userspace and backlight is enabled all the time =
-from
-> > > >    power up.
-> > > >
-> > > >    $ dmesg | grep state
-> > > >    [    1.763381] get state end: -1811360608, enabled: 0
-> > >
-> > > What is -1811360608? When I wrote "print *state" above, I thought abo=
-ut
-> > > something like:
-> > >
-> > >       pr_info("%s: period: %u, duty: %u, polarity: %d, enabled: %d",
-> > >               __func__, state->period, state->duty_cycle, state->pola=
-rity, state->enabled);
-> > >
-> > > A quick look into drivers/pwm/pwm-imx27.c shows that this is another
-> > > driver that yields duty_cycle =3D 0 when the hardware is off.
-> >
-> > It seems to me like the best recourse to fix this for now would be to
-> > patch up the drivers that return 0 when the hardware is off by caching
-> > the currently configured duty cycle.
-> >
-> > How about the patch below?
-> >
-> > Thierry
-> >
-> > --- >8 ---
-> > From 15a52a7f1b910804fabd74a5882befd3f9d6bb37 Mon Sep 17 00:00:00 2001
-> > From: Thierry Reding <thierry.reding@gmail.com>
-> > Date: Thu, 17 Oct 2019 12:56:00 +0200
-> > Subject: [PATCH] pwm: imx27: Cache duty cycle register value
-> >
-> > The hardware register containing the duty cycle value cannot be accesse=
-d
-> > when the PWM is disabled. This causes the ->get_state() callback to rea=
-d
-> > back a duty cycle value of 0, which can confuse consumer drivers.
-> >
-> > Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-Your patch doesn't appear to being the PWM on by default, but I appear
-to be able to do stuff without the screen going blank, so I think
-we're making some progress. I unrolled the pwm_bl changes, but kept
-yours but I am not seeing any ability to change the brightness.
-Level 1-7 all appear to me to be the same.
+The SEPS525 is a 160 RGB x 128 Dots, 262K Colors PM-OLED Display Driver and
+Controller.
 
-> > ---
-> >  drivers/pwm/pwm-imx27.c | 31 ++++++++++++++++++++++++-------
-> >  1 file changed, 24 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-> > index ae11d8577f18..4113d5cd4c62 100644
-> > --- a/drivers/pwm/pwm-imx27.c
-> > +++ b/drivers/pwm/pwm-imx27.c
-> > @@ -85,6 +85,13 @@ struct pwm_imx27_chip {
-> >         struct clk      *clk_per;
-> >         void __iomem    *mmio_base;
-> >         struct pwm_chip chip;
-> > +
-> > +       /*
-> > +        * The driver cannot read the current duty cycle from the hardw=
-are if
-> > +        * the hardware is disabled. Cache the last programmed duty cyc=
-le
-> > +        * value to return in that case.
-> > +        */
-> > +       unsigned int duty_cycle;
-> >  };
-> >
-> >  #define to_pwm_imx27_chip(chip)        container_of(chip, struct pwm_i=
-mx27_chip, chip)
-> > @@ -155,14 +162,17 @@ static void pwm_imx27_get_state(struct pwm_chip *=
-chip,
-> >         tmp =3D NSEC_PER_SEC * (u64)(period + 2);
-> >         state->period =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
-> >
-> > -       /* PWMSAR can be read only if PWM is enabled */
-> > -       if (state->enabled) {
-> > +       /*
-> > +        * PWMSAR can be read only if PWM is enabled. If the PWM is dis=
-abled,
-> > +        * use the cached value.
-> > +        */
-> > +       if (state->enabled)
-> >                 val =3D readl(imx->mmio_base + MX3_PWMSAR);
-> > -               tmp =3D NSEC_PER_SEC * (u64)(val);
-> > -               state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_cl=
-k);
-> > -       } else {
-> > -               state->duty_cycle =3D 0;
-> > -       }
-> > +       else
-> > +               val =3D imx->duty_cycle;
-> > +
-> > +       tmp =3D NSEC_PER_SEC * (u64)(val);
-> > +       state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
->
-> Is this right?  It seems like the tmp  and state->duty_cycle
-> caltulations should be kept inside "if (state->enabled)" because if we
-> set val to the duty_cycle in the else, I would think it is going to
-> calculate this again.
->
-> I think the 'else' should be 'state->duty_cycle =3D imx->duty_cycle'
-> because we shouldn't need to recalculate this again.
->
-> Am I missing something?
+The controller can be found on the NHD-1.69-160128UGC3
+(Newhaven Display International, Inc.).
 
-I figured out what I was missing.
+Datasheets:
+Link: https://www.newhavendisplay.com/appnotes/datasheets/OLEDs/SEPS525.pdf
 
->
-> adam
-> >
-> >         if (!state->enabled)
-> >                 pwm_imx27_clk_disable_unprepare(chip);
-> > @@ -261,6 +271,13 @@ static int pwm_imx27_apply(struct pwm_chip *chip, =
-struct pwm_device *pwm,
-> >                 writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
-> >                 writel(period_cycles, imx->mmio_base + MX3_PWMPR);
-> >
-> > +               /*
-> > +                * Store the duty cycle for future reference in cases w=
-here
-> > +                * the MX3_PWMSAR register can't be read (i.e. when the=
- PWM
-> > +                * is disabled).
-> > +                */
-> > +               imx->duty_cycle =3D duty_cycles;
-> > +
-> >                 cr =3D MX3_PWMCR_PRESCALER_SET(prescale) |
-> >                      MX3_PWMCR_STOPEN | MX3_PWMCR_DOZEN | MX3_PWMCR_WAI=
-TEN |
-> >                      FIELD_PREP(MX3_PWMCR_CLKSRC, MX3_PWMCR_CLKSRC_IPG_=
-HIGH) |
-> > --
-> > 2.23.0
-> >
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Co-developed-by: Beniamin Bia <beniamin.bia@analog.com>
+Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+---
+ MAINTAINERS                        |   8 ++
+ drivers/staging/fbtft/Kconfig      |   7 +
+ drivers/staging/fbtft/Makefile     |   1 +
+ drivers/staging/fbtft/fb_seps525.c | 213 +++++++++++++++++++++++++++++
+ 4 files changed, 229 insertions(+)
+ create mode 100644 drivers/staging/fbtft/fb_seps525.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ef00d6210cff..d077d04f9bc5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15389,6 +15389,14 @@ L:	linux-wireless@vger.kernel.org
+ S:	Supported
+ F:	drivers/staging/wilc1000/
+ 
++STAGING - SEPS525 LCD CONTROLLER DRIVERS
++M:	Michael Hennerich <michael.hennerich@analog.com>
++M:	Beniamin Bia <beniamin.bia@analog.com>
++L:	linux-fbdev@vger.kernel.org
++S:	Supported
++F:	drivers/staging/fbtft/fb_seps525.c
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
++
+ STAGING SUBSYSTEM
+ M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git
+diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
+index 8ec524a95ec8..55af11ee2f5b 100644
+--- a/drivers/staging/fbtft/Kconfig
++++ b/drivers/staging/fbtft/Kconfig
+@@ -112,6 +112,13 @@ config FB_TFT_S6D1121
+ 	help
+ 	  Generic Framebuffer support for S6D1121
+ 
++config FB_TFT_SEPS525
++	tristate "FB driver for the SEPS525 LCD Controller"
++	depends on FB_TFT
++	help
++	  Generic Framebuffer support for SEPS525
++	  Say Y if you have such a display that utilizes this controller.
++
+ config FB_TFT_SH1106
+ 	tristate "FB driver for the SH1106 OLED Controller"
+ 	depends on FB_TFT
+diff --git a/drivers/staging/fbtft/Makefile b/drivers/staging/fbtft/Makefile
+index 6bc03311c9c7..e7a0cd9166e9 100644
+--- a/drivers/staging/fbtft/Makefile
++++ b/drivers/staging/fbtft/Makefile
+@@ -21,6 +21,7 @@ obj-$(CONFIG_FB_TFT_PCD8544)     += fb_pcd8544.o
+ obj-$(CONFIG_FB_TFT_RA8875)      += fb_ra8875.o
+ obj-$(CONFIG_FB_TFT_S6D02A1)     += fb_s6d02a1.o
+ obj-$(CONFIG_FB_TFT_S6D1121)     += fb_s6d1121.o
++obj-$(CONFIG_FB_TFT_SEPS525)     += fb_seps525.o
+ obj-$(CONFIG_FB_TFT_SH1106)      += fb_sh1106.o
+ obj-$(CONFIG_FB_TFT_SSD1289)     += fb_ssd1289.o
+ obj-$(CONFIG_FB_TFT_SSD1305)     += fb_ssd1305.o
+diff --git a/drivers/staging/fbtft/fb_seps525.c b/drivers/staging/fbtft/fb_seps525.c
+new file mode 100644
+index 000000000000..05882e2cde7f
+--- /dev/null
++++ b/drivers/staging/fbtft/fb_seps525.c
+@@ -0,0 +1,213 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * FB driver for the NHD-1.69-160128UGC3 (Newhaven Display International, Inc.)
++ * using the SEPS525 (Syncoam) LCD Controller
++ *
++ * Copyright (C) 2016 Analog Devices Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/gpio.h>
++#include <linux/delay.h>
++
++#include "fbtft.h"
++
++#define DRVNAME		"fb_seps525"
++#define WIDTH		160
++#define HEIGHT		128
++
++#define SEPS525_INDEX 0x00
++#define SEPS525_STATUS_RD 0x01
++#define SEPS525_OSC_CTL 0x02
++#define SEPS525_IREF 0x80
++#define SEPS525_CLOCK_DIV 0x03
++#define SEPS525_REDUCE_CURRENT 0x04
++#define SEPS525_SOFT_RST 0x05
++#define SEPS525_DISP_ONOFF 0x06
++#define SEPS525_PRECHARGE_TIME_R 0x08
++#define SEPS525_PRECHARGE_TIME_G 0x09
++#define SEPS525_PRECHARGE_TIME_B 0x0A
++#define SEPS525_PRECHARGE_CURRENT_R 0x0B
++#define SEPS525_PRECHARGE_CURRENT_G 0x0C
++#define SEPS525_PRECHARGE_CURRENT_B 0x0D
++#define SEPS525_DRIVING_CURRENT_R 0x10
++#define SEPS525_DRIVING_CURRENT_G 0x11
++#define SEPS525_DRIVING_CURRENT_B 0x12
++#define SEPS525_DISPLAYMODE_SET 0x13
++#define SEPS525_RGBIF 0x14
++#define SEPS525_RGB_POL 0x15
++#define SEPS525_MEMORY_WRITEMODE 0x16
++#define SEPS525_MX1_ADDR 0x17
++#define SEPS525_MX2_ADDR 0x18
++#define SEPS525_MY1_ADDR 0x19
++#define SEPS525_MY2_ADDR 0x1A
++#define SEPS525_MEMORY_ACCESS_POINTER_X 0x20
++#define SEPS525_MEMORY_ACCESS_POINTER_Y 0x21
++#define SEPS525_DDRAM_DATA_ACCESS_PORT 0x22
++#define SEPS525_GRAY_SCALE_TABLE_INDEX 0x50
++#define SEPS525_GRAY_SCALE_TABLE_DATA 0x51
++#define SEPS525_DUTY 0x28
++#define SEPS525_DSL 0x29
++#define SEPS525_D1_DDRAM_FAC 0x2E
++#define SEPS525_D1_DDRAM_FAR 0x2F
++#define SEPS525_D2_DDRAM_SAC 0x31
++#define SEPS525_D2_DDRAM_SAR 0x32
++#define SEPS525_SCR1_FX1 0x33
++#define SEPS525_SCR1_FX2 0x34
++#define SEPS525_SCR1_FY1 0x35
++#define SEPS525_SCR1_FY2 0x36
++#define SEPS525_SCR2_SX1 0x37
++#define SEPS525_SCR2_SX2 0x38
++#define SEPS525_SCR2_SY1 0x39
++#define SEPS525_SCR2_SY2 0x3A
++#define SEPS525_SCREEN_SAVER_CONTEROL 0x3B
++#define SEPS525_SS_SLEEP_TIMER 0x3C
++#define SEPS525_SCREEN_SAVER_MODE 0x3D
++#define SEPS525_SS_SCR1_FU 0x3E
++#define SEPS525_SS_SCR1_MXY 0x3F
++#define SEPS525_SS_SCR2_FU 0x40
++#define SEPS525_SS_SCR2_MXY 0x41
++#define SEPS525_MOVING_DIRECTION 0x42
++#define SEPS525_SS_SCR2_SX1 0x47
++#define SEPS525_SS_SCR2_SX2 0x48
++#define SEPS525_SS_SCR2_SY1 0x49
++#define SEPS525_SS_SCR2_SY2 0x4A
++
++/* SEPS525_DISPLAYMODE_SET */
++#define MODE_SWAP_BGR	BIT(7)
++#define MODE_SM		BIT(6)
++#define MODE_RD		BIT(5)
++#define MODE_CD		BIT(4)
++
++#define seps525_use_window	0 /* FBTFT doesn't really use it today */
++
++/* Init sequence taken from: Arduino Library for the Adafruit 2.2" display */
++static int init_display(struct fbtft_par *par)
++{
++	par->fbtftops.reset(par);
++
++	usleep_range(1000, 5000);
++
++	/* Disable Oscillator Power Down */
++	write_reg(par, SEPS525_REDUCE_CURRENT, 0x03);
++	usleep_range(1000, 5000);
++	/* Set Normal Driving Current */
++	write_reg(par, SEPS525_REDUCE_CURRENT, 0x00);
++	usleep_range(1000, 5000);
++
++	write_reg(par, SEPS525_SCREEN_SAVER_CONTEROL, 0x00);
++	/* Set EXPORT1 Pin at Internal Clock */
++	write_reg(par, SEPS525_OSC_CTL, 0x01);
++	/* Set Clock as 120 Frames/Sec */
++	write_reg(par, SEPS525_CLOCK_DIV, 0x90);
++	/* Set Reference Voltage Controlled by External Resister */
++	write_reg(par, SEPS525_IREF, 0x01);
++
++	/* precharge time R G B */
++	write_reg(par, SEPS525_PRECHARGE_TIME_R, 0x04);
++	write_reg(par, SEPS525_PRECHARGE_TIME_G, 0x05);
++	write_reg(par, SEPS525_PRECHARGE_TIME_B, 0x05);
++
++	/* precharge current R G B (uA) */
++	write_reg(par, SEPS525_PRECHARGE_CURRENT_R, 0x9D);
++	write_reg(par, SEPS525_PRECHARGE_CURRENT_G, 0x8C);
++	write_reg(par, SEPS525_PRECHARGE_CURRENT_B, 0x57);
++
++	/* driving current R G B (uA) */
++	write_reg(par, SEPS525_DRIVING_CURRENT_R, 0x56);
++	write_reg(par, SEPS525_DRIVING_CURRENT_G, 0x4D);
++	write_reg(par, SEPS525_DRIVING_CURRENT_B, 0x46);
++	/* Set Color Sequence */
++	write_reg(par, SEPS525_DISPLAYMODE_SET, 0xA0);
++	write_reg(par, SEPS525_RGBIF, 0x01); /* Set MCU Interface Mode */
++	/* Set Memory Write Mode */
++	write_reg(par, SEPS525_MEMORY_WRITEMODE, 0x66);
++	write_reg(par, SEPS525_DUTY, 0x7F); /* 1/128 Duty (0x0F~0x7F) */
++	/* Set Mapping RAM Display Start Line (0x00~0x7F) */
++	write_reg(par, SEPS525_DSL, 0x00);
++	write_reg(par, SEPS525_DISP_ONOFF, 0x01); /* Display On (0x00/0x01) */
++	/* Set All Internal Register Value as Normal Mode */
++	write_reg(par, SEPS525_SOFT_RST, 0x00);
++	/* Set RGB Interface Polarity as Active Low */
++	write_reg(par, SEPS525_RGB_POL, 0x00);
++
++	write_reg(par, SEPS525_DDRAM_DATA_ACCESS_PORT);
++
++	return 0;
++}
++
++static void set_addr_win(struct fbtft_par *par, int xs, int ys, int xe, int ye)
++{
++	if (seps525_use_window) {
++		/* Set Window Xs,Ys Xe,Ye*/
++		write_reg(par, SEPS525_MX1_ADDR, xs);
++		write_reg(par, SEPS525_MX2_ADDR, xe);
++		write_reg(par, SEPS525_MY1_ADDR, ys);
++		write_reg(par, SEPS525_MY2_ADDR, ye);
++	}
++	/* start position X,Y */
++	write_reg(par, SEPS525_MEMORY_ACCESS_POINTER_X, xs);
++	write_reg(par, SEPS525_MEMORY_ACCESS_POINTER_Y, ys);
++
++	write_reg(par, SEPS525_DDRAM_DATA_ACCESS_PORT);
++}
++
++static int set_var(struct fbtft_par *par)
++{
++	u8 val;
++
++	switch (par->info->var.rotate) {
++	case 0:
++		val = 0;
++		break;
++	case 180:
++		val = MODE_RD | MODE_CD;
++		break;
++	case 90:
++	case 270:
++
++	default:
++		return -EINVAL;
++	}
++	/* Memory Access Control  */
++	write_reg(par, SEPS525_DISPLAYMODE_SET, val |
++		       (par->bgr ? MODE_SWAP_BGR : 0));
++
++	write_reg(par, SEPS525_DDRAM_DATA_ACCESS_PORT);
++
++	return 0;
++}
++
++static struct fbtft_display display = {
++	.regwidth = 8,
++	.width = WIDTH,
++	.height = HEIGHT,
++	.fbtftops = {
++		.init_display = init_display,
++		.set_addr_win = set_addr_win,
++		.set_var = set_var,
++	},
++};
++
++FBTFT_REGISTER_DRIVER(DRVNAME, "syncoam,seps525", &display);
++
++MODULE_ALIAS("spi:" DRVNAME);
++MODULE_ALIAS("platform:" DRVNAME);
++MODULE_ALIAS("spi:seps525");
++MODULE_ALIAS("platform:seps525");
++
++MODULE_DESCRIPTION("FB driver for the SEPS525 LCD Controller");
++MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
++MODULE_LICENSE("GPL");
+-- 
+2.17.1
+
