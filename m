@@ -2,353 +2,250 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7F9DAAE7
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 13:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFFDDAAF9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 13:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406022AbfJQLJu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Oct 2019 07:09:50 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:35985 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405538AbfJQLJu (ORCPT
+        id S2502055AbfJQLLh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 07:11:37 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:41373 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2502053AbfJQLLh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Oct 2019 07:09:50 -0400
-Received: by mail-wm1-f68.google.com with SMTP id m18so2105642wmc.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 17 Oct 2019 04:09:48 -0700 (PDT)
+        Thu, 17 Oct 2019 07:11:37 -0400
+Received: by mail-wr1-f67.google.com with SMTP id p4so1858001wrm.8;
+        Thu, 17 Oct 2019 04:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=qCyVynuK7PaSvkeosZV34szIPo2U5n7bK+UWhJ6bjPY=;
-        b=h8UffXa2hhVQYJJ/wxhWdOwKrjrPLX/WdcMY/ndNiZuY6l4OKj0WKif0p8Wsrvv33C
-         O9gjsNrzDxHyzZ/TOeAsuKMCt7MdjkMlsA3w4Vx/Pv8tkyXOthkuqva6vtiF/qf7iozA
-         LUidAJEkf/ejnJ7cTXSY6aIp7mVZCzAU/vlvTf+kBJzbl1VxwX0Q0CQzIcS6GTuxvK60
-         b9ome2O1dpYgTC8B1y8DHSXAyetStGZ5Oskw2ogh6OEVAbQZVSSG1VKs/1ExFpUjeVRa
-         pnHZtSgNe89CeG/xnWQ8rqok5uGR5Ze+qRNxLDr9RMZGIRp2cnCnIpjZ8HwJ7LBYFp5y
-         s1yQ==
+        bh=uVoXPPtms2OBj9SVIoZ3oN8jHS0q6WrUSpAbwHPKjrg=;
+        b=gPxNkUdZqcMM9+6sy0HJERWLjuFkJJrrDGM3u6HPwRkjvFaYvif8HzG8KxxboGrVIW
+         TkOyUKHGLyFD3mmiC84rYOnRuQZ/m7H9uVVNhQE1ffUmYGADEnvzc2B2loGuS/0FbvbX
+         S8X8yHPvCxJ5rDSqd4ywqqp0m+7UdbnzcKDJKdwYLCvOGvapxjBBkUlGz8/2AxHNiCu0
+         HlZ/fk+cKj5DsqEpzAPLzDWVu/p+K5Qi+779lELsQZwdYioMB6bZaFyCHAuAlow39aTx
+         EoSffv1+i4P9aZhE9254IQkehTP6dy4v4kOf4if3PGbVEDotsL4HZgNKtN4QX8R6TxV8
+         +ShQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qCyVynuK7PaSvkeosZV34szIPo2U5n7bK+UWhJ6bjPY=;
-        b=HH7gYvbTtNH5hSxF+IZT0lG6ZgHpLdmrRBh5XDjSLrNuUihrVBkrbgnv+138CCj3L/
-         MnE5jMvGWmxu3+AE27Aas0WMtp7jCwAIzgl43ui44t0k0HnSUsyRVk0sx0BGhkxNIhj+
-         XSb1Cxh10EzBm5RV8kS5s5dQEjbxI4TEZxt+kPjT9Wz4b9m63JjhUkFcECzdNzawvKy6
-         flTbUECZI5Y3rlqjp2c8RoNqYkF3IO3sMLZg+Uf0iE+fsaMOpfa1Xwf/jNl4bOnJOhx0
-         QLGf0nJzbUp9JDZpdUjuqM72CWvY6zSnaGxyV6ETODY49YnzqKZ0NYzw2HnrCQrKrPUy
-         sJ/w==
-X-Gm-Message-State: APjAAAVJWcDM29zjIv1dLTOGEilv/T4dfJKjmkunaI1dTitttbpmKIp0
-        KxScUAK/YkTp/PSgz5ZvHrxu6w==
-X-Google-Smtp-Source: APXvYqylxkpYUC0YR/BT7g7dc/nso2TOI0NcgI5CsiSqzmU5I4fsasacsNe9XwwS9TKTyn1Xxp0ywQ==
-X-Received: by 2002:a7b:cc07:: with SMTP id f7mr2301642wmh.56.1571310587778;
-        Thu, 17 Oct 2019 04:09:47 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id y13sm3163455wrg.8.2019.10.17.04.09.46
+        bh=uVoXPPtms2OBj9SVIoZ3oN8jHS0q6WrUSpAbwHPKjrg=;
+        b=YcN8CruSzTi2a99bGRIts+ARzjKpQUYGCOZJUjdQ4shJUpXF0Yge4CeHiikYH9htF5
+         GEQAboMxyCQtNFgY68NQYF8fqdPJNDW2r5J9PpQhcQmrlugS1nMKLKa8DE4q3fjie0mp
+         uLIpGUm3WMk0byjfNEsqbkI3pfFBv50VofgIkdHugGBgZsT/ZaeTB/MznEmQSZwP0Zhj
+         LpeqSFqEJR7i5PYFjQeMAEy4XdGhI177Y3syep3krqHkKbL8oMqTplyOQ2oJrQeKzGDQ
+         KqVjLM6FyZYHRybWPI645PJrIpO+lrHZYzFxtegBrsnos1MScYYyoe0KyP7VUPWUIg2D
+         36Rg==
+X-Gm-Message-State: APjAAAWluKhr8g3up2brJ2MdLrqF8M42QKDnvHB2HSnPQAnCYcSwqN+/
+        JmcVmfTZ0w9kXvx3oUoEoP8=
+X-Google-Smtp-Source: APXvYqzO6ItEC3kt8jHNlX8r4xUT/KN/LQBY0LzMSmWlc636G/V/pvm/CFIOecA2do+FFkDUPQMN7w==
+X-Received: by 2002:a5d:544a:: with SMTP id w10mr2479776wrv.271.1571310694122;
+        Thu, 17 Oct 2019 04:11:34 -0700 (PDT)
+Received: from localhost (p2E5BE2CE.dip0.t-ipconnect.de. [46.91.226.206])
+        by smtp.gmail.com with ESMTPSA id n1sm1959172wrg.67.2019.10.17.04.11.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 04:09:46 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 12:09:45 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH V7 5/6] backlight: qcom-wled: add support for short
- circuit handling.
-Message-ID: <20191017110945.6dbldlrykumvlpqm@holly.lan>
-References: <1571220826-7740-1-git-send-email-kgunda@codeaurora.org>
- <1571220826-7740-6-git-send-email-kgunda@codeaurora.org>
+        Thu, 17 Oct 2019 04:11:32 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 13:11:31 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Michal =?utf-8?B?Vm9rw6HEjQ==?= <michal.vokac@ysoft.com>,
+        Adam Ford <aford173@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-pwm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight
+ toggle
+Message-ID: <20191017111131.GB3122066@ulmo>
+References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
+ <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com>
+ <20191017101116.3d5okxmto5coecad@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hQiwHBbRI9kgIhsi"
 Content-Disposition: inline
-In-Reply-To: <1571220826-7740-6-git-send-email-kgunda@codeaurora.org>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20191017101116.3d5okxmto5coecad@pengutronix.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 03:43:45PM +0530, Kiran Gunda wrote:
-> Handle the short circuit interrupt and check if the short circuit
-> interrupt is valid. Re-enable the module to check if it goes
-> away. Disable the module altogether if the short circuit event
-> persists.
-> 
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+--hQiwHBbRI9kgIhsi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
->  drivers/video/backlight/qcom-wled.c | 132 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 128 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 2807b4b..b5b125c 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -2,6 +2,9 @@
->  /* Copyright (c) 2015, Sony Mobile Communications, AB.
->   */
->  
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/ktime.h>
->  #include <linux/kernel.h>
->  #include <linux/backlight.h>
->  #include <linux/module.h>
-> @@ -56,6 +59,16 @@
->  #define WLED3_SINK_REG_STR_CABC(n)			(0x66 + (n * 0x10))
->  #define  WLED3_SINK_REG_STR_CABC_MASK			BIT(7)
->  
-> +/* WLED4 specific control registers */
-> +#define WLED4_CTRL_REG_SHORT_PROTECT			0x5e
-> +#define  WLED4_CTRL_REG_SHORT_EN_MASK			BIT(7)
-> +
-> +#define WLED4_CTRL_REG_SEC_ACCESS			0xd0
-> +#define  WLED4_CTRL_REG_SEC_UNLOCK			0xa5
-> +
-> +#define WLED4_CTRL_REG_TEST1				0xe2
-> +#define  WLED4_CTRL_REG_TEST1_EXT_FET_DTEST2		0x09
-> +
->  /* WLED4 specific sink registers */
->  #define WLED4_SINK_REG_CURR_SINK			0x46
->  #define  WLED4_SINK_REG_CURR_SINK_MASK			GENMASK(7, 4)
-> @@ -105,17 +118,23 @@ struct wled_config {
->  	bool cs_out_en;
->  	bool ext_gen;
->  	bool cabc;
-> +	bool external_pfet;
->  };
->  
->  struct wled {
->  	const char *name;
->  	struct device *dev;
->  	struct regmap *regmap;
-> +	struct mutex lock;	/* Lock to avoid race from thread irq handler */
-> +	ktime_t last_short_event;
->  	u16 ctrl_addr;
->  	u16 sink_addr;
->  	u16 max_string_count;
->  	u32 brightness;
->  	u32 max_brightness;
-> +	u32 short_count;
-> +	bool disabled_by_short;
-> +	bool has_short_detect;
->  
->  	struct wled_config cfg;
->  	int (*wled_set_brightness)(struct wled *wled, u16 brightness);
-> @@ -166,6 +185,9 @@ static int wled_module_enable(struct wled *wled, int val)
->  {
->  	int rc;
->  
-> +	if (wled->disabled_by_short)
-> +		return -ENXIO;
-> +
->  	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
->  				WLED3_CTRL_REG_MOD_EN,
->  				WLED3_CTRL_REG_MOD_EN_MASK,
-> @@ -202,18 +224,19 @@ static int wled_update_status(struct backlight_device *bl)
->  	    bl->props.state & BL_CORE_FBBLANK)
->  		brightness = 0;
->  
-> +	mutex_lock(&wled->lock);
->  	if (brightness) {
->  		rc = wled->wled_set_brightness(wled, brightness);
->  		if (rc < 0) {
->  			dev_err(wled->dev, "wled failed to set brightness rc:%d\n",
->  				rc);
-> -			return rc;
-> +			goto unlock_mutex;
->  		}
->  
->  		rc = wled_sync_toggle(wled);
->  		if (rc < 0) {
->  			dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
-> -			return rc;
-> +			goto unlock_mutex;
->  		}
->  	}
->  
-> @@ -221,15 +244,61 @@ static int wled_update_status(struct backlight_device *bl)
->  		rc = wled_module_enable(wled, !!brightness);
->  		if (rc < 0) {
->  			dev_err(wled->dev, "wled enable failed rc:%d\n", rc);
-> -			return rc;
-> +			goto unlock_mutex;
->  		}
->  	}
->  
->  	wled->brightness = brightness;
->  
-> +unlock_mutex:
-> +	mutex_unlock(&wled->lock);
-> +
->  	return rc;
->  }
->  
-> +#define WLED_SHORT_DLY_MS			20
-> +#define WLED_SHORT_CNT_MAX			5
-> +#define WLED_SHORT_RESET_CNT_DLY_US		USEC_PER_SEC
-> +
-> +static irqreturn_t wled_short_irq_handler(int irq, void *_wled)
-> +{
-> +	struct wled *wled = _wled;
-> +	int rc;
-> +	s64 elapsed_time;
-> +
-> +	wled->short_count++;
-> +	mutex_lock(&wled->lock);
-> +	rc = wled_module_enable(wled, false);
-> +	if (rc < 0) {
-> +		dev_err(wled->dev, "wled disable failed rc:%d\n", rc);
-> +		goto unlock_mutex;
-> +	}
-> +
-> +	elapsed_time = ktime_us_delta(ktime_get(),
-> +				      wled->last_short_event);
-> +	if (elapsed_time > WLED_SHORT_RESET_CNT_DLY_US)
-> +		wled->short_count = 1;
-> +
-> +	if (wled->short_count > WLED_SHORT_CNT_MAX) {
-> +		dev_err(wled->dev, "Short trigged %d times, disabling WLED forever!\n",
-> +			wled->short_count);
-> +		wled->disabled_by_short = true;
-> +		goto unlock_mutex;
-> +	}
-> +
-> +	wled->last_short_event = ktime_get();
-> +
-> +	msleep(WLED_SHORT_DLY_MS);
-> +	rc = wled_module_enable(wled, true);
-> +	if (rc < 0)
-> +		dev_err(wled->dev, "wled enable failed rc:%d\n", rc);
-> +
-> +unlock_mutex:
-> +	mutex_unlock(&wled->lock);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
->  static int wled3_setup(struct wled *wled)
->  {
->  	u16 addr;
-> @@ -318,7 +387,7 @@ static int wled4_setup(struct wled *wled)
->  	int rc, temp, i, j;
->  	u16 addr;
->  	u8 sink_en = 0;
-> -	u32 sink_cfg = 0;
-> +	u32 sink_cfg;
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_CTRL_REG_OVP,
-> @@ -340,6 +409,21 @@ static int wled4_setup(struct wled *wled)
->  	if (rc < 0)
->  		return rc;
->  
-> +	if (wled->cfg.external_pfet) {
-> +		/* Unlock the secure register access */
-> +		rc = regmap_write(wled->regmap, wled->ctrl_addr +
-> +				  WLED4_CTRL_REG_SEC_ACCESS,
-> +				  WLED4_CTRL_REG_SEC_UNLOCK);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		rc = regmap_write(wled->regmap,
-> +				  wled->ctrl_addr + WLED4_CTRL_REG_TEST1,
-> +				  WLED4_CTRL_REG_TEST1_EXT_FET_DTEST2);
-> +		if (rc < 0)
-> +			return rc;
-> +	}
-> +
->  	rc = regmap_read(wled->regmap, wled->sink_addr +
->  			 WLED4_SINK_REG_CURR_SINK, &sink_cfg);
->  	if (rc < 0)
-> @@ -425,6 +509,7 @@ static int wled4_setup(struct wled *wled)
->  	.num_strings = 4,
->  	.switch_freq = 11,
->  	.cabc = false,
-> +	.external_pfet = false,
->  };
->  
->  static const u32 wled3_boost_i_limit_values[] = {
-> @@ -590,6 +675,7 @@ static int wled_configure(struct wled *wled, int version)
->  		{ "qcom,cs-out", &cfg->cs_out_en, },
->  		{ "qcom,ext-gen", &cfg->ext_gen, },
->  		{ "qcom,cabc", &cfg->cabc, },
-> +		{ "qcom,external-pfet", &cfg->external_pfet, },
->  	};
->  
->  	prop_addr = of_get_address(dev->of_node, 0, NULL, NULL);
-> @@ -678,6 +764,38 @@ static int wled_configure(struct wled *wled, int version)
->  	return 0;
->  }
->  
-> +static int wled_configure_short_irq(struct wled *wled,
-> +				    struct platform_device *pdev)
-> +{
-> +	int rc, short_irq;
-> +
-> +	if (!wled->has_short_detect)
-> +		return 0;
-> +
-> +	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
-> +				WLED4_CTRL_REG_SHORT_PROTECT,
-> +				WLED4_CTRL_REG_SHORT_EN_MASK,
-> +				WLED4_CTRL_REG_SHORT_EN_MASK);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	short_irq = platform_get_irq_byname(pdev, "short");
-> +	if (short_irq < 0) {
-> +		dev_dbg(&pdev->dev, "short irq is not used\n");
-> +		return 0;
-> +	}
-> +
-> +	rc = devm_request_threaded_irq(wled->dev, short_irq,
-> +				       NULL, wled_short_irq_handler,
-> +				       IRQF_ONESHOT,
-> +				       "wled_short_irq", wled);
-> +	if (rc < 0)
-> +		dev_err(wled->dev, "Unable to request short_irq (err:%d)\n",
-> +			rc);
-> +
-> +	return rc;
-> +}
-> +
->  static const struct backlight_ops wled_ops = {
->  	.update_status = wled_update_status,
->  };
-> @@ -711,6 +829,7 @@ static int wled_probe(struct platform_device *pdev)
->  		return -ENODEV;
->  	}
->  
-> +	mutex_init(&wled->lock);
->  	rc = wled_configure(wled, version);
->  	if (rc)
->  		return rc;
-> @@ -725,6 +844,7 @@ static int wled_probe(struct platform_device *pdev)
->  		break;
->  
->  	case 4:
-> +		wled->has_short_detect = true;
->  		rc = wled4_setup(wled);
->  		if (rc) {
->  			dev_err(&pdev->dev, "wled4_setup failed\n");
-> @@ -737,6 +857,10 @@ static int wled_probe(struct platform_device *pdev)
->  		break;
->  	}
->  
-> +	rc = wled_configure_short_irq(wled, pdev);
-> +	if (rc < 0)
-> +		return rc;
-> +
->  	val = WLED_DEFAULT_BRIGHTNESS;
->  	of_property_read_u32(pdev->dev.of_node, "default-brightness", &val);
->  
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
->  a Linux Foundation Collaborative Project
-> 
+On Thu, Oct 17, 2019 at 12:11:16PM +0200, Uwe Kleine-K=C3=B6nig wrote:
+> On Thu, Oct 17, 2019 at 11:48:08AM +0200, Michal Vok=C3=A1=C4=8D wrote:
+> > On 17. 10. 19 10:10, Uwe Kleine-K=C3=B6nig wrote:
+> > > A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
+> > > pwm_get_state() return the last implemented state")) changed the
+> > > semantic of pwm_get_state() and disclosed an (as it seems) common
+> > > problem in lowlevel PWM drivers. By not relying on the period and duty
+> > > cycle being retrievable from a disabled PWM this type of problem is
+> > > worked around.
+> > >=20
+> > > Apart from this issue only calling the pwm_get_state/pwm_apply_state
+> > > combo once is also more effective.
+> > >=20
+> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > > ---
+> > > Hello,
+> > >=20
+> > > There are now two reports about 01ccf903edd6 breaking a backlight. As
+> > > far as I understand the problem this is a combination of the backend =
+pwm
+> > > driver yielding surprising results and the pwm-bl driver doing things
+> > > more complicated than necessary.
+> > >=20
+> > > So I guess this patch works around these problems. Still it would be
+> > > interesting to find out the details in the imx driver that triggers t=
+he
+> > > problem. So Adam, can you please instrument the pwm-imx27 driver to
+> > > print *state at the beginning of pwm_imx27_apply() and the end of
+> > > pwm_imx27_get_state() and provide the results?
+> > >=20
+> > > Note I only compile tested this change.
+> >=20
+> > Hi Uwe,
+> > I was just about to respond to the "pwm_bl on i.MX6Q broken on 5.4-RC1+"
+> > thread that I have a similar problem when you submitted this patch.
+> >=20
+> > So here are my few cents:
+> >=20
+> > My setup is as follows:
+> >  - imx6dl-yapp4-draco with i.MX6Solo
+> >  - backlight is controlled with inverted PWM signal
+> >  - max brightness level =3D 32, default brightness level set to 32 in D=
+T.
+> >=20
+> > 1. Almost correct backlight behavior before 01ccf903edd6 ("pwm: Let
+> >    pwm_get_state() return the last implemented state):
+> >=20
+> >  - System boots to userspace and backlight is enabled all the time from
+> >    power up.
+> >=20
+> >    $ dmesg | grep state
+> >    [    1.763381] get state end: -1811360608, enabled: 0
+>=20
+> What is -1811360608? When I wrote "print *state" above, I thought about
+> something like:
+>=20
+> 	pr_info("%s: period: %u, duty: %u, polarity: %d, enabled: %d",
+> 		__func__, state->period, state->duty_cycle, state->polarity, state->ena=
+bled);
+>=20
+> A quick look into drivers/pwm/pwm-imx27.c shows that this is another
+> driver that yields duty_cycle =3D 0 when the hardware is off.
+
+It seems to me like the best recourse to fix this for now would be to
+patch up the drivers that return 0 when the hardware is off by caching
+the currently configured duty cycle.
+
+How about the patch below?
+
+Thierry
+
+--- >8 ---
+=46rom 15a52a7f1b910804fabd74a5882befd3f9d6bb37 Mon Sep 17 00:00:00 2001
+=46rom: Thierry Reding <thierry.reding@gmail.com>
+Date: Thu, 17 Oct 2019 12:56:00 +0200
+Subject: [PATCH] pwm: imx27: Cache duty cycle register value
+
+The hardware register containing the duty cycle value cannot be accessed
+when the PWM is disabled. This causes the ->get_state() callback to read
+back a duty cycle value of 0, which can confuse consumer drivers.
+
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+---
+ drivers/pwm/pwm-imx27.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
+index ae11d8577f18..4113d5cd4c62 100644
+--- a/drivers/pwm/pwm-imx27.c
++++ b/drivers/pwm/pwm-imx27.c
+@@ -85,6 +85,13 @@ struct pwm_imx27_chip {
+ 	struct clk	*clk_per;
+ 	void __iomem	*mmio_base;
+ 	struct pwm_chip	chip;
++
++	/*
++	 * The driver cannot read the current duty cycle from the hardware if
++	 * the hardware is disabled. Cache the last programmed duty cycle
++	 * value to return in that case.
++	 */
++	unsigned int duty_cycle;
+ };
+=20
+ #define to_pwm_imx27_chip(chip)	container_of(chip, struct pwm_imx27_chip, =
+chip)
+@@ -155,14 +162,17 @@ static void pwm_imx27_get_state(struct pwm_chip *chip,
+ 	tmp =3D NSEC_PER_SEC * (u64)(period + 2);
+ 	state->period =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
+=20
+-	/* PWMSAR can be read only if PWM is enabled */
+-	if (state->enabled) {
++	/*
++	 * PWMSAR can be read only if PWM is enabled. If the PWM is disabled,
++	 * use the cached value.
++	 */
++	if (state->enabled)
+ 		val =3D readl(imx->mmio_base + MX3_PWMSAR);
+-		tmp =3D NSEC_PER_SEC * (u64)(val);
+-		state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
+-	} else {
+-		state->duty_cycle =3D 0;
+-	}
++	else
++		val =3D imx->duty_cycle;
++
++	tmp =3D NSEC_PER_SEC * (u64)(val);
++	state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
+=20
+ 	if (!state->enabled)
+ 		pwm_imx27_clk_disable_unprepare(chip);
+@@ -261,6 +271,13 @@ static int pwm_imx27_apply(struct pwm_chip *chip, stru=
+ct pwm_device *pwm,
+ 		writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
+ 		writel(period_cycles, imx->mmio_base + MX3_PWMPR);
+=20
++		/*
++		 * Store the duty cycle for future reference in cases where
++		 * the MX3_PWMSAR register can't be read (i.e. when the PWM
++		 * is disabled).
++		 */
++		imx->duty_cycle =3D duty_cycles;
++
+ 		cr =3D MX3_PWMCR_PRESCALER_SET(prescale) |
+ 		     MX3_PWMCR_STOPEN | MX3_PWMCR_DOZEN | MX3_PWMCR_WAITEN |
+ 		     FIELD_PREP(MX3_PWMCR_CLKSRC, MX3_PWMCR_CLKSRC_IPG_HIGH) |
+--=20
+2.23.0
+
+
+--hQiwHBbRI9kgIhsi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl2oTGAACgkQ3SOs138+
+s6ErwRAAqDNujr5rVterfUV5MOpCMJiGtVSWik2J4qpL+Sz0dMupM5exBLxllNkO
+18mgYX5ioHsCvKjW1bEaqivlvpig65n33OBuq3/TT0XxXZd7pQNWckf8vngK7xIo
+MSlKUGyDekWVVt7zocpTpVWoVpV5bXAZ1MTcQCrbKkUsvgE/TU5R4vdXgXX/qd1I
+7QNygG/tj2rjHVfIQaG2RnOf8sEof4NHBR+GrLR9IVMfQjGW0eVqJ4Vjqc4P/JIj
+dvKptasZHRZvuN7zpywh1Jt5x4/GSr9Bhctfv1YwyrJs0HBrGyMsHDgRBVn02Wux
+P395+fNsA554ih7iS4uE8eiqX/TTeRZw2cUgAptzlZsQgAJIIU18ziLkA4xyqSbV
+NQz8AXcpDQGr5iYyxEwc2Z4GohO5wGaGP+yryUhrRnYvw38gejzYQKe7D87c2WnF
+653wEbBWeX3OJQWjYY3MorS22TpSX1R4/xPC+AhS25Japo8JJPOihRwqWGt3JTec
+NpqUyihBg23rnlgkjN68z5iaXtWqtonug4VKExySDZqW8Reg6eITMoEyWHoJ54mx
+C+EKCBSnKNVEmMoAeIavscOrUWuxtNo5NUmHIbOxLL3vaiK330JrUSEkNjVPBEmF
+HKuzBeOHKtBYhgXW7IxyXmvpSPGyTjsmyT3rOXDxn9dZIKasHuI=
+=GrXG
+-----END PGP SIGNATURE-----
+
+--hQiwHBbRI9kgIhsi--
