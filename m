@@ -2,93 +2,158 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 467B9D98D8
-	for <lists+linux-fbdev@lfdr.de>; Wed, 16 Oct 2019 20:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E34F9DA2F4
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 03:19:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393547AbfJPSFl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 16 Oct 2019 14:05:41 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:56200 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390992AbfJPSFl (ORCPT
+        id S2390198AbfJQBTU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 16 Oct 2019 21:19:20 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:46441 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390047AbfJQBTT (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 16 Oct 2019 14:05:41 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GI5bPc024288;
-        Wed, 16 Oct 2019 13:05:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571249137;
-        bh=O/Wbj2F5tkZWFNGIP7N39PcXh3SJywRvUwjgfektGIM=;
-        h=From:To:CC:Subject:Date;
-        b=t4Eg8lp1413Gd1DQJDp95MMv6Wl/NWxlohDJu1oEwIhMRpvLXeriZvTBz0OquXNDY
-         q/y7zsWEXWiPglsH1gtBvjxbnCosPM1zmm6YSJFSjAracb4U3l4qw7k3gojKjH4wFw
-         UesW4S6nCttBZmz84ywx6ha+03tFxZJkDAHyUo9w=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GI5bwZ013949
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Oct 2019 13:05:37 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 16
- Oct 2019 13:05:30 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 16 Oct 2019 13:05:30 -0500
-Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9GI5bOF000515;
-        Wed, 16 Oct 2019 13:05:37 -0500
-Received: from localhost ([10.250.79.55])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x9GI5aZ22393;
-        Wed, 16 Oct 2019 13:05:36 -0500 (CDT)
-From:   "Andrew F. Davis" <afd@ti.com>
-To:     Jiri Kosina <trivial@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-CC:     <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andrew F . Davis" <afd@ti.com>
-Subject: [PATCH] omapfb/dss: remove unneeded conversions to bool
-Date:   Wed, 16 Oct 2019 14:04:24 -0400
-Message-ID: <20191016180424.23907-1-afd@ti.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 16 Oct 2019 21:19:19 -0400
+Received: by mail-qt1-f196.google.com with SMTP id u22so1063844qtq.13;
+        Wed, 16 Oct 2019 18:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Z/aa8wHXCxV3tmXbr+VMzZQ5IcQ3POWlrtZSRfFXe4U=;
+        b=FJ7Cx4okQv21cjqq5YL4ofsxJpaiekvZBcfdJ7bUCEG/x5mqYU4yhbJPlGZ5EMoqCV
+         Rr4J7NHIymCg9kxlE/b7KwyW85qj5XEKEZ2zxaZrI9QoNJqea0fZy7JQ69yJwlA/5lVD
+         +wpgld+msBPX1ogIOVnPCwIypZBk2P38h9324ayHnCT4ruoAsYX2nRKVdvC6hAMAE/MM
+         c6MrgrhT2J8V6lbQgoyngUkfTanQ6Hs259l1lvhTsoQDVhJav2Innl9gS6c9Cb6yw7UR
+         8FDqaISP4JzjUrKJgUFw0qIlX49KI/Cq9h1EgbyO61GyVeaVpSYml2GIRXpGVsjrFWfx
+         EqTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Z/aa8wHXCxV3tmXbr+VMzZQ5IcQ3POWlrtZSRfFXe4U=;
+        b=TgjC7MMbdRk3Dw9XBMmKPph8TjomJghQdGclKptiW7a50CtFwp5VMmu5RjvBuQpRV6
+         eBL6FbpPnfTUe9yBuHx8lokwtu8Jdcndq8Kcr3fzLGaUQkC/ApeQxqylvmrUPK4aucLt
+         4ub0oKEJsda+/RFkb9aNUBiBKKcs15eb3q5RlEUHMuPrDY03kRjKsE1L7kuPeYh74/S4
+         Y55SyFUZRhr3xReIG4Nj736KKiCasgRMsFQv/Ic4FMv2t0bgKNtmViadFi8zdPmXkeDD
+         WPbDKzsKi/VyUib1Jk9yzwC5yCvFEjgTSf43xyaZFKYR3y99gA5u00kQClIw3qxYEedi
+         Qeug==
+X-Gm-Message-State: APjAAAUp4QKqt46dwUXMaBpz73hL3Xd1LkezO8rpXaLIlQQvWXJmCtug
+        lpPWtJDwfvYsb2L7NmlMAoA=
+X-Google-Smtp-Source: APXvYqxoIdiNy2IByAPfJ9y7fcryTSpguig8XZ62D2TJBAdSQUI8qaExu06MD7B60mVtCn7kdQgQaQ==
+X-Received: by 2002:a0c:8867:: with SMTP id 36mr1175545qvm.177.1571275158353;
+        Wed, 16 Oct 2019 18:19:18 -0700 (PDT)
+Received: from localhost.localdomain ([201.53.210.37])
+        by smtp.gmail.com with ESMTPSA id v68sm375528qkd.109.2019.10.16.18.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2019 18:19:17 -0700 (PDT)
+From:   Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+To:     outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
+        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
+        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org,
+        trivial@kernel.org
+Cc:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+Subject: [PATCH] staging: sm750fb: format description of parameters the to kernel doc format
+Date:   Wed, 16 Oct 2019 22:18:49 -0300
+Message-Id: <20191017011849.6081-1-gabrielabittencourt00@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Found with scripts/coccinelle/misc/boolconv.cocci.
+Cluster comments that describes parameters of functions and create one
+single comment before the function in kernel doc format.
 
-Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/staging/sm750fb/sm750_accel.c | 65 +++++++++++++++------------
+ 1 file changed, 37 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index 376ee5bc3ddc..ce37da85cc45 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -1635,7 +1635,7 @@ static void dispc_ovl_set_scaling_uv(enum omap_plane plane,
- {
- 	int scale_x = out_width != orig_width;
- 	int scale_y = out_height != orig_height;
--	bool chroma_upscale = plane != OMAP_DSS_WB ? true : false;
-+	bool chroma_upscale = plane != OMAP_DSS_WB;
- 
- 	if (!dss_has_feature(FEAT_HANDLE_UV_SEPARATE))
- 		return;
-@@ -3100,9 +3100,9 @@ static bool _dispc_mgr_pclk_ok(enum omap_channel channel,
- 		unsigned long pclk)
- {
- 	if (dss_mgr_is_lcd(channel))
--		return pclk <= dispc.feat->max_lcd_pclk ? true : false;
-+		return pclk <= dispc.feat->max_lcd_pclk;
- 	else
--		return pclk <= dispc.feat->max_tv_pclk ? true : false;
-+		return pclk <= dispc.feat->max_tv_pclk;
+diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
+index dbcbbd1055da..d5564cd60f3b 100644
+--- a/drivers/staging/sm750fb/sm750_accel.c
++++ b/drivers/staging/sm750fb/sm750_accel.c
+@@ -130,20 +130,24 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
+ 	return 0;
  }
  
- bool dispc_mgr_timings_ok(enum omap_channel channel,
+-int sm750_hw_copyarea(
+-struct lynx_accel *accel,
+-unsigned int sBase,  /* Address of source: offset in frame buffer */
+-unsigned int sPitch, /* Pitch value of source surface in BYTE */
+-unsigned int sx,
+-unsigned int sy,     /* Starting coordinate of source surface */
+-unsigned int dBase,  /* Address of destination: offset in frame buffer */
+-unsigned int dPitch, /* Pitch value of destination surface in BYTE */
+-unsigned int Bpp,    /* Color depth of destination surface */
+-unsigned int dx,
+-unsigned int dy,     /* Starting coordinate of destination surface */
+-unsigned int width,
+-unsigned int height, /* width and height of rectangle in pixel value */
+-unsigned int rop2)   /* ROP value */
++/**
++ * @sBase: Address of source: offset in frame buffer
++ * @sPitch: Pitch value of source surface in BYTE
++ * @sx, @sy: Starting coordinate of source surface
++ * @dBase: Address of destination: offset in frame buffer
++ * @dPitch: Pitch value of destination surface in BYTE
++ * @Bpp: Color depth of destination surface
++ * @dx, @dy: Starting coordinate of destination surface
++ * @width, @height: width and height of rectangle in pixel value
++ * @rop2: ROP value
++ */
++int sm750_hw_copyarea(struct lynx_accel *accel,
++		      unsigned int sBase, unsigned int sPitch,
++		      unsigned int sx, unsigned int sy,
++		      unsigned int dBase, unsigned int dPitch,
++		      unsigned int Bpp, unsigned int dx, unsigned int dy,
++		      unsigned int width, unsigned int height,
++		      unsigned int rop2)
+ {
+ 	unsigned int nDirection, de_ctrl;
+ 
+@@ -288,20 +292,25 @@ static unsigned int deGetTransparency(struct lynx_accel *accel)
+ 	return de_ctrl;
+ }
+ 
+-int sm750_hw_imageblit(struct lynx_accel *accel,
+-		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
+-		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
+-		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
+-		 u32 dBase,    /* Address of destination: offset in frame buffer */
+-		 u32 dPitch,   /* Pitch value of destination surface in BYTE */
+-		 u32 bytePerPixel,      /* Color depth of destination surface */
+-		 u32 dx,
+-		 u32 dy,       /* Starting coordinate of destination surface */
+-		 u32 width,
+-		 u32 height,   /* width and height of rectangle in pixel value */
+-		 u32 fColor,   /* Foreground color (corresponding to a 1 in the monochrome data */
+-		 u32 bColor,   /* Background color (corresponding to a 0 in the monochrome data */
+-		 u32 rop2)     /* ROP value */
++/**
++ * @pSrcbuf: pointer to start of source buffer in system memory
++ * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top down
++ * and -ive mean button up
++ * @startBit: Mono data can start at any bit in a byte, this value should be
++ * 0 to 7
++ * @dBase: Address of destination: offset in frame buffer
++ * @dPitch: Pitch value of destination surface in BYTE
++ * @bytePerPixel: Color depth of destination surface
++ * @dx, @dy: Starting coordinate of destination surface
++ * @width, @height: width and height of rectangle in pixel value
++ * @fColor: Foreground color (corresponding to a 1 in the monochrome data
++ * @bColor: Background color (corresponding to a 0 in the monochrome data
++ * @rop2: ROP value
++ */
++int sm750_hw_imageblit(struct lynx_accel *accel, const char *pSrcbuf,
++		       u32 srcDelta, u32 startBit, u32 dBase, u32 dPitch,
++		       u32 bytePerPixel, u32 dx, u32 dy, u32 width,
++		       u32 height, u32 fColor, u32 bColor, u32 rop2)
+ {
+ 	unsigned int ulBytesPerScan;
+ 	unsigned int ul4BytesPerScan;
 -- 
-2.17.1
+2.20.1
 
