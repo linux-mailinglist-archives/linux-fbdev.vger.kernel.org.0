@@ -2,190 +2,326 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6358BDADC9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 15:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEACDADEA
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 15:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728923AbfJQNFZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Oct 2019 09:05:25 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:36734 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726898AbfJQNFZ (ORCPT
+        id S2389793AbfJQNJW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 09:09:22 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42130 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726898AbfJQNJW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Oct 2019 09:05:25 -0400
-Received: by mail-wr1-f68.google.com with SMTP id w18so1709726wrt.3;
-        Thu, 17 Oct 2019 06:05:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Y67wkQY0Oxmesuc8oRfdce+PJjDB/BL3x9OqjRG73Bo=;
-        b=BUfv6hZkeqS5Ncg6fG3RTimyYrWMqsVaS/TVWzUpAb/RV7cEloVYWOsbedj3Kq25B7
-         yx0bjNoPzIyI2uhBk7YH5urlu0d25if75ybjGbiKCFIFYTM4oKCuCQzpofa7OTIF4fbS
-         zxfd916BFunFRc9ODynmxfZaC4Gr/XBnjw1BP3bkknInzFBVkaBTCUvRoD1aGyCtSm4a
-         SczAgsVPFVI+gE311CZpt/jMK8Z6LSobXVwDgdUzkemhoFM9in4sfcAVXLjQt3IMwzb0
-         AnwdjkMalQQ0kfNqOmF/lE9cdzCwud7jaeKBK4Zb1AVx3+8Z1LfuK9r0fpA46bh23oVQ
-         YMhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Y67wkQY0Oxmesuc8oRfdce+PJjDB/BL3x9OqjRG73Bo=;
-        b=KJcQVsZPHIM4WB/K6xJBjd3dnwlEuhXh3iTIm3cMPKZjtdFs49yS0XamEiE8zCiINM
-         DvALqSdpeyORlxkBOulGqnBABgpMu48dXMt7pGh5Fz+41eskIm67ByhdUkncdTXa/X/7
-         b3EwzITq0GtxwzIB2KY8FNjHB65/6WkccrFPcd6K61uPhb+WYi3ZQ3jUKSWHm8WexeSC
-         gaironsFJmduhdxWKoNEgrlpWQ40RP9pl9fwcA54DPb2bctY699TuOkX0+I3oahSvWGJ
-         Z3pgqCTcw3Rn2Xi+V6M65+YkNVIP1G8tWjjCKAjdQrSF7Mz/I7UZcvOaaFpGbGNHuNfD
-         mjEA==
-X-Gm-Message-State: APjAAAX0bH5C4pFk/PZYGFRenfQFcLbb2QAcmFIeL68G4ykKvWlMNinm
-        bN0A9QqADzFja7M8Yqfqjfk=
-X-Google-Smtp-Source: APXvYqwuS7SYR6nxg8pFVPusASD+cnwL/eRM1xrf4l1VNTZripARxXo5b4VfZW8FOv5H2QJBtICtYw==
-X-Received: by 2002:a5d:6250:: with SMTP id m16mr2947143wrv.322.1571317521204;
-        Thu, 17 Oct 2019 06:05:21 -0700 (PDT)
-Received: from localhost (p2E5BE2CE.dip0.t-ipconnect.de. [46.91.226.206])
-        by smtp.gmail.com with ESMTPSA id g1sm2437983wrv.68.2019.10.17.06.05.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2019 06:05:19 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 15:05:19 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-pwm@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org, Sascha Hauer <kernel@pengutronix.de>
-Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight
- toggle
-Message-ID: <20191017130519.GC3768303@ulmo>
-References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
- <20191017114727.fy5tg2kgi6mr2sei@holly.lan>
- <20191017121945.cmcvaffmbd7zydrm@pengutronix.de>
- <CAHCN7xKogdqoLmbbTatPdtLzqz+MKh-jgrHkkCh+YA-bwwOkDA@mail.gmail.com>
- <CAHCN7xJFDrsqzR2H2mNYhKB8iF7xYWb9kM+HdzukjDix461gsg@mail.gmail.com>
+        Thu, 17 Oct 2019 09:09:22 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4F1256125D; Thu, 17 Oct 2019 13:09:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571317760;
+        bh=t4NDnXelW5sg2Ml0QnUbHO+z1QOEllhT39rq4T66eHs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=o4INH9b7KFD1tjqGTSgsz+2oGmUCs9JKuh1/wINCJsYntKoTLpmNOD/HcAkV2g3GR
+         /u7gsJwQEJHUXUJ20hxSBZsQJJCdoHUNT08n+zKSbQzzRTMckGydHaXfZxd8qwyvJT
+         0LZLOrw1fjeB0WJE/NlZD3PN7UDiBkx+sS4BmAYI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id CBB806125D;
+        Thu, 17 Oct 2019 13:09:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571317755;
+        bh=t4NDnXelW5sg2Ml0QnUbHO+z1QOEllhT39rq4T66eHs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SIHZPviicUwgsJzTmnVeEDom69LTwHWuGQiES8WuWRan8bUKNfgBfO0uNxWm2oB1K
+         W5sFvlIusgqjRRDN9TDUOl8rq75CgMnGplpFhptRIecrGfOaK/oHpzIoRPcwoaSD+d
+         YCsLgMcgS1z9AUoo9w/ogcJOa4rywQum+h2qx9y0=
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="c3bfwLpm8qysLVxt"
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xJFDrsqzR2H2mNYhKB8iF7xYWb9kM+HdzukjDix461gsg@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 17 Oct 2019 18:39:15 +0530
+From:   kgunda@codeaurora.org
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        daniel.thompson@linaro.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH V7 6/6] backlight: qcom-wled: Add auto string detection
+ logic
+In-Reply-To: <20191017122653.GO4365@dell>
+References: <1571220826-7740-1-git-send-email-kgunda@codeaurora.org>
+ <1571220826-7740-7-git-send-email-kgunda@codeaurora.org>
+ <20191017122653.GO4365@dell>
+Message-ID: <689831a9d7561f51cdb7ea0a1760d472@codeaurora.org>
+X-Sender: kgunda@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On 2019-10-17 17:56, Lee Jones wrote:
+> On Wed, 16 Oct 2019, Kiran Gunda wrote:
+> 
+>> The auto string detection algorithm checks if the current WLED
+>> sink configuration is valid. It tries enabling every sink and
+>> checks if the OVP fault is observed. Based on this information
+>> it detects and enables the valid sink configuration.
+>> Auto calibration will be triggered when the OVP fault interrupts
+>> are seen frequently thereby it tries to fix the sink configuration.
+>> 
+>> The auto-detection also kicks in when the connected LED string
+>> of the display-backlight malfunctions (because of damage) and
+>> requires the damaged string to be turned off to prevent the
+>> complete panel and/or board from being damaged.
+>> 
+>> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+>> ---
+>>  drivers/video/backlight/qcom-wled.c | 410 
+>> +++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 404 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/drivers/video/backlight/qcom-wled.c 
+>> b/drivers/video/backlight/qcom-wled.c
+>> index b5b125c..ff7c409 100644
+>> --- a/drivers/video/backlight/qcom-wled.c
+>> +++ b/drivers/video/backlight/qcom-wled.c
+> 
+> 
+> [...]
+> 
+>> +	/* iterate through the strings one by one */
+> 
+> Please use proper English in comments (less a full stop).
+> 
+> In this case, just s/iterate/Iterate/.
+> 
+Sorry for that ! will fix it in next series.
+>> +	for (i = 0; i < wled->cfg.num_strings; i++) {
+>> +		sink_test = BIT((WLED4_SINK_REG_CURR_SINK_SHFT + i));
+>> +
+>> +		/* Enable feedback control */
+>> +		rc = regmap_write(wled->regmap, wled->ctrl_addr +
+>> +				  WLED3_CTRL_REG_FEEDBACK_CONTROL, i + 1);
+>> +		if (rc < 0) {
+>> +			dev_err(wled->dev, "Failed to enable feedback for SINK %d rc = 
+>> %d\n",
+>> +				i + 1, rc);
+>> +			goto failed_detect;
+>> +		}
+>> +
+>> +		/* enable the sink */
+> 
+> Here too.  And everywhere else.
+> 
+Will fix it in next series.
+>> +		rc = regmap_write(wled->regmap, wled->sink_addr +
+>> +				  WLED4_SINK_REG_CURR_SINK, sink_test);
+>> +		if (rc < 0) {
+>> +			dev_err(wled->dev, "Failed to configure SINK %d rc=%d\n",
+>> +				i + 1, rc);
+>> +			goto failed_detect;
+>> +		}
+>> +
+>> +		/* Enable the module */
+>> +		rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
+>> +					WLED3_CTRL_REG_MOD_EN,
+>> +					WLED3_CTRL_REG_MOD_EN_MASK,
+>> +					WLED3_CTRL_REG_MOD_EN_MASK);
+>> +		if (rc < 0) {
+>> +			dev_err(wled->dev, "Failed to enable WLED module rc=%d\n",
+>> +				rc);
+>> +			goto failed_detect;
+>> +		}
+>> +
+>> +		usleep_range(WLED_SOFT_START_DLY_US,
+>> +			     WLED_SOFT_START_DLY_US + 1000);
+>> +
+>> +		rc = regmap_read(wled->regmap, wled->ctrl_addr +
+>> +				 WLED3_CTRL_REG_INT_RT_STS, &int_sts);
+>> +		if (rc < 0) {
+>> +			dev_err(wled->dev, "Error in reading WLED3_CTRL_INT_RT_STS 
+>> rc=%d\n",
+>> +				rc);
+>> +			goto failed_detect;
+>> +		}
+>> +
+>> +		if (int_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
+>> +			dev_dbg(wled->dev, "WLED OVP fault detected with SINK %d\n",
+>> +				i + 1);
+> 
+> I haven't reviewed the whole patch, but this caught my eye.
+> 
+> I think this should be upgraded to dev_warn().
+> 
+Thought of keeping these messages silent, Because the string 
+configuration will be corrected in this
+and informing it at end of the auto string detection.
+>> +		else
+>> +			sink_valid |= sink_test;
+>> +
+>> +		/* Disable the module */
+>> +		rc = regmap_update_bits(wled->regmap,
+>> +					wled->ctrl_addr + WLED3_CTRL_REG_MOD_EN,
+>> +					WLED3_CTRL_REG_MOD_EN_MASK, 0);
+>> +		if (rc < 0) {
+>> +			dev_err(wled->dev, "Failed to disable WLED module rc=%d\n",
+>> +				rc);
+>> +			goto failed_detect;
+>> +		}
+>> +	}
+>> +
+>> +	if (!sink_valid) {
+>> +		dev_err(wled->dev, "No valid WLED sinks found\n");
+>> +		wled->disabled_by_short = true;
+>> +		goto failed_detect;
+>> +	}
+>> +
+>> +	if (sink_valid == sink_config) {
+>> +		dev_dbg(wled->dev, "WLED auto-detection complete, sink-config=%x 
+>> OK!\n",
+>> +			sink_config);
+> 
+> Does this really need to be placed in the kernel log?
+> 
+Ok. This can be removed. I will remove it in next series.
+>> +	} else {
+>> +		dev_warn(wled->dev, "New WLED string configuration found %x\n",
+>> +			 sink_valid);
+> 
+> Why would the user care about this?  Is it not normal?
+> 
+Actually, it comes here if the user provided string configuration in the 
+device tree is in-correct.
+That's why just informing the user about the right string configuration, 
+after the auto string detection.
+>> +		sink_config = sink_valid;
+>> +	}
+> 
+> [...]
+> 
+>> +static irqreturn_t wled_ovp_irq_handler(int irq, void *_wled)
+>> +{
+>> +	struct wled *wled = _wled;
+>> +	int rc;
+>> +	u32 int_sts, fault_sts;
+>> +
+>> +	rc = regmap_read(wled->regmap,
+>> +			 wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS, &int_sts);
+>> +	if (rc < 0) {
+>> +		dev_err(wled->dev, "Error in reading WLED3_INT_RT_STS rc=%d\n",
+>> +			rc);
+>> +		return IRQ_HANDLED;
+>> +	}
+>> +
+>> +	rc = regmap_read(wled->regmap, wled->ctrl_addr +
+>> +			 WLED3_CTRL_REG_FAULT_STATUS, &fault_sts);
+>> +	if (rc < 0) {
+>> +		dev_err(wled->dev, "Error in reading WLED_FAULT_STATUS rc=%d\n",
+>> +			rc);
+>> +		return IRQ_HANDLED;
+>> +	}
+>> +
+>> +	if (fault_sts &
+>> +		(WLED3_CTRL_REG_OVP_FAULT_BIT | WLED3_CTRL_REG_ILIM_FAULT_BIT))
+> 
+> Break the line at the '|'.
+> 
+Will do it next series.
+>> +		dev_dbg(wled->dev, "WLED OVP fault detected, int_sts=%x fault_sts= 
+>> %x\n",
+>> +			int_sts, fault_sts);
+> 
+> dev_warn().
+> 
+As said above, wanted to keep these messages silent and inform the right 
+string
+configuration at the end of string detection.
+>> +	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT) {
+>> +		mutex_lock(&wled->lock);
+>> +		disable_irq_nosync(wled->ovp_irq);
+>> +
+>> +		if (wled_auto_detection_required(wled))
+>> +			wled_auto_string_detection(wled);
+>> +
+>> +		enable_irq(wled->ovp_irq);
+>> +
+>> +		mutex_unlock(&wled->lock);
+>> +	}
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>>  static int wled3_setup(struct wled *wled)
+>>  {
+>>  	u16 addr;
+>> @@ -435,8 +775,10 @@ static int wled4_setup(struct wled *wled)
+>>  		sink_en |= 1 << temp;
+>>  	}
+>> 
+>> -	if (sink_cfg == sink_en)
+>> -		return 0;
+>> +	if (sink_cfg == sink_en) {
+>> +		rc = wled_auto_detection_at_init(wled);
+>> +		return rc;
+>> +	}
+>> 
+>>  	rc = regmap_update_bits(wled->regmap,
+>>  				wled->sink_addr + WLED4_SINK_REG_CURR_SINK,
+>> @@ -499,7 +841,9 @@ static int wled4_setup(struct wled *wled)
+>>  		return rc;
+>>  	}
+>> 
+>> -	return 0;
+>> +	rc = wled_auto_detection_at_init(wled);
+>> +
+>> +	return rc;
+>>  }
+>> 
+>>  static const struct wled_config wled4_config_defaults = {
+>> @@ -510,6 +854,7 @@ static int wled4_setup(struct wled *wled)
+>>  	.switch_freq = 11,
+>>  	.cabc = false,
+>>  	.external_pfet = false,
+>> +	.auto_detection_enabled = false,
+>>  };
+>> 
+>>  static const u32 wled3_boost_i_limit_values[] = {
+>> @@ -676,6 +1021,7 @@ static int wled_configure(struct wled *wled, int 
+>> version)
+>>  		{ "qcom,ext-gen", &cfg->ext_gen, },
+>>  		{ "qcom,cabc", &cfg->cabc, },
+>>  		{ "qcom,external-pfet", &cfg->external_pfet, },
+>> +		{ "qcom,auto-string-detection", &cfg->auto_detection_enabled, },
+>>  	};
+>> 
+>>  	prop_addr = of_get_address(dev->of_node, 0, NULL, NULL);
+>> @@ -796,6 +1142,40 @@ static int wled_configure_short_irq(struct wled 
+>> *wled,
+>>  	return rc;
+>>  }
+>> 
+>> +static int wled_configure_ovp_irq(struct wled *wled,
+>> +				  struct platform_device *pdev)
+>> +{
+>> +	int rc;
+>> +	u32 val;
+>> +
+>> +	wled->ovp_irq = platform_get_irq_byname(pdev, "ovp");
+>> +	if (wled->ovp_irq < 0) {
+>> +		dev_dbg(&pdev->dev, "ovp irq is not used\n");
+> 
+> I assume this is optional.  What happens if no IRQ is provided?
+> 
+Here OVP IRQ is used to detect the wrong string detection. If it is not
+provided the auto string detection logic won't work.
 
---c3bfwLpm8qysLVxt
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Oct 17, 2019 at 07:40:47AM -0500, Adam Ford wrote:
-> On Thu, Oct 17, 2019 at 7:34 AM Adam Ford <aford173@gmail.com> wrote:
-> >
-> > On Thu, Oct 17, 2019 at 7:19 AM Uwe Kleine-K=C3=B6nig
-> > <u.kleine-koenig@pengutronix.de> wrote:
-> > >
-> > > On Thu, Oct 17, 2019 at 12:47:27PM +0100, Daniel Thompson wrote:
-> > > > On Thu, Oct 17, 2019 at 10:10:59AM +0200, Uwe Kleine-K=C3=B6nig wro=
-te:
-> > > > > A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
-> > > > > pwm_get_state() return the last implemented state")) changed the
-> > > > > semantic of pwm_get_state() and disclosed an (as it seems) common
-> > > > > problem in lowlevel PWM drivers. By not relying on the period and=
- duty
-> > > > > cycle being retrievable from a disabled PWM this type of problem =
-is
-> > > > > worked around.
-> > > > >
-> > > > > Apart from this issue only calling the pwm_get_state/pwm_apply_st=
-ate
-> > > > > combo once is also more effective.
-> > > >
-> > > > I'm only interested in the second paragraph here.
-> > > >
-> > > > There seems to be a reasonable consensus that the i.MX27 and cros-ec
-> > > > PWM drivers should be fixed for the benefit of other PWM clients.
-> > > > So we make this change because it makes the pwm-bl better... not to
-> > > > work around bugs ;-).
-> > >
-> > > That's fine, still I think it's fair to explain the motivation of
-> > > creating this patch.
-> > >
-> > > > > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/bac=
-klight/pwm_bl.c
-> > > > > index 746eebc411df..ddebd62b3978 100644
-> > > > > --- a/drivers/video/backlight/pwm_bl.c
-> > > > > +++ b/drivers/video/backlight/pwm_bl.c
-> > > > > @@ -67,40 +62,27 @@ static void pwm_backlight_power_on(struct pwm=
-_bl_data *pb)
-> > > > >
-> > > > >  static void pwm_backlight_power_off(struct pwm_bl_data *pb)
-> > > > >  {
-> > > > > -   struct pwm_state state;
-> > > > > -
-> > > > > -   pwm_get_state(pb->pwm, &state);
-> > > > > -   if (!pb->enabled)
-> > > > > -           return;
-> > > > > -
-> > > >
-> > > > Why remove the pb->enabled check? I thought that was there to ensur=
-e we
-> > > > don't mess up the regular reference counts.
-> > >
-> > > I havn't looked yet, but I guess I have to respin. Expect a v2 later
-> > > today.
-> >
-> > I would agree that a high-level fix is better than a series of low
-> > level driver fixes.  For what its worth, your V1 patch worked fine on
-> > my i.MX6Q.  I can test the V2 patch when its ready.
->=20
-> I may have spoken too soon.  The patch fixes the display in that it
-> comes on when it previously did not, but changes to brightness do not
-> appear to do anything anymore.  I don't have an oscilloscope where I
-> am now, so I cannot verify whether or not the PWM duty cycle changes.
->=20
-> To my eye, the following do not appear to change the brightness of the sc=
-reen:
->      echo 7 > /sys/devices/soc0/backlight-lvds/backlight/backlight-lvds/b=
-rightness
->      echo 2 > /sys/devices/soc0/backlight-lvds/backlight/backlight-lvds/b=
-rightness
->      echo 5 > /sys/devices/soc0/backlight-lvds/backlight/backlight-lvds/b=
-rightness
-
-Hi Adam,
-
-can you try the i.MX PWM patch that I posted earlier instead? I really
-think we need to fix this in the PWM drivers because they are broken.
-pwm-backlight is not. -rc3 is really not a time to work around breakage
-in consumers.
-
-If my patch doesn't help, can you try reverting the offending patch? If
-we can't come up with a good fix for the drivers, reverting is the next
-best option.
-
-Thierry
-
---c3bfwLpm8qysLVxt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl2oZw4ACgkQ3SOs138+
-s6HfMg/9Gy8G3OY/oPo9PBR5G7SaUJbK+owhtVcIxCqSYaRZTEqv9QjDiMDtTsIr
-DkoX3twloAdvTifihh1M3iFq88U/t5hT0NA9E+xhigZsmml/ZWCW/uf74kILIQ8d
-MUm3e0mnzlaI3mUoTof7JpO2fk01ib6Dh55RdKzVenwTaFtJaQjijvKCkwysIzuU
-dGB+1zsHKRxhGcjyLEb4nYSPitz/ffre6TyLiQOpt7B6ARmmjYgZoGtOllb2hfej
-QwMOcKo/2fX/7e30sfkYVNJPP2C7R8RAQcohZQiVB5K0QlexG9CJ33XRChgb+l/D
-XOwwb7AK63Ndf79dEYwLL4RgnIJZO3PPiEf3gx8W2czFNpZ5tBXv+1RJyVGoGKrH
-2A1oiA5aE4N0CI8G8XnG9GMX4m4hA+u+aOXBpLuZXySXnSFhgcz7E0F/ACqW+/lz
-ok2Yy9Iq8JLZtdP8bIW6JuBTRKSjOr46xoviZLbfbfjbLPc7UbmClGRQTSvImlxH
-rOZ7cQQ8rbOUPLC3tBmleL9ZdEAXrgvYJM9oD1NPOf5WWXjiPyvEmPWTP/wZecyK
-r+Y25gbFle42SOLoaNwe5q2qpmLGuzx6H2FKMij2ddjV5vQV4LPUkuaY7wpOasOO
-TZqlGpLHlDeMgPIdSsfoTGT8WoaKCg5xjGsmqtoMSdX6+uJ23ZU=
-=QRHa
------END PGP SIGNATURE-----
-
---c3bfwLpm8qysLVxt--
+> If, for instance, polling mode is enabled, maybe something like this
+> would be better?
+> 
+>       dev_warn(&pdev->dev, "No IRQ found, falling back to polling 
+> mode\n");
