@@ -2,247 +2,154 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83047DAE72
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 15:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA42ADAE9B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 15:40:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732391AbfJQNbN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Oct 2019 09:31:13 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:42891 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730600AbfJQNbN (ORCPT
+        id S2436619AbfJQNkB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 09:40:01 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:37886 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436621AbfJQNj7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Oct 2019 09:31:13 -0400
-Received: by mail-il1-f193.google.com with SMTP id o18so2016463ilo.9;
-        Thu, 17 Oct 2019 06:31:12 -0700 (PDT)
+        Thu, 17 Oct 2019 09:39:59 -0400
+Received: by mail-wr1-f66.google.com with SMTP id p14so2418015wro.4
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Oct 2019 06:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=4mSEnVFCyaQdwoae48ufGXwbHWkyBhRlYoMbSfFge/8=;
-        b=d95rTCp2CW+iXspsAbpIvzp3nyoOl+4qBV44KS4491jcsm+uJsKk0OfkC6dcB8UCwF
-         1d4npTQBDm7FAH+tyKP1pdoNVp4crosIgsI/XYxuvEVNk2uu4FQPJrgWQ14fEKTwlkq2
-         Yh5nGqivMxKe3JBs8us55PqSqcHTyI2ep/TCSC0ty1usQCOP0km0QAPipgkBopcP1Vjq
-         hvrIyJJ0gaDzuwNaqZABN8J2SIwbSxr09P8FKxMRW4Y2nY+3nnSzWGYD/FI2AbI7/nN4
-         6Qw7pRX7BRbXrGAUcy58EI2ijzR7PhQFFfw2cbdl5uSHB9f0UXz77pcA2DDSp4nQQaXT
-         q8HA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nGdIYkBoWouhui5JZwa5SxA1USJYrGRfLAGOfC1qQUE=;
+        b=EeC7H7ue3oN1wyNo5+y+h/f3QtZwbPbLcR8bvVPiUDCnvQ1Wzzk22Y9y+SWAeu3llf
+         RurKgJ3iIuYu/Et+Jldq3rRCJK+O1oCBGPuIoQNEb/bzD4U2PZFn/hwgLd+zF9vXA3Ij
+         NYkpxgZCWqu4QiJ5veb+lqQbk0AsCybJARVL08fZusOFmSiHSGhiOnk4yOHRhqDmY3tn
+         ZZyKt5J3y+I2fnGBXO+Yca1TaceT4qVU+oy+/27lbS4BQs/tZs2GQzAxgD7jodqHN953
+         qu1oLELMNkcdB2ndjb9exvZknfturibZR8zRbaNgoN/iNeuKYk5KavYeyrGElH8K4Ux9
+         9B0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=4mSEnVFCyaQdwoae48ufGXwbHWkyBhRlYoMbSfFge/8=;
-        b=OVGBKdvCYDOVIPfh95R0hlxvuZiB5VD8fEtRY2dfSTgpcMa08eZB4VGSCWD1ds8owa
-         /cU9xgX/+ilIuLW78uNMRiheuvt5avbzepIkGT/aAvG+9w4I4SAs7aRDylNPP5CysJLV
-         tD4cvGMBD8Iq075vgAkvnfOWQGTTZlGovq4arvjHoaLo1EmlU516h/FJPCQ0DSkF2mnE
-         jfRiLdbqw53h45SeXDd2IHFogY3Jm66CQHe96CzJFodyZ8DOjprxfCM/khz5qxtd9pBK
-         jEI9DjGDUFQv66NyIfDGB+D5Sj5gVkCUwZr7GAJyLrdlFte3rRtrBh6u0usDdUGaqOFw
-         k7ZQ==
-X-Gm-Message-State: APjAAAUGhce7nvnaiieWdAGQXfGIPAdT2IDztVJTpfmsPp0hRFLtzxzR
-        BJc62HKr6NF3sFSa71jTC5DE19ji+TkF90vAwoI=
-X-Google-Smtp-Source: APXvYqzhXl3OF/lHc6myeQ3vda6OwvmKcewOXPy2cQDDEd4jZqsyahc4DOILH8a0fbrdIUveTUo6i1JJhwvjq17CgEo=
-X-Received: by 2002:a92:cb84:: with SMTP id z4mr3889139ilo.78.1571319071378;
- Thu, 17 Oct 2019 06:31:11 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nGdIYkBoWouhui5JZwa5SxA1USJYrGRfLAGOfC1qQUE=;
+        b=HDrALssF+DEFgMOZOgdn1SxlhkAkHbVk4sZU6qpY1yBbXXBs9rJZJR7DTA47ICoivW
+         LAotZXGzBvn2PgJfLZRkdOlwC8Lfh9tTjpONM88xev2U6MnQHD1hgWoUVzPo4+M+y828
+         evCQa/wAooT5Nlfz12lf1FU2/R6w77RInDJ/OrDFcCuJddT74XftfWk+0rt5ZgUzhqiG
+         JA6C4OiALGbfhTbgVdSIWpmDhZQVgzNteXjQEqyOyZEdXcwyVlc0oGYGeTv2z2MmD0Hp
+         pE4HaepNMkBRaSIvNyK6HuwKIL5uG4zL6aWqMskznrkr689dXxApU/VwvXPxPlDXFhW6
+         jsKA==
+X-Gm-Message-State: APjAAAXb7UTi+KL7SzanYGkDRm1K7K2xz6Am94mZClrh9QbKVV5b5WOx
+        GqAqyUGsKPPytb3MWWOajWJxqg==
+X-Google-Smtp-Source: APXvYqy4Lrrg4pMfTd+atu6SWJQ7WAc2FDA1OuzXE16c+jlAXvx7iaUxxV+K+zpm0rWL0ddLU3HqQg==
+X-Received: by 2002:a5d:4644:: with SMTP id j4mr2365010wrs.355.1571319597038;
+        Thu, 17 Oct 2019 06:39:57 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id k8sm777915wrg.15.2019.10.17.06.39.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2019 06:39:55 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 14:39:54 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     kgunda@codeaurora.org
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH V7 6/6] backlight: qcom-wled: Add auto string detection
+ logic
+Message-ID: <20191017133954.7vgqjgwxojmjw446@holly.lan>
+References: <1571220826-7740-1-git-send-email-kgunda@codeaurora.org>
+ <1571220826-7740-7-git-send-email-kgunda@codeaurora.org>
+ <20191017112941.qqvgboyambzw63i3@holly.lan>
+ <fa32f7ec727cb2626ad877a6cef32a1b@codeaurora.org>
 MIME-Version: 1.0
-References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
- <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com> <20191017101116.3d5okxmto5coecad@pengutronix.de>
- <20191017111131.GB3122066@ulmo>
-In-Reply-To: <20191017111131.GB3122066@ulmo>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Thu, 17 Oct 2019 08:30:59 -0500
-Message-ID: <CAHCN7xJmUiMRfYqgB+mkPVtoL20=RwXJHvzzJum4YcgUEHizsg@mail.gmail.com>
-Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight toggle
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-pwm@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org, Sascha Hauer <kernel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fa32f7ec727cb2626ad877a6cef32a1b@codeaurora.org>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 6:11 AM Thierry Reding <thierry.reding@gmail.com> w=
-rote:
->
-> On Thu, Oct 17, 2019 at 12:11:16PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > On Thu, Oct 17, 2019 at 11:48:08AM +0200, Michal Vok=C3=A1=C4=8D wrote:
-> > > On 17. 10. 19 10:10, Uwe Kleine-K=C3=B6nig wrote:
-> > > > A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
-> > > > pwm_get_state() return the last implemented state")) changed the
-> > > > semantic of pwm_get_state() and disclosed an (as it seems) common
-> > > > problem in lowlevel PWM drivers. By not relying on the period and d=
-uty
-> > > > cycle being retrievable from a disabled PWM this type of problem is
-> > > > worked around.
-> > > >
-> > > > Apart from this issue only calling the pwm_get_state/pwm_apply_stat=
-e
-> > > > combo once is also more effective.
-> > > >
-> > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.d=
-e>
-> > > > ---
-> > > > Hello,
-> > > >
-> > > > There are now two reports about 01ccf903edd6 breaking a backlight. =
-As
-> > > > far as I understand the problem this is a combination of the backen=
-d pwm
-> > > > driver yielding surprising results and the pwm-bl driver doing thin=
-gs
-> > > > more complicated than necessary.
-> > > >
-> > > > So I guess this patch works around these problems. Still it would b=
-e
-> > > > interesting to find out the details in the imx driver that triggers=
- the
-> > > > problem. So Adam, can you please instrument the pwm-imx27 driver to
-> > > > print *state at the beginning of pwm_imx27_apply() and the end of
-> > > > pwm_imx27_get_state() and provide the results?
-> > > >
-> > > > Note I only compile tested this change.
-> > >
-> > > Hi Uwe,
-> > > I was just about to respond to the "pwm_bl on i.MX6Q broken on 5.4-RC=
-1+"
-> > > thread that I have a similar problem when you submitted this patch.
-> > >
-> > > So here are my few cents:
-> > >
-> > > My setup is as follows:
-> > >  - imx6dl-yapp4-draco with i.MX6Solo
-> > >  - backlight is controlled with inverted PWM signal
-> > >  - max brightness level =3D 32, default brightness level set to 32 in=
- DT.
-> > >
-> > > 1. Almost correct backlight behavior before 01ccf903edd6 ("pwm: Let
-> > >    pwm_get_state() return the last implemented state):
-> > >
-> > >  - System boots to userspace and backlight is enabled all the time fr=
-om
-> > >    power up.
-> > >
-> > >    $ dmesg | grep state
-> > >    [    1.763381] get state end: -1811360608, enabled: 0
-> >
-> > What is -1811360608? When I wrote "print *state" above, I thought about
-> > something like:
-> >
-> >       pr_info("%s: period: %u, duty: %u, polarity: %d, enabled: %d",
-> >               __func__, state->period, state->duty_cycle, state->polari=
-ty, state->enabled);
-> >
-> > A quick look into drivers/pwm/pwm-imx27.c shows that this is another
-> > driver that yields duty_cycle =3D 0 when the hardware is off.
->
-> It seems to me like the best recourse to fix this for now would be to
-> patch up the drivers that return 0 when the hardware is off by caching
-> the currently configured duty cycle.
->
-> How about the patch below?
->
-> Thierry
->
-> --- >8 ---
-> From 15a52a7f1b910804fabd74a5882befd3f9d6bb37 Mon Sep 17 00:00:00 2001
-> From: Thierry Reding <thierry.reding@gmail.com>
-> Date: Thu, 17 Oct 2019 12:56:00 +0200
-> Subject: [PATCH] pwm: imx27: Cache duty cycle register value
->
-> The hardware register containing the duty cycle value cannot be accessed
-> when the PWM is disabled. This causes the ->get_state() callback to read
-> back a duty cycle value of 0, which can confuse consumer drivers.
->
-> Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-> ---
->  drivers/pwm/pwm-imx27.c | 31 ++++++++++++++++++++++++-------
->  1 file changed, 24 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-> index ae11d8577f18..4113d5cd4c62 100644
-> --- a/drivers/pwm/pwm-imx27.c
-> +++ b/drivers/pwm/pwm-imx27.c
-> @@ -85,6 +85,13 @@ struct pwm_imx27_chip {
->         struct clk      *clk_per;
->         void __iomem    *mmio_base;
->         struct pwm_chip chip;
-> +
-> +       /*
-> +        * The driver cannot read the current duty cycle from the hardwar=
-e if
-> +        * the hardware is disabled. Cache the last programmed duty cycle
-> +        * value to return in that case.
-> +        */
-> +       unsigned int duty_cycle;
->  };
->
->  #define to_pwm_imx27_chip(chip)        container_of(chip, struct pwm_imx=
-27_chip, chip)
-> @@ -155,14 +162,17 @@ static void pwm_imx27_get_state(struct pwm_chip *ch=
-ip,
->         tmp =3D NSEC_PER_SEC * (u64)(period + 2);
->         state->period =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
->
-> -       /* PWMSAR can be read only if PWM is enabled */
-> -       if (state->enabled) {
-> +       /*
-> +        * PWMSAR can be read only if PWM is enabled. If the PWM is disab=
-led,
-> +        * use the cached value.
-> +        */
-> +       if (state->enabled)
->                 val =3D readl(imx->mmio_base + MX3_PWMSAR);
-> -               tmp =3D NSEC_PER_SEC * (u64)(val);
-> -               state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk)=
-;
-> -       } else {
-> -               state->duty_cycle =3D 0;
-> -       }
-> +       else
-> +               val =3D imx->duty_cycle;
-> +
-> +       tmp =3D NSEC_PER_SEC * (u64)(val);
-> +       state->duty_cycle =3D DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
+On Thu, Oct 17, 2019 at 05:47:47PM +0530, kgunda@codeaurora.org wrote:
+> On 2019-10-17 16:59, Daniel Thompson wrote:
+> > On Wed, Oct 16, 2019 at 03:43:46PM +0530, Kiran Gunda wrote:
+> > > The auto string detection algorithm checks if the current WLED
+> > > sink configuration is valid. It tries enabling every sink and
+> > > checks if the OVP fault is observed. Based on this information
+> > > it detects and enables the valid sink configuration.
+> > > Auto calibration will be triggered when the OVP fault interrupts
+> > > are seen frequently thereby it tries to fix the sink configuration.
+> > > 
+> > > The auto-detection also kicks in when the connected LED string
+> > > of the display-backlight malfunctions (because of damage) and
+> > > requires the damaged string to be turned off to prevent the
+> > > complete panel and/or board from being damaged.
+> > > 
+> > > Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> > 
+> > It's a complex bit of code but I'm OK with it in principle. Everything
+> > below is about small details and/or nitpicking.
+> > 
+> > 
+> > > +static void wled_ovp_work(struct work_struct *work)
+> > > +{
+> > > +	struct wled *wled = container_of(work,
+> > > +					 struct wled, ovp_work.work);
+> > > +	enable_irq(wled->ovp_irq);
+> > > +}
+> > > +
+> > 
+> > A bit of commenting about why we have to wait 10ms before enabling the
+> > OVP interrupt would be appreciated.
+> > 
+> > 
+> Sure. Will add the comment in the next series.
+> > > +static irqreturn_t wled_ovp_irq_handler(int irq, void *_wled)
+> > > +{
+> > > +	struct wled *wled = _wled;
+> > > +	int rc;
+> > > +	u32 int_sts, fault_sts;
+> > > +
+> > > +	rc = regmap_read(wled->regmap,
+> > > +			 wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS, &int_sts);
+> > > +	if (rc < 0) {
+> > > +		dev_err(wled->dev, "Error in reading WLED3_INT_RT_STS rc=%d\n",
+> > > +			rc);
+> > > +		return IRQ_HANDLED;
+> > > +	}
+> > > +
+> > > +	rc = regmap_read(wled->regmap, wled->ctrl_addr +
+> > > +			 WLED3_CTRL_REG_FAULT_STATUS, &fault_sts);
+> > > +	if (rc < 0) {
+> > > +		dev_err(wled->dev, "Error in reading WLED_FAULT_STATUS rc=%d\n",
+> > > +			rc);
+> > > +		return IRQ_HANDLED;
+> > > +	}
+> > > +
+> > > +	if (fault_sts &
+> > > +		(WLED3_CTRL_REG_OVP_FAULT_BIT | WLED3_CTRL_REG_ILIM_FAULT_BIT))
+> > > +		dev_dbg(wled->dev, "WLED OVP fault detected, int_sts=%x
+> > > fault_sts= %x\n",
+> > > +			int_sts, fault_sts);
+> > > +
+> > > +	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT) {
+> > > +		mutex_lock(&wled->lock);
+> > > +		disable_irq_nosync(wled->ovp_irq);
+> > 
+> > We're currently running the threaded ISR for this irq. Do we really need
+> > to disable it?
+> > 
+> We need to disable this IRQ, during the auto string detection logic. Because
+> in the auto string detection we configure the current sinks one by one and
+> check the
+> status register for the OVPs and set the right string configuration. We
+> enable it later after
+> the auto string detection is completed.
 
-Is this right?  It seems like the tmp  and state->duty_cycle
-caltulations should be kept inside "if (state->enabled)" because if we
-set val to the duty_cycle in the else, I would think it is going to
-calculate this again.
+This is a threaded oneshot interrupt handler. Why isn't the framework
+masking sufficient for you here?
 
-I think the 'else' should be 'state->duty_cycle =3D imx->duty_cycle'
-because we shouldn't need to recalculate this again.
 
-Am I missing something?
-
-adam
->
->         if (!state->enabled)
->                 pwm_imx27_clk_disable_unprepare(chip);
-> @@ -261,6 +271,13 @@ static int pwm_imx27_apply(struct pwm_chip *chip, st=
-ruct pwm_device *pwm,
->                 writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->                 writel(period_cycles, imx->mmio_base + MX3_PWMPR);
->
-> +               /*
-> +                * Store the duty cycle for future reference in cases whe=
-re
-> +                * the MX3_PWMSAR register can't be read (i.e. when the P=
-WM
-> +                * is disabled).
-> +                */
-> +               imx->duty_cycle =3D duty_cycles;
-> +
->                 cr =3D MX3_PWMCR_PRESCALER_SET(prescale) |
->                      MX3_PWMCR_STOPEN | MX3_PWMCR_DOZEN | MX3_PWMCR_WAITE=
-N |
->                      FIELD_PREP(MX3_PWMCR_CLKSRC, MX3_PWMCR_CLKSRC_IPG_HI=
-GH) |
-> --
-> 2.23.0
->
+Daniel.
