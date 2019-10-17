@@ -2,192 +2,209 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C17DCDA306
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 03:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF41DA327
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 03:29:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403760AbfJQBZP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 16 Oct 2019 21:25:15 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:54006 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389094AbfJQBZO (ORCPT
+        id S2391719AbfJQB3q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 16 Oct 2019 21:29:46 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:36600 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727593AbfJQB3p (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 16 Oct 2019 21:25:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
-        Subject:Sender:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=gv/VRh25JbZQV0A+0eeM+TeAGlcaRb1tnq4YaJG9kPE=; b=W67N6dd7dSkMcvncpQwxMkwPL
-        TOyrZS2j0dKWlaB+WNuXwdFwC5v7jWlIf/ne3H/f5JI4ADBgLbXpAV6g2AqWnZXJnpJdqR6j1Lgmo
-        L6SsDXvS789U5sBQ705V3Sh1+JuGe5r0lZ+HFdf2VRF/yunIcpwQJxSvxiQp2f62IEJ0Z+tr04hUC
-        OfRx7oIvNPJaP/5ndCFXThR580JdmaBhmeZdWVqnCz16Hlg7WZ4IXyzO6WUPxWuAm+zLyihkpxwBL
-        zFu31K8B9JscExhcq4b060R/oWzKi1i90pXHXowzSCGl62Hbd11+rDYRGK76sCH94sFpnqcgChZEB
-        N2gSnNemA==;
-Received: from [2601:1c0:6280:3f0::9ef4]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iKuXQ-00051e-AJ; Thu, 17 Oct 2019 01:25:12 +0000
+        Wed, 16 Oct 2019 21:29:45 -0400
+Received: by mail-qk1-f196.google.com with SMTP id y189so406665qkc.3;
+        Wed, 16 Oct 2019 18:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-transfer-encoding:content-language;
+        bh=WuM4nCTZ81BlJjiPSurvi5qoJfBbsasN21+Lbs4hI80=;
+        b=YZgbqFiOHWigqEcnJTqSXSR3rpJQ9coxv7bijJC+IrPHRpZfIMgmMKhjjg8ltsUrzY
+         d3fm19++8UGhjVn/X0+q2Q2uAY/8+ogW8b3lLVAwHB+yIbhvadVpU5f5Dw5hGIWONQQj
+         cz5lAUxv5QsvX4TsyvcRAc6L0inAPwA2WuDEq6COkDo92UjY7tDN9KQo5y7sc+DzWYLx
+         LVL1FA9TFH0kOlqet1p/FCqG5ptiGrftb5LIWKFdxMuS3ERsBhXtMtp7PmlPBUcSgxmc
+         O8V8P4oQsfDs/FDa5FKdKIhXc9h8UFxCPSt5zOx8TzMtIMw8EnnHbDnC8766FJcDTALH
+         FrUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=WuM4nCTZ81BlJjiPSurvi5qoJfBbsasN21+Lbs4hI80=;
+        b=N8UIuB4jTbCwNEPVpVnXgkHwe+KGSAS+GCBPHQFeVJGe/EsXyc+LHnIGqHu+N+YYRX
+         XyfdtZ3umCw0cxM0y13tO5pdg0/el0B6N1DpFX4F8T/qwBh9SZuj8l3L6GXssCkGg+cd
+         30uXRGo+zH+ZqvBq1FvwodYra9q33uKxO34UhG6p0WijtyF2SJuYq4QeU5zaHMjazBfS
+         iQbqhriZ+g01Rd027djC9v/ix0WJcVf5VViwDrBfJjSqxDXuycn3KHtdHAhrA6qDslNx
+         ecj6PZ0uAMGqEGR/aSqXxMDrNXl2EAV8SPlZJErUaTSqgCSjX54Zt8SLGNYp5gj4kh8S
+         ZyXA==
+X-Gm-Message-State: APjAAAVj3AyKxX2u0Bo9zYrktgc358IQTWs5MJ9BEe9Do44PUdO1jQWX
+        iBqU2CICei7gl5+q+DnOES8=
+X-Google-Smtp-Source: APXvYqyEL0e9Qjox5zgJhKGGHo4fwV8d4cO8SiGrDORpEBQhAgKYy+ontyyqyDjou0k5tCq2KZ/XdA==
+X-Received: by 2002:a05:620a:1211:: with SMTP id u17mr975797qkj.310.1571275784353;
+        Wed, 16 Oct 2019 18:29:44 -0700 (PDT)
+Received: from [192.168.1.101] ([201.53.210.37])
+        by smtp.gmail.com with ESMTPSA id g25sm350465qtp.96.2019.10.16.18.29.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2019 18:29:43 -0700 (PDT)
 Subject: Re: [PATCH] staging: sm750fb: format description of parameters the to
  kernel doc format
-To:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>,
+To:     Randy Dunlap <rdunlap@infradead.org>,
         outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
         teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
         linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
         linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org,
         trivial@kernel.org
 References: <20191017011849.6081-1-gabrielabittencourt00@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <799632e2-a328-d72b-397d-3ee6b5e87e06@infradead.org>
-Date:   Wed, 16 Oct 2019 18:25:10 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+ <799632e2-a328-d72b-397d-3ee6b5e87e06@infradead.org>
+From:   gbittencourt <gabrielabittencourt00@gmail.com>
+Message-ID: <d55516db-28c5-aa53-8d07-20201dc4ffca@gmail.com>
+Date:   Wed, 16 Oct 2019 22:29:27 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191017011849.6081-1-gabrielabittencourt00@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <799632e2-a328-d72b-397d-3ee6b5e87e06@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+Hi Randy,
 
-On 10/16/19 6:18 PM, Gabriela Bittencourt wrote:
-> Cluster comments that describes parameters of functions and create one
-> single comment before the function in kernel doc format.
-
-Good plan.
-
-How did you test this patch?
-
-> Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-> ---
->  drivers/staging/sm750fb/sm750_accel.c | 65 +++++++++++++++------------
->  1 file changed, 37 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
-> index dbcbbd1055da..d5564cd60f3b 100644
-> --- a/drivers/staging/sm750fb/sm750_accel.c
-> +++ b/drivers/staging/sm750fb/sm750_accel.c
-> @@ -130,20 +130,24 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
->  	return 0;
->  }
->  
-> -int sm750_hw_copyarea(
-> -struct lynx_accel *accel,
-> -unsigned int sBase,  /* Address of source: offset in frame buffer */
-> -unsigned int sPitch, /* Pitch value of source surface in BYTE */
-> -unsigned int sx,
-> -unsigned int sy,     /* Starting coordinate of source surface */
-> -unsigned int dBase,  /* Address of destination: offset in frame buffer */
-> -unsigned int dPitch, /* Pitch value of destination surface in BYTE */
-> -unsigned int Bpp,    /* Color depth of destination surface */
-> -unsigned int dx,
-> -unsigned int dy,     /* Starting coordinate of destination surface */
-> -unsigned int width,
-> -unsigned int height, /* width and height of rectangle in pixel value */
-> -unsigned int rop2)   /* ROP value */
-> +/**
-
-Missing function name and short description.  Documentation/doc-guide/kernel-doc.rst says:
-
-The general format of a function and function-like macro kernel-doc comment is::
-
-  /**
-   * function_name() - Brief description of function.
-   * @arg1: Describe the first argument.
-   * @arg2: Describe the second argument.
-   *        One can provide multiple line descriptions
-   *        for arguments.
-   *
-   * A longer description, with more discussion of the function function_name()
-   * that might be useful to those using or modifying it. Begins with an
-   * empty comment line, and may include additional embedded empty
-   * comment lines.
-   *
-   * The longer description may have multiple paragraphs.
-   *
-   * Context: Describes whether the function can sleep, what locks it takes,
-   *          releases, or expects to be held. It can extend over multiple
-   *          lines.
-   * Return: Describe the return value of function_name.
-   *
-   * The return value description can also have multiple paragraphs, and should
-   * be placed at the end of the comment block.
-   */
-
-> + * @sBase: Address of source: offset in frame buffer
-> + * @sPitch: Pitch value of source surface in BYTE
-> + * @sx, @sy: Starting coordinate of source surface
-
-Those should be on separate lines.
-
-> + * @dBase: Address of destination: offset in frame buffer
-> + * @dPitch: Pitch value of destination surface in BYTE
-> + * @Bpp: Color depth of destination surface
-> + * @dx, @dy: Starting coordinate of destination surface
-
-Ditto.
-
-> + * @width, @height: width and height of rectangle in pixel value
-> + * @rop2: ROP value
-> + */
-> +int sm750_hw_copyarea(struct lynx_accel *accel,
-> +		      unsigned int sBase, unsigned int sPitch,
-> +		      unsigned int sx, unsigned int sy,
-> +		      unsigned int dBase, unsigned int dPitch,
-> +		      unsigned int Bpp, unsigned int dx, unsigned int dy,
-> +		      unsigned int width, unsigned int height,
-> +		      unsigned int rop2)
->  {
->  	unsigned int nDirection, de_ctrl;
->  
-> @@ -288,20 +292,25 @@ static unsigned int deGetTransparency(struct lynx_accel *accel)
->  	return de_ctrl;
->  }
->  
-> -int sm750_hw_imageblit(struct lynx_accel *accel,
-> -		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
-> -		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
-> -		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
-> -		 u32 dBase,    /* Address of destination: offset in frame buffer */
-> -		 u32 dPitch,   /* Pitch value of destination surface in BYTE */
-> -		 u32 bytePerPixel,      /* Color depth of destination surface */
-> -		 u32 dx,
-> -		 u32 dy,       /* Starting coordinate of destination surface */
-> -		 u32 width,
-> -		 u32 height,   /* width and height of rectangle in pixel value */
-> -		 u32 fColor,   /* Foreground color (corresponding to a 1 in the monochrome data */
-> -		 u32 bColor,   /* Background color (corresponding to a 0 in the monochrome data */
-> -		 u32 rop2)     /* ROP value */
-> +/**
-
-Similar comments here...
-
-> + * @pSrcbuf: pointer to start of source buffer in system memory
-> + * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top down
-> + * and -ive mean button up
-> + * @startBit: Mono data can start at any bit in a byte, this value should be
-> + * 0 to 7
-> + * @dBase: Address of destination: offset in frame buffer
-> + * @dPitch: Pitch value of destination surface in BYTE
-> + * @bytePerPixel: Color depth of destination surface
-> + * @dx, @dy: Starting coordinate of destination surface
-> + * @width, @height: width and height of rectangle in pixel value
-> + * @fColor: Foreground color (corresponding to a 1 in the monochrome data
-> + * @bColor: Background color (corresponding to a 0 in the monochrome data
-> + * @rop2: ROP value
-> + */
-> +int sm750_hw_imageblit(struct lynx_accel *accel, const char *pSrcbuf,
-> +		       u32 srcDelta, u32 startBit, u32 dBase, u32 dPitch,
-> +		       u32 bytePerPixel, u32 dx, u32 dy, u32 width,
-> +		       u32 height, u32 fColor, u32 bColor, u32 rop2)
->  {
->  	unsigned int ulBytesPerScan;
->  	unsigned int ul4BytesPerScan;
-> 
-
+On 10/16/19 10:25 PM, Randy Dunlap wrote:
+> Hi,
+>
+> On 10/16/19 6:18 PM, Gabriela Bittencourt wrote:
+>> Cluster comments that describes parameters of functions and create one
+>> single comment before the function in kernel doc format.
+> Good plan.
+>
+> How did you test this patch?
+I haven't test it. How can I do it?
+>
+>> Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+>> ---
+>>   drivers/staging/sm750fb/sm750_accel.c | 65 +++++++++++++++------------
+>>   1 file changed, 37 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
+>> index dbcbbd1055da..d5564cd60f3b 100644
+>> --- a/drivers/staging/sm750fb/sm750_accel.c
+>> +++ b/drivers/staging/sm750fb/sm750_accel.c
+>> @@ -130,20 +130,24 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
+>>   	return 0;
+>>   }
+>>   
+>> -int sm750_hw_copyarea(
+>> -struct lynx_accel *accel,
+>> -unsigned int sBase,  /* Address of source: offset in frame buffer */
+>> -unsigned int sPitch, /* Pitch value of source surface in BYTE */
+>> -unsigned int sx,
+>> -unsigned int sy,     /* Starting coordinate of source surface */
+>> -unsigned int dBase,  /* Address of destination: offset in frame buffer */
+>> -unsigned int dPitch, /* Pitch value of destination surface in BYTE */
+>> -unsigned int Bpp,    /* Color depth of destination surface */
+>> -unsigned int dx,
+>> -unsigned int dy,     /* Starting coordinate of destination surface */
+>> -unsigned int width,
+>> -unsigned int height, /* width and height of rectangle in pixel value */
+>> -unsigned int rop2)   /* ROP value */
+>> +/**
+> Missing function name and short description.  Documentation/doc-guide/kernel-doc.rst says:
+>
+> The general format of a function and function-like macro kernel-doc comment is::
+>
+>    /**
+>     * function_name() - Brief description of function.
+>     * @arg1: Describe the first argument.
+>     * @arg2: Describe the second argument.
+>     *        One can provide multiple line descriptions
+>     *        for arguments.
+>     *
+>     * A longer description, with more discussion of the function function_name()
+>     * that might be useful to those using or modifying it. Begins with an
+>     * empty comment line, and may include additional embedded empty
+>     * comment lines.
+>     *
+>     * The longer description may have multiple paragraphs.
+>     *
+>     * Context: Describes whether the function can sleep, what locks it takes,
+>     *          releases, or expects to be held. It can extend over multiple
+>     *          lines.
+>     * Return: Describe the return value of function_name.
+>     *
+>     * The return value description can also have multiple paragraphs, and should
+>     * be placed at the end of the comment block.
+>     */
+>
+>> + * @sBase: Address of source: offset in frame buffer
+>> + * @sPitch: Pitch value of source surface in BYTE
+>> + * @sx, @sy: Starting coordinate of source surface
+> Those should be on separate lines.
+>
+>> + * @dBase: Address of destination: offset in frame buffer
+>> + * @dPitch: Pitch value of destination surface in BYTE
+>> + * @Bpp: Color depth of destination surface
+>> + * @dx, @dy: Starting coordinate of destination surface
+> Ditto.
+>
+>> + * @width, @height: width and height of rectangle in pixel value
+>> + * @rop2: ROP value
+>> + */
+>> +int sm750_hw_copyarea(struct lynx_accel *accel,
+>> +		      unsigned int sBase, unsigned int sPitch,
+>> +		      unsigned int sx, unsigned int sy,
+>> +		      unsigned int dBase, unsigned int dPitch,
+>> +		      unsigned int Bpp, unsigned int dx, unsigned int dy,
+>> +		      unsigned int width, unsigned int height,
+>> +		      unsigned int rop2)
+>>   {
+>>   	unsigned int nDirection, de_ctrl;
+>>   
+>> @@ -288,20 +292,25 @@ static unsigned int deGetTransparency(struct lynx_accel *accel)
+>>   	return de_ctrl;
+>>   }
+>>   
+>> -int sm750_hw_imageblit(struct lynx_accel *accel,
+>> -		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
+>> -		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
+>> -		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
+>> -		 u32 dBase,    /* Address of destination: offset in frame buffer */
+>> -		 u32 dPitch,   /* Pitch value of destination surface in BYTE */
+>> -		 u32 bytePerPixel,      /* Color depth of destination surface */
+>> -		 u32 dx,
+>> -		 u32 dy,       /* Starting coordinate of destination surface */
+>> -		 u32 width,
+>> -		 u32 height,   /* width and height of rectangle in pixel value */
+>> -		 u32 fColor,   /* Foreground color (corresponding to a 1 in the monochrome data */
+>> -		 u32 bColor,   /* Background color (corresponding to a 0 in the monochrome data */
+>> -		 u32 rop2)     /* ROP value */
+>> +/**
+> Similar comments here...
+>
+>> + * @pSrcbuf: pointer to start of source buffer in system memory
+>> + * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top down
+>> + * and -ive mean button up
+>> + * @startBit: Mono data can start at any bit in a byte, this value should be
+>> + * 0 to 7
+>> + * @dBase: Address of destination: offset in frame buffer
+>> + * @dPitch: Pitch value of destination surface in BYTE
+>> + * @bytePerPixel: Color depth of destination surface
+>> + * @dx, @dy: Starting coordinate of destination surface
+>> + * @width, @height: width and height of rectangle in pixel value
+>> + * @fColor: Foreground color (corresponding to a 1 in the monochrome data
+>> + * @bColor: Background color (corresponding to a 0 in the monochrome data
+>> + * @rop2: ROP value
+>> + */
+>> +int sm750_hw_imageblit(struct lynx_accel *accel, const char *pSrcbuf,
+>> +		       u32 srcDelta, u32 startBit, u32 dBase, u32 dPitch,
+>> +		       u32 bytePerPixel, u32 dx, u32 dy, u32 width,
+>> +		       u32 height, u32 fColor, u32 bColor, u32 rop2)
+>>   {
+>>   	unsigned int ulBytesPerScan;
+>>   	unsigned int ul4BytesPerScan;
+>>
+> Thanks.
 Thanks.
--- 
-~Randy
