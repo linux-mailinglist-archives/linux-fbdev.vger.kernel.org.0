@@ -2,131 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4496DDA36F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 03:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0910ADA663
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Oct 2019 09:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391953AbfJQBwg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 16 Oct 2019 21:52:36 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:58152 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391717AbfJQBwg (ORCPT
+        id S2408147AbfJQHZ7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Oct 2019 03:25:59 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:41830 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408135AbfJQHZ4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 16 Oct 2019 21:52:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Type:In-Reply-To:MIME-Version
-        :Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=nvQ3rKLYcBuvjRA9mbVxHj0zFGjRN8NFx1d63gPtKlI=; b=Z0pjrXJuplMgIWNYVGm0gsStj
-        96vReurUOFmW75uXZh8pz+Mg7oprx62UtnewxZIrn5TVr9eEQYgOI0JSXfpqPjkgl9Z9mkT/ArORr
-        BsyRdC89eZ7KGUzgOKg0Gu5q4o6VLcmI6oMcPwiQTo6lttynxeL7L6+j9AgCwgIEI3GV58HT7+QF9
-        SEO3Z0/8R10Ufej7U7hVyTKlxWbpjbf4Z4mt3KG8F1YXdzaRkdSZK8tR7jUFl2rOhrsEkjVMPB3CE
-        uKFR3VJ6XmnDN584aT0fbbnQVmVdyU/F/CA9pJ2Nv1eriaqk0699/LBupEjqSCga5Qrsta/v0Z3e+
-        R+xL0V0mg==;
-Received: from [2601:1c0:6280:3f0::9ef4]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iKuxv-0006Sf-1f; Thu, 17 Oct 2019 01:52:35 +0000
-Subject: Re: [PATCH] staging: sm750fb: format description of parameters the to
- kernel doc format
-To:     gbittencourt <gabrielabittencourt00@gmail.com>,
-        outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org,
-        trivial@kernel.org
-References: <20191017011849.6081-1-gabrielabittencourt00@gmail.com>
- <799632e2-a328-d72b-397d-3ee6b5e87e06@infradead.org>
- <d55516db-28c5-aa53-8d07-20201dc4ffca@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <c8fc60be-5bae-6b3c-d270-c0ca55be1c51@infradead.org>
-Date:   Wed, 16 Oct 2019 18:52:34 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        Thu, 17 Oct 2019 03:25:56 -0400
+Received: by mail-wr1-f66.google.com with SMTP id p4so1048354wrm.8
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Oct 2019 00:25:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=jAAT95spfsOy4+Rq+gH+u3lTOCghLhGj68CKdrx98lE=;
+        b=F9UsfomGr2CNeYykZN6yZitMfmX8fyJmBmymlewoU1PXc2q1Vn6t2I3rLUE0QWoC+8
+         MhGZC1Xxu/HAPvWEqxlCLTCRMaaDSMkAqReNf/vsQmeJgSro0pTbKA1qHoespSFtIU4T
+         hckNX80j47KRUy7XU7YRVWBJJrOhFo29SE2b0tDHsFp6jwXQK2NKPBZS9NbwhF5Qrclh
+         wEK1zOlExz/lr5gS1h3P4ujA4JxsgbbgXtH2moIUZpERKAVb7XpXk5V1UuFSDK+DHnkO
+         HEdCkGHQMMEirfde1nue9BKxA5pg2UOVVQ7LOxvfko9gpIMy1XcL/1RyLnOW7FZBzwn0
+         GIrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=jAAT95spfsOy4+Rq+gH+u3lTOCghLhGj68CKdrx98lE=;
+        b=Brgbn/yUQqveHRCTi79UBxiKTCTh4FLIhK6nOEN63ae2lLfh4/9Dq4T767cNOlw8dO
+         EMVHhEezFpvOjgXxvBhvIQcLrenwNYIiYXyKvOCt3Pf9gThbhSIByH2Yq/Qq1la+KkVq
+         8NI1YvWG4qzfQ+ef3WNkmL2D0mVLzI6cDS6yziEImaV5wa40TmEZMG4NZSCmG9+hwPCl
+         GWI58HuTYIVAgfFcQaHo6RqSyBPz308k87Mlap8fdg6OttBzEFQ1ApZ3qxzfkU/w/6K9
+         VgNzdkYClr5RBmif7UcfCW2JlKdDIAoN2N+PhwaZwZGMleu2W3v5o35POs8921a9KUNy
+         FnYg==
+X-Gm-Message-State: APjAAAWqGIEF64n1s89BTrIU30dZOt3Hr301WsMpNFGNNzQYJpo3HnMj
+        5aOKr1GwdjGd/Np+tnsYqVgpNQ==
+X-Google-Smtp-Source: APXvYqx9/y1nF0ofABrlWuRvb2aHc8qYFhZp9RVTdgQNYYfN+rH7FOQdXwZFWhoItjuvwj7hH3/jTA==
+X-Received: by 2002:a5d:630b:: with SMTP id i11mr1554836wru.87.1571297152660;
+        Thu, 17 Oct 2019 00:25:52 -0700 (PDT)
+Received: from dell ([95.149.164.47])
+        by smtp.gmail.com with ESMTPSA id o22sm1351495wra.96.2019.10.17.00.25.51
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 17 Oct 2019 00:25:51 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 08:25:50 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
+Message-ID: <20191017072550.GK4365@dell>
+References: <20191007033200.13443-1-brgl@bgdev.pl>
+ <20191014081220.GK4545@dell>
+ <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
+ <20191016130536.222vsi5whkoy6vzo@uno.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <d55516db-28c5-aa53-8d07-20201dc4ffca@gmail.com>
-Content-Type: multipart/mixed;
- boundary="------------B227F5DA5237A52E62CCD8AE"
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191016130536.222vsi5whkoy6vzo@uno.localdomain>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------B227F5DA5237A52E62CCD8AE
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+On Wed, 16 Oct 2019, Jacopo Mondi wrote:
 
-On 10/16/19 6:29 PM, gbittencourt wrote:
-> Hi Randy,
+> Hi, sorry for not having replied earlier
 > 
-> On 10/16/19 10:25 PM, Randy Dunlap wrote:
->> Hi,
->>
->> On 10/16/19 6:18 PM, Gabriela Bittencourt wrote:
->>> Cluster comments that describes parameters of functions and create one
->>> single comment before the function in kernel doc format.
->> Good plan.
->>
->> How did you test this patch?
-> I haven't test it. How can I do it?
+> On Wed, Oct 16, 2019 at 02:56:57PM +0200, Linus Walleij wrote:
+> > On Mon, Oct 14, 2019 at 10:12 AM Lee Jones <lee.jones@linaro.org> wrote:
+> >
+> > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
+> > >
+> > > I guess we're just waiting for the SH Acks now?
+> >
+> > The one maintainer with this board is probably overloaded.
+> >
+> > I would say just apply it, it can't hold back the entire series.
+> 
+> I've been able to resurect the Ecovec, and I've also been given a copy
+> of its schematics file a few weeks ago.
+> 
+> It's in my TODO list to test this series but I didn't manage to find
+> time. If I pinky promise I get back to you before end of the week,
+> could you wait for me ? :)
 
-Hm. There used to be a comment in a (now deleted) document named
-Documentation/kernel-doc-nano-HOWTO.txt about how to test kernel-doc.
-
-I took that comment and made a script from it.
-I'll attach the script.  It's easy to use, but it is made to test only
-one function or struct or union or enum at a time.
-
-You need to have a script named 'kernel-doc' in your PATH or you can
-specify where the script is located by using
-$ KERNDOC=path/to/scripts/kernel-doc kdoc_function _parameters_
-
-Its usage is:
-  kdoc_function filename funcname [text|man|html|docbook|xml]
-
-where funcname can be a function, struct, union, or enum name.
-The output format can be any of those listed, but the default is "text".
-
-Let me know if you have any questions or problems.
-
->>> Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
->>> ---
->>>   drivers/staging/sm750fb/sm750_accel.c | 65 +++++++++++++++------------
->>>   1 file changed, 37 insertions(+), 28 deletions(-)
-
+Yes, no problem.
 
 -- 
-~Randy
-
---------------B227F5DA5237A52E62CCD8AE
-Content-Type: text/plain; charset=UTF-8;
- name="kdoc_function"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="kdoc_function"
-
-IyEgL2Jpbi9zaAojIGZyb20gbGludXgvRG9jdW1lbnRhdGlvbi9rZXJuZWwtZG9jLW5hbm8t
-SE9XVE8udHh0CiMgdXNlcyBsaW51eC9zY3JpcHRzL2tlcm5lbC1kb2Mgb3IgYSBjb3B5IG9m
-IGl0IChpbiAkUEFUSCkuCiMgdXNpbmcgIkxBTkc9QyBvciBMQ19BTEw9QyBrZG9jX2Z1bmN0
-aW9uIDxwcm1zPiIgY2FuIGJlIHVzZWZ1bC4KIyBDYW4gdXNlICJLRVJORE9DPTxzY3JpcHRf
-ZmlsZW5hbWU+IGtkb2NfZnVuY3Rpb24gPHBybXM+IiB0byB2YXJ5CiMgd2hpY2gga2VybmVs
-LWRvYyBzY3JpcHQgaXMgdXNlZC4KCnZlcmJvc2U9CmRlYnVnPQppZiBbICIkS0VSTkRPQyIg
-PSAiIiBdOyB0aGVuCglLRVJORE9DPWtlcm5lbC1kb2MKZmkKCiMgY2FyZWZ1bDogbXVzdCBl
-bnRlciAtdiBiZWZvcmUgLXg6CmlmIFsgIiQxIiA9ICItdiIgXTsgdGhlbgoJdmVyYm9zZT0i
-LXYiCglzaGlmdApmaQppZiBbICIkMSIgPSAiLXgiIF07IHRoZW4KCWRlYnVnPSIteCIKCXNo
-aWZ0CmZpCgpmaWxlPSIkMSIKZm49IiQyIgojIGZtdCBjYW4gYmUgInRleHR8bWFufGh0bWx8
-ZG9jYm9va3x4bWwiIChkZWZhdWx0IGlzICJ0ZXh0IikKIyBkb2Nib29rIHByb2R1Y2VzIHht
-bApmbXQ9IiQzIgppZiBbIHgkMyA9IHggXTsgdGhlbgoJZm10PSJ0ZXh0IgpmaQoKaWYgWyAi
-JDIiID0gIiIgXTsgdGhlbgoJZWNobyAidXNhZ2U6IGtkb2NfZnVuY3Rpb24gZmlsZW5hbWUg
-ZnVuY25hbWUgW3RleHR8bWFufGh0bWx8ZG9jYm9va3x4bWxdIgoJZXhpdCAxCmZpCgpjYXNl
-ICRmbXQgaW4KICAgIG1hbikKCSRLRVJORE9DICR2ZXJib3NlICRkZWJ1ZyAtbWFuIC1mdW5j
-dGlvbiAkZm4gJGZpbGUgfCBucm9mZiAtbWFuIHwgbGVzcwoJOzsKICAgIGh0bWwpCgkkS0VS
-TkRPQyAkdmVyYm9zZSAkZGVidWcgLWh0bWwgLWZ1bmN0aW9uICRmbiAkZmlsZSA+a2VybmVs
-ZG9jLmh0bWwKCWVjaG8gInNlZSBrZXJuZWxkb2MuaHRtbCIKCTs7CiAgICBkb2Nib29rfHht
-bCkKCSRLRVJORE9DICR2ZXJib3NlICRkZWJ1ZyAtZG9jYm9vayAtZnVuY3Rpb24gJGZuICRm
-aWxlID5rZXJuZWxkb2MueG1sCgllY2hvICJzZWUga2VybmVsZG9jLnhtbCIKCTs7CiAgICAq
-KQoJJEtFUk5ET0MgJHZlcmJvc2UgJGRlYnVnIC10ZXh0IC1mdW5jdGlvbiAkZm4gJGZpbGUg
-fCBsZXNzCgk7Owplc2FjCg==
---------------B227F5DA5237A52E62CCD8AE--
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
