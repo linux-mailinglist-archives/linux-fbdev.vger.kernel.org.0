@@ -2,570 +2,576 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8DDDC12E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 11:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DCB6DC4F1
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 14:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387811AbfJRJgk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Oct 2019 05:36:40 -0400
-Received: from uho.ysoft.cz ([81.19.3.130]:57622 "EHLO uho.ysoft.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727917AbfJRJgj (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Oct 2019 05:36:39 -0400
-Received: from [10.0.9.70] (unknown [10.0.9.70])
-        by uho.ysoft.cz (Postfix) with ESMTP id 3CC95A0587;
-        Fri, 18 Oct 2019 11:36:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
-        s=20160406-ysoft-com; t=1571391396;
-        bh=7ltV0wSIfqWQOqYh0T3uoa+KZD0GEcY8+ZiANCcyd6Y=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=OuPKOJg1BgU+7ub9bgW1WfMeZPqQs8y8SS3duznr/SWuEQBJ86UPFFvbRucqcKuJ5
-         R3bGz7eqz326VuX9/2B/EobZCNEdqGbuV1mRgLQcJthHyx3gh66Fh9rC3SE0R2zjB8
-         ePes7k2RHIv9fOdlSTEjGDYuvd02AEVmgaY9NYaU=
-Subject: Re: [PATCH] backlight: pwm_bl: configure pwm only once per backlight
- toggle
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Adam Ford <aford173@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-pwm@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-fbdev@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-References: <20191017081059.31761-1-u.kleine-koenig@pengutronix.de>
- <c89925bd-857d-874f-b74f-c5700d4c9fbd@ysoft.com>
- <20191017101116.3d5okxmto5coecad@pengutronix.de>
- <20191017111131.GB3122066@ulmo>
- <20191017120917.fcb7x4fq4tbl2iat@pengutronix.de>
- <20191017125932.GB3768303@ulmo>
- <aa73b430-527c-8066-ad9c-edab62a05fc9@ysoft.com>
- <20191017151437.GA85210@ulmo>
- <CAHCN7xJduG9yxAhuW6D1_kpd5=p7LhO_YCWjVxcCoW5bmSEJGQ@mail.gmail.com>
- <20191017171326.GA531411@ulmo>
- <CAHCN7xJWco5gTdjmJZRbNqi1aO+ytor5XMJWQX8a38tfGbz+xg@mail.gmail.com>
-From:   =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
-Message-ID: <f6d2427d-21fe-e89c-0bfe-572bc1d00863@ysoft.com>
-Date:   Fri, 18 Oct 2019 11:36:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAHCN7xJWco5gTdjmJZRbNqi1aO+ytor5XMJWQX8a38tfGbz+xg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S2409899AbfJRMeO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Oct 2019 08:34:14 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52340 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408148AbfJRMeN (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 18 Oct 2019 08:34:13 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7CBDC61201; Fri, 18 Oct 2019 12:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571402051;
+        bh=WvjYruTJPKhN0T8fCcVqnyZhH8me5YcEVoLHJ5MpJBo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=V7vkvNHbaOi/LjYFfnSlVzRXYb2M1F9yDcEeWGvNlNfOhO92BAMzFvgA5YSbuoouF
+         xZq5yKAcJ7M/mM3gy0KOjdyDPS8sa2aG6T/jcUcmSgt/ag/40pAWIxMypFcKNJvdm1
+         pqKfA6F6EjLJublAQfHuupUSW8gkutIEXUZzvU/Y=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from kgunda-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kgunda@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 54340611B9;
+        Fri, 18 Oct 2019 12:33:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571402043;
+        bh=WvjYruTJPKhN0T8fCcVqnyZhH8me5YcEVoLHJ5MpJBo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hWXToaEj16FiRqO6IcvsmjAX47EXt7ZEHllVe6KVwwDeUVOD0TVWBuUhA9tY05GSr
+         Ie7xLeLEq6uDfG0x1x6lq1xeWJ+ucfLujbuVXciX8jf9ViTtXo0KG2O8aWQAViA1VR
+         tIdUwi9UGLcIQRIOlTdbrnE47zk/pxKOUhlviA8M=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 54340611B9
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kgunda@codeaurora.org
+From:   Kiran Gunda <kgunda@codeaurora.org>
+To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org
+Cc:     Kiran Gunda <kgunda@codeaurora.org>
+Subject: [PATCH V8 2/6] backlight: qcom-wled: Rename PM8941* to WLED3
+Date:   Fri, 18 Oct 2019 18:03:25 +0530
+Message-Id: <1571402009-8706-3-git-send-email-kgunda@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1571402009-8706-1-git-send-email-kgunda@codeaurora.org>
+References: <1571402009-8706-1-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 17. 10. 19 19:44, Adam Ford wrote:
-> On Thu, Oct 17, 2019 at 12:13 PM Thierry Reding
-> <thierry.reding@gmail.com> wrote:
->>
->> On Thu, Oct 17, 2019 at 12:07:21PM -0500, Adam Ford wrote:
->>> On Thu, Oct 17, 2019 at 10:14 AM Thierry Reding
->>> <thierry.reding@gmail.com> wrote:
->>>>
->>>> On Thu, Oct 17, 2019 at 03:58:25PM +0200, Michal Vokáč wrote:
->>>>> On 17. 10. 19 14:59, Thierry Reding wrote:
->>>>>> On Thu, Oct 17, 2019 at 02:09:17PM +0200, Uwe Kleine-König wrote:
->>>>>>> On Thu, Oct 17, 2019 at 01:11:31PM +0200, Thierry Reding wrote:
->>>>>>>> On Thu, Oct 17, 2019 at 12:11:16PM +0200, Uwe Kleine-König wrote:
->>>>>>>>> On Thu, Oct 17, 2019 at 11:48:08AM +0200, Michal Vokáč wrote:
->>>>>>>>>> On 17. 10. 19 10:10, Uwe Kleine-König wrote:
->>>>>>>>>>> A previous change in the pwm core (namely 01ccf903edd6 ("pwm: Let
->>>>>>>>>>> pwm_get_state() return the last implemented state")) changed the
->>>>>>>>>>> semantic of pwm_get_state() and disclosed an (as it seems) common
->>>>>>>>>>> problem in lowlevel PWM drivers. By not relying on the period and duty
->>>>>>>>>>> cycle being retrievable from a disabled PWM this type of problem is
->>>>>>>>>>> worked around.
->>>>>>>>>>>
->>>>>>>>>>> Apart from this issue only calling the pwm_get_state/pwm_apply_state
->>>>>>>>>>> combo once is also more effective.
->>>>>>>>>>>
->>>>>>>>>>> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->>>>>>>>>>> ---
->>>>>>>>>>> Hello,
->>>>>>>>>>>
->>>>>>>>>>> There are now two reports about 01ccf903edd6 breaking a backlight. As
->>>>>>>>>>> far as I understand the problem this is a combination of the backend pwm
->>>>>>>>>>> driver yielding surprising results and the pwm-bl driver doing things
->>>>>>>>>>> more complicated than necessary.
->>>>>>>>>>>
->>>>>>>>>>> So I guess this patch works around these problems. Still it would be
->>>>>>>>>>> interesting to find out the details in the imx driver that triggers the
->>>>>>>>>>> problem. So Adam, can you please instrument the pwm-imx27 driver to
->>>>>>>>>>> print *state at the beginning of pwm_imx27_apply() and the end of
->>>>>>>>>>> pwm_imx27_get_state() and provide the results?
->>>>>>>>>>>
->>>>>>>>>>> Note I only compile tested this change.
->>>>>>>>>>
->>>>>>>>>> Hi Uwe,
->>>>>>>>>> I was just about to respond to the "pwm_bl on i.MX6Q broken on 5.4-RC1+"
->>>>>>>>>> thread that I have a similar problem when you submitted this patch.
->>>>>>>>>>
->>>>>>>>>> So here are my few cents:
->>>>>>>>>>
->>>>>>>>>> My setup is as follows:
->>>>>>>>>>    - imx6dl-yapp4-draco with i.MX6Solo
->>>>>>>>>>    - backlight is controlled with inverted PWM signal
->>>>>>>>>>    - max brightness level = 32, default brightness level set to 32 in DT.
->>>>>>>>>>
->>>>>>>>>> 1. Almost correct backlight behavior before 01ccf903edd6 ("pwm: Let
->>>>>>>>>>      pwm_get_state() return the last implemented state):
->>>>>>>>>>
->>>>>>>>>>    - System boots to userspace and backlight is enabled all the time from
->>>>>>>>>>      power up.
->>>>>>>>>>
->>>>>>>>>>      $ dmesg | grep state
->>>>>>>>>>      [    1.763381] get state end: -1811360608, enabled: 0
->>>>>>>>>
->>>>>>>>> What is -1811360608? When I wrote "print *state" above, I thought about
->>>>>>>>> something like:
->>>>>>>>>
->>>>>>>>>        pr_info("%s: period: %u, duty: %u, polarity: %d, enabled: %d",
->>>>>>>>>                __func__, state->period, state->duty_cycle, state->polarity, state->enabled);
->>>>>>>>>
->>>>>>>>> A quick look into drivers/pwm/pwm-imx27.c shows that this is another
->>>>>>>>> driver that yields duty_cycle = 0 when the hardware is off.
->>>>>>>>
->>>>>>>> It seems to me like the best recourse to fix this for now would be to
->>>>>>>> patch up the drivers that return 0 when the hardware is off by caching
->>>>>>>> the currently configured duty cycle.
->>>>>>>>
->>>>>>>> How about the patch below?
->>>>>>>>
->>>>>>>> Thierry
->>>>>>>>
->>>>>>>> --- >8 ---
->>>>>>>>   From 15a52a7f1b910804fabd74a5882befd3f9d6bb37 Mon Sep 17 00:00:00 2001
->>>>>>>> From: Thierry Reding <thierry.reding@gmail.com>
->>>>>>>> Date: Thu, 17 Oct 2019 12:56:00 +0200
->>>>>>>> Subject: [PATCH] pwm: imx27: Cache duty cycle register value
->>>>>>>>
->>>>>>>> The hardware register containing the duty cycle value cannot be accessed
->>>>>>>> when the PWM is disabled. This causes the ->get_state() callback to read
->>>>>>>> back a duty cycle value of 0, which can confuse consumer drivers.
->>>>>>>>
->>>>>>>> Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
->>>>>>>> ---
->>>>>>>>    drivers/pwm/pwm-imx27.c | 31 ++++++++++++++++++++++++-------
->>>>>>>>    1 file changed, 24 insertions(+), 7 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
->>>>>>>> index ae11d8577f18..4113d5cd4c62 100644
->>>>>>>> --- a/drivers/pwm/pwm-imx27.c
->>>>>>>> +++ b/drivers/pwm/pwm-imx27.c
->>>>>>>> @@ -85,6 +85,13 @@ struct pwm_imx27_chip {
->>>>>>>>          struct clk      *clk_per;
->>>>>>>>          void __iomem    *mmio_base;
->>>>>>>>          struct pwm_chip chip;
->>>>>>>> +
->>>>>>>> +       /*
->>>>>>>> +        * The driver cannot read the current duty cycle from the hardware if
->>>>>>>> +        * the hardware is disabled. Cache the last programmed duty cycle
->>>>>>>> +        * value to return in that case.
->>>>>>>> +        */
->>>>>>>> +       unsigned int duty_cycle;
->>>>>>>>    };
->>>>>>>>    #define to_pwm_imx27_chip(chip)       container_of(chip, struct pwm_imx27_chip, chip)
->>>>>>>> @@ -155,14 +162,17 @@ static void pwm_imx27_get_state(struct pwm_chip *chip,
->>>>>>>>          tmp = NSEC_PER_SEC * (u64)(period + 2);
->>>>>>>>          state->period = DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
->>>>>>>> -       /* PWMSAR can be read only if PWM is enabled */
->>>>>>>> -       if (state->enabled) {
->>>>>>>> +       /*
->>>>>>>> +        * PWMSAR can be read only if PWM is enabled. If the PWM is disabled,
->>>>>>>> +        * use the cached value.
->>>>>>>> +        */
->>>>>>>> +       if (state->enabled)
->>>>>>>>                  val = readl(imx->mmio_base + MX3_PWMSAR);
->>>>>>>> -               tmp = NSEC_PER_SEC * (u64)(val);
->>>>>>>> -               state->duty_cycle = DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
->>>>>>>> -       } else {
->>>>>>>> -               state->duty_cycle = 0;
->>>>>>>> -       }
->>>>>>>> +       else
->>>>>>>> +               val = imx->duty_cycle;
->>>>>>>> +
->>>>>>>> +       tmp = NSEC_PER_SEC * (u64)(val);
->>>>>>>> +       state->duty_cycle = DIV_ROUND_CLOSEST_ULL(tmp, pwm_clk);
->>>>>>>>          if (!state->enabled)
->>>>>>>>                  pwm_imx27_clk_disable_unprepare(chip);
->>>>>>>> @@ -261,6 +271,13 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->>>>>>>>                  writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->>>>>>>>                  writel(period_cycles, imx->mmio_base + MX3_PWMPR);
->>>>>>>> +               /*
->>>>>>>> +                * Store the duty cycle for future reference in cases where
->>>>>>>> +                * the MX3_PWMSAR register can't be read (i.e. when the PWM
->>>>>>>> +                * is disabled).
->>>>>>>> +                */
->>>>>>>> +               imx->duty_cycle = duty_cycles;
->>>>>>>> +
->>>>>>>
->>>>>>> I wonder if it would be more sensible to do this in the pwm core
->>>>>>> instead. Currently there are two drivers known with this problem. I
->>>>>>> wouldn't be surprised if there were more.
->>>>>>
->>>>>> I've inspected all the drivers and didn't spot any beyond cros-ec and
->>>>>> i.MX that have this problem. There's also no good way to do this in the
->>>>>> core, because the core doesn't know whether or not the driver is capable
->>>>>> of returning the correct duty cycle on hardare readout. So the core
->>>>>> would have to rely on state->duty_cycle that is passed in, but then the
->>>>>> offending commit becomes useless because the whole point was to return
->>>>>> the state as written to hardware (rather than the software state which
->>>>>> was being returned before that patch).
->>>>>>
->>>>>>> If we want to move clients to not rely on .period and .duty_cycle for a
->>>>>>> disabled PWM (do we?) a single change in the core is also beneficial
->>>>>>> compared to fixing several lowlevel drivers.
->>>>>>
->>>>>> These are really two orthogonal problems. We don't currently consider
->>>>>> enabled = 0 to be equivalent to duty_cycle = 0 at an API level. I'm not
->>>>>> prepared to do that at this point in the release cycle either.
->>>>>>
->>>>>> What this here has shown is that we have at least two drivers that don't
->>>>>> behave the way they are supposed to according to the API and they break
->>>>>> consumers. If they break for pwm-backlight, it's possible that they will
->>>>>> break for other consumers as well. So the right thing to do is fix the
->>>>>> two drivers that are broken.
->>>>>>
->>>>>> After -rc1 we no longer experiment. Instead we clean up the messes we've
->>>>>> made. We can revisit the other points once mainline is fixed.
->>>>>
->>>>> Hi Thierry,
->>>>> I just tried your patch with v5.4-rc3 with this result:
->>>>>
->>>>> root@hydraco:~# dmesg | grep pwm_
->>>>> [    1.772089] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
->>>>> [    4.938759] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
->>>>> [    4.947431] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
->>>>
->>>> Okay... this is interesting. If I understand correctly, that first line
->>>> here is where the initial hardware readout happens. The second one is
->>>> the first time when the backlight is configured, so it sets period and
->>>> polarity. But then for some reason when we read out after that to read
->>>> what state was written... we see that actually nothing was written at
->>>> all.
->>>>
->>>> And we can see why in pwm_imx27_apply(): If the PWM is not enabled, we
->>>> don't actually program any of the registers, so it's not a surprise that
->>>> things fall apart.
->>>>
->>>>> [    4.956484] pwm_imx27_apply: period: 992970, duty: 992970, polarity: 0, enabled: 0
->>>>> [    4.965473] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
->>>>> [    4.974410] pwm_imx27_apply: period: 992970, duty: 0, polarity: 0, enabled: 1
->>>>> [    4.988617] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 1
->>>>>
->>>>> Backlight is on with full brightness at this stage.
->>>>>
->>>>> root@hydraco:/sys/class/backlight/backlight# cat brightness
->>>>> 32
->>>>>
->>>>> root@hydraco:/sys/class/backlight/backlight# echo 32 > brightness
->>>>> [  153.386391] pwm_imx27_apply: period: 992970, duty: 992970, polarity: 0, enabled: 1
->>>>> [  153.398311] pwm_imx27_get_state: period: 992970, duty: 992970, polarity: 0, enabled: 1
->>>>>
->>>>> Backlight goes down.
->>>>>
->>>>> root@hydraco:/sys/class/backlight/backlight# echo 1 > brightness
->>>>> [  168.506261] pwm_imx27_apply: period: 992970, duty: 15576, polarity: 0, enabled: 1
->>>>> [  168.518064] pwm_imx27_get_state: period: 992970, duty: 15576, polarity: 0, enabled: 1
->>>>>
->>>>> Backlight goes up to almost full brightness.
->>>>>
->>>>> root@hydraco:/sys/class/backlight/backlight# echo 0 > brightness
->>>>> [  177.496265] pwm_imx27_apply: period: 992970, duty: 0, polarity: 0, enabled: 0
->>>>> [  177.507602] pwm_imx27_get_state: period: 496485, duty: 7788, polarity: 0, enabled: 0
->>>>>
->>>>> Backlight goes up to full brightness.
->>>>>
->>>>> So your patch does not solve my issue.
->>>>>
->>>>> The main problem I see is incorrect polarity setting. In my DT
->>>>> the pwm-backlight consumer requests PWM_POLARITY_INVERTED and
->>>>> period 500000ns. Though after reset the PWM HW registers are
->>>>> configured to normal polarity. This initial setting is read out
->>>>> and used by the consumer instead of the DT configuration.
->>>>
->>>> So the problem with the i.MX driver is that it doesn't actually write
->>>> the full state to the hardware and therefore the patch that caused these
->>>> things to break reads back an incomplete state. So we've basically got
->>>> two options: 1) make sure the hardware state is fully written or 2) make
->>>> sure that we return the cached state.
->>>>
->>>> I think 2) doesn't really make sense because it is conflicts with the
->>>> purpose of the ->get_state() callback. The only time where we should be
->>>> returning cached data is if the hardware registers don't contain the
->>>> information (as in the case of the cros-ec driver) or if we can't access
->>>> it for other reasons (such as in the case of i.MX's duty cycle).
->>>>
->>>> Does the attached patch help with your issue? The idea is to always
->>>> write the full state to the hardware, even if period and duty cycle are
->>>> unused when the PWM is disabled. That's really the kind of contract that
->>>> we have added with the offending patch in the core.
->>>>
->>>> It looks like all other drivers handle this more or less correctly, so
->>>> if we only need to fix up cros-ec and i.MX this seems like a realistic
->>>> way to fix things up. If other drivers are problematic in this regard,
->>>> we should probably revert and then fix the drivers before we can apply
->>>> that patch again.
->>>
->>> This patch combined with your previous patch appears to have worked.
->>> If you end up sending a patch series to fix this, go ahead and add
->>>
->>> Tested-by: Adam Ford <aford173@gmail.com> #imx6q-logicpd
->>
->> Excellent! Thanks for testing this. I'll wait until tomorrow to see if
->> there's some feedback from Enric for the cros-ec change. I'll send out
->> the total of three patches again in the hopes that those are really
->> the only two cases that are broken.
-> 
-> When you do, can you mark it with the Fixes note?  I am hoping the
-> maintainers can hopefully incorporate this into 5.4 since it fixes a
-> regression.
+Rename the PM8941* references as WLED3 to make the driver
+generic and have WLED support for other PMICs. Also rename
+"i_boost_limit" and "i_limit" variables to "boost_i_limit"
+and "string_i_limit" respectively to resemble the corresponding
+register names.
 
-Hi Thierry,
+Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+---
+ drivers/video/backlight/qcom-wled.c | 248 ++++++++++++++++++------------------
+ 1 file changed, 125 insertions(+), 123 deletions(-)
 
-I can confirm that the combination of your two patches:
-  - ("pwm: imx27: Unconditionally write state to hardware")
-  - ("pwm: imx27: Cache duty cycle register value")
-
-works OK and solve my problem as well.
-
-root@hydraco:~# dmesg | grep pwm_
-[    1.695306] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-[    5.387271] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-[    5.396433] pwm_imx27_get_state: period: 500000, duty: 0, polarity: 1, enabled: 0
-[    5.405500] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 0
-[    5.418802] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 0
-[    5.428208] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 1
-[    5.442633] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 1
-
-Backlight is on from power up to userspace.
-
-root@hydraco:~# cd /sys/class/backlight/backlight/
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# cat brightness
-32
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 32 > brightness
-
-Nothing happens.
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 1 > brightness
-[  513.629043] pwm_imx27_apply: period: 500000, duty: 7843, polarity: 1, enabled: 1
-[  513.639899] pwm_imx27_get_state: period: 500000, duty: 7833, polarity: 1, enabled: 1
-
-Backlight goes to low brightness.
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 0 > brightness
-[  519.677088] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-[  519.687733] pwm_imx27_get_state: period: 500000, duty: 0, polarity: 1, enabled: 0
-
-Backlight goes to max brightness, unresolved i.MX6 limitation.
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 32 > brightness
-[  923.921292] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 0
-[  923.933331] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 0
-[  923.944546] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 1
-[  923.963931] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 1
-
-Backlight remains at max brightness, OK.
-
-If I apply the patch from Uwe ("backlight: pwm_bl: configure pwm only once
-per backlight toggle") on top of that, it still works and I do not see
-any change in the behavior.
-
-root@hydraco:~# dmesg | grep pwm_
-[    1.687461] pwm_imx27_get_state: period: 992970, duty: 0, polarity: 0, enabled: 0
-[    4.875087] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-[    4.884796] pwm_imx27_get_state: period: 500000, duty: 0, polarity: 1, enabled: 0
-[    4.893922] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 1
-[    4.908473] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 1
-
-root@hydraco:~# cd /sys/class/backlight/backlight/
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# cat brightness
-32
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 32 > brightness
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 1 > brightness
-[  110.775650] pwm_imx27_apply: period: 500000, duty: 7843, polarity: 1, enabled: 1
-[  110.786512] pwm_imx27_get_state: period: 500000, duty: 7833, polarity: 1, enabled: 1
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 0 > brightness
-[  128.224036] pwm_imx27_apply: period: 500000, duty: 0, polarity: 1, enabled: 0
-[  128.234675] pwm_imx27_get_state: period: 500000, duty: 0, polarity: 1, enabled: 0
-
-root@hydraco:/sys/devices/soc0/backlight/backlight/backlight# echo 32 > brightness
-[  138.208072] pwm_imx27_apply: period: 500000, duty: 500000, polarity: 1, enabled: 1
-[  138.220271] pwm_imx27_get_state: period: 500000, duty: 500000, polarity: 1, enabled: 1
-
-The only difference is here when the state is changed from enabled=0
-to enabled=1. The apply/get_state combo is called only once.
-
-So this looks good to me.
-
-Tested-by: Michal Vokáč <michal.vokac@ysoft.com>
-
-Thank you all for the very prompt reaction!
-Michal
-
->>>> --- >8 ---
->>>>  From 7040f0038e04a1caa6dda5b6f675a9fdee0271f4 Mon Sep 17 00:00:00 2001
->>>> From: Thierry Reding <thierry.reding@gmail.com>
->>>> Date: Thu, 17 Oct 2019 17:11:41 +0200
->>>> Subject: [PATCH] pwm: imx27: Unconditionally write state to hardware
->>>>
->>>> The i.MX driver currently uses a shortcut and doesn't write all of the
->>>> state through to the hardware when the PWM is disabled. This causes an
->>>> inconsistent state to be read back by consumers with the result of them
->>>> malfunctioning.
->>>>
->>>> Fix this by always writing the full state through to the hardware
->>>> registers so that the correct state can always be read back.
->>>>
->>>> Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
->>>> ---
->>>>   drivers/pwm/pwm-imx27.c | 120 ++++++++++++++++++++--------------------
->>>>   1 file changed, 59 insertions(+), 61 deletions(-)
->>>>
->>>> diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
->>>> index 4113d5cd4c62..59d8b1289808 100644
->>>> --- a/drivers/pwm/pwm-imx27.c
->>>> +++ b/drivers/pwm/pwm-imx27.c
->>>> @@ -230,70 +230,68 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
->>>>
->>>>          pwm_get_state(pwm, &cstate);
->>>>
->>>> -       if (state->enabled) {
->>>> -               c = clk_get_rate(imx->clk_per);
->>>> -               c *= state->period;
->>>> -
->>>> -               do_div(c, 1000000000);
->>>> -               period_cycles = c;
->>>> -
->>>> -               prescale = period_cycles / 0x10000 + 1;
->>>> -
->>>> -               period_cycles /= prescale;
->>>> -               c = (unsigned long long)period_cycles * state->duty_cycle;
->>>> -               do_div(c, state->period);
->>>> -               duty_cycles = c;
->>>> -
->>>> -               /*
->>>> -                * according to imx pwm RM, the real period value should be
->>>> -                * PERIOD value in PWMPR plus 2.
->>>> -                */
->>>> -               if (period_cycles > 2)
->>>> -                       period_cycles -= 2;
->>>> -               else
->>>> -                       period_cycles = 0;
->>>> -
->>>> -               /*
->>>> -                * Wait for a free FIFO slot if the PWM is already enabled, and
->>>> -                * flush the FIFO if the PWM was disabled and is about to be
->>>> -                * enabled.
->>>> -                */
->>>> -               if (cstate.enabled) {
->>>> -                       pwm_imx27_wait_fifo_slot(chip, pwm);
->>>> -               } else {
->>>> -                       ret = pwm_imx27_clk_prepare_enable(chip);
->>>> -                       if (ret)
->>>> -                               return ret;
->>>> -
->>>> -                       pwm_imx27_sw_reset(chip);
->>>> -               }
->>>> -
->>>> -               writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->>>> -               writel(period_cycles, imx->mmio_base + MX3_PWMPR);
->>>> -
->>>> -               /*
->>>> -                * Store the duty cycle for future reference in cases where
->>>> -                * the MX3_PWMSAR register can't be read (i.e. when the PWM
->>>> -                * is disabled).
->>>> -                */
->>>> -               imx->duty_cycle = duty_cycles;
->>>> -
->>>> -               cr = MX3_PWMCR_PRESCALER_SET(prescale) |
->>>> -                    MX3_PWMCR_STOPEN | MX3_PWMCR_DOZEN | MX3_PWMCR_WAITEN |
->>>> -                    FIELD_PREP(MX3_PWMCR_CLKSRC, MX3_PWMCR_CLKSRC_IPG_HIGH) |
->>>> -                    MX3_PWMCR_DBGEN | MX3_PWMCR_EN;
->>>> -
->>>> -               if (state->polarity == PWM_POLARITY_INVERSED)
->>>> -                       cr |= FIELD_PREP(MX3_PWMCR_POUTC,
->>>> -                                       MX3_PWMCR_POUTC_INVERTED);
->>>> -
->>>> -               writel(cr, imx->mmio_base + MX3_PWMCR);
->>>> -       } else if (cstate.enabled) {
->>>> -               writel(0, imx->mmio_base + MX3_PWMCR);
->>>> +       c = clk_get_rate(imx->clk_per);
->>>> +       c *= state->period;
->>>>
->>>> -               pwm_imx27_clk_disable_unprepare(chip);
->>>> +       do_div(c, 1000000000);
->>>> +       period_cycles = c;
->>>> +
->>>> +       prescale = period_cycles / 0x10000 + 1;
->>>> +
->>>> +       period_cycles /= prescale;
->>>> +       c = (unsigned long long)period_cycles * state->duty_cycle;
->>>> +       do_div(c, state->period);
->>>> +       duty_cycles = c;
->>>> +
->>>> +       /*
->>>> +        * according to imx pwm RM, the real period value should be PERIOD
->>>> +        * value in PWMPR plus 2.
->>>> +        */
->>>> +       if (period_cycles > 2)
->>>> +               period_cycles -= 2;
->>>> +       else
->>>> +               period_cycles = 0;
->>>> +
->>>> +       /*
->>>> +        * Wait for a free FIFO slot if the PWM is already enabled, and flush
->>>> +        * the FIFO if the PWM was disabled and is about to be enabled.
->>>> +        */
->>>> +       if (cstate.enabled) {
->>>> +               pwm_imx27_wait_fifo_slot(chip, pwm);
->>>> +       } else {
->>>> +               ret = pwm_imx27_clk_prepare_enable(chip);
->>>> +               if (ret)
->>>> +                       return ret;
->>>> +
->>>> +               pwm_imx27_sw_reset(chip);
->>>>          }
->>>>
->>>> +       writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
->>>> +       writel(period_cycles, imx->mmio_base + MX3_PWMPR);
->>>> +
->>>> +       /*
->>>> +        * Store the duty cycle for future reference in cases where the
->>>> +        * MX3_PWMSAR register can't be read (i.e. when the PWM is disabled).
->>>> +        */
->>>> +       imx->duty_cycle = duty_cycles;
->>>> +
->>>> +       cr = MX3_PWMCR_PRESCALER_SET(prescale) |
->>>> +            MX3_PWMCR_STOPEN | MX3_PWMCR_DOZEN | MX3_PWMCR_WAITEN |
->>>> +            FIELD_PREP(MX3_PWMCR_CLKSRC, MX3_PWMCR_CLKSRC_IPG_HIGH) |
->>>> +            MX3_PWMCR_DBGEN;
->>>> +
->>>> +       if (state->polarity == PWM_POLARITY_INVERSED)
->>>> +               cr |= FIELD_PREP(MX3_PWMCR_POUTC,
->>>> +                               MX3_PWMCR_POUTC_INVERTED);
->>>> +
->>>> +       if (state->enabled)
->>>> +               cr |= MX3_PWMCR_EN;
->>>> +
->>>> +       writel(cr, imx->mmio_base + MX3_PWMCR);
->>>> +
->>>> +       if (!state->enabled && cstate.enabled)
->>>> +               pwm_imx27_clk_disable_unprepare(chip);
->>>> +
->>>>          return 0;
->>>>   }
->>>>
->>>> --
->>>> 2.23.0
->>>>
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 82b8572..f191242 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -10,77 +10,79 @@
+ #include <linux/regmap.h>
+ 
+ /* From DT binding */
+-#define PM8941_WLED_DEFAULT_BRIGHTNESS		2048
++#define WLED_DEFAULT_BRIGHTNESS				2048
+ 
+-#define PM8941_WLED_REG_VAL_BASE		0x40
+-#define  PM8941_WLED_REG_VAL_MAX		0xFFF
++#define WLED3_SINK_REG_BRIGHT_MAX			0xFFF
++#define WLED3_CTRL_REG_VAL_BASE				0x40
+ 
+-#define PM8941_WLED_REG_MOD_EN			0x46
+-#define  PM8941_WLED_REG_MOD_EN_BIT		BIT(7)
+-#define  PM8941_WLED_REG_MOD_EN_MASK		BIT(7)
++/* WLED3 control registers */
++#define WLED3_CTRL_REG_MOD_EN				0x46
++#define  WLED3_CTRL_REG_MOD_EN_BIT			BIT(7)
++#define  WLED3_CTRL_REG_MOD_EN_MASK			BIT(7)
+ 
+-#define PM8941_WLED_REG_SYNC			0x47
+-#define  PM8941_WLED_REG_SYNC_MASK		0x07
+-#define  PM8941_WLED_REG_SYNC_LED1		BIT(0)
+-#define  PM8941_WLED_REG_SYNC_LED2		BIT(1)
+-#define  PM8941_WLED_REG_SYNC_LED3		BIT(2)
+-#define  PM8941_WLED_REG_SYNC_ALL		0x07
+-#define  PM8941_WLED_REG_SYNC_CLEAR		0x00
++#define WLED3_CTRL_REG_FREQ				0x4c
++#define  WLED3_CTRL_REG_FREQ_MASK			0x0f
+ 
+-#define PM8941_WLED_REG_FREQ			0x4c
+-#define  PM8941_WLED_REG_FREQ_MASK		0x0f
++#define WLED3_CTRL_REG_OVP				0x4d
++#define  WLED3_CTRL_REG_OVP_MASK			0x03
+ 
+-#define PM8941_WLED_REG_OVP			0x4d
+-#define  PM8941_WLED_REG_OVP_MASK		0x03
++#define WLED3_CTRL_REG_ILIMIT				0x4e
++#define  WLED3_CTRL_REG_ILIMIT_MASK			0x07
+ 
+-#define PM8941_WLED_REG_BOOST			0x4e
+-#define  PM8941_WLED_REG_BOOST_MASK		0x07
++/* WLED3 sink registers */
++#define WLED3_SINK_REG_SYNC				0x47
++#define  WLED3_SINK_REG_SYNC_MASK			0x07
++#define  WLED3_SINK_REG_SYNC_LED1			BIT(0)
++#define  WLED3_SINK_REG_SYNC_LED2			BIT(1)
++#define  WLED3_SINK_REG_SYNC_LED3			BIT(2)
++#define  WLED3_SINK_REG_SYNC_ALL			0x07
++#define  WLED3_SINK_REG_SYNC_CLEAR			0x00
+ 
+-#define PM8941_WLED_REG_SINK			0x4f
+-#define  PM8941_WLED_REG_SINK_MASK		0xe0
+-#define  PM8941_WLED_REG_SINK_SHFT		0x05
++#define WLED3_SINK_REG_CURR_SINK			0x4f
++#define  WLED3_SINK_REG_CURR_SINK_MASK			0xe0
++#define  WLED3_SINK_REG_CURR_SINK_SHFT			0x05
+ 
+-/* Per-'string' registers below */
+-#define PM8941_WLED_REG_STR_OFFSET		0x10
++/* WLED3 per-'string' registers below */
++#define WLED3_SINK_REG_STR_OFFSET			0x10
+ 
+-#define PM8941_WLED_REG_STR_MOD_EN_BASE		0x60
+-#define  PM8941_WLED_REG_STR_MOD_MASK		BIT(7)
+-#define  PM8941_WLED_REG_STR_MOD_EN		BIT(7)
++#define WLED3_SINK_REG_STR_MOD_EN_BASE			0x60
++#define  WLED3_SINK_REG_STR_MOD_MASK			BIT(7)
++#define  WLED3_SINK_REG_STR_MOD_EN			BIT(7)
+ 
+-#define PM8941_WLED_REG_STR_SCALE_BASE		0x62
+-#define  PM8941_WLED_REG_STR_SCALE_MASK		0x1f
++#define WLED3_SINK_REG_STR_FULL_SCALE_CURR		0x62
++#define  WLED3_SINK_REG_STR_FULL_SCALE_CURR_MASK	0x1f
+ 
+-#define PM8941_WLED_REG_STR_MOD_SRC_BASE	0x63
+-#define  PM8941_WLED_REG_STR_MOD_SRC_MASK	0x01
+-#define  PM8941_WLED_REG_STR_MOD_SRC_INT	0x00
+-#define  PM8941_WLED_REG_STR_MOD_SRC_EXT	0x01
++#define WLED3_SINK_REG_STR_MOD_SRC_BASE			0x63
++#define  WLED3_SINK_REG_STR_MOD_SRC_MASK		0x01
++#define  WLED3_SINK_REG_STR_MOD_SRC_INT			0x00
++#define  WLED3_SINK_REG_STR_MOD_SRC_EXT			0x01
+ 
+-#define PM8941_WLED_REG_STR_CABC_BASE		0x66
+-#define  PM8941_WLED_REG_STR_CABC_MASK		BIT(7)
+-#define  PM8941_WLED_REG_STR_CABC_EN		BIT(7)
++#define WLED3_SINK_REG_STR_CABC_BASE			0x66
++#define  WLED3_SINK_REG_STR_CABC_MASK			BIT(7)
++#define  WLED3_SINK_REG_STR_CABC_EN			BIT(7)
+ 
+-struct pm8941_wled_config {
+-	u32 i_boost_limit;
++struct wled_config {
++	u32 boost_i_limit;
+ 	u32 ovp;
+ 	u32 switch_freq;
+ 	u32 num_strings;
+-	u32 i_limit;
++	u32 string_i_limit;
+ 	bool cs_out_en;
+ 	bool ext_gen;
+ 	bool cabc_en;
+ };
+ 
+-struct pm8941_wled {
++struct wled {
+ 	const char *name;
+ 	struct regmap *regmap;
+ 	u16 addr;
+ 
+-	struct pm8941_wled_config cfg;
++	struct wled_config cfg;
+ };
+ 
+-static int pm8941_wled_update_status(struct backlight_device *bl)
++static int wled_update_status(struct backlight_device *bl)
+ {
+-	struct pm8941_wled *wled = bl_get_data(bl);
++	struct wled *wled = bl_get_data(bl);
+ 	u16 val = bl->props.brightness;
+ 	u8 ctrl = 0;
+ 	int rc;
+@@ -92,11 +94,11 @@ static int pm8941_wled_update_status(struct backlight_device *bl)
+ 		val = 0;
+ 
+ 	if (val != 0)
+-		ctrl = PM8941_WLED_REG_MOD_EN_BIT;
++		ctrl = WLED3_CTRL_REG_MOD_EN_BIT;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_MOD_EN,
+-			PM8941_WLED_REG_MOD_EN_MASK, ctrl);
++			wled->addr + WLED3_CTRL_REG_MOD_EN,
++			WLED3_CTRL_REG_MOD_EN_MASK, ctrl);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -104,89 +106,89 @@ static int pm8941_wled_update_status(struct backlight_device *bl)
+ 		u8 v[2] = { val & 0xff, (val >> 8) & 0xf };
+ 
+ 		rc = regmap_bulk_write(wled->regmap,
+-				wled->addr + PM8941_WLED_REG_VAL_BASE + 2 * i,
++				wled->addr + WLED3_CTRL_REG_VAL_BASE + 2 * i,
+ 				v, 2);
+ 		if (rc)
+ 			return rc;
+ 	}
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_SYNC,
+-			PM8941_WLED_REG_SYNC_MASK, PM8941_WLED_REG_SYNC_ALL);
++			wled->addr + WLED3_SINK_REG_SYNC,
++			WLED3_SINK_REG_SYNC_MASK, WLED3_SINK_REG_SYNC_ALL);
+ 	if (rc)
+ 		return rc;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_SYNC,
+-			PM8941_WLED_REG_SYNC_MASK, PM8941_WLED_REG_SYNC_CLEAR);
++			wled->addr + WLED3_SINK_REG_SYNC,
++			WLED3_SINK_REG_SYNC_MASK, WLED3_SINK_REG_SYNC_CLEAR);
+ 	return rc;
+ }
+ 
+-static int pm8941_wled_setup(struct pm8941_wled *wled)
++static int wled_setup(struct wled *wled)
+ {
+ 	int rc;
+ 	int i;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_OVP,
+-			PM8941_WLED_REG_OVP_MASK, wled->cfg.ovp);
++			wled->addr + WLED3_CTRL_REG_OVP,
++			WLED3_CTRL_REG_OVP_MASK, wled->cfg.ovp);
+ 	if (rc)
+ 		return rc;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_BOOST,
+-			PM8941_WLED_REG_BOOST_MASK, wled->cfg.i_boost_limit);
++			wled->addr + WLED3_CTRL_REG_ILIMIT,
++			WLED3_CTRL_REG_ILIMIT_MASK, wled->cfg.boost_i_limit);
+ 	if (rc)
+ 		return rc;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-			wled->addr + PM8941_WLED_REG_FREQ,
+-			PM8941_WLED_REG_FREQ_MASK, wled->cfg.switch_freq);
++			wled->addr + WLED3_CTRL_REG_FREQ,
++			WLED3_CTRL_REG_FREQ_MASK, wled->cfg.switch_freq);
+ 	if (rc)
+ 		return rc;
+ 
+ 	if (wled->cfg.cs_out_en) {
+ 		u8 all = (BIT(wled->cfg.num_strings) - 1)
+-				<< PM8941_WLED_REG_SINK_SHFT;
++				<< WLED3_SINK_REG_CURR_SINK_SHFT;
+ 
+ 		rc = regmap_update_bits(wled->regmap,
+-				wled->addr + PM8941_WLED_REG_SINK,
+-				PM8941_WLED_REG_SINK_MASK, all);
++				wled->addr + WLED3_SINK_REG_CURR_SINK,
++				WLED3_SINK_REG_CURR_SINK_MASK, all);
+ 		if (rc)
+ 			return rc;
+ 	}
+ 
+ 	for (i = 0; i < wled->cfg.num_strings; ++i) {
+-		u16 addr = wled->addr + PM8941_WLED_REG_STR_OFFSET * i;
++		u16 addr = wled->addr + WLED3_SINK_REG_STR_OFFSET * i;
+ 
+ 		rc = regmap_update_bits(wled->regmap,
+-				addr + PM8941_WLED_REG_STR_MOD_EN_BASE,
+-				PM8941_WLED_REG_STR_MOD_MASK,
+-				PM8941_WLED_REG_STR_MOD_EN);
++				addr + WLED3_SINK_REG_STR_MOD_EN_BASE,
++				WLED3_SINK_REG_STR_MOD_MASK,
++				WLED3_SINK_REG_STR_MOD_EN);
+ 		if (rc)
+ 			return rc;
+ 
+ 		if (wled->cfg.ext_gen) {
+ 			rc = regmap_update_bits(wled->regmap,
+-					addr + PM8941_WLED_REG_STR_MOD_SRC_BASE,
+-					PM8941_WLED_REG_STR_MOD_SRC_MASK,
+-					PM8941_WLED_REG_STR_MOD_SRC_EXT);
++					addr + WLED3_SINK_REG_STR_MOD_SRC_BASE,
++					WLED3_SINK_REG_STR_MOD_SRC_MASK,
++					WLED3_SINK_REG_STR_MOD_SRC_EXT);
+ 			if (rc)
+ 				return rc;
+ 		}
+ 
+ 		rc = regmap_update_bits(wled->regmap,
+-				addr + PM8941_WLED_REG_STR_SCALE_BASE,
+-				PM8941_WLED_REG_STR_SCALE_MASK,
+-				wled->cfg.i_limit);
++				addr + WLED3_SINK_REG_STR_FULL_SCALE_CURR,
++				WLED3_SINK_REG_STR_FULL_SCALE_CURR_MASK,
++				wled->cfg.string_i_limit);
+ 		if (rc)
+ 			return rc;
+ 
+ 		rc = regmap_update_bits(wled->regmap,
+-				addr + PM8941_WLED_REG_STR_CABC_BASE,
+-				PM8941_WLED_REG_STR_CABC_MASK,
++				addr + WLED3_SINK_REG_STR_CABC_BASE,
++				WLED3_SINK_REG_STR_CABC_MASK,
+ 				wled->cfg.cabc_en ?
+-					PM8941_WLED_REG_STR_CABC_EN : 0);
++					WLED3_SINK_REG_STR_CABC_EN : 0);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -194,9 +196,9 @@ static int pm8941_wled_setup(struct pm8941_wled *wled)
+ 	return 0;
+ }
+ 
+-static const struct pm8941_wled_config pm8941_wled_config_defaults = {
+-	.i_boost_limit = 3,
+-	.i_limit = 20,
++static const struct wled_config wled3_config_defaults = {
++	.boost_i_limit = 3,
++	.string_i_limit = 20,
+ 	.ovp = 2,
+ 	.switch_freq = 5,
+ 	.num_strings = 0,
+@@ -205,55 +207,55 @@ static int pm8941_wled_setup(struct pm8941_wled *wled)
+ 	.cabc_en = false,
+ };
+ 
+-struct pm8941_wled_var_cfg {
++struct wled_var_cfg {
+ 	const u32 *values;
+ 	u32 (*fn)(u32);
+ 	int size;
+ };
+ 
+-static const u32 pm8941_wled_i_boost_limit_values[] = {
++static const u32 wled3_boost_i_limit_values[] = {
+ 	105, 385, 525, 805, 980, 1260, 1400, 1680,
+ };
+ 
+-static const struct pm8941_wled_var_cfg pm8941_wled_i_boost_limit_cfg = {
+-	.values = pm8941_wled_i_boost_limit_values,
+-	.size = ARRAY_SIZE(pm8941_wled_i_boost_limit_values),
++static const struct wled_var_cfg wled3_boost_i_limit_cfg = {
++	.values = wled3_boost_i_limit_values,
++	.size = ARRAY_SIZE(wled3_boost_i_limit_values),
+ };
+ 
+-static const u32 pm8941_wled_ovp_values[] = {
++static const u32 wled3_ovp_values[] = {
+ 	35, 32, 29, 27,
+ };
+ 
+-static const struct pm8941_wled_var_cfg pm8941_wled_ovp_cfg = {
+-	.values = pm8941_wled_ovp_values,
+-	.size = ARRAY_SIZE(pm8941_wled_ovp_values),
++static const struct wled_var_cfg wled3_ovp_cfg = {
++	.values = wled3_ovp_values,
++	.size = ARRAY_SIZE(wled3_ovp_values),
+ };
+ 
+-static u32 pm8941_wled_num_strings_values_fn(u32 idx)
++static u32 wled3_num_strings_values_fn(u32 idx)
+ {
+ 	return idx + 1;
+ }
+ 
+-static const struct pm8941_wled_var_cfg pm8941_wled_num_strings_cfg = {
+-	.fn = pm8941_wled_num_strings_values_fn,
++static const struct wled_var_cfg wled3_num_strings_cfg = {
++	.fn = wled3_num_strings_values_fn,
+ 	.size = 3,
+ };
+ 
+-static u32 pm8941_wled_switch_freq_values_fn(u32 idx)
++static u32 wled3_switch_freq_values_fn(u32 idx)
+ {
+ 	return 19200 / (2 * (1 + idx));
+ }
+ 
+-static const struct pm8941_wled_var_cfg pm8941_wled_switch_freq_cfg = {
+-	.fn = pm8941_wled_switch_freq_values_fn,
++static const struct wled_var_cfg wled3_switch_freq_cfg = {
++	.fn = wled3_switch_freq_values_fn,
+ 	.size = 16,
+ };
+ 
+-static const struct pm8941_wled_var_cfg pm8941_wled_i_limit_cfg = {
++static const struct wled_var_cfg wled3_string_i_limit_cfg = {
+ 	.size = 26,
+ };
+ 
+-static u32 pm8941_wled_values(const struct pm8941_wled_var_cfg *cfg, u32 idx)
++static u32 wled3_values(const struct wled_var_cfg *cfg, u32 idx)
+ {
+ 	if (idx >= cfg->size)
+ 		return UINT_MAX;
+@@ -264,9 +266,9 @@ static u32 pm8941_wled_values(const struct pm8941_wled_var_cfg *cfg, u32 idx)
+ 	return idx;
+ }
+ 
+-static int pm8941_wled_configure(struct pm8941_wled *wled, struct device *dev)
++static int wled_configure(struct wled *wled, struct device *dev)
+ {
+-	struct pm8941_wled_config *cfg = &wled->cfg;
++	struct wled_config *cfg = &wled->cfg;
+ 	u32 val;
+ 	int rc;
+ 	u32 c;
+@@ -276,32 +278,32 @@ static int pm8941_wled_configure(struct pm8941_wled *wled, struct device *dev)
+ 	const struct {
+ 		const char *name;
+ 		u32 *val_ptr;
+-		const struct pm8941_wled_var_cfg *cfg;
++		const struct wled_var_cfg *cfg;
+ 	} u32_opts[] = {
+ 		{
+ 			"qcom,current-boost-limit",
+-			&cfg->i_boost_limit,
+-			.cfg = &pm8941_wled_i_boost_limit_cfg,
++			&cfg->boost_i_limit,
++			.cfg = &wled3_boost_i_limit_cfg,
+ 		},
+ 		{
+ 			"qcom,current-limit",
+-			&cfg->i_limit,
+-			.cfg = &pm8941_wled_i_limit_cfg,
++			&cfg->string_i_limit,
++			.cfg = &wled3_string_i_limit_cfg,
+ 		},
+ 		{
+ 			"qcom,ovp",
+ 			&cfg->ovp,
+-			.cfg = &pm8941_wled_ovp_cfg,
++			.cfg = &wled3_ovp_cfg,
+ 		},
+ 		{
+ 			"qcom,switching-freq",
+ 			&cfg->switch_freq,
+-			.cfg = &pm8941_wled_switch_freq_cfg,
++			.cfg = &wled3_switch_freq_cfg,
+ 		},
+ 		{
+ 			"qcom,num-strings",
+ 			&cfg->num_strings,
+-			.cfg = &pm8941_wled_num_strings_cfg,
++			.cfg = &wled3_num_strings_cfg,
+ 		},
+ 	};
+ 	const struct {
+@@ -324,7 +326,7 @@ static int pm8941_wled_configure(struct pm8941_wled *wled, struct device *dev)
+ 	if (rc)
+ 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
+ 
+-	*cfg = pm8941_wled_config_defaults;
++	*cfg = wled3_config_defaults;
+ 	for (i = 0; i < ARRAY_SIZE(u32_opts); ++i) {
+ 		rc = of_property_read_u32(dev->of_node, u32_opts[i].name, &val);
+ 		if (rc == -EINVAL) {
+@@ -336,7 +338,7 @@ static int pm8941_wled_configure(struct pm8941_wled *wled, struct device *dev)
+ 
+ 		c = UINT_MAX;
+ 		for (j = 0; c != val; j++) {
+-			c = pm8941_wled_values(u32_opts[i].cfg, j);
++			c = wled3_values(u32_opts[i].cfg, j);
+ 			if (c == UINT_MAX) {
+ 				dev_err(dev, "invalid value for '%s'\n",
+ 					u32_opts[i].name);
+@@ -358,15 +360,15 @@ static int pm8941_wled_configure(struct pm8941_wled *wled, struct device *dev)
+ 	return 0;
+ }
+ 
+-static const struct backlight_ops pm8941_wled_ops = {
+-	.update_status = pm8941_wled_update_status,
++static const struct backlight_ops wled_ops = {
++	.update_status = wled_update_status,
+ };
+ 
+-static int pm8941_wled_probe(struct platform_device *pdev)
++static int wled_probe(struct platform_device *pdev)
+ {
+ 	struct backlight_properties props;
+ 	struct backlight_device *bl;
+-	struct pm8941_wled *wled;
++	struct wled *wled;
+ 	struct regmap *regmap;
+ 	u32 val;
+ 	int rc;
+@@ -383,42 +385,42 @@ static int pm8941_wled_probe(struct platform_device *pdev)
+ 
+ 	wled->regmap = regmap;
+ 
+-	rc = pm8941_wled_configure(wled, &pdev->dev);
++	rc = wled_configure(wled, &pdev->dev);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = pm8941_wled_setup(wled);
++	rc = wled_setup(wled);
+ 	if (rc)
+ 		return rc;
+ 
+-	val = PM8941_WLED_DEFAULT_BRIGHTNESS;
++	val = WLED_DEFAULT_BRIGHTNESS;
+ 	of_property_read_u32(pdev->dev.of_node, "default-brightness", &val);
+ 
+ 	memset(&props, 0, sizeof(struct backlight_properties));
+ 	props.type = BACKLIGHT_RAW;
+ 	props.brightness = val;
+-	props.max_brightness = PM8941_WLED_REG_VAL_MAX;
++	props.max_brightness = WLED3_SINK_REG_BRIGHT_MAX;
+ 	bl = devm_backlight_device_register(&pdev->dev, wled->name,
+ 					    &pdev->dev, wled,
+-					    &pm8941_wled_ops, &props);
++					    &wled_ops, &props);
+ 	return PTR_ERR_OR_ZERO(bl);
+ };
+ 
+-static const struct of_device_id pm8941_wled_match_table[] = {
++static const struct of_device_id wled_match_table[] = {
+ 	{ .compatible = "qcom,pm8941-wled" },
+ 	{}
+ };
+-MODULE_DEVICE_TABLE(of, pm8941_wled_match_table);
++MODULE_DEVICE_TABLE(of, wled_match_table);
+ 
+-static struct platform_driver pm8941_wled_driver = {
+-	.probe = pm8941_wled_probe,
++static struct platform_driver wled_driver = {
++	.probe = wled_probe,
+ 	.driver	= {
+-		.name = "pm8941-wled",
+-		.of_match_table	= pm8941_wled_match_table,
++		.name = "qcom,wled",
++		.of_match_table	= wled_match_table,
+ 	},
+ };
+ 
+-module_platform_driver(pm8941_wled_driver);
++module_platform_driver(wled_driver);
+ 
+-MODULE_DESCRIPTION("pm8941 wled driver");
++MODULE_DESCRIPTION("Qualcomm WLED driver");
+ MODULE_LICENSE("GPL v2");
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+ a Linux Foundation Collaborative Project
 
