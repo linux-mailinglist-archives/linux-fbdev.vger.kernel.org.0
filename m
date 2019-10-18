@@ -2,152 +2,140 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C904DCADB
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 18:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A4BBDCB03
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 18:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394854AbfJRQUc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Oct 2019 12:20:32 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:34583 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388711AbfJRQUb (ORCPT
+        id S2437528AbfJRQaJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Oct 2019 12:30:09 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:37941 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732948AbfJRQaJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Oct 2019 12:20:31 -0400
-Received: by mail-il1-f193.google.com with SMTP id c12so6082241ilm.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 18 Oct 2019 09:20:31 -0700 (PDT)
+        Fri, 18 Oct 2019 12:30:09 -0400
+Received: by mail-wr1-f65.google.com with SMTP id o15so6497661wru.5;
+        Fri, 18 Oct 2019 09:30:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=9uIYAnyPMezy1SrLVChvjUvSTT25CSaPRKsdjVZO6n8=;
-        b=RsS1qicPZcnkl76YmnbfWfB4DsiuiCLUqloFqkV4cKo1n8DFJo7UEQSSDFodJSbKB/
-         aBWZqVCPZgMDcLDXyYzENWxYIXywuatRXqle5E7LpooPoQQUBy7bYET/lR3hCkblPVpQ
-         lRCxDCweDqgN5VH3+jmycEAt4tkhNiTGcj63IOj6HoqYIOC+FHhzbw0j2Z6Q6PcheRlq
-         V05ZlaVDqncElnNNeR/8BJBUr0rrldkoPBjEym9DYsl1rkcPeHcDWbU59h32Cz6ffBHn
-         hRdElR9UrqvDGkKzkyMvLFvQ1KF9n7QBf9pfXR5M4kaxLzPEox6QLi5JDuA66WL4yGC9
-         X2Jg==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=lJc0hj7tQVxDAaGjfCOv7vwr1QfJ/5Ay/O35J4hdg0E=;
+        b=W34HiTmzG0Wkh8A4mK+ZBdO7Aae+UoxMX9i9O7wdsm3reQ/ZEtdu3N4gw0ACWa8nbe
+         bpAzAeXA+eqX577RWAm+tQVEQNxRs/1GBLc1TlbBsfMvvme0U/x7Eb1DuRhjJLNIPkhe
+         ooAQtfe2s6JHbVqwyj6nDJiDFV57IXFscjR0vUXmroN10dCjWUV2pMbbyeds/UYgy5sY
+         zNVyoJbEmrWGwDSPlUh4BpS9OyhC0mgDHuWjGZ+CUu0rKVG7nxzrEKjihpX8SvUvsnlV
+         URGpEeu27I3kqsfnJUqoSHj+bzMoZHrhTcGOsbC/rwnDWn6TUGXE6Y4ZY9P0ltJZgFjJ
+         UdZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9uIYAnyPMezy1SrLVChvjUvSTT25CSaPRKsdjVZO6n8=;
-        b=gUH9wIhP+xfYTBVK1jIFUWehAqRNDOBJuZS1VRa0fl/ShMLddtLvKNzI9YuJg8iEfe
-         LglnDk77i7rVi0x0k693uAFPROJuC/+uvxGv+B1RFhjJ5m8Pxzu7CUavrGcalC08xSlz
-         n9UlpGkgYS2verWeHH1Wy2NZvqTNcYZOM2f4dyPMQQMpWO9Yl4UU/M4D4Fth5mrBMTte
-         rWL069lo2mM7mA/TqbCWKzredjZmR7bTBkXqFbtovQ6uPG/MhvW2v1Khv4/YZEhCihRr
-         PRWmDDeMLdN6ItrelR8e8t39BLaO7yuJaaI2yQVyKDQiN+HVmqiYmohrlQmMiUJ5/WF9
-         VjHw==
-X-Gm-Message-State: APjAAAWmf2lCiZFNLBYtZrOD0TnchtfJhyOMALR1+l4uX0j8xQJWLR3e
-        Yhfd4obkEFThL8WQyXgdITgoHcWKlViwYLeQxd76Zg==
-X-Google-Smtp-Source: APXvYqw2YK1lwgF/TFTkt9RSwtJ17zC9sjmAtKYD5ZCcsqeN2ggjp9zo5LRHoqTvo6xjx+0AuXbxZHCiRDt5708hL+c=
-X-Received: by 2002:a92:410c:: with SMTP id o12mr11498464ila.287.1571415630625;
- Fri, 18 Oct 2019 09:20:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191007033200.13443-1-brgl@bgdev.pl> <20191014081220.GK4545@dell>
- <CACRpkda9Kco-bVPw1OA6FMpQ1L8dZ4WFJ227wTCM9rh5JE7-+A@mail.gmail.com>
- <20191016130536.222vsi5whkoy6vzo@uno.localdomain> <20191017072550.GK4365@dell>
- <20191018150426.7w5q55nhkiqbqhuk@uno.localdomain>
-In-Reply-To: <20191018150426.7w5q55nhkiqbqhuk@uno.localdomain>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Fri, 18 Oct 2019 18:20:19 +0200
-Message-ID: <CAMRc=Mc0-c_Cnbbh981pXQHW70GW1kh5hYioxJQM6JrOnCe4NQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] backlight: gpio: simplify the driver
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=lJc0hj7tQVxDAaGjfCOv7vwr1QfJ/5Ay/O35J4hdg0E=;
+        b=Vp1Ycb7Vt1noBRj3fBkas+grtSsIyuCJlb68XVhJXQStmSRmnvvvj2V8a3kLvkJuox
+         rYSjZLZ0sCO1dBsTd6H8WaiifTxkLDyJufS8CY8v9W06GSDeoRJsS5ypbrcafoLUuYAO
+         uHNU1sQ3wLz7QZA5zXkj/haeT5pnBpNJOQhqz1k7Aa+YI6R7TxRd5FgyaJUBgIaf3vGK
+         vH21RA8fGvN2r549IVBKWtsubvt5vl+RIHdlZFGf6P47vcf20UzH1Zz67fmoeUWzXyTn
+         UYHw1ma5SaapZGO0nNr0731Fxx8IiiH8JhO3z95nUhY89w2hde6wlheSB9Vzrdi1npxn
+         wSfw==
+X-Gm-Message-State: APjAAAV5K+sL8mQKAX9BLW7jtK4zW+IBDie/GXeiLJxijCpAGfCrdiE6
+        KVobB3zG/9pKhQrjCy0nbgw=
+X-Google-Smtp-Source: APXvYqyYIv1KczmfhzvFNVLt5B5gajKUiA+enUgcWK2XtyuUq3g+DU3XrKJg4cwXJvIMYHUnnEdVSA==
+X-Received: by 2002:a5d:484e:: with SMTP id n14mr8206328wrs.110.1571416206126;
+        Fri, 18 Oct 2019 09:30:06 -0700 (PDT)
+Received: from debian.office.codethink.co.uk. ([78.40.148.180])
+        by smtp.gmail.com with ESMTPSA id m16sm5010123wml.11.2019.10.18.09.30.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 18 Oct 2019 09:30:05 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH] omapfb: reduce stack usage
+Date:   Fri, 18 Oct 2019 17:30:04 +0100
+Message-Id: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-pt., 18 pa=C5=BA 2019 o 17:02 Jacopo Mondi <jacopo@jmondi.org> napisa=C5=82=
-(a):
->
-> Hi,
->
-> On Thu, Oct 17, 2019 at 08:25:50AM +0100, Lee Jones wrote:
-> > On Wed, 16 Oct 2019, Jacopo Mondi wrote:
-> >
-> > > Hi, sorry for not having replied earlier
-> > >
-> > > On Wed, Oct 16, 2019 at 02:56:57PM +0200, Linus Walleij wrote:
-> > > > On Mon, Oct 14, 2019 at 10:12 AM Lee Jones <lee.jones@linaro.org> w=
-rote:
-> > > >
-> > > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 ++++--
-> > > > >
-> > > > > I guess we're just waiting for the SH Acks now?
-> > > >
-> > > > The one maintainer with this board is probably overloaded.
-> > > >
-> > > > I would say just apply it, it can't hold back the entire series.
-> > >
-> > > I've been able to resurect the Ecovec, and I've also been given a cop=
-y
-> > > of its schematics file a few weeks ago.
-> > >
-> > > It's in my TODO list to test this series but I didn't manage to find
-> > > time. If I pinky promise I get back to you before end of the week,
-> > > could you wait for me ? :)
->
-> Finally had some time to spend on this.
->
-> As I've reported to Bartosz, this version does not work on Ecovec out
-> of the box, as the GPIO line connected to the backlight needs to be
-> configured to work in output mode before registering the backlight
-> device.
->
-> With this simple change:
->
-> $ git diff
-> diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-e=
-covec24/setup.c
-> index dd427bac5cde..eec6e805c3ed 100644
-> --- a/arch/sh/boards/mach-ecovec24/setup.c
-> +++ b/arch/sh/boards/mach-ecovec24/setup.c
-> @@ -1473,6 +1473,7 @@ static int __init arch_setup(void)
->  #endif
->  #endif
->
-> +       gpio_direction_output(GPIO_PTR1, 1);
+The build of xtensa allmodconfig is giving a warning of:
+In function 'dsi_dump_dsidev_irqs':
+warning: the frame size of 1120 bytes is larger than 1024 bytes
 
-This is a hack actually. The problem lies with the gpio backlight
-driver - it should really set the mode to output, not leave it as is.
-If there's no good reason to keep it as it is now, I'll add another
-patch to the series that moves the call to devm_gpiod_get() to where
-we've already determined the initial value in probe() and pass an
-appropriate GPIOD_OUT_HIGH/LOW flag.
+Allocate the memory for 'struct dsi_irq_stats' dynamically instead
+of assigning it in stack.
 
-Bart
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
->         gpiod_add_lookup_table(&gpio_backlight_lookup);
->         gpio_backlight_device =3D platform_device_register_full(
->                                         &gpio_backlight_device_info);
->
-> I can now control the gpio through the backlight interface.
->
-> So please add this bit on top of next iteration and add my:
-> Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
->
-> Thanks and sorry for the long time it took!
->
-> >
-> > Yes, no problem.
-> >
-> > --
-> > Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> > Linaro Services Technical Lead
-> > Linaro.org =E2=94=82 Open source software for ARM SoCs
-> > Follow Linaro: Facebook | Twitter | Blog
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+index d620376216e1..43402467bf40 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+@@ -1536,22 +1536,25 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+ {
+ 	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
+ 	unsigned long flags;
+-	struct dsi_irq_stats stats;
++	struct dsi_irq_stats *stats;
+ 
++	stats = kmalloc(sizeof(*stats), GFP_KERNEL);
++	if (!stats)
++		return;
+ 	spin_lock_irqsave(&dsi->irq_stats_lock, flags);
+ 
+-	stats = dsi->irq_stats;
++	memcpy(stats, &dsi->irq_stats, sizeof(*stats));
+ 	memset(&dsi->irq_stats, 0, sizeof(dsi->irq_stats));
+ 	dsi->irq_stats.last_reset = jiffies;
+ 
+ 	spin_unlock_irqrestore(&dsi->irq_stats_lock, flags);
+ 
+ 	seq_printf(s, "period %u ms\n",
+-			jiffies_to_msecs(jiffies - stats.last_reset));
++			jiffies_to_msecs(jiffies - stats->last_reset));
+ 
+-	seq_printf(s, "irqs %d\n", stats.irq_count);
++	seq_printf(s, "irqs %d\n", stats->irq_count);
+ #define PIS(x) \
+-	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
++	seq_printf(s, "%-20s %10d\n", #x, stats->dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
+ 	PIS(VC0);
+@@ -1575,10 +1578,10 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+ 
+ #define PIS(x) \
+ 	seq_printf(s, "%-20s %10d %10d %10d %10d\n", #x, \
+-			stats.vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
++			stats->vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- VC interrupts --\n");
+ 	PIS(CS);
+@@ -1594,7 +1597,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+ 
+ #define PIS(x) \
+ 	seq_printf(s, "%-20s %10d\n", #x, \
+-			stats.cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
++			stats->cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- CIO interrupts --\n");
+ 	PIS(ERRSYNCESC1);
+@@ -1618,6 +1621,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+ 	PIS(ULPSACTIVENOT_ALL0);
+ 	PIS(ULPSACTIVENOT_ALL1);
+ #undef PIS
++	kfree(stats);
+ }
+ 
+ static void dsi1_dump_irqs(struct seq_file *s)
+-- 
+2.11.0
+
