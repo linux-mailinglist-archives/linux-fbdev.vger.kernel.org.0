@@ -2,155 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F186ADBDC3
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 08:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F368CDBE83
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Oct 2019 09:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407406AbfJRGm7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Oct 2019 02:42:59 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:46322 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393594AbfJRGm6 (ORCPT
+        id S2389490AbfJRHik (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Oct 2019 03:38:40 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33204 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726842AbfJRHik (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Oct 2019 02:42:58 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4EDDF610DC; Fri, 18 Oct 2019 06:42:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571380977;
-        bh=6TBlAdKQKJ2jvjGwgvWVKyvODqXx7MA+HnxHF0EkO/M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XXpUDtHDTlxK4+UvWEa/J0kS0HjwY2zBjFYE7YpXGJAmogZBuItNCDKOCCoKd9sHw
-         j7laQYY1fc5Ie3Od2WNektEtPV7W7lVx9ovF5SOUdgYCEtFWEh42yQx1tkvgbpiQuc
-         9Q51u31cVnJSq1RadpOrTop88nLPI8gLZWDhFCiw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 51E72610DC;
-        Fri, 18 Oct 2019 06:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571380976;
-        bh=6TBlAdKQKJ2jvjGwgvWVKyvODqXx7MA+HnxHF0EkO/M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gW0PUImE+THwnpgh1sMlgBvC+wHvJgH2dfUwZPnMJQ7NXR8nLTHYG6kMHd7zke0fQ
-         jsf4OF79koepY/K+yoYiF204JVVpAVxDfkKQO1EgSXeOjt2EQ9YxVRfGLagD86Oa+W
-         CjGLZ6+0LYrwcuBryQpPZXdoJgNDTOYZwxCrAF/s=
+        Fri, 18 Oct 2019 03:38:40 -0400
+Received: by mail-wr1-f68.google.com with SMTP id b9so5093127wrs.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Oct 2019 00:38:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=dSeQpsX1lWyhJjjqgCnSOVYN/QoRMRw+pYlbFd08lMw=;
+        b=hz3XrSB+KBpqUPLDKyw2Jxr41b1CEp+1/qVyRxUWVhXQ2yO3pcwZzRTc/RmcOuftAe
+         JDBdUygHnnCUA5eOUl15iri/Q+pJwjNj8QpABl/LDSDeAgJpmMZHz+yGbcIXyfe2T2rZ
+         FdvN77qt6r5RmRuiTi8yBUPRt0a5xjswyuHdWiBKGCTG+oN1++x4EHZ0rAVV+SFC9hs6
+         UDxdd63AtrdBw+WdHn1Vt/5QnsArLFY/nkfXoHP1FgeOnU37SLfzYzzzlHSa1ZHOSYSi
+         ztfjgTFwRkHM3MohnmPFb+9aAdSDakwj2NKY9LhRrbQ4q9QibxP+9iEtqyGG4Bho2xcJ
+         y52g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=dSeQpsX1lWyhJjjqgCnSOVYN/QoRMRw+pYlbFd08lMw=;
+        b=kHFfioexx+HHg+D9u3FhSQFTXdJuyYR0eDgFv5IXIZ0MHTrzSFrtq1eLCIx7ho7qqz
+         OBiEy+9SmfCzqSKzsoVrL6YPJ0sYKp/BS/0vT9uKv0/XSX2qGckOpMc91Gt9TytZePQu
+         ViztFGGVkxxdFD3X59Va/G7H/K4P5bwXDTHmrNmHwx26h4n/YOCrZITCgzo4yJv9tXs5
+         S/zTp6M7t4DjiFV2IZ6vazvoFw4uFaQcQfDJdJ454IYUrLbDnwziQHEq38C9QOKcvSRS
+         QEarnEvZvUoUGR2h9yx/lK2PiS1eTx7g/b9V9iiuNMMnAavm0v/zcjDP7VkYZnr7sM6o
+         mmdQ==
+X-Gm-Message-State: APjAAAUq4jtQjr9Www4Ln1fF4hCT11HRbCG5CAxtmCNDChmUrRdZQElC
+        wjBzPKYhk38qjPDYYtZLEhMruNCpHGQ=
+X-Google-Smtp-Source: APXvYqyMG++9BlE+2Kvq0zYfc9v90AGN3ajctmqk/j3JHgJFv9ZF19h9kZYjj54VOjc0kFu8V8CcXg==
+X-Received: by 2002:adf:ed84:: with SMTP id c4mr6235302wro.333.1571384317887;
+        Fri, 18 Oct 2019 00:38:37 -0700 (PDT)
+Received: from dell ([95.149.164.47])
+        by smtp.gmail.com with ESMTPSA id 36sm5585697wrp.30.2019.10.18.00.38.37
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 18 Oct 2019 00:38:37 -0700 (PDT)
+Date:   Fri, 18 Oct 2019 08:38:35 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        linux-kernel@vger.kernel.org, tglx@linutronix.de,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 29/34] backlight/jornada720: Use CONFIG_PREEMPTION
+Message-ID: <20191018073835.GU4365@dell>
+References: <20191015191821.11479-1-bigeasy@linutronix.de>
+ <20191015191821.11479-30-bigeasy@linutronix.de>
+ <20191017113707.lsjwlhi6b4ittcpe@holly.lan>
+ <20191017132324.GP4365@dell>
+ <20191017132846.ojsh27celyl76dlx@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 18 Oct 2019 12:12:56 +0530
-From:   kgunda@codeaurora.org
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-arm-msm-owner@vger.kernel.org
-Subject: Re: [PATCH V7 6/6] backlight: qcom-wled: Add auto string detection
- logic
-In-Reply-To: <20191017133954.7vgqjgwxojmjw446@holly.lan>
-References: <1571220826-7740-1-git-send-email-kgunda@codeaurora.org>
- <1571220826-7740-7-git-send-email-kgunda@codeaurora.org>
- <20191017112941.qqvgboyambzw63i3@holly.lan>
- <fa32f7ec727cb2626ad877a6cef32a1b@codeaurora.org>
- <20191017133954.7vgqjgwxojmjw446@holly.lan>
-Message-ID: <bd369e2d809d642867f712499df0eb33@codeaurora.org>
-X-Sender: kgunda@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191017132846.ojsh27celyl76dlx@linutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2019-10-17 19:09, Daniel Thompson wrote:
-> On Thu, Oct 17, 2019 at 05:47:47PM +0530, kgunda@codeaurora.org wrote:
->> On 2019-10-17 16:59, Daniel Thompson wrote:
->> > On Wed, Oct 16, 2019 at 03:43:46PM +0530, Kiran Gunda wrote:
->> > > The auto string detection algorithm checks if the current WLED
->> > > sink configuration is valid. It tries enabling every sink and
->> > > checks if the OVP fault is observed. Based on this information
->> > > it detects and enables the valid sink configuration.
->> > > Auto calibration will be triggered when the OVP fault interrupts
->> > > are seen frequently thereby it tries to fix the sink configuration.
->> > >
->> > > The auto-detection also kicks in when the connected LED string
->> > > of the display-backlight malfunctions (because of damage) and
->> > > requires the damaged string to be turned off to prevent the
->> > > complete panel and/or board from being damaged.
->> > >
->> > > Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
->> >
->> > It's a complex bit of code but I'm OK with it in principle. Everything
->> > below is about small details and/or nitpicking.
->> >
->> >
->> > > +static void wled_ovp_work(struct work_struct *work)
->> > > +{
->> > > +	struct wled *wled = container_of(work,
->> > > +					 struct wled, ovp_work.work);
->> > > +	enable_irq(wled->ovp_irq);
->> > > +}
->> > > +
->> >
->> > A bit of commenting about why we have to wait 10ms before enabling the
->> > OVP interrupt would be appreciated.
->> >
->> >
->> Sure. Will add the comment in the next series.
->> > > +static irqreturn_t wled_ovp_irq_handler(int irq, void *_wled)
->> > > +{
->> > > +	struct wled *wled = _wled;
->> > > +	int rc;
->> > > +	u32 int_sts, fault_sts;
->> > > +
->> > > +	rc = regmap_read(wled->regmap,
->> > > +			 wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS, &int_sts);
->> > > +	if (rc < 0) {
->> > > +		dev_err(wled->dev, "Error in reading WLED3_INT_RT_STS rc=%d\n",
->> > > +			rc);
->> > > +		return IRQ_HANDLED;
->> > > +	}
->> > > +
->> > > +	rc = regmap_read(wled->regmap, wled->ctrl_addr +
->> > > +			 WLED3_CTRL_REG_FAULT_STATUS, &fault_sts);
->> > > +	if (rc < 0) {
->> > > +		dev_err(wled->dev, "Error in reading WLED_FAULT_STATUS rc=%d\n",
->> > > +			rc);
->> > > +		return IRQ_HANDLED;
->> > > +	}
->> > > +
->> > > +	if (fault_sts &
->> > > +		(WLED3_CTRL_REG_OVP_FAULT_BIT | WLED3_CTRL_REG_ILIM_FAULT_BIT))
->> > > +		dev_dbg(wled->dev, "WLED OVP fault detected, int_sts=%x
->> > > fault_sts= %x\n",
->> > > +			int_sts, fault_sts);
->> > > +
->> > > +	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT) {
->> > > +		mutex_lock(&wled->lock);
->> > > +		disable_irq_nosync(wled->ovp_irq);
->> >
->> > We're currently running the threaded ISR for this irq. Do we really need
->> > to disable it?
->> >
->> We need to disable this IRQ, during the auto string detection logic. 
->> Because
->> in the auto string detection we configure the current sinks one by one 
->> and
->> check the
->> status register for the OVPs and set the right string configuration. 
->> We
->> enable it later after
->> the auto string detection is completed.
+On Thu, 17 Oct 2019, Sebastian Andrzej Siewior wrote:
+
+> On 2019-10-17 14:23:24 [+0100], Lee Jones wrote:
+> > So what are the OP's expectations in that regard?  I see this is a
+> > large set and I am only privy to this patch, thus lack wider
+> > visibility.  Does this patch depend on others, or is it independent?
+> > I'm happy to take it, but wish to avoid bisectability issues in the
+> > next release kernel.
 > 
-> This is a threaded oneshot interrupt handler. Why isn't the framework
-> masking sufficient for you here?
+> It is independent, you can apply it to your -next branch. All
+> dependencies are merged.
 > 
-> 
-> Daniel.
-Right .. I overlooked that it is a oneshot interrupt earlier.
-I will address it in the next series.
+> Sebastian
+
+Wonderful.  Thanks for the info.
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
