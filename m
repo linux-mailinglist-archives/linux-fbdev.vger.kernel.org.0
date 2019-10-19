@@ -2,118 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09757DD5D9
-	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 03:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66B3EDD5EB
+	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 03:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727777AbfJSBDD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Oct 2019 21:03:03 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:44573 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726743AbfJSBDC (ORCPT
+        id S1725948AbfJSBTV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Oct 2019 21:19:21 -0400
+Received: from smtprelay0208.hostedemail.com ([216.40.44.208]:35928 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725800AbfJSBTU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Oct 2019 21:03:02 -0400
-Received: by mail-pg1-f193.google.com with SMTP id e10so4236408pgd.11;
-        Fri, 18 Oct 2019 18:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=O2vDP5dhX90+NEeZF4xwy/6nZiyy5Chs2FfT8NPVR7E=;
-        b=ZFvZMeNde3XSQbCX5z+A8LC9qIkMj77Zzi+EgKADvigb12CI/Atx5eiO423UuVNTZ4
-         FMRj0TTh5vYpzBJFf3onEv/NHctJbLDMvw72Wm/UAs/vKZecv2U7aiKsK5O98DMCY3LN
-         6P8SWWQFoi0WW7dNj9CrT+uf0KK0LjF+3+/cSfQNkEYtvDykIjEQuh6qD2TVjSbIXoLH
-         0NoyZAo/m7sgpGHXCa5h6dWvnJlDsRbI4TfaO4uSF0QgVAzYFE5KMcLQFbvw7OGqrAEI
-         4v0uNLLBBCk7L6lzLHiVmoKSbmmeLfyP8LnUo6lczAWEEIGT7byS+WfZ7fYM1pCa1V6t
-         b94w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=O2vDP5dhX90+NEeZF4xwy/6nZiyy5Chs2FfT8NPVR7E=;
-        b=Cs6svu5TBVneapfDeF1cl88fLEO4eJMVjiW0eRMaVqngna/yQfIeyXNksrhczPppab
-         F9DZFufQuoMgQVF4AqjK1BB3/Pijc1wl2THZzorzyf5HS0LJC4vKw+JkCjKmF5YB6YTa
-         HH3dpKVCjMepemN8nl7VMuFmukJfZ7Ym3dsCGY+1v0YM97fb0niWl+nJaX1//pwcpeim
-         hC60cnZJPN8ST8ZrqWO6oA/aB00BmQGj4Ox7MALU1LQFzC7j3PkouKievz5lHO/6Cap9
-         uyrWE9s23t2gFWYpHLtTjSXmsoZmNKfATgBiJ4OkoFtRO/QhffUzValM1xCtjF0s8EKC
-         1VPw==
-X-Gm-Message-State: APjAAAVgsokVXL/etNlbNK/7y3eQxkJvFNsnT7BEvWNrAdzDaHrp2Paj
-        50g0IEeTefgzQ7e1OFoc9qexMMNU
-X-Google-Smtp-Source: APXvYqyfRaTHhsimbDLjYp5YZtM7EeE6UsAbtJraEIbyzdK0a87RqNrOa51iK+zxPIPUiG8is3MEFw==
-X-Received: by 2002:a63:f5a:: with SMTP id 26mr13333625pgp.63.1571446981132;
-        Fri, 18 Oct 2019 18:03:01 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h14sm7304535pfo.15.2019.10.18.18.02.58
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Oct 2019 18:03:00 -0700 (PDT)
-Subject: Re: [PATCH 00/46] ARM: pxa: towards multiplatform support
-To:     Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org
-References: <20191018154052.1276506-1-arnd@arndb.de>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <803f6fa5-b929-007c-5302-4a2d5042241c@roeck-us.net>
-Date:   Fri, 18 Oct 2019 18:02:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Fri, 18 Oct 2019 21:19:20 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id 268FB182CED28;
+        Sat, 19 Oct 2019 01:19:19 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::,RULES_HIT:41:355:379:599:857:960:966:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2196:2198:2199:2200:2393:2553:2559:2562:2693:2828:2899:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:4385:5007:6119:7903:7904:8603:10004:10400:10848:11026:11232:11658:11914:12043:12297:12438:12555:12740:12760:12895:12986:13439:14096:14097:14659:21080:21433:21627:21773:21795:30012:30051:30054:30090:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:542,LUA_SUMMARY:none
+X-HE-Tag: books16_8b4f00402920f
+X-Filterd-Recvd-Size: 3041
+Received: from XPS-9350.home (unknown [47.151.135.224])
+        (Authenticated sender: joe@perches.com)
+        by omf02.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 19 Oct 2019 01:19:17 +0000 (UTC)
+Message-ID: <184cdd47d4064420b05c16f10588595c65f789e5.camel@perches.com>
+Subject: Re: [PATCH] omapfb: reduce stack usage
+From:   Joe Perches <joe@perches.com>
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Ladislav Michl <ladis@linux-mips.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Date:   Fri, 18 Oct 2019 18:19:15 -0700
+In-Reply-To: <20191018223012.tkpwbo3mg5mthlnz@debian>
+References: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
+         <20191018172728.GA11857@lenoch> <20191018223012.tkpwbo3mg5mthlnz@debian>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.32.1-2 
 MIME-Version: 1.0
-In-Reply-To: <20191018154052.1276506-1-arnd@arndb.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 10/18/19 8:40 AM, Arnd Bergmann wrote:
-> 
-> Hi PXA maintainers,
-> 
-> I'm in the process of getting the old ARM platforms to all build
-> in a single kernel. The largest part of that work is changing all
-> the device drivers to no longer require mach/*.h header files.
-> 
-> This series does it for arch/pxa/.
-> 
-> As with the omap1 and s3c24xx series I sent before, I don't
-> expect this all to be correct in the first version, though
-> a lot of the patches are fairly simple and I did exhaustive
-> compile-time testing on them.
-> 
-> Please test if you have the hardware, or review!
-> 
+On Fri, 2019-10-18 at 23:30 +0100, Sudip Mukherjee wrote:
+> On Fri, Oct 18, 2019 at 07:27:28PM +0200, Ladislav Michl wrote:
+> > On Fri, Oct 18, 2019 at 05:30:04PM +0100, Sudip Mukherjee wrote:
+> > > The build of xtensa allmodconfig is giving a warning of:
+> > > In function 'dsi_dump_dsidev_irqs':
+> > > warning: the frame size of 1120 bytes is larger than 1024 bytes
+> > > 
+> > > Allocate the memory for 'struct dsi_irq_stats' dynamically instead
+> > > of assigning it in stack.
+> > 
+> > So now function can fail silently, executes longer, code is sligthly
+> > bigger... And all that to silent warning about exceeding frame size.
+> > Is it really worth "fixing"?
 
-I don't get very far.
+Depends if it could fail in practice due to a stack overrun.
 
-$ make-arm pxa_defconfig
-arch/arm/Kconfig:677: can't open file "arch/arm/plat-pxa/Kconfig"
-scripts/kconfig/Makefile:90: recipe for target 'pxa_defconfig' failed
-make[1]: *** [pxa_defconfig] Error 1
-Makefile:567: recipe for target 'pxa_defconfig' failed
-make: *** [pxa_defconfig] Error 2
-$ git describe
-v5.4-rc3-52-gfcc4181cd625
+> The only point of failure is if kmalloc() fails and if kmalloc() fails then
+> there will be error prints in dmesg to tell the user that there is no
+> memory left in the system. About the size bigger, it seems
+> the drivers/video/fbdev/omap2/omapfb/dss/dsi.o file is smaller with the
+> patch.
+> This is without the patch:
+> -rw-r--r-- 1 sudip sudip 316856 Oct 18 22:27 drivers/video/fbdev/omap2/omapfb/dss/dsi.o
+> And this is with the patch:
+> -rw-r--r-- 1 sudip sudip 316436 Oct 18 20:09 drivers/video/fbdev/omap2/omapfb/dss/dsi.o
+> 
+> And also, objdump shows me that <dsi_dump_dsidev_irqs> was taking up 0xD7D
+> bytes, and now with the patch it is taking up 0xBED bytes, thats a saving
+> of 400 bytes. If it has 400 bytes of less code to execute will it not be
+> faster now?
 
-Also:
+You should try compiling without all the debugging symbols (defconfig)
 
-$ git grep plat-pxa
-Documentation/arm/marvel.rst:   arch/arm/plat-pxa
-Documentation/arm/marvel.rst:   arch/arm/plat-pxa
-Documentation/arm/marvel.rst:   directory. The plat-pxa/ would therefore disappear.
-arch/arm/Kconfig:source "arch/arm/plat-pxa/Kconfig"
-arch/arm/mach-mmp/Makefile:ccflags-$(CONFIG_ARCH_MULTIPLATFORM) := -I$(srctree)/arch/arm/plat-pxa/include
-drivers/gpio/gpio-pxa.c: *  linux/arch/arm/plat-pxa/gpio.c
-drivers/soc/pxa/mfp.c: * linux/arch/arm/plat-pxa/mfp.c
+> But, I may be totally wrong in my thinking, and in that case, please feel
+> free to reject the patch.
 
-Did I pick the wrong tree ?
+Without your patch:
 
-Guenter
+$ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
+00000d20 l     F .text	0000061c dsi_dump_dsidev_irqs
+
+With your patch:
+
+$ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
+00000d20 l     F .text	00000638 dsi_dump_dsidev_irqs
+
+
