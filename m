@@ -2,167 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FBDDD76F
-	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 10:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947CEDD79F
+	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 11:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728447AbfJSIg0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 19 Oct 2019 04:36:26 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41009 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728430AbfJSIgZ (ORCPT
+        id S1727542AbfJSJMB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 19 Oct 2019 05:12:01 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:36327 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725797AbfJSJMA (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 19 Oct 2019 04:36:25 -0400
-Received: by mail-wr1-f65.google.com with SMTP id p4so8532983wrm.8
-        for <linux-fbdev@vger.kernel.org>; Sat, 19 Oct 2019 01:36:22 -0700 (PDT)
+        Sat, 19 Oct 2019 05:12:00 -0400
+Received: by mail-wm1-f66.google.com with SMTP id m18so8236512wmc.1;
+        Sat, 19 Oct 2019 02:11:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=qycHXMO6hwxhUdb3jdVqS6gIVNXR0dtaUr+q4ZsWEBE=;
-        b=Jk5EBmYa+f25dVL0ytlmaRtf8WAVFhl1TWLYulD/cjGDX1wCaySBwWD/vh2NWZbHVD
-         5niPb2mYSBspLggl0tema5K8Qd8+JzAAcvvu2lPy3+1NRihUAq2JxJ+U490BS8+w0udd
-         t4XfieezI2QS399OfGYDN0hIKV10tM5OK2EICaKM2qjVBAoJ4TJWV1ckCVAhKi4xVHVR
-         QrENWpsMNxsrVai6eEP6BAsNmRZHafdwOW+Q7Y1XYH+rqy2dJEVhPp/9PkmRjJrViH5x
-         tQvWbNZ6yFRV4KParbooJKpz3bzQ20Mn0F+ULmYO5KMaC4yAG2FyBZfAd3ofmJEjIwBm
-         IcjQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=+LSfVcGVgC2SgP+Cklux+YdmwHzIVlEqLbQ9PbRxrCg=;
+        b=CeWcpr6NT8ySjUyYXyaxdJuNWlxeqsR23HWvVpfZAYYVwszdHchrTotikgKwz/A5gc
+         6EI61leoFAqj+lUg0s5q6g5dHFRcGa4uxeeKPdwMt4DzLNJp9hF0HMv4DNxjWhT0BI3T
+         /+9QVX78U2Lj3lnlbOmibWKjsKL7JgXoc6Ffs3fVHDtdi4kulpzJsitGtzu4f2DWFuyI
+         A9JCqe694gIJSetB7O13NSGUhGUdfj1Q04rOV4xeeam7IOnV+pm7GsNZH/gkcdZ4bx9O
+         r4JPSKL1RCKNjA0WJS/UqP+k0RWvi9c8Leb8pmKm/d65oFvERfMpvL2j22jRoEsc1kuK
+         bp5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qycHXMO6hwxhUdb3jdVqS6gIVNXR0dtaUr+q4ZsWEBE=;
-        b=RqvRb4ofVl1Kp9IV8VaFu/8Js2oeRcA0XjsDaYkTzMqMeMKK6W9f0wJNlfwbA0Oxrj
-         al8BzqqnxvL51v9J/JEhmX7kj2hOWuT4W7u3JGNRv3ZkDnTgqjuNdiBltbabvOy74iJH
-         WUljdX+VHvpLKsnXOsF583D2D3ok0KCeehVQbNvmBdopaKaUwz1Y+fXngCF3ov3fjTFQ
-         qyWs0wcKlUFgOuIeYaxbJk4itfjNyAZqRK2n/WiDQQ+QMl7Ny3rJmkgFv24IkU5SPHNE
-         Pjhv+6zdQ2jYVBPM9qZRwSA7vqwFoAL2nptPhuelEXMvLfE6jlXqqmcwUUrxyg6ezCdI
-         /yXQ==
-X-Gm-Message-State: APjAAAV1RQDp1GgqVcLbPDWYHuum2uggU4lJKbR031KjBLNiG9o8tgV2
-        hJrbyjkCp2Js746kpui/7WuPCw==
-X-Google-Smtp-Source: APXvYqxL4ngNwJD3Ia6U3FUSz7NI06K8MQss3MsCYJfxqtNfTF2X+Kq18B1s3ij+8TKee2gNA8Mvcg==
-X-Received: by 2002:adf:fcc5:: with SMTP id f5mr10803495wrs.37.1571474182248;
-        Sat, 19 Oct 2019 01:36:22 -0700 (PDT)
-Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id u1sm7242627wmc.38.2019.10.19.01.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Oct 2019 01:36:21 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=+LSfVcGVgC2SgP+Cklux+YdmwHzIVlEqLbQ9PbRxrCg=;
+        b=FwIqMlo7xQRFw4BtaDU1siQH+N3Wff7wqjJx9D0Lmql0bG/nPqEOUoh/0Wo9PsF9JC
+         oBetIurAvoZQB54rQvMdKf7pUxbIbX3ocmtqve5sZSWHdsCHqZ2EM3AtYH+cnlGkZY7T
+         tF9HBfoKdNdNFiNCYkusCYQFxQRW+O9BOUQkSjbGVgSxQmDV0vf6b23l36OhE+JWUpXc
+         jRvW66zICkIzpaPsVixXQ3epiGNfDE2egyMfE/+9l0dkaItIRSXo0Ve0xpFaoaDJEvmS
+         ufOLPotW4FyFzfSh0FEcp38wMhWoM3GEACyFPKgXI6VcdFOlyUl+/LDZuxU6+KWfV0Gq
+         M3qw==
+X-Gm-Message-State: APjAAAWnafYPvyaSxAnq7GZ9epdiuzKF7roLi8NaXrfJd6sq1oicpNyr
+        +HIrtg5mJrCTjqQeGPMEfATDS/bGey0=
+X-Google-Smtp-Source: APXvYqyDsmrzv4Z1LGUFeuwlx9LTPnznWL1nXliIIrNPSfZ1mxs55/yuuVKfkVko8zJsU0ET6HYBKQ==
+X-Received: by 2002:a1c:2d4d:: with SMTP id t74mr10508690wmt.108.1571476316579;
+        Sat, 19 Oct 2019 02:11:56 -0700 (PDT)
+Received: from debian (host-78-144-219-162.as13285.net. [78.144.219.162])
+        by smtp.gmail.com with ESMTPSA id m16sm6785683wml.11.2019.10.19.02.11.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 19 Oct 2019 02:11:56 -0700 (PDT)
+Date:   Sat, 19 Oct 2019 10:11:54 +0100
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     Ladislav Michl <ladis@linux-mips.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>
-Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v6 9/9] backlight: gpio: pull gpio_backlight_initial_power_state() into probe
-Date:   Sat, 19 Oct 2019 10:35:56 +0200
-Message-Id: <20191019083556.19466-10-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191019083556.19466-1-brgl@bgdev.pl>
-References: <20191019083556.19466-1-brgl@bgdev.pl>
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] omapfb: reduce stack usage
+Message-ID: <20191019091154.qlmb7abqoqdmtz7f@debian>
+References: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
+ <20191018172728.GA11857@lenoch>
+ <20191018223012.tkpwbo3mg5mthlnz@debian>
+ <184cdd47d4064420b05c16f10588595c65f789e5.camel@perches.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <184cdd47d4064420b05c16f10588595c65f789e5.camel@perches.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Fri, Oct 18, 2019 at 06:19:15PM -0700, Joe Perches wrote:
+> On Fri, 2019-10-18 at 23:30 +0100, Sudip Mukherjee wrote:
+> > On Fri, Oct 18, 2019 at 07:27:28PM +0200, Ladislav Michl wrote:
+> > > On Fri, Oct 18, 2019 at 05:30:04PM +0100, Sudip Mukherjee wrote:
+> > > > The build of xtensa allmodconfig is giving a warning of:
+> > > > In function 'dsi_dump_dsidev_irqs':
+> > > > warning: the frame size of 1120 bytes is larger than 1024 bytes
+<snip>
+> 
+> Without your patch:
+> 
+> $ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
+> 00000d20 l     F .text	0000061c dsi_dump_dsidev_irqs
+> 
+> With your patch:
+> 
+> $ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
+> 00000d20 l     F .text	00000638 dsi_dump_dsidev_irqs
 
-The probe function in the gpio-backlight driver is quite short. If we
-pull gpio_backlight_initial_power_state() into probe we can drop two
-more fields from struct gpio_backlight and shrink the driver code.
+I did objdump -d and then compared where it started and where it ended.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
----
- drivers/video/backlight/gpio_backlight.c | 38 +++++++++---------------
- 1 file changed, 14 insertions(+), 24 deletions(-)
+But, in anycase, this driver is framebuffer driver for omap2 and in
+reality, can only be used on arm platform and when I build the driver
+with arm compiler I am not getting this warning. This is not a valid
+concern, please reject this patch.
 
-diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-index 7b411f6ee15a..4336db6bf6b5 100644
---- a/drivers/video/backlight/gpio_backlight.c
-+++ b/drivers/video/backlight/gpio_backlight.c
-@@ -17,11 +17,8 @@
- #include <linux/slab.h>
- 
- struct gpio_backlight {
--	struct device *dev;
- 	struct device *fbdev;
--
- 	struct gpio_desc *gpiod;
--	int def_value;
- };
- 
- static int gpio_backlight_get_curr_brightness(struct backlight_device *bl)
-@@ -60,41 +57,24 @@ static const struct backlight_ops gpio_backlight_ops = {
- 	.check_fb	= gpio_backlight_check_fb,
- };
- 
--static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
--{
--	struct device_node *node = gbl->dev->of_node;
--
--	/* Not booted with device tree or no phandle link to the node */
--	if (!node || !node->phandle)
--		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
--
--	/* if the enable GPIO is disabled, do not enable the backlight */
--	if (gpiod_get_direction(gbl->gpiod) == 0 &&
--	    gpiod_get_value_cansleep(gbl->gpiod) == 0)
--		return FB_BLANK_POWERDOWN;
--
--	return FB_BLANK_UNBLANK;
--}
--
- static int gpio_backlight_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
-+	struct device_node *of_node = dev->of_node;
- 	struct backlight_properties props;
- 	struct backlight_device *bl;
- 	struct gpio_backlight *gbl;
--	int ret, init_brightness;
-+	int ret, init_brightness, def_value;
- 
- 	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
- 	if (gbl == NULL)
- 		return -ENOMEM;
- 
--	gbl->dev = dev;
--
- 	if (pdata)
- 		gbl->fbdev = pdata->fbdev;
- 
--	gbl->def_value = device_property_read_bool(dev, "default-on");
-+	def_value = device_property_read_bool(dev, "default-on");
- 
- 	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
- 	if (IS_ERR(gbl->gpiod)) {
-@@ -115,7 +95,17 @@ static int gpio_backlight_probe(struct platform_device *pdev)
- 		return PTR_ERR(bl);
- 	}
- 
--	bl->props.power = gpio_backlight_initial_power_state(gbl);
-+	/* Set the initial power state */
-+	if (!of_node || !of_node->phandle)
-+		/* Not booted with device tree or no phandle link to the node */
-+		bl->props.power = def_value ? FB_BLANK_UNBLANK
-+					    : FB_BLANK_POWERDOWN;
-+	else if (gpiod_get_direction(gbl->gpiod) == 0 &&
-+		 gpiod_get_value_cansleep(gbl->gpiod) == 0)
-+		bl->props.power = FB_BLANK_POWERDOWN;
-+	else
-+		bl->props.power = FB_BLANK_UNBLANK;
-+
- 	bl->props.brightness = 1;
- 
- 	init_brightness = gpio_backlight_get_curr_brightness(bl);
--- 
-2.23.0
-
+--
+Regards
+Sudip
