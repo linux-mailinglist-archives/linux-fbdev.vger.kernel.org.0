@@ -2,49 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4FCDD777
-	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 10:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4908BDD772
+	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Oct 2019 10:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728336AbfJSIgi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 19 Oct 2019 04:36:38 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41007 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728382AbfJSIgW (ORCPT
+        id S1728440AbfJSIgY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 19 Oct 2019 04:36:24 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:55923 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728414AbfJSIgY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 19 Oct 2019 04:36:22 -0400
-Received: by mail-wr1-f65.google.com with SMTP id p4so8532929wrm.8
-        for <linux-fbdev@vger.kernel.org>; Sat, 19 Oct 2019 01:36:19 -0700 (PDT)
+        Sat, 19 Oct 2019 04:36:24 -0400
+Received: by mail-wm1-f66.google.com with SMTP id a6so8341670wma.5
+        for <linux-fbdev@vger.kernel.org>; Sat, 19 Oct 2019 01:36:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fJb9zTJUFk5gt04WV606l1pH2Oso/m6U1KjJZ/jsQAQ=;
-        b=P1X7rjfTUJ3nuQIt5WgPxo/bWVF1kNL7UC7z6D3mpB5+R/b/fRt812wGTpBYsf1l4X
-         yLrW5jtqYTj9YCVhQyVaKhVahExaGBVsQ24kF8hxTisINKX9Ki9dkJoqd2OpUJpey5aw
-         RJJfG8f4obCZrlt1J0H/Aed3CeK19+tFD1NoDtUEVAktPR+PGIL/dtASqLofSrkNqxKp
-         OuTN9is8GL3bPXKg141be4zDoB0/wM51Cbdiu+mJ4FQidBEmd8QXf3ney/4vuQGHJQlL
-         h+uHFSpFqfIzhmhbYrFM7LUnDmKWRncFKOUNY6CY2/IQnjXIx1JqTuDAaUOQDcS+FrRP
-         UXAg==
+        bh=+aYo/jE0l+r2VpUneeIaMs1HWjXHH9okkuy6GJ4hUcw=;
+        b=h0zJaikzGMrQw/8lBb8sYuz2WDIJK2djdadS0yQaFn8WT5woxc5FUsuVZG+wAXttYG
+         iHwMNTLMjhuKALsd3KJvXMCsxUdR+J58mQ6O1+I8jBn+8yDzdtEkwgPtbZKE9jUa3qLF
+         UOlhDeSMehnwZiRaWSDC2KjDp6B3UEMLcX/BO//N3Odg99NHuaYUVRLmkJceoGeVxIoD
+         4op/vdrRCqyx9zBi0qM+4v1vUKsvdAxXa5lzG28v5SviLf1vGhNZvTamx8PZkKA5Momy
+         qyDXuhvg2Hn2smrWGwoY6GH+GwXdsPfjHPTETa4xb6YommzinQgnvlZmWP4hg0P6vzat
+         +Png==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fJb9zTJUFk5gt04WV606l1pH2Oso/m6U1KjJZ/jsQAQ=;
-        b=Uvwnd2haKEX/SAJfwCgiuBj6vl7fa8hpexTdRd5Y3es5WPvvNO5/At8HnsgzLs9fae
-         uX5P9eteb7ZsafX0tyLu+/PBAo3Qh4l6ziuY/O0OjUtln2t26U4mstyOELlf+z7qjd0k
-         Yd9haofbV1uZUcg+G3pnk4mWYaMF2Ef6K59tP2F0J+he+Rf9SRYykTrnjqb3yq/zJyMr
-         6/69T4QLiwWEYSf5fgy9xmM0T0ZXt9vOEZ5+cmN2/M7cvj2K1oVuZ2v3T0Xb2tLhJyM+
-         5iDTFE7dP4yocQ6z48NkrzBNTmAINLdBDELUFmqdynQ7sV8LfSwSNyCEbZ+spvm/CswA
-         sfjA==
-X-Gm-Message-State: APjAAAXRAJznrdioIw9+q+MEcgkLmvSl/lhSjzA/cV8ISqkpLCP8ra7x
-        CmbgDD791owEkJo9r1xLeo8omA==
-X-Google-Smtp-Source: APXvYqyC7Ckh43yEeLj+N7+h+UruFS+0KKtHRNyoTyt/JpzLBEE5Q2IIWFp45JPp3FFZIDaUQ2sQwg==
-X-Received: by 2002:a5d:6984:: with SMTP id g4mr1432291wru.43.1571474179094;
-        Sat, 19 Oct 2019 01:36:19 -0700 (PDT)
+        bh=+aYo/jE0l+r2VpUneeIaMs1HWjXHH9okkuy6GJ4hUcw=;
+        b=Wwd0YrKYrscr05BwqaSOzXzdbj0e1ZggpeNEEXiGrHMe0Ir2GpCngy/965HMKj9qB0
+         SMA0V4yDuNLatW2/X61nWCYD4LfD03+2/mQk7FkcY/gxCxnhiqxlJcstwncfjbQodu7p
+         QDM0Buytv3lNit/e9MQUJP74qkNzJXT+UuoDk9E2HyWtlXjzXDhAz96gcKAAf5tsj4wd
+         Hpo1UAQGGewstkJSkkk5GT3UtsOcKJR1yJ1O9taBcPuaVKuqlT2SzAm21UN9kiafnnlN
+         zNaawd6WXJpaf2brAJQDKLEKg5hCKWjTY5/YBpQscc4YdMdk07YjTXECsVnDr1pHm4SS
+         x+gA==
+X-Gm-Message-State: APjAAAU5kTPsAMN5GuAuLUZChUuEYlQU5YK/saMOeG7ogO5cgl7Fc/jQ
+        pyzao0UwLOTPIgXjXncSjlJIRA==
+X-Google-Smtp-Source: APXvYqwmPVh7r2j/5vnVETV3Itb96Hdk3RmxzyJeWRMyIuLuB2/Jd+9kynJT4aIzf2BZC4ibMUZKdA==
+X-Received: by 2002:a1c:9894:: with SMTP id a142mr10577174wme.70.1571474180785;
+        Sat, 19 Oct 2019 01:36:20 -0700 (PDT)
 Received: from debian-brgl.home ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id u1sm7242627wmc.38.2019.10.19.01.36.17
+        by smtp.gmail.com with ESMTPSA id u1sm7242627wmc.38.2019.10.19.01.36.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Oct 2019 01:36:18 -0700 (PDT)
+        Sat, 19 Oct 2019 01:36:19 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -58,9 +58,9 @@ To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
 Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v6 7/9] backlight: gpio: remove unused fields from platform data
-Date:   Sat, 19 Oct 2019 10:35:54 +0200
-Message-Id: <20191019083556.19466-8-brgl@bgdev.pl>
+Subject: [PATCH v6 8/9] backlight: gpio: use a helper variable for &pdev->dev
+Date:   Sat, 19 Oct 2019 10:35:55 +0200
+Message-Id: <20191019083556.19466-9-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191019083556.19466-1-brgl@bgdev.pl>
 References: <20191019083556.19466-1-brgl@bgdev.pl>
@@ -73,30 +73,82 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Remove the platform data fields that nobody uses.
+Instead of dereferencing pdev each time, use a helper variable for
+the associated device pointer.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/platform_data/gpio_backlight.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/video/backlight/gpio_backlight.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/platform_data/gpio_backlight.h b/include/linux/platform_data/gpio_backlight.h
-index 34179d600360..1a8b5b1946fe 100644
---- a/include/linux/platform_data/gpio_backlight.h
-+++ b/include/linux/platform_data/gpio_backlight.h
-@@ -9,9 +9,6 @@ struct device;
+diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
+index c829b82f5372..7b411f6ee15a 100644
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -78,29 +78,29 @@ static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
  
- struct gpio_backlight_platform_data {
- 	struct device *fbdev;
--	int gpio;
--	int def_value;
--	const char *name;
- };
+ static int gpio_backlight_probe(struct platform_device *pdev)
+ {
+-	struct gpio_backlight_platform_data *pdata =
+-		dev_get_platdata(&pdev->dev);
++	struct device *dev = &pdev->dev;
++	struct gpio_backlight_platform_data *pdata = dev_get_platdata(dev);
+ 	struct backlight_properties props;
+ 	struct backlight_device *bl;
+ 	struct gpio_backlight *gbl;
+ 	int ret, init_brightness;
  
- #endif
+-	gbl = devm_kzalloc(&pdev->dev, sizeof(*gbl), GFP_KERNEL);
++	gbl = devm_kzalloc(dev, sizeof(*gbl), GFP_KERNEL);
+ 	if (gbl == NULL)
+ 		return -ENOMEM;
+ 
+-	gbl->dev = &pdev->dev;
++	gbl->dev = dev;
+ 
+ 	if (pdata)
+ 		gbl->fbdev = pdata->fbdev;
+ 
+-	gbl->def_value = device_property_read_bool(&pdev->dev, "default-on");
++	gbl->def_value = device_property_read_bool(dev, "default-on");
+ 
+-	gbl->gpiod = devm_gpiod_get(&pdev->dev, NULL, GPIOD_ASIS);
++	gbl->gpiod = devm_gpiod_get(dev, NULL, GPIOD_ASIS);
+ 	if (IS_ERR(gbl->gpiod)) {
+ 		ret = PTR_ERR(gbl->gpiod);
+ 		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev,
++			dev_err(dev,
+ 				"Error: The gpios parameter is missing or invalid.\n");
+ 		return ret;
+ 	}
+@@ -108,11 +108,10 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 	memset(&props, 0, sizeof(props));
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = 1;
+-	bl = devm_backlight_device_register(&pdev->dev, dev_name(&pdev->dev),
+-					&pdev->dev, gbl, &gpio_backlight_ops,
+-					&props);
++	bl = devm_backlight_device_register(dev, dev_name(dev), dev, gbl,
++					    &gpio_backlight_ops, &props);
+ 	if (IS_ERR(bl)) {
+-		dev_err(&pdev->dev, "failed to register backlight\n");
++		dev_err(dev, "failed to register backlight\n");
+ 		return PTR_ERR(bl);
+ 	}
+ 
+@@ -122,7 +121,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
+ 	init_brightness = gpio_backlight_get_curr_brightness(bl);
+ 	ret = gpiod_direction_output(gbl->gpiod, init_brightness);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "failed to set initial brightness\n");
++		dev_err(dev, "failed to set initial brightness\n");
+ 		return ret;
+ 	}
+ 
 -- 
 2.23.0
 
