@@ -2,50 +2,50 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 865B8DE98E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 12:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE479DE9FB
+	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 12:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727517AbfJUKfl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 21 Oct 2019 06:35:41 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:34523 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727572AbfJUKfl (ORCPT
+        id S1726725AbfJUKpP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 21 Oct 2019 06:45:15 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46304 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727987AbfJUKpP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 21 Oct 2019 06:35:41 -0400
-Received: by mail-wr1-f66.google.com with SMTP id t16so8194985wrr.1
-        for <linux-fbdev@vger.kernel.org>; Mon, 21 Oct 2019 03:35:39 -0700 (PDT)
+        Mon, 21 Oct 2019 06:45:15 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n15so2562661wrw.13
+        for <linux-fbdev@vger.kernel.org>; Mon, 21 Oct 2019 03:45:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=kCC2K+1Phv+hZCvepsAaxz4dYzO4ZQaseMmOK9Alp0E=;
-        b=t3cX8WuPKhyW/BpGMRXewuy78R7w/7zHRJAn8p3dQKQhukExp9KXRyiHQyZRTZgcFr
-         0/pl5MrCraK5WBczSBLwEjUlqJTKVoS/g+6NITgaiFUHaA7IbHUBno7wgha+PhK8Ezmj
-         5mJSHCJmisfZGWC1TVJG+/bomIXUOeCqAXrKt+0YDkAEWgYrCiIUXsZ8c30JsZpVc/uW
-         2F25TYKY7ZnPOQ/WQe6pOp9mAEwYaNyQVo2o5NzhBoPbgVKO/CdBduSVc9MBnP5TSM6f
-         VLUNnsx7qaQ2y3zEpnuF8EUCKoY7Wl+T/mPi5QVjgndd4zTXy2aXSO8Y1CRecvEAspBy
-         D7kw==
+        bh=CJo1vGs4ohyige0AyAjrZb8zyvlwhFRLiB6YWgX+C3o=;
+        b=lUNMfWi8td8fXPOYsOUuMBA9nWhRm0sBIXWMkl4sTFpawsp/CTPCpFr6O8gwzrzkgk
+         pkxXJHfF/gQ3TH5qexZiA6RIH368flsN8Q+PTma85+Ev6H7rpZsULwO8EYlzGqtRM4gw
+         7rj2u20jS7LAGi79W7V6cauUS6INpXUN64sMSlhP6LYN+rfZ8nrOtLkRdsGrYBQLjaWn
+         rkgJ5ukLRCJEzn35zoa5dDskWA+2SzE5LItepTXVZpSDG8HN32mqrw2Nw26qf845wK/e
+         D25QsJ3zYhtkMR6iFCZBrEwuV8SpHikU8FdSzNcQxPV+dujq4CCtNkJmNqJRRNfiwSe/
+         7iuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kCC2K+1Phv+hZCvepsAaxz4dYzO4ZQaseMmOK9Alp0E=;
-        b=sQ5y9z2sueXsLb9Jkb3wVMRly8DmntFl3E+3v6GUhSc6JqhxPjNXQmgidNgfv5eShQ
-         d5NnX3TPAYDZP0E6WtirtKIi46dvT6WiWwtC+iuotgmdamnvbDCEQwaHydgl2QpqyGgV
-         sZib3geDbCJAeaKnoi/5M1NDcKjcGK4L6ZNsW+5iYBB8HbbOaUNTJFo3Df+R2x6+7XrF
-         4i5sJFoG4/hgm71sGnUQ3/GoNVLyAiE1pxnCfKNNHUgFfYYRxhe19RfM6Faqe3olsm3h
-         NMsRB6WQg2+oIn3tFybAGiiPOZKsgt6z7d3MVz17ml4CM/eYa0DwnOaFtV1WfwtAsEFz
-         dQLg==
-X-Gm-Message-State: APjAAAXhHI/P6/3tKm7Y65N9yVMP7Hdanadh38IF79MK8Mje7npzRaz4
-        Ng8O/+DnOGv3bFIKwjzhHFS8Xw==
-X-Google-Smtp-Source: APXvYqwzq4W2hoqMGfXD+SnL4v4XRwsU52eKiLQU7E1OuYqmacWEauu7fUOpM3T6jtW1TY+PYeZ8Yw==
-X-Received: by 2002:adf:92a5:: with SMTP id 34mr18183433wrn.337.1571654139130;
-        Mon, 21 Oct 2019 03:35:39 -0700 (PDT)
+        bh=CJo1vGs4ohyige0AyAjrZb8zyvlwhFRLiB6YWgX+C3o=;
+        b=F4bQW8KHskWZvyfGNLasin80NrZ8bxlfAuiPhZeUg+QLjfwl61SoIJyOC519Jb53en
+         qws67J58DZu1pvY12dJWZ8irppMUA4FBG/KolcA5xmOBvFjwbNgjyXfcMh+HFVD8n5Ia
+         jFSbX3KVf7jstg9mR/bav2MBdIZvc2rsw7CCyw0gvjnoQ5GlGDuJT2bOC8ldw7ouSKWA
+         OmQhLxszWjqSJrUbip3KzyxzmXPqMBmem+YjOQ+IPH+km1jgQM7n7JVcZR2chzWFCEMo
+         Et3FYW9IjLQ0QrGxxCe9wMZFh3OtwuY8UYn1eTBf/fRzJJ9fQap/aI7hAfXA8Dp85k3O
+         zORA==
+X-Gm-Message-State: APjAAAVQP49agt1LYWDlZ5ASRrws6rlimqlTqZg4pP6KgzhVnbM2XUAf
+        e/PAgcTYcqibYq34OO++Cm2D9bdx8ZxdLA==
+X-Google-Smtp-Source: APXvYqyOQqTEEe1cFPC48dBEDv70QO6nfTk62LM9CE+MhYiYoDPtFAT2lTxhyOfs7dYa1VCwfKoJrQ==
+X-Received: by 2002:a5d:408f:: with SMTP id o15mr17537508wrp.139.1571654711412;
+        Mon, 21 Oct 2019 03:45:11 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id c18sm13475121wrv.10.2019.10.21.03.35.38
+        by smtp.gmail.com with ESMTPSA id x21sm921318wmj.42.2019.10.21.03.45.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2019 03:35:38 -0700 (PDT)
-Date:   Mon, 21 Oct 2019 11:35:36 +0100
+        Mon, 21 Oct 2019 03:45:10 -0700 (PDT)
+Date:   Mon, 21 Oct 2019 11:45:09 +0100
 From:   Daniel Thompson <daniel.thompson@linaro.org>
 To:     Bartosz Golaszewski <brgl@bgdev.pl>
 Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -59,47 +59,61 @@ Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v6 2/9] backlight: gpio: remove stray newline
-Message-ID: <20191021103536.svhda5kmffhm5hjd@holly.lan>
+Subject: Re: [PATCH v6 3/9] backlight: gpio: explicitly set the direction of
+ the GPIO
+Message-ID: <20191021104509.p2bsll3rwe7ica6t@holly.lan>
 References: <20191019083556.19466-1-brgl@bgdev.pl>
- <20191019083556.19466-3-brgl@bgdev.pl>
+ <20191019083556.19466-4-brgl@bgdev.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191019083556.19466-3-brgl@bgdev.pl>
+In-Reply-To: <20191019083556.19466-4-brgl@bgdev.pl>
 User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Oct 19, 2019 at 10:35:49AM +0200, Bartosz Golaszewski wrote:
+On Sat, Oct 19, 2019 at 10:35:50AM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > 
-> Remove a double newline from the driver.
+> The GPIO backlight driver currently requests the line 'as is', without
+> acively setting its direction. This can lead to problems: if the line
+> is in input mode by default, we won't be able to drive it later when
+> updating the status and also reading its initial value doesn't make
+> sense for backlight setting.
+> 
+> Request the line 'as is' initially, so that we can read its value
+> without affecting it but then change the direction to output explicitly
+> when setting the initial brightness.
+> 
+> Also: check the current direction and only read the value if it's output.
 > 
 > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-(wow! that one was easy ;-) )
+Intent looks good to me but...
 
 > ---
->  drivers/video/backlight/gpio_backlight.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/video/backlight/gpio_backlight.c | 23 ++++++++++++++++++-----
+>  1 file changed, 18 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 7e1990199fae..3955b513f2f8 100644
+> index 3955b513f2f8..a36ac3a45b81 100644
 > --- a/drivers/video/backlight/gpio_backlight.c
 > +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -91,7 +91,6 @@ static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
->  	return FB_BLANK_UNBLANK;
->  }
+> @@ -25,9 +25,8 @@ struct gpio_backlight {
+>  	int def_value;
+>  };
 >  
-> -
->  static int gpio_backlight_probe(struct platform_device *pdev)
->  {
->  	struct gpio_backlight_platform_data *pdata =
-> -- 
-> 2.23.0
-> 
+> -static int gpio_backlight_update_status(struct backlight_device *bl)
+> +static int gpio_backlight_get_curr_brightness(struct backlight_device *bl)
+
+This function does not get the current brightness (e.g. what the
+hardware is currently doing). Given we've just nuked the function that 
+*did* get the current brightness from the hardware this isn't an
+acceptable name.
+
+Would like something like calc_brightness() or get_next_brightness().
+
+
+Daniel.
