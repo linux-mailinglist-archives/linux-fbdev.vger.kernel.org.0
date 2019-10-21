@@ -2,118 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE479DE9FB
-	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 12:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 017BBDEA5F
+	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 13:07:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726725AbfJUKpP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 21 Oct 2019 06:45:15 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46304 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727987AbfJUKpP (ORCPT
+        id S1727433AbfJULHP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 21 Oct 2019 07:07:15 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:38808 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727058AbfJULHP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 21 Oct 2019 06:45:15 -0400
-Received: by mail-wr1-f65.google.com with SMTP id n15so2562661wrw.13
-        for <linux-fbdev@vger.kernel.org>; Mon, 21 Oct 2019 03:45:12 -0700 (PDT)
+        Mon, 21 Oct 2019 07:07:15 -0400
+Received: by mail-io1-f67.google.com with SMTP id u8so15350746iom.5;
+        Mon, 21 Oct 2019 04:07:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=CJo1vGs4ohyige0AyAjrZb8zyvlwhFRLiB6YWgX+C3o=;
-        b=lUNMfWi8td8fXPOYsOUuMBA9nWhRm0sBIXWMkl4sTFpawsp/CTPCpFr6O8gwzrzkgk
-         pkxXJHfF/gQ3TH5qexZiA6RIH368flsN8Q+PTma85+Ev6H7rpZsULwO8EYlzGqtRM4gw
-         7rj2u20jS7LAGi79W7V6cauUS6INpXUN64sMSlhP6LYN+rfZ8nrOtLkRdsGrYBQLjaWn
-         rkgJ5ukLRCJEzn35zoa5dDskWA+2SzE5LItepTXVZpSDG8HN32mqrw2Nw26qf845wK/e
-         D25QsJ3zYhtkMR6iFCZBrEwuV8SpHikU8FdSzNcQxPV+dujq4CCtNkJmNqJRRNfiwSe/
-         7iuQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=n1+aLy128QQ7U6cUlqcBOvUp4FNAoRlJ7X0gYCNLLqs=;
+        b=Lx5prVpIW3WfSNwmK/1yUOg1NwGefIdVmw3AMLk1OwAkh0F/Ikkmu1hdJyTYRrSKZx
+         ZTVAx6+TyKBcHZFYf7xIFZJLBHGK19Z/bgfCXkq3XmVO5MG1pHaDMVsRDYLutXPktMCt
+         w5AN5ehKujfzQsE2PS/X4JBX/m5Ne4o8nxKGwnYa7LEupj7z8DjRN4x0aLlmG4RBZZBh
+         HFCm62rSxEjdVHFiWJeVbt+lqtOXM8k3qfGeyW39MG5OH1VZQNXwAC00dAeM7gr8FiUb
+         Qj2H2AaR85J8y+kHc47VPO3vOwdUgEqaqHfI8NlKxLR+lf85LJAuVfm2xycDH8h9WZBt
+         GMnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=CJo1vGs4ohyige0AyAjrZb8zyvlwhFRLiB6YWgX+C3o=;
-        b=F4bQW8KHskWZvyfGNLasin80NrZ8bxlfAuiPhZeUg+QLjfwl61SoIJyOC519Jb53en
-         qws67J58DZu1pvY12dJWZ8irppMUA4FBG/KolcA5xmOBvFjwbNgjyXfcMh+HFVD8n5Ia
-         jFSbX3KVf7jstg9mR/bav2MBdIZvc2rsw7CCyw0gvjnoQ5GlGDuJT2bOC8ldw7ouSKWA
-         OmQhLxszWjqSJrUbip3KzyxzmXPqMBmem+YjOQ+IPH+km1jgQM7n7JVcZR2chzWFCEMo
-         Et3FYW9IjLQ0QrGxxCe9wMZFh3OtwuY8UYn1eTBf/fRzJJ9fQap/aI7hAfXA8Dp85k3O
-         zORA==
-X-Gm-Message-State: APjAAAVQP49agt1LYWDlZ5ASRrws6rlimqlTqZg4pP6KgzhVnbM2XUAf
-        e/PAgcTYcqibYq34OO++Cm2D9bdx8ZxdLA==
-X-Google-Smtp-Source: APXvYqyOQqTEEe1cFPC48dBEDv70QO6nfTk62LM9CE+MhYiYoDPtFAT2lTxhyOfs7dYa1VCwfKoJrQ==
-X-Received: by 2002:a5d:408f:: with SMTP id o15mr17537508wrp.139.1571654711412;
-        Mon, 21 Oct 2019 03:45:11 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id x21sm921318wmj.42.2019.10.21.03.45.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2019 03:45:10 -0700 (PDT)
-Date:   Mon, 21 Oct 2019 11:45:09 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>, linux-sh@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: Re: [PATCH v6 3/9] backlight: gpio: explicitly set the direction of
- the GPIO
-Message-ID: <20191021104509.p2bsll3rwe7ica6t@holly.lan>
-References: <20191019083556.19466-1-brgl@bgdev.pl>
- <20191019083556.19466-4-brgl@bgdev.pl>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=n1+aLy128QQ7U6cUlqcBOvUp4FNAoRlJ7X0gYCNLLqs=;
+        b=BBLciaVSihQ3OeGZLFHcDgid4Z4O4ehahL2C2DLnYugDl5kuUJoplnVy1SXNM496s3
+         l/4tNmT8y/8DN5QVzSSutR5ltZzywDWCwtS/Trc0ZbFZamyues5b2je6D9bjlDc7H+wx
+         oQP1PvG18sFa91LgtoHzB20wY2WDjJFrpmecz0eTukOz856uscqBidJzeILGoq9uk4yP
+         7VIUseukqKGqkpik5unLMCW9VxWaUputWN+wljnv57NNMSVz3SX2NawFCBTivXv8cKs2
+         pKmankDtR+Q0hGdiWP0w85zGjVuSOl4gT8yRFI1L+J/F/AIcSAeGpjhFnmdjtwlyO7Y/
+         ULsQ==
+X-Gm-Message-State: APjAAAXF/95U8mOv7RIjOESAmnLOYC/8kkTA4Ejo+IY0xpVSudfB0nSc
+        DoX7UQFowKE2/WP+zy9iFiovtbtTOXhzIaP5Gxk=
+X-Google-Smtp-Source: APXvYqxJS0FbQFfzoUfhz3RR8Z3vT75zJ5yamE9bYEK37eDUtbpG03UFr6Kz06usvzDFHokXueWoF3QYO1bPcztKW4Q=
+X-Received: by 2002:a5d:9952:: with SMTP id v18mr20134179ios.58.1571656032438;
+ Mon, 21 Oct 2019 04:07:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191019083556.19466-4-brgl@bgdev.pl>
-User-Agent: NeoMutt/20180716
+References: <20191018130507.29893-1-aford173@gmail.com> <712504cb-c0ad-2e3e-bc3b-5cc1b70dd005@ti.com>
+In-Reply-To: <712504cb-c0ad-2e3e-bc3b-5cc1b70dd005@ti.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 21 Oct 2019 06:07:01 -0500
+Message-ID: <CAHCN7xLBY4bCkzEWEgcrdY0SrvMJv4Y2fSzVHO86P9+hUoZi0Q@mail.gmail.com>
+Subject: Re: [PATCH] fbdev/omap: fix max fclk divider for omap36xx
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     linux-fbdev@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Adam Ford <adam.ford@logicpd.com>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Oct 19, 2019 at 10:35:50AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> 
-> The GPIO backlight driver currently requests the line 'as is', without
-> acively setting its direction. This can lead to problems: if the line
-> is in input mode by default, we won't be able to drive it later when
-> updating the status and also reading its initial value doesn't make
-> sense for backlight setting.
-> 
-> Request the line 'as is' initially, so that we can read its value
-> without affecting it but then change the direction to output explicitly
-> when setting the initial brightness.
-> 
-> Also: check the current direction and only read the value if it's output.
-> 
-> Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Mon, Oct 21, 2019 at 3:44 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
+>
+> On 18/10/2019 16:05, Adam Ford wrote:
+> > The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
+> > (in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
+> > correct, and using divider of 32 breaks DSS with a flood or underflows
+> > and sync losts. Dividers up to 31 seem to work fine.
+> >
+> > There is another patch to the DT files to limit the divider correctly,
+> > but as the DSS driver also needs to know the maximum divider to be able
+> > to iteratively find good rates, we also need to do the fix in the DSS
+> > driver.
+> >
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
+> > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> > Cc: stable@vger.kernel.org # linux-4.4.y only
+> >
+> > diff --git a/drivers/video/fbdev/omap2/dss/dss.c b/drivers/video/fbdev/omap2/dss/dss.c
+> > index 9200a8668b49..a57c3a5f4bf8 100644
+> > --- a/drivers/video/fbdev/omap2/dss/dss.c
+> > +++ b/drivers/video/fbdev/omap2/dss/dss.c
+> > @@ -843,7 +843,7 @@ static const struct dss_features omap34xx_dss_feats = {
+> >   };
+> >
+> >   static const struct dss_features omap3630_dss_feats = {
+> > -     .fck_div_max            =       32,
+> > +     .fck_div_max            =       31,
+> >       .dss_fck_multiplier     =       1,
+> >       .parent_clk_name        =       "dpll4_ck",
+> >       .dpi_select_source      =       &dss_dpi_select_source_omap2_omap3,
+> >
+>
+> To clarify, this patch is only for the v4.4 stable, whereas the previous
+> patch was for next merge window and v4.9+ stable. Right?
 
-Intent looks good to me but...
+That is correct.  The patch I did for 4.9+ didn't apply cleanly on
+4.4, so I had to do a separate patch for 4.4.
 
-> ---
->  drivers/video/backlight/gpio_backlight.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-> index 3955b513f2f8..a36ac3a45b81 100644
-> --- a/drivers/video/backlight/gpio_backlight.c
-> +++ b/drivers/video/backlight/gpio_backlight.c
-> @@ -25,9 +25,8 @@ struct gpio_backlight {
->  	int def_value;
->  };
->  
-> -static int gpio_backlight_update_status(struct backlight_device *bl)
-> +static int gpio_backlight_get_curr_brightness(struct backlight_device *bl)
-
-This function does not get the current brightness (e.g. what the
-hardware is currently doing). Given we've just nuked the function that 
-*did* get the current brightness from the hardware this isn't an
-acceptable name.
-
-Would like something like calc_brightness() or get_next_brightness().
-
-
-Daniel.
+adam
+>
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+>
+>   Tomi
+>
+> --
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
