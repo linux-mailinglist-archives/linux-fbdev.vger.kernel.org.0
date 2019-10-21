@@ -2,108 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 017BBDEA5F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 13:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01BA2DEC0C
+	for <lists+linux-fbdev@lfdr.de>; Mon, 21 Oct 2019 14:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727433AbfJULHP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 21 Oct 2019 07:07:15 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:38808 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727058AbfJULHP (ORCPT
+        id S1726767AbfJUMVf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 21 Oct 2019 08:21:35 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:33243 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728098AbfJUMVe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 21 Oct 2019 07:07:15 -0400
-Received: by mail-io1-f67.google.com with SMTP id u8so15350746iom.5;
-        Mon, 21 Oct 2019 04:07:13 -0700 (PDT)
+        Mon, 21 Oct 2019 08:21:34 -0400
+Received: by mail-il1-f196.google.com with SMTP id v2so11793946ilm.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 21 Oct 2019 05:21:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n1+aLy128QQ7U6cUlqcBOvUp4FNAoRlJ7X0gYCNLLqs=;
-        b=Lx5prVpIW3WfSNwmK/1yUOg1NwGefIdVmw3AMLk1OwAkh0F/Ikkmu1hdJyTYRrSKZx
-         ZTVAx6+TyKBcHZFYf7xIFZJLBHGK19Z/bgfCXkq3XmVO5MG1pHaDMVsRDYLutXPktMCt
-         w5AN5ehKujfzQsE2PS/X4JBX/m5Ne4o8nxKGwnYa7LEupj7z8DjRN4x0aLlmG4RBZZBh
-         HFCm62rSxEjdVHFiWJeVbt+lqtOXM8k3qfGeyW39MG5OH1VZQNXwAC00dAeM7gr8FiUb
-         Qj2H2AaR85J8y+kHc47VPO3vOwdUgEqaqHfI8NlKxLR+lf85LJAuVfm2xycDH8h9WZBt
-         GMnA==
+         :cc:content-transfer-encoding;
+        bh=wnGtB4lj7QZakI4bXBl4LOnjDVuoS6i9juH0AaPHUsI=;
+        b=yqzJO5yrEuZ0AujBs35LlMVgp6QrGyJjIObeyazkPjRn1j5wQVKWq6ySSs5n6N4uiw
+         w7AvSYJxB4dwHnN4Ik35WPXIfmBuhe7CsdcgDCSBhAMZJYWjhfy5dXSqH5XFQGMRCiL7
+         IDZuf7KHDhV7oNVgFuYj4nLiL3qZQdEK4nrMHqRbpO0nMszqcZGhHNGy/GBtrkmkYzAL
+         yXeyd+jUgvOFi1sZvsBGEwDj2CQv2SACk7Dp90Yp6dxMObXcSZ58Nk2OSFEIQIPF4hSy
+         Xtzxus/dbLmFmsv9pIP40s+WzRnsGXN55Dx17Z3AwLupEnMqRwCTVQozron87CbKuu/n
+         mb5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n1+aLy128QQ7U6cUlqcBOvUp4FNAoRlJ7X0gYCNLLqs=;
-        b=BBLciaVSihQ3OeGZLFHcDgid4Z4O4ehahL2C2DLnYugDl5kuUJoplnVy1SXNM496s3
-         l/4tNmT8y/8DN5QVzSSutR5ltZzywDWCwtS/Trc0ZbFZamyues5b2je6D9bjlDc7H+wx
-         oQP1PvG18sFa91LgtoHzB20wY2WDjJFrpmecz0eTukOz856uscqBidJzeILGoq9uk4yP
-         7VIUseukqKGqkpik5unLMCW9VxWaUputWN+wljnv57NNMSVz3SX2NawFCBTivXv8cKs2
-         pKmankDtR+Q0hGdiWP0w85zGjVuSOl4gT8yRFI1L+J/F/AIcSAeGpjhFnmdjtwlyO7Y/
-         ULsQ==
-X-Gm-Message-State: APjAAAXF/95U8mOv7RIjOESAmnLOYC/8kkTA4Ejo+IY0xpVSudfB0nSc
-        DoX7UQFowKE2/WP+zy9iFiovtbtTOXhzIaP5Gxk=
-X-Google-Smtp-Source: APXvYqxJS0FbQFfzoUfhz3RR8Z3vT75zJ5yamE9bYEK37eDUtbpG03UFr6Kz06usvzDFHokXueWoF3QYO1bPcztKW4Q=
-X-Received: by 2002:a5d:9952:: with SMTP id v18mr20134179ios.58.1571656032438;
- Mon, 21 Oct 2019 04:07:12 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=wnGtB4lj7QZakI4bXBl4LOnjDVuoS6i9juH0AaPHUsI=;
+        b=PegjdXoRNZzkKEassJJLN2CrfJSLVHGW2aU4+KVRX8ni0295juLQ10z48IZFSaFqAw
+         56cctfdswUMfrVX3RoLZ+yRzFPkxRW8nd8OkCAkQKdr42GWu6hnsAerEKnipxv+ARL5F
+         /ehSlI0av1FOv1XMHa1C5MlHQuUKbritdsRWnReDYnw3hONxKB/mUqBYXcMOkoathqcz
+         iuw1GyS6w6ZgDv+259uNtDFGNTVFCiM9mCg/543f7Wdy7Tl1ZQd4rAn80ZSLqZc9nJPn
+         pUVBXYaS3BfLYeoQVist/AUqP5DzFC7IuYHM7uoYIx6DWaXgC7QZLk+hZx1w/JorcODb
+         VXRg==
+X-Gm-Message-State: APjAAAXoOZ+JNhJghl0/HxYnYMHuQKnLzt/gCv0OihpFUmPnRUm/0QXR
+        8a6geMaXegW7kTyZJPpaF74RK+hWIuc0/2gxjvUeDg==
+X-Google-Smtp-Source: APXvYqxYqbLQZbfxUfYl5IZ0yaJHH03rYbBNlFarkoXOb5pIu+StSQSkslvJykiuWugAbTzjBnKJwDiNY2bcVyEpgSA=
+X-Received: by 2002:a92:410c:: with SMTP id o12mr25941800ila.287.1571660492888;
+ Mon, 21 Oct 2019 05:21:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191018130507.29893-1-aford173@gmail.com> <712504cb-c0ad-2e3e-bc3b-5cc1b70dd005@ti.com>
-In-Reply-To: <712504cb-c0ad-2e3e-bc3b-5cc1b70dd005@ti.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 21 Oct 2019 06:07:01 -0500
-Message-ID: <CAHCN7xLBY4bCkzEWEgcrdY0SrvMJv4Y2fSzVHO86P9+hUoZi0Q@mail.gmail.com>
-Subject: Re: [PATCH] fbdev/omap: fix max fclk divider for omap36xx
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     linux-fbdev@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
+References: <20191019083556.19466-1-brgl@bgdev.pl> <20191019083556.19466-4-brgl@bgdev.pl>
+ <20191021104509.p2bsll3rwe7ica6t@holly.lan>
+In-Reply-To: <20191021104509.p2bsll3rwe7ica6t@holly.lan>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 21 Oct 2019 14:21:21 +0200
+Message-ID: <CAMRc=Md99q+67FAduiixQQs6BVtLXNrC=KbicsuBsB2Jp4O7dw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/9] backlight: gpio: explicitly set the direction of
+ the GPIO
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        stable <stable@vger.kernel.org>
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Oct 21, 2019 at 3:44 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
+pon., 21 pa=C5=BA 2019 o 12:45 Daniel Thompson <daniel.thompson@linaro.org>
+napisa=C5=82(a):
 >
-> On 18/10/2019 16:05, Adam Ford wrote:
-> > The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
-> > (in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
-> > correct, and using divider of 32 breaks DSS with a flood or underflows
-> > and sync losts. Dividers up to 31 seem to work fine.
+> On Sat, Oct 19, 2019 at 10:35:50AM +0200, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 > >
-> > There is another patch to the DT files to limit the divider correctly,
-> > but as the DSS driver also needs to know the maximum divider to be able
-> > to iteratively find good rates, we also need to do the fix in the DSS
-> > driver.
+> > The GPIO backlight driver currently requests the line 'as is', without
+> > acively setting its direction. This can lead to problems: if the line
+> > is in input mode by default, we won't be able to drive it later when
+> > updating the status and also reading its initial value doesn't make
+> > sense for backlight setting.
 > >
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Cc: stable@vger.kernel.org # linux-4.4.y only
+> > Request the line 'as is' initially, so that we can read its value
+> > without affecting it but then change the direction to output explicitly
+> > when setting the initial brightness.
 > >
-> > diff --git a/drivers/video/fbdev/omap2/dss/dss.c b/drivers/video/fbdev/omap2/dss/dss.c
-> > index 9200a8668b49..a57c3a5f4bf8 100644
-> > --- a/drivers/video/fbdev/omap2/dss/dss.c
-> > +++ b/drivers/video/fbdev/omap2/dss/dss.c
-> > @@ -843,7 +843,7 @@ static const struct dss_features omap34xx_dss_feats = {
-> >   };
+> > Also: check the current direction and only read the value if it's outpu=
+t.
 > >
-> >   static const struct dss_features omap3630_dss_feats = {
-> > -     .fck_div_max            =       32,
-> > +     .fck_div_max            =       31,
-> >       .dss_fck_multiplier     =       1,
-> >       .parent_clk_name        =       "dpll4_ck",
-> >       .dpi_select_source      =       &dss_dpi_select_source_omap2_omap3,
-> >
+> > Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 >
-> To clarify, this patch is only for the v4.4 stable, whereas the previous
-> patch was for next merge window and v4.9+ stable. Right?
+> Intent looks good to me but...
+>
+> > ---
+> >  drivers/video/backlight/gpio_backlight.c | 23 ++++++++++++++++++-----
+> >  1 file changed, 18 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/b=
+acklight/gpio_backlight.c
+> > index 3955b513f2f8..a36ac3a45b81 100644
+> > --- a/drivers/video/backlight/gpio_backlight.c
+> > +++ b/drivers/video/backlight/gpio_backlight.c
+> > @@ -25,9 +25,8 @@ struct gpio_backlight {
+> >       int def_value;
+> >  };
+> >
+> > -static int gpio_backlight_update_status(struct backlight_device *bl)
+> > +static int gpio_backlight_get_curr_brightness(struct backlight_device =
+*bl)
+>
+> This function does not get the current brightness (e.g. what the
+> hardware is currently doing). Given we've just nuked the function that
+> *did* get the current brightness from the hardware this isn't an
+> acceptable name.
+>
+> Would like something like calc_brightness() or get_next_brightness().
+>
 
-That is correct.  The patch I did for 4.9+ didn't apply cleanly on
-4.4, so I had to do a separate patch for 4.4.
+Fair enough, the latter sounds good in this case.
 
-adam
->
-> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
->
->   Tomi
->
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Bart
