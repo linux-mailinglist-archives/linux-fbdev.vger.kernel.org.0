@@ -2,49 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 965E9DFFA6
-	for <lists+linux-fbdev@lfdr.de>; Tue, 22 Oct 2019 10:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04739DFFA0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 22 Oct 2019 10:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731373AbfJVIhS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 22 Oct 2019 04:37:18 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:34573 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731240AbfJVIgl (ORCPT
+        id S1731321AbfJVIhG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 22 Oct 2019 04:37:06 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40171 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388416AbfJVIgo (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:36:41 -0400
-Received: by mail-wm1-f68.google.com with SMTP id v3so3461863wmh.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 22 Oct 2019 01:36:40 -0700 (PDT)
+        Tue, 22 Oct 2019 04:36:44 -0400
+Received: by mail-wr1-f68.google.com with SMTP id o28so16995304wro.7
+        for <linux-fbdev@vger.kernel.org>; Tue, 22 Oct 2019 01:36:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=OjHvv8ZdSVaFl2j34zmQMRFMhFwh+26xUwIofDUAWMQ=;
-        b=UkLVmhIaiNsxcswxRm7saAjEeStKBBF+NXde2AaAQaH3O4OXrI2JqpEeNiYtx1tT4k
-         O3tmDJV08ouTAT18mpcXHM49waszOD09C3kcJoqJ1K3QN1xmklwP/eU7Hi3Da1KpH6+p
-         xHzUd7cW8tvQpL0LdK8EzIbsEydpnZXp6EgfJ09/AxanR8iqfgD2W5clxItpQ1XlxvE1
-         Y3NivMmlc1FI2uZ+h4mjPDpGg07DcZC5wE4UFYAR5q7HGQNTlYTFiD5P+jRs/sNoqlfW
-         5Afs8sR94u+Uqox3JbfZuJfuKgrV7Pd2SzSCLdqv7UzJb6rRU5U+dBwxaIfjR8LqHfw9
-         VMTA==
+        bh=l2IW6NowdeBUIPfd3VNaI3dgAIYTgpRJtcprF0UeLqs=;
+        b=Tyg8K1E7cMRcer3+lkdqXntnVHJHzQPSYcVjamEEFJC1NLQo2ieybp5MQTeXGwl/Uq
+         zhr5KPDI5yz9T/b+emE6PSD9KM/UxQNivFwNLeZOg9zsR2gWQOGvC3tffOlSpVBYh7+t
+         cWHjmw/HsPmptGNShMH32AAfH4DkvXiRmOdkUDl8ACoFpAPMWcP2x/kv3TYfrAp4U8Kx
+         KXSyo2AOrh1/P94ayGaqAHg/3pHgCo3vlEyxTYmTl6Wl7eyOknXg+aVyW5O24T42gp1/
+         L2bVu0PeNJm20e/mIbgIRf5RozmLSZGRyVMDo/yks8vys0xy714h7zCMq2WEo25H/ef+
+         E4hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=OjHvv8ZdSVaFl2j34zmQMRFMhFwh+26xUwIofDUAWMQ=;
-        b=TiiBdXgPOT3iiSaK483wto0yAOC+GD1Qu0sGoD2qDvYkUfLs/sLseD4xX3hddkov9R
-         lvL4gOIxiKOFWoHvWP8tVWz3qy8bGzhHtnrbk60LhM+BSbqYHIDJuKnhzI2W4RBE846b
-         l3JPy65Cx9n4q1X42gr+LObPBW9a/s08OqsGgh1xamH3dBE/F8xi6xPuCMp7j6VpEeLf
-         R6ONTVpa8XEm9RTvy2L9fRml9vCBTP+jx045cJdC/l6bDcdVkcfLvK1wcD1bWlgsGAIY
-         FM0y60sfg0uL8yvJKW7MdIlyn7Ws0GYKg9ggKoTt2IfswcLdN+I9etG3LqjYMFAsUln1
-         be9w==
-X-Gm-Message-State: APjAAAXAUxWbYHy5zx62GaeoGegYRf7dKDmbINShrRJrJ2OjBXYDzDW8
-        eGf0NGSZa0GpJtkB8PxVAeQSOQ==
-X-Google-Smtp-Source: APXvYqwKHDyg0m8WqC6lLMl8/nhXbBRKfJRxg4+8ou9ARo5YAW/NNdc3UuYo+8foYS7XDWsI6AWPPA==
-X-Received: by 2002:a7b:cb03:: with SMTP id u3mr1840598wmj.126.1571733399937;
-        Tue, 22 Oct 2019 01:36:39 -0700 (PDT)
+        bh=l2IW6NowdeBUIPfd3VNaI3dgAIYTgpRJtcprF0UeLqs=;
+        b=W9PQxYJB5cZIrpAcVJ0EH1t2gjBMqlIVnEyUThSaVrglN46ELW3JFKc1ChbUHA4yFo
+         BV23JXO47Qa6eVBuVOzLz0U0xesKWKsI8dn34yPyKQEU7ec7bu0Ezzibo3RMdtdvarVo
+         zuPOyMjdYwjTZgcnU2mAqfIKAWm/22b5k1RrvOoXl+QrQ6aXxVo1OUL9u2kiPp02+vRZ
+         VteUkQqMNaIQZx0z339+TB/5l+PaCI6qZh1Jb6cdBGCvkZj+w0LxCAe5vU2EHJw8+Y8+
+         d90uG5nlSrH6dfZ+n38kpDa67kQUIBM6TNvbxS4iyJRgcHUxm9v/nfRH0e1nZhJHkynY
+         btwA==
+X-Gm-Message-State: APjAAAX5PSmubDtr7LdpiLb/zjt2/SvalsTdo+RzzFanJy+lQsx9+/US
+        jHb7V7c943ski55QErate4KOGg==
+X-Google-Smtp-Source: APXvYqwWQlSbpw30v85cKgMt5omU5YH11fs8JlUz5yLbRA7yJFDrCsz1qIfQZi8zu1xwIlHvVCtOTg==
+X-Received: by 2002:adf:f306:: with SMTP id i6mr2237564wro.209.1571733400949;
+        Tue, 22 Oct 2019 01:36:40 -0700 (PDT)
 Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
-        by smtp.gmail.com with ESMTPSA id g17sm17115253wrq.58.2019.10.22.01.36.38
+        by smtp.gmail.com with ESMTPSA id g17sm17115253wrq.58.2019.10.22.01.36.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2019 01:36:39 -0700 (PDT)
+        Tue, 22 Oct 2019 01:36:40 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
@@ -58,9 +58,9 @@ To:     Yoshinori Sato <ysato@users.sourceforge.jp>,
 Cc:     linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH v7 3/9] backlight: gpio: explicitly set the direction of the GPIO
-Date:   Tue, 22 Oct 2019 10:36:24 +0200
-Message-Id: <20191022083630.28175-4-brgl@bgdev.pl>
+Subject: [PATCH v7 4/9] sh: ecovec24: add additional properties to the backlight device
+Date:   Tue, 22 Oct 2019 10:36:25 +0200
+Message-Id: <20191022083630.28175-5-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191022083630.28175-1-brgl@bgdev.pl>
 References: <20191022083630.28175-1-brgl@bgdev.pl>
@@ -73,86 +73,84 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-The GPIO backlight driver currently requests the line 'as is', without
-acively setting its direction. This can lead to problems: if the line
-is in input mode by default, we won't be able to drive it later when
-updating the status and also reading its initial value doesn't make
-sense for backlight setting.
-
-Request the line 'as is' initially, so that we can read its value
-without affecting it but then change the direction to output explicitly
-when setting the initial brightness.
-
-Also: check the current direction and only read the value if it's output.
+Add a GPIO lookup entry and a device property for GPIO backlight to the
+board file. Tie them to the platform device which is now registered using
+platform_device_register_full() because of the properties. These changes
+are inactive now but will be used once the gpio backlight driver is
+modified.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/video/backlight/gpio_backlight.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ arch/sh/boards/mach-ecovec24/setup.c | 30 +++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/video/backlight/gpio_backlight.c b/drivers/video/backlight/gpio_backlight.c
-index 3955b513f2f8..52f17c9ca1c3 100644
---- a/drivers/video/backlight/gpio_backlight.c
-+++ b/drivers/video/backlight/gpio_backlight.c
-@@ -25,9 +25,8 @@ struct gpio_backlight {
- 	int def_value;
+diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
+index acaa97459531..aaa8ea62636f 100644
+--- a/arch/sh/boards/mach-ecovec24/setup.c
++++ b/arch/sh/boards/mach-ecovec24/setup.c
+@@ -371,6 +371,19 @@ static struct platform_device lcdc_device = {
+ 	},
  };
  
--static int gpio_backlight_update_status(struct backlight_device *bl)
-+static int gpio_backlight_get_next_brightness(struct backlight_device *bl)
- {
--	struct gpio_backlight *gbl = bl_get_data(bl);
- 	int brightness = bl->props.brightness;
- 
- 	if (bl->props.power != FB_BLANK_UNBLANK ||
-@@ -35,6 +34,14 @@ static int gpio_backlight_update_status(struct backlight_device *bl)
- 	    bl->props.state & (BL_CORE_SUSPENDED | BL_CORE_FBBLANK))
- 		brightness = 0;
- 
-+	return brightness;
-+}
++static struct gpiod_lookup_table gpio_backlight_lookup = {
++	.dev_id		= "gpio-backlight.0",
++	.table = {
++		GPIO_LOOKUP("sh7724_pfc", GPIO_PTR1, NULL, GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
 +
-+static int gpio_backlight_update_status(struct backlight_device *bl)
-+{
-+	struct gpio_backlight *gbl = bl_get_data(bl);
-+	int brightness = gpio_backlight_get_next_brightness(bl);
++static struct property_entry gpio_backlight_props[] = {
++	PROPERTY_ENTRY_BOOL("default-on"),
++	{ }
++};
 +
- 	gpiod_set_value_cansleep(gbl->gpiod, brightness);
+ static struct gpio_backlight_platform_data gpio_backlight_data = {
+ 	.fbdev = &lcdc_device.dev,
+ 	.gpio = GPIO_PTR1,
+@@ -378,13 +391,15 @@ static struct gpio_backlight_platform_data gpio_backlight_data = {
+ 	.name = "backlight",
+ };
  
- 	return 0;
-@@ -85,7 +92,8 @@ static int gpio_backlight_initial_power_state(struct gpio_backlight *gbl)
- 		return gbl->def_value ? FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
+-static struct platform_device gpio_backlight_device = {
++static const struct platform_device_info gpio_backlight_device_info = {
+ 	.name = "gpio-backlight",
+-	.dev = {
+-		.platform_data = &gpio_backlight_data,
+-	},
++	.data = &gpio_backlight_data,
++	.size_data = sizeof(gpio_backlight_data),
++	.properties = gpio_backlight_props,
+ };
  
- 	/* if the enable GPIO is disabled, do not enable the backlight */
--	if (gpiod_get_value_cansleep(gbl->gpiod) == 0)
-+	if (gpiod_get_direction(gbl->gpiod) == 0 &&
-+	    gpiod_get_value_cansleep(gbl->gpiod) == 0)
- 		return FB_BLANK_POWERDOWN;
++static struct platform_device *gpio_backlight_device;
++
+ /* CEU0 */
+ static struct ceu_platform_data ceu0_pdata = {
+ 	.num_subdevs			= 2,
+@@ -1006,7 +1021,6 @@ static struct platform_device *ecovec_devices[] __initdata = {
+ 	&usb1_common_device,
+ 	&usbhs_device,
+ 	&lcdc_device,
+-	&gpio_backlight_device,
+ 	&keysc_device,
+ 	&cn12_power,
+ #if defined(CONFIG_MMC_SDHI) || defined(CONFIG_MMC_SDHI_MODULE)
+@@ -1462,6 +1476,12 @@ static int __init arch_setup(void)
+ #endif
+ #endif
  
- 	return FB_BLANK_UNBLANK;
-@@ -98,7 +106,7 @@ static int gpio_backlight_probe(struct platform_device *pdev)
- 	struct backlight_properties props;
- 	struct backlight_device *bl;
- 	struct gpio_backlight *gbl;
--	int ret;
-+	int ret, init_brightness;
- 
- 	gbl = devm_kzalloc(&pdev->dev, sizeof(*gbl), GFP_KERNEL);
- 	if (gbl == NULL)
-@@ -151,7 +159,12 @@ static int gpio_backlight_probe(struct platform_device *pdev)
- 	bl->props.power = gpio_backlight_initial_power_state(gbl);
- 	bl->props.brightness = 1;
- 
--	backlight_update_status(bl);
-+	init_brightness = gpio_backlight_get_next_brightness(bl);
-+	ret = gpiod_direction_output(gbl->gpiod, init_brightness);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to set initial brightness\n");
-+		return ret;
-+	}
- 
- 	platform_set_drvdata(pdev, bl);
- 	return 0;
++	gpiod_add_lookup_table(&gpio_backlight_lookup);
++	gpio_backlight_device = platform_device_register_full(
++					&gpio_backlight_device_info);
++	if (IS_ERR(gpio_backlight_device))
++		return PTR_ERR(gpio_backlight_device);
++
+ 	return platform_add_devices(ecovec_devices,
+ 				    ARRAY_SIZE(ecovec_devices));
+ }
 -- 
 2.23.0
 
