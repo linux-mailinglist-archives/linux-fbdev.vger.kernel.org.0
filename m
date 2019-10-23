@@ -2,164 +2,79 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C651E20A7
-	for <lists+linux-fbdev@lfdr.de>; Wed, 23 Oct 2019 18:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42BFE247F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 23 Oct 2019 22:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436511AbfJWQax (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 23 Oct 2019 12:30:53 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:43409 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436533AbfJWQax (ORCPT
+        id S1733302AbfJWUVq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 23 Oct 2019 16:21:46 -0400
+Received: from mail-wm1-f42.google.com ([209.85.128.42]:54440 "EHLO
+        mail-wm1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389316AbfJWUVp (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 23 Oct 2019 12:30:53 -0400
-Received: by mail-qt1-f196.google.com with SMTP id t20so33155264qtr.10;
-        Wed, 23 Oct 2019 09:30:52 -0700 (PDT)
+        Wed, 23 Oct 2019 16:21:45 -0400
+Received: by mail-wm1-f42.google.com with SMTP id g7so303428wmk.4
+        for <linux-fbdev@vger.kernel.org>; Wed, 23 Oct 2019 13:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=SucdjKTGQcanI63L94XU0ndX+0QHtlZGsavJY3p6BqA=;
-        b=NhyKubbIifRt3AhK5Egtx9QnOPj1v//tXutsSnBwRmGH1pPaeiFJm04d/udCUcFHVA
-         2pgEq3W3mODPiR3aXH2hqyK87JAc/WoFuGI9Nrs6pj9lwRnZZ+n3e+OgoLVqH5EICScL
-         tRfVk7Em36cn5n/p+w2+VimZLKyjzoAm6huuRee3vgPld5M30vipDo3yQnLzRXDwOgZe
-         6zemSjktm3iZEQpJgVb4BcV4FkAajvF1iEKmUWeyApUatAR9iBtJrN6k8ia+kFRUxzRp
-         DYhpm2kFg4eNwlHTL/MKF6//+R6djzAY5zCucG9n+hV/gqhRMyINYIv05502j1RxHv3h
-         KRAg==
+        d=rasmusvillemoes.dk; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=JvlbyXuPyFTwAied7QnteSmnSAks0nnDSQo1KMTiaVE=;
+        b=Xj42kaG68KB2VqgfIb5WaldkwjZPYh7u9UuIqn13LK273eVvgXA00Y6Cswp8d1l7qz
+         T4/UEKKv7M1R1vyNyt7A7scnybyl1yjgaLmKbryMQECyRBLKXIo5TbE8jP6iPxa6Lsp1
+         erAhoFjfmB25XdzGmrcYkhnwlrc9jd7YJADBI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=SucdjKTGQcanI63L94XU0ndX+0QHtlZGsavJY3p6BqA=;
-        b=RyDuK2EKbJ4MGKpsCfdnM342lHpH+h4SGw+8/PSgwd7VfCOL7kHdlkC4R0JixbsvBB
-         OwFb+pW0lgVkio7+dfJF0KceKbIP5zAjsJ9oqIhi2Pjlp99pXHMRPdSVbi4QCfed1erD
-         wpMAijxPHG/haEhoVSqKk/TV6LxXQd3jKecXQ9DE/lF4D7NSXxDQGNHj2Ae0BXlSc38L
-         HaSkxxvLVsS/ZbIHyyHlEZYtU41cTvnMWPr15wQuedflTmTelKl+/To5OkvufEmW4MdD
-         6CE/qkJoyD/5mGEpe1gBBV2nDaJcay2hGxwXBUMGgedosIWtX8HjIq+bb2a5Qyqj+SSu
-         7LFQ==
-X-Gm-Message-State: APjAAAV75Mi/73/0Mrc4JW+cvHeyvk1zI3BatRZcG2mxZuliNUUYdBpv
-        mjEUvaHit/ew5Lbsxz3zbP75Ls0L0pU=
-X-Google-Smtp-Source: APXvYqyG2V4NiZpZM4P1guHPLXEeKEO2Xp95ekklTvi1Lr7qsHknOkOqzKB3ugzL0sKKYdXh7EYSgg==
-X-Received: by 2002:ac8:fda:: with SMTP id f26mr10287344qtk.34.1571848251776;
-        Wed, 23 Oct 2019 09:30:51 -0700 (PDT)
-Received: from localhost.localdomain ([201.53.210.37])
-        by smtp.gmail.com with ESMTPSA id t13sm8349067qtn.18.2019.10.23.09.30.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2019 09:30:51 -0700 (PDT)
-From:   Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-To:     outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org
-Cc:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-Subject: [PATCH v3 2/2] staging: sm750fb: format description of parameters in accel.h
-Date:   Wed, 23 Oct 2019 13:30:14 -0300
-Message-Id: <20191023163016.30217-3-gabrielabittencourt00@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191023163016.30217-1-gabrielabittencourt00@gmail.com>
-References: <20191023163016.30217-1-gabrielabittencourt00@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JvlbyXuPyFTwAied7QnteSmnSAks0nnDSQo1KMTiaVE=;
+        b=U5zDvZp15DIoQqDUvSRSkCXyvc2oXC9S/B1ir5+BQeerA5s5DSqRtPhcDlmfLHagCk
+         mFeYZxe3GIAzuKVcRJn/lPMOw+pGY2Q1YYsGDjg7Iw+c15QFxpc4KusYYBfPR6qGNoM1
+         8LWjLBePl7nQGGD5bVxw0lDcsc0bhEJLScTEcyKuCCGcZNjNp4/MfMNdDK4Vp4aW3akH
+         33Pu3c53vMbdMC8lhadfXuE4xxrj/ifqiLXCYmuNzvN6fSSU8sA+r1swHKRBDzym/iQK
+         D3/edNIlUT5lzJOf+iU5ZdeeefiG1fyNCMvBZNoD1rpXq4ytILisR/5Piz+VqeX8MiWC
+         vyKA==
+X-Gm-Message-State: APjAAAVVToxO7QbLyCEawMl7U95mzJ3LXS+bZB8uPt8anjaNlqAs+63V
+        WAOqUGVJTjTF9OHNQCOV4F8uXg==
+X-Google-Smtp-Source: APXvYqx/TQ4n7MgqmhhUNyCHVlVoWUDwk6UPKxs7AhubFXQlhlXDfD+59nnAXt9e3Fhnux5l8ALyIw==
+X-Received: by 2002:a7b:c011:: with SMTP id c17mr1570137wmb.95.1571862102054;
+        Wed, 23 Oct 2019 13:21:42 -0700 (PDT)
+Received: from [192.168.1.149] (ip-5-186-115-54.cgn.fibianet.dk. [5.186.115.54])
+        by smtp.gmail.com with ESMTPSA id v128sm365873wmb.14.2019.10.23.13.21.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 23 Oct 2019 13:21:41 -0700 (PDT)
+Subject: Re: [PATCH v2 1/4] backlight: pwm_bl: fix cie1913 comments and
+ constant
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191008120327.24208-1-linux@rasmusvillemoes.dk>
+ <20191008120327.24208-2-linux@rasmusvillemoes.dk>
+ <20191014072710.GE4545@dell>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <d716cb92-4d72-f661-2ef9-2771846569e8@rasmusvillemoes.dk>
+Date:   Wed, 23 Oct 2019 22:21:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191014072710.GE4545@dell>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Formatting comments in file drivers/staging/sm750fb/sm750_accel.h.
+On 14/10/2019 09.27, Lee Jones wrote:
 
-Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+> Applied, thanks.
 
----
+I'm not seeing the series in next-20191023, should it be there?
 
-Changes v3:
- - Apply changes in file accel.h
----
- drivers/staging/sm750fb/sm750_accel.h | 75 ++++++++++++++++-----------
- 1 file changed, 46 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/staging/sm750fb/sm750_accel.h b/drivers/staging/sm750fb/sm750_accel.h
-index c4f42002a50f..c16350b5a310 100644
---- a/drivers/staging/sm750fb/sm750_accel.h
-+++ b/drivers/staging/sm750fb/sm750_accel.h
-@@ -194,33 +194,50 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
- 				u32 x, u32 y, u32 width, u32 height,
- 				u32 color, u32 rop);
- 
--int sm750_hw_copyarea(
--struct lynx_accel *accel,
--unsigned int sBase,  /* Address of source: offset in frame buffer */
--unsigned int sPitch, /* Pitch value of source surface in BYTE */
--unsigned int sx,
--unsigned int sy,     /* Starting coordinate of source surface */
--unsigned int dBase,  /* Address of destination: offset in frame buffer */
--unsigned int dPitch, /* Pitch value of destination surface in BYTE */
--unsigned int bpp,    /* Color depth of destination surface */
--unsigned int dx,
--unsigned int dy,     /* Starting coordinate of destination surface */
--unsigned int width,
--unsigned int height, /* width and height of rectangle in pixel value */
--unsigned int rop2);
--
--int sm750_hw_imageblit(struct lynx_accel *accel,
--		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
--		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
--		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
--		 u32 dBase,    /* Address of destination: offset in frame buffer */
--		 u32 dPitch,   /* Pitch value of destination surface in BYTE */
--		 u32 bytePerPixel,      /* Color depth of destination surface */
--		 u32 dx,
--		 u32 dy,       /* Starting coordinate of destination surface */
--		 u32 width,
--		 u32 height,   /* width and height of rectangle in pixel value */
--		 u32 fColor,   /* Foreground color (corresponding to a 1 in the monochrome data */
--		 u32 bColor,   /* Background color (corresponding to a 0 in the monochrome data */
--		 u32 rop2);
-+/**
-+ * sm750_hm_copyarea
-+ * @sBase: Address of source: offset in frame buffer
-+ * @sPitch: Pitch value of source surface in BYTE
-+ * @sx: Starting x coordinate of source surface
-+ * @sy: Starting y coordinate of source surface
-+ * @dBase: Address of destination: offset in frame buffer
-+ * @dPitch: Pitch value of destination surface in BYTE
-+ * @Bpp: Color depth of destination surface
-+ * @dx: Starting x coordinate of destination surface
-+ * @dy: Starting y coordinate of destination surface
-+ * @width: width of rectangle in pixel value
-+ * @height: height of rectangle in pixel value
-+ * @rop2: ROP value
-+ */
-+int sm750_hw_copyarea(struct lynx_accel *accel,
-+		      unsigned int sBase, unsigned int sPitch,
-+		      unsigned int sx, unsigned int sy,
-+		      unsigned int dBase, unsigned int dPitch,
-+		      unsigned int Bpp, unsigned int dx, unsigned int dy,
-+		      unsigned int width, unsigned int height,
-+		      unsigned int rop2);
-+
-+/**
-+ * sm750_hw_imageblit
-+ * @pSrcbuf: pointer to start of source buffer in system memory
-+ * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top down
-+ *>-----      and -ive mean button up
-+ * @startBit: Mono data can start at any bit in a byte, this value should be
-+ *>-----      0 to 7
-+ * @dBase: Address of destination: offset in frame buffer
-+ * @dPitch: Pitch value of destination surface in BYTE
-+ * @bytePerPixel: Color depth of destination surface
-+ * @dx: Starting x coordinate of destination surface
-+ * @dy: Starting y coordinate of destination surface
-+ * @width: width of rectangle in pixel value
-+ * @height: height of rectangle in pixel value
-+ * @fColor: Foreground color (corresponding to a 1 in the monochrome data
-+ * @bColor: Background color (corresponding to a 0 in the monochrome data
-+ * @rop2: ROP value
-+ */
-+int sm750_hw_imageblit(struct lynx_accel *accel, const char *pSrcbuf,
-+		       u32 srcDelta, u32 startBit, u32 dBase, u32 dPitch,
-+		       u32 bytePerPixel, u32 dx, u32 dy, u32 width,
-+		       u32 height, u32 fColor, u32 bColor, u32 rop2);
-+
- #endif
--- 
-2.20.1
-
+Rasmus
