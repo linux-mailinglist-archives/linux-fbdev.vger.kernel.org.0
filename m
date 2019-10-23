@@ -2,197 +2,263 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F5C4E1BFE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 23 Oct 2019 15:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E6FE1C08
+	for <lists+linux-fbdev@lfdr.de>; Wed, 23 Oct 2019 15:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405688AbfJWNNM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 23 Oct 2019 09:13:12 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:39355 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732284AbfJWNNL (ORCPT
+        id S1732349AbfJWNN2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 23 Oct 2019 09:13:28 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:33027 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405714AbfJWNN1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 23 Oct 2019 09:13:11 -0400
-Received: by mail-qt1-f194.google.com with SMTP id t8so14626269qtc.6;
-        Wed, 23 Oct 2019 06:13:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ohRiKoQhkRpaqt9hJhdQvzQzR+t9Fsg+JL8RFCA1XEE=;
-        b=OQbB3ahkNcYiRxKZW8WuEY2S5xKzEhTNB/yLXCb1NRI8+c7ma5fAM9xNufogBcCpNg
-         V5siEzpBSch8ntre1ZdrN8kiOhhZX8AIUIELqxg5XWp11+Wn6SMTVEtWb7T2sKxwiCn0
-         AQxaWPGf9ayNFpQPdasmdYfV4vXuSjxaqeI9mN4kSB6ETuY4xI+Cotu/jBQHp22f94va
-         p/daWLWBPAxV9x2V2EwGYeMLWAj69yJelgOqu+70IE33ofgUlvNXfugBhApkps3Og5rD
-         EWc6s2CMCuPgPeMhpAWbVIbo0Y6+/csSEDR85pxw0Ixxi3LOUdDn46zToyKDyl/Y9Rkm
-         rUyg==
+        Wed, 23 Oct 2019 09:13:27 -0400
+Received: by mail-ed1-f67.google.com with SMTP id c4so15728049edl.0;
+        Wed, 23 Oct 2019 06:13:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ohRiKoQhkRpaqt9hJhdQvzQzR+t9Fsg+JL8RFCA1XEE=;
-        b=DoIz3spvPkLtDquuEb/8qiz4ilIodeCmq1bzhkJTr88exROWR1baoRj87140eMkapC
-         ec13RXHBDDsat61gHQ6782bFbYJ+exYL4Q43URW3ZAr8jDRlHBpvjtiA3ryTAZ8PQYRQ
-         LPFmVGP+JkpDwG3HHOc78seS+YG1NDY6a9i3/nDI7nVmyBvDRMJcdCo2hKQTasJevNFZ
-         5XJrjC9nyttlUl2JijW7bmHvM6P4G3bFTZmKm7yRkobR1Xz4dsE/1Y3TTBhw2IzVj6y+
-         CDeKLmlJmwVnioRgSfrdpD9tm9vjsrRSFRxnM5iVVh4zGkPxBJHM7qczTJP95MMAbSn5
-         NrGw==
-X-Gm-Message-State: APjAAAWde9d6OD8yQ9zSx7gms6fLDA07im8Z+jwrfV8ts++P4x7ire9R
-        Bp/6HGsq0A4YY0IB05dVQDs=
-X-Google-Smtp-Source: APXvYqxUNw3eGYQPCjmEl+DfjUt6gNVhcVwP5JaM+9whBAfh/v4ApQcotxJJS9TmAmZJoSI+LPypCQ==
-X-Received: by 2002:aed:3063:: with SMTP id 90mr7472229qte.242.1571836390299;
-        Wed, 23 Oct 2019 06:13:10 -0700 (PDT)
-Received: from localhost.localdomain ([201.53.210.37])
-        by smtp.gmail.com with ESMTPSA id p22sm9863919qkk.92.2019.10.23.06.13.07
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=o54Jyg7LaPMTM/R2ezpXAUg6vHkjUZaxwTxf8dd6jXk=;
+        b=qhqmL5gdouqSgD5QVpG81sTI3R3KOtcjzZIrNZIWSUG5ZNYdmCdOSslCn64pZVgdx/
+         fSNfEVAfob6EaqnuYgeqbxGu0U/g8vvB1wYTAd/4KfRUFvBglWwhAn1WZDBHvB6cYsDk
+         2GZL75nT+dNoVkm6qPGmFK7QCI55HwhXqqXm60tzluR75iHixp7SLOc3aUUK57XOrKqk
+         QqO2PGSnGtdt4+J+sQ6HL4mgSthVMsER3kfgR3PWy0aneNGir1rpeCqnIOncIVDOgQSX
+         mQf5zo7fKjgVVKnB48oRKlE0CupCC0ai0bo7HygthNy3BVQ1dnALnZeEEePGRvQSdda8
+         8v1w==
+X-Gm-Message-State: APjAAAXUEd9o+7iii/oUQVATVpHwGd/BlFGWRMWRpeWyp+0z9i7GHenX
+        hrNctcFeighXUFUCCPY4WSA=
+X-Google-Smtp-Source: APXvYqxJH5rltespiv1WDhAborQbNiDE5+2CReq8AP71JjFfyUdkdzYR7L1/bvADJTpzB8Q1SXMf1g==
+X-Received: by 2002:a17:906:704:: with SMTP id y4mr32582518ejb.259.1571836404632;
+        Wed, 23 Oct 2019 06:13:24 -0700 (PDT)
+Received: from pi3 ([194.230.155.217])
+        by smtp.googlemail.com with ESMTPSA id v5sm269620edd.90.2019.10.23.06.13.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2019 06:13:09 -0700 (PDT)
-From:   Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-To:     outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org
-Cc:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-Subject: [PATCH v2] staging: sm750fb: Format description of parameters the to kernel doc format
-Date:   Wed, 23 Oct 2019 10:12:53 -0300
-Message-Id: <20191023131253.20819-2-gabrielabittencourt00@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191023131253.20819-1-gabrielabittencourt00@gmail.com>
-References: <20191023131253.20819-1-gabrielabittencourt00@gmail.com>
+        Wed, 23 Oct 2019 06:13:23 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 15:13:21 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kukjin Kim <kgene@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 28/36] fbdev: s3c2410fb: remove mach header dependency
+Message-ID: <20191023131321.GH11048@pi3>
+References: <20191010202802.1132272-1-arnd@arndb.de>
+ <20191010203043.1241612-1-arnd@arndb.de>
+ <20191010203043.1241612-28-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191010203043.1241612-28-arnd@arndb.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Cluster comments that describes parameters of functions and create one
-single comment before the function in kernel doc format.
+On Thu, Oct 10, 2019 at 10:30:12PM +0200, Arnd Bergmann wrote:
+> The s3c2410fb driver is too deeply intertwined with the s3c24xx
+> platform code. Change it in a way that avoids the use of platform
+> header files but having all interface data in a platform_data
+> header, and the private register definitions next to the driver
+> itself.
+> 
+> One ugly bit here is that the driver pokes directly into gpio
+> registers, which are owned by another driver. Passing the
+> mapped addresses in platform_data is somewhat suboptimal, but
+> it is a small improvement over the previous version.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/mach-s3c24xx/include/mach/fb.h       |  2 --
+>  arch/arm/mach-s3c24xx/mach-amlm5900.c         |  7 ++--
+>  arch/arm/mach-s3c24xx/mach-anubis.c           |  1 -
+>  arch/arm/mach-s3c24xx/mach-at2440evb.c        |  3 +-
+>  arch/arm/mach-s3c24xx/mach-bast.c             |  3 +-
+>  arch/arm/mach-s3c24xx/mach-gta02.c            |  2 +-
+>  arch/arm/mach-s3c24xx/mach-h1940.c            |  7 ++--
+>  arch/arm/mach-s3c24xx/mach-jive.c             | 10 ++++--
+>  arch/arm/mach-s3c24xx/mach-mini2440.c         |  9 +++--
+>  arch/arm/mach-s3c24xx/mach-n30.c              |  3 +-
+>  arch/arm/mach-s3c24xx/mach-osiris.c           |  1 -
+>  arch/arm/mach-s3c24xx/mach-qt2410.c           |  3 +-
+>  arch/arm/mach-s3c24xx/mach-rx1950.c           |  8 +++--
+>  arch/arm/mach-s3c24xx/mach-rx3715.c           |  7 ++--
+>  arch/arm/mach-s3c24xx/mach-smdk2413.c         |  3 +-
+>  arch/arm/mach-s3c24xx/mach-smdk2416.c         |  1 -
+>  arch/arm/mach-s3c24xx/mach-smdk2440.c         |  8 +++--
+>  arch/arm/mach-s3c24xx/mach-smdk2443.c         |  3 +-
+>  arch/arm/mach-s3c24xx/mach-vstms.c            |  3 +-
+>  arch/arm/plat-samsung/devs.c                  |  2 +-
+>  .../video/fbdev/s3c2410fb-regs-lcd.h          | 28 ++++------------
+>  drivers/video/fbdev/s3c2410fb.c               | 16 +++++----
+>  .../linux/platform_data}/fb-s3c2410.h         | 33 ++++++++++++++++++-
+>  23 files changed, 98 insertions(+), 65 deletions(-)
+>  delete mode 100644 arch/arm/mach-s3c24xx/include/mach/fb.h
+>  rename arch/arm/mach-s3c24xx/include/mach/regs-lcd.h => drivers/video/fbdev/s3c2410fb-regs-lcd.h (84%)
+>  rename {arch/arm/plat-samsung/include/plat => include/linux/platform_data}/fb-s3c2410.h (57%)
+> 
+> diff --git a/arch/arm/mach-s3c24xx/include/mach/fb.h b/arch/arm/mach-s3c24xx/include/mach/fb.h
+> deleted file mode 100644
+> index 4e539cb8b884..000000000000
+> --- a/arch/arm/mach-s3c24xx/include/mach/fb.h
+> +++ /dev/null
+> @@ -1,2 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0 */
+> -#include <plat/fb-s3c2410.h>
+> diff --git a/arch/arm/mach-s3c24xx/mach-amlm5900.c b/arch/arm/mach-s3c24xx/mach-amlm5900.c
+> index 40ad23b52bc0..ef6de1b1d0c6 100644
+> --- a/arch/arm/mach-s3c24xx/mach-amlm5900.c
+> +++ b/arch/arm/mach-s3c24xx/mach-amlm5900.c
+> @@ -30,9 +30,8 @@
+>  #include <mach/hardware.h>
+>  #include <asm/irq.h>
+>  #include <asm/mach-types.h>
+> -#include <mach/fb.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  
+> -#include <mach/regs-lcd.h>
+>  #include <mach/regs-gpio.h>
+>  #include <mach/gpio-samsung.h>
+>  
+> @@ -194,13 +193,17 @@ static struct s3c2410fb_mach_info __initdata amlm5900_fb_info = {
+>  
+>  	.gpccon =	0xaaaaaaaa,
+>  	.gpccon_mask =	0xffffffff,
+> +	.gpccon_reg =	S3C2410_GPCCON,
+>  	.gpcup =	0x0000ffff,
+>  	.gpcup_mask =	0xffffffff,
+> +	.gpcup_reg =	S3C2410_GPCUP,
+>  
+>  	.gpdcon =	0xaaaaaaaa,
+>  	.gpdcon_mask =	0xffffffff,
+> +	.gpdcon_reg =	S3C2410_GPDCON,
+>  	.gpdup =	0x0000ffff,
+>  	.gpdup_mask =	0xffffffff,
+> +	.gpdup_reg =	S3C2410_GPDUP,
+>  };
+>  #endif
+>  
+> diff --git a/arch/arm/mach-s3c24xx/mach-anubis.c b/arch/arm/mach-s3c24xx/mach-anubis.c
+> index 072966dcad78..e1a73274e90b 100644
+> --- a/arch/arm/mach-s3c24xx/mach-anubis.c
+> +++ b/arch/arm/mach-s3c24xx/mach-anubis.c
+> @@ -29,7 +29,6 @@
+>  #include <asm/mach-types.h>
+>  
+>  #include <mach/regs-gpio.h>
+> -#include <mach/regs-lcd.h>
+>  #include <mach/gpio-samsung.h>
+>  #include <linux/platform_data/mtd-nand-s3c2410.h>
+>  #include <linux/platform_data/i2c-s3c2410.h>
+> diff --git a/arch/arm/mach-s3c24xx/mach-at2440evb.c b/arch/arm/mach-s3c24xx/mach-at2440evb.c
+> index b2199906e678..bfda6dd2a9d5 100644
+> --- a/arch/arm/mach-s3c24xx/mach-at2440evb.c
+> +++ b/arch/arm/mach-s3c24xx/mach-at2440evb.c
+> @@ -25,12 +25,11 @@
+>  #include <asm/mach/irq.h>
+>  
+>  #include <mach/hardware.h>
+> -#include <mach/fb.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  #include <asm/irq.h>
+>  #include <asm/mach-types.h>
+>  
+>  #include <mach/regs-gpio.h>
+> -#include <mach/regs-lcd.h>
+>  #include <mach/gpio-samsung.h>
+>  #include <linux/platform_data/mtd-nand-s3c2410.h>
+>  #include <linux/platform_data/i2c-s3c2410.h>
+> diff --git a/arch/arm/mach-s3c24xx/mach-bast.c b/arch/arm/mach-s3c24xx/mach-bast.c
+> index a7c3955ae8f6..cc941b5030ea 100644
+> --- a/arch/arm/mach-s3c24xx/mach-bast.c
+> +++ b/arch/arm/mach-s3c24xx/mach-bast.c
+> @@ -40,10 +40,9 @@
+>  #include <asm/mach/irq.h>
+>  #include <asm/mach-types.h>
+>  
+> -#include <mach/fb.h>
+>  #include <mach/hardware.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  #include <mach/regs-gpio.h>
+> -#include <mach/regs-lcd.h>
+>  #include <mach/gpio-samsung.h>
+>  
+>  #include <plat/cpu.h>
+> diff --git a/arch/arm/mach-s3c24xx/mach-gta02.c b/arch/arm/mach-s3c24xx/mach-gta02.c
+> index 61b8c6badeb8..1e42782dbd30 100644
+> --- a/arch/arm/mach-s3c24xx/mach-gta02.c
+> +++ b/arch/arm/mach-s3c24xx/mach-gta02.c
+> @@ -57,8 +57,8 @@
+>  #include <linux/platform_data/touchscreen-s3c2410.h>
+>  #include <linux/platform_data/usb-ohci-s3c2410.h>
+>  #include <linux/platform_data/usb-s3c2410_udc.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  
+> -#include <mach/fb.h>
+>  #include <mach/hardware.h>
+>  #include <mach/regs-gpio.h>
+>  #include <mach/regs-irq.h>
+> diff --git a/arch/arm/mach-s3c24xx/mach-h1940.c b/arch/arm/mach-s3c24xx/mach-h1940.c
+> index 446891e23511..d56e3befa459 100644
+> --- a/arch/arm/mach-s3c24xx/mach-h1940.c
+> +++ b/arch/arm/mach-s3c24xx/mach-h1940.c
+> @@ -47,11 +47,10 @@
+>  
+>  #include <sound/uda1380.h>
+>  
+> -#include <mach/fb.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  #include <mach/hardware.h>
+>  #include <mach/regs-clock.h>
+>  #include <mach/regs-gpio.h>
+> -#include <mach/regs-lcd.h>
+>  #include <mach/gpio-samsung.h>
+>  
+>  #include <plat/cpu.h>
+> @@ -211,12 +210,16 @@ static struct s3c2410fb_mach_info h1940_fb_info __initdata = {
+>  	.lpcsel =	0x02,
+>  	.gpccon =	0xaa940659,
+>  	.gpccon_mask =	0xffffc0f0,
+> +	.gpccon_reg =	S3C2410_GPCCON,
+>  	.gpcup =	0x0000ffff,
+>  	.gpcup_mask =	0xffffffff,
+> +	.gpcup_reg =	S3C2410_GPCUP,
+>  	.gpdcon =	0xaa84aaa0,
+>  	.gpdcon_mask =	0xffffffff,
+> +	.gpdcon_reg =	S3C2410_GPDCON,
+>  	.gpdup =	0x0000faff,
+>  	.gpdup_mask =	0xffffffff,
+> +	.gpdup_reg =	S3C2410_GPDUP,
+>  };
+>  
+>  static int power_supply_init(struct device *dev)
+> diff --git a/arch/arm/mach-s3c24xx/mach-jive.c b/arch/arm/mach-s3c24xx/mach-jive.c
+> index 885e8f12e4b9..3b33132b2334 100644
+> --- a/arch/arm/mach-s3c24xx/mach-jive.c
+> +++ b/arch/arm/mach-s3c24xx/mach-jive.c
+> @@ -32,8 +32,7 @@
+>  #include <linux/platform_data/i2c-s3c2410.h>
+>  
+>  #include <mach/regs-gpio.h>
+> -#include <mach/regs-lcd.h>
+> -#include <mach/fb.h>
+> +#include <linux/platform_data/fb-s3c2410.h>
+>  #include <mach/gpio-samsung.h>
+>  
+>  #include <asm/mach-types.h>
+> @@ -321,6 +320,7 @@ static struct s3c2410fb_mach_info jive_lcd_config = {
+>  	 * data. */
+>  
+>  	.gpcup		= (0xf << 1) | (0x3f << 10),
+> +	.gpcup_reg =	S3C2410_GPCUP,
 
-Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+Nits: indentation before/after '=' looks wrong. Tab should be
+before '=', one space after.
 
----
-
-Changes v2:
- - Add name of function at the begining of comment
- - Separate each parameter in individuals lines
-
-Here are the commands that I used to test my documentation and the
-respective outputs:
-
-$ kdoc_function sm750_acc.c sm750_hw_imageblit man
-In NAME:
- there is the name of the function, but it's without a brief description
-In ARGUMENTS:
- argument 'accel' is presented as '-- undescribed --'
-
-$ kdoc_function sm750_acc.c sm750_hw_copyarea man
-In NAME:
- there is the name of the function, but it's without a brief description
-In ARGUMENTS:
- argument 'accel' is presented as '-- undescribed --'
-
-$ kernel-doc -none sm750_accel.c
-2 Warnings:
-sm750_accel.c:155: warning: Function parameter or member 'accel'
-			    not described in 'sm750_hw_copyarea'
-sm750_accel.c:321: warning: Function parameter or member 'accel'
-			    not described in 'sm750_hw_imageblit'
-
-I appreciate Randy's explanation about how to test documentation.
-Thank you very much.
----
- drivers/staging/sm750fb/sm750_accel.c | 72 ++++++++++++++++-----------
- 1 file changed, 44 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
-index dbcbbd1055da..645813a87490 100644
---- a/drivers/staging/sm750fb/sm750_accel.c
-+++ b/drivers/staging/sm750fb/sm750_accel.c
-@@ -130,20 +130,28 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
- 	return 0;
- }
- 
--int sm750_hw_copyarea(
--struct lynx_accel *accel,
--unsigned int sBase,  /* Address of source: offset in frame buffer */
--unsigned int sPitch, /* Pitch value of source surface in BYTE */
--unsigned int sx,
--unsigned int sy,     /* Starting coordinate of source surface */
--unsigned int dBase,  /* Address of destination: offset in frame buffer */
--unsigned int dPitch, /* Pitch value of destination surface in BYTE */
--unsigned int Bpp,    /* Color depth of destination surface */
--unsigned int dx,
--unsigned int dy,     /* Starting coordinate of destination surface */
--unsigned int width,
--unsigned int height, /* width and height of rectangle in pixel value */
--unsigned int rop2)   /* ROP value */
-+/**
-+ * sm750_hm_copyarea
-+ * @sBase: Address of source: offset in frame buffer
-+ * @sPitch: Pitch value of source surface in BYTE
-+ * @sx: Starting x coordinate of source surface
-+ * @sy: Starting y coordinate of source surface
-+ * @dBase: Address of destination: offset in frame buffer
-+ * @dPitch: Pitch value of destination surface in BYTE
-+ * @Bpp: Color depth of destination surface
-+ * @dx: Starting x coordinate of destination surface
-+ * @dy: Starting y coordinate of destination surface
-+ * @width: width of rectangle in pixel value
-+ * @height: height of rectangle in pixel value
-+ * @rop2: ROP value
-+ */
-+int sm750_hw_copyarea(struct lynx_accel *accel,
-+		      unsigned int sBase, unsigned int sPitch,
-+		      unsigned int sx, unsigned int sy,
-+		      unsigned int dBase, unsigned int dPitch,
-+		      unsigned int Bpp, unsigned int dx, unsigned int dy,
-+		      unsigned int width, unsigned int height,
-+		      unsigned int rop2)
- {
- 	unsigned int nDirection, de_ctrl;
- 
-@@ -288,20 +296,28 @@ static unsigned int deGetTransparency(struct lynx_accel *accel)
- 	return de_ctrl;
- }
- 
--int sm750_hw_imageblit(struct lynx_accel *accel,
--		 const char *pSrcbuf, /* pointer to start of source buffer in system memory */
--		 u32 srcDelta,          /* Pitch value (in bytes) of the source buffer, +ive means top down and -ive mean button up */
--		 u32 startBit, /* Mono data can start at any bit in a byte, this value should be 0 to 7 */
--		 u32 dBase,    /* Address of destination: offset in frame buffer */
--		 u32 dPitch,   /* Pitch value of destination surface in BYTE */
--		 u32 bytePerPixel,      /* Color depth of destination surface */
--		 u32 dx,
--		 u32 dy,       /* Starting coordinate of destination surface */
--		 u32 width,
--		 u32 height,   /* width and height of rectangle in pixel value */
--		 u32 fColor,   /* Foreground color (corresponding to a 1 in the monochrome data */
--		 u32 bColor,   /* Background color (corresponding to a 0 in the monochrome data */
--		 u32 rop2)     /* ROP value */
-+/**
-+ * sm750_hw_imageblit
-+ * @pSrcbuf: pointer to start of source buffer in system memory
-+ * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top down
-+ *	      and -ive mean button up
-+ * @startBit: Mono data can start at any bit in a byte, this value should be
-+ *	      0 to 7
-+ * @dBase: Address of destination: offset in frame buffer
-+ * @dPitch: Pitch value of destination surface in BYTE
-+ * @bytePerPixel: Color depth of destination surface
-+ * @dx: Starting x coordinate of destination surface
-+ * @dy: Starting y coordinate of destination surface
-+ * @width: width of rectangle in pixel value
-+ * @height: height of rectangle in pixel value
-+ * @fColor: Foreground color (corresponding to a 1 in the monochrome data
-+ * @bColor: Background color (corresponding to a 0 in the monochrome data
-+ * @rop2: ROP value
-+ */
-+int sm750_hw_imageblit(struct lynx_accel *accel, const char *pSrcbuf,
-+		       u32 srcDelta, u32 startBit, u32 dBase, u32 dPitch,
-+		       u32 bytePerPixel, u32 dx, u32 dy, u32 width,
-+		       u32 height, u32 fColor, u32 bColor, u32 rop2)
- {
- 	unsigned int ulBytesPerScan;
- 	unsigned int ul4BytesPerScan;
--- 
-2.20.1
+Best regards,
+Krzysztof
 
