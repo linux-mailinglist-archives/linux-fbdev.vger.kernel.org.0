@@ -2,103 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 764E1E3840
-	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Oct 2019 18:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E09CE3D90
+	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Oct 2019 22:50:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503656AbfJXQjU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 24 Oct 2019 12:39:20 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:44749 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503655AbfJXQjU (ORCPT
+        id S1727464AbfJXUuG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 24 Oct 2019 16:50:06 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:31578 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728364AbfJXUuG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 24 Oct 2019 12:39:20 -0400
-Received: by mail-qt1-f195.google.com with SMTP id z22so18269402qtq.11;
-        Thu, 24 Oct 2019 09:39:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1qxEej9ZhTTEroEC+KQyp8Bt7h8gyIv3VgjtcTdAbGc=;
-        b=cChmRdzX28Kw1sZcn+RGsEflTdu+W0jowQ985PnjZ9JMREt9BwXphzbCAZw7enPVRO
-         FK3gUvfSYrD5tWP9/Xzr9PX7cpuu7ymqz6odOX8F4rK1198PnxVJ0rnX+6/UdzGP/sms
-         VXbz+zNUgnuMB11mVCofXcA3L1BGMVeXGx41c1C9ItAgdMzJ/jZbmyVj6+081eI4A8PW
-         ySnhjBu1TgDfl2QSn9S1KjUnMcbRvi9x6QpHUORPLiWZBgtnqTS8mwyZDCznUiEDFJdW
-         PDRnNI2VZ3f2RR0CqGFo2bCFtka+FIkrrKZine4AAuMzOqykTtuqDrYKTLrCDuuqnBgh
-         9J4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1qxEej9ZhTTEroEC+KQyp8Bt7h8gyIv3VgjtcTdAbGc=;
-        b=BT1TNt6aLAJhRYbOpxalS7aHdaTGP2vhQEhNiBiXXcGfysIIxkMERg9JdsaxtaOcbl
-         dJjyfM/Ua1/QhlXRLNul5QR3KOMkZxG2iv9//TX5NeWakqhun3I6cba7PMiqgPtB0wxC
-         6v3ODynnXNTZ5UAkPe1Sw7gzyIynBsELqCF+Cs4fcjOX4nCAO9qLoH3oj74SSI3+a9pl
-         F2KPJ0zuClpytLEr2VEoRMauoqoUW/i890uGpR1vqWlRIaLQ6hfXaBoHv1U+/wet4hOe
-         r34Z3jz0bLit1bokVfDxaMjqa4zhDqGcFNWW2916J0dJSXoU8juNxVoNZpqY2N0KaVu7
-         A8Pg==
-X-Gm-Message-State: APjAAAWJ7jSIT8KAYWT3j0OYATeaQWfYYIURWQma9ctyGWyf/TegG2jS
-        7hFvIWV6HNGF1nc7feN/vNM=
-X-Google-Smtp-Source: APXvYqx5wkL3B+B9EVLQiK3NwD0XfT33+WW76uAeEeNoCepjIHPbYXy9SGJ7HSpve1JTxF1pjnaCwA==
-X-Received: by 2002:a0c:fe45:: with SMTP id u5mr15592957qvs.17.1571935157520;
-        Thu, 24 Oct 2019 09:39:17 -0700 (PDT)
-Received: from localhost.localdomain ([201.53.210.37])
-        by smtp.gmail.com with ESMTPSA id l15sm14660121qkj.16.2019.10.24.09.39.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2019 09:39:16 -0700 (PDT)
-From:   Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-To:     outreachy-kernel@googlegroups.com, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org,
-        trivial@kernel.org
-Cc:     Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
-Subject: [PATCH 3/3] staging: sm750fb: align arguments with open parenthesis in file sm750_cursor.h
-Date:   Thu, 24 Oct 2019 13:38:22 -0300
-Message-Id: <20191024163822.7157-4-gabrielabittencourt00@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191024163822.7157-1-gabrielabittencourt00@gmail.com>
-References: <20191024163822.7157-1-gabrielabittencourt00@gmail.com>
+        Thu, 24 Oct 2019 16:50:06 -0400
+Received: from belgarion ([90.76.41.223])
+        by mwinf5d87 with ME
+        id HYps210044otT8A03Ypz5w; Thu, 24 Oct 2019 22:50:03 +0200
+X-ME-Helo: belgarion
+X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
+X-ME-Date: Thu, 24 Oct 2019 22:50:03 +0200
+X-ME-IP: 90.76.41.223
+From:   Robert Jarzmik <robert.jarzmik@free.fr>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        IDE-ML <linux-ide@vger.kernel.org>,
+        "open list\:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        linux-leds@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-rtc@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
+Subject: Re: [PATCH 00/46] ARM: pxa: towards multiplatform support
+References: <20191018154052.1276506-1-arnd@arndb.de>
+        <87v9slg9k5.fsf@belgarion.home>
+        <CAK8P3a1JDtHsOW=iaxEycbJ4TBkR9MHUyDMeJnwxCtb=tefnBQ@mail.gmail.com>
+        <CAK8P3a0376Anmoc8VWXcEBg+z2B+1vcxJoywYYROBQNxpVmZuA@mail.gmail.com>
+        <87r239f2g8.fsf@belgarion.home>
+X-URL:  http://belgarath.falguerolles.org/
+Date:   Thu, 24 Oct 2019 22:49:51 +0200
+In-Reply-To: <87r239f2g8.fsf@belgarion.home> (Robert Jarzmik's message of
+        "Sat, 19 Oct 2019 12:35:03 +0200")
+Message-ID: <87eez1rhqo.fsf@belgarion.home>
+User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/26 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Cleans up checks of "Alignment should match open parenthesis"
-in file sm750_cursor.h
+Robert Jarzmik <robert.jarzmik@free.fr> writes:
 
-Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
----
- drivers/staging/sm750fb/sm750_cursor.h | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+>>> I've now pushed it to
+>>>
+>>> git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
+>>> pxa-multiplatform
+>>
+>> Sorry for the duplication, I had some problems with email configuration
+>> so my reply got rejected, let's see if it goes through this time.
+> I have it now, thanks, I'll test and review as soon as I can.
+>
+> Cheers.
 
-diff --git a/drivers/staging/sm750fb/sm750_cursor.h b/drivers/staging/sm750fb/sm750_cursor.h
-index 16ac07eb58d6..b59643dd61ed 100644
---- a/drivers/staging/sm750fb/sm750_cursor.h
-+++ b/drivers/staging/sm750fb/sm750_cursor.h
-@@ -5,14 +5,11 @@
- /* hw_cursor_xxx works for voyager,718 and 750 */
- void sm750_hw_cursor_enable(struct lynx_cursor *cursor);
- void sm750_hw_cursor_disable(struct lynx_cursor *cursor);
--void sm750_hw_cursor_setSize(struct lynx_cursor *cursor,
--						int w, int h);
--void sm750_hw_cursor_setPos(struct lynx_cursor *cursor,
--						int x, int y);
--void sm750_hw_cursor_setColor(struct lynx_cursor *cursor,
--						u32 fg, u32 bg);
--void sm750_hw_cursor_setData(struct lynx_cursor *cursor,
--			u16 rop, const u8 *data, const u8 *mask);
--void sm750_hw_cursor_setData2(struct lynx_cursor *cursor,
--			u16 rop, const u8 *data, const u8 *mask);
-+void sm750_hw_cursor_setSize(struct lynx_cursor *cursor, int w, int h);
-+void sm750_hw_cursor_setPos(struct lynx_cursor *cursor, int x, int y);
-+void sm750_hw_cursor_setColor(struct lynx_cursor *cursor, u32 fg, u32 bg);
-+void sm750_hw_cursor_setData(struct lynx_cursor *cursor, u16 rop,
-+			     const u8 *data, const u8 *mask);
-+void sm750_hw_cursor_setData2(struct lynx_cursor *cursor, u16 rop,
-+			      const u8 *data, const u8 *mask);
- #endif
+Ok Arnd, I have a preliminary test report.
+
+I tested only the pxa27x (mioa701), which happens to have a lot of drivers, and
+only the platform_data flavor (ie. no device-tree test yet). Apart a panic in
+the regulator framework (which is a known issue [1]), your version seems
+equivalent so far in terms of runtime to Linux 5.4-rc3).
+
+The sound and RTC seem broken, but not by you ...
+
+I'll continue the test onwards for pxa3xx and pxa2xx when I'll gather a bit of
+time, and try to review as well the mach-pxa part.
+
+Cheers.
+
 -- 
-2.20.1
+Robert
 
+[1] https://lore.kernel.org/patchwork/patch/1130436/
