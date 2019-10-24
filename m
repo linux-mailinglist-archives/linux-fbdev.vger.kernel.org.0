@@ -2,173 +2,193 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3474E2A81
-	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Oct 2019 08:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6C9E2AE0
+	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Oct 2019 09:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437773AbfJXGrb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 24 Oct 2019 02:47:31 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:34897 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437771AbfJXGrb (ORCPT
+        id S2437894AbfJXHPY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 24 Oct 2019 03:15:24 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:50579 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437885AbfJXHPY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 24 Oct 2019 02:47:31 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l10so24237401wrb.2
-        for <linux-fbdev@vger.kernel.org>; Wed, 23 Oct 2019 23:47:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=UclEmd8YX++NCf8kPKkA+46Pa3LHuXqjjWzo9Z3XdYM=;
-        b=SO7SqUbR2Vy59Qq6nC05Ir/m4UFWccS9Wg42Qz+tm9gLjOJBtQVpbadit9ajsImgB8
-         c8fISobck8KfXDkvhVEAnmQQnj/ONNNXGGRdnlPWFSRZNoHaRE7yF/P0cfwLmTpjqdj/
-         o5OntZbUc+OPgDWBm113VxzXeoq8Q1/qkHgFnq10DL28gdpjzZWxSDUC/Yj86kvQO/ty
-         kIU+AlVHw0avbfCfFkY02yWNr9dkyKePz29U7S/ucuVeQxt4fC7HtLggOu4eqCEw+pZo
-         jrazNHTw0zilOZKo4xWqKHCeWWdeLZLc51W7hWl1BXY5W8cXvNGqmOH+TqBFnCufB1qz
-         ViCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=UclEmd8YX++NCf8kPKkA+46Pa3LHuXqjjWzo9Z3XdYM=;
-        b=PbA+DKPcxOLZpmlMiUnY30DwuvrFqWcJDqGf7hKgkUeq6mcdvpB1cCV5Lv2bdsl79Q
-         QC2KRbak5sFOQirJF5njNDuzxzL3hKYggjCh14BefhMGP3ZqR8FulUtf+Ax0oe6Sy6zt
-         28azTxR+47DwYROrtG2EJ/61ifDCF39Hagav7P2YdmIOhiUhkicjQlnEzlt+M+bYuqQM
-         m9mAlLJ/gVMYP7ydhHvJqxRKxRXVkPPdcRTyYDZlMYAQHTkzTY7UMrljIJNS03rY83iU
-         8rhbqFFN9Cfm2F+tP65Fl1A+8ux/YqJLQvp8D5Use08pdhYnUabP5mX0pLyIMwPrsS8q
-         U6gw==
-X-Gm-Message-State: APjAAAWjRjgyC7LpMgWrnjhBXuX1133queDPYPjTF2NYIXRBf5sCIswu
-        TPSwFIKJAk4RIDEReX0/wAS3Mg==
-X-Google-Smtp-Source: APXvYqypA7QDjMUQSuSTEtC5xtMr2uR+W7rMNaXx381pXfKuL3lSrfZeffkl8xEc2dweA8MOowi2LA==
-X-Received: by 2002:adf:e34b:: with SMTP id n11mr2183760wrj.250.1571899648399;
-        Wed, 23 Oct 2019 23:47:28 -0700 (PDT)
-Received: from dell ([95.149.164.99])
-        by smtp.gmail.com with ESMTPSA id q11sm1694268wmq.21.2019.10.23.23.47.27
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 23 Oct 2019 23:47:27 -0700 (PDT)
-Date:   Thu, 24 Oct 2019 07:47:26 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thu, 24 Oct 2019 03:15:24 -0400
+X-Originating-IP: 93.2.121.143
+Received: from uno.localdomain (143.121.2.93.rev.sfr.net [93.2.121.143])
+        (Authenticated sender: jacopo@jmondi.org)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 5F255E0015;
+        Thu, 24 Oct 2019 07:15:16 +0000 (UTC)
+Date:   Thu, 24 Oct 2019 09:17:03 +0200
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
         Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
         Linux-sh list <linux-sh@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
-Message-ID: <20191024064726.GB15843@dell>
+Message-ID: <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
 References: <20191022083630.28175-1-brgl@bgdev.pl>
  <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
  <20191023155941.q563d3cfizre4zvt@holly.lan>
+ <20191024064726.GB15843@dell>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="wfpai4ndwplq7h5c"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191023155941.q563d3cfizre4zvt@holly.lan>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191024064726.GB15843@dell>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 23 Oct 2019, Daniel Thompson wrote:
 
-> On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wrote:
-> > wt., 22 paź 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.pl> napisał(a):
-> > >
-> > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > >
-> > > While working on my other series related to gpio-backlight[1] I noticed
-> > > that we could simplify the driver if we made the only user of platform
-> > > data use GPIO lookups and device properties. This series tries to do
-> > > that.
-> > >
-> > > First two patches contain minor fixes. Third patch makes the driver
-> > > explicitly drive the GPIO line. Fourth patch adds all necessary data
-> > > structures to ecovec24. Patch 5/9 unifies much of the code for both
-> > > pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
-> > > fields. Last two patches contain additional improvements for the GPIO
-> > > backlight driver while we're already modifying it.
-> > >
-> > > I don't have access to this HW but hopefully this works. Only compile
-> > > tested.
-> > >
-> > > [1] https://lkml.org/lkml/2019/6/25/900
-> > >
-> > > v1 -> v2:
-> > > - rebased on top of v5.3-rc1 and adjusted to the recent changes from Andy
-> > > - added additional two patches with minor improvements
-> > >
-> > > v2 -> v3:
-> > > - in patch 7/7: used initializers to set values for pdata and dev local vars
-> > >
-> > > v3 -> v4:
-> > > - rebased on top of v5.4-rc1
-> > > - removed changes that are no longer relevant after commit ec665b756e6f
-> > >   ("backlight: gpio-backlight: Correct initial power state handling")
-> > > - added patch 7/7
-> > >
-> > > v4 -> v5:
-> > > - in patch 7/7: added a comment replacing the name of the function being
-> > >   pulled into probe()
-> > >
-> > > v5 -> v6:
-> > > - added a patch making the driver explicitly set the direction of the GPIO
-> > >   to output
-> > > - added a patch removing a redundant newline
-> > >
-> > > v6 -> v7:
-> > > - renamed the function calculating the new GPIO value for status update
-> > > - collected more tags
-> > >
-> > > Bartosz Golaszewski (9):
-> > >   backlight: gpio: remove unneeded include
-> > >   backlight: gpio: remove stray newline
-> > >   backlight: gpio: explicitly set the direction of the GPIO
-> > >   sh: ecovec24: add additional properties to the backlight device
-> > >   backlight: gpio: simplify the platform data handling
-> > >   sh: ecovec24: don't set unused fields in platform data
-> > >   backlight: gpio: remove unused fields from platform data
-> > >   backlight: gpio: use a helper variable for &pdev->dev
-> > >   backlight: gpio: pull gpio_backlight_initial_power_state() into probe
-> > >
-> > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
-> > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++------------
-> > >  include/linux/platform_data/gpio_backlight.h |   3 -
-> > >  3 files changed, 69 insertions(+), 95 deletions(-)
-> > >
-> > >
-> > 
-> > Lee, Daniel, Jingoo,
-> > 
-> > Jacopo is travelling until November 1st and won't be able to test this
-> > again before this date. Do you think you can pick it up and in case
-> > anything's broken on SH, we can fix it after v5.5-rc1, so that it
-> > doesn't miss another merge window?
+--wfpai4ndwplq7h5c
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-November 1st (-rc6) will be fine.
+Hello,
 
-I'd rather apply it late-tested than early-non-tested.
+On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
+> On Wed, 23 Oct 2019, Daniel Thompson wrote:
+>
+> > On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wrote:
+> > > wt., 22 pa=C5=BA 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.pl> nap=
+isa=C5=82(a):
+> > > >
+> > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> > > >
+> > > > While working on my other series related to gpio-backlight[1] I not=
+iced
+> > > > that we could simplify the driver if we made the only user of platf=
+orm
+> > > > data use GPIO lookups and device properties. This series tries to do
+> > > > that.
+> > > >
+> > > > First two patches contain minor fixes. Third patch makes the driver
+> > > > explicitly drive the GPIO line. Fourth patch adds all necessary data
+> > > > structures to ecovec24. Patch 5/9 unifies much of the code for both
+> > > > pdata and non-pdata cases. Patches 6-7/9 remove unused platform data
+> > > > fields. Last two patches contain additional improvements for the GP=
+IO
+> > > > backlight driver while we're already modifying it.
+> > > >
+> > > > I don't have access to this HW but hopefully this works. Only compi=
+le
+> > > > tested.
+> > > >
+> > > > [1] https://lkml.org/lkml/2019/6/25/900
+> > > >
+> > > > v1 -> v2:
+> > > > - rebased on top of v5.3-rc1 and adjusted to the recent changes fro=
+m Andy
+> > > > - added additional two patches with minor improvements
+> > > >
+> > > > v2 -> v3:
+> > > > - in patch 7/7: used initializers to set values for pdata and dev l=
+ocal vars
+> > > >
+> > > > v3 -> v4:
+> > > > - rebased on top of v5.4-rc1
+> > > > - removed changes that are no longer relevant after commit ec665b75=
+6e6f
+> > > >   ("backlight: gpio-backlight: Correct initial power state handling=
+")
+> > > > - added patch 7/7
+> > > >
+> > > > v4 -> v5:
+> > > > - in patch 7/7: added a comment replacing the name of the function =
+being
+> > > >   pulled into probe()
+> > > >
+> > > > v5 -> v6:
+> > > > - added a patch making the driver explicitly set the direction of t=
+he GPIO
+> > > >   to output
+> > > > - added a patch removing a redundant newline
+> > > >
+> > > > v6 -> v7:
+> > > > - renamed the function calculating the new GPIO value for status up=
+date
+> > > > - collected more tags
+> > > >
+> > > > Bartosz Golaszewski (9):
+> > > >   backlight: gpio: remove unneeded include
+> > > >   backlight: gpio: remove stray newline
+> > > >   backlight: gpio: explicitly set the direction of the GPIO
+> > > >   sh: ecovec24: add additional properties to the backlight device
+> > > >   backlight: gpio: simplify the platform data handling
+> > > >   sh: ecovec24: don't set unused fields in platform data
+> > > >   backlight: gpio: remove unused fields from platform data
+> > > >   backlight: gpio: use a helper variable for &pdev->dev
+> > > >   backlight: gpio: pull gpio_backlight_initial_power_state() into p=
+robe
+> > > >
+> > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
+> > > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++--------=
+----
+> > > >  include/linux/platform_data/gpio_backlight.h |   3 -
+> > > >  3 files changed, 69 insertions(+), 95 deletions(-)
+> > > >
+> > > >
+> > >
+> > > Lee, Daniel, Jingoo,
+> > >
+> > > Jacopo is travelling until November 1st and won't be able to test this
+> > > again before this date. Do you think you can pick it up and in case
+> > > anything's broken on SH, we can fix it after v5.5-rc1, so that it
+> > > doesn't miss another merge window?
+>
+> November 1st (-rc6) will be fine.
+>
+> I'd rather apply it late-tested than early-non-tested.
+>
+> Hopefully Jacopo can prioritise testing this on Thursday or Friday,
+> since Monday will be -rc7 which is really cutting it fine.
 
-Hopefully Jacopo can prioritise testing this on Thursday or Friday,
-since Monday will be -rc7 which is really cutting it fine.
+I'll do my best, I'll get home Friday late afternoon :)
 
-> Outside of holidays and other emergencies Lee usually collects up the
-> patches for backlight. I'm not sure when he plans to close things for
-> v5.5.
 
-In special cases such as these I can remain flexible.
+>
+> > Outside of holidays and other emergencies Lee usually collects up the
+> > patches for backlight. I'm not sure when he plans to close things for
+> > v5.5.
+>
+> In special cases such as these I can remain flexible.
+>
+> --
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+> Linaro Services Technical Lead
+> Linaro.org =E2=94=82 Open source software for ARM SoCs
+> Follow Linaro: Facebook | Twitter | Blog
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+--wfpai4ndwplq7h5c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl2xT+kACgkQcjQGjxah
+VjyWSRAAxMG+doVs6jKDU7YNSv/u74lWN3O4ddF1jNPc3tEP3zjxqXDzGlzX8QeD
+LJ8SjmP4xIcU6gTJOEj30PbxQk4w/uCuhVk50LHZxsH8LY6d+NF8F65UaPpJ843X
+WFmK4WDdXkIRZ/HxRL83m9hLmpHRZTGtjW71t+4h7W1aFZfJe6AaWDp+uh76/9qi
+o2gfkjhELb5+wViBHfLexMgWNIGfY7kMXjSiZPZk1hghTvIkNqKm7thvwm5ecgd1
+V0pkF84tBb2qUGV15DC8fYmlsNxiv3iWeh+j8kayiMvGeQSuwPfAQBxW5ihfydau
+NRconH89vXqfl85J6QdEQXI8oM3jLh2rr5bs1QCudeX+Q4yZyxgCWDImCTjO6338
+BTjm4kNGbeaiNbU/t1vVJnjK+DeHluhaK5ahq4IAcwB16ultNHfe/IggX/xoZHkY
+KwSh0NmnVOWcIyokDlOZLvViA16qdD5II0rHx1D75VvwAS3QnyDXBt/A2FF4MYP+
+DQMV8jXkSw7YI5U1j55uEWBA1ePpeZMj2sG7wNBu48uyOzGgbUitnYKm1hkihJM9
+i5D6B9vBJiUOO1auaGcmaNZXWqjuAzk7chajL2O6hprhB3uNUSqHX6oBpJQFb6Yd
+tOpoiYc2px3euAANQVkKw7rOWYBeZlpR7Ic2tvc0lkaeb5agFgA=
+=OTLb
+-----END PGP SIGNATURE-----
+
+--wfpai4ndwplq7h5c--
