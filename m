@@ -2,102 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95394E48E1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Oct 2019 12:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20DC1E68BA
+	for <lists+linux-fbdev@lfdr.de>; Sun, 27 Oct 2019 22:32:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393407AbfJYKvJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Oct 2019 06:51:09 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:45981 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392198AbfJYKvJ (ORCPT
+        id S1730295AbfJ0VbC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 27 Oct 2019 17:31:02 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:45621 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731174AbfJ0VR5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Oct 2019 06:51:09 -0400
-Received: from mail-qk1-f181.google.com ([209.85.222.181]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Mj831-1hlZxU1VH3-00fEqI; Fri, 25 Oct 2019 12:51:05 +0200
-Received: by mail-qk1-f181.google.com with SMTP id q70so1261022qke.12;
-        Fri, 25 Oct 2019 03:51:04 -0700 (PDT)
-X-Gm-Message-State: APjAAAWA6fFViRcJqREnWWJ4XnLSnh9uc5TR3f3XkJRs4iop43nFUxmc
-        NGQ8ccT6lVNGOrvmjR3QEB2RQ+274bWdUrVtGAM=
-X-Google-Smtp-Source: APXvYqx2Oor6PcLHOX4Sy8TtHwX6a9dti7RuLVSJPm8RZ72aJo7WkeFnANJ7SePVIoWyJuP+ht+PknNC97FPJwMamtQ=
-X-Received: by 2002:a37:58d:: with SMTP id 135mr2252602qkf.394.1572000663226;
- Fri, 25 Oct 2019 03:51:03 -0700 (PDT)
+        Sun, 27 Oct 2019 17:17:57 -0400
+Received: by mail-io1-f65.google.com with SMTP id s17so1259304iol.12
+        for <linux-fbdev@vger.kernel.org>; Sun, 27 Oct 2019 14:17:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=3ZOdfed/Evg7Q4cJyCY3H8Ypp6XH0WSGuwBMeOcOnvk=;
+        b=nkzqq/91osugTXXxB20LGQXpTXk8i6dy3WP+8OJ7SmEmCGUnw2grBIgDKnwXdlFeRN
+         vJnu/q+A6hTffZg/Vz6LLGplvXSZjf8sJZ2VjIbv38Cq1gcIAixjGubawxW/jgyyKkNO
+         yAvRg3rJlfvdLWxAuk7rIpCdWHWrT4ZfA67b4ZfSQEvT1f5QO6jg6kzHNGCvV77kOiIm
+         Gf17XWLX5MqnZ+P92eHJfTeOnuq2UHVssaYfEwZl/40WOPdvACTTL60UfMR0GFqRyNsx
+         ONu3Iix1Q1I02ToPQZ5J1xg9t+/d+j9xIUyLqdn4N5MjDT99WKv6N46dr/Riu5s5hao0
+         +6SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=3ZOdfed/Evg7Q4cJyCY3H8Ypp6XH0WSGuwBMeOcOnvk=;
+        b=XClTXX10vo5zEVEpyvBg1qub2sQmhYZ/B1hDEjs4ywRaqGxnMTGFDU3kReLXNH26RS
+         aFM+MECNNjk7FwVtlRwTR4/QLzTmFIj005tUvMgxbJamHaEmq1Lduv1GfCqbj7DI3b7n
+         Ey+wOZUFv7ElENk9QjKXbfI8/khlM7A5eAeJkfblFCwfxXV4CSjTFqP+ogeI1drtoVzN
+         ugFx//ik7X1FN2yF5GBG17Qp/oJ2SJQTjkUvZB7gikUFTOxcTaz7NqEt4rTEBO8JmeL6
+         vbcg815XDuFvTexzer/OFJhXBzSrETstMAJUXMy02KQlOfyuFaTNnhY9lROjgrI8s8Mf
+         nSSg==
+X-Gm-Message-State: APjAAAVlnpWGeVRkXfJBGw6GQ7qbqn2kD11AIlkVdn8Q8zMmPrSsq03B
+        ufOqMu8bTUnf4REQPV+4WSHfQXvAe0pxqra0cxM=
+X-Google-Smtp-Source: APXvYqx05UndC+rJs0V6Wcn+QwcO/lPxX2wOXh4lQOV1hvGmyKJmSbhC8GBG9pw82JW7Xz4mEVmvyVGfoth9mVKPJNQ=
+X-Received: by 2002:a6b:8e97:: with SMTP id q145mr13803856iod.65.1572211076636;
+ Sun, 27 Oct 2019 14:17:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191018154052.1276506-1-arnd@arndb.de> <87v9slg9k5.fsf@belgarion.home>
- <CAK8P3a1JDtHsOW=iaxEycbJ4TBkR9MHUyDMeJnwxCtb=tefnBQ@mail.gmail.com>
- <CAK8P3a0376Anmoc8VWXcEBg+z2B+1vcxJoywYYROBQNxpVmZuA@mail.gmail.com>
- <87r239f2g8.fsf@belgarion.home> <87eez1rhqo.fsf@belgarion.home>
-In-Reply-To: <87eez1rhqo.fsf@belgarion.home>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 25 Oct 2019 12:50:46 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0L3_Hs48X5bh0UD2L_AaxLcUOQ_YS7ZpSd5W-8xcgAog@mail.gmail.com>
-Message-ID: <CAK8P3a0L3_Hs48X5bh0UD2L_AaxLcUOQ_YS7ZpSd5W-8xcgAog@mail.gmail.com>
-Subject: Re: [PATCH 00/46] ARM: pxa: towards multiplatform support
-To:     Robert Jarzmik <robert.jarzmik@free.fr>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        IDE-ML <linux-ide@vger.kernel.org>,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        linux-leds@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-rtc@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
+Reply-To: akgazshak@gmail.com
+Received: by 2002:a4f:8d02:0:0:0:0:0 with HTTP; Sun, 27 Oct 2019 14:17:55
+ -0700 (PDT)
+From:   =?UTF-8?Q?=C4=B0shak_BURAKGAZI?= <akgazishak@gmail.com>
+Date:   Sun, 27 Oct 2019 14:17:55 -0700
+X-Google-Sender-Auth: FZ5EcWg91YE4VO7dO8o-zFGzQH4
+Message-ID: <CALLVH48TxS+905z3TX72ihO33ARJL3i+5gL++uD3bgPTv=DDBA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:bBFl5bX9BqXoDP8OrdvcfGlrYLRY5B1GUhWZJswEMUsHfqL7ZPS
- wNKiBQqI9J4lWaKwMKWpeuRP8Q7gNW1Huux28MpdQbLQHsG8keYqULuxokAyz8cXvUuDQNr
- Y4OmkYoxdwxMOhV/OoYmkmbTVaeZ1jGsBbuhOyjPDaixMEDPYwwWYKYrS8WnrToePTYktVe
- isgPlih4bJp7b5na0cbDg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+amIHTsvEsM=:wxrSdcXp8fCl0WvOtbji8T
- eiMYbEG4cst6pRKOmo34ky4eqFrbI9L+1xHjnaiY+H7o5c4AvretiveY6HsD/8Q4GCTo+d4EF
- 6KHQlLX/3bCOUITQRQRqZXMcO8+d/5yBWQ4PLvO/++od9zW+FSeEXlBspQqZItGbvkewyaSgM
- V2RuqHgZsRHubh1xP1lsxIE2YLtSonVpvh2iNYDMLLKocefeURCWHULZHpLKqb637/1ILOFmh
- oY55eIQP5dCvyMde+02h4Sc41A/coK0VSMYnmjZbIdabokN8wJmd5BpuqN52whvBKMyQB7Drx
- +rJNk043np+L19CHym/KU1GD0+Jh/hYMmdbAesunIc/XFNfshrJppNPggA2jYuD+WHt0GoW0h
- vIRvBMeg6dWxtHSt5iN2OWe8YRwmJozAghx6eaxs/+mtKjhlwdb8pg8wgjMJTT4UVZPNck6ai
- ETIxAKLIg48ERY2PKPCwjHZWIF59mr9ihwrIm7/PoRVzhB2DgY1bXT+r0Xf1ifNLX95PYOB5M
- zAGClTyzoyjzTzKwNgwcV4nTh4Je81xIc8FEG8D5S5n2odlouWYtMUHvQkobX+2UgP+dk+Rdq
- Yf9piYlNy1SKL1OHQdycWsLTFQ3jMWeWKCJRb5PSzWdnYIqeBZU1jM0z+jjUqPYhNrA/3/oIY
- 6RHI26+ovszi6E37l9e4YOUqQLgkyayuNJDsaLxUKkKdzoog8Z1n6LZPKD/u4+MRIXZCKCrGx
- pWVDvdMh6MitMHpzAZXm52z3k1A8T63a1CoAVUlqw1z/kLR1+hrsr4BnhFtpR4HNXe8FSWIge
- SE0Vg8VrS1FRrUX3m8HXrRagLwmAmfEk5PCq5WPOx/NjbgPEUnw5nqQ9HVCS9jOGnKIZvBw5Z
- /NMhJY+Zi7eyYSpPjOOA==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 10:50 PM Robert Jarzmik <robert.jarzmik@free.fr> wrote:
-> Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> >>> I've now pushed it to
-> >>>
-> >>> git://git.kernel.org:/pub/scm/linux/kernel/git/arnd/playground.git
-> >>> pxa-multiplatform
-> >>
-> >> Sorry for the duplication, I had some problems with email configuration
-> >> so my reply got rejected, let's see if it goes through this time.
-> > I have it now, thanks, I'll test and review as soon as I can.
-> >
-> > Cheers.
->
-> Ok Arnd, I have a preliminary test report.
->
-> I tested only the pxa27x (mioa701), which happens to have a lot of drivers, and
-> only the platform_data flavor (ie. no device-tree test yet). Apart a panic in
-> the regulator framework (which is a known issue [1]), your version seems
-> equivalent so far in terms of runtime to Linux 5.4-rc3).
->
-> The sound and RTC seem broken, but not by you ...
->
-> I'll continue the test onwards for pxa3xx and pxa2xx when I'll gather a bit of
-> time, and try to review as well the mach-pxa part.
+Good evening, I have been waiting for your response, kindly get back
+to me, I really need your responds as soon as possible, I look forward
+to hear from you soon. Thanks
 
-Awesome, thanks for testing so far and for the report!
-
-        Arnd
+ishak
