@@ -2,47 +2,32 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCF27E8F35
-	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Oct 2019 19:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 781C0E8F63
+	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Oct 2019 19:36:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727766AbfJ2SZN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 29 Oct 2019 14:25:13 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48686 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726923AbfJ2SZN (ORCPT
+        id S1731783AbfJ2SgI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 29 Oct 2019 14:36:08 -0400
+Received: from smtprelay0165.hostedemail.com ([216.40.44.165]:34820 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725962AbfJ2SgH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 29 Oct 2019 14:25:13 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI5FDj175951;
-        Tue, 29 Oct 2019 18:23:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=pvaGyOZDLlNqbGIv4aiDa+8jV2u8TRmd0Sg/3CdaYfQ=;
- b=GayfmIV97A/7KomJSAsydyBuszzE+3RDo1LCbszbUU03PKeOPpUsle4oX8Bz1eM7+QTg
- w17fUSx26ItlguIpsL8eUG0ZQzM19hMSpsyOjpclWpMjsMwnIU1OJ0G/0HZ9jt9TcWPu
- nc2WRwGPQVL9Ox2RSIbuHMSbPWSSss3mVfWN2ZOT14JMBpQIsvN3gB/FH1OC1i7XgMgI
- pKVgT+27FvJ6I9IkQhR7tVJmBVx3R9ZIPK8kaaHl/VEpXSNaajWQENUJs13sEKJacAWV
- fQuop4wCqvSb1Q1wLkFTAlw40mAmIgY55WNYNdaRCm4j8RVgdThKmUpTxLYJCbEjnlRz Jw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2vvdjub9ee-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:23:39 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI8BBK179764;
-        Tue, 29 Oct 2019 18:23:39 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2vxpfdgt2e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:23:39 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9TINU14011472;
-        Tue, 29 Oct 2019 18:23:30 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 29 Oct 2019 11:23:30 -0700
-Date:   Tue, 29 Oct 2019 21:23:20 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tue, 29 Oct 2019 14:36:07 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id CE5E4180A5B16;
+        Tue, 29 Oct 2019 18:36:05 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::,RULES_HIT:41:355:379:599:857:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3867:3868:3872:4321:5007:6742:10004:10400:11026:11232:11473:11657:11658:11914:12043:12296:12297:12438:12555:12740:12760:12895:12986:13019:13069:13311:13357:13439:14096:14097:14659:14721:21080:21627:21773:30054:30070:30075:30079:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
+X-HE-Tag: thing30_17c4da0fde813
+X-Filterd-Recvd-Size: 2471
+Received: from XPS-9350.home (unknown [47.151.135.224])
+        (Authenticated sender: joe@perches.com)
+        by omf05.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 29 Oct 2019 18:36:03 +0000 (UTC)
+Message-ID: <5a6f05cef45dbb4f77008b36d7a63b429f1519ec.camel@perches.com>
+Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
+From:   Joe Perches <joe@perches.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Andrea Righi <righi.andrea@gmail.com>
 Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
         Sam Ravnborg <sam@ravnborg.org>,
@@ -53,54 +38,52 @@ Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         security@kernel.org, Kees Cook <keescook@chromium.org>,
         Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-Message-ID: <20191029182320.GA17569@mwanda>
+Date:   Tue, 29 Oct 2019 11:35:55 -0700
+In-Reply-To: <20191029182320.GA17569@mwanda>
+References: <20191029182320.GA17569@mwanda>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9425 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910290160
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9425 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910290160
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The "fix" struct has a 2 byte hole after ->ywrapstep and the
-"fix = info->fix;" assignment doesn't necessarily clear it.  It depends
-on the compiler.
+On Tue, 2019-10-29 at 21:23 +0300, Dan Carpenter wrote:
+> The "fix" struct has a 2 byte hole after ->ywrapstep and the
+> "fix = info->fix;" assignment doesn't necessarily clear it.  It depends
+> on the compiler.
+[]
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+[]
+> @@ -1109,6 +1109,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+>  			ret = -EFAULT;
+>  		break;
+>  	case FBIOGET_FSCREENINFO:
+> +		memset(&fix, 0, sizeof(fix));
+>  		lock_fb_info(info);
+>  		fix = info->fix;
+>  		if (info->flags & FBINFO_HIDE_SMEM_START)
 
-Fixes: 1f5e31d7e55a ("fbmem: don't call copy_from/to_user() with mutex held")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Perhaps better to change the struct copy to a memcpy
 ---
-I have 13 more similar places to patch...  I'm not totally sure I
-understand all the issues involved.
-
- drivers/video/fbdev/core/fbmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/core/fbmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 6f6fc785b545..b4ce6a28aed9 100644
+index e6a1c80..364699 100644
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1109,6 +1109,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
- 			ret = -EFAULT;
+@@ -1110,7 +1110,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
  		break;
  	case FBIOGET_FSCREENINFO:
-+		memset(&fix, 0, sizeof(fix));
  		lock_fb_info(info);
- 		fix = info->fix;
+-		fix = info->fix;
++		memcpy(&fix, &info->fix, sizeof(fix));
  		if (info->flags & FBINFO_HIDE_SMEM_START)
--- 
-2.20.1
+ 			fix.smem_start = 0;
+ 		unlock_fb_info(info);
+
+
 
