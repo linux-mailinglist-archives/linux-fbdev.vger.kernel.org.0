@@ -2,113 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C977EE9751
-	for <lists+linux-fbdev@lfdr.de>; Wed, 30 Oct 2019 08:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8ECBE9760
+	for <lists+linux-fbdev@lfdr.de>; Wed, 30 Oct 2019 08:50:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbfJ3Hn0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 30 Oct 2019 03:43:26 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39871 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbfJ3Hn0 (ORCPT
+        id S1725822AbfJ3Huv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 30 Oct 2019 03:50:51 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:39743 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725942AbfJ3Huv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 30 Oct 2019 03:43:26 -0400
-Received: from mail-wr1-f69.google.com ([209.85.221.69])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <andrea.righi@canonical.com>)
-        id 1iPidX-0006NF-Dm
-        for linux-fbdev@vger.kernel.org; Wed, 30 Oct 2019 07:43:23 +0000
-Received: by mail-wr1-f69.google.com with SMTP id z9so893359wrq.11
-        for <linux-fbdev@vger.kernel.org>; Wed, 30 Oct 2019 00:43:23 -0700 (PDT)
+        Wed, 30 Oct 2019 03:50:51 -0400
+Received: by mail-wr1-f68.google.com with SMTP id a11so1113450wra.6
+        for <linux-fbdev@vger.kernel.org>; Wed, 30 Oct 2019 00:50:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=FLPIpnHOBePg/Y6da8w9/WRUoNiVkxQNWcq2DQOe07M=;
+        b=XyPVZBz2kVqf6z+1cIyhTkCY9EFXOZzeQZGpHure5f5izzCxjf1ZVQ6kVBYmm9H1+U
+         d/t30k/IvFZWYAj66fXjRzzv6d+hZ/7mVXinYxHIyoMrDgHZnV8vHynTWW4njmDFj9a6
+         vEs84X07ky4e9x3e9KtjF1LWqsIFnWK6+82TOscZunOTqiGZeOYVRsNxts9VjEQKa+lt
+         FhdpBJnumN6gY9IAN4yvMFF80r4RX3gQFjM1jg9NhL2pXmvBoC3b9DJa8zBtK6RPIeAl
+         DqxNx0LhriVy4PCV06zjT9oR0h6QR3/Rd7c6ScnJbVfmiu0iLZnoBeXTiIVq1McqfwwE
+         Y6MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=r2kgY/Eb4NrL0J9edPQFC8rYWl1U1ZwS7+lel270Qps=;
-        b=c/Rwjho4Wmc+ibQjqe7vSEQjtHQjA4WNmsv22vagn8tUvhh6afIG7JrDqq0+0MLpW4
-         79NmQMtfg+Xq1jD5sC9elTQ5krPSFGd2iDxM0uFb/gAkPQXKU7wan07UiIylpl5ipxlm
-         EDU707mN809Lt1V8TfGuI7VhaprEgrhNDq7Znbcl8oBWmMysgl01PZ3/g2YZ+Z7fBNU7
-         qcMwynqgQtLptxdOtFdn6Aukghm3GuD0W1w7CPXQaFpRBzkAHDJ/BuvWzKoj7AtXLyrc
-         XY6uIoNsykX86p1lC4/T3AyThmTW086QHjiroInsWQT/8a29aHwVYhml9TLKAeYjLkig
-         ZXWA==
-X-Gm-Message-State: APjAAAVFqr4pM0yG+Cmj0j7wti0ofkSTOtfbdVn3y53H//J+MeaIAwH3
-        qZV0dPXCU8yJcF5+u9XZeCNAJTgx64McN4OH60dFPvltYitkFAQobvJXFKdce3s/GDkhfltaIst
-        HiJo7iPhaRtZbq57llMHmf6SrQWXdPp+GZLr1wxle
-X-Received: by 2002:adf:b219:: with SMTP id u25mr22414454wra.327.1572421403072;
-        Wed, 30 Oct 2019 00:43:23 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxLmwt311jFlTSkqSoJBn/UrU6mv9JWrlxZTNb9CaaMKdyQWyaslF1hIc5G7liA+tivNC4DKA==
-X-Received: by 2002:adf:b219:: with SMTP id u25mr22414436wra.327.1572421402800;
-        Wed, 30 Oct 2019 00:43:22 -0700 (PDT)
-Received: from localhost ([91.217.168.176])
-        by smtp.gmail.com with ESMTPSA id c8sm1149783wml.44.2019.10.30.00.43.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2019 00:43:22 -0700 (PDT)
-Date:   Wed, 30 Oct 2019 08:43:21 +0100
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=FLPIpnHOBePg/Y6da8w9/WRUoNiVkxQNWcq2DQOe07M=;
+        b=b5wHuBAELlTcIW015Px6HyMszANrn0vBFj2z/PUfWKSNO/cJE6K1AhZ1KvMPAvnlj0
+         hyOILzOvBzLn+RKYaUeX4akU0KXeWJs39NG1v67NQe+SfYzdiXlidMMkOx9vjGODYNYD
+         WE2Rkoc2dMLdUMGw/FOINQ9eDys0fi2puAisb+wC2QpseuA2qcittyWux5yEtyKkRGP4
+         wSNq21kBSPvuIyQCxx811LbKXzfkZLaXFhlXEiFImfOdHtlySODMJ7xzY8Bo9dcI90zk
+         grng5IbKFPv/0awcL6Rss2nOE3aQMY7KPUb1II45ViGZdVY7JvGw74pVy9c7eGOTxieG
+         1Szw==
+X-Gm-Message-State: APjAAAXLiR6OX9i2HCpj5JefWwq6LMYR4vfoHhmQ3BYBhz02c1NAqrei
+        wDxlCu7SF+SbYYBPXRcAqbWjFQ==
+X-Google-Smtp-Source: APXvYqxqLawwSBkqOwElIXw0EitJZw7c5fIQELur6Ziwo9Eowbi50RtGdHxZjDIulp8GE33dkMbA8A==
+X-Received: by 2002:a5d:4808:: with SMTP id l8mr22968551wrq.118.1572421849544;
+        Wed, 30 Oct 2019 00:50:49 -0700 (PDT)
+Received: from dell ([2.31.163.64])
+        by smtp.gmail.com with ESMTPSA id r19sm1929303wrr.47.2019.10.30.00.50.48
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 30 Oct 2019 00:50:49 -0700 (PDT)
+Date:   Wed, 30 Oct 2019 07:50:47 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Peter Rosin <peda@axentia.se>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        security@kernel.org, Kees Cook <keescook@chromium.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-Message-ID: <20191030074321.GD2656@xps-13>
-References: <20191029182320.GA17569@mwanda>
- <87zhhjjryk.fsf@x220.int.ebiederm.org>
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH next] dt-bindings: backlight: lm3630a: fix missing include
+Message-ID: <20191030075047.GC4484@dell>
+References: <20191029185350.31155-1-andreas@kemnade.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87zhhjjryk.fsf@x220.int.ebiederm.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191029185350.31155-1-andreas@kemnade.info>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 02:02:11PM -0500, Eric W. Biederman wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> writes:
-> 
-> > The "fix" struct has a 2 byte hole after ->ywrapstep and the
-> > "fix = info->fix;" assignment doesn't necessarily clear it.  It depends
-> > on the compiler.
-> >
-> > Fixes: 1f5e31d7e55a ("fbmem: don't call copy_from/to_user() with mutex held")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> > I have 13 more similar places to patch...  I'm not totally sure I
-> > understand all the issues involved.
-> 
-> What I have done in a similar situation with struct siginfo, is that
-> where the structure first appears I have initialized it with memset,
-> and then field by field.
-> 
-> Then when the structure is copied I copy the structure with memcpy.
-> 
-> That ensures all of the bytes in the original structure are initialized
-> and that all of the bytes are copied.
-> 
-> The goal is to avoid memory that has values of the previous users of
-> that memory region from leaking to userspace.  Which depending on who
-> the previous user of that memory region is could tell userspace
-> information about what the kernel is doing that it should not be allowed
-> to find out.
-> 
-> I tried to trace through where "info" and thus presumably "info->fix" is
-> coming from and only made it as far as  register_framebuffer.  Given
-> that I suspect a local memset, and then a field by field copy right
-> before copy_to_user might be a sound solution.  But ick.  That is a lot
-> of fields to copy.
+On Tue, 29 Oct 2019, Andreas Kemnade wrote:
 
-I know it might sound quite inefficient, but what about making struct
-fb_fix_screeninfo __packed?
+> example failed to compile due to undefined GPIO_ACTIVE_HIGH
+> fix that by adding the needed #include to the exammple
+> 
+> Fixes: ae92365cdd75 ("dt-bindings: backlight: lm3630a: Add enable-gpios to describe HWEN pin")
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  .../devicetree/bindings/leds/backlight/lm3630a-backlight.yaml    | 1 +
+>  1 file changed, 1 insertion(+)
 
-This doesn't solve other potential similar issues, but for this
-particular case it could be a reasonable and simple fix.
+Applied, thanks.
 
--Andrea
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
