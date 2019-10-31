@@ -2,33 +2,30 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5433EB6BC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 31 Oct 2019 19:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FFFFEB98F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 31 Oct 2019 23:12:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729197AbfJaSQx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 31 Oct 2019 14:16:53 -0400
-Received: from smtprelay0231.hostedemail.com ([216.40.44.231]:40826 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726602AbfJaSQw (ORCPT
+        id S1729440AbfJaWMZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 31 Oct 2019 18:12:25 -0400
+Received: from out01.mta.xmission.com ([166.70.13.231]:60523 "EHLO
+        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726602AbfJaWMZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 31 Oct 2019 14:16:52 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 354811822563C;
-        Thu, 31 Oct 2019 18:16:51 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1561:1593:1594:1711:1714:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3865:3866:3867:3871:4321:5007:6742:7903:9108:10004:10400:11232:11658:11914:12297:12740:12760:12895:13069:13311:13357:13439:14659:21060:21080:21627:30054:30075:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:162,LUA_SUMMARY:none
-X-HE-Tag: sea16_75aca35dfcc57
-X-Filterd-Recvd-Size: 1678
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf14.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 31 Oct 2019 18:16:48 +0000 (UTC)
-Message-ID: <734ef2833e4e4e7bded92e9d964bc2415aadf3c4.camel@perches.com>
-Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-From:   Joe Perches <joe@perches.com>
-To:     Andrea Righi <andrea.righi@canonical.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Thu, 31 Oct 2019 18:12:25 -0400
+Received: from in02.mta.xmission.com ([166.70.13.52])
+        by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1iQIg0-0007kM-Ml; Thu, 31 Oct 2019 16:12:20 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
+        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1iQIfz-0005t2-OP; Thu, 31 Oct 2019 16:12:20 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Joe Perches <joe@perches.com>
+Cc:     Andrea Righi <andrea.righi@canonical.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         Sam Ravnborg <sam@ravnborg.org>,
@@ -39,25 +36,73 @@ Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         security@kernel.org, Kees Cook <keescook@chromium.org>,
         Julia Lawall <Julia.Lawall@lip6.fr>
-Date:   Thu, 31 Oct 2019 11:16:39 -0700
-In-Reply-To: <20191030201201.GA3209@xps-13>
 References: <20191029182320.GA17569@mwanda>
-         <87zhhjjryk.fsf@x220.int.ebiederm.org> <20191030074321.GD2656@xps-13>
-         <87r22ujaqq.fsf@x220.int.ebiederm.org> <20191030201201.GA3209@xps-13>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        <87zhhjjryk.fsf@x220.int.ebiederm.org> <20191030074321.GD2656@xps-13>
+        <87r22ujaqq.fsf@x220.int.ebiederm.org> <20191030201201.GA3209@xps-13>
+        <734ef2833e4e4e7bded92e9d964bc2415aadf3c4.camel@perches.com>
+Date:   Thu, 31 Oct 2019 17:12:10 -0500
+In-Reply-To: <734ef2833e4e4e7bded92e9d964bc2415aadf3c4.camel@perches.com> (Joe
+        Perches's message of "Thu, 31 Oct 2019 11:16:39 -0700")
+Message-ID: <87ftj8k1j9.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-XM-SPF: eid=1iQIfz-0005t2-OP;;;mid=<87ftj8k1j9.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX1+Wj6J2YX8vDTKT+N1A+xx3aEijyjCXou4=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa08.xmission.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.3 required=8.0 tests=ALL_TRUSTED,BAYES_40,
+        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.3405]
+        *  0.7 XMSubLong Long Subject
+        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+        *      [sa08 1397; Body=1 Fuz1=1 Fuz2=1]
+        *  0.0 T_TooManySym_02 5+ unique symbols in subject
+        *  0.0 T_TooManySym_01 4+ unique symbols in subject
+X-Spam-DCC: XMission; sa08 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Joe Perches <joe@perches.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 521 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 5 (1.0%), b_tie_ro: 3.6 (0.7%), parse: 1.08
+        (0.2%), extract_message_metadata: 12 (2.3%), get_uri_detail_list: 0.87
+        (0.2%), tests_pri_-1000: 6 (1.1%), tests_pri_-950: 1.39 (0.3%),
+        tests_pri_-900: 1.20 (0.2%), tests_pri_-90: 25 (4.9%), check_bayes: 23
+        (4.5%), b_tokenize: 4.6 (0.9%), b_tok_get_all: 9 (1.7%), b_comp_prob:
+        1.69 (0.3%), b_tok_touch_all: 5 (1.0%), b_finish: 1.00 (0.2%),
+        tests_pri_0: 456 (87.6%), check_dkim_signature: 0.48 (0.1%),
+        check_dkim_adsp: 2.8 (0.5%), poll_dns_idle: 1.19 (0.2%), tests_pri_10:
+        2.5 (0.5%), tests_pri_500: 7 (1.3%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 2019-10-30 at 21:12 +0100, Andrea Righi wrote:
-> Then memset() + memcpy() is probably the best option,
-> since copying all those fields one by one looks quite ugly to me...
+Joe Perches <joe@perches.com> writes:
 
-A memset of an automatic before a memcpy to the same
-automatic is unnecessary.
+> On Wed, 2019-10-30 at 21:12 +0100, Andrea Righi wrote:
+>> Then memset() + memcpy() is probably the best option,
+>> since copying all those fields one by one looks quite ugly to me...
+>
+> A memset of an automatic before a memcpy to the same
+> automatic is unnecessary.
 
+You still need to guarantee that all of the holes in the
+structure you are copying are initialized before you copy it.
+
+Otherwise you are just changing which unitialized memory that
+is being copied to userspace.
+
+Which is my concern with your very simple suggestion.
+
+Eric
 
