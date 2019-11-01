@@ -2,215 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 005B5EC5BA
-	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Nov 2019 16:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC29AEC60D
+	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Nov 2019 16:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728819AbfKAPjs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 1 Nov 2019 11:39:48 -0400
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:35715 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbfKAPjs (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Nov 2019 11:39:48 -0400
-X-Originating-IP: 2.224.242.101
-Received: from uno.localdomain (2-224-242-101.ip172.fastwebnet.it [2.224.242.101])
-        (Authenticated sender: jacopo@jmondi.org)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 9C5EDFF802;
-        Fri,  1 Nov 2019 15:39:41 +0000 (UTC)
-Date:   Fri, 1 Nov 2019 16:41:33 +0100
-From:   Jacopo Mondi <jacopo@jmondi.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
-Message-ID: <20191101154133.qqjj3uriwrl2j5r5@uno.localdomain>
-References: <20191022083630.28175-1-brgl@bgdev.pl>
- <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
- <20191023155941.q563d3cfizre4zvt@holly.lan>
- <20191024064726.GB15843@dell>
- <20191024071703.6keoebzlfnn2qmyd@uno.localdomain>
- <20191101085803.GD5700@dell>
+        id S1729179AbfKAP4C (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 1 Nov 2019 11:56:02 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:34840 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729166AbfKAPzt (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Nov 2019 11:55:49 -0400
+Received: by mail-il1-f194.google.com with SMTP id p8so9089437ilp.2
+        for <linux-fbdev@vger.kernel.org>; Fri, 01 Nov 2019 08:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=pUJIzGj/MPv1EKc2k3aNehKVojTiwbi36zg1sckIL11PdqXfau1yGsXj1t9CSJeyKL
+         3i/jp/TX/JDBG+iju9GRvxcye9SA9yiSTdccj7/EyUgYmTSSLRFNkcsvQASN37kQDgQc
+         jnResb6aJSg07Bq5suGRVdOqTkrlyY1YMgTmHgQc7tz+apzSU8zlfJ8cqPEt/z1Bd3OE
+         3WNB6qm/Pkg8xI5aHgZ1XzvGw6eZK1PwDo4winMpdBi8I/fqM1G/oYqHCv2wNxwHhj5m
+         N0Nph5NSOfE5c8csPVkAAUkUAiHHdFA9X2wHOboX58ouCDBOqdL9C38hXp5o3eU3+tNB
+         N8dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=PzI8hzDcUi+AFVvLLK8jyjVqzAXJt/eAdIS0q4EH0yEYKd01XOCMWD4yDL7inTMfEQ
+         U674z0BSbWGrWy9L1rtzkuF2cD5GTt58lPNmoFZMQfwoE0ZgtwtSOBvBZDvL1X72XqFa
+         wHet04afgnXxxmhRgxd77D8IIoXKMZvPmv7i4pHmdsFR9LDEA4mqXoGCWTqa7PlS0i4v
+         UNknrgMSaEW0+rq39AmqUIzq+c1MAgIkpjZPrb3Xf2v7t8q6d0E0l3JMJX1ffZRsWz5w
+         5aU9gRIm3aNnim7CbOskcvZiq3dyQJiXoOywY25/6ndmzC23KLX92SRr8EiThN9KjRuP
+         i44w==
+X-Gm-Message-State: APjAAAVquvup1wR71knyx+y4eIdi3m0RGb4U+AvOfznnftngDypSYQl6
+        LpJQvT9YK0fw5TiKgDNd1K4TFNW9i2tFPjEcVw==
+X-Google-Smtp-Source: APXvYqwNtyKjT0pXbrd92BXP7Yur4/d12tLIQphfDkWOJF9bZR6SLYcfNyjCPNgVxkpA0mTQo/BiL8Zaftdd9XRgWqY=
+X-Received: by 2002:a92:1d8d:: with SMTP id g13mr8826976ile.35.1572623748630;
+ Fri, 01 Nov 2019 08:55:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mkrddyxkwo53ywov"
-Content-Disposition: inline
-In-Reply-To: <20191101085803.GD5700@dell>
-User-Agent: NeoMutt/20180716
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:55:48 -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Mary Coster, I.M.F director-Benin" 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 1 Nov 2019 16:55:48 +0100
+Message-ID: <CABHzvrmPdjgy_vBxQMfJ2YwGwj1RyCvQt1Oy5GJczarHTQb=pg@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
---mkrddyxkwo53ywov
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-  as promised...
-
-On Fri, Nov 01, 2019 at 08:58:03AM +0000, Lee Jones wrote:
-> On Thu, 24 Oct 2019, Jacopo Mondi wrote:
->
-> > Hello,
-> >
-> > On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
-> > > On Wed, 23 Oct 2019, Daniel Thompson wrote:
-> > >
-> > > > On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wrote:
-> > > > > wt., 22 pa=C5=BA 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.pl>=
- napisa=C5=82(a):
-> > > > > >
-> > > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > > > >
-> > > > > > While working on my other series related to gpio-backlight[1] I=
- noticed
-> > > > > > that we could simplify the driver if we made the only user of p=
-latform
-> > > > > > data use GPIO lookups and device properties. This series tries =
-to do
-> > > > > > that.
-> > > > > >
-> > > > > > First two patches contain minor fixes. Third patch makes the dr=
-iver
-> > > > > > explicitly drive the GPIO line. Fourth patch adds all necessary=
- data
-> > > > > > structures to ecovec24. Patch 5/9 unifies much of the code for =
-both
-> > > > > > pdata and non-pdata cases. Patches 6-7/9 remove unused platform=
- data
-> > > > > > fields. Last two patches contain additional improvements for th=
-e GPIO
-> > > > > > backlight driver while we're already modifying it.
-> > > > > >
-> > > > > > I don't have access to this HW but hopefully this works. Only c=
-ompile
-> > > > > > tested.
-> > > > > >
-> > > > > > [1] https://lkml.org/lkml/2019/6/25/900
-> > > > > >
-> > > > > > v1 -> v2:
-> > > > > > - rebased on top of v5.3-rc1 and adjusted to the recent changes=
- from Andy
-> > > > > > - added additional two patches with minor improvements
-> > > > > >
-> > > > > > v2 -> v3:
-> > > > > > - in patch 7/7: used initializers to set values for pdata and d=
-ev local vars
-> > > > > >
-> > > > > > v3 -> v4:
-> > > > > > - rebased on top of v5.4-rc1
-> > > > > > - removed changes that are no longer relevant after commit ec66=
-5b756e6f
-> > > > > >   ("backlight: gpio-backlight: Correct initial power state hand=
-ling")
-> > > > > > - added patch 7/7
-> > > > > >
-> > > > > > v4 -> v5:
-> > > > > > - in patch 7/7: added a comment replacing the name of the funct=
-ion being
-> > > > > >   pulled into probe()
-> > > > > >
-> > > > > > v5 -> v6:
-> > > > > > - added a patch making the driver explicitly set the direction =
-of the GPIO
-> > > > > >   to output
-> > > > > > - added a patch removing a redundant newline
-> > > > > >
-> > > > > > v6 -> v7:
-> > > > > > - renamed the function calculating the new GPIO value for statu=
-s update
-> > > > > > - collected more tags
-> > > > > >
-> > > > > > Bartosz Golaszewski (9):
-> > > > > >   backlight: gpio: remove unneeded include
-> > > > > >   backlight: gpio: remove stray newline
-> > > > > >   backlight: gpio: explicitly set the direction of the GPIO
-> > > > > >   sh: ecovec24: add additional properties to the backlight devi=
-ce
-> > > > > >   backlight: gpio: simplify the platform data handling
-> > > > > >   sh: ecovec24: don't set unused fields in platform data
-> > > > > >   backlight: gpio: remove unused fields from platform data
-> > > > > >   backlight: gpio: use a helper variable for &pdev->dev
-> > > > > >   backlight: gpio: pull gpio_backlight_initial_power_state() in=
-to probe
-> > > > > >
-> > > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
-> > > > > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++----=
---------
-> > > > > >  include/linux/platform_data/gpio_backlight.h |   3 -
-> > > > > >  3 files changed, 69 insertions(+), 95 deletions(-)
-> > > > > >
-> > > > > >
-> > > > >
-> > > > > Lee, Daniel, Jingoo,
-> > > > >
-> > > > > Jacopo is travelling until November 1st and won't be able to test=
- this
-> > > > > again before this date. Do you think you can pick it up and in ca=
-se
-> > > > > anything's broken on SH, we can fix it after v5.5-rc1, so that it
-> > > > > doesn't miss another merge window?
-> > >
-> > > November 1st (-rc6) will be fine.
-> > >
-> > > I'd rather apply it late-tested than early-non-tested.
-> > >
-> > > Hopefully Jacopo can prioritise testing this on Thursday or Friday,
-> > > since Monday will be -rc7 which is really cutting it fine.
-> >
-> > I'll do my best, I'll get home Friday late afternoon :)
->
-> Welcome home!
->
-> Just a little reminder in your inbox. TIA. :)
-
-For the ecovec part:
-Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
-
-Thanks
-   j
-
-
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Linaro Services Technical Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-
---mkrddyxkwo53ywov
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEtcQ9SICaIIqPWDjAcjQGjxahVjwFAl28UigACgkQcjQGjxah
-VjzGSRAArwHKUx3NL679rg20jhbM6i53yCGiIe5VhB7/jWpuNzDeg205l4yidgDI
-xOoxwxeWiNGTFdav95RWXi31C/BO7XRFelNejT4vSdZLZU8nWd6sRqUk26ZoxU5o
-bCwQR1Px6BDJpYCHyHx6JpyFqF6W6NHcvlwYt4ylz7ZmGXbmn3iKsSDrkswPOYvp
-t0msKUcCMFEpEPv2IKx0xjYg9pzqVpJWzG28qZbtnDoQoImgRCsu4mtwHj1LjF1S
-IFBmsGiGkmgRyVBR88JHCXGk0yA8RXzDjtwRhmOqfOZJLqtWOZaWaS8YhMsIt2FM
-SslzzFlI6gTqbwLGApVRWIt8xP9x+Arf280RKSK5jiIXBjdVS+B3Pi1C3VdiHC7R
-Bfn/jIUGoMM1BtywQXBCXNazZWcctMlIBSng12oDcBvhkB7GDPv77XL6mN8WpgIi
-tfeYIkRG1jD79B0+W3vSsuNxNO+dYpKaRbFc/FS0Qbpt8o15U55vMT0SXPs9M4zC
-5lYjN8CdE53JI3A/5YZx+mDwz8ujqZ46kWJRkUqmIjkKnTwW63wysQKNmONdb2BC
-tQIcu2ZRUoo/EwNGCfHfVpJbSS/DEnv6npqQBQqn6FKwlaLbGdyLdbI8ClSRy4sh
-23CZLEVgsB7zilBkNbD1YdOzvoCgNF1/Vi/wg5zuJoViXqP4cFk=
-=y0NH
------END PGP SIGNATURE-----
-
---mkrddyxkwo53ywov--
+Attn Dear,Funds Beneficiary.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com
