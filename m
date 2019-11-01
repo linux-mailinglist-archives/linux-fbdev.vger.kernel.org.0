@@ -2,107 +2,138 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FFFFEB98F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 31 Oct 2019 23:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56EF8EBDD1
+	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Nov 2019 07:27:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729440AbfJaWMZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 31 Oct 2019 18:12:25 -0400
-Received: from out01.mta.xmission.com ([166.70.13.231]:60523 "EHLO
-        out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726602AbfJaWMZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 31 Oct 2019 18:12:25 -0400
-Received: from in02.mta.xmission.com ([166.70.13.52])
-        by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1iQIg0-0007kM-Ml; Thu, 31 Oct 2019 16:12:20 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1iQIfz-0005t2-OP; Thu, 31 Oct 2019 16:12:20 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Joe Perches <joe@perches.com>
-Cc:     Andrea Righi <andrea.righi@canonical.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Peter Rosin <peda@axentia.se>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        security@kernel.org, Kees Cook <keescook@chromium.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>
-References: <20191029182320.GA17569@mwanda>
-        <87zhhjjryk.fsf@x220.int.ebiederm.org> <20191030074321.GD2656@xps-13>
-        <87r22ujaqq.fsf@x220.int.ebiederm.org> <20191030201201.GA3209@xps-13>
-        <734ef2833e4e4e7bded92e9d964bc2415aadf3c4.camel@perches.com>
-Date:   Thu, 31 Oct 2019 17:12:10 -0500
-In-Reply-To: <734ef2833e4e4e7bded92e9d964bc2415aadf3c4.camel@perches.com> (Joe
-        Perches's message of "Thu, 31 Oct 2019 11:16:39 -0700")
-Message-ID: <87ftj8k1j9.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1iQIfz-0005t2-OP;;;mid=<87ftj8k1j9.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX1+Wj6J2YX8vDTKT+N1A+xx3aEijyjCXou4=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa08.xmission.com
+        id S1729782AbfKAG1k (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 1 Nov 2019 02:27:40 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:45414 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729707AbfKAG1k (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Nov 2019 02:27:40 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0356160D85; Fri,  1 Nov 2019 06:27:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572589659;
+        bh=UyoJwvIa110PJasaK0nZFq0Mx0PvYN9KUjsCKGhuWEA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=giPGF+fygDQ7q8bI5enzKDb9UwBc9PClHSGmTvitdTRUrikk0L1z5dqqafFHdOGuy
+         x3/A42E6feEFPlGtDiz49lTR/2K8OSsr1jiXGLrpzK0VsBDatPSfRMXWUA4wMpxDPE
+         I7GQLDaj8xMQBeSkyxsXlj32gRYCdLkRHDMZM/wg=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.3 required=8.0 tests=ALL_TRUSTED,BAYES_40,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.3405]
-        *  0.7 XMSubLong Long Subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa08 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_02 5+ unique symbols in subject
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa08 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Joe Perches <joe@perches.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 521 ms - load_scoreonly_sql: 0.05 (0.0%),
-        signal_user_changed: 5 (1.0%), b_tie_ro: 3.6 (0.7%), parse: 1.08
-        (0.2%), extract_message_metadata: 12 (2.3%), get_uri_detail_list: 0.87
-        (0.2%), tests_pri_-1000: 6 (1.1%), tests_pri_-950: 1.39 (0.3%),
-        tests_pri_-900: 1.20 (0.2%), tests_pri_-90: 25 (4.9%), check_bayes: 23
-        (4.5%), b_tokenize: 4.6 (0.9%), b_tok_get_all: 9 (1.7%), b_comp_prob:
-        1.69 (0.3%), b_tok_touch_all: 5 (1.0%), b_finish: 1.00 (0.2%),
-        tests_pri_0: 456 (87.6%), check_dkim_signature: 0.48 (0.1%),
-        check_dkim_adsp: 2.8 (0.5%), poll_dns_idle: 1.19 (0.2%), tests_pri_10:
-        2.5 (0.5%), tests_pri_500: 7 (1.3%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from kgunda-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kgunda@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2132260B72;
+        Fri,  1 Nov 2019 06:27:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572589655;
+        bh=UyoJwvIa110PJasaK0nZFq0Mx0PvYN9KUjsCKGhuWEA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=EE0xyh2eR4ER/2CLxWYwfAXMX2N/c4WvniUXnExV+3SPZ5QHjwlBP2dZFpM7SBDQs
+         AWjaqfcwGBhxVH0weQ3LWiwr6Y9hyLXByTk6KSa7XtZjAOHTDkCc3Imm1l4fA/+H4H
+         nefPvnl3WGO5vaJ5kGxMVMNuYecxcSjzEfXJbvIA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2132260B72
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kgunda@codeaurora.org
+From:   Kiran Gunda <kgunda@codeaurora.org>
+To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dan Murphy <dmurphy@ti.com>, Andy Gross <agross@kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc:     Kiran Gunda <kgunda@codeaurora.org>
+Subject: [PATCH V10 1/8] backlight: qcom-wled: Rename pm8941-wled.c to qcom-wled.c
+Date:   Fri,  1 Nov 2019 11:56:57 +0530
+Message-Id: <1572589624-6095-2-git-send-email-kgunda@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1572589624-6095-1-git-send-email-kgunda@codeaurora.org>
+References: <1572589624-6095-1-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Joe Perches <joe@perches.com> writes:
+pm8941-wled.c driver is supporting the WLED peripheral
+on pm8941. Rename it to qcom-wled.c so that it can support
+WLED on multiple PMICs.
 
-> On Wed, 2019-10-30 at 21:12 +0100, Andrea Righi wrote:
->> Then memset() + memcpy() is probably the best option,
->> since copying all those fields one by one looks quite ugly to me...
->
-> A memset of an automatic before a memcpy to the same
-> automatic is unnecessary.
+Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+---
+ .../bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt}    | 2 +-
+ drivers/video/backlight/Kconfig                                   | 8 ++++----
+ drivers/video/backlight/Makefile                                  | 2 +-
+ drivers/video/backlight/{pm8941-wled.c => qcom-wled.c}            | 0
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+ rename Documentation/devicetree/bindings/leds/backlight/{pm8941-wled.txt => qcom-wled.txt} (95%)
+ rename drivers/video/backlight/{pm8941-wled.c => qcom-wled.c} (100%)
 
-You still need to guarantee that all of the holes in the
-structure you are copying are initialized before you copy it.
-
-Otherwise you are just changing which unitialized memory that
-is being copied to userspace.
-
-Which is my concern with your very simple suggestion.
-
-Eric
+diff --git a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+similarity index 95%
+rename from Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
+rename to Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+index e5b294d..fb39e32 100644
+--- a/Documentation/devicetree/bindings/leds/backlight/pm8941-wled.txt
++++ b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.txt
+@@ -1,4 +1,4 @@
+-Binding for Qualcomm PM8941 WLED driver
++Binding for Qualcomm Technologies, Inc. WLED driver
+ 
+ Required properties:
+ - compatible: should be "qcom,pm8941-wled"
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index 40676be..73442bdf 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -282,12 +282,12 @@ config BACKLIGHT_TOSA
+ 	  If you have an Sharp SL-6000 Zaurus say Y to enable a driver
+ 	  for its backlight
+ 
+-config BACKLIGHT_PM8941_WLED
+-	tristate "Qualcomm PM8941 WLED Driver"
++config BACKLIGHT_QCOM_WLED
++	tristate "Qualcomm PMIC WLED Driver"
+ 	select REGMAP
+ 	help
+-	  If you have the Qualcomm PM8941, say Y to enable a driver for the
+-	  WLED block.
++	  If you have the Qualcomm PMIC, say Y to enable a driver for the
++	  WLED block. Currently it supports PM8941 and PMI8998.
+ 
+ config BACKLIGHT_SAHARA
+ 	tristate "Tabletkiosk Sahara Touch-iT Backlight Driver"
+diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+index 63c507c..6f87770 100644
+--- a/drivers/video/backlight/Makefile
++++ b/drivers/video/backlight/Makefile
+@@ -48,8 +48,8 @@ obj-$(CONFIG_BACKLIGHT_OMAP1)		+= omap1_bl.o
+ obj-$(CONFIG_BACKLIGHT_OT200)		+= ot200_bl.o
+ obj-$(CONFIG_BACKLIGHT_PANDORA)		+= pandora_bl.o
+ obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
+-obj-$(CONFIG_BACKLIGHT_PM8941_WLED)	+= pm8941-wled.o
+ obj-$(CONFIG_BACKLIGHT_PWM)		+= pwm_bl.o
++obj-$(CONFIG_BACKLIGHT_QCOM_WLED)	+= qcom-wled.o
+ obj-$(CONFIG_BACKLIGHT_SAHARA)		+= kb3886_bl.o
+ obj-$(CONFIG_BACKLIGHT_SKY81452)	+= sky81452-backlight.o
+ obj-$(CONFIG_BACKLIGHT_TOSA)		+= tosa_bl.o
+diff --git a/drivers/video/backlight/pm8941-wled.c b/drivers/video/backlight/qcom-wled.c
+similarity index 100%
+rename from drivers/video/backlight/pm8941-wled.c
+rename to drivers/video/backlight/qcom-wled.c
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+ a Linux Foundation Collaborative Project
 
