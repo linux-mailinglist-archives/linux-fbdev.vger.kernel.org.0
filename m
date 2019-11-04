@@ -2,219 +2,138 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3B20EDB96
-	for <lists+linux-fbdev@lfdr.de>; Mon,  4 Nov 2019 10:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F336EDBE8
+	for <lists+linux-fbdev@lfdr.de>; Mon,  4 Nov 2019 10:50:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727327AbfKDJWt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 4 Nov 2019 04:22:49 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:34649 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727553AbfKDJWt (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 4 Nov 2019 04:22:49 -0500
-Received: by mail-il1-f196.google.com with SMTP id p6so1439083ilp.1
-        for <linux-fbdev@vger.kernel.org>; Mon, 04 Nov 2019 01:22:48 -0800 (PST)
+        id S1726100AbfKDJuG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 4 Nov 2019 04:50:06 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:39839 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727993AbfKDJuG (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 4 Nov 2019 04:50:06 -0500
+Received: by mail-wr1-f68.google.com with SMTP id a11so16209994wra.6
+        for <linux-fbdev@vger.kernel.org>; Mon, 04 Nov 2019 01:50:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=vp7+46dBcKq+wJhm7tcBHhOhxI41NbVk2dPfYaVzjCs=;
-        b=X7UnsHYAWsVYNulf0awFFpNulF3wvzdSTFgPijQ9KFhO5FdjYR8+8W5RRtaBeSV9Gq
-         xcFc2LXnxCcG5+gV/NrSd4zdJj5QtpC8O8MYJ2LL1nP96t5SyFO8qWgcoOptiNo7rkPK
-         KHdpGidRDePl/0j3HW8zAPx2WyvxeO9l379+OHr3GqSBnQ29MEeHAUmVucS9KIqVKqog
-         1GXIXilooUdA4FPrbSFOZ+iZQyCihlKyVaB/bMhq7MlHBMRWAOss1k0sHQNYCsr+99ET
-         T98BYhpo7K6JtFacNsFDdboQEjCMsjmSopPtbCyrNA82iooXgxFkLoA7gFoVp9LVkRWj
-         81Ow==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=zkMcvSms/U4Qaw7R6HtNgaBc3dEVSO6odZWh6NsVfGM=;
+        b=ReXeIciiF4NFFhQ/IHMb4yYMIlGw4cQRP3qdhGM+219nNZPv24yYUgtPBwOjkmgo6c
+         ZwdFIwEcVH/odn/N6q36fHsB2YJEd2OlYTTLSAJyPfwDyXnEsLekH35c5/8HH4OHVTS+
+         +bRNSLbWFjNLk+2TPLtrWBgVbLUz7xWK5NV48=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=vp7+46dBcKq+wJhm7tcBHhOhxI41NbVk2dPfYaVzjCs=;
-        b=sGyAPxFFjAdfNYKf4UoGLsLyq7jXIA/JzzzX+BFjBVrd85N8K7VH+hdD0G1Yuc+DEQ
-         i2C7x41wlb302TLUGucQ9Tk/oddwsd29i2h7BfwJU8SfHJxJFpsXRgOPoE8wRCNg9tia
-         jFC76w+tF0W1TrnWqBtG5df4juRAua7oVXmWX8X5VaoqPRPIptQK/AZBdaUmCLv+5SqR
-         nSB9WB6SFdgbiQ1/cIqYnGfAbloI1PSZ0zfzuJZ0hgGEI6MA25VtaLc5EAUKBTvJHWfs
-         ZL+1F2s+8oBX6crT45GEJ9FlH0D/MOxIM8Fx5/lgHNYuxMb3CD3tmjLxxLhrQvyFKa9C
-         S4yw==
-X-Gm-Message-State: APjAAAVDG9bMe4SLD6IKQcYvqwAlLyk1mFHuA3thV/TDR8PvyBhSb6jZ
-        +rGEft2cNxhNO/cG2V3RUv6N+JMBPXLdRl/ntUM2GA==
-X-Google-Smtp-Source: APXvYqzTiTqZlHfA1zV5+aakewP6d9iaJAJI5oGc7QmwUdxCqYJz+/wVh7vcTJIidSKUC+p8c8k3ZmGl9CS/g1+u8HA=
-X-Received: by 2002:a92:c8:: with SMTP id 191mr27722707ila.287.1572859367845;
- Mon, 04 Nov 2019 01:22:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20191022083630.28175-1-brgl@bgdev.pl> <CAMRc=MeyrDZgmHJ+2SMipP7y9NggxiVfkAh4kCLePFWvUku9aQ@mail.gmail.com>
- <20191023155941.q563d3cfizre4zvt@holly.lan> <20191024064726.GB15843@dell>
- <20191024071703.6keoebzlfnn2qmyd@uno.localdomain> <20191101085803.GD5700@dell>
- <20191101154133.qqjj3uriwrl2j5r5@uno.localdomain>
-In-Reply-To: <20191101154133.qqjj3uriwrl2j5r5@uno.localdomain>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 4 Nov 2019 10:22:37 +0100
-Message-ID: <CAMRc=MejNQAPUXQkJsVFBxcQUJ83xRF0ntKM2ssnAxc1C+7Jjg@mail.gmail.com>
-Subject: Re: [PATCH v7 0/9] backlight: gpio: simplify the driver
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Rich Felker <dalias@libc.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=zkMcvSms/U4Qaw7R6HtNgaBc3dEVSO6odZWh6NsVfGM=;
+        b=lIjhsYxIpAmipmDyq2Wx+2DRoydpbZH6qOMDy7Hm8345kfLltjFfBDtx1jza+I93fC
+         3G8vi5qvDXpXN0dj40zJerNMAM0F60lWMAlzzT2XS1egpreHPf9y59NgwbzmMOufPhns
+         8kFtNfTCH0zfjQ4DXxLmSigd0FwoP94shkYpDWFHIDXD8BKSNoyep5Jh2KUSpDOh/RGr
+         78xJP+8FJKd25yAf6Ohx048LVFjZ6OA/DhH9HMid5RLKpKgPE/ytQkxMEP/OEEchZ8gN
+         XXBcu4vxqfJFQB39Qiy3sLBq+d7bERYVlaLUDj1B3zp3t92EL/9XMNziGCouUPrU7isM
+         38gg==
+X-Gm-Message-State: APjAAAW0VQSklqEmXFwLVCXcHigD/536cdIw3HCfu44PbDes5TucTJ0o
+        7BwWbjWOaKfReN78Emh+uwvNqQ==
+X-Google-Smtp-Source: APXvYqyS9IIRVxDZNgalOrFWi0oIEgRyORArI8t1YtTjTqwHb+ZD4S0expj0K0dwt02Xt23TJXmrPA==
+X-Received: by 2002:a5d:55c7:: with SMTP id i7mr23332669wrw.371.1572861003981;
+        Mon, 04 Nov 2019 01:50:03 -0800 (PST)
+Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
+        by smtp.gmail.com with ESMTPSA id r3sm35307740wre.29.2019.11.04.01.50.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2019 01:50:03 -0800 (PST)
+Date:   Mon, 4 Nov 2019 10:50:01 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux/m68k <linux-m68k@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: Re: [PATCH v2] fbdev: c2p: Fix link failure on non-inlining
+Message-ID: <20191104095001.GB10326@phenom.ffwll.local>
+Mail-Followup-To: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux/m68k <linux-m68k@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+References: <20190927094708.11563-1-geert@linux-m68k.org>
+ <CAMuHMdW7fkPjqppQYESDf4ZLKcCrxhMUyCn0=tm6kxPSxf5mGA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdW7fkPjqppQYESDf4ZLKcCrxhMUyCn0=tm6kxPSxf5mGA@mail.gmail.com>
+X-Operating-System: Linux phenom 5.2.0-3-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-pt., 1 lis 2019 o 16:39 Jacopo Mondi <jacopo@jmondi.org> napisa=C5=82(a):
->
-> Hello,
->   as promised...
->
-> On Fri, Nov 01, 2019 at 08:58:03AM +0000, Lee Jones wrote:
-> > On Thu, 24 Oct 2019, Jacopo Mondi wrote:
+On Mon, Nov 04, 2019 at 08:43:07AM +0100, Geert Uytterhoeven wrote:
+> Hi Bartlomiej, Andrew,
+> 
+> On Fri, Sep 27, 2019 at 11:47 AM Geert Uytterhoeven
+> <geert@linux-m68k.org> wrote:
+> > When the compiler decides not to inline the Chunky-to-Planar core
+> > functions, the build fails with:
 > >
-> > > Hello,
-> > >
-> > > On Thu, Oct 24, 2019 at 07:47:26AM +0100, Lee Jones wrote:
-> > > > On Wed, 23 Oct 2019, Daniel Thompson wrote:
-> > > >
-> > > > > On Tue, Oct 22, 2019 at 11:29:54AM +0200, Bartosz Golaszewski wro=
-te:
-> > > > > > wt., 22 pa=C5=BA 2019 o 10:36 Bartosz Golaszewski <brgl@bgdev.p=
-l> napisa=C5=82(a):
-> > > > > > >
-> > > > > > > From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-> > > > > > >
-> > > > > > > While working on my other series related to gpio-backlight[1]=
- I noticed
-> > > > > > > that we could simplify the driver if we made the only user of=
- platform
-> > > > > > > data use GPIO lookups and device properties. This series trie=
-s to do
-> > > > > > > that.
-> > > > > > >
-> > > > > > > First two patches contain minor fixes. Third patch makes the =
-driver
-> > > > > > > explicitly drive the GPIO line. Fourth patch adds all necessa=
-ry data
-> > > > > > > structures to ecovec24. Patch 5/9 unifies much of the code fo=
-r both
-> > > > > > > pdata and non-pdata cases. Patches 6-7/9 remove unused platfo=
-rm data
-> > > > > > > fields. Last two patches contain additional improvements for =
-the GPIO
-> > > > > > > backlight driver while we're already modifying it.
-> > > > > > >
-> > > > > > > I don't have access to this HW but hopefully this works. Only=
- compile
-> > > > > > > tested.
-> > > > > > >
-> > > > > > > [1] https://lkml.org/lkml/2019/6/25/900
-> > > > > > >
-> > > > > > > v1 -> v2:
-> > > > > > > - rebased on top of v5.3-rc1 and adjusted to the recent chang=
-es from Andy
-> > > > > > > - added additional two patches with minor improvements
-> > > > > > >
-> > > > > > > v2 -> v3:
-> > > > > > > - in patch 7/7: used initializers to set values for pdata and=
- dev local vars
-> > > > > > >
-> > > > > > > v3 -> v4:
-> > > > > > > - rebased on top of v5.4-rc1
-> > > > > > > - removed changes that are no longer relevant after commit ec=
-665b756e6f
-> > > > > > >   ("backlight: gpio-backlight: Correct initial power state ha=
-ndling")
-> > > > > > > - added patch 7/7
-> > > > > > >
-> > > > > > > v4 -> v5:
-> > > > > > > - in patch 7/7: added a comment replacing the name of the fun=
-ction being
-> > > > > > >   pulled into probe()
-> > > > > > >
-> > > > > > > v5 -> v6:
-> > > > > > > - added a patch making the driver explicitly set the directio=
-n of the GPIO
-> > > > > > >   to output
-> > > > > > > - added a patch removing a redundant newline
-> > > > > > >
-> > > > > > > v6 -> v7:
-> > > > > > > - renamed the function calculating the new GPIO value for sta=
-tus update
-> > > > > > > - collected more tags
-> > > > > > >
-> > > > > > > Bartosz Golaszewski (9):
-> > > > > > >   backlight: gpio: remove unneeded include
-> > > > > > >   backlight: gpio: remove stray newline
-> > > > > > >   backlight: gpio: explicitly set the direction of the GPIO
-> > > > > > >   sh: ecovec24: add additional properties to the backlight de=
-vice
-> > > > > > >   backlight: gpio: simplify the platform data handling
-> > > > > > >   sh: ecovec24: don't set unused fields in platform data
-> > > > > > >   backlight: gpio: remove unused fields from platform data
-> > > > > > >   backlight: gpio: use a helper variable for &pdev->dev
-> > > > > > >   backlight: gpio: pull gpio_backlight_initial_power_state() =
-into probe
-> > > > > > >
-> > > > > > >  arch/sh/boards/mach-ecovec24/setup.c         |  33 +++--
-> > > > > > >  drivers/video/backlight/gpio_backlight.c     | 128 +++++++--=
-----------
-> > > > > > >  include/linux/platform_data/gpio_backlight.h |   3 -
-> > > > > > >  3 files changed, 69 insertions(+), 95 deletions(-)
-> > > > > > >
-> > > > > > >
-> > > > > >
-> > > > > > Lee, Daniel, Jingoo,
-> > > > > >
-> > > > > > Jacopo is travelling until November 1st and won't be able to te=
-st this
-> > > > > > again before this date. Do you think you can pick it up and in =
-case
-> > > > > > anything's broken on SH, we can fix it after v5.5-rc1, so that =
-it
-> > > > > > doesn't miss another merge window?
-> > > >
-> > > > November 1st (-rc6) will be fine.
-> > > >
-> > > > I'd rather apply it late-tested than early-non-tested.
-> > > >
-> > > > Hopefully Jacopo can prioritise testing this on Thursday or Friday,
-> > > > since Monday will be -rc7 which is really cutting it fine.
-> > >
-> > > I'll do my best, I'll get home Friday late afternoon :)
+> >     c2p_planar.c:(.text+0xd6): undefined reference to `c2p_unsupported'
+> >     c2p_planar.c:(.text+0x1dc): undefined reference to `c2p_unsupported'
+> >     c2p_iplan2.c:(.text+0xc4): undefined reference to `c2p_unsupported'
+> >     c2p_iplan2.c:(.text+0x150): undefined reference to `c2p_unsupported'
 > >
-> > Welcome home!
+> > Fix this by marking the functions __always_inline.
 > >
-> > Just a little reminder in your inbox. TIA. :)
->
-> For the ecovec part:
-> Tested-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
->
-
-Thanks Jacopo!
-
-Lee: I hope it's not too late to get it picked up for v5.5?
-
-Best regards,
-Bartosz Golaszewski
-
-> Thanks
->    j
->
->
+> > While this could be triggered before by manually enabling both
+> > CONFIG_OPTIMIZE_INLINING and CONFIG_CC_OPTIMIZE_FOR_SIZE, it was exposed
+> > in the m68k defconfig by commit ac7c3e4ff401b304 ("compiler: enable
+> > CONFIG_OPTIMIZE_INLINING forcibly").
 > >
-> > --
-> > Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> > Linaro Services Technical Lead
-> > Linaro.org =E2=94=82 Open source software for ARM SoCs
-> > Follow Linaro: Facebook | Twitter | Blog
-> > _______________________________________________
-> > dri-devel mailing list
-> > dri-devel@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> > Fixes: 9012d011660ea5cf ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
+> > Reported-by: noreply@ellerman.id.au
+> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > ---
+> > This is a fix for v5.4-rc1.
+> 
+> Can you please apply this for v5.4?
+> This is one of the 4 remaining build regressions, compared to v5.3.
+
+Applied to drm-misc-fixes, thanks for your patch.
+-Daniel
+
+> 
+> Thanks!
+> 
+> > v2:
+> >   - Add Reviewed-by,
+> >   - Fix Fixes,
+> >   - Add more explanation.
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> -- 
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
