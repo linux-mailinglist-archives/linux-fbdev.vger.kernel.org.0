@@ -2,138 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F336EDBE8
-	for <lists+linux-fbdev@lfdr.de>; Mon,  4 Nov 2019 10:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CAAEFA64
+	for <lists+linux-fbdev@lfdr.de>; Tue,  5 Nov 2019 11:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726100AbfKDJuG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 4 Nov 2019 04:50:06 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:39839 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727993AbfKDJuG (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 4 Nov 2019 04:50:06 -0500
-Received: by mail-wr1-f68.google.com with SMTP id a11so16209994wra.6
-        for <linux-fbdev@vger.kernel.org>; Mon, 04 Nov 2019 01:50:04 -0800 (PST)
+        id S2387917AbfKEKE5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 5 Nov 2019 05:04:57 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:40571 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387742AbfKEKE5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 5 Nov 2019 05:04:57 -0500
+Received: by mail-lj1-f193.google.com with SMTP id q2so14537594ljg.7
+        for <linux-fbdev@vger.kernel.org>; Tue, 05 Nov 2019 02:04:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=zkMcvSms/U4Qaw7R6HtNgaBc3dEVSO6odZWh6NsVfGM=;
-        b=ReXeIciiF4NFFhQ/IHMb4yYMIlGw4cQRP3qdhGM+219nNZPv24yYUgtPBwOjkmgo6c
-         ZwdFIwEcVH/odn/N6q36fHsB2YJEd2OlYTTLSAJyPfwDyXnEsLekH35c5/8HH4OHVTS+
-         +bRNSLbWFjNLk+2TPLtrWBgVbLUz7xWK5NV48=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Syu30Am6BErl09auW6zTpaceggouTxknVxJ/Bz3Nu6s=;
+        b=F3UmVNykzWHUTwNdwBuIbGn2Gmfwp0lPCaec0SGFmqb3Uet67QafNd3kCYlw6Ko+iZ
+         xv75pN0y9ypmC6pikz0liwOGhAiNts/UROWuHig/DbuhUeFBXD4yqjhPU382v6bC9Ru0
+         /j8rerZpggbnjA3tv+Ouiy3Tj9W/7DfdMcsnk1B6kFVShopOgMjoLO9MthZ4KIHuWxuc
+         BQP4u2JN974kAVhnIVbXsl02XqxL6+gMbv3UJRx1mRF+XO8D2Fmke5YyV809sOBHqgmv
+         rvgASQ5uItepUr0wXaAijVdeu8uYwD5Cz3CiEi/f3Yi1VzBKw690MH7685YqlBJAUyAK
+         /oMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=zkMcvSms/U4Qaw7R6HtNgaBc3dEVSO6odZWh6NsVfGM=;
-        b=lIjhsYxIpAmipmDyq2Wx+2DRoydpbZH6qOMDy7Hm8345kfLltjFfBDtx1jza+I93fC
-         3G8vi5qvDXpXN0dj40zJerNMAM0F60lWMAlzzT2XS1egpreHPf9y59NgwbzmMOufPhns
-         8kFtNfTCH0zfjQ4DXxLmSigd0FwoP94shkYpDWFHIDXD8BKSNoyep5Jh2KUSpDOh/RGr
-         78xJP+8FJKd25yAf6Ohx048LVFjZ6OA/DhH9HMid5RLKpKgPE/ytQkxMEP/OEEchZ8gN
-         XXBcu4vxqfJFQB39Qiy3sLBq+d7bERYVlaLUDj1B3zp3t92EL/9XMNziGCouUPrU7isM
-         38gg==
-X-Gm-Message-State: APjAAAW0VQSklqEmXFwLVCXcHigD/536cdIw3HCfu44PbDes5TucTJ0o
-        7BwWbjWOaKfReN78Emh+uwvNqQ==
-X-Google-Smtp-Source: APXvYqyS9IIRVxDZNgalOrFWi0oIEgRyORArI8t1YtTjTqwHb+ZD4S0expj0K0dwt02Xt23TJXmrPA==
-X-Received: by 2002:a5d:55c7:: with SMTP id i7mr23332669wrw.371.1572861003981;
-        Mon, 04 Nov 2019 01:50:03 -0800 (PST)
-Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
-        by smtp.gmail.com with ESMTPSA id r3sm35307740wre.29.2019.11.04.01.50.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2019 01:50:03 -0800 (PST)
-Date:   Mon, 4 Nov 2019 10:50:01 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux/m68k <linux-m68k@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH v2] fbdev: c2p: Fix link failure on non-inlining
-Message-ID: <20191104095001.GB10326@phenom.ffwll.local>
-Mail-Followup-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux/m68k <linux-m68k@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-References: <20190927094708.11563-1-geert@linux-m68k.org>
- <CAMuHMdW7fkPjqppQYESDf4ZLKcCrxhMUyCn0=tm6kxPSxf5mGA@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Syu30Am6BErl09auW6zTpaceggouTxknVxJ/Bz3Nu6s=;
+        b=hvQu1MmDd72XHRPXHUZa21D+ga33N4u6/OW4LnzQeFbtoefgZZIL4v+QgZ3XlBuFQ4
+         7nsYl97oCZlc4ttEGrXwCgih0Rn0ZCXN5Mkp/bSo7qA4MfXj14wKlYXzlJ6txgRgECsW
+         Zt0AWXgUIsVGLNiMJ9NhsgcpvSCGvFWIxAkS2QAuTijWVlFalIw4BGAZBTL+GIW2itO3
+         wOFxZOgiAlFsI6OWV1Y/JUvRnIDD/hszQSAQ3/wHXlFxAlMhFbDqiKFePCFX/Mk6JrYY
+         s97TvpRIvS6Zm7V9dljpdBaK/QyHKiy9fo3EDLlmjgE0O+gSWxS2HnIu2U8F8foQ2Vkp
+         k5fg==
+X-Gm-Message-State: APjAAAX17FR4ajHaIgBgrh9ZKAxq9TiaTrSZJ/Oave7LFck4bYa1mCAo
+        yPUofdnhDQd4gOCSQLBOCI1h61IUjK0UU7PF6kyLWg==
+X-Google-Smtp-Source: APXvYqzNQn4xnOeOTV9UejT9zf0JppB8XIps/M7O6A+dhmKjufcoOTliNdNUw1qqwcAYUPtRHSb50EJJlG+Vv1iRlcY=
+X-Received: by 2002:a2e:9a55:: with SMTP id k21mr8950214ljj.251.1572948295656;
+ Tue, 05 Nov 2019 02:04:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdW7fkPjqppQYESDf4ZLKcCrxhMUyCn0=tm6kxPSxf5mGA@mail.gmail.com>
-X-Operating-System: Linux phenom 5.2.0-3-amd64 
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191018154052.1276506-1-arnd@arndb.de> <20191018154201.1276638-38-arnd@arndb.de>
+In-Reply-To: <20191018154201.1276638-38-arnd@arndb.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 5 Nov 2019 11:04:44 +0100
+Message-ID: <CACRpkdajkSh6Bbvpfycm83j1GuCm+pTfw9fQS53JEfG2i07MKg@mail.gmail.com>
+Subject: Re: [PATCH 38/46] video: backlight: tosa: use gpio lookup table
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Nov 04, 2019 at 08:43:07AM +0100, Geert Uytterhoeven wrote:
-> Hi Bartlomiej, Andrew,
-> 
-> On Fri, Sep 27, 2019 at 11:47 AM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
-> > When the compiler decides not to inline the Chunky-to-Planar core
-> > functions, the build fails with:
-> >
-> >     c2p_planar.c:(.text+0xd6): undefined reference to `c2p_unsupported'
-> >     c2p_planar.c:(.text+0x1dc): undefined reference to `c2p_unsupported'
-> >     c2p_iplan2.c:(.text+0xc4): undefined reference to `c2p_unsupported'
-> >     c2p_iplan2.c:(.text+0x150): undefined reference to `c2p_unsupported'
-> >
-> > Fix this by marking the functions __always_inline.
-> >
-> > While this could be triggered before by manually enabling both
-> > CONFIG_OPTIMIZE_INLINING and CONFIG_CC_OPTIMIZE_FOR_SIZE, it was exposed
-> > in the m68k defconfig by commit ac7c3e4ff401b304 ("compiler: enable
-> > CONFIG_OPTIMIZE_INLINING forcibly").
-> >
-> > Fixes: 9012d011660ea5cf ("compiler: allow all arches to enable CONFIG_OPTIMIZE_INLINING")
-> > Reported-by: noreply@ellerman.id.au
-> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Reviewed-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> > ---
-> > This is a fix for v5.4-rc1.
-> 
-> Can you please apply this for v5.4?
-> This is one of the 4 remaining build regressions, compared to v5.3.
+On Fri, Oct 18, 2019 at 5:43 PM Arnd Bergmann <arnd@arndb.de> wrote:
 
-Applied to drm-misc-fixes, thanks for your patch.
--Daniel
+> The driver should not require a machine specific header. Change
+> it to pass the gpio line through a lookup table, and move the
+> timing generator definitions into the drivers itself.
+>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> ---
+> I'm not overly confident that I got the correct device names
+> for the lookup table, it would be good if someone could
+> double-check.
 
-> 
-> Thanks!
-> 
-> > v2:
-> >   - Add Reviewed-by,
-> >   - Fix Fixes,
-> >   - Add more explanation.
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> -- 
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+You're anyway doing more than required for the people who
+may or may not be using this platform. Brokenness can surely
+be fixed later, it's not like we are taking down the entire Amazon
+cloud or something.
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
