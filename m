@@ -2,94 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36DE2F1346
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Nov 2019 11:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF65AF292A
+	for <lists+linux-fbdev@lfdr.de>; Thu,  7 Nov 2019 09:33:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfKFKG5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 6 Nov 2019 05:06:57 -0500
-Received: from gofer.mess.org ([88.97.38.141]:45907 "EHLO gofer.mess.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725856AbfKFKG5 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 6 Nov 2019 05:06:57 -0500
-Received: by gofer.mess.org (Postfix, from userid 1000)
-        id 5EF88C635F; Wed,  6 Nov 2019 10:06:55 +0000 (GMT)
-Date:   Wed, 6 Nov 2019 10:06:55 +0000
-From:   Sean Young <sean@mess.org>
+        id S1726982AbfKGId7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 7 Nov 2019 03:33:59 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:38878 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726734AbfKGId7 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 7 Nov 2019 03:33:59 -0500
+Received: by mail-wm1-f66.google.com with SMTP id z19so1378595wmk.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 07 Nov 2019 00:33:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=s8siO8c5nG2oA4yleva52f8UrXXloSdu8Edj03PJpK0=;
+        b=JRkRa/R1N2W5Q9fECuduw7TIszePzpuIf+wxSx2MpS7SVRD2xH3wNupZLXTrfgmaJh
+         mGoLnytxEdFYu1k8s1FTzVDv/O0IW/WSVdoccxvdGjvYKtdyrKLfx+CzEHFryhCO3JAw
+         KYb8NmrLgGyx511ItajYvxS7EXqMNegvbQbqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=s8siO8c5nG2oA4yleva52f8UrXXloSdu8Edj03PJpK0=;
+        b=eN07pGm7Z9XU6sZE5hqEgzqEN6YbZvgIDp/AKU2eKplYTiRDHvCv3oH9aTFemtgzMt
+         cGKuljWsoCs/837ctBO41PXUokpoto3dn8cOGzedBPpV5R31LXOfeiaCumroVb3R0mcw
+         u3eM5ZVGp3xqy1e6toSV9Cbv5e5RAiVD2Y+jHLpH91OfUaO7RRErV/4bsFSFA311MMH5
+         ijs9N8JR2cMvbj2TxOegrqKt4mhbZ6SlfEA4YDMZDYyut73l9UjkTc1kGni+yvdIOmtm
+         tz2qSiYZXK4ntbbe8FkPSCHTmDeHzFWQ+lAkfhWcjZT6EQstxVMwWOU8GT6jMgKuUC+Y
+         PGaQ==
+X-Gm-Message-State: APjAAAWBeAE+QuzxyrYh85DBMypPzFSjS6rHO57ffe0NeMvWcYYjrF0M
+        j2ZDYjW3Z2rRGNBbFNcpp2mTCg==
+X-Google-Smtp-Source: APXvYqxKMCfhiclD4wFqY8ApTHpX3Q1Ro0gZKnJrP51xrd4JOijhRLOYoIdKgYqifQ0PrRuhN8PtPg==
+X-Received: by 2002:a1c:4946:: with SMTP id w67mr1729615wma.16.1573115636920;
+        Thu, 07 Nov 2019 00:33:56 -0800 (PST)
+Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
+        by smtp.gmail.com with ESMTPSA id v128sm2249296wmb.14.2019.11.07.00.33.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2019 00:33:56 -0800 (PST)
+Date:   Thu, 7 Nov 2019 09:33:54 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
 To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-i2c@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC PATCH 00/12] i2c: replace i2c_new_probed_device with an
- ERR_PTR variant
-Message-ID: <20191106100655.GA2743@gofer.mess.org>
+Cc:     linux-i2c@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [RFC PATCH 05/12] video: fbdev: matrox: convert to
+ i2c_new_scanned_device
+Message-ID: <20191107083354.GK23790@phenom.ffwll.local>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-i2c@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 References: <20191106095033.25182-1-wsa+renesas@sang-engineering.com>
+ <20191106095033.25182-6-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191106095033.25182-1-wsa+renesas@sang-engineering.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191106095033.25182-6-wsa+renesas@sang-engineering.com>
+X-Operating-System: Linux phenom 5.2.0-3-amd64 
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Nov 06, 2019 at 10:50:18AM +0100, Wolfram Sang wrote:
-> From: Wolfram Sang <wsa@the-dreams.de>
+On Wed, Nov 06, 2019 at 10:50:23AM +0100, Wolfram Sang wrote:
+> Move from the deprecated i2c_new_probed_device() to the new
+> i2c_new_scanned_device(). Make use of the new ERRPTR if suitable.
 > 
-> In the on-going mission to let i2c_new_* calls return an ERR_PTR instead
-> of NULL, here is a series converting i2c_new_probed_device(). A new
-> function called i2c_new_scanned_device() is introduced with the new
-> retval, but for now, a compatibility helper is provided until all users
-> are converted. The rest of the patches convert all current in-tree
-> users.
-> 
-> Note that these patches are RFC because I want feedback on the approach
-> and hopefully collect acks on the driver conversions. If all goes well,
-> I'll apply the first two patches for the next merge window. Then, once
-> this dependency is upstream, I'll resend this series with all issues
-> fixed and acks collected.
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-The patches to drivers/media/pci/* are all IR related which have touched
-on/read over the years. So, for those:
+Ack for merging through whatever tree you think this should best land
+through.
+-Daniel
 
-Acked-by: Sean Young <sean@mess.org>
-
+> ---
 > 
-> Core changes tested on a Renesas Salvator-XS board (R-Car M3-N), driver
-> patches build tested by me and buildbot.
+> Build tested only. RFC, please comment and/or ack, but don't apply yet.
 > 
-> Wolfram Sang (12):
->   i2c: replace i2c_new_probed_device with an ERR_PTR variant
->   i2c: icy: convert to i2c_new_scanned_device
->   macintosh: convert to i2c_new_scanned_device
->   platform: chrome: convert to i2c_new_scanned_device
->   video: fbdev: matrox: convert to i2c_new_scanned_device
->   input: mouse: convert to i2c_new_scanned_device
->   media: pci: cx23885: convert to i2c_new_scanned_device
->   media: pci: cx88: convert to i2c_new_scanned_device
->   media: pci: bt8xx: convert to i2c_new_scanned_device
->   media: pci: cx18: convert to i2c_new_scanned_device
->   media: pci: ivtv: convert to i2c_new_scanned_device
->   media: v4l2-core: convert to i2c_new_scanned_device
+>  drivers/video/fbdev/matrox/i2c-matroxfb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->  Documentation/i2c/instantiating-devices.rst | 10 ++++-----
->  Documentation/i2c/writing-clients.rst       |  8 +++----
->  drivers/i2c/busses/i2c-icy.c                |  8 +++----
->  drivers/i2c/i2c-core-base.c                 | 25 ++++++++++++++++-----
->  drivers/input/mouse/psmouse-smbus.c         |  8 ++++---
->  drivers/macintosh/therm_windtunnel.c        |  4 ++--
->  drivers/media/pci/bt8xx/bttv-input.c        |  6 ++---
->  drivers/media/pci/cx18/cx18-i2c.c           |  2 +-
->  drivers/media/pci/cx23885/cx23885-i2c.c     |  4 ++--
->  drivers/media/pci/cx88/cx88-input.c         |  2 +-
->  drivers/media/pci/ivtv/ivtv-i2c.c           |  6 ++---
->  drivers/media/pci/ivtv/ivtv-i2c.h           |  2 +-
->  drivers/media/v4l2-core/v4l2-i2c.c          | 10 ++++-----
->  drivers/platform/chrome/chromeos_laptop.c   | 18 ++++++++-------
->  drivers/video/fbdev/matrox/i2c-matroxfb.c   |  4 ++--
->  include/linux/i2c.h                         | 12 +++++++---
->  16 files changed, 76 insertions(+), 53 deletions(-)
-> 
+> diff --git a/drivers/video/fbdev/matrox/i2c-matroxfb.c b/drivers/video/fbdev/matrox/i2c-matroxfb.c
+> index 34e2659c3189..e2e4705e3fe0 100644
+> --- a/drivers/video/fbdev/matrox/i2c-matroxfb.c
+> +++ b/drivers/video/fbdev/matrox/i2c-matroxfb.c
+> @@ -191,8 +191,8 @@ static void* i2c_matroxfb_probe(struct matrox_fb_info* minfo) {
+>  				0x1b, I2C_CLIENT_END
+>  			};
+>  
+> -			i2c_new_probed_device(&m2info->maven.adapter,
+> -					      &maven_info, addr_list, NULL);
+> +			i2c_new_scanned_device(&m2info->maven.adapter,
+> +					       &maven_info, addr_list, NULL);
+>  		}
+>  	}
+>  	return m2info;
 > -- 
 > 2.20.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
