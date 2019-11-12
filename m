@@ -2,111 +2,233 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A776F9250
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Nov 2019 15:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02216F9295
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Nov 2019 15:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727567AbfKLO0t (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Nov 2019 09:26:49 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:34637 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727820AbfKLO0s (ORCPT
+        id S1727149AbfKLObr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Nov 2019 09:31:47 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36291 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726645AbfKLObr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Nov 2019 09:26:48 -0500
-Received: by mail-oi1-f196.google.com with SMTP id l202so14941622oig.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 12 Nov 2019 06:26:48 -0800 (PST)
+        Tue, 12 Nov 2019 09:31:47 -0500
+Received: by mail-ot1-f68.google.com with SMTP id f10so14464801oto.3
+        for <linux-fbdev@vger.kernel.org>; Tue, 12 Nov 2019 06:31:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vOq3Ga6TU7d+OBIVxdc75mj6tT8YQYRdorOOD6OFfXY=;
-        b=BxRrXJzCCx1hIyEvZSBVA0yZXvf4Od5JT6l96C9dyN0qzywU8gAzJY+k+1FXxp5U8b
-         mjqYVSvosbEgInhTINXOvCrJh8KWb8Cq/gr9rEqAPGz2C4d7Q6wn4rqp9tqzAZjAWs82
-         j6Ape7bP7RYA6XvgX0LqZl9CF1t26JVGPpTz8=
+         :cc:content-transfer-encoding;
+        bh=APYlBn4LTHO89hs47rgqnLkGOShadwleO0VkyeHX6bw=;
+        b=Q2uAVe82aqSPRnToNF6tFcbNBpTse1Ha8OAnRonh6FL/a8WqaNvok/Y63US+8G4mm3
+         +G6sgqy3m81ueBDAMCD+q94xs3EKa+ElBGCRt6pYHw39cgOij9OTQBPikb4/1h4ra12C
+         LZMRQDI8fUIn1ErZeDvn6CencW9gt1bHZIPX0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vOq3Ga6TU7d+OBIVxdc75mj6tT8YQYRdorOOD6OFfXY=;
-        b=bgb2rl6pk/yjSxayUOkA5FtGCz898eHf9cCHH2/s3JRJINwhEJCfvTitMXeEEE7TFq
-         1nUNUaxsmkVWtNEkupTKBrbLDnNwlWJBDgLkNRKMm2T1QkBEAZT4kO0HNdQzMyyJMFVv
-         0uobyDw5NmzqEoqo7Gu6x0UfVPfm6vTKQbzXvNt/aU0KhdOQwULDPey+9aEbnOfjzdLe
-         rupE0v3m53+Za1cMgTgSPkhWdry0YDPOxvrsgynMhjDKyIBjzq/tA0/zM03DHUjU9nlr
-         GFNE0rhTRAWrE72HmODbsr8um2c9E5UbakHacxM135A9Q2G2RbVv/0no8a5YmqVHPWSb
-         /6VQ==
-X-Gm-Message-State: APjAAAX4FqPzE5fR2phNbd0cYfUrGpv6FcXXPg9VVO30uOMUefx/LHpz
-        zMaJHVu0pBok5DBU2okeL3xnfkG9r1FeQMnKFUBCLQ==
-X-Google-Smtp-Source: APXvYqzxht4Kq/NUweMLOm8iFPqZy+ybMvdqrPmbR2Vb2ZUVHK8mNb/HzPnUuK+o0IXo9qRHecPgclqQzte2uFHRgyY=
-X-Received: by 2002:aca:ead7:: with SMTP id i206mr4359423oih.128.1573568807592;
- Tue, 12 Nov 2019 06:26:47 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=APYlBn4LTHO89hs47rgqnLkGOShadwleO0VkyeHX6bw=;
+        b=klJ6xSjZr2vmu8yJ6SaJ69rYQ/QY6tjoq15OZ+0AckBWRrxSU+mArM5Wbsy4VJd6Vl
+         rRJHw64WG6W2Wh3XYb6+G6E7FMR8JituHlMLLLFujpWUVgvEzvN8ngKBQTKnHmmdf5h1
+         eGxuom8gB8x2bEzVyRbESHCXJQEUJs0d0+OzM7n3nJrVCoki9Xx7T4z0wtsD4o4hWdwq
+         Ne0/YqoN8BQI+mRgkT/94AX76k1P/SBVY/D9mZSR0USdNwD7CCR0AzbiKHbcmNIFlFMJ
+         vHVTN3C9vizIIA5RbVmIhVILLcUMxZPnHetraSng6ZSCEf7GNOhLdGnGiH8Lo7QZAUGj
+         LHeQ==
+X-Gm-Message-State: APjAAAXPxTBXQ1I1dPeOjGcy2VC7usxUU/E720+DvxGH3FVVCtnork1/
+        YUb69SA7i5L6FU8rHhXYVN3aJe4upOuABuW5OZHLjg==
+X-Google-Smtp-Source: APXvYqzPx8i+5koNmIElg/zsr5FoA1NgNBlyfuPBAzyyH6/kp64ZYDygldVjOQbn5U2r+udnceYzkVwFH4IDlxb2Wfo=
+X-Received: by 2002:a05:6830:22d0:: with SMTP id q16mr2441952otc.188.1573569105849;
+ Tue, 12 Nov 2019 06:31:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20191111192258.2234502-1-arnd@arndb.de> <20191112105507.GA7122@lst.de>
- <CAKMK7uEEz1n+zuTs29rbPHU74Dspaib=prpMge63L_-rUk_o4A@mail.gmail.com> <20191112140631.GA10922@lst.de>
-In-Reply-To: <20191112140631.GA10922@lst.de>
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-Date:   Tue, 12 Nov 2019 15:26:35 +0100
-Message-ID: <CAKMK7uFaA607rOS6x_FWjXQ2+Qdm8dQ1dQ+Oi-9if_Qh_wHWPg@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: atyfb: only use ioremap_uc() on i386 and ia64
-To:     Christoph Hellwig <hch@lst.de>, Tuowen Zhao <ztuowen@gmail.com>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Roman Gilg <subdiff@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Luis R. Rodriguez" <mcgrof@suse.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+References: <20191108123333.25274-1-tzimmermann@suse.de> <20191108123333.25274-2-tzimmermann@suse.de>
+ <e8b90928-fdae-36e0-f116-8b49159c4aad@tronnes.org> <1704c1d6-ec08-211b-0677-6c22f96ca7aa@suse.de>
+ <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com> <6da6c49a-572a-343a-ddb1-103ca7080ccd@suse.de>
+In-Reply-To: <6da6c49a-572a-343a-ddb1-103ca7080ccd@suse.de>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Tue, 12 Nov 2019 15:31:33 +0100
+Message-ID: <CAKMK7uHiXtg=FCpqv7ekpopd=2Hofrs7oR3qPNsf8e_E_Wv08w@mail.gmail.com>
+Subject: Re: [PATCH 1/4] drm/udl: Replace fbdev code with generic emulation
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        Dave Airlie <airlied@redhat.com>, Sean Paul <sean@poorly.run>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Souptick Joarder <jrdr.linux@gmail.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Emil Velikov <emil.velikov@collabora.com>,
         dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 3:06 PM Christoph Hellwig <hch@lst.de> wrote:
-> On Tue, Nov 12, 2019 at 02:04:16PM +0100, Daniel Vetter wrote:
-> > Wut ... Maybe I'm missing something, but from how we use mtrr in other
-> > gpu drivers it's a) either you use MTRR because that's all you got or
-> > b) you use pat. Mixing both sounds like a pretty bad idea, since if
-> > you need MTRR for performance (because you dont have PAT) then you
-> > can't fix the wc with the PAT-based ioremap_uc. And if you have PAT,
-> > then you don't really need an MTRR to get wc.
+On Tue, Nov 12, 2019 at 3:03 PM Thomas Zimmermann <tzimmermann@suse.de> wro=
+te:
+>
+> Hi
+>
+> Am 12.11.19 um 14:40 schrieb Daniel Vetter:
+> > On Tue, Nov 12, 2019 at 12:55 PM Thomas Zimmermann <tzimmermann@suse.de=
+> wrote:
+> >>
+> >> Hi
+> >>
+> >> Am 08.11.19 um 16:37 schrieb Noralf Tr=C3=B8nnes:
+> >>>
+> >>>
+> >>> Den 08.11.2019 13.33, skrev Thomas Zimmermann:
+> >>>> The udl driver can use the generic fbdev implementation. Convert it.
+> >>>>
+> >>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> >>>> ---
+> >>>
+> >>>> diff --git a/drivers/gpu/drm/udl/udl_drv.c b/drivers/gpu/drm/udl/udl=
+_drv.c
+> >>>> index 563cc5809e56..55c0f9dfee29 100644
+> >>>> --- a/drivers/gpu/drm/udl/udl_drv.c
+> >>>> +++ b/drivers/gpu/drm/udl/udl_drv.c
+> >>>
+> >>>> @@ -47,6 +48,8 @@ static struct drm_driver driver =3D {
+> >>>>      .driver_features =3D DRIVER_MODESET | DRIVER_GEM,
+> >>>>      .release =3D udl_driver_release,
+> >>>>
+> >>>> +    .lastclose =3D drm_fb_helper_lastclose,
+> >>>> +
+> >>>
+> >>> No need to set this, it's already wired up:
+> >>>
+> >>> drm_lastclose -> drm_client_dev_restore -> drm_fbdev_client_restore -=
+>
+> >>> drm_fb_helper_lastclose
+> >>>
+> >>>>      /* gem hooks */
+> >>>>      .gem_create_object =3D udl_driver_gem_create_object,
+> >>>>
+> >>>
+> >>>> diff --git a/drivers/gpu/drm/udl/udl_fb.c b/drivers/gpu/drm/udl/udl_=
+fb.c
+> >>>> index f8153b726343..afe74f892a2b 100644
+> >>>> --- a/drivers/gpu/drm/udl/udl_fb.c
+> >>>> +++ b/drivers/gpu/drm/udl/udl_fb.c
+> >>>> @@ -20,19 +20,9 @@
+> >>>>
+> >>>>  #include "udl_drv.h"
+> >>>>
+> >>>> -#define DL_DEFIO_WRITE_DELAY    (HZ/20) /* fb_deferred_io.delay in =
+jiffies */
+> >>>> -
+> >>>> -static int fb_defio =3D 0;  /* Optionally enable experimental fb_de=
+fio mmap support */
+> >>>>  static int fb_bpp =3D 16;
+> >>>>
+> >>>>  module_param(fb_bpp, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
+> >>>
+> >>> Maybe fb_bpp can be dropped too?
+> >>
+> >> Sure, makes sense.
+> >>
+> >> The driver exposes a preferred color depth of 24 bpp, which we may wan=
+t
+> >> to change to 16 then. The internal framebuffer is only 16 bpp anyway.
 > >
-> > So I'd revert this patch from Luis and ...
+> > Just something that crossed my mind: Should we ensure that the
+> > preferred format of the primary plane (should be the first in the
+> > format array) matches up with the preferred bpp setting? Maybe even
+> > enforce that for drivers with an explicit primary plane (i.e. atomic
+> > drivers). I think tiny drivers get this right already.
 >
-> Sounds great to me..
->
-> > ... apply this one. Since the same reasoning should apply to anything
-> > that's running on any cpu with PAT.
->
-> Can you take a look at "mfd: intel-lpss: Use devm_ioremap_uc for MMIO"
-> in linux-next, which also looks rather fishy to me?  Can't we use
-> the MTRR APIs to override the broken BIOS MTRR setup there as well?
+> IMHO that makes if the userspace can handle it. The preferred bpp could
+> also be retrieved from the formats array automatically. What about HW
+> with multiple CRTCs with different format defaults (sounds weird, I know)=
+?
 
-Hm so that's way out of my knowledge, but I think mtrr_cleanup() was
-supposed to fix up messy/broken MTRR setups by the bios. So maybe they
-simply didn't enable that in their .config with CONFIG_MTRR_SANITIZER.
+Ime I haven't seen such a case yet. What I have seen is that the most
+preferred format might be some fancy compressed format, which not all
+formats support. But which you can't render into without mesa anyway,
+so really doesn't matter for preferred bpp.
 
-An explicit cleanup is currently not possible for drivers, since the
-only interface exported to drivers is arch_phys_wc_add/del (which
-short-circuits if pat works since you don't need mtrr in that case).
-Adding everyone from that commit, plus Luis. Drivers really shouldn't
-assume/work around the bios setting up superflous/wrong MTRR.
+> WRT udl: For v3 of this patchset I've set the preferred color depth to
+> 32 bpp; although the internal FB is always at 16 bpp. Because when I
+> tested with a dual-screen setup (radeon + udl) X11 didn't support the 16
+> bpp output on the second screen (the one driven by udl). Only setting
+> both screen to 32 bpp worked out of the box. And the preferred 24 bpp
+> are not even supported by udl.
 
-> With that we could kill ioremap_uc entirely.
-
-So yeah removing that seems definitely like the right thing.
+Uh, if we can only set preferred bpp to make X happy, and X can only
+support one preferred bpp, then everyone needs to set 32bit. Which
+defeats the point (and we'd need to hardcode it to 32bpp). Is this
+really the case?
 -Daniel
--- 
+
+>
+> Best regards
+> Thomas
+>
+> > -Daniel
+> >
+> >>
+> >> Best regards
+> >> Thomas
+> >>
+> >>>
+> >>> It's possible to set it on the command line:
+> >>>
+> >>> video=3D<xres>x<yres>-<bpp>
+> >>>
+> >>> I haven't tried it so I can't say for certain that it actually works>
+> >>> Ref: Documentation/fb/modedb.rst and drm_fb_helper_single_fb_probe()
+> >>>
+> >>>> -module_param(fb_defio, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
+> >>>> -
+> >>>
+> >>>> diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl=
+/udl_modeset.c
+> >>>> index bc1ab6060dc6..1517d5e881b8 100644
+> >>>> --- a/drivers/gpu/drm/udl/udl_modeset.c
+> >>>> +++ b/drivers/gpu/drm/udl/udl_modeset.c
+> >>>
+> >>>> @@ -422,7 +423,7 @@ static int udl_crtc_init(struct drm_device *dev)
+> >>>>
+> >>>>  static const struct drm_mode_config_funcs udl_mode_funcs =3D {
+> >>>>      .fb_create =3D udl_fb_user_fb_create,
+> >>>> -    .output_poll_changed =3D NULL,
+> >>>> +    .output_poll_changed =3D drm_fb_helper_output_poll_changed,
+> >>>
+> >>> No need to set this, it's already wired up:
+> >>>
+> >>> drm_kms_helper_hotplug_event -> drm_client_dev_hotplug ->
+> >>> drm_fbdev_client_hotplug -> drm_fb_helper_hotplug_event
+> >>>
+> >>> Noralf.
+> >>>
+> >>>>  };
+> >>>>
+> >>>>  int udl_modeset_init(struct drm_device *dev)
+> >>>>
+> >>
+> >> --
+> >> Thomas Zimmermann
+> >> Graphics Driver Developer
+> >> SUSE Software Solutions Germany GmbH
+> >> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+> >> (HRB 36809, AG N=C3=BCrnberg)
+> >> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+> >>
+> >
+> >
+>
+> --
+> Thomas Zimmermann
+> Graphics Driver Developer
+> SUSE Software Solutions Germany GmbH
+> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+> (HRB 36809, AG N=C3=BCrnberg)
+> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+>
+
+
+--=20
 Daniel Vetter
 Software Engineer, Intel Corporation
 +41 (0) 79 365 57 48 - http://blog.ffwll.ch
