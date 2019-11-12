@@ -2,52 +2,22 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE61CF90D8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Nov 2019 14:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 131B8F9158
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Nov 2019 15:03:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbfKLNlI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Nov 2019 08:41:08 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33136 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727302AbfKLNlI (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Nov 2019 08:41:08 -0500
-Received: by mail-ot1-f65.google.com with SMTP id u13so14315259ote.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 12 Nov 2019 05:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=WEtD4NUsNII9Q5Y5URDwxzsb3Zvwk1zRHFdwetuuY/U=;
-        b=CGVqN/929T51ir6AFCMC33cfbZ4w6S/tP81VFFe0MW1RydZkWuJdoXLKakHm7OEwyx
-         nqa6sUdfU4r0gfK+LReWvmh84u4ullxuUs+Tx2sWIw6Bt6KFnXDL5OBcTQZD1QHzTcO9
-         QciaedqtTV/vcOlot/6LPDm0e6J/u9KXNjL1o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=WEtD4NUsNII9Q5Y5URDwxzsb3Zvwk1zRHFdwetuuY/U=;
-        b=UzYRTBFT3PFL8JU5gzL4SJP+JE02wED40pN5wpJ60fKrksaui3ft8cH7ZZyMYrMGIJ
-         BRhld6ug3sW+7n/AX3ULd4dWpiETTINEjPp/Ci3K9DeLPuEAGfjA0jWuwFKN59QWI3Xt
-         4TqG5HOAeNO/7ZH7vpIznq4iRr9FGsjUtOZsA3GKA8tE/yBEs6971Y0OENDqYS1LFMqY
-         yZP8hRGOTdeHYUt7ZhgSsnvnDNe0x/nFSMUJJPv/y4VX1WovSN7YRi6AkcVG0A511bUf
-         cCEiqGBlxF2w97F3C/WjKdG443v1LHaztFD3BL/IE2E+KzxAaOsZEAsUSXIGdcTPo18Z
-         q4MQ==
-X-Gm-Message-State: APjAAAUHGDUpDiXFBGswTuslHcNbKXWVCtENrwSeO1aEY9uC+FBLppB1
-        l/sQnp1ETUhooiHkgstALbG8XIZCJ8P1DrnbCp2rnA==
-X-Google-Smtp-Source: APXvYqz+trtRVvHuGhYuXNRd23JUvGyCZ5uPJlMHc9VjEKibVDcUhTyYPCQEbZ+1L3TP3/vpVDew2g3nlMoCBXcE1Eo=
-X-Received: by 2002:a9d:4c15:: with SMTP id l21mr26098625otf.204.1573566065828;
- Tue, 12 Nov 2019 05:41:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20191108123333.25274-1-tzimmermann@suse.de> <20191108123333.25274-2-tzimmermann@suse.de>
- <e8b90928-fdae-36e0-f116-8b49159c4aad@tronnes.org> <1704c1d6-ec08-211b-0677-6c22f96ca7aa@suse.de>
-In-Reply-To: <1704c1d6-ec08-211b-0677-6c22f96ca7aa@suse.de>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Tue, 12 Nov 2019 14:40:54 +0100
-Message-ID: <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com>
+        id S1726939AbfKLODh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Nov 2019 09:03:37 -0500
+Received: from mx2.suse.de ([195.135.220.15]:42442 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725865AbfKLODh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 12 Nov 2019 09:03:37 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 072D7B5D5;
+        Tue, 12 Nov 2019 14:03:33 +0000 (UTC)
 Subject: Re: [PATCH 1/4] drm/udl: Replace fbdev code with generic emulation
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
         Dave Airlie <airlied@redhat.com>, Sean Paul <sean@poorly.run>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Gerd Hoffmann <kraxel@redhat.com>,
@@ -55,132 +25,248 @@ Cc:     =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
         Emil Velikov <emil.velikov@collabora.com>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20191108123333.25274-1-tzimmermann@suse.de>
+ <20191108123333.25274-2-tzimmermann@suse.de>
+ <e8b90928-fdae-36e0-f116-8b49159c4aad@tronnes.org>
+ <1704c1d6-ec08-211b-0677-6c22f96ca7aa@suse.de>
+ <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
+ BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
+ irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
+ clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
+ mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
+ KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
+ Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
+ UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
+ RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
+ dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
+ ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
+ 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
+ wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
+ h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
+ n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
+ aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
+ HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
+ 3H26qrE=
+Message-ID: <6da6c49a-572a-343a-ddb1-103ca7080ccd@suse.de>
+Date:   Tue, 12 Nov 2019 15:03:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
+MIME-Version: 1.0
+In-Reply-To: <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="4Z6Q7avBr3Rk8r5csTiStkZ2Py9u0qQng"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 12:55 PM Thomas Zimmermann <tzimmermann@suse.de> wr=
-ote:
->
-> Hi
->
-> Am 08.11.19 um 16:37 schrieb Noralf Tr=C3=B8nnes:
-> >
-> >
-> > Den 08.11.2019 13.33, skrev Thomas Zimmermann:
-> >> The udl driver can use the generic fbdev implementation. Convert it.
-> >>
-> >> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> >> ---
-> >
-> >> diff --git a/drivers/gpu/drm/udl/udl_drv.c b/drivers/gpu/drm/udl/udl_d=
-rv.c
-> >> index 563cc5809e56..55c0f9dfee29 100644
-> >> --- a/drivers/gpu/drm/udl/udl_drv.c
-> >> +++ b/drivers/gpu/drm/udl/udl_drv.c
-> >
-> >> @@ -47,6 +48,8 @@ static struct drm_driver driver =3D {
-> >>      .driver_features =3D DRIVER_MODESET | DRIVER_GEM,
-> >>      .release =3D udl_driver_release,
-> >>
-> >> +    .lastclose =3D drm_fb_helper_lastclose,
-> >> +
-> >
-> > No need to set this, it's already wired up:
-> >
-> > drm_lastclose -> drm_client_dev_restore -> drm_fbdev_client_restore ->
-> > drm_fb_helper_lastclose
-> >
-> >>      /* gem hooks */
-> >>      .gem_create_object =3D udl_driver_gem_create_object,
-> >>
-> >
-> >> diff --git a/drivers/gpu/drm/udl/udl_fb.c b/drivers/gpu/drm/udl/udl_fb=
-.c
-> >> index f8153b726343..afe74f892a2b 100644
-> >> --- a/drivers/gpu/drm/udl/udl_fb.c
-> >> +++ b/drivers/gpu/drm/udl/udl_fb.c
-> >> @@ -20,19 +20,9 @@
-> >>
-> >>  #include "udl_drv.h"
-> >>
-> >> -#define DL_DEFIO_WRITE_DELAY    (HZ/20) /* fb_deferred_io.delay in ji=
-ffies */
-> >> -
-> >> -static int fb_defio =3D 0;  /* Optionally enable experimental fb_defi=
-o mmap support */
-> >>  static int fb_bpp =3D 16;
-> >>
-> >>  module_param(fb_bpp, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
-> >
-> > Maybe fb_bpp can be dropped too?
->
-> Sure, makes sense.
->
-> The driver exposes a preferred color depth of 24 bpp, which we may want
-> to change to 16 then. The internal framebuffer is only 16 bpp anyway.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--4Z6Q7avBr3Rk8r5csTiStkZ2Py9u0qQng
+Content-Type: multipart/mixed; boundary="aD4Q0DpD1uac8oIbzBhvbTm0Fmnu4qazf";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+ Dave Airlie <airlied@redhat.com>, Sean Paul <sean@poorly.run>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Emil Velikov <emil.velikov@collabora.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Message-ID: <6da6c49a-572a-343a-ddb1-103ca7080ccd@suse.de>
+Subject: Re: [PATCH 1/4] drm/udl: Replace fbdev code with generic emulation
+References: <20191108123333.25274-1-tzimmermann@suse.de>
+ <20191108123333.25274-2-tzimmermann@suse.de>
+ <e8b90928-fdae-36e0-f116-8b49159c4aad@tronnes.org>
+ <1704c1d6-ec08-211b-0677-6c22f96ca7aa@suse.de>
+ <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com>
+In-Reply-To: <CAKMK7uF7M60NcPTGicQVJ=09pqf4ua4kWaCmdCcDaC13AgTFQw@mail.gmail.com>
 
-Just something that crossed my mind: Should we ensure that the
-preferred format of the primary plane (should be the first in the
-format array) matches up with the preferred bpp setting? Maybe even
-enforce that for drivers with an explicit primary plane (i.e. atomic
-drivers). I think tiny drivers get this right already.
--Daniel
+--aD4Q0DpD1uac8oIbzBhvbTm0Fmnu4qazf
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
->
-> Best regards
-> Thomas
->
-> >
-> > It's possible to set it on the command line:
-> >
-> > video=3D<xres>x<yres>-<bpp>
-> >
-> > I haven't tried it so I can't say for certain that it actually works>
-> > Ref: Documentation/fb/modedb.rst and drm_fb_helper_single_fb_probe()
-> >
-> >> -module_param(fb_defio, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
-> >> -
-> >
-> >> diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/u=
-dl_modeset.c
-> >> index bc1ab6060dc6..1517d5e881b8 100644
-> >> --- a/drivers/gpu/drm/udl/udl_modeset.c
-> >> +++ b/drivers/gpu/drm/udl/udl_modeset.c
-> >
-> >> @@ -422,7 +423,7 @@ static int udl_crtc_init(struct drm_device *dev)
-> >>
-> >>  static const struct drm_mode_config_funcs udl_mode_funcs =3D {
-> >>      .fb_create =3D udl_fb_user_fb_create,
-> >> -    .output_poll_changed =3D NULL,
-> >> +    .output_poll_changed =3D drm_fb_helper_output_poll_changed,
-> >
-> > No need to set this, it's already wired up:
-> >
-> > drm_kms_helper_hotplug_event -> drm_client_dev_hotplug ->
-> > drm_fbdev_client_hotplug -> drm_fb_helper_hotplug_event
-> >
-> > Noralf.
-> >
-> >>  };
-> >>
-> >>  int udl_modeset_init(struct drm_device *dev)
-> >>
->
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-> (HRB 36809, AG N=C3=BCrnberg)
-> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
->
+Hi
 
+Am 12.11.19 um 14:40 schrieb Daniel Vetter:
+> On Tue, Nov 12, 2019 at 12:55 PM Thomas Zimmermann <tzimmermann@suse.de=
+> wrote:
+>>
+>> Hi
+>>
+>> Am 08.11.19 um 16:37 schrieb Noralf Tr=C3=B8nnes:
+>>>
+>>>
+>>> Den 08.11.2019 13.33, skrev Thomas Zimmermann:
+>>>> The udl driver can use the generic fbdev implementation. Convert it.=
+
+>>>>
+>>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>>> ---
+>>>
+>>>> diff --git a/drivers/gpu/drm/udl/udl_drv.c b/drivers/gpu/drm/udl/udl=
+_drv.c
+>>>> index 563cc5809e56..55c0f9dfee29 100644
+>>>> --- a/drivers/gpu/drm/udl/udl_drv.c
+>>>> +++ b/drivers/gpu/drm/udl/udl_drv.c
+>>>
+>>>> @@ -47,6 +48,8 @@ static struct drm_driver driver =3D {
+>>>>      .driver_features =3D DRIVER_MODESET | DRIVER_GEM,
+>>>>      .release =3D udl_driver_release,
+>>>>
+>>>> +    .lastclose =3D drm_fb_helper_lastclose,
+>>>> +
+>>>
+>>> No need to set this, it's already wired up:
+>>>
+>>> drm_lastclose -> drm_client_dev_restore -> drm_fbdev_client_restore -=
+>
+>>> drm_fb_helper_lastclose
+>>>
+>>>>      /* gem hooks */
+>>>>      .gem_create_object =3D udl_driver_gem_create_object,
+>>>>
+>>>
+>>>> diff --git a/drivers/gpu/drm/udl/udl_fb.c b/drivers/gpu/drm/udl/udl_=
+fb.c
+>>>> index f8153b726343..afe74f892a2b 100644
+>>>> --- a/drivers/gpu/drm/udl/udl_fb.c
+>>>> +++ b/drivers/gpu/drm/udl/udl_fb.c
+>>>> @@ -20,19 +20,9 @@
+>>>>
+>>>>  #include "udl_drv.h"
+>>>>
+>>>> -#define DL_DEFIO_WRITE_DELAY    (HZ/20) /* fb_deferred_io.delay in =
+jiffies */
+>>>> -
+>>>> -static int fb_defio =3D 0;  /* Optionally enable experimental fb_de=
+fio mmap support */
+>>>>  static int fb_bpp =3D 16;
+>>>>
+>>>>  module_param(fb_bpp, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
+>>>
+>>> Maybe fb_bpp can be dropped too?
+>>
+>> Sure, makes sense.
+>>
+>> The driver exposes a preferred color depth of 24 bpp, which we may wan=
+t
+>> to change to 16 then. The internal framebuffer is only 16 bpp anyway.
+>=20
+> Just something that crossed my mind: Should we ensure that the
+> preferred format of the primary plane (should be the first in the
+> format array) matches up with the preferred bpp setting? Maybe even
+> enforce that for drivers with an explicit primary plane (i.e. atomic
+> drivers). I think tiny drivers get this right already.
+
+IMHO that makes if the userspace can handle it. The preferred bpp could
+also be retrieved from the formats array automatically. What about HW
+with multiple CRTCs with different format defaults (sounds weird, I know)=
+?
+
+WRT udl: For v3 of this patchset I've set the preferred color depth to
+32 bpp; although the internal FB is always at 16 bpp. Because when I
+tested with a dual-screen setup (radeon + udl) X11 didn't support the 16
+bpp output on the second screen (the one driven by udl). Only setting
+both screen to 32 bpp worked out of the box. And the preferred 24 bpp
+are not even supported by udl.
+
+Best regards
+Thomas
+
+> -Daniel
+>=20
+>>
+>> Best regards
+>> Thomas
+>>
+>>>
+>>> It's possible to set it on the command line:
+>>>
+>>> video=3D<xres>x<yres>-<bpp>
+>>>
+>>> I haven't tried it so I can't say for certain that it actually works>=
+
+>>> Ref: Documentation/fb/modedb.rst and drm_fb_helper_single_fb_probe()
+>>>
+>>>> -module_param(fb_defio, int, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);=
+
+>>>> -
+>>>
+>>>> diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl=
+/udl_modeset.c
+>>>> index bc1ab6060dc6..1517d5e881b8 100644
+>>>> --- a/drivers/gpu/drm/udl/udl_modeset.c
+>>>> +++ b/drivers/gpu/drm/udl/udl_modeset.c
+>>>
+>>>> @@ -422,7 +423,7 @@ static int udl_crtc_init(struct drm_device *dev)=
+
+>>>>
+>>>>  static const struct drm_mode_config_funcs udl_mode_funcs =3D {
+>>>>      .fb_create =3D udl_fb_user_fb_create,
+>>>> -    .output_poll_changed =3D NULL,
+>>>> +    .output_poll_changed =3D drm_fb_helper_output_poll_changed,
+>>>
+>>> No need to set this, it's already wired up:
+>>>
+>>> drm_kms_helper_hotplug_event -> drm_client_dev_hotplug ->
+>>> drm_fbdev_client_hotplug -> drm_fb_helper_hotplug_event
+>>>
+>>> Noralf.
+>>>
+>>>>  };
+>>>>
+>>>>  int udl_modeset_init(struct drm_device *dev)
+>>>>
+>>
+>> --
+>> Thomas Zimmermann
+>> Graphics Driver Developer
+>> SUSE Software Solutions Germany GmbH
+>> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+>> (HRB 36809, AG N=C3=BCrnberg)
+>> Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+>>
+>=20
+>=20
 
 --=20
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--aD4Q0DpD1uac8oIbzBhvbTm0Fmnu4qazf--
+
+--4Z6Q7avBr3Rk8r5csTiStkZ2Py9u0qQng
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl3Ku7EACgkQaA3BHVML
+eiNq2ggAwg3bWDHmT6URWD5BFXC6Af3gsEcGKMRijVzzAR6fw23FhhwF/+resrEM
+3Wm5LpylYf0uf7PrU5ImrN6leDtCPpKg6hVLIy5T4X3+d+bM7oVpm+3bNUkbiKh1
+DkbQXXwFPOT9d4BEGlKSom7nWn1iJFX0NxgyyXJXvI0DnfsyDc27T122/+FEpHYM
+9KMPL0jHkBhw58RzHnqP3YWaUayp8sygDvfyfVM4fHZs8oSAEYUukO2Hv+WqN7jH
+pzzv6Vt5wj3ViYMTsFZALv9VFI/T7dt4R3pLiDtxxUs0VoyPCnPy99OEZuyEbJ6F
+lTvg67zgMVxS0z1jRJ0NZxvdbxaeaA==
+=nieo
+-----END PGP SIGNATURE-----
+
+--4Z6Q7avBr3Rk8r5csTiStkZ2Py9u0qQng--
