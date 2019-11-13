@@ -2,61 +2,192 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE01AFB3B3
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 16:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA65FB3E6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 16:41:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727793AbfKMP1U (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Nov 2019 10:27:20 -0500
-Received: from smtp.domeneshop.no ([194.63.252.55]:57241 "EHLO
-        smtp.domeneshop.no" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727721AbfKMP1U (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Nov 2019 10:27:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
-        ; s=ds201810; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=H3cBhEL11TGC3fnSyP5Uz6kpf1ieE2CexsDAQNrKRMk=; b=dWTVEzq8AVJUFgT0XnDVseKSbJ
-        Epk0zNq7pDL4zUFVIItRub2ov743QmczScDiDqeKFLjiiV4ePKEo9SEbRfnT0a3bi3e5R7SYuW72G
-        yZIIez3vEpJtIsgALmJmtavusX1eILGYL4qOoiF3m03P0Td2nhPyYAtytXFNw6WnpC1kHhEDm/uFh
-        giREU2UG0g9n17CbWkDsIk6fOsAkF5GUGa4aiw2SqyXG3vrDe5l2DHqqjjBby5YsP0ueKiyA+l/wb
-        TxwU45xzkP7uOQEe9iq2AiTtwvEFB7bbOuFtixtbj6cBCQSH0wkya7nzpncihgdQRoKCL2tctyMCG
-        cvdDtNBQ==;
-Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:58970 helo=[192.168.10.173])
-        by smtp.domeneshop.no with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <noralf@tronnes.org>)
-        id 1iUuY9-0003UG-VO; Wed, 13 Nov 2019 16:27:17 +0100
-Subject: Re: [PATCH v4 3/3] fbdev: Unexport unlink_framebuffer()
-To:     Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
-        sean@poorly.run, daniel@ffwll.ch, b.zolnierkie@samsung.com,
-        kraxel@redhat.com, sam@ravnborg.org, emil.velikov@collabora.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+        id S1727145AbfKMPlL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Nov 2019 10:41:11 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34366 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726957AbfKMPlL (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 13 Nov 2019 10:41:11 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 7C345B1FD;
+        Wed, 13 Nov 2019 15:41:08 +0000 (UTC)
+Subject: Re: [PATCH v4 1/3] drm/udl: Replace fbdev code with generic emulation
+To:     =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+        airlied@redhat.com, sean@poorly.run, daniel@ffwll.ch,
+        b.zolnierkie@samsung.com, kraxel@redhat.com, sam@ravnborg.org,
+        emil.velikov@collabora.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 References: <20191113115233.18483-1-tzimmermann@suse.de>
- <20191113115233.18483-4-tzimmermann@suse.de>
-From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Message-ID: <26c62d04-760e-cecc-3642-d91b083b12e5@tronnes.org>
-Date:   Wed, 13 Nov 2019 16:27:15 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+ <20191113115233.18483-2-tzimmermann@suse.de>
+ <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
+ BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
+ irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
+ clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
+ mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
+ KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
+ Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
+ UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
+ RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
+ dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
+ ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
+ 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
+ wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
+ h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
+ n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
+ aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
+ HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
+ 3H26qrE=
+Message-ID: <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
+Date:   Wed, 13 Nov 2019 16:41:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20191113115233.18483-4-tzimmermann@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="MUZ0CICzXdQU7zjQFtQ8TsMo9EZyBJIyT"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--MUZ0CICzXdQU7zjQFtQ8TsMo9EZyBJIyT
+Content-Type: multipart/mixed; boundary="1IOtx37RiYQz9L8B57LSRFxdKmUon48jm";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>, airlied@redhat.com,
+ sean@poorly.run, daniel@ffwll.ch, b.zolnierkie@samsung.com,
+ kraxel@redhat.com, sam@ravnborg.org, emil.velikov@collabora.com
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Message-ID: <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
+Subject: Re: [PATCH v4 1/3] drm/udl: Replace fbdev code with generic emulation
+References: <20191113115233.18483-1-tzimmermann@suse.de>
+ <20191113115233.18483-2-tzimmermann@suse.de>
+ <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
+In-Reply-To: <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
+
+--1IOtx37RiYQz9L8B57LSRFxdKmUon48jm
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+Am 13.11.19 um 16:26 schrieb Noralf Tr=C3=B8nnes:
+>=20
+>=20
+> Den 13.11.2019 12.52, skrev Thomas Zimmermann:
+>> The udl driver can use the generic fbdev implementation. Convert it.
+>>
+>> v4:
+>> 	* hardcode console bpp to 16
+>> v3:
+>> 	* remove module parameter fb_bpp in favor of fbdev's video
+>> 	* call drm_fbdev_generic_setup() directly; remove udl_fbdev_init()
+>> 	* use default for struct drm_mode_config_funcs.output_poll_changed
+>> 	* use default for struct drm_driver.lastclose
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> ---
+>=20
+>> diff --git a/drivers/gpu/drm/udl/udl_main.c b/drivers/gpu/drm/udl/udl_=
+main.c
+>> index 4e854e017390..3be0c0cec49e 100644
+>> --- a/drivers/gpu/drm/udl/udl_main.c
+>> +++ b/drivers/gpu/drm/udl/udl_main.c
+>> @@ -9,6 +9,7 @@
+>>   */
+>> =20
+>>  #include <drm/drm.h>
+>> +#include <drm/drm_fb_helper.h>
+>>  #include <drm/drm_print.h>
+>>  #include <drm/drm_probe_helper.h>
+>> =20
+>> @@ -338,7 +339,7 @@ int udl_init(struct udl_device *udl)
+>>  	if (ret)
+>>  		goto err;
+>> =20
+>> -	ret =3D udl_fbdev_init(dev);
+>> +	ret =3D drm_fbdev_generic_setup(dev, 16);
+>=20
+> I suggest you put this after drm_dev_register() in _probe() since fbdev=
+
+> is a client, a user of the driver, not part of it as such.
+
+Good point. I'll change it.
+
+>=20
+> Either way you choose:
+
+Glad you like it :)
+
+>=20
+> Reviewed-by: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
+
+Thanks for the review.
+
+Best regards
+Thomas
+
+>=20
+> Btw, nice diffstat!
+>=20
+>>  	if (ret)
+>>  		goto err;
+>> =20
+>> @@ -367,6 +368,4 @@ void udl_fini(struct drm_device *dev)
+>> =20
+>>  	if (udl->urbs.count)
+>>  		udl_free_urb_list(dev);
+>> -
+>> -	udl_fbdev_cleanup(dev);
+>>  }
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
 
 
-Den 13.11.2019 12.52, skrev Thomas Zimmermann:
-> There are no external callers of unlink_framebuffer() left. Make the
-> function an internal interface.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
+--1IOtx37RiYQz9L8B57LSRFxdKmUon48jm--
 
-Reviewed-by: Noralf Trønnes <noralf@tronnes.org>
+--MUZ0CICzXdQU7zjQFtQ8TsMo9EZyBJIyT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl3MJBAACgkQaA3BHVML
+eiNOoggAtgNWfEKPliAot2UIOzJyX99OHZ9PFCQVDh39lyn6KiXDYWH4t/3hP2+2
+GpC3gfqr3t6zL8oI/RUfRhiv1RiqIMRcndRCyWJitho4fI9jZqknyExN9tJnGJMp
+JSlPSLRoRJcwCn7WNDA9GJ369N8KDk4tzBs3FJh67389B0G5gj9/DFxsMwfsoxHG
+1aiAerjev/BVjGZEwguosmrzVySsgs6qvmYPtX5aGuNz/gkllnTxK2wipfLKKeE3
+Rv8Kc2E2GGJgmvFh5CyJhEYoJBQk12BNx8mDA9PFKs69FJ3UwEPV5HmhvF/2fVCg
+ir3SwkmpWDTzSCNJIIsfim32lCLR3g==
+=Ve5e
+-----END PGP SIGNATURE-----
+
+--MUZ0CICzXdQU7zjQFtQ8TsMo9EZyBJIyT--
