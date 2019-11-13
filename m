@@ -2,150 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 316A5FB412
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 16:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DDFEFB7DA
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 19:45:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726590AbfKMPsZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Nov 2019 10:48:25 -0500
-Received: from mx2.suse.de ([195.135.220.15]:40344 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726395AbfKMPsZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Nov 2019 10:48:25 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E3B90B496;
-        Wed, 13 Nov 2019 15:48:23 +0000 (UTC)
-Subject: Re: [PATCH v4 1/3] drm/udl: Replace fbdev code with generic emulation
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
-        airlied@redhat.com, sean@poorly.run, daniel@ffwll.ch,
-        b.zolnierkie@samsung.com, kraxel@redhat.com, sam@ravnborg.org,
-        emil.velikov@collabora.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20191113115233.18483-1-tzimmermann@suse.de>
- <20191113115233.18483-2-tzimmermann@suse.de>
- <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
- <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <5398d88a-bb4a-7f8f-f043-a101911940aa@suse.de>
-Date:   Wed, 13 Nov 2019 16:48:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+        id S1727687AbfKMSpI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Nov 2019 13:45:08 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:35021 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727054AbfKMSpI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 13 Nov 2019 13:45:08 -0500
+Received: by mail-pf1-f193.google.com with SMTP id q13so2242802pff.2;
+        Wed, 13 Nov 2019 10:45:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ytOa/TRpYZHcXnwihJ6zpPIzYpkWSN253EE1mDAjXKo=;
+        b=sQyexlwAOOOOJjs6JytY1RmDs1L97RiDZ4+TprM0G9qxAsmXXJ/vdBH953oW7QdsDx
+         nCNQhPIy6ef6r+JRrQqFjaUYwxnXf8Dum7BAYt/z7spYKiqP1l8vIOQ40FpcAKiJ7RL4
+         /DU38NeMr6Q8p0nLWTzRk80RmpLfp55SvVHVRx/TwN92Bip/AD5XNVE1MV86gN3BJg17
+         uILcZ45cavMR9WAeTwbbedH2I+9dCNrcrXa0BLGhgLiUer6RF3/1ZfYK+0dPlAbgDqDx
+         xNwlWKSUf4vn4K4I6DDAhtkuOaLuG48ttn5w+ukMyUG76VgW6uxfdSLsWs/vRVulqF3f
+         313Q==
+X-Gm-Message-State: APjAAAWwZTnuWB4yOxVq/N5lKqLhof9JpeJP6Y6pcoAlkj9QJ5ndUIEX
+        XGlMa/wt/ZIQTH6fOkVbxTY=
+X-Google-Smtp-Source: APXvYqw6X5AwWUNGodgFhZ6+c75EuWASAsRsHY14mdl8no689akd+8+9HvchuIg7nCAOCno/VfHAOg==
+X-Received: by 2002:aa7:9d8b:: with SMTP id f11mr6212536pfq.20.1573670707173;
+        Wed, 13 Nov 2019 10:45:07 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id 21sm4273627pfa.170.2019.11.13.10.45.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 10:45:06 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 68732403DC; Wed, 13 Nov 2019 18:45:05 +0000 (UTC)
+Date:   Wed, 13 Nov 2019 18:45:05 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Christoph Hellwig <hch@lst.de>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Juergen Gross <jgross@suse.com>,
+        Tuowen Zhao <ztuowen@gmail.com>,
+        AceLan Kao <acelan.kao@canonical.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Roman Gilg <subdiff@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Luis R. Rodriguez" <mcgrof@suse.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Souptick Joarder <jrdr.linux@gmail.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] video: fbdev: atyfb: only use ioremap_uc() on i386 and
+ ia64
+Message-ID: <20191113184505.GW11244@42.do-not-panic.com>
+References: <20191111192258.2234502-1-arnd@arndb.de>
+ <20191112105507.GA7122@lst.de>
+ <CAKMK7uEEz1n+zuTs29rbPHU74Dspaib=prpMge63L_-rUk_o4A@mail.gmail.com>
+ <20191112140631.GA10922@lst.de>
+ <CAKMK7uFaA607rOS6x_FWjXQ2+Qdm8dQ1dQ+Oi-9if_Qh_wHWPg@mail.gmail.com>
+ <20191112222423.GO11244@42.do-not-panic.com>
+ <20191113072708.GA3213@lst.de>
+ <CAK8P3a3OpiWAep86tOiN1Fj2W7ud5hQ1OLTkBR8ueAKsMHk-dA@mail.gmail.com>
+ <20191113093154.GB32742@smile.fi.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="ZQ6pXZQRbgjVW9F6dCLaI2xDfw1j2uWHu"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191113093154.GB32742@smile.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---ZQ6pXZQRbgjVW9F6dCLaI2xDfw1j2uWHu
-Content-Type: multipart/mixed; boundary="HJTtoV33BLx1rsgTppA8uUGQFUTEeDIXM";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>, airlied@redhat.com,
- sean@poorly.run, daniel@ffwll.ch, b.zolnierkie@samsung.com,
- kraxel@redhat.com, sam@ravnborg.org, emil.velikov@collabora.com
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Message-ID: <5398d88a-bb4a-7f8f-f043-a101911940aa@suse.de>
-Subject: Re: [PATCH v4 1/3] drm/udl: Replace fbdev code with generic emulation
-References: <20191113115233.18483-1-tzimmermann@suse.de>
- <20191113115233.18483-2-tzimmermann@suse.de>
- <7c9289a6-1a4e-e0d3-ce9e-3f5d6305da69@tronnes.org>
- <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
-In-Reply-To: <c2d1d12d-d90e-f6f6-9608-9955e63a8bec@suse.de>
+On Wed, Nov 13, 2019 at 11:31:54AM +0200, Andy Shevchenko wrote:
+> On Wed, Nov 13, 2019 at 08:38:15AM +0100, Arnd Bergmann wrote:
+> > On Wed, Nov 13, 2019 at 8:27 AM Christoph Hellwig <hch@lst.de> wrote:
+> > >
+> > > On Tue, Nov 12, 2019 at 10:24:23PM +0000, Luis Chamberlain wrote:
+> > > > I think this would be possible if we could flop ioremap_nocache() to UC
+> > > > instead of UC- on x86. Otherwise, I can't see how we can remove this by
+> > > > still not allowing direct MTRR calls.
+> > >
+> > > If everything goes well ioremap_nocache will be gone as of 5.5.
+> > 
+> > As ioremap_nocache() just an alias for ioremap(), I suppose the idea would
+> > then be to make x86 ioremap be UC instead of UC-, again matching what the
+> > other architectures do already.
+> 
+> I think it's right thing to do, i.e. assume that ioremap() always does strong
+> UC independently on MTRR settings.
 
---HJTtoV33BLx1rsgTppA8uUGQFUTEeDIXM
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Agreed wholeheartedly. What are the blockers from making that happen? Do
+we have any left?
 
-
-Am 13.11.19 um 16:41 schrieb Thomas Zimmermann:
-
->> Either way you choose:
->=20
-> Glad you like it :)
->=20
-
-more like this
-
->>
->> Btw, nice diffstat!
-
-Glad you like it :)
-
->>
->>>  	if (ret)
->>>  		goto err;
->>> =20
->>> @@ -367,6 +368,4 @@ void udl_fini(struct drm_device *dev)
->>> =20
->>>  	if (udl->urbs.count)
->>>  		udl_free_urb_list(dev);
->>> -
->>> -	udl_fbdev_cleanup(dev);
->>>  }
->> _______________________________________________
->> dri-devel mailing list
->> dri-devel@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/dri-devel
->>
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---HJTtoV33BLx1rsgTppA8uUGQFUTEeDIXM--
-
---ZQ6pXZQRbgjVW9F6dCLaI2xDfw1j2uWHu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl3MJcQACgkQaA3BHVML
-eiNG6Qf/epNWFMYvFoLWFEdBRojEqVCU3W7GD95cNBp25auTYxjmbdeB4dhasdMJ
-vG7gIxe+uRaOSiN5sEDSpenMw3gGUhMVbFwmaQUapxU4THVpdSKB2X/d7iFFOtbP
-ECFxsfAHRSrb7xzTZwoPNsnTR8ptgH++uok/Mh3V+PfgqGqjUaOVHYhZvVtPuMGf
-TF296DjD0hPBuvVvXsSQ9S+vuJeCHsBw6vVHr/peP8hx6/pForieSf3G/MvxkBYV
-M10qhmgQ5mI9MP+9qsP1OiUF2wPentGzQsxA0r1mt6TRH8Taqm7vSNCRdrHVG8Gz
-nhGkHuxLErXgN3hG0y1hXKbjEdG+lw==
-=Ol7h
------END PGP SIGNATURE-----
-
---ZQ6pXZQRbgjVW9F6dCLaI2xDfw1j2uWHu--
+  Luis
