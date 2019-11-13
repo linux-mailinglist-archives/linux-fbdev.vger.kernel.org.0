@@ -2,126 +2,158 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97452F9CEC
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Nov 2019 23:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F68FA4FB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 03:21:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726906AbfKLWY0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Nov 2019 17:24:26 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:32997 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726896AbfKLWYZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Nov 2019 17:24:25 -0500
-Received: by mail-pf1-f196.google.com with SMTP id c184so113659pfb.0;
-        Tue, 12 Nov 2019 14:24:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ry7MlWHWsPiTlOdYnNj9Sx46aKAp4p8fIGij3YUbq4o=;
-        b=RTCM3YsuRrBW1rSeGPMHQg1g+lNT6bOGCkb3Q07RPmw6sh5OfeM386QRjVFgVu/kLi
-         oe7ucjtMpCMjw8BhzrZ9AM+8/+KUFtitMxXsG03P2p1hg74YHqnKVpRUxS9J5I19z0IA
-         w8IH9+5SaJUwCjJHnaIUeGwOwmW8C4vLFzIJnQUD89npc+soZcURMXAu7o4rwhlb8V1u
-         x0XMVTpxekcpRvezoBqC1noTgjCShaVbRzxGphO+GcYC6Lujv/gBL3pD6JXcdUJOQvQU
-         DujfpatjoFJ1wsu0sDCdCoebrr4CFGUZ3VYFVCP2BFTKqBK8K+OarHiLQOeR4hDDmYkG
-         PeNQ==
-X-Gm-Message-State: APjAAAVZ+0iNipGWuqD3ZZpdYKT13SXPwxED9f4J5HbAgqFWWqxbzNI/
-        4G43OlA0WDB/q2Mb7DtM+c4=
-X-Google-Smtp-Source: APXvYqyQjg0WJFTXJX4TDREGWX/l6oBydGPSLvZPR83Gb1S+0oI6F/VbuxNKlHHytBATO8Dg89NbeA==
-X-Received: by 2002:a63:d258:: with SMTP id t24mr37597711pgi.289.1573597465040;
-        Tue, 12 Nov 2019 14:24:25 -0800 (PST)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
-        by smtp.gmail.com with ESMTPSA id c6sm20600076pfj.59.2019.11.12.14.24.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2019 14:24:23 -0800 (PST)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
-        id 4625B403DC; Tue, 12 Nov 2019 22:24:23 +0000 (UTC)
-Date:   Tue, 12 Nov 2019 22:24:23 +0000
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Juergen Gross <jgross@suse.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Tuowen Zhao <ztuowen@gmail.com>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Roman Gilg <subdiff@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Luis R. Rodriguez" <mcgrof@suse.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S1728808AbfKMByP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Nov 2019 20:54:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44784 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728752AbfKMByP (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:54:15 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A244222D4;
+        Wed, 13 Nov 2019 01:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573610054;
+        bh=eHQG1+45UnU0f2+tIK6SyHL4QPGWNo5WyA4FhoQxtTo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=iLswZrtJqORMUQf/Cqs3YmnI48Ykf0eoje1KmUp+eb+jAX7CBnxfT7apNrS5f/Ibn
+         Pd77R3dbjxv8bmW0Cq5htR1YIDxkO+WB2ILMT6j3slnBbceSD1a8KNNlGJ8K4dihfT
+         Wnw5Zge6DJM5gmK2MGbksdug7hWeCx672zUAqSKc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Souptick Joarder <jrdr.linux@gmail.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] video: fbdev: atyfb: only use ioremap_uc() on i386 and
- ia64
-Message-ID: <20191112222423.GO11244@42.do-not-panic.com>
-References: <20191111192258.2234502-1-arnd@arndb.de>
- <20191112105507.GA7122@lst.de>
- <CAKMK7uEEz1n+zuTs29rbPHU74Dspaib=prpMge63L_-rUk_o4A@mail.gmail.com>
- <20191112140631.GA10922@lst.de>
- <CAKMK7uFaA607rOS6x_FWjXQ2+Qdm8dQ1dQ+Oi-9if_Qh_wHWPg@mail.gmail.com>
+        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 4.19 140/209] atmel_lcdfb: support native-mode display-timings
+Date:   Tue, 12 Nov 2019 20:49:16 -0500
+Message-Id: <20191113015025.9685-140-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
+References: <20191113015025.9685-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKMK7uFaA607rOS6x_FWjXQ2+Qdm8dQ1dQ+Oi-9if_Qh_wHWPg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Nov 12, 2019 at 03:26:35PM +0100, Daniel Vetter wrote:
-> On Tue, Nov 12, 2019 at 3:06 PM Christoph Hellwig <hch@lst.de> wrote:
-> > On Tue, Nov 12, 2019 at 02:04:16PM +0100, Daniel Vetter wrote:
-> > > Wut ... Maybe I'm missing something, but from how we use mtrr in other
-> > > gpu drivers it's a) either you use MTRR because that's all you got or
-> > > b) you use pat. Mixing both sounds like a pretty bad idea, since if
-> > > you need MTRR for performance (because you dont have PAT) then you
-> > > can't fix the wc with the PAT-based ioremap_uc. And if you have PAT,
-> > > then you don't really need an MTRR to get wc.
-> > >
-> > > So I'd revert this patch from Luis and ...
-> >
-> > Sounds great to me..
-> >
-> > > ... apply this one. Since the same reasoning should apply to anything
-> > > that's running on any cpu with PAT.
-> >
-> > Can you take a look at "mfd: intel-lpss: Use devm_ioremap_uc for MMIO"
-> > in linux-next, which also looks rather fishy to me?  Can't we use
-> > the MTRR APIs to override the broken BIOS MTRR setup there as well?
-> 
-> Hm so that's way out of my knowledge, but I think mtrr_cleanup() was
-> supposed to fix up messy/broken MTRR setups by the bios. So maybe they
-> simply didn't enable that in their .config with CONFIG_MTRR_SANITIZER.
+From: Sam Ravnborg <sam@ravnborg.org>
 
-I had originally suggested to just make the driver build on x86, but an
-atlternative was to provide the call for the missing architecture.
+[ Upstream commit 60e5e48dba72c6b59a7a9c7686ba320766913368 ]
 
-> An explicit cleanup is currently not possible for drivers, since the
-> only interface exported to drivers is arch_phys_wc_add/del (which
-> short-circuits if pat works since you don't need mtrr in that case).
+When a device tree set a display-timing using native-mode
+then according to the bindings doc this should:
 
-Right, the goal was to not call MTRR directly.
+    native-mode:
+    The native mode for the display, in case multiple
+    modes are provided.
+    When omitted, assume the first node is the native.
 
-> Adding everyone from that commit, plus Luis. Drivers really shouldn't
-> assume/work around the bios setting up superflous/wrong MTRR.
+The atmel_lcdfb used the last timing subnode and did not
+respect the timing mode specified with native-mode.
 
-Such things are needed, otherwise some systems may not boot...
+Introduce use of of_get_videomode() which allowed
+a nice simplification of the code while also
+added support for native-mode.
 
-> > With that we could kill ioremap_uc entirely.
-> 
-> So yeah removing that seems definitely like the right thing.
+As a nice side-effect this fixes a memory leak where the
+data used for timings and the display_np was not freed.
 
-I think this would be possible if we could flop ioremap_nocache() to UC
-instead of UC- on x86. Otherwise, I can't see how we can remove this by
-still not allowing direct MTRR calls.
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/atmel_lcdfb.c | 43 +++++++------------------------
+ 1 file changed, 9 insertions(+), 34 deletions(-)
 
-  Luis
+diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
+index 076d24afbd728..4ed55e6bbb840 100644
+--- a/drivers/video/fbdev/atmel_lcdfb.c
++++ b/drivers/video/fbdev/atmel_lcdfb.c
+@@ -22,6 +22,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
++#include <video/of_videomode.h>
+ #include <video/of_display_timing.h>
+ #include <linux/regulator/consumer.h>
+ #include <video/videomode.h>
+@@ -1028,11 +1029,11 @@ static int atmel_lcdfb_of_init(struct atmel_lcdfb_info *sinfo)
+ 	struct device *dev = &sinfo->pdev->dev;
+ 	struct device_node *np =dev->of_node;
+ 	struct device_node *display_np;
+-	struct device_node *timings_np;
+-	struct display_timings *timings;
+ 	struct atmel_lcdfb_power_ctrl_gpio *og;
+ 	bool is_gpio_power = false;
++	struct fb_videomode fb_vm;
+ 	struct gpio_desc *gpiod;
++	struct videomode vm;
+ 	int ret = -ENOENT;
+ 	int i;
+ 
+@@ -1105,44 +1106,18 @@ static int atmel_lcdfb_of_init(struct atmel_lcdfb_info *sinfo)
+ 	pdata->lcdcon_is_backlight = of_property_read_bool(display_np, "atmel,lcdcon-backlight");
+ 	pdata->lcdcon_pol_negative = of_property_read_bool(display_np, "atmel,lcdcon-backlight-inverted");
+ 
+-	timings = of_get_display_timings(display_np);
+-	if (!timings) {
+-		dev_err(dev, "failed to get display timings\n");
+-		ret = -EINVAL;
++	ret = of_get_videomode(display_np, &vm, OF_USE_NATIVE_MODE);
++	if (ret) {
++		dev_err(dev, "failed to get videomode from DT\n");
+ 		goto put_display_node;
+ 	}
+ 
+-	timings_np = of_get_child_by_name(display_np, "display-timings");
+-	if (!timings_np) {
+-		dev_err(dev, "failed to find display-timings node\n");
+-		ret = -ENODEV;
++	ret = fb_videomode_from_videomode(&vm, &fb_vm);
++	if (ret < 0)
+ 		goto put_display_node;
+-	}
+ 
+-	for (i = 0; i < of_get_child_count(timings_np); i++) {
+-		struct videomode vm;
+-		struct fb_videomode fb_vm;
+-
+-		ret = videomode_from_timings(timings, &vm, i);
+-		if (ret < 0)
+-			goto put_timings_node;
+-		ret = fb_videomode_from_videomode(&vm, &fb_vm);
+-		if (ret < 0)
+-			goto put_timings_node;
+-
+-		fb_add_videomode(&fb_vm, &info->modelist);
+-	}
+-
+-	/*
+-	 * FIXME: Make sure we are not referencing any fields in display_np
+-	 * and timings_np and drop our references to them before returning to
+-	 * avoid leaking the nodes on probe deferral and driver unbind.
+-	 */
+-
+-	return 0;
++	fb_add_videomode(&fb_vm, &info->modelist);
+ 
+-put_timings_node:
+-	of_node_put(timings_np);
+ put_display_node:
+ 	of_node_put(display_np);
+ 	return ret;
+-- 
+2.20.1
+
