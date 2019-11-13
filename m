@@ -2,39 +2,38 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29613FA238
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 03:03:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFDEFA279
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 03:04:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731026AbfKMCC3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Nov 2019 21:02:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59062 "EHLO mail.kernel.org"
+        id S1729538AbfKMCDr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Nov 2019 21:03:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730094AbfKMCC3 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Nov 2019 21:02:29 -0500
+        id S1731040AbfKMCCd (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:02:33 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A94E5222CA;
-        Wed, 13 Nov 2019 02:02:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6F1982245B;
+        Wed, 13 Nov 2019 02:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610548;
-        bh=NGvcGUUb/zX84EsKjg1TLdH6Al2JKVLtjEr2dAXuSVE=;
+        s=default; t=1573610553;
+        bh=julWjBlCYWiwOVW4slF5Jvmglxdu1fcIEx8uEPF98IM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P88yY1P7UAi7xs9N4k5ebC62VmgWOLcsqDOhJdyorYBe5DrsO+7JfgHEZBaEJO6hx
-         q/zMhCEmUNKGZp6k/EoUv5v4995DEE5cuQDOfxszxtEU0r/koTjV13uEH3lEk3ucB9
-         WHFB7BUq2DDtBSGdRJhCx/LqUyrugq1iGdRlBOR4=
+        b=I/BRtjC+fLEC5Q9HFONet5ZCepVyAJV04nyNAjUEitiAB1sbjF+rUjnnWKxBUjaBy
+         OJIdyiYltTh7Chb6PKSsAy4miLs4ZG4JdyzD3e9iGV2gZRxDR2xut6vmjeQCNnk5mS
+         ZIqdaSs6waGY5iBJfTSeVZuGV/p4oUph6NGYb+88=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Peter Malone <peter.malone@gmail.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Mathieu Malaterre <malat@debian.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 33/48] fbdev: sbuslib: integer overflow in sbusfb_ioctl_helper()
-Date:   Tue, 12 Nov 2019 21:01:16 -0500
-Message-Id: <20191113020131.13356-33-sashal@kernel.org>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: [PATCH AUTOSEL 4.4 36/48] backlight: lm3639: Unconditionally call led_classdev_unregister
+Date:   Tue, 12 Nov 2019 21:01:19 -0500
+Message-Id: <20191113020131.13356-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113020131.13356-1-sashal@kernel.org>
 References: <20191113020131.13356-1-sashal@kernel.org>
@@ -47,36 +46,57 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit e5017716adb8aa5c01c52386c1b7470101ffe9c5 ]
+[ Upstream commit 7cea645ae9c5a54aa7904fddb2cdf250acd63a6c ]
 
-The "index + count" addition can overflow.  Both come directly from the
-user.  This bug leads to an information leak.
+Clang warns that the address of a pointer will always evaluated as true
+in a boolean context.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Peter Malone <peter.malone@gmail.com>
-Cc: Philippe Ombredanne <pombredanne@nexb.com>
-Cc: Mathieu Malaterre <malat@debian.org>
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+drivers/video/backlight/lm3639_bl.c:403:14: warning: address of
+'pchip->cdev_torch' will always evaluate to 'true'
+[-Wpointer-bool-conversion]
+        if (&pchip->cdev_torch)
+        ~~   ~~~~~~~^~~~~~~~~~
+drivers/video/backlight/lm3639_bl.c:405:14: warning: address of
+'pchip->cdev_flash' will always evaluate to 'true'
+[-Wpointer-bool-conversion]
+        if (&pchip->cdev_flash)
+        ~~   ~~~~~~~^~~~~~~~~~
+2 warnings generated.
+
+These statements have been present since 2012, introduced by
+commit 0f59858d5119 ("backlight: add new lm3639 backlight
+driver"). Given that they have been called unconditionally since
+then presumably without any issues, removing the always true if
+statements to fix the warnings without any real world changes.
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/119
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sbuslib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/backlight/lm3639_bl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib.c
-index b425718925c01..52e161dbd2047 100644
---- a/drivers/video/fbdev/sbuslib.c
-+++ b/drivers/video/fbdev/sbuslib.c
-@@ -170,7 +170,7 @@ int sbusfb_ioctl_helper(unsigned long cmd, unsigned long arg,
- 		    get_user(ublue, &c->blue))
- 			return -EFAULT;
+diff --git a/drivers/video/backlight/lm3639_bl.c b/drivers/video/backlight/lm3639_bl.c
+index cd50df5807ead..086611c7bc03c 100644
+--- a/drivers/video/backlight/lm3639_bl.c
++++ b/drivers/video/backlight/lm3639_bl.c
+@@ -400,10 +400,8 @@ static int lm3639_remove(struct i2c_client *client)
  
--		if (index + count > cmap->len)
-+		if (index > cmap->len || count > cmap->len - index)
- 			return -EINVAL;
+ 	regmap_write(pchip->regmap, REG_ENABLE, 0x00);
  
- 		for (i = 0; i < count; i++) {
+-	if (&pchip->cdev_torch)
+-		led_classdev_unregister(&pchip->cdev_torch);
+-	if (&pchip->cdev_flash)
+-		led_classdev_unregister(&pchip->cdev_flash);
++	led_classdev_unregister(&pchip->cdev_torch);
++	led_classdev_unregister(&pchip->cdev_flash);
+ 	if (pchip->bled)
+ 		device_remove_file(&(pchip->bled->dev), &dev_attr_bled_mode);
+ 	return 0;
 -- 
 2.20.1
 
