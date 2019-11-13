@@ -2,41 +2,42 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6070FA345
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 03:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB52FA2F6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Nov 2019 03:07:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730141AbfKMB6x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Nov 2019 20:58:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52914 "EHLO mail.kernel.org"
+        id S1730607AbfKMCAz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Nov 2019 21:00:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56402 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730137AbfKMB6w (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:58:52 -0500
+        id S1730604AbfKMCAz (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:00:55 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0B77F2053B;
-        Wed, 13 Nov 2019 01:58:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B6A8A222CF;
+        Wed, 13 Nov 2019 02:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610332;
-        bh=julWjBlCYWiwOVW4slF5Jvmglxdu1fcIEx8uEPF98IM=;
+        s=default; t=1573610453;
+        bh=sRrLkyUGgCKpwty94eVo3szlNVzGQWCr0iIWSeGW3dI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rz85SUw0HPQniBrnhFbttQ8T+VTbWibRrOEH0yo1qL2Dfgg5UpB3r7ujqj2exI5oF
-         2hUgMuknH6a6VJCALdiLf/+pRjnyfF9VeZwiWsJx6aPl5Jij3sIcHKiMBWaYk4CfYT
-         OXIXrsMc+/HU1vmwDsYO0Zp2Jd3CGqzmI318XL9k=
+        b=QFHCuNtvPexOkIlbI/zSog56+qYgpKx1kPrVmbA1W/s5tLoTeaZMXg7UTdF2VOFBz
+         jFYdbu0b1j6jugRRRFk9q+Uzy/XrCDiOgr0Enko9EwXPHKHE3lekF/+eNG5PD0IsH1
+         tlzrq797ipEhxgSdwY4k/ATAXRgGghZs1wxYtOg0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        Peter Malone <peter.malone@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.14 089/115] backlight: lm3639: Unconditionally call led_classdev_unregister
-Date:   Tue, 12 Nov 2019 20:55:56 -0500
-Message-Id: <20191113015622.11592-89-sashal@kernel.org>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 46/68] fbdev: sbuslib: use checked version of put_user()
+Date:   Tue, 12 Nov 2019 20:59:10 -0500
+Message-Id: <20191113015932.12655-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
-References: <20191113015622.11592-1-sashal@kernel.org>
+In-Reply-To: <20191113015932.12655-1-sashal@kernel.org>
+References: <20191113015932.12655-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,57 +47,75 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 7cea645ae9c5a54aa7904fddb2cdf250acd63a6c ]
+[ Upstream commit d8bad911e5e55e228d59c0606ff7e6b8131ca7bf ]
 
-Clang warns that the address of a pointer will always evaluated as true
-in a boolean context.
+I'm not sure why the code assumes that only the first put_user() needs
+an access_ok() check.  I have made all the put_user() and get_user()
+calls checked.
 
-drivers/video/backlight/lm3639_bl.c:403:14: warning: address of
-'pchip->cdev_torch' will always evaluate to 'true'
-[-Wpointer-bool-conversion]
-        if (&pchip->cdev_torch)
-        ~~   ~~~~~~~^~~~~~~~~~
-drivers/video/backlight/lm3639_bl.c:405:14: warning: address of
-'pchip->cdev_flash' will always evaluate to 'true'
-[-Wpointer-bool-conversion]
-        if (&pchip->cdev_flash)
-        ~~   ~~~~~~~^~~~~~~~~~
-2 warnings generated.
-
-These statements have been present since 2012, introduced by
-commit 0f59858d5119 ("backlight: add new lm3639 backlight
-driver"). Given that they have been called unconditionally since
-then presumably without any issues, removing the always true if
-statements to fix the warnings without any real world changes.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/119
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Philippe Ombredanne <pombredanne@nexb.com>
+Cc: Mathieu Malaterre <malat@debian.org>
+Cc: Peter Malone <peter.malone@gmail.com>,
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/lm3639_bl.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/sbuslib.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/video/backlight/lm3639_bl.c b/drivers/video/backlight/lm3639_bl.c
-index cd50df5807ead..086611c7bc03c 100644
---- a/drivers/video/backlight/lm3639_bl.c
-+++ b/drivers/video/backlight/lm3639_bl.c
-@@ -400,10 +400,8 @@ static int lm3639_remove(struct i2c_client *client)
+diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib.c
+index 31c301d6be621..b425718925c01 100644
+--- a/drivers/video/fbdev/sbuslib.c
++++ b/drivers/video/fbdev/sbuslib.c
+@@ -105,11 +105,11 @@ int sbusfb_ioctl_helper(unsigned long cmd, unsigned long arg,
+ 		struct fbtype __user *f = (struct fbtype __user *) arg;
  
- 	regmap_write(pchip->regmap, REG_ENABLE, 0x00);
+ 		if (put_user(type, &f->fb_type) ||
+-		    __put_user(info->var.yres, &f->fb_height) ||
+-		    __put_user(info->var.xres, &f->fb_width) ||
+-		    __put_user(fb_depth, &f->fb_depth) ||
+-		    __put_user(0, &f->fb_cmsize) ||
+-		    __put_user(fb_size, &f->fb_cmsize))
++		    put_user(info->var.yres, &f->fb_height) ||
++		    put_user(info->var.xres, &f->fb_width) ||
++		    put_user(fb_depth, &f->fb_depth) ||
++		    put_user(0, &f->fb_cmsize) ||
++		    put_user(fb_size, &f->fb_cmsize))
+ 			return -EFAULT;
+ 		return 0;
+ 	}
+@@ -124,10 +124,10 @@ int sbusfb_ioctl_helper(unsigned long cmd, unsigned long arg,
+ 		unsigned int index, count, i;
  
--	if (&pchip->cdev_torch)
--		led_classdev_unregister(&pchip->cdev_torch);
--	if (&pchip->cdev_flash)
--		led_classdev_unregister(&pchip->cdev_flash);
-+	led_classdev_unregister(&pchip->cdev_torch);
-+	led_classdev_unregister(&pchip->cdev_flash);
- 	if (pchip->bled)
- 		device_remove_file(&(pchip->bled->dev), &dev_attr_bled_mode);
- 	return 0;
+ 		if (get_user(index, &c->index) ||
+-		    __get_user(count, &c->count) ||
+-		    __get_user(ured, &c->red) ||
+-		    __get_user(ugreen, &c->green) ||
+-		    __get_user(ublue, &c->blue))
++		    get_user(count, &c->count) ||
++		    get_user(ured, &c->red) ||
++		    get_user(ugreen, &c->green) ||
++		    get_user(ublue, &c->blue))
+ 			return -EFAULT;
+ 
+ 		cmap.len = 1;
+@@ -164,10 +164,10 @@ int sbusfb_ioctl_helper(unsigned long cmd, unsigned long arg,
+ 		u8 red, green, blue;
+ 
+ 		if (get_user(index, &c->index) ||
+-		    __get_user(count, &c->count) ||
+-		    __get_user(ured, &c->red) ||
+-		    __get_user(ugreen, &c->green) ||
+-		    __get_user(ublue, &c->blue))
++		    get_user(count, &c->count) ||
++		    get_user(ured, &c->red) ||
++		    get_user(ugreen, &c->green) ||
++		    get_user(ublue, &c->blue))
+ 			return -EFAULT;
+ 
+ 		if (index + count > cmap->len)
 -- 
 2.20.1
 
