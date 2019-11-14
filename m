@@ -2,82 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6074CFC68F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Nov 2019 13:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82002FCBC6
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Nov 2019 18:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726263AbfKNMvM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 Nov 2019 07:51:12 -0500
-Received: from mx2.suse.de ([195.135.220.15]:60148 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726319AbfKNMvM (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 Nov 2019 07:51:12 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 110F9AD54;
-        Thu, 14 Nov 2019 12:51:09 +0000 (UTC)
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     airlied@redhat.com, sean@poorly.run, daniel@ffwll.ch,
-        b.zolnierkie@samsung.com, noralf@tronnes.org, kraxel@redhat.com,
-        sam@ravnborg.org, emil.velikov@collabora.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v5 3/3] fbdev: Unexport unlink_framebuffer()
-Date:   Thu, 14 Nov 2019 13:51:06 +0100
-Message-Id: <20191114125106.28347-4-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191114125106.28347-1-tzimmermann@suse.de>
-References: <20191114125106.28347-1-tzimmermann@suse.de>
+        id S1726098AbfKNR11 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 Nov 2019 12:27:27 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:44707 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbfKNR10 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 14 Nov 2019 12:27:26 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iVItt-0003AZ-5S; Thu, 14 Nov 2019 17:27:21 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "K . Y . Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
+Date:   Thu, 14 Nov 2019 17:27:20 +0000
+Message-Id: <20191114172720.322023-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There are no external callers of unlink_framebuffer() left. Make the
-function an internal interface.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Noralf Trønnes <noralf@tronnes.org>
+There is a block of statements that are indented
+too deeply, remove the extraneous tabs.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/video/fbdev/core/fbmem.c | 3 +--
- include/linux/fb.h               | 1 -
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/hyperv_fb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 95c32952fa8a..86b06a599f96 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1673,7 +1673,7 @@ static void unbind_console(struct fb_info *fb_info)
- 	console_unlock();
- }
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index 4cd27e5172a1..5fcf4bdf85ab 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -582,8 +582,8 @@ static int synthvid_get_supported_resolution(struct hv_device *hdev)
+ 	t = wait_for_completion_timeout(&par->wait, VSP_TIMEOUT);
+ 	if (!t) {
+ 		pr_err("Time out on waiting resolution response\n");
+-			ret = -ETIMEDOUT;
+-			goto out;
++		ret = -ETIMEDOUT;
++		goto out;
+ 	}
  
--void unlink_framebuffer(struct fb_info *fb_info)
-+static void unlink_framebuffer(struct fb_info *fb_info)
- {
- 	int i;
- 
-@@ -1692,7 +1692,6 @@ void unlink_framebuffer(struct fb_info *fb_info)
- 
- 	fb_info->dev = NULL;
- }
--EXPORT_SYMBOL(unlink_framebuffer);
- 
- static void do_unregister_framebuffer(struct fb_info *fb_info)
- {
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 41e0069eca0a..a6ad528990de 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -606,7 +606,6 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
- /* drivers/video/fbmem.c */
- extern int register_framebuffer(struct fb_info *fb_info);
- extern void unregister_framebuffer(struct fb_info *fb_info);
--extern void unlink_framebuffer(struct fb_info *fb_info);
- extern int remove_conflicting_pci_framebuffers(struct pci_dev *pdev,
- 					       const char *name);
- extern int remove_conflicting_framebuffers(struct apertures_struct *a,
+ 	if (msg->resolution_resp.resolution_count == 0) {
 -- 
-2.23.0
+2.20.1
 
