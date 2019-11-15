@@ -2,67 +2,42 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82002FCBC6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Nov 2019 18:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B77FDC97
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 Nov 2019 12:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726098AbfKNR11 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 Nov 2019 12:27:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44707 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbfKNR10 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 Nov 2019 12:27:26 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iVItt-0003AZ-5S; Thu, 14 Nov 2019 17:27:21 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "K . Y . Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
-Date:   Thu, 14 Nov 2019 17:27:20 +0000
-Message-Id: <20191114172720.322023-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727468AbfKOLu4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 15 Nov 2019 06:50:56 -0500
+Received: from [211.53.128.215] ([211.53.128.215]:53045 "EHLO MAIL.isd.co.kr"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727200AbfKOLu4 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 15 Nov 2019 06:50:56 -0500
+Received: from 192.168.1.3 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
+ with Microsoft SMTP Server id 14.3.123.3; Fri, 15 Nov 2019 20:50:10 +0900
+Date:   Fri, 15 Nov 2019 12:50:38 +0100
+From:   Peter Wong <choimj@isd.co.kr>
+Reply-To: Peter Wong <pw178483@gmail.com>
+To:     <linux-fbdev@vger.kernel.org>
+Message-ID: <16439040.38482.1573818640030.JavaMail.cash@webmail.isd.co.kr>
+Subject: Investment opportunity
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [217.217.179.17]
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Greetings,
 
-There is a block of statements that are indented
-too deeply, remove the extraneous tabs.
+Find attached email very confidential. reply for more details
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/video/fbdev/hyperv_fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks.
+Peter Wong
 
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 4cd27e5172a1..5fcf4bdf85ab 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -582,8 +582,8 @@ static int synthvid_get_supported_resolution(struct hv_device *hdev)
- 	t = wait_for_completion_timeout(&par->wait, VSP_TIMEOUT);
- 	if (!t) {
- 		pr_err("Time out on waiting resolution response\n");
--			ret = -ETIMEDOUT;
--			goto out;
-+		ret = -ETIMEDOUT;
-+		goto out;
- 	}
- 
- 	if (msg->resolution_resp.resolution_count == 0) {
--- 
-2.20.1
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 
