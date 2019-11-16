@@ -2,87 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6ABFE1DC
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 Nov 2019 16:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85F4FFECD2
+	for <lists+linux-fbdev@lfdr.de>; Sat, 16 Nov 2019 16:13:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727721AbfKOPtr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 15 Nov 2019 10:49:47 -0500
-Received: from mail-io1-f65.google.com ([209.85.166.65]:39656 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727621AbfKOPto (ORCPT
+        id S1727750AbfKPPN3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 16 Nov 2019 10:13:29 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41220 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727646AbfKPPN3 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 15 Nov 2019 10:49:44 -0500
-Received: by mail-io1-f65.google.com with SMTP id k1so10922617ioj.6
-        for <linux-fbdev@vger.kernel.org>; Fri, 15 Nov 2019 07:49:42 -0800 (PST)
+        Sat, 16 Nov 2019 10:13:29 -0500
+Received: by mail-pg1-f195.google.com with SMTP id 207so917pge.8;
+        Sat, 16 Nov 2019 07:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
-         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
-         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
-         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
-         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
-         KrHA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1NR0lZBfSAsF9PTcWhdjtOR0vndWuNhvYIvZ0O6q/gY=;
+        b=t2Fixbx8FrbucKGgmC0xyNorjg8XHYcKKOvOb8d4MqBkw4RSLbRua9PFBL0WqPxO0S
+         vzDvoPgs9fsNawm1/nDoQKxbYxRICBGkFkcfS7fuYJaPFxrncKHsrBhSmQ0NoZs00GtC
+         XPESdybY3jw3R/zj4Y2fTrDBHkIufqP6WxPogUcFDZKmSox1lRiVh9GXFryLXUCs1Fba
+         +isMDFrscgXvX88Oib81T5jkgiraCTz5X8H9n3iKvL4VsT+dCUtFHaL1v0CAqwMfnEmH
+         RpTXmNjRo4JByPO7ElefkJDkchq5mfKDrHCresVem8NOzbla+YCV+OIMM7J8v8VK/fJY
+         umnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=Ld+TSD+2tI0iFaQmD8UwEE4EESnc7GAaj2r+66oY5lv0YdZWQNf+W73d34E/hRyf0e
-         1AnXXZCMn+dG8cAMnxX0dliSnmoBeBhHmtqByjtYmAdD4esk7dnET+JYD6mL82sOrcGB
-         +R0KINfpcZ8sN8+Nu5DzeSH0NWhiWw9kAucKW2PyP0mBXBoe6w1dJq6G8jGj1FgKZPZb
-         rlSxlzMS/nHlWkiQ+bREi84Lresxrnq6f0GJLEM6+RWAv6pxO3ZOLKuNQQFI/LC2Zv56
-         yqtXrciv7Y8RPvvPZqGqQqd93329PFlXDxJkko1g255DWwtQADiHwTd3Yru/nN+9ULLF
-         WtpA==
-X-Gm-Message-State: APjAAAXcIhRAnccSS+A3tiD+740IGwe8GQiu1OorT8JKj+5zK44LNi3E
-        oz6TtwLjJ/+7vMjiZ/VepDvPOjqUmxpBb/RXgw==
-X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
-X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
- Fri, 15 Nov 2019 07:49:42 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1NR0lZBfSAsF9PTcWhdjtOR0vndWuNhvYIvZ0O6q/gY=;
+        b=BDyqXegdY0MEHePyupPTKv+YCDpOtVdiTdZkeknnV4gAk1snbuDfV9tCJZUwDAvtfZ
+         Rn1iLDEG/hdVYBAprawY80EEJKAu7bh3Qt5DSE6/253UgIj1HJCbpSpX87lNs1OKh13u
+         7zfAu1HBo+e+qzHvYC7IArpEglKMvpkGuPeWEkiSEGKw2KEAjSziOC/cp2QCPFOvv/X4
+         AHG6YCmOvu4A8FcmMt6NnbPDEWyjpkOHqYAqkuNYdmDFg/oQgy4kp58eNSzaCVXLfNOF
+         0EN1Ecf3nmZgy2xKShLpEMo9S7jPq0FmF6SRWCZZZ5i8LJbU3mAxplIndJhF391OWU9J
+         A9RA==
+X-Gm-Message-State: APjAAAVtpvoE7S3rvsHypjpblb3j303ly9dZaBSJSOXepabgVxFkFPJf
+        CddjkcdS1jJfjoiVZImxUCE=
+X-Google-Smtp-Source: APXvYqwLV+Q22WHhBCIyjc4XfkdYQHcDZZlOf6JUEe1X4D7cOUaa++BL8PFFUkrqKStocMzbnbRfew==
+X-Received: by 2002:a63:ea17:: with SMTP id c23mr22941078pgi.85.1573917207501;
+        Sat, 16 Nov 2019 07:13:27 -0800 (PST)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id m6sm7250201pgl.42.2019.11.16.07.13.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2019 07:13:26 -0800 (PST)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] video: fbdev: vesafb: add missed release_region
+Date:   Sat, 16 Nov 2019 23:13:18 +0800
+Message-Id: <20191116151318.17874-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
- -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 15 Nov 2019 16:49:41 +0100
-Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
-Subject: Goodnews, I have deposited your transfer total amount US$4.8million
- Dollars with Money Gram this morning. we agreed you will be receiving it
- $5000.00 daily.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Attn, Dear
-Goodnews, I have deposited your transfer total amount US$4.8million
-Dollars with Money Gram this morning. we agreed you will be receiving
-it $5000.00 daily.
-Contact Mr. John Dave Director, Money Gram to pick up your first Money
-Gram payment $5000.00 today.
-Contact Person; Mr. John Dave Director, Money Gram,International
-Remittance-Benin
-Email; moneygram.1820@outlook.fr
-Telephone; +229 62619517
-Please re-confirm your address to him once again such as listed below.
-1.Your Full Name..............................
-2.Address.........................
-3.Country....................
-4.Sex.........................................
-5.Your telephone numbers..........................
-6. Copy of your ID...........................
-This is to avoid sending your funds to wrong person, He is waiting to
-hear from you urgent today.
-Let me know once you pick up your transfer $5000.00 today.
-Finally, Note I have paid for the service fees, but only money will
-send to him is $90.00 transfer fee before you can pick up the transfer
-today.
-Ask, Mr. John Dave Director, Money Gram to give you direction where to
-send your transfer fee $90.00 only to Him Immediately so that you can
-pick up $5000.00 us dollars today.
-Thanks for undrstanding.
-Mary Coster
-m.coster@aol.com
+This driver calls request_region in probe but forgets to call
+release_region in probe failure and remove.
+Add the missed calls to fix it.
+
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ drivers/video/fbdev/vesafb.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+index d9c08f6c2155..fbb196a8bbf6 100644
+--- a/drivers/video/fbdev/vesafb.c
++++ b/drivers/video/fbdev/vesafb.c
+@@ -468,6 +468,7 @@ static int vesafb_probe(struct platform_device *dev)
+ 	fb_info(info, "%s frame buffer device\n", info->fix.id);
+ 	return 0;
+ err:
++	release_region(0x3c0, 32);
+ 	arch_phys_wc_del(par->wc_cookie);
+ 	if (info->screen_base)
+ 		iounmap(info->screen_base);
+@@ -480,6 +481,7 @@ static int vesafb_remove(struct platform_device *pdev)
+ {
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 
++	release_region(0x3c0, 32);
+ 	unregister_framebuffer(info);
+ 	framebuffer_release(info);
+ 
+-- 
+2.24.0
+
