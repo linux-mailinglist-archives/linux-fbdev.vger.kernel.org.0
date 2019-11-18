@@ -2,57 +2,56 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3DF010000B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Nov 2019 09:09:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2578100480
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Nov 2019 12:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbfKRIJM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 18 Nov 2019 03:09:12 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:45342 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbfKRIJM (ORCPT
+        id S1726536AbfKRLmA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 18 Nov 2019 06:42:00 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:39740 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726460AbfKRLl7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 18 Nov 2019 03:09:12 -0500
-Received: by mail-pf1-f195.google.com with SMTP id z4so9980764pfn.12;
-        Mon, 18 Nov 2019 00:09:12 -0800 (PST)
+        Mon, 18 Nov 2019 06:41:59 -0500
+Received: by mail-pg1-f193.google.com with SMTP id 29so9522662pgm.6;
+        Mon, 18 Nov 2019 03:41:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=vRkaKiZ0jcK6pZOODPSHPs05af1EHFvRH6r+NHDvbGM=;
-        b=pmaHxIU+GCD6VEupE1hCmo/hCdEJPDzkAJsMNygngaLbm8RyaEKPo+YTSBEyzbu1St
-         Lk2mlA6PYXWbfpGDclJv5JAXeYpd/R9xVBBm5QF1mLaapYKL+2VD0l06tEcqwG+hC+rv
-         iZB7f6tuFby6M0JjyMAYEgJSr2V4UYoBjlKRFbWOouMn3X5Fhbkjs25K8vHvJF8327pk
-         sejuBgyTiqOMzEflAc1CCskqRuGZexEIO+B86jmueVbjbAFhhWNjrhB8rWYbrBn7Hc1H
-         ci7s1jDzU9rvq0Cfz/PpS2VzpdX1YHTUAHyccMaKngTLMtKrI5W95E/+wX6RryrlXVPv
-         IfSg==
+        bh=GUSVLZmMqCMWMeD0FT4xlPzHbtQaXySLAxO0s7N20fw=;
+        b=OyaN94NXMpCVElZ8Jw1WSv1yyO+jM2NeUo+yFOKhRx4WUNFccidxt6IWuwEiFy84z+
+         tNQg5QGqeNbQPOTBhrRHcHxbWgMkT157Ebb4Dz1jWP/askkCcH8pofzUjkl8IDLGkhC0
+         Wr9nznlGpUgn+s3PUWzUS0mwNmyJPLvXaYhWsRrOuZixx63Bn7APNEKGoqcr7pV9LImk
+         QU++7ig0TwtFloemfAXCPH9Pu8q1dVP8nAillJt4c6ATNHv54emIlGz6FX0EuTXP2xWJ
+         ZXUK9J8VmhbowEhKNbgtceawRPuCkvQXlDFiRTo6I7mm+WemE1CBJ8P4uboM+bPfoO1f
+         Ln8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=vRkaKiZ0jcK6pZOODPSHPs05af1EHFvRH6r+NHDvbGM=;
-        b=Cal9+Q97DkBPwGTWSZo8wMmtwnVY7PGO5/1crooJwEQjtrFIEVFlG8rpxAfW+TWzEe
-         eo0bBExaquomOLejOtUDfYkOSfxrKH7TI+dqlQ3IAK6qhC830w/kzLzNYzdNebGt+mNR
-         BpnyGImQU+dMjtC/u+MP8Yxg4uL4FemcqpuRZ696lVD1/6sK4Rt78CAKdcUmZe5YDdYF
-         wRC6GcQlkFbvNojp8Q2i2c+MN6O34Fs/nKj02/D+NdetIysK5+n0rJUJIPcrhRiFxZ1C
-         UtMN92EDWBWBGPyPBq/QUgvXHhYju9cFvDNPcoVODfdX+NSp7jOweF1nsJmv4iv+Kx2N
-         lXRw==
-X-Gm-Message-State: APjAAAVLjASoJDZoX7KOKgNc/qYTKOE7fYekt/oWd54lmKJFYih00XHd
-        +4bqd5rrMlq6vbh2G6+QQhs=
-X-Google-Smtp-Source: APXvYqyqXM4dF/Bi8sS6a38D6GEbquJXQ6xwUz/LmqrrZeJ/7Sma+NSuyAYem4JwyHzl9f78o5JtYw==
-X-Received: by 2002:a62:e119:: with SMTP id q25mr33042968pfh.161.1574064551736;
-        Mon, 18 Nov 2019 00:09:11 -0800 (PST)
+        bh=GUSVLZmMqCMWMeD0FT4xlPzHbtQaXySLAxO0s7N20fw=;
+        b=M76rl0tuEw8cH0ub+2KLN2oIq1h7sL0CIhgm6pF8R+wwQ7jVO58krhDUmtAOgr3PC/
+         FEOsi0rcLUvsVhy5LviiIGzjotrBRg7nLRYhGrgElgZgVk4cHGe0dEVKdxClk8HqJDgK
+         bPomTiteX93QQOEMp08arU7K6WkB95Qvpd0q0dQ4zXL/Xx8bUsZeKiYR6vtGVZM3Rvvq
+         eQgOKMmEvV4beyC01q1qkQVgGqXWKVFX8v8XehOg7jAXzHtQ2mBhKnBeCRVbWK19SFva
+         EGU4TYQPdLtFFHkW7/sVlsmaa7g7BsCV2wJ2f893/pM94yW4Xf6IkiM7RRyx3Ws8YLtr
+         X1vw==
+X-Gm-Message-State: APjAAAVpwHQXVV9zGdMvhm82i2YHUaxUBWYIMyKsdJGiAdLaQPwsd2TI
+        tF9PDrVBTh+29cqGPD2S56LORvP37NM=
+X-Google-Smtp-Source: APXvYqwlZhctfGUcf61eKwA95+64A55BOSGDXtVe6j8GQMt1TABUbYCgPWwT7eZpn3YAxZAoBaB9dw==
+X-Received: by 2002:aa7:80d2:: with SMTP id a18mr15473101pfn.29.1574077319270;
+        Mon, 18 Nov 2019 03:41:59 -0800 (PST)
 Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id y24sm21273800pfr.116.2019.11.18.00.09.07
+        by smtp.gmail.com with ESMTPSA id m19sm19455324pgh.31.2019.11.18.03.41.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2019 00:09:11 -0800 (PST)
+        Mon, 18 Nov 2019 03:41:58 -0800 (PST)
 From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] fbdev: s1d13xxxfb: add missed unregister_framebuffer in remove
-Date:   Mon, 18 Nov 2019 16:09:00 +0800
-Message-Id: <20191118080900.30634-1-hslester96@gmail.com>
+Subject: [PATCH] video: ssd1307fb: add the missed regulator_disable
+Date:   Mon, 18 Nov 2019 19:41:50 +0800
+Message-Id: <20191118114150.25724-1-hslester96@gmail.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,27 +61,28 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver calls register_framebuffer in probe but does not call
-unregister_framebuffer in remove.
+The driver forgets to disable the regulator in remove like what is done
+in probe failure.
 Add the missed call to fix it.
 
 Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/video/fbdev/s1d13xxxfb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/ssd1307fb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/s1d13xxxfb.c b/drivers/video/fbdev/s1d13xxxfb.c
-index e04efb567b5c..162003ea6b79 100644
---- a/drivers/video/fbdev/s1d13xxxfb.c
-+++ b/drivers/video/fbdev/s1d13xxxfb.c
-@@ -729,6 +729,7 @@ s1d13xxxfb_remove(struct platform_device *pdev)
- 	struct s1d13xxxfb_par *par = NULL;
- 
- 	if (info) {
-+		unregister_framebuffer(info);
- 		par = info->par;
- 		if (par && par->regs) {
- 			/* disable output & enable powersave */
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index 78ca7ffc40c2..819fbee18dda 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -791,6 +791,8 @@ static int ssd1307fb_remove(struct i2c_client *client)
+ 		pwm_disable(par->pwm);
+ 		pwm_put(par->pwm);
+ 	}
++	if (par->vbat_reg)
++		regulator_disable(par->vbat_reg);
+ 	fb_deferred_io_cleanup(info);
+ 	__free_pages(__va(info->fix.smem_start), get_order(info->fix.smem_len));
+ 	framebuffer_release(info);
 -- 
 2.24.0
 
