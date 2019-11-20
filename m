@@ -2,38 +2,36 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4974F103BE0
-	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 14:38:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D63F6103BF9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 14:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729879AbfKTNio (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 20 Nov 2019 08:38:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45956 "EHLO mail.kernel.org"
+        id S1729940AbfKTNjQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 20 Nov 2019 08:39:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46834 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729880AbfKTNio (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:38:44 -0500
+        id S1728167AbfKTNjQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 20 Nov 2019 08:39:16 -0500
 Received: from localhost.localdomain (unknown [118.189.143.39])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EBCE7224D2;
-        Wed, 20 Nov 2019 13:38:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3BEB4224FA;
+        Wed, 20 Nov 2019 13:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574257122;
-        bh=gHBm8yONn1xiZsHJ3LmRceNT0Sg02G5dhIjLRvp7MX4=;
+        s=default; t=1574257155;
+        bh=Z+eZq7iwaPRpNAmDEUhF3PizbEv3Dh2gfpmI5l4V05M=;
         h=From:To:Cc:Subject:Date:From;
-        b=KkWkvNsJxAhY8BOgu1SQ8uzFIuYkOHbxafMdh/XSigEsySA2qB59O2FL2zErZ417/
-         CCRxZ0HI54uU8JZtxjcVHrW7VG2KOsQEcmCV2Ii18cK67AZgpxhyw19qC7KpUZuBS8
-         DVBLsxenogZI+xUp9gADgvG4daxtJkZWtj5VyjZo=
+        b=uBE6mFT2S2HqG0fxEeNser1ycs5Wah7tXw+553v0tnVu76p1E/2bfxulblhcJm445
+         M2KCMFt1flU9UnhKlPQrdxQoKu4FI3MQG9sY0sd4ylQ5GSG2YhD41hinHq2qiYUNQs
+         jwxrxF4zdDduA9a0oclRRcJewaFRIEPK5flDDcgU=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH] video: Fix Kconfig indentation
-Date:   Wed, 20 Nov 2019 21:38:38 +0800
-Message-Id: <20191120133838.13132-1-krzk@kernel.org>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org
+Subject: [PATCH] staging: fbtft: Fix Kconfig indentation
+Date:   Wed, 20 Nov 2019 21:39:11 +0800
+Message-Id: <20191120133911.13539-1-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -46,172 +44,39 @@ coding style with command like:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/video/backlight/Kconfig |  8 ++--
- drivers/video/console/Kconfig   | 76 ++++++++++++++++-----------------
- 2 files changed, 42 insertions(+), 42 deletions(-)
+ drivers/staging/fbtft/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 403707a3e503..95e2000c1491 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -9,7 +9,7 @@ menu "Backlight & LCD device support"
- # LCD
- #
- config LCD_CLASS_DEVICE
--        tristate "Lowlevel LCD controls"
-+	tristate "Lowlevel LCD controls"
+diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
+index d994aea84b21..19d9d88e9150 100644
+--- a/drivers/staging/fbtft/Kconfig
++++ b/drivers/staging/fbtft/Kconfig
+@@ -95,8 +95,8 @@ config FB_TFT_PCD8544
+ 	  Generic Framebuffer support for PCD8544
+ 
+ config FB_TFT_RA8875
+-        tristate "FB driver for the RA8875 LCD Controller"
+-        depends on FB_TFT
++	tristate "FB driver for the RA8875 LCD Controller"
++	depends on FB_TFT
  	help
- 	  This framework adds support for low-level control of LCD.
- 	  Some framebuffer devices connect to platform-specific LCD modules
-@@ -141,10 +141,10 @@ endif # LCD_CLASS_DEVICE
- # Backlight
- #
- config BACKLIGHT_CLASS_DEVICE
--        tristate "Lowlevel Backlight controls"
-+	tristate "Lowlevel Backlight controls"
- 	help
- 	  This framework adds support for low-level control of the LCD
--          backlight. This includes support for brightness and power.
-+	  backlight. This includes support for brightness and power.
+ 	  Generic Framebuffer support for RA8875
  
- 	  To have support for your specific LCD panel you will have to
- 	  select the proper drivers which depend on this option.
-@@ -272,7 +272,7 @@ config BACKLIGHT_APPLE
-        tristate "Apple Backlight Driver"
-        depends on X86 && ACPI
-        help
--         If you have an Intel-based Apple say Y to enable a driver for its
-+	 If you have an Intel-based Apple say Y to enable a driver for its
- 	 backlight.
+@@ -132,10 +132,10 @@ config FB_TFT_SSD1289
+ 	  Framebuffer support for SSD1289
  
- config BACKLIGHT_TOSA
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index c10e17fb9a9a..ac3a28c08f78 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -27,7 +27,7 @@ config VGACON_SOFT_SCROLLBACK
-        depends on VGA_CONSOLE
-        default n
-        help
--         The scrollback buffer of the standard VGA console is located in
-+	 The scrollback buffer of the standard VGA console is located in
- 	 the VGA RAM.  The size of this RAM is fixed and is quite small.
- 	 If you require a larger scrollback buffer, this can be placed in
- 	 System RAM which is dynamically allocated during initialization.
-@@ -84,12 +84,12 @@ config MDA_CONSOLE
- 	  If unsure, say N.
- 
- config SGI_NEWPORT_CONSOLE
--        tristate "SGI Newport Console support"
-+	tristate "SGI Newport Console support"
- 	depends on SGI_IP22 && HAS_IOMEM
--        select FONT_SUPPORT
+ config FB_TFT_SSD1305
+-        tristate "FB driver for the SSD1305 OLED Controller"
+-        depends on FB_TFT
 -        help
--          Say Y here if you want the console on the Newport aka XL graphics
--          card of your Indy.  Most people say Y here.
-+	select FONT_SUPPORT
+-          Framebuffer support for SSD1305
++	tristate "FB driver for the SSD1305 OLED Controller"
++	depends on FB_TFT
 +	help
-+	  Say Y here if you want the console on the Newport aka XL graphics
-+	  card of your Indy.  Most people say Y here.
++	  Framebuffer support for SSD1305
  
- config DUMMY_CONSOLE
- 	bool
-@@ -97,24 +97,24 @@ config DUMMY_CONSOLE
- 	default y
- 
- config DUMMY_CONSOLE_COLUMNS
--        int "Initial number of console screen columns"
--        depends on DUMMY_CONSOLE && !ARM
--        default 160 if PARISC
--        default 80
--        help
--          On PA-RISC, the default value is 160, which should fit a 1280x1024
--          monitor.
--          Select 80 if you use a 640x480 resolution by default.
-+	int "Initial number of console screen columns"
-+	depends on DUMMY_CONSOLE && !ARM
-+	default 160 if PARISC
-+	default 80
-+	help
-+	  On PA-RISC, the default value is 160, which should fit a 1280x1024
-+	  monitor.
-+	  Select 80 if you use a 640x480 resolution by default.
- 
- config DUMMY_CONSOLE_ROWS
--        int "Initial number of console screen rows"
--        depends on DUMMY_CONSOLE && !ARM
--        default 64 if PARISC
--        default 25
--        help
--          On PA-RISC, the default value is 64, which should fit a 1280x1024
--          monitor.
--          Select 25 if you use a 640x480 resolution by default.
-+	int "Initial number of console screen rows"
-+	depends on DUMMY_CONSOLE && !ARM
-+	default 64 if PARISC
-+	default 25
-+	help
-+	  On PA-RISC, the default value is 64, which should fit a 1280x1024
-+	  monitor.
-+	  Select 25 if you use a 640x480 resolution by default.
- 
- config FRAMEBUFFER_CONSOLE
- 	bool "Framebuffer Console support"
-@@ -130,11 +130,11 @@ config FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
-        depends on FRAMEBUFFER_CONSOLE
-        default n
-        ---help---
--         If this option is selected, the framebuffer console will
--         automatically select the primary display device (if the architecture
-+	 If this option is selected, the framebuffer console will
-+	 automatically select the primary display device (if the architecture
- 	 supports this feature).  Otherwise, the framebuffer console will
--         always select the first framebuffer driver that is loaded. The latter
--         is the default behavior.
-+	 always select the first framebuffer driver that is loaded. The latter
-+	 is the default behavior.
- 
- 	 You can always override the automatic selection of the primary device
- 	 by using the fbcon=map: boot option.
-@@ -145,11 +145,11 @@ config FRAMEBUFFER_CONSOLE_ROTATION
-        bool "Framebuffer Console Rotation"
-        depends on FRAMEBUFFER_CONSOLE
-        help
--         Enable display rotation for the framebuffer console.  This is done
--         in software and may be significantly slower than a normally oriented
--         display.  Note that the rotation is done at the console level only
--         such that other users of the framebuffer will remain normally
--         oriented.
-+	 Enable display rotation for the framebuffer console.  This is done
-+	 in software and may be significantly slower than a normally oriented
-+	 display.  Note that the rotation is done at the console level only
-+	 such that other users of the framebuffer will remain normally
-+	 oriented.
- 
- config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
- 	bool "Framebuffer Console Deferred Takeover"
-@@ -163,14 +163,14 @@ config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
- 	  black screen as soon as fbcon loads.
- 
- config STI_CONSOLE
--        bool "STI text console"
-+	bool "STI text console"
- 	depends on PARISC && HAS_IOMEM
--        select FONT_SUPPORT
--        default y
--        help
--          The STI console is the builtin display/keyboard on HP-PARISC
--          machines.  Say Y here to build support for it into your kernel.
--          The alternative is to use your primary serial port as a console.
-+	select FONT_SUPPORT
-+	default y
-+	help
-+	  The STI console is the builtin display/keyboard on HP-PARISC
-+	  machines.  Say Y here to build support for it into your kernel.
-+	  The alternative is to use your primary serial port as a console.
- 
- endmenu
- 
+ config FB_TFT_SSD1306
+ 	tristate "FB driver for the SSD1306 OLED Controller"
 -- 
 2.17.1
 
