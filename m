@@ -2,106 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C364D103E72
-	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 16:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6068B104108
+	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 17:42:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727777AbfKTP2z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 20 Nov 2019 10:28:55 -0500
-Received: from mga12.intel.com ([192.55.52.136]:64631 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727067AbfKTP2y (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 20 Nov 2019 10:28:54 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2019 07:28:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,222,1571727600"; 
-   d="scan'208";a="209568358"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003.jf.intel.com with ESMTP; 20 Nov 2019 07:28:51 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iXRuU-0006qT-KF; Wed, 20 Nov 2019 17:28:50 +0200
-Date:   Wed, 20 Nov 2019 17:28:50 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Nishad Kamdar <nishadkamdar@gmail.com>,
-        devel@driverdev.osuosl.org
-Subject: Re: [PATCH v1 3/5] fbtft: Drop useless #ifdef CONFIG_OF and dead code
-Message-ID: <20191120152850.GQ32742@smile.fi.intel.com>
-References: <20191120095716.26628-1-andriy.shevchenko@linux.intel.com>
- <20191120095716.26628-3-andriy.shevchenko@linux.intel.com>
- <37435de0-873d-d20c-ac66-420ba91356fd@tronnes.org>
- <676c3f0e-81b7-d9be-8b37-a38eb3d762fb@tronnes.org>
+        id S1732848AbfKTQmA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 20 Nov 2019 11:42:00 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:40348 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728632AbfKTQmA (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 20 Nov 2019 11:42:00 -0500
+Received: by mail-wm1-f65.google.com with SMTP id y5so308664wmi.5
+        for <linux-fbdev@vger.kernel.org>; Wed, 20 Nov 2019 08:41:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=DoBrdkQjnM2M/sNIIdwf16laThZkuQKlh8PPcfsQfYM=;
+        b=GN0/nFYDPFzOUrHsl9BbUvlxMEQgUTa5wU0hEQG8hzQRTEesfxWZBj4Q/qj3QnsV4K
+         AjN2mkwABi+vsodfnJLOTctxxyuhkQ55UuAtU8xswqrCnp7gxOrM8XDS6g1oeux1y2AZ
+         q8O3Fd5bQRf9OxPkeDbthgLX0cnVMUMd6NecI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=DoBrdkQjnM2M/sNIIdwf16laThZkuQKlh8PPcfsQfYM=;
+        b=tMBzeDu38pohV/i64Dhe4gOh/ogcUdLGmb2NZOv16kF4p7/c/ojs0NtV74M0PV16RD
+         Klc+LH1cBdOIHQXwk6UqsDdPUPl0h7zY9Vfb4fSEj96lfMDyt2xojFWVO6qpxR9rvMpO
+         huwVvFM8ze5gMWsFKBk2jChVJsGr0dOPPz//i28BtFQXQoq2ktxhLy5cBDTi01neTSDt
+         65ykeuDWkDV9R+52Wrp7Hq5RLL7npAtlmAszJREw1qZb6T2IRo2Yvd7oADAeiW5Qdx9Y
+         zLIx6PO6cbWlYjsHm9sVinJDPCwirmOpAekvOYnWzEJJgCxOO8dmGlW4P2oD3nzdzLqf
+         12sw==
+X-Gm-Message-State: APjAAAV60eXPbq7WNtJRCH8ih+36e5Rhy1DAsfes0XMB+95xdv0I/1JE
+        FAakqy4MbcQIy1dGHNXhAQ71wQ==
+X-Google-Smtp-Source: APXvYqxcp61Ouq7qqx6fMqpJbU5o8VCWsZA5gd0+Tv52/4/6QtREkNjADbOEaEE5seygIX0OYcGmYw==
+X-Received: by 2002:a1c:cc01:: with SMTP id h1mr4269171wmb.172.1574268118420;
+        Wed, 20 Nov 2019 08:41:58 -0800 (PST)
+Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
+        by smtp.gmail.com with ESMTPSA id j2sm32071445wrt.61.2019.11.20.08.41.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Nov 2019 08:41:57 -0800 (PST)
+Date:   Wed, 20 Nov 2019 17:41:55 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, devel@driverdev.osuosl.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] staging: fbtft: Fix Kconfig indentation
+Message-ID: <20191120164155.GR30416@phenom.ffwll.local>
+Mail-Followup-To: Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-kernel@vger.kernel.org, devel@driverdev.osuosl.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20191120133911.13539-1-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <676c3f0e-81b7-d9be-8b37-a38eb3d762fb@tronnes.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191120133911.13539-1-krzk@kernel.org>
+X-Operating-System: Linux phenom 5.2.0-3-amd64 
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 04:04:17PM +0100, Noralf Trønnes wrote:
-> Den 20.11.2019 15.43, skrev Noralf Trønnes:
-> > Den 20.11.2019 10.57, skrev Andy Shevchenko:
-
-> >> First of all there is no need to guard GPIO request by CONFIG_OF.
-> >> It works for everybody independently on resource provider. While here,
-> >> rename the function to reflect the above.
-> >>
-> >> Moreover, since we have a global dependency to OF, the rest of
-> >> conditional compilation is no-op, i.e. it's always be true.
-> >>
-> >> Due to above drop useless #ifdef CONFIG_OF and therefore dead code.
-> >>
-> >> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >> ---
-> >>  drivers/staging/fbtft/fbtft-core.c | 19 ++-----------------
-> >>  1 file changed, 2 insertions(+), 17 deletions(-)
-> >>
-> >> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-> > 
-> > <snip>
-> > 
-> >> @@ -1184,17 +1176,10 @@ static struct fbtft_platform_data *fbtft_probe_dt(struct device *dev)
-> >>  		pdata->display.backlight = 1;
-> >>  	if (of_find_property(node, "init", NULL))
-> >>  		pdata->display.fbtftops.init_display = fbtft_init_display_dt;
-> >> -	pdata->display.fbtftops.request_gpios = fbtft_request_gpios_dt;
-> >> +	pdata->display.fbtftops.request_gpios = fbtft_request_gpios;
-> > 
-> > You can ditch the .request_gpios callback and call fbtft_request_gpios()
-> > directly in fbtft_register_framebuffer(). That will make it safe to drop
-> > the OF dependency, otherwise .request_gpios will be NULL in the non-DT
-> > case. This is one of the bugs that follwed the gpio refactoring.
+On Wed, Nov 20, 2019 at 09:39:11PM +0800, Krzysztof Kozlowski wrote:
+> Adjust indentation from spaces to tab (+optional two spaces) as in
+> coding style with command like:
+> 	$ sed -e 's/^        /\t/' -i */Kconfig
 > 
-> Really difficult to read this fbtft code (that I wrote...).
-> The NULL deref can only happen when dev->platform_data is set. That
-> can't happen, in mainline at least, now that fbtft_device is gone.
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Hmm... If I read code correctly this patch doesn't change this logic. We have
-non-NULL ->request_gpios() in case of pdata != NULL if and only if supplier
-gives it to us.
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-The above assignment happens only for DT case (fbtft_properties_read() is
-guarded against non-DT, okay non-fwnode, cases).
+I expect Greg will pick this up.
+-Daniel
 
-> > You can also ditch the .request_gpios_match callback if you want, it
-> > isn't called anymore (it is set in fb_agm1264k-fl).
-
-I guess both improvements can be done later since they are not affecting the
-logic in this series.
+> ---
+>  drivers/staging/fbtft/Kconfig | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
+> index d994aea84b21..19d9d88e9150 100644
+> --- a/drivers/staging/fbtft/Kconfig
+> +++ b/drivers/staging/fbtft/Kconfig
+> @@ -95,8 +95,8 @@ config FB_TFT_PCD8544
+>  	  Generic Framebuffer support for PCD8544
+>  
+>  config FB_TFT_RA8875
+> -        tristate "FB driver for the RA8875 LCD Controller"
+> -        depends on FB_TFT
+> +	tristate "FB driver for the RA8875 LCD Controller"
+> +	depends on FB_TFT
+>  	help
+>  	  Generic Framebuffer support for RA8875
+>  
+> @@ -132,10 +132,10 @@ config FB_TFT_SSD1289
+>  	  Framebuffer support for SSD1289
+>  
+>  config FB_TFT_SSD1305
+> -        tristate "FB driver for the SSD1305 OLED Controller"
+> -        depends on FB_TFT
+> -        help
+> -          Framebuffer support for SSD1305
+> +	tristate "FB driver for the SSD1305 OLED Controller"
+> +	depends on FB_TFT
+> +	help
+> +	  Framebuffer support for SSD1305
+>  
+>  config FB_TFT_SSD1306
+>  	tristate "FB driver for the SSD1306 OLED Controller"
+> -- 
+> 2.17.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
