@@ -2,249 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F62103C7D
-	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 14:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD9C103C92
+	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Nov 2019 14:50:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728864AbfKTNpv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 20 Nov 2019 08:45:51 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:37121 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727986AbfKTNpv (ORCPT
+        id S1730285AbfKTNuS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 20 Nov 2019 08:50:18 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:41712 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729591AbfKTNuS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:45:51 -0500
-Received: by mail-qk1-f196.google.com with SMTP id e187so21255243qkf.4
-        for <linux-fbdev@vger.kernel.org>; Wed, 20 Nov 2019 05:45:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=/UyxuxmxImlUdV6zHQGJ06NC25bjtzoqkkhU8rYqgdo=;
-        b=u4kojKEMNq+NIJgjFysH9QOnDjFv8cvxJtkDBxPmoX9dPtPTtMh450iGqlNrRcYVwf
-         S5msvMuOI7czflrDvqAbguWXiRU2qLrWjzlb6PNtUSNd2kjiz6VxzSW5j429u7EA3H3a
-         zNfc4l8ZWMPLgrBsN0F/rcbOoeYhi9zQiKbfgs3e6YAwuIhe9WPVnj6sk7/UlG2a0qHB
-         z16rIAQjLGIdfCiIk0dHibTuoHVxeMK87XnguLt4TRNd6Pa6J5cSFFm/vGCtKJ7OVXE3
-         upkB+KBUDBZNRugYpIg2meqx1Uz2e+jgHcrgiD/AnEiLZ8w4mxWYillfHZUXye+Ggr+F
-         5OCg==
+        Wed, 20 Nov 2019 08:50:18 -0500
+Received: by mail-pf1-f193.google.com with SMTP id p26so14247467pfq.8;
+        Wed, 20 Nov 2019 05:50:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=/UyxuxmxImlUdV6zHQGJ06NC25bjtzoqkkhU8rYqgdo=;
-        b=d+FmFO3Cna0KMugiFzv4AJJV0weulh9kqq7KHvo4aO0gDmg8uiAGgdqsqnVj+zsdOB
-         BvDhQkfTRGs9oMSApUHFLNmpBV/jFmK7ZJ1D376Dl7TvSWGCv8sKp3RJ/PDr+31bGFm2
-         RjQS95zue6JaDZNopteCPPx9JiX5+lCL/wAQXL4MRQBr5wf0s9q8XD5uUo6dVQ73Nb3R
-         CvIFDx3ilkj3qz7CC09LaJV5lhi0y0Ee1AEb+KuogPl3e4GNnps3v5O0fn1fyORou/y+
-         af/KHWgisOakJYDel+SuspiGL9hhQJzej/QcRSbD6rdzu+AiwmVt0sFMOMGCFiEoWTrL
-         GVAg==
-X-Gm-Message-State: APjAAAUNkfpicL01R6w5KfWpGthBbbmuzsqEsCg/JNYYgA9Tbak+grwJ
-        4U2LjY1s87XDi1EauH2V5JBL5w==
-X-Google-Smtp-Source: APXvYqyhLkOpqX04Zv3575puz7F0gB0sdprqkx8HCY/U/VcEvqlM3VT8sHJzs5dMTVaYr/YF2CMZkA==
-X-Received: by 2002:ae9:e501:: with SMTP id w1mr2334470qkf.271.1574257549958;
-        Wed, 20 Nov 2019 05:45:49 -0800 (PST)
-Received: from pine ([2603:3005:3403:7100::715b])
-        by smtp.gmail.com with ESMTPSA id k26sm13483064qtm.10.2019.11.20.05.45.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2019 05:45:49 -0800 (PST)
-Date:   Wed, 20 Nov 2019 08:45:46 -0500
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
+        bh=OyieLJ1Q4b4TjminHrLGIRlIaNN2ozqzVE5QUxBBtOE=;
+        b=KnULF7DmF9ciBAge9J8scdRDdJd+xwDN/6X2ElSQeQu1App8iy3ZwHb2Iqoqzby+Il
+         BXlihsAVi3TY5UzViMlQg5m8x9tcBa3VJjff0ubCS5P6C8IDXRmMvCRzCHEy+qLHbIJQ
+         R3ojapZtOFx8j7gIWnS5gPRKUVmPIeHtzpVv3UuUdtgc03NT4Sh8n4gehCcJ2npjbOQf
+         J/1ICKSPMi2ucKWncBNEcofC4frr9Kg1IOvoSk9mmNv5+kVWluAjywVJZ3qvPZE98/KW
+         G5lzTk/by0iTLqVBe0xK0HhT8hS0NBp8CEUl2BOQ0F4DVqoj6j3t71I/B/Et3J1OvBF5
+         yOHg==
+X-Gm-Message-State: APjAAAVER8rY9KFaGu/rxhX4kz+mQb4FHq9BLwHLiOS2FLORGBVDLl4P
+        tE17W8gn9+fOdGflC1Gao4Y=
+X-Google-Smtp-Source: APXvYqznbb6ml/3cJWeJZ7kaQBiiMHytQFDrl8Oth2mMRG8vaWWS54IdG4w6Y8FENZKLCLRDmQ6vbg==
+X-Received: by 2002:a63:1360:: with SMTP id 32mr3294515pgt.3.1574257817641;
+        Wed, 20 Nov 2019 05:50:17 -0800 (PST)
+Received: from kozik-lap ([118.189.143.39])
+        by smtp.googlemail.com with ESMTPSA id j7sm26942590pgl.38.2019.11.20.05.50.14
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 20 Nov 2019 05:50:16 -0800 (PST)
+Date:   Wed, 20 Nov 2019 21:50:12 +0800
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
 Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
 Subject: Re: [PATCH] video: Fix Kconfig indentation
-Message-ID: <20191120134546.GA2654@pine>
+Message-ID: <20191120135012.GA17348@kozik-lap>
 References: <20191120133838.13132-1-krzk@kernel.org>
+ <20191120134546.GA2654@pine>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191120133838.13132-1-krzk@kernel.org>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20191120134546.GA2654@pine>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 09:38:38PM +0800, Krzysztof Kozlowski wrote:
-> Adjust indentation from spaces to tab (+optional two spaces) as in
-> coding style with command like:
-> 	$ sed -e 's/^        /\t/' -i */Kconfig
+On Wed, Nov 20, 2019 at 08:45:46AM -0500, Daniel Thompson wrote:
+> On Wed, Nov 20, 2019 at 09:38:38PM +0800, Krzysztof Kozlowski wrote:
+> > Adjust indentation from spaces to tab (+optional two spaces) as in
+> > coding style with command like:
+> > 	$ sed -e 's/^        /\t/' -i */Kconfig
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> No particular objections but I wonder if this would be better sent to
+> trivial@kernel.org .
 
-No particular objections but I wonder if this would be better sent to
-trivial@kernel.org .
+Thanks for feedback.
 
+I sent to trivial and kernel-janitors my previous version of this
+patchset which was not split per-subsystem and there was no feedback.
+Few other patches already came through maintainers. If there will be no
+reply, I'll send next version through trivial.
 
-Daniel.
+Best regards,
+Krzysztof
 
-> ---
->  drivers/video/backlight/Kconfig |  8 ++--
->  drivers/video/console/Kconfig   | 76 ++++++++++++++++-----------------
->  2 files changed, 42 insertions(+), 42 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index 403707a3e503..95e2000c1491 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -9,7 +9,7 @@ menu "Backlight & LCD device support"
->  # LCD
->  #
->  config LCD_CLASS_DEVICE
-> -        tristate "Lowlevel LCD controls"
-> +	tristate "Lowlevel LCD controls"
->  	help
->  	  This framework adds support for low-level control of LCD.
->  	  Some framebuffer devices connect to platform-specific LCD modules
-> @@ -141,10 +141,10 @@ endif # LCD_CLASS_DEVICE
->  # Backlight
->  #
->  config BACKLIGHT_CLASS_DEVICE
-> -        tristate "Lowlevel Backlight controls"
-> +	tristate "Lowlevel Backlight controls"
->  	help
->  	  This framework adds support for low-level control of the LCD
-> -          backlight. This includes support for brightness and power.
-> +	  backlight. This includes support for brightness and power.
->  
->  	  To have support for your specific LCD panel you will have to
->  	  select the proper drivers which depend on this option.
-> @@ -272,7 +272,7 @@ config BACKLIGHT_APPLE
->         tristate "Apple Backlight Driver"
->         depends on X86 && ACPI
->         help
-> -         If you have an Intel-based Apple say Y to enable a driver for its
-> +	 If you have an Intel-based Apple say Y to enable a driver for its
->  	 backlight.
->  
->  config BACKLIGHT_TOSA
-> diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-> index c10e17fb9a9a..ac3a28c08f78 100644
-> --- a/drivers/video/console/Kconfig
-> +++ b/drivers/video/console/Kconfig
-> @@ -27,7 +27,7 @@ config VGACON_SOFT_SCROLLBACK
->         depends on VGA_CONSOLE
->         default n
->         help
-> -         The scrollback buffer of the standard VGA console is located in
-> +	 The scrollback buffer of the standard VGA console is located in
->  	 the VGA RAM.  The size of this RAM is fixed and is quite small.
->  	 If you require a larger scrollback buffer, this can be placed in
->  	 System RAM which is dynamically allocated during initialization.
-> @@ -84,12 +84,12 @@ config MDA_CONSOLE
->  	  If unsure, say N.
->  
->  config SGI_NEWPORT_CONSOLE
-> -        tristate "SGI Newport Console support"
-> +	tristate "SGI Newport Console support"
->  	depends on SGI_IP22 && HAS_IOMEM
-> -        select FONT_SUPPORT
-> -        help
-> -          Say Y here if you want the console on the Newport aka XL graphics
-> -          card of your Indy.  Most people say Y here.
-> +	select FONT_SUPPORT
-> +	help
-> +	  Say Y here if you want the console on the Newport aka XL graphics
-> +	  card of your Indy.  Most people say Y here.
->  
->  config DUMMY_CONSOLE
->  	bool
-> @@ -97,24 +97,24 @@ config DUMMY_CONSOLE
->  	default y
->  
->  config DUMMY_CONSOLE_COLUMNS
-> -        int "Initial number of console screen columns"
-> -        depends on DUMMY_CONSOLE && !ARM
-> -        default 160 if PARISC
-> -        default 80
-> -        help
-> -          On PA-RISC, the default value is 160, which should fit a 1280x1024
-> -          monitor.
-> -          Select 80 if you use a 640x480 resolution by default.
-> +	int "Initial number of console screen columns"
-> +	depends on DUMMY_CONSOLE && !ARM
-> +	default 160 if PARISC
-> +	default 80
-> +	help
-> +	  On PA-RISC, the default value is 160, which should fit a 1280x1024
-> +	  monitor.
-> +	  Select 80 if you use a 640x480 resolution by default.
->  
->  config DUMMY_CONSOLE_ROWS
-> -        int "Initial number of console screen rows"
-> -        depends on DUMMY_CONSOLE && !ARM
-> -        default 64 if PARISC
-> -        default 25
-> -        help
-> -          On PA-RISC, the default value is 64, which should fit a 1280x1024
-> -          monitor.
-> -          Select 25 if you use a 640x480 resolution by default.
-> +	int "Initial number of console screen rows"
-> +	depends on DUMMY_CONSOLE && !ARM
-> +	default 64 if PARISC
-> +	default 25
-> +	help
-> +	  On PA-RISC, the default value is 64, which should fit a 1280x1024
-> +	  monitor.
-> +	  Select 25 if you use a 640x480 resolution by default.
->  
->  config FRAMEBUFFER_CONSOLE
->  	bool "Framebuffer Console support"
-> @@ -130,11 +130,11 @@ config FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
->         depends on FRAMEBUFFER_CONSOLE
->         default n
->         ---help---
-> -         If this option is selected, the framebuffer console will
-> -         automatically select the primary display device (if the architecture
-> +	 If this option is selected, the framebuffer console will
-> +	 automatically select the primary display device (if the architecture
->  	 supports this feature).  Otherwise, the framebuffer console will
-> -         always select the first framebuffer driver that is loaded. The latter
-> -         is the default behavior.
-> +	 always select the first framebuffer driver that is loaded. The latter
-> +	 is the default behavior.
->  
->  	 You can always override the automatic selection of the primary device
->  	 by using the fbcon=map: boot option.
-> @@ -145,11 +145,11 @@ config FRAMEBUFFER_CONSOLE_ROTATION
->         bool "Framebuffer Console Rotation"
->         depends on FRAMEBUFFER_CONSOLE
->         help
-> -         Enable display rotation for the framebuffer console.  This is done
-> -         in software and may be significantly slower than a normally oriented
-> -         display.  Note that the rotation is done at the console level only
-> -         such that other users of the framebuffer will remain normally
-> -         oriented.
-> +	 Enable display rotation for the framebuffer console.  This is done
-> +	 in software and may be significantly slower than a normally oriented
-> +	 display.  Note that the rotation is done at the console level only
-> +	 such that other users of the framebuffer will remain normally
-> +	 oriented.
->  
->  config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
->  	bool "Framebuffer Console Deferred Takeover"
-> @@ -163,14 +163,14 @@ config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
->  	  black screen as soon as fbcon loads.
->  
->  config STI_CONSOLE
-> -        bool "STI text console"
-> +	bool "STI text console"
->  	depends on PARISC && HAS_IOMEM
-> -        select FONT_SUPPORT
-> -        default y
-> -        help
-> -          The STI console is the builtin display/keyboard on HP-PARISC
-> -          machines.  Say Y here to build support for it into your kernel.
-> -          The alternative is to use your primary serial port as a console.
-> +	select FONT_SUPPORT
-> +	default y
-> +	help
-> +	  The STI console is the builtin display/keyboard on HP-PARISC
-> +	  machines.  Say Y here to build support for it into your kernel.
-> +	  The alternative is to use your primary serial port as a console.
->  
->  endmenu
->  
-> -- 
-> 2.17.1
-> 
