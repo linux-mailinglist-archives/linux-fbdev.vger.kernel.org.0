@@ -2,38 +2,39 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF14104914
-	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Nov 2019 04:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2555110498F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Nov 2019 05:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726620AbfKUDUJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 20 Nov 2019 22:20:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33708 "EHLO mail.kernel.org"
+        id S1725842AbfKUEJs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 20 Nov 2019 23:09:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50244 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726270AbfKUDUJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 20 Nov 2019 22:20:09 -0500
+        id S1725819AbfKUEJs (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 20 Nov 2019 23:09:48 -0500
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F3FBD208A1;
-        Thu, 21 Nov 2019 03:20:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2AB092075A;
+        Thu, 21 Nov 2019 04:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574306407;
-        bh=s+QsmEgOr+csgbZHAoMXoQmPkbsck6p+PUk6xQi1T0A=;
+        s=default; t=1574309387;
+        bh=3kMwFuzyohxTobIMe/WYKQzxLPSq+fERLEf9Qju7v/w=;
         h=From:To:Cc:Subject:Date:From;
-        b=xJXXIvNjN6nqSRBR1adxravinmdoqkmSvF5AI7c675Oe/mKJW9eqfTiCsc533avx4
-         IxMUyG+UkAaZMEs5NIT0e4YFz3z3i4yt41WsL1awN2G0FYYzwsnMOyplKpdfC7zy+T
-         Cym9LMOqDa2mctFCb3XStmYhrnH8io+iDSANfjLs=
+        b=XLeYjIDoQcideYRI2m9prHlmDgp2oWjnd/6p59Epr2mmqyKpj0miGLulyIIWNnhYv
+         4V8LA7IFTOkIghqe1+TaLOySdOrSFo7iR7pGvbqtMqzuDOwcKGRJbvFVELZhbkaqNV
+         I8H35ddmp4VIo6sV/LslFjj74Ca8Y9Qb2YI2YGA4=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     linux-kernel@vger.kernel.org
+To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v2] video: Fix Kconfig indentation
-Date:   Thu, 21 Nov 2019 04:20:03 +0100
-Message-Id: <1574306404-17703-1-git-send-email-krzk@kernel.org>
+Subject: [PATCH v3] video: Fix Kconfig indentation
+Date:   Thu, 21 Nov 2019 05:09:43 +0100
+Message-Id: <1574309383-31278-1-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -45,8 +46,12 @@ coding style with command like:
 	$ sed -e 's/^        /\t/' -i */Kconfig
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
 ---
+
+Changes since v2:
+1. Add Bartlomiej's ack.
 
 Changes since v1:
 1. Fix also 7-space and tab+1 space indentation issues.
