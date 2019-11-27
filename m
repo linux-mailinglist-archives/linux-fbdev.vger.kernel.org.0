@@ -2,33 +2,34 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D41310B34A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Nov 2019 17:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A07E510B34D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Nov 2019 17:32:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726698AbfK0Qci (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 27 Nov 2019 11:32:38 -0500
-Received: from mga04.intel.com ([192.55.52.120]:58185 "EHLO mga04.intel.com"
+        id S1726926AbfK0Qcp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 27 Nov 2019 11:32:45 -0500
+Received: from mga03.intel.com ([134.134.136.65]:43789 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726514AbfK0Qci (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 27 Nov 2019 11:32:38 -0500
+        id S1726514AbfK0Qcp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 27 Nov 2019 11:32:45 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:32:37 -0800
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:32:43 -0800
 X-IronPort-AV: E=Sophos;i="5.69,250,1571727600"; 
-   d="scan'208";a="203126079"
+   d="scan'208";a="199239647"
 Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:32:35 -0800
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:32:40 -0800
 From:   Jani Nikula <jani.nikula@intel.com>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 Cc:     ville.syrjala@linux.intel.com, intel-gfx@lists.freedesktop.org,
-        jani.nikula@intel.com
-Subject: [PATCH 00/13] video, drm: constify fbops in struct fb_info 
-Date:   Wed, 27 Nov 2019 18:31:56 +0200
-Message-Id: <cover.1574871797.git.jani.nikula@intel.com>
+        jani.nikula@intel.com, Jaya Kumar <jayalk@intworks.biz>
+Subject: [PATCH 01/13] video: fb_defio: preserve user fb_ops
+Date:   Wed, 27 Nov 2019 18:31:57 +0200
+Message-Id: <448995ffd954e0cd2287089cb686e351cc095834.1574871797.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1574871797.git.jani.nikula@intel.com>
+References: <cover.1574871797.git.jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -36,168 +37,107 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-So I wanted to quickly move our struct fb_ops to const data because we
-don't modify it... and this series is where the rabbit hole ends. Ugh.
+Modifying fb_ops directly to override fb_mmap with fb_deferred_io_mmap
+and then resetting it to NULL afterwards causes problems all over the
+place. First, it prevents making the fbops member of struct fb_info a
+const pointer, which means we can't make struct fb_ops const
+anywhere. Second, a few places have to go out of their way to restore
+the original fb_mmap pointer that gets reset to NULL.
 
-The main pain point is deferred IO, which is covered in patch
-1. Everything gets easier after that. The last 5 could be merged at
-leisure.
+Preserve the passed in fb_ops by making a copy of it and modifying that
+instead. Add a deferred_io_private member to struct fb_info to store the
+pointer to the old fb_ops, and restore that at cleanup.
 
-BR,
-Jani.
+Cc: Jaya Kumar <jayalk@intworks.biz>
+Cc: linux-fbdev@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
+---
 
-Jani Nikula (13):
-  video: fb_defio: preserve user fb_ops
-  drm/fb-helper: don't preserve fb_ops across deferred IO use
-  video: smscufx: don't restore fb_mmap after deferred IO cleanup
-  video: udlfb: don't restore fb_mmap after deferred IO cleanup
-  video: fbdev: vesafb: modify the static fb_ops directly
-  video: fbmem: use const pointer for fb_ops
-  video: omapfb: use const pointer for fb_ops
-  video: fbdev: make fbops member of struct fb_info a const pointer
-  drm: constify fb ops across all drivers
-  video: constify fb ops across all drivers
-  HID: picoLCD: constify fb ops
-  media: constify fb ops across all drivers
-  samples: vfio-mdev: constify fb ops
+Note: If the approach is acceptable, we'll also need to handle the error
+returns on memory allocation failures at fb_deferred_io_init() call
+sites. There are 13.
+---
+ drivers/video/fbdev/core/fb_defio.c | 25 ++++++++++++++++++++++---
+ include/linux/fb.h                  |  3 ++-
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_fb.c        |  2 +-
- drivers/gpu/drm/armada/armada_fbdev.c         |  2 +-
- drivers/gpu/drm/drm_fb_helper.c               | 20 +++------------
- drivers/gpu/drm/exynos/exynos_drm_fbdev.c     |  2 +-
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_fbdev.c |  2 +-
- drivers/gpu/drm/i915/display/intel_fbdev.c    |  2 +-
- drivers/gpu/drm/msm/msm_fbdev.c               |  2 +-
- drivers/gpu/drm/nouveau/nouveau_fbcon.c       |  4 +--
- drivers/gpu/drm/omapdrm/omap_fbdev.c          |  2 +-
- drivers/gpu/drm/radeon/radeon_fb.c            |  2 +-
- drivers/gpu/drm/rockchip/rockchip_drm_fbdev.c |  2 +-
- drivers/gpu/drm/tegra/fb.c                    |  2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_fb.c            |  2 +-
- drivers/hid/hid-picolcd_fb.c                  |  3 +--
- drivers/media/pci/ivtv/ivtvfb.c               |  3 +--
- drivers/media/platform/vivid/vivid-osd.c      |  1 -
- drivers/video/fbdev/68328fb.c                 |  2 +-
- drivers/video/fbdev/acornfb.c                 |  2 +-
- drivers/video/fbdev/amba-clcd.c               |  2 +-
- drivers/video/fbdev/amifb.c                   |  2 +-
- drivers/video/fbdev/arcfb.c                   |  2 +-
- drivers/video/fbdev/arkfb.c                   |  2 +-
- drivers/video/fbdev/asiliantfb.c              |  2 +-
- drivers/video/fbdev/atmel_lcdfb.c             |  2 +-
- drivers/video/fbdev/aty/aty128fb.c            |  2 +-
- drivers/video/fbdev/aty/atyfb_base.c          |  2 +-
- drivers/video/fbdev/aty/radeon_base.c         |  2 +-
- drivers/video/fbdev/au1100fb.c                |  2 +-
- drivers/video/fbdev/au1200fb.c                |  2 +-
- drivers/video/fbdev/broadsheetfb.c            |  2 +-
- drivers/video/fbdev/bw2.c                     |  2 +-
- drivers/video/fbdev/carminefb.c               |  2 +-
- drivers/video/fbdev/cg14.c                    |  2 +-
- drivers/video/fbdev/cg3.c                     |  2 +-
- drivers/video/fbdev/cg6.c                     |  2 +-
- drivers/video/fbdev/chipsfb.c                 |  2 +-
- drivers/video/fbdev/cirrusfb.c                |  2 +-
- drivers/video/fbdev/clps711x-fb.c             |  2 +-
- drivers/video/fbdev/cobalt_lcdfb.c            |  2 +-
- drivers/video/fbdev/controlfb.c               |  2 +-
- drivers/video/fbdev/core/fb_defio.c           | 25 ++++++++++++++++---
- drivers/video/fbdev/core/fbmem.c              |  6 ++---
- drivers/video/fbdev/cyber2000fb.c             |  2 +-
- drivers/video/fbdev/da8xx-fb.c                |  2 +-
- drivers/video/fbdev/dnfb.c                    |  2 +-
- drivers/video/fbdev/efifb.c                   |  2 +-
- drivers/video/fbdev/ep93xx-fb.c               |  2 +-
- drivers/video/fbdev/fb-puv3.c                 |  2 +-
- drivers/video/fbdev/ffb.c                     |  2 +-
- drivers/video/fbdev/fm2fb.c                   |  2 +-
- drivers/video/fbdev/fsl-diu-fb.c              |  2 +-
- drivers/video/fbdev/g364fb.c                  |  2 +-
- drivers/video/fbdev/gbefb.c                   |  2 +-
- drivers/video/fbdev/geode/gx1fb_core.c        |  2 +-
- drivers/video/fbdev/geode/gxfb_core.c         |  2 +-
- drivers/video/fbdev/geode/lxfb_core.c         |  2 +-
- drivers/video/fbdev/goldfishfb.c              |  2 +-
- drivers/video/fbdev/grvga.c                   |  2 +-
- drivers/video/fbdev/gxt4500.c                 |  2 +-
- drivers/video/fbdev/hecubafb.c                |  2 +-
- drivers/video/fbdev/hgafb.c                   |  2 +-
- drivers/video/fbdev/hitfb.c                   |  2 +-
- drivers/video/fbdev/hpfb.c                    |  2 +-
- drivers/video/fbdev/hyperv_fb.c               |  2 +-
- drivers/video/fbdev/i740fb.c                  |  2 +-
- drivers/video/fbdev/imsttfb.c                 |  2 +-
- drivers/video/fbdev/imxfb.c                   |  2 +-
- drivers/video/fbdev/intelfb/intelfbdrv.c      |  2 +-
- drivers/video/fbdev/kyro/fbdev.c              |  2 +-
- drivers/video/fbdev/leo.c                     |  2 +-
- drivers/video/fbdev/macfb.c                   |  2 +-
- drivers/video/fbdev/matrox/matroxfb_crtc2.c   |  2 +-
- drivers/video/fbdev/maxinefb.c                |  2 +-
- drivers/video/fbdev/mb862xx/mb862xxfbdrv.c    |  2 +-
- drivers/video/fbdev/mbx/mbxfb.c               |  2 +-
- drivers/video/fbdev/metronomefb.c             |  2 +-
- drivers/video/fbdev/mmp/fb/mmpfb.c            |  2 +-
- drivers/video/fbdev/mx3fb.c                   |  5 ++--
- drivers/video/fbdev/neofb.c                   |  2 +-
- drivers/video/fbdev/nvidia/nvidia.c           |  2 +-
- drivers/video/fbdev/ocfb.c                    |  2 +-
- drivers/video/fbdev/offb.c                    |  2 +-
- drivers/video/fbdev/omap/omapfb_main.c        |  2 +-
- .../video/fbdev/omap2/omapfb/omapfb-main.c    |  2 +-
- drivers/video/fbdev/p9100.c                   |  2 +-
- drivers/video/fbdev/platinumfb.c              |  2 +-
- drivers/video/fbdev/pm2fb.c                   |  2 +-
- drivers/video/fbdev/pm3fb.c                   |  2 +-
- drivers/video/fbdev/pmag-aa-fb.c              |  2 +-
- drivers/video/fbdev/pmag-ba-fb.c              |  2 +-
- drivers/video/fbdev/pmagb-b-fb.c              |  2 +-
- drivers/video/fbdev/ps3fb.c                   |  2 +-
- drivers/video/fbdev/pvr2fb.c                  |  2 +-
- drivers/video/fbdev/pxa168fb.c                |  2 +-
- drivers/video/fbdev/pxafb.c                   |  4 +--
- drivers/video/fbdev/q40fb.c                   |  2 +-
- drivers/video/fbdev/riva/fbdev.c              |  2 +-
- drivers/video/fbdev/s3c-fb.c                  |  2 +-
- drivers/video/fbdev/s3c2410fb.c               |  2 +-
- drivers/video/fbdev/s3fb.c                    |  2 +-
- drivers/video/fbdev/sa1100fb.c                |  2 +-
- drivers/video/fbdev/savage/savagefb_driver.c  |  2 +-
- drivers/video/fbdev/sh7760fb.c                |  2 +-
- drivers/video/fbdev/sh_mobile_lcdcfb.c        |  4 +--
- drivers/video/fbdev/simplefb.c                |  2 +-
- drivers/video/fbdev/sis/sis_main.c            |  2 +-
- drivers/video/fbdev/skeletonfb.c              |  2 +-
- drivers/video/fbdev/sm712fb.c                 |  2 +-
- drivers/video/fbdev/smscufx.c                 |  1 -
- drivers/video/fbdev/ssd1307fb.c               |  2 +-
- drivers/video/fbdev/sstfb.c                   |  2 +-
- drivers/video/fbdev/stifb.c                   |  2 +-
- drivers/video/fbdev/sunxvr1000.c              |  2 +-
- drivers/video/fbdev/sunxvr2500.c              |  2 +-
- drivers/video/fbdev/sunxvr500.c               |  2 +-
- drivers/video/fbdev/tcx.c                     |  2 +-
- drivers/video/fbdev/tdfxfb.c                  |  2 +-
- drivers/video/fbdev/tgafb.c                   |  2 +-
- drivers/video/fbdev/tmiofb.c                  |  2 +-
- drivers/video/fbdev/tridentfb.c               |  2 +-
- drivers/video/fbdev/udlfb.c                   |  1 -
- drivers/video/fbdev/uvesafb.c                 |  2 +-
- drivers/video/fbdev/valkyriefb.c              |  2 +-
- drivers/video/fbdev/vesafb.c                  |  6 ++---
- drivers/video/fbdev/vfb.c                     |  2 +-
- drivers/video/fbdev/vga16fb.c                 |  2 +-
- drivers/video/fbdev/vt8500lcdfb.c             |  2 +-
- drivers/video/fbdev/vt8623fb.c                |  2 +-
- drivers/video/fbdev/w100fb.c                  |  2 +-
- drivers/video/fbdev/wm8505fb.c                |  2 +-
- drivers/video/fbdev/xen-fbfront.c             |  2 +-
- drivers/video/fbdev/xilinxfb.c                |  2 +-
- include/linux/fb.h                            |  5 ++--
- samples/vfio-mdev/mdpy-fb.c                   |  2 +-
- 134 files changed, 165 insertions(+), 163 deletions(-)
-
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index 82c20c6047b0..36697844c1e0 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -200,13 +200,23 @@ static void fb_deferred_io_work(struct work_struct *work)
+ 	mutex_unlock(&fbdefio->lock);
+ }
+ 
+-void fb_deferred_io_init(struct fb_info *info)
++int fb_deferred_io_init(struct fb_info *info)
+ {
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
++	struct fb_ops *fbops;
+ 
+ 	BUG_ON(!fbdefio);
++
++	fbops = kmemdup(info->fbops, sizeof(*fbops), GFP_KERNEL);
++	if (!fbops)
++		return -ENOMEM;
++
++	fbops->fb_mmap = fb_deferred_io_mmap;
++	info->deferred_io_private = info->fbops;
++	info->fbops = fbops;
++
+ 	mutex_init(&fbdefio->lock);
+-	info->fbops->fb_mmap = fb_deferred_io_mmap;
++
+ 	INIT_DELAYED_WORK(&info->deferred_work, fb_deferred_io_work);
+ 	INIT_LIST_HEAD(&fbdefio->pagelist);
+ 	if (fbdefio->delay == 0) /* set a default of 1 s */
+@@ -229,6 +239,12 @@ void fb_deferred_io_cleanup(struct fb_info *info)
+ 	int i;
+ 
+ 	BUG_ON(!fbdefio);
++
++	/* sanity check against misuse */
++	if (WARN_ON(!info->deferred_io_private ||
++		    info->fbops->fb_mmap != fb_deferred_io_mmap))
++		return;
++
+ 	cancel_delayed_work_sync(&info->deferred_work);
+ 
+ 	/* clear out the mapping that we setup */
+@@ -237,7 +253,10 @@ void fb_deferred_io_cleanup(struct fb_info *info)
+ 		page->mapping = NULL;
+ 	}
+ 
+-	info->fbops->fb_mmap = NULL;
++	kfree(info->fbops);
++	info->fbops = info->deferred_io_private;
++	info->deferred_io_private = NULL;
++
+ 	mutex_destroy(&fbdefio->lock);
+ }
+ EXPORT_SYMBOL_GPL(fb_deferred_io_cleanup);
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index a6ad528990de..65f2abd47745 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -470,6 +470,7 @@ struct fb_info {
+ #ifdef CONFIG_FB_DEFERRED_IO
+ 	struct delayed_work deferred_work;
+ 	struct fb_deferred_io *fbdefio;
++	void *deferred_io_private;
+ #endif
+ 
+ 	struct fb_ops *fbops;
+@@ -658,7 +659,7 @@ static inline void __fb_pad_aligned_buffer(u8 *dst, u32 d_pitch,
+ 
+ /* drivers/video/fb_defio.c */
+ int fb_deferred_io_mmap(struct fb_info *info, struct vm_area_struct *vma);
+-extern void fb_deferred_io_init(struct fb_info *info);
++extern int fb_deferred_io_init(struct fb_info *info);
+ extern void fb_deferred_io_open(struct fb_info *info,
+ 				struct inode *inode,
+ 				struct file *file);
 -- 
 2.20.1
 
