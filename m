@@ -2,113 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D7410D43E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 29 Nov 2019 11:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACA810D6B7
+	for <lists+linux-fbdev@lfdr.de>; Fri, 29 Nov 2019 15:12:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726778AbfK2Kfx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 29 Nov 2019 05:35:53 -0500
-Received: from mga17.intel.com ([192.55.52.151]:17471 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726215AbfK2Kfx (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 29 Nov 2019 05:35:53 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 02:35:53 -0800
-X-IronPort-AV: E=Sophos;i="5.69,257,1571727600"; 
-   d="scan'208";a="212284321"
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 02:35:48 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Cc:     Andy Walls <awalls@md.metrocast.net>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, ivtv-devel@ivtvdriver.org,
-        Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH v2 12/14] media: constify fb ops across all drivers
-In-Reply-To: <9cfc1a171d12a52dfbd5508d737681f2d89d21df.1575022735.git.jani.nikula@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1575022735.git.jani.nikula@intel.com> <9cfc1a171d12a52dfbd5508d737681f2d89d21df.1575022735.git.jani.nikula@intel.com>
-Date:   Fri, 29 Nov 2019 12:35:44 +0200
-Message-ID: <87h82nkm0v.fsf@intel.com>
+        id S1726824AbfK2OMN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 29 Nov 2019 09:12:13 -0500
+Received: from smtp.domeneshop.no ([194.63.252.55]:60727 "EHLO
+        smtp.domeneshop.no" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726878AbfK2OMN (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 29 Nov 2019 09:12:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
+        ; s=ds201810; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mCOMn0jrLhbugFa3zJRR2tiZlWvauRU6XzY33ntGSlM=; b=Rb+LNaqGByG5T1nIeu0bhgL+1G
+        ijwGWqsa+GOdhNYG6ddgMBpmLYJumKDygTiPMDIgKp+XWbJdwuFQ2YFQDjVzqpm0HYq/A2qmfiXJV
+        GEYB++IYytbrlaUYfQuhirAXZANtB/6gvjrmj/yygnyKi5W3VfWYfbzHKSULtGBSSsDjeepBRrKX+
+        nyREtr+mrpDMV9Uy5VzP7yCnLSCP/suWtBfD7UGrgAmorX0+2//e8FdcSdEn3ZLElBqjugsLP9fAI
+        pv2pp5EqZhtbmqrLrbLv16Htam7yc+XTE8RP/xeWMsmwKQuGHLTRRI1U8/vlqOtChG7oZSvI0cKkN
+        jDL6WUCw==;
+Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:64570 helo=[192.168.10.174])
+        by smtp.domeneshop.no with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <noralf@tronnes.org>)
+        id 1iah0E-0002OJ-P7; Fri, 29 Nov 2019 15:12:10 +0100
+Subject: Re: [PATCH v2 01/14] video: fb_defio: preserve user fb_ops
+To:     Jani Nikula <jani.nikula@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     intel-gfx@lists.freedesktop.org
+References: <cover.1575022735.git.jani.nikula@intel.com>
+ <022c82429da15d6450ff9ac1a897322ec3124db4.1575022735.git.jani.nikula@intel.com>
+From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Message-ID: <b9c25f8d-c1e4-3c72-c6ed-903015a69e63@tronnes.org>
+Date:   Fri, 29 Nov 2019 15:12:02 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <022c82429da15d6450ff9ac1a897322ec3124db4.1575022735.git.jani.nikula@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 29 Nov 2019, Jani Nikula <jani.nikula@intel.com> wrote:
-> Now that the fbops member of struct fb_info is const, we can start
-> making the ops const as well.
->
-> Remove the redundant fbops assignments while at it.
->
-> v2:
-> - actually add const in vivid
-> - fix typo (Christophe de Dinechin)
->
-> Cc: Hans Verkuil <hverkuil@xs4all.nl>
-> Cc: Andy Walls <awalls@md.metrocast.net>
-> Cc: linux-media@vger.kernel.org
-> Cc: ivtv-devel@ivtvdriver.org
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+
+Den 29.11.2019 11.29, skrev Jani Nikula:
+> Modifying fb_ops directly to override fb_mmap with fb_deferred_io_mmap
+> and then resetting it to NULL afterwards causes problems all over the
+> place. First, it prevents making the fbops member of struct fb_info a
+> const pointer, which means we can't make struct fb_ops const
+> anywhere. Second, a few places have to go out of their way to restore
+> the original fb_mmap pointer that gets reset to NULL.
+> 
+> Since the only user of the fbops->fb_mmap hook is fb_mmap() in fbmem.c,
+> call fb_deferred_io_mmap() directly when deferred IO is enabled, and
+> avoid modifying fb_ops altogether.
+> 
+> Simply use info->fbdefio to determine whether deferred IO should be used
+> or not. This should be accurate enough for all use cases, although
+> perhaps not pedantically correct.
+> 
+> v2: Simplify considerably by calling fb_deferred_io_mmap() directly
+>     (Daniel, Ville)
+> 
+> Cc: Jaya Kumar <jayalk@intworks.biz>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
-> fixup-to-media
-
-Rebase artefact, to be removed before applying...
-
-BR,
-Jani.
-
 > ---
->  drivers/media/pci/ivtv/ivtvfb.c          | 3 +--
->  drivers/media/platform/vivid/vivid-osd.c | 3 +--
->  2 files changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
-> index 95a56cce9b65..f2922b554b09 100644
-> --- a/drivers/media/pci/ivtv/ivtvfb.c
-> +++ b/drivers/media/pci/ivtv/ivtvfb.c
-> @@ -925,7 +925,7 @@ static int ivtvfb_blank(int blank_mode, struct fb_info *info)
->  	return 0;
->  }
->  
-> -static struct fb_ops ivtvfb_ops = {
-> +static const struct fb_ops ivtvfb_ops = {
->  	.owner = THIS_MODULE,
->  	.fb_write       = ivtvfb_write,
->  	.fb_check_var   = ivtvfb_check_var,
-> @@ -1049,7 +1049,6 @@ static int ivtvfb_init_vidmode(struct ivtv *itv)
->  
->  	oi->ivtvfb_info.node = -1;
->  	oi->ivtvfb_info.flags = FBINFO_FLAG_DEFAULT;
-> -	oi->ivtvfb_info.fbops = &ivtvfb_ops;
->  	oi->ivtvfb_info.par = itv;
->  	oi->ivtvfb_info.var = oi->ivtvfb_defined;
->  	oi->ivtvfb_info.fix = oi->ivtvfb_fix;
-> diff --git a/drivers/media/platform/vivid/vivid-osd.c b/drivers/media/platform/vivid/vivid-osd.c
-> index f2e789bdf4a6..fbaec8acc161 100644
-> --- a/drivers/media/platform/vivid/vivid-osd.c
-> +++ b/drivers/media/platform/vivid/vivid-osd.c
-> @@ -244,7 +244,7 @@ static int vivid_fb_blank(int blank_mode, struct fb_info *info)
->  	return 0;
->  }
->  
-> -static struct fb_ops vivid_fb_ops = {
-> +static const struct fb_ops vivid_fb_ops = {
->  	.owner = THIS_MODULE,
->  	.fb_check_var   = vivid_fb_check_var,
->  	.fb_set_par     = vivid_fb_set_par,
-> @@ -311,7 +311,6 @@ static int vivid_fb_init_vidmode(struct vivid_dev *dev)
->  
->  	dev->fb_info.node = -1;
->  	dev->fb_info.flags = FBINFO_FLAG_DEFAULT;
-> -	dev->fb_info.fbops = &vivid_fb_ops;
->  	dev->fb_info.par = dev;
->  	dev->fb_info.var = dev->fb_defined;
->  	dev->fb_info.fix = dev->fb_fix;
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Nice simple solution:
+
+Acked-by: Noralf Trønnes <noralf@tronnes.org>
