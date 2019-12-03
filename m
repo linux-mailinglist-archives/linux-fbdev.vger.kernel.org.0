@@ -2,33 +2,31 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACE751102A2
-	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Dec 2019 17:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9821C1102A4
+	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Dec 2019 17:40:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbfLCQkJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Dec 2019 11:40:09 -0500
-Received: from mga07.intel.com ([134.134.136.100]:56552 "EHLO mga07.intel.com"
+        id S1727101AbfLCQkN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Dec 2019 11:40:13 -0500
+Received: from mga02.intel.com ([134.134.136.20]:45679 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726186AbfLCQkI (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 3 Dec 2019 11:40:08 -0500
+        id S1726186AbfLCQkM (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 3 Dec 2019 11:40:12 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:40:07 -0800
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:40:12 -0800
 X-IronPort-AV: E=Sophos;i="5.69,273,1571727600"; 
-   d="scan'208";a="208503613"
+   d="scan'208";a="208533501"
 Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:40:04 -0800
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:40:09 -0800
 From:   Jani Nikula <jani.nikula@intel.com>
 To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
 Cc:     intel-gfx@lists.freedesktop.org, jani.nikula@intel.com,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Andy Walls <awalls@md.metrocast.net>,
-        linux-media@vger.kernel.org, ivtv-devel@ivtvdriver.org,
+        Kirti Wankhede <kwankhede@nvidia.com>, kvm@vger.kernel.org,
         Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: [PATCH v3 10/12] media: constify fb ops across all drivers
-Date:   Tue,  3 Dec 2019 18:38:52 +0200
-Message-Id: <71794337f8611271f2c1fdb3882119a58e743a87.1575390741.git.jani.nikula@intel.com>
+Subject: [PATCH v3 11/12] samples: vfio-mdev: constify fb ops
+Date:   Tue,  3 Dec 2019 18:38:53 +0200
+Message-Id: <ddb10df1316ef585930cda7718643a580f4fe37b.1575390741.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <cover.1575390740.git.jani.nikula@intel.com>
 References: <cover.1575390740.git.jani.nikula@intel.com>
@@ -43,65 +41,29 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 Now that the fbops member of struct fb_info is const, we can start
 making the ops const as well.
 
-Remove the redundant fbops assignments while at it.
+v2: fix	typo (Christophe de Dinechin)
 
-v2:
-- actually add const in vivid
-- fix typo (Christophe de Dinechin)
-
-Cc: Hans Verkuil <hverkuil@xs4all.nl>
-Cc: Andy Walls <awalls@md.metrocast.net>
-Cc: linux-media@vger.kernel.org
-Cc: ivtv-devel@ivtvdriver.org
+Cc: Kirti Wankhede <kwankhede@nvidia.com>
+Cc: kvm@vger.kernel.org
 Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- drivers/media/pci/ivtv/ivtvfb.c          | 3 +--
- drivers/media/platform/vivid/vivid-osd.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ samples/vfio-mdev/mdpy-fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
-index 95a56cce9b65..f2922b554b09 100644
---- a/drivers/media/pci/ivtv/ivtvfb.c
-+++ b/drivers/media/pci/ivtv/ivtvfb.c
-@@ -925,7 +925,7 @@ static int ivtvfb_blank(int blank_mode, struct fb_info *info)
- 	return 0;
+diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
+index 2719bb259653..21dbf63d6e41 100644
+--- a/samples/vfio-mdev/mdpy-fb.c
++++ b/samples/vfio-mdev/mdpy-fb.c
+@@ -86,7 +86,7 @@ static void mdpy_fb_destroy(struct fb_info *info)
+ 		iounmap(info->screen_base);
  }
  
--static struct fb_ops ivtvfb_ops = {
-+static const struct fb_ops ivtvfb_ops = {
- 	.owner = THIS_MODULE,
- 	.fb_write       = ivtvfb_write,
- 	.fb_check_var   = ivtvfb_check_var,
-@@ -1049,7 +1049,6 @@ static int ivtvfb_init_vidmode(struct ivtv *itv)
- 
- 	oi->ivtvfb_info.node = -1;
- 	oi->ivtvfb_info.flags = FBINFO_FLAG_DEFAULT;
--	oi->ivtvfb_info.fbops = &ivtvfb_ops;
- 	oi->ivtvfb_info.par = itv;
- 	oi->ivtvfb_info.var = oi->ivtvfb_defined;
- 	oi->ivtvfb_info.fix = oi->ivtvfb_fix;
-diff --git a/drivers/media/platform/vivid/vivid-osd.c b/drivers/media/platform/vivid/vivid-osd.c
-index f2e789bdf4a6..fbaec8acc161 100644
---- a/drivers/media/platform/vivid/vivid-osd.c
-+++ b/drivers/media/platform/vivid/vivid-osd.c
-@@ -244,7 +244,7 @@ static int vivid_fb_blank(int blank_mode, struct fb_info *info)
- 	return 0;
- }
- 
--static struct fb_ops vivid_fb_ops = {
-+static const struct fb_ops vivid_fb_ops = {
- 	.owner = THIS_MODULE,
- 	.fb_check_var   = vivid_fb_check_var,
- 	.fb_set_par     = vivid_fb_set_par,
-@@ -311,7 +311,6 @@ static int vivid_fb_init_vidmode(struct vivid_dev *dev)
- 
- 	dev->fb_info.node = -1;
- 	dev->fb_info.flags = FBINFO_FLAG_DEFAULT;
--	dev->fb_info.fbops = &vivid_fb_ops;
- 	dev->fb_info.par = dev;
- 	dev->fb_info.var = dev->fb_defined;
- 	dev->fb_info.fix = dev->fb_fix;
+-static struct fb_ops mdpy_fb_ops = {
++static const struct fb_ops mdpy_fb_ops = {
+ 	.owner		= THIS_MODULE,
+ 	.fb_destroy	= mdpy_fb_destroy,
+ 	.fb_setcolreg	= mdpy_fb_setcolreg,
 -- 
 2.20.1
 
