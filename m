@@ -2,43 +2,43 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 284241105C6
-	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Dec 2019 21:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FECC111B9C
+	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Dec 2019 23:25:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727468AbfLCUPN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Dec 2019 15:15:13 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:55850 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727454AbfLCUPM (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 3 Dec 2019 15:15:12 -0500
-Received: by mail-io1-f71.google.com with SMTP id z21so3250207iob.22
-        for <linux-fbdev@vger.kernel.org>; Tue, 03 Dec 2019 12:15:11 -0800 (PST)
+        id S1727502AbfLCWZJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Dec 2019 17:25:09 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:44048 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727131AbfLCWZJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 3 Dec 2019 17:25:09 -0500
+Received: by mail-io1-f72.google.com with SMTP id t17so3598489ioi.11
+        for <linux-fbdev@vger.kernel.org>; Tue, 03 Dec 2019 14:25:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=CwLSfE/Y1vBL15GsZLjJiZpTfs2T+fihUXimA9es2g0=;
-        b=S/W+XRPYot+RORAE2DtDydNLIe1cdAkkQpCkUaTDBodmWzBp/+YSXJmfpP0KyhaHcY
-         AgY7hnDkJtERhQ3TsmklyHdl+PZlGgBWWE2uPqCc/6V+69dVISTIsv7PtpdU44YAkJYc
-         8C50X8Of5FhALj/5nrEvSkiduK3vGoSLAWWYJ3v5DblOWk+paAPmeJYUNxxLaZuwuZvR
-         vy7vuqtP5WdktLWUBz0kNiQjzr/jS4O6qE1TUEufQ2meFTrXDY6YnzsSm1LBejAaLKYi
-         n7s7hKPOjmQW5ycbB+/Tkc1Il4J/e62yFfzSThLz6+2GfVegzzRfNj4ku5GRxFR20Jdv
-         saSw==
-X-Gm-Message-State: APjAAAW0dUhzCu5oUxEjbdDvD+2dMQoaNJ1y3dQyiQbi11ozrYtdcSSL
-        ugN778kVEB0K5kWksdXXPvzJTJESgOwpjlMuDpEpeZb0jPuH
-X-Google-Smtp-Source: APXvYqy/pBJzkX0cuJoHDDpVVYbogDEfJdh0sIn6vOdofFp5iUYIB3wVptYmnnWs/UuAkXkJKfccS5v0eSRGcXpgBDqc6faMXKOa
+        bh=CXOkI0TBPtmTtJsgF6Sr0rjb/p028NpwaM4sLEBYlYQ=;
+        b=DYubIUqgBZwp+Em4pOG0Hj6HiOa08FQi8d+4ZmVMdCfOw4Kc9PBOAYI0CtDlVRzP5Y
+         SmrsasJjvrjX/mWMUxBXeMLsznLbv46EeMpp4u/zWYx6G3ixpYudJrQa/jdfjqUk3MJ/
+         wbBs2ROCllOwvijfdNIPP7MjIQjbdJMNnW2+G7I29kPdD/2bjv8GKxSvoplG6znmJTWb
+         pmQgCt5/xPVwi/fsTV6MlZhT+/QYLBZ9wGQxBhBXLxwp2C+VniuX5Hr+TAtCufvuTLVo
+         vWRT/xCo1jtrA4haBnIrj1xfxFWBWIm/P3eWAlj6mvdu9rJWdqXnfiaWLPPpA3wRnUvj
+         l4oA==
+X-Gm-Message-State: APjAAAU4+vRK7gZMssl4Zcag4Qs7LimGnBPLbCp86fgMbTQemTk7fkJ3
+        xAxgcX3YW6/3dfLniChcA37Ieo7eYbVy9xbED/8PsXyv9w6O
+X-Google-Smtp-Source: APXvYqw0xQihGRub9pr2EXHoW6MqapjULktrGjdJ8k6mGFbVD7FZp6C3iVDmayNWFbuvk79pyYzHmOJ+M1o4qnItZXeuDkXdbxWn
 MIME-Version: 1.0
-X-Received: by 2002:a5d:9eda:: with SMTP id a26mr3911109ioe.238.1575404111262;
- Tue, 03 Dec 2019 12:15:11 -0800 (PST)
-Date:   Tue, 03 Dec 2019 12:15:11 -0800
+X-Received: by 2002:a05:6602:2541:: with SMTP id j1mr388622ioe.239.1575411908408;
+ Tue, 03 Dec 2019 14:25:08 -0800 (PST)
+Date:   Tue, 03 Dec 2019 14:25:08 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006dff110598d25a9b@google.com>
-Subject: INFO: task hung in fb_open
-From:   syzbot <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, kraxel@redhat.com,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, peda@axentia.se,
+Message-ID: <0000000000002cfc3a0598d42b70@google.com>
+Subject: KASAN: slab-out-of-bounds Read in fbcon_get_font
+From:   syzbot <syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.thompson@linaro.org,
+        daniel.vetter@ffwll.ch, dri-devel@lists.freedesktop.org,
+        ghalat@redhat.com, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
         sam@ravnborg.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -50,330 +50,133 @@ Hello,
 
 syzbot found the following crash on:
 
-HEAD commit:    596cf45c Merge branch 'akpm' (patches from Andrew)
+HEAD commit:    76bb8b05 Merge tag 'kbuild-v5.5' of git://git.kernel.org/p..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1599f641e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d8ab2e0e09c2a82
-dashboard link: https://syzkaller.appspot.com/bug?extid=a4ae1442ccc637162dc1
+console output: https://syzkaller.appspot.com/x/log.txt?x=10bfe282e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=dd226651cb0f364b
+dashboard link: https://syzkaller.appspot.com/bug?extid=4455ca3b3291de891abc
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14273edae00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e7677ae00000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11181edae00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=105cbb7ae00000
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com
+Reported-by: syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com
 
-INFO: task syz-executor823:8749 blocked for more than 143 seconds.
-       Not tainted 5.4.0-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-syz-executor823 D28160  8749   8748 0x00000004
-Call Trace:
-  context_switch kernel/sched/core.c:3385 [inline]
-  __schedule+0x934/0x1f90 kernel/sched/core.c:4081
-  schedule+0xdc/0x2b0 kernel/sched/core.c:4155
-  schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:4214
-  __mutex_lock_common kernel/locking/mutex.c:1036 [inline]
-  __mutex_lock+0x7ab/0x13c0 kernel/locking/mutex.c:1106
-  mutex_lock_nested+0x16/0x20 kernel/locking/mutex.c:1121
-  lock_fb_info include/linux/fb.h:637 [inline]
-  fb_open+0xd7/0x450 drivers/video/fbdev/core/fbmem.c:1406
-  chrdev_open+0x245/0x6b0 fs/char_dev.c:414
-  do_dentry_open+0x4e6/0x1380 fs/open.c:797
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_openat fs/open.c:1124 [inline]
-  __se_sys_openat fs/open.c:1118 [inline]
-  __x64_sys_openat+0x9d/0x100 fs/open.c:1118
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: Bad RIP value.
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000000000000 RSI: 0000000020000840 RDI: ffffffffffffff9c
-RBP: 00000000006cb018 R08: 0000000000000004 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
-INFO: task syz-executor823:8750 blocked for more than 143 seconds.
-       Not tainted 5.4.0-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-syz-executor823 D28160  8750   8747 0x00000004
-Call Trace:
-  context_switch kernel/sched/core.c:3385 [inline]
-  __schedule+0x934/0x1f90 kernel/sched/core.c:4081
-  schedule+0xdc/0x2b0 kernel/sched/core.c:4155
-  schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:4214
-  __mutex_lock_common kernel/locking/mutex.c:1036 [inline]
-  __mutex_lock+0x7ab/0x13c0 kernel/locking/mutex.c:1106
-  mutex_lock_nested+0x16/0x20 kernel/locking/mutex.c:1121
-  lock_fb_info include/linux/fb.h:637 [inline]
-  fb_open+0xd7/0x450 drivers/video/fbdev/core/fbmem.c:1406
-  chrdev_open+0x245/0x6b0 fs/char_dev.c:414
-  do_dentry_open+0x4e6/0x1380 fs/open.c:797
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_openat fs/open.c:1124 [inline]
-  __se_sys_openat fs/open.c:1118 [inline]
-  __x64_sys_openat+0x9d/0x100 fs/open.c:1118
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: Bad RIP value.
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000000000000 RSI: 0000000020000840 RDI: ffffffffffffff9c
-RBP: 00000000006cb018 R08: 0000000000000004 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
-INFO: task syz-executor823:8751 blocked for more than 143 seconds.
-       Not tainted 5.4.0-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-syz-executor823 D28160  8751   8745 0x00004004
-Call Trace:
-  context_switch kernel/sched/core.c:3385 [inline]
-  __schedule+0x934/0x1f90 kernel/sched/core.c:4081
-  schedule+0xdc/0x2b0 kernel/sched/core.c:4155
-  schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:4214
-  __mutex_lock_common kernel/locking/mutex.c:1036 [inline]
-  __mutex_lock+0x7ab/0x13c0 kernel/locking/mutex.c:1106
-  mutex_lock_nested+0x16/0x20 kernel/locking/mutex.c:1121
-  lock_fb_info include/linux/fb.h:637 [inline]
-  fb_open+0xd7/0x450 drivers/video/fbdev/core/fbmem.c:1406
-  chrdev_open+0x245/0x6b0 fs/char_dev.c:414
-  do_dentry_open+0x4e6/0x1380 fs/open.c:797
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_openat fs/open.c:1124 [inline]
-  __se_sys_openat fs/open.c:1118 [inline]
-  __x64_sys_openat+0x9d/0x100 fs/open.c:1118
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: Bad RIP value.
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000000000000 RSI: 0000000020000840 RDI: ffffffffffffff9c
-RBP: 00000000006cb018 R08: 0000000000000004 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
-INFO: task syz-executor823:8752 blocked for more than 143 seconds.
-       Not tainted 5.4.0-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-syz-executor823 D27992  8752   8743 0x00004004
-Call Trace:
-  context_switch kernel/sched/core.c:3385 [inline]
-  __schedule+0x934/0x1f90 kernel/sched/core.c:4081
-  schedule+0xdc/0x2b0 kernel/sched/core.c:4155
-  schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:4214
-  __mutex_lock_common kernel/locking/mutex.c:1036 [inline]
-  __mutex_lock+0x7ab/0x13c0 kernel/locking/mutex.c:1106
-  mutex_lock_nested+0x16/0x20 kernel/locking/mutex.c:1121
-  lock_fb_info include/linux/fb.h:637 [inline]
-  fb_open+0xd7/0x450 drivers/video/fbdev/core/fbmem.c:1406
-  chrdev_open+0x245/0x6b0 fs/char_dev.c:414
-  do_dentry_open+0x4e6/0x1380 fs/open.c:797
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_openat fs/open.c:1124 [inline]
-  __se_sys_openat fs/open.c:1118 [inline]
-  __x64_sys_openat+0x9d/0x100 fs/open.c:1118
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: Bad RIP value.
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000000000000 RSI: 0000000020000840 RDI: ffffffffffffff9c
-RBP: 00000000006cb018 R08: 0000000000000004 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
-INFO: task syz-executor823:8753 blocked for more than 143 seconds.
-       Not tainted 5.4.0-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-syz-executor823 D28160  8753   8746 0x00000004
-Call Trace:
-  context_switch kernel/sched/core.c:3385 [inline]
-  __schedule+0x934/0x1f90 kernel/sched/core.c:4081
-  schedule+0xdc/0x2b0 kernel/sched/core.c:4155
-  schedule_preempt_disabled+0x13/0x20 kernel/sched/core.c:4214
-  __mutex_lock_common kernel/locking/mutex.c:1036 [inline]
-  __mutex_lock+0x7ab/0x13c0 kernel/locking/mutex.c:1106
-  mutex_lock_nested+0x16/0x20 kernel/locking/mutex.c:1121
-  lock_fb_info include/linux/fb.h:637 [inline]
-  fb_open+0xd7/0x450 drivers/video/fbdev/core/fbmem.c:1406
-  chrdev_open+0x245/0x6b0 fs/char_dev.c:414
-  do_dentry_open+0x4e6/0x1380 fs/open.c:797
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_openat fs/open.c:1124 [inline]
-  __se_sys_openat fs/open.c:1118 [inline]
-  __x64_sys_openat+0x9d/0x100 fs/open.c:1118
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: Bad RIP value.
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000000000000 RSI: 0000000020000840 RDI: ffffffffffffff9c
-RBP: 00000000006cb018 R08: 0000000000000004 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
+==================================================================
+BUG: KASAN: slab-out-of-bounds in memcpy include/linux/string.h:380 [inline]
+BUG: KASAN: slab-out-of-bounds in fbcon_get_font+0x2b2/0x5e0  
+drivers/video/fbdev/core/fbcon.c:2465
+Read of size 16 at addr ffff888094b0aa10 by task syz-executor414/9999
 
-Showing all locks held in the system:
-1 lock held by khungtaskd/1105:
-  #0: ffffffff897a4240 (rcu_read_lock){....}, at:  
-debug_show_all_locks+0x5f/0x279 kernel/locking/lockdep.c:5334
-1 lock held by rsyslogd/8626:
-  #0: ffff888099d3e860 (&f->f_pos_lock){+.+.}, at: __fdget_pos+0xee/0x110  
-fs/file.c:801
-2 locks held by getty/8716:
-  #0: ffff888090469090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc9000178b2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8717:
-  #0: ffff888096224090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc900017eb2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8718:
-  #0: ffff888095f16090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc9000174b2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8719:
-  #0: ffff8880a7b99090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc900017bb2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8720:
-  #0: ffff8880a8021090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc9000177b2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8721:
-  #0: ffff8880a8ac3090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc900017db2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by getty/8722:
-  #0: ffff8880a7a59090 (&tty->ldisc_sem){++++}, at:  
-ldsem_down_read+0x33/0x40 drivers/tty/tty_ldsem.c:340
-  #1: ffffc9000172b2e0 (&ldata->atomic_read_lock){+.+.}, at:  
-n_tty_read+0x232/0x1c10 drivers/tty/n_tty.c:2156
-2 locks held by syz-executor823/8744:
-1 lock held by syz-executor823/8749:
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: lock_fb_info  
-include/linux/fb.h:637 [inline]
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: fb_open+0xd7/0x450  
-drivers/video/fbdev/core/fbmem.c:1406
-1 lock held by syz-executor823/8750:
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: lock_fb_info  
-include/linux/fb.h:637 [inline]
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: fb_open+0xd7/0x450  
-drivers/video/fbdev/core/fbmem.c:1406
-1 lock held by syz-executor823/8751:
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: lock_fb_info  
-include/linux/fb.h:637 [inline]
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: fb_open+0xd7/0x450  
-drivers/video/fbdev/core/fbmem.c:1406
-1 lock held by syz-executor823/8752:
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: lock_fb_info  
-include/linux/fb.h:637 [inline]
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: fb_open+0xd7/0x450  
-drivers/video/fbdev/core/fbmem.c:1406
-1 lock held by syz-executor823/8753:
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: lock_fb_info  
-include/linux/fb.h:637 [inline]
-  #0: ffff8880a3d59070 (&fb_info->lock){+.+.}, at: fb_open+0xd7/0x450  
-drivers/video/fbdev/core/fbmem.c:1406
-
-=============================================
-
-NMI backtrace for cpu 1
-CPU: 1 PID: 1105 Comm: khungtaskd Not tainted 5.4.0-syzkaller #0
+CPU: 0 PID: 9999 Comm: syz-executor414 Not tainted 5.4.0-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
 Google 01/01/2011
 Call Trace:
   __dump_stack lib/dump_stack.c:77 [inline]
   dump_stack+0x197/0x210 lib/dump_stack.c:118
-  nmi_cpu_backtrace.cold+0x70/0xb2 lib/nmi_backtrace.c:101
-  nmi_trigger_cpumask_backtrace+0x23b/0x28b lib/nmi_backtrace.c:62
-  arch_trigger_cpumask_backtrace+0x14/0x20 arch/x86/kernel/apic/hw_nmi.c:38
-  trigger_all_cpu_backtrace include/linux/nmi.h:146 [inline]
-  check_hung_uninterruptible_tasks kernel/hung_task.c:205 [inline]
-  watchdog+0xb11/0x10c0 kernel/hung_task.c:289
-  kthread+0x361/0x430 kernel/kthread.c:255
-  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 PID: 8744 Comm: syz-executor823 Not tainted 5.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-RIP: 0010:__read_once_size include/linux/compiler.h:199 [inline]
-RIP: 0010:check_kcov_mode kernel/kcov.c:70 [inline]
-RIP: 0010:__sanitizer_cov_trace_pc+0x20/0x50 kernel/kcov.c:102
-Code: ff cc cc cc cc cc cc cc cc cc 55 48 89 e5 65 48 8b 04 25 c0 1e 02 00  
-65 8b 15 f4 23 8d 7e 81 e2 00 01 1f 00 48 8b 75 08 75 2b <8b> 90 80 13 00  
-00 83 fa 02 75 20 48 8b 88 88 13 00 00 8b 80 84 13
-RSP: 0018:ffffc90001e072c8 EFLAGS: 00000246
-RAX: ffff8880a5382000 RBX: 0000000000000000 RCX: ffffffff83b3479d
-RDX: 0000000000000000 RSI: ffffffff83b34766 RDI: 0000000000000005
-RBP: ffffc90001e072c8 R08: ffff8880a5382000 R09: 0000000000000040
-R10: ffffed10147a952b R11: ffff8880a3d4a95f R12: 0000000000000050
-R13: 0000000000000048 R14: ffff8880000a0000 R15: ffff8880000a0040
-FS:  0000000000cbb880(0000) GS:ffff8880ae800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffff600400 CR3: 0000000098fe3000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  bitfill_aligned drivers/video/fbdev/core/cfbfillrect.c:64 [inline]
-  bitfill_aligned+0x106/0x210 drivers/video/fbdev/core/cfbfillrect.c:35
-  cfb_fillrect+0x423/0x7c0 drivers/video/fbdev/core/cfbfillrect.c:327
-  vga16fb_fillrect+0x6ce/0x19b0 drivers/video/fbdev/vga16fb.c:951
-  bit_clear_margins+0x30b/0x530 drivers/video/fbdev/core/bitblit.c:232
-  fbcon_clear_margins+0x1e9/0x250 drivers/video/fbdev/core/fbcon.c:1372
-  fbcon_switch+0xd7f/0x17f0 drivers/video/fbdev/core/fbcon.c:2354
-  redraw_screen+0x2b6/0x7d0 drivers/tty/vt/vt.c:997
-  fbcon_modechanged+0x5c3/0x790 drivers/video/fbdev/core/fbcon.c:2991
-  fbcon_update_vcs+0x42/0x50 drivers/video/fbdev/core/fbcon.c:3038
-  fb_set_var+0xb32/0xdd0 drivers/video/fbdev/core/fbmem.c:1051
-  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
-  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
+  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:638
+  check_memory_region_inline mm/kasan/generic.c:185 [inline]
+  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
+  memcpy+0x24/0x50 mm/kasan/common.c:124
+  memcpy include/linux/string.h:380 [inline]
+  fbcon_get_font+0x2b2/0x5e0 drivers/video/fbdev/core/fbcon.c:2465
+  con_font_get drivers/tty/vt/vt.c:4446 [inline]
+  con_font_op+0x20b/0x1250 drivers/tty/vt/vt.c:4605
+  vt_ioctl+0x181a/0x26d0 drivers/tty/vt/vt_ioctl.c:965
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2658
   vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:539 [inline]
-  do_vfs_ioctl+0xdb6/0x13e0 fs/ioctl.c:726
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:743
-  __do_sys_ioctl fs/ioctl.c:750 [inline]
-  __se_sys_ioctl fs/ioctl.c:748 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:748
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
   do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x441419
-Code: e8 ac e8 ff ff 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7  
+RIP: 0033:0x4444d9
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 eb 08 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fffaaef6f78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000441419
-RDX: 0000000020000180 RSI: 0000000000004601 RDI: 0000000000000003
-RBP: 00000000006cb018 R08: 00000000004002c8 R09: 00000000004002c8
-R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000402190
-R13: 0000000000402220 R14: 0000000000000000 R15: 0000000000000000
+ff 0f 83 7b d8 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fff6f4393b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fff6f4393c0 RCX: 00000000004444d9
+RDX: 0000000020000440 RSI: 0000000000004b72 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000400da0
+R10: 00007fff6f438f00 R11: 0000000000000246 R12: 00000000004021e0
+R13: 0000000000402270 R14: 0000000000000000 R15: 0000000000000000
+
+Allocated by task 9999:
+  save_stack+0x23/0x90 mm/kasan/common.c:71
+  set_track mm/kasan/common.c:79 [inline]
+  __kasan_kmalloc mm/kasan/common.c:512 [inline]
+  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:485
+  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:526
+  __do_kmalloc mm/slab.c:3656 [inline]
+  __kmalloc+0x163/0x770 mm/slab.c:3665
+  kmalloc include/linux/slab.h:561 [inline]
+  fbcon_set_font+0x32d/0x860 drivers/video/fbdev/core/fbcon.c:2663
+  con_font_set drivers/tty/vt/vt.c:4538 [inline]
+  con_font_op+0xe18/0x1250 drivers/tty/vt/vt.c:4603
+  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2658
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Freed by task 9771:
+  save_stack+0x23/0x90 mm/kasan/common.c:71
+  set_track mm/kasan/common.c:79 [inline]
+  kasan_set_free_info mm/kasan/common.c:334 [inline]
+  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:473
+  kasan_slab_free+0xe/0x10 mm/kasan/common.c:482
+  __cache_free mm/slab.c:3426 [inline]
+  kfree+0x10a/0x2c0 mm/slab.c:3757
+  tomoyo_init_log+0x15c1/0x2070 security/tomoyo/audit.c:294
+  tomoyo_supervisor+0x33f/0xef0 security/tomoyo/common.c:2095
+  tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+  tomoyo_env_perm+0x18e/0x210 security/tomoyo/environ.c:63
+  tomoyo_environ security/tomoyo/domain.c:670 [inline]
+  tomoyo_find_next_domain+0x1354/0x1f6c security/tomoyo/domain.c:876
+  tomoyo_bprm_check_security security/tomoyo/tomoyo.c:107 [inline]
+  tomoyo_bprm_check_security+0x124/0x1a0 security/tomoyo/tomoyo.c:97
+  security_bprm_check+0x63/0xb0 security/security.c:784
+  search_binary_handler+0x71/0x570 fs/exec.c:1645
+  exec_binprm fs/exec.c:1701 [inline]
+  __do_execve_file.isra.0+0x1329/0x22b0 fs/exec.c:1821
+  do_execveat_common fs/exec.c:1867 [inline]
+  do_execve fs/exec.c:1884 [inline]
+  __do_sys_execve fs/exec.c:1960 [inline]
+  __se_sys_execve fs/exec.c:1955 [inline]
+  __x64_sys_execve+0x8f/0xc0 fs/exec.c:1955
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+The buggy address belongs to the object at ffff888094b0a000
+  which belongs to the cache kmalloc-4k of size 4096
+The buggy address is located 2576 bytes inside of
+  4096-byte region [ffff888094b0a000, ffff888094b0b000)
+The buggy address belongs to the page:
+page:ffffea000252c280 refcount:1 mapcount:0 mapping:ffff8880aa402000  
+index:0x0 compound_mapcount: 0
+raw: 00fffe0000010200 ffffea0002a3ae08 ffffea0002a6aa88 ffff8880aa402000
+raw: 0000000000000000 ffff888094b0a000 0000000100000001 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff888094b0a900: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ffff888094b0a980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> ffff888094b0aa00: 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                          ^
+  ffff888094b0aa80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff888094b0ab00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
 
 
 ---
