@@ -2,110 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8613112BC7
-	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Dec 2019 13:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E333E112E63
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Dec 2019 16:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727731AbfLDMnM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 4 Dec 2019 07:43:12 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:42228 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727820AbfLDMm6 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Dec 2019 07:42:58 -0500
-Received: by mail-qt1-f193.google.com with SMTP id j5so7534094qtq.9
-        for <linux-fbdev@vger.kernel.org>; Wed, 04 Dec 2019 04:42:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=AkbuvF8WWOeGkFuNbpEiUPeHs0D9XYCrvYJnn3sJBPk0l/N+bAJ+lU7by52a8c0/XL
-         X5y/+uJVi5SRPzgKpD7LZp2RSO63H/dWhNB+Sgv8CnTmnW6HnNvEkrD3pvFKiHue+ji0
-         Cyct4Vs7hozR5hYKDh8cJJMkT72K9aPHj93bK1Ew++bIIM698i5hGwNXpwVN8RyOlTlg
-         ekVZP06isuUhwZwFxkLwU0Sye3HMnEDkq9yUmWZzxA1JTm8RzibEufZxYTJilauyHwzc
-         pKJFDkaXtzzvkeOyU7ajhljX9QykaA8Ur2FHYJunK1Sxosbxld4ODKAYs9j7AB06Aipc
-         jW5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=Ey5f4qsVCV/sOU6xgc268/RdExQ0h4eA3ZmI+KrEYiZ8ZPJf5C1Uic0hMcBYxMqr/l
-         DRFgwADt3YIlC+AjBGAxgW/yc8/KfC9XB3x9U7Tmq0BLmslixQXS/zE7Bvvba3uIJOPq
-         idOA8XqXfgcb3yHEVHVc1AzBHD9Iu/0CdLLh7vxqKwN5pG0hcewz0ccN5c3GWoOAW4M8
-         dxgriyzauFH20SQP8fcScSDtceS/SXN7V93INacSATcSHpHgVEVpTCMVWTHUrEKGDzVq
-         zWYyLTx3/nw8n/VBtfAj+xMVnROeBrCzI+wuq3orzzTFiQr3SkNoJq4eJIC1qom6SGQV
-         APbA==
-X-Gm-Message-State: APjAAAXdjuvLHae9OJ32LwD1t7dYfsYgKxIiHVigy4lyFCd0+i6vl4uk
-        F1rCUMhmoNgos700pKVH6LzAl3hQe2PWRnULtr8=
-X-Google-Smtp-Source: APXvYqzw3gCG5cnmI6368TWfhjS/+LLSHd6b95oZCOsPTpsAjIN23auDStB1pQ1PTnMah1qk6gl8uYsnTPaZ7k01uH0=
-X-Received: by 2002:ac8:4a81:: with SMTP id l1mr2434940qtq.357.1575463377714;
- Wed, 04 Dec 2019 04:42:57 -0800 (PST)
+        id S1728310AbfLDP2u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 4 Dec 2019 10:28:50 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:60044 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728209AbfLDP2u (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Dec 2019 10:28:50 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1icWa7-0000L2-JP; Wed, 04 Dec 2019 15:28:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@nokia.com>,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] OMAP: DSS2: remove non-zero check on variable r
+Date:   Wed,  4 Dec 2019 15:28:47 +0000
+Message-Id: <20191204152847.1435188-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:57 -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Wed, 4 Dec 2019 13:42:57 +0100
-Message-ID: <CAP=nHBJXiPmPL21x=_0BHWRk_3N3Yax+tTxcFi=t=AhN7g==1Q@mail.gmail.com>
-Subject: God has remembered your prayers I have already sent you Money Gram
- payment of $5000.00 today, MG 1029-8096
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Attn, dear Beneficiary.
+From: Colin Ian King <colin.king@canonical.com>
 
-God has remembered your prayers
-I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
-This is because we have finally concluded to effect your transfer
-funds of $4.8,000.000usd
-through MONEY GRAM International Fund transfer Service
-Each payment will be sending to you by $5000.00 daily until the
-($4.8,000.000usd) is completely transferred
-we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
+Variable r is being initialized to zero, so the check of a non-zero
+rv is redundant and can be removed.
 
-Contact person Mrs. Alan Ude
-Dir. MONEY GRAM Service,Benin
-Phone number: +229 98856728
-E-mail: moneygram.1820@outlook.fr
+It appears that the previous case statements set r to be -EINVAL
+and the "Fallthrough" comment afterwards suggested it was going
+to fall through to this non-zero check but won't because of the
+break statement. Remove the confusion by removing the Fallthrough
+comment too.
 
-Ask him to give you the complete mtcn, sender name, question and
-answer to enable you
-pick up the $5000.00 sent today,
-Also you are instructed to re-confirm your information's
-to Mrs.Alan Ude as listed below to avoid wrong transactions.
+Addresses-Coverity: ("Logically dead code")
+Fixes: b39a982ddecf ("OMAP: DSS2: omapfb driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-(1Your Full name:............................................
-(2 Phone number.....................................................
-(3 Contact address:.....................................
-(4 Age:..................................................................
-(5 Country..............................................
-(6) Sex .................................................................
-(7) your occupation...........................................
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index 858c2c011d19..a2a2c1b205d9 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -1154,16 +1154,12 @@ static int _setcolreg(struct fb_info *fbi, u_int regno, u_int red, u_int green,
+ 		   r = fbdev->ctrl->setcolreg(regno, red, green, blue,
+ 		   transp, update_hw_pal);
+ 		   */
+-		/* Fallthrough */
+ 		r = -EINVAL;
+ 		break;
+ 	case OMAPFB_COLOR_RGB565:
+ 	case OMAPFB_COLOR_RGB444:
+ 	case OMAPFB_COLOR_RGB24P:
+ 	case OMAPFB_COLOR_RGB24U:
+-		if (r != 0)
+-			break;
+-
+ 		if (regno < 16) {
+ 			u32 pal;
+ 			pal = ((red >> (16 - var->red.length)) <<
+-- 
+2.24.0
 
-(8)Passport/By Attach or Drivers License Number:
-Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
-Note please: I have paid service fees for you but the only money you
-are required
-to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
-pick up your transfer today.
-
-Send it to via Money Gram
-Receiver's Name-----Alan Ude
-Country----------Benin
-Address-----------Cotonou
-Quest--------Honest
-Ans-----------Trust
-
-I done all my best for you to receive your transfer now ok.
-We need your urgent reply
-Best Regards
-Rev.Dr Emmanuel Okoye
-CEO Ecobank-benin
-
-If we did not receive it urgent from you today,
-I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
-representative.
