@@ -2,179 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E289D11300F
-	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Dec 2019 17:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB8E1136C3
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Dec 2019 21:52:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728216AbfLDQcI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 4 Dec 2019 11:32:08 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:32946 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727008AbfLDQcI (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Dec 2019 11:32:08 -0500
-Received: by mail-io1-f71.google.com with SMTP id i8so308112ioi.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 04 Dec 2019 08:32:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=attlcnJZfQz5huvDfutvGGLNdSlinmCfWkUddLr0dFw=;
-        b=OfnMzc/1K94uGiDLjJGkSB2dKK56R4c8CQAfWrQchP/iz4qM0ati6by8e6e4xKMjIK
-         bzDuAFRCbthM9J4EhffuMllMGOTLDKuNxr61Vj43xXRSO5UG9CcZLZ/lfviZQhKKyB4X
-         zTCOo7Itlcx2GaIT8TzoRZZ5a382CX/VvPMsznjQVXRUCs8dkA/Ume4z9lxVsxk1ZiNv
-         gI4vQBp+N1wK1XTvwtXa73hC/syGebKKm1WVX66SngJbnHffRrJmLtIIIhnF6+45bDEf
-         2SKuzo2o30/wN8G0D7ysFfPBK6jRQRmt8URH/YgmXsKF+enR45ymJPjubC6Hh7dr6RCl
-         MNKw==
-X-Gm-Message-State: APjAAAWrSE1oe98y8djNdJ4bRxuKew+qpg6nfq4sPZYkXq6jlT8K+d7r
-        MJvvroIZLDn/qYnSs34mbs7DuUs9RaHjkw41YoBtGvzWJ2/9
-X-Google-Smtp-Source: APXvYqxip4RWhBwkubn43oGa4ibqwnhMglAFnXQJ0wOOlSsHVvMUqC6/dCNIz3eDmFRU4I+wHBCdfgS2TgFbEHtJhvJ83UwvMqXu
+        id S1728042AbfLDUwb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 4 Dec 2019 15:52:31 -0500
+Received: from relay.sw.ru ([185.231.240.75]:50772 "EHLO relay.sw.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727889AbfLDUwb (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 4 Dec 2019 15:52:31 -0500
+Received: from [192.168.15.5]
+        by relay.sw.ru with esmtp (Exim 4.92.3)
+        (envelope-from <aryabinin@virtuozzo.com>)
+        id 1icbcl-0001ny-LQ; Wed, 04 Dec 2019 23:51:51 +0300
+Subject: Re: KASAN: slab-out-of-bounds Read in fbcon_get_font
+To:     Dmitry Vyukov <dvyukov@google.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        kasan-dev <kasan-dev@googlegroups.com>
+Cc:     syzbot <syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com>,
+        Kentaro Takeda <takedakn@nttdata.co.jp>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>, ghalat@redhat.com,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+References: <0000000000002cfc3a0598d42b70@google.com>
+ <CAKMK7uFAfw4M6B8WaHx6FBkYDmUBTQ6t3D8RE5BbMt=_5vyp9A@mail.gmail.com>
+ <CACT4Y+aV9vzJ6gs9r2RAQP+dQ_vkOc5H6hWu-prF1ECruAE_5w@mail.gmail.com>
+From:   Andrey Ryabinin <aryabinin@virtuozzo.com>
+Message-ID: <6632ddb6-37bf-dc42-e355-2443c17e6da0@virtuozzo.com>
+Date:   Wed, 4 Dec 2019 23:49:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-Received: by 2002:a92:5bdd:: with SMTP id c90mr4547173ilg.78.1575477127358;
- Wed, 04 Dec 2019 08:32:07 -0800 (PST)
-Date:   Wed, 04 Dec 2019 08:32:07 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000008731130598e35a2e@google.com>
-Subject: KASAN: slab-out-of-bounds Read in soft_cursor
-From:   syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+In-Reply-To: <CACT4Y+aV9vzJ6gs9r2RAQP+dQ_vkOc5H6hWu-prF1ECruAE_5w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
-
-syzbot found the following crash on:
-
-HEAD commit:    63de3747 Merge tag 'tag-chrome-platform-for-v5.5' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14819aeae00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1d189d07c6717979
-dashboard link: https://syzkaller.appspot.com/bug?extid=16469b5e8e5a72e9131e
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-
-Unfortunately, I don't have any reproducer for this crash yet.
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in memcpy include/linux/string.h:380 [inline]
-BUG: KASAN: slab-out-of-bounds in soft_cursor+0x439/0xa30  
-drivers/video/fbdev/core/softcursor.c:70
-Read of size 9 at addr ffff888094efeaf2 by task syz-executor.2/30416
-
-CPU: 0 PID: 30416 Comm: syz-executor.2 Not tainted 5.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:638
-  check_memory_region_inline mm/kasan/generic.c:185 [inline]
-  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
-  memcpy+0x24/0x50 mm/kasan/common.c:124
-  memcpy include/linux/string.h:380 [inline]
-  soft_cursor+0x439/0xa30 drivers/video/fbdev/core/softcursor.c:70
-  bit_cursor+0x12fc/0x1a60 drivers/video/fbdev/core/bitblit.c:386
-  fbcon_cursor+0x487/0x660 drivers/video/fbdev/core/fbcon.c:1402
-  hide_cursor+0x9d/0x2b0 drivers/tty/vt/vt.c:895
-  redraw_screen+0x60b/0x7d0 drivers/tty/vt/vt.c:988
-  vc_do_resize+0x10c9/0x1460 drivers/tty/vt/vt.c:1284
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x2076/0x26d0 drivers/tty/vt/vt_ioctl.c:887
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a679
-Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f25945c0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a679
-RDX: 00000000200002c0 RSI: 000000000000560a RDI: 0000000000000003
-RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f25945c16d4
-R13: 00000000004c6ce2 R14: 00000000004dd2d0 R15: 00000000ffffffff
-
-Allocated by task 18150:
-  save_stack+0x23/0x90 mm/kasan/common.c:71
-  set_track mm/kasan/common.c:79 [inline]
-  __kasan_kmalloc mm/kasan/common.c:512 [inline]
-  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:485
-  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:526
-  __do_kmalloc mm/slab.c:3656 [inline]
-  __kmalloc+0x163/0x770 mm/slab.c:3665
-  kmalloc include/linux/slab.h:561 [inline]
-  fbcon_set_font+0x32d/0x860 drivers/video/fbdev/core/fbcon.c:2663
-  con_font_set drivers/tty/vt/vt.c:4538 [inline]
-  con_font_op+0xe18/0x1250 drivers/tty/vt/vt.c:4603
-  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-Freed by task 17018:
-  save_stack+0x23/0x90 mm/kasan/common.c:71
-  set_track mm/kasan/common.c:79 [inline]
-  kasan_set_free_info mm/kasan/common.c:334 [inline]
-  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:473
-  kasan_slab_free+0xe/0x10 mm/kasan/common.c:482
-  __cache_free mm/slab.c:3426 [inline]
-  kfree+0x10a/0x2c0 mm/slab.c:3757
-  free_bprm+0x198/0x200 fs/exec.c:1433
-  __do_execve_file.isra.0+0x1abd/0x22b0 fs/exec.c:1831
-  do_execveat_common fs/exec.c:1867 [inline]
-  do_execve fs/exec.c:1884 [inline]
-  __do_sys_execve fs/exec.c:1960 [inline]
-  __se_sys_execve fs/exec.c:1955 [inline]
-  __x64_sys_execve+0x8f/0xc0 fs/exec.c:1955
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-The buggy address belongs to the object at ffff888094efe800
-  which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 242 bytes to the right of
-  512-byte region [ffff888094efe800, ffff888094efea00)
-The buggy address belongs to the page:
-page:ffffea000253bf80 refcount:1 mapcount:0 mapping:ffff8880aa400a80  
-index:0xffff888094efe400
-raw: 00fffe0000000200 ffffea0002634fc8 ffffea000287f088 ffff8880aa400a80
-raw: ffff888094efe400 ffff888094efe000 0000000100000003 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff888094efe980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff888094efea00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> ffff888094efea80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                                              ^
-  ffff888094efeb00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff888094efeb80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
 
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On 12/4/19 9:33 AM, Dmitry Vyukov wrote:
+> On Tue, Dec 3, 2019 at 11:37 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+>>
+>> On Tue, Dec 3, 2019 at 11:25 PM syzbot
+>> <syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com> wrote:
+>>>
+>>> Hello,
+>>>
+>>> syzbot found the following crash on:
+>>>
+>>> HEAD commit:    76bb8b05 Merge tag 'kbuild-v5.5' of git://git.kernel.org/p..
+>>> git tree:       upstream
+>>> console output: https://syzkaller.appspot.com/x/log.txt?x=10bfe282e00000
+>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=dd226651cb0f364b
+>>> dashboard link: https://syzkaller.appspot.com/bug?extid=4455ca3b3291de891abc
+>>> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11181edae00000
+>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=105cbb7ae00000
+>>>
+>>> IMPORTANT: if you fix the bug, please add the following tag to the commit:
+>>> Reported-by: syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com
+>>>
+>>> ==================================================================
+>>> BUG: KASAN: slab-out-of-bounds in memcpy include/linux/string.h:380 [inline]
+>>> BUG: KASAN: slab-out-of-bounds in fbcon_get_font+0x2b2/0x5e0
+>>> drivers/video/fbdev/core/fbcon.c:2465
+>>> Read of size 16 at addr ffff888094b0aa10 by task syz-executor414/9999
+>>
+>> So fbcon allocates some memory, security/tomoyo goes around and frees
+>> it, fbcon goes boom because the memory is gone. I'm kinda leaning
+>> towards "not an fbcon bug". Adding relevant security folks and mailing
+>> lists.
+>>
+>> But from a very quick look in tomoyo it loosk more like "machine on
+>> fire, random corruption all over". No idea what's going on here.
+> 
+> Hi Daniel,
+> 
+> This is an out-of-bounds access, not use-after-free.
+> I don't know why we print the free stack at all (maybe +Andrey knows),
+> but that's what KASAN did from day one. I filed
+> https://bugzilla.kernel.org/show_bug.cgi?id=198425 which I think is a
+> good idea, I will add your confusion as a data point :)
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Because we have that information (free stack) and it usually better to provide
+all the information we have rather than hide it. You never known what information
+might be needed to fix the bug.
+Free memory might be reused and what we report as OOB might be an UAF and free stack
+could be useful in such case.
