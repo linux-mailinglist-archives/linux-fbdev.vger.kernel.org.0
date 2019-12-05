@@ -2,103 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E93A114240
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 15:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BCA111445F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 17:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729637AbfLEOFI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 Dec 2019 09:05:08 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:32915 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729622AbfLEOFI (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 09:05:08 -0500
-Received: by mail-oi1-f195.google.com with SMTP id v140so2848093oie.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 05 Dec 2019 06:05:07 -0800 (PST)
+        id S1729941AbfLEQG0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Dec 2019 11:06:26 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:44370 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726028AbfLEQG0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 11:06:26 -0500
+Received: by mail-pl1-f195.google.com with SMTP id bh2so301090plb.11;
+        Thu, 05 Dec 2019 08:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xeq4HgJBk0tt+S9xudVxwhQMEwHOJwN3jhLi9OPFVKY=;
-        b=b09ztlWc8v0Um4ctng63ZDT0E7P0RKXrvR927jOraXHcGtJp+Uf2CHIS+MDhda51Bh
-         t/U7WR4cLn1riEonp0c2aWFTbS7B4AKZl2EUZHj5NsL5WDWdHrX8BVO6KWzWJvr2InKS
-         NcLiCmBKk1g//LRtR7nDPgmouAT6mLYsA1WLE=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=A6T5rNKNclcrc8zSiYoO2y70nKx7U2mYLpgDu385uMU=;
+        b=EEP91ussc+X9HzK01xBWThOjZtw6K6ZrLXNzwbhx0dgAQ2+XYaUBeVBxWnz48RsOmQ
+         wzF0BcUi17TxzODM5z06N5ysOw8YpjclnJfPSqF1G4L58tbBMLo71c4altUl4MJ9mlR1
+         6n6+6jKu6+dm10mC0loRoI8MTLMUhIt8wQUjfPvna6FxQZdJyVeHO0ppSNLY+Erl/o+k
+         1/R3gfasyxfoUDUOm890FZMyOYUK/rZ5u8gRvpg+IosslbZE7seueHOZVSvoQ8nZ4QXI
+         pRAsRYQQzjY904SOKIjYQnrmj0ZzVe06KeuB45tFS5xZiuH5wBoHnwbFMsB1yvsmZjah
+         PtwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xeq4HgJBk0tt+S9xudVxwhQMEwHOJwN3jhLi9OPFVKY=;
-        b=CEzE562mCzte0525SvrnK6mQrob6ybYaW3Dm16ER/298ry1x+VSF6m/gbfswrmypJp
-         nA1DvFUKXhc/qR2NtAoxzHqIcvbJkC/KuUUmo8QeOm56O78wtAt7DHQ7y63L5SPt57rQ
-         YgQ0wbuQIM3NG72qqOwk1ygJxjzSE3hSXLms++VEnlVTHYxM5IfDg64jGAnP38O6FL0E
-         iL/G7bTY9h3u48bekzUengtQ1sTu1RJGuCiFI5pFw/LK4r1rvHJTObPiVPx00DLmLw/0
-         kYUUB0g9/HjLy5CW5VTfDpgJPzVJOKtMLabdbIVgrjOok94KVyj4crHtYNbNjptZRQX6
-         7tow==
-X-Gm-Message-State: APjAAAWKALBBUh95YLQI5hlOBD25oyvZNsp4w+oxhg74ahfTy4+BTTbv
-        XJlBXuKYIoGAT2D4q0ima2KqPWbLBiUpG3zvLveZdg==
-X-Google-Smtp-Source: APXvYqzl2QkRicAy9CfAYCw7et3Bgx9YggGL0O1f0fzAsagnw/nPzczyEThdywCyJBZDVTdqDQAUNlpNTbUK5vhRF90=
-X-Received: by 2002:aca:b805:: with SMTP id i5mr7462629oif.110.1575554707452;
- Thu, 05 Dec 2019 06:05:07 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=A6T5rNKNclcrc8zSiYoO2y70nKx7U2mYLpgDu385uMU=;
+        b=TbJWJOZSlDWUKoOy535Ohvoj6uAlGgeZfiYZMXOYKIpewCK6lZqUaajPwoKl275leR
+         zzBkaesthFSKOQd7joNcqIlvtxhubofbygoKqS8gjF4yifEzrNxPXXRbvjrfnQvsIlnM
+         w4hXn5McV0vDmhwM+iRODfdbYcNxkZm5x8qZo5OsEX/XuYpfW5H3iS0Dute2KlhNxAc/
+         rs3CRGyqqsQyvL/OhHJ9BPq4r5n+bkvg1MauERTrN0RqgC2YhtGqhwrqhkG5YqycIvL1
+         E7IxoOSeLmNLrBdOaBNZQdmnH24AbV811CdUDOKQkmTu8AAV+DIQNVdVKmQBSKejxPne
+         Z/Ug==
+X-Gm-Message-State: APjAAAWei5Pa1TdMPnkDIkBG/qXP+qdilkL+t2rlvbL2z+8uE3P8rb4l
+        42kV6qPxtUB3114+bQ0Zuuk=
+X-Google-Smtp-Source: APXvYqz1TvZSptnZMQa6vC1oLdSukjuo/E1BH74lUOre/7W/SL+wHr7pmaLET0W6OUGj2U7BLAkn4A==
+X-Received: by 2002:a17:902:8494:: with SMTP id c20mr9822487plo.123.1575561985483;
+        Thu, 05 Dec 2019 08:06:25 -0800 (PST)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id f8sm171321pjg.28.2019.12.05.08.06.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2019 08:06:24 -0800 (PST)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] pxa168fb: fix release function mismatch in probe failure
+Date:   Fri,  6 Dec 2019 00:06:13 +0800
+Message-Id: <20191205160613.32075-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <0000000000006dff110598d25a9b@google.com> <000000000000bcf3bc0598f5090d@google.com>
-In-Reply-To: <000000000000bcf3bc0598f5090d@google.com>
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-Date:   Thu, 5 Dec 2019 15:04:55 +0100
-Message-ID: <CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A=xyuh1HjgvfYy7RCBg@mail.gmail.com>
-Subject: Re: INFO: task hung in fb_open
-To:     syzbot <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com>
-Cc:     Dave Airlie <airlied@linux.ie>,
-        Ayan Kumar Halder <ayan.halder@arm.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Peter Rosin <peda@axentia.se>, Sam Ravnborg <sam@ravnborg.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        "Syrjala, Ville" <ville.syrjala@linux.intel.com>,
-        Chen-Yu Tsai <wens@csie.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Dec 5, 2019 at 2:38 PM syzbot
-<syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com> wrote:
->
-> syzbot has bisected this bug to:
->
-> commit 979c11ef39cee79d6f556091a357890962be2580
-> Author: Ayan Kumar Halder <ayan.halder@arm.com>
-> Date:   Tue Jul 17 17:13:46 2018 +0000
->
->      drm/sun4i: Substitute sun4i_backend_format_is_yuv() with format->is_yuv
+The driver uses kfree() to release the resource allocated by
+framebuffer_alloc(), which does not match.
+Use framebuffer_release() instead to fix it.
 
-Pretty sure your GCD machine is not using the sun4i driver. It's also
-very far away from the code that's blowing up. bisect gone wrong?
--Daniel
+Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ drivers/video/fbdev/pxa168fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15d2f97ee00000
-> start commit:   596cf45c Merge branch 'akpm' (patches from Andrew)
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13d2f97ee00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=7d8ab2e0e09c2a82
-> dashboard link: https://syzkaller.appspot.com/bug?extid=a4ae1442ccc637162dc1
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14273edae00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e7677ae00000
->
-> Reported-by: syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com
-> Fixes: 979c11ef39ce ("drm/sun4i: Substitute sun4i_backend_format_is_yuv()
-> with format->is_yuv")
->
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-
-
+diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+index 1410f476e135..b9435133b6f3 100644
+--- a/drivers/video/fbdev/pxa168fb.c
++++ b/drivers/video/fbdev/pxa168fb.c
+@@ -769,7 +769,7 @@ static int pxa168fb_probe(struct platform_device *pdev)
+ 	dma_free_coherent(fbi->dev, info->fix.smem_len,
+ 			info->screen_base, fbi->fb_start_dma);
+ failed_free_info:
+-	kfree(info);
++	framebuffer_release(info);
+ 
+ 	dev_err(&pdev->dev, "frame buffer device init failed with %d\n", ret);
+ 	return ret;
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
+2.24.0
+
