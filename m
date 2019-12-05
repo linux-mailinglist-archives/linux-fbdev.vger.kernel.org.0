@@ -2,125 +2,178 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6D1B114508
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 17:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA09A11450F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 17:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729022AbfLEQpf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 Dec 2019 11:45:35 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:43591 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726257AbfLEQpe (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 11:45:34 -0500
-Received: by mail-qk1-f194.google.com with SMTP id q28so3857843qkn.10
-        for <linux-fbdev@vger.kernel.org>; Thu, 05 Dec 2019 08:45:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VBet/bIZobzEfIAUk75Ti4RAy8XooAiOYVqu+hnKHI4=;
-        b=A18pMSgTuR1kAVWLezvNQ+EC+Hs0uA80wcQbNijo7N4Ix/7a1tU7cm7N2rQTw4+UIh
-         4iu9LwCetkxoehhPs7t16hTAq9W521UwYRXB7Oghj57ECN6X9Vm4oW/V/63y5P7TFOca
-         cdCKN1/ogTkKEMpDrbuQ1kfOdnt/uuSZ8+H6wxmmDpUO4ZHIpj7/dB3e7eA5Er0Rw9i/
-         Kri3ArIiSLagbh3J+2/x26uyTcnlse9wn8f2gKYoWac2Geb3AZL7OqZQIag7zXzGzLaH
-         jBZY5/CBTf3qF62jLSljdr+O2kMFLf/+AQ4JBm8+zGkBKIQOYwgN538tjP+91dB3/rdY
-         nHBQ==
+        id S1729530AbfLEQqL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Dec 2019 11:46:11 -0500
+Received: from mail-il1-f198.google.com ([209.85.166.198]:47663 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729685AbfLEQqJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 11:46:09 -0500
+Received: by mail-il1-f198.google.com with SMTP id d4so2933864ile.14
+        for <linux-fbdev@vger.kernel.org>; Thu, 05 Dec 2019 08:46:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VBet/bIZobzEfIAUk75Ti4RAy8XooAiOYVqu+hnKHI4=;
-        b=Od7wJmn7a7kADJRvZhaWAxEF/mUpkZLUD8fvrQHFkKURgog9G/bJR5rcH09OKUIBwD
-         ysmm2b8jG0hqEaty+NrV2bgOfg0dtUBxSX86Pdu7CYNY+CihgHK+O6cHFuAq0ucskzgM
-         s77IMJxFiOkPaRZ5hS1gqZd+8g8WT7FM/tSPOBQ4hlrf2ljx/iRNHnDYuoRzKeuWluZU
-         +fY+BV4B1l/etrJ++cC+0CF6SWyEHY7jvEV2/ReSzrILqXMXzVUbQmyOw+mt/l9+GEOF
-         e9u1tMiQ/DSOxqAxky25ZaacGYjBvOEf83e5WjxYAANDKiBDMSLmQd83yuYA3o92pVxf
-         rP4g==
-X-Gm-Message-State: APjAAAWsWr7FM4kGk22VP0annLEhuvTsiIHCYI4pvylE3YnXlV/EHC01
-        wTKAAyRk5J+E08s8HaJI+XiuuH4tDUNJ2XByBIp50Q==
-X-Google-Smtp-Source: APXvYqwerl8XImN73VXaOFe2fMFNwgUDm+1VNfq91ocV1c1p8hyv/IzbQRvKMuNsJzHUygG2fax8WM/w50U/rYGR52g=
-X-Received: by 2002:a37:4782:: with SMTP id u124mr9350911qka.8.1575564333504;
- Thu, 05 Dec 2019 08:45:33 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=6XRIMuzgh02Ovw3rxeyz54ijBjPe2X9NHJTkVKkX31c=;
+        b=tuRkMiIP1FmVnsQmNoPb3RwcRHhhh4BcBRGsE2R7jQE8uZkWl7KUioLX0cEHw1FJQL
+         fDTaPRWWP9Lo2v6AFp6WulqIDfGs/A2wjf5jA6GGmltXOZciWeStDxj0m8SvFRxVlj2P
+         vlm2WLz1iBPp1lwxrYrVbsdshwoy0yLtFAWneu4qrYokNoGt0yM0Cg+xuXVRTQiG1YCn
+         2vj3t4X8WZL5nrM1Uk/J0Jwx1hoHwQ4LDbEYM6j2EzCsL++UALC+6FTAq7G5aetRYdX+
+         QEWVEeQUnNrMurGJUFPiaHo4dtOQ/4TPps/ESvLO/Ekkz+IkO5QWtahyqigtS2GIIJUa
+         mJEQ==
+X-Gm-Message-State: APjAAAUDXDR6lX6zWbq4CA+MsrnDYWXv7QmytOkFhydaaUlVxT92/A5L
+        xAzIBECBV2xtQ8ynivoNa3248xc+iEKPGxyqbNJqPh/N5zG5
+X-Google-Smtp-Source: APXvYqxQVnQDUVP2INDpxyPnyG5PtM7v1M6Mm6zZiDrpKRt8Oj8xWWXGWPnM0NftkIPnk0Nc6bZSd6+4j6uheUrk7UGEGl/O9jKS
 MIME-Version: 1.0
-References: <0000000000006dff110598d25a9b@google.com> <000000000000bcf3bc0598f5090d@google.com>
- <CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A=xyuh1HjgvfYy7RCBg@mail.gmail.com>
-In-Reply-To: <CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A=xyuh1HjgvfYy7RCBg@mail.gmail.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Thu, 5 Dec 2019 17:45:22 +0100
-Message-ID: <CACT4Y+ZjQSvpZAnLkp6w8erqtraZGkXB2O84BFmcRN_Rm6fs3Q@mail.gmail.com>
-Subject: Re: INFO: task hung in fb_open
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     syzbot <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com>,
-        Dave Airlie <airlied@linux.ie>,
-        Ayan Kumar Halder <ayan.halder@arm.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Peter Rosin <peda@axentia.se>, Sam Ravnborg <sam@ravnborg.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        "Syrjala, Ville" <ville.syrjala@linux.intel.com>,
-        Chen-Yu Tsai <wens@csie.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a02:9f09:: with SMTP id z9mr8888680jal.119.1575564368341;
+ Thu, 05 Dec 2019 08:46:08 -0800 (PST)
+Date:   Thu, 05 Dec 2019 08:46:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007f075c0598f7aa38@google.com>
+Subject: KASAN: slab-out-of-bounds Read in bit_putcs
+From:   syzbot <syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Dec 5, 2019 at 3:05 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> On Thu, Dec 5, 2019 at 2:38 PM syzbot
-> <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com> wrote:
-> >
-> > syzbot has bisected this bug to:
-> >
-> > commit 979c11ef39cee79d6f556091a357890962be2580
-> > Author: Ayan Kumar Halder <ayan.halder@arm.com>
-> > Date:   Tue Jul 17 17:13:46 2018 +0000
-> >
-> >      drm/sun4i: Substitute sun4i_backend_format_is_yuv() with format->is_yuv
->
-> Pretty sure your GCD machine is not using the sun4i driver. It's also
-> very far away from the code that's blowing up. bisect gone wrong?
-> -Daniel
+Hello,
 
-Yes, this driver is not even enabled in the config.
-I see 2 issues with kernel in the bisect log:
-1. Unrelated machine hangs get in the way of bisection process (or
-that "no output" another manifestation of this bug?).
-2. Somehow this change to not compiled file changed vmlinux thus
-detection of unrelated changes failed. Non-deterministic kernel builds
-issue is tracked here:
-https://github.com/google/syzkaller/issues/1271#issuecomment-559093018
-but so far I don't have any glues/ideas.
+syzbot found the following crash on:
+
+HEAD commit:    282ffdf3 Add linux-next specific files for 20191205
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=165627f2e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=29372c0243b4b980
+dashboard link: https://syzkaller.appspot.com/bug?extid=998dec6452146bd7a90c
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in __fb_pad_aligned_buffer  
+include/linux/fb.h:655 [inline]
+BUG: KASAN: slab-out-of-bounds in bit_putcs_aligned  
+drivers/video/fbdev/core/bitblit.c:96 [inline]
+BUG: KASAN: slab-out-of-bounds in bit_putcs+0xd5d/0xf10  
+drivers/video/fbdev/core/bitblit.c:185
+Read of size 1 at addr ffff88809f4ed8fe by task syz-executor.1/22264
+
+CPU: 0 PID: 22264 Comm: syz-executor.1 Not tainted  
+5.4.0-next-20191205-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  __asan_report_load1_noabort+0x14/0x20 mm/kasan/generic_report.c:132
+  __fb_pad_aligned_buffer include/linux/fb.h:655 [inline]
+  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
+  bit_putcs+0xd5d/0xf10 drivers/video/fbdev/core/bitblit.c:185
+  fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
+  do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
+  redraw_screen+0x676/0x7d0 drivers/tty/vt/vt.c:1011
+  vc_do_resize+0x10c9/0x1460 drivers/tty/vt/vt.c:1284
+  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
+  vt_ioctl+0x2076/0x26d0 drivers/tty/vt/vt_ioctl.c:887
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x45a679
+Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fce593a0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a679
+RDX: 00000000200002c0 RSI: 000000000000560a RDI: 0000000000000003
+RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fce593a16d4
+R13: 00000000004c6ce2 R14: 00000000004dd2d0 R15: 00000000ffffffff
+
+Allocated by task 18936:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  __kasan_kmalloc mm/kasan/common.c:513 [inline]
+  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
+  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
+  __do_kmalloc mm/slab.c:3656 [inline]
+  __kmalloc+0x163/0x770 mm/slab.c:3665
+  kmalloc include/linux/slab.h:561 [inline]
+  fbcon_set_font+0x32d/0x860 drivers/video/fbdev/core/fbcon.c:2663
+  con_font_set drivers/tty/vt/vt.c:4538 [inline]
+  con_font_op+0xe30/0x1270 drivers/tty/vt/vt.c:4603
+  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Freed by task 18502:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  kasan_set_free_info mm/kasan/common.c:335 [inline]
+  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
+  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
+  __cache_free mm/slab.c:3426 [inline]
+  kfree+0x10a/0x2c0 mm/slab.c:3757
+  free_event_rcu+0x5e/0x70 kernel/events/core.c:4372
+  __rcu_reclaim kernel/rcu/rcu.h:222 [inline]
+  rcu_do_batch kernel/rcu/tree.c:2183 [inline]
+  rcu_core+0x570/0x1540 kernel/rcu/tree.c:2408
+  rcu_core_si+0x9/0x10 kernel/rcu/tree.c:2417
+  __do_softirq+0x262/0x98c kernel/softirq.c:292
+
+The buggy address belongs to the object at ffff88809f4ed000
+  which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 254 bytes to the right of
+  2048-byte region [ffff88809f4ed000, ffff88809f4ed800)
+The buggy address belongs to the page:
+page:ffffea00027d3b40 refcount:1 mapcount:0 mapping:ffff8880aa400e00  
+index:0x0
+raw: 00fffe0000000200 ffffea00029bc9c8 ffffea00024ae408 ffff8880aa400e00
+raw: 0000000000000000 ffff88809f4ed000 0000000100000001 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff88809f4ed780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff88809f4ed800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> ffff88809f4ed880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                                                                 ^
+  ffff88809f4ed900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff88809f4ed980: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
 
 
-> > bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15d2f97ee00000
-> > start commit:   596cf45c Merge branch 'akpm' (patches from Andrew)
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=13d2f97ee00000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=7d8ab2e0e09c2a82
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=a4ae1442ccc637162dc1
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14273edae00000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e7677ae00000
-> >
-> > Reported-by: syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com
-> > Fixes: 979c11ef39ce ("drm/sun4i: Substitute sun4i_backend_format_is_yuv()
-> > with format->is_yuv")
-> >
-> > For information about bisection process see: https://goo.gl/tpsmEJ#bisection
->
->
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A%3Dxyuh1HjgvfYy7RCBg%40mail.gmail.com.
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
