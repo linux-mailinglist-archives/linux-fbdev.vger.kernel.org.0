@@ -2,96 +2,125 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 541DD11446A
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 17:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D1B114508
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 17:45:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730003AbfLEQHV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 Dec 2019 11:07:21 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39173 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726028AbfLEQHV (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 11:07:21 -0500
-Received: by mail-pf1-f196.google.com with SMTP id 2so1820181pfx.6;
-        Thu, 05 Dec 2019 08:07:21 -0800 (PST)
+        id S1729022AbfLEQpf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Dec 2019 11:45:35 -0500
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:43591 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726257AbfLEQpe (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 11:45:34 -0500
+Received: by mail-qk1-f194.google.com with SMTP id q28so3857843qkn.10
+        for <linux-fbdev@vger.kernel.org>; Thu, 05 Dec 2019 08:45:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Nk1cXD8ocqFBtC4Ixaba4spST22wd8UaYJyDzazVJTU=;
-        b=Spso+1VBGEYjX599HKgBZ7LMPvTnErQh8OrWYDokzKb3zBSSaEgZ4u+I7C5EwKrVeR
-         lUG3UW/5r65Fp75N8CBIUjv0os9y+d8jDXNVYICft9E6k/2uxzV9eTJm5v5FvsNpZo9o
-         vf8MzxGjzeWRfcVXaeWb2sQNaDqMSv+/hIJ+IRH3BPxs3B1ykEPlsdshzdpXT6Xuwzcj
-         EgGzERz2cVpnYAaW3kqMFAtCJQswy/cTqOwhu4EHNjgqlzgRKhF2SSB4NFAcFCCyDxfn
-         UbFZIr3T0i9xpQA3xoaqCda2BYeVA5gwQcFMZGSDjcbHaEj8cfWg1pu9yAIv4xdZTwIg
-         k00A==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VBet/bIZobzEfIAUk75Ti4RAy8XooAiOYVqu+hnKHI4=;
+        b=A18pMSgTuR1kAVWLezvNQ+EC+Hs0uA80wcQbNijo7N4Ix/7a1tU7cm7N2rQTw4+UIh
+         4iu9LwCetkxoehhPs7t16hTAq9W521UwYRXB7Oghj57ECN6X9Vm4oW/V/63y5P7TFOca
+         cdCKN1/ogTkKEMpDrbuQ1kfOdnt/uuSZ8+H6wxmmDpUO4ZHIpj7/dB3e7eA5Er0Rw9i/
+         Kri3ArIiSLagbh3J+2/x26uyTcnlse9wn8f2gKYoWac2Geb3AZL7OqZQIag7zXzGzLaH
+         jBZY5/CBTf3qF62jLSljdr+O2kMFLf/+AQ4JBm8+zGkBKIQOYwgN538tjP+91dB3/rdY
+         nHBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Nk1cXD8ocqFBtC4Ixaba4spST22wd8UaYJyDzazVJTU=;
-        b=l8cWx2IplVPxHPDd91ucWHxdeqOTRmdRRmxSgsk64tGXHRy5fDnSXwy1xUFJAmQghB
-         Mmqeh3LBy4yhXpRf9YqKcouhmvvJBTl0UL/sAVWoN3ydXpf3mqKtxP/3NBugfNNCZRus
-         jYykpdUHURazb3bzw/K98qX7iyYF6yuvClvt/P7158WDeqguChvGrZqdHbjlPGArI9Kw
-         UTl236B7QsawiIGg8GFxLdvLnRXR9MQ2GTf9e98ApIusXmlX0mo/BoNDdn5geJa9+tl8
-         BDDYrMYDnXN1V5JtgN7uJUK9ueJYTdxP9kkudCbyQEs8GR8RjRKVWgyhpVbnlmYT0BD5
-         UANg==
-X-Gm-Message-State: APjAAAUukiG4hJqOZiRM05pU+vkQQrYEIA+Z1aNGNekin0GWI/lEFzqW
-        Wk5gafjSRAZRkGfyLziPvIk=
-X-Google-Smtp-Source: APXvYqy9oKB9Ozl8hrB3SUfpSveBM41X9hsvRCH6URNhs4FJAED+cuPGdd9arO5yZ4Zj26NEgNPDFQ==
-X-Received: by 2002:a63:3104:: with SMTP id x4mr9948531pgx.369.1575562040738;
-        Thu, 05 Dec 2019 08:07:20 -0800 (PST)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id m15sm11956980pgi.91.2019.12.05.08.07.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2019 08:07:20 -0800 (PST)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] video: fbdev: vesafb: add missed release_region
-Date:   Fri,  6 Dec 2019 00:07:12 +0800
-Message-Id: <20191205160712.32245-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.24.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VBet/bIZobzEfIAUk75Ti4RAy8XooAiOYVqu+hnKHI4=;
+        b=Od7wJmn7a7kADJRvZhaWAxEF/mUpkZLUD8fvrQHFkKURgog9G/bJR5rcH09OKUIBwD
+         ysmm2b8jG0hqEaty+NrV2bgOfg0dtUBxSX86Pdu7CYNY+CihgHK+O6cHFuAq0ucskzgM
+         s77IMJxFiOkPaRZ5hS1gqZd+8g8WT7FM/tSPOBQ4hlrf2ljx/iRNHnDYuoRzKeuWluZU
+         +fY+BV4B1l/etrJ++cC+0CF6SWyEHY7jvEV2/ReSzrILqXMXzVUbQmyOw+mt/l9+GEOF
+         e9u1tMiQ/DSOxqAxky25ZaacGYjBvOEf83e5WjxYAANDKiBDMSLmQd83yuYA3o92pVxf
+         rP4g==
+X-Gm-Message-State: APjAAAWsWr7FM4kGk22VP0annLEhuvTsiIHCYI4pvylE3YnXlV/EHC01
+        wTKAAyRk5J+E08s8HaJI+XiuuH4tDUNJ2XByBIp50Q==
+X-Google-Smtp-Source: APXvYqwerl8XImN73VXaOFe2fMFNwgUDm+1VNfq91ocV1c1p8hyv/IzbQRvKMuNsJzHUygG2fax8WM/w50U/rYGR52g=
+X-Received: by 2002:a37:4782:: with SMTP id u124mr9350911qka.8.1575564333504;
+ Thu, 05 Dec 2019 08:45:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <0000000000006dff110598d25a9b@google.com> <000000000000bcf3bc0598f5090d@google.com>
+ <CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A=xyuh1HjgvfYy7RCBg@mail.gmail.com>
+In-Reply-To: <CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A=xyuh1HjgvfYy7RCBg@mail.gmail.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Thu, 5 Dec 2019 17:45:22 +0100
+Message-ID: <CACT4Y+ZjQSvpZAnLkp6w8erqtraZGkXB2O84BFmcRN_Rm6fs3Q@mail.gmail.com>
+Subject: Re: INFO: task hung in fb_open
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     syzbot <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com>,
+        Dave Airlie <airlied@linux.ie>,
+        Ayan Kumar Halder <ayan.halder@arm.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Peter Rosin <peda@axentia.se>, Sam Ravnborg <sam@ravnborg.org>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+        "Syrjala, Ville" <ville.syrjala@linux.intel.com>,
+        Chen-Yu Tsai <wens@csie.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver forgets to free the requested irq in remove and probe
-failure.
-Add the missed calls to fix it.
+On Thu, Dec 5, 2019 at 3:05 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+>
+> On Thu, Dec 5, 2019 at 2:38 PM syzbot
+> <syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com> wrote:
+> >
+> > syzbot has bisected this bug to:
+> >
+> > commit 979c11ef39cee79d6f556091a357890962be2580
+> > Author: Ayan Kumar Halder <ayan.halder@arm.com>
+> > Date:   Tue Jul 17 17:13:46 2018 +0000
+> >
+> >      drm/sun4i: Substitute sun4i_backend_format_is_yuv() with format->is_yuv
+>
+> Pretty sure your GCD machine is not using the sun4i driver. It's also
+> very far away from the code that's blowing up. bisect gone wrong?
+> -Daniel
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v2:
-  - Modify commit message.
+Yes, this driver is not even enabled in the config.
+I see 2 issues with kernel in the bisect log:
+1. Unrelated machine hangs get in the way of bisection process (or
+that "no output" another manifestation of this bug?).
+2. Somehow this change to not compiled file changed vmlinux thus
+detection of unrelated changes failed. Non-deterministic kernel builds
+issue is tracked here:
+https://github.com/google/syzkaller/issues/1271#issuecomment-559093018
+but so far I don't have any glues/ideas.
 
- drivers/video/fbdev/vesafb.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-index d9c08f6c2155..fbb196a8bbf6 100644
---- a/drivers/video/fbdev/vesafb.c
-+++ b/drivers/video/fbdev/vesafb.c
-@@ -468,6 +468,7 @@ static int vesafb_probe(struct platform_device *dev)
- 	fb_info(info, "%s frame buffer device\n", info->fix.id);
- 	return 0;
- err:
-+	release_region(0x3c0, 32);
- 	arch_phys_wc_del(par->wc_cookie);
- 	if (info->screen_base)
- 		iounmap(info->screen_base);
-@@ -480,6 +481,7 @@ static int vesafb_remove(struct platform_device *pdev)
- {
- 	struct fb_info *info = platform_get_drvdata(pdev);
- 
-+	release_region(0x3c0, 32);
- 	unregister_framebuffer(info);
- 	framebuffer_release(info);
- 
--- 
-2.24.0
-
+> > bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15d2f97ee00000
+> > start commit:   596cf45c Merge branch 'akpm' (patches from Andrew)
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=13d2f97ee00000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=7d8ab2e0e09c2a82
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=a4ae1442ccc637162dc1
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14273edae00000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15e7677ae00000
+> >
+> > Reported-by: syzbot+a4ae1442ccc637162dc1@syzkaller.appspotmail.com
+> > Fixes: 979c11ef39ce ("drm/sun4i: Substitute sun4i_backend_format_is_yuv()
+> > with format->is_yuv")
+> >
+> > For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+>
+>
+>
+> --
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
+>
+> --
+> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/CAKMK7uF4AR_tRxt5wBKxzz6gTPJmub3A%3Dxyuh1HjgvfYy7RCBg%40mail.gmail.com.
