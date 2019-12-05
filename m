@@ -2,110 +2,129 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7681711397E
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 03:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8E2113BB4
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 07:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728604AbfLECDy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 4 Dec 2019 21:03:54 -0500
-Received: from www262.sakura.ne.jp ([202.181.97.72]:60062 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728121AbfLECDy (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Dec 2019 21:03:54 -0500
-Received: from fsav301.sakura.ne.jp (fsav301.sakura.ne.jp [153.120.85.132])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id xB51xvft020982;
-        Thu, 5 Dec 2019 10:59:57 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav301.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav301.sakura.ne.jp);
- Thu, 05 Dec 2019 10:59:57 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav301.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id xB51xvmN020973;
-        Thu, 5 Dec 2019 10:59:57 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: (from i-love@localhost)
-        by www262.sakura.ne.jp (8.15.2/8.15.2/Submit) id xB51xuco020972;
-        Thu, 5 Dec 2019 10:59:56 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Message-Id: <201912050159.xB51xuco020972@www262.sakura.ne.jp>
-X-Authentication-Warning: www262.sakura.ne.jp: i-love set sender to penguin-kernel@i-love.sakura.ne.jp using -f
-Subject: Re: KASAN: slab-out-of-bounds Read in =?ISO-2022-JP?B?ZmJjb25fZ2V0X2Zv?=
- =?ISO-2022-JP?B?bnQ=?=
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Grzegorz Halat <ghalat@redhat.com>
-Cc:     syzbot <syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com>,
-        aryabinin@virtuozzo.com, daniel.thompson@linaro.org,
-        dri-devel@lists.freedesktop.org, dvyukov@google.com,
-        gleb@kernel.org, gwshan@linux.vnet.ibm.com, hpa@zytor.com,
-        jmorris@namei.org, kasan-dev@googlegroups.com, kvm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, mingo@redhat.com,
-        mpe@ellerman.id.au, pbonzini@redhat.com, ruscur@russell.cc,
-        serge@hallyn.com, stewart@linux.vnet.ibm.com,
-        syzkaller-bugs@googlegroups.com, takedakn@nttdata.co.jp,
-        tglx@linutronix.de, x86@kernel.org
+        id S1726082AbfLEGcJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Dec 2019 01:32:09 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70]:48343 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfLEGcI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 01:32:08 -0500
+Received: by mail-io1-f70.google.com with SMTP id e15so1711200ioh.15
+        for <linux-fbdev@vger.kernel.org>; Wed, 04 Dec 2019 22:32:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=gFm1gwUBe3aCgV86v6LWZ9hjXuYSquYhbKNTONEAZTg=;
+        b=Ur20lBzJiQPi2z1RygkRJGV4175GAhxC6YTGZp9LjCOwoBcezNCBkBMhLuEqRSQoPx
+         zryVdtD7kulrcyuLpy7Xc8IbiTMnAny8kqjjuY02bsannFdw+bUHCipjCZOPhq/kG6Fz
+         OgZB4gC6iczeSSKWkBFjYvdJHrj1jIiLNiyZQNf3s+cd/9rQGgXmlREJEiC8YZqMYm/v
+         VblWwLm0q/3N5V/z01FKkiaEQ3WNX0H8JnlDh4frzGMW/9+8pcDJxmYAI/UI3aDqKCxO
+         Ek0O2Dr4bI7z0QKhIbyq3CGI+O7CbBgvYTnYMpwt3ad9RoPqH9oWZ33qlQ+c57JpNYUs
+         Irzw==
+X-Gm-Message-State: APjAAAUwcdOVMZwEfPRvZEpkc/LhS0mUG3e6tU0OQ8Oe62FCeP278rAD
+        ms2wNwj/rRvhlZg6hUu9AN+CkYjwkkm/lZAPy4gPxH0hcy73
+X-Google-Smtp-Source: APXvYqxQQwL/9K+MlUOghBiyJ/HODZZ+EZ24A0kMBBi2MlWWUzTliZxJ8mnm6quXBgQishvvvlTIOO/1XfndCqccGX1zpuvagG+2
 MIME-Version: 1.0
-Date:   Thu, 05 Dec 2019 10:59:56 +0900
-References: <0000000000002cfc3a0598d42b70@google.com> <0000000000003e640e0598e7abc3@google.com>
-In-Reply-To: <0000000000003e640e0598e7abc3@google.com>
-Content-Type: text/plain; charset="ISO-2022-JP"
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:ca8b:: with SMTP id t11mr7760516ilo.227.1575527528013;
+ Wed, 04 Dec 2019 22:32:08 -0800 (PST)
+Date:   Wed, 04 Dec 2019 22:32:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a4293f0598ef165e@google.com>
+Subject: KASAN: vmalloc-out-of-bounds Write in bitfill_aligned
+From:   syzbot <syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello.
+Hello,
 
-syzbot is reporting that memory allocation size at fbcon_set_font() is too small
-because font's height is rounded up from 10 to 16 after memory allocation.
+syzbot found the following crash on:
 
-----------
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index c9235a2f42f8..68fe66e435d3 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2461,6 +2461,7 @@ static int fbcon_get_font(struct vc_data *vc, struct console_font *font)
- 
- 	if (font->width <= 8) {
- 		j = vc->vc_font.height;
-+		printk("ksize(fontdata)=%lu font->charcount=%d vc->vc_font.height=%d font->width=%u\n", ksize(fontdata), font->charcount, j, font->width);
- 		for (i = 0; i < font->charcount; i++) {
- 			memcpy(data, fontdata, j);
- 			memset(data + j, 0, 32 - j);
-@@ -2661,6 +2662,8 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
- 	size = h * pitch * charcount;
- 
- 	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
-+	if (new_data)
-+		printk("ksize(new_data)=%lu h=%u pitch=%u charcount=%u font->width=%u\n", ksize(new_data), h, pitch, charcount, font->width);
- 
- 	if (!new_data)
- 		return -ENOMEM;
-----------
+HEAD commit:    63de3747 Merge tag 'tag-chrome-platform-for-v5.5' of git:/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1040fc41e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1d189d07c6717979
+dashboard link: https://syzkaller.appspot.com/bug?extid=e5fd3e65515b48c02a30
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
 
-Normal usage:
+Unfortunately, I don't have any reproducer for this crash yet.
 
-[   27.305293] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.328527] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.362551] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.385084] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.387653] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.417562] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.437808] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.440738] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.461157] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.495346] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.607372] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.655674] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.675310] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
-[   27.702193] ksize(new_data)=8192 h=16 pitch=1 charcount=256 font->width=8
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com
 
-syzbot's testcase:
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in bitfill_aligned  
+drivers/video/fbdev/core/sysfillrect.c:54 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in bitfill_aligned+0x356/0x410  
+drivers/video/fbdev/core/sysfillrect.c:25
+Write of size 8 at addr ffffc90008b11000 by task syz-executor.2/9476
 
-[  115.784893] ksize(new_data)=4096 h=10 pitch=1 charcount=256 font->width=8
-[  115.790269] ksize(fontdata)=4096 font->charcount=256 vc->vc_font.height=16 font->width=8
+CPU: 2 PID: 9476 Comm: syz-executor.2 Not tainted 5.4.0-syzkaller #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS  
+rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:638
+  __asan_report_store8_noabort+0x17/0x20 mm/kasan/generic_report.c:140
+  bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:54 [inline]
+  bitfill_aligned+0x356/0x410 drivers/video/fbdev/core/sysfillrect.c:25
+  sys_fillrect+0x421/0x7c0 drivers/video/fbdev/core/sysfillrect.c:291
+  drm_fb_helper_sys_fillrect+0x21/0x190 drivers/gpu/drm/drm_fb_helper.c:736
+  bit_clear_margins+0x30b/0x530 drivers/video/fbdev/core/bitblit.c:232
+  fbcon_clear_margins+0x1e9/0x250 drivers/video/fbdev/core/fbcon.c:1372
+  fbcon_switch+0xd7f/0x17f0 drivers/video/fbdev/core/fbcon.c:2354
+  redraw_screen+0x2b6/0x7d0 drivers/tty/vt/vt.c:997
+  fbcon_modechanged+0x5c3/0x790 drivers/video/fbdev/core/fbcon.c:2991
+  fbcon_update_vcs+0x42/0x50 drivers/video/fbdev/core/fbcon.c:3038
+  fb_set_var+0xb32/0xdd0 drivers/video/fbdev/core/fbmem.c:1051
+  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
+  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x45a759
+Code: bd b1 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 8b b1 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f8280324c88 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 000000000072bf00 RCX: 000000000045a759
+RDX: 0000000020000040 RSI: 0000000000004601 RDI: 0000000000000003
+RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f82803256d4
+R13: 00000000004a9e78 R14: 00000000006ec2d8 R15: 00000000ffffffff
+
+
+Memory state around the buggy address:
+  ffffc90008b10f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ffffc90008b10f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> ffffc90008b11000: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+                    ^
+  ffffc90008b11080: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+  ffffc90008b11100: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
