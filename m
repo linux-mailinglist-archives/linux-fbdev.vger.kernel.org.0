@@ -2,70 +2,125 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 406AA113E56
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 10:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D897A113F24
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 Dec 2019 11:13:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728707AbfLEJk4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 Dec 2019 04:40:56 -0500
-Received: from mga05.intel.com ([192.55.52.43]:42572 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726239AbfLEJk4 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 5 Dec 2019 04:40:56 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Dec 2019 01:40:55 -0800
-X-IronPort-AV: E=Sophos;i="5.69,280,1571727600"; 
-   d="scan'208";a="205715715"
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Dec 2019 01:40:52 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Sakari Ailus <sakari.ailus@iki.fi>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, Hans Verkuil <hverkuil@xs4all.nl>,
-        Andy Walls <awalls@md.metrocast.net>,
-        linux-media@vger.kernel.org, ivtv-devel@ivtvdriver.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: Re: [PATCH v3 10/12] media: constify fb ops across all drivers
-In-Reply-To: <20191204113315.GG5282@valkosipuli.retiisi.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1575390740.git.jani.nikula@intel.com> <71794337f8611271f2c1fdb3882119a58e743a87.1575390741.git.jani.nikula@intel.com> <20191204113315.GG5282@valkosipuli.retiisi.org.uk>
-Date:   Thu, 05 Dec 2019 11:40:49 +0200
-Message-ID: <87wobbglem.fsf@intel.com>
+        id S1729295AbfLEKN0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 Dec 2019 05:13:26 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20687 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729286AbfLEKN0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 Dec 2019 05:13:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575540805;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dLjLck9Pm/snpxos2FeKTPLyXDOV4MbjcH5G/gXnZeo=;
+        b=UrjqAl0FdTx1DR8II4SItSOlGSaV0zYAIeT3P/cdj/b/s/gfViXXoV2xNJ0RLZmdjU6cu/
+        4KkfTSYf+GJf2ciZm6bDahr2A/wf9HqN4Mlt25JTIiiatJD4ES0ba0cBW180jJzJnulzny
+        hZ6p2Oxf2aBUKy28i3TAT+CG9DJG3MI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-25-MX8hf-umNJWNVC0xF1q0qQ-1; Thu, 05 Dec 2019 05:13:24 -0500
+Received: by mail-wr1-f72.google.com with SMTP id t3so1290395wrm.23
+        for <linux-fbdev@vger.kernel.org>; Thu, 05 Dec 2019 02:13:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=K5MgG/FvOKZSKbQY6hPWHA5W+WMbjReooYZ5I81Xsns=;
+        b=Ve9Ao0tBuiFk+z+ESsBKBL7gJJIswUxPV8NfAs6y5BOa2yvU2mNW5lDryw7fHZHs6U
+         9IV0NPj2bFfdzsuV1nMK6jIisOCwy1GQ+pJ6a8gJoFjlbKO2fMB92sdF2fP/0DWRjGHQ
+         4rJ3iBj6NRus1xM9xj1ufdofZ2jpX9DfVCf3qONnCWOJTOmVDT1x48/swYQCPJWWQpHj
+         nzi85ABy6q4eRqYu484gKVag7QaL9MkmEzKBdjAoOOxD99qAHJ/RWga3H7SMEAGJUqzU
+         xHSMfEaaS9dvkq9xPDolvIAmIgi2xojBjxy1n37SIyQOO2/mT8JIfkFRFneOVWM9Sszi
+         eRpA==
+X-Gm-Message-State: APjAAAVh9/cGs3CgWTtcwumYlByQ0ZyWKWyA151MObZwp4x6IBwzgcXY
+        ch2wQIH6cBcLxKE6/XZAjjdtMGf1YTwtTux+fsPX/WU+6vBZnpRqSV+B2DIMFoORD/bisaa1v0J
+        XuzN9hQouy+mExOc3NVkJh7E=
+X-Received: by 2002:adf:ee88:: with SMTP id b8mr9668748wro.249.1575540802662;
+        Thu, 05 Dec 2019 02:13:22 -0800 (PST)
+X-Google-Smtp-Source: APXvYqy1I4G0ttOXF/rUkkrOfkbFkbQZCtitZoVCfOg6HbWgiUhViQ9mKyA8AXZI2yuHHuDJRNzr4g==
+X-Received: by 2002:adf:ee88:: with SMTP id b8mr9668720wro.249.1575540802410;
+        Thu, 05 Dec 2019 02:13:22 -0800 (PST)
+Received: from ?IPv6:2001:b07:6468:f312:541f:a977:4b60:6802? ([2001:b07:6468:f312:541f:a977:4b60:6802])
+        by smtp.gmail.com with ESMTPSA id b10sm11809139wrt.90.2019.12.05.02.13.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2019 02:13:21 -0800 (PST)
+Subject: Re: KASAN: slab-out-of-bounds Read in fbcon_get_font
+To:     syzbot <syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com>,
+        aryabinin@virtuozzo.com, b.zolnierkie@samsung.com,
+        daniel.thompson@linaro.org, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, dvyukov@google.com,
+        ghalat@redhat.com, gleb@kernel.org, gwshan@linux.vnet.ibm.com,
+        hpa@zytor.com, jmorris@namei.org, kasan-dev@googlegroups.com,
+        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        maarten.lankhorst@linux.intel.com, mingo@redhat.com,
+        mpe@ellerman.id.au, penguin-kernel@i-love.sakura.ne.jp,
+        ruscur@russell.cc, sam@ravnborg.org, serge@hallyn.com,
+        stewart@linux.vnet.ibm.com, syzkaller-bugs@googlegroups.com,
+        takedakn@nttdata.co.jp, tglx@linutronix.de, x86@kernel.org
+References: <0000000000003e640e0598e7abc3@google.com>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <41c082f5-5d22-d398-3bdd-3f4bf69d7ea3@redhat.com>
+Date:   Thu, 5 Dec 2019 11:13:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <0000000000003e640e0598e7abc3@google.com>
+Content-Language: en-US
+X-MC-Unique: MX8hf-umNJWNVC0xF1q0qQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 04 Dec 2019, Sakari Ailus <sakari.ailus@iki.fi> wrote:
-> On Tue, Dec 03, 2019 at 06:38:52PM +0200, Jani Nikula wrote:
->> Now that the fbops member of struct fb_info is const, we can start
->> making the ops const as well.
->> 
->> Remove the redundant fbops assignments while at it.
->> 
->> v2:
->> - actually add const in vivid
->> - fix typo (Christophe de Dinechin)
->> 
->> Cc: Hans Verkuil <hverkuil@xs4all.nl>
->> Cc: Andy Walls <awalls@md.metrocast.net>
->> Cc: linux-media@vger.kernel.org
->> Cc: ivtv-devel@ivtvdriver.org
->> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+On 04/12/19 22:41, syzbot wrote:
+> syzbot has bisected this bug to:
+>=20
+> commit 2de50e9674fc4ca3c6174b04477f69eb26b4ee31
+> Author: Russell Currey <ruscur@russell.cc>
+> Date:=C2=A0=C2=A0 Mon Feb 8 04:08:20 2016 +0000
+>=20
+> =C2=A0=C2=A0=C2=A0 powerpc/powernv: Remove support for p5ioc2
+>=20
+> bisection log:=C2=A0 https://syzkaller.appspot.com/x/bisect.txt?x=3D127a0=
+42ae00000
+> start commit:=C2=A0=C2=A0 76bb8b05 Merge tag 'kbuild-v5.5' of
+> git://git.kernel.org/p..
+> git tree:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 upstream
+> final crash:=C2=A0=C2=A0=C2=A0 https://syzkaller.appspot.com/x/report.txt=
+?x=3D117a042ae00000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D167a042ae0000=
+0
+> kernel config:=C2=A0 https://syzkaller.appspot.com/x/.config?x=3Ddd226651=
+cb0f364b
+> dashboard link:
+> https://syzkaller.appspot.com/bug?extid=3D4455ca3b3291de891abc
+> syz repro:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 https://syzkaller.appspot.com/x/=
+repro.syz?x=3D11181edae00000
+> C reproducer:=C2=A0=C2=A0 https://syzkaller.appspot.com/x/repro.c?x=3D105=
+cbb7ae00000
+>=20
+> Reported-by: syzbot+4455ca3b3291de891abc@syzkaller.appspotmail.com
+> Fixes: 2de50e9674fc ("powerpc/powernv: Remove support for p5ioc2")
+>=20
+> For information about bisection process see:
+> https://goo.gl/tpsmEJ#bisection
+>=20
 
-Thanks for the review!
+Why is everybody being CC'd, even if the bug has nothing to do with the
+person's subsystem?
 
-Andy, Hans, may I have your ack to merge this through drm-misc please?
+Thanks,
 
-BR,
-Jani.
+Paolo
 
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
