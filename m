@@ -2,198 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BD811505F
-	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Dec 2019 13:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E5BE11520A
+	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Dec 2019 15:09:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbfLFMZJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Dec 2019 07:25:09 -0500
-Received: from mail-io1-f72.google.com ([209.85.166.72]:32804 "EHLO
-        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726475AbfLFMZI (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Dec 2019 07:25:08 -0500
-Received: by mail-io1-f72.google.com with SMTP id i8so4699980ioi.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 06 Dec 2019 04:25:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=1Iq671YgDjKDD3K/l4MlVvnbM8/18AXfYGtT+naeDN0=;
-        b=YtWswltBmmu66pSPpbbN8ZUkxqkU6Q0hLzFcrgIjyg5WHpCKwR8B3SUif2iJVxCZkd
-         yqCTrWCE1f3jcBaOyElCFQ2zESx44HRZQzXqEaxZ7cy4bPjJ9d4yBszsU7w+31iecv5Q
-         OJs+UwY/1aDp5h4NG5Egou8/YQq4gq9wnR6dCI1G8r2IYR6aKbDRvPbljSfQuwJnDNl7
-         5OkL5YgOjTtw9ZagDn+1hv8D1VhCO4WKcY+df4xBQ45gn+9eMvvlDZAStrjWZ1UCfVvW
-         gxVr5gCczQVDyYBUh0JeVXkCJfb+H65rqn6OCRj1K8lGpA8Oq1wuEZEkQHO70bKfjMnX
-         S8EA==
-X-Gm-Message-State: APjAAAXsdCu5MQbPdrYBCznmtbvkvFY+leBhYc9wLtkOuuBHdz7cp/fp
-        xHNYcY/268dA3x/HPS1pyTCoYKrZ+5T79OkB0U15OuPwCCG4
-X-Google-Smtp-Source: APXvYqzuBIdf/7oxCmAcv3LAKa4fxkNNDcqAxTHjwxqGsraF4G4Rdpxy+ZEkyrR2jeHWs23F1aJ7DWoz9YfsdNB97JAxPx20CvnE
+        id S1726201AbfLFOJl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 6 Dec 2019 09:09:41 -0500
+Received: from uho.ysoft.cz ([81.19.3.130]:33262 "EHLO uho.ysoft.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726195AbfLFOJl (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 6 Dec 2019 09:09:41 -0500
+Received: from [10.1.8.111] (unknown [10.1.8.111])
+        by uho.ysoft.cz (Postfix) with ESMTP id 80E27A4524;
+        Fri,  6 Dec 2019 15:09:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+        s=20160406-ysoft-com; t=1575641379;
+        bh=Gh92ZsBctWlxLoXumd+V8kAW3+jwHvM8/Uy+GKlI2Nc=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=WzVlnee3PNlB6wxgVQBJUEGubBbnjKG+PNlpX+3RBuFQ1eUdDXZifpY/IITLnrQ60
+         +EDogywdoZpBOx9MY6xQ0x3b1dehtFrR8Pgn5VGY6nZxoLlHkCpi9HC/AmjgwlYTJN
+         2RjPWj0qYfO/BY9R2sh0W0aG9PMJtlnAAUn75Bj4=
+Subject: Re: [PATCH] video: ssd1307fb: add the missed regulator_disable
+To:     Chuhong Yuan <hslester96@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20191118114150.25724-1-hslester96@gmail.com>
+From:   =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
+Message-ID: <efd5bc3a-9c3b-2d66-7aa1-c06748294fc3@ysoft.com>
+Date:   Fri, 6 Dec 2019 15:09:39 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-Received: by 2002:a6b:6310:: with SMTP id p16mr9729553iog.5.1575635107564;
- Fri, 06 Dec 2019 04:25:07 -0800 (PST)
-Date:   Fri, 06 Dec 2019 04:25:07 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e1d639059908223b@google.com>
-Subject: KASAN: use-after-free Read in soft_cursor
-From:   syzbot <syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+In-Reply-To: <20191118114150.25724-1-hslester96@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On 18. 11. 19 12:41, Chuhong Yuan wrote:
+> The driver forgets to disable the regulator in remove like what is done
+> in probe failure.
+> Add the missed call to fix it.
+> 
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+>   drivers/video/fbdev/ssd1307fb.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+> index 78ca7ffc40c2..819fbee18dda 100644
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -791,6 +791,8 @@ static int ssd1307fb_remove(struct i2c_client *client)
+>   		pwm_disable(par->pwm);
+>   		pwm_put(par->pwm);
+>   	}
 
-syzbot found the following crash on:
+An empty line missing here?
 
-HEAD commit:    b0d4beaa Merge branch 'next.autofs' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11b97e41e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
-dashboard link: https://syzkaller.appspot.com/bug?extid=cf43fb300aa142fb024b
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1745a90ee00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361042ae00000
+> +	if (par->vbat_reg)
+> +		regulator_disable(par->vbat_reg);
+>   	fb_deferred_io_cleanup(info);
+>   	__free_pages(__va(info->fix.smem_start), get_order(info->fix.smem_len));
+>   	framebuffer_release(info);
+> 
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com
+I have tested this on imx6dl-yapp4-hydra board with SSD1305 and this fixes
+the following problem when unloading the driver:
 
-==================================================================
-BUG: KASAN: use-after-free in memcpy include/linux/string.h:380 [inline]
-BUG: KASAN: use-after-free in soft_cursor+0x439/0xa30  
-drivers/video/fbdev/core/softcursor.c:70
-Read of size 9 at addr ffff8880a1b23851 by task syz-executor549/8989
-
-CPU: 0 PID: 8989 Comm: syz-executor549 Not tainted 5.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:639
-  check_memory_region_inline mm/kasan/generic.c:185 [inline]
-  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
-  memcpy+0x24/0x50 mm/kasan/common.c:125
-  memcpy include/linux/string.h:380 [inline]
-  soft_cursor+0x439/0xa30 drivers/video/fbdev/core/softcursor.c:70
-  bit_cursor+0x12fc/0x1a60 drivers/video/fbdev/core/bitblit.c:386
-  fbcon_cursor+0x487/0x660 drivers/video/fbdev/core/fbcon.c:1402
-  hide_cursor+0x9d/0x2b0 drivers/tty/vt/vt.c:895
-  redraw_screen+0x60b/0x7d0 drivers/tty/vt/vt.c:988
-  vc_do_resize+0x10c9/0x1460 drivers/tty/vt/vt.c:1284
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x2076/0x26d0 drivers/tty/vt/vt_ioctl.c:887
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x440219
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 5b 14 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffe3702aa48 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440219
-RDX: 00000000200002c0 RSI: 000000000000560a RDI: 0000000000000004
-RBP: 00000000006ca018 R08: 0000000000000001 R09: 00000000004002c8
-R10: 0000000000000002 R11: 0000000000000246 R12: 0000000000401b00
-R13: 0000000000401b90 R14: 0000000000000000 R15: 0000000000000000
-
-Allocated by task 8975:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  __kasan_kmalloc mm/kasan/common.c:513 [inline]
-  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
-  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
-  __do_kmalloc mm/slab.c:3656 [inline]
-  __kmalloc+0x163/0x770 mm/slab.c:3665
-  kmalloc include/linux/slab.h:561 [inline]
-  kzalloc include/linux/slab.h:670 [inline]
-  tomoyo_init_log+0x141f/0x2070 security/tomoyo/audit.c:275
-  tomoyo_supervisor+0x33f/0xef0 security/tomoyo/common.c:2095
-  tomoyo_audit_path_log security/tomoyo/file.c:168 [inline]
-  tomoyo_path_permission security/tomoyo/file.c:587 [inline]
-  tomoyo_path_permission+0x263/0x360 security/tomoyo/file.c:573
-  tomoyo_check_open_permission+0x3a6/0x3e0 security/tomoyo/file.c:777
-  tomoyo_file_open security/tomoyo/tomoyo.c:319 [inline]
-  tomoyo_file_open+0xa9/0xd0 security/tomoyo/tomoyo.c:314
-  security_file_open+0x71/0x300 security/security.c:1497
-  do_dentry_open+0x37a/0x1380 fs/open.c:784
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_open fs/open.c:1115 [inline]
-  __se_sys_open fs/open.c:1110 [inline]
-  __x64_sys_open+0x7e/0xc0 fs/open.c:1110
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-Freed by task 8975:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  kasan_set_free_info mm/kasan/common.c:335 [inline]
-  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
-  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
-  __cache_free mm/slab.c:3426 [inline]
-  kfree+0x10a/0x2c0 mm/slab.c:3757
-  tomoyo_supervisor+0x360/0xef0 security/tomoyo/common.c:2147
-  tomoyo_audit_path_log security/tomoyo/file.c:168 [inline]
-  tomoyo_path_permission security/tomoyo/file.c:587 [inline]
-  tomoyo_path_permission+0x263/0x360 security/tomoyo/file.c:573
-  tomoyo_check_open_permission+0x3a6/0x3e0 security/tomoyo/file.c:777
-  tomoyo_file_open security/tomoyo/tomoyo.c:319 [inline]
-  tomoyo_file_open+0xa9/0xd0 security/tomoyo/tomoyo.c:314
-  security_file_open+0x71/0x300 security/security.c:1497
-  do_dentry_open+0x37a/0x1380 fs/open.c:784
-  vfs_open+0xa0/0xd0 fs/open.c:914
-  do_last fs/namei.c:3412 [inline]
-  path_openat+0x10e4/0x4710 fs/namei.c:3529
-  do_filp_open+0x1a1/0x280 fs/namei.c:3559
-  do_sys_open+0x3fe/0x5d0 fs/open.c:1097
-  __do_sys_open fs/open.c:1115 [inline]
-  __se_sys_open fs/open.c:1110 [inline]
-  __x64_sys_open+0x7e/0xc0 fs/open.c:1110
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-The buggy address belongs to the object at ffff8880a1b23800
-  which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 81 bytes inside of
-  512-byte region [ffff8880a1b23800, ffff8880a1b23a00)
-The buggy address belongs to the page:
-page:ffffea000286c8c0 refcount:1 mapcount:0 mapping:ffff8880aa400a80  
-index:0xffff8880a1b23000
-raw: 00fffe0000000200 ffffea00028bd888 ffffea0002a4a388 ffff8880aa400a80
-raw: ffff8880a1b23000 ffff8880a1b23000 0000000100000003 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff8880a1b23700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff8880a1b23780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> ffff8880a1b23800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                                  ^
-  ffff8880a1b23880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-  ffff8880a1b23900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
+root@imx6qdlsabresd:~# rmmod ssd1307fb
+[  191.792674] ------------[ cut here ]------------
+[  191.797453] WARNING: CPU: 0 PID: 858 at /mnt/ssd/users/vokac/development/sources/linux-fslc/drivers/regulator/core.c:2047 _regulator_put.part.6+0x178/0x180
+[  191.811464] Modules linked in: ssd1307fb(-)
+[  191.815688] CPU: 0 PID: 858 Comm: rmmod Not tainted 5.4.0-next-20191128-00005-g121a1da986f1-dirty #14
+[  191.824914] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+[  191.831445] Backtrace:
+[  191.833909] [<8010d878>] (dump_backtrace) from [<8010db8c>] (show_stack+0x20/0x24)
+[  191.841490]  r7:00000009 r6:60060013 r5:00000000 r4:812d96b0
+[  191.847164] [<8010db6c>] (show_stack) from [<80c1fa24>] (dump_stack+0x9c/0xb0)
+[  191.854395] [<80c1f988>] (dump_stack) from [<80126cec>] (__warn+0xec/0x104)
+[  191.861362]  r7:00000009 r6:80ff25c0 r5:00000000 r4:00000000
+[  191.867029] [<80126c00>] (__warn) from [<80126dbc>] (warn_slowpath_fmt+0xb8/0xc0)
+[  191.874519]  r9:00000009 r8:805a2e00 r7:000007ff r6:80ff25c0 r5:00000000 r4:81206788
+[  191.882274] [<80126d08>] (warn_slowpath_fmt) from [<805a2e00>] (_regulator_put.part.6+0x178/0x180)
+[  191.891239]  r9:ed261200 r8:ed261b00 r7:ed3d9e64 r6:ec413020 r5:81206788 r4:ecaaa400
+[  191.898991] [<805a2c88>] (_regulator_put.part.6) from [<805a2e40>] (regulator_put+0x38/0x48)
+[  191.907435]  r9:ed261200 r8:ed261b00 r7:ed3d9e64 r6:ec413020 r5:81206788 r4:ecaaa400
+[  191.915190] [<805a2e08>] (regulator_put) from [<805a9540>] (devm_regulator_release+0x1c/0x20)
+[  191.923716]  r5:81206788 r4:00000003
+[  191.927303] [<805a9524>] (devm_regulator_release) from [<8065b848>] (release_nodes+0x1c8/0x208)
+[  191.936007] [<8065b680>] (release_nodes) from [<8065b9e0>] (devres_release_all+0x40/0x60)
+[  191.944191]  r10:00000081 r9:ed3d8000 r8:80101204 r7:00000081 r6:7f00307c r5:ec412c80
+[  191.952023]  r4:ec413020
+[  191.954568] [<8065b9a0>] (devres_release_all) from [<80657244>] (device_release_driver_internal+0x108/0x1b0)
+[  191.964397]  r5:ec412c80 r4:ec413020
+[  191.967981] [<8065713c>] (device_release_driver_internal) from [<80657398>] (driver_detach+0x64/0xb0)
+[  191.977205]  r7:00000081 r6:00cfdebc r5:7f00307c r4:ec413020
+[  191.982872] [<80657334>] (driver_detach) from [<80655ce4>] (bus_remove_driver+0x5c/0xb0)
+[  191.990965]  r5:7f003140 r4:7f00307c
+[  191.994549] [<80655c88>] (bus_remove_driver) from [<80657d88>] (driver_unregister+0x38/0x5c)
+[  192.002989]  r5:7f003140 r4:7f00307c
+[  192.006579] [<80657d50>] (driver_unregister) from [<8078290c>] (i2c_del_driver+0x2c/0x30)
+[  192.014759]  r5:7f003140 r4:7f003060
+[  192.018356] [<807828e0>] (i2c_del_driver) from [<7f001754>] (ssd1307fb_driver_exit+0x14/0x8c0 [ssd1307fb])
+[  192.028013]  r5:7f003140 r4:81206788
+[  192.031604] [<7f001740>] (ssd1307fb_driver_exit [ssd1307fb]) from [<801c36b8>] (sys_delete_module+0x138/0x208)
+[  192.041615] [<801c3580>] (sys_delete_module) from [<80101000>] (ret_fast_syscall+0x0/0x54)
+[  192.049882] Exception stack(0xed3d9fa8 to 0xed3d9ff0)
+[  192.054941] 9fa0:                   00000002 7eb4ac28 00cfdebc 00000800 00000064 00000000
+[  192.063125] 9fc0: 00000002 7eb4ac28 00000000 00000081 7eb4af0e 00cfde80 7eb4ae0c 00000001
+[  192.071306] 9fe0: 76f0ec61 7eb4abe4 0001b403 76f0ec68
+[  192.076363]  r6:00000000 r5:7eb4ac28 r4:00000002
+[  192.081033] ---[ end trace af216f02771e12a7 ]---
 
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+With this patch the problem disappears. Thanks.
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+Tested-by: Michal Vokáč <michal.vokac@ysoft.com>
