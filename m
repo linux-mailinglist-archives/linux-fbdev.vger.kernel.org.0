@@ -2,123 +2,102 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4AD811557E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Dec 2019 17:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 927B2115B80
+	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Dec 2019 08:23:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726366AbfLFQeK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Dec 2019 11:34:10 -0500
-Received: from mail-il1-f199.google.com ([209.85.166.199]:53705 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726261AbfLFQeK (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Dec 2019 11:34:10 -0500
-Received: by mail-il1-f199.google.com with SMTP id d3so5631621ilg.20
-        for <linux-fbdev@vger.kernel.org>; Fri, 06 Dec 2019 08:34:10 -0800 (PST)
+        id S1726196AbfLGHXI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 7 Dec 2019 02:23:08 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:42815 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725935AbfLGHXH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Dec 2019 02:23:07 -0500
+Received: by mail-qt1-f196.google.com with SMTP id j5so9606145qtq.9
+        for <linux-fbdev@vger.kernel.org>; Fri, 06 Dec 2019 23:23:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WKRU5pSG2PRY1i50C6ckRyYjlPu0mkUgyvtTtKKNwF4=;
+        b=TSgkeFFjw9IXx/DReyCPlEeIMmu0k9IyhNUDT03zvwWvvnOt4VzeW6knY8j/T4K5zc
+         JMzRL2mIa03FbkvOn3Wq+DnFMm1HZiqVi23oZL63A1ZKFBqOZ942cxk6h3ZDSTnP+6mb
+         tJx2BEfefiTerW4vzKLvOLGzyU6N27A0nDi0mFMcMM5BJwmnGDf7DdbI1yg1NozpJxft
+         Ven48GSQ08+cKs07SJsnB7OVl7W6S0QJhBBgsgZKtiqKZfNnd6W9v0Rf/3Y9s/dEDHRC
+         khXrqNPdvJnIgOAV8r8/cTFE+mCQ/KGb4nkhTKqU3htoekizxTxrYC5GouMtlWrdWiPg
+         5YrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=rqCputwRcsxKt2PlVXuw5MtF3XLiOp9UpYUuXc2aLgA=;
-        b=tw+VxV16Nzx2k9m6nJaVOEVzLff68XYg3QDy+/ESUrTgzwd6VuKyqGzI4mf2moNrho
-         +1CTHLFYlr9pOdutQ1cohlAda7QiXZl5v7VfN2RguK8m/kQUCAoRuk/IwaLwZmvK55Yv
-         I8kGaMYcipl/YPiJnuOq+m4wpHqW9tnrBmDloLXw5z3bizh9/gjNVrO/wKe5XD9pDDlz
-         bvGLmm+g96rvFBjz4PzUgvo+HRzsakZP7BslmhDuEbZloq4e9hkyUFy/YKArc5EVi7DI
-         yhdHj9PXmigYJPMqDPIJ9h8CsKNF+ZbxqK7smKgVW39vh3x7fzgB8XT3m7uZp8rhAsku
-         /UEg==
-X-Gm-Message-State: APjAAAWgmmhCX77TjYnKTVwz4gh7q6O/BfZK0hl9Ugv3D6aJoi8pXwci
-        xkE+XJhtXakOQ3B7TD92RCkwTPyXX2IoRaJ6r5P4/jcXW1SR
-X-Google-Smtp-Source: APXvYqyByNLCVhQAXljCtTGdKG18t+bHUjiYlyEo7ulRihXdvs7rvToSmnxN1Bisrh0fnPxXMOEIw2rvuFKa3NROGJCVAOQ5gtng
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WKRU5pSG2PRY1i50C6ckRyYjlPu0mkUgyvtTtKKNwF4=;
+        b=osI1WZmo7/i8QQQajT5oyYF7xebtHOVQKIBILW3W/MfDZGkVRBEBvDkhVqPO+4pF/b
+         1YPZMyLfAwQBpIxHA1/tb0Pnu5oUSP/a3yUmI2EciYwd/Xrhk7zf7nKuh/giUE2FAAMi
+         hnN9UF187vN/QffHAtO/3Az8sfIl0iwd9hs2qW7cCm5vWwsOM+bBm91fL8ni2wEkyp9g
+         Pd8ngIP8MNopjj9tRUT3g8Iyucdcsa+kuFccIm8vzsufCsVLgqG5nvVHtMjY7YyDFgdU
+         r7hTr7bEIwAoQyX96IyRz7c2BwOchPcCFb+fRZZYULEQnk0IysnejnMUwzBniSYt8ERj
+         kkYg==
+X-Gm-Message-State: APjAAAXRft3G20effzP/S7qpMUK6rD6j/66FpCVsVhvFya2kwvAntbzW
+        4hXJkO06cKCb/QnZ7Cg23WyrihnA1o2W9XSP3EmwRQ==
+X-Google-Smtp-Source: APXvYqzADYcdsyMtAGfTGhS9VBKWgLIVQ8HeiaaMSQTOXcfnjmm1OYt8/HHEC3dw5lwpNOgSzkdKcfJ7rQeL88sn7Ro=
+X-Received: by 2002:ac8:3905:: with SMTP id s5mr16470924qtb.158.1575703386571;
+ Fri, 06 Dec 2019 23:23:06 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:187:: with SMTP id m7mr11405177ioo.16.1575650049916;
- Fri, 06 Dec 2019 08:34:09 -0800 (PST)
-Date:   Fri, 06 Dec 2019 08:34:09 -0800
-In-Reply-To: <0000000000007b17010598f7aa1f@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000008409aa05990b9d8a@google.com>
-Subject: Re: KASAN: global-out-of-bounds Read in bit_putcs
-From:   syzbot <syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+References: <000000000000e1d639059908223b@google.com> <000000000000fdd04105990b9c93@google.com>
+In-Reply-To: <000000000000fdd04105990b9c93@google.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Sat, 7 Dec 2019 08:22:55 +0100
+Message-ID: <CACT4Y+ahbULUDLhmNxqEffU1BbAiMuZ7Da6DurdX4XwUftROmg@mail.gmail.com>
+Subject: Re: KASAN: use-after-free Read in soft_cursor
+To:     syzbot <syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        coreteam@netfilter.org, David Miller <davem@davemloft.net>,
+        DRI <dri-devel@lists.freedesktop.org>, gwshan@linux.vnet.ibm.com,
+        Patrick McHardy <kaber@trash.net>,
+        Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        netdev <netdev@vger.kernel.org>,
+        NetFilter <netfilter-devel@vger.kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Russell Currey <ruscur@russell.cc>, stewart@linux.vnet.ibm.com,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
+On Fri, Dec 6, 2019 at 5:34 PM syzbot
+<syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com> wrote:
+>
+> syzbot has bisected this bug to:
+>
+> commit 2de50e9674fc4ca3c6174b04477f69eb26b4ee31
+> Author: Russell Currey <ruscur@russell.cc>
+> Date:   Mon Feb 8 04:08:20 2016 +0000
+>
+>      powerpc/powernv: Remove support for p5ioc2
 
-HEAD commit:    b0d4beaa Merge branch 'next.autofs' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1015a90ee00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
-dashboard link: https://syzkaller.appspot.com/bug?extid=38a3699c7eaf165b97a6
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1795d941e00000
+Another weird one, I must be missing something obvious about how git
+bisect works... I keep adding these to:
+https://github.com/google/syzkaller/issues/1527
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer  
-include/linux/fb.h:655 [inline]
-BUG: KASAN: global-out-of-bounds in bit_putcs_aligned  
-drivers/video/fbdev/core/bitblit.c:96 [inline]
-BUG: KASAN: global-out-of-bounds in bit_putcs+0xd5d/0xf10  
-drivers/video/fbdev/core/bitblit.c:185
-Read of size 1 at addr ffffffff88726a41 by task syz-executor.5/9415
-
-CPU: 1 PID: 9415 Comm: syz-executor.5 Not tainted 5.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:639
-  __asan_report_load1_noabort+0x14/0x20 mm/kasan/generic_report.c:132
-  __fb_pad_aligned_buffer include/linux/fb.h:655 [inline]
-  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
-  bit_putcs+0xd5d/0xf10 drivers/video/fbdev/core/bitblit.c:185
-  fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
-  do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
-  redraw_screen+0x676/0x7d0 drivers/tty/vt/vt.c:1011
-  fbcon_do_set_font+0x829/0x960 drivers/video/fbdev/core/fbcon.c:2605
-  fbcon_copy_font+0x12c/0x190 drivers/video/fbdev/core/fbcon.c:2620
-  con_font_copy drivers/tty/vt/vt.c:4594 [inline]
-  con_font_op+0x6b2/0x1270 drivers/tty/vt/vt.c:4609
-  vt_ioctl+0x181a/0x26d0 drivers/tty/vt/vt_ioctl.c:965
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a679
-Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f5b74dffc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a679
-RDX: 0000000020000000 RSI: 0000000000004b72 RDI: 0000000000000005
-RBP: 000000000075bfc8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f5b74e006d4
-R13: 00000000004c37ab R14: 00000000004d8c38 R15: 00000000ffffffff
-
-The buggy address belongs to the variable:
-  oid_index+0xb01/0xb80
-
-Memory state around the buggy address:
-  ffffffff88726900: 00 00 02 fa fa fa fa fa 00 00 00 05 fa fa fa fa
-  ffffffff88726980: 00 00 00 fa fa fa fa fa 00 00 00 00 00 01 fa fa
-> ffffffff88726a00: fa fa fa fa 00 00 00 00 01 fa fa fa fa fa fa fa
-                                            ^
-  ffffffff88726a80: 00 00 00 00 fa fa fa fa 00 03 fa fa fa fa fa fa
-  ffffffff88726b00: 04 fa fa fa fa fa fa fa 00 00 01 fa fa fa fa fa
-==================================================================
-
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1512d1bce00000
+> start commit:   b0d4beaa Merge branch 'next.autofs' of git://git.kernel.or..
+> git tree:       upstream
+> final crash:    https://syzkaller.appspot.com/x/report.txt?x=1712d1bce00000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1312d1bce00000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=cf43fb300aa142fb024b
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1745a90ee00000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361042ae00000
+>
+> Reported-by: syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com
+> Fixes: 2de50e9674fc ("powerpc/powernv: Remove support for p5ioc2")
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+>
+> --
+> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/000000000000fdd04105990b9c93%40google.com.
