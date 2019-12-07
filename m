@@ -2,102 +2,175 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 927B2115B80
-	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Dec 2019 08:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFE0115BC7
+	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Dec 2019 11:05:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726196AbfLGHXI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 7 Dec 2019 02:23:08 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:42815 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725935AbfLGHXH (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Dec 2019 02:23:07 -0500
-Received: by mail-qt1-f196.google.com with SMTP id j5so9606145qtq.9
-        for <linux-fbdev@vger.kernel.org>; Fri, 06 Dec 2019 23:23:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WKRU5pSG2PRY1i50C6ckRyYjlPu0mkUgyvtTtKKNwF4=;
-        b=TSgkeFFjw9IXx/DReyCPlEeIMmu0k9IyhNUDT03zvwWvvnOt4VzeW6knY8j/T4K5zc
-         JMzRL2mIa03FbkvOn3Wq+DnFMm1HZiqVi23oZL63A1ZKFBqOZ942cxk6h3ZDSTnP+6mb
-         tJx2BEfefiTerW4vzKLvOLGzyU6N27A0nDi0mFMcMM5BJwmnGDf7DdbI1yg1NozpJxft
-         Ven48GSQ08+cKs07SJsnB7OVl7W6S0QJhBBgsgZKtiqKZfNnd6W9v0Rf/3Y9s/dEDHRC
-         khXrqNPdvJnIgOAV8r8/cTFE+mCQ/KGb4nkhTKqU3htoekizxTxrYC5GouMtlWrdWiPg
-         5YrA==
+        id S1726185AbfLGKFK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 7 Dec 2019 05:05:10 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:38308 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726025AbfLGKFJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Dec 2019 05:05:09 -0500
+Received: by mail-io1-f72.google.com with SMTP id f1so2516615ioo.5
+        for <linux-fbdev@vger.kernel.org>; Sat, 07 Dec 2019 02:05:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WKRU5pSG2PRY1i50C6ckRyYjlPu0mkUgyvtTtKKNwF4=;
-        b=osI1WZmo7/i8QQQajT5oyYF7xebtHOVQKIBILW3W/MfDZGkVRBEBvDkhVqPO+4pF/b
-         1YPZMyLfAwQBpIxHA1/tb0Pnu5oUSP/a3yUmI2EciYwd/Xrhk7zf7nKuh/giUE2FAAMi
-         hnN9UF187vN/QffHAtO/3Az8sfIl0iwd9hs2qW7cCm5vWwsOM+bBm91fL8ni2wEkyp9g
-         Pd8ngIP8MNopjj9tRUT3g8Iyucdcsa+kuFccIm8vzsufCsVLgqG5nvVHtMjY7YyDFgdU
-         r7hTr7bEIwAoQyX96IyRz7c2BwOchPcCFb+fRZZYULEQnk0IysnejnMUwzBniSYt8ERj
-         kkYg==
-X-Gm-Message-State: APjAAAXRft3G20effzP/S7qpMUK6rD6j/66FpCVsVhvFya2kwvAntbzW
-        4hXJkO06cKCb/QnZ7Cg23WyrihnA1o2W9XSP3EmwRQ==
-X-Google-Smtp-Source: APXvYqzADYcdsyMtAGfTGhS9VBKWgLIVQ8HeiaaMSQTOXcfnjmm1OYt8/HHEC3dw5lwpNOgSzkdKcfJ7rQeL88sn7Ro=
-X-Received: by 2002:ac8:3905:: with SMTP id s5mr16470924qtb.158.1575703386571;
- Fri, 06 Dec 2019 23:23:06 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=JpYQV+AWM+mnMWgwQ0nH4DdPd34Sic4MN/MkWFQj1ok=;
+        b=lisNUhVK1YpzrnHqyhrdik1XN7eShrHfM2IQ+RjAZ2ejW8yLHCHDmrJ5v/YoCZW+GJ
+         VvJMUX3L5I8jF3Op1VC2GqMwZbq1YKULsGQ/skjSPsJudscJJe+JBuwp+k6jcDmSS5/N
+         WiAwIYO5loQ3m6DCW5nzWo3P0YW5wURoxjS+40a6id0hqzdzR8O4pf0QJPE0jWKeRhLZ
+         TC89pMsYYdCPxI709RX0P4D1CdWrynR9YuFLP9Jr5eF8Ai6m8KoeO74mlYv49mFbT8Jn
+         50DNWfvDFSfAwknNmHHs5y0nzCeoERzq30UUXV82EWmXnhJBBVsbmtHlyXSau6eyEiW9
+         ZzUQ==
+X-Gm-Message-State: APjAAAXY1Gh00oJmUiQ8vR0jC0jWOpv0m7Z1nmpN5BENcOgVgq4sqvR7
+        9NE4bKafJ9edq/qA4CzjbLfmrMAvPpZTrQIdrajLkgtKkw8M
+X-Google-Smtp-Source: APXvYqzeipCOGfynVdwRuYHS6CTvxr6M3Ja8bZMTy9Vq6/49j8ukhkZLP3HZ6Ggn5Cp+1VYLq4VkY96VIrax3nB3P+iXJjEPkjMx
 MIME-Version: 1.0
-References: <000000000000e1d639059908223b@google.com> <000000000000fdd04105990b9c93@google.com>
-In-Reply-To: <000000000000fdd04105990b9c93@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Sat, 7 Dec 2019 08:22:55 +0100
-Message-ID: <CACT4Y+ahbULUDLhmNxqEffU1BbAiMuZ7Da6DurdX4XwUftROmg@mail.gmail.com>
-Subject: Re: KASAN: use-after-free Read in soft_cursor
-To:     syzbot <syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        coreteam@netfilter.org, David Miller <davem@davemloft.net>,
-        DRI <dri-devel@lists.freedesktop.org>, gwshan@linux.vnet.ibm.com,
-        Patrick McHardy <kaber@trash.net>,
-        Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        netdev <netdev@vger.kernel.org>,
-        NetFilter <netfilter-devel@vger.kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Russell Currey <ruscur@russell.cc>, stewart@linux.vnet.ibm.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Received: by 2002:a5d:8cda:: with SMTP id k26mr14417470iot.26.1575713108600;
+ Sat, 07 Dec 2019 02:05:08 -0800 (PST)
+Date:   Sat, 07 Dec 2019 02:05:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001b2f4605991a4cc0@google.com>
+Subject: KASAN: use-after-free Read in fb_mode_is_equal
+From:   syzbot <syzbot+f11cda116c57db68c227@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mojha@codeaurora.org,
+        shile.zhang@linux.alibaba.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Dec 6, 2019 at 5:34 PM syzbot
-<syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com> wrote:
->
-> syzbot has bisected this bug to:
->
-> commit 2de50e9674fc4ca3c6174b04477f69eb26b4ee31
-> Author: Russell Currey <ruscur@russell.cc>
-> Date:   Mon Feb 8 04:08:20 2016 +0000
->
->      powerpc/powernv: Remove support for p5ioc2
+Hello,
 
-Another weird one, I must be missing something obvious about how git
-bisect works... I keep adding these to:
-https://github.com/google/syzkaller/issues/1527
+syzbot found the following crash on:
 
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1512d1bce00000
-> start commit:   b0d4beaa Merge branch 'next.autofs' of git://git.kernel.or..
-> git tree:       upstream
-> final crash:    https://syzkaller.appspot.com/x/report.txt?x=1712d1bce00000
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1312d1bce00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
-> dashboard link: https://syzkaller.appspot.com/bug?extid=cf43fb300aa142fb024b
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1745a90ee00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361042ae00000
->
-> Reported-by: syzbot+cf43fb300aa142fb024b@syzkaller.appspotmail.com
-> Fixes: 2de50e9674fc ("powerpc/powernv: Remove support for p5ioc2")
->
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/000000000000fdd04105990b9c93%40google.com.
+HEAD commit:    7ada90eb Merge tag 'drm-next-2019-12-06' of git://anongit...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=16997c82e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
+dashboard link: https://syzkaller.appspot.com/bug?extid=f11cda116c57db68c227
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+f11cda116c57db68c227@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: use-after-free in fb_mode_is_equal+0x297/0x300  
+drivers/video/fbdev/core/modedb.c:924
+Read of size 4 at addr ffff8880992d5d9c by task syz-executor.0/32283
+
+CPU: 0 PID: 32283 Comm: syz-executor.0 Not tainted 5.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  __asan_report_load4_noabort+0x14/0x20 mm/kasan/generic_report.c:134
+  fb_mode_is_equal+0x297/0x300 drivers/video/fbdev/core/modedb.c:924
+  fbcon_mode_deleted+0x12c/0x190 drivers/video/fbdev/core/fbcon.c:3060
+  fb_set_var+0xab9/0xdd0 drivers/video/fbdev/core/fbmem.c:971
+  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
+  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x45a6f9
+Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f7aefd54c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a6f9
+RDX: 0000000020000000 RSI: 0000000000004601 RDI: 0000000000000003
+RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f7aefd556d4
+R13: 00000000004c2ef7 R14: 00000000004d8138 R15: 00000000ffffffff
+
+Allocated by task 9205:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  __kasan_kmalloc mm/kasan/common.c:513 [inline]
+  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
+  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
+  kmem_cache_alloc_trace+0x158/0x790 mm/slab.c:3551
+  kmalloc include/linux/slab.h:556 [inline]
+  fb_add_videomode drivers/video/fbdev/core/modedb.c:1073 [inline]
+  fb_add_videomode+0x2fb/0x610 drivers/video/fbdev/core/modedb.c:1057
+  fb_set_var+0x5ef/0xdd0 drivers/video/fbdev/core/fbmem.c:1041
+  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
+  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Freed by task 32276:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  kasan_set_free_info mm/kasan/common.c:335 [inline]
+  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
+  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
+  __cache_free mm/slab.c:3426 [inline]
+  kfree+0x10a/0x2c0 mm/slab.c:3757
+  fb_delete_videomode+0x3fa/0x540 drivers/video/fbdev/core/modedb.c:1104
+  fb_set_var+0xac8/0xdd0 drivers/video/fbdev/core/fbmem.c:974
+  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
+  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+The buggy address belongs to the object at ffff8880992d5d80
+  which belongs to the cache kmalloc-96 of size 96
+The buggy address is located 28 bytes inside of
+  96-byte region [ffff8880992d5d80, ffff8880992d5de0)
+The buggy address belongs to the page:
+page:ffffea000264b540 refcount:1 mapcount:0 mapping:ffff8880aa400540  
+index:0x0
+raw: 00fffe0000000200 ffffea00025470c8 ffffea0002992508 ffff8880aa400540
+raw: 0000000000000000 ffff8880992d5000 0000000100000020 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff8880992d5c80: 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc
+  ffff8880992d5d00: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+> ffff8880992d5d80: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+                             ^
+  ffff8880992d5e00: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+  ffff8880992d5e80: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
