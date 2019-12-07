@@ -2,120 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53173115E07
-	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Dec 2019 19:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 982AB115EDC
+	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Dec 2019 22:58:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726637AbfLGSpc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 7 Dec 2019 13:45:32 -0500
-Received: from mail-eopbgr770119.outbound.protection.outlook.com ([40.107.77.119]:2153
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726455AbfLGSpc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 7 Dec 2019 13:45:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BkbKAV9nE88sjDPOpf7fiL16/OWV6aona4mUIW33yJdQGjF/uMfg8NTLU+sGhntncK9gvDlJW4Z1vv401jcTGxRY8BbpjJbLRwtTHmd5a7BPehSYrZ0kcjsnSnhTXqR31BVGFuf0MsnWbXWOORUhN0sooFnwS4kZbkiw8nSnfILldiUbRzDHYrPlsNL/DL5IORtv+m8GW/FOyYPGTndVH+O6DhBAvtapK+qKf7EJwuICPC1xJEdbq0ccvom5/qkfKDz6V56ftZP19Bl2gHGE1jBAG1rsSdlsrN5LxvNE/gbzbtcpq6pfNnS1Oo2hevArN7wudb+6RsySoqTpg5MCIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=543H2LkNliSsJFfScz4bw5i6VEXYTiYQIcRJThnxA4A=;
- b=BHI9a401lpwV4oSB65y4gY0AtwypcqEBvMP73rHXB0xhUwReK42w9KxriYf7OF0pULtHrcJ7/f8RsPSV0tzv2rVWt3myV6v9jix/BmYrSLGW5vumbrbriCwNt1bA3rBYV9W8u1N6wehL4BxuNW8ZUfNMCuMfZE03NovOZ04D3Fh/b1KFhUyN8h7ZrPvIHY6UQI48cHcmR4lV3eiSPFUHso853tgusC8j2OV1+Vv6G/TOcz+0ZAj51vGYNpJuypyp9n8FXCce49ARNwMug6r1L8ODVrG0hsjtCT218Rbs/XCaR3gGWEuD9yn00Cf00a4d4HP7Rbi9ca/6coW3jookWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=543H2LkNliSsJFfScz4bw5i6VEXYTiYQIcRJThnxA4A=;
- b=QOeQdcoabhlDRIWsf9cECZKZsCPzlBhC6OYmWgb2ri6Y5/JPHjqcTkwqBrEfx309JZSvWGncEOmMpRnz0GpBEV7lbvOCCmRX7MB6Y6ZfQjDaBJvTqvFiNaSEgPPZUpKSSAM1MmQhhaQsUwm/gA24EZIacs/YstXGsaDTt0rLaL8=
-Received: from CY4PR21MB0629.namprd21.prod.outlook.com (10.175.115.19) by
- CY4PR21MB0741.namprd21.prod.outlook.com (10.173.189.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2538.3; Sat, 7 Dec 2019 18:45:30 +0000
-Received: from CY4PR21MB0629.namprd21.prod.outlook.com
- ([fe80::ed94:4b6d:5371:285c]) by CY4PR21MB0629.namprd21.prod.outlook.com
- ([fe80::ed94:4b6d:5371:285c%4]) with mapi id 15.20.2516.003; Sat, 7 Dec 2019
- 18:45:29 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     Colin King <colin.king@canonical.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
-Thread-Topic: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
-Thread-Index: AQHVmxDKZML+qQStOkW0VXMY7bFvUqevJqBw
-Date:   Sat, 7 Dec 2019 18:45:29 +0000
-Message-ID: <CY4PR21MB0629CD9D4B8FFAD1AE685C10D75E0@CY4PR21MB0629.namprd21.prod.outlook.com>
-References: <20191114172720.322023-1-colin.king@canonical.com>
-In-Reply-To: <20191114172720.322023-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-12-07T18:45:27.9353183Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=00eb9548-a232-4731-99e6-d5da4ac9b67f;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=mikelley@microsoft.com; 
-x-originating-ip: [24.22.167.197]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 8c804d41-0b5d-4bee-a9a2-08d77b45a21a
-x-ms-traffictypediagnostic: CY4PR21MB0741:|CY4PR21MB0741:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR21MB0741B940373EBE3D805147DCD75E0@CY4PR21MB0741.namprd21.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:635;
-x-forefront-prvs: 0244637DEA
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(396003)(346002)(39860400002)(376002)(366004)(189003)(199004)(8990500004)(316002)(66946007)(5660300002)(33656002)(186003)(66476007)(110136005)(8936002)(54906003)(52536014)(26005)(229853002)(66556008)(66446008)(10090500001)(4744005)(81166006)(8676002)(81156014)(64756008)(10290500003)(86362001)(9686003)(71200400001)(76176011)(71190400001)(4326008)(99286004)(2906002)(7696005)(76116006)(74316002)(6506007)(55016002)(478600001)(102836004)(305945005);DIR:OUT;SFP:1102;SCL:1;SRVR:CY4PR21MB0741;H:CY4PR21MB0629.namprd21.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: giADaz7nzTN7arVkco24/gVnVkWjjl2Ct0JJuZVq1azU2xduvJvtELwK8SUvdNargEohW5YSqsK0dL00dvgcyq8JKHIDO/thNgMEC/QjC200owvLEJfKll8RCuagislYpUas8auo2VWWl5we2GjF+LtOakz1vSIHXDus0rAVfEN5gmFXuzctbV0uM0fLhjVq4jhPfQiDNiJ7VMdT44ZmzR4kUOb2LfTLcQS3RdY5mFuyrOArv9GEYiyajGLvAqqKQWsViwOD5KKOO/XtkUakjsBTzUEUsG1yyutpKtLGyp4Ttf45Be+TiRS5/cSFfH+TsyJX8a7y4sHZsTEeGYFbSaW3XLnNrj6swBhGFpbo8qxQkfxhkZedwzO4pPI9U79UeAq+o5s0v5TSyPFA1nzPGqC2T8DXatG+jU3ZAgub6jRIx1Psdk+pf6o11MQ1k/oA
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726403AbfLGV6J (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 7 Dec 2019 16:58:09 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70]:43095 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726378AbfLGV6J (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Dec 2019 16:58:09 -0500
+Received: by mail-io1-f70.google.com with SMTP id b17so7683893ioh.10
+        for <linux-fbdev@vger.kernel.org>; Sat, 07 Dec 2019 13:58:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=RCo5XRoCAvBV6cPjpzOdV+7ot6a52yZxOPlkjd6r1r8=;
+        b=iqNqsr0pW4kXwLa921crp5eEZ6kw9hORto/6L+JMZfqtq2mnLQSYGkF1/Y6J1TrY+1
+         iomqI1l+JxvS6LMB0AGpUa25Gxsk4p4u79pnJp5TXNdYu/Ak9ft6aZMKgOH5izQMF5UG
+         sMACqYIddzXfrv3iFM67v+lSGygJ/MdQVgoCdPrZQDsn6i03LGdkD1hPYqVFicg6J2nU
+         KYJfiGpwbKv3c/0+jY5NgL2EuJt6NUcU1Ml2SorJ7CFz2kL+k/PRcDRb37SFiLwWRRV2
+         HE16bnmaJvkAx8DpPD1qHAoB1Fs/h53qEQroXVK8YVVcFY28qTq1j1/MfQbG7U7crjAq
+         pi2A==
+X-Gm-Message-State: APjAAAV/PKnu709nsj0LKjXNCKprOczjeJ32P5C9f99rQraTKoehTf8y
+        q4SfW2vZrxJMRi0r/ENrP7yqKKpMVwzYAe8D4Ss5mOdkD4+x
+X-Google-Smtp-Source: APXvYqzTwC6BLVBe4iTeHffJKTyH9oDf+MyHBg8QuyYn+xCyOSKtEjf1AGFDNZQheGt1vN2BFejbB3j2pO+wKL+5Ob4hO04t1IV3
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c804d41-0b5d-4bee-a9a2-08d77b45a21a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Dec 2019 18:45:29.7521
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jX3rwiPavfyDCoK3pKc2rPkqMgRsT7MuskEADWC/w/wAS+r+312nFdnqTAFGhRrP2K3lPy0uSwdmqEN+qNxemMZwVY/7oUjBjFGtMTYx2K8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0741
+X-Received: by 2002:a6b:5a13:: with SMTP id o19mr15354365iob.120.1575755888785;
+ Sat, 07 Dec 2019 13:58:08 -0800 (PST)
+Date:   Sat, 07 Dec 2019 13:58:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000000ffab05992442a7@google.com>
+Subject: KASAN: global-out-of-bounds Read in fb_pad_aligned_buffer
+From:   syzbot <syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, kraxel@redhat.com,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        maarten.lankhorst@linux.intel.com, peda@axentia.se,
+        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-RnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4gU2VudDogVGh1
-cnNkYXksIE5vdmVtYmVyIDE0LCAyMDE5IDk6MjcgQU0NCj4gDQo+IFRoZXJlIGlzIGEgYmxvY2sg
-b2Ygc3RhdGVtZW50cyB0aGF0IGFyZSBpbmRlbnRlZA0KPiB0b28gZGVlcGx5LCByZW1vdmUgdGhl
-IGV4dHJhbmVvdXMgdGFicy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxj
-b2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy92aWRlby9mYmRldi9o
-eXBlcnZfZmIuYyB8IDQgKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
-MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L2h5
-cGVydl9mYi5jIGIvZHJpdmVycy92aWRlby9mYmRldi9oeXBlcnZfZmIuYw0KPiBpbmRleCA0Y2Qy
-N2U1MTcyYTEuLjVmY2Y0YmRmODVhYiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy92aWRlby9mYmRl
-di9oeXBlcnZfZmIuYw0KPiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L2h5cGVydl9mYi5jDQo+
-IEBAIC01ODIsOCArNTgyLDggQEAgc3RhdGljIGludCBzeW50aHZpZF9nZXRfc3VwcG9ydGVkX3Jl
-c29sdXRpb24oc3RydWN0IGh2X2RldmljZQ0KPiAqaGRldikNCj4gIAl0ID0gd2FpdF9mb3JfY29t
-cGxldGlvbl90aW1lb3V0KCZwYXItPndhaXQsIFZTUF9USU1FT1VUKTsNCj4gIAlpZiAoIXQpIHsN
-Cj4gIAkJcHJfZXJyKCJUaW1lIG91dCBvbiB3YWl0aW5nIHJlc29sdXRpb24gcmVzcG9uc2VcbiIp
-Ow0KPiAtCQkJcmV0ID0gLUVUSU1FRE9VVDsNCj4gLQkJCWdvdG8gb3V0Ow0KPiArCQlyZXQgPSAt
-RVRJTUVET1VUOw0KPiArCQlnb3RvIG91dDsNCj4gIAl9DQo+IA0KPiAgCWlmIChtc2ctPnJlc29s
-dXRpb25fcmVzcC5yZXNvbHV0aW9uX2NvdW50ID09IDApIHsNCj4gLS0NCj4gMi4yMC4xDQoNClJl
-dmlld2VkLWJ5OiBNaWNoYWVsIEtlbGxleSA8bWlrZWxsZXlAbWljcm9zb2Z0LmNvbT4NCg0K
+Hello,
+
+syzbot found the following crash on:
+
+HEAD commit:    ad910e36 pipe: fix poll/select race introduced by the pipe..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15483196e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=318fa2bff8166d0d
+dashboard link: https://syzkaller.appspot.com/bug?extid=0568d05e486eee0a1ba2
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer  
+include/linux/fb.h:655 [inline]
+BUG: KASAN: global-out-of-bounds in fb_pad_aligned_buffer+0x138/0x160  
+drivers/video/fbdev/core/fbmem.c:115
+Read of size 1 at addr ffffffff887274d4 by task syz-executor.2/19900
+
+CPU: 1 PID: 19900 Comm: syz-executor.2 Not tainted 5.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  __asan_report_load1_noabort+0x14/0x20 mm/kasan/generic_report.c:132
+  __fb_pad_aligned_buffer include/linux/fb.h:655 [inline]
+  fb_pad_aligned_buffer+0x138/0x160 drivers/video/fbdev/core/fbmem.c:115
+  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:99 [inline]
+  bit_putcs+0xd14/0xf10 drivers/video/fbdev/core/bitblit.c:185
+  fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
+  do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
+  redraw_screen+0x676/0x7d0 drivers/tty/vt/vt.c:1011
+  fbcon_do_set_font+0x829/0x960 drivers/video/fbdev/core/fbcon.c:2605
+  fbcon_copy_font+0x12c/0x190 drivers/video/fbdev/core/fbcon.c:2620
+  con_font_copy drivers/tty/vt/vt.c:4594 [inline]
+  con_font_op+0x6b2/0x1270 drivers/tty/vt/vt.c:4609
+  vt_ioctl+0x181a/0x26d0 drivers/tty/vt/vt_ioctl.c:965
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x45a6f9
+Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fe2b58b1c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a6f9
+RDX: 0000000020000000 RSI: 0000000000004b72 RDI: 0000000000000003
+RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe2b58b26d4
+R13: 00000000004c382b R14: 00000000004d8d78 R15: 00000000ffffffff
+
+The buggy address belongs to the variable:
+  fontdata_8x16+0x1054/0x1120
+
+Memory state around the buggy address:
+  ffffffff88727380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ffffffff88727400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> ffffffff88727480: fa fa fa fa 06 fa fa fa fa fa fa fa 05 fa fa fa
+                                                  ^
+  ffffffff88727500: fa fa fa fa 06 fa fa fa fa fa fa fa 00 00 03 fa
+  ffffffff88727580: fa fa fa fa 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
