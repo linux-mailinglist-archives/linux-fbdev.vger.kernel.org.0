@@ -2,122 +2,161 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 572A3116319
-	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Dec 2019 17:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 974BD1163B3
+	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Dec 2019 21:25:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726472AbfLHQ4X (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 8 Dec 2019 11:56:23 -0500
-Received: from mga09.intel.com ([134.134.136.24]:14998 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726465AbfLHQ4X (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 8 Dec 2019 11:56:23 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Dec 2019 08:56:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,292,1571727600"; 
-   d="scan'208";a="224546789"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 08 Dec 2019 08:56:21 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1idzr2-0009Ae-Ih; Mon, 09 Dec 2019 00:56:20 +0800
-Date:   Mon, 9 Dec 2019 00:55:22 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
-Cc:     kbuild-all@lists.01.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alencar.fmce@imbel.gov.br,
-        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Subject: Re: [PATCH] video: fbdev: added driver for sharp memory lcd displays
-Message-ID: <201912090055.QXDo7ygw%lkp@intel.com>
-References: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br>
+        id S1726535AbfLHUZZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 8 Dec 2019 15:25:25 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:52480 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbfLHUZZ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Dec 2019 15:25:25 -0500
+Received: by mail-wm1-f66.google.com with SMTP id p9so13217554wmc.2;
+        Sun, 08 Dec 2019 12:25:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=rZuOVSsIOLORgQcyJUkFkX7+NHfebp3ftqDZpnNhVHI=;
+        b=kwIHKoYHrbfekVTgSUlg1aLlX9zpLbsy6LZrajc6UkAYDIeNweO0S0s4hsvP1GtsU/
+         34453WviStBNhCXxisY8OaAsrKEqKM4f27LS5VW1NryK85Bhp5Ik6P4Z9Aj9eGJveQ6C
+         /Fkc9neUMThjUO1JZMhbCw6y3Iy+89Dfst8RXduhjM8a1DcB86KAmu5QbFgHJbjMQPqp
+         2mHHH601DHQLZ7Q76zhdnyrk86HgPZT49SWIRwzZYSp3W/4JNTdf3KR1ztOdTLz8rsr+
+         SkYBUIw7IRpyEi41n7PaQLm6uVozsLXtB8a1OK+KBpN8uoHy/LJ5eL5ZkZXDymZUiHFM
+         SWBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=rZuOVSsIOLORgQcyJUkFkX7+NHfebp3ftqDZpnNhVHI=;
+        b=fbU9vYsUQYX5f6Jx2psnUsLw1LTOTUmP9BeyNhuqpZiKmpG0Qgamu7JTzh7vlt4l0j
+         oq8/KJ9Wsb23ZOKusXyPOPg9TYx9KytM9SFSoDaaZpi7IEN0pgG2AEh+FZMmzB8svDD+
+         hTQdm8QKJRPuNnBXEOUSgUzZsAOzwMwNeRXn7EEHX90J2hhRx72+LRzUm4WOyFFTFIkP
+         E9PpUaQPW65W0g7C0APG+GM7fdgg2be2nVyAfh2/LpSUdgopIETR+05Qb6QNxT61FL8b
+         6GPluWgD7HrmNXeg1ffxNu/DYzzF8ogcD9XBg3HZDv8EwYDG4H8hzBVnQ4VgTWEZU9Z+
+         CRlA==
+X-Gm-Message-State: APjAAAWoIczHQQuAaI4wKIyfUck68uuDE3l082riwUVFrs5Jt/p/auS4
+        ZhikDAlv6x3Wy6Vr+PhcITfXrvuOGeIXSYZzD/j25ZEPMTA=
+X-Google-Smtp-Source: APXvYqxwE0DDF5AzVPKzIWQIP3EkMtREDeLD3Y5ZUEHq7I+yta13o8/zhbVIu3lpq2QcAAfttUOSqMRUeV81a7wEcmk=
+X-Received: by 2002:a7b:c0d8:: with SMTP id s24mr22284690wmh.30.1575836722869;
+ Sun, 08 Dec 2019 12:25:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br> <201912090055.QXDo7ygw%lkp@intel.com>
+In-Reply-To: <201912090055.QXDo7ygw%lkp@intel.com>
+From:   Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Date:   Sun, 8 Dec 2019 17:25:11 -0300
+Message-ID: <CACk9uecHrKDQHdL=fgz0xVF4oKUBOUUyRAt-cMn6m0YCOf9v_g@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev: added driver for sharp memory lcd displays
+To:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Rodrigo Rolim Mendes de <alencar.fmce@imbel.gov.br>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Rodrigo,
+Hello,
 
-Thank you for the patch! Perhaps something to improve:
+Em dom., 8 de dez. de 2019 =C3=A0s 13:56, kbuild test robot <lkp@intel.com>=
+ escreveu:
+>
+> Hi Rodrigo,
+>
+> Thank you for the patch! Perhaps something to improve:
+>
+> [auto build test WARNING on linux/master]
+> [also build test WARNING on robh/for-next linus/master v5.4 next-20191208=
+]
+> [if your patch is applied to the wrong git tree, please drop us a note to=
+ help
+> improve the system. BTW, we also suggest to use '--base' option to specif=
+y the
+> base tree in git format-patch, please see https://stackoverflow.com/a/374=
+06982]
+>
+> url:    https://github.com/0day-ci/linux/commits/Rodrigo-Rolim-Mendes-de-=
+Alencar/video-fbdev-added-driver-for-sharp-memory-lcd-displays/20191207-112=
+607
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t 26bc672134241a080a83b2ab9aa8abede8d30e1c
+> reproduce:
+>         # apt-get install sparse
+>         # sparse version: v0.6.1-91-g817270f-dirty
+>         make ARCH=3Dx86_64 allmodconfig
+>         make C=3D1 CF=3D'-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+>
+> sparse warnings: (new ones prefixed by >>)
+>
+> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse: sparse: incorrect type =
+in initializer (different address spaces) @@    expected unsigned char [use=
+rtype] *vmem @@    got signed char [usertype] *vmem @@
+> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    expected unsigned ch=
+ar [usertype] *vmem
+> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    got char [noderef] <=
+asn:2> *screen_base
+>
+> vim +71 drivers/video/fbdev/smemlcdfb.c
+>
+>     67
+>     68  static void smemlcd_update(struct smemlcd_par *par)
+>     69  {
+>     70          struct spi_device *spi =3D par->spi;
+>   > 71          u8 *vmem =3D par->info->screen_base;
 
-[auto build test WARNING on linux/master]
-[also build test WARNING on robh/for-next linus/master v5.4 next-20191208]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+A cast is really necessary here?
 
-url:    https://github.com/0day-ci/linux/commits/Rodrigo-Rolim-Mendes-de-Alencar/video-fbdev-added-driver-for-sharp-memory-lcd-displays/20191207-112607
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 26bc672134241a080a83b2ab9aa8abede8d30e1c
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-91-g817270f-dirty
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-
->> drivers/video/fbdev/smemlcdfb.c:71:29: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected unsigned char [usertype] *vmem @@    got signed char [usertype] *vmem @@
->> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    expected unsigned char [usertype] *vmem
->> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    got char [noderef] <asn:2> *screen_base
-
-vim +71 drivers/video/fbdev/smemlcdfb.c
-
-    67	
-    68	static void smemlcd_update(struct smemlcd_par *par)
-    69	{
-    70		struct spi_device *spi = par->spi;
-  > 71		u8 *vmem = par->info->screen_base;
-    72		u8 *buf_ptr = par->spi_buf;
-    73		int ret;
-    74		u32 i,j;
-    75	
-    76		if (par->start + par->height > par->info->var.yres) {
-    77			par->start = 0;
-    78			par->height = 0;
-    79		}
-    80		/* go to start line */
-    81		vmem += par->start * par->vmem_width;
-    82		/* update vcom */
-    83		par->vcom ^= SMEMLCD_FRAME_INVERSION;
-    84		/* mode selection */
-    85		*(buf_ptr++) = (par->height)? (SMEMLCD_DATA_UPDATE | par->vcom) : par->vcom;
-    86	
-    87		/* not all SPI masters have LSB-first mode, bitrev8 is used */
-    88		for (i = par->start + 1; i < par->start + par->height + 1; i++) {
-    89			/* gate line address */
-    90			*(buf_ptr++) = bitrev8(i);
-    91			/* data writing */
-    92			for (j = 0; j < par->spi_width; j++)
-    93				*(buf_ptr++) = bitrev8(*(vmem++));
-    94			/* dummy data */
-    95			*(buf_ptr++) = SMEMLCD_DUMMY_DATA;
-    96			/* video memory alignment */
-    97			for (; j < par->vmem_width; j++)
-    98				vmem++;
-    99		}
-   100		/* dummy data */
-   101		*(buf_ptr++) = SMEMLCD_DUMMY_DATA;
-   102	
-   103		ret = spi_write(spi, &(par->spi_buf[0]), par->height * (par->spi_width + 2) + 2);
-   104		if (ret < 0)
-   105			dev_err(&spi->dev, "Couldn't send SPI command.\n");
-   106	
-   107		par->start = U32_MAX;
-   108		par->height = 0;
-   109	}
-   110	
-
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
+>     72          u8 *buf_ptr =3D par->spi_buf;
+>     73          int ret;
+>     74          u32 i,j;
+>     75
+>     76          if (par->start + par->height > par->info->var.yres) {
+>     77                  par->start =3D 0;
+>     78                  par->height =3D 0;
+>     79          }
+>     80          /* go to start line */
+>     81          vmem +=3D par->start * par->vmem_width;
+>     82          /* update vcom */
+>     83          par->vcom ^=3D SMEMLCD_FRAME_INVERSION;
+>     84          /* mode selection */
+>     85          *(buf_ptr++) =3D (par->height)? (SMEMLCD_DATA_UPDATE | pa=
+r->vcom) : par->vcom;
+>     86
+>     87          /* not all SPI masters have LSB-first mode, bitrev8 is us=
+ed */
+>     88          for (i =3D par->start + 1; i < par->start + par->height +=
+ 1; i++) {
+>     89                  /* gate line address */
+>     90                  *(buf_ptr++) =3D bitrev8(i);
+>     91                  /* data writing */
+>     92                  for (j =3D 0; j < par->spi_width; j++)
+>     93                          *(buf_ptr++) =3D bitrev8(*(vmem++));
+>     94                  /* dummy data */
+>     95                  *(buf_ptr++) =3D SMEMLCD_DUMMY_DATA;
+>     96                  /* video memory alignment */
+>     97                  for (; j < par->vmem_width; j++)
+>     98                          vmem++;
+>     99          }
+>    100          /* dummy data */
+>    101          *(buf_ptr++) =3D SMEMLCD_DUMMY_DATA;
+>    102
+>    103          ret =3D spi_write(spi, &(par->spi_buf[0]), par->height * =
+(par->spi_width + 2) + 2);
+>    104          if (ret < 0)
+>    105                  dev_err(&spi->dev, "Couldn't send SPI command.\n"=
+);
+>    106
+>    107          par->start =3D U32_MAX;
+>    108          par->height =3D 0;
+>    109  }
+>    110
+>
+> ---
+> 0-DAY kernel test infrastructure                 Open Source Technology C=
+enter
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corpor=
+ation
