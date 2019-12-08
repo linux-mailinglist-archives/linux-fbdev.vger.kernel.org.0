@@ -2,70 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3859115FF3
-	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Dec 2019 01:07:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 572A3116319
+	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Dec 2019 17:56:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726418AbfLHAHT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 7 Dec 2019 19:07:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35500 "EHLO mail.kernel.org"
+        id S1726472AbfLHQ4X (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 8 Dec 2019 11:56:23 -0500
+Received: from mga09.intel.com ([134.134.136.24]:14998 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726378AbfLHAHT (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 7 Dec 2019 19:07:19 -0500
-Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 333682176D;
-        Sun,  8 Dec 2019 00:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575763638;
-        bh=M7YFDrfsP98aHjcTFmDSkdeQQZQR99Y+Wunr3u7VZBk=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=1TY4b7uPfggkxhFT+TY3ACqYiMTBwLT2da6upkhSP9ffdWP65lHcYCNWxCaVLoSdI
-         nNqzfhmSQZ+33DwsBzNTLbncAzpH2IXNJw6CaWZR0LORJF34o81IxGrRrLHI2Au6KE
-         eU8U9cK9EaBIOthIBFlz5Iupe4m6Q3Q60w8XZmh0=
-Date:   Sun, 8 Dec 2019 01:07:02 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Jani Nikula <jani.nikula@intel.com>
-cc:     =?ISO-8859-15?Q?Bruno_Pr=E9mont?= <bonbons@linux-vserver.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, ville.syrjala@linux.intel.com,
-        linux-input@vger.kernel.org, Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: Re: [PATCH v2 11/14] HID: picoLCD: constify fb ops
-In-Reply-To: <871rtji02a.fsf@intel.com>
-Message-ID: <nycvar.YFH.7.76.1912080106260.4603@cbobk.fhfr.pm>
-References: <cover.1575022735.git.jani.nikula@intel.com> <8678a9a3566279c881bb4db944850eef35d0a4bb.1575022735.git.jani.nikula@intel.com> <20191202094047.34525a7d@aether.lan.sysophe.eu> <871rtji02a.fsf@intel.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1726465AbfLHQ4X (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 8 Dec 2019 11:56:23 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Dec 2019 08:56:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,292,1571727600"; 
+   d="scan'208";a="224546789"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 08 Dec 2019 08:56:21 -0800
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1idzr2-0009Ae-Ih; Mon, 09 Dec 2019 00:56:20 +0800
+Date:   Mon, 9 Dec 2019 00:55:22 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
+Cc:     kbuild-all@lists.01.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alencar.fmce@imbel.gov.br,
+        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Subject: Re: [PATCH] video: fbdev: added driver for sharp memory lcd displays
+Message-ID: <201912090055.QXDo7ygw%lkp@intel.com>
+References: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 5 Dec 2019, Jani Nikula wrote:
+Hi Rodrigo,
 
-> >> Now that the fbops member of struct fb_info is const, we can start
-> >> making the ops const as well.
-> >>
-> >> v2: fix	typo (Christophe de Dinechin)
-> >
-> > Fine with me.
-> > I don't think going through drm-misc would trigger any conflict, but
-> > adding Jiri to CC for the case there was any preference.
-> >
-> > Acked-by: Bruno Prémont <bonbons@linux-vserver.org>
-> 
-> No response, may I proceed with merging this through drm-misc please?
+Thank you for the patch! Perhaps something to improve:
 
-I have been off the grid the past week, sorry for belated response. Feel 
-free to add
+[auto build test WARNING on linux/master]
+[also build test WARNING on robh/for-next linus/master v5.4 next-20191208]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-	Acked-by: Jiri Kosina <jkosina@suse.cz>
+url:    https://github.com/0day-ci/linux/commits/Rodrigo-Rolim-Mendes-de-Alencar/video-fbdev-added-driver-for-sharp-memory-lcd-displays/20191207-112607
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 26bc672134241a080a83b2ab9aa8abede8d30e1c
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-91-g817270f-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
-and take it through your tree.
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
--- 
-Jiri Kosina
-SUSE Labs
 
+sparse warnings: (new ones prefixed by >>)
+
+>> drivers/video/fbdev/smemlcdfb.c:71:29: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected unsigned char [usertype] *vmem @@    got signed char [usertype] *vmem @@
+>> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    expected unsigned char [usertype] *vmem
+>> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    got char [noderef] <asn:2> *screen_base
+
+vim +71 drivers/video/fbdev/smemlcdfb.c
+
+    67	
+    68	static void smemlcd_update(struct smemlcd_par *par)
+    69	{
+    70		struct spi_device *spi = par->spi;
+  > 71		u8 *vmem = par->info->screen_base;
+    72		u8 *buf_ptr = par->spi_buf;
+    73		int ret;
+    74		u32 i,j;
+    75	
+    76		if (par->start + par->height > par->info->var.yres) {
+    77			par->start = 0;
+    78			par->height = 0;
+    79		}
+    80		/* go to start line */
+    81		vmem += par->start * par->vmem_width;
+    82		/* update vcom */
+    83		par->vcom ^= SMEMLCD_FRAME_INVERSION;
+    84		/* mode selection */
+    85		*(buf_ptr++) = (par->height)? (SMEMLCD_DATA_UPDATE | par->vcom) : par->vcom;
+    86	
+    87		/* not all SPI masters have LSB-first mode, bitrev8 is used */
+    88		for (i = par->start + 1; i < par->start + par->height + 1; i++) {
+    89			/* gate line address */
+    90			*(buf_ptr++) = bitrev8(i);
+    91			/* data writing */
+    92			for (j = 0; j < par->spi_width; j++)
+    93				*(buf_ptr++) = bitrev8(*(vmem++));
+    94			/* dummy data */
+    95			*(buf_ptr++) = SMEMLCD_DUMMY_DATA;
+    96			/* video memory alignment */
+    97			for (; j < par->vmem_width; j++)
+    98				vmem++;
+    99		}
+   100		/* dummy data */
+   101		*(buf_ptr++) = SMEMLCD_DUMMY_DATA;
+   102	
+   103		ret = spi_write(spi, &(par->spi_buf[0]), par->height * (par->spi_width + 2) + 2);
+   104		if (ret < 0)
+   105			dev_err(&spi->dev, "Couldn't send SPI command.\n");
+   106	
+   107		par->start = U32_MAX;
+   108		par->height = 0;
+   109	}
+   110	
+
+---
+0-DAY kernel test infrastructure                 Open Source Technology Center
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation
