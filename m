@@ -2,132 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F8A7116CCA
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 13:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB4D116E61
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 15:00:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbfLIMBK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Dec 2019 07:01:10 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:39718 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727188AbfLIMBK (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Dec 2019 07:01:10 -0500
-Received: by mail-io1-f70.google.com with SMTP id u13so10512413iol.6
-        for <linux-fbdev@vger.kernel.org>; Mon, 09 Dec 2019 04:01:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=/5KO4nUeYu8oKg0JMtTVjDN33PVQp5q5hi7dGA2Dw+E=;
-        b=OlEe4OhrWtJ8jiYxL624kZr+vD2MEqtK/Ja6dgSMUoGLD8B0qFSraIF27tTqykyFLb
-         cW4ZHlZPdIRDdE5C8HzmGESfEONsTI/eEV/4YR17Y8zgCsnN8XalSPGYDNdMWzNkR3JY
-         KkfCHfw9iP8jImI16K13iioQNu66diHoxVdSzwHyvUo19hpSSJXFzOniMS+UCK6uV9F8
-         z4HDk3EszgRnjtD3z4hVk+S7I4p/aOs+Y8L/Z79uutvQwN/vrDJzY4UqAX4M2B7yjjUT
-         AHrevg08/ooIh76YLHaG/HuagVK9E2I7rNBn1cr1LJYVPivSSHy7MQP6zKNWYOV/O5YL
-         gwQw==
-X-Gm-Message-State: APjAAAWxYerv/pxxIJby8/HuePmi85ljaXX2HVVYfy4M1tuDSHh7KVZX
-        Ksy/ehfjiMw8q3VtCPACDDiUfSZch132WSknR8i/dzf8wmle
-X-Google-Smtp-Source: APXvYqzBxWu+RmcQ2MNK/kctsW7tqs/FL8kvc71wAUOguT1glbySNTrZ/djfQYKZ6PEnxFw5501mtlu/6hJrAqkhJqqkIy1S6LzP
+        id S1727200AbfLIOAB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Mon, 9 Dec 2019 09:00:01 -0500
+Received: from mga05.intel.com ([192.55.52.43]:1359 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726687AbfLIOAB (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 9 Dec 2019 09:00:01 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 06:00:00 -0800
+X-IronPort-AV: E=Sophos;i="5.69,294,1571727600"; 
+   d="scan'208";a="206898784"
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 05:59:56 -0800
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org,
+        Bruno =?utf-8?Q?Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
+        linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>
+Subject: Re: [Intel-gfx] [PATCH v3 09/12] HID: picoLCD: constify fb ops
+In-Reply-To: <f415010cd52cce7d8a1250d4eca582ec64e67956.1575390741.git.jani.nikula@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1575390740.git.jani.nikula@intel.com> <f415010cd52cce7d8a1250d4eca582ec64e67956.1575390741.git.jani.nikula@intel.com>
+Date:   Mon, 09 Dec 2019 15:59:53 +0200
+Message-ID: <87wob54n1i.fsf@intel.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:9951:: with SMTP id p78mr10429663ili.208.1575892869300;
- Mon, 09 Dec 2019 04:01:09 -0800 (PST)
-Date:   Mon, 09 Dec 2019 04:01:09 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000adca7b0599442690@google.com>
-Subject: general protection fault in fbcon_fb_blanked
-From:   syzbot <syzbot+f457c8344e5a2a121e78@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, ghalat@redhat.com,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, sam@ravnborg.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
+> Now that the fbops member of struct fb_info is const, we can start
+> making the ops const as well.
+>
+> v2: fix	typo (Christophe de Dinechin)
+>
+> Cc: Bruno Prémont <bonbons@linux-vserver.org>
+> Cc: linux-input@vger.kernel.org
+> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Acked-by: Bruno Prémont <bonbons@linux-vserver.org>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-syzbot found the following crash on:
+Pushed to drm-misc-next, with Jiri's ack from the other thread [1],
+thanks for the reviews and acks.
 
-HEAD commit:    eea2d5da Merge tag 'for-linus' of git://git.armlinux.org.u..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1785042ae00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f07a23020fd7d21a
-dashboard link: https://syzkaller.appspot.com/bug?extid=f457c8344e5a2a121e78
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+BR,
+Jani.
 
-Unfortunately, I don't have any reproducer for this crash yet.
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+f457c8344e5a2a121e78@syzkaller.appspotmail.com
-
-kasan: CONFIG_KASAN_INLINE enabled
-kasan: GPF could be caused by NULL-ptr deref or user memory access
-general protection fault: 0000 [#1] PREEMPT SMP KASAN
-CPU: 1 PID: 12067 Comm: syz-executor.2 Not tainted 5.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-RIP: 0010:fbcon_fb_blanked+0xe5/0x260 drivers/video/fbdev/core/fbcon.c:3272
-Code: 0f 85 79 01 00 00 48 8d 04 db 4c 8b 3c c5 80 79 0f 8c 48 b8 00 00 00  
-00 00 fc ff df 49 8d bf 7c 03 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48  
-89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 21 01 00 00
-RSP: 0018:ffffc9000169fa30 EFLAGS: 00010207
-RAX: dffffc0000000000 RBX: 000000000000003e RCX: ffffc9000dbd6000
-RDX: 000000000000006f RSI: ffffffff83b2430a RDI: 000000000000037c
-RBP: ffffc9000169fa60 R08: ffff8880a702c240 R09: ffffed10147fc003
-R10: ffffc9000169fa60 R11: ffff8880a3fe0017 R12: ffff8880a3fe0000
-R13: ffff8880a3f05400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007fe327bd5700(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000400200 CR3: 0000000058b49000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  do_fb_ioctl+0x18b/0x7d0 drivers/video/fbdev/core/fbmem.c:1158
-  fb_ioctl+0xe6/0x130 drivers/video/fbdev/core/fbmem.c:1180
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a6f9
-Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fe327bd4c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a6f9
-RDX: 0000000000000000 RSI: 0000000000004611 RDI: 0000000000000004
-RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe327bd56d4
-R13: 00000000004d09d8 R14: 00000000004dc698 R15: 00000000ffffffff
-Modules linked in:
----[ end trace d8165df606abdd16 ]---
-RIP: 0010:fbcon_fb_blanked+0xe5/0x260 drivers/video/fbdev/core/fbcon.c:3272
-Code: 0f 85 79 01 00 00 48 8d 04 db 4c 8b 3c c5 80 79 0f 8c 48 b8 00 00 00  
-00 00 fc ff df 49 8d bf 7c 03 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48  
-89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 21 01 00 00
-RSP: 0018:ffffc9000169fa30 EFLAGS: 00010207
-RAX: dffffc0000000000 RBX: 000000000000003e RCX: ffffc9000dbd6000
-RDX: 000000000000006f RSI: ffffffff83b2430a RDI: 000000000000037c
-RBP: ffffc9000169fa60 R08: ffff8880a702c240 R09: ffffed10147fc003
-R10: ffffc9000169fa60 R11: ffff8880a3fe0017 R12: ffff8880a3fe0000
-R13: ffff8880a3f05400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007fe327bd5700(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa2ff0a3db8 CR3: 0000000058b49000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[1] http://lore.kernel.org/r/nycvar.YFH.7.76.1912080106260.4603@cbobk.fhfr.pm
 
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> ---
+>  drivers/hid/hid-picolcd_fb.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/hid/hid-picolcd_fb.c b/drivers/hid/hid-picolcd_fb.c
+> index e162a668fb7e..a549c42e8c90 100644
+> --- a/drivers/hid/hid-picolcd_fb.c
+> +++ b/drivers/hid/hid-picolcd_fb.c
+> @@ -417,8 +417,7 @@ static int picolcd_set_par(struct fb_info *info)
+>  	return 0;
+>  }
+>  
+> -/* Note this can't be const because of struct fb_info definition */
+> -static struct fb_ops picolcdfb_ops = {
+> +static const struct fb_ops picolcdfb_ops = {
+>  	.owner        = THIS_MODULE,
+>  	.fb_destroy   = picolcd_fb_destroy,
+>  	.fb_read      = fb_sys_read,
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-- 
+Jani Nikula, Intel Open Source Graphics Center
