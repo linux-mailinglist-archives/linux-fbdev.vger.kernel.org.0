@@ -2,46 +2,44 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D48A1165CF
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 05:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D4A3116665
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 06:25:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727044AbfLIE1L (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 8 Dec 2019 23:27:11 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:51993 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727038AbfLIE1K (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Dec 2019 23:27:10 -0500
-Received: by mail-io1-f70.google.com with SMTP id t18so9820823iob.18
-        for <linux-fbdev@vger.kernel.org>; Sun, 08 Dec 2019 20:27:10 -0800 (PST)
+        id S1726014AbfLIFZK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 9 Dec 2019 00:25:10 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:34755 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbfLIFZJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Dec 2019 00:25:09 -0500
+Received: by mail-io1-f72.google.com with SMTP id n26so4985022ioj.1
+        for <linux-fbdev@vger.kernel.org>; Sun, 08 Dec 2019 21:25:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
          :from:to;
-        bh=hx1YQCXRjoFEb2pqqCvEj+3QepedTCJ9H4Wrwh4zGQk=;
-        b=LfwhKc9P78xaTeboum1DBgnbXrXrKptciqjDZnxkhxVP+uZrh2ROUWAOEfBox317Ti
-         I2QgQJQWk9tz7Mfv/T3zx713KCkbELvi7/oq6D41e04uQoU0HJ8kxRfdHYtDxWKU6HFS
-         pDIExAb+wWXNWbPs0GREk4r8cbR/lMrmLLYQyZ4/lIfnzTok3iR+XAf8VHU68VDhAbd+
-         f8iTpSewLmKY3hWCscYdTtpxGJFHO1c1JDnwzkmSVJsO+lwWFA8NzbGb9SXpX4PeYn+q
-         5bgebe1i7AK6SrgDLDg3OFgSO+NppRDc/GUqppuPvGpRuVe3ByefO+2sS0KHffS3ZZX9
-         jAgw==
-X-Gm-Message-State: APjAAAXSxRoWeL+UE+ASdfz/pUHySaQkZEWXvgBFLMZlC35iel7LVO2w
-        Ia8kzJistf/ThQpm5NLp3OlbINSywIiTeucichNJTviJFHq5
-X-Google-Smtp-Source: APXvYqzijTECTU43qgJSvG2P/wVuvnS2ksHah2Im6nAFln5YkfudkojtJQytrRAY5hPCsA/BTpxbuMYNPpx4vX1WgJTOjBlviwIM
+        bh=FUR5HH5qJErdY2JqpOki/U8tKZp98W2ZoPj1kOrVy7U=;
+        b=sMn5nkHP3DaAufvACCh7KE6VdhOAVpjofHBi6BqJC1pk1Yv7lAAFwNNrsxsI2jG2zM
+         +9z/RRHwm9htrdvSKPlDPF/HxDVriXh+78khTXJye7N0cBwwuMEp/OwPBJ4af6SdGnoX
+         Nj4MxUyDQjD/ouuH2bkjpe/GNqZQ7fwUaZYyzfzMR9UIozTnqW0YhO9J9brArF1XmRjt
+         FIAXgI03yreFbOrDel97aI1Rvx4vqYxJXC3AtpPrxUlevWJpX3/JPN/kY87LPg5QGGsy
+         9YXLcvMIWdV8GffQDtJ3Iv5C393ydnRR2FruAuM2sRKyQLyrocgAfm+mCAGadhc7Q48z
+         sOVA==
+X-Gm-Message-State: APjAAAXeHiW97dNqqGo9OdjTp29wh5Q6OZ0fUroQXYZa/W1gFEPgY06n
+        JHZYRU7iLfJaFWCAk/yg/abWj6+TMixD61+WnvWvv6zGq2AI
+X-Google-Smtp-Source: APXvYqxbTYgS+UzTWkNlPOh3ufIFqWK1gmZ+gqCKv92ZZKxxyuhbiWeFyYbbA6FIl1xI6HkVG/4jh0arIvL8KxaHAcPOSWwG4FVq
 MIME-Version: 1.0
-X-Received: by 2002:a6b:7310:: with SMTP id e16mr19924283ioh.107.1575865629997;
- Sun, 08 Dec 2019 20:27:09 -0800 (PST)
-Date:   Sun, 08 Dec 2019 20:27:09 -0800
-In-Reply-To: <00000000000000ffab05992442a7@google.com>
+X-Received: by 2002:a92:9f9c:: with SMTP id z28mr26764436ilk.239.1575869109062;
+ Sun, 08 Dec 2019 21:25:09 -0800 (PST)
+Date:   Sun, 08 Dec 2019 21:25:09 -0800
+In-Reply-To: <0000000000007f075c0598f7aa38@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000017046a05993dcf90@google.com>
-Subject: Re: KASAN: global-out-of-bounds Read in fb_pad_aligned_buffer
-From:   syzbot <syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, kraxel@redhat.com,
+Message-ID: <00000000000075564805993e9eeb@google.com>
+Subject: Re: KASAN: slab-out-of-bounds Read in bit_putcs
+From:   syzbot <syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, peda@axentia.se,
-        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -52,37 +50,38 @@ syzbot has found a reproducer for the following crash on:
 
 HEAD commit:    9455d25f Merge tag 'ntb-5.5' of git://github.com/jonmason/..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=171e09dae00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=16b1d1bce00000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=7a3b8f5088d4043a
-dashboard link: https://syzkaller.appspot.com/bug?extid=0568d05e486eee0a1ba2
+dashboard link: https://syzkaller.appspot.com/bug?extid=998dec6452146bd7a90c
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ddeca6e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16df9e41e00000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fa5c2ee00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12e327f2e00000
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com
+Reported-by: syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com
 
 ==================================================================
-BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer  
+BUG: KASAN: slab-out-of-bounds in __fb_pad_aligned_buffer  
 include/linux/fb.h:655 [inline]
-BUG: KASAN: global-out-of-bounds in fb_pad_aligned_buffer+0x138/0x160  
-drivers/video/fbdev/core/fbmem.c:115
-Read of size 1 at addr ffffffff8872a77c by task syz-executor208/9953
+BUG: KASAN: slab-out-of-bounds in bit_putcs_aligned  
+drivers/video/fbdev/core/bitblit.c:96 [inline]
+BUG: KASAN: slab-out-of-bounds in bit_putcs+0xd5d/0xf10  
+drivers/video/fbdev/core/bitblit.c:185
+Read of size 1 at addr ffff8880a66ec808 by task syz-executor523/8819
 
-CPU: 1 PID: 9953 Comm: syz-executor208 Not tainted 5.4.0-syzkaller #0
+CPU: 1 PID: 8819 Comm: syz-executor523 Not tainted 5.4.0-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
 Google 01/01/2011
 Call Trace:
   __dump_stack lib/dump_stack.c:77 [inline]
   dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
   __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
   kasan_report+0x12/0x20 mm/kasan/common.c:639
   __asan_report_load1_noabort+0x14/0x20 mm/kasan/generic_report.c:132
   __fb_pad_aligned_buffer include/linux/fb.h:655 [inline]
-  fb_pad_aligned_buffer+0x138/0x160 drivers/video/fbdev/core/fbmem.c:115
-  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:99 [inline]
-  bit_putcs+0xd14/0xf10 drivers/video/fbdev/core/bitblit.c:185
+  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
+  bit_putcs+0xd5d/0xf10 drivers/video/fbdev/core/bitblit.c:185
   fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
   do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
   redraw_screen+0x676/0x7d0 drivers/tty/vt/vt.c:1011
@@ -101,26 +100,79 @@ Call Trace:
   __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
   do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x440269
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
+RIP: 0033:0x446a79
+Code: e8 ec e7 ff ff 48 83 c4 18 c3 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7  
 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 5b 14 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fff65832458 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440269
-RDX: 0000000020000000 RSI: 0000000000004b72 RDI: 0000000000000004
-RBP: 00000000006cb018 R08: 000000000000000d R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401b50
-R13: 0000000000401be0 R14: 0000000000000000 R15: 0000000000000000
+ff 0f 83 3b 07 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f451fcd2d08 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00000000006dbc58 RCX: 0000000000446a79
+RDX: 0000000020000180 RSI: 0000000000004b72 RDI: 0000000000000003
+RBP: 00000000006dbc50 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000006dbc5c
+R13: 0000000000000000 R14: 00000000f72a8fce R15: 0000000000000000
 
-The buggy address belongs to the variable:
-  oid_index+0x93c/0xb80
+Allocated by task 8802:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  __kasan_kmalloc mm/kasan/common.c:513 [inline]
+  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
+  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
+  __do_kmalloc mm/slab.c:3656 [inline]
+  __kmalloc+0x163/0x770 mm/slab.c:3665
+  kmalloc include/linux/slab.h:561 [inline]
+  fbcon_set_font+0x32d/0x860 drivers/video/fbdev/core/fbcon.c:2663
+  con_font_set drivers/tty/vt/vt.c:4538 [inline]
+  con_font_op+0xe30/0x1270 drivers/tty/vt/vt.c:4603
+  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Freed by task 8528:
+  save_stack+0x23/0x90 mm/kasan/common.c:72
+  set_track mm/kasan/common.c:80 [inline]
+  kasan_set_free_info mm/kasan/common.c:335 [inline]
+  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
+  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
+  __cache_free mm/slab.c:3426 [inline]
+  kfree+0x10a/0x2c0 mm/slab.c:3757
+  kvfree+0x61/0x70 mm/util.c:603
+  __free_fdtable+0x34/0x80 fs/file.c:31
+  put_files_struct fs/file.c:420 [inline]
+  put_files_struct+0x253/0x2f0 fs/file.c:413
+  exit_files+0x83/0xb0 fs/file.c:445
+  do_exit+0x8b5/0x2ef0 kernel/exit.c:792
+  do_group_exit+0x135/0x360 kernel/exit.c:895
+  __do_sys_exit_group kernel/exit.c:906 [inline]
+  __se_sys_exit_group kernel/exit.c:904 [inline]
+  __x64_sys_exit_group+0x44/0x50 kernel/exit.c:904
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+The buggy address belongs to the object at ffff8880a66ec000
+  which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 8 bytes to the right of
+  2048-byte region [ffff8880a66ec000, ffff8880a66ec800)
+The buggy address belongs to the page:
+page:ffffea000299bb00 refcount:1 mapcount:0 mapping:ffff8880aa400e00  
+index:0x0
+raw: 00fffe0000000200 ffffea000299bac8 ffffea000299bb48 ffff8880aa400e00
+raw: 0000000000000000 ffff8880a66ec000 0000000100000001 0000000000000000
+page dumped because: kasan: bad access detected
 
 Memory state around the buggy address:
-  ffffffff8872a600: 04 fa fa fa fa fa fa fa 00 01 fa fa fa fa fa fa
-  ffffffff8872a680: 04 fa fa fa fa fa fa fa 04 fa fa fa fa fa fa fa
-> ffffffff8872a700: 07 fa fa fa fa fa fa fa 04 fa fa fa fa fa fa fa
-                                                                 ^
-  ffffffff8872a780: 05 fa fa fa fa fa fa fa 01 fa fa fa fa fa fa fa
-  ffffffff8872a800: 00 00 02 fa fa fa fa fa 00 00 00 05 fa fa fa fa
+  ffff8880a66ec700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff8880a66ec780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+> ffff8880a66ec800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                       ^
+  ffff8880a66ec880: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff8880a66ec900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
 ==================================================================
 
