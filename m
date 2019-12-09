@@ -2,161 +2,125 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 974BD1163B3
-	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Dec 2019 21:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D48A1165CF
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 05:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726535AbfLHUZZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 8 Dec 2019 15:25:25 -0500
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:52480 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbfLHUZZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Dec 2019 15:25:25 -0500
-Received: by mail-wm1-f66.google.com with SMTP id p9so13217554wmc.2;
-        Sun, 08 Dec 2019 12:25:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=rZuOVSsIOLORgQcyJUkFkX7+NHfebp3ftqDZpnNhVHI=;
-        b=kwIHKoYHrbfekVTgSUlg1aLlX9zpLbsy6LZrajc6UkAYDIeNweO0S0s4hsvP1GtsU/
-         34453WviStBNhCXxisY8OaAsrKEqKM4f27LS5VW1NryK85Bhp5Ik6P4Z9Aj9eGJveQ6C
-         /Fkc9neUMThjUO1JZMhbCw6y3Iy+89Dfst8RXduhjM8a1DcB86KAmu5QbFgHJbjMQPqp
-         2mHHH601DHQLZ7Q76zhdnyrk86HgPZT49SWIRwzZYSp3W/4JNTdf3KR1ztOdTLz8rsr+
-         SkYBUIw7IRpyEi41n7PaQLm6uVozsLXtB8a1OK+KBpN8uoHy/LJ5eL5ZkZXDymZUiHFM
-         SWBw==
+        id S1727044AbfLIE1L (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 8 Dec 2019 23:27:11 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70]:51993 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727038AbfLIE1K (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Dec 2019 23:27:10 -0500
+Received: by mail-io1-f70.google.com with SMTP id t18so9820823iob.18
+        for <linux-fbdev@vger.kernel.org>; Sun, 08 Dec 2019 20:27:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rZuOVSsIOLORgQcyJUkFkX7+NHfebp3ftqDZpnNhVHI=;
-        b=fbU9vYsUQYX5f6Jx2psnUsLw1LTOTUmP9BeyNhuqpZiKmpG0Qgamu7JTzh7vlt4l0j
-         oq8/KJ9Wsb23ZOKusXyPOPg9TYx9KytM9SFSoDaaZpi7IEN0pgG2AEh+FZMmzB8svDD+
-         hTQdm8QKJRPuNnBXEOUSgUzZsAOzwMwNeRXn7EEHX90J2hhRx72+LRzUm4WOyFFTFIkP
-         E9PpUaQPW65W0g7C0APG+GM7fdgg2be2nVyAfh2/LpSUdgopIETR+05Qb6QNxT61FL8b
-         6GPluWgD7HrmNXeg1ffxNu/DYzzF8ogcD9XBg3HZDv8EwYDG4H8hzBVnQ4VgTWEZU9Z+
-         CRlA==
-X-Gm-Message-State: APjAAAWoIczHQQuAaI4wKIyfUck68uuDE3l082riwUVFrs5Jt/p/auS4
-        ZhikDAlv6x3Wy6Vr+PhcITfXrvuOGeIXSYZzD/j25ZEPMTA=
-X-Google-Smtp-Source: APXvYqxwE0DDF5AzVPKzIWQIP3EkMtREDeLD3Y5ZUEHq7I+yta13o8/zhbVIu3lpq2QcAAfttUOSqMRUeV81a7wEcmk=
-X-Received: by 2002:a7b:c0d8:: with SMTP id s24mr22284690wmh.30.1575836722869;
- Sun, 08 Dec 2019 12:25:22 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=hx1YQCXRjoFEb2pqqCvEj+3QepedTCJ9H4Wrwh4zGQk=;
+        b=LfwhKc9P78xaTeboum1DBgnbXrXrKptciqjDZnxkhxVP+uZrh2ROUWAOEfBox317Ti
+         I2QgQJQWk9tz7Mfv/T3zx713KCkbELvi7/oq6D41e04uQoU0HJ8kxRfdHYtDxWKU6HFS
+         pDIExAb+wWXNWbPs0GREk4r8cbR/lMrmLLYQyZ4/lIfnzTok3iR+XAf8VHU68VDhAbd+
+         f8iTpSewLmKY3hWCscYdTtpxGJFHO1c1JDnwzkmSVJsO+lwWFA8NzbGb9SXpX4PeYn+q
+         5bgebe1i7AK6SrgDLDg3OFgSO+NppRDc/GUqppuPvGpRuVe3ByefO+2sS0KHffS3ZZX9
+         jAgw==
+X-Gm-Message-State: APjAAAXSxRoWeL+UE+ASdfz/pUHySaQkZEWXvgBFLMZlC35iel7LVO2w
+        Ia8kzJistf/ThQpm5NLp3OlbINSywIiTeucichNJTviJFHq5
+X-Google-Smtp-Source: APXvYqzijTECTU43qgJSvG2P/wVuvnS2ksHah2Im6nAFln5YkfudkojtJQytrRAY5hPCsA/BTpxbuMYNPpx4vX1WgJTOjBlviwIM
 MIME-Version: 1.0
-References: <1575554335-27197-1-git-send-email-alencar.fmce@imbel.gov.br> <201912090055.QXDo7ygw%lkp@intel.com>
-In-Reply-To: <201912090055.QXDo7ygw%lkp@intel.com>
-From:   Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Date:   Sun, 8 Dec 2019 17:25:11 -0300
-Message-ID: <CACk9uecHrKDQHdL=fgz0xVF4oKUBOUUyRAt-cMn6m0YCOf9v_g@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: added driver for sharp memory lcd displays
-To:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Rodrigo Rolim Mendes de <alencar.fmce@imbel.gov.br>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a6b:7310:: with SMTP id e16mr19924283ioh.107.1575865629997;
+ Sun, 08 Dec 2019 20:27:09 -0800 (PST)
+Date:   Sun, 08 Dec 2019 20:27:09 -0800
+In-Reply-To: <00000000000000ffab05992442a7@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000017046a05993dcf90@google.com>
+Subject: Re: KASAN: global-out-of-bounds Read in fb_pad_aligned_buffer
+From:   syzbot <syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, kraxel@redhat.com,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        maarten.lankhorst@linux.intel.com, peda@axentia.se,
+        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+syzbot has found a reproducer for the following crash on:
 
-Em dom., 8 de dez. de 2019 =C3=A0s 13:56, kbuild test robot <lkp@intel.com>=
- escreveu:
->
-> Hi Rodrigo,
->
-> Thank you for the patch! Perhaps something to improve:
->
-> [auto build test WARNING on linux/master]
-> [also build test WARNING on robh/for-next linus/master v5.4 next-20191208=
-]
-> [if your patch is applied to the wrong git tree, please drop us a note to=
- help
-> improve the system. BTW, we also suggest to use '--base' option to specif=
-y the
-> base tree in git format-patch, please see https://stackoverflow.com/a/374=
-06982]
->
-> url:    https://github.com/0day-ci/linux/commits/Rodrigo-Rolim-Mendes-de-=
-Alencar/video-fbdev-added-driver-for-sharp-memory-lcd-displays/20191207-112=
-607
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t 26bc672134241a080a83b2ab9aa8abede8d30e1c
-> reproduce:
->         # apt-get install sparse
->         # sparse version: v0.6.1-91-g817270f-dirty
->         make ARCH=3Dx86_64 allmodconfig
->         make C=3D1 CF=3D'-fdiagnostic-prefix -D__CHECK_ENDIAN__'
->
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
->
->
-> sparse warnings: (new ones prefixed by >>)
->
-> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse: sparse: incorrect type =
-in initializer (different address spaces) @@    expected unsigned char [use=
-rtype] *vmem @@    got signed char [usertype] *vmem @@
-> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    expected unsigned ch=
-ar [usertype] *vmem
-> >> drivers/video/fbdev/smemlcdfb.c:71:29: sparse:    got char [noderef] <=
-asn:2> *screen_base
->
-> vim +71 drivers/video/fbdev/smemlcdfb.c
->
->     67
->     68  static void smemlcd_update(struct smemlcd_par *par)
->     69  {
->     70          struct spi_device *spi =3D par->spi;
->   > 71          u8 *vmem =3D par->info->screen_base;
+HEAD commit:    9455d25f Merge tag 'ntb-5.5' of git://github.com/jonmason/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=171e09dae00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7a3b8f5088d4043a
+dashboard link: https://syzkaller.appspot.com/bug?extid=0568d05e486eee0a1ba2
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15ddeca6e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16df9e41e00000
 
-A cast is really necessary here?
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+0568d05e486eee0a1ba2@syzkaller.appspotmail.com
 
->     72          u8 *buf_ptr =3D par->spi_buf;
->     73          int ret;
->     74          u32 i,j;
->     75
->     76          if (par->start + par->height > par->info->var.yres) {
->     77                  par->start =3D 0;
->     78                  par->height =3D 0;
->     79          }
->     80          /* go to start line */
->     81          vmem +=3D par->start * par->vmem_width;
->     82          /* update vcom */
->     83          par->vcom ^=3D SMEMLCD_FRAME_INVERSION;
->     84          /* mode selection */
->     85          *(buf_ptr++) =3D (par->height)? (SMEMLCD_DATA_UPDATE | pa=
-r->vcom) : par->vcom;
->     86
->     87          /* not all SPI masters have LSB-first mode, bitrev8 is us=
-ed */
->     88          for (i =3D par->start + 1; i < par->start + par->height +=
- 1; i++) {
->     89                  /* gate line address */
->     90                  *(buf_ptr++) =3D bitrev8(i);
->     91                  /* data writing */
->     92                  for (j =3D 0; j < par->spi_width; j++)
->     93                          *(buf_ptr++) =3D bitrev8(*(vmem++));
->     94                  /* dummy data */
->     95                  *(buf_ptr++) =3D SMEMLCD_DUMMY_DATA;
->     96                  /* video memory alignment */
->     97                  for (; j < par->vmem_width; j++)
->     98                          vmem++;
->     99          }
->    100          /* dummy data */
->    101          *(buf_ptr++) =3D SMEMLCD_DUMMY_DATA;
->    102
->    103          ret =3D spi_write(spi, &(par->spi_buf[0]), par->height * =
-(par->spi_width + 2) + 2);
->    104          if (ret < 0)
->    105                  dev_err(&spi->dev, "Couldn't send SPI command.\n"=
-);
->    106
->    107          par->start =3D U32_MAX;
->    108          par->height =3D 0;
->    109  }
->    110
->
-> ---
-> 0-DAY kernel test infrastructure                 Open Source Technology C=
-enter
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corpor=
-ation
+==================================================================
+BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer  
+include/linux/fb.h:655 [inline]
+BUG: KASAN: global-out-of-bounds in fb_pad_aligned_buffer+0x138/0x160  
+drivers/video/fbdev/core/fbmem.c:115
+Read of size 1 at addr ffffffff8872a77c by task syz-executor208/9953
+
+CPU: 1 PID: 9953 Comm: syz-executor208 Not tainted 5.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  __asan_report_load1_noabort+0x14/0x20 mm/kasan/generic_report.c:132
+  __fb_pad_aligned_buffer include/linux/fb.h:655 [inline]
+  fb_pad_aligned_buffer+0x138/0x160 drivers/video/fbdev/core/fbmem.c:115
+  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:99 [inline]
+  bit_putcs+0xd14/0xf10 drivers/video/fbdev/core/bitblit.c:185
+  fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
+  do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
+  redraw_screen+0x676/0x7d0 drivers/tty/vt/vt.c:1011
+  fbcon_do_set_font+0x829/0x960 drivers/video/fbdev/core/fbcon.c:2605
+  fbcon_copy_font+0x12c/0x190 drivers/video/fbdev/core/fbcon.c:2620
+  con_font_copy drivers/tty/vt/vt.c:4594 [inline]
+  con_font_op+0x6b2/0x1270 drivers/tty/vt/vt.c:4609
+  vt_ioctl+0x181a/0x26d0 drivers/tty/vt/vt_ioctl.c:965
+  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x440269
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 5b 14 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fff65832458 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440269
+RDX: 0000000020000000 RSI: 0000000000004b72 RDI: 0000000000000004
+RBP: 00000000006cb018 R08: 000000000000000d R09: 00000000004002c8
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401b50
+R13: 0000000000401be0 R14: 0000000000000000 R15: 0000000000000000
+
+The buggy address belongs to the variable:
+  oid_index+0x93c/0xb80
+
+Memory state around the buggy address:
+  ffffffff8872a600: 04 fa fa fa fa fa fa fa 00 01 fa fa fa fa fa fa
+  ffffffff8872a680: 04 fa fa fa fa fa fa fa 04 fa fa fa fa fa fa fa
+> ffffffff8872a700: 07 fa fa fa fa fa fa fa 04 fa fa fa fa fa fa fa
+                                                                 ^
+  ffffffff8872a780: 05 fa fa fa fa fa fa fa 01 fa fa fa fa fa fa fa
+  ffffffff8872a800: 00 00 02 fa fa fa fa fa 00 00 00 05 fa fa fa fa
+==================================================================
+
