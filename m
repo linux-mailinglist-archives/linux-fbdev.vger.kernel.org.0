@@ -2,84 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D0C1180D2
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 07:53:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E961188FE
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 13:59:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727119AbfLJGxO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Dec 2019 01:53:14 -0500
-Received: from mga12.intel.com ([192.55.52.136]:17562 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727024AbfLJGxO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Dec 2019 01:53:14 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 22:53:14 -0800
-X-IronPort-AV: E=Sophos;i="5.69,298,1571727600"; 
-   d="scan'208";a="203087366"
-Received: from wwisnei1-mobl.ger.corp.intel.com (HELO localhost) ([10.249.33.29])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 22:53:11 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Kirti Wankhede <kwankhede@nvidia.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v3 11/12] samples: vfio-mdev: constify fb ops
-In-Reply-To: <0d5434e0-3d86-bbb8-6377-94e00b4f0d78@nvidia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1575390740.git.jani.nikula@intel.com> <ddb10df1316ef585930cda7718643a580f4fe37b.1575390741.git.jani.nikula@intel.com> <87tv694myu.fsf@intel.com> <0d5434e0-3d86-bbb8-6377-94e00b4f0d78@nvidia.com>
-Date:   Tue, 10 Dec 2019 08:53:15 +0200
-Message-ID: <87wob4vfhg.fsf@intel.com>
+        id S1727317AbfLJM7C (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Dec 2019 07:59:02 -0500
+Received: from mail-io1-f70.google.com ([209.85.166.70]:41833 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727131AbfLJM7B (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 10 Dec 2019 07:59:01 -0500
+Received: by mail-io1-f70.google.com with SMTP id m13so4780689iol.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Dec 2019 04:59:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=K7gPl1FphJWhh8zq+KZGN6d9O0Mc9hz+Z8xkj8vZdlQ=;
+        b=oW3X4TlUHZXXsdhHFcSKrzrjdAaZLWl5bfGHuHvqIBYRss1uOcvBnxBba31/AbR4ae
+         MPygDEISBkB9Gx7TOg92awWlxTs6NjIRtRF5M9LVSUiPqmk268qtavoecnds3d31Vrik
+         ZiFqGOYvFapNWXo+EE6SUAGnvFKU2gPcg8ls9w2+k2afeOW2LAgGIyZwAvTcvT9qcM81
+         tbuSihQv08c7lP05gF6yJwt8cWBZbsG3cm0iqWOXR/5E3d3EpZAb7uNYq+HjA/0Rvj4a
+         4gyLLFxd2yY2kHqyLrq4wDr19m2eS/QcKURu0QY3ZiPDSy974S7y58oKKxFlmbsTBeHW
+         JY/g==
+X-Gm-Message-State: APjAAAVb3n0hsEQ+h8DAKk6DPf7h2pxzEEredEJVFvtq7wWk6QgLV7ui
+        d22lGTvM6wC61L5f+fvRTjZ5yCldzsOtdLr5TEyNdC2zxmTz
+X-Google-Smtp-Source: APXvYqwDCe80r9YbW2QQnA0KjjLSvil/nEblKeil0eEsHFedCe59r/gm8ekpcNZa3NtXqCgGqqZ6wrMr2kggORAQDm9RLlN60DpJ
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a92:5e4b:: with SMTP id s72mr32788228ilb.211.1575982741163;
+ Tue, 10 Dec 2019 04:59:01 -0800 (PST)
+Date:   Tue, 10 Dec 2019 04:59:01 -0800
+In-Reply-To: <0000000000007f075c0598f7aa38@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000007598ae0599591335@google.com>
+Subject: Re: KASAN: slab-out-of-bounds Read in bit_putcs
+From:   syzbot <syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, coreteam@netfilter.org,
+        davem@davemloft.net, dri-devel@lists.freedesktop.org,
+        gwshan@linux.vnet.ibm.com, kaber@trash.net,
+        kadlec@blackhole.kfki.hu, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mpe@ellerman.id.au,
+        netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        pablo@netfilter.org, ruscur@russell.cc, stewart@linux.vnet.ibm.com,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 10 Dec 2019, Kirti Wankhede <kwankhede@nvidia.com> wrote:
-> On 12/9/2019 7:31 PM, Jani Nikula wrote:
->> On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
->>> Now that the fbops member of struct fb_info is const, we can start
->>> making the ops const as well.
->>>
->>> v2: fix	typo (Christophe de Dinechin)
->>>
->>> Cc: Kirti Wankhede <kwankhede@nvidia.com>
->>> Cc: kvm@vger.kernel.org
->>> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> 
->> Kirti, may I have your ack to merge this through drm-misc please?
->> 
->> BR,
->> Jani.
->> 
->>> ---
->>>   samples/vfio-mdev/mdpy-fb.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
->>> index 2719bb259653..21dbf63d6e41 100644
->>> --- a/samples/vfio-mdev/mdpy-fb.c
->>> +++ b/samples/vfio-mdev/mdpy-fb.c
->>> @@ -86,7 +86,7 @@ static void mdpy_fb_destroy(struct fb_info *info)
->>>   		iounmap(info->screen_base);
->>>   }
->>>   
->>> -static struct fb_ops mdpy_fb_ops = {
->>> +static const struct fb_ops mdpy_fb_ops = {
->>>   	.owner		= THIS_MODULE,
->>>   	.fb_destroy	= mdpy_fb_destroy,
->>>   	.fb_setcolreg	= mdpy_fb_setcolreg,
->> 
->
-> Acked-by : Kirti Wankhede <kwankhede@nvidia.com>
+syzbot has bisected this bug to:
 
-Thanks, pushed to drm-misc-next.
+commit 2de50e9674fc4ca3c6174b04477f69eb26b4ee31
+Author: Russell Currey <ruscur@russell.cc>
+Date:   Mon Feb 8 04:08:20 2016 +0000
 
-BR,
-Jani.
+     powerpc/powernv: Remove support for p5ioc2
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16af042ae00000
+start commit:   9455d25f Merge tag 'ntb-5.5' of git://github.com/jonmason/..
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=15af042ae00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=11af042ae00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7a3b8f5088d4043a
+dashboard link: https://syzkaller.appspot.com/bug?extid=998dec6452146bd7a90c
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fa5c2ee00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12e327f2e00000
+
+Reported-by: syzbot+998dec6452146bd7a90c@syzkaller.appspotmail.com
+Fixes: 2de50e9674fc ("powerpc/powernv: Remove support for p5ioc2")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
