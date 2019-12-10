@@ -2,104 +2,132 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C61C11174BD
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Dec 2019 19:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A59AB117EF2
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 05:26:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727154AbfLISns (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Dec 2019 13:43:48 -0500
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:5028 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726911AbfLISnr (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Dec 2019 13:43:47 -0500
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5dee95dd0000>; Mon, 09 Dec 2019 10:43:41 -0800
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Mon, 09 Dec 2019 10:43:46 -0800
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Mon, 09 Dec 2019 10:43:46 -0800
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 9 Dec
- 2019 18:43:46 +0000
-Received: from [10.40.101.166] (10.124.1.5) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 9 Dec 2019
- 18:43:43 +0000
-Subject: Re: [PATCH v3 11/12] samples: vfio-mdev: constify fb ops
-To:     Jani Nikula <jani.nikula@intel.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-CC:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        <intel-gfx@lists.freedesktop.org>, <kvm@vger.kernel.org>
-References: <cover.1575390740.git.jani.nikula@intel.com>
- <ddb10df1316ef585930cda7718643a580f4fe37b.1575390741.git.jani.nikula@intel.com>
- <87tv694myu.fsf@intel.com>
-X-Nvconfidentiality: public
-From:   Kirti Wankhede <kwankhede@nvidia.com>
-Message-ID: <0d5434e0-3d86-bbb8-6377-94e00b4f0d78@nvidia.com>
-Date:   Tue, 10 Dec 2019 00:13:39 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1726911AbfLJE0L (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 9 Dec 2019 23:26:11 -0500
+Received: from mail-io1-f71.google.com ([209.85.166.71]:37866 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726810AbfLJE0J (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Dec 2019 23:26:09 -0500
+Received: by mail-io1-f71.google.com with SMTP id p2so12390632iof.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 09 Dec 2019 20:26:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=dIyJGQ3B3clY9DtQmNbtYZwIFkxAsZhR+iSPfPXlII0=;
+        b=hyVoVIdaosiXfoXrjqmVr6Fbo0p9C/1AocDlptSkNVerWBlvZDJFWmhxlIZ2qVDenH
+         SpqYVF1PnEfHKqcnLPxWYVhU2i+vzAw3Q0k8B0vIB3UbgsJVZOHs57dZr4ZQKMyV25TI
+         DBqmMJ2ghwnloTejQ2VWeNw97tShjFik38BA6Q26V5YVU/xnBDYiDWLM4SbFRIjZy0JO
+         nv1gDSzLoHJzpu6GhH+ZQlXFJGKEz0hkAv+IjeA7NQWFzZJsdAj/frQxV+mqToIfoqqn
+         ESoYu3zWzIzn5erYJPPzVWcms+FptaXGKDFFoVRWrwcTJ22YU9XEMPRnm919OU2qGk0/
+         BXhA==
+X-Gm-Message-State: APjAAAWmDOn1OhIv2hf6LU7jZyUdQQGKdEXhcP0JOKT2rgDuDx8gsn3k
+        3+uc5W5oUyKQLDnpaB6QDjIeYNSFxHOPTeJKWBDhOOQRzLpU
+X-Google-Smtp-Source: APXvYqyZVf+qEL5eXjQ+tURaI6HmSW7Qv83MNMLwuQC1DxTt3dQrnPV/EYK9HIvwRLYhEmLbufFgnKBJg/TMPE5joMeKseE8+Y8h
 MIME-Version: 1.0
-In-Reply-To: <87tv694myu.fsf@intel.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1575917021; bh=/7RvFJCUG4iQV+IDvVpbMgXKzJOkAMSMaevIPIjioqo=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=Y6wZDvVdMVatstmzKu5SutbP2nXXb/rNT7RvDQBaUBpwel/Ppk8RHXTPSUsY2JLEI
-         GPHAGnnjRUNVizRoR8Bik/EAkJv1xkvimXAesz8C2O1+4klexm8wQ8Z8yaXj+b1rRe
-         c2DJ3atEyFticNm2EfmFogYLEVO30JoyzqWFA7g/xLNwAFICp1XbuysYXsrFqTTaIe
-         WnmR99W4Z45WDhf3Hm7c8UcaSe8GU3sTXSiKOMqsR9q0oM/QX/Xk7J1NroSifpKyH4
-         6zfoBCmb1xYefKzninwV27B8XFwLuBGgpIkFtsmaBxU/k/iDVguLzezRXylNSPloeg
-         F1vJUI8bn7FaQ==
+X-Received: by 2002:a6b:fc01:: with SMTP id r1mr9849017ioh.33.1575951968510;
+ Mon, 09 Dec 2019 20:26:08 -0800 (PST)
+Date:   Mon, 09 Dec 2019 20:26:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000442b12059951e9f7@google.com>
+Subject: general protection fault in fbcon_modechanged
+From:   syzbot <syzbot+d396a0ae28ab4507bc89@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.thompson@linaro.org,
+        daniel.vetter@ffwll.ch, dri-devel@lists.freedesktop.org,
+        ghalat@redhat.com, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
+        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Hello,
+
+syzbot found the following crash on:
+
+HEAD commit:    e42617b8 Linux 5.5-rc1
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15229c2ae00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3754e2c78c1adb82
+dashboard link: https://syzkaller.appspot.com/bug?extid=d396a0ae28ab4507bc89
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+d396a0ae28ab4507bc89@syzkaller.appspotmail.com
+
+kasan: CONFIG_KASAN_INLINE enabled
+kasan: GPF could be caused by NULL-ptr deref or user memory access
+general protection fault: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 24279 Comm: syz-executor.0 Not tainted 5.5.0-rc1-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+RIP: 0010:fbcon_modechanged+0xeb/0x790 drivers/video/fbdev/core/fbcon.c:2967
+Code: 8d 14 ff 4c 8b 2c d5 80 19 10 8c 48 ba 00 00 00 00 00 fc ff df 49 8d  
+85 7c 03 00 00 48 89 c1 48 89 45 c8 83 e0 07 48 c1 e9 03 <0f> b6 14 11 38  
+c2 7f 08 84 d2 0f 85 61 05 00 00 41 0f b6 b5 7c 03
+RSP: 0018:ffffc90002b27828 EFLAGS: 00010207
+RAX: 0000000000000004 RBX: ffff888218cc2400 RCX: 000000000000006f
+RDX: dffffc0000000000 RSI: ffffffff83b22859 RDI: ffffffff8c102af0
+RBP: ffffc90002b27878 R08: ffff888093236040 R09: ffffed1015d2703d
+R10: ffffed1015d2703c R11: ffff8880ae9381e3 R12: ffff888218d25000
+R13: 0000000000000000 R14: ffff888218d25468 R15: 000000000000003e
+FS:  0000000000000000(0000) GS:ffff8880ae900000(0063) knlGS:00000000f5de3b40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 000000000812a0f0 CR3: 000000008f8fb000 CR4: 00000000001426e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+  fbcon_update_vcs+0x42/0x50 drivers/video/fbdev/core/fbcon.c:3038
+  fb_set_var+0xb32/0xdd0 drivers/video/fbdev/core/fbmem.c:1051
+  do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1104
+  fb_compat_ioctl+0x305/0xc50 drivers/video/fbdev/core/fbmem.c:1310
+  __do_compat_sys_ioctl fs/compat_ioctl.c:214 [inline]
+  __se_compat_sys_ioctl fs/compat_ioctl.c:142 [inline]
+  __ia32_compat_sys_ioctl+0x233/0x610 fs/compat_ioctl.c:142
+  do_syscall_32_irqs_on arch/x86/entry/common.c:337 [inline]
+  do_fast_syscall_32+0x27b/0xe16 arch/x86/entry/common.c:408
+  entry_SYSENTER_compat+0x70/0x7f arch/x86/entry/entry_64_compat.S:139
+RIP: 0023:0xf7fe7a39
+Code: 00 00 00 89 d3 5b 5e 5f 5d c3 b8 80 96 98 00 eb c4 8b 04 24 c3 8b 1c  
+24 c3 8b 34 24 c3 8b 3c 24 c3 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90  
+90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 002b:00000000f5de30cc EFLAGS: 00000296 ORIG_RAX: 0000000000000036
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000000004601
+RDX: 0000000020000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+Modules linked in:
+---[ end trace 500a2104f8ca30f5 ]---
+RIP: 0010:fbcon_modechanged+0xeb/0x790 drivers/video/fbdev/core/fbcon.c:2967
+Code: 8d 14 ff 4c 8b 2c d5 80 19 10 8c 48 ba 00 00 00 00 00 fc ff df 49 8d  
+85 7c 03 00 00 48 89 c1 48 89 45 c8 83 e0 07 48 c1 e9 03 <0f> b6 14 11 38  
+c2 7f 08 84 d2 0f 85 61 05 00 00 41 0f b6 b5 7c 03
+RSP: 0018:ffffc90002b27828 EFLAGS: 00010207
+RAX: 0000000000000004 RBX: ffff888218cc2400 RCX: 000000000000006f
+RDX: dffffc0000000000 RSI: ffffffff83b22859 RDI: ffffffff8c102af0
+RBP: ffffc90002b27878 R08: ffff888093236040 R09: ffffed1015d2703d
+R10: ffffed1015d2703c R11: ffff8880ae9381e3 R12: ffff888218d25000
+R13: 0000000000000000 R14: ffff888218d25468 R15: 000000000000003e
+FS:  0000000000000000(0000) GS:ffff8880ae900000(0063) knlGS:00000000f5de3b40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 0000000000bf2fd0 CR3: 000000008f8fb000 CR4: 00000000001426e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
 
-On 12/9/2019 7:31 PM, Jani Nikula wrote:
-> On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
->> Now that the fbops member of struct fb_info is const, we can start
->> making the ops const as well.
->>
->> v2: fix	typo (Christophe de Dinechin)
->>
->> Cc: Kirti Wankhede <kwankhede@nvidia.com>
->> Cc: kvm@vger.kernel.org
->> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> Kirti, may I have your ack to merge this through drm-misc please?
-> 
-> BR,
-> Jani.
-> 
->> ---
->>   samples/vfio-mdev/mdpy-fb.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
->> index 2719bb259653..21dbf63d6e41 100644
->> --- a/samples/vfio-mdev/mdpy-fb.c
->> +++ b/samples/vfio-mdev/mdpy-fb.c
->> @@ -86,7 +86,7 @@ static void mdpy_fb_destroy(struct fb_info *info)
->>   		iounmap(info->screen_base);
->>   }
->>   
->> -static struct fb_ops mdpy_fb_ops = {
->> +static const struct fb_ops mdpy_fb_ops = {
->>   	.owner		= THIS_MODULE,
->>   	.fb_destroy	= mdpy_fb_destroy,
->>   	.fb_setcolreg	= mdpy_fb_setcolreg,
-> 
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Acked-by : Kirti Wankhede <kwankhede@nvidia.com>
-
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
