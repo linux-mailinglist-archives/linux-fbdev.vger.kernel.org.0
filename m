@@ -2,130 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36165117F0C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 05:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11D0C1180D2
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 07:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbfLJEfI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Dec 2019 23:35:08 -0500
-Received: from mail-il1-f197.google.com ([209.85.166.197]:38665 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726619AbfLJEfI (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Dec 2019 23:35:08 -0500
-Received: by mail-il1-f197.google.com with SMTP id o18so13482507ilb.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 09 Dec 2019 20:35:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=ojUsEZmdHCxS3AxxhdmlegdxZox/znL15KjV4PQzpWY=;
-        b=ZCzibZt1gVw2hE30AURhkcBREwVFToOv3Thle0+t9QgPgjNWB74adBkZtcyM0q1UG/
-         AUBqPnILwtq3DH5R1iJ9KEV2VYfLVIgeYhyivIX+BdIWuM1GlQd9xB9oJG3eGR3vmloU
-         g08ZsecguCYWas2YF2MWTag540kHLYXEZoOyY6GvN7twyP/0rwMNOEfpyN+aMHvm2g1O
-         YTHjA0oUpx9Wlc7fZMeNofdwAMIW+ki/iBxaD+/JpbNseWJ/Z3LU8br5b+H7GHXuP9dp
-         sARacdEmeD44HU7NOlJ+SXfiNLAEPpvx5xesCbq9PDzj1ZtMhXYiHbVRUuWv2oFccLWg
-         w8WQ==
-X-Gm-Message-State: APjAAAX1FzFXwuzezXzbTH+kN8N04iuNWIxz3Qs2WHQ4jgc0x7Zwv7mh
-        iZ0ybICxbda7bKZ5D2dKCz/tFrQmEHyPBx2tJRxSgTVKAVeu
-X-Google-Smtp-Source: APXvYqxtY4ucMI2e+tz8tCQDhxmqZLWTzAv+U0BPSTC6krA/zKqyEzVTXXPPyX9XbROjO707XOsxABLM7n78xjcpZIous7+eq2US
+        id S1727119AbfLJGxO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Dec 2019 01:53:14 -0500
+Received: from mga12.intel.com ([192.55.52.136]:17562 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727024AbfLJGxO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 10 Dec 2019 01:53:14 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 22:53:14 -0800
+X-IronPort-AV: E=Sophos;i="5.69,298,1571727600"; 
+   d="scan'208";a="203087366"
+Received: from wwisnei1-mobl.ger.corp.intel.com (HELO localhost) ([10.249.33.29])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Dec 2019 22:53:11 -0800
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     Kirti Wankhede <kwankhede@nvidia.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v3 11/12] samples: vfio-mdev: constify fb ops
+In-Reply-To: <0d5434e0-3d86-bbb8-6377-94e00b4f0d78@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1575390740.git.jani.nikula@intel.com> <ddb10df1316ef585930cda7718643a580f4fe37b.1575390741.git.jani.nikula@intel.com> <87tv694myu.fsf@intel.com> <0d5434e0-3d86-bbb8-6377-94e00b4f0d78@nvidia.com>
+Date:   Tue, 10 Dec 2019 08:53:15 +0200
+Message-ID: <87wob4vfhg.fsf@intel.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:9f9c:: with SMTP id z28mr32065504ilk.239.1575952507966;
- Mon, 09 Dec 2019 20:35:07 -0800 (PST)
-Date:   Mon, 09 Dec 2019 20:35:07 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006b9e8d059952095e@google.com>
-Subject: KASAN: global-out-of-bounds Read in fbcon_get_font
-From:   syzbot <syzbot+29d4ed7f3bdedf2aa2fd@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, ghalat@redhat.com,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, sam@ravnborg.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Tue, 10 Dec 2019, Kirti Wankhede <kwankhede@nvidia.com> wrote:
+> On 12/9/2019 7:31 PM, Jani Nikula wrote:
+>> On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
+>>> Now that the fbops member of struct fb_info is const, we can start
+>>> making the ops const as well.
+>>>
+>>> v2: fix	typo (Christophe de Dinechin)
+>>>
+>>> Cc: Kirti Wankhede <kwankhede@nvidia.com>
+>>> Cc: kvm@vger.kernel.org
+>>> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> 
+>> Kirti, may I have your ack to merge this through drm-misc please?
+>> 
+>> BR,
+>> Jani.
+>> 
+>>> ---
+>>>   samples/vfio-mdev/mdpy-fb.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
+>>> index 2719bb259653..21dbf63d6e41 100644
+>>> --- a/samples/vfio-mdev/mdpy-fb.c
+>>> +++ b/samples/vfio-mdev/mdpy-fb.c
+>>> @@ -86,7 +86,7 @@ static void mdpy_fb_destroy(struct fb_info *info)
+>>>   		iounmap(info->screen_base);
+>>>   }
+>>>   
+>>> -static struct fb_ops mdpy_fb_ops = {
+>>> +static const struct fb_ops mdpy_fb_ops = {
+>>>   	.owner		= THIS_MODULE,
+>>>   	.fb_destroy	= mdpy_fb_destroy,
+>>>   	.fb_setcolreg	= mdpy_fb_setcolreg,
+>> 
+>
+> Acked-by : Kirti Wankhede <kwankhede@nvidia.com>
 
-syzbot found the following crash on:
+Thanks, pushed to drm-misc-next.
 
-HEAD commit:    6cf8298d Add linux-next specific files for 20191209
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=168bbb7ae00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=682fc0ce6c86e3c7
-dashboard link: https://syzkaller.appspot.com/bug?extid=29d4ed7f3bdedf2aa2fd
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12fff061e00000
+BR,
+Jani.
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+29d4ed7f3bdedf2aa2fd@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: global-out-of-bounds in memcpy include/linux/string.h:425  
-[inline]
-BUG: KASAN: global-out-of-bounds in fbcon_get_font+0x2b2/0x5e0  
-drivers/video/fbdev/core/fbcon.c:2465
-Read of size 32 at addr ffffffff88729d80 by task syz-executor.3/9100
-
-CPU: 1 PID: 9100 Comm: syz-executor.3 Not tainted  
-5.5.0-rc1-next-20191209-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:639
-  check_memory_region_inline mm/kasan/generic.c:185 [inline]
-  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
-  memcpy+0x24/0x50 mm/kasan/common.c:125
-  memcpy include/linux/string.h:425 [inline]
-  fbcon_get_font+0x2b2/0x5e0 drivers/video/fbdev/core/fbcon.c:2465
-  con_font_get drivers/tty/vt/vt.c:4446 [inline]
-  con_font_op+0x20b/0x1270 drivers/tty/vt/vt.c:4605
-  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a6f9
-Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f30314dcc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a6f9
-RDX: 0000000000713000 RSI: 0000000000004b60 RDI: 0000000000000004
-RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f30314dd6d4
-R13: 00000000004c6d87 R14: 00000000004dd3e0 R15: 00000000ffffffff
-
-The buggy address belongs to the variable:
-  fontdata_8x16+0x1000/0x1120
-
-Memory state around the buggy address:
-  ffffffff88729c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ffffffff88729d00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> ffffffff88729d80: fa fa fa fa 06 fa fa fa fa fa fa fa 05 fa fa fa
-                    ^
-  ffffffff88729e00: fa fa fa fa 06 fa fa fa fa fa fa fa 00 00 03 fa
-  ffffffff88729e80: fa fa fa fa 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+-- 
+Jani Nikula, Intel Open Source Graphics Center
