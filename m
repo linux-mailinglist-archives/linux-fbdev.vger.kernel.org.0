@@ -2,153 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE676118DB8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 17:38:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 662C9119053
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2019 20:08:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727594AbfLJQiK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Dec 2019 11:38:10 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:46481 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727494AbfLJQiJ (ORCPT
+        id S1727645AbfLJTIO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Dec 2019 14:08:14 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:44094 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727638AbfLJTIO (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Dec 2019 11:38:09 -0500
-Received: by mail-io1-f70.google.com with SMTP id b186so13670905iof.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 10 Dec 2019 08:38:09 -0800 (PST)
+        Tue, 10 Dec 2019 14:08:14 -0500
+Received: by mail-lj1-f195.google.com with SMTP id c19so21076953lji.11
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Dec 2019 11:08:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7ulX543+9toeatXV1iMTIBBXIHYl2aF/n/HSQV4cdnE=;
+        b=krMB+98HHl2ikMxCeSc8JFW1+AKXXIBqxKEUFRZdXCP1YR54Hhair5K6iNLFON53eI
+         o5itHuP/xpP/CN2fL1fViuQ7rwaBkWy9TkqHT9/VbB/tqAE/MI6rLGgqzDqhRF4kKSD6
+         5HszHqiAvyFUzJBYAGWF5IlNAtJaJ5DZDyQ9TBAy6MdUDUW9GQ6egnY4hozVT3cnyuii
+         vWe9LQ5tBDqGquzggHj0MgMvZVY57t0Gx+myVxUW4VwgH0fQYr2g90QtCoT/ciZmoQpO
+         ZirSJ4quZaQhbOCIAZZ+FoIBynxoLnBBtCLQKByczBguymQcECvGryJw8oqc1JRFPFT8
+         WbcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=uCq5HA7BmvJopfTUDQwacB9njYfd+WsmvAPPNIGbe6E=;
-        b=bGNughQFq32yDwanNTkd3mi/sIFkqcmgMiqljXkLBzNDLLlNwCy1qC21+xUBaUsuD6
-         12MbtvPo3Ux57cMol6mKp51DHL7DU2XInGyC5gOm3bV3Fdk1qUEbzqEnNiwbK2oSdPfr
-         Ru9b7EbLN1spub50z3G+/LhF04yzfLhc0msJRr2dpyzI5/xedGKwkaNbwRlNfVkff8uY
-         7JJ4Y/FYJ4mWDyRl4KJwAijqU1LrBZDDcBvILMVrjAasdN2JCZ6rv7kWqTkGpRIIn4rx
-         /oOe2Fo+m+7nh0yv2uWM1Cw59DdS3dQ+8mGh9q6V/fc4meO3z7G4q6PKEhoUf4ByQlzH
-         w+aQ==
-X-Gm-Message-State: APjAAAU3jwoOLGhk/wyrEiYnMBM6iY9EOr9DD8GGPwItatQEJO037Rv4
-        PNLDlXQYz69AB7u1RMhmK0IFO7vCHNTjA0ZVT+56aRyIie0i
-X-Google-Smtp-Source: APXvYqzn8FlWXKA4hFy9XTE0Ib9XqN9SRmuRiOGcY/8ozcw7lzzeIvUcj5j9hVxj09SVLghIzzNJ3megIjhslIqliDHNYeGMKzcT
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7ulX543+9toeatXV1iMTIBBXIHYl2aF/n/HSQV4cdnE=;
+        b=RBfJMJ79co1D/YPYIfmrAn2x+K+AFjOO3UeZvkdTIi7fmczOEAIyPPVanmxvFXN4zU
+         2+DGedBglw2XUSc3r9kuzEdDcVCfpKiiH69FJAsx7pHJcI4lz+uVdVPZmXvIkhyh1EYu
+         qrG/RBelVFTHGazOV3oKXmNqgHMM/HnJ9+G/OqnUKCGN2zUvr7SJApqe1w66qYa8zSTS
+         msMqa7EAVb6/105TjPAXSr3rZ4BgifGYGZ/LetHPL1ryBDVqqQHfGfQIhk5nnU0Ro+Zi
+         Pl3ziwyzG069OL/kV2LRBNV5+Cp+vOtbrFPbkQRpYNq/XYqfsUpCtnDw4rbwNY+/op4k
+         7uLg==
+X-Gm-Message-State: APjAAAXj0T7gKCL1vdADTywPxYjnPR+QWMKXpCOmZLXnpp1/xdSYpwa8
+        rEVIWgS91mJPJpkIQD22WWaHHrigUagW1i2CqjgYQg==
+X-Google-Smtp-Source: APXvYqwbAv2cElTyCaMQre9NPYKpWiyhQ0WKEV0u6pXHxn6mzg24fDBxfrswSCfVWucaAJwWg2+mx4KbDWo/BeBJe2k=
+X-Received: by 2002:a2e:9b05:: with SMTP id u5mr21292120lji.59.1576004892742;
+ Tue, 10 Dec 2019 11:08:12 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a92:844d:: with SMTP id l74mr3570750ild.16.1575995888710;
- Tue, 10 Dec 2019 08:38:08 -0800 (PST)
-Date:   Tue, 10 Dec 2019 08:38:08 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000001d3ff605995c23d6@google.com>
-Subject: BUG: unable to handle kernel paging request in sys_imageblit
-From:   syzbot <syzbot+33f89a9a6b6acd893b11@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+References: <cover.1575390740.git.jani.nikula@intel.com> <31c18e3ce9d6962aabda4799b3051039ff591c92.1575390741.git.jani.nikula@intel.com>
+ <87pngx4muv.fsf@intel.com>
+In-Reply-To: <87pngx4muv.fsf@intel.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 10 Dec 2019 20:08:01 +0100
+Message-ID: <CANiq72nPccKZghPM-FrNRnQ8AkN_r40cUmM3ruhyGtiTs_DdyQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/12] auxdisplay: constify fb ops
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Robin van der Gracht <robin@protonic.nl>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Mon, Dec 9, 2019 at 3:04 PM Jani Nikula <jani.nikula@intel.com> wrote:
+>
+> On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
+> > Now that the fbops member of struct fb_info is const, we can start
+> > making the ops const as well.
+> >
+> > Cc: Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>
+> > Cc: Robin van der Gracht <robin@protonic.nl>
+> > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > Reviewed-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> > Acked-by: Robin van der Gracht <robin@protonic.nl>
+> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> Miguel, Robin, just to err on the safe side, were you both okay with me
+> merging this through drm-misc? Not very likely to conflict badly.
 
-syzbot found the following crash on:
+I think that is fine, go ahead! :)
 
-HEAD commit:    6794862a Merge tag 'for-5.5-rc1-kconfig-tag' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1574aaeae00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=79f79de2a27d3e3d
-dashboard link: https://syzkaller.appspot.com/bug?extid=33f89a9a6b6acd893b11
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-
-Unfortunately, I don't have any reproducer for this crash yet.
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+33f89a9a6b6acd893b11@syzkaller.appspotmail.com
-
-BUG: unable to handle page fault for address: fffff5200124c3fc
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 7ffcd067 P4D 7ffcd067 PUD 2cd1c067 PMD 299b2067 PTE 0
-Oops: 0000 [#1] PREEMPT SMP KASAN
-CPU: 2 PID: 9109 Comm: syz-executor.2 Not tainted 5.5.0-rc1-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS  
-rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-RIP: 0010:fast_imageblit drivers/video/fbdev/core/sysimgblt.c:229 [inline]
-RIP: 0010:sys_imageblit+0x61c/0x1240  
-drivers/video/fbdev/core/sysimgblt.c:275
-Code: 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 57 0b 00 00 48 b9 00 00 00 00 00  
-fc ff df 4c 89 fa 8b 45 b0 23 07 4d 8d 77 04 48 c1 ea 03 <0f> b6 0c 0a 4c  
-89 fa 83 e2 07 33 45 c4 83 c2 03 38 ca 7c 08 84 c9
-RSP: 0018:ffffc900042c7168 EFLAGS: 00010a06
-RAX: 0000000000000000 RBX: ffff888076970800 RCX: dffffc0000000000
-RDX: 1ffff9200124c3fc RSI: ffffffff83b4fada RDI: ffffffff887498e0
-RBP: ffffc900042c7230 R08: ffff88805d278e40 R09: 000000000000007f
-R10: fffffbfff14f3347 R11: ffffffff8a799a3b R12: 0000000000000007
-R13: 0000000000000007 R14: ffffc90009261fe4 R15: ffffc90009261fe0
-FS:  00007f0af02fc700(0000) GS:ffff88802d200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffff5200124c3fc CR3: 00000000278c2000 CR4: 0000000000340ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  drm_fb_helper_sys_imageblit+0x21/0x180 drivers/gpu/drm/drm_fb_helper.c:768
-  bit_putcs_unaligned drivers/video/fbdev/core/bitblit.c:139 [inline]
-  bit_putcs+0x9a3/0xf10 drivers/video/fbdev/core/bitblit.c:188
-  fbcon_putcs+0x33c/0x3e0 drivers/video/fbdev/core/fbcon.c:1353
-  do_update_region+0x42b/0x6f0 drivers/tty/vt/vt.c:677
-  invert_screen+0x2da/0x650 drivers/tty/vt/vt.c:794
-  highlight drivers/tty/vt/selection.c:53 [inline]
-  clear_selection drivers/tty/vt/selection.c:81 [inline]
-  clear_selection+0x59/0x70 drivers/tty/vt/selection.c:77
-  vc_do_resize+0x1163/0x1460 drivers/tty/vt/vt.c:1200
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  fbcon_do_set_font+0x4a6/0x960 drivers/video/fbdev/core/fbcon.c:2599
-  fbcon_set_font+0x72e/0x860 drivers/video/fbdev/core/fbcon.c:2696
-  con_font_set drivers/tty/vt/vt.c:4538 [inline]
-  con_font_op+0xe30/0x1270 drivers/tty/vt/vt.c:4603
-  vt_ioctl+0xd2e/0x26d0 drivers/tty/vt/vt_ioctl.c:913
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a7c9
-Code: bd b1 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 8b b1 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f0af02fbc88 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 000000000072bf00 RCX: 000000000045a7c9
-RDX: 0000000020000000 RSI: 0000000000004b61 RDI: 0000000000000003
-RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f0af02fc6d4
-R13: 00000000004ab60f R14: 00000000006ede60 R15: 00000000ffffffff
-Modules linked in:
-CR2: fffff5200124c3fc
----[ end trace 7698227ca2d5f789 ]---
-RIP: 0010:fast_imageblit drivers/video/fbdev/core/sysimgblt.c:229 [inline]
-RIP: 0010:sys_imageblit+0x61c/0x1240  
-drivers/video/fbdev/core/sysimgblt.c:275
-Code: 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 57 0b 00 00 48 b9 00 00 00 00 00  
-fc ff df 4c 89 fa 8b 45 b0 23 07 4d 8d 77 04 48 c1 ea 03 <0f> b6 0c 0a 4c  
-89 fa 83 e2 07 33 45 c4 83 c2 03 38 ca 7c 08 84 c9
-RSP: 0018:ffffc900042c7168 EFLAGS: 00010a06
-RAX: 0000000000000000 RBX: ffff888076970800 RCX: dffffc0000000000
-RDX: 1ffff9200124c3fc RSI: ffffffff83b4fada RDI: ffffffff887498e0
-RBP: ffffc900042c7230 R08: ffff88805d278e40 R09: 000000000000007f
-R10: fffffbfff14f3347 R11: ffffffff8a799a3b R12: 0000000000000007
-R13: 0000000000000007 R14: ffffc90009261fe4 R15: ffffc90009261fe0
-FS:  00007f0af02fc700(0000) GS:ffff88802d200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffff5200124c3fc CR3: 00000000278c2000 CR4: 0000000000340ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Cheers,
+Miguel
