@@ -2,122 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5035811DE8B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Dec 2019 08:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF4211E231
+	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Dec 2019 11:41:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725906AbfLMHVM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 13 Dec 2019 02:21:12 -0500
-Received: from mail-il1-f200.google.com ([209.85.166.200]:50795 "EHLO
-        mail-il1-f200.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbfLMHVL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 13 Dec 2019 02:21:11 -0500
-Received: by mail-il1-f200.google.com with SMTP id l63so1321662ili.17
-        for <linux-fbdev@vger.kernel.org>; Thu, 12 Dec 2019 23:21:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=UBhSC4Z1qFXXc2HUBCNu4A2Q6en5x0QfWiP2o1ZOWSQ=;
-        b=ufVcc8Vz9oDv6tLVLTW57lo0sdHowJJHiLPSQju1Cxc2iEcOkYnvSraw5jXfnKsAq7
-         v+edXxwmlfw9oP3KGxYBzycH/XA3/E/EekL1bd9UhZRYduLjk+z3DvrSFdhqctAO7h2m
-         doNR97oYz2FR6ujcix606xQW7i24ScfU8tDOBBZCcxV3pU3R2AH80lO4WPpcX3StmyNm
-         yPcyugPrq6H7P//+pJOhyfbkZ2MZgS1A2KDztyEzUGBMwFz1TBo5OHpn88tl5djO//ty
-         wuK+0BgCgoe4XDcXRZCrXHB751Y92yhmO4ayzfbfUyYVVcylBNf3XXB8Ya4GZ/jeFEXA
-         EbXw==
-X-Gm-Message-State: APjAAAV3fSUA1m1jvaLn34g9muWSuEbXge5Z1b31K6S0hz2IopKdeo8l
-        NLqWuhuSWtZv1autzZvxLrMOVjUe6sdQabXnzS7bhT7xbrDf
-X-Google-Smtp-Source: APXvYqzKKDdtoK2MWqr9l+ar5eCKKhGAGTth0kWrsd/T2k0/rM0mMhIfPpKbRcWtAyxzqqBE7fE2iwHx91u+IqjiYLKFy4qHT1NU
+        id S1726016AbfLMKlj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 13 Dec 2019 05:41:39 -0500
+Received: from mga06.intel.com ([134.134.136.31]:44851 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725890AbfLMKlj (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 13 Dec 2019 05:41:39 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Dec 2019 02:41:39 -0800
+X-IronPort-AV: E=Sophos;i="5.69,309,1571727600"; 
+   d="scan'208";a="204291289"
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Dec 2019 02:41:36 -0800
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     Hans Verkuil <hverkuil@xs4all.nl>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Cc:     intel-gfx@lists.freedesktop.org,
+        Andy Walls <awalls@md.metrocast.net>,
+        linux-media@vger.kernel.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v3 10/12] media: constify fb ops across all drivers
+In-Reply-To: <966b9db7-b6c2-d3a2-0842-574186418860@xs4all.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1575390740.git.jani.nikula@intel.com> <71794337f8611271f2c1fdb3882119a58e743a87.1575390741.git.jani.nikula@intel.com> <966b9db7-b6c2-d3a2-0842-574186418860@xs4all.nl>
+Date:   Fri, 13 Dec 2019 12:41:33 +0200
+Message-ID: <87a77w33tu.fsf@intel.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:902:: with SMTP id y2mr12186015ilg.196.1576221669031;
- Thu, 12 Dec 2019 23:21:09 -0800 (PST)
-Date:   Thu, 12 Dec 2019 23:21:09 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000ab87b6059990b486@google.com>
-Subject: general protection fault in fbcon_cursor
-From:   syzbot <syzbot+6acf28c23c81badd89a7@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
-        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Thu, 12 Dec 2019, Hans Verkuil <hverkuil@xs4all.nl> wrote:
+> On 12/3/19 5:38 PM, Jani Nikula wrote:
+>> Now that the fbops member of struct fb_info is const, we can start
+>> making the ops const as well.
+>> 
+>> Remove the redundant fbops assignments while at it.
+>> 
+>> v2:
+>> - actually add const in vivid
+>> - fix typo (Christophe de Dinechin)
+>> 
+>> Cc: Hans Verkuil <hverkuil@xs4all.nl>
+>> Cc: Andy Walls <awalls@md.metrocast.net>
+>> Cc: linux-media@vger.kernel.org
+>> Cc: ivtv-devel@ivtvdriver.org
+>> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-syzbot found the following crash on:
+Pushed to drm-misc-next, thanks for the reviews and acks.
 
-HEAD commit:    ae4b064e Merge tag 'afs-fixes-20191211' of git://git.kerne..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1218c1dee00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=79f79de2a27d3e3d
-dashboard link: https://syzkaller.appspot.com/bug?extid=6acf28c23c81badd89a7
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+BR,
+Jani.
 
-Unfortunately, I don't have any reproducer for this crash yet.
+>
+> Thanks!
+>
+> 	Hans
+>
+>> ---
+>>  drivers/media/pci/ivtv/ivtvfb.c          | 3 +--
+>>  drivers/media/platform/vivid/vivid-osd.c | 3 +--
+>>  2 files changed, 2 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
+>> index 95a56cce9b65..f2922b554b09 100644
+>> --- a/drivers/media/pci/ivtv/ivtvfb.c
+>> +++ b/drivers/media/pci/ivtv/ivtvfb.c
+>> @@ -925,7 +925,7 @@ static int ivtvfb_blank(int blank_mode, struct fb_info *info)
+>>  	return 0;
+>>  }
+>>  
+>> -static struct fb_ops ivtvfb_ops = {
+>> +static const struct fb_ops ivtvfb_ops = {
+>>  	.owner = THIS_MODULE,
+>>  	.fb_write       = ivtvfb_write,
+>>  	.fb_check_var   = ivtvfb_check_var,
+>> @@ -1049,7 +1049,6 @@ static int ivtvfb_init_vidmode(struct ivtv *itv)
+>>  
+>>  	oi->ivtvfb_info.node = -1;
+>>  	oi->ivtvfb_info.flags = FBINFO_FLAG_DEFAULT;
+>> -	oi->ivtvfb_info.fbops = &ivtvfb_ops;
+>>  	oi->ivtvfb_info.par = itv;
+>>  	oi->ivtvfb_info.var = oi->ivtvfb_defined;
+>>  	oi->ivtvfb_info.fix = oi->ivtvfb_fix;
+>> diff --git a/drivers/media/platform/vivid/vivid-osd.c b/drivers/media/platform/vivid/vivid-osd.c
+>> index f2e789bdf4a6..fbaec8acc161 100644
+>> --- a/drivers/media/platform/vivid/vivid-osd.c
+>> +++ b/drivers/media/platform/vivid/vivid-osd.c
+>> @@ -244,7 +244,7 @@ static int vivid_fb_blank(int blank_mode, struct fb_info *info)
+>>  	return 0;
+>>  }
+>>  
+>> -static struct fb_ops vivid_fb_ops = {
+>> +static const struct fb_ops vivid_fb_ops = {
+>>  	.owner = THIS_MODULE,
+>>  	.fb_check_var   = vivid_fb_check_var,
+>>  	.fb_set_par     = vivid_fb_set_par,
+>> @@ -311,7 +311,6 @@ static int vivid_fb_init_vidmode(struct vivid_dev *dev)
+>>  
+>>  	dev->fb_info.node = -1;
+>>  	dev->fb_info.flags = FBINFO_FLAG_DEFAULT;
+>> -	dev->fb_info.fbops = &vivid_fb_ops;
+>>  	dev->fb_info.par = dev;
+>>  	dev->fb_info.var = dev->fb_defined;
+>>  	dev->fb_info.fix = dev->fb_fix;
+>> 
+>
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+6acf28c23c81badd89a7@syzkaller.appspotmail.com
-
-kasan: CONFIG_KASAN_INLINE enabled
-kasan: GPF could be caused by NULL-ptr deref or user memory access
-general protection fault: 0000 [#1] PREEMPT SMP KASAN
-CPU: 1 PID: 17 Comm: kworker/1:0 Not tainted 5.5.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Workqueue: events console_callback
-RIP: 0010:fbcon_cursor+0x114/0x660 drivers/video/fbdev/core/fbcon.c:1380
-Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 e6 04 00 00 4d 8b b4 24 a0 03  
-00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 <0f> b6 14 02 4c  
-89 f0 83 e0 07 83 c0 01 38 d0 7c 08 84 d2 0f 85 ba
-RSP: 0018:ffffc90000d8fb00 EFLAGS: 00010206
-RAX: dffffc0000000000 RBX: ffff8880a4309400 RCX: ffffffff83e01590
-RDX: 000000001fffffe7 RSI: ffffffff83b2804c RDI: ffff8880a282b3a0
-RBP: ffffc90000d8fb40 R08: ffff8880a9a4a480 R09: ffffed10147a3e1c
-R10: ffffed10147a3e1b R11: ffff8880a3d1f0df R12: ffff8880a282b000
-R13: ffff888218c76000 R14: 00000000ffffff3a R15: ffff888218c76468
-FS:  0000000000000000(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000004bf9b0 CR3: 000000008e75d000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  set_cursor drivers/tty/vt/vt.c:908 [inline]
-  set_cursor+0x1fb/0x280 drivers/tty/vt/vt.c:899
-  redraw_screen+0x4e1/0x7d0 drivers/tty/vt/vt.c:1013
-  complete_change_console+0x105/0x3a0 drivers/tty/vt/vt_ioctl.c:1264
-  change_console+0x19b/0x2c0 drivers/tty/vt/vt_ioctl.c:1389
-  console_callback+0x3a1/0x400 drivers/tty/vt/vt.c:2824
-  process_one_work+0x9af/0x1740 kernel/workqueue.c:2264
-  worker_thread+0x98/0xe40 kernel/workqueue.c:2410
-  kthread+0x361/0x430 kernel/kthread.c:255
-  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-Modules linked in:
----[ end trace a825343a1e8757e1 ]---
-RIP: 0010:fbcon_cursor+0x114/0x660 drivers/video/fbdev/core/fbcon.c:1380
-Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 e6 04 00 00 4d 8b b4 24 a0 03  
-00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 <0f> b6 14 02 4c  
-89 f0 83 e0 07 83 c0 01 38 d0 7c 08 84 d2 0f 85 ba
-RSP: 0018:ffffc90000d8fb00 EFLAGS: 00010206
-RAX: dffffc0000000000 RBX: ffff8880a4309400 RCX: ffffffff83e01590
-RDX: 000000001fffffe7 RSI: ffffffff83b2804c RDI: ffff8880a282b3a0
-RBP: ffffc90000d8fb40 R08: ffff8880a9a4a480 R09: ffffed10147a3e1c
-R10: ffffed10147a3e1b R11: ffff8880a3d1f0df R12: ffff8880a282b000
-R13: ffff888218c76000 R14: 00000000ffffff3a R15: ffff888218c76468
-FS:  0000000000000000(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000004bf9b0 CR3: 000000008e75d000 CR4: 00000000001406e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+-- 
+Jani Nikula, Intel Open Source Graphics Center
