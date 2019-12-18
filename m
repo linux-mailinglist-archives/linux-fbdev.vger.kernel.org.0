@@ -2,57 +2,57 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 026F0123D86
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Dec 2019 03:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D7F123D9F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Dec 2019 04:00:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726496AbfLRCxt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 17 Dec 2019 21:53:49 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:43120 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbfLRCxt (ORCPT
+        id S1726510AbfLRDAc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 17 Dec 2019 22:00:32 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:39883 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726496AbfLRDAc (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 17 Dec 2019 21:53:49 -0500
-Received: by mail-ot1-f68.google.com with SMTP id p8so481923oth.10;
-        Tue, 17 Dec 2019 18:53:48 -0800 (PST)
+        Tue, 17 Dec 2019 22:00:32 -0500
+Received: by mail-ot1-f65.google.com with SMTP id 77so515844oty.6;
+        Tue, 17 Dec 2019 19:00:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=napGSWjNbtalCcb/TGth7a+gCE4XiYyJESJ2KzfJmU8=;
-        b=hs0MAylM1x9OeqPMSPUXXG4f/LQFGdgUZ+x09WQNrJ6Is+O9oD5Yz4jKugxFxQzh7n
-         S9bw9s50RChQY5ZGMz76zzUpS1LFrrARuogPumZpCpxuAEhE+QB5MxGeJaKNzvwOuOiQ
-         YPgor9D+jr0x3K0qnhzgruo6r0y9XBCLMhokJiNc2AI26q3ckHXNU4pF3tRcS+cRtkId
-         qM4t1XRlWudrz2fDAxMCfN4HpXkPgE+W34bSz+J5Ycf7GvNuRcSBzMyIIt59UkKxQBHd
-         OujXN65VcqHiTytgficx6Bq6nF6nRNhz1l/+Ak3lmmG/dxdjfjGkOs52tT0ehE30R7fZ
-         bGNg==
+        bh=kwTUvw7XaRz2SlqwuKp+LVG2T88wKaGXcyDmN7449mo=;
+        b=M/qv0ZCZkJmxKvIbZ4PXNPWC/fhpd48XEONEmvva4ejd2BHXSxvrlhZ7SCIYEmuoFv
+         Ik5Xu3mWH63/5iHKxKWWHrTFKDsSQESLrupFeEt0xZb8NwQOwIGFJav3ttaH0m6GNW51
+         XHYXeh1pHCczyCjIBveXYhH4SNvpZfTuggOrRzKdUnSpnpuAn9NDAbupV8pQE8C6v/Eo
+         yMIEMVS+FeOGTWwjy801kTD5c/BB8fQJHqdlGXk/oqCu4max09GZAxwLb7LzQLLemhcP
+         oBdSSOspGKJk6mKm7uFQ6W0wt16uOedOnliZPdJ67Iv1R6PGlT18n48Pe7xj7+Ppm5sf
+         GwLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=napGSWjNbtalCcb/TGth7a+gCE4XiYyJESJ2KzfJmU8=;
-        b=DLStilepSzUI/mDAFmbeixFL2tNW3AhY/egiS9Z8aWZj/5VJKx+yhk3o/y0Swkvd6n
-         KWHrO+CNRAWkx2B0XtTgq3VZn6p+kzjHqxlRl2S2iUST+fmmhXubIKUtTJm7qBcF7jDJ
-         OiKg09Pz7uScutRzKwY+5ECtua6Jd2bdzpujCQehBS19K+Um421wZ5Ti7VkEjG3A/iVR
-         C8kn2WKEgQzXrsbRTMzc0Ur9Q2ACtyvl/qzGljoLDK8BeywrdalW2sfqC2fYMxDHaE0p
-         5QU1V1IJ3yuaKjVGWSxgBbXjI6WfmoTtG0P82fBth3HFRAgK5a6AlHfhY5c8TD1IUzUu
-         fi4Q==
-X-Gm-Message-State: APjAAAWw1m5H/EhzyZOCHTryR5eahaZVzr0BzInq3+1P+FffguDXHW3W
-        Wv9oiE/dJMA2ydYwp+j1nfazIPTb
-X-Google-Smtp-Source: APXvYqweUnGyc7Bkuy40mtuJwRPbvb6R4a3nrdaFBq7qRzNeSOHozOIJBbv5SpCrYTFmG64y7nKIEg==
-X-Received: by 2002:a05:6830:2361:: with SMTP id r1mr51151oth.88.1576637627813;
-        Tue, 17 Dec 2019 18:53:47 -0800 (PST)
+        bh=kwTUvw7XaRz2SlqwuKp+LVG2T88wKaGXcyDmN7449mo=;
+        b=B+ukqtv9jQw5x1oTtHPEUWjZIY5hMbEcWi47hSmV/UNPRMHy3xFHa01UDr/3z83UXF
+         F61ZZ15O6y8JZBQhpdgcgdKBaoXOQCwsOIMRdgPBmiFXIPuW/jwRs8H/pOIbEZCzF/vQ
+         PIew/LN5EuFyXISedyOqDvP6L2a4k/ZTv+DhaUQ6+6PuS82wAYRrLMFsWPfQQtOSvNFE
+         p7gJYMHwbdxs23BFHOy0ICfMj+gA0/cIrRJDQi5RYOah5dFffj3hO7NBQ+Nx90icW+FC
+         Ne60E/tchZtBX1qEr5AGIaajMK77id9+zWiVHKYjHSTsc6gCcSyrWCxGH1rkNBUA40C/
+         B+pA==
+X-Gm-Message-State: APjAAAXZQoL+phcRnrSufRKzPmKlM3q54I3qD71ajXlA9/iS3I2OIsbD
+        UJECX1AVWoxriAxFdc7gv/E=
+X-Google-Smtp-Source: APXvYqwi52DW7BTH/Joy63L2i6a/L8NgInTxr1fjqelbSr7NB6xlsFO0WENr+MWp3f3/50zFaX0Qbg==
+X-Received: by 2002:a05:6830:1442:: with SMTP id w2mr29328otp.143.1576638030607;
+        Tue, 17 Dec 2019 19:00:30 -0800 (PST)
 Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id q16sm279817otl.74.2019.12.17.18.53.47
+        by smtp.gmail.com with ESMTPSA id b3sm327530oie.25.2019.12.17.19.00.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 18:53:47 -0800 (PST)
+        Tue, 17 Dec 2019 19:00:30 -0800 (PST)
 From:   Nathan Chancellor <natechancellor@gmail.com>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
         Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] fbcon: Adjust indentation in set_con2fb_map
-Date:   Tue, 17 Dec 2019 19:53:37 -0700
-Message-Id: <20191218025337.35044-1-natechancellor@gmail.com>
+Subject: [PATCH] fbmem: Adjust indentation in fb_prepare_logo and fb_blank
+Date:   Tue, 17 Dec 2019 20:00:25 -0700
+Message-Id: <20191218030025.10064-1-natechancellor@gmail.com>
 X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
 X-Patchwork-Bot: notify
@@ -64,88 +64,100 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Clang warns:
 
-../drivers/video/fbdev/core/fbcon.c:915:3: warning: misleading
+../drivers/video/fbdev/core/fbmem.c:665:3: warning: misleading
+indentation; statement is not part of the previous 'else'
+[-Wmisleading-indentation]
+        if (fb_logo.depth > 4 && depth > 4) {
+        ^
+../drivers/video/fbdev/core/fbmem.c:661:2: note: previous statement is
+here
+        else
+        ^
+../drivers/video/fbdev/core/fbmem.c:1075:3: warning: misleading
 indentation; statement is not part of the previous 'if'
 [-Wmisleading-indentation]
-        return err;
+        return ret;
         ^
-../drivers/video/fbdev/core/fbcon.c:912:2: note: previous statement is
+../drivers/video/fbdev/core/fbmem.c:1072:2: note: previous statement is
 here
-        if (!search_fb_in_map(info_idx))
+        if (!ret)
         ^
-1 warning generated.
+2 warnings generated.
 
-This warning occurs because there is a space before the tab on this
-line. This happens on several lines in this function; normalize them
-so that the indentation is consistent with the Linux kernel coding
-style and clang no longer warns.
+This warning occurs because there are spaces before the tabs on these
+lines. Normalize the indentation in these functions so that it is
+consistent with the Linux kernel coding style and clang no longer warns.
 
-This warning was introduced before the beginning of git history so no
-fixes tab.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/824
+Fixes: 1692b37c99d5 ("fbdev: Fix logo if logo depth is less than framebuffer depth")
+Link: https://github.com/ClangBuiltLinux/linux/issues/825
 Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 ---
- drivers/video/fbdev/core/fbcon.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 36 ++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index c9235a2f42f8..9d2c43e345a4 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -866,7 +866,7 @@ static int set_con2fb_map(int unit, int newidx, int user)
- 	int oldidx = con2fb_map[unit];
- 	struct fb_info *info = registered_fb[newidx];
- 	struct fb_info *oldinfo = NULL;
-- 	int found, err = 0;
-+	int found, err = 0;
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 0662b61fdb50..bf63cc0e6b65 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -662,20 +662,20 @@ int fb_prepare_logo(struct fb_info *info, int rotate)
+ 		fb_logo.depth = 1;
  
- 	WARN_CONSOLE_UNLOCKED();
  
-@@ -888,31 +888,30 @@ static int set_con2fb_map(int unit, int newidx, int user)
+- 	if (fb_logo.depth > 4 && depth > 4) {
+- 		switch (info->fix.visual) {
+- 		case FB_VISUAL_TRUECOLOR:
+- 			fb_logo.needs_truepalette = 1;
+- 			break;
+- 		case FB_VISUAL_DIRECTCOLOR:
+- 			fb_logo.needs_directpalette = 1;
+- 			fb_logo.needs_cmapreset = 1;
+- 			break;
+- 		case FB_VISUAL_PSEUDOCOLOR:
+- 			fb_logo.needs_cmapreset = 1;
+- 			break;
+- 		}
+- 	}
++	if (fb_logo.depth > 4 && depth > 4) {
++		switch (info->fix.visual) {
++		case FB_VISUAL_TRUECOLOR:
++			fb_logo.needs_truepalette = 1;
++			break;
++		case FB_VISUAL_DIRECTCOLOR:
++			fb_logo.needs_directpalette = 1;
++			fb_logo.needs_cmapreset = 1;
++			break;
++		case FB_VISUAL_PSEUDOCOLOR:
++			fb_logo.needs_cmapreset = 1;
++			break;
++		}
++	}
  
- 	con2fb_map[unit] = newidx;
- 	if (!err && !found)
-- 		err = con2fb_acquire_newinfo(vc, info, unit, oldidx);
--
-+		err = con2fb_acquire_newinfo(vc, info, unit, oldidx);
+ 	height = fb_logo.logo->height;
+ 	if (fb_center_logo)
+@@ -1060,19 +1060,19 @@ fb_blank(struct fb_info *info, int blank)
+ 	struct fb_event event;
+ 	int ret = -EINVAL;
  
- 	/*
- 	 * If old fb is not mapped to any of the consoles,
- 	 * fbcon should release it.
- 	 */
-- 	if (!err && oldinfo && !search_fb_in_map(oldidx))
-- 		err = con2fb_release_oldinfo(vc, oldinfo, info, unit, oldidx,
-- 					     found);
-+	if (!err && oldinfo && !search_fb_in_map(oldidx))
-+		err = con2fb_release_oldinfo(vc, oldinfo, info, unit, oldidx,
-+					     found);
+- 	if (blank > FB_BLANK_POWERDOWN)
+- 		blank = FB_BLANK_POWERDOWN;
++	if (blank > FB_BLANK_POWERDOWN)
++		blank = FB_BLANK_POWERDOWN;
  
-- 	if (!err) {
-- 		int show_logo = (fg_console == 0 && !user &&
-- 				 logo_shown != FBCON_LOGO_DONTSHOW);
-+	if (!err) {
-+		int show_logo = (fg_console == 0 && !user &&
-+				 logo_shown != FBCON_LOGO_DONTSHOW);
+ 	event.info = info;
+ 	event.data = &blank;
  
-- 		if (!found)
-- 			fbcon_add_cursor_timer(info);
-- 		con2fb_map_boot[unit] = newidx;
-- 		con2fb_init_display(vc, info, unit, show_logo);
-+		if (!found)
-+			fbcon_add_cursor_timer(info);
-+		con2fb_map_boot[unit] = newidx;
-+		con2fb_init_display(vc, info, unit, show_logo);
- 	}
+ 	if (info->fbops->fb_blank)
+- 		ret = info->fbops->fb_blank(blank, info);
++		ret = info->fbops->fb_blank(blank, info);
  
- 	if (!search_fb_in_map(info_idx))
- 		info_idx = newidx;
+ 	if (!ret)
+ 		fb_notifier_call_chain(FB_EVENT_BLANK, &event);
  
-- 	return err;
-+	return err;
+- 	return ret;
++	return ret;
  }
+ EXPORT_SYMBOL(fb_blank);
  
- /*
 -- 
 2.24.1
 
