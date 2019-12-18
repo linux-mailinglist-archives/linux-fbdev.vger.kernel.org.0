@@ -2,181 +2,150 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5441611FB21
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2019 21:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 026F0123D86
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Dec 2019 03:53:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbfLOUfL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 15 Dec 2019 15:35:11 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:46218 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726445AbfLOUfK (ORCPT
+        id S1726496AbfLRCxt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 17 Dec 2019 21:53:49 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:43120 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726487AbfLRCxt (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 15 Dec 2019 15:35:10 -0500
-Received: by mail-io1-f71.google.com with SMTP id p206so4361679iod.13
-        for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2019 12:35:10 -0800 (PST)
+        Tue, 17 Dec 2019 21:53:49 -0500
+Received: by mail-ot1-f68.google.com with SMTP id p8so481923oth.10;
+        Tue, 17 Dec 2019 18:53:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=napGSWjNbtalCcb/TGth7a+gCE4XiYyJESJ2KzfJmU8=;
+        b=hs0MAylM1x9OeqPMSPUXXG4f/LQFGdgUZ+x09WQNrJ6Is+O9oD5Yz4jKugxFxQzh7n
+         S9bw9s50RChQY5ZGMz76zzUpS1LFrrARuogPumZpCpxuAEhE+QB5MxGeJaKNzvwOuOiQ
+         YPgor9D+jr0x3K0qnhzgruo6r0y9XBCLMhokJiNc2AI26q3ckHXNU4pF3tRcS+cRtkId
+         qM4t1XRlWudrz2fDAxMCfN4HpXkPgE+W34bSz+J5Ycf7GvNuRcSBzMyIIt59UkKxQBHd
+         OujXN65VcqHiTytgficx6Bq6nF6nRNhz1l/+Ak3lmmG/dxdjfjGkOs52tT0ehE30R7fZ
+         bGNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=vCeIGudgCVzVtDClTVtamE+2MjDf0OYRK93EKlgnM94=;
-        b=r6NmP6J2xBwkiZX26qIxaYSXnUBCgxJw5ngRxu/2CO24yuGA6b+82WJxW8PsHdSiac
-         okJWch5mQJ1+JvjccZwXgRTUY62G24b1VeIVwskyVvQ/6qJxDySGFoTOUCv3kJ7UUZI0
-         Ig7D+HVyOn5IVR/GQtnsJldPDQGB0eBO5Ia+7PG78E9lMHMrQz5wvFcWEmQG6PKx9CDt
-         SCyf5mMlkVtf4urAEEWIUN5QpR7yDx7Eva0QFoXSFsUKAWnE8WVKuzFsop9Am1wrfMUT
-         ++RULPH8Bm1xBnCr/7W2V6zKTZnnHNaAmLWuuwFFtOGRcTRjXdw4VOYZFz1SY3m83WDq
-         yExQ==
-X-Gm-Message-State: APjAAAUBfpcmYesH679J3IkjqK3J0/JGBu2/fn7NTb959j9797ukFkL+
-        h66ZJtaq4DE8UYt48RhqwMBzoeAu6W2pacqxFrYk2eStIQJ2
-X-Google-Smtp-Source: APXvYqw1jqxCI+YeO8FJYnKqamQPTdtR1NMgf7Skx87R1i9IkpSLJ9b9vSY6iYXyhKSP3smM0FNtnXdQfOExQ/IE9SyJYl1upS+r
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=napGSWjNbtalCcb/TGth7a+gCE4XiYyJESJ2KzfJmU8=;
+        b=DLStilepSzUI/mDAFmbeixFL2tNW3AhY/egiS9Z8aWZj/5VJKx+yhk3o/y0Swkvd6n
+         KWHrO+CNRAWkx2B0XtTgq3VZn6p+kzjHqxlRl2S2iUST+fmmhXubIKUtTJm7qBcF7jDJ
+         OiKg09Pz7uScutRzKwY+5ECtua6Jd2bdzpujCQehBS19K+Um421wZ5Ti7VkEjG3A/iVR
+         C8kn2WKEgQzXrsbRTMzc0Ur9Q2ACtyvl/qzGljoLDK8BeywrdalW2sfqC2fYMxDHaE0p
+         5QU1V1IJ3yuaKjVGWSxgBbXjI6WfmoTtG0P82fBth3HFRAgK5a6AlHfhY5c8TD1IUzUu
+         fi4Q==
+X-Gm-Message-State: APjAAAWw1m5H/EhzyZOCHTryR5eahaZVzr0BzInq3+1P+FffguDXHW3W
+        Wv9oiE/dJMA2ydYwp+j1nfazIPTb
+X-Google-Smtp-Source: APXvYqweUnGyc7Bkuy40mtuJwRPbvb6R4a3nrdaFBq7qRzNeSOHozOIJBbv5SpCrYTFmG64y7nKIEg==
+X-Received: by 2002:a05:6830:2361:: with SMTP id r1mr51151oth.88.1576637627813;
+        Tue, 17 Dec 2019 18:53:47 -0800 (PST)
+Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
+        by smtp.gmail.com with ESMTPSA id q16sm279817otl.74.2019.12.17.18.53.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 18:53:47 -0800 (PST)
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] fbcon: Adjust indentation in set_con2fb_map
+Date:   Tue, 17 Dec 2019 19:53:37 -0700
+Message-Id: <20191218025337.35044-1-natechancellor@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-X-Received: by 2002:a5d:8498:: with SMTP id t24mr15986136iom.164.1576442109907;
- Sun, 15 Dec 2019 12:35:09 -0800 (PST)
-Date:   Sun, 15 Dec 2019 12:35:09 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000f85c120599c407e4@google.com>
-Subject: KASAN: use-after-free Read in fbcon_cursor
-From:   syzbot <syzbot+9116ecc1978ca3a12f43@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
-        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+Clang warns:
 
-syzbot found the following crash on:
+../drivers/video/fbdev/core/fbcon.c:915:3: warning: misleading
+indentation; statement is not part of the previous 'if'
+[-Wmisleading-indentation]
+        return err;
+        ^
+../drivers/video/fbdev/core/fbcon.c:912:2: note: previous statement is
+here
+        if (!search_fb_in_map(info_idx))
+        ^
+1 warning generated.
 
-HEAD commit:    07c4b9e9 Merge tag 'scsi-fixes' of git://git.kernel.org/pu..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14b61f41e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=79f79de2a27d3e3d
-dashboard link: https://syzkaller.appspot.com/bug?extid=9116ecc1978ca3a12f43
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=119fa6b6e00000
+This warning occurs because there is a space before the tab on this
+line. This happens on several lines in this function; normalize them
+so that the indentation is consistent with the Linux kernel coding
+style and clang no longer warns.
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+9116ecc1978ca3a12f43@syzkaller.appspotmail.com
+This warning was introduced before the beginning of git history so no
+fixes tab.
 
-==================================================================
-BUG: KASAN: use-after-free in fbcon_cursor+0x4ef/0x660  
-drivers/video/fbdev/core/fbcon.c:1380
-Read of size 2 at addr ffff8880959ff0cc by task syz-executor.0/10203
-
-CPU: 1 PID: 10203 Comm: syz-executor.0 Not tainted 5.5.0-rc1-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:639
-  __asan_report_load2_noabort+0x14/0x20 mm/kasan/generic_report.c:133
-  fbcon_cursor+0x4ef/0x660 drivers/video/fbdev/core/fbcon.c:1380
-  fbcon_scrolldelta+0x679/0x1220 drivers/video/fbdev/core/fbcon.c:2877
-  fbcon_set_origin+0x43/0x50 drivers/video/fbdev/core/fbcon.c:2928
-  set_origin+0xf3/0x400 drivers/tty/vt/vt.c:919
-  vc_do_resize+0xacc/0x1460 drivers/tty/vt/vt.c:1264
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x14bb/0x26d0 drivers/tty/vt/vt_ioctl.c:840
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x45a909
-Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007f1a84ca0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045a909
-RDX: 0000000020000000 RSI: 0000000000005609 RDI: 0000000000000003
-RBP: 000000000075bf20 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007f1a84ca16d4
-R13: 00000000004c7009 R14: 00000000004dd670 R15: 00000000ffffffff
-
-Allocated by task 9734:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  __kasan_kmalloc mm/kasan/common.c:513 [inline]
-  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
-  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
-  __do_kmalloc mm/slab.c:3656 [inline]
-  __kmalloc+0x163/0x770 mm/slab.c:3665
-  kmalloc include/linux/slab.h:561 [inline]
-  kzalloc include/linux/slab.h:670 [inline]
-  vc_do_resize+0x262/0x1460 drivers/tty/vt/vt.c:1187
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x14bb/0x26d0 drivers/tty/vt/vt_ioctl.c:840
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-Freed by task 10203:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  kasan_set_free_info mm/kasan/common.c:335 [inline]
-  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
-  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
-  __cache_free mm/slab.c:3426 [inline]
-  kfree+0x10a/0x2c0 mm/slab.c:3757
-  vc_do_resize+0xa69/0x1460 drivers/tty/vt/vt.c:1261
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x14bb/0x26d0 drivers/tty/vt/vt_ioctl.c:840
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-The buggy address belongs to the object at ffff8880959ff0c0
-  which belongs to the cache kmalloc-32 of size 32
-The buggy address is located 12 bytes inside of
-  32-byte region [ffff8880959ff0c0, ffff8880959ff0e0)
-The buggy address belongs to the page:
-page:ffffea0002567fc0 refcount:1 mapcount:0 mapping:ffff8880aa4001c0  
-index:0xffff8880959fffc1
-raw: 00fffe0000000200 ffffea00027c7748 ffffea000276ee08 ffff8880aa4001c0
-raw: ffff8880959fffc1 ffff8880959ff000 000000010000003f 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff8880959fef80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff8880959ff000: fb fb fb fb fc fc fc fc fb fb fb fb fc fc fc fc
-> ffff8880959ff080: fb fb fb fb fc fc fc fc fb fb fb fb fc fc fc fc
-                                               ^
-  ffff8880959ff100: 00 01 fc fc fc fc fc fc fb fb fb fb fc fc fc fc
-  ffff8880959ff180: fb fb fb fb fc fc fc fc fb fb fb fb fc fc fc fc
-==================================================================
-
-
+Link: https://github.com/ClangBuiltLinux/linux/issues/824
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 ---
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/video/fbdev/core/fbcon.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index c9235a2f42f8..9d2c43e345a4 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -866,7 +866,7 @@ static int set_con2fb_map(int unit, int newidx, int user)
+ 	int oldidx = con2fb_map[unit];
+ 	struct fb_info *info = registered_fb[newidx];
+ 	struct fb_info *oldinfo = NULL;
+- 	int found, err = 0;
++	int found, err = 0;
+ 
+ 	WARN_CONSOLE_UNLOCKED();
+ 
+@@ -888,31 +888,30 @@ static int set_con2fb_map(int unit, int newidx, int user)
+ 
+ 	con2fb_map[unit] = newidx;
+ 	if (!err && !found)
+- 		err = con2fb_acquire_newinfo(vc, info, unit, oldidx);
+-
++		err = con2fb_acquire_newinfo(vc, info, unit, oldidx);
+ 
+ 	/*
+ 	 * If old fb is not mapped to any of the consoles,
+ 	 * fbcon should release it.
+ 	 */
+- 	if (!err && oldinfo && !search_fb_in_map(oldidx))
+- 		err = con2fb_release_oldinfo(vc, oldinfo, info, unit, oldidx,
+- 					     found);
++	if (!err && oldinfo && !search_fb_in_map(oldidx))
++		err = con2fb_release_oldinfo(vc, oldinfo, info, unit, oldidx,
++					     found);
+ 
+- 	if (!err) {
+- 		int show_logo = (fg_console == 0 && !user &&
+- 				 logo_shown != FBCON_LOGO_DONTSHOW);
++	if (!err) {
++		int show_logo = (fg_console == 0 && !user &&
++				 logo_shown != FBCON_LOGO_DONTSHOW);
+ 
+- 		if (!found)
+- 			fbcon_add_cursor_timer(info);
+- 		con2fb_map_boot[unit] = newidx;
+- 		con2fb_init_display(vc, info, unit, show_logo);
++		if (!found)
++			fbcon_add_cursor_timer(info);
++		con2fb_map_boot[unit] = newidx;
++		con2fb_init_display(vc, info, unit, show_logo);
+ 	}
+ 
+ 	if (!search_fb_in_map(info_idx))
+ 		info_idx = newidx;
+ 
+- 	return err;
++	return err;
+ }
+ 
+ /*
+-- 
+2.24.1
+
