@@ -2,162 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D7F123D9F
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Dec 2019 04:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2977124B46
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Dec 2019 16:14:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfLRDAc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 17 Dec 2019 22:00:32 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39883 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726496AbfLRDAc (ORCPT
+        id S1727180AbfLRPOT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 18 Dec 2019 10:14:19 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:39182 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727189AbfLRPNx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 17 Dec 2019 22:00:32 -0500
-Received: by mail-ot1-f65.google.com with SMTP id 77so515844oty.6;
-        Tue, 17 Dec 2019 19:00:31 -0800 (PST)
+        Wed, 18 Dec 2019 10:13:53 -0500
+Received: by mail-il1-f195.google.com with SMTP id x5so1983657ila.6
+        for <linux-fbdev@vger.kernel.org>; Wed, 18 Dec 2019 07:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
+        h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=kwTUvw7XaRz2SlqwuKp+LVG2T88wKaGXcyDmN7449mo=;
-        b=M/qv0ZCZkJmxKvIbZ4PXNPWC/fhpd48XEONEmvva4ejd2BHXSxvrlhZ7SCIYEmuoFv
-         Ik5Xu3mWH63/5iHKxKWWHrTFKDsSQESLrupFeEt0xZb8NwQOwIGFJav3ttaH0m6GNW51
-         XHYXeh1pHCczyCjIBveXYhH4SNvpZfTuggOrRzKdUnSpnpuAn9NDAbupV8pQE8C6v/Eo
-         yMIEMVS+FeOGTWwjy801kTD5c/BB8fQJHqdlGXk/oqCu4max09GZAxwLb7LzQLLemhcP
-         oBdSSOspGKJk6mKm7uFQ6W0wt16uOedOnliZPdJ67Iv1R6PGlT18n48Pe7xj7+Ppm5sf
-         GwLg==
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
+         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
+         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
+         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
+         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
+         +a+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kwTUvw7XaRz2SlqwuKp+LVG2T88wKaGXcyDmN7449mo=;
-        b=B+ukqtv9jQw5x1oTtHPEUWjZIY5hMbEcWi47hSmV/UNPRMHy3xFHa01UDr/3z83UXF
-         F61ZZ15O6y8JZBQhpdgcgdKBaoXOQCwsOIMRdgPBmiFXIPuW/jwRs8H/pOIbEZCzF/vQ
-         PIew/LN5EuFyXISedyOqDvP6L2a4k/ZTv+DhaUQ6+6PuS82wAYRrLMFsWPfQQtOSvNFE
-         p7gJYMHwbdxs23BFHOy0ICfMj+gA0/cIrRJDQi5RYOah5dFffj3hO7NBQ+Nx90icW+FC
-         Ne60E/tchZtBX1qEr5AGIaajMK77id9+zWiVHKYjHSTsc6gCcSyrWCxGH1rkNBUA40C/
-         B+pA==
-X-Gm-Message-State: APjAAAXZQoL+phcRnrSufRKzPmKlM3q54I3qD71ajXlA9/iS3I2OIsbD
-        UJECX1AVWoxriAxFdc7gv/E=
-X-Google-Smtp-Source: APXvYqwi52DW7BTH/Joy63L2i6a/L8NgInTxr1fjqelbSr7NB6xlsFO0WENr+MWp3f3/50zFaX0Qbg==
-X-Received: by 2002:a05:6830:1442:: with SMTP id w2mr29328otp.143.1576638030607;
-        Tue, 17 Dec 2019 19:00:30 -0800 (PST)
-Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id b3sm327530oie.25.2019.12.17.19.00.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 19:00:30 -0800 (PST)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] fbmem: Adjust indentation in fb_prepare_logo and fb_blank
-Date:   Tue, 17 Dec 2019 20:00:25 -0700
-Message-Id: <20191218030025.10064-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.24.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=ShPlm4aZCm8nEInKovTjSwupjglcDprObaPjmljOlOiJ6iyRv9zva1bi5INhel2R3m
+         +ACRarkmUHMwaPI0ZTsRmf46OoNgfAmjkRONlHDE9QXIgM3k56Hs1OoLyjLGYdTB0bNL
+         TRHxPh6lWgVUV1+dzVwTqMwvwThtLyBvToRie1uhGE7FAPa11ROt+vaBVrR8j2HmiLMv
+         2gRUKpeALhOrimTddqwWbeBdaP9FdqROOMGFTmHAe+gA/6K6b7k9EXbUY4Z+8oHDIcl/
+         UOjEOF9wwpCZjUuFZBPLDTZd4kAeREVKW2KYz+47A9FVM4bczA51akhf09jwhzpKn/ki
+         IKjg==
+X-Gm-Message-State: APjAAAWkH20jyF2rD87aETg22yi0lkQH1mBW+yEMtccYeQ0csgFjajWW
+        v4sv+yG6LWSESFmL9oR2i3EPv8HTJNet8upMdQ==
+X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
+X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
+ Wed, 18 Dec 2019 07:13:53 -0800 (PST)
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:13:52 +0100
+Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
+Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Clang warns:
+Attn Dear.
 
-../drivers/video/fbdev/core/fbmem.c:665:3: warning: misleading
-indentation; statement is not part of the previous 'else'
-[-Wmisleading-indentation]
-        if (fb_logo.depth > 4 && depth > 4) {
-        ^
-../drivers/video/fbdev/core/fbmem.c:661:2: note: previous statement is
-here
-        else
-        ^
-../drivers/video/fbdev/core/fbmem.c:1075:3: warning: misleading
-indentation; statement is not part of the previous 'if'
-[-Wmisleading-indentation]
-        return ret;
-        ^
-../drivers/video/fbdev/core/fbmem.c:1072:2: note: previous statement is
-here
-        if (!ret)
-        ^
-2 warnings generated.
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
-This warning occurs because there are spaces before the tabs on these
-lines. Normalize the indentation in these functions so that it is
-consistent with the Linux kernel coding style and clang no longer warns.
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-Fixes: 1692b37c99d5 ("fbdev: Fix logo if logo depth is less than framebuffer depth")
-Link: https://github.com/ClangBuiltLinux/linux/issues/825
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
- drivers/video/fbdev/core/fbmem.c | 36 ++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 0662b61fdb50..bf63cc0e6b65 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -662,20 +662,20 @@ int fb_prepare_logo(struct fb_info *info, int rotate)
- 		fb_logo.depth = 1;
- 
- 
-- 	if (fb_logo.depth > 4 && depth > 4) {
-- 		switch (info->fix.visual) {
-- 		case FB_VISUAL_TRUECOLOR:
-- 			fb_logo.needs_truepalette = 1;
-- 			break;
-- 		case FB_VISUAL_DIRECTCOLOR:
-- 			fb_logo.needs_directpalette = 1;
-- 			fb_logo.needs_cmapreset = 1;
-- 			break;
-- 		case FB_VISUAL_PSEUDOCOLOR:
-- 			fb_logo.needs_cmapreset = 1;
-- 			break;
-- 		}
-- 	}
-+	if (fb_logo.depth > 4 && depth > 4) {
-+		switch (info->fix.visual) {
-+		case FB_VISUAL_TRUECOLOR:
-+			fb_logo.needs_truepalette = 1;
-+			break;
-+		case FB_VISUAL_DIRECTCOLOR:
-+			fb_logo.needs_directpalette = 1;
-+			fb_logo.needs_cmapreset = 1;
-+			break;
-+		case FB_VISUAL_PSEUDOCOLOR:
-+			fb_logo.needs_cmapreset = 1;
-+			break;
-+		}
-+	}
- 
- 	height = fb_logo.logo->height;
- 	if (fb_center_logo)
-@@ -1060,19 +1060,19 @@ fb_blank(struct fb_info *info, int blank)
- 	struct fb_event event;
- 	int ret = -EINVAL;
- 
-- 	if (blank > FB_BLANK_POWERDOWN)
-- 		blank = FB_BLANK_POWERDOWN;
-+	if (blank > FB_BLANK_POWERDOWN)
-+		blank = FB_BLANK_POWERDOWN;
- 
- 	event.info = info;
- 	event.data = &blank;
- 
- 	if (info->fbops->fb_blank)
-- 		ret = info->fbops->fb_blank(blank, info);
-+		ret = info->fbops->fb_blank(blank, info);
- 
- 	if (!ret)
- 		fb_notifier_call_chain(FB_EVENT_BLANK, &event);
- 
-- 	return ret;
-+	return ret;
- }
- EXPORT_SYMBOL(fb_blank);
- 
--- 
-2.24.1
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
 
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
+
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
+
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
