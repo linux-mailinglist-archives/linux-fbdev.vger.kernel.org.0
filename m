@@ -2,95 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF1112D044
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Dec 2019 14:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC8612DE42
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jan 2020 09:21:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbfL3N1p (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Dec 2019 08:27:45 -0500
-Received: from andre.telenet-ops.be ([195.130.132.53]:49050 "EHLO
-        andre.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbfL3N1p (ORCPT
+        id S1726803AbgAAIUO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Jan 2020 03:20:14 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:56955 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725783AbgAAIUN (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Dec 2019 08:27:45 -0500
-Received: from ramsan ([84.195.182.253])
-        by andre.telenet-ops.be with bizsmtp
-        id kDTf2100A5USYZQ01DTf3m; Mon, 30 Dec 2019 14:27:42 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1ilv59-0001Yv-B0; Mon, 30 Dec 2019 14:27:39 +0100
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1ilv59-0001C0-8p; Mon, 30 Dec 2019 14:27:39 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Stefan Agner <stefan@agner.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] drm/fb-helper: Round up bits_per_pixel if possible
-Date:   Mon, 30 Dec 2019 14:27:34 +0100
-Message-Id: <20191230132734.4538-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
+        Wed, 1 Jan 2020 03:20:13 -0500
+X-IronPort-AV: E=Sophos;i="5.69,382,1571695200"; 
+   d="scan'208";a="429578748"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA256; 01 Jan 2020 09:20:08 +0100
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Jernej Skrabec <jernej.skrabec@siol.net>
+Cc:     kernel-janitors@vger.kernel.org, Jonas Karlman <jonas@kwiboo.se>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-nfs@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 00/16] constify copied structure
+Date:   Wed,  1 Jan 2020 08:43:18 +0100
+Message-Id: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When userspace requests a video mode parameter value that is not
-supported, frame buffer device drivers should round it up to a supported
-value, if possible, instead of just rejecting it.  This allows
-applications to quickly scan for supported video modes.
+Make const static structures that are just copied into other structures.
 
-Currently this rule is not followed for the number of bits per pixel,
-causing e.g. "fbset -depth N" to fail, if N is smaller than the current
-number of bits per pixel.
+The semantic patch that detects the opportunity for this change is as
+follows: (http://coccinelle.lip6.fr/)
 
-Fix this by returning an error only if bits per pixel is too large, and
-setting it to the current value otherwise.
+<smpl>
+@r disable optional_qualifier@
+identifier i,j;
+position p;
+@@
+static struct i j@p = { ... };
 
-See also Documentation/fb/framebuffer.rst, Section 2 (Programmer's View
-of /dev/fb*").
+@upd@
+position p1;
+identifier r.j;
+expression e;
+@@
+e = j@p1
 
-Fixes: 865afb11949e5bf4 ("drm/fb-helper: reject any changes to the fbdev")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+@ref@
+position p2 != {r.p,upd.p1};
+identifier r.j;
+@@
+j@p2
+
+@script:ocaml depends on upd && !ref@
+i << r.i;
+j << r.j;
+p << r.p;
+@@
+if j = (List.hd p).current_element
+then Coccilib.print_main i p
+</smpl>
+
 ---
-Against drm-misc#for-linux-next.
-Applies with some fuzz against v5.5-rc4.
----
- drivers/gpu/drm/drm_fb_helper.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index f8e9051926083373..cae8fa74781c8db0 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -1267,7 +1267,7 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
- 	 * Changes struct fb_var_screeninfo are currently not pushed back
- 	 * to KMS, hence fail if different settings are requested.
- 	 */
--	if (var->bits_per_pixel != fb->format->cpp[0] * 8 ||
-+	if (var->bits_per_pixel > fb->format->cpp[0] * 8 ||
- 	    var->xres > fb->width || var->yres > fb->height ||
- 	    var->xres_virtual > fb->width || var->yres_virtual > fb->height) {
- 		drm_dbg_kms(dev, "fb requested width/height/bpp can't fit in current fb "
-@@ -1292,6 +1292,11 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
- 		drm_fb_helper_fill_pixel_fmt(var, fb->format->depth);
- 	}
- 
-+	/*
-+	 * Likewise, bits_per_pixel should be rounded up to a supported value.
-+	 */
-+	var->bits_per_pixel = fb->format->cpp[0] * 8;
-+
- 	/*
- 	 * drm fbdev emulation doesn't support changing the pixel format at all,
- 	 * so reject all pixel format changing requests.
--- 
-2.17.1
-
+ arch/powerpc/sysdev/mpic.c                          |    4 ++--
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c |    2 +-
+ drivers/media/i2c/mt9v111.c                         |    2 +-
+ drivers/media/platform/davinci/isif.c               |    2 +-
+ drivers/media/usb/cx231xx/cx231xx-dvb.c             |    2 +-
+ drivers/media/usb/dvb-usb-v2/anysee.c               |    4 ++--
+ drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c           |    2 +-
+ drivers/pinctrl/qcom/pinctrl-ssbi-gpio.c            |    2 +-
+ drivers/pinctrl/qcom/pinctrl-ssbi-mpp.c             |    2 +-
+ drivers/ptp/ptp_clockmatrix.c                       |    2 +-
+ drivers/usb/gadget/udc/atmel_usba_udc.c             |    2 +-
+ drivers/video/fbdev/sa1100fb.c                      |    2 +-
+ net/sunrpc/xdr.c                                    |    2 +-
+ sound/isa/ad1816a/ad1816a_lib.c                     |    2 +-
+ sound/pci/hda/hda_controller.c                      |    2 +-
+ sound/soc/qcom/qdsp6/q6asm-dai.c                    |    2 +-
+ 16 files changed, 18 insertions(+), 18 deletions(-)
