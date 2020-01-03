@@ -2,115 +2,147 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB38512F813
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jan 2020 13:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 691A812F823
+	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jan 2020 13:22:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727457AbgACMRk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 Jan 2020 07:17:40 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:60494 "EHLO
+        id S1727350AbgACMWv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 3 Jan 2020 07:22:51 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:33459 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727350AbgACMRj (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jan 2020 07:17:39 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200103121738euoutp01312b415a6e688aae0baefdf5e710d626~mX5996rHm0720007200euoutp017
-        for <linux-fbdev@vger.kernel.org>; Fri,  3 Jan 2020 12:17:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200103121738euoutp01312b415a6e688aae0baefdf5e710d626~mX5996rHm0720007200euoutp017
+        with ESMTP id S1727436AbgACMWv (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jan 2020 07:22:51 -0500
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200103122249euoutp01cc7df79beeefbc2b5676765f198954a2~mX_fsrQrW1018910189euoutp01M
+        for <linux-fbdev@vger.kernel.org>; Fri,  3 Jan 2020 12:22:49 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200103122249euoutp01cc7df79beeefbc2b5676765f198954a2~mX_fsrQrW1018910189euoutp01M
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1578053858;
-        bh=Q1lRn94T6zTZLhrBzX48cbGpKnNMHdU8KieAj7Jk+ew=;
+        s=mail20170921; t=1578054169;
+        bh=qz3vCml/Vlv9r1Aqb/Ae+7dojZSRbFwZFZBgN3gJ9PE=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=sOauRfmTuRzsZFbd2ox8odeV4wnuL+3renns/xnN4SBV3q3f12PLMA0oXGq1ztA4+
-         257GeEhW0+I7ojkz1fZE40OXcnnnGGZNTPveRwoCRKtaU6XMpykhE3sodZyzW99/R+
-         1xBuJwHQD4W7Iaoeuzib3+gQmwH39PDhRO3ufN5w=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200103121737eucas1p27bf40fa10897e88f6fd92f7d749c4188~mX59zOim22834428344eucas1p2u;
-        Fri,  3 Jan 2020 12:17:37 +0000 (GMT)
+        b=PeH+ouAbYcLItY9Eeq02aCEmLyuCBXJlL1vjfJpM6vxMew8MEboyvnGTNvA28LOT9
+         etdkyw1DHRpnPxZ8k5xYK63DWAIsUIQathoxzF+uLDSwxclNok/nW762ehBeSjBHzs
+         ORiwL5p6O4BcXhNLh8kcd3iRt3Qt/Z1w9GCUxZHs=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200103122249eucas1p17ca28c5846788fef6b0f3b5b00ede7c8~mX_foA69D2967629676eucas1p1Z;
+        Fri,  3 Jan 2020 12:22:49 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 27.B6.60679.1E03F0E5; Fri,  3
-        Jan 2020 12:17:37 +0000 (GMT)
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 21.7A.61286.8123F0E5; Fri,  3
+        Jan 2020 12:22:48 +0000 (GMT)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200103121737eucas1p16776590bbf3fe4ce45392ea68188a066~mX59fdoxn3131231312eucas1p1w;
-        Fri,  3 Jan 2020 12:17:37 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        20200103122248eucas1p1f3053cb6b27525299714825e771cd92a~mX_fGGjIj2965629656eucas1p1d;
+        Fri,  3 Jan 2020 12:22:48 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200103121737eusmtrp2091def0757d73fedfeb7167dedeab35b~mX59ezzIf2799927999eusmtrp2k;
-        Fri,  3 Jan 2020 12:17:37 +0000 (GMT)
-X-AuditID: cbfec7f4-0cbff7000001ed07-24-5e0f30e17036
+        20200103122248eusmtrp23d8ab4de1d67357e5c4342a454d60add~mX_fFhsAd2952829528eusmtrp2f;
+        Fri,  3 Jan 2020 12:22:48 +0000 (GMT)
+X-AuditID: cbfec7f2-ef1ff7000001ef66-09-5e0f3218a055
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 08.24.08375.1E03F0E5; Fri,  3
-        Jan 2020 12:17:37 +0000 (GMT)
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 91.34.07950.8123F0E5; Fri,  3
+        Jan 2020 12:22:48 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200103121737eusmtip29d965df973edc23b371f4ec0c8502a19~mX59D15SS0409104091eusmtip2E;
-        Fri,  3 Jan 2020 12:17:37 +0000 (GMT)
-Subject: Re: [PATCH -next] fbdev/sa1100fb: use
- devm_platform_ioremap_resource() to simplify code
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     maarten.lankhorst@linux.intel.com, daniel.vetter@ffwll.ch,
-        viresh.kumar@linaro.org, rafael.j.wysocki@intel.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        20200103122248eusmtip2c33eba0f91e0b29ed1c6092afd6d6fb9~mX_eztqxD0532905329eusmtip2J;
+        Fri,  3 Jan 2020 12:22:48 +0000 (GMT)
+Subject: Re: [PATCH] fbdev: matrox: make array wtst_xlat static const, makes
+ object smaller
+To:     =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <de1f8697-3b8a-20f1-e3fe-73a889b0e68a@samsung.com>
-Date:   Fri, 3 Jan 2020 13:17:36 +0100
+Message-ID: <fce5c5cc-bbb3-40a9-27fe-90957d25e7fe@samsung.com>
+Date:   Fri, 3 Jan 2020 13:22:47 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190904115754.21612-1-yuehaibing@huawei.com>
+In-Reply-To: <20190906181714.GU7482@intel.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJKsWRmVeSWpSXmKPExsWy7djPc7oPDfjjDCZ/MrBY+PAus8WVr+/Z
-        LE70fWC1uLxrDpvFwo9bWSwer3jLbrHxq4fFna/PWRw4PPZ+W8Di0XLkLavH4j0vmTzuXNvD
-        5jHvZKDH/e7jTB6fN8kFsEdx2aSk5mSWpRbp2yVwZZx5d5Gp4DRXxY6LK5gbGB9wdDFyckgI
-        mEhsXdzF2sXIxSEksIJRYsWjRnYI5wujxJ/p31ggnM+MEs+3XGWGaek53wZVtZxRYu3G9VD9
-        bxklXk/6zQpSJSyQJDH13AUwW0RATaLl1BZmkCJmgSuMEn1t29lBEmwCVhIT21cxgti8AnYS
-        r5f8ZwGxWQRUJB4cPA9WIyoQIfHpwWFWiBpBiZMzn4DVcApYS6zd1gd2ErOAuMStJ/OZIGx5
-        ie1v50CdeopdYv4RbgjbRaLh6DoWCFtY4tXxLewQtozE/50gvVxA9jpGib8dL5ghnO2MEssn
-        /2ODqLKWuHPuF5DNAbRBU2L9Ln2IsKNEy8wWFpCwhACfxI23ghA38ElM2jadGSLMK9HRJgRR
-        rSaxYdkGNpi1XTtXMk9gVJqF5LNZSL6ZheSbWQh7FzCyrGIUTy0tzk1PLTbKSy3XK07MLS7N
-        S9dLzs/dxAhMUKf/Hf+yg3HXn6RDjAIcjEo8vAnK/HFCrIllxZW5hxglOJiVRHjLA3njhHhT
-        EiurUovy44tKc1KLDzFKc7AoifMaL3oZKySQnliSmp2aWpBaBJNl4uCUamC0utp+qfXfU8XS
-        91xHg83OGs/bnH6mfeV5w47gbftl5T+Xeu0Qe3NOzOX+/UW7Xrw+GlrKfuNqfVx/4TXGoNLP
-        /0IenAy5Li62sf3Hbp4nE2vurEhzTFVdwsyhskziVkOvire9m/eP56y/7x7MbN1jZKVwyeDu
-        9PUatyYKsiuXVVXse1Jq/k9NiaU4I9FQi7moOBEAkQ4iyEwDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNIsWRmVeSWpSXmKPExsVy+t/xe7oPDfjjDFrmyVksfHiX2eLK1/ds
-        Fif6PrBaXN41h81i4cetLBaPV7xlt9j41cPiztfnLA4cHnu/LWDxaDnyltVj8Z6XTB53ru1h
-        85h3MtDjfvdxJo/Pm+QC2KP0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTt
-        bFJSczLLUov07RL0Ms68u8hUcJqrYsfFFcwNjA84uhg5OSQETCR6zrexdzFycQgJLGWU6Ovf
-        zdrFyAGUkJE4vr4MokZY4s+1LjaImteMEtP+TGACSQgLJElMPXeBFcQWEVCTaDm1hRmkiFng
-        CqPE0YmLmCA6+hgles8dYQGpYhOwkpjYvooRxOYVsJN4veQ/WJxFQEXiwcHz7CC2qECExOEd
-        s6BqBCVOznwCVsMpYC2xdlsfM4jNLKAu8WfeJShbXOLWk/lMELa8xPa3c5gnMArNQtI+C0nL
-        LCQts5C0LGBkWcUoklpanJueW2yoV5yYW1yal66XnJ+7iREYkduO/dy8g/HSxuBDjAIcjEo8
-        vAnK/HFCrIllxZW5hxglOJiVRHjLA3njhHhTEiurUovy44tKc1KLDzGaAj03kVlKNDkfmCzy
-        SuINTQ3NLSwNzY3Njc0slMR5OwQOxggJpCeWpGanphakFsH0MXFwSjUwygTNPWsh9UKC/c/5
-        OVK7Q/iV5WqnhYoUXIvMDI21WGweKnUiNfQmh6rQrJzegCgjd/YfVwXjtmz7JBD+8dT7xbIX
-        mGV3Lt20TXmqk9gkg+jQ6zt9uCwOuE9Z0HYwsTzlyc5szmc2M32fyPSKXDr0YqaRb5Wt+pfI
-        OV66DbJvTDaKan5Omv1PiaU4I9FQi7moOBEAjLafL94CAAA=
-X-CMS-MailID: 20200103121737eucas1p16776590bbf3fe4ce45392ea68188a066
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprHKsWRmVeSWpSXmKPExsWy7djPc7oSRvxxBl8vWVj8Xt3LZnHl63s2
+        i623pC1O9H1gtbi8aw6bxfd/C5kc2DxmNfSyecw7Gehxv/s4k8fnTXIBLFFcNimpOZllqUX6
+        dglcGScvL2AueM1fMWPvC/YGxgM8XYycHBICJhIzTvxi6mLk4hASWMEocez2LjYI5wujxJ8b
+        jxghnM+MEpP/7wJyOMBafraIQMSXM0o8uL4Zqv0to8SjD1MZQeYKC8RKbF/zjB3EFhHIlfiz
+        /RMrSBGzQCOjxLk7V9lAEmwCVhIT21eBNfAK2EksOf6XGWQDi4CKxKXLkiBhUYEIiU8PDrNC
+        lAhKnJz5hAXE5hTQk2i8eRpsPrOAuMStJ/OZIGx5ieats5khflvELvGsmQvCdpFonvKMCcIW
+        lnh1fAs7hC0j8X/nfLAHJATWMUr87XjBDOFsZ5RYPvkfG0SVtcSdc7/YQI5jFtCUWL9LHyLs
+        KHH75CR2SKjwSdx4KwhxA5/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27VzJfMERqVZSD6bheSb
+        WUi+mYWwdwEjyypG8dTS4tz01GLDvNRyveLE3OLSvHS95PzcTYzAVHP63/FPOxi/Xko6xCjA
+        wajEw5ugzB8nxJpYVlyZe4hRgoNZSYS3PJA3Tog3JbGyKrUoP76oNCe1+BCjNAeLkjiv8aKX
+        sUIC6YklqdmpqQWpRTBZJg5OqQbGjQaX36aZcDZ8ZuCWMeSJd59c6bT4QdUFx0V8//2LnaqO
+        3i9Tjd/pd8R4o2DX0x/tGWwrKlqzZnI8+NZxMM93s1p35oVXd39+uV1i82vprUurPD1Yl1xc
+        tDWmv3DFy/dL/t1f0vxwmoKQm+5r64sHnz07MSH8bJ6uqq9KfNhB1+QnEv80l3c6KLEUZyQa
+        ajEXFScCAMqB/tcxAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAIsWRmVeSWpSXmKPExsVy+t/xe7oSRvxxBtdWy1r8Xt3LZnHl63s2
+        i623pC1O9H1gtbi8aw6bxfd/C5kc2DxmNfSyecw7Gehxv/s4k8fnTXIBLFF6NkX5pSWpChn5
+        xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GScvL2AueM1fMWPvC/YG
+        xgM8XYwcHBICJhI/W0S6GLk4hASWMkqc6bnFAhGXkTi+vqyLkRPIFJb4c62LDaLmNaNE16d2
+        ZpCEsECsxPY1z9hBbBGBXIkb2zYxgxQxCzQySiw58p8JomMro8TZ3cfBOtgErCQmtq9iBLF5
+        Bewklhz/ywyyjUVAReLSZUmQsKhAhMThHbOgSgQlTs58wgJicwroSTTePA22jFlAXeLPvEvM
+        ELa4xK0n85kgbHmJ5q2zmScwCs1C0j4LScssJC2zkLQsYGRZxSiSWlqcm55bbKRXnJhbXJqX
+        rpecn7uJERhb24793LKDsetd8CFGAQ5GJR5eDkX+OCHWxLLiytxDjBIczEoivOWBvHFCvCmJ
+        lVWpRfnxRaU5qcWHGE2BfpvILCWanA+M+7ySeENTQ3MLS0NzY3NjMwslcd4OgYMxQgLpiSWp
+        2ampBalFMH1MHJxSDYyBUy6YSJ3LdlpU1CJ5lOm31MPOfOnpeRO/sDup+8W4XHCUmb+40+3O
+        ko9dpxulQqIvCNpvYZVJWO+dstN7y7z6ybnfalZv8by+/n77teyVrVIdp/pLjuaenvWmjW91
+        sOwN5oDg+EJ54ZgDK5o3McnbVfpOVperLf1z667tFjadG9Zhd9uSxJVYijMSDbWYi4oTAcCX
+        MPbDAgAA
+X-CMS-MailID: 20200103122248eucas1p1f3053cb6b27525299714825e771cd92a
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190904120019epcas2p2d20e3e922d6a51ebd51c226440bc5df9
+X-RootMTR: 20190906181721epcas4p4be0f813e9da4d8e386b7a1c0b2ab1da7
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190904120019epcas2p2d20e3e922d6a51ebd51c226440bc5df9
-References: <CGME20190904120019epcas2p2d20e3e922d6a51ebd51c226440bc5df9@epcas2p2.samsung.com>
-        <20190904115754.21612-1-yuehaibing@huawei.com>
+X-CMS-RootMailID: 20190906181721epcas4p4be0f813e9da4d8e386b7a1c0b2ab1da7
+References: <20190906181114.31414-1-colin.king@canonical.com>
+        <CGME20190906181721epcas4p4be0f813e9da4d8e386b7a1c0b2ab1da7@epcas4p4.samsung.com>
+        <20190906181714.GU7482@intel.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 9/4/19 1:57 PM, YueHaibing wrote:
-> Use devm_platform_ioremap_resource() to simplify the code a bit.
-> This is detected by coccinelle.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+On 9/6/19 8:17 PM, Ville Syrjälä wrote:
+> On Fri, Sep 06, 2019 at 07:11:14PM +0100, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Don't populate the array wtst_xlat on the stack but instead make it
+>> static const. Makes the object code smaller by 89 bytes.
+>>
+>> Before:
+>>    text	   data	    bss	    dec	    hex	filename
+>>   14347	    840	      0	  15187	   3b53	fbdev/matrox/matroxfb_misc.o
+>>
+>> After:
+>>    text	   data	    bss	    dec	    hex	filename
+>>   14162	    936	      0	  15098	   3afa	fbdev/matrox/matroxfb_misc.o
+>>
+>> (gcc version 9.2.1, amd64)
+>>
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Thanks, patch queued for v5.6 (also sorry for the delay).
+
+>> ---
+>>  drivers/video/fbdev/matrox/matroxfb_misc.c | 5 ++++-
+>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/video/fbdev/matrox/matroxfb_misc.c b/drivers/video/fbdev/matrox/matroxfb_misc.c
+>> index c7aaca12805e..feb0977c82eb 100644
+>> --- a/drivers/video/fbdev/matrox/matroxfb_misc.c
+>> +++ b/drivers/video/fbdev/matrox/matroxfb_misc.c
+>> @@ -673,7 +673,10 @@ static int parse_pins5(struct matrox_fb_info *minfo,
+>>  	if (bd->pins[115] & 4) {
+>>  		minfo->values.reg.mctlwtst_core = minfo->values.reg.mctlwtst;
+>>  	} else {
+>> -		u_int32_t wtst_xlat[] = { 0, 1, 5, 6, 7, 5, 2, 3 };
+>> +		static const u_int32_t wtst_xlat[] = {
+>> +			0, 1, 5, 6, 7, 5, 2, 3
+> 
+> All of those would easily fit in u8 as well.
+
+Good idea, I've converted the table to u8 while applying the patch.
 
 Best regards,
 --
@@ -118,29 +150,15 @@ Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
 
-> ---
->  drivers/video/fbdev/sa1100fb.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
-> index ae2bcfe..4428cef 100644
-> --- a/drivers/video/fbdev/sa1100fb.c
-> +++ b/drivers/video/fbdev/sa1100fb.c
-> @@ -1156,7 +1156,6 @@ static struct sa1100fb_info *sa1100fb_init_fbinfo(struct device *dev)
->  static int sa1100fb_probe(struct platform_device *pdev)
->  {
->  	struct sa1100fb_info *fbi;
-> -	struct resource *res;
->  	int ret, irq;
->  
->  	if (!dev_get_platdata(&pdev->dev)) {
-> @@ -1172,8 +1171,7 @@ static int sa1100fb_probe(struct platform_device *pdev)
->  	if (!fbi)
->  		return -ENOMEM;
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	fbi->base = devm_ioremap_resource(&pdev->dev, res);
-> +	fbi->base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(fbi->base))
->  		return PTR_ERR(fbi->base);
->  
+>> +		};
+>> +
+>>  		minfo->values.reg.mctlwtst_core = (minfo->values.reg.mctlwtst & ~7) |
+>>  						  wtst_xlat[minfo->values.reg.mctlwtst & 7];
+>>  	}
+>> -- 
+>> 2.20.1
+>>
+>> _______________________________________________
+>> dri-devel mailing list
+>> dri-devel@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/dri-devel
