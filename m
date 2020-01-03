@@ -2,136 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBE612F82A
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jan 2020 13:26:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30BC612F83F
+	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jan 2020 13:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727489AbgACM00 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 Jan 2020 07:26:26 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:58056 "EHLO
+        id S1727700AbgACMd6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 3 Jan 2020 07:33:58 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:60297 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727436AbgACM00 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jan 2020 07:26:26 -0500
+        with ESMTP id S1727507AbgACMd5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jan 2020 07:33:57 -0500
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200103122624euoutp0270634e64bc4abd3d232b56fd4755080d~mYBogzWux2777727777euoutp02t
-        for <linux-fbdev@vger.kernel.org>; Fri,  3 Jan 2020 12:26:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200103122624euoutp0270634e64bc4abd3d232b56fd4755080d~mYBogzWux2777727777euoutp02t
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200103123355euoutp02b669268c79b988cae77590f0f69c1163~mYIMNfgvl0042800428euoutp02F
+        for <linux-fbdev@vger.kernel.org>; Fri,  3 Jan 2020 12:33:55 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200103123355euoutp02b669268c79b988cae77590f0f69c1163~mYIMNfgvl0042800428euoutp02F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1578054384;
-        bh=+aCWclvV0rZhCCMyxhCs/miKoxo1AiEONhSNOqnKW3Y=;
+        s=mail20170921; t=1578054835;
+        bh=wqpvlc5dc6EaKv/qmjbhZPAOqfxHg+4cZNkZ0Hpa7lM=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=ufh+HaetG8cs6xZc6zKailLfF/azjvScuRKvVD78/cc7hpGoxsm5JRgLu+vyxxx1W
-         e+HCquA4SSxRnBr2AJ85Dtt2I0j0AbYwBpeS5uarHzgXD7vZQvCyTNzbhxWZQv0CQP
-         N5JZ2tuQExaIJxwburfWz2o9gZ9nlmzyHOLdAlLE=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200103122624eucas1p14bbc0d86fcf9074ffec58297f47327c1~mYBn9KEVv2385723857eucas1p1G;
-        Fri,  3 Jan 2020 12:26:24 +0000 (GMT)
+        b=jVIVL/paiDHrY+HwVpYzg4vCwmV3FhmiY4FM6u2Op3FPSX9iFV9Kn0DnBctzhht4S
+         ZlHOcfB/dDJDjccLOwueSrjv36x4qc9juOk4zb0zh9O19IsQ1jEaL6QqoZ1AVk4Qco
+         sJJv9f9DskIcfICJ/RFS7rwRX0ATe2bBagWt0MZ8=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200103123355eucas1p2873eb62ac1d4b07b38c59b5a721453ed~mYIL_wNCD1877118771eucas1p23;
+        Fri,  3 Jan 2020 12:33:55 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 20.67.60679.0F23F0E5; Fri,  3
-        Jan 2020 12:26:24 +0000 (GMT)
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 0C.6B.61286.3B43F0E5; Fri,  3
+        Jan 2020 12:33:55 +0000 (GMT)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200103122623eucas1p234b0f5ab28dd95a5cdd1e508e3542e4d~mYBniTinB1703917039eucas1p24;
-        Fri,  3 Jan 2020 12:26:23 +0000 (GMT)
+        20200103123354eucas1p28317fdf62e31014ea563baed8ff08c20~mYILqJyjU2296222962eucas1p2l;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200103122623eusmtrp25a2ad23ba86f7ad47bce1a860f74eafc~mYBnhsR740071200712eusmtrp2f;
-        Fri,  3 Jan 2020 12:26:23 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-a3-5e0f32f018f8
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 7C.C4.08375.FE23F0E5; Fri,  3
-        Jan 2020 12:26:23 +0000 (GMT)
+        20200103123354eusmtrp2ed33b4f922e74bb3f8cfcb50ec193fbd~mYILpJLNd0551105511eusmtrp2X;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-f6-5e0f34b32075
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 1E.85.08375.2B43F0E5; Fri,  3
+        Jan 2020 12:33:54 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200103122623eusmtip23b61d1584b98ff40c75942da64c2fed8~mYBnMMbFl0940109401eusmtip2F;
-        Fri,  3 Jan 2020 12:26:23 +0000 (GMT)
-Subject: Re: [PATCH] video: fbdev: fsl-diu-fb: mark expected switch
- fall-throughs
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Timur Tabi <timur@kernel.org>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200103123354eusmtip16cd9c58f869a4d80172f5d6a5d37e2a8~mYILIz9bH1469514695eusmtip1l;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
+Subject: Re: [PATCH] video: ocfb: Use devm_platform_ioremap_resource() in
+ ocfb_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <3cc20993-1f45-ba6d-78b8-32be92b4853d@samsung.com>
-Date:   Fri, 3 Jan 2020 13:26:22 +0100
+Message-ID: <94a71d4e-25c2-5aa4-208f-70e46b6a964e@samsung.com>
+Date:   Fri, 3 Jan 2020 13:33:54 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190911113604.GA31512@embeddedor>
+In-Reply-To: <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBKsWRmVeSWpSXmKPExsWy7djP87ofjPjjDBZ+ZLa48vU9m8XWPaoW
-        J/o+sFpc3jWHzeLEb3UHVo91B1U9Nq3qZPO4332cyePzJrkAligum5TUnMyy1CJ9uwSujMvv
-        +tgLDotULFj3g72B8aZAFyMnh4SAicTBo2fZuhi5OIQEVjBKXDxxngXC+cIo0b77AxtIlZDA
-        Z0aJxXOtYDruzrnBBFG0nFGi90kjM4TzllHi2aNGRpAqYYFgidZfy5lBbBEBI4nZM7pZQWxm
-        gXqJD3t6wWrYBKwkJravArN5BewkFt7tB6rh4GARUJE4/0wYJCwqECHx6cFhVogSQYmTM5+w
-        gNicAgYSG1YvgRopLnHryXwmCFteonnrbLB7JAQms0s82L2NCeJqF4ln35cyQtjCEq+Ob2GH
-        sGUk/u+czwTRsI5R4m/HC6ju7YwSyyf/Y4Oospa4c+4XG8h1zAKaEut36UOEHSXeNrcygYQl
-        BPgkbrwVhDiCT2LStunMEGFeiY42IYhqNYkNyzawwazt2rmSeQKj0iwkr81C8s4sJO/MQti7
-        gJFlFaN4amlxbnpqsVFearlecWJucWleul5yfu4mRmB6Of3v+JcdjLv+JB1iFOBgVOLhTVDm
-        jxNiTSwrrsw9xCjBwawkwlseyBsnxJuSWFmVWpQfX1Sak1p8iFGag0VJnNd40ctYIYH0xJLU
-        7NTUgtQimCwTB6dUA6N9mtH0WfZzZ9888tvrdoa4UEj8u+INy3bJBnSJ3vR44F1V2XnhudzJ
-        ezUG5m79/46f8P5olfXbfZHCuWjRPofDdzo50/Yu4Jw+U9WZf/aSmtCAJTX//afLGguIX951
-        T7Fmirr2Tvevc7+Z3Ws9VanFEiN+qWDrhLimpi9HxDmnbk8S4unJX6PEUpyRaKjFXFScCACl
-        Hwq8KwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFIsWRmVeSWpSXmKPExsVy+t/xe7rvjfjjDKbfUre48vU9m8XWPaoW
-        J/o+sFpc3jWHzeLEb3UHVo91B1U9Nq3qZPO4332cyePzJrkAlig9m6L80pJUhYz84hJbpWhD
-        CyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jMvv+tgLDotULFj3g72B8aZAFyMn
-        h4SAicTdOTeYuhi5OIQEljJKLDzVCeRwACVkJI6vL4OoEZb4c62LDaLmNaPEj+YTbCAJYYFg
-        idZfy5lBbBEBI4nZM7pZQWxmgXqJ2Rv3Qw1tZpQ4cqWFESTBJmAlMbF9FZjNK2AnsfBuPyvI
-        MhYBFYnzz4RBwqICERKHd8yCKhGUODnzCQuIzSlgILFh9RKo+eoSf+ZdYoawxSVuPZnPBGHL
-        SzRvnc08gVFoFpL2WUhaZiFpmYWkZQEjyypGkdTS4tz03GJDveLE3OLSvHS95PzcTYzAeNp2
-        7OfmHYyXNgYfYhTgYFTi4U1Q5o8TYk0sK67MPcQowcGsJMJbHsgbJ8SbklhZlVqUH19UmpNa
-        fIjRFOi3icxSosn5wFjPK4k3NDU0t7A0NDc2NzazUBLn7RA4GCMkkJ5YkpqdmlqQWgTTx8TB
-        KdXA6NWm7qfLoWk188IW7y9NK9Is9X6Kzfs4Q9GaOzzPNlPdXDXgkndiypb9k1fEFKzi/Hxw
-        1udLbK+cTDvnHHlx6OgD/UvPL7RJzHmhHKE7X90727SgxuPMlJ0+9j23FzY+k1navjXhxNLX
-        O30/xztPqLKOKtmwzz5z9Ryt1t+9XBO/V/Evurh4mRJLcUaioRZzUXEiAMHvSr69AgAA
-X-CMS-MailID: 20200103122623eucas1p234b0f5ab28dd95a5cdd1e508e3542e4d
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFKsWRmVeSWpSXmKPExsWy7djP87qbTfjjDOZ/YbX4MvcUi8WVr+/Z
+        LKataWG12HpL2uJE3wdWi8u75rBZ/J/1nNWB3eP9jVZ2j52z7rJ73O8+zuTxeZOcx+1n21gC
+        WKO4bFJSczLLUov07RK4Mh6cO8tWsJmnYtbyacwNjBO4uhg5OSQETCTevX/M1sXIxSEksIJR
+        4u6MHywQzhdGif9PW5khnM+MEvuv3WGEaTk45xAjRGI5o8Sv54vZIZy3jBIdj3+ygFQJC0RI
+        LGtbyNTFyMEhIqAl8fSxCUgNs8BLRolNe64zgdSwCVhJTGxfBTaVV8BOYsqRWWC9LAIqEvtf
+        z2AGsUWB5nx6cJgVokZQ4uTMJ2A1nEC917+uZgOxmQXEJW49mc8EYctLbH87B+xsCYFt7BKP
+        9nexgxwhIeAiMeVcIMQHwhKvjm9hh7BlJP7vBOkFqV/HKPG34wVU83ZGieWT/7FBVFlL3Dn3
+        iw1kELOApsT6XfoQYUeJ96cboObzSdx4KwhxA5/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27Vz
+        JfMERqVZSD6bheSbWUi+mYWwdwEjyypG8dTS4tz01GLDvNRyveLE3OLSvHS95PzcTYzAFHT6
+        3/FPOxi/Xko6xCjAwajEw5ugzB8nxJpYVlyZe4hRgoNZSYS3PJA3Tog3JbGyKrUoP76oNCe1
+        +BCjNAeLkjiv8aKXsUIC6YklqdmpqQWpRTBZJg5OqQZGs7QrjS5m+yoNN/PMFs53E/TLluGu
+        NFvKWjzjxZray5e02+S1n76tavFNmlNffGp51DS9I6Wr73ozpBibs/2frqnC5WBmbOepvCtf
+        sXidqsy+sPun15yN717w3Iw7p3iLwceVbQk3ph6ZkP3vVKr68uS7bAcX7P8zfXOR9AGeB862
+        d99WdMspsRRnJBpqMRcVJwIApoaJdj0DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDIsWRmVeSWpSXmKPExsVy+t/xu7qbTPjjDP5d07f4MvcUi8WVr+/Z
+        LKataWG12HpL2uJE3wdWi8u75rBZ/J/1nNWB3eP9jVZ2j52z7rJ73O8+zuTxeZOcx+1n21gC
+        WKP0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mh6c
+        O8tWsJmnYtbyacwNjBO4uhg5OSQETCQOzjnE2MXIxSEksJRRYsv8H6xdjBxACRmJ4+vLIGqE
+        Jf5c62KDqHnNKNH9Zx07SEJYIEJiWdtCJpB6EQEtiaePTUBqmAVeMkrc+fKYGaKhl1HiyNcu
+        sAY2ASuJie2rGEFsXgE7iSlHZrGA2CwCKhL7X89gBrFFgYYe3jELqkZQ4uTMJ2A1nEC917+u
+        ZgOxmQXUJf7Mu8QMYYtL3HoynwnClpfY/nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz
+        03OLDfWKE3OLS/PS9ZLzczcxAmNu27Gfm3cwXtoYfIhRgINRiYc3QZk/Tog1say4MvcQowQH
+        s5IIb3kgb5wQb0piZVVqUX58UWlOavEhRlOg5yYyS4km5wPTQV5JvKGpobmFpaG5sbmxmYWS
+        OG+HwMEYIYH0xJLU7NTUgtQimD4mDk6pBkbGmaeWBmgUv7lb1f1BhXfe5opd0W9jzjWeF5KP
+        Xhwmk3//ttu6mrNM0iymR0yKvkgnz/749GLssh9nHwatkRBOMnTY86RLfPGLnSl9D1w13gaG
+        zjUM5066NPfXlcgqlcmMpQul2F7m3S+csfPX5cppHyddPJi9hcVl96sJXFzX7dR1p03/c0pT
+        iaU4I9FQi7moOBEAIZLzu88CAAA=
+X-CMS-MailID: 20200103123354eucas1p28317fdf62e31014ea563baed8ff08c20
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190911053645epcas3p36e689569e847f94ea42f1692c7aba22b
+X-RootMTR: 20190919143339epcas5p2ca00bc034be8e478353a40475683de13
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190911053645epcas3p36e689569e847f94ea42f1692c7aba22b
-References: <CGME20190911053645epcas3p36e689569e847f94ea42f1692c7aba22b@epcas3p3.samsung.com>
-        <20190911113604.GA31512@embeddedor>
+X-CMS-RootMailID: 20190919143339epcas5p2ca00bc034be8e478353a40475683de13
+References: <CGME20190919143339epcas5p2ca00bc034be8e478353a40475683de13@epcas5p2.samsung.com>
+        <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 9/11/19 1:36 PM, Gustavo A. R. Silva wrote:
-> Mark switch cases where we are expecting to fall through.
+On 9/19/19 4:33 PM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 19 Sep 2019 16:26:56 +0200
 > 
-> Fix the following warnings (Building: mpc512x_defconfig powerpc):
+> Simplify this function implementation by using a known wrapper function.
 > 
-> drivers/video/fbdev/fsl-diu-fb.c: In function ‘fsl_diu_ioctl’:
-> ./include/linux/device.h:1750:2: warning: this statement may fall through [-Wimplicit-fallthrough=]
->   _dev_warn(dev, dev_fmt(fmt), ##__VA_ARGS__)
->   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/video/fbdev/fsl-diu-fb.c:1287:3: note: in expansion of macro ‘dev_warn’
->    dev_warn(info->dev,
->    ^~~~~~~~
-> drivers/video/fbdev/fsl-diu-fb.c:1290:2: note: here
->   case MFB_SET_PIXFMT:
->   ^~~~
-> In file included from ./include/linux/acpi.h:15:0,
->                  from ./include/linux/i2c.h:13,
->                  from ./include/uapi/linux/fb.h:6,
->                  from ./include/linux/fb.h:6,
->                  from drivers/video/fbdev/fsl-diu-fb.c:20:
-> ./include/linux/device.h:1750:2: warning: this statement may fall through [-Wimplicit-fallthrough=]
->   _dev_warn(dev, dev_fmt(fmt), ##__VA_ARGS__)
->   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/video/fbdev/fsl-diu-fb.c:1296:3: note: in expansion of macro ‘dev_warn’
->    dev_warn(info->dev,
->    ^~~~~~~~
-> drivers/video/fbdev/fsl-diu-fb.c:1299:2: note: here
->   case MFB_GET_PIXFMT:
->   ^~~~
+> This issue was detected by using the Coccinelle software.
 > 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
 Thanks, patch queued for v5.6 (also sorry for the delay).
 
@@ -142,27 +123,35 @@ Samsung R&D Institute Poland
 Samsung Electronics
 
 > ---
->  drivers/video/fbdev/fsl-diu-fb.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/video/fbdev/ocfb.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-> index d19f58263b4e..3e410b9eb272 100644
-> --- a/drivers/video/fbdev/fsl-diu-fb.c
-> +++ b/drivers/video/fbdev/fsl-diu-fb.c
-> @@ -1287,6 +1287,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
->  		dev_warn(info->dev,
->  			 "MFB_SET_PIXFMT value of 0x%08x is deprecated.\n",
->  			 MFB_SET_PIXFMT_OLD);
-> +		/* fall through */
->  	case MFB_SET_PIXFMT:
->  		if (copy_from_user(&pix_fmt, buf, sizeof(pix_fmt)))
->  			return -EFAULT;
-> @@ -1296,6 +1297,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
->  		dev_warn(info->dev,
->  			 "MFB_GET_PIXFMT value of 0x%08x is deprecated.\n",
->  			 MFB_GET_PIXFMT_OLD);
-> +		/* fall through */
->  	case MFB_GET_PIXFMT:
->  		pix_fmt = ad->pix_fmt;
->  		if (copy_to_user(buf, &pix_fmt, sizeof(pix_fmt)))
+> diff --git a/drivers/video/fbdev/ocfb.c b/drivers/video/fbdev/ocfb.c
+> index a970edc2a6f8..be308b4dc91d 100644
+> --- a/drivers/video/fbdev/ocfb.c
+> +++ b/drivers/video/fbdev/ocfb.c
+> @@ -297,7 +297,6 @@ static int ocfb_probe(struct platform_device *pdev)
+>  {
+>  	int ret = 0;
+>  	struct ocfb_dev *fbdev;
+> -	struct resource *res;
+>  	int fbsize;
 > 
+>  	fbdev = devm_kzalloc(&pdev->dev, sizeof(*fbdev), GFP_KERNEL);
+> @@ -319,13 +318,7 @@ static int ocfb_probe(struct platform_device *pdev)
+>  	ocfb_init_var(fbdev);
+>  	ocfb_init_fix(fbdev);
+> 
+> -	/* Request I/O resource */
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res) {
+> -		dev_err(&pdev->dev, "I/O resource request failed\n");
+> -		return -ENXIO;
+> -	}
+> -	fbdev->regs = devm_ioremap_resource(&pdev->dev, res);
+> +	fbdev->regs = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(fbdev->regs))
+>  		return PTR_ERR(fbdev->regs);
+> 
+> --
+> 2.23.0
