@@ -2,181 +2,178 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24CD0130F53
-	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Jan 2020 10:21:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8922E131B91
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Jan 2020 23:38:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726155AbgAFJVJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 6 Jan 2020 04:21:09 -0500
-Received: from mail-io1-f71.google.com ([209.85.166.71]:46852 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725996AbgAFJVJ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Jan 2020 04:21:09 -0500
-Received: by mail-io1-f71.google.com with SMTP id p206so30612851iod.13
-        for <linux-fbdev@vger.kernel.org>; Mon, 06 Jan 2020 01:21:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=GjNdGReWbjB9kPwSCZVvgY8hPYvlyzp2JV+wGoSvZxY=;
-        b=H0onRvJGcuVY07SM3EUQqWL19sTQfn4l/dRi+ma7gI5EDnXK8SENIfEyxJQaJ7POMf
-         WFPGlA6LPeZdt7BfB8wx5uJyHWJ7airz3nDrWyOJJja25kCpISgaQIOh5/VJcdka+E8/
-         640WcA1Yq+S8Ne1/J77aWgHDr3mRgewBUP/QWIs16Iv/aULbwghULRpHgnS1ov+U02JS
-         sZ5/MHmZryi2abYNNjrdtXnWxr9yEfaQewkSWFkN4uBlIYDQRavzYn8d0FtZJ6JmtGB7
-         uIUhPO8DLhQwaeS1Eg+o0S+lxKJQJDwAp9Z/RUuMJsw7H1RWZm/BmvcWYkrIY6bF2isP
-         HoXQ==
-X-Gm-Message-State: APjAAAWFTMSlnkuPtKYOGDnQcX5Vnd6XiSYe7exSUfPq5dQSsnpQM8xn
-        n6bI9nmB75uDumJAZ/lS868MVsyzPWIjro8aNPu0S+VxNVzB
-X-Google-Smtp-Source: APXvYqzRUOYtI7Hdzhse7UC57o8mfIwW0bKPENrYOU99qtVXW/NW8DRoJoZSXNpADImK8Lv1T84Vwfl8+7RwSTd7h7XJxehJc0m6
+        id S1726930AbgAFWiM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 6 Jan 2020 17:38:12 -0500
+Received: from mail-eopbgr1300133.outbound.protection.outlook.com ([40.107.130.133]:6073
+        "EHLO APC01-HK2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726721AbgAFWiL (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 6 Jan 2020 17:38:11 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DMEsMwiBMLqfhzKBzI2gC62+D8UtNgSvjnxif8BznXuZlNchNxCewJqgo6JGVE9Brk9F/C9FSw+qBijV15JHePsPhDhsvsOgnecZy5asFC3O8A+Ey01PdASvv9KhRFtBPsSihHeHzmU7LS8PUeB1KMmaYm1i8zFJqlctgIjAfE41g5lXizGA/xq28q6Eqy4tAaVMaRMl+sil6EYkBR0d7xNbmaq9duA3//8asz0OV9ZwrurZ0oZZ97NRUJRZKuvi7z/S1bs+6RraoehzhSgZYDCUiAvnm+bSEIj2FofXj0vi7m6IzRIb+t5imqImMp+D2p3OjyM337BUCsOKbd+z4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KiCD50HsVXB3SDNGKs1hwRp9s1laNPeqRrAt3EpEMwY=;
+ b=RugJ9mrVF68bVZoQjk7bbHMDVlJEDgqkbxmiltcHZ8XG8pp2PAlEMVFzp2XSalTZ4ye3iN2E7K6hGSSXLlFvi2JceYaJBK6hLUvZZ9k9DeV5MKMV+6JvUOMw2yr5+vsn03oBAR766vRW4Y78E5/wo0fXSIPeZ2LlXVubCQvt5+igoVMUeDmxxm2P5i+NRg1fvh+kZdBM/bMPJ2XG8FT2mlJB4YTV6LghLVZwWCTy35cutGYsVK5D3oYGJQm1HNOBgL9+veoLGKIfxCRyM+9CLTiZetz5jbgjAhOsjO//JyXkpf6uKYL4uPFBBeR/ZhR1H/o1oPPyqO+k20sJrHalfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KiCD50HsVXB3SDNGKs1hwRp9s1laNPeqRrAt3EpEMwY=;
+ b=dmF2P7alSZraMBXg1uLx8R4w/hUK6BnOPg6iSEoBuY+SHpKty8COJXdKQtvToWBVDsSDTjguCwGmYMgHHLoILS7puTaPzL/emFVvnsivP+7AT2bozg2lrKggUa+TDVHSbXYrxHOPWe5jqdoiJG4JTP5vDzTq3FOUjbiQBw80lUg=
+Received: from HK0P153MB0148.APCP153.PROD.OUTLOOK.COM (52.133.156.139) by
+ HK0P153MB0145.APCP153.PROD.OUTLOOK.COM (52.133.156.22) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2644.3; Mon, 6 Jan 2020 22:38:00 +0000
+Received: from HK0P153MB0148.APCP153.PROD.OUTLOOK.COM
+ ([fe80::15e7:8155:31bc:d4e7]) by HK0P153MB0148.APCP153.PROD.OUTLOOK.COM
+ ([fe80::15e7:8155:31bc:d4e7%7]) with mapi id 15.20.2644.002; Mon, 6 Jan 2020
+ 22:38:00 +0000
+From:   Dexuan Cui <decui@microsoft.com>
+To:     Michael Kelley <mikelley@microsoft.com>,
+        Wei Hu <weh@microsoft.com>,
+        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        "sashal@kernel.org" <sashal@kernel.org>, "hch@lst.de" <hch@lst.de>,
+        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+        "mchehab+samsung@kernel.org" <mchehab+samsung@kernel.org>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "info@metux.net" <info@metux.net>, "arnd@arndb.de" <arnd@arndb.de>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>
+CC:     kbuild test robot <lkp@intel.com>
+Subject: RE: [PATCH v4] video: hyperv: hyperv_fb: Use physical memory for fb
+ on HyperV Gen 1 VMs.
+Thread-Topic: [PATCH v4] video: hyperv: hyperv_fb: Use physical memory for fb
+ on HyperV Gen 1 VMs.
+Thread-Index: AQHVxOHxuopG5mY95kawnV462nTW6w==
+Date:   Mon, 6 Jan 2020 22:37:59 +0000
+Message-ID: <HK0P153MB0148F18913BEA45144AF8443BF3C0@HK0P153MB0148.APCP153.PROD.OUTLOOK.COM>
+References: <20191209075749.3804-1-weh@microsoft.com>
+ <CY4PR21MB06293C21EC5338C98080F6AED7580@CY4PR21MB0629.namprd21.prod.outlook.com>
+In-Reply-To: <CY4PR21MB06293C21EC5338C98080F6AED7580@CY4PR21MB0629.namprd21.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=mikelley@ntdev.microsoft.com;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-12-09T16:32:55.0594936Z;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
+ Information Protection;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=32db805d-f982-4dfd-985a-2183a1a1211d;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=decui@microsoft.com; 
+x-originating-ip: [2001:4898:80e8:9:9215:9356:cafd:e70d]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: ad78d3bc-0336-43a8-b8ae-08d792f91593
+x-ms-traffictypediagnostic: HK0P153MB0145:|HK0P153MB0145:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <HK0P153MB01453B73FFC8D5E7FB72F0FFBF3C0@HK0P153MB0145.APCP153.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-forefront-prvs: 0274272F87
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(39860400002)(396003)(136003)(366004)(189003)(199004)(71200400001)(76116006)(316002)(10290500003)(86362001)(7416002)(9686003)(66946007)(478600001)(66476007)(66556008)(64756008)(55016002)(66446008)(53546011)(110136005)(8936002)(4326008)(8990500004)(5660300002)(2906002)(7696005)(6506007)(81166006)(81156014)(52536014)(8676002)(33656002)(186003)(921003)(1121003);DIR:OUT;SFP:1102;SCL:1;SRVR:HK0P153MB0145;H:HK0P153MB0148.APCP153.PROD.OUTLOOK.COM;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: microsoft.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: TYfy/9hBwPHtX71CRSOAYpTOfijLZNuE09eWdKZAmqkEQsVJDYe5cAXN08W6/rwgaugrYVxueZQxBzP5nMJJgvZhPBBTNYWVHhLCjnNnkh/7XwEWxgnvrgC6EB/6nt0XBYiksmrQl28x/v1gzOGQDW1GXy/EdAP8RmuJD2bzw41HBjKPI39HKRnMmJloV8l3doBw7vRkvkwj9iz0whpNqJhRZHpy0Cgk6hylbgX47DyiYu/SOnW+33nO4bCg/Lireg3+jyhtBRcWvy82kjFK2W18UM/pPSjSa+Z/FYTWBWU3B+uFz1iiEfVlHXhwCdkApBXGe9g4Ajp8bj0UvA7PsQBD7gOK7mIGh+xOVTWKgLBmFFsDkjQNHOzSX0a0dNTuaE46ksA1YjEUDK95/4K3jPxj1Le8I2gjmGMOpMZiAIuUqMTTsea9hehD5+s35TnNEoVbUi6qHjIy4aKSyuO++ygODrs0ZNYgUWosY2R5Y/bma/SLlbzGKn4ueS7la5ZL
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Received: by 2002:a92:390c:: with SMTP id g12mr82884490ila.246.1578302468894;
- Mon, 06 Jan 2020 01:21:08 -0800 (PST)
-Date:   Mon, 06 Jan 2020 01:21:08 -0800
-In-Reply-To: <0000000000008731130598e35a2e@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000001bae8059b752ec6@google.com>
-Subject: Re: KASAN: slab-out-of-bounds Read in soft_cursor
-From:   syzbot <syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad78d3bc-0336-43a8-b8ae-08d792f91593
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2020 22:37:59.8621
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /EgCmK1Ap1QFrM8BoWUuJ/CtYV54glkYyXuWQkpbSByV4QB+nlXqnOZBn6N127HB6glQky2coOSTQWFkMTTqxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK0P153MB0145
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
+> From: Michael Kelley <mikelley@microsoft.com>
+> Sent: Monday, December 9, 2019 8:33 AM
+> To: Wei Hu <weh@microsoft.com>; b.zolnierkie@samsung.com; KY
+> Srinivasan <kys@microsoft.com>; Haiyang Zhang <haiyangz@microsoft.com>;
+> Stephen Hemminger <sthemmin@microsoft.com>; sashal@kernel.org;
+> hch@lst.de; m.szyprowski@samsung.com; mchehab+samsung@kernel.org;
+> sam@ravnborg.org; gregkh@linuxfoundation.org;
+> alexandre.belloni@bootlin.com; info@metux.net; arnd@arndb.de;
+> dri-devel@lists.freedesktop.org; linux-fbdev@vger.kernel.org;
+> linux-kernel@vger.kernel.org; linux-hyperv@vger.kernel.org; Dexuan Cui
+> <decui@microsoft.com>
+> Cc: kbuild test robot <lkp@intel.com>
+> Subject: RE: [PATCH v4] video: hyperv: hyperv_fb: Use physical memory for
+> fb on HyperV Gen 1 VMs.
+>=20
+> From: Wei Hu <weh@microsoft.com> Sent: Sunday, December 8, 2019 11:58
+> PM
+> >
+> > On Hyper-V, Generation 1 VMs can directly use VM's physical memory for
+> > their framebuffers. This can improve the efficiency of framebuffer and
+> > overall performance for VM. The physical memory assigned to framebuffer
+> > must be contiguous. We use CMA allocator to get contiguous physicial
+> > memory when the framebuffer size is greater than 4MB. For size under
+> > 4MB, we use alloc_pages to achieve this.
+> >
+> > To enable framebuffer memory allocation from CMA, supply a kernel
+> > parameter to give enough space to CMA allocator at boot time. For
+> > example:
+> >     cma=3D130m
+> > This gives 130MB memory to CAM allocator that can be allocated to
+> > framebuffer. If this fails, we fall back to the old way of using
+> > mmio for framebuffer.
+> >
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Signed-off-by: Wei Hu <weh@microsoft.com>
+> > ---
+> >     v2: Incorporated review comments form hch@lst.de, Michael Kelley
+> and
+> >     Dexuan Cui
+> >     - Use dma_alloc_coherent to allocate large contiguous memory
+> >     - Use phys_addr_t for physical addresses
+> >     - Corrected a few spelling errors and minor cleanups
+> >     - Also tested on 32 bit Ubuntu guest
+> >     v3: Fixed a build issue reported by kbuild test robot and incorport=
+ed
+> >     some review comments from Michael Kelley
+> >     - Add CMA check to avoid link failure
+> >     - Fixed small memory leak introduced by alloc_apertures
+> >     - Cleaned up so code
+> >     v4: Removed request_pages variable as it is no longer needed
+> >
+> >  drivers/video/fbdev/Kconfig     |   1 +
+> >  drivers/video/fbdev/hyperv_fb.c | 182
+> +++++++++++++++++++++++++-------
+> >  2 files changed, 144 insertions(+), 39 deletions(-)
+> >
+>=20
+> Reviewed-by: Michael Kelley <mikelley@microsoft.com>
 
-HEAD commit:    c79f46a2 Linux 5.5-rc5
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=131bcee1e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=42c82694f792b2f5
-dashboard link: https://syzkaller.appspot.com/bug?extid=16469b5e8e5a72e9131e
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1371ba56e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13423e3ee00000
+Tested-by: Dexuan Cui <decui@microsoft.com>
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+16469b5e8e5a72e9131e@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in memcpy include/linux/string.h:380 [inline]
-BUG: KASAN: slab-out-of-bounds in soft_cursor+0x439/0xa30  
-drivers/video/fbdev/core/softcursor.c:70
-Read of size 16 at addr ffff88809fbb1740 by task syz-executor427/9732
-
-CPU: 0 PID: 9732 Comm: syz-executor427 Not tainted 5.5.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  print_address_description.constprop.0.cold+0xd4/0x30b mm/kasan/report.c:374
-  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
-  kasan_report+0x12/0x20 mm/kasan/common.c:639
-  check_memory_region_inline mm/kasan/generic.c:185 [inline]
-  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
-  memcpy+0x24/0x50 mm/kasan/common.c:125
-  memcpy include/linux/string.h:380 [inline]
-  soft_cursor+0x439/0xa30 drivers/video/fbdev/core/softcursor.c:70
-  bit_cursor+0x12fc/0x1a60 drivers/video/fbdev/core/bitblit.c:386
-  fbcon_cursor+0x487/0x660 drivers/video/fbdev/core/fbcon.c:1402
-  hide_cursor+0x9d/0x2b0 drivers/tty/vt/vt.c:895
-  redraw_screen+0x60b/0x7d0 drivers/tty/vt/vt.c:988
-  vc_do_resize+0x10c9/0x1460 drivers/tty/vt/vt.c:1284
-  vc_resize+0x4d/0x60 drivers/tty/vt/vt.c:1304
-  vt_ioctl+0x2076/0x26d0 drivers/tty/vt/vt_ioctl.c:887
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x440249
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 5b 14 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffdd43faf18 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440249
-RDX: 0000000020000000 RSI: 000000000000560a RDI: 0000000000000004
-RBP: 00000000006cb018 R08: 000000000000000d R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401b30
-R13: 0000000000401bc0 R14: 0000000000000000 R15: 0000000000000000
-
-Allocated by task 9732:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  __kasan_kmalloc mm/kasan/common.c:513 [inline]
-  __kasan_kmalloc.constprop.0+0xcf/0xe0 mm/kasan/common.c:486
-  kasan_kmalloc+0x9/0x10 mm/kasan/common.c:527
-  __do_kmalloc mm/slab.c:3656 [inline]
-  __kmalloc+0x163/0x770 mm/slab.c:3665
-  kmalloc include/linux/slab.h:561 [inline]
-  fbcon_set_font+0x32d/0x860 drivers/video/fbdev/core/fbcon.c:2663
-  con_font_set drivers/tty/vt/vt.c:4538 [inline]
-  con_font_op+0xe30/0x1270 drivers/tty/vt/vt.c:4603
-  do_fontx_ioctl drivers/tty/vt/vt_ioctl.c:244 [inline]
-  vt_ioctl+0x35a/0x26d0 drivers/tty/vt/vt_ioctl.c:930
-  tty_ioctl+0xa37/0x14f0 drivers/tty/tty_io.c:2660
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-Freed by task 9473:
-  save_stack+0x23/0x90 mm/kasan/common.c:72
-  set_track mm/kasan/common.c:80 [inline]
-  kasan_set_free_info mm/kasan/common.c:335 [inline]
-  __kasan_slab_free+0x102/0x150 mm/kasan/common.c:474
-  kasan_slab_free+0xe/0x10 mm/kasan/common.c:483
-  __cache_free mm/slab.c:3426 [inline]
-  kfree+0x10a/0x2c0 mm/slab.c:3757
-  tomoyo_supervisor+0x360/0xef0 security/tomoyo/common.c:2149
-  tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
-  tomoyo_env_perm+0x18e/0x210 security/tomoyo/environ.c:63
-  tomoyo_environ security/tomoyo/domain.c:674 [inline]
-  tomoyo_find_next_domain+0x1354/0x1f6c security/tomoyo/domain.c:881
-  tomoyo_bprm_check_security security/tomoyo/tomoyo.c:107 [inline]
-  tomoyo_bprm_check_security+0x124/0x1a0 security/tomoyo/tomoyo.c:97
-  security_bprm_check+0x63/0xb0 security/security.c:784
-  search_binary_handler+0x71/0x570 fs/exec.c:1645
-  exec_binprm fs/exec.c:1701 [inline]
-  __do_execve_file.isra.0+0x1329/0x22b0 fs/exec.c:1821
-  do_execveat_common fs/exec.c:1867 [inline]
-  do_execve fs/exec.c:1884 [inline]
-  __do_sys_execve fs/exec.c:1960 [inline]
-  __se_sys_execve fs/exec.c:1955 [inline]
-  __x64_sys_execve+0x8f/0xc0 fs/exec.c:1955
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-
-The buggy address belongs to the object at ffff88809fbb1000
-  which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 1856 bytes inside of
-  2048-byte region [ffff88809fbb1000, ffff88809fbb1800)
-The buggy address belongs to the page:
-page:ffffea00027eec40 refcount:1 mapcount:0 mapping:ffff8880aa400e00  
-index:0x0
-raw: 00fffe0000000200 ffffea00027d0ac8 ffffea00027645c8 ffff8880aa400e00
-raw: 0000000000000000 ffff88809fbb1000 0000000100000001 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-  ffff88809fbb1600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff88809fbb1680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> ffff88809fbb1700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                            ^
-  ffff88809fbb1780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffff88809fbb1800: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
+For a Gen-1 VM running on recent Hyper-V hosts, this patch can greatly=20
+reduce the CPU utilization because it avoids the slow data copy from the=20
+shadow framebuffer to the MMIO framebuffer, and hence it resolves the
+"blurred screen" issue when we output a lot of characters on the text-mode
+ternimal (e.g. "dmesg").
