@@ -2,109 +2,147 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28380132A60
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 16:48:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AEF132A86
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 16:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbgAGPsA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Jan 2020 10:48:00 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:36956 "EHLO
+        id S1728115AbgAGP4P (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Jan 2020 10:56:15 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37041 "EHLO
         mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728236AbgAGPsA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 10:48:00 -0500
-Received: by mail-wr1-f67.google.com with SMTP id w15so41905452wru.4
-        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 07:47:58 -0800 (PST)
+        with ESMTP id S1728052AbgAGP4O (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 10:56:14 -0500
+Received: by mail-wr1-f67.google.com with SMTP id w15so41940539wru.4
+        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 07:56:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=date:from:to:cc:subject:message-id:mail-followup-to:references
          :mime-version:content-disposition:in-reply-to;
-        bh=AKH9iM1/iG8zWx2xNV+zLPV8iovcpOyyXJoSIxqdbRk=;
-        b=VcnYI9AkDcSpvZxqfakPF0VUIvVs6cdZjxpLiY4QgG7rkRNj1VtVjcVLvPw+ALUCoo
-         gzKrXcOFdzaWRY7NS4FOUS6Sk3iQfoxdSNFA/KyV+fKOHLMQUaEIUttgA/eyGEqPGN4E
-         ONMSnAN3TjRTrvBXa+e9K9twu69SAs/P43wss=
+        bh=CvMm05V8g7+0q+Ui42OmT25y1ziIysK8ZY1Hix9SYOk=;
+        b=b5zAbHoLeEnnKv5Pe2FO8SXc2DC9kOf7vi90pfVCVrAZTrEqSStlebOBOleTywwlu0
+         L1b/R2sUnO88QH7MdQfYAwQKY5CQiKyAu450/ywdWpvDC9aV4+qVyu+F0elZsnXKGkGY
+         x40SQaNAwyLjhSWVZzFNqi/j/WpUXI/vYyuEs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id
          :mail-followup-to:references:mime-version:content-disposition
          :in-reply-to;
-        bh=AKH9iM1/iG8zWx2xNV+zLPV8iovcpOyyXJoSIxqdbRk=;
-        b=dOJfj57fMxDylFK6xroeUMvC7Zkru/R22wJaLZQ+RzrYBXq6Mwc6Xr9AozXDrhuDSb
-         CeMyKjVnI++gYW6KAqslosdj150GxRjF1FDcjjvh/bMKfzUhRcNE4GjVv9yT05tuDwQP
-         E3jiujYETiibBXvXlTJdH/NWRmbQODwCWjaiYjhd6942IkqLoZIjAMD2XRqZq+1f0p+w
-         8DHQb/7JFJaZVRJRI7uxdESuPADk72Z5dETfMYhcdMdQEUlYAprxdke0W4TkAUGlkO9q
-         j+UUiJ9BMFhMwPgh8KVjeR6kIo2dAqyGWXyx58B++YL9zPjBpHlRUf0W5Qh/7vG0/kLi
-         n1oA==
-X-Gm-Message-State: APjAAAW3N7+KT45gTkboWvRI1iFpXzbOLPJZdFUE8167+cQrZWvGPshY
-        9eFd1/uwMlzqNRvVSS2sRB2yHA==
-X-Google-Smtp-Source: APXvYqzD68uooO7ZcoDZN1tshuC4uGYDnvSgRZJxqX3p24va63g3pm/AWE8wq12cU/IU5J8Nos3Kbw==
-X-Received: by 2002:adf:f10a:: with SMTP id r10mr109349448wro.202.1578412078158;
-        Tue, 07 Jan 2020 07:47:58 -0800 (PST)
+        bh=CvMm05V8g7+0q+Ui42OmT25y1ziIysK8ZY1Hix9SYOk=;
+        b=lkyKKC8ZobaLVH4p0vg4I4A7TWVBUuVtuwVhs15DKpKQH5dBtHgVFH2Pi8gTpE/d4r
+         u97tjKQXMb9ct3/3KvMKU/l7WpBwaQ8/qc6tpzRNTfC17/84vEO4bNl+N2dlUiNIsurr
+         AkS2YIqmXDb+76wf9Ue5Nx1KIXjpaIn8LGd3+arhGns72Yfk2MCEOBd1coTjaM1M9MI1
+         jzHo82wlifqnHzeDHzLiU6FW6stAGsJYc380egtv6G5ddGhycNqmLY5LmbJFFljl7FOh
+         MgdZDU47OPY+PbOKECtK2dkfeGOdzRjcIX2Hpd8BR52+ATTqtp1J2yulcEsUGB9TPj4Q
+         m9Dg==
+X-Gm-Message-State: APjAAAV0VMmrclhz6+2Z+V2esqD0Vb2ggVev9l9zw88fMmjDaRJL2HEH
+        HWprTssIcNMAkkdosZWXK3oh0Zq/AGU=
+X-Google-Smtp-Source: APXvYqx3h6noxkt81i/cx6q7p6cU1GJPR1y287dcrhXYvOtvXcQFfcMZU3tI3SF9MlsEh+F8zLMl/w==
+X-Received: by 2002:a5d:4a91:: with SMTP id o17mr32868608wrq.232.1578412572311;
+        Tue, 07 Jan 2020 07:56:12 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:564b:0:7567:bb67:3d7f:f863])
-        by smtp.gmail.com with ESMTPSA id z187sm39236wme.16.2020.01.07.07.47.56
+        by smtp.gmail.com with ESMTPSA id v17sm242529wrt.91.2020.01.07.07.56.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2020 07:47:57 -0800 (PST)
-Date:   Tue, 7 Jan 2020 16:47:55 +0100
+        Tue, 07 Jan 2020 07:56:11 -0800 (PST)
+Date:   Tue, 7 Jan 2020 16:56:09 +0100
 From:   Daniel Vetter <daniel@ffwll.ch>
-To:     syzbot <syzbot+d130c4a0890561cfac5b@syzkaller.appspotmail.com>
-Cc:     Rex.Zhu@amd.com, airlied@linux.ie, alexander.deucher@amd.com,
-        amd-gfx@lists.freedesktop.org, b.zolnierkie@samsung.com,
-        christian.koenig@amd.com, daniel.vetter@ffwll.ch,
-        david1.zhou@amd.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, sam@ravnborg.org,
-        syzkaller-bugs@googlegroups.com
-Subject: Re: INFO: task hung in fb_release
-Message-ID: <20200107154755.GB43062@phenom.ffwll.local>
-Mail-Followup-To: syzbot <syzbot+d130c4a0890561cfac5b@syzkaller.appspotmail.com>,
-        Rex.Zhu@amd.com, airlied@linux.ie, alexander.deucher@amd.com,
-        amd-gfx@lists.freedesktop.org, b.zolnierkie@samsung.com,
-        christian.koenig@amd.com, david1.zhou@amd.com,
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Stefan Agner <stefan@agner.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
-        sam@ravnborg.org, syzkaller-bugs@googlegroups.com
-References: <00000000000082b80f059a56da1f@google.com>
- <0000000000002074ef059a5c86e2@google.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/fb-helper: Round up bits_per_pixel if possible
+Message-ID: <20200107155609.GC43062@phenom.ffwll.local>
+Mail-Followup-To: Geert Uytterhoeven <geert+renesas@glider.be>,
+        Stefan Agner <stefan@agner.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20191230132734.4538-1-geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0000000000002074ef059a5c86e2@google.com>
+In-Reply-To: <20191230132734.4538-1-geert+renesas@glider.be>
 X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Dec 23, 2019 at 02:31:01AM -0800, syzbot wrote:
-> syzbot has bisected this bug to:
+On Mon, Dec 30, 2019 at 02:27:34PM +0100, Geert Uytterhoeven wrote:
+> When userspace requests a video mode parameter value that is not
+> supported, frame buffer device drivers should round it up to a supported
+> value, if possible, instead of just rejecting it.  This allows
+> applications to quickly scan for supported video modes.
 > 
-> commit e3933f26b657c341055443103bad331f4537b113
-> Author: Rex Zhu <Rex.Zhu@amd.com>
-> Date:   Tue Jan 16 10:35:15 2018 +0000
+> Currently this rule is not followed for the number of bits per pixel,
+> causing e.g. "fbset -depth N" to fail, if N is smaller than the current
+> number of bits per pixel.
 > 
->     drm/amd/pp: Add edit/commit/show OD clock/voltage support in sysfs
+> Fix this by returning an error only if bits per pixel is too large, and
+> setting it to the current value otherwise.
+> 
+> See also Documentation/fb/framebuffer.rst, Section 2 (Programmer's View
+> of /dev/fb*").
+> 
+> Fixes: 865afb11949e5bf4 ("drm/fb-helper: reject any changes to the fbdev")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Pretty sure you don't even have that driver loaded ... from the config:
+Applied to drm-misc-fixes with a cc:stable.
 
-# CONFIG_DRM_AMDGPU is not set
+Aside, would be really lovely if someone who cares about these fbdev
+details would start to with some unit tests in the drm testsuite:
 
-:-)
+https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html?highlight=igt#testing-and-validation
 
-Cheers, Daniel
+The drm version is gearing up to be _the_ fbdev implementation, that way
+we could make sure it wont break (e.g. intel gfx CI would run this stuff
+if it's in igt).
+
+Thanks, Daniel
+
+> ---
+> Against drm-misc#for-linux-next.
+> Applies with some fuzz against v5.5-rc4.
+> ---
+>  drivers/gpu/drm/drm_fb_helper.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12b5a799e00000
-> start commit:   c6017471 Merge tag 'xfs-5.5-fixes-2' of git://git.kernel.o..
-> git tree:       upstream
-> final crash:    https://syzkaller.appspot.com/x/report.txt?x=11b5a799e00000
-> console output: https://syzkaller.appspot.com/x/log.txt?x=16b5a799e00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=7f6119e2e3675a73
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d130c4a0890561cfac5b
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=169b1925e00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b9623ee00000
+> diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+> index f8e9051926083373..cae8fa74781c8db0 100644
+> --- a/drivers/gpu/drm/drm_fb_helper.c
+> +++ b/drivers/gpu/drm/drm_fb_helper.c
+> @@ -1267,7 +1267,7 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
+>  	 * Changes struct fb_var_screeninfo are currently not pushed back
+>  	 * to KMS, hence fail if different settings are requested.
+>  	 */
+> -	if (var->bits_per_pixel != fb->format->cpp[0] * 8 ||
+> +	if (var->bits_per_pixel > fb->format->cpp[0] * 8 ||
+>  	    var->xres > fb->width || var->yres > fb->height ||
+>  	    var->xres_virtual > fb->width || var->yres_virtual > fb->height) {
+>  		drm_dbg_kms(dev, "fb requested width/height/bpp can't fit in current fb "
+> @@ -1292,6 +1292,11 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
+>  		drm_fb_helper_fill_pixel_fmt(var, fb->format->depth);
+>  	}
+>  
+> +	/*
+> +	 * Likewise, bits_per_pixel should be rounded up to a supported value.
+> +	 */
+> +	var->bits_per_pixel = fb->format->cpp[0] * 8;
+> +
+>  	/*
+>  	 * drm fbdev emulation doesn't support changing the pixel format at all,
+>  	 * so reject all pixel format changing requests.
+> -- 
+> 2.17.1
 > 
-> Reported-by: syzbot+d130c4a0890561cfac5b@syzkaller.appspotmail.com
-> Fixes: e3933f26b657 ("drm/amd/pp: Add edit/commit/show OD clock/voltage
-> support in sysfs")
-> 
-> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
 -- 
 Daniel Vetter
