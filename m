@@ -2,121 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D73B132AA0
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 17:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B79132AD8
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 17:14:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbgAGQCJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Jan 2020 11:02:09 -0500
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:45747 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728293AbgAGQCJ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 11:02:09 -0500
-Received: by mail-qk1-f195.google.com with SMTP id x1so43033013qkl.12
-        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 08:02:09 -0800 (PST)
+        id S1728344AbgAGQOG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Jan 2020 11:14:06 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33113 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727974AbgAGQOF (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 11:14:05 -0500
+Received: by mail-wr1-f67.google.com with SMTP id b6so42455wrq.0
+        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 08:14:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m5L2Z7dBLaHFaGhh6t90np+r+vB2C1fkHc9c1XkE5eA=;
-        b=SRKTOX73kQ0C7bZJyVEQPX5lrHCfn6wtB+TUgnlKYaqAcPOJxRX9W33hvgPLf/Cqni
-         20bWZcvpVtp+u3kVVCy8Pr6p5WX771zG/aaYNm3a43PBoZMEWPkVUdafi6z8zdNbP875
-         wtMMQXxTZrS4EHq5APXk2wYx3oJy+7yGEHag0xh0L78KeLuZ6Up0ZEKAeisMiKKEo5bD
-         GnoA9zsPeHtXte1J8C12L3Ve4R2yJhPrmNnqIh1xILeh06Iq5UCkFiirkFczmkS1Durt
-         VPuB0v7XEVsThI6kRHNHza1+1T1XUR1zTV2kSimviYK2TK4yxqHmw1gQJk9t+jf8ah8+
-         YhdQ==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=BnDKwUCZGErP+KyVZtLEwU8FgiR2KztEMGDlEQCZd7s=;
+        b=it6jWsNZqZnJRkxU0QF0aJRe+H0+HCzalY18g4ewAHrgujNSc8aGGHJOyIkjkmXvPP
+         5BXRcjhZEebBC8Fh/fPqNbuvXUVZRTPyF+QlRNp3popqzAHBTYNQLBz/Dzff+SBqtnJb
+         i+pZDiEyjvepJxb7O5j423j2fpP6tNpbG9J18=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m5L2Z7dBLaHFaGhh6t90np+r+vB2C1fkHc9c1XkE5eA=;
-        b=qa2RdPU4SHPO4fKlzNZq/lwhYdkauYfgZ85mNz5VufnmIGH6OaLuCT0TQElmgXQhM0
-         vChL3Ew/5EPgfwb6y6CYC6Wa4CbsgumnGoqmQYrYbGMr8/KiIJHtc/8VuJiq7LrNJ7KT
-         BbKmloqaASN+AsjptmRXBvtSXB4aUrFlcDZ/zrwSv2HSXAo7M6pi365j4GT8Za4ighT8
-         yBbkltd4KYxOSlsemQuwECYUiBrBkQg/7vuk3YTV9LidIXqD8GkBMejoOCD+NUwnt0U0
-         +yRP1yQO4FsPt5y8NiFGWvyApFOo1GiZJGSwnqbECv/0BSfRdcR0SUR1Kzd9a1oYWs7T
-         mVXQ==
-X-Gm-Message-State: APjAAAUijsMeI6Xbw+xBHIUl79kyKtlv+y6fsHFIIPIWQma9tCKgYkY5
-        j3kERVJEykQnJ8EB0NWqt5YcZJ1CXYQMFcCIpF90rw==
-X-Google-Smtp-Source: APXvYqzUW7seMxUlfo6okJae/fU1ZwL/kM+/uzTVDw6txhjzZH1cXINZE4qkaz5ynFXQaozCcU2Y+HQm3/FNG88d/6Y=
-X-Received: by 2002:a37:e312:: with SMTP id y18mr18264qki.250.1578412928223;
- Tue, 07 Jan 2020 08:02:08 -0800 (PST)
-MIME-Version: 1.0
-References: <00000000000082b80f059a56da1f@google.com> <0000000000002074ef059a5c86e2@google.com>
- <20200107154755.GB43062@phenom.ffwll.local>
-In-Reply-To: <20200107154755.GB43062@phenom.ffwll.local>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Tue, 7 Jan 2020 17:01:56 +0100
-Message-ID: <CACT4Y+arQyPjzHSFy1MkVF2jNPJbu262_FTL5ma9AnWkXosY1g@mail.gmail.com>
-Subject: Re: INFO: task hung in fb_release
-To:     syzbot <syzbot+d130c4a0890561cfac5b@syzkaller.appspotmail.com>,
-        Rex.Zhu@amd.com, David Airlie <airlied@linux.ie>,
-        alexander.deucher@amd.com, amd-gfx@lists.freedesktop.org,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=BnDKwUCZGErP+KyVZtLEwU8FgiR2KztEMGDlEQCZd7s=;
+        b=VfHdOg1kXaDoVEwIGp4RdbO2z1ISCl0Mi2aMStF5EoWv+0bq0rVjsnWn2EOIsxDMpE
+         Ku1kwR4f6q33+uCRb1/4ULcZ85qQag4KPUu7hKkIB3SqwIYouIv52Elwhfa4wb/m0UOC
+         ijOSt2F5ZqVqx9MKl0sDAa5rV2hB8tNw6ZrylZe/yssaofziHIAwavqlyhjZShj/KJNp
+         VUvkYw8SUik+/J/4fWepL+BtlwJ3JPITgQT8vxkmrk1PToI/SXpzKnQ2k3qN7smaQQ28
+         rXbXFBCSvVP1s2ErB+Z/eDGAiy9N5azZk2YAMxj4bRwEaFUz1RPcWTPxGF5LATKXmLhf
+         FLjA==
+X-Gm-Message-State: APjAAAXgw4RVEZzTndS1r7IoE1KGZ3JSOKpDUy59oibtgHQunOzV5mfG
+        FPmqqVRnwFnW5D39mUxntkkqQw==
+X-Google-Smtp-Source: APXvYqyQHK3dzkGnpN+A204ch3gC1JI6BVacIWD7/CNfZ+GZU0DG7Tm8hsvhn35Lq2tPf4RZVD7Biw==
+X-Received: by 2002:a5d:4c8c:: with SMTP id z12mr79526820wrs.222.1578413643880;
+        Tue, 07 Jan 2020 08:14:03 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:564b:0:7567:bb67:3d7f:f863])
+        by smtp.gmail.com with ESMTPSA id q14sm133727wmj.14.2020.01.07.08.14.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 08:14:03 -0800 (PST)
+Date:   Tue, 7 Jan 2020 17:14:01 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, kbuild-all@lists.01.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Steve Winslow <swinslow@gmail.com>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>
+Subject: Re: [PATCH] video: fbdev: mmp: fix platform_get_irq.cocci warnings
+Message-ID: <20200107161401.GF43062@phenom.ffwll.local>
+Mail-Followup-To: Julia Lawall <julia.lawall@inria.fr>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        christian.koenig@amd.com, david1.zhou@amd.com,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
+        linux-fbdev@vger.kernel.org, kbuild-all@lists.01.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Steve Winslow <swinslow@gmail.com>,
+        Jilayne Lovejoy <opensource@jilayne.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>
+References: <alpine.DEB.2.21.2001042140310.6944@hadrien>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2001042140310.6944@hadrien>
+X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jan 7, 2020 at 4:48 PM Daniel Vetter <daniel@ffwll.ch> wrote:
->
-> On Mon, Dec 23, 2019 at 02:31:01AM -0800, syzbot wrote:
-> > syzbot has bisected this bug to:
-> >
-> > commit e3933f26b657c341055443103bad331f4537b113
-> > Author: Rex Zhu <Rex.Zhu@amd.com>
-> > Date:   Tue Jan 16 10:35:15 2018 +0000
-> >
-> >     drm/amd/pp: Add edit/commit/show OD clock/voltage support in sysfs
->
-> Pretty sure you don't even have that driver loaded ... from the config:
->
-> # CONFIG_DRM_AMDGPU is not set
->
-> :-)
+On Sat, Jan 04, 2020 at 09:43:31PM +0100, Julia Lawall wrote:
+> From: kbuild test robot <lkp@intel.com>
+> 
+> Remove dev_err() messages after platform_get_irq*() failures.
+> Line 450 is redundant because platform_get_irq() already prints
+> an error.
+> 
+> Generated by: scripts/coccinelle/api/platform_get_irq.cocci
+> 
+> Fixes: dd90e9ae55a1 ("video: fbdev: mmp: add COMPILE_TEST support")
+> Signed-off-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
 
-Yes, it seems the bug is very flaky and flakiness changes over time.
-And this is combined with non-deterministic kernel build bug:
-https://github.com/google/syzkaller/issues/1271#issuecomment-559093018
-It builds the same kernel, but gets a different result, so it's like
-"nope, this commit very much affects the kernel so could be the root
-cause"...
+Applied to drm-misc-next, thanks for your patch.
+-Daniel
 
+> 
+> ---
+> 
+> tree:   git://anongit.freedesktop.org/drm/drm-misc for-linux-next
+> head:   80805774fc354f9ae7755a8e649a01dedfd0dcf8
+> commit: dd90e9ae55a1e7efd3ac036afe9f7ae7bb64d39d [2/16] video: fbdev: mmp: add COMPILE_TEST support
+> :::::: branch date: 11 hours ago
+> :::::: commit date: 11 hours ago
+> 
+>  mmp_ctrl.c |    1 -
+>  1 file changed, 1 deletion(-)
+> 
+> --- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+> +++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
+> @@ -447,7 +447,6 @@ static int mmphw_probe(struct platform_d
+> 
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0) {
+> -		dev_err(&pdev->dev, "%s: no IRQ defined\n", __func__);
+>  		ret = -ENOENT;
+>  		goto failed;
+>  	}
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
 
-
-
-> Cheers, Daniel
-> >
-> > bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12b5a799e00000
-> > start commit:   c6017471 Merge tag 'xfs-5.5-fixes-2' of git://git.kernel.o..
-> > git tree:       upstream
-> > final crash:    https://syzkaller.appspot.com/x/report.txt?x=11b5a799e00000
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=16b5a799e00000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=7f6119e2e3675a73
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=d130c4a0890561cfac5b
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=169b1925e00000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b9623ee00000
-> >
-> > Reported-by: syzbot+d130c4a0890561cfac5b@syzkaller.appspotmail.com
-> > Fixes: e3933f26b657 ("drm/amd/pp: Add edit/commit/show OD clock/voltage
-> > support in sysfs")
-> >
-> > For information about bisection process see: https://goo.gl/tpsmEJ#bisection
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/20200107154755.GB43062%40phenom.ffwll.local.
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
