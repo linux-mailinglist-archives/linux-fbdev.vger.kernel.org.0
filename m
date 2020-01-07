@@ -2,123 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B79132AD8
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 17:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA488133004
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 20:56:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgAGQOG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Jan 2020 11:14:06 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33113 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727974AbgAGQOF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 11:14:05 -0500
-Received: by mail-wr1-f67.google.com with SMTP id b6so42455wrq.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 08:14:04 -0800 (PST)
+        id S1728672AbgAGT4h (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Jan 2020 14:56:37 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:39876 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728682AbgAGT4h (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 14:56:37 -0500
+Received: by mail-ed1-f66.google.com with SMTP id t17so623334eds.6
+        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 11:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=BnDKwUCZGErP+KyVZtLEwU8FgiR2KztEMGDlEQCZd7s=;
-        b=it6jWsNZqZnJRkxU0QF0aJRe+H0+HCzalY18g4ewAHrgujNSc8aGGHJOyIkjkmXvPP
-         5BXRcjhZEebBC8Fh/fPqNbuvXUVZRTPyF+QlRNp3popqzAHBTYNQLBz/Dzff+SBqtnJb
-         i+pZDiEyjvepJxb7O5j423j2fpP6tNpbG9J18=
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
+         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
+         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
+         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
+         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
+         ABpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=BnDKwUCZGErP+KyVZtLEwU8FgiR2KztEMGDlEQCZd7s=;
-        b=VfHdOg1kXaDoVEwIGp4RdbO2z1ISCl0Mi2aMStF5EoWv+0bq0rVjsnWn2EOIsxDMpE
-         Ku1kwR4f6q33+uCRb1/4ULcZ85qQag4KPUu7hKkIB3SqwIYouIv52Elwhfa4wb/m0UOC
-         ijOSt2F5ZqVqx9MKl0sDAa5rV2hB8tNw6ZrylZe/yssaofziHIAwavqlyhjZShj/KJNp
-         VUvkYw8SUik+/J/4fWepL+BtlwJ3JPITgQT8vxkmrk1PToI/SXpzKnQ2k3qN7smaQQ28
-         rXbXFBCSvVP1s2ErB+Z/eDGAiy9N5azZk2YAMxj4bRwEaFUz1RPcWTPxGF5LATKXmLhf
-         FLjA==
-X-Gm-Message-State: APjAAAXgw4RVEZzTndS1r7IoE1KGZ3JSOKpDUy59oibtgHQunOzV5mfG
-        FPmqqVRnwFnW5D39mUxntkkqQw==
-X-Google-Smtp-Source: APXvYqyQHK3dzkGnpN+A204ch3gC1JI6BVacIWD7/CNfZ+GZU0DG7Tm8hsvhn35Lq2tPf4RZVD7Biw==
-X-Received: by 2002:a5d:4c8c:: with SMTP id z12mr79526820wrs.222.1578413643880;
-        Tue, 07 Jan 2020 08:14:03 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:564b:0:7567:bb67:3d7f:f863])
-        by smtp.gmail.com with ESMTPSA id q14sm133727wmj.14.2020.01.07.08.14.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2020 08:14:03 -0800 (PST)
-Date:   Tue, 7 Jan 2020 17:14:01 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, kbuild-all@lists.01.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Steve Winslow <swinslow@gmail.com>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>
-Subject: Re: [PATCH] video: fbdev: mmp: fix platform_get_irq.cocci warnings
-Message-ID: <20200107161401.GF43062@phenom.ffwll.local>
-Mail-Followup-To: Julia Lawall <julia.lawall@inria.fr>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, kbuild-all@lists.01.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Steve Winslow <swinslow@gmail.com>,
-        Jilayne Lovejoy <opensource@jilayne.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>
-References: <alpine.DEB.2.21.2001042140310.6944@hadrien>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=aeQa0KxyNGxKgf73/0RLSgu45+VA/xZwzvxJf8ht1i3wLc5X4ZtjqwJNJ6H/xBFxPx
+         aasenVtD1yYxrQRZ5RBWM8JKNrjFVVzC5h3zhUoyXssmU+gn1dcxltJMc8XLCVcFuhKo
+         Eubk9kC9NhzgaQnumfnfOZ0GSY3oUyVpBBHF3ll538szpwJ7gvl3HgNwroYyi0sV8kSh
+         R5Wu2RatUShzbGVrWnRVf8yRYyEklojDKFpH96MvU9EDnYJzjx2lz4WnaRnZN+wmocbI
+         PhpfRy/Zbnma2fani8IqjgyMWebQYBnNMI1E4GY668aiEeKCvTRCWGDqzCi7I2stvJo4
+         4ZcA==
+X-Gm-Message-State: APjAAAXGZb1QLBi9avC5u5JC6pz3zJ8wawgWA485ma6gwsVByQqweZUu
+        3mq2JP+lHFOBjxYw3BrAD9Oks+nNzIV530yHCUo=
+X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
+X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
+ Tue, 07 Jan 2020 11:56:35 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2001042140310.6944@hadrien>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:56:34 +0100
+Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jan 04, 2020 at 09:43:31PM +0100, Julia Lawall wrote:
-> From: kbuild test robot <lkp@intel.com>
-> 
-> Remove dev_err() messages after platform_get_irq*() failures.
-> Line 450 is redundant because platform_get_irq() already prints
-> an error.
-> 
-> Generated by: scripts/coccinelle/api/platform_get_irq.cocci
-> 
-> Fixes: dd90e9ae55a1 ("video: fbdev: mmp: add COMPILE_TEST support")
-> Signed-off-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
-
-Applied to drm-misc-next, thanks for your patch.
--Daniel
-
-> 
-> ---
-> 
-> tree:   git://anongit.freedesktop.org/drm/drm-misc for-linux-next
-> head:   80805774fc354f9ae7755a8e649a01dedfd0dcf8
-> commit: dd90e9ae55a1e7efd3ac036afe9f7ae7bb64d39d [2/16] video: fbdev: mmp: add COMPILE_TEST support
-> :::::: branch date: 11 hours ago
-> :::::: commit date: 11 hours ago
-> 
->  mmp_ctrl.c |    1 -
->  1 file changed, 1 deletion(-)
-> 
-> --- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-> +++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-> @@ -447,7 +447,6 @@ static int mmphw_probe(struct platform_d
-> 
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0) {
-> -		dev_err(&pdev->dev, "%s: no IRQ defined\n", __func__);
->  		ret = -ENOENT;
->  		goto failed;
->  	}
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS with Courier company
+asigned to deliver it to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $25.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
