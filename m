@@ -2,78 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA488133004
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jan 2020 20:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3CF138264
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jan 2020 17:30:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728672AbgAGT4h (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Jan 2020 14:56:37 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:39876 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728682AbgAGT4h (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jan 2020 14:56:37 -0500
-Received: by mail-ed1-f66.google.com with SMTP id t17so623334eds.6
-        for <linux-fbdev@vger.kernel.org>; Tue, 07 Jan 2020 11:56:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
-        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
-         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
-         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
-         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
-         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
-         ABpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
-        b=aeQa0KxyNGxKgf73/0RLSgu45+VA/xZwzvxJf8ht1i3wLc5X4ZtjqwJNJ6H/xBFxPx
-         aasenVtD1yYxrQRZ5RBWM8JKNrjFVVzC5h3zhUoyXssmU+gn1dcxltJMc8XLCVcFuhKo
-         Eubk9kC9NhzgaQnumfnfOZ0GSY3oUyVpBBHF3ll538szpwJ7gvl3HgNwroYyi0sV8kSh
-         R5Wu2RatUShzbGVrWnRVf8yRYyEklojDKFpH96MvU9EDnYJzjx2lz4WnaRnZN+wmocbI
-         PhpfRy/Zbnma2fani8IqjgyMWebQYBnNMI1E4GY668aiEeKCvTRCWGDqzCi7I2stvJo4
-         4ZcA==
-X-Gm-Message-State: APjAAAXGZb1QLBi9avC5u5JC6pz3zJ8wawgWA485ma6gwsVByQqweZUu
-        3mq2JP+lHFOBjxYw3BrAD9Oks+nNzIV530yHCUo=
-X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
-X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
- Tue, 07 Jan 2020 11:56:35 -0800 (PST)
+        id S1730266AbgAKQ37 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 11 Jan 2020 11:29:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49438 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730198AbgAKQ37 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 11 Jan 2020 11:29:59 -0500
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3DF0F2072E;
+        Sat, 11 Jan 2020 16:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578760198;
+        bh=/wlKCThrzNJPzZekL3yESpjJlP5RxW4MwHyG6+SnY1o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fmhf/bzIdrvM3mWAMr0lt5BRE0JT4yQNn34Yqr5VNyOHa0cHOHoClVhmddExtTFak
+         0Vuq/UahvfhT8PUf50VWKT5hIY6tjvsbEbzM5iglCRVDxF3BK7L3XfDToEyurfPNyM
+         B0yF3W4MCZSgbjR5a7DEL0XZ/h9Vdgb6Yz1/n9UI=
+Date:   Sat, 11 Jan 2020 11:29:57 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Dexuan Cui <decui@microsoft.com>
+Cc:     kys@microsoft.com, haiyangz@microsoft.com, sthemmin@microsoft.com,
+        b.zolnierkie@samsung.com, linux-hyperv@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mikelley@microsoft.com,
+        Alexander.Levin@microsoft.co, weh@microsoft.com
+Subject: Re: [PATCH][RESEND] video: hyperv_fb: Fix hibernation for the
+ deferred IO feature
+Message-ID: <20200111162957.GK1706@sasha-vm>
+References: <1578350511-130150-1-git-send-email-decui@microsoft.com>
 MIME-Version: 1.0
-Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
- -0800 (PST)
-Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
-From:   "Dr. William Johnson" <currency1000000@gmail.com>
-Date:   Tue, 7 Jan 2020 20:56:34 +0100
-Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
-Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
- worth $15.8Million US DOLLARS now.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1578350511-130150-1-git-send-email-decui@microsoft.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-ATTN Dear Beneficiary.
-Goodnews
-I have Registered your Prepaid ATM Master Card
-worth $15.800,000.00 US DOLLARS with Courier company
-asigned to deliver it to you today.
-So contact Dhl office New York to receive your Prepaid ATM Master Card
-worth $15.8Million US DOLLARS now.
-Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
-Email. dhlexpresscouriercompany.nyusa@gmail.com
-Call the office +(202) 890-8752
-Rec-Confirmed your mailing address to the office as I listed below.
-Your Full Name--------------
-House Address-----------
-Your working Phone Number----------------
-ID copy-------------------------
-Sex-----------------------------
-Note,delivery fee to your address is only $25.00. send it to this
-company urgent on itunes card today so that DHL will deliver this
-Prepaid ATM Master Card to you today according to our finally
-agreement.
-Thanks for coperations,
-Dr. William Johnson
+On Mon, Jan 06, 2020 at 02:41:51PM -0800, Dexuan Cui wrote:
+>fb_deferred_io_work() can access the vmbus ringbuffer by calling
+>fbdefio->deferred_io() -> synthvid_deferred_io() -> synthvid_update().
+>
+>Because the vmbus ringbuffer is inaccessible between hvfb_suspend()
+>and hvfb_resume(), we must cancel info->deferred_work before calling
+>vmbus_close() and then reschedule it after we reopen the channel
+>in hvfb_resume().
+>
+>Fixes: a4ddb11d297e ("video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver")
+>Fixes: 824946a8b6fb ("video: hyperv_fb: Add the support of hibernation")
+>Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>Reviewed-by: Wei Hu <weh@microsoft.com>
+>---
+>
+>This is a RESEND of https://lkml.org/lkml/2019/11/20/73 .
+>
+>The only change is the addition of Wei's Review-ed-by.
+>
+>Please review.
+>
+>If it looks good, Sasha Levin, can you please pick it up via the
+>hyperv/linux.git tree, as you did last time for this driver?
+
+Like with the input driver, if the relevant maintainers here are okay
+with this type of patches going through the hyperv tree I'll be happy to
+do it, otherwise I need an explicit ack from them on this patch.
+
+-- 
+Thanks,
+Sasha
