@@ -2,108 +2,73 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D04138730
-	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Jan 2020 18:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84FEB138B72
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jan 2020 06:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732827AbgALRP0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 12 Jan 2020 12:15:26 -0500
-Received: from baptiste.telenet-ops.be ([195.130.132.51]:60282 "EHLO
-        baptiste.telenet-ops.be" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732859AbgALRP0 (ORCPT
+        id S1730654AbgAMFwu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 13 Jan 2020 00:52:50 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:45634 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729833AbgAMFwZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 12 Jan 2020 12:15:26 -0500
-Received: from ramsan ([84.195.182.253])
-        by baptiste.telenet-ops.be with bizsmtp
-        id pVFN2100D5USYZQ01VFNDa; Sun, 12 Jan 2020 18:15:24 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1iqgpe-0008HY-Ab; Sun, 12 Jan 2020 18:15:22 +0100
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1iqgpe-0005qj-9J; Sun, 12 Jan 2020 18:15:22 +0100
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-m68k@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] fbdev: c2p: Use BUILD_BUG() instead of custom solution
-Date:   Sun, 12 Jan 2020 18:15:21 +0100
-Message-Id: <20200112171521.22443-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.17.1
+        Mon, 13 Jan 2020 00:52:25 -0500
+Received: by mail-oi1-f193.google.com with SMTP id n16so7171376oie.12
+        for <linux-fbdev@vger.kernel.org>; Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
+         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
+         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
+         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
+         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
+         s+8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=Agl86HgM/3Q+PBv+iLDtOjRp+on+EQx3mkHenTTjKhjCcMUjFqNdkq/IESoF4HwX5S
+         aGgE9JhLX73WD/HRbuJikiBVnXxpv4If0XulNQw/5G7fZDbfmUDOKpoo87o8+n+48v5B
+         +00e7SCD/EG0TRXYj7CWq5Cj7lnY34ZbZyjbAHgZ+Wf+ZInS/9TwRVBJNR0PVTUanBrq
+         +nb/Dhn5j6xshBrNNKipCqRuWJuGue2ImrLTH9h6uWPSG7EqHrWsywXc6SBU/bzPuG2w
+         Q9jukYTz2qUh2oBt22DeXch7r+eFIsW3VcKyFYCF9j0bVmrv53cbsSZLQSM0UU9/rJvF
+         s1nw==
+X-Gm-Message-State: APjAAAXZ0W59VnQcZESTUS9PzELoADniGs1Q09nUcgF3yjmnO1Gamnsn
+        YFHYgGp84xic7wR+JYu4Ud+9WqxqHRire4B6uD8=
+X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
+X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
+ Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
+ -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <cathben72@gmail.com>
+Date:   Mon, 13 Jan 2020 01:52:24 -0400
+Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
+Subject: I wait for your swift response,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Replace the call to the custom non-existing function by a standard
-BUILD_BUG() invocation.
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- drivers/video/fbdev/c2p_core.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
-diff --git a/drivers/video/fbdev/c2p_core.h b/drivers/video/fbdev/c2p_core.h
-index 45a6d895a7d7208e..cf5f1ebce65e6afd 100644
---- a/drivers/video/fbdev/c2p_core.h
-+++ b/drivers/video/fbdev/c2p_core.h
-@@ -12,6 +12,8 @@
-  *  for more details.
-  */
- 
-+#include <linux/build_bug.h>
-+
- 
-     /*
-      *  Basic transpose step
-@@ -27,8 +29,6 @@ static inline void _transp(u32 d[], unsigned int i1, unsigned int i2,
- }
- 
- 
--extern void c2p_unsupported(void);
--
- static __always_inline u32 get_mask(unsigned int n)
- {
- 	switch (n) {
-@@ -48,7 +48,7 @@ static __always_inline u32 get_mask(unsigned int n)
- 		return 0x0000ffff;
- 	}
- 
--	c2p_unsupported();
-+	BUILD_BUG();
- 	return 0;
- }
- 
-@@ -91,7 +91,7 @@ static __always_inline void transp8(u32 d[], unsigned int n, unsigned int m)
- 		return;
- 	}
- 
--	c2p_unsupported();
-+	BUILD_BUG();
- }
- 
- 
-@@ -118,7 +118,7 @@ static __always_inline void transp4(u32 d[], unsigned int n, unsigned int m)
- 		return;
- 	}
- 
--	c2p_unsupported();
-+	BUILD_BUG();
- }
- 
- 
-@@ -138,7 +138,7 @@ static __always_inline void transp4x(u32 d[], unsigned int n, unsigned int m)
- 		return;
- 	}
- 
--	c2p_unsupported();
-+	BUILD_BUG();
- }
- 
- 
--- 
-2.17.1
-
+Yours sincerely,
+Rick Schaech.
