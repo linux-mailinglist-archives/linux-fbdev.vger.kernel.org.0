@@ -2,102 +2,120 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E6501393E8
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jan 2020 15:46:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B2D139F24
+	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Jan 2020 02:39:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgAMOqc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 13 Jan 2020 09:46:32 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:42804 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726505AbgAMOqc (ORCPT
+        id S1728851AbgANBjY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 13 Jan 2020 20:39:24 -0500
+Received: from mta00.svc.cra.dublin.eircom.net ([159.134.118.55]:49099 "HELO
+        mta00.svc.cra.dublin.eircom.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S1728766AbgANBjY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 13 Jan 2020 09:46:32 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ir0z5-0000RA-C9; Mon, 13 Jan 2020 14:46:27 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Antonino Daplas <adaplas@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] video: fbdev: nvidia: clean up indentation issues and comment block
-Date:   Mon, 13 Jan 2020 14:46:27 +0000
-Message-Id: <20200113144627.219967-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Mon, 13 Jan 2020 20:39:24 -0500
+X-Greylist: delayed 397 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jan 2020 20:39:22 EST
+Received: (qmail 29364 messnum 22030803 invoked from network[213.94.190.12/avas01.vendorsvc.cra.dublin.eircom.net]); 14 Jan 2020 01:32:41 -0000
+Received: from avas01.vendorsvc.cra.dublin.eircom.net (HELO avas01) (213.94.190.12)
+  by mta00.svc.cra.dublin.eircom.net (qp 29364) with SMTP; 14 Jan 2020 01:32:41 -0000
+Received: from vzmbx18.eircom.net ([86.43.60.98])
+        by Cloudmark Gateway with SMTP
+        id rB4SilIS8vSCGrB4SilrJf; Tue, 14 Jan 2020 01:32:41 +0000
+X-Spam-Flag: NO
+X-CNFS-Analysis: v=2.2 cv=Vs1TO6+n c=1 sm=1 tr=0
+ a=e7gqILOnBbllteVy7xBg4A==:117 a=9cW_t1CCXrUA:10 a=FKkrIqjQGGEA:10
+ a=56OF8xidLmEA:10 a=Ta-MJLm6_moA:10 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10
+ a=mf9jJPqrL4kA:10 a=sgm4F-J2Ld0A:10 a=ZZnuYtJkoWoA:10 a=UqCG9HQmAAAA:8
+ a=4q5nmWF_J0Ip0owdAhoA:9 a=sdQFkm6Mf0l6Isv9:21 a=5ynS3-km4IMm0R91:21
+ a=QEXdDO2ut3YA:10 a=dRqJYu-X7R0A:10 a=UuxKnNfG_hQA:10 a=i0FYOed3za4A:10
+Date:   Tue, 14 Jan 2020 01:32:40 +0000 (GMT)
+From:   Ahmed <ahmed25442@eircom.net>
+Reply-To: ouedraogoahmed@outlook.com
+Message-ID: <1762071180.135292.1578965560857.JavaMail.zimbra@eircom.net>
+Subject: HELLO DEAR
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.120.208.67]
+X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
+Thread-Topic: HELLO DEAR
+Thread-Index: vLC4sVjcjsDm032YV6RcNxioMSICpw==
+X-CMAE-Envelope: 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
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Dear Friend,
 
-There is a hunk of code that is incorrectly indented, clean up the
-indentation and a comment block. Also remove block braces around a
-one line statement on an if condition and add missing spaces after
-if keywords.
+I need your urgent assistance in transferring the sum of $11.3million to your private account.By indicating your interest i will send you the full details on how the business will be executed.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/video/fbdev/nvidia/nvidia.c | 41 ++++++++++++++---------------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+Please if you are interested contact me through my private e-mail (ouedraogoahmed@outlook.com)  
 
-diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
-index c583c018304d..c24de9107958 100644
---- a/drivers/video/fbdev/nvidia/nvidia.c
-+++ b/drivers/video/fbdev/nvidia/nvidia.c
-@@ -168,27 +168,26 @@ static int nvidia_panel_tweak(struct nvidia_par *par,
- {
- 	int tweak = 0;
- 
--   if (par->paneltweak) {
--	   tweak = par->paneltweak;
--   } else {
--	   /* begin flat panel hacks */
--	   /* This is unfortunate, but some chips need this register
--	      tweaked or else you get artifacts where adjacent pixels are
--	      swapped.  There are no hard rules for what to set here so all
--	      we can do is experiment and apply hacks. */
--
--	   if(((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
--		   /* At least one NV34 laptop needs this workaround. */
--		   tweak = -1;
--	   }
--
--	   if((par->Chipset & 0xfff0) == 0x0310) {
--		   tweak = 1;
--	   }
--	   /* end flat panel hacks */
--   }
--
--   return tweak;
-+	if (par->paneltweak) {
-+		tweak = par->paneltweak;
-+	} else {
-+		/* Begin flat panel hacks.
-+		 * This is unfortunate, but some chips need this register
-+		 * tweaked or else you get artifacts where adjacent pixels are
-+		 * swapped.  There are no hard rules for what to set here so all
-+		 * we can do is experiment and apply hacks.
-+		 */
-+		if (((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
-+			/* At least one NV34 laptop needs this workaround. */
-+			tweak = -1;
-+		}
-+
-+		if ((par->Chipset & 0xfff0) == 0x0310)
-+			tweak = 1;
-+		/* end flat panel hacks */
-+	}
-+
-+	return tweak;
- }
- 
- static void nvidia_screen_off(struct nvidia_par *par, int on)
--- 
-2.24.0
-
+Best Regards,
+Ahmed Ouedraogo
