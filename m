@@ -2,120 +2,196 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B2D139F24
-	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Jan 2020 02:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0198F13C249
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 14:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728851AbgANBjY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 13 Jan 2020 20:39:24 -0500
-Received: from mta00.svc.cra.dublin.eircom.net ([159.134.118.55]:49099 "HELO
-        mta00.svc.cra.dublin.eircom.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S1728766AbgANBjY (ORCPT
+        id S1726071AbgAONJm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Jan 2020 08:09:42 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:37579 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726100AbgAONJk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 13 Jan 2020 20:39:24 -0500
-X-Greylist: delayed 397 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jan 2020 20:39:22 EST
-Received: (qmail 29364 messnum 22030803 invoked from network[213.94.190.12/avas01.vendorsvc.cra.dublin.eircom.net]); 14 Jan 2020 01:32:41 -0000
-Received: from avas01.vendorsvc.cra.dublin.eircom.net (HELO avas01) (213.94.190.12)
-  by mta00.svc.cra.dublin.eircom.net (qp 29364) with SMTP; 14 Jan 2020 01:32:41 -0000
-Received: from vzmbx18.eircom.net ([86.43.60.98])
-        by Cloudmark Gateway with SMTP
-        id rB4SilIS8vSCGrB4SilrJf; Tue, 14 Jan 2020 01:32:41 +0000
-X-Spam-Flag: NO
-X-CNFS-Analysis: v=2.2 cv=Vs1TO6+n c=1 sm=1 tr=0
- a=e7gqILOnBbllteVy7xBg4A==:117 a=9cW_t1CCXrUA:10 a=FKkrIqjQGGEA:10
- a=56OF8xidLmEA:10 a=Ta-MJLm6_moA:10 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10
- a=mf9jJPqrL4kA:10 a=sgm4F-J2Ld0A:10 a=ZZnuYtJkoWoA:10 a=UqCG9HQmAAAA:8
- a=4q5nmWF_J0Ip0owdAhoA:9 a=sdQFkm6Mf0l6Isv9:21 a=5ynS3-km4IMm0R91:21
- a=QEXdDO2ut3YA:10 a=dRqJYu-X7R0A:10 a=UuxKnNfG_hQA:10 a=i0FYOed3za4A:10
-Date:   Tue, 14 Jan 2020 01:32:40 +0000 (GMT)
-From:   Ahmed <ahmed25442@eircom.net>
-Reply-To: ouedraogoahmed@outlook.com
-Message-ID: <1762071180.135292.1578965560857.JavaMail.zimbra@eircom.net>
-Subject: HELLO DEAR
+        Wed, 15 Jan 2020 08:09:40 -0500
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115130938euoutp01a26d2e084b7d86f1af8ebd78b076243c~qEWzV34J_1931419314euoutp01E
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 13:09:38 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115130938euoutp01a26d2e084b7d86f1af8ebd78b076243c~qEWzV34J_1931419314euoutp01E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1579093778;
+        bh=ueSGlkXTpFk7VXNWLhrgWBJ0hToomm/X8o6QoUdinb8=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=F2ewjwg9r/omc4RxFTFZ6/9ejp2YYMbOj2iI3m+gE4P1AEDxG8cqnETqo5AO5yVMK
+         bPVz+c397OJj0OLUMEju34BFESLBbMe86MHbL0xYrWdh4Qg3jfstwJTudVp2xlc3Gg
+         v3ctWe30hzg3E8B81666+xh/uI2TwZuBpf282Vvs=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200115130938eucas1p209b4204b639c05afc3880b4aa4ed47f1~qEWzACZoT1216012160eucas1p2t;
+        Wed, 15 Jan 2020 13:09:38 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 5B.5F.61286.11F0F1E5; Wed, 15
+        Jan 2020 13:09:38 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200115130937eucas1p2674b7613bb50697556ab3068985b8776~qEWynydpI1216512165eucas1p2r;
+        Wed, 15 Jan 2020 13:09:37 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200115130937eusmtrp261b214e7212697676c420e59c0951e30~qEWym_ss00896208962eusmtrp2B;
+        Wed, 15 Jan 2020 13:09:37 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-c9-5e1f0f112373
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2E.FB.08375.11F0F1E5; Wed, 15
+        Jan 2020 13:09:37 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200115130936eusmtip13802b1dead4248941f960f209aad27df~qEWxmaNxD2707427074eusmtip15;
+        Wed, 15 Jan 2020 13:09:36 +0000 (GMT)
+Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        Joe Perches <joe@perches.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Andrea Righi <righi.andrea@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Peter Rosin <peda@axentia.se>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, security@kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Julia Lawall <Julia.Lawall@lip6.fr>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <6ed59903-afe7-d5b2-73eb-ca626616dd6f@samsung.com>
+Date:   Wed, 15 Jan 2020 14:09:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAK8P3a2uLm9pJtx42qDXJSdD71-dVW6+iDcRAnEB85Ajak-HLw@mail.gmail.com>
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.120.208.67]
-X-Mailer: Zimbra 8.6.0_GA_1242 (zclient/8.6.0_GA_1242)
-Thread-Topic: HELLO DEAR
-Thread-Index: vLC4sVjcjsDm032YV6RcNxioMSICpw==
-X-CMAE-Envelope: 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
-To:     unlisted-recipients:; (no To-header on input)
+X-Brightmail-Tracker: H4sIAAAAAAAAA01SfUxNYRz2ds4993Tr1tu90m+F5o4mS7TMXqJly5zNbGqG2cSJs0L31u4t
+        ZLZC9LUlUbgZfVglSW7qiqXuzUpqEZI1H1nJ1+6SihVdOp2a/nn3/J7f8+z3PNvLUqoMxpM9
+        oIsX9Do+RsMo6NrmsY7lKlfviJUnQshETrOcfLNfpEnhh7cUeTk6yJC/tSlykv++jyYlvW2I
+        tGdqSU2PFxnoaaXI46zvMvLi/hWGFA7V0KTeeg2Rq03dDCkbq0GkayINhbhxv8dzEJfXmC/n
+        8pM7aa7+ZwHN1RnfyjlTeTrDXW0N4+rvHuTeZ7Y4cEMfe2hupPwVxV3P62K4wYeTz7BpIXfB
+        mkpvdd2lWLdfiDlwWNCvCN6riK5saURxv+YdHT/dJk9GJnUGcmQBr4Jbg9l0BlKwKlyGIHPM
+        KJOGEQSWkWwkDcMIat5lOcxYhm9kyUWswqUIJhr8JJENwWiFmREXarwJsopKkIjn4kWQ+3mA
+        EkUUviyDJ386ZeKCwWvhXGr5lEiJg6EpfWCSZ1kaLwHzp1CRdsc74Udvk0ySuEHr5X5axI44
+        DJoKTk0ForAH9PRfm8beYLZdmboF+BELud2jSEodCu1nC6exGr623JVLeD78rRPNoqFysk3a
+        52m3GUHpeTsjqYLgTcc4I6ajsC/cvr9CojdA8b1sSqQBu8Brm5sUwgVyai9O00pIO6OS1D5Q
+        VVLFzJzNqLtBZSONcVY146w6xll1jP/vFiC6HHkICQZtlGAI0AlH/A281pCgi/LfF6s1ockf
+        2mZv+XEPjT6PtCLMIo2zMvrPwgiVjD9sSNRaEbCUZq6y9dKCCJVyP594TNDH7tEnxAgGK/Ji
+        aY2HMrDoy24VjuLjhUOCECfoZ7YOrKNnMsoz1buvflW3LcnT/9cW35DApNpzFb1O/SfJ7h2D
+        pZrcbteA3NA+32fBPkETfavHXfRRZy3e25dWNK957fTzqV+4cyXv5EX3fhA2V0c6Hms4rq6K
+        fz4nbucieyBvu2NuuNkcyQnXu8YSFZ3hzhZbiu5FmaX643r7A0tBsTpyy+KNGzS0IZoPWEbp
+        Dfw/bb/g+J0DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRmVeSWpSXmKPExsVy+t/xu7qC/PJxBlN6FC3+TjrGbvH633QW
+        i4UP7zJbXPn6ns3i/7YWdovZ9x+zWCx7cJrR4kx3rsXWW9IWz26dZLY40feB1eLyrjlsFgs/
+        bmWx2HtoPqPFvMPX2SxW/NzKaHH1bwejg6DH71+TGD2mHZjN7jG74SKLx95vC1g8ds66y+6x
+        aVUnm8e8k4Eee7dkedzvPs7k8fHpLRaPL6uuMXssmXaVzeP9PiDxeZOcx5RD7SwB/FF6NkX5
+        pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GeuOH2As+C5W
+        8av1NHsD4ybhLkZODgkBE4nPK/vYuxi5OIQEljJKvPt1hKWLkQMoISNxfH0ZRI2wxJ9rXWwQ
+        Na8ZJe5+PcQGkhAWcJfoW7SMEcQWEVCUmPriGTNIEbPAbFaJplVrWSE6ljBJdP64CNbBJmAl
+        MbF9FVgHr4CdxOHOZ6wg21gEVCW2P3cBCYsKREgc3jELqkRQ4uTMJywgNqdAoMThBc1MIDaz
+        gLrEn3mXmCFscYlbT+ZDxeUltr+dwzyBUWgWkvZZSFpmIWmZhaRlASPLKkaR1NLi3PTcYkO9
+        4sTc4tK8dL3k/NxNjMCkse3Yz807GC9tDD7EKMDBqMTDm/FHLk6INbGsuDL3EKMEB7OSCO/J
+        GbJxQrwpiZVVqUX58UWlOanFhxhNgX6byCwlmpwPTGh5JfGGpobmFpaG5sbmxmYWSuK8HQIH
+        Y4QE0hNLUrNTUwtSi2D6mDg4pRoYVZLvPc9be8d2yT4O8aeMf6REc2xL6/ladU/UmJzdVb7+
+        gd2BAJW5tcnTw7mW/Ah+sSXCOH7+rfpvsz4XXL3m1zhzb3f1DxfDtSfiMi+fXusYWNf8Tv5b
+        3OcnOdbuwTEBC3sOL80Tvpz80ikk4gm/ka68cuwkvo2Na/2tbD6JV6/eOa/9HXO4EktxRqKh
+        FnNRcSIA0JCo2jADAAA=
+X-CMS-MailID: 20200115130937eucas1p2674b7613bb50697556ab3068985b8776
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20191029190229epcas3p4e9b24bd8cde962681ef3dc4644ed2c2e
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20191029190229epcas3p4e9b24bd8cde962681ef3dc4644ed2c2e
+References: <20191029182320.GA17569@mwanda>
+        <CGME20191029190229epcas3p4e9b24bd8cde962681ef3dc4644ed2c2e@epcas3p4.samsung.com>
+        <87zhhjjryk.fsf@x220.int.ebiederm.org>
+        <fd4e6f01-074b-def7-7ffb-9a9197930c31@samsung.com>
+        <CAK8P3a2uLm9pJtx42qDXJSdD71-dVW6+iDcRAnEB85Ajak-HLw@mail.gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear Friend,
 
-I need your urgent assistance in transferring the sum of $11.3million to your private account.By indicating your interest i will send you the full details on how the business will be executed.
+On 1/13/20 1:49 PM, Arnd Bergmann wrote:
+> On Fri, Jan 3, 2020 at 2:09 PM Bartlomiej Zolnierkiewicz
+> <b.zolnierkie@samsung.com> wrote:
+>> On 10/29/19 8:02 PM, Eric W. Biederman wrote:
+>>>
+>>> The goal is to avoid memory that has values of the previous users of
+>>> that memory region from leaking to userspace.  Which depending on who
+>>> the previous user of that memory region is could tell userspace
+>>> information about what the kernel is doing that it should not be allowed
+>>> to find out.
+>>>
+>>> I tried to trace through where "info" and thus presumably "info->fix" is
+>>> coming from and only made it as far as  register_framebuffer.  Given
+>>
+>> "info" (and thus "info->fix") comes from framebuffer_alloc() (which is
+>> called by fbdev device drivers prior to registering "info" with
+>> register_framebuffer()). framebuffer_alloc() does kzalloc() on "info".
+>>
+>> Therefore shouldn't memcpy() (as suggested by Jeo Perches) be enough?
+> 
+> Is it guaranteed that all drivers call framebuffer_alloc() rather than
+> open-coding it somewhere?
+> 
+> Here is a list of all files that call register_framebuffer() without first
+> calling framebuffer_alloc:
+> 
+> $ git grep -wl register_framebuffer | xargs grep -L framebuffer_alloc
+> Documentation/fb/framebuffer.rst
+> drivers/media/pci/ivtv/ivtvfb.c
+> drivers/media/platform/vivid/vivid-osd.c
+> drivers/video/fbdev/68328fb.c
+> drivers/video/fbdev/acornfb.c
+> drivers/video/fbdev/amba-clcd.c
+> drivers/video/fbdev/atafb.c
+> drivers/video/fbdev/au1100fb.c
+> drivers/video/fbdev/controlfb.c
+> drivers/video/fbdev/core/fbmem.c
+> drivers/video/fbdev/cyber2000fb.c
+> drivers/video/fbdev/fsl-diu-fb.c
+> drivers/video/fbdev/g364fb.c
+> drivers/video/fbdev/goldfishfb.c
+> drivers/video/fbdev/hpfb.c
+> drivers/video/fbdev/macfb.c
+> drivers/video/fbdev/matrox/matroxfb_base.c
+> drivers/video/fbdev/matrox/matroxfb_crtc2.c
+> drivers/video/fbdev/maxinefb.c
+> drivers/video/fbdev/ocfb.c
+> drivers/video/fbdev/pxafb.c
+> drivers/video/fbdev/sa1100fb.c
+> drivers/video/fbdev/stifb.c
+> drivers/video/fbdev/valkyriefb.c
+> drivers/video/fbdev/vermilion/vermilion.c
+> drivers/video/fbdev/vt8500lcdfb.c
+> drivers/video/fbdev/wm8505fb.c
+> drivers/video/fbdev/xilinxfb.c
+> 
+> It's possible (even likely, the ones I looked at are fine) that they
+> all correctly
+> zero out the fb_info structure first, but it seems hard to guarantee, so
+> Eric's suggestion would possibly still be the safer choice.
 
-Please if you are interested contact me through my private e-mail (ouedraogoahmed@outlook.com)  
+I've audited all above instances and they are all fine. They either
+use the fb_info structure embedded in a driver specific structure
+(which is zeroed out) or (in case of some m68k specific drivers) use
+a static fb_info instance.
 
-Best Regards,
-Ahmed Ouedraogo
+Since fbdev is closed for new drivers it should be now fine to use
+the simpler approach (just use memcpy()).
+ 
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
