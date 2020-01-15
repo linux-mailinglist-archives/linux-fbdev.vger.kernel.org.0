@@ -2,142 +2,153 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4988213C63C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 15:36:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C28013C693
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 15:50:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729091AbgAOOgO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 15 Jan 2020 09:36:14 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:39110 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728890AbgAOOgN (ORCPT
+        id S1729030AbgAOOuU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Jan 2020 09:50:20 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:47092 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728912AbgAOOuU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 Jan 2020 09:36:13 -0500
+        Wed, 15 Jan 2020 09:50:20 -0500
 Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200115143612euoutp0276930a9c0d16af5b8995ebf368176966~qFiYSJEem0812408124euoutp02g
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 14:36:12 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200115143612euoutp0276930a9c0d16af5b8995ebf368176966~qFiYSJEem0812408124euoutp02g
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115145018euoutp013d902710a5908987c44ddcdf399fa190~qFusd-TNA0739907399euoutp013
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 14:50:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115145018euoutp013d902710a5908987c44ddcdf399fa190~qFusd-TNA0739907399euoutp013
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579098972;
-        bh=G52O5VyNkErB7xWbsCXmqXw9uHYiR3BQe0k0xtJJtVU=;
+        s=mail20170921; t=1579099818;
+        bh=NXPvp1zYgb9gUmV9qAl2ZhCLamS6Ygtjex83I12F2Xk=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=WwT7A7LQB5GyCxHAvpvm5OyvguqNhGfwu00DhWFoyUsH3AdQOttSGSe4ZFpU1yiFe
-         hlNBlmBWoAW7O8mP3JMNa+fu8BXUDSnR9JIYgfgU1ZXikRiyWBevlxmiv91uCb5HUg
-         CjUCqtUh8+g4+jiLOoGTDKOE/xB8fwKvVvIOUtXs=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        b=cRTE0535aT5viddPt8EH6g7TTxAc7M9OM6bH+ROgfHtUtEQWFVJuKJdUOa/hbB7V6
+         m1Rp/v0uyvoUih/9wM1lYEpTUoXTkcUmaR8PGa4bxyB5fiutZ9V25H5e2A1ivhSku2
+         KI9hb54+lIU0piv5tdSUNdMPdDNMeW6oOZM+C+fU=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200115143611eucas1p1b99d81b0eb3e49c193f0dd438e304573~qFiYGx7rO1192611926eucas1p1A;
-        Wed, 15 Jan 2020 14:36:11 +0000 (GMT)
+        20200115145018eucas1p19c95153872d7a1895718036fa17c8918~qFusYbRyR2783327833eucas1p1R;
+        Wed, 15 Jan 2020 14:50:18 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id E5.BB.60698.B532F1E5; Wed, 15
-        Jan 2020 14:36:11 +0000 (GMT)
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 7E.7E.61286.AA62F1E5; Wed, 15
+        Jan 2020 14:50:18 +0000 (GMT)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200115143611eucas1p1fb720b3a7cd83378e2fa86128b2fa5d3~qFiX3FwvZ1254612546eucas1p1I;
-        Wed, 15 Jan 2020 14:36:11 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200115145018eucas1p260f7cb61e0dc9738cc5fd3bff9dd3b27~qFusJbuO81408814088eucas1p28;
+        Wed, 15 Jan 2020 14:50:18 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200115143611eusmtrp2503177ee93c20432211e2990686bb9d9~qFiX18H3W3077130771eusmtrp2e;
-        Wed, 15 Jan 2020 14:36:11 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-e0-5e1f235be781
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id A2.78.08375.B532F1E5; Wed, 15
-        Jan 2020 14:36:11 +0000 (GMT)
+        20200115145018eusmtrp21b96c9875b5a8e01641a8242416f3216~qFusI7DwW0683306833eusmtrp2M;
+        Wed, 15 Jan 2020 14:50:18 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-2d-5e1f26aa99c5
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id FF.4A.07950.AA62F1E5; Wed, 15
+        Jan 2020 14:50:18 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200115143610eusmtip1d1664341b38dc49e35cdc2e08ea10735~qFiXMRjAU2108921089eusmtip1q;
-        Wed, 15 Jan 2020 14:36:10 +0000 (GMT)
-Subject: Re: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
-To:     Colin King <colin.king@canonical.com>
-Cc:     "K . Y . Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, linux-hyperv@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200115145016eusmtip271834eddaaa45ebe9074e4e891b665e8~qFuquTwu52322023220eusmtip2g;
+        Wed, 15 Jan 2020 14:50:16 +0000 (GMT)
+Subject: Re: [PATCH v2] video: fbdev: vesafb: add missed release_region
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <060a65e9-1880-0356-f8f3-447cb391b4e7@samsung.com>
-Date:   Wed, 15 Jan 2020 15:36:10 +0100
+Message-ID: <69c018bc-b51b-0eab-39bc-6cd14a0245e5@samsung.com>
+Date:   Wed, 15 Jan 2020 15:50:16 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191114172720.322023-1-colin.king@canonical.com>
+In-Reply-To: <20191205160712.32245-1-hslester96@gmail.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SfUyMcRzf756Xe7o5+3mKvkLZY5kMed8zTIzZzYaGmXk5jp4V3dXteXqR
-        sGh5ObJiqKtJmHR5abfqLqxRVkIdlWZXG5vb1OWSYojQ03NN/332ednn+/ntxxCskwphDiQk
-        CWKCwcjRGrKq/qdr7s4ZYfr558qW8L/Ksmm+7dtnmm936PhK9xTeU1ap5p+d76P4S7l9NN/6
-        oJDm7Xfaad5X94RYpdFZM7Jpnd12hta9O9ug0mU5h9S6AXtoNLVDsyJGMB5IEcTIlXs1cT/d
-        tWpzDXPoclYPmYEGaAsKYAAvht5TvciCNAyLbyN42JKvlgUWf0Xw6iUowgCCTzXl6tFEfbFL
-        pQglw4Lvuz/uQ3DTm0fIrkC8Hpy+H6QFMUwQjgBXsyh7CPxUBcWPLlCyh8bLIPeUDclYi1dC
-        5vPckQYSh8NrbxUp44l4O/S/r6MUzwRozPeM8AE4Clqvvh3hCRwMbk+RSsFh4PAVEnIZ4Odq
-        KPjSTSpnr4UCVxel4EDwNlT450yFv9VFKiVwD8HQ6S5/2oGg5OIf/zMth87mQVqeQwzPuf8g
-        UqFXw4/j9ZRMAx4Pb30TlCPGw4WqK4RCa+H0SVZxz4TyW+X0aK2lupTIQZx1zDTrmDnWMXOs
-        /3uvIdKGgoVkyRQrSIsShNR5ksEkJSfEztufaLKj4f/04k/DNyeq+b2vFmEGceO0cb9D9Sxl
-        SJHSTLUIGIIL0jbmTdOz2hhD2mFBTNwjJhsFqRZNYUguWLvoevduFscakoR4QTAL4qiqYgJC
-        MlByJlc0tbLsQ/4WzovZVjHiE2uytVVTthPuzHRHVU5jxyzTpGOb9H9Ltj4OXbeq4kj40hdD
-        xo13ByoSLy2gSzdXRPVE7TrU0n/DbLvyJMZUujDjFx2cl5oevaEv502hZnmTxBzc1t68Jv4j
-        O904p9fs8JydNDg4Wd2Z1d9xtMkbzpFSnGHBbEKUDP8Ax8FLUUsDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsVy+t/xu7rRyvJxBvOPKlv8Xt3LZnHl63s2
-        i2vbPSy23pK2eLJ6K7vFib4PrBZTJ35gs7i8aw6bxaY119gs3h4+yOzA5TGroZfNY9OqTjaP
-        +93HmTxad/xl9/i8SS6ANUrPpii/tCRVISO/uMRWKdrQwkjP0NJCz8jEUs/Q2DzWyshUSd/O
-        JiU1J7MstUjfLkEv4+etQ+wF+zgqprW+Zmlg/MzWxcjJISFgInFs4XmmLkYuDiGBpYwSpya+
-        ZOli5ABKyEgcX18GUSMs8edaFxtEzWtGiZOrV7KDJIQFvCR2vP0BVi8ioClx/lwRSA2zwDEm
-        iev3PjJCNExilJi+dAITSAObgJXExPZVjCA2r4CdRPOpiWCDWARUJS6+2sYCYosKREgc3jEL
-        qkZQ4uTMJ2BxTgF7icvzbrCC2MwC6hJ/5l1ihrDFJW49mc8EYctLbH87h3kCo9AsJO2zkLTM
-        QtIyC0nLAkaWVYwiqaXFuem5xYZ6xYm5xaV56XrJ+bmbGIHxuO3Yz807GC9tDD7EKMDBqMTD
-        m/FHLk6INbGsuDL3EKMEB7OSCO/JGbJxQrwpiZVVqUX58UWlOanFhxhNgZ6byCwlmpwPTBV5
-        JfGGpobmFpaG5sbmxmYWSuK8HQIHY4QE0hNLUrNTUwtSi2D6mDg4pRoYJaP/y31kDrr6YNuM
-        7RqJAndWGZTLzOFOjzqQKmKaUlfAk7VhTb1UycoHwSU9J5bcX6pkY1YvuqA+3frD88n5nhYZ
-        n+wOtzGdSzr5smGK/gWRJ7y/Oi6WnLfcvXqv7bsc5W3MbaXyga85vuw5ebmGSaVIIuaa3snK
-        S49yFn5VMF4qsj1/SaedEktxRqKhFnNRcSIAc9kMwt0CAAA=
-X-CMS-MailID: 20200115143611eucas1p1fb720b3a7cd83378e2fa86128b2fa5d3
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAKsWRmVeSWpSXmKPExsWy7djP87qr1OTjDNrnC1hc+fqezWL2oZfM
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcxWWTkpqTWZZapG+XwJXxoPkFW8FH7oqt
+        v6obGM9xdjFycEgImEg83FTWxcjFISSwglFiyZlGZgjnC6PEihv/2boYOYGcz4wSz96lgdgg
+        DY+ub2WBKFrOKNH19SOU85ZR4sWSHawgVcIC7hLPl81jAbFFBNQlPu/ayQ5iMwskSJxedA8s
+        ziZgJTGxfRUjiM0rYCdx5Pg8ZhCbRUBVYsnjzUwgtqhAhMSnB4dZIWoEJU7OfALWywnUO+XK
+        AzaImeISt57MZ4Kw5SW2v50D9oKEQD+7xM41XawQZ7tINB3dwwhhC0u8Or6FHcKWkfi/E6QZ
+        pGEdo8TfjhdQ3dsZJZZP/scGUWUtcefcLzZQiDELaEqs36UPEXaUWHHiFCskIPkkbrwVhDiC
+        T2LStunMEGFeiY42IYhqNYkNyzawwazt2rmSeQKj0iwkr81C8s4sJO/MQti7gJFlFaN4amlx
+        bnpqsWFearlecWJucWleul5yfu4mRmA6Of3v+KcdjF8vJR1iFOBgVOLhzfgjFyfEmlhWXJl7
+        iFGCg1lJhPfkDNk4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqemFqQWwWSZ
+        ODilGhg7YnbP8k2fpnw3eNLzJcUXM97uizputXjxdJv2S+ubOTKyXoTJrXoy4eXMw8u7VsTW
+        xfC+r7aROde3zezEm6cFzHv7LWeql2s902F99db20/5D1+4VH7cuu+EZU1jqbN6yg8fAT8Ty
+        16d+lw38laJm76PLtauMGyNsZBPm8TxYkO2tsfPvogtKLMUZiYZazEXFiQA0v5uIIwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsVy+t/xe7qr1OTjDM40MFtc+fqezWL2oZfM
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
+        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJfxoPkFW8FH7oqtv6obGM9xdjFyckgImEg8ur6V
+        pYuRi0NIYCmjxMsve5i7GDmAEjISx9eXQdQIS/y51sUGUfOaUeJ832F2kISwgLvE82XzWEBs
+        EQF1ic+7drKD9DILJEg8m5cCUd/LKPFhxSlWkBo2ASuJie2rGEFsXgE7iSPH5zGD2CwCqhJL
+        Hm9mArFFBSIkDu+YBVUjKHFy5hOw+ZxAvVOuPGADsZmBdv2Zd4kZwhaXuPVkPhOELS+x/e0c
+        5gmMQrOQtM9C0jILScssJC0LGFlWMYqklhbnpucWG+kVJ+YWl+al6yXn525iBMbPtmM/t+xg
+        7HoXfIhRgINRiYf3wD+5OCHWxLLiytxDjBIczEoivCdnyMYJ8aYkVlalFuXHF5XmpBYfYjQF
+        em4is5Rocj4wtvNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQWwfQxcXBKNTCy
+        bzl0+/ABvxXRkw70i8zzvx8WzjnX98ae4JZiof98mRfFpCQFWaq3vj/lL3qaT+Dh/OOGPR4O
+        S5fMn7j7D8d0viCvKfwS894+UPryb0Yf4781lpLFz5e25ZzIW/tOoVuhcPm74usO4n/ncwgH
+        //OxYypsVXwZf1R3lq7Goa1s1aE5h76IGF1TYinOSDTUYi4qTgQA/uL3LLUCAAA=
+X-CMS-MailID: 20200115145018eucas1p260f7cb61e0dc9738cc5fd3bff9dd3b27
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20191114172730eucas1p1206011eed67d59f39fbbcf0b9ad1bbca
+X-RootMTR: 20191205160725eucas1p226595a8d3043f48183a0a646bda61b4c
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20191114172730eucas1p1206011eed67d59f39fbbcf0b9ad1bbca
-References: <CGME20191114172730eucas1p1206011eed67d59f39fbbcf0b9ad1bbca@eucas1p1.samsung.com>
-        <20191114172720.322023-1-colin.king@canonical.com>
+X-CMS-RootMailID: 20191205160725eucas1p226595a8d3043f48183a0a646bda61b4c
+References: <CGME20191205160725eucas1p226595a8d3043f48183a0a646bda61b4c@eucas1p2.samsung.com>
+        <20191205160712.32245-1-hslester96@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 11/14/19 6:27 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a block of statements that are indented
-> too deeply, remove the extraneous tabs.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On 12/5/19 5:07 PM, Chuhong Yuan wrote:
+> The driver forgets to free the requested irq in remove and probe
+> failure.
 
-Patch queued for v5.6, thanks.
+This is I/O region not IRQ.
+
+> Add the missed calls to fix it.
+> 
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+> Changes in v2:
+>   - Modify commit message.
+> 
+>  drivers/video/fbdev/vesafb.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+> index d9c08f6c2155..fbb196a8bbf6 100644
+> --- a/drivers/video/fbdev/vesafb.c
+> +++ b/drivers/video/fbdev/vesafb.c
+> @@ -468,6 +468,7 @@ static int vesafb_probe(struct platform_device *dev)
+>  	fb_info(info, "%s frame buffer device\n", info->fix.id);
+>  	return 0;
+>  err:
+> +	release_region(0x3c0, 32);
+
+There is one 'goto err;' instance before request_region() which
+needs to be taken care of first.
+
+>  	arch_phys_wc_del(par->wc_cookie);
+>  	if (info->screen_base)
+>  		iounmap(info->screen_base);
+> @@ -480,6 +481,7 @@ static int vesafb_remove(struct platform_device *pdev)
+>  {
+>  	struct fb_info *info = platform_get_drvdata(pdev);
+>  
+> +	release_region(0x3c0, 32);
+>  	unregister_framebuffer(info);
+
+The order of operations on remove should be the reverse of
+order of operations on probe.
+
+[ We cannot release I/O region while framebuffer is active. ]
+
+>  	framebuffer_release(info);
+
+Please fix the patch and re-submit.
 
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
-
-> ---
->  drivers/video/fbdev/hyperv_fb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-> index 4cd27e5172a1..5fcf4bdf85ab 100644
-> --- a/drivers/video/fbdev/hyperv_fb.c
-> +++ b/drivers/video/fbdev/hyperv_fb.c
-> @@ -582,8 +582,8 @@ static int synthvid_get_supported_resolution(struct hv_device *hdev)
->  	t = wait_for_completion_timeout(&par->wait, VSP_TIMEOUT);
->  	if (!t) {
->  		pr_err("Time out on waiting resolution response\n");
-> -			ret = -ETIMEDOUT;
-> -			goto out;
-> +		ret = -ETIMEDOUT;
-> +		goto out;
->  	}
->  
->  	if (msg->resolution_resp.resolution_count == 0) {
-> 
