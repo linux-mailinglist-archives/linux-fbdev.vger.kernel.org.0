@@ -2,139 +2,194 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D621613C6FF
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 16:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72EBD13C72C
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 16:16:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729011AbgAOPJK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 15 Jan 2020 10:09:10 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:50907 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728992AbgAOPJK (ORCPT
+        id S1728931AbgAOPQt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Jan 2020 10:16:49 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:56696 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726132AbgAOPQs (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 Jan 2020 10:09:10 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200115150908euoutp02bc178f8722c4e3da8ab11fe8b0aff012~qF-JIfVpM3070530705euoutp02u
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 15:09:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200115150908euoutp02bc178f8722c4e3da8ab11fe8b0aff012~qF-JIfVpM3070530705euoutp02u
+        Wed, 15 Jan 2020 10:16:48 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115151646euoutp016e82e1aaeb9d6b69ccec1f9343e7bf90~qGFzhPMgm2976929769euoutp01_
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 15:16:46 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115151646euoutp016e82e1aaeb9d6b69ccec1f9343e7bf90~qGFzhPMgm2976929769euoutp01_
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579100948;
-        bh=pgc0KbIHRZtV95G/YdItWgVEQnJDvr037YYBXdbWFl8=;
+        s=mail20170921; t=1579101406;
+        bh=N07jBECcaGqq4VB4q54/zMIlWBsa3RYsqTuCu9Rdyu4=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=NGkEro7EDp2UhDipKS1U4C+qMuVCgMjDl7mzkBMYf5p36+EapQEYEyyU7hx7a0xHh
-         On+OaTOUZyfGfVg6Ap8Bg0/wiFjAvEnYPGyB3OiGeEXcxc8uCJGD6rI3hy+NcS6JpQ
-         RrnX/ujtCw6CKHyg6kDa8yGRf7QKoLpzXktw6W0E=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200115150908eucas1p283cbcbee603710bc567640c991d16d20~qF-I9hzn81992219922eucas1p2X;
-        Wed, 15 Jan 2020 15:09:08 +0000 (GMT)
+        b=Tgc2rK2P8dK5dTX0UKLooPDPdkXgjOiINboFzTl8ms9+mjmCaixvjTgxqzdp+8FS4
+         hYFFh0EwZSzEtsQ3PVY6SE7AqHgP9Wk+8g6215HR0INyJ4DHve3JJmyir6O4w3sTLl
+         POQsNvJ/nYBK5lvIPskM21fq7M3kf4pwPEoWbE9U=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200115151646eucas1p11734f25e7720fc56a7ec3c9e3776633f~qGFzEQ0XS2610926109eucas1p1i;
+        Wed, 15 Jan 2020 15:16:46 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 0F.0D.60679.41B2F1E5; Wed, 15
-        Jan 2020 15:09:08 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 22.91.60698.DDC2F1E5; Wed, 15
+        Jan 2020 15:16:45 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200115150907eucas1p2c04f054556f4751704eab807edc807e4~qF-IaDPiU1970519705eucas1p2d;
-        Wed, 15 Jan 2020 15:09:07 +0000 (GMT)
+        20200115151645eucas1p2241fc1538cd4518051c56325fcad5901~qGFyuRK4l3174031740eucas1p2t;
+        Wed, 15 Jan 2020 15:16:45 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200115150907eusmtrp1a93425a3f9c857758d4679fc42bb4876~qF-IZW_HC0299102991eusmtrp1I;
-        Wed, 15 Jan 2020 15:09:07 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-49-5e1f2b14df6f
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id BA.DC.07950.31B2F1E5; Wed, 15
-        Jan 2020 15:09:07 +0000 (GMT)
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200115151645eusmtrp2a0ebdaf8a88140c8f9893147b0fabeb6~qGFytaF8P2330623306eusmtrp2e;
+        Wed, 15 Jan 2020 15:16:45 +0000 (GMT)
+X-AuditID: cbfec7f5-a0fff7000001ed1a-2b-5e1f2cdde18d
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 38.BD.07950.DDC2F1E5; Wed, 15
+        Jan 2020 15:16:45 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200115150907eusmtip2493072d5318fb15fcb5d627b60128478~qF-IEsI8p0507205072eusmtip20;
-        Wed, 15 Jan 2020 15:09:07 +0000 (GMT)
-Subject: Re: [PATCH] video: fbdev: arcfb: add missed free_irq
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Jaya Kumar <jayalk@intworks.biz>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200115151644eusmtip156aac6e446621275c61f447d2333550a~qGFxrL4fL1521915219eusmtip1R;
+        Wed, 15 Jan 2020 15:16:44 +0000 (GMT)
+Subject: Re: [PATCH v4] video: hyperv: hyperv_fb: Use physical memory for fb
+ on HyperV Gen 1 VMs.
+To:     Dexuan Cui <decui@microsoft.com>
+Cc:     Michael Kelley <mikelley@microsoft.com>,
+        Wei Hu <weh@microsoft.com>, KY Srinivasan <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        "sashal@kernel.org" <sashal@kernel.org>, "hch@lst.de" <hch@lst.de>,
+        "m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+        "mchehab+samsung@kernel.org" <mchehab+samsung@kernel.org>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "info@metux.net" <info@metux.net>, "arnd@arndb.de" <arnd@arndb.de>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        kbuild test robot <lkp@intel.com>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <76ebce76-6f24-c4c4-f067-3989a2c41710@samsung.com>
-Date:   Wed, 15 Jan 2020 16:09:06 +0100
+Message-ID: <5a58696d-7f23-a577-c25e-ebe748b1aef0@samsung.com>
+Date:   Wed, 15 Jan 2020 16:16:44 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191116154416.19390-1-hslester96@gmail.com>
+In-Reply-To: <HK0P153MB0148F18913BEA45144AF8443BF3C0@HK0P153MB0148.APCP153.PROD.OUTLOOK.COM>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRmVeSWpSXmKPExsWy7djPc7oi2vJxBo2z5C2ufH3PZjH70Etm
-        i2nH/jFZnOj7wGpxedccNgdWj52z7rJ7bGvex+pxv/s4k8fnTXIBLFFcNimpOZllqUX6dglc
-        GYs3XWMueMZZcWbiD9YGxr/sXYycHBICJhKrb7xn62Lk4hASWMEoseDvASjnC6PEkv9TWSCc
-        z4wSr7Z9hGvpWbCJCSKxnFHi6pF97BDOW0aJu28mALVwcAgL2Eos2lgD0iAioC7xeddOsBpm
-        gSZGidP3exlBEmwCVhIT21eB2bwCdhJ/bsxlBrFZBFQlXj9pZAKxRQUiJD49OMwKUSMocXLm
-        ExYQmxOo9/T8i2AXMQuIS9x6Mp8JwpaX2P52DjPIMgmBRewSz67NYAQ5SELAReL0lViID4Ql
-        Xh3fAvWNjMTpyT0sEPXrGCX+dryAat7OKLF88j82iCpriTvnfrGBDGIW0JRYv0sfIuwo8fz6
-        W2aI+XwSN94KQtzAJzFp23SoMK9ER5sQRLWaxIZlG9hg1nbtXMk8gVFpFpLPZiH5ZhaSb2Yh
-        7F3AyLKKUTy1tDg3PbXYKC+1XK84Mbe4NC9dLzk/dxMjMM2c/nf8yw7GXX+SDjEKcDAq8fBm
-        /JGLE2JNLCuuzD3EKMHBrCTCe3KGbJwQb0piZVVqUX58UWlOavEhRmkOFiVxXuNFL2OFBNIT
-        S1KzU1MLUotgskwcnFINjJt9rjrpluU8EfRa/D9y0lFHdtEN2gJn/a9stfc7IWp1RqfgX8is
-        PR8nMX3j1Nts7+iSIp9YsPz+qb9RDCcn/5kq3vV9l81nm4SiR/P5U7n3lTX/akjMV1jHv3GK
-        1gq7wiz9gtKHr6eJzWWZ+2mLrOEXF6fnq76993mremT/6zuP9Tymh895b6jEUpyRaKjFXFSc
-        CAAxPzWZLwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHIsWRmVeSWpSXmKPExsVy+t/xe7rC2vJxBhc/mFhc+fqezWL2oZfM
-        FtOO/WOyONH3gdXi8q45bA6sHjtn3WX32Na8j9XjfvdxJo/Pm+QCWKL0bIryS0tSFTLyi0ts
-        laINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0MhZvusZc8Iyz4szEH6wNjH/Z
-        uxg5OSQETCR6Fmxi6mLk4hASWMoo8btvCpDDAZSQkTi+vgyiRljiz7UuNoia14wSDatPsoDU
-        CAvYSizaWANSIyKgLvF51052kBpmgSZGiQuHFzFCNPQySszbvYEZpIpNwEpiYvsqRhCbV8BO
-        4s+NuWBxFgFViddPGplAbFGBCInDO2ZB1QhKnJz5hAXE5gTqPT3/ItjVzEDb/sy7xAxhi0vc
-        ejKfCcKWl9j+dg7zBEahWUjaZyFpmYWkZRaSlgWMLKsYRVJLi3PTc4uN9IoTc4tL89L1kvNz
-        NzEC42rbsZ9bdjB2vQs+xCjAwajEw3vgn1ycEGtiWXFl7iFGCQ5mJRHekzNk44R4UxIrq1KL
-        8uOLSnNSiw8xmgI9N5FZSjQ5HxjzeSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1KzU1ML
-        Uotg+pg4OKUaGOfur0hs0uN4vOvJrf684C/6vA/qFhk8Pb5hsqzJx428RrE/FlyYe6DEMVLq
-        wBa/IzWZlinzp5cxycjfWnYwLnrZy2OLOJpCpN++5Hziu+J7jDhTabPYrCXvt5kFnpH/GbHs
-        yte+hflfyjlVls8tN43ZIyR8+PjzP/9XnzTQiOfIDZ2bvPZ9zlUlluKMREMt5qLiRABX0wpP
-        wQIAAA==
-X-CMS-MailID: 20200115150907eucas1p2c04f054556f4751704eab807edc807e4
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SWUwTURSGc2emM0O1MlYIxw21UaNGQYTEKypq4sM8qYlrXNAKE1AWSQuu
+        D+IKgiCgCFYQIwZKqWBqWWRVUMCojRubYkCDQUjaIigRCyLDQOTtO8t///MnlyWV8fQs9kh4
+        pKAJV4eqaDlVXDdoWfF5+Tz/lQ0ja3CMLYfBwyl1DK66aEL4wy87jS9kF9K4qYTHefnPCdx6
+        rpzAnflFDG5I7JXh1OReGr8vy6Bxz4WvNH7w7DOD7X1XCJzTaqGwfrAIYZOxicbW2qckdqQ5
+        bXThHX9SEH/HeIbPrugmeJPhCs1XZxoZvj2+nuDLW6NpPqnXSvOXSocZ/v7NRppPNBsQ329y
+        3zZ1r3xdoBB65Lig8fQ7JA9O0BVQEW0zT1qMibJoFO8ah5xY4Hwg4XmSTGQlp0fwtHJuHJKP
+        8k8ExnsOJBX9CArsf+gJhflDISENchE8eqOTSYUVgaPFMDph2RlcAAwP7BAFLtxCOP/zHSnu
+        kFw6A9defR97ieZ8ITnGgERWcH6Q1mgaY4pbBEMNGaTIrtwe6OuolUk70+HFrU5KfN+J2w/X
+        C1eLbZJzg4+dWYTE86DEmjHmBVwFC08cg5R09Wa4m/laJvEM6Kk3MxLPgZHHWYQkKEAwHPt9
+        XF2CIPf63/HMa6HNIuZnRy2WQmGZp9TeBG8H7pBiG7hp0GKdLh0xDVKK08bbCoi9rJS2F8PD
+        nIf0hG3c4zwyCal0k5LpJsXRTYqj++97F1EG5CZEacOCBK13uHDCQ6sO00aFB3kEHAszodEv
+        +vJv/a9SVDV0uAZxLFJNVQQPufsrZerj2lNhNQhYUuWieJE+11+pCFSfOi1ojh3URIUK2ho0
+        m6VUbgrve90HlFyQOlIIEYQIQTMxJVinWdFozqeunb67SLmmvfjLk9mNFpvX0ZDa1DJDaXAH
+        s6OsTu9Zrusfad6d4OHrtq/bq/d9p8397KHsvoWV968Nzi9a75Nl7bItNrt45utWbjVtXuUj
+        PxpnWbJl/fYF0c3pj5KVV6ectdhJ54vLnOtvmG3fUnuqvTekK2b+dtbfzvLrGjjxQ0Vpg9Ve
+        y0iNVv0Pu4MiUZ4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHe8/Zzs7MxWkqvo3SOF0JnU5nexWTvnnoU5CQpKnDTi5yTnbm
+        rSIsNXPW8IKay7QypXS5HOYlo3TljSDBG3iPErTyssoCm0rOJfjtD8/v9zw88CdxcQVfQl5K
+        0rHaJGUiTbjwPqz3TPpO+njH+I91HEa5i7UCtFbULUBvsi0ADf1eIlBWtZlAIy0MelbfhaHR
+        G+0Ymql/KUC9BhsflRTaCDT4qoJA37I+E+j5+0kBWvqZh6Ha0Y889HTlJUAW0wiBFt514she
+        Jjzpztj/FgGm0nSVqX79FWMsdXkE8/aBScBM5/dgTPtoJsEU2BYIJqd1TcA8KR0mGENTHWB+
+        WbxOu56Thmo1KTp2v0rD6U7QUTIUIJUFI2mAPFgqC1ScDwkIov3CQi+wiZdSWa1fWJxUddfY
+        wEue2JP+0WTgZ4J8Dz0QkpCSw6YhM6YHLqSYqgFwvX8c6AG5MdgLe8ypTsYNro7oCSfzHcDC
+        HDvuYNyoeLj2J8LBuFMH4c3lAdyRccoogFOfaCffgMF+ayNwDAgqBBbm1m1mERUGy4Ytm5lH
+        HYKrvRWbsgcVCd+1Gv8zu2Ff+QzPcUtIRcNis8K5/whcrdy65QnHZqowZ/aGLQsVeAEQG7fZ
+        xm2KcZti3KY8BLw64M6mcOoENRcg5ZRqLiUpQRqvUVvARjOau1eaWoF+8YwVUCSgXUUd614x
+        Yr4ylctQWwEkcdpd1HdvX4xYdEGZcYXVamK1KYksZwVBG78V4hKPeM1Gz5J0sbIgmQIFyxSB
+        isDjiPYU3aY6o8VUglLHXmbZZFa75WGkUJIJrn+oSTvgo6jCJKzrc7GyeWIg3XcuZ5BdPNUy
+        ktdWLfQ7ZJ8qkw/NUXJT3OOJFz+O6kMeHd45tQM2z3qllXPHdtleC1W4YTqq61ZfUXZj4osv
+        EfJ0bDl8nCy4WDNmWwi334lEZ82a+x60/2xpQaebpOjavMQ0WVyiXSlfnW+jeZxKKTuGaznl
+        P9CockovAwAA
+X-CMS-MailID: 20200115151645eucas1p2241fc1538cd4518051c56325fcad5901
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20191116154430eucas1p21c738a988e3bc0c3544a388c71f4a75c
+X-RootMTR: 20200106223809eucas1p19d62a7481db309e28b64977639dc94c7
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20191116154430eucas1p21c738a988e3bc0c3544a388c71f4a75c
-References: <CGME20191116154430eucas1p21c738a988e3bc0c3544a388c71f4a75c@eucas1p2.samsung.com>
-        <20191116154416.19390-1-hslester96@gmail.com>
+X-CMS-RootMailID: 20200106223809eucas1p19d62a7481db309e28b64977639dc94c7
+References: <20191209075749.3804-1-weh@microsoft.com>
+        <CY4PR21MB06293C21EC5338C98080F6AED7580@CY4PR21MB0629.namprd21.prod.outlook.com>
+        <CGME20200106223809eucas1p19d62a7481db309e28b64977639dc94c7@eucas1p1.samsung.com>
+        <HK0P153MB0148F18913BEA45144AF8443BF3C0@HK0P153MB0148.APCP153.PROD.OUTLOOK.COM>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 11/16/19 4:44 PM, Chuhong Yuan wrote:
-> The driver forgets to free irq in remove which is requested in
-> probe.
-> Add the missed call to fix it.
+On 1/6/20 11:37 PM, Dexuan Cui wrote:
+>> From: Michael Kelley <mikelley@microsoft.com>
+>> Sent: Monday, December 9, 2019 8:33 AM
+>> To: Wei Hu <weh@microsoft.com>; b.zolnierkie@samsung.com; KY
+>> Srinivasan <kys@microsoft.com>; Haiyang Zhang <haiyangz@microsoft.com>;
+>> Stephen Hemminger <sthemmin@microsoft.com>; sashal@kernel.org;
+>> hch@lst.de; m.szyprowski@samsung.com; mchehab+samsung@kernel.org;
+>> sam@ravnborg.org; gregkh@linuxfoundation.org;
+>> alexandre.belloni@bootlin.com; info@metux.net; arnd@arndb.de;
+>> dri-devel@lists.freedesktop.org; linux-fbdev@vger.kernel.org;
+>> linux-kernel@vger.kernel.org; linux-hyperv@vger.kernel.org; Dexuan Cui
+>> <decui@microsoft.com>
+>> Cc: kbuild test robot <lkp@intel.com>
+>> Subject: RE: [PATCH v4] video: hyperv: hyperv_fb: Use physical memory for
+>> fb on HyperV Gen 1 VMs.
+>>
+>> From: Wei Hu <weh@microsoft.com> Sent: Sunday, December 8, 2019 11:58
+>> PM
+>>>
+>>> On Hyper-V, Generation 1 VMs can directly use VM's physical memory for
+>>> their framebuffers. This can improve the efficiency of framebuffer and
+>>> overall performance for VM. The physical memory assigned to framebuffer
+>>> must be contiguous. We use CMA allocator to get contiguous physicial
+>>> memory when the framebuffer size is greater than 4MB. For size under
+>>> 4MB, we use alloc_pages to achieve this.
+>>>
+>>> To enable framebuffer memory allocation from CMA, supply a kernel
+>>> parameter to give enough space to CMA allocator at boot time. For
+>>> example:
+>>>     cma=130m
+>>> This gives 130MB memory to CAM allocator that can be allocated to
+>>> framebuffer. If this fails, we fall back to the old way of using
+>>> mmio for framebuffer.
+>>>
+>>> Reported-by: kbuild test robot <lkp@intel.com>
+>>> Signed-off-by: Wei Hu <weh@microsoft.com>
+>>> ---
+>>>     v2: Incorporated review comments form hch@lst.de, Michael Kelley
+>> and
+>>>     Dexuan Cui
+>>>     - Use dma_alloc_coherent to allocate large contiguous memory
+>>>     - Use phys_addr_t for physical addresses
+>>>     - Corrected a few spelling errors and minor cleanups
+>>>     - Also tested on 32 bit Ubuntu guest
+>>>     v3: Fixed a build issue reported by kbuild test robot and incorported
+>>>     some review comments from Michael Kelley
+>>>     - Add CMA check to avoid link failure
+>>>     - Fixed small memory leak introduced by alloc_apertures
+>>>     - Cleaned up so code
+>>>     v4: Removed request_pages variable as it is no longer needed
+>>>
+>>>  drivers/video/fbdev/Kconfig     |   1 +
+>>>  drivers/video/fbdev/hyperv_fb.c | 182
+>> +++++++++++++++++++++++++-------
+>>>  2 files changed, 144 insertions(+), 39 deletions(-)
+>>>
+>>
+>> Reviewed-by: Michael Kelley <mikelley@microsoft.com>
 > 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> ---
->  drivers/video/fbdev/arcfb.c | 3 +++
->  1 file changed, 3 insertions(+)
+> Tested-by: Dexuan Cui <decui@microsoft.com>
 > 
-> diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
-> index a48741aab240..7aed01f001a4 100644
-> --- a/drivers/video/fbdev/arcfb.c
-> +++ b/drivers/video/fbdev/arcfb.c
-> @@ -590,8 +590,11 @@ static int arcfb_probe(struct platform_device *dev)
->  static int arcfb_remove(struct platform_device *dev)
->  {
->  	struct fb_info *info = platform_get_drvdata(dev);
-> +	struct arcfb_par *par = info->par;
->  
->  	if (info) {
-> +		if (irq)
-> +			free_irq(par->irq, info);
->  		unregister_framebuffer(info);
+> For a Gen-1 VM running on recent Hyper-V hosts, this patch can greatly 
+> reduce the CPU utilization because it avoids the slow data copy from the 
+> shadow framebuffer to the MMIO framebuffer, and hence it resolves the
+> "blurred screen" issue when we output a lot of characters on the text-mode
+> ternimal (e.g. "dmesg").
 
-We cannot free IRQ while framebuffer is registered (as we can
-deadlock in arcfb_ioctl()).
-
-Also it seems that ordering in the probe function is wrong
-(it should not request IRQ or initialize the hardware after
-registering framebuffer).
-
->  		vfree((void __force *)info->screen_base);
->  		framebuffer_release(info);
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
 Best regards,
 --
