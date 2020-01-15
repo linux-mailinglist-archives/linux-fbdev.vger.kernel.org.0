@@ -2,146 +2,154 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B28DB13C34A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 14:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A89A713C606
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jan 2020 15:31:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729027AbgAONfB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 15 Jan 2020 08:35:01 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:47294 "EHLO
+        id S1726472AbgAOObe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Jan 2020 09:31:34 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:40770 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729011AbgAONfA (ORCPT
+        with ESMTP id S1726248AbgAOObe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 Jan 2020 08:35:00 -0500
+        Wed, 15 Jan 2020 09:31:34 -0500
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115133459euoutp016280e5affae76f626525d3bd493c2f4f~qEs7hvsbY0830508305euoutp01O
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 13:34:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115133459euoutp016280e5affae76f626525d3bd493c2f4f~qEs7hvsbY0830508305euoutp01O
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115143131euoutp019b29ff00ea8b6d98e22b151f5a871622~qFeTWHLDT2291322913euoutp01Y
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jan 2020 14:31:31 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115143131euoutp019b29ff00ea8b6d98e22b151f5a871622~qFeTWHLDT2291322913euoutp01Y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579095299;
-        bh=Wyj7xb2hHhoWQ11nk70/XEqS3v06yRBiPdUaYN7dYRA=;
+        s=mail20170921; t=1579098691;
+        bh=1cw4JMKy1lErsNYO/NGq+Qbzm8WjBl+Evi60eX5AHHw=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=HTiK5zFlGemlOdz+30GNuhA/IJOoiGLyyEme9bd2Sm7qH8WV7A94NRF1q3KLoQ4Mw
-         Co56Sbsda+scKY/PNx3FuQhRL+dy6qNndXvnFiGR7RGQ/r5cc/zoK4P5URJuM8F4lQ
-         qVjaH4EM5HQDeZVdEFGqMbMH7zpA8gHcs6crk/0A=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        b=H+Gb1ulHlR0zP/LiOqkr2g7iidbvBUKzZ8i/eF5RJcfLLDaYdAXF/Nk/Xd5+lfvkm
+         hCz+kXQ9LRT3nNMa27cA4sNkkndlAVsqI7c5PVM0HpFjVzQmRKmVn90Vbbqne0bLJf
+         PseTHPwJMsvnY0X0vNrSTwG1bm5kXmYsjAPy30GE=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200115133458eucas1p2e3df808a4c784a69526c2dbfcff5b201~qEs7Mj4_e2289222892eucas1p25;
-        Wed, 15 Jan 2020 13:34:58 +0000 (GMT)
+        20200115143131eucas1p25ddd1f5510a4c878dc4d029fba83b695~qFeTHeD-90399003990eucas1p2O;
+        Wed, 15 Jan 2020 14:31:31 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 1F.5E.60679.2051F1E5; Wed, 15
-        Jan 2020 13:34:58 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200115133458eucas1p2da22edad7c425619cc99dc49df712ada~qEs6s9DOR2438824388eucas1p2G;
-        Wed, 15 Jan 2020 13:34:58 +0000 (GMT)
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id CA.DB.61286.3422F1E5; Wed, 15
+        Jan 2020 14:31:31 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200115143131eucas1p11e74f62a262e12c8bf664e181384cfc1~qFeSy6NpB3147931479eucas1p1d;
+        Wed, 15 Jan 2020 14:31:31 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200115133458eusmtrp263d592c218074fca7ebac1692b52152b~qEs6sP5Kh2458424584eusmtrp2c;
-        Wed, 15 Jan 2020 13:34:58 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-29-5e1f1502c113
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id ED.AF.08375.2051F1E5; Wed, 15
-        Jan 2020 13:34:58 +0000 (GMT)
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200115143131eusmtrp16383aedf24a8b1f5e3935b44e610ded1~qFeSxtlYC1089610896eusmtrp1E;
+        Wed, 15 Jan 2020 14:31:31 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-ac-5e1f22438f16
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 24.D7.08375.3422F1E5; Wed, 15
+        Jan 2020 14:31:31 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200115133457eusmtip2a48b48b49458d709d82ba2176edd2660~qEs5_uYIX0906309063eusmtip29;
-        Wed, 15 Jan 2020 13:34:57 +0000 (GMT)
-Subject: Re: [PATCH][RESEND] video: hyperv_fb: Fix hibernation for the
- deferred IO feature
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Dexuan Cui <decui@microsoft.com>, kys@microsoft.com,
-        haiyangz@microsoft.com, sthemmin@microsoft.com,
-        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mikelley@microsoft.com, Alexander.Levin@microsoft.co,
-        weh@microsoft.com
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200115143130eusmtip1f078a4fb398be341001874dc8707ba6b~qFeSIQxju1623716237eusmtip1b;
+        Wed, 15 Jan 2020 14:31:30 +0000 (GMT)
+Subject: Re: [PATCH v2] fbdev: potential information leak in do_fb_ioctl()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrea Righi <righi.andrea@gmail.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Peter Rosin <peda@axentia.se>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <9fbc3d79-d825-c8be-b9fa-74cc79b30f56@samsung.com>
-Date:   Wed, 15 Jan 2020 14:34:57 +0100
+Message-ID: <ac5585a5-1670-92d2-c019-f349df123f47@samsung.com>
+Date:   Wed, 15 Jan 2020 15:31:29 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200111162957.GK1706@sasha-vm>
+In-Reply-To: <20200113100132.ixpaymordi24n3av@kili.mountain>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrEKsWRmVeSWpSXmKPExsWy7djPc7pMovJxBrebdCx+bJKy2NeyidHi
-        ytf3bBbXtntYPFm9ld3iRN8HVoupEz+wWVzeNYfNYtnNcywWm9ZcY7N4e/ggs8Xv6ZwOPB6b
-        VnWyedzvPs7kcX3ddkaP1h1/2T0+b5ILYI3isklJzcksSy3St0vgyph85i5rwTWeij+/V7E2
-        MJ7h6mLk5JAQMJF41HuPpYuRi0NIYAWjxOoDm9ghnC+MEp1fJrGDVAkJfGaUmHheF6ZjfkcH
-        VMdyRoknH6ewQjhvGSVWdC5lBKkSFoiRmPO+hQ3EFhFQluhctxSsiFlgE5PEk8dvwRJsAlYS
-        E9tXgTXwCthJnL+xDCzOIqAqcblnN1hcVCBC4tODw6wQNYISJ2c+YQGxOQV0JT6uncQEYjML
-        iEvcejIfypaX2P52DjPIMgmBa+wSsz8cYIW420Vix9wGFghbWOLV8S3sELaMxP+dIM0gDesY
-        Jf52vIDq3s4osXzyPzaIKmuJO+d+AdkcQCs0Jdbv0ocIO0qsbD7HDBKWEOCTuPFWEOIIPolJ
-        26ZDhXklOtqEIKrVJDYs28AGs7Zr50rmCYxKs5C8NgvJO7OQvDMLYe8CRpZVjOKppcW56anF
-        Rnmp5XrFibnFpXnpesn5uZsYgSnr9L/jX3Yw7vqTdIhRgINRiYc3449cnBBrYllxZe4hRgkO
-        ZiUR3pMzZOOEeFMSK6tSi/Lji0pzUosPMUpzsCiJ8xovehkrJJCeWJKanZpakFoEk2Xi4JRq
-        YJzB6D/r7/wf616KZJz7lN0a/rJda/HL0OqFk88flThhr1+cZq6u+POrjF2WNccqzprLB5sU
-        va5Ldfdbu1i768/J9CgTmjCBNW/d/007/dtWXLYuW8h3a93Fs29PZ1UbPnirFPmGx6zk1fSg
-        7fymi+s36RXWLRSxFW2ym9Sw0DTlRsClbG1NZSWW4oxEQy3mouJEALWcqIBVAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMIsWRmVeSWpSXmKPExsVy+t/xe7pMovJxBhM6OC1+bJKy2NeyidHi
-        ytf3bBbXtntYPFm9ld3iRN8HVoupEz+wWVzeNYfNYtnNcywWm9ZcY7N4e/ggs8Xv6ZwOPB6b
-        VnWyedzvPs7kcX3ddkaP1h1/2T0+b5ILYI3SsynKLy1JVcjILy6xVYo2tDDSM7S00DMysdQz
-        NDaPtTIyVdK3s0lJzcksSy3St0vQy5h85i5rwTWeij+/V7E2MJ7h6mLk5JAQMJGY39HB0sXI
-        xSEksJRR4seieaxdjBxACRmJ4+vLIGqEJf5c62IDsYUEXjNKPFjlD2ILC8RIzHnfAhYXEVCW
-        6Fy3lBVkDrPAJiaJZ1NWQg3dzSix/V4zE0gVm4CVxMT2VYwgNq+AncT5G8vAulkEVCUu9+wG
-        i4sKREgc3jELqkZQ4uTMJywgNqeArsTHtZPA5jALqEv8mXeJGcIWl7j1ZD5UXF5i+9s5zBMY
-        hWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIzQbcd+bt7BeGlj
-        8CFGAQ5GJR7ejD9ycUKsiWXFlbmHGCU4mJVEeE/OkI0T4k1JrKxKLcqPLyrNSS0+xGgK9NxE
-        ZinR5Hxg8sgriTc0NTS3sDQ0NzY3NrNQEuftEDgYIySQnliSmp2aWpBaBNPHxMEp1cBY+oRt
-        54FtCne/vv11tLd6ge+lrdHWCz9Y2a3+zNd3Wbax5VM6e/IbrrxdQpUfW5f8W+y9v2HjvsUG
-        q4Q+xet7d08ubdLP53v+/5R0ftZNlugzWv9ezLj+JXxV5MQFF5Z4/H8cvU7+9XPmFBUOqQfr
-        t5op7z5mvcRqmuzlvbkXt71Yu4Jv5nXbXCWW4oxEQy3mouJEAHSgbvrmAgAA
-X-CMS-MailID: 20200115133458eucas1p2da22edad7c425619cc99dc49df712ada
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRjm2zk7OxMnp2X5pnZhZFBUJhl8lkpRxKEI7E90IWvpQSOndpZ2
+        +VVkTVeEaanNOaddLLM0c0tNRSapQ51SVmoTDSq18pZ5t5XuKPnn43mf93ne93s+PpqQX6M8
+        6dPR5zg+WhmloFxIc+2kbdNuxerQLVfH12J9YQGF/6TUSvAPRzqJG392SnDO504Ct44OUviv
+        OUGCK+w/EDZ1eOFvHVYC198aEuN35XoK5wybSFxpyUbYUPORwo8nTWgnw05PpSA2rTpTwlaO
+        GUm2TNcpYe9X9IlY+4cKiq3PmCZZg/Ug23WjTsQOf+0g2Qdp7yl2sGr2GClexd6xaMgQt6Mu
+        geFc1Ol4jvcNPukSmfQ0XRJrlV6oTh6nLqMeiRZJaWD8oemOjtAiF1rOPEZwd3RMIhS/EWQ1
+        DIqFYgSBNrOCWLCktltJoZGH4GZy83zRj8D80ugcvJTZBy2tjU6HO7MR3iVNOOcSjIWEbs19
+        Z4NitsNtTT6awzImGLLe2Kg5TDI+UGNoIufwMuYw/OquEQuaJWC998XJS5lAmDZXOfUE4wEd
+        X7JFAl4Nr/r1zkTAlNKQbSpBwr33QOe9drGAl8L3upL5J/CGhtSbpGB4juBPYu+8+xWCvFQH
+        Jah2gN02NYvp2RXrobDcV6B3QZ8hTTRHA+MGbf1LhEu4QYo5nRBoGSRelwvqdVD0qIhaWKst
+        e0IkI4VuUTTdoji6RXF0//caEZmPPLg4tSqCU/tFc+c3q5UqdVx0xOawGFUxmv2cDY66X6Vo
+        9O0pC2JopHCVRc6sCpWLlfHqiyoLAppQuMusGStD5bJw5cVLHB9zgo+L4tQW5EWTCg/Z1ty+
+        43ImQnmOO8NxsRy/0BXRUs/LiI9cz+sOtmmzsK57xCeh9UbQzqhU/2Zb1rFDPTbj/kszv3Ou
+        2HZNvH7wMjfxWUvX2lvnFQN7Zd0BAxrXofzhXqMqNiUirEQfcrZsm1dhTsiVTy3HfOz6yYS9
+        QXlnHRrvjOWcr+Ph+zVH6NARy5SBHLD3HnD9vuKIawFf/Ckz4IW/glRHKv02ELxa+Q8P2mGI
+        mAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTURyAO7vXe6e0uE7Fw/IRV6KQms5pO4qJVNQlCIogItM19OYk53R3
+        E40iQcE0KrXysWwq9jATTENT0WWT1JVZqFmK0sslauUrNfNRmxrsn8PH+X3fgQM/PibMdxDx
+        4xK0rCZBEU8TTvir1Y7h3ftp7yj/9iYKFVdXEWglr51EE6sFOOr6Pkyiss/DGOqbmyTQ3/oM
+        EjUPTQBUN7gVfRs0Y6jz2pQD6m0qJlDZdB2OWkwlABna3hOoYrEOhFPM0p88wOS33iaZlvlS
+        nGnUD5NMefMYjxnqbyaYzsIlnDGYjzEfr3TwmGnLIM7czX9HMJNG6zFb68XcNGXiR7ecEodq
+        1Dotu02p5rR76QgJChBLgpE4IDBYLJHKIkMCgmi/sNAYNj4umdX4hZ0RK7MeFZCJZseU1pwF
+        Ig2MktnAkQ+pQHhjwIxnAye+kLoH4NDoHC8b8K0DD9hRnbzuuMDl/mxi3ZkAsOjLqoNt4EId
+        hm/7ujAbu1K7YG/Wb9ImYZQJhzOZNRuvXgewtPTWWkFQITA3sxLYWECFwTsvugkb49R22GZ4
+        jdvYjToJ2xr0G44zNBeNrN07UqFwqd645mPUDrhs6MHW2R0OjpTw1tkbPv1RjOUAod4u19sl
+        ertEb5eUArwSuLI6ThWr4iRiTqHidAmx4mi1qhZYd6K+ffFJA+ipOW4CFB/QmwXKZa8ooYMi
+        mUtVmQDkY7SrwFzoGSUUxChSz7MatVyji2c5Ewiyfi4XE7lFq60blqCVS4IkMhQskUll0j2I
+        dhdcpp6fFlKxCi17jmUTWc3/jsd3FKUBb8uFyojuxjJ5mnEfr8IyMIOU0y3kg45a1cX5g0Ob
+        aCANv/Th04Ei6RvX1l9TjFNGvDnJf3y2ojFfUR7qqzMFJo0VLkR4nPgqZ8rP+owfyU0uuFqT
+        I6/4GZW+ohepU0X9h4wjkfB+UevYdEbNQ8+6Kn8L+9LnGbbzcXqgc8o8jXNKhcQX03CKf53x
+        gMwpAwAA
+X-CMS-MailID: 20200115143131eucas1p11e74f62a262e12c8bf664e181384cfc1
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200111163007eucas1p2e1a121270ec036ba444e3a363d3f7fed
+X-RootMTR: 20200113111044eucas1p2037e64332e79316dc0114d67a38400ab
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200111163007eucas1p2e1a121270ec036ba444e3a363d3f7fed
-References: <1578350511-130150-1-git-send-email-decui@microsoft.com>
-        <CGME20200111163007eucas1p2e1a121270ec036ba444e3a363d3f7fed@eucas1p2.samsung.com>
-        <20200111162957.GK1706@sasha-vm>
+X-CMS-RootMailID: 20200113111044eucas1p2037e64332e79316dc0114d67a38400ab
+References: <CGME20200113111044eucas1p2037e64332e79316dc0114d67a38400ab@eucas1p2.samsung.com>
+        <20200113100132.ixpaymordi24n3av@kili.mountain>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 1/11/20 5:29 PM, Sasha Levin wrote:
-> On Mon, Jan 06, 2020 at 02:41:51PM -0800, Dexuan Cui wrote:
->> fb_deferred_io_work() can access the vmbus ringbuffer by calling
->> fbdefio->deferred_io() -> synthvid_deferred_io() -> synthvid_update().
->>
->> Because the vmbus ringbuffer is inaccessible between hvfb_suspend()
->> and hvfb_resume(), we must cancel info->deferred_work before calling
->> vmbus_close() and then reschedule it after we reopen the channel
->> in hvfb_resume().
->>
->> Fixes: a4ddb11d297e ("video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver")
->> Fixes: 824946a8b6fb ("video: hyperv_fb: Add the support of hibernation")
->> Signed-off-by: Dexuan Cui <decui@microsoft.com>
->> Reviewed-by: Wei Hu <weh@microsoft.com>
->> ---
->>
->> This is a RESEND of https://protect2.fireeye.com/url?k=a9db9902-f41598d1-a9da124d-000babff317b-c1ee475745c278a5&u=https://lkml.org/lkml/2019/11/20/73 .
->>
->> The only change is the addition of Wei's Review-ed-by.
->>
->> Please review.
->>
->> If it looks good, Sasha Levin, can you please pick it up via the
->> hyperv/linux.git tree, as you did last time for this driver?
+On 1/13/20 12:08 PM, Dan Carpenter wrote:
+> The "fix" struct has a 2 byte hole after ->ywrapstep and the
+> "fix = info->fix;" assignment doesn't necessarily clear it.  It depends
+> on the compiler.  The solution is just to replace the assignment with an
+> memcpy().
 > 
-> Like with the input driver, if the relevant maintainers here are okay
-> with this type of patches going through the hyperv tree I'll be happy to
-> do it, otherwise I need an explicit ack from them on this patch.
+> Fixes: 1f5e31d7e55a ("fbmem: don't call copy_from/to_user() with mutex held")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Yes, I'm fine with hyperv_fb driver patches going through hyperv tree.
-
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Patch queued for v5.6, thanks.
 
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
+
+> ---
+> v2:  Use memcpy()
+> 
+>  drivers/video/fbdev/core/fbmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index d04554959ea7..bb8d8dbc0461 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1115,7 +1115,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+>  		break;
+>  	case FBIOGET_FSCREENINFO:
+>  		lock_fb_info(info);
+> -		fix = info->fix;
+> +		memcpy(&fix, &info->fix, sizeof(fix));
+>  		if (info->flags & FBINFO_HIDE_SMEM_START)
+>  			fix.smem_start = 0;
+>  		unlock_fb_info(info);
+> 
