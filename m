@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 395E313E7A9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 18:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9770113E99B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 18:39:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392449AbgAPR1R (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jan 2020 12:27:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36990 "EHLO mail.kernel.org"
+        id S2393425AbgAPRjG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 Jan 2020 12:39:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55170 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392442AbgAPR1Q (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:27:16 -0500
+        id S2388353AbgAPRjG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:39:06 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17881246D6;
-        Thu, 16 Jan 2020 17:27:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6AB4E246EF;
+        Thu, 16 Jan 2020 17:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195636;
-        bh=UIxcUvduVdcP4qofQbk8fqLg1lEDIcWViqbTbAe5F+A=;
+        s=default; t=1579196345;
+        bh=GXrOPGzs1i6dk8/vbBQRhdqLFf9BkLkpKVr1wvZMRy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qnB+E+eNDbdd6BWqzF8C9ZhznG5tZVTmTaR6qT/NqG1sQQkMbcxu6yxbThfZylIzD
-         cLwxVlVZ+Cyp02yiKJmksFa/1vXm1JGkA3H0HCp3H34RS7cNg8+sDMeJQwVXUedihl
-         6xF/HRWPQmoZWBvusIT65YbuQjg/aeBAjjhflLUk=
+        b=U+tbg7/MZK5FJqEfgdSpCPPmHt0Nh13qMJCbFzmBxJ12KDgmSHLbUO7THLvOO/HJR
+         KFYzRnhDNsR65PSvE6J6/uzCdvLrTFhIUQbUWKjmlHPx/L4EK33oWu90ZZ5HqobM/q
+         y+P+I3679eGfdLJp3DIHH8RsZOECUmidcqAImXdo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Brian Masney <masneyb@onstation.org>, Pavel Machek <pavel@ucw.cz>,
@@ -30,12 +30,12 @@ Cc:     Brian Masney <masneyb@onstation.org>, Pavel Machek <pavel@ucw.cz>,
         Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 202/371] backlight: lm3630a: Return 0 on success in update_status functions
-Date:   Thu, 16 Jan 2020 12:21:14 -0500
-Message-Id: <20200116172403.18149-145-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 141/251] backlight: lm3630a: Return 0 on success in update_status functions
+Date:   Thu, 16 Jan 2020 12:34:50 -0500
+Message-Id: <20200116173641.22137-101-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
-References: <20200116172403.18149-1-sashal@kernel.org>
+In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
+References: <20200116173641.22137-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-index 2030a6b77a09..ef2553f452ca 100644
+index 60d6c2ac87aa..1771220b2437 100644
 --- a/drivers/video/backlight/lm3630a_bl.c
 +++ b/drivers/video/backlight/lm3630a_bl.c
-@@ -201,7 +201,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+@@ -200,7 +200,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
  				      LM3630A_LEDA_ENABLE, LM3630A_LEDA_ENABLE);
  	if (ret < 0)
  		goto out_i2c_err;
@@ -78,7 +78,7 @@ index 2030a6b77a09..ef2553f452ca 100644
  
  out_i2c_err:
  	dev_err(pchip->dev, "i2c failed to access\n");
-@@ -278,7 +278,7 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
+@@ -277,7 +277,7 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
  				      LM3630A_LEDB_ENABLE, LM3630A_LEDB_ENABLE);
  	if (ret < 0)
  		goto out_i2c_err;
