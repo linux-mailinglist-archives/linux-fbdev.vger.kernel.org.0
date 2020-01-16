@@ -2,41 +2,42 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD44113F474
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 19:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 625A713F22D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 19:33:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389621AbgAPRJS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jan 2020 12:09:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44864 "EHLO mail.kernel.org"
+        id S2403811AbgAPRYq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 Jan 2020 12:24:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59780 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389646AbgAPRJS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:09:18 -0500
+        id S2391372AbgAPRYp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:24:45 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1FDEB205F4;
-        Thu, 16 Jan 2020 17:09:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4DC4F246B6;
+        Thu, 16 Jan 2020 17:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194557;
-        bh=Us2oXtdbboe0sr3+v+28oDWDxQ0tEGkRNRlLlWzXMIM=;
+        s=default; t=1579195485;
+        bh=bT5/2MJcIpgpjY2eppwjDB2SlZlU7x8jPy5Cpzfz2y0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KjAwXYZcaI0IjcJ9iLeNmboVk2M+YaDOVs0WQY9T89RJMoZssIxvY8W8iA4+fJDfb
-         MQ/p7/kz8CHV+oIheNInIqcYbpMR18r4ZcVNUuV6pey4Ts/XCbUQuy5vYY3L5RYBlL
-         oZuvDfOfYbG07RyeCx5anifSrxIMIxhb439B9CAU=
+        b=tbIMTR+vhKyZHfSjrBTXqBOVMoqnGPKR9DQbBtv/w0p8VKoNcw5OpxJPl7p5YUfwu
+         Mg9kBKQq4wwTEnSQgE6v5FF++rUVqKX4gjh2lAxgPLE8xZ9XpsGfgu19AofTFWiNWt
+         fkXTeNxgg/tMNZCJUsfU45mnMZFbhtDTD4Qtz8fo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Matthias Kaehlcke <mka@chromium.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-pwm@vger.kernel.org,
+Cc:     YueHaibing <yuehaibing@huawei.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 438/671] backlight: pwm_bl: Fix heuristic to determine number of brightness levels
-Date:   Thu, 16 Jan 2020 12:01:16 -0500
-Message-Id: <20200116170509.12787-175-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 089/371] fbdev: chipsfb: remove set but not used variable 'size'
+Date:   Thu, 16 Jan 2020 12:19:21 -0500
+Message-Id: <20200116172403.18149-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
-References: <20200116170509.12787-1-sashal@kernel.org>
+In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
+References: <20200116172403.18149-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,85 +47,49 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Matthias Kaehlcke <mka@chromium.org>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 73fbfc499448455f1e1c77717040e09e25f1d976 ]
+[ Upstream commit 8e71fa5e4d86bedfd26df85381d65d6b4c860020 ]
 
-With commit 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of
-LED linearly to human eye") the number of set bits (aka hweight())
-in the PWM period is used in the heuristic to determine the number
-of brightness levels, when the brightness table isn't specified in
-the DT. The number of set bits doesn't provide a reliable clue about
-the length of the period, instead change the heuristic to:
+Fixes gcc '-Wunused-but-set-variable' warning:
 
- nlevels = period / fls(period)
+drivers/video/fbdev/chipsfb.c: In function 'chipsfb_pci_init':
+drivers/video/fbdev/chipsfb.c:352:22: warning:
+ variable 'size' set but not used [-Wunused-but-set-variable]
 
-Also limit the maximum number of brightness levels to 4096 to avoid
-excessively large tables.
-
-With this the number of levels increases monotonically with the PWM
-period, until the maximum of 4096 levels is reached:
-
-period (ns)    # levels
-
-100    	       16
-500	       62
-1000	       111
-5000	       416
-10000	       769
-50000	       3333
-100000	       4096
-
-Fixes: 88ba95bedb79 ("backlight: pwm_bl: Compute brightness of LED linearly to human eye")
-Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Fixes: 8c8709334cec ("[PATCH] ppc32: Remove CONFIG_PMAC_PBOOK").
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+[b.zolnierkie: minor commit summary and description fixups]
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/pwm_bl.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/chipsfb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index 7ddc0930e98c..3a3098d4873b 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -199,29 +199,17 @@ int pwm_backlight_brightness_default(struct device *dev,
- 				     struct platform_pwm_backlight_data *data,
- 				     unsigned int period)
+diff --git a/drivers/video/fbdev/chipsfb.c b/drivers/video/fbdev/chipsfb.c
+index f103665cad43..f9b366d17587 100644
+--- a/drivers/video/fbdev/chipsfb.c
++++ b/drivers/video/fbdev/chipsfb.c
+@@ -350,7 +350,7 @@ static void init_chips(struct fb_info *p, unsigned long addr)
+ static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *ent)
  {
--	unsigned int counter = 0;
--	unsigned int i, n;
-+	unsigned int i;
- 	u64 retval;
+ 	struct fb_info *p;
+-	unsigned long addr, size;
++	unsigned long addr;
+ 	unsigned short cmd;
+ 	int rc = -ENODEV;
  
- 	/*
--	 * Count the number of bits needed to represent the period number. The
--	 * number of bits is used to calculate the number of levels used for the
--	 * brightness-levels table, the purpose of this calculation is have a
--	 * pre-computed table with enough levels to get linear brightness
--	 * perception. The period is divided by the number of bits so for a
--	 * 8-bit PWM we have 255 / 8 = 32 brightness levels or for a 16-bit PWM
--	 * we have 65535 / 16 = 4096 brightness levels.
--	 *
--	 * Note that this method is based on empirical testing on different
--	 * devices with PWM of 8 and 16 bits of resolution.
-+	 * Once we have 4096 levels there's little point going much higher...
-+	 * neither interactive sliders nor animation benefits from having
-+	 * more values in the table.
- 	 */
--	n = period;
--	while (n) {
--		counter += n % 2;
--		n >>= 1;
--	}
-+	data->max_brightness =
-+		min((int)DIV_ROUND_UP(period, fls(period)), 4096);
+@@ -362,7 +362,6 @@ static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *ent)
+ 	if ((dp->resource[0].flags & IORESOURCE_MEM) == 0)
+ 		goto err_disable;
+ 	addr = pci_resource_start(dp, 0);
+-	size = pci_resource_len(dp, 0);
+ 	if (addr == 0)
+ 		goto err_disable;
  
--	data->max_brightness = DIV_ROUND_UP(period, counter);
- 	data->levels = devm_kcalloc(dev, data->max_brightness,
- 				    sizeof(*data->levels), GFP_KERNEL);
- 	if (!data->levels)
 -- 
 2.20.1
 
