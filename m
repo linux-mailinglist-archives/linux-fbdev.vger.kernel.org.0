@@ -2,447 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F109B13DD0D
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 15:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A04C13DDF7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 15:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgAPOJa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jan 2020 09:09:30 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:50649 "EHLO
+        id S1726566AbgAPOtM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 Jan 2020 09:49:12 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:37107 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726908AbgAPOJT (ORCPT
+        with ESMTP id S1726371AbgAPOtM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jan 2020 09:09:19 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200116140917euoutp01b4cf8964fdd392c7c2ca6d64b7f720f3~qY0Kye08y0369803698euoutp01P
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 Jan 2020 14:09:17 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200116140917euoutp01b4cf8964fdd392c7c2ca6d64b7f720f3~qY0Kye08y0369803698euoutp01P
+        Thu, 16 Jan 2020 09:49:12 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200116144910euoutp01f620c08ea634965bf69d2ff61020ccab~qZW-K67Qy0508705087euoutp01R
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 Jan 2020 14:49:10 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200116144910euoutp01f620c08ea634965bf69d2ff61020ccab~qZW-K67Qy0508705087euoutp01R
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579183757;
-        bh=hpgw6xnVEWj+E/Pyg9EDeM6sLEMaetg0XhqQOF1Ravk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lfdA8L3MqjAn4KlFojNgxkuF8+x8Tj2lV+V6c0kCjeoNxWre96swmsCDz7OR0OV4I
-         N+kYYUEtV/eX3SC+0uBfmGGDeZYdTcRbKNyWp6USm9JXJt4icibyBrp/Rmy5rQt/QA
-         In/tuWfxTwnhHNVgdMr5wlzH9L9q8wct/6T5powQ=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200116140917eucas1p1d640595b59ab2a8f67765c3873bc61bf~qY0KczGcV1322413224eucas1p1O;
-        Thu, 16 Jan 2020 14:09:17 +0000 (GMT)
+        s=mail20170921; t=1579186150;
+        bh=5z+EA0+AvXuwxUQKzh/8qQSatvOShkqzcgYqau+xnSE=;
+        h=To:Cc:From:Subject:Date:References:From;
+        b=DDIe3U6JBSA6KlAsZHaaKYN6rMDei5clQ7oEUlxFE4xn5+CarUuxGeU1KqlsF8uxJ
+         27Gi9jmpwu8TZookH68EXl8jZ6a2TV8PXn1Zqkhm8QffWDpbuA5Dkq+V4YtpKq2E61
+         2dFjdXVGFAiq3Ff7KNpSs5j2dONcAmZuVw6MkJnE=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200116144909eucas1p269ec4b4c4e5572f9a85efd96b3d77f04~qZW_s57FO0038900389eucas1p2U;
+        Thu, 16 Jan 2020 14:49:09 +0000 (GMT)
 Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 8D.FD.60679.C8E602E5; Thu, 16
-        Jan 2020 14:09:17 +0000 (GMT)
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id CF.34.61286.5E7702E5; Thu, 16
+        Jan 2020 14:49:09 +0000 (GMT)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200116140916eucas1p2bd3480995a55fdc646481a8fa5a5aff3~qY0KCTod32425224252eucas1p27;
-        Thu, 16 Jan 2020 14:09:16 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a~qZW_GmgFX3193331933eucas1p1f;
+        Thu, 16 Jan 2020 14:49:09 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200116140916eusmtrp2bf28e8ece2286e3860f47641f36a9439~qY0KBtxrl0965509655eusmtrp2H;
-        Thu, 16 Jan 2020 14:09:16 +0000 (GMT)
-X-AuditID: cbfec7f4-0cbff7000001ed07-51-5e206e8c3e51
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 0B.FF.08375.C8E602E5; Thu, 16
-        Jan 2020 14:09:16 +0000 (GMT)
-Received: from AMDC3058.digital.local (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200116140916eusmtip139c44590ab708c090249338a68ceb2be~qY0Jt7Ymx0711307113eusmtip1C;
-        Thu, 16 Jan 2020 14:09:16 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        20200116144909eusmtrp2bb0d677eae675ac93160d567dcaeb23f~qZW_FwysQ0199001990eusmtrp2U;
+        Thu, 16 Jan 2020 14:49:09 +0000 (GMT)
+X-AuditID: cbfec7f2-ef1ff7000001ef66-05-5e2077e52aaf
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id EE.A5.07950.4E7702E5; Thu, 16
+        Jan 2020 14:49:08 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200116144908eusmtip29cb56798e109445012d2e882883204ea~qZW918RDk2936329363eusmtip2m;
+        Thu, 16 Jan 2020 14:49:08 +0000 (GMT)
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org
-Cc:     Andrzej Hajda <a.hajda@samsung.com>, b.zolnierkie@samsung.com
-Subject: [PATCH 6/6] video: fbdev: controlfb: remove function prototypes
- part #3
-Date:   Thu, 16 Jan 2020 15:09:00 +0100
-Message-Id: <20200116140900.26363-7-b.zolnierkie@samsung.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200116140900.26363-1-b.zolnierkie@samsung.com>
+Cc:     Andrzej Hajda <a.hajda@samsung.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: fbdev: arcfb: add COMPILE_TEST support
+Message-ID: <acf2cc2e-614d-f0fb-ce40-cee62bfcde4c@samsung.com>
+Date:   Thu, 16 Jan 2020 15:49:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupgleLIzCtJLcpLzFFi42LZduznOd3ePIU4g/Z+Zotb686xWmycsZ7V
-        4srX92wWJ/o+sFpc3jWHzYHV4373cSaPvi2rGD0+b5ILYI7isklJzcksSy3St0vgypgx3afg
-        n3vFkr9PGRsYf1p2MXJwSAiYSGw8EdfFyMUhJLCCUaJhzldmCOcLo8Sb+5tZIJzPjBLbZzcC
-        OZxgHRNnv4ZKLGeUOHKggw2u5XTzAXaQKjYBK4mJ7asYQWwRgQSJFdNnMILsYxZwlGju5wMx
-        hQWCJHrPR4JUsAioSnyf0M0GYvMK2Er8+76JHWKXvMTWb59YQWxOATuJeafuMULUCEqcnPkE
-        7B5moJrmrbPBrpYQ+MwmcXPJdahDXST+H9sHNUhY4tXxLVC2jMT/nfOZIBrWMUr87XgB1b2d
-        UWL55H9sEFXWEnfO/WKDOFpTYv0ufYiwo8T0pcfYIGHHJ3HjrSDEEXwSk7ZNZ4YI80p0tAlB
-        VKtJbFi2gQ1mbdfOlcwQtodET8sktgmMirOQvDMLyTuzEPYuYGRexSieWlqcm55abJSXWq5X
-        nJhbXJqXrpecn7uJEZg+Tv87/mUH464/SYcYBTgYlXh4ZwQpxAmxJpYVV+YeYpTgYFYS4T05
-        QzZOiDclsbIqtSg/vqg0J7X4EKM0B4uSOK/xopexQgLpiSWp2ampBalFMFkmDk6pBkbtovI3
-        0neCV4g2XCqr81pmMfeHT3jjE9n236VRy77P5ov1DGpl61v7kSFXc/PbGzn9LoJ++tGrsu9M
-        Nt1Z5iHy7MH+5aKLNq3ddeZ4RrfD78NK2fG/D0T82fHXoMBOoK1u9eJ7LM1d+fadDl2My3O2
-        sx67vuuyXKsqh8yJsxcm8T3mz7pjaKjEUpyRaKjFXFScCAC2vAG8GwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrGLMWRmVeSWpSXmKPExsVy+t/xu7o9eQpxBge+K1vcWneO1WLjjPWs
-        Fle+vmezONH3gdXi8q45bA6sHve7jzN59G1ZxejxeZNcAHOUnk1RfmlJqkJGfnGJrVK0oYWR
-        nqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXsaM6T4F/9wrlvx9ytjA+NOyi5GTQ0LA
-        RGLi7NcsXYxcHEICSxklJp48xtTFyAGUkJE4vr4MokZY4s+1LjaImk+MEsdvtbGDJNgErCQm
-        tq9iBLFFBJIkOhtOMoPYzALOErNuPWICsYUFAiQutHWzgdgsAqoS3ydA2LwCthL/vm9ih1gg
-        L7H12ydWEJtTwE5i3ql7jCA3CAHVHJomBVEuKHFy5hMWiPHyEs1bZzNPYBSYhSQ1C0lqASPT
-        KkaR1NLi3PTcYkO94sTc4tK8dL3k/NxNjMAw33bs5+YdjJc2Bh9iFOBgVOLhnRGkECfEmlhW
-        XJl7iFGCg1lJhPfkDNk4Id6UxMqq1KL8+KLSnNTiQ4ymQD9MZJYSTc4HxmBeSbyhqaG5haWh
-        ubG5sZmFkjhvh8DBGCGB9MSS1OzU1ILUIpg+Jg5OqQZGL71Tl2Qjsmy1N1VtszHe8Kjy6smZ
-        M4LYp0uuY4x453wp5fuvwP2CHdzJd+5urfU/c+xe6qLEzdJlMv0PFx0pKniS0/PphcK9hEqG
-        A/Y5GuE3y5r9P5vrzhK3ivp9w7741kbO6x/0V/zdcNV+yYxPLFzaEb/XmMxQjf8/I8x6Ye+/
-        pZzdvE6zlViKMxINtZiLihMBmJZlOYkCAAA=
-X-CMS-MailID: 20200116140916eucas1p2bd3480995a55fdc646481a8fa5a5aff3
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOKsWRmVeSWpSXmKPExsWy7djPc7pPyxXiDHqPqlncWneO1WLjjPWs
+        Fle+vmezONH3gdXi8q45bA6sHve7jzN59G1ZxejxeZNcAHMUl01Kak5mWWqRvl0CV8aCyzuY
+        CuayVsxpfsXUwLiJpYuRk0NCwETi4trrzF2MXBxCAisYJX5232CHcL4wSrydvRfK+cwocfPp
+        KUaYlkWLN0MlljNKXLp9Esp5yyixs+Mi2GARgQSJFdNngHUwC8RLbGs+CmazCVhJTGxfBWYL
+        C9hJbL8Bso+TgxfIvrzpEiuIzSKgKtF57R8TiC0qECHx6cFhVogaQYmTM5+wQMwUl7j1ZD4T
+        hC0vsf3tHLAnJAR+s0l8fbcPqIgDyHGRePGeH+JqYYlXx7ewQ9gyEv93gvSC1K9jlPjb8QKq
+        eTujxPLJ/9ggqqwl7pz7xQYyiFlAU2L9Ln2IsKPExKuLmCDm80nceCsIcQOfxKRt05khwrwS
+        HW1CENVqEhuWbWCDWdu1cyUzhO0hcWjCU6YJjIqzkHw2C8lns5B8NgvhhgWMLKsYxVNLi3PT
+        U4sN81LL9YoTc4tL89L1kvNzNzECk8vpf8c/7WD8einpEKMAB6MSD++MIIU4IdbEsuLK3EOM
+        EhzMSiK8J2fIxgnxpiRWVqUW5ccXleakFh9ilOZgURLnNV70MlZIID2xJDU7NbUgtQgmy8TB
+        KdXAuN5my53Xxc2XottexsmnRbXNtfWYJiocZOe9Q4XVVSr2/E+x+BJDzwXPZ60ryN0pPal6
+        f2UTzwspzZcPVH5ulpbxD52fp8Ya6iO2cs7pP9U7j8xkvVMsW580bcoGpV9rVn3mXNjRuoyF
+        N6v2bmyR9Xrd/M0KDrsOPKjZ7HFat+VPpu6cnIP1SizFGYmGWsxFxYkA59gdHioDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprAIsWRmVeSWpSXmKPExsVy+t/xe7pPyhXiDLactbG4te4cq8XGGetZ
+        La58fc9mcaLvA6vF5V1z2BxYPe53H2fy6NuyitHj8ya5AOYoPZui/NKSVIWM/OISW6VoQwsj
+        PUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYwFl3cwFcxlrZjT/IqpgXETSxcjJ4eE
+        gInEosWb2bsYuTiEBJYySqyftJyxi5EDKCEjcXx9GUSNsMSfa11sEDWvGSW+rPwF1iwikCDx
+        9PV8NhCbWSBeonNbAyOIzSZgJTGxfRWYLSxgJ7H9xg12EJsXyL686RIriM0ioCrRee0fE4gt
+        KhAhcXjHLEaIGkGJkzOfsEDMVJf4M+8SM4QtLnHryXwmCFteYvvbOcwTGAVmIWmZhaRlFpKW
+        WUhaFjCyrGIUSS0tzk3PLTbSK07MLS7NS9dLzs/dxAiMjW3Hfm7Zwdj1LvgQowAHoxIP74wg
+        hTgh1sSy4srcQ4wSHMxKIrwnZ8jGCfGmJFZWpRblxxeV5qQWH2I0BXpoIrOUaHI+MG7zSuIN
+        TQ3NLSwNzY3Njc0slMR5OwQOxggJpCeWpGanphakFsH0MXFwSjUwTjzhYryYN5Td9vhqtYfc
+        Zzr0Nr+8/3/xZob5IvoRzz9z3npROFHE+GRdfJDmg8PHXi/fpcp5TE7fZUZhzI9GD4mnt7Nu
+        6+vK+f5Qaqq44fjV7TRT3pYFJ3tUTHu/RRu8Pr+NQTHE6fHPYz0xmZcsIq0ev2T+bte9pvj/
+        g6d1pSxipzJOa2rfUmIpzkg01GIuKk4EABHBc4OjAgAA
+X-CMS-MailID: 20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200116140916eucas1p2bd3480995a55fdc646481a8fa5a5aff3
+X-RootMTR: 20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200116140916eucas1p2bd3480995a55fdc646481a8fa5a5aff3
-References: <20200116140900.26363-1-b.zolnierkie@samsung.com>
-        <CGME20200116140916eucas1p2bd3480995a55fdc646481a8fa5a5aff3@eucas1p2.samsung.com>
+X-CMS-RootMailID: 20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a
+References: <CGME20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a@eucas1p1.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Reorder code a bit and then remove no longer needed function
-prototypes.
+Add COMPILE_TEST support to arcfb driver for better compile
+testing coverage.
 
 Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/video/fbdev/controlfb.c | 306 +++++++++++++++-----------------
- 1 file changed, 147 insertions(+), 159 deletions(-)
+ drivers/video/fbdev/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
-index 4012ecf72d47..e71192ee5650 100644
---- a/drivers/video/fbdev/controlfb.c
-+++ b/drivers/video/fbdev/controlfb.c
-@@ -129,16 +129,6 @@ struct fb_info_control {
- #define CNTRL_REG(INFO,REG) (&(((INFO)->control_regs->REG).r))
+Index: b/drivers/video/fbdev/Kconfig
+===================================================================
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -435,7 +435,7 @@ config FB_FM2
  
- 
--/******************** Prototypes for internal functions **********************/
--
--static void control_set_hardware(struct fb_info_control *p,
--	struct fb_par_control *par);
--static int control_var_to_par(struct fb_var_screeninfo *var,
--	struct fb_par_control *par, const struct fb_info *fb_info);
--static inline void control_par_to_var(struct fb_par_control *par,
--	struct fb_var_screeninfo *var);
--
--
- /************************** Internal variables *******************************/
- 
- static struct fb_info_control *control_fb;
-@@ -147,155 +137,6 @@ static int default_vmode __initdata = VMODE_NVRAM;
- static int default_cmode __initdata = CMODE_NVRAM;
- 
- 
--/********************  The functions for controlfb_ops ********************/
--
--/*
-- * Checks a var structure
-- */
--static int controlfb_check_var (struct fb_var_screeninfo *var, struct fb_info *info)
--{
--	struct fb_par_control par;
--	int err;
--
--	err = control_var_to_par(var, &par, info);
--	if (err)
--		return err;	
--	control_par_to_var(&par, var);
--
--	return 0;
--}
--
--/*
-- * Applies current var to display
-- */
--static int controlfb_set_par (struct fb_info *info)
--{
--	struct fb_info_control *p =
--		container_of(info, struct fb_info_control, info);
--	struct fb_par_control par;
--	int err;
--
--	if((err = control_var_to_par(&info->var, &par, info))) {
--		printk (KERN_ERR "controlfb_set_par: error calling"
--				 " control_var_to_par: %d.\n", err);
--		return err;
--	}
--	
--	control_set_hardware(p, &par);
--
--	info->fix.visual = (p->par.cmode == CMODE_8) ?
--		FB_VISUAL_PSEUDOCOLOR : FB_VISUAL_DIRECTCOLOR;
--	info->fix.line_length = p->par.pitch;
--	info->fix.xpanstep = 32 >> p->par.cmode;
--	info->fix.ypanstep = 1;
--
--	return 0;
--}
--
--/*
-- * Set screen start address according to var offset values
-- */
--static inline void set_screen_start(int xoffset, int yoffset,
--	struct fb_info_control *p)
--{
--	struct fb_par_control *par = &p->par;
--
--	par->xoffset = xoffset;
--	par->yoffset = yoffset;
--	out_le32(CNTRL_REG(p,start_addr),
--		 par->yoffset * par->pitch + (par->xoffset << par->cmode));
--}
--
--
--static int controlfb_pan_display(struct fb_var_screeninfo *var,
--				 struct fb_info *info)
--{
--	unsigned int xoffset, hstep;
--	struct fb_info_control *p =
--		container_of(info, struct fb_info_control, info);
--	struct fb_par_control *par = &p->par;
--
--	/*
--	 * make sure start addr will be 32-byte aligned
--	 */
--	hstep = 0x1f >> par->cmode;
--	xoffset = (var->xoffset + hstep) & ~hstep;
--
--	if (xoffset+par->xres > par->vxres ||
--	    var->yoffset+par->yres > par->vyres)
--		return -EINVAL;
--
--	set_screen_start(xoffset, var->yoffset, p);
--
--	return 0;
--}
--
--
--/*
-- * Private mmap since we want to have a different caching on the framebuffer
-- * for controlfb.
-- * Note there's no locking in here; it's done in fb_mmap() in fbmem.c.
-- */
--static int controlfb_mmap(struct fb_info *info,
--                       struct vm_area_struct *vma)
--{
--	unsigned long mmio_pgoff;
--	unsigned long start;
--	u32 len;
--
--	start = info->fix.smem_start;
--	len = info->fix.smem_len;
--	mmio_pgoff = PAGE_ALIGN((start & ~PAGE_MASK) + len) >> PAGE_SHIFT;
--	if (vma->vm_pgoff >= mmio_pgoff) {
--		if (info->var.accel_flags)
--			return -EINVAL;
--		vma->vm_pgoff -= mmio_pgoff;
--		start = info->fix.mmio_start;
--		len = info->fix.mmio_len;
--		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	} else {
--		/* framebuffer */
--#ifdef CONFIG_PPC_PMAC
--		vma->vm_page_prot = pgprot_cached_wthru(vma->vm_page_prot);
--#endif
--	}
--
--	return vm_iomap_memory(vma, start, len);
--}
--
--static int controlfb_blank(int blank_mode, struct fb_info *info)
--{
--	struct fb_info_control *p =
--		container_of(info, struct fb_info_control, info);
--	unsigned ctrl;
--
--	ctrl = le32_to_cpup((const __force __le32 *)CNTRL_REG(p, ctrl));
--	if (blank_mode > 0)
--		switch (blank_mode) {
--		case FB_BLANK_VSYNC_SUSPEND:
--			ctrl &= ~3;
--			break;
--		case FB_BLANK_HSYNC_SUSPEND:
--			ctrl &= ~0x30;
--			break;
--		case FB_BLANK_POWERDOWN:
--			ctrl &= ~0x33;
--			/* fall through */
--		case FB_BLANK_NORMAL:
--			ctrl |= 0x400;
--			break;
--		default:
--			break;
--		}
--	else {
--		ctrl &= ~0x400;
--		ctrl |= 0x33;
--	}
--	out_le32(CNTRL_REG(p,ctrl), ctrl);
--
--	return 0;
--}
--
- static int controlfb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
- 			     u_int transp, struct fb_info *info)
- {
-@@ -352,6 +193,20 @@ static void set_control_clock(unsigned char *params)
- #endif	
- }
- 
-+/*
-+ * Set screen start address according to var offset values
-+ */
-+static inline void set_screen_start(int xoffset, int yoffset,
-+	struct fb_info_control *p)
-+{
-+	struct fb_par_control *par = &p->par;
-+
-+	par->xoffset = xoffset;
-+	par->yoffset = yoffset;
-+	out_le32(CNTRL_REG(p,start_addr),
-+		 par->yoffset * par->pitch + (par->xoffset << par->cmode));
-+}
-+
- #define RADACAL_WRITE(a,d) \
- 	out_8(&p->cmap_regs->addr, (a)); \
- 	out_8(&p->cmap_regs->dat,   (d))
-@@ -774,6 +629,139 @@ static inline void control_par_to_var(struct fb_par_control *par,
- 	var->pixclock >>= par->regvals.clock_params[2];
- }
- 
-+/********************  The functions for controlfb_ops ********************/
-+
-+/*
-+ * Checks a var structure
-+ */
-+static int controlfb_check_var (struct fb_var_screeninfo *var, struct fb_info *info)
-+{
-+	struct fb_par_control par;
-+	int err;
-+
-+	err = control_var_to_par(var, &par, info);
-+	if (err)
-+		return err;	
-+	control_par_to_var(&par, var);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Applies current var to display
-+ */
-+static int controlfb_set_par (struct fb_info *info)
-+{
-+	struct fb_info_control *p =
-+		container_of(info, struct fb_info_control, info);
-+	struct fb_par_control par;
-+	int err;
-+
-+	if((err = control_var_to_par(&info->var, &par, info))) {
-+		printk (KERN_ERR "controlfb_set_par: error calling"
-+				 " control_var_to_par: %d.\n", err);
-+		return err;
-+	}
-+	
-+	control_set_hardware(p, &par);
-+
-+	info->fix.visual = (p->par.cmode == CMODE_8) ?
-+		FB_VISUAL_PSEUDOCOLOR : FB_VISUAL_DIRECTCOLOR;
-+	info->fix.line_length = p->par.pitch;
-+	info->fix.xpanstep = 32 >> p->par.cmode;
-+	info->fix.ypanstep = 1;
-+
-+	return 0;
-+}
-+
-+static int controlfb_pan_display(struct fb_var_screeninfo *var,
-+				 struct fb_info *info)
-+{
-+	unsigned int xoffset, hstep;
-+	struct fb_info_control *p =
-+		container_of(info, struct fb_info_control, info);
-+	struct fb_par_control *par = &p->par;
-+
-+	/*
-+	 * make sure start addr will be 32-byte aligned
-+	 */
-+	hstep = 0x1f >> par->cmode;
-+	xoffset = (var->xoffset + hstep) & ~hstep;
-+
-+	if (xoffset+par->xres > par->vxres ||
-+	    var->yoffset+par->yres > par->vyres)
-+		return -EINVAL;
-+
-+	set_screen_start(xoffset, var->yoffset, p);
-+
-+	return 0;
-+}
-+
-+static int controlfb_blank(int blank_mode, struct fb_info *info)
-+{
-+	struct fb_info_control *p =
-+		container_of(info, struct fb_info_control, info);
-+	unsigned ctrl;
-+
-+	ctrl = le32_to_cpup((const __force __le32 *)CNTRL_REG(p, ctrl));
-+	if (blank_mode > 0)
-+		switch (blank_mode) {
-+		case FB_BLANK_VSYNC_SUSPEND:
-+			ctrl &= ~3;
-+			break;
-+		case FB_BLANK_HSYNC_SUSPEND:
-+			ctrl &= ~0x30;
-+			break;
-+		case FB_BLANK_POWERDOWN:
-+			ctrl &= ~0x33;
-+			/* fall through */
-+		case FB_BLANK_NORMAL:
-+			ctrl |= 0x400;
-+			break;
-+		default:
-+			break;
-+		}
-+	else {
-+		ctrl &= ~0x400;
-+		ctrl |= 0x33;
-+	}
-+	out_le32(CNTRL_REG(p,ctrl), ctrl);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Private mmap since we want to have a different caching on the framebuffer
-+ * for controlfb.
-+ * Note there's no locking in here; it's done in fb_mmap() in fbmem.c.
-+ */
-+static int controlfb_mmap(struct fb_info *info,
-+                       struct vm_area_struct *vma)
-+{
-+	unsigned long mmio_pgoff;
-+	unsigned long start;
-+	u32 len;
-+
-+	start = info->fix.smem_start;
-+	len = info->fix.smem_len;
-+	mmio_pgoff = PAGE_ALIGN((start & ~PAGE_MASK) + len) >> PAGE_SHIFT;
-+	if (vma->vm_pgoff >= mmio_pgoff) {
-+		if (info->var.accel_flags)
-+			return -EINVAL;
-+		vma->vm_pgoff -= mmio_pgoff;
-+		start = info->fix.mmio_start;
-+		len = info->fix.mmio_len;
-+		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-+	} else {
-+		/* framebuffer */
-+#ifdef CONFIG_PPC_PMAC
-+		vma->vm_page_prot = pgprot_cached_wthru(vma->vm_page_prot);
-+#endif
-+	}
-+
-+	return vm_iomap_memory(vma, start, len);
-+}
-+
- static const struct fb_ops controlfb_ops = {
- 	.owner		= THIS_MODULE,
- 	.fb_check_var	= controlfb_check_var,
--- 
-2.24.1
-
+ config FB_ARC
+ 	tristate "Arc Monochrome LCD board support"
+-	depends on FB && X86
++	depends on FB && (X86 || COMPILE_TEST)
+ 	select FB_SYS_FILLRECT
+ 	select FB_SYS_COPYAREA
+ 	select FB_SYS_IMAGEBLIT
