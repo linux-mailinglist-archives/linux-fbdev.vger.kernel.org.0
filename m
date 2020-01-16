@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 625A713F22D
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 19:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E2A13F705
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 20:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403811AbgAPRYq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jan 2020 12:24:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59780 "EHLO mail.kernel.org"
+        id S2391727AbgAPTIv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 Jan 2020 14:08:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51130 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391372AbgAPRYp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:24:45 -0500
+        id S2387924AbgAPRAw (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:00:52 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4DC4F246B6;
-        Thu, 16 Jan 2020 17:24:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9D0B621D56;
+        Thu, 16 Jan 2020 17:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195485;
+        s=default; t=1579194051;
         bh=bT5/2MJcIpgpjY2eppwjDB2SlZlU7x8jPy5Cpzfz2y0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tbIMTR+vhKyZHfSjrBTXqBOVMoqnGPKR9DQbBtv/w0p8VKoNcw5OpxJPl7p5YUfwu
-         Mg9kBKQq4wwTEnSQgE6v5FF++rUVqKX4gjh2lAxgPLE8xZ9XpsGfgu19AofTFWiNWt
-         fkXTeNxgg/tMNZCJUsfU45mnMZFbhtDTD4Qtz8fo=
+        b=Wj4mjaLPZfvZya4xeBPPnty6U73TvSUyvMcLIiTfHBFSO/js7b9Q0D86QUFs8W4jL
+         PTw2ef9OWwoduo4KibUka6s7ycYs/LGOAFYjzADMuxWIraa5YheS1ogaEWhu9SqmM6
+         XCoiJyUFTQ6TKyQnSTAfctibR2J1fSnVsstor2kY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     YueHaibing <yuehaibing@huawei.com>,
@@ -32,12 +32,12 @@ Cc:     YueHaibing <yuehaibing@huawei.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 089/371] fbdev: chipsfb: remove set but not used variable 'size'
-Date:   Thu, 16 Jan 2020 12:19:21 -0500
-Message-Id: <20200116172403.18149-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 166/671] fbdev: chipsfb: remove set but not used variable 'size'
+Date:   Thu, 16 Jan 2020 11:51:15 -0500
+Message-Id: <20200116165940.10720-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
-References: <20200116172403.18149-1-sashal@kernel.org>
+In-Reply-To: <20200116165940.10720-1-sashal@kernel.org>
+References: <20200116165940.10720-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
