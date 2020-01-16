@@ -2,39 +2,37 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79D8313EC74
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 18:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B326213EBF2
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jan 2020 18:54:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394018AbgAPR4u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jan 2020 12:56:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34182 "EHLO mail.kernel.org"
+        id S1730051AbgAPRxe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 16 Jan 2020 12:53:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393989AbgAPRnr (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:43:47 -0500
+        id S2406036AbgAPRpA (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:45:00 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BC13A2474D;
-        Thu, 16 Jan 2020 17:43:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2EC4F2477C;
+        Thu, 16 Jan 2020 17:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196626;
-        bh=IvhLZl9OwsezdqO6p8i8hAjb0pJmYjgbg9Le9zB7u1Y=;
+        s=default; t=1579196699;
+        bh=UV+UW21C0YLEnMbawAaEXJVN1QaXt/38CSxDdq3QTno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k7ZNkqtjrikdPsUPSDCY8ptR1QSb1X/oLiREGBLCqVcb8JXp6E2qbDum+eqAlAApd
-         kT7pR1aSkiv5sZSppD6RzSBvhKH2QYQKGALseJrtcoxy9UeHZ6FBrVoghUAoVbHyAp
-         K3lMXpnFzFPY4eVuqQCWm8azjXZXMz4H8rOnkElg=
+        b=GEpywa7uKQkIKbFnbjVj+P9B9w5mXDYUnCauv+xSSL55Jei0ncovnQyfqrcX0wtx/
+         c5VZRPFtnwxY1eGSZNCpbBnrzDVFeC9NGIYX3v48FrHVzQ63rn6fkcJpOX2fLX91WL
+         lZCEkN/E+lnS5T6g50xqtvxRg2NMrSDkfwotUtIQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+Cc:     Brian Masney <masneyb@onstation.org>, Pavel Machek <pavel@ucw.cz>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 041/174] fbdev: chipsfb: remove set but not used variable 'size'
-Date:   Thu, 16 Jan 2020 12:40:38 -0500
-Message-Id: <20200116174251.24326-41-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 092/174] backlight: lm3630a: Return 0 on success in update_status functions
+Date:   Thu, 16 Jan 2020 12:41:29 -0500
+Message-Id: <20200116174251.24326-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
 References: <20200116174251.24326-1-sashal@kernel.org>
@@ -47,49 +45,48 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Brian Masney <masneyb@onstation.org>
 
-[ Upstream commit 8e71fa5e4d86bedfd26df85381d65d6b4c860020 ]
+[ Upstream commit d3f48ec0954c6aac736ab21c34a35d7554409112 ]
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+lm3630a_bank_a_update_status() and lm3630a_bank_b_update_status()
+both return the brightness value if the brightness was successfully
+updated. Writing to these attributes via sysfs would cause a 'Bad
+address' error to be returned. These functions should return 0 on
+success, so let's change it to correct that error.
 
-drivers/video/fbdev/chipsfb.c: In function 'chipsfb_pci_init':
-drivers/video/fbdev/chipsfb.c:352:22: warning:
- variable 'size' set but not used [-Wunused-but-set-variable]
-
-Fixes: 8c8709334cec ("[PATCH] ppc32: Remove CONFIG_PMAC_PBOOK").
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-[b.zolnierkie: minor commit summary and description fixups]
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Fixes: 28e64a68a2ef ("backlight: lm3630: apply chip revision")
+Signed-off-by: Brian Masney <masneyb@onstation.org>
+Acked-by: Pavel Machek <pavel@ucw.cz>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/chipsfb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/backlight/lm3630a_bl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/chipsfb.c b/drivers/video/fbdev/chipsfb.c
-index 59abdc6a97f6..314b7eceb81c 100644
---- a/drivers/video/fbdev/chipsfb.c
-+++ b/drivers/video/fbdev/chipsfb.c
-@@ -350,7 +350,7 @@ static void init_chips(struct fb_info *p, unsigned long addr)
- static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *ent)
- {
- 	struct fb_info *p;
--	unsigned long addr, size;
-+	unsigned long addr;
- 	unsigned short cmd;
- 	int rc = -ENODEV;
+diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
+index 35fe4825a454..5ef6f9d420a2 100644
+--- a/drivers/video/backlight/lm3630a_bl.c
++++ b/drivers/video/backlight/lm3630a_bl.c
+@@ -200,7 +200,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+ 				      LM3630A_LEDA_ENABLE, LM3630A_LEDA_ENABLE);
+ 	if (ret < 0)
+ 		goto out_i2c_err;
+-	return bl->props.brightness;
++	return 0;
  
-@@ -362,7 +362,6 @@ static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *ent)
- 	if ((dp->resource[0].flags & IORESOURCE_MEM) == 0)
- 		goto err_disable;
- 	addr = pci_resource_start(dp, 0);
--	size = pci_resource_len(dp, 0);
- 	if (addr == 0)
- 		goto err_disable;
+ out_i2c_err:
+ 	dev_err(pchip->dev, "i2c failed to access\n");
+@@ -277,7 +277,7 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
+ 				      LM3630A_LEDB_ENABLE, LM3630A_LEDB_ENABLE);
+ 	if (ret < 0)
+ 		goto out_i2c_err;
+-	return bl->props.brightness;
++	return 0;
  
+ out_i2c_err:
+ 	dev_err(pchip->dev, "i2c failed to access REG_CTRL\n");
 -- 
 2.20.1
 
