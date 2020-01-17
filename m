@@ -2,109 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9812141149
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Jan 2020 19:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3C114114D
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Jan 2020 19:58:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726761AbgAQS5k (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Jan 2020 13:57:40 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:38006 "EHLO
+        id S1729335AbgAQS56 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Jan 2020 13:57:58 -0500
+Received: from asavdk3.altibox.net ([109.247.116.14]:38024 "EHLO
         asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729546AbgAQS5k (ORCPT
+        with ESMTP id S1729014AbgAQS56 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Jan 2020 13:57:40 -0500
+        Fri, 17 Jan 2020 13:57:58 -0500
 Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 6195F20028;
-        Fri, 17 Jan 2020 19:57:38 +0100 (CET)
-Date:   Fri, 17 Jan 2020 19:57:37 +0100
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 8A65120026;
+        Fri, 17 Jan 2020 19:57:56 +0100 (CET)
+Date:   Fri, 17 Jan 2020 19:57:55 +0100
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] video: fbdev: w100fb: fix sparse warnings
-Message-ID: <20200117185737.GB24508@ravnborg.org>
-References: <CGME20200116145320eucas1p188ed7bed08623bc2c2ba6b863ff223d8@eucas1p1.samsung.com>
- <d438108a-e569-a14a-a9b1-3fefd88fcadc@samsung.com>
+Subject: Re: [PATCH 2/2] video: fbdev: w100fb: add COMPILE_TEST support
+Message-ID: <20200117185755.GC24508@ravnborg.org>
+References: <CGME20200116145359eucas1p1350bf2b827aa7ffa3e6767739e9ba7ad@eucas1p1.samsung.com>
+ <a929db5e-d373-7b09-ae2b-efec227f7e85@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d438108a-e569-a14a-a9b1-3fefd88fcadc@samsung.com>
+In-Reply-To: <a929db5e-d373-7b09-ae2b-efec227f7e85@samsung.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
         a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
         a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=hD80L64hAAAA:8
-        a=7gkXJVJtAAAA:8 a=e5mUnYsNAAAA:8 a=jGXlrUAzkbCyByQ0p6wA:9
+        a=7gkXJVJtAAAA:8 a=e5mUnYsNAAAA:8 a=lvFLg_xmVYU4ooTg2iAA:9
         a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jan 16, 2020 at 03:53:20PM +0100, Bartlomiej Zolnierkiewicz wrote:
-> * Add missing __iomem annotations where needed.
-> * Make w100fb_probe() static.
-> * Return NULL pointer (instead of using plain integer) in
->   w100_get_xtal_tabl().
+On Thu, Jan 16, 2020 at 03:53:58PM +0100, Bartlomiej Zolnierkiewicz wrote:
+> Add COMPILE_TEST support to w100fb driver for better compile
+> testing coverage.
 > 
 > Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
 > ---
->  drivers/video/fbdev/w100fb.c |   18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
+>  drivers/video/fbdev/Kconfig |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Index: b/drivers/video/fbdev/w100fb.c
+> Index: b/drivers/video/fbdev/Kconfig
 > ===================================================================
-> --- a/drivers/video/fbdev/w100fb.c
-> +++ b/drivers/video/fbdev/w100fb.c
-> @@ -61,9 +61,9 @@ struct w100_pll_info *w100_get_xtal_tabl
->  #define BITS_PER_PIXEL    16
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -1827,7 +1827,7 @@ config FB_FSL_DIU
 >  
->  /* Remapped addresses for base cfg, memmapped regs and the frame buffer itself */
-> -static void *remapped_base;
-> -static void *remapped_regs;
-> -static void *remapped_fbuf;
-> +static void __iomem *remapped_base;
-> +static void __iomem *remapped_regs;
-> +static void __iomem *remapped_fbuf;
->  
->  #define REMAPPED_FB_LEN   0x15ffff
->  
-> @@ -635,7 +635,7 @@ static int w100fb_resume(struct platform
->  #endif
->  
->  
-> -int w100fb_probe(struct platform_device *pdev)
-> +static int w100fb_probe(struct platform_device *pdev)
->  {
->  	int err = -EIO;
->  	struct w100fb_mach_info *inf;
-> @@ -807,10 +807,11 @@ static int w100fb_remove(struct platform
->  
->  static void w100_soft_reset(void)
->  {
-> -	u16 val = readw((u16 *) remapped_base + cfgSTATUS);
-> -	writew(val | 0x08, (u16 *) remapped_base + cfgSTATUS);
-> +	u16 val = readw((u16 __iomem *)remapped_base + cfgSTATUS);
-> +
-> +	writew(val | 0x08, (u16 __iomem *)remapped_base + cfgSTATUS);
->  	udelay(100);
-> -	writew(0x00, (u16 *) remapped_base + cfgSTATUS);
-> +	writew(0x00, (u16 __iomem *)remapped_base + cfgSTATUS);
->  	udelay(100);
->  }
->  
-> @@ -1022,7 +1023,8 @@ struct w100_pll_info *w100_get_xtal_tabl
->  			return pll_entry->pll_table;
->  		pll_entry++;
->  	} while (pll_entry->xtal_freq);
-> -	return 0;
-> +
-> +	return NULL;
->  }
->  
->  
+>  config FB_W100
+>  	tristate "W100 frame buffer support"
+> -	depends on FB && ARCH_PXA
+> +	depends on FB && HAS_IOMEM && (ARCH_PXA || COMPILE_TEST)
+>  	select FB_CFB_FILLRECT
+>  	select FB_CFB_COPYAREA
+>  	select FB_CFB_IMAGEBLIT
 > _______________________________________________
 > dri-devel mailing list
 > dri-devel@lists.freedesktop.org
