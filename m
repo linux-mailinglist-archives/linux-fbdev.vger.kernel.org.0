@@ -2,69 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6394140C18
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Jan 2020 15:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 827BF14113E
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Jan 2020 19:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726587AbgAQOIq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Jan 2020 09:08:46 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34965 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726574AbgAQOIq (ORCPT
+        id S1729014AbgAQS5Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Jan 2020 13:57:25 -0500
+Received: from asavdk3.altibox.net ([109.247.116.14]:37984 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726761AbgAQS5Z (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Jan 2020 09:08:46 -0500
-Received: by mail-ot1-f65.google.com with SMTP id i15so22629231oto.2;
-        Fri, 17 Jan 2020 06:08:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=N+Kvtznk/wQ3RQceXPlbXNebs+cmr/OsrKXgAi73pC8=;
-        b=DxcJfHheUQ5tBzDKkzHorgR2gcLXoI0PCm4JF6jNBJ1PuJkeQCpVl3G4IK+c3Cr2+7
-         hDwIEIzmoHiZiHJLrYSUQK5PSRyv6igMbeC5Nm6VgMRyTqfyAu6qlvV/XdDjJffzY3S1
-         YFhcZYlmx1G4xc9rTVJDxBOmH883izdab+qlcMTTHVjtOZ5SUDDbOkpzfd/ZGG0/V2sT
-         R7FNGoRK1iUXzIBoKhrR3T7vD5sUB463qsrqRgv4v/niD6blgjmvNPCCRUkUFhq8NYcn
-         0N4DS+Az75mNGyA6LowGE1pE/j+ly5TlFFeEMA2Qx4z9fIJfw4tKdb/QZRlkv0jEFzGK
-         s9Cw==
-X-Gm-Message-State: APjAAAVScXDUCPVkUvcigxJapPyD9OBce1/z23/Oxvi7yTJDhq8U1FkF
-        kWYIj3qVYjjVWm6T3jZBm+XlPzlzq/zdFygFIuE=
-X-Google-Smtp-Source: APXvYqwfyMoS4OLZbI0D8YiBzxm1g6GgAYSbLMjZHjS79Rgj58kvMeYupqdn8up0R2mIakaN+MsqQVPiWg9tYoEVsD0=
-X-Received: by 2002:a05:6830:2141:: with SMTP id r1mr6202897otd.39.1579270125929;
- Fri, 17 Jan 2020 06:08:45 -0800 (PST)
-MIME-Version: 1.0
-References: <CGME20200116145157eucas1p2401abc6b00654d767e872edbd0338957@eucas1p2.samsung.com>
- <d98fea18-b72e-6d0f-33ac-1421738bd12b@samsung.com>
-In-Reply-To: <d98fea18-b72e-6d0f-33ac-1421738bd12b@samsung.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 17 Jan 2020 15:08:34 +0100
-Message-ID: <CAMuHMdVxesjdmL7asPwOP2xoS6quLs4-onT80afi7ui2GSZ-tg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] video: fbdev: sh_mobile_lcdcfb: add COMPILE_TEST support
+        Fri, 17 Jan 2020 13:57:25 -0500
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id C90E120026;
+        Fri, 17 Jan 2020 19:57:23 +0100 (CET)
+Date:   Fri, 17 Jan 2020 19:57:22 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andrzej Hajda <a.hajda@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: arcfb: add COMPILE_TEST support
+Message-ID: <20200117185722.GA24508@ravnborg.org>
+References: <CGME20200116144909eucas1p1b247368aded82dad3ca8da852deaca1a@eucas1p1.samsung.com>
+ <acf2cc2e-614d-f0fb-ce40-cee62bfcde4c@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acf2cc2e-614d-f0fb-ce40-cee62bfcde4c@samsung.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=hD80L64hAAAA:8
+        a=7gkXJVJtAAAA:8 a=e5mUnYsNAAAA:8 a=D1x47FpqbbcrrsTMZkUA:9
+        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jan 16, 2020 at 3:52 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
-> Add COMPILE_TEST support to sh_mobile_lcdcfb driver for better compile
+On Thu, Jan 16, 2020 at 03:49:07PM +0100, Bartlomiej Zolnierkiewicz wrote:
+> Add COMPILE_TEST support to arcfb driver for better compile
 > testing coverage.
->
+> 
 > Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/video/fbdev/Kconfig |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Index: b/drivers/video/fbdev/Kconfig
+> ===================================================================
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -435,7 +435,7 @@ config FB_FM2
+>  
+>  config FB_ARC
+>  	tristate "Arc Monochrome LCD board support"
+> -	depends on FB && X86
+> +	depends on FB && (X86 || COMPILE_TEST)
+>  	select FB_SYS_FILLRECT
+>  	select FB_SYS_COPYAREA
+>  	select FB_SYS_IMAGEBLIT
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
