@@ -2,89 +2,49 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 499061411CD
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Jan 2020 20:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B09141DBE
+	for <lists+linux-fbdev@lfdr.de>; Sun, 19 Jan 2020 13:18:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729052AbgAQTc1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Jan 2020 14:32:27 -0500
-Received: from asavdk4.altibox.net ([109.247.116.15]:38214 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726897AbgAQTc1 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Jan 2020 14:32:27 -0500
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id D152F803F0;
-        Fri, 17 Jan 2020 20:32:24 +0100 (CET)
-Date:   Fri, 17 Jan 2020 20:32:23 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] video: fbdev: controlfb: small cleanup
-Message-ID: <20200117193223.GD24812@ravnborg.org>
-References: <CGME20200116140914eucas1p1a62794ad40589e818614176ea8e817ff@eucas1p1.samsung.com>
- <20200116140900.26363-1-b.zolnierkie@samsung.com>
+        id S1726816AbgASMSh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 19 Jan 2020 07:18:37 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9194 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726765AbgASMS3 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 19 Jan 2020 07:18:29 -0500
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id AB1364C57EF4A5898D05;
+        Sun, 19 Jan 2020 20:18:26 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS414-HUB.china.huawei.com
+ (10.3.19.214) with Microsoft SMTP Server id 14.3.439.0; Sun, 19 Jan 2020
+ 20:18:16 +0800
+From:   yu kuai <yukuai3@huawei.com>
+To:     <benh@kernel.crashing.org>, <b.zolnierkie@samsung.com>
+CC:     <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <yukuai3@huawei.com>,
+        <zhengbin13@huawei.com>, <yi.zhang@huawei.com>
+Subject: [PATCH 0/4] cleanup patches for unused variables
+Date:   Sun, 19 Jan 2020 20:17:26 +0800
+Message-ID: <20200119121730.10701-1-yukuai3@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200116140900.26363-1-b.zolnierkie@samsung.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8
-        a=e5mUnYsNAAAA:8 a=52nNHdF23vC62uqb84gA:9 a=CjuIK1q_8ugA:10
-        a=E9Po1WZjFZOl8hwRPBS3:22 a=Vxmtnl_E_bksehYqCbjh:22
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Bartlomiej
+yu kuai (4):
+  video: fbdev: remove set but not used variable 'hSyncPol'
+  video: fbdev: remove set but not used variable 'vSyncPol'
+  video: fbdev: remove set but not used variable 'vSyncPol'
+  video: fbdev: remove set but not used variable 'bytpp'
 
-On Thu, Jan 16, 2020 at 03:08:54PM +0100, Bartlomiej Zolnierkiewicz wrote:
-> Hi,
-> 
-> Small cleanup for controlfb driver:
-> 
-> - fix sparse warnings
-> - remove not working module support
-> - add COMPILE_TEST support
-> - remove redundant function prototypes
+ drivers/video/fbdev/aty/radeon_base.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-Nice cleanup - with a few comments.
-The last three patches are the good ones.
+-- 
+2.17.2
 
-With my comments considered - and then up to you if you cahnge anything
-- then all patches are:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-
-> 
-> Best regards,
-> --
-> Bartlomiej Zolnierkiewicz
-> Samsung R&D Institute Poland
-> Samsung Electronics
-> 
-> 
-> Bartlomiej Zolnierkiewicz (6):
->   video: fbdev: controlfb: fix sparse warning about using incorrect type
->   video: fbdev: controlfb: remove obsolete module support
->   video: fbdev: controlfb: add COMPILE_TEST support
->   video: fbdev: controlfb: remove function prototypes part #1
->   video: fbdev: controlfb: remove function prototypes part #2
->   video: fbdev: controlfb: remove function prototypes part #3
-> 
->  drivers/video/fbdev/Kconfig     |   2 +-
->  drivers/video/fbdev/controlfb.c | 810 +++++++++++++++-----------------
->  2 files changed, 383 insertions(+), 429 deletions(-)
-> 
-> -- 
-> 2.24.1
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
