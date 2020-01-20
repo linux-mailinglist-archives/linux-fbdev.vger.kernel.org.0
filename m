@@ -2,108 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C12E1427BA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Jan 2020 11:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D8DC142BA8
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Jan 2020 14:07:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbgATKAX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Jan 2020 05:00:23 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:38341 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726039AbgATKAX (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Jan 2020 05:00:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579514422;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=A5GcFGtVAQWVAj/IjmTO+b/muvDYD9pVj8U6MMH/3YE=;
-        b=NC42xYd9N+jq7GCvssjVvkbHqA/j/WnlyYgxAEVF7h9/j3qYiSotPBRrY9gxx3yrWoVuDq
-        za/VWA79JsM+qLwof3q2oXq5rd46pALC6v6cq+6lEbIz+A7O4Vk0FIgG56HeY/nKUlDdA7
-        7ZOvhKymFcat4x43JEepVu8NMs4fq1s=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-388-YPaqEMN3PyiBcHX6c_McOw-1; Mon, 20 Jan 2020 05:00:19 -0500
-X-MC-Unique: YPaqEMN3PyiBcHX6c_McOw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 39584800590;
-        Mon, 20 Jan 2020 10:00:18 +0000 (UTC)
-Received: from sirius.home.kraxel.org (ovpn-116-106.ams2.redhat.com [10.36.116.106])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C398910013A7;
-        Mon, 20 Jan 2020 10:00:14 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id 124DB16E36; Mon, 20 Jan 2020 11:00:14 +0100 (CET)
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     marmarek@invisiblethingslab.com, Gerd Hoffmann <kraxel@redhat.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] fbdev: wait for references go away
-Date:   Mon, 20 Jan 2020 11:00:13 +0100
-Message-Id: <20200120100014.23488-1-kraxel@redhat.com>
+        id S1728779AbgATNGw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 Jan 2020 08:06:52 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:44834 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728792AbgATNGw (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 20 Jan 2020 08:06:52 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E578B618678A3BA5CAF1;
+        Mon, 20 Jan 2020 21:06:49 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 20 Jan 2020 21:06:32 +0800
+From:   Chen Zhou <chenzhou10@huawei.com>
+To:     <agross@kernel.org>, <bjorn.andersson@linaro.org>,
+        <lee.jones@linaro.org>, <daniel.thompson@linaro.org>,
+        <jingoohan1@gmail.com>, <b.zolnierkie@samsung.com>
+CC:     <kgunda@codeaurora.org>, <linux-arm-msm@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <chenzhou10@huawei.com>
+Subject: [PATCH -next] backlight: qcom-wled: fix unsigned comparison to zero
+Date:   Mon, 20 Jan 2020 21:01:43 +0800
+Message-ID: <20200120130143.35363-1-chenzhou10@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Problem: do_unregister_framebuffer() might return before the device is
-fully cleaned up, due to userspace having a file handle for /dev/fb0
-open.  Which can result in drm driver not being able to grab resources
-(and fail initialization) because the firmware framebuffer still holds
-them.  Reportedly plymouth can trigger this.
+Fixes coccicheck warning:
+./drivers/video/backlight/qcom-wled.c:1104:5-15:
+	WARNING: Unsigned expression compared with zero: string_len > 0
 
-Fix this by trying to wait until all references are gone.  Don't wait
-forever though given that userspace might keep the file handle open.
+The unsigned variable string_len is assigned a return value from the call
+to wled_configure, which may return negative error code.
 
-Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
-.com>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
 ---
- drivers/video/fbdev/core/fbmem.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/video/backlight/qcom-wled.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/=
-fbmem.c
-index d04554959ea7..2ea8ac05b065 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -35,6 +35,7 @@
- #include <linux/fbcon.h>
- #include <linux/mem_encrypt.h>
- #include <linux/pci.h>
-+#include <linux/delay.h>
-=20
- #include <asm/fb.h>
-=20
-@@ -1707,6 +1708,8 @@ static void unlink_framebuffer(struct fb_info *fb_i=
-nfo)
-=20
- static void do_unregister_framebuffer(struct fb_info *fb_info)
- {
-+	int limit =3D 100;
-+
- 	unlink_framebuffer(fb_info);
- 	if (fb_info->pixmap.addr &&
- 	    (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
-@@ -1726,6 +1729,10 @@ static void do_unregister_framebuffer(struct fb_in=
-fo *fb_info)
- 	fbcon_fb_unregistered(fb_info);
- 	console_unlock();
-=20
-+	/* try wait until all references are gone */
-+	while (atomic_read(&fb_info->count) > 1 && --limit > 0)
-+		msleep(10);
-+
- 	/* this may free fb info */
- 	put_fb_info(fb_info);
- }
---=20
-2.18.1
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index d46052d..3d276b3 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -956,8 +956,8 @@ static int wled_configure(struct wled *wled, int version)
+ 	struct wled_config *cfg = &wled->cfg;
+ 	struct device *dev = wled->dev;
+ 	const __be32 *prop_addr;
+-	u32 size, val, c, string_len;
+-	int rc, i, j;
++	u32 size, val, c;
++	int rc, i, j, string_len;
+ 
+ 	const struct wled_u32_opts *u32_opts = NULL;
+ 	const struct wled_u32_opts wled3_opts[] = {
+-- 
+2.7.4
 
