@@ -2,112 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B24414314D
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Jan 2020 19:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 671F71436D0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Jan 2020 06:53:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728139AbgATSLx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Jan 2020 13:11:53 -0500
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:58057 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728093AbgATSLx (ORCPT
+        id S1726052AbgAUFx4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Jan 2020 00:53:56 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:51160 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725789AbgAUFx4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Jan 2020 13:11:53 -0500
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 0A4A521D25;
-        Mon, 20 Jan 2020 13:11:52 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Mon, 20 Jan 2020 13:11:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=3eLX0e
-        f+TjguMEDNQ4OqQg1MbtOe1MZnC7yyN6gjokc=; b=J7JuvkDQay6+NBdblOPewo
-        RfJhDS3JUf0TWtuMcX/K5jGwDS+DYQXZbSyfL7aLx3XJVHJc86kle0a0PQoWy0zb
-        uRrXXyN+/XIX2kMU68B40hIjoq0pIjb3qUD6wBPFjfPgyYbgk+24BnVniW4cXVwk
-        cM5+3hKCLbGB2R0Q/szbK95h6NXXBihjkAlaF6sDuSQHFkW7fIVcCyGS9wDW/ArG
-        M80xbcpEbNLO81Wla/bfKr59DUUfKx36SudmTR/bX4Awzg9zi4losnWMUlxfgobV
-        8v/9sSkmkqu4hGGegfoz2YYGFPSViNbJZGWRVI7OdYeNvCMBx34gHEHGIMnBT/LQ
-        ==
-X-ME-Sender: <xms:Zu0lXslUU6-MGtXpdNaemRY51oWdb94kEKtoBTL76xtyU7Pg50dm1A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrudeigdegiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcu
-    ofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvih
-    hsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuffhomhgrihhnpehlihhnuhigfhho
-    uhhnuggrthhiohhnrdhorhhgnecukfhppeeluddrieehrdefgedrfeefnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehi
-    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:Zu0lXnoaJbkd_uCCkRJHVs_Qtq_KtTQ5GoLG4AUtHooRQGdGxzAetg>
-    <xmx:Zu0lXmAbXycj-ZHg1cCg2yo_pH2uZnhA0aA3LsppuUu2sjMbEawh8g>
-    <xmx:Zu0lXiElReVvpHFvWUg6rn9c3T1GOB1MGEp5OFSvKmPuSKe37bD3Ow>
-    <xmx:aO0lXkT8fumM0nUUeav2lWoz3rCOwjsGNqmDoUQFvyuhGJvG4rGAGg>
-Received: from mail-itl (ip5b412221.dynamic.kabel-deutschland.de [91.65.34.33])
-        by mail.messagingengine.com (Postfix) with ESMTPA id A7280306099E;
-        Mon, 20 Jan 2020 13:11:49 -0500 (EST)
-Date:   Mon, 20 Jan 2020 19:11:46 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
+        Tue, 21 Jan 2020 00:53:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1579586034;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=sCaBPZeEJdT4Pf0kOk3x5es44UV2mktFJpDyLiBTSXo=;
+        b=JYmCEef+kNXP7IrJozWPoNqlhx18YT2SXHeuDZFAt3iv9DmU+6Oz7ueRut+3R3eE5L9sxo
+        jJ6rebiOfmb8ZW9ENrKC+LnLNlIT5xe3TlOAwK6+Fk/o0buwPT6or1g48Vmt2Jd8p0xTlg
+        f6gBZZaruKd0vNIxDA2jX8KZu+iKzCg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-375-oRE6kHfxMxCgz2UXM4ClGQ-1; Tue, 21 Jan 2020 00:53:51 -0500
+X-MC-Unique: oRE6kHfxMxCgz2UXM4ClGQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 34ECA800A02;
+        Tue, 21 Jan 2020 05:53:50 +0000 (UTC)
+Received: from sirius.home.kraxel.org (ovpn-116-106.ams2.redhat.com [10.36.116.106])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A2D718433B;
+        Tue, 21 Jan 2020 05:53:49 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+        id AFC6516E36; Tue, 21 Jan 2020 06:53:48 +0100 (CET)
+Date:   Tue, 21 Jan 2020 06:53:48 +0100
+From:   Gerd Hoffmann <kraxel@redhat.com>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Gerd Hoffmann <kraxel@redhat.com>, dri-devel@lists.freedesktop.org,
+Cc:     dri-devel@lists.freedesktop.org, marmarek@invisiblethingslab.com,
         "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] fbdev: wait for references go away
-Message-ID: <20200120181146.GL1314@mail-itl>
+Message-ID: <20200121055348.s4anrveo2z6avin6@sirius.home.kraxel.org>
 References: <CGME20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c@eucas1p2.samsung.com>
  <20200120100014.23488-1-kraxel@redhat.com>
  <d143e43b-8a38-940e-3ae5-e7b830a74bb3@samsung.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="p0HNO2YbtFeVXwJ3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <d143e43b-8a38-940e-3ae5-e7b830a74bb3@samsung.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+  Hi,
 
---p0HNO2YbtFeVXwJ3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] fbdev: wait for references go away
-
-On Mon, Jan 20, 2020 at 06:51:17PM +0100, Bartlomiej Zolnierkiewicz wrote:
+> > open.  Which can result in drm driver not being able to grab resources
+> > (and fail initialization) because the firmware framebuffer still holds
+> > them.  Reportedly plymouth can trigger this.
+> 
+> Could you please describe issue some more?
+> 
 > I guess that a problem is happening during DRM driver load while fbdev
 > driver is loaded? I assume do_unregister_framebuffer() is called inside
 > do_remove_conflicting_framebuffers()?
 
-Yes, exactly. More details here:
-https://lists.linuxfoundation.org/pipermail/virtualization/2020-January/045=
-026.html
+Yes.  Specifically bochs-drm.ko and efifb in virtual machines.
 
 > At first glance it seems to be an user-space issue as it should not be
 > holding references on /dev/fb0 while DRM driver is being loaded.
 
-How plymouth would know when exactly it needs to release /dev/fb0?
+Well, the drm driver is loaded by udev like everything else.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-A: Because it messes up the order in which people normally read text.
-Q: Why is top-posting such a bad thing?
+Dunno what plymouth (graphical boot screen tool) does to handle the
+situation.  I guess listening to udev events.  So it should notice efifb
+going away and drop the /dev/fb0 reference, but this races against
+bochs-drm initializing.
 
---p0HNO2YbtFeVXwJ3
-Content-Type: application/pgp-signature; name="signature.asc"
+> > Fix this by trying to wait until all references are gone.  Don't wait
+> > forever though given that userspace might keep the file handle open.
+> 
+> Where does the 1s maximum delay come from?
 
------BEGIN PGP SIGNATURE-----
+Pulled out something out of thin air which I expect being on the safe
+side.  plymouth responding on the udev event should need only a small
+fraction of that.
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAl4l7WIACgkQ24/THMrX
-1ywYwQgAimDeFDny3c/ar866L78Bc5TRyJynEGGbFlnb9BR/gCc9gpS1tNCyemPC
-keqTV3PxXHMFaTPnrJi2ebuUP+Lmj/YOK+tCXB8+ipwMs3Z1HZv1DR7D4s3gDDzk
-To8b4e0RnxpCdQJ4xpOoWL+XcueHy+RB8FtEXqXyVJTW/bJWGYGnuyQVSubBKQxL
-TyEp6ASDocGLFX0QsSrdVEkuVF/PMdfbyu6Th9MwQMtMmd0s2BuepAfJhDP3js1f
-JlMnL3N1wscxFOWn1TSAGywTMbAjwRctGwrCcULMDME2STVryuH0VNWpapKIMQpj
-PUlDFH5CMVOKGjXo2OkywONz4gP7kQ==
-=2hqv
------END PGP SIGNATURE-----
+cheers,
+  Gerd
 
---p0HNO2YbtFeVXwJ3--
