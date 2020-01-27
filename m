@@ -2,177 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21B48149F42
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Jan 2020 08:36:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A0F14A21E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Jan 2020 11:40:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726036AbgA0HgQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 Jan 2020 02:36:16 -0500
-Received: from mx2.suse.de ([195.135.220.15]:38618 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725777AbgA0HgQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 Jan 2020 02:36:16 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id DD987AC46;
-        Mon, 27 Jan 2020 07:36:12 +0000 (UTC)
-Subject: Re: [PATCH] matroxfb: add Matrox MGA-G200eW board support
-To:     Rich Felker <dalias@libc.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20200125195506.GA16638@brightrain.aerifal.cx>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <1466259e-efe7-df52-c05b-80042628d577@suse.de>
-Date:   Mon, 27 Jan 2020 08:36:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1729184AbgA0Kkg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 Jan 2020 05:40:36 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:34893 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726079AbgA0Kkg (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 27 Jan 2020 05:40:36 -0500
+Received: by mail-ot1-f67.google.com with SMTP id r16so7891192otd.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 27 Jan 2020 02:40:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AW+LBaeT8gOjm/Wt8re4LDAAGI/aZNJ9jt+vsl49tb4=;
+        b=r3tFHyGB/FXvz2BXLqinspv844NeSdWFvtAN+EIbD7zNm+a71Q7lhZwyGLk/ZW9fEj
+         c6mxq7X6bWYDFD9wz1vk5Zrm4dLPxNoW+7ULIEg54KsoeyIteVmJKQ4Itoy8XoR66ciY
+         +S6P5lU6wqzjTnIs10wfc7HA09lpFyMb15RKLq0iXWmDS+D24ruzt8f9hjs1lu/fYhSs
+         STJZLnLNGyT46y4L1MAQ95LqZjTWvuWwT6Oc4M5p1apoZQmwXn19O2TS6h0+tb9zmmWl
+         rNcjZ8hq643QhniEP0g+0LoTOO++0yOHe3hGLy4c+N3rJZXzBid+XhKWiacCitkuI7k2
+         /Xwg==
+X-Gm-Message-State: APjAAAWz5d5RKDmeEKHpWvKF2EKDXo3WihLINGToYCpFglUh2NihqjJE
+        PJ69rKGDwNcM4giXjIu8rpHY8wuf+UWm2Pb5td8=
+X-Google-Smtp-Source: APXvYqyZJ7snfwIF9VhtGo0junMx6187m3dBMp5u/yhu7QVejoz7fioQfLRaBYU4XdKKGp9DEtface7gHN7kLtf167I=
+X-Received: by 2002:a9d:7984:: with SMTP id h4mr12336553otm.297.1580121635811;
+ Mon, 27 Jan 2020 02:40:35 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200125195506.GA16638@brightrain.aerifal.cx>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="JXtJqsfGpCLX37g1U82XR0axYY5SX2ng4"
+References: <20200125195506.GA16638@brightrain.aerifal.cx> <20200126071724.GA3520745@kroah.com>
+In-Reply-To: <20200126071724.GA3520745@kroah.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 27 Jan 2020 11:40:24 +0100
+Message-ID: <CAMuHMdU32gF89zz86WH3AqkoPK7hdSjWMexJ1aLU9woe0qF0YA@mail.gmail.com>
+Subject: Re: [PATCH] matroxfb: add Matrox MGA-G200eW board support
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Rich Felker <dalias@libc.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---JXtJqsfGpCLX37g1U82XR0axYY5SX2ng4
-Content-Type: multipart/mixed; boundary="kXJKU2muNsUH08rB4dLf3tn0abYMGCebb";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Rich Felker <dalias@libc.org>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>
-Message-ID: <1466259e-efe7-df52-c05b-80042628d577@suse.de>
-Subject: Re: [PATCH] matroxfb: add Matrox MGA-G200eW board support
-References: <20200125195506.GA16638@brightrain.aerifal.cx>
-In-Reply-To: <20200125195506.GA16638@brightrain.aerifal.cx>
+Hi Greg,
 
---kXJKU2muNsUH08rB4dLf3tn0abYMGCebb
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+On Sun, Jan 26, 2020 at 8:44 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, Jan 25, 2020 at 02:55:06PM -0500, Rich Felker wrote:
+> > Signed-off-by: Rich Felker <dalias@libc.org>
+> > --
+>
+> I know I don't accept patches without any changelog text, don't know
+> about other subsystem maintainers...
 
-Hi
+FTR, I do, iff the one-line summary says everything that needs to be said.
 
-Am 25.01.20 um 20:55 schrieb Rich Felker:
-> Signed-off-by: Rich Felker <dalias@libc.org>
-> --
-> I've had this lying around a while and figure I should send it
-> upsteam; it's needed to support the onboard video on my Spectre-free
-> Atom S1260 server board.
+What's the point in writing a full paragraph like:
 
-This HW is supported by mgag200, which is maintained. Can't you use that?=
+   Currently the foo driver does not support the bar device.
+   As users may want to use the bar device, it makes perfect sense
+   to add support for the bar device to the foo driver.
+   Hence add support for the bar device to the foo driver.
 
+if this doesn't add any value on top of the one-line summary?
 
-Best regards
-Thomas
+Gr{oetje,eeting}s,
 
->=20
-> ---
->  drivers/video/fbdev/matrox/matroxfb_base.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->=20
-> diff --git a/drivers/video/fbdev/matrox/matroxfb_base.c b/drivers/video=
-/fbdev/matrox/matroxfb_base.c
-> index 1a555f70923a..ff344313860c 100644
-> --- a/drivers/video/fbdev/matrox/matroxfb_base.c
-> +++ b/drivers/video/fbdev/matrox/matroxfb_base.c
-> @@ -1376,6 +1376,12 @@ static struct video_board vbG200 =3D {
->  	.accelID =3D FB_ACCEL_MATROX_MGAG200,
->  	.lowlevel =3D &matrox_G100
->  };
-> +static struct video_board vbG200eW =3D {
-> +	.maxvram =3D 0x800000,
-> +	.maxdisplayable =3D 0x800000,
-> +	.accelID =3D FB_ACCEL_MATROX_MGAG200,
-> +	.lowlevel =3D &matrox_G100
-> +};
->  /* from doc it looks like that accelerator can draw only to low 16MB :=
--( Direct accesses & displaying are OK for
->     whole 32MB */
->  static struct video_board vbG400 =3D {
-> @@ -1494,6 +1500,13 @@ static struct board {
->  		MGA_G200,
->  		&vbG200,
->  		"MGA-G200 (PCI)"},
-> +	{PCI_VENDOR_ID_MATROX,	0x0532,	0xFF,
-> +		0,			0,
-> +		DEVF_G200,
-> +		250000,
-> +		MGA_G200,
-> +		&vbG200eW,
-> +		"MGA-G200eW (PCI)"},
->  	{PCI_VENDOR_ID_MATROX,	PCI_DEVICE_ID_MATROX_G200_AGP,	0xFF,
->  		PCI_SS_VENDOR_ID_MATROX,	PCI_SS_ID_MATROX_GENERIC,
->  		DEVF_G200,
-> @@ -2136,6 +2149,8 @@ static const struct pci_device_id matroxfb_device=
-s[] =3D {
->  		PCI_ANY_ID,	PCI_ANY_ID,	0, 0, 0},
->  	{PCI_VENDOR_ID_MATROX,	PCI_DEVICE_ID_MATROX_G200_PCI,
->  		PCI_ANY_ID,	PCI_ANY_ID,	0, 0, 0},
-> +	{PCI_VENDOR_ID_MATROX,	0x0532,
-> +		PCI_ANY_ID,	PCI_ANY_ID,	0, 0, 0},
->  	{PCI_VENDOR_ID_MATROX,	PCI_DEVICE_ID_MATROX_G200_AGP,
->  		PCI_ANY_ID,	PCI_ANY_ID,	0, 0, 0},
->  	{PCI_VENDOR_ID_MATROX,	PCI_DEVICE_ID_MATROX_G400,
->=20
+                        Geert
 
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
---kXJKU2muNsUH08rB4dLf3tn0abYMGCebb--
-
---JXtJqsfGpCLX37g1U82XR0axYY5SX2ng4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl4ukusACgkQaA3BHVML
-eiND4AgAtd2QdgBKcSGDT6qgNFNiQlF3Zuo2G4F6F8TFMSOfEPGr9AFjyBwtwcHV
-7FM9xf28m1W2QYYZNnjF6Rulqj+ixi55KWKSmIrRmaphsbN/Pyd3Qo+2OcX0yiHq
-tgVshfKjM/BP9uJepxE57BIFdaLNxX+A8ImO4ggvJxG/W7GTmyl4l+VOpcXVSAwM
-KsVbgLOcMFpMlFBtnDOAQLVjdMoWeBUgaazV7YLa9ilQhD3QYcj+GRCzBRhih0In
-XrKWoV+brXQqTQb8kO2wH2V+y+4NhX0hc3/vGte3avpA4YtVMq890xb2KkHJJfa6
-G2YJMDlPER9x7SHUFUTCgfC0pULVEw==
-=GbzM
------END PGP SIGNATURE-----
-
---JXtJqsfGpCLX37g1U82XR0axYY5SX2ng4--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
