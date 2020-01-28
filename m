@@ -2,48 +2,48 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 498AA14BDE6
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 17:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6025F14BDF4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 17:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725881AbgA1Qje (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 Jan 2020 11:39:34 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:33340 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726066AbgA1Qje (ORCPT
+        id S1726257AbgA1QoQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 Jan 2020 11:44:16 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:41896 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbgA1QoP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 Jan 2020 11:39:34 -0500
-Received: by mail-oi1-f193.google.com with SMTP id q81so10963038oig.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 08:39:33 -0800 (PST)
+        Tue, 28 Jan 2020 11:44:15 -0500
+Received: by mail-oi1-f196.google.com with SMTP id i1so10930836oie.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 08:44:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=nD4uqM90qVZiRS6dUZrtCSHcEDqm2B4XAwmtvXy/0pA=;
-        b=ML7H4nDE6zq4bTcKsWGsZFSvFV9hFgPVfiHknWBXK1ofXLjy7CGR2GwiZH98DkPnET
-         1ibyf9HUBQwHYxAwiX8daYuOaV9hG0+paczgZgTIRs79c0GgXGSbKt9xIPfdrd2gDaCq
-         8iiWuftq2QGUFS+zglwb9t+VRJriBuBlvH+Qo=
+        bh=18/Y5u07knvHEJdaTlkeKYn//3ntjh8d0eQZR8UfAuA=;
+        b=fo1svL6SfClSU67atd4IEu0wO/bcT44gO3Ucu2cLiX5Zm0Uxke0k2jhidQvHtSRlvH
+         pDzoSmCUWA3G1oOqjcYxuFnkknsTSn2HrTOuE4T6GY9eTZaYuQdUtAA+ubXE0bQwGndA
+         rh79FRWol9I3eNVbeyIVWlaaBPyuZsi6wk+C8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nD4uqM90qVZiRS6dUZrtCSHcEDqm2B4XAwmtvXy/0pA=;
-        b=jPnYXMsgRhN68Xddn2lmAjVkEflRu0So5wgZw11KhMIKwHtO3fl1Yt2nj6dTxH9oFD
-         +xoWmVSCDdO5DCxkGzNFLRaPfeza9Wwo7r40TivX7hlsAvc3km4wvbqW2rLmC1Lv86cE
-         9lB05GeC+IGor/qKkooWlMf2kYyYaC3PqPZ43WJG1E8vGPanQhHikKEKuWyFW44l5WWp
-         mRAr56NAGfDusb5dqxpvWwGa2YC215duiLS6orGzT2xRpHRsaWC9FJRx2A3sXBbWBgYE
-         INb/ueI5yItuNst36KUaI2kPwwZVMHLOWMRRpG4nbF6HTDvkBckune7ZrUSMarnw0vjl
-         8Zcg==
-X-Gm-Message-State: APjAAAVZC7yvNuDKodbdE3EyIGTbbml5d4kWYpnuJIsAXac1M5GkoegY
-        vjP4PFt39Yis0slwhsikbRE4pRfHBjtOPMtI/nkTd/hg
-X-Google-Smtp-Source: APXvYqzVolj3YtRfGSVh3phqyOIPhVt6ICt2M0KXD4VyXnXjkWPT4SkGeJy+ULeEK4dpDNDFLaQW70SqzZ3sWpvjXMc=
-X-Received: by 2002:aca:d985:: with SMTP id q127mr3302927oig.132.1580229573356;
- Tue, 28 Jan 2020 08:39:33 -0800 (PST)
+        bh=18/Y5u07knvHEJdaTlkeKYn//3ntjh8d0eQZR8UfAuA=;
+        b=iekhKsPCvAWW9pyanV1HGBigoxnjxaUE0yDUCGsRXTeBL1v1Iwxt/u0QFjs6whNgLr
+         8FwjwT6K+er15XT/NUpLNPOBi36359mNtvryzkv/jN9Xvvrkk3sw9tO94hw9TA++A/oa
+         qUTQpVz+iH6eVMOv0n4Er/6U1+1tqVEZB7gfzHZ5KQpEPrG/aw7XbnZmfD25KW+d0HwL
+         EmnJn6UnfIkN22uRZEMgYwetdGIG9kO6GnBrrDyco3X09WJDfaMYC5J4tbdTeoW9FZfG
+         YoYHRknudTycRUKX891MZcr7lAk/7EW+a0ApHY5NqpDNz+nVoz/GKhZG5nddZm14LDe8
+         6Wdg==
+X-Gm-Message-State: APjAAAWA/w1gACHadcUcAnSjHBFHb2G2peflumWryU1hgIpbkbPaGDun
+        omfFZ3G0KcPRHJALPeDrKw222aA/A8fpoXVUtTECOQ==
+X-Google-Smtp-Source: APXvYqwyM99y4aXPw7e6nSfcN/k4HEDw2+3XC0/UO/afm8IyM+ySpJUpy65/PZx0NiyJdKxUVVF0OSUVsHdVkzPH3s8=
+X-Received: by 2002:aca:2407:: with SMTP id n7mr3505084oic.14.1580229854725;
+ Tue, 28 Jan 2020 08:44:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20200120100014.23488-1-kraxel@redhat.com>
-In-Reply-To: <20200120100014.23488-1-kraxel@redhat.com>
+References: <20200120100014.23488-1-kraxel@redhat.com> <CAKMK7uGMTLoyMnfLmx3r9+qf6sMXcrKT_EgO78f=Gw0Oi51kWQ@mail.gmail.com>
+In-Reply-To: <CAKMK7uGMTLoyMnfLmx3r9+qf6sMXcrKT_EgO78f=Gw0Oi51kWQ@mail.gmail.com>
 From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Tue, 28 Jan 2020 17:39:22 +0100
-Message-ID: <CAKMK7uGMTLoyMnfLmx3r9+qf6sMXcrKT_EgO78f=Gw0Oi51kWQ@mail.gmail.com>
+Date:   Tue, 28 Jan 2020 17:44:03 +0100
+Message-ID: <CAKMK7uFgGQdd1V3-ux6dGhUXFNvsFJvCiA8eNW9RK=nNdsK3OA@mail.gmail.com>
 Subject: Re: [PATCH] fbdev: wait for references go away
 To:     Gerd Hoffmann <kraxel@redhat.com>,
         =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>
@@ -59,134 +59,149 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jan 20, 2020 at 11:00 AM Gerd Hoffmann <kraxel@redhat.com> wrote:
+On Tue, Jan 28, 2020 at 5:39 PM Daniel Vetter <daniel@ffwll.ch> wrote:
 >
-> Problem: do_unregister_framebuffer() might return before the device is
-> fully cleaned up, due to userspace having a file handle for /dev/fb0
-> open.  Which can result in drm driver not being able to grab resources
-> (and fail initialization) because the firmware framebuffer still holds
-> them.  Reportedly plymouth can trigger this.
+> On Mon, Jan 20, 2020 at 11:00 AM Gerd Hoffmann <kraxel@redhat.com> wrote:
+> >
+> > Problem: do_unregister_framebuffer() might return before the device is
+> > fully cleaned up, due to userspace having a file handle for /dev/fb0
+> > open.  Which can result in drm driver not being able to grab resources
+> > (and fail initialization) because the firmware framebuffer still holds
+> > them.  Reportedly plymouth can trigger this.
+> >
+> > Fix this by trying to wait until all references are gone.  Don't wait
+> > forever though given that userspace might keep the file handle open.
+> >
+> > Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingsl=
+ab.com>
+> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 >
-> Fix this by trying to wait until all references are gone.  Don't wait
-> forever though given that userspace might keep the file handle open.
+> (Missed this because lca, so a bit late)
 >
-> Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
-.com>
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-
-(Missed this because lca, so a bit late)
-
-This isn't really how driver unload is supposed to happen. Instead:
-
-- Driver unload starts
-- Driver calls the foo_unregister function, which stops new userspace
-from getting at the driver. If you're subsystem is good (i.e. drm
-since Noralf fixed it) this will also sufficiently synchronize with
-any pending ioctl.
-- Important: This does _not_ wait until userspace closes all
-references. You can't force that.
-- Driver releases all hw structures and mappings and everything else.
-With fbdev this is currently not fully race free because no one is
-synchronizing with userspace everywhere correctly.
-
-... much time can pass ...
-
-- Userspace releases the last references, which triggers the final
-destroy stuff and which releases the memory occupied by various
-structures still (but not anything releated to hw or anything else
-really).
-
-So there's two bits:
-
-1. Synchronizing with pending ioctls. This is mostly there already
-with lock_fb_info/unlock_fb_info. From a quick look the missing bit
-seems to be that the unregister code is not taking that lock, and so
-not sufficiently synchronizing against concurrent ioctl calls and
-other stuff. Plus would need to audit all entry points.
-
-1a. fbcon works differently. Don't look too closely, but this is also
-not the problem your facing here.
-
-2. Refcounting of the fb structure and hw teardown. That's what's
-tracked in fb_info->count. Most likely the fbdev driver you have has a
-wrong split between the hw teardown code and what's in fb_destroy. If
-you have any hw cleanup code in fb_destroy that driver is buggy. efifb
-is very buggy in that area :-) Same for offb, simplefb, vesafb and
-vesa16fb.
-
-We might need a new fb_unregister callback for these drivers to be
-able to fix this properly. Because the unregister comes from the fbdev
-core, and not the driver as usual, so the usual driver unload sequence
-doesnt work:
-
-drm_dev_unregister();
-... release all hw resource ...
-
-drm_dev_put();
-
-Or in terms of fbdev:
-
-unregister_framebuffer(info);
-... release all hw resources ... <- everyone gets this wrong
-framebuffer_release(info); <- also wrong because not refcounted,
-hooray, this should be moved to to end of the ->fb_destroy callback
-
-So we need a callback to put the "release all hw resources" step into
-the flow at the right place. Another option (slightly less midlayer)
-would be to add a fb_takeover hook, for these platforms drivers, which
-would then do the above sequence (like at driver unload).
-
-Also adding Noralf, since he's fixed up all the drm stuff in this area
-in the past.
-
-Cheers, Daniel
-
-> ---
->  drivers/video/fbdev/core/fbmem.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> This isn't really how driver unload is supposed to happen. Instead:
 >
-> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/=
-fbmem.c
-> index d04554959ea7..2ea8ac05b065 100644
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -35,6 +35,7 @@
->  #include <linux/fbcon.h>
->  #include <linux/mem_encrypt.h>
->  #include <linux/pci.h>
-> +#include <linux/delay.h>
+> - Driver unload starts
+> - Driver calls the foo_unregister function, which stops new userspace
+> from getting at the driver. If you're subsystem is good (i.e. drm
+> since Noralf fixed it) this will also sufficiently synchronize with
+> any pending ioctl.
+> - Important: This does _not_ wait until userspace closes all
+> references. You can't force that.
+> - Driver releases all hw structures and mappings and everything else.
+> With fbdev this is currently not fully race free because no one is
+> synchronizing with userspace everywhere correctly.
 >
->  #include <asm/fb.h>
+> ... much time can pass ...
 >
-> @@ -1707,6 +1708,8 @@ static void unlink_framebuffer(struct fb_info *fb_i=
-nfo)
+> - Userspace releases the last references, which triggers the final
+> destroy stuff and which releases the memory occupied by various
+> structures still (but not anything releated to hw or anything else
+> really).
 >
->  static void do_unregister_framebuffer(struct fb_info *fb_info)
->  {
-> +       int limit =3D 100;
-> +
->         unlink_framebuffer(fb_info);
->         if (fb_info->pixmap.addr &&
->             (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
-> @@ -1726,6 +1729,10 @@ static void do_unregister_framebuffer(struct fb_in=
-fo *fb_info)
->         fbcon_fb_unregistered(fb_info);
->         console_unlock();
+> So there's two bits:
 >
-> +       /* try wait until all references are gone */
-> +       while (atomic_read(&fb_info->count) > 1 && --limit > 0)
-> +               msleep(10);
-> +
->         /* this may free fb info */
->         put_fb_info(fb_info);
->  }
+> 1. Synchronizing with pending ioctls. This is mostly there already
+> with lock_fb_info/unlock_fb_info. From a quick look the missing bit
+> seems to be that the unregister code is not taking that lock, and so
+> not sufficiently synchronizing against concurrent ioctl calls and
+> other stuff. Plus would need to audit all entry points.
+
+Correction: The check here is file_fb_info(), which checks for
+unregister. Except it's totally racy and misses the end marker (unlike
+drm_dev_enter/exit in drm). So bunch of work to do here too. The
+lock_fb_info is purely locking, not lifetime (and I think in a bunch
+of places way too late).
+
+> 1a. fbcon works differently. Don't look too closely, but this is also
+> not the problem your facing here.
+>
+> 2. Refcounting of the fb structure and hw teardown. That's what's
+> tracked in fb_info->count. Most likely the fbdev driver you have has a
+> wrong split between the hw teardown code and what's in fb_destroy. If
+> you have any hw cleanup code in fb_destroy that driver is buggy. efifb
+> is very buggy in that area :-) Same for offb, simplefb, vesafb and
+> vesa16fb.
+>
+> We might need a new fb_unregister callback for these drivers to be
+> able to fix this properly. Because the unregister comes from the fbdev
+> core, and not the driver as usual, so the usual driver unload sequence
+> doesnt work:
+>
+> drm_dev_unregister();
+> ... release all hw resource ...
+>
+> drm_dev_put();
+>
+> Or in terms of fbdev:
+>
+> unregister_framebuffer(info);
+> ... release all hw resources ... <- everyone gets this wrong
+> framebuffer_release(info); <- also wrong because not refcounted,
+> hooray, this should be moved to to end of the ->fb_destroy callback
+>
+> So we need a callback to put the "release all hw resources" step into
+> the flow at the right place. Another option (slightly less midlayer)
+> would be to add a fb_takeover hook, for these platforms drivers, which
+> would then do the above sequence (like at driver unload).
+>
+> Also adding Noralf, since he's fixed up all the drm stuff in this area
+> in the past.
+>
+> Cheers, Daniel
+>
+> > ---
+> >  drivers/video/fbdev/core/fbmem.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/cor=
+e/fbmem.c
+> > index d04554959ea7..2ea8ac05b065 100644
+> > --- a/drivers/video/fbdev/core/fbmem.c
+> > +++ b/drivers/video/fbdev/core/fbmem.c
+> > @@ -35,6 +35,7 @@
+> >  #include <linux/fbcon.h>
+> >  #include <linux/mem_encrypt.h>
+> >  #include <linux/pci.h>
+> > +#include <linux/delay.h>
+> >
+> >  #include <asm/fb.h>
+> >
+> > @@ -1707,6 +1708,8 @@ static void unlink_framebuffer(struct fb_info *fb=
+_info)
+> >
+> >  static void do_unregister_framebuffer(struct fb_info *fb_info)
+> >  {
+> > +       int limit =3D 100;
+> > +
+> >         unlink_framebuffer(fb_info);
+> >         if (fb_info->pixmap.addr &&
+> >             (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
+> > @@ -1726,6 +1729,10 @@ static void do_unregister_framebuffer(struct fb_=
+info *fb_info)
+> >         fbcon_fb_unregistered(fb_info);
+> >         console_unlock();
+> >
+> > +       /* try wait until all references are gone */
+> > +       while (atomic_read(&fb_info->count) > 1 && --limit > 0)
+> > +               msleep(10);
+> > +
+> >         /* this may free fb info */
+> >         put_fb_info(fb_info);
+> >  }
+> > --
+> > 2.18.1
+> >
+> > _______________________________________________
+> > dri-devel mailing list
+> > dri-devel@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+>
+>
+>
 > --
-> 2.18.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
 
 
 
