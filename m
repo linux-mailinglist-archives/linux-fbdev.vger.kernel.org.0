@@ -2,163 +2,195 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E780014BCBA
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 16:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 498AA14BDE6
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 17:39:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgA1PVF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 Jan 2020 10:21:05 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:45912 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726482AbgA1PVE (ORCPT
+        id S1725881AbgA1Qje (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 Jan 2020 11:39:34 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:33340 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726066AbgA1Qje (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 Jan 2020 10:21:04 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200128152102euoutp01bf3218f5e7da3e6b2bf3cf81ebd45f7f~uFiPZwIVW2740427404euoutp01j
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 15:21:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200128152102euoutp01bf3218f5e7da3e6b2bf3cf81ebd45f7f~uFiPZwIVW2740427404euoutp01j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1580224862;
-        bh=c+5xU8gjZGqZjMpG2KUe0/mMVcXhBH61/Bs24x6Qd9E=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=dgP5Cmdgrm5YxCNjiD/5RvX7yjhLmxAqyPjPu3ro6u0bk1bNFKviQdwvFj8Zg7V5J
-         oSEJdTC8bowWSKt1jQarYKJunXXaI+mQYiZGSwjHUNHkjUTRYx36cxpgrPdf7T7+m1
-         ScAXLUKw/5FT7s4+E2f1aGdGoyj/kWme5Ui8D5Po=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200128152102eucas1p148763110247c0d5e63b0020bbaca8430~uFiPFWOFA0561805618eucas1p1F;
-        Tue, 28 Jan 2020 15:21:02 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 0A.EB.60679.D51503E5; Tue, 28
-        Jan 2020 15:21:01 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200128152101eucas1p1cfd0983fb01439e55279b62448fd8072~uFiOT7HZM0549005490eucas1p1G;
-        Tue, 28 Jan 2020 15:21:01 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200128152101eusmtrp25a14db7a27e704195c3240e0c3a66a8f~uFiOTP5Va0521105211eusmtrp2H;
-        Tue, 28 Jan 2020 15:21:01 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-38-5e30515d39da
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 69.42.07950.D51503E5; Tue, 28
-        Jan 2020 15:21:01 +0000 (GMT)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200128152058eusmtip25574867aae5217c7a627d828c12d11db~uFiMGp6sN0896708967eusmtip24;
-        Tue, 28 Jan 2020 15:20:58 +0000 (GMT)
-Subject: Re: [PATCH] fbdev: wait for references go away
-To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     dri-devel@lists.freedesktop.org, marmarek@invisiblethingslab.com,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <e16f568b-c629-b81e-ec3a-7c7dd6edb766@samsung.com>
-Date:   Tue, 28 Jan 2020 16:20:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        Tue, 28 Jan 2020 11:39:34 -0500
+Received: by mail-oi1-f193.google.com with SMTP id q81so10963038oig.0
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 08:39:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=nD4uqM90qVZiRS6dUZrtCSHcEDqm2B4XAwmtvXy/0pA=;
+        b=ML7H4nDE6zq4bTcKsWGsZFSvFV9hFgPVfiHknWBXK1ofXLjy7CGR2GwiZH98DkPnET
+         1ibyf9HUBQwHYxAwiX8daYuOaV9hG0+paczgZgTIRs79c0GgXGSbKt9xIPfdrd2gDaCq
+         8iiWuftq2QGUFS+zglwb9t+VRJriBuBlvH+Qo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=nD4uqM90qVZiRS6dUZrtCSHcEDqm2B4XAwmtvXy/0pA=;
+        b=jPnYXMsgRhN68Xddn2lmAjVkEflRu0So5wgZw11KhMIKwHtO3fl1Yt2nj6dTxH9oFD
+         +xoWmVSCDdO5DCxkGzNFLRaPfeza9Wwo7r40TivX7hlsAvc3km4wvbqW2rLmC1Lv86cE
+         9lB05GeC+IGor/qKkooWlMf2kYyYaC3PqPZ43WJG1E8vGPanQhHikKEKuWyFW44l5WWp
+         mRAr56NAGfDusb5dqxpvWwGa2YC215duiLS6orGzT2xRpHRsaWC9FJRx2A3sXBbWBgYE
+         INb/ueI5yItuNst36KUaI2kPwwZVMHLOWMRRpG4nbF6HTDvkBckune7ZrUSMarnw0vjl
+         8Zcg==
+X-Gm-Message-State: APjAAAVZC7yvNuDKodbdE3EyIGTbbml5d4kWYpnuJIsAXac1M5GkoegY
+        vjP4PFt39Yis0slwhsikbRE4pRfHBjtOPMtI/nkTd/hg
+X-Google-Smtp-Source: APXvYqzVolj3YtRfGSVh3phqyOIPhVt6ICt2M0KXD4VyXnXjkWPT4SkGeJy+ULeEK4dpDNDFLaQW70SqzZ3sWpvjXMc=
+X-Received: by 2002:aca:d985:: with SMTP id q127mr3302927oig.132.1580229573356;
+ Tue, 28 Jan 2020 08:39:33 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200121055348.s4anrveo2z6avin6@sirius.home.kraxel.org>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRmVeSWpSXmKPExsWy7djPc7qxgQZxBu92aFpc+fqezeLZrZPM
-        Fif6PrBaXN41h83ic+MuFgdWj95999g97ncfZ/J4v+8qm8fnTXIBLFFcNimpOZllqUX6dglc
-        Gae23GMpOCRYseFXL1sD40/eLkYODgkBE4nNf1S7GLk4hARWMEpc/DuXDcL5wihx49cqFgjn
-        M6NEw+0HTF2MnGAdMz61QlUtZ5TYefU6C0hCSOAto8SKE+YgtrCAucSjD6+YQWwRAVWJhf+W
-        sII0MAusZ5TYt+YJI0iCTcBKYmL7KjCbV8BOoul5I9ggFqCGnes2gsVFBSIkPj04zApRIyhx
-        cuYTsBpOAVeJEwdOs4HYzALiEreezGeCsOUltr+dwwyyTEJgHrvEu9cTWSDOdpGYsXUJ1AvC
-        Eq+Ob2GHsGUk/u8EaQZpWMco8bfjBVT3dkaJ5ZP/sUFUWUvcOfeLDRRkzAKaEut36UOEHSW+
-        NC1hh4Qkn8SNt4IQR/BJTNo2nRkizCvR0SYEUa0msWHZBjaYtV07VzJPYFSaheS1WUjemYXk
-        nVkIexcwsqxiFE8tLc5NTy02ykst1ytOzC0uzUvXS87P3cQITDOn/x3/soNx15+kQ4wCHIxK
-        PLwzVAzihFgTy4orcw8xSnAwK4nwdjIBhXhTEiurUovy44tKc1KLDzFKc7AoifMaL3oZKySQ
-        nliSmp2aWpBaBJNl4uCUamAUt7ZqCZf5taek+fon4U01hStc9D9bm6yczbr03CXmXRNMetOD
-        5Wd+OHHPIe+gDn+rqUZ96w6241cUXmRUGHpk/fCZaCvCdF073sIy6IBDl92ngNksL7avTYqd
-        UqXfbpizwOpqYOj/SxcU99lt2a/fKi16aCKj2Itp37QFFrsq+fc42AUesldiKc5INNRiLipO
-        BAAlr2qRLwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPIsWRmVeSWpSXmKPExsVy+t/xe7qxgQZxBsu7+SyufH3PZvHs1klm
-        ixN9H1gtLu+aw2bxuXEXiwOrR+++e+we97uPM3m833eVzePzJrkAlig9m6L80pJUhYz84hJb
-        pWhDCyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jFNb7rEUHBKs2PCrl62B8Sdv
-        FyMnh4SAicSMT61sXYxcHEICSxklpjUcZe9i5ABKyEgcX18GUSMs8edaF1TNa0aJN68fMYIk
-        hAXMJR59eMUMYosIqEos/LeEFaSIWWA9o8Sm32uZITp+MUqsunubBaSKTcBKYmL7KrBuXgE7
-        iabnjWBxFqDunes2gsVFBSIkDu+YBVUjKHFy5hOwGk4BV4kTB06zgdjMAuoSf+ZdYoawxSVu
-        PZnPBGHLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucVGesWJucWleel6yfm5
-        mxiBkbXt2M8tOxi73gUfYhTgYFTi4XVQMogTYk0sK67MPcQowcGsJMLbyQQU4k1JrKxKLcqP
-        LyrNSS0+xGgK9NxEZinR5Hxg1OeVxBuaGppbWBqaG5sbm1koifN2CByMERJITyxJzU5NLUgt
-        gulj4uCUamDc0F02x0DtocPOKfaOa29m/fkccfFOdW3WevkTU/vF7EzdpE4VCS2+euKTUUsn
-        f/U3E8PJW+7NfZLeMHn1wQ3eCoahl6OXFDD7rf7R8PTXtFsb/Bk+CXz5lpbNYp+/t8z0GsOM
-        8GfX5dcc3GMvdU3pblRVT6lW0EXxTElJ75ryJjulDQybu/KUWIozEg21mIuKEwGC5rG5wgIA
-        AA==
-X-CMS-MailID: 20200128152101eucas1p1cfd0983fb01439e55279b62448fd8072
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c
-References: <CGME20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c@eucas1p2.samsung.com>
-        <20200120100014.23488-1-kraxel@redhat.com>
-        <d143e43b-8a38-940e-3ae5-e7b830a74bb3@samsung.com>
-        <20200121055348.s4anrveo2z6avin6@sirius.home.kraxel.org>
+References: <20200120100014.23488-1-kraxel@redhat.com>
+In-Reply-To: <20200120100014.23488-1-kraxel@redhat.com>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Tue, 28 Jan 2020 17:39:22 +0100
+Message-ID: <CAKMK7uGMTLoyMnfLmx3r9+qf6sMXcrKT_EgO78f=Gw0Oi51kWQ@mail.gmail.com>
+Subject: Re: [PATCH] fbdev: wait for references go away
+To:     Gerd Hoffmann <kraxel@redhat.com>,
+        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>
+Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        marmarek@invisiblethingslab.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Mon, Jan 20, 2020 at 11:00 AM Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> Problem: do_unregister_framebuffer() might return before the device is
+> fully cleaned up, due to userspace having a file handle for /dev/fb0
+> open.  Which can result in drm driver not being able to grab resources
+> (and fail initialization) because the firmware framebuffer still holds
+> them.  Reportedly plymouth can trigger this.
+>
+> Fix this by trying to wait until all references are gone.  Don't wait
+> forever though given that userspace might keep the file handle open.
+>
+> Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
+.com>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 
-On 1/21/20 6:53 AM, Gerd Hoffmann wrote:
->   Hi,
-> 
->>> open.  Which can result in drm driver not being able to grab resources
->>> (and fail initialization) because the firmware framebuffer still holds
->>> them.  Reportedly plymouth can trigger this.
->>
->> Could you please describe issue some more?
->>
->> I guess that a problem is happening during DRM driver load while fbdev
->> driver is loaded? I assume do_unregister_framebuffer() is called inside
->> do_remove_conflicting_framebuffers()?
-> 
-> Yes.  Specifically bochs-drm.ko and efifb in virtual machines.
-> 
->> At first glance it seems to be an user-space issue as it should not be
->> holding references on /dev/fb0 while DRM driver is being loaded.
-> 
-> Well, the drm driver is loaded by udev like everything else.
-> 
-> Dunno what plymouth (graphical boot screen tool) does to handle the
-> situation.  I guess listening to udev events.  So it should notice efifb
-> going away and drop the /dev/fb0 reference, but this races against
-> bochs-drm initializing.
+(Missed this because lca, so a bit late)
 
-It has been a week and there have been no alternative proposals to
-address the problem so I incline to accepting this approach..
+This isn't really how driver unload is supposed to happen. Instead:
 
-However please rework the patch slightly:
+- Driver unload starts
+- Driver calls the foo_unregister function, which stops new userspace
+from getting at the driver. If you're subsystem is good (i.e. drm
+since Noralf fixed it) this will also sufficiently synchronize with
+any pending ioctl.
+- Important: This does _not_ wait until userspace closes all
+references. You can't force that.
+- Driver releases all hw structures and mappings and everything else.
+With fbdev this is currently not fully race free because no one is
+synchronizing with userspace everywhere correctly.
 
-- Don't wait in the usual fb_info removal code-path, only in the driver
-  replacement one. You can achieve this by adding additional "bool wait"
-  parameter to do_unregister_framebuffer()
+... much time can pass ...
 
-- Add a FIXME comment just before the wait loop with the description of
-  the issue (the above explanation of the race between plymouth and udev
-  would be fine) so we will remember why this workaround is needed.
+- Userspace releases the last references, which triggers the final
+destroy stuff and which releases the memory occupied by various
+structures still (but not anything releated to hw or anything else
+really).
 
-- Change patch summary to something more descriptive (i.e. to "fbdev:
-  workaround race on driver replacement").
+So there's two bits:
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+1. Synchronizing with pending ioctls. This is mostly there already
+with lock_fb_info/unlock_fb_info. From a quick look the missing bit
+seems to be that the unregister code is not taking that lock, and so
+not sufficiently synchronizing against concurrent ioctl calls and
+other stuff. Plus would need to audit all entry points.
 
->>> Fix this by trying to wait until all references are gone.  Don't wait
->>> forever though given that userspace might keep the file handle open.
->>
->> Where does the 1s maximum delay come from?
-> 
-> Pulled out something out of thin air which I expect being on the safe
-> side.  plymouth responding on the udev event should need only a small
-> fraction of that.
-> 
-> cheers,
->   Gerd
+1a. fbcon works differently. Don't look too closely, but this is also
+not the problem your facing here.
+
+2. Refcounting of the fb structure and hw teardown. That's what's
+tracked in fb_info->count. Most likely the fbdev driver you have has a
+wrong split between the hw teardown code and what's in fb_destroy. If
+you have any hw cleanup code in fb_destroy that driver is buggy. efifb
+is very buggy in that area :-) Same for offb, simplefb, vesafb and
+vesa16fb.
+
+We might need a new fb_unregister callback for these drivers to be
+able to fix this properly. Because the unregister comes from the fbdev
+core, and not the driver as usual, so the usual driver unload sequence
+doesnt work:
+
+drm_dev_unregister();
+... release all hw resource ...
+
+drm_dev_put();
+
+Or in terms of fbdev:
+
+unregister_framebuffer(info);
+... release all hw resources ... <- everyone gets this wrong
+framebuffer_release(info); <- also wrong because not refcounted,
+hooray, this should be moved to to end of the ->fb_destroy callback
+
+So we need a callback to put the "release all hw resources" step into
+the flow at the right place. Another option (slightly less midlayer)
+would be to add a fb_takeover hook, for these platforms drivers, which
+would then do the above sequence (like at driver unload).
+
+Also adding Noralf, since he's fixed up all the drm stuff in this area
+in the past.
+
+Cheers, Daniel
+
+> ---
+>  drivers/video/fbdev/core/fbmem.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/=
+fbmem.c
+> index d04554959ea7..2ea8ac05b065 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -35,6 +35,7 @@
+>  #include <linux/fbcon.h>
+>  #include <linux/mem_encrypt.h>
+>  #include <linux/pci.h>
+> +#include <linux/delay.h>
+>
+>  #include <asm/fb.h>
+>
+> @@ -1707,6 +1708,8 @@ static void unlink_framebuffer(struct fb_info *fb_i=
+nfo)
+>
+>  static void do_unregister_framebuffer(struct fb_info *fb_info)
+>  {
+> +       int limit =3D 100;
+> +
+>         unlink_framebuffer(fb_info);
+>         if (fb_info->pixmap.addr &&
+>             (fb_info->pixmap.flags & FB_PIXMAP_DEFAULT))
+> @@ -1726,6 +1729,10 @@ static void do_unregister_framebuffer(struct fb_in=
+fo *fb_info)
+>         fbcon_fb_unregistered(fb_info);
+>         console_unlock();
+>
+> +       /* try wait until all references are gone */
+> +       while (atomic_read(&fb_info->count) > 1 && --limit > 0)
+> +               msleep(10);
+> +
+>         /* this may free fb info */
+>         put_fb_info(fb_info);
+>  }
+> --
+> 2.18.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+
+
+--=20
+Daniel Vetter
+Software Engineer, Intel Corporation
++41 (0) 79 365 57 48 - http://blog.ffwll.ch
