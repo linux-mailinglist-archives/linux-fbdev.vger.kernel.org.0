@@ -2,146 +2,163 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E097214BC69
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 15:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E780014BCBA
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jan 2020 16:21:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbgA1O6L (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 Jan 2020 09:58:11 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:58642 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726143AbgA1O6K (ORCPT
+        id S1726462AbgA1PVF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 Jan 2020 10:21:05 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:45912 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbgA1PVE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 Jan 2020 09:58:10 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200128145808euoutp022f43f3c047ee991ed8bb932a16208d25~uFOP9V_wG1872918729euoutp02g
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 14:58:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200128145808euoutp022f43f3c047ee991ed8bb932a16208d25~uFOP9V_wG1872918729euoutp02g
+        Tue, 28 Jan 2020 10:21:04 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200128152102euoutp01bf3218f5e7da3e6b2bf3cf81ebd45f7f~uFiPZwIVW2740427404euoutp01j
+        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jan 2020 15:21:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200128152102euoutp01bf3218f5e7da3e6b2bf3cf81ebd45f7f~uFiPZwIVW2740427404euoutp01j
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1580223488;
-        bh=NoGRo3q31xRJmf8hvOu7cNIzqn2A9IS+PVrSFMvLol0=;
+        s=mail20170921; t=1580224862;
+        bh=c+5xU8gjZGqZjMpG2KUe0/mMVcXhBH61/Bs24x6Qd9E=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=KUk3wyK9raVpE6GHjfIiVNwrDoqMgnSrwafNqa97zrKYN5RNCody7bFHF7/36CLLY
-         287Fnx5kn192hCzndOJ0D73DdZ2GWxXpc4DDvh7cMY95apjGiDQoWdgJ2UVwyIJCA8
-         dy62VGaKo3k8cWWVt8Ag64sISWvNIP+wfobPSr/4=
+        b=dgP5Cmdgrm5YxCNjiD/5RvX7yjhLmxAqyPjPu3ro6u0bk1bNFKviQdwvFj8Zg7V5J
+         oSEJdTC8bowWSKt1jQarYKJunXXaI+mQYiZGSwjHUNHkjUTRYx36cxpgrPdf7T7+m1
+         ScAXLUKw/5FT7s4+E2f1aGdGoyj/kWme5Ui8D5Po=
 Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200128145808eucas1p29c5b0b3fa0a09c8fb0bef3746ea47b3b~uFOP0P5NC1328213282eucas1p2q;
-        Tue, 28 Jan 2020 14:58:08 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 39.68.60679.00C403E5; Tue, 28
-        Jan 2020 14:58:08 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200128145808eucas1p2e0de9fc3d007c682251ce1a320b6906d~uFOPZJD_j1335013350eucas1p2j;
-        Tue, 28 Jan 2020 14:58:08 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200128152102eucas1p148763110247c0d5e63b0020bbaca8430~uFiPFWOFA0561805618eucas1p1F;
+        Tue, 28 Jan 2020 15:21:02 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 0A.EB.60679.D51503E5; Tue, 28
+        Jan 2020 15:21:01 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200128152101eucas1p1cfd0983fb01439e55279b62448fd8072~uFiOT7HZM0549005490eucas1p1G;
+        Tue, 28 Jan 2020 15:21:01 +0000 (GMT)
 Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200128145808eusmtrp1a11fb64eb06bfbdff6dd5a5544a335b1~uFOPYa9551035610356eusmtrp1_;
-        Tue, 28 Jan 2020 14:58:08 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-7f-5e304c00e71d
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id B2.2F.07950.FFB403E5; Tue, 28
-        Jan 2020 14:58:08 +0000 (GMT)
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200128152101eusmtrp25a14db7a27e704195c3240e0c3a66a8f~uFiOTP5Va0521105211eusmtrp2H;
+        Tue, 28 Jan 2020 15:21:01 +0000 (GMT)
+X-AuditID: cbfec7f4-0e5ff7000001ed07-38-5e30515d39da
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 69.42.07950.D51503E5; Tue, 28
+        Jan 2020 15:21:01 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200128145807eusmtip15afd24a045c541970b6de3867ad42202~uFOO8Xsfb3227432274eusmtip1W;
-        Tue, 28 Jan 2020 14:58:07 +0000 (GMT)
-Subject: Re: KASAN: slab-out-of-bounds Write in vgacon_scroll
-To:     Petr Mladek <pmladek@suse.com>, anon anon <742991625abc@gmail.com>
-Cc:     wangkefeng.wang@huawei.com, sergey.senozhatsky@gmail.com,
-        syzkaller@googlegroups.com, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200128152058eusmtip25574867aae5217c7a627d828c12d11db~uFiMGp6sN0896708967eusmtip24;
+        Tue, 28 Jan 2020 15:20:58 +0000 (GMT)
+Subject: Re: [PATCH] fbdev: wait for references go away
+To:     Gerd Hoffmann <kraxel@redhat.com>
+Cc:     dri-devel@lists.freedesktop.org, marmarek@invisiblethingslab.com,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
-Date:   Tue, 28 Jan 2020 15:58:04 +0100
+Message-ID: <e16f568b-c629-b81e-ec3a-7c7dd6edb766@samsung.com>
+Date:   Tue, 28 Jan 2020 16:20:58 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200128124912.chttagasucdpydhk@pathway.suse.cz>
+In-Reply-To: <20200121055348.s4anrveo2z6avin6@sirius.home.kraxel.org>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGKsWRmVeSWpSXmKPExsWy7djP87oMPgZxBt/3Sls87O1htbjy9T2b
-        xYm+D6wWl3fNYbP4//grq8Xaz4/ZLY686Wa2aPx8n9GBw2PnrLvsHnsmnmTzaDnyltXjfvdx
-        Jo/1W66yeHzeJBfAFsVlk5Kak1mWWqRvl8CVcXetc8EWroq+2cvZGxjXc3QxcnJICJhIzP3X
-        ydTFyMUhJLCCUWJKy0Q2COcLo8SPwyugnM+MEm+fLWSCaXnZtYQVIrGcUWLy+1NQVW8ZJc4/
-        +MAIUiUsYCtxsKmBGcQWEXCT2PGmA6yDWWAHo8Su/zfBitgErCQmtq8Cs3kF7CQOrzgAtoJF
-        QFVi4tceNhBbVCBC4tODw6wQNYISJ2c+YQGxOYHqX896B2YzC4hL3HoynwnClpfY/nYOM8gy
-        CYFD7BJ7ft5ihrjbReLl9QUsELawxKvjW9ghbBmJ05N7WCAa1jFK/O14AdW9nVFi+eR/bBBV
-        1hJ3zv0CsjmAVmhKrN+lDxF2lNjVMBEsLCHAJ3HjrSDEEXwSk7ZNZ4YI80p0tAlBVKtJbFi2
-        gQ1mbdfOlcwTGJVmIXltFpJ3ZiF5ZxbC3gWMLKsYxVNLi3PTU4uN8lLL9YoTc4tL89L1kvNz
-        NzECU9Ppf8e/7GDc9SfpEKMAB6MSD+8MFYM4IdbEsuLK3EOMEhzMSiK8nUxAId6UxMqq1KL8
-        +KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqemFqQWwWSZODilGhjXrLwYxP4qvEvpuc7l9w19
-        8/deMTA4d2jahcL6/M1KPRteyn7x2WXHoDBrmXvWp0ennmcYc060+qUYteiJbSjH1TlyIvGJ
-        x/7aZXkbVwVUh79dln0xeJm5+t8ve/Z+OjY//uGu1d6FMou54nrLFD/u2bz5Q9fiy9rRGz9d
-        q3q+Ilp6U1sfh95tJZbijERDLeai4kQA9rYmqUkDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKIsWRmVeSWpSXmKPExsVy+t/xu7oMPgZxBvNjLR729rBaXPn6ns3i
-        RN8HVovLu+awWfx//JXVYu3nx+wWR950M1s0fr7P6MDhsXPWXXaPPRNPsnm0HHnL6nG/+ziT
-        x/otV1k8Pm+SC2CL0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAzMrHUMzQ2j7UyMlXSt7NJSc3J
-        LEst0rdL0Mu4u9a5YAtXRd/s5ewNjOs5uhg5OSQETCRedi1hBbGFBJYySvzZytPFyAEUl5E4
-        vr4MokRY4s+1LrYuRi6gkteMEnsXfwGrFxawlTjY1MAMYosIuEnseNPBClLELLCDUeJHxyEW
-        iI4bjBIrb68A62ATsJKY2L6KEcTmFbCTOLziABOIzSKgKjHxaw8biC0qECFxeMcsqBpBiZMz
-        n7CA2JxA9a9nvQOzmQXUJf7Mu8QMYYtL3HoynwnClpfY/nYO8wRGoVlI2mchaZmFpGUWkpYF
-        jCyrGEVSS4tz03OLjfSKE3OLS/PS9ZLzczcxAqNw27GfW3Ywdr0LPsQowMGoxMProGQQJ8Sa
-        WFZcmXuIUYKDWUmEt5MJKMSbklhZlVqUH19UmpNafIjRFOi5icxSosn5wASRVxJvaGpobmFp
-        aG5sbmxmoSTO2yFwMEZIID2xJDU7NbUgtQimj4mDU6qBsfftHNkTtdqqTzNu8KWpCi5+0Do3
-        ZIug7r6levtMjvm+EFnjkfh1tVe8zYG5U75eXefe/mu204l8Z22JBZ+33WHgfnbI9Eey0rX7
-        3QstRZcUsZ5aWMKj7H1R5E2HBAf3l2Pm3vWTm057pj3UOG+/Tueg3Mqfz1/PfeMY9LjsmmyL
-        ofJyz2dPDyuxFGckGmoxFxUnAgCwvaoz2AIAAA==
-X-CMS-MailID: 20200128145808eucas1p2e0de9fc3d007c682251ce1a320b6906d
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRmVeSWpSXmKPExsWy7djPc7qxgQZxBu92aFpc+fqezeLZrZPM
+        Fif6PrBaXN41h83ic+MuFgdWj95999g97ncfZ/J4v+8qm8fnTXIBLFFcNimpOZllqUX6dglc
+        Gae23GMpOCRYseFXL1sD40/eLkYODgkBE4nNf1S7GLk4hARWMEpc/DuXDcL5wihx49cqFgjn
+        M6NEw+0HTF2MnGAdMz61QlUtZ5TYefU6C0hCSOAto8SKE+YgtrCAucSjD6+YQWwRAVWJhf+W
+        sII0MAusZ5TYt+YJI0iCTcBKYmL7KjCbV8BOoul5I9ggFqCGnes2gsVFBSIkPj04zApRIyhx
+        cuYTsBpOAVeJEwdOs4HYzALiEreezGeCsOUltr+dwwyyTEJgHrvEu9cTWSDOdpGYsXUJ1AvC
+        Eq+Ob2GHsGUk/u8EaQZpWMco8bfjBVT3dkaJ5ZP/sUFUWUvcOfeLDRRkzAKaEut36UOEHSW+
+        NC1hh4Qkn8SNt4IQR/BJTNo2nRkizCvR0SYEUa0msWHZBjaYtV07VzJPYFSaheS1WUjemYXk
+        nVkIexcwsqxiFE8tLc5NTy02ykst1ytOzC0uzUvXS87P3cQITDOn/x3/soNx15+kQ4wCHIxK
+        PLwzVAzihFgTy4orcw8xSnAwK4nwdjIBhXhTEiurUovy44tKc1KLDzFKc7AoifMaL3oZKySQ
+        nliSmp2aWpBaBJNl4uCUamAUt7ZqCZf5taek+fon4U01hStc9D9bm6yczbr03CXmXRNMetOD
+        5Wd+OHHPIe+gDn+rqUZ96w6241cUXmRUGHpk/fCZaCvCdF073sIy6IBDl92ngNksL7avTYqd
+        UqXfbpizwOpqYOj/SxcU99lt2a/fKi16aCKj2Itp37QFFrsq+fc42AUesldiKc5INNRiLipO
+        BAAlr2qRLwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPIsWRmVeSWpSXmKPExsVy+t/xe7qxgQZxBsu7+SyufH3PZvHs1klm
+        ixN9H1gtLu+aw2bxuXEXiwOrR+++e+we97uPM3m833eVzePzJrkAlig9m6L80pJUhYz84hJb
+        pWhDCyM9Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jFNb7rEUHBKs2PCrl62B8Sdv
+        FyMnh4SAicSMT61sXYxcHEICSxklpjUcZe9i5ABKyEgcX18GUSMs8edaF1TNa0aJN68fMYIk
+        hAXMJR59eMUMYosIqEos/LeEFaSIWWA9o8Sm32uZITp+MUqsunubBaSKTcBKYmL7KrBuXgE7
+        iabnjWBxFqDunes2gsVFBSIkDu+YBVUjKHFy5hOwGk4BV4kTB06zgdjMAuoSf+ZdYoawxSVu
+        PZnPBGHLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucVGesWJucWleel6yfm5
+        mxiBkbXt2M8tOxi73gUfYhTgYFTi4XVQMogTYk0sK67MPcQowcGsJMLbyQQU4k1JrKxKLcqP
+        LyrNSS0+xGgK9NxEZinR5Hxg1OeVxBuaGppbWBqaG5sbm1koifN2CByMERJITyxJzU5NLUgt
+        gulj4uCUamDc0F02x0DtocPOKfaOa29m/fkccfFOdW3WevkTU/vF7EzdpE4VCS2+euKTUUsn
+        f/U3E8PJW+7NfZLeMHn1wQ3eCoahl6OXFDD7rf7R8PTXtFsb/Bk+CXz5lpbNYp+/t8z0GsOM
+        8GfX5dcc3GMvdU3pblRVT6lW0EXxTElJ75ryJjulDQybu/KUWIozEg21mIuKEwGC5rG5wgIA
+        AA==
+X-CMS-MailID: 20200128152101eucas1p1cfd0983fb01439e55279b62448fd8072
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454
+X-RootMTR: 20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454
-References: <CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com>
-        <CGME20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454@eucas1p1.samsung.com>
-        <20200128124912.chttagasucdpydhk@pathway.suse.cz>
+X-CMS-RootMailID: 20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c
+References: <CGME20200120100025eucas1p21f5e2da0fd7c1fcb33cb47a97e9e645c@eucas1p2.samsung.com>
+        <20200120100014.23488-1-kraxel@redhat.com>
+        <d143e43b-8a38-940e-3ae5-e7b830a74bb3@samsung.com>
+        <20200121055348.s4anrveo2z6avin6@sirius.home.kraxel.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 1/28/20 1:49 PM, Petr Mladek wrote:
-> On Tue 2020-01-28 18:23:46, anon anon wrote:
->> Dear Linux kernel developers,
+On 1/21/20 6:53 AM, Gerd Hoffmann wrote:
+>   Hi,
+> 
+>>> open.  Which can result in drm driver not being able to grab resources
+>>> (and fail initialization) because the firmware framebuffer still holds
+>>> them.  Reportedly plymouth can trigger this.
 >>
->> I found the crash "KASAN: slab-out-of-bounds Write in vgacon_scroll"
->> when running syzkaller, hope it's unknown:
+>> Could you please describe issue some more?
 >>
->> Linux version: Linux v4.17-rc4 (75bc37fefc44)
->> Branch: master
->>
->> This crash still exists on the latest linux kernel Linux v5.5-rc6.
->> Please get C repo and crash log generated by syzkaller, as well as the
->> .config I used for linux kernel from the attachment. Thanks.
+>> I guess that a problem is happening during DRM driver load while fbdev
+>> driver is loaded? I assume do_unregister_framebuffer() is called inside
+>> do_remove_conflicting_framebuffers()?
 > 
-> The out-of-bound access seems to be in vgacon_scroll() and thus
-> in vgacon code.
+> Yes.  Specifically bochs-drm.ko and efifb in virtual machines.
 > 
-> Unfortunately, most people in CC are printk-guys. They were mentioned
-> by ./scripts/get_maintainer.pl -f drivers/video/console/vgacon.c
-> just because the very last comment (tree wide pr_warning() clean up).
+>> At first glance it seems to be an user-space issue as it should not be
+>> holding references on /dev/fb0 while DRM driver is being loaded.
 > 
-> Bartolomej seems to be the only relevant name.
+> Well, the drm driver is loaded by udev like everything else.
 > 
-> Bartolomej,
-> 
-> are you going to look at it? Or should we add more people or some list
+> Dunno what plymouth (graphical boot screen tool) does to handle the
+> situation.  I guess listening to udev events.  So it should notice efifb
+> going away and drop the /dev/fb0 reference, but this races against
+> bochs-drm initializing.
 
-Help is welcomed as I'm not going to look at it in the foreseeable future
-(I'm busy enough with other things).
+It has been a week and there have been no alternative proposals to
+address the problem so I incline to accepting this approach..
 
-> (dri-devel@lists.freedesktop.org or linux-fbdev@vger.kernel.org) into CC?
+However please rework the patch slightly:
 
-Added to Cc:, thanks.
+- Don't wait in the usual fb_info removal code-path, only in the driver
+  replacement one. You can achieve this by adding additional "bool wait"
+  parameter to do_unregister_framebuffer()
 
-> Thanks,
-> Petr
+- Add a FIXME comment just before the wait loop with the description of
+  the issue (the above explanation of the race between plymouth and udev
+  would be fine) so we will remember why this workaround is needed.
+
+- Change patch summary to something more descriptive (i.e. to "fbdev:
+  workaround race on driver replacement").
 
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
+
+>>> Fix this by trying to wait until all references are gone.  Don't wait
+>>> forever though given that userspace might keep the file handle open.
+>>
+>> Where does the 1s maximum delay come from?
+> 
+> Pulled out something out of thin air which I expect being on the safe
+> side.  plymouth responding on the udev event should need only a small
+> fraction of that.
+> 
+> cheers,
+>   Gerd
