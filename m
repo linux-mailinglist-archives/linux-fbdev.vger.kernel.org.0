@@ -2,59 +2,34 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C49614CCF4
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jan 2020 16:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E0914CFB9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jan 2020 18:35:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbgA2PG6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jan 2020 10:06:58 -0500
-Received: from mail-qv1-f67.google.com ([209.85.219.67]:44433 "EHLO
-        mail-qv1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726401AbgA2PG6 (ORCPT
+        id S1727332AbgA2Rfa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Jan 2020 12:35:30 -0500
+Received: from www262.sakura.ne.jp ([202.181.97.72]:59422 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727103AbgA2Rf3 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jan 2020 10:06:58 -0500
-Received: by mail-qv1-f67.google.com with SMTP id n8so8123053qvg.11
-        for <linux-fbdev@vger.kernel.org>; Wed, 29 Jan 2020 07:06:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=InuKBX2au5PgZW6T2UC0fko2cqbcK+Z9FZ9mVarwTPc=;
-        b=UHycOpckqcmEHlujxurhr+2yzJXIdF3P7M/bxMu5HRHXUFMy8t5uMpeIIvIg1zAf5a
-         9O/hNk7D/5yWbFCcGAmsKMfAfuBtI7SpykFLDbojMWNcU+0Bltcr98zTC2AnVpvojl1U
-         1BVzpyYAs5zc7l1o40O6rgqjAzUvfLnkNpaYhIGOZlu6GfF+RSyCvS+ah7wl66zbboVN
-         GG5mZR2jJavEE60EAldt5qavIpwXX56JK5PB7+AHnQD9PbOXfurtN4qmGbPRvvNYdW7H
-         I/9oH45TGNXxln3ZF2BpyQ5Vu19jrkPl4KQ6KGwstRBIOiE0PfrRsDtOzoPS0dEOMS+j
-         pe9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=InuKBX2au5PgZW6T2UC0fko2cqbcK+Z9FZ9mVarwTPc=;
-        b=rx9CSdQJstGHGD14HCOOdxIoHc8BOfvymbknpehlWxoFb5Hah/Z2iUEnmJIcu8uhCM
-         wYg/Gw469PAAAFoJq2yTFQqMZAbb45kyruQBI9jd6YdIaEsBhJkRddJ4GTu9gUp5u67x
-         2+FuP7Jdqr9VhggAKlDBSlQ86eOGnMAKg7dYUtoQXrltfZcz+LnFUwswRU12z+9SZJMt
-         6SbAC1ipS96Wv60b1twqUpyRxYfDAiOUPxPKGJFAKqSEU17+gsZLQlbZ+P1plEE9JRA9
-         XX+tmXUksHQdhCaMj384FkQOf6ZUKPeJdOfzki6+oeRQmc6DPSyRDA0LDflmGYKIzQFO
-         Q/Kg==
-X-Gm-Message-State: APjAAAUL4CwCRu0kRQa5pLwx4ft6D2mUZIXQ+pjdrcYJBE7HGb9H2XFC
-        90ZFHonG2BHVPwhQoKn9QqN0NWjOBWG7O3vgRdmAtw==
-X-Google-Smtp-Source: APXvYqxGXya7Ub3SmIcL1siAW7Ztqg0GnN7Sc8WRiWlrbmRJSMj/AvnQ1pJy7D+Vx9YUjv/TNuT7lT3ae0M7TlCuxdc=
-X-Received: by 2002:a05:6214:1874:: with SMTP id eh20mr28761173qvb.122.1580310416499;
- Wed, 29 Jan 2020 07:06:56 -0800 (PST)
-MIME-Version: 1.0
-References: <CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com>
- <CGME20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454@eucas1p1.samsung.com>
- <20200128124912.chttagasucdpydhk@pathway.suse.cz> <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
- <20200129141517.GA13721@jagdpanzerIV.localdomain> <20200129141759.GB13721@jagdpanzerIV.localdomain>
- <20200129143754.GA15445@jagdpanzerIV.localdomain> <CACT4Y+bavHG8esK3jsv0V40+9+mUOFaSdOD1+prpw6L4Wv816g@mail.gmail.com>
-In-Reply-To: <CACT4Y+bavHG8esK3jsv0V40+9+mUOFaSdOD1+prpw6L4Wv816g@mail.gmail.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 29 Jan 2020 16:06:45 +0100
-Message-ID: <CACT4Y+arS5GsyUa0A0s51OAWj7eJohZsCoY-7cuoU0HVsyeZ6Q@mail.gmail.com>
+        Wed, 29 Jan 2020 12:35:29 -0500
+Received: from fsav109.sakura.ne.jp (fsav109.sakura.ne.jp [27.133.134.236])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 00THZ88v007101;
+        Thu, 30 Jan 2020 02:35:08 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav109.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav109.sakura.ne.jp);
+ Thu, 30 Jan 2020 02:35:08 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav109.sakura.ne.jp)
+Received: from [192.168.1.9] (softbank126040062084.bbtec.net [126.40.62.84])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 00THZ1EC007062
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 30 Jan 2020 02:35:08 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
 Subject: Re: KASAN: slab-out-of-bounds Write in vgacon_scroll
-To:     Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+To:     Dmitry Vyukov <dvyukov@google.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
 Cc:     anon anon <742991625abc@gmail.com>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Petr Mladek <pmladek@suse.com>,
         Kefeng Wang <wangkefeng.wang@huawei.com>,
@@ -62,93 +37,31 @@ Cc:     anon anon <742991625abc@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>,
         DRI <dri-devel@lists.freedesktop.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com>
+ <CGME20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454@eucas1p1.samsung.com>
+ <20200128124912.chttagasucdpydhk@pathway.suse.cz>
+ <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
+ <20200129141517.GA13721@jagdpanzerIV.localdomain>
+ <20200129141759.GB13721@jagdpanzerIV.localdomain>
+ <20200129143754.GA15445@jagdpanzerIV.localdomain>
+ <CACT4Y+bavHG8esK3jsv0V40+9+mUOFaSdOD1+prpw6L4Wv816g@mail.gmail.com>
+ <CACT4Y+arS5GsyUa0A0s51OAWj7eJohZsCoY-7cuoU0HVsyeZ6Q@mail.gmail.com>
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Message-ID: <0f852429-c69d-1520-2db5-6f2370799566@i-love.sakura.ne.jp>
+Date:   Thu, 30 Jan 2020 02:34:57 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <CACT4Y+arS5GsyUa0A0s51OAWj7eJohZsCoY-7cuoU0HVsyeZ6Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jan 29, 2020 at 3:59 PM Dmitry Vyukov <dvyukov@google.com> wrote:
->
-> On Wed, Jan 29, 2020 at 3:40 PM Sergey Senozhatsky
-> <sergey.senozhatsky@gmail.com> wrote:
-> >
-> > Cc-ing Dmitry and Tetsuo
-> >
-> > Original Message-id: CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com
-> >
-> > On (20/01/29 23:17), Sergey Senozhatsky wrote:
-> > > > Hmm. There is something strange about it. I use vga console quite
-> > > > often, and scrolling happens all the time, yet I can't get the same
-> > > > out-of-bounds report (nor have I ever seen it in the past), even with
-> > > > the reproducer. Is it supposed to be executed as it is, or are there
-> > > > any preconditions? Any chance that something that runs prior to that
-> > > > reproducer somehow impacts the system? Just asking.
-> > >
-> > > These questions were addressed to anon anon (742991625abc@gmail.com),
-> > > not to Bartlomiej.
-> >
-> > Could this be GCC_PLUGIN related?
->
-> syzkaller repros are meant to be self-contained, but they don't
-> capture the image and VM setup (or actual hardware). I suspect it may
-> have something to do with these bugs.
-> syzbot has reported a bunch of similar bugs in one of our internal kernels:
->
-> KASAN: slab-out-of-bounds Read in vgacon_scroll
-> KASAN: slab-out-of-bounds Read in vgacon_invert_region
-> KASAN: use-after-free Write in vgacon_scroll
-> KASAN: use-after-free Read in vgacon_scroll
-> KASAN: use-after-free Read in vgacon_invert_region
-> BUG: unable to handle kernel paging request in vgacon_scroll
->
-> But none on upstream kernels. That may be some difference in config?
-> I actually don't know what affects these things. When I tried to get
-> at least some coverage of that code in syzkaller I just understood
-> that relations between all these
-> tty/pty/ptmx/vt/pt/ldisc/vcs/vcsu/fb/con/dri/drm/etc are complex to
-> say the least...
+A fbcon bug found that allocation size was wrong.
+  https://groups.google.com/d/msg/syzkaller-bugs/TVGAFDeUKJo/uchTlvbFAQAJ
+You can try adding printk() for examining values because you have reproducers.
 
-
-It would also be good to figure out how we can cover this on syzbot/upstream.
-
-Our upstream config is:
-
-$ grep VGA upstream-kasan.config
-CONFIG_VGA_ARB=y
-CONFIG_VGA_ARB_MAX_GPUS=16
-# CONFIG_VGA_SWITCHEROO is not set
-CONFIG_FB_VGA16=y
-CONFIG_VGASTATE=y
-CONFIG_VGA_CONSOLE=y
-CONFIG_VGACON_SOFT_SCROLLBACK=y
-CONFIG_VGACON_SOFT_SCROLLBACK_SIZE=64
-# CONFIG_VGACON_SOFT_SCROLLBACK_PERSISTENT_ENABLE_BY_DEFAULT is not set
-CONFIG_LOGO_LINUX_VGA16=y
-# CONFIG_USB_SISUSBVGA is not set
-# CONFIG_VFIO_PCI_VGA is not set
-
-where anon's is:
-CONFIG_VGA_ARB=y
-CONFIG_VGA_ARB_MAX_GPUS=16
-# CONFIG_VGA_SWITCHEROO is not set
-# CONFIG_FB_VGA16 is not set
-CONFIG_VGA_CONSOLE=y
-CONFIG_VGACON_SOFT_SCROLLBACK=y
-CONFIG_VGACON_SOFT_SCROLLBACK_SIZE=64
-# CONFIG_VGACON_SOFT_SCROLLBACK_PERSISTENT_ENABLE_BY_DEFAULT is not set
-# CONFIG_LOGO_LINUX_VGA16 is not set
-# CONFIG_USB_SISUSBVGA is not set
-
-And the one on which are catching the bugs in vgacon on internal kernel is:
-CONFIG_VGA_ARB=y
-CONFIG_VGA_ARB_MAX_GPUS=16
-# CONFIG_VGA_SWITCHEROO is not set
-# CONFIG_VGASTATE is not set
-CONFIG_VGA_CONSOLE=y
-# CONFIG_VGACON_SOFT_SCROLLBACK is not set
-# CONFIG_USB_SISUSBVGA is not set
-# CONFIG_VFIO_PCI_VGA is not set
-
-
-May it be related to CONFIG_VGASTATE?
