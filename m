@@ -2,146 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2FD614C6CB
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jan 2020 08:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C02414CC27
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jan 2020 15:15:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726043AbgA2HUp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jan 2020 02:20:45 -0500
-Received: from mx2.suse.de ([195.135.220.15]:41108 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726037AbgA2HUp (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jan 2020 02:20:45 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 2DD8BADDD;
-        Wed, 29 Jan 2020 07:20:43 +0000 (UTC)
-Subject: Re: [PATCH] matroxfb: add Matrox MGA-G200eW board support
-To:     Rich Felker <dalias@libc.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20200125195506.GA16638@brightrain.aerifal.cx>
- <1466259e-efe7-df52-c05b-80042628d577@suse.de>
- <20200128185819.GG30412@brightrain.aerifal.cx>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <b667c38a-381e-3b32-3050-f35fcfe2dfcb@suse.de>
-Date:   Wed, 29 Jan 2020 08:20:38 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726178AbgA2OPV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Jan 2020 09:15:21 -0500
+Received: from mail-pf1-f170.google.com ([209.85.210.170]:43832 "EHLO
+        mail-pf1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726177AbgA2OPV (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 Jan 2020 09:15:21 -0500
+Received: by mail-pf1-f170.google.com with SMTP id s1so7883270pfh.10;
+        Wed, 29 Jan 2020 06:15:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=VVbzzG0X6Ket27YVQDpoYGdZSbXo+DC3nnTq4FkdtZo=;
+        b=I4CeqxN5dAk6/08hdqcE8P00etE7Vb7WQs5alGHfNFiZR+lO4mhNk9l4beVqAHxxY0
+         QlPEozoMIglOjkvFQYrkLl41bOBtHYiaHhoWkbj0Txuih6mO2A3ZWZlU+CGULQb6gPEp
+         xgpVQsx3GfLSzF10BIMdrenNh4l0u/qfQEunZnSrb51R6MyKyKTMBFv3T/Y2I1uO2ONP
+         v239qoxswlBoLHjdbnP5Q/F1aQbnkm4n8D5hIHdZ+w1+kT9Ys5HTEk7EMfPIQPPcypNO
+         wdPJnv+mbI2W903tNUQyzhREuwBlncxwMYNmBW536c7JUyXs+sr4dtOv+SsTsjQ3EGtq
+         kKkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=VVbzzG0X6Ket27YVQDpoYGdZSbXo+DC3nnTq4FkdtZo=;
+        b=QbMsVfQV+1fSIBW73FlJ/JzgZ/jUYDh3vwTAQxLzOp46cR91QUrch+fl942T45Vuc4
+         EI6PwPm+kMrRhP9afUufVYBHQIJsNAAj5VCdusS2+Sr+m3WKsXZwCbrltZcL9eBH7DFy
+         SiA+nUIhAoheSmoxg0jIBPudXuTqPiTkdv+Mmj5c7W8ysU3xJxQn2J0YvmoXUVk1xXDD
+         1Efr38qHjME2yo4LbJCTVXLBTMeZ+AvrgLJ/DcnSkXoblNlwaIGNK+xuEEaqOUUSV1SS
+         18nXql5BvNv2EIyp5W6phvWeakSU/feDcddBlkQgqk3C8VfoOeiBn3MECEQuK6kdrgw3
+         IuZQ==
+X-Gm-Message-State: APjAAAVie549h0/JZ9HWgnY0rcBaK+wIKhaoblpzfjfRZkaNbNBXS+Wr
+        AiK7Kc4pzyHBNLGGzyLb72Y=
+X-Google-Smtp-Source: APXvYqyTDXo/6RaGs+c+wYhxBhyJhEJcaTTgG9q+fTKW8Tk7Agy5LbFJ2OqN5YCuxHUvJMBopVMWIA==
+X-Received: by 2002:a63:6c09:: with SMTP id h9mr29888623pgc.34.1580307320595;
+        Wed, 29 Jan 2020 06:15:20 -0800 (PST)
+Received: from localhost (167.117.30.125.dy.iij4u.or.jp. [125.30.117.167])
+        by smtp.gmail.com with ESMTPSA id g7sm3057573pfq.33.2020.01.29.06.15.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2020 06:15:19 -0800 (PST)
+From:   Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+X-Google-Original-From: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Date:   Wed, 29 Jan 2020 23:15:17 +0900
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Petr Mladek <pmladek@suse.com>, anon anon <742991625abc@gmail.com>,
+        wangkefeng.wang@huawei.com, sergey.senozhatsky@gmail.com,
+        syzkaller@googlegroups.com, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: KASAN: slab-out-of-bounds Write in vgacon_scroll
+Message-ID: <20200129141517.GA13721@jagdpanzerIV.localdomain>
+References: <CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com>
+ <CGME20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454@eucas1p1.samsung.com>
+ <20200128124912.chttagasucdpydhk@pathway.suse.cz>
+ <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <20200128185819.GG30412@brightrain.aerifal.cx>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="3gezrqnn607yPBbay9tsQHGpVxxVVhmKm"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---3gezrqnn607yPBbay9tsQHGpVxxVVhmKm
-Content-Type: multipart/mixed; boundary="jiHI8bmAKGzPRvPZHeFhvF89VkNz8nEUl";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Rich Felker <dalias@libc.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>
-Message-ID: <b667c38a-381e-3b32-3050-f35fcfe2dfcb@suse.de>
-Subject: Re: [PATCH] matroxfb: add Matrox MGA-G200eW board support
-References: <20200125195506.GA16638@brightrain.aerifal.cx>
- <1466259e-efe7-df52-c05b-80042628d577@suse.de>
- <20200128185819.GG30412@brightrain.aerifal.cx>
-In-Reply-To: <20200128185819.GG30412@brightrain.aerifal.cx>
+On (20/01/28 15:58), Bartlomiej Zolnierkiewicz wrote:
+[..]
+> 
+> Help is welcomed as I'm not going to look at it in the foreseeable future
+> (I'm busy enough with other things).
+> 
+> > (dri-devel@lists.freedesktop.org or linux-fbdev@vger.kernel.org) into CC?
+> 
+> Added to Cc:, thanks.
 
---jiHI8bmAKGzPRvPZHeFhvF89VkNz8nEUl
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Hmm. There is something strange about it. I use vga console quite
+often, and scrolling happens all the time, yet I can't get the same
+out-of-bounds report (nor have I ever seen it in the past), even with
+the reproducer. Is it supposed to be executed as it is, or are there
+any preconditions? Any chance that something that runs prior to that
+reproducer somehow impacts the system? Just asking.
 
-Hi
-
-Am 28.01.20 um 19:58 schrieb Rich Felker:
-> On Mon, Jan 27, 2020 at 08:36:07AM +0100, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 25.01.20 um 20:55 schrieb Rich Felker:
->>> Signed-off-by: Rich Felker <dalias@libc.org>
->>> --
->>> I've had this lying around a while and figure I should send it
->>> upsteam; it's needed to support the onboard video on my Spectre-free
->>> Atom S1260 server board.
->>
->> This HW is supported by mgag200, which is maintained. Can't you use th=
-at?
->=20
-> Perhaps; I wasn't aware it existed. I'll give it a try. It still might
-> be nice to apply my patch though since the matroxfb driver works with
-> it and only fails to support it because of not knowing the device id.
-
-Well, I have no say about applying your patch. You can ping me however,
-if mgag200 doesn't work for you.
-
-Best regards
-Thomas
-
->=20
-> Rich
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---jiHI8bmAKGzPRvPZHeFhvF89VkNz8nEUl--
-
---3gezrqnn607yPBbay9tsQHGpVxxVVhmKm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl4xMkoACgkQaA3BHVML
-eiO5kggAvRGcA7e/xtccGdTsgQhlq4Wf9Ms0D/DgpOjK0at6Q4iK+nwAeui3fb4A
-Jo8iqTqzm6LOoH+kTknTIXMlFnkf06t7canfBOv0jqkM82L1AEdp28NlXMM9AuTk
-/TngvH4q7N/XRhjNhbav1maqKVaQR5/UhwbQGbJsaX1MCOLmyfvjIRMXsczdoxBh
-UAPLVgjdhvXZPj/lYTqPRTJSaOTK0EY44Qv3Ywr0oaUdOaRiqK3PLbwU9tXuQ4PS
-Uhfcu3DQQ1cmGuZPUG9ben0HMeHZU1oqYMvA/tPMjP4SX6nulSsyYNkyrXf8e3xT
-g55Uij0uK8FVRlq3x12ftXLXDsnRNA==
-=vbNs
------END PGP SIGNATURE-----
-
---3gezrqnn607yPBbay9tsQHGpVxxVVhmKm--
+	-ss
