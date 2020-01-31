@@ -2,66 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E0914CFB9
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jan 2020 18:35:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A73514F3F4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 31 Jan 2020 22:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727332AbgA2Rfa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jan 2020 12:35:30 -0500
-Received: from www262.sakura.ne.jp ([202.181.97.72]:59422 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727103AbgA2Rf3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jan 2020 12:35:29 -0500
-Received: from fsav109.sakura.ne.jp (fsav109.sakura.ne.jp [27.133.134.236])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 00THZ88v007101;
-        Thu, 30 Jan 2020 02:35:08 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav109.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav109.sakura.ne.jp);
- Thu, 30 Jan 2020 02:35:08 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav109.sakura.ne.jp)
-Received: from [192.168.1.9] (softbank126040062084.bbtec.net [126.40.62.84])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 00THZ1EC007062
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 30 Jan 2020 02:35:08 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: KASAN: slab-out-of-bounds Write in vgacon_scroll
-To:     Dmitry Vyukov <dvyukov@google.com>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc:     anon anon <742991625abc@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        syzkaller <syzkaller@googlegroups.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-References: <CAA=061EoW8AmjUrBLsJy5nTDz-1jeArLeB+z6HJuyZud0zZXug@mail.gmail.com>
- <CGME20200128124918eucas1p1f0ce2b2b7b33a5d63d33f876ef30f454@eucas1p1.samsung.com>
- <20200128124912.chttagasucdpydhk@pathway.suse.cz>
- <4ab69855-6112-52f4-bee2-3358664d0c20@samsung.com>
- <20200129141517.GA13721@jagdpanzerIV.localdomain>
- <20200129141759.GB13721@jagdpanzerIV.localdomain>
- <20200129143754.GA15445@jagdpanzerIV.localdomain>
- <CACT4Y+bavHG8esK3jsv0V40+9+mUOFaSdOD1+prpw6L4Wv816g@mail.gmail.com>
- <CACT4Y+arS5GsyUa0A0s51OAWj7eJohZsCoY-7cuoU0HVsyeZ6Q@mail.gmail.com>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <0f852429-c69d-1520-2db5-6f2370799566@i-love.sakura.ne.jp>
-Date:   Thu, 30 Jan 2020 02:34:57 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1726180AbgAaVrF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 31 Jan 2020 16:47:05 -0500
+Received: from mga17.intel.com ([192.55.52.151]:30307 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726163AbgAaVrF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 31 Jan 2020 16:47:05 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jan 2020 13:47:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,387,1574150400"; 
+   d="scan'208";a="262691440"
+Received: from helsinki.fi.intel.com ([10.237.66.145])
+  by fmsmga002.fm.intel.com with ESMTP; 31 Jan 2020 13:47:03 -0800
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH 00/18] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Fri, 31 Jan 2020 23:46:43 +0200
+Message-Id: <20200131214701.1085737-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <CACT4Y+arS5GsyUa0A0s51OAWj7eJohZsCoY-7cuoU0HVsyeZ6Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-A fbcon bug found that allocation size was wrong.
-  https://groups.google.com/d/msg/syzkaller-bugs/TVGAFDeUKJo/uchTlvbFAQAJ
-You can try adding printk() for examining values because you have reproducers.
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
+
+Gwan-gyeong Mun (18):
+  drm: add DP 1.4 VSC SDP Payload related enums
+  drm/i915: Add DP VSC SDP payload data to intel_crtc_state.infoframes
+  drm/i915/dp: Add compute routine for DP VSC SDP
+  drm/i915/dp: Add compute routine for DP HDR Metadata Infoframe SDP
+  drm/i915/dp: Add writing of DP SDPs (Secondary Data Packet)
+  video/hdmi: Add Unpack only function for DRM infoframe
+  drm/i915/dp: Read out DP SDPs (Secondary Data Packet)
+  drm/i915/dp: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on intel_ddi_post_disable_dp()
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
+
+ drivers/gpu/drm/i915/display/intel_ddi.c      |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c  |  62 ++
+ .../drm/i915/display/intel_display_types.h    |   1 +
+ drivers/gpu/drm/i915/display/intel_dp.c       | 775 ++++++++++++++----
+ drivers/gpu/drm/i915/display/intel_dp.h       |  21 +-
+ drivers/gpu/drm/i915/display/intel_psr.c      |  54 +-
+ drivers/gpu/drm/i915/display/intel_psr.h      |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h               |  12 +
+ drivers/video/hdmi.c                          |  58 +-
+ include/drm/drm_dp_helper.h                   |  45 +
+ include/linux/hdmi.h                          |   2 +
+ 11 files changed, 837 insertions(+), 218 deletions(-)
+
+-- 
+2.24.1
 
