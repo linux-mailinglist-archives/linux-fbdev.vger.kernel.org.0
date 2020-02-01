@@ -2,276 +2,269 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BBA14F411
-	for <lists+linux-fbdev@lfdr.de>; Fri, 31 Jan 2020 22:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD6D14F7CD
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Feb 2020 13:43:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbgAaVrc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 31 Jan 2020 16:47:32 -0500
-Received: from mga17.intel.com ([192.55.52.151]:30307 "EHLO mga17.intel.com"
+        id S1726480AbgBAMn1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Feb 2020 07:43:27 -0500
+Received: from mga14.intel.com ([192.55.52.115]:9839 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726109AbgAaVrc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 31 Jan 2020 16:47:32 -0500
+        id S1726469AbgBAMn1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 1 Feb 2020 07:43:27 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jan 2020 13:47:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,387,1574150400"; 
-   d="scan'208";a="262691532"
-Received: from helsinki.fi.intel.com ([10.237.66.145])
-  by fmsmga002.fm.intel.com with ESMTP; 31 Jan 2020 13:47:30 -0800
-From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 18/18] drm/i915/psr: Use new DP VSC SDP compute routine on PSR
-Date:   Fri, 31 Jan 2020 23:47:01 +0200
-Message-Id: <20200131214701.1085737-19-gwan-gyeong.mun@intel.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200131214701.1085737-1-gwan-gyeong.mun@intel.com>
-References: <20200131214701.1085737-1-gwan-gyeong.mun@intel.com>
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Feb 2020 04:43:27 -0800
+X-IronPort-AV: E=Sophos;i="5.70,389,1574150400"; 
+   d="scan'208";a="223424880"
+Received: from nreina-mobl.ger.corp.intel.com (HELO localhost) ([10.252.52.61])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Feb 2020 04:43:24 -0800
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        intel-gfx@lists.freedesktop.org
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [Intel-gfx] [PATCH 08/18] drm/i915/dp: Add logging function for DP VSC SDP
+In-Reply-To: <20200131214701.1085737-9-gwan-gyeong.mun@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200131214701.1085737-1-gwan-gyeong.mun@intel.com> <20200131214701.1085737-9-gwan-gyeong.mun@intel.com>
+Date:   Sat, 01 Feb 2020 14:43:22 +0200
+Message-ID: <87wo965vh1.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In order to use a common VSC SDP Colorimetry calculating code on PSR,
-it uses a new psr vsc sdp compute routine.
-Because PSR routine has its own scenario and timings of writing a VSC SDP,
-the current PSR routine needs to have its own intel_dp_vsc_sdp structure
-member variable on struct i915_psr.
+On Fri, 31 Jan 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
+> When receiving video it is very useful to be able to log DP VSC SDP.
+> This greatly simplifies debugging.
 
-In order to include "struct intel_dp_vsc_sdp" to "struct i915_psr",
-it moves defintion of "struct intel_dp_vsc_sdp" to i915_drv.h .
-And in order to calculate colorimetry information, intel_psr_update()
-function and intel_psr_enable() function extend a drm_connector_state
-argument.
+Seems like a lot of the functions should really be in drm core.
 
-There are no changes to PSR mechanism.
+BR,
+Jani.
 
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c      |  4 +-
- .../drm/i915/display/intel_display_types.h    | 11 ----
- drivers/gpu/drm/i915/display/intel_psr.c      | 54 ++++++-------------
- drivers/gpu/drm/i915/display/intel_psr.h      |  6 ++-
- drivers/gpu/drm/i915/i915_drv.h               | 12 +++++
- 5 files changed, 33 insertions(+), 54 deletions(-)
+>
+> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+> ---
+>  drivers/gpu/drm/i915/display/intel_dp.c | 173 ++++++++++++++++++++++++
+>  drivers/gpu/drm/i915/display/intel_dp.h |   4 +
+>  2 files changed, 177 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> index 6756030692c8..e33488222ac5 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -5090,6 +5090,179 @@ void intel_read_dp_sdp(struct intel_encoder *encoder,
+>  	}
+>  }
+>  
+> +static const char *dp_colorspace_get_name(enum dp_colorspace colorspace)
+> +{
+> +	if (colorspace < 0 || colorspace > DP_COLORSPACE_RESERVED)
+> +		return "Invalid";
+> +
+> +	switch (colorspace) {
+> +	case DP_COLORSPACE_RGB:
+> +		return "RGB";
+> +	case DP_COLORSPACE_YUV444:
+> +		return "YUV444";
+> +	case DP_COLORSPACE_YUV422:
+> +		return "YUV422";
+> +	case DP_COLORSPACE_YUV420:
+> +		return "YUV420";
+> +	case DP_COLORSPACE_Y_ONLY:
+> +		return "Y_ONLY";
+> +	case DP_COLORSPACE_RAW:
+> +		return "RAW";
+> +	default:
+> +		return "Reserved";
+> +	}
+> +}
+> +
+> +static const char *dp_colorimetry_get_name(enum dp_colorspace colorspace,
+> +					   enum dp_colorimetry colorimetry)
+> +{
+> +	if (colorspace < 0 || colorspace > DP_COLORSPACE_RESERVED)
+> +		return "Invalid";
+> +
+> +	switch (colorimetry) {
+> +	case DP_COLORIMETRY_DEFAULT:
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "sRGB";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "BT.601";
+> +		case DP_COLORSPACE_Y_ONLY:
+> +			return "DICOM PS3.14";
+> +		case DP_COLORSPACE_RAW:
+> +			return "Custom Color Profile";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_RGB_WIDE_FIXED: /* and DP_COLORIMETRY_BT709_YCC */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "Wide Fixed";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "BT.709";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_RGB_WIDE_FLOAT: /* and DP_COLORIMETRY_XVYCC_601 */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "Wide Float";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "xvYCC 601";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_OPRGB: /* and DP_COLORIMETRY_XVYCC_709 */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "OpRGB";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "xvYCC 709";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_DCI_P3_RGB: /* and DP_COLORIMETRY_SYCC_601 */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "DCI-P3";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "sYCC 601";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_RGB_CUSTOM: /* and DP_COLORIMETRY_OPYCC_601 */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "Custom Profile";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "OpYCC 601";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_BT2020_RGB: /* and DP_COLORIMETRY_BT2020_CYCC */
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_RGB:
+> +			return "BT.2020 RGB";
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "BT.2020 CYCC";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	case DP_COLORIMETRY_BT2020_YCC:
+> +		switch (colorspace) {
+> +		case DP_COLORSPACE_YUV444:
+> +		case DP_COLORSPACE_YUV422:
+> +		case DP_COLORSPACE_YUV420:
+> +			return "BT.2020 YCC";
+> +		default:
+> +			return "Reserved";
+> +		}
+> +	default:
+> +		return "Invalid";
+> +	}
+> +}
+> +
+> +static const char *dp_dynamic_range_get_name(enum dp_dynamic_range dynamic_range)
+> +{
+> +	switch (dynamic_range) {
+> +	case DP_DYNAMIC_RANGE_VESA:
+> +		return "VESA range";
+> +	case DP_DYNAMIC_RANGE_CTA:
+> +		return "CTA range";
+> +	default:
+> +		return "Invalid";
+> +	}
+> +}
+> +
+> +static const char *dp_content_type_get_name(enum dp_content_type content_type)
+> +{
+> +	switch (content_type) {
+> +	case DP_CONTENT_TYPE_NOT_DEFINED:
+> +		return "Not defined";
+> +	case DP_CONTENT_TYPE_GRAPHICS:
+> +		return "Graphics";
+> +	case DP_CONTENT_TYPE_PHOTO:
+> +		return "Photo";
+> +	case DP_CONTENT_TYPE_VIDEO:
+> +		return "Video";
+> +	case DP_CONTENT_TYPE_GAME:
+> +		return "Game";
+> +	default:
+> +		return "Reserved";
+> +	}
+> +}
+> +
+> +#define dp_sdp_log(fmt, ...) dev_printk(level, dev, fmt, ##__VA_ARGS__)
+> +void intel_dp_vsc_sdp_log(const char *level, struct device *dev,
+> +			  const struct intel_dp_vsc_sdp *vsc)
+> +{
+> +	dp_sdp_log("DP SDP: %s, revision %u, length %u\n", "VSC",
+> +		   vsc->revision, vsc->length);
+> +	dp_sdp_log("    colorspace: %s\n",
+> +			dp_colorspace_get_name(vsc->colorspace));
+> +	dp_sdp_log("    colorimetry: %s\n",
+> +			dp_colorimetry_get_name(vsc->colorspace, vsc->colorimetry));
+> +	dp_sdp_log("    bpc: %u\n",vsc->bpc);
+> +	dp_sdp_log("    dynamic range: %s\n",
+> +			dp_dynamic_range_get_name(vsc->dynamic_range));
+> +	dp_sdp_log("    content type: %s\n",
+> +			dp_content_type_get_name(vsc->content_type));
+> +}
+> +#undef dp_sdp_log
+> +
+>  static void
+>  intel_dp_setup_vsc_sdp(struct intel_dp *intel_dp,
+>  		       const struct intel_crtc_state *crtc_state,
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.h b/drivers/gpu/drm/i915/display/intel_dp.h
+> index e8f9ba962d09..03b300b58fd0 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.h
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.h
+> @@ -7,6 +7,7 @@
+>  #define __INTEL_DP_H__
+>  
+>  #include <linux/types.h>
+> +#include <linux/device.h>
+>  
+>  #include <drm/i915_drm.h>
+>  
+> @@ -23,6 +24,7 @@ struct intel_crtc_state;
+>  struct intel_digital_port;
+>  struct intel_dp;
+>  struct intel_encoder;
+> +struct intel_dp_vsc_sdp;
+>  
+>  struct link_config_limits {
+>  	int min_clock, max_clock;
+> @@ -122,6 +124,8 @@ void intel_dp_set_infoframes(struct intel_encoder *encoder, bool enable,
+>  void intel_read_dp_sdp(struct intel_encoder *encoder,
+>  		       struct intel_crtc_state *crtc_state,
+>  		       unsigned int type);
+> +void intel_dp_vsc_sdp_log(const char *level, struct device *dev,
+> +			  const struct intel_dp_vsc_sdp *vsc);
+>  bool intel_digital_port_connected(struct intel_encoder *encoder);
+>  
+>  static inline unsigned int intel_dp_unused_lane_mask(int lane_count)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 8509cd33569e..00b46c45f6a8 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3901,7 +3901,7 @@ static void intel_enable_ddi_dp(struct intel_encoder *encoder,
- 		intel_dp_stop_link_train(intel_dp);
- 
- 	intel_edp_backlight_on(crtc_state, conn_state);
--	intel_psr_enable(intel_dp, crtc_state);
-+	intel_psr_enable(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-@@ -4063,7 +4063,7 @@ static void intel_ddi_update_pipe_dp(struct intel_encoder *encoder,
- 
- 	intel_ddi_set_dp_msa(crtc_state, conn_state);
- 
--	intel_psr_update(intel_dp, crtc_state);
-+	intel_psr_update(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 81112d63342c..09438a661a97 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -780,17 +780,6 @@ enum intel_output_format {
- 	INTEL_OUTPUT_FORMAT_YCBCR444,
- };
- 
--struct intel_dp_vsc_sdp {
--	unsigned char sdp_type; /* Secondary-data Packet Type */
--	unsigned char revision; /* Revision Number */
--	unsigned char length; /* Number of Valid Data Bytes */
--	enum dp_colorspace colorspace;
--	enum dp_colorimetry colorimetry;
--	int bpc;
--	enum dp_dynamic_range dynamic_range;
--	enum dp_content_type content_type;
--};
--
- struct intel_crtc_state {
- 	/*
- 	 * uapi (drm) state. This is the software state shown to userspace.
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index e41ed962aa80..a4564607b6c5 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -330,39 +330,6 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
- 	}
- }
- 
--static void intel_psr_setup_vsc(struct intel_dp *intel_dp,
--				const struct intel_crtc_state *crtc_state)
--{
--	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
--	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
--	struct dp_sdp psr_vsc;
--
--	if (dev_priv->psr.psr2_enabled) {
--		/* Prepare VSC Header for SU as per EDP 1.4 spec, Table 6.11 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		if (dev_priv->psr.colorimetry_support) {
--			psr_vsc.sdp_header.HB2 = 0x5;
--			psr_vsc.sdp_header.HB3 = 0x13;
--		} else {
--			psr_vsc.sdp_header.HB2 = 0x4;
--			psr_vsc.sdp_header.HB3 = 0xe;
--		}
--	} else {
--		/* Prepare VSC packet as per EDP 1.3 spec, Table 3.10 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		psr_vsc.sdp_header.HB2 = 0x2;
--		psr_vsc.sdp_header.HB3 = 0x8;
--	}
--
--	intel_dig_port->write_infoframe(&intel_dig_port->base,
--					crtc_state,
--					DP_SDP_VSC, &psr_vsc, sizeof(psr_vsc));
--}
--
- static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-@@ -841,9 +808,12 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- }
- 
- static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
--				    const struct intel_crtc_state *crtc_state)
-+				    const struct intel_crtc_state *crtc_state,
-+				    const struct drm_connector_state *conn_state)
- {
- 	struct intel_dp *intel_dp = dev_priv->psr.dp;
-+	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
-+	struct intel_encoder *encoder = &intel_dig_port->base;
- 	u32 val;
- 
- 	WARN_ON(dev_priv->psr.enabled);
-@@ -881,7 +851,9 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
- 
- 	DRM_DEBUG_KMS("Enabling PSR%s\n",
- 		      dev_priv->psr.psr2_enabled ? "2" : "1");
--	intel_psr_setup_vsc(intel_dp, crtc_state);
-+	intel_dp_compute_psr_vsc_sdp(intel_dp, crtc_state, conn_state,
-+				     &dev_priv->psr.vsc);
-+	intel_write_dp_vsc_sdp(encoder, crtc_state, &dev_priv->psr.vsc);
- 	intel_psr_enable_sink(intel_dp);
- 	intel_psr_enable_source(intel_dp, crtc_state);
- 	dev_priv->psr.enabled = true;
-@@ -893,11 +865,13 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
-  * intel_psr_enable - Enable PSR
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This function can only be called after the pipe is fully trained and enabled.
-  */
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 
-@@ -916,7 +890,7 @@ void intel_psr_enable(struct intel_dp *intel_dp,
- 		goto unlock;
- 	}
- 
--	intel_psr_enable_locked(dev_priv, crtc_state);
-+	intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-@@ -1049,13 +1023,15 @@ static void psr_force_hw_tracking_exit(struct drm_i915_private *dev_priv)
-  * intel_psr_update - Update PSR state
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This functions will update PSR states, disabling, enabling or switching PSR
-  * version when executing fastsets. For full modeset, intel_psr_disable() and
-  * intel_psr_enable() should be called instead.
-  */
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 	struct i915_psr *psr = &dev_priv->psr;
-@@ -1090,7 +1066,7 @@ void intel_psr_update(struct intel_dp *intel_dp,
- 		intel_psr_disable_locked(intel_dp);
- 
- 	if (enable)
--		intel_psr_enable_locked(dev_priv, crtc_state);
-+		intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.h b/drivers/gpu/drm/i915/display/intel_psr.h
-index c58a1d438808..a003fb18105a 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.h
-+++ b/drivers/gpu/drm/i915/display/intel_psr.h
-@@ -17,11 +17,13 @@ struct intel_dp;
- #define CAN_PSR(dev_priv) (HAS_PSR(dev_priv) && dev_priv->psr.sink_support)
- void intel_psr_init_dpcd(struct intel_dp *intel_dp);
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- void intel_psr_disable(struct intel_dp *intel_dp,
- 		       const struct intel_crtc_state *old_crtc_state);
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- int intel_psr_debug_set(struct drm_i915_private *dev_priv, u64 value);
- void intel_psr_invalidate(struct drm_i915_private *dev_priv,
- 			  unsigned frontbuffer_bits,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index a8a08c63278e..10a914fdfb10 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -471,6 +471,17 @@ struct i915_drrs {
- 	enum drrs_support_type type;
- };
- 
-+struct intel_dp_vsc_sdp {
-+	unsigned char sdp_type; /* Secondary-data Packet Type */
-+	unsigned char revision; /* Revision Number */
-+	unsigned char length; /* Number of Valid Data Bytes */
-+	enum dp_colorspace colorspace;
-+	enum dp_colorimetry colorimetry;
-+	int bpc;
-+	enum dp_dynamic_range dynamic_range;
-+	enum dp_content_type content_type;
-+};
-+
- struct i915_psr {
- 	struct mutex lock;
- 
-@@ -504,6 +515,7 @@ struct i915_psr {
- 	u32 dc3co_exit_delay;
- 	struct delayed_work idle_work;
- 	bool initially_probed;
-+	struct intel_dp_vsc_sdp vsc;
- };
- 
- #define QUIRK_LVDS_SSC_DISABLE (1<<1)
 -- 
-2.24.1
-
+Jani Nikula, Intel Open Source Graphics Center
