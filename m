@@ -2,149 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4A91533A4
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2020 16:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C2A15342B
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2020 16:41:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726320AbgBEPKG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 5 Feb 2020 10:10:06 -0500
-Received: from mga14.intel.com ([192.55.52.115]:4147 "EHLO mga14.intel.com"
+        id S1726592AbgBEPll (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 5 Feb 2020 10:41:41 -0500
+Received: from mga01.intel.com ([192.55.52.88]:54055 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726119AbgBEPKG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 5 Feb 2020 10:10:06 -0500
+        id S1726413AbgBEPll (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 5 Feb 2020 10:41:41 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Feb 2020 07:10:05 -0800
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Feb 2020 07:41:41 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,405,1574150400"; 
-   d="scan'208";a="343669299"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
-  by fmsmga001.fm.intel.com with ESMTP; 05 Feb 2020 07:10:05 -0800
-Received: from fmsmsx608.amr.corp.intel.com (10.18.126.88) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 5 Feb 2020 07:10:04 -0800
-Received: from fmsmsx608.amr.corp.intel.com (10.18.126.88) by
- fmsmsx608.amr.corp.intel.com (10.18.126.88) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 5 Feb 2020 07:08:21 -0800
-Received: from bgsmsx154.gar.corp.intel.com (10.224.48.47) by
- fmsmsx608.amr.corp.intel.com (10.18.126.88) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Wed, 5 Feb 2020 07:08:20 -0800
-Received: from bgsmsx104.gar.corp.intel.com ([169.254.5.97]) by
- BGSMSX154.gar.corp.intel.com ([169.254.7.238]) with mapi id 14.03.0439.000;
- Wed, 5 Feb 2020 20:36:56 +0530
-From:   "Shankar, Uma" <uma.shankar@intel.com>
-To:     "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-CC:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-Subject: RE: [PATCH v3 03/17] drm/i915/dp: Add compute routine for DP HDR
- Metadata Infoframe SDP
-Thread-Topic: [PATCH v3 03/17] drm/i915/dp: Add compute routine for DP HDR
- Metadata Infoframe SDP
-Thread-Index: AQHV2uiMDE8we7SfPkCKcmmWhS6BNKgMtS+A
-Date:   Wed, 5 Feb 2020 15:06:55 +0000
-Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F823DCE62@BGSMSX104.gar.corp.intel.com>
-References: <20200203232014.906651-1-gwan-gyeong.mun@intel.com>
- <20200203232014.906651-4-gwan-gyeong.mun@intel.com>
-In-Reply-To: <20200203232014.906651-4-gwan-gyeong.mun@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ctpclassification: CTP_NT
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMmMyNDZlOWMtNDE5Mi00ZjQxLWE4NDgtNTAyNzA4ZGY4MGQyIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRndDTXgxMVwvd3V0dDNQbUR3bmJ6M3ArNlFseGxaZWcwbXpxbzhqelFZaTJQbFUxUXB3NlJnaDlcL2NUQmpRdk5tIn0=
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.223.10.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+X-IronPort-AV: E=Sophos;i="5.70,406,1574150400"; 
+   d="scan'208";a="224950122"
+Received: from helsinki.fi.intel.com ([10.237.66.164])
+  by fmsmga007.fm.intel.com with ESMTP; 05 Feb 2020 07:41:40 -0800
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v4 00/17] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Wed,  5 Feb 2020 17:41:20 +0200
+Message-Id: <20200205154137.1202389-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
 
+v2: Minor style fix
+v3: 
+  - Add a new drm data structure for DP VSC SDP
+  - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
+  - Move logging functions to drm core [Jani N]
+    And use drm core's DP VSC SDP logging function
+  - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+    used for HDMI), when intel_dp_set_infoframes() function will be called.
+v4:
+  - Use struct drm_device logging macros
+  - Rebased
 
-> -----Original Message-----
-> From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of Gwan-
-> gyeong Mun
-> Sent: Tuesday, February 4, 2020 4:50 AM
-> To: intel-gfx@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org; dri-devel@lists.freedesktop.org
-> Subject: [PATCH v3 03/17] drm/i915/dp: Add compute routine for DP HDR Metadata
-> Infoframe SDP
-> 
-> It stores computed dp hdr metadata infoframe sdp to infoframes.drm of crtc state.
-> It referenced intel_hdmi_compute_drm_infoframe().
-> 
-> While computing, we'll also fill out the inforames.enable bitmask appropriately.
+Gwan-gyeong Mun (17):
+  drm: add DP 1.4 VSC SDP Payload related enums and a structure
+  drm/i915/dp: Add compute routine for DP VSC SDP
+  drm/i915/dp: Add compute routine for DP HDR Metadata Infoframe SDP
+  drm/i915/dp: Add writing of DP SDPs (Secondary Data Packet)
+  video/hdmi: Add Unpack only function for DRM infoframe
+  drm/i915/dp: Read out DP SDPs (Secondary Data Packet)
+  drm: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on intel_ddi_post_disable_dp()
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
 
-Typo in infoframes
+ drivers/gpu/drm/drm_dp_helper.c               | 174 +++++
+ drivers/gpu/drm/i915/display/intel_ddi.c      |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c  |  62 ++
+ .../drm/i915/display/intel_display_types.h    |   1 +
+ drivers/gpu/drm/i915/display/intel_dp.c       | 614 +++++++++++++-----
+ drivers/gpu/drm/i915/display/intel_dp.h       |  18 +-
+ drivers/gpu/drm/i915/display/intel_psr.c      |  54 +-
+ drivers/gpu/drm/i915/display/intel_psr.h      |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h               |   1 +
+ drivers/video/hdmi.c                          |  58 +-
+ include/drm/drm_dp_helper.h                   |  60 ++
+ include/linux/hdmi.h                          |   2 +
+ 12 files changed, 851 insertions(+), 218 deletions(-)
 
-With the above fixed, this is
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+-- 
+2.24.1
 
-> 
-> v2: Wrap a long line.
-> 
-> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-> ---
->  drivers/gpu/drm/i915/display/intel_dp.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c
-> b/drivers/gpu/drm/i915/display/intel_dp.c
-> index 2bdc43c80e03..b265b5c599f2 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -2463,6 +2463,27 @@ static void intel_dp_compute_vsc_sdp(struct intel_dp
-> *intel_dp,
->  					 &crtc_state->infoframes.vsc);
->  }
-> 
-> +static void
-> +intel_dp_compute_hdr_metadata_infoframe_sdp(struct intel_crtc_state
-> *crtc_state,
-> +					    const struct drm_connector_state
-> *conn_state) {
-> +	int ret;
-> +	struct hdmi_drm_infoframe *drm_infoframe =
-> +&crtc_state->infoframes.drm.drm;
-> +
-> +	if (!conn_state->hdr_output_metadata)
-> +		return;
-> +
-> +	ret = drm_hdmi_infoframe_set_hdr_metadata(drm_infoframe, conn_state);
-> +
-> +	if (ret) {
-> +		DRM_DEBUG_KMS("couldn't set HDR metadata in infoframe\n");
-> +		return;
-> +	}
-> +
-> +	crtc_state->infoframes.enable |=
-> +
-> 	intel_hdmi_infoframe_enable(HDMI_PACKET_TYPE_GAMUT_METADATA);
-> +}
-> +
->  int
->  intel_dp_compute_config(struct intel_encoder *encoder,
->  			struct intel_crtc_state *pipe_config, @@ -2569,6 +2590,7
-> @@ intel_dp_compute_config(struct intel_encoder *encoder,
-> 
->  	intel_psr_compute_config(intel_dp, pipe_config);
->  	intel_dp_compute_vsc_sdp(intel_dp, pipe_config, conn_state);
-> +	intel_dp_compute_hdr_metadata_infoframe_sdp(pipe_config, conn_state);
-> 
->  	return 0;
->  }
-> --
-> 2.24.1
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
