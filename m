@@ -2,236 +2,236 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E1D15345E
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2020 16:42:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87CB3153500
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2020 17:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbgBEPmG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 5 Feb 2020 10:42:06 -0500
-Received: from mga01.intel.com ([192.55.52.88]:54055 "EHLO mga01.intel.com"
+        id S1727043AbgBEQJs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 5 Feb 2020 11:09:48 -0500
+Received: from mga03.intel.com ([134.134.136.65]:1856 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726534AbgBEPmG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 5 Feb 2020 10:42:06 -0500
+        id S1726933AbgBEQJs (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 5 Feb 2020 11:09:48 -0500
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Feb 2020 07:42:06 -0800
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Feb 2020 08:09:47 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.70,406,1574150400"; 
-   d="scan'208";a="224950266"
-Received: from helsinki.fi.intel.com ([10.237.66.164])
-  by fmsmga007.fm.intel.com with ESMTP; 05 Feb 2020 07:42:04 -0800
-From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v4 17/17] drm/i915/psr: Use new DP VSC SDP compute routine on PSR
-Date:   Wed,  5 Feb 2020 17:41:37 +0200
-Message-Id: <20200205154137.1202389-18-gwan-gyeong.mun@intel.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200205154137.1202389-1-gwan-gyeong.mun@intel.com>
-References: <20200205154137.1202389-1-gwan-gyeong.mun@intel.com>
+   d="scan'208";a="220146152"
+Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
+  by orsmga007.jf.intel.com with ESMTP; 05 Feb 2020 08:09:47 -0800
+Received: from bgsmsx106.gar.corp.intel.com (10.223.43.196) by
+ FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 5 Feb 2020 08:09:46 -0800
+Received: from bgsmsx104.gar.corp.intel.com ([169.254.5.97]) by
+ BGSMSX106.gar.corp.intel.com ([169.254.1.101]) with mapi id 14.03.0439.000;
+ Wed, 5 Feb 2020 21:39:22 +0530
+From:   "Shankar, Uma" <uma.shankar@intel.com>
+To:     "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+CC:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: RE: [PATCH v3 04/17] drm/i915/dp: Add writing of DP SDPs (Secondary
+ Data Packet)
+Thread-Topic: [PATCH v3 04/17] drm/i915/dp: Add writing of DP SDPs
+ (Secondary Data Packet)
+Thread-Index: AQHV2uiQlLyZNdpXr0+p8L6L7lKCd6gMxO3g
+Date:   Wed, 5 Feb 2020 16:09:21 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F823DCF97@BGSMSX104.gar.corp.intel.com>
+References: <20200203232014.906651-1-gwan-gyeong.mun@intel.com>
+ <20200203232014.906651-5-gwan-gyeong.mun@intel.com>
+In-Reply-To: <20200203232014.906651-5-gwan-gyeong.mun@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiYWIzNTViODgtNmM0Yi00YmQ0LTk1ZjYtNzM5MjFiZTg5ODU5IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiQ2t4eWRzVkZzK0puQ2VtSmljeFBpNVpYNTNINlVQUHcwYlRWTUY5QVwvTmRzOXJjTXZ5RXlCZFwvQjlnZG9rMlVDIn0=
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.223.10.10]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In order to use a common VSC SDP Colorimetry calculating code on PSR,
-it uses a new psr vsc sdp compute routine.
-Because PSR routine has its own scenario and timings of writing a VSC SDP,
-the current PSR routine needs to have its own drm_dp_vsc_sdp structure
-member variable on struct i915_psr.
-
-In order to calculate colorimetry information, intel_psr_update()
-function and intel_psr_enable() function extend a drm_connector_state
-argument.
-
-There are no changes to PSR mechanism.
-
-v3: Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
-v4: Rebased
-
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c |  4 +-
- drivers/gpu/drm/i915/display/intel_psr.c | 54 +++++++-----------------
- drivers/gpu/drm/i915/display/intel_psr.h |  6 ++-
- drivers/gpu/drm/i915/i915_drv.h          |  1 +
- 4 files changed, 22 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index e21dfc0d926b..fd0e88566074 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3903,7 +3903,7 @@ static void intel_enable_ddi_dp(struct intel_encoder *encoder,
- 		intel_dp_stop_link_train(intel_dp);
- 
- 	intel_edp_backlight_on(crtc_state, conn_state);
--	intel_psr_enable(intel_dp, crtc_state);
-+	intel_psr_enable(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-@@ -4071,7 +4071,7 @@ static void intel_ddi_update_pipe_dp(struct intel_encoder *encoder,
- 
- 	intel_ddi_set_dp_msa(crtc_state, conn_state);
- 
--	intel_psr_update(intel_dp, crtc_state);
-+	intel_psr_update(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index db3d1561e9bf..953c0286307d 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -335,39 +335,6 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
- 	}
- }
- 
--static void intel_psr_setup_vsc(struct intel_dp *intel_dp,
--				const struct intel_crtc_state *crtc_state)
--{
--	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
--	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
--	struct dp_sdp psr_vsc;
--
--	if (dev_priv->psr.psr2_enabled) {
--		/* Prepare VSC Header for SU as per EDP 1.4 spec, Table 6.11 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		if (dev_priv->psr.colorimetry_support) {
--			psr_vsc.sdp_header.HB2 = 0x5;
--			psr_vsc.sdp_header.HB3 = 0x13;
--		} else {
--			psr_vsc.sdp_header.HB2 = 0x4;
--			psr_vsc.sdp_header.HB3 = 0xe;
--		}
--	} else {
--		/* Prepare VSC packet as per EDP 1.3 spec, Table 3.10 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		psr_vsc.sdp_header.HB2 = 0x2;
--		psr_vsc.sdp_header.HB3 = 0x8;
--	}
--
--	intel_dig_port->write_infoframe(&intel_dig_port->base,
--					crtc_state,
--					DP_SDP_VSC, &psr_vsc, sizeof(psr_vsc));
--}
--
- static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-@@ -859,9 +826,12 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- }
- 
- static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
--				    const struct intel_crtc_state *crtc_state)
-+				    const struct intel_crtc_state *crtc_state,
-+				    const struct drm_connector_state *conn_state)
- {
- 	struct intel_dp *intel_dp = dev_priv->psr.dp;
-+	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
-+	struct intel_encoder *encoder = &intel_dig_port->base;
- 	u32 val;
- 
- 	drm_WARN_ON(&dev_priv->drm, dev_priv->psr.enabled);
-@@ -900,7 +870,9 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
- 
- 	drm_dbg_kms(&dev_priv->drm, "Enabling PSR%s\n",
- 		    dev_priv->psr.psr2_enabled ? "2" : "1");
--	intel_psr_setup_vsc(intel_dp, crtc_state);
-+	intel_dp_compute_psr_vsc_sdp(intel_dp, crtc_state, conn_state,
-+				     &dev_priv->psr.vsc);
-+	intel_write_dp_vsc_sdp(encoder, crtc_state, &dev_priv->psr.vsc);
- 	intel_psr_enable_sink(intel_dp);
- 	intel_psr_enable_source(intel_dp, crtc_state);
- 	dev_priv->psr.enabled = true;
-@@ -912,11 +884,13 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
-  * intel_psr_enable - Enable PSR
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This function can only be called after the pipe is fully trained and enabled.
-  */
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 
-@@ -935,7 +909,7 @@ void intel_psr_enable(struct intel_dp *intel_dp,
- 		goto unlock;
- 	}
- 
--	intel_psr_enable_locked(dev_priv, crtc_state);
-+	intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-@@ -1068,13 +1042,15 @@ static void psr_force_hw_tracking_exit(struct drm_i915_private *dev_priv)
-  * intel_psr_update - Update PSR state
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This functions will update PSR states, disabling, enabling or switching PSR
-  * version when executing fastsets. For full modeset, intel_psr_disable() and
-  * intel_psr_enable() should be called instead.
-  */
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 	struct i915_psr *psr = &dev_priv->psr;
-@@ -1109,7 +1085,7 @@ void intel_psr_update(struct intel_dp *intel_dp,
- 		intel_psr_disable_locked(intel_dp);
- 
- 	if (enable)
--		intel_psr_enable_locked(dev_priv, crtc_state);
-+		intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.h b/drivers/gpu/drm/i915/display/intel_psr.h
-index c58a1d438808..a003fb18105a 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.h
-+++ b/drivers/gpu/drm/i915/display/intel_psr.h
-@@ -17,11 +17,13 @@ struct intel_dp;
- #define CAN_PSR(dev_priv) (HAS_PSR(dev_priv) && dev_priv->psr.sink_support)
- void intel_psr_init_dpcd(struct intel_dp *intel_dp);
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- void intel_psr_disable(struct intel_dp *intel_dp,
- 		       const struct intel_crtc_state *old_crtc_state);
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- int intel_psr_debug_set(struct drm_i915_private *dev_priv, u64 value);
- void intel_psr_invalidate(struct drm_i915_private *dev_priv,
- 			  unsigned frontbuffer_bits,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index a71ff233cc55..3a723715327d 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -506,6 +506,7 @@ struct i915_psr {
- 	u32 dc3co_exit_delay;
- 	struct delayed_work idle_work;
- 	bool initially_probed;
-+	struct drm_dp_vsc_sdp vsc;
- };
- 
- #define QUIRK_LVDS_SSC_DISABLE (1<<1)
--- 
-2.24.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogZHJpLWRldmVsIDxkcmkt
+ZGV2ZWwtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBHd2FuLQ0K
+PiBneWVvbmcgTXVuDQo+IFNlbnQ6IFR1ZXNkYXksIEZlYnJ1YXJ5IDQsIDIwMjAgNDo1MCBBTQ0K
+PiBUbzogaW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogbGludXgtZmJkZXZA
+dmdlci5rZXJuZWwub3JnOyBkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1Ympl
+Y3Q6IFtQQVRDSCB2MyAwNC8xN10gZHJtL2k5MTUvZHA6IEFkZCB3cml0aW5nIG9mIERQIFNEUHMg
+KFNlY29uZGFyeSBEYXRhDQo+IFBhY2tldCkNCg0KRHJvcCB0aGluZ3MgaW4gKCksIG5vdCBuZWVk
+ZWQuDQoNCj4gSXQgYWRkcyByb3V0aW5lcyB0aGF0IHdyaXRlIERQIFZTQyBTRFAgYW5kIERQIEhE
+UiBNZXRhZGF0YSBJbmZvZnJhbWUgU0RQLg0KPiBJbiBvcmRlciB0byBwYWNrIERQIFZTQyBTRFAs
+IGl0IGFkZHMgaW50ZWxfZHBfdnNjX3NkcF9wYWNrKCkgZnVuY3Rpb24uDQo+IEl0IGZvbGxvd3Mg
+RFAgMS40YSBzcGVjLiBbVGFibGUgMi0xMTY6IFZTQyBTRFAgSGVhZGVyIEJ5dGVzXSBhbmQgW1Rh
+YmxlIDItMTE3OiBWU0MNCj4gU0RQIFBheWxvYWQgZm9yIERCMTYgdGhyb3VnaCBEQjE4XQ0KPiAN
+Cj4gSW4gb3JkZXIgdG8gcGFjayBEUCBIRFIgTWV0YWRhdGEgSW5mb2ZyYW1lIFNEUCwgaXQgYWRk
+cw0KPiBpbnRlbF9kcF9oZHJfbWV0YWRhdGFfaW5mb2ZyYW1lX3NkcF9wYWNrKCkgZnVuY3Rpb24u
+DQo+IEFuZCBpdCBmb2xsb3dzIERQIDEuNGEgc3BlYy4NCj4gKFtUYWJsZSAyLTEyNTogSU5GT0ZS
+QU1FIFNEUCB2MS4yIEhlYWRlciBCeXRlc10gYW5kIFtUYWJsZSAyLTEyNjogSU5GT0ZSQU1FDQo+
+IFNEUCB2MS4yIFBheWxvYWQgRGF0YSBCeXRlcyAtIERCMCB0aHJvdWdoIERCMzFdKSBhbmQgQ1RB
+LTg2MS1HIHNwZWMuIFtUYWJsZS00Mg0KPiBEeW5hbWljIFJhbmdlIGFuZCBNYXN0ZXJpbmcgSW5m
+b0ZyYW1lXS4NCj4gDQo+IEEgbWFjaGFuaXNtIGFuZCBhIG5hbWluZyBydWxlIG9mIGludGVsX2Rw
+X3NldF9pbmZvZnJhbWVzKCkgZnVuY3Rpb24gcmVmZXJlbmNlcw0KDQpUeXBvIGluIG1lY2hhbmlz
+bS4NCg0KPiBpbnRlbF9lbmNvZGVyLT5zZXRfaW5mb2ZyYW1lcygpIG9mIGludGVsX2hkbWkuYyAu
+DQo+IFZTQyBTRFAgaXMgdXNlZCBmb3IgUFNSIGFuZCBQaXhlbCBFbmNvZGluZyBhbmQgQ29sb3Jp
+bWV0cnkgRm9ybWF0cyBjYXNlcy4NCj4gQmVjYXVzZSBQU1Igcm91dGluZSBoYXMgaXRzIG93biBy
+b3V0aW5lIG9mIHdyaXRpbmcgYSBWU0MgU0RQLCB3aGVuIHRoZSBQU1IgaXMNCj4gZW5hYmxlZCwg
+aW50ZWxfZHBfc2V0X2luZm9mcmFtZXMoKSBkb2VzIG5vdCB3cml0ZSBhIFZTQyBTRFAuDQo+IA0K
+PiB2MzoNCj4gICAtIEV4cGxpY2l0bHkgZGlzYWJsZSB1bnVzZWQgRElQcyAoQVZJLCBHQ1AsIFZT
+LCBTUEQsIERSTS4gVGhleSB3aWxsIGJlDQo+ICAgICB1c2VkIGZvciBIRE1JKSwgd2hlbiBpbnRl
+bF9kcF9zZXRfaW5mb2ZyYW1lcygpIGZ1bmN0aW9uIHdpbGwgYmUgY2FsbGVkLg0KPiAgIC0gUmVw
+bGFjZSBhIHN0cnVjdHVyZSBuYW1lIHRvIGRybV9kcF92c2Nfc2RwIGZyb20gaW50ZWxfZHBfdnNj
+X3NkcC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEd3YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcu
+bXVuQGludGVsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5L2lu
+dGVsX2RwLmMgfCAxOTQgKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICBkcml2ZXJzL2dwdS9k
+cm0vaTkxNS9kaXNwbGF5L2ludGVsX2RwLmggfCAgIDMgKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAx
+OTcgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9pOTE1
+L2Rpc3BsYXkvaW50ZWxfZHAuYw0KPiBiL2RyaXZlcnMvZ3B1L2RybS9pOTE1L2Rpc3BsYXkvaW50
+ZWxfZHAuYw0KPiBpbmRleCBiMjY1YjVjNTk5ZjIuLmRkN2U1NTg4MDAxZSAxMDA2NDQNCj4gLS0t
+IGEvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9kcC5jDQo+ICsrKyBiL2RyaXZl
+cnMvZ3B1L2RybS9pOTE1L2Rpc3BsYXkvaW50ZWxfZHAuYw0KPiBAQCAtNDczMSw2ICs0NzMxLDIw
+MCBAQCBpbnRlbF9kcF9uZWVkc192c2Nfc2RwKGNvbnN0IHN0cnVjdCBpbnRlbF9jcnRjX3N0YXRl
+DQo+ICpjcnRjX3N0YXRlLA0KPiAgCXJldHVybiBmYWxzZTsNCj4gIH0NCj4gDQo+ICtzdGF0aWMg
+c3NpemVfdCBpbnRlbF9kcF92c2Nfc2RwX3BhY2soY29uc3Qgc3RydWN0IGRybV9kcF92c2Nfc2Rw
+ICp2c2MsDQo+ICsJCQkJICAgICBzdHJ1Y3QgZHBfc2RwICpzZHAsIHNpemVfdCBzaXplKSB7DQo+
+ICsJc2l6ZV90IGxlbmd0aCA9IHNpemVvZihzdHJ1Y3QgZHBfc2RwKTsNCj4gKw0KPiArCWlmIChz
+aXplIDwgbGVuZ3RoKQ0KPiArCQlyZXR1cm4gLUVOT1NQQzsNCj4gKw0KPiArCW1lbXNldChzZHAs
+IDAsIHNpemUpOw0KPiArDQo+ICsJLyoNCj4gKwkgKiBQcmVwYXJlIFZTQyBIZWFkZXIgZm9yIFNV
+IGFzIHBlciBEUCAxLjRhIHNwZWMsIFRhYmxlIDItMTE5DQo+ICsJICogVlNDIFNEUCBIZWFkZXIg
+Qnl0ZXMNCj4gKwkgKi8NCj4gKwlzZHAtPnNkcF9oZWFkZXIuSEIwID0gMDsgLyogU2Vjb25kYXJ5
+LURhdGEgUGFja2V0IElEID0gMCAqLw0KPiArCXNkcC0+c2RwX2hlYWRlci5IQjEgPSB2c2MtPnNk
+cF90eXBlOyAvKiBTZWNvbmRhcnktZGF0YSBQYWNrZXQgVHlwZSAqLw0KPiArCXNkcC0+c2RwX2hl
+YWRlci5IQjIgPSB2c2MtPnJldmlzaW9uOyAvKiBSZXZpc2lvbiBOdW1iZXIgKi8NCj4gKwlzZHAt
+PnNkcF9oZWFkZXIuSEIzID0gdnNjLT5sZW5ndGg7IC8qIE51bWJlciBvZiBWYWxpZCBEYXRhIEJ5
+dGVzICovDQo+ICsNCj4gKwkvKiBWU0MgU0RQIFBheWxvYWQgZm9yIERCMTYgdGhyb3VnaCBEQjE4
+ICovDQo+ICsJLyogUGl4ZWwgRW5jb2RpbmcgYW5kIENvbG9yaW1ldHJ5IEZvcm1hdHMgICovDQo+
+ICsJc2RwLT5kYlsxNl0gPSAodnNjLT5jb2xvcnNwYWNlICYgMHhmKSA8PCA0OyAvKiBEQjE2Wzc6
+NF0gKi8NCj4gKwlzZHAtPmRiWzE2XSB8PSB2c2MtPmNvbG9yaW1ldHJ5ICYgMHhmOyAvKiBEQjE2
+WzM6MF0gKi8NCj4gKw0KPiArCXN3aXRjaCAodnNjLT5icGMpIHsNCj4gKwljYXNlIDg6DQo+ICsJ
+CXNkcC0+ZGJbMTddID0gMHgxOyAvKiBEQjE3WzM6MF0gKi8NCj4gKwkJYnJlYWs7DQo+ICsJY2Fz
+ZSAxMDoNCj4gKwkJc2RwLT5kYlsxN10gPSAweDI7DQo+ICsJCWJyZWFrOw0KPiArCWNhc2UgMTI6
+DQo+ICsJCXNkcC0+ZGJbMTddID0gMHgzOw0KPiArCQlicmVhazsNCj4gKwljYXNlIDE2Og0KPiAr
+CQlzZHAtPmRiWzE3XSA9IDB4NDsNCj4gKwkJYnJlYWs7DQo+ICsJZGVmYXVsdDoNCj4gKwkJTUlT
+U0lOR19DQVNFKHZzYy0+YnBjKTsNCg0KNmJwYyBpcyBub3QgaGFuZGxlZCBoZXJlLCBhZGQgdGhh
+dCBhcyB3ZWxsLg0KDQo+ICsJCWJyZWFrOw0KPiArCX0NCj4gKwkvKiBEeW5hbWljIFJhbmdlIGFu
+ZCBDb21wb25lbnQgQml0IERlcHRoICovDQo+ICsJaWYgKHZzYy0+ZHluYW1pY19yYW5nZSA9PSBE
+UF9EWU5BTUlDX1JBTkdFX0NUQSkNCj4gKwkJc2RwLT5kYlsxN10gfD0gMHg4MDsgIC8qIERCMTdb
+N10gKi8NCj4gKw0KPiArCS8qIENvbnRlbnQgVHlwZSAqLw0KPiArCXNkcC0+ZGJbMThdID0gdnNj
+LT5jb250ZW50X3R5cGUgJiAweDc7DQo+ICsNCj4gKwlyZXR1cm4gbGVuZ3RoOw0KPiArfQ0KPiAr
+DQo+ICtzdGF0aWMgc3NpemVfdA0KPiAraW50ZWxfZHBfaGRyX21ldGFkYXRhX2luZm9mcmFtZV9z
+ZHBfcGFjayhjb25zdCBzdHJ1Y3QgaGRtaV9kcm1faW5mb2ZyYW1lDQo+ICpkcm1faW5mb2ZyYW1l
+LA0KPiArCQkJCQkgc3RydWN0IGRwX3NkcCAqc2RwLA0KPiArCQkJCQkgc2l6ZV90IHNpemUpDQo+
+ICt7DQo+ICsJc2l6ZV90IGxlbmd0aCA9IHNpemVvZihzdHJ1Y3QgZHBfc2RwKTsNCj4gKwljb25z
+dCBpbnQgaW5mb2ZyYW1lX3NpemUgPSBIRE1JX0lORk9GUkFNRV9IRUFERVJfU0laRSArDQo+IEhE
+TUlfRFJNX0lORk9GUkFNRV9TSVpFOw0KPiArCXVuc2lnbmVkIGNoYXIgYnVmW0hETUlfSU5GT0ZS
+QU1FX0hFQURFUl9TSVpFICsNCj4gSERNSV9EUk1fSU5GT0ZSQU1FX1NJWkVdOw0KPiArCXNzaXpl
+X3QgbGVuOw0KPiArDQo+ICsJaWYgKHNpemUgPCBsZW5ndGgpDQo+ICsJCXJldHVybiAtRU5PU1BD
+Ow0KPiArDQo+ICsJbWVtc2V0KHNkcCwgMCwgc2l6ZSk7DQo+ICsNCj4gKwlsZW4gPSBoZG1pX2Ry
+bV9pbmZvZnJhbWVfcGFja19vbmx5KGRybV9pbmZvZnJhbWUsIGJ1Ziwgc2l6ZW9mKGJ1ZikpOw0K
+PiArCWlmIChsZW4gPCAwKSB7DQo+ICsJCURSTV9ERUJVR19LTVMoImJ1ZmZlciBzaXplIGlzIHNt
+YWxsZXIgdGhhbiBoZHIgbWV0YWRhdGENCj4gaW5mb2ZyYW1lXG4iKTsNCj4gKwkJcmV0dXJuIC1F
+Tk9TUEM7DQo+ICsJfQ0KPiArDQo+ICsJaWYgKGxlbiAhPSBpbmZvZnJhbWVfc2l6ZSkgew0KPiAr
+CQlEUk1fREVCVUdfS01TKCJ3cm9uZyBzdGF0aWMgaGRyIG1ldGFkYXRhIHNpemVcbiIpOw0KPiAr
+CQlyZXR1cm4gLUVOT1NQQzsNCj4gKwl9DQo+ICsNCj4gKwkvKg0KPiArCSAqIFNldCB1cCB0aGUg
+aW5mb2ZyYW1lIHNkcCBwYWNrZXQgZm9yIEhEUiBzdGF0aWMgbWV0YWRhdGEuDQo+ICsJICogUHJl
+cGFyZSBWU0MgSGVhZGVyIGZvciBTVSBhcyBwZXIgRFAgMS40YSBzcGVjLA0KPiArCSAqIFRhYmxl
+IDItMTAwIGFuZCBUYWJsZSAyLTEwMQ0KPiArCSAqLw0KPiArDQo+ICsJLyogU2Vjb25kYXJ5LURh
+dGEgUGFja2V0IElELCAwMGggZm9yIG5vbi1BdWRpbyBJTkZPRlJBTUUgKi8NCj4gKwlzZHAtPnNk
+cF9oZWFkZXIuSEIwID0gMDsNCj4gKwkvKg0KPiArCSAqIFBhY2tldCBUeXBlIDgwaCArIE5vbi1h
+dWRpbyBJTkZPRlJBTUUgVHlwZSB2YWx1ZQ0KPiArCSAqIEhETUlfSU5GT0ZSQU1FX1RZUEVfRFJN
+OiAweDg3DQo+ICsJICogLSA4MGggKyBOb24tYXVkaW8gSU5GT0ZSQU1FIFR5cGUgdmFsdWUNCj4g
+KwkgKiAtIEluZm9GcmFtZSBUeXBlOiAweDA3DQo+ICsJICogICAgW0NUQS04NjEtRyBUYWJsZS00
+MiBEeW5hbWljIFJhbmdlIGFuZCBNYXN0ZXJpbmcgSW5mb0ZyYW1lXQ0KPiArCSAqLw0KPiArCXNk
+cC0+c2RwX2hlYWRlci5IQjEgPSBkcm1faW5mb2ZyYW1lLT50eXBlOw0KPiArCS8qDQo+ICsJICog
+TGVhc3QgU2lnbmlmaWNhbnQgRWlnaHQgQml0cyBvZiAoRGF0YSBCeXRlIENvdW50IOKAkyAxKQ0K
+PiArCSAqIGluZm9mcmFtZV9zaXplIC0gMQ0KPiArCSAqLw0KPiArCXNkcC0+c2RwX2hlYWRlci5I
+QjIgPSAweDFEOw0KPiArCS8qIElORk9GUkFNRSBTRFAgVmVyc2lvbiBOdW1iZXIgKi8NCj4gKwlz
+ZHAtPnNkcF9oZWFkZXIuSEIzID0gKDB4MTMgPDwgMik7DQo+ICsJLyogQ1RBIEhlYWRlciBCeXRl
+IDIgKElORk9GUkFNRSBWZXJzaW9uIE51bWJlcikgKi8NCj4gKwlzZHAtPmRiWzBdID0gZHJtX2lu
+Zm9mcmFtZS0+dmVyc2lvbjsNCj4gKwkvKiBDVEEgSGVhZGVyIEJ5dGUgMyAoTGVuZ3RoIG9mIElO
+Rk9GUkFNRSk6DQo+IEhETUlfRFJNX0lORk9GUkFNRV9TSVpFICovDQo+ICsJc2RwLT5kYlsxXSA9
+IGRybV9pbmZvZnJhbWUtPmxlbmd0aDsNCj4gKwkvKg0KPiArCSAqIENvcHkgSERNSV9EUk1fSU5G
+T0ZSQU1FX1NJWkUgc2l6ZSBmcm9tIGEgYnVmZmVyIGFmdGVyDQoNCkNvbW1lbnQgTG9va3MgaW5j
+b21wbGV0ZS4NCg0KPiArCSAqLw0KPiArCUJVSUxEX0JVR19PTihzaXplb2Yoc2RwLT5kYikgPCBI
+RE1JX0RSTV9JTkZPRlJBTUVfU0laRSArIDIpOw0KPiArCW1lbWNweSgmc2RwLT5kYlsyXSwgJmJ1
+ZltIRE1JX0lORk9GUkFNRV9IRUFERVJfU0laRV0sDQo+ICsJICAgICAgIEhETUlfRFJNX0lORk9G
+UkFNRV9TSVpFKTsNCj4gKw0KPiArCS8qDQo+ICsJICogU2l6ZSBvZiBEUCBpbmZvZnJhbWUgc2Rw
+IHBhY2tldCBmb3IgSERSIHN0YXRpYyBtZXRhZGF0YSBpcyBjb25zaXN0IG9mDQoNCkRyb3AgImlz
+Ig0KDQo+ICsJICogLSBEUCBTRFAgSGVhZGVyKHN0cnVjdCBkcF9zZHBfaGVhZGVyKTogNCBieXRl
+cw0KPiArCSAqIC0gVHdvIERhdGEgQmxvY2tzOiAyIGJ5dGVzDQo+ICsJICogICAgQ1RBIEhlYWRl
+ciBCeXRlMiAoSU5GT0ZSQU1FIFZlcnNpb24gTnVtYmVyKQ0KPiArCSAqICAgIENUQSBIZWFkZXIg
+Qnl0ZTMgKExlbmd0aCBvZiBJTkZPRlJBTUUpDQo+ICsJICogLSBIRE1JX0RSTV9JTkZPRlJBTUVf
+U0laRTogMjYgYnl0ZXMNCj4gKwkgKg0KPiArCSAqIFByaW9yIHRvIEdFTjExJ3MgR01QIHJlZ2lz
+dGVyIHNpemUgaXMgaWRlbnRpY2FsIHRvIERQIEhEUiBzdGF0aWMgbWV0YWRhdGENCj4gKwkgKiBp
+bmZvZnJhbWUgc2l6ZS4gQnV0IEdFTjExKyBoYXMgbGFyZ2VyIHRoYW4gdGhhdCBzaXplLCB3cml0
+ZV9pbmZvZnJhbWUNCj4gKwkgKiB3aWxsIHBhZCByZXN0IG9mIHRoZSBzaXplLg0KPiArCSAqLw0K
+PiArCXJldHVybiBzaXplb2Yoc3RydWN0IGRwX3NkcF9oZWFkZXIpICsgMiArIEhETUlfRFJNX0lO
+Rk9GUkFNRV9TSVpFOyB9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIGludGVsX3dyaXRlX2RwX3NkcChz
+dHJ1Y3QgaW50ZWxfZW5jb2RlciAqZW5jb2RlciwNCj4gKwkJCSAgICAgICBjb25zdCBzdHJ1Y3Qg
+aW50ZWxfY3J0Y19zdGF0ZSAqY3J0Y19zdGF0ZSwNCj4gKwkJCSAgICAgICB1bnNpZ25lZCBpbnQg
+dHlwZSkNCj4gK3sNCj4gKwlzdHJ1Y3QgaW50ZWxfZGlnaXRhbF9wb3J0ICppbnRlbF9kaWdfcG9y
+dCA9IGVuY190b19kaWdfcG9ydChlbmNvZGVyKTsNCj4gKwlzdHJ1Y3QgZHBfc2RwIHNkcCA9IHt9
+Ow0KPiArCXNzaXplX3QgbGVuOw0KPiArDQo+ICsJaWYgKChjcnRjX3N0YXRlLT5pbmZvZnJhbWVz
+LmVuYWJsZSAmDQo+ICsJICAgICBpbnRlbF9oZG1pX2luZm9mcmFtZV9lbmFibGUodHlwZSkpID09
+IDApDQo+ICsJCXJldHVybjsNCj4gKw0KPiArCXN3aXRjaCAodHlwZSkgew0KPiArCWNhc2UgRFBf
+U0RQX1ZTQzoNCj4gKwkJbGVuID0gaW50ZWxfZHBfdnNjX3NkcF9wYWNrKCZjcnRjX3N0YXRlLT5p
+bmZvZnJhbWVzLnZzYywgJnNkcCwNCj4gKwkJCQkJICAgIHNpemVvZihzZHApKTsNCj4gKwkJYnJl
+YWs7DQo+ICsJY2FzZSBIRE1JX1BBQ0tFVF9UWVBFX0dBTVVUX01FVEFEQVRBOg0KPiArCQlsZW4g
+PSBpbnRlbF9kcF9oZHJfbWV0YWRhdGFfaW5mb2ZyYW1lX3NkcF9wYWNrKCZjcnRjX3N0YXRlLQ0K
+PiA+aW5mb2ZyYW1lcy5kcm0uZHJtLA0KPiArCQkJCQkJCSAgICAgICAmc2RwLCBzaXplb2Yoc2Rw
+KSk7DQo+ICsJCWJyZWFrOw0KPiArCWRlZmF1bHQ6DQo+ICsJCU1JU1NJTkdfQ0FTRSh0eXBlKTsN
+Cj4gKwkJYnJlYWs7DQo+ICsJfQ0KPiArDQo+ICsJaWYgKFdBUk5fT04obGVuIDwgMCkpDQo+ICsJ
+CXJldHVybjsNCj4gKw0KPiArCWludGVsX2RpZ19wb3J0LT53cml0ZV9pbmZvZnJhbWUoZW5jb2Rl
+ciwgY3J0Y19zdGF0ZSwgdHlwZSwgJnNkcCwgbGVuKTsNCj4gK30NCj4gKw0KPiArdm9pZCBpbnRl
+bF9kcF9zZXRfaW5mb2ZyYW1lcyhzdHJ1Y3QgaW50ZWxfZW5jb2RlciAqZW5jb2RlciwNCj4gKwkJ
+CSAgICAgYm9vbCBlbmFibGUsDQo+ICsJCQkgICAgIGNvbnN0IHN0cnVjdCBpbnRlbF9jcnRjX3N0
+YXRlICpjcnRjX3N0YXRlLA0KPiArCQkJICAgICBjb25zdCBzdHJ1Y3QgZHJtX2Nvbm5lY3Rvcl9z
+dGF0ZSAqY29ubl9zdGF0ZSkgew0KPiArCXN0cnVjdCBkcm1faTkxNV9wcml2YXRlICpkZXZfcHJp
+diA9IHRvX2k5MTUoZW5jb2Rlci0+YmFzZS5kZXYpOw0KPiArCXN0cnVjdCBpbnRlbF9kcCAqaW50
+ZWxfZHAgPSBlbmNfdG9faW50ZWxfZHAoZW5jb2Rlcik7DQo+ICsJaTkxNV9yZWdfdCByZWcgPSBI
+U1dfVFZJREVPX0RJUF9DVEwoY3J0Y19zdGF0ZS0+Y3B1X3RyYW5zY29kZXIpOw0KPiArCXUzMiBk
+aXBfZW5hYmxlID0gVklERU9fRElQX0VOQUJMRV9BVklfSFNXIHwNCj4gVklERU9fRElQX0VOQUJM
+RV9HQ1BfSFNXIHwNCj4gKwkJCSBWSURFT19ESVBfRU5BQkxFX1ZTX0hTVyB8DQo+IFZJREVPX0RJ
+UF9FTkFCTEVfR01QX0hTVyB8DQo+ICsJCQkgVklERU9fRElQX0VOQUJMRV9TUERfSFNXIHwNCj4g
+VklERU9fRElQX0VOQUJMRV9EUk1fR0xLOw0KPiArCXUzMiB2YWwgPSBJOTE1X1JFQUQocmVnKTsN
+Cj4gKw0KPiArCS8qIFRPRE86IEFkZCBEU0MgY2FzZSAoRElQX0VOQUJMRV9QUFMpICovDQo+ICsJ
+LyogV2hlbiBQU1IgaXMgZW5hYmxlZCwgdGhpcyByb3V0aW5lIGRvZXNuJ3QgZGlzYWJsZSBWU0Mg
+RElQICovDQo+ICsJaWYgKGludGVsX3Bzcl9lbmFibGVkKGludGVsX2RwKSkNCj4gKwkJdmFsICY9
+IH5kaXBfZW5hYmxlOw0KPiArCWVsc2UNCj4gKwkJdmFsICY9IH4oZGlwX2VuYWJsZSB8IFZJREVP
+X0RJUF9FTkFCTEVfVlNDX0hTVyk7DQoNCmRpcF9lbmFibGUgaGFzIFZJREVPX0RJUF9FTkFCTEVf
+VlNDX0hTVyBhbHJlYWR5IGluIGl0LiBQbGVhc2UgZml4IHRoaXMuDQoNCj4gKw0KPiArCWlmICgh
+ZW5hYmxlKSB7DQo+ICsJCUk5MTVfV1JJVEUocmVnLCB2YWwpOw0KPiArCQlQT1NUSU5HX1JFQUQo
+cmVnKTsNCj4gKwkJcmV0dXJuOw0KPiArCX0NCj4gKw0KPiArCUk5MTVfV1JJVEUocmVnLCB2YWwp
+Ow0KPiArCVBPU1RJTkdfUkVBRChyZWcpOw0KPiArDQo+ICsJLyogV2hlbiBQU1IgaXMgZW5hYmxl
+ZCwgVlNDIFNEUCBpcyBoYW5kbGVkIGJ5IFBTUiByb3V0aW5lICovDQo+ICsJaWYgKCFpbnRlbF9w
+c3JfZW5hYmxlZChpbnRlbF9kcCkpDQo+ICsJCWludGVsX3dyaXRlX2RwX3NkcChlbmNvZGVyLCBj
+cnRjX3N0YXRlLCBEUF9TRFBfVlNDKTsNCj4gKw0KPiArCWludGVsX3dyaXRlX2RwX3NkcChlbmNv
+ZGVyLCBjcnRjX3N0YXRlLA0KPiArSERNSV9QQUNLRVRfVFlQRV9HQU1VVF9NRVRBREFUQSk7IH0N
+Cj4gKw0KPiAgc3RhdGljIHZvaWQNCj4gIGludGVsX2RwX3NldHVwX3ZzY19zZHAoc3RydWN0IGlu
+dGVsX2RwICppbnRlbF9kcCwNCj4gIAkJICAgICAgIGNvbnN0IHN0cnVjdCBpbnRlbF9jcnRjX3N0
+YXRlICpjcnRjX3N0YXRlLCBkaWZmIC0tZ2l0DQo+IGEvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlz
+cGxheS9pbnRlbF9kcC5oDQo+IGIvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9k
+cC5oDQo+IGluZGV4IDNkYTE2NjA1NDc4OC4uMGRjMDlhNDYzZWUxIDEwMDY0NA0KPiAtLS0gYS9k
+cml2ZXJzL2dwdS9kcm0vaTkxNS9kaXNwbGF5L2ludGVsX2RwLmgNCj4gKysrIGIvZHJpdmVycy9n
+cHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9kcC5oDQo+IEBAIC0xMTYsNiArMTE2LDkgQEAgdm9p
+ZCBpbnRlbF9kcF92c2NfZW5hYmxlKHN0cnVjdCBpbnRlbF9kcCAqaW50ZWxfZHAsICB2b2lkDQo+
+IGludGVsX2RwX2hkcl9tZXRhZGF0YV9lbmFibGUoc3RydWN0IGludGVsX2RwICppbnRlbF9kcCwN
+Cj4gIAkJCQkgIGNvbnN0IHN0cnVjdCBpbnRlbF9jcnRjX3N0YXRlICpjcnRjX3N0YXRlLA0KPiAg
+CQkJCSAgY29uc3Qgc3RydWN0IGRybV9jb25uZWN0b3Jfc3RhdGUgKmNvbm5fc3RhdGUpOw0KPiAr
+dm9pZCBpbnRlbF9kcF9zZXRfaW5mb2ZyYW1lcyhzdHJ1Y3QgaW50ZWxfZW5jb2RlciAqZW5jb2Rl
+ciwgYm9vbCBlbmFibGUsDQo+ICsJCQkgICAgIGNvbnN0IHN0cnVjdCBpbnRlbF9jcnRjX3N0YXRl
+ICpjcnRjX3N0YXRlLA0KPiArCQkJICAgICBjb25zdCBzdHJ1Y3QgZHJtX2Nvbm5lY3Rvcl9zdGF0
+ZSAqY29ubl9zdGF0ZSk7DQo+ICBib29sIGludGVsX2RpZ2l0YWxfcG9ydF9jb25uZWN0ZWQoc3Ry
+dWN0IGludGVsX2VuY29kZXIgKmVuY29kZXIpOw0KPiANCj4gIHN0YXRpYyBpbmxpbmUgdW5zaWdu
+ZWQgaW50IGludGVsX2RwX3VudXNlZF9sYW5lX21hc2soaW50IGxhbmVfY291bnQpDQo+IC0tDQo+
+IDIuMjQuMQ0KPiANCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18NCj4gZHJpLWRldmVsIG1haWxpbmcgbGlzdA0KPiBkcmktZGV2ZWxAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vZHJpLWRldmVsDQo=
