@@ -2,122 +2,209 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B24154F9D
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2020 01:10:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA9D1559D7
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2020 15:41:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726628AbgBGAK2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Feb 2020 19:10:28 -0500
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:46674 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726502AbgBGAK2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Feb 2020 19:10:28 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 01A8327E6B;
-        Thu,  6 Feb 2020 19:10:21 -0500 (EST)
-Date:   Fri, 7 Feb 2020 11:10:21 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
+        id S1726956AbgBGOl0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 7 Feb 2020 09:41:26 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:54155 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbgBGOl0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Feb 2020 09:41:26 -0500
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200207144123euoutp029b9a58b4d255e03d84707f367a572df0~xJcetSHdy0239702397euoutp02I
+        for <linux-fbdev@vger.kernel.org>; Fri,  7 Feb 2020 14:41:23 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200207144123euoutp029b9a58b4d255e03d84707f367a572df0~xJcetSHdy0239702397euoutp02I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1581086483;
+        bh=8TLOKNSerZfjKBmTt/PKQZPovrdv2lAMi8TdJvkstMU=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=s9MIKDhYUQy5t8NVRpZlQouCLeZNW2caY5rlpK6fxLiipWvSMILJXZME0C5dFuzol
+         LZFT6zC8j2/iWQ4wrYN6XYI+fSihNvPgbwhsZ9EniY9cIDRmTHVa6DHhBPaJLO9toB
+         yQewUG6r71Bb05M2fn5Rou6eM+yG59OTxj6Onzag=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200207144123eucas1p1070d7c153d2c73cbfd6ecd82e2f127d7~xJced3RrG0069300693eucas1p1y;
+        Fri,  7 Feb 2020 14:41:23 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 23.8A.60698.3177D3E5; Fri,  7
+        Feb 2020 14:41:23 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200207144123eucas1p2181412871e88ab4c1e8f9354ebc15e7d~xJceDNgGA0332003320eucas1p2-;
+        Fri,  7 Feb 2020 14:41:23 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200207144123eusmtrp29763e58a4a94015a30c9db19214a1da6~xJceCkCps1887118871eusmtrp2f;
+        Fri,  7 Feb 2020 14:41:23 +0000 (GMT)
+X-AuditID: cbfec7f5-a29ff7000001ed1a-8e-5e3d77132a80
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 0F.3B.08375.2177D3E5; Fri,  7
+        Feb 2020 14:41:22 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200207144122eusmtip2e7a7dba388c3c9692b307e7a9f3695ea~xJcdec-2r0561805618eusmtip2H;
+        Fri,  7 Feb 2020 14:41:22 +0000 (GMT)
+Subject: Re: [PATCH v2 1/3] fbdev/g364fb: Fix build failure
+To:     Finn Thain <fthain@telegraphics.com.au>
+Cc:     Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paulburton@kernel.org>,
         James Hogan <jhogan@kernel.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Laurent Vivier <laurent@vivier.eu>,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Subject: Re: [PATCH 1/3] fbdev/g364fb: Fix build failure
-In-Reply-To: <CAAdtpL5Cz5YGKZVfbA=X8qMtP7jDc0G7igSj3EB=PfazM5JoDg@mail.gmail.com>
-Message-ID: <alpine.LNX.2.22.394.2002071054180.13@nippy.intranet>
-References: <cover.1580610812.git.fthain@telegraphics.com.au> <d8f19ebc00a7688da739d41d584d081d1559f0d2.1580610812.git.fthain@telegraphics.com.au> <CAAdtpL7SpzfqSmEcuVszNyXfrRegC20txoS5j7Ss3WkCmyRH+g@mail.gmail.com> <alpine.LNX.2.22.394.2002060829410.8@nippy.intranet>
- <CAAdtpL5Cz5YGKZVfbA=X8qMtP7jDc0G7igSj3EB=PfazM5JoDg@mail.gmail.com>
+        =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <43030f2c-d60e-0ae8-dff2-b5cb4e576f70@samsung.com>
+Date:   Fri, 7 Feb 2020 15:41:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="-1463811774-1984420675-1581033946=:13"
-Content-ID: <alpine.LNX.2.22.394.2002071105540.13@nippy.intranet>
+In-Reply-To: <5504c0c416525ed8c7b8440e5f9971f2a7b59f28.1581030073.git.fthain@telegraphics.com.au>
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrMKsWRmVeSWpSXmKPExsWy7djP87rC5bZxBlOuC1lc+fqezeLEpoPM
+        FhN7l7JYTDzxicXiRN8HVovLu+awWXRu2spo0fFtLovFpT0qFoebDjI7cHm0XlrO4nHgxUJ2
+        j02rOtk8jq5cy+Rxv/s4k8ezgw9ZPT5vkgtgj+KySUnNySxLLdK3S+DKONE3j71gumJF063P
+        rA2MS6S7GDk5JARMJBbPmcPaxcjFISSwglHiafM/FpCEkMAXRonmt+IQic+MErtXP2aB6Xhy
+        czM7RGI5UGLdVqiOt4wS7UfqQGxhAWuJP/NvM4PYIgLaEhPf7GADaWAWuMEk8XviQyaQBJuA
+        lcTE9lWMIDavgJ3EgnVXwQaxCKhIfL32CqxGVCBC4tODw6wQNYISJ2c+AavhFEiUaGlcC1bD
+        LCAucevJfChbXqJ562xmkGUSAtfYJVrv74A620XixqytzBC2sMSr41vYIWwZif87QZpBGtYx
+        SvzteAHVvZ1RYvnkf2wQVdYSd879ArI5gFZoSqzfpQ8RdpRonXOEGSQsIcAnceOtIMQRfBKT
+        tk2HCvNKdLQJQVSrSWxYtoENZm3XzpXMExiVZiF5bRaSd2YheWcWwt4FjCyrGMVTS4tz01OL
+        jfNSy/WKE3OLS/PS9ZLzczcxApPW6X/Hv+5g3Pcn6RCjAAejEg9vgqNNnBBrYllxZe4hRgkO
+        ZiUR3j5V2zgh3pTEyqrUovz4otKc1OJDjNIcLErivMaLXsYKCaQnlqRmp6YWpBbBZJk4OKUa
+        GG8wHasV3Zw3z/PvK6f/03+fft7RZ205tXt715OdUwzbVFY1qTreeJ5/d0vHuqu9xsv088R/
+        /JHkWf5huxrnfu2XdxecuHN+nf+c8JsLnN5tf17PJh31L2Xl3BsvX5oHcEgFXivZp2dzuvcW
+        z43js+w/83DsEz2WUWicryqr/3d57FydE9xZL0yVWIozEg21mIuKEwG5qApFVgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrGIsWRmVeSWpSXmKPExsVy+t/xe7pC5bZxBjf3Wlpc+fqezeLEpoPM
+        FhN7l7JYTDzxicXiRN8HVovLu+awWXRu2spo0fFtLovFpT0qFoebDjI7cHm0XlrO4nHgxUJ2
+        j02rOtk8jq5cy+Rxv/s4k8ezgw9ZPT5vkgtgj9KzKcovLUlVyMgvLrFVija0MNIztLTQMzKx
+        1DM0No+1MjJV0rezSUnNySxLLdK3S9DLONE3j71gumJF063PrA2MS6S7GDk5JARMJJ7c3Mze
+        xcjFISSwlFHi0+JG1i5GDqCEjMTx9WUQNcISf651sUHUvGaUOHTjISNIQljAWuLP/NvMILaI
+        gLbExDc7wIqYBW4xSbz80wY19QWjROPB2ywgVWwCVhIT21eBdfMK2EksWHcVLM4ioCLx9dor
+        JhBbVCBC4vCOWVA1ghInZz4Bq+EUSJRoaVwLVsMsoC7xZ94lZghbXOLWk/lQcXmJ5q2zmScw
+        Cs1C0j4LScssJC2zkLQsYGRZxSiSWlqcm55bbKhXnJhbXJqXrpecn7uJERin24793LyD8dLG
+        4EOMAhyMSjy8CY42cUKsiWXFlbmHGCU4mJVEePtUbeOEeFMSK6tSi/Lji0pzUosPMZoCPTeR
+        WUo0OR+YQvJK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQWwfQxcXBKNTBqND84
+        5TafIabBXWJGafZUXgfLU/qb9/CUrRb1SkjmmVSwtF24X1Ngxv4CqfKeRVp73Xx4vQwePrav
+        3uqRJ2ZYO/PLzqWdlqnzvhR5Ld73finnjO5IiW9rv0VfED9vZyMZeWde5TfV2ISQkMzPH7te
+        zhALz39tIWJ6o1X67P9XVlfZ7kck5yixFGckGmoxFxUnAgB5EIU36QIAAA==
+X-CMS-MailID: 20200207144123eucas1p2181412871e88ab4c1e8f9354ebc15e7d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200206230657eucas1p23fc9345866fb3f489534e0c0640b129f
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200206230657eucas1p23fc9345866fb3f489534e0c0640b129f
+References: <cover.1581030073.git.fthain@telegraphics.com.au>
+        <CGME20200206230657eucas1p23fc9345866fb3f489534e0c0640b129f@eucas1p2.samsung.com>
+        <5504c0c416525ed8c7b8440e5f9971f2a7b59f28.1581030073.git.fthain@telegraphics.com.au>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
----1463811774-1984420675-1581033946=:13
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <alpine.LNX.2.22.394.2002071105541.13@nippy.intranet>
 
-On Fri, 7 Feb 2020, Philippe Mathieu-Daud=C3=A9 wrote:
+On 2/7/20 12:01 AM, Finn Thain wrote:
+> This patch resolves these compiler errors and warnings --
+> 
+>   CC      drivers/video/fbdev/g364fb.o
+> drivers/video/fbdev/g364fb.c: In function 'g364fb_cursor':
+> drivers/video/fbdev/g364fb.c:137:9: error: 'x' undeclared (first use in this function)
+> drivers/video/fbdev/g364fb.c:137:9: note: each undeclared identifier is reported only once for each function it appears in
+> drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of function 'fontwidth' [-Werror=implicit-function-declaration]
+> drivers/video/fbdev/g364fb.c:137:23: error: 'p' undeclared (first use in this function)
+> drivers/video/fbdev/g364fb.c:137:38: error: 'y' undeclared (first use in this function)
+> drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of function 'fontheight' [-Werror=implicit-function-declaration]
+> drivers/video/fbdev/g364fb.c: In function 'g364fb_init':
+> drivers/video/fbdev/g364fb.c:233:24: error: 'fbvar' undeclared (first use in this function)
+> drivers/video/fbdev/g364fb.c:234:24: error: 'xres' undeclared (first use in this function)
+> drivers/video/fbdev/g364fb.c:201:14: warning: unused variable 'j' [-Wunused-variable]
+> drivers/video/fbdev/g364fb.c:197:25: warning: unused variable 'pal_ptr' [-Wunused-variable]
+> 
+> The MIPS Magnum framebuffer console now works when tested in QEMU.
+> 
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 
-> On Wed, Feb 5, 2020 at 11:18 PM Finn Thain <fthain@telegraphics.com.au>  =
-wrote:
-> > On Wed, 5 Feb 2020, Philippe Mathieu-Daud=C3=A9 wrote:
-> > > On Sun, Feb 2, 2020 at 3:41 AM Finn Thain  <fthain@telegraphics.com.a=
-u> wrote:
-> > > >
-> > > > This patch resolves these compiler errors and warnings --
-> > > >
-> > > >   CC      drivers/video/fbdev/g364fb.o
-> > > > drivers/video/fbdev/g364fb.c: In function 'g364fb_cursor':
-> > > > drivers/video/fbdev/g364fb.c:137:9: error: 'x' undeclared (first us=
-e in this function)
-> > > > drivers/video/fbdev/g364fb.c:137:9: note: each undeclared identifie=
-r is reported only once for each function it appears in
-> > > > drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of =
-function 'fontwidth' [-Werror=3Dimplicit-function-declaration]
-> > > > drivers/video/fbdev/g364fb.c:137:23: error: 'p' undeclared (first u=
-se in this function)
-> > > > drivers/video/fbdev/g364fb.c:137:38: error: 'y' undeclared (first u=
-se in this function)
-> > > > drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of =
-function 'fontheight' [-Werror=3Dimplicit-function-declaration]
-> > > > drivers/video/fbdev/g364fb.c: In function 'g364fb_init':
-> > > > drivers/video/fbdev/g364fb.c:233:24: error: 'fbvar' undeclared (fir=
-st use in this function)
-> > > > drivers/video/fbdev/g364fb.c:234:24: error: 'xres' undeclared (firs=
-t use in this function)
-> > >
-> > > 18 years unnoticed...
-> > >
-> >
-> > More likely, it was noticed by those without the skills or time to get=
-=20
-> > it fixed upstream.
-> >
-> > Those with the hardware skills and platform knowledge to be affected=20
-> > by an obscure bug aren't necessarily also capable of fixing a kernel=20
-> > bug, sending a patch upstream and getting it past code review.
-> >
-> > Getting a patch into the Linux kernel is itself a lot of work, unless=
-=20
-> > you've had years of experience with that constantly changing process=20
-> > (which varies significantly between subsystems).
->=20
-> I see, I'm not custom to kernel workflow.
->=20
-> > Kernel developers are only human and do accidentally introduce=20
-> > breakage in their work (as contributors) while ironically (as=20
-> > reviewers) they raise the bar for random fixes from users not versed=20
-> > in the 10000+ lines of Documentation/process/*.rst
-> >
-> > Broken code does not mean zero potential users or zero frustrated=20
-> > users yet I often hear kernel developers disingenuously claim that it=
-=20
-> > does. They have an incentive to make that claim and often there's=20
-> > no-one reading the mailing lists to push back.
->=20
-> But broken code is also bad example of code. The removed code is still=20
-> buried in the git tree.
->=20
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
-Some bugs may never be noticed and yet everyone assumes that they are=20
-present (hence "defence in depth" and all of the complexity that entails).
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
 
-My complaint was really about broken code being used as a rationale to=20
-remove additional code (whatever its quality).
-
-For example, some maintainers would say, "18 years unnoticed... don't stop=
-=20
-at g364fb_cursor(), remove the entire driver".
----1463811774-1984420675-1581033946=:13--
+> ---
+>  drivers/video/fbdev/g364fb.c | 29 +++--------------------------
+>  1 file changed, 3 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/g364fb.c b/drivers/video/fbdev/g364fb.c
+> index 845b79da2a7c..05837a3b985c 100644
+> --- a/drivers/video/fbdev/g364fb.c
+> +++ b/drivers/video/fbdev/g364fb.c
+> @@ -108,7 +108,6 @@ static int g364fb_pan_display(struct fb_var_screeninfo *var,
+>  static int g364fb_setcolreg(u_int regno, u_int red, u_int green,
+>  			    u_int blue, u_int transp,
+>  			    struct fb_info *info);
+> -static int g364fb_cursor(struct fb_info *info, struct fb_cursor *cursor);
+>  static int g364fb_blank(int blank, struct fb_info *info);
+>  
+>  static const struct fb_ops g364fb_ops = {
+> @@ -119,28 +118,8 @@ static const struct fb_ops g364fb_ops = {
+>  	.fb_fillrect	= cfb_fillrect,
+>  	.fb_copyarea	= cfb_copyarea,
+>  	.fb_imageblit	= cfb_imageblit,
+> -	.fb_cursor	= g364fb_cursor,
+>  };
+>  
+> -int g364fb_cursor(struct fb_info *info, struct fb_cursor *cursor)
+> -{
+> -	
+> -	switch (cursor->enable) {
+> -	case CM_ERASE:
+> -		*(unsigned int *) CTLA_REG |= CURS_TOGGLE;
+> -		break;
+> -
+> -	case CM_MOVE:
+> -	case CM_DRAW:
+> -		*(unsigned int *) CTLA_REG &= ~CURS_TOGGLE;
+> -		*(unsigned int *) CURS_POS_REG =
+> -		    ((x * fontwidth(p)) << 12) | ((y * fontheight(p)) -
+> -						  info->var.yoffset);
+> -		break;
+> -	}
+> -	return 0;
+> -}
+> -
+>  /*
+>   *  Pan or Wrap the Display
+>   *
+> @@ -194,11 +173,9 @@ static int g364fb_setcolreg(u_int regno, u_int red, u_int green,
+>   */
+>  int __init g364fb_init(void)
+>  {
+> -	volatile unsigned int *pal_ptr =
+> -	    (volatile unsigned int *) CLR_PAL_REG;
+>  	volatile unsigned int *curs_pal_ptr =
+>  	    (volatile unsigned int *) CURS_PAL_REG;
+> -	int mem, i, j;
+> +	int mem, i;
+>  
+>  	if (fb_get_options("g364fb", NULL))
+>  		return -ENODEV;
+> @@ -230,8 +207,8 @@ int __init g364fb_init(void)
+>  	 */
+>  	*(unsigned short *) (CURS_PAT_REG + 14 * 64) = 0xffff;
+>  	*(unsigned short *) (CURS_PAT_REG + 15 * 64) = 0xffff;
+> -	fb_var.xres_virtual = fbvar.xres;
+> -	fb_fix.line_length = (xres / 8) * fb_var.bits_per_pixel;
+> +	fb_var.xres_virtual = fb_var.xres;
+> +	fb_fix.line_length = fb_var.xres_virtual * fb_var.bits_per_pixel / 8;
+>  	fb_fix.smem_start = 0x40000000;	/* physical address */
+>  	/* get size of video memory; this is special for the JAZZ hardware */
+>  	mem = (r4030_read_reg32(JAZZ_R4030_CONFIG) >> 8) & 3;
