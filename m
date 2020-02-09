@@ -2,191 +2,146 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7049B1565B4
-	for <lists+linux-fbdev@lfdr.de>; Sat,  8 Feb 2020 18:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96BB515687B
+	for <lists+linux-fbdev@lfdr.de>; Sun,  9 Feb 2020 04:26:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727377AbgBHRRE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 8 Feb 2020 12:17:04 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:39706 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727341AbgBHRRD (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 8 Feb 2020 12:17:03 -0500
-Received: by mail-wm1-f67.google.com with SMTP id c84so6050253wme.4;
-        Sat, 08 Feb 2020 09:17:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=tlJ/vckZeI91VzkDgxtSb4e3JuionnABQlaSnybK7BM=;
-        b=X+85D0vwhKbejNfGqazNfql0+7igwTNm40FiKu8te2gKExwu87WTQehulNKLHDhkrM
-         rH/dy56qJhQNmxl3KtZv2s+2dIkKYp4oUnciZpKvGfjko2tZaVj3fzd/VvcXlaYYaI5V
-         P6J9bdKhuRWhpEdFRnTnuHEr4pdH1Xwxx7TNdk07QfwcaeZZISUqPnNPuBzVpPxBaYCV
-         onCOPWuZtxsseCaHM2nKBGMcXQoBt4c+39w20kQUmFOYZUhfoyOt2+E4CxZ7gnTypJIL
-         TZhgg0ho8PXdjh5X7QtrCD400IMfNR6PDQ2j0xaO7NX0X6kocOp6KDoLDxGyvAIOAFKC
-         Lbag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=tlJ/vckZeI91VzkDgxtSb4e3JuionnABQlaSnybK7BM=;
-        b=t4clssszuFT/V78kqK3KNZf4M1cUXWYDjjknXZN/09z9hefdqNDeJzG779W1qE/cly
-         20ZDkbD5a0p+I8F+o4sCEh39qLbVxiflUi3Ii9SrtoujXzYxISoWaB+KEm8eoDI+kr+s
-         Ll6CYyosj4mPkC/q/mH+fLySY3SGa2dVYgYxrd2jxZ8FLX169mTbL+ctUxT20hZkXD4L
-         ffU22+i5O9LYigvtTyh219V2RbvHQlqaeJiwHbtMGBgXSZ0zEt+BvjMBw8OroVDQKZqV
-         CdW5HeO0tQ43ev86Ei1PINtTEXY4xy72hKGMvGIpgB9gbYQinvQ4IkQNKJiSgPvx2TL2
-         K1Bg==
-X-Gm-Message-State: APjAAAW6XNFNHRS7riv2hAx70q39ZBB5bpwEFv0rJW2etuwgatmbkAkC
-        0abmg2UIvMQrRw9/arhjp2gHYKWl
-X-Google-Smtp-Source: APXvYqx+d48ubAFBGX5Uw/lQDSK93Q8wRHqwB3BmhCdqWWIE6x2xPOPFq7PeUn6xHddhNGEg2nzVJA==
-X-Received: by 2002:a1c:a1c3:: with SMTP id k186mr2156509wme.179.1581182220222;
-        Sat, 08 Feb 2020 09:17:00 -0800 (PST)
-Received: from [192.168.1.35] (78.red-88-21-202.staticip.rima-tde.net. [88.21.202.78])
-        by smtp.gmail.com with ESMTPSA id b18sm8405621wru.50.2020.02.08.09.16.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Feb 2020 09:16:59 -0800 (PST)
-Subject: Re: [PATCH v2 1/3] fbdev/g364fb: Fix build failure
-To:     Finn Thain <fthain@telegraphics.com.au>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>
-Cc:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <cover.1581030073.git.fthain@telegraphics.com.au>
- <5504c0c416525ed8c7b8440e5f9971f2a7b59f28.1581030073.git.fthain@telegraphics.com.au>
-From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-Autocrypt: addr=f4bug@amsat.org; keydata=
- mQINBDU8rLoBEADb5b5dyglKgWF9uDbIjFXU4gDtcwiga9wJ/wX6xdhBqU8tlQ4BroH7AeRl
- u4zXP0QnBDAG7EetxlQzcfYbPmxFISWjckDBFvDbFsojrZmwF2/LkFSzlvKiN5KLghzzJhLO
- HhjGlF8deEZz/d/G8qzO9mIw8GIBS8uuWh6SIcG/qq7+y+2+aifaj92EdwU79apZepT/U3vN
- YrfcAuo1Ycy7/u0hJ7rlaFUn2Fu5KIgV2O++hHYtCCQfdPBg/+ujTL+U+sCDawCyq+9M5+LJ
- ojCzP9rViLZDd/gS6jX8T48hhidtbtsFRj/e9QpdZgDZfowRMVsRx+TB9yzjFdMO0YaYybXp
- dg/wCUepX5xmDBrle6cZ8VEe00+UQCAU1TY5Hs7QFfBbjgR3k9pgJzVXNUKcJ9DYQP0OBH9P
- ZbZvM0Ut2Bk6bLBO5iCVDOco0alrPkX7iJul2QWBy3Iy9j02GnA5jZ1Xtjr9kpCqQT+sRXso
- Vpm5TPGWaWljIeLWy/qL8drX1eyJzwTB3A36Ck4r3YmjMjfmvltSZB1uAdo1elHTlFEULpU/
- HiwvvqXQ9koB15U154VCuguvx/Qnboz8GFb9Uw8VyawzVxYVNME7xw7CQF8FYxzj6eI7rBf2
- Dj/II6wxWPgDEy3oUzuNOxTB7sT3b/Ym76yOJzWX5BylXQIJ5wARAQABtDFQaGlsaXBwZSBN
- YXRoaWV1LURhdWTDqSAoRjRCVUcpIDxmNGJ1Z0BhbXNhdC5vcmc+iQJVBBMBCAA/AhsPBgsJ
- CAcDAgYVCAIJCgsEFgIDAQIeAQIXgBYhBPqr514SkXIh3P1rsuPjLCzercDeBQJd660aBQks
- klzgAAoJEOPjLCzercDe2iMP+gMG2dUf+qHz2uG8nTBGMjgK0aEJrKVPodFA+iedQ5Kp3BMo
- jrTg3/DG1HMYdcvQu/NFLYwamUfUasyor1k+3dB23hY09O4xOsYJBWdilkBGsJTKErUmkUO2
- 3J/kawosvYtJJSHUpw3N6mwz/iWnjkT8BPp7fFXSujV63aZWZINueTbK7Y8skFHI0zpype9s
- loU8xc4JBrieGccy3n4E/kogGrTG5jcMTNHZ106DsQkhFnjhWETp6g9xOKrzZQbETeRBOe4P
- sRsY9YSG2Sj+ZqmZePvO8LyzGRjYU7T6Z80S1xV0lH6KTMvq7vvz5rd92f3pL4YrXq+e//HZ
- JsiLen8LH/FRhTsWRgBtNYkOsd5F9NvfJtSM0qbX32cSXMAStDVnS4U+H2vCVCWnfNug2TdY
- 7v4NtdpaCi4CBBa3ZtqYVOU05IoLnlx0miKTBMqmI05kpgX98pi2QUPJBYi/+yNu3fjjcuS9
- K5WmpNFTNi6yiBbNjJA5E2qUKbIT/RwQFQvhrxBUcRCuK4x/5uOZrysjFvhtR8YGm08h+8vS
- n0JCnJD5aBhiVdkohEFAz7e5YNrAg6kOA5IVRHB44lTBOatLqz7ntwdGD0rteKuHaUuXpTYy
- CRqCVAKqFJtxhvJvaX0vLS1Z2dwtDwhjfIdgPiKEGOgCNGH7R8l+aaM4OPOd
-Message-ID: <22d69fb6-ef2c-e4db-43e0-bf34a8fc17dc@amsat.org>
-Date:   Sat, 8 Feb 2020 18:16:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <5504c0c416525ed8c7b8440e5f9971f2a7b59f28.1581030073.git.fthain@telegraphics.com.au>
-Content-Type: text/plain; charset=utf-8
+        id S1727559AbgBID0q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 8 Feb 2020 22:26:46 -0500
+Received: from mga14.intel.com ([192.55.52.115]:38854 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727550AbgBID0q (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 8 Feb 2020 22:26:46 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Feb 2020 19:26:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,419,1574150400"; 
+   d="scan'208";a="405246160"
+Received: from irsmsx109.ger.corp.intel.com ([163.33.3.23])
+  by orsmga005.jf.intel.com with ESMTP; 08 Feb 2020 19:26:44 -0800
+Received: from irsmsx602.ger.corp.intel.com (163.33.146.8) by
+ IRSMSX109.ger.corp.intel.com (163.33.3.23) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Sun, 9 Feb 2020 03:26:43 +0000
+Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
+ irsmsx602.ger.corp.intel.com (163.33.146.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Sun, 9 Feb 2020 03:26:43 +0000
+Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
+ IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
+ Sun, 9 Feb 2020 03:26:43 +0000
+From:   "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
+To:     "Shankar, Uma" <uma.shankar@intel.com>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+CC:     "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH v3 01/17] drm: add DP 1.4 VSC SDP Payload related enums
+ and a structure
+Thread-Topic: [PATCH v3 01/17] drm: add DP 1.4 VSC SDP Payload related enums
+ and a structure
+Thread-Index: AQHV3DJ6afw6Xys2cEiu5kzcqEyBq6gSORkA
+Date:   Sun, 9 Feb 2020 03:26:43 +0000
+Message-ID: <99dcd8e318627428c3a61b75204e1dfa05866863.camel@intel.com>
+References: <20200203232014.906651-1-gwan-gyeong.mun@intel.com>
+         <20200203232014.906651-2-gwan-gyeong.mun@intel.com>
+         <E7C9878FBA1C6D42A1CA3F62AEB6945F823DCE00@BGSMSX104.gar.corp.intel.com>
+In-Reply-To: <E7C9878FBA1C6D42A1CA3F62AEB6945F823DCE00@BGSMSX104.gar.corp.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.252.14.133]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8AF4058DBD5E464A825D31270D1AE11D@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2/7/20 12:01 AM, Finn Thain wrote:
-> This patch resolves these compiler errors and warnings --
-> 
->   CC      drivers/video/fbdev/g364fb.o
-> drivers/video/fbdev/g364fb.c: In function 'g364fb_cursor':
-> drivers/video/fbdev/g364fb.c:137:9: error: 'x' undeclared (first use in this function)
-> drivers/video/fbdev/g364fb.c:137:9: note: each undeclared identifier is reported only once for each function it appears in
-> drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of function 'fontwidth' [-Werror=implicit-function-declaration]
-> drivers/video/fbdev/g364fb.c:137:23: error: 'p' undeclared (first use in this function)
-> drivers/video/fbdev/g364fb.c:137:38: error: 'y' undeclared (first use in this function)
-> drivers/video/fbdev/g364fb.c:137:7: error: implicit declaration of function 'fontheight' [-Werror=implicit-function-declaration]
-> drivers/video/fbdev/g364fb.c: In function 'g364fb_init':
-> drivers/video/fbdev/g364fb.c:233:24: error: 'fbvar' undeclared (first use in this function)
-> drivers/video/fbdev/g364fb.c:234:24: error: 'xres' undeclared (first use in this function)
-> drivers/video/fbdev/g364fb.c:201:14: warning: unused variable 'j' [-Wunused-variable]
-> drivers/video/fbdev/g364fb.c:197:25: warning: unused variable 'pal_ptr' [-Wunused-variable]
-> 
-> The MIPS Magnum framebuffer console now works when tested in QEMU.
-> 
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
-> ---
->  drivers/video/fbdev/g364fb.c | 29 +++--------------------------
->  1 file changed, 3 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/g364fb.c b/drivers/video/fbdev/g364fb.c
-> index 845b79da2a7c..05837a3b985c 100644
-> --- a/drivers/video/fbdev/g364fb.c
-> +++ b/drivers/video/fbdev/g364fb.c
-> @@ -108,7 +108,6 @@ static int g364fb_pan_display(struct fb_var_screeninfo *var,
->  static int g364fb_setcolreg(u_int regno, u_int red, u_int green,
->  			    u_int blue, u_int transp,
->  			    struct fb_info *info);
-> -static int g364fb_cursor(struct fb_info *info, struct fb_cursor *cursor);
->  static int g364fb_blank(int blank, struct fb_info *info);
->  
->  static const struct fb_ops g364fb_ops = {
-> @@ -119,28 +118,8 @@ static const struct fb_ops g364fb_ops = {
->  	.fb_fillrect	= cfb_fillrect,
->  	.fb_copyarea	= cfb_copyarea,
->  	.fb_imageblit	= cfb_imageblit,
-> -	.fb_cursor	= g364fb_cursor,
->  };
->  
-> -int g364fb_cursor(struct fb_info *info, struct fb_cursor *cursor)
-> -{
-> -	
-> -	switch (cursor->enable) {
-> -	case CM_ERASE:
-> -		*(unsigned int *) CTLA_REG |= CURS_TOGGLE;
-> -		break;
-> -
-> -	case CM_MOVE:
-> -	case CM_DRAW:
-> -		*(unsigned int *) CTLA_REG &= ~CURS_TOGGLE;
-> -		*(unsigned int *) CURS_POS_REG =
-> -		    ((x * fontwidth(p)) << 12) | ((y * fontheight(p)) -
-> -						  info->var.yoffset);
-> -		break;
-> -	}
-> -	return 0;
-> -}
-> -
->  /*
->   *  Pan or Wrap the Display
->   *
-> @@ -194,11 +173,9 @@ static int g364fb_setcolreg(u_int regno, u_int red, u_int green,
->   */
->  int __init g364fb_init(void)
->  {
-> -	volatile unsigned int *pal_ptr =
-> -	    (volatile unsigned int *) CLR_PAL_REG;
->  	volatile unsigned int *curs_pal_ptr =
->  	    (volatile unsigned int *) CURS_PAL_REG;
-> -	int mem, i, j;
-> +	int mem, i;
->  
->  	if (fb_get_options("g364fb", NULL))
->  		return -ENODEV;
-> @@ -230,8 +207,8 @@ int __init g364fb_init(void)
->  	 */
->  	*(unsigned short *) (CURS_PAT_REG + 14 * 64) = 0xffff;
->  	*(unsigned short *) (CURS_PAT_REG + 15 * 64) = 0xffff;
-> -	fb_var.xres_virtual = fbvar.xres;
-> -	fb_fix.line_length = (xres / 8) * fb_var.bits_per_pixel;
-> +	fb_var.xres_virtual = fb_var.xres;
-> +	fb_fix.line_length = fb_var.xres_virtual * fb_var.bits_per_pixel / 8;
->  	fb_fix.smem_start = 0x40000000;	/* physical address */
->  	/* get size of video memory; this is special for the JAZZ hardware */
->  	mem = (r4030_read_reg32(JAZZ_R4030_CONFIG) >> 8) & 3;
-> 
-
-Tested-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+T24gV2VkLCAyMDIwLTAyLTA1IGF0IDIwOjEyICswNTMwLCBTaGFua2FyLCBVbWEgd3JvdGU6DQo+
+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBkcmktZGV2ZWwgPGRyaS1k
+ZXZlbC1ib3VuY2VzQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4gT24gQmVoYWxmDQo+ID4gT2YgR3dh
+bi0NCj4gPiBneWVvbmcgTXVuDQo+ID4gU2VudDogVHVlc2RheSwgRmVicnVhcnkgNCwgMjAyMCA0
+OjUwIEFNDQo+ID4gVG86IGludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiBDYzog
+bGludXgtZmJkZXZAdmdlci5rZXJuZWwub3JnOyBkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnDQo+ID4gU3ViamVjdDogW1BBVENIIHYzIDAxLzE3XSBkcm06IGFkZCBEUCAxLjQgVlNDIFNE
+UCBQYXlsb2FkIHJlbGF0ZWQNCj4gPiBlbnVtcyBhbmQgYQ0KPiA+IHN0cnVjdHVyZQ0KPiANCj4g
+JXMvYWRkL0FkZC8NCj4gQWxzbyB5b3UgY2FuIHJlcGhyYXNlIHRoaXMgYXMgIiBBZGQgRFAxLjQg
+VlNDIFNEUCBQYXlsb2FkIHJlbGF0ZWQNCj4gRGF0YSBTdHJ1Y3R1cmVzIi8NCj4gDQpIaSBVbWEs
+DQpUaGFuayB5b3UgZm9yIHJldmlld2luZyBhIHBhdGNoIHNlcmllcy4NCg0KT2theSBJJ2xsIHJl
+cGhyYXNlIGNvbW1pdCBtZXNzYWdlIHdpdGggeW91ciBndWlkZS4NCg0KPiA+IEl0IGFkZHMgbmV3
+IGVudW1lcmF0aW9uIGRlZmluaXRpb25zIGZvciBWU0MgU0RQIFBheWxvYWQgZm9yIFBpeGVsDQo+
+ID4gRW5jb2RpbmcvQ29sb3JpbWV0cnkgRm9ybWF0Lg0KPiA+IEFuZCBpdCBhZGRzIGEgbmV3IGRy
+bSBkYXRhIHN0cnVjdHVyZSBmb3IgRFAgVlNDIFNEUC4NCj4gPiANCj4gPiBlbnVtIGRwX2NvbG9y
+c3BhY2UgYW5kIGVudW0gZHBfY29sb3JpbWV0cnkgY29ycmVzcG9uZCAiUGl4ZWwNCj4gPiBFbmNv
+ZGluZyBhbmQNCj4gPiBDb2xvcmltZXRyeSBGb3JtYXRzIi4gZW51bSBkcF9keW5hbWljX3Jhbmdl
+IGNvcnJlc3BvbmRzICJEeW5hbWljDQo+ID4gUmFuZ2UiLg0KPiA+IEFuZCBlbnVtIGRwX2NvbnRl
+bnRfdHlwZSBjb3JyZXNwb25kcyAiQ29udGVudCBUeXBlIg0KPiA+IEFsbCBvZiB0aGVtIGFyZSBi
+YXNlZCBvbiBEUCAxLjQgc3BlYyBbVGFibGUgMi0xMTc6IFZTQyBTRFAgUGF5bG9hZA0KPiA+IGZv
+cg0KPiA+IERCMTYgdGhyb3VnaCBEQjE4XS4NCj4gPiANCj4gPiB2MzogQWRkIGEgbmV3IGRybSBk
+YXRhIHN0cnVjdHVyZSBmb3IgRFAgVlNDIFNEUA0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IEd3
+YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAg
+aW5jbHVkZS9kcm0vZHJtX2RwX2hlbHBlci5oIHwgNTcNCj4gPiArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA1NyBpbnNlcnRpb25zKCsp
+DQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvZHJtL2RybV9kcF9oZWxwZXIuaA0KPiA+
+IGIvaW5jbHVkZS9kcm0vZHJtX2RwX2hlbHBlci5oIGluZGV4DQo+ID4gMjYyZmFmOWU1ZTk0Li5j
+MDk4NzI3NjgxZmEgMTAwNjQ0DQo+ID4gLS0tIGEvaW5jbHVkZS9kcm0vZHJtX2RwX2hlbHBlci5o
+DQo+ID4gKysrIGIvaW5jbHVkZS9kcm0vZHJtX2RwX2hlbHBlci5oDQo+ID4gQEAgLTEyMDksNiAr
+MTIwOSw2MyBAQCBzdHJ1Y3QgZHBfc2RwIHsNCj4gPiAgI2RlZmluZSBFRFBfVlNDX1BTUl9VUERB
+VEVfUkZCCQkoMTw8MSkNCj4gPiAgI2RlZmluZSBFRFBfVlNDX1BTUl9DUkNfVkFMVUVTX1ZBTElE
+CSgxPDwyKQ0KPiA+IA0KPiA+ICsvKiBCYXNlZCBvbiBEUCAxLjQgc3BlYyBbVGFibGUgMi0xMTc6
+IFZTQyBTRFAgUGF5bG9hZCBmb3IgREIxNg0KPiA+IHRocm91Z2gNCj4gPiArREIxOF0gKi8gZW51
+bSBkcF9jb2xvcnNwYWNlIHsNCj4gDQo+IFdlIHNob3VsZCBub3QgY2FsbCB0aGlzIGNvbG9yc3Bh
+Y2UsIHJhdGhlciByZW5hbWUgaXQgdG8NCj4gZHBfcGl4ZWxmb3JtYXQuDQo+IFRoZXNlIGFyZSBu
+b3QgY29sb3JzcGFjZXMuDQo+IA0KPiBBbHNvIGFkZCB0aGVzZSB0byBrZXJuZWwgZG9jcyBhcyB0
+aGV5IGFyZSBzdGFuZGFyZCBkZWZpbml0aW9ucy4NCj4gDQo+ID4gKwlEUF9DT0xPUlNQQUNFX1JH
+QiA9IDAsDQo+IA0KPiBNYWtlIHRoaXMgYXMgRFBfUElYRUxGT1JNQVRfUkdCIGFuZCByZW5hbWUg
+YWxsIHRoZSBiZWxvdyBvbmVzIGFzDQo+IHdlbGwuDQo+IA0KPiA+ICsJRFBfQ09MT1JTUEFDRV9Z
+VVY0NDQgPSAweDEsDQo+ID4gKwlEUF9DT0xPUlNQQUNFX1lVVjQyMiA9IDB4MiwNCj4gPiArCURQ
+X0NPTE9SU1BBQ0VfWVVWNDIwID0gMHgzLA0KPiA+ICsJRFBfQ09MT1JTUEFDRV9ZX09OTFkgPSAw
+eDQsDQo+ID4gKwlEUF9DT0xPUlNQQUNFX1JBVyA9IDB4NSwNCj4gPiArCURQX0NPTE9SU1BBQ0Vf
+UkVTRVJWRUQgPSAweDYsDQo+ID4gK307DQo+ID4gKw0KPiA+ICsvKioNCj4gPiArICogQmFzZWQg
+b24gRFAgMS40IHNwZWMgW1RhYmxlIDItMTE3OiBWU0MgU0RQIFBheWxvYWQgZm9yIERCMTYNCj4g
+PiB0aHJvdWdoDQo+ID4gK0RCMThdDQo+ID4gKyAqIGFuZCBhIG5hbWUgb2YgZW51bSBtZW1iZXIg
+Zm9sbG93ZXMgRFJNX01PREVfQ09MT1JJTUVUUlkNCj4gPiBkZWZpbml0aW9uLg0KPiANCj4gVHlw
+byBpbiBmb2xsb3dzDQo+IA0KPiA+ICsgKi8NCj4gPiArZW51bSBkcF9jb2xvcmltZXRyeSB7DQo+
+IA0KPiBZb3UgY2FuIGNhbGwgdGhpcyBhcyBkcF9jb2xvcnNwYWNlICh0aGlzIGlzIGFjdHVhbCBj
+b2xvcnNwYWNlKSwgeW91DQo+IGNhbiBzdGljayB3aXRoIGNvbG9yaW1ldHJ5IGFzIHdlbGwuDQo+
+IFdpbGwgbGVhdmUgdGhhdCB0byB5b3UuDQpZZXMsIHRoZSBEUCBzcGVjIHVzZXMgY29sb3JpbWV0
+cnkgYXMgdGhlIHRlcm0sIEkgcHJlZmVyIGNvbG9yaW1ldHJ5Lg0KPiANCj4gPiArCURQX0NPTE9S
+SU1FVFJZX0RFRkFVTFQgPSAwLCAvKiBzUkdCIChJRUMgNjE5NjYtMi0xKSAvIElUVS1SDQo+ID4g
+QlQuNjAxICovDQo+ID4gKwlEUF9DT0xPUklNRVRSWV9SR0JfV0lERV9GSVhFRCA9IDB4MSwNCj4g
+PiArCURQX0NPTE9SSU1FVFJZX0JUNzA5X1lDQyA9IDB4MSwNCj4gPiArCURQX0NPTE9SSU1FVFJZ
+X1JHQl9XSURFX0ZMT0FUID0gMHgyLA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfWFZZQ0NfNjAxID0g
+MHgyLA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfT1BSR0IgPSAweDMsDQo+ID4gKwlEUF9DT0xPUklN
+RVRSWV9YVllDQ183MDkgPSAweDMsDQo+ID4gKwlEUF9DT0xPUklNRVRSWV9EQ0lfUDNfUkdCID0g
+MHg0LA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfU1lDQ182MDEgPSAweDQsDQo+ID4gKwlEUF9DT0xP
+UklNRVRSWV9SR0JfQ1VTVE9NID0gMHg1LA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfT1BZQ0NfNjAx
+ID0gMHg1LA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfQlQyMDIwX1JHQiA9IDB4NiwNCj4gPiArCURQ
+X0NPTE9SSU1FVFJZX0JUMjAyMF9DWUNDID0gMHg2LA0KPiA+ICsJRFBfQ09MT1JJTUVUUllfQlQy
+MDIwX1lDQyA9IDB4NywNCj4gPiArfTsNCj4gPiArDQo+ID4gK2VudW0gZHBfZHluYW1pY19yYW5n
+ZSB7DQo+ID4gKwlEUF9EWU5BTUlDX1JBTkdFX1ZFU0EgPSAwLA0KPiA+ICsJRFBfRFlOQU1JQ19S
+QU5HRV9DVEEgPSAxLA0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArZW51bSBkcF9jb250ZW50X3R5cGUg
+ew0KPiA+ICsJRFBfQ09OVEVOVF9UWVBFX05PVF9ERUZJTkVEID0gMHgwMCwNCj4gPiArCURQX0NP
+TlRFTlRfVFlQRV9HUkFQSElDUyA9IDB4MDEsDQo+ID4gKwlEUF9DT05URU5UX1RZUEVfUEhPVE8g
+PSAweDAyLA0KPiA+ICsJRFBfQ09OVEVOVF9UWVBFX1ZJREVPID0gMHgwMywNCj4gPiArCURQX0NP
+TlRFTlRfVFlQRV9HQU1FID0gMHgwNCwNCj4gPiArfTsNCj4gPiArDQo+ID4gKy8qIERSTSBEUCBW
+U0MgU0RQIGFzIHBlciBEUCAxLjQgc3BlYyAqLyBzdHJ1Y3QgZHJtX2RwX3ZzY19zZHAgew0KPiA+
+ICsJdW5zaWduZWQgY2hhciBzZHBfdHlwZTsgLyogU2Vjb25kYXJ5LWRhdGEgUGFja2V0IFR5cGUg
+Ki8NCj4gPiArCXVuc2lnbmVkIGNoYXIgcmV2aXNpb247IC8qIFJldmlzaW9uIE51bWJlciAqLw0K
+PiANCj4gVGhlc2UgY29tbWVudHMgc2VlbXMgc2VsZi1leHBsYW5hdG9yeSwgeW91IGNhbiBwcm9i
+YWJseSBkcm9wIHRoZW0uDQo+IA0KVGhhbmsgeW91IGZvciByZXZpZXcgaW4gZGV0YWlsLCBJJ2xs
+IHVwZGF0ZSBldmVyeXRoaW5nIHRoYXQgeW91IGNvbW1lbnRlZC4NCj4gPiArCXVuc2lnbmVkIGNo
+YXIgbGVuZ3RoOyAvKiBOdW1iZXIgb2YgVmFsaWQgRGF0YSBCeXRlcyAqLw0KPiA+ICsJZW51bSBk
+cF9jb2xvcnNwYWNlIGNvbG9yc3BhY2U7DQo+ID4gKwllbnVtIGRwX2NvbG9yaW1ldHJ5IGNvbG9y
+aW1ldHJ5Ow0KPiA+ICsJaW50IGJwYzsgLyogYml0IHBlciBjb2xvciAqLw0KPiA+ICsJZW51bSBk
+cF9keW5hbWljX3JhbmdlIGR5bmFtaWNfcmFuZ2U7DQo+ID4gKwllbnVtIGRwX2NvbnRlbnRfdHlw
+ZSBjb250ZW50X3R5cGU7DQo+ID4gK307DQo+ID4gKw0KPiA+ICBpbnQgZHJtX2RwX3Bzcl9zZXR1
+cF90aW1lKGNvbnN0IHU4DQo+ID4gcHNyX2NhcFtFRFBfUFNSX1JFQ0VJVkVSX0NBUF9TSVpFXSk7
+DQo+ID4gDQo+ID4gIHN0YXRpYyBpbmxpbmUgaW50DQo+ID4gLS0NCj4gPiAyLjI0LjENCj4gPiAN
+Cj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+
+IGRyaS1kZXZlbCBtYWlsaW5nIGxpc3QNCj4gPiBkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnDQo+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9k
+cmktZGV2ZWwNCg==
