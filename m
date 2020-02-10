@@ -2,121 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C670715747E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Feb 2020 13:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4689D1580D9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Feb 2020 18:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727455AbgBJM1H (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 Feb 2020 07:27:07 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:44928 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727431AbgBJM1H (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 Feb 2020 07:27:07 -0500
-Received: by mail-oi1-f196.google.com with SMTP id d62so8960962oia.11
-        for <linux-fbdev@vger.kernel.org>; Mon, 10 Feb 2020 04:27:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=oa0bZQpkEyjcs7ABeeOu5qKY4d6etbTg8GwEpE2lwx4=;
-        b=MH0BFKkIBUvlGyZJjtbEnbfuFta13a9TrQ6QGSlXqekYrZIJQD6cRHmNKHwHO6oAZ7
-         zl+9aANHbnP5v/vLtMWHE0XD870t5+SJkhVk6kzzMz7Fia81hXAHpac5TB72w4NRrVtJ
-         r3rzYJF8f612n2oGM61VtceTXR23Il+m+eOkVz1T+ol6NPhghjZqnUs0Q7r5dSxk3UfG
-         7WKbAmK77Poc9+8csDrKl9hjAQbIpIJZC6gj7eq5NOEpt9InzWqhe65tBpuQeM7CJxfk
-         tl6GTHLPu+UjUbuRklE11Dl5UGa8SHz5fGk+prhSOuRyQOQvr54C4Rfgob9b28zM2fok
-         b3Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=oa0bZQpkEyjcs7ABeeOu5qKY4d6etbTg8GwEpE2lwx4=;
-        b=SH/FpaAPSFUACoNlcsgBrT7gksYQqYlgOLoQlRcUU5AFfFF8jkDVKQEDvXsFSUImUu
-         BOgkt+UsIEyMLeb1F/HT8+rxbc7SoAyEipb/LgY9rwdUNlPLry/O25aeywbibCSNqiEj
-         nkpzIDAcJGhSwg7FGpqUu0WYyo748jjG2+1OcONNU/6oox9pie+QZLkJBwmZtnsuX3eS
-         6R5M7xpWxMMy4yZZgH+/0zxiiVGfswyEo1L0lKc+vqHhyEbqrPfwYcKsnO7VuzbBgrGr
-         3ZVHnKtYB6o9wB5mp5nBIGQSSOaV9vsu6u70fdLxvkN63Tp/Rd9mQYvaeecUgO+aPF1C
-         SyGw==
-X-Gm-Message-State: APjAAAW3oCMpQ9U6AzKlLhxniJOvKxcz70OKhzywqtkklAZTmjkoy8jC
-        VeSdT3FlXLgGJT+I0QbtIVJOMx7Kn6capcZbqQ==
-X-Google-Smtp-Source: APXvYqzSifkbNkpIAX3gQEx9jLNvNFkj5gxaF9IXOHNyR39WK13PQgMJl2/eE/T/lCHDk69RBfxUFU0KyzpZXZz6ilE=
-X-Received: by 2002:aca:3f54:: with SMTP id m81mr627374oia.73.1581337626555;
- Mon, 10 Feb 2020 04:27:06 -0800 (PST)
+        id S1728225AbgBJRKZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 Feb 2020 12:10:25 -0500
+Received: from mga18.intel.com ([134.134.136.126]:40093 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728223AbgBJRKZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 Feb 2020 12:10:25 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Feb 2020 09:10:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,425,1574150400"; 
+   d="scan'208";a="233168212"
+Received: from helsinki.fi.intel.com ([10.237.66.159])
+  by orsmga003.jf.intel.com with ESMTP; 10 Feb 2020 09:10:23 -0800
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v6 00/18] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Mon, 10 Feb 2020 19:10:03 +0200
+Message-Id: <20200210171021.109684-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Received: by 2002:a05:6830:1406:0:0:0:0 with HTTP; Mon, 10 Feb 2020 04:27:06
- -0800 (PST)
-Reply-To: janvierlitse2019@gmail.com
-From:   Mr Janvier Litse <mrennofreye@gmail.com>
-Date:   Mon, 10 Feb 2020 04:27:06 -0800
-Message-ID: <CAHvf7r1yZLxngX-Fj=9unkpFGUbt6TPYvFB4BbY_PP6KsGdHCA@mail.gmail.com>
-Subject: URGENT RESPOND FOR MORE DETAILS!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Mr Janvier Litse.
-African Development Bank
-Burkina Faso (ADB)
-Ouagadougou - Burkina Faso.
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
 
-Dear friend, Good Day
+v2: Minor style fix
+v3: 
+  - Add a new drm data structure for DP VSC SDP
+  - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
+  - Move logging functions to drm core [Jani N]
+    And use drm core's DP VSC SDP logging function
+  - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+    used for HDMI), when intel_dp_set_infoframes() function will be called.
+v4:
+  - Use struct drm_device logging macros
+  - Rebased
+v5:
+  - Use intel_de_*() functions for register access
+  - Add warning where a bpc is 6 and a pixel format is RGB.
+  - Addressed review comments from Uma
+    Add kernel docs for added data structures
+    Rename enum dp_colorspace to dp_pixelformat
+    Polish commit message and comments
+    Combine the if checks of sdp.HB2 and sdp.HB3
+    Add 6bpc to packining and unpacking of VSC SDP
+v6:
+  - Fix enabled infoframe states of lspcon
 
-I am writing to seek your cooperation over this business, Please due
-welcome this letter.
+Gwan-gyeong Mun (18):
+  drm: Add DP1.4 VSC SDP Payload related Data Structures
+  drm/i915/dp: Add compute routine for DP VSC SDP
+  drm/i915/dp: Add compute routine for DP HDR Metadata Infoframe SDP
+  drm/i915/dp: Add writing of DP SDPs
+  video/hdmi: Add Unpack only function for DRM infoframe
+  drm/i915/dp: Read out DP SDPs
+  drm: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Fix enabled infoframe states of lspcon
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on ddi disable
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
 
-I am Mr Janvier Litse.the director of the accounts & auditing dept .at
-the African Development Bank Ouagadougou-west Africa (A D B) With due
-respect, I have decided to contact you on a business transaction that
-will be beneficial to both of us.At the bank's lastaccounts/auditing
-evaluations, my staffs came across an old account which was being
-maintained by a foreign client who we learnt was among the deceased
-passengers of motor accident on November.. 2003, the deceased was
-unable to run this account since his death. The account has remained
-dormant without the knowledge of his family since it was put in a safe
-deposit account in the bank for future investment by the client.
+ drivers/gpu/drm/drm_dp_helper.c               | 174 +++++
+ drivers/gpu/drm/i915/display/intel_ddi.c      |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c  |  62 ++
+ .../drm/i915/display/intel_display_types.h    |   1 +
+ drivers/gpu/drm/i915/display/intel_dp.c       | 636 +++++++++++++-----
+ drivers/gpu/drm/i915/display/intel_dp.h       |  18 +-
+ drivers/gpu/drm/i915/display/intel_lspcon.c   |   2 +-
+ drivers/gpu/drm/i915/display/intel_psr.c      |  54 +-
+ drivers/gpu/drm/i915/display/intel_psr.h      |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h               |   1 +
+ drivers/video/hdmi.c                          |  58 +-
+ include/drm/drm_dp_helper.h                   | 133 ++++
+ include/linux/hdmi.h                          |   2 +
+ 13 files changed, 948 insertions(+), 218 deletions(-)
 
-Since his demise, even the members of his family haven't applied for
-claims over this fund and it has been in the safe deposit accountuntil
-I discovered that it cannot be claimed since our client is a foreign
-national and we are sure that he has no next of kin here to file
-claims over the money. As the director of the department, this
-discovery was brought to my office so as to decide what is to be done.
-I decided to seek ways through which to transfer this money out of the
-bank and out of the country too.
+-- 
+2.25.0
 
-The total amount in the account is twenty eight  million three hundred
-thousand dollars (USD 28,300,000.00).with my positions as a staffs of
-the bank, I am handicapped because I can not operate foreign accounts
-and cannot lay bonafide claim over this money.The client was a foreign
-national and you will only be asked to act as his next of kin and I
-will supply you with all the necessary information and bank data to
-assist you in being able to transfer this money to any bank of your
-choice where this money could be transferred into.
-
-The total sum will be shared as follows: 50% for me, 50% for you and
-expenses incidental occur during the transfer will be  incured by both
-of us. The transfer is risk free on both sides hence you are going to
-follow my instruction till the fund transfer to your account.
-
-Since I work in this bank that is why you should be confident in the
-success of this transaction because you will be updated with
-information as at when desired I will wish you to keep this
-transaction secret and confidential as I am hoping to retire with my
-share of this money at the end of transaction which will be when this
-money is safety in your account. I will then come over to your country
-for sharing according to the previously agreed percentages. You might
-even have to advise me on possibilities of investment in your country
-or elsewhere of our choice. May God help you to help me to a restive
-retirement, Amen.
-
-
-Please for further information and enquires feel free to contact me
-back immediately for more explanation and better  understanding.please
-contact me through this alternative email address
-(janvierlitse2019@gmail.com)
-
-I am waiting for your urgent response!!!
-Thanks and remain blessed
- Mr Janvier Litse.
-+226 54459253
