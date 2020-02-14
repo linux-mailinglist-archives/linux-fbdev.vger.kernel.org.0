@@ -2,117 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C1D15DAB4
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Feb 2020 16:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 963A615E1FA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Feb 2020 17:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387622AbgBNPWF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Feb 2020 10:22:05 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:53377 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387533AbgBNPWF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Feb 2020 10:22:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581693723;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ViIYXYbx4L1XBFneJrIYnhcCLgHD03pQaTDVMByFkSU=;
-        b=BIpvdOWTBHhLX2HhG3azrhXsEeA166UIATn5iRztqvCYM4bwY7+XU/T0IZQ9RMfA341bNi
-        IxNrkd0TcqDtgHHperbvSPK7lVEuegxhi9HnLJxiT4JSR+TSB/miPzg4Z1uVXaxzQS7/FT
-        Z+9Wa1EukMh3N+Uwv0JFJxSG7r/an80=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-375-2RBtl4uONKC51IE6td5wAA-1; Fri, 14 Feb 2020 10:22:01 -0500
-X-MC-Unique: 2RBtl4uONKC51IE6td5wAA-1
-Received: by mail-wm1-f70.google.com with SMTP id y24so4038465wmj.8
-        for <linux-fbdev@vger.kernel.org>; Fri, 14 Feb 2020 07:22:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ViIYXYbx4L1XBFneJrIYnhcCLgHD03pQaTDVMByFkSU=;
-        b=EqIhxP/MMvJHOLP37ivxwT7OBEfOAhyNXWvN6Pc2JAFmKloMbrRl5tswp3KnoZhRGM
-         4pdqgFsg/BmMxn9DfCmTPhfDoRoGCGN0Gcjh8u7I41+cI9NLE4O4RK+MEPhERgPcMF0a
-         of8jssWL+3HtVVT13gfE2LUphu/DkaqPFt52czM+8QvK923Pozu7xyStQjl+sgMnLTb8
-         fc76layB1+iU2D02FwexiSfNxN4mg09rIl7kzzieuRjZhVEGM4nhiPuFlhq/2uUfMZRp
-         RICkkUjQcEJVRcSlnvFacskby17oShiFLIC/w8bItjzNKTmAmKUd7K0z/Cxzp/mGwNVf
-         LLjA==
-X-Gm-Message-State: APjAAAWUjngGINKekb/6uNvcBQSXewIam0nfBFtIXDEn2OZu6woU1EBb
-        TRhDCnMnJKqy3x3B7ocbXxZ/N+bbz4jtfHwgpE8XBp97enkfZr0ommjmBtBVwFjd77wwx14Ytsw
-        HVmlNWWF5Y5EKxlMnn5p3YwA=
-X-Received: by 2002:a5d:640d:: with SMTP id z13mr4372731wru.181.1581693720220;
-        Fri, 14 Feb 2020 07:22:00 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzJhnOqsakup/oRM69XOoggfdoo+dBtiGPAHCNQF4+OJNV0ybr/9h7kzmW/TDPxQ1DLLcBnsA==
-X-Received: by 2002:a5d:640d:: with SMTP id z13mr4372719wru.181.1581693720021;
-        Fri, 14 Feb 2020 07:22:00 -0800 (PST)
-Received: from x1.localdomain ([62.140.137.72])
-        by smtp.gmail.com with ESMTPSA id c4sm7669109wml.7.2020.02.14.07.21.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Feb 2020 07:21:59 -0800 (PST)
-Subject: Re: [PATCH v1] fbdev: simplefb: Platform data shan't include kernel.h
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-fbdev@vger.kernel.org
-References: <20200204162114.28937-1-andriy.shevchenko@linux.intel.com>
- <20200214142550.GL10400@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <f33a4921-2b73-66c1-3165-b2e23c9fb2a8@redhat.com>
-Date:   Fri, 14 Feb 2020 16:21:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S2393017AbgBNQVg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Feb 2020 11:21:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56264 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2392329AbgBNQVf (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:21:35 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 86DD1246A6;
+        Fri, 14 Feb 2020 16:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581697294;
+        bh=8Tg0HQeU8QFKYHVtVIxc5GOOIl8RtN1hrGNhC1kUx4Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=G4DLG1CDY+9TdFXBnrZzrXOkhPMS1yoCV6rrrQlCXPIyqefTfxV2hamEKPohVFdCo
+         scFjcl1+hqeo7xtAAIW2KHyouzAAntZ3R5Bb/fWbkvOLGy2kKiItACqNzDsvB0dgWf
+         N41bd6gsELC9Hx3pRCj+y0UPZK1n997o3hpAMK68=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sasha Levin <sashal@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 009/141] pxa168fb: Fix the function used to release some memory in an error handling path
+Date:   Fri, 14 Feb 2020 11:19:09 -0500
+Message-Id: <20200214162122.19794-9-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
+References: <20200214162122.19794-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200214142550.GL10400@smile.fi.intel.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-On 2/14/20 3:25 PM, Andy Shevchenko wrote:
-> On Tue, Feb 04, 2020 at 06:21:14PM +0200, Andy Shevchenko wrote:
->> Replace with appropriate types.h.
-> 
-> Hans, any comment on this?
+[ Upstream commit 3c911fe799d1c338d94b78e7182ad452c37af897 ]
 
-Not really, I've not touched that code in a while.
+In the probe function, some resources are allocated using 'dma_alloc_wc()',
+they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
 
-But I see I'm still listed as the maintainer, the change looks sensible
-to me, so:
+We already use 'dma_free_wc()' in the remove function, but not in the
+error handling path of the probe function.
 
-Acked-by: Hans de Goede <hdegoede@redhat.com>
+Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
+PAGE_ALIGNed.
 
-Regards,
+Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
+CC: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20190831100024.3248-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/pxa168fb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Hans
-
-
-
->> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> ---
->>   include/linux/platform_data/simplefb.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/include/linux/platform_data/simplefb.h b/include/linux/platform_data/simplefb.h
->> index 4f733a411d18..ca8337695c2a 100644
->> --- a/include/linux/platform_data/simplefb.h
->> +++ b/include/linux/platform_data/simplefb.h
->> @@ -10,7 +10,7 @@
->>   
->>   #include <drm/drm_fourcc.h>
->>   #include <linux/fb.h>
->> -#include <linux/kernel.h>
->> +#include <linux/types.h>
->>   
->>   /* format array, use it to initialize a "struct simplefb_format" array */
->>   #define SIMPLEFB_FORMATS \
->> -- 
->> 2.24.1
->>
-> 
+diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+index d059d04c63acd..20195d3dbf088 100644
+--- a/drivers/video/fbdev/pxa168fb.c
++++ b/drivers/video/fbdev/pxa168fb.c
+@@ -769,8 +769,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
+ failed_free_clk:
+ 	clk_disable_unprepare(fbi->clk);
+ failed_free_fbmem:
+-	dma_free_coherent(fbi->dev, info->fix.smem_len,
+-			info->screen_base, fbi->fb_start_dma);
++	dma_free_wc(fbi->dev, info->fix.smem_len,
++		    info->screen_base, fbi->fb_start_dma);
+ failed_free_info:
+ 	kfree(info);
+ 
+@@ -804,7 +804,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 
+-	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
++	dma_free_wc(fbi->dev, info->fix.smem_len,
+ 		    info->screen_base, info->fix.smem_start);
+ 
+ 	clk_disable_unprepare(fbi->clk);
+-- 
+2.20.1
 
