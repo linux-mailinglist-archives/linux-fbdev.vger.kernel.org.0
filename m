@@ -2,38 +2,36 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFA1315EF1B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Feb 2020 18:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9B9A15EECD
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Feb 2020 18:43:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388522AbgBNRpq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Feb 2020 12:45:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48964 "EHLO mail.kernel.org"
+        id S2389641AbgBNRnS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Feb 2020 12:43:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50198 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388782AbgBNQCe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:02:34 -0500
+        id S2389581AbgBNQDQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:03:16 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74F2E217F4;
-        Fri, 14 Feb 2020 16:02:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 20FD724686;
+        Fri, 14 Feb 2020 16:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696154;
-        bh=b/DkCkBjfmugWgVNNhk4QMI2Ne6zMW1uGQ9tVLzx0OE=;
+        s=default; t=1581696196;
+        bh=8LejdIoIXZMOUABhucZnQy6clJGTMw5d0X03JVnOjpw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fGbZ/rZ7YnQnQDN0uTxGA3bMTwi4TVvrO/+Z4q7I1OFPhm3KdDl95W9sipI+R8lL5
-         wUY1riN++RyljP6vWzWoYCLDcdZ/VWKhRqqk/jiyD4N8cSMBT2jewE8F+w9eyYk+Z5
-         W32j+XeM/aYmf6Qv8ooYlw2tJEndpfOvFNwzSMmE=
+        b=TfZAPIlfJO0MAWiuTQph2TXzcdOzFXlC6seE4LqMX4DNgWwqnLu0tXs4/bLKgMbTK
+         wYHCn+0DXKTtygM5/lLNV3acB0lLESK/ZCnlidsX9gXmNhp8O+l1B5oKJaDzTDbN6k
+         Y0M6SdgUTq1yRtiUUceD3eFEM2uo2TQ8K7vVmpp4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sasha Levin <sashal@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 033/459] pxa168fb: Fix the function used to release some memory in an error handling path
-Date:   Fri, 14 Feb 2020 10:54:43 -0500
-Message-Id: <20200214160149.11681-33-sashal@kernel.org>
+Cc:     Beniamin Bia <beniamin.bia@analog.com>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 063/459] dt-bindings: iio: adc: ad7606: Fix wrong maxItems value
+Date:   Fri, 14 Feb 2020 10:55:13 -0500
+Message-Id: <20200214160149.11681-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
@@ -46,54 +44,48 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Beniamin Bia <beniamin.bia@analog.com>
 
-[ Upstream commit 3c911fe799d1c338d94b78e7182ad452c37af897 ]
+[ Upstream commit a6c4f77cb3b11f81077b53c4a38f21b92d41f21e ]
 
-In the probe function, some resources are allocated using 'dma_alloc_wc()',
-they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
+This patch set the correct value for oversampling maxItems. In the
+original example, appears 3 items for oversampling while the maxItems
+is set to 1, this patch fixes those issues.
 
-We already use 'dma_free_wc()' in the remove function, but not in the
-error handling path of the probe function.
-
-Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
-PAGE_ALIGNed.
-
-Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
-CC: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20190831100024.3248-1-christophe.jaillet@wanadoo.fr
+Fixes: 416f882c3b40 ("dt-bindings: iio: adc: Migrate AD7606 documentation to yaml")
+Signed-off-by: Beniamin Bia <beniamin.bia@analog.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxa168fb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index 1410f476e135d..1fc50fc0694bc 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
- failed_free_clk:
- 	clk_disable_unprepare(fbi->clk);
- failed_free_fbmem:
--	dma_free_coherent(fbi->dev, info->fix.smem_len,
--			info->screen_base, fbi->fb_start_dma);
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
-+		    info->screen_base, fbi->fb_start_dma);
- failed_free_info:
- 	kfree(info);
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+index cc544fdc38bea..bc8aed17800d3 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+@@ -85,7 +85,7 @@ properties:
+       Must be the device tree identifier of the over-sampling
+       mode pins. As the line is active high, it should be marked
+       GPIO_ACTIVE_HIGH.
+-    maxItems: 1
++    maxItems: 3
  
-@@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
- 
- 	irq = platform_get_irq(pdev, 0);
- 
--	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
- 		    info->screen_base, info->fix.smem_start);
- 
- 	clk_disable_unprepare(fbi->clk);
+   adi,sw-mode:
+     description:
+@@ -128,9 +128,9 @@ examples:
+                 adi,conversion-start-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
+                 reset-gpios = <&gpio 27 GPIO_ACTIVE_HIGH>;
+                 adi,first-data-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
+-                adi,oversampling-ratio-gpios = <&gpio 18 GPIO_ACTIVE_HIGH
+-                                                &gpio 23 GPIO_ACTIVE_HIGH
+-                                                &gpio 26 GPIO_ACTIVE_HIGH>;
++                adi,oversampling-ratio-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>,
++                                               <&gpio 23 GPIO_ACTIVE_HIGH>,
++                                               <&gpio 26 GPIO_ACTIVE_HIGH>;
+                 standby-gpios = <&gpio 24 GPIO_ACTIVE_LOW>;
+                 adi,sw-mode;
+         };
 -- 
 2.20.1
 
