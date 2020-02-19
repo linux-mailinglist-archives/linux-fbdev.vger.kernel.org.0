@@ -2,103 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26E79162A0E
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Feb 2020 17:08:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA29D1645C6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Feb 2020 14:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726403AbgBRQIp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Feb 2020 11:08:45 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:43183 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726360AbgBRQIp (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Feb 2020 11:08:45 -0500
-Received: by mail-pl1-f196.google.com with SMTP id p11so8243720plq.10;
-        Tue, 18 Feb 2020 08:08:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=/PWlIRrux36Z8YXu1c6rYJDQ0dR+HkQHRAcmTGfpRHA=;
-        b=Wgikwh8/fq9qwIWTMaJkaQThHgvxfDWhHENraP0DiIzzSAj35YjR+DZaMV2WEQg67v
-         JCmyiY4bh+10crmZGGwVT5CgYfpW190885U7uL6UAmLbwDC2Zm9vY7wNHnsryOZN/zop
-         2k/831O1h3NE7MgvJb2DqelTL//+p6B3dNlyrTN0mIrcaceW0MjdSYroz8zc9FeIJMoV
-         oCpyOf3f4asPzYEWn1RxRcGajYYQ09A8mb3hT9wkqIDHwnVWTJybmnh+WdXwf3TTqxxz
-         9ibr0nmuoeQdvagcy8IKje9E6lBy75/n34mv2YVmchT75KVwkmU/SIfI2s+3nRMRuEZ0
-         c3lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=/PWlIRrux36Z8YXu1c6rYJDQ0dR+HkQHRAcmTGfpRHA=;
-        b=Kdi331CMS1AH087jAuTjky9Njjlkr8NvbYx9vSXapNb1j8FpCzl0UNNf0fmc8QEWBu
-         P7MArz5AA5VIsiOCApXc6svppbbCAqDcSJwEap47CEwpf1F6m5f1c4O3yfdB2a2eggbQ
-         +DdHq5Usafr/9NO1Pyn19qXjIRG+hBD2vIYJoHOi2OtHYUtV1hPDMPuwcMVQoPrKwVxL
-         L48IhzRmQ1/MRdQWe/jEfN8jtwTtSHgGqRQPLcAe7JoKuK+/39/zwPcc5EZX9/6o5Y2D
-         HDeDdaC1yx0cAaM+/lU3XT16z9nkPrkh27uoUqAe6VHyB48pPLmdUTauWnM4mWrySvU2
-         6b/g==
-X-Gm-Message-State: APjAAAX86Qpb5crh4LYaBJHj5EEJuosCDZ9rR6swHEsBjGmbs/tXAbdf
-        39m1yOzdk4qt7Ct9d9cESZ4=
-X-Google-Smtp-Source: APXvYqwq30136YrcBJPF6QwgqCw02zX8wuOYcx6L1EtvZLWymcIhi+ooZhvqNMzsFO3Arf/VYTO5VA==
-X-Received: by 2002:a17:902:bc88:: with SMTP id bb8mr20297850plb.274.1582042123021;
-        Tue, 18 Feb 2020 08:08:43 -0800 (PST)
-Received: from localhost.localdomain ([1.39.134.248])
-        by smtp.gmail.com with ESMTPSA id 7sm4866755pfc.21.2020.02.18.08.08.39
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 18 Feb 2020 08:08:41 -0800 (PST)
-From:   Souptick Joarder <jrdr.linux@gmail.com>
-To:     benh@kernel.crashing.org, b.zolnierkie@samsung.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Souptick Joarder <jrdr.linux@gmail.com>
-Subject: [PATCH] video: fbdev: radeon: Remove dead code
-Date:   Tue, 18 Feb 2020 21:45:56 +0530
-Message-Id: <1582042556-21555-1-git-send-email-jrdr.linux@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        id S1727875AbgBSNiA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 19 Feb 2020 08:38:00 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:21971 "EHLO scm.imp.edu.mx"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727762AbgBSNh7 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:37:59 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id C909E18AD1C;
+        Wed, 19 Feb 2020 06:11:28 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 2FB1E18D9F9;
+        Wed, 19 Feb 2020 04:51:47 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 304AF18D9D5;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 142C6180635F4C;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id drikqDSaXNZ7; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id E9078180635F42;
+        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id nlvgsIzZRblX; Wed, 19 Feb 2020 04:51:43 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id 27589180635F4C;
+        Wed, 19 Feb 2020 04:51:42 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:51:40 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219105142.27589180635F4C@imp.edu.mx>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is dead code since 3.15 and can be removed if not
-going to be useful further.
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
----
- drivers/video/fbdev/aty/radeon_base.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
 
-diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
-index 3af00e3..ccf888e 100644
---- a/drivers/video/fbdev/aty/radeon_base.c
-+++ b/drivers/video/fbdev/aty/radeon_base.c
-@@ -849,12 +849,6 @@ static int radeonfb_check_var (struct fb_var_screeninfo *var, struct fb_info *in
- 		case 9 ... 16:
- 			v.bits_per_pixel = 16;
- 			break;
--		case 17 ... 24:
--#if 0 /* Doesn't seem to work */
--			v.bits_per_pixel = 24;
--			break;
--#endif			
--			return -EINVAL;
- 		case 25 ... 32:
- 			v.bits_per_pixel = 32;
- 			break;
-@@ -2548,16 +2542,6 @@ static void radeonfb_pci_unregister(struct pci_dev *pdev)
- 	if (rinfo->mon2_EDID)
- 		sysfs_remove_bin_file(&rinfo->pdev->dev.kobj, &edid2_attr);
- 
--#if 0
--	/* restore original state
--	 * 
--	 * Doesn't quite work yet, I suspect if we come from a legacy
--	 * VGA mode (or worse, text mode), we need to do some VGA black
--	 * magic here that I know nothing about. --BenH
--	 */
--        radeon_write_mode (rinfo, &rinfo->init_state, 1);
-- #endif
--
- 	del_timer_sync(&rinfo->lvds_timer);
- 	arch_phys_wc_del(rinfo->wc_cookie);
-         unregister_framebuffer(info);
--- 
-1.9.1
-
+Mfg
+urs portmann
