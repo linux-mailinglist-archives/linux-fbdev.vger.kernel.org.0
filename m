@@ -2,62 +2,114 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA29D1645C6
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Feb 2020 14:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D66A4164E55
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Feb 2020 20:04:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727875AbgBSNiA convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 19 Feb 2020 08:38:00 -0500
-Received: from scm.imp.edu.mx ([132.247.16.103]:21971 "EHLO scm.imp.edu.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727762AbgBSNh7 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Feb 2020 08:37:59 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id C909E18AD1C;
-        Wed, 19 Feb 2020 06:11:28 -0600 (CST)
-X-Virus-Scanned: by SpamTitan at imp.edu.mx
-Received: from scm.imp.edu.mx (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 2FB1E18D9F9;
-        Wed, 19 Feb 2020 04:51:47 -0600 (CST)
-Authentication-Results: scm.imp.edu.mx; none
-Received: from imp.edu.mx (unknown [10.249.93.105])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 304AF18D9D5;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 142C6180635F4C;
-        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id drikqDSaXNZ7; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id E9078180635F42;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-X-Virus-Scanned: amavisd-new at imp.edu.mx
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id nlvgsIzZRblX; Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Received: from [45.147.4.119] (unknown [45.147.4.119])
-        by imp.edu.mx (Postfix) with ESMTPSA id 27589180635F4C;
-        Wed, 19 Feb 2020 04:51:42 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: 19-02-2020
-To:     Recipients <mucios@imp.edu.mx>
-From:   "urs portmann" <mucios@imp.edu.mx>
-Date:   Wed, 19 Feb 2020 21:51:40 +1100
-Reply-To: onube@qq.com
-Message-Id: <20200219105142.27589180635F4C@imp.edu.mx>
+        id S1726718AbgBSTEA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 19 Feb 2020 14:04:00 -0500
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:43960 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726643AbgBSTD7 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 19 Feb 2020 14:03:59 -0500
+Received: by mail-pg1-f194.google.com with SMTP id u12so548405pgb.10;
+        Wed, 19 Feb 2020 11:03:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
+         :references:in-reply-to;
+        bh=DiJoVOfQs//1PaWZFtx2QcGxz7nAwr47TsQFS3rNJQE=;
+        b=PyBg1YXmPsU3qt0mtm2/q/MSn94DN4XK1POgkvqYJu429EAvsawZzE1HpBWRX1egmg
+         dRZZPCeaMXU9ZgUWXs7zqprC0a2NnvmFijj/7OmTkpavVkyQ9nLlwto5Co4nE/aDUP5Y
+         vN5wAzRKNWZ8mIfyyKQW5wneAsVFcN3uCVtudwEyUrvn3wa6W/eD6GDQ29OaOqr5eUtf
+         zoDFmfPy6GjKRRcypnGpZCRnQ+TxEZZYrWIuoARB9VLQ60TE5tNIu6CGJeKobaNAeTde
+         95cN6TiagLo08ClC07owTTL9pbL1MTBEgHBk1BOhv5Vx4aoRidqtK1jgiA+Iax5cmA+4
+         NSRg==
+X-Gm-Message-State: APjAAAVljcdgMQmWzsznfBHLNAKFqXFc8ihKNNRVZEkKh0r2Ly4VqWQF
+        NLtweieTxM9aPVVbrKLmjN7MsrSFLyPePA==
+X-Google-Smtp-Source: APXvYqx7/YKjuAjwK+VacNMDKFITTSWWqrTmLtv3O6oHG+s4MiEScrKPPtXEjw473ZTHkP0IX51N7Q==
+X-Received: by 2002:a63:ec07:: with SMTP id j7mr28908332pgh.187.1582139038703;
+        Wed, 19 Feb 2020 11:03:58 -0800 (PST)
+Received: from localhost ([2601:646:8a00:9810:5af3:56d9:f882:39d4])
+        by smtp.gmail.com with ESMTPSA id p23sm428286pgn.92.2020.02.19.11.03.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 11:03:57 -0800 (PST)
+Message-ID: <5e4d869d.1c69fb81.aa02.151b@mx.google.com>
+Date:   Wed, 19 Feb 2020 11:03:52 -0800
+From:   Paul Burton <paulburton@kernel.org>
+To:     Finn Thain <fthain@telegraphics.com.au>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>
+CC:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        =?utf-8?q?Philippe_Math?= =?utf-8?q?ieu-Daud=C3=A9?= 
+        <f4bug@amsat.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+CC:     linux-mips@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Improve MIPS Magnum support
+References:  <cover.1581030073.git.fthain@telegraphics.com.au>
+In-Reply-To:  <cover.1581030073.git.fthain@telegraphics.com.au>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Guten Morgen,
-                                          19-02-2020
-Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehˆrt. Haben Sie unsere letzte E-Mail ¸ber Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
+Hello,
 
-Wir warten darauf, von Ihnen zu hˆren, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterst¸tzt.
+Finn Thain wrote:
+> A few minor patches are needed to more easily boot a MIPS Magnum build
+> under QEMU. This series fixes a build failure in the g364fb driver and
+> modifies jazz_defconfig for use with 'qemu-system-mips64el -M magnum'.
+> 
+> Note that QEMU's dp8393x implementation has bugs, one of which prevents
+> the Linux jazzsonic driver from probing the chip. I have fixed the bugs
+> that I know of in a series of patches at,
+> https://github.com/fthain/qemu/commits/sonic
+> 
+> Changed since v1:
+>  - Added reviewed-by and tested-by tags from Philippe Mathieu-Daud√©.
+>  - Rebased.
+> 
+> 
+> Finn Thain (3):
+>   fbdev/g364fb: Fix build failure
+>   mips/jazz: Remove redundant settings and shrink jazz_defconfig
+>   mips/jazz: Update jazz_defconfig for MIPS Magnum
 
-Mfg
-urs portmann
+Series applied to mips-next.
+
+> fbdev/g364fb: Fix build failure
+>   commit c584f9532115
+>   https://git.kernel.org/mips/c/c584f9532115
+>   
+>   Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>   Reviewed-by: Philippe Mathieu-Daud√© <f4bug@amsat.org>
+>   Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+>   Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+>   Tested-by: Philippe Mathieu-Daud√© <f4bug@amsat.org>
+>   Signed-off-by: Paul Burton <paulburton@kernel.org>
+> 
+> mips/jazz: Remove redundant settings and shrink jazz_defconfig
+>   commit a7047b8dd098
+>   https://git.kernel.org/mips/c/a7047b8dd098
+>   
+>   Tested-by: Philippe Mathieu-Daud√© <f4bug@amsat.org>
+>   Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+>   Signed-off-by: Paul Burton <paulburton@kernel.org>
+> 
+> mips/jazz: Update jazz_defconfig for MIPS Magnum
+>   commit 91f40e896444
+>   https://git.kernel.org/mips/c/91f40e896444
+>   
+>   Reviewed-by: Philippe Mathieu-Daud√© <f4bug@amsat.org>
+>   Tested-by: Philippe Mathieu-Daud√© <f4bug@amsat.org>
+>   Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+>   Signed-off-by: Paul Burton <paulburton@kernel.org>
+
+Thanks,
+    Paul
+
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paulburton@kernel.org to report it. ]
