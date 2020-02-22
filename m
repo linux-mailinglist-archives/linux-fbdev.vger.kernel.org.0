@@ -2,148 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8B716831D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Feb 2020 17:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8112E168F59
+	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Feb 2020 15:35:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727312AbgBUQSu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Feb 2020 11:18:50 -0500
-Received: from gateway30.websitewelcome.com ([50.116.127.1]:14123 "EHLO
-        gateway30.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727213AbgBUQSt (ORCPT
+        id S1727259AbgBVOfD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 22 Feb 2020 09:35:03 -0500
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:43106
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727382AbgBVOfD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Feb 2020 11:18:49 -0500
-X-Greylist: delayed 1287 seconds by postgrey-1.27 at vger.kernel.org; Fri, 21 Feb 2020 11:18:49 EST
-Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
-        by gateway30.websitewelcome.com (Postfix) with ESMTP id 2247D1CA3A
-        for <linux-fbdev@vger.kernel.org>; Fri, 21 Feb 2020 09:57:22 -0600 (CST)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 5Ag6jWUTBAGTX5Ag6jgrx6; Fri, 21 Feb 2020 09:57:22 -0600
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=WtMzr2gjoX6df0EoQz24CcYsj+i/bg0u7qsVYdxv5ak=; b=FhvXqQUtu/kbV+Vrnk71BG8yZl
-        0TSU2YZiZPuLm929TonrbWh+9w4cqnRMB47gz6qXSDLBweYpn9jQ+EjXxYW/M5bcxnogAtcQqyQcT
-        d9YOOfhiTjG1h/fi3IibqqqRun0NUq+ZHlwKQZa8WF1W2O438fbUpOSn0SFF5xQGz3i5HQoQ0UFmX
-        1o4m7QN23g9FgLM7f75UPYJm5fMx6rIzxCe4Df7P2QFM8aOXA9Ml7jH9RJH7sBkjxlO1tdJ73WDIu
-        G/2bBwvnZdm9s6uI2vLVmlN8cuWvlEiicixYHyVO2UPgWMqlvYp+ALBiFytrjN6JVHyz9MPmuV3z3
-        EJXGFXrQ==;
-Received: from [200.68.140.54] (port=6638 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1j5Ag4-003vD4-K4; Fri, 21 Feb 2020 09:57:20 -0600
-Date:   Fri, 21 Feb 2020 10:00:05 -0600
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] video: Replace zero-length array with flexible-array member
-Message-ID: <20200221160005.GA13552@embeddedor>
+        Sat, 22 Feb 2020 09:35:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1582382100; bh=BwDPrsA2+wE7onqC1JBBbTtzaCQs5syyrmDpzadvHSI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=I7B73B7Du/7lfAIQ7VDJ12j7SoIFWMjozRJS2DAT3gb/n7YwS80fqNfTphYTpKgZ+BTpSEya6uX7x/ZMyc+SlzL9uzeZ22Lk5sQ9aFMGqxwo5s97uk4zIlO8GqIAHicbVHUedwkQ0b8ivrJxEebCpW9/OaqoK3geioUimFEQW0tH/eb7s4rIE8LB4JH6nBWXxAmk2fF+/21xvoTcg1ZVneuVmsxlfgh1jd/PSf/ji25J8iXAO/unLl+JOgowofQsKAy0LvDjeu523og0z7EXCCun85qxPSSFucjuwR1KxUl882uQ2qBVKIAJkKqH7O3pyqE18BAfj0MKDqOJ38xADw==
+X-YMail-OSG: 5vtwVsUVM1nlJTe1KwTRUbz3svlc50sfE96KeUL1f0GHnVqSRdxXySekwgAv2yz
+ fXlhDUD9EPAYIKNYwzSxMREI4z0yS3bGXqtQjEOTx1BM1gPZp0a6MJ6ufQ.oyjHfCF4QayTdQKZT
+ gLQh3EyXODKDZ1uscrEtOqIPU0W9diqUBJEQoLVHyO_GG_ElOYacuijsThTKEdqSWWU.pcRFTuL7
+ ZnVW26aJpqnV0MLAhMA4oZDRRi4duZABiJTqYVWcqC04ukoUfgvBGZNKOEctCrV6Jx5AM1FAN5.g
+ Pn5yM3isf9BBAMfnm3tNT1LaZE_CCwvrU2nYOS3o32WQOtOZR4b6ulHjoiq8jgr0PC0beajB4IZq
+ 06jK4ATxbJrJTebjuRuNXckznN0PZSB_ZYgW1n7ECQ6J74B7UsRxzHQAcz4dZsfdAj5kfiztzWYU
+ Enr_go703NYlT7O0DGP3Ukd33lajeh.I9WN9BFxad020FTjWRJ7BM9gb4vh6ww_TniGX8om09EPf
+ jcM.Czq6Kwie52RGMNUQ4sZaKJP8z0jgM4kqBYm5S9sWRV1cxCpZwcSnPCYXN97pJayImd9C3G3p
+ BcE4FVtdyD84W2AFUV.vDg_f4NI4iwXDg2mGd0jE.riECuci0vieuFATicOpfF0CM3omttZ.3Elu
+ ev.6v15Cv6wwwjURcpBpYkFYwAzdPm5FmJGNT2yiXUI2lMDp8rsP_zBG67vjKnHIacsnjTJyv38S
+ Fc.VcG6ACsCX6zXouy4BM00m6gUQelZlHWww_bNKIchXmrd1Uj0GmQs3dfUgmOiC3sGdUnPlGh9F
+ WNq2SPlgESO5NJ6EMXzFIPH.gk_9iOa75FPTP6PGAwLCX8KcZAS2jMRZ9RBKyJgpNP00PW09UCPl
+ 2pW1JMcX4KAsyHb49R11m.yn4pO4OWFyFxQrygTnQh1U546_RFJmWaKRGllWkKneZTgTVSUGzECP
+ E57VATjEGtF86C3cHEY.5H5aem9K_XN7pF4rBflN.lryadd0JgRXBl57Uqn4BVMEQDVY3yY8XbWk
+ ggBsGXyyTJ.mwewPbjGsOISQ4OHPoiw0E5nB0Z5PzK56YjC088sx4hsuijx7Ad5drPqJzcJmLvC9
+ V842T6Iu6Y1UVmzpOPdTcn3AOlsrjEaiCrinG22dpEOFlKnDArMzWbY24mjEpLjerUbCcq4IdKSD
+ FBbxVAxFN8.xKC6qVzJT9vkPkSMx5G_H4VGoew0onZL_G0Bim4uS1tFftgnUIxKkri0.ONisrSSC
+ aSujVejttvPCK00Hg4cd09VTIgkT_5VtBY0yRkfpke2_HvPmPLt4BsslfPL91RAYsVtz1f76Av8p
+ JpQI-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Feb 2020 14:35:00 +0000
+Date:   Sat, 22 Feb 2020 14:34:59 +0000 (UTC)
+From:   Lisa Williams <lw82831@gmail.com>
+Reply-To: lisawilam@yahoo.com
+Message-ID: <1557056426.457732.1582382099727@mail.yahoo.com>
+Subject: Hi Dear
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 200.68.140.54
-X-Source-L: No
-X-Exim-ID: 1j5Ag4-003vD4-K4
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [200.68.140.54]:6638
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 31
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1557056426.457732.1582382099727.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15280 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:72.0) Gecko/20100101 Firefox/72.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
+Hi Dear,
 
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
+ How are you doing hope you are fine and OK?
 
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
+I was just going through the Internet search when I found your email address, I want to make a new and special friend, so I decided to contact you to see how we can make it work out if we can. Please I wish you will have the desire with me so that we can get to know each other better and see what happens in future.
 
-This issue was found with the help of Coccinelle.
+My name is Lisa Williams, I am an American, but presently I live in the UK, I will be glad to see your reply for us to know each other better to exchange pictures and details about us.
 
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/video/fbdev/mmp/hw/mmp_ctrl.h | 2 +-
- drivers/video/fbdev/ssd1307fb.c       | 2 +-
- include/video/mmp_disp.h              | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/video/fbdev/mmp/hw/mmp_ctrl.h b/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-index 335d4983dc52..167585a889d3 100644
---- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-+++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-@@ -1406,7 +1406,7 @@ struct mmphw_ctrl {
- 
- 	/*pathes*/
- 	int path_num;
--	struct mmphw_path_plat path_plats[0];
-+	struct mmphw_path_plat path_plats[];
- };
- 
- static inline int overlay_is_vid(struct mmp_overlay *overlay)
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index 142535267fec..fb2640fe575a 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -89,7 +89,7 @@ struct ssd1307fb_par {
- 
- struct ssd1307fb_array {
- 	u8	type;
--	u8	data[0];
-+	u8	data[];
- };
- 
- static const struct fb_fix_screeninfo ssd1307fb_fix = {
-diff --git a/include/video/mmp_disp.h b/include/video/mmp_disp.h
-index 1f9bc133e230..77252cb46361 100644
---- a/include/video/mmp_disp.h
-+++ b/include/video/mmp_disp.h
-@@ -231,7 +231,7 @@ struct mmp_path {
- 
- 	/* layers */
- 	int overlay_num;
--	struct mmp_overlay overlays[0];
-+	struct mmp_overlay overlays[];
- };
- 
- extern struct mmp_path *mmp_get_path(const char *name);
--- 
-2.25.0
-
+Yours
+Lisa.
