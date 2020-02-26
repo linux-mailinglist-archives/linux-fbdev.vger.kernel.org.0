@@ -2,21 +2,21 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4FBE17091A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Feb 2020 20:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B95170920
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Feb 2020 20:58:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727317AbgBZT5q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Feb 2020 14:57:46 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59007 "EHLO
+        id S1727306AbgBZT6c (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Feb 2020 14:58:32 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59020 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727244AbgBZT5q (ORCPT
+        with ESMTP id S1727253AbgBZT6c (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Feb 2020 14:57:46 -0500
+        Wed, 26 Feb 2020 14:58:32 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1j72oN-0000Ge-8y; Wed, 26 Feb 2020 19:57:39 +0000
+        id 1j72p8-0000Jj-K4; Wed, 26 Feb 2020 19:58:26 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -26,9 +26,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         Bryan Wu <cooloney@gmail.com>, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] backlight: sky81452: unsure while loop does not allow negative array indexing
-Date:   Wed, 26 Feb 2020 19:57:39 +0000
-Message-Id: <20200226195739.6462-1-colin.king@canonical.com>
+Subject: [PATCH][V2] backlight: sky81452: insure while loop does not allow negative array indexing
+Date:   Wed, 26 Feb 2020 19:58:26 +0000
+Message-Id: <20200226195826.6567-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -47,6 +47,10 @@ array sources. Fix this by iterating only if num_entry >= 0.
 Addresses-Coverity: ("Out-of-bounds read")
 Fixes: f705806c9f35 ("backlight: Add support Skyworks SKY81452 backlight driver")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+
+V2: fix typo in commit subject line
+
 ---
  drivers/video/backlight/sky81452-backlight.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
