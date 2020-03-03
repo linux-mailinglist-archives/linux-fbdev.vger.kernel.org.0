@@ -2,185 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19169175E95
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Mar 2020 16:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A206D176D88
+	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Mar 2020 04:22:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727367AbgCBPnD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 Mar 2020 10:43:03 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:55924 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727111AbgCBPnD (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Mar 2020 10:43:03 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200302154301euoutp01d4fdbe7cb32a10ec0697513d78028bd4~4hxJWyUrG1491814918euoutp01J
-        for <linux-fbdev@vger.kernel.org>; Mon,  2 Mar 2020 15:43:01 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200302154301euoutp01d4fdbe7cb32a10ec0697513d78028bd4~4hxJWyUrG1491814918euoutp01J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1583163781;
-        bh=5YJmkzqSvsOl8Ktv0uRw2gsQLS0X8Ye3zrrzqfkrg18=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=S/K7AocXxU3JkFZvlxrG/fOl6z6WxxHIJ8pch7UNdQ5GtblGGuCRZUWCBqy0uz0KL
-         sxlAk7H7JLxq68JN/aiXvApk6XVVumoT7UVmnyFq9TA0OoKEzQTgbIrWjubMl8yXMQ
-         c4HxyOA0mL+rQTgZB3SZp7I+QGazXt1BFyNYDsZc=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200302154301eucas1p2ba9a21a5c8aeeb1d5c68c8bc609a4b32~4hxI_wW7n1937719377eucas1p20;
-        Mon,  2 Mar 2020 15:43:01 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 35.AD.61286.5892D5E5; Mon,  2
-        Mar 2020 15:43:01 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200302154301eucas1p15080111e25e2a09f1848a659f3288b2b~4hxIsLcJJ1688016880eucas1p1f;
-        Mon,  2 Mar 2020 15:43:01 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200302154301eusmtrp1f04d5a60bc8a020d9172c153cd2f87ad~4hxIroKlY2927629276eusmtrp1v;
-        Mon,  2 Mar 2020 15:43:01 +0000 (GMT)
-X-AuditID: cbfec7f2-ef1ff7000001ef66-48-5e5d2985c20f
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 31.10.07950.5892D5E5; Mon,  2
-        Mar 2020 15:43:01 +0000 (GMT)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200302154300eusmtip1cb8d74e6d2819f4b0f7e39596efad4c5~4hxIZzkNw2417824178eusmtip1-;
-        Mon,  2 Mar 2020 15:43:00 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] video: Replace zero-length array with flexible-array
- member
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <98cf9000-7ba4-afa6-345e-f170216c6847@samsung.com>
-Date:   Mon, 2 Mar 2020 16:43:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1726970AbgCCDWJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Mar 2020 22:22:09 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:10713 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726956AbgCCDWJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 2 Mar 2020 22:22:09 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 6D4356B065E6098395E5;
+        Tue,  3 Mar 2020 11:22:08 +0800 (CST)
+Received: from localhost.localdomain (10.175.124.28) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 3 Mar 2020 11:21:58 +0800
+From:   Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <zhangxiaoxu5@huawei.com>,
+        <wangkefeng.wang@huawei.com>, <sergey.senozhatsky@gmail.com>,
+        <pmladek@suse.com>, <akpm@osdl.org>
+CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+Subject: [PATCH] vgacon: Fix a UAF in vgacon_invert_region
+Date:   Tue, 3 Mar 2020 11:20:36 +0800
+Message-ID: <20200303032036.40560-1-zhangxiaoxu5@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
-In-Reply-To: <20200221160005.GA13552@embeddedor>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduznOd1Wzdg4g8bzkhZXvr5ns9i6R9Xi
-        RN8HVovLu+awObB4rDuo6nG/+ziTx+dNcgHMUVw2Kak5mWWpRfp2CVwZyzr7mAoWiVdsXrmM
-        sYHxp1AXIyeHhICJxPNF19m6GLk4hARWMEocO7ESyvnCKLF70w0mkCohgc+MEhOXqcB0tK64
-        wgpRtJxR4sKW08wQzltGicvrL7OAVLEJWElMbF/FCGILCwRJXDqyASwuImAkMXtGNyuIzSyQ
-        IHF60T2wOK+AncSjmWfA4iwCKhL/Xv1lBrFFBSIkPj04zApRIyhxcuYTsHpOAQOJ6ds+MULM
-        EZe49WQ+E4QtL7H97RxmiEu72SWer3GBsF0kfjy/AxUXlnh1fAs7hC0jcXpyDwvIAxIC6xgl
-        /na8YIZwtjNKLJ/8jw2iylrizrlfQDYH0AZNifW79CHCjhIrGlaygoQlBPgkbrwVhLiBT2LS
-        tunMEGFeiY42aFCrSWxYtoENZm3XzpXMExiVZiH5bBaSb2Yh+WYWwt4FjCyrGMVTS4tz01OL
-        DfNSy/WKE3OLS/PS9ZLzczcxApPJ6X/HP+1g/Hop6RCjAAejEg9vAHNsnBBrYllxZe4hRgkO
-        ZiURXl/O6Dgh3pTEyqrUovz4otKc1OJDjNIcLErivMaLXsYKCaQnlqRmp6YWpBbBZJk4OKUa
-        GPfK83NxB0z5cmfnq8iL3bcuWX8PFtR4aRLr/+jcze+/npm8mPdkoqP4iZOdHJ9fbwu+zGq2
-        fs6nLvPLd26KeD9hev/obV0X59KSE0ce3b14Tejrj6PL5rhHuohKtPMc6cvKXh/Ltdp0WpXC
-        edbufdP5lv/Ov5i18S6jQ+7num33n2rrvraUuG2vxFKckWioxVxUnAgAj9t3xCIDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIIsWRmVeSWpSXmKPExsVy+t/xu7qtmrFxBteesVlc+fqezWLrHlWL
-        E30fWC0u75rD5sDise6gqsf97uNMHp83yQUwR+nZFOWXlqQqZOQXl9gqRRtaGOkZWlroGZlY
-        6hkam8daGZkq6dvZpKTmZJalFunbJehlLOvsYypYJF6xeeUyxgbGn0JdjJwcEgImEq0rrrB2
-        MXJxCAksZZRY9LWRsYuRAyghI3F8fRlEjbDEn2tdbBA1rxklPk6dxgySYBOwkpjYvooRxBYW
-        CJK4dGQDC4gtImAkMXtGNyvIHGaBBIln81IgepsZJa5+3A9WzytgJ/Fo5hlWEJtFQEXi36u/
-        YDNFBSIkDu+YBVUjKHFy5hOwmZwCBhLTt30CizMLqEv8mXeJGcIWl7j1ZD4ThC0vsf3tHOYJ
-        jEKzkLTPQtIyC0nLLCQtCxhZVjGKpJYW56bnFhvpFSfmFpfmpesl5+duYgRGz7ZjP7fsYOx6
-        F3yIUYCDUYmH9wdDbJwQa2JZcWXuIUYJDmYlEV5fzug4Id6UxMqq1KL8+KLSnNTiQ4ymQM9N
-        ZJYSTc4HRnZeSbyhqaG5haWhubG5sZmFkjhvh8DBGCGB9MSS1OzU1ILUIpg+Jg5OqQZGwUm5
-        MeGcahbbmV5+XZq3WfWBmIZOZYLCcUFZe7UFRdutSpPeFIcZ20qfn7hiQeSxd89P1Eufq+q5
-        XXc37V1ZBv/Ma6mp8zROGegXfb297CjvUpWEizY/g5Zrh5zc989jW+nvPJN+oxPuCpe/eknv
-        WyD6YCK7yZK/Z+16pI5JOG96zS5/1+abEktxRqKhFnNRcSIA2ZHYkLQCAAA=
-X-CMS-MailID: 20200302154301eucas1p15080111e25e2a09f1848a659f3288b2b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200221155727eucas1p13764b85076c6fc29eccaf27ab6dc4967
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200221155727eucas1p13764b85076c6fc29eccaf27ab6dc4967
-References: <CGME20200221155727eucas1p13764b85076c6fc29eccaf27ab6dc4967@eucas1p1.samsung.com>
-        <20200221160005.GA13552@embeddedor>
+Content-Type: text/plain
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+When syzkaller tests, there is a UAF:
+  BUG: KASan: use after free in vgacon_invert_region+0x9d/0x110 at addr
+    ffff880000100000
+  Read of size 2 by task syz-executor.1/16489
+  page:ffffea0000004000 count:0 mapcount:-127 mapping:          (null)
+  index:0x0
+  page flags: 0xfffff00000000()
+  page dumped because: kasan: bad access detected
+  CPU: 1 PID: 16489 Comm: syz-executor.1 Not tainted
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+  rel-1.9.3-0-ge2fc41e-prebuilt.qemu-project.org 04/01/2014
+  Call Trace:
+    [<ffffffffb119f309>] dump_stack+0x1e/0x20
+    [<ffffffffb04af957>] kasan_report+0x577/0x950
+    [<ffffffffb04ae652>] __asan_load2+0x62/0x80
+    [<ffffffffb090f26d>] vgacon_invert_region+0x9d/0x110
+    [<ffffffffb0a39d95>] invert_screen+0xe5/0x470
+    [<ffffffffb0a21dcb>] set_selection+0x44b/0x12f0
+    [<ffffffffb0a3bfae>] tioclinux+0xee/0x490
+    [<ffffffffb0a1d114>] vt_ioctl+0xff4/0x2670
+    [<ffffffffb0a0089a>] tty_ioctl+0x46a/0x1a10
+    [<ffffffffb052db3d>] do_vfs_ioctl+0x5bd/0xc40
+    [<ffffffffb052e2f2>] SyS_ioctl+0x132/0x170
+    [<ffffffffb11c9b1b>] system_call_fastpath+0x22/0x27
+    Memory state around the buggy address:
+     ffff8800000fff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+     00 00
+     ffff8800000fff80: 00 00 00 00 00 00 00 00 00 00 00 00 00
+     00 00 00
+    >ffff880000100000: ff ff ff ff ff ff ff ff ff ff ff ff ff
+     ff ff ff
 
-On 2/21/20 5:00 PM, Gustavo A. R. Silva wrote:
-> The current codebase makes use of the zero-length array language
-> extension to the C90 standard, but the preferred mechanism to declare
-> variable-length types such as these ones is a flexible array member[1][2],
-> introduced in C99:
-> 
-> struct foo {
->         int stuff;
->         struct boo array[];
-> };
-> 
-> By making use of the mechanism above, we will get a compiler warning
-> in case the flexible array does not occur last in the structure, which
-> will help us prevent some kind of undefined behavior bugs from being
-> inadvertently introduced[3] to the codebase from now on.
-> 
-> Also, notice that, dynamic memory allocations won't be affected by
-> this change:
-> 
-> "Flexible array members have incomplete type, and so the sizeof operator
-> may not be applied. As a quirk of the original implementation of
-> zero-length arrays, sizeof evaluates to zero."[1]
-> 
-> This issue was found with the help of Coccinelle.
-> 
-> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> [2] https://protect2.fireeye.com/url?k=0e91e8f4-53f6acd2-0e9063bb-0cc47a31384a-8666d8e5380b9caf&u=https://github.com/KSPP/linux/issues/21
-> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+It can be reproduce in the linux mainline by the program:
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <fcntl.h>
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <sys/ioctl.h>
+  #include <linux/vt.h>
 
-Patch queued for v5.7, thanks.
+  struct tiocl_selection {
+    unsigned short xs;      /* X start */
+    unsigned short ys;      /* Y start */
+    unsigned short xe;      /* X end */
+    unsigned short ye;      /* Y end */
+    unsigned short sel_mode; /* selection mode */
+  };
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+  #define TIOCL_SETSEL    2
+  struct tiocl {
+    unsigned char type;
+    unsigned char pad;
+    struct tiocl_selection sel;
+  };
 
-> ---
->  drivers/video/fbdev/mmp/hw/mmp_ctrl.h | 2 +-
->  drivers/video/fbdev/ssd1307fb.c       | 2 +-
->  include/video/mmp_disp.h              | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/mmp/hw/mmp_ctrl.h b/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-> index 335d4983dc52..167585a889d3 100644
-> --- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-> +++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.h
-> @@ -1406,7 +1406,7 @@ struct mmphw_ctrl {
->  
->  	/*pathes*/
->  	int path_num;
-> -	struct mmphw_path_plat path_plats[0];
-> +	struct mmphw_path_plat path_plats[];
->  };
->  
->  static inline int overlay_is_vid(struct mmp_overlay *overlay)
-> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-> index 142535267fec..fb2640fe575a 100644
-> --- a/drivers/video/fbdev/ssd1307fb.c
-> +++ b/drivers/video/fbdev/ssd1307fb.c
-> @@ -89,7 +89,7 @@ struct ssd1307fb_par {
->  
->  struct ssd1307fb_array {
->  	u8	type;
-> -	u8	data[0];
-> +	u8	data[];
->  };
->  
->  static const struct fb_fix_screeninfo ssd1307fb_fix = {
-> diff --git a/include/video/mmp_disp.h b/include/video/mmp_disp.h
-> index 1f9bc133e230..77252cb46361 100644
-> --- a/include/video/mmp_disp.h
-> +++ b/include/video/mmp_disp.h
-> @@ -231,7 +231,7 @@ struct mmp_path {
->  
->  	/* layers */
->  	int overlay_num;
-> -	struct mmp_overlay overlays[0];
-> +	struct mmp_overlay overlays[];
->  };
->  
->  extern struct mmp_path *mmp_get_path(const char *name);
-> 
+  int main()
+  {
+    int fd = 0;
+    const char *dev = "/dev/char/4:1";
+
+    struct vt_consize v = {0};
+    struct tiocl tioc = {0};
+
+    fd = open(dev, O_RDWR, 0);
+
+    v.v_rows = 3346;
+    ioctl(fd, VT_RESIZEX, &v);
+
+    tioc.type = TIOCL_SETSEL;
+    ioctl(fd, TIOCLINUX, &tioc);
+
+    return 0;
+  }
+
+When resize the screen, update the 'vc->vc_size_row' to the new_row_size,
+but when 'set_origin' in 'vgacon_set_origin', vgacon use 'vga_vram_base'
+for 'vc_origin' and 'vc_visible_origin', not 'vc_screenbuf'. It maybe
+smaller than 'vc_screenbuf'. When TIOCLINUX, use the new_row_size to calc
+the offset, it maybe larger than the vga_vram_base in vgacon driver, then
+bad access.
+
+So, If the screen size larger than vga_vram, resize screen should be
+failed. This alse fix CVE-2020-8649
+
+Fixes: 0aec4867dca14 ("[PATCH] SVGATextMode fix")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+---
+ drivers/video/console/vgacon.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index de7b8382aba9..9c216f707629 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1316,7 +1316,10 @@ static int vgacon_font_get(struct vc_data *c, struct console_font *font)
+ static int vgacon_resize(struct vc_data *c, unsigned int width,
+ 			 unsigned int height, unsigned int user)
+ {
+-	if (width % 2 || width > screen_info.orig_video_cols ||
++	if (width % 2 || width * height > vga_vram_size)
++		return -EINVAL;
++
++	if (width > screen_info.orig_video_cols ||
+ 	    height > (screen_info.orig_video_lines * vga_default_font_height)/
+ 	    c->vc_font.height)
+ 		/* let svgatextmode tinker with video timings and
+-- 
+2.17.2
+
