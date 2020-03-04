@@ -2,66 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D01FF178220
-	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Mar 2020 20:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0006C17879A
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Mar 2020 02:31:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733136AbgCCSJC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Mar 2020 13:09:02 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:41899 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733206AbgCCSJB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 3 Mar 2020 13:09:01 -0500
-Received: by mail-il1-f196.google.com with SMTP id q13so3591432ile.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 03 Mar 2020 10:09:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=q7YmcB4c3xNivUiRnGbEmHi9ciBYsBTGJ3kBqOzI/c6CTS7TSPqRgaWNk025FpfiIk
-         UIHk/34W6/novGmD0W9ZSoJZbAR9qiyBwIbPfw8htytv3Pu+5ladp6JGliaatdTqYqkf
-         Fk69LG5Nm8YzADex4Vi+pf/rIeGNqNr78qVqopOdKzY11PtfTXtKZPzyTZFXbL/EduMu
-         vrTog13bOuCpMRI3PU9oQb0Q48DD/QD7nIIPWvI5CtHad4tT7V7uSdaJEhJ+oaISbJID
-         ga65o7/Vvvpc0yIEqzcmaI77Jw6/EO5F/+EQPV/TUhotVu/KSLDlNqX9UAupuiIWaWiJ
-         N+sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
-        b=P7wKoFvkaoGlaniAjaAzfVVOu9Fy8m/6WxeArsLv7WdniJdXYnozzeh9lp6b2ccCBR
-         HC2U8qVbLrfJ5C99H6Di8LFNpUqPnCfYAffkKFW8yFG1eyhy/9AyUE2jj0UrxTMah19h
-         QzjsZtwvGv52QP+RtTzBnEcxUwDapwIZl0rDlOIL7oIP+y1+lS9ZJfTtxOoNBTlxqyrH
-         UtMe7pX7nTOgTTMLpELy8J79z3wzhs4w5lRosTe+hATf3TqncJBvmUjpo3ERCaRsgWkR
-         PFKuttuW6H4mqxlFe9e+pMcte0rPIghIHbXMWlMwHrFtGkH2X1ul1fWITn1o3cwpm4nj
-         QhYg==
-X-Gm-Message-State: ANhLgQ0gNdgbmEABK7/UBqyGD6UoVqn8wkVyLX50kSNWhLSluD+65Msg
-        MVDbFtBjV5wpue0AUI695Z1w4sYdpJ4EeQpddI4=
-X-Google-Smtp-Source: ADFU+vv6E+wsnvPeg+ajcohjNvpKFAWgFSPumeVI6/s74fKhIZXkTb+ytEUQRfjMVtoUc1OrqPZutNFrjMHjyYaW0Q4=
-X-Received: by 2002:a92:244f:: with SMTP id k76mr6178413ilk.290.1583258940852;
- Tue, 03 Mar 2020 10:09:00 -0800 (PST)
+        id S1728132AbgCDBbe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Mar 2020 20:31:34 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:11138 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727865AbgCDBbe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 3 Mar 2020 20:31:34 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0AAACC87A8B01059C2C9;
+        Wed,  4 Mar 2020 09:31:31 +0800 (CST)
+Received: from [127.0.0.1] (10.173.220.145) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Wed, 4 Mar 2020
+ 09:31:21 +0800
+Subject: Re: [PATCH] vgacon: Fix a UAF in vgacon_invert_region
+To:     =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+CC:     <b.zolnierkie@samsung.com>, <wangkefeng.wang@huawei.com>,
+        <sergey.senozhatsky@gmail.com>, <pmladek@suse.com>,
+        <akpm@osdl.org>, <linux-fbdev@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>
+References: <20200303032036.40560-1-zhangxiaoxu5@huawei.com>
+ <20200303135940.GS13686@intel.com>
+ <67073029-8477-5f5a-ed2a-bb5ad4896878@huawei.com>
+ <20200303144649.GT13686@intel.com>
+From:   "zhangxiaoxu (A)" <zhangxiaoxu5@huawei.com>
+Message-ID: <5c63d51f-b396-f2a7-a7c2-3b8af0bb54b0@huawei.com>
+Date:   Wed, 4 Mar 2020 09:31:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:09:00 -0800 (PST)
-Reply-To: dr.challynoah@gmail.com
-From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
-Date:   Tue, 3 Mar 2020 19:09:00 +0100
-Message-ID: <CALqVJWdFx_aWTT4kkN0eD5b+-M5aPDZmP2kebmH9eN3yv-cVBg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200303144649.GT13686@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.220.145]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Dear,
-What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
-This said fund was issued out by the UNITED NATIONS To compensate
-you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
-at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
-fund (award)release to you or better still reply back Immediately You
-Receive This Information For An Urgent Confirmation And Release Of Your
-Fund To You Without Delays, as your email was listed among those to be
-compensated this year.Congratulations..
-Best Regards,
-Dr Chally Noah.
-Minister Of Finance On Foreign Remittance:
+
+
+在 2020/3/3 22:46, Ville Syrjälä 写道:
+> On Tue, Mar 03, 2020 at 10:30:14PM +0800, zhangxiaoxu (A) wrote:
+>>
+>>
+>> 在 2020/3/3 21:59, Ville Syrjälä 写道:
+>>> That doesn't match how vc_screenbuf_size is computed elsewhere. Also
+>>> a lot of places seem to assume that the screenbuf can be larger than
+>>> vga_vram_size (eg. all the memcpy()s pick the smaller size of the
+>>> two).
+>> Yes, in the vga source code, we also pick the smaller size of two. But
+>> in other place, eg: vc_do_resize, copy the old_origin to new_origin, we
+>> not do that. It also make bad access happen. it maybe CVE-2020-8647.
+>>
+>> I think we should just assume the width/height maybe larger than the
+>> default, not the screenbuf larger than vga_vram_size.
+>>
+>> If not, any useful of the larger screenbuf?
+> 
+> Maybe used for scrolling?
+The screenbuf just allocated with cols and rows, it can be save just one
+screen?
+vc_do_resize is the largest size which one screen can be shown?
+
+If so, we can't set the screen to the resolution which more than it's
+capability?
+> 
+>>
+>>>
+>>> And you're changing the behaviour of the code when
+>>> 'width % 2 && user' is true
+> 
+
