@@ -2,29 +2,30 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE26C1787EF
-	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Mar 2020 03:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B6D178816
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Mar 2020 03:11:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387398AbgCDCDu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Mar 2020 21:03:50 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:36926 "EHLO huawei.com"
+        id S2387457AbgCDCLc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Mar 2020 21:11:32 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:37540 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727725AbgCDCDu (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 3 Mar 2020 21:03:50 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id C24CCB87C8F2B661241D;
-        Wed,  4 Mar 2020 10:03:47 +0800 (CST)
+        id S2387454AbgCDCLc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 3 Mar 2020 21:11:32 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 984BA3C4B02D843EC596;
+        Wed,  4 Mar 2020 10:11:29 +0800 (CST)
 Received: from localhost.localdomain (10.175.124.28) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 4 Mar 2020 10:03:40 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 4 Mar 2020 10:11:23 +0800
 From:   Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 To:     <b.zolnierkie@samsung.com>, <zhangxiaoxu5@huawei.com>,
         <wangkefeng.wang@huawei.com>, <sergey.senozhatsky@gmail.com>,
-        <pmladek@suse.com>, <akpm@osdl.org>
+        <pmladek@suse.com>, <akpm@osdl.org>,
+        <ville.syrjala@linux.intel.com>
 CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-Subject: [v2] vgacon: Fix a UAF in vgacon_invert_region
-Date:   Wed, 4 Mar 2020 10:02:28 +0800
-Message-ID: <20200304020228.44484-1-zhangxiaoxu5@huawei.com>
+Subject: [v3] vgacon: Fix a UAF in vgacon_invert_region
+Date:   Wed, 4 Mar 2020 10:10:11 +0800
+Message-ID: <20200304021011.5691-1-zhangxiaoxu5@huawei.com>
 X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -132,14 +133,14 @@ Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index de7b8382aba9..3188ce162f8b 100644
+index de7b8382aba9..95e2fece7e91 100644
 --- a/drivers/video/console/vgacon.c
 +++ b/drivers/video/console/vgacon.c
 @@ -1316,6 +1316,9 @@ static int vgacon_font_get(struct vc_data *c, struct console_font *font)
  static int vgacon_resize(struct vc_data *c, unsigned int width,
  			 unsigned int height, unsigned int user)
  {
-+	if ((width > 1) * height > vga_vram_size)
++	if ((width >> 1) * height > vga_vram_size)
 +		return -EINVAL;
 +
  	if (width % 2 || width > screen_info.orig_video_cols ||
