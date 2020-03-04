@@ -2,33 +2,34 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B386178843
-	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Mar 2020 03:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 003CC178846
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Mar 2020 03:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387432AbgCDC0a (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Mar 2020 21:26:30 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:51554 "EHLO huawei.com"
+        id S2387397AbgCDC0j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 3 Mar 2020 21:26:39 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:11140 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2387397AbgCDC0a (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 3 Mar 2020 21:26:30 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 03AE44F1FF0FC611984E;
-        Wed,  4 Mar 2020 10:26:28 +0800 (CST)
-Received: from [127.0.0.1] (10.173.220.145) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.439.0; Wed, 4 Mar 2020
- 10:26:17 +0800
-Subject: Re: [v2] vgacon: Fix a UAF in vgacon_invert_region
+        id S2387497AbgCDC0j (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 3 Mar 2020 21:26:39 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 561B770F4122FC0FDD03;
+        Wed,  4 Mar 2020 10:26:37 +0800 (CST)
+Received: from [127.0.0.1] (10.173.220.145) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Wed, 4 Mar 2020
+ 10:26:31 +0800
+Subject: Re: [v3] vgacon: Fix a UAF in vgacon_invert_region
 To:     <b.zolnierkie@samsung.com>, <wangkefeng.wang@huawei.com>,
-        <sergey.senozhatsky@gmail.com>, <pmladek@suse.com>, <akpm@osdl.org>
+        <sergey.senozhatsky@gmail.com>, <pmladek@suse.com>,
+        <akpm@osdl.org>, <ville.syrjala@linux.intel.com>
 CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-References: <20200304020228.44484-1-zhangxiaoxu5@huawei.com>
+References: <20200304021011.5691-1-zhangxiaoxu5@huawei.com>
 From:   "zhangxiaoxu (A)" <zhangxiaoxu5@huawei.com>
-Message-ID: <3e57400c-6632-4fae-d242-f839bfff8d46@huawei.com>
-Date:   Wed, 4 Mar 2020 10:26:17 +0800
+Message-ID: <85ac21e6-9b52-558a-c233-61253a12247b@huawei.com>
+Date:   Wed, 4 Mar 2020 10:26:30 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.1
 MIME-Version: 1.0
-In-Reply-To: <20200304020228.44484-1-zhangxiaoxu5@huawei.com>
+In-Reply-To: <20200304021011.5691-1-zhangxiaoxu5@huawei.com>
 Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.173.220.145]
@@ -41,7 +42,7 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 Please ignore this patch.
 Thanks.
 
-在 2020/3/4 10:02, Zhang Xiaoxu 写道:
+在 2020/3/4 10:10, Zhang Xiaoxu 写道:
 > When syzkaller tests, there is a UAF:
 >    BUG: KASan: use after free in vgacon_invert_region+0x9d/0x110 at addr
 >      ffff880000100000
@@ -139,14 +140,14 @@ Thanks.
 >   1 file changed, 3 insertions(+)
 > 
 > diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-> index de7b8382aba9..3188ce162f8b 100644
+> index de7b8382aba9..95e2fece7e91 100644
 > --- a/drivers/video/console/vgacon.c
 > +++ b/drivers/video/console/vgacon.c
 > @@ -1316,6 +1316,9 @@ static int vgacon_font_get(struct vc_data *c, struct console_font *font)
 >   static int vgacon_resize(struct vc_data *c, unsigned int width,
 >   			 unsigned int height, unsigned int user)
 >   {
-> +	if ((width > 1) * height > vga_vram_size)
+> +	if ((width >> 1) * height > vga_vram_size)
 > +		return -EINVAL;
 > +
 >   	if (width % 2 || width > screen_info.orig_video_cols ||
