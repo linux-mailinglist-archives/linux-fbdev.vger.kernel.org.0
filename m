@@ -2,50 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F62317BDDC
-	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Mar 2020 14:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8446117BE34
+	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Mar 2020 14:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgCFNMa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Mar 2020 08:12:30 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37085 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbgCFNMa (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Mar 2020 08:12:30 -0500
-Received: by mail-oi1-f195.google.com with SMTP id q65so2474374oif.4
-        for <linux-fbdev@vger.kernel.org>; Fri, 06 Mar 2020 05:12:28 -0800 (PST)
+        id S1726879AbgCFNY0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 6 Mar 2020 08:24:26 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42161 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726090AbgCFNY0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Mar 2020 08:24:26 -0500
+Received: by mail-lj1-f194.google.com with SMTP id q19so2184852ljp.9
+        for <linux-fbdev@vger.kernel.org>; Fri, 06 Mar 2020 05:24:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
+        d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xpK8kATRR5IULu5Ty4ktaaz9fInoLK6h5kiSCEaAQTA=;
-        b=ifDG7eRGJBVsY9yZe/ywT9alzJa4ksSVsVCGQqLR6WBSkpMnT4HSkSBA3xrfUdFmFO
-         UzM/83G++1TH566fmbVYh/OiqK6e1xYg14RAQx94tKmtH+SLFn58f930OX0CaFQFKV/8
-         1W/bhc4lizG6PrmZkA+dn+WFkfJQsDo8lkjG8=
+        bh=KDYKc7DCCCP8IsrCVczT6C88EXaizXrCTGtH/4pFS+M=;
+        b=VTpKH3Biqo5cU85DKD5haoqo18n+/RQoz9ihmzUmZ5B0M2R0YjtQfJed8PR6zrMRO1
+         2ea9U1wJXWVScHhHE2o5+2OgNGtj5WyMDW8J/uT9Wf53EI7cz7Zz3lxHDzbK5mwn+zgv
+         ePnqCnmrM06Mn9VuTwcgknPZ9VlTxFNxMm7BU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xpK8kATRR5IULu5Ty4ktaaz9fInoLK6h5kiSCEaAQTA=;
-        b=jVqMewQId30FPAj+opz+O93u8qrn6Z4eo1iOi5vnGiPbW8xrMruLTy/fELLdULUKGS
-         8PaXz6/khX3MqLu18D30RgHAdtV/e4es/q0Gxv1aXajqhCKeZN5GpxSIE4aZKfBhIkkN
-         wEnNtjmUJq93E4ahaWkrVbuwXbXW6hv7nNACn7ugNhBhWwiN+4TpuArWTtfkiBnSeHa2
-         szfAv0im5yJVcyCAH54tKLQrosTqYaHEsZZ2UIlJaHvS1vMCSnl/EygwIHQGde9oiWNJ
-         mlkAyiBoLFp9tvHUkHgJ9Tb1DhiOzQKaFYwWShC4F3ncsQLo7cja294xWCeknEJaAvCz
-         riYg==
-X-Gm-Message-State: ANhLgQ1zet7HlHW8yNDG25+cnJnwpuxivx6w1gh6Gtp91D28W35zOcPu
-        YvkXvcsMqZPHZNhBAKHkaKZOx/WHvO5V1VwmLxGkJw==
-X-Google-Smtp-Source: ADFU+vvx+RoFcv01sd8hhwIAyMC0qgoTEasKLc0LumZuFhVm1ZkRdTTdO5QpApNyGa9g7p18SMulX6mrBlc9tgc0kAo=
-X-Received: by 2002:aca:d985:: with SMTP id q127mr2404605oig.132.1583500347682;
- Fri, 06 Mar 2020 05:12:27 -0800 (PST)
+        bh=KDYKc7DCCCP8IsrCVczT6C88EXaizXrCTGtH/4pFS+M=;
+        b=pVP6EIyQjzDB0ScMgtrPCigt+Nu5amdiEZYdto6xyQZw5A2frUBjE4s+tKuKg2vUJS
+         fkdRNhQj0LK1dqRM9/xU9jsJe3dQk1uC2gvaxuXQJO3rNFJeywkvFAKhBEkw5aLGgTYL
+         3Dt0fYNNea87BHeMDsklHdp39VG9H/OjSZL8QpPSfsDIrHuedRnCGGiRAUTo9Af+KANC
+         STLE0CNyl5d5LA6zI9W11OKCry6S8etw5z7pM+kGolpZu/LdRiNRvhrFFtiIsDNY/K/Q
+         aLGj7G2+Sdtf/CuKNB75Jih5f+4eEzrVSQTTCcn3ny5cgKPUN0gDvIBq2ggrv2CX/yUi
+         s4Gg==
+X-Gm-Message-State: ANhLgQ0YX1rwx/OxQVxwfNo7RmBqvF7J9Nn+sHqsQp0481/z7F3A+tXd
+        e5hZdTXiQ0S88YaYoUS9AsTC8xVRbabpLA==
+X-Google-Smtp-Source: ADFU+vttErePtW7VvXcukDP0K4aPzLqG3zTrNZYXHlSuTCj3jYTxw3zCksCDg2Pz60Hdxj48HzkDgg==
+X-Received: by 2002:a2e:3011:: with SMTP id w17mr1781921ljw.124.1583501063494;
+        Fri, 06 Mar 2020 05:24:23 -0800 (PST)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
+        by smtp.gmail.com with ESMTPSA id q24sm150344lfa.2.2020.03.06.05.24.22
+        for <linux-fbdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2020 05:24:22 -0800 (PST)
+Received: by mail-lj1-f172.google.com with SMTP id h18so2154934ljl.13
+        for <linux-fbdev@vger.kernel.org>; Fri, 06 Mar 2020 05:24:22 -0800 (PST)
+X-Received: by 2002:a2e:9356:: with SMTP id m22mr1274250ljh.201.1583501061710;
+ Fri, 06 Mar 2020 05:24:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20200304022429.37738-1-zhangxiaoxu5@huawei.com>
  <20200306103846.GS2363188@phenom.ffwll.local> <CAHk-=wgA7wCXf2s+ihRopi7dzfzc7hWQ0jGiQiV8vMW-XVdD-A@mail.gmail.com>
-In-Reply-To: <CAHk-=wgA7wCXf2s+ihRopi7dzfzc7hWQ0jGiQiV8vMW-XVdD-A@mail.gmail.com>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Fri, 6 Mar 2020 14:12:16 +0100
-Message-ID: <CAKMK7uF_JnyWi+2QUG9OscC9DUA+4wh4dZGAXXAyYeXMTzXFyw@mail.gmail.com>
+ <CAKMK7uF_JnyWi+2QUG9OscC9DUA+4wh4dZGAXXAyYeXMTzXFyw@mail.gmail.com>
+In-Reply-To: <CAKMK7uF_JnyWi+2QUG9OscC9DUA+4wh4dZGAXXAyYeXMTzXFyw@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 6 Mar 2020 07:24:05 -0600
+X-Gmail-Original-Message-ID: <CAHk-=wi-vJ9-snUQeotBD0Zmb-Y=ggPQcY3yP=M2qjsXttvCOQ@mail.gmail.com>
+Message-ID: <CAHk-=wi-vJ9-snUQeotBD0Zmb-Y=ggPQcY3yP=M2qjsXttvCOQ@mail.gmail.com>
 Subject: Re: [v4] vgacon: Fix a UAF in vgacon_invert_region
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Daniel Vetter <daniel@ffwll.ch>
 Cc:     Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
         Dave Airlie <airlied@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
@@ -61,40 +72,29 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Mar 6, 2020 at 1:55 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Fri, Mar 6, 2020 at 7:12 AM Daniel Vetter <daniel@ffwll.ch> wrote:
 >
-> On Fri, Mar 6, 2020 at 4:38 AM Daniel Vetter <daniel@ffwll.ch> wrote:
-> >
-> > Linus, since this missed the -fixes pull from Dave maybe double check I'm
-> > not grossly wrong here and apply directly?
+> I'll stuff it into a pull and throw that your way, that's simplest.
+
+Thanks.
+
+> btw we did add dri-devel to lore a while back, so should be there:
+
+Indeed. I tried (incompetently) to look up your message ID, but I
+didn't put the dri-devel part and saw the 404, and assumed it wasn't
+there.
+
+My bad.
+
+> > It does strike me that there's nothing that seems to check for
+> > overflow in the "(width << 1) * height" calculation. Hmm?
 >
-> Hmm. I don't have the original email, mind just sending it to me (with
-> the proper added sign-off chain)?
+> Indeed I failed to hunt for that :-/ But I think we're good, in
+> vc_do_resize() we have
+>
+>     if (cols > VC_RESIZE_MAXCOL || lines > VC_RESIZE_MAXROW)
+>         return -EINVAL;
 
-I'll stuff it into a pull and throw that your way, that's simplest.
-btw we did add dri-devel to lore a while back, so should be there:
+Perfect. I just looked at the quoted patch itself.
 
-Message-ID: <20200304022429.37738-1-zhangxiaoxu5@huawei.com>
-https://lore.kernel.org/dri-devel/20200304022429.37738-1-zhangxiaoxu5@huawei.com/
-
-> It does strike me that there's nothing that seems to check for
-> overflow in the "(width << 1) * height" calculation. Hmm?
-
-Indeed I failed to hunt for that :-/ But I think we're good, in
-vc_do_resize() we have
-
-    if (cols > VC_RESIZE_MAXCOL || lines > VC_RESIZE_MAXROW)
-        return -EINVAL;
-
-And they're both (1<<15)-1 so I think should be good enough even on
-32bit - I quickly checked and we're short of UINT_MAX:
-
-$ echo $(((((1<<15)-1) << 1)*((1<<15)-1)))
-2147352578
-
-Cheers, Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
+            Linus
