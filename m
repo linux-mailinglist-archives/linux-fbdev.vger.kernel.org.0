@@ -2,211 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D6317E11B
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Mar 2020 14:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 094CF17E89D
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Mar 2020 20:36:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbgCIN1N (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Mar 2020 09:27:13 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:60270 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726703AbgCIN1N (ORCPT
+        id S1726621AbgCITfY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 9 Mar 2020 15:35:24 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:22361 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726461AbgCITfY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 9 Mar 2020 09:27:13 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583760432; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=68EsyXGUzdLIawLyIVCLBm8Bb1s9J5ol+wgvzvuPly0=; b=DCow2JACoUNnFX5Jffxj9YEl6MULP5RPxkYnI2lQaQ28So+539Yqk3KkpFjp1b3lvrWch31R
- EnYyFLlU7DaT+9zCLOrJO/8gJKN56WQ4NfZFe78AhWO5sT3zCflTUsJTAZS+KcKHFoHJcXwA
- TOr+Dd+ilDGuen/sBR2GZr4J40c=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI4YmIzMiIsICJsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e664426.7ff793b16618-smtp-out-n05;
- Mon, 09 Mar 2020 13:27:02 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4085AC433CB; Mon,  9 Mar 2020 13:26:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from kgunda-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kgunda)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 91D1BC433CB;
-        Mon,  9 Mar 2020 13:26:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 91D1BC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kgunda@codeaurora.org
-From:   Kiran Gunda <kgunda@codeaurora.org>
-To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
-        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Cc:     Kiran Gunda <kgunda@codeaurora.org>
-Subject: [PATCH V3 4/4] backlight: qcom-wled: Update auto calibration support for WLED5
-Date:   Mon,  9 Mar 2020 18:56:02 +0530
-Message-Id: <1583760362-26978-5-git-send-email-kgunda@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1583760362-26978-1-git-send-email-kgunda@codeaurora.org>
-References: <1583760362-26978-1-git-send-email-kgunda@codeaurora.org>
+        Mon, 9 Mar 2020 15:35:24 -0400
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 09 Mar 2020 12:35:21 -0700
+Received: from gurus-linux.qualcomm.com ([10.46.162.81])
+  by ironmsg05-sd.qualcomm.com with ESMTP; 09 Mar 2020 12:35:21 -0700
+Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
+        id 43E1B4973; Mon,  9 Mar 2020 12:35:21 -0700 (PDT)
+From:   Guru Das Srinagesh <gurus@codeaurora.org>
+To:     linux-pwm@vger.kernel.org
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        linux-kernel@vger.kernel.org,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v7 12/13] backlight: pwm_bl: Use 64-bit division macros for period and duty cycle
+Date:   Mon,  9 Mar 2020 12:35:15 -0700
+Message-Id: <bf6d8f6190d266f8992bd5451b12c9f3962fd18e.1583782035.git.gurus@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <cover.1583782035.git.gurus@codeaurora.org>
+References: <cover.1583782035.git.gurus@codeaurora.org>
+In-Reply-To: <cover.1583782035.git.gurus@codeaurora.org>
+References: <cover.1583782035.git.gurus@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Currently, auto calibration logic checks only for OVP_FAULT bit
-to be set in FAULT_STATUS register to detect OVP fault. This works
-well for WLED4 type. However, WLED5 type has OVP_PRE_ALARM bit
-which can indicate a potential OVP fault. Use that as well for
-detecting OVP fault and run auto calibration to fix the sink
-configuration.
+Because period and duty cycle are defined in the PWM framework structs
+as ints with units of nanoseconds, the maximum time duration that can be
+set is limited to ~2.147 seconds. Redefining them as u64 values will
+enable larger time durations to be set.
 
-Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+As a first step, prepare drivers to handle the switch to u64 period and
+duty_cycle by replacing division operations involving pwm period and duty cycle
+with their 64-bit equivalents as appropriate. The actual switch to u64 period
+and duty_cycle follows as a separate patch.
+
+Where the dividend is 64-bit but the divisor is 32-bit, use *_ULL
+macros:
+- DIV_ROUND_UP_ULL
+- DIV_ROUND_CLOSEST_ULL
+- div_u64
+
+Where the divisor is 64-bit (dividend may be 32-bit or 64-bit), use
+DIV64_* macros:
+- DIV64_U64_ROUND_CLOSEST
+- div64_u64
+
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: linux-pwm@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+
+Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
 ---
- drivers/video/backlight/qcom-wled.c | 90 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 88 insertions(+), 2 deletions(-)
+ drivers/video/backlight/pwm_bl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index edbbcb2..5079f1f 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -27,6 +27,7 @@
- #define  WLED3_CTRL_REG_ILIM_FAULT_BIT			BIT(0)
- #define  WLED3_CTRL_REG_OVP_FAULT_BIT			BIT(1)
- #define  WLED4_CTRL_REG_SC_FAULT_BIT			BIT(2)
-+#define  WLED5_CTRL_REG_OVP_PRE_ALARM_BIT		BIT(4)
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index efb4efc..3e5dbcf 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+ 		pb->scale = data->max_brightness;
+ 	}
  
- #define WLED3_CTRL_REG_INT_RT_STS			0x10
- #define  WLED3_CTRL_REG_OVP_FAULT_STATUS		BIT(1)
-@@ -104,6 +105,10 @@
+-	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
++	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
++				pb->scale));
  
- #define WLED4_SINK_REG_BRIGHT(n)			(0x57 + (n * 0x10))
- 
-+/* WLED5 specific control registers */
-+#define WLED5_CTRL_REG_OVP_INT_CTL			0x5f
-+#define  WLED5_CTRL_REG_OVP_INT_TIMER_MASK		GENMASK(2, 0)
-+
- /* WLED5 specific sink registers */
- #define WLED5_SINK_REG_MOD_A_EN				0x50
- #define WLED5_SINK_REG_MOD_B_EN				0x60
-@@ -394,11 +399,67 @@ static int wled4_ovp_fault_status(struct wled *wled, bool *fault_set)
- 	return rc;
- }
- 
-+static int wled5_ovp_fault_status(struct wled *wled, bool *fault_set)
-+{
-+	int rc;
-+	u32 int_rt_sts, fault_sts;
-+
-+	*fault_set = false;
-+	rc = regmap_read(wled->regmap,
-+			wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
-+			&int_rt_sts);
-+	if (rc < 0) {
-+		dev_err(wled->dev, "Failed to read INT_RT_STS rc=%d\n", rc);
-+		return rc;
-+	}
-+
-+	rc = regmap_read(wled->regmap,
-+			wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
-+			&fault_sts);
-+	if (rc < 0) {
-+		dev_err(wled->dev, "Failed to read FAULT_STATUS rc=%d\n", rc);
-+		return rc;
-+	}
-+
-+	if (int_rt_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
-+		*fault_set = true;
-+
-+	if (fault_sts & (WLED3_CTRL_REG_OVP_FAULT_BIT |
-+			       WLED5_CTRL_REG_OVP_PRE_ALARM_BIT))
-+		*fault_set = true;
-+
-+	if (*fault_set)
-+		dev_dbg(wled->dev, "WLED OVP fault detected, int_rt_sts=0x%x fault_sts=0x%x\n",
-+			int_rt_sts, fault_sts);
-+
-+	return rc;
-+}
-+
- static int wled4_ovp_delay(struct wled *wled)
- {
- 	return WLED_SOFT_START_DLY_US;
- }
- 
-+static int wled5_ovp_delay(struct wled *wled)
-+{
-+	int rc, delay_us;
-+	u32 val;
-+	u8 ovp_timer_ms[8] = {1, 2, 4, 8, 12, 16, 20, 24};
-+
-+	/* For WLED5, get the delay based on OVP timer */
-+	rc = regmap_read(wled->regmap, wled->ctrl_addr +
-+			 WLED5_CTRL_REG_OVP_INT_CTL, &val);
-+	if (rc < 0)
-+		delay_us =
-+		ovp_timer_ms[val & WLED5_CTRL_REG_OVP_INT_TIMER_MASK] * 1000;
-+	else
-+		delay_us = 2 * WLED_SOFT_START_DLY_US;
-+
-+	dev_dbg(wled->dev, "delay_time_us: %d\n", *delay_us);
-+
-+	return delay_us;
-+}
-+
- static int wled_update_status(struct backlight_device *bl)
- {
- 	struct wled *wled = bl_get_data(bl);
-@@ -736,9 +797,32 @@ static bool wled_auto_detection_required(struct wled *wled)
- 	if (!wled->auto_detection_ovp_count) {
- 		wled->start_ovp_fault_time = ktime_get();
- 		wled->auto_detection_ovp_count++;
--	} else {
-+		return false;
-+	}
-+
-+	if (wled->version == 5) {
-+		/*
-+		 * WLED5 has OVP fault density interrupt configuration i.e. to
-+		 * count the number of OVP alarms for a certain duration before
-+		 * triggering OVP fault interrupt. By default, number of OVP
-+		 * fault events counted before an interrupt is fired is 32 and
-+		 * the time interval is 12 ms. If we see more than one OVP fault
-+		 * interrupt, then that should qualify for a real OVP fault
-+		 * condition to run auto calibration algorithm.
-+		 */
-+
-+		if (wled->auto_detection_ovp_count > 1) {
-+			elapsed_time_us = ktime_us_delta(ktime_get(),
-+					wled->start_ovp_fault_time);
-+			wled->auto_detection_ovp_count = 0;
-+			dev_dbg(wled->dev, "Elapsed time: %lld us\n",
-+				elapsed_time_us);
-+			return true;
-+		}
-+		wled->auto_detection_ovp_count++;
-+	} else if (wled->version == 4) {
- 		elapsed_time_us = ktime_us_delta(ktime_get(),
--						 wled->start_ovp_fault_time);
-+					 wled->start_ovp_fault_time);
- 		if (elapsed_time_us > WLED_AUTO_DETECT_CNT_DLY_US)
- 			wled->auto_detection_ovp_count = 0;
- 		else
-@@ -1424,6 +1508,8 @@ static int wled_configure(struct wled *wled)
- 		wled->wled_set_brightness = wled5_set_brightness;
- 		wled->wled_sync_toggle = wled5_sync_toggle;
- 		wled->cabc_config = wled5_cabc_config;
-+		wled->wled_ovp_fault_status = wled5_ovp_fault_status;
-+		wled->wled_ovp_delay = wled5_ovp_delay;
- 		wled->max_string_count = 4;
- 
- 		prop_addr = of_get_address(dev->of_node, 1, NULL, NULL);
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = data->max_brightness;
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
- a Linux Foundation Collaborative Project
+a Linux Foundation Collaborative Project
+
