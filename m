@@ -2,118 +2,143 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3318918002C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Mar 2020 15:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AF47180048
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Mar 2020 15:34:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726998AbgCJObB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Mar 2020 10:31:01 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:41387 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbgCJObB (ORCPT
+        id S1726557AbgCJOei (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Mar 2020 10:34:38 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:45858 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726451AbgCJOeh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Mar 2020 10:31:01 -0400
-Received: by mail-pg1-f196.google.com with SMTP id b1so6373256pgm.8;
-        Tue, 10 Mar 2020 07:30:58 -0700 (PDT)
+        Tue, 10 Mar 2020 10:34:37 -0400
+Received: by mail-wr1-f65.google.com with SMTP id m9so7181393wro.12
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Mar 2020 07:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MacYADCTD8qyc7WRcNZs8kAJcizBx9dQZtfdy9R4RNE=;
-        b=KttrUyVNMJm4tVYsndEJewihA/Fnj3N2ZrjYXIrDKeGl8u/WNjT48KZrE5gagQlRGw
-         NsMbdCIkZCKNQ9PqKTuT6DOghaGLkm6UW7HV2ruq5QGTJfIBEw1k3T8+NDHpBWC2FvGm
-         GFuEtFUCuPXElbvO+Bt8GVG9txDegpQ7HBGqNL86qPmCGmC8/pmKM2VCCtl9gcZlEaKF
-         Sqk7gHJNqdfImZj4Tnq8kPoqYQtJOzyS+KFCV1P9sXrSEsYdNSJzBUxzbwJYwT9iFFq+
-         +HCsss44iRlGKPmrcylrkKGSpHUyGX4EKEPerBxQ8IrBOqRHSih0RLo1b1i5TRsWs+LX
-         erIQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=zXUts9AKiN/fKeCTOGQ7/e/tECu60a66Sq1qE2nSsj8=;
+        b=ucqglDNfh+/t7dmNc1CoK4kO9k+WxOIJzAhBXn+Oh0STOsQnfHC/GDv6spYpC2ti0F
+         WkhQA8v8uiST7Z2FuAl1vsyWSGLCSJLSeMFgLDT5TelHP3z9E5sty8LyyHNRfUDslRso
+         p498ot405gbFzIQB8Gt7/kHjgUTRjDSPxJyPA9DIw7zogenq96fCCzMxkx/7v30uhgLQ
+         MaUkhBksj+EQPUUo9C1nbNcAeQ7zVyr7DbaeRMuje32RNsSbERV6RjurO2HhIIVSVp5P
+         1C58TiVwLcXXFWBZ6cIpe4SUvRGwDpB5RiViuB8j7/8j8KHchz/Q4771WMHVRqM0rp1w
+         ddbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MacYADCTD8qyc7WRcNZs8kAJcizBx9dQZtfdy9R4RNE=;
-        b=Bz5kwrHwjuR55luBQackEX5I3B5GiPL0rI0kFbxyqmxuFvgp8dox9AzH4Jk0uhgYTp
-         du/0u1AbjehQ7aQYALJZ8tP5pJDpg+KRuZNONDqsXTcMwEaVJBzc9GCK7thy63/uDXnA
-         CO4Fa0+281WZ/8vh4y4En74SsOfkUHzM1NQmz/JJPS28JM0gTQKOFDlJO4+txZlGN5pO
-         XYRc4qU/PvOhSc5CmsMj6cFqaCDhIB86p7K8hMDFFYzU93avh6QyXttIRu8yveCMBUUz
-         MO0lPD0gHuowVYL5odfDrKuCWriEDQuwwoQpxLSbSrx17Cazd1bCJ+j7bNKUWMv3zhbJ
-         AMRw==
-X-Gm-Message-State: ANhLgQ0j2mUC3obSsoic7JituRflQSHZWNRNMRmee1EwWphYFt142p86
-        XO/bRecYr78HMgZ8OwgBeLg=
-X-Google-Smtp-Source: ADFU+vtOz7EqaVGESIcXkflwV06RHK6js+BsrPdEsZ/CtPuy/i+I8NN2JdKWWajI6r7UnUNzTZwOCQ==
-X-Received: by 2002:aa7:9af8:: with SMTP id y24mr6740721pfp.91.1583850658299;
-        Tue, 10 Mar 2020 07:30:58 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id j21sm2537919pji.13.2020.03.10.07.30.54
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zXUts9AKiN/fKeCTOGQ7/e/tECu60a66Sq1qE2nSsj8=;
+        b=Cxm03s+Ucj7j9KXCSwwu5bQ7dvBkt+rLdMjI8hAfUU0+cU0armQe6rfYWMoCL3PO+0
+         GlMT7e7Hcrx0ZHCg2vkjjttaH7rBXIMcqueWBOPIqqPkRbnNJxRutrg9IdR6oTzDxkOL
+         8VdRE2uHDq5G5+CTSNndWOr9qLWx9g35OI6d1wDYWaRDHvKsTbBq5AEg4dZXGNIffIPg
+         bVpSfFTvUO36pjXKfaWSYFQRd7992i/1VYt1B31ZfGBMzAGpErMbeXKuxHiN27Cza3SH
+         2mtDdZ7UGuVovlt2RaWcIRMscOamp0xp5960MfC5IRz139RvmIsnzGref2Pou4MxSm04
+         2plw==
+X-Gm-Message-State: ANhLgQ3Cu4ngxd3S9LdGcUhq2fqEy1pqak/IpU51MZ/vCfYZ2hjRUBE8
+        T7Td/13qdelTfBqXrOwCawTmxw==
+X-Google-Smtp-Source: ADFU+vvCn/r+CWrqGkHsSeFBVcE/wnMDHgQjwBF6p03Kfe11Rwc7vjt86tUuLleXNkWdlmNEvJ52Jg==
+X-Received: by 2002:adf:eb51:: with SMTP id u17mr29388013wrn.29.1583850875652;
+        Tue, 10 Mar 2020 07:34:35 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id o3sm4610328wme.36.2020.03.10.07.34.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2020 07:30:57 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v3] video: fbdev: arcfb: add missed free_irq and fix the order of request_irq
-Date:   Tue, 10 Mar 2020 22:30:50 +0800
-Message-Id: <20200310143050.5154-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 10 Mar 2020 07:34:34 -0700 (PDT)
+Date:   Tue, 10 Mar 2020 14:34:32 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Guru Das Srinagesh <gurus@codeaurora.org>
+Cc:     linux-pwm@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v7 12/13] backlight: pwm_bl: Use 64-bit division macros
+ for period and duty cycle
+Message-ID: <20200310143432.cfjlqac5x6oinshj@holly.lan>
+References: <cover.1583782035.git.gurus@codeaurora.org>
+ <bf6d8f6190d266f8992bd5451b12c9f3962fd18e.1583782035.git.gurus@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf6d8f6190d266f8992bd5451b12c9f3962fd18e.1583782035.git.gurus@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver forgets to free irq in remove which is requested in
-probe.
-Add the missed call to fix it.
-Also, the position of request_irq() in probe should be put before
-register_framebuffer().
+On Mon, Mar 09, 2020 at 12:35:15PM -0700, Guru Das Srinagesh wrote:
+> Because period and duty cycle are defined in the PWM framework structs
+> as ints with units of nanoseconds, the maximum time duration that can be
+> set is limited to ~2.147 seconds. Redefining them as u64 values will
+> enable larger time durations to be set.
+> 
+> As a first step, prepare drivers to handle the switch to u64 period and
+> duty_cycle by replacing division operations involving pwm period and duty cycle
+> with their 64-bit equivalents as appropriate. The actual switch to u64 period
+> and duty_cycle follows as a separate patch.
+> 
+> Where the dividend is 64-bit but the divisor is 32-bit, use *_ULL
+> macros:
+> - DIV_ROUND_UP_ULL
+> - DIV_ROUND_CLOSEST_ULL
+> - div_u64
+> 
+> Where the divisor is 64-bit (dividend may be 32-bit or 64-bit), use
+> DIV64_* macros:
+> - DIV64_U64_ROUND_CLOSEST
+> - div64_u64
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v3:
-  - Add missed variable par in remove.
+This patch looks like it is a tiny change to get the pwm_backlight to
+perform 64-bit division. Most of the above text is completely irrelevant
+to the change contained in this patch. No need to justify the change in
+the PWM structures here since that can go in the patch that changes
+those structures.  Just describe what this patch does, perhaps something
+like the following:
 
- drivers/video/fbdev/arcfb.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+    The PWM API will shortly switch the state.period and
+    state.duty_cycle fields to 64-bit values. Make pwm_bl
+    ready for this transition by adopting 64-bit division
+    macros.
 
-diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
-index 314ab82e01c0..9a720c14056c 100644
---- a/drivers/video/fbdev/arcfb.c
-+++ b/drivers/video/fbdev/arcfb.c
-@@ -544,10 +544,6 @@ static int arcfb_probe(struct platform_device *dev)
- 	par->cslut[1] = 0x06;
- 	info->flags = FBINFO_FLAG_DEFAULT;
- 	spin_lock_init(&par->lock);
--	retval = register_framebuffer(info);
--	if (retval < 0)
--		goto err1;
--	platform_set_drvdata(dev, info);
- 	if (irq) {
- 		par->irq = irq;
- 		if (request_irq(par->irq, &arcfb_interrupt, IRQF_SHARED,
-@@ -558,6 +554,10 @@ static int arcfb_probe(struct platform_device *dev)
- 			goto err1;
- 		}
- 	}
-+	retval = register_framebuffer(info);
-+	if (retval < 0)
-+		goto err1;
-+	platform_set_drvdata(dev, info);
- 	fb_info(info, "Arc frame buffer device, using %dK of video memory\n",
- 		videomemorysize >> 10);
+Also please copy the backlight maintainers into the covering letter. It
+is useful to place patches like this into context.
+
+
+Daniel.
+
  
-@@ -590,9 +590,12 @@ static int arcfb_probe(struct platform_device *dev)
- static int arcfb_remove(struct platform_device *dev)
- {
- 	struct fb_info *info = platform_get_drvdata(dev);
-+	struct arcfb_par *par = info->par;
- 
- 	if (info) {
- 		unregister_framebuffer(info);
-+		if (irq)
-+			free_irq(par->irq, info);
- 		vfree((void __force *)info->screen_base);
- 		framebuffer_release(info);
- 	}
--- 
-2.25.1
-
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: linux-pwm@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> 
+> Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+> ---
+>  drivers/video/backlight/pwm_bl.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+> index efb4efc..3e5dbcf 100644
+> --- a/drivers/video/backlight/pwm_bl.c
+> +++ b/drivers/video/backlight/pwm_bl.c
+> @@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+>  		pb->scale = data->max_brightness;
+>  	}
+>  
+> -	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
+> +	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
+> +				pb->scale));
+>  
+>  	props.type = BACKLIGHT_RAW;
+>  	props.max_brightness = data->max_brightness;
+> -- 
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project
+> 
