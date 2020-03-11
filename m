@@ -2,109 +2,109 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 849A5181578
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Mar 2020 11:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A71531815D0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Mar 2020 11:30:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728514AbgCKKF4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Mar 2020 06:05:56 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:51372 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728195AbgCKKF4 (ORCPT
+        id S1726934AbgCKKav (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Mar 2020 06:30:51 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:40630 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728195AbgCKKav (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Mar 2020 06:05:56 -0400
-Received: by mail-wm1-f67.google.com with SMTP id a132so1374465wme.1
-        for <linux-fbdev@vger.kernel.org>; Wed, 11 Mar 2020 03:05:54 -0700 (PDT)
+        Wed, 11 Mar 2020 06:30:51 -0400
+Received: by mail-wr1-f67.google.com with SMTP id p2so1868431wrw.7
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 Mar 2020 03:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=93G/zDTaOyD8EFBjnQ5HIhSQ1W1zWJdEX89fmqSHRBM=;
-        b=sphWW9cMhYeeZnLJ1WOkhyAMUglQ2PHyu4A4P4MLn5LhUtR9grWcvpv742AfsJD6Ae
-         MTvz64bk2UZqLRIhYNkgXi2vDO0gtjl1Y1K0iLPsu9RZOBO+0NApphHzRa/dwzCffgyz
-         JCPqgrdJC6G4t08cCPiiopuMy77kI75CX90AUD5PQDA+3LrRgoiWJLUkVupU0XhQnhM0
-         uwQesF7rKRXr4TUN92Sp0L6xrs0pD8XnAGmGuAvA7PWJWJQ7eb/vVnHglk5SmVwwDU8w
-         P5YMd7cfmZvPApO7oHcFhiAb6mDKRbVk5KH+MR1INXVq1NdWTwh8eg3ym3UH9qsNgraI
-         a9Tg==
+        bh=LzaLKCBRIewXD3EaTa5hnO0VT8owm6vRQQh9HZJ8avA=;
+        b=Q8iLXeBxiZgXJvA2vze2ga6XXLHnHiwXpcRBGb+97vDPoqWmHmYQNZD5qm5/UYrxEN
+         cjwCR0pOyqqvz+obQOJ74UiEbO7YwyeOGWUXaBfM4aUNnRCAIQ9IE4r3C+JmrXVApEtN
+         QfPbit0/lnZGYVi+UbvPMWvMtahu0kOMN1FY7tWEojQqHEJFot3f9/ECjN87ZRJokwqG
+         2UsaMwgAolYMNAwFN3YLUN/BSxz17PzqJ2t4SXZFY+UzqWaGXWXRITvoP1q9aPlL8I0s
+         56ZCsoZTUZMEuVHJtvwg/6Z8hd7DcKfTuDssaWskglPcGlBC0+0hPscKQR+14eNZKuhJ
+         oaJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=93G/zDTaOyD8EFBjnQ5HIhSQ1W1zWJdEX89fmqSHRBM=;
-        b=CX0KfRG7euI7u7hNowAahcvqKnan1ufYVanm6MtmmFp6AdEDu18AdxIAHfBNhiz4bf
-         fbzuV4eFIMxffCYfLESSMZD/f/Z8hduoVYikzW+SOx2cwHiK4M1FnacVHAVowbkNFPIw
-         oj+hWisPB5HuiKrsWHGGjvPjMNasem6rGSZNyM/JGAMJ/AaGvZuQ9ik5DVOrG5SgFhJk
-         kg4wqjQ9964FdWIVmZCVVLbiZDmLOjXRGL/KX8Wuclk2DxPEd02G9FfAu+4stBDfMmmw
-         XRNYE/MMDzAaZzTFMEQHnfRFNJ1ZRYWGx/9Kcrc8EsvCShO/QeCZ7GQEbZDmKDC5TuwQ
-         bg9w==
-X-Gm-Message-State: ANhLgQ2UddGsQEwVJRcQbv8nJ0Gojth2dh2J99WlW1j7KY0QEE/9Ftwc
-        dErFJybHGZPXn4fyoxTFJHOuPw==
-X-Google-Smtp-Source: ADFU+vux58htGjgI+MQUNkO9EePfRE4OlardHqAxVYVpyO/Mn5vugUubYA/2NPUQF5VUi6osmAu/aQ==
-X-Received: by 2002:a1c:1f14:: with SMTP id f20mr3005879wmf.61.1583921154070;
-        Wed, 11 Mar 2020 03:05:54 -0700 (PDT)
+        bh=LzaLKCBRIewXD3EaTa5hnO0VT8owm6vRQQh9HZJ8avA=;
+        b=XE3uf3qVP6Ql84WZMrMRmotyn4NrRkxS6mfrwSoOy9DYsCXSmShlVH2kLgotnjFNov
+         kV8hr4ajAjB0o+ZlAvauyGVeM0dKzK5JGyVJvPVuRI+MyeFHFmcWbCZFJFjMsETc1c7/
+         Mwfzk29T186NOoVaByjoErNiJ0TJxOWSBS1wX+33k8+U3myR2i1BHrHetSqwofaF4Ktn
+         SH++UmKPAPQegrKTZLUrnQBO5tVVoYAJ5OgiHU8694e/Cnr+oufoeSIOrYqkIN/PePOj
+         1sIXvvD+Ac0tVy73XSktMw1ca0/CQQnmwMJf1Nbl1JZIsJZJVI2nhX7egTnbSJkgL1Wu
+         FILw==
+X-Gm-Message-State: ANhLgQ1Oanh9teh3YEtzShIKCNth/mISItHLO76U3hFAVrR9i/XF9qpO
+        2Wc0gWaCdN/OayPgWTZ1N+RWDw==
+X-Google-Smtp-Source: ADFU+vuO9qK9g/2D1BMl3E61Zu+yTrfHT1j9G9JEFmGh20HcuAhscXtAx5vC28GPTMlL0pnuoxc5CA==
+X-Received: by 2002:adf:ef44:: with SMTP id c4mr3720111wrp.404.1583922649952;
+        Wed, 11 Mar 2020 03:30:49 -0700 (PDT)
 Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id i21sm8239881wmb.23.2020.03.11.03.05.53
+        by smtp.gmail.com with ESMTPSA id f9sm18718612wrc.71.2020.03.11.03.30.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2020 03:05:53 -0700 (PDT)
-Date:   Wed, 11 Mar 2020 10:05:51 +0000
+        Wed, 11 Mar 2020 03:30:49 -0700 (PDT)
+Date:   Wed, 11 Mar 2020 10:30:47 +0000
 From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Guru Das Srinagesh <gurus@codeaurora.org>
-Cc:     linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v8 11/12] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200311100551.umvfqelrqzcfo7sa@holly.lan>
-References: <cover.1583889178.git.gurus@codeaurora.org>
- <a9f914f92ee637c68e1d336e5b4894a565eb3cdc.1583889178.git.gurus@codeaurora.org>
+To:     kgunda@codeaurora.org
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-arm-msm-owner@vger.kernel.org
+Subject: Re: [PATCH V3 2/4] backlight: qcom-wled: Add callback functions
+Message-ID: <20200311103047.v7rt5ii3saack22a@holly.lan>
+References: <1583760362-26978-1-git-send-email-kgunda@codeaurora.org>
+ <1583760362-26978-3-git-send-email-kgunda@codeaurora.org>
+ <20200310152719.5hpzh6osq22y4qbn@holly.lan>
+ <05ab744dfbd83b6704bd394ce3c3dfc9@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a9f914f92ee637c68e1d336e5b4894a565eb3cdc.1583889178.git.gurus@codeaurora.org>
+In-Reply-To: <05ab744dfbd83b6704bd394ce3c3dfc9@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 10, 2020 at 06:41:20PM -0700, Guru Das Srinagesh wrote:
-> Since the PWM framework is switching struct pwm_state.period's datatype
-> to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> dividend instead of a straight division operation.
-> 
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-pwm@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> 
-> Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+On Wed, Mar 11, 2020 at 12:11:00PM +0530, kgunda@codeaurora.org wrote:
+> On 2020-03-10 20:57, Daniel Thompson wrote:
+> > On Mon, Mar 09, 2020 at 06:56:00PM +0530, Kiran Gunda wrote:
+> > > Add cabc_config, sync_toggle, wled_ovp_fault_status and wled_ovp_delay
+> > > callback functions to prepare the driver for adding WLED5 support.
+> > > 
+> > > Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> > 
+> > Overall this code would a lot easier to review if
+> > > ---
+> > >  drivers/video/backlight/qcom-wled.c | 196
+> > > +++++++++++++++++++++++-------------
+> > >  1 file changed, 126 insertions(+), 70 deletions(-)
+> > > 
+> > > diff --git a/drivers/video/backlight/qcom-wled.c
+> > > b/drivers/video/backlight/qcom-wled.c
+> > > index 3d276b3..b73f273 100644
+> > > --- a/drivers/video/backlight/qcom-wled.c
+> > > +++ b/drivers/video/backlight/qcom-wled.c
+> > > @@ -128,6 +128,7 @@ struct wled_config {
+> > >  	bool cs_out_en;
+> > >  	bool ext_gen;
+> > >  	bool cabc;
+> > > +	bool en_cabc;
+> > 
+> > Does this ever get set to true?
+> > 
+> Yes. If user wants use the cabc pin to control the brightness and
+> use the "qcom,cabc" DT property in the device tree.
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+That sounds like what you intended the code to do!
 
-> ---
->  drivers/video/backlight/pwm_bl.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index efb4efc..3e5dbcf 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  		pb->scale = data->max_brightness;
->  	}
->  
-> -	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-> +	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
-> +				pb->scale));
->  
->  	props.type = BACKLIGHT_RAW;
->  	props.max_brightness = data->max_brightness;
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-> a Linux Foundation Collaborative Project
-> 
+Is the code that does this present in the patch? I could not find
+it.
+
+
+Daniel.
