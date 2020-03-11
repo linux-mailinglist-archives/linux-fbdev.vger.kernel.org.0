@@ -2,90 +2,79 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4490180D73
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Mar 2020 02:25:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3590A180DAB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Mar 2020 02:41:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727528AbgCKBZo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Mar 2020 21:25:44 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:40749 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727506AbgCKBZo (ORCPT
+        id S1727880AbgCKBlk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Mar 2020 21:41:40 -0400
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:26769 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727960AbgCKBl0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Mar 2020 21:25:44 -0400
-Received: by mail-qk1-f196.google.com with SMTP id m2so568870qka.7;
-        Tue, 10 Mar 2020 18:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1Fukjl9q8moe8CzDk64XDMos63vCyfonbgEhEiAaGvw=;
-        b=DGaA0U9LZTxFDk9p+UrQTc+2w6FbZ2lAa1NdcuJN6FekMurcJUwLjEEAb30LZopenF
-         IhQQqBpDgZ/B1xli5AROa0jXmEJRoFr02uu/7E/l3xzQdINShRX0rY6vlr8pNZDUEmu+
-         lZCOyQ6Kz/rqCIq9UC4KZUNXRnvLdwhb/ShruKQrjpmEkIk64zxarVhNYPB8QfGuhQbZ
-         CjR6OS8+dQFdIojetGmZej1ArM7tpp/ZT+eMwCO3FmHKjNmgyu5Rw9LxF4HyEAniCgn6
-         mTeiCpXNH5mPFpBF7eBXIVTPfqKTUi1t2aq8/UoyLMzwd6IBCM1Z2+ivahWqzXIk+6i+
-         P65Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1Fukjl9q8moe8CzDk64XDMos63vCyfonbgEhEiAaGvw=;
-        b=nVj0kCpDDPARGcIpklskZoaiRn0MjAeIrJGKjiUI7VMl0bh0A6iBh5RJxrcvhAOBsI
-         iykG/kFWoGX4NwUk+aRbsGQxcdIg43jnY7pDoQQGX35ICKd0zg7OLMGjUeYQEa3yHP4t
-         CQpDUr9IJVSGF3gI7w+qNRhvKJ0U0Be9Sj4BwGTw76qE4WXRLWX7/fzYxdaO33sQ4MoC
-         nZn9JNWlTfbYCiyIbOsUWn384bySSzhR9/ql2UPXQpKrwWX7D47qEBlxDdldV/hUU2Jj
-         dWOjokX+qnK66xzQqBt6Wc17sQQ+kRknGpBTr9eFxm1ECxbIp3lFR9crbgGA5R7X6NcZ
-         cRIw==
-X-Gm-Message-State: ANhLgQ1od9qkiFT0SJZqaL3Dl5pfxMIXSU5EdO5MPu2/1i2fnuEYao5L
-        A5nsD9wlqwbPoC6p3lB3eS0=
-X-Google-Smtp-Source: ADFU+vtwivKOZ8x2mrkiVtdyMruWBJg75D32INLdZIi72P50DVRuj9bAjvMTNxFmNm86LOt8++lszQ==
-X-Received: by 2002:ae9:f504:: with SMTP id o4mr611927qkg.306.1583889941922;
-        Tue, 10 Mar 2020 18:25:41 -0700 (PDT)
-Received: from 73ec49dbc856.ic.unicamp.br (wifi-177-220-84-29.wifi.ic.unicamp.br. [177.220.84.29])
-        by smtp.gmail.com with ESMTPSA id i66sm4618570qkc.13.2020.03.10.18.25.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2020 18:25:41 -0700 (PDT)
-From:   Marcio Albano <marcio.ahf@gmail.com>
-To:     gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, lkcamp@lists.libreplanetbr.org
-Subject: [PATCH] staging: fbtft: Remove prohibited spaces before ')'
-Date:   Wed, 11 Mar 2020 01:25:33 +0000
-Message-Id: <20200311012533.26167-1-marcio.ahf@gmail.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 10 Mar 2020 21:41:26 -0400
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 10 Mar 2020 18:41:24 -0700
+Received: from gurus-linux.qualcomm.com ([10.46.162.81])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP; 10 Mar 2020 18:41:24 -0700
+Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
+        id 6DFB44AEB; Tue, 10 Mar 2020 18:41:24 -0700 (PDT)
+From:   Guru Das Srinagesh <gurus@codeaurora.org>
+To:     linux-pwm@vger.kernel.org
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        linux-kernel@vger.kernel.org,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v8 11/12] backlight: pwm_bl: Use 64-bit division function
+Date:   Tue, 10 Mar 2020 18:41:20 -0700
+Message-Id: <a9f914f92ee637c68e1d336e5b4894a565eb3cdc.1583889178.git.gurus@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <cover.1583889178.git.gurus@codeaurora.org>
+References: <cover.1583889178.git.gurus@codeaurora.org>
+In-Reply-To: <cover.1583889178.git.gurus@codeaurora.org>
+References: <cover.1583889178.git.gurus@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix checkpatch errors:
+Since the PWM framework is switching struct pwm_state.period's datatype
+to u64, prepare for this transition by using div_u64 to handle a 64-bit
+dividend instead of a straight division operation.
 
-"ERROR: space prohibited before that close parenthesis ')'"
-in fbtft-bus.c:65 and fbtft-bus.c:67.
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: linux-pwm@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 
-Signed-off-by: Marcio Albano <marcio.ahf@gmail.com>
+Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
 ---
- drivers/staging/fbtft/fbtft-bus.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/backlight/pwm_bl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
-index 63c65dd67..847cbfbbd 100644
---- a/drivers/staging/fbtft/fbtft-bus.c
-+++ b/drivers/staging/fbtft/fbtft-bus.c
-@@ -62,9 +62,9 @@ out:									      \
- }                                                                             \
- EXPORT_SYMBOL(func);
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index efb4efc..3e5dbcf 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+ 		pb->scale = data->max_brightness;
+ 	}
  
--define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
-+define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8)
- define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
--define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
-+define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16)
+-	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
++	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
++				pb->scale));
  
- void fbtft_write_reg8_bus9(struct fbtft_par *par, int len, ...)
- {
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = data->max_brightness;
 -- 
-2.20.1
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 
