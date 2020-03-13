@@ -2,68 +2,259 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7AC181665
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Mar 2020 12:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9DB1846CA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Mar 2020 13:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726000AbgCKLAb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 Mar 2020 07:00:31 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:34200 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728973AbgCKLAb (ORCPT
+        id S1726667AbgCMMYZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 13 Mar 2020 08:24:25 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:51486 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726461AbgCMMYZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Mar 2020 07:00:31 -0400
-Received: by mail-wr1-f65.google.com with SMTP id z15so2029360wrl.1;
-        Wed, 11 Mar 2020 04:00:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=b25sp8qI66/j49iyqNBdtNtMfSxMP1oLNv9A/qaCM54=;
-        b=disRR8YWcUkAL22/v3IPpnne5qf+vopN6WJn5QPn9LcqNKLiCTnNimqLAxrafFhSyc
-         yCofedNu9NI3oPMZ2GyZmSOovKmj2SQJvalIGl/FAFsNckHsXLN3gxQQBlffbR85Z08M
-         IvVfqHPw3G22q3rbxa89FtEmJkUwZurh4UiGXmKsea7czs5HpmE/AoOoVd9FDIZyAMNy
-         6GPUP8OYe7q21aMOE22nPlz2WSekOfgCKn3WoeBuNETDgWeW2LGbC3PibvYXfXomcBoo
-         hz4rLq+cIE+8/tOAGU3/s6n3zRN3DV3g4be9+5bnVETBtz+u47I2IJB7X30oPRqBdrJR
-         c2Yw==
-X-Gm-Message-State: ANhLgQ3J2uCNBoeCtIeFf4yo6xGiYEyTFudZeUFNKYyELCvoRTwypOF7
-        GfF17rkDJjNkBGhkXdhXdWM=
-X-Google-Smtp-Source: ADFU+vvNZicSP57FUXBCc+PbAP0dQa6QnWWOb5Ff7mqH6aO33TLcIKh9t9fDtFxYFTEo8QnHyZAzlw==
-X-Received: by 2002:adf:e485:: with SMTP id i5mr4104528wrm.81.1583924428712;
-        Wed, 11 Mar 2020 04:00:28 -0700 (PDT)
-Received: from debian (41.142.6.51.dyn.plus.net. [51.6.142.41])
-        by smtp.gmail.com with ESMTPSA id z19sm8187551wma.41.2020.03.11.04.00.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2020 04:00:27 -0700 (PDT)
-Date:   Wed, 11 Mar 2020 11:00:25 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH -next 019/491] Hyper-V CORE AND DRIVERS: Use fallthrough;
-Message-ID: <20200311110025.lycn35o7zvvmohvu@debian>
-References: <cover.1583896344.git.joe@perches.com>
- <84677022b8ec4ad14bddab57d871dcbfc0b4a1bf.1583896348.git.joe@perches.com>
+        Fri, 13 Mar 2020 08:24:25 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02DCOG7s043307;
+        Fri, 13 Mar 2020 07:24:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584102256;
+        bh=4LC52G3Dlu+AliRKNpbA2YnEyulkoxZ5we+H6bAWuTM=;
+        h=From:To:CC:Subject:Date;
+        b=PYX/DNr3PxOQokC7Ewc9jMIMj4Fa4dgdCaSfVaotS9DTj31O1/XHgAyLQL59uXPlo
+         4f1YIX8/KCrHs1WF6NRkSNBPgeP0KhB+qNd08KedX1l/qRzFfUnxK5EWe4i2/oU373
+         wALqUTXJ9sNBW279zBpsPk7ZVMJ3uxRb3VN4p0jU=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02DCOGnB073291
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 13 Mar 2020 07:24:16 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
+ Mar 2020 07:24:16 -0500
+Received: from localhost.localdomain (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 13 Mar 2020 07:24:16 -0500
+Received: from deskari.lan (ileax41-snat.itg.ti.com [10.172.224.153])
+        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 02DCOEgv126921;
+        Fri, 13 Mar 2020 07:24:14 -0500
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
+CC:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH] omapfb: Remove unused writeback code
+Date:   Fri, 13 Mar 2020 14:24:10 +0200
+Message-ID: <20200313122410.7528-1-tomi.valkeinen@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <84677022b8ec4ad14bddab57d871dcbfc0b4a1bf.1583896348.git.joe@perches.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 10, 2020 at 09:51:33PM -0700, Joe Perches wrote:
-> Convert the various uses of fallthrough comments to fallthrough;
-> 
-> Done via script
-> Link: https://lore.kernel.org/lkml/b56602fcf79f849e733e7b521bb0e17895d390fa.1582230379.git.joe.com/
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
+Remove unused writeback code. This code will never be used, as omapfb is
+being deprecated.
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 114 -------------------
+ drivers/video/fbdev/omap2/omapfb/dss/dss.h   |  20 ----
+ 2 files changed, 134 deletions(-)
+
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index ce37da85cc45..4a16798b2ecd 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -557,11 +557,6 @@ u32 dispc_mgr_get_sync_lost_irq(enum omap_channel channel)
+ }
+ EXPORT_SYMBOL(dispc_mgr_get_sync_lost_irq);
+ 
+-u32 dispc_wb_get_framedone_irq(void)
+-{
+-	return DISPC_IRQ_FRAMEDONEWB;
+-}
+-
+ bool dispc_mgr_go_busy(enum omap_channel channel)
+ {
+ 	return mgr_fld_read(channel, DISPC_MGR_FLD_GO) == 1;
+@@ -579,30 +574,6 @@ void dispc_mgr_go(enum omap_channel channel)
+ }
+ EXPORT_SYMBOL(dispc_mgr_go);
+ 
+-bool dispc_wb_go_busy(void)
+-{
+-	return REG_GET(DISPC_CONTROL2, 6, 6) == 1;
+-}
+-
+-void dispc_wb_go(void)
+-{
+-	enum omap_plane plane = OMAP_DSS_WB;
+-	bool enable, go;
+-
+-	enable = REG_GET(DISPC_OVL_ATTRIBUTES(plane), 0, 0) == 1;
+-
+-	if (!enable)
+-		return;
+-
+-	go = REG_GET(DISPC_CONTROL2, 6, 6) == 1;
+-	if (go) {
+-		DSSERR("GO bit not down for WB\n");
+-		return;
+-	}
+-
+-	REG_FLD_MOD(DISPC_CONTROL2, 1, 6, 6);
+-}
+-
+ static void dispc_ovl_write_firh_reg(enum omap_plane plane, int reg, u32 value)
+ {
+ 	dispc_write_reg(DISPC_OVL_FIR_COEF_H(plane, reg), value);
+@@ -1028,13 +999,6 @@ static enum omap_channel dispc_ovl_get_channel_out(enum omap_plane plane)
+ 	}
+ }
+ 
+-void dispc_wb_set_channel_in(enum dss_writeback_channel channel)
+-{
+-	enum omap_plane plane = OMAP_DSS_WB;
+-
+-	REG_FLD_MOD(DISPC_OVL_ATTRIBUTES(plane), channel, 18, 16);
+-}
+-
+ static void dispc_ovl_set_burst_size(enum omap_plane plane,
+ 		enum omap_burst_size burst_size)
+ {
+@@ -2805,74 +2769,6 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ }
+ EXPORT_SYMBOL(dispc_ovl_setup);
+ 
+-int dispc_wb_setup(const struct omap_dss_writeback_info *wi,
+-		bool mem_to_mem, const struct omap_video_timings *mgr_timings)
+-{
+-	int r;
+-	u32 l;
+-	enum omap_plane plane = OMAP_DSS_WB;
+-	const int pos_x = 0, pos_y = 0;
+-	const u8 zorder = 0, global_alpha = 0;
+-	const bool replication = false;
+-	bool truncation;
+-	int in_width = mgr_timings->x_res;
+-	int in_height = mgr_timings->y_res;
+-	enum omap_overlay_caps caps =
+-		OMAP_DSS_OVL_CAP_SCALE | OMAP_DSS_OVL_CAP_PRE_MULT_ALPHA;
+-
+-	DSSDBG("dispc_wb_setup, pa %x, pa_uv %x, %d,%d -> %dx%d, cmode %x, "
+-		"rot %d, mir %d\n", wi->paddr, wi->p_uv_addr, in_width,
+-		in_height, wi->width, wi->height, wi->color_mode, wi->rotation,
+-		wi->mirror);
+-
+-	r = dispc_ovl_setup_common(plane, caps, wi->paddr, wi->p_uv_addr,
+-		wi->buf_width, pos_x, pos_y, in_width, in_height, wi->width,
+-		wi->height, wi->color_mode, wi->rotation, wi->mirror, zorder,
+-		wi->pre_mult_alpha, global_alpha, wi->rotation_type,
+-		replication, mgr_timings, mem_to_mem);
+-
+-	switch (wi->color_mode) {
+-	case OMAP_DSS_COLOR_RGB16:
+-	case OMAP_DSS_COLOR_RGB24P:
+-	case OMAP_DSS_COLOR_ARGB16:
+-	case OMAP_DSS_COLOR_RGBA16:
+-	case OMAP_DSS_COLOR_RGB12U:
+-	case OMAP_DSS_COLOR_ARGB16_1555:
+-	case OMAP_DSS_COLOR_XRGB16_1555:
+-	case OMAP_DSS_COLOR_RGBX16:
+-		truncation = true;
+-		break;
+-	default:
+-		truncation = false;
+-		break;
+-	}
+-
+-	/* setup extra DISPC_WB_ATTRIBUTES */
+-	l = dispc_read_reg(DISPC_OVL_ATTRIBUTES(plane));
+-	l = FLD_MOD(l, truncation, 10, 10);	/* TRUNCATIONENABLE */
+-	l = FLD_MOD(l, mem_to_mem, 19, 19);	/* WRITEBACKMODE */
+-	if (mem_to_mem)
+-		l = FLD_MOD(l, 1, 26, 24);	/* CAPTUREMODE */
+-	else
+-		l = FLD_MOD(l, 0, 26, 24);	/* CAPTUREMODE */
+-	dispc_write_reg(DISPC_OVL_ATTRIBUTES(plane), l);
+-
+-	if (mem_to_mem) {
+-		/* WBDELAYCOUNT */
+-		REG_FLD_MOD(DISPC_OVL_ATTRIBUTES2(plane), 0, 7, 0);
+-	} else {
+-		int wbdelay;
+-
+-		wbdelay = min(mgr_timings->vfp + mgr_timings->vsw +
+-			mgr_timings->vbp, 255);
+-
+-		/* WBDELAYCOUNT */
+-		REG_FLD_MOD(DISPC_OVL_ATTRIBUTES2(plane), wbdelay, 7, 0);
+-	}
+-
+-	return r;
+-}
+-
+ int dispc_ovl_enable(enum omap_plane plane, bool enable)
+ {
+ 	DSSDBG("dispc_enable_plane %d, %d\n", plane, enable);
+@@ -2903,16 +2799,6 @@ bool dispc_mgr_is_enabled(enum omap_channel channel)
+ }
+ EXPORT_SYMBOL(dispc_mgr_is_enabled);
+ 
+-void dispc_wb_enable(bool enable)
+-{
+-	dispc_ovl_enable(OMAP_DSS_WB, enable);
+-}
+-
+-bool dispc_wb_is_enabled(void)
+-{
+-	return dispc_ovl_enabled(OMAP_DSS_WB);
+-}
+-
+ static void dispc_lcd_enable_signal_polarity(bool act_high)
+ {
+ 	if (!dss_has_feature(FEAT_LCDENABLEPOL))
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.h b/drivers/video/fbdev/omap2/omapfb/dss/dss.h
+index a2269008590f..21cfcbf74a6d 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss.h
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.h
+@@ -89,17 +89,6 @@ enum dss_dsi_content_type {
+ 	DSS_DSI_CONTENT_GENERIC,
+ };
+ 
+-enum dss_writeback_channel {
+-	DSS_WB_LCD1_MGR =	0,
+-	DSS_WB_LCD2_MGR =	1,
+-	DSS_WB_TV_MGR =		2,
+-	DSS_WB_OVL0 =		3,
+-	DSS_WB_OVL1 =		4,
+-	DSS_WB_OVL2 =		5,
+-	DSS_WB_OVL3 =		6,
+-	DSS_WB_LCD3_MGR =	7,
+-};
+-
+ enum dss_pll_id {
+ 	DSS_PLL_DSI1,
+ 	DSS_PLL_DSI2,
+@@ -403,15 +392,6 @@ int dispc_mgr_get_clock_div(enum omap_channel channel,
+ 		struct dispc_clock_info *cinfo);
+ void dispc_set_tv_pclk(unsigned long pclk);
+ 
+-u32 dispc_wb_get_framedone_irq(void);
+-bool dispc_wb_go_busy(void);
+-void dispc_wb_go(void);
+-void dispc_wb_enable(bool enable);
+-bool dispc_wb_is_enabled(void);
+-void dispc_wb_set_channel_in(enum dss_writeback_channel channel);
+-int dispc_wb_setup(const struct omap_dss_writeback_info *wi,
+-		bool mem_to_mem, const struct omap_video_timings *timings);
+-
+ u32 dispc_read_irqstatus(void);
+ void dispc_clear_irqstatus(u32 mask);
+ u32 dispc_read_irqenable(void);
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
