@@ -2,94 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 843EB184899
-	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Mar 2020 14:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E37541859A4
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Mar 2020 04:21:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726845AbgCMN5G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 13 Mar 2020 09:57:06 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:46848 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726776AbgCMN5G (ORCPT
+        id S1726596AbgCODVA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 14 Mar 2020 23:21:00 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:39388 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726506AbgCODVA (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 13 Mar 2020 09:57:06 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02DDuwcv024360;
-        Fri, 13 Mar 2020 08:56:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584107818;
-        bh=GBfQ2U4h7W+sFa+Ijpcch+QhRJihZSmOMPAE+Mj+Lc4=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=TDGAQFqNcveuTsu0zVPs5lYvxxaAWVmpqLa70V08DqlBodB80YcFvkMfFnlIDqc9l
-         s2gf4D2Y96D4ZK9ERg2m+XF6LKGnKPR92smmj95R5dBaG3HTjfzl9XIzhcw8J1zPxl
-         J39qxWca8hCJar8tC7BlPuCFv+wqd39dL8+lwEK4=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02DDuwjO090419
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Mar 2020 08:56:58 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Mar 2020 08:56:58 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Mar 2020 08:56:58 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02DDuuvc007020;
-        Fri, 13 Mar 2020 08:56:57 -0500
-Subject: Re: [PATCH] omapfb: Remove unused writeback code
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-References: <20200313122410.7528-1-tomi.valkeinen@ti.com>
- <20200313132244.GB4751@pendragon.ideasonboard.com>
- <249364fc-bc83-6fe6-d3bf-f709505c299e@ti.com>
- <20200313133803.GA9070@pendragon.ideasonboard.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <64b002c9-15df-2662-b969-e9696821b07a@ti.com>
-Date:   Fri, 13 Mar 2020 15:56:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Sat, 14 Mar 2020 23:21:00 -0400
+Received: by mail-qt1-f194.google.com with SMTP id f17so9949160qtq.6
+        for <linux-fbdev@vger.kernel.org>; Sat, 14 Mar 2020 20:20:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=jOBfC5O/vBSLdecO/QlWaVNApHJ26+h2FsT0+WvoPpqb2FIa4XKbiSPP5B9vUh4N2E
+         8dcd84mryHvGdhB4Panwk+QG1wHlVc/p+oPyhhzTLXGWyQciLI99UqCFci5qud7pVfpk
+         kuz3Kp6fX+gGb+ayyhPLjSf9NwTiaRmMzao7zqZoJ916qimH/ClhzK02cBxVS248yH/4
+         MLwgNkC0mvY3jImZm/H4tv1UsjRWq0IkEksqVOH7KwWPIcmFzVt3gZll4K4Zb8CTy399
+         YuuHCdbflo0rQ/ZRklWw2XvObc4jWALWXHICWm4sE8qCEXxtmRf7jaZzYRWn+4gkpOHW
+         ov3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=rySLrb6e8pdxDloLytBEUWmIP8HvBNLPxIuJLcg1j9c=;
+        b=rWEbXEP5MLwQhzqhkMUrqN0yTWLXe2Va5J20XzTx2d4JaAY13hkIWllDwEt5i2sFyJ
+         txVgdTd/6jlsAY1T5jwUv8oFOFJNNZ/dbHpFW0sR8cxbum6lRSWCOWWfPvaP8lcorHbC
+         aFm6Ejd7e5YHmusO/EpmCWq29zTzJu9Jr0liC2OWSgHJWwwWN6wDK4VSAhUYGKthoj9e
+         C7g/D/W9QruNKZYZlnpvUxpXWTySFFhP6slvbuplHmbg4Ma6yuthc2T7Ai80MrYMxib8
+         yyQmcVyLgWsnXC5GydrUJPW9ELU+C3+uOof5uxjQqVFyE97EGzfARDcqhOc2XOMbO1Ie
+         aYkQ==
+X-Gm-Message-State: ANhLgQ08AZHeuQF7U2HMP1FM3XrUhIAjggyKmpe3l17tXJAvBtA/THfY
+        rTybcLuwq+3nD0TDDyOAclzkpEvSFy4ACyKCp+Y2pBDR
+X-Google-Smtp-Source: ADFU+vtrCuIL7f0dLnfUqYduMJ2SDxRo018yLOP6NxdgbsfKecOZqAqtXXYgm7d639rR2SeNyBfiYoDDl9GfFzIVkd0=
+X-Received: by 2002:a02:8801:: with SMTP id r1mr18315992jai.50.1584205559100;
+ Sat, 14 Mar 2020 10:05:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200313133803.GA9070@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Received: by 2002:a4f:4447:0:0:0:0:0 with HTTP; Sat, 14 Mar 2020 10:05:57
+ -0700 (PDT)
+From:   Omar Ousman <omarousman25@gmail.com>
+Date:   Sat, 14 Mar 2020 18:05:57 +0100
+X-Google-Sender-Auth: co2Ly_AxunXf6OTEIWso4hgD0hk
+Message-ID: <CAAai1fyC_-jJRVKHjo_nc0JFua5o7kbmYf0iBfeibOqkO5=pdA@mail.gmail.com>
+Subject: You received my last mail,,,,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 13/03/2020 15:38, Laurent Pinchart wrote:
-> Hi Tomi,
-> 
-> On Fri, Mar 13, 2020 at 03:30:15PM +0200, Tomi Valkeinen wrote:
->> On 13/03/2020 15:22, Laurent Pinchart wrote:
->>> On Fri, Mar 13, 2020 at 02:24:10PM +0200, Tomi Valkeinen wrote:
->>>> Remove unused writeback code. This code will never be used, as omapfb is
->>>> being deprecated.
->>>
->>> I'm fine with that, but out of curiosity, is there any particular reason
->>> to remove that code now instead of letting omapfb bitrot slowly ?
->>
->> It conflicts with tidss's writeback code in TI kernel, when compiling tidss and omapfb into the
->> kernel. I thought this is the easiest way to resolve that, as all the removed code is dead code,
->> instead of trying to invent new names in tidss for a lot of functions.
->>
->> Probably the functions in tidss still could use some renaming in the future, but I didn't want to be
->> forced to do that because of omapfb's dead code...
-> 
-> Could you do both ? :-) It's not good using too generic names in tidss.
-> You can just prefix the functions with tidss_. There's a risk of
-> conflict with omapdrm too if the names are too generic.
+I am Mr.Omar Ousman, a regional managing director (CORIS BANK
+INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
+US$9,500.0000 million united state dollars, to transfer into your
+account as a dormant fund.If you are interested to use this fund to
+help the orphans around the world contact and send me your personal
+information for more details to my email omarousman25@gmail.com
 
-I will, but I didn't want to start doing that right now. tidss has just been merged to mainline, and 
-tidss is still under active development, so doing such a change is an invitation to conflicts. I'd 
-like things to settle down a bit first.
+Your full names..........
+Your country of origin..........
+Your occupation..........
+Your Age..........
+Your Mobile Number..........
 
-  Tomi
-
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Best Regards,
