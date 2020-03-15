@@ -2,73 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E2B185AF4
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Mar 2020 08:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 009EE185AEA
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Mar 2020 08:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727670AbgCOHPq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 15 Mar 2020 03:15:46 -0400
+        id S1727730AbgCOHPf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 15 Mar 2020 03:15:35 -0400
 Received: from bombadil.infradead.org ([198.137.202.133]:49192 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727798AbgCOHPg (ORCPT
+        with ESMTP id S1727670AbgCOHPf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 15 Mar 2020 03:15:36 -0400
+        Sun, 15 Mar 2020 03:15:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:References:To:From:
-        Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
-        bh=PIdL3ADHFqOYxL3rUUU7O33jeUO949ynfok0fGxMJ30=; b=aOT8m7qknOR/gn204boJiMs3mh
-        eT5ZkX9U6rLnc4HmFFQg8Z7wI6k7PW5yJwtqEbx60/O86SSRqHaXftTwclz4jAbKCXU4o3IwuA+XQ
-        BkDtoAJQJAAHVUKDoscctGsMXS/X7FgW+Z3uMMDDu4nncTMkgPmbI3CcolDQ5vn3gumpr7hPJRFI5
-        B1WycobIxdcrYJAIOu8H2+qIWmyvVI2is9SuCCCh1FjVA1cbRgeYPCpxVeo1zF/g7FRDMFE69NqmH
-        kVtp7q+QFOFkMrGDwgyVs/GHnOUJHXnHPClyEz3h5BIvNSWW5j17pqYlZR8cJWuzx7Ze4EaG1IJ8d
-        Kxj0uuOQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
+        d=infradead.org; s=bombadil.20170209; h=Message-Id:Date:Subject:Cc:To:From:
+        Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=M43Fclutcops3LTjLdBwRIG7fc6qs+/SivGL6t7wtcQ=; b=lVXJbQWZKeohEKZYCbB4VhDVV/
+        XsMhxq3ZNhrJcH+HIjJOQHNOsyeBe6gyt/qf17MIyA30PaqWRrm5Vdf7f8V0BLXsHIMfNCUAwWOfX
+        Hdv6oCUPEO/gWtLLMSrlPwujR4mKGfHvDB9Th85vsLEPxrICNf428R4H+9NcuNKn1cXLuVn8DBQYr
+        PAKt5dFeWs/7RigXJ6QKkltkEKahOwGjNOKiF33VFufb5+yh6yGONB+L8n5sjZWUPF4pihtmPa/Bl
+        PgfmRJNOnrkswUYLJn9gG7nD5o31pDXVK1s1qG1KXOHs3Y9QTWvqVhE7CGYAFSl9SPVAgZE8rnGVH
+        Ya3xZTQw==;
+Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
         by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jDAmc-0005IX-80; Sat, 14 Mar 2020 17:41:10 +0000
-Subject: Re: pm3fb.c: question
+        id 1jDKbE-0003dY-6j; Sun, 15 Mar 2020 04:10:04 +0000
 From:   Randy Dunlap <rdunlap@infradead.org>
-To:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-References: <9f7b3b9b-f48e-6da1-d08c-cc60f60b1eac@infradead.org>
-Message-ID: <044a63f0-2589-5550-572e-df57c7135c31@infradead.org>
-Date:   Sat, 14 Mar 2020 10:41:08 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <9f7b3b9b-f48e-6da1-d08c-cc60f60b1eac@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Antonino Daplas <adaplas@gmail.com>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+Subject: fbdev: fix -Wextra build warnings
+Date:   Sat, 14 Mar 2020 21:09:56 -0700
+Message-Id: <20200315041002.24473-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 3/14/20 12:35 AM, Randy Dunlap wrote:
-> In drivers/video/fbdev/pm3fb.c, if I change the definition of DPRINTK()
-> (in order to remove some gcc warnings if -Wextra is used), like this:
-> 
-> -#define DPRINTK(a, b...)
-> +#define DPRINTK(a, b...)	no_printk(a, ##b)
-> 
-> I get a build error here:
-> 		default:
-> 			DPRINTK("Unsupported depth %d\n",
-> 				info->current_par->depth);
-> 			break;
-> 
-> ../drivers/video/fbdev/pm3fb.c: In function ‘pm3fb_init_engine’:
-> ../drivers/video/fbdev/pm3fb.c:353:9: error: ‘struct fb_info’ has no member named ‘current_par’
->      info->current_par->depth);
->          ^
-> 
-> Is there a replacement (fix) for this field?
-> or should the entire DPRINTK() be deleted?
-> or somethine else?
+This patch series fixes warnings in fbdev that are found when
+-Wextra is used. In fixing these, there were a few other build
+errors discovered (mostly caused by bitrot) and fixed.
 
-Got it.
-I'll just change it to what is used in the switch statement above.
+[PATCH 1/6] fbdev: fbmon: fix -Wextra build warnings
+[PATCH 2/6] fbdev: aty: fix -Wextra build warning
+[PATCH 3/6] fbdev: matrox: fix -Wextra build warnings
+[PATCH 4/6] fbdev: savage: fix -Wextra build warning
+[PATCH 5/6] fbdev: pm[23]fb.c: fix -Wextra build warnings and errors
+[PATCH 6/6] fbdev: via: fix -Wextra build warning and format warning
 
--- 
-~Randy
-
+ drivers/video/fbdev/aty/atyfb_base.c       |    2 +-
+ drivers/video/fbdev/core/fbmon.c           |    2 +-
+ drivers/video/fbdev/matrox/matroxfb_base.h |    2 +-
+ drivers/video/fbdev/pm2fb.c                |    2 +-
+ drivers/video/fbdev/pm3fb.c                |    8 ++++----
+ drivers/video/fbdev/savage/savagefb.h      |    2 +-
+ drivers/video/fbdev/via/debug.h            |    6 ++++--
+ drivers/video/fbdev/via/viafbdev.c         |    2 +-
+ 8 files changed, 14 insertions(+), 12 deletions(-)
