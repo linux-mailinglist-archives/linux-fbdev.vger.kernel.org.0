@@ -2,114 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E52AB187C18
-	for <lists+linux-fbdev@lfdr.de>; Tue, 17 Mar 2020 10:34:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67B6D188357
+	for <lists+linux-fbdev@lfdr.de>; Tue, 17 Mar 2020 13:12:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726082AbgCQJeT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 17 Mar 2020 05:34:19 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:37612 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgCQJeS (ORCPT
+        id S1726947AbgCQMLq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 17 Mar 2020 08:11:46 -0400
+Received: from sonic307-2.consmr.mail.ne1.yahoo.com ([66.163.190.121]:35454
+        "EHLO sonic307-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726541AbgCQMLq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 17 Mar 2020 05:34:18 -0400
-Received: by mail-io1-f71.google.com with SMTP id p4so13612189ioo.4
-        for <linux-fbdev@vger.kernel.org>; Tue, 17 Mar 2020 02:34:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=8hA1xiNFfEeNh4tjPf0Sj4oPNobnSXcjqFM/N93g+x4=;
-        b=dn/JE78dbE4ItOrco/sznqqNLeiGA45QSwU25lpUlMjeY3ajFsRrzz4FTrID+W08j7
-         2vW/baZFNAwpJfyI9q+N2ptdIpQ+MnWa2EtRwC1gZ7YVGLEgT732fqXQE5aKxLGbQz+d
-         NR8skGSYpiBuWNlQ30bJJUUgJ8l/yglP+X1DyWRZOlVlSx69YwjrdrLO2Ua51Kf5VLJ9
-         VOHf0pYuyY9w744fS5alEHLXYIoxZ0dCN+VuElEvNVBm8CBWQ+0NChXa/eMWUNbXDXld
-         s01s23FTj3MkI9WpYLd4WyBDBdqhRrDSkp6mzSZsTXeaUQA070zcdtayJeZe7Y3qL67Y
-         aDHQ==
-X-Gm-Message-State: ANhLgQ1m+at0NScwA8yrx1j9G8LhQF2TBfWc2gYt/ubEvILSAhMI4LKw
-        dzENbMWtFRoUUiRiAJETzxV8oDlNZB8/ppkJGpP0HKAAWTVm
-X-Google-Smtp-Source: ADFU+vvwgyMWDfCh3AiPKjRyG8ZlkZ8tqhlrYN4CYwCevf2XHU/VCKMvku+jVjT9gOIGJynjjnn9dHGSHsL+rLQAZcQgm2nA5lW4
+        Tue, 17 Mar 2020 08:11:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584447105; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Mm+amEABuqOJSxEgMJ/+nsPA/ert+WBMiBEAweTDEsx0N036ol3lmnkGKYWfx1C2elo7X2MRdIotA+1oIY3R33KgQYVWZPOomU9AK+h0oYREGlTeqU6XgPE8Hm4IMzgjKLifqesthHoal8PP8ZNv5J/Rs4JtryuX+7H6/zqwwNqpCB8gMjj1IOA11oJY10PxvQ8kq2gzmJYi8JFmaIovHksWCkDP2+khyElBjOAwmHHqoEgc3O6qHrU8EA5jJvBTCWL180Y1bbtqpD4D3F6cMF0bErwQBIDmrVVWDIWiJYdSEfKS2QbzeAXQJJg3unqJTzWmN7nkDdLYNJLh27eZ9g==
+X-YMail-OSG: meabeLkVM1kj4Qo1UjIKZPmYD57gR7gOgoKWAJhAgndzEP8FpYomA0vodT2zgoo
+ 7sGgK.kVySqbLaFz.W_wkblfN0jMp5w9BAW3QXr902Dv_G_zrhaCZzbV5wPqfES1rrrtb6SPZI2E
+ pznk8b9RjhucMPpNVS8_iBj4VWaQIr2RxGjq9ZKK4xgUkbNwEwq6EtwDvQHBuiYmue13bfoywmx2
+ ClCujEeJt7CoC_GmYMMhTuOo.QP8U6.RI222je7MxVK7SrULUS6l_osTHUuteMP78NY7l.PDTFqI
+ glY09FeQ0qMvYADM6VZ3OClo8hcWXRW3GaWATtORTGYFet9mMRuAwZWM5u_26HoYyw1zYKFGoPIC
+ XB5nswWjghnuoqXAeGtZEsjRUJG9LhgJyQDkc6cL00qYKir_uCXfE1Yf7R1cImjyWjTnPgQeTSVw
+ hOECgCxqGfQYp5I2rVed9WhPiBiRwnoZFuW3cafYUeDVyV4didE8dS2uk8cXhBKMqLOnTpkdGG6O
+ a2oeCSGv49CgeOKgZLD3f7bm.eabxtUAqIOV__b9udeCc0lIGeXVuaWknhwAPPHX.aOJJS7Wo0mT
+ Cb_15kkvpBs00Oq6cyHwGkrUG71QGXQ.kzSe708iYcSGZ4IFFBQZq3U78tQBVT6zmKdemUY7Qsx9
+ mg6El.vRbjJzEP74i_gaHx.6dKnENZZvFNvnNuIcb8zklHvgwZS01Df.tDJBa01xGoq_DEwEm_O3
+ N48x7AVSyU1OVZEI2EvOyGtTY6NeRsSPSKMSO5RcC_22Sj0aClWQOt.0IMou5DfrakujXXz3I4ov
+ h4LGzvx5Sm45iKCZS79a84ZEerqaaENotu.40RYrtsD8TmX2QsMijpduFznz3YG_I08.c1tT4Rel
+ 9BbD_vtcKKmNYLyyDqT6z.yEN0Icq51wncO4XK.oa9Uw8AzfLGRRigifle87lSIMPipCGDhig3IQ
+ Vh.oMt8wiWk0gz0XNhVvu3GUxmyHRYPNHd6KpvsHfcXHPIfg4FgodNhyKAn1VC33D5DHi3fQI0I3
+ NFDezcnyxTcoaUPJFtPpGiD8TUuWg_hI2QjLiIy8SgfpB4WLyhya2F3EBGQFwyc9Guxnw4..ROt7
+ Wtq27ankkDbapMf80Xq0xAN762_4GTU2kJD6CNytnpBfJmiTPXjn.ZWmg3kbg5_Xm5D3Tv05X4uy
+ M_OA4zS72HdEIFhqlBXy0zJaQye7Sje767SEvPxEr7kvrF7SD0GZzLXAGOxQO8xrD21jWAdDZiX4
+ R3kAEKZk7kjrfXPZ1akGXosn4j4uYPL4Ou1rjpKlhq76S8vU4JOiZ_tK872l7DM84Qy965IpeihH
+ P8YIG.GJzM0xKyipjV76O7oiBQWA-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:11:45 +0000
+Date:   Tue, 17 Mar 2020 12:09:44 +0000 (UTC)
+From:   Stephen Li <stenn6@gabg.net>
+Reply-To: stephli947701@gmail.com
+Message-ID: <2047002212.1846736.1584446984727@mail.yahoo.com>
+Subject: REF
 MIME-Version: 1.0
-X-Received: by 2002:a02:3506:: with SMTP id k6mr4450475jaa.104.1584437655618;
- Tue, 17 Mar 2020 02:34:15 -0700 (PDT)
-Date:   Tue, 17 Mar 2020 02:34:15 -0700
-In-Reply-To: <000000000000a4293f0598ef165e@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000a1c96505a109a31b@google.com>
-Subject: Re: KASAN: vmalloc-out-of-bounds Write in bitfill_aligned
-From:   syzbot <syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2047002212.1846736.1584446984727.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
-
-HEAD commit:    fb33c651 Linux 5.6-rc6
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17dacd55e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9f894bd92023de02
-dashboard link: https://syzkaller.appspot.com/bug?extid=e5fd3e65515b48c02a30
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11b8ca75e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=114800e5e00000
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:54 [inline]
-BUG: KASAN: vmalloc-out-of-bounds in bitfill_aligned+0x34b/0x410 drivers/video/fbdev/core/sysfillrect.c:25
-Write of size 8 at addr ffffc90009621000 by task syz-executor767/9337
-
-CPU: 3 PID: 9337 Comm: syz-executor767 Not tainted 5.6.0-rc6-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x188/0x20d lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0x5/0x315 mm/kasan/report.c:374
- __kasan_report.cold+0x1a/0x32 mm/kasan/report.c:506
- kasan_report+0xe/0x20 mm/kasan/common.c:641
- bitfill_aligned drivers/video/fbdev/core/sysfillrect.c:54 [inline]
- bitfill_aligned+0x34b/0x410 drivers/video/fbdev/core/sysfillrect.c:25
- sys_fillrect+0x415/0x7a0 drivers/video/fbdev/core/sysfillrect.c:291
- drm_fb_helper_sys_fillrect+0x1c/0x190 drivers/gpu/drm/drm_fb_helper.c:719
- bit_clear_margins+0x2d5/0x4a0 drivers/video/fbdev/core/bitblit.c:232
- fbcon_clear_margins+0x1de/0x240 drivers/video/fbdev/core/fbcon.c:1379
- fbcon_switch+0xd1b/0x1740 drivers/video/fbdev/core/fbcon.c:2361
- redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
- fbcon_modechanged+0x5bd/0x780 drivers/video/fbdev/core/fbcon.c:2998
- fbcon_update_vcs+0x3a/0x50 drivers/video/fbdev/core/fbcon.c:3045
- fb_set_var+0xad0/0xd40 drivers/video/fbdev/core/fbmem.c:1056
- do_fb_ioctl+0x390/0x7d0 drivers/video/fbdev/core/fbmem.c:1109
- fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1185
- vfs_ioctl fs/ioctl.c:47 [inline]
- ksys_ioctl+0x11a/0x180 fs/ioctl.c:763
- __do_sys_ioctl fs/ioctl.c:772 [inline]
- __se_sys_ioctl fs/ioctl.c:770 [inline]
- __x64_sys_ioctl+0x6f/0xb0 fs/ioctl.c:770
- do_syscall_64+0xf6/0x7d0 arch/x86/entry/common.c:294
- entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x433d29
-Code: c4 18 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 eb da fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fff33d61508 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004002e0 RCX: 0000000000433d29
-RDX: 00000000200001c0 RSI: 0000000000004601 RDI: 0000000000000003
-RBP: 00000000006b2018 R08: 0000000000000000 R09: 00000000004002e0
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401bc0
-R13: 0000000000401c50 R14: 0000000000000000 R15: 0000000000000000
 
 
-Memory state around the buggy address:
- ffffc90009620f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffc90009620f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffffc90009621000: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
-                   ^
- ffffc90009621080: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
- ffffc90009621100: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
-==================================================================
-
+Greetings,
+I was searching through a local business directory when I found your
+profile. I am Soliciting On-Behalf of my private client who is
+interested in having a serious business investment in your country. If
+you have a valid business, investment or project he can invest
+back to me for more details. Your swift response is highly needed.
+Sincerely
+Stephen Li
+Please response back to me with is my private email below for more details
+stephli947701@gmail.com
