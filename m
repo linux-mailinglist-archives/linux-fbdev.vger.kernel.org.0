@@ -2,116 +2,169 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F8118CEDB
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 14:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 656FE18CF08
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 14:35:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727122AbgCTNal (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 20 Mar 2020 09:30:41 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:38533 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727107AbgCTNal (ORCPT
+        id S1727243AbgCTNfh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 20 Mar 2020 09:35:37 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:55467 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727574AbgCTNfh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 20 Mar 2020 09:30:41 -0400
-Received: by mail-wm1-f66.google.com with SMTP id l20so6334908wmi.3
-        for <linux-fbdev@vger.kernel.org>; Fri, 20 Mar 2020 06:30:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=s6NlNBz5JabYM7cmGqE8XzWKbyl9fJfmEfdQ5l/oU3Q=;
-        b=s09Wp38Yl9D/BXm38cmJgGPi0UqMy1rBmBFtHIfPgWs3qOVc4KyCW68gFgC6sqGOlB
-         jz/2CgAIG4Z86LceTEe+1zjlO/Fo1IECFE5A+avANLmx8T9hSj8HpV1PNp0HJ4nkbvr9
-         w/6J0RX5hWBJZHJkXMqtDVmhO7Oi3GPGv8l+Mw9OcKAQNTXnBhNgE65/RtWoz2KBhGCo
-         T6SZZwu/9P54Us9BE+P3EeQ4kpcOe+/TxL5F+jeppKCmwyECfpUfo9D+5HwthNn+XOZQ
-         2/+ahfHQtav6UCiN/qtcm9rOmsdcm1rRpK/30JxrAvC2jNt6WBWPBDuSuypXAshrAOCU
-         j4vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=s6NlNBz5JabYM7cmGqE8XzWKbyl9fJfmEfdQ5l/oU3Q=;
-        b=bGPea+gcf8eR06jgZHIHqtvVLtvxvnGaYYHxkiC6pVR8l1zH/SWoNV73IcskL12Uti
-         oxvpfPzNi5k6iEsEqzabIKPptXixqwKFSKKgahcVmg74Sa31iruy1rq0qewkZHL6ROXt
-         R7c6KC2aEaMwRNem7kO5mSF+niFmZYPvDH7fZzQ/e2rDhqEVQataRvOmAiJ7oGPWMc8N
-         WCg33Fned6NApx7O8STCy78/78mL7W6KtOY9WAOHA8brV0XnxGIYKMhyxM5773UXq+HO
-         CQfMziaLEBNRfmoSrJUsBa2iyFcmJOJpxMkg9Epf9KW4Ie3TY/i1r3g0vBwFFg8fTAlW
-         daeQ==
-X-Gm-Message-State: ANhLgQ2hfEIiunV2ymqsagmxn+m3NfFlyDDLZGplr0jQZY/+SxjdrUR7
-        GbVUzK7nJ0HKka23zbYO37AUCw==
-X-Google-Smtp-Source: ADFU+vvlGfEGMnbI0JopCMtHtW1bL0mgS+eqdDxppBiwUxn2gHI7t8tKpw60msVbIuQpZZ91pK0jiA==
-X-Received: by 2002:a7b:cf03:: with SMTP id l3mr10440117wmg.139.1584711038190;
-        Fri, 20 Mar 2020 06:30:38 -0700 (PDT)
-Received: from dell ([2.27.35.213])
-        by smtp.gmail.com with ESMTPSA id i4sm8758565wrm.32.2020.03.20.06.30.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2020 06:30:37 -0700 (PDT)
-Date:   Fri, 20 Mar 2020 13:31:23 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Guru Das Srinagesh <gurus@codeaurora.org>
-Cc:     linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200320133123.GD5477@dell>
-References: <cover.1584667964.git.gurus@codeaurora.org>
- <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
+        Fri, 20 Mar 2020 09:35:37 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200320133535euoutp0212526094880b5a9802428ef315bb8220~_BpA2PjGS1704617046euoutp02F
+        for <linux-fbdev@vger.kernel.org>; Fri, 20 Mar 2020 13:35:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200320133535euoutp0212526094880b5a9802428ef315bb8220~_BpA2PjGS1704617046euoutp02F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1584711335;
+        bh=P/pAyaCFc+jZJwFlQQQA+VgQq0sbwFSfWyQNsVZTqbo=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=cm1XncswLtzqncB6GLzpfSpQfZbEM9ZiY1TgIYK750iPJ5PMjX9/rzp6LtxRCp4sT
+         o8MgvGieB1kHfkUaYd8tJVcxk9sVw41Ri/sMpK8Ay9/KQ6W6gSLIy0Gu2bd274+gdE
+         FGHSZwcZV85v4ceYbLOaeKpyHc6vS8P3J/Dd/AaI=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200320133535eucas1p1a1427e91920496e58b83028dc8deda28~_BpAjzZn22390123901eucas1p1c;
+        Fri, 20 Mar 2020 13:35:35 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id BF.32.61286.6A6C47E5; Fri, 20
+        Mar 2020 13:35:34 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200320133534eucas1p20402f96ce9c1d9ee120ef700d7c4b40f~_BpAImpSA0621306213eucas1p2F;
+        Fri, 20 Mar 2020 13:35:34 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200320133534eusmtrp112e16d0ce3643a896729ca71de78378f~_BpAIA0XC1841118411eusmtrp1t;
+        Fri, 20 Mar 2020 13:35:34 +0000 (GMT)
+X-AuditID: cbfec7f2-ef1ff7000001ef66-ca-5e74c6a60576
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id E0.78.08375.6A6C47E5; Fri, 20
+        Mar 2020 13:35:34 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200320133534eusmtip284e819d4b7568e806631ff91537df226~_Bo-1SI1F1039110391eusmtip2K;
+        Fri, 20 Mar 2020 13:35:34 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH] Fix off by one in nvidia driver strncpy size arg
+To:     Dominik 'disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
+Cc:     Antonino Daplas <adaplas@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Message-ID: <a0fdfd97-d3e2-3299-0d1c-df13158e799a@samsung.com>
+Date:   Fri, 20 Mar 2020 14:35:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
+In-Reply-To: <20200309124947.4502-1-dominik.b.czarnota@gmail.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJKsWRmVeSWpSXmKPExsWy7djP87rLjpXEGVx6a2Pxs/sLm8WyTytZ
+        LK58fc9mcaLvA6vF5V1z2BxYPXbOusvucb/7OJPH501yAcxRXDYpqTmZZalF+nYJXBmHZ55j
+        LZggXNH36h9rA2MrfxcjJ4eEgInEt/krmLoYuTiEBFYwSvzr62eGcL4wSvxYf5MNwvnMKPHn
+        xU5WmJadDw4yQiSWM0rMeXyNFcJ5yyhx8vdqRpAqNgEriYntq8BsYQFXid6fG9lBbBEBJ4mv
+        R6+D7WAWaGWUuHNuCRNIglfATuL9j0ksIDaLgKrE6t2nwZpFBSIkPj04zApRIyhxcuYTsBpO
+        AUeJ+XcOMIPYzALiEreezGeCsOUltr+dA7ZAQmA6u8SBvxMYIe52kZi2dAcThC0s8er4FnYI
+        W0bi9OQeFoiGdYwSfzteQHVvZ5RYPvkfG0SVNdCpv4BsDqAVmhLrd+lDhB0ldvWDAoMDyOaT
+        uPFWEOIIPolJ26YzQ4R5JTrahCCq1SQ2LNvABrO2a+dK5gmMSrOQvDYLyTuzkLwzC2HvAkaW
+        VYziqaXFuempxYZ5qeV6xYm5xaV56XrJ+bmbGIEJ5vS/4592MH69lHSIUYCDUYmH12JlSZwQ
+        a2JZcWXuIUYJDmYlEV7d9OI4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqem
+        FqQWwWSZODilGhgz/GVmV/zfYHNcZY/CvrPxr1wZd5eu/KnO5c7hlPJvIr8So9LFfdlrZm+/
+        O31x1OywSA6l1X3/dizty3pwQDT4+f6fHxgDOtRfnhK2SbmfWmp8hE8mavG02LXywvc3/eXR
+        ZZvy0/3iFdMTgsuvuzqsvXbBaqJhg9O94qsVOqX7kr3fPNmobaytxFKckWioxVxUnAgADvgA
+        aSwDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFIsWRmVeSWpSXmKPExsVy+t/xe7rLjpXEGcxskLP42f2FzWLZp5Us
+        Fle+vmezONH3gdXi8q45bA6sHjtn3WX3uN99nMnj8ya5AOYoPZui/NKSVIWM/OISW6VoQwsj
+        PUNLCz0jE0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYzDM8+xFkwQruh79Y+1gbGVv4uRk0NC
+        wERi54ODjF2MXBxCAksZJTafvsfexcgBlJCROL6+DKJGWOLPtS42iJrXjBJzV65gB0mwCVhJ
+        TGxfxQhiCwu4SvT+3AgWFxFwkvh69DozSAOzQCujxMazX1khuqcwSjT+ucsMUsUrYCfx/sck
+        FhCbRUBVYvXu02CTRAUiJA7vmMUIUSMocXLmE7AaTgFHifl3DoD1MguoS/yZdwnKFpe49WQ+
+        E4QtL7H97RzmCYxCs5C0z0LSMgtJyywkLQsYWVYxiqSWFuem5xYb6hUn5haX5qXrJefnbmIE
+        xtO2Yz8372C8tDH4EKMAB6MSD6/FypI4IdbEsuLK3EOMEhzMSiK8uunFcUK8KYmVValF+fFF
+        pTmpxYcYTYGem8gsJZqcD4z1vJJ4Q1NDcwtLQ3Njc2MzCyVx3g6BgzFCAumJJanZqakFqUUw
+        fUwcnFINjB7Ptfs4NuufacksWitslZeqVbamwSWD6W5nbajbl3vJPxbNb0lZn+nVXpJy5ZVG
+        xCmOmELegNB/Bl5bVO3c1z7SmfNNbEpRuPDRwAK+SHONbxIGaputXZ7F7o+vOjLpYZrBoSYX
+        h5l289waVGftkHHfFt+vkBt9J8FKcH2p+QaxX43vfv5SYinOSDTUYi4qTgQAGmySZL0CAAA=
+X-CMS-MailID: 20200320133534eucas1p20402f96ce9c1d9ee120ef700d7c4b40f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200309125343eucas1p17700a344a70dedd4c8a04c6f9ba4c7ac
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200309125343eucas1p17700a344a70dedd4c8a04c6f9ba4c7ac
+References: <CGME20200309125343eucas1p17700a344a70dedd4c8a04c6f9ba4c7ac@eucas1p1.samsung.com>
+        <20200309124947.4502-1-dominik.b.czarnota@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 19 Mar 2020, Guru Das Srinagesh wrote:
 
-> Since the PWM framework is switching struct pwm_state.period's datatype
-> to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> dividend instead of a straight division operation.
+On 3/9/20 1:49 PM, Dominik 'disconnect3d' Czarnota wrote:
+> From: disconnect3d <dominik.b.czarnota@gmail.com>
 > 
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-pwm@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
+> This patch fixes an off-by-one error in strncpy size argument in
+> drivers/video/fbdev/nvidia/nvidia.c. The issue is that in:
 > 
-> Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+>         strncmp(this_opt, "noaccel", 6)
+> 
+> the passed string literal: "noaccel" has 7 bytes (without the NULL byte)
+> and the passed size argument is 6. As a result, the logic will also
+> match/accept string "noacce" or "noacceX".
+> 
+> This bug doesn't seem to have any security impact since its present in
+> the driver's setup and just accepts slighty changed string to enable the
+> `noaccel` flag.
+> 
+> Signed-off-by: disconnect3d <dominik.b.czarnota@gmail.com>
+
+Patch looks fine but please fix 'From:' and 'S-o-b:' lines,
+
+per Documentation/process/submitting-patches.rst:
+
+...
+then you just add a line saying::
+
+        Signed-off-by: Random J Developer <random@developer.example.org>
+
+using your real name (sorry, no pseudonyms or anonymous contributions.)
+...
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
 > ---
->  drivers/video/backlight/pwm_bl.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-
-Can this patch be taken on its own?
-
-> diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> index efb4efc..3e5dbcf 100644
-> --- a/drivers/video/backlight/pwm_bl.c
-> +++ b/drivers/video/backlight/pwm_bl.c
-> @@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
->  		pb->scale = data->max_brightness;
->  	}
->  
-> -	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-> +	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
-> +				pb->scale));
->  
->  	props.type = BACKLIGHT_RAW;
->  	props.max_brightness = data->max_brightness;
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> 
+> Notes:
+>     The bug could also be fixed by changing the size argument to
+>     `sizeof("string literal")-1` but I am not proposing this change as that
+>     would have to be changed in other places.
+>     
+>     There are also more cases like this in kernel sources which I
+>     reported/will report soon.
+>     
+>     This bug has been found by running a massive grep-like search using
+>     Google's BigQuery on GitHub repositories data. I am also going to work
+>     on a CodeQL/Semmle query to be able to find more sophisticated cases
+>     like this that can't be found via grepping.
+> 
+>  drivers/video/fbdev/nvidia/nvidia.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
+> index c583c018304d..b77efeb33477 100644
+> --- a/drivers/video/fbdev/nvidia/nvidia.c
+> +++ b/drivers/video/fbdev/nvidia/nvidia.c
+> @@ -1470,7 +1470,7 @@ static int nvidiafb_setup(char *options)
+>  			flatpanel = 1;
+>  		} else if (!strncmp(this_opt, "hwcur", 5)) {
+>  			hwcur = 1;
+> -		} else if (!strncmp(this_opt, "noaccel", 6)) {
+> +		} else if (!strncmp(this_opt, "noaccel", 7)) {
+>  			noaccel = 1;
+>  		} else if (!strncmp(this_opt, "noscale", 7)) {
+>  			noscale = 1;
+> 
