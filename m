@@ -2,182 +2,345 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3894118CDD1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 13:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF4A18CDD4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 13:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726925AbgCTMWF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 20 Mar 2020 08:22:05 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:37884 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726894AbgCTMWF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:22:05 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200320122203euoutp01b265c0d42444827cd287fc6f62f88774~_Ao0FlvDk2977729777euoutp01K
-        for <linux-fbdev@vger.kernel.org>; Fri, 20 Mar 2020 12:22:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200320122203euoutp01b265c0d42444827cd287fc6f62f88774~_Ao0FlvDk2977729777euoutp01K
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1584706923;
-        bh=7DqLPwT9jbPp3D97g2+PtisAfL6UoBNG8W7Dxa+4fzE=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=h1+6GomsQX8LYM/ct8EeOjZlXHjv1/biu7yjoMVwl7w//5Y0TOw/WzfX8p4AoZlKW
-         PKsRU9kOxwi6pDOelVvUYxhiL41aDqkaMTXYtcVuKcJzYUfgoBG8gsgVk0W0pHznj6
-         Emz/1aXR3N3JYkouVigujO2mP21QTJn962eEM8aA=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200320122203eucas1p2796c4346372fcca05d81513f0755c00a~_Aoz6LGEB1895918959eucas1p2E;
-        Fri, 20 Mar 2020 12:22:03 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id FB.E7.60679.B65B47E5; Fri, 20
-        Mar 2020 12:22:03 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200320122202eucas1p1747dddcf74680d35fadb4a48b7271b86~_AozhKBc21554515545eucas1p1r;
-        Fri, 20 Mar 2020 12:22:02 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200320122202eusmtrp1b7f2d5df9f18069507bdf47c13200529~_AozgdfDj0150901509eusmtrp1G;
-        Fri, 20 Mar 2020 12:22:02 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-a6-5e74b56b7a44
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 21.DD.08375.A65B47E5; Fri, 20
-        Mar 2020 12:22:02 +0000 (GMT)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200320122202eusmtip1e694c85f6bd876b4852242dc1648c826~_AozKCLoy0224302243eusmtip1R;
-        Fri, 20 Mar 2020 12:22:02 +0000 (GMT)
-Subject: Re: [PATCH v2] fbdev: s1d13xxxfb: add missed unregister_framebuffer
- in remove
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <eda0b4c0-93ff-dfb3-4f63-907a8bef01ec@samsung.com>
-Date:   Fri, 20 Mar 2020 13:22:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1727015AbgCTMWP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 20 Mar 2020 08:22:15 -0400
+Received: from mga14.intel.com ([192.55.52.115]:7328 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726893AbgCTMWO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 20 Mar 2020 08:22:14 -0400
+IronPort-SDR: IDaemkFZglXr69D9flPw0hRol3rqV4yZz+d2JOEO7IjzIVHzuuuqGUTL0yO5+beYCqtmU16/i8
+ YFGZLjyYtqIA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 05:22:14 -0700
+IronPort-SDR: wFaM3ezRN1qjK7W7z7svUL4CrhuZSt9j6zI3/bna3oM39NcrOmiBobyrRMRSG2eWZK+ZtYBhYV
+ V7NlmLTUdv0w==
+X-IronPort-AV: E=Sophos;i="5.72,284,1580803200"; 
+   d="scan'208";a="418698114"
+Received: from rkamins1-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.41.98])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 05:22:11 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     "Shankar\, Uma" <uma.shankar@intel.com>,
+        "Mun\, Gwan-gyeong" <gwan-gyeong.mun@intel.com>,
+        "intel-gfx\@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+Cc:     "linux-fbdev\@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel\@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: RE: [PATCH v7 04/18] drm/i915/dp: Add writing of DP SDPs
+In-Reply-To: <E7C9878FBA1C6D42A1CA3F62AEB6945F824324D8@BGSMSX104.gar.corp.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com> <20200211074657.231405-5-gwan-gyeong.mun@intel.com> <E7C9878FBA1C6D42A1CA3F62AEB6945F824324D8@BGSMSX104.gar.corp.intel.com>
+Date:   Fri, 20 Mar 2020 14:22:11 +0200
+Message-ID: <87eetncj2k.fsf@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200310143033.5098-1-hslester96@gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djPc7rZW0viDO5NF7e48vU9m8XsQy+Z
-        LeadlLA40feB1eLyrjlsDqweO2fdZfe4332cyePzJrkA5igum5TUnMyy1CJ9uwSujNkvexgL
-        eoQqTtw/wdbAeJOvi5GTQ0LARKKv8TVzFyMXh5DACkaJVSfnsYMkhAS+MErc/MUIkfjMKHG5
-        eTUrTMffm91QieWMEu9+XmCDcN4ySpy4cZMZpEpYIEJi/pw+MFtEQF3i866dYGOZBaYySry+
-        lQtiswlYSUxsX8UIYvMK2Encn3gVaBAHB4uAqsSmw7IgYVGgMZ8eHGaFKBGUODnzCQuIzSlg
-        KTFn7j4miJHiEreezIey5SW2v50D9o6EwGR2ifU31zBBXO0i0bT8LguELSzx6vgWdghbRuL0
-        5B4WiIZ1jBJ/O15AdW9nlFg++R8bRJW1xJ1zv8CuYxbQlFi/Sx/ElBBwlNjx2hLC5JO48VYQ
-        4gY+iUnbpjNDhHklOtqEIGaoSWxYtoENZmvXzpXMExiVZiH5bBaSb2Yh+WYWwtoFjCyrGMVT
-        S4tz01OLjfJSy/WKE3OLS/PS9ZLzczcxAtPK6X/Hv+xg3PUn6RCjAAejEg+vxcqSOCHWxLLi
-        ytxDjBIczEoivLrpxXFCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeY0XvYwVEkhPLEnNTk0tSC2C
-        yTJxcEo1MMbu16/O6G3KMNK7IGH6dG3I0nPq8UyHl6me98o63KF+XOhq9Vx7q1+5QWK2rj+S
-        xSY4n7qh5bPGrzBz96XDfZrOR32mrNp2q3yqNSc/39aHT9flPZkXyKydtvGtpdjinKx8FTm1
-        uZkL/b8LapyOVLnhtkVeoDHoiluZM/fPNXV37i1YxFHIp8RSnJFoqMVcVJwIABhaXwYnAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOIsWRmVeSWpSXmKPExsVy+t/xu7pZW0viDKY8Nbe48vU9m8XsQy+Z
-        LeadlLA40feB1eLyrjlsDqweO2fdZfe4332cyePzJrkA5ig9m6L80pJUhYz84hJbpWhDCyM9
-        Q0sLPSMTSz1DY/NYKyNTJX07m5TUnMyy1CJ9uwS9jNkvexgLeoQqTtw/wdbAeJOvi5GTQ0LA
-        ROLvzW5GEFtIYCmjxI1dml2MHEBxGYnj68sgSoQl/lzrYuti5AIqec0ocW/FAhaQhLBAhMT8
-        OX3MILaIgLrE51072UGKmAWmMkpM6JzICNHRwyjx5PgrJpAqNgEriYntq8C28QrYSdyfeJUN
-        ZBuLgKrEpsOyIGFRoKGHd8yCKhGUODnzCdgyTgFLiTlz94GNYQZa9mfeJWYIW1zi1pP5UHF5
-        ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDIsopRJLW0ODc9t9hQrzgxt7g0L10vOT93EyMwkrYd
-        +7l5B+OljcGHGAU4GJV4eC1WlsQJsSaWFVfmHmKU4GBWEuHVTS+OE+JNSaysSi3Kjy8qzUkt
-        PsRoCvTbRGYp0eR8YJTnlcQbmhqaW1gamhubG5tZKInzdggcjBESSE8sSc1OTS1ILYLpY+Lg
-        lGpg5HNkk/5h5/qk1XjvwR+fDkeH7Li58tq2VSqHnm3PvWx8/ZpG05u1B562b5Q7I5Dx+UL8
-        2kMvoi+2ur7iL8zc41rkanXm6IJbQi+Y/gcHRQZL6Z9Z1rm3cWb268zfZrcrWjLuqa1Nj3O+
-        tu8Ql+N2nkKmEr2UmHTW/7+l+mojzjz+2JHkt91aT4mlOCPRUIu5qDgRAI+TI5W6AgAA
-X-CMS-MailID: 20200320122202eucas1p1747dddcf74680d35fadb4a48b7271b86
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200310143051eucas1p2ad43ac5aee1f9132db0c377212ec8419
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200310143051eucas1p2ad43ac5aee1f9132db0c377212ec8419
-References: <CGME20200310143051eucas1p2ad43ac5aee1f9132db0c377212ec8419@eucas1p2.samsung.com>
-        <20200310143033.5098-1-hslester96@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Mon, 16 Mar 2020, "Shankar, Uma" <uma.shankar@intel.com> wrote:
+>> -----Original Message-----
+>> From: dri-devel <dri-devel-bounces@lists.freedesktop.org> On Behalf Of Gwan-
+>> gyeong Mun
+>> Sent: Tuesday, February 11, 2020 1:17 PM
+>> To: intel-gfx@lists.freedesktop.org
+>> Cc: linux-fbdev@vger.kernel.org; dri-devel@lists.freedesktop.org
+>> Subject: [PATCH v7 04/18] drm/i915/dp: Add writing of DP SDPs
+>> 
+>> It adds routines that write DP VSC SDP and DP HDR Metadata Infoframe SDP.
+>> In order to pack DP VSC SDP, it adds intel_dp_vsc_sdp_pack() function.
+>> It follows DP 1.4a spec. [Table 2-116: VSC SDP Header Bytes] and [Table 2-117: VSC
+>> SDP Payload for DB16 through DB18]
+>> 
+>> In order to pack DP HDR Metadata Infoframe SDP, it adds
+>> intel_dp_hdr_metadata_infoframe_sdp_pack() function.
+>> And it follows DP 1.4a spec.
+>> ([Table 2-125: INFOFRAME SDP v1.2 Header Bytes] and [Table 2-126: INFOFRAME
+>> SDP v1.2 Payload Data Bytes - DB0 through DB31]) and CTA-861-G spec. [Table-42
+>> Dynamic Range and Mastering InfoFrame].
+>> 
+>> A mechanism and a naming rule of intel_dp_set_infoframes() function references
+>> intel_encoder->set_infoframes() of intel_hdmi.c .
+>> VSC SDP is used for PSR and Pixel Encoding and Colorimetry Formats cases.
+>> Because PSR routine has its own routine of writing a VSC SDP, when the PSR is
+>> enabled, intel_dp_set_infoframes() does not write a VSC SDP.
+>> 
+>> v3:
+>>   - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+>>     used for HDMI), when intel_dp_set_infoframes() function will be called.
+>>   - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp.
+>> v4: Use struct drm_device logging macros
+>> v5:
+>>   - use intel_de_*() functions for register access
+>>   - Addressed review comments from Uma
+>>     Polish commit message and comments
+>>     Add 6bpc to packing of VSC SDP
+>
+> Looks good to me.
+> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-On 3/10/20 3:30 PM, Chuhong Yuan wrote:
-> The driver calls register_framebuffer() in probe but does not call
-> unregister_framebuffer() in remove.
-> Rename current remove to __s1d13xxxfb_remove() for error handler.
-> Then add a new remove to call unregister_framebuffer().
-> 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> ---
-> Changes in v2:
->   - Rename the existing remove and add a new one to ensure the correctness
->     of error handler in probe.
-> 
->  drivers/video/fbdev/s1d13xxxfb.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/s1d13xxxfb.c b/drivers/video/fbdev/s1d13xxxfb.c
-> index 8048499e398d..bafea3d09bba 100644
-> --- a/drivers/video/fbdev/s1d13xxxfb.c
-> +++ b/drivers/video/fbdev/s1d13xxxfb.c
-> @@ -721,9 +721,8 @@ static void s1d13xxxfb_fetch_hw_state(struct fb_info *info)
->  		xres, yres, xres_virtual, yres_virtual, is_color, is_dual, is_tft);
->  }
->  
-> -
->  static int
-> -s1d13xxxfb_remove(struct platform_device *pdev)
-> +__s1d13xxxfb_remove(struct platform_device *pdev)
+Pushed up to and including this patch, thanks for the patches and
+review.
 
-The new function can be made void as it always returns 0.
+BR,
+Jani.
 
-Also please use the standard CodingStyle while at it:
+>
+>> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+>> ---
+>>  drivers/gpu/drm/i915/display/intel_dp.c | 199 ++++++++++++++++++++++++
+>>  drivers/gpu/drm/i915/display/intel_dp.h |   3 +
+>>  2 files changed, 202 insertions(+)
+>> 
+>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c
+>> b/drivers/gpu/drm/i915/display/intel_dp.c
+>> index fb008168ca83..5bbc55113325 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+>> @@ -4741,6 +4741,205 @@ intel_dp_needs_vsc_sdp(const struct intel_crtc_state
+>> *crtc_state,
+>>  	return false;
+>>  }
+>> 
+>> +static ssize_t intel_dp_vsc_sdp_pack(const struct drm_dp_vsc_sdp *vsc,
+>> +				     struct dp_sdp *sdp, size_t size) {
+>> +	size_t length = sizeof(struct dp_sdp);
+>> +
+>> +	if (size < length)
+>> +		return -ENOSPC;
+>> +
+>> +	memset(sdp, 0, size);
+>> +
+>> +	/*
+>> +	 * Prepare VSC Header for SU as per DP 1.4a spec, Table 2-119
+>> +	 * VSC SDP Header Bytes
+>> +	 */
+>> +	sdp->sdp_header.HB0 = 0; /* Secondary-Data Packet ID = 0 */
+>> +	sdp->sdp_header.HB1 = vsc->sdp_type; /* Secondary-data Packet Type */
+>> +	sdp->sdp_header.HB2 = vsc->revision; /* Revision Number */
+>> +	sdp->sdp_header.HB3 = vsc->length; /* Number of Valid Data Bytes */
+>> +
+>> +	/* VSC SDP Payload for DB16 through DB18 */
+>> +	/* Pixel Encoding and Colorimetry Formats  */
+>> +	sdp->db[16] = (vsc->pixelformat & 0xf) << 4; /* DB16[7:4] */
+>> +	sdp->db[16] |= vsc->colorimetry & 0xf; /* DB16[3:0] */
+>> +
+>> +	switch (vsc->bpc) {
+>> +	case 6:
+>> +		/* 6bpc: 0x0 */
+>> +		break;
+>> +	case 8:
+>> +		sdp->db[17] = 0x1; /* DB17[3:0] */
+>> +		break;
+>> +	case 10:
+>> +		sdp->db[17] = 0x2;
+>> +		break;
+>> +	case 12:
+>> +		sdp->db[17] = 0x3;
+>> +		break;
+>> +	case 16:
+>> +		sdp->db[17] = 0x4;
+>> +		break;
+>> +	default:
+>> +		MISSING_CASE(vsc->bpc);
+>> +		break;
+>> +	}
+>> +	/* Dynamic Range and Component Bit Depth */
+>> +	if (vsc->dynamic_range == DP_DYNAMIC_RANGE_CTA)
+>> +		sdp->db[17] |= 0x80;  /* DB17[7] */
+>> +
+>> +	/* Content Type */
+>> +	sdp->db[18] = vsc->content_type & 0x7;
+>> +
+>> +	return length;
+>> +}
+>> +
+>> +static ssize_t
+>> +intel_dp_hdr_metadata_infoframe_sdp_pack(const struct hdmi_drm_infoframe
+>> *drm_infoframe,
+>> +					 struct dp_sdp *sdp,
+>> +					 size_t size)
+>> +{
+>> +	size_t length = sizeof(struct dp_sdp);
+>> +	const int infoframe_size = HDMI_INFOFRAME_HEADER_SIZE +
+>> HDMI_DRM_INFOFRAME_SIZE;
+>> +	unsigned char buf[HDMI_INFOFRAME_HEADER_SIZE +
+>> HDMI_DRM_INFOFRAME_SIZE];
+>> +	ssize_t len;
+>> +
+>> +	if (size < length)
+>> +		return -ENOSPC;
+>> +
+>> +	memset(sdp, 0, size);
+>> +
+>> +	len = hdmi_drm_infoframe_pack_only(drm_infoframe, buf, sizeof(buf));
+>> +	if (len < 0) {
+>> +		DRM_DEBUG_KMS("buffer size is smaller than hdr metadata
+>> infoframe\n");
+>> +		return -ENOSPC;
+>> +	}
+>> +
+>> +	if (len != infoframe_size) {
+>> +		DRM_DEBUG_KMS("wrong static hdr metadata size\n");
+>> +		return -ENOSPC;
+>> +	}
+>> +
+>> +	/*
+>> +	 * Set up the infoframe sdp packet for HDR static metadata.
+>> +	 * Prepare VSC Header for SU as per DP 1.4a spec,
+>> +	 * Table 2-100 and Table 2-101
+>> +	 */
+>> +
+>> +	/* Secondary-Data Packet ID, 00h for non-Audio INFOFRAME */
+>> +	sdp->sdp_header.HB0 = 0;
+>> +	/*
+>> +	 * Packet Type 80h + Non-audio INFOFRAME Type value
+>> +	 * HDMI_INFOFRAME_TYPE_DRM: 0x87
+>> +	 * - 80h + Non-audio INFOFRAME Type value
+>> +	 * - InfoFrame Type: 0x07
+>> +	 *    [CTA-861-G Table-42 Dynamic Range and Mastering InfoFrame]
+>> +	 */
+>> +	sdp->sdp_header.HB1 = drm_infoframe->type;
+>> +	/*
+>> +	 * Least Significant Eight Bits of (Data Byte Count – 1)
+>> +	 * infoframe_size - 1
+>> +	 */
+>> +	sdp->sdp_header.HB2 = 0x1D;
+>> +	/* INFOFRAME SDP Version Number */
+>> +	sdp->sdp_header.HB3 = (0x13 << 2);
+>> +	/* CTA Header Byte 2 (INFOFRAME Version Number) */
+>> +	sdp->db[0] = drm_infoframe->version;
+>> +	/* CTA Header Byte 3 (Length of INFOFRAME):
+>> HDMI_DRM_INFOFRAME_SIZE */
+>> +	sdp->db[1] = drm_infoframe->length;
+>> +	/*
+>> +	 * Copy HDMI_DRM_INFOFRAME_SIZE size from a buffer after
+>> +	 * HDMI_INFOFRAME_HEADER_SIZE
+>> +	 */
+>> +	BUILD_BUG_ON(sizeof(sdp->db) < HDMI_DRM_INFOFRAME_SIZE + 2);
+>> +	memcpy(&sdp->db[2], &buf[HDMI_INFOFRAME_HEADER_SIZE],
+>> +	       HDMI_DRM_INFOFRAME_SIZE);
+>> +
+>> +	/*
+>> +	 * Size of DP infoframe sdp packet for HDR static metadata consists of
+>> +	 * - DP SDP Header(struct dp_sdp_header): 4 bytes
+>> +	 * - Two Data Blocks: 2 bytes
+>> +	 *    CTA Header Byte2 (INFOFRAME Version Number)
+>> +	 *    CTA Header Byte3 (Length of INFOFRAME)
+>> +	 * - HDMI_DRM_INFOFRAME_SIZE: 26 bytes
+>> +	 *
+>> +	 * Prior to GEN11's GMP register size is identical to DP HDR static metadata
+>> +	 * infoframe size. But GEN11+ has larger than that size, write_infoframe
+>> +	 * will pad rest of the size.
+>> +	 */
+>> +	return sizeof(struct dp_sdp_header) + 2 + HDMI_DRM_INFOFRAME_SIZE; }
+>> +
+>> +static void intel_write_dp_sdp(struct intel_encoder *encoder,
+>> +			       const struct intel_crtc_state *crtc_state,
+>> +			       unsigned int type)
+>> +{
+>> +	struct intel_digital_port *intel_dig_port = enc_to_dig_port(encoder);
+>> +	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+>> +	struct dp_sdp sdp = {};
+>> +	ssize_t len;
+>> +
+>> +	if ((crtc_state->infoframes.enable &
+>> +	     intel_hdmi_infoframe_enable(type)) == 0)
+>> +		return;
+>> +
+>> +	switch (type) {
+>> +	case DP_SDP_VSC:
+>> +		len = intel_dp_vsc_sdp_pack(&crtc_state->infoframes.vsc, &sdp,
+>> +					    sizeof(sdp));
+>> +		break;
+>> +	case HDMI_PACKET_TYPE_GAMUT_METADATA:
+>> +		len = intel_dp_hdr_metadata_infoframe_sdp_pack(&crtc_state-
+>> >infoframes.drm.drm,
+>> +							       &sdp, sizeof(sdp));
+>> +		break;
+>> +	default:
+>> +		MISSING_CASE(type);
+>> +		break;
+>> +	}
+>> +
+>> +	if (drm_WARN_ON(&dev_priv->drm, len < 0))
+>> +		return;
+>> +
+>> +	intel_dig_port->write_infoframe(encoder, crtc_state, type, &sdp, len);
+>> +}
+>> +
+>> +void intel_dp_set_infoframes(struct intel_encoder *encoder,
+>> +			     bool enable,
+>> +			     const struct intel_crtc_state *crtc_state,
+>> +			     const struct drm_connector_state *conn_state) {
+>> +	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+>> +	struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
+>> +	i915_reg_t reg = HSW_TVIDEO_DIP_CTL(crtc_state->cpu_transcoder);
+>> +	u32 dip_enable = VIDEO_DIP_ENABLE_AVI_HSW |
+>> VIDEO_DIP_ENABLE_GCP_HSW |
+>> +			 VIDEO_DIP_ENABLE_VS_HSW |
+>> VIDEO_DIP_ENABLE_GMP_HSW |
+>> +			 VIDEO_DIP_ENABLE_SPD_HSW |
+>> VIDEO_DIP_ENABLE_DRM_GLK;
+>> +	u32 val = intel_de_read(dev_priv, reg);
+>> +
+>> +	/* TODO: Add DSC case (DIP_ENABLE_PPS) */
+>> +	/* When PSR is enabled, this routine doesn't disable VSC DIP */
+>> +	if (intel_psr_enabled(intel_dp))
+>> +		val &= ~dip_enable;
+>> +	else
+>> +		val &= ~(dip_enable | VIDEO_DIP_ENABLE_VSC_HSW);
+>> +
+>> +	if (!enable) {
+>> +		intel_de_write(dev_priv, reg, val);
+>> +		intel_de_posting_read(dev_priv, reg);
+>> +		return;
+>> +	}
+>> +
+>> +	intel_de_write(dev_priv, reg, val);
+>> +	intel_de_posting_read(dev_priv, reg);
+>> +
+>> +	/* When PSR is enabled, VSC SDP is handled by PSR routine */
+>> +	if (!intel_psr_enabled(intel_dp))
+>> +		intel_write_dp_sdp(encoder, crtc_state, DP_SDP_VSC);
+>> +
+>> +	intel_write_dp_sdp(encoder, crtc_state,
+>> +HDMI_PACKET_TYPE_GAMUT_METADATA); }
+>> +
+>>  static void
+>>  intel_dp_setup_vsc_sdp(struct intel_dp *intel_dp,
+>>  		       const struct intel_crtc_state *crtc_state, diff --git
+>> a/drivers/gpu/drm/i915/display/intel_dp.h
+>> b/drivers/gpu/drm/i915/display/intel_dp.h
+>> index 3da166054788..0dc09a463ee1 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp.h
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp.h
+>> @@ -116,6 +116,9 @@ void intel_dp_vsc_enable(struct intel_dp *intel_dp,  void
+>> intel_dp_hdr_metadata_enable(struct intel_dp *intel_dp,
+>>  				  const struct intel_crtc_state *crtc_state,
+>>  				  const struct drm_connector_state *conn_state);
+>> +void intel_dp_set_infoframes(struct intel_encoder *encoder, bool enable,
+>> +			     const struct intel_crtc_state *crtc_state,
+>> +			     const struct drm_connector_state *conn_state);
+>>  bool intel_digital_port_connected(struct intel_encoder *encoder);
+>> 
+>>  static inline unsigned int intel_dp_unused_lane_mask(int lane_count)
+>> --
+>> 2.25.0
+>> 
+>> _______________________________________________
+>> dri-devel mailing list
+>> dri-devel@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
 
-void __s1d13xxxfb_remove(struct platform_device *pdev)
-
->  {
->  	struct fb_info *info = platform_get_drvdata(pdev);
->  	struct s1d13xxxfb_par *par = NULL;
-> @@ -752,6 +751,18 @@ s1d13xxxfb_remove(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +static int
-> +s1d13xxxfb_remove(struct platform_device *pdev)
-
-Please use the standard CodingStyle while at it:
-
-static int s1d13xxxfb_remove(struct platform_device *pdev)
-
-> +{
-> +	struct fb_info *info = platform_get_drvdata(pdev);
-> +
-> +	if (info)
-
-'info' check is superfluous in the ->remove only code-path.
-
-> +		unregister_framebuffer(info);
-> +
-> +	return __s1d13xxxfb_remove(pdev);
-> +}
-> +
-> +
->  static int s1d13xxxfb_probe(struct platform_device *pdev)
->  {
->  	struct s1d13xxxfb_par *default_par;
-> @@ -895,7 +906,7 @@ static int s1d13xxxfb_probe(struct platform_device *pdev)
->  	return 0;
->  
->  bail:
-> -	s1d13xxxfb_remove(pdev);
-> +	__s1d13xxxfb_remove(pdev);
->  	return ret;
->  
->  }
-> 
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+-- 
+Jani Nikula, Intel Open Source Graphics Center
