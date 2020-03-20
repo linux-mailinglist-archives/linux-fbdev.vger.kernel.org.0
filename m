@@ -2,196 +2,168 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E156218CD07
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 12:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F027218CD3C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 12:48:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726831AbgCTLcU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 20 Mar 2020 07:32:20 -0400
-Received: from mga11.intel.com ([192.55.52.93]:48941 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726814AbgCTLcU (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 20 Mar 2020 07:32:20 -0400
-IronPort-SDR: pGYARFUv8qU5elypiqI4xTiLTEELCu13Ju9ZL35gBCN5pu8g0IyfuIm6EChIhLGQLb+DRycNi/
- N+fUsfv/ZpNw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 04:32:19 -0700
-IronPort-SDR: +5QzuMkcKoZDSgul7aiXXzOqkseTtVHhEmIXaq8ypBAqPEhgnB0uEfgFjDqqbdHMqYBb3MFyng
- Cq8kcbs4ZJjw==
-X-IronPort-AV: E=Sophos;i="5.72,284,1580803200"; 
-   d="scan'208";a="418686722"
-Received: from rkamins1-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.41.98])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 04:32:16 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        intel-gfx@lists.freedesktop.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only function for DRM infoframe
-In-Reply-To: <87k13fcm8w.fsf@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com> <20200211074657.231405-6-gwan-gyeong.mun@intel.com> <87k13fcm8w.fsf@intel.com>
-Date:   Fri, 20 Mar 2020 13:32:17 +0200
-Message-ID: <87h7yjcldq.fsf@intel.com>
+        id S1726893AbgCTLs6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 20 Mar 2020 07:48:58 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:49371 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726892AbgCTLs5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 20 Mar 2020 07:48:57 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200320114855euoutp02600139bc7977a620a92e8a7aa09099ae~_AL43Tq6C1439814398euoutp02w
+        for <linux-fbdev@vger.kernel.org>; Fri, 20 Mar 2020 11:48:55 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200320114855euoutp02600139bc7977a620a92e8a7aa09099ae~_AL43Tq6C1439814398euoutp02w
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1584704935;
+        bh=nLcjzIOGCN900e/OEOUNApcMwCdwdSMIJRGT8aZqxpc=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=V9nMsPgz/ev+yVZOVCLbz2TxfvIpX7jPSkwkgk/hngxFbRMa8HxgM0S56tx0xS94V
+         jl2B3hf94y75/wjuYGiKamqccp/qd23HGK59nbNpFmYgm8JXXJy1d0QCpk3Hnh4kLx
+         CalxfwkKiqd81TPD8e0gOoSFcPPWBmxWJz774MqY=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200320114855eucas1p1f4f46d392692f17471526c7d82771f50~_AL4sk0uM0567705677eucas1p18;
+        Fri, 20 Mar 2020 11:48:55 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id C3.13.60679.7ADA47E5; Fri, 20
+        Mar 2020 11:48:55 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200320114855eucas1p2a0ebaee7b17af54e408d558d9205dfdd~_AL4P_lJP0691306913eucas1p22;
+        Fri, 20 Mar 2020 11:48:55 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200320114855eusmtrp1cc1388611252763c88adef345d5085cd~_AL4PYfrV1196311963eusmtrp1Q;
+        Fri, 20 Mar 2020 11:48:55 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-cd-5e74ada7f0a5
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id E5.39.08375.7ADA47E5; Fri, 20
+        Mar 2020 11:48:55 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200320114854eusmtip22f9ca6c7b13e42591a560e2774e1a12c~_AL3929nC0580505805eusmtip2g;
+        Fri, 20 Mar 2020 11:48:54 +0000 (GMT)
+Subject: Re: [PATCH v3] video: fbdev: arcfb: add missed free_irq and fix the
+ order of request_irq
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <80493efb-cc29-73e2-da8e-72902c709f1a@samsung.com>
+Date:   Fri, 20 Mar 2020 12:48:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200310143050.5154-1-hslester96@gmail.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEKsWRmVeSWpSXmKPExsWy7djP87rL15bEGXy5p2px5et7NovZh14y
+        W5zo+8BqcXnXHDYHFo+ds+6ye9zvPs7k8XmTXABzFJdNSmpOZllqkb5dAlfGvav3mAt2CVac
+        XvKBpYHxH28XIyeHhICJxJH2ucxdjFwcQgIrGCWOfT3JDJIQEvjCKHFqTzBE4jOjxIRt/xhh
+        OhYu+ALVsZxR4tv2LYwQzltGiT1NT8DahQWSJd4c+g5miwioS3zetZMdxGYWSJA4vegeC4jN
+        JmAlMbF9FdhUXgE7iRPnrjKB2CwCqhIXZ81mA7FFBSIkPj04zApRIyhxcuYTsF5OAUuJifuf
+        skHMFJe49WQ+E4QtL7H97Ryw6yQE+tkleuctgDrbRWLDoo9MELawxKvjW9ghbBmJ05N7WCAa
+        1jFK/O14AdW9nVFi+eR/bBBV1hJ3zv0CsjmAVmhKrN+lDxF2lOhYtIYFJCwhwCdx460gxBF8
+        EpO2TWeGCPNKdLQJQVSrSWxYtoENZm3XzpXMExiVZiF5bRaSd2YheWcWwt4FjCyrGMVTS4tz
+        01OLjfJSy/WKE3OLS/PS9ZLzczcxAlPK6X/Hv+xg3PUn6RCjAAejEg+vxcqSOCHWxLLiytxD
+        jBIczEoivLrpxXFCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeY0XvYwVEkhPLEnNTk0tSC2CyTJx
+        cEo1ME66tL+vpLFi75GkO9IMUd+1THkOx1hOf1eUuKx6xd3URf2dAnlxws9nzONsFtN12hmW
+        9PXrmT+Xp2z03CRwan1A8LOLMX/iOraWSKa2dDT+eJW1U/ahvo3CDx8HTQbzt4tm9+j9iE/Y
+        2bEw9Y7Y5bVeiQsmi9Vfn3dt5Sxt/bNPJ9588jd7f4cSS3FGoqEWc1FxIgAriBQeJQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsVy+t/xe7rL15bEGfQ0sllc+fqezWL2oZfM
+        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
+        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJdx7+o95oJdghWnl3xgaWD8x9vFyMkhIWAisXDB
+        F+YuRi4OIYGljBIf/14HcjiAEjISx9eXQdQIS/y51sUGUfOaUeL0tMVMIAlhgWSJN4e+M4PY
+        IgLqEp937WQH6WUWSJB4Ni8For6HUeLEk08sIDVsAlYSE9tXMYLYvAJ2EifOXQWbwyKgKnFx
+        1mw2EFtUIELi8I5ZUDWCEidnPgHr5RSwlJi4/ylYDTPQrj/zLjFD2OISt57MZ4Kw5SW2v53D
+        PIFRaBaS9llIWmYhaZmFpGUBI8sqRpHU0uLc9NxiQ73ixNzi0rx0veT83E2MwAjaduzn5h2M
+        lzYGH2IU4GBU4uG1WFkSJ8SaWFZcmXuIUYKDWUmEVze9OE6INyWxsiq1KD++qDQntfgQoynQ
+        cxOZpUST84HRnVcSb2hqaG5haWhubG5sZqEkztshcDBGSCA9sSQ1OzW1ILUIpo+Jg1OqgVHu
+        uEvytm+LmIM5rSbfeH5ffv01A2uGG7c0r9WWfM2bn538+QvjgrXHlp79U7dPZXqqg77/1dcm
+        RZ7zhbM19jOY/1urcWFur/xPzX3hW19d5dp/iiVljlLbr8pVRi6iXqdkz0cs2TT5Y+i/Jcd/
+        T+H3Fqt2TvHaepu7s3bWVRXBhQLHLP9qzt2nxFKckWioxVxUnAgAOMSXA7YCAAA=
+X-CMS-MailID: 20200320114855eucas1p2a0ebaee7b17af54e408d558d9205dfdd
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200310143100eucas1p241418d286851099f545477b153d3fa0c
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200310143100eucas1p241418d286851099f545477b153d3fa0c
+References: <CGME20200310143100eucas1p241418d286851099f545477b153d3fa0c@eucas1p2.samsung.com>
+        <20200310143050.5154-1-hslester96@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 20 Mar 2020, Jani Nikula <jani.nikula@linux.intel.com> wrote:
-> On Tue, 11 Feb 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
->> It adds an unpack only function for DRM infoframe for dynamic range and
->> mastering infoframe readout.
->> It unpacks the information data block contained in the binary buffer into
->> a structured frame of the HDMI Dynamic Range and Mastering (DRM)
->> information frame.
->>
->> In contrast to hdmi_drm_infoframe_unpack() function, it does not verify
->> a checksum.
->>
->> It can be used for unpacking a DP HDR Metadata Infoframe SDP case.
->> DP HDR Metadata Infoframe SDP uses the same Dynamic Range and Mastering
->> (DRM) information (CTA-861-G spec.) such as HDMI DRM infoframe.
->> But DP SDP header and payload structure are different from HDMI DRM
->> Infoframe. Therefore unpacking DRM infoframe for DP requires skipping of
->> a verifying checksum.
->>
->> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
->> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
->
-> Bartlomiej, can I have your ack for merging this via drm-intel along
-> with the rest of the series, please?
 
-Or Hans or Laurent, from v4l/video point of view.
+On 3/10/20 3:30 PM, Chuhong Yuan wrote:
+> The driver forgets to free irq in remove which is requested in
+> probe.
+> Add the missed call to fix it.
+> Also, the position of request_irq() in probe should be put before
+> register_framebuffer().
+> 
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+> Changes in v3:
+>   - Add missed variable par in remove.
+> 
+>  drivers/video/fbdev/arcfb.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
+> index 314ab82e01c0..9a720c14056c 100644
+> --- a/drivers/video/fbdev/arcfb.c
+> +++ b/drivers/video/fbdev/arcfb.c
+> @@ -544,10 +544,6 @@ static int arcfb_probe(struct platform_device *dev)
+>  	par->cslut[1] = 0x06;
+>  	info->flags = FBINFO_FLAG_DEFAULT;
+>  	spin_lock_init(&par->lock);
+> -	retval = register_framebuffer(info);
+> -	if (retval < 0)
+> -		goto err1;
+> -	platform_set_drvdata(dev, info);
+>  	if (irq) {
+>  		par->irq = irq;
+>  		if (request_irq(par->irq, &arcfb_interrupt, IRQF_SHARED,
+> @@ -558,6 +554,10 @@ static int arcfb_probe(struct platform_device *dev)
+>  			goto err1;
+>  		}
+>  	}
+> +	retval = register_framebuffer(info);
+> +	if (retval < 0)
+> +		goto err1;
+> +	platform_set_drvdata(dev, info);
+>  	fb_info(info, "Arc frame buffer device, using %dK of video memory\n",
+>  		videomemorysize >> 10);
+>  
+> @@ -590,9 +590,12 @@ static int arcfb_probe(struct platform_device *dev)
+>  static int arcfb_remove(struct platform_device *dev)
+>  {
+>  	struct fb_info *info = platform_get_drvdata(dev);
+> +	struct arcfb_par *par = info->par;
 
-Thanks,
-Jani.
+Please look at the line below, 'info' is checked for being NULL so
+either 'par = info->par' can dereference NULL pointer or the check is
+superfluous and should be removed.
 
->
-> BR,
-> Jani.
->
->
->> ---
->>  drivers/video/hdmi.c | 58 +++++++++++++++++++++++++++++++-------------
->>  include/linux/hdmi.h |  2 ++
->>  2 files changed, 43 insertions(+), 17 deletions(-)
->>
->> diff --git a/drivers/video/hdmi.c b/drivers/video/hdmi.c
->> index 9c82e2a0a411..9818836d82b7 100644
->> --- a/drivers/video/hdmi.c
->> +++ b/drivers/video/hdmi.c
->> @@ -1775,20 +1775,18 @@ hdmi_vendor_any_infoframe_unpack(union hdmi_vendor_any_infoframe *frame,
->>  }
->>  
->>  /**
->> - * hdmi_drm_infoframe_unpack() - unpack binary buffer to a HDMI DRM infoframe
->> + * hdmi_drm_infoframe_unpack_only() - unpack binary buffer to a HDMI DRM infoframe
->>   * @frame: HDMI DRM infoframe
->>   * @buffer: source buffer
->>   * @size: size of buffer
->>   *
->> - * Unpacks the information contained in binary @buffer into a structured
->> + * Unpacks the information data block contained in binary @buffer into a structured
->>   * @frame of the HDMI Dynamic Range and Mastering (DRM) information frame.
->> - * Also verifies the checksum as required by section 5.3.5 of the HDMI 1.4
->> - * specification.
->>   *
->>   * Returns 0 on success or a negative error code on failure.
->>   */
->> -static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
->> -				     const void *buffer, size_t size)
->> +int hdmi_drm_infoframe_unpack_only(struct hdmi_drm_infoframe *frame,
->> +				   const void *buffer, size_t size)
->>  {
->>  	const u8 *ptr = buffer;
->>  	const u8 *temp;
->> @@ -1797,23 +1795,13 @@ static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
->>  	int ret;
->>  	int i;
->>  
->> -	if (size < HDMI_INFOFRAME_SIZE(DRM))
->> -		return -EINVAL;
->> -
->> -	if (ptr[0] != HDMI_INFOFRAME_TYPE_DRM ||
->> -	    ptr[1] != 1 ||
->> -	    ptr[2] != HDMI_DRM_INFOFRAME_SIZE)
->> -		return -EINVAL;
->> -
->> -	if (hdmi_infoframe_checksum(buffer, HDMI_INFOFRAME_SIZE(DRM)) != 0)
->> +	if (size < HDMI_DRM_INFOFRAME_SIZE)
->>  		return -EINVAL;
->>  
->>  	ret = hdmi_drm_infoframe_init(frame);
->>  	if (ret)
->>  		return ret;
->>  
->> -	ptr += HDMI_INFOFRAME_HEADER_SIZE;
->> -
->>  	frame->eotf = ptr[0] & 0x7;
->>  	frame->metadata_type = ptr[1] & 0x7;
->>  
->> @@ -1837,6 +1825,42 @@ static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
->>  
->>  	return 0;
->>  }
->> +EXPORT_SYMBOL(hdmi_drm_infoframe_unpack_only);
->> +
->> +/**
->> + * hdmi_drm_infoframe_unpack() - unpack binary buffer to a HDMI DRM infoframe
->> + * @frame: HDMI DRM infoframe
->> + * @buffer: source buffer
->> + * @size: size of buffer
->> + *
->> + * Unpacks the information contained in binary @buffer into a structured
->> + * @frame of the HDMI Dynamic Range and Mastering (DRM) information frame.
->> + * Also verifies the checksum as required by section 5.3.5 of the HDMI 1.4
->> + * specification.
->> + *
->> + * Returns 0 on success or a negative error code on failure.
->> + */
->> +static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
->> +				     const void *buffer, size_t size)
->> +{
->> +	const u8 *ptr = buffer;
->> +	int ret;
->> +
->> +	if (size < HDMI_INFOFRAME_SIZE(DRM))
->> +		return -EINVAL;
->> +
->> +	if (ptr[0] != HDMI_INFOFRAME_TYPE_DRM ||
->> +	    ptr[1] != 1 ||
->> +	    ptr[2] != HDMI_DRM_INFOFRAME_SIZE)
->> +		return -EINVAL;
->> +
->> +	if (hdmi_infoframe_checksum(buffer, HDMI_INFOFRAME_SIZE(DRM)) != 0)
->> +		return -EINVAL;
->> +
->> +	ret = hdmi_drm_infoframe_unpack_only(frame, ptr + HDMI_INFOFRAME_HEADER_SIZE,
->> +					     size - HDMI_INFOFRAME_HEADER_SIZE);
->> +	return ret;
->> +}
->>  
->>  /**
->>   * hdmi_infoframe_unpack() - unpack binary buffer to a HDMI infoframe
->> diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
->> index 9918a6c910c5..afb43efc03e0 100644
->> --- a/include/linux/hdmi.h
->> +++ b/include/linux/hdmi.h
->> @@ -219,6 +219,8 @@ ssize_t hdmi_drm_infoframe_pack(struct hdmi_drm_infoframe *frame, void *buffer,
->>  ssize_t hdmi_drm_infoframe_pack_only(const struct hdmi_drm_infoframe *frame,
->>  				     void *buffer, size_t size);
->>  int hdmi_drm_infoframe_check(struct hdmi_drm_infoframe *frame);
->> +int hdmi_drm_infoframe_unpack_only(struct hdmi_drm_infoframe *frame,
->> +				   const void *buffer, size_t size);
->>  
->>  enum hdmi_spd_sdi {
->>  	HDMI_SPD_SDI_UNKNOWN,
+Also there is no need for 'par' variable (it is used only once),
+why not simply use info->par->irq in free_irq() call below?
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+>  	if (info) {
+>  		unregister_framebuffer(info);
+> +		if (irq)
+> +			free_irq(par->irq, info);
+>  		vfree((void __force *)info->screen_base);
+>  		framebuffer_release(info);
+>  	}
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
