@@ -2,81 +2,187 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C4CD18C4C8
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 02:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC9318CC79
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Mar 2020 12:13:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727550AbgCTBld (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 19 Mar 2020 21:41:33 -0400
-Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:61073 "EHLO
-        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727509AbgCTBlc (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 19 Mar 2020 21:41:32 -0400
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 19 Mar 2020 18:41:26 -0700
-Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg04-sd.qualcomm.com with ESMTP; 19 Mar 2020 18:41:26 -0700
-Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id 048F04559; Thu, 19 Mar 2020 18:41:25 -0700 (PDT)
-From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
-Date:   Thu, 19 Mar 2020 18:41:21 -0700
-Message-Id: <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
-References: <cover.1584667964.git.gurus@codeaurora.org>
-In-Reply-To: <cover.1584667964.git.gurus@codeaurora.org>
-References: <cover.1584667964.git.gurus@codeaurora.org>
+        id S1726806AbgCTLNj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 20 Mar 2020 07:13:39 -0400
+Received: from mga02.intel.com ([134.134.136.20]:37291 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726726AbgCTLNj (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 20 Mar 2020 07:13:39 -0400
+IronPort-SDR: 0zpNg29v4ii9DSZFUA9FD3ord8aQim5RFh6p5h1YTdOuSB5FAiPjXve5pPsRp2UXIpdcKOl/sL
+ 8aLshAAQTZZw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 04:13:38 -0700
+IronPort-SDR: sNria2I5u1fs3HKy9Ek03GTqh83ttAEQUk4PEfutDwzTPL1WYfcSMSQZ3ZSPyNDx70dC49tPOO
+ 6JEm58iht4CQ==
+X-IronPort-AV: E=Sophos;i="5.72,284,1580803200"; 
+   d="scan'208";a="418682929"
+Received: from rkamins1-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.41.98])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2020 04:13:35 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        intel-gfx@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only function for DRM infoframe
+In-Reply-To: <20200211074657.231405-6-gwan-gyeong.mun@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com> <20200211074657.231405-6-gwan-gyeong.mun@intel.com>
+Date:   Fri, 20 Mar 2020 13:13:35 +0200
+Message-ID: <87k13fcm8w.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Since the PWM framework is switching struct pwm_state.period's datatype
-to u64, prepare for this transition by using div_u64 to handle a 64-bit
-dividend instead of a straight division operation.
+On Tue, 11 Feb 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
+> It adds an unpack only function for DRM infoframe for dynamic range and
+> mastering infoframe readout.
+> It unpacks the information data block contained in the binary buffer into
+> a structured frame of the HDMI Dynamic Range and Mastering (DRM)
+> information frame.
+>
+> In contrast to hdmi_drm_infoframe_unpack() function, it does not verify
+> a checksum.
+>
+> It can be used for unpacking a DP HDR Metadata Infoframe SDP case.
+> DP HDR Metadata Infoframe SDP uses the same Dynamic Range and Mastering
+> (DRM) information (CTA-861-G spec.) such as HDMI DRM infoframe.
+> But DP SDP header and payload structure are different from HDMI DRM
+> Infoframe. Therefore unpacking DRM infoframe for DP requires skipping of
+> a verifying checksum.
+>
+> Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: linux-pwm@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
+Bartlomiej, can I have your ack for merging this via drm-intel along
+with the rest of the series, please?
 
-Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
----
- drivers/video/backlight/pwm_bl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+BR,
+Jani.
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index efb4efc..3e5dbcf 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
- 		pb->scale = data->max_brightness;
- 	}
- 
--	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-+	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
-+				pb->scale));
- 
- 	props.type = BACKLIGHT_RAW;
- 	props.max_brightness = data->max_brightness;
+
+> ---
+>  drivers/video/hdmi.c | 58 +++++++++++++++++++++++++++++++-------------
+>  include/linux/hdmi.h |  2 ++
+>  2 files changed, 43 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/video/hdmi.c b/drivers/video/hdmi.c
+> index 9c82e2a0a411..9818836d82b7 100644
+> --- a/drivers/video/hdmi.c
+> +++ b/drivers/video/hdmi.c
+> @@ -1775,20 +1775,18 @@ hdmi_vendor_any_infoframe_unpack(union hdmi_vendor_any_infoframe *frame,
+>  }
+>  
+>  /**
+> - * hdmi_drm_infoframe_unpack() - unpack binary buffer to a HDMI DRM infoframe
+> + * hdmi_drm_infoframe_unpack_only() - unpack binary buffer to a HDMI DRM infoframe
+>   * @frame: HDMI DRM infoframe
+>   * @buffer: source buffer
+>   * @size: size of buffer
+>   *
+> - * Unpacks the information contained in binary @buffer into a structured
+> + * Unpacks the information data block contained in binary @buffer into a structured
+>   * @frame of the HDMI Dynamic Range and Mastering (DRM) information frame.
+> - * Also verifies the checksum as required by section 5.3.5 of the HDMI 1.4
+> - * specification.
+>   *
+>   * Returns 0 on success or a negative error code on failure.
+>   */
+> -static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
+> -				     const void *buffer, size_t size)
+> +int hdmi_drm_infoframe_unpack_only(struct hdmi_drm_infoframe *frame,
+> +				   const void *buffer, size_t size)
+>  {
+>  	const u8 *ptr = buffer;
+>  	const u8 *temp;
+> @@ -1797,23 +1795,13 @@ static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
+>  	int ret;
+>  	int i;
+>  
+> -	if (size < HDMI_INFOFRAME_SIZE(DRM))
+> -		return -EINVAL;
+> -
+> -	if (ptr[0] != HDMI_INFOFRAME_TYPE_DRM ||
+> -	    ptr[1] != 1 ||
+> -	    ptr[2] != HDMI_DRM_INFOFRAME_SIZE)
+> -		return -EINVAL;
+> -
+> -	if (hdmi_infoframe_checksum(buffer, HDMI_INFOFRAME_SIZE(DRM)) != 0)
+> +	if (size < HDMI_DRM_INFOFRAME_SIZE)
+>  		return -EINVAL;
+>  
+>  	ret = hdmi_drm_infoframe_init(frame);
+>  	if (ret)
+>  		return ret;
+>  
+> -	ptr += HDMI_INFOFRAME_HEADER_SIZE;
+> -
+>  	frame->eotf = ptr[0] & 0x7;
+>  	frame->metadata_type = ptr[1] & 0x7;
+>  
+> @@ -1837,6 +1825,42 @@ static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
+>  
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL(hdmi_drm_infoframe_unpack_only);
+> +
+> +/**
+> + * hdmi_drm_infoframe_unpack() - unpack binary buffer to a HDMI DRM infoframe
+> + * @frame: HDMI DRM infoframe
+> + * @buffer: source buffer
+> + * @size: size of buffer
+> + *
+> + * Unpacks the information contained in binary @buffer into a structured
+> + * @frame of the HDMI Dynamic Range and Mastering (DRM) information frame.
+> + * Also verifies the checksum as required by section 5.3.5 of the HDMI 1.4
+> + * specification.
+> + *
+> + * Returns 0 on success or a negative error code on failure.
+> + */
+> +static int hdmi_drm_infoframe_unpack(struct hdmi_drm_infoframe *frame,
+> +				     const void *buffer, size_t size)
+> +{
+> +	const u8 *ptr = buffer;
+> +	int ret;
+> +
+> +	if (size < HDMI_INFOFRAME_SIZE(DRM))
+> +		return -EINVAL;
+> +
+> +	if (ptr[0] != HDMI_INFOFRAME_TYPE_DRM ||
+> +	    ptr[1] != 1 ||
+> +	    ptr[2] != HDMI_DRM_INFOFRAME_SIZE)
+> +		return -EINVAL;
+> +
+> +	if (hdmi_infoframe_checksum(buffer, HDMI_INFOFRAME_SIZE(DRM)) != 0)
+> +		return -EINVAL;
+> +
+> +	ret = hdmi_drm_infoframe_unpack_only(frame, ptr + HDMI_INFOFRAME_HEADER_SIZE,
+> +					     size - HDMI_INFOFRAME_HEADER_SIZE);
+> +	return ret;
+> +}
+>  
+>  /**
+>   * hdmi_infoframe_unpack() - unpack binary buffer to a HDMI infoframe
+> diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
+> index 9918a6c910c5..afb43efc03e0 100644
+> --- a/include/linux/hdmi.h
+> +++ b/include/linux/hdmi.h
+> @@ -219,6 +219,8 @@ ssize_t hdmi_drm_infoframe_pack(struct hdmi_drm_infoframe *frame, void *buffer,
+>  ssize_t hdmi_drm_infoframe_pack_only(const struct hdmi_drm_infoframe *frame,
+>  				     void *buffer, size_t size);
+>  int hdmi_drm_infoframe_check(struct hdmi_drm_infoframe *frame);
+> +int hdmi_drm_infoframe_unpack_only(struct hdmi_drm_infoframe *frame,
+> +				   const void *buffer, size_t size);
+>  
+>  enum hdmi_spd_sdi {
+>  	HDMI_SPD_SDI_UNKNOWN,
+
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
-
+Jani Nikula, Intel Open Source Graphics Center
