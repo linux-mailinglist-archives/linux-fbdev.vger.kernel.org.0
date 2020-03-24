@@ -2,114 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73A2519108A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 445EB191141
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:40:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727361AbgCXN3U (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 09:29:20 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:42068 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729518AbgCXNYC (ORCPT
+        id S1726188AbgCXNgE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 09:36:04 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45496 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbgCXNgE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Mar 2020 09:24:02 -0400
-Received: by mail-pf1-f194.google.com with SMTP id 22so5666440pfa.9;
-        Tue, 24 Mar 2020 06:24:01 -0700 (PDT)
+        Tue, 24 Mar 2020 09:36:04 -0400
+Received: by mail-ed1-f68.google.com with SMTP id u59so20655834edc.12;
+        Tue, 24 Mar 2020 06:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=J59vOQButIA7wOzAY9wmajFYSXUMpXsPzQxaHYbQv0o=;
-        b=duqJNACteTZSXSWcZF+gw1gKTJ4q1aUrfnAY8rwv1olCQqbbh2Ieil2rGE28zWqW3N
-         jGzY6h6Xgd0f/k30hX8o57PFadqh2jKETuPVzX8vwAssZlz5pPGqwJiuzZSM3aR4swVU
-         FxmlGfJLVFvEMBi0/LJjGqquKL866NuDSzfVlWxpAuXd/1BWw/1+mXcJ0mVVVIUSKKWz
-         y+BKGvYDHary7SK/O5BJ3X/8vmBQy0a6K+GmIYS96bRriWhDd85terlO2mrXxQ8xdu52
-         U52SS2J29H1F4dqDlA4XfVa/KRcJ/u7GKgELhyNTAUFciHaVFdDDX5Kd5eWqg2UG3r5X
-         1Qqg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TMB75Qkz8yI3t1WgLX4NDid7APvWxFWZwvhtkRGYDD0=;
+        b=YmaPzGpXLGUa5XCjv+/RdXu1YOk3nivWvqRjx/vlBo4hqqJMk61wmNSN10Iul77Nvo
+         E2L8DGlsGEt1ZD8RNEtVTvW8atC1lJhwwbwWlVmw0Kle33ZWDgaUBzU4LXO6eNZ2+t/3
+         7DOFjDXJpe06e+edi5OVIv5ZrmN3GgBmYGQk9Gh9Gdc3HQYrcGeRwPDfduTjETjLmLC0
+         W4ghmX+aNoJ9x1cnG7XrpgydcXceO9B0t87y35x/4tvjwkUofUE8CKAZbbP35QzShhcL
+         KxnbtZtkYvIV9nmhS+8rEJgSTDL46IbvmxBicE2mgMB+B9Ke6u0ZBK8Ou7pw41gMrIAy
+         aD/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=J59vOQButIA7wOzAY9wmajFYSXUMpXsPzQxaHYbQv0o=;
-        b=G26+GEc+7lY1wDuwBpI3QgRIhB/Ot7mGNJUrudUFGykbLIBmgvCOdcA2jrm6t6W67m
-         B1NvpJTMkgNnNBtAI4BIz5OKgBYVlx0armIiz/20cR0KSqgf6qxv9Orf7Ziqf7MTXLYI
-         3p5q9WRAl9qxRY/kbYeJ0L9nBbiDBRcosvKDeCOkDmoxnsZdJM85b68MY0gVzM6Xr7ag
-         ylTqoZk37CUt9FsR261+FB7mrcOJP5NbAwSycYM6ISvV6nAVcRPKoq/q9ztx0d1Irz2P
-         TGyuALJoC0XRodqAAkUkzXBzweZZkAcYn6NA1gCBt2UpWfKtDP9l2PvoWGIZbWtPdd7h
-         cq9A==
-X-Gm-Message-State: ANhLgQ2fJO787p43Kz/Tq8jS8J7N76xbNk/JZNUVXRb1fQazsyhOz8DT
-        duuyH0yEk8v45favuW4dGAE=
-X-Google-Smtp-Source: ADFU+vuGRwIJvFbAqb+kj/0gocMW4ppLpIEgYm9sWVVBwJaPcIjDZns5zlU0AC9H0zhDUZoQKzK5OQ==
-X-Received: by 2002:a65:6910:: with SMTP id s16mr1545967pgq.426.1585056241100;
-        Tue, 24 Mar 2020 06:24:01 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id g11sm15874883pfm.4.2020.03.24.06.23.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2020 06:24:00 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v4] video: fbdev: arcfb: add missed free_irq and fix the order of request_irq
-Date:   Tue, 24 Mar 2020 21:23:53 +0800
-Message-Id: <20200324132353.21785-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.25.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TMB75Qkz8yI3t1WgLX4NDid7APvWxFWZwvhtkRGYDD0=;
+        b=aYPKJktJkhyeb78u1aYJlAeJWIQya4BI1Mih/VBbLdmAx+t6y6EvpzBIUODXEzEjIh
+         +vg2y3uRegA2V3CKl08gUpAD7JjEa0KtZA7D2ZSR7rx3G3Tj7Em71VAiPC8683P2zq6E
+         S1aqgSEfem0FzuuqdKmNMuxKU67eXZqw/Pcmm5dMEUWEcIX77xLJevjKRgAeWgnDdBby
+         4huBFNOvDuBUDCGpswwnfUGAwlBdgoGeh50njiK/J7dDgvZt7d9HKHSO3wa7LPmPrFUN
+         aOPjhzp0bBOjhQOgHr9cnsW4nLKhNHQY5COQuNmvQpVoOIxWgxy8sTClSLjqX2kP2QQN
+         RF4w==
+X-Gm-Message-State: ANhLgQ2+E6n8UFJc8TEzBbibV/H20INxEd983ETjQsFTZthCDqA3CJqO
+        RO8U2UAGxE7Hi3Hn+CED3tZNbI04zjuixBsBnssJ8tl1
+X-Google-Smtp-Source: ADFU+vscfGIZKpwjX0dEGgS35+1q/HihwK1k2Qfxg2EzIk59b8orP/i57EWa5pCCRT3SkfBE+JjbKeYPuy25TYl1VEA=
+X-Received: by 2002:a50:f743:: with SMTP id j3mr26864098edn.22.1585056962133;
+ Tue, 24 Mar 2020 06:36:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <CGME20200310023550eucas1p10797f834d7dc16f634cf644011462393@eucas1p1.samsung.com>
+ <20200310023536.13622-1-hslester96@gmail.com> <1f5e6f52-c638-f73e-cf9d-88eb641a010d@samsung.com>
+In-Reply-To: <1f5e6f52-c638-f73e-cf9d-88eb641a010d@samsung.com>
+From:   Chuhong Yuan <hslester96@gmail.com>
+Date:   Tue, 24 Mar 2020 21:35:51 +0800
+Message-ID: <CANhBUQ1JV3drHn-HO2urK-Q7yUNtLhk09UuBG7F=qV7Lid=0ww@mail.gmail.com>
+Subject: Re: [PATCH v3] video: fbdev: vesafb: add missed release_region
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver forgets to free irq in remove which is requested in
-probe.
-Add the missed call to fix it.
-Also, the position of request_irq() in probe should be put before
-register_framebuffer().
+On Fri, Mar 20, 2020 at 8:01 PM Bartlomiej Zolnierkiewicz
+<b.zolnierkie@samsung.com> wrote:
+>
+>
+> On 3/10/20 3:35 AM, Chuhong Yuan wrote:
+> > The driver forgets to free the I/O region in remove and probe
+> > failure.
+> > Add the missed calls to fix it.
+> >
+> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> > ---
+> > Changes in v3:
+> >   - Revise the commit message.
+> >   - Add an error handler to suit the "goto error" before request_region().
+> >   - Revise the order of operations in remove.
+> >
+> >  drivers/video/fbdev/vesafb.c | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+> > index a1fe24ea869b..c7bc9ace47d4 100644
+> > --- a/drivers/video/fbdev/vesafb.c
+> > +++ b/drivers/video/fbdev/vesafb.c
+> > @@ -439,7 +439,7 @@ static int vesafb_probe(struct platform_device *dev)
+> >                      "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
+> >                       vesafb_fix.smem_len, vesafb_fix.smem_start);
+> >               err = -EIO;
+> > -             goto err;
+> > +             goto err_release_region;
+> >       }
+> >
+> >       printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
+> > @@ -458,15 +458,17 @@ static int vesafb_probe(struct platform_device *dev)
+> >
+> >       if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
+> >               err = -ENOMEM;
+> > -             goto err;
+> > +             goto err_release_region;
+> >       }
+> >       if (register_framebuffer(info)<0) {
+> >               err = -EINVAL;
+> >               fb_dealloc_cmap(&info->cmap);
+> > -             goto err;
+> > +             goto err_release_region;
+> >       }
+> >       fb_info(info, "%s frame buffer device\n", info->fix.id);
+> >       return 0;
+> > +err_release_region:
+> > +     release_region(0x3c0, 32);
+>
+> This is incorrect.
+>
+> The cleanup order should be the reverse of the probing order.
+>
+> Also request_region() return value is not checked by the driver
+> (there is a comment that it can fail and is optional):
+>
+>         /* request failure does not faze us, as vgacon probably has this
+>          * region already (FIXME) */
+>         request_region(0x3c0, 32, "vesafb");
+>
+> so what would happen in such case? It seems that unconditionally
+> doing the release will result in freeing the I/O region owned by
+> the other driver (vgacon)..
+>
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v4:
-  - Use info->par->irq instead of par->irq to avoid dereferencing NULL pointer.
+Maybe we can add a field to represent whether the request succeeds?
+request_region() returns source *, we can store it and check whether
+it is null when
+we are going to call release_region().
 
- drivers/video/fbdev/arcfb.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
-index 314ab82e01c0..6f7838979f0a 100644
---- a/drivers/video/fbdev/arcfb.c
-+++ b/drivers/video/fbdev/arcfb.c
-@@ -544,10 +544,6 @@ static int arcfb_probe(struct platform_device *dev)
- 	par->cslut[1] = 0x06;
- 	info->flags = FBINFO_FLAG_DEFAULT;
- 	spin_lock_init(&par->lock);
--	retval = register_framebuffer(info);
--	if (retval < 0)
--		goto err1;
--	platform_set_drvdata(dev, info);
- 	if (irq) {
- 		par->irq = irq;
- 		if (request_irq(par->irq, &arcfb_interrupt, IRQF_SHARED,
-@@ -558,6 +554,10 @@ static int arcfb_probe(struct platform_device *dev)
- 			goto err1;
- 		}
- 	}
-+	retval = register_framebuffer(info);
-+	if (retval < 0)
-+		goto err1;
-+	platform_set_drvdata(dev, info);
- 	fb_info(info, "Arc frame buffer device, using %dK of video memory\n",
- 		videomemorysize >> 10);
- 
-@@ -593,6 +593,8 @@ static int arcfb_remove(struct platform_device *dev)
- 
- 	if (info) {
- 		unregister_framebuffer(info);
-+		if (irq)
-+			free_irq(((struct arcfb_par *)(info->par))->irq, info);
- 		vfree((void __force *)info->screen_base);
- 		framebuffer_release(info);
- 	}
--- 
-2.25.2
-
+> >  err:
+> >       arch_phys_wc_del(par->wc_cookie);
+> >       if (info->screen_base)
+> > @@ -481,6 +483,7 @@ static int vesafb_remove(struct platform_device *pdev)
+> >       struct fb_info *info = platform_get_drvdata(pdev);
+> >
+> >       unregister_framebuffer(info);
+> > +     release_region(0x3c0, 32);
+> >       framebuffer_release(info);
+> >
+> >       return 0;
+> >
+>
+> Best regards,
+> --
+> Bartlomiej Zolnierkiewicz
+> Samsung R&D Institute Poland
+> Samsung Electronics
