@@ -2,148 +2,136 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 445EB191141
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 529C51911B7
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:47:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726188AbgCXNgE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 09:36:04 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:45496 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbgCXNgE (ORCPT
+        id S1728249AbgCXNpV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 09:45:21 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:40741 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728032AbgCXNpU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Mar 2020 09:36:04 -0400
-Received: by mail-ed1-f68.google.com with SMTP id u59so20655834edc.12;
-        Tue, 24 Mar 2020 06:36:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TMB75Qkz8yI3t1WgLX4NDid7APvWxFWZwvhtkRGYDD0=;
-        b=YmaPzGpXLGUa5XCjv+/RdXu1YOk3nivWvqRjx/vlBo4hqqJMk61wmNSN10Iul77Nvo
-         E2L8DGlsGEt1ZD8RNEtVTvW8atC1lJhwwbwWlVmw0Kle33ZWDgaUBzU4LXO6eNZ2+t/3
-         7DOFjDXJpe06e+edi5OVIv5ZrmN3GgBmYGQk9Gh9Gdc3HQYrcGeRwPDfduTjETjLmLC0
-         W4ghmX+aNoJ9x1cnG7XrpgydcXceO9B0t87y35x/4tvjwkUofUE8CKAZbbP35QzShhcL
-         KxnbtZtkYvIV9nmhS+8rEJgSTDL46IbvmxBicE2mgMB+B9Ke6u0ZBK8Ou7pw41gMrIAy
-         aD/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TMB75Qkz8yI3t1WgLX4NDid7APvWxFWZwvhtkRGYDD0=;
-        b=aYPKJktJkhyeb78u1aYJlAeJWIQya4BI1Mih/VBbLdmAx+t6y6EvpzBIUODXEzEjIh
-         +vg2y3uRegA2V3CKl08gUpAD7JjEa0KtZA7D2ZSR7rx3G3Tj7Em71VAiPC8683P2zq6E
-         S1aqgSEfem0FzuuqdKmNMuxKU67eXZqw/Pcmm5dMEUWEcIX77xLJevjKRgAeWgnDdBby
-         4huBFNOvDuBUDCGpswwnfUGAwlBdgoGeh50njiK/J7dDgvZt7d9HKHSO3wa7LPmPrFUN
-         aOPjhzp0bBOjhQOgHr9cnsW4nLKhNHQY5COQuNmvQpVoOIxWgxy8sTClSLjqX2kP2QQN
-         RF4w==
-X-Gm-Message-State: ANhLgQ2+E6n8UFJc8TEzBbibV/H20INxEd983ETjQsFTZthCDqA3CJqO
-        RO8U2UAGxE7Hi3Hn+CED3tZNbI04zjuixBsBnssJ8tl1
-X-Google-Smtp-Source: ADFU+vscfGIZKpwjX0dEGgS35+1q/HihwK1k2Qfxg2EzIk59b8orP/i57EWa5pCCRT3SkfBE+JjbKeYPuy25TYl1VEA=
-X-Received: by 2002:a50:f743:: with SMTP id j3mr26864098edn.22.1585056962133;
- Tue, 24 Mar 2020 06:36:02 -0700 (PDT)
+        Tue, 24 Mar 2020 09:45:20 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200324134519euoutp016a1c327beaa61266e3d148a3253012b9~-QWphhGkf0072900729euoutp01l
+        for <linux-fbdev@vger.kernel.org>; Tue, 24 Mar 2020 13:45:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200324134519euoutp016a1c327beaa61266e3d148a3253012b9~-QWphhGkf0072900729euoutp01l
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1585057519;
+        bh=rhhrPM93CG0b8oKYRKwOJigfjSTatX4Tm1+HO5o6DnM=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=byd8ohrNTW7n5MPLVVNMgJ5gjscE07GWSs4VtEhMln1q6C6RnDMxtdAA06+NNj2+j
+         JQdMo7EqVKDhyXqW+3grgaCX4hrMOk/BP/T4I3Db8SlhPFru2nYJ4a8l3pAHGT+DQh
+         7RkGhU6WSmXmYcZQaVFnErnoFxBObmUqddaDkxTg=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200324134518eucas1p11bc8b62d77fe0f52777f46d2c2d603f1~-QWpTK8Ke1592815928eucas1p1M;
+        Tue, 24 Mar 2020 13:45:18 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 06.48.60679.EEE0A7E5; Tue, 24
+        Mar 2020 13:45:18 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200324134518eucas1p1440c92398ddcbe5ea72d6db3703d3f97~-QWo6xfPk0905409054eucas1p1j;
+        Tue, 24 Mar 2020 13:45:18 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200324134518eusmtrp17752f05b21be98ec271b0054dcafead6~-QWo6I03L2619426194eusmtrp1n;
+        Tue, 24 Mar 2020 13:45:18 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-c2-5e7a0eee4996
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 4B.E6.08375.EEE0A7E5; Tue, 24
+        Mar 2020 13:45:18 +0000 (GMT)
+Received: from AMDC3058.digital.local (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200324134517eusmtip27d0ef96226851c80515eca3644966487~-QWojJSDK3226032260eusmtip2z;
+        Tue, 24 Mar 2020 13:45:17 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Cc:     Andrzej Hajda <a.hajda@samsung.com>,
+        Sam Ravnborg <sam@ravnborg.org>, b.zolnierkie@samsung.com
+Subject: [PATCH v2 0/6] video: fbdev: controlfb: small cleanup
+Date:   Tue, 24 Mar 2020 14:45:02 +0100
+Message-Id: <20200324134508.25120-1-b.zolnierkie@samsung.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-References: <CGME20200310023550eucas1p10797f834d7dc16f634cf644011462393@eucas1p1.samsung.com>
- <20200310023536.13622-1-hslester96@gmail.com> <1f5e6f52-c638-f73e-cf9d-88eb641a010d@samsung.com>
-In-Reply-To: <1f5e6f52-c638-f73e-cf9d-88eb641a010d@samsung.com>
-From:   Chuhong Yuan <hslester96@gmail.com>
-Date:   Tue, 24 Mar 2020 21:35:51 +0800
-Message-ID: <CANhBUQ1JV3drHn-HO2urK-Q7yUNtLhk09UuBG7F=qV7Lid=0ww@mail.gmail.com>
-Subject: Re: [PATCH v3] video: fbdev: vesafb: add missed release_region
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djPc7rv+KriDM4v0bG4te4cq8XGGetZ
+        La58fc9mcaLvA6vF5V1z2CxW/NzK6MDmcb/7OJPHkmlX2Tz6tqxi9Pi8SS6AJYrLJiU1J7Ms
+        tUjfLoEro+3jVfaCiZwV77YdY2xgPMTexcjJISFgInFq+V6mLkYuDiGBFYwSB38dZoNwvjBK
+        3H78gxHC+cwoceJfAzNMy7G+1+wQieWMEssvT2KBa5n5dDXYYDYBK4mJ7asYQWwRgQSJFdNn
+        gNnMAikSH7b8B1rIwSEsYCdx9l4oSJhFQFVi/+dZYCW8ArYSV9cuZ4NYJi+x9dsnVoi4oMTJ
+        mU9YIMbISzRvnc0MsldC4DGbxI+F66Guc5GYO3kZ1HPCEq+Ob4GyZSROT+5hgWhYxyjxt+MF
+        VPd2oBcm/4NaZy1x59wvNpDrmAU0Jdbv0ocIO0qsmHAQ7GgJAT6JG28FIY7gk5i0bTozRJhX
+        oqNNCKJaTWLDsg1sMGu7dq6EOs1D4uv8K2DlQgKxEu/Pu09gVJiF5LNZSD6bhXDCAkbmVYzi
+        qaXFuempxUZ5qeV6xYm5xaV56XrJ+bmbGIFp5fS/4192MO76k3SIUYCDUYmHV+NhZZwQa2JZ
+        cWXuIUYJDmYlEd7NqRVxQrwpiZVVqUX58UWlOanFhxilOViUxHmNF72MFRJITyxJzU5NLUgt
+        gskycXBKNTBmxChcFptep/FPOfj7lcdcJczT565f+MlmxlIhR3XNH4aTp22UDmFd19ORzZC7
+        vftCxvEVW9P+7L45icUlzaN/X+//LWtdOQXWmAgHhKSYforhW9192uBQz+uOResZnN+UL9P4
+        EVxy5q3gVt9cv4O3yvyffPnsLBxxofTbyRtvvhaYbXib+OWYEktxRqKhFnNRcSIAKb4XCScD
+        AAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOLMWRmVeSWpSXmKPExsVy+t/xe7rv+KriDA6fELC4te4cq8XGGetZ
+        La58fc9mcaLvA6vF5V1z2CxW/NzK6MDmcb/7OJPHkmlX2Tz6tqxi9Pi8SS6AJUrPpii/tCRV
+        ISO/uMRWKdrQwkjP0NJCz8jEUs/Q2DzWyshUSd/OJiU1J7MstUjfLkEvo+3jVfaCiZwV77Yd
+        Y2xgPMTexcjJISFgInGs7zWYLSSwlFHi7Wu9LkYOoLiMxPH1ZRAlwhJ/rnWxQZR8YpRY9FsV
+        xGYTsJKY2L6KEcQWEUiS6Gw4yQxiMwukSUw6e5cJZIywgJ3E2XuhIGEWAVWJ/Z9ngZXzCthK
+        XF27nA1ivLzE1m+fWCHighInZz5hgRgjL9G8dTbzBEa+WUhSs5CkFjAyrWIUSS0tzk3PLTbU
+        K07MLS7NS9dLzs/dxAgM5G3Hfm7ewXhpY/AhRgEORiUeXo2HlXFCrIllxZW5hxglOJiVRHg3
+        p1bECfGmJFZWpRblxxeV5qQWH2I0BTp2IrOUaHI+MMrySuINTQ3NLSwNzY3Njc0slMR5OwQO
+        xggJpCeWpGanphakFsH0MXFwSjUwCvy/tZC71+XOGmuzc/ulerRrvi2xXyyWJrT8X3jGcd5f
+        nySeLXD9sLBw+8pgodqKKb6JSjovHkY//Xl+5uJHhyZUHfy9rEv1ke12RXElpfjvLuuuFFw0
+        lFHzv3r55X3NnU4ue3vudb1Jj12gvSKgJt34dotq1yKJJyKKAvbmuzQe+gne6fjXq8RSnJFo
+        qMVcVJwIANodE096AgAA
+X-CMS-MailID: 20200324134518eucas1p1440c92398ddcbe5ea72d6db3703d3f97
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200324134518eucas1p1440c92398ddcbe5ea72d6db3703d3f97
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200324134518eucas1p1440c92398ddcbe5ea72d6db3703d3f97
+References: <CGME20200324134518eucas1p1440c92398ddcbe5ea72d6db3703d3f97@eucas1p1.samsung.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 8:01 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
->
->
-> On 3/10/20 3:35 AM, Chuhong Yuan wrote:
-> > The driver forgets to free the I/O region in remove and probe
-> > failure.
-> > Add the missed calls to fix it.
-> >
-> > Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> > ---
-> > Changes in v3:
-> >   - Revise the commit message.
-> >   - Add an error handler to suit the "goto error" before request_region().
-> >   - Revise the order of operations in remove.
-> >
-> >  drivers/video/fbdev/vesafb.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-> > index a1fe24ea869b..c7bc9ace47d4 100644
-> > --- a/drivers/video/fbdev/vesafb.c
-> > +++ b/drivers/video/fbdev/vesafb.c
-> > @@ -439,7 +439,7 @@ static int vesafb_probe(struct platform_device *dev)
-> >                      "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
-> >                       vesafb_fix.smem_len, vesafb_fix.smem_start);
-> >               err = -EIO;
-> > -             goto err;
-> > +             goto err_release_region;
-> >       }
-> >
-> >       printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
-> > @@ -458,15 +458,17 @@ static int vesafb_probe(struct platform_device *dev)
-> >
-> >       if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
-> >               err = -ENOMEM;
-> > -             goto err;
-> > +             goto err_release_region;
-> >       }
-> >       if (register_framebuffer(info)<0) {
-> >               err = -EINVAL;
-> >               fb_dealloc_cmap(&info->cmap);
-> > -             goto err;
-> > +             goto err_release_region;
-> >       }
-> >       fb_info(info, "%s frame buffer device\n", info->fix.id);
-> >       return 0;
-> > +err_release_region:
-> > +     release_region(0x3c0, 32);
->
-> This is incorrect.
->
-> The cleanup order should be the reverse of the probing order.
->
-> Also request_region() return value is not checked by the driver
-> (there is a comment that it can fail and is optional):
->
->         /* request failure does not faze us, as vgacon probably has this
->          * region already (FIXME) */
->         request_region(0x3c0, 32, "vesafb");
->
-> so what would happen in such case? It seems that unconditionally
-> doing the release will result in freeing the I/O region owned by
-> the other driver (vgacon)..
->
+Hi,
 
-Maybe we can add a field to represent whether the request succeeds?
-request_region() returns source *, we can store it and check whether
-it is null when
-we are going to call release_region().
+Small cleanup for controlfb driver:
 
-> >  err:
-> >       arch_phys_wc_del(par->wc_cookie);
-> >       if (info->screen_base)
-> > @@ -481,6 +483,7 @@ static int vesafb_remove(struct platform_device *pdev)
-> >       struct fb_info *info = platform_get_drvdata(pdev);
-> >
-> >       unregister_framebuffer(info);
-> > +     release_region(0x3c0, 32);
-> >       framebuffer_release(info);
-> >
-> >       return 0;
-> >
->
-> Best regards,
-> --
-> Bartlomiej Zolnierkiewicz
-> Samsung R&D Institute Poland
-> Samsung Electronics
+- fix sparse warnings
+- remove not working module support
+- add COMPILE_TEST support
+- remove redundant function prototypes
+
+Changes since v1
+(https://lore.kernel.org/lkml/20200116140900.26363-1-b.zolnierkie@samsung.com/):
+- use in_le32() instead of le32_to_cpup()
+- use eieio() and dcbf() helpers
+- add invalid_vram_cache() helper
+- add more dummy CONFIG_PPC_PMAC=n helpers to avoid ifdefs
+- add ACKs from Sam
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+
+Bartlomiej Zolnierkiewicz (6):
+  video: fbdev: controlfb: fix sparse warning about using incorrect type
+  video: fbdev: controlfb: add COMPILE_TEST support
+  video: fbdev: controlfb: remove obsolete module support
+  video: fbdev: controlfb: remove function prototypes part #1
+  video: fbdev: controlfb: remove function prototypes part #2
+  video: fbdev: controlfb: remove function prototypes part #3
+
+ drivers/video/fbdev/Kconfig     |   2 +-
+ drivers/video/fbdev/controlfb.c | 828 +++++++++++++++-----------------
+ 2 files changed, 391 insertions(+), 439 deletions(-)
+
+-- 
+2.24.1
+
