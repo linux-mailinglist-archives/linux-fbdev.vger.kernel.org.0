@@ -2,37 +2,37 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D6F19172E
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 18:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E93919172F
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 18:06:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727324AbgCXRFg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 13:05:36 -0400
-Received: from mga06.intel.com ([134.134.136.31]:39626 "EHLO mga06.intel.com"
+        id S1727133AbgCXRFh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 13:05:37 -0400
+Received: from mga05.intel.com ([192.55.52.43]:48953 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727133AbgCXRFg (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        id S1726962AbgCXRFg (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
         Tue, 24 Mar 2020 13:05:36 -0400
-IronPort-SDR: qlupSQ7eBBoBR17LkbybVkTZJri5SzBkKGOc/J72j/9e6ORow1Z2ouyJPcfq+L8aw0BSn3kBWl
- OHJr8oF6AJbA==
+IronPort-SDR: etCopCZB0Nc2+9M0s085vmuN5fsY86QLIX0ZIa9lpxrQce31stxV6DZdmN2YA9M25EkMqgBGCA
+ 49Avgm9oL1Hw==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 10:05:35 -0700
-IronPort-SDR: 6Nb4hp976Vbe4Rp/ytYLLRxNys4igwR71G4Tlvp9wjRV0y5+Y37Yk/gzuglmg73SpOZxVX2jF/
- yQuI9Rrf4Wqg==
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 10:05:36 -0700
+IronPort-SDR: U/V0Ku8vqBuZm1PTdbCMsXWEWFk6oo7s7hyQcEqviocpE2MAPgUtbLXcdce9fpuCMb6BIBb5f/
+ Pj0yhenGXDmA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,301,1580803200"; 
-   d="scan'208";a="240328465"
+   d="scan'208";a="265224187"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 24 Mar 2020 10:05:34 -0700
+  by orsmga002.jf.intel.com with ESMTP; 24 Mar 2020 10:05:34 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 5AC7E65; Tue, 24 Mar 2020 19:05:33 +0200 (EET)
+        id 643EB3F3; Tue, 24 Mar 2020 19:05:33 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-fbdev@vger.kernel.org, xllacyx@gmail.com
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/5] video: ssd1307fb: Introduce temporary variable to increase readability
-Date:   Tue, 24 Mar 2020 19:05:29 +0200
-Message-Id: <20200324170532.44384-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 3/5] video: ssd1307fb: Make use of device properties
+Date:   Tue, 24 Mar 2020 19:05:30 +0200
+Message-Id: <20200324170532.44384-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
 References: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
@@ -43,121 +43,107 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Introduce temporary variable to increase readability of the code.
+Device property API allows to gather device resources from different sources,
+such as ACPI. Convert the drivers to unleash the power of device property API.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/video/fbdev/ssd1307fb.c | 34 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+ drivers/video/fbdev/ssd1307fb.c | 40 ++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index 397eae246c2c..84dfd7b0f682 100644
+index 84dfd7b0f682..7a6a44a0b7a6 100644
 --- a/drivers/video/fbdev/ssd1307fb.c
 +++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -588,6 +588,7 @@ MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
- 
- static int ssd1307fb_probe(struct i2c_client *client)
- {
-+	struct device *dev = &client->dev;
+@@ -12,8 +12,7 @@
+ #include <linux/i2c.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+-#include <linux/of_gpio.h>
++#include <linux/property.h>
+ #include <linux/pwm.h>
+ #include <linux/uaccess.h>
+ #include <linux/regulator/consumer.h>
+@@ -592,7 +591,6 @@ static int ssd1307fb_probe(struct i2c_client *client)
  	struct backlight_device *bl;
  	char bl_name[12];
  	struct fb_info *info;
-@@ -598,7 +599,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	void *vmem;
- 	int ret;
+-	struct device_node *node = client->dev.of_node;
+ 	struct fb_deferred_io *ssd1307fb_defio;
+ 	u32 vmem_size;
+ 	struct ssd1307fb_par *par;
+@@ -607,7 +605,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	par->info = info;
+ 	par->client = client;
  
--	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
-+	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), dev);
- 	if (!info)
- 		return -ENOMEM;
+-	par->device_info = of_device_get_match_data(&client->dev);
++	par->device_info = device_get_match_data(dev);
  
-@@ -608,23 +609,20 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 
- 	par->device_info = of_device_get_match_data(&client->dev);
- 
--	par->reset = devm_gpiod_get_optional(&client->dev, "reset",
--					     GPIOD_OUT_LOW);
-+	par->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+ 	par->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
  	if (IS_ERR(par->reset)) {
--		dev_err(&client->dev, "failed to get reset gpio: %ld\n",
--			PTR_ERR(par->reset));
-+		dev_err(dev, "failed to get reset gpio: %ld\n", PTR_ERR(par->reset));
- 		ret = PTR_ERR(par->reset);
- 		goto fb_alloc_error;
- 	}
- 
--	par->vbat_reg = devm_regulator_get_optional(&client->dev, "vbat");
-+	par->vbat_reg = devm_regulator_get_optional(dev, "vbat");
- 	if (IS_ERR(par->vbat_reg)) {
- 		ret = PTR_ERR(par->vbat_reg);
- 		if (ret == -ENODEV) {
- 			par->vbat_reg = NULL;
- 		} else {
--			dev_err(&client->dev, "failed to get VBAT regulator: %d\n",
--				ret);
-+			dev_err(dev, "failed to get VBAT regulator: %d\n", ret);
- 			goto fb_alloc_error;
+@@ -627,44 +625,44 @@ static int ssd1307fb_probe(struct i2c_client *client)
  		}
  	}
-@@ -674,15 +672,14 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	vmem = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
- 					get_order(vmem_size));
- 	if (!vmem) {
--		dev_err(&client->dev, "Couldn't allocate graphical memory.\n");
-+		dev_err(dev, "Couldn't allocate graphical memory.\n");
- 		ret = -ENOMEM;
- 		goto fb_alloc_error;
- 	}
  
--	ssd1307fb_defio = devm_kzalloc(&client->dev, sizeof(*ssd1307fb_defio),
--				       GFP_KERNEL);
-+	ssd1307fb_defio = devm_kzalloc(dev, sizeof(*ssd1307fb_defio), GFP_KERNEL);
- 	if (!ssd1307fb_defio) {
--		dev_err(&client->dev, "Couldn't allocate deferred io.\n");
-+		dev_err(dev, "Couldn't allocate deferred io.\n");
- 		ret = -ENOMEM;
- 		goto fb_alloc_error;
- 	}
-@@ -720,8 +717,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	if (par->vbat_reg) {
- 		ret = regulator_enable(par->vbat_reg);
- 		if (ret) {
--			dev_err(&client->dev, "failed to enable VBAT: %d\n",
--				ret);
-+			dev_err(dev, "failed to enable VBAT: %d\n", ret);
- 			goto reset_oled_error;
- 		}
- 	}
-@@ -732,17 +728,15 @@ static int ssd1307fb_probe(struct i2c_client *client)
+-	if (of_property_read_u32(node, "solomon,width", &par->width))
++	if (device_property_read_u32(dev, "solomon,width", &par->width))
+ 		par->width = 96;
  
- 	ret = register_framebuffer(info);
- 	if (ret) {
--		dev_err(&client->dev, "Couldn't register the framebuffer\n");
-+		dev_err(dev, "Couldn't register the framebuffer\n");
- 		goto panel_init_error;
- 	}
+-	if (of_property_read_u32(node, "solomon,height", &par->height))
++	if (device_property_read_u32(dev, "solomon,height", &par->height))
+ 		par->height = 16;
  
- 	snprintf(bl_name, sizeof(bl_name), "ssd1307fb%d", info->node);
--	bl = backlight_device_register(bl_name, &client->dev, par,
--				       &ssd1307fb_bl_ops, NULL);
-+	bl = backlight_device_register(bl_name, dev, par, &ssd1307fb_bl_ops, NULL);
- 	if (IS_ERR(bl)) {
- 		ret = PTR_ERR(bl);
--		dev_err(&client->dev, "unable to register backlight device: %d\n",
--			ret);
-+		dev_err(dev, "unable to register backlight device: %d\n", ret);
- 		goto bl_init_error;
- 	}
+-	if (of_property_read_u32(node, "solomon,page-offset", &par->page_offset))
++	if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
+ 		par->page_offset = 1;
  
-@@ -750,7 +744,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	bl->props.max_brightness = MAX_CONTRAST;
- 	info->bl_dev = bl;
+-	if (of_property_read_u32(node, "solomon,com-offset", &par->com_offset))
++	if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
+ 		par->com_offset = 0;
  
--	dev_info(&client->dev, "fb%d: %s framebuffer device registered, using %d bytes of video memory\n", info->node, info->fix.id, vmem_size);
-+	dev_info(dev, "fb%d: %s framebuffer device registered, using %d bytes of video memory\n", info->node, info->fix.id, vmem_size);
+-	if (of_property_read_u32(node, "solomon,prechargep1", &par->prechargep1))
++	if (device_property_read_u32(dev, "solomon,prechargep1", &par->prechargep1))
+ 		par->prechargep1 = 2;
  
- 	return 0;
+-	if (of_property_read_u32(node, "solomon,prechargep2", &par->prechargep2))
++	if (device_property_read_u32(dev, "solomon,prechargep2", &par->prechargep2))
+ 		par->prechargep2 = 2;
  
+-	if (!of_property_read_u8_array(node, "solomon,lookup-table",
+-				       par->lookup_table,
+-				       ARRAY_SIZE(par->lookup_table)))
++	if (!device_property_read_u8_array(dev, "solomon,lookup-table",
++					   par->lookup_table,
++					   ARRAY_SIZE(par->lookup_table)))
+ 		par->lookup_table_set = 1;
+ 
+-	par->seg_remap = !of_property_read_bool(node, "solomon,segment-no-remap");
+-	par->com_seq = of_property_read_bool(node, "solomon,com-seq");
+-	par->com_lrremap = of_property_read_bool(node, "solomon,com-lrremap");
+-	par->com_invdir = of_property_read_bool(node, "solomon,com-invdir");
++	par->seg_remap = !device_property_read_bool(dev, "solomon,segment-no-remap");
++	par->com_seq = device_property_read_bool(dev, "solomon,com-seq");
++	par->com_lrremap = device_property_read_bool(dev, "solomon,com-lrremap");
++	par->com_invdir = device_property_read_bool(dev, "solomon,com-invdir");
+ 	par->area_color_enable =
+-		of_property_read_bool(node, "solomon,area-color-enable");
+-	par->low_power = of_property_read_bool(node, "solomon,low-power");
++		device_property_read_bool(dev, "solomon,area-color-enable");
++	par->low_power = device_property_read_bool(dev, "solomon,low-power");
+ 
+ 	par->contrast = 127;
+ 	par->vcomh = par->device_info->default_vcomh;
+ 
+ 	/* Setup display timing */
+-	if (of_property_read_u32(node, "solomon,dclk-div", &par->dclk_div))
++	if (device_property_read_u32(dev, "solomon,dclk-div", &par->dclk_div))
+ 		par->dclk_div = par->device_info->default_dclk_div;
+-	if (of_property_read_u32(node, "solomon,dclk-frq", &par->dclk_frq))
++	if (device_property_read_u32(dev, "solomon,dclk-frq", &par->dclk_frq))
+ 		par->dclk_frq = par->device_info->default_dclk_frq;
+ 
+ 	vmem_size = DIV_ROUND_UP(par->width, 8) * par->height;
 -- 
 2.25.1
 
