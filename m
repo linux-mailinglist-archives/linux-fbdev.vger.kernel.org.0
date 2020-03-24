@@ -2,114 +2,124 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE3BA190E48
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A6F1910A1
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727120AbgCXNEQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 09:04:16 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:46929 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726802AbgCXNEQ (ORCPT
+        id S1727642AbgCXNaL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 09:30:11 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:37135 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728980AbgCXNXW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Mar 2020 09:04:16 -0400
-Received: by mail-wr1-f68.google.com with SMTP id j17so17922395wru.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 24 Mar 2020 06:04:15 -0700 (PDT)
+        Tue, 24 Mar 2020 09:23:22 -0400
+Received: by mail-pf1-f194.google.com with SMTP id h72so7055681pfe.4;
+        Tue, 24 Mar 2020 06:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=1oa8yxV7xzZ+tD1LcZwM67jLdYW/JjWbnu15B5rKnAc=;
-        b=pgrieuKBguK79BGSzhI7qQoDKjs7oVSsEZFIkfliQlS4z5oJJ8i92cBNzbOc6KuF1k
-         eeh8US59wuikVQM5bbteGvBBxvsZWujEwU6Wt/GOypCDV7QldRZo2bm2Z3Z/oDT3qUxy
-         IyyWUye5I8LOmsJlNfr1zBUhQVPRbiik4yERyYY8ajgeowR6YD9qVW9h8wHNhdTpBj34
-         1nWgV2/0E+YFu3oaFa7h1tC6MO5jeXwowcGsQVjUfVFZi0+WKfIAiVpGy1hfpaOZeze7
-         5SJ81Lzjc5G+49LBl1KyN8/cbBUg/ehWOfDEBzOwCJL3GV09zAwFEDDUuzXEF1FC2GTw
-         Lxsw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H9W5asHoSbtI69dnrLRaFeOykWQKzVNx1ATwcX4bFlQ=;
+        b=cTEo3+rd8HjtvQG84BxeLG5XwUFWbasowEp0PVZ6AJ/I5pEqpW4uEbt3Wuk2CT+SCt
+         De2wcAyw3uw+IPmKMCPaFITdnf7zCEl9kM5er3APCB5PKEpirrz+U4dKfY0+2ZpWDm5g
+         9hz8y5gJDvNwfgilx3+eMuNGsqiEccHlKCNPyw1NrgHDn9o9O4JCm9posf1Sco1085zY
+         IxsIbbH+dmxoTN3oX85CHQhhKxuVHo+gKMCzDjn5eqWW3qrUJ8BsBRQ/8HBXfXiAEtyt
+         zb3NMACa4XBLpk1faZBKgIDplrvs0jDPyHvOvMMPnT8c0mA0OLTukH08sccg8nDez6xR
+         8iEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=1oa8yxV7xzZ+tD1LcZwM67jLdYW/JjWbnu15B5rKnAc=;
-        b=PRyfWY8MwxukfgKOFX2wZDSkNOdzOnUDJD8zL8KB73PXQxImhlUh9lMTF0XwdRgU3A
-         IHWuVOKK+jRWt4bYyzT1eMjDSnXzI4QyWv+l4tSRxxICQOKmOr6VhXzwZjf25MqAvwNG
-         qVyBszdw/Grg0hvlgNDRa+RYc/d+Q/6vpwgHEmabcjc+0lZbfWLzpxVsD4WsAcXLOSPU
-         8zur63t+rEzlldWJZp1JFq+lEigEwhsknwNC+hK0QCkTOXwB2v9rKh4l+633/xwZBqEB
-         8G9m07mw5RyX5s7dZ0N5nrR/jGgk3ZQ8AfbAVwldw2Nt/PyX2Gzs/hAfiDObHYeNGILc
-         3F2w==
-X-Gm-Message-State: ANhLgQ3lqZ+Qz/71WIo3sL9MD1G/MkNljgcA+3/k5pVxZzvKWFX7GMVU
-        OpdK3ewge+LgBg18l4ilh9rSuw==
-X-Google-Smtp-Source: ADFU+vt/tZsuKl1gh3b+r/lHzGLKErJB8LKeO5CV2x9BnDtJ1QJrNAMaaIoqumVT6rOFGRemUbUOqQ==
-X-Received: by 2002:adf:afdb:: with SMTP id y27mr37198227wrd.208.1585055052854;
-        Tue, 24 Mar 2020 06:04:12 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id v2sm30204625wrt.58.2020.03.24.06.04.11
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=H9W5asHoSbtI69dnrLRaFeOykWQKzVNx1ATwcX4bFlQ=;
+        b=NsQdQP5AHbOHJgKH/XffMLrAnHpoSAqsPd13UIGYfPvI4sFdxy8TuRkB8d2vUynpMD
+         UrVcHeQGkMOKsPCbZB8aT6UKA73yBXl8MdcXotO+xEjal1CkLB1fF6pNNQQWcUz1HzKD
+         uYpdHBC0WDATYKMExHN9PRxbsz/TgXQBkal27InyMc8t2RC/aeQBoprMtc2me19BVhKT
+         jo4GLEVF/pvHGTkGPKTUJrS0xSzwEC2M2jakK2qHIQjFTkm6j6zH+MMk3+B4y/0X172J
+         ssfL/0RKx/v5iSjyDdF9F8Y1QbgsTIPRNH5rsZYl0rWN5RiuE3hFANyslLlBpQkCTPsC
+         bDpg==
+X-Gm-Message-State: ANhLgQ0PhghWoq51pszZSB0LT6KMis5wrb6okZgzPrKA43vjsJnOlgXi
+        tmhF1L1D4KBX6PuZ6dyn+hCtNq4K
+X-Google-Smtp-Source: ADFU+vvaV82cQxYW+iVQ8iL9mUZuQav300Ftc7kBv07XCthMCJNg/aF3ZNj3CMKOFKg++p2Xw3BLbA==
+X-Received: by 2002:a62:1745:: with SMTP id 66mr30225015pfx.291.1585056200107;
+        Tue, 24 Mar 2020 06:23:20 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id r189sm4187618pgr.31.2020.03.24.06.23.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2020 06:04:12 -0700 (PDT)
-Date:   Tue, 24 Mar 2020 13:04:10 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        linux-pwm@vger.kernel.org,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        Tue, 24 Mar 2020 06:23:19 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Kristoffer Ericson <kristoffer.ericson@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200324130410.dwlg767ku6kwequv@holly.lan>
-References: <cover.1584667964.git.gurus@codeaurora.org>
- <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
- <20200320133123.GD5477@dell>
- <20200324110710.GL5477@dell>
- <20200324125735.2mjuvbxt5bpon2ft@pengutronix.de>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH v3] fbdev: s1d13xxxfb: add missed unregister_framebuffer in remove
+Date:   Tue, 24 Mar 2020 21:23:11 +0800
+Message-Id: <20200324132311.21729-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200324125735.2mjuvbxt5bpon2ft@pengutronix.de>
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 01:57:35PM +0100, Uwe Kleine-König wrote:
-> Hello Lee,
-> 
-> On Tue, Mar 24, 2020 at 11:07:10AM +0000, Lee Jones wrote:
-> > On Fri, 20 Mar 2020, Lee Jones wrote:
-> > 
-> > > On Thu, 19 Mar 2020, Guru Das Srinagesh wrote:
-> > > 
-> > > > Since the PWM framework is switching struct pwm_state.period's datatype
-> > > > to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> > > > dividend instead of a straight division operation.
-> > > > 
-> > > > Cc: Lee Jones <lee.jones@linaro.org>
-> > > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > > > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > > > Cc: linux-pwm@vger.kernel.org
-> > > > Cc: dri-devel@lists.freedesktop.org
-> > > > Cc: linux-fbdev@vger.kernel.org
-> > > > 
-> > > > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> > > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > ---
-> > > >  drivers/video/backlight/pwm_bl.c | 3 ++-
-> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > 
-> > > Can this patch be taken on its own?
-> > 
-> > Hellooooo ...
-> 
-> Conceptually it can. As the last patch depends on this one (and the
-> others) some coordination might be beneficial. But that's up to Thierry
-> to decide how (and if) he want this series to be applied.
+The driver calls register_framebuffer() in probe but does not call
+unregister_framebuffer() in remove.
+Rename current remove to __s1d13xxxfb_remove() for error handler.
+Then add a new remove to call unregister_framebuffer().
 
-... and on the backlight side we definitely need to know about the "if"
-otherwise there's no point in taking it.
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+Changes in v3:
+  - Fix code style.
+  - Set __s1d13xxxfb_remove() to return void.
+  - Remove redundant check for info.
 
+ drivers/video/fbdev/s1d13xxxfb.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Daniel.
+diff --git a/drivers/video/fbdev/s1d13xxxfb.c b/drivers/video/fbdev/s1d13xxxfb.c
+index 8048499e398d..d51ef7619115 100644
+--- a/drivers/video/fbdev/s1d13xxxfb.c
++++ b/drivers/video/fbdev/s1d13xxxfb.c
+@@ -721,9 +721,7 @@ static void s1d13xxxfb_fetch_hw_state(struct fb_info *info)
+ 		xres, yres, xres_virtual, yres_virtual, is_color, is_dual, is_tft);
+ }
+ 
+-
+-static int
+-s1d13xxxfb_remove(struct platform_device *pdev)
++static void __s1d13xxxfb_remove(struct platform_device *pdev)
+ {
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 	struct s1d13xxxfb_par *par = NULL;
+@@ -749,9 +747,18 @@ s1d13xxxfb_remove(struct platform_device *pdev)
+ 			pdev->resource[0].end - pdev->resource[0].start +1);
+ 	release_mem_region(pdev->resource[1].start,
+ 			pdev->resource[1].end - pdev->resource[1].start +1);
++}
++
++static int s1d13xxxfb_remove(struct platform_device *pdev)
++{
++	struct fb_info *info = platform_get_drvdata(pdev);
++
++	unregister_framebuffer(info);
++	__s1d13xxxfb_remove(pdev);
+ 	return 0;
+ }
+ 
++
+ static int s1d13xxxfb_probe(struct platform_device *pdev)
+ {
+ 	struct s1d13xxxfb_par *default_par;
+@@ -895,7 +902,7 @@ static int s1d13xxxfb_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ bail:
+-	s1d13xxxfb_remove(pdev);
++	__s1d13xxxfb_remove(pdev);
+ 	return ret;
+ 
+ }
+-- 
+2.25.2
+
