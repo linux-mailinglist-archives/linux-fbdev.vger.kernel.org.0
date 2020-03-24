@@ -2,111 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B276B191372
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 15:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E7E19172C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 18:06:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727065AbgCXOnT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 10:43:19 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:55387 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727464AbgCXOnS (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Mar 2020 10:43:18 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jGklo-0001vv-Na; Tue, 24 Mar 2020 15:43:08 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jGkln-0000tK-B5; Tue, 24 Mar 2020 15:43:07 +0100
-Date:   Tue, 24 Mar 2020 15:43:07 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        linux-pwm@vger.kernel.org,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200324144307.kxhqzyjj4evrouqa@pengutronix.de>
-References: <cover.1584667964.git.gurus@codeaurora.org>
- <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
- <20200320133123.GD5477@dell>
- <20200324110710.GL5477@dell>
- <20200324125735.2mjuvbxt5bpon2ft@pengutronix.de>
- <20200324130410.dwlg767ku6kwequv@holly.lan>
- <20200324142441.GD442973@dell>
+        id S1727304AbgCXRFg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 13:05:36 -0400
+Received: from mga02.intel.com ([134.134.136.20]:21606 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727295AbgCXRFg (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 24 Mar 2020 13:05:36 -0400
+IronPort-SDR: 45A3N9rNAvbWDSoc05FhwbGdbcwGSzjdRPTNrRrQc7bYeCX8quIYXUaCdnFEETBw6NtzejGqHI
+ OzjTvnm9Ne7Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2020 10:05:35 -0700
+IronPort-SDR: RKGsBswksdHt7HFGNuI+iVdAchD7DYRhS1Pe9ExiiC6/82b4EyD2cosT1BfMkBCvOd8iBdM6+F
+ 7nNJAuNgwXuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,301,1580803200"; 
+   d="scan'208";a="446302980"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga005.fm.intel.com with ESMTP; 24 Mar 2020 10:05:34 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 51ED011D; Tue, 24 Mar 2020 19:05:33 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, xllacyx@gmail.com
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/5] video: ssd1307fb: Convert driver to use ->probe_new()
+Date:   Tue, 24 Mar 2020 19:05:28 +0200
+Message-Id: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200324142441.GD442973@dell>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 02:24:41PM +0000, Lee Jones wrote:
-> On Tue, 24 Mar 2020, Daniel Thompson wrote:
-> 
-> > On Tue, Mar 24, 2020 at 01:57:35PM +0100, Uwe Kleine-König wrote:
-> > > Hello Lee,
-> > > 
-> > > On Tue, Mar 24, 2020 at 11:07:10AM +0000, Lee Jones wrote:
-> > > > On Fri, 20 Mar 2020, Lee Jones wrote:
-> > > > 
-> > > > > On Thu, 19 Mar 2020, Guru Das Srinagesh wrote:
-> > > > > 
-> > > > > > Since the PWM framework is switching struct pwm_state.period's datatype
-> > > > > > to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> > > > > > dividend instead of a straight division operation.
-> > > > > > 
-> > > > > > Cc: Lee Jones <lee.jones@linaro.org>
-> > > > > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > > > > > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > > > > > Cc: linux-pwm@vger.kernel.org
-> > > > > > Cc: dri-devel@lists.freedesktop.org
-> > > > > > Cc: linux-fbdev@vger.kernel.org
-> > > > > > 
-> > > > > > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> > > > > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > > > ---
-> > > > > >  drivers/video/backlight/pwm_bl.c | 3 ++-
-> > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > Can this patch be taken on its own?
-> > > > 
-> > > > Hellooooo ...
-> > > 
-> > > Conceptually it can. As the last patch depends on this one (and the
-> > > others) some coordination might be beneficial. But that's up to Thierry
-> > > to decide how (and if) he want this series to be applied.
-> > 
-> > ... and on the backlight side we definitely need to know about the "if"
-> > otherwise there's no point in taking it.
-> 
-> Right.
-> 
-> I'm happy to wait for Thierry.  Although this isn't the only set he's
-> currently blocking.  Is he okay?  On holiday perhaps?
+Use the ->probe_new() callback.
 
-The newest commit by him in next is from last week. My guess is he
-just didn't come around yet to care for the PWM duties.
+The driver does not use const struct i2c_device_id * argument,
+so convert it to utilise the simplified IÂ²C driver registration.
 
-Best regards
-Uwe
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/video/fbdev/ssd1307fb.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index 142535267fec..397eae246c2c 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -586,8 +586,7 @@ static const struct of_device_id ssd1307fb_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
+ 
+-static int ssd1307fb_probe(struct i2c_client *client,
+-			   const struct i2c_device_id *id)
++static int ssd1307fb_probe(struct i2c_client *client)
+ {
+ 	struct backlight_device *bl;
+ 	char bl_name[12];
+@@ -599,11 +598,6 @@ static int ssd1307fb_probe(struct i2c_client *client,
+ 	void *vmem;
+ 	int ret;
+ 
+-	if (!node) {
+-		dev_err(&client->dev, "No device tree data found!\n");
+-		return -EINVAL;
+-	}
+-
+ 	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -808,7 +802,7 @@ static const struct i2c_device_id ssd1307fb_i2c_id[] = {
+ MODULE_DEVICE_TABLE(i2c, ssd1307fb_i2c_id);
+ 
+ static struct i2c_driver ssd1307fb_driver = {
+-	.probe = ssd1307fb_probe,
++	.probe_new = ssd1307fb_probe,
+ 	.remove = ssd1307fb_remove,
+ 	.id_table = ssd1307fb_i2c_id,
+ 	.driver = {
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+2.25.1
+
