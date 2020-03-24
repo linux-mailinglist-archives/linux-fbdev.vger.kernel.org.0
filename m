@@ -2,200 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B46A91911FF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 14:50:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 035AD1912E4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 24 Mar 2020 15:23:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727289AbgCXNuT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 24 Mar 2020 09:50:19 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:37762 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727266AbgCXNuR (ORCPT
+        id S1727530AbgCXOX4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 24 Mar 2020 10:23:56 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:37332 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727501AbgCXOXz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 24 Mar 2020 09:50:17 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200324135016euoutp025c78514292f1033bddea63e6615855c3~-Qa_Whsld0085000850euoutp02C
-        for <linux-fbdev@vger.kernel.org>; Tue, 24 Mar 2020 13:50:16 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200324135016euoutp025c78514292f1033bddea63e6615855c3~-Qa_Whsld0085000850euoutp02C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1585057816;
-        bh=CO6Q5YxaFJM13/GXn2w+f7Ptm3wnmYAz8/fZSrHINXg=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=Odq5XzkTTForQnaa3WqVNooRbjH7Xnzd0hrf4YwrQdDb2gZfHkbRw86g1Hz9f6Gnw
-         +wFz/nzrMkx6wh50d0FCzHLMj/6IjPExoMpHXvW40dYDwc14uqgj+MnhJXV+p5o8pO
-         G1PrpEx505d02IlXjQVpS/f0ZZjvMh+i21MCfTc0=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200324135016eucas1p2cdc9ccdb5fa434d4773c3bef895e82f7~-Qa_ORT470764107641eucas1p2j;
-        Tue, 24 Mar 2020 13:50:16 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3E.C8.60698.8101A7E5; Tue, 24
-        Mar 2020 13:50:16 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200324135015eucas1p1b1a42eae32e4f3b2358cde82caf29b57~-Qa98Myyl0616006160eucas1p1m;
-        Tue, 24 Mar 2020 13:50:15 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200324135015eusmtrp1866ae5ce1110f83be343eb91a7c4134b~-Qa97orGR2944629446eusmtrp1t;
-        Tue, 24 Mar 2020 13:50:15 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-21-5e7a10183c4c
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 02.B7.08375.7101A7E5; Tue, 24
-        Mar 2020 13:50:15 +0000 (GMT)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200324135015eusmtip20c5deec7609d3b74812af0d1a0e7758e~-Qa9oEsWW0442804428eusmtip2D;
-        Tue, 24 Mar 2020 13:50:15 +0000 (GMT)
-Subject: Re: [PATCH v3] video: fbdev: vesafb: add missed release_region
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <ede1ba08-3fd0-20f1-1641-461e89734316@samsung.com>
-Date:   Tue, 24 Mar 2020 14:50:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        Tue, 24 Mar 2020 10:23:55 -0400
+Received: by mail-wr1-f66.google.com with SMTP id w10so21713889wrm.4
+        for <linux-fbdev@vger.kernel.org>; Tue, 24 Mar 2020 07:23:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=cKmeib+BmWwd47DgxcgoVOMPKvAp+uPr4gwXndY1O5I=;
+        b=Ce3yOBCPqf7VZXVox52EqtYVXwJmCTDBc4rPpj21E1LEXlSyWAWPpoO3IXOyacoBvV
+         OPgcpgxn5NjhVaIDt+zAvy5+UtjOV/cQnl0nXkQMvPO7aw7V7L0Nu9pbz1AnO05QY0n4
+         BeT08PMENEfpbDVVhnyfCE4hEenLxGYJs78gdR/3IgD9pKkhJaXbj10IpQSdREvsRAhg
+         oMO/smrg6JtZ4Shi97Wp1/RP26dRPQVbpY8F4EPEA72GrhFXToBKKdg2B+xQdgGJJ2vZ
+         f2OdT6atGc6tDEHNZ3v5g2Os9ohn+lfi1UqtMOP30U5uAMJEClhlBGzyP7GZijgmL5k/
+         0qwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=cKmeib+BmWwd47DgxcgoVOMPKvAp+uPr4gwXndY1O5I=;
+        b=beFk8lohY9QzffXbxsPvezorsMt7MRB3NOD0hJJ/lLbqQ9hZmaX3GOSfACaq11oY39
+         /Dc7VbwZdzWQhE1ObOeNc7LpJnKnLRiczgRnN/PNkhUxfQagjjTxJfXlZ4CxW19bpLTf
+         IxN5eSSSqbpKGKK1+wTE1dZumbx3+S4xCdBRamxtFHfl7KPfBwESJa974sLoMNkwdP7f
+         Sr/9CWbigDcbVw4g7NPFh594paJvci9DnOziayGaR9uM+iOuTYGDX/KpnOWW9gnYqQH6
+         bKpiUhAFRJfvJhT/s2xQtm11lrgwDMzp1zeB4uGw+0GY/2aZe6YQZmFyuLgdp9VsRVG+
+         j4wA==
+X-Gm-Message-State: ANhLgQ2n4D8jzeb+ufUPQBvedq46bvoM/k9HXKhhHmCLPuSS9LvyTpA6
+        DrTTRPXA8DQIhKdAPywqpHlIZQ==
+X-Google-Smtp-Source: ADFU+vvHmRGGnvo0nzP7x/ozCt+1LNA6o+Q2xPy5/8uHRCz+FM1auNFVHF2NF74leUS+Zr/IBljAKw==
+X-Received: by 2002:a5d:6044:: with SMTP id j4mr35092009wrt.232.1585059833617;
+        Tue, 24 Mar 2020 07:23:53 -0700 (PDT)
+Received: from dell ([2.27.35.213])
+        by smtp.gmail.com with ESMTPSA id n2sm30986951wro.25.2020.03.24.07.23.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2020 07:23:52 -0700 (PDT)
+Date:   Tue, 24 Mar 2020 14:24:41 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        linux-pwm@vger.kernel.org,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
+Message-ID: <20200324142441.GD442973@dell>
+References: <cover.1584667964.git.gurus@codeaurora.org>
+ <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
+ <20200320133123.GD5477@dell>
+ <20200324110710.GL5477@dell>
+ <20200324125735.2mjuvbxt5bpon2ft@pengutronix.de>
+ <20200324130410.dwlg767ku6kwequv@holly.lan>
 MIME-Version: 1.0
-In-Reply-To: <CANhBUQ1JV3drHn-HO2urK-Q7yUNtLhk09UuBG7F=qV7Lid=0ww@mail.gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEKsWRmVeSWpSXmKPExsWy7djPc7oSAlVxBnufsVpc+fqezWL2oZfM
-        Fif6PrBaXN41h82BxWPnrLvsHve7jzN5fN4kF8AcxWWTkpqTWZZapG+XwJWxY/YNtoL1UhUX
-        991jb2C8L9zFyMkhIWAi0bZjB0sXIxeHkMAKRonVr+awQThfGCWezJnODOF8ZpRYdaoXqIwD
-        rGXPu3KI+HJGiYmrJ0N1vGWUuD9jMzPIXGEBd4lZk0ESnBwiAuoSn3ftZAexmQXSJTbNOggW
-        ZxOwkpjYvooRxOYVsJO4/PoJWJxFQFXiXOcrsHpRgQiJTw8Os0LUCEqcnPmEBcTmFAiUODP7
-        JRvETHGJW0/mM0HY8hLb384Bu1pCoJtdYvWem0wQj7pI/Lr8C8oWlnh1fAs7hC0jcXpyDwtE
-        wzpGib8dL6C6tzNKLJ/8jw2iylrizrlfbCD/MwtoSqzfpQ8RdpTYM+syOyRY+CRuvBWEOIJP
-        YtI2UNCBhHklOtqEIKrVJDYs28AGs7Zr50rmCYxKs5C8NgvJO7OQvDMLYe8CRpZVjOKppcW5
-        6anFxnmp5XrFibnFpXnpesn5uZsYgSnl9L/jX3cw7vuTdIhRgINRiYdX42FlnBBrYllxZe4h
-        RgkOZiUR3s2pFXFCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeY0XvYwVEkhPLEnNTk0tSC2CyTJx
-        cEo1MB5SDN50+bSU7vL05P8qwgt/Z7ad7/6+ZkJl3dHWG/IK705/ZVx0hI33sfqdFr3Ynw+f
-        uT94V7NZefWdVqnkvQGO1lu4f83gTeCq+rZtbfS5yK+vzs15fkJwM6NnrX/uqXWzOJrvRutM
-        ZTG9Gr8x5EP4nCI27h0czMJuyY9NfTuX9iwNXXLjr6USS3FGoqEWc1FxIgCXlc38JQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsVy+t/xe7riAlVxBlN69S2ufH3PZjH70Etm
-        ixN9H1gtLu+aw+bA4rFz1l12j/vdx5k8Pm+SC2CO0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAz
-        MrHUMzQ2j7UyMlXSt7NJSc3JLEst0rdL0MvYMfsGW8F6qYqL++6xNzDeF+5i5OCQEDCR2POu
-        vIuRk0NIYCmjxKF+G4iwjMTx9WUgYQkBYYk/17rYuhi5gEpeM0p8X36VCSQhLOAuMWvyZDYQ
-        W0RAXeLzrp3sIDazQLrExG1HmSAaOpkk5hw5xQiSYBOwkpjYvgrM5hWwk7j8+glYM4uAqsS5
-        zldgzaICERKHd8yCqhGUODnzCQuIzSkQKHFm9ks2iAXqEn/mXWKGsMUlbj2ZzwRhy0tsfzuH
-        eQKj0Cwk7bOQtMxC0jILScsCRpZVjCKppcW56bnFhnrFibnFpXnpesn5uZsYgfGz7djPzTsY
-        L20MPsQowMGoxMOr8bAyTog1say4MvcQowQHs5II7+bUijgh3pTEyqrUovz4otKc1OJDjKZA
-        z01klhJNzgfGdl5JvKGpobmFpaG5sbmxmYWSOG+HwMEYIYH0xJLU7NTUgtQimD4mDk6pBsaM
-        M7NYDGzlp3DEHqnuW3mQ4bnq5+CCkOgdDomzjrysKlm5vYtpce0X7aS5ot1LEqt6HewUFzm7
-        WD7+/dholansOv/S3IwojYNu191e2LiYxfxlf/A7i8n34utm1/idOT84nB27k/K3Lby8eGHB
-        mh3hcpukzCbM/ykgUb9If0F7/fw//qba6kosxRmJhlrMRcWJAFLdO4+1AgAA
-X-CMS-MailID: 20200324135015eucas1p1b1a42eae32e4f3b2358cde82caf29b57
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200310023550eucas1p10797f834d7dc16f634cf644011462393
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200310023550eucas1p10797f834d7dc16f634cf644011462393
-References: <CGME20200310023550eucas1p10797f834d7dc16f634cf644011462393@eucas1p1.samsung.com>
-        <20200310023536.13622-1-hslester96@gmail.com>
-        <1f5e6f52-c638-f73e-cf9d-88eb641a010d@samsung.com>
-        <CANhBUQ1JV3drHn-HO2urK-Q7yUNtLhk09UuBG7F=qV7Lid=0ww@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200324130410.dwlg767ku6kwequv@holly.lan>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Tue, 24 Mar 2020, Daniel Thompson wrote:
 
-On 3/24/20 2:35 PM, Chuhong Yuan wrote:
-> On Fri, Mar 20, 2020 at 8:01 PM Bartlomiej Zolnierkiewicz
-> <b.zolnierkie@samsung.com> wrote:
->>
->>
->> On 3/10/20 3:35 AM, Chuhong Yuan wrote:
->>> The driver forgets to free the I/O region in remove and probe
->>> failure.
->>> Add the missed calls to fix it.
->>>
->>> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
->>> ---
->>> Changes in v3:
->>>   - Revise the commit message.
->>>   - Add an error handler to suit the "goto error" before request_region().
->>>   - Revise the order of operations in remove.
->>>
->>>  drivers/video/fbdev/vesafb.c | 9 ++++++---
->>>  1 file changed, 6 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
->>> index a1fe24ea869b..c7bc9ace47d4 100644
->>> --- a/drivers/video/fbdev/vesafb.c
->>> +++ b/drivers/video/fbdev/vesafb.c
->>> @@ -439,7 +439,7 @@ static int vesafb_probe(struct platform_device *dev)
->>>                      "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
->>>                       vesafb_fix.smem_len, vesafb_fix.smem_start);
->>>               err = -EIO;
->>> -             goto err;
->>> +             goto err_release_region;
->>>       }
->>>
->>>       printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
->>> @@ -458,15 +458,17 @@ static int vesafb_probe(struct platform_device *dev)
->>>
->>>       if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
->>>               err = -ENOMEM;
->>> -             goto err;
->>> +             goto err_release_region;
->>>       }
->>>       if (register_framebuffer(info)<0) {
->>>               err = -EINVAL;
->>>               fb_dealloc_cmap(&info->cmap);
->>> -             goto err;
->>> +             goto err_release_region;
->>>       }
->>>       fb_info(info, "%s frame buffer device\n", info->fix.id);
->>>       return 0;
->>> +err_release_region:
->>> +     release_region(0x3c0, 32);
->>
->> This is incorrect.
->>
->> The cleanup order should be the reverse of the probing order.
->>
->> Also request_region() return value is not checked by the driver
->> (there is a comment that it can fail and is optional):
->>
->>         /* request failure does not faze us, as vgacon probably has this
->>          * region already (FIXME) */
->>         request_region(0x3c0, 32, "vesafb");
->>
->> so what would happen in such case? It seems that unconditionally
->> doing the release will result in freeing the I/O region owned by
->> the other driver (vgacon)..
->>
+> On Tue, Mar 24, 2020 at 01:57:35PM +0100, Uwe Kleine-König wrote:
+> > Hello Lee,
+> > 
+> > On Tue, Mar 24, 2020 at 11:07:10AM +0000, Lee Jones wrote:
+> > > On Fri, 20 Mar 2020, Lee Jones wrote:
+> > > 
+> > > > On Thu, 19 Mar 2020, Guru Das Srinagesh wrote:
+> > > > 
+> > > > > Since the PWM framework is switching struct pwm_state.period's datatype
+> > > > > to u64, prepare for this transition by using div_u64 to handle a 64-bit
+> > > > > dividend instead of a straight division operation.
+> > > > > 
+> > > > > Cc: Lee Jones <lee.jones@linaro.org>
+> > > > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> > > > > Cc: Jingoo Han <jingoohan1@gmail.com>
+> > > > > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> > > > > Cc: linux-pwm@vger.kernel.org
+> > > > > Cc: dri-devel@lists.freedesktop.org
+> > > > > Cc: linux-fbdev@vger.kernel.org
+> > > > > 
+> > > > > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+> > > > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> > > > > ---
+> > > > >  drivers/video/backlight/pwm_bl.c | 3 ++-
+> > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > 
+> > > > Can this patch be taken on its own?
+> > > 
+> > > Hellooooo ...
+> > 
+> > Conceptually it can. As the last patch depends on this one (and the
+> > others) some coordination might be beneficial. But that's up to Thierry
+> > to decide how (and if) he want this series to be applied.
 > 
-> Maybe we can add a field to represent whether the request succeeds?
-> request_region() returns source *, we can store it and check whether
-> it is null when
-> we are going to call release_region().
+> ... and on the backlight side we definitely need to know about the "if"
+> otherwise there's no point in taking it.
 
-Yes, this is a preferred approach. 
+Right.
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+I'm happy to wait for Thierry.  Although this isn't the only set he's
+currently blocking.  Is he okay?  On holiday perhaps?
 
->>>  err:
->>>       arch_phys_wc_del(par->wc_cookie);
->>>       if (info->screen_base)
->>> @@ -481,6 +483,7 @@ static int vesafb_remove(struct platform_device *pdev)
->>>       struct fb_info *info = platform_get_drvdata(pdev);
->>>
->>>       unregister_framebuffer(info);
->>> +     release_region(0x3c0, 32);
->>>       framebuffer_release(info);
->>>
->>>       return 0;
->>>
->>
->> Best regards,
->> --
->> Bartlomiej Zolnierkiewicz
->> Samsung R&D Institute Poland
->> Samsung Electronics
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
