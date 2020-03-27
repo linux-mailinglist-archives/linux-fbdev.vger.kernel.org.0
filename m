@@ -2,205 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2641951DE
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2020 08:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD851951E1
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2020 08:28:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725857AbgC0H2B (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 27 Mar 2020 03:28:01 -0400
-Received: from mga01.intel.com ([192.55.52.88]:37341 "EHLO mga01.intel.com"
+        id S1725956AbgC0H2j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Mar 2020 03:28:39 -0400
+Received: from mga14.intel.com ([192.55.52.115]:61770 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725942AbgC0H2B (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 27 Mar 2020 03:28:01 -0400
-IronPort-SDR: tDwrJKaEFHTGbcdSvS1ayKPJImgA4tNgtqsFgaqS1n/bgADmtDhT7sXMI5O1onYMskJ2R2KbCm
- Jn5rqGKaIxXA==
+        id S1725857AbgC0H2j (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 27 Mar 2020 03:28:39 -0400
+IronPort-SDR: BtGI3/43TI1PcXIEq+D7vwjpZc89ixRvOGBDqF6Ubkx3MGvD6GkIN69tWSNg4JsCG6eifvjN6A
+ Flfi0m5njUpg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2020 00:27:59 -0700
-IronPort-SDR: Fq+XwKNPaEe8JM8wkvZixfDf4QLI/qxKGXY8zWjC5NsbHfVVGA1TWWPOc1i4UvwBC7Hb/RfXl+
- i84HBnDcguoA==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2020 00:28:38 -0700
+IronPort-SDR: Bdo4x/uyVfWNkI9uXDMqPBxRj4dCH5r5ax9dBpyyU8PHnAXnR/ROIMcpWPxZFFNwIPp99rmKLw
+ uC/AAfCD/lZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.72,311,1580803200"; 
-   d="scan'208";a="447317522"
-Received: from irsmsx153.ger.corp.intel.com ([163.33.192.75])
-  by fmsmga005.fm.intel.com with ESMTP; 27 Mar 2020 00:27:57 -0700
-Received: from irsmsx604.ger.corp.intel.com (163.33.146.137) by
- IRSMSX153.ger.corp.intel.com (163.33.192.75) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 27 Mar 2020 07:27:56 +0000
-Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
- IRSMSX604.ger.corp.intel.com (163.33.146.137) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 27 Mar 2020 07:27:56 +0000
-Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
- IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
- Fri, 27 Mar 2020 07:27:56 +0000
-From:   "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-To:     "laurent.pinchart@ideasonboard.com" 
-        <laurent.pinchart@ideasonboard.com>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>
-CC:     "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
-        "hverkuil@xs4all.nl" <hverkuil@xs4all.nl>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Subject: Re: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only function
- for DRM infoframe
-Thread-Topic: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only
- function for DRM infoframe
-Thread-Index: AQHV4K+D4GGLpaNfYkqvNBu0B8JWuahRj9KAgAAFOoCAAAcUgIAKtSmA
-Date:   Fri, 27 Mar 2020 07:27:56 +0000
-Message-ID: <2dd87897a2c1dea8d882141823ed1ca1206ec01c.camel@intel.com>
-References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com>
-         <20200211074657.231405-6-gwan-gyeong.mun@intel.com>
-         <87k13fcm8w.fsf@intel.com> <87h7yjcldq.fsf@intel.com>
-         <20200320115737.GF5193@pendragon.ideasonboard.com>
-In-Reply-To: <20200320115737.GF5193@pendragon.ideasonboard.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.252.26.111]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1F121079EAA74E48BB7E5655D9C021EC@intel.com>
-Content-Transfer-Encoding: base64
+   d="scan'208";a="394291969"
+Received: from aburk3x-mobl1.ger.corp.intel.com (HELO helsinki.ger.corp.intel.com) ([10.252.26.111])
+  by orsmga004.jf.intel.com with ESMTP; 27 Mar 2020 00:28:36 -0700
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        uma.shankar@intel.com, laurent.pinchart@ideasonboard.com,
+        jani.nikula@intel.com
+Subject: [PATCH v8 00/14] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Fri, 27 Mar 2020 09:29:03 +0200
+Message-Id: <20200327072917.3676391-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-T24gRnJpLCAyMDIwLTAzLTIwIGF0IDEzOjU3ICswMjAwLCBMYXVyZW50IFBpbmNoYXJ0IHdyb3Rl
-Og0KPiBIaSBKYW5pLA0KPiANCj4gT24gRnJpLCBNYXIgMjAsIDIwMjAgYXQgMDE6MzI6MTdQTSAr
-MDIwMCwgSmFuaSBOaWt1bGEgd3JvdGU6DQo+ID4gT24gRnJpLCAyMCBNYXIgMjAyMCwgSmFuaSBO
-aWt1bGEgPGphbmkubmlrdWxhQGxpbnV4LmludGVsLmNvbT4NCj4gPiB3cm90ZToNCj4gPiA+IE9u
-IFR1ZSwgMTEgRmViIDIwMjAsIEd3YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcubXVuQGludGVs
-LmNvbT4NCj4gPiA+IHdyb3RlOg0KPiA+ID4gPiBJdCBhZGRzIGFuIHVucGFjayBvbmx5IGZ1bmN0
-aW9uIGZvciBEUk0gaW5mb2ZyYW1lIGZvciBkeW5hbWljDQo+ID4gPiA+IHJhbmdlIGFuZA0KPiA+
-ID4gPiBtYXN0ZXJpbmcgaW5mb2ZyYW1lIHJlYWRvdXQuDQo+ID4gPiA+IEl0IHVucGFja3MgdGhl
-IGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29udGFpbmVkIGluIHRoZSBiaW5hcnkNCj4gPiA+ID4g
-YnVmZmVyIGludG8NCj4gPiA+ID4gYSBzdHJ1Y3R1cmVkIGZyYW1lIG9mIHRoZSBIRE1JIER5bmFt
-aWMgUmFuZ2UgYW5kIE1hc3RlcmluZw0KPiA+ID4gPiAoRFJNKQ0KPiA+ID4gPiBpbmZvcm1hdGlv
-biBmcmFtZS4NCj4gPiA+ID4gDQo+ID4gPiA+IEluIGNvbnRyYXN0IHRvIGhkbWlfZHJtX2luZm9m
-cmFtZV91bnBhY2soKSBmdW5jdGlvbiwgaXQgZG9lcw0KPiA+ID4gPiBub3QgdmVyaWZ5DQo+ID4g
-PiA+IGEgY2hlY2tzdW0uDQo+ID4gPiA+IA0KPiA+ID4gPiBJdCBjYW4gYmUgdXNlZCBmb3IgdW5w
-YWNraW5nIGEgRFAgSERSIE1ldGFkYXRhIEluZm9mcmFtZSBTRFANCj4gPiA+ID4gY2FzZS4NCj4g
-PiA+ID4gRFAgSERSIE1ldGFkYXRhIEluZm9mcmFtZSBTRFAgdXNlcyB0aGUgc2FtZSBEeW5hbWlj
-IFJhbmdlIGFuZA0KPiA+ID4gPiBNYXN0ZXJpbmcNCj4gPiA+ID4gKERSTSkgaW5mb3JtYXRpb24g
-KENUQS04NjEtRyBzcGVjLikgc3VjaCBhcyBIRE1JIERSTSBpbmZvZnJhbWUuDQo+ID4gPiA+IEJ1
-dCBEUCBTRFAgaGVhZGVyIGFuZCBwYXlsb2FkIHN0cnVjdHVyZSBhcmUgZGlmZmVyZW50IGZyb20g
-SERNSQ0KPiA+ID4gPiBEUk0NCj4gPiA+ID4gSW5mb2ZyYW1lLiBUaGVyZWZvcmUgdW5wYWNraW5n
-IERSTSBpbmZvZnJhbWUgZm9yIERQIHJlcXVpcmVzDQo+ID4gPiA+IHNraXBwaW5nIG9mDQo+ID4g
-PiA+IGEgdmVyaWZ5aW5nIGNoZWNrc3VtLg0KPiA+ID4gPiANCj4gPiA+ID4gU2lnbmVkLW9mZi1i
-eTogR3dhbi1neWVvbmcgTXVuIDxnd2FuLWd5ZW9uZy5tdW5AaW50ZWwuY29tPg0KPiA+ID4gPiBS
-ZXZpZXdlZC1ieTogVW1hIFNoYW5rYXIgPHVtYS5zaGFua2FyQGludGVsLmNvbT4NCj4gPiA+IA0K
-PiA+ID4gQmFydGxvbWllaiwgY2FuIEkgaGF2ZSB5b3VyIGFjayBmb3IgbWVyZ2luZyB0aGlzIHZp
-YSBkcm0taW50ZWwNCj4gPiA+IGFsb25nDQo+ID4gPiB3aXRoIHRoZSByZXN0IG9mIHRoZSBzZXJp
-ZXMsIHBsZWFzZT8NCj4gPiANCj4gPiBPciBIYW5zIG9yIExhdXJlbnQsIGZyb20gdjRsL3ZpZGVv
-IHBvaW50IG9mIHZpZXcuDQo+IA0KPiBJJ20gbm8gZXhwZXJ0IG9uIEluZm9GcmFtZSwgSSdsbCBv
-bmx5IGNvbW1lbnQgb24gdGhlIEFQSSBiZWxvdy4NCj4gDQo+ID4gPiA+IC0tLQ0KPiA+ID4gPiAg
-ZHJpdmVycy92aWRlby9oZG1pLmMgfCA1OCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0tLS0NCj4gPiA+ID4gLS0tLS0tLS0NCj4gPiA+ID4gIGluY2x1ZGUvbGludXgvaGRtaS5oIHwg
-IDIgKysNCj4gPiA+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNDMgaW5zZXJ0aW9ucygrKSwgMTcgZGVs
-ZXRpb25zKC0pDQo+ID4gPiA+IA0KPiA+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92aWRlby9o
-ZG1pLmMgYi9kcml2ZXJzL3ZpZGVvL2hkbWkuYw0KPiA+ID4gPiBpbmRleCA5YzgyZTJhMGE0MTEu
-Ljk4MTg4MzZkODJiNyAxMDA2NDQNCj4gPiA+ID4gLS0tIGEvZHJpdmVycy92aWRlby9oZG1pLmMN
-Cj4gPiA+ID4gKysrIGIvZHJpdmVycy92aWRlby9oZG1pLmMNCj4gPiA+ID4gQEAgLTE3NzUsMjAg
-KzE3NzUsMTggQEAgaGRtaV92ZW5kb3JfYW55X2luZm9mcmFtZV91bnBhY2sodW5pb24NCj4gPiA+
-ID4gaGRtaV92ZW5kb3JfYW55X2luZm9mcmFtZSAqZnJhbWUsDQo+ID4gPiA+ICB9DQo+ID4gPiA+
-ICANCj4gPiA+ID4gIC8qKg0KPiA+ID4gPiAtICogaGRtaV9kcm1faW5mb2ZyYW1lX3VucGFjaygp
-IC0gdW5wYWNrIGJpbmFyeSBidWZmZXIgdG8gYQ0KPiA+ID4gPiBIRE1JIERSTSBpbmZvZnJhbWUN
-Cj4gPiA+ID4gKyAqIGhkbWlfZHJtX2luZm9mcmFtZV91bnBhY2tfb25seSgpIC0gdW5wYWNrIGJp
-bmFyeSBidWZmZXIgdG8NCj4gPiA+ID4gYSBIRE1JIERSTSBpbmZvZnJhbWUNCj4gPiA+ID4gICAq
-IEBmcmFtZTogSERNSSBEUk0gaW5mb2ZyYW1lDQo+ID4gPiA+ICAgKiBAYnVmZmVyOiBzb3VyY2Ug
-YnVmZmVyDQo+ID4gPiA+ICAgKiBAc2l6ZTogc2l6ZSBvZiBidWZmZXINCj4gPiA+ID4gICAqDQo+
-ID4gPiA+IC0gKiBVbnBhY2tzIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaW4gYmluYXJ5IEBi
-dWZmZXIgaW50byBhDQo+ID4gPiA+IHN0cnVjdHVyZWQNCj4gPiA+ID4gKyAqIFVucGFja3MgdGhl
-IGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29udGFpbmVkIGluIGJpbmFyeQ0KPiA+ID4gPiBAYnVm
-ZmVyIGludG8gYSBzdHJ1Y3R1cmVkDQo+IA0KPiBMaW5lIHdyYXAgcGxlYXNlLg0KPiANCj4gVGhp
-cyBuZWVkcyB0byBiZSBjbGFyaWZpZWQgdG8gZXhwbGFpbiBleGFjdGx5IHdoYXQgdGhlIGJ1ZmZl
-ciBwb2ludHMNCj4gdG8uDQo+IA0KT2theSBJJ2xsIHVwZGF0ZSBjbGVhciBjb21tZW50cyBuZXh0
-IHZlcnNpb24uDQo+IEFsc28sIGFzIHRoaXMgaXMgYXBwbGljYWJsZSB0byBEUCB0b28sIHNob3Vs
-ZG4ndCB3ZSBkcm9wIHRoZSBoZG1pXw0KPiBwcmVmaXggPyBJcyB0aGVyZSBhbm90aGVyIHByZWZp
-eCB0aGF0IGNvdWxkIGJlIHVzZWQgZm9yIGZ1bmN0aW9ucw0KPiB0aGF0DQo+IGFyZSBhcHBsaWNh
-dGlvbiB0byBpbmZvZnJhbWUgaGFuZGxpbmcgc2hhcmVkIGJ5IGRpZmZlcmVudCBkaXNwbGF5DQo+
-IGludGVyZmFjZXMgPyBBIGJpdCBvZiByZWZhY3RvcmluZyB3b3VsZCBoZWxwIG1ha2luZyBhbGwg
-dGhpcyBjbGVhci4NCj4gDQpCb3RoIERQIGFuZCBIRE1JIHVzZSBDVEEtODYxLUcgc3BlYyBmb3Ig
-RFJNIGluZm9mcmFtZS4gSSdsbCB1cGRhdGUNCnByZWZpeCB3aXRoIGN0YV8gaW5zdGVhZCBvZiBo
-ZG1pXy4NCj4gPiA+ID4gICAqIEBmcmFtZSBvZiB0aGUgSERNSSBEeW5hbWljIFJhbmdlIGFuZCBN
-YXN0ZXJpbmcgKERSTSkNCj4gPiA+ID4gaW5mb3JtYXRpb24gZnJhbWUuDQo+ID4gPiA+IC0gKiBB
-bHNvIHZlcmlmaWVzIHRoZSBjaGVja3N1bSBhcyByZXF1aXJlZCBieSBzZWN0aW9uIDUuMy41IG9m
-DQo+ID4gPiA+IHRoZSBIRE1JIDEuNA0KPiA+ID4gPiAtICogc3BlY2lmaWNhdGlvbi4NCj4gPiA+
-ID4gICAqDQo+ID4gPiA+ICAgKiBSZXR1cm5zIDAgb24gc3VjY2VzcyBvciBhIG5lZ2F0aXZlIGVy
-cm9yIGNvZGUgb24gZmFpbHVyZS4NCj4gPiA+ID4gICAqLw0KPiA+ID4gPiAtc3RhdGljIGludCBo
-ZG1pX2RybV9pbmZvZnJhbWVfdW5wYWNrKHN0cnVjdCBoZG1pX2RybV9pbmZvZnJhbWUNCj4gPiA+
-ID4gKmZyYW1lLA0KPiA+ID4gPiAtCQkJCSAgICAgY29uc3Qgdm9pZCAqYnVmZmVyLCBzaXplX3QN
-Cj4gPiA+ID4gc2l6ZSkNCj4gPiA+ID4gK2ludCBoZG1pX2RybV9pbmZvZnJhbWVfdW5wYWNrX29u
-bHkoc3RydWN0IGhkbWlfZHJtX2luZm9mcmFtZQ0KPiA+ID4gPiAqZnJhbWUsDQo+ID4gPiA+ICsJ
-CQkJICAgY29uc3Qgdm9pZCAqYnVmZmVyLCBzaXplX3QNCj4gPiA+ID4gc2l6ZSkNCj4gPiA+ID4g
-IHsNCj4gPiA+ID4gIAljb25zdCB1OCAqcHRyID0gYnVmZmVyOw0KPiA+ID4gPiAgCWNvbnN0IHU4
-ICp0ZW1wOw0KPiA+ID4gPiBAQCAtMTc5NywyMyArMTc5NSwxMyBAQCBzdGF0aWMgaW50DQo+ID4g
-PiA+IGhkbWlfZHJtX2luZm9mcmFtZV91bnBhY2soc3RydWN0IGhkbWlfZHJtX2luZm9mcmFtZSAq
-ZnJhbWUsDQo+ID4gPiA+ICAJaW50IHJldDsNCj4gPiA+ID4gIAlpbnQgaTsNCj4gPiA+ID4gIA0K
-PiA+ID4gPiAtCWlmIChzaXplIDwgSERNSV9JTkZPRlJBTUVfU0laRShEUk0pKQ0KPiA+ID4gPiAt
-CQlyZXR1cm4gLUVJTlZBTDsNCj4gPiA+ID4gLQ0KPiA+ID4gPiAtCWlmIChwdHJbMF0gIT0gSERN
-SV9JTkZPRlJBTUVfVFlQRV9EUk0gfHwNCj4gPiA+ID4gLQkgICAgcHRyWzFdICE9IDEgfHwNCj4g
-PiA+ID4gLQkgICAgcHRyWzJdICE9IEhETUlfRFJNX0lORk9GUkFNRV9TSVpFKQ0KPiA+ID4gPiAt
-CQlyZXR1cm4gLUVJTlZBTDsNCj4gPiA+ID4gLQ0KPiA+ID4gPiAtCWlmIChoZG1pX2luZm9mcmFt
-ZV9jaGVja3N1bShidWZmZXIsDQo+ID4gPiA+IEhETUlfSU5GT0ZSQU1FX1NJWkUoRFJNKSkgIT0g
-MCkNCj4gPiA+ID4gKwlpZiAoc2l6ZSA8IEhETUlfRFJNX0lORk9GUkFNRV9TSVpFKQ0KPiA+ID4g
-PiAgCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiA+ID4gIA0KPiA+ID4gPiAgCXJldCA9IGhkbWlfZHJt
-X2luZm9mcmFtZV9pbml0KGZyYW1lKTsNCj4gPiA+ID4gIAlpZiAocmV0KQ0KPiA+ID4gPiAgCQly
-ZXR1cm4gcmV0Ow0KPiA+ID4gPiAgDQo+ID4gPiA+IC0JcHRyICs9IEhETUlfSU5GT0ZSQU1FX0hF
-QURFUl9TSVpFOw0KPiA+ID4gPiAtDQo+ID4gPiA+ICAJZnJhbWUtPmVvdGYgPSBwdHJbMF0gJiAw
-eDc7DQo+ID4gPiA+ICAJZnJhbWUtPm1ldGFkYXRhX3R5cGUgPSBwdHJbMV0gJiAweDc7DQo+ID4g
-PiA+ICANCj4gPiA+ID4gQEAgLTE4MzcsNiArMTgyNSw0MiBAQCBzdGF0aWMgaW50DQo+ID4gPiA+
-IGhkbWlfZHJtX2luZm9mcmFtZV91bnBhY2soc3RydWN0IGhkbWlfZHJtX2luZm9mcmFtZSAqZnJh
-bWUsDQo+ID4gPiA+ICANCj4gPiA+ID4gIAlyZXR1cm4gMDsNCj4gPiA+ID4gIH0NCj4gPiA+ID4g
-K0VYUE9SVF9TWU1CT0woaGRtaV9kcm1faW5mb2ZyYW1lX3VucGFja19vbmx5KTsNCj4gPiA+ID4g
-Kw0KPiA+ID4gPiArLyoqDQo+ID4gPiA+ICsgKiBoZG1pX2RybV9pbmZvZnJhbWVfdW5wYWNrKCkg
-LSB1bnBhY2sgYmluYXJ5IGJ1ZmZlciB0byBhDQo+ID4gPiA+IEhETUkgRFJNIGluZm9mcmFtZQ0K
-PiA+ID4gPiArICogQGZyYW1lOiBIRE1JIERSTSBpbmZvZnJhbWUNCj4gPiA+ID4gKyAqIEBidWZm
-ZXI6IHNvdXJjZSBidWZmZXINCj4gPiA+ID4gKyAqIEBzaXplOiBzaXplIG9mIGJ1ZmZlcg0KPiA+
-ID4gPiArICoNCj4gPiA+ID4gKyAqIFVucGFja3MgdGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBp
-biBiaW5hcnkgQGJ1ZmZlciBpbnRvIGENCj4gPiA+ID4gc3RydWN0dXJlZA0KPiANCj4gU2FtZSBo
-ZXJlLiBUaGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHRoZSB0d28gZnVuY3Rpb25zIGlzICJpbmZvcm1h
-dGlvbg0KPiBkYXRhDQo+IGJsb2NrIiB2cy4gImluZm9ybWF0aW9uIiwgaXQncyB2ZXJ5IHVuY2xl
-YXIgdG8gdGhlIHJlYWRlciB3aXRob3V0DQo+IGxvb2tpbmcgYXQgZWl0aGVyIHRoZSBjb21taXQg
-bWVzc2FnZSBvciB0aGUgaW1wbGVtZW50YXRpb24uDQo+IA0KSSdsbCB1cGRhdGUgY2xlYXIgY29t
-bWVudHMgbmV4dCB2ZXJzaW9uLg0KDQpUaGFuayB5b3UgZm9yIGdpdmluZyBtZSByZXZpZXcgY29t
-bWVudHMuDQoNCkcuRy4NCg0KPiA+ID4gPiArICogQGZyYW1lIG9mIHRoZSBIRE1JIER5bmFtaWMg
-UmFuZ2UgYW5kIE1hc3RlcmluZyAoRFJNKQ0KPiA+ID4gPiBpbmZvcm1hdGlvbiBmcmFtZS4NCj4g
-PiA+ID4gKyAqIEFsc28gdmVyaWZpZXMgdGhlIGNoZWNrc3VtIGFzIHJlcXVpcmVkIGJ5IHNlY3Rp
-b24gNS4zLjUgb2YNCj4gPiA+ID4gdGhlIEhETUkgMS40DQo+ID4gPiA+ICsgKiBzcGVjaWZpY2F0
-aW9uLg0KPiA+ID4gPiArICoNCj4gPiA+ID4gKyAqIFJldHVybnMgMCBvbiBzdWNjZXNzIG9yIGEg
-bmVnYXRpdmUgZXJyb3IgY29kZSBvbiBmYWlsdXJlLg0KPiA+ID4gPiArICovDQo+ID4gPiA+ICtz
-dGF0aWMgaW50IGhkbWlfZHJtX2luZm9mcmFtZV91bnBhY2soc3RydWN0IGhkbWlfZHJtX2luZm9m
-cmFtZQ0KPiA+ID4gPiAqZnJhbWUsDQo+ID4gPiA+ICsJCQkJICAgICBjb25zdCB2b2lkICpidWZm
-ZXIsIHNpemVfdA0KPiA+ID4gPiBzaXplKQ0KPiA+ID4gPiArew0KPiA+ID4gPiArCWNvbnN0IHU4
-ICpwdHIgPSBidWZmZXI7DQo+ID4gPiA+ICsJaW50IHJldDsNCj4gPiA+ID4gKw0KPiA+ID4gPiAr
-CWlmIChzaXplIDwgSERNSV9JTkZPRlJBTUVfU0laRShEUk0pKQ0KPiA+ID4gPiArCQlyZXR1cm4g
-LUVJTlZBTDsNCj4gPiA+ID4gKw0KPiA+ID4gPiArCWlmIChwdHJbMF0gIT0gSERNSV9JTkZPRlJB
-TUVfVFlQRV9EUk0gfHwNCj4gPiA+ID4gKwkgICAgcHRyWzFdICE9IDEgfHwNCj4gPiA+ID4gKwkg
-ICAgcHRyWzJdICE9IEhETUlfRFJNX0lORk9GUkFNRV9TSVpFKQ0KPiA+ID4gPiArCQlyZXR1cm4g
-LUVJTlZBTDsNCj4gPiA+ID4gKw0KPiA+ID4gPiArCWlmIChoZG1pX2luZm9mcmFtZV9jaGVja3N1
-bShidWZmZXIsDQo+ID4gPiA+IEhETUlfSU5GT0ZSQU1FX1NJWkUoRFJNKSkgIT0gMCkNCj4gPiA+
-ID4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwlyZXQgPSBoZG1pX2Ry
-bV9pbmZvZnJhbWVfdW5wYWNrX29ubHkoZnJhbWUsIHB0ciArDQo+ID4gPiA+IEhETUlfSU5GT0ZS
-QU1FX0hFQURFUl9TSVpFLA0KPiA+ID4gPiArCQkJCQkgICAgIHNpemUgLQ0KPiA+ID4gPiBIRE1J
-X0lORk9GUkFNRV9IRUFERVJfU0laRSk7DQo+ID4gPiA+ICsJcmV0dXJuIHJldDsNCj4gPiA+ID4g
-K30NCj4gPiA+ID4gIA0KPiA+ID4gPiAgLyoqDQo+ID4gPiA+ICAgKiBoZG1pX2luZm9mcmFtZV91
-bnBhY2soKSAtIHVucGFjayBiaW5hcnkgYnVmZmVyIHRvIGEgSERNSQ0KPiA+ID4gPiBpbmZvZnJh
-bWUNCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaGRtaS5oIGIvaW5jbHVkZS9s
-aW51eC9oZG1pLmgNCj4gPiA+ID4gaW5kZXggOTkxOGE2YzkxMGM1Li5hZmI0M2VmYzAzZTAgMTAw
-NjQ0DQo+ID4gPiA+IC0tLSBhL2luY2x1ZGUvbGludXgvaGRtaS5oDQo+ID4gPiA+ICsrKyBiL2lu
-Y2x1ZGUvbGludXgvaGRtaS5oDQo+ID4gPiA+IEBAIC0yMTksNiArMjE5LDggQEAgc3NpemVfdCBo
-ZG1pX2RybV9pbmZvZnJhbWVfcGFjayhzdHJ1Y3QNCj4gPiA+ID4gaGRtaV9kcm1faW5mb2ZyYW1l
-ICpmcmFtZSwgdm9pZCAqYnVmZmVyLA0KPiA+ID4gPiAgc3NpemVfdCBoZG1pX2RybV9pbmZvZnJh
-bWVfcGFja19vbmx5KGNvbnN0IHN0cnVjdA0KPiA+ID4gPiBoZG1pX2RybV9pbmZvZnJhbWUgKmZy
-YW1lLA0KPiA+ID4gPiAgCQkJCSAgICAgdm9pZCAqYnVmZmVyLCBzaXplX3QNCj4gPiA+ID4gc2l6
-ZSk7DQo+ID4gPiA+ICBpbnQgaGRtaV9kcm1faW5mb2ZyYW1lX2NoZWNrKHN0cnVjdCBoZG1pX2Ry
-bV9pbmZvZnJhbWUNCj4gPiA+ID4gKmZyYW1lKTsNCj4gPiA+ID4gK2ludCBoZG1pX2RybV9pbmZv
-ZnJhbWVfdW5wYWNrX29ubHkoc3RydWN0IGhkbWlfZHJtX2luZm9mcmFtZQ0KPiA+ID4gPiAqZnJh
-bWUsDQo+ID4gPiA+ICsJCQkJICAgY29uc3Qgdm9pZCAqYnVmZmVyLCBzaXplX3QNCj4gPiA+ID4g
-c2l6ZSk7DQo+ID4gPiA+ICANCj4gPiA+ID4gIGVudW0gaGRtaV9zcGRfc2RpIHsNCj4gPiA+ID4g
-IAlIRE1JX1NQRF9TRElfVU5LTk9XTiwNCg==
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
+
+v2: Minor style fix
+v3: 
+  - Add a new drm data structure for DP VSC SDP
+  - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
+  - Move logging functions to drm core [Jani N]
+    And use drm core's DP VSC SDP logging function
+  - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+    used for HDMI), when intel_dp_set_infoframes() function will be called.
+v4:
+  - Use struct drm_device logging macros
+  - Rebased
+v5:
+  - Use intel_de_*() functions for register access
+  - Add warning where a bpc is 6 and a pixel format is RGB.
+  - Addressed review comments from Uma
+    Add kernel docs for added data structures
+    Rename enum dp_colorspace to dp_pixelformat
+    Polish commit message and comments
+    Combine the if checks of sdp.HB2 and sdp.HB3
+    Add 6bpc to packining and unpacking of VSC SDP
+v6: Fix enabled infoframe states of lspcon
+v7: Fix the wrong check of combination bpc 6 and RGB pixelformat
+v8:
+  - Rebased
+  - Addressed review comments from Laurent Pinchart
+    Rename hdmi_drm_infoframe_unpack_only() to cta_drm_infoframe_unpack_databytes()
+    Add clear comments to cta_drm_infoframe_unpack_databytes()
+
+Gwan-gyeong Mun (14):
+  video/hdmi: Add Unpack function for CTA-861-G DRM infoframe DataBytes
+  drm/i915/dp: Read out DP SDPs
+  drm: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Fix enabled infoframe states of lspcon
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on ddi disable
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
+
+ drivers/gpu/drm/drm_dp_helper.c              | 174 ++++++++
+ drivers/gpu/drm/i915/display/intel_ddi.c     |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c |  62 +++
+ drivers/gpu/drm/i915/display/intel_dp.c      | 395 ++++++++++---------
+ drivers/gpu/drm/i915/display/intel_dp.h      |  15 +-
+ drivers/gpu/drm/i915/display/intel_lspcon.c  |   2 +-
+ drivers/gpu/drm/i915/display/intel_psr.c     |  54 +--
+ drivers/gpu/drm/i915/display/intel_psr.h     |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h              |   1 +
+ drivers/video/hdmi.c                         |  74 ++--
+ include/drm/drm_dp_helper.h                  |   3 +
+ include/linux/hdmi.h                         |   2 +
+ 12 files changed, 544 insertions(+), 263 deletions(-)
+
+-- 
+2.25.0
+
