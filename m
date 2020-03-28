@@ -2,116 +2,111 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFB0E1967C8
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Mar 2020 17:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0238D19684E
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Mar 2020 19:13:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbgC1Q5n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Mar 2020 12:57:43 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:39198 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726186AbgC1Q5n (ORCPT
+        id S1726325AbgC1SNG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Mar 2020 14:13:06 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:35612 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726265AbgC1SNG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Mar 2020 12:57:43 -0400
-Received: by mail-il1-f193.google.com with SMTP id r5so11761026ilq.6;
-        Sat, 28 Mar 2020 09:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WLDYwWYbolvs0EFALE9dMKsppiAeImVTfUdChbO3aow=;
-        b=pPgqIvdZ9uNU7ousZa8O2z2V+0gFzTJGZ7ABV8Gxi8q3uDmusxPuaKdRJSwm57b/cL
-         ruYb656wWLtlY53QjVAUZSag3Ic2h5PDKDET4B6KrQ4YvXehJDb8JVrBSMKU2oro5vuz
-         Z+KZjfk5YlZ2DFwobx/GMAQIFRWYxJwHEBSDRV9fQs9ADG4BJfSyMPunk+oJg3vfD7Ua
-         vH3VBF077y1DVtJC2Gob+dulzgj6ELBrZH1wI/SLzDii9zSBTasHK8CazQAqJ4nleT5A
-         vXX7suRnXWPWuxdeSUACQ2lwZ4ZLKDGPZrB0AuFsd09SRFIqO1/XMt3c/OH/3YXle8+v
-         1zEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WLDYwWYbolvs0EFALE9dMKsppiAeImVTfUdChbO3aow=;
-        b=QuHS9JwnV0YGnv6jbLbxNPn6CXidX43fO2vWYoQXr05QXULVtHlhOiKuo+xa1+hO4s
-         V0R6dxR/iTunFF/AyN+P4Lvl6amVXstiIv/L//YpRoNB6F9wpk530lS6Wn4r4fo2reHv
-         Y6u8zHFmt0f+EGQnlAaWFGSdYT4K+fqNKALDmYsgHhCw8ylhGTF+9hkIBbmGKehYb08N
-         a0Vh5WCxW3Vpvi2A7zYYBAriWrz4yiwMYoQwqhiFGse8hOR0pN/YmC68WSeuA23StAt7
-         GHz2ALvf3wLAu98wcPb21l+LcxOB0XdGZc5aRvXydpRy8sjUtmIvIqG85AWD9rifrqdg
-         JOdQ==
-X-Gm-Message-State: ANhLgQ0NG0IzlB5Py5nX/PLzAyFzX2Dz+CMU+wbkfZOFbAaNAeqHpXlj
-        JP/uCPFHSe0Auy89WXHN58L6n81krN68jpj2Rjc=
-X-Google-Smtp-Source: ADFU+vuddmVyw+A7IZajazkq9naRHRcxcUddjdccvYWE0Sz6p4/HG+6kcqL17pjFizx9jh7A3zQERI6a2RANMmH2NOY=
-X-Received: by 2002:a92:77c2:: with SMTP id s185mr4244689ilc.297.1585414661819;
- Sat, 28 Mar 2020 09:57:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200328151511.22932-1-hqjagain@gmail.com> <CAKMK7uF2mipUSr-XRESrRJ8JdOZCekNTCVsDPW5hNp-mWwPj6Q@mail.gmail.com>
-In-Reply-To: <CAKMK7uF2mipUSr-XRESrRJ8JdOZCekNTCVsDPW5hNp-mWwPj6Q@mail.gmail.com>
-From:   Qiujun Huang <hqjagain@gmail.com>
-Date:   Sun, 29 Mar 2020 00:57:29 +0800
-Message-ID: <CAJRQjocxe+KfSBX3uFv+_ajcY6agF9oXWvkon_kPM+3dk6Pz2Q@mail.gmail.com>
+        Sat, 28 Mar 2020 14:13:06 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id CF34D80609;
+        Sat, 28 Mar 2020 19:13:00 +0100 (CET)
+Date:   Sat, 28 Mar 2020 19:12:59 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Qiujun Huang <hqjagain@gmail.com>
+Cc:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, daniel.thompson@linaro.org,
+        ghalat@redhat.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] fbcon: fix null-ptr-deref in fbcon_switch
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        ghalat@redhat.com, dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20200328181259.GA24335@ravnborg.org>
+References: <20200328151511.22932-1-hqjagain@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200328151511.22932-1-hqjagain@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=hSkVLCK3AAAA:8
+        a=pGLkceISAAAA:8 a=UqxoRI4XFovwuTuz1dAA:9 a=CjuIK1q_8ugA:10
+        a=cQPPKAXgyycSBL8etih5:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Mar 29, 2020 at 12:31 AM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
->
-> On Sat, Mar 28, 2020 at 4:15 PM Qiujun Huang <hqjagain@gmail.com> wrote:
-> > Add check for vc_cons[logo_shown].d, as it can be released by
-> > vt_ioctl(VT_DISALLOCATE).
->
-> Can you pls link to the syzbot report and distill the essence of the
-> crash/issue here in the commit message? As-is a bit unclear what's
-> going on. Patch itself looks correct.
+Hi Qiujun
 
-https://lkml.org/lkml/2020/3/27/403
-Thanks.
+Thanks for looking into the sysbot bugs.
 
->
-> Thanks, Daniel
->
-> > Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
-> > Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> > ---
-> >  drivers/video/fbdev/core/fbcon.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> > index bb6ae995c2e5..7ee0f7b55829 100644
-> > --- a/drivers/video/fbdev/core/fbcon.c
-> > +++ b/drivers/video/fbdev/core/fbcon.c
-> > @@ -2254,7 +2254,7 @@ static int fbcon_switch(struct vc_data *vc)
-> >                 fbcon_update_softback(vc);
-> >         }
-> >
-> > -       if (logo_shown >= 0) {
-> > +       if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
-> >                 struct vc_data *conp2 = vc_cons[logo_shown].d;
-> >
-> >                 if (conp2->vc_top == logo_lines
-> > @@ -2852,7 +2852,7 @@ static void fbcon_scrolldelta(struct vc_data *vc, int lines)
-> >                         return;
-> >                 if (vc->vc_mode != KD_TEXT || !lines)
-> >                         return;
-> > -               if (logo_shown >= 0) {
-> > +               if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
-> >                         struct vc_data *conp2 = vc_cons[logo_shown].d;
-> >
-> >                         if (conp2->vc_top == logo_lines
-> > --
-> > 2.17.1
-> >
->
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
+On Sat, Mar 28, 2020 at 11:15:10PM +0800, Qiujun Huang wrote:
+> Add check for vc_cons[logo_shown].d, as it can be released by
+> vt_ioctl(VT_DISALLOCATE).
+> 
+> Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
+> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+> ---
+>  drivers/video/fbdev/core/fbcon.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index bb6ae995c2e5..7ee0f7b55829 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -2254,7 +2254,7 @@ static int fbcon_switch(struct vc_data *vc)
+>  		fbcon_update_softback(vc);
+>  	}
+>  
+> -	if (logo_shown >= 0) {
+> +	if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
+>  		struct vc_data *conp2 = vc_cons[logo_shown].d;
+>  
+>  		if (conp2->vc_top == logo_lines
+> @@ -2852,7 +2852,7 @@ static void fbcon_scrolldelta(struct vc_data *vc, int lines)
+>  			return;
+>  		if (vc->vc_mode != KD_TEXT || !lines)
+>  			return;
+> -		if (logo_shown >= 0) {
+> +		if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
+>  			struct vc_data *conp2 = vc_cons[logo_shown].d;
+>  
+>  			if (conp2->vc_top == logo_lines
+
+I am not familiar with this code.
+
+But it looks like you try to avoid the sympton
+which is that logo_shown has a wrong value after a
+vc is deallocated, and do not fix the root cause.
+
+We have:
+
+vt_ioctl(VT_DISALLOCATE)
+ |
+ +- vc_deallocate()
+     |
+     +- visual_deinit()
+         |
+	 +- vc->vc_sw->con_deinit(vc)
+	     |
+	     +- fbcon_deinit()
+
+Would it be better to update logo_shown
+in fbcon_deinit()?
+Then we will not try to do anything with
+the logo in fbcon_switch().
+
+fbcon_deinit() is called with console locked
+so there should not be any races.
+
+I did not stare long enough on the code to come up with a patch,
+but this may be a better way to fix it.
+
+	Sam
