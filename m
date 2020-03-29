@@ -2,122 +2,149 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2D1196D41
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 14:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4ED5196E01
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 16:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728035AbgC2MWz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Mar 2020 08:22:55 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:42771 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728044AbgC2MWy (ORCPT
+        id S1727888AbgC2O6s (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 Mar 2020 10:58:48 -0400
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:54948 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727488AbgC2O6s (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Mar 2020 08:22:54 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 22so7162620pfa.9;
-        Sun, 29 Mar 2020 05:22:53 -0700 (PDT)
+        Sun, 29 Mar 2020 10:58:48 -0400
+Received: by mail-pj1-f66.google.com with SMTP id np9so6391292pjb.4;
+        Sun, 29 Mar 2020 07:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6UClIPWeDMQPAzXntBk2QoHfbWj9MDU21yOBf0GHeHw=;
-        b=jdUOwg337Wg8hPuF5NdV1z+1iXNGjwb+YDUmS97pf9xkU/BWMOmRa8gpqg/wHMmz2a
-         h58yHx1+HaoLmCL6hnIeTPqm+2YMk9XzXIgi8Vgh9+ZM41zzixi1r10H3tUGl6hbw2fa
-         +/SCEv5PddejDs3d49ieJ06lzLGUMqG9GyxGvtAAn6VGkc3VIzvQFeTpteUPogXC2Pzf
-         Nck2ZgMO6TY1u9JXPbiayQdMPaVsYZN0gYMyxOTiZ2uHnfym+nSJ5RCtbfwJVF5O2hRj
-         FXgxRY9UmwUvEuFr258gE1lMF0n3PSTtd9BUt9ycNv+7B5vOzdWySiaKBoIv9i+HiGuE
-         66Yg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8BcxV8pGWJr7R5GyeodoBfbjlgHj70bMVXWL1P/PRiA=;
+        b=c9/0eKER41JmgTmkyLd4o0N090jCq6vEQVUWvqTldbNa/noBczXdbXylNqfn+9GDH+
+         WGXuLdCTMG//pUS+UM8lEUR7MA5baNxvn2KWJWrJr06077S5i9dmGx2pU9iPCmlo4QhD
+         cfyv9CJ5k8xLLoLOtzWh+bDRd76EN+7xuXlvkJDBFjZUxcyr2C+wiy1FA4GLjFod2sTA
+         AXv3wdotCT3B5p6HfqEMT2hGMGIhEI9LcAOzL6NmVT9wX5P6aQW/lyoljBuQw70u8AdB
+         Elc0qoUk6G7T5WEE4P4HifwYr+DwOyjh+v/bDwiACJG52nZTYo4hEJ5UADrMe7UG8P4e
+         qelw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6UClIPWeDMQPAzXntBk2QoHfbWj9MDU21yOBf0GHeHw=;
-        b=KnEe6XjPVjmNADNjUjazYFiieYsEpGXBrvx734J77qKEV74h7t1VVqZ+nDksLazaC4
-         QKgn+cMIpVqPNG5RCUZTTeSXSxqkxt+gDHnz8F6iqeWAHwUfP2OOEYT1XCvYxHPa4Z7t
-         /ajQeKH6GFa9uotjWYec9CCf1Y2aNhgnUjV/2DkOwVb1Ygm6B+CrZXtzJu7uu/LpVfHe
-         lepCJabgYeRi57lvxhjdt3ysLjdbgokwId2ER/IHJK/ln3rz9K+QyRwjQGMyoxuz4Aak
-         QPLM/mrT9LilH7CG9PA6hfT3RcA48lsCBlmqnYoyyNhdaSo/MMQVLkwDkyxviQF+7EzX
-         qGgQ==
-X-Gm-Message-State: ANhLgQ1U/0zf2lpPzYbVrDLusyT3qAZBiW4hfKVmViIGdCJUPICJLte9
-        DFTdkENCCbxP/uKVNypcgizCvtl1iSpb1I01dx0=
-X-Google-Smtp-Source: ADFU+vtdWfniuNTMK9Zagqw0FyohZmWEmZi+NzvusNKnAyqgygrL2tuE+ttN/w5nkf3Xdl0gmeaKUfp8hzr43IbRckI=
-X-Received: by 2002:a63:798a:: with SMTP id u132mr8699746pgc.203.1585484573149;
- Sun, 29 Mar 2020 05:22:53 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8BcxV8pGWJr7R5GyeodoBfbjlgHj70bMVXWL1P/PRiA=;
+        b=Y1qatms2Q/VnstzqYToiYIBzzn/gh8oFsPqvcpmPRwwM2UedwknmJimkPgs5O5Oh4s
+         2XY+oYm3/IybLS0KkbbWahVq7cSCHgDIG848X6MUM+xQIyF1BeozfVv+tdO5uKFQYpbN
+         q2RTykIQ57qujxX6I11wV9/HqAoA9zVv2MM7PCsGtU13edHGI1J1+jNj0GiMtIx3xGqR
+         rBVg7dGNTQ18nhZw7bbI4bdqJ7eXdr0eNt841rxZpe98wBSV1nyVsFvYrBy2zANCgv2i
+         n5wMoZi+SBpFcZXn948D3jRuJ5H/vwDjGdemVx2Ql1/9Zn63jBLdEVeCXQPRRek4QRRt
+         nnpQ==
+X-Gm-Message-State: AGi0PuZFuRO+w11HOBZG/IfywQuJbDkSghEqY38dPhyhEUxIRV79JRb+
+        E23XKGH5kKmVIpMHRNh0MNakrlLL
+X-Google-Smtp-Source: APiQypJeUUa8fwtqNZ7WFemPga2cu7l9NOhSfiE3izJjKXKkOQ1zmtu+VGTFwmE2NCLNG6icNn1Bwg==
+X-Received: by 2002:a17:90a:be18:: with SMTP id a24mr3578860pjs.92.1585493927244;
+        Sun, 29 Mar 2020 07:58:47 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.gmail.com with ESMTPSA id j65sm7883215pgc.16.2020.03.29.07.58.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2020 07:58:46 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH v4] video: fbdev: vesafb: add missed release_region
+Date:   Sun, 29 Mar 2020 22:58:39 +0800
+Message-Id: <20200329145839.20076-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-References: <20200329092204.770405-1-jbwyatt4@gmail.com> <alpine.DEB.2.21.2003291127230.2990@hadrien>
- <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
- <alpine.DEB.2.21.2003291144460.2990@hadrien> <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
- <alpine.DEB.2.21.2003291235590.2990@hadrien> <ab06bc216dc07b2b070bc2635aaabb1942c6089c.camel@gmail.com>
-In-Reply-To: <ab06bc216dc07b2b070bc2635aaabb1942c6089c.camel@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 29 Mar 2020 15:22:41 +0300
-Message-ID: <CAHp75VeyV5t3rMw5Za8yFoKmrFLwxDqbLLdDyOr+pezAC+Lv7w@mail.gmail.com>
-Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
- preferred usleep_range
-To:     Sam Muhammed <jane.pnx9@gmail.com>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Soumyajit Deb <debsoumyajit100@gmail.com>,
-        John Wyatt <jbwyatt4@gmail.com>,
-        outreachy-kernel@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Mar 29, 2020 at 2:23 PM Sam Muhammed <jane.pnx9@gmail.com> wrote:
-> On Sun, 2020-03-29 at 12:37 +0200, Julia Lawall wrote:
-> > On Sun, 29 Mar 2020, Soumyajit Deb wrote:
-> >
+The driver forgets to free the I/O region in remove and probe
+failure.
+Add the missed calls to fix it.
 
-First of all, let's stop topposting.
+Since the success of request_region() is optional, add the "region" field
+in vesafb_par to represent whether request_region() succeeds.
+Then only call release_region() when "region" is not null.
 
-> > > I had the same doubt the other day about the replacement of udelay() with
-> > > usleep_range(). The corresponding range for the single argument value of
-> > > udelay() is quite confusing as I couldn't decide the range. But as much as I
-> > > noticed checkpatch.pl gives warning for replacing udelay() with
-> > > usleep_range() by checking the argument value of udelay(). In the
-> > > documentation, it is written udelay() should be used for a sleep time of at
-> > > most 10 microseconds but between 10 microseconds and 20 milliseconds,
-> > > usleep_range() should be used.
-> > > I think the range is code specific and will depend on what range is
-> > > acceptable and doesn't break the code.
-> > >  Please correct me if I am wrong.
-> >
-> > The range depends on the associated hardware.  Just because checkpatch
-> > suggests something doesn't mean that it is easy to address the problem.
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+Changes in v4:
+  - Add a field in vesafb_par to represent whether request_region() succeeds.
+  - Only call release_region() when request_region() succeeds.
+  - Adjust the order in the error handler of probe.
+  - Modify commit message.
 
-> Hi all, i think when it comes to a significant change in the code, we
-> should at least be familiar with the driver or be able to test the
-> change.
->
-> In the very beginning of the Documentation/timers/timers-howto.rst
-> there is the question:
-> "Is my code in an atomic context?"
-> It's not just about the range, it's more of at which context this code
-> runs, for atomic-context -> udelay must be used.
-> for non-atomic context -> usleep-range is better for power-management.
->
-> unless we are familiar with the driver we wouldn't really know in what
-> context this code is run at.
->
-> This thread though had the same conversation about this change, for the
-> same driver.
-> https://patchwork.kernel.org/patch/11137125/
+ drivers/video/fbdev/vesafb.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-While it's a good discussion it reminds me that this entire function,
-i.e. reset(), repeats the on provided by fbtft core.
-Yes, the only question if it's atomic or not. IIRC ->reset() is being
-called only in non-atomic contexts and keeping reset signal longer is
-fine (but better to check with datasheet).
+diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+index a1fe24ea869b..df6de5a9dd4c 100644
+--- a/drivers/video/fbdev/vesafb.c
++++ b/drivers/video/fbdev/vesafb.c
+@@ -32,6 +32,7 @@
+ struct vesafb_par {
+ 	u32 pseudo_palette[256];
+ 	int wc_cookie;
++	struct resource *region;
+ };
+ 
+ static struct fb_var_screeninfo vesafb_defined = {
+@@ -411,7 +412,7 @@ static int vesafb_probe(struct platform_device *dev)
+ 
+ 	/* request failure does not faze us, as vgacon probably has this
+ 	 * region already (FIXME) */
+-	request_region(0x3c0, 32, "vesafb");
++	par->region = request_region(0x3c0, 32, "vesafb");
+ 
+ 	if (mtrr == 3) {
+ 		unsigned int temp_size = size_total;
+@@ -439,7 +440,7 @@ static int vesafb_probe(struct platform_device *dev)
+ 		       "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
+ 			vesafb_fix.smem_len, vesafb_fix.smem_start);
+ 		err = -EIO;
+-		goto err;
++		goto err_release_region;
+ 	}
+ 
+ 	printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
+@@ -458,19 +459,22 @@ static int vesafb_probe(struct platform_device *dev)
+ 
+ 	if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
+ 		err = -ENOMEM;
+-		goto err;
++		goto err_release_region;
+ 	}
+ 	if (register_framebuffer(info)<0) {
+ 		err = -EINVAL;
+ 		fb_dealloc_cmap(&info->cmap);
+-		goto err;
++		goto err_release_region;
+ 	}
+ 	fb_info(info, "%s frame buffer device\n", info->fix.id);
+ 	return 0;
+-err:
++err_release_region:
+ 	arch_phys_wc_del(par->wc_cookie);
+ 	if (info->screen_base)
+ 		iounmap(info->screen_base);
++	if (par->region)
++		release_region(0x3c0, 32);
++err:
+ 	framebuffer_release(info);
+ 	release_mem_region(vesafb_fix.smem_start, size_total);
+ 	return err;
+@@ -481,6 +485,8 @@ static int vesafb_remove(struct platform_device *pdev)
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 
+ 	unregister_framebuffer(info);
++	if (((struct vesafb_par *)(info->par))->region)
++		release_region(0x3c0, 32);
+ 	framebuffer_release(info);
+ 
+ 	return 0;
+-- 
+2.26.0
 
-So, I would rather to drop the function completely in order to use
-fbtft's core one.
-
---
-With Best Regards,
-Andy Shevchenko
