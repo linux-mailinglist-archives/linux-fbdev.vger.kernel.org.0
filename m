@@ -2,107 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DD35196BF3
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 10:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD47196C0C
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 11:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727675AbgC2I45 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Mar 2020 04:56:57 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:42846 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727639AbgC2I45 (ORCPT
+        id S1727397AbgC2JWj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 Mar 2020 05:22:39 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:37254 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727286AbgC2JWj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Mar 2020 04:56:57 -0400
-Received: by mail-lj1-f195.google.com with SMTP id q19so14536267ljp.9;
-        Sun, 29 Mar 2020 01:56:55 -0700 (PDT)
+        Sun, 29 Mar 2020 05:22:39 -0400
+Received: by mail-pf1-f194.google.com with SMTP id h72so7021665pfe.4;
+        Sun, 29 Mar 2020 02:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=j9mujlxbObmOJIv9aY8Pv9+f4Diabo1dscBEk1uTFZ8=;
-        b=LQu+EVoLSJKX0tHv/setWOeqwKWK+bWXztDRZ5UJroVq+XxYPRIhA9sSrTKTT2ibEY
-         yB/6BCgeWRViYpqnPuBKAerGApUXQnxeG+X0WoOXn5axXbeok3hIPq11BbkPWdqDreNy
-         /THe8rlu1cI4/e6WfTUHpVqpotR7Dd2kDsVzvcEwWWDOrSWFxb3Ds6YKGThFJab8ivoO
-         daDXvYPXRAlZnzHQkB1KpdXtMB27sAdYXiBCqIHlCU7kRjveZm5jDb8J670PFFxPt6uL
-         QZDBl8oREV/wjQydRKzSSOW2PiVRbx1TEAU8mPdrUnCkZsHza59pbO832vXPFQSv8D2S
-         Vpjw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1hCX0Eu5BSFoHJWyRefAvnMuTN8T0slwSrNK+D8BVUE=;
+        b=seiBEgEWo89G0cm4eLCRBhoG4Ilds9sW/UkUVahSr62V/bc68xt4FSrpnMVkw8BfJn
+         SO8C+hWFr7MqBP927XPkgd1v5y+scKb3sdMF15SV9rB60OKms3nLkpWT/7LpeBYmTx8T
+         5MZ2mRL/6P8rvgoMzla/a+Wl1XOW4dHDbn0pXPmU/uibNDN+JK2J1blSPVOMMEyPC+py
+         NLawegDjyJ203XfGz6tILqTQPOzGBBFiy9IiaXDbsJQFs2cI81MQw9gW6l4zRcpzMFPQ
+         K5jmOkIUmQrD0ABHxXfFEG6P+rX2v6oke5jSor4qvAI1G3hOQZ09GYU377NQXRtPDM/e
+         a/PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=j9mujlxbObmOJIv9aY8Pv9+f4Diabo1dscBEk1uTFZ8=;
-        b=UeZNDZoG9lVqwRuuvTroGUnrGmT8JFLm4RGCz/IGwN2dH1qQduP6If64RWUz6oJ7po
-         9AVLJvTacHPWVlgwWckLl8jmhM2m2nyRL5r9kog3VGuGssr6x44c5mf2laHYe8CqjQ3R
-         zmgb2io9zw/inau6balF54ECJuc4WAcLudt1ibGaoWBaQxI3a8DbZoXDLK3uAUJ+EHZ3
-         3ItOYI6/z+gChCQj8ZUKVjesSoKwhAHAG1Tjbh5AteN7O6qytaQ7awDKCWu0U3eTkFhc
-         j8mfeA2c8truX0nb2wDsicCidLQKzyX+VZbDpMjXusMak92l0D5sbkOlEk97l8XI4SPk
-         Bu7Q==
-X-Gm-Message-State: AGi0PuZ+74ys6IDemHrKRQ2U3YqhGnPwZ2lW7XcOkF04XWiqYzDI8xLD
-        UFlZyx1zDQax3QEG/jVlQkI=
-X-Google-Smtp-Source: APiQypILmyETDoZAWXoLBcXENwr7izGJwTkjiZlQpOLwdm0cfT9q3DBAk44CF2QOzRRtVdc3Nvj7nA==
-X-Received: by 2002:a05:651c:1108:: with SMTP id d8mr4072521ljo.198.1585472214451;
-        Sun, 29 Mar 2020 01:56:54 -0700 (PDT)
-Received: from localhost (n112120135125.netvigator.com. [112.120.135.125])
-        by smtp.gmail.com with ESMTPSA id g18sm3797574lfh.1.2020.03.29.01.56.53
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 29 Mar 2020 01:56:53 -0700 (PDT)
-From:   Qiujun Huang <hqjagain@gmail.com>
-To:     b.zolnierkie@samsung.com
-Cc:     daniel.vetter@ffwll.ch, maarten.lankhorst@linux.intel.com,
-        sam@ravnborg.org, daniel.thompson@linaro.org, ghalat@redhat.com,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1hCX0Eu5BSFoHJWyRefAvnMuTN8T0slwSrNK+D8BVUE=;
+        b=hI9Vb/eNTK0LCsNVvriupsby62+XLxDhaYR5fUIC9Yyg4B97WGEhwQYBfZ4nSEz3TI
+         4oZbYTbFubR8H6avy4Fy+5mfeQ/Ur2zMh31BmVWViH3+pzG0TwcRiW3MbUvMC0oe8XsD
+         c+Hm1DVnunLD8RciWW3yAQHZABCEPfgrljDpsVBxzMnNa5CcnS1eOg1GH/FkH2YnchYt
+         ny2xYlEtRaFQqWz53Auncz4Qx2L+lN6ILXVZECFhtL+6ws3FLU+oMQPN1je/vHp04sE2
+         tr7xE2Y3uU9xx5uSh/IeKE2WEq1rqy4lT39azQcm37VfcSmyW+fFRNawMLHyUlpZSD3J
+         5lrg==
+X-Gm-Message-State: ANhLgQ3pr+J7IVhnKhfOAj5qbruR5bsJD9zBveLafq38rrPZfrH2G3CG
+        JTak3F3HNuo8au/p5HJPPqE=
+X-Google-Smtp-Source: ADFU+vs2xioDwndYreFjtqUiqCO2dHroI6mYZCs+EpeXHdChdsMV8FKCH9+T0VoQFeFpcNj8WaZt5A==
+X-Received: by 2002:a65:5a87:: with SMTP id c7mr7664384pgt.237.1585473758132;
+        Sun, 29 Mar 2020 02:22:38 -0700 (PDT)
+Received: from OptiPlexFedora.fios-router.home ([47.144.161.84])
+        by smtp.gmail.com with ESMTPSA id b3sm7366962pgs.69.2020.03.29.02.22.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2020 02:22:37 -0700 (PDT)
+From:   "John B. Wyatt IV" <jbwyatt4@gmail.com>
+To:     outreachy-kernel@googlegroups.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Qiujun Huang <hqjagain@gmail.com>
-Subject: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
-Date:   Sun, 29 Mar 2020 16:56:47 +0800
-Message-Id: <20200329085647.25133-1-hqjagain@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Cc:     "John B. Wyatt IV" <jbwyatt4@gmail.com>
+Subject: [PATCH] staging: fbtft: Replace udelay with preferred usleep_range
+Date:   Sun, 29 Mar 2020 02:22:04 -0700
+Message-Id: <20200329092204.770405-1-jbwyatt4@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
+Fix style issue with usleep_range being reported as preferred over
+udelay.
 
-syzkaller report: https://lkml.org/lkml/2020/3/27/403
-general protection fault, probably for non-canonical address
-0xdffffc000000006c: 0000 [#1] SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
-RIP: 0010:fbcon_switch+0x28f/0x1740
-drivers/video/fbdev/core/fbcon.c:2260
+Issue reported by checkpatch.
 
-Call Trace:
-redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
-vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
-fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
-visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
-do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
-do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
-do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
-fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
-do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
-register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
-dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
-usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
+Please review.
 
-accessing vc_cons[logo_shown].d->vc_top causes the bug.
+As written in Documentation/timers/timers-howto.rst udelay is the
+generally preferred API. hrtimers, as noted in the docs, may be too
+expensive for this short timer.
 
-Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+Are the docs out of date, or, is this a checkpatch issue?
+
+Signed-off-by: John B. Wyatt IV <jbwyatt4@gmail.com>
 ---
- drivers/video/fbdev/core/fbcon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/fbtft/fb_agm1264k-fl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index bb6ae995c2e5..5eb3fc90f9f6 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
- 	if (!con_is_bound(&fb_con))
- 		fbcon_exit();
+diff --git a/drivers/staging/fbtft/fb_agm1264k-fl.c b/drivers/staging/fbtft/fb_agm1264k-fl.c
+index eeeeec97ad27..019c8cce6bab 100644
+--- a/drivers/staging/fbtft/fb_agm1264k-fl.c
++++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
+@@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
+ 	dev_dbg(par->info->device, "%s()\n", __func__);
  
-+	if (vc->vc_num == logo_shown)
-+		logo_shown = FBCON_LOGO_CANSHOW;
-+
- 	return;
+ 	gpiod_set_value(par->gpio.reset, 0);
+-	udelay(20);
++	usleep_range(20, 20);
+ 	gpiod_set_value(par->gpio.reset, 1);
+ 	mdelay(120);
  }
- 
 -- 
-2.17.1
+2.25.1
 
