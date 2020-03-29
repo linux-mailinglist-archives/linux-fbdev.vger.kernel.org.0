@@ -2,135 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E25196A7B
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 03:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD35196BF3
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 10:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727722AbgC2BEx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Mar 2020 21:04:53 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:37340 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727491AbgC2BEx (ORCPT
+        id S1727675AbgC2I45 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 Mar 2020 04:56:57 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:42846 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727639AbgC2I45 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Mar 2020 21:04:53 -0400
-Received: by mail-io1-f66.google.com with SMTP id q9so13951806iod.4;
-        Sat, 28 Mar 2020 18:04:52 -0700 (PDT)
+        Sun, 29 Mar 2020 04:56:57 -0400
+Received: by mail-lj1-f195.google.com with SMTP id q19so14536267ljp.9;
+        Sun, 29 Mar 2020 01:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xEq14gH8MJ7hv3D8jymXXOPTR88QaLueWbAQX3wPTCI=;
-        b=g2CrChD5giKWudtUUGe7Dk4fpmJs/Q1hRfTmTMy7boQPFpx8ZRml/KS883rNanHpRn
-         2ZqgiC854Qu40PaAk1IvSSbZdvemDyOcwZ1RxhJUI3MBWOBlzZjgmetBlDEKRxNd/YfD
-         Ls1La1vTqcezL3Jwji56DbSpl7ugEsHjLFF+ZZjZ6UmVDj11Lbe0msce8dsMQaTNfR1m
-         uvFlL9Sb4vDcuIm3kx68geUs8fcF3Zne24rlOOAyXaJY9I8dEqcv+jmzmoZ1/eOC3oUq
-         WwBRICbuAPjeM6d2AGNSRoEm+J6wfiq0W/l/mE3MHy0Pya1qm7LKjtBdNlXYx88EVr/3
-         UsgA==
+        h=from:to:cc:subject:date:message-id;
+        bh=j9mujlxbObmOJIv9aY8Pv9+f4Diabo1dscBEk1uTFZ8=;
+        b=LQu+EVoLSJKX0tHv/setWOeqwKWK+bWXztDRZ5UJroVq+XxYPRIhA9sSrTKTT2ibEY
+         yB/6BCgeWRViYpqnPuBKAerGApUXQnxeG+X0WoOXn5axXbeok3hIPq11BbkPWdqDreNy
+         /THe8rlu1cI4/e6WfTUHpVqpotR7Dd2kDsVzvcEwWWDOrSWFxb3Ds6YKGThFJab8ivoO
+         daDXvYPXRAlZnzHQkB1KpdXtMB27sAdYXiBCqIHlCU7kRjveZm5jDb8J670PFFxPt6uL
+         QZDBl8oREV/wjQydRKzSSOW2PiVRbx1TEAU8mPdrUnCkZsHza59pbO832vXPFQSv8D2S
+         Vpjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xEq14gH8MJ7hv3D8jymXXOPTR88QaLueWbAQX3wPTCI=;
-        b=ep0sJ5Twt5k1nrdLNi89NF6h+WmiHjv5aeXikYKbwLhFNLN28GKTu6LqlArC0Deezm
-         LZ/8UQyp1VmZk8wf/XzEx/KWM4wMpqnXYK5Mk+2fMSQibTWzIuauHXXPSizyZZA5Tg6l
-         WewisFjs5umDYE+MxQNrj9uURKRkS/mzCEcPKqcWKdSCoXGNcNbaFCdQAdqKd1+qi4bi
-         JBBbXxTEj0JyK4ZFrdKp8TXDJTZAi13AbGHRDG+Tjcf+ApQetNaeERkFc5ooTorTTaIR
-         jXlIwSX655ULT3vLOsEYeF6sm/XD0ImLIyJUW9OIPYqr45+g3jDEPrAnPSlAecPrk7Ns
-         kDYg==
-X-Gm-Message-State: ANhLgQ0uIDyhtIZ7hz+EcAA0V+5haX/21uv5pRv2mBla7ZiSDqHR/Dsm
-        XUDRbgU9V4+e2EhU3jvwYaWfakury5e11DvOTpQ=
-X-Google-Smtp-Source: ADFU+vt1KZuhCRM+OKkatVV3lTeceg4W8ntn06ZjFKjPPU9/MpP04h0cm6lxyPiDzVyULvca5SJ8ckIz8wyGD2DZEL8=
-X-Received: by 2002:a6b:5406:: with SMTP id i6mr4908695iob.188.1585443892387;
- Sat, 28 Mar 2020 18:04:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200328151511.22932-1-hqjagain@gmail.com> <20200328181259.GA24335@ravnborg.org>
-In-Reply-To: <20200328181259.GA24335@ravnborg.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=j9mujlxbObmOJIv9aY8Pv9+f4Diabo1dscBEk1uTFZ8=;
+        b=UeZNDZoG9lVqwRuuvTroGUnrGmT8JFLm4RGCz/IGwN2dH1qQduP6If64RWUz6oJ7po
+         9AVLJvTacHPWVlgwWckLl8jmhM2m2nyRL5r9kog3VGuGssr6x44c5mf2laHYe8CqjQ3R
+         zmgb2io9zw/inau6balF54ECJuc4WAcLudt1ibGaoWBaQxI3a8DbZoXDLK3uAUJ+EHZ3
+         3ItOYI6/z+gChCQj8ZUKVjesSoKwhAHAG1Tjbh5AteN7O6qytaQ7awDKCWu0U3eTkFhc
+         j8mfeA2c8truX0nb2wDsicCidLQKzyX+VZbDpMjXusMak92l0D5sbkOlEk97l8XI4SPk
+         Bu7Q==
+X-Gm-Message-State: AGi0PuZ+74ys6IDemHrKRQ2U3YqhGnPwZ2lW7XcOkF04XWiqYzDI8xLD
+        UFlZyx1zDQax3QEG/jVlQkI=
+X-Google-Smtp-Source: APiQypILmyETDoZAWXoLBcXENwr7izGJwTkjiZlQpOLwdm0cfT9q3DBAk44CF2QOzRRtVdc3Nvj7nA==
+X-Received: by 2002:a05:651c:1108:: with SMTP id d8mr4072521ljo.198.1585472214451;
+        Sun, 29 Mar 2020 01:56:54 -0700 (PDT)
+Received: from localhost (n112120135125.netvigator.com. [112.120.135.125])
+        by smtp.gmail.com with ESMTPSA id g18sm3797574lfh.1.2020.03.29.01.56.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 29 Mar 2020 01:56:53 -0700 (PDT)
 From:   Qiujun Huang <hqjagain@gmail.com>
-Date:   Sun, 29 Mar 2020 09:04:41 +0800
-Message-ID: <CAJRQjoeOfiyacHcFfQOop5jJ9MspDKL8HTjQeAY-_Wbm9PnFGg@mail.gmail.com>
-Subject: Re: [PATCH] fbcon: fix null-ptr-deref in fbcon_switch
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        ghalat@redhat.com, dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     b.zolnierkie@samsung.com
+Cc:     daniel.vetter@ffwll.ch, maarten.lankhorst@linux.intel.com,
+        sam@ravnborg.org, daniel.thompson@linaro.org, ghalat@redhat.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qiujun Huang <hqjagain@gmail.com>
+Subject: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
+Date:   Sun, 29 Mar 2020 16:56:47 +0800
+Message-Id: <20200329085647.25133-1-hqjagain@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Mar 29, 2020 at 2:13 AM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Qiujun
->
-> Thanks for looking into the sysbot bugs.
->
-> On Sat, Mar 28, 2020 at 11:15:10PM +0800, Qiujun Huang wrote:
-> > Add check for vc_cons[logo_shown].d, as it can be released by
-> > vt_ioctl(VT_DISALLOCATE).
-> >
-> > Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
-> > Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> > ---
-> >  drivers/video/fbdev/core/fbcon.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> > index bb6ae995c2e5..7ee0f7b55829 100644
-> > --- a/drivers/video/fbdev/core/fbcon.c
-> > +++ b/drivers/video/fbdev/core/fbcon.c
-> > @@ -2254,7 +2254,7 @@ static int fbcon_switch(struct vc_data *vc)
-> >               fbcon_update_softback(vc);
-> >       }
-> >
-> > -     if (logo_shown >= 0) {
-> > +     if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
-> >               struct vc_data *conp2 = vc_cons[logo_shown].d;
-> >
-> >               if (conp2->vc_top == logo_lines
-> > @@ -2852,7 +2852,7 @@ static void fbcon_scrolldelta(struct vc_data *vc, int lines)
-> >                       return;
-> >               if (vc->vc_mode != KD_TEXT || !lines)
-> >                       return;
-> > -             if (logo_shown >= 0) {
-> > +             if (logo_shown >= 0 && vc_cons_allocated(logo_shown)) {
-> >                       struct vc_data *conp2 = vc_cons[logo_shown].d;
-> >
-> >                       if (conp2->vc_top == logo_lines
->
-> I am not familiar with this code.
->
-> But it looks like you try to avoid the sympton
-> which is that logo_shown has a wrong value after a
-> vc is deallocated, and do not fix the root cause.
->
-> We have:
->
-> vt_ioctl(VT_DISALLOCATE)
->  |
->  +- vc_deallocate()
->      |
->      +- visual_deinit()
->          |
->          +- vc->vc_sw->con_deinit(vc)
->              |
->              +- fbcon_deinit()
->
-> Would it be better to update logo_shown
-> in fbcon_deinit()?
-> Then we will not try to do anything with
-> the logo in fbcon_switch().
->
-> fbcon_deinit() is called with console locked
-> so there should not be any races.
+Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
 
-Get that, thanks.
+syzkaller report: https://lkml.org/lkml/2020/3/27/403
+general protection fault, probably for non-canonical address
+0xdffffc000000006c: 0000 [#1] SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
+RIP: 0010:fbcon_switch+0x28f/0x1740
+drivers/video/fbdev/core/fbcon.c:2260
 
->
-> I did not stare long enough on the code to come up with a patch,
-> but this may be a better way to fix it.
->
->         Sam
+Call Trace:
+redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
+vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
+fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
+visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
+do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
+do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
+do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
+fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
+do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
+register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
+dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
+usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
+
+accessing vc_cons[logo_shown].d->vc_top causes the bug.
+
+Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
+Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+---
+ drivers/video/fbdev/core/fbcon.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index bb6ae995c2e5..5eb3fc90f9f6 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
+ 	if (!con_is_bound(&fb_con))
+ 		fbcon_exit();
+ 
++	if (vc->vc_num == logo_shown)
++		logo_shown = FBCON_LOGO_CANSHOW;
++
+ 	return;
+ }
+ 
+-- 
+2.17.1
+
