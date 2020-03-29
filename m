@@ -2,89 +2,142 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 365A2196C18
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 11:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB86E196C20
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 11:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727772AbgC2J2f (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Mar 2020 05:28:35 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:26519 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727286AbgC2J2f (ORCPT
+        id S1727504AbgC2Ji7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 Mar 2020 05:38:59 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:41338 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727286AbgC2Ji7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Mar 2020 05:28:35 -0400
-X-IronPort-AV: E=Sophos;i="5.72,319,1580770800"; 
-   d="scan'208";a="442805364"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Mar 2020 11:28:33 +0200
-Date:   Sun, 29 Mar 2020 11:28:33 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     "John B. Wyatt IV" <jbwyatt4@gmail.com>
-cc:     outreachy-kernel@googlegroups.com,
+        Sun, 29 Mar 2020 05:38:59 -0400
+Received: by mail-pf1-f195.google.com with SMTP id a24so194572pfc.8;
+        Sun, 29 Mar 2020 02:38:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=1FjUt0FY4qG4swr3glwUOGPZovJqvh5BcKDS4lGNLW4=;
+        b=JTmZm4tANjipQr6DLS3RinvGorU5jef6avNVRWTXMGMOHc5zWJD8xRNxFdvfYAU4My
+         dEKmoB/HJdqNKyrKgkKhGvUtY2NYkWNMrIpeZcIPjbvpkgSoKP+IlQUNP6CyEu+b4qGT
+         l+YPnkDIixPJwYLwiuhYT1u38s37mYmi54uDWkT7EzzbeLUFYD5j78Upnr/2DGP4+d6m
+         fXVTjObFPYSWpVc+/5VbiQy/dyhcRHQTNROPixtBi5Cc7g9PWtN2eezd9eFyd2k8FEjg
+         w49fddJ9HlCac53/1mK3H20pfoGxPXiO70i0BlYo5w+3HCm3cV8SOG5GXIG7hlLiOHcB
+         hA5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=1FjUt0FY4qG4swr3glwUOGPZovJqvh5BcKDS4lGNLW4=;
+        b=Ta+fMBXBVVHCiMwkQNmuuJFGEplmsOrKixl7Jyd2QPcMFy8L/C+ACS45H2CVs5eBmt
+         Chn2DC719xnITo/ye/d6D6+e2i1Tpn8wSBs56pXCxKX6jlrUP41hiwYqWxfiJg6laGSq
+         EwaOx4VHxj5TFJklYzxUKuFhVahds783espD5zUEFgUgfLoQFRcKWl/c54rbp40G+IJE
+         rWnKiAYjyYZDjbAT5GGPdIMVCe/VHCZHzM1X/f9wfPmVC7j2ZIv6xlV4Da1SYWEcPtpM
+         tKqr1HJ2EsFQrvNQhoa1KIFHv/Crqbd5IWRA5XROlymLb2Tw4PauvSoDF4mGvOCPRHgP
+         Nlgg==
+X-Gm-Message-State: ANhLgQ2QB3Ie5zxK1aP1wPiWl9LNZNRrT3tGWt15Xb/OmgzAAq+O5H+P
+        ha9m+JzmmorSZewVPGulMMQ=
+X-Google-Smtp-Source: ADFU+vsho0XarlgM5qxPPJLJ7yrus56xN6a1QzWk0breFr82zriHlE38k99Mh8f7T/KzyYmocphc7Q==
+X-Received: by 2002:a62:160b:: with SMTP id 11mr8149948pfw.189.1585474737395;
+        Sun, 29 Mar 2020 02:38:57 -0700 (PDT)
+Received: from ManjaroKDE ([47.144.161.84])
+        by smtp.gmail.com with ESMTPSA id y29sm7265920pge.22.2020.03.29.02.38.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Mar 2020 02:38:56 -0700 (PDT)
+Message-ID: <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
+Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
+ preferred usleep_range
+From:   John Wyatt <jbwyatt4@gmail.com>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     outreachy-kernel@googlegroups.com,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
- preferred usleep_range
-In-Reply-To: <20200329092204.770405-1-jbwyatt4@gmail.com>
-Message-ID: <alpine.DEB.2.21.2003291127230.2990@hadrien>
+Date:   Sun, 29 Mar 2020 02:38:51 -0700
+In-Reply-To: <alpine.DEB.2.21.2003291127230.2990@hadrien>
 References: <20200329092204.770405-1-jbwyatt4@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+         <alpine.DEB.2.21.2003291127230.2990@hadrien>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Sun, 2020-03-29 at 11:28 +0200, Julia Lawall wrote:
+> 
+> On Sun, 29 Mar 2020, John B. Wyatt IV wrote:
+> 
+> > Fix style issue with usleep_range being reported as preferred over
+> > udelay.
+> > 
+> > Issue reported by checkpatch.
+> > 
+> > Please review.
+> > 
+> > As written in Documentation/timers/timers-howto.rst udelay is the
+> > generally preferred API. hrtimers, as noted in the docs, may be too
+> > expensive for this short timer.
+> > 
+> > Are the docs out of date, or, is this a checkpatch issue?
+> > 
+> > Signed-off-by: John B. Wyatt IV <jbwyatt4@gmail.com>
+> > ---
+> >  drivers/staging/fbtft/fb_agm1264k-fl.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/staging/fbtft/fb_agm1264k-fl.c
+> > b/drivers/staging/fbtft/fb_agm1264k-fl.c
+> > index eeeeec97ad27..019c8cce6bab 100644
+> > --- a/drivers/staging/fbtft/fb_agm1264k-fl.c
+> > +++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
+> > @@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
+> >  	dev_dbg(par->info->device, "%s()\n", __func__);
+> > 
+> >  	gpiod_set_value(par->gpio.reset, 0);
+> > -	udelay(20);
+> > +	usleep_range(20, 20);
+> 
+> usleep_range should have a range, eg usleep_range(50, 100);.  But it
+> is
+> hard to know a priori what the range should be.  So it is probably
+> better
+> to leave the code alone.
 
+Understood.
 
-On Sun, 29 Mar 2020, John B. Wyatt IV wrote:
+With the question I wrote in the commit message:
 
-> Fix style issue with usleep_range being reported as preferred over
-> udelay.
->
-> Issue reported by checkpatch.
->
-> Please review.
->
-> As written in Documentation/timers/timers-howto.rst udelay is the
-> generally preferred API. hrtimers, as noted in the docs, may be too
-> expensive for this short timer.
->
-> Are the docs out of date, or, is this a checkpatch issue?
->
-> Signed-off-by: John B. Wyatt IV <jbwyatt4@gmail.com>
-> ---
->  drivers/staging/fbtft/fb_agm1264k-fl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/staging/fbtft/fb_agm1264k-fl.c b/drivers/staging/fbtft/fb_agm1264k-fl.c
-> index eeeeec97ad27..019c8cce6bab 100644
-> --- a/drivers/staging/fbtft/fb_agm1264k-fl.c
-> +++ b/drivers/staging/fbtft/fb_agm1264k-fl.c
-> @@ -85,7 +85,7 @@ static void reset(struct fbtft_par *par)
->  	dev_dbg(par->info->device, "%s()\n", __func__);
->
->  	gpiod_set_value(par->gpio.reset, 0);
-> -	udelay(20);
-> +	usleep_range(20, 20);
+"As written in Documentation/timers/timers-howto.rst udelay is the
+generally preferred API. hrtimers, as noted in the docs, may be too
+expensive for this short timer.
 
-usleep_range should have a range, eg usleep_range(50, 100);.  But it is
-hard to know a priori what the range should be.  So it is probably better
-to leave the code alone.
+Are the docs out of date, or, is this a checkpatch issue?"
 
-julia
+Is usleep_range too expensive for this operation?
 
->  	gpiod_set_value(par->gpio.reset, 1);
->  	mdelay(120);
->  }
-> --
-> 2.25.1
->
-> --
-> You received this message because you are subscribed to the Google Groups "outreachy-kernel" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to outreachy-kernel+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/outreachy-kernel/20200329092204.770405-1-jbwyatt4%40gmail.com.
->
+Why does checkpatch favor usleep_range while the docs favor udelay?
+
+> 
+> julia
+> 
+> >  	gpiod_set_value(par->gpio.reset, 1);
+> >  	mdelay(120);
+> >  }
+> > --
+> > 2.25.1
+> > 
+> > --
+> > You received this message because you are subscribed to the Google
+> > Groups "outreachy-kernel" group.
+> > To unsubscribe from this group and stop receiving emails from it,
+> > send an email to outreachy-kernel+unsubscribe@googlegroups.com.
+> > To view this discussion on the web visit 
+> > https://groups.google.com/d/msgid/outreachy-kernel/20200329092204.770405-1-jbwyatt4%40gmail.com
+> > .
+> > 
+
