@@ -2,54 +2,41 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE811986EC
-	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 00:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F1A198737
+	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 00:17:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730798AbgC3WD6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 18:03:58 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:40428 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729386AbgC3WD6 (ORCPT
+        id S1728857AbgC3WRA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 18:17:00 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:27246 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729021AbgC3WQ7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 18:03:58 -0400
-Received: by mail-pg1-f195.google.com with SMTP id t24so9334800pgj.7;
-        Mon, 30 Mar 2020 15:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=Fn5bbEwDKA1CjrL2t4+buEZ5DMdOn8ZLIb0ux0e5B3Q=;
-        b=QlDnJ+HXQj0YHxnX8aX313kM6rHoKORnaNm2WYXDMn1aeXXbnF8UNEQ4VowdZeG4zl
-         uV2sLQkwXOtnNAwFLkHNHrGIdHbHg2WXKZ+OCxvcK6XGQ4p7XyOtNEZguQcao8eEbZik
-         jzhJzwgxyju9KgyIAO6AGWgfZzTJEGj7PCStu/3VWR74BEj6493pWtlmOVLr3PXjMy6j
-         EvPvcs8zuq5fFUGMmdyzRW3LnvxqECq4R5074NxZe/sQXvq3wyUHonW+iSMHkNnpBI2D
-         MA52ER9NNMOOvvHw75Dyrr3HHU19n2Cm6kVIde2BUnl4kJPuV5rqVxtOQP/DKfiUAQTz
-         Rlnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=Fn5bbEwDKA1CjrL2t4+buEZ5DMdOn8ZLIb0ux0e5B3Q=;
-        b=XlyaJQ75YmYZFlHYQ3CsRkt7hNrVdnNy1xCTwovTHU+C8ASxZAQbCcCI8UjYnILFma
-         MoF/XvJ3SWBj4nXIQxoZkOvKzMYAfQfO1BBMUzGACPklifq9Weu6pCCOSkL9C5b6MvcP
-         ZxWP5cb6998V5c2kOTtHtDSj8YYijRKZ136kQ0QXOx1nKOhQrRI8RJH6ngcAcQnA6h2d
-         UtlTaR1RIYc6WEcWXpzh7E8kn5zVf+h/7BZq+gmKkzqkCSWgVk8ePKokzRw5O2GqGpTs
-         TYSbj9ap8KTJJwiQxmXVKpOVV+wIjbZmFvAsthINGHVLlU/NcDYV+7m3T5NKiATY37rC
-         HdVg==
-X-Gm-Message-State: AGi0Puapi+qiYG6iLMKtdCei6VgfebfVrffPlu6r8GYItW73WV4tcK9t
-        0zIWT4Y9QKhek/pehQzNyRtRRQg//G3+tg==
-X-Google-Smtp-Source: APiQypIZ7rugn26VNzMH9f1FGurreUtTRDwMeVEoQLstiLOtdeGMyyyqnQhROZmrQSttmeLztEHYWg==
-X-Received: by 2002:a65:55c6:: with SMTP id k6mr1200130pgs.52.1585605836849;
-        Mon, 30 Mar 2020 15:03:56 -0700 (PDT)
-Received: from OptiPlexFedora ([47.144.161.84])
-        by smtp.gmail.com with ESMTPSA id h4sm1230719pgg.67.2020.03.30.15.03.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 15:03:56 -0700 (PDT)
-Message-ID: <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
-Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
- preferred usleep_range
-From:   "John B. Wyatt IV" <jbwyatt4@gmail.com>
-To:     Stefano Brivio <sbrivio@redhat.com>
+        Mon, 30 Mar 2020 18:16:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585606618;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=kFxQ6sa3As6Jtugci2z3HRdxNU4LPCC1zzYUuabLxUU=;
+        b=T+AivKsihWBfEzf81uYR3lgay9073n72UnvuNpWxuDKcTzWDeyh1o5rOYVUCiYvGGJ27sA
+        tQ/10hC/C7IOOJWKadf09cPMc4Q4J3eP+xBenLmtRD9nR1dgiI35Dm02QRSP3QGXicG7Ua
+        dcjGhGGDY9SovvT7rw0DpprsAuF9LH0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-445-L_lh2rRnM8uuiqNlMRll3Q-1; Mon, 30 Mar 2020 18:16:51 -0400
+X-MC-Unique: L_lh2rRnM8uuiqNlMRll3Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AEB1A18A5500;
+        Mon, 30 Mar 2020 22:16:49 +0000 (UTC)
+Received: from elisabeth (unknown [10.36.110.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 180CF5C1BB;
+        Mon, 30 Mar 2020 22:16:43 +0000 (UTC)
+Date:   Tue, 31 Mar 2020 00:16:37 +0200
+From:   Stefano Brivio <sbrivio@redhat.com>
+To:     "John B. Wyatt IV" <jbwyatt4@gmail.com>
 Cc:     Julia Lawall <julia.lawall@inria.fr>,
         Soumyajit Deb <debsoumyajit100@gmail.com>,
         outreachy-kernel@googlegroups.com,
@@ -57,57 +44,81 @@ Cc:     Julia Lawall <julia.lawall@inria.fr>,
         Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Date:   Mon, 30 Mar 2020 15:03:55 -0700
-In-Reply-To: <20200330194043.56c79bb8@elisabeth>
+Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
+ preferred usleep_range
+Message-ID: <20200331001637.6bf108ed@elisabeth>
+In-Reply-To: <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
 References: <20200329092204.770405-1-jbwyatt4@gmail.com>
-         <alpine.DEB.2.21.2003291127230.2990@hadrien>
-         <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
-         <alpine.DEB.2.21.2003291144460.2990@hadrien>
-         <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
-         <alpine.DEB.2.21.2003291235590.2990@hadrien>
-         <20200330194043.56c79bb8@elisabeth>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        <alpine.DEB.2.21.2003291127230.2990@hadrien>
+        <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
+        <alpine.DEB.2.21.2003291144460.2990@hadrien>
+        <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
+        <alpine.DEB.2.21.2003291235590.2990@hadrien>
+        <20200330194043.56c79bb8@elisabeth>
+        <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 2020-03-30 at 19:40 +0200, Stefano Brivio wrote:
-> On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
-> Julia Lawall <julia.lawall@inria.fr> wrote:
-> 
-> > On Sun, 29 Mar 2020, Soumyajit Deb wrote:
-> > 
-> > > I had the same doubt the other day about the replacement of
-> > > udelay() with
-> > > usleep_range(). The corresponding range for the single argument
-> > > value of
-> > > udelay() is quite confusing as I couldn't decide the range. But
-> > > as much as I
-> > > noticed checkpatch.pl gives warning for replacing udelay() with
-> > > usleep_range() by checking the argument value of udelay(). In the
-> > > documentation, it is written udelay() should be used for a sleep
-> > > time of at
-> > > most 10 microseconds but between 10 microseconds and 20
-> > > milliseconds,
-> > > usleep_range() should be used. 
-> > > I think the range is code specific and will depend on what range
-> > > is
-> > > acceptable and doesn't break the code.
-> > >  Please correct me if I am wrong.  
-> > 
-> > The range depends on the associated hardware.
-> 
-> John, by the way, here you could have checked the datasheet of this
-> LCD
-> controller. It's a pair of those:
-> 	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
-> 
+On Mon, 30 Mar 2020 15:03:55 -0700
+"John B. Wyatt IV" <jbwyatt4@gmail.com> wrote:
 
-No I have not. This datasheet is a little over my head honestly.
+> On Mon, 2020-03-30 at 19:40 +0200, Stefano Brivio wrote:
+> > On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
+> > Julia Lawall <julia.lawall@inria.fr> wrote:
+> >  =20
+> > > On Sun, 29 Mar 2020, Soumyajit Deb wrote:
+> > >  =20
+> > > > I had the same doubt the other day about the replacement of
+> > > > udelay() with
+> > > > usleep_range(). The corresponding range for the single argument
+> > > > value of
+> > > > udelay() is quite confusing as I couldn't decide the range. But
+> > > > as much as I
+> > > > noticed checkpatch.pl gives warning for replacing udelay() with
+> > > > usleep_range() by checking the argument value of udelay(). In the
+> > > > documentation, it is written udelay() should be used for a sleep
+> > > > time of at
+> > > > most 10 microseconds but between 10 microseconds and 20
+> > > > milliseconds,
+> > > > usleep_range() should be used.=20
+> > > > I think the range is code specific and will depend on what range
+> > > > is
+> > > > acceptable and doesn't break the code.
+> > > >  Please correct me if I am wrong.   =20
+> > >=20
+> > > The range depends on the associated hardware. =20
+> >=20
+> > John, by the way, here you could have checked the datasheet of this
+> > LCD
+> > controller. It's a pair of those:
+> > 	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
+>=20
+> No I have not. This datasheet is a little over my head honestly.
+>=20
+> What would you recommend to get familiar with datasheets like this?
 
-What would you recommend to get familiar with datasheets like this?
+Well, you don't necessarily have to, there are many subsystems in the
+kernel which are almost completely abstracted away from hardware.
+
+If you're interested, look around yourself for something simple chip,
+or get something that you can easily plug on a "maker board", Raspberry
+Pi, something like that. Perhaps via I=C2=B2C or SPI.
+
+Some types of sensors (temperature, pressure) have very simple
+datasheets. If you are allergic to hardware, try:
+	$ ls -Ssl drivers/iio/*
+
+pick the smallest sensor driver in the category that is the most likely
+to spark your interest, and go through it, checking it against the
+datasheet, at some point it will make sense.
+
+--=20
+Stefano
 
