@@ -2,149 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4ED5196E01
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Mar 2020 16:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2515B19780A
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 11:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727888AbgC2O6s (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Mar 2020 10:58:48 -0400
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:54948 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727488AbgC2O6s (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Mar 2020 10:58:48 -0400
-Received: by mail-pj1-f66.google.com with SMTP id np9so6391292pjb.4;
-        Sun, 29 Mar 2020 07:58:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8BcxV8pGWJr7R5GyeodoBfbjlgHj70bMVXWL1P/PRiA=;
-        b=c9/0eKER41JmgTmkyLd4o0N090jCq6vEQVUWvqTldbNa/noBczXdbXylNqfn+9GDH+
-         WGXuLdCTMG//pUS+UM8lEUR7MA5baNxvn2KWJWrJr06077S5i9dmGx2pU9iPCmlo4QhD
-         cfyv9CJ5k8xLLoLOtzWh+bDRd76EN+7xuXlvkJDBFjZUxcyr2C+wiy1FA4GLjFod2sTA
-         AXv3wdotCT3B5p6HfqEMT2hGMGIhEI9LcAOzL6NmVT9wX5P6aQW/lyoljBuQw70u8AdB
-         Elc0qoUk6G7T5WEE4P4HifwYr+DwOyjh+v/bDwiACJG52nZTYo4hEJ5UADrMe7UG8P4e
-         qelw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8BcxV8pGWJr7R5GyeodoBfbjlgHj70bMVXWL1P/PRiA=;
-        b=Y1qatms2Q/VnstzqYToiYIBzzn/gh8oFsPqvcpmPRwwM2UedwknmJimkPgs5O5Oh4s
-         2XY+oYm3/IybLS0KkbbWahVq7cSCHgDIG848X6MUM+xQIyF1BeozfVv+tdO5uKFQYpbN
-         q2RTykIQ57qujxX6I11wV9/HqAoA9zVv2MM7PCsGtU13edHGI1J1+jNj0GiMtIx3xGqR
-         rBVg7dGNTQ18nhZw7bbI4bdqJ7eXdr0eNt841rxZpe98wBSV1nyVsFvYrBy2zANCgv2i
-         n5wMoZi+SBpFcZXn948D3jRuJ5H/vwDjGdemVx2Ql1/9Zn63jBLdEVeCXQPRRek4QRRt
-         nnpQ==
-X-Gm-Message-State: AGi0PuZFuRO+w11HOBZG/IfywQuJbDkSghEqY38dPhyhEUxIRV79JRb+
-        E23XKGH5kKmVIpMHRNh0MNakrlLL
-X-Google-Smtp-Source: APiQypJeUUa8fwtqNZ7WFemPga2cu7l9NOhSfiE3izJjKXKkOQ1zmtu+VGTFwmE2NCLNG6icNn1Bwg==
-X-Received: by 2002:a17:90a:be18:: with SMTP id a24mr3578860pjs.92.1585493927244;
-        Sun, 29 Mar 2020 07:58:47 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id j65sm7883215pgc.16.2020.03.29.07.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2020 07:58:46 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v4] video: fbdev: vesafb: add missed release_region
-Date:   Sun, 29 Mar 2020 22:58:39 +0800
-Message-Id: <20200329145839.20076-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.0
+        id S1727376AbgC3Jvs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 05:51:48 -0400
+Received: from mga04.intel.com ([192.55.52.120]:64883 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727183AbgC3Jvs (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 30 Mar 2020 05:51:48 -0400
+IronPort-SDR: veeICvahpIIId1aJ23ru4iqhacphvKG0UT36+ndBSiVVaaU221YJ/ACvV9qcqTyfBeSjsGsK0u
+ 8jp/LLOlRa4Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 02:51:47 -0700
+IronPort-SDR: ue1O0p7CzbpwjktU84UOXiMcrPVEKdY692ZRuuKnfmfx4Rc+5Ixqi7bpuq7jjvZEj6Qlt2Vi2Q
+ N0HJMFmIkdLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,323,1580803200"; 
+   d="scan'208";a="449747171"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga006.fm.intel.com with ESMTP; 30 Mar 2020 02:51:47 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jIr56-00E9st-Iv; Mon, 30 Mar 2020 12:51:44 +0300
+Date:   Mon, 30 Mar 2020 12:51:44 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, xllacyx@gmail.com
+Subject: Re: [PATCH v1 1/5] video: ssd1307fb: Convert driver to use
+ ->probe_new()
+Message-ID: <20200330095144.GL1922688@smile.fi.intel.com>
+References: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver forgets to free the I/O region in remove and probe
-failure.
-Add the missed calls to fix it.
+On Tue, Mar 24, 2020 at 07:05:28PM +0200, Andy Shevchenko wrote:
+> Use the ->probe_new() callback.
+> 
+> The driver does not use const struct i2c_device_id * argument,
+> so convert it to utilise the simplified I²C driver registration.
+> 
 
-Since the success of request_region() is optional, add the "region" field
-in vesafb_par to represent whether request_region() succeeds.
-Then only call release_region() when "region" is not null.
+Bartlomiej, any comments on the series?
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
-Changes in v4:
-  - Add a field in vesafb_par to represent whether request_region() succeeds.
-  - Only call release_region() when request_region() succeeds.
-  - Adjust the order in the error handler of probe.
-  - Modify commit message.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/video/fbdev/ssd1307fb.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+> index 142535267fec..397eae246c2c 100644
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -586,8 +586,7 @@ static const struct of_device_id ssd1307fb_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
+>  
+> -static int ssd1307fb_probe(struct i2c_client *client,
+> -			   const struct i2c_device_id *id)
+> +static int ssd1307fb_probe(struct i2c_client *client)
+>  {
+>  	struct backlight_device *bl;
+>  	char bl_name[12];
+> @@ -599,11 +598,6 @@ static int ssd1307fb_probe(struct i2c_client *client,
+>  	void *vmem;
+>  	int ret;
+>  
+> -	if (!node) {
+> -		dev_err(&client->dev, "No device tree data found!\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
+>  	if (!info)
+>  		return -ENOMEM;
+> @@ -808,7 +802,7 @@ static const struct i2c_device_id ssd1307fb_i2c_id[] = {
+>  MODULE_DEVICE_TABLE(i2c, ssd1307fb_i2c_id);
+>  
+>  static struct i2c_driver ssd1307fb_driver = {
+> -	.probe = ssd1307fb_probe,
+> +	.probe_new = ssd1307fb_probe,
+>  	.remove = ssd1307fb_remove,
+>  	.id_table = ssd1307fb_i2c_id,
+>  	.driver = {
+> -- 
+> 2.25.1
+> 
 
- drivers/video/fbdev/vesafb.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-index a1fe24ea869b..df6de5a9dd4c 100644
---- a/drivers/video/fbdev/vesafb.c
-+++ b/drivers/video/fbdev/vesafb.c
-@@ -32,6 +32,7 @@
- struct vesafb_par {
- 	u32 pseudo_palette[256];
- 	int wc_cookie;
-+	struct resource *region;
- };
- 
- static struct fb_var_screeninfo vesafb_defined = {
-@@ -411,7 +412,7 @@ static int vesafb_probe(struct platform_device *dev)
- 
- 	/* request failure does not faze us, as vgacon probably has this
- 	 * region already (FIXME) */
--	request_region(0x3c0, 32, "vesafb");
-+	par->region = request_region(0x3c0, 32, "vesafb");
- 
- 	if (mtrr == 3) {
- 		unsigned int temp_size = size_total;
-@@ -439,7 +440,7 @@ static int vesafb_probe(struct platform_device *dev)
- 		       "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
- 			vesafb_fix.smem_len, vesafb_fix.smem_start);
- 		err = -EIO;
--		goto err;
-+		goto err_release_region;
- 	}
- 
- 	printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
-@@ -458,19 +459,22 @@ static int vesafb_probe(struct platform_device *dev)
- 
- 	if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
- 		err = -ENOMEM;
--		goto err;
-+		goto err_release_region;
- 	}
- 	if (register_framebuffer(info)<0) {
- 		err = -EINVAL;
- 		fb_dealloc_cmap(&info->cmap);
--		goto err;
-+		goto err_release_region;
- 	}
- 	fb_info(info, "%s frame buffer device\n", info->fix.id);
- 	return 0;
--err:
-+err_release_region:
- 	arch_phys_wc_del(par->wc_cookie);
- 	if (info->screen_base)
- 		iounmap(info->screen_base);
-+	if (par->region)
-+		release_region(0x3c0, 32);
-+err:
- 	framebuffer_release(info);
- 	release_mem_region(vesafb_fix.smem_start, size_total);
- 	return err;
-@@ -481,6 +485,8 @@ static int vesafb_remove(struct platform_device *pdev)
- 	struct fb_info *info = platform_get_drvdata(pdev);
- 
- 	unregister_framebuffer(info);
-+	if (((struct vesafb_par *)(info->par))->region)
-+		release_region(0x3c0, 32);
- 	framebuffer_release(info);
- 
- 	return 0;
 -- 
-2.26.0
+With Best Regards,
+Andy Shevchenko
+
 
