@@ -2,510 +2,147 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40046197EB7
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 16:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32931980E9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 18:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727769AbgC3Opz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 10:45:55 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:43864 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725268AbgC3Opz (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 10:45:55 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585579554; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=DndG4fEC7ONuOnbVgDPUzhh2TjL1g+kbAoAdln7s4VQ=;
- b=uPH6/pB4AO3mpLHH2c6YIf0sjFLEKcitO/4Z2FDCMre4Q71t+N8ZmmaLGuNwRoMC3mxAJesQ
- v6m2n3jpOLPtPphqjM3EKal3GdAZoBx+BVJI6g9/2Q1Xc0V0/khNG0ldsHEtDf5d4usJDBD8
- 5ug4YOOBqFcc7Ng6pjQ5k4XPHo8=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI4YmIzMiIsICJsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e82060a.7fa61087eca8-smtp-out-n03;
- Mon, 30 Mar 2020 14:45:30 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B06E5C44788; Mon, 30 Mar 2020 14:45:29 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kgunda)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BAD32C433F2;
-        Mon, 30 Mar 2020 14:45:27 +0000 (UTC)
+        id S1730175AbgC3QWk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 12:22:40 -0400
+Received: from mga05.intel.com ([192.55.52.43]:57279 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730125AbgC3QWk (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 30 Mar 2020 12:22:40 -0400
+IronPort-SDR: HP4zjRddEmnNY+AsmZdwtCNRHYFiYges/NbnESw7u0FOJcR4h1WD+zA6uXdL+tNcpMexvJAZb+
+ 1fm6q0qDz1wA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 09:22:39 -0700
+IronPort-SDR: p0KNu+EpveAAQrD2AGJ+IuzIhxL019kBbIDENElC0nNRXzgafz6NbOiUtt1khOkiNgI1jUVu48
+ 3iMHHTLHQbig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,324,1580803200"; 
+   d="scan'208";a="248753824"
+Received: from irsmsx105.ger.corp.intel.com ([163.33.3.28])
+  by orsmga003.jf.intel.com with ESMTP; 30 Mar 2020 09:22:37 -0700
+Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
+ irsmsx105.ger.corp.intel.com (163.33.3.28) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 30 Mar 2020 17:22:36 +0100
+Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
+ irsmsx601.ger.corp.intel.com (163.33.146.7) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 30 Mar 2020 17:22:36 +0100
+Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
+ IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
+ Mon, 30 Mar 2020 17:22:36 +0100
+From:   "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
+To:     "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>
+CC:     "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "laurent.pinchart@ideasonboard.com" 
+        <laurent.pinchart@ideasonboard.com>,
+        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+        "hverkuil@xs4all.nl" <hverkuil@xs4all.nl>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
+Subject: Re: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only function
+ for DRM infoframe
+Thread-Topic: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only
+ function for DRM infoframe
+Thread-Index: AQHV4K+D4GGLpaNfYkqvNBu0B8JWuahRj9KAgAAFOoCAAAcUgIAKtSmAgABblwCABOAcgA==
+Date:   Mon, 30 Mar 2020 16:22:36 +0000
+Message-ID: <ca98f0999efa1b7db4f1b5116a13611241976308.camel@intel.com>
+References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com>
+         <20200211074657.231405-6-gwan-gyeong.mun@intel.com>
+         <87k13fcm8w.fsf@intel.com> <87h7yjcldq.fsf@intel.com>
+         <20200320115737.GF5193@pendragon.ideasonboard.com>
+         <2dd87897a2c1dea8d882141823ed1ca1206ec01c.camel@intel.com>
+         <20200327125626.GE13686@intel.com>
+In-Reply-To: <20200327125626.GE13686@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.252.1.242]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A4A323BA1E64E54BB440AD138D173C74@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 30 Mar 2020 20:15:27 +0530
-From:   kgunda@codeaurora.org
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH V4 2/4] backlight: qcom-wled: Add callback functions
-In-Reply-To: <20200325153036.zyor2srbkdhmr2zj@holly.lan>
-References: <1584985618-25689-1-git-send-email-kgunda@codeaurora.org>
- <1584985618-25689-3-git-send-email-kgunda@codeaurora.org>
- <20200325153036.zyor2srbkdhmr2zj@holly.lan>
-Message-ID: <0fc7c05e411267ac921adce070dcfd80@codeaurora.org>
-X-Sender: kgunda@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2020-03-25 21:00, Daniel Thompson wrote:
-> On Mon, Mar 23, 2020 at 11:16:56PM +0530, Kiran Gunda wrote:
->> Add wled_cabc_config, wled_sync_toggle, wled_ovp_fault_status
->> and wled_ovp_delay callback functions to prepare the driver for
->> adding WLED5 support.
->> 
->> wled_cabc_config() ===> Used to configure the cabc register.
->>                          It is applicable for wled4 and wled5.
->> 
->> wled_sync_toggle() ===> used to toggle the Sync register bit for the
->>                         brightness update to take place.
->>                         It is applicable for WLED3, WLED4 and WLED5.
->> 
->> wled_ovp_fault_status() ===> Used to determine if the OVP fault is 
->> triggered.
->>                              It is applicable for WLED4 and WLED5.
->> 
->> wled_ovp_delay() ===> Provides the time to wait before checking the 
->> OVP status
->>                         after wled module enable.
->>                         It is applicable for WLED4 and WLED5.
-> 
-> These look like comments to me. Move them out of the patch header and
-> make them into real comments!
-> 
-Sure. Will do it in next post.
-> 
->> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-> 
-> This patch does not compile. Please fix this.
-> 
-> 
-Sorry for that. Some how it didn't show up in my compilation.
-Will fix it in next post.
->> ---
->>  drivers/video/backlight/qcom-wled.c | 188 
->> ++++++++++++++++++++++--------------
->>  1 file changed, 118 insertions(+), 70 deletions(-)
->> 
->> diff --git a/drivers/video/backlight/qcom-wled.c 
->> b/drivers/video/backlight/qcom-wled.c
->> index 3d276b3..a3daf9e 100644
->> --- a/drivers/video/backlight/qcom-wled.c
->> +++ b/drivers/video/backlight/qcom-wled.c
->> @@ -147,6 +147,7 @@ struct wled {
->>  	u32 max_brightness;
->>  	u32 short_count;
->>  	u32 auto_detect_count;
->> +	u32 version;
-> 
-> Why does some of the changes here use function pointers and other parts
-> use if/else networks (wled->version == X) ?
-> 
-There is one place (in auto_string_detection) where we have to add the
-if (version == 4) because the per string modulator_enable is present 
-only
-for WLED4 and there is no equivalent functionality available for WLED5.
-
-There is another place, that i can convert it to the function pointer 
-(auto_detection_required).
-
-> Overall I almost wonder if the reduced clarify that comes from function
-> pointers is actually adding much value?
-> 
-I believe adding the function pointer makes it cleaner and the same 
-approach is used for
-WLED4/WLED3 also.
-
-> 
->>  	bool disabled_by_short;
->>  	bool has_short_detect;
->>  	int short_irq;
->> @@ -155,6 +156,10 @@ struct wled {
->>  	struct wled_config cfg;
->>  	struct delayed_work ovp_work;
->>  	int (*wled_set_brightness)(struct wled *wled, u16 brightness);
->> +	int (*wled_cabc_config)(struct wled *wled, bool enable);
->> +	int (*wled_sync_toggle)(struct wled *wled);
->> +	int (*wled_ovp_fault_status)(struct wled *wled, bool *fault_set);
->> +	int (*wled_ovp_delay)(struct wled *wled);
->>  };
->> 
->>  static int wled3_set_brightness(struct wled *wled, u16 brightness)
->> @@ -237,7 +242,7 @@ static int wled_module_enable(struct wled *wled, 
->> int val)
->>  	return 0;
->>  }
->> 
->> -static int wled_sync_toggle(struct wled *wled)
->> +static int wled3_sync_toggle(struct wled *wled)
->>  {
->>  	int rc;
->>  	unsigned int mask = GENMASK(wled->max_string_count - 1, 0);
->> @@ -255,6 +260,46 @@ static int wled_sync_toggle(struct wled *wled)
->>  	return rc;
->>  }
->> 
->> +static int wled4_ovp_fault_status(struct wled *wled, bool *fault_set)
->> +{
->> +	int rc;
->> +	u32 int_rt_sts, fault_sts;
->> +
->> +	*fault_set = false;
->> +	rc = regmap_read(wled->regmap,
->> +			wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
->> +			&int_rt_sts);
->> +	if (rc < 0) {
->> +		dev_err(wled->dev, "Failed to read INT_RT_STS rc=%d\n", rc);
->> +		return rc;
->> +	}
->> +
->> +	rc = regmap_read(wled->regmap,
->> +			wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
->> +			&fault_sts);
->> +	if (rc < 0) {
->> +		dev_err(wled->dev, "Failed to read FAULT_STATUS rc=%d\n", rc);
->> +		return rc;
->> +	}
->> +
->> +	if (int_rt_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
->> +		*fault_set = true;
->> +
->> +	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT)
->> +		*fault_set = true;
->> +
->> +	if (*fault_set)
->> +		dev_dbg(wled->dev, "WLED OVP fault detected, int_rt_sts=0x%x 
->> fault_sts=0x%x\n",
->> +			int_rt_sts, fault_sts);
->> +
->> +	return rc;
->> +}
->> +
->> +static int wled4_ovp_delay(struct wled *wled)
->> +{
->> +	return WLED_SOFT_START_DLY_US;
->> +}
->> +
->>  static int wled_update_status(struct backlight_device *bl)
->>  {
->>  	struct wled *wled = bl_get_data(bl);
->> @@ -275,7 +320,7 @@ static int wled_update_status(struct 
->> backlight_device *bl)
->>  			goto unlock_mutex;
->>  		}
->> 
->> -		rc = wled_sync_toggle(wled);
->> +		rc = wled->wled_sync_toggle(wled);
->>  		if (rc < 0) {
->>  			dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
->>  			goto unlock_mutex;
->> @@ -298,6 +343,25 @@ static int wled_update_status(struct 
->> backlight_device *bl)
->>  	return rc;
->>  }
->> 
->> +static int wled4_cabc_config(struct wled *wled, bool enable)
->> +{
->> +	int i, j, rc;
->> +	u8 val;
->> +
->> +	for (i = 0; i < wled->cfg.num_strings; i++) {
->> +		j = wled->cfg.enabled_strings[i];
->> +
->> +		val = enable ? WLED4_SINK_REG_STR_CABC_MASK : 0;
->> +		rc = regmap_update_bits(wled->regmap, wled->sink_addr +
->> +					WLED4_SINK_REG_STR_CABC(j),
->> +					WLED4_SINK_REG_STR_CABC_MASK, val);
->> +		if (rc < 0)
->> +			return rc;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  #define WLED_SHORT_DLY_MS			20
->>  #define WLED_SHORT_CNT_MAX			5
->>  #define WLED_SHORT_RESET_CNT_DLY_US		USEC_PER_SEC
->> @@ -345,9 +409,10 @@ static irqreturn_t wled_short_irq_handler(int 
->> irq, void *_wled)
->> 
->>  static void wled_auto_string_detection(struct wled *wled)
->>  {
->> -	int rc = 0, i;
->> -	u32 sink_config = 0, int_sts;
->> +	int rc = 0, i, delay_time_us;
->> +	u32 sink_config = 0;
->>  	u8 sink_test = 0, sink_valid = 0, val;
->> +	bool fault_set;
->> 
->>  	/* Read configured sink configuration */
->>  	rc = regmap_read(wled->regmap, wled->sink_addr +
->> @@ -376,14 +441,9 @@ static void wled_auto_string_detection(struct 
->> wled *wled)
->>  	}
->> 
->>  	if (wled->cfg.cabc) {
->> -		for (i = 0; i < wled->cfg.num_strings; i++) {
->> -			rc = regmap_update_bits(wled->regmap, wled->sink_addr +
->> -						WLED4_SINK_REG_STR_CABC(i),
->> -						WLED4_SINK_REG_STR_CABC_MASK,
->> -						0);
->> -			if (rc < 0)
->> -				goto failed_detect;
->> -		}
->> +		rc = wled->wled_cabc_config(wled, 0);
-> 
-> Be consistent with the argument (elsewhere it is true/false).
-> 
-Will address in the next post.
-> 
->> +		if (rc < 0)
->> +			goto failed_detect;
->>  	}
->> 
->>  	/* Disable all sinks */
->> @@ -427,18 +487,17 @@ static void wled_auto_string_detection(struct 
->> wled *wled)
->>  			goto failed_detect;
->>  		}
->> 
->> -		usleep_range(WLED_SOFT_START_DLY_US,
->> -			     WLED_SOFT_START_DLY_US + 1000);
->> +		delay_time_us = wled->wled_ovp_delay(wled);
->> +		usleep_range(delay_time_us, delay_time_us + 1000);
->> 
->> -		rc = regmap_read(wled->regmap, wled->ctrl_addr +
->> -				 WLED3_CTRL_REG_INT_RT_STS, &int_sts);
->> +		rc = wled->wled_ovp_fault_status(wled, &fault_set);
->>  		if (rc < 0) {
->> -			dev_err(wled->dev, "Error in reading WLED3_CTRL_INT_RT_STS 
->> rc=%d\n",
->> +			dev_err(wled->dev, "Error in getting OVP fault_sts, rc=%d\n",
->>  				rc);
->>  			goto failed_detect;
->>  		}
->> 
-> 
-> 
->> -		if (int_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
->> +		if (fault_set)
->>  			dev_dbg(wled->dev, "WLED OVP fault detected with SINK %d\n",
->>  				i + 1);
->>  		else
->> @@ -478,30 +537,30 @@ static void wled_auto_string_detection(struct 
->> wled *wled)
->>  	}
->> 
->>  	/* Enable valid sinks */
->> -	for (i = 0; i < wled->cfg.num_strings; i++) {
->> -		if (wled->cfg.cabc) {
->> -			rc = regmap_update_bits(wled->regmap, wled->sink_addr +
->> -						WLED4_SINK_REG_STR_CABC(i),
->> -						WLED4_SINK_REG_STR_CABC_MASK,
->> -						WLED4_SINK_REG_STR_CABC_MASK);
->> -			if (rc < 0)
->> +	if (wled->version == 4) {
->> +		for (i = 0; i < wled->cfg.num_strings; i++) {
->> +			if (sink_config &
->> +			    BIT(WLED4_SINK_REG_CURR_SINK_SHFT + i))
->> +				val = WLED4_SINK_REG_STR_MOD_MASK;
->> +			else
->> +				/* Disable modulator_en for unused sink */
->> +				val = 0x0;
->> +
->> +			rc = regmap_write(wled->regmap, wled->sink_addr +
->> +					  WLED4_SINK_REG_STR_MOD_EN(i), val);
->> +			if (rc < 0) {
->> +				dev_err(wled->dev, "Failed to configure MODULATOR_EN rc=%d\n",
->> +					rc);
->>  				goto failed_detect;
->> -		}
->> -
->> -		if (sink_config & BIT(WLED4_SINK_REG_CURR_SINK_SHFT + i))
->> -			val = WLED4_SINK_REG_STR_MOD_MASK;
->> -		else
->> -			val = 0x0; /* Disable modulator_en for unused sink */
->> -
->> -		rc = regmap_write(wled->regmap, wled->sink_addr +
->> -				  WLED4_SINK_REG_STR_MOD_EN(i), val);
->> -		if (rc < 0) {
->> -			dev_err(wled->dev, "Failed to configure MODULATOR_EN rc=%d\n",
->> -				rc);
->> -			goto failed_detect;
->> +			}
->>  		}
->>  	}
->> 
->> +	/* Enable CABC if it needs to be enabled */
-> 
-> If it needs to be enabled?
-> 
-Ok. Actually Enable CABC should be enough. I will remove the latter part
-in the next post.
-> 
->> +	rc = wled->wled_cabc_config(wled, true);
->> +	if (rc < 0)
->> +		goto failed_detect;
->> +
->>  	/* Restore the feedback setting */
->>  	rc = regmap_write(wled->regmap,
->>  			  wled->ctrl_addr + WLED3_CTRL_REG_FEEDBACK_CONTROL, 0);
->> @@ -570,29 +629,19 @@ static bool wled_auto_detection_required(struct 
->> wled *wled)
->>  static int wled_auto_detection_at_init(struct wled *wled)
->>  {
->>  	int rc;
->> -	u32 fault_status, rt_status;
->> +	bool fault_set;
->> 
->>  	if (!wled->cfg.auto_detection_enabled)
->>  		return 0;
->> 
->> -	rc = regmap_read(wled->regmap,
->> -			 wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
->> -			 &rt_status);
->> +	rc = wled->wled_ovp_fault_status(wled, &fault_set);
->>  	if (rc < 0) {
->> -		dev_err(wled->dev, "Failed to read RT status rc=%d\n", rc);
->> -		return rc;
->> -	}
->> -
->> -	rc = regmap_read(wled->regmap,
->> -			 wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
->> -			 &fault_status);
->> -	if (rc < 0) {
->> -		dev_err(wled->dev, "Failed to read fault status rc=%d\n", rc);
->> +		dev_err(wled->dev, "Error in getting OVP fault_sts, rc=%d\n",
->> +			rc);
->>  		return rc;
->>  	}
->> 
->> -	if ((rt_status & WLED3_CTRL_REG_OVP_FAULT_STATUS) ||
->> -	    (fault_status & WLED3_CTRL_REG_OVP_FAULT_BIT)) {
->> +	if (fault_set) {
->>  		mutex_lock(&wled->lock);
->>  		wled_auto_string_detection(wled);
->>  		mutex_unlock(&wled->lock);
->> @@ -811,17 +860,12 @@ static int wled4_setup(struct wled *wled)
->>  					wled->cfg.string_i_limit);
->>  		if (rc < 0)
->>  			return rc;
->> -
->> -		addr = wled->sink_addr +
->> -				WLED4_SINK_REG_STR_CABC(j);
->> -		rc = regmap_update_bits(wled->regmap, addr,
->> -					WLED4_SINK_REG_STR_CABC_MASK,
->> -					wled->cfg.cabc ?
->> -					WLED4_SINK_REG_STR_CABC_MASK : 0);
->> -		if (rc < 0)
->> -			return rc;
->>  	}
->> 
->> +	rc = wled4_cabc_config(wled, wled->cfg.en_cabc);
->> +	if (rc < 0)
->> +		return rc;
->> +
->>  	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
->>  				WLED3_CTRL_REG_MOD_EN,
->>  				WLED3_CTRL_REG_MOD_EN_MASK,
->> @@ -835,7 +879,7 @@ static int wled4_setup(struct wled *wled)
->>  	if (rc < 0)
->>  		return rc;
->> 
->> -	rc = wled_sync_toggle(wled);
->> +	rc = wled->wled_sync_toggle(wled);
->>  	if (rc < 0) {
->>  		dev_err(wled->dev, "Failed to toggle sync reg rc:%d\n", rc);
->>  		return rc;
->> @@ -951,7 +995,7 @@ static u32 wled_values(const struct wled_var_cfg 
->> *cfg, u32 idx)
->>  	return idx;
->>  }
->> 
->> -static int wled_configure(struct wled *wled, int version)
->> +static int wled_configure(struct wled *wled)
->>  {
->>  	struct wled_config *cfg = &wled->cfg;
->>  	struct device *dev = wled->dev;
->> @@ -1035,12 +1079,13 @@ static int wled_configure(struct wled *wled, 
->> int version)
->>  	if (rc)
->>  		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", 
->> dev->of_node);
->> 
->> -	switch (version) {
->> +	switch (wled->version) {
->>  	case 3:
->>  		u32_opts = wled3_opts;
->>  		size = ARRAY_SIZE(wled3_opts);
->>  		*cfg = wled3_config_defaults;
->>  		wled->wled_set_brightness = wled3_set_brightness;
->> +		wled->wled_sync_toggle = wled3_sync_toggle;
->>  		wled->max_string_count = 3;
->>  		wled->sink_addr = wled->ctrl_addr;
->>  		break;
->> @@ -1050,6 +1095,10 @@ static int wled_configure(struct wled *wled, 
->> int version)
->>  		size = ARRAY_SIZE(wled4_opts);
->>  		*cfg = wled4_config_defaults;
->>  		wled->wled_set_brightness = wled4_set_brightness;
->> +		wled->wled_sync_toggle = wled3_sync_toggle;
->> +		wled->wled_cabc_config = wled4_cabc_config;
->> +		wled->wled_ovp_fault_status = wled4_ovp_fault_status;
->> +		wled->wled_ovp_delay = wled4_ovp_delay;
->>  		wled->max_string_count = 4;
->> 
->>  		prop_addr = of_get_address(dev->of_node, 1, NULL, NULL);
->> @@ -1186,7 +1235,6 @@ static int wled_probe(struct platform_device 
->> *pdev)
->>  	struct backlight_device *bl;
->>  	struct wled *wled;
->>  	struct regmap *regmap;
->> -	int version;
->>  	u32 val;
->>  	int rc;
->> 
->> @@ -1203,18 +1251,18 @@ static int wled_probe(struct platform_device 
->> *pdev)
->>  	wled->regmap = regmap;
->>  	wled->dev = &pdev->dev;
->> 
->> -	version = (uintptr_t)of_device_get_match_data(&pdev->dev);
->> -	if (!version) {
->> +	wled->version = (uintptr_t)of_device_get_match_data(&pdev->dev);
->> +	if (!wled->version) {
->>  		dev_err(&pdev->dev, "Unknown device version\n");
->>  		return -ENODEV;
->>  	}
->> 
->>  	mutex_init(&wled->lock);
->> -	rc = wled_configure(wled, version);
->> +	rc = wled_configure(wled);
->>  	if (rc)
->>  		return rc;
->> 
->> -	switch (version) {
->> +	switch (wled->version) {
->>  	case 3:
->>  		wled->cfg.auto_detection_enabled = false;
->>  		rc = wled3_setup(wled);
->> --
->> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora 
->> Forum,
->>  a Linux Foundation Collaborative Project
+T24gRnJpLCAyMDIwLTAzLTI3IGF0IDE0OjU2ICswMjAwLCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6
+DQo+IE9uIEZyaSwgTWFyIDI3LCAyMDIwIGF0IDA3OjI3OjU2QU0gKzAwMDAsIE11biwgR3dhbi1n
+eWVvbmcgd3JvdGU6DQo+ID4gT24gRnJpLCAyMDIwLTAzLTIwIGF0IDEzOjU3ICswMjAwLCBMYXVy
+ZW50IFBpbmNoYXJ0IHdyb3RlOg0KPiA+ID4gSGkgSmFuaSwNCj4gPiA+IA0KPiA+ID4gT24gRnJp
+LCBNYXIgMjAsIDIwMjAgYXQgMDE6MzI6MTdQTSArMDIwMCwgSmFuaSBOaWt1bGEgd3JvdGU6DQo+
+ID4gPiA+IE9uIEZyaSwgMjAgTWFyIDIwMjAsIEphbmkgTmlrdWxhIDxqYW5pLm5pa3VsYUBsaW51
+eC5pbnRlbC5jb20+DQo+ID4gPiA+IHdyb3RlOg0KPiA+ID4gPiA+IE9uIFR1ZSwgMTEgRmViIDIw
+MjAsIEd3YW4tZ3llb25nIE11biA8DQo+ID4gPiA+ID4gZ3dhbi1neWVvbmcubXVuQGludGVsLmNv
+bT4NCj4gPiA+ID4gPiB3cm90ZToNCj4gPiA+ID4gPiA+IEl0IGFkZHMgYW4gdW5wYWNrIG9ubHkg
+ZnVuY3Rpb24gZm9yIERSTSBpbmZvZnJhbWUgZm9yDQo+ID4gPiA+ID4gPiBkeW5hbWljDQo+ID4g
+PiA+ID4gPiByYW5nZSBhbmQNCj4gPiA+ID4gPiA+IG1hc3RlcmluZyBpbmZvZnJhbWUgcmVhZG91
+dC4NCj4gPiA+ID4gPiA+IEl0IHVucGFja3MgdGhlIGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29u
+dGFpbmVkIGluIHRoZQ0KPiA+ID4gPiA+ID4gYmluYXJ5DQo+ID4gPiA+ID4gPiBidWZmZXIgaW50
+bw0KPiA+ID4gPiA+ID4gYSBzdHJ1Y3R1cmVkIGZyYW1lIG9mIHRoZSBIRE1JIER5bmFtaWMgUmFu
+Z2UgYW5kIE1hc3RlcmluZw0KPiA+ID4gPiA+ID4gKERSTSkNCj4gPiA+ID4gPiA+IGluZm9ybWF0
+aW9uIGZyYW1lLg0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBJbiBjb250cmFzdCB0byBoZG1p
+X2RybV9pbmZvZnJhbWVfdW5wYWNrKCkgZnVuY3Rpb24sIGl0DQo+ID4gPiA+ID4gPiBkb2VzDQo+
+ID4gPiA+ID4gPiBub3QgdmVyaWZ5DQo+ID4gPiA+ID4gPiBhIGNoZWNrc3VtLg0KPiA+ID4gPiA+
+ID4gDQo+ID4gPiA+ID4gPiBJdCBjYW4gYmUgdXNlZCBmb3IgdW5wYWNraW5nIGEgRFAgSERSIE1l
+dGFkYXRhIEluZm9mcmFtZQ0KPiA+ID4gPiA+ID4gU0RQDQo+ID4gPiA+ID4gPiBjYXNlLg0KPiA+
+ID4gPiA+ID4gRFAgSERSIE1ldGFkYXRhIEluZm9mcmFtZSBTRFAgdXNlcyB0aGUgc2FtZSBEeW5h
+bWljIFJhbmdlDQo+ID4gPiA+ID4gPiBhbmQNCj4gPiA+ID4gPiA+IE1hc3RlcmluZw0KPiA+ID4g
+PiA+ID4gKERSTSkgaW5mb3JtYXRpb24gKENUQS04NjEtRyBzcGVjLikgc3VjaCBhcyBIRE1JIERS
+TQ0KPiA+ID4gPiA+ID4gaW5mb2ZyYW1lLg0KPiA+ID4gPiA+ID4gQnV0IERQIFNEUCBoZWFkZXIg
+YW5kIHBheWxvYWQgc3RydWN0dXJlIGFyZSBkaWZmZXJlbnQgZnJvbQ0KPiA+ID4gPiA+ID4gSERN
+SQ0KPiA+ID4gPiA+ID4gRFJNDQo+ID4gPiA+ID4gPiBJbmZvZnJhbWUuIFRoZXJlZm9yZSB1bnBh
+Y2tpbmcgRFJNIGluZm9mcmFtZSBmb3IgRFANCj4gPiA+ID4gPiA+IHJlcXVpcmVzDQo+ID4gPiA+
+ID4gPiBza2lwcGluZyBvZg0KPiA+ID4gPiA+ID4gYSB2ZXJpZnlpbmcgY2hlY2tzdW0uDQo+ID4g
+PiA+ID4gPiANCj4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEd3YW4tZ3llb25nIE11biA8Z3dh
+bi1neWVvbmcubXVuQGludGVsLmNvbT4NCj4gPiA+ID4gPiA+IFJldmlld2VkLWJ5OiBVbWEgU2hh
+bmthciA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IEJhcnRs
+b21pZWosIGNhbiBJIGhhdmUgeW91ciBhY2sgZm9yIG1lcmdpbmcgdGhpcyB2aWEgZHJtLQ0KPiA+
+ID4gPiA+IGludGVsDQo+ID4gPiA+ID4gYWxvbmcNCj4gPiA+ID4gPiB3aXRoIHRoZSByZXN0IG9m
+IHRoZSBzZXJpZXMsIHBsZWFzZT8NCj4gPiA+ID4gDQo+ID4gPiA+IE9yIEhhbnMgb3IgTGF1cmVu
+dCwgZnJvbSB2NGwvdmlkZW8gcG9pbnQgb2Ygdmlldy4NCj4gPiA+IA0KPiA+ID4gSSdtIG5vIGV4
+cGVydCBvbiBJbmZvRnJhbWUsIEknbGwgb25seSBjb21tZW50IG9uIHRoZSBBUEkgYmVsb3cuDQo+
+ID4gPiANCj4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gIGRyaXZlcnMvdmlkZW8vaGRtaS5j
+IHwgNTggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gPiA+ID4gPiA+IC0tLS0N
+Cj4gPiA+ID4gPiA+IC0tLS0tLS0tDQo+ID4gPiA+ID4gPiAgaW5jbHVkZS9saW51eC9oZG1pLmgg
+fCAgMiArKw0KPiA+ID4gPiA+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNDMgaW5zZXJ0aW9ucygrKSwg
+MTcgZGVsZXRpb25zKC0pDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL3ZpZGVvL2hkbWkuYyBiL2RyaXZlcnMvdmlkZW8vaGRtaS5jDQo+ID4gPiA+ID4gPiBp
+bmRleCA5YzgyZTJhMGE0MTEuLjk4MTg4MzZkODJiNyAxMDA2NDQNCj4gPiA+ID4gPiA+IC0tLSBh
+L2RyaXZlcnMvdmlkZW8vaGRtaS5jDQo+ID4gPiA+ID4gPiArKysgYi9kcml2ZXJzL3ZpZGVvL2hk
+bWkuYw0KPiA+ID4gPiA+ID4gQEAgLTE3NzUsMjAgKzE3NzUsMTggQEANCj4gPiA+ID4gPiA+IGhk
+bWlfdmVuZG9yX2FueV9pbmZvZnJhbWVfdW5wYWNrKHVuaW9uDQo+ID4gPiA+ID4gPiBoZG1pX3Zl
+bmRvcl9hbnlfaW5mb2ZyYW1lICpmcmFtZSwNCj4gPiA+ID4gPiA+ICB9DQo+ID4gPiA+ID4gPiAg
+DQo+ID4gPiA+ID4gPiAgLyoqDQo+ID4gPiA+ID4gPiAtICogaGRtaV9kcm1faW5mb2ZyYW1lX3Vu
+cGFjaygpIC0gdW5wYWNrIGJpbmFyeSBidWZmZXIgdG8gYQ0KPiA+ID4gPiA+ID4gSERNSSBEUk0g
+aW5mb2ZyYW1lDQo+ID4gPiA+ID4gPiArICogaGRtaV9kcm1faW5mb2ZyYW1lX3VucGFja19vbmx5
+KCkgLSB1bnBhY2sgYmluYXJ5IGJ1ZmZlcg0KPiA+ID4gPiA+ID4gdG8NCj4gPiA+ID4gPiA+IGEg
+SERNSSBEUk0gaW5mb2ZyYW1lDQo+ID4gPiA+ID4gPiAgICogQGZyYW1lOiBIRE1JIERSTSBpbmZv
+ZnJhbWUNCj4gPiA+ID4gPiA+ICAgKiBAYnVmZmVyOiBzb3VyY2UgYnVmZmVyDQo+ID4gPiA+ID4g
+PiAgICogQHNpemU6IHNpemUgb2YgYnVmZmVyDQo+ID4gPiA+ID4gPiAgICoNCj4gPiA+ID4gPiA+
+IC0gKiBVbnBhY2tzIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaW4gYmluYXJ5IEBidWZmZXIN
+Cj4gPiA+ID4gPiA+IGludG8gYQ0KPiA+ID4gPiA+ID4gc3RydWN0dXJlZA0KPiA+ID4gPiA+ID4g
+KyAqIFVucGFja3MgdGhlIGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29udGFpbmVkIGluIGJpbmFy
+eQ0KPiA+ID4gPiA+ID4gQGJ1ZmZlciBpbnRvIGEgc3RydWN0dXJlZA0KPiA+ID4gDQo+ID4gPiBM
+aW5lIHdyYXAgcGxlYXNlLg0KPiA+ID4gDQo+ID4gPiBUaGlzIG5lZWRzIHRvIGJlIGNsYXJpZmll
+ZCB0byBleHBsYWluIGV4YWN0bHkgd2hhdCB0aGUgYnVmZmVyDQo+ID4gPiBwb2ludHMNCj4gPiA+
+IHRvLg0KPiA+ID4gDQo+ID4gT2theSBJJ2xsIHVwZGF0ZSBjbGVhciBjb21tZW50cyBuZXh0IHZl
+cnNpb24uDQo+ID4gPiBBbHNvLCBhcyB0aGlzIGlzIGFwcGxpY2FibGUgdG8gRFAgdG9vLCBzaG91
+bGRuJ3Qgd2UgZHJvcCB0aGUNCj4gPiA+IGhkbWlfDQo+ID4gPiBwcmVmaXggPyBJcyB0aGVyZSBh
+bm90aGVyIHByZWZpeCB0aGF0IGNvdWxkIGJlIHVzZWQgZm9yIGZ1bmN0aW9ucw0KPiA+ID4gdGhh
+dA0KPiA+ID4gYXJlIGFwcGxpY2F0aW9uIHRvIGluZm9mcmFtZSBoYW5kbGluZyBzaGFyZWQgYnkg
+ZGlmZmVyZW50IGRpc3BsYXkNCj4gPiA+IGludGVyZmFjZXMgPyBBIGJpdCBvZiByZWZhY3Rvcmlu
+ZyB3b3VsZCBoZWxwIG1ha2luZyBhbGwgdGhpcw0KPiA+ID4gY2xlYXIuDQo+ID4gPiANCj4gPiBC
+b3RoIERQIGFuZCBIRE1JIHVzZSBDVEEtODYxLUcgc3BlYyBmb3IgRFJNIGluZm9mcmFtZS4gSSds
+bCB1cGRhdGUNCj4gPiBwcmVmaXggd2l0aCBjdGFfIGluc3RlYWQgb2YgaGRtaV8uDQo+IA0KPiBN
+b3N0IG9mIHZpZGVvL2hkbWkuYyBpcyBmcm9tIHRoZSBDVEEgc3BlYyhzKS4gVGhlIG5hbWUgaXMg
+anVzdCBhDQo+IG5hbWUuDQo+IExldCdzIG5vdCBzdGFydCBtYWtpbmcgaXQgaW5jb25zaXN0ZW50
+IGp1c3QgZm9yIHRoaXMgb25lIGNhc2UuDQo+IA0KSGkgVmlsbGUsIHRoYW5rIHlvdSBmb3IgZ2l2
+aW5nIG1lIHlvdXIgb3Bpbmlvbi4NCkFuZCBJIGFncmVlIHdpdGggeW91ciBvcGluaW9uLg0KSSds
+bCB1cGRhdGUgZGV0YWlsZWQgY29tbWVudHMgd2l0aCBjb25zaXN0ZW50IEFQSSBuYW1pbmdzLg0K
