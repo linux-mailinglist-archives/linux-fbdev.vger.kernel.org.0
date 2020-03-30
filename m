@@ -2,244 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 015BB198106
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 18:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B567819828E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 19:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730099AbgC3QXe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 12:23:34 -0400
-Received: from mga18.intel.com ([134.134.136.126]:60988 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730086AbgC3QXe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 12:23:34 -0400
-IronPort-SDR: EU4EUEQDvv1o6vofZy9BHuAWE5Hg9wUONOWnbcnQ+6tbwlsyOPuPZqsKBfs020SVdvwM/ogQx+
- MQe6GIrsIwXw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 09:23:34 -0700
-IronPort-SDR: NIvXoEj9gERKkVmt9w+h7jD/GrUMCpyewCiXOLj5U2wY9SumI0OdfrlwqtSf1baH7WBKYh6eZW
- CG9Z5A32kdKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
-   d="scan'208";a="248754059"
-Received: from niamhrya-mobl.ger.corp.intel.com (HELO helsinki.ger.corp.intel.com) ([10.252.1.242])
-  by orsmga003.jf.intel.com with ESMTP; 30 Mar 2020 09:23:31 -0700
-From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        uma.shankar@intel.com, laurent.pinchart@ideasonboard.com,
-        jani.nikula@intel.com, ville.syrjala@linux.intel.com
-Subject: [PATCH v9 14/14] drm/i915/psr: Use new DP VSC SDP compute routine on PSR
-Date:   Mon, 30 Mar 2020 19:23:56 +0300
-Message-Id: <20200330162356.162361-15-gwan-gyeong.mun@intel.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200330162356.162361-1-gwan-gyeong.mun@intel.com>
-References: <20200330162356.162361-1-gwan-gyeong.mun@intel.com>
+        id S1729821AbgC3RlV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 13:41:21 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:38571 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729788AbgC3RlP (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 30 Mar 2020 13:41:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1585590074;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YGHvH2P6nK7TQrcIUAsAOYU1x8zpv/Ba4jDsyhsFhTg=;
+        b=IxRzBpM+kz+5TXsorpzFspxithz1QaEdi3t6knzmYqK3tuNdcJjT+lykcJS0kPB9uCEY/X
+        rGRjBrJnrjSuYwcPRCYKGNO2hCqiwE4wjmGPwhagBuwIpmnzk9HmTo95v05JnIxpo/Jg2P
+        9jKRUSUpjwC81n7YbZbNf7PzdafPCnY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-109-vixzt7PyMZC7dnLS7w5LvQ-1; Mon, 30 Mar 2020 13:41:03 -0400
+X-MC-Unique: vixzt7PyMZC7dnLS7w5LvQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2189B1B2C980;
+        Mon, 30 Mar 2020 17:41:00 +0000 (UTC)
+Received: from elisabeth (unknown [10.36.110.18])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E96E7CDBFF;
+        Mon, 30 Mar 2020 17:40:54 +0000 (UTC)
+Date:   Mon, 30 Mar 2020 19:40:43 +0200
+From:   Stefano Brivio <sbrivio@redhat.com>
+To:     John Wyatt <jbwyatt4@gmail.com>
+Cc:     Julia Lawall <julia.lawall@inria.fr>,
+        Soumyajit Deb <debsoumyajit100@gmail.com>,
+        outreachy-kernel@googlegroups.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
+ preferred usleep_range
+Message-ID: <20200330194043.56c79bb8@elisabeth>
+In-Reply-To: <alpine.DEB.2.21.2003291235590.2990@hadrien>
+References: <20200329092204.770405-1-jbwyatt4@gmail.com>
+        <alpine.DEB.2.21.2003291127230.2990@hadrien>
+        <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
+        <alpine.DEB.2.21.2003291144460.2990@hadrien>
+        <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
+        <alpine.DEB.2.21.2003291235590.2990@hadrien>
+Organization: Red Hat
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In order to use a common VSC SDP Colorimetry calculating code on PSR,
-it uses a new psr vsc sdp compute routine.
-Because PSR routine has its own scenario and timings of writing a VSC SDP,
-the current PSR routine needs to have its own drm_dp_vsc_sdp structure
-member variable on struct i915_psr.
+On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
-In order to calculate colorimetry information, intel_psr_update()
-function and intel_psr_enable() function extend a drm_connector_state
-argument.
+> On Sun, 29 Mar 2020, Soumyajit Deb wrote:
+>=20
+> > I had the same doubt the other day about the replacement of udelay() wi=
+th
+> > usleep_range(). The corresponding range for the single argument value of
+> > udelay() is quite confusing as I couldn't decide the range.=C2=A0But as=
+ much as I
+> > noticed checkpatch.pl gives warning for replacing udelay() with
+> > usleep_range() by checking the argument value of udelay(). In the
+> > documentation, it is written udelay() should be used for a sleep time o=
+f at
+> > most 10 microseconds but between 10 microseconds and 20 milliseconds,
+> > usleep_range() should be used.=C2=A0
+> > I think the range is code specific and will depend on what range is
+> > acceptable and doesn't break the code.
+> > =C2=A0Please correct me if I am wrong. =20
+>=20
+> The range depends on the associated hardware.
 
-There are no changes to PSR mechanism.
+John, by the way, here you could have checked the datasheet of this LCD
+controller. It's a pair of those:
+	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
 
-v3: Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
-v4: Rebased
-v8: Rebased
+reset time is 1=C2=B5s minimum, which is the only actual constraint here.
+The rise time should then be handled by power supply and reflected
+with some appropriate usage of the regulator framework.
 
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c |  4 +-
- drivers/gpu/drm/i915/display/intel_psr.c | 54 +++++++-----------------
- drivers/gpu/drm/i915/display/intel_psr.h |  6 ++-
- drivers/gpu/drm/i915/i915_drv.h          |  1 +
- 4 files changed, 22 insertions(+), 43 deletions(-)
+That 120ms delay, however, must be there for a reason, that is, most
+likely to develop this quickly without exposing a proper model of the
+power supplies to the driver.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 83bee335372b..eca7cf09aa93 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3546,7 +3546,7 @@ static void intel_enable_ddi_dp(struct intel_encoder *encoder,
- 		intel_dp_stop_link_train(intel_dp);
- 
- 	intel_edp_backlight_on(crtc_state, conn_state);
--	intel_psr_enable(intel_dp, crtc_state);
-+	intel_psr_enable(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-@@ -3717,7 +3717,7 @@ static void intel_ddi_update_pipe_dp(struct intel_encoder *encoder,
- 
- 	intel_ddi_set_dp_msa(crtc_state, conn_state);
- 
--	intel_psr_update(intel_dp, crtc_state);
-+	intel_psr_update(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index a0569fdfeb16..9e82d706507b 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -357,39 +357,6 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
- 	}
- }
- 
--static void intel_psr_setup_vsc(struct intel_dp *intel_dp,
--				const struct intel_crtc_state *crtc_state)
--{
--	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
--	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
--	struct dp_sdp psr_vsc;
--
--	if (dev_priv->psr.psr2_enabled) {
--		/* Prepare VSC Header for SU as per EDP 1.4 spec, Table 6.11 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		if (dev_priv->psr.colorimetry_support) {
--			psr_vsc.sdp_header.HB2 = 0x5;
--			psr_vsc.sdp_header.HB3 = 0x13;
--		} else {
--			psr_vsc.sdp_header.HB2 = 0x4;
--			psr_vsc.sdp_header.HB3 = 0xe;
--		}
--	} else {
--		/* Prepare VSC packet as per EDP 1.3 spec, Table 3.10 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		psr_vsc.sdp_header.HB2 = 0x2;
--		psr_vsc.sdp_header.HB3 = 0x8;
--	}
--
--	intel_dig_port->write_infoframe(&intel_dig_port->base,
--					crtc_state,
--					DP_SDP_VSC, &psr_vsc, sizeof(psr_vsc));
--}
--
- static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-@@ -880,9 +847,12 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- }
- 
- static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
--				    const struct intel_crtc_state *crtc_state)
-+				    const struct intel_crtc_state *crtc_state,
-+				    const struct drm_connector_state *conn_state)
- {
- 	struct intel_dp *intel_dp = dev_priv->psr.dp;
-+	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
-+	struct intel_encoder *encoder = &intel_dig_port->base;
- 	u32 val;
- 
- 	drm_WARN_ON(&dev_priv->drm, dev_priv->psr.enabled);
-@@ -921,7 +891,9 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
- 
- 	drm_dbg_kms(&dev_priv->drm, "Enabling PSR%s\n",
- 		    dev_priv->psr.psr2_enabled ? "2" : "1");
--	intel_psr_setup_vsc(intel_dp, crtc_state);
-+	intel_dp_compute_psr_vsc_sdp(intel_dp, crtc_state, conn_state,
-+				     &dev_priv->psr.vsc);
-+	intel_write_dp_vsc_sdp(encoder, crtc_state, &dev_priv->psr.vsc);
- 	intel_psr_enable_sink(intel_dp);
- 	intel_psr_enable_source(intel_dp, crtc_state);
- 	dev_priv->psr.enabled = true;
-@@ -933,11 +905,13 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
-  * intel_psr_enable - Enable PSR
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This function can only be called after the pipe is fully trained and enabled.
-  */
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 
-@@ -958,7 +932,7 @@ void intel_psr_enable(struct intel_dp *intel_dp,
- 		goto unlock;
- 	}
- 
--	intel_psr_enable_locked(dev_priv, crtc_state);
-+	intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-@@ -1091,13 +1065,15 @@ static void psr_force_hw_tracking_exit(struct drm_i915_private *dev_priv)
-  * intel_psr_update - Update PSR state
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This functions will update PSR states, disabling, enabling or switching PSR
-  * version when executing fastsets. For full modeset, intel_psr_disable() and
-  * intel_psr_enable() should be called instead.
-  */
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 	struct i915_psr *psr = &dev_priv->psr;
-@@ -1134,7 +1110,7 @@ void intel_psr_update(struct intel_dp *intel_dp,
- 		intel_psr_disable_locked(intel_dp);
- 
- 	if (enable)
--		intel_psr_enable_locked(dev_priv, crtc_state);
-+		intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.h b/drivers/gpu/drm/i915/display/intel_psr.h
-index 274fc6bb6221..b4515186d5f4 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.h
-+++ b/drivers/gpu/drm/i915/display/intel_psr.h
-@@ -17,11 +17,13 @@ struct intel_dp;
- #define CAN_PSR(dev_priv) (HAS_PSR(dev_priv) && dev_priv->psr.sink_support)
- void intel_psr_init_dpcd(struct intel_dp *intel_dp);
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- void intel_psr_disable(struct intel_dp *intel_dp,
- 		       const struct intel_crtc_state *old_crtc_state);
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- int intel_psr_debug_set(struct drm_i915_private *dev_priv, u64 value);
- void intel_psr_invalidate(struct drm_i915_private *dev_priv,
- 			  unsigned frontbuffer_bits,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 2ee2a2b301ef..04e704e2b191 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -510,6 +510,7 @@ struct i915_psr {
- 	u32 dc3co_exit_delay;
- 	struct delayed_work dc3co_work;
- 	bool force_mode_changed;
-+	struct drm_dp_vsc_sdp vsc;
- };
- 
- #define QUIRK_LVDS_SSC_DISABLE (1<<1)
--- 
-2.25.0
+So... in this case, with the datasheet alone, you won't go very far,
+you would need the actual module (probably connected to a Raspberry Pi
+to catch a typical usage). Still, it's usually worth a check. In any
+case, most likely, as Andy suggested, this function can eventually be
+dropped.
+
+--=20
+Stefano
 
