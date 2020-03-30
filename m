@@ -2,147 +2,114 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D32931980E9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 18:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EC6F1980ED
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 18:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730175AbgC3QWk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 12:22:40 -0400
-Received: from mga05.intel.com ([192.55.52.43]:57279 "EHLO mga05.intel.com"
+        id S1727915AbgC3QXO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 12:23:14 -0400
+Received: from mga14.intel.com ([192.55.52.115]:63541 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730125AbgC3QWk (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 12:22:40 -0400
-IronPort-SDR: HP4zjRddEmnNY+AsmZdwtCNRHYFiYges/NbnESw7u0FOJcR4h1WD+zA6uXdL+tNcpMexvJAZb+
- 1fm6q0qDz1wA==
+        id S1727826AbgC3QXO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 30 Mar 2020 12:23:14 -0400
+IronPort-SDR: oeKa6oc+vxvRvoJ/reswJcvVr+G+gHeVnTsxnuea2wLdM9MTuokQYq/Z7+G5kSCzPE5Sxik1tD
+ z59WXsKxcmgA==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 09:22:39 -0700
-IronPort-SDR: p0KNu+EpveAAQrD2AGJ+IuzIhxL019kBbIDENElC0nNRXzgafz6NbOiUtt1khOkiNgI1jUVu48
- 3iMHHTLHQbig==
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 09:23:14 -0700
+IronPort-SDR: QRqmxmc/r3Zc+ePTJvpT2gC4zxcNQmoOG0Q4931/0oPHL78SGLYrmfu/3ARCp7dY8xxSqZV37n
+ YR7nxaHM92eg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,324,1580803200"; 
-   d="scan'208";a="248753824"
-Received: from irsmsx105.ger.corp.intel.com ([163.33.3.28])
-  by orsmga003.jf.intel.com with ESMTP; 30 Mar 2020 09:22:37 -0700
-Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
- irsmsx105.ger.corp.intel.com (163.33.3.28) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 30 Mar 2020 17:22:36 +0100
-Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
- irsmsx601.ger.corp.intel.com (163.33.146.7) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 30 Mar 2020 17:22:36 +0100
-Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
- IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
- Mon, 30 Mar 2020 17:22:36 +0100
-From:   "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-To:     "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>
-CC:     "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "laurent.pinchart@ideasonboard.com" 
-        <laurent.pinchart@ideasonboard.com>,
-        "b.zolnierkie@samsung.com" <b.zolnierkie@samsung.com>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
-        "hverkuil@xs4all.nl" <hverkuil@xs4all.nl>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Subject: Re: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only function
- for DRM infoframe
-Thread-Topic: [Intel-gfx] [PATCH v7 05/18] video/hdmi: Add Unpack only
- function for DRM infoframe
-Thread-Index: AQHV4K+D4GGLpaNfYkqvNBu0B8JWuahRj9KAgAAFOoCAAAcUgIAKtSmAgABblwCABOAcgA==
-Date:   Mon, 30 Mar 2020 16:22:36 +0000
-Message-ID: <ca98f0999efa1b7db4f1b5116a13611241976308.camel@intel.com>
-References: <20200211074657.231405-1-gwan-gyeong.mun@intel.com>
-         <20200211074657.231405-6-gwan-gyeong.mun@intel.com>
-         <87k13fcm8w.fsf@intel.com> <87h7yjcldq.fsf@intel.com>
-         <20200320115737.GF5193@pendragon.ideasonboard.com>
-         <2dd87897a2c1dea8d882141823ed1ca1206ec01c.camel@intel.com>
-         <20200327125626.GE13686@intel.com>
-In-Reply-To: <20200327125626.GE13686@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.252.1.242]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A4A323BA1E64E54BB440AD138D173C74@intel.com>
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
+   d="scan'208";a="248753891"
+Received: from niamhrya-mobl.ger.corp.intel.com (HELO helsinki.ger.corp.intel.com) ([10.252.1.242])
+  by orsmga003.jf.intel.com with ESMTP; 30 Mar 2020 09:22:57 -0700
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        uma.shankar@intel.com, laurent.pinchart@ideasonboard.com,
+        jani.nikula@intel.com, ville.syrjala@linux.intel.com
+Subject: [PATCH v9 00/14] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Mon, 30 Mar 2020 19:23:42 +0300
+Message-Id: <20200330162356.162361-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-T24gRnJpLCAyMDIwLTAzLTI3IGF0IDE0OjU2ICswMjAwLCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6
-DQo+IE9uIEZyaSwgTWFyIDI3LCAyMDIwIGF0IDA3OjI3OjU2QU0gKzAwMDAsIE11biwgR3dhbi1n
-eWVvbmcgd3JvdGU6DQo+ID4gT24gRnJpLCAyMDIwLTAzLTIwIGF0IDEzOjU3ICswMjAwLCBMYXVy
-ZW50IFBpbmNoYXJ0IHdyb3RlOg0KPiA+ID4gSGkgSmFuaSwNCj4gPiA+IA0KPiA+ID4gT24gRnJp
-LCBNYXIgMjAsIDIwMjAgYXQgMDE6MzI6MTdQTSArMDIwMCwgSmFuaSBOaWt1bGEgd3JvdGU6DQo+
-ID4gPiA+IE9uIEZyaSwgMjAgTWFyIDIwMjAsIEphbmkgTmlrdWxhIDxqYW5pLm5pa3VsYUBsaW51
-eC5pbnRlbC5jb20+DQo+ID4gPiA+IHdyb3RlOg0KPiA+ID4gPiA+IE9uIFR1ZSwgMTEgRmViIDIw
-MjAsIEd3YW4tZ3llb25nIE11biA8DQo+ID4gPiA+ID4gZ3dhbi1neWVvbmcubXVuQGludGVsLmNv
-bT4NCj4gPiA+ID4gPiB3cm90ZToNCj4gPiA+ID4gPiA+IEl0IGFkZHMgYW4gdW5wYWNrIG9ubHkg
-ZnVuY3Rpb24gZm9yIERSTSBpbmZvZnJhbWUgZm9yDQo+ID4gPiA+ID4gPiBkeW5hbWljDQo+ID4g
-PiA+ID4gPiByYW5nZSBhbmQNCj4gPiA+ID4gPiA+IG1hc3RlcmluZyBpbmZvZnJhbWUgcmVhZG91
-dC4NCj4gPiA+ID4gPiA+IEl0IHVucGFja3MgdGhlIGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29u
-dGFpbmVkIGluIHRoZQ0KPiA+ID4gPiA+ID4gYmluYXJ5DQo+ID4gPiA+ID4gPiBidWZmZXIgaW50
-bw0KPiA+ID4gPiA+ID4gYSBzdHJ1Y3R1cmVkIGZyYW1lIG9mIHRoZSBIRE1JIER5bmFtaWMgUmFu
-Z2UgYW5kIE1hc3RlcmluZw0KPiA+ID4gPiA+ID4gKERSTSkNCj4gPiA+ID4gPiA+IGluZm9ybWF0
-aW9uIGZyYW1lLg0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBJbiBjb250cmFzdCB0byBoZG1p
-X2RybV9pbmZvZnJhbWVfdW5wYWNrKCkgZnVuY3Rpb24sIGl0DQo+ID4gPiA+ID4gPiBkb2VzDQo+
-ID4gPiA+ID4gPiBub3QgdmVyaWZ5DQo+ID4gPiA+ID4gPiBhIGNoZWNrc3VtLg0KPiA+ID4gPiA+
-ID4gDQo+ID4gPiA+ID4gPiBJdCBjYW4gYmUgdXNlZCBmb3IgdW5wYWNraW5nIGEgRFAgSERSIE1l
-dGFkYXRhIEluZm9mcmFtZQ0KPiA+ID4gPiA+ID4gU0RQDQo+ID4gPiA+ID4gPiBjYXNlLg0KPiA+
-ID4gPiA+ID4gRFAgSERSIE1ldGFkYXRhIEluZm9mcmFtZSBTRFAgdXNlcyB0aGUgc2FtZSBEeW5h
-bWljIFJhbmdlDQo+ID4gPiA+ID4gPiBhbmQNCj4gPiA+ID4gPiA+IE1hc3RlcmluZw0KPiA+ID4g
-PiA+ID4gKERSTSkgaW5mb3JtYXRpb24gKENUQS04NjEtRyBzcGVjLikgc3VjaCBhcyBIRE1JIERS
-TQ0KPiA+ID4gPiA+ID4gaW5mb2ZyYW1lLg0KPiA+ID4gPiA+ID4gQnV0IERQIFNEUCBoZWFkZXIg
-YW5kIHBheWxvYWQgc3RydWN0dXJlIGFyZSBkaWZmZXJlbnQgZnJvbQ0KPiA+ID4gPiA+ID4gSERN
-SQ0KPiA+ID4gPiA+ID4gRFJNDQo+ID4gPiA+ID4gPiBJbmZvZnJhbWUuIFRoZXJlZm9yZSB1bnBh
-Y2tpbmcgRFJNIGluZm9mcmFtZSBmb3IgRFANCj4gPiA+ID4gPiA+IHJlcXVpcmVzDQo+ID4gPiA+
-ID4gPiBza2lwcGluZyBvZg0KPiA+ID4gPiA+ID4gYSB2ZXJpZnlpbmcgY2hlY2tzdW0uDQo+ID4g
-PiA+ID4gPiANCj4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEd3YW4tZ3llb25nIE11biA8Z3dh
-bi1neWVvbmcubXVuQGludGVsLmNvbT4NCj4gPiA+ID4gPiA+IFJldmlld2VkLWJ5OiBVbWEgU2hh
-bmthciA8dW1hLnNoYW5rYXJAaW50ZWwuY29tPg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IEJhcnRs
-b21pZWosIGNhbiBJIGhhdmUgeW91ciBhY2sgZm9yIG1lcmdpbmcgdGhpcyB2aWEgZHJtLQ0KPiA+
-ID4gPiA+IGludGVsDQo+ID4gPiA+ID4gYWxvbmcNCj4gPiA+ID4gPiB3aXRoIHRoZSByZXN0IG9m
-IHRoZSBzZXJpZXMsIHBsZWFzZT8NCj4gPiA+ID4gDQo+ID4gPiA+IE9yIEhhbnMgb3IgTGF1cmVu
-dCwgZnJvbSB2NGwvdmlkZW8gcG9pbnQgb2Ygdmlldy4NCj4gPiA+IA0KPiA+ID4gSSdtIG5vIGV4
-cGVydCBvbiBJbmZvRnJhbWUsIEknbGwgb25seSBjb21tZW50IG9uIHRoZSBBUEkgYmVsb3cuDQo+
-ID4gPiANCj4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gIGRyaXZlcnMvdmlkZW8vaGRtaS5j
-IHwgNTggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gPiA+ID4gPiA+IC0tLS0N
-Cj4gPiA+ID4gPiA+IC0tLS0tLS0tDQo+ID4gPiA+ID4gPiAgaW5jbHVkZS9saW51eC9oZG1pLmgg
-fCAgMiArKw0KPiA+ID4gPiA+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNDMgaW5zZXJ0aW9ucygrKSwg
-MTcgZGVsZXRpb25zKC0pDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9k
-cml2ZXJzL3ZpZGVvL2hkbWkuYyBiL2RyaXZlcnMvdmlkZW8vaGRtaS5jDQo+ID4gPiA+ID4gPiBp
-bmRleCA5YzgyZTJhMGE0MTEuLjk4MTg4MzZkODJiNyAxMDA2NDQNCj4gPiA+ID4gPiA+IC0tLSBh
-L2RyaXZlcnMvdmlkZW8vaGRtaS5jDQo+ID4gPiA+ID4gPiArKysgYi9kcml2ZXJzL3ZpZGVvL2hk
-bWkuYw0KPiA+ID4gPiA+ID4gQEAgLTE3NzUsMjAgKzE3NzUsMTggQEANCj4gPiA+ID4gPiA+IGhk
-bWlfdmVuZG9yX2FueV9pbmZvZnJhbWVfdW5wYWNrKHVuaW9uDQo+ID4gPiA+ID4gPiBoZG1pX3Zl
-bmRvcl9hbnlfaW5mb2ZyYW1lICpmcmFtZSwNCj4gPiA+ID4gPiA+ICB9DQo+ID4gPiA+ID4gPiAg
-DQo+ID4gPiA+ID4gPiAgLyoqDQo+ID4gPiA+ID4gPiAtICogaGRtaV9kcm1faW5mb2ZyYW1lX3Vu
-cGFjaygpIC0gdW5wYWNrIGJpbmFyeSBidWZmZXIgdG8gYQ0KPiA+ID4gPiA+ID4gSERNSSBEUk0g
-aW5mb2ZyYW1lDQo+ID4gPiA+ID4gPiArICogaGRtaV9kcm1faW5mb2ZyYW1lX3VucGFja19vbmx5
-KCkgLSB1bnBhY2sgYmluYXJ5IGJ1ZmZlcg0KPiA+ID4gPiA+ID4gdG8NCj4gPiA+ID4gPiA+IGEg
-SERNSSBEUk0gaW5mb2ZyYW1lDQo+ID4gPiA+ID4gPiAgICogQGZyYW1lOiBIRE1JIERSTSBpbmZv
-ZnJhbWUNCj4gPiA+ID4gPiA+ICAgKiBAYnVmZmVyOiBzb3VyY2UgYnVmZmVyDQo+ID4gPiA+ID4g
-PiAgICogQHNpemU6IHNpemUgb2YgYnVmZmVyDQo+ID4gPiA+ID4gPiAgICoNCj4gPiA+ID4gPiA+
-IC0gKiBVbnBhY2tzIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaW4gYmluYXJ5IEBidWZmZXIN
-Cj4gPiA+ID4gPiA+IGludG8gYQ0KPiA+ID4gPiA+ID4gc3RydWN0dXJlZA0KPiA+ID4gPiA+ID4g
-KyAqIFVucGFja3MgdGhlIGluZm9ybWF0aW9uIGRhdGEgYmxvY2sgY29udGFpbmVkIGluIGJpbmFy
-eQ0KPiA+ID4gPiA+ID4gQGJ1ZmZlciBpbnRvIGEgc3RydWN0dXJlZA0KPiA+ID4gDQo+ID4gPiBM
-aW5lIHdyYXAgcGxlYXNlLg0KPiA+ID4gDQo+ID4gPiBUaGlzIG5lZWRzIHRvIGJlIGNsYXJpZmll
-ZCB0byBleHBsYWluIGV4YWN0bHkgd2hhdCB0aGUgYnVmZmVyDQo+ID4gPiBwb2ludHMNCj4gPiA+
-IHRvLg0KPiA+ID4gDQo+ID4gT2theSBJJ2xsIHVwZGF0ZSBjbGVhciBjb21tZW50cyBuZXh0IHZl
-cnNpb24uDQo+ID4gPiBBbHNvLCBhcyB0aGlzIGlzIGFwcGxpY2FibGUgdG8gRFAgdG9vLCBzaG91
-bGRuJ3Qgd2UgZHJvcCB0aGUNCj4gPiA+IGhkbWlfDQo+ID4gPiBwcmVmaXggPyBJcyB0aGVyZSBh
-bm90aGVyIHByZWZpeCB0aGF0IGNvdWxkIGJlIHVzZWQgZm9yIGZ1bmN0aW9ucw0KPiA+ID4gdGhh
-dA0KPiA+ID4gYXJlIGFwcGxpY2F0aW9uIHRvIGluZm9mcmFtZSBoYW5kbGluZyBzaGFyZWQgYnkg
-ZGlmZmVyZW50IGRpc3BsYXkNCj4gPiA+IGludGVyZmFjZXMgPyBBIGJpdCBvZiByZWZhY3Rvcmlu
-ZyB3b3VsZCBoZWxwIG1ha2luZyBhbGwgdGhpcw0KPiA+ID4gY2xlYXIuDQo+ID4gPiANCj4gPiBC
-b3RoIERQIGFuZCBIRE1JIHVzZSBDVEEtODYxLUcgc3BlYyBmb3IgRFJNIGluZm9mcmFtZS4gSSds
-bCB1cGRhdGUNCj4gPiBwcmVmaXggd2l0aCBjdGFfIGluc3RlYWQgb2YgaGRtaV8uDQo+IA0KPiBN
-b3N0IG9mIHZpZGVvL2hkbWkuYyBpcyBmcm9tIHRoZSBDVEEgc3BlYyhzKS4gVGhlIG5hbWUgaXMg
-anVzdCBhDQo+IG5hbWUuDQo+IExldCdzIG5vdCBzdGFydCBtYWtpbmcgaXQgaW5jb25zaXN0ZW50
-IGp1c3QgZm9yIHRoaXMgb25lIGNhc2UuDQo+IA0KSGkgVmlsbGUsIHRoYW5rIHlvdSBmb3IgZ2l2
-aW5nIG1lIHlvdXIgb3Bpbmlvbi4NCkFuZCBJIGFncmVlIHdpdGggeW91ciBvcGluaW9uLg0KSSds
-bCB1cGRhdGUgZGV0YWlsZWQgY29tbWVudHMgd2l0aCBjb25zaXN0ZW50IEFQSSBuYW1pbmdzLg0K
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
+
+v2: Minor style fix
+v3: 
+  - Add a new drm data structure for DP VSC SDP
+  - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
+  - Move logging functions to drm core [Jani N]
+    And use drm core's DP VSC SDP logging function
+  - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+    used for HDMI), when intel_dp_set_infoframes() function will be called.
+v4:
+  - Use struct drm_device logging macros
+  - Rebased
+v5:
+  - Use intel_de_*() functions for register access
+  - Add warning where a bpc is 6 and a pixel format is RGB.
+  - Addressed review comments from Uma
+    Add kernel docs for added data structures
+    Rename enum dp_colorspace to dp_pixelformat
+    Polish commit message and comments
+    Combine the if checks of sdp.HB2 and sdp.HB3
+    Add 6bpc to packining and unpacking of VSC SDP
+v6: Fix enabled infoframe states of lspcon
+v7: Fix the wrong check of combination bpc 6 and RGB pixelformat
+v8: Rebased
+v9: Add clear comments to hdmi_drm_infoframe_unpack_only() and
+    hdmi_drm_infoframe_unpack() (Laurent Pinchart)
+
+Gwan-gyeong Mun (14):
+  video/hdmi: Add Unpack only function for DRM infoframe
+  drm/i915/dp: Read out DP SDPs
+  drm: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Fix enabled infoframe states of lspcon
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on ddi disable
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
+
+ drivers/gpu/drm/drm_dp_helper.c              | 174 +++++++++
+ drivers/gpu/drm/i915/display/intel_ddi.c     |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c |  62 +++
+ drivers/gpu/drm/i915/display/intel_dp.c      | 391 ++++++++++---------
+ drivers/gpu/drm/i915/display/intel_dp.h      |  15 +-
+ drivers/gpu/drm/i915/display/intel_lspcon.c  |   2 +-
+ drivers/gpu/drm/i915/display/intel_psr.c     |  54 +--
+ drivers/gpu/drm/i915/display/intel_psr.h     |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h              |   1 +
+ drivers/video/hdmi.c                         |  65 ++-
+ include/drm/drm_dp_helper.h                  |   3 +
+ include/linux/hdmi.h                         |   2 +
+ 12 files changed, 536 insertions(+), 258 deletions(-)
+
+-- 
+2.25.0
+
