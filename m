@@ -2,101 +2,112 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE797198408
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 21:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE811986EC
+	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 00:03:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727148AbgC3TQ2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 15:16:28 -0400
-Received: from asavdk3.altibox.net ([109.247.116.14]:47348 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726672AbgC3TQ2 (ORCPT
+        id S1730798AbgC3WD6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 18:03:58 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:40428 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729386AbgC3WD6 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 15:16:28 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 7155D20024;
-        Mon, 30 Mar 2020 21:16:20 +0200 (CEST)
-Date:   Mon, 30 Mar 2020 21:16:19 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Qiujun Huang <hqjagain@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        maarten.lankhorst@linux.intel.com, daniel.thompson@linaro.org,
-        ghalat@redhat.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
-Message-ID: <20200330191619.GF7594@ravnborg.org>
-References: <20200329085647.25133-1-hqjagain@gmail.com>
+        Mon, 30 Mar 2020 18:03:58 -0400
+Received: by mail-pg1-f195.google.com with SMTP id t24so9334800pgj.7;
+        Mon, 30 Mar 2020 15:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=Fn5bbEwDKA1CjrL2t4+buEZ5DMdOn8ZLIb0ux0e5B3Q=;
+        b=QlDnJ+HXQj0YHxnX8aX313kM6rHoKORnaNm2WYXDMn1aeXXbnF8UNEQ4VowdZeG4zl
+         uV2sLQkwXOtnNAwFLkHNHrGIdHbHg2WXKZ+OCxvcK6XGQ4p7XyOtNEZguQcao8eEbZik
+         jzhJzwgxyju9KgyIAO6AGWgfZzTJEGj7PCStu/3VWR74BEj6493pWtlmOVLr3PXjMy6j
+         EvPvcs8zuq5fFUGMmdyzRW3LnvxqECq4R5074NxZe/sQXvq3wyUHonW+iSMHkNnpBI2D
+         MA52ER9NNMOOvvHw75Dyrr3HHU19n2Cm6kVIde2BUnl4kJPuV5rqVxtOQP/DKfiUAQTz
+         Rlnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=Fn5bbEwDKA1CjrL2t4+buEZ5DMdOn8ZLIb0ux0e5B3Q=;
+        b=XlyaJQ75YmYZFlHYQ3CsRkt7hNrVdnNy1xCTwovTHU+C8ASxZAQbCcCI8UjYnILFma
+         MoF/XvJ3SWBj4nXIQxoZkOvKzMYAfQfO1BBMUzGACPklifq9Weu6pCCOSkL9C5b6MvcP
+         ZxWP5cb6998V5c2kOTtHtDSj8YYijRKZ136kQ0QXOx1nKOhQrRI8RJH6ngcAcQnA6h2d
+         UtlTaR1RIYc6WEcWXpzh7E8kn5zVf+h/7BZq+gmKkzqkCSWgVk8ePKokzRw5O2GqGpTs
+         TYSbj9ap8KTJJwiQxmXVKpOVV+wIjbZmFvAsthINGHVLlU/NcDYV+7m3T5NKiATY37rC
+         HdVg==
+X-Gm-Message-State: AGi0Puapi+qiYG6iLMKtdCei6VgfebfVrffPlu6r8GYItW73WV4tcK9t
+        0zIWT4Y9QKhek/pehQzNyRtRRQg//G3+tg==
+X-Google-Smtp-Source: APiQypIZ7rugn26VNzMH9f1FGurreUtTRDwMeVEoQLstiLOtdeGMyyyqnQhROZmrQSttmeLztEHYWg==
+X-Received: by 2002:a65:55c6:: with SMTP id k6mr1200130pgs.52.1585605836849;
+        Mon, 30 Mar 2020 15:03:56 -0700 (PDT)
+Received: from OptiPlexFedora ([47.144.161.84])
+        by smtp.gmail.com with ESMTPSA id h4sm1230719pgg.67.2020.03.30.15.03.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2020 15:03:56 -0700 (PDT)
+Message-ID: <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
+Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
+ preferred usleep_range
+From:   "John B. Wyatt IV" <jbwyatt4@gmail.com>
+To:     Stefano Brivio <sbrivio@redhat.com>
+Cc:     Julia Lawall <julia.lawall@inria.fr>,
+        Soumyajit Deb <debsoumyajit100@gmail.com>,
+        outreachy-kernel@googlegroups.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Date:   Mon, 30 Mar 2020 15:03:55 -0700
+In-Reply-To: <20200330194043.56c79bb8@elisabeth>
+References: <20200329092204.770405-1-jbwyatt4@gmail.com>
+         <alpine.DEB.2.21.2003291127230.2990@hadrien>
+         <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
+         <alpine.DEB.2.21.2003291144460.2990@hadrien>
+         <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
+         <alpine.DEB.2.21.2003291235590.2990@hadrien>
+         <20200330194043.56c79bb8@elisabeth>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200329085647.25133-1-hqjagain@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=D19gQVrFAAAA:8
-        a=hSkVLCK3AAAA:8 a=pGLkceISAAAA:8 a=7gkXJVJtAAAA:8 a=NVFoAeSCgwShZuBWzHEA:9
-        a=ViYWLu_RVrLAkblt:21 a=QLy0bD8Az-XStLsx:21 a=CjuIK1q_8ugA:10
-        a=W4TVW4IDbPiebHqcZpNg:22 a=cQPPKAXgyycSBL8etih5:22
-        a=E9Po1WZjFZOl8hwRPBS3:22
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Qiujun
+On Mon, 2020-03-30 at 19:40 +0200, Stefano Brivio wrote:
+> On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
+> Julia Lawall <julia.lawall@inria.fr> wrote:
+> 
+> > On Sun, 29 Mar 2020, Soumyajit Deb wrote:
+> > 
+> > > I had the same doubt the other day about the replacement of
+> > > udelay() with
+> > > usleep_range(). The corresponding range for the single argument
+> > > value of
+> > > udelay() is quite confusing as I couldn't decide the range. But
+> > > as much as I
+> > > noticed checkpatch.pl gives warning for replacing udelay() with
+> > > usleep_range() by checking the argument value of udelay(). In the
+> > > documentation, it is written udelay() should be used for a sleep
+> > > time of at
+> > > most 10 microseconds but between 10 microseconds and 20
+> > > milliseconds,
+> > > usleep_range() should be used. 
+> > > I think the range is code specific and will depend on what range
+> > > is
+> > > acceptable and doesn't break the code.
+> > >  Please correct me if I am wrong.  
+> > 
+> > The range depends on the associated hardware.
+> 
+> John, by the way, here you could have checked the datasheet of this
+> LCD
+> controller. It's a pair of those:
+> 	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
+> 
 
-On Sun, Mar 29, 2020 at 04:56:47PM +0800, Qiujun Huang wrote:
-> Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
-> 
-> syzkaller report: https://lkml.org/lkml/2020/3/27/403
-> general protection fault, probably for non-canonical address
-> 0xdffffc000000006c: 0000 [#1] SMP KASAN
-> KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
-> RIP: 0010:fbcon_switch+0x28f/0x1740
-> drivers/video/fbdev/core/fbcon.c:2260
-> 
-> Call Trace:
-> redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
-> vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
-> fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
-> visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
-> do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
-> do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
-> do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
-> fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
-> do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
-> register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
-> dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
-> usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
-> 
-> accessing vc_cons[logo_shown].d->vc_top causes the bug.
-> 
-> Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
-> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> ---
->  drivers/video/fbdev/core/fbcon.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index bb6ae995c2e5..5eb3fc90f9f6 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
->  	if (!con_is_bound(&fb_con))
->  		fbcon_exit();
->  
-> +	if (vc->vc_num == logo_shown)
-> +		logo_shown = FBCON_LOGO_CANSHOW;
-> +
->  	return;
->  }
+No I have not. This datasheet is a little over my head honestly.
 
-Looks much better than the previous version.
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+What would you recommend to get familiar with datasheets like this?
 
-I expect Bartlomiej to review/apply.
-
-	Sam
