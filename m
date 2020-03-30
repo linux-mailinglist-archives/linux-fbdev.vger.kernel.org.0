@@ -2,108 +2,101 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B567819828E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 19:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE797198408
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Mar 2020 21:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729821AbgC3RlV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 13:41:21 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:38571 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729788AbgC3RlP (ORCPT
+        id S1727148AbgC3TQ2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Mar 2020 15:16:28 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:47348 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726672AbgC3TQ2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 13:41:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585590074;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YGHvH2P6nK7TQrcIUAsAOYU1x8zpv/Ba4jDsyhsFhTg=;
-        b=IxRzBpM+kz+5TXsorpzFspxithz1QaEdi3t6knzmYqK3tuNdcJjT+lykcJS0kPB9uCEY/X
-        rGRjBrJnrjSuYwcPRCYKGNO2hCqiwE4wjmGPwhagBuwIpmnzk9HmTo95v05JnIxpo/Jg2P
-        9jKRUSUpjwC81n7YbZbNf7PzdafPCnY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-109-vixzt7PyMZC7dnLS7w5LvQ-1; Mon, 30 Mar 2020 13:41:03 -0400
-X-MC-Unique: vixzt7PyMZC7dnLS7w5LvQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Mon, 30 Mar 2020 15:16:28 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2189B1B2C980;
-        Mon, 30 Mar 2020 17:41:00 +0000 (UTC)
-Received: from elisabeth (unknown [10.36.110.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E96E7CDBFF;
-        Mon, 30 Mar 2020 17:40:54 +0000 (UTC)
-Date:   Mon, 30 Mar 2020 19:40:43 +0200
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     John Wyatt <jbwyatt4@gmail.com>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Soumyajit Deb <debsoumyajit100@gmail.com>,
-        outreachy-kernel@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
- preferred usleep_range
-Message-ID: <20200330194043.56c79bb8@elisabeth>
-In-Reply-To: <alpine.DEB.2.21.2003291235590.2990@hadrien>
-References: <20200329092204.770405-1-jbwyatt4@gmail.com>
-        <alpine.DEB.2.21.2003291127230.2990@hadrien>
-        <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
-        <alpine.DEB.2.21.2003291144460.2990@hadrien>
-        <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
-        <alpine.DEB.2.21.2003291235590.2990@hadrien>
-Organization: Red Hat
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 7155D20024;
+        Mon, 30 Mar 2020 21:16:20 +0200 (CEST)
+Date:   Mon, 30 Mar 2020 21:16:19 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Qiujun Huang <hqjagain@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        maarten.lankhorst@linux.intel.com, daniel.thompson@linaro.org,
+        ghalat@redhat.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
+Message-ID: <20200330191619.GF7594@ravnborg.org>
+References: <20200329085647.25133-1-hqjagain@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200329085647.25133-1-hqjagain@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=D19gQVrFAAAA:8
+        a=hSkVLCK3AAAA:8 a=pGLkceISAAAA:8 a=7gkXJVJtAAAA:8 a=NVFoAeSCgwShZuBWzHEA:9
+        a=ViYWLu_RVrLAkblt:21 a=QLy0bD8Az-XStLsx:21 a=CjuIK1q_8ugA:10
+        a=W4TVW4IDbPiebHqcZpNg:22 a=cQPPKAXgyycSBL8etih5:22
+        a=E9Po1WZjFZOl8hwRPBS3:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
-Julia Lawall <julia.lawall@inria.fr> wrote:
+Hi Qiujun
 
-> On Sun, 29 Mar 2020, Soumyajit Deb wrote:
->=20
-> > I had the same doubt the other day about the replacement of udelay() wi=
-th
-> > usleep_range(). The corresponding range for the single argument value of
-> > udelay() is quite confusing as I couldn't decide the range.=C2=A0But as=
- much as I
-> > noticed checkpatch.pl gives warning for replacing udelay() with
-> > usleep_range() by checking the argument value of udelay(). In the
-> > documentation, it is written udelay() should be used for a sleep time o=
-f at
-> > most 10 microseconds but between 10 microseconds and 20 milliseconds,
-> > usleep_range() should be used.=C2=A0
-> > I think the range is code specific and will depend on what range is
-> > acceptable and doesn't break the code.
-> > =C2=A0Please correct me if I am wrong. =20
->=20
-> The range depends on the associated hardware.
+On Sun, Mar 29, 2020 at 04:56:47PM +0800, Qiujun Huang wrote:
+> Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
+> 
+> syzkaller report: https://lkml.org/lkml/2020/3/27/403
+> general protection fault, probably for non-canonical address
+> 0xdffffc000000006c: 0000 [#1] SMP KASAN
+> KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
+> RIP: 0010:fbcon_switch+0x28f/0x1740
+> drivers/video/fbdev/core/fbcon.c:2260
+> 
+> Call Trace:
+> redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
+> vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
+> fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
+> visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
+> do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
+> do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
+> do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
+> fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
+> do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
+> register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
+> dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
+> usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
+> 
+> accessing vc_cons[logo_shown].d->vc_top causes the bug.
+> 
+> Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
+> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+> ---
+>  drivers/video/fbdev/core/fbcon.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index bb6ae995c2e5..5eb3fc90f9f6 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
+>  	if (!con_is_bound(&fb_con))
+>  		fbcon_exit();
+>  
+> +	if (vc->vc_num == logo_shown)
+> +		logo_shown = FBCON_LOGO_CANSHOW;
+> +
+>  	return;
+>  }
 
-John, by the way, here you could have checked the datasheet of this LCD
-controller. It's a pair of those:
-	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
+Looks much better than the previous version.
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
 
-reset time is 1=C2=B5s minimum, which is the only actual constraint here.
-The rise time should then be handled by power supply and reflected
-with some appropriate usage of the regulator framework.
+I expect Bartlomiej to review/apply.
 
-That 120ms delay, however, must be there for a reason, that is, most
-likely to develop this quickly without exposing a proper model of the
-power supplies to the driver.
-
-So... in this case, with the datasheet alone, you won't go very far,
-you would need the actual module (probably connected to a Raspberry Pi
-to catch a typical usage). Still, it's usually worth a check. In any
-case, most likely, as Andy suggested, this function can eventually be
-dropped.
-
---=20
-Stefano
-
+	Sam
