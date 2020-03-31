@@ -2,138 +2,140 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB5DE198DDA
-	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 10:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7699319934B
+	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 12:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730053AbgCaIB2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 31 Mar 2020 04:01:28 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46829 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbgCaIB1 (ORCPT
+        id S1730294AbgCaKTC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 31 Mar 2020 06:19:02 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:34111 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727655AbgCaKTC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 31 Mar 2020 04:01:27 -0400
-Received: by mail-wr1-f65.google.com with SMTP id j17so24592904wru.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 31 Mar 2020 01:01:26 -0700 (PDT)
+        Tue, 31 Mar 2020 06:19:02 -0400
+Received: by mail-qk1-f194.google.com with SMTP id i6so22377910qke.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 31 Mar 2020 03:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=NP7RN6gDze0UfJ8t7IIvwLkl0F8QdLj5fqt2LMXUxbY=;
-        b=Ep9UKTxoYhSEudWlGvEXKt3K7JAmOqoB4BJ2hTrbsmBIbp10oYGBfmvzcQkdI0HODH
-         kPkBYd3A83rKErAAx8VEjuLBVmy4o6niPOrVVosAHK4jZcl76PrvtJgY9bAv+MwTNTP/
-         mZdJOvVcPB92CkZ/F6CZZQgtzHWasemEjsYq4=
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HzNurC8m2BgER49ycEMEtlBfddUEOvSlWj/tf+H1wCY=;
+        b=LuNFoNFC8TXQngMjWPdYR8nHhN29U4SK5C/6tu+C6Z+PgEZak1OdwmNwOwVU1VCNX8
+         5FFNFZzh/c3BjbWbwjiCJ/Px8B3CJYWOU0jKrkqngnC8Z3geASSUwfcxngVJ9pyA2k+B
+         GK821BnTbwITarKSs0rPfntebe3NC3+eh+7Xe6jabLQDHgxYSd8Cw9LZICdLhAFfJK2F
+         bBf5z/hdULxDQ5F3/JfyloyIoJ/14dPwO5HKdKRssBNBSpFPGY9LNWtiNxX9LFsT08Wo
+         tsecSlt49ZGCgU2UOucZHKuyp/u+YgFHzwmpUgqvb/fPtcJf5o84lnrY3A+KeX+d2j0F
+         8NKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=NP7RN6gDze0UfJ8t7IIvwLkl0F8QdLj5fqt2LMXUxbY=;
-        b=KXZaPnmpJMX2zcf5qQz6zZ48DQipxxncpXZ0b2yvwMfwZQnyMptws6NSeoGP2GDPA4
-         T96Up3E4CH6e+USoHXYFtkuF0BzERqeV4DIHdQQQcx0yt6ViBWkTxX4Fik0inyUUKBuH
-         RRydvnk+MxjM7MSS12ZjzTQeemL8g/XgGJrHeOLuYJI1HVezNF8w/wW+7MGiGpsa9Gc/
-         sAgr/C6gKVft3icCPOi9+Q5SL2/U+6iiq+F4z654r4aap9GJdNcmOE19nOb/0mvjDw0U
-         ho7boE0nEI1mXR09mfbhD6fcz5KmJI1erD0IJYs+QdkbsD3ew0yj8X+5DIn+0So8HYR9
-         6WXg==
-X-Gm-Message-State: ANhLgQ1T7ttsRi78JqYLG4467XbFAzBTTGulDWSwFGHhkLCCRsHs61aZ
-        zdVO8OlobY36iykHOpSVnNXmzg==
-X-Google-Smtp-Source: ADFU+vtz+p6vgrdf/PdwcY1Polm8UQcM+44sWG/RRvi5FdtnsFgNsXI5ZpfuKOcIvc7wLaV/6dTDTA==
-X-Received: by 2002:adf:f1ce:: with SMTP id z14mr19211505wro.68.1585641685851;
-        Tue, 31 Mar 2020 01:01:25 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id t6sm2267999wma.30.2020.03.31.01.01.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Mar 2020 01:01:24 -0700 (PDT)
-Date:   Tue, 31 Mar 2020 10:01:23 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Qiujun Huang <hqjagain@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        daniel.vetter@ffwll.ch, maarten.lankhorst@linux.intel.com,
-        daniel.thompson@linaro.org, ghalat@redhat.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
-Message-ID: <20200331080123.GI2363188@phenom.ffwll.local>
-Mail-Followup-To: Sam Ravnborg <sam@ravnborg.org>,
-        Qiujun Huang <hqjagain@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        maarten.lankhorst@linux.intel.com, daniel.thompson@linaro.org,
-        ghalat@redhat.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200329085647.25133-1-hqjagain@gmail.com>
- <20200330191619.GF7594@ravnborg.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HzNurC8m2BgER49ycEMEtlBfddUEOvSlWj/tf+H1wCY=;
+        b=U/xfYj9lY2oi90cqk6Oi8CF5OneloSLCSIl7umpTJHVNfNLdoY9P0sqr2NJkkdn6kk
+         KOqfOgnwxgc/IH/GtLOO/T4EsSW2qDt+isrt/TQJBT10rWwZZlLMwRg/bugk4ndhdhf+
+         /9OE8IzmmJHHqReQVMVGKT3jK58vpOPSuhT1iGm34nFJugeteO+6oAs23RLpknksKo3E
+         lysRMI1rgaKRK9P0smbxH+3m8bl8KWM+R0D3wsurUJ3jZS0xaVRLsBr91xrxwmKH72/v
+         HnM5/NDxPjl+DCEnzb8AeJs38H3SjrwB6I9Fyykh3sq/tdRXTwC4KpL+frjo9R3vStLM
+         QZOw==
+X-Gm-Message-State: ANhLgQ1OZJ2EOVF1QDrJYHcvy0o7udphe/9QiZ2i6H3ckrUEGMyKFrSZ
+        5zI7cM/qPnVf4GGQpuLrJjb+hmFpBoJ6R/AjhQf/AQ==
+X-Google-Smtp-Source: ADFU+vt5VB3XZM3XDJ4oOkj4wPSxUd+9SkOx1m0xsv+BrY3woUVq5c+khDRiYmVZHffq+/U/ZpzyS1ldKBsjZWQnyIs=
+X-Received: by 2002:a37:8d86:: with SMTP id p128mr4267320qkd.250.1585649940834;
+ Tue, 31 Mar 2020 03:19:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200330191619.GF7594@ravnborg.org>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+References: <000000000000ec257905a21f7415@google.com> <20200331095737.GO20730@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200331095737.GO20730@hirez.programming.kicks-ass.net>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Tue, 31 Mar 2020 12:18:49 +0200
+Message-ID: <CACT4Y+bqBCqDPQZ1Nk8G+8y2vu8aaT2S54J4UqRPaFNUcusbYw@mail.gmail.com>
+Subject: Re: INFO: trying to register non-static key in try_to_wake_up
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        DRI <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Cc:     syzbot <syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Mar 30, 2020 at 09:16:19PM +0200, Sam Ravnborg wrote:
-> Hi Qiujun
-> 
-> On Sun, Mar 29, 2020 at 04:56:47PM +0800, Qiujun Huang wrote:
-> > Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
-> > 
-> > syzkaller report: https://lkml.org/lkml/2020/3/27/403
-> > general protection fault, probably for non-canonical address
-> > 0xdffffc000000006c: 0000 [#1] SMP KASAN
-> > KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
-> > RIP: 0010:fbcon_switch+0x28f/0x1740
-> > drivers/video/fbdev/core/fbcon.c:2260
-> > 
+On Tue, Mar 31, 2020 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Mon, Mar 30, 2020 at 10:01:12PM -0700, syzbot wrote:
+> > Hello,
+> >
+> > syzbot found the following crash on:
+> >
+> > HEAD commit:    9420e8ad Merge tag 'for-linus' of git://git.kernel.org/pub..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=1206ed4be00000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=27392dd2975fd692
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=e84d7ebd1361da13c356
+> > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+> >
+> > Unfortunately, I don't have any reproducer for this crash yet.
+> >
+> > IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> > Reported-by: syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com
+> >
+> > INFO: trying to register non-static key.
+> > the code is fine but needs lockdep annotation.
+> > turning off the locking correctness validator.
+> > CPU: 1 PID: 1014 Comm: syz-executor.0 Not tainted 5.6.0-rc7-syzkaller #0
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
 > > Call Trace:
-> > redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
-> > vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
-> > fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
-> > visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
-> > do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
-> > do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
-> > do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
-> > fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
-> > do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
-> > register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
-> > dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
-> > usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
-> > 
-> > accessing vc_cons[logo_shown].d->vc_top causes the bug.
-> > 
-> > Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
-> > Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> > ---
-> >  drivers/video/fbdev/core/fbcon.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> > index bb6ae995c2e5..5eb3fc90f9f6 100644
-> > --- a/drivers/video/fbdev/core/fbcon.c
-> > +++ b/drivers/video/fbdev/core/fbcon.c
-> > @@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
-> >  	if (!con_is_bound(&fb_con))
-> >  		fbcon_exit();
-> >  
-> > +	if (vc->vc_num == logo_shown)
-> > +		logo_shown = FBCON_LOGO_CANSHOW;
-> > +
-> >  	return;
-> >  }
-> 
-> Looks much better than the previous version.
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> I expect Bartlomiej to review/apply.
+> >  <IRQ>
+> >  __dump_stack lib/dump_stack.c:77 [inline]
+> >  dump_stack+0x188/0x20d lib/dump_stack.c:118
+> >  assign_lock_key kernel/locking/lockdep.c:880 [inline]
+> >  register_lock_class+0x14c4/0x1540 kernel/locking/lockdep.c:1189
+> >  __lock_acquire+0xfc/0x3ca0 kernel/locking/lockdep.c:3836
+> >  lock_acquire+0x197/0x420 kernel/locking/lockdep.c:4484
+> >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+> >  _raw_spin_lock_irqsave+0x8c/0xbf kernel/locking/spinlock.c:159
+> >  try_to_wake_up+0x9f/0x17c0 kernel/sched/core.c:2547
+>
+> That's p->pi_lock, which gets initialized in rt_mutex_init_task() in
+> copy_process(). This should be impossible. Very odd.
 
-Especially for bugfixes I think better to push quicker than wait for
-others to ... the point with drm-misc is real group maintainership and
-benefitting from the flexibility, not reflecting the same strict hierarchy
-but in a flat tree to make it look like it doesn't exist :-)
+The stack mentions fbdev, which is a red flag at the moment. There are
+a dozen of bad bugs in fbdev and around. Just few days ago Andy
+pointed to another "impossible" crash "general protection fault in
+do_syscall_64" which is related to dri:
+https://syzkaller.appspot.com/bug?id=0ec7b2602b1ff40f0d34f38baa4ba1640727c3d9
+https://groups.google.com/forum/#!msg/syzkaller-bugs/ePqhfYx0-8M/Q_Urt97iAAAJ
 
-Applied to drm-misc-next-fixes with a cc: stable.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+There are probably more random manifestations of these bugs already,
+and I guess we will be getting more.
+
++fbdev maintainers
+
+
+
+> >  wake_up_worker kernel/workqueue.c:836 [inline]
+> >  insert_work+0x2ad/0x3a0 kernel/workqueue.c:1337
+> >  __queue_work+0x50d/0x1280 kernel/workqueue.c:1488
+> >  call_timer_fn+0x195/0x760 kernel/time/timer.c:1404
+> >  expire_timers kernel/time/timer.c:1444 [inline]
+> >  __run_timers kernel/time/timer.c:1773 [inline]
+> >  __run_timers kernel/time/timer.c:1740 [inline]
+> >  run_timer_softirq+0x412/0x1600 kernel/time/timer.c:1786
+> >  __do_softirq+0x26c/0x99d kernel/softirq.c:292
+> >  invoke_softirq kernel/softirq.c:373 [inline]
+> >  irq_exit+0x192/0x1d0 kernel/softirq.c:413
+> >  exiting_irq arch/x86/include/asm/apic.h:546 [inline]
+> >  smp_apic_timer_interrupt+0x19e/0x600 arch/x86/kernel/apic/apic.c:1146
+> >  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
+> >  </IRQ>
+>
+> --
+> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/20200331095737.GO20730%40hirez.programming.kicks-ass.net.
