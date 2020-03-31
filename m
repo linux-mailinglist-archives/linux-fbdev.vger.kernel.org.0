@@ -2,140 +2,223 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7699319934B
-	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 12:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 193D2199581
+	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 13:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730294AbgCaKTC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 31 Mar 2020 06:19:02 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:34111 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727655AbgCaKTC (ORCPT
+        id S1730589AbgCaLoG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 31 Mar 2020 07:44:06 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:57354 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730424AbgCaLoG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 31 Mar 2020 06:19:02 -0400
-Received: by mail-qk1-f194.google.com with SMTP id i6so22377910qke.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 31 Mar 2020 03:19:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HzNurC8m2BgER49ycEMEtlBfddUEOvSlWj/tf+H1wCY=;
-        b=LuNFoNFC8TXQngMjWPdYR8nHhN29U4SK5C/6tu+C6Z+PgEZak1OdwmNwOwVU1VCNX8
-         5FFNFZzh/c3BjbWbwjiCJ/Px8B3CJYWOU0jKrkqngnC8Z3geASSUwfcxngVJ9pyA2k+B
-         GK821BnTbwITarKSs0rPfntebe3NC3+eh+7Xe6jabLQDHgxYSd8Cw9LZICdLhAFfJK2F
-         bBf5z/hdULxDQ5F3/JfyloyIoJ/14dPwO5HKdKRssBNBSpFPGY9LNWtiNxX9LFsT08Wo
-         tsecSlt49ZGCgU2UOucZHKuyp/u+YgFHzwmpUgqvb/fPtcJf5o84lnrY3A+KeX+d2j0F
-         8NKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HzNurC8m2BgER49ycEMEtlBfddUEOvSlWj/tf+H1wCY=;
-        b=U/xfYj9lY2oi90cqk6Oi8CF5OneloSLCSIl7umpTJHVNfNLdoY9P0sqr2NJkkdn6kk
-         KOqfOgnwxgc/IH/GtLOO/T4EsSW2qDt+isrt/TQJBT10rWwZZlLMwRg/bugk4ndhdhf+
-         /9OE8IzmmJHHqReQVMVGKT3jK58vpOPSuhT1iGm34nFJugeteO+6oAs23RLpknksKo3E
-         lysRMI1rgaKRK9P0smbxH+3m8bl8KWM+R0D3wsurUJ3jZS0xaVRLsBr91xrxwmKH72/v
-         HnM5/NDxPjl+DCEnzb8AeJs38H3SjrwB6I9Fyykh3sq/tdRXTwC4KpL+frjo9R3vStLM
-         QZOw==
-X-Gm-Message-State: ANhLgQ1OZJ2EOVF1QDrJYHcvy0o7udphe/9QiZ2i6H3ckrUEGMyKFrSZ
-        5zI7cM/qPnVf4GGQpuLrJjb+hmFpBoJ6R/AjhQf/AQ==
-X-Google-Smtp-Source: ADFU+vt5VB3XZM3XDJ4oOkj4wPSxUd+9SkOx1m0xsv+BrY3woUVq5c+khDRiYmVZHffq+/U/ZpzyS1ldKBsjZWQnyIs=
-X-Received: by 2002:a37:8d86:: with SMTP id p128mr4267320qkd.250.1585649940834;
- Tue, 31 Mar 2020 03:19:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <000000000000ec257905a21f7415@google.com> <20200331095737.GO20730@hirez.programming.kicks-ass.net>
-In-Reply-To: <20200331095737.GO20730@hirez.programming.kicks-ass.net>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Tue, 31 Mar 2020 12:18:49 +0200
-Message-ID: <CACT4Y+bqBCqDPQZ1Nk8G+8y2vu8aaT2S54J4UqRPaFNUcusbYw@mail.gmail.com>
-Subject: Re: INFO: trying to register non-static key in try_to_wake_up
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Cc:     syzbot <syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+        Tue, 31 Mar 2020 07:44:06 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200331114403euoutp0210aa151d754e464ace7df85e01b678c3~BYNxhx7Yv2185821858euoutp02m;
+        Tue, 31 Mar 2020 11:44:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200331114403euoutp0210aa151d754e464ace7df85e01b678c3~BYNxhx7Yv2185821858euoutp02m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1585655043;
+        bh=fLUaALAhJU0GPsppx99QNEL/LVVPbYb1Y86e+Ys2dEU=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=BcjvcLxCxjZiAgS0l2JcDE4a+/1VTtpXAljpF+BNuBk/ddxbw9AaQMqc/bx+A7uO8
+         eLYS1g29m+nJM9prb9cCpQvYJDV6SZVpZvwqO50bq3xkg4Ki7KluWQKraVgIaEktEn
+         HnSEjIZeroXgtE0/8kaBIsWol9YzXRDxyc1i+MNs=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200331114403eucas1p2a2d75fd5ed7aa795b9dd75f82560f851~BYNxTCIpx2947329473eucas1p2i;
+        Tue, 31 Mar 2020 11:44:03 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 24.03.60679.30D238E5; Tue, 31
+        Mar 2020 12:44:03 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200331114402eucas1p137fa539fd8880af609c144731c2268dd~BYNw3CN3i3094030940eucas1p1p;
+        Tue, 31 Mar 2020 11:44:02 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200331114402eusmtrp16e3bcf058264987d54e7bd63976dafb8~BYNw1rUfX0209802098eusmtrp1E;
+        Tue, 31 Mar 2020 11:44:02 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-4b-5e832d03104e
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 08.8B.07950.20D238E5; Tue, 31
+        Mar 2020 12:44:02 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200331114400eusmtip1324ffeb3f4a193aca8ef85f592d3f465~BYNu7A0fm3131531315eusmtip1u;
+        Tue, 31 Mar 2020 11:44:00 +0000 (GMT)
+Subject: Re: [PATCH v2 2/2] powerpc: Remove Xilinx PPC405/PPC440 support
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     linux-kernel@vger.kernel.org, monstr@monstr.eu, git@xilinx.com,
+        sfr@canb.auug.org.au, maz@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Alistair Popple <alistair@popple.id.au>,
+        Allison Randal <allison@lohutok.net>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Enrico Weigelt <info@metux.net>,
+        Fabio Estevam <festevam@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Wei Hu <weh@microsoft.com>, YueHaibing <yuehaibing@huawei.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <f29415e1-5a77-2f26-914a-91bb5a4428cc@samsung.com>
+Date:   Tue, 31 Mar 2020 13:43:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02TbUxTZxTH89z3Niu7VgdPhGjSzRlNWpxj25ku7iVG7zeX7MOIyZhV78AN
+        0LTC5pYtUMpbB1jaIVmpgoBDSKNYK1iQjmADGmIb45Cy2Axmg+1CQatEEO1WeiXj2/8853fO
+        //w/PBypbGHXc0cKj4u6Qm2+ipFTPcOLPjWpLsvZdn+Uhpn2YRI8QQ8Ltc4KGjpvxCmoNTQS
+        8MIyzMKphcskPDSUk1BVRkBosBKB3W+kwDx7joJmr4+GP+bnGDBPVbAwNbYPTjdZEFitDgRl
+        bRcZmCjtJ6Dr7F0G/P5uFmrsBgTO+3dpOFvRTsGNuoc03OmzM7D0NE7DufHbBExNBmhw22/S
+        MBerJmA2kg3XKz00hB6NUuAqGWKgwf80cZL5XwIWwwEKHN42FsoHvCw4HQmfKwNjLFx2NpCw
+        1CiDe/MPqI80guOMAwlLzyxIOOP4QSg/ucAIpYEAI7g6JwihNVJCCfW31ILbFmSFFmeRYPRG
+        aaHtWoQQamaMtODsqmaEWZ+PFcytg+jTDfvlHxwW848Ui7rMXQfkeaZgmDn2+4bvfP5hpgTN
+        pZqQjMN8Fm7o8dMmJOeU/HmEJ9tHKKl4gvBflgApFY8Rdpp+oVZGrOVjrNToQDjYaX5ZRBG+
+        5O2jl6m1vIAHJ2Lssl7Hb8UxwzixDJF8vwKfHFpMQgy/A9dXdqFlreB3YWPpWNKC4jfhykfG
+        5PBrfDaOTV6nJWYNvvlrKMnI+BxsPF+fnCX5NPxnqJmQ9EbcG7Un78a8QY77A94ExCWK3Tjq
+        +kSKsBb/M+JiJZ2BR601lMRfQPhFVfjlcC/CHdY4I1E78T3fM2Z5EclvwRf7MqXnj/FCuJ6S
+        9qfgQHSNdEMKtvQ0ktKzAldVKCX6Tdz9WzezYmtyd5JmpLKtSmZblca2Ko3tf98WRHWhNLFI
+        X5Ar6rcXit9q9NoCfVFhrubQ0QInSvyb0fjIk6uo7/nBIcRzSPWKYnKsNEdJa4v1JwqGEOZI
+        1ToFs68kR6k4rD3xvag7+qWuKF/UD6F0jlKlKd5ujXyh5HO1x8VvRPGYqFvpEpxsfQnS7PR7
+        3qldyJgeD7uvHvi5+ha+s33bla/UHfvTNDtux79+/fE859l90Eg0u9SpXldQ2DsgDvc3fhbO
+        S5/O+LGpdXrvTPqUd89ErHlLXa/Nps6KPNj8PPXvd2ti+dT0ppRM0b0ntll2KWvje3XFr75h
+        IbM/DP30+anMa/h9t2tO26RTUfo87VtbSZ1e+x/TpcUQMwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUybVRSHc9/PlqzJuwLjBt2mTSYJkc7CgEOzocZorhozE6MhTmENewOb
+        lJJ+6WaiBVpgDZsFgmS1gzEgStME8w5x040hYGHi2jhtB04WGCxCZIWRIJudaEs14b/n3PN7
+        7r0nOTJaKXHpsqOVZtFYqatQcUnMxMbYdBaVVVv8zMLdDFjq9tMwOD3IwympjoXe8Q0GTtW0
+        UfB3s5+HTx9coGGlxkFDQy0F80P1CDxBOwOuSA8DHaMBFn5ZW+bANVvHw2zoIJz9rBlBS4sP
+        QW1XHwdT1d9S4O0McxAMfslDo6cGgTQXZqGzrpuB8dMrLPz8jYeD6PoGCz03f6JgdmaShUue
+        aywsr56kILJYBCP1gyzM359goN82zEFrcD32Jdc/FDxcmGTAN9rFg+PKKA+SL/bOV1dCPFyQ
+        WmmItsnht7XfmefUxNfuQyT6VzMi7b4PieOTBxypnpzkSH/vFEXOL9oY0nQ9i1xyT/PknGQh
+        9tF7LOm6vEiRxiU7SyTvSY5EAgGeuM4Podd3va3ebzRYzOIT5QaT+YDqkAay1ZoCUGfvK1Br
+        cvLf1WbnqvYW7j8iVhy1isa9hYfV5c7pBa7q6q4PAkE/Z0PLO5xILsPCPtziCPFOlCRTCj0I
+        R6bWY4Us1ngcj/VZE5lk/Cjs5BKZPxCO2ufYeCNZIHhoapWPc4qQiVdrblLxEC1MKHA0PEQn
+        jDsIt/RubBqcoMVN9V4UZ4VQiO3VISbOjLAH19+3b96UKhThkYvu/zLb8bUz85sZuVCM7V80
+        bZ7TQgZ+1H6DTnAa/nW+g0rwbvz1PQ/tQkr3Ft29RXFvUdxblHOI8aIU0WLSl+lN2WqTTm+y
+        VJapSw16CcX2dcD/sP8ickbeGEaCDKm2KWZC1cVKVmc1HdcPIyyjVSkK7qCtWKk4ojt+QjQa
+        SoyWCtE0jHJjwzXR6amlhtj2V5pLNLmafCjQ5Ofk5+SBKk3RIHz3jlIo05nF90SxSjT+71Ey
+        eboN/fB0qO923o6rYwPJe07vJLPbV54cT9K+FlTNpVa8bG3oN0qO8LG170mHJrNc9fxLH7fm
+        Xfepd8ofaxuo6yo9oyj68xZ+ZfHYQoH4KsXcDtx98cCd4Ju73+9u+NzbtBp4Kl17OKMk75Z0
+        wzyT9eyJy5Ef3/qosyqSJn/h0IjW34iXrNtUjKlcp8mkjSbdv/JTKejFAwAA
+X-CMS-MailID: 20200331114402eucas1p137fa539fd8880af609c144731c2268dd
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200330133235eucas1p2293a8ec8af48231bf220959d21913d55
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200330133235eucas1p2293a8ec8af48231bf220959d21913d55
+References: <cover.1585575111.git.michal.simek@xilinx.com>
+        <CGME20200330133235eucas1p2293a8ec8af48231bf220959d21913d55@eucas1p2.samsung.com>
+        <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 31, 2020 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Mon, Mar 30, 2020 at 10:01:12PM -0700, syzbot wrote:
-> > Hello,
-> >
-> > syzbot found the following crash on:
-> >
-> > HEAD commit:    9420e8ad Merge tag 'for-linus' of git://git.kernel.org/pub..
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=1206ed4be00000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=27392dd2975fd692
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=e84d7ebd1361da13c356
-> > compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> >
-> > Unfortunately, I don't have any reproducer for this crash yet.
-> >
-> > IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > Reported-by: syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com
-> >
-> > INFO: trying to register non-static key.
-> > the code is fine but needs lockdep annotation.
-> > turning off the locking correctness validator.
-> > CPU: 1 PID: 1014 Comm: syz-executor.0 Not tainted 5.6.0-rc7-syzkaller #0
-> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> > Call Trace:
-> >  <IRQ>
-> >  __dump_stack lib/dump_stack.c:77 [inline]
-> >  dump_stack+0x188/0x20d lib/dump_stack.c:118
-> >  assign_lock_key kernel/locking/lockdep.c:880 [inline]
-> >  register_lock_class+0x14c4/0x1540 kernel/locking/lockdep.c:1189
-> >  __lock_acquire+0xfc/0x3ca0 kernel/locking/lockdep.c:3836
-> >  lock_acquire+0x197/0x420 kernel/locking/lockdep.c:4484
-> >  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-> >  _raw_spin_lock_irqsave+0x8c/0xbf kernel/locking/spinlock.c:159
-> >  try_to_wake_up+0x9f/0x17c0 kernel/sched/core.c:2547
->
-> That's p->pi_lock, which gets initialized in rt_mutex_init_task() in
-> copy_process(). This should be impossible. Very odd.
 
-The stack mentions fbdev, which is a red flag at the moment. There are
-a dozen of bad bugs in fbdev and around. Just few days ago Andy
-pointed to another "impossible" crash "general protection fault in
-do_syscall_64" which is related to dri:
-https://syzkaller.appspot.com/bug?id=0ec7b2602b1ff40f0d34f38baa4ba1640727c3d9
-https://groups.google.com/forum/#!msg/syzkaller-bugs/ePqhfYx0-8M/Q_Urt97iAAAJ
+On 3/30/20 3:32 PM, Michal Simek wrote:
+> The latest Xilinx design tools called ISE and EDK has been released in
+> October 2013. New tool doesn't support any PPC405/PPC440 new designs.
+> These platforms are no longer supported and tested.
+> 
+> PowerPC 405/440 port is orphan from 2013 by
+> commit cdeb89943bfc ("MAINTAINERS: Fix incorrect status tag") and
+> commit 19624236cce1 ("MAINTAINERS: Update Grant's email address and maintainership")
+> that's why it is time to remove the support fot these platforms.
+> 
+> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-There are probably more random manifestations of these bugs already,
-and I guess we will be getting more.
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com> # for fbdev
 
-+fbdev maintainers
-
-
-
-> >  wake_up_worker kernel/workqueue.c:836 [inline]
-> >  insert_work+0x2ad/0x3a0 kernel/workqueue.c:1337
-> >  __queue_work+0x50d/0x1280 kernel/workqueue.c:1488
-> >  call_timer_fn+0x195/0x760 kernel/time/timer.c:1404
-> >  expire_timers kernel/time/timer.c:1444 [inline]
-> >  __run_timers kernel/time/timer.c:1773 [inline]
-> >  __run_timers kernel/time/timer.c:1740 [inline]
-> >  run_timer_softirq+0x412/0x1600 kernel/time/timer.c:1786
-> >  __do_softirq+0x26c/0x99d kernel/softirq.c:292
-> >  invoke_softirq kernel/softirq.c:373 [inline]
-> >  irq_exit+0x192/0x1d0 kernel/softirq.c:413
-> >  exiting_irq arch/x86/include/asm/apic.h:546 [inline]
-> >  smp_apic_timer_interrupt+0x19e/0x600 arch/x86/kernel/apic/apic.c:1146
-> >  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
-> >  </IRQ>
->
-> --
-> You received this message because you are subscribed to the Google Groups "syzkaller-bugs" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to syzkaller-bugs+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/syzkaller-bugs/20200331095737.GO20730%40hirez.programming.kicks-ass.net.
+> ---
+> 
+> Changes in v2:
+> - Based on my chat with Arnd I removed arch/powerpc/xmon/ changes done in
+>   v1 to keep them the same as before. (kbuild reported some issues with it
+>   too)
+> 
+>  Documentation/devicetree/bindings/xilinx.txt | 143 ------
+>  Documentation/powerpc/bootwrapper.rst        |  28 +-
+>  MAINTAINERS                                  |   6 -
+>  arch/powerpc/Kconfig.debug                   |   2 +-
+>  arch/powerpc/boot/Makefile                   |   7 +-
+>  arch/powerpc/boot/dts/Makefile               |   1 -
+>  arch/powerpc/boot/dts/virtex440-ml507.dts    | 406 ----------------
+>  arch/powerpc/boot/dts/virtex440-ml510.dts    | 466 -------------------
+>  arch/powerpc/boot/ops.h                      |   1 -
+>  arch/powerpc/boot/serial.c                   |   5 -
+>  arch/powerpc/boot/uartlite.c                 |  79 ----
+>  arch/powerpc/boot/virtex.c                   |  97 ----
+>  arch/powerpc/boot/virtex405-head.S           |  31 --
+>  arch/powerpc/boot/wrapper                    |   8 -
+>  arch/powerpc/configs/40x/virtex_defconfig    |  75 ---
+>  arch/powerpc/configs/44x/virtex5_defconfig   |  74 ---
+>  arch/powerpc/configs/ppc40x_defconfig        |   8 -
+>  arch/powerpc/configs/ppc44x_defconfig        |   8 -
+>  arch/powerpc/include/asm/xilinx_intc.h       |  16 -
+>  arch/powerpc/include/asm/xilinx_pci.h        |  21 -
+>  arch/powerpc/kernel/cputable.c               |  39 --
+>  arch/powerpc/platforms/40x/Kconfig           |  31 --
+>  arch/powerpc/platforms/40x/Makefile          |   1 -
+>  arch/powerpc/platforms/40x/virtex.c          |  54 ---
+>  arch/powerpc/platforms/44x/Kconfig           |  37 --
+>  arch/powerpc/platforms/44x/Makefile          |   2 -
+>  arch/powerpc/platforms/44x/virtex.c          |  60 ---
+>  arch/powerpc/platforms/44x/virtex_ml510.c    |  30 --
+>  arch/powerpc/platforms/Kconfig               |   4 -
+>  arch/powerpc/sysdev/Makefile                 |   2 -
+>  arch/powerpc/sysdev/xilinx_intc.c            |  88 ----
+>  arch/powerpc/sysdev/xilinx_pci.c             | 132 ------
+>  drivers/char/Kconfig                         |   2 +-
+>  drivers/video/fbdev/Kconfig                  |   2 +-
+>  34 files changed, 7 insertions(+), 1959 deletions(-)
+>  delete mode 100644 arch/powerpc/boot/dts/virtex440-ml507.dts
+>  delete mode 100644 arch/powerpc/boot/dts/virtex440-ml510.dts
+>  delete mode 100644 arch/powerpc/boot/uartlite.c
+>  delete mode 100644 arch/powerpc/boot/virtex.c
+>  delete mode 100644 arch/powerpc/boot/virtex405-head.S
+>  delete mode 100644 arch/powerpc/configs/40x/virtex_defconfig
+>  delete mode 100644 arch/powerpc/configs/44x/virtex5_defconfig
+>  delete mode 100644 arch/powerpc/include/asm/xilinx_intc.h
+>  delete mode 100644 arch/powerpc/include/asm/xilinx_pci.h
+>  delete mode 100644 arch/powerpc/platforms/40x/virtex.c
+>  delete mode 100644 arch/powerpc/platforms/44x/virtex.c
+>  delete mode 100644 arch/powerpc/platforms/44x/virtex_ml510.c
+>  delete mode 100644 arch/powerpc/sysdev/xilinx_intc.c
+>  delete mode 100644 arch/powerpc/sysdev/xilinx_pci.c
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
