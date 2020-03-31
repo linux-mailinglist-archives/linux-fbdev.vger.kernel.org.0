@@ -2,123 +2,138 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83F1A198737
-	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 00:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5DE198DDA
+	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 10:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728857AbgC3WRA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Mar 2020 18:17:00 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:27246 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729021AbgC3WQ7 (ORCPT
+        id S1730053AbgCaIB2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 31 Mar 2020 04:01:28 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46829 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726397AbgCaIB1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Mar 2020 18:16:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585606618;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kFxQ6sa3As6Jtugci2z3HRdxNU4LPCC1zzYUuabLxUU=;
-        b=T+AivKsihWBfEzf81uYR3lgay9073n72UnvuNpWxuDKcTzWDeyh1o5rOYVUCiYvGGJ27sA
-        tQ/10hC/C7IOOJWKadf09cPMc4Q4J3eP+xBenLmtRD9nR1dgiI35Dm02QRSP3QGXicG7Ua
-        dcjGhGGDY9SovvT7rw0DpprsAuF9LH0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-445-L_lh2rRnM8uuiqNlMRll3Q-1; Mon, 30 Mar 2020 18:16:51 -0400
-X-MC-Unique: L_lh2rRnM8uuiqNlMRll3Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AEB1A18A5500;
-        Mon, 30 Mar 2020 22:16:49 +0000 (UTC)
-Received: from elisabeth (unknown [10.36.110.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 180CF5C1BB;
-        Mon, 30 Mar 2020 22:16:43 +0000 (UTC)
-Date:   Tue, 31 Mar 2020 00:16:37 +0200
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     "John B. Wyatt IV" <jbwyatt4@gmail.com>
-Cc:     Julia Lawall <julia.lawall@inria.fr>,
-        Soumyajit Deb <debsoumyajit100@gmail.com>,
-        outreachy-kernel@googlegroups.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Payal Kshirsagar <payal.s.kshirsagar.98@gmail.com>,
+        Tue, 31 Mar 2020 04:01:27 -0400
+Received: by mail-wr1-f65.google.com with SMTP id j17so24592904wru.13
+        for <linux-fbdev@vger.kernel.org>; Tue, 31 Mar 2020 01:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=NP7RN6gDze0UfJ8t7IIvwLkl0F8QdLj5fqt2LMXUxbY=;
+        b=Ep9UKTxoYhSEudWlGvEXKt3K7JAmOqoB4BJ2hTrbsmBIbp10oYGBfmvzcQkdI0HODH
+         kPkBYd3A83rKErAAx8VEjuLBVmy4o6niPOrVVosAHK4jZcl76PrvtJgY9bAv+MwTNTP/
+         mZdJOvVcPB92CkZ/F6CZZQgtzHWasemEjsYq4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=NP7RN6gDze0UfJ8t7IIvwLkl0F8QdLj5fqt2LMXUxbY=;
+        b=KXZaPnmpJMX2zcf5qQz6zZ48DQipxxncpXZ0b2yvwMfwZQnyMptws6NSeoGP2GDPA4
+         T96Up3E4CH6e+USoHXYFtkuF0BzERqeV4DIHdQQQcx0yt6ViBWkTxX4Fik0inyUUKBuH
+         RRydvnk+MxjM7MSS12ZjzTQeemL8g/XgGJrHeOLuYJI1HVezNF8w/wW+7MGiGpsa9Gc/
+         sAgr/C6gKVft3icCPOi9+Q5SL2/U+6iiq+F4z654r4aap9GJdNcmOE19nOb/0mvjDw0U
+         ho7boE0nEI1mXR09mfbhD6fcz5KmJI1erD0IJYs+QdkbsD3ew0yj8X+5DIn+0So8HYR9
+         6WXg==
+X-Gm-Message-State: ANhLgQ1T7ttsRi78JqYLG4467XbFAzBTTGulDWSwFGHhkLCCRsHs61aZ
+        zdVO8OlobY36iykHOpSVnNXmzg==
+X-Google-Smtp-Source: ADFU+vtz+p6vgrdf/PdwcY1Polm8UQcM+44sWG/RRvi5FdtnsFgNsXI5ZpfuKOcIvc7wLaV/6dTDTA==
+X-Received: by 2002:adf:f1ce:: with SMTP id z14mr19211505wro.68.1585641685851;
+        Tue, 31 Mar 2020 01:01:25 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id t6sm2267999wma.30.2020.03.31.01.01.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2020 01:01:24 -0700 (PDT)
+Date:   Tue, 31 Mar 2020 10:01:23 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     Qiujun Huang <hqjagain@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        daniel.vetter@ffwll.ch, maarten.lankhorst@linux.intel.com,
+        daniel.thompson@linaro.org, ghalat@redhat.com,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: Re: [Outreachy kernel] [PATCH] staging: fbtft: Replace udelay with
- preferred usleep_range
-Message-ID: <20200331001637.6bf108ed@elisabeth>
-In-Reply-To: <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
-References: <20200329092204.770405-1-jbwyatt4@gmail.com>
-        <alpine.DEB.2.21.2003291127230.2990@hadrien>
-        <2fccf96c3754e6319797a10856e438e023f734a7.camel@gmail.com>
-        <alpine.DEB.2.21.2003291144460.2990@hadrien>
-        <CAMS7mKBEhqFat8fWi=QiFwfLV9+skwi1hE-swg=XxU48zk=_tQ@mail.gmail.com>
-        <alpine.DEB.2.21.2003291235590.2990@hadrien>
-        <20200330194043.56c79bb8@elisabeth>
-        <53befe00af657428b591200b31b5349a4a462eb1.camel@gmail.com>
-Organization: Red Hat
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fbcon: fix null-ptr-deref in fbcon_switch
+Message-ID: <20200331080123.GI2363188@phenom.ffwll.local>
+Mail-Followup-To: Sam Ravnborg <sam@ravnborg.org>,
+        Qiujun Huang <hqjagain@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        maarten.lankhorst@linux.intel.com, daniel.thompson@linaro.org,
+        ghalat@redhat.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200329085647.25133-1-hqjagain@gmail.com>
+ <20200330191619.GF7594@ravnborg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200330191619.GF7594@ravnborg.org>
+X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 30 Mar 2020 15:03:55 -0700
-"John B. Wyatt IV" <jbwyatt4@gmail.com> wrote:
+On Mon, Mar 30, 2020 at 09:16:19PM +0200, Sam Ravnborg wrote:
+> Hi Qiujun
+> 
+> On Sun, Mar 29, 2020 at 04:56:47PM +0800, Qiujun Huang wrote:
+> > Set logo_shown to FBCON_LOGO_CANSHOW when the vc was deallocated.
+> > 
+> > syzkaller report: https://lkml.org/lkml/2020/3/27/403
+> > general protection fault, probably for non-canonical address
+> > 0xdffffc000000006c: 0000 [#1] SMP KASAN
+> > KASAN: null-ptr-deref in range [0x0000000000000360-0x0000000000000367]
+> > RIP: 0010:fbcon_switch+0x28f/0x1740
+> > drivers/video/fbdev/core/fbcon.c:2260
+> > 
+> > Call Trace:
+> > redraw_screen+0x2a8/0x770 drivers/tty/vt/vt.c:1008
+> > vc_do_resize+0xfe7/0x1360 drivers/tty/vt/vt.c:1295
+> > fbcon_init+0x1221/0x1ab0 drivers/video/fbdev/core/fbcon.c:1219
+> > visual_init+0x305/0x5c0 drivers/tty/vt/vt.c:1062
+> > do_bind_con_driver+0x536/0x890 drivers/tty/vt/vt.c:3542
+> > do_take_over_console+0x453/0x5b0 drivers/tty/vt/vt.c:4122
+> > do_fbcon_takeover+0x10b/0x210 drivers/video/fbdev/core/fbcon.c:588
+> > fbcon_fb_registered+0x26b/0x340 drivers/video/fbdev/core/fbcon.c:3259
+> > do_register_framebuffer drivers/video/fbdev/core/fbmem.c:1664 [inline]
+> > register_framebuffer+0x56e/0x980 drivers/video/fbdev/core/fbmem.c:1832
+> > dlfb_usb_probe.cold+0x1743/0x1ba3 drivers/video/fbdev/udlfb.c:1735
+> > usb_probe_interface+0x310/0x800 drivers/usb/core/driver.c:374
+> > 
+> > accessing vc_cons[logo_shown].d->vc_top causes the bug.
+> > 
+> > Reported-by: syzbot+732528bae351682f1f27@syzkaller.appspotmail.com
+> > Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+> > ---
+> >  drivers/video/fbdev/core/fbcon.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> > index bb6ae995c2e5..5eb3fc90f9f6 100644
+> > --- a/drivers/video/fbdev/core/fbcon.c
+> > +++ b/drivers/video/fbdev/core/fbcon.c
+> > @@ -1283,6 +1283,9 @@ static void fbcon_deinit(struct vc_data *vc)
+> >  	if (!con_is_bound(&fb_con))
+> >  		fbcon_exit();
+> >  
+> > +	if (vc->vc_num == logo_shown)
+> > +		logo_shown = FBCON_LOGO_CANSHOW;
+> > +
+> >  	return;
+> >  }
+> 
+> Looks much better than the previous version.
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> 
+> I expect Bartlomiej to review/apply.
 
-> On Mon, 2020-03-30 at 19:40 +0200, Stefano Brivio wrote:
-> > On Sun, 29 Mar 2020 12:37:18 +0200 (CEST)
-> > Julia Lawall <julia.lawall@inria.fr> wrote:
-> >  =20
-> > > On Sun, 29 Mar 2020, Soumyajit Deb wrote:
-> > >  =20
-> > > > I had the same doubt the other day about the replacement of
-> > > > udelay() with
-> > > > usleep_range(). The corresponding range for the single argument
-> > > > value of
-> > > > udelay() is quite confusing as I couldn't decide the range. But
-> > > > as much as I
-> > > > noticed checkpatch.pl gives warning for replacing udelay() with
-> > > > usleep_range() by checking the argument value of udelay(). In the
-> > > > documentation, it is written udelay() should be used for a sleep
-> > > > time of at
-> > > > most 10 microseconds but between 10 microseconds and 20
-> > > > milliseconds,
-> > > > usleep_range() should be used.=20
-> > > > I think the range is code specific and will depend on what range
-> > > > is
-> > > > acceptable and doesn't break the code.
-> > > >  Please correct me if I am wrong.   =20
-> > >=20
-> > > The range depends on the associated hardware. =20
-> >=20
-> > John, by the way, here you could have checked the datasheet of this
-> > LCD
-> > controller. It's a pair of those:
-> > 	https://www.sparkfun.com/datasheets/LCD/ks0108b.pdf
->=20
-> No I have not. This datasheet is a little over my head honestly.
->=20
-> What would you recommend to get familiar with datasheets like this?
+Especially for bugfixes I think better to push quicker than wait for
+others to ... the point with drm-misc is real group maintainership and
+benefitting from the flexibility, not reflecting the same strict hierarchy
+but in a flat tree to make it look like it doesn't exist :-)
 
-Well, you don't necessarily have to, there are many subsystems in the
-kernel which are almost completely abstracted away from hardware.
-
-If you're interested, look around yourself for something simple chip,
-or get something that you can easily plug on a "maker board", Raspberry
-Pi, something like that. Perhaps via I=C2=B2C or SPI.
-
-Some types of sensors (temperature, pressure) have very simple
-datasheets. If you are allergic to hardware, try:
-	$ ls -Ssl drivers/iio/*
-
-pick the smallest sensor driver in the category that is the most likely
-to spark your interest, and go through it, checking it against the
-datasheet, at some point it will make sense.
-
---=20
-Stefano
-
+Applied to drm-misc-next-fixes with a cc: stable.
+-Daniel
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
