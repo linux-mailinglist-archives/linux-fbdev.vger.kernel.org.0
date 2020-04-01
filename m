@@ -2,57 +2,56 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9414319A7A4
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Apr 2020 10:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 153F919A81C
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Apr 2020 11:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729703AbgDAIrC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 1 Apr 2020 04:47:02 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:36861 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727322AbgDAIrC (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Apr 2020 04:47:02 -0400
-Received: by mail-qt1-f195.google.com with SMTP id m33so20957665qtb.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 01 Apr 2020 01:47:00 -0700 (PDT)
+        id S1732074AbgDAJAE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Apr 2020 05:00:04 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:34302 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730333AbgDAJAE (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Apr 2020 05:00:04 -0400
+Received: by mail-oi1-f195.google.com with SMTP id d3so16993390oic.1
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Apr 2020 02:00:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=ffwll.ch; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Tvks17TElncNUVJtHWlwAufDtb+/wKNIhVDLRHPndSE=;
-        b=G/fvhGKI1zMwNmjJy8EIRRXcIpLpmRdjeUF34VN7Aw/YO/naTFPfT8UKbz6Ylv0Kr9
-         WNYecDECUUaYYSb71C8o9j4Euw+Wct6t/Sb5RrAACN/RzMGH93brummTQ3PH1tLghisy
-         hPMwUEBogycy16MHhvBgckKCsmdG56PiRttsl5B0kgA0z39o2YZ5XAZuk5tq50Wra7wm
-         gWLgMo+YVSxbVCrirCWOvtVpNI2GgEFAnL52lEChY8yydGrIbAWGZcF0DbhOJFBSm3z/
-         CYJN2Fpu4VPvThTp2PNUya1GdUWegASVfLPkgRpGOLXf2UfroorzxOP6p14eYcISZeR2
-         rmxA==
+        bh=tua3ateR5u2S61JvWw0wOYnH9G34YeISa9gzNpfiTsM=;
+        b=LrhWpXSXR+GjELfoDy+MltpvcJP8hquI1b+B+OBmXNrrXFfAYDdNO3PHyN5CahnjA3
+         oKCqnJqB0BscWVWQGEEmAEGTSnkCtxK4VNdZYF+lBHQzkuTsLO2f+zfGjtV9pTSlfEL4
+         Jn5RRq8kuj7uk/gmh5M9Zo7LkD+GxAY3p41yo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Tvks17TElncNUVJtHWlwAufDtb+/wKNIhVDLRHPndSE=;
-        b=Ckt5R4rX+sKYPjRQqLtFN+uPjFL59MVKTMJzxT4LnoaYVPvRM6QyIlmAWYy7T7xxqG
-         V7QWl07Qlmbt+Hs8Zss3WQXAt1+Fc8FW2fgr4nIoyrYxoSXNQUs8/IGZfmmb5fpAobn2
-         3PnL7C3yRmT0sUCOvOFPrF6eWU7QTFnR14UZ0i24Z6Q2E+apwhw+nqYsSJMDbvo7vBWU
-         aPxRLWpNpQHuozf4m3cRDBqH6MdOkq/05Kkc5Tb1IppmOzG1GYcTP+0Mcu46iqO1IpfT
-         TgrXIclhNXpjLwyBZt8wWEEtAzWUHWZrFr2FT+NawENroPh01BgTur7u6AxGBok+zEVC
-         kpkw==
-X-Gm-Message-State: ANhLgQ2rBUNTYzTTPgpiNhbEy9tljgOAmpuWofHK2qjgdKHb5L3WNMx/
-        o6N7niXJFnWgtASSQYWntAry0NpXOev1B1JORNHjGw==
-X-Google-Smtp-Source: ADFU+vuJzKVEqrFtcYrHVE4servT3mRZOdlJclzovoH48jeRg+EodA0GJM72kTcNo3mtjErR7Z/iJ+rpcUTS5pbLg5Q=
-X-Received: by 2002:aed:25f4:: with SMTP id y49mr6628420qtc.50.1585730819858;
- Wed, 01 Apr 2020 01:46:59 -0700 (PDT)
+        bh=tua3ateR5u2S61JvWw0wOYnH9G34YeISa9gzNpfiTsM=;
+        b=RaoFTeCwATGFhYMtyX+1QWGOBWT6c4oEJM49IEqt2uueoCeMcxBccyy1+doZieFewk
+         L6NFX6NHLWVq4ZwMbpAZWFQxtlI3Oh54UkXlTh0kitwpLM8bQdQUXnZLNHqj/Xo3DDra
+         yqnMtCb21MoAewi6bt/YorbQumoqoPWiq5Eugnadayt2eEoIB5Lma1Wr2dWgSfn9eyZ9
+         Zixc03EoGeC2efrodm06EgNjH0NmxivthfnyIVMeQ+QjGMzB/+snVkosgQerXLVEnZhU
+         vBzJxFyu37XPXNyRlt1fdX3aHVFKZm3orLzuzSRejNsr5uXkubrca26kv/obQahiSa4J
+         xI8w==
+X-Gm-Message-State: AGi0PuYZASaCr0cJY8DkmIN4ljnHrsn2PgBl9jaxt+GsGPejR7VnuQw5
+        85TeL0fNZgY4pe+M6qZ6fdxMUfzxBsXpbI1Ji1td9w==
+X-Google-Smtp-Source: APiQypJbch+wNP3JvxQ5mDbge7Me82aOIapEem1oPuiKzU4EaoA5Z6UueklCo60T8cD8EA2dAQpmlqPixm/t55ZCY4A=
+X-Received: by 2002:a54:4189:: with SMTP id 9mr2088613oiy.128.1585731602603;
+ Wed, 01 Apr 2020 02:00:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <000000000000ec257905a21f7415@google.com> <20200331095737.GO20730@hirez.programming.kicks-ass.net>
  <CGME20200331101907eucas1p1ce5d3f7c49c2c724c4e85f5c19c7108d@eucas1p1.samsung.com>
  <CACT4Y+bqBCqDPQZ1Nk8G+8y2vu8aaT2S54J4UqRPaFNUcusbYw@mail.gmail.com>
  <7641fb29-20ec-0963-d04c-bfbf49fd3ebc@samsung.com> <CAKMK7uF5zZH3CaHueWsLR96-AzT==wP8=MpymTqx-T+SRsXWHA@mail.gmail.com>
-In-Reply-To: <CAKMK7uF5zZH3CaHueWsLR96-AzT==wP8=MpymTqx-T+SRsXWHA@mail.gmail.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 1 Apr 2020 10:46:48 +0200
-Message-ID: <CACT4Y+Y_i86-MPG_3jo-+_5WTLvcNi6HTR=mQkVdwJb5ATqDsQ@mail.gmail.com>
+ <CACT4Y+Y_i86-MPG_3jo-+_5WTLvcNi6HTR=mQkVdwJb5ATqDsQ@mail.gmail.com>
+In-Reply-To: <CACT4Y+Y_i86-MPG_3jo-+_5WTLvcNi6HTR=mQkVdwJb5ATqDsQ@mail.gmail.com>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Wed, 1 Apr 2020 10:59:51 +0200
+Message-ID: <CAKMK7uHCZK8L_Ho3yBq-=QnKm9F60KtRTqr8pAHxVjUcFjnd_w@mail.gmail.com>
 Subject: Re: INFO: trying to register non-static key in try_to_wake_up
-To:     Daniel Vetter <daniel@ffwll.ch>,
-        syzkaller <syzkaller@googlegroups.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+To:     Dmitry Vyukov <dvyukov@google.com>,
+        Matthew Garrett <mjg59@google.com>
+Cc:     syzkaller <syzkaller@googlegroups.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         syzbot <syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com>,
@@ -69,156 +68,185 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Mar 31, 2020 at 2:50 PM Daniel Vetter <daniel@ffwll.ch> wrote:
+On Wed, Apr 1, 2020 at 10:47 AM Dmitry Vyukov <dvyukov@google.com> wrote:
 >
-> On Tue, Mar 31, 2020 at 2:18 PM Bartlomiej Zolnierkiewicz
-> <b.zolnierkie@samsung.com> wrote:
+> On Tue, Mar 31, 2020 at 2:50 PM Daniel Vetter <daniel@ffwll.ch> wrote:
 > >
-> >
-> > On 3/31/20 12:18 PM, Dmitry Vyukov wrote:
-> > > On Tue, Mar 31, 2020 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> > >>
-> > >> On Mon, Mar 30, 2020 at 10:01:12PM -0700, syzbot wrote:
-> > >>> Hello,
-> > >>>
-> > >>> syzbot found the following crash on:
-> > >>>
-> > >>> HEAD commit:    9420e8ad Merge tag 'for-linus' of git://git.kernel.org/pub..
-> > >>> git tree:       upstream
-> > >>> console output: https://protect2.fireeye.com/url?k=0756a78d-5a9a6c49-07572cc2-0cc47a314e9a-e4dc8b657d340686&u=https://syzkaller.appspot.com/x/log.txt?x=1206ed4be00000
-> > >>> kernel config:  https://protect2.fireeye.com/url?k=43211072-1eeddbb6-43209b3d-0cc47a314e9a-3bd45a19932c37c8&u=https://syzkaller.appspot.com/x/.config?x=27392dd2975fd692
-> > >>> dashboard link: https://protect2.fireeye.com/url?k=bf7a6153-e2b6aa97-bf7bea1c-0cc47a314e9a-c64073ee605efb7b&u=https://syzkaller.appspot.com/bug?extid=e84d7ebd1361da13c356
-> > >>> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> > >>>
-> > >>> Unfortunately, I don't have any reproducer for this crash yet.
-> > >>>
-> > >>> IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> > >>> Reported-by: syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com
-> > >>>
-> > >>> INFO: trying to register non-static key.
-> > >>> the code is fine but needs lockdep annotation.
-> > >>> turning off the locking correctness validator.
-> > >>> CPU: 1 PID: 1014 Comm: syz-executor.0 Not tainted 5.6.0-rc7-syzkaller #0
-> > >>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> > >>> Call Trace:
-> > >>>  <IRQ>
-> > >>>  __dump_stack lib/dump_stack.c:77 [inline]
-> > >>>  dump_stack+0x188/0x20d lib/dump_stack.c:118
-> > >>>  assign_lock_key kernel/locking/lockdep.c:880 [inline]
-> > >>>  register_lock_class+0x14c4/0x1540 kernel/locking/lockdep.c:1189
-> > >>>  __lock_acquire+0xfc/0x3ca0 kernel/locking/lockdep.c:3836
-> > >>>  lock_acquire+0x197/0x420 kernel/locking/lockdep.c:4484
-> > >>>  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-> > >>>  _raw_spin_lock_irqsave+0x8c/0xbf kernel/locking/spinlock.c:159
-> > >>>  try_to_wake_up+0x9f/0x17c0 kernel/sched/core.c:2547
-> > >>
-> > >> That's p->pi_lock, which gets initialized in rt_mutex_init_task() in
-> > >> copy_process(). This should be impossible. Very odd.
+> > On Tue, Mar 31, 2020 at 2:18 PM Bartlomiej Zolnierkiewicz
+> > <b.zolnierkie@samsung.com> wrote:
 > > >
-> > > The stack mentions fbdev, which is a red flag at the moment. There are
-> > > a dozen of bad bugs in fbdev and around. Just few days ago Andy
-> > > pointed to another "impossible" crash "general protection fault in
-> > > do_syscall_64" which is related to dri:
-> > > https://protect2.fireeye.com/url?k=0cb8ad06-517466c2-0cb92649-0cc47a314e9a-a20c11191483c65b&u=https://syzkaller.appspot.com/bug?id=0ec7b2602b1ff40f0d34f38baa4ba1640727c3d9
-> > > https://protect2.fireeye.com/url?k=614292e3-3c8e5927-614319ac-0cc47a314e9a-aeda6d72c01a7b0e&u=https://groups.google.com/forum/#!msg/syzkaller-bugs/ePqhfYx0-8M/Q_Urt97iAAAJ
 > > >
-> > > There are probably more random manifestations of these bugs already,
-> > > and I guess we will be getting more.
+> > > On 3/31/20 12:18 PM, Dmitry Vyukov wrote:
+> > > > On Tue, Mar 31, 2020 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > > >>
+> > > >> On Mon, Mar 30, 2020 at 10:01:12PM -0700, syzbot wrote:
+> > > >>> Hello,
+> > > >>>
+> > > >>> syzbot found the following crash on:
+> > > >>>
+> > > >>> HEAD commit:    9420e8ad Merge tag 'for-linus' of git://git.kernel.org/pub..
+> > > >>> git tree:       upstream
+> > > >>> console output: https://protect2.fireeye.com/url?k=0756a78d-5a9a6c49-07572cc2-0cc47a314e9a-e4dc8b657d340686&u=https://syzkaller.appspot.com/x/log.txt?x=1206ed4be00000
+> > > >>> kernel config:  https://protect2.fireeye.com/url?k=43211072-1eeddbb6-43209b3d-0cc47a314e9a-3bd45a19932c37c8&u=https://syzkaller.appspot.com/x/.config?x=27392dd2975fd692
+> > > >>> dashboard link: https://protect2.fireeye.com/url?k=bf7a6153-e2b6aa97-bf7bea1c-0cc47a314e9a-c64073ee605efb7b&u=https://syzkaller.appspot.com/bug?extid=e84d7ebd1361da13c356
+> > > >>> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+> > > >>>
+> > > >>> Unfortunately, I don't have any reproducer for this crash yet.
+> > > >>>
+> > > >>> IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> > > >>> Reported-by: syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com
+> > > >>>
+> > > >>> INFO: trying to register non-static key.
+> > > >>> the code is fine but needs lockdep annotation.
+> > > >>> turning off the locking correctness validator.
+> > > >>> CPU: 1 PID: 1014 Comm: syz-executor.0 Not tainted 5.6.0-rc7-syzkaller #0
+> > > >>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+> > > >>> Call Trace:
+> > > >>>  <IRQ>
+> > > >>>  __dump_stack lib/dump_stack.c:77 [inline]
+> > > >>>  dump_stack+0x188/0x20d lib/dump_stack.c:118
+> > > >>>  assign_lock_key kernel/locking/lockdep.c:880 [inline]
+> > > >>>  register_lock_class+0x14c4/0x1540 kernel/locking/lockdep.c:1189
+> > > >>>  __lock_acquire+0xfc/0x3ca0 kernel/locking/lockdep.c:3836
+> > > >>>  lock_acquire+0x197/0x420 kernel/locking/lockdep.c:4484
+> > > >>>  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+> > > >>>  _raw_spin_lock_irqsave+0x8c/0xbf kernel/locking/spinlock.c:159
+> > > >>>  try_to_wake_up+0x9f/0x17c0 kernel/sched/core.c:2547
+> > > >>
+> > > >> That's p->pi_lock, which gets initialized in rt_mutex_init_task() in
+> > > >> copy_process(). This should be impossible. Very odd.
+> > > >
+> > > > The stack mentions fbdev, which is a red flag at the moment. There are
+> > > > a dozen of bad bugs in fbdev and around. Just few days ago Andy
+> > > > pointed to another "impossible" crash "general protection fault in
+> > > > do_syscall_64" which is related to dri:
+> > > > https://protect2.fireeye.com/url?k=0cb8ad06-517466c2-0cb92649-0cc47a314e9a-a20c11191483c65b&u=https://syzkaller.appspot.com/bug?id=0ec7b2602b1ff40f0d34f38baa4ba1640727c3d9
+> > > > https://protect2.fireeye.com/url?k=614292e3-3c8e5927-614319ac-0cc47a314e9a-aeda6d72c01a7b0e&u=https://groups.google.com/forum/#!msg/syzkaller-bugs/ePqhfYx0-8M/Q_Urt97iAAAJ
+> > > >
+> > > > There are probably more random manifestations of these bugs already,
+> > > > and I guess we will be getting more.
+> > > >
+> > > > +fbdev maintainers
 > > >
-> > > +fbdev maintainers
+> > > Thank you for the report.
+> > >
+> > > fbdev is in the maintenance mode and no new features or drivers are
+> > > being added so syzbot reports are not for a new bugs (regressions) and
+> > > are not a priority (at least to me).
 > >
-> > Thank you for the report.
+> > Yup same here, I've seen a pile of syzbot reports for fbdev (and also
+> > vt, or combinations of them since fbdev is linked to vt through fbcon)
+> > fly by. But I really don't have to deal with these, my recommendation
+> > to anyone who cares about security are:
+> > - Don't enable vt
+> > - Don't enable fbdev
+>
+> 1. How do we deliver this message to relevant people?
+>
+> Because:
+>
+> $ grep FBDEV syzkaller/dashboard/config/upstream-kasan.config
+> CONFIG_DRM_FBDEV_EMULATION=y
+> CONFIG_DRM_FBDEV_OVERALLOC=100
+> # CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
+> CONFIG_XEN_FBDEV_FRONTEND=y
+>
+> and my current work machine:
+>
+> $ grep FBDEV /boot/config-5.2.17-1-amd64
+> CONFIG_DRM_FBDEV_EMULATION=y
+> CONFIG_DRM_FBDEV_OVERALLOC=100
+> # CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
+> CONFIG_XEN_FBDEV_FRONTEND=y
+
+Yeah I know it's been like this since forever. In theory you could
+build a fbdev/fbcon less distro since years (the last bit for a proof
+of concept was kmscon/systemd-consoled), but the amount of investment
+into classic linux desktop is so little that it's impossible to get
+this funded. CrOS fixed this a while ago iirc though.
+
+I think to fix the syzbot issues all we'd need is a competent intern
+for a few months, that should take care of the worst stuff. Obviously
+wont include getting a test suite going, nor fixing any of the
+fundamental issues. But duct-taping over all the bugs should be
+possible (it's what we've been doing for well over 10 years by now in
+fbdev/fbocn/vt code anyway). I'd be willing to help mentoring, but
+that's about all I can do.
+
+Adding Matthew Garret, I have discussed with him in the past finding
+some funding for linux desktop stuff like this.
+
+> 2. What do we do with fbdev testing on syzbot? Is there a way to
+> disable all of the unsupported stuff? But if we disable it, we don't
+> find any regressions as well. And in the end that's what is in the
+> mainline kernel and is still enabled in distros (at least in the 2
+> real configs I can grep now).
+
+This would be bad I agree, but it's not any worse than the state of
+things the past 10 years. That's roughly for as long as fbdev has been
+in maintainance only mode, meaning "we'll apply patches if they come".
+Without Bart volunteering, we wouldn't even have that much really.
+-Daniel
+
+> > All that code has been developed long ago, in a much more innocent
+> > time. If someone wants to fix this you'd not just need to fix all the
+> > syzbot stuff, but also ramp up a full testsuite for all the ioctl, and
+> > all the corner-cases. Plus also fix some of the horrendous locking in
+> > there, probably.
 > >
-> > fbdev is in the maintenance mode and no new features or drivers are
-> > being added so syzbot reports are not for a new bugs (regressions) and
-> > are not a priority (at least to me).
->
-> Yup same here, I've seen a pile of syzbot reports for fbdev (and also
-> vt, or combinations of them since fbdev is linked to vt through fbcon)
-> fly by. But I really don't have to deal with these, my recommendation
-> to anyone who cares about security are:
-> - Don't enable vt
-> - Don't enable fbdev
-
-1. How do we deliver this message to relevant people?
-
-Because:
-
-$ grep FBDEV syzkaller/dashboard/config/upstream-kasan.config
-CONFIG_DRM_FBDEV_EMULATION=y
-CONFIG_DRM_FBDEV_OVERALLOC=100
-# CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
-CONFIG_XEN_FBDEV_FRONTEND=y
-
-and my current work machine:
-
-$ grep FBDEV /boot/config-5.2.17-1-amd64
-CONFIG_DRM_FBDEV_EMULATION=y
-CONFIG_DRM_FBDEV_OVERALLOC=100
-# CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
-CONFIG_XEN_FBDEV_FRONTEND=y
-
-
-2. What do we do with fbdev testing on syzbot? Is there a way to
-disable all of the unsupported stuff? But if we disable it, we don't
-find any regressions as well. And in the end that's what is in the
-mainline kernel and is still enabled in distros (at least in the 2
-real configs I can grep now).
-
-
-
-> All that code has been developed long ago, in a much more innocent
-> time. If someone wants to fix this you'd not just need to fix all the
-> syzbot stuff, but also ramp up a full testsuite for all the ioctl, and
-> all the corner-cases. Plus also fix some of the horrendous locking in
-> there, probably.
->
-> Multi-year effort, easily.
->
-> Regressions I'll obviously try to handle, but none of these are. It's
-> just syzbot has become smarter at hitting bugs in fbdev and vt
-> subsystems (or maybe the hw the virtual machines emulate has become
-> more varied, some of the reports are for fun stuff like vgacon ...).
->
-> Cheers, Daniel
->
-> > I have only resources to review/merge pending fbdev patches from time
-> > to time so any help in fixing these syzbot reports is welcomed (there
-> > have been a few fbdev related syzbot reports recently).
+> > Multi-year effort, easily.
 > >
-> > Also please note that fbdev is maintained through drm-misc tree so
-> > patches can also be handled by other drm-misc maintainers in case I'm
-> > not available / busy with other things.
+> > Regressions I'll obviously try to handle, but none of these are. It's
+> > just syzbot has become smarter at hitting bugs in fbdev and vt
+> > subsystems (or maybe the hw the virtual machines emulate has become
+> > more varied, some of the reports are for fun stuff like vgacon ...).
 > >
-> > Best regards,
+> > Cheers, Daniel
+> >
+> > > I have only resources to review/merge pending fbdev patches from time
+> > > to time so any help in fixing these syzbot reports is welcomed (there
+> > > have been a few fbdev related syzbot reports recently).
+> > >
+> > > Also please note that fbdev is maintained through drm-misc tree so
+> > > patches can also be handled by other drm-misc maintainers in case I'm
+> > > not available / busy with other things.
+> > >
+> > > Best regards,
+> > > --
+> > > Bartlomiej Zolnierkiewicz
+> > > Samsung R&D Institute Poland
+> > > Samsung Electronics
+> > >
+> > > >>>  wake_up_worker kernel/workqueue.c:836 [inline]
+> > > >>>  insert_work+0x2ad/0x3a0 kernel/workqueue.c:1337
+> > > >>>  __queue_work+0x50d/0x1280 kernel/workqueue.c:1488
+> > > >>>  call_timer_fn+0x195/0x760 kernel/time/timer.c:1404
+> > > >>>  expire_timers kernel/time/timer.c:1444 [inline]
+> > > >>>  __run_timers kernel/time/timer.c:1773 [inline]
+> > > >>>  __run_timers kernel/time/timer.c:1740 [inline]
+> > > >>>  run_timer_softirq+0x412/0x1600 kernel/time/timer.c:1786
+> > > >>>  __do_softirq+0x26c/0x99d kernel/softirq.c:292
+> > > >>>  invoke_softirq kernel/softirq.c:373 [inline]
+> > > >>>  irq_exit+0x192/0x1d0 kernel/softirq.c:413
+> > > >>>  exiting_irq arch/x86/include/asm/apic.h:546 [inline]
+> > > >>>  smp_apic_timer_interrupt+0x19e/0x600 arch/x86/kernel/apic/apic.c:1146
+> > > >>>  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
+> > > >>>  </IRQ>
+> > > _______________________________________________
+> > > dri-devel mailing list
+> > > dri-devel@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> >
+> >
+> >
 > > --
-> > Bartlomiej Zolnierkiewicz
-> > Samsung R&D Institute Poland
-> > Samsung Electronics
-> >
-> > >>>  wake_up_worker kernel/workqueue.c:836 [inline]
-> > >>>  insert_work+0x2ad/0x3a0 kernel/workqueue.c:1337
-> > >>>  __queue_work+0x50d/0x1280 kernel/workqueue.c:1488
-> > >>>  call_timer_fn+0x195/0x760 kernel/time/timer.c:1404
-> > >>>  expire_timers kernel/time/timer.c:1444 [inline]
-> > >>>  __run_timers kernel/time/timer.c:1773 [inline]
-> > >>>  __run_timers kernel/time/timer.c:1740 [inline]
-> > >>>  run_timer_softirq+0x412/0x1600 kernel/time/timer.c:1786
-> > >>>  __do_softirq+0x26c/0x99d kernel/softirq.c:292
-> > >>>  invoke_softirq kernel/softirq.c:373 [inline]
-> > >>>  irq_exit+0x192/0x1d0 kernel/softirq.c:413
-> > >>>  exiting_irq arch/x86/include/asm/apic.h:546 [inline]
-> > >>>  smp_apic_timer_interrupt+0x19e/0x600 arch/x86/kernel/apic/apic.c:1146
-> > >>>  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
-> > >>>  </IRQ>
-> > _______________________________________________
-> > dri-devel mailing list
-> > dri-devel@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
->
->
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
+> > Daniel Vetter
+> > Software Engineer, Intel Corporation
+> > +41 (0) 79 365 57 48 - http://blog.ffwll.ch
+
+
+
+--
+Daniel Vetter
+Software Engineer, Intel Corporation
++41 (0) 79 365 57 48 - http://blog.ffwll.ch
