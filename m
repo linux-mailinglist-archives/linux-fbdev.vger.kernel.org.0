@@ -2,54 +2,57 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5931996E1
-	for <lists+linux-fbdev@lfdr.de>; Tue, 31 Mar 2020 14:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9414319A7A4
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Apr 2020 10:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730728AbgCaM5k (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 31 Mar 2020 08:57:40 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:33169 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730703AbgCaM5k (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 31 Mar 2020 08:57:40 -0400
-Received: by mail-oi1-f193.google.com with SMTP id m14so18841707oic.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 31 Mar 2020 05:57:39 -0700 (PDT)
+        id S1729703AbgDAIrC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Apr 2020 04:47:02 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:36861 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727322AbgDAIrC (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Apr 2020 04:47:02 -0400
+Received: by mail-qt1-f195.google.com with SMTP id m33so20957665qtb.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Apr 2020 01:47:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YnQ6n4z7dqsVMXT9rKZXxIInLsfWtapicwNMD80Iq9c=;
-        b=ZTALGM4kwm+Kf2As9s7ZQeXAd+Z+9DWdqrVknruP4/FP5WEGyO35AmH72B7mORbwG9
-         YShZbF4yuhIqZCTOVaykFDQXdCpzEaPdi8b/7om6SoBPcD9TwjgNldde95OPkcsqF2KJ
-         Ffis3yvcWOItscPvwMy3aHTbj/sdwkjV4alq8=
+        bh=Tvks17TElncNUVJtHWlwAufDtb+/wKNIhVDLRHPndSE=;
+        b=G/fvhGKI1zMwNmjJy8EIRRXcIpLpmRdjeUF34VN7Aw/YO/naTFPfT8UKbz6Ylv0Kr9
+         WNYecDECUUaYYSb71C8o9j4Euw+Wct6t/Sb5RrAACN/RzMGH93brummTQ3PH1tLghisy
+         hPMwUEBogycy16MHhvBgckKCsmdG56PiRttsl5B0kgA0z39o2YZ5XAZuk5tq50Wra7wm
+         gWLgMo+YVSxbVCrirCWOvtVpNI2GgEFAnL52lEChY8yydGrIbAWGZcF0DbhOJFBSm3z/
+         CYJN2Fpu4VPvThTp2PNUya1GdUWegASVfLPkgRpGOLXf2UfroorzxOP6p14eYcISZeR2
+         rmxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YnQ6n4z7dqsVMXT9rKZXxIInLsfWtapicwNMD80Iq9c=;
-        b=rkE4Iz0OlUzZ6qfgHBQJ+b8h8u527PMY/Csd8co+O5uH0oGqJ9WPJGHnVHe4wDKzq5
-         mP1DA3SloUEpfCYkYZj3lObDU8NGcN9xwNV2mLTf6bM2G2QqXcRB2Duca65o8gq3MAr1
-         jZBhCJb+34ZILcgaEMlGWX6xyUX1yRSFWV51Zam+RDB4v2IqzWFnzrIcwe6gXSfjD4sC
-         B76yDGqDnix+6nlya83vYomAEqRyU4P4dsVZaAL9UYEyMHJPNX3hXSz1Fv3SVmSjk+q9
-         Xt5KjS/L9aqFWK6p7legjmxWnGoAuLAGK0gO+FOmM3UYc8FsTS65E+lRiV3C2neJoOEa
-         Sd8A==
-X-Gm-Message-State: ANhLgQ3w90UMRYLwB+ID32O/1NFiuUxHWzu/gOQvynCIhcJ78xEJhXuQ
-        yfa8Z0Bxe/wkKz5X2siuz9+kf9o42e2XSxdu9OnmXQ==
-X-Google-Smtp-Source: ADFU+vsHIYpT+UiCcnFQy+LqGPIU6kLwePdxboKvdsjUG5UX8ztNt72gPqwl52xcTdsX7Dhv6lQuyuLO50DCJ0O4HBM=
-X-Received: by 2002:aca:c45:: with SMTP id i5mr1796256oiy.101.1585659459332;
- Tue, 31 Mar 2020 05:57:39 -0700 (PDT)
+        bh=Tvks17TElncNUVJtHWlwAufDtb+/wKNIhVDLRHPndSE=;
+        b=Ckt5R4rX+sKYPjRQqLtFN+uPjFL59MVKTMJzxT4LnoaYVPvRM6QyIlmAWYy7T7xxqG
+         V7QWl07Qlmbt+Hs8Zss3WQXAt1+Fc8FW2fgr4nIoyrYxoSXNQUs8/IGZfmmb5fpAobn2
+         3PnL7C3yRmT0sUCOvOFPrF6eWU7QTFnR14UZ0i24Z6Q2E+apwhw+nqYsSJMDbvo7vBWU
+         aPxRLWpNpQHuozf4m3cRDBqH6MdOkq/05Kkc5Tb1IppmOzG1GYcTP+0Mcu46iqO1IpfT
+         TgrXIclhNXpjLwyBZt8wWEEtAzWUHWZrFr2FT+NawENroPh01BgTur7u6AxGBok+zEVC
+         kpkw==
+X-Gm-Message-State: ANhLgQ2rBUNTYzTTPgpiNhbEy9tljgOAmpuWofHK2qjgdKHb5L3WNMx/
+        o6N7niXJFnWgtASSQYWntAry0NpXOev1B1JORNHjGw==
+X-Google-Smtp-Source: ADFU+vuJzKVEqrFtcYrHVE4servT3mRZOdlJclzovoH48jeRg+EodA0GJM72kTcNo3mtjErR7Z/iJ+rpcUTS5pbLg5Q=
+X-Received: by 2002:aed:25f4:: with SMTP id y49mr6628420qtc.50.1585730819858;
+ Wed, 01 Apr 2020 01:46:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <000000000000ec257905a21f7415@google.com> <20200331095737.GO20730@hirez.programming.kicks-ass.net>
  <CGME20200331101907eucas1p1ce5d3f7c49c2c724c4e85f5c19c7108d@eucas1p1.samsung.com>
  <CACT4Y+bqBCqDPQZ1Nk8G+8y2vu8aaT2S54J4UqRPaFNUcusbYw@mail.gmail.com>
  <7641fb29-20ec-0963-d04c-bfbf49fd3ebc@samsung.com> <CAKMK7uF5zZH3CaHueWsLR96-AzT==wP8=MpymTqx-T+SRsXWHA@mail.gmail.com>
 In-Reply-To: <CAKMK7uF5zZH3CaHueWsLR96-AzT==wP8=MpymTqx-T+SRsXWHA@mail.gmail.com>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Tue, 31 Mar 2020 14:57:28 +0200
-Message-ID: <CAKMK7uGNC0FmDs6XrFju+adSV0UcNcuZcGESqEq54LJWMEFQ9A@mail.gmail.com>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Wed, 1 Apr 2020 10:46:48 +0200
+Message-ID: <CACT4Y+Y_i86-MPG_3jo-+_5WTLvcNi6HTR=mQkVdwJb5ATqDsQ@mail.gmail.com>
 Subject: Re: INFO: trying to register non-static key in try_to_wake_up
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Dmitry Vyukov <dvyukov@google.com>,
+To:     Daniel Vetter <daniel@ffwll.ch>,
+        syzkaller <syzkaller@googlegroups.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         syzbot <syzbot+e84d7ebd1361da13c356@syzkaller.appspotmail.com>,
@@ -136,7 +139,34 @@ On Tue, Mar 31, 2020 at 2:50 PM Daniel Vetter <daniel@ffwll.ch> wrote:
 > to anyone who cares about security are:
 > - Don't enable vt
 > - Don't enable fbdev
->
+
+1. How do we deliver this message to relevant people?
+
+Because:
+
+$ grep FBDEV syzkaller/dashboard/config/upstream-kasan.config
+CONFIG_DRM_FBDEV_EMULATION=y
+CONFIG_DRM_FBDEV_OVERALLOC=100
+# CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
+CONFIG_XEN_FBDEV_FRONTEND=y
+
+and my current work machine:
+
+$ grep FBDEV /boot/config-5.2.17-1-amd64
+CONFIG_DRM_FBDEV_EMULATION=y
+CONFIG_DRM_FBDEV_OVERALLOC=100
+# CONFIG_DRM_FBDEV_LEAK_PHYS_SMEM is not set
+CONFIG_XEN_FBDEV_FRONTEND=y
+
+
+2. What do we do with fbdev testing on syzbot? Is there a way to
+disable all of the unsupported stuff? But if we disable it, we don't
+find any regressions as well. And in the end that's what is in the
+mainline kernel and is still enabled in distros (at least in the 2
+real configs I can grep now).
+
+
+
 > All that code has been developed long ago, in a much more innocent
 > time. If someone wants to fix this you'd not just need to fix all the
 > syzbot stuff, but also ramp up a full testsuite for all the ioctl, and
@@ -149,21 +179,7 @@ On Tue, Mar 31, 2020 at 2:50 PM Daniel Vetter <daniel@ffwll.ch> wrote:
 > just syzbot has become smarter at hitting bugs in fbdev and vt
 > subsystems (or maybe the hw the virtual machines emulate has become
 > more varied, some of the reports are for fun stuff like vgacon ...).
-
-Forgot to mention: Just yesterday I did merge an fbcon overflow bugfix:
-commit b139f8b00db4a8ea75a4174346eafa48041aa489 (HEAD ->
-drm-misc-next-fixes, drm-misc/for-linux-next,
-drm-misc/drm-misc-next-fixes)
-Author: Qiujun Huang <hqjagain@gmail.com>
-Date:   Sun Mar 29 16:56:47 2020 +0800
-
-    fbcon: fix null-ptr-deref in fbcon_switch
-
-There's also a pending patch in the vt subsystem to catch overflow for
-unicode fonts on consoles, that's reviewed and waiting for Greg to
-pick it up.
--Daniel
-
+>
 > Cheers, Daniel
 >
 > > I have only resources to review/merge pending fbdev patches from time
@@ -206,10 +222,3 @@ pick it up.
 > Daniel Vetter
 > Software Engineer, Intel Corporation
 > +41 (0) 79 365 57 48 - http://blog.ffwll.ch
-
-
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch
