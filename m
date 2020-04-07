@@ -2,98 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FEEB19F7B4
-	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Apr 2020 16:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF7C91A0650
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2020 07:12:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728584AbgDFOOA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 6 Apr 2020 10:14:00 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:24086 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728558AbgDFOOA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Apr 2020 10:14:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1586182440; x=1617718440;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=VxBfFZSMnzPlZNHz2TtxxRNY5T+Ta8nxtKmyydIYbJ8=;
-  b=MsNi9wpVJ4LPhBvYoZhg6lnl58RjzTiawO2AS6+GZpB+CUIfYkREpqwf
-   R7DPgqIaWtPjoUpSnkGEmNeT/f1Zlr00MlXCEWGXMLbnqPvO/U+/K1mCa
-   nrPQUmqH1cV9YDwllJzVMptx5mLD349jQnHBx0bkYKjPOrWnsQw++DSad
-   h6xdZNaUGZcq94f8sBgfXR+nUuYH9Wee5qzB+MHavDUaue7GYR+UEM/q+
-   kdG8Unx9vMZhEEfDeniBR638acPt91jx1+5BrMPxJuli3r2Tov084axhE
-   T5U0o8gAxipYCqI5Q0fcUPlSH9g4VDdYBSYGn95jdOMK9yqGfEBNGT9+/
-   w==;
-IronPort-SDR: 3dhHBhElSxHQC59mGMY0HVh7OBNkgad/SlfGf8LOeUnqPpr8jm+FFOjg8EX/1MI5BisywgXgYc
- pdPi4XsnSPa3UOej5f/VB5P14Sv9FOvnpQ6byLPegzF5YxnjLX3CwErHzBFsaCBJk1PRz6kL03
- l4Kgs29BkGfq6w4xZ+OapMJJDSJHi1IFkVcvlpIEymygXGyUROheYBIq8bgUuu4pNxuXib6TRp
- 9AF9NC1IutFhGz1I5nyb0CDM41BulqXLEWvVxc6Jg/cDzE82ULYI7cOdKTuwQHC7swyYNfoTZd
- Ejc=
-X-IronPort-AV: E=Sophos;i="5.72,351,1580799600"; 
-   d="scan'208";a="71546329"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 06 Apr 2020 07:13:59 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 6 Apr 2020 07:13:57 -0700
-Received: from [10.205.29.84] (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Mon, 6 Apr 2020 07:14:05 -0700
-Subject: Re: [PATCH] video: fbdev: don't print error message on
- platform_get_irq() failure
-To:     Tang Bin <tangbin@cmss.chinamobile.com>,
-        <b.zolnierkie@samsung.com>, <alexandre.belloni@bootlin.com>,
-        <ludovic.desroches@microchip.com>, <linux-fbdev@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20200406053450.8380-1-tangbin@cmss.chinamobile.com>
-From:   Nicolas Ferre <nicolas.ferre@microchip.com>
-Organization: microchip
-Message-ID: <d6c8f07c-a57e-45ef-429a-d627ba7d7ce0@microchip.com>
-Date:   Mon, 6 Apr 2020 16:13:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1726878AbgDGFM5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Apr 2020 01:12:57 -0400
+Received: from mail-ua1-f68.google.com ([209.85.222.68]:41690 "EHLO
+        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726852AbgDGFMm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Apr 2020 01:12:42 -0400
+Received: by mail-ua1-f68.google.com with SMTP id f9so838584uaq.8
+        for <linux-fbdev@vger.kernel.org>; Mon, 06 Apr 2020 22:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=m9m/DCsFRus/zRmIuphflM5sHyenmkMN/TOEnECOGthbLJHVg8u2+iqtFZpNbyb2/k
+         2tLF//qwyXGtNVJKRleGUy+KbEtVjN+06Aw6FbGL98d5M/QEqB9c9SHaIsBPFlQYoUCh
+         Lj+P9EPUGdvyQRip4KeH3oSvDVhqDTV0IJcbcI66BzYP/b9Y/1y4LF++1q0teLhPl3GM
+         v15gBTxOBB8qvH4CNaCnwdm2sugBL+St8qIlm7SqBWweWj6hdsos1F0mjeWO8qJt64R9
+         xl3tya8AfljNAFdSOkZ4tC7INitomO8JQPFHHcp+JAODUsaup01At9KIYDntXEoTQZb0
+         DmdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=fSBK578pOtg4V1Eye4nDiaqDXMrhG14sMebJzBdUhADYIu9+VNUWlsUBK0hvnzR78b
+         xRz5rTq4YuXHYvrWKf4F//vWUXvrc1uQIBHmCCLYV77bWO0VCDOBAY2eCtI+Tgre7tKE
+         z+/ERrcfGMamkMBOCL/aTnXlajjrnRigU7ytDH+uH4kjBxDPYSIouJQXkrQaDbtxQc/I
+         1TkTU3CpxxPbBkI4xHDkT6vTaTGaqMWt4LnBZEvGAVCtM2+cA31Os7KJy/ETVxaGY5XY
+         HciaUYLI/BphZBANbCZlbd8jDhan4NhKjzjp/a7NF8IWdHxTtCbejLzTJON4QiC+15st
+         MKTw==
+X-Gm-Message-State: AGi0Pub/C0tGxnWNeWOxutQNWveUW0DWWp1936OYNEGYaqiXqwJmjjT0
+        bi4TfdzGqL0EZ08HOXo/GirbyROwO9cn3CrETHg=
+X-Google-Smtp-Source: APiQypIYXniGQUHEpASwiGNjKth4Cu9ElCz4yjrJ2uXbYBYunhfz0887D/TRydUbTstl7MwaeVftG8QxF1P80ST3qos=
+X-Received: by 2002:ab0:a9:: with SMTP id 38mr504317uaj.61.1586236361040; Mon,
+ 06 Apr 2020 22:12:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200406053450.8380-1-tangbin@cmss.chinamobile.com>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab0:4929:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:12:40 -0700 (PDT)
+From:   SANDRA DEWI <dewisandra154@gmail.com>
+Date:   Tue, 7 Apr 2020 05:12:40 +0000
+Message-ID: <CABRVPWys0xe4CWBkaU0ZXQW+4d=tjDOjyo8cKohc5-VFkWPkcA@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 06/04/2020 at 07:34, Tang Bin wrote:
-> The platform_get_irq() can print error message,so remove the redundant
-> dev_err() here.
-> 
-> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-> ---
->   drivers/video/fbdev/atmel_lcdfb.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-> index d567f5d56..1e2521925 100644
-> --- a/drivers/video/fbdev/atmel_lcdfb.c
-> +++ b/drivers/video/fbdev/atmel_lcdfb.c
-> @@ -1114,7 +1114,6 @@ static int __init atmel_lcdfb_probe(struct platform_device *pdev)
-> 
->          sinfo->irq_base = platform_get_irq(pdev, 0);
->          if (sinfo->irq_base < 0) {
-> -               dev_err(dev, "unable to get irq\n");
->                  ret = sinfo->irq_base;
->                  goto stop_clk;
->          }
-> --
-> 2.20.1.windows.1
-> 
-> 
-> 
+Dear ,Pastor
 
 
--- 
-Nicolas Ferre
+
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
+
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
+
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
