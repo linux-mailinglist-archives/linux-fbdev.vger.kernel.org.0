@@ -2,70 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1E01A136E
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2020 20:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F2C91A162E
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2020 21:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726393AbgDGSSN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Apr 2020 14:18:13 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:44012 "EHLO
+        id S1726705AbgDGTsa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Apr 2020 15:48:30 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:50210 "EHLO
         asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726332AbgDGSSN (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Apr 2020 14:18:13 -0400
+        with ESMTP id S1726339AbgDGTsa (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Apr 2020 15:48:30 -0400
 Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 6FAD8804D5;
-        Tue,  7 Apr 2020 20:18:06 +0200 (CEST)
-Date:   Tue, 7 Apr 2020 20:18:05 +0200
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 0EAE380533;
+        Tue,  7 Apr 2020 21:48:26 +0200 (CEST)
+Date:   Tue, 7 Apr 2020 21:48:24 +0200
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Tang Bin <tangbin@cmss.chinamobile.com>
-Cc:     b.zolnierkie@samsung.com, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] video: fbdev: don't print error message on
- platform_get_irq() failure
-Message-ID: <20200407181805.GC6356@ravnborg.org>
-References: <20200406053450.8380-1-tangbin@cmss.chinamobile.com>
+To:     Jules Irenge <jbi.octave@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        boqun.feng@gmail.com, Russell King <linux@armlinux.org.uk>,
+        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
+        "moderated list:CYBERPRO FB DRIVER" 
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 2/5] video: Add missing annotation for
+ cyber2000fb_enable_ddc() and cyber2000fb_disable_ddc()
+Message-ID: <20200407194824.GA28801@ravnborg.org>
+References: <0/5>
+ <20200403160505.2832-1-jbi.octave@gmail.com>
+ <20200403160505.2832-3-jbi.octave@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200406053450.8380-1-tangbin@cmss.chinamobile.com>
+In-Reply-To: <20200403160505.2832-3-jbi.octave@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
         a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=R5C9hjxsAAAA:8
-        a=X_j5bIVzEBSOzoI8NEYA:9 a=CjuIK1q_8ugA:10 a=KpS7wOGxO9l4JKx0McS0:22
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8
+        a=e5mUnYsNAAAA:8 a=c_KzuGgbJLCNkQNsKyQA:9 a=CjuIK1q_8ugA:10
+        a=Vxmtnl_E_bksehYqCbjh:22 a=pHzHmUro8NiASowvMSCR:22
+        a=Ew2E2A-JSTLzCXPT_086:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Tang Bin
+Hi Jules.
 
-On Mon, Apr 06, 2020 at 01:34:50PM +0800, Tang Bin wrote:
-> The platform_get_irq() can print error message,so remove the redundant
-> dev_err() here.
+On Fri, Apr 03, 2020 at 05:05:02PM +0100, Jules Irenge wrote:
+> Sparse reports warnings at cyber2000fb_enable_ddc()
+> 	and cyber2000fb_disable_ddc()
 > 
-> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-> ---
->  drivers/video/fbdev/atmel_lcdfb.c | 1 -
->  1 file changed, 1 deletion(-)
+> warning: context imbalance in cyber2000fb_enable_ddc()
+> 	- wrong count at exit
 > 
-> diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-> index d567f5d56..1e2521925 100644
-> --- a/drivers/video/fbdev/atmel_lcdfb.c
-> +++ b/drivers/video/fbdev/atmel_lcdfb.c
-> @@ -1114,7 +1114,6 @@ static int __init atmel_lcdfb_probe(struct platform_device *pdev)
->  
->  	sinfo->irq_base = platform_get_irq(pdev, 0);
->  	if (sinfo->irq_base < 0) {
-> -		dev_err(dev, "unable to get irq\n");
->  		ret = sinfo->irq_base;
->  		goto stop_clk;
->  	}
+> warning: context imbalance in cyber2000fb_disable_ddc()
+> 	- unexpected unlock
+> 
+> The root cause is the missing annotation at cyber2000fb_enable_ddc()
+> 	and cyber2000fb_disable_ddc()
+> 
+> Add the missing __acquires(&cfb->reg_b0_lock) annotation
+> Add the missing __releases(&cfb->reg_b0_lock) annotation
+> 
+> Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
 
-Thanks, applied to drm-misc-next. The fix will appear in kernel 5.8
+Thanks, added to drm-misc-next, so the patch will hit the kernel
+when the merge windows opens the next time.
+
+Was this the only locking relevant warning in fbdev?
+I would expect a few more.
 
 	Sam
+
+> ---
+>  drivers/video/fbdev/cyber2000fb.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/cyber2000fb.c b/drivers/video/fbdev/cyber2000fb.c
+> index 460826a7ad55..513f58f28b0f 100644
+> --- a/drivers/video/fbdev/cyber2000fb.c
+> +++ b/drivers/video/fbdev/cyber2000fb.c
+> @@ -1160,12 +1160,14 @@ EXPORT_SYMBOL(cyber2000fb_detach);
+>  #define DDC_SDA_IN	(1 << 6)
+>  
+>  static void cyber2000fb_enable_ddc(struct cfb_info *cfb)
+> +	__acquires(&cfb->reg_b0_lock)
+>  {
+>  	spin_lock(&cfb->reg_b0_lock);
+>  	cyber2000fb_writew(0x1bf, 0x3ce, cfb);
+>  }
+>  
+>  static void cyber2000fb_disable_ddc(struct cfb_info *cfb)
+> +	__releases(&cfb->reg_b0_lock)
+>  {
+>  	cyber2000fb_writew(0x0bf, 0x3ce, cfb);
+>  	spin_unlock(&cfb->reg_b0_lock);
+> -- 
+> 2.24.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
