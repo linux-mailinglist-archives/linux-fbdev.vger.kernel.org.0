@@ -2,92 +2,121 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26ED41A1EA5
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Apr 2020 12:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D20511A2720
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Apr 2020 18:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727928AbgDHKTb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 8 Apr 2020 06:19:31 -0400
-Received: from asavdk3.altibox.net ([109.247.116.14]:37496 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726521AbgDHKTb (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Apr 2020 06:19:31 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id A011D20027;
-        Wed,  8 Apr 2020 12:19:28 +0200 (CEST)
-Date:   Wed, 8 Apr 2020 12:19:27 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Jason Yan <yanaijie@huawei.com>
-Cc:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] video: fbdev: mb862xx: remove set but not used variable
- 'mdr'
-Message-ID: <20200408101927.GD20795@ravnborg.org>
-References: <20200403022553.33320-1-yanaijie@huawei.com>
+        id S1728179AbgDHQ0G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 8 Apr 2020 12:26:06 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:46101 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727931AbgDHQ0F (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Apr 2020 12:26:05 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1N8XHb-1jHHhA1YYr-014Tax; Wed, 08 Apr 2020 18:25:53 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Enrico Weigelt <info@metux.net>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] fbdev: mx3fb: avoid warning about psABI change
+Date:   Wed,  8 Apr 2020 18:25:38 +0200
+Message-Id: <20200408162551.3928330-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200403022553.33320-1-yanaijie@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=i0EeH86SAAAA:8
-        a=e5mUnYsNAAAA:8 a=fKMPv7tiX5XEn72-Iu4A:9 a=QEXdDO2ut3YA:10
-        a=Vxmtnl_E_bksehYqCbjh:22
+X-Provags-ID: V03:K1:a1SttS1sh0V8p8yNp3DZOBnM7t3XNhEBzBMwVVmOUCS7K8nEh0c
+ 8njey4uOCRCAK8sgTmZLVKJHFuADY6t12iLayYT208LdNpRm9Nk2tYvZpNj7E+Yc/U2qtcA
+ ulytP8YPz81OEx7SWoYabgaStCwARP5d5nQqJ862NIg3i/L0a0t/j4a9gOK5SZYohRsPksi
+ bNGUs6HQEWyFiT+EgxmAg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dk5f3Sr4sU4=:G4pwmQu7W8VWR/oKC4D7fh
+ zYDpiz4/nmqqokBhiixH+tYQlboMpqizLqa98wG16tvgtwcmSxyB6gapFuYgkdXdiNRSNzw7q
+ f6pK2VziehJuaGLcKDA7NXTbXAmstSsWfhKs9OFN15XhNZo5wkHNxCJrJpEdwhqIcTNJpR6aX
+ cl7tu3JT3y+hHOcHtGwlki3J5zrvxxPWpIHOVG/CR5AYtwQj4JQ8vDNNquIjvOtKA0K+fCUHV
+ 1RF/GbCLqdMHdtIdy9fOy1JwjdBQF0LTM3uuIBSlWgXgh8kiqKw831N7blh3zBlzbZQ/70OWj
+ EeDZfy5ywcdqhoPXklXwxmoCHKHB7K6dfBbJfZ9HOlBca/Y1W8rGJxRGPIqL/p26bDrQIIOBF
+ H37E6PPuCrDz07n3VzWnL/zryCOG0fS4nBRbF+LHy/twFiGyQjwvFD68Yw0dE0GOoFkyQWwGt
+ Yt61AHVZu1qETiIo9dojxRC/zZ3mvyun5Qf4Not90U9oCHBUsa/wlDj5LsX6cvzNJDGFM/M8X
+ lXLrrZgIdoSPJ4Ingtj+USfaCKIlUmPNIWOYMuXcIYCGcZd0vJkgxsxr4OxxS328VIEPDed46
+ MzwIe+hsdcsiMDXofUp1utgQGJOVpeJEono+Ox25sEQPZSPjxh+wLF4+1PFbKtytzJNlDrEfU
+ kFFZc9URlkox2/4mqU5YYQlYEAmb6ziOaabhhB1n3YIq97qWkG6P/OpB5RmfhaJqm5m3j9gOO
+ tuPELPlQUdNNqsGW+xHzppnJPh7i2hmUlOIdgU923HaMqJorb2RCqr1lV+8/EiQ2ZkJw6Ss/Z
+ UbysbcvUGU1nYfLBnovzS1M1baR38tmUQOqpuh+qv9y19jvSYc=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Jason.
+The arm64 gcc-9 release warns about a change in the calling
+conventions:
 
-On Fri, Apr 03, 2020 at 10:25:53AM +0800, Jason Yan wrote:
-> Fix the following gcc warning:
-> 
-> drivers/video/fbdev/mb862xx/mb862xxfb_accel.c:187:6: warning: variable
-> ‘mdr’ set but not used [-Wunused-but-set-variable]
->   int mdr;
->       ^~~
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+drivers/video/fbdev/mx3fb.c: In function 'sdc_init_panel':
+drivers/video/fbdev/mx3fb.c:506:12: note: parameter passing for argument of type 'struct ipu_di_signal_cfg' changed in GCC 9.1
+  506 | static int sdc_init_panel(struct mx3fb_data *mx3fb, enum ipu_panel panel,
+      |            ^~~~~~~~~~~~~~
+drivers/video/fbdev/mx3fb.c: In function '__set_par':
+drivers/video/fbdev/mx3fb.c:848:7: note: parameter passing for argument of type 'struct ipu_di_signal_cfg' changed in GCC 9.1
 
-Thanks, committed to drm-misc-next.
-The fix will show up durign the next merge window.
+Change the file to just pass the struct by reference, which is
+unambiguous and avoids the warning.
 
-	Sam
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/video/fbdev/mx3fb.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-> ---
->  drivers/video/fbdev/mb862xx/mb862xxfb_accel.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-> index 42569264801f..d40b806461ca 100644
-> --- a/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-> +++ b/drivers/video/fbdev/mb862xx/mb862xxfb_accel.c
-> @@ -184,7 +184,6 @@ static void mb86290fb_imageblit16(u32 *cmd, u16 step, u16 dx, u16 dy,
->  static void mb86290fb_imageblit(struct fb_info *info,
->  				const struct fb_image *image)
->  {
-> -	int mdr;
->  	u32 *cmd = NULL;
->  	void (*cmdfn) (u32 *, u16, u16, u16, u16, u16, u32, u32,
->  		       const struct fb_image *, struct fb_info *) = NULL;
-> @@ -196,7 +195,6 @@ static void mb86290fb_imageblit(struct fb_info *info,
->  	u16 dx = image->dx, dy = image->dy;
->  	int x2, y2, vxres, vyres;
->  
-> -	mdr = (GDC_ROP_COPY << 9);
->  	x2 = image->dx + image->width;
->  	y2 = image->dy + image->height;
->  	vxres = info->var.xres_virtual;
-> -- 
-> 2.17.2
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+diff --git a/drivers/video/fbdev/mx3fb.c b/drivers/video/fbdev/mx3fb.c
+index 4af28e4421e5..e13fea3a292f 100644
+--- a/drivers/video/fbdev/mx3fb.c
++++ b/drivers/video/fbdev/mx3fb.c
+@@ -509,7 +509,7 @@ static int sdc_init_panel(struct mx3fb_data *mx3fb, enum ipu_panel panel,
+ 			  uint16_t h_start_width, uint16_t h_sync_width,
+ 			  uint16_t h_end_width, uint16_t v_start_width,
+ 			  uint16_t v_sync_width, uint16_t v_end_width,
+-			  struct ipu_di_signal_cfg sig)
++			  struct ipu_di_signal_cfg *sig)
+ {
+ 	unsigned long lock_flags;
+ 	uint32_t reg;
+@@ -591,17 +591,17 @@ static int sdc_init_panel(struct mx3fb_data *mx3fb, enum ipu_panel panel,
+ 
+ 	/* DI settings */
+ 	old_conf = mx3fb_read_reg(mx3fb, DI_DISP_IF_CONF) & 0x78FFFFFF;
+-	old_conf |= sig.datamask_en << DI_D3_DATAMSK_SHIFT |
+-		sig.clksel_en << DI_D3_CLK_SEL_SHIFT |
+-		sig.clkidle_en << DI_D3_CLK_IDLE_SHIFT;
++	old_conf |= sig->datamask_en << DI_D3_DATAMSK_SHIFT |
++		sig->clksel_en << DI_D3_CLK_SEL_SHIFT |
++		sig->clkidle_en << DI_D3_CLK_IDLE_SHIFT;
+ 	mx3fb_write_reg(mx3fb, old_conf, DI_DISP_IF_CONF);
+ 
+ 	old_conf = mx3fb_read_reg(mx3fb, DI_DISP_SIG_POL) & 0xE0FFFFFF;
+-	old_conf |= sig.data_pol << DI_D3_DATA_POL_SHIFT |
+-		sig.clk_pol << DI_D3_CLK_POL_SHIFT |
+-		sig.enable_pol << DI_D3_DRDY_SHARP_POL_SHIFT |
+-		sig.Hsync_pol << DI_D3_HSYNC_POL_SHIFT |
+-		sig.Vsync_pol << DI_D3_VSYNC_POL_SHIFT;
++	old_conf |= sig->data_pol << DI_D3_DATA_POL_SHIFT |
++		sig->clk_pol << DI_D3_CLK_POL_SHIFT |
++		sig->enable_pol << DI_D3_DRDY_SHARP_POL_SHIFT |
++		sig->Hsync_pol << DI_D3_HSYNC_POL_SHIFT |
++		sig->Vsync_pol << DI_D3_VSYNC_POL_SHIFT;
+ 	mx3fb_write_reg(mx3fb, old_conf, DI_DISP_SIG_POL);
+ 
+ 	map = &di_mappings[mx3fb->disp_data_fmt];
+@@ -855,7 +855,7 @@ static int __set_par(struct fb_info *fbi, bool lock)
+ 				   fbi->var.upper_margin,
+ 				   fbi->var.vsync_len,
+ 				   fbi->var.lower_margin +
+-				   fbi->var.vsync_len, sig_cfg) != 0) {
++				   fbi->var.vsync_len, &sig_cfg) != 0) {
+ 			dev_err(fbi->device,
+ 				"mx3fb: Error initializing panel.\n");
+ 			return -EINVAL;
+-- 
+2.26.0
+
