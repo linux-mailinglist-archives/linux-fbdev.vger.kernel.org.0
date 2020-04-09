@@ -2,98 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 310E31A2A01
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Apr 2020 22:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7E41A2F8C
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 08:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728157AbgDHUBx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 8 Apr 2020 16:01:53 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:34952 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726550AbgDHUBx (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Apr 2020 16:01:53 -0400
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9613159E;
-        Wed,  8 Apr 2020 22:01:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1586376111;
-        bh=61QBxElcESJR0QqO2K++tyWrWFyA7zoUCeDLp6hC+aQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qoYyJyh+jqyAYLHY0BVUnl3jCFhNUaTaNTUhldIrMbPqukGr0bP38btQyrpHhVjBa
-         cKxx8DIgd3DkTUzF9sxryDEAlfYD3P1dbHsaqiO2TYGXuzYFk3XpsWfdB3ponKZ39S
-         pr5AIEYTQWPD3vfSFXkdUtoYt+qCDGop56gP/FN0=
-Date:   Wed, 8 Apr 2020 23:01:41 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Jani Nikula <jani.nikula@intel.com>, linux-fbdev@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S1726626AbgDIGxC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Apr 2020 02:53:02 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:47363 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726623AbgDIGw5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 9 Apr 2020 02:52:57 -0400
+Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 08 Apr 2020 23:52:55 -0700
+Received: from gurus-linux.qualcomm.com ([10.46.162.81])
+  by ironmsg01-sd.qualcomm.com with ESMTP; 08 Apr 2020 23:52:54 -0700
+Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
+        id 6E4744C4D; Wed,  8 Apr 2020 23:52:54 -0700 (PDT)
+From:   Guru Das Srinagesh <gurus@codeaurora.org>
+To:     linux-pwm@vger.kernel.org
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        David Collins <collinsd@codeaurora.org>,
+        linux-kernel@vger.kernel.org,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Enrico Weigelt <info@metux.net>
-Subject: Re: [PATCH] fbdev: mx3fb: const pointer to ipu_di_signal_cfg
-Message-ID: <20200408200141.GM4881@pendragon.ideasonboard.com>
-References: <20200408162551.3928330-1-arnd@arndb.de>
- <87pnchhp2s.fsf@intel.com>
- <20200408180216.GC24828@ravnborg.org>
- <20200408182926.GA21997@ravnborg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200408182926.GA21997@ravnborg.org>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v12 09/11] backlight: pwm_bl: Use 64-bit division function
+Date:   Wed,  8 Apr 2020 23:52:38 -0700
+Message-Id: <e2139a83008e9f301889f9384487c55de475a6a2.1586414867.git.gurus@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <cover.1586414867.git.gurus@codeaurora.org>
+References: <cover.1586414867.git.gurus@codeaurora.org>
+In-Reply-To: <cover.1586414867.git.gurus@codeaurora.org>
+References: <cover.1586414867.git.gurus@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sam,
+Since the PWM framework is switching struct pwm_state.period's datatype
+to u64, prepare for this transition by using div_u64 to handle a 64-bit
+dividend instead of a straight division operation.
 
-Thank you for the patch.
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: linux-pwm@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 
-On Wed, Apr 08, 2020 at 08:29:26PM +0200, Sam Ravnborg wrote:
-> Laurent Pinchart <laurent.pinchart@ideasonboard.com> and
-> Jani Nikula <jani.nikula@intel.com> both
-> suggested to make the pointer to struct ipu_di_signal_cfg const.
-> 
-> Fix this.
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Fixes: 3f6c93ec9254 ("fbdev: mx3fb: avoid warning about psABI change")
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Enrico Weigelt <info@metux.net>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-fbdev@vger.kernel.org
+Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+ drivers/video/backlight/pwm_bl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Assuming this is compile-tested,
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> ---
-> 
-> Again, sorry. I should have waited a day before applying.
-> 
-> 	Sam
-> 
->  drivers/video/fbdev/mx3fb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbdev/mx3fb.c b/drivers/video/fbdev/mx3fb.c
-> index e13fea3a292f..603731a5a72e 100644
-> --- a/drivers/video/fbdev/mx3fb.c
-> +++ b/drivers/video/fbdev/mx3fb.c
-> @@ -509,7 +509,7 @@ static int sdc_init_panel(struct mx3fb_data *mx3fb, enum ipu_panel panel,
->  			  uint16_t h_start_width, uint16_t h_sync_width,
->  			  uint16_t h_end_width, uint16_t v_start_width,
->  			  uint16_t v_sync_width, uint16_t v_end_width,
-> -			  struct ipu_di_signal_cfg *sig)
-> +			  const struct ipu_di_signal_cfg *sig)
->  {
->  	unsigned long lock_flags;
->  	uint32_t reg;
-
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index efb4efc..3e5dbcf 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
+ 		pb->scale = data->max_brightness;
+ 	}
+ 
+-	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
++	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
++				pb->scale));
+ 
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = data->max_brightness;
 -- 
-Regards,
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
 
-Laurent Pinchart
