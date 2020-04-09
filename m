@@ -2,68 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 329291A3262
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 12:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA49A1A326B
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 12:22:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbgDIKRd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Apr 2020 06:17:33 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:49790 "EHLO
+        id S1725987AbgDIKWU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Apr 2020 06:22:20 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:54146 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbgDIKRd (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Apr 2020 06:17:33 -0400
+        with ESMTP id S1725970AbgDIKWU (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Apr 2020 06:22:20 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039AD75n162883;
-        Thu, 9 Apr 2020 10:17:27 GMT
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039AD3F2162825;
+        Thu, 9 Apr 2020 10:22:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2020-01-29;
- bh=BQv+SFU9p0BAD68jJoZGU4GuYeJmyCacIu0TxHC5XrE=;
- b=zCw7BJTh6xHuF4KLGeTZOLnqIpZz43sntnvBpt26ZiOKmw2KhKwVxRVn7W+YXXYGZdu5
- +ZhUeDrec4ZKkm9AN/SiK4Orvstru5aSFF3o8tovRmAW8ZNkKzariO8xffXafpJ5UgNv
- XO1Qy4XVI+r5x3nKdOc/7DvAr8Xnk8uAGQ1rmDxS39XrCBDNCreD8RnfmNvlKdA2vyQm
- Mo7SSMqt/u/Qd8fAkWHG4i2qaMUlqpdkq7kNGAhQPp6OZa7pYhlVLElo4sPqjkGXeZaq
- Yf0SWAFRFlclEoz4/Q3Mh12H3X3/bBSUV5GRi8ZvbEvULiYajmBPjud25mgk+elCe4+U Kg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 309gw4chm5-1
+ bh=d0vbh1SNAcfSwbd6w+AzaTccs3Ec+MTzHAp5ctJy/mI=;
+ b=i22hPosZiC/dM+p3jpWetJjF42Y2kWHZbHkD+VgbrR48kvvVmP+4UMTpUhHObeenMkhb
+ 7kieRdzf8MJgNG252Vn2lddlxAS1iymIblQU3kAElcjKOYqKTzjFCRN81IgBlw1wPsos
+ UP9dKE9ZCi7Q9HmsTjc6C2UoJbJRXP0C6ujRtdy2nVl7Q0c/Kad2RQl7G+AnNHHGnl75
+ JtV4toMaM2PbmJrXooZFto+IcC126Dx1/2sFtvLsjrA1Hqg6t1Al4ts1fqbxdRloe1GQ
+ 2H9tdylmPE/VYHtHEE3QcxJUoI56rt6zC4BKVU9LONMpnk0nu4WuKmRseQiThfRXKV/M Rg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 309gw4cj49-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:17:26 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039AClOb148569;
-        Thu, 9 Apr 2020 10:15:26 GMT
+        Thu, 09 Apr 2020 10:22:13 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039ALakk093384;
+        Thu, 9 Apr 2020 10:22:12 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 309ag478ey-1
+        by aserp3020.oracle.com with ESMTP id 3091m7g8m5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:15:26 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 039AFPpT017318;
-        Thu, 9 Apr 2020 10:15:25 GMT
+        Thu, 09 Apr 2020 10:22:12 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 039AMBAk020185;
+        Thu, 9 Apr 2020 10:22:11 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Apr 2020 03:15:24 -0700
-Date:   Thu, 9 Apr 2020 13:15:17 +0300
+        with ESMTP ; Thu, 09 Apr 2020 03:22:10 -0700
+Date:   Thu, 9 Apr 2020 13:22:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Oliver Graute <oliver.graute@gmail.com>
 Cc:     gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
         linux-fbdev@vger.kernel.org,
         Oliver Graute <oliver.graute@kococonnector.com>,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: enabled inversion
-Message-ID: <20200409101517.GO2001@kadam>
-References: <1586424250-25897-1-git-send-email-oliver.graute@gmail.com>
+Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: Initialize the Display
+Message-ID: <20200409102013.GP2001@kadam>
+References: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1586424250-25897-1-git-send-email-oliver.graute@gmail.com>
+In-Reply-To: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 mlxscore=0 bulkscore=0 mlxlogscore=667 suspectscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004090077
+ definitions=main-2004090078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
  phishscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=745 mlxscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2004090077
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -71,13 +71,51 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 09, 2020 at 11:24:05AM +0200, Oliver Graute wrote:
+On Thu, Apr 09, 2020 at 11:25:32AM +0200, Oliver Graute wrote:
 > From: Oliver Graute <oliver.graute@kococonnector.com>
 > 
-> Enable inversion mode
+> Set Gamma Values and Register Values for the HSD20_IPS
+> 
+> Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
+> ---
+>  drivers/staging/fbtft/fb_st7789v.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
+> index 84c5af2dc9a0..b0aa96b703a8 100644
+> --- a/drivers/staging/fbtft/fb_st7789v.c
+> +++ b/drivers/staging/fbtft/fb_st7789v.c
+> @@ -17,8 +17,8 @@
+>  #define DRVNAME "fb_st7789v"
+>  
+>  #define DEFAULT_GAMMA \
+> -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
+> -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
+> +	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
+> +	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
 
-What the heck is an inversion mode and why would you want it?
+How do you know this won't break someone else's setup?
+
+>  
+>  /**
+>   * enum st7789v_command - ST7789V display controller commands
+> @@ -83,13 +83,13 @@ static int init_display(struct fbtft_par *par)
+>  	/* set pixel format to RGB-565 */
+>  	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_16BIT);
+>  
+> -	write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
+> +	write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
+
+Without knowing anything at all about this driver, it feels like this
+should be:
+
+	if (new_hardware)
+		write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
+	else
+		write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
+
+Same comment for the rest of the patch.
 
 regards,
-dasn carpenter
+dan carpenter
 
