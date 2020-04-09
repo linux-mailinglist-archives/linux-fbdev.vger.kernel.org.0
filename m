@@ -2,82 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA7E41A2F8C
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 08:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB3E1A31CC
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 11:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726626AbgDIGxC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Apr 2020 02:53:02 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:47363 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726623AbgDIGw5 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 9 Apr 2020 02:52:57 -0400
-Received: from unknown (HELO ironmsg01-sd.qualcomm.com) ([10.53.140.141])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 08 Apr 2020 23:52:55 -0700
-Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg01-sd.qualcomm.com with ESMTP; 08 Apr 2020 23:52:54 -0700
-Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id 6E4744C4D; Wed,  8 Apr 2020 23:52:54 -0700 (PDT)
-From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        David Collins <collinsd@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v12 09/11] backlight: pwm_bl: Use 64-bit division function
-Date:   Wed,  8 Apr 2020 23:52:38 -0700
-Message-Id: <e2139a83008e9f301889f9384487c55de475a6a2.1586414867.git.gurus@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <cover.1586414867.git.gurus@codeaurora.org>
-References: <cover.1586414867.git.gurus@codeaurora.org>
-In-Reply-To: <cover.1586414867.git.gurus@codeaurora.org>
-References: <cover.1586414867.git.gurus@codeaurora.org>
+        id S1726637AbgDIJeK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Apr 2020 05:34:10 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:45560 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725987AbgDIJeJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Apr 2020 05:34:09 -0400
+Received: by mail-wr1-f65.google.com with SMTP id v5so11101492wrp.12;
+        Thu, 09 Apr 2020 02:34:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vFKY58EHDI35uWqTXFRcYlKrXpE9AmTqUd0lTuoZycc=;
+        b=Vluwa6jv99EFa0y3quZjb49M0cgeiVocOWBa7QIiBKYvYGJY7V0w2GjxOzU0DvqBB2
+         Nb+5jY6WzMvAFVr7+8Ys8cs/E8W+eSH7gVqp9SXwjXmeXK/fsM9P8X0pxGVa8CRje2WC
+         g3y3AHexyE7aae+UXl275caZKdGy3bXMWW3dOX0pxx/kD46g0wwTIx60fxsbAA7dgI1x
+         3xFzJ3zU4lMTfDFv0mkxtk/La2DIonGAbNbfo5hjR4wtvI44ZywsUdkq4FmMJmN3jx1p
+         DfoQ6ycgEdCR5XR/YjooLFM2As21WdGwPk7QuF5UpUfyNAWu7GlOOrJdpnAnF0PHtHfj
+         JPVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vFKY58EHDI35uWqTXFRcYlKrXpE9AmTqUd0lTuoZycc=;
+        b=OhMDXk93e7IuqQjxcvXPjaPxXYEilIIZlfTEdycrrQYrJkRPNEppBa60kthOvDGmTw
+         rsim4XB4zY1DXaS2dcaLYy8UqhHW2kCd1j2DkjHpI5e0buDsNa3I2fc3e8vUikJyMnSW
+         jomr+Ft+0axJEMuvZ7dmbc8CeSm6qPiHma5z7SO6e708T3VUf6SLbFP3aZkou5tAPcaF
+         geK5ewnPqdRnBhUjymrO1iKKvfmZMkTjNHb/kT/e1KUP1s3ioZeEnUjpI7AVEiyuuubU
+         nBsgnbcVABuVw08+lEV/vGn31w3IpLYv3MLDGa5B161WRw3+ejs1TVa+CMdcuj1m8iMx
+         2kdQ==
+X-Gm-Message-State: AGi0PubY5+IgboKAkxcqnBc6Zh8rRW5imifpOw9w9Ttg8PBiM7iB2Haq
+        J3y8VSs+e5F4pqv415SU0nlE73PKSv4=
+X-Google-Smtp-Source: APiQypKHK/kvsaEcZ/Cmzl/YN983+vE0TBvst1peF9mlnQUhbLlkLuwefhysx3YSl6P6fBAQtjQu9w==
+X-Received: by 2002:adf:904e:: with SMTP id h72mr12881868wrh.367.1586424848253;
+        Thu, 09 Apr 2020 02:34:08 -0700 (PDT)
+Received: from localhost (ip1f115f16.dynamic.kabel-deutschland.de. [31.17.95.22])
+        by smtp.gmail.com with ESMTPSA id h2sm1916942wmf.34.2020.04.09.02.34.07
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Apr 2020 02:34:07 -0700 (PDT)
+From:   Oliver Graute <oliver.graute@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     oliver.graute@gmail.com,
+        Oliver Graute <oliver.graute@kococonnector.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1] staging: fbtft: fb_st7789v: enabled inversion
+Date:   Thu,  9 Apr 2020 11:24:05 +0200
+Message-Id: <1586424250-25897-1-git-send-email-oliver.graute@gmail.com>
+X-Mailer: git-send-email 2.7.4
+X-Patchwork-Bot: notify
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Since the PWM framework is switching struct pwm_state.period's datatype
-to u64, prepare for this transition by using div_u64 to handle a 64-bit
-dividend instead of a straight division operation.
+From: Oliver Graute <oliver.graute@kococonnector.com>
 
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: linux-pwm@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
+Enable inversion mode
 
-Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
 ---
- drivers/video/backlight/pwm_bl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/fbtft/fb_st7789v.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index efb4efc..3e5dbcf 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -625,7 +625,8 @@ static int pwm_backlight_probe(struct platform_device *pdev)
- 		pb->scale = data->max_brightness;
- 	}
+diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
+index 3c3f387936e8..84c5af2dc9a0 100644
+--- a/drivers/staging/fbtft/fb_st7789v.c
++++ b/drivers/staging/fbtft/fb_st7789v.c
+@@ -120,6 +120,10 @@ static int init_display(struct fbtft_par *par)
+ 	write_reg(par, PWCTRL1, 0xA4, 0xA1);
  
--	pb->lth_brightness = data->lth_brightness * (state.period / pb->scale);
-+	pb->lth_brightness = data->lth_brightness * (div_u64(state.period,
-+				pb->scale));
+ 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
++
++	/* enable inversion mode */
++	write_reg(par, 0x21);
++
+ 	return 0;
+ }
  
- 	props.type = BACKLIGHT_RAW;
- 	props.max_brightness = data->max_brightness;
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+2.17.1
 
