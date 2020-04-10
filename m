@@ -2,120 +2,149 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA49A1A326B
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2020 12:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0B51A495B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Apr 2020 19:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725987AbgDIKWU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Apr 2020 06:22:20 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:54146 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725970AbgDIKWU (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Apr 2020 06:22:20 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039AD3F2162825;
-        Thu, 9 Apr 2020 10:22:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=d0vbh1SNAcfSwbd6w+AzaTccs3Ec+MTzHAp5ctJy/mI=;
- b=i22hPosZiC/dM+p3jpWetJjF42Y2kWHZbHkD+VgbrR48kvvVmP+4UMTpUhHObeenMkhb
- 7kieRdzf8MJgNG252Vn2lddlxAS1iymIblQU3kAElcjKOYqKTzjFCRN81IgBlw1wPsos
- UP9dKE9ZCi7Q9HmsTjc6C2UoJbJRXP0C6ujRtdy2nVl7Q0c/Kad2RQl7G+AnNHHGnl75
- JtV4toMaM2PbmJrXooZFto+IcC126Dx1/2sFtvLsjrA1Hqg6t1Al4ts1fqbxdRloe1GQ
- 2H9tdylmPE/VYHtHEE3QcxJUoI56rt6zC4BKVU9LONMpnk0nu4WuKmRseQiThfRXKV/M Rg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 309gw4cj49-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:22:13 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 039ALakk093384;
-        Thu, 9 Apr 2020 10:22:12 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 3091m7g8m5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 Apr 2020 10:22:12 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 039AMBAk020185;
-        Thu, 9 Apr 2020 10:22:11 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Apr 2020 03:22:10 -0700
-Date:   Thu, 9 Apr 2020 13:22:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Oliver Graute <oliver.graute@gmail.com>
-Cc:     gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
-        linux-fbdev@vger.kernel.org,
-        Oliver Graute <oliver.graute@kococonnector.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: Initialize the Display
-Message-ID: <20200409102013.GP2001@kadam>
-References: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
+        id S1726680AbgDJRjZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 10 Apr 2020 13:39:25 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:42505 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726595AbgDJRjZ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 10 Apr 2020 13:39:25 -0400
+Received: by mail-oi1-f195.google.com with SMTP id e4so1954361oig.9;
+        Fri, 10 Apr 2020 10:39:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=UVlxIE0CSKdKwuyXIBQDvbaJJFV3N43f9jUNTBByOKM=;
+        b=oV6SLID4+Gi2Tugy1dlLl9zVvXhpadhUPmlPgEKPqC+Q5ihE9il4EtDc/MavWkerEI
+         3aK5pQ7zZMvzX3ovdmDRnU3z/SjNR1OWYWJ+A88l/2W+uypQ/7iJYS+No/UoQHmM84X8
+         NNIFqjgtH/PDr1tikW+DsYjuqVYxp/IjUFUezNgtiNjgq5ktZkm6mqo/6danKssxzvl0
+         +WGJ9b4zyFlNfeNqzta3zZE6veCtzQr68/7ZSU2nuJ8v6M3X4e9WgoYOqmS1J2qK4E2Q
+         JN+xp3vDqQ8oIUo4L/4iIa3oxHWajHiL1iAsw1ZFeAuYcj3TEH/nIuiTNaPSKwUt9fYQ
+         mLgA==
+X-Gm-Message-State: AGi0PuZtGcZmcqwCtMX79L4accWSNqkKSrxrvQiBCpV3yYqjF0tcNORg
+        XDQQP933XWIaXlMQjbs/rA==
+X-Google-Smtp-Source: APiQypIbEr9eAuDn8ap/2ErWe8F05Nq4R1u7xjJ+3zCkjJKKNwFWVUzijYYdI42B6WOSqS3yiJsmAw==
+X-Received: by 2002:a05:6808:1c1:: with SMTP id x1mr3845478oic.55.1586540363863;
+        Fri, 10 Apr 2020 10:39:23 -0700 (PDT)
+Received: from rob-hp-laptop (ip-99-203-29-27.pools.cgn.spcsdns.net. [99.203.29.27])
+        by smtp.gmail.com with ESMTPSA id d21sm1480776otp.39.2020.04.10.10.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2020 10:39:23 -0700 (PDT)
+Received: (nullmailer pid 6854 invoked by uid 1000);
+        Fri, 10 Apr 2020 17:33:24 -0000
+Date:   Fri, 10 Apr 2020 12:33:24 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     linux-kernel@vger.kernel.org, monstr@monstr.eu, git@xilinx.com,
+        sfr@canb.auug.org.au, maz@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Alistair Popple <alistair@popple.id.au>,
+        Allison Randal <allison@lohutok.net>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Enrico Weigelt <info@metux.net>,
+        Fabio Estevam <festevam@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Wei Hu <weh@microsoft.com>, YueHaibing <yuehaibing@huawei.com>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 2/2] powerpc: Remove Xilinx PPC405/PPC440 support
+Message-ID: <20200410173324.GA28512@bogus>
+References: <cover.1585575111.git.michal.simek@xilinx.com>
+ <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004090078
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9585 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 bulkscore=0
- phishscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004090077
+In-Reply-To: <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 09, 2020 at 11:25:32AM +0200, Oliver Graute wrote:
-> From: Oliver Graute <oliver.graute@kococonnector.com>
+On Mon, Mar 30, 2020 at 03:32:17PM +0200, Michal Simek wrote:
+> The latest Xilinx design tools called ISE and EDK has been released in
+> October 2013. New tool doesn't support any PPC405/PPC440 new designs.
+> These platforms are no longer supported and tested.
 > 
-> Set Gamma Values and Register Values for the HSD20_IPS
+> PowerPC 405/440 port is orphan from 2013 by
+> commit cdeb89943bfc ("MAINTAINERS: Fix incorrect status tag") and
+> commit 19624236cce1 ("MAINTAINERS: Update Grant's email address and maintainership")
+> that's why it is time to remove the support fot these platforms.
 > 
-> Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
+> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  drivers/staging/fbtft/fb_st7789v.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> index 84c5af2dc9a0..b0aa96b703a8 100644
-> --- a/drivers/staging/fbtft/fb_st7789v.c
-> +++ b/drivers/staging/fbtft/fb_st7789v.c
-> @@ -17,8 +17,8 @@
->  #define DRVNAME "fb_st7789v"
->  
->  #define DEFAULT_GAMMA \
-> -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
-> -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
-> +	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-> +	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
+> Changes in v2:
+> - Based on my chat with Arnd I removed arch/powerpc/xmon/ changes done in
+>   v1 to keep them the same as before. (kbuild reported some issues with it
+>   too)
+> 
+>  Documentation/devicetree/bindings/xilinx.txt | 143 ------
 
-How do you know this won't break someone else's setup?
+Acked-by: Rob Herring <robh@kernel.org>
 
->  
->  /**
->   * enum st7789v_command - ST7789V display controller commands
-> @@ -83,13 +83,13 @@ static int init_display(struct fbtft_par *par)
->  	/* set pixel format to RGB-565 */
->  	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_16BIT);
->  
-> -	write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
-> +	write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
-
-Without knowing anything at all about this driver, it feels like this
-should be:
-
-	if (new_hardware)
-		write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
-	else
-		write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
-
-Same comment for the rest of the patch.
-
-regards,
-dan carpenter
-
+>  Documentation/powerpc/bootwrapper.rst        |  28 +-
+>  MAINTAINERS                                  |   6 -
+>  arch/powerpc/Kconfig.debug                   |   2 +-
+>  arch/powerpc/boot/Makefile                   |   7 +-
+>  arch/powerpc/boot/dts/Makefile               |   1 -
+>  arch/powerpc/boot/dts/virtex440-ml507.dts    | 406 ----------------
+>  arch/powerpc/boot/dts/virtex440-ml510.dts    | 466 -------------------
+>  arch/powerpc/boot/ops.h                      |   1 -
+>  arch/powerpc/boot/serial.c                   |   5 -
+>  arch/powerpc/boot/uartlite.c                 |  79 ----
+>  arch/powerpc/boot/virtex.c                   |  97 ----
+>  arch/powerpc/boot/virtex405-head.S           |  31 --
+>  arch/powerpc/boot/wrapper                    |   8 -
+>  arch/powerpc/configs/40x/virtex_defconfig    |  75 ---
+>  arch/powerpc/configs/44x/virtex5_defconfig   |  74 ---
+>  arch/powerpc/configs/ppc40x_defconfig        |   8 -
+>  arch/powerpc/configs/ppc44x_defconfig        |   8 -
+>  arch/powerpc/include/asm/xilinx_intc.h       |  16 -
+>  arch/powerpc/include/asm/xilinx_pci.h        |  21 -
+>  arch/powerpc/kernel/cputable.c               |  39 --
+>  arch/powerpc/platforms/40x/Kconfig           |  31 --
+>  arch/powerpc/platforms/40x/Makefile          |   1 -
+>  arch/powerpc/platforms/40x/virtex.c          |  54 ---
+>  arch/powerpc/platforms/44x/Kconfig           |  37 --
+>  arch/powerpc/platforms/44x/Makefile          |   2 -
+>  arch/powerpc/platforms/44x/virtex.c          |  60 ---
+>  arch/powerpc/platforms/44x/virtex_ml510.c    |  30 --
+>  arch/powerpc/platforms/Kconfig               |   4 -
+>  arch/powerpc/sysdev/Makefile                 |   2 -
+>  arch/powerpc/sysdev/xilinx_intc.c            |  88 ----
+>  arch/powerpc/sysdev/xilinx_pci.c             | 132 ------
+>  drivers/char/Kconfig                         |   2 +-
+>  drivers/video/fbdev/Kconfig                  |   2 +-
+>  34 files changed, 7 insertions(+), 1959 deletions(-)
