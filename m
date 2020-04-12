@@ -1,108 +1,87 @@
 Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 966351A5636
-	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Apr 2020 01:15:01 +0200 (CEST)
+Received: from vger.kernel.org (unknown [209.132.180.67])
+	by mail.lfdr.de (Postfix) with ESMTP id 30CE41A6075
+	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Apr 2020 22:21:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730537AbgDKXPA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 11 Apr 2020 19:15:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730082AbgDKXO7 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 11 Apr 2020 19:14:59 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727338AbgDLUVr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 12 Apr 2020 16:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:34118 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727315AbgDLUVr (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 12 Apr 2020 16:21:47 -0400
+Received: from asavdk4.altibox.net (asavdk4.altibox.net [109.247.116.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5BFC0A3BF0
+        for <linux-fbdev@vger.kernel.org>; Sun, 12 Apr 2020 13:21:47 -0700 (PDT)
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9E12420787;
-        Sat, 11 Apr 2020 23:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586646899;
-        bh=G3UUIHyg7xSxPYcVcLYBK8Zfu2gVBd/q3PMHYp8s44I=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wxXM3FzuI8ztVk3zO/jVKpX3cgXyBxl3bbQTRbeCqM6cZXFL2P04vmhQULMvynQvC
-         4kh8e2j79VylXJ8t3VlNTYKgXR85DlfWj2jJYsEB4/ac6ZiKilMk7+MKTqEIan/z1y
-         sXSFNvEWyoAvFXOR3mmtSbfdONg1yFFj9csMUvpA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Yang <wen.yang99@zte.com.cn>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        dri-devel@lists.freedesktop.org,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 09/16] drm/omap: fix possible object reference leak
-Date:   Sat, 11 Apr 2020 19:14:39 -0400
-Message-Id: <20200411231447.27182-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200411231447.27182-1-sashal@kernel.org>
-References: <20200411231447.27182-1-sashal@kernel.org>
+        by asavdk4.altibox.net (Postfix) with ESMTPS id EE21F80478;
+        Sun, 12 Apr 2020 22:21:44 +0200 (CEST)
+Date:   Sun, 12 Apr 2020 22:21:43 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     Alexey Charkov <alchark@gmail.com>,
+        Paul Mundt <lethal@linux-sh.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] video: vt8500lcdfb: fix fallthrough warning
+Message-ID: <20200412202143.GA26948@ravnborg.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=QyXUC8HyAAAA:8 a=pGLkceISAAAA:8
+        a=1cMp6Op0AAAA:8 a=hD80L64hAAAA:8 a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8
+        a=NcUNtGcOwW8lTd5LSkMA:9 a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+        a=cge21SmdFH0vqy2l-lvr:22 a=Vxmtnl_E_bksehYqCbjh:22
+        a=AjGcO6oz07-iQ99wixmX:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Wen Yang <wen.yang99@zte.com.cn>
+Fix following warning:
+vt8500lcdfb.c: In function 'vt8500lcd_blank':
+vt8500lcdfb.c:229:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+      if (info->fix.visual == FB_VISUAL_PSEUDOCOLOR ||
+         ^
+vt8500lcdfb.c:233:2: note: here
+     case FB_BLANK_UNBLANK:
+     ^~~~
 
-[ Upstream commit 47340e46f34a3b1d80e40b43ae3d7a8da34a3541 ]
+Adding a simple "fallthrough;" fixed the warning.
+The fix was build tested.
 
-The call to of_find_matching_node returns a node pointer with refcount
-incremented thus it must be explicitly decremented after the last
-usage.
-
-Detected by coccinelle with the following warnings:
-drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c:212:2-8: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 209, but without a corresponding object release within this function.
-drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c:237:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 209, but without a corresponding object release within this function.
-
-Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Reported-by: kbuild test robot <lkp@intel.com>
+Fixes: e41f1a989408 ("fbdev: Implement simple blanking in pseudocolor modes for vt8500lcdfb")
+Cc: Alexey Charkov <alchark@gmail.com>
+Cc: Paul Mundt <lethal@linux-sh.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/1554692313-28882-2-git-send-email-wen.yang99@zte.com.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v2.6.38+
 ---
- drivers/video/fbdev/omap2/dss/omapdss-boot-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/vt8500lcdfb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c b/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-index 8b6f6d5fdd68b..43186fa8a13c9 100644
---- a/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-+++ b/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-@@ -194,7 +194,7 @@ static int __init omapdss_boot_init(void)
- 	dss = of_find_matching_node(NULL, omapdss_of_match);
- 
- 	if (dss == NULL || !of_device_is_available(dss))
--		return 0;
-+		goto put_node;
- 
- 	omapdss_walk_device(dss, true);
- 
-@@ -221,6 +221,8 @@ static int __init omapdss_boot_init(void)
- 		kfree(n);
- 	}
- 
-+put_node:
-+	of_node_put(dss);
- 	return 0;
- }
- 
+diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
+index f744479dc7df..c61476247ba8 100644
+--- a/drivers/video/fbdev/vt8500lcdfb.c
++++ b/drivers/video/fbdev/vt8500lcdfb.c
+@@ -230,6 +230,7 @@ static int vt8500lcd_blank(int blank, struct fb_info *info)
+ 		    info->fix.visual == FB_VISUAL_STATIC_PSEUDOCOLOR)
+ 			for (i = 0; i < 256; i++)
+ 				vt8500lcd_setcolreg(i, 0, 0, 0, 0, info);
++		fallthrough;
+ 	case FB_BLANK_UNBLANK:
+ 		if (info->fix.visual == FB_VISUAL_PSEUDOCOLOR ||
+ 		    info->fix.visual == FB_VISUAL_STATIC_PSEUDOCOLOR)
 -- 
 2.20.1
 
