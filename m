@@ -1,85 +1,111 @@
 Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77DA21A6085
-	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Apr 2020 22:34:09 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 9AAF81A65C0
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Apr 2020 13:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728121AbgDLUeI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 12 Apr 2020 16:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:36668 "EHLO
+        id S1729188AbgDMLts (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 13 Apr 2020 07:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727315AbgDLUeH (ORCPT
+        with ESMTP id S1729163AbgDMLto (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 12 Apr 2020 16:34:07 -0400
-Received: from asavdk3.altibox.net (asavdk3.altibox.net [109.247.116.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CB7C0A3BF0;
-        Sun, 12 Apr 2020 13:34:07 -0700 (PDT)
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 924C72001F;
-        Sun, 12 Apr 2020 22:34:04 +0200 (CEST)
-Date:   Sun, 12 Apr 2020 22:34:03 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     linux-fbdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Enrico Weigelt <info@metux.net>
-Subject: Re: [PATCH] fbdev: mx3fb: const pointer to ipu_di_signal_cfg
-Message-ID: <20200412203402.GA27677@ravnborg.org>
-References: <20200408162551.3928330-1-arnd@arndb.de>
- <87pnchhp2s.fsf@intel.com>
- <20200408180216.GC24828@ravnborg.org>
- <20200408182926.GA21997@ravnborg.org>
- <20200408200141.GM4881@pendragon.ideasonboard.com>
+        Mon, 13 Apr 2020 07:49:44 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFD2C00861B
+        for <linux-fbdev@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id i75so8162243ild.13
+        for <linux-fbdev@vger.kernel.org>; Mon, 13 Apr 2020 04:41:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=HxOaFJZljqXQIeSLw7dw+YeTIVe76Yo57NkC3rYQjPPsruaWLZEetJYgTw7mDA7iYw
+         4KM/sQKuVdxfTyBgHy0QGrcgvhBAp/s2WR+7lhwMEms7c5U3ARzlxX4w9gHN6kyIVCTo
+         InVjjBwajQbgYMLlLr/dGAnfAOq75HLmi2bmQShdg5UrDH6ZNHdmpjirCjsFE3E+W3lI
+         4HPNdhIk9GHy3wOVy8qt79oLhQ3V0WJ+l2R8YfTk5No8OB207Mc1ssyzLdiNdU6iDIon
+         HSnId1sWR9JHq8BkscMOY+TVCS7WuDDdfTSRJRDObUGUY3pKdsd/NGq97n4qtv5szVJr
+         IEMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
+        b=gQLINqp5dQISQFJZ9FhPSmtbAUwO/yVUh8jt7vtMPJnm1S8wJILgjFyAC/TpMfxsz9
+         fotXQCarPPU9/vbxzOKnIEcQ2mqashqw3ybuHmW3XwohIyjmlDPTh99cTfzoYmB2pELY
+         aMmHIvJjPycvaR85LpNOMpmOCHpugA3uoXtBWRM/uEXaRRz/mF1As9iT7HHiW7B4IoZQ
+         l/TwAiJRfxXx8A2xGCnKDynlQcyJoDGkW8O9UBv5VZA9EKZzhVL5VwesDBj5rO9OJ6Ri
+         MuWmn5kA/2dd5D3s8bWXxzxbC89Gm2dlCSQMc1cpW7CkXsKeBgRAJJ2IXqlOofmWi296
+         dDfg==
+X-Gm-Message-State: AGi0PuZM1JQeLbwwjbWoWHztufuoK9nlp/7dtF6Ra1iUS1gyfXPBFg6k
+        9ziC6gw2YmJbry0CyEFuWDOT9lsmXBKhR3FvDQ==
+X-Google-Smtp-Source: APiQypJ8Xf5JZIaJmuakcegBHklRN/w3ObzOY1fG2hZhiF0393fUgrxf6qaSVcLD5pLEm/4TEQgoj9oGK8tQ5EeyGAU=
+X-Received: by 2002:a05:6e02:c8f:: with SMTP id b15mr14965961ile.35.1586778068198;
+ Mon, 13 Apr 2020 04:41:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200408200141.GM4881@pendragon.ideasonboard.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=P1BnusSwAAAA:8
-        a=QyXUC8HyAAAA:8 a=7gkXJVJtAAAA:8 a=ZTmiYS-oAAAA:8 a=hD80L64hAAAA:8
-        a=VwQbUJbxAAAA:8 a=ouh9qIkmRCoZiYK3H64A:9 a=CjuIK1q_8ugA:10
-        a=D0XLA9XvdZm18NrgonBM:22 a=E9Po1WZjFZOl8hwRPBS3:22
-        a=Bgfdu2smNuKfk3vLOmSO:22 a=AjGcO6oz07-iQ99wixmX:22
+Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:07
+ -0700 (PDT)
+Reply-To: mgbenin903@gmail.com
+From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
+        <info.zennitbankplcnigerian@gmail.com>
+Date:   Mon, 13 Apr 2020 13:41:07 +0200
+Message-ID: <CABHzvrm3rWryg1yAooKeHwdxzrKD47PRAEfC+ay1A6i5z3Wdiw@mail.gmail.com>
+Subject: I have already sent you first payment US$5000.00 this morning through
+ MONEY Gram service.it is available to pick up in address now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Apr 08, 2020 at 11:01:41PM +0300, Laurent Pinchart wrote:
-> Hi Sam,
-> 
-> Thank you for the patch.
-> 
-> On Wed, Apr 08, 2020 at 08:29:26PM +0200, Sam Ravnborg wrote:
-> > Laurent Pinchart <laurent.pinchart@ideasonboard.com> and
-> > Jani Nikula <jani.nikula@intel.com> both
-> > suggested to make the pointer to struct ipu_di_signal_cfg const.
-> > 
-> > Fix this.
-> > 
-> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> > Fixes: 3f6c93ec9254 ("fbdev: mx3fb: avoid warning about psABI change")
-> > Cc: Jani Nikula <jani.nikula@intel.com>
-> > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
-> > Cc: Sam Ravnborg <sam@ravnborg.org>
-> > Cc: Enrico Weigelt <info@metux.net>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: linux-fbdev@vger.kernel.org
-> 
-> Assuming this is compile-tested,
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+ATTN DEAR BENEFICIARY.
 
-Thanks. Applied and pushed out to drm-misc-next.
+GOOD NEWS.
 
-	Sam
+I have already sent you first payment US$5000.00 this morning through
+MONEY Gram service.it is available to pick up in address now.
+
+So we advise you to Contact This Money Gram office to pick up your
+transfer $US5000.00 today.
+
+
+Note that your compensation payment funds is total amount $US2.800,000
+Million Dollars.We have instructed the Money Gram Agent,Mr. James
+Gadner to keep sending the transfer to you daily, but the maximum
+amount you will be receiving everyday is US$5000.00. Contact Agent now
+to pick up your first payment $US5000.00 immediately.
+
+Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
+Email: mgbenin903@gmail.com
+Telephone Numbers: +229 62819378/ +229 98477762
+
+HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
+
+Track View Website link:
+https://secure.moneygram.com/track
+Sender=E2=80=99s First name: David
+Sender=E2=80=99s Last Name: Joiner
+Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+
+Contact the Mmoney Gram Urgent and reconfirm your address to the
+office before, they will allow you to pick up the transfer today.
+
+HERE IS WHAT REQUIRED OF YOU.
+
+YOUR FULL NAME---------
+ADDRESS--------------
+COUNTRY-----------------------------
+TELEPHONE NUMBERS-----------------
+
+Note, I paid the transfer fee for you, but only you are required to
+send to the office is $75 only,Been Your Payment File activation fee,
+Send once you contact the office,before you can able to pick up your
+transfer today.
+
+Let me know once you pick up first payment today.
+
+Barrister Robert Richter UN-Attorney at Law Court-Benin
