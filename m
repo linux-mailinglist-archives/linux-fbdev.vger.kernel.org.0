@@ -2,109 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AC41A9AEB
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Apr 2020 12:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1881AA468
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Apr 2020 15:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408815AbgDOKjT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 15 Apr 2020 06:39:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2408811AbgDOKit (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 Apr 2020 06:38:49 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442FDC061A0C
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 03:38:48 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id t14so5295664wrw.12
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 03:38:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=IrPL0bBBQDeF29Z4aLgq8ImOYXP6kd9vk4rNs7ZTqws=;
-        b=yIAMMnZu4/5XkjVkCq32hl9Pn9SikmiyUmlKUEu7u/JAwTn5UxxsMyK4Mz2TFYtBJK
-         8bK9XO32DspPZRUWcNCWbt434F5d59Z8Gp6+JI7VNiygAxfdd+dK18ew602ZlIrASmTB
-         f+O8iv9zsJpKyROuS7I6KJHsds1z/or0RLiYq85eCFBcyejyW54bjjsycwzLwCGj81jO
-         M5mgoA6CFO2R78EETs8ZwxWQ497GCVAIWtench+iCvLlMVYhQVf+KEUmYIFf/OsCqb7E
-         u+lhG72eBlNLj5HqiKBPiX6FLhcupVCkG3ru861qNkNNR30/I6gDKk8HUXt2PeCOnnOi
-         NGpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=IrPL0bBBQDeF29Z4aLgq8ImOYXP6kd9vk4rNs7ZTqws=;
-        b=Dijqrk4fQDTTEZpFPIf2x65srqtrscHhvo9143KXte+mYfvBDRNjtQFl22EgPfvU9F
-         tSVzoGppNpjbf4ctjLCIy/1696dD0JniKEJEdEGRVOZmdz8NQ47wOsO4wvaqvw6T6/wD
-         y6CA/IVDZDnxiMe7EBRoxH8PJe1iCiS5B2YHL88jXzDurdMQhqUrwszbs3AAxlJOXBQ4
-         9W2f7JNhGfZ35F4Gg4XcfKYr7P4Uj3kNnZNh8Bvb0T5bp38DwtovFoE9uPTOsJkYZVQU
-         R+gp6PU05b3fAuRHQagFTIUC1lr1a4l3q8Xk2qZx5jS0PkTYmKMrTDWek6NoSmq/J9Pc
-         zG/A==
-X-Gm-Message-State: AGi0PuYce6P3boBCLqP5M0WCescKxmcNsRGVaRcRBwMG9/hBU1J0SI/G
-        kk147s/RNwh7bOA05GKbey9tfA==
-X-Google-Smtp-Source: APiQypJfhW8S65Wxra9t0NaoxN8IlVd9vyp0bk8pl+XOImR8b/3RISiU1lKFKzoqVOuvy3de4k5SGA==
-X-Received: by 2002:adf:e54c:: with SMTP id z12mr17403476wrm.276.1586947126830;
-        Wed, 15 Apr 2020 03:38:46 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id z15sm10599204wrs.47.2020.04.15.03.38.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 03:38:46 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 11:38:44 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] video: backlight: tosa_lcd: convert to use
- i2c_new_client_device()
-Message-ID: <20200415103844.vnjccybvy5wtnrq6@holly.lan>
-References: <20200326210959.13111-1-wsa+renesas@sang-engineering.com>
- <20200326210959.13111-2-wsa+renesas@sang-engineering.com>
+        id S2636074AbgDONYQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Apr 2020 09:24:16 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2331 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2636065AbgDONYN (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 15 Apr 2020 09:24:13 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 19845F6C67779E3BA95F;
+        Wed, 15 Apr 2020 21:24:10 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Apr 2020
+ 21:24:00 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <allison@lohutok.net>
+CC:     <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] omapfb/dss: remove unused varible 'venc_config_pal_bdghi'
+Date:   Wed, 15 Apr 2020 21:23:50 +0800
+Message-ID: <20200415132350.33088-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200326210959.13111-2-wsa+renesas@sang-engineering.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 10:09:59PM +0100, Wolfram Sang wrote:
-> Move away from the deprecated API and return the shiny new ERRPTR where
-> useful.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+drivers/video/fbdev/omap2/omapfb/dss/venc.c:212:33:
+ warning: ‘venc_config_pal_bdghi’ defined but not used [-Wunused-const-variable=]
+ static const struct venc_config venc_config_pal_bdghi = {
+                                 ^~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c | 43 ---------------------
+ 1 file changed, 43 deletions(-)
+
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+index f81e2a46366d..d5404d56c922 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+@@ -209,49 +209,6 @@ static const struct venc_config venc_config_ntsc_trm = {
+ 	.gen_ctrl				= 0x00F90000,
+ };
+ 
+-static const struct venc_config venc_config_pal_bdghi = {
+-	.f_control				= 0,
+-	.vidout_ctrl				= 0,
+-	.sync_ctrl				= 0,
+-	.hfltr_ctrl				= 0,
+-	.x_color				= 0,
+-	.line21					= 0,
+-	.ln_sel					= 21,
+-	.htrigger_vtrigger			= 0,
+-	.tvdetgp_int_start_stop_x		= 0x00140001,
+-	.tvdetgp_int_start_stop_y		= 0x00010001,
+-	.gen_ctrl				= 0x00FB0000,
+-
+-	.llen					= 864-1,
+-	.flens					= 625-1,
+-	.cc_carr_wss_carr			= 0x2F7625ED,
+-	.c_phase				= 0xDF,
+-	.gain_u					= 0x111,
+-	.gain_v					= 0x181,
+-	.gain_y					= 0x140,
+-	.black_level				= 0x3e,
+-	.blank_level				= 0x3e,
+-	.m_control				= 0<<2 | 1<<1,
+-	.bstamp_wss_data			= 0x42,
+-	.s_carr					= 0x2a098acb,
+-	.l21__wc_ctl				= 0<<13 | 0x16<<8 | 0<<0,
+-	.savid__eavid				= 0x06A70108,
+-	.flen__fal				= 23<<16 | 624<<0,
+-	.lal__phase_reset			= 2<<17 | 310<<0,
+-	.hs_int_start_stop_x			= 0x00920358,
+-	.hs_ext_start_stop_x			= 0x000F035F,
+-	.vs_int_start_x				= 0x1a7<<16,
+-	.vs_int_stop_x__vs_int_start_y		= 0x000601A7,
+-	.vs_int_stop_y__vs_ext_start_x		= 0x01AF0036,
+-	.vs_ext_stop_x__vs_ext_start_y		= 0x27101af,
+-	.vs_ext_stop_y				= 0x05,
+-	.avid_start_stop_x			= 0x03530082,
+-	.avid_start_stop_y			= 0x0270002E,
+-	.fid_int_start_x__fid_int_start_y	= 0x0005008A,
+-	.fid_int_offset_y__fid_ext_start_x	= 0x002E0138,
+-	.fid_ext_start_y__fid_ext_offset_y	= 0x01380005,
+-};
+-
+ const struct omap_video_timings omap_dss_pal_timings = {
+ 	.x_res		= 720,
+ 	.y_res		= 574,
+-- 
+2.17.1
 
 
-> ---
->  drivers/video/backlight/tosa_lcd.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/tosa_lcd.c b/drivers/video/backlight/tosa_lcd.c
-> index e8ab583e5098..113116d3585c 100644
-> --- a/drivers/video/backlight/tosa_lcd.c
-> +++ b/drivers/video/backlight/tosa_lcd.c
-> @@ -107,7 +107,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
->  	/* TG LCD GVSS */
->  	tosa_tg_send(spi, TG_PINICTL, 0x0);
->  
-> -	if (!data->i2c) {
-> +	if (IS_ERR_OR_NULL(data->i2c)) {
->  		/*
->  		 * after the pannel is powered up the first time,
->  		 * we can access the i2c bus so probe for the DAC
-> @@ -119,7 +119,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
->  			.addr	= DAC_BASE,
->  			.platform_data = data->spi,
->  		};
-> -		data->i2c = i2c_new_device(adap, &info);
-> +		data->i2c = i2c_new_client_device(adap, &info);
->  	}
->  }
->  
-> -- 
-> 2.20.1
-> 
