@@ -2,141 +2,109 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 969A41A98C5
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Apr 2020 11:26:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59AC41A9AEB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Apr 2020 12:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2895467AbgDOJZm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 15 Apr 2020 05:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48150 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2895465AbgDOJZk (ORCPT
+        id S2408815AbgDOKjT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Apr 2020 06:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2408811AbgDOKit (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:25:40 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A084C061A10
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 02:25:39 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id j2so18259998wrs.9
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 02:25:39 -0700 (PDT)
+        Wed, 15 Apr 2020 06:38:49 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442FDC061A0C
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 03:38:48 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id t14so5295664wrw.12
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Apr 2020 03:38:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=ZWggYGy5+ypMqGqv3DNlvkeDC7Fwyk09CE6tJxrl9As=;
-        b=yAETmibb8HvejiyM/sXx1gWJMBhdkYj+FhYy7xp+PelrTRoY6cWOI7vlWmSSyf3/r8
-         Zs7zbY4OY0HkPENvC3MebqmtVYDArhkyX/g7FTCwfijd4SiDs1/6sbl1jq4MKLPElHnk
-         9VKATFRT9sOJo4mRUK+WBMHugVTceCqQPi1zlKDZVNOSqDSOz+6uTukiwId07cKmWcgp
-         XJxImHct6GIxxb7WyVTTlC6x3xy/LL9RImgVJnr1bV1Gk95SPry4pp++J2dF0JiCW1/i
-         U/8iG7CmRO3gVZGqdupqmJQRzcbF2FVeyYIXOSA2bifkKrKSkYX5BoXstYm34gXq/2wL
-         tN5w==
+         :content-disposition:in-reply-to;
+        bh=IrPL0bBBQDeF29Z4aLgq8ImOYXP6kd9vk4rNs7ZTqws=;
+        b=yIAMMnZu4/5XkjVkCq32hl9Pn9SikmiyUmlKUEu7u/JAwTn5UxxsMyK4Mz2TFYtBJK
+         8bK9XO32DspPZRUWcNCWbt434F5d59Z8Gp6+JI7VNiygAxfdd+dK18ew602ZlIrASmTB
+         f+O8iv9zsJpKyROuS7I6KJHsds1z/or0RLiYq85eCFBcyejyW54bjjsycwzLwCGj81jO
+         M5mgoA6CFO2R78EETs8ZwxWQ497GCVAIWtench+iCvLlMVYhQVf+KEUmYIFf/OsCqb7E
+         u+lhG72eBlNLj5HqiKBPiX6FLhcupVCkG3ru861qNkNNR30/I6gDKk8HUXt2PeCOnnOi
+         NGpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=ZWggYGy5+ypMqGqv3DNlvkeDC7Fwyk09CE6tJxrl9As=;
-        b=CLZVump0PNImVD+7Vv6IexLv48T7qwuu1ry/+jAGO3a5xLAl4f0pOhDKmwU5Sloehq
-         KWhq48OsX6wFeMbpPicCsrDZN2r3JbcseMYfu65OFm2kcMNkwHcvjEqBqAEMLN/E45lJ
-         BqCrtkr7QABCVvNwqAJ46Owdap2I4EOkSnQAEHJC34xIvEYtsvD46vGDy251c/4VIWF6
-         AQaPG2lxdQQBsnMZ0DoyWPHsEslLCHQyGY1FeKIfrdqzhcB1lpxzXZg7pwg4ix5EOp2e
-         h+SGOmS/tulv2dF+LcOkUwgauObY97nEIbFX47v9trYJJKRptZs+73VXwCH2Dft9M04h
-         4Ufg==
-X-Gm-Message-State: AGi0PuYtgu4fZNw6DjTjLJCnhaFc0QzM2p2LNfehyS8zroEhOCJsa9YF
-        Ht0hRZTg6rmuzao16pyMVCiuVw==
-X-Google-Smtp-Source: APiQypIF43NYr8JHA746c2oer4jXDUVqBd6KdFR7FEBIeVOo3DZguLN98tLGGC6iP9SMBCFc+YgdsA==
-X-Received: by 2002:a5d:658e:: with SMTP id q14mr29224669wru.92.1586942738248;
-        Wed, 15 Apr 2020 02:25:38 -0700 (PDT)
-Received: from dell ([95.149.164.124])
-        by smtp.gmail.com with ESMTPSA id h16sm24769457wrw.36.2020.04.15.02.25.36
+         :mime-version:content-disposition:in-reply-to;
+        bh=IrPL0bBBQDeF29Z4aLgq8ImOYXP6kd9vk4rNs7ZTqws=;
+        b=Dijqrk4fQDTTEZpFPIf2x65srqtrscHhvo9143KXte+mYfvBDRNjtQFl22EgPfvU9F
+         tSVzoGppNpjbf4ctjLCIy/1696dD0JniKEJEdEGRVOZmdz8NQ47wOsO4wvaqvw6T6/wD
+         y6CA/IVDZDnxiMe7EBRoxH8PJe1iCiS5B2YHL88jXzDurdMQhqUrwszbs3AAxlJOXBQ4
+         9W2f7JNhGfZ35F4Gg4XcfKYr7P4Uj3kNnZNh8Bvb0T5bp38DwtovFoE9uPTOsJkYZVQU
+         R+gp6PU05b3fAuRHQagFTIUC1lr1a4l3q8Xk2qZx5jS0PkTYmKMrTDWek6NoSmq/J9Pc
+         zG/A==
+X-Gm-Message-State: AGi0PuYce6P3boBCLqP5M0WCescKxmcNsRGVaRcRBwMG9/hBU1J0SI/G
+        kk147s/RNwh7bOA05GKbey9tfA==
+X-Google-Smtp-Source: APiQypJfhW8S65Wxra9t0NaoxN8IlVd9vyp0bk8pl+XOImR8b/3RISiU1lKFKzoqVOuvy3de4k5SGA==
+X-Received: by 2002:adf:e54c:: with SMTP id z12mr17403476wrm.276.1586947126830;
+        Wed, 15 Apr 2020 03:38:46 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id z15sm10599204wrs.47.2020.04.15.03.38.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 02:25:37 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 10:26:38 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        linux-pwm@vger.kernel.org,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        Wed, 15 Apr 2020 03:38:46 -0700 (PDT)
+Date:   Wed, 15 Apr 2020 11:38:44 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v11 10/12] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200415092638.GG2167633@dell>
-References: <cover.1584667964.git.gurus@codeaurora.org>
- <17fc1dcf8b9b392d1e37dc7e3e67409e3c502840.1584667964.git.gurus@codeaurora.org>
- <20200320133123.GD5477@dell>
- <20200324110710.GL5477@dell>
- <20200324125735.2mjuvbxt5bpon2ft@pengutronix.de>
- <20200324130410.dwlg767ku6kwequv@holly.lan>
- <20200324142441.GD442973@dell>
- <20200324144307.kxhqzyjj4evrouqa@pengutronix.de>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] video: backlight: tosa_lcd: convert to use
+ i2c_new_client_device()
+Message-ID: <20200415103844.vnjccybvy5wtnrq6@holly.lan>
+References: <20200326210959.13111-1-wsa+renesas@sang-engineering.com>
+ <20200326210959.13111-2-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200324144307.kxhqzyjj4evrouqa@pengutronix.de>
+In-Reply-To: <20200326210959.13111-2-wsa+renesas@sang-engineering.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 24 Mar 2020, Uwe Kleine-König wrote:
-
-> On Tue, Mar 24, 2020 at 02:24:41PM +0000, Lee Jones wrote:
-> > On Tue, 24 Mar 2020, Daniel Thompson wrote:
-> > 
-> > > On Tue, Mar 24, 2020 at 01:57:35PM +0100, Uwe Kleine-König wrote:
-> > > > Hello Lee,
-> > > > 
-> > > > On Tue, Mar 24, 2020 at 11:07:10AM +0000, Lee Jones wrote:
-> > > > > On Fri, 20 Mar 2020, Lee Jones wrote:
-> > > > > 
-> > > > > > On Thu, 19 Mar 2020, Guru Das Srinagesh wrote:
-> > > > > > 
-> > > > > > > Since the PWM framework is switching struct pwm_state.period's datatype
-> > > > > > > to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> > > > > > > dividend instead of a straight division operation.
-> > > > > > > 
-> > > > > > > Cc: Lee Jones <lee.jones@linaro.org>
-> > > > > > > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > > > > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > > > > > > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > > > > > > Cc: linux-pwm@vger.kernel.org
-> > > > > > > Cc: dri-devel@lists.freedesktop.org
-> > > > > > > Cc: linux-fbdev@vger.kernel.org
-> > > > > > > 
-> > > > > > > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> > > > > > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > > > > > > ---
-> > > > > > >  drivers/video/backlight/pwm_bl.c | 3 ++-
-> > > > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > > > 
-> > > > > > Can this patch be taken on its own?
-> > > > > 
-> > > > > Hellooooo ...
-> > > > 
-> > > > Conceptually it can. As the last patch depends on this one (and the
-> > > > others) some coordination might be beneficial. But that's up to Thierry
-> > > > to decide how (and if) he want this series to be applied.
-> > > 
-> > > ... and on the backlight side we definitely need to know about the "if"
-> > > otherwise there's no point in taking it.
-> > 
-> > Right.
-> > 
-> > I'm happy to wait for Thierry.  Although this isn't the only set he's
-> > currently blocking.  Is he okay?  On holiday perhaps?
+On Thu, Mar 26, 2020 at 10:09:59PM +0100, Wolfram Sang wrote:
+> Move away from the deprecated API and return the shiny new ERRPTR where
+> useful.
 > 
-> The newest commit by him in next is from last week. My guess is he
-> just didn't come around yet to care for the PWM duties.
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Looks like we missed the last release.
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Let's hope we don't miss the next one also.
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> ---
+>  drivers/video/backlight/tosa_lcd.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/tosa_lcd.c b/drivers/video/backlight/tosa_lcd.c
+> index e8ab583e5098..113116d3585c 100644
+> --- a/drivers/video/backlight/tosa_lcd.c
+> +++ b/drivers/video/backlight/tosa_lcd.c
+> @@ -107,7 +107,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
+>  	/* TG LCD GVSS */
+>  	tosa_tg_send(spi, TG_PINICTL, 0x0);
+>  
+> -	if (!data->i2c) {
+> +	if (IS_ERR_OR_NULL(data->i2c)) {
+>  		/*
+>  		 * after the pannel is powered up the first time,
+>  		 * we can access the i2c bus so probe for the DAC
+> @@ -119,7 +119,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
+>  			.addr	= DAC_BASE,
+>  			.platform_data = data->spi,
+>  		};
+> -		data->i2c = i2c_new_device(adap, &info);
+> +		data->i2c = i2c_new_client_device(adap, &info);
+>  	}
+>  }
+>  
+> -- 
+> 2.20.1
+> 
