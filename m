@@ -2,195 +2,150 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 316371ADF84
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 16:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AF661AE1B4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 17:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730937AbgDQOI1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Apr 2020 10:08:27 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:58298 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731214AbgDQOI0 (ORCPT
+        id S1729615AbgDQP5A (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 11:57:00 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:50399 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729282AbgDQP5A (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Apr 2020 10:08:26 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200417140825euoutp022597acd161dcc30f8b65c9b1e795cab1~GoJq17EL71573015730euoutp02e
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 14:08:25 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200417140825euoutp022597acd161dcc30f8b65c9b1e795cab1~GoJq17EL71573015730euoutp02e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1587132505;
-        bh=R7Ur/56yFcr7YXkME4bM8JQPVy2Q7jo8CruJdpZeLM4=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=GtaNy2YZJGC9iO/7POSj8abHzal4DxGsT6o5mxuYAv95apR+wq2xoYB1Y86a4c+IU
-         4YoF9YpFohRiENRHjavh9X8dNyfBiSZidEQrPyCocx/H4Rvaao5MJqNlw2KNDTRmgg
-         NCMmwassC60ZIRAjwVkOfZCRvw4xGB5k9mwFPVu0=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200417140824eucas1p15c9abdeb569eb28faa603877d192d210~GoJqqhz123049630496eucas1p1I;
-        Fri, 17 Apr 2020 14:08:24 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 0F.5C.61286.858B99E5; Fri, 17
-        Apr 2020 15:08:24 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200417140824eucas1p1201a34566f7ad6b5e6a931423af26e0a~GoJqE_BH82643526435eucas1p1m;
-        Fri, 17 Apr 2020 14:08:24 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200417140824eusmtrp11b76d121f2c30c5f1f325a04ee2368ae~GoJqEc7l82228222282eusmtrp1h;
-        Fri, 17 Apr 2020 14:08:24 +0000 (GMT)
-X-AuditID: cbfec7f2-ef1ff7000001ef66-8f-5e99b858fa29
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 35.D2.08375.858B99E5; Fri, 17
-        Apr 2020 15:08:24 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200417140823eusmtip2881adae30a45d44627b3212c29464aa4~GoJp1PAmi2541125411eusmtip2U;
-        Fri, 17 Apr 2020 14:08:23 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v4] video: fbdev: vesafb: add missed release_region
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <0a42a3d3-fd71-2334-8c19-9455c0971c6f@samsung.com>
-Date:   Fri, 17 Apr 2020 16:08:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        Fri, 17 Apr 2020 11:57:00 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MdeSt-1iprPw3KU5-00ZfOr; Fri, 17 Apr 2020 17:56:21 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     dri-devel@lists.freedesktop.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        linux-fbdev@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Nicolas Pitre <nico@fluxnic.net>,
+        Andrzej Hajda <a.hajda@samsung.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Saeed Mahameed <saeedm@mellanox.com>, masahiroy@kernel.org,
+        Laurent.pinchart@ideasonboard.com,
+        linux-renesas-soc@vger.kernel.org,
+        kieran.bingham+renesas@ideasonboard.com, airlied@linux.ie,
+        daniel@zonque.org, haojian.zhuang@gmail.com,
+        robert.jarzmik@free.fr, daniel@ffwll.ch, marex@denx.de,
+        stefan@agner.ch, linux-graphics-maintainer@vmware.com,
+        thellstrom@vmware.com, jfrederich@gmail.com, dsd@laptop.org,
+        geert@linux-m68k.org
+Subject: [PATCH 0/8] drm, fbdev: rework dependencies
+Date:   Fri, 17 Apr 2020 17:55:45 +0200
+Message-Id: <20200417155553.675905-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-In-Reply-To: <20200329145839.20076-1-hslester96@gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleLIzCtJLcpLzFFi42LZduznOd2IHTPjDObtMrC48vU9m8XsQy+Z
-        LU70fWC1uLxrDpsDi8fOWXfZPe53H2fy+LxJLoA5issmJTUnsyy1SN8ugStje8N/5oI2iYr1
-        XX9ZGhj7hbsYOTkkBEwkzn1ex9jFyMUhJLCCUeLm/NtMEM4XRomLC/6yQDifGSUOHdzDAtNy
-        tLGXGSKxnFFi792NUC1vGSXuHr7JBFLFJmAlMbF9FdBgDg5hAXeJRT+rQMIiAuoSn3ftZAex
-        mQUSJE4vuscCUsIrYCfxaYM0SJhFQFXi0vbDbCC2qECExKcHh1lBbF4BQYmTM5+A3cAJNL3l
-        +QYWiDHiEreezGeCsOUltr+dA3abhEA3u8TV7r1g8yUEXCQ2rg+DuF9Y4tXxLewQtozE6ck9
-        LBD16xgl/na8gGreziixfPI/Nogqa4k7536xgQxiFtCUWL9LH2Kmo8TmB8EQJp/EjbeCECfw
-        SUzaNp0ZIswr0dEmBDFDTWLDsg1sMFu7dq5knsCoNAvJY7OQPDMLyTOzENYuYGRZxSieWlqc
-        m55abJiXWq5XnJhbXJqXrpecn7uJEZhMTv87/mkH49dLSYcYBTgYlXh4DXpmxgmxJpYVV+Ye
-        YpTgYFYS4T3oBhTiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampBahFMlomD
-        U6qBccqtbaW975I55h35cetRBtPMgJfWE3OsYspvvOafU68bNeNM+BJ5c4Flsd3BnE81eaSn
-        sG+5Z9hjoxX+TTBboPPwKa7MRx1epxfMdDhvMEtG/PAaX88D+e4+dpuytbRYlgfoelj8+Gkf
-        0T8h8rlT+bzd9a6iOrWcdb8sDp0r3PglN8Hl+s9FSizFGYmGWsxFxYkAitB3tyIDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIIsWRmVeSWpSXmKPExsVy+t/xe7oRO2bGGUxcy21x5et7NovZh14y
-        W5zo+8BqcXnXHDYHFo+ds+6ye9zvPs7k8XmTXABzlJ5NUX5pSapCRn5xia1StKGFkZ6hpYWe
-        kYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7G9ob/zAVtEhXru/6yNDD2C3cxcnJICJhIHG3s
-        Ze5i5OIQEljKKHFj5i/2LkYOoISMxPH1ZRA1whJ/rnWxQdS8ZpSYdHMVI0iCTcBKYmI7iM3B
-        ISzgLrHoZxVIWERAXeLzrp1gY5gFEiSezUuBaO1llNj45ipYnFfATuLTBmmQchYBVYlL2w+z
-        gdiiAhESh3fMApvOKyAocXLmExYQmxNoU8vzDWA2M9D4P/MuMUPY4hK3nsxngrDlJba/ncM8
-        gVFoFpL2WUhaZiFpmYWkZQEjyypGkdTS4tz03GJDveLE3OLSvHS95PzcTYzA6Nl27OfmHYyX
-        NgYfYhTgYFTi4TXomRknxJpYVlyZe4hRgoNZSYT3oBtQiDclsbIqtSg/vqg0J7X4EKMp0HMT
-        maVEk/OBkZ1XEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoHR9+LS
-        ZQW8nGsDVh1byb1qf0Djwws1i46sK54wPeP5nzUz9Fdabl+qveJc2G6+pQFq+eW+oV/+JBpt
-        8NcT1l98X6s7izuq3PzIvRXnPiZlPrxdzsdSs7nq+HYpxafHAtZwcvzcFHlXOq5/0d+VS2x8
-        n5X6vLMpXTtv6sStG1a+15CZ+drlurRZqRJLcUaioRZzUXEiABoQjDy0AgAA
-X-CMS-MailID: 20200417140824eucas1p1201a34566f7ad6b5e6a931423af26e0a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200329145851eucas1p13777aa6188fc6886d150d9834dd0b257
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200329145851eucas1p13777aa6188fc6886d150d9834dd0b257
-References: <CGME20200329145851eucas1p13777aa6188fc6886d150d9834dd0b257@eucas1p1.samsung.com>
-        <20200329145839.20076-1-hslester96@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:ihjqslpA75qTMF6wDF4+VNNTC1NuRX5DyjEZChnbH2+LduferQW
+ jC0LdL6btHPVgdMOdMSVPpZ+znLPsqbExhraTQcyb9rSJjMpz9m6IC8Rv/hCKvIPAJcBGd0
+ hoMUlKQPUxa5CWHHDUiR9HooUGxQKazIExDHqcmkZ2XigqkWeJHResaEL4oAKQcpaZIWAwD
+ ruyD6lxdbXrDz80gK0WHg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:3tM+z2ZlTSg=:Y+9HE2EHWXdISGlEwzfCoA
+ znjKjlR25yaG0teoXA4D4CeSSX+90bjonxwvfbjYZQQcAEg91D0TCOo68kMmgHgdjxSeZ/cQE
+ h7ea4mzL0RV4U9lI8gHxzNG7B0A+rf1wcqF+02xr5G+kX4C2wqgW9HW3lxAW7aktqf4q5efZA
+ JXLi+n2fEBOILATNtcdS5xjaMq/0B3qRcSs/zMQKeCDxG+MvNjdR3AMR8grIoOesVD0m0wUvD
+ yeODH5YXBaQtCzFrIkoYRb1enxS0bPVu6rTX8POeJ4YVCxP1ABi+zbsuT4BXoeW7Iap00s+hz
+ 7xlD1BV37+gDlcxZ4GZUzs5tkkaPQIkMCGCvUJOJ3rRut1JwC7X/lr3drfx9hw5cjIaiE1LMC
+ JgK5KNaFDR7oPdLrOS/C1OEbrOiqB8gKsjT5ZPt+0NtBNIJtfgyv9fvvcX75UR1+nfhojAaLF
+ xC49KgXOQS2jnvO1w1VJdB5lRJmfPWJQDsRXP5sZTVRzYeLLqC0EHgTreGAoUOcQ+oxV5QDCL
+ T7OI5dkyb/qbyPE8C09N72z19941QqlXgY5M0x2NkO9rzCPWhDkHqXL9ivrf2NiNfu/G4uOal
+ BEFmbx0RKEk2vk9zgrHJasgEMe36VSFu6DggJ6Gk7Swe0drJO7GkfcCaQ5/jzUA+hgDkAMlWa
+ z5WnF+9VTwvi6zaTpktEnJEvJPz1hiLDMUl/Xt+t2c8zGxhmhMNv3lkHXnPQIcSk+YBRNVSPs
+ 5L8k0Ju92kqHNPL3aAP7VTgciERckhKIKlBGQpFCZz2DlY828VoHZGEjrZjRuxqZFZfd04ylz
+ wzH+eGBO8rrvCSJAO8TPvbKeMFvlMJr5uWCJBB8rNqGirwuBew=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+I tried to fix up some dependencies after the sii8620 "imply EXTCON"
+statementn broke, trying a few things but in the backing out a
+change that would completely reverse the LEDS_CLASS selects into
+a 'depends on'. 
 
-On 3/29/20 4:58 PM, Chuhong Yuan wrote:
-> The driver forgets to free the I/O region in remove and probe
-> failure.
-> Add the missed calls to fix it.
-> 
-> Since the success of request_region() is optional, add the "region" field
-> in vesafb_par to represent whether request_region() succeeds.
-> Then only call release_region() when "region" is not null.
-> 
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+However, what I got now are multiple changes that remove gratious
+"selects" that lead to circular dependencies for sii8620 and others:
 
-Patch queued for v5.8, thanks.
+- Anything doing "select FB" is now gone, or becomes "depends on FB",
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+- DDC support depends on I2C instead of selecting it
 
-> ---
-> Changes in v4:
->   - Add a field in vesafb_par to represent whether request_region() succeeds.
->   - Only call release_region() when request_region() succeeds.
->   - Adjust the order in the error handler of probe.
->   - Modify commit message.
-> 
->  drivers/video/fbdev/vesafb.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-> index a1fe24ea869b..df6de5a9dd4c 100644
-> --- a/drivers/video/fbdev/vesafb.c
-> +++ b/drivers/video/fbdev/vesafb.c
-> @@ -32,6 +32,7 @@
->  struct vesafb_par {
->  	u32 pseudo_palette[256];
->  	int wc_cookie;
-> +	struct resource *region;
->  };
->  
->  static struct fb_var_screeninfo vesafb_defined = {
-> @@ -411,7 +412,7 @@ static int vesafb_probe(struct platform_device *dev)
->  
->  	/* request failure does not faze us, as vgacon probably has this
->  	 * region already (FIXME) */
-> -	request_region(0x3c0, 32, "vesafb");
-> +	par->region = request_region(0x3c0, 32, "vesafb");
->  
->  	if (mtrr == 3) {
->  		unsigned int temp_size = size_total;
-> @@ -439,7 +440,7 @@ static int vesafb_probe(struct platform_device *dev)
->  		       "vesafb: abort, cannot ioremap video memory 0x%x @ 0x%lx\n",
->  			vesafb_fix.smem_len, vesafb_fix.smem_start);
->  		err = -EIO;
-> -		goto err;
-> +		goto err_release_region;
->  	}
->  
->  	printk(KERN_INFO "vesafb: framebuffer at 0x%lx, mapped to 0x%p, "
-> @@ -458,19 +459,22 @@ static int vesafb_probe(struct platform_device *dev)
->  
->  	if (fb_alloc_cmap(&info->cmap, 256, 0) < 0) {
->  		err = -ENOMEM;
-> -		goto err;
-> +		goto err_release_region;
->  	}
->  	if (register_framebuffer(info)<0) {
->  		err = -EINVAL;
->  		fb_dealloc_cmap(&info->cmap);
-> -		goto err;
-> +		goto err_release_region;
->  	}
->  	fb_info(info, "%s frame buffer device\n", info->fix.id);
->  	return 0;
-> -err:
-> +err_release_region:
->  	arch_phys_wc_del(par->wc_cookie);
->  	if (info->screen_base)
->  		iounmap(info->screen_base);
-> +	if (par->region)
-> +		release_region(0x3c0, 32);
-> +err:
->  	framebuffer_release(info);
->  	release_mem_region(vesafb_fix.smem_start, size_total);
->  	return err;
-> @@ -481,6 +485,8 @@ static int vesafb_remove(struct platform_device *pdev)
->  	struct fb_info *info = platform_get_drvdata(pdev);
->  
->  	unregister_framebuffer(info);
-> +	if (((struct vesafb_par *)(info->par))->region)
-> +		release_region(0x3c0, 32);
->  	framebuffer_release(info);
->  
->  	return 0;
-> 
+- backlight class device support is never selected by framebuffer
+  drivers but has proper dependencies
+
+I have done thousands of randconfig build tests on this, but no
+runtime tests.
+
+Some of the 'depends on FOO || !FOO' statements could be simplified
+into a new 'uses FOO' syntax based on a patch from Saeed Mahameed,
+but I would for the moment treat that as a cleanup that can be done
+later.
+
+If we can agree on these changes, maybe someone can merge them
+through the drm-misc tree.
+
+Please review
+
+       Arnd
+
+Arnd Bergmann (8):
+  fbdev: w100fb: clean up mach-pxa compile-time dependency
+  fbdev/ARM: pxa: avoid selecting CONFIG_FB
+  fbdev: rework FB_DDC dependencies
+  drm/rcar: stop using 'imply' for dependencies
+  drm/vmwgfx: make framebuffer support optional
+  drm: decouple from CONFIG_FB
+  fbdev: rework backlight dependencies
+  drm/bridge/sii8620: fix extcon dependency
+
+ arch/arm/configs/pxa_defconfig      |  3 ++
+ arch/arm/mach-pxa/Kconfig           |  7 ---
+ arch/arm/mach-pxa/eseries.c         | 14 +----
+ arch/arm/mach-pxa/saar.c            |  2 +-
+ arch/arm/mach-pxa/tavorevb.c        |  2 +-
+ drivers/auxdisplay/Kconfig          |  1 +
+ drivers/gpu/drm/Kconfig             |  5 +-
+ drivers/gpu/drm/bridge/Kconfig      |  2 +-
+ drivers/gpu/drm/mxsfb/Kconfig       |  1 -
+ drivers/gpu/drm/rcar-du/Kconfig     | 23 +++++---
+ drivers/gpu/drm/vmwgfx/Kconfig      | 17 +++---
+ drivers/gpu/drm/vmwgfx/Makefile     |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 35 +++++++-----
+ drivers/gpu/drm/zte/Kconfig         |  1 -
+ drivers/macintosh/Kconfig           |  1 +
+ drivers/staging/fbtft/Kconfig       |  1 +
+ drivers/staging/olpc_dcon/Kconfig   |  2 +-
+ drivers/video/fbdev/Kconfig         | 31 ++++++++---
+ drivers/video/fbdev/w100fb.c        | 84 +++++------------------------
+ include/video/w100fb.h              |  6 +--
+ 20 files changed, 101 insertions(+), 141 deletions(-)
+
+-- 
+2.26.0
+
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Nicolas Pitre <nico@fluxnic.net>
+Cc: Andrzej Hajda <a.hajda@samsung.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Saeed Mahameed <saeedm@mellanox.com>
+Cc: <masahiroy@kernel.org>
+Cc: <Laurent.pinchart@ideasonboard.com>
+Cc: <linux-renesas-soc@vger.kernel.org>,
+Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+Cc: <kieran.bingham+renesas@ideasonboard.com>,
+Cc: <airlied@linux.ie>
+Cc: daniel@zonque.org
+Cc: haojian.zhuang@gmail.com
+Cc: robert.jarzmik@free.fr
+Cc: daniel@ffwll.ch
+Cc: marex@denx.de
+Cc: stefan@agner.ch
+Cc: linux-graphics-maintainer@vmware.com
+Cc: thellstrom@vmware.com
+Cc: jfrederich@gmail.com
+Cc: dsd@laptop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: geert@linux-m68k.org
