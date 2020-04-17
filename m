@@ -2,196 +2,132 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E49981AE3C1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 19:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB891AE584
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 21:09:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbgDQRYc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Apr 2020 13:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34332 "EHLO
+        id S1730209AbgDQTI5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 15:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728162AbgDQRYc (ORCPT
+        by vger.kernel.org with ESMTP id S1730182AbgDQTI4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Apr 2020 13:24:32 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FE7C061A0C
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 10:14:57 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id k11so3927571wrp.5
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 10:14:57 -0700 (PDT)
+        Fri, 17 Apr 2020 15:08:56 -0400
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C149C061A0C
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 12:08:56 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id t3so3641236qkg.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 12:08:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
+        d=ziepe.ca; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SedhEjANQErpwU77RpqCFpguAIDMZbPe2/zGk7oJ1uE=;
-        b=ZvkkLCyLbItWJ+r8xwdr0TIdfARZWvC6KCFlwZzze9dBY8bOQfP/SrCP87ujgmmRZK
-         EtJEh2IrbkYF4isZPTuQNK1ECWqK1S0/f69O2eXEqLNgEiiqgKjCVKuT1hegksyBITI3
-         LX0kGHgWiSyKwpsRmhmnc26WVVb8IUIgeZc9k=
+         :content-disposition:in-reply-to:user-agent;
+        bh=ZQhy489OjssnVOvD6kvurmA3AIks5bQMEPnQ8xp2xFg=;
+        b=pV+43fstjAtSTBJujlpMRb3PnaAdhK49JGeZx0mtsPWi0i5zyh/GIe07lQH636PX1h
+         RIWPKiapAktc0jQ13zOFSG5h5Vu5T812FdS46BdspmXMV3vumTY7mMzYQrGq/QGjJHaj
+         8I3kGiLdXDNidC3ZcSfGE4o+dTcl1qSgRhReF0w9RPtYx3SOyRj689V2lKNcpG164NFG
+         YObWePcqJSeXel5QsVuD2l+dRSLbjvMjJj9eDGBIJ4J5ZHwCtOAtWEgOVdjfrzn0hdSN
+         3ndnpfaaIt4YYrWhrybrpcRqKPWqDuR20RBEuyJZYSRcD/2I7Q607h7BQ21xVKN0uXCO
+         wB6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SedhEjANQErpwU77RpqCFpguAIDMZbPe2/zGk7oJ1uE=;
-        b=kZENlkfxWW81F7daPK6luIJ1YE9RIz+tcGOu2T3p+hMbts2G7bxORsLjNCaDYIwmyU
-         JvB3+smfJCatKD2y8AjKu2tU97rDuk2+Wp6yT9PMllbTvsms0BT4WB3W+NTvMDALQzvr
-         qJJ5Gh8BhfaoKEeXIR28mmGxxCSrRYsfHD1B4d1nic8T0+rHhyQwcWrj96m4s5VqWX+b
-         RJuGydUwY6sPGkUN7ZQnCMFy31mgbCYr506c2j+9w8cft+hdwMqO99Ug/g0hjeGUwjHO
-         n2LK/ogKTUOuoI6RIfCmGZxMw/P9pwEjb2Sr8RTMNUG42xkEAwrnL5eD9qz6CWkNsMnF
-         yg+Q==
-X-Gm-Message-State: AGi0PuZsXqPs0q+2iL5JStPqMyFpbyJG9AytwTsQi5qKFdcqFEGiXsqi
-        q/HS6P3Y+wpJfw5asBqLWDoF5Q==
-X-Google-Smtp-Source: APiQypL2gS2a9dwMkf4Ijkq+tJDqXlCksrQZL+nL7t7odPzjDuw6TG9icwc5UUeeP/E3vPoVbkhjzQ==
-X-Received: by 2002:adf:aa9d:: with SMTP id h29mr5031902wrc.356.1587143696366;
-        Fri, 17 Apr 2020 10:14:56 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id a205sm8371357wmh.29.2020.04.17.10.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2020 10:14:55 -0700 (PDT)
-Date:   Fri, 17 Apr 2020 19:14:53 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     dri-devel@lists.freedesktop.org,
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ZQhy489OjssnVOvD6kvurmA3AIks5bQMEPnQ8xp2xFg=;
+        b=QwExJPjAGvXnIRnUzNjpO3rzaogCbgUbKCIjNUjMF4j8oJnRwpIhRcPCB7sHHs3Ky7
+         RTQAaMSWVgzgrgP4X/SJB2U40tC6gK1ISMzfLpsb567gJE5v/JZvpG1tYnGBijoMYZhw
+         KHkBjT9/n7WZikT7I7PAI50UuwPRqlIhzQ7M6++XY5MBXQadN9TTNZy6WXJH5k3VDF8h
+         Z/FXviGda44ZecZRbpi+Lq5TLxpgb3bTmfD7tFfdZpa3WIbHs8zuMLUFj3pgJH40NJBd
+         2oAn5qUrDvqNrRqL8Lx6J11ignXFriI6rh5YcI9Ns/ExT9cVsh4DTWQFWITWZTlaUMJ8
+         DrWw==
+X-Gm-Message-State: AGi0PuZ8Phkjai6xK+hPx/qohhgQ9zcp2d8vN922wOJ/OGxrqq0m305D
+        BqjjGYOcg8h6OZaiB8nvjBC41w==
+X-Google-Smtp-Source: APiQypKA07MEDcxRiPNxIYGcNyFxt8xoAoygqSmYVhzwxCcBpIf9Uy0CgboqxeZKDdhDPJ7gd+xFoQ==
+X-Received: by 2002:a37:44a:: with SMTP id 71mr4857241qke.114.1587150535689;
+        Fri, 17 Apr 2020 12:08:55 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-57-212.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.57.212])
+        by smtp.gmail.com with ESMTPSA id j9sm766287qkk.99.2020.04.17.12.08.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 17 Apr 2020 12:08:55 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1jPWMA-0004ar-El; Fri, 17 Apr 2020 16:08:54 -0300
+Date:   Fri, 17 Apr 2020 16:08:54 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
         Jani Nikula <jani.nikula@linux.intel.com>,
         linux-fbdev@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
         Andrzej Hajda <a.hajda@samsung.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
         Saeed Mahameed <saeedm@mellanox.com>, masahiroy@kernel.org,
         Laurent.pinchart@ideasonboard.com,
         linux-renesas-soc@vger.kernel.org,
         kieran.bingham+renesas@ideasonboard.com, airlied@linux.ie,
         daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, daniel@ffwll.ch, marex@denx.de,
-        stefan@agner.ch, linux-graphics-maintainer@vmware.com,
-        thellstrom@vmware.com, jfrederich@gmail.com, dsd@laptop.org,
-        geert@linux-m68k.org
+        robert.jarzmik@free.fr, marex@denx.de, stefan@agner.ch,
+        linux-graphics-maintainer@vmware.com, thellstrom@vmware.com,
+        jfrederich@gmail.com, dsd@laptop.org, geert@linux-m68k.org
 Subject: Re: [PATCH 0/8] drm, fbdev: rework dependencies
-Message-ID: <20200417171453.GS3456981@phenom.ffwll.local>
+Message-ID: <20200417190854.GI26002@ziepe.ca>
 References: <20200417155553.675905-1-arnd@arndb.de>
+ <20200417171453.GS3456981@phenom.ffwll.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200417155553.675905-1-arnd@arndb.de>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+In-Reply-To: <20200417171453.GS3456981@phenom.ffwll.local>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 05:55:45PM +0200, Arnd Bergmann wrote:
-> I tried to fix up some dependencies after the sii8620 "imply EXTCON"
-> statementn broke, trying a few things but in the backing out a
-> change that would completely reverse the LEDS_CLASS selects into
-> a 'depends on'. 
+On Fri, Apr 17, 2020 at 07:14:53PM +0200, Daniel Vetter wrote:
+> On Fri, Apr 17, 2020 at 05:55:45PM +0200, Arnd Bergmann wrote:
+> > I tried to fix up some dependencies after the sii8620 "imply EXTCON"
+> > statementn broke, trying a few things but in the backing out a
+> > change that would completely reverse the LEDS_CLASS selects into
+> > a 'depends on'. 
+> > 
+> > However, what I got now are multiple changes that remove gratious
+> > "selects" that lead to circular dependencies for sii8620 and others:
+> > 
+> > - Anything doing "select FB" is now gone, or becomes "depends on FB",
+> > 
+> > - DDC support depends on I2C instead of selecting it
+> > 
+> > - backlight class device support is never selected by framebuffer
+> >   drivers but has proper dependencies
+> > 
+> > I have done thousands of randconfig build tests on this, but no
+> > runtime tests.
+> > 
+> > Some of the 'depends on FOO || !FOO' statements could be simplified
+> > into a new 'uses FOO' syntax based on a patch from Saeed Mahameed,
+> > but I would for the moment treat that as a cleanup that can be done
+> > later.
+> > 
+> > If we can agree on these changes, maybe someone can merge them
+> > through the drm-misc tree.
+> > 
+> > Please review
 > 
-> However, what I got now are multiple changes that remove gratious
-> "selects" that lead to circular dependencies for sii8620 and others:
+> Biggest concern I have is that usability of make menuconfig is horrible,
+> and it's very hard to find options that are hidden by depends on. You can
+> use the search interface, if you happen to know the option.
 > 
-> - Anything doing "select FB" is now gone, or becomes "depends on FB",
-> 
-> - DDC support depends on I2C instead of selecting it
-> 
-> - backlight class device support is never selected by framebuffer
->   drivers but has proper dependencies
-> 
-> I have done thousands of randconfig build tests on this, but no
-> runtime tests.
-> 
-> Some of the 'depends on FOO || !FOO' statements could be simplified
-> into a new 'uses FOO' syntax based on a patch from Saeed Mahameed,
-> but I would for the moment treat that as a cleanup that can be done
-> later.
-> 
-> If we can agree on these changes, maybe someone can merge them
-> through the drm-misc tree.
-> 
-> Please review
+> Once you've surmounted that bar, the next one is trying to find what
+> exactly you need to enable. Which again means endless of recursive
+> screaming at Kconfig files, since make menuconfig doesn't help you at all.
 
-Biggest concern I have is that usability of make menuconfig is horrible,
-and it's very hard to find options that are hidden by depends on. You can
-use the search interface, if you happen to know the option.
++1 on this. But this is a general kconfig problem, and not unique to
+DRM, I've done this screaming for many different things now.. eg to
+turn on every single RDMA driver.
 
-Once you've surmounted that bar, the next one is trying to find what
-exactly you need to enable. Which again means endless of recursive
-screaming at Kconfig files, since make menuconfig doesn't help you at all.
+I hackily delt with it by creating this rather insane script based on
+the python kconfiglib to try and sort things out mostly automatically:
 
-That's pretty much why we've never pushed this in, and instead done the
-selects. I'm vary applying all this, since after after there'll be all the
-screaming again and we have to back it out.
+https://github.com/jgunthorpe/Kernel-Maintainer-Tools/blob/master/gj_tools/cmd_kconfig.py
 
-I think to embrace this without regrets what we need is:
-- some way to list the hidden options
-- some way to browse the depedencies of those hidden options
+It would be great if menuconfig had a key to say 'hey, really, turn
+this on and everything it depends on, recursively'
 
-menuconfig cant do that, gconfig I cant build here (it's some old gtk2
-thing, where do you even get the deps for that). xconfig also cant do
-this easily, dependencies aren't linked.
-
-So yeah not sure this is a good idea at all, until at least menuconfig can
-cope.
--Daniel
-
-> 
->        Arnd
-> 
-> Arnd Bergmann (8):
->   fbdev: w100fb: clean up mach-pxa compile-time dependency
->   fbdev/ARM: pxa: avoid selecting CONFIG_FB
->   fbdev: rework FB_DDC dependencies
->   drm/rcar: stop using 'imply' for dependencies
->   drm/vmwgfx: make framebuffer support optional
->   drm: decouple from CONFIG_FB
->   fbdev: rework backlight dependencies
->   drm/bridge/sii8620: fix extcon dependency
-> 
->  arch/arm/configs/pxa_defconfig      |  3 ++
->  arch/arm/mach-pxa/Kconfig           |  7 ---
->  arch/arm/mach-pxa/eseries.c         | 14 +----
->  arch/arm/mach-pxa/saar.c            |  2 +-
->  arch/arm/mach-pxa/tavorevb.c        |  2 +-
->  drivers/auxdisplay/Kconfig          |  1 +
->  drivers/gpu/drm/Kconfig             |  5 +-
->  drivers/gpu/drm/bridge/Kconfig      |  2 +-
->  drivers/gpu/drm/mxsfb/Kconfig       |  1 -
->  drivers/gpu/drm/rcar-du/Kconfig     | 23 +++++---
->  drivers/gpu/drm/vmwgfx/Kconfig      | 17 +++---
->  drivers/gpu/drm/vmwgfx/Makefile     |  4 +-
->  drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 35 +++++++-----
->  drivers/gpu/drm/zte/Kconfig         |  1 -
->  drivers/macintosh/Kconfig           |  1 +
->  drivers/staging/fbtft/Kconfig       |  1 +
->  drivers/staging/olpc_dcon/Kconfig   |  2 +-
->  drivers/video/fbdev/Kconfig         | 31 ++++++++---
->  drivers/video/fbdev/w100fb.c        | 84 +++++------------------------
->  include/video/w100fb.h              |  6 +--
->  20 files changed, 101 insertions(+), 141 deletions(-)
-> 
-> -- 
-> 2.26.0
-> 
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Nicolas Pitre <nico@fluxnic.net>
-> Cc: Andrzej Hajda <a.hajda@samsung.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Saeed Mahameed <saeedm@mellanox.com>
-> Cc: <masahiroy@kernel.org>
-> Cc: <Laurent.pinchart@ideasonboard.com>
-> Cc: <linux-renesas-soc@vger.kernel.org>,
-> Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-> Cc: <kieran.bingham+renesas@ideasonboard.com>,
-> Cc: <airlied@linux.ie>
-> Cc: daniel@zonque.org
-> Cc: haojian.zhuang@gmail.com
-> Cc: robert.jarzmik@free.fr
-> Cc: daniel@ffwll.ch
-> Cc: marex@denx.de
-> Cc: stefan@agner.ch
-> Cc: linux-graphics-maintainer@vmware.com
-> Cc: thellstrom@vmware.com
-> Cc: jfrederich@gmail.com
-> Cc: dsd@laptop.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: geert@linux-m68k.org
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Jason
