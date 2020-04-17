@@ -2,99 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF4621ADF6B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 16:11:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BC71ADF6C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 16:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730779AbgDQOHe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Apr 2020 10:07:34 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:57983 "EHLO
+        id S1730805AbgDQOHg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 10:07:36 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:58000 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730778AbgDQOHd (ORCPT
+        with ESMTP id S1730778AbgDQOHf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Apr 2020 10:07:33 -0400
+        Fri, 17 Apr 2020 10:07:35 -0400
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200417140730euoutp02a30cbfd3b886ab8e994264c25eb79880~GoI4chH6W1553115531euoutp02U
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200417140730euoutp02a30cbfd3b886ab8e994264c25eb79880~GoI4chH6W1553115531euoutp02U
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200417140734euoutp02fc1266329a9b94d16812296cb1668060~GoI7slInB1552515525euoutp02Y
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 14:07:34 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200417140734euoutp02fc1266329a9b94d16812296cb1668060~GoI7slInB1552515525euoutp02Y
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1587132450;
-        bh=lsq2eSUvdBU1vvyLFdk6GKu1kqi9p8k3KwTJyUCI7Ug=;
+        s=mail20170921; t=1587132454;
+        bh=+mRo0y+WREjEvM6VZR45Y8nyy/gok+B+AK9fCUNLJY4=;
         h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=fBesXSfBbi8jc8LHt5Zc0oOTMLnEoJYnXT80KeSaPG6qRjXfVtkHaA/s2VHT/5/PF
-         ErxwrHsgvHdRRgDBO8NhxGLGjCZqtlHYmZOxzbTBeVCFfTRBjyNNhvpsHSTAyYJWLR
-         kj3wq9wbsK1QT3uZT8feZvV4ksI4Uwtuc2NJ0eFc=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        b=M1xh9nbgeRpS+5C5hOus4iIqzF6YGARbG2bXwFKW+DP/S1/Dps+kGfT5AjbhrpeDR
+         KUU/AbTZ0EYmM/8qEsya9OVyQipuwVLvibrOEKuMqYH7KJkCbvs2ZR+XfGQZfx2+zE
+         LOxBZsGIlhxIB6PRb+vERbYNbUuZhIZ40ZmQfa6M=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200417140730eucas1p1e0695ecaef0e5846cbe3f882a7cd0adf~GoI4WQPWG1657316573eucas1p1l;
-        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 5D.BA.60698.228B99E5; Fri, 17
-        Apr 2020 15:07:30 +0100 (BST)
+        20200417140734eucas1p12e34024b5a4bed6f5f96ad3a7c1dc876~GoI7gSxWc1437814378eucas1p1T;
+        Fri, 17 Apr 2020 14:07:34 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 51.4C.61286.628B99E5; Fri, 17
+        Apr 2020 15:07:34 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200417140730eucas1p1c314f5fadf3f27aa5268c180a0c1d63b~GoI383igW1445114451eucas1p1i;
-        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200417140733eucas1p280e53209e70586c8dde064b6cd6c24d2~GoI7MSHCW1167511675eucas1p2v;
+        Fri, 17 Apr 2020 14:07:33 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200417140730eusmtrp126e85ae9b19c516579c0e491e09efe34~GoI38SGk12167921679eusmtrp1j;
-        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-6a-5e99b822aaab
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 45.B2.08375.228B99E5; Fri, 17
-        Apr 2020 15:07:30 +0100 (BST)
+        20200417140733eusmtrp18ef0244ee0d59e63f3cded17fb2191e2~GoI7JMhnm2210922109eusmtrp1o;
+        Fri, 17 Apr 2020 14:07:33 +0000 (GMT)
+X-AuditID: cbfec7f2-ef1ff7000001ef66-fb-5e99b826acaa
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 67.B2.08375.528B99E5; Fri, 17
+        Apr 2020 15:07:33 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200417140730eusmtip2301934b40db4dd719801f43127a7a95c~GoI3sw5Gm0114701147eusmtip27;
-        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200417140733eusmtip1317ddb38855c782686c85c5d5640a138~GoI63dUps0911109111eusmtip1M;
+        Fri, 17 Apr 2020 14:07:33 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v1 1/5] video: ssd1307fb: Convert driver to use
- ->probe_new()
+Subject: Re: [PATCH v1 2/5] video: ssd1307fb: Introduce temporary variable
+ to increase readability
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         xllacyx@gmail.com
-Message-ID: <a53b8cfd-dc4b-322b-6661-ea4312152e92@samsung.com>
-Date:   Fri, 17 Apr 2020 16:07:29 +0200
+Message-ID: <3a7ef743-580a-d5e6-08b8-07507c6c6ea7@samsung.com>
+Date:   Fri, 17 Apr 2020 16:07:33 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20200324170532.44384-2-andriy.shevchenko@linux.intel.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djPc7pKO2bGGbQu07LobZrOZHHl63s2
-        ixN9H1gtli1by+rA4rFz1l12j3knAz3udx9n8vi8SS6AJYrLJiU1J7MstUjfLoErY/nK08wF
-        C/kqenZfYGtgPM7dxcjJISFgInFz/h/GLkYuDiGBFYwS/5s62UASQgJfGCWWbNWGSHxmlLj5
-        /QA7TMeL433sEInljBJ/Xi2Aan/LKPHwwHFmkCo2ASuJie2rgBIcHMICwRK/TnmBhEUEzCXW
-        TVoEtoFZIFRiQ8N7dpASXgE7iSmzwcIsAqoSN893soDYogIREp8eHGYFsXkFBCVOznwCFucU
-        cJfom70Xaoy4xK0n85kgbHmJ5q2zmUHOkRCYzC5x9W4fI8TRLhIPvm1hgrCFJV4d3wL1jIzE
-        6ck9LBAN6xgl/na8gOreziixfPI/Nogqa4k7536xgVzKLKApsX6XPkTYUeL9hW9MIGEJAT6J
-        G28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJa7OQvDMLyTuzEPYuYGRZ
-        xSieWlqcm55abJyXWq5XnJhbXJqXrpecn7uJEZhWTv87/nUH474/SYcYBTgYlXh4DXpmxgmx
-        JpYVV+YeYpTgYFYS4T3oBhTiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampB
-        ahFMlomDU6qBUbFcsXB+6OU7X4seMFvvaE49celhb+9Xi171zOsKb/PjLm1eXc+j0hLssuZ4
-        whKZTY1fzrFpCd3feTq7+8q+K5MFjxkesU17l739k1d66SQe21faL9n5b+9wM/N9LXnmLN/n
-        RbP6ljHMCXV/e+ZU8t4d0649mTV9y53bS5LTtIvFhO/zK37Je6DEUpyRaKjFXFScCAAxU5gE
-        JwMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xe7pKO2bGGaycKWbR2zSdyeLK1/ds
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djP87pqO2bGGazczGbR2zSdyeLK1/ds
+        Fif6PrBaLFu2ltWBxWPnrLvsHvNOBnrc7z7O5PF5k1wASxSXTUpqTmZZapG+XQJXRtOzzSwF
+        n1Uqlj/Ra2C8ItvFyMkhIWAicelpP3MXIxeHkMAKRolra6ewQzhfGCWmNV5ng3A+M0rsaW5g
+        hmmZ/eQqC0RiOaPE6tV/oKreMkqsv/QBrIpNwEpiYvsqxi5GDg5hgRSJtT/cQMIiAuYS6yYt
+        YgOxmQVCJTY0vGcHsXkF7CS6bl5gBilnEVCVmHfeHSQsKhAh8enBYVaIEkGJkzOfsIDYnALu
+        Eocv3GaHGCMucevJfCYIW15i+9s5YO9ICExml7j+cSsLxNEuEuc2bmWFsIUlXh3fwg5hy0ic
+        ntzDAtGwjlHib8cLqO7tjBLLJ/9jg6iylrhz7hcbyHXMApoS63fpQ4QdJTraGthBwhICfBI3
+        3gpCHMEnMWnbdGaIMC9QiRBEtZrEhmUb2GDWdu1cyTyBUWkWktdmIXlnFpJ3ZiHsXcDIsopR
+        PLW0ODc9tdgwL7Vcrzgxt7g0L10vOT93EyMwrZz+d/zTDsavl5IOMQpwMCrx8Br0zIwTYk0s
+        K67MPcQowcGsJMJ70A0oxJuSWFmVWpQfX1Sak1p8iFGag0VJnNd40ctYIYH0xJLU7NTUgtQi
+        mCwTB6dUA+Os0vobU3vXT+M8d+GGfFIpX2aD8ee2hck7UmdnXPmuYDYxdUnEZ505jw64M8Qc
+        mX/jwLLZFzlyDk07+OzXkT3GVoXbVxm0q/3wtTRQXfLqD49KyYnymN9GG6cdTbK0dwqOe7T1
+        kVEZ56NDi4O6Aw7829ywfc7jvztvh7Rt7bEKFhLYNEXFUuOsEktxRqKhFnNRcSIAncdoricD
+        AAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xu7qqO2bGGZx/rmPR2zSdyeLK1/ds
         Fif6PrBaLFu2ltWBxWPnrLvsHvNOBnrc7z7O5PF5k1wAS5SeTVF+aUmqQkZ+cYmtUrShhZGe
-        oaWFnpGJpZ6hsXmslZGpkr6dTUpqTmZZapG+XYJexvKVp5kLFvJV9Oy+wNbAeJy7i5GTQ0LA
-        ROLF8T72LkYuDiGBpYwSH74uBnI4gBIyEsfXl0HUCEv8udbFBlHzmlGibe9pFpAEm4CVxMT2
-        VYwg9cICwRK/TnmBhEUEzCXWTVrEBmIzC4RK3L+9jgmidxajxMRzq9hA6nkF7CSmzAarYRFQ
-        lbh5vhNspKhAhMThHbMYQWxeAUGJkzOfgMU5Bdwl+mbvhZqpLvFn3iVmCFtc4taT+UwQtrxE
-        89bZzBMYhWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIyjbcd+
-        bt7BeGlj8CFGAQ5GJR5eg56ZcUKsiWXFlbmHGCU4mJVEeA+6AYV4UxIrq1KL8uOLSnNSiw8x
-        mgI9N5FZSjQ5HxjjeSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1KzU1MLUotg+pg4OKUa
-        GIUmaOortRxtfJ8n/H3rerkS2wUPVYP6IrdlX/B4l3tD1/fWnwttf7v/Li9q5psd9DSbxdtr
-        xSx+jwtrcib++bZM5M8n768ymhP/eCyYEtO1d3LrmYlzEj7cCrl+d+WJ85k29nvmanhsujiF
-        4+ML/0zTMsbcuXcau0WNHfl/TOiVZVuR0yRy670SS3FGoqEWc1FxIgDkf0QLuQIAAA==
-X-CMS-MailID: 20200417140730eucas1p1c314f5fadf3f27aa5268c180a0c1d63b
+        oaWFnpGJpZ6hsXmslZGpkr6dTUpqTmZZapG+XYJeRtOzzSwFn1Uqlj/Ra2C8ItvFyMkhIWAi
+        MfvJVZYuRi4OIYGljBJbtj1g62LkAErISBxfXwZRIyzx51oXG0TNa0aJQwe2MIMk2ASsJCa2
+        r2IEsYUFUiQuPnnJDmKLCJhLrJu0iA3EZhYIlbh/ex0TRPN1Ron/t2exgCR4Bewkum5eYAZZ
+        xiKgKjHvvDtIWFQgQuLwjlmMECWCEidnPgEr5xRwlzh84TY7xEx1iT/zLjFD2OISt57MZ4Kw
+        5SW2v53DPIFRaBaS9llIWmYhaZmFpGUBI8sqRpHU0uLc9NxiQ73ixNzi0rx0veT83E2MwDja
+        duzn5h2MlzYGH2IU4GBU4uE16JkZJ8SaWFZcmXuIUYKDWUmE96AbUIg3JbGyKrUoP76oNCe1
+        +BCjKdBvE5mlRJPzgTGeVxJvaGpobmFpaG5sbmxmoSTO2yFwMEZIID2xJDU7NbUgtQimj4mD
+        U6qBsXupKbe/f1haZm7L366GWQfOe01d92yz4/40DZ2YJToHuX/8WL36bXPwkeUbKnc/mHzO
+        l3u1/0+OqBeOqVJqs37Gec3ekbg99IMNw8/4/vpbS7WPHgtI3/YuwOno0yaVvh1m71/t7tsj
+        wnqKY5fgrNS0SSp/jyd1Cl49qSik9IytOKXayuJ0hBJLcUaioRZzUXEiAM4uVc65AgAA
+X-CMS-MailID: 20200417140733eucas1p280e53209e70586c8dde064b6cd6c24d2
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200324170539eucas1p25909201d48429c9489c286ac18af0f1c
+X-RootMTR: 20200324170551eucas1p2a568c0296a5773cdf70e162c5a1e9b72
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200324170539eucas1p25909201d48429c9489c286ac18af0f1c
-References: <CGME20200324170539eucas1p25909201d48429c9489c286ac18af0f1c@eucas1p2.samsung.com>
-        <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+X-CMS-RootMailID: 20200324170551eucas1p2a568c0296a5773cdf70e162c5a1e9b72
+References: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+        <CGME20200324170551eucas1p2a568c0296a5773cdf70e162c5a1e9b72@eucas1p2.samsung.com>
+        <20200324170532.44384-2-andriy.shevchenko@linux.intel.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
@@ -104,14 +105,11 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 [ added dri-devel ML to Cc: ]
 
 On 3/24/20 6:05 PM, Andy Shevchenko wrote:
-> Use the ->probe_new() callback.
-> 
-> The driver does not use const struct i2c_device_id * argument,
-> so convert it to utilise the simplified I²C driver registration.
+> Introduce temporary variable to increase readability of the code.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Patch queued for v5.8, thanks.
+Patch queued for v5.8 (w/ few lines over 80 characters fixed), thanks.
 
 Best regards,
 --
@@ -120,43 +118,114 @@ Samsung R&D Institute Poland
 Samsung Electronics
 
 > ---
->  drivers/video/fbdev/ssd1307fb.c | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
+>  drivers/video/fbdev/ssd1307fb.c | 34 ++++++++++++++-------------------
+>  1 file changed, 14 insertions(+), 20 deletions(-)
 > 
 > diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-> index 142535267fec..397eae246c2c 100644
+> index 397eae246c2c..84dfd7b0f682 100644
 > --- a/drivers/video/fbdev/ssd1307fb.c
 > +++ b/drivers/video/fbdev/ssd1307fb.c
-> @@ -586,8 +586,7 @@ static const struct of_device_id ssd1307fb_of_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
+> @@ -588,6 +588,7 @@ MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
 >  
-> -static int ssd1307fb_probe(struct i2c_client *client,
-> -			   const struct i2c_device_id *id)
-> +static int ssd1307fb_probe(struct i2c_client *client)
+>  static int ssd1307fb_probe(struct i2c_client *client)
 >  {
+> +	struct device *dev = &client->dev;
 >  	struct backlight_device *bl;
 >  	char bl_name[12];
-> @@ -599,11 +598,6 @@ static int ssd1307fb_probe(struct i2c_client *client,
+>  	struct fb_info *info;
+> @@ -598,7 +599,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
 >  	void *vmem;
 >  	int ret;
 >  
-> -	if (!node) {
-> -		dev_err(&client->dev, "No device tree data found!\n");
-> -		return -EINVAL;
-> -	}
-> -
->  	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
+> -	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
+> +	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), dev);
 >  	if (!info)
 >  		return -ENOMEM;
-> @@ -808,7 +802,7 @@ static const struct i2c_device_id ssd1307fb_i2c_id[] = {
->  MODULE_DEVICE_TABLE(i2c, ssd1307fb_i2c_id);
 >  
->  static struct i2c_driver ssd1307fb_driver = {
-> -	.probe = ssd1307fb_probe,
-> +	.probe_new = ssd1307fb_probe,
->  	.remove = ssd1307fb_remove,
->  	.id_table = ssd1307fb_i2c_id,
->  	.driver = {
-> 
-
+> @@ -608,23 +609,20 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>  
+>  	par->device_info = of_device_get_match_data(&client->dev);
+>  
+> -	par->reset = devm_gpiod_get_optional(&client->dev, "reset",
+> -					     GPIOD_OUT_LOW);
+> +	par->reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+>  	if (IS_ERR(par->reset)) {
+> -		dev_err(&client->dev, "failed to get reset gpio: %ld\n",
+> -			PTR_ERR(par->reset));
+> +		dev_err(dev, "failed to get reset gpio: %ld\n", PTR_ERR(par->reset));
+>  		ret = PTR_ERR(par->reset);
+>  		goto fb_alloc_error;
+>  	}
+>  
+> -	par->vbat_reg = devm_regulator_get_optional(&client->dev, "vbat");
+> +	par->vbat_reg = devm_regulator_get_optional(dev, "vbat");
+>  	if (IS_ERR(par->vbat_reg)) {
+>  		ret = PTR_ERR(par->vbat_reg);
+>  		if (ret == -ENODEV) {
+>  			par->vbat_reg = NULL;
+>  		} else {
+> -			dev_err(&client->dev, "failed to get VBAT regulator: %d\n",
+> -				ret);
+> +			dev_err(dev, "failed to get VBAT regulator: %d\n", ret);
+>  			goto fb_alloc_error;
+>  		}
+>  	}
+> @@ -674,15 +672,14 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>  	vmem = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
+>  					get_order(vmem_size));
+>  	if (!vmem) {
+> -		dev_err(&client->dev, "Couldn't allocate graphical memory.\n");
+> +		dev_err(dev, "Couldn't allocate graphical memory.\n");
+>  		ret = -ENOMEM;
+>  		goto fb_alloc_error;
+>  	}
+>  
+> -	ssd1307fb_defio = devm_kzalloc(&client->dev, sizeof(*ssd1307fb_defio),
+> -				       GFP_KERNEL);
+> +	ssd1307fb_defio = devm_kzalloc(dev, sizeof(*ssd1307fb_defio), GFP_KERNEL);
+>  	if (!ssd1307fb_defio) {
+> -		dev_err(&client->dev, "Couldn't allocate deferred io.\n");
+> +		dev_err(dev, "Couldn't allocate deferred io.\n");
+>  		ret = -ENOMEM;
+>  		goto fb_alloc_error;
+>  	}
+> @@ -720,8 +717,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>  	if (par->vbat_reg) {
+>  		ret = regulator_enable(par->vbat_reg);
+>  		if (ret) {
+> -			dev_err(&client->dev, "failed to enable VBAT: %d\n",
+> -				ret);
+> +			dev_err(dev, "failed to enable VBAT: %d\n", ret);
+>  			goto reset_oled_error;
+>  		}
+>  	}
+> @@ -732,17 +728,15 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>  
+>  	ret = register_framebuffer(info);
+>  	if (ret) {
+> -		dev_err(&client->dev, "Couldn't register the framebuffer\n");
+> +		dev_err(dev, "Couldn't register the framebuffer\n");
+>  		goto panel_init_error;
+>  	}
+>  
+>  	snprintf(bl_name, sizeof(bl_name), "ssd1307fb%d", info->node);
+> -	bl = backlight_device_register(bl_name, &client->dev, par,
+> -				       &ssd1307fb_bl_ops, NULL);
+> +	bl = backlight_device_register(bl_name, dev, par, &ssd1307fb_bl_ops, NULL);
+>  	if (IS_ERR(bl)) {
+>  		ret = PTR_ERR(bl);
+> -		dev_err(&client->dev, "unable to register backlight device: %d\n",
+> -			ret);
+> +		dev_err(dev, "unable to register backlight device: %d\n", ret);
+>  		goto bl_init_error;
+>  	}
+>  
+> @@ -750,7 +744,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>  	bl->props.max_brightness = MAX_CONTRAST;
+>  	info->bl_dev = bl;
+>  
+> -	dev_info(&client->dev, "fb%d: %s framebuffer device registered, using %d bytes of video memory\n", info->node, info->fix.id, vmem_size);
+> +	dev_info(dev, "fb%d: %s framebuffer device registered, using %d bytes of video memory\n", info->node, info->fix.id, vmem_size);
+>  
+>  	return 0;
+>  
