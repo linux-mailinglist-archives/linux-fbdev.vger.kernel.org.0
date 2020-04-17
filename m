@@ -2,157 +2,121 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7B81ADC42
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 13:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CA51ADCB8
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 13:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730301AbgDQLdp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Apr 2020 07:33:45 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:41838 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730267AbgDQLdp (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Apr 2020 07:33:45 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03HBXc8G039105;
-        Fri, 17 Apr 2020 06:33:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587123218;
-        bh=B4svpTjbq2qHmr8DJw9LugXKpQ5dJfS4XwA8vW7yUes=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=dIv08+1eyLlGQnxbLUFZnUDZsoullYatL6FTvngK5E4m4JtK/4OboubXRAH58XVtQ
-         Dw9wxq5EPO0El6a8nOOZVvD7yXcyGH+7WwBFjff/qCfcJ+o9elwQTzFZZ/0bjvSj07
-         G7e9T17st7nt66myQ8GhYxmQZVtVeHLGrYnQCiU0=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03HBXcfA066382;
-        Fri, 17 Apr 2020 06:33:38 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 17
- Apr 2020 06:33:38 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 17 Apr 2020 06:33:38 -0500
-Received: from deskari.lan (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03HBXSSn012787;
-        Fri, 17 Apr 2020 06:33:36 -0500
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-CC:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH 5/5] backlight: led_bl: rewrite led_bl_parse_levels()
-Date:   Fri, 17 Apr 2020 14:33:12 +0300
-Message-ID: <20200417113312.24340-5-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200417113312.24340-1-tomi.valkeinen@ti.com>
-References: <20200417113312.24340-1-tomi.valkeinen@ti.com>
+        id S1730465AbgDQL6I (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 07:58:08 -0400
+Received: from mga09.intel.com ([134.134.136.24]:15803 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730436AbgDQL6I (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 17 Apr 2020 07:58:08 -0400
+IronPort-SDR: GscMFrVkS+uyZbggSHNkjNt5XeXFAGZeWduxaARIUSe/Ww1BEpsc+aNyR11L9GrOWlKuFxRy34
+ w3YvggAtuD2A==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2020 04:58:07 -0700
+IronPort-SDR: oPzffoD/xvtzehxbN+DpuD6KafShULTvJHrfM14Jf25fDpUU582Lfcznzd0DmMHcQAB8QZt+dN
+ RkAnbrAUacDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,394,1580803200"; 
+   d="scan'208";a="279491930"
+Received: from elewis-mobl.ger.corp.intel.com (HELO helsinki.ger.corp.intel.com) ([10.251.94.8])
+  by orsmga008.jf.intel.com with ESMTP; 17 Apr 2020 04:58:05 -0700
+From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        uma.shankar@intel.com, laurent.pinchart@ideasonboard.com,
+        jani.nikula@intel.com, ville.syrjala@linux.intel.com
+Subject: [PATCH v10 00/14] In order to readout DP SDPs, refactors the handling of DP SDPs 
+Date:   Fri, 17 Apr 2020 15:00:26 +0300
+Message-Id: <20200417120040.3432332-1-gwan-gyeong.mun@intel.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-led_bl_parse_levels() is rather difficult to follow. Rewrite it with a
-more obvious code flow.
+In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+It adds new compute routines for DP HDR Metadata Infoframe SDP
+and DP VSC SDP. 
+And new writing routines of DP SDPs (Secondary Data Packet) that uses
+computed configs.
+New reading routines of DP SDPs are added for readout.
+It adds a logging function for DP VSC SDP.
+When receiving video it is very useful to be able to log DP VSC SDP.
+This greatly simplifies debugging.
+In order to use a common VSC SDP Colorimetry calculating code on PSR,
+it uses a new psr vsc sdp compute routine.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
----
- drivers/video/backlight/led_bl.c | 63 ++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+v2: Minor style fix
+v3: 
+  - Add a new drm data structure for DP VSC SDP
+  - Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
+  - Move logging functions to drm core [Jani N]
+    And use drm core's DP VSC SDP logging function
+  - Explicitly disable unused DIPs (AVI, GCP, VS, SPD, DRM. They will be
+    used for HDMI), when intel_dp_set_infoframes() function will be called.
+v4:
+  - Use struct drm_device logging macros
+  - Rebased
+v5:
+  - Use intel_de_*() functions for register access
+  - Add warning where a bpc is 6 and a pixel format is RGB.
+  - Addressed review comments from Uma
+    Add kernel docs for added data structures
+    Rename enum dp_colorspace to dp_pixelformat
+    Polish commit message and comments
+    Combine the if checks of sdp.HB2 and sdp.HB3
+    Add 6bpc to packining and unpacking of VSC SDP
+v6: Fix enabled infoframe states of lspcon
+v7: Fix the wrong check of combination bpc 6 and RGB pixelformat
+v8: Rebased
+v9: Add clear comments to hdmi_drm_infoframe_unpack_only() and
+    hdmi_drm_infoframe_unpack() (Laurent Pinchart)
+v10:
+  - Fix packing of VSC SDP where Pixel Encoding/Colorimetry Format is not
+    supported
+  - When a PSR is enabled, it needs to add DP_SDP_VSC to infoframes.enable.
+  - Change a checking of PSR state.
+  - Skip checking of VSC SDP when a crtc config has psr.
+  - Rebased
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 021b5edd895c..7b3889035540 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -132,50 +132,51 @@ static int led_bl_parse_levels(struct device *dev,
- 	int num_levels;
- 	u32 value;
- 	int ret;
-+	int i;
-+	u32 *levels;
- 
- 	if (!node)
- 		return -ENODEV;
- 
- 	num_levels = of_property_count_u32_elems(node, "brightness-levels");
--	if (num_levels > 1) {
--		int i;
--		unsigned int db;
--		u32 *levels;
--
--		levels = devm_kzalloc(dev, sizeof(u32) * num_levels,
--				      GFP_KERNEL);
--		if (!levels)
--			return -ENOMEM;
--
--		ret = of_property_read_u32_array(node, "brightness-levels",
--						 levels,
--						 num_levels);
--		if (ret < 0)
--			return ret;
--
--		/*
--		 * Try to map actual LED brightness to backlight brightness
--		 * level
--		 */
--		db = priv->default_brightness;
-+
-+	if (num_levels < 0)
-+		return 0;
-+
-+	if (num_levels == 0) {
-+		dev_warn(dev, "No brightness-levels defined\n");
-+		return -EINVAL;
-+	}
-+
-+	levels = devm_kzalloc(dev, sizeof(u32) * num_levels,
-+			      GFP_KERNEL);
-+	if (!levels)
-+		return -ENOMEM;
-+
-+	ret = of_property_read_u32_array(node, "brightness-levels",
-+					 levels,
-+					 num_levels);
-+	if (ret < 0)
-+		return ret;
-+
-+	priv->max_brightness = num_levels - 1;
-+	priv->levels = levels;
-+
-+	ret = of_property_read_u32(node, "default-brightness-level", &value);
-+	if (!ret) {
-+		priv->default_brightness = min(value, priv->max_brightness);
-+	} else {
-+		/* Map LED default-brightness to backlight brightness level */
-+		unsigned int db = priv->default_brightness;
-+
- 		for (i = 0 ; i < num_levels; i++) {
- 			if ((i == 0 || db > levels[i - 1]) && db <= levels[i])
- 				break;
- 		}
- 
- 		priv->default_brightness = i < num_levels ? i : 0;
--		priv->max_brightness = num_levels - 1;
--		priv->levels = levels;
--	} else if (num_levels >= 0) {
--		dev_warn(dev, "Not enough levels defined\n");
- 	}
- 
--	ret = of_property_read_u32(node, "default-brightness-level", &value);
--	if (!ret && value <= priv->max_brightness)
--		priv->default_brightness = value;
--	else if (!ret  && value > priv->max_brightness)
--		dev_warn(dev, "Invalid default brightness. Ignoring it\n");
--
- 	return 0;
- }
- 
+Gwan-gyeong Mun (14):
+  video/hdmi: Add Unpack only function for DRM infoframe
+  drm/i915/dp: Read out DP SDPs
+  drm: Add logging function for DP VSC SDP
+  drm/i915: Include HDMI DRM infoframe in the crtc state dump
+  drm/i915: Include DP HDR Metadata Infoframe SDP in the crtc state dump
+  drm/i915: Include DP VSC SDP in the crtc state dump
+  drm/i915: Program DP SDPs with computed configs
+  drm/i915: Add state readout for DP HDR Metadata Infoframe SDP
+  drm/i915: Add state readout for DP VSC SDP
+  drm/i915: Fix enabled infoframe states of lspcon
+  drm/i915: Program DP SDPs on pipe updates
+  drm/i915: Stop sending DP SDPs on ddi disable
+  drm/i915/dp: Add compute routine for DP PSR VSC SDP
+  drm/i915/psr: Use new DP VSC SDP compute routine on PSR
+
+ drivers/gpu/drm/drm_dp_helper.c              | 174 ++++++++
+ drivers/gpu/drm/i915/display/intel_ddi.c     |  19 +-
+ drivers/gpu/drm/i915/display/intel_display.c |  63 +++
+ drivers/gpu/drm/i915/display/intel_dp.c      | 406 ++++++++++---------
+ drivers/gpu/drm/i915/display/intel_dp.h      |  15 +-
+ drivers/gpu/drm/i915/display/intel_lspcon.c  |   2 +-
+ drivers/gpu/drm/i915/display/intel_psr.c     |  56 +--
+ drivers/gpu/drm/i915/display/intel_psr.h     |   6 +-
+ drivers/gpu/drm/i915/i915_drv.h              |   1 +
+ drivers/video/hdmi.c                         |  65 ++-
+ include/drm/drm_dp_helper.h                  |   3 +
+ include/linux/hdmi.h                         |   2 +
+ 12 files changed, 549 insertions(+), 263 deletions(-)
+
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.25.0
 
