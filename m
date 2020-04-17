@@ -2,263 +2,161 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B63F61ADCC8
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 13:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4621ADF6B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 16:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730548AbgDQL6n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Apr 2020 07:58:43 -0400
-Received: from mga09.intel.com ([134.134.136.24]:15826 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730536AbgDQL6m (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Apr 2020 07:58:42 -0400
-IronPort-SDR: YlBadd8IYKJVE1Mg4hUA5kPMIXHh2+zxOgdEKijor3KTsfkPQRt8emJdmdErxYB++9I/xAoCtk
- dZp+b05ouDaA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2020 04:58:39 -0700
-IronPort-SDR: 9227tivENzzQmRgC0SI+CZmvWeJcHWFd/yc31aNduOKFaZUVy0dxM7+ImuZHax6meULJ6cuClJ
- zBM3Gzmj+VOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,394,1580803200"; 
-   d="scan'208";a="279492077"
-Received: from elewis-mobl.ger.corp.intel.com (HELO helsinki.ger.corp.intel.com) ([10.251.94.8])
-  by orsmga008.jf.intel.com with ESMTP; 17 Apr 2020 04:58:37 -0700
-From:   Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        uma.shankar@intel.com, laurent.pinchart@ideasonboard.com,
-        jani.nikula@intel.com, ville.syrjala@linux.intel.com
-Subject: [PATCH v10 14/14] drm/i915/psr: Use new DP VSC SDP compute routine on PSR
-Date:   Fri, 17 Apr 2020 15:00:40 +0300
-Message-Id: <20200417120040.3432332-15-gwan-gyeong.mun@intel.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200417120040.3432332-1-gwan-gyeong.mun@intel.com>
-References: <20200417120040.3432332-1-gwan-gyeong.mun@intel.com>
+        id S1730779AbgDQOHe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 10:07:34 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:57983 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730778AbgDQOHd (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 17 Apr 2020 10:07:33 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200417140730euoutp02a30cbfd3b886ab8e994264c25eb79880~GoI4chH6W1553115531euoutp02U
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200417140730euoutp02a30cbfd3b886ab8e994264c25eb79880~GoI4chH6W1553115531euoutp02U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1587132450;
+        bh=lsq2eSUvdBU1vvyLFdk6GKu1kqi9p8k3KwTJyUCI7Ug=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=fBesXSfBbi8jc8LHt5Zc0oOTMLnEoJYnXT80KeSaPG6qRjXfVtkHaA/s2VHT/5/PF
+         ErxwrHsgvHdRRgDBO8NhxGLGjCZqtlHYmZOxzbTBeVCFfTRBjyNNhvpsHSTAyYJWLR
+         kj3wq9wbsK1QT3uZT8feZvV4ksI4Uwtuc2NJ0eFc=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200417140730eucas1p1e0695ecaef0e5846cbe3f882a7cd0adf~GoI4WQPWG1657316573eucas1p1l;
+        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 5D.BA.60698.228B99E5; Fri, 17
+        Apr 2020 15:07:30 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200417140730eucas1p1c314f5fadf3f27aa5268c180a0c1d63b~GoI383igW1445114451eucas1p1i;
+        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200417140730eusmtrp126e85ae9b19c516579c0e491e09efe34~GoI38SGk12167921679eusmtrp1j;
+        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+X-AuditID: cbfec7f5-a0fff7000001ed1a-6a-5e99b822aaab
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 45.B2.08375.228B99E5; Fri, 17
+        Apr 2020 15:07:30 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200417140730eusmtip2301934b40db4dd719801f43127a7a95c~GoI3sw5Gm0114701147eusmtip27;
+        Fri, 17 Apr 2020 14:07:30 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH v1 1/5] video: ssd1307fb: Convert driver to use
+ ->probe_new()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        xllacyx@gmail.com
+Message-ID: <a53b8cfd-dc4b-322b-6661-ea4312152e92@samsung.com>
+Date:   Fri, 17 Apr 2020 16:07:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsWy7djPc7pKO2bGGbQu07LobZrOZHHl63s2
+        ixN9H1gtli1by+rA4rFz1l12j3knAz3udx9n8vi8SS6AJYrLJiU1J7MstUjfLoErY/nK08wF
+        C/kqenZfYGtgPM7dxcjJISFgInFz/h/GLkYuDiGBFYwS/5s62UASQgJfGCWWbNWGSHxmlLj5
+        /QA7TMeL433sEInljBJ/Xi2Aan/LKPHwwHFmkCo2ASuJie2rgBIcHMICwRK/TnmBhEUEzCXW
+        TVoEtoFZIFRiQ8N7dpASXgE7iSmzwcIsAqoSN893soDYogIREp8eHGYFsXkFBCVOznwCFucU
+        cJfom70Xaoy4xK0n85kgbHmJ5q2zmUHOkRCYzC5x9W4fI8TRLhIPvm1hgrCFJV4d3wL1jIzE
+        6ck9LBAN6xgl/na8gOreziixfPI/Nogqa4k7536xgVzKLKApsX6XPkTYUeL9hW9MIGEJAT6J
+        G28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJa7OQvDMLyTuzEPYuYGRZ
+        xSieWlqcm55abJyXWq5XnJhbXJqXrpecn7uJEZhWTv87/nUH474/SYcYBTgYlXh4DXpmxgmx
+        JpYVV+YeYpTgYFYS4T3oBhTiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampB
+        ahFMlomDU6qBUbFcsXB+6OU7X4seMFvvaE49celhb+9Xi171zOsKb/PjLm1eXc+j0hLssuZ4
+        whKZTY1fzrFpCd3feTq7+8q+K5MFjxkesU17l739k1d66SQe21faL9n5b+9wM/N9LXnmLN/n
+        RbP6ljHMCXV/e+ZU8t4d0649mTV9y53bS5LTtIvFhO/zK37Je6DEUpyRaKjFXFScCAAxU5gE
+        JwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xe7pKO2bGGaycKWbR2zSdyeLK1/ds
+        Fif6PrBaLFu2ltWBxWPnrLvsHvNOBnrc7z7O5PF5k1wAS5SeTVF+aUmqQkZ+cYmtUrShhZGe
+        oaWFnpGJpZ6hsXmslZGpkr6dTUpqTmZZapG+XYJexvKVp5kLFvJV9Oy+wNbAeJy7i5GTQ0LA
+        ROLF8T72LkYuDiGBpYwSH74uBnI4gBIyEsfXl0HUCEv8udbFBlHzmlGibe9pFpAEm4CVxMT2
+        VYwg9cICwRK/TnmBhEUEzCXWTVrEBmIzC4RK3L+9jgmidxajxMRzq9hA6nkF7CSmzAarYRFQ
+        lbh5vhNspKhAhMThHbMYQWxeAUGJkzOfgMU5Bdwl+mbvhZqpLvFn3iVmCFtc4taT+UwQtrxE
+        89bZzBMYhWYhaZ+FpGUWkpZZSFoWMLKsYhRJLS3OTc8tNtQrTswtLs1L10vOz93ECIyjbcd+
+        bt7BeGlj8CFGAQ5GJR5eg56ZcUKsiWXFlbmHGCU4mJVEeA+6AYV4UxIrq1KL8uOLSnNSiw8x
+        mgI9N5FZSjQ5HxjjeSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1KzU1MLUotg+pg4OKUa
+        GIUmaOortRxtfJ8n/H3rerkS2wUPVYP6IrdlX/B4l3tD1/fWnwttf7v/Li9q5psd9DSbxdtr
+        xSx+jwtrcib++bZM5M8n768ymhP/eCyYEtO1d3LrmYlzEj7cCrl+d+WJ85k29nvmanhsujiF
+        4+ML/0zTMsbcuXcau0WNHfl/TOiVZVuR0yRy670SS3FGoqEWc1FxIgDkf0QLuQIAAA==
+X-CMS-MailID: 20200417140730eucas1p1c314f5fadf3f27aa5268c180a0c1d63b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200324170539eucas1p25909201d48429c9489c286ac18af0f1c
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200324170539eucas1p25909201d48429c9489c286ac18af0f1c
+References: <CGME20200324170539eucas1p25909201d48429c9489c286ac18af0f1c@eucas1p2.samsung.com>
+        <20200324170532.44384-1-andriy.shevchenko@linux.intel.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In order to use a common VSC SDP Colorimetry calculating code on PSR,
-it uses a new psr vsc sdp compute routine.
-Because PSR routine has its own scenario and timings of writing a VSC SDP,
-the current PSR routine needs to have its own drm_dp_vsc_sdp structure
-member variable on struct i915_psr.
 
-In order to calculate colorimetry information, intel_psr_update()
-function and intel_psr_enable() function extend a drm_connector_state
-argument.
+[ added dri-devel ML to Cc: ]
 
-There are no changes to PSR mechanism.
+On 3/24/20 6:05 PM, Andy Shevchenko wrote:
+> Use the ->probe_new() callback.
+> 
+> The driver does not use const struct i2c_device_id * argument,
+> so convert it to utilise the simplified I²C driver registration.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-v3: Replace a structure name to drm_dp_vsc_sdp from intel_dp_vsc_sdp
-v4: Rebased
-v8: Rebased
-v10: When a PSR is enabled, it needs to add DP_SDP_VSC to
-     infoframes.enable.
-     It is needed for comparing between HW and pipe_state of VSC_SDP.
+Patch queued for v5.8, thanks.
 
-Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
----
- drivers/gpu/drm/i915/display/intel_ddi.c |  4 +-
- drivers/gpu/drm/i915/display/intel_psr.c | 56 +++++++-----------------
- drivers/gpu/drm/i915/display/intel_psr.h |  6 ++-
- drivers/gpu/drm/i915/i915_drv.h          |  1 +
- 4 files changed, 24 insertions(+), 43 deletions(-)
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
 
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 2d6ed59bf04b..578945ae8ca5 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3669,7 +3669,7 @@ static void intel_enable_ddi_dp(struct intel_atomic_state *state,
- 		intel_dp_stop_link_train(intel_dp);
- 
- 	intel_edp_backlight_on(crtc_state, conn_state);
--	intel_psr_enable(intel_dp, crtc_state);
-+	intel_psr_enable(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-@@ -3850,7 +3850,7 @@ static void intel_ddi_update_pipe_dp(struct intel_atomic_state *state,
- 
- 	intel_ddi_set_dp_msa(crtc_state, conn_state);
- 
--	intel_psr_update(intel_dp, crtc_state);
-+	intel_psr_update(intel_dp, crtc_state, conn_state);
- 	intel_dp_set_infoframes(encoder, true, crtc_state, conn_state);
- 	intel_edp_drrs_enable(intel_dp, crtc_state);
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index a0569fdfeb16..95d21d9f7310 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -30,6 +30,7 @@
- #include "intel_display_types.h"
- #include "intel_psr.h"
- #include "intel_sprite.h"
-+#include "intel_hdmi.h"
- 
- /**
-  * DOC: Panel Self Refresh (PSR/SRD)
-@@ -357,39 +358,6 @@ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
- 	}
- }
- 
--static void intel_psr_setup_vsc(struct intel_dp *intel_dp,
--				const struct intel_crtc_state *crtc_state)
--{
--	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
--	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
--	struct dp_sdp psr_vsc;
--
--	if (dev_priv->psr.psr2_enabled) {
--		/* Prepare VSC Header for SU as per EDP 1.4 spec, Table 6.11 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		if (dev_priv->psr.colorimetry_support) {
--			psr_vsc.sdp_header.HB2 = 0x5;
--			psr_vsc.sdp_header.HB3 = 0x13;
--		} else {
--			psr_vsc.sdp_header.HB2 = 0x4;
--			psr_vsc.sdp_header.HB3 = 0xe;
--		}
--	} else {
--		/* Prepare VSC packet as per EDP 1.3 spec, Table 3.10 */
--		memset(&psr_vsc, 0, sizeof(psr_vsc));
--		psr_vsc.sdp_header.HB0 = 0;
--		psr_vsc.sdp_header.HB1 = 0x7;
--		psr_vsc.sdp_header.HB2 = 0x2;
--		psr_vsc.sdp_header.HB3 = 0x8;
--	}
--
--	intel_dig_port->write_infoframe(&intel_dig_port->base,
--					crtc_state,
--					DP_SDP_VSC, &psr_vsc, sizeof(psr_vsc));
--}
--
- static void hsw_psr_setup_aux(struct intel_dp *intel_dp)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-@@ -798,6 +766,7 @@ void intel_psr_compute_config(struct intel_dp *intel_dp,
- 
- 	crtc_state->has_psr = true;
- 	crtc_state->has_psr2 = intel_psr2_config_valid(intel_dp, crtc_state);
-+	crtc_state->infoframes.enable |= intel_hdmi_infoframe_enable(DP_SDP_VSC);
- }
- 
- static void intel_psr_activate(struct intel_dp *intel_dp)
-@@ -880,9 +849,12 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- }
- 
- static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
--				    const struct intel_crtc_state *crtc_state)
-+				    const struct intel_crtc_state *crtc_state,
-+				    const struct drm_connector_state *conn_state)
- {
- 	struct intel_dp *intel_dp = dev_priv->psr.dp;
-+	struct intel_digital_port *intel_dig_port = dp_to_dig_port(intel_dp);
-+	struct intel_encoder *encoder = &intel_dig_port->base;
- 	u32 val;
- 
- 	drm_WARN_ON(&dev_priv->drm, dev_priv->psr.enabled);
-@@ -921,7 +893,9 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
- 
- 	drm_dbg_kms(&dev_priv->drm, "Enabling PSR%s\n",
- 		    dev_priv->psr.psr2_enabled ? "2" : "1");
--	intel_psr_setup_vsc(intel_dp, crtc_state);
-+	intel_dp_compute_psr_vsc_sdp(intel_dp, crtc_state, conn_state,
-+				     &dev_priv->psr.vsc);
-+	intel_write_dp_vsc_sdp(encoder, crtc_state, &dev_priv->psr.vsc);
- 	intel_psr_enable_sink(intel_dp);
- 	intel_psr_enable_source(intel_dp, crtc_state);
- 	dev_priv->psr.enabled = true;
-@@ -933,11 +907,13 @@ static void intel_psr_enable_locked(struct drm_i915_private *dev_priv,
-  * intel_psr_enable - Enable PSR
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This function can only be called after the pipe is fully trained and enabled.
-  */
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 
-@@ -958,7 +934,7 @@ void intel_psr_enable(struct intel_dp *intel_dp,
- 		goto unlock;
- 	}
- 
--	intel_psr_enable_locked(dev_priv, crtc_state);
-+	intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-@@ -1091,13 +1067,15 @@ static void psr_force_hw_tracking_exit(struct drm_i915_private *dev_priv)
-  * intel_psr_update - Update PSR state
-  * @intel_dp: Intel DP
-  * @crtc_state: new CRTC state
-+ * @conn_state: new CONNECTOR state
-  *
-  * This functions will update PSR states, disabling, enabling or switching PSR
-  * version when executing fastsets. For full modeset, intel_psr_disable() and
-  * intel_psr_enable() should be called instead.
-  */
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state)
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state)
- {
- 	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
- 	struct i915_psr *psr = &dev_priv->psr;
-@@ -1134,7 +1112,7 @@ void intel_psr_update(struct intel_dp *intel_dp,
- 		intel_psr_disable_locked(intel_dp);
- 
- 	if (enable)
--		intel_psr_enable_locked(dev_priv, crtc_state);
-+		intel_psr_enable_locked(dev_priv, crtc_state, conn_state);
- 
- unlock:
- 	mutex_unlock(&dev_priv->psr.lock);
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.h b/drivers/gpu/drm/i915/display/intel_psr.h
-index 274fc6bb6221..b4515186d5f4 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.h
-+++ b/drivers/gpu/drm/i915/display/intel_psr.h
-@@ -17,11 +17,13 @@ struct intel_dp;
- #define CAN_PSR(dev_priv) (HAS_PSR(dev_priv) && dev_priv->psr.sink_support)
- void intel_psr_init_dpcd(struct intel_dp *intel_dp);
- void intel_psr_enable(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- void intel_psr_disable(struct intel_dp *intel_dp,
- 		       const struct intel_crtc_state *old_crtc_state);
- void intel_psr_update(struct intel_dp *intel_dp,
--		      const struct intel_crtc_state *crtc_state);
-+		      const struct intel_crtc_state *crtc_state,
-+		      const struct drm_connector_state *conn_state);
- int intel_psr_debug_set(struct drm_i915_private *dev_priv, u64 value);
- void intel_psr_invalidate(struct drm_i915_private *dev_priv,
- 			  unsigned frontbuffer_bits,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index b00f0845cbc3..5baac0c3757e 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -510,6 +510,7 @@ struct i915_psr {
- 	u32 dc3co_exit_delay;
- 	struct delayed_work dc3co_work;
- 	bool force_mode_changed;
-+	struct drm_dp_vsc_sdp vsc;
- };
- 
- #define QUIRK_LVDS_SSC_DISABLE (1<<1)
--- 
-2.25.0
+> ---
+>  drivers/video/fbdev/ssd1307fb.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+> index 142535267fec..397eae246c2c 100644
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -586,8 +586,7 @@ static const struct of_device_id ssd1307fb_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ssd1307fb_of_match);
+>  
+> -static int ssd1307fb_probe(struct i2c_client *client,
+> -			   const struct i2c_device_id *id)
+> +static int ssd1307fb_probe(struct i2c_client *client)
+>  {
+>  	struct backlight_device *bl;
+>  	char bl_name[12];
+> @@ -599,11 +598,6 @@ static int ssd1307fb_probe(struct i2c_client *client,
+>  	void *vmem;
+>  	int ret;
+>  
+> -	if (!node) {
+> -		dev_err(&client->dev, "No device tree data found!\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	info = framebuffer_alloc(sizeof(struct ssd1307fb_par), &client->dev);
+>  	if (!info)
+>  		return -ENOMEM;
+> @@ -808,7 +802,7 @@ static const struct i2c_device_id ssd1307fb_i2c_id[] = {
+>  MODULE_DEVICE_TABLE(i2c, ssd1307fb_i2c_id);
+>  
+>  static struct i2c_driver ssd1307fb_driver = {
+> -	.probe = ssd1307fb_probe,
+> +	.probe_new = ssd1307fb_probe,
+>  	.remove = ssd1307fb_remove,
+>  	.id_table = ssd1307fb_i2c_id,
+>  	.driver = {
+> 
 
