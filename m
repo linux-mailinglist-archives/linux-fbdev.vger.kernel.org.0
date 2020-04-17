@@ -2,84 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCDA1ACF2C
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2020 19:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B889F1AD93E
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Apr 2020 10:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731874AbgDPRzz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Apr 2020 13:55:55 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:37671 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728445AbgDPRzy (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Apr 2020 13:55:54 -0400
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 16 Apr 2020 10:55:28 -0700
-Received: from gurus-linux.qualcomm.com ([10.46.162.81])
-  by ironmsg05-sd.qualcomm.com with ESMTP; 16 Apr 2020 10:55:28 -0700
-Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
-        id DD0574C5E; Thu, 16 Apr 2020 10:55:27 -0700 (PDT)
-Date:   Thu, 16 Apr 2020 10:55:27 -0700
-From:   Guru Das Srinagesh <gurus@codeaurora.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        David Collins <collinsd@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v12 09/11] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200416175527.GA21388@codeaurora.org>
-References: <cover.1586414867.git.gurus@codeaurora.org>
- <e2139a83008e9f301889f9384487c55de475a6a2.1586414867.git.gurus@codeaurora.org>
- <20200416094420.GB2167633@dell>
+        id S1729992AbgDQI4o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Apr 2020 04:56:44 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2345 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729784AbgDQI4n (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 17 Apr 2020 04:56:43 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E6BB1BA9E54F3CB3E3A9;
+        Fri, 17 Apr 2020 16:56:39 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Fri, 17 Apr 2020
+ 16:56:31 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <lee.jones@linaro.org>, <daniel.thompson@linaro.org>,
+        <jingoohan1@gmail.com>, <b.zolnierkie@samsung.com>,
+        <yanaijie@huawei.com>, <dri-devel@lists.freedesktop.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] backlight: lms501kf03: remove unused 'seq_sleep_in' and 'seq_up_dn'
+Date:   Fri, 17 Apr 2020 17:22:57 +0800
+Message-ID: <20200417092257.13694-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200416094420.GB2167633@dell>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 10:44:20AM +0100, Lee Jones wrote:
-> On Wed, 08 Apr 2020, Guru Das Srinagesh wrote:
-> 
-> > Since the PWM framework is switching struct pwm_state.period's datatype
-> > to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> > dividend instead of a straight division operation.
-> > 
-> > Cc: Lee Jones <lee.jones@linaro.org>
-> > Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> > Cc: Jingoo Han <jingoohan1@gmail.com>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: linux-pwm@vger.kernel.org
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: linux-fbdev@vger.kernel.org
-> > 
-> > Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > ---
-> >  drivers/video/backlight/pwm_bl.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> I see that this is part of a large set, but the remainder of the
-> patches have been hidden from me.
+Fix the following gcc warning:
 
-Sorry about that, the full series is here: [1].
+drivers/video/backlight/lms501kf03.c:96:28: warning: ‘seq_sleep_in’
+defined but not used [-Wunused-const-variable=]
+ static const unsigned char seq_sleep_in[] = {
+                            ^~~~~~~~~~~~
+drivers/video/backlight/lms501kf03.c:92:28: warning: ‘seq_up_dn’ defined
+but not used [-Wunused-const-variable=]
+ static const unsigned char seq_up_dn[] = {
+                            ^~~~~~~~~
 
-> Does this mean I can apply this patch on its own?
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/video/backlight/lms501kf03.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-I'll defer to Uwe on this point as I am not sure of the implications of
-taking in this single patch and not the entire series.
+diff --git a/drivers/video/backlight/lms501kf03.c b/drivers/video/backlight/lms501kf03.c
+index 8ae32e3573c1..c1bd02bb8b2e 100644
+--- a/drivers/video/backlight/lms501kf03.c
++++ b/drivers/video/backlight/lms501kf03.c
+@@ -89,14 +89,6 @@ static const unsigned char seq_rgb_gamma[] = {
+ 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ };
+ 
+-static const unsigned char seq_up_dn[] = {
+-	0x36, 0x10,
+-};
+-
+-static const unsigned char seq_sleep_in[] = {
+-	0x10,
+-};
+-
+ static const unsigned char seq_sleep_out[] = {
+ 	0x11,
+ };
+-- 
+2.21.1
 
-Thank you.
-
-Guru Das.
-
-[1] https://www.spinics.net/lists/linux-pwm/msg12131.html
