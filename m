@@ -2,246 +2,147 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C711B11BB
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Apr 2020 18:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C9B1B14B3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Apr 2020 20:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgDTQhu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Apr 2020 12:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726715AbgDTQhs (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Apr 2020 12:37:48 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D411C025492
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Apr 2020 09:37:48 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id x18so13041635wrq.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Apr 2020 09:37:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Rj3jrSbU2b68oTmKDFbN7ThfXz7DCPKlENH6dIentbg=;
-        b=qOT0X9riAMzmEP5Ha7488hZVekV30Pk1csqcVzplu+ZIg38c2b8tJvtqrQxgpOYkB9
-         gX3MxO54dkj2kFQFhE5lK6hQo7mTnazAsr/J9Mos46z019jWW0wXkiX4mXVo7Slw+LmM
-         v5tq74Of3prsSVSua+OY6XUstDoUqWTCf0/NpP7ovNedfz5TSTxz9xs1B4lJkC9hP74b
-         YBH+u7CaAba8aqdOIlMvsOdBz5fvPCDxaisMIDG148fRwFWGWsEtfhVUIWBUGapQLE7h
-         bOZo0wZ/o5qKajlkAxKhsO8NZxFKfxwBbEQ6JKkH71oNt5TtD6msKqc81wIjQ6P9pA/e
-         A2cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Rj3jrSbU2b68oTmKDFbN7ThfXz7DCPKlENH6dIentbg=;
-        b=YYKBON/DAUNMGsk8z5Tp6gGhlZcbgyye+rZ11yHCuQ4AOOEiJAhFpjnmQGQwncfBkX
-         DqpU3tLAfB5+/VCXAUyw2NksnnIXGDOeBH+CHO4tZJf97lTPVUgkZhOLkI3PVnjghRHS
-         tVpWI7MFtn1G5Eo5VcTH4AcvwQfgQFQPx0W6zQPtawvqPPWlPodM2Bi3gciNJfI4U1Ee
-         y3drZ8HyBWME8Ez4GDumhYHDXC+KCv9nO9BqW7E4aFzJuCbY803vinHXfGIjmsG49291
-         jyLHQ0PX8E8I0dSb6q+WDpaNhK5t/XjfOly6JPLKJepLBl7GDgR1MU/r4CAOpjGf2rvo
-         LajA==
-X-Gm-Message-State: AGi0PuZ8VCZDvd7RfBeyC1RVnHKLa0zWqbTFo0LEvl6/xOkxS8qoulD2
-        zOLNY03D3daexmuLAc4GspXA8A==
-X-Google-Smtp-Source: APiQypKAH6kAxnN7z1zkH/+viWwXnCewnUDNHJ9TNYyq8qYdBhojhij+2K2UR3NYJ6w9XnjttNtugg==
-X-Received: by 2002:adf:e5c8:: with SMTP id a8mr21467911wrn.56.1587400666708;
-        Mon, 20 Apr 2020 09:37:46 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id s8sm42510wru.38.2020.04.20.09.37.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2020 09:37:46 -0700 (PDT)
-Date:   Mon, 20 Apr 2020 17:37:44 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-Subject: Re: [PATCH V5 4/4] backlight: qcom-wled: Add support for WLED5
- peripheral that is present on PM8150L PMICs
-Message-ID: <20200420163744.3qbeqwv7myzmam3d@holly.lan>
-References: <1586274430-28402-1-git-send-email-kgunda@codeaurora.org>
- <1586274430-28402-5-git-send-email-kgunda@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1586274430-28402-5-git-send-email-kgunda@codeaurora.org>
+        id S1727877AbgDTSgi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 Apr 2020 14:36:38 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:61324 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725613AbgDTSgh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 20 Apr 2020 14:36:37 -0400
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 495b4z3MXVz9v1w9;
+        Mon, 20 Apr 2020 20:36:35 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=E+DWEZwJ; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id L4mwlUXAK_-i; Mon, 20 Apr 2020 20:36:35 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 495b4z2JLhz9v95f;
+        Mon, 20 Apr 2020 20:36:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1587407795; bh=0fa57ddsyHEgiUKKkj3rA4MemZZkyaFbgYjKejGShaM=;
+        h=From:Subject:To:Cc:Date:From;
+        b=E+DWEZwJhz6Y/xgde33hxmuD3rGUtiRxeI/8EM0ccVSx3KfiQ4f7G5tlyiclyZlTv
+         G3EZfX0BGGT6pW9WIfnMkWEKqCSDbnWxGkJCDbptk9jvRRwxinuBROxEoLLsiTAxU+
+         2fc5X+q61AH6lsZ6C9gAPrkXh1oIdYDt+A1N76WQ=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 4F6AA8B78A;
+        Mon, 20 Apr 2020 20:36:35 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id 7Voh0XE4aIU2; Mon, 20 Apr 2020 20:36:35 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id EFABD8B77E;
+        Mon, 20 Apr 2020 20:36:34 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+        id B0D97657AE; Mon, 20 Apr 2020 18:36:34 +0000 (UTC)
+Message-Id: <a5945463f86c984151962a475a3ee56a2893e85d.1587407777.git.christophe.leroy@c-s.fr>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 1/5] drivers/powerpc: Replace _ALIGN_UP() by ALIGN()
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Cc:     linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+Date:   Mon, 20 Apr 2020 18:36:34 +0000 (UTC)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Apr 07, 2020 at 09:17:10PM +0530, Kiran Gunda wrote:
-> From: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-> 
-> PM8150L WLED supports the following:
->     - Two modulators and each sink can use any of the modulator
->     - Multiple CABC selection options from which one can be selected/enabled
->     - Multiple brightness width selection (12 bits to 15 bits)
-> 
-> Signed-off-by: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-> ---
->  drivers/video/backlight/qcom-wled.c | 443 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 442 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index a6ddaa9..3a57011 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> ...
-> +static const u8 wled5_brightness_reg[MOD_MAX] = {
-> +	[MOD_A] = WLED5_SINK_REG_MOD_A_BRIGHTNESS_LSB,
-> +	[MOD_B] = WLED5_SINK_REG_MOD_B_BRIGHTNESS_LSB,
-> +};
-> +
-> +static const u8 wled5_src_sel_reg[MOD_MAX] = {
-> +	[MOD_A] = WLED5_SINK_REG_MOD_A_SRC_SEL,
-> +	[MOD_B] = WLED5_SINK_REG_MOD_B_SRC_SEL,
-> +};
-> +
-> +static const u8 wled5_brt_wid_sel_reg[MOD_MAX] = {
-> +	[MOD_A] = WLED5_SINK_REG_MOD_A_BRIGHTNESS_WIDTH_SEL,
-> +	[MOD_B] = WLED5_SINK_REG_MOD_B_BRIGHTNESS_WIDTH_SEL,
-> +};
-> +
+_ALIGN_UP() is specific to powerpc
+ALIGN() is generic and does the same
 
-Each of these lookup tables are used exactly once... and half the time
-when this code chooses between MOD_A and MOD_B a ternary is used and
-half the time these lookup tables.
+Replace _ALIGN_UP() by ALIGN()
 
-I suggest these be removed.
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ drivers/ps3/ps3-lpm.c               | 6 +++---
+ drivers/vfio/pci/vfio_pci_nvlink2.c | 2 +-
+ drivers/video/fbdev/ps3fb.c         | 4 ++--
+ sound/ppc/snd_ps3.c                 | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/ps3/ps3-lpm.c b/drivers/ps3/ps3-lpm.c
+index 83c45659bc9d..064b5884ba13 100644
+--- a/drivers/ps3/ps3-lpm.c
++++ b/drivers/ps3/ps3-lpm.c
+@@ -1096,8 +1096,8 @@ int ps3_lpm_open(enum ps3_lpm_tb_type tb_type, void *tb_cache,
+ 		lpm_priv->tb_cache_internal = NULL;
+ 		lpm_priv->tb_cache = NULL;
+ 	} else if (tb_cache) {
+-		if (tb_cache != (void *)_ALIGN_UP((unsigned long)tb_cache, 128)
+-			|| tb_cache_size != _ALIGN_UP(tb_cache_size, 128)) {
++		if (tb_cache != (void *)ALIGN((unsigned long)tb_cache, 128)
++			|| tb_cache_size != ALIGN(tb_cache_size, 128)) {
+ 			dev_err(sbd_core(), "%s:%u: unaligned tb_cache\n",
+ 				__func__, __LINE__);
+ 			result = -EINVAL;
+@@ -1116,7 +1116,7 @@ int ps3_lpm_open(enum ps3_lpm_tb_type tb_type, void *tb_cache,
+ 			result = -ENOMEM;
+ 			goto fail_malloc;
+ 		}
+-		lpm_priv->tb_cache = (void *)_ALIGN_UP(
++		lpm_priv->tb_cache = (void *)ALIGN(
+ 			(unsigned long)lpm_priv->tb_cache_internal, 128);
+ 	}
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
+index ed20d73cc27c..65c61710c0e9 100644
+--- a/drivers/vfio/pci/vfio_pci_nvlink2.c
++++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
+@@ -67,7 +67,7 @@ static size_t vfio_pci_nvgpu_rw(struct vfio_pci_device *vdev,
+ 	 *
+ 	 * This is not fast path anyway.
+ 	 */
+-	sizealigned = _ALIGN_UP(posoff + count, PAGE_SIZE);
++	sizealigned = ALIGN(posoff + count, PAGE_SIZE);
+ 	ptr = ioremap_cache(data->gpu_hpa + posaligned, sizealigned);
+ 	if (!ptr)
+ 		return -EFAULT;
+diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+index 834f63edf700..9df78fb77267 100644
+--- a/drivers/video/fbdev/ps3fb.c
++++ b/drivers/video/fbdev/ps3fb.c
+@@ -44,7 +44,7 @@
+ #define GPU_CMD_BUF_SIZE			(2 * 1024 * 1024)
+ #define GPU_FB_START				(64 * 1024)
+ #define GPU_IOIF				(0x0d000000UL)
+-#define GPU_ALIGN_UP(x)				_ALIGN_UP((x), 64)
++#define GPU_ALIGN_UP(x)				ALIGN((x), 64)
+ #define GPU_MAX_LINE_LENGTH			(65536 - 64)
+ 
+ #define GPU_INTR_STATUS_VSYNC_0			0	/* vsync on head A */
+@@ -1015,7 +1015,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
+ 	}
+ #endif
+ 
+-	max_ps3fb_size = _ALIGN_UP(GPU_IOIF, 256*1024*1024) - GPU_IOIF;
++	max_ps3fb_size = ALIGN(GPU_IOIF, 256*1024*1024) - GPU_IOIF;
+ 	if (ps3fb_videomemory.size > max_ps3fb_size) {
+ 		dev_info(&dev->core, "Limiting ps3fb mem size to %lu bytes\n",
+ 			 max_ps3fb_size);
+diff --git a/sound/ppc/snd_ps3.c b/sound/ppc/snd_ps3.c
+index 6d2a33b8faa0..b8161a08f2ca 100644
+--- a/sound/ppc/snd_ps3.c
++++ b/sound/ppc/snd_ps3.c
+@@ -926,7 +926,7 @@ static int snd_ps3_driver_probe(struct ps3_system_bus_device *dev)
+ 			    PAGE_SHIFT, /* use system page size */
+ 			    0, /* dma type; not used */
+ 			    NULL,
+-			    _ALIGN_UP(SND_PS3_DMA_REGION_SIZE, PAGE_SIZE));
++			    ALIGN(SND_PS3_DMA_REGION_SIZE, PAGE_SIZE));
+ 	dev->d_region->ioid = PS3_AUDIO_IOID;
+ 
+ 	ret = ps3_dma_region_create(dev->d_region);
+-- 
+2.25.0
 
->  static int wled3_set_brightness(struct wled *wled, u16 brightness)
->  {
->  	int rc, i;
-> @@ -225,6 +291,25 @@ static int wled4_set_brightness(struct wled *wled, u16 brightness)
->  	return 0;
->  }
->  
-> +static int wled5_set_brightness(struct wled *wled, u16 brightness)
-> +{
-> +	int rc, offset;
-> +	u16 low_limit = wled->max_brightness * 1 / 1000;
-
-Multiplying by 1 is redundant.
-
-
-> +	u8 v[2];
-> +
-> +	/* WLED5's lower limit is 0.1% */
-> +	if (brightness < low_limit)
-> +		brightness = low_limit;
-> +
-> +	v[0] = brightness & 0xff;
-> +	v[1] = (brightness >> 8) & 0x7f;
-> +
-> +	offset = wled5_brightness_reg[wled->cfg.mod_sel];
-> +	rc = regmap_bulk_write(wled->regmap, wled->sink_addr + offset,
-> +			       v, 2);
-> +	return rc;
-> +}
-> +
->  static void wled_ovp_work(struct work_struct *work)
->  {
->  	struct wled *wled = container_of(work,
-> @@ -317,11 +420,67 @@ static int wled4_ovp_fault_status(struct wled *wled, bool *fault_set)
->  	return rc;
->  }
->  
-> +static int wled5_ovp_fault_status(struct wled *wled, bool *fault_set)
-> +{
-> +	int rc;
-> +	u32 int_rt_sts, fault_sts;
-> +
-> +	*fault_set = false;
-> +	rc = regmap_read(wled->regmap,
-> +			wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
-> +			&int_rt_sts);
-> +	if (rc < 0) {
-> +		dev_err(wled->dev, "Failed to read INT_RT_STS rc=%d\n", rc);
-> +		return rc;
-> +	}
-> +
-> +	rc = regmap_read(wled->regmap,
-> +			wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
-> +			&fault_sts);
-> +	if (rc < 0) {
-> +		dev_err(wled->dev, "Failed to read FAULT_STATUS rc=%d\n", rc);
-> +		return rc;
-> +	}
-> +
-> +	if (int_rt_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
-> +		*fault_set = true;
-> +
-> +	if (fault_sts & (WLED3_CTRL_REG_OVP_FAULT_BIT |
-> +			       WLED5_CTRL_REG_OVP_PRE_ALARM_BIT))
-
-Correct me if I'm wrong but isn't the only difference between the WLED4
-and WLED5 code that the wled5 code also checks the
-WLED5_CTRL_REG_OVP_PRE_ALARM_BIT ?
-
-If so why do we need to pull out (and duplicate) this code code using
-the function pointers?
-
-> +		*fault_set = true;
-> +
-> +	if (*fault_set)
-> +		dev_dbg(wled->dev, "WLED OVP fault detected, int_rt_sts=0x%x fault_sts=0x%x\n",
-> +			int_rt_sts, fault_sts);
-> +
-> +	return rc;
-> +}
-> +
-> @@ -615,6 +797,7 @@ static void wled_auto_string_detection(struct wled *wled)
->  
->  #define WLED_AUTO_DETECT_OVP_COUNT		5
->  #define WLED_AUTO_DETECT_CNT_DLY_US		USEC_PER_SEC
-> +
-
-Nit picking but this additional line is in the wrong patch ;-)
-
-
->  static bool wled4_auto_detection_required(struct wled *wled)
->  {
->  	s64 elapsed_time_us;
-> @@ -648,6 +831,46 @@ static bool wled4_auto_detection_required(struct wled *wled)
->  	return false;
->  }
->  
-> +static bool wled5_auto_detection_required(struct wled *wled)
-> +{
-> +	s64 elapsed_time_us;
-> +
-> +	if (!wled->cfg.auto_detection_enabled)
-> +		return false;
-> +
-> +	/*
-> +	 * Check if the OVP fault was an occasional one
-> +	 * or if it's firing continuously, the latter qualifies
-> +	 * for an auto-detection check.
-> +	 */
-> +	if (!wled->auto_detection_ovp_count) {
-> +		wled->start_ovp_fault_time = ktime_get();
-> +		wled->auto_detection_ovp_count++;
-> +	} else {
-> +		/*
-> +		 * WLED5 has OVP fault density interrupt configuration i.e. to
-> +		 * count the number of OVP alarms for a certain duration before
-> +		 * triggering OVP fault interrupt. By default, number of OVP
-> +		 * fault events counted before an interrupt is fired is 32 and
-> +		 * the time interval is 12 ms. If we see more than one OVP fault
-> +		 * interrupt, then that should qualify for a real OVP fault
-> +		 * condition to run auto calibration algorithm.
-> +		 */
-
-Given the above why do we have a software mechanism to wait until the
-second time the interrupt fires? I'm a bit rusty on this driver but
-wasn't there already some mechanism to slightly delay turning on the
-fault detection?
-
-
-Daniel.
