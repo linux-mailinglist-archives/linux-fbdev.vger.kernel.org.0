@@ -2,201 +2,115 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFE451B0C6F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Apr 2020 15:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 433A71B0D61
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Apr 2020 15:51:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbgDTNR5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Apr 2020 09:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38196 "EHLO
+        id S1728326AbgDTNvG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 Apr 2020 09:51:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726049AbgDTNR4 (ORCPT
+        by vger.kernel.org with ESMTP id S1726725AbgDTNvF (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Apr 2020 09:17:56 -0400
-X-Greylist: delayed 301 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 20 Apr 2020 06:17:56 PDT
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 618C7C061A0C
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Apr 2020 06:17:56 -0700 (PDT)
-Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:124:221f:3928:ed52])
-        by andre.telenet-ops.be with bizsmtp
-        id V1Ct22001079KS6011CtZP; Mon, 20 Apr 2020 15:12:53 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jQWEG-0007CS-T5; Mon, 20 Apr 2020 15:12:52 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1jQWEG-00028Y-Pp; Mon, 20 Apr 2020 15:12:52 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     linux-fbdev@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest] Fix small pixel drawing on little endian systems
-Date:   Mon, 20 Apr 2020 15:12:51 +0200
-Message-Id: <20200420131251.8172-1-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.17.1
+        Mon, 20 Apr 2020 09:51:05 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68196C061A0F
+        for <linux-fbdev@vger.kernel.org>; Mon, 20 Apr 2020 06:51:04 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id k11so12274237wrp.5
+        for <linux-fbdev@vger.kernel.org>; Mon, 20 Apr 2020 06:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=xL0eDIXpQBxMEh1rpP/FONQ6psNDwPofEEjDAjgV9+E=;
+        b=g9N4Prb+W/MZeBAamiu3mzs0P1/HfnhajHbNf6Z+BFG6AESZOAaf9tIdcTxFockEwT
+         EKWaFlouUpD/6fVZbNK0UTx2Jequz1Oq9PHEye186schaM/btM9eBXfEyafUFocZ4uoG
+         9pltSmbf6ROp/xZA9nnA49VLvIueiVYem97NDOVi92BD00TMnnEYBZ1zmUTNSjkm0Z31
+         VdcX8+PNRUSm0vWV05sEJ5T8GMqxfwe1n/O6bOaDggc/c8v7DZG/1gRKS6fRBhbxQKe3
+         Jw1jtrmpyMbhSiH1+qiF5nHqdAbioZLiViL9DeqUIgcbbxhwd3dFKn8Nl13HJkeUL/8l
+         VmOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=xL0eDIXpQBxMEh1rpP/FONQ6psNDwPofEEjDAjgV9+E=;
+        b=rs3R9STqMck2D2mFZmg6hCWg1ucKc7iNkY7+jpeL+3idTfn8iit90NQ96kn9NOtqDz
+         cRp4dPa0X8fbVj36qx0ctLukfweGwZn6j8SzxGn2ymjaLa953EAoAPrXRO1richlAl7R
+         BUxzqBs/Jt19i1rAeM7pO0gEA8xwFRhE+GYKyJo/Rqam1CvbokZTkeDsqvUB3ivhijxE
+         K2Qb7MuVvY6hgwEsWXcJAljBZM1ZEM5iCM+6BjbhQPKgFA8iRSqdmdak0UcLKQTLEqVW
+         Pj1YSIy+GzFUnueBSObD+qYNaSkb2nHzZ4FuAnqtmITnCnPe4u8oC89L4OOHuBt0pSkU
+         tD8w==
+X-Gm-Message-State: AGi0PuZnexUHz8NdgmqDLjpgq6FlBblAcHEIrTorypxk7Z6ywSSYc0Jf
+        m1yGX6Dn61nPfrSO69ibgXeHXw==
+X-Google-Smtp-Source: APiQypIkD9tDuLBwdY9svyS889RVUDhlwihT/636a3FV3sGGLOwXPv1ushYYNwKn2DXvjpEovZY5Zg==
+X-Received: by 2002:adf:decb:: with SMTP id i11mr18098981wrn.140.1587390663057;
+        Mon, 20 Apr 2020 06:51:03 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id b85sm1502032wmb.21.2020.04.20.06.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2020 06:51:02 -0700 (PDT)
+Date:   Mon, 20 Apr 2020 14:51:00 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hulk Robot <hulkci@huawei.com>
+Subject: Re: [PATCH] backlight: lms501kf03: remove unused 'seq_sleep_in' and
+ 'seq_up_dn'
+Message-ID: <20200420135100.lhwcdkl33jzomy6p@holly.lan>
+References: <20200417092257.13694-1-yanaijie@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200417092257.13694-1-yanaijie@huawei.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If the pixel size (bpp) is smaller than the word size (long) on a little
-endian system, pixel data is written to the wrong part of the word.
+On Fri, Apr 17, 2020 at 05:22:57PM +0800, Jason Yan wrote:
+> Fix the following gcc warning:
+> 
+> drivers/video/backlight/lms501kf03.c:96:28: warning: ‘seq_sleep_in’
+> defined but not used [-Wunused-const-variable=]
+>  static const unsigned char seq_sleep_in[] = {
+>                             ^~~~~~~~~~~~
+> drivers/video/backlight/lms501kf03.c:92:28: warning: ‘seq_up_dn’ defined
+> but not used [-Wunused-const-variable=]
+>  static const unsigned char seq_up_dn[] = {
+>                             ^~~~~~~~~
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-Fix this by reversing the shifts on little endian systems.
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-Seen on 16-bpp displays when drawing horizontal line segments that start
-or end an odd pixel boundary.
----
- drawops/bitstream.c | 28 ++++++++++++++++++----------
- drawops/cfb.c       | 25 +++++++++++++++++++------
- include/types.h     |  2 ++
- 3 files changed, 39 insertions(+), 16 deletions(-)
 
-diff --git a/drawops/bitstream.c b/drawops/bitstream.c
-index b3e09336cc477baa..06c74043b091846b 100644
---- a/drawops/bitstream.c
-+++ b/drawops/bitstream.c
-@@ -13,6 +13,14 @@
- #include "bitstream.h"
- #include "fb.h"
- 
-+#if __BYTE_ORDER == __LITTLE_ENDIAN
-+#define FIRST_MASK(idx)		(~0UL << (idx))
-+#define LAST_MASK(idx, n)	(~(~0UL << (((idx)+(n)) % BITS_PER_LONG)))
-+#else
-+#define FIRST_MASK(idx)		(~0UL >> (idx))
-+#define LAST_MASK(idx, n)	(~(~0UL >> (((idx)+(n)) % BITS_PER_LONG)))
-+#endif
-+
- 
-     /*
-      *  Compose two values, using a bitmask as decision value
-@@ -42,8 +50,8 @@ void bitcpy(unsigned long *dst, int dst_idx, const unsigned long *src,
- 	return;
- 
-     shift = dst_idx-src_idx;
--    first = ~0UL >> dst_idx;
--    last = ~(~0UL >> ((dst_idx+n) % BITS_PER_LONG));
-+    first = FIRST_MASK(dst_idx);
-+    last = LAST_MASK(dst_idx, n);
- 
-     if (!shift) {
- 	// Same alignment for source and dest
-@@ -190,8 +198,8 @@ void bitcpy_rev(unsigned long *dst, int dst_idx, const unsigned long *src,
-     }
- 
-     shift = dst_idx-src_idx;
--    first = ~0UL << (BITS_PER_LONG-1-dst_idx);
--    last = ~(~0UL << (BITS_PER_LONG-1-((dst_idx-n) % BITS_PER_LONG)));
-+    first = FIRST_MASK(BITS_PER_LONG-1-dst_idx);
-+    last = LAST_MASK(BITS_PER_LONG-1-dst_idx, n);
- 
-     if (!shift) {
- 	// Same alignment for source and dest
-@@ -328,8 +336,8 @@ void bitcpy_not(unsigned long *dst, int dst_idx, const unsigned long *src,
- 	return;
- 
-     shift = dst_idx-src_idx;
--    first = ~0UL >> dst_idx;
--    last = ~(~0UL >> ((dst_idx+n) % BITS_PER_LONG));
-+    first = FIRST_MASK(dst_idx);
-+    last = LAST_MASK(dst_idx, n);
- 
-     if (!shift) {
- 	// Same alignment for source and dest
-@@ -465,8 +473,8 @@ void bitfill32(unsigned long *dst, int dst_idx, u32 pat, u32 n)
-     val |= val << 32;
- #endif
- 
--    first = ~0UL >> dst_idx;
--    last = ~(~0UL >> ((dst_idx+n) % BITS_PER_LONG));
-+    first = FIRST_MASK(dst_idx);
-+    last = LAST_MASK(dst_idx, n);
- 
-     if (dst_idx+n <= BITS_PER_LONG) {
- 	// Single word
-@@ -520,8 +528,8 @@ void bitfill(unsigned long *dst, int dst_idx, unsigned long pat, int left,
-     if (!n)
- 	return;
- 
--    first = ~0UL >> dst_idx;
--    last = ~(~0UL >> ((dst_idx+n) % BITS_PER_LONG));
-+    first = FIRST_MASK(dst_idx);
-+    last = LAST_MASK(dst_idx, n);
- 
-     if (dst_idx+n <= BITS_PER_LONG) {
- 	// Single word
-diff --git a/drawops/cfb.c b/drawops/cfb.c
-index 1d8c88e7f23e983e..4a5a1ab654d75310 100644
---- a/drawops/cfb.c
-+++ b/drawops/cfb.c
-@@ -104,7 +104,7 @@ static inline unsigned long pixel_to_pat(pixel_t pixel, int left)
- void cfb_draw_hline(u32 x, u32 y, u32 length, pixel_t pixel)
- {
-     unsigned long *dst;
--    int dst_idx, left;
-+    int dst_idx, left, right;
-     u32 bpp = fb_var.bits_per_pixel;
- 
-     dst = (unsigned long *)((unsigned long)fb & ~(BYTES_PER_LONG-1));
-@@ -118,15 +118,22 @@ void cfb_draw_hline(u32 x, u32 y, u32 length, pixel_t pixel)
- 	u32 pat = pixel_to_pat32(pixel);
- 	bitfill32(dst, dst_idx, pat, length*bpp);
-     } else {
--	unsigned long pat = pixel_to_pat(pixel, (left-dst_idx) % bpp);
--	bitfill(dst, dst_idx, pat, left, bpp-left, length*bpp);
-+	unsigned long pat;
-+#if __BYTE_ORDER == __LITTLE_ENDIAN
-+	right = left;
-+	left = bpp-left;
-+#else
-+	right = bpp-left;
-+#endif
-+	pat = pixel_to_pat(pixel, (left-dst_idx) % bpp);
-+	bitfill(dst, dst_idx, pat, left, right, length*bpp);
-     }
- }
- 
- void cfb_fill_rect(u32 x, u32 y, u32 width, u32 height, pixel_t pixel)
- {
-     unsigned long *dst;
--    int dst_idx, left;
-+    int dst_idx, left, right;
-     u32 bpp = fb_var.bits_per_pixel;
- 
-     dst = (unsigned long *)((unsigned long)fb & ~(BYTES_PER_LONG-1));
-@@ -143,9 +150,15 @@ void cfb_fill_rect(u32 x, u32 y, u32 width, u32 height, pixel_t pixel)
- 	    dst_idx += next_line*8;
- 	}
-     } else {
--	unsigned long pat = pixel_to_pat(pixel, (left-dst_idx) % bpp);
--	int right = bpp-left;
-+	unsigned long pat;
- 	int r;
-+#if __BYTE_ORDER == __LITTLE_ENDIAN
-+	right = left;
-+	left = bpp-left;
-+#else
-+	right = bpp-left;
-+#endif
-+	pat = pixel_to_pat(pixel, (left-dst_idx) % bpp);
- 	while (height--) {
- 	    dst += dst_idx >> SHIFT_PER_LONG;
- 	    dst_idx &= (BITS_PER_LONG-1);
-diff --git a/include/types.h b/include/types.h
-index 8b11ee1b1b63ede6..33066fd299be79eb 100644
---- a/include/types.h
-+++ b/include/types.h
-@@ -9,6 +9,8 @@
-  *  more details.
-  */
- 
-+#include <endian.h>
-+
- 
-     /*
-      *  Fixed size quantities
--- 
-2.17.1
-
+> ---
+>  drivers/video/backlight/lms501kf03.c | 8 --------
+>  1 file changed, 8 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/lms501kf03.c b/drivers/video/backlight/lms501kf03.c
+> index 8ae32e3573c1..c1bd02bb8b2e 100644
+> --- a/drivers/video/backlight/lms501kf03.c
+> +++ b/drivers/video/backlight/lms501kf03.c
+> @@ -89,14 +89,6 @@ static const unsigned char seq_rgb_gamma[] = {
+>  	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+>  };
+>  
+> -static const unsigned char seq_up_dn[] = {
+> -	0x36, 0x10,
+> -};
+> -
+> -static const unsigned char seq_sleep_in[] = {
+> -	0x10,
+> -};
+> -
+>  static const unsigned char seq_sleep_out[] = {
+>  	0x11,
+>  };
+> -- 
+> 2.21.1
+> 
