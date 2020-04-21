@@ -2,94 +2,169 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A218C1B269F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 14:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C95F61B26E4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 14:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728645AbgDUMqx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 Apr 2020 08:46:53 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:40328 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728524AbgDUMqx (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 Apr 2020 08:46:53 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03LCkgta126600;
-        Tue, 21 Apr 2020 07:46:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587473202;
-        bh=km8GOuXtSK2uVaZ02Woyvmud19wDYpD0cpRiTMtbJDM=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=rrjVtWtXRPXSmi3zX6MwVnDEH05p5WAfU0ExKmxw3k2MuwDINWHZ66/sKKIzznzAQ
-         qenrpfSdzx9CxIoqWyLeCEp2jRAt25YqYWp9PvJyU7jmVMAACUvX6RWIM/PaqGGNAl
-         4RkP6Gmw1c97ccdoq6TUrQ5UjVhqgeB23hcJcVUU=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03LCkgHS027546
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 21 Apr 2020 07:46:42 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 21
- Apr 2020 07:46:41 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 21 Apr 2020 07:46:41 -0500
-Received: from deskari.lan (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03LCkVx7037462;
-        Tue, 21 Apr 2020 07:46:40 -0500
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-CC:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCHv2 4/4] backlight: led_bl: fix led -> backlight brightness mapping
-Date:   Tue, 21 Apr 2020 15:46:29 +0300
-Message-ID: <20200421124629.20977-5-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200421124629.20977-1-tomi.valkeinen@ti.com>
-References: <20200421124629.20977-1-tomi.valkeinen@ti.com>
+        id S1728847AbgDUM6U (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Apr 2020 08:58:20 -0400
+Received: from mga18.intel.com ([134.134.136.126]:43057 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728337AbgDUM6T (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 21 Apr 2020 08:58:19 -0400
+IronPort-SDR: 7Ca3xYGvfKmaoLuxbNKifL4kZ/zq7yybeiEwMD9tmPsaldTKJmVbSxcMXH4ahJ2lXoCPDgvQyu
+ wIMg+l/NsRiw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2020 05:58:18 -0700
+IronPort-SDR: axJ9m9BU+wnJvpOqz/6tiNoXd/1WErtbn7nWjaZcOfojZqzDTWX9Vm1Me6VPShLcS2Mnbj6O+t
+ jNFvSMbOeeyw==
+X-IronPort-AV: E=Sophos;i="5.72,410,1580803200"; 
+   d="scan'208";a="429521801"
+Received: from parkernx-mobl.ger.corp.intel.com (HELO localhost) ([10.249.46.80])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2020 05:58:11 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Andrzej Hajda <a.hajda@samsung.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
+        VMware Graphics <linux-graphics-maintainer@vmware.com>,
+        Thomas Hellstrom <thellstrom@vmware.com>, jfrederich@gmail.com,
+        dsd@laptop.org, Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 0/8] drm, fbdev: rework dependencies
+In-Reply-To: <20200421122726.GW3456981@phenom.ffwll.local>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200417155553.675905-1-arnd@arndb.de> <20200417171453.GS3456981@phenom.ffwll.local> <20200417190854.GI26002@ziepe.ca> <87y2qq1smt.fsf@intel.com> <CAK8P3a0eSHg6Hx-FqpEF-N4LhZjv4o3PooK2eKw7KTntoKKckQ@mail.gmail.com> <20200421122726.GW3456981@phenom.ffwll.local>
+Date:   Tue, 21 Apr 2020 15:58:08 +0300
+Message-ID: <87a735yp0f.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The code that maps the LED default brightness to backlight levels has
-two issues: 1) if the default brightness is the first backlight level
-(usually 0), the code fails to find it, and 2) when the code fails to
-find a backlight level, it ends up using max_brightness + 1 as the
-default brightness.
+On Tue, 21 Apr 2020, Daniel Vetter <daniel@ffwll.ch> wrote:
+> On Mon, Apr 20, 2020 at 04:03:23PM +0200, Arnd Bergmann wrote:
+>> On Mon, Apr 20, 2020 at 10:14 AM Jani Nikula
+>> <jani.nikula@linux.intel.com> wrote:
+>> > On Fri, 17 Apr 2020, Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>> > > On Fri, Apr 17, 2020 at 07:14:53PM +0200, Daniel Vetter wrote:
+>> > >> On Fri, Apr 17, 2020 at 05:55:45PM +0200, Arnd Bergmann wrote:
+>> > >> >
+>> > >> > If we can agree on these changes, maybe someone can merge them
+>> > >> > through the drm-misc tree.
+>> > >> >
+>> > >> > Please review
+>> > >>
+>> > >> Biggest concern I have is that usability of make menuconfig is horrible,
+>> 
+>> No doubt about that, but that seems to be unrelated to the cleanup.
+>> 
+>> > >> and it's very hard to find options that are hidden by depends on. You can
+>> > >> use the search interface, if you happen to know the option.
+>> > >>
+>> > >> Once you've surmounted that bar, the next one is trying to find what
+>> > >> exactly you need to enable. Which again means endless of recursive
+>> > >> screaming at Kconfig files, since make menuconfig doesn't help you at all.
+>> 
+>> The changes I'm doing are mostly for fbdev, which is currently the
+>> odd one out. Most kernel subsystems today follow the documented
+>> recommendations and only use 'depends on' for things they
+>> depend on.
+>> 
+>> Having fbdev be the exception causes two problems:
+>> 
+>> - It does not make kconfig any easier to use overall, just less consistent
+>>   when it is the only thing that implicitly turns on dependencies and
+>>   for everything else one still has to look up what the dependencies are.
+>> 
+>> - Most of the problems with circular dependencies come from mixing
+>>   the two methods, and most of the cases where they have caused
+>>   problems in the past involve fbdev in some way.
+>> 
+>> I also doubt switching lots of 'depends on' to 'select' all over Kconfig
+>> would improve the situation on a global level. It would simplify the
+>> problem of turning something on without understanding the what it
+>> does, but in turn it makes it harder to turn off something else.
+>> 
+>> E.g. today it is hard to turn off fbdev because that is selected by a
+>> number of (partly unrelated) options, but there was a recent discussion
+>> about getting distros to stop enabling fbdev out of security concerns.
+>
+> I've done some history digging, this is the patch that started this all:
+>
+> commit d2f59357700487a8b944f4f7777d1e97cf5ea2ed
+> Author: Ingo Molnar <mingo@elte.hu>
+> Date:   Thu Feb 5 16:03:34 2009 +0100
+>
+>     drm/i915: select framebuffer support automatically
+>
+> I.e. driver gets disabled because a new config is added which isn't
+> enabled. System doesn't boot, maintainer gets angry regression report,
+> select hack gets added.
 
-Fix these two issues.
+Gotta love a good commit message from a decade ago.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
----
- drivers/video/backlight/led_bl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+First, it says it's a migration helper. And that the problem
+specifically is that the user has a working config *without* FB enabled
+as a starting point.
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 63693c4f0883..43a5302f163a 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -159,10 +159,11 @@ static int led_bl_parse_levels(struct device *dev,
- 		 */
- 		db = priv->default_brightness;
- 		for (i = 0 ; i < num_levels; i++) {
--			if ((i && db > levels[i - 1]) && db <= levels[i])
-+			if ((i == 0 || db > levels[i - 1]) && db <= levels[i])
- 				break;
- 		}
--		priv->default_brightness = i;
-+
-+		priv->default_brightness = min(i, num_levels - 1);
- 		priv->max_brightness = num_levels - 1;
- 		priv->levels = levels;
- 	} else if (num_levels >= 0) {
+Now, if the starting point for a new config *now* is less than ten years
+old, and it had i915 enabled, it'll also have FB enabled. Because
+select. The migration part has done its job, and I think we should be
+good to make some progress.
+
+The commit message also notes the problems of select.
+
+BR,
+Jani.
+
+
+> Note on the specific example the code has been reworked enough that even
+> if you'd upgrade the kernel all that would get disabled now is the fbdev
+> emulation on top of drm drivers, not any of the drm drivers.
+>
+> The above says we should have an automatic system for at least oldconfig
+> (but would be nice in menuconfig too), since "break user's kernel on
+> upgrade" isn't an option. And without that select is going to come back
+> somewhere and make a huge nasty mess: We're definitely not going to
+> fix Kconfig when fixing a regression in -rc kernels.
+>
+> So in theory no need to convince me that select is terrible. Practice
+> disagrees unfortunately.
+> -Daniel
+>
+>> 
+>> > I'm really all for switching to using depends when that is the
+>> > semantically right thing to do. In many places using select is a hack to
+>> > make the UI simpler, and that's just plain wrong. We'll be doomed to
+>> > perpetual randconfig build failures and duct tape fixes.
+>> >
+>> > I'm pretty tired of this, and I regularly ignore those duct tape fixes
+>> > to i915 backlight build issues on some bizarre configs that nobody will
+>> > ever use, and would not exist if depends were used throughout.
+>> >
+>> > I'm fine with select but only when it's restricted to symbols that have
+>> > no dependencies of their own and have no UI. This is in line with
+>> > Documentation/kbuild/kconfig-language.rst. Not enforcing this is another
+>> > Kconfig tool shortcoming.
+>> 
+>> Agreed, that is generally a good rule.
+>> 
+>>       Arnd
+
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+Jani Nikula, Intel Open Source Graphics Center
