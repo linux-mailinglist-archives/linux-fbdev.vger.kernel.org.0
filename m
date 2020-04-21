@@ -2,180 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4CA1B1B19
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 03:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8D51B1E5C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 07:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbgDUBMF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Apr 2020 21:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726121AbgDUBMF (ORCPT
+        id S1725901AbgDUFwN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Apr 2020 01:52:13 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:50616 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725881AbgDUFwN (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Apr 2020 21:12:05 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F29C061A0E;
-        Mon, 20 Apr 2020 18:12:05 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id a2so9616702ejx.5;
-        Mon, 20 Apr 2020 18:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Wp/4OUZ+t6DtrNUNi8QED2tYXGNcm7p7HQx9y7jVsyE=;
-        b=jBHIXMMqmv7Aus032CJ29TCsVbNmCcWvBL1qZYR+MTvz1Np/UQLslt3cjqrBpRQ7A+
-         HVoyGy2PNpEomcWwRjHmW8Ak2N/EoxZMA1MCSPmiEBAije7BXceQJc3pWuaMlFYjZCGw
-         +dbOr9lgbJ1NksYu03hyjp/+zZGgTDNZTrbIc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Wp/4OUZ+t6DtrNUNi8QED2tYXGNcm7p7HQx9y7jVsyE=;
-        b=qtieov6dEW9Q6d0hcph3cmEG2ilMPshMiWGCQxH4AP1OWy3+g9VIqcOA9pvGe6Wije
-         wcMOw4XnA16rPxzSk717xqmby+G2G5719Wa+Dd/WB7HB5UBnmierMe5xyea2sTf6Rrni
-         3U/EMv4lMwUb5s3S7xYqsywTMohBHVep6/oK6RjABRj7h4HsIMej7IhYMvEIcg5FAQtm
-         JRpmoFTnxmoc7jZcn1kbFMcjl5+pdOSglvzM/hcqkPSTcDvRjaI94KZcMjfIqejnilVT
-         op+mvdN9+PvhOGrgHHSkfL7y3A8dl5eZB7MFATRN/mr2axE5Z7qGalOrhpd/jaVsoab1
-         xCdw==
-X-Gm-Message-State: AGi0PuYpKcRRmQjus91recMbe2jLiFM9/67M+O0u04AH+qfXgukJU75X
-        GmvcNRZoBS0xiJXN64yQnWXehu9mGLfnRd8rmbE=
-X-Google-Smtp-Source: APiQypIwX6LNiArHUl2jR5jEUHw3irQha6rujNUKiFvGPogUg6tL4fPWSZU+QH9PJrbsYVIAn12O5Owrj2LpHTm1d+Q=
-X-Received: by 2002:a17:906:a857:: with SMTP id dx23mr18970317ejb.52.1587431523767;
- Mon, 20 Apr 2020 18:12:03 -0700 (PDT)
+        Tue, 21 Apr 2020 01:52:13 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03L5q5tI022869;
+        Tue, 21 Apr 2020 00:52:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1587448325;
+        bh=PmuR6BJKwcLG9x5ikzLU67xqNt5W5WSyJdrYIgpZ5Nk=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=vN6nNbal1T91mKtG0oPg82ShW2RdFekTpRyzpmAd6lgFtdULO8dOSjcnfNszoSYV4
+         rrwR3UG1ixMT9Vnt7MfFWIHk29WKqv5OyuyvMoqoLKjH8S3IoMLXUVTbXwccB0E87T
+         OgS2nO+G9inRhfj0DSaBLkUiNUb1DM0zA+/sBCpw=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03L5q5PZ104491;
+        Tue, 21 Apr 2020 00:52:05 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 21
+ Apr 2020 00:52:04 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 21 Apr 2020 00:52:04 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03L5q2bk101041;
+        Tue, 21 Apr 2020 00:52:03 -0500
+Subject: Re: [PATCH 5/5] backlight: led_bl: rewrite led_bl_parse_levels()
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+CC:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+References: <20200417113312.24340-1-tomi.valkeinen@ti.com>
+ <20200417113312.24340-5-tomi.valkeinen@ti.com>
+ <20200420160154.4xxv37fofx37ow7q@holly.lan>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <2233a194-bc8e-99ba-d302-edd087a3adfa@ti.com>
+Date:   Tue, 21 Apr 2020 08:52:02 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <a5945463f86c984151962a475a3ee56a2893e85d.1587407777.git.christophe.leroy@c-s.fr>
- <4006d9c8e69f8eaccee954899f6b5fb76240d00b.1587407777.git.christophe.leroy@c-s.fr>
-In-Reply-To: <4006d9c8e69f8eaccee954899f6b5fb76240d00b.1587407777.git.christophe.leroy@c-s.fr>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Tue, 21 Apr 2020 01:11:51 +0000
-Message-ID: <CACPK8XfCS0X_YsuL8Bq-a3gNgEBoTb8=cK6yBvK4qVwvATZ68A@mail.gmail.com>
-Subject: Re: [PATCH 4/5] powerpc: Replace _ALIGN() by ALIGN()
-To:     Christophe Leroy <christophe.leroy@c-s.fr>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200420160154.4xxv37fofx37ow7q@holly.lan>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 20 Apr 2020 at 18:39, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->
-> _ALIGN() is specific to powerpc
-> ALIGN() is generic and does the same
->
-> Replace _ALIGN() by ALIGN()
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+On 20/04/2020 19:01, Daniel Thompson wrote:
+> On Fri, Apr 17, 2020 at 02:33:12PM +0300, Tomi Valkeinen wrote:
+>> led_bl_parse_levels() is rather difficult to follow. Rewrite it with a
+>> more obvious code flow.
+> 
+> ... that introduces new behaviour.
+> 
+> There's a couple of new behaviours here but the one that particular
+> attracted my attention is the disregarding the "default-brightness-level" if
+> there is no table. That looks like a bug to me.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+I think the previous behavior was a (minor) bug: how can there be default brightness level if there 
+are no brightness levels? The led-backlight.txt is a bit lacking (another thing to improve...) but 
+led-backlight mimics pwm-backlight, and pwm-backlight.txt says
 
-> ---
->  arch/powerpc/include/asm/book3s/32/pgtable.h | 2 +-
->  arch/powerpc/include/asm/nohash/32/pgtable.h | 2 +-
->  arch/powerpc/kernel/prom_init.c              | 8 ++++----
->  arch/powerpc/platforms/powermac/bootx_init.c | 4 ++--
->  4 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> index 53b5c93eaf5d..0d4bccb4b9f2 100644
-> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> @@ -188,7 +188,7 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
->   * memory shall not share segments.
->   */
->  #if defined(CONFIG_STRICT_KERNEL_RWX) && defined(CONFIG_MODULES)
-> -#define VMALLOC_START ((_ALIGN((long)high_memory, 256L << 20) + VMALLOC_OFFSET) & \
-> +#define VMALLOC_START ((ALIGN((long)high_memory, 256L << 20) + VMALLOC_OFFSET) & \
->                        ~(VMALLOC_OFFSET - 1))
->  #else
->  #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
-> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> index 5b4d4c4297e1..4315d40906a0 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@ -110,7 +110,7 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
->   */
->  #define VMALLOC_OFFSET (0x1000000) /* 16M */
->  #ifdef PPC_PIN_SIZE
-> -#define VMALLOC_START (((_ALIGN((long)high_memory, PPC_PIN_SIZE) + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
-> +#define VMALLOC_START (((ALIGN((long)high_memory, PPC_PIN_SIZE) + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
+default-brightness-level: The default brightness level (index into the array defined by the 
+"brightness-levels" property)
 
-Perhaps this once needed to be more flexiable, but now it always
-aligns to 256M and then to 16MB.
+But I agree, it's a change, so good to mention.
 
->  #else
->  #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
+> Please can you add any intended changes of behaviour in the patch
+> header?
 
-This is an open coded align to VMALLOC_OFFSET.
+Ok.
 
->  #endif
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index 3a5a7db4564f..e3a9fde51c4f 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -2426,7 +2426,7 @@ static void __init *make_room(unsigned long *mem_start, unsigned long *mem_end,
->  {
->         void *ret;
->
-> -       *mem_start = _ALIGN(*mem_start, align);
-> +       *mem_start = ALIGN(*mem_start, align);
->         while ((*mem_start + needed) > *mem_end) {
->                 unsigned long room, chunk;
->
-> @@ -2562,7 +2562,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
->                                 *lp++ = *p;
->                 }
->                 *lp = 0;
-> -               *mem_start = _ALIGN((unsigned long)lp + 1, 4);
-> +               *mem_start = ALIGN((unsigned long)lp + 1, 4);
->         }
->
->         /* get it again for debugging */
-> @@ -2608,7 +2608,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
->                 /* push property content */
->                 valp = make_room(mem_start, mem_end, l, 4);
->                 call_prom("getprop", 4, 1, node, pname, valp, l);
-> -               *mem_start = _ALIGN(*mem_start, 4);
-> +               *mem_start = ALIGN(*mem_start, 4);
->
->                 if (!prom_strcmp(pname, "phandle"))
->                         has_phandle = 1;
-> @@ -2667,7 +2667,7 @@ static void __init flatten_device_tree(void)
->                 prom_panic ("couldn't get device tree root\n");
->
->         /* Build header and make room for mem rsv map */
-> -       mem_start = _ALIGN(mem_start, 4);
-> +       mem_start = ALIGN(mem_start, 4);
->         hdr = make_room(&mem_start, &mem_end,
->                         sizeof(struct boot_param_header), 4);
->         dt_header_start = (unsigned long)hdr;
-> diff --git a/arch/powerpc/platforms/powermac/bootx_init.c b/arch/powerpc/platforms/powermac/bootx_init.c
-> index c3374a90952f..9d4ecd292255 100644
-> --- a/arch/powerpc/platforms/powermac/bootx_init.c
-> +++ b/arch/powerpc/platforms/powermac/bootx_init.c
-> @@ -386,7 +386,7 @@ static unsigned long __init bootx_flatten_dt(unsigned long start)
->         hdr->dt_strings_size = bootx_dt_strend - bootx_dt_strbase;
->
->         /* Build structure */
-> -       mem_end = _ALIGN(mem_end, 16);
-> +       mem_end = ALIGN(mem_end, 16);
->         DBG("Building device tree structure at: %x\n", mem_end);
->         hdr->off_dt_struct = mem_end - mem_start;
->         bootx_scan_dt_build_struct(base, 4, &mem_end);
-> @@ -404,7 +404,7 @@ static unsigned long __init bootx_flatten_dt(unsigned long start)
->          * also bump mem_reserve_cnt to cause further reservations to
->          * fail since it's too late.
->          */
-> -       mem_end = _ALIGN(mem_end, PAGE_SIZE);
-> +       mem_end = ALIGN(mem_end, PAGE_SIZE);
->         DBG("End of boot params: %x\n", mem_end);
->         rsvmap[0] = mem_start;
->         rsvmap[1] = mem_end;
-> --
-> 2.25.0
->
+  Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
