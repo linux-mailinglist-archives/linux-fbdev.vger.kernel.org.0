@@ -2,182 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6521E1B25F8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 14:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8411B2697
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 14:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728519AbgDUM1b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 Apr 2020 08:27:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728422AbgDUM1b (ORCPT
+        id S1728519AbgDUMqn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Apr 2020 08:46:43 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:42728 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726628AbgDUMqm (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 Apr 2020 08:27:31 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF982C061A10
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 Apr 2020 05:27:30 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id v4so2411374wme.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 Apr 2020 05:27:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=qmU6VDakv65FJJosETAWKCa3cyDJLx7WYQNvdAP44Tc=;
-        b=EAg0osLEXbJbWQm56pz5XD/2fbzlf5SovRIg5pAvRfRyfFO2ffE2Lpu3rRDGKaDsxq
-         jFGbPaQbuSXwz1XKPN9r2TKQ1/NSMgY3CmMa7vSSJc2p9+GrbpWtZ0iZN/lbzEmhq1oR
-         Rau8FDs4Jhb1sQ3m3Ip5VwijA0ScmDaZRGUT8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=qmU6VDakv65FJJosETAWKCa3cyDJLx7WYQNvdAP44Tc=;
-        b=hAhj71/LwsUnOpg86eHf4ifHPwArEAnTPn5Ak9wpndeOngtbSk3J5EDsF7H009C9DL
-         qbouU2OoNnSOGvVDoNDEXby99Snfq4J4soPz9B5PXjaNYkfkS4bX0/zMUzUN7Z8QB/+i
-         GBmRfkad47MOBASiVrSzk/9vXsPBpLPX19V77w1St9LimC08ZC0s4Lp5r7orIG6j6wIb
-         0B3/62BIHTlEOjBdKWgP3jvfiPVAOInFCbtktTUUjA6wpXjgzqtZrs5UiHceb8uXoDMg
-         gJHZ7vadNMiylwOiZmEdz9g9GBJ2yL8cKo0NRHLAvyjan7zrKo9zovSMzWk8KHgGyS73
-         eKTQ==
-X-Gm-Message-State: AGi0PubWousZRCtAwhT8ApOLCKAOgcJbdG4sy9zjGHO5O+gPtCwSUnRa
-        +y1OJo3xcx3BE94dvWWEhV5H+G6pTEs=
-X-Google-Smtp-Source: APiQypJU5xpo8/LAIgPDWow0ew55pmwU5prJYaxGXB+BkqZ9w31v+W9HGZG0ezIJsqD8WKBNwhKFfA==
-X-Received: by 2002:a05:600c:4096:: with SMTP id k22mr4294659wmh.99.1587472049580;
-        Tue, 21 Apr 2020 05:27:29 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id n6sm3734848wrs.81.2020.04.21.05.27.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2020 05:27:28 -0700 (PDT)
-Date:   Tue, 21 Apr 2020 14:27:26 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>, jfrederich@gmail.com,
-        dsd@laptop.org, Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 0/8] drm, fbdev: rework dependencies
-Message-ID: <20200421122726.GW3456981@phenom.ffwll.local>
-References: <20200417155553.675905-1-arnd@arndb.de>
- <20200417171453.GS3456981@phenom.ffwll.local>
- <20200417190854.GI26002@ziepe.ca>
- <87y2qq1smt.fsf@intel.com>
- <CAK8P3a0eSHg6Hx-FqpEF-N4LhZjv4o3PooK2eKw7KTntoKKckQ@mail.gmail.com>
+        Tue, 21 Apr 2020 08:46:42 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03LCkY4r123680;
+        Tue, 21 Apr 2020 07:46:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1587473194;
+        bh=vkwNLbWImYCxiRXcjhOVVpfLAdrgZzNABjmA4X4e09E=;
+        h=From:To:CC:Subject:Date;
+        b=MUL8n0GxVH/3Mm8XIkTsmWgC3xWnLsa4qHiZFLSKkp5QpVJ4ocvTWOqoBB5urcLrl
+         47lWS9+KAQyPB9RHzOYarYS70CZzAlUT3j99u6TPSBKW0swm9ganwcubXTu62r6Rs3
+         YsenriZ25m6u9kl3L2WOBUeZpGBXABVqVg7ZNmU8=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03LCkYqo083937
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 21 Apr 2020 07:46:34 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 21
+ Apr 2020 07:46:34 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 21 Apr 2020 07:46:33 -0500
+Received: from deskari.lan (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03LCkVx3037462;
+        Tue, 21 Apr 2020 07:46:32 -0500
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+CC:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCHv2 0/4] led-backlight cleanups & fixes
+Date:   Tue, 21 Apr 2020 15:46:25 +0300
+Message-ID: <20200421124629.20977-1-tomi.valkeinen@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a0eSHg6Hx-FqpEF-N4LhZjv4o3PooK2eKw7KTntoKKckQ@mail.gmail.com>
-X-Operating-System: Linux phenom 5.3.0-3-amd64 
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Apr 20, 2020 at 04:03:23PM +0200, Arnd Bergmann wrote:
-> On Mon, Apr 20, 2020 at 10:14 AM Jani Nikula
-> <jani.nikula@linux.intel.com> wrote:
-> > On Fri, 17 Apr 2020, Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > > On Fri, Apr 17, 2020 at 07:14:53PM +0200, Daniel Vetter wrote:
-> > >> On Fri, Apr 17, 2020 at 05:55:45PM +0200, Arnd Bergmann wrote:
-> > >> >
-> > >> > If we can agree on these changes, maybe someone can merge them
-> > >> > through the drm-misc tree.
-> > >> >
-> > >> > Please review
-> > >>
-> > >> Biggest concern I have is that usability of make menuconfig is horrible,
-> 
-> No doubt about that, but that seems to be unrelated to the cleanup.
-> 
-> > >> and it's very hard to find options that are hidden by depends on. You can
-> > >> use the search interface, if you happen to know the option.
-> > >>
-> > >> Once you've surmounted that bar, the next one is trying to find what
-> > >> exactly you need to enable. Which again means endless of recursive
-> > >> screaming at Kconfig files, since make menuconfig doesn't help you at all.
-> 
-> The changes I'm doing are mostly for fbdev, which is currently the
-> odd one out. Most kernel subsystems today follow the documented
-> recommendations and only use 'depends on' for things they
-> depend on.
-> 
-> Having fbdev be the exception causes two problems:
-> 
-> - It does not make kconfig any easier to use overall, just less consistent
->   when it is the only thing that implicitly turns on dependencies and
->   for everything else one still has to look up what the dependencies are.
-> 
-> - Most of the problems with circular dependencies come from mixing
->   the two methods, and most of the cases where they have caused
->   problems in the past involve fbdev in some way.
-> 
-> I also doubt switching lots of 'depends on' to 'select' all over Kconfig
-> would improve the situation on a global level. It would simplify the
-> problem of turning something on without understanding the what it
-> does, but in turn it makes it harder to turn off something else.
-> 
-> E.g. today it is hard to turn off fbdev because that is selected by a
-> number of (partly unrelated) options, but there was a recent discussion
-> about getting distros to stop enabling fbdev out of security concerns.
+Hi,
 
-I've done some history digging, this is the patch that started this all:
+Changes in v2:
 
-commit d2f59357700487a8b944f4f7777d1e97cf5ea2ed
-Author: Ingo Molnar <mingo@elte.hu>
-Date:   Thu Feb 5 16:03:34 2009 +0100
+- Drop "backlight: led_bl: rewrite led_bl_parse_levels()". The patch
+  changed the behavior, and the new behavior may not be wanted. So lets
+  drop this for now.
 
-    drm/i915: select framebuffer support automatically
+- "backlight: led_bl: fix led -> backlight brightness mapping" will now
+  use max brightness if LED's brightness is higher than highest
+  backlight brightness level.
 
-I.e. driver gets disabled because a new config is added which isn't
-enabled. System doesn't boot, maintainer gets angry regression report,
-select hack gets added.
+- Added reviewed-bys.
 
-Note on the specific example the code has been reworked enough that even
-if you'd upgrade the kernel all that would get disabled now is the fbdev
-emulation on top of drm drivers, not any of the drm drivers.
+ Tomi
 
-The above says we should have an automatic system for at least oldconfig
-(but would be nice in menuconfig too), since "break user's kernel on
-upgrade" isn't an option. And without that select is going to come back
-somewhere and make a huge nasty mess: We're definitely not going to
-fix Kconfig when fixing a regression in -rc kernels.
+Tomi Valkeinen (4):
+  backlight: led_bl: fix cosmetic issues
+  backlight: led_bl: drop useless NULL initialization
+  backlight: led_bl: add led_access locking
+  backlight: led_bl: fix led -> backlight brightness mapping
 
-So in theory no need to convince me that select is terrible. Practice
-disagrees unfortunately.
--Daniel
-
-> 
-> > I'm really all for switching to using depends when that is the
-> > semantically right thing to do. In many places using select is a hack to
-> > make the UI simpler, and that's just plain wrong. We'll be doomed to
-> > perpetual randconfig build failures and duct tape fixes.
-> >
-> > I'm pretty tired of this, and I regularly ignore those duct tape fixes
-> > to i915 backlight build issues on some bizarre configs that nobody will
-> > ever use, and would not exist if depends were used throughout.
-> >
-> > I'm fine with select but only when it's restricted to symbols that have
-> > no dependencies of their own and have no UI. This is in line with
-> > Documentation/kbuild/kconfig-language.rst. Not enforcing this is another
-> > Kconfig tool shortcoming.
-> 
-> Agreed, that is generally a good rule.
-> 
->       Arnd
+ drivers/video/backlight/led_bl.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
