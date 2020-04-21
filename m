@@ -2,80 +2,140 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C2941B27BE
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 15:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67D341B2B86
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Apr 2020 17:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728879AbgDUNZV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 Apr 2020 09:25:21 -0400
-Received: from mga09.intel.com ([134.134.136.24]:12133 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728859AbgDUNZU (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 Apr 2020 09:25:20 -0400
-IronPort-SDR: th4UfbIgN6s0lyCNYD7T2x7RoGrHRDIepbJmertGTqLxNBnDIQhJi8aGCcPPqyUTb+AyAaeTYR
- kLjgtvsGFjfA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2020 06:25:20 -0700
-IronPort-SDR: Pxwk5F1PYhQkqNU/uoogRvppqsRUhmVhKkJjfu2H8Ed6nQ0Mx8DgDU3PKrjQOHXJK0ImGAfP4z
- hO+lxJVr2a8Q==
-X-IronPort-AV: E=Sophos;i="5.72,410,1580803200"; 
-   d="scan'208";a="429528579"
-Received: from parkernx-mobl.ger.corp.intel.com (HELO localhost) ([10.249.46.80])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2020 06:25:12 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Daniel Vetter <daniel@ffwll.ch>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Saeed Mahameed <saeedm@mellanox.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
-        VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        Jens Frederich <jfrederich@gmail.com>,
-        Daniel Drake <dsd@laptop.org>
-Subject: Re: [PATCH 0/8] drm, fbdev: rework dependencies
-In-Reply-To: <CAKMK7uE7y8TVbZ8ExpDEA2MuvhSDxKQ6y=eDXSbwgjUzsbm44A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20200417155553.675905-1-arnd@arndb.de> <20200417171453.GS3456981@phenom.ffwll.local> <20200417190854.GI26002@ziepe.ca> <87y2qq1smt.fsf@intel.com> <CAK8P3a0eSHg6Hx-FqpEF-N4LhZjv4o3PooK2eKw7KTntoKKckQ@mail.gmail.com> <20200421122726.GW3456981@phenom.ffwll.local> <87a735yp0f.fsf@intel.com> <CAMuHMdXRwRe5p65+YM69HDM4BhW+ZuHUju9B9083+=HdCotsqw@mail.gmail.com> <CAKMK7uE7y8TVbZ8ExpDEA2MuvhSDxKQ6y=eDXSbwgjUzsbm44A@mail.gmail.com>
-Date:   Tue, 21 Apr 2020 16:25:09 +0300
-Message-ID: <877dy9ynre.fsf@intel.com>
+        id S1725960AbgDUPrm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Apr 2020 11:47:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725613AbgDUPrm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 21 Apr 2020 11:47:42 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD19C061A10
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 Apr 2020 08:47:40 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id u13so17010067wrp.3
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 Apr 2020 08:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=k+3fqnUIb47ny4XuS/cO5bm+055JkF8KuM1XMcQ87Wc=;
+        b=qRfiPmWl7eFIrY0GWgIwQF1S0Xq96aDE6g2y/HqjHuDn7jVIaZSaX0OI++QEV/ZqN4
+         SHXu/6Ormo0Y+lMPQthYujoZUGViaMTsZyLtZ3T1gI6kvDmcCxEHtUjQtRqd/VSNevlP
+         WOk77j4jSu72aSfegezNFxI88b70yOktd/yAxY8IuO7AAF1aWKmcXc3moS4qSErw7kV6
+         LAcRk3im/wlipzkcCYYVzPNP2/I0q2p/42gUbpEp3QFyV32Mn+lB5Hzt6/azOKR83/hr
+         FVfPhkY28alubEoSXf77ZtdKsuK8JRB4CngqiYxZEPdIKK7jeYuT47Hrrn0YkgINjXB9
+         HFgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=k+3fqnUIb47ny4XuS/cO5bm+055JkF8KuM1XMcQ87Wc=;
+        b=MkXKjjwWK9S3RfAnqeP3que+4Hl6nuWP93V2O2N8trYb5RGxAmq7UPIxTs9z+LM3pB
+         GLtLpzoEm5qe6P7yeTRe3UmESC3uc+3DR954D8otHHsQTBtJ6LQEoKEwhw28tM5g2MBP
+         fQ+EYnCTMWBBbuCgzMwHz3+h8+Xn+ckHYeHVNpG4W52L0EfNiNmMyJgc5pChAgwghtyr
+         hEo8inHG4YLQMeyfM9v4pYSDjfUd94oKbnTVUyO/dBMkv2/Nrj3CJo5l1HEdarRzgaX1
+         d66Bq6zBNcmxTLCHk8xaWg2yTBZDrGyt6L/58X6+M7cI/nBgHlOnaT8lQetIsrIiPpq4
+         5plQ==
+X-Gm-Message-State: AGi0Puag8myJYlHCRNOSU05KTlF4xidNCxNfStcLDrLUD3vVizoZyBW5
+        /3yg/N2WUTXUBE83o44Rf5oMRg==
+X-Google-Smtp-Source: APiQypJfzjD/qb9Uf1L/3iQEZgnTPgII7dm2JKkqv8hYlHkbmpVo/PKuCEmFFiTMCJPl4XVba4AzAw==
+X-Received: by 2002:adf:f0d2:: with SMTP id x18mr24421255wro.259.1587484058126;
+        Tue, 21 Apr 2020 08:47:38 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id y70sm4302396wmc.36.2020.04.21.08.47.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2020 08:47:37 -0700 (PDT)
+Date:   Tue, 21 Apr 2020 16:47:35 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCHv2 4/4] backlight: led_bl: fix led -> backlight brightness
+ mapping
+Message-ID: <20200421154735.byedkij5bry76trd@holly.lan>
+References: <20200421124629.20977-1-tomi.valkeinen@ti.com>
+ <20200421124629.20977-5-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200421124629.20977-5-tomi.valkeinen@ti.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 21 Apr 2020, Daniel Vetter <daniel@ffwll.ch> wrote:
-> To clarify what I was aiming for with my mail: I'm not worried about
-> fbdev here, I'm just worried that this will come back, and we'll grow
-> select somewhere else until it's become a big & totally horrible mess.
-> I think a lot of the backlight selects have also grown because of
-> this, so this isn't just a one-off I think.
->
-> If Arnd is happy to play "Kconfig select" whack-a-mole ever once in a
-> while (and deal with the intermediate compile horrors while everyone
-> upgrades) I'm ok with this landing. Just not terribly happy if the
-> underlying issue isn't fixed.
+On Tue, Apr 21, 2020 at 03:46:29PM +0300, Tomi Valkeinen wrote:
+> The code that maps the LED default brightness to backlight levels has
+> two issues: 1) if the default brightness is the first backlight level
+> (usually 0), the code fails to find it, and 2) when the code fails to
+> find a backlight level, it ends up using max_brightness + 1 as the
+> default brightness.
+> 
+> Fix these two issues.
+> 
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> ---
+>  drivers/video/backlight/led_bl.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+> index 63693c4f0883..43a5302f163a 100644
+> --- a/drivers/video/backlight/led_bl.c
+> +++ b/drivers/video/backlight/led_bl.c
+> @@ -159,10 +159,11 @@ static int led_bl_parse_levels(struct device *dev,
+>  		 */
+>  		db = priv->default_brightness;
+>  		for (i = 0 ; i < num_levels; i++) {
+> -			if ((i && db > levels[i - 1]) && db <= levels[i])
+> +			if ((i == 0 || db > levels[i - 1]) && db <= levels[i])
+>  				break;
+>  		}
 
-And I'll keep ignoring the IS_REACHABLE() patches that make i915 build
-with a config that should not exist. ;)
+I looked at this loop again and realized the entire check of
+levels[i-1] is pointless anyway: we already know that db is greater
+then levels[i-1] otherwise the loop would have exited on its previous
+iteration.
 
-BR,
-Jani.
+
+> -		priv->default_brightness = i;
+> +
+> +		priv->default_brightness = min(i, num_levels - 1);
+
+Perhaps this min() also tells us the loop exit condition is wrong as
+well...  and whilst we are at it the final comparison is arguably
+not in the best order (since to describe what the loop does we have to
+a complex clauses like "such that").
+
+In natural English what the code is trying to do is "find the first
+value in the lookup table that is larger than or equal to db or, if that
+does not exist, choose the brightest value".
+
+In other words:
+
+		for (i=0; i<num_levels-1; i++)
+			if (levels[i] >= db)
+				break;
 
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Daniel.
+
+
+> -                     if ((i && db > levels[i - 1]) && db <=
+> levels[i])
+> +                     if ((i == 0 || db > levels[i - 1]) && db <=
+> levels[i])
+>                               break;
+>               }
+
+>  		priv->max_brightness = num_levels - 1;
+>  		priv->levels = levels;
+>  	} else if (num_levels >= 0) {
+> -- 
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> 
