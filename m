@@ -2,108 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 999B31B37F4
-	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Apr 2020 08:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B64A1B38BA
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Apr 2020 09:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbgDVGvg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 22 Apr 2020 02:51:36 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:42140 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726520AbgDVGvg (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 22 Apr 2020 02:51:36 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03M6pUn3130148;
-        Wed, 22 Apr 2020 01:51:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587538290;
-        bh=34pGNEIVX9mec7aDUBogd/7S0j9oPZJtVWJoDUjyq8A=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=ZPEj913Q6Ix4Ym9VAqlA0JUjWsjP9eO+UGbwskzLebtgjxVyb6o26O9Ka9+V3hfYz
-         sTw6FPVvB9mViKXjFFnLZxY6SBoWhnwNDAGiF8PwJNpNHvUtGSVQT8utE0+NDa1bw0
-         n+/fiF2lrdSW8WGF87PigzxcaVVRXZbUOi82j6zI=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03M6pUAd099586
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 22 Apr 2020 01:51:30 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 22
- Apr 2020 01:51:30 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 22 Apr 2020 01:51:30 -0500
-Received: from deskari.lan (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03M6pKUa100224;
-        Wed, 22 Apr 2020 01:51:28 -0500
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-CC:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCHv3 4/4] backlight: led_bl: fix led -> backlight brightness mapping
-Date:   Wed, 22 Apr 2020 09:51:14 +0300
-Message-ID: <20200422065114.22164-5-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200422065114.22164-1-tomi.valkeinen@ti.com>
-References: <20200422065114.22164-1-tomi.valkeinen@ti.com>
+        id S1726458AbgDVHTJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 22 Apr 2020 03:19:09 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2831 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726442AbgDVHTJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 22 Apr 2020 03:19:09 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 84F806D9E9DBBCAC755F;
+        Wed, 22 Apr 2020 15:19:07 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0; Wed, 22 Apr 2020
+ 15:18:57 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <adaplas@gmail.com>, <b.zolnierkie@samsung.com>,
+        <yanaijie@huawei.com>, <linux-fbdev@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] video: fbdev: i810: use true,false for bool variables
+Date:   Wed, 22 Apr 2020 15:18:26 +0800
+Message-ID: <20200422071826.49038-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The code that maps the LED default brightness to backlight levels has
-two issues: 1) if the default brightness is the first backlight level
-(usually 0), the code fails to find it, and 2) when the code fails to
-find a backlight level, it ends up using max_brightness + 1 as the
-default brightness.
+Fix the following coccicheck warning:
 
-Fix these two issues.
+drivers/video/fbdev/i810/i810_main.c:1969:3-7: WARNING: Assignment of
+0/1 to bool variable
+drivers/video/fbdev/i810/i810_main.c:1971:3-8: WARNING: Assignment of
+0/1 to bool variable
+drivers/video/fbdev/i810/i810_main.c:1973:3-9: WARNING: Assignment of
+0/1 to bool variable
+drivers/video/fbdev/i810/i810_main.c:1975:3-7: WARNING: Assignment of
+0/1 to bool variable
+drivers/video/fbdev/i810/i810_main.c:2001:3-9: WARNING: Assignment of
+0/1 to bool variable
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
 ---
- drivers/video/backlight/led_bl.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/i810/i810_main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 63693c4f0883..699424b111ec 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -139,7 +139,6 @@ static int led_bl_parse_levels(struct device *dev,
- 	num_levels = of_property_count_u32_elems(node, "brightness-levels");
- 	if (num_levels > 1) {
- 		int i;
--		unsigned int db;
- 		u32 *levels;
- 
- 		levels = devm_kzalloc(dev, sizeof(u32) * num_levels,
-@@ -153,15 +152,11 @@ static int led_bl_parse_levels(struct device *dev,
- 		if (ret < 0)
- 			return ret;
- 
--		/*
--		 * Try to map actual LED brightness to backlight brightness
--		 * level
--		 */
--		db = priv->default_brightness;
--		for (i = 0 ; i < num_levels; i++) {
--			if ((i && db > levels[i - 1]) && db <= levels[i])
-+		/* Map LED brightness to backlight brightness level */
-+		for (i = 0; i < num_levels - 1; i++)
-+			if (levels[i] >= priv->default_brightness)
- 				break;
--		}
-+
- 		priv->default_brightness = i;
- 		priv->max_brightness = num_levels - 1;
- 		priv->levels = levels;
+diff --git a/drivers/video/fbdev/i810/i810_main.c b/drivers/video/fbdev/i810/i810_main.c
+index aa7583d963ac..13bbf7fe13bf 100644
+--- a/drivers/video/fbdev/i810/i810_main.c
++++ b/drivers/video/fbdev/i810/i810_main.c
+@@ -1966,13 +1966,13 @@ static int i810fb_setup(char *options)
+ 	
+ 	while ((this_opt = strsep(&options, ",")) != NULL) {
+ 		if (!strncmp(this_opt, "mtrr", 4))
+-			mtrr = 1;
++			mtrr = true;
+ 		else if (!strncmp(this_opt, "accel", 5))
+-			accel = 1;
++			accel = true;
+ 		else if (!strncmp(this_opt, "extvga", 6))
+-			extvga = 1;
++			extvga = true;
+ 		else if (!strncmp(this_opt, "sync", 4))
+-			sync = 1;
++			sync = true;
+ 		else if (!strncmp(this_opt, "vram:", 5))
+ 			vram = (simple_strtoul(this_opt+5, NULL, 0));
+ 		else if (!strncmp(this_opt, "voffset:", 8))
+@@ -1998,7 +1998,7 @@ static int i810fb_setup(char *options)
+ 		else if (!strncmp(this_opt, "vsync2:", 7))
+ 			vsync2 = simple_strtoul(this_opt+7, NULL, 0);
+ 		else if (!strncmp(this_opt, "dcolor", 6))
+-			dcolor = 1;
++			dcolor = true;
+ 		else if (!strncmp(this_opt, "ddc3", 4))
+ 			ddc3 = true;
+ 		else
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.21.1
 
