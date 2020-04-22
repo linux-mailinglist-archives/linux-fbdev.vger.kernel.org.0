@@ -2,62 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 080141B4931
-	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Apr 2020 17:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 711011B4995
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Apr 2020 18:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbgDVPxi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 22 Apr 2020 11:53:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58812 "EHLO
+        id S1726399AbgDVQH2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 22 Apr 2020 12:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726648AbgDVPxh (ORCPT
+        with ESMTP id S1726584AbgDVQH2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 22 Apr 2020 11:53:37 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29F5C03C1A9;
-        Wed, 22 Apr 2020 08:53:37 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id p8so1296012pgi.5;
-        Wed, 22 Apr 2020 08:53:37 -0700 (PDT)
+        Wed, 22 Apr 2020 12:07:28 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D2FC03C1A9;
+        Wed, 22 Apr 2020 09:07:28 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id v63so1307291pfb.10;
+        Wed, 22 Apr 2020 09:07:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8DXOAVnHR/JBy0Y4uPJ7GHHi938/y6M1uaE+uBo8UB4=;
-        b=p37iL8woIBWNU97EnJMT9VwP7l2RKgc8soMSx4IV+IX62SYlHIqQdpGySbCjARcv7D
-         qDHkwJRGOOhe5LB/rrzCnEOCGZrjk8QWB0EE52Sp0aHSY13nrTMj3aX4A59ll4UidDsO
-         IVGCKAZ/VSuHoDsim1ZSp1O8r3x7kkkFQIfiWPsMLYHAOwAEQw9dfuBPZLQXeLe8OxBB
-         AfAEET9OzEtDYHMI5c5tecVubReXE3btLphVRcTBTOxwA362MdDP7/LsMtArPvYySZxp
-         vB4ufq7h+xTpZmo3zmohx4Efzthsovh+DjhsL4tZIvQKPeCoevAXisI2BmTEHKgrR+l4
-         1DFg==
+        bh=m5xEoHET9vfaEq5LIR2V1cy0U7HP7GDZ0ojpw/b8noo=;
+        b=op9xXMUQE7+eoyEI/3bjdKIOPzkykzXpyT3jwTtohkIl/ROFGP/BywJFuagmDWuwpE
+         Pm5ctXySjJG9ycaY6+T7WIubSLShz3za1aa2QQQP2EWNTUevUAcBRBQWqzsiYJ1BJKu7
+         xy9YWh4AxbbdlChIZ8hlpmnFtegES9UKefSEfv0DtRS5RB3l1JV6s1Sfc0CgakQkl929
+         JJjZKyNRND5IAl/p9dFWBZv7zrgLmldP7Bm1ACO7tqLlvaZvwOyrsXQtqf39Q9laMd4L
+         2VgpBRjFkOlqvJcgJ/lym5BH+kMH9uN3kZdLbzSsn4XisvPqq0VHigRydEu2zxmhl9YN
+         goXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8DXOAVnHR/JBy0Y4uPJ7GHHi938/y6M1uaE+uBo8UB4=;
-        b=gdv7SpbfPa0XP3MyccLQlL2DV4OX/HUhr/lFgi1Nq+GEsyQ2Radw3RV4BvpenIB+eE
-         w3rNMi8krloklgBmAjd6t+xzeB9ETFgBsPg9KGT3hkwKx6JAHArWZA/07bvrFeyd8kG3
-         S9Ju/zXPxdC8NozCUi6VlwfJ4cfkDLZZDRXChhu8wHmVrzl5upwXiTk3kO33Sk5wgIK3
-         kUYBHdM/odioDYwh+6wHd/iXPhNvPQ9rLP+2SGGfvpooVsTHmnXZE/iwHUMfmaflLoZa
-         PhQK+JrCovFUTwVwdTbzMj4KPz2y0fgAa623zBSJQwHllrpNzxp6QVz6j2cOJ6Vu/JTH
-         NBbA==
-X-Gm-Message-State: AGi0PuZF08QGihepy8OLYVZ1d6e3/+KvCbmZF0wavUGiG87cWgzaf0bZ
-        IR9fon2PRF+BU1E94QJPJTw=
-X-Google-Smtp-Source: APiQypLhyEB4b+85IkZPJo2ASXh+Y/49d68Z1e97PBFqQn5TiO1hKIDkGgZIzkquqVbKKzf4UK/c8g==
-X-Received: by 2002:a63:594:: with SMTP id 142mr26040751pgf.418.1587570817396;
-        Wed, 22 Apr 2020 08:53:37 -0700 (PDT)
+        bh=m5xEoHET9vfaEq5LIR2V1cy0U7HP7GDZ0ojpw/b8noo=;
+        b=CDjcODNvd2MBqzTejfilL0k+Ytp4/L/vlnQzr70wBNkxqNgY4rlEbK72ACS5s+3CYm
+         P6RBS8k62A4B3aR5L3KgkSJSpeUt/3q7wLHRKTKl06xUTqdjUt3hIMK64aBM5EBPbe01
+         hs24wFmN0y6qVBKcmgFVFrJOWE87eRFeZFJmoRzNASzj8m2iZR/v9sEgKK4J3wRhbga6
+         mdcyQcQFVcZqC1LSgIW0YfgHyl7pmHmvywa/EeSXP8SZrMueiyd6iuKPet7ujbmv2eHi
+         4maxw1aVLxpHJQxpCwWqBMdDePR/A6wJMAMeoPZLNa+DmnH9GqdAqNYtgA/+HN7Cn9dW
+         e63g==
+X-Gm-Message-State: AGi0PubbBsKqGJ5wGZ7MYGhUumaBMPwICUwplPVV7SXofaQs0CmwgWPU
+        cFhp7p4j0GfkEJuVoLb0yyRCOcgG
+X-Google-Smtp-Source: APiQypIKUZKH++J4SaK/mpXI+7xB04AVhcJdfDXy62fFLjyb3yakjYt0JDm/ostuKjQSOUQvZvH34g==
+X-Received: by 2002:a63:df42:: with SMTP id h2mr27572335pgj.216.1587571647496;
+        Wed, 22 Apr 2020 09:07:27 -0700 (PDT)
 Received: from localhost ([89.208.244.140])
-        by smtp.gmail.com with ESMTPSA id 36sm5529103pgs.70.2020.04.22.08.53.36
+        by smtp.gmail.com with ESMTPSA id p190sm4179323pfp.207.2020.04.22.09.07.25
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 22 Apr 2020 08:53:36 -0700 (PDT)
+        Wed, 22 Apr 2020 09:07:26 -0700 (PDT)
 From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     b.zolnierkie@samsung.com, tglx@linutronix.de,
-        gregkh@linuxfoundation.org, tsbogend@alpha.franken.de,
-        FlorianSchandinat@gmx.de, ralf@linux-mips.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+To:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+        b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 Cc:     linux-kernel@vger.kernel.org, Dejin Zheng <zhengdejin5@gmail.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v1] console: fix an issue about ioremap leak.
-Date:   Wed, 22 Apr 2020 23:53:28 +0800
-Message-Id: <20200422155328.27473-1-zhengdejin5@gmail.com>
+Subject: [PATCH v1] video: fbdev: sm712fb: fix an issue about iounmap for a wrong address
+Date:   Thu, 23 Apr 2020 00:07:19 +0800
+Message-Id: <20200422160719.27763-1-zhengdejin5@gmail.com>
 X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,30 +65,30 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-if do_take_over_console() return an error in the newport_probe(),
-due to the io virtual address is not released, it will cause a leak.
+the sfb->fb->screen_base is not save the value get by iounmap() when
+the chip id is 0x720. so iounmap() for address sfb->fb->screen_base
+is not right.
 
-Fixes: e84de0c6190503 ("MIPS: GIO bus support for SGI IP22/28")
+Fixes: 1461d6672864854 ("staging: sm7xxfb: merge sm712fb with fbdev")
 CC: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
 ---
- drivers/video/console/newport_con.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/video/fbdev/sm712fb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 00dddf6e08b0..6bfc8e3ffd4a 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -720,6 +720,9 @@ static int newport_probe(struct gio_device *dev,
- 	console_lock();
- 	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
- 	console_unlock();
-+
-+	if (err)
-+		iounmap((void *)npregs);
- 	return err;
- }
- 
+diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
+index 6a1b4a853d9e..8cd655d6d628 100644
+--- a/drivers/video/fbdev/sm712fb.c
++++ b/drivers/video/fbdev/sm712fb.c
+@@ -1429,6 +1429,8 @@ static int smtc_map_smem(struct smtcfb_info *sfb,
+ static void smtc_unmap_smem(struct smtcfb_info *sfb)
+ {
+ 	if (sfb && sfb->fb->screen_base) {
++		if (sfb->chip_id == 0x720)
++			sfb->fb->screen_base -= 0x00200000;
+ 		iounmap(sfb->fb->screen_base);
+ 		sfb->fb->screen_base = NULL;
+ 	}
 -- 
 2.25.0
 
