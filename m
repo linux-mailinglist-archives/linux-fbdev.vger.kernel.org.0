@@ -2,137 +2,176 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA261B5E5C
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 16:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81F1C1B5E65
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 16:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728875AbgDWOwr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 10:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726380AbgDWOwr (ORCPT
+        id S1728816AbgDWOzj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 10:55:39 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:47312 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728906AbgDWOzj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:52:47 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCD6C08E934;
-        Thu, 23 Apr 2020 07:52:47 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id t16so2439098plo.7;
-        Thu, 23 Apr 2020 07:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=XXa44dRejUVD9khGbpB7Lq0g9wT1bE7Lq11QXvftrgA=;
-        b=qE2OfZI2wUVvj77T4PFS0pvS8DTwl271ADgwm6nQaDeGBfGTNSVgYanwxrIvfw4rAI
-         J58hPTNIqmjrHrUpsIOY6RtbFoJGIgscCA41U8MGHAHQTPoudHOATd9n32TM7IoqKprO
-         7s/TmDNACHiujN3hfikbHxN8ZlKxSGsqz2Ql/+u5h8BPgBFgL19XhinLPzl2rW8Nh1ZQ
-         G/HIyN4hEzJHAz/4ZmhJE3bAvpQqzlXcYv0qngMoe68yFw0BvvR8Am6znPtWDs2jnPQO
-         w/px3lOq3k9fN2N+okO6iwWf0bdu1nGSw3QjAMDkoovNlS16b3D6r2yGbnlV7bXlHBZl
-         4aIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=XXa44dRejUVD9khGbpB7Lq0g9wT1bE7Lq11QXvftrgA=;
-        b=oihQQ+JOFBLI2z7XH6Tt6N0YQvbA58dJUN1ochJS8KOsUL7leK6qLARivz6fgOCCdU
-         wHPtjTxysZ2St37eM47+xbx/kFlbWIgQWDSXv0s2KyjgLb8G4AMWQ6UF35z+4CA9b++E
-         mqwpNETs8hAfN0SPgTbW1p8c06fX1N6+D6PSk8nFE6gzi3TB/YvlmGBEg4krbCz5e/mW
-         LGnQh3VFC7ryNynopDfgtbZtPKliTjwzmIJpgd32bJrc6L7gNcGK8beKBo94LU/Q2MtJ
-         Z3yj7/cfW0dgth/NpoEKauogjUr4P/eGtQxy2erlDzGeHoDTb04/1ab8cLxNINSuGqbQ
-         R4tQ==
-X-Gm-Message-State: AGi0PuY2fLG5Vi/R2cnR4xeJPfQKIGJXN98p4DqIsbZ4tmyj4gW7L0H7
-        R8SA1BHjJvU+iuGmFWzt+X0=
-X-Google-Smtp-Source: APiQypJpH6Jh81nSVTNgvgCANJgQ3DPA4JhoZAwMB7qvMzGPSlAcC3qmZOotUwN/EekORxapq5Vkgw==
-X-Received: by 2002:a17:90a:2f64:: with SMTP id s91mr1147538pjd.30.1587653566730;
-        Thu, 23 Apr 2020 07:52:46 -0700 (PDT)
-Received: from localhost ([176.122.158.71])
-        by smtp.gmail.com with ESMTPSA id r189sm2319896pgr.31.2020.04.23.07.52.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Apr 2020 07:52:46 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 22:52:40 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thu, 23 Apr 2020 10:55:39 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200423145536euoutp02b058d1d041b8463f880912431f338a52~Ieqlv2nhX3051630516euoutp02P
+        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200423145536euoutp02b058d1d041b8463f880912431f338a52~Ieqlv2nhX3051630516euoutp02P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1587653736;
+        bh=4jBedYbVs9iPISb4SHRfEbPFJqP00QurHGBQmIMMH9o=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=KmXYnhcFiNWsqafuebllh6+baVzXgyJ35Y/K6QD6Tr++BrpHYhXI/OhzxCArk9+kT
+         awrP/Wa4vz3+aJSzNTLu1EyVF/chzn0/E1cpk6K3JawP18fEosiwmFRyNcRTD4GgY0
+         x8ANFqiUqjb/bkrr0fv5bwfosG9SGDYL1CID2ckY=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200423145536eucas1p11d03e6479cd7a4ae7276a37b6d2c144f~IeqlZ1cJj3041030410eucas1p1Q;
+        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3E.4A.60698.86CA1AE5; Thu, 23
+        Apr 2020 15:55:36 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200423145536eucas1p1d17d340c8ac30b9e186bfaeaf593f1b4~IeqlFFyEW3041030410eucas1p1N;
+        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200423145536eusmtrp14eaca221daa39987e6c63814679c691d~IeqlEWxNm1059810598eusmtrp1I;
+        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
+X-AuditID: cbfec7f5-a29ff7000001ed1a-85-5ea1ac689cbc
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id A3.6B.08375.76CA1AE5; Thu, 23
+        Apr 2020 15:55:35 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200423145535eusmtip16a9e68a9b4493120f55398ce1a99fd94~Ieqkkhsqz1968119681eusmtip1u;
+        Thu, 23 Apr 2020 14:55:35 +0000 (GMT)
+Subject: Re: [PATCH v2] console: console: Complete exception handling in
+ newport_probe()
+To:     Dejin Zheng <zhengdejin5@gmail.com>
+Cc:     gregkh@linuxfoundation.org, tglx@linutronix.de,
+        FlorianSchandinat@gmx.de, ralf@linux-mips.org,
+        tsbogend@alpha.franken.de, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v1] fbdev: sm712fb: fix an issue about iounmap for a
- wrong address
-Message-ID: <20200423145239.GC1562@nuc8i5>
-References: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
+Date:   Thu, 23 Apr 2020 16:55:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20200423142627.1820-1-zhengdejin5@gmail.com>
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOKsWRmVeSWpSXmKPExsWy7djPc7oZaxbGGTRPErV4OeEwo8WVr+/Z
+        LDpnXmO0aF68ns3iRN8HVovLu+awWVzao2KxedNUZovDTQeZLXY9usnswOXRemk5i8fOWXfZ
+        PT58jPN4d+4cu8fRlWuZPPbPXcPucb/7OJPH501yARxRXDYpqTmZZalF+nYJXBlnFjSxFTQK
+        VEy99pq5gbGPt4uRg0NCwERi8Ra2LkYuDiGBFYwSbQcaGSGcL4wSy68fZ4dwPjNKLN03AaiM
+        E6yj59cKqJbljBKXP0xhhnDeMkoc7H7GCDJXWCBK4uMxTpAGEQF1iZkt/SwgNcwC3UwSr083
+        gE1iE7CSmNi+ihHE5hWwk1j8tpkJxGYRUJX4tvEDC4gtKhAh8enBYVaIGkGJkzOfgMU5gXr/
+        7D8FFmcWEJe49WQ+E4QtL9G8dTbYQRIC99glln87ygRxtovEkxNN7BC2sMSr41ugbBmJ05N7
+        WCAa1jFK/O14AdW9HRgCk/9BPW0tcefcLzaQ15gFNCXW79KHCDtKfNi1hA0SknwSN94KQhzB
+        JzFp23RmiDCvREebEES1msSGZRvYYNZ27VzJPIFRaRaS12YheWcWkndmIexdwMiyilE8tbQ4
+        Nz212DgvtVyvODG3uDQvXS85P3cTIzB5nf53/OsOxn1/kg4xCnAwKvHwGpQujBNiTSwrrsw9
+        xCjBwawkwrvh4bw4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqemFqQWwWSZ
+        ODilGhj5nv5I0zVbwOnI/61jemo/t7mtjel+QaEydS2mvjUrwn0CV7i4lDb+6mq6uHq5n0fg
+        5s+yU1LY3kWqPHmyL/SXtNIX4cylLb/eXz48UXn31Mdv90U08rOWZ2Quf2f6+fG61YILDshK
+        Km2/Hvj12hoR6QlTEj++sfNJTNp052vezFc5+YfNzwcrsRRnJBpqMRcVJwIAhgtLnVoDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRmVeSWpSXmKPExsVy+t/xu7rpaxbGGfS/trJ4OeEwo8WVr+/Z
+        LDpnXmO0aF68ns3iRN8HVovLu+awWVzao2KxedNUZovDTQeZLXY9usnswOXRemk5i8fOWXfZ
+        PT58jPN4d+4cu8fRlWuZPPbPXcPucb/7OJPH501yARxRejZF+aUlqQoZ+cUltkrRhhZGeoaW
+        FnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehlnFjSxFTQKVEy99pq5gbGPt4uRk0NCwESi
+        59cKti5GLg4hgaWMEuvnrmXsYuQASshIHF9fBlEjLPHnWhdUzWtGiemXVrKA1AgLREl8PMYJ
+        UiMioC4xs6WfBaSGWaCbSeLeq72MEA29jBJLTkxnB6liE7CSmNi+ihHE5hWwk1j8tpkJxGYR
+        UJX4tvEDC4gtKhAhcXjHLKgaQYmTM5+AxTmBev/sP8UKYjMDbfsz7xIzhC0ucevJfCYIW16i
+        eets5gmMQrOQtM9C0jILScssJC0LGFlWMYqklhbnpucWG+oVJ+YWl+al6yXn525iBEbrtmM/
+        N+9gvLQx+BCjAAejEg/vjaKFcUKsiWXFlbmHGCU4mJVEeDc8nBcnxJuSWFmVWpQfX1Sak1p8
+        iNEU6LmJzFKiyfnARJJXEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNT
+        qoGRu+BVlJ+tQ/LDI+8rHiyw1og5U3blvpRH++lI7YD7DeFm/Rs2+k2rWnvS/zxHD3Or/GNu
+        62MVJSvmpR7ZvLml1fX0r5yG6fMmec2e6y5zRSeXkY/9o7XhSb2VLCxfnVjn9S048Hjr75yT
+        G/w3BxzWYOdaEP5vXt4T/ov3DhebH275kxLPI/JeiaU4I9FQi7moOBEAYiueT+wCAAA=
+X-CMS-MailID: 20200423145536eucas1p1d17d340c8ac30b9e186bfaeaf593f1b4
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
+References: <CGME20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146@eucas1p2.samsung.com>
+        <20200423142627.1820-1-zhengdejin5@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 02:14:48PM +0200, Markus Elfring wrote:
-> > the sfb->fb->screen_base is not save the value get by iounmap() when
-> > the chip id is 0x720.
+
+Hi,
+
+I believe that the patch summary line should be:
+
+"[PATCH v2] console: newport_con: ..."
+
+On 4/23/20 4:26 PM, Dejin Zheng wrote:
+> A call of the function ¡°do_take_over_console¡± can fail here.
+> The corresponding system resources were not released then.
+> Thus add a call of the function ¡°iounmap¡± together with the check
+> of a failure predicate.
 > 
-> I suggest to improve this change description.
-> How did you determine relevant differences for the mentioned chip model?
->
-Read and check its codes。
+> Fixes: e84de0c6190503 ("MIPS: GIO bus support for SGI IP22/28")
 
-smtcfb_pci_probe() --> smtc_map_smem()
+I cannot see how this patch fixes commit e84de0c6190503
+(AFAICS npregs has also been leaked on error before)?
 
-smtcfb_pci_probe()
-switch (sfb->chip_id) {
-        case 0x710:
-        case 0x712:
-		sfb->lfb = ioremap(mmio_base, mmio_addr);
-	case 0x720:
-		sfb->dp_regs = ioremap(mmio_base, 0x00200000 + smem_size);
-                sfb->lfb = sfb->dp_regs + 0x00200000;
-	}
-smtc_map_smem()
-	sfb->fb->screen_base = sfb->lfb;
-
-
-smtcfb_pci_remove() --> smtc_unmap_smem()
-
-smtc_unmap_smem()
-	iounmap(sfb->fb->screen_base);
-
+> CC: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
+> ---
+> v1 -> v2:
+> 	- modify the commit comments by Markus'suggestion.
 > 
-> > so iounmap() for address sfb->fb->screen_base is not right.
+>  drivers/video/console/newport_con.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> Will another imperative wording become helpful here?
-> 
-yes, this is why need to change this code.
+> diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
+> index 00dddf6e08b0..6bfc8e3ffd4a 100644
+> --- a/drivers/video/console/newport_con.c
+> +++ b/drivers/video/console/newport_con.c
+> @@ -720,6 +720,9 @@ static int newport_probe(struct gio_device *dev,
+>  	console_lock();
+>  	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
+>  	console_unlock();
+> +
+> +	if (err)
+> +		iounmap((void *)npregs);
 
-> 
-> …
-> > +++ b/drivers/video/fbdev/sm712fb.c
-> > @@ -1429,6 +1429,8 @@  static int smtc_map_smem(struct smtcfb_info *sfb,
-> >  static void smtc_unmap_smem(struct smtcfb_info *sfb)
-> >  {
-> >  	if (sfb && sfb->fb->screen_base) {
-> > +		if (sfb->chip_id == 0x720)
-> > +			sfb->fb->screen_base -= 0x00200000;
-> >  		iounmap(sfb->fb->screen_base);
-> 
-> How do you think about to use descriptive identifiers for
-> the shown constants?
->
-These two constants are originally in the driver, I don't know enough
-about its meaning, There are a lot of constants in this driver. If I
-replace it with the macro, I worry that the name of the macro may not
-be accurate.
+Looks OK but while you are at it, could you please also add missing
+release_mem_region() on error and on device removal:
 
-> Would you like to clarify any related software analysis approaches?
->
-just read coedes and check it.
+	newport_addr = dev->resource.start + 0xF0000;
+	if (!request_mem_region(newport_addr, 0x10000, "Newport"))
+		return -ENODEV;
 
-> Regards,
-> Markus
+	npregs = (struct newport_regs *)/* ioremap cannot fail */
+		ioremap(newport_addr, sizeof(struct newport_regs));
+	console_lock();
+	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
+	console_unlock();
+	return err;
+}
+
+static void newport_remove(struct gio_device *dev)
+{
+	give_up_console(&newport_con);
+	iounmap((void *)npregs);
+}
+
+?
+
+>  	return err;
+>  }
+>  
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
