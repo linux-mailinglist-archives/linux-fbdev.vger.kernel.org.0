@@ -2,157 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E891B5FE6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E82A11B603A
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 18:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729212AbgDWPv0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 11:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56648 "EHLO
+        id S1729392AbgDWQEB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 12:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729072AbgDWPv0 (ORCPT
+        by vger.kernel.org with ESMTP id S1729257AbgDWQEB (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 11:51:26 -0400
+        Thu, 23 Apr 2020 12:04:01 -0400
 Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8770C09B040;
-        Thu, 23 Apr 2020 08:51:24 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id 18so3144166pfx.6;
-        Thu, 23 Apr 2020 08:51:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F8AC09B040;
+        Thu, 23 Apr 2020 09:04:01 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id x15so3180130pfa.1;
+        Thu, 23 Apr 2020 09:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=+Lpx84ybnP3CbGO9+hIlMb8pKZvpHlBUCvuaUaL2gSc=;
-        b=siyn8fn9dgNTeY0PFfNmf3LQOi0S4q18gLuG/8tqxoJ2xhYIUJtylgFoSPsgXvC62U
-         13PR7A6ZHoCHxk6J5LGWsHxwmqAbc9fAL3QpZTmQHXf9lND8mWx5WZsepUSTtHf9ilO7
-         iYoWUINohBd88hEZk/vniNzaVSpxQQlBxTzTUaUQwdFnNk1BX0IqjmE0DXZjEPE+BFO4
-         o+TOxBANszxYwZg9ETuztp4Z1kS2iy8RSSXxvZKe5QHPZYDg2RfNblXS9svfX0sneC3Q
-         Ap0U76J8jIoXqnEHpcJQWa7SFgJBTPm73RPp2csNvjdfbyUffI3AeCGPC6DWelbU6sFA
-         eVVQ==
+         :content-disposition:in-reply-to:user-agent;
+        bh=QRRSRzv3ELZyPDBdtIE45poUqjMQaq7ox4Jm7P7/zG8=;
+        b=R1yAor3At9e+xtBhUr6dlgl7zNXUVenScXyHMgcn6IEG2US+/UvODrE8lbtPt/gLs/
+         fbWEVj/JWvpO34kH3WTmFqm02fkOHuQ7PhIiONd8EUu3SW3XtYCNPbk92Xa4fdfbrRE1
+         PXQd0r0F2W4Fp10i4ld1cmfne4gSHWf8NyMjtGLwvuq4GJmQJABiDyvshdytsc4Dk0Rx
+         e//SCLAP6/rdoNEqY0IdCqIT3FibTx1vI72kTE3eLnhpUYI2ZreFg08S9YtkGEs0zhOt
+         WX9FXySSlDXshp0yLq17w2rYTW0o1mmx/y55DH11xOJlY8NmfYyv7tfqjERP5kVDnBrD
+         Eccw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=+Lpx84ybnP3CbGO9+hIlMb8pKZvpHlBUCvuaUaL2gSc=;
-        b=Vw46uONZ2rbslhgTGFzcq7IbllIpLNb7skz35flTY6ZLxyxZE4Ra4+Hk2VXgTSHCft
-         o7UqxtA/OuCBzfm+Mkmw2/OgGfUTxLiZKhMSxhIexyr3yTbUqOT5NB9RZMSiOaQ1C+6O
-         I+NwCzEh34kDgREtBP6bH5X8oQrPlm1jsmq7P+TmJnLbXyLxXcsPsuOqZnXZ1ixStHoR
-         wX5U9237YCBqmj/cZd9XVue6SXensU0qKmkFUO+z8YwreWyQnxBEvODexIjNwBSRZOaN
-         qQLwKuJAnlTQQa/wpM3d347IlcSog7G0ncodvrhGuFxgorQswLqmpXoExe5wrOJB44wi
-         7bqQ==
-X-Gm-Message-State: AGi0PuYnSYht+stXoV2Po6iCcRoMj5tnmf6HCl+0HxjOmA19nLvHLiGd
-        phBkcn4U4fiYv4tk6g6deQY=
-X-Google-Smtp-Source: APiQypIz/YwOugDPJn9jgplod/vw/LcRDTS+6PH+rgJgIUALhMFb4iU4bXeGzUzz1cPDhS+gji1UoA==
-X-Received: by 2002:a05:6a00:d:: with SMTP id h13mr4466425pfk.254.1587657084207;
-        Thu, 23 Apr 2020 08:51:24 -0700 (PDT)
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=QRRSRzv3ELZyPDBdtIE45poUqjMQaq7ox4Jm7P7/zG8=;
+        b=TVIeVzzejAOOiRRSoz4/GvNBmr5n75ABs+uF/NIo/cF4b3z+CngP+2xcfu0HXoPN4O
+         gw3GWY1e5GxoaCfNEHMIxVlcDrZuNx464YMIY6HTgDL3jT8r55Mgq1IYOujjzo3zXf5X
+         iMgry4kzJyhwxE03G5YmSpIVIT2XtMuA8aakiZ7/YpNUUtbo+FPTbL7le01odsE39v4S
+         mVYyiSMapgsvQvAUZyvrhDTbiKgPrGTM/YvyByT9Ao8+bqywZX/jMhKXTO3kUPmRFpC9
+         cfh+vKW4gKHw/kxpPhCxagCPzHKg7I7BIzM48OUR0KiTAjH4J6Ub7syT1sBfGHKjyo0w
+         fSLQ==
+X-Gm-Message-State: AGi0Pua+3BR7Q1XoCz2myIeaDcqmDzHUuyfJn6MeyNrAbwM+d1lB3mJM
+        A0NH/FWcDNXqArm9nKELxg0=
+X-Google-Smtp-Source: APiQypJNoUyWvf19ibvNaStq1WA8/4V2tFh9qQrvtbqG8Us89/iEAV2d0p9Nj6pt/PJyn6r+TTHe8Q==
+X-Received: by 2002:aa7:82d4:: with SMTP id f20mr4501737pfn.253.1587657840767;
+        Thu, 23 Apr 2020 09:04:00 -0700 (PDT)
 Received: from localhost (176.122.158.71.16clouds.com. [176.122.158.71])
-        by smtp.gmail.com with ESMTPSA id h17sm2931338pfk.13.2020.04.23.08.51.22
+        by smtp.gmail.com with ESMTPSA id a200sm2867954pfa.201.2020.04.23.09.03.59
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Apr 2020 08:51:23 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 23:51:16 +0800
+        Thu, 23 Apr 2020 09:04:00 -0700 (PDT)
+Date:   Fri, 24 Apr 2020 00:03:56 +0800
 From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     gregkh@linuxfoundation.org, tglx@linutronix.de,
-        FlorianSchandinat@gmx.de, ralf@linux-mips.org,
-        tsbogend@alpha.franken.de, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, FlorianSchandinat@gmx.de,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v2] console: console: Complete exception handling in
  newport_probe()
-Message-ID: <20200423155116.GA2247@nuc8i5>
-References: <CGME20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146@eucas1p2.samsung.com>
- <20200423142627.1820-1-zhengdejin5@gmail.com>
- <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
+Message-ID: <20200423160356.GA2538@nuc8i5>
+References: <20200423142627.1820-1-zhengdejin5@gmail.com>
+ <CAHp75Vf1_SMk=_WDUrB97BGR6K6EXOdtgQ92=hTyMdVUoyWQiw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
+In-Reply-To: <CAHp75Vf1_SMk=_WDUrB97BGR6K6EXOdtgQ92=hTyMdVUoyWQiw@mail.gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 04:55:35PM +0200, Bartlomiej Zolnierkiewicz wrote:
-> 
-> Hi,
-> 
-> I believe that the patch summary line should be:
-> 
-> "[PATCH v2] console: newport_con: ..."
->
-OK, thanks!
-
-> On 4/23/20 4:26 PM, Dejin Zheng wrote:
-> > A call of the function ¡°do_take_over_console¡± can fail here.
+On Thu, Apr 23, 2020 at 05:52:09PM +0300, Andy Shevchenko wrote:
+> On Thu, Apr 23, 2020 at 5:26 PM Dejin Zheng <zhengdejin5@gmail.com> wrote:
+> >
+> > A call of the function do_take_over_console() can fail here.
 > > The corresponding system resources were not released then.
-> > Thus add a call of the function ¡°iounmap¡± together with the check
+> > Thus add a call of the function iounmap() together with the check
 > > of a failure predicate.
-> > 
-> > Fixes: e84de0c6190503 ("MIPS: GIO bus support for SGI IP22/28")
->
-> I cannot see how this patch fixes commit e84de0c6190503
-> (AFAICS npregs has also been leaked on error before)?
->
-yes, you are right, the commit should be e86bb8acc0fdca82d2
-("[PATCH] VT binding: Make newport_con support binding")
-
-- move register ioremap from newport_startup() to newport_console_init()
-
+> 
+> ...
+> 
 > > CC: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
-> > ---
-> > v1 -> v2:
-> > 	- modify the commit comments by Markus'suggestion.
-> > 
-> >  drivers/video/console/newport_con.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-> > index 00dddf6e08b0..6bfc8e3ffd4a 100644
-> > --- a/drivers/video/console/newport_con.c
-> > +++ b/drivers/video/console/newport_con.c
-> > @@ -720,6 +720,9 @@ static int newport_probe(struct gio_device *dev,
-> >  	console_lock();
-> >  	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
-> >  	console_unlock();
-> > +
-> > +	if (err)
-> > +		iounmap((void *)npregs);
 > 
-> Looks OK but while you are at it, could you please also add missing
-> release_mem_region() on error and on device removal:
+> Use Cc: Better to read.
 >
-Ok, Thanks, I will send the patch v3 for it.
+I will pay attention to the next submission, thanks.
 
-> 	newport_addr = dev->resource.start + 0xF0000;
-> 	if (!request_mem_region(newport_addr, 0x10000, "Newport"))
-> 		return -ENODEV;
+> ...
 > 
-> 	npregs = (struct newport_regs *)/* ioremap cannot fail */
-> 		ioremap(newport_addr, sizeof(struct newport_regs));
-> 	console_lock();
-> 	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
-> 	console_unlock();
-> 	return err;
-> }
+> > v1 -> v2:
+> >         - modify the commit comments by Markus'suggestion.
 > 
-> static void newport_remove(struct gio_device *dev)
-> {
-> 	give_up_console(&newport_con);
-> 	iounmap((void *)npregs);
-> }
+> What suggestion? You need to be clear in changelog what exactly has
+> been done without looking to any previous mail.
+>
+The commit comments have some more appropriate instructions by
+Markus'suggestion. here is my first version commit comments:
+
+if do_take_over_console() return an error in the newport_probe(),
+due to the io virtual address is not released, it will cause a leak.
+
+Thnaks!
+
+> ...
 > 
-> ?
-> 
-> >  	return err;
+> >         console_lock();
+> >         err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
+> >         console_unlock();
+> > +
+> > +       if (err)
+> > +               iounmap((void *)npregs);
+> >         return err;
 > >  }
-> >  
 > 
-> Best regards,
-> --
-> Bartlomiej Zolnierkiewicz
-> Samsung R&D Institute Poland
-> Samsung Electronics
+> I have briefly looked at the code (it is actually quite old one!), and
+> I think this is half-baked solution, besides the fact of missed
+> __iomem annotation and useless explicit casting.
+> The proper one seems to switch to memremap() and do memunmap() here.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
