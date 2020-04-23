@@ -2,105 +2,131 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D605A1B5E93
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C3C31B5F08
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728921AbgDWPF0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 11:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49368 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728551AbgDWPF0 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 11:05:26 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09202C08E934;
-        Thu, 23 Apr 2020 08:05:26 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id g6so3014917pgs.9;
-        Thu, 23 Apr 2020 08:05:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YHcF20Pivw8z3/ND3mH4iQQaNlvKu4UnK2vOPdbQVJA=;
-        b=FfBGHPK7wd3f4BANvXku7COH9+t7ONn4xwNP0pCwrDxGoSAjfB+kx+Ba2EjlFV+MQx
-         6JOKBdD69hIcNz+Lx0mdmGb4L7e8Z3Rq71Pmu08iUZaKD09/qI2P1Ufw4/8/ycV6U4VO
-         PYJdNt4VGItxq7kJAlDRpz8DxoOvOjDhWktDup3jVleZ4Tocp5zsDz+ATnQEvpnMPrFv
-         6UEd4Uu0xASl247ScxZsDPwy0zvKJ5ofx0Kry678mnDgEpnZIyVvLHVS+0I1TJnXgyd4
-         CoHNMAjjymhKxRZJCFoGWt0v/1M/GTR7iKdgHZ4H2MWSIDwfojhh/OEdjCh/55XlfHZZ
-         iOaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YHcF20Pivw8z3/ND3mH4iQQaNlvKu4UnK2vOPdbQVJA=;
-        b=U7y9lY6dEOi34YPEJ868aDV5mWj7UhGs61gepVITmSXMHy2YGowgHkLVAnN1aLRf5I
-         2Ag5Bt9PGPJ8T5Ek3XDJiZG6Z0uSgXbEFaUzDpscB/jxw3SGNe/xACG3eQaLYxp4M+QY
-         Sz1vP+F2pNEDNYmQva6fnzXEHDaRVPN8F+PhAmnPD8QZvtLycS7dKPxXlviMTd6dzO+g
-         r/yMIfuuDJiJJYV+LQQ/SBldGqI0+uHidDLq+Tzzg/VZOSBTf0eY9MsEaA+AaxXn8DIi
-         RF2H1QzVG1hlR7gJuAwo/H0zXdPkagRc0OLoeZ13AzSCnngr+cOlpiMVmbWi/Q8tKMLm
-         1S6w==
-X-Gm-Message-State: AGi0PuayJ2KkNkQ4aufo/sdqUgJ4VCRPf8b754WzmfrJMq9us+FdKNmD
-        l4nEmvfxym7ta64tXvJcogLP8ROwyAcXTsmFez0=
-X-Google-Smtp-Source: APiQypLZf74LwPBpTYXTJ9GR4vXb1ctcANv6Y0o2lRSo2eTWzHdfq22mdOYPLt5ZSvJ/rqzQ1KHuwiCeFT/95uxbJt4=
-X-Received: by 2002:a63:5511:: with SMTP id j17mr4281090pgb.4.1587654325529;
- Thu, 23 Apr 2020 08:05:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <CGME20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146@eucas1p2.samsung.com>
- <20200423142627.1820-1-zhengdejin5@gmail.com> <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
-In-Reply-To: <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 23 Apr 2020 18:05:18 +0300
-Message-ID: <CAHp75Vd8kC6ub-=pwe3QtdZ=FBqka3F1bbHea6__G5_Vm_ybcQ@mail.gmail.com>
-Subject: Re: [PATCH v2] console: console: Complete exception handling in newport_probe()
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Dejin Zheng <zhengdejin5@gmail.com>,
+        id S1729072AbgDWPXv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 11:23:51 -0400
+Received: from mout.web.de ([212.227.15.4]:41205 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729024AbgDWPXu (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 23 Apr 2020 11:23:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1587655411;
+        bh=M4+W1USca9HVX4Azy30pfv+90wRipbT6lbsENz2hjLE=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=X7lfJqmckIqrzVGF8Ua8MYRnMuAHeg7JRJc3NiXdXXZDdvsLJslU1gyRhusrShVWM
+         QwG+JhBkfsdkJ1mA4n1GWJOUoQGIWOwWaLD1QoWesfmq/oqVhjz5Se35l0W+uvX7G/
+         OeVTU2JoNoggBqkRSigX5yaPwxZruirJARcvxhtc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.69.235]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtFAh-1j3cSW1x8N-012lEi; Thu, 23
+ Apr 2020 17:23:31 +0200
+Subject: Re: console: Complete exception handling in newport_probe()
+To:     Dejin Zheng <zhengdejin5@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, FlorianSchandinat@gmx.de,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>,
+        =?UTF-8?Q?Thomas_Bogend=c3=b6rfer?= <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
+ <20200423142909.GB1562@nuc8i5>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <f054f00c-b813-e0c2-fe2e-30ccdec1ff46@web.de>
+Date:   Thu, 23 Apr 2020 17:23:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200423142909.GB1562@nuc8i5>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:I25rebWPlVXPKQRAe55ebCQcs7veEq7l6aFHkXrgRw7EUlk9SwD
+ HgMOlxkXVFe9XYv/FIdjuIJV8fhn6BItJ02BaMHD92JBxUWd1xGyycKcI2Z/Q5ldqeCmgXw
+ 7dXbBhC8v7ddRXO2YSf78ATIXoAYemzl1Zx4KwGFb30cTVPZndDhV5tByiH+w728LF7wA+y
+ /BcsiBgtPYMHCGzbMoABA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OXXHy57w/qU=:6qxJ8NG+o0pbnqSZCEl215
+ 4d+khhyja+zyuz1vcTiizHh/q7uob/WMBIgfqcF+BUMdsyR1Za3+E3cIq1sn/wJut/8iP8Q4d
+ lW21wgVA17HbIBO4sKVk3hGJfT34B26XamcnxKVcMEovAfPBgmsEviu+b4DSm5cJOOsuzxs79
+ efWE8tkraY8TetcCqX/oGl61h/RYajFPt9Ejxr5RHTFVwGNN/cCncV397eVU39dQiTGyR+Qy0
+ rZ/KywoluAI2Se/yAYOlXqaZXGkv2ZQUOfG7fz/j1pj5yLjMI/sOF4UveG/KKFt1ZyE3BHIEk
+ 8oLrK9+bv52eRgBhrVCDnDnXK8QTg/9l9KunAoL8YzKgujwiJuUFwSASj1tAFt2KKkEb2uBKF
+ VSQbq2leQxo4+i865JDBUji5B8pVHMsxZo3m0HNeTgXgy57aDh4oow7A3IvB8UT2z0WY16hkF
+ QVDC71DThevQp5qRwhu3olLx7qWLdWWu/X4FHuSBCEqPDyR8mpfF0IRJwxipUnTTiZIc1xHIf
+ XEaXLu410qnBIfDi5SeEz4wVrRTpV3v03e03nGB+3Jxc0DXAQcL7WQLRC7m49RBjlNmg+rXjJ
+ 78Svc6IvYsrC9G1IOt8sdNGbWruYzDCHDj7EbRlpE8++b1t65eVrjlD3xw2ZtdNUHTw0RTIrr
+ Fy5AsujnAhPIbRbRMLfgc6KO8JXDyEBwY/Suhle/4gLzL7D/xH71GbuB/BUkB6iRy2T+qXTO9
+ o/zzaDE52l8jDYInr4TmSKKEt1rIdm8EfKk5JtdEQfhR/Jurq8d995sffEgrzt8t+Dt87FWkv
+ fz918D9e3j78anlwGUgpu1YjDsIpFio7Y4xsjdFgr7Ixizin7Zehozjp/sEBB65Z+SYSF7/uX
+ 0MqqmLzZmEPIz/MfOevJ8djJaEEXeYRTI5QW0GvXFRhEB5sDtWAUxTnrPT09VbssE8a8yaD0N
+ OGbBzE9+KjlrVCjFiQPk5Kg7j8MbeBPXOUGBZXNqX2WwLgXFOeXOHPzewg41MRlT7C5WP/dLD
+ h7zqJR+qwjtbfUHkncwO604PnqY0hwQXyTw1QiYgdtxzm47TTf6E8/waOZU5+KotnaokeJkcZ
+ olEp88R7mVAo7NMzKUBG7YHyjXX8VZ0i2aXwRdN0q15ZMIsGxsj89Ir0Z9a1lIMqEB5xxVyfj
+ /FnoacgZtSBQ8hB6qk6XxoqjhFyq//oAHkrLq/vm8fwXmRHlM3SRsmue3t3HFHCdZ71y9fmvF
+ Cd2bbOH7uI70yEW/h
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 5:55 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/scripts/coccinelle/free/iounmap.cocci
+>>
+>> How do you think about to extend presented software analysis approaches?
+>>
+> Sorry, I am not familiar with it, I don't know.
 
-> > +     if (err)
-> > +             iounmap((void *)npregs);
->
-> Looks OK but while you are at it, could you please also add missing
-> release_mem_region() on error and on device removal:
->
->         newport_addr = dev->resource.start + 0xF0000;
->         if (!request_mem_region(newport_addr, 0x10000, "Newport"))
->                 return -ENODEV;
->
->         npregs = (struct newport_regs *)/* ioremap cannot fail */
->                 ioremap(newport_addr, sizeof(struct newport_regs));
->         console_lock();
->         err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
->         console_unlock();
->         return err;
-> }
->
-> static void newport_remove(struct gio_device *dev)
-> {
->         give_up_console(&newport_con);
->         iounmap((void *)npregs);
-> }
->
-> ?
+Do you find the comments helpful at the beginning of this SmPL script?
 
-Don't you think that proper solution is rather switch to memremap()?
+Would you like to let any more source code analysis tools help you
+to find remaining update candidates?
 
-> >       return err;
-> >  }
-
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Markus
