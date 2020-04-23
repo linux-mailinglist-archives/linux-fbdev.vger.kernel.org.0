@@ -2,176 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F1C1B5E65
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 16:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D605A1B5E93
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728816AbgDWOzj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 10:55:39 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:47312 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728906AbgDWOzj (ORCPT
+        id S1728921AbgDWPF0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 11:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728551AbgDWPF0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:55:39 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200423145536euoutp02b058d1d041b8463f880912431f338a52~Ieqlv2nhX3051630516euoutp02P
-        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200423145536euoutp02b058d1d041b8463f880912431f338a52~Ieqlv2nhX3051630516euoutp02P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1587653736;
-        bh=4jBedYbVs9iPISb4SHRfEbPFJqP00QurHGBQmIMMH9o=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=KmXYnhcFiNWsqafuebllh6+baVzXgyJ35Y/K6QD6Tr++BrpHYhXI/OhzxCArk9+kT
-         awrP/Wa4vz3+aJSzNTLu1EyVF/chzn0/E1cpk6K3JawP18fEosiwmFRyNcRTD4GgY0
-         x8ANFqiUqjb/bkrr0fv5bwfosG9SGDYL1CID2ckY=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200423145536eucas1p11d03e6479cd7a4ae7276a37b6d2c144f~IeqlZ1cJj3041030410eucas1p1Q;
-        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3E.4A.60698.86CA1AE5; Thu, 23
-        Apr 2020 15:55:36 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200423145536eucas1p1d17d340c8ac30b9e186bfaeaf593f1b4~IeqlFFyEW3041030410eucas1p1N;
-        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200423145536eusmtrp14eaca221daa39987e6c63814679c691d~IeqlEWxNm1059810598eusmtrp1I;
-        Thu, 23 Apr 2020 14:55:36 +0000 (GMT)
-X-AuditID: cbfec7f5-a29ff7000001ed1a-85-5ea1ac689cbc
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id A3.6B.08375.76CA1AE5; Thu, 23
-        Apr 2020 15:55:35 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200423145535eusmtip16a9e68a9b4493120f55398ce1a99fd94~Ieqkkhsqz1968119681eusmtip1u;
-        Thu, 23 Apr 2020 14:55:35 +0000 (GMT)
-Subject: Re: [PATCH v2] console: console: Complete exception handling in
- newport_probe()
-To:     Dejin Zheng <zhengdejin5@gmail.com>
-Cc:     gregkh@linuxfoundation.org, tglx@linutronix.de,
-        FlorianSchandinat@gmx.de, ralf@linux-mips.org,
-        tsbogend@alpha.franken.de, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
-Date:   Thu, 23 Apr 2020 16:55:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        Thu, 23 Apr 2020 11:05:26 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09202C08E934;
+        Thu, 23 Apr 2020 08:05:26 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id g6so3014917pgs.9;
+        Thu, 23 Apr 2020 08:05:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YHcF20Pivw8z3/ND3mH4iQQaNlvKu4UnK2vOPdbQVJA=;
+        b=FfBGHPK7wd3f4BANvXku7COH9+t7ONn4xwNP0pCwrDxGoSAjfB+kx+Ba2EjlFV+MQx
+         6JOKBdD69hIcNz+Lx0mdmGb4L7e8Z3Rq71Pmu08iUZaKD09/qI2P1Ufw4/8/ycV6U4VO
+         PYJdNt4VGItxq7kJAlDRpz8DxoOvOjDhWktDup3jVleZ4Tocp5zsDz+ATnQEvpnMPrFv
+         6UEd4Uu0xASl247ScxZsDPwy0zvKJ5ofx0Kry678mnDgEpnZIyVvLHVS+0I1TJnXgyd4
+         CoHNMAjjymhKxRZJCFoGWt0v/1M/GTR7iKdgHZ4H2MWSIDwfojhh/OEdjCh/55XlfHZZ
+         iOaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YHcF20Pivw8z3/ND3mH4iQQaNlvKu4UnK2vOPdbQVJA=;
+        b=U7y9lY6dEOi34YPEJ868aDV5mWj7UhGs61gepVITmSXMHy2YGowgHkLVAnN1aLRf5I
+         2Ag5Bt9PGPJ8T5Ek3XDJiZG6Z0uSgXbEFaUzDpscB/jxw3SGNe/xACG3eQaLYxp4M+QY
+         Sz1vP+F2pNEDNYmQva6fnzXEHDaRVPN8F+PhAmnPD8QZvtLycS7dKPxXlviMTd6dzO+g
+         r/yMIfuuDJiJJYV+LQQ/SBldGqI0+uHidDLq+Tzzg/VZOSBTf0eY9MsEaA+AaxXn8DIi
+         RF2H1QzVG1hlR7gJuAwo/H0zXdPkagRc0OLoeZ13AzSCnngr+cOlpiMVmbWi/Q8tKMLm
+         1S6w==
+X-Gm-Message-State: AGi0PuayJ2KkNkQ4aufo/sdqUgJ4VCRPf8b754WzmfrJMq9us+FdKNmD
+        l4nEmvfxym7ta64tXvJcogLP8ROwyAcXTsmFez0=
+X-Google-Smtp-Source: APiQypLZf74LwPBpTYXTJ9GR4vXb1ctcANv6Y0o2lRSo2eTWzHdfq22mdOYPLt5ZSvJ/rqzQ1KHuwiCeFT/95uxbJt4=
+X-Received: by 2002:a63:5511:: with SMTP id j17mr4281090pgb.4.1587654325529;
+ Thu, 23 Apr 2020 08:05:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200423142627.1820-1-zhengdejin5@gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOKsWRmVeSWpSXmKPExsWy7djPc7oZaxbGGTRPErV4OeEwo8WVr+/Z
-        LDpnXmO0aF68ns3iRN8HVovLu+awWVzao2KxedNUZovDTQeZLXY9usnswOXRemk5i8fOWXfZ
-        PT58jPN4d+4cu8fRlWuZPPbPXcPucb/7OJPH501yARxRXDYpqTmZZalF+nYJXBlnFjSxFTQK
-        VEy99pq5gbGPt4uRg0NCwERi8Ra2LkYuDiGBFYwSbQcaGSGcL4wSy68fZ4dwPjNKLN03AaiM
-        E6yj59cKqJbljBKXP0xhhnDeMkoc7H7GCDJXWCBK4uMxTpAGEQF1iZkt/SwgNcwC3UwSr083
-        gE1iE7CSmNi+ihHE5hWwk1j8tpkJxGYRUJX4tvEDC4gtKhAh8enBYVaIGkGJkzOfgMU5gXr/
-        7D8FFmcWEJe49WQ+E4QtL9G8dTbYQRIC99glln87ygRxtovEkxNN7BC2sMSr41ugbBmJ05N7
-        WCAa1jFK/O14AdW9HRgCk/9BPW0tcefcLzaQ15gFNCXW79KHCDtKfNi1hA0SknwSN94KQhzB
-        JzFp23RmiDCvREebEES1msSGZRvYYNZ27VzJPIFRaRaS12YheWcWkndmIexdwMiyilE8tbQ4
-        Nz212DgvtVyvODG3uDQvXS85P3cTIzB5nf53/OsOxn1/kg4xCnAwKvHwGpQujBNiTSwrrsw9
-        xCjBwawkwrvh4bw4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqemFqQWwWSZ
-        ODilGhj5nv5I0zVbwOnI/61jemo/t7mtjel+QaEydS2mvjUrwn0CV7i4lDb+6mq6uHq5n0fg
-        5s+yU1LY3kWqPHmyL/SXtNIX4cylLb/eXz48UXn31Mdv90U08rOWZ2Quf2f6+fG61YILDshK
-        Km2/Hvj12hoR6QlTEj++sfNJTNp052vezFc5+YfNzwcrsRRnJBpqMRcVJwIAhgtLnVoDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRmVeSWpSXmKPExsVy+t/xu7rpaxbGGfS/trJ4OeEwo8WVr+/Z
-        LDpnXmO0aF68ns3iRN8HVovLu+awWVzao2KxedNUZovDTQeZLXY9usnswOXRemk5i8fOWXfZ
-        PT58jPN4d+4cu8fRlWuZPPbPXcPucb/7OJPH501yARxRejZF+aUlqQoZ+cUltkrRhhZGeoaW
-        FnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehlnFjSxFTQKVEy99pq5gbGPt4uRk0NCwESi
-        59cKti5GLg4hgaWMEuvnrmXsYuQASshIHF9fBlEjLPHnWhdUzWtGiemXVrKA1AgLREl8PMYJ
-        UiMioC4xs6WfBaSGWaCbSeLeq72MEA29jBJLTkxnB6liE7CSmNi+ihHE5hWwk1j8tpkJxGYR
-        UJX4tvEDC4gtKhAhcXjHLKgaQYmTM5+AxTmBev/sP8UKYjMDbfsz7xIzhC0ucevJfCYIW16i
-        eets5gmMQrOQtM9C0jILScssJC0LGFlWMYqklhbnpucWG+oVJ+YWl+al6yXn525iBEbrtmM/
-        N+9gvLQx+BCjAAejEg/vjaKFcUKsiWXFlbmHGCU4mJVEeDc8nBcnxJuSWFmVWpQfX1Sak1p8
-        iNEU6LmJzFKiyfnARJJXEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNT
-        qoGRu+BVlJ+tQ/LDI+8rHiyw1og5U3blvpRH++lI7YD7DeFm/Rs2+k2rWnvS/zxHD3Or/GNu
-        62MVJSvmpR7ZvLml1fX0r5yG6fMmec2e6y5zRSeXkY/9o7XhSb2VLCxfnVjn9S048Hjr75yT
-        G/w3BxzWYOdaEP5vXt4T/ov3DhebH275kxLPI/JeiaU4I9FQi7moOBEAYiueT+wCAAA=
-X-CMS-MailID: 20200423145536eucas1p1d17d340c8ac30b9e186bfaeaf593f1b4
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
 References: <CGME20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146@eucas1p2.samsung.com>
-        <20200423142627.1820-1-zhengdejin5@gmail.com>
+ <20200423142627.1820-1-zhengdejin5@gmail.com> <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
+In-Reply-To: <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 23 Apr 2020 18:05:18 +0300
+Message-ID: <CAHp75Vd8kC6ub-=pwe3QtdZ=FBqka3F1bbHea6__G5_Vm_ybcQ@mail.gmail.com>
+Subject: Re: [PATCH v2] console: console: Complete exception handling in newport_probe()
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Dejin Zheng <zhengdejin5@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, FlorianSchandinat@gmx.de,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Thu, Apr 23, 2020 at 5:55 PM Bartlomiej Zolnierkiewicz
+<b.zolnierkie@samsung.com> wrote:
 
-Hi,
+> > +     if (err)
+> > +             iounmap((void *)npregs);
+>
+> Looks OK but while you are at it, could you please also add missing
+> release_mem_region() on error and on device removal:
+>
+>         newport_addr = dev->resource.start + 0xF0000;
+>         if (!request_mem_region(newport_addr, 0x10000, "Newport"))
+>                 return -ENODEV;
+>
+>         npregs = (struct newport_regs *)/* ioremap cannot fail */
+>                 ioremap(newport_addr, sizeof(struct newport_regs));
+>         console_lock();
+>         err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
+>         console_unlock();
+>         return err;
+> }
+>
+> static void newport_remove(struct gio_device *dev)
+> {
+>         give_up_console(&newport_con);
+>         iounmap((void *)npregs);
+> }
+>
+> ?
 
-I believe that the patch summary line should be:
+Don't you think that proper solution is rather switch to memremap()?
 
-"[PATCH v2] console: newport_con: ..."
+> >       return err;
+> >  }
 
-On 4/23/20 4:26 PM, Dejin Zheng wrote:
-> A call of the function ¡°do_take_over_console¡± can fail here.
-> The corresponding system resources were not released then.
-> Thus add a call of the function ¡°iounmap¡± together with the check
-> of a failure predicate.
-> 
-> Fixes: e84de0c6190503 ("MIPS: GIO bus support for SGI IP22/28")
-
-I cannot see how this patch fixes commit e84de0c6190503
-(AFAICS npregs has also been leaked on error before)?
-
-> CC: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
-> ---
-> v1 -> v2:
-> 	- modify the commit comments by Markus'suggestion.
-> 
->  drivers/video/console/newport_con.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-> index 00dddf6e08b0..6bfc8e3ffd4a 100644
-> --- a/drivers/video/console/newport_con.c
-> +++ b/drivers/video/console/newport_con.c
-> @@ -720,6 +720,9 @@ static int newport_probe(struct gio_device *dev,
->  	console_lock();
->  	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
->  	console_unlock();
-> +
-> +	if (err)
-> +		iounmap((void *)npregs);
-
-Looks OK but while you are at it, could you please also add missing
-release_mem_region() on error and on device removal:
-
-	newport_addr = dev->resource.start + 0xF0000;
-	if (!request_mem_region(newport_addr, 0x10000, "Newport"))
-		return -ENODEV;
-
-	npregs = (struct newport_regs *)/* ioremap cannot fail */
-		ioremap(newport_addr, sizeof(struct newport_regs));
-	console_lock();
-	err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
-	console_unlock();
-	return err;
-}
-
-static void newport_remove(struct gio_device *dev)
-{
-	give_up_console(&newport_con);
-	iounmap((void *)npregs);
-}
-
-?
-
->  	return err;
->  }
->  
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+-- 
+With Best Regards,
+Andy Shevchenko
