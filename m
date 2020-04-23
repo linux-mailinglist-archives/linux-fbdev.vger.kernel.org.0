@@ -2,92 +2,170 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4440B1B63B5
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 20:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8C61B661B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 23:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730280AbgDWS1t (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 14:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52794 "EHLO
+        id S1726071AbgDWVXo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 17:23:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730269AbgDWS0v (ORCPT
+        with ESMTP id S1725817AbgDWVXo (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 14:26:51 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC4D5C09B042
-        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id z2so7488175iol.11
-        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
+        Thu, 23 Apr 2020 17:23:44 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45727C09B042;
+        Thu, 23 Apr 2020 14:23:44 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id r14so3631514pfg.2;
+        Thu, 23 Apr 2020 14:23:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
-        b=g40sBMuaO0eKdotmx6qgQBl63DKBmrekz5bvyEQHA4wVZtcqrxc+aFVgh/QD84O9VQ
-         7GeGJGwCstc5CQBYUut5JFB/SR9hiHRBoNucBdQ5+M/xcZE7LYnQNVriX94nlJDQQ53M
-         WWNnGuPMmJMtuCxOc6M3BOG48McWyi9pwkfv1qCbwmDhh95byI3UmcGK9ZJ59xQm/kqA
-         giNgZwxUHu+XTIAoqn/uu1orK63Ur+6hMBQW2TB101zb0oJ5HpVThkCq6id/TjpQtg27
-         HPMb1DcYsj7bM6wQaeV1UkPK6mgUhECRFNV10F5zDhvx1RXP4ikb8uuEIGMKOSNWVb51
-         vLew==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XUMoGhY5L7Ce12qPN/+ZvR9RdaPKROuCE+nbwYYQZjo=;
+        b=s0/OP9DDA3gkPf7NIb24mAh7l/E0qodqA1SOp9ziVmNnIO9fT1oyN0LqMv9o8L6cen
+         aeolu96fv+P5eTrlCkNWKxCnSM5ynJO+jOCCnD876QvT1ehFUguZKa+fBN6STq19O97O
+         CiSJHOHTJcGiurWOmlLB1qHssbx4D74cfm9x0/fQS+rfmkru01P064qg/bnR3v4epEQh
+         TCORYK94sO0/9w08wp1/9p2v3kB56BoaHNZ3XLFvV8JaQAZuRa/mzaLQxwyDc972iOBO
+         WbiNhpWsdPTip3BN3vU8Tdlk8uVXTq3w4rfWnC8/sBaX1OCT5xwnSys8Ir+UFqeGjNhP
+         UBdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
-        b=ZRjRq8iZwirTi5LPJ+0LUyPEf8BFacYQ0XpoANAPBE+rH5F3ZrG0+YVKRRqpsskz3X
-         Ga0kWpve+Legujy4XoS0vMPHv3e/dZbThTkuNUVfw4T1dM1XEOsD5iVIqeZFadQO5zy+
-         8uLWAa1JGufhuT3MI78KBZ78dhNDun8Iqc+ojIxL6fRI9rg25oxbXz5ZPG+M965rvNxQ
-         LAcCyeVyPBTSPH6d0aMlBG8O4SajPxTv7iUFjMfpA80FvT8v/7Um9Ed20FEnrlTl0nUy
-         awYWrVkniJVEq7xJvOkPtGXVNh84IAxCcYiY9hs+PKumaX5CnlIDWH1Gs5qZrN0KOLAa
-         PrMQ==
-X-Gm-Message-State: AGi0PubnDPCEMvfKOxPhpXBEwd9NfO3HKGtFSanQitdQz3Ux+dbPRVjV
-        fitS/NQqD5WxdBDU8jN7LclQTTDGKMTKe6KKvA==
-X-Google-Smtp-Source: APiQypKZ88CB7WlyCjo0k9+cU4PX0VcggKkKtzSKgRJHkcPGizF0yZXAjzEMBgo6XH4xzBXv0KAOMjPM9p1sgpp6/70=
-X-Received: by 2002:a5e:9416:: with SMTP id q22mr2547966ioj.93.1587666410194;
- Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XUMoGhY5L7Ce12qPN/+ZvR9RdaPKROuCE+nbwYYQZjo=;
+        b=TQwToyJeYmiT2ZtTVZidyFTZsAlLFe/NWujXuoZvyUQ7Qe7ia97FXH8FXgknk+HLpq
+         EjY7UUBfNVZDqdDqCR8r7KzOfxuscBQEsOYPrBYcOC9eJ4cLgNaUYeuhEEs4R7mywiZN
+         3LNjO1R/OWekN+EI19ySu60eIFQynWooMip/53zRH4rjGD5yVXrCllCY4kVNA+g1NznW
+         GEWCWGKP8qsd3OsFGChB9NM9lg+sfrjTFJ/k0xgzpY6hS/rQ3rdpGVQR7C7rtgSPEUHN
+         l1zHkEPhQliIV/W5Hc6DU5M/AgtuRgG/qVUwb3baeN1rNrWn2KAbKKB7+6ltk6sFW48K
+         B9vg==
+X-Gm-Message-State: AGi0PuZQKh3xgRI5fghPG68I3P+E8sRwyHRe9JBHkzXqYYq/+aQq6OsI
+        jVuwTgLbk33+64iqTj92ZO9JYoUruXIghP++dSI=
+X-Google-Smtp-Source: APiQypLtTkISyuDrfh11O88zSEDSw5J46od7eHcJ6QRa2ED7NGyRC8Qv79IS5r4EZ/IHXaEND1Yvqmh+MsIkorv+RlA=
+X-Received: by 2002:a63:1c1:: with SMTP id 184mr6033217pgb.203.1587677023745;
+ Thu, 23 Apr 2020 14:23:43 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a02:c845:0:0:0:0:0 with HTTP; Thu, 23 Apr 2020 11:26:49
- -0700 (PDT)
-Reply-To: boa.benin107@yahoo.com
-From:   "Mrs. Angella Michelle" <info.zennitbankplcnigerian@gmail.com>
-Date:   Thu, 23 Apr 2020 20:26:49 +0200
-Message-ID: <CABHzvr=N78snvtMHePMOa+RLFdcZEjXLPkuhkojt4VoZGNzBsQ@mail.gmail.com>
-Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
- amount of $12.800.000,00 Million USD,approved this morning by IMF.
-To:     undisclosed-recipients:;
+References: <20200423164251.3349-1-zhengdejin5@gmail.com>
+In-Reply-To: <20200423164251.3349-1-zhengdejin5@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 24 Apr 2020 00:23:31 +0300
+Message-ID: <CAHp75VdSv4AooA-hrgoQH-qs_8woFbzHJH99AKrYUrwae7xoZQ@mail.gmail.com>
+Subject: Re: [PATCH v3] console: newport_con: fix an issue about leak related
+ system resources
+To:     Dejin Zheng <zhengdejin5@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, akpm@osdl.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Attn Dear.
-Contact Bank of Africa-Benin to receive your payment funds transfer amount =
-of
-$12.800.000,00 Million USD,approved this morning by IMF.
-Happy to inform you, we have finally deposited your payment funds
-$12.8 million us dollars with the Paying Bank of Africa-Benin
-to transfer the payment amount of $12.800,000,00 Million Us Dollars to you
-Contact the bank immediately you receive this email now.
-Director Bank of Africa-Benin: Dr. Festus Obiara
-Email id:  boa.benin107@yahoo.com
-Tel/mobile, (229) 62819378
-BOA-BENIN | GROUPE BANK OF AFRICA, boa-benin
-Avenue Jean-Paul II - 08 BP 0879 - Cotonou - B=C3=A9nin
-Phone:(229) 62819378.
-2020 GROUPE BANK OF AFRICA
-Be advised to re-confirm your bank details to this bank as listed.
-Your account Holder's name----------------
-Bank Name----------------------------------------------------------
-Bank address----------------------------------------------
-Account Numbers---------------------------------------
-Rounting-----------------------------------------------------------------
-Your direct Phone Numbers----------------------------------------------
-Note,I have paid the deposit and insurance fees for you
-But the only money you are to send to this bank is $150.00 us dollars
-Been for the wire transfer fees of your funds
-Contact Him now to receive your transfer deposited this morning
-I wait for your reply upon confirmation
-Mrs. Angella Michelle
-Editor, Zenith Bank- Companies Benin
-mrsa9389@gmail.com
+On Thu, Apr 23, 2020 at 7:42 PM Dejin Zheng <zhengdejin5@gmail.com> wrote:
+>
+> A call of the function do_take_over_console() can fail here.
+> The corresponding system resources were not released then.
+> Thus add a call of iounmap() and release_mem_region()
+> together with the check of a failure predicate. and also
+> add release_mem_region() on device removal.
+
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Fixes: e86bb8acc0fdc ("[PATCH] VT binding: Make newport_con support binding")
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Suggested-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
+> ---
+> v2 -> v3:
+>         - modify commit tag CC to Cc by Andy's suggestion.
+>         - modify Subject 'console: console:' to 'console: newport_con:'
+>           by Bartlomiej's suggestion.
+>         - add missing release_mem_region() on error and on device removal
+>           by Bartlomiej's suggestion.
+>         - add correct fixes commit, before this patch, add a wrong 'Fixes:
+>           e84de0c6190503 ("MIPS: GIO bus support for SGI IP22/28")'
+>           thanks Bartlomiej again!
+>
+> v1 -> v2:
+>         - modify the commit comments. The commit comments have some more
+>           appropriate instructions by Markus'suggestion. here is my first
+>           version commit comments:
+>
+>           if do_take_over_console() return an error in the newport_probe(),
+>           due to the io virtual address is not released, it will cause a
+>           leak.
+>
+>  drivers/video/console/newport_con.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
+> index 00dddf6e08b0..2d2ee17052e8 100644
+> --- a/drivers/video/console/newport_con.c
+> +++ b/drivers/video/console/newport_con.c
+> @@ -32,6 +32,8 @@
+>  #include <linux/linux_logo.h>
+>  #include <linux/font.h>
+>
+> +#define NEWPORT_LEN    0x10000
+> +
+>  #define FONT_DATA ((unsigned char *)font_vga_8x16.data)
+>
+>  /* borrowed from fbcon.c */
+> @@ -43,6 +45,7 @@
+>  static unsigned char *font_data[MAX_NR_CONSOLES];
+>
+>  static struct newport_regs *npregs;
+> +static unsigned long newport_addr;
+>
+>  static int logo_active;
+>  static int topscan;
+> @@ -702,7 +705,6 @@ const struct consw newport_con = {
+>  static int newport_probe(struct gio_device *dev,
+>                          const struct gio_device_id *id)
+>  {
+> -       unsigned long newport_addr;
+>         int err;
+>
+>         if (!dev->resource.start)
+> @@ -712,7 +714,7 @@ static int newport_probe(struct gio_device *dev,
+>                 return -EBUSY; /* we only support one Newport as console */
+>
+>         newport_addr = dev->resource.start + 0xF0000;
+> -       if (!request_mem_region(newport_addr, 0x10000, "Newport"))
+> +       if (!request_mem_region(newport_addr, NEWPORT_LEN, "Newport"))
+>                 return -ENODEV;
+>
+>         npregs = (struct newport_regs *)/* ioremap cannot fail */
+> @@ -720,6 +722,11 @@ static int newport_probe(struct gio_device *dev,
+>         console_lock();
+>         err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
+>         console_unlock();
+> +
+> +       if (err) {
+> +               iounmap((void *)npregs);
+> +               release_mem_region(newport_addr, NEWPORT_LEN);
+> +       }
+>         return err;
+>  }
+>
+> @@ -727,6 +734,7 @@ static void newport_remove(struct gio_device *dev)
+>  {
+>         give_up_console(&newport_con);
+>         iounmap((void *)npregs);
+> +       release_mem_region(newport_addr, NEWPORT_LEN);
+>  }
+>
+>  static struct gio_device_id newport_ids[] = {
+> --
+> 2.25.0
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
