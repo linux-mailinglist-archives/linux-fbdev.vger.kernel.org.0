@@ -2,101 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 436691B6182
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 19:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E22E01B6198
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 19:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729801AbgDWRCx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 13:02:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
+        id S1729802AbgDWRJB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 13:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729674AbgDWRCx (ORCPT
+        with ESMTP id S1729687AbgDWRJB (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 13:02:53 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF20BC09B042;
-        Thu, 23 Apr 2020 10:02:51 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id v63so3241975pfb.10;
-        Thu, 23 Apr 2020 10:02:51 -0700 (PDT)
+        Thu, 23 Apr 2020 13:09:01 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCFC4C09B043
+        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 10:09:00 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id y24so7361381wma.4
+        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 10:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=BdjmbukyN93EyhI1DSTNcyhVrYjSoObY8SQv9ckT3OI=;
-        b=vXhJEFPxCQwVoQXSTNO7YMg1HIyKEpV6lC+8pPWILrho1vIrTYf7UoAtU9MirtLHZe
-         i6KIAsnQK7M9f/BFnt5/Y/yopgyslrJalNcovo0+uJBc1yu1OTt8V5/wn1qPIHDQKp82
-         DVcB8mHqkVdvrwJ9AODqJAc4JXSSUGkpwH+pWtj1dj+qrhXUlF8RYRQXG4FYjWkyvDfa
-         4UtchUVnEcSAc31X4mLxPHPY1uWi7U2ZcJpagDCh7QFHJiA6x0d3VS4QxxgxyTJ0w5os
-         KAhYbfPZR82MsC+AF9VB7T+ByJwLrc+3wWRv4++vLdCNdV1CFjuGjDn375prp2Uw9Wp0
-         m/Pg==
+         :content-disposition:in-reply-to;
+        bh=HyYauB8Zb4kPY2jhycDpuK1O3YKpPPWs1jRZhg3W+PY=;
+        b=YIzqtZTQ86QFuC3Fm4NBWsdOm0pT4cBdJ7LP5GP2m1Iy0O7jxZ4FN6lCTA4pC3+xEi
+         h8VeJgo2IBWMDWo+UMx5OdJyoS3Dq7CwWyqIzw+mpQOoXpKhW6CaDct1MaBX0WFNswe8
+         S0Fd49PA/VO1sC7i2qPSiJU2syTaaBJbrhV0dWWNbPVG3KxVQZW1Y6bEZIH9/6cxLJmM
+         L/T1dn/jbwKPs4moZuwT8rK7gg6iiHRx4h358kfomBb7V37Y/DqboBHiSGV8uTjXTW1C
+         2uJGiuc9P3sMJZlpspCAZFLGblsS6gZqFdijjC7UOcFH8G58rHKZgdYuqVqPEKasyViT
+         pdeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BdjmbukyN93EyhI1DSTNcyhVrYjSoObY8SQv9ckT3OI=;
-        b=bNYlayDEb1DAkjbFYu5g7VZUWoFXLEQRXhWL20wckF8Aw7Si6UZL4q842iK6Cz/enZ
-         XgDmkql5oTSZIakumlRQyQsidBYwGlmjvQtV/ow6hHj00SBgtluOKSZbFpquHFULyvMI
-         /z2x/FQAK/arXJcSSvnu1sKKNGW3OpvjjUzQQYu7Dh7xtLF5TETzsiPEVgwetPi2wXfj
-         c4QqUnlXh5+KCWdHeRJ4HG5XZbvq606i05yrU5UfyzjIdfM7vJAs+O9S3nNvZeUmDh0W
-         J9fSpv9HVXfyqAmsWHGbSBHmz15WArDOoTmFhz0m3L7tZFk3lhkP/RPmSm7aeBxpukHw
-         7CAw==
-X-Gm-Message-State: AGi0PubND9Cr2VAAXinSFBcWYKXTvOe5PyHF+RinHDjxOFG1wwsAqL22
-        XLmu6EtpUpnX3XIrazbm9vQ=
-X-Google-Smtp-Source: APiQypJWSjA7CCiMuitdqpKx5L1KTkJAM/q32nofaJP3XA57AQ41nGcVcHpg1zkfSbrYj7gWzJBy1g==
-X-Received: by 2002:a63:1d08:: with SMTP id d8mr4797010pgd.306.1587661371447;
-        Thu, 23 Apr 2020 10:02:51 -0700 (PDT)
-Received: from localhost (176.122.158.71.16clouds.com. [176.122.158.71])
-        by smtp.gmail.com with ESMTPSA id o198sm3105112pfg.183.2020.04.23.10.02.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Apr 2020 10:02:50 -0700 (PDT)
-Date:   Fri, 24 Apr 2020 01:02:45 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ralf =?utf-8?Q?B=C3=A4chle?= <ralf@linux-mips.org>,
-        Thomas =?utf-8?Q?Bogend=C3=B6rfer?= <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: console: Complete exception handling in newport_probe()
-Message-ID: <20200423170245.GA3417@nuc8i5>
-References: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
- <20200423142909.GB1562@nuc8i5>
- <f054f00c-b813-e0c2-fe2e-30ccdec1ff46@web.de>
+         :mime-version:content-disposition:in-reply-to;
+        bh=HyYauB8Zb4kPY2jhycDpuK1O3YKpPPWs1jRZhg3W+PY=;
+        b=WtjiK0V9CukKbxTDsd9AoKzprB8toZwSFREnNxAVOs43i/C7drHIL0NPzMDwzUw+IE
+         UBvSsrWeNfp0GERF408xnwVB2EP2RrFbBizPIB6y2RSo28yLLOl19+LIjQRHDv+/Prrb
+         O0C/R17bhOAQHj1oER3L7qyKrk5skgirH1ZAAimbBCI7spTsqORUA414Vafv7iEI3LXk
+         K2TDdsxvzL3NCxGIOUw+BBvcd9S1a79eryI1IkmR0Xj7uyB4s+wwgpMKvsFHqa+7C/8V
+         XIHhYpF+g9rpfU/ReQcOVQKMU4HGundU2Xx4dFnS7q/GCqNkubMUMyMtmkfgDzemD+Fk
+         O07Q==
+X-Gm-Message-State: AGi0PuZfCE0XpZ6akRkLvCDd0g5HroNeCZAYfsL7kPfU29++AWmBf/0j
+        bBZ/rHJWVar0AmVz3wQve/x47g==
+X-Google-Smtp-Source: APiQypLTFoqOzEEgVSqQsK2DVwkZLCzK4Qr3KYvzNDTrgnBoJM5h/atmfsvo1wLAjiYN7AmpJR6jMg==
+X-Received: by 2002:a1c:40c4:: with SMTP id n187mr5040344wma.28.1587661739472;
+        Thu, 23 Apr 2020 10:08:59 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id s30sm4475128wrb.67.2020.04.23.10.08.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2020 10:08:58 -0700 (PDT)
+Date:   Thu, 23 Apr 2020 18:08:56 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Kiran Gunda <kgunda@codeaurora.org>
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        robh@kernel.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+Subject: Re: [PATCH V6 4/4] backlight: qcom-wled: Add support for WLED5
+ peripheral that is present on PM8150L PMICs
+Message-ID: <20200423170856.f4r62iwcg7qtppva@holly.lan>
+References: <1587656017-27911-1-git-send-email-kgunda@codeaurora.org>
+ <1587656017-27911-5-git-send-email-kgunda@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f054f00c-b813-e0c2-fe2e-30ccdec1ff46@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <1587656017-27911-5-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 05:23:29PM +0200, Markus Elfring wrote:
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/scripts/coccinelle/free/iounmap.cocci
-> >>
-> >> How do you think about to extend presented software analysis approaches?
-> >>
-> > Sorry, I am not familiar with it, I don't know.
+On Thu, Apr 23, 2020 at 09:03:37PM +0530, Kiran Gunda wrote:
+> From: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
 > 
-> Do you find the comments helpful at the beginning of this SmPL script?
->
-Sorry, I do not know how to use the SmPL script. 
+> PM8150L WLED supports the following:
+>     - Two modulators and each sink can use any of the modulator
+>     - Multiple CABC selection options from which one can be selected/enabled
+>     - Multiple brightness width selection (12 bits to 15 bits)
+> 
+> Signed-off-by: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
 
-> Would you like to let any more source code analysis tools help you
-> to find remaining update candidates?
->
-yes, but I think the source code analysis tools only can found the simple
-repetitive issue. and need spend some time learning to use it. at different
-stages, it should have different methods for me. now, I think the best for
-me may be that read and check the source code. Thanks!
-
-BR,
-Dejin
-
-> Regards,
-> Markus
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
