@@ -2,38 +2,36 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9C631B5A17
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 13:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E89A31B5B2C
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 14:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727077AbgDWLKn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 07:10:43 -0400
-Received: from mout.web.de ([212.227.15.4]:45405 "EHLO mout.web.de"
+        id S1726379AbgDWMPY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 08:15:24 -0400
+Received: from mout.web.de ([212.227.15.3]:55209 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726805AbgDWLKm (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 07:10:42 -0400
+        id S1726121AbgDWMPX (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 23 Apr 2020 08:15:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1587640223;
-        bh=yYnePFBnYjm0+kKDqtFx9/+WaHiU9Mt4y2pqq8GgQto=;
+        s=dbaedf251592; t=1587644090;
+        bh=1SKzE4Q2FpgGEwUDDVzFQzRLWubTgqwnZLfvXfb0+ZQ=;
         h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=O48r8Ny0ZYNu+ieo0BcnpP8xohl+xKASLTyz7k1sW14pT/vAWAPMNOBs2VJK+Ztrl
-         6fWXumet4o/atIKHTCT0lA1amDf9K8Gnu3VOqjMAaz8ElqIDK/FZkeIQZmN8uzObVp
-         wLDyJhEmKeCDiz7edeQsdy/WBR7Rf/oThLEFM6KE=
+        b=hXFnrrmBdJKOhkCU+WE8reYaNWVDUVxsvvUp3pSIEKiLZ7C5xhuw3DX0lkvZZEOFk
+         blvnEHLdZv38q6W/xWdis4zfObjS/B6/BYwcQybTMSCGsbkqUqsBnjIr6bnbgcZA5h
+         A7CGF/hVQCNsMI30Hd9p4gGSEtY1EZ7mmnksqrhA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.69.235]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M9MDO-1jMasD11kE-00CmPa; Thu, 23
- Apr 2020 13:10:23 +0200
+Received: from [192.168.1.2] ([78.49.69.235]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Llncm-1isFw13qW8-00ZMyt; Thu, 23
+ Apr 2020 14:14:50 +0200
 To:     Dejin Zheng <zhengdejin5@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Teddy Wang <teddy.wang@siliconmotion.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        =?UTF-8?Q?Ralf_B=c3=a4chle?= <ralf@linux-mips.org>,
-        =?UTF-8?Q?Thomas_Bogend=c3=b6rfer?= <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v1] console: fix an issue about ioremap leak.
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v1] fbdev: sm712fb: fix an issue about iounmap for a wrong
+ address
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,66 +76,69 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
-Date:   Thu, 23 Apr 2020 13:10:14 +0200
+Message-ID: <bb6ba7c9-ad92-9c54-e1c4-91d2f7d0f5f8@web.de>
+Date:   Thu, 23 Apr 2020 14:14:48 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GkMP8tA8DoXrcGs23WXOvhxS73pgENm3HVMc8sKZzC1R/HE6m0i
- jmxSJ13ymfTtQTeeMYX9H3SQ9zWrJ+A3iMWOY+rRiaot9G1QRnKtZmCj68JYJp2+k2EFMUk
- UomjJesOteW03oZ7Prh0vDzPc4d1jWh0xquPyuirb5LIRsS4yM8UFYH2f5N26Cbx3cdH5Yw
- GL1f2yxRCUmQGVaKzg4EA==
+X-Provags-ID: V03:K1:fNl1cgofnTwAo5SJnX+oCy/NEF1B/UCFW519u4Hpg0ptC1sJLg2
+ Lgj12RzQSsSjYV5m1/DHaJzegclx/eSNoh1r5k//wRS5zMUgC9Lrt2HJs/fTqwOLs13QgbT
+ 2n0nkbFV5jiGwI3L/xUbZrEPLuluP8Fky8h39z9rIqSrLn+xkuDJ47lSEpS/HcclvwrYm9O
+ aLXNjNhlma/j5HSigomOw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2Sg4nlms0HE=:2GkcY30Cf6kiC0qUAVS49l
- y/dU4eb+XYNwpr+wqy11BrOis35xPOnubGdtnZxFL1SdrTyewwk8U3spocOuUEx3OeOPRoN5d
- Xu9E5y6SudDCG9PQNE6lA/4p5nNfJcF9rZpT4olR+N5DyKgwkRO70Kdm25W6pGjXgAtWB4dEm
- KZmQgPWCwFmib7iuSVlE/K0YMX8LB++Pf4Tz3J29cIngQ9gnBhVzvm11igPgGUwcPSlIIygFX
- +gnYP5Ybll8zuJDvnMMwPZP4xQ/fPdKdSWEDt6ylLGMjrcaPniVs7mBCQoeCnstfRQNC32RtO
- /b0u/4HTSpV3TR1rjMExtchEsxH42OpXlblOG6KM/Z9InkW6EI0N9Z3auKL+qRuOrymzXv5jQ
- t+MqITBGJx05YVYImF3FKn0PBLEWoAjSX3T/f0mzbOZSDomZ/Lj3uq+/PIZRcnqn9Q3FW1WLg
- H8EUlZYTyo36VMEE9jk77ACTm90MXn8cU7F6Xbtzq7qw2sLNT5GBD+UkTOkHvk9sexvYwzchA
- VzxnxE/QsD06DWnj/dR54BcH3HRULh8LP9QF+RnfqxP07Xo9DKWmVt/RzHzwBpQpIhMv4tFiL
- 666vm0/X6mgbm3hk3e2vhI0FCpRKeC4gjFil3CyLghKxpU3ErMxPoCWcrDG9LEBYZMcBhr7Ds
- K1972ASYlbV+qMivslga/iWEAMzvY2ucDbtsTewgjUlVN/dEr6DqNJBTekvs8fnaCYejNRyPx
- N0GOwELWkmG2PSsBrv8AP1rGdiu7gFcWMLP1+TCa3al8bfrdm3XcmAP7KzhyAGxyI3ibe2BV6
- U3ziTlNtv1OQqwlv7/Fl13ndU20T9TVNNsnvbpG4fKdoOOtiTLvIOfU+uyzLr8vENZmGStuno
- OjwuZYDzlqk5H4YtgxZUgnC9kcu9kfLkmbX9vej2XWKtyXCC4Y7C5wTrm2qG+dJbPuPn894yv
- SLu4AFhOhvu+AoeXRPBmfdQtew3/k4sOD6LJd/avFsosT4DB70X1TxmhKKvc6R0SI6+cTsATK
- d9iuHOUCAfOtQd0pWw+HXHoUOLGCU9GyBh8Gd1e29c1+B3hvZd5PMvUH15+W7Cb87h0Geg9bH
- N8SK3nLi2vYuPSgtgEiYWqiSAxX7kox+7BnIwMPeBqPIZtX6YjuoK41600sGpL+8xuUmcG4es
- GHV9SEv4T9da9MQuDpACg2OeSvLbx8QdpXt8i5/dbZGhPUXVNukyys2BeyQXEL4uek436fqmt
- 3/XBRMaFdw6b+u7KV
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZKe2MMTCh5s=:TvG8BqpKT2GzCaKluhcfSy
+ kB41QablcGOHx7krOy1EAlWK3bb+35IcWpQLqSgrS/JTIsh2oga1Zh0Ml/A0TjIFTRPlSZKkk
+ ACd88BRBqnwsxCdTaqPtjrRzub+ug1qWae7hlkdsfG3vLbCN4I0igyKuFJHRE/dbjxM+pPbUm
+ aEkgcoVb6xhkx3sEVY+NlZTtfobK5b3bkC47Dgu8OMnsQb+M+Md28w9Lh80/DhiaBgkhZv+jD
+ Kiy8g5zuAafBU+SuyQJSFjYp72b7L8TkdK6CI0vQrOEDr4NWyEgwViDUmQYHZ8AqrsbVRS92+
+ Z7vus94bMvaJNV0OCcZhJEQ+GfRAYTAstLP4RcEvQRaSsXQ5sCCgIKNqYApEMy5h169xBjSBH
+ iy19lAZSl296Qswm3+n9TOrgVaDVpGCDO91LydWcjHbwB0xHQf0jIYWZNcDi5Cvitp7Vi4zRl
+ xp4JlWz3K3HGD5SIFuSbtVNVaF196JRuYL4HnqLiz5i8vuRB4tTQEPAgQczNRyl6k0nuojWv3
+ og/F2xr3f49ORUhlnNo/EWpqz3mf/VYIosYcPdABIlimywt+RAne0plOfuO8euRp/pD5cFlqk
+ hYH99n/wLbZRgH00vxyPOyGvi4wv7Z2cZErrTGmGg3FyzUzMZv49YE8J2CrXvYSZGdTu7ASzr
+ QJnKXrZIT+9ar0whJZavRB7fMH4M6MbGEMK2MrTmU+dVV8PFB2t3IZ7Pa0uIZJ0QjxTNWxoJk
+ O/EAfi7Z5dhtlS6Jb1Rb4XAgp/nWDAfUaDx6aWC3AQDJn2OTFqr8rx2MiUvqAh634mg4Lv+80
+ 6NAC8HKVOBvxhQ5kfxaby+afxo1sKsoWfn6UuYnxxynVc0hDTeXtP3ObhtCDuFXYzHYp06o2S
+ wGaAP4cvCkCMh0GythDdhbYNQfv6y6xTDHi1CB/4c7G0Kx3HFPMBrEzVZXe+Uu3vWV1PqcARt
+ 5pbm3UAgYdJybfVd9Sjw0NVzjMXVbQqosx6ynbyyEFl7BRP8F5DDr3WKpR8fFQSAO0GYSQkh5
+ e7gi/Co3W5Nbf8OOyQTljy+3h1g/ZdWGdR2bnMaH1aTPlppbz+TfLVSSs/7qXEFfzfDBzgCk6
+ Ekr8V+4vQHVWxLSDwoJ6CUTJ+mdvIyB17RyHndMfps6OqCPU0ATm5GM41rYn7Y8UxB8xIVluM
+ xjqzG9HgjVhr/3uDBV14MA3qwJGrA8Y6a5as6qcRNLtxooMxS6XACtzjl3iOGR6vQcKgD46VJ
+ veHKKNSOE/9WfqMKQ
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-> if do_take_over_console() return an error in the newport_probe(),
-> due to the io virtual address is not released, it will cause a leak.
+> the sfb->fb->screen_base is not save the value get by iounmap() when
+> the chip id is 0x720.
 
-How do you think about a wording variant like the following?
-
-   Subject:
-   [PATCH v2] console: Complete exception handling in newport_probe()
-
-   Change description:
-   A call of the function =E2=80=9Cdo_take_over_console=E2=80=9D can fail =
-here.
-   The corresponding system resources were not released then.
-   Thus add a call of the function =E2=80=9Ciounmap=E2=80=9D together with=
- the check
-   of a failure predicate.
+I suggest to improve this change description.
+How did you determine relevant differences for the mentioned chip model?
 
 
-I would like to point out that there is a script for the semantic
-patch language which would detect other questionable source code.
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/sc=
-ripts/coccinelle/free/iounmap.cocci
+> so iounmap() for address sfb->fb->screen_base is not right.
 
-How do you think about to extend presented software analysis approaches?
+Will another imperative wording become helpful here?
+
+
+=E2=80=A6
+> +++ b/drivers/video/fbdev/sm712fb.c
+> @@ -1429,6 +1429,8 @@  static int smtc_map_smem(struct smtcfb_info *sfb,
+>  static void smtc_unmap_smem(struct smtcfb_info *sfb)
+>  {
+>  	if (sfb && sfb->fb->screen_base) {
+> +		if (sfb->chip_id =3D=3D 0x720)
+> +			sfb->fb->screen_base -=3D 0x00200000;
+>  		iounmap(sfb->fb->screen_base);
+
+How do you think about to use descriptive identifiers for
+the shown constants?
+
+Would you like to clarify any related software analysis approaches?
 
 Regards,
 Markus
