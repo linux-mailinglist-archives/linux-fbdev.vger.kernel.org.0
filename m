@@ -2,109 +2,111 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0871B5DC4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 16:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CEA91B5E57
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 16:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726487AbgDWO3O (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 10:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
+        id S1728500AbgDWOwR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 10:52:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726307AbgDWO3N (ORCPT
+        by vger.kernel.org with ESMTP id S1726380AbgDWOwQ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 10:29:13 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F05C08E934;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id f7so3017698pfa.9;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
+        Thu, 23 Apr 2020 10:52:16 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96078C08E934;
+        Thu, 23 Apr 2020 07:52:16 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id w65so3041100pfc.12;
+        Thu, 23 Apr 2020 07:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=euZIJ/M801FkiIRohqJykf0KTV1d7R1eB6u3qEkTjI0=;
-        b=Ko6BUx5ma8P13bvtmuvtoClR1kdW1PNfQ5Mdcb5ut/b6dbYDkx4snP1pcDRIaxOAWt
-         OrjLtoxwLINDnrWAmg7a5CQU5PcYxBNmj260qRjWiFDyutI3obuDy12DDb+0FtQabOsJ
-         /3rVzC3AOzR+z+YJlDXnT1BweMe1w5xONexIwTNdYDkMCNDJRsU1inGD2jUIRLgKCL0k
-         1bpmI47cx+gGudFoSqsQaGbVCfn+4Mj1YLSG3N0PQxFoc3IwdALS/MkBBF2+D3kD6rLt
-         XH+krkBwKgcXAWWSnTzI88j3+8S+pBK0gz36DD/o1UpqdI95hODX2seSYE5abCiWGtNs
-         2Z5A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/sb3dlUj5FrGwmCMaw1i7cs39EU8HrExHVtJsyVG3VY=;
+        b=oyIVHUIMteQ+Jyujbx3EDLFuw+ISWFk6HIHSvS6fYlUsxnyisljN8Ia6w8b2XrbWI5
+         kn/ZnFcbY+qdKeF4vLEem6y/yZrATTRtLYUbkbxX3dq1jQP4X9U7bqOquWVm5PQ58wIk
+         zQFJtrba2s5XmQtB/1CUeF+UNtgy0Yi8WYrsAzHDHbkhJbbtS8LHnkI2ZWLBtfq8FGl7
+         n/e8I9fe0HozYBhAYBxbmkzDW7MPkIPONX9Wc16T4KH3D7OeN4TJyax0hcFB6T5/cnEQ
+         PMi7d1gyQRk9aDLupdLrXQo4rLNH0emHJrkAKy0ai5BJJ6Z8/NjsAqq8kSnh0lLmjYHd
+         d3Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=euZIJ/M801FkiIRohqJykf0KTV1d7R1eB6u3qEkTjI0=;
-        b=BWE75bbEnls+v0wtezc7btijxW0BiIzpDT8nvkiR9I+d4lKq30D/e40Wscdx6ReMfH
-         xErSW1Nq9xWKxSv63Jv7I8ycXxmBD5V62B9fAsdansMS1OQqbFE1FObG1AtoSrdntjj0
-         AwIG49X20oiGxA9gaadOpqawqRZwls3G97p31CdSffgtz7FFKL99E2xXzPcYODfdJ/fF
-         y/RNwy2PeXqFqOcXwscuudUhLqUfRZf6VuDR+VYcA8nbAQ2kVlN6r49ItRgWYdJz7zLD
-         qkO/TjH92JIZWPXRjGhqFZyC7CYWbmjNBtC6q+qTp/4ZKeRi+sKoi3d43T0z1fHQc1Wd
-         2jOA==
-X-Gm-Message-State: AGi0PuYbDJGvKgNYrrtftyqKEynHOZlMIBV8xAkvtPNfGvoJmMRpN0ro
-        9nnp8CSywumgF9KJjQpuFB4=
-X-Google-Smtp-Source: APiQypLCBsvdXjd0LfkUeemwgs+0ri7ASlr6IwzFVhcmjfzaxZE5iJago8sKARkvbGq9vjBLA4PJvA==
-X-Received: by 2002:aa7:96c1:: with SMTP id h1mr4085226pfq.212.1587652153207;
-        Thu, 23 Apr 2020 07:29:13 -0700 (PDT)
-Received: from localhost (176.122.158.71.16clouds.com. [176.122.158.71])
-        by smtp.gmail.com with ESMTPSA id h5sm2537837pjv.4.2020.04.23.07.29.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Apr 2020 07:29:12 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 22:29:09 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Ralf =?utf-8?Q?B=C3=A4chle?= <ralf@linux-mips.org>,
-        Thomas =?utf-8?Q?Bogend=C3=B6rfer?= <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v1] console: fix an issue about ioremap leak.
-Message-ID: <20200423142909.GB1562@nuc8i5>
-References: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/sb3dlUj5FrGwmCMaw1i7cs39EU8HrExHVtJsyVG3VY=;
+        b=iVPE5J1N4c2m6sNJbechtJqGxq6C0vF8CwJYcm7CBQXNiA934g7f/v96eZ9dv+qaS/
+         ImPEEQakcLsaI/hE0T8IhmhF0QKO8fDnhJd1pweym07BQbAJwWeULT19RzsjZZslwnj8
+         LSrMZGJHYS0gOqfK9yQqzlCd9p3Gjk4a5l1938L3gnILiBU7oy9MfjKPNeSRnT87iiaZ
+         01p/vaMr1RG0G+CTWTK8ZlFRP9lHavCSIPklLCZS7NIjhd80r2FrXroHe7apXf9a9Giy
+         WSEqcJaJOeNkyNzJviG+7anSbHQZja/1iAKO+9ixHeB4GGLmyAABPW5UqGhq2y02D+JJ
+         aVQQ==
+X-Gm-Message-State: AGi0PuaiJzJGltWNvCC5LUi9/ICVAHx3qN2TpgwYaMN76Oeen3LtsDP0
+        onnRv6z5JsEjqEHIbfppfwD2nIxdkVQflhf1HlI=
+X-Google-Smtp-Source: APiQypJYkHlH+G01ukIQTIcX4mw/JbzhQZYKNM2IW0V/S/oVOVH5kXUElwv3U/VvSlsvXAXK2gyRX1QXlKVJiRNAlsI=
+X-Received: by 2002:a62:5ec7:: with SMTP id s190mr3964136pfb.130.1587653536121;
+ Thu, 23 Apr 2020 07:52:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c62ec54f-348b-2eae-59eb-374dde4d49ad@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20200423142627.1820-1-zhengdejin5@gmail.com>
+In-Reply-To: <20200423142627.1820-1-zhengdejin5@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 23 Apr 2020 17:52:09 +0300
+Message-ID: <CAHp75Vf1_SMk=_WDUrB97BGR6K6EXOdtgQ92=hTyMdVUoyWQiw@mail.gmail.com>
+Subject: Re: [PATCH v2] console: console: Complete exception handling in newport_probe()
+To:     Dejin Zheng <zhengdejin5@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>, FlorianSchandinat@gmx.de,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Apr 23, 2020 at 01:10:14PM +0200, Markus Elfring wrote:
-> > if do_take_over_console() return an error in the newport_probe(),
-> > due to the io virtual address is not released, it will cause a leak.
-> 
-> How do you think about a wording variant like the following?
-> 
->    Subject:
->    [PATCH v2] console: Complete exception handling in newport_probe()
-> 
->    Change description:
->    A call of the function “do_take_over_console” can fail here.
->    The corresponding system resources were not released then.
->    Thus add a call of the function “iounmap” together with the check
->    of a failure predicate.
+On Thu, Apr 23, 2020 at 5:26 PM Dejin Zheng <zhengdejin5@gmail.com> wrote:
 >
-Thanks!
+> A call of the function =C2=A1=C2=B0do_take_over_console=C2=A1=C2=B1 can f=
+ail here.
+> The corresponding system resources were not released then.
+> Thus add a call of the function =C2=A1=C2=B0iounmap=C2=A1=C2=B1 together =
+with the check
+> of a failure predicate.
 
-> 
-> I would like to point out that there is a script for the semantic
-> patch language which would detect other questionable source code.
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/scripts/coccinelle/free/iounmap.cocci
-> 
-> How do you think about to extend presented software analysis approaches?
->
-Sorry, I am not familiar with it, I don't know.
+...
 
-BR,
-Dejin
+> CC: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> Regards,
-> Markus
+Use Cc: Better to read.
+
+...
+
+> v1 -> v2:
+>         - modify the commit comments by Markus'suggestion.
+
+What suggestion? You need to be clear in changelog what exactly has
+been done without looking to any previous mail.
+
+...
+
+>         console_lock();
+>         err =3D do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1=
+, 1);
+>         console_unlock();
+> +
+> +       if (err)
+> +               iounmap((void *)npregs);
+>         return err;
+>  }
+
+I have briefly looked at the code (it is actually quite old one!), and
+I think this is half-baked solution, besides the fact of missed
+__iomem annotation and useless explicit casting.
+The proper one seems to switch to memremap() and do memunmap() here.
+
+--=20
+With Best Regards,
+Andy Shevchenko
