@@ -2,174 +2,468 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A03881B5F18
-	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A601B5F65
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Apr 2020 17:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729054AbgDWPZx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 23 Apr 2020 11:25:53 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:48475 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728989AbgDWPZx (ORCPT
+        id S1729300AbgDWPek (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Apr 2020 11:34:40 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:50141 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729280AbgDWPej (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 23 Apr 2020 11:25:53 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200423152551euoutp01631caefc8bd488ba0b3174d81580ce27~IfE-0MEjh2301123011euoutp01P
-        for <linux-fbdev@vger.kernel.org>; Thu, 23 Apr 2020 15:25:51 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200423152551euoutp01631caefc8bd488ba0b3174d81580ce27~IfE-0MEjh2301123011euoutp01P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1587655551;
-        bh=4CcgJX+hMyyt8NIG6umkE7GDivLV5CaWJh6tXmz7IAM=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=t3BwxSwoSx1mkbPrk0RXM78rPZZyYc2pjOa9WI3m4l9z2woCViVmUq4HYLoK+Q5Mc
-         mYi2UvWn+SGK7fxJXuYnhBWQXKkFmiDereAZrC5JLtw0BwssO7kkWg2JT+i85xxtU2
-         SjCHIxhy4Mxv5lJKi/6ySubMCB4wykN25gVSAHiI=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200423152551eucas1p1f74c81ba9a55483c9b2b6707c5dae3c2~IfE-mfEiU0758907589eucas1p16;
-        Thu, 23 Apr 2020 15:25:51 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id BB.4E.60698.F73B1AE5; Thu, 23
-        Apr 2020 16:25:51 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200423152550eucas1p1c7555e091e310f29f5d99bec04a90107~IfE_2qBz60759507595eucas1p1M;
-        Thu, 23 Apr 2020 15:25:50 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200423152550eusmtrp19943a6fb8b63ad410d060f79349dc093~IfE_1_-cT3134831348eusmtrp1j;
-        Thu, 23 Apr 2020 15:25:50 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-3f-5ea1b37f359b
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 9C.FB.07950.E73B1AE5; Thu, 23
-        Apr 2020 16:25:50 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200423152549eusmtip1a56fe5afbd52660c5da01981adefc06e~IfE_WE6Wq1007910079eusmtip1b;
-        Thu, 23 Apr 2020 15:25:49 +0000 (GMT)
-Subject: Re: [PATCH v2] console: console: Complete exception handling in
- newport_probe()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dejin Zheng <zhengdejin5@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>, FlorianSchandinat@gmx.de,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <051e7dee-d64c-c54c-6bdd-6e60444c0a26@samsung.com>
-Date:   Thu, 23 Apr 2020 17:25:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAHp75Vd8kC6ub-=pwe3QtdZ=FBqka3F1bbHea6__G5_Vm_ybcQ@mail.gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGKsWRmVeSWpSXmKPExsWy7djPc7r1mxfGGTx7zWvxcsJhRosrX9+z
-        WXTOvMZo0bx4PZvFib4PrBaXd81hs7i0R8Vi86apzBaHmw4yW+x6dJPZgcuj9dJyFo+ds+6y
-        e3z4GOfx7tw5do+jK9cyeeyfu4bd4373cSaPz5vkAjiiuGxSUnMyy1KL9O0SuDL27tzEVrCb
-        t2Lm3JlMDYztXF2MnBwSAiYSy37OZ+pi5OIQEljBKNHb9YMZwvnCKHHwwTko5zOjxIt7C1lg
-        Wlb0d7BDJJYzSnzcsZkNwnnLKNH85AbQMA4OYYEoiY/HOLsY2TlEBPQl9peBVDAL/GaSWP//
-        AyvIHDYBK4mJ7asYQWxeATuJTUfXgdksAqoSz17+ZgKxRQUiJD49OMwKUSMocXLmE7AbOAUC
-        JY7tuMoGYjMLiEvcejKfCcKWl9j+dg7Y0RICt9glrn6GOdpFYuuH1ewQtrDEq+NboGwZidOT
-        e1ggGtYxSvzteAHVvZ1RYvnkf2wQVdYSd879YgN5jFlAU2L9Ln2IsKPEh11LwMISAnwSN94K
-        QhzBJzFp23RmiDCvREebEES1msSGZRvYYNZ27VzJPIFRaRaS12YheWcWkndmIexdwMiyilE8
-        tbQ4Nz212DgvtVyvODG3uDQvXS85P3cTIzB1nf53/OsOxn1/kg4xCnAwKvHwGpQujBNiTSwr
-        rsw9xCjBwawkwrvh4bw4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmkJ5akZqemFqQW
-        wWSZODilGhgDWH7/cJ8fbLr6l+3URwl7JjyZ1ryqXvjLOe9M2UPy05+fYnS+XxN9o6em3zhy
-        67OZRwt8NkyTunM543P/0m3hb7afFrj+lvtCpRtf+DW+Yq8/z891fnaeG/K/KFIhiaWKhXX7
-        3K19InlT2c9t1zvPUJI+w8Rru43x/fqDE4/ZPyvljfh2UHmpEktxRqKhFnNRcSIAU2FTDlkD
-        AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrCIsWRmVeSWpSXmKPExsVy+t/xu7p1mxfGGdw/K2HxcsJhRosrX9+z
-        WXTOvMZo0bx4PZvFib4PrBaXd81hs7i0R8Vi86apzBaHmw4yW+x6dJPZgcuj9dJyFo+ds+6y
-        e3z4GOfx7tw5do+jK9cyeeyfu4bd4373cSaPz5vkAjii9GyK8ktLUhUy8otLbJWiDS2M9Awt
-        LfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DL27tzEVrCbt2Lm3JlMDYztXF2MnBwSAiYS
-        K/o72LsYuTiEBJYyStz/PY21i5EDKCEjcXx9GUSNsMSfa11sILaQwGtGiX0L+EBKhAWiJD4e
-        4+xiZOcQEdCX2A9WzCzwl0niyIpciOJOJok5mx1AbDYBK4mJ7asYQWxeATuJTUfXgdksAqoS
-        z17+ZgKxRQUiJA7vmAVVIyhxcuYTFhCbUyBQ4tiOq2wQ89Ul/sy7xAxhi0vcejKfCcKWl9j+
-        dg7zBEahWUjaZyFpmYWkZRaSlgWMLKsYRVJLi3PTc4uN9IoTc4tL89L1kvNzNzECY3TbsZ9b
-        djB2vQs+xCjAwajEw2tQujBOiDWxrLgy9xCjBAezkgjvhofz4oR4UxIrq1KL8uOLSnNSiw8x
-        mgI9N5FZSjQ5H5g+8kriDU0NzS0sDc2NzY3NLJTEeTsEDsYICaQnlqRmp6YWpBbB9DFxcEo1
-        MC6TW5unNUtuUWiY5RZLpdYemYIzmspZHVNn/o17PyPv/I+wxVd9p57ZFjvpwnH/bsGZInsZ
-        Tlu49D6eb9fCXc0Y2HSDz9Qz/r7+/80hb+QddOYpZZZmHDAzncj7Upuh2n1FeOPeF048PYnN
-        CROOc5kxujrbFfOkP7mhNCFyfvvTxznB4p1HlViKMxINtZiLihMBYdIREucCAAA=
-X-CMS-MailID: 20200423152550eucas1p1c7555e091e310f29f5d99bec04a90107
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146
-References: <CGME20200423142637eucas1p2ea543e281d96c75aa4292b49756f2146@eucas1p2.samsung.com>
-        <20200423142627.1820-1-zhengdejin5@gmail.com>
-        <081f8192-1708-80ff-6eef-885d72bdf5c5@samsung.com>
-        <CAHp75Vd8kC6ub-=pwe3QtdZ=FBqka3F1bbHea6__G5_Vm_ybcQ@mail.gmail.com>
+        Thu, 23 Apr 2020 11:34:39 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587656078; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=RAXs1ZeSABGEzLjYk+mvvwLddROk837UOMFG46uzVbY=; b=LcfxAtwALY/ZHt9UqV1/PuwHn4s9OK14oSAiAu9rTp3It0EF0IyEIWlZNnTOYbfX+DGs4PV2
+ sMYTRaZNjPY68qdzp/xtLbGnLM0iT8zOpMOYLC0iPHGs6SNDnGBaSkcoKYHx/iJTSZgwkU3K
+ G/e7ZTJ39VF1FHXpiifJ10d1qVM=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI4YmIzMiIsICJsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea1b584.7f5aabcf98b8-smtp-out-n05;
+ Thu, 23 Apr 2020 15:34:28 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9DDD3C43637; Thu, 23 Apr 2020 15:34:27 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from kgunda-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kgunda)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1D35AC433BA;
+        Thu, 23 Apr 2020 15:34:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1D35AC433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kgunda@codeaurora.org
+From:   Kiran Gunda <kgunda@codeaurora.org>
+To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        mark.rutland@arm.com, robh@kernel.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org
+Cc:     Kiran Gunda <kgunda@codeaurora.org>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+Subject: [PATCH V6 2/4] backlight: qcom-wled: Add callback functions
+Date:   Thu, 23 Apr 2020 21:03:35 +0530
+Message-Id: <1587656017-27911-3-git-send-email-kgunda@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1587656017-27911-1-git-send-email-kgunda@codeaurora.org>
+References: <1587656017-27911-1-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Add wled_cabc_config, wled_sync_toggle, wled_ovp_fault_status
+and wled_ovp_delay and wled_auto_detection_required callback
+functions to prepare the driver for adding WLED5 support.
 
-On 4/23/20 5:05 PM, Andy Shevchenko wrote:
-> On Thu, Apr 23, 2020 at 5:55 PM Bartlomiej Zolnierkiewicz
-> <b.zolnierkie@samsung.com> wrote:
-> 
->>> +     if (err)
->>> +             iounmap((void *)npregs);
->>
->> Looks OK but while you are at it, could you please also add missing
->> release_mem_region() on error and on device removal:
->>
->>         newport_addr = dev->resource.start + 0xF0000;
->>         if (!request_mem_region(newport_addr, 0x10000, "Newport"))
->>                 return -ENODEV;
->>
->>         npregs = (struct newport_regs *)/* ioremap cannot fail */
->>                 ioremap(newport_addr, sizeof(struct newport_regs));
->>         console_lock();
->>         err = do_take_over_console(&newport_con, 0, MAX_NR_CONSOLES - 1, 1);
->>         console_unlock();
->>         return err;
->> }
->>
->> static void newport_remove(struct gio_device *dev)
->> {
->>         give_up_console(&newport_con);
->>         iounmap((void *)npregs);
->> }
->>
->> ?
-> 
-> Don't you think that proper solution is rather switch to memremap()?
+Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+Signed-off-by: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+ drivers/video/backlight/qcom-wled.c | 213 ++++++++++++++++++++++++------------
+ 1 file changed, 141 insertions(+), 72 deletions(-)
 
-Doesn't seem to be a case here (used memory region in uncached).
-
-On MIPS (this is MIPS-only driver):
-
-...
-#define ioremap(offset, size)						\
-	__ioremap_mode((offset), (size), _CACHE_UNCACHED)
-#define ioremap_uc		ioremap
-...
-
-While memremap() is only for cacheable memory:
-
-...
- * memremap() - remap an iomem_resource as cacheable memory
- * @offset: iomem resource start address
- * @size: size of remap
- * @flags: any of MEMREMAP_WB, MEMREMAP_WT, MEMREMAP_WC,
- *		  MEMREMAP_ENC, MEMREMAP_DEC
-...
-
-
->>>       return err;
->>>  }
-> 
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index df53fbd..7b0095e 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -147,6 +147,7 @@ struct wled {
+ 	u32 max_brightness;
+ 	u32 short_count;
+ 	u32 auto_detect_count;
++	u32 version;
+ 	bool disabled_by_short;
+ 	bool has_short_detect;
+ 	int short_irq;
+@@ -154,7 +155,30 @@ struct wled {
  
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+ 	struct wled_config cfg;
+ 	struct delayed_work ovp_work;
++
++	/* Configures the brightness. Applicable for wled3, wled4 and wled5 */
+ 	int (*wled_set_brightness)(struct wled *wled, u16 brightness);
++
++	/* Configures the cabc register. Applicable for wled4 and wled5 */
++	int (*wled_cabc_config)(struct wled *wled, bool enable);
++
++	/*
++	 * Toggles the sync bit for the brightness update to take place.
++	 * Applicable for WLED3, WLED4 and WLED5.
++	 */
++	int (*wled_sync_toggle)(struct wled *wled);
++
++	/*
++	 * Time to wait before checking the OVP status after wled module enable.
++	 * Applicable for WLED4 and WLED5.
++	 */
++	int (*wled_ovp_delay)(struct wled *wled);
++
++	/*
++	 * Determines if the auto string detection is required.
++	 * Applicable for WLED4 and WLED5
++	 */
++	bool (*wled_auto_detection_required)(struct wled *wled);
+ };
+ 
+ static int wled3_set_brightness(struct wled *wled, u16 brightness)
+@@ -237,7 +261,7 @@ static int wled_module_enable(struct wled *wled, int val)
+ 	return 0;
+ }
+ 
+-static int wled_sync_toggle(struct wled *wled)
++static int wled3_sync_toggle(struct wled *wled)
+ {
+ 	int rc;
+ 	unsigned int mask = GENMASK(wled->max_string_count - 1, 0);
+@@ -255,6 +279,46 @@ static int wled_sync_toggle(struct wled *wled)
+ 	return rc;
+ }
+ 
++static int wled_ovp_fault_status(struct wled *wled, bool *fault_set)
++{
++	int rc;
++	u32 int_rt_sts, fault_sts;
++
++	*fault_set = false;
++	rc = regmap_read(wled->regmap,
++			wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
++			&int_rt_sts);
++	if (rc < 0) {
++		dev_err(wled->dev, "Failed to read INT_RT_STS rc=%d\n", rc);
++		return rc;
++	}
++
++	rc = regmap_read(wled->regmap,
++			wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
++			&fault_sts);
++	if (rc < 0) {
++		dev_err(wled->dev, "Failed to read FAULT_STATUS rc=%d\n", rc);
++		return rc;
++	}
++
++	if (int_rt_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
++		*fault_set = true;
++
++	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT)
++		*fault_set = true;
++
++	if (*fault_set)
++		dev_dbg(wled->dev, "WLED OVP fault detected, int_rt_sts=0x%x fault_sts=0x%x\n",
++			int_rt_sts, fault_sts);
++
++	return rc;
++}
++
++static int wled4_ovp_delay(struct wled *wled)
++{
++	return WLED_SOFT_START_DLY_US;
++}
++
+ static int wled_update_status(struct backlight_device *bl)
+ {
+ 	struct wled *wled = bl_get_data(bl);
+@@ -275,7 +339,7 @@ static int wled_update_status(struct backlight_device *bl)
+ 			goto unlock_mutex;
+ 		}
+ 
+-		rc = wled_sync_toggle(wled);
++		rc = wled->wled_sync_toggle(wled);
+ 		if (rc < 0) {
+ 			dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
+ 			goto unlock_mutex;
+@@ -298,6 +362,25 @@ static int wled_update_status(struct backlight_device *bl)
+ 	return rc;
+ }
+ 
++static int wled4_cabc_config(struct wled *wled, bool enable)
++{
++	int i, j, rc;
++	u8 val;
++
++	for (i = 0; i < wled->cfg.num_strings; i++) {
++		j = wled->cfg.enabled_strings[i];
++
++		val = enable ? WLED4_SINK_REG_STR_CABC_MASK : 0;
++		rc = regmap_update_bits(wled->regmap, wled->sink_addr +
++					WLED4_SINK_REG_STR_CABC(j),
++					WLED4_SINK_REG_STR_CABC_MASK, val);
++		if (rc < 0)
++			return rc;
++	}
++
++	return 0;
++}
++
+ #define WLED_SHORT_DLY_MS			20
+ #define WLED_SHORT_CNT_MAX			5
+ #define WLED_SHORT_RESET_CNT_DLY_US		USEC_PER_SEC
+@@ -345,9 +428,10 @@ static irqreturn_t wled_short_irq_handler(int irq, void *_wled)
+ 
+ static void wled_auto_string_detection(struct wled *wled)
+ {
+-	int rc = 0, i;
+-	u32 sink_config = 0, int_sts;
++	int rc = 0, i, delay_time_us;
++	u32 sink_config = 0;
+ 	u8 sink_test = 0, sink_valid = 0, val;
++	bool fault_set;
+ 
+ 	/* Read configured sink configuration */
+ 	rc = regmap_read(wled->regmap, wled->sink_addr +
+@@ -376,14 +460,9 @@ static void wled_auto_string_detection(struct wled *wled)
+ 	}
+ 
+ 	if (wled->cfg.cabc) {
+-		for (i = 0; i < wled->cfg.num_strings; i++) {
+-			rc = regmap_update_bits(wled->regmap, wled->sink_addr +
+-						WLED4_SINK_REG_STR_CABC(i),
+-						WLED4_SINK_REG_STR_CABC_MASK,
+-						0);
+-			if (rc < 0)
+-				goto failed_detect;
+-		}
++		rc = wled->wled_cabc_config(wled, false);
++		if (rc < 0)
++			goto failed_detect;
+ 	}
+ 
+ 	/* Disable all sinks */
+@@ -427,18 +506,17 @@ static void wled_auto_string_detection(struct wled *wled)
+ 			goto failed_detect;
+ 		}
+ 
+-		usleep_range(WLED_SOFT_START_DLY_US,
+-			     WLED_SOFT_START_DLY_US + 1000);
++		delay_time_us = wled->wled_ovp_delay(wled);
++		usleep_range(delay_time_us, delay_time_us + 1000);
+ 
+-		rc = regmap_read(wled->regmap, wled->ctrl_addr +
+-				 WLED3_CTRL_REG_INT_RT_STS, &int_sts);
++		rc = wled_ovp_fault_status(wled, &fault_set);
+ 		if (rc < 0) {
+-			dev_err(wled->dev, "Error in reading WLED3_CTRL_INT_RT_STS rc=%d\n",
++			dev_err(wled->dev, "Error in getting OVP fault_sts, rc=%d\n",
+ 				rc);
+ 			goto failed_detect;
+ 		}
+ 
+-		if (int_sts & WLED3_CTRL_REG_OVP_FAULT_STATUS)
++		if (fault_set)
+ 			dev_dbg(wled->dev, "WLED OVP fault detected with SINK %d\n",
+ 				i + 1);
+ 		else
+@@ -478,30 +556,30 @@ static void wled_auto_string_detection(struct wled *wled)
+ 	}
+ 
+ 	/* Enable valid sinks */
+-	for (i = 0; i < wled->cfg.num_strings; i++) {
+-		if (wled->cfg.cabc) {
+-			rc = regmap_update_bits(wled->regmap, wled->sink_addr +
+-						WLED4_SINK_REG_STR_CABC(i),
+-						WLED4_SINK_REG_STR_CABC_MASK,
+-						WLED4_SINK_REG_STR_CABC_MASK);
+-			if (rc < 0)
++	if (wled->version == 4) {
++		for (i = 0; i < wled->cfg.num_strings; i++) {
++			if (sink_config &
++			    BIT(WLED4_SINK_REG_CURR_SINK_SHFT + i))
++				val = WLED4_SINK_REG_STR_MOD_MASK;
++			else
++				/* Disable modulator_en for unused sink */
++				val = 0;
++
++			rc = regmap_write(wled->regmap, wled->sink_addr +
++					  WLED4_SINK_REG_STR_MOD_EN(i), val);
++			if (rc < 0) {
++				dev_err(wled->dev, "Failed to configure MODULATOR_EN rc=%d\n",
++					rc);
+ 				goto failed_detect;
+-		}
+-
+-		if (sink_config & BIT(WLED4_SINK_REG_CURR_SINK_SHFT + i))
+-			val = WLED4_SINK_REG_STR_MOD_MASK;
+-		else
+-			val = 0x0; /* Disable modulator_en for unused sink */
+-
+-		rc = regmap_write(wled->regmap, wled->sink_addr +
+-				  WLED4_SINK_REG_STR_MOD_EN(i), val);
+-		if (rc < 0) {
+-			dev_err(wled->dev, "Failed to configure MODULATOR_EN rc=%d\n",
+-				rc);
+-			goto failed_detect;
++			}
+ 		}
+ 	}
+ 
++	/* Enable CABC */
++	rc = wled->wled_cabc_config(wled, true);
++	if (rc < 0)
++		goto failed_detect;
++
+ 	/* Restore the feedback setting */
+ 	rc = regmap_write(wled->regmap,
+ 			  wled->ctrl_addr + WLED3_CTRL_REG_FEEDBACK_CONTROL, 0);
+@@ -534,7 +612,8 @@ static void wled_auto_string_detection(struct wled *wled)
+ 
+ #define WLED_AUTO_DETECT_OVP_COUNT		5
+ #define WLED_AUTO_DETECT_CNT_DLY_US		USEC_PER_SEC
+-static bool wled_auto_detection_required(struct wled *wled)
++
++static bool wled4_auto_detection_required(struct wled *wled)
+ {
+ 	s64 elapsed_time_us;
+ 
+@@ -570,29 +649,19 @@ static bool wled_auto_detection_required(struct wled *wled)
+ static int wled_auto_detection_at_init(struct wled *wled)
+ {
+ 	int rc;
+-	u32 fault_status, rt_status;
++	bool fault_set;
+ 
+ 	if (!wled->cfg.auto_detection_enabled)
+ 		return 0;
+ 
+-	rc = regmap_read(wled->regmap,
+-			 wled->ctrl_addr + WLED3_CTRL_REG_INT_RT_STS,
+-			 &rt_status);
+-	if (rc < 0) {
+-		dev_err(wled->dev, "Failed to read RT status rc=%d\n", rc);
+-		return rc;
+-	}
+-
+-	rc = regmap_read(wled->regmap,
+-			 wled->ctrl_addr + WLED3_CTRL_REG_FAULT_STATUS,
+-			 &fault_status);
++	rc = wled_ovp_fault_status(wled, &fault_set);
+ 	if (rc < 0) {
+-		dev_err(wled->dev, "Failed to read fault status rc=%d\n", rc);
++		dev_err(wled->dev, "Error in getting OVP fault_sts, rc=%d\n",
++			rc);
+ 		return rc;
+ 	}
+ 
+-	if ((rt_status & WLED3_CTRL_REG_OVP_FAULT_STATUS) ||
+-	    (fault_status & WLED3_CTRL_REG_OVP_FAULT_BIT)) {
++	if (fault_set) {
+ 		mutex_lock(&wled->lock);
+ 		wled_auto_string_detection(wled);
+ 		mutex_unlock(&wled->lock);
+@@ -629,7 +698,7 @@ static irqreturn_t wled_ovp_irq_handler(int irq, void *_wled)
+ 			int_sts, fault_sts);
+ 
+ 	if (fault_sts & WLED3_CTRL_REG_OVP_FAULT_BIT) {
+-		if (wled_auto_detection_required(wled)) {
++		if (wled->wled_auto_detection_required(wled)) {
+ 			mutex_lock(&wled->lock);
+ 			wled_auto_string_detection(wled);
+ 			mutex_unlock(&wled->lock);
+@@ -811,17 +880,12 @@ static int wled4_setup(struct wled *wled)
+ 					wled->cfg.string_i_limit);
+ 		if (rc < 0)
+ 			return rc;
+-
+-		addr = wled->sink_addr +
+-				WLED4_SINK_REG_STR_CABC(j);
+-		rc = regmap_update_bits(wled->regmap, addr,
+-					WLED4_SINK_REG_STR_CABC_MASK,
+-					wled->cfg.cabc ?
+-					WLED4_SINK_REG_STR_CABC_MASK : 0);
+-		if (rc < 0)
+-			return rc;
+ 	}
+ 
++	rc = wled4_cabc_config(wled, wled->cfg.cabc);
++	if (rc < 0)
++		return rc;
++
+ 	rc = regmap_update_bits(wled->regmap, wled->ctrl_addr +
+ 				WLED3_CTRL_REG_MOD_EN,
+ 				WLED3_CTRL_REG_MOD_EN_MASK,
+@@ -835,7 +899,7 @@ static int wled4_setup(struct wled *wled)
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	rc = wled_sync_toggle(wled);
++	rc = wled->wled_sync_toggle(wled);
+ 	if (rc < 0) {
+ 		dev_err(wled->dev, "Failed to toggle sync reg rc:%d\n", rc);
+ 		return rc;
+@@ -943,7 +1007,7 @@ static u32 wled_values(const struct wled_var_cfg *cfg, u32 idx)
+ 	return idx;
+ }
+ 
+-static int wled_configure(struct wled *wled, int version)
++static int wled_configure(struct wled *wled)
+ {
+ 	struct wled_config *cfg = &wled->cfg;
+ 	struct device *dev = wled->dev;
+@@ -1027,12 +1091,13 @@ static int wled_configure(struct wled *wled, int version)
+ 	if (rc)
+ 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
+ 
+-	switch (version) {
++	switch (wled->version) {
+ 	case 3:
+ 		u32_opts = wled3_opts;
+ 		size = ARRAY_SIZE(wled3_opts);
+ 		*cfg = wled3_config_defaults;
+ 		wled->wled_set_brightness = wled3_set_brightness;
++		wled->wled_sync_toggle = wled3_sync_toggle;
+ 		wled->max_string_count = 3;
+ 		wled->sink_addr = wled->ctrl_addr;
+ 		break;
+@@ -1042,6 +1107,11 @@ static int wled_configure(struct wled *wled, int version)
+ 		size = ARRAY_SIZE(wled4_opts);
+ 		*cfg = wled4_config_defaults;
+ 		wled->wled_set_brightness = wled4_set_brightness;
++		wled->wled_sync_toggle = wled3_sync_toggle;
++		wled->wled_cabc_config = wled4_cabc_config;
++		wled->wled_ovp_delay = wled4_ovp_delay;
++		wled->wled_auto_detection_required =
++					wled4_auto_detection_required;
+ 		wled->max_string_count = 4;
+ 
+ 		prop_addr = of_get_address(dev->of_node, 1, NULL, NULL);
+@@ -1178,7 +1248,6 @@ static int wled_probe(struct platform_device *pdev)
+ 	struct backlight_device *bl;
+ 	struct wled *wled;
+ 	struct regmap *regmap;
+-	int version;
+ 	u32 val;
+ 	int rc;
+ 
+@@ -1195,18 +1264,18 @@ static int wled_probe(struct platform_device *pdev)
+ 	wled->regmap = regmap;
+ 	wled->dev = &pdev->dev;
+ 
+-	version = (uintptr_t)of_device_get_match_data(&pdev->dev);
+-	if (!version) {
++	wled->version = (uintptr_t)of_device_get_match_data(&pdev->dev);
++	if (!wled->version) {
+ 		dev_err(&pdev->dev, "Unknown device version\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	mutex_init(&wled->lock);
+-	rc = wled_configure(wled, version);
++	rc = wled_configure(wled);
+ 	if (rc)
+ 		return rc;
+ 
+-	switch (version) {
++	switch (wled->version) {
+ 	case 3:
+ 		wled->cfg.auto_detection_enabled = false;
+ 		rc = wled3_setup(wled);
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+ a Linux Foundation Collaborative Project
