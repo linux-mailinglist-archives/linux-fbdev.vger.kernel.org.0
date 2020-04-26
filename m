@@ -2,104 +2,42 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE4E1B8B78
-	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Apr 2020 04:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F37371B95A3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 05:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726092AbgDZCzl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 25 Apr 2020 22:55:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42848 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725952AbgDZCzl (ORCPT
+        id S1726391AbgD0Dvk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 26 Apr 2020 23:51:40 -0400
+Received: from host141-99-61-217.static.arubacloud.com ([217.61.99.141]:41882
+        "EHLO mail.bengiamein.cf" rhost-flags-OK-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1726349AbgD0Dvk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 25 Apr 2020 22:55:41 -0400
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4CA7C061A0C;
-        Sat, 25 Apr 2020 19:55:39 -0700 (PDT)
-Received: by mail-pl1-x644.google.com with SMTP id t16so5472903plo.7;
-        Sat, 25 Apr 2020 19:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=asnsPXdyirP9oS05sJeDQpJdG3Yhu+JHcjQarVbK0gk=;
-        b=m/42paNYk4bTJSAgkYwKRquaje4aOyqgds2AflCUcNPSom+nmtRb/rohJdbkyrAZ4j
-         a/l5Y+caMeCjIuX8q3HTHuO9b3BvriFmpwynhXu3NQF9jj0We7IQyTxjFay4RnVe7V7N
-         i+YDgva5XOg2biHHGXlRV4FhkmvzojIDkj4DPNKiji/EIIMl8aw7Tq9PWMW621z/RLsS
-         5pMr9tQOILDYQYcetoAwwQtza6Dyjr6geiaoh4grKc1QmGUWa0P3QZhQfWa7k3txGhZR
-         5xSMr7ts/QnFBm8Q9QNmM5L6GSWn+GzJurQPoSJCRna2qxlW5aSzFIYKR9BcS6xODzGH
-         TzxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=asnsPXdyirP9oS05sJeDQpJdG3Yhu+JHcjQarVbK0gk=;
-        b=oqwwYl4eEWx4QfoeuY8/H+cw4aFbuH+/TQ2yN6/BlF/yLloxx6AhW5PYXgG+2eNDVp
-         S13OliFzKgeOzc8HqJGJk9o5Qjr7PwesOglzaZ7NQIFLSYudcoEz44YHP0jLip2qInHM
-         Ay22S3cb3bPdTcqTqO2Hs+DhaSFw3OhKBeOTa+C/psqigw7ZoRhOlg5yIllI7K4inUL9
-         ppMrDInTnNX2KX9aNYbPIIBziHqxSJs64Plmx8SteN4czJjL/RKhBIPS+mTjGwA8AMCi
-         L05OjvZLO9CYlDb7ZfdyC+65GdiKDTaImqvdwT4hdcw22200jz5G4ssC4H2UF+i36J8h
-         0sKg==
-X-Gm-Message-State: AGi0PuZ5vgFqxw/Zn+IUvemuk15otvg//+rLtaaykuJYx9hT7Y/pS3lF
-        pQAToH5glJYqs2gv3vof19E=
-X-Google-Smtp-Source: APiQypK1GdDBLwOHRoHmSNhagXQufrO/V6jYWukUGGNElpFTa7XzOuwPiJ8w5GPxjpgKb04FkBxlKg==
-X-Received: by 2002:a17:90a:a40e:: with SMTP id y14mr16047402pjp.101.1587869739112;
-        Sat, 25 Apr 2020 19:55:39 -0700 (PDT)
-Received: from localhost ([176.122.158.64])
-        by smtp.gmail.com with ESMTPSA id 79sm8037252pgd.62.2020.04.25.19.55.38
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 25 Apr 2020 19:55:38 -0700 (PDT)
-Date:   Sun, 26 Apr 2020 10:55:34 +0800
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andrew Morton <akpm@osdl.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v3] console: newport_con: fix an issue about leak related
- system resources
-Message-ID: <20200426025534.GA19252@nuc8i5>
-References: <20f37865-5af3-5fb9-8b8f-91f9464e4af3@web.de>
+        Sun, 26 Apr 2020 23:51:40 -0400
+Received: by mail.bengiamein.cf (Postfix, from userid 48)
+        id D8AA812EE8; Sun, 26 Apr 2020 19:44:27 -0400 (EDT)
+To:     linux-fbdev@vger.kernel.org
+Subject: Purchase Order
+X-PHP-Originating-Script: 0:ghgaerew.php
+From:   Richard Martins <richard.martins@list.ru>
+Reply-To: richard.martins1953@outlook.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20f37865-5af3-5fb9-8b8f-91f9464e4af3@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Message-Id: <20200426235545.D8AA812EE8@mail.bengiamein.cf>
+Date:   Sun, 26 Apr 2020 19:44:27 -0400 (EDT)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Apr 24, 2020 at 06:54:41PM +0200, Markus Elfring wrote:
-> > The corresponding system resources were not released then.
-> 
-> How do you think about a wording variant like the following?
->
-Markus, I think my commit comments is a sufficiently clear description
-for this patch. Someone has told me not to send commit comments again
-and again when it is enough clear. Because it only wastes the precious
-time of the maintainer and very very little help for patch improvement.
+Hi, friend,
 
-BTW, In the past week, you asked me to change the commit comments in my
-6 patches like this one. Let me return to the essence of patch, point
-out the code problems and better solutions will be more popular.
+This is Richard Martins and i am purchasing manager from BANTEX INTERNATIONAL INC. in the US.
+We are glad to know about your company from the web and we are interested in your products.
+Could you kindly send us your Latest catalog and price list for our trial order.
 
->    Subject:
->    [PATCH v4] console: newport_con: Fix incomplete releasing of system resources
-> 
->    Change description:
->    * A call of the function do_take_over_console() can fail here.
->      The corresponding system resources were not released then.
->      Thus add a call of iounmap() and release_mem_region()
->      together with the check of a failure predicate.
-> 
->    * Add also a call of release_mem_region() for the completion
->      of resource clean-up on device removal.
-> 
-> 
-> It can be nicer if all patch reviewers (including me) will be explicitly specified
-> as recipients for such messages, can't it?
-> 
-> Regards,
-> Markus
+Thanks and Best Regards,
+Mr.Richard Martins
+Purchasing Manager
+BANTEX INTERNATIONAL INC.
+
+
