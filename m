@@ -2,116 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6A011B9A5A
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 10:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F1671B9FAE
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 11:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726611AbgD0Igs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 Apr 2020 04:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725899AbgD0Igr (ORCPT
+        id S1726621AbgD0JUO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 Apr 2020 05:20:14 -0400
+Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:47033 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726589AbgD0JUO (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 Apr 2020 04:36:47 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35127C061A0F;
-        Mon, 27 Apr 2020 01:36:46 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id e2so13366919eje.13;
-        Mon, 27 Apr 2020 01:36:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vQTluHrFlTPouGYN0L8RFSa0ut56oC/RfYr17kNASok=;
-        b=meKAh8FbBdII7WfsflAdIDuNSKAWExOwNGTQONordCK+iMffZUBH4QRLKIj9g3hUAn
-         YdV1IZ903/Ia+CRl7z1QLOG/iAvLvkeIL46dC+N8HcIA085a47xkeVd/d8bh4ILznfGK
-         mYG0TqRV+AdXCoDveEOkLJcaLWYYbpZaf7DWgkpl3d7DEzkPG7MzqxCPG++2mTyCXzBB
-         hn2CMjRyBXSOLouKFBFwh/GBKSrvfsJlTDDekvK5NO2FzQWaOyfa9p1QwBfW9k21v7U5
-         PCHOoFKOplRT4+78hCu4tj17YMcjc4ZIs+YJhSOwjlxGEh0trr1ZwuzG8JMqICaBTnqK
-         TpeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vQTluHrFlTPouGYN0L8RFSa0ut56oC/RfYr17kNASok=;
-        b=Pep8qUtO9whatpkvdV2dFDFM3rFxdgQK3aDdbDTc8KCJ1rCBzapI+hEJFQ3TYNVr/E
-         U7vLVrx1pFuTz3DJ1cr+zHNDXV4b70dkoakAxAjJrKfy46Rkyv2EFP4a2Ze40vOuOic/
-         EJcBEIYeKmxL0VlysNFJX/ZWSMo6JJ4Alult+Z0Dnbqmt+rkMFQ8iJlNOo7n5glYhbKW
-         yJ8ABKfd7i3skHpg4dtX3puYlFbABudlPBxo7w06UDxjS9p6+VlwPvSRC4hpfUlJr5rw
-         nzvBu4SABmeX/hxjuYedX9iiDvMKdNW+mYP0OnW8yNt58lC4Xt4+rPPY2su/t6SVfFYf
-         wWkQ==
-X-Gm-Message-State: AGi0Pub0BJTlL/Dg+6awNXHr5lri0iyFuOsOHB80IXLcqNDu7O5rTlCl
-        rl7EuEKDpZyXt9WVDZSmYxGh+JmOu9DF/Q==
-X-Google-Smtp-Source: APiQypIRUAnXaWz08Q8liiasN60ylITxEvvKR+QbUyjJant5k2FUB9f77S8t1viHZzIbcdXyf4L9nA==
-X-Received: by 2002:a17:906:496:: with SMTP id f22mr18305568eja.311.1587976604820;
-        Mon, 27 Apr 2020 01:36:44 -0700 (PDT)
-Received: from localhost (ipv6-80adf4751ff4da96.ost.clients.hamburg.freifunk.net. [2a03:2267:4:0:80ad:f475:1ff4:da96])
-        by smtp.gmail.com with ESMTPSA id s18sm2810366ejm.63.2020.04.27.01.36.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Apr 2020 01:36:44 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 10:36:42 +0200
-From:   Oliver Graute <oliver.graute@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
-        linux-fbdev@vger.kernel.org,
-        Oliver Graute <oliver.graute@kococonnector.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: Initialize the Display
-Message-ID: <20200427083642.GD18436@portage>
-References: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
- <20200409102013.GP2001@kadam>
+        Mon, 27 Apr 2020 05:20:14 -0400
+Received: from localhost.localdomain ([92.148.159.11])
+        by mwinf5d75 with ME
+        id XlL5220090F2omL03lL5VT; Mon, 27 Apr 2020 11:20:12 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 27 Apr 2020 11:20:12 +0200
+X-ME-IP: 92.148.159.11
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        kstewart@linuxfoundation.org, tglx@linutronix.de, arnd@arndb.de,
+        jani.nikula@intel.com, akpm@osdl.org, adaplas@pol.net,
+        rpurdie@rpsys.net
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] video: fbdev: w100fb: Fix a potential double free.
+Date:   Mon, 27 Apr 2020 11:19:45 +0200
+Message-Id: <20200427091945.57534-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200409102013.GP2001@kadam>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 09/04/20, Dan Carpenter wrote:
-> On Thu, Apr 09, 2020 at 11:25:32AM +0200, Oliver Graute wrote:
-> > From: Oliver Graute <oliver.graute@kococonnector.com>
-> > 
-> > Set Gamma Values and Register Values for the HSD20_IPS
-> > 
-> > Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
-> > ---
-> >  drivers/staging/fbtft/fb_st7789v.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> > index 84c5af2dc9a0..b0aa96b703a8 100644
-> > --- a/drivers/staging/fbtft/fb_st7789v.c
-> > +++ b/drivers/staging/fbtft/fb_st7789v.c
-> > @@ -17,8 +17,8 @@
-> >  #define DRVNAME "fb_st7789v"
-> >  
-> >  #define DEFAULT_GAMMA \
-> > -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
-> > -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
-> > +	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-> > +	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
-> 
-> How do you know this won't break someone else's setup?
+Some memory is vmalloc'ed in the 'suspend' function and freed in the
+'resume' function.
+However, it is also freed in the remove function.
 
-Should I declare an extra define for my values?
+In order to avoid a potential double free, set the corresponding pointer
+to NULL once freed in the 'resume' function.
 
-+#define HSD20_IPS_GAMMA \
-+	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-+	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
+Fixes: aac51f09d96a ("[PATCH] w100fb: Rewrite for platform independence")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/video/fbdev/w100fb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> 
-> Without knowing anything at all about this driver, it feels like this
-> should be:
-> 
-> 	if (new_hardware)
-> 		write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
-> 	else
-> 		write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
+diff --git a/drivers/video/fbdev/w100fb.c b/drivers/video/fbdev/w100fb.c
+index 2d6e2738b792..d96ab28f8ce4 100644
+--- a/drivers/video/fbdev/w100fb.c
++++ b/drivers/video/fbdev/w100fb.c
+@@ -588,6 +588,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
+ 		memsize=par->mach->mem->size;
+ 		memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_extmem, memsize);
+ 		vfree(par->saved_extmem);
++		par->saved_extmem = NULL;
+ 	}
+ 	if (par->saved_intmem) {
+ 		memsize=MEM_INT_SIZE;
+@@ -596,6 +597,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
+ 		else
+ 			memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_intmem, memsize);
+ 		vfree(par->saved_intmem);
++		par->saved_intmem = NULL;
+ 	}
+ }
+ 
+-- 
+2.25.1
 
-ok, I'll update this.
-
-Best regards,
-
-Oliver
