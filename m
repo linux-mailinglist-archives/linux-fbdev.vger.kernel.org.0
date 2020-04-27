@@ -2,42 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F37371B95A3
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 05:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42151B9979
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 10:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbgD0Dvk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 26 Apr 2020 23:51:40 -0400
-Received: from host141-99-61-217.static.arubacloud.com ([217.61.99.141]:41882
-        "EHLO mail.bengiamein.cf" rhost-flags-OK-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1726349AbgD0Dvk (ORCPT
+        id S1726434AbgD0IMQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 Apr 2020 04:12:16 -0400
+Received: from mail-m17613.qiye.163.com ([59.111.176.13]:48827 "EHLO
+        mail-m17613.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726407AbgD0IMP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 26 Apr 2020 23:51:40 -0400
-Received: by mail.bengiamein.cf (Postfix, from userid 48)
-        id D8AA812EE8; Sun, 26 Apr 2020 19:44:27 -0400 (EDT)
-To:     linux-fbdev@vger.kernel.org
-Subject: Purchase Order
-X-PHP-Originating-Script: 0:ghgaerew.php
-From:   Richard Martins <richard.martins@list.ru>
-Reply-To: richard.martins1953@outlook.com
+        Mon, 27 Apr 2020 04:12:15 -0400
+X-Greylist: delayed 393 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 04:12:14 EDT
+Received: from ubuntu.localdomain (unknown [157.0.31.122])
+        by mail-m17613.qiye.163.com (Hmail) with ESMTPA id B9D1C48274B;
+        Mon, 27 Apr 2020 16:05:39 +0800 (CST)
+From:   Bernard Zhao <bernard@vivo.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Uma Shankar <uma.shankar@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Shashank Sharma <shashank.sharma@intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Bernard Zhao <bernard@vivo.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     opensource.kernel@vivo.com
+Subject: [PATCH] drivers/video: cleanup coding style in video a bit
+Date:   Mon, 27 Apr 2020 01:05:23 -0700
+Message-Id: <20200427080530.3234-1-bernard@vivo.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20200426235545.D8AA812EE8@mail.bengiamein.cf>
-Date:   Sun, 26 Apr 2020 19:44:27 -0400 (EDT)
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVOTUhLS0tJS0lKTENCTVlXWShZQU
+        hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PTI6Sgw4CDgrFkgNMjU9Dw0w
+        ThYaCjJVSlVKTkNMQkxPTE9LS05JVTMWGhIXVRkeCRUaCR87DRINFFUYFBZFWVdZEgtZQVlKTkxV
+        S1VISlVKSUlZV1kIAVlBSU5PTTcG
+X-HM-Tid: 0a71baab97fd93bakuwsb9d1c48274b
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, friend,
+Eliminate the magic numbers, add vender infoframe size macro
+like other hdmi modules.
 
-This is Richard Martins and i am purchasing manager from BANTEX INTERNATIONAL INC. in the US.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
+Signed-off-by: Bernard Zhao <bernard@vivo.com>
+---
+ drivers/video/hdmi.c | 2 +-
+ include/linux/hdmi.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Thanks and Best Regards,
-Mr.Richard Martins
-Purchasing Manager
-BANTEX INTERNATIONAL INC.
-
+diff --git a/drivers/video/hdmi.c b/drivers/video/hdmi.c
+index 856a8c4e84a2..f693076f2e5f 100644
+--- a/drivers/video/hdmi.c
++++ b/drivers/video/hdmi.c
+@@ -495,7 +495,7 @@ int hdmi_vendor_infoframe_init(struct hdmi_vendor_infoframe *frame)
+ 	 * value
+ 	 */
+ 	frame->s3d_struct = HDMI_3D_STRUCTURE_INVALID;
+-	frame->length = 4;
++	frame->length = HDMI_VENDOR_INFOFRAME_SIZE;
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
+index 9613d796cfb1..ff25aeb95ee4 100644
+--- a/include/linux/hdmi.h
++++ b/include/linux/hdmi.h
+@@ -57,6 +57,7 @@ enum hdmi_infoframe_type {
+ #define HDMI_SPD_INFOFRAME_SIZE    25
+ #define HDMI_AUDIO_INFOFRAME_SIZE  10
+ #define HDMI_DRM_INFOFRAME_SIZE    26
++#define HDMI_VENDOR_INFOFRAME_SIZE  4
+ 
+ #define HDMI_INFOFRAME_SIZE(type)	\
+ 	(HDMI_INFOFRAME_HEADER_SIZE + HDMI_ ## type ## _INFOFRAME_SIZE)
+-- 
+2.26.2
 
