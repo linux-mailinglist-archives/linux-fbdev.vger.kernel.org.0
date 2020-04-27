@@ -2,83 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C42151B9979
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 10:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FC061B9A35
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 10:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726434AbgD0IMQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 Apr 2020 04:12:16 -0400
-Received: from mail-m17613.qiye.163.com ([59.111.176.13]:48827 "EHLO
-        mail-m17613.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726407AbgD0IMP (ORCPT
+        id S1726566AbgD0I3o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 Apr 2020 04:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726003AbgD0I3n (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 Apr 2020 04:12:15 -0400
-X-Greylist: delayed 393 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 04:12:14 EDT
-Received: from ubuntu.localdomain (unknown [157.0.31.122])
-        by mail-m17613.qiye.163.com (Hmail) with ESMTPA id B9D1C48274B;
-        Mon, 27 Apr 2020 16:05:39 +0800 (CST)
-From:   Bernard Zhao <bernard@vivo.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Uma Shankar <uma.shankar@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Shashank Sharma <shashank.sharma@intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Bernard Zhao <bernard@vivo.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     opensource.kernel@vivo.com
-Subject: [PATCH] drivers/video: cleanup coding style in video a bit
-Date:   Mon, 27 Apr 2020 01:05:23 -0700
-Message-Id: <20200427080530.3234-1-bernard@vivo.com>
-X-Mailer: git-send-email 2.26.2
+        Mon, 27 Apr 2020 04:29:43 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62243C061A0F;
+        Mon, 27 Apr 2020 01:29:43 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id a8so12809414edv.2;
+        Mon, 27 Apr 2020 01:29:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=3u0dV855unI4O3p8peLsDTUicXAYlb28KnCe8UM7MUs=;
+        b=Zlu6VfX2l+7goUVTDjG0v+TCcX75zOZGXqTIdVxBqOlF54VJrT09yWSCdeAt86pL5e
+         IR3ssFL9phUIY4cr04VSZ8exPUkcdWgSSislA+X+jcvoelNI6YDI8O1ynEGTXy/+IQdl
+         UPD7Nxcf6CE4y3EFj1kwkIMoz8P6STCkLLXBL1NDVVgq6pEkeCJavGgsTDm5zz8XPufO
+         Xthx3bO2cYdQ7/GMIVxOyZ3zFuN09avlPFWfLgklAq/pa+vAdO84iaowsDdqhgFsw5eR
+         vB8tdAjJvjxu1VLa2ioiMjRM7dS5j/VYyUqdPE/ZPXr3XaSfXaUk3r82WSJY9C+8qGId
+         KrsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3u0dV855unI4O3p8peLsDTUicXAYlb28KnCe8UM7MUs=;
+        b=EMdeo9w+a+aETHo082VgEWrzB7VWEY0wQ4GAY8cB/zl4Nj3lokGaK5QW9V+5SyGi5l
+         t0pN2WSR+nQXkWtlI1KmGc3ltdgbNFMTvVxnoI4MVZKxNgFwR34Q9lojXgm/Qj5gwNMR
+         97864uXLMPO18amCvp6LF4oFuvuDzRDiShZ+3YjAyH/eMJKhPCTno+f7gBt6lAfp2I3l
+         GZ0G8Zw8qf2f13UOMPPtlD24lrQO0T6ySsnv+77IEynZwjugQ6+fRw/MAuUqZeEMehBl
+         3M9BFDFMQUw5MBlBo7VuB5sla1MHrI0/SwgnMnAhkZXfyp47VjnsXPA1eprsjqTe39QX
+         qf+g==
+X-Gm-Message-State: AGi0PuaGLDdGoenl3vI0V1ewPWWuboKWWzBebQY0upztLojrzQZtC6//
+        4FFX0kb4eKvCvkWkDeP6rdlNmhYx/qQ=
+X-Google-Smtp-Source: APiQypKbYjp0Ad9RAw21UP4Z6Nd2JIoYOrwLCpAUf/+Tg0yEq9TchOmQsbsVdRSuZVn7vzuOqKCM7w==
+X-Received: by 2002:a05:6402:391:: with SMTP id o17mr17630403edv.71.1587976182020;
+        Mon, 27 Apr 2020 01:29:42 -0700 (PDT)
+Received: from localhost (ipv6-80adf4751ff4da96.ost.clients.hamburg.freifunk.net. [2a03:2267:4:0:80ad:f475:1ff4:da96])
+        by smtp.gmail.com with ESMTPSA id r26sm1976873edw.34.2020.04.27.01.29.40
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 27 Apr 2020 01:29:40 -0700 (PDT)
+Date:   Mon, 27 Apr 2020 10:29:39 +0200
+From:   Oliver Graute <oliver.graute@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
+        linux-fbdev@vger.kernel.org,
+        Oliver Graute <oliver.graute@kococonnector.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: enabled inversion
+Message-ID: <20200427082939.GB18436@portage>
+References: <1586424250-25897-1-git-send-email-oliver.graute@gmail.com>
+ <20200409101517.GO2001@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVOTUhLS0tJS0lKTENCTVlXWShZQU
-        hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PTI6Sgw4CDgrFkgNMjU9Dw0w
-        ThYaCjJVSlVKTkNMQkxPTE9LS05JVTMWGhIXVRkeCRUaCR87DRINFFUYFBZFWVdZEgtZQVlKTkxV
-        S1VISlVKSUlZV1kIAVlBSU5PTTcG
-X-HM-Tid: 0a71baab97fd93bakuwsb9d1c48274b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200409101517.GO2001@kadam>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Eliminate the magic numbers, add vender infoframe size macro
-like other hdmi modules.
+On 09/04/20, Dan Carpenter wrote:
+> On Thu, Apr 09, 2020 at 11:24:05AM +0200, Oliver Graute wrote:
+> > From: Oliver Graute <oliver.graute@kococonnector.com>
+> > 
+> > Enable inversion mode
+> 
+> What the heck is an inversion mode and why would you want it?
 
-Signed-off-by: Bernard Zhao <bernard@vivo.com>
----
- drivers/video/hdmi.c | 2 +-
- include/linux/hdmi.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/hdmi.c b/drivers/video/hdmi.c
-index 856a8c4e84a2..f693076f2e5f 100644
---- a/drivers/video/hdmi.c
-+++ b/drivers/video/hdmi.c
-@@ -495,7 +495,7 @@ int hdmi_vendor_infoframe_init(struct hdmi_vendor_infoframe *frame)
- 	 * value
- 	 */
- 	frame->s3d_struct = HDMI_3D_STRUCTURE_INVALID;
--	frame->length = 4;
-+	frame->length = HDMI_VENDOR_INFOFRAME_SIZE;
- 
- 	return 0;
- }
-diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
-index 9613d796cfb1..ff25aeb95ee4 100644
---- a/include/linux/hdmi.h
-+++ b/include/linux/hdmi.h
-@@ -57,6 +57,7 @@ enum hdmi_infoframe_type {
- #define HDMI_SPD_INFOFRAME_SIZE    25
- #define HDMI_AUDIO_INFOFRAME_SIZE  10
- #define HDMI_DRM_INFOFRAME_SIZE    26
-+#define HDMI_VENDOR_INFOFRAME_SIZE  4
- 
- #define HDMI_INFOFRAME_SIZE(type)	\
- 	(HDMI_INFOFRAME_HEADER_SIZE + HDMI_ ## type ## _INFOFRAME_SIZE)
--- 
-2.26.2
+Should I name it:
 
+Enable MIPI_DCS_ENTER_INVERT_MODE
+
+Best Regards,
+
+Oliver
