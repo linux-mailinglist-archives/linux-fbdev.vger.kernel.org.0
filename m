@@ -2,115 +2,101 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B434D1BA3A8
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2020 14:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D34761BCBDA
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Apr 2020 21:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbgD0Mga (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 Apr 2020 08:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44744 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726651AbgD0Mga (ORCPT
+        id S1729105AbgD1TAQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 Apr 2020 15:00:16 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44940 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729263AbgD1S7R (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 Apr 2020 08:36:30 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70507C0610D5;
-        Mon, 27 Apr 2020 05:36:29 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id t12so13319757edw.3;
-        Mon, 27 Apr 2020 05:36:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=PLUp+H7tLoE7SqL2B/5Sr5RyPMPq2y7xz4BTXAvd9zk=;
-        b=Mf1WP5XnzaDH9wPHukRV8bbvRPNRmZ2+SC0Y3EZgsPhYhW+DN+4m+XsX6HAJMlmJFd
-         9wjS25y9Zb1+0Z7IxanewEwe1SvR1CymsXiS0Mvyy7I3Ymvn7ek3E7B6bVbN3Gni+Or4
-         vlleN1AxUg+T/IJGQ3MDxDoeeQqj6mhCk2Q+1WzBPAMItDnER+7Hv0oOQBpWUVyYUbKl
-         YTKdKJ/tk7xyobHPvOf1TOkEVdTCvPggyXpDfakHgb1jrn722RJRqf2B+bx2gaQhJGS8
-         lLNnttJpyVU4XSwBqVvcDR7jUydDRzNvqiIUOrzcK+pEu4QoPT8/8y8FbjnLzq553q9v
-         utPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=PLUp+H7tLoE7SqL2B/5Sr5RyPMPq2y7xz4BTXAvd9zk=;
-        b=fAsovNJaz/0u5XyIjPiozg0XxL0YJ0PgX6OnUbTg5d7USnGuWyZN2E2lYhEk7AjzFt
-         c6EXIBeONx5GgaxeUIhmKzn4wgbC3Dg5dyYd2RMHoXbC9hoVPGbHEhiTSM9aTPIWWsKU
-         0bhI0ODW4E5KZGlHTiN0HaP+XTbsfGluo/7h/Uek/PZyhP+W3KKb0lbRK0K828DQ5mcW
-         0W28GcmF2e1+3u2jrBRqdj52OlAZ5F3+iDf+czJmLL5XglcvdI61WI+CpmApH+jEMCAk
-         F9sA8RrKaB1CQjU/9Ody4vhtC4ckBZqZiCH+/18BhSTo7IFGahRMLYir8kKwDp5TcSty
-         t27Q==
-X-Gm-Message-State: AGi0Pub/VKb4Kegyzu5NAdZS6SeHrF5fAE+Uvqlpyhs39tmq6XC3/SZn
-        RjxiEjDd5Ekd29LJoLzB3/9+v3qeXztwZg==
-X-Google-Smtp-Source: APiQypIWrAvc4+fSH7YxABePAo7Zu9cVJBR6VJKr1ooQvQPnNyq7X9TWDSeFjgjWJ2uHKxGNGt1ZSA==
-X-Received: by 2002:aa7:dd84:: with SMTP id g4mr14403690edv.257.1587990987953;
-        Mon, 27 Apr 2020 05:36:27 -0700 (PDT)
-Received: from localhost (ipv6-80adf4751ff4da96.ost.clients.hamburg.freifunk.net. [2a03:2267:4:0:80ad:f475:1ff4:da96])
-        by smtp.gmail.com with ESMTPSA id z26sm2941505ejb.36.2020.04.27.05.36.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 27 Apr 2020 05:36:27 -0700 (PDT)
-Date:   Mon, 27 Apr 2020 14:36:25 +0200
-From:   Oliver Graute <oliver.graute@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     gregkh@linuxfoundation.org, devel@driverdev.osuosl.org,
-        linux-fbdev@vger.kernel.org,
+        Tue, 28 Apr 2020 14:59:17 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SItOrH087842;
+        Tue, 28 Apr 2020 18:59:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=6QfPBxRy5q90uwHDhwkUZK3Fz9TlbCsqwMzjQP33fAQ=;
+ b=UuzYbl5loRqRRTDE3pzbcxlp8AoZsd2mvoJ5IB71FBYjz5pBLpDDzUZyWaQBT2lvObEw
+ LMNmexC/MBYW6oGpPjUFxJexF9G+g5eX+ApuvTGiHNObigDRKRCrtV7fNs8dwZqKc0e3
+ q7kiCkk8IKcNOoeNVRHkrcebK9bAG6Y2fFw7AFIynX7SnZ6CuSdhXJSQQ38BKV4b8qZr
+ gLczAyd5Du1ZZKoFTJzvjv8NQuBt2J6TEg7wVambUY7Nn5XdJm5yb7YiRUnsMd6DsW8o
+ QgFp9fYox5ki7zaFJ1j9l/ESOTzDx3cSpxxP3dZM2ykswoHJPbZwD+0Cwyw1uWC/oFqk yw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 30p2p077g6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 18:59:07 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SIv13j173815;
+        Tue, 28 Apr 2020 18:59:06 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 30my0e1hmd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 18:59:06 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SIx1x2005370;
+        Tue, 28 Apr 2020 18:59:01 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 Apr 2020 11:59:01 -0700
+Date:   Tue, 28 Apr 2020 21:58:54 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Oliver Graute <oliver.graute@gmail.com>
+Cc:     devel@driverdev.osuosl.org, linux-fbdev@vger.kernel.org,
+        gregkh@linuxfoundation.org,
         Oliver Graute <oliver.graute@kococonnector.com>,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: Initialize the Display
-Message-ID: <20200427123625.GE18436@portage>
-References: <1586424337-26602-1-git-send-email-oliver.graute@gmail.com>
- <20200409102013.GP2001@kadam>
- <20200427083642.GD18436@portage>
- <20200427093306.GU2682@kadam>
+Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: enabled inversion
+Message-ID: <20200428185854.GK2014@kadam>
+References: <1586424250-25897-1-git-send-email-oliver.graute@gmail.com>
+ <20200409101517.GO2001@kadam>
+ <20200427082939.GB18436@portage>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200427093306.GU2682@kadam>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20200427082939.GB18436@portage>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=915 bulkscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280150
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=964 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004280149
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 27/04/20, Dan Carpenter wrote:
-> On Mon, Apr 27, 2020 at 10:36:42AM +0200, Oliver Graute wrote:
-> > On 09/04/20, Dan Carpenter wrote:
-> > > On Thu, Apr 09, 2020 at 11:25:32AM +0200, Oliver Graute wrote:
-> > > > From: Oliver Graute <oliver.graute@kococonnector.com>
-> > > > 
-> > > > Set Gamma Values and Register Values for the HSD20_IPS
-> > > > 
-> > > > Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
-> > > > ---
-> > > >  drivers/staging/fbtft/fb_st7789v.c | 12 ++++++------
-> > > >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> > > > index 84c5af2dc9a0..b0aa96b703a8 100644
-> > > > --- a/drivers/staging/fbtft/fb_st7789v.c
-> > > > +++ b/drivers/staging/fbtft/fb_st7789v.c
-> > > > @@ -17,8 +17,8 @@
-> > > >  #define DRVNAME "fb_st7789v"
-> > > >  
-> > > >  #define DEFAULT_GAMMA \
-> > > > -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
-> > > > -	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
-> > > > +	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-> > > > +	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
+On Mon, Apr 27, 2020 at 10:29:39AM +0200, Oliver Graute wrote:
+> On 09/04/20, Dan Carpenter wrote:
+> > On Thu, Apr 09, 2020 at 11:24:05AM +0200, Oliver Graute wrote:
+> > > From: Oliver Graute <oliver.graute@kococonnector.com>
 > > > 
-> > > How do you know this won't break someone else's setup?
+> > > Enable inversion mode
 > > 
-> > Should I declare an extra define for my values?
-> > 
-> > +#define HSD20_IPS_GAMMA \
-> > +	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-> > +	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
-> > 
+> > What the heck is an inversion mode and why would you want it?
 > 
-> That's fine, but it can't be a compile time thing.  Both types of
-> hardware have to be working/available at run time.
+> 
+> Should I name it:
+> 
+> Enable MIPI_DCS_ENTER_INVERT_MODE
+> 
 
-ok, what is the proper way to handover the gamma values during run time?
+What I'm saying is the changelog should explain why would want to apply
+the patch.  What does the inversion mode do?  Is it inverting the color
+or flipping something upside down?
 
-Best Regards,
+Probably if I had a background in graphics I would know what "Enable
+inversion mode" means...  But three words is not a proper and complete
+commit message normally.
 
-Oliver
+regards,
+dan carpenter
+
