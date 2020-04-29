@@ -2,75 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52E941BE04F
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Apr 2020 16:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008E81BE58A
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Apr 2020 19:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbgD2OK2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Apr 2020 10:10:28 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3383 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726691AbgD2OK1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Apr 2020 10:10:27 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EF597D0A7553792897A7;
-        Wed, 29 Apr 2020 22:10:24 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Wed, 29 Apr 2020
- 22:10:16 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH] video: fbdev: valkyriefb.c: fix warning comparing pointer to 0
-Date:   Wed, 29 Apr 2020 22:09:42 +0800
-Message-ID: <20200429140942.8137-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1726524AbgD2Rmv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Apr 2020 13:42:51 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:34623 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726481AbgD2Rmu (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 Apr 2020 13:42:50 -0400
+Received: from [192.168.42.210] ([93.22.38.239])
+        by mwinf5d58 with ME
+        id Yhig2200R59bE5H03hig2Q; Wed, 29 Apr 2020 19:42:48 +0200
+X-ME-Helo: [192.168.42.210]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 29 Apr 2020 19:42:48 +0200
+X-ME-IP: 93.22.38.239
+Subject: Re: [PATCH] video: fbdev: pxa3xx_gcu: Fix some resource leak in an
+ error handling path in 'pxa3xx_gcu_probe()'
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
+        mpe@ellerman.id.au, zhenzhong.duan@gmail.com, arnd@arndb.de,
+        tglx@linutronix.de, eric.y.miao@gmail.com, daniel@caiaq.de,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200429043438.96212-1-christophe.jaillet@wanadoo.fr>
+ <20200429122538.GO2014@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <0db91149-fa85-6ec3-1787-d5effd41a1b9@wanadoo.fr>
+Date:   Wed, 29 Apr 2020 19:42:40 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200429122538.GO2014@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix the following coccicheck warning:
+Le 29/04/2020 à 14:25, Dan Carpenter a écrit :
+> On Wed, Apr 29, 2020 at 06:34:38AM +0200, Christophe JAILLET wrote:
+>> If an error occurs in the loop where we call 'pxa3xx_gcu_add_buffer()',
+>> any resource already allocated should be freed.
+>>
+>> In order to fix it, add a call to 'pxa3xx_gcu_free_buffers()' in the error
+>> handling path, as already done in the remove function.
+>>
+>> Fixes: 364dbdf3b6c3 ("video: add driver for PXA3xx 2D graphics accelerator")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/video/fbdev/pxa3xx-gcu.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
+>> index 4279e13a3b58..68d9c7a681d4 100644
+>> --- a/drivers/video/fbdev/pxa3xx-gcu.c
+>> +++ b/drivers/video/fbdev/pxa3xx-gcu.c
+>> @@ -675,6 +675,7 @@ static int pxa3xx_gcu_probe(struct platform_device *pdev)
+>>   
+>>   err_disable_clk:
+>>   	clk_disable_unprepare(priv->clk);
+>> +	pxa3xx_gcu_free_buffers(dev, priv);
+> The error handling in this function makes no sense and is buggy.  It
+> should be that it unwinds in the reverse order from the allocation.  The
+> goto should be "goto free_most_recently_allocated_resource;".  Since the
+> unwind is done in the wrong order it causes a couple bugs.
+>
+> These buffers are the last thing which we allocated so they should be
+> the first thing which we free.  In this case, calling
+> pxa3xx_gcu_free_buffers() before the buffers are allocated is confusing
+> but harmless.  The clk_disable_unprepare() is done on some paths where
+> the clock was not enabled and that will trigger a WARN() so that's a
+> bug.  Syzcaller will complain and if you have reboot on WARN then it's
+> annoying.
+>
+> The second bug is that we don't deregister the misc device or release
+> the DMA memory on failure when we allocate the buffers in the loop.
+>
+> regards,
+> dan carpenter
+>
+Agreed. I've been a little too fast on this one.
+I'll update it.
 
-drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
-0, suggest !E
-drivers/video/fbdev/valkyriefb.c:334:12-13: WARNING comparing pointer to
-0
-drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
-0
+Thx for the review.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/video/fbdev/valkyriefb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+CJ
 
-diff --git a/drivers/video/fbdev/valkyriefb.c b/drivers/video/fbdev/valkyriefb.c
-index 4d20c4603e5a..8425afe37d7c 100644
---- a/drivers/video/fbdev/valkyriefb.c
-+++ b/drivers/video/fbdev/valkyriefb.c
-@@ -331,7 +331,7 @@ int __init valkyriefb_init(void)
- 		struct resource r;
- 
- 		dp = of_find_node_by_name(NULL, "valkyrie");
--		if (dp == 0)
-+		if (!dp)
- 			return 0;
- 
- 		if (of_address_to_resource(dp, 0, &r)) {
-@@ -345,7 +345,7 @@ int __init valkyriefb_init(void)
- #endif /* ppc (!CONFIG_MAC) */
- 
- 	p = kzalloc(sizeof(*p), GFP_ATOMIC);
--	if (p == 0)
-+	if (!p)
- 		return -ENOMEM;
- 
- 	/* Map in frame buffer and registers */
--- 
-2.21.1
 
