@@ -2,75 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9271BDEDE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Apr 2020 15:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E941BE04F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Apr 2020 16:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgD2Njf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Apr 2020 09:39:35 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:52230 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727798AbgD2Nje (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Apr 2020 09:39:34 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 49B6580507;
-        Wed, 29 Apr 2020 15:39:29 +0200 (CEST)
-Date:   Wed, 29 Apr 2020 15:39:23 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        kbuild test robot <lkp@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] video: fbdev: controlfb: fix build for COMPILE_TEST=y
- && PPC_PMAC=y && PPC32=n
-Message-ID: <20200429133923.GA18115@ravnborg.org>
-References: <CGME20200429104825eucas1p16bf37b71a3ab3a768d1eff6c48eb61dd@eucas1p1.samsung.com>
- <fe520316-3863-e6c4-9581-5d709f49e906@samsung.com>
- <20200429125101.GA21275@infradead.org>
+        id S1727843AbgD2OK2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Apr 2020 10:10:28 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3383 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726691AbgD2OK1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 Apr 2020 10:10:27 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id EF597D0A7553792897A7;
+        Wed, 29 Apr 2020 22:10:24 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Wed, 29 Apr 2020
+ 22:10:16 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <dri-devel@lists.freedesktop.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] video: fbdev: valkyriefb.c: fix warning comparing pointer to 0
+Date:   Wed, 29 Apr 2020 22:09:42 +0800
+Message-ID: <20200429140942.8137-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200429125101.GA21275@infradead.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=MOBOZvRl c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=kj9zAlcOel0A:10 a=_B__PoOuIxrDVYIAAIsA:9 a=CjuIK1q_8ugA:10
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Christoph
+Fix the following coccicheck warning:
 
-On Wed, Apr 29, 2020 at 05:51:01AM -0700, Christoph Hellwig wrote:
-> Why do we even bother allocing the driver to compile for !ppc32
-> given that it clearly needs ppc-specific infrastructure?  The whole
-> idea of needing magic stubs for the COMPILE_TEST case seems rather
-> counterproduction.
+drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
+0, suggest !E
+drivers/video/fbdev/valkyriefb.c:334:12-13: WARNING comparing pointer to
+0
+drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
+0
 
-All the usual good arguments.
-If this driver only builds for 32bit powerpc then we will seldom
-build it and every time we do some refactoring we risk introducing
-build errros in this driver that is triggered much later.
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/video/fbdev/valkyriefb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-So a few hacks are preferred to actually make it build.
-But hacks should not paper over missing abstractions
-in the general ioremap handlign and such.
-
-I recall someone said the other day that drm folks had a tendency to
-workaround rather than fixing this.
-So this is "drm folks" reaching out and asking if this is a
-case where we have a workaround and need a fix?
-
-I will - after some testing - apply the fix from Bartlomiej.
-But would like to know if this is a workarond or a fix.
-Dropping COMPILE_TEST is not an option as explained above.
-
-	Sam
+diff --git a/drivers/video/fbdev/valkyriefb.c b/drivers/video/fbdev/valkyriefb.c
+index 4d20c4603e5a..8425afe37d7c 100644
+--- a/drivers/video/fbdev/valkyriefb.c
++++ b/drivers/video/fbdev/valkyriefb.c
+@@ -331,7 +331,7 @@ int __init valkyriefb_init(void)
+ 		struct resource r;
+ 
+ 		dp = of_find_node_by_name(NULL, "valkyrie");
+-		if (dp == 0)
++		if (!dp)
+ 			return 0;
+ 
+ 		if (of_address_to_resource(dp, 0, &r)) {
+@@ -345,7 +345,7 @@ int __init valkyriefb_init(void)
+ #endif /* ppc (!CONFIG_MAC) */
+ 
+ 	p = kzalloc(sizeof(*p), GFP_ATOMIC);
+-	if (p == 0)
++	if (!p)
+ 		return -ENOMEM;
+ 
+ 	/* Map in frame buffer and registers */
+-- 
+2.21.1
 
