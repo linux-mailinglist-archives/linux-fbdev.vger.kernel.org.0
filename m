@@ -2,131 +2,183 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE3B1C2EF3
-	for <lists+linux-fbdev@lfdr.de>; Sun,  3 May 2020 22:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FD91C4A61
+	for <lists+linux-fbdev@lfdr.de>; Tue,  5 May 2020 01:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729037AbgECUAA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 3 May 2020 16:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49654 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728207AbgECUAA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 3 May 2020 16:00:00 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044A0C061A0E;
-        Sun,  3 May 2020 13:00:00 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id y4so7633372ljn.7;
-        Sun, 03 May 2020 12:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zLPE4D1sK0zsHGMlXa0Pxw17ACXHcfJqsNrgMQ+yusQ=;
-        b=MoWFwe/ISoefeYi0uYDrYATw+tIdx6gFDmppAi/CnTIz8roXxfUJ6Ab4QL8hRC3NzN
-         PaLN4fwk3uQOqKKH7JJlzdUbItmZbfamGgKniB/eDlzUl6eqIzMSiPcaqykrV/SxjCmY
-         aHDX9StPG0YGB5mzlk6IUVPpqjafmjulD+GByo9qpjNb99qXBXXwTruhYco6dEPsq12H
-         7X7PTNo9/gWDYcPpZDmqtlrbelvrcy7OyYnXAlhebJNBJdsKKF6brchm6awxOrm4ZVqY
-         DHgpQtq4tpInB/trZOG4UlfU7mR4jHrUT4M1k2LesHQL/9V/mJM5YqlpAN+foE7H3Kzj
-         YjUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zLPE4D1sK0zsHGMlXa0Pxw17ACXHcfJqsNrgMQ+yusQ=;
-        b=mUfdKYe2Q2f+elb2CHprQPRtSulYVuiESlb/i9S3iW7AVThvKyxV/Ip0yLUiXk6NX3
-         rxqCSo8VBHszIPMUjMSeJFb++lYm6oA1k5rNNiQomXMOoMRzt5eOCjSIKczbu07CCY5k
-         pB0wrcjLWrBQD0CvkKAv1xcw7vtryQLGtAOfAGSS5mHQlK3TQbbFb44h27FWW04Mzk9S
-         wmXgcbtBgkKr+JDoBj0HOFWF6Xso1dWre10BhcxtSJsoWAum6mWuxP7NxS9D+cIhP5MB
-         R7Ho3FO05SO9TOfwxqwE0YPXnLnbDVJMpZxSLps87B5UHsdDXqFAi9g+yCVS0fc4bfVO
-         a/PA==
-X-Gm-Message-State: AGi0PuYMKzRd8e+AVB+AliSta9z4p7oFRlXs7UtVYcNl7hjmtCA9M17E
-        oPsOV9ohdLdqKo2YI9174RldCxDo8aJE8M0bU7nleCPdv4c=
-X-Google-Smtp-Source: APiQypJdPIGKEeUOvDrKstspkPFWNnHxClOnLOmE9E9/8W4198p/LZr+UDHjXayyyV+8kSNHjmY0HQTKVR4QHTOhKHw=
-X-Received: by 2002:a2e:7815:: with SMTP id t21mr8540277ljc.146.1588535998430;
- Sun, 03 May 2020 12:59:58 -0700 (PDT)
+        id S1727982AbgEDXfP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 4 May 2020 19:35:15 -0400
+Received: from smtprelay0057.hostedemail.com ([216.40.44.57]:36100 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728092AbgEDXfP (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 4 May 2020 19:35:15 -0400
+X-Greylist: delayed 371 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 May 2020 19:35:14 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave03.hostedemail.com (Postfix) with ESMTP id 411321802562C;
+        Mon,  4 May 2020 23:29:04 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay06.hostedemail.com (Postfix) with ESMTP id 8294D1822384F;
+        Mon,  4 May 2020 23:29:02 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:800:857:960:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1535:1544:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3355:3867:4321:4605:5007:6117:6119:6642:7903:7974:8879:9592:10004:10848:11026:11473:11657:11658:11914:12043:12296:12297:12438:12555:12760:12986:13439:14181:14659:14721:21080:21451:21611:21627:21773:30054:30055,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: burst33_88fb33cf02246
+X-Filterd-Recvd-Size: 5410
+Received: from XPS-9350.home (unknown [47.151.136.130])
+        (Authenticated sender: joe@perches.com)
+        by omf04.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  4 May 2020 23:29:01 +0000 (UTC)
+Message-ID: <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+Subject: [trivial PATCH] video: fbdev: Use IS_BUILTIN
+From:   Joe Perches <joe@perches.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Date:   Mon, 04 May 2020 16:29:00 -0700
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.1-2 
 MIME-Version: 1.0
-References: <1588370291-7746-1-git-send-email-jrdr.linux@gmail.com> <20200503174040.GA27362@ravnborg.org>
-In-Reply-To: <20200503174040.GA27362@ravnborg.org>
-From:   Souptick Joarder <jrdr.linux@gmail.com>
-Date:   Mon, 4 May 2020 01:29:47 +0530
-Message-ID: <CAFqt6zb94Wj_dkSb2NJ6TOJczxJErvFRB7OSzZieOTot-EL+qw@mail.gmail.com>
-Subject: Re: [PATCH] video/fbdev/matroxfb: Remove dead code
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     b.zolnierkie@samsung.com, Thomas Gleixner <tglx@linutronix.de>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, May 3, 2020 at 11:10 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Souptick
->
-> On Sat, May 02, 2020 at 03:28:11AM +0530, Souptick Joarder wrote:
-> > These are dead code since 3.15. If there is no plan to use it further
-> > it can be removed forever.
-> Could you explain why you conclude this is dead code sine 3.15 -
-> and maybe point to the commit that made it dead.
-> I failed to look it up.
-> And I would assume I did not have to look it up, but that you have
-> provided enough background to evaluate the patch.
+IS_BUILTIN can be use to replace various initializations
+like #if CONFIG_<FOO> int val = 1; #else int val = 0; #endif
+so do so.
 
-I trace this back till linux version 2.3.9 & 2.4.0 in
-drivers/video/matrox/matroxfb_DAC1064.c
-(3.15 was the version when this is moved to
-drivers/video/fbdev/matrox/matroxfb_DAC1064.c)
-and I think this driver support was added mostly in 2.4.0, but as it
-is pre git era, unable to provide
-commit id. Code commented with *#if 0* in discussion existed since 2.4.0.
+Signed-off-by: Joe Perches <joe@perches.com>
+---
+ drivers/video/fbdev/aty/aty128fb.c     | 6 +-----
+ drivers/video/fbdev/aty/atyfb_base.c   | 7 +------
+ drivers/video/fbdev/aty/radeon_base.c  | 6 +-----
+ drivers/video/fbdev/nvidia/nvidia.c    | 6 +-----
+ drivers/video/fbdev/omap/omapfb_main.c | 6 +-----
+ drivers/video/fbdev/riva/fbdev.c       | 6 +-----
+ drivers/video/fbdev/s3c2410fb.c        | 6 +-----
+ 7 files changed, 7 insertions(+), 36 deletions(-)
 
-First two *#if 0* can be removed as these are just declaration of
-variables, never used.
-
--#if 0
--static int def50 = 0;  /* reg50, & 0x0F, & 0x3000 (only 0x0000,
-0x1000, 0x2000 (0x3000 disallowed and treated as 0) */
+diff --git a/drivers/video/fbdev/aty/aty128fb.c b/drivers/video/fbdev/aty/aty128fb.c
+index d05d4195acad..6fae6ad6cb77 100644
+--- a/drivers/video/fbdev/aty/aty128fb.c
++++ b/drivers/video/fbdev/aty/aty128fb.c
+@@ -384,11 +384,7 @@ static int default_lcd_on = 1;
+ static bool mtrr = true;
+ 
+ #ifdef CONFIG_FB_ATY128_BACKLIGHT
+-#ifdef CONFIG_PMAC_BACKLIGHT
+-static int backlight = 1;
+-#else
+-static int backlight = 0;
 -#endif
-
- static void MGAG100_progPixClock(const struct matrox_fb_info *minfo, int flags,
-                                 int m, int n, int p)
-@@ -843,9 +840,6 @@ static int MGAG100_preinit(struct matrox_fb_info *minfo)
-        struct matrox_hw_state *hw = &minfo->hw;
-
-         u_int32_t reg50;
--#if 0
--       u_int32_t q;
++static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
+ #endif
+ 
+ /* PLL constants */
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 49d192869cf5..23a29d61c2a2 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -317,12 +317,7 @@ static int mclk;
+ static int xclk;
+ static int comp_sync = -1;
+ static char *mode;
+-
+-#ifdef CONFIG_PMAC_BACKLIGHT
+-static int backlight = 1;
+-#else
+-static int backlight = 0;
 -#endif
-
-In my opinion 3rd *#if 0 is not for documentation purpose and can be
-removed as well.
-
--#if 0
--               if (mga_readb(minfo->video.vbase, 0x0000) != 0xAA) {
--                       hw->MXoptionReg &= ~0x1000;
--               }
++static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
+ 
+ #ifdef CONFIG_PPC
+ static int default_vmode = VMODE_CHOOSE;
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index e116a3f9ad56..3fe509cb9b87 100644
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -269,11 +269,7 @@ static bool force_measure_pll = 0;
+ static bool nomtrr = 0;
+ static bool force_sleep;
+ static bool ignore_devlist;
+-#ifdef CONFIG_PMAC_BACKLIGHT
+-static int backlight = 1;
+-#else
+-static int backlight = 0;
 -#endif
++static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
+ 
+ /* Note about this function: we have some rare cases where we must not schedule,
+  * this typically happen with our special "wake up early" hook which allows us to
+diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
+index c24de9107958..c6820e21875d 100644
+--- a/drivers/video/fbdev/nvidia/nvidia.c
++++ b/drivers/video/fbdev/nvidia/nvidia.c
+@@ -74,11 +74,7 @@ static int vram = 0;
+ static int bpp = 8;
+ static int reverse_i2c;
+ static bool nomtrr = false;
+-#ifdef CONFIG_PMAC_BACKLIGHT
+-static int backlight = 1;
+-#else
+-static int backlight = 0;
+-#endif
++static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
+ 
+ static char *mode_option = NULL;
+ 
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 1a9d6242916e..0cbcc74fa943 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -34,11 +34,7 @@ static unsigned long	def_vyres;
+ static unsigned int	def_rotate;
+ static unsigned int	def_mirror;
+ 
+-#ifdef CONFIG_FB_OMAP_MANUAL_UPDATE
+-static bool		manual_update = 1;
+-#else
+-static bool		manual_update;
+-#endif
++static bool	manual_update = IS_BUILTIN(CONFIG_FB_OMAP_MANUAL_UPDATE);
+ 
+ static struct platform_device	*fbdev_pdev;
+ static struct lcd_panel		*fbdev_panel;
+diff --git a/drivers/video/fbdev/riva/fbdev.c b/drivers/video/fbdev/riva/fbdev.c
+index 764ec3285e62..9b3493846f4d 100644
+--- a/drivers/video/fbdev/riva/fbdev.c
++++ b/drivers/video/fbdev/riva/fbdev.c
+@@ -202,11 +202,7 @@ static int flatpanel = -1; /* Autodetect later */
+ static int forceCRTC = -1;
+ static bool noaccel  = 0;
+ static bool nomtrr = 0;
+-#ifdef CONFIG_PMAC_BACKLIGHT
+-static int backlight = 1;
+-#else
+-static int backlight = 0;
+-#endif
++static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
+ 
+ static char *mode_option = NULL;
+ static bool strictmode       = 0;
+diff --git a/drivers/video/fbdev/s3c2410fb.c b/drivers/video/fbdev/s3c2410fb.c
+index 2fb15a540167..6f8fa501583f 100644
+--- a/drivers/video/fbdev/s3c2410fb.c
++++ b/drivers/video/fbdev/s3c2410fb.c
+@@ -44,11 +44,7 @@
+ #include "s3c2410fb.h"
+ 
+ /* Debugging stuff */
+-#ifdef CONFIG_FB_S3C2410_DEBUG
+-static int debug	= 1;
+-#else
+-static int debug;
+-#endif
++static int debug = IS_BUILTIN(CONFIG_FB_S3C2410_DEBUG);
+ 
+ #define dprintk(msg...) \
+ do { \
 
-There is a 4th *#if 0 in this file. But it wasn't removed as there are
-some documentation
-comment exists for it.
 
-#if 0
-/* HELP! If we boot without DFP connected to DVI, we can
-  poweroff TMDS. But if we boot with DFP connected,
-  TMDS generated clocks are used instead of ALL pixclocks
-  available... If someone knows which register
-  handles it, please reveal this secret to me... */
-hw->DACreg[POS1064_XPWRCTRL] &= ~0x04; /* Poweroff TMDS */
-#endif
-
-
-
->
-> Sometimes dead code are kept becasue it documents something etc.
-> So it is not always a simple removal.
->
-Yes, I agree there are some dead code kept tree wide for documentation purpose,
-but many of them are truly dead code as well and it differ from case to case.
