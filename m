@@ -2,99 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D32641C6E12
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 12:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6DF71C7828
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 19:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728614AbgEFKIk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 6 May 2020 06:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729279AbgEFKIj (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 6 May 2020 06:08:39 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F23C061A41
-        for <linux-fbdev@vger.kernel.org>; Wed,  6 May 2020 03:08:38 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id x25so1927849wmc.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 06 May 2020 03:08:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=VzNe2ST4lz1BYAQ/p9YeE0kmmD4jLbs29p9J5C8f3PI=;
-        b=lVg/KXxsQi9o5BFRkAdFAHJvM5az1noe+ABa8yeVzaBDNNCZTnPXEe6S/aOwqh/vkp
-         8f0NhIcwAJ2PC/4vpwvKstSIXj0hfRFtrIeW0wcQYIan1lOdxvJyQqFAQfoII08sPkC4
-         DGORLRfat4zBbEEmmc9MXkI3gjVEeqX+6hILIUTcqtnxODF/CSTLO5D+jI8mALONUf+L
-         ikK7bGvxYlGDq4kzxRRF0d6+ObCh8KvLz/0bAVZgpwyprzBb9pD1uOu+cqtkevW0phpJ
-         kzTkEGZKVK++p9qj8MHC5TvynAIpX+h0IbgOi9Tqyi9CmY91FSY9d8VpzwtWlO1tQvMq
-         g81w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=VzNe2ST4lz1BYAQ/p9YeE0kmmD4jLbs29p9J5C8f3PI=;
-        b=ZphyMO7AvsYzqJQ4+CvrkDKvdS7IqeqT2mCp5R1NVph+15qQOyw3S3/xFFKWe/MA7c
-         Z5Aupx8UKpZTUYZMibQRmD96GWrKakNS9ID++afbZuJNfBPCbP7r39S2YEFwNMIn5TB2
-         NRXWEKloqfJ+UBRaXMi0n8LSt8dcK7JQLvzvnzc4cUKRhcwt/4ZeoYF5LGLIIdgwYJl7
-         rzT+9W03Onk0EPIHdChWMvKhl8lmLp9PTA+m4AFD58OHRRc7Dybb9xI0QpbVegGNGqT+
-         Soe3s9D7Kck7nHGEXmkqdOEbZqRfRXO+2yf3T2acTtMhCasue3G6NK7y0bpiHQLLyvum
-         oUHw==
-X-Gm-Message-State: AGi0PuaKoJ5/xCQyS3zVv3/YjX1yILh1wbCdheQVtJcqnvMTAbsQdJBB
-        m9R0OXCg5mQHCVT4Gl+ELikO8A==
-X-Google-Smtp-Source: APiQypInYHUDNrqEUITYN/4bNtu4Kh3BGLktqne+H6HDYbuGJNmorPX8kNclKs+5lI97bApQew2ZlQ==
-X-Received: by 2002:a1c:7715:: with SMTP id t21mr3332429wmi.182.1588759716943;
-        Wed, 06 May 2020 03:08:36 -0700 (PDT)
-Received: from dell ([2.31.163.63])
-        by smtp.gmail.com with ESMTPSA id 88sm2000910wrq.77.2020.05.06.03.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2020 03:08:36 -0700 (PDT)
-Date:   Wed, 6 May 2020 11:08:34 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        daniel.thompson@linaro.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        robh@kernel.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-Subject: Re: [PATCH V6 4/4] backlight: qcom-wled: Add support for WLED5
- peripheral that is present on PM8150L PMICs
-Message-ID: <20200506100834.GG823950@dell>
-References: <1587656017-27911-1-git-send-email-kgunda@codeaurora.org>
- <1587656017-27911-5-git-send-email-kgunda@codeaurora.org>
+        id S1728803AbgEFRlD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 6 May 2020 13:41:03 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:37872 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728718AbgEFRlC (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 6 May 2020 13:41:02 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 6599A803E8;
+        Wed,  6 May 2020 19:40:59 +0200 (CEST)
+Date:   Wed, 6 May 2020 19:40:52 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     adaplas@gmail.com, b.zolnierkie@samsung.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: i810: use true,false for bool variables
+Message-ID: <20200506174052.GF19296@ravnborg.org>
+References: <20200422071826.49038-1-yanaijie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1587656017-27911-5-git-send-email-kgunda@codeaurora.org>
+In-Reply-To: <20200422071826.49038-1-yanaijie@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=MOBOZvRl c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=e5mUnYsNAAAA:8
+        a=t5bY3fDbLEjA0SOcjXMA:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 23 Apr 2020, Kiran Gunda wrote:
+On Wed, Apr 22, 2020 at 03:18:26PM +0800, Jason Yan wrote:
+> Fix the following coccicheck warning:
+> 
+> drivers/video/fbdev/i810/i810_main.c:1969:3-7: WARNING: Assignment of
+> 0/1 to bool variable
+> drivers/video/fbdev/i810/i810_main.c:1971:3-8: WARNING: Assignment of
+> 0/1 to bool variable
+> drivers/video/fbdev/i810/i810_main.c:1973:3-9: WARNING: Assignment of
+> 0/1 to bool variable
+> drivers/video/fbdev/i810/i810_main.c:1975:3-7: WARNING: Assignment of
+> 0/1 to bool variable
+> drivers/video/fbdev/i810/i810_main.c:2001:3-9: WARNING: Assignment of
+> 0/1 to bool variable
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-> From: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-> 
-> PM8150L WLED supports the following:
->     - Two modulators and each sink can use any of the modulator
->     - Multiple CABC selection options from which one can be selected/enabled
->     - Multiple brightness width selection (12 bits to 15 bits)
-> 
-> Signed-off-by: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+Thanks.
+
+I have pushed this and your other three patches to drm-misc-next.
+They will show up in the mainline kernel in the next merge window.
+
+	Sam
+
 > ---
->  drivers/video/backlight/qcom-wled.c | 378 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 376 insertions(+), 2 deletions(-)
-
-Applied, thanks.
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+>  drivers/video/fbdev/i810/i810_main.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/i810/i810_main.c b/drivers/video/fbdev/i810/i810_main.c
+> index aa7583d963ac..13bbf7fe13bf 100644
+> --- a/drivers/video/fbdev/i810/i810_main.c
+> +++ b/drivers/video/fbdev/i810/i810_main.c
+> @@ -1966,13 +1966,13 @@ static int i810fb_setup(char *options)
+>  	
+>  	while ((this_opt = strsep(&options, ",")) != NULL) {
+>  		if (!strncmp(this_opt, "mtrr", 4))
+> -			mtrr = 1;
+> +			mtrr = true;
+>  		else if (!strncmp(this_opt, "accel", 5))
+> -			accel = 1;
+> +			accel = true;
+>  		else if (!strncmp(this_opt, "extvga", 6))
+> -			extvga = 1;
+> +			extvga = true;
+>  		else if (!strncmp(this_opt, "sync", 4))
+> -			sync = 1;
+> +			sync = true;
+>  		else if (!strncmp(this_opt, "vram:", 5))
+>  			vram = (simple_strtoul(this_opt+5, NULL, 0));
+>  		else if (!strncmp(this_opt, "voffset:", 8))
+> @@ -1998,7 +1998,7 @@ static int i810fb_setup(char *options)
+>  		else if (!strncmp(this_opt, "vsync2:", 7))
+>  			vsync2 = simple_strtoul(this_opt+7, NULL, 0);
+>  		else if (!strncmp(this_opt, "dcolor", 6))
+> -			dcolor = 1;
+> +			dcolor = true;
+>  		else if (!strncmp(this_opt, "ddc3", 4))
+>  			ddc3 = true;
+>  		else
+> -- 
+> 2.21.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
