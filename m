@@ -2,78 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B68531C6859
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 08:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 825091C6E05
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 12:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725873AbgEFGSe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 6 May 2020 02:18:34 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:50022 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727084AbgEFGSd (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 6 May 2020 02:18:33 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 3A1678CC74D9F94A02ED;
-        Wed,  6 May 2020 14:18:30 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Wed, 6 May 2020
- 14:18:23 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH] video: fbdev: pxa168fb: make pxa168fb_init_mode() return void
-Date:   Wed, 6 May 2020 14:17:45 +0800
-Message-ID: <20200506061745.19451-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1728399AbgEFKIO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 6 May 2020 06:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728347AbgEFKIO (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 6 May 2020 06:08:14 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D82AC061A10
+        for <linux-fbdev@vger.kernel.org>; Wed,  6 May 2020 03:08:12 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id u16so1924912wmc.5
+        for <linux-fbdev@vger.kernel.org>; Wed, 06 May 2020 03:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=d0Mbz4IlNlOD6NWoBttZxtAzOi0yfZP1EXWbU1DQp9Q=;
+        b=Z7R1iFysNju6kMVpM8kSyPU9reJ3/lCVZfmYivHjP+o137oLI+OylHjmc+n4PogcNm
+         a5Na1bKrSFh6vqcnnuyaGJXMn8AIo2J4Xoib4FDqLFuOJ47GPL2MCqOJM+kyU50i0C90
+         86E8mtAD6WruBAVwV+XhgAw1BjN7NhphyxxHRobpypSlG7WtDiL9CNPwcrvE4rD3wSLh
+         kMEv+XbPGaRXlXsk71fHXekWGfjwn791PsvSjKJ2OqopNMTtubyn6xDVaruvPm8TL6ml
+         SwlHtTh7QVMALH3cydlLNFggmlqWjM5Zi3uDdG5SVVh4C5IF1axFqDJpteLirg8vclOn
+         OIxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=d0Mbz4IlNlOD6NWoBttZxtAzOi0yfZP1EXWbU1DQp9Q=;
+        b=dLE/haiaTnz93l5+Yt+QNRTWElGDmFPTFkxgjAo9xqH4quD4cnK0V7H1jwW2uWlZT2
+         1RThzhMGqKjTWMQP7ZjNDu5ahBEwSM9R5TGbAOEylHGnvL74QAi6OIqz7FInwJeCCY5a
+         v7BwWE9T2RwH8ZnnT2Zu9v9EalyI0aIeOeOVC+sgzNI1zs+CpLyG/bHk4vUB7vXFgOh8
+         3g1xyo2ecStX5bKnEq7czRyf0CP2jpoOFbI7QsCi4bpZJ4Nvf8hN7/jLPzX3IsWGbowB
+         SNgouEi9+TcC8yuia5vMdtcqASwOfWwV8EDALDcNsNu2ACXt+nvvunjo3hRrEtVBYzFb
+         QJ2w==
+X-Gm-Message-State: AGi0PuYj70mehE73TS1RrxwKfROQNISeCESA21fYRLi3FIZSo10NhOug
+        TX6IwUpLisXdE/A4tPwN028JZA==
+X-Google-Smtp-Source: APiQypL3RUgh074vMzPhOQV/+cRFmEYLPRligBsdSST97UzRQldJjqnOSxvZmUKsze74rOGtmCISQg==
+X-Received: by 2002:a05:600c:220c:: with SMTP id z12mr3580308wml.84.1588759691135;
+        Wed, 06 May 2020 03:08:11 -0700 (PDT)
+Received: from dell ([2.31.163.63])
+        by smtp.gmail.com with ESMTPSA id 138sm2440363wmb.14.2020.05.06.03.08.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 03:08:10 -0700 (PDT)
+Date:   Wed, 6 May 2020 11:08:08 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kiran Gunda <kgunda@codeaurora.org>
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        daniel.thompson@linaro.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        robh@kernel.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+Subject: Re: [PATCH V6 2/4] backlight: qcom-wled: Add callback functions
+Message-ID: <20200506100808.GE823950@dell>
+References: <1587656017-27911-1-git-send-email-kgunda@codeaurora.org>
+ <1587656017-27911-3-git-send-email-kgunda@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1587656017-27911-3-git-send-email-kgunda@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-No other functions use the return value of pxa168fb_init_mode() and the
-return value is always 0 now. Make it return void. This fixes the
-following coccicheck warning:
+On Thu, 23 Apr 2020, Kiran Gunda wrote:
 
-drivers/video/fbdev/pxa168fb.c:565:5-8: Unneeded variable: "ret". Return
-"0" on line 597
+> Add wled_cabc_config, wled_sync_toggle, wled_ovp_fault_status
+> and wled_ovp_delay and wled_auto_detection_required callback
+> functions to prepare the driver for adding WLED5 support.
+> 
+> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> Signed-off-by: Subbaraman Narayanamurthy <subbaram@codeaurora.org>
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> ---
+>  drivers/video/backlight/qcom-wled.c | 213 ++++++++++++++++++++++++------------
+>  1 file changed, 141 insertions(+), 72 deletions(-)
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/video/fbdev/pxa168fb.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Applied, thanks.
 
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index aef8a3042590..eedfbd3572a8 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -557,12 +557,11 @@ static const struct fb_ops pxa168fb_ops = {
- 	.fb_imageblit	= cfb_imageblit,
- };
- 
--static int pxa168fb_init_mode(struct fb_info *info,
-+static void pxa168fb_init_mode(struct fb_info *info,
- 			      struct pxa168fb_mach_info *mi)
- {
- 	struct pxa168fb_info *fbi = info->par;
- 	struct fb_var_screeninfo *var = &info->var;
--	int ret = 0;
- 	u32 total_w, total_h, refresh;
- 	u64 div_result;
- 	const struct fb_videomode *m;
-@@ -593,8 +592,6 @@ static int pxa168fb_init_mode(struct fb_info *info,
- 	div_result = 1000000000000ll;
- 	do_div(div_result, total_w * total_h * refresh);
- 	var->pixclock = (u32)div_result;
--
--	return ret;
- }
- 
- static int pxa168fb_probe(struct platform_device *pdev)
 -- 
-2.21.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
