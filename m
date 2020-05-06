@@ -2,98 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D35C01C7950
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 20:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 363561C79E1
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 May 2020 21:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729631AbgEFSX3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 6 May 2020 14:23:29 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:42578 "EHLO
+        id S1726218AbgEFTHG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 6 May 2020 15:07:06 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:47374 "EHLO
         asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729589AbgEFSX2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 6 May 2020 14:23:28 -0400
+        with ESMTP id S1727774AbgEFTHG (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 6 May 2020 15:07:06 -0400
 Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 96C608050C;
-        Wed,  6 May 2020 20:23:24 +0200 (CEST)
-Date:   Wed, 6 May 2020 20:23:18 +0200
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 09799804FE;
+        Wed,  6 May 2020 21:07:02 +0200 (CEST)
+Date:   Wed, 6 May 2020 21:07:01 +0200
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     rpurdie@rpsys.net, adaplas@pol.net, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH V2] video: fbdev: w100fb: Fix a potential double free.
-Message-ID: <20200506182318.GA8712@ravnborg.org>
-References: <20200506181902.193290-1-christophe.jaillet@wanadoo.fr>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: valkyriefb.c: fix warning comparing
+ pointer to 0
+Message-ID: <20200506190701.GE8227@ravnborg.org>
+References: <20200429140942.8137-1-yanaijie@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200506181902.193290-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200429140942.8137-1-yanaijie@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=MOBOZvRl c=1 sm=1 tr=0
         a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=kj9zAlcOel0A:10 a=-sM3sDvmAAAA:8 a=p1g2r8j9AAAA:8 a=hD80L64hAAAA:8
-        a=VwQbUJbxAAAA:8 a=lUMsOl5nhcu_R7_EiuIA:9 a=CjuIK1q_8ugA:10
-        a=LUHx1oGsa4U61Z4w8267:22 a=GEd6vGEn79KL1p3bDQhq:22
-        a=AjGcO6oz07-iQ99wixmX:22
+        a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=e5mUnYsNAAAA:8
+        a=NiWkjFAJyjduSeFMYQYA:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Christophe
-On Wed, May 06, 2020 at 08:19:02PM +0200, Christophe JAILLET wrote:
-> Some memory is vmalloc'ed in the 'w100fb_save_vidmem' function and freed in
-> the 'w100fb_restore_vidmem' function. (these functions are called
-> respectively from the 'suspend' and the 'resume' functions)
+On Wed, Apr 29, 2020 at 10:09:42PM +0800, Jason Yan wrote:
+> Fix the following coccicheck warning:
 > 
-> However, it is also freed in the 'remove' function.
+> drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
+> 0, suggest !E
+> drivers/video/fbdev/valkyriefb.c:334:12-13: WARNING comparing pointer to
+> 0
+> drivers/video/fbdev/valkyriefb.c:348:10-11: WARNING comparing pointer to
+> 0
 > 
-> In order to avoid a potential double free, set the corresponding pointer
-> to NULL once freed in the 'w100fb_restore_vidmem' function.
-> 
-> Fixes: aac51f09d96a ("[PATCH] w100fb: Rewrite for platform independence")
-> Cc: Richard Purdie <rpurdie@rpsys.net>
-> Cc: Antonino Daplas <adaplas@pol.net>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: <stable@vger.kernel.org> # v2.6.14+
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Thanks for the quick v2.
-Applied to drm-misc-next.
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Thanks, applied to drm-misc-next.
 
 	Sam
 
 > ---
-> v2: - Add Cc: tags
->     - Reword the commit message to give the names of the functions that
->       allocate and free the memory. These functions are called from the
->       suspend and resume function.
-> ---
->  drivers/video/fbdev/w100fb.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/video/fbdev/valkyriefb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/w100fb.c b/drivers/video/fbdev/w100fb.c
-> index 2d6e2738b792..d96ab28f8ce4 100644
-> --- a/drivers/video/fbdev/w100fb.c
-> +++ b/drivers/video/fbdev/w100fb.c
-> @@ -588,6 +588,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
->  		memsize=par->mach->mem->size;
->  		memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_extmem, memsize);
->  		vfree(par->saved_extmem);
-> +		par->saved_extmem = NULL;
->  	}
->  	if (par->saved_intmem) {
->  		memsize=MEM_INT_SIZE;
-> @@ -596,6 +597,7 @@ static void w100fb_restore_vidmem(struct w100fb_par *par)
->  		else
->  			memcpy_toio(remapped_fbuf + (W100_FB_BASE-MEM_WINDOW_BASE), par->saved_intmem, memsize);
->  		vfree(par->saved_intmem);
-> +		par->saved_intmem = NULL;
->  	}
->  }
+> diff --git a/drivers/video/fbdev/valkyriefb.c b/drivers/video/fbdev/valkyriefb.c
+> index 4d20c4603e5a..8425afe37d7c 100644
+> --- a/drivers/video/fbdev/valkyriefb.c
+> +++ b/drivers/video/fbdev/valkyriefb.c
+> @@ -331,7 +331,7 @@ int __init valkyriefb_init(void)
+>  		struct resource r;
 >  
+>  		dp = of_find_node_by_name(NULL, "valkyrie");
+> -		if (dp == 0)
+> +		if (!dp)
+>  			return 0;
+>  
+>  		if (of_address_to_resource(dp, 0, &r)) {
+> @@ -345,7 +345,7 @@ int __init valkyriefb_init(void)
+>  #endif /* ppc (!CONFIG_MAC) */
+>  
+>  	p = kzalloc(sizeof(*p), GFP_ATOMIC);
+> -	if (p == 0)
+> +	if (!p)
+>  		return -ENOMEM;
+>  
+>  	/* Map in frame buffer and registers */
 > -- 
-> 2.25.1
+> 2.21.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
