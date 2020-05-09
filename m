@@ -2,148 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C88C1CA4C6
-	for <lists+linux-fbdev@lfdr.de>; Fri,  8 May 2020 09:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F26141CC4A4
+	for <lists+linux-fbdev@lfdr.de>; Sat,  9 May 2020 23:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbgEHHHR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 8 May 2020 03:07:17 -0400
-Received: from mail-il1-f199.google.com ([209.85.166.199]:48855 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbgEHHHO (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 8 May 2020 03:07:14 -0400
-Received: by mail-il1-f199.google.com with SMTP id i2so703352ile.15
-        for <linux-fbdev@vger.kernel.org>; Fri, 08 May 2020 00:07:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=1g63PD4aW+o9z6DtIx6SKExc/rMZEaz5ow/1Vs89Rik=;
-        b=aMTj59NBmVbT2w96QqW+t0n8n90/IIPcdcxzlVb+xmYVtVShu8dK5ITlq4pqOVo04o
-         9/+pMHN/jSkQaIQ4V9xPkWsjhVkDAOB5MUukp5r4LzzKO6ux/svDQ0RwBCNjKXxXfzxZ
-         b7YWXdLLPsB8IQixvDU9LLINlwZUvVr/fZ+EVfoHLTeqHkQ77udhO/Aediq0bb8WI7pb
-         gTKSKO5jw9UHrxtmTJYe/2UgY+wtxFOQxqta8FY/1hz3R78F5i4iNvz7vzbDW7OxVRp2
-         Foy7zWE9s9mTsAd5Vj8W70NsZj6Sn7U8cBHpJZ7SMqJ6GscU0emn3oe/ipRkmshuHLdr
-         pyEA==
-X-Gm-Message-State: AGi0PubfdxsJN5U66rKX9MZzVup+72GVZEGGP8n3clMmhwJU8Dv5U1cs
-        GHldiQp5Mu5vQA+Ydx7oeV9lDU2VtpUS93j+SjSq6mJsm4kS
-X-Google-Smtp-Source: APiQypLuTPZ0bTtaD8jyqJ21T3s0snid0JDDtH58MJUSOncjcM9yqBUA/lwCTFQm9CLtkD0H8QkYgJrI5SPlEUbSFvOoKTfJeY0H
+        id S1728199AbgEIVJ3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 9 May 2020 17:09:29 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:45488 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728187AbgEIVJ2 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 May 2020 17:09:28 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 25EB42003E;
+        Sat,  9 May 2020 23:09:26 +0200 (CEST)
+Date:   Sat, 9 May 2020 23:09:24 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: pxa168fb: make pxa168fb_init_mode() return
+ void
+Message-ID: <20200509210924.GB12666@ravnborg.org>
+References: <20200506061745.19451-1-yanaijie@huawei.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:ca1:: with SMTP id x1mr321463jad.86.1588921633226;
- Fri, 08 May 2020 00:07:13 -0700 (PDT)
-Date:   Fri, 08 May 2020 00:07:13 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000086452c05a51da504@google.com>
-Subject: BUG: unable to handle kernel paging request in vga16fb_imageblit (2)
-From:   syzbot <syzbot+1f29e126cf461c4de3b3@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, jani.nikula@intel.com,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506061745.19451-1-yanaijie@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=ULXz4hXy c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=e5mUnYsNAAAA:8
+        a=LIjMPlzXlnp3mKN0Lz4A:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+Hi Jason.
 
-syzbot found the following crash on:
+On Wed, May 06, 2020 at 02:17:45PM +0800, Jason Yan wrote:
+> No other functions use the return value of pxa168fb_init_mode() and the
+> return value is always 0 now. Make it return void. This fixes the
+> following coccicheck warning:
+> 
+> drivers/video/fbdev/pxa168fb.c:565:5-8: Unneeded variable: "ret". Return
+> "0" on line 597
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-HEAD commit:    262f7a6b Merge tag 'for-5.7-rc3-tag' of git://git.kernel.o..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12786888100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5b075813ec8b93cd
-dashboard link: https://syzkaller.appspot.com/bug?extid=1f29e126cf461c4de3b3
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+Thanks, applied to drm-misc-next.
 
-Unfortunately, I don't have any reproducer for this crash yet.
+	Sam
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+1f29e126cf461c4de3b3@syzkaller.appspotmail.com
-
-BUG: unable to handle page fault for address: ffff8880ffca0e80
-#PF: supervisor write access in kernel mode
-#PF: error_code(0x0002) - not-present page
-PGD d401067 P4D d401067 PUD 0 
-Oops: 0002 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 710 Comm: syz-executor.5 Not tainted 5.7.0-rc3-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:writeb arch/x86/include/asm/io.h:65 [inline]
-RIP: 0010:vga_imageblit_expand drivers/video/fbdev/vga16fb.c:1168 [inline]
-RIP: 0010:vga16fb_imageblit+0xa5b/0x2210 drivers/video/fbdev/vga16fb.c:1260
-Code: 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8 ee 59 ed fd 41 8b 47 14 48 8b 74 24 08 <88> 06 0f ae e8 8a 06 b8 05 00 00 00 ba ce 03 00 00 ee 48 c7 c2 18
-RSP: 0000:ffffc90002ea71f0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000007 RCX: ffffc90014391000
-RDX: 0000000000000000 RSI: ffff8880ffca0e80 RDI: ffffc90002ea739c
-RBP: ffffc90002ea738c R08: ffff8880922ac200 R09: 0000000000000000
-R10: ffffffff8a895007 R11: fffffbfff1512a00 R12: 0000000000000000
-R13: ffff888218de5140 R14: 0000000000000001 R15: ffffc90002ea7388
-FS:  00007fbeeb282700(0000) GS:ffff8880ae600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff8880ffca0e80 CR3: 000000008e9c5000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- bit_putcs_unaligned drivers/video/fbdev/core/bitblit.c:139 [inline]
- bit_putcs+0x910/0xe10 drivers/video/fbdev/core/bitblit.c:188
- fbcon_putcs+0x345/0x3f0 drivers/video/fbdev/core/fbcon.c:1362
- con_flush drivers/tty/vt/vt.c:2569 [inline]
- do_con_write.part.0+0x7d1/0x1dc0 drivers/tty/vt/vt.c:2772
- do_con_write drivers/tty/vt/vt.c:2588 [inline]
- con_write+0x41/0xe0 drivers/tty/vt/vt.c:3154
- process_output_block drivers/tty/n_tty.c:595 [inline]
- n_tty_write+0x3f0/0xf90 drivers/tty/n_tty.c:2333
- do_tty_write drivers/tty/tty_io.c:962 [inline]
- tty_write+0x495/0x800 drivers/tty/tty_io.c:1046
- __vfs_write+0x76/0x100 fs/read_write.c:495
- __kernel_write+0x11c/0x3a0 fs/read_write.c:516
- write_pipe_buf+0x153/0x1e0 fs/splice.c:809
- splice_from_pipe_feed fs/splice.c:512 [inline]
- __splice_from_pipe+0x3e6/0x7b0 fs/splice.c:636
- splice_from_pipe+0xd9/0x140 fs/splice.c:671
- default_file_splice_write+0x37/0x90 fs/splice.c:821
- do_splice_from fs/splice.c:863 [inline]
- direct_splice_actor+0x115/0x160 fs/splice.c:1037
- splice_direct_to_actor+0x38c/0x980 fs/splice.c:992
- do_splice_direct+0x1b4/0x280 fs/splice.c:1080
- do_sendfile+0x555/0xc50 fs/read_write.c:1521
- __do_sys_sendfile64 fs/read_write.c:1582 [inline]
- __se_sys_sendfile64 fs/read_write.c:1568 [inline]
- __x64_sys_sendfile64+0x1cc/0x210 fs/read_write.c:1568
- do_syscall_64+0xf6/0x7d0 arch/x86/entry/common.c:295
- entry_SYSCALL_64_after_hwframe+0x49/0xb3
-RIP: 0033:0x45c829
-Code: 0d b7 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fbeeb281c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
-RAX: ffffffffffffffda RBX: 00000000004fc0c0 RCX: 000000000045c829
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000003
-RBP: 000000000078bf00 R08: 0000000000000000 R09: 0000000000000000
-R10: 0800000080004103 R11: 0000000000000246 R12: 00000000ffffffff
-R13: 00000000000008d6 R14: 00000000004cb7a1 R15: 00007fbeeb2826d4
-Modules linked in:
-CR2: ffff8880ffca0e80
----[ end trace 5bb103c4fc7bf525 ]---
-RIP: 0010:writeb arch/x86/include/asm/io.h:65 [inline]
-RIP: 0010:vga_imageblit_expand drivers/video/fbdev/vga16fb.c:1168 [inline]
-RIP: 0010:vga16fb_imageblit+0xa5b/0x2210 drivers/video/fbdev/vga16fb.c:1260
-Code: 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 09 84 d2 74 05 e8 ee 59 ed fd 41 8b 47 14 48 8b 74 24 08 <88> 06 0f ae e8 8a 06 b8 05 00 00 00 ba ce 03 00 00 ee 48 c7 c2 18
-RSP: 0000:ffffc90002ea71f0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000007 RCX: ffffc90014391000
-RDX: 0000000000000000 RSI: ffff8880ffca0e80 RDI: ffffc90002ea739c
-RBP: ffffc90002ea738c R08: ffff8880922ac200 R09: 0000000000000000
-R10: ffffffff8a895007 R11: fffffbfff1512a00 R12: 0000000000000000
-R13: ffff888218de5140 R14: 0000000000000001 R15: ffffc90002ea7388
-FS:  00007fbeeb282700(0000) GS:ffff8880ae600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff8880ffca0e80 CR3: 000000008e9c5000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> ---
+>  drivers/video/fbdev/pxa168fb.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+> index aef8a3042590..eedfbd3572a8 100644
+> --- a/drivers/video/fbdev/pxa168fb.c
+> +++ b/drivers/video/fbdev/pxa168fb.c
+> @@ -557,12 +557,11 @@ static const struct fb_ops pxa168fb_ops = {
+>  	.fb_imageblit	= cfb_imageblit,
+>  };
+>  
+> -static int pxa168fb_init_mode(struct fb_info *info,
+> +static void pxa168fb_init_mode(struct fb_info *info,
+>  			      struct pxa168fb_mach_info *mi)
+>  {
+>  	struct pxa168fb_info *fbi = info->par;
+>  	struct fb_var_screeninfo *var = &info->var;
+> -	int ret = 0;
+>  	u32 total_w, total_h, refresh;
+>  	u64 div_result;
+>  	const struct fb_videomode *m;
+> @@ -593,8 +592,6 @@ static int pxa168fb_init_mode(struct fb_info *info,
+>  	div_result = 1000000000000ll;
+>  	do_div(div_result, total_w * total_h * refresh);
+>  	var->pixclock = (u32)div_result;
+> -
+> -	return ret;
+>  }
+>  
+>  static int pxa168fb_probe(struct platform_device *pdev)
+> -- 
+> 2.21.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
