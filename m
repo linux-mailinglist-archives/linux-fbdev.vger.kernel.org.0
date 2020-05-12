@@ -2,107 +2,124 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D81C1CE860
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2020 00:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8942E1CED62
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2020 08:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726471AbgEKWoQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 11 May 2020 18:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727933AbgEKWoM (ORCPT
+        id S1728937AbgELGzT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 May 2020 02:55:19 -0400
+Received: from mail-il1-f199.google.com ([209.85.166.199]:48086 "EHLO
+        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728933AbgELGzR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 11 May 2020 18:44:12 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAED0C061A0E
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 May 2020 15:44:11 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id g1so5504291ljk.7
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 May 2020 15:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ef1MTgEAKFw6adwkz7lKMErPGJSzzTLWzjNkQKbUYbc=;
-        b=TimCyhVh0uT7+DD4xHDKexQ7z2FT9uSIOSfRBHYiJ4c5NxH2eSgaWHVEGWvywrzrCf
-         RUPmhi9KtMqjETmLJvB/kXG+BScPM+Hprl4SA2n7X81v7kRP0/pK7bk+tE56vCXh+NPm
-         g2ql7SK1MeoEN+FkX5/vY53gboaqX5UP7BgrKSTRBiSrGmjSBI46F8Q+JFL5FB/OcG9X
-         P3eloax74J6iQGYmFcd733jhJ27gW3VJi/PNLTRavFvYkv4Nd4R9fIH3Z+KpkCMWcuXB
-         zq2AqAOAfDEU8q1vc2C/W0G2ZZpRewsb2lvxzkpjmLOO8F+OpZo5aEXKrGPs2vE5DfFi
-         15NA==
+        Tue, 12 May 2020 02:55:17 -0400
+Received: by mail-il1-f199.google.com with SMTP id w65so11910069ilk.14
+        for <linux-fbdev@vger.kernel.org>; Mon, 11 May 2020 23:55:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ef1MTgEAKFw6adwkz7lKMErPGJSzzTLWzjNkQKbUYbc=;
-        b=twqfeSakaMwUQ1xXm0KgGwM/qnsQ33s0m9hY+Gb9xZuIFA8tIoYXQJpSiz10CK8OsZ
-         E6ZU3NEJ69g1hKmXn4oJmnr1wQP/FqigACkGaUVDYHf7I2l2E4m5kEBXbr/UXmbzm+sg
-         ElVxkNRqXw0NKBUCspDXEC4as+o6eDxHmrZJqy6OGLiSzZs7QF/BiKL0IagJHj33cvuD
-         RUSLT11XqFpYGm5G499Np/dh7GLkn/MZ/lXZaCUGm78UcCnD7Tu+dLxuFVPFbsgQQ28w
-         Rxqp/ucuUakhtTvfCxGgVwHU+LMDOYRFGiFhgBU4yKu3/5kvUMWCcKC8iUS3ufrMXpoC
-         Hmtw==
-X-Gm-Message-State: AOAM531I75pvb5fmeTJ0f9W1S9vHwuzPL/3dkLzAE9NFNKBpjUMrEUIx
-        WC0qUvuy50ghP+APn/s9h91m0aZrzK0X4Whlcxo=
-X-Google-Smtp-Source: ABdhPJx7bIzO6uHubD+MJkUstESZ4o7b1yKhaRXqFTRUHytpD72IP1xJQQlVySX+etyJz/IbHc7Vt+7VKa9l9+3F5bo=
-X-Received: by 2002:a2e:9118:: with SMTP id m24mr12008744ljg.172.1589237050297;
- Mon, 11 May 2020 15:44:10 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=0utPJhl8u3dQnuupDpTMqPJeqZpeiR+EaJx9ihO75P0=;
+        b=uWWhqlJwmnvgMY7/6Zew4PrAdDyj05KdiuywfNpfXRLn91d7xMTag0/iwb67hk66iH
+         xgg7XU587XDrZMgd4Jc6R/+DY7qMFamQW7yogHX63nxkthZIkV+cbper6hPiObKVjrch
+         3iBAPIPivZ7xX18pkWKYauzDEMySewhWTCsMEKJ3Eh3csJ8svLVESSjE/RH/8rt+IZFI
+         SFBNdHEoitfkVaU+n2saVOePvpcOyBgu/PoSEUlkoqXzvNqil6cMaNYPlCu6X8ADYW78
+         R3ViOji7otzR24qkTZoEbi54R3jPPOQKI06M8+5KplOMm+Bdr+o9nVBI7TtojzQsHHtm
+         so8g==
+X-Gm-Message-State: AGi0PuYnHqCBCQPDRiFNlC2ufqe+M4fLupV1qngB9RAw1hH0gvj0ubFI
+        +L79VrCZNsVMolXY6YzmkxSwH6aMWBg6AepJc3dRrgr9Atgl
+X-Google-Smtp-Source: APiQypKwCw/HVeBYlAIDKGK08rZj9zUSvpqZc6seXE0qHdOTdwDsdt0UCVGhbx/CgOyu5OpFdCQa9NkmKlPwkNqeQrBa6WUcwCoT
 MIME-Version: 1.0
-Received: by 2002:a05:6512:15d:0:0:0:0 with HTTP; Mon, 11 May 2020 15:44:09
- -0700 (PDT)
-Reply-To: mrs.minaabrunel30@gmail.com
-From:   "Mrs. Mina A. Brunel" <abuduhassan1000@gmail.com>
-Date:   Tue, 12 May 2020 00:44:09 +0200
-Message-ID: <CAHZefCh8YjcVkS0v3NiUHKZvF3FoGgnyzkOjQR7FrAsnnGwy=w@mail.gmail.com>
-Subject: My Dear in the lord
-To:     undisclosed-recipients:;
+X-Received: by 2002:a05:6e02:dc3:: with SMTP id l3mr19189526ilj.149.1589266516388;
+ Mon, 11 May 2020 23:55:16 -0700 (PDT)
+Date:   Mon, 11 May 2020 23:55:16 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000029b38c05a56df2b0@google.com>
+Subject: BUG: unable to handle kernel paging request in bitfill_aligned
+From:   syzbot <syzbot+00ed1cf405874e141432@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-My Dear in the lord
+Hello,
+
+syzbot found the following crash on:
+
+HEAD commit:    1d3962ae Merge tag 'io_uring-5.7-2020-05-08' of git://git...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14874258100000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b0212dbee046bc1f
+dashboard link: https://syzkaller.appspot.com/bug?extid=00ed1cf405874e141432
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+00ed1cf405874e141432@syzkaller.appspotmail.com
+
+BUG: unable to handle page fault for address: ffff888000cf5080
+#PF: supervisor write access in kernel mode
+#PF: error_code(0x0002) - not-present page
+PGD d401067 P4D d401067 PUD d402067 PMD cf4063 PTE 0
+Oops: 0002 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 30473 Comm: syz-executor.4 Not tainted 5.7.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:__writeq arch/x86/include/asm/io.h:98 [inline]
+RIP: 0010:bitfill_aligned drivers/video/fbdev/core/cfbfillrect.c:64 [inline]
+RIP: 0010:bitfill_aligned+0xfc/0x200 drivers/video/fbdev/core/cfbfillrect.c:35
+Code: fd 44 89 e0 31 d2 bf 07 00 00 00 f7 f5 41 89 c4 89 c6 89 c5 e8 c5 ab b3 fd 41 83 fc 07 76 62 45 89 e7 4c 89 ed e8 44 aa b3 fd <48> 89 5d 00 48 89 5d 08 48 89 5d 10 48 89 5d 18 48 89 5d 20 48 89
+RSP: 0018:ffffc90001c474e0 EFLAGS: 00010246
+RAX: 0000000000040000 RBX: 0000000000000000 RCX: ffffc90012324000
+RDX: 0000000000040000 RSI: ffffffff83bf846c RDI: 0000000000000005
+RBP: ffff888000cf5080 R08: ffff888056a6a340 R09: 0000000000000040
+R10: ffff888218d3331f R11: ffffed10431a6663 R12: 0000000000000030
+R13: ffff888000cf5080 R14: 0000000000000000 R15: 0000000000000030
+FS:  00007fe0d9986700(0000) GS:ffff8880ae600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff888000cf5080 CR3: 000000008ea77000 CR4: 00000000001426f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ cfb_fillrect+0x418/0x7a0 drivers/video/fbdev/core/cfbfillrect.c:327
+ vga16fb_fillrect+0x68f/0x1960 drivers/video/fbdev/vga16fb.c:951
+ bit_clear_margins+0x2d5/0x4a0 drivers/video/fbdev/core/bitblit.c:232
+ fbcon_clear_margins+0x1de/0x240 drivers/video/fbdev/core/fbcon.c:1381
+ fbcon_switch+0xcde/0x16f0 drivers/video/fbdev/core/fbcon.c:2363
+ redraw_screen+0x2ae/0x770 drivers/tty/vt/vt.c:1015
+ fbcon_modechanged+0x581/0x720 drivers/video/fbdev/core/fbcon.c:3000
+ fbcon_update_vcs+0x3a/0x50 drivers/video/fbdev/core/fbcon.c:3047
+ fb_set_var+0xad0/0xd40 drivers/video/fbdev/core/fbmem.c:1056
+ do_fb_ioctl+0x390/0x6e0 drivers/video/fbdev/core/fbmem.c:1109
+ fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1185
+ vfs_ioctl fs/ioctl.c:47 [inline]
+ ksys_ioctl+0x11a/0x180 fs/ioctl.c:771
+ __do_sys_ioctl fs/ioctl.c:780 [inline]
+ __se_sys_ioctl fs/ioctl.c:778 [inline]
+ __x64_sys_ioctl+0x6f/0xb0 fs/ioctl.c:778
+ do_syscall_64+0xf6/0x7d0 arch/x86/entry/common.c:295
+ entry_SYSCALL_64_after_hwframe+0x49/0xb3
+RIP: 0033:0x45c829
+Code: 0d b7 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fe0d9985c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00000000004e4860 RCX: 000000000045c829
+RDX: 0000000020000000 RSI: 0000000000004601 RDI: 0000000000000003
+RBP: 000000000078bf00 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
+R13: 00000000000002f2 R14: 00000000004c54c8 R15: 00007fe0d99866d4
+Modules linked in:
+CR2: ffff888000cf5080
+
+======================================================
 
 
-My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in
-Burkina Faso, I am married to Mr. Brunel Patrice, a politician who
-owns a small gold company in Burkina Faso; He died of Leprosy and
-Radesyge, in the year February 2010, During his lifetime he deposited
-the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five hundred thousand
-Euros in a bank in Ouagadougou the capital city of Burkina Faso in
-West Africa. The money was from the sale of his company and death
-benefits payment and entitlements of my deceased husband by his
-company.
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-I am sending you this message with heavy tears in my eyes and great
-sorrow in my heart, and also praying that it will reach you in good
-health because I am not in good health, I sleep every night without
-knowing if I may be alive to see the next day. I am suffering from
-long time cancer and presently I am partially suffering from Leprosy,
-which has become difficult for me to move around. I was married to my
-late husband for more than 6 years without having a child and my
-doctor confided that I have less chance to live, having to know when
-the cup of death will come, I decided to contact you to claim the fund
-since I don't have any relation I grew up from an orphanage home.
-
-I have decided to donate this money for the support of helping
-Motherless babies/Less privileged/Widows and churches also to build
-the house of God because I am dying and diagnosed with cancer for
-about 3 years ago. I have decided to donate from what I have inherited
-from my late husband to you for the good work of Almighty God; I will
-be going in for an operation surgery soon.
-
-Now I want you to stand as my next of kin to claim the funds for
-charity purposes. Because of this money remains unclaimed after my
-death, the bank executives or the government will take the money as
-unclaimed fund and maybe use it for selfishness and worthless
-ventures, I need a very honest person who can claim this money and use
-it for Charity works, for orphanages, widows and also build schools
-and churches for less privilege that will be named after my late
-husband and my name.
-
-I need your urgent answer to know if you will be able to execute this
-project, and I will give you more information on how the fund will be
-transferred to your bank account or online banking.
-
-Thanks
-Mrs. Mina A. Brunel
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
