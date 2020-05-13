@@ -2,165 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C941D17A1
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 16:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C601D189A
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 17:03:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388912AbgEMOcN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 10:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37012 "EHLO
+        id S1729257AbgEMPDn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 11:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728345AbgEMOcM (ORCPT
+        with ESMTP id S1729121AbgEMPDn (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 10:32:12 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6B2C061A0C;
-        Wed, 13 May 2020 07:32:12 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id l11so15250501wru.0;
-        Wed, 13 May 2020 07:32:12 -0700 (PDT)
+        Wed, 13 May 2020 11:03:43 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381FBC061A0C;
+        Wed, 13 May 2020 08:03:43 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id n11so7890542pgl.9;
+        Wed, 13 May 2020 08:03:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=e5l1ivHxvrs1cxo8s+YGVNADN8Rkef6bb/X9HBvnEUo=;
-        b=jYfhdyXMvfikdAmp4t94kn7Oqc+gcUglu6kotXtK7pCKoEZcxVf+D/gfJXZgnlA3tY
-         VcjpeS5YBLgOvzR5lH8nd8xcxAdRH5J/1H+Rx0YuTlUz/0uGIY6A8YBpL08huizZsKAk
-         pQTiCU//78OYtJbklytYh8aNf58msaMeP+CHrBi+IMPVFrxmNPRXvWfqUONnqkYrCTX6
-         gvaFx+iNa4Fpv9gfJJ9qbT4HuW1APNIdtSjeNhLXuUCQ+UFiSiHNQBRrDklcXRcQBRGJ
-         /WFHn0p2Cbgl8iZvetZyCwySHcma/dxORA0r5kTxv83q873p1+IsAj4VwSbTtPefwDf3
-         YB4g==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cAK/6f4l7khR9D9MeksEsqPLBqxBSGeZguJ9NMxZ/KM=;
+        b=hxU6V9R83V11Jvt+uutKDwAvcJQREw6Y0smqveaz1L2sQdtprbG9yEJI7VibSClGa/
+         jpDG1sAWBa/x+Ltmf8lG2mqYkRC+n/WwYTL1NPa2aO1T2ERDPvEmK3J77hsyDvq+oc4z
+         72IuZkDk+1O+/PEHVG8zs63ke7GjlaU4eCk+b7srvxrxVRAZSMt1tFkBYHVY8jq4CH8M
+         Oa7gljf83XkkxlG02lWINffuFFUMzOC4c3NQ0OdSPKuiynjyMm+Re8abyp2rluoXIvMz
+         HsH7A4PUH+fHlsoFi8+lARbXYkeSDffPJXUc2JICwA/PDklHNDQiFxVzzutmsevIUFFR
+         VrFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=e5l1ivHxvrs1cxo8s+YGVNADN8Rkef6bb/X9HBvnEUo=;
-        b=NSmjupiqijJ80+6a8Ea4qMLwQbBq7WYzG9Dz5oqKAq+4LKyq/rsM2+AOP0XMRbMTqF
-         Rz/LCrQGpLIzqpAFnf4JlR0F06F20T4IshIzSpbsZuaiECZJJz+I2qXWwIfEZshNusWh
-         1DR9+G/UpomfwnByFoMX8vZOWbVQpputrV28JiSiSlS+35/dDR/KFHsSgIgKrxQzgWC+
-         FQf0NHO2IYb/lpZNN5+Zt+xWxxvp5t/PjP1xuta881AVuLZdXYP9nL+yEreXzLQkk8EY
-         YBGL4I+FKxFSwwEBbn5EhT3kNUhw6hYO7ZC8y6Bmm3jKPUj5BqySmmdsh0ZaOLpoW97D
-         IQcA==
-X-Gm-Message-State: AGi0PuYRzq65n0Ttg6JigwUqsEu9fUV+4BmZZDlVz0Y6QfBO4xoqoPDO
-        AsU8gVwaRWS4nugXo/VimeI=
-X-Google-Smtp-Source: APiQypLALuA0r2EITrx0jgdNwC0QL/EE50fO/i1b1frjQJxz76h8l1YXSRVhSmv9cyqfKw97a8V3XQ==
-X-Received: by 2002:adf:ee03:: with SMTP id y3mr29782517wrn.190.1589380330471;
-        Wed, 13 May 2020 07:32:10 -0700 (PDT)
-Received: from localhost (ipv6-fd0e7292a9d5c758.ost.clients.hamburg.freifunk.net. [2a03:2267:4:0:fd0e:7292:a9d5:c758])
-        by smtp.gmail.com with ESMTPSA id b2sm25212812wrm.30.2020.05.13.07.32.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 13 May 2020 07:32:09 -0700 (PDT)
-From:   Oliver Graute <oliver.graute@gmail.com>
-To:     gregkh@linuxfoundation.org
-Cc:     dan.carpenter@oracle.com, oliver.graute@gmail.com,
-        Oliver Graute <oliver.graute@kococonnector.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] staging: fbtft: fb_st7789v: Initialize the Display
-Date:   Wed, 13 May 2020 16:30:46 +0200
-Message-Id: <1589380299-21871-1-git-send-email-oliver.graute@gmail.com>
-X-Mailer: git-send-email 2.7.4
-X-Patchwork-Bot: notify
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cAK/6f4l7khR9D9MeksEsqPLBqxBSGeZguJ9NMxZ/KM=;
+        b=rQ24lXpXefbc0HD7tA6GRoc7XvRWTJ6jAyNHT9JdW8I+rTb2/7kqcmG9GUKYMGbqa/
+         vQSh8KYoS2SPHA/6wF/P9vPZi47m1TqXzBSOeuwbj17/ydJxXRr1pzrtQWj3Ql9panF8
+         AJZGHU7eCWFLsSlEudGhiMkl/kJrf13p51KdVPLre3/ZSaHsnMA8YpR5EVR+kjT/g7o5
+         j4qYwohgkfKg78rIov2oQDXUqvDeHNq4XAp1zDerHqlDci1raDwkgb65iQ92GDfYcBEF
+         0VIcGnlixXixGl8vM86epIuHa3i4EBn0eY9sqQrFRNQAiL8Cc90DwLlvR1wn9HNgx+rE
+         dvnA==
+X-Gm-Message-State: AGi0PubaJPl5yiJQVN65CX9ejRuaA8FxJ979PCIhqcmzyi/josjCk72F
+        OvaNGcbfwhkDUNVOiiiOyD8ESVp5SYvETh+wGMUcjLxd
+X-Google-Smtp-Source: APiQypIRYsyGfiDl3QKzXSyGYv9eoVbFwDg/I113aXCiUGoanxmPfa92fLc84XJlH3CWW7YX96GpEBknOEiAvRfVsDg=
+X-Received: by 2002:a62:5ec7:: with SMTP id s190mr25501011pfb.130.1589382222681;
+ Wed, 13 May 2020 08:03:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <1589370694-14327-1-git-send-email-alencar.fmce@imbel.gov.br>
+In-Reply-To: <1589370694-14327-1-git-send-email-alencar.fmce@imbel.gov.br>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 13 May 2020 18:03:35 +0300
+Message-ID: <CAHp75VfggycwYpsi024MWZYEgOpnst9NR3q-D5n30SDgmSB9Pw@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev: ssd1307fb: Added support to Column offset
+To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        alencar.fmce@imbel.gov.br
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Oliver Graute <oliver.graute@kococonnector.com>
+On Wed, May 13, 2020 at 2:51 PM Rodrigo Rolim Mendes de Alencar
+<455.rodrigo.alencar@gmail.com> wrote:
+>
+> This patch provides support for displays like VGM128064B0W10,
+> which requires a column offset of 2, i.e., its segments starts
+> in SEG2 and ends in SEG129.
 
-Set Gamma Values and Register Values for the HSD20_IPS Panel
+You forgot
+1) version of the patch (series) to be bumped
+2) Cc to fbdev maintainer (I did here FYI)
 
-Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
----
+> -       ret = ssd1307fb_write_cmd(par->client, 0x0);
+> +       ret = ssd1307fb_write_cmd(par->client, par->col_offset);
+>         if (ret < 0)
+>                 return ret;
+>
+> -       ret = ssd1307fb_write_cmd(par->client, par->width - 1);
+> +       ret = ssd1307fb_write_cmd(par->client, par->col_offset + par->width - 1);
+>         if (ret < 0)
+>                 return ret;
+>
+> @@ -626,6 +627,9 @@ static int ssd1307fb_probe(struct i2c_client *client)
+>         if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
+>                 par->page_offset = 1;
+>
+> +       if (of_property_read_u32(node, "solomon,col-offset", &par->col_offset))
+> +               par->col_offset = 0;
 
-need information howto set HSD20_IPS Panel at run time and not at compile time
+This won't work on non-OF systems, but easy to fix: simple see around
+and do in the same way.
 
-Changes for v2:
- - added define for HSD20_IPS_GAMMA values
- - check for HSD20_IPS define
- - enabled MIPI_DCS_ENTER_INVERT_MODE
+>         if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
+>                 par->com_offset = 0;
 
- drivers/staging/fbtft/fb_st7789v.c | 32 +++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-index 3c3f387936e8..ebc17e05ecd0 100644
---- a/drivers/staging/fbtft/fb_st7789v.c
-+++ b/drivers/staging/fbtft/fb_st7789v.c
-@@ -20,6 +20,12 @@
- 	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
- 	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
- 
-+#define HSD20_IPS_GAMMA \
-+	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
-+	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
-+
-+#define HSD20_IPS "true"
-+
- /**
-  * enum st7789v_command - ST7789V display controller commands
-  *
-@@ -82,14 +88,20 @@ static int init_display(struct fbtft_par *par)
- 
- 	/* set pixel format to RGB-565 */
- 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_16BIT);
-+	if (HSD20_IPS)
-+		write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
- 
--	write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
-+	else
-+		write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
- 
- 	/*
- 	 * VGH = 13.26V
- 	 * VGL = -10.43V
- 	 */
--	write_reg(par, GCTRL, 0x35);
-+	if (HSD20_IPS)
-+		write_reg(par, GCTRL, 0x75);
-+	else
-+		write_reg(par, GCTRL, 0x35);
- 
- 	/*
- 	 * VDV and VRH register values come from command write
-@@ -101,13 +113,19 @@ static int init_display(struct fbtft_par *par)
- 	 * VAP =  4.1V + (VCOM + VCOM offset + 0.5 * VDV)
- 	 * VAN = -4.1V + (VCOM + VCOM offset + 0.5 * VDV)
- 	 */
--	write_reg(par, VRHS, 0x0B);
-+	if (HSD20_IPS)
-+		write_reg(par, VRHS, 0x13);
-+	else
-+		write_reg(par, VRHS, 0x0B);
- 
- 	/* VDV = 0V */
- 	write_reg(par, VDVS, 0x20);
- 
- 	/* VCOM = 0.9V */
--	write_reg(par, VCOMS, 0x20);
-+	if (HSD20_IPS)
-+		write_reg(par, VCOMS, 0x22);
-+	else
-+		write_reg(par, VCOMS, 0x20);
- 
- 	/* VCOM offset = 0V */
- 	write_reg(par, VCMOFSET, 0x20);
-@@ -120,6 +138,10 @@ static int init_display(struct fbtft_par *par)
- 	write_reg(par, PWCTRL1, 0xA4, 0xA1);
- 
- 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
-+
-+	if (HSD20_IPS)
-+		write_reg(par, MIPI_DCS_ENTER_INVERT_MODE);
-+
- 	return 0;
- }
- 
-@@ -234,7 +256,7 @@ static struct fbtft_display display = {
- 	.height = 320,
- 	.gamma_num = 2,
- 	.gamma_len = 14,
--	.gamma = DEFAULT_GAMMA,
-+	.gamma = HSD20_IPS_GAMMA,
- 	.fbtftops = {
- 		.init_display = init_display,
- 		.set_var = set_var,
 -- 
-2.17.1
-
+With Best Regards,
+Andy Shevchenko
