@@ -2,124 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4814E1D1BA1
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 18:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F061D1BFF
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 19:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389737AbgEMQ4e (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 12:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59474 "EHLO
+        id S2389826AbgEMRNX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 13:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727120AbgEMQ4e (ORCPT
+        with ESMTP id S2389431AbgEMRNX (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 12:56:34 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58A0C061A0C;
-        Wed, 13 May 2020 09:56:33 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id p12so339813qtn.13;
-        Wed, 13 May 2020 09:56:33 -0700 (PDT)
+        Wed, 13 May 2020 13:13:23 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E81FC061A0C;
+        Wed, 13 May 2020 10:13:23 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id k7so6394121pjs.5;
+        Wed, 13 May 2020 10:13:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=qBVZWFtAh+7DORRPK/TwdIKVsq3QEyyzn54AuQWxNP0=;
-        b=L1RIAufNL98urjz7BCnrWRTjugA6uPmGbIYVboOjQ8V2QimJ0n2VXOnIUHzoJXQ+/4
-         99TyMq6RTSQQHgGIGsLEycE/uc0bfxNjQjAyR6mNiV0XsOPBxN0866iXF/qdvYHXD9lO
-         seFml3FmDCb8GYPQ6g6T02+IWklFe1aBMnmYyU05b2M/XfP7lWQKxR2qUPovUERYPE9+
-         8UkY07ADa/IBpVT6h+JK4JesJLZMLRJOtSx7DGAuT2EosWrOnvJBC98jUR5ipXo9SDem
-         cA+0tf1mxDxu3VM39aZLY39w7aQGmIJEPnpfHpibNKEcu7/rhL2PhnWVDPPZhq+A7RRg
-         7Pgg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CESDIXK5iziXykt0Y/ez2vWrIKygUcVw6M6S2Ji/JxM=;
+        b=lHuOQ7kUnqQ2J0pAG3sD5Jmpiv/ZRrptG88vVBX3a6kKvOnEj9jay5x80zP7d27cU0
+         hsnrdGm01EqSgogJIz7up6/iww5HRrxBkHIrnvZVX980yyqqQVn5hsIq3aNQdOkMkWZq
+         sshgStyWmPTxxWtzMEIG5deLjiaPpOuoZcaE6NZFHEJS9D/zEvmjLaB6z/kL6pz1AbCi
+         w7s06b1aApuoQjttFuvOQQVG6undKKO+yPHP2N8lHCAgxRX0hmmLOYSQrRCq8Zs0yu1D
+         L2O9cp3DoSh0+CO5hrgxoXAc6Y8DKaAN93O88wgIQc2QyQ7DQty+5Xd3+nxK9AoYj2YC
+         kxTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=qBVZWFtAh+7DORRPK/TwdIKVsq3QEyyzn54AuQWxNP0=;
-        b=dWOdnfYuw6Nw0ktwbam8O+FWbMtur1pLF5EcFSFfCrhQ2MUwZGOLXR3fmzT3J7cCQB
-         TVwRBusYZukgUdSwXHnRbX0+QPrB2NThWj4aZjIzUPovqbjanV/C56jQ5gxlRW94ZdIX
-         b6mNTQ7Vawi/d9R1jXMRWD2HUxnWT0p8mrkHU5Bdzd01F49RBb7mbLUZyDzCbT5qizpa
-         EyFUAlZPF3u8NZr6G1nORJhvhc0y13UJMXyLsMliSAOVFvbqCHxMQvm/H8ikw94vdpuH
-         nS3cREhAO/Gl78rr8iSoZhdPaJJmksIbxwGLzFNaPIYy0OyYTKHYuFSOFPxodk+qMgNK
-         S9KA==
-X-Gm-Message-State: AOAM532I784rZaQIUNBTnZZKfz/T6ot7UYjAaCEYwggUcIlBJVYIS2Vb
-        iooBniN0oC76LMDhcgjnAjDR41cLHWP3IQ==
-X-Google-Smtp-Source: ABdhPJz4BxcVN1K+jM+GD0D/sMOhctEOtpVMtMUtfe8GhLvP3oAgnfwMAJRnU/Yz/g6xusJ+o4e8oA==
-X-Received: by 2002:ac8:4890:: with SMTP id i16mr7909qtq.299.1589388992616;
-        Wed, 13 May 2020 09:56:32 -0700 (PDT)
-Received: from sca.dev ([201.17.110.164])
-        by smtp.gmail.com with ESMTPSA id m59sm136795qtd.46.2020.05.13.09.56.30
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 13 May 2020 09:56:31 -0700 (PDT)
-From:   Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
-X-Google-Original-From: Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>
-To:     linux-fbdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, b.zolnierkie@samsung.com,
-        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
-        Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>,
-        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Subject: [PATCH v2] video: fbdev: ssd1307fb: Added support to Column offset
-Date:   Wed, 13 May 2020 13:56:15 -0300
-Message-Id: <1589388975-15499-1-git-send-email-alencar.fmce@imbel.gov.br>
-X-Mailer: git-send-email 1.9.3
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CESDIXK5iziXykt0Y/ez2vWrIKygUcVw6M6S2Ji/JxM=;
+        b=VE5kdUUFQv3Dp+a9XYbyIeSSEjdYCAvxC1ZAcTe9SAIXRcI4n5tEax7jLzuV4INc3s
+         6X877dgG/p0olmP4KU/xAVowjRybtY+vRKDHXy15EnSR3OTNFg8uRnGpGZMrQSslWkX6
+         0gQ27pbSv7TDrayGq5FhN/joLvmXUv4uqg9jZtycfPipBtjjytHAWr0EqIAF9/AHcQtb
+         C/XsGiTeqNxfoRx7K7XQgCqUCNTcyFsJvxNCQFYUzKFRrqV27INACOJvWmkfuATJL4Mi
+         GIEp7AH/90HbA7TP5KLo1drRg+TzdYFXXoqlr6F6Ix/CGmWP55PVqkSR3RbGV2KS/jgC
+         tcHw==
+X-Gm-Message-State: AGi0PuZO/pmbJ8gL3/fTlNd2IfpsCB4LqZVDltZ3cIUius0/XH069rW5
+        wQfZM5K4CEg7t/7NYoy0W1bp2SsDagDlhYtjWG00CcK9J40=
+X-Google-Smtp-Source: APiQypJb2ISh0rO+fH9GikkKZila88U9u2hScbncsFLhBKJ17A2wWU2g4j/yfe5q/bd2kIKf2YRxCXnmezeOzQ619E0=
+X-Received: by 2002:a17:90b:3717:: with SMTP id mg23mr36843294pjb.129.1589390002549;
+ Wed, 13 May 2020 10:13:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <1589388975-15499-1-git-send-email-alencar.fmce@imbel.gov.br>
+In-Reply-To: <1589388975-15499-1-git-send-email-alencar.fmce@imbel.gov.br>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 13 May 2020 20:13:16 +0300
+Message-ID: <CAHp75VeycGutrfTCrVP-9V61ag-KbNHfykQXHWU-8hwEFOerMQ@mail.gmail.com>
+Subject: Re: [PATCH v2] video: fbdev: ssd1307fb: Added support to Column offset
+To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
+Cc:     linux-fbdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This patch provides support for displays like VGM128064B0W10,
-which requires a column offset of 2, i.e., its segments starts
-in SEG2 and ends in SEG129.
+On Wed, May 13, 2020 at 7:56 PM Rodrigo Rolim Mendes de Alencar
+<455.rodrigo.alencar@gmail.com> wrote:
+>
+> This patch provides support for displays like VGM128064B0W10,
+> which requires a column offset of 2, i.e., its segments starts
+> in SEG2 and ends in SEG129.
 
-Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
----
- Documentation/devicetree/bindings/display/ssd1307fb.txt | 1 +
- drivers/video/fbdev/ssd1307fb.c                         | 8 ++++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+Also, include Rob as well into Cc.
 
-diff --git a/Documentation/devicetree/bindings/display/ssd1307fb.txt b/Documentation/devicetree/bindings/display/ssd1307fb.txt
-index 27333b9551b3..2dcb6d12d137 100644
---- a/Documentation/devicetree/bindings/display/ssd1307fb.txt
-+++ b/Documentation/devicetree/bindings/display/ssd1307fb.txt
-@@ -19,6 +19,7 @@ Optional properties:
-   - vbat-supply: The supply for VBAT
-   - solomon,segment-no-remap: Display needs normal (non-inverted) data column
-                               to segment mapping
-+  - solomon,col-offset: Offset of columns (COL/SEG) that the screen is mapped to.
-   - solomon,com-seq: Display uses sequential COM pin configuration
-   - solomon,com-lrremap: Display uses left-right COM pin remap
-   - solomon,com-invdir: Display uses inverted COM pin scan direction
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index 8e06ba912d60..f135b2959f87 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -74,6 +74,7 @@ struct ssd1307fb_par {
- 	struct fb_info *info;
- 	u8 lookup_table[4];
- 	u32 page_offset;
-+	u32 col_offset;
- 	u32 prechargep1;
- 	u32 prechargep2;
- 	struct pwm_device *pwm;
-@@ -458,11 +459,11 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = ssd1307fb_write_cmd(par->client, 0x0);
-+	ret = ssd1307fb_write_cmd(par->client, par->col_offset);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = ssd1307fb_write_cmd(par->client, par->width - 1);
-+	ret = ssd1307fb_write_cmd(par->client, par->col_offset + par->width - 1);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -626,6 +627,9 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
- 		par->page_offset = 1;
- 
-+	if (device_property_read_u32(node, "solomon,col-offset", &par->col_offset))
-+		par->col_offset = 0;
-+
- 	if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
- 		par->com_offset = 0;
- 
+...
+
+> +       if (device_property_read_u32(node, "solomon,col-offset", &par->col_offset))
+> +               par->col_offset = 0;
+> +
+>         if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
+>                 par->com_offset = 0;
+
+Have you ever compile it?
+
 -- 
-2.23.0.rc1
-
+With Best Regards,
+Andy Shevchenko
