@@ -2,113 +2,165 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9D51D1642
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 15:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08C941D17A1
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 16:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387593AbgEMNpy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 09:45:54 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:35911 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727792AbgEMNpx (ORCPT
+        id S2388912AbgEMOcN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 10:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37012 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728345AbgEMOcM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 09:45:53 -0400
-Received: by mail-oi1-f194.google.com with SMTP id x7so20539831oic.3;
-        Wed, 13 May 2020 06:45:52 -0700 (PDT)
+        Wed, 13 May 2020 10:32:12 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6B2C061A0C;
+        Wed, 13 May 2020 07:32:12 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id l11so15250501wru.0;
+        Wed, 13 May 2020 07:32:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=e5l1ivHxvrs1cxo8s+YGVNADN8Rkef6bb/X9HBvnEUo=;
+        b=jYfhdyXMvfikdAmp4t94kn7Oqc+gcUglu6kotXtK7pCKoEZcxVf+D/gfJXZgnlA3tY
+         VcjpeS5YBLgOvzR5lH8nd8xcxAdRH5J/1H+Rx0YuTlUz/0uGIY6A8YBpL08huizZsKAk
+         pQTiCU//78OYtJbklytYh8aNf58msaMeP+CHrBi+IMPVFrxmNPRXvWfqUONnqkYrCTX6
+         gvaFx+iNa4Fpv9gfJJ9qbT4HuW1APNIdtSjeNhLXuUCQ+UFiSiHNQBRrDklcXRcQBRGJ
+         /WFHn0p2Cbgl8iZvetZyCwySHcma/dxORA0r5kTxv83q873p1+IsAj4VwSbTtPefwDf3
+         YB4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xp2IqGP2Mbz3cUUpa596hqcAdNywAgOxy/wkkTIouTg=;
-        b=LiIltCoq47JiOnxD0ShmFYyGPstSVWGVyLqihPYSAVlw62Dh1hvyuIemKqxFwU+rhw
-         P7uy6biHyKTeFI9hpVJAmYkBIeWC56dnbF74YsQVKMfbHRnOMKWH0hjWYpaWA54a1Kzm
-         zYutM6y9JBcgoly+aYTlPS2vIqBWEX0d6F747laMPKpcog+9XARdNZLeO0oPJn7lubva
-         A0h3L5fCojpR/AJz/Oyu2T3rrDfqJhSNeCk9OmXgxqp0C42ynx79adjPNC8HCB3zy3h1
-         aaCgr5OMze2frVJUp8oHeW4/sI1UjTTqXSqkAJDAGxmCMdWSdW5YiUkQqg8Bwm1j9IZh
-         Npfg==
-X-Gm-Message-State: AGi0PuY6gTFdCVPlBuxtxLTvcdk6QqihiTIlebb33l6zsMArlsnXI2bu
-        8mBX768KZ9Y2ndxfMlh8ikA1Cv26X5DkEHDFVSE=
-X-Google-Smtp-Source: APiQypIkVm7LXX8qk0ws4kqaeeBcVvSSkhrRjsfESas1+/iQAxJtbMOedEgPmzmOblcvF9BI9+5orflFlvsnP8NbL+g=
-X-Received: by 2002:aca:cd93:: with SMTP id d141mr4645429oig.148.1589377552343;
- Wed, 13 May 2020 06:45:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <1589370694-14327-1-git-send-email-alencar.fmce@imbel.gov.br>
-In-Reply-To: <1589370694-14327-1-git-send-email-alencar.fmce@imbel.gov.br>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 May 2020 15:45:41 +0200
-Message-ID: <CAMuHMdX5-cYdK0UrNYj+wRuUu3whADaq607OuBjALnnKWi5FCQ@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: ssd1307fb: Added support to Column offset
-To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        alencar.fmce@imbel.gov.br,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=e5l1ivHxvrs1cxo8s+YGVNADN8Rkef6bb/X9HBvnEUo=;
+        b=NSmjupiqijJ80+6a8Ea4qMLwQbBq7WYzG9Dz5oqKAq+4LKyq/rsM2+AOP0XMRbMTqF
+         Rz/LCrQGpLIzqpAFnf4JlR0F06F20T4IshIzSpbsZuaiECZJJz+I2qXWwIfEZshNusWh
+         1DR9+G/UpomfwnByFoMX8vZOWbVQpputrV28JiSiSlS+35/dDR/KFHsSgIgKrxQzgWC+
+         FQf0NHO2IYb/lpZNN5+Zt+xWxxvp5t/PjP1xuta881AVuLZdXYP9nL+yEreXzLQkk8EY
+         YBGL4I+FKxFSwwEBbn5EhT3kNUhw6hYO7ZC8y6Bmm3jKPUj5BqySmmdsh0ZaOLpoW97D
+         IQcA==
+X-Gm-Message-State: AGi0PuYRzq65n0Ttg6JigwUqsEu9fUV+4BmZZDlVz0Y6QfBO4xoqoPDO
+        AsU8gVwaRWS4nugXo/VimeI=
+X-Google-Smtp-Source: APiQypLALuA0r2EITrx0jgdNwC0QL/EE50fO/i1b1frjQJxz76h8l1YXSRVhSmv9cyqfKw97a8V3XQ==
+X-Received: by 2002:adf:ee03:: with SMTP id y3mr29782517wrn.190.1589380330471;
+        Wed, 13 May 2020 07:32:10 -0700 (PDT)
+Received: from localhost (ipv6-fd0e7292a9d5c758.ost.clients.hamburg.freifunk.net. [2a03:2267:4:0:fd0e:7292:a9d5:c758])
+        by smtp.gmail.com with ESMTPSA id b2sm25212812wrm.30.2020.05.13.07.32.08
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 May 2020 07:32:09 -0700 (PDT)
+From:   Oliver Graute <oliver.graute@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     dan.carpenter@oracle.com, oliver.graute@gmail.com,
+        Oliver Graute <oliver.graute@kococonnector.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] staging: fbtft: fb_st7789v: Initialize the Display
+Date:   Wed, 13 May 2020 16:30:46 +0200
+Message-Id: <1589380299-21871-1-git-send-email-oliver.graute@gmail.com>
+X-Mailer: git-send-email 2.7.4
+X-Patchwork-Bot: notify
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-CC dt
+From: Oliver Graute <oliver.graute@kococonnector.com>
 
-On Wed, May 13, 2020 at 1:52 PM Rodrigo Rolim Mendes de Alencar
-<455.rodrigo.alencar@gmail.com> wrote:
-> This patch provides support for displays like VGM128064B0W10,
-> which requires a column offset of 2, i.e., its segments starts
-> in SEG2 and ends in SEG129.
->
-> Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-> ---
->  Documentation/devicetree/bindings/display/ssd1307fb.txt | 1 +
->  drivers/video/fbdev/ssd1307fb.c                         | 8 ++++++--
->  2 files changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/display/ssd1307fb.txt b/Documentation/devicetree/bindings/display/ssd1307fb.txt
-> index 27333b9551b3..a9b51fd724a9 100644
-> --- a/Documentation/devicetree/bindings/display/ssd1307fb.txt
-> +++ b/Documentation/devicetree/bindings/display/ssd1307fb.txt
-> @@ -19,6 +19,7 @@ Optional properties:
->    - vbat-supply: The supply for VBAT
->    - solomon,segment-no-remap: Display needs normal (non-inverted) data column
->                                to segment mapping
-> +  - solomon,col-offset: Offset of columns (SEG) that the screen is mapped to.
->    - solomon,com-seq: Display uses sequential COM pin configuration
->    - solomon,com-lrremap: Display uses left-right COM pin remap
->    - solomon,com-invdir: Display uses inverted COM pin scan direction
-> diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-> index 8e06ba912d60..0241585bfbcc 100644
-> --- a/drivers/video/fbdev/ssd1307fb.c
-> +++ b/drivers/video/fbdev/ssd1307fb.c
-> @@ -74,6 +74,7 @@ struct ssd1307fb_par {
->         struct fb_info *info;
->         u8 lookup_table[4];
->         u32 page_offset;
-> +       u32 col_offset;
->         u32 prechargep1;
->         u32 prechargep2;
->         struct pwm_device *pwm;
-> @@ -458,11 +459,11 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
->         if (ret < 0)
->                 return ret;
->
-> -       ret = ssd1307fb_write_cmd(par->client, 0x0);
-> +       ret = ssd1307fb_write_cmd(par->client, par->col_offset);
->         if (ret < 0)
->                 return ret;
->
-> -       ret = ssd1307fb_write_cmd(par->client, par->width - 1);
-> +       ret = ssd1307fb_write_cmd(par->client, par->col_offset + par->width - 1);
->         if (ret < 0)
->                 return ret;
->
-> @@ -626,6 +627,9 @@ static int ssd1307fb_probe(struct i2c_client *client)
->         if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
->                 par->page_offset = 1;
->
-> +       if (of_property_read_u32(node, "solomon,col-offset", &par->col_offset))
-> +               par->col_offset = 0;
-> +
->         if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
->                 par->com_offset = 0;
+Set Gamma Values and Register Values for the HSD20_IPS Panel
+
+Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
+---
+
+need information howto set HSD20_IPS Panel at run time and not at compile time
+
+Changes for v2:
+ - added define for HSD20_IPS_GAMMA values
+ - check for HSD20_IPS define
+ - enabled MIPI_DCS_ENTER_INVERT_MODE
+
+ drivers/staging/fbtft/fb_st7789v.c | 32 +++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
+index 3c3f387936e8..ebc17e05ecd0 100644
+--- a/drivers/staging/fbtft/fb_st7789v.c
++++ b/drivers/staging/fbtft/fb_st7789v.c
+@@ -20,6 +20,12 @@
+ 	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25\n" \
+ 	"70 2C 2E 15 10 09 48 33 53 0B 19 18 20 25"
+ 
++#define HSD20_IPS_GAMMA \
++	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
++	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
++
++#define HSD20_IPS "true"
++
+ /**
+  * enum st7789v_command - ST7789V display controller commands
+  *
+@@ -82,14 +88,20 @@ static int init_display(struct fbtft_par *par)
+ 
+ 	/* set pixel format to RGB-565 */
+ 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_16BIT);
++	if (HSD20_IPS)
++		write_reg(par, PORCTRL, 0x05, 0x05, 0x00, 0x33, 0x33);
+ 
+-	write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
++	else
++		write_reg(par, PORCTRL, 0x08, 0x08, 0x00, 0x22, 0x22);
+ 
+ 	/*
+ 	 * VGH = 13.26V
+ 	 * VGL = -10.43V
+ 	 */
+-	write_reg(par, GCTRL, 0x35);
++	if (HSD20_IPS)
++		write_reg(par, GCTRL, 0x75);
++	else
++		write_reg(par, GCTRL, 0x35);
+ 
+ 	/*
+ 	 * VDV and VRH register values come from command write
+@@ -101,13 +113,19 @@ static int init_display(struct fbtft_par *par)
+ 	 * VAP =  4.1V + (VCOM + VCOM offset + 0.5 * VDV)
+ 	 * VAN = -4.1V + (VCOM + VCOM offset + 0.5 * VDV)
+ 	 */
+-	write_reg(par, VRHS, 0x0B);
++	if (HSD20_IPS)
++		write_reg(par, VRHS, 0x13);
++	else
++		write_reg(par, VRHS, 0x0B);
+ 
+ 	/* VDV = 0V */
+ 	write_reg(par, VDVS, 0x20);
+ 
+ 	/* VCOM = 0.9V */
+-	write_reg(par, VCOMS, 0x20);
++	if (HSD20_IPS)
++		write_reg(par, VCOMS, 0x22);
++	else
++		write_reg(par, VCOMS, 0x20);
+ 
+ 	/* VCOM offset = 0V */
+ 	write_reg(par, VCMOFSET, 0x20);
+@@ -120,6 +138,10 @@ static int init_display(struct fbtft_par *par)
+ 	write_reg(par, PWCTRL1, 0xA4, 0xA1);
+ 
+ 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
++
++	if (HSD20_IPS)
++		write_reg(par, MIPI_DCS_ENTER_INVERT_MODE);
++
+ 	return 0;
+ }
+ 
+@@ -234,7 +256,7 @@ static struct fbtft_display display = {
+ 	.height = 320,
+ 	.gamma_num = 2,
+ 	.gamma_len = 14,
+-	.gamma = DEFAULT_GAMMA,
++	.gamma = HSD20_IPS_GAMMA,
+ 	.fbtftops = {
+ 		.init_display = init_display,
+ 		.set_var = set_var,
+-- 
+2.17.1
+
