@@ -2,198 +2,144 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7444E1D2188
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 23:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B221D21E9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 00:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730047AbgEMV4Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 17:56:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
+        id S1731176AbgEMWU7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 18:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729487AbgEMV4Z (ORCPT
+        by vger.kernel.org with ESMTP id S1730064AbgEMWU7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 17:56:25 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B27CC061A0E
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 May 2020 14:56:23 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id v12so1303832wrp.12
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 May 2020 14:56:23 -0700 (PDT)
+        Wed, 13 May 2020 18:20:59 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDAA3C061A0C;
+        Wed, 13 May 2020 15:20:58 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id z1so772387vsn.11;
+        Wed, 13 May 2020 15:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hwonKHzFuATNeAdoyzCvSTRBuE9NuTgicFg1W8wjFZg=;
-        b=vHMbGgI7Rodl3kyPSAXHxWobKHo1GYSJ4oa2Z3FZcTd8iL1WF+wNrqZcu2RhW6OW2p
-         jlPqiypDyN9iMTgTznUUpON9fpnWagb18lPHwXU2RlRWDbdNpCdrObQXBlybQNOp6iYl
-         zkKYmHhlN3UPtxPXZZxUMULABWT0PL0ZX19LWaS+r8CYoow4yCUVQKb94UCT/efyiu6v
-         ken+Xh4UOxhO7XbvSEB/SIoZKCHJeRO0g0zKqIlVJHCtYgJ+QlkLjLaeo8eN7VtiYCKo
-         +v4ekNfkJmNj5r/Ud+YfrNYEePcEkka+3NsDGnMsF4kjf/4CS+9QdEjw5b4o5PoyjlDs
-         OTMQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Febjjj5+WWTqUCbI65lFaOFBjwVkcmzD8E9a3lP4Uv4=;
+        b=MdNrrrwcMt5bs37DshmUmoyIMjjh7CB+k9Wk9SQHhdVkyuYOcacp3SASS2JGHQkFZW
+         6P6GOR6UyQqrQRzKsmKoQSVSn7Da1sS+IwByJS+VlE4ZThLUdat3cJX4oYY+x1vwVDhw
+         NmSmxRfrdXNGNnbQoAWb8hoQ2cIcKtJQ1wkp7+KFnJyqi23qBsaYS/ixGdP3ELSYcwwX
+         s3ql3bAdCqGCUM/QoI9AMgSpIlwTlRO9nzyXflHlPNHCw0QL3jewdGahAjnXxpi6JuVJ
+         r1cotSeMPSwWva2uv4VGiN7NKdQlUDyGwkvenaCmnDDpOr3mIi1vo8nCILZTJWYz4Zy8
+         b4qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hwonKHzFuATNeAdoyzCvSTRBuE9NuTgicFg1W8wjFZg=;
-        b=puPRDkxxDOL9OcAcXH3+kQ7r2VG/JRD8U8qBgI29a6G1M1RpacnGJIQzrcvTaUfuff
-         Ih9ZMsUiusfReshT79I7JUpi2QTXVC9aTy8egdm6JwfTxWduBkvA/2PapewHJWHLbv/K
-         1P2GE77skftEfiznBACj5/W5ZFkHE6GgrT4pvEYoNZl2tYpLWNP0Ya+hBoYDMxU94+JD
-         tLEGH5gOvtRSx+jp0Ut0qLaF2Uz+caFFcntBErqUa7ZwuTsJ6JET/t5QNBa3s69O0NdI
-         TZRdC+lnfQlpaWPNA/v6ROJNoa9NoI91Ii6S7iCF6MA4goivFOB9QYN6PubccQlQIqBr
-         NZXA==
-X-Gm-Message-State: AOAM532SkxykzyP/veYNeRBtELf9J+DVBIcpO/33AeluAidMik7/nc6F
-        iFsS7oUFTd2wMa6XL5RteoM=
-X-Google-Smtp-Source: ABdhPJwZab0RhfCQOqf/Ht72DHQCZ1jIssnq1PG+HQQCEjv/FfAMFsFPDkcvD1ObXYb4L1Cdf4yA7g==
-X-Received: by 2002:a5d:4b09:: with SMTP id v9mr1548869wrq.297.1589406982352;
-        Wed, 13 May 2020 14:56:22 -0700 (PDT)
-Received: from localhost.localdomain (cpc91192-cmbg18-2-0-cust374.5-4.cable.virginm.net. [80.6.113.119])
-        by smtp.gmail.com with ESMTPSA id h133sm192371wmf.25.2020.05.13.14.56.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2020 14:56:21 -0700 (PDT)
-From:   Emil Velikov <emil.l.velikov@gmail.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     emil.l.velikov@gmail.com, Antonino Daplas <adaplas@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH] fbdev: annotate rivafb/nvidiafb as obsolete
-Date:   Wed, 13 May 2020 22:53:42 +0100
-Message-Id: <20200513215342.2145495-1-emil.l.velikov@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Febjjj5+WWTqUCbI65lFaOFBjwVkcmzD8E9a3lP4Uv4=;
+        b=ZSJJa2Wxr2YUUC3seEXJRfWgApKBKO2GjUOcS3DzLAGDfoHa3t7VD1cwemQ/aoVuDl
+         MgNJIMcQ7w+vJPbJcxcRxIJmXs1Lv01Cf8Z9mgUxt/euyKy/ekVtbBE5HQFwY5kskO3a
+         +SrE0stTLGmDxRyWuArxst80z4foz06qYas/kyR6NqwafI8USv+Mq1NJqyBh4/L5DMzO
+         2OrTmfQxuXv77OEFsWwza5Do750Et/syU+59MZn1dDkZmcS301b8/bx49Xvp670JKGJb
+         89bb1/UtFd+Ws2l0XpZs/X6hmhBZvYo5jp0lU7PwsA8muwe3TYH3qiiVD7Tx3+8VrPmg
+         jl4g==
+X-Gm-Message-State: AOAM532E593tGVK3t4vv5Z2RXvuQAnp7hLVws5T2Z0AFwcanDSXtJLQX
+        enCrZKAQ32ot6MnWoj3/MzsR4TRfgr14xoA8YoM=
+X-Google-Smtp-Source: ABdhPJxo9EuLqhoKWxflAPUvXZF3mOIP4Fla676O86ZIxPbhYie0qT8N7NxiarKZvsbsx8aJvfTXSAykTIcU6rJym2E=
+X-Received: by 2002:a67:c482:: with SMTP id d2mr1227981vsk.37.1589408457816;
+ Wed, 13 May 2020 15:20:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190731124349.4474-1-gregkh@linuxfoundation.org>
+ <20190731131045.GB147138@dtor-ws> <20190802104633.GA14823@kroah.com>
+In-Reply-To: <20190802104633.GA14823@kroah.com>
+From:   Emil Velikov <emil.l.velikov@gmail.com>
+Date:   Wed, 13 May 2020 23:18:15 +0100
+Message-ID: <CACvgo52+Uqx4GJFwadJoFzzt5EMc69HcW-+K9uxv9t25TtSDBg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] drivers, provide a way to add sysfs groups easily
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>, x86@kernel.org,
+        linux-input@vger.kernel.org,
+        linux-fbdev <linux-fbdev@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
+        ML dri-devel <dri-devel@lists.freedesktop.org>,
+        platform-driver-x86@vger.kernel.org,
+        Tony Prisk <linux@prisktech.co.nz>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Richard Gong <richard.gong@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        LAKML <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Drivers have not seen any love for years.
+Hi Greg,
 
-Be that fixes or improvements, or cosmetics like introducing symbolic
-names, style and code-flow polish.
+On Fri, 2 Aug 2019 at 11:46, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 
-Seemingly the maintainer has also disappeared years ago :-\
+>
+> I have now done this with patch 1/10.  Here's the pull info if any
+> subsystem maintainer wants to suck this into their tree to provide the
+> ability for drivers to add/remove attribute groups easily.
+>
+> This is part of my driver-core tree now, and will go to Linus for
+> 5.4-rc1, along with a few platform drivers that have been acked by their
+> various subsystem maintainers that convert them to use this new
+> functionality.
+>
+> If anyone has any questions about this, please let me know.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------------
+>
+> The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+>
+>   Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git tags/dev_groups_all_drivers
+>
+> for you to fetch changes up to 23b6904442d08b7dbed7622ed33b236d41a3aa8b:
+>
+>   driver core: add dev_groups to all drivers (2019-08-02 12:37:53 +0200)
+>
+> ----------------------------------------------------------------
+> dev_groups added to struct driver
+>
+> Persistent tag for others to pull this branch from
+>
+> This is the first patch in a longer series that adds the ability for the
+> driver core to create and remove a list of attribute groups
+> automatically when the device is bound/unbound from a specific driver.
+>
+> See:
+>         https://lore.kernel.org/r/20190731124349.4474-2-gregkh@linuxfoundation.org
+> for details on this patch, and examples of how to use it in other
+> drivers.
+>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+> ----------------------------------------------------------------
+> Dmitry Torokhov (1):
+>       driver core: add dev_groups to all drivers
+>
+>  drivers/base/dd.c      | 14 ++++++++++++++
+>  include/linux/device.h |  3 +++
+>  2 files changed, 17 insertions(+)
+> _______________________________________________
 
-Considering nouveau supports all that hardware (modulo nv03) just mark
-these as obsolete/broken, referring to nouveau in the help text.
+Was planning to re-spin DRM a series which uses .dev_groups, although
+I cannot see the core patch.
+Did the it get reverted or simply fell though the cracks?
 
-Cc: Antonino Daplas <adaplas@gmail.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
----
- MAINTAINERS                           | 3 +--
- arch/powerpc/configs/g5_defconfig     | 2 --
- arch/powerpc/configs/pasemi_defconfig | 2 --
- arch/powerpc/configs/pmac32_defconfig | 2 --
- arch/powerpc/configs/ppc6xx_defconfig | 3 ---
- drivers/video/fbdev/Kconfig           | 6 ++++++
- 6 files changed, 7 insertions(+), 11 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 515a81fdb7d6..cc9da9a1e230 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11247,9 +11247,8 @@ F:	include/linux/nubus.h
- F:	include/uapi/linux/nubus.h
- 
- NVIDIA (rivafb and nvidiafb) FRAMEBUFFER DRIVER
--M:	Antonino Daplas <adaplas@gmail.com>
- L:	linux-fbdev@vger.kernel.org
--S:	Maintained
-+S:	Obsolete
- F:	drivers/video/fbdev/riva/
- F:	drivers/video/fbdev/nvidia/
- 
-diff --git a/arch/powerpc/configs/g5_defconfig b/arch/powerpc/configs/g5_defconfig
-index ceb3c770786f..24225e39662a 100644
---- a/arch/powerpc/configs/g5_defconfig
-+++ b/arch/powerpc/configs/g5_defconfig
-@@ -130,8 +130,6 @@ CONFIG_FB=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_OF=y
--CONFIG_FB_NVIDIA=y
--CONFIG_FB_NVIDIA_I2C=y
- CONFIG_FB_RADEON=y
- # CONFIG_VGA_CONSOLE is not set
- CONFIG_FRAMEBUFFER_CONSOLE=y
-diff --git a/arch/powerpc/configs/pasemi_defconfig b/arch/powerpc/configs/pasemi_defconfig
-index c0423b2cf7c0..36b242efae9a 100644
---- a/arch/powerpc/configs/pasemi_defconfig
-+++ b/arch/powerpc/configs/pasemi_defconfig
-@@ -107,8 +107,6 @@ CONFIG_DRM_RADEON=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_VGA16=y
--CONFIG_FB_NVIDIA=y
--CONFIG_FB_NVIDIA_I2C=y
- CONFIG_FB_RADEON=y
- # CONFIG_LCD_CLASS_DEVICE is not set
- CONFIG_VGACON_SOFT_SCROLLBACK=y
-diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
-index 50b610b48914..ef4470d44763 100644
---- a/arch/powerpc/configs/pmac32_defconfig
-+++ b/arch/powerpc/configs/pmac32_defconfig
-@@ -211,8 +211,6 @@ CONFIG_FB_PLATINUM=y
- CONFIG_FB_VALKYRIE=y
- CONFIG_FB_CT65550=y
- CONFIG_FB_IMSTT=y
--CONFIG_FB_NVIDIA=y
--CONFIG_FB_NVIDIA_I2C=y
- CONFIG_FB_MATROX=y
- CONFIG_FB_MATROX_MILLENIUM=y
- CONFIG_FB_MATROX_MYSTIQUE=y
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 7c6baf6df139..5b4e26de0bcf 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -752,9 +752,6 @@ CONFIG_FB_OF=y
- CONFIG_FB_PLATINUM=y
- CONFIG_FB_VALKYRIE=y
- CONFIG_FB_CT65550=y
--CONFIG_FB_NVIDIA=y
--CONFIG_FB_NVIDIA_I2C=y
--CONFIG_FB_RIVA=m
- CONFIG_FB_MATROX=y
- CONFIG_FB_MATROX_MILLENIUM=y
- CONFIG_FB_MATROX_MYSTIQUE=y
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 1b2f5f31fb6f..cad3e4bc5e52 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -868,6 +868,7 @@ config FB_ATMEL
- 
- config FB_NVIDIA
- 	tristate "nVidia Framebuffer Support"
-+	depends on BROKEN
- 	depends on FB && PCI
- 	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
- 	select FB_MODE_HELPERS
-@@ -877,6 +878,8 @@ config FB_NVIDIA
- 	select BITREVERSE
- 	select VGASTATE
- 	help
-+	  Obsolete, use nouveau instead.
-+
- 	  This driver supports graphics boards with the nVidia chips, TNT
- 	  and newer. For very old chipsets, such as the RIVA128, then use
- 	  the rivafb.
-@@ -915,6 +918,7 @@ config FB_NVIDIA_BACKLIGHT
- 
- config FB_RIVA
- 	tristate "nVidia Riva support"
-+	depends on BROKEN
- 	depends on FB && PCI
- 	select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
- 	select FB_MODE_HELPERS
-@@ -924,6 +928,8 @@ config FB_RIVA
- 	select BITREVERSE
- 	select VGASTATE
- 	help
-+	  Obsolete, use nouveau instead.
-+
- 	  This driver supports graphics boards with the nVidia Riva/Geforce
- 	  chips.
- 	  Say Y if you have such a graphics board.
--- 
-2.25.1
-
+-Emil
