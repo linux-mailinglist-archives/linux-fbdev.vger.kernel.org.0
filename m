@@ -2,59 +2,45 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B86DA1CFFFC
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2020 23:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DE101D0995
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 09:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731214AbgELU76 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 May 2020 16:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42444 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731083AbgELU76 (ORCPT
+        id S1729866AbgEMHJg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 03:09:36 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:45672 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729189AbgEMHJg (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 May 2020 16:59:58 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69603C061A0C;
-        Tue, 12 May 2020 13:59:58 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id q24so10005096pjd.1;
-        Tue, 12 May 2020 13:59:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IJPL9Tl1cgActLuK4g/HRhyhZpVeiRdgyWh88fXkA+w=;
-        b=OHrva3OtIfkvxENY7wpj/fPhbyf8DcMvdrS2KP0ysWrSpz4mxaNsIDn2wnh3QYK54q
-         fo9J9nU2TZq3Sw8TA+Z0R/lCFxtBrBy7dtvhMnhFXXX2vkl+uDBpTR450URMLJsmJK0y
-         wb7M9g+RbxshL3G5Ry5qd9EbQD5Ftcy56E116a0c5wdK4N/pt/pId4Da4k0aSIE+jEWE
-         FUML6G7C5PN2NMxyBnr8oxwTk59YaPMEJxYLDgf6ehJ+d0efVkRw5tImFoFnXkGMYGrE
-         EyNcL1Dxw9q9dYMxx4eusEpsh7QVLo7VkqF7y1BLv5/NoWS+q8FwlrD5nATzcjfOWoOr
-         1H0w==
+        Wed, 13 May 2020 03:09:36 -0400
+Received: by mail-ot1-f67.google.com with SMTP id e20so12625723otk.12;
+        Wed, 13 May 2020 00:09:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IJPL9Tl1cgActLuK4g/HRhyhZpVeiRdgyWh88fXkA+w=;
-        b=ZxRvgqci0C5qiAxOkk24Y5cyL277UjLgA2RR9TWl+8CXLB+oAHdkipdgLJja/BqgtY
-         VeC+pfqVrzHad3f5moF76nh7fjCQ/gTsouZV92uiL3cf5+nu/TOFJ7PHmFSLJ1vF4BeS
-         hL58sjwgRBQ/WS5OQv8EYzOmHgn+kMBKLagKNHSMm6GiBi82KJDIAheLfTYDWMmWos8f
-         42kGaiKD/l/klOfQoAmZ6uqHLVRSwVp/gkr+KyV+ue9xjdzN3VWuBjeulmjy3wpzMFAr
-         HjnVfROyAoMfiadKQe5pVbsZ6ACTywDAUH7CEtWPjWrBHKo6lbBRayySUWaZcgHYj04v
-         7xsg==
-X-Gm-Message-State: AGi0PubMvoKgd/y/q2LuDHl/jnEygm3wGQ+HGpjrOfNWGb6HucdM6Rlr
-        YW8pOwHmXh7HsQA0bCk3qZU8ml28oBJ3+WGNFng=
-X-Google-Smtp-Source: APiQypLqRUkFh5Gq4ZARlaTpFxPfK5sVf01Itv5Lo33wIETMAdD0Tv6bI9JM3S3OgvhG7Hi8srQ//CYX2STx/6trW6A=
-X-Received: by 2002:a17:90b:3717:: with SMTP id mg23mr31789295pjb.129.1589317197919;
- Tue, 12 May 2020 13:59:57 -0700 (PDT)
+        bh=tQBKncGAceygAQVR48tADdwtIIB18GAq7ci7gmWLAQ8=;
+        b=jGTF+Y1iulKZgUZ+ZlNV0v08VBm8XlHhfbD+YsZXTAmevDSThtBSiDZQHZG1pq0NHG
+         BH+IpY/sXhr7OiuYgXcKLYpzWraMZ8d76UsoEqMLgkWYS/ESQEyhLF2HPtiLf34nwIqt
+         P6zG6TQHMxP9hi0sbbH35CyMPHEwR36NGjtmYFTg/daGBGjV3Qc4+v23nlimVmYB/RDd
+         5GEQisJZv8Cbf0f5HyTV0jVFekswfn/mEzpGYfhod0nzklRILfRDrSvGJDHVq4bATIPZ
+         GmTtMq1fGDxFPSToDc7xd3UaMrmx4zs5Qj2WyNFbzj6wfVyPEgAoBppw7zJ3r6Eo+gzE
+         TGzg==
+X-Gm-Message-State: AGi0PuYQPxl+mck3NQ/nK80xylzw/yritxJsITcgNvfxOF2+ncdXNxFP
+        SOI++aqodB5RTDUlA7FzXi11KnlnKXSbV2d4gy2/QA==
+X-Google-Smtp-Source: APiQypIBT17ifmw4vzyJJL7IX/eEsBrLn2/Wj5bSVTTtat1HEGfYI4uCfrVdxSM2De7RpwnxP7jndUR8WmXw7H79LJg=
+X-Received: by 2002:a9d:63da:: with SMTP id e26mr18492173otl.107.1589353775974;
+ Wed, 13 May 2020 00:09:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <1589316769-13277-1-git-send-email-alencar.fmce@imbel.gov.br>
-In-Reply-To: <1589316769-13277-1-git-send-email-alencar.fmce@imbel.gov.br>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 12 May 2020 23:59:46 +0300
-Message-ID: <CAHp75VfLMUCpDWr4_Wo3Gqd4rZdC3dEFhQfmwjF6eTxaLMxYvw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] video: fbdev: ssd1307fb: Added support to Column offset
+References: <1589316769-13277-1-git-send-email-alencar.fmce@imbel.gov.br> <1589316769-13277-2-git-send-email-alencar.fmce@imbel.gov.br>
+In-Reply-To: <1589316769-13277-2-git-send-email-alencar.fmce@imbel.gov.br>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 13 May 2020 09:09:24 +0200
+Message-ID: <CAMuHMdWiNhpEbXbTcYVJ2gP5X++gwmP5Wb2n9VYchTBFyi07GA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] video: fbdev: ssd1307fb: Support to pixel inversion
 To:     Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
-Cc:     linux-fbdev@vger.kernel.org,
+Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "maxime.ripard" <maxime.ripard@free-electrons.com>,
+        Maxime Ripard <maxime.ripard@free-electrons.com>,
         alencar.fmce@imbel.gov.br
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -62,27 +48,41 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, May 12, 2020 at 11:55 PM Rodrigo Rolim Mendes de Alencar
+Hi Rodrigo,
+
+On Tue, May 12, 2020 at 10:53 PM Rodrigo Rolim Mendes de Alencar
 <455.rodrigo.alencar@gmail.com> wrote:
+> Pixel inversion in hardware is performed by issuing the
+> command 0xa7. This patch adds a boolean  property to control
+> color inversion.
 >
-> This patch provides support for displays like VGM128064B0W10,
-> which requires a column offset of 2, i.e., its segments starts
-> in SEG2 and ends in SEG129.
+> Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
 
-Thank you!
+Thanks for your patch!
 
->         if (of_property_read_u32(node, "solomon,page-offset", &par->page_offset))
->                 par->page_offset = 1;
->
-> +       if (of_property_read_u32(node, "solomon,col-offset", &par->col_offset))
-> +               par->col_offset = 0;
-> +
->         if (of_property_read_u32(node, "solomon,com-offset", &par->com_offset))
->                 par->com_offset = 0;
+> --- a/Documentation/devicetree/bindings/display/ssd1307fb.txt
+> +++ b/Documentation/devicetree/bindings/display/ssd1307fb.txt
+> @@ -22,6 +22,7 @@ Optional properties:
+>    - solomon,com-seq: Display uses sequential COM pin configuration
+>    - solomon,com-lrremap: Display uses left-right COM pin remap
+>    - solomon,com-invdir: Display uses inverted COM pin scan direction
+> +  - solomon,color-inv: Set Inverse display mode (invert pixel color)
 
-Needs to be rebased on top of latest changes (can be, in particular,
-found in Linux Next tree).
+Isn't that software configuration instead of hard description?
+DT describes the hardware, not software configuration, so this may not
+belong here?
+
+>    - solomon,com-offset: Number of the COM pin wired to the first display line
+>    - solomon,col-offset: Offset of columns (SEG) that the screen is mapped to.
+>    - solomon,prechargep1: Length of deselect period (phase 1) in clock cycles.
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
