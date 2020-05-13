@@ -2,95 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54ACC1D1C19
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 19:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E0B1D1DF2
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 20:48:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389832AbgEMRUf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 13:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
+        id S2390035AbgEMSse (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 14:48:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2389805AbgEMRUe (ORCPT
+        by vger.kernel.org with ESMTP id S1732218AbgEMSse (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 13:20:34 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A66EC061A0C;
-        Wed, 13 May 2020 10:20:33 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id g12so29427109wmh.3;
-        Wed, 13 May 2020 10:20:33 -0700 (PDT)
+        Wed, 13 May 2020 14:48:34 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576C9C061A0C;
+        Wed, 13 May 2020 11:48:34 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id j2so676485qtr.12;
+        Wed, 13 May 2020 11:48:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=nIFAViuHZiqmpu9Sg7QKKPVrFGX6QP/as79ZNgHWK64=;
-        b=hfWMoQKcR4bQGuCuTtIaXSGIXb4+Jgw2zpvbboy2kTx19tnU+DNLni+f2HMjCX8UDp
-         UaS3a6LhY9RTW76gUNtskIqszvZ6iPZg2PieYucYYulhU9YNQFswLbrer0vD46APYoH+
-         fge0srFyw+aLJjpCJYf+n4gubaEHb+oPssjiqGAgdUWeT/Y3LZ2FhsXn1S9nOwNrJB3i
-         4UDPIfzrXqfwfG8d7VmE7wkWl09DfXY1J/fLBV6sKrGHfwv2DokR+xR4dMD9Z5/efUHR
-         qlpCZoNPj57clGIKYOAnajq8D5gomn32XQgGfFxAqEDWBmNW7sVP7WF+fKlVwegbfMJs
-         E0Qw==
+        h=from:to:cc:subject:date:message-id;
+        bh=O+v6/HetATnirOETJaaLYtIOTXHLeVK+a1zo9bE2gjg=;
+        b=lzM2sulhP4qvY5Yfcz80VJJ/6KP/AAFPw4Ul23TqYASG7trju8lwDfuL8titQ0jZlv
+         pjoiyH9x77REXE2zTeNU96T4g+W9D1X0m42DZkHpTqRfAkeYkwHhAYvSktB38IctD3O5
+         MocLBnWco8QQ12xSE+JXVTeLLgMYCqIHQrAPWcTxvXw1XytMrzQu3v7eVuT2jxXSp3st
+         whgkxqoPcK3AXknEZPVA2Af5kkKaVA2RYdegbIi0S8NtzUjnO1JSvq4ccIKB7Kit7qGY
+         mNJ2dgZ/W1hiO0tKZHtzpOuVtUVzYWtdzHOYX5T/7qkRE0XzGDqrP/zSlVX26slvxzhO
+         fG3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nIFAViuHZiqmpu9Sg7QKKPVrFGX6QP/as79ZNgHWK64=;
-        b=JVznDinVyqpnci1QXRYdqI/xSGB08I+z1XtffBgAmUcRjk6KfxgJX+Z2jPsa84+2Th
-         7lslA5LGg8mkeuiOIndaw1dn4MLdC//93+DCGDNOzC7OZrdylPxY3K17y01E2Qoc/bHC
-         9zNZhMDeYLTeZG0Ww79CW4FXl6kF4FZkTjfUBAC3bBPbnUwm/61ZYOfH7lMf2Nr+c8Ab
-         BOhwGlYNxPBXMcV0fdD59VvEqlvmPEAe+qxowaZyc8u48xiUWXWSKnLADBs1mCrSrU4G
-         aHYDVl6RCPKPzoB29ASSd22XCbFK2Mvdv9myKcvEqOF2RHHXM1n68vX8rrxmLDDle3Yr
-         xtJg==
-X-Gm-Message-State: AGi0PuauQYYizxVBxYfpS8B+FY1kma5lybj4FeE5j3wIZIKoddMqUXMe
-        a5CN4lGTiwiye9ghhidJMqA4NwZbbfSx6Du/Weo=
-X-Google-Smtp-Source: APiQypIO0LBMdxmZ5sV7C7nGsn9iIDTT0FmNpLsVgIL7wAhjUQaTeT8vg6ENs59fjPtXhFTEUasU/iGtPyQeKktniUY=
-X-Received: by 2002:a1c:f416:: with SMTP id z22mr44216615wma.32.1589390431769;
- Wed, 13 May 2020 10:20:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <1589388975-15499-1-git-send-email-alencar.fmce@imbel.gov.br> <CAHp75VeycGutrfTCrVP-9V61ag-KbNHfykQXHWU-8hwEFOerMQ@mail.gmail.com>
-In-Reply-To: <CAHp75VeycGutrfTCrVP-9V61ag-KbNHfykQXHWU-8hwEFOerMQ@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=O+v6/HetATnirOETJaaLYtIOTXHLeVK+a1zo9bE2gjg=;
+        b=ht0EKmFhaOGZyRGItLrTwmC07qq14Yp8t0U+CZ/qvDYD5GsfW5iBGcvpYevLDQsIDC
+         3OAyqX0Y796VyAk+xB/6rJDvStWXOttZ4SztwZKZBUDtTxeMlNcZH/s0/zU0eKutMWRB
+         1nZ83apRpaBSWy9YY+L1Th3kU9WxvhjCsvx7jW+C6zLu/1IHpIrtCxnmDyaIjRFgEZWL
+         wn4m4ZdNOCFKkVNRf8ug5ZFoEAq9vmmGTmUREMl07H4bauSPicLjMjfvWCrXrRlDSaFu
+         mWLYgWSJpJJUSCWPeKTmJq0v0ejA8ysMFlJ1wWzzq01v6SPIaE3WGlAUf4ZtByTQ6SBJ
+         vVuQ==
+X-Gm-Message-State: AOAM533Z4GnHs/+k01Gicwc7xraXb5tcFQnYMfGyJzhXhkWWh6uLOTLi
+        jOwlHSEg5Nmq5K4gKZ9Q1olCsTWrTxtkPQ==
+X-Google-Smtp-Source: ABdhPJzo+BKzKMDFOJBotQJKCE9cz6QqtNmPnYV1hMHxXuy6OFQe5eC5fsOpQdPerkDWi5jWYsyDFw==
+X-Received: by 2002:aed:3949:: with SMTP id l67mr506854qte.313.1589395713113;
+        Wed, 13 May 2020 11:48:33 -0700 (PDT)
+Received: from sca.dev ([201.17.110.164])
+        by smtp.gmail.com with ESMTPSA id j9sm526484qkg.88.2020.05.13.11.48.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 May 2020 11:48:32 -0700 (PDT)
 From:   Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Date:   Wed, 13 May 2020 14:20:17 -0300
-Message-ID: <CACk9uef9zY_cEVhhSdnYfSf-XZxrwU+V+eLUz5-N=U9DRtVp4g@mail.gmail.com>
-Subject: Re: [PATCH v2] video: fbdev: ssd1307fb: Added support to Column offset
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-fbdev@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Google-Original-From: Rodrigo Alencar <alencar.fmce@imbel.gov.br>
+To:     linux-fbdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, b.zolnierkie@samsung.com,
+        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
+        Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>,
+        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Subject: [PATCH v3] video: fbdev: ssd1307fb: Added support to Column offset
+Date:   Wed, 13 May 2020 15:48:11 -0300
+Message-Id: <1589395691-8762-1-git-send-email-alencar.fmce@imbel.gov.br>
+X-Mailer: git-send-email 1.9.3
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Em qua., 13 de mai. de 2020 =C3=A0s 14:13, Andy Shevchenko
-<andy.shevchenko@gmail.com> escreveu:
->
-> On Wed, May 13, 2020 at 7:56 PM Rodrigo Rolim Mendes de Alencar
-> <455.rodrigo.alencar@gmail.com> wrote:
-> >
-> > This patch provides support for displays like VGM128064B0W10,
-> > which requires a column offset of 2, i.e., its segments starts
-> > in SEG2 and ends in SEG129.
->
-> Also, include Rob as well into Cc.
->
-> ...
->
-> > +       if (device_property_read_u32(node, "solomon,col-offset", &par->=
-col_offset))
-> > +               par->col_offset =3D 0;
-> > +
-> >         if (device_property_read_u32(dev, "solomon,com-offset", &par->c=
-om_offset))
-> >                 par->com_offset =3D 0;
->
-> Have you ever compile it?
+From: Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>
 
-hmm I did it now. Sorry... found another issue. I'll fix it again
+This patch provides support for displays like VGM128064B0W10,
+which requires a column offset of 2, i.e., its segments starts
+in SEG2 and ends in SEG129.
 
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+---
+ Documentation/devicetree/bindings/display/ssd1307fb.txt | 1 +
+ drivers/video/fbdev/ssd1307fb.c                         | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/display/ssd1307fb.txt b/Documentation/devicetree/bindings/display/ssd1307fb.txt
+index 27333b9551b3..2dcb6d12d137 100644
+--- a/Documentation/devicetree/bindings/display/ssd1307fb.txt
++++ b/Documentation/devicetree/bindings/display/ssd1307fb.txt
+@@ -19,6 +19,7 @@ Optional properties:
+   - vbat-supply: The supply for VBAT
+   - solomon,segment-no-remap: Display needs normal (non-inverted) data column
+                               to segment mapping
++  - solomon,col-offset: Offset of columns (COL/SEG) that the screen is mapped to.
+   - solomon,com-seq: Display uses sequential COM pin configuration
+   - solomon,com-lrremap: Display uses left-right COM pin remap
+   - solomon,com-invdir: Display uses inverted COM pin scan direction
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index 8e06ba912d60..102f941104c0 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -74,6 +74,7 @@ struct ssd1307fb_par {
+ 	struct fb_info *info;
+ 	u8 lookup_table[4];
+ 	u32 page_offset;
++	u32 col_offset;
+ 	u32 prechargep1;
+ 	u32 prechargep2;
+ 	struct pwm_device *pwm;
+@@ -458,11 +459,11 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ssd1307fb_write_cmd(par->client, 0x0);
++	ret = ssd1307fb_write_cmd(par->client, par->col_offset);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ssd1307fb_write_cmd(par->client, par->width - 1);
++	ret = ssd1307fb_write_cmd(par->client, par->col_offset + par->width - 1);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -626,6 +627,9 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
+ 		par->page_offset = 1;
+ 
++	if (device_property_read_u32(dev, "solomon,col-offset", &par->col_offset))
++		par->col_offset = 0;
++
+ 	if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
+ 		par->com_offset = 0;
+ 
+-- 
+2.23.0.rc1
+
