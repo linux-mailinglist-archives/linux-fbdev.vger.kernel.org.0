@@ -2,100 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 867F21D0A64
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 10:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3FE1D11C9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 May 2020 13:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730120AbgEMIBG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 May 2020 04:01:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60502 "EHLO
+        id S1726190AbgEMLvs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 May 2020 07:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730105AbgEMIBF (ORCPT
+        with ESMTP id S1725982AbgEMLvr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 May 2020 04:01:05 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F77C061A0C
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 May 2020 01:01:03 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id l11so13713050wru.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 May 2020 01:01:03 -0700 (PDT)
+        Wed, 13 May 2020 07:51:47 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ECBEC061A0C;
+        Wed, 13 May 2020 04:51:47 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id g185so16930093qke.7;
+        Wed, 13 May 2020 04:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=qOmmunlWx5TbxpEYsCi6LXm1KoaU+vaRN5iuBeMyAvA=;
-        b=wwGGIzfhjfM9NgXhcpJu8mIl16HfUpZxpzVQ0jfZyEuuJGGHo6S3WyOm4VQNJqtNJ/
-         Zz93RR+VCNEoT+QCqEzG2uAUgNhcaMiybCUp+DobkeU64t8Za/EyWgGHc9O6Lx3oOsNM
-         TPIQ/1bNv/yAs6qveLsyOUaJqV9S+l0LnS4N4ndUR6IBwgVktAZUDeGPg7lDs/1TbkiZ
-         pizBletTSn7fUiS6rRNQXESiQuNFvoYgScCVqHaNRqRbl4ZwuzRVNOOOxtYuf6WvO1Ty
-         thsS1053p4825+Sh7yU70apSzy1Va35O3gTFABx8YTEocfHcEsW9hfxnvgtZ1lcPFeY9
-         umjA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Gwpqh921Hf6wzA5AMDQSYWZ5UpHdH6Jqwq1eRKuvGKQ=;
+        b=m2MjvC9z7cCTNiR3FWhmuuVKx5AHNcn5GnriRNuHcXKLp8W8bF+7C416Rt/aQxAKAE
+         FLZl9wOcUrjZV7L+SGD0YsiB1MThdrmG2vT3tfes7/cTaDq2plUx1kq2oLhRbzGtL0K7
+         jsf1zwRe1Kh5FezfovCo3orbZyqr+kbrsIXqtcLNFRW7wpt71fEFR4QSPvXWXpKRhzyq
+         6VHQ4gHqhVE6FWANf4wnmBmSKny+D7/9KJhZcvjsct/UNkQ6OfVfOWm+Pm34C0Z5CKiQ
+         TsleYb7wz/uQDsIcFpQJbaldGSfhq0uAeJTthenOs/nvoAG5Dbz4GZlzU1JH30rjls7o
+         XH8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=qOmmunlWx5TbxpEYsCi6LXm1KoaU+vaRN5iuBeMyAvA=;
-        b=EFLed1HbBTLIPr0hPV38OIQyTQhsQM9VQVloEr5CxFsLnCJgk2s4iYR0OnDaG4FQYx
-         rZF3xR+qvN9noHcWw6nY56jIfrej2+OO7/Uh3v2FLGLfFKDe3csQN3ovvzAmbP3x420F
-         itt2UaaCon0U8e64bJkTV9+vcX1RYfR6lbcBA5nqLdm0le6YGgltdPpvB9iLu2unJSP4
-         LmTgDYR99CGHTwKH7+7a82+Kao/3LBHoSuayjVCz1Vgt8elSQHRU0ASpa0jz7fR5Gi93
-         1tiRt8boJumWXCS4kgu/h8PQd18xSaqphrkVxCl6xAQONJeEwXQRRhGn4QZW7ujrFNWS
-         j2Sg==
-X-Gm-Message-State: AGi0Puaoqk7Ev2s6UviDGLFfXF2OXgk+CvomiN2wpHlhMlz4jqA79BFk
-        n41Isenbl3fr4323W+hA3CHeng==
-X-Google-Smtp-Source: APiQypLqRksq0eSlol4tSTwedgyaTVM2PgFckTaG8ma5JptZgQpiUumnGNrPnWn12cdi9hLSZsxIVQ==
-X-Received: by 2002:adf:80d0:: with SMTP id 74mr15451539wrl.338.1589356862397;
-        Wed, 13 May 2020 01:01:02 -0700 (PDT)
-Received: from dell ([2.31.163.63])
-        by smtp.gmail.com with ESMTPSA id c25sm33770259wmb.44.2020.05.13.01.01.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2020 01:01:01 -0700 (PDT)
-Date:   Wed, 13 May 2020 09:00:59 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-i2c@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] video: backlight: tosa_lcd: convert to use
- i2c_new_client_device()
-Message-ID: <20200513080059.GD3548@dell>
-References: <20200326210959.13111-1-wsa+renesas@sang-engineering.com>
- <20200326210959.13111-2-wsa+renesas@sang-engineering.com>
- <20200417101446.GB3737@dell>
- <20200512162546.GG13516@ninjato>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200512162546.GG13516@ninjato>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Gwpqh921Hf6wzA5AMDQSYWZ5UpHdH6Jqwq1eRKuvGKQ=;
+        b=FAtme6Gw5+HYRUlIeR3y7iwHGfRULoyeI3jJuAXhC6mmWko1HUKkVwNKtWtnhfal93
+         6jxfLGT+MxE0/5HaDGHVobHGJ1EKUefmEpDUfdaatRzYP6zhfz4URW05w/s5xU1R4OtY
+         vDPizMVCiXxscz7Yo11konp/wEAf6cAY3WkjP3lKzbsWJaJZQyU7T3Aw6dMX7ZstMuCs
+         JoJ1EPupyBVf2QbWZV5aZw6CVfxwbHbRe2rmfKkYjjZn7J40Iu92Y+sKBosLBQGdtdOH
+         TEGWD//v1mjAiQGrzCnF6p6CdY+m3MbtsDt1vkkuttyr90RBrvHhErVwu/uNUYJSqadu
+         tVmQ==
+X-Gm-Message-State: AOAM530vUB1FO5HMAv0Vs5QwwnEAMfITmQ4nmyek8X6LdA83gMIz73t6
+        kFp6By+FDmcBoynWYXteEufSo7Zwzd7cOw==
+X-Google-Smtp-Source: ABdhPJxApCjQCUHEkH+244z8ftz/jYBy6PM/euMt6f7ynylTtWESS8RV2jzthXzvhDLxG/bW02bp3w==
+X-Received: by 2002:a05:620a:14ac:: with SMTP id x12mr6315219qkj.262.1589370706284;
+        Wed, 13 May 2020 04:51:46 -0700 (PDT)
+Received: from sca.dev ([201.17.110.164])
+        by smtp.gmail.com with ESMTPSA id r128sm13846699qke.109.2020.05.13.04.51.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 May 2020 04:51:45 -0700 (PDT)
+From:   Rodrigo Rolim Mendes de Alencar <455.rodrigo.alencar@gmail.com>
+X-Google-Original-From: Rodrigo Rolim Mendes de Alencar <alencar.fmce@imbel.gov.br>
+To:     linux-fbdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, alencar.fmce@imbel.gov.br,
+        andy.shevchenko@gmail.com,
+        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Subject: [PATCH] video: fbdev: ssd1307fb: Added support to Column offset
+Date:   Wed, 13 May 2020 08:51:34 -0300
+Message-Id: <1589370694-14327-1-git-send-email-alencar.fmce@imbel.gov.br>
+X-Mailer: git-send-email 1.9.3
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 12 May 2020, Wolfram Sang wrote:
+This patch provides support for displays like VGM128064B0W10,
+which requires a column offset of 2, i.e., its segments starts
+in SEG2 and ends in SEG129.
 
-> On Fri, Apr 17, 2020 at 11:14:46AM +0100, Lee Jones wrote:
-> > On Thu, 26 Mar 2020, Wolfram Sang wrote:
-> > 
-> > > Move away from the deprecated API and return the shiny new ERRPTR where
-> > > useful.
-> > > 
-> > > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> > > ---
-> > >  drivers/video/backlight/tosa_lcd.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > Applied, thanks.
-> 
-> Thanks! I don't see it in -next, though?
+Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+---
+ Documentation/devicetree/bindings/display/ssd1307fb.txt | 1 +
+ drivers/video/fbdev/ssd1307fb.c                         | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-Just pushed.  Should be there soon.
-
+diff --git a/Documentation/devicetree/bindings/display/ssd1307fb.txt b/Documentation/devicetree/bindings/display/ssd1307fb.txt
+index 27333b9551b3..a9b51fd724a9 100644
+--- a/Documentation/devicetree/bindings/display/ssd1307fb.txt
++++ b/Documentation/devicetree/bindings/display/ssd1307fb.txt
+@@ -19,6 +19,7 @@ Optional properties:
+   - vbat-supply: The supply for VBAT
+   - solomon,segment-no-remap: Display needs normal (non-inverted) data column
+                               to segment mapping
++  - solomon,col-offset: Offset of columns (SEG) that the screen is mapped to.
+   - solomon,com-seq: Display uses sequential COM pin configuration
+   - solomon,com-lrremap: Display uses left-right COM pin remap
+   - solomon,com-invdir: Display uses inverted COM pin scan direction
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index 8e06ba912d60..0241585bfbcc 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -74,6 +74,7 @@ struct ssd1307fb_par {
+ 	struct fb_info *info;
+ 	u8 lookup_table[4];
+ 	u32 page_offset;
++	u32 col_offset;
+ 	u32 prechargep1;
+ 	u32 prechargep2;
+ 	struct pwm_device *pwm;
+@@ -458,11 +459,11 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ssd1307fb_write_cmd(par->client, 0x0);
++	ret = ssd1307fb_write_cmd(par->client, par->col_offset);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ssd1307fb_write_cmd(par->client, par->width - 1);
++	ret = ssd1307fb_write_cmd(par->client, par->col_offset + par->width - 1);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -626,6 +627,9 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	if (device_property_read_u32(dev, "solomon,page-offset", &par->page_offset))
+ 		par->page_offset = 1;
+ 
++	if (of_property_read_u32(node, "solomon,col-offset", &par->col_offset))
++		par->col_offset = 0;
++
+ 	if (device_property_read_u32(dev, "solomon,com-offset", &par->com_offset))
+ 		par->com_offset = 0;
+ 
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.23.0.rc1
+
