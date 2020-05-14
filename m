@@ -2,137 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C21341D2899
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 09:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 755FF1D2E1F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 13:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgENHQf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 May 2020 03:16:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45362 "EHLO mail.kernel.org"
+        id S1727942AbgENLT3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 May 2020 07:19:29 -0400
+Received: from mga07.intel.com ([134.134.136.100]:27953 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725909AbgENHQe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 May 2020 03:16:34 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 80546206B6;
-        Thu, 14 May 2020 07:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589440594;
-        bh=x6XY+w06HhJq6OnCryR2C8r+d8634pKZTzl7OEtJ84I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fsVHPsSugeuQaqh74KM3vTh5YlMixAmucxuZV15thPoJJMrucj9GTrX+4SfuldnhB
-         9l1LHA1eD+XBDjopMaSSsjMf2YIDC55sDJofhKonyQwyNCXX2L9+6xLEwnVOYrkmJu
-         HPyLWUmcgMwI4jj/qfiwZg1D0JFjzHw6/eb6nNR8=
-Date:   Thu, 14 May 2020 09:16:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Emil Velikov <emil.l.velikov@gmail.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>, x86@kernel.org,
-        linux-input@vger.kernel.org,
-        linux-fbdev <linux-fbdev@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Linux-Kernel@Vger. Kernel. Org" <linux-kernel@vger.kernel.org>,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        platform-driver-x86@vger.kernel.org,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Richard Gong <richard.gong@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        LAKML <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2 00/10] drivers, provide a way to add sysfs groups
- easily
-Message-ID: <20200514071631.GA1566388@kroah.com>
-References: <20190731124349.4474-1-gregkh@linuxfoundation.org>
- <20190731131045.GB147138@dtor-ws>
- <20190802104633.GA14823@kroah.com>
- <CACvgo52+Uqx4GJFwadJoFzzt5EMc69HcW-+K9uxv9t25TtSDBg@mail.gmail.com>
+        id S1726216AbgENLT3 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 14 May 2020 07:19:29 -0400
+IronPort-SDR: sFSjo0UwVUeHhVhqBNMgeQV14KVv8r9jRefhRodJy2f57sVrHIBpKaJ2NbNjtYusNudA0o6ttj
+ W0tjfQJ3+LJg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 04:19:28 -0700
+IronPort-SDR: T/9E/clvfkcfmrudsl3Ktg4mE8EfkEMb5IruAQHfs4jdk5Lcvbrkt5++8Mp0mC44m5cEcmUipl
+ AtALqGTn8sjA==
+X-IronPort-AV: E=Sophos;i="5.73,391,1583222400"; 
+   d="scan'208";a="410036713"
+Received: from oalgaze-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.39.44])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 04:19:25 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        laurent.pinchart@ideasonboard.com, ville.syrjala@linux.intel.com,
+        daniel.vetter@ffwll.ch
+Subject: Re: [PATCH v12 00/14] In order to readout DP SDPs, refactors the handling of DP SDPs
+In-Reply-To: <20200514060732.3378396-1-gwan-gyeong.mun@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20200514060732.3378396-1-gwan-gyeong.mun@intel.com>
+Date:   Thu, 14 May 2020 14:19:23 +0300
+Message-ID: <87eerm4vd0.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACvgo52+Uqx4GJFwadJoFzzt5EMc69HcW-+K9uxv9t25TtSDBg@mail.gmail.com>
+Content-Type: text/plain
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, May 13, 2020 at 11:18:15PM +0100, Emil Velikov wrote:
-> Hi Greg,
-> 
-> On Fri, 2 Aug 2019 at 11:46, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> 
-> >
-> > I have now done this with patch 1/10.  Here's the pull info if any
-> > subsystem maintainer wants to suck this into their tree to provide the
-> > ability for drivers to add/remove attribute groups easily.
-> >
-> > This is part of my driver-core tree now, and will go to Linus for
-> > 5.4-rc1, along with a few platform drivers that have been acked by their
-> > various subsystem maintainers that convert them to use this new
-> > functionality.
-> >
-> > If anyone has any questions about this, please let me know.
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> > -------------------
-> >
-> > The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
-> >
-> >   Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
-> >
-> > are available in the Git repository at:
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git tags/dev_groups_all_drivers
-> >
-> > for you to fetch changes up to 23b6904442d08b7dbed7622ed33b236d41a3aa8b:
-> >
-> >   driver core: add dev_groups to all drivers (2019-08-02 12:37:53 +0200)
-> >
-> > ----------------------------------------------------------------
-> > dev_groups added to struct driver
-> >
-> > Persistent tag for others to pull this branch from
-> >
-> > This is the first patch in a longer series that adds the ability for the
-> > driver core to create and remove a list of attribute groups
-> > automatically when the device is bound/unbound from a specific driver.
-> >
-> > See:
-> >         https://lore.kernel.org/r/20190731124349.4474-2-gregkh@linuxfoundation.org
-> > for details on this patch, and examples of how to use it in other
-> > drivers.
-> >
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >
-> > ----------------------------------------------------------------
-> > Dmitry Torokhov (1):
-> >       driver core: add dev_groups to all drivers
-> >
-> >  drivers/base/dd.c      | 14 ++++++++++++++
-> >  include/linux/device.h |  3 +++
-> >  2 files changed, 17 insertions(+)
-> > _______________________________________________
-> 
-> Was planning to re-spin DRM a series which uses .dev_groups, although
-> I cannot see the core patch.
-> Did the it get reverted or simply fell though the cracks?
+On Thu, 14 May 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
+> In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+> Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+> It adds new compute routines for DP HDR Metadata Infoframe SDP
+> and DP VSC SDP. 
+> And new writing routines of DP SDPs (Secondary Data Packet) that uses
+> computed configs.
+> New reading routines of DP SDPs are added for readout.
+> It adds a logging function for DP VSC SDP.
+> When receiving video it is very useful to be able to log DP VSC SDP.
+> This greatly simplifies debugging.
+> In order to use a common VSC SDP Colorimetry calculating code on PSR,
+> it uses a new psr vsc sdp compute routine.
 
-Nope, it's in there:
-	23b6904442d0 ("driver core: add dev_groups to all drivers")
-which showed up in the 5.4 kernel release.
+Pushed the series to drm-intel-next-queued with Daniel's irc ack for
+merging the two non-i915 patches that route too.
 
-Lots of other subsystems have already been converted to use this, do you
-not see it in your tree?
+Thanks for the patches and review!
 
-thanks,
+BR,
+Jani.
 
-greg k-h
+-- 
+Jani Nikula, Intel Open Source Graphics Center
