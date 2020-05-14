@@ -2,68 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA9A1D2FE7
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 14:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 001BD1D3144
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 15:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726056AbgENMhm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 May 2020 08:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725955AbgENMhm (ORCPT
+        id S1726146AbgENN2M (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 May 2020 09:28:12 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:40868 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726117AbgENN2L (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 May 2020 08:37:42 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0409EC061A0C
-        for <linux-fbdev@vger.kernel.org>; Thu, 14 May 2020 05:37:42 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id j5so3885540wrq.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 14 May 2020 05:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=w34+yydt15m63oHueozKI43M9FgZpWIQLSp+jJoneNc=;
-        b=e9aC+t+1AWn+GBNk8udUi5A57evXgsw+F9q1iHmY3vlD3E8kA43XVDIYnG9V3xm68B
-         FCFJ7rvjlbP4UB/TZsijLyVQ1kbajlm/kVuYa547rgf9p0/NvbE8RafbP7P9AZ+p5dPV
-         tD334UKBTtHNlnIp6jO8wZRD3W/XOr9Vf2WzU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=w34+yydt15m63oHueozKI43M9FgZpWIQLSp+jJoneNc=;
-        b=J/qckZwJDuwuERWzLbTY2T6qrRKEOarf3b9JRB2oKgtKwj/oR/pVOWIqlMOU+qdJoH
-         dQ/VZDXM+D+mvP1UKxIBNk90MbCE1fnu5G2bR+kQmfQAOF4Njm617VZIl9NtYTV+dOld
-         zuhJirgNfVmZcV7U9Fz+JUbqDsE/hVm0m45F9iChb6S5uEZIGxrBF/28RWxYg8aWRc1Y
-         VV98EG6if49Ey7NZWlJ8qsmDv0YEgt3c/s9wsDgM6G1a+W04z4bJmqECDwFn6duMpcoI
-         wWMcoGuSKySwMovvK/Xlj9pM2oFQ2+qOA7VAsndJfRAz9DVgBoelMh5ct5p4FB0voJa6
-         1tKQ==
-X-Gm-Message-State: AOAM5302opbW/ack1YL2eb7cyrmUzOa7O+xlSpeAASnWu6ydexjGD6AV
-        /2DgYN2/D6NZbW4qrEVi18gnGQ==
-X-Google-Smtp-Source: ABdhPJwwuh/8AkuSZPZulxuTxYjN+CMuoQTY/ngPdRDVzsewOeGDG8SgR2dLnt8VxV2pX1mnW/MzQQ==
-X-Received: by 2002:adf:ee03:: with SMTP id y3mr5022866wrn.190.1589459860755;
-        Thu, 14 May 2020 05:37:40 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id c19sm3973321wrb.89.2020.05.14.05.37.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2020 05:37:40 -0700 (PDT)
-Date:   Thu, 14 May 2020 14:37:38 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Emil Velikov <emil.l.velikov@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        Thu, 14 May 2020 09:28:11 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200514132808euoutp010d619152c83ca08ce52a5626c6d7e5fc~O6BN12wL11125511255euoutp01K
+        for <linux-fbdev@vger.kernel.org>; Thu, 14 May 2020 13:28:08 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200514132808euoutp010d619152c83ca08ce52a5626c6d7e5fc~O6BN12wL11125511255euoutp01K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1589462888;
+        bh=yIrf21r7axTfbevhR2aw2TeYa13FPhahOKl3Ek3yiPY=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=grakMfZg+KZ9kSQCS66P/FblZvSALFiyF0shFwYjteWhW4+iX1npWGZSREonC9aEz
+         uS2v2QKpi2M9bVofvMJLCSrC5RyncfspAHH4FJfdHs+yb0wohG95P/bcKxkGP5w7pj
+         CFndCan7CMP8zHQvkV2ZdoRXp1PAzBDg5B/5lo6Y=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200514132808eucas1p2f2d1b9673a0b47bdb6522b1724b9c3b8~O6BNrvo5p1563815638eucas1p2m;
+        Thu, 14 May 2020 13:28:08 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id DF.F2.60679.8674DBE5; Thu, 14
+        May 2020 14:28:08 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200514132808eucas1p17d6555a3d8720d92576c028dec9b10cf~O6BNaqvJw1470214702eucas1p1z;
+        Thu, 14 May 2020 13:28:08 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200514132808eusmtrp19b4c905fbc5a5986b6062e340ee8e0f8~O6BNaEM8W2700227002eusmtrp19;
+        Thu, 14 May 2020 13:28:08 +0000 (GMT)
+X-AuditID: cbfec7f4-0e5ff7000001ed07-0a-5ebd4768b723
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 06.F0.07950.8674DBE5; Thu, 14
+        May 2020 14:28:08 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200514132808eusmtip2700ba0844cff1fe9f5ad79be872eb02d~O6BNG86K42553625536eusmtip2p;
+        Thu, 14 May 2020 13:28:07 +0000 (GMT)
 Subject: Re: [PATCH] fbdev: annotate rivafb/nvidiafb as obsolete
-Message-ID: <20200514123738.GU206103@phenom.ffwll.local>
-References: <20200513215342.2145495-1-emil.l.velikov@gmail.com>
+To:     Emil Velikov <emil.l.velikov@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <178a203a-fc3e-0027-60c9-786c3e907407@samsung.com>
+Date:   Thu, 14 May 2020 15:28:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20200513215342.2145495-1-emil.l.velikov@gmail.com>
-X-Operating-System: Linux phenom 5.6.0-1-amd64 
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIKsWRmVeSWpSXmKPExsWy7djP87oZ7nvjDJ61qlj87P7CZnHl63s2
+        iz1X7zFZnOj7wOrA4rFz1l12j/vdx5k8Pm+SC2CO4rJJSc3JLEst0rdL4MpY3PKbueC9ZsWn
+        Lz9ZGxg3K3UxcnJICJhILJ7QytzFyMUhJLCCUeLElClQzhdGiblzZjJBOJ8ZJZZfuMwG03Ky
+        YysrRGI5o8S3HW0sIAkhgbeMEv0XmEBsYQEHiRk9h9lBbBEBbYnpD+cwg9jMAukSZ56tB7PZ
+        BKwkJravYgSxeQXsJD4vvgRmswioSlz4ORmsV1QgQuLTg8OsEDWCEidnPgHaxcHBCTR/yZc4
+        iJHiEreezGeCsOUltr+dA/aBhEAzu8TCeYsYIY52kbj1/iE7hC0s8er4FihbRuL05B4WiIZ1
+        jBJ/O15AdW8HennyP6iXrSXunPvFBrKZWUBTYv0ufYiwo8T/1lZGkLCEAJ/EjbeCEEfwSUza
+        Np0ZIswr0dEmBFGtJrFh2QY2mLVdO1cyT2BUmoXks1lI3pmF5J1ZCHsXMLKsYhRPLS3OTU8t
+        NspLLdcrTswtLs1L10vOz93ECEwop/8d/7KDcdefpEOMAhyMSjy8Frd2xwmxJpYVV+YeYpTg
+        YFYS4fVbDxTiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampBahFMlomDU6qB
+        kfvNZYW5oZ1Hgp4f/2OvZ1XeGspecaysZoH4+fzElk3Fe0u//Oh1i3e46npT4PHc1Lf+jNd9
+        Oz2eb32SwjHrcU/I1vLIFs8M86578+e1TTJaXFohOemZ6FPRd+J9F7fklGrGN9e8nvDK8ftv
+        e99VVtUfv20oVGWeEmeeJhh8+9uSxpz16ZVKSizFGYmGWsxFxYkA54emJyQDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsVy+t/xe7oZ7nvjDF7O4LX42f2FzeLK1/ds
+        Fnuu3mOyONH3gdWBxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
+        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJexuOU3c8F7zYpPX36yNjBuVupi5OSQEDCRONmx
+        lbWLkYtDSGApo8TNhrVADgdQQkbi+PoyiBphiT/Xutggal4zSrz9c5EVJCEs4CAxo+cwO4gt
+        IqAtMf3hHGYQm1kgXaK/+QHU0MmMEo0NV8CK2ASsJCa2r2IEsXkF7CQ+L74EZrMIqEpc+DkZ
+        rEZUIELi8I5ZUDWCEidnPmEBOYgTaNmSL3EQ89Ul/sy7BLVLXOLWk/lMELa8xPa3c5gnMArN
+        QtI9C0nLLCQts5C0LGBkWcUoklpanJueW2ykV5yYW1yal66XnJ+7iREYQduO/dyyg7HrXfAh
+        RgEORiUeXotbu+OEWBPLiitzDzFKcDArifD6rQcK8aYkVlalFuXHF5XmpBYfYjQF+m0is5Ro
+        cj4wuvNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQWwfQxcXBKNTBa7TK9GP5n
+        UaTp5Z1TUiQWcLqFyskkcX3o9by23tZ+h9uknat321TUlofzaM9NSN/+vzy9IOR4tv7HK69k
+        22MYUxTbS86yvdcT9VmyfWprW5+dkzSXa0tx2wXTL0/ZxGY2eWSdmpcYWuX46SLrhQkdMc8S
+        Dty37qnuW7Kd4XXXDhfD3oPnrJRYijMSDbWYi4oTAfshwrG2AgAA
+X-CMS-MailID: 20200514132808eucas1p17d6555a3d8720d92576c028dec9b10cf
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62
+References: <CGME20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62@eucas1p1.samsung.com>
+        <20200513215342.2145495-1-emil.l.velikov@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, May 13, 2020 at 10:53:42PM +0100, Emil Velikov wrote:
+
+Hi!
+
+On 5/13/20 11:53 PM, Emil Velikov wrote:
 > Drivers have not seen any love for years.
 > 
 > Be that fixes or improvements, or cosmetics like introducing symbolic
@@ -79,10 +118,6 @@ On Wed, May 13, 2020 at 10:53:42PM +0100, Emil Velikov wrote:
 > Cc: linux-fbdev@vger.kernel.org
 > Cc: dri-devel@lists.freedesktop.org
 > Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
-
-Makes sense
-
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 > ---
 >  MAINTAINERS                           | 3 +--
 >  arch/powerpc/configs/g5_defconfig     | 2 --
@@ -160,6 +195,10 @@ Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 >  CONFIG_FB_MATROX=y
 >  CONFIG_FB_MATROX_MILLENIUM=y
 >  CONFIG_FB_MATROX_MYSTIQUE=y
+
+defconfigs should be converted to use the nouveau driver
+(in a separate patch please).
+
 > diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
 > index 1b2f5f31fb6f..cad3e4bc5e52 100644
 > --- a/drivers/video/fbdev/Kconfig
@@ -169,6 +208,13 @@ Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 >  config FB_NVIDIA
 >  	tristate "nVidia Framebuffer Support"
 > +	depends on BROKEN
+
+Please don't add new users of BROKEN config option.
+
+Either it is broken and should be removed right now (BROKEN config option
+predates git and with git nothing is ever lost), or it still works and
+should be left alone.
+
 >  	depends on FB && PCI
 >  	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
 >  	select FB_MODE_HELPERS
@@ -177,6 +223,15 @@ Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 >  	select VGASTATE
 >  	help
 > +	  Obsolete, use nouveau instead.
+
+"nouveau" -> "nouveau DRM driver"
+
+Please also add a runtime warning in the driver probe function with a fixed
+date for removal, i.e.:
+
+	pr_warn("Legacy nvidiafb framebuffer driver will be removed in 2022\n
+		"Please switch to nouveau DRM driver\n");
+
 > +
 >  	  This driver supports graphics boards with the nVidia chips, TNT
 >  	  and newer. For very old chipsets, such as the RIVA128, then use
@@ -195,18 +250,16 @@ Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 >  	help
 > +	  Obsolete, use nouveau instead.
 > +
+
+ditto
+
 >  	  This driver supports graphics boards with the nVidia Riva/Geforce
 >  	  chips.
 >  	  Say Y if you have such a graphics board.
-> -- 
-> 2.25.1
 > 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
