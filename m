@@ -2,264 +2,99 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 001BD1D3144
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 May 2020 15:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D497B1D4E71
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2020 15:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726146AbgENN2M (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 May 2020 09:28:12 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:40868 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726117AbgENN2L (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 May 2020 09:28:11 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200514132808euoutp010d619152c83ca08ce52a5626c6d7e5fc~O6BN12wL11125511255euoutp01K
-        for <linux-fbdev@vger.kernel.org>; Thu, 14 May 2020 13:28:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200514132808euoutp010d619152c83ca08ce52a5626c6d7e5fc~O6BN12wL11125511255euoutp01K
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1589462888;
-        bh=yIrf21r7axTfbevhR2aw2TeYa13FPhahOKl3Ek3yiPY=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=grakMfZg+KZ9kSQCS66P/FblZvSALFiyF0shFwYjteWhW4+iX1npWGZSREonC9aEz
-         uS2v2QKpi2M9bVofvMJLCSrC5RyncfspAHH4FJfdHs+yb0wohG95P/bcKxkGP5w7pj
-         CFndCan7CMP8zHQvkV2ZdoRXp1PAzBDg5B/5lo6Y=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200514132808eucas1p2f2d1b9673a0b47bdb6522b1724b9c3b8~O6BNrvo5p1563815638eucas1p2m;
-        Thu, 14 May 2020 13:28:08 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id DF.F2.60679.8674DBE5; Thu, 14
-        May 2020 14:28:08 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200514132808eucas1p17d6555a3d8720d92576c028dec9b10cf~O6BNaqvJw1470214702eucas1p1z;
-        Thu, 14 May 2020 13:28:08 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200514132808eusmtrp19b4c905fbc5a5986b6062e340ee8e0f8~O6BNaEM8W2700227002eusmtrp19;
-        Thu, 14 May 2020 13:28:08 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-0a-5ebd4768b723
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 06.F0.07950.8674DBE5; Thu, 14
-        May 2020 14:28:08 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200514132808eusmtip2700ba0844cff1fe9f5ad79be872eb02d~O6BNG86K42553625536eusmtip2p;
-        Thu, 14 May 2020 13:28:07 +0000 (GMT)
-Subject: Re: [PATCH] fbdev: annotate rivafb/nvidiafb as obsolete
-To:     Emil Velikov <emil.l.velikov@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Antonino Daplas <adaplas@gmail.com>,
-        linux-fbdev@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <178a203a-fc3e-0027-60c9-786c3e907407@samsung.com>
-Date:   Thu, 14 May 2020 15:28:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1726171AbgEONG0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 15 May 2020 09:06:26 -0400
+Received: from mga14.intel.com ([192.55.52.115]:18181 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726168AbgEONG0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 15 May 2020 09:06:26 -0400
+IronPort-SDR: Veg9yLRI8TAlKahZZpnGBGs+t08VPoyHMwvrgthStxQwYY3fn6EDFnT4AmT8EdW+EwbDS3JrGX
+ 7rczYKWE1GEw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2020 06:06:16 -0700
+IronPort-SDR: cJW89boO3UmMbV9Q4iHG416GrkUpiUDF+wwZxsExzQpHcTD61rtOSJyonEIjDpTqLohpM/xRSr
+ vBgqH+VJec7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,395,1583222400"; 
+   d="scan'208";a="307420596"
+Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
+  by FMSMGA003.fm.intel.com with SMTP; 15 May 2020 06:06:13 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 15 May 2020 16:06:12 +0300
+Date:   Fri, 15 May 2020 16:06:12 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>
+Cc:     Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, laurent.pinchart@ideasonboard.com,
+        daniel.vetter@ffwll.ch
+Subject: Re: [PATCH v12 00/14] In order to readout DP SDPs, refactors the
+ handling of DP SDPs
+Message-ID: <20200515130612.GI6112@intel.com>
+References: <20200514060732.3378396-1-gwan-gyeong.mun@intel.com>
+ <87eerm4vd0.fsf@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200513215342.2145495-1-emil.l.velikov@gmail.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIKsWRmVeSWpSXmKPExsWy7djP87oZ7nvjDJ61qlj87P7CZnHl63s2
-        iz1X7zFZnOj7wOrA4rFz1l12j/vdx5k8Pm+SC2CO4rJJSc3JLEst0rdL4MpY3PKbueC9ZsWn
-        Lz9ZGxg3K3UxcnJICJhILJ7QytzFyMUhJLCCUeLElClQzhdGiblzZjJBOJ8ZJZZfuMwG03Ky
-        YysrRGI5o8S3HW0sIAkhgbeMEv0XmEBsYQEHiRk9h9lBbBEBbYnpD+cwg9jMAukSZ56tB7PZ
-        BKwkJravYgSxeQXsJD4vvgRmswioSlz4ORmsV1QgQuLTg8OsEDWCEidnPgHaxcHBCTR/yZc4
-        iJHiEreezGeCsOUltr+dA/aBhEAzu8TCeYsYIY52kbj1/iE7hC0s8er4FihbRuL05B4WiIZ1
-        jBJ/O15AdW8HennyP6iXrSXunPvFBrKZWUBTYv0ufYiwo8T/1lZGkLCEAJ/EjbeCEEfwSUza
-        Np0ZIswr0dEmBFGtJrFh2QY2mLVdO1cyT2BUmoXks1lI3pmF5J1ZCHsXMLKsYhRPLS3OTU8t
-        NspLLdcrTswtLs1L10vOz93ECEwop/8d/7KDcdefpEOMAhyMSjy8Frd2xwmxJpYVV+YeYpTg
-        YFYS4fVbDxTiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampBahFMlomDU6qB
-        kfvNZYW5oZ1Hgp4f/2OvZ1XeGspecaysZoH4+fzElk3Fe0u//Oh1i3e46npT4PHc1Lf+jNd9
-        Oz2eb32SwjHrcU/I1vLIFs8M86578+e1TTJaXFohOemZ6FPRd+J9F7fklGrGN9e8nvDK8ftv
-        e99VVtUfv20oVGWeEmeeJhh8+9uSxpz16ZVKSizFGYmGWsxFxYkA54emJyQDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsVy+t/xe7oZ7nvjDF7O4LX42f2FzeLK1/ds
-        Fnuu3mOyONH3gdWBxWPnrLvsHve7jzN5fN4kF8AcpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFn
-        ZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJexuOU3c8F7zYpPX36yNjBuVupi5OSQEDCRONmx
-        lbWLkYtDSGApo8TNhrVADgdQQkbi+PoyiBphiT/Xutggal4zSrz9c5EVJCEs4CAxo+cwO4gt
-        IqAtMf3hHGYQm1kgXaK/+QHU0MmMEo0NV8CK2ASsJCa2r2IEsXkF7CQ+L74EZrMIqEpc+DkZ
-        rEZUIELi8I5ZUDWCEidnPmEBOYgTaNmSL3EQ89Ul/sy7BLVLXOLWk/lMELa8xPa3c5gnMArN
-        QtI9C0nLLCQts5C0LGBkWcUoklpanJueW2ykV5yYW1yal66XnJ+7iREYQduO/dyyg7HrXfAh
-        RgEORiUeXotbu+OEWBPLiitzDzFKcDArifD6rQcK8aYkVlalFuXHF5XmpBYfYjQF+m0is5Ro
-        cj4wuvNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5akZqemFqQWwfQxcXBKNTBa7TK9GP5n
-        UaTp5Z1TUiQWcLqFyskkcX3o9by23tZ+h9uknat321TUlofzaM9NSN/+vzy9IOR4tv7HK69k
-        22MYUxTbS86yvdcT9VmyfWprW5+dkzSXa0tx2wXTL0/ZxGY2eWSdmpcYWuX46SLrhQkdMc8S
-        Dty37qnuW7Kd4XXXDhfD3oPnrJRYijMSDbWYi4oTAfshwrG2AgAA
-X-CMS-MailID: 20200514132808eucas1p17d6555a3d8720d92576c028dec9b10cf
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62
-References: <CGME20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62@eucas1p1.samsung.com>
-        <20200513215342.2145495-1-emil.l.velikov@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87eerm4vd0.fsf@intel.com>
+X-Patchwork-Hint: comment
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
-Hi!
-
-On 5/13/20 11:53 PM, Emil Velikov wrote:
-> Drivers have not seen any love for years.
+On Thu, May 14, 2020 at 02:19:23PM +0300, Jani Nikula wrote:
+> On Thu, 14 May 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
+> > In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
+> > Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
+> > It adds new compute routines for DP HDR Metadata Infoframe SDP
+> > and DP VSC SDP. 
+> > And new writing routines of DP SDPs (Secondary Data Packet) that uses
+> > computed configs.
+> > New reading routines of DP SDPs are added for readout.
+> > It adds a logging function for DP VSC SDP.
+> > When receiving video it is very useful to be able to log DP VSC SDP.
+> > This greatly simplifies debugging.
+> > In order to use a common VSC SDP Colorimetry calculating code on PSR,
+> > it uses a new psr vsc sdp compute routine.
 > 
-> Be that fixes or improvements, or cosmetics like introducing symbolic
-> names, style and code-flow polish.
-> 
-> Seemingly the maintainer has also disappeared years ago :-\
-> 
-> Considering nouveau supports all that hardware (modulo nv03) just mark
-> these as obsolete/broken, referring to nouveau in the help text.
-> 
-> Cc: Antonino Daplas <adaplas@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
-> ---
->  MAINTAINERS                           | 3 +--
->  arch/powerpc/configs/g5_defconfig     | 2 --
->  arch/powerpc/configs/pasemi_defconfig | 2 --
->  arch/powerpc/configs/pmac32_defconfig | 2 --
->  arch/powerpc/configs/ppc6xx_defconfig | 3 ---
->  drivers/video/fbdev/Kconfig           | 6 ++++++
->  6 files changed, 7 insertions(+), 11 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 515a81fdb7d6..cc9da9a1e230 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11247,9 +11247,8 @@ F:	include/linux/nubus.h
->  F:	include/uapi/linux/nubus.h
->  
->  NVIDIA (rivafb and nvidiafb) FRAMEBUFFER DRIVER
-> -M:	Antonino Daplas <adaplas@gmail.com>
->  L:	linux-fbdev@vger.kernel.org
-> -S:	Maintained
-> +S:	Obsolete
->  F:	drivers/video/fbdev/riva/
->  F:	drivers/video/fbdev/nvidia/
->  
-> diff --git a/arch/powerpc/configs/g5_defconfig b/arch/powerpc/configs/g5_defconfig
-> index ceb3c770786f..24225e39662a 100644
-> --- a/arch/powerpc/configs/g5_defconfig
-> +++ b/arch/powerpc/configs/g5_defconfig
-> @@ -130,8 +130,6 @@ CONFIG_FB=y
->  CONFIG_FIRMWARE_EDID=y
->  CONFIG_FB_TILEBLITTING=y
->  CONFIG_FB_OF=y
-> -CONFIG_FB_NVIDIA=y
-> -CONFIG_FB_NVIDIA_I2C=y
->  CONFIG_FB_RADEON=y
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_FRAMEBUFFER_CONSOLE=y
-> diff --git a/arch/powerpc/configs/pasemi_defconfig b/arch/powerpc/configs/pasemi_defconfig
-> index c0423b2cf7c0..36b242efae9a 100644
-> --- a/arch/powerpc/configs/pasemi_defconfig
-> +++ b/arch/powerpc/configs/pasemi_defconfig
-> @@ -107,8 +107,6 @@ CONFIG_DRM_RADEON=y
->  CONFIG_FIRMWARE_EDID=y
->  CONFIG_FB_TILEBLITTING=y
->  CONFIG_FB_VGA16=y
-> -CONFIG_FB_NVIDIA=y
-> -CONFIG_FB_NVIDIA_I2C=y
->  CONFIG_FB_RADEON=y
->  # CONFIG_LCD_CLASS_DEVICE is not set
->  CONFIG_VGACON_SOFT_SCROLLBACK=y
-> diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
-> index 50b610b48914..ef4470d44763 100644
-> --- a/arch/powerpc/configs/pmac32_defconfig
-> +++ b/arch/powerpc/configs/pmac32_defconfig
-> @@ -211,8 +211,6 @@ CONFIG_FB_PLATINUM=y
->  CONFIG_FB_VALKYRIE=y
->  CONFIG_FB_CT65550=y
->  CONFIG_FB_IMSTT=y
-> -CONFIG_FB_NVIDIA=y
-> -CONFIG_FB_NVIDIA_I2C=y
->  CONFIG_FB_MATROX=y
->  CONFIG_FB_MATROX_MILLENIUM=y
->  CONFIG_FB_MATROX_MYSTIQUE=y
-> diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-> index 7c6baf6df139..5b4e26de0bcf 100644
-> --- a/arch/powerpc/configs/ppc6xx_defconfig
-> +++ b/arch/powerpc/configs/ppc6xx_defconfig
-> @@ -752,9 +752,6 @@ CONFIG_FB_OF=y
->  CONFIG_FB_PLATINUM=y
->  CONFIG_FB_VALKYRIE=y
->  CONFIG_FB_CT65550=y
-> -CONFIG_FB_NVIDIA=y
-> -CONFIG_FB_NVIDIA_I2C=y
-> -CONFIG_FB_RIVA=m
->  CONFIG_FB_MATROX=y
->  CONFIG_FB_MATROX_MILLENIUM=y
->  CONFIG_FB_MATROX_MYSTIQUE=y
+> Pushed the series to drm-intel-next-queued with Daniel's irc ack for
+> merging the two non-i915 patches that route too.
 
-defconfigs should be converted to use the nouveau driver
-(in a separate patch please).
+fi-hsw-4770 now oopses at boot:
 
-> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> index 1b2f5f31fb6f..cad3e4bc5e52 100644
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -868,6 +868,7 @@ config FB_ATMEL
->  
->  config FB_NVIDIA
->  	tristate "nVidia Framebuffer Support"
-> +	depends on BROKEN
+<1>[    3.736903] BUG: kernel NULL pointer dereference, address: 0000000000000000
+<1>[    3.736916] #PF: supervisor read access in kernel mode
+<1>[    3.736916] #PF: error_code(0x0000) - not-present page
+<6>[    3.736917] PGD 0 P4D 0 
+<4>[    3.736919] Oops: 0000 [#1] PREEMPT SMP PTI
+<4>[    3.736921] CPU: 0 PID: 363 Comm: systemd-udevd Not tainted 5.7.0-rc5-CI-CI_DRM_8485+ #1
+<4>[    3.736922] Hardware name: LENOVO 10AGS00601/SHARKBAY, BIOS FBKT34AUS 04/24/2013
+<4>[    3.736986] RIP: 0010:intel_psr_enabled+0x8/0x70 [i915]
+<4>[    3.736988] Code: 18 48 c7 c6 40 09 79 a0 e8 e3 e2 04 e1 0f b6 44 24 03 e9 f4 fd ff ff 90 66 2e 0f 1f 84 00 00 00 00 00 41 54 55 53 48 83 ec 08 <48> 8b 9f d8 fe ff ff f6 83 5e 0d 00 00 20 74 09 80 bb 6c b6 00 00
+<4>[    3.737036] RSP: 0018:ffffc9000047f8a0 EFLAGS: 00010286
+<4>[    3.737042] RAX: 0000000000000002 RBX: ffff8883ffd04000 RCX: 0000000000000001
+<4>[    3.737048] RDX: 0000000000000007 RSI: ffff8883ffd04000 RDI: 0000000000000128
+<4>[    3.737055] RBP: ffff888406afe200 R08: 000000000000000f R09: 0000000000000001
+<4>[    3.737061] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+<4>[    3.737068] R13: ffff8883f75d0000 R14: ffff888406afe200 R15: ffff8883f75d0870
+<4>[    3.737075] FS:  00007f71618f9680(0000) GS:ffff88840ec00000(0000) knlGS:0000000000000000
+<4>[    3.737082] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[    3.737088] CR2: 0000000000000000 CR3: 0000000402510002 CR4: 00000000001606f0
+<4>[    3.737094] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+<4>[    3.737101] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+<4>[    3.737107] Call Trace:
+<4>[    3.737175]  intel_read_dp_sdp+0x1a4/0x380 [i915]
+<4>[    3.737246]  hsw_crt_get_config+0x12/0x40 [i915]
+<4>[    3.737317]  intel_modeset_setup_hw_state+0x3b3/0x16a0 [i915]
+...
 
-Please don't add new users of BROKEN config option.
-
-Either it is broken and should be removed right now (BROKEN config option
-predates git and with git nothing is ever lost), or it still works and
-should be left alone.
-
->  	depends on FB && PCI
->  	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
->  	select FB_MODE_HELPERS
-> @@ -877,6 +878,8 @@ config FB_NVIDIA
->  	select BITREVERSE
->  	select VGASTATE
->  	help
-> +	  Obsolete, use nouveau instead.
-
-"nouveau" -> "nouveau DRM driver"
-
-Please also add a runtime warning in the driver probe function with a fixed
-date for removal, i.e.:
-
-	pr_warn("Legacy nvidiafb framebuffer driver will be removed in 2022\n
-		"Please switch to nouveau DRM driver\n");
-
-> +
->  	  This driver supports graphics boards with the nVidia chips, TNT
->  	  and newer. For very old chipsets, such as the RIVA128, then use
->  	  the rivafb.
-> @@ -915,6 +918,7 @@ config FB_NVIDIA_BACKLIGHT
->  
->  config FB_RIVA
->  	tristate "nVidia Riva support"
-> +	depends on BROKEN
->  	depends on FB && PCI
->  	select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
->  	select FB_MODE_HELPERS
-> @@ -924,6 +928,8 @@ config FB_RIVA
->  	select BITREVERSE
->  	select VGASTATE
->  	help
-> +	  Obsolete, use nouveau instead.
-> +
-
-ditto
-
->  	  This driver supports graphics boards with the nVidia Riva/Geforce
->  	  chips.
->  	  Say Y if you have such a graphics board.
-> 
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+-- 
+Ville Syrjälä
+Intel
