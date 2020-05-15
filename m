@@ -2,158 +2,150 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECFA1D5024
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2020 16:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 671EE1D505F
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2020 16:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726140AbgEOOOb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 15 May 2020 10:14:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60268 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726016AbgEOOOb (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 15 May 2020 10:14:31 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B37C061A0C
-        for <linux-fbdev@vger.kernel.org>; Fri, 15 May 2020 07:14:30 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id e16so3730288wra.7
-        for <linux-fbdev@vger.kernel.org>; Fri, 15 May 2020 07:14:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=75mytnsZSW494ezzILP9HOEPjF4cYjBQvV72zHXjVsk=;
-        b=jIhdtQ/wrRK/lvciskioZccjkpI8vyqTPNOit2Gg21ag2loY+O+TNFVHPXd3tmj4ST
-         R0PcCu0ihnJuHE2HhFNC8D+MSHOzs1IgQyPF7tvgsPx95DlT/xTVPo3dDAx8APQU8sym
-         0zShFPno9J6SNWtN3Hp6gaQbelareIxoDlNVo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=75mytnsZSW494ezzILP9HOEPjF4cYjBQvV72zHXjVsk=;
-        b=DkRrZRaOBVgESbLt7wxdr1/aJ6TYQixeJMbksGK9jU+GHDSmAeJLiRQ/fWeVyr+KOR
-         HYqbLzSHLkPlx/u5EsKhQGyVx6Yq7Ns22hUcn4eZFFxeA329WPOraJF+R9euYzrphCRr
-         mzUPBPVwMshk1dP8Xj/Zb06wGXdzyfAvOwC9TEIRPvtp1JDSfKdDVwsXvhTOMInwj2j3
-         svzBgstov47dnm9qABhp3VrtCvrwwjb7M9Jf5IHfOMTNA9HOVVmabNlx2OF9Q+8Hph2w
-         invK/j+MFnpT6ZHA33RKZycY48NE6Ok4zcr9SJFrmQPa9e7KG6d1JG+TTybfLndXO3tX
-         kugA==
-X-Gm-Message-State: AOAM532PzNLQlS28Hk5TT7MC/BjmRJWl0WmNZg3SkTvbxzgyGowD8ZSD
-        GhNGtAVjoq+cUrLP5P/qLGp0OAt8ZTA=
-X-Google-Smtp-Source: ABdhPJx9P2iM/DwMwqAedF1D9rW6k90+F9vmbtNvRw8SIicpdiNm4dezPuj1b9Y1Ph9c4sLB/2tGDQ==
-X-Received: by 2002:a5d:6b83:: with SMTP id n3mr4822679wrx.213.1589552069335;
-        Fri, 15 May 2020 07:14:29 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id e7sm4136911wrp.0.2020.05.15.07.14.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2020 07:14:28 -0700 (PDT)
-Date:   Fri, 15 May 2020 16:14:26 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, laurent.pinchart@ideasonboard.com,
-        daniel.vetter@ffwll.ch
-Subject: Re: [PATCH v12 00/14] In order to readout DP SDPs, refactors the
- handling of DP SDPs
-Message-ID: <20200515141426.GI206103@phenom.ffwll.local>
+        id S1726140AbgEOOZp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 15 May 2020 10:25:45 -0400
+Received: from mga06.intel.com ([134.134.136.31]:27102 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726263AbgEOOZo (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 15 May 2020 10:25:44 -0400
+IronPort-SDR: LzJhtL7UuBLMli6gLhqZ9Dv6GSsyhluWl8WycCqCdaoJFuIWAFNmv8rUd8VV+9l+LUrS/6QNSs
+ Ud8PAXUkjb/w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2020 07:25:44 -0700
+IronPort-SDR: TgY3fOINZ9NscYQBtERM0IiWO+ovfwODOV2sLs4GwF5EPykqPM4V6GHnmNzZuY0rrekNJda0Ld
+ bJVEaON1keuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,395,1583222400"; 
+   d="scan'208";a="281232214"
+Received: from irsmsx152.ger.corp.intel.com ([163.33.192.66])
+  by orsmga002.jf.intel.com with ESMTP; 15 May 2020 07:25:42 -0700
+Received: from irsmsx606.ger.corp.intel.com (163.33.146.139) by
+ IRSMSX152.ger.corp.intel.com (163.33.192.66) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 15 May 2020 15:25:41 +0100
+Received: from irsmsx603.ger.corp.intel.com (163.33.146.9) by
+ IRSMSX606.ger.corp.intel.com (163.33.146.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Fri, 15 May 2020 15:25:41 +0100
+Received: from irsmsx603.ger.corp.intel.com ([163.33.146.9]) by
+ irsmsx603.ger.corp.intel.com ([163.33.146.9]) with mapi id 15.01.1713.004;
+ Fri, 15 May 2020 15:25:41 +0100
+From:   "Saarinen, Jani" <jani.saarinen@intel.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+CC:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "daniel.vetter@ffwll.ch" <daniel.vetter@ffwll.ch>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "laurent.pinchart@ideasonboard.com" 
+        <laurent.pinchart@ideasonboard.com>
+Subject: RE: [Intel-gfx] [PATCH v12 00/14] In order to readout DP SDPs,
+ refactors the handling of DP SDPs
+Thread-Topic: [Intel-gfx] [PATCH v12 00/14] In order to readout DP SDPs,
+ refactors the handling of DP SDPs
+Thread-Index: AQHWKbYA9S5hlcm0nEW0iS76EfXfTainXtqAgAGwLQCAAAH8AIAAJMTA
+Date:   Fri, 15 May 2020 14:25:41 +0000
+Message-ID: <e82f172de7a04c0589f4f7c551475535@intel.com>
 References: <20200514060732.3378396-1-gwan-gyeong.mun@intel.com>
- <87eerm4vd0.fsf@intel.com>
- <20200515130612.GI6112@intel.com>
+ <87eerm4vd0.fsf@intel.com> <20200515130612.GI6112@intel.com>
  <87zha92vf5.fsf@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <87zha92vf5.fsf@intel.com>
-X-Operating-System: Linux phenom 5.6.0-1-amd64 
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+dlp-product: dlpe-windows
+x-originating-ip: [163.33.253.164]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, May 15, 2020 at 04:13:18PM +0300, Jani Nikula wrote:
-> On Fri, 15 May 2020, Ville Syrjälä <ville.syrjala@linux.intel.com> wrote:
-> > On Thu, May 14, 2020 at 02:19:23PM +0300, Jani Nikula wrote:
-> >> On Thu, 14 May 2020, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com> wrote:
-> >> > In order to readout DP SDPs (Secondary Data Packet: DP HDR Metadata
-> >> > Infoframe SDP, DP VSC SDP), it refactors handling DP SDPs codes.
-> >> > It adds new compute routines for DP HDR Metadata Infoframe SDP
-> >> > and DP VSC SDP. 
-> >> > And new writing routines of DP SDPs (Secondary Data Packet) that uses
-> >> > computed configs.
-> >> > New reading routines of DP SDPs are added for readout.
-> >> > It adds a logging function for DP VSC SDP.
-> >> > When receiving video it is very useful to be able to log DP VSC SDP.
-> >> > This greatly simplifies debugging.
-> >> > In order to use a common VSC SDP Colorimetry calculating code on PSR,
-> >> > it uses a new psr vsc sdp compute routine.
-> >> 
-> >> Pushed the series to drm-intel-next-queued with Daniel's irc ack for
-> >> merging the two non-i915 patches that route too.
-> >
-> > fi-hsw-4770 now oopses at boot:
-> 
-> /o\
-> 
-> What did I miss? What part about the CI report did I overlook?
-
-Participating hosts (48 -> 45)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (4): fi-byt-clapper fi-byt-squawks fi-bsw-cyan fi-hsw-4200u
-
-
-You kill machines at boot, CI won't tell you.
-
-This is (or at least was) because the network is shitty enough that we
-have more spurious failures because the ethernet went into the ether than
-because of people having killed the machine with their patches for real.
-Also it's hard to grab logs if the thing doesn't work at all, so cant give
-you any more data than the above.
-
-Yes this sucks :-/
-
-Cheers, Daniel
-
-> 
-> BR,
-> Jani.
-> 
-> 
-> >
-> > <1>[    3.736903] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> > <1>[    3.736916] #PF: supervisor read access in kernel mode
-> > <1>[    3.736916] #PF: error_code(0x0000) - not-present page
-> > <6>[    3.736917] PGD 0 P4D 0 
-> > <4>[    3.736919] Oops: 0000 [#1] PREEMPT SMP PTI
-> > <4>[    3.736921] CPU: 0 PID: 363 Comm: systemd-udevd Not tainted 5.7.0-rc5-CI-CI_DRM_8485+ #1
-> > <4>[    3.736922] Hardware name: LENOVO 10AGS00601/SHARKBAY, BIOS FBKT34AUS 04/24/2013
-> > <4>[    3.736986] RIP: 0010:intel_psr_enabled+0x8/0x70 [i915]
-> > <4>[    3.736988] Code: 18 48 c7 c6 40 09 79 a0 e8 e3 e2 04 e1 0f b6 44 24 03 e9 f4 fd ff ff 90 66 2e 0f 1f 84 00 00 00 00 00 41 54 55 53 48 83 ec 08 <48> 8b 9f d8 fe ff ff f6 83 5e 0d 00 00 20 74 09 80 bb 6c b6 00 00
-> > <4>[    3.737036] RSP: 0018:ffffc9000047f8a0 EFLAGS: 00010286
-> > <4>[    3.737042] RAX: 0000000000000002 RBX: ffff8883ffd04000 RCX: 0000000000000001
-> > <4>[    3.737048] RDX: 0000000000000007 RSI: ffff8883ffd04000 RDI: 0000000000000128
-> > <4>[    3.737055] RBP: ffff888406afe200 R08: 000000000000000f R09: 0000000000000001
-> > <4>[    3.737061] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-> > <4>[    3.737068] R13: ffff8883f75d0000 R14: ffff888406afe200 R15: ffff8883f75d0870
-> > <4>[    3.737075] FS:  00007f71618f9680(0000) GS:ffff88840ec00000(0000) knlGS:0000000000000000
-> > <4>[    3.737082] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > <4>[    3.737088] CR2: 0000000000000000 CR3: 0000000402510002 CR4: 00000000001606f0
-> > <4>[    3.737094] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > <4>[    3.737101] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > <4>[    3.737107] Call Trace:
-> > <4>[    3.737175]  intel_read_dp_sdp+0x1a4/0x380 [i915]
-> > <4>[    3.737246]  hsw_crt_get_config+0x12/0x40 [i915]
-> > <4>[    3.737317]  intel_modeset_setup_hw_state+0x3b3/0x16a0 [i915]
-> > ...
-> 
-> -- 
-> Jani Nikula, Intel Open Source Graphics Center
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSW50ZWwtZ2Z4IDxp
+bnRlbC1nZngtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBKYW5p
+IE5pa3VsYQ0KPiBTZW50OiBwZXJqYW50YWkgMTUuIHRvdWtva3V1dGEgMjAyMCAxNi4xMw0KPiBU
+bzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gQ2M6
+IGxpbnV4LWZiZGV2QHZnZXIua2VybmVsLm9yZzsgZGFuaWVsLnZldHRlckBmZndsbC5jaDsgaW50
+ZWwtDQo+IGdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IGRyaS1kZXZlbEBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmc7DQo+IGxhdXJlbnQucGluY2hhcnRAaWRlYXNvbmJvYXJkLmNvbQ0KPiBTdWJqZWN0
+OiBSZTogW0ludGVsLWdmeF0gW1BBVENIIHYxMiAwMC8xNF0gSW4gb3JkZXIgdG8gcmVhZG91dCBE
+UCBTRFBzLCByZWZhY3RvcnMgdGhlDQo+IGhhbmRsaW5nIG9mIERQIFNEUHMNCj4gDQo+IE9uIEZy
+aSwgMTUgTWF5IDIwMjAsIFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRl
+bC5jb20+IHdyb3RlOg0KPiA+IE9uIFRodSwgTWF5IDE0LCAyMDIwIGF0IDAyOjE5OjIzUE0gKzAz
+MDAsIEphbmkgTmlrdWxhIHdyb3RlOg0KPiA+PiBPbiBUaHUsIDE0IE1heSAyMDIwLCBHd2FuLWd5
+ZW9uZyBNdW4gPGd3YW4tZ3llb25nLm11bkBpbnRlbC5jb20+DQo+IHdyb3RlOg0KPiA+PiA+IElu
+IG9yZGVyIHRvIHJlYWRvdXQgRFAgU0RQcyAoU2Vjb25kYXJ5IERhdGEgUGFja2V0OiBEUCBIRFIg
+TWV0YWRhdGENCj4gPj4gPiBJbmZvZnJhbWUgU0RQLCBEUCBWU0MgU0RQKSwgaXQgcmVmYWN0b3Jz
+IGhhbmRsaW5nIERQIFNEUHMgY29kZXMuDQo+ID4+ID4gSXQgYWRkcyBuZXcgY29tcHV0ZSByb3V0
+aW5lcyBmb3IgRFAgSERSIE1ldGFkYXRhIEluZm9mcmFtZSBTRFAgYW5kDQo+ID4+ID4gRFAgVlND
+IFNEUC4NCj4gPj4gPiBBbmQgbmV3IHdyaXRpbmcgcm91dGluZXMgb2YgRFAgU0RQcyAoU2Vjb25k
+YXJ5IERhdGEgUGFja2V0KSB0aGF0DQo+ID4+ID4gdXNlcyBjb21wdXRlZCBjb25maWdzLg0KPiA+
+PiA+IE5ldyByZWFkaW5nIHJvdXRpbmVzIG9mIERQIFNEUHMgYXJlIGFkZGVkIGZvciByZWFkb3V0
+Lg0KPiA+PiA+IEl0IGFkZHMgYSBsb2dnaW5nIGZ1bmN0aW9uIGZvciBEUCBWU0MgU0RQLg0KPiA+
+PiA+IFdoZW4gcmVjZWl2aW5nIHZpZGVvIGl0IGlzIHZlcnkgdXNlZnVsIHRvIGJlIGFibGUgdG8g
+bG9nIERQIFZTQyBTRFAuDQo+ID4+ID4gVGhpcyBncmVhdGx5IHNpbXBsaWZpZXMgZGVidWdnaW5n
+Lg0KPiA+PiA+IEluIG9yZGVyIHRvIHVzZSBhIGNvbW1vbiBWU0MgU0RQIENvbG9yaW1ldHJ5IGNh
+bGN1bGF0aW5nIGNvZGUgb24NCj4gPj4gPiBQU1IsIGl0IHVzZXMgYSBuZXcgcHNyIHZzYyBzZHAg
+Y29tcHV0ZSByb3V0aW5lLg0KPiA+Pg0KPiA+PiBQdXNoZWQgdGhlIHNlcmllcyB0byBkcm0taW50
+ZWwtbmV4dC1xdWV1ZWQgd2l0aCBEYW5pZWwncyBpcmMgYWNrIGZvcg0KPiA+PiBtZXJnaW5nIHRo
+ZSB0d28gbm9uLWk5MTUgcGF0Y2hlcyB0aGF0IHJvdXRlIHRvby4NCj4gPg0KPiA+IGZpLWhzdy00
+NzcwIG5vdyBvb3BzZXMgYXQgYm9vdDoNCj4gDQo+IC9vXA0KPiANCj4gV2hhdCBkaWQgSSBtaXNz
+PyBXaGF0IHBhcnQgYWJvdXQgdGhlIENJIHJlcG9ydCBkaWQgSSBvdmVybG9vaz8NCkRhbW4sIGlu
+ZGVlZDoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzI4NTMvDQpD
+aSByZXN1bHRzIGlzIHN1Y2Nlc3MgYnV0IGl0IGhhczoNCktub3duIGlzc3Vlcw0KLS0tLS0tLS0t
+LS0tDQoNCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gUGF0Y2h3b3JrXzE3NjU0IHRo
+YXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCg0KIyMjIENJIGNoYW5nZXMgIyMjDQoNCiMjIyMg
+SXNzdWVzIGhpdCAjIyMjDQoNCiAgKiBib290Og0KICAgIC0gZmktaHN3LTQ3NzA6ICAgICAgICBb
+UEFTU11bMV0gLT4gW0ZBSUxdWzJdIChbQ0kjODBdKQ0KICAgWzFdOiBodHRwczovL2ludGVsLWdm
+eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NDgxL2ZpLWhzdy00NzcwL2Jvb3QuaHRt
+bA0KICAgWzJdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL1BhdGNo
+d29ya18xNzY1NC9maS1oc3ctNDc3MC9ib290Lmh0bWwNCg0KPiANCj4gQlIsDQo+IEphbmkuDQo+
+IA0KPiANCj4gPg0KPiA+IDwxPlsgICAgMy43MzY5MDNdIEJVRzoga2VybmVsIE5VTEwgcG9pbnRl
+ciBkZXJlZmVyZW5jZSwgYWRkcmVzczoNCj4gMDAwMDAwMDAwMDAwMDAwMA0KPiA+IDwxPlsgICAg
+My43MzY5MTZdICNQRjogc3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0KPiA+
+IDwxPlsgICAgMy43MzY5MTZdICNQRjogZXJyb3JfY29kZSgweDAwMDApIC0gbm90LXByZXNlbnQg
+cGFnZQ0KPiA+IDw2PlsgICAgMy43MzY5MTddIFBHRCAwIFA0RCAwDQo+ID4gPDQ+WyAgICAzLjcz
+NjkxOV0gT29wczogMDAwMCBbIzFdIFBSRUVNUFQgU01QIFBUSQ0KPiA+IDw0PlsgICAgMy43MzY5
+MjFdIENQVTogMCBQSUQ6IDM2MyBDb21tOiBzeXN0ZW1kLXVkZXZkIE5vdCB0YWludGVkIDUuNy4w
+LXJjNS1DSS0NCj4gQ0lfRFJNXzg0ODUrICMxDQo+ID4gPDQ+WyAgICAzLjczNjkyMl0gSGFyZHdh
+cmUgbmFtZTogTEVOT1ZPIDEwQUdTMDA2MDEvU0hBUktCQVksIEJJT1MNCj4gRkJLVDM0QVVTIDA0
+LzI0LzIwMTMNCj4gPiA8ND5bICAgIDMuNzM2OTg2XSBSSVA6IDAwMTA6aW50ZWxfcHNyX2VuYWJs
+ZWQrMHg4LzB4NzAgW2k5MTVdDQo+ID4gPDQ+WyAgICAzLjczNjk4OF0gQ29kZTogMTggNDggYzcg
+YzYgNDAgMDkgNzkgYTAgZTggZTMgZTIgMDQgZTEgMGYgYjYgNDQgMjQgMDMgZTkgZjQNCj4gZmQg
+ZmYgZmYgOTAgNjYgMmUgMGYgMWYgODQgMDAgMDAgMDAgMDAgMDAgNDEgNTQgNTUgNTMgNDggODMg
+ZWMgMDggPDQ4PiA4YiA5ZiBkOCBmZSBmZiBmZg0KPiBmNiA4MyA1ZSAwZCAwMCAwMCAyMCA3NCAw
+OSA4MCBiYiA2YyBiNiAwMCAwMA0KPiA+IDw0PlsgICAgMy43MzcwMzZdIFJTUDogMDAxODpmZmZm
+YzkwMDAwNDdmOGEwIEVGTEFHUzogMDAwMTAyODYNCj4gPiA8ND5bICAgIDMuNzM3MDQyXSBSQVg6
+IDAwMDAwMDAwMDAwMDAwMDIgUkJYOiBmZmZmODg4M2ZmZDA0MDAwIFJDWDoNCj4gMDAwMDAwMDAw
+MDAwMDAwMQ0KPiA+IDw0PlsgICAgMy43MzcwNDhdIFJEWDogMDAwMDAwMDAwMDAwMDAwNyBSU0k6
+IGZmZmY4ODgzZmZkMDQwMDAgUkRJOg0KPiAwMDAwMDAwMDAwMDAwMTI4DQo+ID4gPDQ+WyAgICAz
+LjczNzA1NV0gUkJQOiBmZmZmODg4NDA2YWZlMjAwIFIwODogMDAwMDAwMDAwMDAwMDAwZiBSMDk6
+DQo+IDAwMDAwMDAwMDAwMDAwMDENCj4gPiA8ND5bICAgIDMuNzM3MDYxXSBSMTA6IDAwMDAwMDAw
+MDAwMDAwMDAgUjExOiAwMDAwMDAwMDAwMDAwMDAwIFIxMjoNCj4gMDAwMDAwMDAwMDAwMDAwMA0K
+PiA+IDw0PlsgICAgMy43MzcwNjhdIFIxMzogZmZmZjg4ODNmNzVkMDAwMCBSMTQ6IGZmZmY4ODg0
+MDZhZmUyMDAgUjE1Og0KPiBmZmZmODg4M2Y3NWQwODcwDQo+ID4gPDQ+WyAgICAzLjczNzA3NV0g
+RlM6ICAwMDAwN2Y3MTYxOGY5NjgwKDAwMDApIEdTOmZmZmY4ODg0MGVjMDAwMDAoMDAwMCkNCj4g
+a25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiA+IDw0PlsgICAgMy43MzcwODJdIENTOiAgMDAxMCBE
+UzogMDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMNCj4gPiA8ND5bICAgIDMuNzM3
+MDg4XSBDUjI6IDAwMDAwMDAwMDAwMDAwMDAgQ1IzOiAwMDAwMDAwNDAyNTEwMDAyIENSNDoNCj4g
+MDAwMDAwMDAwMDE2MDZmMA0KPiA+IDw0PlsgICAgMy43MzcwOTRdIERSMDogMDAwMDAwMDAwMDAw
+MDAwMCBEUjE6IDAwMDAwMDAwMDAwMDAwMDAgRFIyOg0KPiAwMDAwMDAwMDAwMDAwMDAwDQo+ID4g
+PDQ+WyAgICAzLjczNzEwMV0gRFIzOiAwMDAwMDAwMDAwMDAwMDAwIERSNjogMDAwMDAwMDBmZmZl
+MGZmMCBEUjc6DQo+IDAwMDAwMDAwMDAwMDA0MDANCj4gPiA8ND5bICAgIDMuNzM3MTA3XSBDYWxs
+IFRyYWNlOg0KPiA+IDw0PlsgICAgMy43MzcxNzVdICBpbnRlbF9yZWFkX2RwX3NkcCsweDFhNC8w
+eDM4MCBbaTkxNV0NCj4gPiA8ND5bICAgIDMuNzM3MjQ2XSAgaHN3X2NydF9nZXRfY29uZmlnKzB4
+MTIvMHg0MCBbaTkxNV0NCj4gPiA8ND5bICAgIDMuNzM3MzE3XSAgaW50ZWxfbW9kZXNldF9zZXR1
+cF9od19zdGF0ZSsweDNiMy8weDE2YTAgW2k5MTVdDQo+ID4gLi4uDQo+IA0KPiAtLQ0KPiBKYW5p
+IE5pa3VsYSwgSW50ZWwgT3BlbiBTb3VyY2UgR3JhcGhpY3MgQ2VudGVyDQo+IF9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+IEludGVsLWdmeCBtYWlsaW5n
+IGxpc3QNCj4gSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ludGVsLWdmeA0K
