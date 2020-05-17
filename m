@@ -2,61 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00771D6DC2
+	by mail.lfdr.de (Postfix) with ESMTP id 1EAF41D6DC1
 	for <lists+linux-fbdev@lfdr.de>; Mon, 18 May 2020 00:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbgEQWIQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1726444AbgEQWIQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Sun, 17 May 2020 18:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46138 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbgEQWIQ (ORCPT
+        with ESMTP id S1726299AbgEQWIP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 17 May 2020 18:08:16 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B8FC061A0C
-        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 15:08:14 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id w64so8202490wmg.4
-        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 15:08:14 -0700 (PDT)
+        Sun, 17 May 2020 18:08:15 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3B7C05BD09
+        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 15:08:15 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id e1so9610188wrt.5
+        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 15:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=L84eJGx9nrBqB4ScS+pZZVQbMN8D1zpwWqD1mcXWMRo=;
-        b=lsbMd8LBESCC1CS6XdcoNp4FHO5Q5lU3uDTrLk0cjtrsZtBbeCdHxhlcUN1grz70JG
-         EEA74kNc+KkGSvydt2S9Iywv6XhQ7uzLOwXewMgMe50Hvrgum/zMbn/H/tBY+xxR1e4O
-         sMagNsYN8Kkx+cN/dwQQv2BdG81I/FZMtGH1XpYLYYUbu9kJ2TV+6TyoLuL/Z+VV3//I
-         9pgHTvwwtDP91oZmNttEepYzgxlj1z2sQO/jwj9BOxC31xfZ37xhcw/EGiVtkMCXNf12
-         pMUxQxvtyuPqBQm6QRYzD0+Fempd8rbJJFMyZFDceUEDUWs1g0fwhJlxeP/ogxTW4Mfd
-         ldXQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=vlQG2udc7GDr5JGXbF/q4vF+mhIn8QekfFy1X7bhtvY=;
+        b=DHyJsjBBHryBZH7glNoiQGUO7uk4uXwkkHGzn8Cp6rxZHsbFV6vGvDfTQ53aaDGZ1K
+         BkIGkLCUuk4pweI4DpTcgK2Nekp2Jq9HOswvUsft68N7L0r5jtEmBlOGMEj9eYFiXcwE
+         XeFzHic8KOMsH+dxliASyngPvtqSJNN+JTNeqjBC+SYBVlZ+qNNuWtBCqyObScliTop8
+         1UtCt2TsKtCsj/WFVaAGVhvIkuZw1UGmMl8FMm2n/niXQZG1nALiJacRLQ5caPoGIlrD
+         lKA6LUxr9oHYV73oshAeez7/epvHrZ4pRTHY0mg0nkQvwAdo2IbzrHMGitB10DmOzbti
+         mAig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=L84eJGx9nrBqB4ScS+pZZVQbMN8D1zpwWqD1mcXWMRo=;
-        b=BmPIvnHjEgEtK0EzfvcbKyAk4oF+Euxu1sW2ViFcJ3HQNJx13xYvalpGaqA6aiC0iE
-         X4n7bSlNW6mvFv50JSlmJEJffeIFlTE2AifDf39JnTeair58/rHdMJmxw7qIerxSU4eV
-         FfpM/pXbufG40y0jc54M97t1qndN6MXW+ppKew82y64B/ztT1kxKjhCV9aNCydNGPSWN
-         f+ejKdEKZsi01ghWrKGnoz4M2ITBY2R/QLOHoY1ccNnqfoTi27QRvsONx3bT7Xqr9uSP
-         RD8P/Ao85CtRxk9dhLU4yBMXfawUXnpgdFm4C5EvY7zxomF5zsrXSOtdGSlPDOA3yMon
-         7vvQ==
-X-Gm-Message-State: AOAM533ARSP8sMbElWz83SBVS0K3De5++4J+RldzQRsOrZfIVo2JHg3q
-        ZlN8YccZ0xEJfnr85RtrkT8=
-X-Google-Smtp-Source: ABdhPJxFmsVmzuCAAXDb7Ie+EhKSRU9KNaJEROz6onOoR7FWnj3tr2kR/+uAq5xSOpNHJJEVlyyrPw==
-X-Received: by 2002:a1c:2943:: with SMTP id p64mr172717wmp.42.1589753293111;
-        Sun, 17 May 2020 15:08:13 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=vlQG2udc7GDr5JGXbF/q4vF+mhIn8QekfFy1X7bhtvY=;
+        b=rQiBvoI6DaDQBfCqGeZVXkylmtWAI7Qu3q1HItqT0bGNpteQEXJF/aCl2HHZNC3jaO
+         mVqnMTNRLLuSDUka40ITB78c1zkq9sJK/FcHknJ3pREYSZW7uYDkCHICP/wr/LpaOd1W
+         8ggaokEwCOmCA8KmoMhsn+0QIZvsK0Hu4bGUAaVyr5Ep0pnFTPyyuF0k+jiR/1H19ajS
+         FitHilOEKliTjxzNin4pxOnq7YDgwe+7Dh2UaUYNG6C0HAll61ItSDVPePDQC7AKdxwH
+         Y4+D9VNBlMQ85BKWdqY+9o4q7WSaBWE80SJEvTcXzvckZxsVSRFt5jEHvA/7MwEIoYfw
+         byJA==
+X-Gm-Message-State: AOAM533sJLIt5m4TsxZsjSyHIWmMFdCL8II2br8+MtaEXyn3ERLwQhvI
+        bLtVDcWRoOvwGaiFEgNCjEQ=
+X-Google-Smtp-Source: ABdhPJztZqF86REgFZUlLolQDOtb+TvD9sDFoqDx5vwO0wz5kqneUY3+1a0p10+sjgxN4zO6IVtQkg==
+X-Received: by 2002:adf:e5c8:: with SMTP id a8mr15611191wrn.335.1589753294182;
+        Sun, 17 May 2020 15:08:14 -0700 (PDT)
 Received: from localhost.localdomain (cpc91192-cmbg18-2-0-cust374.5-4.cable.virginm.net. [80.6.113.119])
-        by smtp.gmail.com with ESMTPSA id d9sm13805482wmd.10.2020.05.17.15.08.11
+        by smtp.gmail.com with ESMTPSA id d9sm13805482wmd.10.2020.05.17.15.08.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2020 15:08:12 -0700 (PDT)
+        Sun, 17 May 2020 15:08:13 -0700 (PDT)
 From:   Emil Velikov <emil.l.velikov@gmail.com>
 To:     dri-devel@lists.freedesktop.org
 Cc:     emil.l.velikov@gmail.com, Antonino Daplas <adaplas@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH v2 1/2] fbdev: annotate rivafb/nvidiafb as obsolete
-Date:   Sun, 17 May 2020 23:05:23 +0100
-Message-Id: <20200517220524.4036334-1-emil.l.velikov@gmail.com>
+        linux-fbdev@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 2/2] powerpc/configs: replace deprecated riva/nvidia with nouveau
+Date:   Sun, 17 May 2020 23:05:24 +0100
+Message-Id: <20200517220524.4036334-2-emil.l.velikov@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200517220524.4036334-1-emil.l.velikov@gmail.com>
+References: <20200517220524.4036334-1-emil.l.velikov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -64,100 +69,138 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Drivers have not seen any love for years.
+As mentioned in earlier commit, the riva and nvidia fbdev drivers have
+seen no love over the years, are short on features and overall below par
 
-Be that fixes or improvements, or cosmetics like introducing symbolic
-names, style and code-flow polish.
+Users are encouraged to switch to the nouveau drm driver instead.
 
-Seemingly the maintainer has also disappeared years ago :-\
-
-Considering nouveau supports all that hardware (modulo nv03) just mark
-these as obsolete/broken, referring to nouveau in the help text.
-
-v2 (Bartlomiej):
- - split config changes into separate patch
- - spell out nouveau DRM driver
- - don't use BROKEN
- - add runtime warning
+v2: Split configs to separate patch, enable nouveau (Bartlomiej)
 
 Cc: Antonino Daplas <adaplas@gmail.com>
 Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc: linux-fbdev@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
 Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch> (v1)
 ---
- MAINTAINERS                         | 3 +--
- drivers/video/fbdev/Kconfig         | 4 ++++
- drivers/video/fbdev/nvidia/nvidia.c | 3 +++
- drivers/video/fbdev/riva/fbdev.c    | 3 +++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+Hi all unless, there are objections I would prefer to merge this via
+the drm tree.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 938316092634..c9498dd15e4a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12055,9 +12055,8 @@ F:	include/linux/nubus.h
- F:	include/uapi/linux/nubus.h
- 
- NVIDIA (rivafb and nvidiafb) FRAMEBUFFER DRIVER
--M:	Antonino Daplas <adaplas@gmail.com>
- L:	linux-fbdev@vger.kernel.org
--S:	Maintained
-+S:	Obsolete
- F:	drivers/video/fbdev/nvidia/
- F:	drivers/video/fbdev/riva/
- 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index fa88e8b9a83d..ccddd06ab430 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -881,6 +881,8 @@ config FB_NVIDIA
- 	select BITREVERSE
- 	select VGASTATE
- 	help
-+	  Obsolete, use the nouveau DRM driver instead.
-+
- 	  This driver supports graphics boards with the nVidia chips, TNT
- 	  and newer. For very old chipsets, such as the RIVA128, then use
- 	  the rivafb.
-@@ -928,6 +930,8 @@ config FB_RIVA
- 	select BITREVERSE
- 	select VGASTATE
- 	help
-+	  Obsolete, use the nouveau DRM driver instead.
-+
- 	  This driver supports graphics boards with the nVidia Riva/Geforce
- 	  chips.
- 	  Say Y if you have such a graphics board.
-diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
-index c24de9107958..a958612ef75b 100644
---- a/drivers/video/fbdev/nvidia/nvidia.c
-+++ b/drivers/video/fbdev/nvidia/nvidia.c
-@@ -1512,6 +1512,9 @@ static struct pci_driver nvidiafb_driver = {
- 
- static int nvidiafb_init(void)
- {
-+	pr_warn("Legacy nvidiafb framebuffer driver will be removed in 2022\n"
-+		"Please switch to nouveau DRM driver\n");
-+
- #ifndef MODULE
- 	char *option = NULL;
- 
-diff --git a/drivers/video/fbdev/riva/fbdev.c b/drivers/video/fbdev/riva/fbdev.c
-index 764ec3285e62..c2788e22f5c1 100644
---- a/drivers/video/fbdev/riva/fbdev.c
-+++ b/drivers/video/fbdev/riva/fbdev.c
-@@ -2160,6 +2160,9 @@ static struct pci_driver rivafb_driver = {
- 
- static int rivafb_init(void)
- {
-+	pr_warn("Legacy rivafb framebuffer driver will be removed in 2022\n"
-+		"Please switch to nouveau DRM driver\n");
-+
- #ifndef MODULE
- 	char *option = NULL;
- 
+Thanks
+Emil
+---
+ arch/powerpc/configs/g5_defconfig     | 10 ++++++++--
+ arch/powerpc/configs/pasemi_defconfig |  9 +++++++--
+ arch/powerpc/configs/pmac32_defconfig |  9 +++++++--
+ arch/powerpc/configs/ppc6xx_defconfig | 10 +++++++---
+ 4 files changed, 29 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/configs/g5_defconfig b/arch/powerpc/configs/g5_defconfig
+index a68c7f3af10e..213472f373b3 100644
+--- a/arch/powerpc/configs/g5_defconfig
++++ b/arch/powerpc/configs/g5_defconfig
+@@ -124,12 +124,18 @@ CONFIG_RAW_DRIVER=y
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_AGP=m
+ CONFIG_AGP_UNINORTH=m
++CONFIG_DRM=y
++CONFIG_DRM_NOUVEAU=m
++# CONFIG_NOUVEAU_LEGACY_CTX_SUPPORT is not set
++CONFIG_NOUVEAU_DEBUG=5
++CONFIG_NOUVEAU_DEBUG_DEFAULT=3
++# CONFIG_NOUVEAU_DEBUG_MMU is not set
++CONFIG_DRM_NOUVEAU_BACKLIGHT=y
++# CONFIG_DRM_NOUVEAU_SVM is not set
+ CONFIG_FB=y
+ CONFIG_FIRMWARE_EDID=y
+ CONFIG_FB_TILEBLITTING=y
+ CONFIG_FB_OF=y
+-CONFIG_FB_NVIDIA=y
+-CONFIG_FB_NVIDIA_I2C=y
+ CONFIG_FB_RADEON=y
+ # CONFIG_VGA_CONSOLE is not set
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+diff --git a/arch/powerpc/configs/pasemi_defconfig b/arch/powerpc/configs/pasemi_defconfig
+index 08b7f4cef243..ccb3ab5e01da 100644
+--- a/arch/powerpc/configs/pasemi_defconfig
++++ b/arch/powerpc/configs/pasemi_defconfig
+@@ -102,11 +102,16 @@ CONFIG_SENSORS_LM85=y
+ CONFIG_SENSORS_LM90=y
+ CONFIG_DRM=y
+ CONFIG_DRM_RADEON=y
++CONFIG_DRM_NOUVEAU=m
++# CONFIG_NOUVEAU_LEGACY_CTX_SUPPORT is not set
++CONFIG_NOUVEAU_DEBUG=5
++CONFIG_NOUVEAU_DEBUG_DEFAULT=3
++# CONFIG_NOUVEAU_DEBUG_MMU is not set
++CONFIG_DRM_NOUVEAU_BACKLIGHT=y
++# CONFIG_DRM_NOUVEAU_SVM is not set
+ CONFIG_FIRMWARE_EDID=y
+ CONFIG_FB_TILEBLITTING=y
+ CONFIG_FB_VGA16=y
+-CONFIG_FB_NVIDIA=y
+-CONFIG_FB_NVIDIA_I2C=y
+ CONFIG_FB_RADEON=y
+ # CONFIG_LCD_CLASS_DEVICE is not set
+ CONFIG_VGACON_SOFT_SCROLLBACK=y
+diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
+index 05e325ca3fbd..f858627385c8 100644
+--- a/arch/powerpc/configs/pmac32_defconfig
++++ b/arch/powerpc/configs/pmac32_defconfig
+@@ -199,6 +199,13 @@ CONFIG_DRM=m
+ CONFIG_DRM_RADEON=m
+ CONFIG_DRM_LEGACY=y
+ CONFIG_DRM_R128=m
++CONFIG_DRM_NOUVEAU=m
++# CONFIG_NOUVEAU_LEGACY_CTX_SUPPORT is not set
++CONFIG_NOUVEAU_DEBUG=5
++CONFIG_NOUVEAU_DEBUG_DEFAULT=3
++# CONFIG_NOUVEAU_DEBUG_MMU is not set
++CONFIG_DRM_NOUVEAU_BACKLIGHT=y
++# CONFIG_DRM_NOUVEAU_SVM is not set
+ CONFIG_FB=y
+ CONFIG_FB_OF=y
+ CONFIG_FB_CONTROL=y
+@@ -206,8 +213,6 @@ CONFIG_FB_PLATINUM=y
+ CONFIG_FB_VALKYRIE=y
+ CONFIG_FB_CT65550=y
+ CONFIG_FB_IMSTT=y
+-CONFIG_FB_NVIDIA=y
+-CONFIG_FB_NVIDIA_I2C=y
+ CONFIG_FB_MATROX=y
+ CONFIG_FB_MATROX_MILLENIUM=y
+ CONFIG_FB_MATROX_MYSTIQUE=y
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index feb5d47d8d1e..48421f5007ed 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -738,15 +738,19 @@ CONFIG_DRM_MGA=m
+ CONFIG_DRM_SIS=m
+ CONFIG_DRM_VIA=m
+ CONFIG_DRM_SAVAGE=m
++CONFIG_DRM_NOUVEAU=m
++# CONFIG_NOUVEAU_LEGACY_CTX_SUPPORT is not set
++CONFIG_NOUVEAU_DEBUG=5
++CONFIG_NOUVEAU_DEBUG_DEFAULT=3
++# CONFIG_NOUVEAU_DEBUG_MMU is not set
++CONFIG_DRM_NOUVEAU_BACKLIGHT=y
++# CONFIG_DRM_NOUVEAU_SVM is not set
+ CONFIG_FB=y
+ CONFIG_FB_CIRRUS=m
+ CONFIG_FB_OF=y
+ CONFIG_FB_PLATINUM=y
+ CONFIG_FB_VALKYRIE=y
+ CONFIG_FB_CT65550=y
+-CONFIG_FB_NVIDIA=y
+-CONFIG_FB_NVIDIA_I2C=y
+-CONFIG_FB_RIVA=m
+ CONFIG_FB_MATROX=y
+ CONFIG_FB_MATROX_MILLENIUM=y
+ CONFIG_FB_MATROX_MYSTIQUE=y
 -- 
 2.25.1
 
