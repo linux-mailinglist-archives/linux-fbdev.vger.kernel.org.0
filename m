@@ -2,151 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAEBD1D5791
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2020 19:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DEEA1D6D6E
+	for <lists+linux-fbdev@lfdr.de>; Sun, 17 May 2020 23:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbgEORWv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 15 May 2020 13:22:51 -0400
-Received: from mga14.intel.com ([192.55.52.115]:40836 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726170AbgEORWv (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 15 May 2020 13:22:51 -0400
-IronPort-SDR: y9YyGnSFZinMKfN9S9QTLT3gePtm91iLbcI9hsqnV2Ta9uyxyA+yGuyFoFSq2Ly+h5G3wWYPte
- bIv77QFHyxLA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2020 10:22:47 -0700
-IronPort-SDR: 6+t5nB6pw/R2COsxj7hF+fmiDO2dB9jv4udPEwK4XJbNjsI5IeP5TVx/HkWQWFyacVoL/apkwN
- VR1Cc+z2Q5Xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,396,1583222400"; 
-   d="scan'208";a="438384258"
-Received: from irsmsx104.ger.corp.intel.com ([163.33.3.159])
-  by orsmga005.jf.intel.com with ESMTP; 15 May 2020 10:22:44 -0700
-Received: from irsmsx601.ger.corp.intel.com (163.33.146.7) by
- IRSMSX104.ger.corp.intel.com (163.33.3.159) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 15 May 2020 18:22:43 +0100
-Received: from irsmsx605.ger.corp.intel.com (163.33.146.138) by
- irsmsx601.ger.corp.intel.com (163.33.146.7) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 15 May 2020 18:22:43 +0100
-Received: from irsmsx605.ger.corp.intel.com ([163.33.146.138]) by
- IRSMSX605.ger.corp.intel.com ([163.33.146.138]) with mapi id 15.01.1713.004;
- Fri, 15 May 2020 18:22:43 +0100
-From:   "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-To:     "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>
-CC:     "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "laurent.pinchart@ideasonboard.com" 
-        <laurent.pinchart@ideasonboard.com>,
-        "daniel.vetter@ffwll.ch" <daniel.vetter@ffwll.ch>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH v12 00/14] In order to readout DP SDPs, refactors the
- handling of DP SDPs
-Thread-Topic: [PATCH v12 00/14] In order to readout DP SDPs, refactors the
- handling of DP SDPs
-Thread-Index: AQHWKeGJb6E7K9KVgUC8KKYXcyaCcqipDrAAgAAB/ACAABEUAIAANJoA
-Date:   Fri, 15 May 2020 17:22:43 +0000
-Message-ID: <e2cf963c6db302d94195f4af643d8fbad3ece5dc.camel@intel.com>
-References: <20200514060732.3378396-1-gwan-gyeong.mun@intel.com>
-         <87eerm4vd0.fsf@intel.com> <20200515130612.GI6112@intel.com>
-         <87zha92vf5.fsf@intel.com> <20200515141426.GI206103@phenom.ffwll.local>
-In-Reply-To: <20200515141426.GI206103@phenom.ffwll.local>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.252.20.205]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1D39322AF3464E49BDC12C15E7949135@intel.com>
-Content-Transfer-Encoding: base64
+        id S1726313AbgEQVLd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 17 May 2020 17:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726288AbgEQVLd (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 17 May 2020 17:11:33 -0400
+Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335B8C061A0C
+        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 14:11:33 -0700 (PDT)
+Received: by mail-vs1-xe43.google.com with SMTP id e10so4372194vsp.12
+        for <linux-fbdev@vger.kernel.org>; Sun, 17 May 2020 14:11:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pS6rsKOx2NlgRMIkpuNZy1aWSRLDNax4OfYSZRKfBK4=;
+        b=sRI2awQU1CCgH2QZGeVWlqfdWUktkqScKv3xetm+Xi3bETiLKZl/gRqnqgrANiHZ8o
+         kYQeEV6tyEKSwqoBudxg21WBawsQO5Mjpe7Bv++v0FPDa/gg7dvIE8pR/Be9NqI/s/38
+         o5PPzB7gGJpZZuwI03d4T8lNI0CwuTrwwrRbUx/UaTVTjeotO0VjVMjIn8P4TPhKhpN/
+         unE4RY0viEJFRgLCT7DLwW+vUiKFvqVO4L6791+wgFCO2qh3z4kTr/TTWGw8tU1tfqEl
+         3BxCZntyMjc+gdh5ieYUTgVMeSuIFXFhBetYhCwx2J1OtSIS3NB+Os+BnV6MMoJuNsf9
+         LeNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pS6rsKOx2NlgRMIkpuNZy1aWSRLDNax4OfYSZRKfBK4=;
+        b=kP5LhjhG73rkylZcl3Q0W74/v97P0eIZ4/h6tGQL6nWCj+nhj4Muao/ndOJ/xBRsjC
+         RcdUitZYOL92T2/EvMjIWtSLmtyPpWzvUnTkWmeLI0VXkS9RKQtgC6uwq4/xRlDp6QON
+         v8s3P9WJUHOj1AtwGGyavYVulc7MsPMtnFrPUW+rsNsqUdBIY27Y4ixkXRb2cH+X5C/H
+         hfnBKgCUF5ud4wRsfbZJT/x/NiVUFou5qIXnuHk1HeqJhFXkJIIbrVTuBfYmQcvHMS14
+         8h6j+dLq3bNiR1YOGr9D40sBdZMCPDrCq9sWJAUvkC7lX7sT2XZE2RTpi6Yyq8jspiQx
+         ed6A==
+X-Gm-Message-State: AOAM530o4GFoJZgBTalJH33G0PqpskL2z0rXrKBecAy5i8YzpTGgPVbr
+        rImlFQWzUqZFLeHbfkl/r0tjdXkXC7v1jQJZMgMtZ+aR
+X-Google-Smtp-Source: ABdhPJxsotUSshgEqdsswCJgkh3hTeWWx0kLTasnyOGe6CvxTYAxGOIceX0CTXUHGLxmhfSj2EfI8mB4Yp99bcNUO+w=
+X-Received: by 2002:a67:ecc2:: with SMTP id i2mr8496841vsp.85.1589749892414;
+ Sun, 17 May 2020 14:11:32 -0700 (PDT)
 MIME-Version: 1.0
+References: <CGME20200513215627eucas1p1c919a6175b210c13fe7b920c455ebb62@eucas1p1.samsung.com>
+ <20200513215342.2145495-1-emil.l.velikov@gmail.com> <178a203a-fc3e-0027-60c9-786c3e907407@samsung.com>
+In-Reply-To: <178a203a-fc3e-0027-60c9-786c3e907407@samsung.com>
+From:   Emil Velikov <emil.l.velikov@gmail.com>
+Date:   Sun, 17 May 2020 22:08:43 +0100
+Message-ID: <CACvgo53YRogMB_Xh+=+gNLQ28beNJdhyECR0550hVqqtD0J8Bg@mail.gmail.com>
+Subject: Re: [PATCH] fbdev: annotate rivafb/nvidiafb as obsolete
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     ML dri-devel <dri-devel@lists.freedesktop.org>,
+        Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-SGkgVmlsbGUsDQpUaGFuayB5b3UgZm9yIG5vdGlmeWluZyBtZSB0aGF0LiBJIGRlZmluaXRlbHkg
-bWlzc2VkIHRoZSBjcmFzaC4NClNvcnJ5IGZvciB0aGF0Lg0KRGFuaWFsIGFuZCBKYW5pLCBJJyB1
-bmRlciBkZWJ1Z2dpbmcgdGhlIGNyYXNoIGNhc2UuDQpJZiB5b3UgYXJlIGF2YWlsYWJlIHBsZWFz
-ZSBkbyBub3QgbWVyZ2UgY3VycmVudCB2ZXJzaW9uLg0KDQpCciwNCg0KRy5HLg0KDQo+IA0KT24g
-RnJpLCAyMDIwLTA1LTE1IGF0IDE2OjE0ICswMjAwLCBEYW5pZWwgVmV0dGVyIHdyb3RlOg0KPiBP
-biBGcmksIE1heSAxNSwgMjAyMCBhdCAwNDoxMzoxOFBNICswMzAwLCBKYW5pIE5pa3VsYSB3cm90
-ZToNCj4gPiBPbiBGcmksIDE1IE1heSAyMDIwLCBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmph
-bGFAbGludXguaW50ZWwuY29tPg0KPiA+IHdyb3RlOg0KPiA+ID4gT24gVGh1LCBNYXkgMTQsIDIw
-MjAgYXQgMDI6MTk6MjNQTSArMDMwMCwgSmFuaSBOaWt1bGEgd3JvdGU6DQo+ID4gPiA+IE9uIFRo
-dSwgMTQgTWF5IDIwMjAsIEd3YW4tZ3llb25nIE11biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNv
-bQ0KPiA+ID4gPiA+IHdyb3RlOg0KPiA+ID4gPiA+IEluIG9yZGVyIHRvIHJlYWRvdXQgRFAgU0RQ
-cyAoU2Vjb25kYXJ5IERhdGEgUGFja2V0OiBEUCBIRFINCj4gPiA+ID4gPiBNZXRhZGF0YQ0KPiA+
-ID4gPiA+IEluZm9mcmFtZSBTRFAsIERQIFZTQyBTRFApLCBpdCByZWZhY3RvcnMgaGFuZGxpbmcg
-RFAgU0RQcw0KPiA+ID4gPiA+IGNvZGVzLg0KPiA+ID4gPiA+IEl0IGFkZHMgbmV3IGNvbXB1dGUg
-cm91dGluZXMgZm9yIERQIEhEUiBNZXRhZGF0YSBJbmZvZnJhbWUNCj4gPiA+ID4gPiBTRFANCj4g
-PiA+ID4gPiBhbmQgRFAgVlNDIFNEUC4gDQo+ID4gPiA+ID4gQW5kIG5ldyB3cml0aW5nIHJvdXRp
-bmVzIG9mIERQIFNEUHMgKFNlY29uZGFyeSBEYXRhIFBhY2tldCkNCj4gPiA+ID4gPiB0aGF0IHVz
-ZXMNCj4gPiA+ID4gPiBjb21wdXRlZCBjb25maWdzLg0KPiA+ID4gPiA+IE5ldyByZWFkaW5nIHJv
-dXRpbmVzIG9mIERQIFNEUHMgYXJlIGFkZGVkIGZvciByZWFkb3V0Lg0KPiA+ID4gPiA+IEl0IGFk
-ZHMgYSBsb2dnaW5nIGZ1bmN0aW9uIGZvciBEUCBWU0MgU0RQLg0KPiA+ID4gPiA+IFdoZW4gcmVj
-ZWl2aW5nIHZpZGVvIGl0IGlzIHZlcnkgdXNlZnVsIHRvIGJlIGFibGUgdG8gbG9nIERQDQo+ID4g
-PiA+ID4gVlNDIFNEUC4NCj4gPiA+ID4gPiBUaGlzIGdyZWF0bHkgc2ltcGxpZmllcyBkZWJ1Z2dp
-bmcuDQo+ID4gPiA+ID4gSW4gb3JkZXIgdG8gdXNlIGEgY29tbW9uIFZTQyBTRFAgQ29sb3JpbWV0
-cnkgY2FsY3VsYXRpbmcgY29kZQ0KPiA+ID4gPiA+IG9uIFBTUiwNCj4gPiA+ID4gPiBpdCB1c2Vz
-IGEgbmV3IHBzciB2c2Mgc2RwIGNvbXB1dGUgcm91dGluZS4NCj4gPiA+ID4gDQo+ID4gPiA+IFB1
-c2hlZCB0aGUgc2VyaWVzIHRvIGRybS1pbnRlbC1uZXh0LXF1ZXVlZCB3aXRoIERhbmllbCdzIGly
-Yw0KPiA+ID4gPiBhY2sgZm9yDQo+ID4gPiA+IG1lcmdpbmcgdGhlIHR3byBub24taTkxNSBwYXRj
-aGVzIHRoYXQgcm91dGUgdG9vLg0KPiA+ID4gDQo+ID4gPiBmaS1oc3ctNDc3MCBub3cgb29wc2Vz
-IGF0IGJvb3Q6DQo+ID4gDQo+ID4gL29cDQo+ID4gDQo+ID4gV2hhdCBkaWQgSSBtaXNzPyBXaGF0
-IHBhcnQgYWJvdXQgdGhlIENJIHJlcG9ydCBkaWQgSSBvdmVybG9vaz8NCj4gDQo+IFBhcnRpY2lw
-YXRpbmcgaG9zdHMgKDQ4IC0+IDQ1KQ0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0N
-Cj4gDQo+ICAgQWRkaXRpb25hbCAoMSk6IGZpLWtibC03NTYwdSANCj4gICBNaXNzaW5nICAgICg0
-KTogZmktYnl0LWNsYXBwZXIgZmktYnl0LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktaHN3LQ0KPiA0
-MjAwdQ0KPiANCj4gDQo+IFlvdSBraWxsIG1hY2hpbmVzIGF0IGJvb3QsIENJIHdvbid0IHRlbGwg
-eW91Lg0KPiANCj4gVGhpcyBpcyAob3IgYXQgbGVhc3Qgd2FzKSBiZWNhdXNlIHRoZSBuZXR3b3Jr
-IGlzIHNoaXR0eSBlbm91Z2ggdGhhdA0KPiB3ZQ0KPiBoYXZlIG1vcmUgc3B1cmlvdXMgZmFpbHVy
-ZXMgYmVjYXVzZSB0aGUgZXRoZXJuZXQgd2VudCBpbnRvIHRoZSBldGhlcg0KPiB0aGFuDQo+IGJl
-Y2F1c2Ugb2YgcGVvcGxlIGhhdmluZyBraWxsZWQgdGhlIG1hY2hpbmUgd2l0aCB0aGVpciBwYXRj
-aGVzIGZvcg0KPiByZWFsLg0KPiBBbHNvIGl0J3MgaGFyZCB0byBncmFiIGxvZ3MgaWYgdGhlIHRo
-aW5nIGRvZXNuJ3Qgd29yayBhdCBhbGwsIHNvIGNhbnQNCj4gZ2l2ZQ0KPiB5b3UgYW55IG1vcmUg
-ZGF0YSB0aGFuIHRoZSBhYm92ZS4NCj4gDQo+IFllcyB0aGlzIHN1Y2tzIDotLw0KPiANCj4gQ2hl
-ZXJzLCBEYW5pZWwNCj4gDQo+ID4gQlIsDQo+ID4gSmFuaS4NCj4gPiANCj4gPiANCj4gPiA+IDwx
-PlsgICAgMy43MzY5MDNdIEJVRzoga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSwgYWRk
-cmVzczoNCj4gPiA+IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+IDwxPlsgICAgMy43MzY5MTZdICNQ
-Rjogc3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0KPiA+ID4gPDE+WyAgICAz
-LjczNjkxNl0gI1BGOiBlcnJvcl9jb2RlKDB4MDAwMCkgLSBub3QtcHJlc2VudCBwYWdlDQo+ID4g
-PiA8Nj5bICAgIDMuNzM2OTE3XSBQR0QgMCBQNEQgMCANCj4gPiA+IDw0PlsgICAgMy43MzY5MTld
-IE9vcHM6IDAwMDAgWyMxXSBQUkVFTVBUIFNNUCBQVEkNCj4gPiA+IDw0PlsgICAgMy43MzY5MjFd
-IENQVTogMCBQSUQ6IDM2MyBDb21tOiBzeXN0ZW1kLXVkZXZkIE5vdCB0YWludGVkDQo+ID4gPiA1
-LjcuMC1yYzUtQ0ktQ0lfRFJNXzg0ODUrICMxDQo+ID4gPiA8ND5bICAgIDMuNzM2OTIyXSBIYXJk
-d2FyZSBuYW1lOiBMRU5PVk8gMTBBR1MwMDYwMS9TSEFSS0JBWSwgQklPUw0KPiA+ID4gRkJLVDM0
-QVVTIDA0LzI0LzIwMTMNCj4gPiA+IDw0PlsgICAgMy43MzY5ODZdIFJJUDogMDAxMDppbnRlbF9w
-c3JfZW5hYmxlZCsweDgvMHg3MCBbaTkxNV0NCj4gPiA+IDw0PlsgICAgMy43MzY5ODhdIENvZGU6
-IDE4IDQ4IGM3IGM2IDQwIDA5IDc5IGEwIGU4IGUzIGUyIDA0IGUxIDBmDQo+ID4gPiBiNiA0NCAy
-NCAwMyBlOSBmNCBmZCBmZiBmZiA5MCA2NiAyZSAwZiAxZiA4NCAwMCAwMCAwMCAwMCAwMCA0MSA1
-NA0KPiA+ID4gNTUgNTMgNDggODMgZWMgMDggPDQ4PiA4YiA5ZiBkOCBmZSBmZiBmZiBmNiA4MyA1
-ZSAwZCAwMCAwMCAyMCA3NA0KPiA+ID4gMDkgODAgYmIgNmMgYjYgMDAgMDANCj4gPiA+IDw0Plsg
-ICAgMy43MzcwMzZdIFJTUDogMDAxODpmZmZmYzkwMDAwNDdmOGEwIEVGTEFHUzogMDAwMTAyODYN
-Cj4gPiA+IDw0PlsgICAgMy43MzcwNDJdIFJBWDogMDAwMDAwMDAwMDAwMDAwMiBSQlg6IGZmZmY4
-ODgzZmZkMDQwMDANCj4gPiA+IFJDWDogMDAwMDAwMDAwMDAwMDAwMQ0KPiA+ID4gPDQ+WyAgICAz
-LjczNzA0OF0gUkRYOiAwMDAwMDAwMDAwMDAwMDA3IFJTSTogZmZmZjg4ODNmZmQwNDAwMA0KPiA+
-ID4gUkRJOiAwMDAwMDAwMDAwMDAwMTI4DQo+ID4gPiA8ND5bICAgIDMuNzM3MDU1XSBSQlA6IGZm
-ZmY4ODg0MDZhZmUyMDAgUjA4OiAwMDAwMDAwMDAwMDAwMDBmDQo+ID4gPiBSMDk6IDAwMDAwMDAw
-MDAwMDAwMDENCj4gPiA+IDw0PlsgICAgMy43MzcwNjFdIFIxMDogMDAwMDAwMDAwMDAwMDAwMCBS
-MTE6IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+IFIxMjogMDAwMDAwMDAwMDAwMDAwMA0KPiA+ID4g
-PDQ+WyAgICAzLjczNzA2OF0gUjEzOiBmZmZmODg4M2Y3NWQwMDAwIFIxNDogZmZmZjg4ODQwNmFm
-ZTIwMA0KPiA+ID4gUjE1OiBmZmZmODg4M2Y3NWQwODcwDQo+ID4gPiA8ND5bICAgIDMuNzM3MDc1
-XSBGUzogIDAwMDA3ZjcxNjE4Zjk2ODAoMDAwMCkNCj4gPiA+IEdTOmZmZmY4ODg0MGVjMDAwMDAo
-MDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiA+ID4gPDQ+WyAgICAzLjczNzA4Ml0gQ1M6
-ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDoNCj4gPiA+IDAwMDAwMDAwODAwNTAwMzMNCj4g
-PiA+IDw0PlsgICAgMy43MzcwODhdIENSMjogMDAwMDAwMDAwMDAwMDAwMCBDUjM6IDAwMDAwMDA0
-MDI1MTAwMDINCj4gPiA+IENSNDogMDAwMDAwMDAwMDE2MDZmMA0KPiA+ID4gPDQ+WyAgICAzLjcz
-NzA5NF0gRFIwOiAwMDAwMDAwMDAwMDAwMDAwIERSMTogMDAwMDAwMDAwMDAwMDAwMA0KPiA+ID4g
-RFIyOiAwMDAwMDAwMDAwMDAwMDAwDQo+ID4gPiA8ND5bICAgIDMuNzM3MTAxXSBEUjM6IDAwMDAw
-MDAwMDAwMDAwMDAgRFI2OiAwMDAwMDAwMGZmZmUwZmYwDQo+ID4gPiBEUjc6IDAwMDAwMDAwMDAw
-MDA0MDANCj4gPiA+IDw0PlsgICAgMy43MzcxMDddIENhbGwgVHJhY2U6DQo+ID4gPiA8ND5bICAg
-IDMuNzM3MTc1XSAgaW50ZWxfcmVhZF9kcF9zZHArMHgxYTQvMHgzODAgW2k5MTVdDQo+ID4gPiA8
-ND5bICAgIDMuNzM3MjQ2XSAgaHN3X2NydF9nZXRfY29uZmlnKzB4MTIvMHg0MCBbaTkxNV0NCj4g
-PiA+IDw0PlsgICAgMy43MzczMTddICBpbnRlbF9tb2Rlc2V0X3NldHVwX2h3X3N0YXRlKzB4M2Iz
-LzB4MTZhMA0KPiA+ID4gW2k5MTVdDQo+ID4gPiAuLi4NCj4gPiANCj4gPiAtLSANCj4gPiBKYW5p
-IE5pa3VsYSwgSW50ZWwgT3BlbiBTb3VyY2UgR3JhcGhpY3MgQ2VudGVyDQo=
+On Thu, 14 May 2020 at 14:28, Bartlomiej Zolnierkiewicz
+<b.zolnierkie@samsung.com> wrote:
+
+> > diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+> > index 1b2f5f31fb6f..cad3e4bc5e52 100644
+> > --- a/drivers/video/fbdev/Kconfig
+> > +++ b/drivers/video/fbdev/Kconfig
+> > @@ -868,6 +868,7 @@ config FB_ATMEL
+> >
+> >  config FB_NVIDIA
+> >       tristate "nVidia Framebuffer Support"
+> > +     depends on BROKEN
+>
+> Please don't add new users of BROKEN config option.
+>
+> Either it is broken and should be removed right now (BROKEN config option
+> predates git and with git nothing is ever lost), or it still works and
+> should be left alone.
+>
+Seems like not everyone got that memo. BROKEN is still in use, with
+dozen or so cases for last year.
+See for example:
+
+commit 9d60d93198c62ac3b3e59e8bba7079646c972a4c
+Author: J. Bruce Fields <bfields@redhat.com>
+Date:   Mon Aug 26 10:28:58 2019 -0400
+
+    Deprecate nfsd fault injection
+
+
+That said, your suggestions are pretty good. v2 coming in a moment.
+
+-Emil
