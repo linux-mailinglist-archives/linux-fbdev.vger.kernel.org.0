@@ -2,167 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D53B1D71D5
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 May 2020 09:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C53941D7247
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 May 2020 09:52:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbgERHal (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 18 May 2020 03:30:41 -0400
-Received: from ozlabs.org ([203.11.71.1]:39337 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726573AbgERHal (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 18 May 2020 03:30:41 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 49QVzb1NrSz9sTC;
-        Mon, 18 May 2020 17:30:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1589787036;
-        bh=MDlXD/dXZ4SIz/zEFqjB97s8wYmIXZm8GHRLFeTWLX8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=L+l/iVU2gWPCIGALPHaECZGRU2y04a2OR6TKjipLsWcUM7Lbv+jnsNiC6OWf2/yyM
-         6P95PMDpVoO/jcc53b3ysZ6L0PjqgrnldQwNWD6zEiPzaHTpQCgRYmmAfBEitEFx8u
-         6AFGOR/UDa7EiHPHNLpWXCBh0VPywjQi8hZQl9JbPs2iV/IuoAY6yQcxBk2Wcz6USx
-         6dVX4u0CJG0lB/uZNGTrziAn2+5PZi//WwVSZwK9WqklikDa3XDa8zkOlgvCWf29pu
-         kGnBIhjZwVUSh5GE6+6oJMMxzI3q+faER2cErx/SWGYqXg0R7sM3AeNmxZkyiIJOi+
-         2I15aoQJANd0g==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Emil Velikov <emil.l.velikov@gmail.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     emil.l.velikov@gmail.com, Antonino Daplas <adaplas@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/2] powerpc/configs: replace deprecated riva/nvidia with nouveau
-In-Reply-To: <20200517220524.4036334-2-emil.l.velikov@gmail.com>
-References: <20200517220524.4036334-1-emil.l.velikov@gmail.com> <20200517220524.4036334-2-emil.l.velikov@gmail.com>
-Date:   Mon, 18 May 2020 17:30:53 +1000
-Message-ID: <87d071aedu.fsf@mpe.ellerman.id.au>
+        id S1726828AbgERHwD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 18 May 2020 03:52:03 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:39653 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726676AbgERHwD (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 18 May 2020 03:52:03 -0400
+Received: from mail-qt1-f175.google.com ([209.85.160.175]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1Mo73N-1jGagl2DIx-00pa1X for <linux-fbdev@vger.kernel.org>; Mon, 18 May
+ 2020 09:52:00 +0200
+Received: by mail-qt1-f175.google.com with SMTP id d7so7300292qtn.11
+        for <linux-fbdev@vger.kernel.org>; Mon, 18 May 2020 00:52:00 -0700 (PDT)
+X-Gm-Message-State: AOAM5304ikxvY9Dh9BVXJEqlbuaefhYPiUwhF6g6rFDH72aLOgAwTQGm
+        iJTXd+o2lL7Pru+6JtxbNuQ+dNBeFmrFPbDj+PI=
+X-Google-Smtp-Source: ABdhPJwKJs2tBbsiAp5buhbH7+nBy1gs4sbXiUcXaaX+zO4MdYepKhG/rvRgDCtRmvNcpRswmcr9uvXa3JilwFHZalo=
+X-Received: by 2002:ac8:6a09:: with SMTP id t9mr4240443qtr.7.1589788319394;
+ Mon, 18 May 2020 00:51:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <202005181437.mPf3HD00%lkp@intel.com>
+In-Reply-To: <202005181437.mPf3HD00%lkp@intel.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 18 May 2020 09:51:43 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3JsqShYvB_0tc6j5QtrXRcgrgTtWnT8fbsO5x0tJZBsg@mail.gmail.com>
+Message-ID: <CAK8P3a3JsqShYvB_0tc6j5QtrXRcgrgTtWnT8fbsO5x0tJZBsg@mail.gmail.com>
+Subject: Re: [linux-next:master 6172/9662] drivers/video/fbdev/atmel_lcdfb.c:362:20:
+ sparse: sparse: incorrect type in argument 1 (different address spaces)
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Stephen Boyd <sboyd@kernel.org>, kbuild-all@lists.01.org,
+        Mark Brown <broonie@kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:ECCN8Hw9YjNygIogF42UG4Cb9+Hz2M2/Swil2NzVdbcTRgGDzdq
+ YRQ92jB9GzGb5zloc4tFAJ0B3XXnZdaDvpssK9r/xiomq1r0mZ8SwyZDMpO4U0MinZVQfb4
+ eJAncajteZPLv1tHzdiEtuuttVgzOwUwYCrjdJ35xOZxXGZsyz3TTlFclLafRva8Kn6BmYm
+ iNZoR6nd/SvDe6/2DrUdQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8h/K2ttQlCY=:3yxPhPjyFoiMzDW4Ngl/H/
+ Y2LbxEQYC2lEl2SdLKw8VZfvMhxesTKrM7CSzAVtmSBW6m4QX5kt5ew8GkLnvZXCfyXw9XBbP
+ +yqo0rqbzuG2fwruY1QvUbH/E+M64yz4HEP3c+VtJrSJlxHXLlf+4JFOpQ30Xx5QlpgAnfREF
+ o84DHYrLxzQ7KGuqDd33WbWFADCPX7SDeB9bpWx0jdEL7FJhaQxMa5wdUd+jf7jVXE8lUqANy
+ IuRs7mOb2HNeSa1pCBCDgbz/+Ljaaj4l6mTq18rTFMIN/eQSYmibu+P+ThcLu2IkVLzAHVKvj
+ 3bbFgkkadJEE4EmFa8JOejhZLN/ELjq+Mu7t5FUJnI+rfr0wpsVzPnLoGEJnffj6bHnJLKc2p
+ aFk8AoSu3OdYCuF6NpLqkITtJURU6z1UOvzj5UybuhIlrZ5eZ3+4uAdY1sytIIP/3E9kHFd0G
+ BHiXzOB+KJtmBRnsMEyJDVY/FUN0h7k+u6cjHO26aNA5tBXIZXOdjxV4ABW23lw/wUmj/DMyk
+ h6k25Y6XpMevBWlV5X1/ICwGxGShwiJWMtwbu4tNmC8e3PBQ2zjfXSsAjRwsqVJBkuCX9IwG5
+ +Dkv1t3yXDMu5EN93FZ0AelV6UwMS1jgaHkfyUQRk7DHn3Tb/RyDWiupYAClW7jOKHXXH6v1v
+ RH5B4nno88vOdGF2CqzvjZdG9KNt/8jE5h0ogItKJSdDjpWonpF8QecPWkJYW0z1rzyOLzkCz
+ BJbccQ4a+neO7lsoZE51vtYUHHU2zWt1F9Yn97v/zndWXDsGvwgV7tDsqjeXo1bYaPH/b58Ax
+ 5JXC1ZlnT8YkIxx2IOZZg4vX7Lscjs/SNVrMs/FM7b6yXl0IR0=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Emil Velikov <emil.l.velikov@gmail.com> writes:
-> As mentioned in earlier commit, the riva and nvidia fbdev drivers have
-> seen no love over the years, are short on features and overall below par
+On Mon, May 18, 2020 at 8:56 AM kbuild test robot <lkp@intel.com> wrote:
 >
-> Users are encouraged to switch to the nouveau drm driver instead.
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   bdecf38f228bcca73b31ada98b5b7ba1215eb9c9
+> commit: bbd7ffdbef6888459f301c5889f3b14ada38b913 [6172/9662] clk: Allow the common clk framework to be selectable
+> config: ia64-randconfig-s001-20200518 (attached as .config)
+> reproduce:
+>         # apt-get install sparse
+>         # sparse version: v0.6.1-193-gb8fad4bc-dirty
+>         git checkout bbd7ffdbef6888459f301c5889f3b14ada38b913
+>         # save the attached .config to linux build tree
+>         make C=1 ARCH=ia64 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 >
-> v2: Split configs to separate patch, enable nouveau (Bartlomiej)
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kbuild test robot <lkp@intel.com>
 >
-> Cc: Antonino Daplas <adaplas@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch> (v1)
-> ---
-> Hi all unless, there are objections I would prefer to merge this via
-> the drm tree.
+>
+> sparse warnings: (new ones prefixed by >>)
+>
+>    drivers/video/fbdev/atmel_lcdfb.c:354:27: sparse: sparse: incorrect type in assignment (different address spaces) @@    expected char [noderef] <asn:2> *screen_base @@    got n:2> *screen_base @@
+>    drivers/video/fbdev/atmel_lcdfb.c:354:27: sparse:    expected char [noderef] <asn:2> *screen_base
+>    drivers/video/fbdev/atmel_lcdfb.c:354:27: sparse:    got void *
+> >> drivers/video/fbdev/atmel_lcdfb.c:362:20: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void * @@    got char [noderef] <asvoid * @@
+> >> drivers/video/fbdev/atmel_lcdfb.c:362:20: sparse:    expected void *
+>    drivers/video/fbdev/atmel_lcdfb.c:362:20: sparse:    got char [noderef] <asn:2> *screen_base
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse: sparse: incorrect type in argument 3 (different address spaces) @@    expected void *cpu_addr @@    got char [noderef] <asvoid *cpu_addr @@
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse:    expected void *cpu_addr
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse:    got char [noderef] <asn:2> *screen_base
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse: sparse: incorrect type in argument 3 (different address spaces) @@    expected void *cpu_addr @@    got char [noderef] <asvoid *cpu_addr @@
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse:    expected void *cpu_addr
+>    drivers/video/fbdev/atmel_lcdfb.c:333:59: sparse:    got char [noderef] <asn:2> *screen_base
 
-Have you tested that the resulting kernels work on the relevant
-hardware?
+This is an old bug, valid but harmless. The same thing happens in a number
+of fbdev drivers, but it may be hard to motivate someone to fix them all.
 
-The old drivers may be crufty but they presumably have been tested by
-people and at least somewhat work.
-
-So I'd be inclined to leave the defconfigs alone until someone can test
-that the new driver works at all.
-
-I gave it a quick spin on a G5 I have access to and dmesg has a bunch of
-errors in it (see below). I can't actually tell if the display is
-working because the machine is remote, and I can't go and check it at
-the moment because the office is closed.
-
-cheers
-
-
-[  128.563251] nouveau 0000:f0:10.0: NVIDIA NV34 (034900b1)
-[  128.565720] nouveau 0000:f0:10.0: bios: version 04.34.20.18.00
-[  128.570994] nouveau 0000:f0:10.0: bios: OOB 1 00000cdd 00000cdd
-[  128.571702] nouveau 0000:f0:10.0: bios: OOB 1 00000ce1 00000ce1
-[  128.571723] nouveau 0000:f0:10.0: bios: OOB 1 00000cde 00000cde
-[  128.571731] nouveau 0000:f0:10.0: bios: OOB 1 00000cdf 00000cdf
-[  128.572438] nouveau 0000:f0:10.0: bios: OOB 1 00000ce5 00000ce5
-[  128.572459] nouveau 0000:f0:10.0: bios: OOB 1 00000ce2 00000ce2
-[  128.572468] nouveau 0000:f0:10.0: bios: OOB 1 00000ce3 00000ce3
-[  128.579187] nouveau 0000:f0:10.0: bios: OOB 1 00000ce9 00000ce9
-[  128.579210] nouveau 0000:f0:10.0: bios: OOB 1 00000ce6 00000ce6
-[  128.579219] nouveau 0000:f0:10.0: bios: OOB 1 00000ce7 00000ce7
-[  128.580230] nouveau 0000:f0:10.0: bios: OOB 1 00000ced 00000ced
-[  128.580252] nouveau 0000:f0:10.0: bios: OOB 1 00000cea 00000cea
-[  128.580261] nouveau 0000:f0:10.0: bios: OOB 1 00000ceb 00000ceb
-[  128.581543] nouveau 0000:f0:10.0: bios: OOB 1 00000cf1 00000cf1
-[  128.581567] nouveau 0000:f0:10.0: bios: OOB 1 00000cee 00000cee
-[  128.581576] nouveau 0000:f0:10.0: bios: OOB 1 00000cef 00000cef
-[  128.582456] nouveau 0000:f0:10.0: bios: OOB 1 00000cf5 00000cf5
-[  128.582479] nouveau 0000:f0:10.0: bios: OOB 1 00000cf2 00000cf2
-[  128.582487] nouveau 0000:f0:10.0: bios: OOB 1 00000cf3 00000cf3
-[  128.583314] nouveau 0000:f0:10.0: bios: OOB 1 00000cf9 00000cf9
-[  128.583336] nouveau 0000:f0:10.0: bios: OOB 1 00000cf6 00000cf6
-[  128.583344] nouveau 0000:f0:10.0: bios: OOB 1 00000cf7 00000cf7
-[  128.584186] nouveau 0000:f0:10.0: bios: OOB 1 00000cfd 00000cfd
-[  128.584208] nouveau 0000:f0:10.0: bios: OOB 1 00000cfa 00000cfa
-[  128.584217] nouveau 0000:f0:10.0: bios: OOB 1 00000cfb 00000cfb
-[  128.585635] nouveau 0000:f0:10.0: bios: OOB 1 00000d01 00000d01
-[  128.585658] nouveau 0000:f0:10.0: bios: OOB 1 00000cfe 00000cfe
-[  128.585666] nouveau 0000:f0:10.0: bios: OOB 1 00000cff 00000cff
-[  128.589405] nouveau 0000:f0:10.0: bios: OOB 1 00000d05 00000d05
-[  128.589428] nouveau 0000:f0:10.0: bios: OOB 1 00000d02 00000d02
-[  128.589436] nouveau 0000:f0:10.0: bios: OOB 1 00000d03 00000d03
-[  128.590316] nouveau 0000:f0:10.0: bios: OOB 1 00000d09 00000d09
-[  128.590338] nouveau 0000:f0:10.0: bios: OOB 1 00000d06 00000d06
-[  128.590346] nouveau 0000:f0:10.0: bios: OOB 1 00000d07 00000d07
-[  128.591173] nouveau 0000:f0:10.0: bios: OOB 1 00000d0d 00000d0d
-[  128.591196] nouveau 0000:f0:10.0: bios: OOB 1 00000d0a 00000d0a
-[  128.591205] nouveau 0000:f0:10.0: bios: OOB 1 00000d0b 00000d0b
-[  128.593513] nouveau 0000:f0:10.0: tmr: unknown input clock freq
-[  128.595886] nouveau 0000:f0:10.0: fb: 64 MiB DDR1
-[  128.609034] [TTM] Zone  kernel: Available graphics memory: 500010 KiB
-[  128.609058] [TTM] Initializing pool allocator
-[  128.609106] nouveau 0000:f0:10.0: DRM: VRAM: 63 MiB
-[  128.609115] nouveau 0000:f0:10.0: DRM: GART: 128 MiB
-[  128.609134] nouveau 0000:f0:10.0: DRM: BMP version 5.38
-[  128.609144] nouveau 0000:f0:10.0: DRM: DCB version 2.2
-[  128.609155] nouveau 0000:f0:10.0: DRM: DCB outp 00: 01000122 00000004
-[  128.609168] nouveau 0000:f0:10.0: DRM: DCB outp 01: 02010200 11b088b8
-[  128.609177] nouveau 0000:f0:10.0: DRM: DCB outp 02: 02010201 11b00703
-[  128.609222] nouveau 0000:f0:10.0: DRM: Loading NV17 power sequencing microcode
-[  128.610947] nouveau 0000:f0:10.0: DRM: MM: using M2MF for buffer copies
-[  128.613371] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
-[  128.615065] nouveau 0000:f0:10.0: DRM: Setting dpms mode 3 on TV encoder (output 2)
-[  128.707050] nouveau 0000:f0:10.0: TV-1: EDID is invalid:
-[  128.707075]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707083]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707091]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707099]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707106]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707114]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707121]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707129]  [00] ZERO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  128.707144] nouveau 0000:f0:10.0: DRM: DDC responded, but no EDID for TV-1
-[  128.750558] nouveau 0000:f0:10.0: DRM: allocated 1440x900 fb: 0x9000, bo 000000002677d038
-[  128.825341] nouveau 0000:f0:10.0: DRM: DDC responded, but no EDID for TV-1
-[  128.885351] nouveau 0000:f0:10.0: DRM: Pixel clock comparison table not found
-[  128.905884] Console: switching to colour frame buffer device 180x56
-[  128.907251] nouveau 0000:f0:10.0: fb0: nouveaudrmfb frame buffer device
-[  128.911832] [drm] Initialized nouveau 1.3.1 20120801 for 0000:f0:10.0 on minor 0
-[  129.168778] nouveau 0000:f0:10.0: DRM: DDC responded, but no EDID for TV-1
-[  131.014692] Adding 2947556k swap on /dev/sda4.  Priority:-2 extents:1 across:2947556k 
-[  133.501059] sungem_phy: PHY ID: 4061e4, addr: 0
-[  133.502214] gem 0001:03:0f.0 eth0: Found BCM5221 PHY
-[  135.940863] gem 0001:03:0f.0 eth0: Link is up at 100 Mbps, full-duplex
-[  135.941181] gem 0001:03:0f.0 eth0: Pause is disabled
-[  136.224079] nouveau 0000:f0:10.0: DRM: DDC responded, but no EDID for TV-1
-[  136.297015] nouveau 0000:f0:10.0: DRM: DDC responded, but no EDID for TV-1
-[  139.465278] nouveau 0000:f0:10.0: DRM: Pixel clock comparison table not found
+       Arnd
