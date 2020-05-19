@@ -2,124 +2,244 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7EE1D7A57
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 May 2020 15:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E46C81D9CC1
+	for <lists+linux-fbdev@lfdr.de>; Tue, 19 May 2020 18:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726989AbgERNsy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 18 May 2020 09:48:54 -0400
-Received: from mail-out.m-online.net ([212.18.0.9]:49616 "EHLO
-        mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726800AbgERNsy (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 18 May 2020 09:48:54 -0400
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 49QgN3135Xz1qrfP;
-        Mon, 18 May 2020 15:48:50 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-        by mail.m-online.net (Postfix) with ESMTP id 49QgN24CMyz1qrKn;
-        Mon, 18 May 2020 15:48:50 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-        by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-        with ESMTP id WKU9go5JRdju; Mon, 18 May 2020 15:48:49 +0200 (CEST)
-X-Auth-Info: RDtpFOykrL7UDpceuQwibcIgc/loAzBysowiqqJYR50I8OZbFVZPVaKHWRSWo7jT
-Received: from igel.home (ppp-46-244-178-90.dynamic.mnet-online.de [46.244.178.90])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1728953AbgESQdK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 19 May 2020 12:33:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46136 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726203AbgESQdJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 19 May 2020 12:33:09 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Mon, 18 May 2020 15:48:49 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id DACB62C01E5; Mon, 18 May 2020 15:48:48 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Emil Velikov <emil.l.velikov@gmail.com>,
+        by mail.kernel.org (Postfix) with ESMTPSA id EA79220709;
+        Tue, 19 May 2020 16:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589905988;
+        bh=N1UCw97sxHv6NCUr3SlLAqzW3zL/V10Dg2KZ3SMQItM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=YEFfxu+DKUF3cUmlvwThQFr8L4FVPQT4GNnD9NrOAAxftkTN/wVInEBVVzV+vmz3g
+         SpRhjgh8NoEYtVwmEPwfJcjvb7AmnzpsTEVGJddF0ZEcBEUqFinzvjuxALD9HWs+qa
+         kguy5MvWcaAv+bpW2Mw5fhZ+Lem2P3AcOqCVE1kg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     alexander.deucher@amd.com, chris@chris-wilson.co.uk,
+        ville.syrjala@linux.intel.com, Hawking.Zhang@amd.com,
+        tvrtko.ursulin@intel.com
+Cc:     linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        kys@microsoft.com, haiyangz@microsoft.com, sthemmin@microsoft.com,
+        wei.liu@kernel.org, spronovo@microsoft.com, iourit@microsoft.com,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Antonino Daplas <adaplas@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/2] powerpc/configs: replace deprecated riva/nvidia
- with nouveau
-References: <20200517220524.4036334-1-emil.l.velikov@gmail.com>
-        <20200517220524.4036334-2-emil.l.velikov@gmail.com>
-        <87d071aedu.fsf@mpe.ellerman.id.au>
-X-Yow:  Has everybody got HALVAH spread all over their ANKLES??...
- Now, it's time to ``HAVE A NAGEELA''!!
-Date:   Mon, 18 May 2020 15:48:48 +0200
-In-Reply-To: <87d071aedu.fsf@mpe.ellerman.id.au> (Michael Ellerman's message
-        of "Mon, 18 May 2020 17:30:53 +1000")
-Message-ID: <87v9ktpd4v.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.0.91 (gnu/linux)
+        gregkh@linuxfoundation.org, Sasha Levin <sashal@kernel.org>
+Subject: [RFC PATCH 0/4] DirectX on Linux
+Date:   Tue, 19 May 2020 12:32:30 -0400
+Message-Id: <20200519163234.226513-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mai 18 2020, Michael Ellerman wrote:
+There is a blog post that goes into more detail about the bigger
+picture, and walks through all the required pieces to make this work. It
+is available here:
+https://devblogs.microsoft.com/directx/directx-heart-linux . The rest of
+this cover letter will focus on the Linux Kernel bits.
 
-> The old drivers may be crufty but they presumably have been tested by
-> people and at least somewhat work.
+Overview
+========
 
-I can confirm that the nvidia fbdev driver is working perfectly fine.
+This is the first draft of the Microsoft Virtual GPU (vGPU) driver. The
+driver exposes a paravirtualized GPU to user mode applications running
+in a virtual machine on a Windows host. This enables hardware
+acceleration in environment such as WSL (Windows Subsystem for Linux)
+where the Linux virtual machine is able to share the GPU with the
+Windows host.
 
-> I gave it a quick spin on a G5 I have access to and dmesg has a bunch of
-> errors in it (see below). I can't actually tell if the display is
-> working because the machine is remote, and I can't go and check it at
-> the moment because the office is closed.
+The projection is accomplished by exposing the WDDM (Windows Display
+Driver Model) interface as a set of IOCTL. This allows APIs and user
+mode driver written against the WDDM GPU abstraction on Windows to be
+ported to run within a Linux environment. This enables the port of the
+D3D12 and DirectML APIs as well as their associated user mode driver to
+Linux. This also enables third party APIs, such as the popular NVIDIA
+Cuda compute API, to be hardware accelerated within a WSL environment.
 
-The nouveau driver is completely borked.
+Only the rendering/compute aspect of the GPU are projected to the
+virtual machine, no display functionality is exposed. Further, at this
+time there are no presentation integration. So although the D3D12 API
+can be use to render graphics offscreen, there is no path (yet) for
+pixel to flow from the Linux environment back onto the Windows host
+desktop. This GPU stack is effectively side-by-side with the native
+Linux graphics stack.
 
-[    2.299204] nouveau 0000:f0:10.0: NVIDIA NV34 (034100a2)
-[    2.363100] nouveau 0000:f0:10.0: bios: version 04.34.20.19.00
-[    2.363273] nouveau 0000:f0:10.0: bios: OOB 1 00000962 00000962
-[    2.363323] nouveau 0000:f0:10.0: bios: OOB 1 00000966 00000966
-[    2.363332] nouveau 0000:f0:10.0: bios: OOB 1 00000963 00000963
-[    2.363341] nouveau 0000:f0:10.0: bios: OOB 1 00000964 00000964
-[    2.363387] nouveau 0000:f0:10.0: bios: OOB 1 0000096a 0000096a
-[    2.363396] nouveau 0000:f0:10.0: bios: OOB 1 00000967 00000967
-[    2.363405] nouveau 0000:f0:10.0: bios: OOB 1 00000968 00000968
-[    2.363453] nouveau 0000:f0:10.0: bios: OOB 1 0000096e 0000096e
-[    2.363462] nouveau 0000:f0:10.0: bios: OOB 1 0000096b 0000096b
-[    2.363471] nouveau 0000:f0:10.0: bios: OOB 1 0000096c 0000096c
-[    2.363516] nouveau 0000:f0:10.0: bios: OOB 1 00000972 00000972
-[    2.363526] nouveau 0000:f0:10.0: bios: OOB 1 0000096f 0000096f
-[    2.363534] nouveau 0000:f0:10.0: bios: OOB 1 00000970 00000970
-[    2.363580] nouveau 0000:f0:10.0: bios: OOB 1 00000976 00000976
-[    2.363589] nouveau 0000:f0:10.0: bios: OOB 1 00000973 00000973
-[    2.363597] nouveau 0000:f0:10.0: bios: OOB 1 00000974 00000974
-[    2.363643] nouveau 0000:f0:10.0: bios: OOB 1 0000097a 0000097a
-[    2.363652] nouveau 0000:f0:10.0: bios: OOB 1 00000977 00000977
-[    2.363661] nouveau 0000:f0:10.0: bios: OOB 1 00000978 00000978
-[    2.363709] nouveau 0000:f0:10.0: bios: OOB 1 0000097e 0000097e
-[    2.363718] nouveau 0000:f0:10.0: bios: OOB 1 0000097b 0000097b
-[    2.363727] nouveau 0000:f0:10.0: bios: OOB 1 0000097c 0000097c
-[    2.363772] nouveau 0000:f0:10.0: bios: OOB 1 00000982 00000982
-[    2.363781] nouveau 0000:f0:10.0: bios: OOB 1 0000097f 0000097f
-[    2.363790] nouveau 0000:f0:10.0: bios: OOB 1 00000980 00000980
-[    2.363836] nouveau 0000:f0:10.0: bios: OOB 1 00000986 00000986
-[    2.363845] nouveau 0000:f0:10.0: bios: OOB 1 00000983 00000983
-[    2.363854] nouveau 0000:f0:10.0: bios: OOB 1 00000984 00000984
-[    2.363900] nouveau 0000:f0:10.0: bios: OOB 1 0000098a 0000098a
-[    2.363909] nouveau 0000:f0:10.0: bios: OOB 1 00000987 00000987
-[    2.363918] nouveau 0000:f0:10.0: bios: OOB 1 00000988 00000988
-[    2.363965] nouveau 0000:f0:10.0: bios: OOB 1 0000098e 0000098e
-[    2.363974] nouveau 0000:f0:10.0: bios: OOB 1 0000098b 0000098b
-[    2.363983] nouveau 0000:f0:10.0: bios: OOB 1 0000098c 0000098c
-[    2.364029] nouveau 0000:f0:10.0: bios: OOB 1 00000992 00000992
-[    2.364038] nouveau 0000:f0:10.0: bios: OOB 1 0000098f 0000098f
-[    2.364047] nouveau 0000:f0:10.0: bios: OOB 1 00000990 00000990
-[    2.364383] nouveau 0000:f0:10.0: gpio: GPU is missing power, check its power cables.  Boot with nouveau.config=NvPowerChecks=0 to disable.
-[    2.364402] nouveau 0000:f0:10.0: gpio: init failed, -22
-[    2.364431] nouveau 0000:f0:10.0: init failed with -22
-[    2.364438] nouveau: DRM-master:00000000:00000080: init failed with -22
-[    2.364450] nouveau 0000:f0:10.0: DRM-master: Device allocation failed: -22
-[    2.365268] nouveau: probe of 0000:f0:10.0 failed with error -22
+The driver creates the /dev/dxg device, which can be opened by user mode
+application and handles their ioctls. The IOCTL interface to the driver
+is defined in dxgkmthk.h (Dxgkrnl Graphics Port Driver ioctl
+definitions). The interface matches the D3DKMT interface on Windows.
+Ioctls are implemented in ioctl.c.
 
-Andreas.
+When a VM starts, hyper-v on the host adds virtual GPU devices to the VM
+via the hyper-v driver. The host offers several VM bus channels to the
+VM: the global channel and one channel per virtual GPU, assigned to the
+VM.
+
+The driver registers with the hyper-v driver (hv_driver) for the arrival
+of VM bus channels. dxg_probe_device recognizes the vGPU channels and
+creates the corresponding objects (dxgadapter for vGPUs and dxgglobal
+for the global channel).
+
+The driver uses the hyper-V VM bus interface to communicate with the
+host. dxgvmbus.c implements the communication interface.
+
+The global channel has 8GB of IO space assigned by the host. This space
+is managed by the host and used to give the guest direct CPU access to
+some allocations. Video memory is allocated on the host except in the
+case of existing_sysmem allocations. The Windows host allocates memory
+for the GPU on behalf of the guest. The Linux guest can access that
+memory by mapping GPU virtual address to allocations and then
+referencing those GPU virtual address from within GPU command buffers
+submitted to the GPU. For allocations which require CPU access, the
+allocation is mapped by the host into a location in the 8GB of IO space
+reserved in the guest for that purpose. The Windows host uses the nested
+CPU page table to ensure that this guest IO space always map to the
+correct location for the allocation as it may migrate between dedicated
+GPU memory (e.g. VRAM, firmware reserved DDR) and shared system memory
+(regular DDR) over its lifetime. The Linux guest maps a user mode CPU
+virtual address to an allocation IO space range for direct access by
+user mode APIs and drivers.
+
+ 
+
+Implementation of LX_DXLOCK2 ioctl
+==================================
+
+We would appreciate your feedback on the implementation of the
+LX_DXLOCK2 ioctl.
+
+This ioctl is used to get a CPU address to an allocation, which is
+resident in video/system memory on the host. The way it works:
+
+1. The driver sends the Lock message to the host
+
+2. The host allocates space in the VM IO space and maps it to the
+allocation memory
+
+3. The host returns the address in IO space for the mapped allocation
+
+4. The driver (in dxg_map_iospace) allocates a user mode virtual address
+range using vm_mmap and maps it to the IO space using
+io_remap_ofn_range)
+
+5. The VA is returned to the application
+
+ 
+
+Internal objects
+================
+
+The following objects are created by the driver (defined in dxgkrnl.h):
+
+- dxgadapter - represents a virtual GPU
+
+- dxgprocess - tracks per process state (handle table of created
+  objects, list of objects, etc.)
+
+- dxgdevice - a container for other objects (contexts, paging queues,
+  allocations, GPU synchronization objects)
+
+- dxgcontext - represents thread of GPU execution for packet
+  scheduling.
+
+- dxghwqueue - represents thread of GPU execution of hardware scheduling
+
+- dxgallocation - represents a GPU accessible allocation
+
+- dxgsyncobject - represents a GPU synchronization object
+
+- dxgresource - collection of dxgalloction objects
+
+- dxgsharedresource, dxgsharedsyncobj - helper objects to share objects
+  between different dxgdevice objects, which can belong to different
+processes
+
+
+ 
+Object handles
+==============
+
+All GPU objects, created by the driver, are accessible by a handle
+(d3dkmt_handle). Each process has its own handle table, which is
+implemented in hmgr.c. For each API visible object, created by the
+driver, there is an object, created on the host. For example, the is a
+dxgprocess object on the host for each dxgprocess object in the VM, etc.
+The object handles have the same value in the host and the VM, which is
+done to avoid translation from the guest handles to the host handles.
+ 
+
+
+Signaling CPU events by the host
+================================
+
+The WDDM interface provides a way to signal CPU event objects when
+execution of a context reached certain point. The way it is implemented:
+
+- application sends an event_fd via ioctl to the driver
+
+- eventfd_ctx_get is used to get a pointer to the file object
+  (eventfd_ctx)
+
+- the pointer to sent the host via a VM bus message
+
+- when GPU execution reaches a certain point, the host sends a message
+  to the VM with the event pointer
+
+- signal_guest_event() handles the messages and eventually
+  eventfd_signal() is called.
+
+
+Sasha Levin (4):
+  gpu: dxgkrnl: core code
+  gpu: dxgkrnl: hook up dxgkrnl
+  Drivers: hv: vmbus: hook up dxgkrnl
+  gpu: dxgkrnl: create a MAINTAINERS entry
+
+ MAINTAINERS                      |    7 +
+ drivers/gpu/Makefile             |    2 +-
+ drivers/gpu/dxgkrnl/Kconfig      |   10 +
+ drivers/gpu/dxgkrnl/Makefile     |   12 +
+ drivers/gpu/dxgkrnl/d3dkmthk.h   | 1635 +++++++++
+ drivers/gpu/dxgkrnl/dxgadapter.c | 1399 ++++++++
+ drivers/gpu/dxgkrnl/dxgkrnl.h    |  913 ++++++
+ drivers/gpu/dxgkrnl/dxgmodule.c  |  692 ++++
+ drivers/gpu/dxgkrnl/dxgprocess.c |  355 ++
+ drivers/gpu/dxgkrnl/dxgvmbus.c   | 2955 +++++++++++++++++
+ drivers/gpu/dxgkrnl/dxgvmbus.h   |  859 +++++
+ drivers/gpu/dxgkrnl/hmgr.c       |  593 ++++
+ drivers/gpu/dxgkrnl/hmgr.h       |  107 +
+ drivers/gpu/dxgkrnl/ioctl.c      | 5269 ++++++++++++++++++++++++++++++
+ drivers/gpu/dxgkrnl/misc.c       |  280 ++
+ drivers/gpu/dxgkrnl/misc.h       |  288 ++
+ drivers/video/Kconfig            |    2 +
+ include/linux/hyperv.h           |   16 +
+ 18 files changed, 15393 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpu/dxgkrnl/Kconfig
+ create mode 100644 drivers/gpu/dxgkrnl/Makefile
+ create mode 100644 drivers/gpu/dxgkrnl/d3dkmthk.h
+ create mode 100644 drivers/gpu/dxgkrnl/dxgadapter.c
+ create mode 100644 drivers/gpu/dxgkrnl/dxgkrnl.h
+ create mode 100644 drivers/gpu/dxgkrnl/dxgmodule.c
+ create mode 100644 drivers/gpu/dxgkrnl/dxgprocess.c
+ create mode 100644 drivers/gpu/dxgkrnl/dxgvmbus.c
+ create mode 100644 drivers/gpu/dxgkrnl/dxgvmbus.h
+ create mode 100644 drivers/gpu/dxgkrnl/hmgr.c
+ create mode 100644 drivers/gpu/dxgkrnl/hmgr.h
+ create mode 100644 drivers/gpu/dxgkrnl/ioctl.c
+ create mode 100644 drivers/gpu/dxgkrnl/misc.c
+ create mode 100644 drivers/gpu/dxgkrnl/misc.h
 
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.25.1
+
