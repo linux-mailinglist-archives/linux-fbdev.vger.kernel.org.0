@@ -2,120 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A47341DDEA2
-	for <lists+linux-fbdev@lfdr.de>; Fri, 22 May 2020 06:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D3B41DF9D1
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2020 20:00:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727901AbgEVEPK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 22 May 2020 00:15:10 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:3764 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727773AbgEVEPK (ORCPT
+        id S1728374AbgEWSAV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 23 May 2020 14:00:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55722 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727940AbgEWSAU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 22 May 2020 00:15:10 -0400
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ec751c10001>; Thu, 21 May 2020 21:14:57 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate102.nvidia.com (PGP Universal service);
-  Thu, 21 May 2020 21:15:09 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate102.nvidia.com on Thu, 21 May 2020 21:15:09 -0700
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 22 May
- 2020 04:15:09 +0000
-Received: from rnnvemgw01.nvidia.com (10.128.109.123) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Fri, 22 May 2020 04:15:09 +0000
-Received: from sandstorm.nvidia.com (Not Verified[10.2.48.182]) by rnnvemgw01.nvidia.com with Trustwave SEG (v7,5,8,10121)
-        id <B5ec751cc0002>; Thu, 21 May 2020 21:15:08 -0700
-From:   John Hubbard <jhubbard@nvidia.com>
-To:     LKML <linux-kernel@vger.kernel.org>
-CC:     John Hubbard <jhubbard@nvidia.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
-Subject: [PATCH 2/2] video: fbdev: convert get_user_pages() --> pin_user_pages()
-Date:   Thu, 21 May 2020 21:15:06 -0700
-Message-ID: <20200522041506.39638-3-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200522041506.39638-1-jhubbard@nvidia.com>
-References: <20200522041506.39638-1-jhubbard@nvidia.com>
+        Sat, 23 May 2020 14:00:20 -0400
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B6DC08C5C1
+        for <linux-fbdev@vger.kernel.org>; Sat, 23 May 2020 11:00:19 -0700 (PDT)
+Received: by mail-qv1-xf44.google.com with SMTP id ee19so6252809qvb.11
+        for <linux-fbdev@vger.kernel.org>; Sat, 23 May 2020 11:00:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
+        b=DLUdlLdqK1bsV3DbEuTTyBWxouo7TOwyxri4APWQD3NqiMSIjirU+KuWgkxjC+SPXd
+         U5bKcUrFxXkujPWjXtLFF/k/nfilKzP5EjBajrS/8510fneO07cpMqdcHCxwrpi40/q7
+         /O0e1HoJlTbh5NB1junI0CHT5u7OlL96wLc3EVtoU1jy6h6mu/94Ij3+HmmWjDrdLWVh
+         jTwO4Rc/jE6wel14tPJDJsn6k0/UDkI9Or/XCFS691xyvyogoxyI2h7yK06Suh6ePv/U
+         +lZz7VywgsFgSxYL/B5mLPOXcZ0fktkIkUnyPxHg9tbmvqat4Bb8GZAodniIxvBVB3XB
+         mJxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
+        b=JgR3Iu6EjV0zmJrCJqrtXTBHKrHMi1RLrsgAYZ0ViZiqmjQ5g6r5dSB1cX4h9YFSD+
+         Fgc4t/j1bBPtfH106vZBm6xgrXmnAun0Kp4M72NlKZor6EgBS5CeA5M/CU+kUbCj+e0e
+         E2nn6exhUQh/HkuVb3t9nlH8TrnBEnDmci+jjlNt3XiTbEhGtY/ZnrQPTB6hH4bGukPO
+         x+lzlZtfhtj+VTXDwFSUArgHBd4Q8IJS4ojO56vcsNEpgUDkjaY1HbNQbwQyfQGD1H/H
+         +UYv+fzi8PQ+lkty9R+eh6rjQivmiy6VghGbMfzWUkmBjGdp3v5aDekymcH2lb78Nr3V
+         rSDg==
+X-Gm-Message-State: AOAM531udEfA4Vt9nPKoLCRhx5h6ba6f4H9+CV1kISLs0/2VBbSeZDCA
+        icA7Do73zeyjeR7csKkZ46ao7ijeMiwP3ekLp70=
+X-Google-Smtp-Source: ABdhPJxI0GNvtYFRzubiNKehFnBmeNa8IdxO7hQ3TxAldsg7mTxyy0v9X6v2Fayhxp/lnxt7tCbB9QFJVJ60H98MgEQ=
+X-Received: by 2002:a0c:ed4b:: with SMTP id v11mr9120627qvq.179.1590256818769;
+ Sat, 23 May 2020 11:00:18 -0700 (PDT)
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1590120897; bh=ouw78Ze34s++yvNZQkTG1iTTFB5/htkcycvRireHQNE=;
-        h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-         In-Reply-To:References:MIME-Version:X-NVConfidentiality:
-         Content-Transfer-Encoding:Content-Type;
-        b=AgGFJjlNoGWVVjm8kijEcZNDXRlAEGwnJ4pgoR9yHJTI8Eu5TfiCKnOyH4M4UiFl2
-         rwAdWweoH98+1/VP6biU6pwSKe/QvY4tkRUMyyudd0YHhJRVB/e08Sx82h5jjuqfI8
-         +CTMa40jjdBVGbMAVJfcwD1r0Leb47iMx6RUkw/3wa9lf6D8NAt/YxvCHv4G1MQV55
-         AeuIPAk/Hc7ZOz6rS207GQ3hqv6NwYhL3VaPMFBDnTEYAjAcdBVTO2+pyA0TNlIP8Z
-         YYn5USowgtaIC7x47L/2U602+QixoydX6hpANgsLVznr7YZBUZGvhPNG3cd1Ym3fXr
-         jVTGx8EnBI9QA==
+Received: by 2002:aed:3ac5:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:18
+ -0700 (PDT)
+Reply-To: mrs.chantala2055@gmail.com
+From:   mrs chantal <mrs.chantaltwo@gmail.com>
+Date:   Sat, 23 May 2020 18:00:18 +0000
+Message-ID: <CAGVwK0UnqGdMqCxvjeR06i5Ca=SScOHB3E1kfQEUa4_tgZN-cQ@mail.gmail.com>
+Subject: jjCompliment
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This code was using get_user_pages*(), in a "Case 2" scenario
-(DMA/RDMA), using the categorization from [1]. That means that it's
-time to convert the get_user_pages*() + put_page() calls to
-pin_user_pages*() + unpin_user_pages() calls.
-
-There is some helpful background in [2]: basically, this is a small
-part of fixing a long-standing disconnect between pinning pages, and
-file systems' use of those pages.
-
-[1] Documentation/core-api/pin_user_pages.rst
-
-[2] "Explicit pinning of user-space pages":
-    https://lwn.net/Articles/807108/
-
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- drivers/video/fbdev/pvr2fb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
-index ceb6ef590597..2d9f69b93392 100644
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -652,7 +652,7 @@ static ssize_t pvr2fb_write(struct fb_info *info, const=
- char *buf,
- 	if (!pages)
- 		return -ENOMEM;
-=20
--	ret =3D get_user_pages_fast((unsigned long)buf, nr_pages, FOLL_WRITE, pag=
-es);
-+	ret =3D pin_user_pages_fast((unsigned long)buf, nr_pages, FOLL_WRITE, pag=
-es);
- 	if (ret < nr_pages) {
- 		if (ret < 0) {
- 			/*
-@@ -712,9 +712,7 @@ static ssize_t pvr2fb_write(struct fb_info *info, const=
- char *buf,
- 	ret =3D count;
-=20
- out_unmap:
--	for (i =3D 0; i < nr_pages; i++)
--		put_page(pages[i]);
--
-+	unpin_user_pages(pages, nr_pages);
- 	kfree(pages);
-=20
- 	return ret;
---=20
-2.26.2
-
+     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
+    letter to solicit your partnership to transfer $13.5 Million US
+    Dollars.I shall send you more information and procedures when I receive
+    positive response From you. Please send me a message in My private
+    email address is ( mrschantal066@gmail.com  )
+    Best Regards
+    MrS.Chantal
