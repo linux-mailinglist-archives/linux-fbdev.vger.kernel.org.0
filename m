@@ -2,100 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFB921E0C40
-	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 12:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 289981E0C74
+	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 13:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389930AbgEYKyJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 25 May 2020 06:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
+        id S2390031AbgEYLGZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 25 May 2020 07:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389484AbgEYKyJ (ORCPT
+        with ESMTP id S2389897AbgEYLGY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 25 May 2020 06:54:09 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B1DC061A0E;
-        Mon, 25 May 2020 03:54:08 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id h21so20053610ejq.5;
-        Mon, 25 May 2020 03:54:08 -0700 (PDT)
+        Mon, 25 May 2020 07:06:24 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE775C061A0E
+        for <linux-fbdev@vger.kernel.org>; Mon, 25 May 2020 04:06:24 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id q16so7386719plr.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 25 May 2020 04:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=I2SbXHPPSfQYxydd3wzVxKM/dM5peIMZZus8bzRPuPo=;
-        b=q4lxaU9CtOqrjY7oTsTXqky1nSVO0crs1fSCGfajCpOJOJEkhb2krEfjE2ivsNddo8
-         LL4BA0vUQhaBvhZBsXjfN0SuYXpWeL6hFzInK8QZuSMOH1Faptdjtvz1+1xAQ/iJeOfS
-         mgLaqeMgFHFopi+2y37hjqF4dvJMyaYHF3ZLqqoJNz3fXfxCCF+LsaTs+UvwPWEu2ITj
-         Ifb2nW/EuqSEEyYkqf/KsmkKOp3oHVfzcMni37bT0PXZM3dVHQ/X8/lxkoj/VG9sf2YN
-         0S+3RlGK64BfGVU2ykWHHZI1G6HExpHG3BoD9J+swJSzGUUPyY9QZ7BFj40CoeV11eIM
-         YVVQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=QcB2YOMl1yui9BYd9Im0D0BSfvlNUCbYy9AD2DvaL7w=;
+        b=YP7l59M+5Jh9lRuizAMBVkh8n0w/Qm12+7H//7Fj4nDQ5LawKP9V4GllUZ32hcXP0r
+         5KgW6MIPrmNJ+ursHMGJm6JQUZOsiigsB9vc0JLXIUWhy9ZvBOb+PeC2dHNZERmvy9yJ
+         aBLEpNpbFjA89dj//T/dmbB1QpNnjQPBXGVQqMHdYK0oUlBz5Rl7yGbXNM97AU4T2Abh
+         faXqN03cJiQZzC/f6/PUz4WVRf4Mvf/No27tXpcRfrTNGwvjfLUhNPvy8uq5gQiEHqrt
+         4LRi+j8qpfx/XJ+97MTxwsqnVLh6rCjjL6ha9UfJQeNaYoUy1B5ImnT3tE5nv7CirzpI
+         46eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=I2SbXHPPSfQYxydd3wzVxKM/dM5peIMZZus8bzRPuPo=;
-        b=A8heldaB0QHhtqT6YTHvg88PoOY0EEO3vKvfjHgQUTKxZNnbdUTKpYatk6EWtdVKXQ
-         PmYaPUg4uB6W8Pg+zKaBheEFv+QKxqgHD4TBJTUwXSEpHA/ElJH+7cqxspljJ5XrBjuw
-         bXLTDzqv1N+39x7TuZeJm2ZyrXc/HM9hAcRplJFkTVE7q1PoTemkJIwHGNsgyZMOM1Hd
-         uLbIQBUKf0gCQK+979FU7FFzWfLAb/97J0GnBX+gUn4HuR/cnm4XXG9xL/6jW/3m/3lK
-         80puMKV4TIK9WC8BxjdwzUWVXKUBIzpOui99E+rusBuRpRUQARoSxReRMNRRPy/SGO+o
-         CrGA==
-X-Gm-Message-State: AOAM532x47u/Jzz5imQlE++ENFiaP3oZaBunHlwfKAUAOwsbwjFcVysk
-        nDxsMsFlAc3lS4xpfLc9Yio=
-X-Google-Smtp-Source: ABdhPJwi1ssc7Gtx/iriU4TwkE8NvmkswAIt2uL7Im8Q8vBREkBMDvgoet34z0Judn6oiPaJ9Kzewg==
-X-Received: by 2002:a17:906:a0c2:: with SMTP id bh2mr19064586ejb.458.1590404047012;
-        Mon, 25 May 2020 03:54:07 -0700 (PDT)
-Received: from localhost (ip1f115f16.dynamic.kabel-deutschland.de. [31.17.95.22])
-        by smtp.gmail.com with ESMTPSA id cm26sm15127731edb.87.2020.05.25.03.54.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2020 03:54:05 -0700 (PDT)
-From:   Oliver Graute <oliver.graute@gmail.com>
-X-Google-Original-From: Oliver Graute <oliver.graute@kococonnector.com>
-Date:   Mon, 25 May 2020 12:53:32 +0200
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: fb_st7789v: make HSD20_IPS numeric and
- not a string
-Message-ID: <20200525105332.GB12301@archlinux.localdomain>
-References: <20200521135038.345878-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=QcB2YOMl1yui9BYd9Im0D0BSfvlNUCbYy9AD2DvaL7w=;
+        b=VJXeabmqx9Ere94mFN6a2hZ88K2LPkRmfKQcblpFWsqub9xGl5imLJIt6711CWn9sC
+         0EG5d1LPLECirOib7Sh0M4OcRptO/xy6KWuY8CgltyUtLNpOTvknXz31Q8PSYa4HjEs1
+         cajgQud1kIKmSr2NO+ClmlmDk6AP29S6kGdfMmq7vyx2hiJHiGbwnmpmM9zq462Jf0/X
+         vrBPtTiDzBKnef5LtVab8nRHuc9EVXgV360vfDYy0PbU5ZLuw6wHKvpbncNiHY739whF
+         YB2cHtP+vSkIoghpNCoxmlq3rXv+3FQ4e1lY8yU0Ar2aoqsXfyo2gFFfJdZqca2qLwd2
+         3Xlw==
+X-Gm-Message-State: AOAM530jiXudcLiiUMo98pk23ODl86wbgP68jEtVkuUUZAxHc6cLX6xe
+        CXfnIMhxkJmV1OJPq4Qi1RG5Epp2nJWNqSD17Ls=
+X-Google-Smtp-Source: ABdhPJydhUpmTbTJBr/tzrwjYKu6/QA5VXimHdeXD4elSR3UmMVq1wkX0CJsm5la4HiwGIFLKepasxOdALI4cVsoiek=
+X-Received: by 2002:a17:90a:6a4a:: with SMTP id d10mr20377480pjm.199.1590404784402;
+ Mon, 25 May 2020 04:06:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200521135038.345878-1-colin.king@canonical.com>
+Received: by 2002:a17:90a:36c6:0:0:0:0 with HTTP; Mon, 25 May 2020 04:06:24
+ -0700 (PDT)
+Reply-To: farmer2006@embarqmail.com
+From:   Mary Farmer <orabank751@gmail.com>
+Date:   Mon, 25 May 2020 13:06:24 +0200
+Message-ID: <CAB9NweReHh5AEitr7rvqCOxGT468qsiWhb+mfs3_Gvn3f0gUBw@mail.gmail.com>
+Subject: Dringend bitte lesen
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 21/05/20, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently HSD20_IPS is defined as "true" and will always result in a
-> non-zero result even if it is defined as "false" because it is an array
-> and that will never be zero. Fix this by defining it as an integer 1
-> rather than a literal string.
-> 
-> Addessses-Coverity: ("Array compared against 0")
-> Fixes: f03c9b788472 ("staging: fbtft: fb_st7789v: Initialize the Display")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/staging/fbtft/fb_st7789v.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> index ebc17e05ecd0..3a280cc1892c 100644
-> --- a/drivers/staging/fbtft/fb_st7789v.c
-> +++ b/drivers/staging/fbtft/fb_st7789v.c
-> @@ -24,7 +24,7 @@
->  	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
->  	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
->  
-> -#define HSD20_IPS "true"
-> +#define HSD20_IPS 1
->  
->  /**
->   * enum st7789v_command - ST7789V display controller commands
+--=20
+Lieber Freund,
 
-Acked-by: Oliver Graute <oliver.graute@kococonnector.com>
+Es gibt etwas sehr Wichtiges, das ich mit Ihnen besprechen muss.
+
+ Ich schreibe diesen Brief in Tr=C3=A4nen und Angst. In Tr=C3=A4nen, weil i=
+ch
+Ich werde bald abreisen und Angst haben, weil ich nicht wirklich wei=C3=9F,=
+ ob du
+werde dies treu tun.
+
+Ich bin COVID-19-Patient und der Arzt hat bereits best=C3=A4tigt, dass ich =
+es kann
+nicht f=C3=BCr die n=C3=A4chsten 7 Tage dauern.
+
+Ich habe einen betr=C3=A4chtlichen Geldbetrag in einem Sicherheitstresor hi=
+nterlegt
+in deinem Land. Es ist in Kofferr=C3=A4umen und sobald ich erhalte
+Ihre Antwort und sehen Sie Ihre Bereitschaft, das Geld zu fordern
+Ich werde sofort die ben=C3=B6tigten Unterlagen und den Kontakt weiterleite=
+n
+des Sicherheitsgew=C3=B6lbes, in dem die Sendung deponiert ist,
+Ich bitte Sie nicht, mir etwas zu geben, aber ich m=C3=B6chte, dass Sie hel=
+fen
+Menschen, die mit 60% von diesem t=C3=B6dlichen Virus infiziert wurden
+Das Geld und 40% sollten f=C3=BCr Sie und Ihre Familie sein.
+
+Ich werde den genauen Betrag in den Feldern offenlegen, sobald ich
+Erhalten Sie Ihre Antwort.
+
+Gr=C3=BC=C3=9Fe.
