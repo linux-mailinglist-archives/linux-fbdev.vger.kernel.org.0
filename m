@@ -2,66 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D3B41DF9D1
-	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2020 20:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B6B1E0789
+	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 09:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728374AbgEWSAV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 23 May 2020 14:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55722 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727940AbgEWSAU (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 23 May 2020 14:00:20 -0400
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B6DC08C5C1
-        for <linux-fbdev@vger.kernel.org>; Sat, 23 May 2020 11:00:19 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id ee19so6252809qvb.11
-        for <linux-fbdev@vger.kernel.org>; Sat, 23 May 2020 11:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=DLUdlLdqK1bsV3DbEuTTyBWxouo7TOwyxri4APWQD3NqiMSIjirU+KuWgkxjC+SPXd
-         U5bKcUrFxXkujPWjXtLFF/k/nfilKzP5EjBajrS/8510fneO07cpMqdcHCxwrpi40/q7
-         /O0e1HoJlTbh5NB1junI0CHT5u7OlL96wLc3EVtoU1jy6h6mu/94Ij3+HmmWjDrdLWVh
-         jTwO4Rc/jE6wel14tPJDJsn6k0/UDkI9Or/XCFS691xyvyogoxyI2h7yK06Suh6ePv/U
-         +lZz7VywgsFgSxYL/B5mLPOXcZ0fktkIkUnyPxHg9tbmvqat4Bb8GZAodniIxvBVB3XB
-         mJxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=JgR3Iu6EjV0zmJrCJqrtXTBHKrHMi1RLrsgAYZ0ViZiqmjQ5g6r5dSB1cX4h9YFSD+
-         Fgc4t/j1bBPtfH106vZBm6xgrXmnAun0Kp4M72NlKZor6EgBS5CeA5M/CU+kUbCj+e0e
-         E2nn6exhUQh/HkuVb3t9nlH8TrnBEnDmci+jjlNt3XiTbEhGtY/ZnrQPTB6hH4bGukPO
-         x+lzlZtfhtj+VTXDwFSUArgHBd4Q8IJS4ojO56vcsNEpgUDkjaY1HbNQbwQyfQGD1H/H
-         +UYv+fzi8PQ+lkty9R+eh6rjQivmiy6VghGbMfzWUkmBjGdp3v5aDekymcH2lb78Nr3V
-         rSDg==
-X-Gm-Message-State: AOAM531udEfA4Vt9nPKoLCRhx5h6ba6f4H9+CV1kISLs0/2VBbSeZDCA
-        icA7Do73zeyjeR7csKkZ46ao7ijeMiwP3ekLp70=
-X-Google-Smtp-Source: ABdhPJxI0GNvtYFRzubiNKehFnBmeNa8IdxO7hQ3TxAldsg7mTxyy0v9X6v2Fayhxp/lnxt7tCbB9QFJVJ60H98MgEQ=
-X-Received: by 2002:a0c:ed4b:: with SMTP id v11mr9120627qvq.179.1590256818769;
- Sat, 23 May 2020 11:00:18 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:aed:3ac5:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:18
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantaltwo@gmail.com>
-Date:   Sat, 23 May 2020 18:00:18 +0000
-Message-ID: <CAGVwK0UnqGdMqCxvjeR06i5Ca=SScOHB3E1kfQEUa4_tgZN-cQ@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S2388979AbgEYHLy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 25 May 2020 03:11:54 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:53602 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388948AbgEYHLy (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 25 May 2020 03:11:54 -0400
+Received: from linux.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxr2uyb8teEdE4AA--.1329S2;
+        Mon, 25 May 2020 15:11:46 +0800 (CST)
+From:   Tiezhu Yang <yangtiezhu@loongson.cn>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: [PATCH] video: fbdev: pxafb: Use correct return value for pxafb_probe()
+Date:   Mon, 25 May 2020 15:11:45 +0800
+Message-Id: <1590390705-22898-1-git-send-email-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9Dxr2uyb8teEdE4AA--.1329S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw18Zw1xXFykWFyrtFyxZrb_yoW3AFb_Cw
+        48ur93XryUtr1vg3Wqya15Ary2yF97Wr4fXanrK3yYy347uryfuryUZr1v9FW8Xw4jyFn8
+        ZF4qgr1avr4fCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbckFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+        Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6r4x
+        MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+        0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0E
+        wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
+        W8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF
+        0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUIApnUUUUU=
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+When call function devm_platform_ioremap_resource(), we should use IS_ERR()
+to check the return value and return PTR_ERR() if failed.
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ drivers/video/fbdev/pxafb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 00b96a7..423331c 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2305,7 +2305,7 @@ static int pxafb_probe(struct platform_device *dev)
+ 	fbi->mmio_base = devm_platform_ioremap_resource(dev, 0);
+ 	if (IS_ERR(fbi->mmio_base)) {
+ 		dev_err(&dev->dev, "failed to get I/O memory\n");
+-		ret = -EBUSY;
++		ret = PTR_ERR(fbi->mmio_base);
+ 		goto failed;
+ 	}
+ 
+-- 
+2.1.0
+
