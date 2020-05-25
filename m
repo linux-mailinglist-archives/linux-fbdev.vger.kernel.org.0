@@ -2,70 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B6B1E0789
-	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 09:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFB921E0C40
+	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 12:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388979AbgEYHLy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 25 May 2020 03:11:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:53602 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388948AbgEYHLy (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 25 May 2020 03:11:54 -0400
-Received: from linux.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxr2uyb8teEdE4AA--.1329S2;
-        Mon, 25 May 2020 15:11:46 +0800 (CST)
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
-        Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: [PATCH] video: fbdev: pxafb: Use correct return value for pxafb_probe()
-Date:   Mon, 25 May 2020 15:11:45 +0800
-Message-Id: <1590390705-22898-1-git-send-email-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9Dxr2uyb8teEdE4AA--.1329S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw18Zw1xXFykWFyrtFyxZrb_yoW3AFb_Cw
-        48ur93XryUtr1vg3Wqya15Ary2yF97Wr4fXanrK3yYy347uryfuryUZr1v9FW8Xw4jyFn8
-        ZF4qgr1avr4fCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbckFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-        Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6r4x
-        MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-        0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0E
-        wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
-        W8JwCI42IY6xAIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF
-        0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUIApnUUUUU=
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+        id S2389930AbgEYKyJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 25 May 2020 06:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389484AbgEYKyJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 25 May 2020 06:54:09 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B1DC061A0E;
+        Mon, 25 May 2020 03:54:08 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id h21so20053610ejq.5;
+        Mon, 25 May 2020 03:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=I2SbXHPPSfQYxydd3wzVxKM/dM5peIMZZus8bzRPuPo=;
+        b=q4lxaU9CtOqrjY7oTsTXqky1nSVO0crs1fSCGfajCpOJOJEkhb2krEfjE2ivsNddo8
+         LL4BA0vUQhaBvhZBsXjfN0SuYXpWeL6hFzInK8QZuSMOH1Faptdjtvz1+1xAQ/iJeOfS
+         mgLaqeMgFHFopi+2y37hjqF4dvJMyaYHF3ZLqqoJNz3fXfxCCF+LsaTs+UvwPWEu2ITj
+         Ifb2nW/EuqSEEyYkqf/KsmkKOp3oHVfzcMni37bT0PXZM3dVHQ/X8/lxkoj/VG9sf2YN
+         0S+3RlGK64BfGVU2ykWHHZI1G6HExpHG3BoD9J+swJSzGUUPyY9QZ7BFj40CoeV11eIM
+         YVVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=I2SbXHPPSfQYxydd3wzVxKM/dM5peIMZZus8bzRPuPo=;
+        b=A8heldaB0QHhtqT6YTHvg88PoOY0EEO3vKvfjHgQUTKxZNnbdUTKpYatk6EWtdVKXQ
+         PmYaPUg4uB6W8Pg+zKaBheEFv+QKxqgHD4TBJTUwXSEpHA/ElJH+7cqxspljJ5XrBjuw
+         bXLTDzqv1N+39x7TuZeJm2ZyrXc/HM9hAcRplJFkTVE7q1PoTemkJIwHGNsgyZMOM1Hd
+         uLbIQBUKf0gCQK+979FU7FFzWfLAb/97J0GnBX+gUn4HuR/cnm4XXG9xL/6jW/3m/3lK
+         80puMKV4TIK9WC8BxjdwzUWVXKUBIzpOui99E+rusBuRpRUQARoSxReRMNRRPy/SGO+o
+         CrGA==
+X-Gm-Message-State: AOAM532x47u/Jzz5imQlE++ENFiaP3oZaBunHlwfKAUAOwsbwjFcVysk
+        nDxsMsFlAc3lS4xpfLc9Yio=
+X-Google-Smtp-Source: ABdhPJwi1ssc7Gtx/iriU4TwkE8NvmkswAIt2uL7Im8Q8vBREkBMDvgoet34z0Judn6oiPaJ9Kzewg==
+X-Received: by 2002:a17:906:a0c2:: with SMTP id bh2mr19064586ejb.458.1590404047012;
+        Mon, 25 May 2020 03:54:07 -0700 (PDT)
+Received: from localhost (ip1f115f16.dynamic.kabel-deutschland.de. [31.17.95.22])
+        by smtp.gmail.com with ESMTPSA id cm26sm15127731edb.87.2020.05.25.03.54.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2020 03:54:05 -0700 (PDT)
+From:   Oliver Graute <oliver.graute@gmail.com>
+X-Google-Original-From: Oliver Graute <oliver.graute@kococonnector.com>
+Date:   Mon, 25 May 2020 12:53:32 +0200
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: fb_st7789v: make HSD20_IPS numeric and
+ not a string
+Message-ID: <20200525105332.GB12301@archlinux.localdomain>
+References: <20200521135038.345878-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200521135038.345878-1-colin.king@canonical.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When call function devm_platform_ioremap_resource(), we should use IS_ERR()
-to check the return value and return PTR_ERR() if failed.
+On 21/05/20, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently HSD20_IPS is defined as "true" and will always result in a
+> non-zero result even if it is defined as "false" because it is an array
+> and that will never be zero. Fix this by defining it as an integer 1
+> rather than a literal string.
+> 
+> Addessses-Coverity: ("Array compared against 0")
+> Fixes: f03c9b788472 ("staging: fbtft: fb_st7789v: Initialize the Display")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/fbtft/fb_st7789v.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
+> index ebc17e05ecd0..3a280cc1892c 100644
+> --- a/drivers/staging/fbtft/fb_st7789v.c
+> +++ b/drivers/staging/fbtft/fb_st7789v.c
+> @@ -24,7 +24,7 @@
+>  	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
+>  	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
+>  
+> -#define HSD20_IPS "true"
+> +#define HSD20_IPS 1
+>  
+>  /**
+>   * enum st7789v_command - ST7789V display controller commands
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- drivers/video/fbdev/pxafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 00b96a7..423331c 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2305,7 +2305,7 @@ static int pxafb_probe(struct platform_device *dev)
- 	fbi->mmio_base = devm_platform_ioremap_resource(dev, 0);
- 	if (IS_ERR(fbi->mmio_base)) {
- 		dev_err(&dev->dev, "failed to get I/O memory\n");
--		ret = -EBUSY;
-+		ret = PTR_ERR(fbi->mmio_base);
- 		goto failed;
- 	}
- 
--- 
-2.1.0
-
+Acked-by: Oliver Graute <oliver.graute@kococonnector.com>
