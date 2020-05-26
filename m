@@ -2,102 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAAE1E1BA9
-	for <lists+linux-fbdev@lfdr.de>; Tue, 26 May 2020 09:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAF41E32E6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2020 00:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731363AbgEZHAs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 26 May 2020 03:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33524 "EHLO
+        id S2404358AbgEZWrz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 May 2020 18:47:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731361AbgEZHAr (ORCPT
+        with ESMTP id S2391442AbgEZWrz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 26 May 2020 03:00:47 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90112C08C5C0
-        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 00:00:47 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id h4so2081154wmb.4
-        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 00:00:47 -0700 (PDT)
+        Tue, 26 May 2020 18:47:55 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B824C061A0F
+        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 15:47:55 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id v15so10320508qvr.8
+        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 15:47:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=L8TiiDzdqmM1LGFjKPSxipAC4aAv2ZlXxCOvAA34JO4=;
-        b=WNVjoKCn/BXMVwd6ksjhylPSLlzdBMSDeZqC3XO1UNGE6o1d+WJ/qAszePgebMrpDw
-         H0tbDceixrx0YHSneKhw+c9J0OWOkX16dvjlrC6FOTJUQrSlh7v6jBDzY+ExHepeahwk
-         vJSEC85PXUFpYl54FFDgtX9A5EXacawUsLdK4sJIKRZfTfNItosXhylloe4zq05Xa5Cc
-         vyO9cpU+O+ZPSYbHeZW3ksaveqxljOV0jr3qjLSuu3x+PB5+S3HmOHqIQ2kJLWsicvFh
-         kn0gCbeoDhDHodCvYDYJtxLkZgajDlQbr2nOXdBHbG+rf5XSQxq8yWZYUrcBTFodS2sB
-         0vvQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=teAmu69bgSntRJN8fh+rAnF1/9Xzb/8LyTa0nS/Bw/w=;
+        b=hlntefcJiVY7WAW+DqLZb5zZoyEETNFGmL10kd1iF3eBhDCealr+Pw2Tb+twOLff5x
+         Xby5fUwlWhMOKduTj9AEVl5n+dj7v6Eoao7FE8YPoBbNibKyYFy0J9tFhPpQNHLmWJkG
+         4fU/lNZpdytMhJ2/eH+6aaGFpAUFghLDSe4No8LGxQU8Tjl8ry2QbiRzJgulrbF48XON
+         1uC07aQj0EVcz8ifDD6mBsJL0MgAedWWZxYE7HB+P0kKt1i/kRMh86xQV4SfL1O8XAu7
+         ESsVRZFYrqdT/5wdYlKfU8/q5ge8iqRip7xsAA0M/Hz7UfWHrmiEtR0R1QSZIRwqTm2+
+         OEwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=L8TiiDzdqmM1LGFjKPSxipAC4aAv2ZlXxCOvAA34JO4=;
-        b=lhm+qzghADqZwbQbYqKkUBThlfQVQCDMCJvGxQ0Pi4Z34rKJbuzzTCdhMdVXjOCjAE
-         HMN4wbO62lHWvsmT/f2BFIpuAxrVXT7BahrHHKFvAfuyjCqHLoEZHu2ZmsX2Umezc7Ga
-         ofkncX9Wft79Mz74GXqE1bJ06hDyKSrdXeFRqRKDK8l3weZIGEX8LfdTHfbh4bwOtTJ5
-         KOyAEnadBzZUYYz9e61PvrQXlQVk9xK8c2y7Jq8L1r9yiZHPsb55ra/JWYz8yGuFH0cJ
-         2HZegn3crkKokErCC/+9DchC1pBLIiOPNzDnC62DABlv2TiAyG5jFRXe5uhcL8fbD0AC
-         Pi4w==
-X-Gm-Message-State: AOAM5303+5bSCF0j+y3r4Gq9DdmY83kV+C+yzMkdlWlVaTIchYELkFt8
-        uG4DoisdOA7G0WhumaKAdBTE3Q==
-X-Google-Smtp-Source: ABdhPJzdpWRMgGjTIcUg1QCmJz9zkoVDiBzpCYl6ODlrd+6sOxBl3vFTH+nPkYAMXFbO2wsi95nKLg==
-X-Received: by 2002:a7b:cf2c:: with SMTP id m12mr16587245wmg.70.1590476446197;
-        Tue, 26 May 2020 00:00:46 -0700 (PDT)
-Received: from dell ([95.149.164.102])
-        by smtp.gmail.com with ESMTPSA id a16sm5852484wrx.8.2020.05.26.00.00.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 00:00:45 -0700 (PDT)
-Date:   Tue, 26 May 2020 08:00:44 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Guru Das Srinagesh <gurus@codeaurora.org>
-Cc:     linux-pwm@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
-        David Collins <collinsd@codeaurora.org>,
-        linux-kernel@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v13 09/11] backlight: pwm_bl: Use 64-bit division function
-Message-ID: <20200526070044.GB3628@dell>
-References: <cover.1587523702.git.gurus@codeaurora.org>
- <429c18e1e1461d7cd3ccb93f9093a6719744f6b0.1587523702.git.gurus@codeaurora.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=teAmu69bgSntRJN8fh+rAnF1/9Xzb/8LyTa0nS/Bw/w=;
+        b=WHSJMEtvey6tgK/0Vgsbhmg9ik8YSGrlSn+qlUdGsF98AREdUTCIx+8KBF3dg51Fs4
+         ftyG7lmrsYkouqz4Q/XRAgkSvsKlGOfMzYF7qzu72axPuToDX+1BYMXRmMd6VErZveaa
+         w7rf3MUpXKmdiamRSldqehizZt7URKxDyqPMaWS4vG/fI5DpKymRssebKj4V0paVV1nG
+         Xu99+Mo34IDdyDojzo+jfEAmNxkMFBFkAKpuHw4QJzMq15vGAFUc6sgK5iU7DMWEeCAh
+         103UNFW8p601CI/TsGfUSiPuwaSAQpuj1Hzd1Pn1SErX4764k4Z3/Fm6IlsFxFkry9ib
+         iiIA==
+X-Gm-Message-State: AOAM533X3PFeo5fkX8g1fYtyieeJdpKfkUJoFrTGUemPWyiXDbb7e9rF
+        xPo8+ajSBHxdNROako7qDP2U+hAxWS4=
+X-Google-Smtp-Source: ABdhPJwkuvT20Bx/H2rbaGUqCSlr8S836/29rNPoK6RDMqREzBybgHsufMjzjf4T6Z74DDnMeC6hrQ==
+X-Received: by 2002:a0c:99c7:: with SMTP id y7mr22278742qve.188.1590533274057;
+        Tue, 26 May 2020 15:47:54 -0700 (PDT)
+Received: from igor-Aspire-F5-573G ([189.84.32.31])
+        by smtp.gmail.com with ESMTPSA id a27sm919477qtc.92.2020.05.26.15.47.53
+        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
+        Tue, 26 May 2020 15:47:53 -0700 (PDT)
+Date:   Tue, 26 May 2020 19:47:50 -0300
+From:   Igor Ribeiro Barbosa Duarte <igor.ribeiro.duarte@gmail.com>
+To:     gregkh@linuxfoundation.org
+Cc:     igor.ribeiro.duarte@gmail.com, linux-fbdev@vger.kernel.org
+Subject: [PATCH] staging: sm750fb: Add names to proc_setBLANK args
+Message-ID: <20200526224750.GA29722@igor-Aspire-F5-573G>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <429c18e1e1461d7cd3ccb93f9093a6719744f6b0.1587523702.git.gurus@codeaurora.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 21 Apr 2020, Guru Das Srinagesh wrote:
+Add names to proc_setBLANK args.
+Found using checkpatch.pl.
 
-> Since the PWM framework is switching struct pwm_state.period's datatype
-> to u64, prepare for this transition by using div_u64 to handle a 64-bit
-> dividend instead of a straight division operation.
-> 
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: linux-pwm@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> 
-> Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Igor Ribeiro Barbosa Duarte <igor.ribeiro.duarte@gmail.com>
+---
+ drivers/staging/sm750fb/sm750.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
-
+diff --git a/drivers/staging/sm750fb/sm750.h b/drivers/staging/sm750fb/sm750.h
+index 55fe5a2..19823c7 100644
+--- a/drivers/staging/sm750fb/sm750.h
++++ b/drivers/staging/sm750fb/sm750.h
+@@ -166,7 +166,7 @@ struct lynxfb_output {
+ 	 */
+ 	void *priv;
+ 
+-	int (*proc_setBLANK)(struct lynxfb_output*, int);
++	int (*proc_setBLANK)(struct lynxfb_output *output, int blank);
+ };
+ 
+ struct lynxfb_par {
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.7.4
+
