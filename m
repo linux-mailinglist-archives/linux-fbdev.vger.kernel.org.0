@@ -2,92 +2,102 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 289981E0C74
-	for <lists+linux-fbdev@lfdr.de>; Mon, 25 May 2020 13:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FAAE1E1BA9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 26 May 2020 09:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390031AbgEYLGZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 25 May 2020 07:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42524 "EHLO
+        id S1731363AbgEZHAs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 May 2020 03:00:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389897AbgEYLGY (ORCPT
+        with ESMTP id S1731361AbgEZHAr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 25 May 2020 07:06:24 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE775C061A0E
-        for <linux-fbdev@vger.kernel.org>; Mon, 25 May 2020 04:06:24 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id q16so7386719plr.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 25 May 2020 04:06:24 -0700 (PDT)
+        Tue, 26 May 2020 03:00:47 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90112C08C5C0
+        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 00:00:47 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id h4so2081154wmb.4
+        for <linux-fbdev@vger.kernel.org>; Tue, 26 May 2020 00:00:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=QcB2YOMl1yui9BYd9Im0D0BSfvlNUCbYy9AD2DvaL7w=;
-        b=YP7l59M+5Jh9lRuizAMBVkh8n0w/Qm12+7H//7Fj4nDQ5LawKP9V4GllUZ32hcXP0r
-         5KgW6MIPrmNJ+ursHMGJm6JQUZOsiigsB9vc0JLXIUWhy9ZvBOb+PeC2dHNZERmvy9yJ
-         aBLEpNpbFjA89dj//T/dmbB1QpNnjQPBXGVQqMHdYK0oUlBz5Rl7yGbXNM97AU4T2Abh
-         faXqN03cJiQZzC/f6/PUz4WVRf4Mvf/No27tXpcRfrTNGwvjfLUhNPvy8uq5gQiEHqrt
-         4LRi+j8qpfx/XJ+97MTxwsqnVLh6rCjjL6ha9UfJQeNaYoUy1B5ImnT3tE5nv7CirzpI
-         46eg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=L8TiiDzdqmM1LGFjKPSxipAC4aAv2ZlXxCOvAA34JO4=;
+        b=WNVjoKCn/BXMVwd6ksjhylPSLlzdBMSDeZqC3XO1UNGE6o1d+WJ/qAszePgebMrpDw
+         H0tbDceixrx0YHSneKhw+c9J0OWOkX16dvjlrC6FOTJUQrSlh7v6jBDzY+ExHepeahwk
+         vJSEC85PXUFpYl54FFDgtX9A5EXacawUsLdK4sJIKRZfTfNItosXhylloe4zq05Xa5Cc
+         vyO9cpU+O+ZPSYbHeZW3ksaveqxljOV0jr3qjLSuu3x+PB5+S3HmOHqIQ2kJLWsicvFh
+         kn0gCbeoDhDHodCvYDYJtxLkZgajDlQbr2nOXdBHbG+rf5XSQxq8yWZYUrcBTFodS2sB
+         0vvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=QcB2YOMl1yui9BYd9Im0D0BSfvlNUCbYy9AD2DvaL7w=;
-        b=VJXeabmqx9Ere94mFN6a2hZ88K2LPkRmfKQcblpFWsqub9xGl5imLJIt6711CWn9sC
-         0EG5d1LPLECirOib7Sh0M4OcRptO/xy6KWuY8CgltyUtLNpOTvknXz31Q8PSYa4HjEs1
-         cajgQud1kIKmSr2NO+ClmlmDk6AP29S6kGdfMmq7vyx2hiJHiGbwnmpmM9zq462Jf0/X
-         vrBPtTiDzBKnef5LtVab8nRHuc9EVXgV360vfDYy0PbU5ZLuw6wHKvpbncNiHY739whF
-         YB2cHtP+vSkIoghpNCoxmlq3rXv+3FQ4e1lY8yU0Ar2aoqsXfyo2gFFfJdZqca2qLwd2
-         3Xlw==
-X-Gm-Message-State: AOAM530jiXudcLiiUMo98pk23ODl86wbgP68jEtVkuUUZAxHc6cLX6xe
-        CXfnIMhxkJmV1OJPq4Qi1RG5Epp2nJWNqSD17Ls=
-X-Google-Smtp-Source: ABdhPJydhUpmTbTJBr/tzrwjYKu6/QA5VXimHdeXD4elSR3UmMVq1wkX0CJsm5la4HiwGIFLKepasxOdALI4cVsoiek=
-X-Received: by 2002:a17:90a:6a4a:: with SMTP id d10mr20377480pjm.199.1590404784402;
- Mon, 25 May 2020 04:06:24 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=L8TiiDzdqmM1LGFjKPSxipAC4aAv2ZlXxCOvAA34JO4=;
+        b=lhm+qzghADqZwbQbYqKkUBThlfQVQCDMCJvGxQ0Pi4Z34rKJbuzzTCdhMdVXjOCjAE
+         HMN4wbO62lHWvsmT/f2BFIpuAxrVXT7BahrHHKFvAfuyjCqHLoEZHu2ZmsX2Umezc7Ga
+         ofkncX9Wft79Mz74GXqE1bJ06hDyKSrdXeFRqRKDK8l3weZIGEX8LfdTHfbh4bwOtTJ5
+         KOyAEnadBzZUYYz9e61PvrQXlQVk9xK8c2y7Jq8L1r9yiZHPsb55ra/JWYz8yGuFH0cJ
+         2HZegn3crkKokErCC/+9DchC1pBLIiOPNzDnC62DABlv2TiAyG5jFRXe5uhcL8fbD0AC
+         Pi4w==
+X-Gm-Message-State: AOAM5303+5bSCF0j+y3r4Gq9DdmY83kV+C+yzMkdlWlVaTIchYELkFt8
+        uG4DoisdOA7G0WhumaKAdBTE3Q==
+X-Google-Smtp-Source: ABdhPJzdpWRMgGjTIcUg1QCmJz9zkoVDiBzpCYl6ODlrd+6sOxBl3vFTH+nPkYAMXFbO2wsi95nKLg==
+X-Received: by 2002:a7b:cf2c:: with SMTP id m12mr16587245wmg.70.1590476446197;
+        Tue, 26 May 2020 00:00:46 -0700 (PDT)
+Received: from dell ([95.149.164.102])
+        by smtp.gmail.com with ESMTPSA id a16sm5852484wrx.8.2020.05.26.00.00.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 00:00:45 -0700 (PDT)
+Date:   Tue, 26 May 2020 08:00:44 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Guru Das Srinagesh <gurus@codeaurora.org>
+Cc:     linux-pwm@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Subbaraman Narayanamurthy <subbaram@codeaurora.org>,
+        David Collins <collinsd@codeaurora.org>,
+        linux-kernel@vger.kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v13 09/11] backlight: pwm_bl: Use 64-bit division function
+Message-ID: <20200526070044.GB3628@dell>
+References: <cover.1587523702.git.gurus@codeaurora.org>
+ <429c18e1e1461d7cd3ccb93f9093a6719744f6b0.1587523702.git.gurus@codeaurora.org>
 MIME-Version: 1.0
-Received: by 2002:a17:90a:36c6:0:0:0:0 with HTTP; Mon, 25 May 2020 04:06:24
- -0700 (PDT)
-Reply-To: farmer2006@embarqmail.com
-From:   Mary Farmer <orabank751@gmail.com>
-Date:   Mon, 25 May 2020 13:06:24 +0200
-Message-ID: <CAB9NweReHh5AEitr7rvqCOxGT468qsiWhb+mfs3_Gvn3f0gUBw@mail.gmail.com>
-Subject: Dringend bitte lesen
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <429c18e1e1461d7cd3ccb93f9093a6719744f6b0.1587523702.git.gurus@codeaurora.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Lieber Freund,
+On Tue, 21 Apr 2020, Guru Das Srinagesh wrote:
 
-Es gibt etwas sehr Wichtiges, das ich mit Ihnen besprechen muss.
+> Since the PWM framework is switching struct pwm_state.period's datatype
+> to u64, prepare for this transition by using div_u64 to handle a 64-bit
+> dividend instead of a straight division operation.
+> 
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: linux-pwm@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> 
+> Signed-off-by: Guru Das Srinagesh <gurus@codeaurora.org>
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
- Ich schreibe diesen Brief in Tr=C3=A4nen und Angst. In Tr=C3=A4nen, weil i=
-ch
-Ich werde bald abreisen und Angst haben, weil ich nicht wirklich wei=C3=9F,=
- ob du
-werde dies treu tun.
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-Ich bin COVID-19-Patient und der Arzt hat bereits best=C3=A4tigt, dass ich =
-es kann
-nicht f=C3=BCr die n=C3=A4chsten 7 Tage dauern.
-
-Ich habe einen betr=C3=A4chtlichen Geldbetrag in einem Sicherheitstresor hi=
-nterlegt
-in deinem Land. Es ist in Kofferr=C3=A4umen und sobald ich erhalte
-Ihre Antwort und sehen Sie Ihre Bereitschaft, das Geld zu fordern
-Ich werde sofort die ben=C3=B6tigten Unterlagen und den Kontakt weiterleite=
-n
-des Sicherheitsgew=C3=B6lbes, in dem die Sendung deponiert ist,
-Ich bitte Sie nicht, mir etwas zu geben, aber ich m=C3=B6chte, dass Sie hel=
-fen
-Menschen, die mit 60% von diesem t=C3=B6dlichen Virus infiziert wurden
-Das Geld und 40% sollten f=C3=BCr Sie und Ihre Familie sein.
-
-Ich werde den genauen Betrag in den Feldern offenlegen, sobald ich
-Erhalten Sie Ihre Antwort.
-
-Gr=C3=BC=C3=9Fe.
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
