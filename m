@@ -2,94 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 825861E782B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 29 May 2020 10:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 048F01E9A5F
+	for <lists+linux-fbdev@lfdr.de>; Sun, 31 May 2020 22:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbgE2IWe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 29 May 2020 04:22:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43504 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbgE2IWe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 29 May 2020 04:22:34 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        id S1727000AbgEaU6Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 31 May 2020 16:58:25 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:36624 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726008AbgEaU6Y (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 31 May 2020 16:58:24 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32CBE2075A;
-        Fri, 29 May 2020 08:22:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590740553;
-        bh=bF+LDFKKjlpS21JygvHXpMb9WnNnBV/JsdAJKAMxjZs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ICjfZOphbFZLG5btT32Hp4tn9NGWybHZBgnR3m2vcuI6BJJr4xsqSbGpskfnXhahr
-         Sux2cUhuyBFdlhJ1kX1rXWLGUCS/ZRrNVUzPCWZzCkHnNn8cjsz/4etAhb/A6Zenbh
-         lXFsI8hB0AUoZDIo4CEPmuymr7KPrHwkZDH8UXrE=
-Date:   Fri, 29 May 2020 10:22:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     wu000273@umn.edu
-Cc:     kjlu@umn.edu, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Enrico Weigelt <info@metux.net>,
-        Allison Randal <allison@lohutok.net>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Dave Airlie <airlied@gmail.com>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] omapfb: Fix reference count leak in display_init_sysfs.
-Message-ID: <20200529082231.GA847132@kroah.com>
-References: <20200528194424.11596-1-wu000273@umn.edu>
+        by asavdk4.altibox.net (Postfix) with ESMTPS id C79CB80518;
+        Sun, 31 May 2020 22:58:20 +0200 (CEST)
+Date:   Sun, 31 May 2020 22:58:19 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     John Hubbard <jhubbard@nvidia.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-fbdev@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
+ pin_user_pages*()
+Message-ID: <20200531205819.GC138722@ravnborg.org>
+References: <20200522041506.39638-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200528194424.11596-1-wu000273@umn.edu>
+In-Reply-To: <20200522041506.39638-1-jhubbard@nvidia.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=G88y7es5 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=hD80L64hAAAA:8 a=_Wotqz80AAAA:8 a=QyXUC8HyAAAA:8
+        a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8 a=0vaWVN_RBqfUHpfuwWIA:9
+        a=CjuIK1q_8ugA:10 a=buJP51TR1BpY-zbLSsyS:22 a=Vxmtnl_E_bksehYqCbjh:22
+        a=AjGcO6oz07-iQ99wixmX:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, May 28, 2020 at 02:44:23PM -0500, wu000273@umn.edu wrote:
-> From: Qiushi Wu <wu000273@umn.edu>
+Hi John.
+On Thu, May 21, 2020 at 09:15:04PM -0700, John Hubbard wrote:
+> Hi,
 > 
-> kobject_init_and_add() takes reference even when it fails.
-> If this function returns an error, kobject_put() must be called to
-> properly clean up the memory associated with the object.
-> Because function omap_dss_put_device() doesn't handle dssdev->kobj,
-> thus we need insert kobject_put() to clean up the kobject,
-> when kobject_init_and_add() fails.
+> Note that I have only compile-tested this series, although that does
+> also include cross-compiling for a few other arches. I'm hoping that
+> this posting will lead to some run-time testing.
 > 
-> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-> Signed-off-by: Qiushi Wu <wu000273@umn.edu>
-> ---
->  drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 1 +
->  1 file changed, 1 insertion(+)
+> Also: the proposed fix does not have a "Fixes:" tag, nor does it
+> Cc stable. That's because the issue has been there since the dawn of
+> git history for the kernel. If it's gone unnoticed this long, then
+> there is clearly no need for the relatively fast track of putting it
+> into stable, IMHO. But please correct me if that's wrong.
 > 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> index 6dbe265b312d..51322ac7df07 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> @@ -316,6 +316,7 @@ int display_init_sysfs(struct platform_device *pdev)
->  			&pdev->dev.kobj, "%s", dssdev->alias);
->  		if (r) {
->  			DSSERR("failed to create sysfs files\n");
-> +			kobject_put(&dssdev->kobj);
->  			omap_dss_put_device(dssdev);
->  			goto err;
->  		}
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
 
-Why is a driver creating "raw" kobjects and the like at all?
+Thanks, patches are now applied to drm-misc-next.
+They will hit -next soon, but you will have to wait
+until next (not the upcoming) merge window before they hit
+mainline linux.
 
-/me goes off to look...
+	Sam
 
-
-Ick, no, that's not ok, this just needs to be an attribute group
-attached to the device, no need for a kobject at all.  Having a kobject
-means that the files will be ignored totally by userspace tools that
-monitor sysfs changes.  So these files are probably not even being
-used...
-
-Please fix this up properly.
-
-thanks,
-
-greg k-h
+> 
+> John Hubbard (2):
+>   video: fbdev: fix error handling for get_user_pages_fast()
+>   video: fbdev: convert get_user_pages() --> pin_user_pages()
+> 
+>  drivers/video/fbdev/pvr2fb.c | 24 ++++++++++++++++++------
+>  1 file changed, 18 insertions(+), 6 deletions(-)
+> 
+> 
+> base-commit: 051143e1602d90ea71887d92363edd539d411de5
+> -- 
+> 2.26.2
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
