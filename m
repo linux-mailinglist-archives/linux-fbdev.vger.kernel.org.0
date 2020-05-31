@@ -2,88 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E42F1E9A6D
-	for <lists+linux-fbdev@lfdr.de>; Sun, 31 May 2020 23:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BCA61E9A70
+	for <lists+linux-fbdev@lfdr.de>; Sun, 31 May 2020 23:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728408AbgEaVBc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 31 May 2020 17:01:32 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:36822 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727084AbgEaVBb (ORCPT
+        id S1727921AbgEaVGz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 31 May 2020 17:06:55 -0400
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:15033 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727084AbgEaVGz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 31 May 2020 17:01:31 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id AFC83804BB;
-        Sun, 31 May 2020 23:01:28 +0200 (CEST)
-Date:   Sun, 31 May 2020 23:01:27 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Oliver Graute <oliver.graute@kococonnector.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: fb_st7789v: make HSD20_IPS numeric and
- not a string
-Message-ID: <20200531210127.GD138722@ravnborg.org>
-References: <20200521135038.345878-1-colin.king@canonical.com>
+        Sun, 31 May 2020 17:06:55 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5ed41c100000>; Sun, 31 May 2020 14:05:21 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Sun, 31 May 2020 14:06:55 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Sun, 31 May 2020 14:06:55 -0700
+Received: from [10.2.56.10] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 31 May
+ 2020 21:06:47 +0000
+Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
+ pin_user_pages*()
+To:     Sam Ravnborg <sam@ravnborg.org>
+CC:     LKML <linux-kernel@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        "Arnd Bergmann" <arnd@arndb.de>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        <dri-devel@lists.freedesktop.org>
+References: <20200522041506.39638-1-jhubbard@nvidia.com>
+ <20200531205819.GC138722@ravnborg.org>
+From:   John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <854fae07-3cb4-dbcf-fa93-35b447f9d084@nvidia.com>
+Date:   Sun, 31 May 2020 14:06:47 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200521135038.345878-1-colin.king@canonical.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=G88y7es5 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=kj9zAlcOel0A:10 a=DfNHnWVPAAAA:8 a=e5mUnYsNAAAA:8
-        a=O1M_s53xj7QJbslopEUA:9 a=CjuIK1q_8ugA:10 a=rjTVMONInIDnV1a_A2c_:22
-        a=Vxmtnl_E_bksehYqCbjh:22
+In-Reply-To: <20200531205819.GC138722@ravnborg.org>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1590959121; bh=/ZGiEKiwNpXWSWZDwVkz+Tk/sHOOPYcqnJuRlZIDyZ8=;
+        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+         Content-Transfer-Encoding;
+        b=pqjPHdWkXaeLqCJnJg2hyDItqsOnTLmyv6+3NdUBHO6w+yJcUKJKTnJsg1MOxJFRn
+         FvmOxEZbBzjv7u6M4gELvw/CHGhtD/e968J/WBj9G2F8GLhX8z1vsHgUwpG/ZYSDjZ
+         OCdaZ97vkDpYFLZOvw6aTxGRB/RxsaHmMZHOuXBo6QgiG5q4VGjbO/abFzW51wXnH0
+         xhNVv0KY7++eiLqrNMD7NVVzlkM5396UFNSvBOgJt2XZN1ivoBmjw0LjFZHQefPPrq
+         wIxAr3F9wGCBMKLAnRBeWUWS0lXLDREWRZgO9StI8+TrFbcRYaHauuoQR1mgoQseEx
+         8RuTEf7qBXQ8g==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Colin/Greg.
-
-On Thu, May 21, 2020 at 02:50:38PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 2020-05-31 13:58, Sam Ravnborg wrote:
+...
+> Thanks, patches are now applied to drm-misc-next.
+> They will hit -next soon, but you will have to wait
+> until next (not the upcoming) merge window before they hit
+> mainline linux.
 > 
-> Currently HSD20_IPS is defined as "true" and will always result in a
-> non-zero result even if it is defined as "false" because it is an array
-> and that will never be zero. Fix this by defining it as an integer 1
-> rather than a literal string.
+> 	Sam
 > 
-> Addessses-Coverity: ("Array compared against 0")
-> Fixes: f03c9b788472 ("staging: fbtft: fb_st7789v: Initialize the Display")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/staging/fbtft/fb_st7789v.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> index ebc17e05ecd0..3a280cc1892c 100644
-> --- a/drivers/staging/fbtft/fb_st7789v.c
-> +++ b/drivers/staging/fbtft/fb_st7789v.c
-> @@ -24,7 +24,7 @@
->  	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
->  	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
->  
-> -#define HSD20_IPS "true"
-> +#define HSD20_IPS 1
->  
->  /**
->   * enum st7789v_command - ST7789V display controller commands
 
-Patch does not apply to drm-misc-next, seems to be a staging thing.
-So do not expext the DRM people to pick it up.
+Great! That will work out just fine.
 
-	Sam
 
-> -- 
-> 2.25.1
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+thanks,
+-- 
+John Hubbard
+NVIDIA
