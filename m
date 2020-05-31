@@ -2,92 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 048F01E9A5F
-	for <lists+linux-fbdev@lfdr.de>; Sun, 31 May 2020 22:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E42F1E9A6D
+	for <lists+linux-fbdev@lfdr.de>; Sun, 31 May 2020 23:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbgEaU6Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 31 May 2020 16:58:25 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:36624 "EHLO
+        id S1728408AbgEaVBc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 31 May 2020 17:01:32 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:36822 "EHLO
         asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbgEaU6Y (ORCPT
+        with ESMTP id S1727084AbgEaVBb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 31 May 2020 16:58:24 -0400
+        Sun, 31 May 2020 17:01:31 -0400
 Received: from ravnborg.org (unknown [158.248.194.18])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id C79CB80518;
-        Sun, 31 May 2020 22:58:20 +0200 (CEST)
-Date:   Sun, 31 May 2020 22:58:19 +0200
+        by asavdk4.altibox.net (Postfix) with ESMTPS id AFC83804BB;
+        Sun, 31 May 2020 23:01:28 +0200 (CEST)
+Date:   Sun, 31 May 2020 23:01:27 +0200
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     John Hubbard <jhubbard@nvidia.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>, linux-fbdev@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
- pin_user_pages*()
-Message-ID: <20200531205819.GC138722@ravnborg.org>
-References: <20200522041506.39638-1-jhubbard@nvidia.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Oliver Graute <oliver.graute@kococonnector.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: fb_st7789v: make HSD20_IPS numeric and
+ not a string
+Message-ID: <20200531210127.GD138722@ravnborg.org>
+References: <20200521135038.345878-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200522041506.39638-1-jhubbard@nvidia.com>
+In-Reply-To: <20200521135038.345878-1-colin.king@canonical.com>
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=G88y7es5 c=1 sm=1 tr=0
         a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=kj9zAlcOel0A:10 a=hD80L64hAAAA:8 a=_Wotqz80AAAA:8 a=QyXUC8HyAAAA:8
-        a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8 a=0vaWVN_RBqfUHpfuwWIA:9
-        a=CjuIK1q_8ugA:10 a=buJP51TR1BpY-zbLSsyS:22 a=Vxmtnl_E_bksehYqCbjh:22
-        a=AjGcO6oz07-iQ99wixmX:22
+        a=kj9zAlcOel0A:10 a=DfNHnWVPAAAA:8 a=e5mUnYsNAAAA:8
+        a=O1M_s53xj7QJbslopEUA:9 a=CjuIK1q_8ugA:10 a=rjTVMONInIDnV1a_A2c_:22
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi John.
-On Thu, May 21, 2020 at 09:15:04PM -0700, John Hubbard wrote:
-> Hi,
-> 
-> Note that I have only compile-tested this series, although that does
-> also include cross-compiling for a few other arches. I'm hoping that
-> this posting will lead to some run-time testing.
-> 
-> Also: the proposed fix does not have a "Fixes:" tag, nor does it
-> Cc stable. That's because the issue has been there since the dawn of
-> git history for the kernel. If it's gone unnoticed this long, then
-> there is clearly no need for the relatively fast track of putting it
-> into stable, IMHO. But please correct me if that's wrong.
-> 
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
+Hi Colin/Greg.
 
-Thanks, patches are now applied to drm-misc-next.
-They will hit -next soon, but you will have to wait
-until next (not the upcoming) merge window before they hit
-mainline linux.
+On Thu, May 21, 2020 at 02:50:38PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently HSD20_IPS is defined as "true" and will always result in a
+> non-zero result even if it is defined as "false" because it is an array
+> and that will never be zero. Fix this by defining it as an integer 1
+> rather than a literal string.
+> 
+> Addessses-Coverity: ("Array compared against 0")
+> Fixes: f03c9b788472 ("staging: fbtft: fb_st7789v: Initialize the Display")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/fbtft/fb_st7789v.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
+> index ebc17e05ecd0..3a280cc1892c 100644
+> --- a/drivers/staging/fbtft/fb_st7789v.c
+> +++ b/drivers/staging/fbtft/fb_st7789v.c
+> @@ -24,7 +24,7 @@
+>  	"D0 05 0A 09 08 05 2E 44 45 0F 17 16 2B 33\n" \
+>  	"D0 05 0A 09 08 05 2E 43 45 0F 16 16 2B 33"
+>  
+> -#define HSD20_IPS "true"
+> +#define HSD20_IPS 1
+>  
+>  /**
+>   * enum st7789v_command - ST7789V display controller commands
+
+Patch does not apply to drm-misc-next, seems to be a staging thing.
+So do not expext the DRM people to pick it up.
 
 	Sam
 
-> 
-> John Hubbard (2):
->   video: fbdev: fix error handling for get_user_pages_fast()
->   video: fbdev: convert get_user_pages() --> pin_user_pages()
-> 
->  drivers/video/fbdev/pvr2fb.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
-> 
-> 
-> base-commit: 051143e1602d90ea71887d92363edd539d411de5
 > -- 
-> 2.26.2
+> 2.25.1
 > 
 > _______________________________________________
 > dri-devel mailing list
