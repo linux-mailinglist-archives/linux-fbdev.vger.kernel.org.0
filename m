@@ -2,250 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1129E1EA4EF
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 15:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9CFE1EA832
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 19:10:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727104AbgFANZd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Jun 2020 09:25:33 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:44780 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727814AbgFANZd (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 09:25:33 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200601132530euoutp0261510405ffb67493e4635c439e69f18f~UbmDUOo1u1813918139euoutp02Z
-        for <linux-fbdev@vger.kernel.org>; Mon,  1 Jun 2020 13:25:30 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200601132530euoutp0261510405ffb67493e4635c439e69f18f~UbmDUOo1u1813918139euoutp02Z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1591017930;
-        bh=7MYfA7T1V2zf0ITQLbcPCa/EsxPMtj591hArtPdOjMw=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=G6EVZ06pRJJULZiV8S7AVTH/3ncNkfYaIcWhbeuLOLPrZWKG/W5wlpGKUIpMaRhjv
-         DAorg2ctcMO5q+9C4UknJo+QbLjloH9IPsSM6T/KU6ExB5ZFwwyBqzMHDGNhM6JJiu
-         SereMKlyB9KM9zu6Zen44NS+u1OuvrF1QVyCZ2kI=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200601132530eucas1p19a24e5bd23ad1d0190549ddb8bf39910~UbmDLs-Sf1285112851eucas1p1o;
-        Mon,  1 Jun 2020 13:25:30 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id AB.14.61286.AC105DE5; Mon,  1
-        Jun 2020 14:25:30 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200601132530eucas1p273e2fc07bcc82b5acdc6329853398e59~UbmC5ESkn2293122931eucas1p2i;
-        Mon,  1 Jun 2020 13:25:30 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200601132530eusmtrp2e22ef13b605eb5f0be3d4bec7968535b~UbmC4V9au1059710597eusmtrp2s;
-        Mon,  1 Jun 2020 13:25:30 +0000 (GMT)
-X-AuditID: cbfec7f2-ef1ff7000001ef66-d3-5ed501caf24b
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id DC.95.07950.9C105DE5; Mon,  1
-        Jun 2020 14:25:30 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200601132529eusmtip144ca8a4d65015ef72f79683e359a1e3b~UbmCifbJL1117511175eusmtip1Q;
-        Mon,  1 Jun 2020 13:25:29 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [trivial PATCH] video: fbdev: Use IS_BUILTIN
-To:     Joe Perches <joe@perches.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Message-ID: <465a04eb-cd2e-d0da-b667-584d297a0102@samsung.com>
-Date:   Mon, 1 Jun 2020 15:25:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1726149AbgFARK1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Jun 2020 13:10:27 -0400
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:4197 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726113AbgFARK0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 13:10:26 -0400
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+        id <B5ed5362b0000>; Mon, 01 Jun 2020 10:08:59 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Mon, 01 Jun 2020 10:10:26 -0700
+X-PGP-Universal: processed;
+        by hqpgpgate101.nvidia.com on Mon, 01 Jun 2020 10:10:26 -0700
+Received: from [10.2.56.10] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 1 Jun
+ 2020 17:10:17 +0000
+Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
+ pin_user_pages*()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Sam Ravnborg <sam@ravnborg.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
+        "Jani Nikula" <jani.nikula@intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "Paul Mundt" <lethal@linux-sh.org>
+References: <20200522041506.39638-1-jhubbard@nvidia.com>
+ <20200531205819.GC138722@ravnborg.org>
+ <854fae07-3cb4-dbcf-fa93-35b447f9d084@nvidia.com>
+ <CAHp75Vf6=UuC2Sef3m3CpRmjAOWt8ZgBW+OPf0-_53P3F__CWw@mail.gmail.com>
+ <e7f95207-1b30-17a8-4667-ca58b77ec0a3@nvidia.com>
+ <CAHp75VcaXTM86K9vzyxTQJP_oNnzJ8mMHzgm7ybEioVhG6DHDQ@mail.gmail.com>
+From:   John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <8fa07f59-6d77-f76b-7539-c88bf85c5036@nvidia.com>
+Date:   Mon, 1 Jun 2020 10:10:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+In-Reply-To: <CAHp75VcaXTM86K9vzyxTQJP_oNnzJ8mMHzgm7ybEioVhG6DHDQ@mail.gmail.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0hTYRjm2zmbR2l6nJovGqWjrMy0UT9WmqQUrH/1Q8ku2lFPOtqm7TjT
-        IrI/mQs1NVCXtfCSNnQuXU4NzBSc5TVviCQGmpuSWF4ItSwPZ5L/nve5fO/7wEdgoiq+DyFX
-        pdFqFaUQC1zwpq61/qOf0Gjssa55kXRkdVEgfTY1jUsbpsf40u68H3zpcGvZFleZj0tLBtp4
-        Z5xkU4+tPFlj5X3ZimEMky037L2AX3YJS6QV8nRaHRJ+3SX5Q2kRSv15MMPy/TmehTb8tMiZ
-        APIEvLDk87TIhRCRNQhqSysQN6wgyH2vdSjLCD4PTThtR+pHe504oRpBV8E3nBsWEGTn2DDW
-        JSBPQUG2AbHYgzwJje3mLRNBeJL+MGl2Y/0YaUVgLawUsB4hGQ761qeI9eDkfuh+48bSXuQl
-        WPrayecs7vCxdAZnsTN5Hppzh3ksxkhvmJjRO/A+sCyUYez7QBqdoD2rF3FXn4WKmgIBhz1g
-        3mp2tNkDf1v0PEcAwZ9HdkfagqC6aNORCIUv/esC9jqMPAz1rSEcHQG9g3M8lgbSFcYX3Lkj
-        XKGwqRjjaCE8eiji3AFgemUSbK/VtrzGniCxbkc13Y46uh11dP/3vkS4AXnTGkaZRDMSFX07
-        mKGUjEaVFJyQomxAW5+nZ9O61IxWh+I7EEkg8S6haWokVsSn0plMZQcCAhN7CiP7emJFwkQq
-        8w6tTolTaxQ004F8CVzsLTxePndNRCZRafRNmk6l1dsqj3D2yULyplpzQqQtetrIXO1VHAhO
-        jsuYDe9czifS5HWGmOK3ecFtxkN+R6Iy9YZoSaiOSIrqM95V577bsIetLeZEGKtKqJragSCb
-        l75k9+mYhf6l2R7/SI0hXj4fP24uDzzXb3OuM1gmLw7afX9f2bwxalH+urceIVEGPbCv3TIF
-        ZIhxJpmSBGJqhvoHW5fcpzgDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCIsWRmVeSWpSXmKPExsVy+t/xu7qnGK/GGfSZWlz5+p7NYvb9xywW
-        mx5fY7U40feB1eLyrjlAsSX9LBYzzu9jcmD3uN99nMlj85J6jy+rrjF7fN4kF8ASpWdTlF9a
-        kqqQkV9cYqsUbWhhpGdoaaFnZGKpZ2hsHmtlZKqkb2eTkpqTWZZapG+XoJdxcOZkxoKP6hXb
-        38xlaWD8rdDFyMkhIWAisf7qGXYQW0hgKaPE19tWXYwcQHEZiePryyBKhCX+XOti62LkAip5
-        zSixe+lVNpAEm4CVxMT2VYwgtrCApcTmA1tYQHpFBBQl7m7hB6lnFjjOKPHlxBZWiOY5jBI7
-        Xt0Aa+AVsJOYv2sKI0gDi4CKxImN/CBhUYEIicM7ZkGVCEqcnPmEBcTmFPCU2NF7mQnEZhZQ
-        l/gz7xIzhC0ucevJfKi4vMT2t3OYJzAKzULSPgtJyywkLbOQtCxgZFnFKJJaWpybnltspFec
-        mFtcmpeul5yfu4kRGGPbjv3csoOx613wIUYBDkYlHt4N96/ECbEmlhVX5h5ilOBgVhLhdTp7
-        Ok6INyWxsiq1KD++qDQntfgQoynQbxOZpUST84Hxn1cSb2hqaG5haWhubG5sZqEkztshcDBG
-        SCA9sSQ1OzW1ILUIpo+Jg1OqgXGK5b15//Vnf/2SrPblSUDGonXJ24J2b5/+1PRontf/lSI5
-        7peD39QvmcS2NkLLXWXC1BU6WxkfpFf3zX7pHlKsr3K/XcHqcuyjyG/Xp9xdelAj/XKmRBPr
-        NWUhHp3ykLMXImVvzj3EK1/nMbcuY3NFLW8c2+5tPrsrhdJPnOiIPjRDZ7v5mlolluKMREMt
-        5qLiRABw3u1dxwIAAA==
-X-CMS-MailID: 20200601132530eucas1p273e2fc07bcc82b5acdc6329853398e59
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
-References: <CGME20200504232908eucas1p296927bc7c736ad924cefaea9a546459d@eucas1p2.samsung.com>
-        <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1591031340; bh=+gVKA91Wuj6YNNamkXREV13fdKCX2X0cckR/xAC0a/8=;
+        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+         Content-Transfer-Encoding;
+        b=bSGBjSvURux84TXnv7AIb6LHGg98Y9Z0Bd+JJI8mUameTP8gU0ksdMDn8kiyj5PGi
+         QUZytsVsMScs+OsTEtOwFGbqAbSo22Mody45pb5aIPNf910ER6RLyhS0HAGlrI7CVe
+         TZkXxv6wmTpjQY4fIRBPoJkgoFNZhItMQsCfwFQySj9dfSpDK2RK1aKn+CtigpzbHW
+         iECWV17WVLTxV+/nTpfj/Uxf+FsRoP0Yz+2yXgad6cH1nBug511boW5uL/mQnbUotu
+         ZETa0LeiPyeJUzXSXR7Q2E6Cld7obchV0IhK7IG3cyXmEuZDttArL9clJN1kGgjIWa
+         JWFIu5FRvHi6A==
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
-On 5/5/20 1:29 AM, Joe Perches wrote:
-> IS_BUILTIN can be use to replace various initializations
-> like #if CONFIG_<FOO> int val = 1; #else int val = 0; #endif
-> so do so.
+On 2020-06-01 03:35, Andy Shevchenko wrote:
+> On Mon, Jun 1, 2020 at 1:00 AM John Hubbard <jhubbard@nvidia.com> wrote:
+>> On 2020-05-31 14:11, Andy Shevchenko wrote:
+>>>      ...
+>>> JFYI, we have history.git starting from v0.01.
+>>>
+>> OK, thanks for that note. According to that history.git [1],
+>> then: drivers/video/pvr2fb.c had get_user_pages_fast() support added to
+>> pvr2fb_write() back in 2004, but only for CONFIG_SH_DMA, as part of
+>>
+>>       commit 434502754f2 ("[PATCH] SH Merge")
+>>
+>> ...and that commit created the minor bug that patch 0001 here
+>> addresses. (+Cc Paul just for the sake of completeness.)
+>>
+>>
+>> [1] git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
 > 
-> Signed-off-by: Joe Perches <joe@perches.com>
-
-
-Applied to drm-misc-next tree (patch should show up in v5.9), thanks.
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
-> ---
->  drivers/video/fbdev/aty/aty128fb.c     | 6 +-----
->  drivers/video/fbdev/aty/atyfb_base.c   | 7 +------
->  drivers/video/fbdev/aty/radeon_base.c  | 6 +-----
->  drivers/video/fbdev/nvidia/nvidia.c    | 6 +-----
->  drivers/video/fbdev/omap/omapfb_main.c | 6 +-----
->  drivers/video/fbdev/riva/fbdev.c       | 6 +-----
->  drivers/video/fbdev/s3c2410fb.c        | 6 +-----
->  7 files changed, 7 insertions(+), 36 deletions(-)
+> I mentioned this one, but I guess content should be the same.
 > 
-> diff --git a/drivers/video/fbdev/aty/aty128fb.c b/drivers/video/fbdev/aty/aty128fb.c
-> index d05d4195acad..6fae6ad6cb77 100644
-> --- a/drivers/video/fbdev/aty/aty128fb.c
-> +++ b/drivers/video/fbdev/aty/aty128fb.c
-> @@ -384,11 +384,7 @@ static int default_lcd_on = 1;
->  static bool mtrr = true;
->  
->  #ifdef CONFIG_FB_ATY128_BACKLIGHT
-> -#ifdef CONFIG_PMAC_BACKLIGHT
-> -static int backlight = 1;
-> -#else
-> -static int backlight = 0;
-> -#endif
-> +static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
->  #endif
->  
->  /* PLL constants */
-> diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-> index 49d192869cf5..23a29d61c2a2 100644
-> --- a/drivers/video/fbdev/aty/atyfb_base.c
-> +++ b/drivers/video/fbdev/aty/atyfb_base.c
-> @@ -317,12 +317,7 @@ static int mclk;
->  static int xclk;
->  static int comp_sync = -1;
->  static char *mode;
-> -
-> -#ifdef CONFIG_PMAC_BACKLIGHT
-> -static int backlight = 1;
-> -#else
-> -static int backlight = 0;
-> -#endif
-> +static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
->  
->  #ifdef CONFIG_PPC
->  static int default_vmode = VMODE_CHOOSE;
-> diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
-> index e116a3f9ad56..3fe509cb9b87 100644
-> --- a/drivers/video/fbdev/aty/radeon_base.c
-> +++ b/drivers/video/fbdev/aty/radeon_base.c
-> @@ -269,11 +269,7 @@ static bool force_measure_pll = 0;
->  static bool nomtrr = 0;
->  static bool force_sleep;
->  static bool ignore_devlist;
-> -#ifdef CONFIG_PMAC_BACKLIGHT
-> -static int backlight = 1;
-> -#else
-> -static int backlight = 0;
-> -#endif
-> +static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
->  
->  /* Note about this function: we have some rare cases where we must not schedule,
->   * this typically happen with our special "wake up early" hook which allows us to
-> diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
-> index c24de9107958..c6820e21875d 100644
-> --- a/drivers/video/fbdev/nvidia/nvidia.c
-> +++ b/drivers/video/fbdev/nvidia/nvidia.c
-> @@ -74,11 +74,7 @@ static int vram = 0;
->  static int bpp = 8;
->  static int reverse_i2c;
->  static bool nomtrr = false;
-> -#ifdef CONFIG_PMAC_BACKLIGHT
-> -static int backlight = 1;
-> -#else
-> -static int backlight = 0;
-> -#endif
-> +static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
->  
->  static char *mode_option = NULL;
->  
-> diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-> index 1a9d6242916e..0cbcc74fa943 100644
-> --- a/drivers/video/fbdev/omap/omapfb_main.c
-> +++ b/drivers/video/fbdev/omap/omapfb_main.c
-> @@ -34,11 +34,7 @@ static unsigned long	def_vyres;
->  static unsigned int	def_rotate;
->  static unsigned int	def_mirror;
->  
-> -#ifdef CONFIG_FB_OMAP_MANUAL_UPDATE
-> -static bool		manual_update = 1;
-> -#else
-> -static bool		manual_update;
-> -#endif
-> +static bool	manual_update = IS_BUILTIN(CONFIG_FB_OMAP_MANUAL_UPDATE);
->  
->  static struct platform_device	*fbdev_pdev;
->  static struct lcd_panel		*fbdev_panel;
-> diff --git a/drivers/video/fbdev/riva/fbdev.c b/drivers/video/fbdev/riva/fbdev.c
-> index 764ec3285e62..9b3493846f4d 100644
-> --- a/drivers/video/fbdev/riva/fbdev.c
-> +++ b/drivers/video/fbdev/riva/fbdev.c
-> @@ -202,11 +202,7 @@ static int flatpanel = -1; /* Autodetect later */
->  static int forceCRTC = -1;
->  static bool noaccel  = 0;
->  static bool nomtrr = 0;
-> -#ifdef CONFIG_PMAC_BACKLIGHT
-> -static int backlight = 1;
-> -#else
-> -static int backlight = 0;
-> -#endif
-> +static int backlight = IS_BUILTIN(CONFIG_PMAC_BACKLIGHT);
->  
->  static char *mode_option = NULL;
->  static bool strictmode       = 0;
-> diff --git a/drivers/video/fbdev/s3c2410fb.c b/drivers/video/fbdev/s3c2410fb.c
-> index 2fb15a540167..6f8fa501583f 100644
-> --- a/drivers/video/fbdev/s3c2410fb.c
-> +++ b/drivers/video/fbdev/s3c2410fb.c
-> @@ -44,11 +44,7 @@
->  #include "s3c2410fb.h"
->  
->  /* Debugging stuff */
-> -#ifdef CONFIG_FB_S3C2410_DEBUG
-> -static int debug	= 1;
-> -#else
-> -static int debug;
-> -#endif
-> +static int debug = IS_BUILTIN(CONFIG_FB_S3C2410_DEBUG);
->  
->  #define dprintk(msg...) \
->  do { \
+> https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/
 > 
+
+Actually, that history.git *starts* at Linux 2.6.12-rc2, while
+tglx/history.git *ends* at Linux 2.6.12-rc2 (which is in April, 2005).
+And the commit I was looking for is in 2004. So that's why I needed a
+different stretch of history.
+
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
