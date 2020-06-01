@@ -2,167 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E04E1EA1FA
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 12:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B66E41EA4DC
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 15:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726201AbgFAKhG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Jun 2020 06:37:06 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:50384 "EHLO
+        id S1726132AbgFANZH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Jun 2020 09:25:07 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:44608 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgFAKhD (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 06:37:03 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200601103701euoutp02da18523fb4b490d538b2996efa8b4524~UZS8lMn4S1208612086euoutp020
-        for <linux-fbdev@vger.kernel.org>; Mon,  1 Jun 2020 10:37:01 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200601103701euoutp02da18523fb4b490d538b2996efa8b4524~UZS8lMn4S1208612086euoutp020
+        with ESMTP id S1725974AbgFANZG (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 09:25:06 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200601132505euoutp0213d39aeb4c1371bbb2cb3c3d54c91d40~Ublr26qr41973419734euoutp02T
+        for <linux-fbdev@vger.kernel.org>; Mon,  1 Jun 2020 13:25:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200601132505euoutp0213d39aeb4c1371bbb2cb3c3d54c91d40~Ublr26qr41973419734euoutp02T
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1591007821;
-        bh=/UMQHqTtHM5ikbtFOx1j0wz3rCuvK7jc3hS7HWS+nGw=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=PSn/8IHcqu3IsJ7YUfJJyej7KsEFkbG/mltjXdz5vefOnn0woatdpo3N8LadrAPm4
-         QdCUW0SxL8YlzYtK6CkNIwN+vohgCm6FxQHO8g8/jXDOwUg/XahydHH6ZN8DJu4J76
-         rNOLhIJUJ4vcUGMmBbvKaBuQtGX9D1xGyWtdDduM=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        s=mail20170921; t=1591017905;
+        bh=WDoFslnoBh4NFH5LxebC/l/9rNxykmi1JmVWDnec9NU=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=cD1cN3D1e+Nh7jTXsLqqpT0yDWpTd0ZULiUNMLo3S6r/pH/aqFVm4qrAsau0lTLHY
+         ENS2lNyiQhzeOUDdMHO7+92HNFOJoFh3ysiVnR5VYk/CrwjkFNl83yYJyJAa79P+7K
+         iMpJ3ynypXHODTihrjeEYb3bVzDvAOoR2T4ApzHs=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200601103701eucas1p155db4406e6f64904c8d6e3c0bc42ec32~UZS8VXS9q0313703137eucas1p1F;
-        Mon,  1 Jun 2020 10:37:01 +0000 (GMT)
+        20200601132505eucas1p18e3a7e6740ebae768a8f4da8c9a9ece3~UblrkZ79k1098310983eucas1p1T;
+        Mon,  1 Jun 2020 13:25:05 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 5F.70.61286.D4AD4DE5; Mon,  1
-        Jun 2020 11:37:01 +0100 (BST)
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 51.33.60679.0B105DE5; Mon,  1
+        Jun 2020 14:25:04 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200601103700eucas1p29e06d187f744d086ac2cc3f4b37a8399~UZS79iiX-0485304853eucas1p2q;
-        Mon,  1 Jun 2020 10:37:00 +0000 (GMT)
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200601132504eucas1p1065ae1c2c68bb149a0505cd521452c15~UblrMu8g12556225562eucas1p18;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200601103700eusmtrp1160fd800fdab63e14532ee97e815564c~UZS785TOA1200712007eusmtrp1W;
-        Mon,  1 Jun 2020 10:37:00 +0000 (GMT)
-X-AuditID: cbfec7f2-ef1ff7000001ef66-af-5ed4da4d8437
+        20200601132504eusmtrp111ff227a9c0cd8a8e126eb12a77f4b3a~UblrMG_lB2270722707eusmtrp1H;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-1c-5ed501b010ea
 Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 2A.1A.08375.C4AD4DE5; Mon,  1
-        Jun 2020 11:37:00 +0100 (BST)
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id B7.DB.08375.0B105DE5; Mon,  1
+        Jun 2020 14:25:04 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200601103700eusmtip1cf1797686670af94334216824ff56af5~UZS7lGa420450104501eusmtip1J;
-        Mon,  1 Jun 2020 10:37:00 +0000 (GMT)
-Subject: Re: [PATCH] video: uvesafb: use true,false for bool variables
-To:     Jason Yan <yanaijie@huawei.com>, Sam Ravnborg <sam@ravnborg.org>
-Cc:     spock@gentoo.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+        20200601132504eusmtip10bef19bb4da24abb7f5138822552b060~Ublq27nnW1048610486eusmtip1m;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <4b460d82-b23c-f6ce-6593-735a726e4d8a@samsung.com>
-Date:   Mon, 1 Jun 2020 12:37:00 +0200
+Subject: Re: [PATCH] omapfb/dss: fix comparison to bool warning
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     afd@ti.com, tomi.valkeinen@ti.com, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Message-ID: <266bc2e0-c2bf-1c0c-a5ac-58941ff38f5f@samsung.com>
+Date:   Mon, 1 Jun 2020 15:25:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200422071845.403-1-yanaijie@huawei.com>
+In-Reply-To: <20200422071903.637-1-yanaijie@huawei.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGKsWRmVeSWpSXmKPExsWy7djP87q+t67EGay/xW1x5et7NosTfR9Y
-        LS7vmsNmseLnVkaLKR+PM1ss2tPJ7MDmcfn7G2aPliNvWT3udx9n8lgy7Sqbx+dNcgGsUVw2
-        Kak5mWWpRfp2CVwZbcteshZ0SFfsnfOIqYHxl2gXIyeHhICJxJ0Z/xm7GLk4hARWMEosO3Ge
-        CSQhJPCFUWLtlWqIxGdGif3nJjPCdEx6cpYdIrGcUeLUuT2sEM5bRokJt5+DtQsLuEnM6/sH
-        1iEi4CJxa+8zsDizQJFE342HrCA2m4CVxMT2VWA1vAJ2Eu1LJ4DFWQRUJO48fQtmiwpESHx6
-        cJgVokZQ4uTMJywgNqeAucTb4x+ZIWaKS9x6Mh9qvrzE9rdzmEEOkhBYxy4xZ8IOdoizXSQa
-        v7cyQ9jCEq+Ob4GKy0icntzDAtXAKPG34wVU93ZGieWT/7FBVFlL3Dn3C8jmAFqhKbF+lz5E
-        2FHi/IHNYGEJAT6JG28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJa7OQ
-        vDMLyTuzEPYuYGRZxSieWlqcm55abJiXWq5XnJhbXJqXrpecn7uJEZh6Tv87/mkH49dLSYcY
-        BTgYlXh4NS5djhNiTSwrrsw9xCjBwawkwut09nScEG9KYmVValF+fFFpTmrxIUZpDhYlcV7j
-        RS9jhQTSE0tSs1NTC1KLYLJMHJxSDYxix3QDtuppcsVyKT3VvMN5c51n0o9AR8Wgg6p536q/
-        V/9b97tySpX8/wWlJdHJWVwqKx9mfDymEL05aY5IiXFuo67PVcFlX67Mb56T69rY5T3nQsNK
-        K59vdbe+m7ibVIi7yXSyMfBH7pdt4p/PzpjxrX3+2lRey6cCU/SeG98/fdU5fz5boRJLcUai
-        oRZzUXEiANKSy9I5AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGIsWRmVeSWpSXmKPExsVy+t/xu7o+t67EGTxcbmxx5et7NosTfR9Y
-        LS7vmsNmseLnVkaLKR+PM1ss2tPJ7MDmcfn7G2aPliNvWT3udx9n8lgy7Sqbx+dNcgGsUXo2
-        RfmlJakKGfnFJbZK0YYWRnqGlhZ6RiaWeobG5rFWRqZK+nY2Kak5mWWpRfp2CXoZbcteshZ0
-        SFfsnfOIqYHxl2gXIyeHhICJxKQnZ9m7GLk4hASWMko0/N/N2MXIAZSQkTi+vgyiRljiz7Uu
-        NhBbSOA1o8ST54ogtrCAm8S8vn+MILaIgIvErb3PmCDmdDFKvLp3lA1kDrNAkcSjg6ogNWwC
-        VhIT21eB1fMK2Em0L53ACmKzCKhI3Hn6FswWFYiQOLxjFlSNoMTJmU9YQGxOAXOJt8c/MoPY
-        zALqEn/mXYKyxSVuPZnPBGHLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucWG
-        esWJucWleel6yfm5mxiBcbbt2M/NOxgvbQw+xCjAwajEw3vh/OU4IdbEsuLK3EOMEhzMSiK8
-        TmdPxwnxpiRWVqUW5ccXleakFh9iNAV6biKzlGhyPjAF5JXEG5oamltYGpobmxubWSiJ83YI
-        HIwREkhPLEnNTk0tSC2C6WPi4JRqYGxs9XVf0fO/etVeU81I1a7r+kEdL4+nly9cXJZw2SHh
-        r9XGv7J5d0rKgud6TSrUfDhFYsbX1lKv9FP32eVcTW2//jISNv7lcL2c3f4Wq/2+eXNtmus+
-        sDspH/KavPmlTleN+pprLbIi11YZqPy56VxxdWl5Uf+ZuxZ6mztSFZUqxE97RFxMVmIpzkg0
-        1GIuKk4EAJAGurPJAgAA
-X-CMS-MailID: 20200601103700eucas1p29e06d187f744d086ac2cc3f4b37a8399
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOKsWRmVeSWpSXmKPExsWy7djP87obGK/GGfR3WVm8PzWR3eLK1/ds
+        Fif6PrBaXN41h81i9pJ+Fov182+xWSza08nswO7RcuQtq8f97uNMHsdvbGfy+LxJLoAlissm
+        JTUnsyy1SN8ugStjc8NL5oLF/BVNR9vYGxi/8HQxcnJICJhIrHk0g72LkYtDSGAFo8T/+Xeh
+        nC+MEm/vfmGFcD4zSnya8ZwJpuVGzzSoxHJGiWW7mlkgnLeMEpPWXWQEqWITsJKY2L4KzBYW
+        sJdou/sbrFtEQFmi8f50sG5mgYWMEgc3rQdayMHBK2AncWKvH0gNi4CKRPedbjYQW1QgQuLT
+        g8OsIDavgKDEyZlPWEBsTgFziea1/8FmMguIS9x6Mh/KlpfY/nYOM8h8CYFt7BKXrs6GOttF
+        YtmEs2wQtrDEq+Nb2CFsGYnTk3tYIBrWMUr87XgB1b2dUWL55H9QHdYSd879YgO5lFlAU2L9
+        Ln2IsKPE3W3PwR6QEOCTuPFWEOIIPolJ26YzQ4R5JTrahCCq1SQ2LNvABrO2a+dK5gmMSrOQ
+        vDYLyTuzkLwzC2HvAkaWVYziqaXFuempxUZ5qeV6xYm5xaV56XrJ+bmbGIHJ5/S/4192MO76
+        k3SIUYCDUYmHl+PRlTgh1sSy4srcQ4wSHMxKIrxOZ0/HCfGmJFZWpRblxxeV5qQWH2KU5mBR
+        Euc1XvQyVkggPbEkNTs1tSC1CCbLxMEp1cDI7bDKTkTR/O3n3dqf9Btm2+y56LPk+RlHTeUW
+        yY83Tnw74qH9XMxm5dbsKfFHeN04Ih5MfrpR93qz4eSME7u3rJVlPhfzQdauX+PGJ5+224bL
+        +Q5+Fpp1d7/i2U0uU5a1SX1aVvs6l/Nvq4M09+1Z+/vKOWcoKpUcmmTsFXK1nt3DwSwwqzlP
+        iaU4I9FQi7moOBEAcc8G9DoDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsVy+t/xu7obGK/GGUz7pmTx/tREdosrX9+z
+        WZzo+8BqcXnXHDaL2Uv6WSzWz7/FZrFoTyezA7tHy5G3rB73u48zeRy/sZ3J4/MmuQCWKD2b
+        ovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1MlfTublNSczLLUIn27BL2MzQ0vmQsW
+        81c0HW1jb2D8wtPFyMkhIWAicaNnGmsXIxeHkMBSRokVX1vZuhg5gBIyEsfXl0HUCEv8udbF
+        BlHzmlFi3rReZpAEm4CVxMT2VYwgtrCAvUTb3d9MILaIgLJE4/3pYEOZBRYySmyY+JcdoruL
+        UeL+zXcsIBt4BewkTuz1A2lgEVCR6L7TzQZiiwpESBzeMQtsKK+AoMTJmU9YQGxOAXOJ5rX/
+        wRYwC6hL/Jl3iRnCFpe49WQ+VFxeYvvbOcwTGIVmIWmfhaRlFpKWWUhaFjCyrGIUSS0tzk3P
+        LTbUK07MLS7NS9dLzs/dxAiMtW3Hfm7ewXhpY/AhRgEORiUe3g33r8QJsSaWFVfmHmKU4GBW
+        EuF1Ons6Tog3JbGyKrUoP76oNCe1+BCjKdBzE5mlRJPzgWkgryTe0NTQ3MLS0NzY3NjMQkmc
+        t0PgYIyQQHpiSWp2ampBahFMHxMHp1QDY79emF3X1dbZO0y7P+neWrm6jkO89/LWE812MyZy
+        r18R1zvj2IdFv/Lc1m2wXxeQKPbh47p/nAqTe97NnPv/ufryyfNfLq90W3xL33nObdYH2vt7
+        Pe9t/5DaJ/hVW7+js3p6pKinxSI5vpwgf/2n6ponGDubPD0XP7r5zjNB9eS+4NTVBx7eD1Vi
+        Kc5INNRiLipOBAAdEM/mywIAAA==
+X-CMS-MailID: 20200601132504eucas1p1065ae1c2c68bb149a0505cd521452c15
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200422071952eucas1p219bc9ef0a74220149966ecb03688681c
+X-RootMTR: 20200422072450eucas1p106befe0a06fe20557d7ea4297525878a
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200422071952eucas1p219bc9ef0a74220149966ecb03688681c
-References: <CGME20200422071952eucas1p219bc9ef0a74220149966ecb03688681c@eucas1p2.samsung.com>
-        <20200422071845.403-1-yanaijie@huawei.com>
+X-CMS-RootMailID: 20200422072450eucas1p106befe0a06fe20557d7ea4297525878a
+References: <CGME20200422072450eucas1p106befe0a06fe20557d7ea4297525878a@eucas1p1.samsung.com>
+        <20200422071903.637-1-yanaijie@huawei.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-Hi,
-
-On 4/22/20 9:18 AM, Jason Yan wrote:
+On 4/22/20 9:19 AM, Jason Yan wrote:
 > Fix the following coccicheck warning:
 > 
-> drivers/video/fbdev/uvesafb.c:48:12-17: WARNING: Assignment of 0/1 to
-> bool variable
-> drivers/video/fbdev/uvesafb.c:1827:3-13: WARNING: Assignment of 0/1 to
-> bool variable
-> drivers/video/fbdev/uvesafb.c:1829:3-13: WARNING: Assignment of 0/1 to
-> bool variable
-> drivers/video/fbdev/uvesafb.c:1835:3-9: WARNING: Assignment of 0/1 to
-> bool variable
-> drivers/video/fbdev/uvesafb.c:1837:3-9: WARNING: Assignment of 0/1 to
-> bool variable
-> drivers/video/fbdev/uvesafb.c:1839:3-8: WARNING: Assignment of 0/1 to
-> bool variable
+> drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c:461:15-32: WARNING:
+> Comparison to bool
+> drivers/video/fbdev/omap2/omapfb/dss/dispc.c:891:5-35: WARNING:
+> Comparison of 0/1 to bool variable
 > 
 > Signed-off-by: Jason Yan <yanaijie@huawei.com>
-> ---
->  drivers/video/fbdev/uvesafb.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-> index 1b385cf76110..bee29aadc646 100644
-> --- a/drivers/video/fbdev/uvesafb.c
-> +++ b/drivers/video/fbdev/uvesafb.c
-> @@ -45,7 +45,7 @@ static const struct fb_fix_screeninfo uvesafb_fix = {
->  };
->  
->  static int mtrr		= 3;	/* enable mtrr by default */
-> -static bool blank	= 1;	/* enable blanking by default */
-> +static bool blank	= true;	/* enable blanking by default */
->  static int ypan		= 1;	/* 0: scroll, 1: ypan, 2: ywrap */
->  static bool pmi_setpal	= true; /* use PMI for palette changes */
->  static bool nocrtc;		/* ignore CRTC settings */
-> @@ -1824,19 +1824,19 @@ static int uvesafb_setup(char *options)
->  		else if (!strcmp(this_opt, "ywrap"))
->  			ypan = 2;
->  		else if (!strcmp(this_opt, "vgapal"))
-> -			pmi_setpal = 0;
-> +			pmi_setpal = false;
->  		else if (!strcmp(this_opt, "pmipal"))
-> -			pmi_setpal = 1;
-> +			pmi_setpal = true;
->  		else if (!strncmp(this_opt, "mtrr:", 5))
->  			mtrr = simple_strtoul(this_opt+5, NULL, 0);
->  		else if (!strcmp(this_opt, "nomtrr"))
->  			mtrr = 0;
->  		else if (!strcmp(this_opt, "nocrtc"))
-> -			nocrtc = 1;
-> +			nocrtc = true;
->  		else if (!strcmp(this_opt, "noedid"))
-> -			noedid = 1;
-> +			noedid = true;
->  		else if (!strcmp(this_opt, "noblank"))
-> -			blank = 0;
-> +			blank = true;
 
-The above conversion is incorrect.
-
-The follow-up fix is included below (the original patch has been
-already applied).
+Applied to drm-misc-next tree (patch should show up in v5.9), thanks.
 
 Best regards,
 --
@@ -170,31 +119,40 @@ Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
 
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 2 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c | 4 +---
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> index 4a16798b2ecd..3bb951eb29c7 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -888,7 +888,7 @@ static void dispc_ovl_set_color_mode(enum omap_plane plane,
+>  static void dispc_ovl_configure_burst_type(enum omap_plane plane,
+>  		enum omap_dss_rotation_type rotation_type)
+>  {
+> -	if (dss_has_feature(FEAT_BURST_2D) == 0)
+> +	if (!dss_has_feature(FEAT_BURST_2D))
+>  		return;
+>  
+>  	if (rotation_type == OMAP_DSS_ROT_TILER)
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> index 7060ae56c062..ef659c89ba58 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> @@ -455,11 +455,9 @@ static void hdmi_disconnect(struct omap_dss_device *dssdev,
+>  static int hdmi_read_edid(struct omap_dss_device *dssdev,
+>  		u8 *edid, int len)
+>  {
+> -	bool need_enable;
+> +	bool need_enable = !hdmi.core_enabled;
+>  	int r;
+>  
+> -	need_enable = hdmi.core_enabled == false;
+> -
+>  	if (need_enable) {
+>  		r = hdmi_core_enable(dssdev);
+>  		if (r)
+> 
 
-From: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH] video: fbdev: uvesafb: fix "noblank" option handling
-
-Fix the recent regression.
-
-Fixes: dbc7ece12a38 ("video: uvesafb: use true,false for bool variables")
-Cc: Jason Yan <yanaijie@huawei.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Michal Januszewski <spock@gentoo.org>
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/video/fbdev/uvesafb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-Index: b/drivers/video/fbdev/uvesafb.c
-===================================================================
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1836,7 +1836,7 @@ static int uvesafb_setup(char *options)
- 		else if (!strcmp(this_opt, "noedid"))
- 			noedid = true;
- 		else if (!strcmp(this_opt, "noblank"))
--			blank = true;
-+			blank = false;
- 		else if (!strncmp(this_opt, "vtotal:", 7))
- 			vram_total = simple_strtoul(this_opt + 7, NULL, 0);
- 		else if (!strncmp(this_opt, "vremap:", 7))
