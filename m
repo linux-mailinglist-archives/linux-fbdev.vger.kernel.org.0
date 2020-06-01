@@ -2,92 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17291E9AA6
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 00:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 265CF1EA1EC
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 12:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727915AbgEaWAV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 31 May 2020 18:00:21 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:3708 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727084AbgEaWAV (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 31 May 2020 18:00:21 -0400
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ed428e90000>; Sun, 31 May 2020 15:00:09 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate101.nvidia.com (PGP Universal service);
-  Sun, 31 May 2020 15:00:21 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate101.nvidia.com on Sun, 31 May 2020 15:00:21 -0700
-Received: from [10.2.56.10] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sun, 31 May
- 2020 22:00:12 +0000
-Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
- pin_user_pages*()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Sam Ravnborg <sam@ravnborg.org>,
+        id S1725925AbgFAKfg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Jun 2020 06:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51204 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbgFAKfg (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 06:35:36 -0400
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2361FC061A0E;
+        Mon,  1 Jun 2020 03:35:36 -0700 (PDT)
+Received: by mail-pl1-x644.google.com with SMTP id i17so4109024pli.13;
+        Mon, 01 Jun 2020 03:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=21ZKUiitaA/VhyuuR21o/snW4MjwihJIMa0dWGwpQ4I=;
+        b=cf95h8/P8RLWELxgMUXot/xVV2Qm8zpk/WRjFXZJchtLMflAlwkn0HVmDmNfmy623M
+         x9B+3YHbgZ1PO0Iyf8QndcNTAbtgeZhKTtEw+UTzvdHBadF7RQc4QRHI6LPirfxaz4by
+         GF5KQkGkc9WRfDqJXaSLb0Ffc1x3EAy5CiwpwQkZ7hhFQp/YlL3R3kTAtoskNkZcQRtb
+         PTf0vgDAYBkq+KqGYqJPG5H7Nn69AxOEVLQ9Qet40Sn14P64WBqUzyEIyegC6hKDvFlx
+         Ws3OHclr/nf8BlUexMUqWhVDbydTSJ9PqxD1cJhHayYoqt1RvSagTr6vIKzIq75j8vlG
+         frgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=21ZKUiitaA/VhyuuR21o/snW4MjwihJIMa0dWGwpQ4I=;
+        b=iQdsgng2xm5Ig3LVNT7vUJ/qPSciTdnTNuo+sa186JdHHDCLRcXokkUA5yd0JSRV5z
+         xi9swuDcrfKZcxbsuub7hZMSJniqu6UftVG81v0b3iOw1HqYUTHgwgKPeL6ajCHrlm2G
+         2oVLZ4vh8TMjnXArpoBM0LQX4TqLOWkEtTIvNmtoOuS01XM/FvdxdFwX+bkNDiShBkNo
+         irlF2HwfWeH2E+DblJhPOi8DJuMUHEOS7I8/oZCwI/ysYDFulP7QALh88WA14HDMxdQD
+         tihNoC3GNu9orAtzSTa6vWqEfQyX5s8/yL6adHiszI5AIESuTIklJui6/HRsWEjbbXDa
+         FAwA==
+X-Gm-Message-State: AOAM530tvIszj8oo28OTmKhSSkmkTJ+4aLEDTyc85oFpwY9HTX3M1E3Z
+        8zNNB1eJVacI3X2qMK99BTehmiPwntDL9wPv1HMRKu0PRkVJSw==
+X-Google-Smtp-Source: ABdhPJwgMTA7CTg/J3O189c9eXdi9xezD6/jnmjsispxqh2tGpuDIdE5UzwbivbO5Alg9BCa5kCstAN/6s2oOmrZCw4=
+X-Received: by 2002:a17:90a:ac05:: with SMTP id o5mr8473367pjq.228.1591007735577;
+ Mon, 01 Jun 2020 03:35:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200522041506.39638-1-jhubbard@nvidia.com> <20200531205819.GC138722@ravnborg.org>
+ <854fae07-3cb4-dbcf-fa93-35b447f9d084@nvidia.com> <CAHp75Vf6=UuC2Sef3m3CpRmjAOWt8ZgBW+OPf0-_53P3F__CWw@mail.gmail.com>
+ <e7f95207-1b30-17a8-4667-ca58b77ec0a3@nvidia.com>
+In-Reply-To: <e7f95207-1b30-17a8-4667-ca58b77ec0a3@nvidia.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 1 Jun 2020 13:35:24 +0300
+Message-ID: <CAHp75VcaXTM86K9vzyxTQJP_oNnzJ8mMHzgm7ybEioVhG6DHDQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to pin_user_pages*()
+To:     John Hubbard <jhubbard@nvidia.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
         LKML <linux-kernel@vger.kernel.org>,
         "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
-        "Jani Nikula" <jani.nikula@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "Paul Mundt" <lethal@linux-sh.org>
-References: <20200522041506.39638-1-jhubbard@nvidia.com>
- <20200531205819.GC138722@ravnborg.org>
- <854fae07-3cb4-dbcf-fa93-35b447f9d084@nvidia.com>
- <CAHp75Vf6=UuC2Sef3m3CpRmjAOWt8ZgBW+OPf0-_53P3F__CWw@mail.gmail.com>
-From:   John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <e7f95207-1b30-17a8-4667-ca58b77ec0a3@nvidia.com>
-Date:   Sun, 31 May 2020 15:00:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
-MIME-Version: 1.0
-In-Reply-To: <CAHp75Vf6=UuC2Sef3m3CpRmjAOWt8ZgBW+OPf0-_53P3F__CWw@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1590962409; bh=mOAHg3HWAQU+SMgvhvLbwcrCiN0aIfRDvzo6PURxuws=;
-        h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=ptLSHDxVso3RmTaVpqglneBPvQzg2bSY6Fo4uzSa9phJrDAwaSIV3oBEMcttBX3x2
-         qsP/G2Hr7T8kQOqLlPnrSjvDPtNX21coIAGNE0MtSY4Tu4gedBmuomvOKgDlBd5bYR
-         T6X/fSnMmgVhJtsXHbwOeEqU61FkQjt47VAprGjOG600hSdouVmaCoTwI5Sx0/WLi2
-         ZndYhUYCfEDX/21wOQorRxy2t4ssGitG6CiCLcE8WfxY6Ap5FYLbEbLhjBdkRSHnH5
-         7tJGjJjs722imCo81uA2nV5XcM3a0cuO0fFxm88tw7yPsoxRzX33C6C7p7ACs/EYkw
-         0+E6YvRcvKT7Q==
+        Paul Mundt <lethal@linux-sh.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2020-05-31 14:11, Andy Shevchenko wrote:
->     ...
-> JFYI, we have history.git starting from v0.01.
-> 
-OK, thanks for that note. According to that history.git [1],
-then: drivers/video/pvr2fb.c had get_user_pages_fast() support added to
-pvr2fb_write() back in 2004, but only for CONFIG_SH_DMA, as part of
+On Mon, Jun 1, 2020 at 1:00 AM John Hubbard <jhubbard@nvidia.com> wrote:
+> On 2020-05-31 14:11, Andy Shevchenko wrote:
+> >     ...
+> > JFYI, we have history.git starting from v0.01.
+> >
+> OK, thanks for that note. According to that history.git [1],
+> then: drivers/video/pvr2fb.c had get_user_pages_fast() support added to
+> pvr2fb_write() back in 2004, but only for CONFIG_SH_DMA, as part of
+>
+>      commit 434502754f2 ("[PATCH] SH Merge")
+>
+> ...and that commit created the minor bug that patch 0001 here
+> addresses. (+Cc Paul just for the sake of completeness.)
+>
+>
+> [1] git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
 
-     commit 434502754f2 ("[PATCH] SH Merge")
+I mentioned this one, but I guess content should be the same.
 
-...and that commit created the minor bug that patch 0001 here
-addresses. (+Cc Paul just for the sake of completeness.)
+https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/
 
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
-
-
-thanks,
 -- 
-John Hubbard
-NVIDIA
+With Best Regards,
+Andy Shevchenko
