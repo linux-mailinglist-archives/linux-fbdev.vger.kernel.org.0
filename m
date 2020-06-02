@@ -2,63 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92DB51EBFB2
-	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jun 2020 18:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16AE1EC3FE
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jun 2020 22:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726019AbgFBQMb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 2 Jun 2020 12:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725940AbgFBQMa (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jun 2020 12:12:30 -0400
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCD8C05BD1E;
-        Tue,  2 Jun 2020 09:12:30 -0700 (PDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat Linux))
-        id 1jg9Wb-00219F-54; Tue, 02 Jun 2020 16:12:25 +0000
-Date:   Tue, 2 Jun 2020 17:12:25 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>
-Subject: Re: [PATCH v2 1/2] video: fbdev: amifb: add FIXME about dead APUS
- support
-Message-ID: <20200602161225.GJ23230@ZenIV.linux.org.uk>
-References: <CGME20200504232908eucas1p296927bc7c736ad924cefaea9a546459d@eucas1p2.samsung.com>
- <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
- <767d36ff-22ec-8136-7ebc-1d9d0d3ac98d@samsung.com>
- <CAMuHMdWac+YE3qr0CTepn5K24tGZq0VHuQDGg-yUOHW1rJDbbg@mail.gmail.com>
+        id S1726842AbgFBUuk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jun 2020 16:50:40 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:51324 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726130AbgFBUuk (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jun 2020 16:50:40 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 139228050E;
+        Tue,  2 Jun 2020 22:50:34 +0200 (CEST)
+Date:   Tue, 2 Jun 2020 22:50:33 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Jason Yan <yanaijie@huawei.com>, spock@gentoo.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: uvesafb: use true,false for bool variables
+Message-ID: <20200602205033.GA56418@ravnborg.org>
+References: <CGME20200422071952eucas1p219bc9ef0a74220149966ecb03688681c@eucas1p2.samsung.com>
+ <20200422071845.403-1-yanaijie@huawei.com>
+ <4b460d82-b23c-f6ce-6593-735a726e4d8a@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWac+YE3qr0CTepn5K24tGZq0VHuQDGg-yUOHW1rJDbbg@mail.gmail.com>
+In-Reply-To: <4b460d82-b23c-f6ce-6593-735a726e4d8a@samsung.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=G88y7es5 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=hD80L64hAAAA:8 a=7gkXJVJtAAAA:8
+        a=7mOBRU54AAAA:8 a=pQOkFE01E-EqrLGc8Q0A:9 a=CjuIK1q_8ugA:10
+        a=E9Po1WZjFZOl8hwRPBS3:22 a=wa9RWnbW_A1YIeRBVszw:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 02, 2020 at 02:03:12PM +0200, Geert Uytterhoeven wrote:
-> On Tue, Jun 2, 2020 at 1:50 PM Bartlomiej Zolnierkiewicz
-> <b.zolnierkie@samsung.com> wrote:
-> > On 5/14/20 10:21 PM, Geert Uytterhoeven wrote:
-> > > These #ifdefs are relics from APUS (Amiga Power-Up System), which
-> > > added a PPC board.  APUS support was killed off a long time ago,
-> > > when arch/ppc/ was still king, but these #ifdefs were missed, because
-> > > they didn't test for CONFIG_APUS.
-> >
-> > Add FIXME about using the C code variants (APUS ones) in the future.
-> >
-> > Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> 
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Hi Bartlomiej
 
-FWIW, has anyone managed to boot m68k linux kernel on e.g. FS-UAE?
-I have done that on aranym (which is how I'd been doing all
-testing for e.g. signal-related m68k patches) and I've seen
-references to some out-of-tree qemu variant doing quadra, but
-nothing for amiga emulators...
+On Mon, Jun 01, 2020 at 12:37:00PM +0200, Bartlomiej Zolnierkiewicz wrote:
+> 
+> Hi,
+> 
+> On 4/22/20 9:18 AM, Jason Yan wrote:
+> > Fix the following coccicheck warning:
+> > 
+> > drivers/video/fbdev/uvesafb.c:48:12-17: WARNING: Assignment of 0/1 to
+> > bool variable
+> > drivers/video/fbdev/uvesafb.c:1827:3-13: WARNING: Assignment of 0/1 to
+> > bool variable
+> > drivers/video/fbdev/uvesafb.c:1829:3-13: WARNING: Assignment of 0/1 to
+> > bool variable
+> > drivers/video/fbdev/uvesafb.c:1835:3-9: WARNING: Assignment of 0/1 to
+> > bool variable
+> > drivers/video/fbdev/uvesafb.c:1837:3-9: WARNING: Assignment of 0/1 to
+> > bool variable
+> > drivers/video/fbdev/uvesafb.c:1839:3-8: WARNING: Assignment of 0/1 to
+> > bool variable
+> > 
+> > Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> > ---
+> >  drivers/video/fbdev/uvesafb.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+> > index 1b385cf76110..bee29aadc646 100644
+> > --- a/drivers/video/fbdev/uvesafb.c
+> > +++ b/drivers/video/fbdev/uvesafb.c
+> > @@ -45,7 +45,7 @@ static const struct fb_fix_screeninfo uvesafb_fix = {
+> >  };
+> >  
+> >  static int mtrr		= 3;	/* enable mtrr by default */
+> > -static bool blank	= 1;	/* enable blanking by default */
+> > +static bool blank	= true;	/* enable blanking by default */
+> >  static int ypan		= 1;	/* 0: scroll, 1: ypan, 2: ywrap */
+> >  static bool pmi_setpal	= true; /* use PMI for palette changes */
+> >  static bool nocrtc;		/* ignore CRTC settings */
+> > @@ -1824,19 +1824,19 @@ static int uvesafb_setup(char *options)
+> >  		else if (!strcmp(this_opt, "ywrap"))
+> >  			ypan = 2;
+> >  		else if (!strcmp(this_opt, "vgapal"))
+> > -			pmi_setpal = 0;
+> > +			pmi_setpal = false;
+> >  		else if (!strcmp(this_opt, "pmipal"))
+> > -			pmi_setpal = 1;
+> > +			pmi_setpal = true;
+> >  		else if (!strncmp(this_opt, "mtrr:", 5))
+> >  			mtrr = simple_strtoul(this_opt+5, NULL, 0);
+> >  		else if (!strcmp(this_opt, "nomtrr"))
+> >  			mtrr = 0;
+> >  		else if (!strcmp(this_opt, "nocrtc"))
+> > -			nocrtc = 1;
+> > +			nocrtc = true;
+> >  		else if (!strcmp(this_opt, "noedid"))
+> > -			noedid = 1;
+> > +			noedid = true;
+> >  		else if (!strcmp(this_opt, "noblank"))
+> > -			blank = 0;
+> > +			blank = true;
+> 
+> The above conversion is incorrect.
+> 
+> The follow-up fix is included below (the original patch has been
+> already applied).
+Good spot, sorry for missing this when I applied the original patch.
+
+> 
+> Best regards,
+> --
+> Bartlomiej Zolnierkiewicz
+> Samsung R&D Institute Poland
+> Samsung Electronics
+> 
+> 
+> From: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Subject: [PATCH] video: fbdev: uvesafb: fix "noblank" option handling
+> 
+> Fix the recent regression.
+> 
+> Fixes: dbc7ece12a38 ("video: uvesafb: use true,false for bool variables")
+> Cc: Jason Yan <yanaijie@huawei.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Michal Januszewski <spock@gentoo.org>
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+>  drivers/video/fbdev/uvesafb.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Index: b/drivers/video/fbdev/uvesafb.c
+> ===================================================================
+> --- a/drivers/video/fbdev/uvesafb.c
+> +++ b/drivers/video/fbdev/uvesafb.c
+> @@ -1836,7 +1836,7 @@ static int uvesafb_setup(char *options)
+>  		else if (!strcmp(this_opt, "noedid"))
+>  			noedid = true;
+>  		else if (!strcmp(this_opt, "noblank"))
+> -			blank = true;
+> +			blank = false;
+>  		else if (!strncmp(this_opt, "vtotal:", 7))
+>  			vram_total = simple_strtoul(this_opt + 7, NULL, 0);
+>  		else if (!strncmp(this_opt, "vremap:", 7))
