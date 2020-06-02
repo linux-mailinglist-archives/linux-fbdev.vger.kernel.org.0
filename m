@@ -2,134 +2,130 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC4851EB9B3
-	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jun 2020 12:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F19A1EB9BC
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jun 2020 12:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgFBKiW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 2 Jun 2020 06:38:22 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:58702 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725958AbgFBKiV (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jun 2020 06:38:21 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200602103819euoutp01e72059346cedd4332eb8f9a6fd1fbf3c~Us9XrMz3D0275602756euoutp01C
-        for <linux-fbdev@vger.kernel.org>; Tue,  2 Jun 2020 10:38:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200602103819euoutp01e72059346cedd4332eb8f9a6fd1fbf3c~Us9XrMz3D0275602756euoutp01C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1591094299;
-        bh=srJNMlN35yPx2wBufa1+xyUmNboKPt4b/fJgTaYJwj0=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=HTQ6BOEfhJHzUPwFhSeT4t9bbPokCsqZl9PeMbsDCpRaH0Hp5L6227Uxb9m6wvwOc
-         cVT2Q6IjaXJwpQdKMZgvn9K+aG6ICbrktt1HOicRKed2k56zS6ri1h6ptRbO1F9ZSJ
-         TTG7cxSDiVqkw206eaksVvJeaw/54km0/uI58zdk=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200602103819eucas1p1c7c078d397114df8c40cc227b64cf65a~Us9XjvqQt1569715697eucas1p1i;
-        Tue,  2 Jun 2020 10:38:19 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id E3.6D.61286.B1C26DE5; Tue,  2
-        Jun 2020 11:38:19 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200602103819eucas1p1613484842ec2169440d9597557b1c740~Us9XTovJY1306513065eucas1p1l;
-        Tue,  2 Jun 2020 10:38:19 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200602103819eusmtrp29f4bef2776ab5dcdb45cdb0d40edd7a5~Us9XS8WIG1507115071eusmtrp2v;
-        Tue,  2 Jun 2020 10:38:19 +0000 (GMT)
-X-AuditID: cbfec7f2-ef1ff7000001ef66-b5-5ed62c1b625a
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id C6.49.07950.B1C26DE5; Tue,  2
-        Jun 2020 11:38:19 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200602103818eusmtip1e7b600b92b20ab441ca5277343e72794~Us9W4WQcS2246822468eusmtip1f;
-        Tue,  2 Jun 2020 10:38:18 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH 2/2] video: fbdev: amifb: add FIXMEs about {put,get}_user()
- failures
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+        id S1726110AbgFBKlp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jun 2020 06:41:45 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:52425 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725958AbgFBKlp (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 2 Jun 2020 06:41:45 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1jg4MW-001rc5-5b; Tue, 02 Jun 2020 12:41:40 +0200
+Received: from p57bd9b57.dip0.t-ipconnect.de ([87.189.155.87] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jg4MV-002cRG-UC; Tue, 02 Jun 2020 12:41:40 +0200
+Subject: Re: [PATCH 1/2] video: fbdev: amifb: remove dead APUS support
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 Cc:     linux-kernel@vger.kernel.org,
         linux-m68k <linux-m68k@lists.linux-m68k.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Geert Uytterhoeven <geert@linux-m68k.org>
-Message-ID: <a514e3bf-2e1a-ff4d-5529-3e918d067d5e@samsung.com>
-Date:   Tue, 2 Jun 2020 12:38:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+References: <CGME20200504232908eucas1p296927bc7c736ad924cefaea9a546459d@eucas1p2.samsung.com>
+ <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+ <839133dd-8ed4-5fec-c311-ce9f8abf3d5f@samsung.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <72e0871c-d4bb-4887-4d6f-a60fd905bec1@physik.fu-berlin.de>
+Date:   Tue, 2 Jun 2020 12:41:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+In-Reply-To: <839133dd-8ed4-5fec-c311-ce9f8abf3d5f@samsung.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGKsWRmVeSWpSXmKPExsWy7djPc7rSOtfiDA6dU7S48vU9m8WzW3uZ
-        LE70fWC1uLxrDpvF8idrmS3O/z3O6sDmcehwB6PH/e7jTB4nW7+xeHzeJOex6clbpgDWKC6b
-        lNSczLLUIn27BK6Mle+WMBac46w42b6DrYHxCnsXIyeHhICJxI3JUxi7GLk4hARWMEpM3tPA
-        DOF8YZSYP2cWVOYzo8TJL7vYYFrmfW9gArGFBJYzSvzZwwFR9JZR4t7VUywgCTYBK4mJ7asY
-        QWxhgTCJBS/vgDWICDhITLkxAWw3s8ACRokth5xBbF4BO4kZc7rAelkEVCSmrG4BqxcViJD4
-        9OAwK0SNoMTJmU/AajgFPCV29F5mgpgjLnHryXwoW15i+9s5YC9ICKxjl7j9aDYTxNUuEle2
-        r2eBsIUlXh3fAg0AGYn/O0GawRoYJf52vIDq3s4osXzyP6ifrSXunPsFZHMArdCUWL9LHyLs
-        KHHmwksmkLCEAJ/EjbeCEEfwSUzaNp0ZIswr0dEmBFGtJrFh2QY2mLVdO1cyT2BUmoXktVlI
-        3pmF5J1ZCHsXMLKsYhRPLS3OTU8tNsxLLdcrTswtLs1L10vOz93ECEw9p/8d/7SD8eulpEOM
-        AhyMSjy8G+5fiRNiTSwrrsw9xCjBwawkwut09nScEG9KYmVValF+fFFpTmrxIUZpDhYlcV7j
-        RS9jhQTSE0tSs1NTC1KLYLJMHJxSDYyGuaY+040tyquyzDeJmS5KePluXoD382ObuNWiKy8q
-        MP8QfyV27PHV7V/zmzpXeFx2+Xg9Pe34h95zu4y1Fz77Zjzjp6/vkpe3NtrX5j2JkpF+vGb1
-        lAkqhSt8d97aua6Bbb8V168V6i90vQKnFRzdyFC331U7myFp4XO5Y7tOW0afS0y5/T1MiaU4
-        I9FQi7moOBEAuyosQzkDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJIsWRmVeSWpSXmKPExsVy+t/xu7rSOtfiDK7c4bW48vU9m8WzW3uZ
-        LE70fWC1uLxrDpvF8idrmS3O/z3O6sDmcehwB6PH/e7jTB4nW7+xeHzeJOex6clbpgDWKD2b
-        ovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1MlfTublNSczLLUIn27BL2Mle+WMBac
-        46w42b6DrYHxCnsXIyeHhICJxLzvDUxdjFwcQgJLGSUWPzvJ0sXIAZSQkTi+vgyiRljiz7Uu
-        Noia14wSNx7MYANJsAlYSUxsX8UIYgsLhEkseHmHCcQWEXCQmHJjAjtIA7PAAkaJs20HWSG6
-        5zBK7Hh1A6yDV8BOYsacLhYQm0VARWLK6hawblGBCInDO2ZB1QhKnJz5BKyGU8BTYkfvZbAa
-        ZgF1iT/zLjFD2OISt57Mh4rLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucVG
-        esWJucWleel6yfm5mxiB0bbt2M8tOxi73gUfYhTgYFTi4d1w/0qcEGtiWXFl7iFGCQ5mJRFe
-        p7On44R4UxIrq1KL8uOLSnNSiw8xmgI9N5FZSjQ5H5gI8kriDU0NzS0sDc2NzY3NLJTEeTsE
-        DsYICaQnlqRmp6YWpBbB9DFxcEo1MDY/tS/cLtAV9c3x8PSYtAK9eRVCL2eb/Vnz4WfbgmUz
-        pWz2djyZ8qD59aliXpOkXD8x88Izs4680Vy7VeGHptPPE68zL65a+SOkvyyWdbIvoyy/lWwt
-        j1jRU/Neq/7Q6Ftt16/d1tOaLaRV4hKb6C10ybrL6NEpIRbGTp7ils0WTGcWyX13VGIpzkg0
-        1GIuKk4EAGB0mu3MAgAA
-X-CMS-MailID: 20200602103819eucas1p1613484842ec2169440d9597557b1c740
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
-References: <CGME20200504232908eucas1p296927bc7c736ad924cefaea9a546459d@eucas1p2.samsung.com>
-        <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.155.87
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Since we lack the hardware (or proper emulator setup) for
-testing needed changes add FIXMEs to document the issues
-(so at least they are not forgotten).
+Hi Geert!
 
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/video/fbdev/amifb.c |    2 ++
- 1 file changed, 2 insertions(+)
+On 6/2/20 12:37 PM, Bartlomiej Zolnierkiewicz wrote:
+> 
+> On 5/14/20 10:21 PM, Geert Uytterhoeven wrote:
+> 
+>> These #ifdefs are relics from APUS (Amiga Power-Up System), which
+>> added a PPC board.  APUS support was killed off a long time ago,
+>> when arch/ppc/ was still king, but these #ifdefs were missed, because
+>> they didn't test for CONFIG_APUS.
+> 
+> Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> ---
+>  drivers/video/fbdev/amifb.c |   63 --------------------------------------------
+>  1 file changed, 63 deletions(-)
 
-Index: b/drivers/video/fbdev/amifb.c
-===================================================================
---- a/drivers/video/fbdev/amifb.c
-+++ b/drivers/video/fbdev/amifb.c
-@@ -1866,6 +1866,7 @@ static int ami_get_var_cursorinfo(struct
- 				"clrb %0 ; swap %1 ; lslw #1,%1 ; roxlb #1,%0 ; "
- 				"swap %1 ; lslw #1,%1 ; roxlb #1,%0"
- 				: "=d" (color), "=d" (datawords) : "1" (datawords));
-+			/* FIXME: check the return value + test the change */
- 			put_user(color, data++);
- 		}
- 		if (bits > 0) {
-@@ -1923,6 +1924,7 @@ static int ami_set_var_cursorinfo(struct
- 		bits = 16; words = delta; datawords = 0;
- 		for (width = (short)var->width - 1; width >= 0; width--) {
- 			unsigned long tdata = 0;
-+			/* FIXME: check the return value + test the change */
- 			get_user(tdata, data);
- 			data++;
- 			asm volatile (
+What do you mean with the sentence "when arch/ppc/ was still king"?
+
+Does that mean - in the case we would re-add APUS support in the future, that
+these particular changes would not be necessary?
+
+I assume there could be new affordable PowerPC upgrade cards for the Amiga
+in the future as the PowerPC cards are still sought after by the Amiga
+community, so there is still demand for those on the market.
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
