@@ -2,121 +2,264 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A67D1EA882
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Jun 2020 19:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBAE1EB9AE
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Jun 2020 12:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726110AbgFARmh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Jun 2020 13:42:37 -0400
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:6621 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbgFARmh (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Jun 2020 13:42:37 -0400
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-        id <B5ed53db70000>; Mon, 01 Jun 2020 10:41:11 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
-  by hqpgpgate102.nvidia.com (PGP Universal service);
-  Mon, 01 Jun 2020 10:42:37 -0700
-X-PGP-Universal: processed;
-        by hqpgpgate102.nvidia.com on Mon, 01 Jun 2020 10:42:37 -0700
-Received: from [10.2.56.10] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 1 Jun
- 2020 17:42:26 +0000
-Subject: Re: [PATCH 0/2] video: fbdev: fix error handling, convert to
- pin_user_pages*()
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Sam Ravnborg <sam@ravnborg.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Gustavo A . R . Silva" <gustavo@embeddedor.com>,
-        "Jani Nikula" <jani.nikula@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "Paul Mundt" <lethal@linux-sh.org>
-References: <20200522041506.39638-1-jhubbard@nvidia.com>
- <20200531205819.GC138722@ravnborg.org>
- <854fae07-3cb4-dbcf-fa93-35b447f9d084@nvidia.com>
- <CAHp75Vf6=UuC2Sef3m3CpRmjAOWt8ZgBW+OPf0-_53P3F__CWw@mail.gmail.com>
- <e7f95207-1b30-17a8-4667-ca58b77ec0a3@nvidia.com>
- <CAHp75VcaXTM86K9vzyxTQJP_oNnzJ8mMHzgm7ybEioVhG6DHDQ@mail.gmail.com>
- <8fa07f59-6d77-f76b-7539-c88bf85c5036@nvidia.com>
- <CAHp75VfHnLz56jyR5PNgpxWGtO_u0bss45+iHhQ03c_4L3jH5g@mail.gmail.com>
-X-Nvconfidentiality: public
-From:   John Hubbard <jhubbard@nvidia.com>
-Message-ID: <2f832d22-179e-b228-0864-f55dde765b48@nvidia.com>
-Date:   Mon, 1 Jun 2020 10:42:26 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        id S1726217AbgFBKhd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Jun 2020 06:37:33 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:36550 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726198AbgFBKhc (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 2 Jun 2020 06:37:32 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200602103729euoutp02005c3b81f403233702fd943b3ef6d8cd~Us8ofR3-f1922219222euoutp02M
+        for <linux-fbdev@vger.kernel.org>; Tue,  2 Jun 2020 10:37:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200602103729euoutp02005c3b81f403233702fd943b3ef6d8cd~Us8ofR3-f1922219222euoutp02M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1591094249;
+        bh=4vUewRLzHeFYoroLdqGpNGuPNMeJGx5ZvKq8Qs7i8ug=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=M8+hQaQFsd3TD9YQH56v3iYt1haKgPY7V78GF/ZJ7mflbbWT8Nyg8z2xjSsUWacK6
+         XUcomYvoxwhHtdCWc7qgkhPRHttXA+iX41nj/XEW8KVebxrUpPYuZ/JJ4b+0g5WEe6
+         fyvLKxwjFEdCDMyXKg2L98n8kUVvm5gyFH5wMTV4=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200602103728eucas1p1412c7a16e2c124de609493d6af81ec2c~Us8oHFc1m2606626066eucas1p1l;
+        Tue,  2 Jun 2020 10:37:28 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 2D.FF.60698.8EB26DE5; Tue,  2
+        Jun 2020 11:37:28 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200602103728eucas1p14557b8b4c33dbc82b0351f58e2a4140d~Us8nxlVUX1571015710eucas1p1A;
+        Tue,  2 Jun 2020 10:37:28 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200602103728eusmtrp2f9a8f6736e923eff4bf707d32c238b35~Us8nw_IWx1363813638eusmtrp26;
+        Tue,  2 Jun 2020 10:37:28 +0000 (GMT)
+X-AuditID: cbfec7f5-a29ff7000001ed1a-0a-5ed62be82fee
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 1A.29.07950.8EB26DE5; Tue,  2
+        Jun 2020 11:37:28 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200602103727eusmtip2d2687492ceec67a96c797c4c247892d1~Us8nY_3Oj2214522145eusmtip2P;
+        Tue,  2 Jun 2020 10:37:27 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH 1/2] video: fbdev: amifb: remove dead APUS support
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc:     linux-kernel@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Message-ID: <839133dd-8ed4-5fec-c311-ce9f8abf3d5f@samsung.com>
+Date:   Tue, 2 Jun 2020 12:37:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfHnLz56jyR5PNgpxWGtO_u0bss45+iHhQ03c_4L3jH5g@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1591033271; bh=ChY8kQ3GISu3XKtIp7DQSWGeUWq2DqG74+qg5oD8kN8=;
-        h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
-         Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
-         X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
-         Content-Transfer-Encoding;
-        b=sCPp7JivTlZhcs+40THY6PI0JWnW2mcA0A2601nDZ8DnPr9GsqZOl/aJ0iq1cefjI
-         hfItZabxvz1KtzwrdLtiByIm4aJ1UOsVrt3Jx7UA0ZHsUCzCpEluXZ9lDEERWj6iJ5
-         7Crih9Xi3hxUnPY1RxtA3EwDCZZgvilOGjy5zpmAT9sW01BOv0BpWnESgQF/ZrIWPv
-         WFA4i7MjiPK6Pgn4jubGCI0rAt80dfO3JAzUw5Q/zgUE4LQN/szeJtJKMCLA13ifls
-         +vvjTizNjYNDUs5fDsQypUkq1vdGDhe/mb6Pv6MMZVfNMlt2UoHvh/H8Pr4xAzQTPZ
-         /j6nA5Szu0kRQ==
+X-Brightmail-Tracker: H4sIAAAAAAAAA01SfyyUcRze933fe+9lTl9H80nFuqn1E01/3MoMNZ0tldpobX6cvGH5cd2h
+        +KPZSkmYXzGXIr+zye0yji10mmM4FaubWfrjGOYoh5ZF9XpZ/nue5/t8ns/z2b4MKa4RuDDx
+        SSmsMkmeIKFtqba+XyMnZo59jvBqfHNQOraySEunx98S0v787wLpaGcFLW0wN5PSkXWDwI+W
+        6XuzkWzyiYGQDWStUjKr1lWmNVuIy4Lrtj4xbEJ8Gqv09I2yjTPlzgsVBYfvWjq9MpHRNQfZ
+        MIBPwZDpJ5GDbBkxbkQwv5Ar5MkygkJjKc0TK4KXOg2xPdJi7dlyNSCYWisieWJBMNFXS3Mu
+        Gp+GwkdNKAcxjCMOgNplxMlO2A9KTAVCDpO4CkGr/ixnEWFfaHofzMkUdoeayVKSw7vxNVj6
+        1ivgsAg7wEC5meKwDQ4CXd4owcc4w7i5cgu7QbulYrMOYK0QvkzN0Vw+4HNQZkB8f0eYM7QK
+        ebwP/nRUErz/NYL17Jmt4XYEDcUbNO86AxPGtc0gEh+Blk5PXvaHoQ+zBJ9vDyaLA9/BHora
+        ykheFkH2QzHvPgSaeg29vTan4xVZgCTqHZepd1yj3nGN+v/eKkQ1IWc2VZUYy6q8k9g7Hip5
+        oio1KdbjRnKiFv37OoMbhhUd6vodrUeYQRI7kWZyLEIskKep0hP1CBhS4iQKGB6MEIti5OkZ
+        rDI5UpmawKr0aC9DSZxF3tWz4WIcK09hb7GsglVuvxKMjUsm0jlE+oQfFxy46d/oUr3LqtEN
+        hHU/KLdraAtZLbwnGw4LVSqKv65UmJpv3++/uGipyHsWFVJJPcbpQ8/rQv3nYd5YHWi0xqeX
+        qD9e8X13Va0IMkxr3LoUwcH5WVrqx3LPxNKLDLt6h5UL7rj0fKDxky6Y7Oluia67FPR0Yc/+
+        UgmlipOfPEoqVfK/qa7VBDYDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGIsWRmVeSWpSXmKPExsVy+t/xe7ovtK/FGRx8xmNx5et7Notnt/Yy
+        WZzo+8BqcXnXHDaL5U/WMluc/3uc1YHN49DhDkaP+93HmTxOtn5j8fi8Sc5j05O3TAGsUXo2
+        RfmlJakKGfnFJbZK0YYWRnqGlhZ6RiaWeobG5rFWRqZK+nY2Kak5mWWpRfp2CXoZN3resBdM
+        0Kh4u8uggfGcXBcjJ4eEgInE+s8H2LsYuTiEBJYySlz8e4C1i5EDKCEjcXx9GUSNsMSfa11s
+        EDWvGSVOL+xgA0mwCVhJTGxfxQhSLyzgJLHkCyNIWETAQWLKjQlgM5kFFjBKnG07yArRPIdR
+        YserG2ANvAJ2EquO+II0sAioSCy+P40ZxBYViJA4vGMW2CBeAUGJkzOfsIDYnAKeEjt6LzOB
+        2MwC6hJ/5l1ihrDFJW49mQ8Vl5fY/nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz03OL
+        jfSKE3OLS/PS9ZLzczcxAuNs27GfW3Ywdr0LPsQowMGoxMO74f6VOCHWxLLiytxDjBIczEoi
+        vE5nT8cJ8aYkVlalFuXHF5XmpBYfYjQFem4is5Rocj4wBeSVxBuaGppbWBqaG5sbm1koifN2
+        CByMERJITyxJzU5NLUgtgulj4uCUamBUlHngcfbqER79o8Ut935HX//Fe+Z6n8iLzs+p77rq
+        ck8u3Onye5Nm214p0ak3Pqt62MWoB28r+BJhuDNJUyfYbqu48i+mmf5OB8I/NT9aeL96tSrv
+        o65bjS67pjPF2HT8b/0o0ZZereHup8PJ/Nt5pqho/8L3HXq9dxoOKFefuXqyy3BpIY8SS3FG
+        oqEWc1FxIgDIacQmyQIAAA==
+X-CMS-MailID: 20200602103728eucas1p14557b8b4c33dbc82b0351f58e2a4140d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200504232908eucas1p296927bc7c736ad924cefaea9a546459d
+References: <CGME20200504232908eucas1p296927bc7c736ad924cefaea9a546459d@eucas1p2.samsung.com>
+        <b1cf967015c5beafa475aaa30d8e21a58caff870.camel@perches.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2020-06-01 10:25, Andy Shevchenko wrote:
-> On Mon, Jun 1, 2020 at 8:10 PM John Hubbard <jhubbard@nvidia.com> wrote:
->>
->> On 2020-06-01 03:35, Andy Shevchenko wrote:
->>> On Mon, Jun 1, 2020 at 1:00 AM John Hubbard <jhubbard@nvidia.com> wrote:
->>>> On 2020-05-31 14:11, Andy Shevchenko wrote:
->>>>>       ...
->>>>> JFYI, we have history.git starting from v0.01.
->>>>>
->>>> OK, thanks for that note. According to that history.git [1],
->>>> then: drivers/video/pvr2fb.c had get_user_pages_fast() support added to
->>>> pvr2fb_write() back in 2004, but only for CONFIG_SH_DMA, as part of
->>>>
->>>>        commit 434502754f2 ("[PATCH] SH Merge")
->>>>
->>>> ...and that commit created the minor bug that patch 0001 here
->>>> addresses. (+Cc Paul just for the sake of completeness.)
->>>>
->>>>
->>>> [1] git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
->>>
->>> I mentioned this one, but I guess content should be the same.
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/
->>>
->>
->> Actually, that history.git *starts* at Linux 2.6.12-rc2,
-> 
-> It's not true.
 
-OK I see, neither a straight "git log" nor git branches will suffice, you
-have to use tags in order to get to the older versions.
+On 5/14/20 10:21 PM, Geert Uytterhoeven wrote:
 
-> 
->> while
->> tglx/history.git *ends* at Linux 2.6.12-rc2 (which is in April, 2005).
->> And the commit I was looking for is in 2004. So that's why I needed a
->> different stretch of history.
-> 
-> Actually history/history.git contains all of them starting from v0.01.
-> But it ends, indeed, on 2.6.33.
-> 
+> These #ifdefs are relics from APUS (Amiga Power-Up System), which
+> added a PPC board.  APUS support was killed off a long time ago,
+> when arch/ppc/ was still king, but these #ifdefs were missed, because
+> they didn't test for CONFIG_APUS.
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ drivers/video/fbdev/amifb.c |   63 --------------------------------------------
+ 1 file changed, 63 deletions(-)
+
+Index: b/drivers/video/fbdev/amifb.c
+===================================================================
+--- a/drivers/video/fbdev/amifb.c
++++ b/drivers/video/fbdev/amifb.c
+@@ -576,14 +576,8 @@ static u_short maxfmode, chipset;
+ #define modx(x, v)	((v) & ((x) - 1))
+ 
+ /* if x1 is not a constant, this macro won't make real sense :-) */
+-#ifdef __mc68000__
+ #define DIVUL(x1, x2) ({int res; asm("divul %1,%2,%3": "=d" (res): \
+ 	"d" (x2), "d" ((long)((x1) / 0x100000000ULL)), "0" ((long)(x1))); res;})
+-#else
+-/* We know a bit about the numbers, so we can do it this way */
+-#define DIVUL(x1, x2) ((((long)((unsigned long long)x1 >> 8) / x2) << 8) + \
+-	((((long)((unsigned long long)x1 >> 8) % x2) << 8) / x2))
+-#endif
+ 
+ #define highw(x)	((u_long)(x)>>16 & 0xffff)
+ #define loww(x)		((u_long)(x) & 0xffff)
+@@ -1837,11 +1831,7 @@ static int ami_get_var_cursorinfo(struct
+ 				  const struct amifb_par *par)
+ {
+ 	register u_short *lspr, *sspr;
+-#ifdef __mc68000__
+ 	register u_long datawords asm ("d2");
+-#else
+-	register u_long datawords;
+-#endif
+ 	register short delta;
+ 	register u_char color;
+ 	short height, width, bits, words;
+@@ -1868,24 +1858,14 @@ static int ami_get_var_cursorinfo(struct
+ 		for (width = (short)var->width - 1; width >= 0; width--) {
+ 			if (bits == 0) {
+ 				bits = 16; --words;
+-#ifdef __mc68000__
+ 				asm volatile ("movew %1@(%3:w:2),%0 ; swap %0 ; movew %1@+,%0"
+ 					: "=d" (datawords), "=a" (lspr) : "1" (lspr), "d" (delta));
+-#else
+-				datawords = (*(lspr + delta) << 16) | (*lspr++);
+-#endif
+ 			}
+ 			--bits;
+-#ifdef __mc68000__
+ 			asm volatile (
+ 				"clrb %0 ; swap %1 ; lslw #1,%1 ; roxlb #1,%0 ; "
+ 				"swap %1 ; lslw #1,%1 ; roxlb #1,%0"
+ 				: "=d" (color), "=d" (datawords) : "1" (datawords));
+-#else
+-			color = (((datawords >> 30) & 2)
+-				 | ((datawords >> 15) & 1));
+-			datawords <<= 1;
+-#endif
+ 			put_user(color, data++);
+ 		}
+ 		if (bits > 0) {
+@@ -1893,17 +1873,8 @@ static int ami_get_var_cursorinfo(struct
+ 		}
+ 		while (--words >= 0)
+ 			++lspr;
+-#ifdef __mc68000__
+ 		asm volatile ("lea %0@(%4:w:2),%0 ; tstl %1 ; jeq 1f ; exg %0,%1\n1:"
+ 			: "=a" (lspr), "=a" (sspr) : "0" (lspr), "1" (sspr), "d" (delta));
+-#else
+-		lspr += delta;
+-		if (sspr) {
+-			u_short *tmp = lspr;
+-			lspr = sspr;
+-			sspr = tmp;
+-		}
+-#endif
+ 	}
+ 	return 0;
+ }
+@@ -1912,11 +1883,7 @@ static int ami_set_var_cursorinfo(struct
+ 				  u_char __user *data, struct amifb_par *par)
+ {
+ 	register u_short *lspr, *sspr;
+-#ifdef __mc68000__
+ 	register u_long datawords asm ("d2");
+-#else
+-	register u_long datawords;
+-#endif
+ 	register short delta;
+ 	u_short fmode;
+ 	short height, width, bits, words;
+@@ -1958,60 +1925,30 @@ static int ami_set_var_cursorinfo(struct
+ 			unsigned long tdata = 0;
+ 			get_user(tdata, data);
+ 			data++;
+-#ifdef __mc68000__
+ 			asm volatile (
+ 				"lsrb #1,%2 ; roxlw #1,%0 ; swap %0 ; "
+ 				"lsrb #1,%2 ; roxlw #1,%0 ; swap %0"
+ 				: "=d" (datawords)
+ 				: "0" (datawords), "d" (tdata));
+-#else
+-			datawords = ((datawords << 1) & 0xfffefffe);
+-			datawords |= tdata & 1;
+-			datawords |= (tdata & 2) << (16 - 1);
+-#endif
+ 			if (--bits == 0) {
+ 				bits = 16; --words;
+-#ifdef __mc68000__
+ 				asm volatile ("swap %2 ; movew %2,%0@(%3:w:2) ; swap %2 ; movew %2,%0@+"
+ 					: "=a" (lspr) : "0" (lspr), "d" (datawords), "d" (delta));
+-#else
+-				*(lspr + delta) = (u_short) (datawords >> 16);
+-				*lspr++ = (u_short) (datawords & 0xffff);
+-#endif
+ 			}
+ 		}
+ 		if (bits < 16) {
+ 			--words;
+-#ifdef __mc68000__
+ 			asm volatile (
+ 				"swap %2 ; lslw %4,%2 ; movew %2,%0@(%3:w:2) ; "
+ 				"swap %2 ; lslw %4,%2 ; movew %2,%0@+"
+ 				: "=a" (lspr) : "0" (lspr), "d" (datawords), "d" (delta), "d" (bits));
+-#else
+-			*(lspr + delta) = (u_short) (datawords >> (16 + bits));
+-			*lspr++ = (u_short) ((datawords & 0x0000ffff) >> bits);
+-#endif
+ 		}
+ 		while (--words >= 0) {
+-#ifdef __mc68000__
+ 			asm volatile ("moveql #0,%%d0 ; movew %%d0,%0@(%2:w:2) ; movew %%d0,%0@+"
+ 				: "=a" (lspr) : "0" (lspr), "d" (delta) : "d0");
+-#else
+-			*(lspr + delta) = 0;
+-			*lspr++ = 0;
+-#endif
+ 		}
+-#ifdef __mc68000__
+ 		asm volatile ("lea %0@(%4:w:2),%0 ; tstl %1 ; jeq 1f ; exg %0,%1\n1:"
+ 			: "=a" (lspr), "=a" (sspr) : "0" (lspr), "1" (sspr), "d" (delta));
+-#else
+-		lspr += delta;
+-		if (sspr) {
+-			u_short *tmp = lspr;
+-			lspr = sspr;
+-			sspr = tmp;
+-		}
+-#endif
+ 	}
+ 	par->crsr.height = var->height;
+ 	par->crsr.width = var->width;
