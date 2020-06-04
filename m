@@ -2,146 +2,120 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 128691ED484
-	for <lists+linux-fbdev@lfdr.de>; Wed,  3 Jun 2020 18:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CBD81EDFB1
+	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Jun 2020 10:22:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgFCQtX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 3 Jun 2020 12:49:23 -0400
-Received: from mout.web.de ([212.227.15.4]:55943 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725854AbgFCQtW (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 3 Jun 2020 12:49:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1591202915;
-        bh=TE+7YlXa9CphjYQj4lBe/p+j6I9U+M1rVqU01v24P/I=;
-        h=X-UI-Sender-Class:To:Cc:Subject:From:Date;
-        b=YW115lvVNjR2jH9PLPfr1gZboxWOjIZBDQDmtKgYy+sjA/VBrvDxQrR2U15hdkoc6
-         PD6S9apWwMiBjuczMvlrlcvWpFIB2w+EBetf+MPiQNSIAAbewjMtV2AwcwzXmk1vRt
-         WG5lpTO8krttpvNOjquegXL4Hv4F1EzU2Sk/N3XQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LkVZr-1j8ZnE01xz-00cMPm; Wed, 03
- Jun 2020 18:48:35 +0200
-To:     Chuhong Yuan <hslester96@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-geode@lists.infradead.org
-Cc:     Andrew Morton <akpm@osdl.org>,
+        id S1726837AbgFDIWr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 4 Jun 2020 04:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726802AbgFDIWr (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 4 Jun 2020 04:22:47 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC95EC05BD1E;
+        Thu,  4 Jun 2020 01:22:46 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id e4so6188330ljn.4;
+        Thu, 04 Jun 2020 01:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version;
+        bh=/pZRUQwbTJyxIjfL2SLZaaCRlVPUN1E89Tgo7boEHrY=;
+        b=gn2JTTevK/73GbATNCXpC8WiDu0GR/R4p9RCNBJJHKqT4hXpfs8Se96Z++XqTbDTvv
+         1I68UMOFgVBIHBDuA0wxomVL9CML8c90CiQoarDdiXXIIehcqsxzrHALuyutxN3vfRGO
+         Ooh772/2qY2Qs9y2pVA+K4YHHc6Phcc0JNyeZ+evo3H9JAJhROOmhuFZx/ZTZj+DSDYh
+         rVeaz8/1k0Jrp1/9DHAIkBPMbCAb+UjCH7NXFqgUhfkGj59Gonq9pBF3EqKP3NI/LX7M
+         UkLLuYQQQQnfdhXpeMOnLvdG8CeF+v42IUf3tuHUcTYbFu1k0RBBtbmR7qnyERxaUd+c
+         8Cng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version;
+        bh=/pZRUQwbTJyxIjfL2SLZaaCRlVPUN1E89Tgo7boEHrY=;
+        b=AjjQIuvbhXsI3329Jbk79OzEVMdusJt/o2Wm9mjQsMqyh0PvkOWSTosQPAXHp8BJpt
+         J+3yiBfdWrwnv9IyxZaSv+cM70n5ycOVGoWdh8fgzhvCVY0QGjqCzPRuSLouM4PAAAvK
+         IqznGrT2c032o92PtIsTrbfnS1bBi5jfKKoyp+YECWONru98GYRrIYWAQ37wAtNPqyxe
+         moiSYsIE/s3woCleUdCDfszkHcD9RJZgR6xvxZGz+WJAo1Ds8BJfYKNhDWdQFZTZVfQv
+         RLrkGMP9sBK3OTjc8JD0FFEyARCiKyU4fXI9EiO5X4xBgSHrCwGhH/Qx/6W2mIXi/BCK
+         7dZQ==
+X-Gm-Message-State: AOAM531mZn5BqgjKuGmuEcaeE9CwnvpizNbP8JtlsNoQjKT70gXluIFJ
+        gyhNJI7Lr2eW8TPkVK3rRu0=
+X-Google-Smtp-Source: ABdhPJwpcV8sR/8e6TUhVrMndC2q04n2y9gia509NnYsFtk4TjSvo4KVguFBEyVdx9FhLnf8nSSCyA==
+X-Received: by 2002:a2e:8246:: with SMTP id j6mr1524263ljh.54.1591258965089;
+        Thu, 04 Jun 2020 01:22:45 -0700 (PDT)
+Received: from eldfell.localdomain ([194.136.85.206])
+        by smtp.gmail.com with ESMTPSA id k29sm1038116ljc.136.2020.06.04.01.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2020 01:22:44 -0700 (PDT)
+Date:   Thu, 4 Jun 2020 11:22:34 +0300
+From:   Pekka Paalanen <ppaalanen@gmail.com>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Andrew Morton <akpm@osdl.org>, linux-fbdev@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Adrian Bunk <bunk@stusta.de>,
+        linux-kernel@vger.kernel.org, linux-geode@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, Adrian Bunk <bunk@stusta.de>,
         Andres Salomon <dilinger@queued.net>,
-        David Vrabel <dvrabel@arcom.com>,
-        James Simmons <jsimmons@infradead.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fbdev: geocode: Add the missed pci_disable_device() in
+        David Vrabel <dvrabel@arcom.com>
+Subject: Re: [PATCH] fbdev: geocode: Add the missed pci_disable_device() for
  gx1fb_map_video_memory()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <4bec4498-05a2-9ec5-8b91-7934d05ded68@web.de>
-Date:   Wed, 3 Jun 2020 18:48:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+Message-ID: <20200604112234.7d840c15@eldfell.localdomain>
+In-Reply-To: <20200603092547.1424428-1-hslester96@gmail.com>
+References: <20200603092547.1424428-1-hslester96@gmail.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EQx1HmrmztYYs1gNBf9Qss7JOHw/RMkgoVB+L6NgVpS/+umFR/V
- MqMloFUD4fENWisJD03digB1Ju+ZMlhJD9vGuOucOmA78rqfpmpaYg8JSXCSOsqseFRJw5j
- kvTEp+xDjsO9b8zCvad69DU5gpE+8arabzKrGusQgPTqFA3q8F9/8Hx756DSi2a2aqpx+O6
- QT03R4NWxvy/jHuzuVXcA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BHwkEzjKZuU=:Ou1ujXjeipDwFFpp8brFCZ
- Sn87Zf9YXuFMwrWPXsc8RQzXwX3WPO/UD/uMwK0/e/QV8tZfsFzZTQbn4AMhoqTjXpM36gogX
- 3NkP2mvdP9PCdHbe1bBrO6O8aqnIFJPS5bEuqq4BjhRhIRReNoDJXuH6oocC3+wULOOsPxd0P
- NyeWORfBsB3Xz1bltJE24cGz6yABOY78iHE1pXTsU5oTW2602v3NJnBw8x9RUur1e7jXF93g1
- KM8vuUkHdsiukesfuKpys4YnS2Nz03ww8AiOZ0UJkBn9f17yZCJo29kmRYe907soFdO4XolMo
- NWc03y6Zkq4U6zwSS0FS6a/Cx94N7LZj9OMCg6xU4zxwKY8LcTDZ5lsWENKMhHIwewTUZLwIF
- h0RlJdg3b3iQUvZ6mHGinnC8lcS0NZwciTqfSMkU0UGbWzHN0FUo235agQm9qqtWrJenFUyaz
- dkSrG8WUNOKVcfmpRQT2xHx+AURlue20QS9eeKYUF0Cbs1g9kAq15QAvYYgTr5mcZ+MJHp5f8
- 4shQaEAR1B4vAl5nDezR+HJ5jUqeqaFvBtzb42HlEGIcmBL/s8Iro0dG8JIbiPk9RNYNft6y4
- xVDGcvbi7tBcvMWk567d6yQPxyjfjjBixcMD4dTbcdHutQDBZR7QqYNI6wURF5jfo7SKsD+u2
- CnE6znCg3wedhPPCw9X9SfZhzT4iCsExmR+nvRsEtC/x4EaLrvedymQfq+D9TlrMX9CGb/prO
- FRpb4ELaKV00vfPWTJFbz+sKM49fRiT/oZvEFFSuj8BuJVp2OYtAaUD2BkGZd2Uw/tNLGjbzT
- EgRLXvvcFSsDFEUuPO+99Dyz2B1dDadsfRTq3LWPSj5cxETzA+LFQ/NIn+WUzlPkqDXONH4Xp
- oMp5YdnkOBocwWc+//inFZXhaalgEEzKRbdVKyBe9A2214Tl2SzZMktn2s5JanuwnvYRKFMWP
- xhMhiOtBj1gv3zfuNVEFDGM7rrPLZudlE5Yuz2Ycywo0FE1SNcGP2nlnMjJZGUzEHntMRcupB
- kqmZcCdD6Ri6pATkZMcqa6xepiy3hWzxNStqGGFRkdL6F5+khJWlNWVStUkmi38CnY4TLLm6N
- y9s6mB4r5TMYwpJadeEKIS7UVgmYi/6ijBKu+IRq3ValdHuEqPiqnjOfAF54trMi0Fu9KfRhT
- mLjdtHYXqkE1vpWOsHr1SIvHphcmtZRdawQXDGftMuD5VbDaCx62KZuK5IoBTsJGjsMya/TUN
- Hx6zdj+t6Ft7QOvUj
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/7zGwgSlxxHt_4_lufD_uPZr"; protocol="application/pgp-signature"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+--Sig_/7zGwgSlxxHt_4_lufD_uPZr
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+On Wed,  3 Jun 2020 17:25:47 +0800
+Chuhong Yuan <hslester96@gmail.com> wrote:
+
+> Although gx1fb_probe() has handled the failure of gx1fb_map_video_memory()
+> partly, it does not call pci_disable_device() as gx1fb_map_video_memory()
+> calls pci_enable_device().
 > Add the missed function call to fix the bug.
+>=20
+> Fixes: 53eed4ec8bcd ("[PATCH] fbdev: geode updates]")
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+>  drivers/video/fbdev/geode/gx1fb_core.c | 37 ++++++++++++++++++--------
+>  1 file changed, 26 insertions(+), 11 deletions(-)
 
-=E2=80=A6
-> +++ b/drivers/video/fbdev/geode/gx1fb_core.c
-> @@ -208,29 +208,44 @@  static int gx1fb_map_video_memory(struct fb_info =
-*info, struct pci_dev *dev)
-=E2=80=A6
->  	return 0;
-> +
-> +err:
-> +	pci_disable_device(dev);
-> +	return ret;
->  }
-=E2=80=A6
+Hi,
 
-I suggest to use more descriptive labels so that the exception handling
-can be improved accordingly.
-
- 	return 0;
-+
-+e_nomem:
-+	ret =3D -ENOMEM;
-+disable_device:
-+	pci_disable_device(dev);
-+	return ret;
- }
+there is a typo in the patch subject, the driver seems to be called
+geode, not geocode.
 
 
-Regards,
-Markus
+Thanks,
+pq
+
+--Sig_/7zGwgSlxxHt_4_lufD_uPZr
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAl7Yr0sACgkQI1/ltBGq
+qqfEDw/+KLMc9/wo+jXiWAnLH7DQ87u0JEDybMYKFKx6EpC9KBlSApWcagjDaiw7
+Swy6OTzovGayh7moGisYDCTSsXsG0KyA3AmGbOhTDSjIyWYb+HPPAI9X10yMmwvo
+ql4+Jl5NF5ClfmQl3FAQKcrsdcUiTMJCu9rUBtaZG4RhTS/IV8Ou78BymOtzHSU3
+0W/IeutQWwjH3txsdthOe4O2mkJy3DCok0jxn76VsivoifPKxRbia8O7NH+UbFP6
+7p164/E4mVaTIHzFfqvvPqfZrh4w5k6meQHRy+9TC5AE46vADO/L7wcrghqrj0dK
+wXc6i16+04wreh1cQLK/37V3SGYLhILjvK+K/ERvr1utyGUoPu3pmf67qugwxSoj
+RfxWJj3yMnba/H7rCVXUKak5DtMixvtLlgwWg9JM0k453H8Ma4+pPPnEs5LrVVuw
+ANeolbROqLp7EDQ4nFSgLY3Jac2QH3uiUg/KyB+MMbA8HyTqHEyfPXoFQWFeEGdW
+c+ZPkw+f7QOYDOxGMmMKiZb6Vut5lNbfpSOIsleOeMbeifx2xtDK8IKV5gSfeFlI
+kueD9zp8FjwMZ4wDRYXpW+l8y3EQj1Dt0GDuw6f9K5Xo2a7s89jMY+2K+qJX9y5m
+oa24nht3w0fptulkyk4NPiuZVMXe6s8fZ/Fwf5M5W/Dd6Ii/dEE=
+=W7Eg
+-----END PGP SIGNATURE-----
+
+--Sig_/7zGwgSlxxHt_4_lufD_uPZr--
