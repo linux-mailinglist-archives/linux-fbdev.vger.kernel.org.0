@@ -2,140 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 398E71EFD56
-	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Jun 2020 18:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A2C1F370F
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Jun 2020 11:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726024AbgFEQP4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 5 Jun 2020 12:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbgFEQPz (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 Jun 2020 12:15:55 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A5DC08C5C2;
-        Fri,  5 Jun 2020 09:15:54 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id d8so624050plo.12;
-        Fri, 05 Jun 2020 09:15:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Fuq8iZ/w30hGFlRF7P+LbLAz0hBlIdSZDfbjIwkl+Ys=;
-        b=MttvX8sgmxw6H5NSZaRGauZRhobavEOiAKvRo0ATGJCUoMGnKdk/fOph76//jM0WtB
-         hI1o++k/E5WSqsPG3+snSomrZmq03ik1WZV8syJgto7yOOBqR3u1v4d7WyAfNwii+ryQ
-         FsTf5b7/qZJwcD4yUmaYBuO/cF/262SwLp/o79UopfS3oCmY3ej3Dd+xK/NPYmmUKb8w
-         0GPNNvBejEWzW+/37kuMLoSuBdUjUc1qfM1t+hS9qzqZEQISQ5d4umuKrVK2VxqZTzoC
-         EpEpDSETY+CuB6AmdsG0fGilKthilo6GE7WiOFD42IHE47ErvP0srMy28Ra0Ewh1ae+v
-         DkCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Fuq8iZ/w30hGFlRF7P+LbLAz0hBlIdSZDfbjIwkl+Ys=;
-        b=Alhe8Dohs7QDLdIie8YZzKorJUd57K3OnSSV+QoBI5wI1Nkh8CVsK9Iue1eUC0Q8dG
-         PhsiN6GlSeS5kWdILeljULhXx/TEef3XPPMZYBXIFlUy2k6kv3sxUKmxxW92FCMdF0yZ
-         IOGhB75AutqRbfpKqau41ypYfdy1zTwAqpvCExa87O9EybRtIvzIEZz7CJA2w61s2gAX
-         CpF48AuEGSuIX7mr0RAFlyYV+n9oaEUaoaAGeYq0J69xenGhXzBmjhu4PaJ3MsRB4LE1
-         lNKUwbzDiKKlbRmLfHdPrqB1daAfH24Ie+2gEK4a0IY4UX0phY8S483LXJAQiT1VuMDE
-         cpeQ==
-X-Gm-Message-State: AOAM532Zk4AlK07d+fS+zudH34xw7M3Dqn6pX7vEDX4wbtr4tA5cdR8P
-        d236mo5uelzgDfRyGX33lYU=
-X-Google-Smtp-Source: ABdhPJw+Yh+6a9DtpZMLVt18+l2rdWHlZ/HrTCVinrjrjK1NAV9KB7wxpACoWzuM2Yd6mArQ1x72xQ==
-X-Received: by 2002:a17:902:bc4c:: with SMTP id t12mr10171340plz.141.1591373754191;
-        Fri, 05 Jun 2020 09:15:54 -0700 (PDT)
-Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.gmail.com with ESMTPSA id h17sm62665pgv.41.2020.06.05.09.15.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2020 09:15:53 -0700 (PDT)
-From:   Chuhong Yuan <hslester96@gmail.com>
-Cc:     Andres Salomon <dilinger@queued.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Adrian Bunk <bunk@stusta.de>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        James Simmons <jsimmons@infradead.org>,
-        David Vrabel <dvrabel@arcom.com>,
-        Andrew Morton <akpm@osdl.org>, linux-geode@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] fbdev: geode: Add the missed pci_disable_device() in gx1fb_map_video_memory()
-Date:   Sat,  6 Jun 2020 00:14:58 +0800
-Message-Id: <20200605161458.2513177-1-hslester96@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        id S1727859AbgFIJ3q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 Jun 2020 05:29:46 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:39987 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727090AbgFIJ3p (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 Jun 2020 05:29:45 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200609092944euoutp02c84dc441dc64bd3204ea4fc12783d0a2~W1ifLBuQt3246632466euoutp02X
+        for <linux-fbdev@vger.kernel.org>; Tue,  9 Jun 2020 09:29:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200609092944euoutp02c84dc441dc64bd3204ea4fc12783d0a2~W1ifLBuQt3246632466euoutp02X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1591694984;
+        bh=lmO8I2gtlDKBhQn6Df7D6vscoa/y6HaOIRRQcnneCm0=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=DFuPykEnIKC55yJ/Z/1LqJrf46bV3mne0voUWld9BZrwQKb8y2Mtz/ns04dZHxsRY
+         C61hOn26X4h30dOrM+4XwLG+onkhZEeC9OPYD09b3PckpfJ6IQCQPIW3yrZT2yxLwp
+         yzBqyrIQ2D7m1h3HV3Qf5xR1vCfk6Qgy0Zt5v0S0=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200609092944eucas1p29f2a16c4fd24c531a62959ec05680ce7~W1ifDH1ET1567215672eucas1p2H;
+        Tue,  9 Jun 2020 09:29:44 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 88.63.60679.8865FDE5; Tue,  9
+        Jun 2020 10:29:44 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200609092944eucas1p1e76c223fcfbede0c75d9e91780ffd44b~W1iesRbie3209832098eucas1p1L;
+        Tue,  9 Jun 2020 09:29:44 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200609092944eusmtrp2245759b48870a0bd4a17f7c43e351c1a~W1ier6KDn1661316613eusmtrp2T;
+        Tue,  9 Jun 2020 09:29:44 +0000 (GMT)
+X-AuditID: cbfec7f4-0e5ff7000001ed07-d1-5edf56887a02
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 1E.8B.07950.8865FDE5; Tue,  9
+        Jun 2020 10:29:44 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200609092943eusmtip2c8abf5624327a794a4d6441a39f37ed4~W1iecbHvP0192401924eusmtip2B;
+        Tue,  9 Jun 2020 09:29:43 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH v2] video: fbdev: uvesafb: fix "noblank" option handling
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc:     Jason Yan <yanaijie@huawei.com>, Sam Ravnborg <sam@ravnborg.org>,
+        linux-kernel@vger.kernel.org
+Message-ID: <81c9f140-d6fb-803a-18c8-04dae1007ab3@samsung.com>
+Date:   Tue, 9 Jun 2020 11:29:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200422071845.403-1-yanaijie@huawei.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNKsWRmVeSWpSXmKPExsWy7djPc7odYffjDKadl7W48vU9m8WJvg+s
+        Fpd3zWGzWPFzK6PFoj2dzA6sHi1H3rJ63O8+zuSxZNpVNo/Pm+QCWKK4bFJSczLLUov07RK4
+        Mr6dXMFU8JS9YvWsDUwNjAfZuhg5OCQETCQWXSrsYuTiEBJYwSjxfdt3NgjnC6PEte8LWSCc
+        z4wS188/YILpeD2LAyK+nFFiy5HPUB1vGSUaZh1m72Lk5GATsJKY2L6KEcQWFvCQaFxyiAXE
+        FhFwkJhyYwJYDbNAisSFi9vAangF7CQ+fO9gBrFZBFQktv9YAFYvKhAh8enBYVaIGkGJkzOf
+        gMU5Bcwl3h7/yAwxR1zi1pP5TBC2vMT2t3OYQQ6SEJjHLjHv9hGwBgkBF4lT194xQdjCEq+O
+        b2GHsGUk/u8EaQZpWMco8bfjBVT3dkaJ5ZP/sUFUWUvcOfcLHGLMApoS63fpQ4QdJc4f2AwN
+        SD6JG28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJa7OQvDMLyTuzEPYu
+        YGRZxSieWlqcm55abJSXWq5XnJhbXJqXrpecn7uJEZhkTv87/mUH464/SYcYBTgYlXh4b4jf
+        ixNiTSwrrsw9xCjBwawkwut09nScEG9KYmVValF+fFFpTmrxIUZpDhYlcV7jRS9jhQTSE0tS
+        s1NTC1KLYLJMHJxSDYxr2W3+XWuZ8n1x7IuJ27sj7v5pnuT3yEFJpUzos9i02ddnG1mn6tse
+        dZ/sW5bonl++YfHDg3JP7vBsflMocfpf4haFLQJKcsZ+z3L3RZv68xZPUJItqnHfcfVHZVNA
+        3J3ri0OW8Sy+57xuUbIx88drPD0Wokzabw5fZa6LvLPGVs5gr1NtVaASS3FGoqEWc1FxIgD+
+        kcfKLgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDIsWRmVeSWpSXmKPExsVy+t/xe7odYffjDFau57a48vU9m8WJvg+s
+        Fpd3zWGzWPFzK6PFoj2dzA6sHi1H3rJ63O8+zuSxZNpVNo/Pm+QCWKL0bIryS0tSFTLyi0ts
+        laINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mr6dXMFU8JS9YvWsDUwNjAfZ
+        uhg5OCQETCRez+LoYuTkEBJYyijx8Go2RFhG4vj6MpCwhICwxJ9rXUDVXEAlrxklzp1tYwVJ
+        sAlYSUxsX8UIYgsLeEg0LjnEAmKLCDhITLkxgR3EZhZIkZi2cB8LRHMXo8Sre0fZQBK8AnYS
+        H753MIPYLAIqEtt/LABrFhWIkDi8YxYjRI2gxMmZT8DinALmEm+Pf2SGGKou8WfeJShbXOLW
+        k/lMELa8xPa3c5gnMArNQtI+C0nLLCQts5C0LGBkWcUoklpanJueW2ykV5yYW1yal66XnJ+7
+        iREYU9uO/dyyg7HrXfAhRgEORiUe3hvi9+KEWBPLiitzDzFKcDArifA6nT0dJ8SbklhZlVqU
+        H19UmpNafIjRFOi5icxSosn5wHjPK4k3NDU0t7A0NDc2NzazUBLn7RA4GCMkkJ5YkpqdmlqQ
+        WgTTx8TBKdXAaMaw6f23MJPvJvJCAisWhqes9I08/k7qi92vR+l/f1wOeytxJyz2z+k3Jdd/
+        fF94bob83ZqsYyxu3Kduc/R6zHJ571q560JOWPTliJ4DknLTdu+4lLI5q3r7agfP+W6ezG6G
+        03d9naoYp9j6XLndVcxTmclAof/B0RccnZ2bvoQvm/5Yatrq/0osxRmJhlrMRcWJAM3baNO/
+        AgAA
+X-CMS-MailID: 20200609092944eucas1p1e76c223fcfbede0c75d9e91780ffd44b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200422071952eucas1p219bc9ef0a74220149966ecb03688681c
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200422071952eucas1p219bc9ef0a74220149966ecb03688681c
+References: <CGME20200422071952eucas1p219bc9ef0a74220149966ecb03688681c@eucas1p2.samsung.com>
+        <20200422071845.403-1-yanaijie@huawei.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Although gx1fb_probe() has handled the failure of gx1fb_map_video_memory()
-partly, it does not call pci_disable_device() as gx1fb_map_video_memory()
-calls pci_enable_device().
-Add the missed function call to fix the bug.
+Fix the recent regression.
 
-Fixes: 53eed4ec8bcd ("[PATCH] fbdev: geode updates]")
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Fixes: dbc7ece12a38 ("video: uvesafb: use true,false for bool variables")
+Cc: Jason Yan <yanaijie@huawei.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
-Changes in v2:
-  - Fix the typo in the subject.
-  - Modify the label of error handler.
-  - Refactor the code.
- 
- drivers/video/fbdev/geode/gx1fb_core.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+v2:
+- added Reviewed-by tag from Sam
+- removed no longer working Michal's email address from Cc:
 
-diff --git a/drivers/video/fbdev/geode/gx1fb_core.c b/drivers/video/fbdev/geode/gx1fb_core.c
-index 5d34d89fb665..15645244e4d0 100644
---- a/drivers/video/fbdev/geode/gx1fb_core.c
-+++ b/drivers/video/fbdev/geode/gx1fb_core.c
-@@ -208,29 +208,39 @@ static int gx1fb_map_video_memory(struct fb_info *info, struct pci_dev *dev)
- 
- 	ret = pci_request_region(dev, 0, "gx1fb (video)");
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_device;
- 	par->vid_regs = pci_ioremap_bar(dev, 0);
- 	if (!par->vid_regs)
--		return -ENOMEM;
-+		goto err_nomem;
- 
--	if (!request_mem_region(gx_base + 0x8300, 0x100, "gx1fb (display controller)"))
--		return -EBUSY;
-+	if (!request_mem_region(gx_base + 0x8300, 0x100,
-+				"gx1fb (display controller)")) {
-+		ret = -EBUSY;
-+		goto err_disable_device;
-+	}
- 	par->dc_regs = ioremap(gx_base + 0x8300, 0x100);
- 	if (!par->dc_regs)
--		return -ENOMEM;
-+		goto err_nomem;
- 
- 	if ((fb_len = gx1_frame_buffer_size()) < 0)
--		return -ENOMEM;
-+		goto err_nomem;
-+
- 	info->fix.smem_start = gx_base + 0x800000;
- 	info->fix.smem_len = fb_len;
- 	info->screen_base = ioremap(info->fix.smem_start, info->fix.smem_len);
- 	if (!info->screen_base)
--		return -ENOMEM;
-+		goto err_nomem;
- 
- 	dev_info(&dev->dev, "%d Kibyte of video memory at 0x%lx\n",
- 		 info->fix.smem_len / 1024, info->fix.smem_start);
- 
- 	return 0;
-+
-+err_nomem:
-+	ret = -ENOMEM;
-+err_disable_device:
-+	pci_disable_device(dev);
-+	return ret;
- }
- 
- static int parse_panel_option(struct fb_info *info)
--- 
-2.26.2
+ drivers/video/fbdev/uvesafb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+Index: b/drivers/video/fbdev/uvesafb.c
+===================================================================
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1836,7 +1836,7 @@ static int uvesafb_setup(char *options)
+ 		else if (!strcmp(this_opt, "noedid"))
+ 			noedid = true;
+ 		else if (!strcmp(this_opt, "noblank"))
+-			blank = true;
++			blank = false;
+ 		else if (!strncmp(this_opt, "vtotal:", 7))
+ 			vram_total = simple_strtoul(this_opt + 7, NULL, 0);
+ 		else if (!strncmp(this_opt, "vremap:", 7))
