@@ -2,46 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 104601F4652
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Jun 2020 20:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1ACD1F465A
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Jun 2020 20:32:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731989AbgFIS2u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 9 Jun 2020 14:28:50 -0400
-Received: from sonic309-14.consmr.mail.bf2.yahoo.com ([74.6.129.124]:42493
-        "EHLO sonic309-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730658AbgFIS2u (ORCPT
+        id S2388313AbgFISc2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 Jun 2020 14:32:28 -0400
+Received: from sonic304-20.consmr.mail.sg3.yahoo.com ([106.10.242.210]:42867
+        "EHLO sonic304-20.consmr.mail.sg3.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2388228AbgFIScX (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 9 Jun 2020 14:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591727328; bh=Sq0m1vvm2SZTihycyLIp46MmEaT+M4u+5ZuM67ujUHw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Nr3y20AwOg3mpLe6UyI5GuAIRBfNPAs6nUGwCL67dxCckt8Z2Z1eN+ymI5Grwj0glOwTbWnEdkDhfLkTQpgHk4eJ9sXeJOddgn9AFswLfmrC5HxC8BwVn0co4q9qigP6+5GZVC5d9WoOy5kdSMeNw6/MrQeXplHq0CtIZwmBfYJYG3PxfeZZW/7O+iZzcKHeJetw2AnryWubnMYSZSHcM6pIYhJkfMhot06FBtkxNm+HSp9S3nCezpcA/PmSOIgrpEMi3qcDeT7DpZsWgb9AlLLW+5uifQ1+E8sW+c1cQFNcGjwDWUwE+nt9jX01b1usoH2clCYzQMs/PedmoX0Amw==
-X-YMail-OSG: fUoTHGsVM1m9.edCxT9EbOaf3wt062fK2ERKy2_DbALGkQP39N.LbPjclNZMuJD
- tL6caQOKNNDRqNTaagCZ1eUeAfoQgbWB1FfyqBxs_d0hrTGoKug5VTart_QsfmpUuqeuO32O31Oi
- 8WsaXvnZwWjSvLn48L31fBorjiWc6MUrXo5jQCxuqjdu6HU4jO8gNz0jyXPXdoLQSUOw5mKnXFSJ
- sqtR0R9XLvmy3N8kNDeLOYzgFakWHXUn2eruaEH7NBb.8MheDHhHqOeasrRw0jRhVicxhuW9v2Lp
- MlxHqqkEqanQ2lgb3FY27fXjH4MyHjUgQULWN85n2dgBlP4DNkX9pj43TKSXbKs0b_NQZ6Wx5yLL
- fLyqAoECywaIIFxW6U84hTbuVqB.yRNYFo9DSt4RtvK2KVAFgaNzM1BSiJbaK7xGuGgSO3HYgRLC
- 4TfWrrgItN9lU0nJIsz5wVR5JkHw_ngKjXwCQsQGaVLqbJTw547gOvHHv8z0qShXdBYP3z8MeOw8
- JMPwE6e2SqXOtaTKM1xm5zExId2Ia6oTKTT46kRl60AlKo2o5ne9tQcM2OIR6I07tG7k5bXFurTi
- BGcbKDFOyzO_IyoGZiILfsdZr7C5x.JztyZqaH2zq0K6Y.x2jZSM83KYL8FrF7QUJxD.kX7IlGvO
- 4HqELz4Z4avrYJw9hpRxIueMFfWQ7e6G2Bjyb.2CYf1kd9lg8Gq43enDLiYCN.dw9ptKqbNfIGcW
- Sal_2ml2XQcrrC7GkJ.tAMym.j.b4ZeGkxA2SNckQTMXez7isZxvnAHIkRQSJxCO88Ml_4jYB_.r
- vPXFPGjNFqQqtzdeHIlp4cgczo_VG8kRGy6e1slB_uFh07fW_SKNEB3pgyBa3zyaAdHPAZAgLOJa
- MrjXcIyQLyHvbz8nuuQFKJhOJdmOE5RMIwfgaF17J3x8vAhCUEP129vXQ1g3VkaA1.1S_aZls08K
- XYOE.VVSMglhoq0qTtDAm6PgH8N2_MsqmjbEAsNje39l_bJ6RWNGr6.LQPKBE9acQOJfw1SpZ9vq
- 9x9QBn42_w7NKJJZl5bJyZPxBNg._w6QxOMP2SoQLNMv9nnMdSzNc87BLAS8AkhTLwHxpwZpXk2b
- rxOAf8C0Ydu.JDRbL8macIWx8GwrjCNRK_xmSTJ5Lf0qtEcEGPinhJ8SSWzOvVepDze_xXQJgfOD
- uLrLGo7sZJJRYrFCCxEMcLLNFyrQ9TbvbiY3XzYGVYcwsV9ILmf7kc0a0M1XWXhNonEFLv2HMI2z
- lgQ1u3gAhta233vngVYQhU7S3FQRUxwmAlabtZMvvztb.AWnhF_93upXSjwjWJFlHKstnVmo5PHg
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Tue, 9 Jun 2020 18:28:48 +0000
-Date:   Tue, 9 Jun 2020 18:28:48 +0000 (UTC)
-From:   "Mrs. Mina A. Brunel" <annahbruun6@gmail.com>
-Reply-To: mrsminaabrunel63@gmail.com
-Message-ID: <1531292104.1215879.1591727328053@mail.yahoo.com>
+        Tue, 9 Jun 2020 14:32:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591727539; bh=DPYuw2gUpgtMJzJhlH/AVmRGu2wSKCY1C+f8nOCoxu0=; h=Date:From:Reply-To:Subject:References:From:Subject; b=mI2BfxIKvoDzqL5vsegJigGcjEYXXOPXeCXcBJIen7mpqXzja/75oK2ohLduCs4vVa975Y9VNjVznkK1KsLMzM4J7dS4eL5U3+0P/WKn9xhRCJPMUQSYPC16tQYBdaKb9RrjT53ZZ8QIN8hFLDdEejzL+T+XX0Iff62cT/72mR4TOGBL1d69Ij511ojXIt8Vmoa1xvF4BvM2oDhYr7FGXRMpSS1DOMT66YcxZhgZZ0PZCbESpNewl1VgNxVCek3AWIbJhEQ+tF1/QUOFwzmbU6Z5XqhabfkEtVqvbnlNcbjFbq7JWHlzZP8mSZzafDDZcIZkrYtGdPYARVGCXBrrIw==
+X-YMail-OSG: wZBfVDMVM1lsD0vJTm1isaILtAgTLtsQF0_F46Byw0zdHperdjU4e5mxSAoymvE
+ tlazQ4DsnLUhmSthnJrfmPfCsaqmqsUJUuVWVwRf6yEtWXfki8Td115ptIqrkGMKxTV1C_w.Krxv
+ .2lElFGMVj9pFcFJJh.MtKUb4a1s200YwqTOlLGpLGpsnEBreOrnXpyEu5bWgc.g81ixdlHdVbDr
+ gP0irugDkZ_3039GPJ9cwsqSU46ROC2vsLp.yes3UCkbPlsm6E2DI4KWTQsG_.iIsApURViDZahU
+ eAUX6osSv4IG5bqQgZf2a9f.Xyfq_0SOh9bcjF.jRVlcjyIMava4Dm0992J.Ac5jAeFtoN.vfZqV
+ 60LruJALGRWBDwR7i32T9QnueOluv1nrnDPLl5pIf_rz1GJjNKBOz0QdNtPk.We1ssNMvz43pnjO
+ _g3VAeve3bulelT.CV3yCs8xmneJNCIaebr33aDFH1kXVKN_DijJVeR21QScm_RG2Rl_iEhlZRdU
+ ocvZX49CPt7swkcKH5NVSQ8C14mu0pCz21aEU_GT5pQjvoArM5rCW8h9.7Edd20TfNK3uQdv24FW
+ d2yp11vh.Mwrhj.1_DBAMvdb3Kq7ZVZkWgj27ekTMHguNsVQC0zj1eRf5gI81VFrnRm4zHE0tV3g
+ zvROU92qk44UpTCCwiISxexQnvfmBOHHqsAj3Uz84BoXAQJA_WC851m79_eb.EZWYXrivsT5R2OY
+ 3ws9gxTaM7pL04BV74TKamN1tE.uQ_mKgjlFaSdT7Ctuv3HCLWyNuAbsVQ4Vhg8Ewo5HytqlMlPS
+ XWxbfZucAGdk1I4YlxpFfXd4XToJtg5o45qblkbRVdiC_SgkHvRptAY7jD.alpEvzw.2uOwPItuc
+ Bt_IC417X99.NmP8GjFd6JPo.uEuLD0mVi8wVCicINhG5DpwGs6P5Q.mklo.Aw6k0nwgH7lh1bjQ
+ RCH6rHjeHBkzmYnmgWYljmfIQqQFYjPnB0WscMyiKagxOXduw_FHj.rWQ8pqC4l6wQtVPJ2WvLkH
+ kkPytfrS_XHTt2UBBCSEKF37DWVbIujQ0uh6DmLmH.0SeKoiaaElkRzzHHrojYUl5cyZ.c.f3dS.
+ uVIzyjAOp29QJ0pb6ySFEcfQaqxBMjioDS5UXpGxyZCKwp8.u5PTBxS8dVWpJsF_vnbc2LR1PDti
+ qYtHu5AtDcgke8c.G1ucSTU3dQ5aautsdeXmN5ryuAjlroKV6RdKR2_hRM6DJ5U1ohSpnE5UdzAV
+ t1LONoLjunBbwo5T75QoVmZi4HPfaANDeGyWbspEgjMAui1rIyijajEe4fWtVdUVRhK1oxUojkzU
+ tdQ--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.sg3.yahoo.com with HTTP; Tue, 9 Jun 2020 18:32:19 +0000
+Date:   Tue, 9 Jun 2020 18:32:16 +0000 (UTC)
+From:   "Mrs. Mina A. Brunel" <mrsminaabrunel2@gmail.com>
+Reply-To: smrsminaabrunel63@gmail.com
+Message-ID: <1794129235.1418099.1591727536313@mail.yahoo.com>
 Subject: My Dear in the lord
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-References: <1531292104.1215879.1591727328053.ref@mail.yahoo.com>
+References: <1794129235.1418099.1591727536313.ref@mail.yahoo.com>
 X-Mailer: WebService/1.1.16072 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36
 To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
@@ -58,10 +58,10 @@ My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
 na Faso, I am married to Mr. Brunel Patrice, a politicians who owns a small=
  gold company in Burkina Faso; He died of Leprosy and Radesyge, in year Feb=
 ruary 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Milli=
-on Euro) Eight million, Five hundred thousand Euros in a bank in Rome the c=
-apital city of Italy in Southern Europe. The money was from the sale of his=
- company and death benefits payment and entitlements of my deceased husband=
- by his company.
+on Euro) Eight million, Five hundred thousand Euros in a bank in Ouagadougo=
+u the capital city of of Burkina in West Africa. The money was from the sal=
+e of his company and death benefits payment and entitlements of my deceased=
+ husband by his company.
 
 I am sending you this message with heavy tears in my eyes and great sorrow =
 in my heart, and also praying that it will reach you in good health because=
