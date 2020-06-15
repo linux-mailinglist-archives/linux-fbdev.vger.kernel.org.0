@@ -2,81 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 207621F90DA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2020 09:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D7D1F9246
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2020 10:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728180AbgFOH66 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 15 Jun 2020 03:58:58 -0400
-Received: from www.zeus03.de ([194.117.254.33]:49216 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728861AbgFOH6f (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 15 Jun 2020 03:58:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=k1; bh=zy9ju7B6YlDDHE
-        ooLxFkrGU+ZF5mtEjzYhXAsCLKff0=; b=ZJzgOZhC1+clVG+dYzuwHLtkuNQiVP
-        8i/w8ENmpvV/PkIYUiMSd68dh45K9gwwZez+JRqlsGtwiuOBU5JQmHZ6QSeJyN5n
-        voFrkUqBaQUygGoB3q3sAiJ4H98h2X9CmuN33PdjVxtzISc5SM4r00MoqHF1aF3M
-        /HY0LWJP5rrHY=
-Received: (qmail 989253 invoked from network); 15 Jun 2020 09:58:29 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 15 Jun 2020 09:58:29 +0200
-X-UD-Smtp-Session: l3s3148p1@FhXZyhqoDrYgAwDPXwRdAFnN6pRlEuNX
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        id S1728895AbgFOIyL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 15 Jun 2020 04:54:11 -0400
+Received: from m17617.mail.qiye.163.com ([59.111.176.17]:17256 "EHLO
+        m17617.mail.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728522AbgFOIyL (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 15 Jun 2020 04:54:11 -0400
+Received: from vivo-HP-ProDesk-680-G4-PCI-MT.vivo.xyz (unknown [58.251.74.226])
+        by m17617.mail.qiye.163.com (Hmail) with ESMTPA id B251D261613;
+        Mon, 15 Jun 2020 16:54:07 +0800 (CST)
+From:   Wang Qing <wangqing@vivo.com>
+To:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 4/6] video: backlight: tosa_lcd: convert to use i2c_new_client_device()
-Date:   Mon, 15 Jun 2020 09:58:13 +0200
-Message-Id: <20200615075816.2848-5-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
-References: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc:     Wang Qing <wangqing@vivo.com>
+Subject: [PATCH] drivers/video/backlight: Use kobj_to_dev() instead
+Date:   Mon, 15 Jun 2020 16:54:02 +0800
+Message-Id: <1592211242-31683-1-git-send-email-wangqing@vivo.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZSkwZSU1NGU1PT01JVkpOQklJSkpJT0NJSk1VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS0hKTFVKS0tZBg++
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PT46Ayo4Hzg5CQhOSihMSxEW
+        M0kaFFZVSlVKTkJJSUpKSU9DTk1DVTMWGhIXVQwaFRwKEhUcOw0SDRRVGBQWRVlXWRILWUFZTkNV
+        SU5KVUxPVUlJTVlXWQgBWUFKQ0NINwY+
+X-HM-Tid: 0a72b72f93709375kuwsb251d261613
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Move away from the deprecated API and return the shiny new ERRPTR where
-useful.
+Use kobj_to_dev() instead of container_of()
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Wang Qing <wangqing@vivo.com>
 ---
+ drivers/video/backlight/lm3533_bl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ mode change 100644 => 100755 drivers/video/backlight/lm3533_bl.c
 
-I'd like to push it via I2C for 5.8-rc2.
-
- drivers/video/backlight/tosa_lcd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/backlight/tosa_lcd.c b/drivers/video/backlight/tosa_lcd.c
-index e8ab583e5098..113116d3585c 100644
---- a/drivers/video/backlight/tosa_lcd.c
-+++ b/drivers/video/backlight/tosa_lcd.c
-@@ -107,7 +107,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
- 	/* TG LCD GVSS */
- 	tosa_tg_send(spi, TG_PINICTL, 0x0);
- 
--	if (!data->i2c) {
-+	if (IS_ERR_OR_NULL(data->i2c)) {
- 		/*
- 		 * after the pannel is powered up the first time,
- 		 * we can access the i2c bus so probe for the DAC
-@@ -119,7 +119,7 @@ static void tosa_lcd_tg_on(struct tosa_lcd_data *data)
- 			.addr	= DAC_BASE,
- 			.platform_data = data->spi,
- 		};
--		data->i2c = i2c_new_device(adap, &info);
-+		data->i2c = i2c_new_client_device(adap, &info);
- 	}
- }
+diff --git a/drivers/video/backlight/lm3533_bl.c b/drivers/video/backlight/lm3533_bl.c
+index ee09d1b..0c7830f
+--- a/drivers/video/backlight/lm3533_bl.c
++++ b/drivers/video/backlight/lm3533_bl.c
+@@ -235,7 +235,7 @@ static struct attribute *lm3533_bl_attributes[] = {
+ static umode_t lm3533_bl_attr_is_visible(struct kobject *kobj,
+ 					     struct attribute *attr, int n)
+ {
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct lm3533_bl *bl = dev_get_drvdata(dev);
+ 	umode_t mode = attr->mode;
  
 -- 
-2.27.0
+2.7.4
 
