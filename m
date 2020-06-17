@@ -2,102 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4F341FB907
-	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Jun 2020 18:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C831FC713
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2020 09:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732827AbgFPQAX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 16 Jun 2020 12:00:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33726 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732614AbgFPQAV (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 16 Jun 2020 12:00:21 -0400
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 584D620882;
-        Tue, 16 Jun 2020 16:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592323220;
-        bh=nhtRihdq0ZnRFzRQVLYSMJPsEUezpVlbdISEsa2u8F0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qwvcb5lGhEbAtTjUKYtG+m/I0Vwuvkg8ZwXwxUy/bdqyWvbARwe+nPbeVmI45HELY
-         k32Drk1lwyA1R4DgzpmrRhwMQlZjKM1yiKXnfWlV1syy8bYMgCU/PyQWMQedOAzL/O
-         SQnIfmHT3qkfUTsuJbwEYKQrubysqHO7QnSE1Kws=
-Date:   Tue, 16 Jun 2020 12:00:19 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>, alexander.deucher@amd.com,
-        chris@chris-wilson.co.uk, ville.syrjala@linux.intel.com,
-        Hawking.Zhang@amd.com, tvrtko.ursulin@intel.com,
-        linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        kys@microsoft.com, haiyangz@microsoft.com, sthemmin@microsoft.com,
-        wei.liu@kernel.org, spronovo@microsoft.com, iourit@microsoft.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        gregkh@linuxfoundation.org
-Subject: Re: [RFC PATCH 0/4] DirectX on Linux
-Message-ID: <20200616160019.GQ1931@sasha-vm>
-References: <20200519163234.226513-1-sashal@kernel.org>
- <55c57049-1869-7421-aa0f-3ce0b6a133cf@suse.de>
- <20200616105112.GC1718@bug>
- <20200616132819.GP1931@sasha-vm>
- <20200616144122.GA18447@duo.ucw.cz>
+        id S1725941AbgFQHSr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 17 Jun 2020 03:18:47 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:45569 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725894AbgFQHSq (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 17 Jun 2020 03:18:46 -0400
+Received: by mail-oi1-f193.google.com with SMTP id p70so881530oic.12;
+        Wed, 17 Jun 2020 00:18:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rbNjBfQChq86KCqMUr/PrecFByo1h6xqIQX3C8q/kck=;
+        b=M5MzLtCL+GbFcqDPsSaW+l0ywkmX+pqSMG1hSoUoYkGFrOe/4ZpZ/6Z9fbQJhDVaR+
+         Oee8mcqylWMrUhBZNPNlAuQbsw/b8i02/TRRUFnyl21XIhPPvZu4D4d7xhTj+yAgGafH
+         q4gGOZdEKkDy5XycOMftdP2QXVf5TmPoRLPn2wdZpi+L73uGGkUayoFq8g9H0V4R1v/4
+         sS7a/8cEkr4UKU0dYv8AEqA98gZSfefkhn4wf1YWBA4czNqBrdYyMIBOO9oa4UpcFeTq
+         Ex4rexyWW4y0inybMYWHV5WJAIW+8oBN/e6foA9pQqtO27IA5EeJdvRkVo8lhkc8MuUe
+         dFMA==
+X-Gm-Message-State: AOAM532KOTjlqo2djycUfoGF2FZoph5UYMZB0HHsXL1r+sbFHsDQOJfG
+        N2mPTz0EeRIw5VTDUQZJVw06owXD0xAnPxkiDGc=
+X-Google-Smtp-Source: ABdhPJy2BJl8lH7KWshHjFs2QyMUqtCXHxi/voSfLuUWyFefGalG6ul8iDspOWJlZF5Q8XoTbLrAz6CFfpwp4GQnVjI=
+X-Received: by 2002:aca:849:: with SMTP id 70mr6140466oii.153.1592378325516;
+ Wed, 17 Jun 2020 00:18:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200616144122.GA18447@duo.ucw.cz>
+References: <20200615141606.2814208-1-thierry.reding@gmail.com> <20200615141606.2814208-2-thierry.reding@gmail.com>
+In-Reply-To: <20200615141606.2814208-2-thierry.reding@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 17 Jun 2020 09:18:34 +0200
+Message-ID: <CAMuHMdWaKgNOz02eVXkFnGRpsjdNNGVtuCf0setigH31-9aXQg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] video: ssd1307fb: Print PWM period using 64-bit
+ format specifier
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jun 16, 2020 at 04:41:22PM +0200, Pavel Machek wrote:
->On Tue 2020-06-16 09:28:19, Sasha Levin wrote:
->> On Tue, Jun 16, 2020 at 12:51:13PM +0200, Pavel Machek wrote:
->> > Hi!
->> >
->> > > > The driver creates the /dev/dxg device, which can be opened by user mode
->> > > > application and handles their ioctls. The IOCTL interface to the driver
->> > > > is defined in dxgkmthk.h (Dxgkrnl Graphics Port Driver ioctl
->> > > > definitions). The interface matches the D3DKMT interface on Windows.
->> > > > Ioctls are implemented in ioctl.c.
->> > >
->> > > Echoing what others said, you're not making a DRM driver. The driver should live outside
->> > > of the DRM code.
->> > >
->> >
->> > Actually, this sounds to me like "this should not be merged into linux kernel". I mean,
->> > we already have DRM API on Linux. We don't want another one, do we?
->>
->> This driver doesn't have any display functionality.
+Hi Thierry,
+
+On Mon, Jun 15, 2020 at 4:17 PM Thierry Reding <thierry.reding@gmail.com> wrote:
+> The PWM core will soon change the duty cycle and period of PWMs to 64
+> bits to allow for a broader range of values. Use a 64-bit format
+> specifier to avoid a warning when that change is made.
 >
->Graphics cards without displays connected are quite common. I may be
->wrong, but I believe we normally handle them using DRM...
+> Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 
-This is more similar to the accelerators that live in drivers/misc/
-right now.
-
->> > And at the very least... this misses API docs for /dev/dxg. Code can't really
->> > be reviewed without that.
->>
->> The docs live here: https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/d3dkmthk/
+> --- a/drivers/video/fbdev/ssd1307fb.c
+> +++ b/drivers/video/fbdev/ssd1307fb.c
+> @@ -312,7 +312,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+>                 /* Enable the PWM */
+>                 pwm_enable(par->pwm);
 >
->I don't see "/dev/dxg" being metioned there. Plus, kernel API
+> -               dev_dbg(&par->client->dev, "Using PWM%d with a %dns period.\n",
+> +               dev_dbg(&par->client->dev, "Using PWM%d with a %lluns period.\n",
+>                         par->pwm->pwm, pwm_get_period(par->pwm));
+>         }
 
-Right, this is because this entire codebase is just a pipe to the API
-I've linked, it doesn't implement anything new on it's own.
+This change must be done together with changing the return type of
+pwm_get_period(), else you will get a compiler warning, and will print a
+bogus value.
 
->documentation should really go to Documentation, and be suitably
->licensed.
+Gr{oetje,eeting}s,
 
-While I don't mind copying the docs into Documentation, I'm concerned
-that over time they will diverge from the docs on the website. This is
-similar to how other documentation (such as the virtio spec) live out of
-tree to avoid these issues.
-
-w.r.t the licensing, again: this was sent under GPL2 (note the SPDX tags
-in each file), and the patches carry a S-O-B by someone who was a
-Microsoft employee at the time the patches were sent.
+                        Geert
 
 -- 
-Thanks,
-Sasha
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
