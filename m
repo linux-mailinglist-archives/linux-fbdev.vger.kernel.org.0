@@ -2,76 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 447B41FE7B3
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 04:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0F61FEDFB
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 10:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728816AbgFRCmu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 17 Jun 2020 22:42:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39976 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728802AbgFRBLv (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:11:51 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6613021974;
-        Thu, 18 Jun 2020 01:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592442711;
-        bh=tXZguFDtMNtJqm3M9bfTwLckJP+68oggVDjUs9RehoA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E/xBmkX8lgGJH6ECqJnnT64IrHI8qV/pUlg0PLHIMvqM+TrpjiYk1ClP4IqDylMuU
-         cpI7brpOCvGlyeX5lG36xrzmVEmCXozUEdbUBTzkr7ImmRA3HS2XwKtI2bm7VB7ylR
-         NZjgZ10npJlP9wQywcXAMdCgbHZvO17s3DFxYtYM=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Matej Dujava <mdujava@kocurkovo.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 5.7 171/388] staging: sm750fb: add missing case while setting FB_VISUAL
-Date:   Wed, 17 Jun 2020 21:04:28 -0400
-Message-Id: <20200618010805.600873-171-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
+        id S1728738AbgFRIn2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 18 Jun 2020 04:43:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728320AbgFRIn0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 18 Jun 2020 04:43:26 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E5FC0613ED
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jun 2020 01:43:26 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id t13so2698147wrs.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jun 2020 01:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=brvq047GWmZAo17C69Xj/1QyaxG1QhV4W0ODi9tBfK0=;
+        b=um1VtIz1ojnFmyHyfDbAw2jjevGBCC8F6ig4HMD39gp1CU8SuAqgkEg2NNJrCMIlYg
+         bTAKUY8zbGgzauDwHSuE8FMLJXz9oHLaky+S7ULuR8DSp7FoHTWLzDQPK5n8NZIbN4HD
+         U8JaZFLsXXpirT5E6C+ILXnjHBr9vo2TrmvSuEMBXLRQAxUWwhbk4oqfcLy1zYEFtmNm
+         sCyz2jbHn0MVC4fgCQVF2/opm4xl0QIW4ZNfAaHTMk3abaiS0AMtJBqyMu6O8SCZonvR
+         LBC2yHgo9CMo2FitN56vSOJN12whYQmlZkS5w29LFRQdvc4D5SoIAou4DHoUI8kRUArn
+         FTww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=brvq047GWmZAo17C69Xj/1QyaxG1QhV4W0ODi9tBfK0=;
+        b=mR1UskGC7oxcfoxRNhLAttduqy9jigwRAezJERx+GD8qL5RU7CTyfyLZkn+Karw0t2
+         eFv9Wv+EXXYFGoqb1va3bn5UgZ1yXAOnWt37Mt0dgYpPe28RRZpRrI5SlZWNl8/BXOT7
+         VEyXkOk7ahUiXT3kRdPkcJi0JfjpBH6U0n0is6rQTemUBlEmfeB/R7UwYguKOvxAXceg
+         VNzteeHuox8Jxk6LAVj3M3f2jrqGOm+RSBtH6hiMPAl0dCftb4U/B/EdBbxYPNU8Oy0a
+         K5O70p3Qt5nM+tPEAwVBv/FF7E5FcoWkQ4VBarzY7Zb4tnMilNHOekje9XbExC862K7t
+         253A==
+X-Gm-Message-State: AOAM532sHP2tMZGwU/EI+COdHBSx6rBGFQjg7sYYywNBPUooIYUgGuvZ
+        gi/4nK61itkrz/yhYPYjc5DFJg==
+X-Google-Smtp-Source: ABdhPJzmV6kItaKJaH4rcxOjvDp5gt/F5ZQIJ2li/nrZlhjEurHChGdTsVGmEdRqHfl2f10IQgFFOQ==
+X-Received: by 2002:a5d:5084:: with SMTP id a4mr3499044wrt.416.1592469805280;
+        Thu, 18 Jun 2020 01:43:25 -0700 (PDT)
+Received: from dell ([95.149.164.118])
+        by smtp.gmail.com with ESMTPSA id e12sm2656213wro.52.2020.06.18.01.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2020 01:43:24 -0700 (PDT)
+Date:   Thu, 18 Jun 2020 09:43:23 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/6] video: backlight: tosa_lcd: convert to use
+ i2c_new_client_device()
+Message-ID: <20200618084323.GB954398@dell>
+References: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
+ <20200615075816.2848-5-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200615075816.2848-5-wsa+renesas@sang-engineering.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Matej Dujava <mdujava@kocurkovo.cz>
+On Mon, 15 Jun 2020, Wolfram Sang wrote:
 
-[ Upstream commit fa90133377f4a7f15a937df6ad55133bb57c5665 ]
+> Move away from the deprecated API and return the shiny new ERRPTR where
+> useful.
+> 
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> ---
+> 
+> I'd like to push it via I2C for 5.8-rc2.
 
-Switch statement does not contain all cases: 8, 16, 24, 32.
-This patch will add missing one (24)
+Go for it:
 
-Fixes: 81dee67e215b ("staging: sm750fb: add sm750 to staging")
-Signed-off-by: Matej Dujava <mdujava@kocurkovo.cz>
-Link: https://lore.kernel.org/r/1588277366-19354-2-git-send-email-mdujava@kocurkovo.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/staging/sm750fb/sm750.c | 1 +
- 1 file changed, 1 insertion(+)
+Acked-by: Lee Jones <lee.jones@linaro.org>
 
-diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
-index 59568d18ce23..5b72aa81d94c 100644
---- a/drivers/staging/sm750fb/sm750.c
-+++ b/drivers/staging/sm750fb/sm750.c
-@@ -898,6 +898,7 @@ static int lynxfb_set_fbinfo(struct fb_info *info, int index)
- 		fix->visual = FB_VISUAL_PSEUDOCOLOR;
- 		break;
- 	case 16:
-+	case 24:
- 	case 32:
- 		fix->visual = FB_VISUAL_TRUECOLOR;
- 		break;
 -- 
-2.25.1
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
