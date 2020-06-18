@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0229A1FDAD2
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 03:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C49A1FE151
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 03:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727798AbgFRBI2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 17 Jun 2020 21:08:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34024 "EHLO mail.kernel.org"
+        id S1731626AbgFRBxu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 17 Jun 2020 21:53:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33518 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727787AbgFRBIZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:08:25 -0400
+        id S1731613AbgFRB0M (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:26:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AAB6421D79;
-        Thu, 18 Jun 2020 01:08:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7A44320897;
+        Thu, 18 Jun 2020 01:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592442504;
-        bh=NEZN25+YMUKahemIRd/ZYG04Rz9EGS/NjNQvn0xz5WU=;
+        s=default; t=1592443571;
+        bh=D7QnYO+pvZnv4CSj2j8if+GlEBWTIfsf+981WJSK4Ig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FS0VMKRXy83qeOfuBGwWnYJD/B8horEy3KSU+7G0okmKU7Gef6GsSLVuUF/AJJZdw
-         eUzJfLLNkP8ahNlZ4fwK5074TwgEtscwArtbNcjAmvBY3dus7Nt2iW2N/4ecz/rt72
-         qlAhUGGZh5KESSTu1Ah7jEQ46bT1HGwPxF5HaXxE=
+        b=z7ExQTKOtQmavAEZBw1a636Fir93PWMXSMrA55MDUxXYBbZBDTpA7S5YI/HVng4ru
+         hTn2FNGUGKyx3uHc6KnvuU5kd7LThXvQXyf4MOs7aGpKiElhzKMMnALr7sDxV0DkbD
+         LgG0X3CSiSQlLwpuclESE2ZmoUoD/Y8F93DrI94I=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jon Hunter <jonathanh@nvidia.com>,
@@ -30,12 +30,12 @@ Cc:     Jon Hunter <jonathanh@nvidia.com>,
         Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 014/388] backlight: lp855x: Ensure regulators are disabled on probe failure
-Date:   Wed, 17 Jun 2020 21:01:51 -0400
-Message-Id: <20200618010805.600873-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 008/108] backlight: lp855x: Ensure regulators are disabled on probe failure
+Date:   Wed, 17 Jun 2020 21:24:20 -0400
+Message-Id: <20200618012600.608744-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
+In-Reply-To: <20200618012600.608744-1-sashal@kernel.org>
+References: <20200618012600.608744-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
-index f68920131a4a..e94932c69f54 100644
+index 939f057836e1..4cdc7a3f6dc5 100644
 --- a/drivers/video/backlight/lp855x_bl.c
 +++ b/drivers/video/backlight/lp855x_bl.c
-@@ -456,7 +456,7 @@ static int lp855x_probe(struct i2c_client *cl, const struct i2c_device_id *id)
+@@ -460,7 +460,7 @@ static int lp855x_probe(struct i2c_client *cl, const struct i2c_device_id *id)
  		ret = regulator_enable(lp->enable);
  		if (ret < 0) {
  			dev_err(lp->dev, "failed to enable vddio: %d\n", ret);
@@ -113,7 +113,7 @@ index f68920131a4a..e94932c69f54 100644
  		}
  
  		/*
-@@ -471,24 +471,34 @@ static int lp855x_probe(struct i2c_client *cl, const struct i2c_device_id *id)
+@@ -475,24 +475,34 @@ static int lp855x_probe(struct i2c_client *cl, const struct i2c_device_id *id)
  	ret = lp855x_configure(lp);
  	if (ret) {
  		dev_err(lp->dev, "device config err: %d", ret);
@@ -151,7 +151,7 @@ index f68920131a4a..e94932c69f54 100644
  }
  
  static int lp855x_remove(struct i2c_client *cl)
-@@ -497,6 +507,8 @@ static int lp855x_remove(struct i2c_client *cl)
+@@ -501,6 +511,8 @@ static int lp855x_remove(struct i2c_client *cl)
  
  	lp->bl->props.brightness = 0;
  	backlight_update_status(lp->bl);
