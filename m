@@ -2,39 +2,39 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB0601FDFC6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 03:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 528F41FDEFE
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 03:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732234AbgFRB3G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 17 Jun 2020 21:29:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38186 "EHLO mail.kernel.org"
+        id S1732880AbgFRBhv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 17 Jun 2020 21:37:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40898 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732231AbgFRB3F (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:29:05 -0400
+        id S1731919AbgFRBal (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:30:41 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C5702222B;
-        Thu, 18 Jun 2020 01:29:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8FE6B21D90;
+        Thu, 18 Jun 2020 01:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443745;
-        bh=elXTXmYGJokeCCdeFSr5Bv7sOMGdOofxUAzIdj/ov38=;
+        s=default; t=1592443841;
+        bh=Cw9ow6ueq2twMjtypdAtV/dpjUCSZdqJ3BP2pATcygA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iuiBIm2DtpIT+23Knf1bfMEGHMR7sY5OOdYfS6Ukx1XfUCXlC9Nt0v5E1ao/WWm4Y
-         yNFsqyd3dY8VyTzAbo/8gUDldeOSuYrEmUwSTgtjl2pXGoC1PI/bzAyupfasfm2ylv
-         VnnkXDOuUbVyVbsTLtmocQadsFuTa2+rN32Rg6Ys=
+        b=BzS+flITWl8GIOc8EO00a/NrbuFXkayGKGyUxubIKVsf2cEp4ohnyThR9yp0hdSA+
+         z9EVW5Jr0vVY11C9q8eI9BSM5ShHdmE3lnv3re34oVyhwWLn19nzRFnxfNJ56y8Slk
+         NZRXxcWXXnXM7QW9Nbf6952u8nj3VBOO28kMDfbE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Matej Dujava <mdujava@kocurkovo.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
         devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 4.9 34/80] staging: sm750fb: add missing case while setting FB_VISUAL
-Date:   Wed, 17 Jun 2020 21:27:33 -0400
-Message-Id: <20200618012819.609778-34-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 27/60] staging: sm750fb: add missing case while setting FB_VISUAL
+Date:   Wed, 17 Jun 2020 21:29:31 -0400
+Message-Id: <20200618013004.610532-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618012819.609778-1-sashal@kernel.org>
-References: <20200618012819.609778-1-sashal@kernel.org>
+In-Reply-To: <20200618013004.610532-1-sashal@kernel.org>
+References: <20200618013004.610532-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
-index 86ace1449309..ee54711cf8e8 100644
+index 860e1c288ad5..75b47d61318a 100644
 --- a/drivers/staging/sm750fb/sm750.c
 +++ b/drivers/staging/sm750fb/sm750.c
-@@ -897,6 +897,7 @@ static int lynxfb_set_fbinfo(struct fb_info *info, int index)
+@@ -894,6 +894,7 @@ static int lynxfb_set_fbinfo(struct fb_info *info, int index)
  		fix->visual = FB_VISUAL_PSEUDOCOLOR;
  		break;
  	case 16:
