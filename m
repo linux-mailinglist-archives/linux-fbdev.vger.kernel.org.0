@@ -2,94 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F0F61FEDFB
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 10:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D441FFC37
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Jun 2020 22:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728738AbgFRIn2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 18 Jun 2020 04:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728320AbgFRIn0 (ORCPT
+        id S1730456AbgFRUFJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 18 Jun 2020 16:05:09 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:51554 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730108AbgFRUFI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 18 Jun 2020 04:43:26 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E5FC0613ED
-        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jun 2020 01:43:26 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id t13so2698147wrs.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jun 2020 01:43:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=brvq047GWmZAo17C69Xj/1QyaxG1QhV4W0ODi9tBfK0=;
-        b=um1VtIz1ojnFmyHyfDbAw2jjevGBCC8F6ig4HMD39gp1CU8SuAqgkEg2NNJrCMIlYg
-         bTAKUY8zbGgzauDwHSuE8FMLJXz9oHLaky+S7ULuR8DSp7FoHTWLzDQPK5n8NZIbN4HD
-         U8JaZFLsXXpirT5E6C+ILXnjHBr9vo2TrmvSuEMBXLRQAxUWwhbk4oqfcLy1zYEFtmNm
-         sCyz2jbHn0MVC4fgCQVF2/opm4xl0QIW4ZNfAaHTMk3abaiS0AMtJBqyMu6O8SCZonvR
-         LBC2yHgo9CMo2FitN56vSOJN12whYQmlZkS5w29LFRQdvc4D5SoIAou4DHoUI8kRUArn
-         FTww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=brvq047GWmZAo17C69Xj/1QyaxG1QhV4W0ODi9tBfK0=;
-        b=mR1UskGC7oxcfoxRNhLAttduqy9jigwRAezJERx+GD8qL5RU7CTyfyLZkn+Karw0t2
-         eFv9Wv+EXXYFGoqb1va3bn5UgZ1yXAOnWt37Mt0dgYpPe28RRZpRrI5SlZWNl8/BXOT7
-         VEyXkOk7ahUiXT3kRdPkcJi0JfjpBH6U0n0is6rQTemUBlEmfeB/R7UwYguKOvxAXceg
-         VNzteeHuox8Jxk6LAVj3M3f2jrqGOm+RSBtH6hiMPAl0dCftb4U/B/EdBbxYPNU8Oy0a
-         K5O70p3Qt5nM+tPEAwVBv/FF7E5FcoWkQ4VBarzY7Zb4tnMilNHOekje9XbExC862K7t
-         253A==
-X-Gm-Message-State: AOAM532sHP2tMZGwU/EI+COdHBSx6rBGFQjg7sYYywNBPUooIYUgGuvZ
-        gi/4nK61itkrz/yhYPYjc5DFJg==
-X-Google-Smtp-Source: ABdhPJzmV6kItaKJaH4rcxOjvDp5gt/F5ZQIJ2li/nrZlhjEurHChGdTsVGmEdRqHfl2f10IQgFFOQ==
-X-Received: by 2002:a5d:5084:: with SMTP id a4mr3499044wrt.416.1592469805280;
-        Thu, 18 Jun 2020 01:43:25 -0700 (PDT)
-Received: from dell ([95.149.164.118])
-        by smtp.gmail.com with ESMTPSA id e12sm2656213wro.52.2020.06.18.01.43.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2020 01:43:24 -0700 (PDT)
-Date:   Thu, 18 Jun 2020 09:43:23 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     linux-i2c@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
+        Thu, 18 Jun 2020 16:05:08 -0400
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 18 Jun 2020 13:05:08 -0700
+Received: from gurus-linux.qualcomm.com ([10.46.162.81])
+  by ironmsg04-sd.qualcomm.com with ESMTP; 18 Jun 2020 13:05:07 -0700
+Received: by gurus-linux.qualcomm.com (Postfix, from userid 383780)
+        id CDCAE184A; Thu, 18 Jun 2020 13:05:07 -0700 (PDT)
+Date:   Thu, 18 Jun 2020 13:05:07 -0700
+From:   Guru Das Srinagesh <gurus@codeaurora.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] video: backlight: tosa_lcd: convert to use
- i2c_new_client_device()
-Message-ID: <20200618084323.GB954398@dell>
-References: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
- <20200615075816.2848-5-wsa+renesas@sang-engineering.com>
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] video: ssd1307fb: Print PWM period using 64-bit
+ format specifier
+Message-ID: <20200618200507.GA2905@codeaurora.org>
+References: <20200615141606.2814208-1-thierry.reding@gmail.com>
+ <20200615141606.2814208-2-thierry.reding@gmail.com>
+ <CAMuHMdWaKgNOz02eVXkFnGRpsjdNNGVtuCf0setigH31-9aXQg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200615075816.2848-5-wsa+renesas@sang-engineering.com>
+In-Reply-To: <CAMuHMdWaKgNOz02eVXkFnGRpsjdNNGVtuCf0setigH31-9aXQg@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 15 Jun 2020, Wolfram Sang wrote:
-
-> Move away from the deprecated API and return the shiny new ERRPTR where
-> useful.
+On Wed, Jun 17, 2020 at 09:18:34AM +0200, Geert Uytterhoeven wrote:
+> Hi Thierry,
 > 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> ---
+> On Mon, Jun 15, 2020 at 4:17 PM Thierry Reding <thierry.reding@gmail.com> wrote:
+> > The PWM core will soon change the duty cycle and period of PWMs to 64
+> > bits to allow for a broader range of values. Use a 64-bit format
+> > specifier to avoid a warning when that change is made.
+> >
+> > Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 > 
-> I'd like to push it via I2C for 5.8-rc2.
+> > --- a/drivers/video/fbdev/ssd1307fb.c
+> > +++ b/drivers/video/fbdev/ssd1307fb.c
+> > @@ -312,7 +312,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+> >                 /* Enable the PWM */
+> >                 pwm_enable(par->pwm);
+> >
+> > -               dev_dbg(&par->client->dev, "Using PWM%d with a %dns period.\n",
+> > +               dev_dbg(&par->client->dev, "Using PWM%d with a %lluns period.\n",
+> >                         par->pwm->pwm, pwm_get_period(par->pwm));
+> >         }
+> 
+> This change must be done together with changing the return type of
+> pwm_get_period(), else you will get a compiler warning, and will print a
+> bogus value.
 
-Go for it:
+Hi Geert,
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+Yes, this is already being done in the patch series [1] that forms the
+base for this specific patch.
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+[1] https://lore.kernel.org/lkml/64f9ba1c9d6c49a397f12846493707883cee430f.1591136989.git.gurus@codeaurora.org/
+
+Thank you.
+
+Guru Das.
