@@ -2,125 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE85200172
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Jun 2020 06:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 514DF200222
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Jun 2020 08:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbgFSE4Q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 19 Jun 2020 00:56:16 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:39807 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725850AbgFSE4Q (ORCPT
+        id S1729122AbgFSGrF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 19 Jun 2020 02:47:05 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:44476 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725778AbgFSGrC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 19 Jun 2020 00:56:16 -0400
-Received: by mail-io1-f69.google.com with SMTP id 5so5882815iou.6
-        for <linux-fbdev@vger.kernel.org>; Thu, 18 Jun 2020 21:56:15 -0700 (PDT)
+        Fri, 19 Jun 2020 02:47:02 -0400
+Received: by mail-oi1-f194.google.com with SMTP id x202so7564988oix.11;
+        Thu, 18 Jun 2020 23:47:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=kVV7AQIUbbYdGbVlGXkgoxxP+MlYua7sKpJCqtMOVU4=;
-        b=UBu8gPo7oyS1Fd2LEeBDPHCXTfTXNPJKnttvnt5Q/dhZODmlq8Ovf4UqX1ODZz8XQK
-         9Zo3qPYvgD0qXsNjnr0fP2cNMd59B0wzg7H1QXWmzBFezyq+SjwlE2/6obbqyr8OGfkT
-         y40qwpc8BKrsxq0d4SY2LZ6yzxhnpxJbx+zYb78hiuJEefD9LCFyUv5lD/PSrD86iGuo
-         f2XHtj4cP0EfpXavf407ilGG+K3GaCFD0apFjLTZ1r1l7QPFe6fRb5kt9sMMPCBWk8UI
-         NGI9hip6Q6Z4beJJGIZWn2H6nE+1SY5DRuYPsoPQ/MFjFVKSIxNSCrpU3IjJnMiVwjyv
-         cZIw==
-X-Gm-Message-State: AOAM532Ra8Jjh6z8vCC5bf1c5heaxDwzDnKdK0XaHqAiH+ZxwFLQoy0j
-        LP3hvM1T5p1J5oJTYCOXxv++76DwdSeGLU7Y/jDb9bVzEBmG
-X-Google-Smtp-Source: ABdhPJwdNZQyzkPUlSgTaQiywiDsztu4+RdFjl3U3aswkL4CZhfKr0IA6BTtV1XwM3rxXzkhoJ+yY9MmVKDBru/N5YVV3R1a/wEA
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=obSLRSGUdtL1aSsm/uf2ID8ufq/D3V0gORBSH0QDde0=;
+        b=n91YsgLoij0lvALblDHm4hqnsTAVBPsYQmh1EltPTykSDCDJhz2m8IbjCSEAIo9Lcf
+         Q73OLP9sOOub7cRl2Byb612G7Y18u/U1SHJxGdixhUV2xj53ajhse84+Zo8Gui7/SjzQ
+         PFTivm9BkDxkS0YxcS/WdXGz8Ba0TULkymYeUge1NbQz7LFmaNfo4i85RHZoEdVGfGpB
+         Fa6rFLH+wQAuCEWwPb9Px7BAyDfuN3uwwi8tOfB1As+zz8/GFCcgLgA8JLlONnLc9LgK
+         92TTko4nNcO3+Yd/+wvfh6P7SvB86bTBxYWqsdgQ0xilwAdhgLNaVj3MHfeldlhf9C5r
+         Og0w==
+X-Gm-Message-State: AOAM533iOCMXjlprY/ccrPfNpGKT6MOOS0AOUHYREER0unvcmhinHJT1
+        3jrjDaCW1TgnXXbNVu5TFFYuytb+UG+hFSNqTpfhqA==
+X-Google-Smtp-Source: ABdhPJyM/HIf32MqGOd016BpCM/MH9LqQadoHNgeCyy6v07UdPWFKyqvPx+AZn/Je52XhLCCn8CJo6EWO0pqYb4es34=
+X-Received: by 2002:aca:849:: with SMTP id 70mr1908872oii.153.1592549221910;
+ Thu, 18 Jun 2020 23:47:01 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a02:ab94:: with SMTP id t20mr2096716jan.13.1592542575012;
- Thu, 18 Jun 2020 21:56:15 -0700 (PDT)
-Date:   Thu, 18 Jun 2020 21:56:15 -0700
-In-Reply-To: <0000000000001d3ff605995c23d6@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000792f4f05a868b670@google.com>
-Subject: Re: BUG: unable to handle kernel paging request in sys_imageblit
-From:   syzbot <syzbot+33f89a9a6b6acd893b11@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
+References: <20200615141606.2814208-1-thierry.reding@gmail.com>
+ <20200615141606.2814208-2-thierry.reding@gmail.com> <CAMuHMdWaKgNOz02eVXkFnGRpsjdNNGVtuCf0setigH31-9aXQg@mail.gmail.com>
+ <20200618200507.GA2905@codeaurora.org>
+In-Reply-To: <20200618200507.GA2905@codeaurora.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 19 Jun 2020 08:46:50 +0200
+Message-ID: <CAMuHMdUv8xic7L=UJzCmJ+WepvADBYvcaPCmaN0BzCvcbgvx6g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] video: ssd1307fb: Print PWM period using 64-bit
+ format specifier
+To:     Guru Das Srinagesh <gurus@codeaurora.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
+Hi Guru,
 
-HEAD commit:    435faf5c Merge tag 'riscv-for-linus-5.8-mw0' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1768c725100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3dbb617b9c2a5bdf
-dashboard link: https://syzkaller.appspot.com/bug?extid=33f89a9a6b6acd893b11
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-userspace arch: i386
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11f3f485100000
+On Thu, Jun 18, 2020 at 10:05 PM Guru Das Srinagesh
+<gurus@codeaurora.org> wrote:
+> On Wed, Jun 17, 2020 at 09:18:34AM +0200, Geert Uytterhoeven wrote:
+> > On Mon, Jun 15, 2020 at 4:17 PM Thierry Reding <thierry.reding@gmail.com> wrote:
+> > > The PWM core will soon change the duty cycle and period of PWMs to 64
+> > > bits to allow for a broader range of values. Use a 64-bit format
+> > > specifier to avoid a warning when that change is made.
+> > >
+> > > Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+> >
+> > > --- a/drivers/video/fbdev/ssd1307fb.c
+> > > +++ b/drivers/video/fbdev/ssd1307fb.c
+> > > @@ -312,7 +312,7 @@ static int ssd1307fb_init(struct ssd1307fb_par *par)
+> > >                 /* Enable the PWM */
+> > >                 pwm_enable(par->pwm);
+> > >
+> > > -               dev_dbg(&par->client->dev, "Using PWM%d with a %dns period.\n",
+> > > +               dev_dbg(&par->client->dev, "Using PWM%d with a %lluns period.\n",
+> > >                         par->pwm->pwm, pwm_get_period(par->pwm));
+> > >         }
+> >
+> > This change must be done together with changing the return type of
+> > pwm_get_period(), else you will get a compiler warning, and will print a
+> > bogus value.
+>
+> Hi Geert,
+>
+> Yes, this is already being done in the patch series [1] that forms the
+> base for this specific patch.
+>
+> [1] https://lore.kernel.org/lkml/64f9ba1c9d6c49a397f12846493707883cee430f.1591136989.git.gurus@codeaurora.org/
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+33f89a9a6b6acd893b11@syzkaller.appspotmail.com
+IC, but the "will soon" suggested otherwise.
+In any case, not combining both into a single patch causes a bisection
+regression, regardless of the order in which they are applied.
 
-BUG: unable to handle page fault for address: fffff520013df608
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 7ffcd067 P4D 7ffcd067 PUD 2c920067 PMD 29858067 PTE 0
-Oops: 0000 [#1] PREEMPT SMP KASAN
-CPU: 2 PID: 8457 Comm: syz-executor.0 Not tainted 5.7.0-syzkaller #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-RIP: 0010:fast_imageblit drivers/video/fbdev/core/sysimgblt.c:229 [inline]
-RIP: 0010:sys_imageblit+0x616/0x1240 drivers/video/fbdev/core/sysimgblt.c:275
-Code: 0f b6 14 28 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 5c 0b 00 00 8b 44 24 20 4d 8d 77 04 4c 89 fa 48 c1 ea 03 23 07 <42> 0f b6 0c 2a 4c 89 fa 83 e2 07 33 44 24 14 83 c2 03 38 ca 7c 08
-RSP: 0018:ffffc90001867578 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888023ac8402 RCX: ffffffff88786a40
-RDX: 1ffff920013df608 RSI: ffffffff83c3bbbc RDI: ffffffff88786a40
-RBP: 0000000000000fef R08: ffff888029cf8040 R09: 0000000000000001
-R10: ffffffff8a8b743f R11: fffffbfff1516e87 R12: 0000000000000007
-R13: dffffc0000000000 R14: ffffc90009efb044 R15: ffffc90009efb040
-FS:  0000000000000000(0000) GS:ffff88802d000000(0063) knlGS:00000000f7f0fb40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: fffff520013df608 CR3: 000000001b812000 CR4: 0000000000340ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- drm_fb_helper_sys_imageblit+0x1c/0x180 drivers/gpu/drm/drm_fb_helper.c:747
- bit_putcs_unaligned drivers/video/fbdev/core/bitblit.c:139 [inline]
- bit_putcs+0x8d0/0xd60 drivers/video/fbdev/core/bitblit.c:188
- fbcon_putcs+0x345/0x3f0 drivers/video/fbdev/core/fbcon.c:1362
- do_update_region+0x398/0x630 drivers/tty/vt/vt.c:683
- invert_screen+0x2a7/0x600 drivers/tty/vt/vt.c:800
- highlight drivers/tty/vt/selection.c:57 [inline]
- clear_selection drivers/tty/vt/selection.c:84 [inline]
- clear_selection+0x55/0x70 drivers/tty/vt/selection.c:80
- vc_do_resize+0xff3/0x1370 drivers/tty/vt/vt.c:1230
- fbcon_do_set_font+0x4a0/0x950 drivers/video/fbdev/core/fbcon.c:2608
- fbcon_set_font+0x732/0x870 drivers/video/fbdev/core/fbcon.c:2705
- con_font_set drivers/tty/vt/vt.c:4571 [inline]
- con_font_op+0xd65/0x1160 drivers/tty/vt/vt.c:4636
- compat_kdfontop_ioctl drivers/tty/vt/vt_ioctl.c:1151 [inline]
- vt_compat_ioctl+0x23a/0x6c0 drivers/tty/vt/vt_ioctl.c:1213
- tty_compat_ioctl+0x19c/0x410 drivers/tty/tty_io.c:2847
- __do_compat_sys_ioctl fs/ioctl.c:865 [inline]
- __se_compat_sys_ioctl fs/ioctl.c:816 [inline]
- __ia32_compat_sys_ioctl+0x23d/0x2b0 fs/ioctl.c:816
- do_syscall_32_irqs_on arch/x86/entry/common.c:337 [inline]
- do_fast_syscall_32+0x270/0xe90 arch/x86/entry/common.c:396
- entry_SYSENTER_compat+0x70/0x7f arch/x86/entry/entry_64_compat.S:139
-Modules linked in:
-CR2: fffff520013df608
----[ end trace fbceb2e52f6d552c ]---
-RIP: 0010:fast_imageblit drivers/video/fbdev/core/sysimgblt.c:229 [inline]
-RIP: 0010:sys_imageblit+0x616/0x1240 drivers/video/fbdev/core/sysimgblt.c:275
-Code: 0f b6 14 28 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 5c 0b 00 00 8b 44 24 20 4d 8d 77 04 4c 89 fa 48 c1 ea 03 23 07 <42> 0f b6 0c 2a 4c 89 fa 83 e2 07 33 44 24 14 83 c2 03 38 ca 7c 08
-RSP: 0018:ffffc90001867578 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff888023ac8402 RCX: ffffffff88786a40
-RDX: 1ffff920013df608 RSI: ffffffff83c3bbbc RDI: ffffffff88786a40
-RBP: 0000000000000fef R08: ffff888029cf8040 R09: 0000000000000001
-R10: ffffffff8a8b743f R11: fffffbfff1516e87 R12: 0000000000000007
-R13: dffffc0000000000 R14: ffffc90009efb044 R15: ffffc90009efb040
-FS:  0000000000000000(0000) GS:ffff88802d000000(0063) knlGS:00000000f7f0fb40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: fffff520013df608 CR3: 000000001b812000 CR4: 0000000000340ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Gr{oetje,eeting}s,
 
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
