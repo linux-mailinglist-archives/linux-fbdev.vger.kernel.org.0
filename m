@@ -2,85 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8448D20029D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Jun 2020 09:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED86201568
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Jun 2020 18:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730151AbgFSHVY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 19 Jun 2020 03:21:24 -0400
-Received: from www.zeus03.de ([194.117.254.33]:34376 "EHLO mail.zeus03.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729714AbgFSHVX (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 19 Jun 2020 03:21:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=k1; bh=Tx1HKfhcOXw7ejBWKidFnCtFoaUu
-        r9y0RAg5uUGEalE=; b=OrBsnhQJjJUlLKpVyJLvgJDRgFo6cVeSKwNw5whAk1AS
-        duWZ4NZ9Ch+3QWEsGdZREuHzzRqPWAfkp64Av2jnS/dA2KVd6SzqUUm7NBVOyIVj
-        GkNDuReFg/5jGv2PZfkYPbR8qhANBWxMzw9SkNK6sXj38epcHqUXGxog472xQc8=
-Received: (qmail 2435058 invoked from network); 19 Jun 2020 09:21:20 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 19 Jun 2020 09:21:20 +0200
-X-UD-Smtp-Session: l3s3148p1@FpZVvWqoYMdQT+F6
-Date:   Fri, 19 Jun 2020 09:21:19 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 0/6] remove deprecated i2c_new_device API
-Message-ID: <20200619072119.GB1705@kunai>
-References: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LpQ9ahxlCli8rRTG"
-Content-Disposition: inline
-In-Reply-To: <20200615075816.2848-1-wsa+renesas@sang-engineering.com>
+        id S2394595AbgFSQV5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 19 Jun 2020 12:21:57 -0400
+Received: from winnie.ispras.ru ([83.149.199.91]:27582 "EHLO smtp.ispras.ru"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2394520AbgFSQV4 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 19 Jun 2020 12:21:56 -0400
+Received: from home.intra.ispras.ru (unknown [10.10.165.12])
+        by smtp.ispras.ru (Postfix) with ESMTP id 16300203C1;
+        Fri, 19 Jun 2020 19:21:53 +0300 (MSK)
+From:   Evgeny Novikov <novikov@ispras.ru>
+To:     Antonino Daplas <adaplas@gmail.com>
+Cc:     Evgeny Novikov <novikov@ispras.ru>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org
+Subject: [PATCH] video: fbdev: savage: fix memory leak on error handling path in probe
+Date:   Fri, 19 Jun 2020 19:21:36 +0300
+Message-Id: <20200619162136.9010-1-novikov@ispras.ru>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+savagefb_probe() calls savage_init_fb_info() that can successfully
+allocate memory for info->pixmap.addr but then fail when
+fb_alloc_cmap() fails. savagefb_probe() goes to label failed_init and
+does not free allocated memory. It is not valid to go to label
+failed_mmio since savage_init_fb_info() can fail during memory
+allocation as well. So, the patch free allocated memory on the error
+handling path in savage_init_fb_info() itself.
 
---LpQ9ahxlCli8rRTG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Found by Linux Driver Verification project (linuxtesting.org).
 
-On Mon, Jun 15, 2020 at 09:58:09AM +0200, Wolfram Sang wrote:
-> I want to remove the above API this cycle, and just a few patches have
-> not made it into 5.8-rc1. They have been reviewed and most had been
-> promised to get into linux-next, but well, things happen. So, I hope it
-> is okay for everyone to collect them like this and push them via I2C for
-> 5.8-rc2.
->=20
-> One minor exception is the media documentation patch which I simply have
-> missed so far, but it is trivial.
->=20
-> And then, finally, there is the removal of the old API as the final
-> patch. Phew, that's been a long ride.
->=20
-> I am open for comments, of course.
+Signed-off-by: Evgeny Novikov <novikov@ispras.ru>
+---
+ drivers/video/fbdev/savage/savagefb_driver.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Applied to for-current, thanks!
+diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
+index 3c8ae87f0ea7..3fd87aeb6c79 100644
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -2157,6 +2157,8 @@ static int savage_init_fb_info(struct fb_info *info, struct pci_dev *dev,
+ 			info->flags |= FBINFO_HWACCEL_COPYAREA |
+ 				       FBINFO_HWACCEL_FILLRECT |
+ 				       FBINFO_HWACCEL_IMAGEBLIT;
++		else
++			kfree(info->pixmap.addr);
+ 	}
+ #endif
+ 	return err;
+-- 
+2.16.4
 
-
---LpQ9ahxlCli8rRTG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7sZ2sACgkQFA3kzBSg
-KbZVtBAAjxj8/yCiqHPP8gPXOpd8hStQqYaqlvw6NW5ddjUNy8nDaA/ztSbvpdDv
-RKtamlqk9b6JKoOgP0Fxe6xQfysX5qdg9DOKGlAS+atbNTQNydlCovfYbUARyJtz
-RoiP0jzxCquuoLcSWAtGWzBhG350v33bysM+zVe4yakWp2ILF8Y1y5l+7/tgXFZB
-HbVGxYihsGm76WPlXRRACWrKB1HsieEPVUXDCzG9BLMicuy1Ly7en7UdhkiJnzpz
-+Pk1OVCXpDHoKewKv2uK8sbf+TSy9hdesPCO40TZC1Oe1hB2fJGPOV3XsR0CZ7iS
-mC7vRPd3rNw62m4zMDxIX0Le5QlCQCpwiW8uSNj7IuadxM5p34b2J6cqTeQBEz5K
-y33mJTVybc2yClSvrFDnXNj1Zagz1M4vMVpDLGTBX45rzxmShlzl2inG9hVZblw8
-EMSYAefZUHfgc7HptbdTQsTQkjlS1Q5wg9lHXWXGdtFE/oEhOV/DGQOLQwlBH6jD
-shVnrzLQcr7mUgJCq2+x8dTs73TnupyVCcRIDh2iTXPmd6UGByIAUN5yTC5GkUIf
-wmtRQyJfYHNEvtdFC+jehCarVj0zO0JmzDX434FUDJMFvXa9a2vqJLORds5ASJl7
-3K+Xupy+eSX6trVDd7StjIQYraYbn2rFko60famD5ePLbfpGuDE=
-=kh1x
------END PGP SIGNATURE-----
-
---LpQ9ahxlCli8rRTG--
