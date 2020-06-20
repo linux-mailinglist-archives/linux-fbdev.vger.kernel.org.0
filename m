@@ -2,61 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ED86201568
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Jun 2020 18:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7FC202356
+	for <lists+linux-fbdev@lfdr.de>; Sat, 20 Jun 2020 13:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394595AbgFSQV5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 19 Jun 2020 12:21:57 -0400
-Received: from winnie.ispras.ru ([83.149.199.91]:27582 "EHLO smtp.ispras.ru"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2394520AbgFSQV4 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 19 Jun 2020 12:21:56 -0400
-Received: from home.intra.ispras.ru (unknown [10.10.165.12])
-        by smtp.ispras.ru (Postfix) with ESMTP id 16300203C1;
-        Fri, 19 Jun 2020 19:21:53 +0300 (MSK)
-From:   Evgeny Novikov <novikov@ispras.ru>
-To:     Antonino Daplas <adaplas@gmail.com>
-Cc:     Evgeny Novikov <novikov@ispras.ru>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org
-Subject: [PATCH] video: fbdev: savage: fix memory leak on error handling path in probe
-Date:   Fri, 19 Jun 2020 19:21:36 +0300
-Message-Id: <20200619162136.9010-1-novikov@ispras.ru>
-X-Mailer: git-send-email 2.16.4
+        id S1728047AbgFTL1Y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 20 Jun 2020 07:27:24 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:50632 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728035AbgFTL1X (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Sat, 20 Jun 2020 07:27:23 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id B4AC220020;
+        Sat, 20 Jun 2020 13:27:20 +0200 (CEST)
+Date:   Sat, 20 Jun 2020 13:27:19 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: Re: [PATCH][next] fbdev/fb.h: Use struct_size() helper in kzalloc()
+Message-ID: <20200620112719.GC16901@ravnborg.org>
+References: <20200617175647.GA26370@embeddedor>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200617175647.GA26370@embeddedor>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=edQTgYMH c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=VwQbUJbxAAAA:8 a=e5mUnYsNAAAA:8
+        a=eQAgsu64IDNOz3FtGqwA:9 a=KgSf4rBJBTyy23aL:21 a=eSvgJIpcUDpWB52b:21
+        a=CjuIK1q_8ugA:10 a=AjGcO6oz07-iQ99wixmX:22 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-savagefb_probe() calls savage_init_fb_info() that can successfully
-allocate memory for info->pixmap.addr but then fail when
-fb_alloc_cmap() fails. savagefb_probe() goes to label failed_init and
-does not free allocated memory. It is not valid to go to label
-failed_mmio since savage_init_fb_info() can fail during memory
-allocation as well. So, the patch free allocated memory on the error
-handling path in savage_init_fb_info() itself.
+Hi Gustavo.
 
-Found by Linux Driver Verification project (linuxtesting.org).
+On Wed, Jun 17, 2020 at 12:56:47PM -0500, Gustavo A. R. Silva wrote:
+> Make use of the struct_size() helper instead of an open-coded version
+> in order to avoid any potential type mistakes.
+> 
+> This code was detected with the help of Coccinelle and, audited and
+> fixed manually.
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Signed-off-by: Evgeny Novikov <novikov@ispras.ru>
----
- drivers/video/fbdev/savage/savagefb_driver.c | 2 ++
- 1 file changed, 2 insertions(+)
+struct_size is defined in overflow.h - which is not included by fs.h.
+So we rely on overflow.h being pulled in by some other header - maybe
+slab.h in this case.
+Seems fragile, should this patch add an include of overflow.h?
 
-diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
-index 3c8ae87f0ea7..3fd87aeb6c79 100644
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -2157,6 +2157,8 @@ static int savage_init_fb_info(struct fb_info *info, struct pci_dev *dev,
- 			info->flags |= FBINFO_HWACCEL_COPYAREA |
- 				       FBINFO_HWACCEL_FILLRECT |
- 				       FBINFO_HWACCEL_IMAGEBLIT;
-+		else
-+			kfree(info->pixmap.addr);
- 	}
- #endif
- 	return err;
--- 
-2.16.4
+	Sam
 
+> ---
+>  include/linux/fb.h | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index 3b4b2f0c6994..2b530e6d86e4 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -506,8 +506,9 @@ struct fb_info {
+>  };
+>  
+>  static inline struct apertures_struct *alloc_apertures(unsigned int max_num) {
+> -	struct apertures_struct *a = kzalloc(sizeof(struct apertures_struct)
+> -			+ max_num * sizeof(struct aperture), GFP_KERNEL);
+> +	struct apertures_struct *a;
+> +
+> +	a = kzalloc(struct_size(a, ranges, max_num), GFP_KERNEL);
+>  	if (!a)
+>  		return NULL;
+>  	a->count = max_num;
+> -- 
+> 2.27.0
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
