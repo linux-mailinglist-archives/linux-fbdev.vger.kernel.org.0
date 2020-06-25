@@ -2,117 +2,135 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33FEC209CEF
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2020 12:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA80620A550
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2020 20:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403816AbgFYKdm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 25 Jun 2020 06:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404022AbgFYKdk (ORCPT
+        id S2406119AbgFYS5w (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 25 Jun 2020 14:57:52 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:44052 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403853AbgFYS5w (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 25 Jun 2020 06:33:40 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1772C0613ED
-        for <linux-fbdev@vger.kernel.org>; Thu, 25 Jun 2020 03:33:38 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id g75so5022840wme.5
-        for <linux-fbdev@vger.kernel.org>; Thu, 25 Jun 2020 03:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=cwS7iBZ35KlWA6jBEXe+RY7hU/oltm4mf+ZLVTmBHbg=;
-        b=ckSbRH6Y9xOKw8TwFf5S6Fhk1vOPMMffz1PvAsd5fQkuEUwGeqv8ZMfu7b4VseJXq+
-         Q+Zwl6jtJPG6b8nC0vUNjXsuJBAHkcblkb0pQgjxdlrWuvAO3vVH5EOdN8ykR1fFNkO2
-         0Y3+9hQyIHdmKpwtONksi/eq/d8zwBaAwnMZiCl2cMapDRa21bVFWnrvJmrLcOy/lGA5
-         r1jIAR/pLarr4nRMPCFRPDiBFXE3KVAPa2+iPKV0c4lCbi24fnFNTvU8a5C/BFnrqmFF
-         NBvqmgslp9dIo5O2WX8S0qZbHFB5FnOKAffE3NigkrXiKcASZlQGDfgOFNp/1b16IVxq
-         irbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=cwS7iBZ35KlWA6jBEXe+RY7hU/oltm4mf+ZLVTmBHbg=;
-        b=m/GTw53PNYR/5qPmsP81KHht40HhMXGOFYYuDMUUVcju7uJng0wuakwcbM3Qh3qEBn
-         UV6Nhv9QSQNmidz4WHOdxSXZzCy//1ekKiQN5aTyRs4B4kUAsVpXx22EUXBcygTtVpX/
-         ttKfBUj4S0HrRyoNCINwHtBeUPbpss3bLHC77xYvqPBIrgTg8zPlh3VkL5VevNFaQSks
-         Yr1UlAsiv/QP7RBrOMF4TfHctcvkX0Q9tzICNfzQ4vTNtOMh4fxA+oG8cVAODaBafY8j
-         lX5O/MKmvvFNxUFNire0302PgYi40KYXV+cwsyxrLhBoJqXoR7/hVigbsM6U5WMiZu4o
-         zZoQ==
-X-Gm-Message-State: AOAM532TxA/u6rsfkDo2eX3WXjJWboclrM2Bv3P945wIO/cmfxgMJoL4
-        X0KtsP2W/Q9Ick6u6lhTrktDqA==
-X-Google-Smtp-Source: ABdhPJxRQCCMvNxIjXjxszNKanKw0pTi4YzKhm6dZatNk1oJ81au17V7nolB179hYdVcODuntoi7tQ==
-X-Received: by 2002:a7b:ce97:: with SMTP id q23mr2641581wmj.89.1593081217260;
-        Thu, 25 Jun 2020 03:33:37 -0700 (PDT)
-Received: from dell ([2.27.35.144])
-        by smtp.gmail.com with ESMTPSA id t4sm5852497wmf.4.2020.06.25.03.33.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2020 03:33:36 -0700 (PDT)
-Date:   Thu, 25 Jun 2020 11:33:34 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     jingoohan1@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Software Engineering <sbabic@denx.de>
-Subject: Re: [PATCH 3/8] backlight: ili922x: Add missing kerneldoc
- descriptions for CHECK_FREQ_REG() args
-Message-ID: <20200625103334.GO954398@dell>
+        Thu, 25 Jun 2020 14:57:52 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 88DBD200DF;
+        Thu, 25 Jun 2020 20:57:47 +0200 (CEST)
+Date:   Thu, 25 Jun 2020 20:57:46 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/8] Fix a bunch of W=1 warnings in Backlight
+Message-ID: <20200625185746.GA1875182@ravnborg.org>
 References: <20200624145721.2590327-1-lee.jones@linaro.org>
- <20200624145721.2590327-4-lee.jones@linaro.org>
- <20200625094051.u4hanl3rycczlwiy@holly.lan>
+ <20200624153216.GA1814806@ravnborg.org>
+ <20200624154321.GH954398@dell>
+ <20200624162446.GA1815586@ravnborg.org>
+ <20200625080337.GN954398@dell>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200625094051.u4hanl3rycczlwiy@holly.lan>
+In-Reply-To: <20200625080337.GN954398@dell>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=f+hm+t6M c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=IkcTkHD0fZMA:10 a=7gkXJVJtAAAA:8 a=KKAkSRfTAAAA:8
+        a=dC_rIlIaLDHj5HQ0j38A:9 a=QEXdDO2ut3YA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+        a=cvBusfyB2V15izCimMoJ:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 25 Jun 2020, Daniel Thompson wrote:
+Hi Lee.
 
-> On Wed, Jun 24, 2020 at 03:57:16PM +0100, Lee Jones wrote:
-> > Kerneldoc syntax is used, but not complete.  Descriptions required.
-> > 
-> > Prevents warnings like:
-> > 
-> >  drivers/video/backlight/ili922x.c:116: warning: Function parameter or member 's' not described in 'CHECK_FREQ_REG'
-> >  drivers/video/backlight/ili922x.c:116: warning: Function parameter or member 'x' not described in 'CHECK_FREQ_REG'
-> > 
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: Software Engineering <sbabic@denx.de>
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > ---
-> >  drivers/video/backlight/ili922x.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/video/backlight/ili922x.c b/drivers/video/backlight/ili922x.c
-> > index 9c5aa3fbb2842..8cb4b9d3c3bba 100644
-> > --- a/drivers/video/backlight/ili922x.c
-> > +++ b/drivers/video/backlight/ili922x.c
-> > @@ -107,6 +107,8 @@
-> >   *	lower frequency when the registers are read/written.
-> >   *	The macro sets the frequency in the spi_transfer structure if
-> >   *	the frequency exceeds the maximum value.
-> > + * @s: pointer to controller side proxy for an SPI slave device
+On Thu, Jun 25, 2020 at 09:03:37AM +0100, Lee Jones wrote:
+> On Wed, 24 Jun 2020, Sam Ravnborg wrote:
 > 
-> What's wrong with "a pointer to an SPI device"?
+> > Hi Lee.
+> > 
+> > On Wed, Jun 24, 2020 at 04:43:21PM +0100, Lee Jones wrote:
+> > > On Wed, 24 Jun 2020, Sam Ravnborg wrote:
+> > > 
+> > > > Hi Lee.
+> > > > 
+> > > > On Wed, Jun 24, 2020 at 03:57:13PM +0100, Lee Jones wrote:
+> > > > > Attempting to clean-up W=1 kernel builds, which are currently
+> > > > > overwhelmingly riddled with niggly little warnings.
+> > > > > 
+> > > > > Lee Jones (8):
+> > > > >   backlight: lms501kf03: Remove unused const variables
+> > > > >   backlight: lcd: Add missing kerneldoc entry for 'struct device parent'
+> > > > 
+> > > > 
+> > > > >   backlight: ili922x: Add missing kerneldoc descriptions for
+> > > > >     CHECK_FREQ_REG() args
+> > > > >   backlight: ili922x: Remove invalid use of kerneldoc syntax
+> > > > >   backlight: ili922x: Add missing kerneldoc description for
+> > > > >     ili922x_reg_dump()'s arg
+> > > > I wonder why these warnings show up as nothing pulls in this .c file.
+> > > > Anyway I would suggest to drop using kerneldoc syntax for single drivers
+> > > > like this - and the benefit here is low.
+> > > > Now they are typed, otherwise this ahd been fine in a single patch.
+> > > 
+> > > What do you mean by 'nothing pulls it in'?
+> > There are no .rst files that includes any:
+> > .. kernel-doc:: drivers/video/backlight/ili922x.c
+> > 
+> > so I do not see how the kernel-doc comments will be used by any
+> > of the generated kernel-docs.
 > 
-> I am aware, having looked it up to find out what the above actually
-> means, that this is how struct spi_device is described in its own kernel
-> doc but quoting at that level of detail of both overkill and confusing.
+> Looks like a common problem (if it is actually a problem):
+> 
+>  $ ./scripts/find-unused-docs.sh . | wc -l
+>  1476
+> 
+> The role of this patch-set is not to eradicate unused kerneldoc
+> headers, but to ensure they are formatted correctly.  W=1 builds
+> currently complain of ill formatted kerneldocs, which is currently
+> littering the build-log and masking some more important issues (which
+> I'm also trying to fix en route).
 
-I figured that using the official description would be better than
-making something up.  However if you think it's better to KISS, then I
-can change it.
+My point is that I do not see why we should maintain correct kernel-doc
+style comments for files that are not used to to generate kernel-doc.
+It would serve us better to drop the kernel-doc style comments.
+But thats just my opinion, feel free to ignore.
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+I digged a little and can see we run kernel-doc on all .c files
+when we specify W=1 - which was a suprise to me.
+That explains why I had not seen said warnings in my regular make
+htmldocs runs.
+
+	Sam
+
+> 
+> > > > >   backlight: backlight: Supply description for function args in existing
+> > > > >     Kerneldocs
+> > > > >   backlight: lm3630a_bl: Remove invalid checks for unsigned int < 0
+> > > > >   backlight: qcom-wled: Remove unused configs for LED3 and LED4
+> > > > 
+> > > > The other fixes looks good.
+> > > > They are all:
+> > > > Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> > > 
+> > > Thanks (although this should be Reviewed-by).
+> > > 
+> > > > >  drivers/video/backlight/backlight.c  | 2 ++
+> > > > >  drivers/video/backlight/ili922x.c    | 8 ++++++--
+> > > > >  drivers/video/backlight/lcd.c        | 1 +
+> > > > >  drivers/video/backlight/lm3630a_bl.c | 4 ++--
+> > > > >  drivers/video/backlight/lms501kf03.c | 8 --------
+> > > > >  drivers/video/backlight/qcom-wled.c  | 8 --------
+> > > > >  6 files changed, 11 insertions(+), 20 deletions(-)
+> > > > > 
+> > > 
+> 
+> -- 
+> Lee Jones [李琼斯]
+> Senior Technical Lead - Developer Services
+> Linaro.org │ Open source software for Arm SoCs
+> Follow Linaro: Facebook | Twitter | Blog
