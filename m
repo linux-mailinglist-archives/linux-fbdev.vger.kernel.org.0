@@ -2,136 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4188920B49D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Jun 2020 17:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061DD20BE6C
+	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Jun 2020 06:50:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727066AbgFZPdz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 26 Jun 2020 11:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
+        id S1725922AbgF0EuM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 27 Jun 2020 00:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbgFZPdz (ORCPT
+        with ESMTP id S1725840AbgF0EuL (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 26 Jun 2020 11:33:55 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4EF0C03E97B
-        for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2020 08:33:54 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id j18so9217011wmi.3
-        for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2020 08:33:54 -0700 (PDT)
+        Sat, 27 Jun 2020 00:50:11 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69620C03E97A
+        for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2020 21:50:11 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id t11so681216pfq.11
+        for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2020 21:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=rpso9ySNKoLDGZyCP/hQvs97M6SXDiiUl7b7MavvpwM=;
-        b=Im1TNyjYUqGtSxb3sVpOQyDfuWo+4jL/eqZNHs4NDDTYEFyid04tQdyu89ASBScZ4r
-         wb24XBrOxce/WjPuyNXPXoUHQtfJiOu0kaAMJjR3M59cyn6Vkqe368y2feEo+qQEiBk1
-         DGBfapEIfDFuUQ2BVVIu2qVIvQnFFinKhlLC/DFjzG2Vl42KM9ir4BThZQhjbOqbEaLn
-         PIGe/3KXrsysRdikgnP8sEL3JiLrgrISIBIssg0wXfm9CiCOt594i2d+P+H+yy96DPWd
-         chrGgttiyWu7uhIOKgZbaVf2bTgCFyCeXiE4mMc/P5bBOpgpq8XeNZk2VCtLj5y9RojH
-         FdvA==
+        d=pesu-pes-edu.20150623.gappssmtp.com; s=20150623;
+        h=from:date:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=tM82nN98PD/iFRUwc7s9SC6I4w+oHpo70UtnZbaWoFQ=;
+        b=jf1dEOdAeA5EcCIR8qObQ/wbPHUqoVwwBs6kEVZMFsHVe4a17OlVzSNKDxqqqa5aYn
+         FjULqXMPqT1uvOwx8jPezGuPvJ5zwfbSw8QL9UmJw6gE0iOO/UKDUZinUQK9LLbxJfrp
+         g+TG2B+tmxymKLzCF12h1D3CdAczXMERXHEg4eDyaGSkz6i5Q7hXrW2dIkUtELRXyrkZ
+         iIbX0WlZVRisshR9HXWIqx7BlVlF3n3uc6sN0YFH8U0jXPZyZR7nyDJW5oNN+w+5jX5N
+         rbXcV0vu7mb4Q5dfJU7hwfT6kQJua2tPETOeLe7cqEA3ywsYOFPRXq++0SMSZenzWwPo
+         gDXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=rpso9ySNKoLDGZyCP/hQvs97M6SXDiiUl7b7MavvpwM=;
-        b=H8g/r0vey9/B/wdDL48TbEuTxFWUPVvLgHcgtyNkpMnrtjrSMKJbmGuCabftm8o88T
-         g/JK6yxuP+7L6PL83yhcip5YU0Dl40qiJNmWlutJJ5srVYn7wzh7Xx6osIAu1vFutQTs
-         u+gWbHT+tFfgaaG48e7t0Lpjt7OywBxYavThgc23Wv8vHospSPqXfloVK1u/mAJmZxkq
-         aS2Yfd7eiB9Xb0Va1RPh4rOM2LswRTS5Ji2jgsk+Gkz02wXaFFrmXM3gIkAkW3XLWLcW
-         cpX3apNqdywfgLCj6JOl4xtFiGOFtK3b9XUkADKGNUCf/Mog45hagUd4S33SNCtmWU7c
-         GzZA==
-X-Gm-Message-State: AOAM530Xb4avpGKo3EGFkTwa9ndtbjxjNd7LJRZAtEWpdNPGP3Mr/SSR
-        gxiN5XBu9FUpHHVDeiLKGJ8Luw==
-X-Google-Smtp-Source: ABdhPJz9yrxY45T9SAy1cdsmEGjRTcOB+Cz9/AF+lu25KlsF3R66G6fdX+qT3KF8kVohKRgE/ySkTg==
-X-Received: by 2002:a1c:32c4:: with SMTP id y187mr4112202wmy.79.1593185633299;
-        Fri, 26 Jun 2020 08:33:53 -0700 (PDT)
-Received: from dell ([2.27.35.144])
-        by smtp.gmail.com with ESMTPSA id f16sm18168315wmh.27.2020.06.26.08.33.52
+        h=x-gm-message-state:from:date:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=tM82nN98PD/iFRUwc7s9SC6I4w+oHpo70UtnZbaWoFQ=;
+        b=ZRPJa51/okHkgKt+HTnubm+pDW+y/qFfr1kc/AitHEe8HKpbDIJ8MCIE5cf3uUovxA
+         7CP30GX2YEEnp7Q1H5+eTn5enDhw8VztY7CMIxEnoYPceZDIF/MxN9krHdJcOf9ZbcMX
+         Dt/z05oIODqysNK+n1NrzS1PrfOwpvRz7LHjPwQzTnLHGWJpeHmS6A4R5hazrultO9ZP
+         oLD8z8FXVmeyVbkYV48Kglpq/WkVGrl8wIvHKvkOR8R0sRhc83kfq0eaCJ8cm6Jqqku6
+         CKTDcptAW7j3fHNOjU4PYV7+WvAhy6ckJgawKgek0g8NEXKBXwzelBHO7zOUCqsIsYPW
+         361w==
+X-Gm-Message-State: AOAM530oa5qqZHVyydFS3mwh6+q7NbZHNkbCBhUYlen3ujHiqyNzXihN
+        s4nvp2vUTgrS//+BoxK0ZBt3Rw==
+X-Google-Smtp-Source: ABdhPJw1T404vfNkBJqJi3CGby6UB/ljdx3K1oZ0OfkL5W4D7XFob76v7f8JkPz+QzojRx/fiIsWXg==
+X-Received: by 2002:a62:8342:: with SMTP id h63mr5467050pfe.183.1593233410769;
+        Fri, 26 Jun 2020 21:50:10 -0700 (PDT)
+Received: from localhost ([2406:7400:73:59a9:908:f18a:1156:5c38])
+        by smtp.gmail.com with ESMTPSA id 7sm13692079pgh.80.2020.06.26.21.50.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2020 08:33:52 -0700 (PDT)
-Date:   Fri, 26 Jun 2020 16:33:51 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     jingoohan1@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Software Engineering <sbabic@denx.de>
-Subject: Re: [PATCH 3/8] backlight: ili922x: Add missing kerneldoc
- descriptions for CHECK_FREQ_REG() args
-Message-ID: <20200626153351.GD177734@dell>
-References: <20200624145721.2590327-1-lee.jones@linaro.org>
- <20200624145721.2590327-4-lee.jones@linaro.org>
- <20200625094051.u4hanl3rycczlwiy@holly.lan>
- <20200625103334.GO954398@dell>
- <20200626095405.nzhqsfjegj6qg2ro@holly.lan>
+        Fri, 26 Jun 2020 21:50:09 -0700 (PDT)
+From:   B K Karthik <bkkarthik@pesu.pes.edu>
+X-Google-Original-From: B K Karthik <karthik.bk2000@live.com>
+Date:   Sat, 27 Jun 2020 00:50:04 -0400
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jan Sebastian =?utf-8?B?R8O2dHRl?= <linux@jaseg.net>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] fbtft-bus.c:
+Message-ID: <20200627045004.a46jbqtbiintu2nt@pesu-pes-edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wcjbyctbs2w26lm4"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200626095405.nzhqsfjegj6qg2ro@holly.lan>
+User-Agent: NeoMutt/20180716
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 26 Jun 2020, Daniel Thompson wrote:
 
-> On Thu, Jun 25, 2020 at 11:33:34AM +0100, Lee Jones wrote:
-> > On Thu, 25 Jun 2020, Daniel Thompson wrote:
-> > 
-> > > On Wed, Jun 24, 2020 at 03:57:16PM +0100, Lee Jones wrote:
-> > > > Kerneldoc syntax is used, but not complete.  Descriptions required.
-> > > > 
-> > > > Prevents warnings like:
-> > > > 
-> > > >  drivers/video/backlight/ili922x.c:116: warning: Function parameter or member 's' not described in 'CHECK_FREQ_REG'
-> > > >  drivers/video/backlight/ili922x.c:116: warning: Function parameter or member 'x' not described in 'CHECK_FREQ_REG'
-> > > > 
-> > > > Cc: <stable@vger.kernel.org>
-> > > > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > > > Cc: Software Engineering <sbabic@denx.de>
-> > > > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > > > ---
-> > > >  drivers/video/backlight/ili922x.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/video/backlight/ili922x.c b/drivers/video/backlight/ili922x.c
-> > > > index 9c5aa3fbb2842..8cb4b9d3c3bba 100644
-> > > > --- a/drivers/video/backlight/ili922x.c
-> > > > +++ b/drivers/video/backlight/ili922x.c
-> > > > @@ -107,6 +107,8 @@
-> > > >   *	lower frequency when the registers are read/written.
-> > > >   *	The macro sets the frequency in the spi_transfer structure if
-> > > >   *	the frequency exceeds the maximum value.
-> > > > + * @s: pointer to controller side proxy for an SPI slave device
-> > > 
-> > > What's wrong with "a pointer to an SPI device"?
-> > > 
-> > > I am aware, having looked it up to find out what the above actually
-> > > means, that this is how struct spi_device is described in its own kernel
-> > > doc but quoting at that level of detail of both overkill and confusing.
-> > 
-> > I figured that using the official description would be better than
-> > making something up.  However if you think it's better to KISS, then I
-> > can change it.
-> 
-> Yes, I'd strongly prefer KISS here.
-> 
-> I know it is an "I am the world" argument[1] but I found using such a
-> dogmatically accurate description out of context to be very confusing
-> and therefore I don't think such a comment improves readability.
-> 
-> [1]: See #3 from http://www.leany.com/logic/Adams.html
+--wcjbyctbs2w26lm4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It's fine, you are the world, I get it. ;)
+fbtft-bus.c:
 
-Do you even like Country music?
+fixing ERROR: space prohibited before that close parenthesis ')' by removin=
+g that space and ',' in line 65 and 67.
 
-Will fix!
+Signed-off-by: B K Karthik <karthik.bk2000@live.com>
+---
+ drivers/staging/fbtft/fbtft-bus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtf=
+t-bus.c
+index 63c65dd67b17..847cbfbbd766 100644
+--- a/drivers/staging/fbtft/fbtft-bus.c
++++ b/drivers/staging/fbtft/fbtft-bus.c
+@@ -62,9 +62,9 @@ out:									      \
+ }                                                                         =
+    \
+ EXPORT_SYMBOL(func);
+=20
+-define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8, )
++define_fbtft_write_reg(fbtft_write_reg8_bus8, u8, u8)
+ define_fbtft_write_reg(fbtft_write_reg16_bus8, __be16, u16, cpu_to_be16)
+-define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16, )
++define_fbtft_write_reg(fbtft_write_reg16_bus16, u16, u16)
+=20
+ void fbtft_write_reg8_bus9(struct fbtft_par *par, int len, ...)
+ {
+--=20
+2.20.1
+
+
+--wcjbyctbs2w26lm4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCgAdFiEEpIrzAt4LvWLJmKjp471Q5AHeZ2oFAl72z/wACgkQ471Q5AHe
+Z2o05Qv9ElUD8lscq3RLdrWxDC3fGK3n7kQZTWCQEFU+K0muQXceEX0JRhGy9N1F
+8aGgIb3wumF0ZaWhX8b4HW7tivAQTkmJoKhWcYDzjrkfvFv/9viCvUw5A3SqUFoA
+X919WgEO4epopUMRpK97SRksK1L6RACBVjTttO3BOX31i550BUSH53PCLtbdbiPm
+F30wh0jIBPykPOSJXcctTTOYZXco03xpQ8J8POmfIGQVyluM/ZOjOL10PbQvJXlZ
+SpqGUTwu3VRyPnSRCtBvvNHUNHUUNOMhhN1uG7Scrt4SONQJWe4trYHDSFaA838q
+8QUXzwWFVRGYy9paUzdYPKH/B++F3xJ1//kySDxsSfYuZOaJIUc33gjOCCs+pkvU
+sXzHAQdUPDKYm2S0WaZJqHHUDj1PRcJfIuHVxZCPegs5hcd5J6TECzhYrURzBadb
+odcMJCHYpy/bt78inyLdi0CK8rseZDCJkHCfndjoWBVSclHqVlc9eGZ7X/xypu0L
+r8Vq99ni
+=7vSF
+-----END PGP SIGNATURE-----
+
+--wcjbyctbs2w26lm4--
