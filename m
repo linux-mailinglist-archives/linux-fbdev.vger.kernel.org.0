@@ -2,102 +2,118 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CD22134C4
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jul 2020 09:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 357DE213BEE
+	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jul 2020 16:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726053AbgGCHRi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 Jul 2020 03:17:38 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59178 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725779AbgGCHRi (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jul 2020 03:17:38 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0637HWoL115147;
-        Fri, 3 Jul 2020 02:17:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1593760652;
-        bh=tpCp46YgYhG/QrH4ChjpFQLXP5Ol+QOmEFujaXnFEPI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=JFeFvps/w2XpkSxRKOeoGYS+r9rHLogTZ3ryq3TPoNHlrFsoSe73PrTb/r1LNGu1e
-         MoALpJE2Yvc8JCUNQ26yAkS3aRQ5Qaqb5I8S/egTIQBrt/xU2z1SB9+r9GsxG+REy4
-         eVNfNSyPqlsZR1ZlGZ0K0s9P3a0o0dhMru/IqdyU=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0637HWPh031794
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 3 Jul 2020 02:17:32 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 3 Jul
- 2020 02:17:31 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 3 Jul 2020 02:17:31 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0637HTNE007840;
-        Fri, 3 Jul 2020 02:17:30 -0500
-Subject: Re: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
-To:     Adam Ford <aford173@gmail.com>, <linux-fbdev@vger.kernel.org>
-CC:     <stable@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Dave Airlie <airlied@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, <linux-omap@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-References: <20200630182636.439015-1-aford173@gmail.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
-Date:   Fri, 3 Jul 2020 10:17:29 +0300
+        id S1726108AbgGCOj4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 3 Jul 2020 10:39:56 -0400
+Received: from sender4-of-o57.zoho.com ([136.143.188.57]:21765 "EHLO
+        sender4-of-o57.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726035AbgGCOj4 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jul 2020 10:39:56 -0400
+X-Greylist: delayed 903 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 Jul 2020 10:39:56 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1593786277; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=YD5HBn0ew2QDQkvGb3z0aqAM4pIFvC4VAt2TXNkuFwzZ6MUj9fQelce2qSSm9GJvfMn1E9kyuocb/oNNN7u7oNWX0idasYDdM+ati1n5A1HPjATlPf/GpQMmvbbV6CPfvGfaLYn7FP6yXlmjISgJ5kxbvyYByAfpP4X6HRS/lBo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1593786277; h=Content-Type:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=mHfqeTV/OAFRPJkymwJ/yrF4XNt3RmPWXeOFHypvR0g=; 
+        b=R+svHu776OudBhmv1VKQwF29mHDN4+hUgAQvimtlK8QpdmHONwwUENoVD70rBu9iE3o8DQbP1pKIbkv7IwYRqKpqImdpn2qX7ZKcEC+ALxGP0rxyUta/q7KT8eYgo8wHOADRtkKJO9dMry7yHWqYJdPHhcjmesurL4u5dHb1efo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=qubes-os.org;
+        spf=pass  smtp.mailfrom=frederic.pierret@qubes-os.org;
+        dmarc=pass header.from=<frederic.pierret@qubes-os.org> header.from=<frederic.pierret@qubes-os.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1593786277;
+        s=s; d=qubes-os.org; i=frederic.pierret@qubes-os.org;
+        h=From:Subject:To:Cc:Message-ID:Date:MIME-Version:Content-Type;
+        bh=mHfqeTV/OAFRPJkymwJ/yrF4XNt3RmPWXeOFHypvR0g=;
+        b=kLfqLr33dv9gjO2ihDXNju2EWOc6PlwwOTwg9qvpZXfTl2ESaHEvrA+w1wnF0SFQ
+        NeS3Q95p3NfDubrE4wKX0ioB4N813yviryOaYpQRCZy39PcJ4n9GbgyZ5YilkJxP1Rv
+        1DUNSmSaJO1lEN+hNsJssgjJRgPLDnQ1jQlXRoC0=
+Received: from [10.137.0.45] (92.188.110.153 [92.188.110.153]) by mx.zohomail.com
+        with SMTPS id 1593786275485103.42683310504424; Fri, 3 Jul 2020 07:24:35 -0700 (PDT)
+From:   =?UTF-8?B?RnLDqWTDqXJpYyBQaWVycmV0?= 
+        <frederic.pierret@qubes-os.org>
+Subject: dummy-backlight
+To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, b.zolnierkie@samsung.com,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org
+Cc:     =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
+        <marmarek@invisiblethingslab.com>
+Message-ID: <903f7645-5062-00a9-8d7c-b30ef5f54951@qubes-os.org>
+Date:   Fri, 3 Jul 2020 16:24:31 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200630182636.439015-1-aford173@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="4fGmdG7NnKFN1M86H79xV4JfD01yLcbyk"
+X-Zoho-Virus-Status: 1
+X-ZohoMailClient: External
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 30/06/2020 21:26, Adam Ford wrote:
-> The drm/omap driver was fixed to correct an issue where using a
-> divider of 32 breaks the DSS despite the TRM stating 32 is a valid
-> number.  Through experimentation, it appears that 31 works, and
-> it is consistent with the value used by the drm/omap driver.
-> 
-> This patch fixes the divider for fbdev driver instead of the drm.
-> 
-> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-> 
-> Cc: <stable@vger.kernel.org> #4.9+
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> ---
-> Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
-> 
-> The DRM version of this same fix is:
-> e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
-> 
-> 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> index 7252d22dd117..bfc5c4c5a26a 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> @@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
->   };
->   
->   static const struct dss_features omap3630_dss_feats = {
-> -	.fck_div_max		=	32,
-> +	.fck_div_max		=	31,
->   	.dss_fck_multiplier	=	1,
->   	.parent_clk_name	=	"dpll4_ck",
->   	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--4fGmdG7NnKFN1M86H79xV4JfD01yLcbyk
+Content-Type: multipart/mixed; boundary="Q7nSMCZKXlHpZb2Yy992XltX3EiXUZfr7"
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+--Q7nSMCZKXlHpZb2Yy992XltX3EiXUZfr7
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-  Tomi
+Dear all,
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I'm working on a simple kernel module currently called "dummy-backlight" =
+(https://github.com/fepitre/dummy-backlight) which creates a testing back=
+light. After loaded, this driver allows to modify integer values of the v=
+irtual backlight created through its sysfs attributes directly.
+
+In the context of the Qubes OS project, it allows to setup into a VM, a v=
+irtual backlight and managing the hardware backlight into the VM directly=
+ thanks to a communication channel with the host system.
+
+I'm writing to you to know if you would be interested to have such module=
+ into kernel. Another name could be "virtual-backlight".
+
+I've written a similar module for PSU too (https://lore.kernel.org/linux-=
+pm/a8223cce-636f-578b-7304-eb0e4868e018@qubes-os.org/) where a nice sugge=
+stion of improvement has been made to use a misc device for controlling a=
+ttributes instead of sysfs directly. Indeed, it's appropriated in case of=
+ multiple PSU but maybe for a (only one?) "dummy-backligh", using two sys=
+fs attributes is enough.
+
+Any kind of improvements are very welcomed. Thank you.
+
+Best regards,
+Fr=C3=A9d=C3=A9ric Pierret
+
+
+--Q7nSMCZKXlHpZb2Yy992XltX3EiXUZfr7--
+
+--4fGmdG7NnKFN1M86H79xV4JfD01yLcbyk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEn6ZLkvlecGvyjiymSEAQtc3FduIFAl7/P58ACgkQSEAQtc3F
+duIIehAAop77snM7y/Bd9ln0IS+FiUw6eZcj5mp+0oKi1xjKbiCui/6WfVFwYzki
+Q500M5gH/6r3jXf1wBOiZIkRVgj9TKkKiOlPJDCqTSBMKEYV3n7P4yrq0Lr+dTlf
+qvXBOnzQlG2GuTDvGz3UOOmHLaa/NV4P7wQusNVkj2dCBBMoC4QJsuwnA2jVZHdI
+4Va19Yijrfpx+8pWgb5/yTHuo/yjxCiobTRsFQI+qas15KbJ0r+wHHESD4qZ+T8M
+FIrDLUIcUAV3orMjLkx1b6KxG/1aMtXwYH+bIpswFbhJ9iw/jhuemEtiJnM+Zbf2
+1iviZSzlICZB3hsEmzqcFPGdAXZj+O6cdm30wl7kMQeZiPzkGg9WMaQ/c7/AUcPb
+hwBI7KteyvkGahM7nkooIaJnu29+Yc9KS8r5RhedPA1fJycxSsZniPudRLwh186G
+9TqTqTDyYkTbnhsjQQTOosUqlwYG1sgk9Xs64glgiAl6WAbWTYOrj4W2bNyw/jDx
+RYbGBV0PwpCASCOyZhMk++oPeloQytLN17y1AQO+tM+t/UjK1FHWlSZ1fD3BlZVg
+m6qItivxR+I6kvrOM4AhTZrR5h6nS0R0WHaVyvoxSnrcdO/t0K4m2T+MZxD8If8P
+4g31Uk6bcm3kOQ29ifCnnkJXPwoJWPrksG88/sKxe7nmdPyQdag=
+=NWRT
+-----END PGP SIGNATURE-----
+
+--4fGmdG7NnKFN1M86H79xV4JfD01yLcbyk--
