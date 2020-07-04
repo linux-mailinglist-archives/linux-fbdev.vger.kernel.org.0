@@ -2,41 +2,23 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 046272148CA
-	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Jul 2020 23:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC322148DA
+	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Jul 2020 23:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726953AbgGDVDd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 4 Jul 2020 17:03:33 -0400
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:33837 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726922AbgGDVDd (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Jul 2020 17:03:33 -0400
-Received: by mail-oi1-f196.google.com with SMTP id e4so21054272oib.1;
-        Sat, 04 Jul 2020 14:03:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yut0ecpXXGBYkNUyjPkKKir3ho9UA6fe0bH3wwD2YtA=;
-        b=Ul2R6rBHhuiptR3avIjONjpZMjlODXr8gjSLjrT+iP3GMKpSEmQeX4mJSkawk5wqSu
-         oA5BiFKi39m+YDMy6o0bViuJO2vCUuoNYbhXjMFg6//qS3s5uIEoak7pvZDzHepu5jLk
-         XBV69PhjhiNbgBl/r4JOLsUkRm1DVRinctNlAYdTqMvsUjY/3504wTclF7nWYc/GSZyT
-         VNxsvwKt9ki7+DTiSJjeHgpF7sCubteXQguoIOmpFtOPO7jv1yvVwCoIAz6gAe1TzQRw
-         Wwip7rfGxRFUrI2b4im702hQ+S05Ph75fb+WD86j+gas7mFRQ7FERRiZqjqaLrn7Ez2X
-         aEvw==
-X-Gm-Message-State: AOAM5318tdZadz4FvFJR6edciafYfRBPdNPbiDlGo5nnuKEeD/YlT5h0
-        HEiwxHpA/4zvGcu1g43dxZBtvOjvjLPetVMeYq0=
-X-Google-Smtp-Source: ABdhPJyTCoq8/XCSR+AJg+1hDROJChzwPNMYZ5Lb1va9EPUV35YM2IZobwkleBvxakacYZY5XTsZ9MpukAzF2eKN250=
-X-Received: by 2002:aca:1801:: with SMTP id h1mr26808470oih.148.1593896612172;
- Sat, 04 Jul 2020 14:03:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200704143544.789345-1-sam@ravnborg.org> <20200704143544.789345-2-sam@ravnborg.org>
-In-Reply-To: <20200704143544.789345-2-sam@ravnborg.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sat, 4 Jul 2020 23:03:21 +0200
-Message-ID: <CAMuHMdXWXk=QUbpFeX6bjwp+JWKgHqiQALTdQJgSgwBRkyvkRA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] dt-bindings: fix simple-framebuffer example
-To:     Sam Ravnborg <sam@ravnborg.org>
+        id S1727911AbgGDV0V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 4 Jul 2020 17:26:21 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:43988 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727084AbgGDV0V (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Jul 2020 17:26:21 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id C6C0520023;
+        Sat,  4 Jul 2020 23:26:16 +0200 (CEST)
+Date:   Sat, 4 Jul 2020 23:26:15 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
@@ -45,50 +27,72 @@ Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
         Daniel Vetter <daniel@ffwll.ch>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 1/1] dt-bindings: fix simple-framebuffer example
+Message-ID: <20200704212615.GA1693435@ravnborg.org>
+References: <20200704143544.789345-1-sam@ravnborg.org>
+ <20200704143544.789345-2-sam@ravnborg.org>
+ <CAMuHMdXWXk=QUbpFeX6bjwp+JWKgHqiQALTdQJgSgwBRkyvkRA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXWXk=QUbpFeX6bjwp+JWKgHqiQALTdQJgSgwBRkyvkRA@mail.gmail.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=f+hm+t6M c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=YG64nluAAAAA:20 a=tBb2bbeoAAAA:8
+        a=eaCYuVEjiU5D5XKsubUA:9 a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+        a=Oj-tNtZlA1e06AYgeCfH:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sam,
+On Sat, Jul 04, 2020 at 11:03:21PM +0200, Geert Uytterhoeven wrote:
+> Hi Sam,
+> 
+> Thanks for your patch!
+> 
+> On Sat, Jul 4, 2020 at 4:37 PM Sam Ravnborg <sam@ravnborg.org> wrote:
+> > Now that dt-extract-example gained support for using root nodes
+> > in examples, update the example for the simple-frambuffer binding to use it.
+> 
+> simple-framebuffer
+Thanks, will fix.
 
-Thanks for your patch!
+> 
+> > This gives us a better example and kill a long standing warning:
+> >
+> > simple-framebuffer.example.dts:23.16-39.11:
+> > Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
+> >
+> > Note: To get the update dt-extract-example execute:
+> > pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+> >
+> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> 
+> > --- a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+> > +++ b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+> > @@ -152,28 +152,29 @@ additionalProperties: false
+> >
+> >  examples:
+> >    - |
+> > -    aliases {
+> > -      display0 = &lcdc0;
+> 
+> Why drop the aliases example?
+I did not see it had any value for the binding that the example shall
+demonstrate. But it was not somthing I have given much thought of.
 
-On Sat, Jul 4, 2020 at 4:37 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> Now that dt-extract-example gained support for using root nodes
-> in examples, update the example for the simple-frambuffer binding to use it.
+	Sam
 
-simple-framebuffer
-
-> This gives us a better example and kill a long standing warning:
->
-> simple-framebuffer.example.dts:23.16-39.11:
-> Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
->
-> Note: To get the update dt-extract-example execute:
-> pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
->
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-
-> --- a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
-> +++ b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
-> @@ -152,28 +152,29 @@ additionalProperties: false
->
->  examples:
->    - |
-> -    aliases {
-> -      display0 = &lcdc0;
-
-Why drop the aliases example?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> -- 
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
