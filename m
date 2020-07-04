@@ -2,112 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58BEA21400E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jul 2020 21:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D04214678
+	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Jul 2020 16:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726502AbgGCTgz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 Jul 2020 15:36:55 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:51528 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbgGCTgz (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jul 2020 15:36:55 -0400
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 016FA804F9;
-        Fri,  3 Jul 2020 21:36:49 +0200 (CEST)
-Date:   Fri, 3 Jul 2020 21:36:48 +0200
+        id S1726830AbgGDOfz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 4 Jul 2020 10:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726573AbgGDOfx (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Jul 2020 10:35:53 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A54C061794;
+        Sat,  4 Jul 2020 07:35:53 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id t25so35613120lji.12;
+        Sat, 04 Jul 2020 07:35:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rX77pyYaI7t3osrGVixdaT1lC+LXvMPuit/5ILLdKK0=;
+        b=mrrCw80nucNN86OBNz9hzWdT0d5Nva04qDeRs4B9u66jpyu/TVP8po9eiRKUtgjiJl
+         SBCUtSd0oyC4bQKuIczGOjn9yelj34Sm3vdTSFvbDawjF69I3LmcQPIRZO/CMbBzxGho
+         kkbTfC5a7P3bpKQMLLotYYtYF84faiovcFPvhWr7NKxiZ7SW8+x+eithmNofw/vcEnaZ
+         VhIf/1nxQVef5WOpklyf0zPr5q2FTdjX6oRFMtjw0oWN4/XmuCUAXLvF2Ce8hZO9bpC5
+         5odMnP1g5URmcRlWMuDmBVUd7ZuRjjMC9HTyPfHbsK9JGrK6kVsu9tB8yXghZcXSJTHq
+         b5ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=rX77pyYaI7t3osrGVixdaT1lC+LXvMPuit/5ILLdKK0=;
+        b=KpVansuInIebWRgV9s+abV44gdhbI9PdtyOzySTR0biF/ppdJSYvvUpbcmOrr/CXFz
+         MQW8aCZLpdM4tUhs9MQjp7zOG2CmU1SxIHIZXChbr8OEcw4riNVj2MjemZfUdHkPDrdk
+         FTWN3CyPnqFs9sdkasTh9BY5mZTShK2Mzeg6o/hiyuWzXiJ+86AA435PqW7n3qkFt+oT
+         JcKeAl7o5yupT1d6ldmAvVdk8nzpzHNyOXPr+9+/36qWCCvyo2/C7YSxgMpaabpOyZgg
+         kde5Mg4d/icrJqvPLMTgu+xjTvmZK/M/6S4qOYK46Nfml+LEFaBTO+1H259cFmcO0dVH
+         n9ng==
+X-Gm-Message-State: AOAM532cLNZZ3L7w2HpNGRhOz6AEshaxw345wVCiEu64vbp/tnlyM3F+
+        UE117q3WljYB3ZcTc1Y4m+U=
+X-Google-Smtp-Source: ABdhPJwKJGdn4otFvTUzOLOqyA3r/4en6H8xyAu7TIq7U0TR4mfCjZjq9t9D05dapbDK374ClSPXMw==
+X-Received: by 2002:a05:651c:3cf:: with SMTP id f15mr21042061ljp.365.1593873349874;
+        Sat, 04 Jul 2020 07:35:49 -0700 (PDT)
+Received: from saturn.lan ([2a00:fd00:805f:db00:4025:a614:1d5c:b7bc])
+        by smtp.gmail.com with ESMTPSA id 144sm6407556lfm.87.2020.07.04.07.35.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2020 07:35:49 -0700 (PDT)
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Adam Ford <aford173@gmail.com>, linux-fbdev@vger.kernel.org,
+To:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        stable@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
-Message-ID: <20200703193648.GA373653@ravnborg.org>
-References: <20200630182636.439015-1-aford173@gmail.com>
- <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
+        linux-fbdev@vger.kernel.org
+Subject: [PATCH v1 0/1] dt-bindings: fix simple-framebuffer warning
+Date:   Sat,  4 Jul 2020 16:35:43 +0200
+Message-Id: <20200704143544.789345-1-sam@ravnborg.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=sozttTNsAAAA:8
-        a=P1BnusSwAAAA:8 a=7gkXJVJtAAAA:8 a=hD80L64hAAAA:8 a=i0EeH86SAAAA:8
-        a=e5mUnYsNAAAA:8 a=0HEiEkm5zgkht_cWyOUA:9 a=CjuIK1q_8ugA:10
-        a=AjGcO6oz07-iQ99wixmX:22 a=aeg5Gbbo78KNqacMgKqU:22
-        a=D0XLA9XvdZm18NrgonBM:22 a=E9Po1WZjFZOl8hwRPBS3:22
-        a=Vxmtnl_E_bksehYqCbjh:22
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Tomi.
-
-On Fri, Jul 03, 2020 at 10:17:29AM +0300, Tomi Valkeinen wrote:
-> On 30/06/2020 21:26, Adam Ford wrote:
-> > The drm/omap driver was fixed to correct an issue where using a
-> > divider of 32 breaks the DSS despite the TRM stating 32 is a valid
-> > number.  Through experimentation, it appears that 31 works, and
-> > it is consistent with the value used by the drm/omap driver.
-> > 
-> > This patch fixes the divider for fbdev driver instead of the drm.
-> > 
-> > Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-> > 
-> > Cc: <stable@vger.kernel.org> #4.9+
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > ---
-> > Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
-> > 
-> > The DRM version of this same fix is:
-> > e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
-> > 
-> > 
-> > diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> > index 7252d22dd117..bfc5c4c5a26a 100644
-> > --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> > +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> > @@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
-> >   };
-> >   static const struct dss_features omap3630_dss_feats = {
-> > -	.fck_div_max		=	32,
-> > +	.fck_div_max		=	31,
-> >   	.dss_fck_multiplier	=	1,
-> >   	.parent_clk_name	=	"dpll4_ck",
-> >   	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
-> > 
-> 
-> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Will you apply to drm-misc?
-
-Note  following output from "dim fixes":
-$ dim fixes f76ee892a99e
-Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jason Yan <yanaijie@huawei.com>
-Cc: "Andrew F. Davis" <afd@ti.com>
-Cc: YueHaibing <yuehaibing@huawei.com>
-Cc: <stable@vger.kernel.org> # v4.5+
-
-Here it says the fix is valid from v4.5 onwards.
+Trivial fix for a long standing warning.
+At least not fixed in drm-msc-next for now.
+Just in case it was not fixed by someone else (Rob?) already.
 
 	Sam
-> 
->  Tomi
-> 
-> -- 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+Sam Ravnborg (1):
+      dt-bindings: fix simple-framebuffer example
+
+ .../bindings/display/simple-framebuffer.yaml       | 45 +++++++++++-----------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
+
+
