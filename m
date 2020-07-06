@@ -2,97 +2,132 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC322148DA
-	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Jul 2020 23:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B9C21524F
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Jul 2020 08:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727911AbgGDV0V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 4 Jul 2020 17:26:21 -0400
-Received: from asavdk3.altibox.net ([109.247.116.14]:43988 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727084AbgGDV0V (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Jul 2020 17:26:21 -0400
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id C6C0520023;
-        Sat,  4 Jul 2020 23:26:16 +0200 (CEST)
-Date:   Sat, 4 Jul 2020 23:26:15 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH v1 1/1] dt-bindings: fix simple-framebuffer example
-Message-ID: <20200704212615.GA1693435@ravnborg.org>
-References: <20200704143544.789345-1-sam@ravnborg.org>
- <20200704143544.789345-2-sam@ravnborg.org>
- <CAMuHMdXWXk=QUbpFeX6bjwp+JWKgHqiQALTdQJgSgwBRkyvkRA@mail.gmail.com>
+        id S1728804AbgGFGDA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 6 Jul 2020 02:03:00 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40476 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728794AbgGFGDA (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Jul 2020 02:03:00 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06662lNM055242;
+        Mon, 6 Jul 2020 01:02:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1594015367;
+        bh=KjZlw1a/nmq4Ty3eASb8JP7sn5EXruzwzsBkpSaPwlA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=lzkYPfA2BlXCMLdKkajDaZaQOHaW1L4TEMzcjeFuh5jLE+LVVJAKtfRRzx5JBobFJ
+         hQDznclQillFZwhtKJQt8F6UW1/890lKHLRCgPjc//GVKs5UX0vvu7MUzG+plS8HAK
+         g363haOP5I08lS4FEaxB7Yxx1WWaqI8pLmSjmpXw=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 06662lV9094314
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 6 Jul 2020 01:02:47 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 6 Jul
+ 2020 01:02:47 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 6 Jul 2020 01:02:47 -0500
+Received: from [10.250.217.39] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06662i1W034768;
+        Mon, 6 Jul 2020 01:02:45 -0500
+Subject: Re: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
+To:     Sam Ravnborg <sam@ravnborg.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+CC:     Adam Ford <aford173@gmail.com>, <linux-fbdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <stable@vger.kernel.org>, <linux-omap@vger.kernel.org>
+References: <20200630182636.439015-1-aford173@gmail.com>
+ <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
+ <20200703193648.GA373653@ravnborg.org>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <bda1606f-b12c-3356-15ce-489fc2441737@ti.com>
+Date:   Mon, 6 Jul 2020 09:02:44 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXWXk=QUbpFeX6bjwp+JWKgHqiQALTdQJgSgwBRkyvkRA@mail.gmail.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=f+hm+t6M c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=YG64nluAAAAA:20 a=tBb2bbeoAAAA:8
-        a=eaCYuVEjiU5D5XKsubUA:9 a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
-        a=Oj-tNtZlA1e06AYgeCfH:22
+In-Reply-To: <20200703193648.GA373653@ravnborg.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jul 04, 2020 at 11:03:21PM +0200, Geert Uytterhoeven wrote:
-> Hi Sam,
-> 
-> Thanks for your patch!
-> 
-> On Sat, Jul 4, 2020 at 4:37 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> > Now that dt-extract-example gained support for using root nodes
-> > in examples, update the example for the simple-frambuffer binding to use it.
-> 
-> simple-framebuffer
-Thanks, will fix.
+Hi,
 
+On 03/07/2020 22:36, Sam Ravnborg wrote:
+> Hi Tomi.
 > 
-> > This gives us a better example and kill a long standing warning:
-> >
-> > simple-framebuffer.example.dts:23.16-39.11:
-> > Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
-> >
-> > Note: To get the update dt-extract-example execute:
-> > pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
-> >
-> > Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> > --- a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
-> > +++ b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
-> > @@ -152,28 +152,29 @@ additionalProperties: false
-> >
-> >  examples:
-> >    - |
-> > -    aliases {
-> > -      display0 = &lcdc0;
-> 
-> Why drop the aliases example?
-I did not see it had any value for the binding that the example shall
-demonstrate. But it was not somthing I have given much thought of.
+> On Fri, Jul 03, 2020 at 10:17:29AM +0300, Tomi Valkeinen wrote:
+>> On 30/06/2020 21:26, Adam Ford wrote:
+>>> The drm/omap driver was fixed to correct an issue where using a
+>>> divider of 32 breaks the DSS despite the TRM stating 32 is a valid
+>>> number.  Through experimentation, it appears that 31 works, and
+>>> it is consistent with the value used by the drm/omap driver.
+>>>
+>>> This patch fixes the divider for fbdev driver instead of the drm.
+>>>
+>>> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+>>>
+>>> Cc: <stable@vger.kernel.org> #4.9+
+>>> Signed-off-by: Adam Ford <aford173@gmail.com>
+>>> ---
+>>> Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
+>>>
+>>> The DRM version of this same fix is:
+>>> e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
+>>>
+>>>
+>>> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+>>> index 7252d22dd117..bfc5c4c5a26a 100644
+>>> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+>>> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+>>> @@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
+>>>    };
+>>>    static const struct dss_features omap3630_dss_feats = {
+>>> -	.fck_div_max		=	32,
+>>> +	.fck_div_max		=	31,
+>>>    	.dss_fck_multiplier	=	1,
+>>>    	.parent_clk_name	=	"dpll4_ck",
+>>>    	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
+>>>
+>>
+>> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Will you apply to drm-misc?
 
-	Sam
+This is for fbdev, so I presume Bartlomiej will pick this one.
 
+> Note  following output from "dim fixes":
+> $ dim fixes f76ee892a99e
+> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: Rob Clark <robdclark@gmail.com>
+> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> Cc: Jason Yan <yanaijie@huawei.com>
+> Cc: "Andrew F. Davis" <afd@ti.com>
+> Cc: YueHaibing <yuehaibing@huawei.com>
+> Cc: <stable@vger.kernel.org> # v4.5+
 > 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> -- 
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
+> Here it says the fix is valid from v4.5 onwards.
+
+Hmm... Adam, you marked the fix to apply to v4.9+, and then you said 
+v4.4 needs a new patch (that's before the big copy/rename). Did you 
+check the versions between 4.4 and 4.9? I would guess this one applies 
+to v4.5+.
+
+  Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
