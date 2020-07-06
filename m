@@ -2,109 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4F62152E8
-	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Jul 2020 09:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C363C2152EC
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Jul 2020 09:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728855AbgGFHN1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 6 Jul 2020 03:13:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
+        id S1728879AbgGFHNp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 6 Jul 2020 03:13:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728789AbgGFHN1 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Jul 2020 03:13:27 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA36CC08C5E0
-        for <linux-fbdev@vger.kernel.org>; Mon,  6 Jul 2020 00:13:26 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id f18so31543532wrs.0
-        for <linux-fbdev@vger.kernel.org>; Mon, 06 Jul 2020 00:13:26 -0700 (PDT)
+        with ESMTP id S1728466AbgGFHNo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Jul 2020 03:13:44 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C2BC061794
+        for <linux-fbdev@vger.kernel.org>; Mon,  6 Jul 2020 00:13:44 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id l17so38088070wmj.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 06 Jul 2020 00:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=RMGnvxquvbu4QyMyyHqPaCsBLX3LZtSdXGrqjMwfS7E=;
-        b=AAikv23ZIqKM8pfJvjReSBC3OGv4L4hsLmToMzvt7T4/lJmoiQ+k4CdAGRb0cV7S2W
-         5X8g98k0ELBNX7r3ltxzvzV7Us/w7LOjcAmp/SXbx8utOSJSEuFc7U0259FgO+PDubaM
-         k24kALm57sxDO8COLitP2s3SUPG757vsPnwL9+lCTMT28+RB1XbGNbSOw46k+xJDdaBB
-         VuFjAMTV3L6YEJCKAgb19Z1QDdVmigQUrNGym9PJiCpMP5CfkmNXCk2xvhJegjTQQ3vX
-         WUTgp7t8gDULlaBYcJc9JBvRnTkdKprktwjq6xQVSs0pSfm931CCLVe8qirXmhGyS+aQ
-         R6Zg==
+        bh=y6aItrK3ggYlleH0/viUOY6qolHTQy/1u/+BpOihMeo=;
+        b=Hg0xmjE2A2QgB70rmuXJ5Pw8tCPqmCSk8JyeYpHNJadeb74FDA/UNMbzhfZk64RUnP
+         Zr1rpnoAHP8vavTwaW59I5ARloISn3axV1g6YgmRwGj5OWiSj+WmXPOmPtEbzqknfQWU
+         ZEub0cl9lD2LDwyIaNdZxbMfO0V7M5aBmDE7L9N2p3GkyLma3aAtEVmjt1kQl/1CfoLJ
+         8G9W1b0Lti/IYKiuN1mAlMLdlrJFH51PHTACl4zbOUDV3kuYMT4KnNzeIJlnnTDm4kA2
+         PyqBePTZPGxmSCPnXDR9CrS1Vy9NuS/x9NqZ8lMU11tTceRZNBArWLIisVl+XdKf+pmi
+         BywA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=RMGnvxquvbu4QyMyyHqPaCsBLX3LZtSdXGrqjMwfS7E=;
-        b=R47oCQpxycS/oWeWhKft3jCDlkhlax6B0vZNpAfB6SI3vbEyZ6DSaClXpNNfJjgRaZ
-         681gQ+nnBQWstkn73NYC3PYhxTPigcHAsSIBBnhFgD2XyvhVJmK+i1OkYqoqQgeH4HOi
-         r68vDsKRbJYO4+bVE9MBjpcNaESfKOAnfJRtvYqP6ha0md/5frY91fXQG+CKY2mwmjOE
-         +xxZUCBgJPFFw1obWl2pOmJCTHfn/553JkRutlQQyt7NhAGMrOQyk7Bk+stE5EYLGgsm
-         CnVf8mE6G9e8PvyI4kZ8br5VKAowCZAMgNFUwagQoUGfgM53j+0m6nSw/rMc99/YH3an
-         pazg==
-X-Gm-Message-State: AOAM530gpPjS2fy8ToITNC9w4sfhxVQPFqdKa8Zgks+gEfr0oKAJ9zg8
-        Ytpx36BxloyY2DfHt0369V4F3g==
-X-Google-Smtp-Source: ABdhPJzbRa4dAsAzugKpjzOIhWptwA1zAERFnuxhOgrcEveqI1bRWNiT7yGNRTf9jNNznRD5lbePTw==
-X-Received: by 2002:adf:ed02:: with SMTP id a2mr46518594wro.110.1594019605697;
-        Mon, 06 Jul 2020 00:13:25 -0700 (PDT)
+        bh=y6aItrK3ggYlleH0/viUOY6qolHTQy/1u/+BpOihMeo=;
+        b=dYl62qcWbtrZ8XspOYgJ4a5ac/AnsODweYvWdWorgeEBKk1NP0YjCIhiHZ7McOc/Xq
+         jcSdzVD5dgTEH3+N2CBkiwsHJJZtCq7ew6j0CDqjmLGthF9Yyg/wdZZC0kENPtvDzpNC
+         npq3y5MhPSqaOz8qDWGisA5aFdNP29GEUwDd39a0tt3VLQ4AicaK3LI5pjWfz2BzMBDM
+         FBxuSLywoxd3svj7Tl8o9SW11U+W0n4XW4jrny7Qdfigb4alvP+WgJdgL0BEzK4dc+oZ
+         jYZa4PHbP9DqfSSWGZEn0ZDNdUQ6hbTEPhxAqCu/ZWIngG/eytRjZlXjaP4GqrQaXMuT
+         1uOg==
+X-Gm-Message-State: AOAM532D098ms3fRgGVeDICGHiYqMVfj7EcpQdFqpMATPJf+uMRtSKxQ
+        L9rZnsE3tPMM+Y9QaAsu4k09vQ==
+X-Google-Smtp-Source: ABdhPJxWsjw1xgjYJUFiPLMMd5RNjJNu0hJkWTnvqG5HIkpSNJgHQAoTPWkdT0q52MWphuM5cnUMdA==
+X-Received: by 2002:a1c:4406:: with SMTP id r6mr47190853wma.161.1594019623028;
+        Mon, 06 Jul 2020 00:13:43 -0700 (PDT)
 Received: from dell ([2.27.35.206])
-        by smtp.gmail.com with ESMTPSA id d13sm22969218wrq.89.2020.07.06.00.13.24
+        by smtp.gmail.com with ESMTPSA id l3sm6561303wrx.22.2020.07.06.00.13.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2020 00:13:24 -0700 (PDT)
-Date:   Mon, 6 Jul 2020 08:13:22 +0100
+        Mon, 06 Jul 2020 00:13:42 -0700 (PDT)
+Date:   Mon, 6 Jul 2020 08:13:40 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     jingoohan1@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Software Engineering <sbabic@denx.de>
-Subject: Re: [PATCH 5/8] backlight: ili922x: Add missing kerneldoc
- description for ili922x_reg_dump()'s arg
-Message-ID: <20200706071322.GB2821869@dell>
+To:     daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] Fix a bunch of W=1 warnings in Backlight
+Message-ID: <20200706071340.GC2821869@dell>
 References: <20200624145721.2590327-1-lee.jones@linaro.org>
- <20200624145721.2590327-6-lee.jones@linaro.org>
- <20200625094318.h6t22gkgi5d7wbv4@holly.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200625094318.h6t22gkgi5d7wbv4@holly.lan>
+In-Reply-To: <20200624145721.2590327-1-lee.jones@linaro.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 25 Jun 2020, Daniel Thompson wrote:
+On Wed, 24 Jun 2020, Lee Jones wrote:
 
-> On Wed, Jun 24, 2020 at 03:57:18PM +0100, Lee Jones wrote:
-> > Kerneldoc syntax is used, but not complete.  Descriptions required.
-> > 
-> > Prevents warnings like:
-> > 
-> >  drivers/video/backlight/ili922x.c:298: warning: Function parameter or member 'spi' not described in 'ili922x_reg_dump'
-> > 
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> > Cc: Software Engineering <sbabic@denx.de>
-> > Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> > ---
-> >  drivers/video/backlight/ili922x.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/video/backlight/ili922x.c b/drivers/video/backlight/ili922x.c
-> > index cd41433b87aeb..26193f38234e7 100644
-> > --- a/drivers/video/backlight/ili922x.c
-> > +++ b/drivers/video/backlight/ili922x.c
-> > @@ -295,6 +295,8 @@ static int ili922x_write(struct spi_device *spi, u8 reg, u16 value)
-> >  #ifdef DEBUG
-> >  /**
-> >   * ili922x_reg_dump - dump all registers
-> > + *
-> > + * @spi: pointer to the controller side proxy for an SPI slave device
+> Attempting to clean-up W=1 kernel builds, which are currently
+> overwhelmingly riddled with niggly little warnings.
 > 
-> Similar to previous... and I also noticed that there are several other
-> existing @spi descriptions in this file and it would be good to make
-> them consistent.
+> Lee Jones (8):
+>   backlight: lms501kf03: Remove unused const variables
+>   backlight: lcd: Add missing kerneldoc entry for 'struct device parent'
+>   backlight: ili922x: Add missing kerneldoc descriptions for
+>     CHECK_FREQ_REG() args
+>   backlight: ili922x: Remove invalid use of kerneldoc syntax
+>   backlight: ili922x: Add missing kerneldoc description for
+>     ili922x_reg_dump()'s arg
+>   backlight: backlight: Supply description for function args in existing
+>     Kerneldocs
+>   backlight: lm3630a_bl: Remove invalid checks for unsigned int < 0
+>   backlight: qcom-wled: Remove unused configs for LED3 and LED4
+> 
+>  drivers/video/backlight/backlight.c  | 2 ++
+>  drivers/video/backlight/ili922x.c    | 8 ++++++--
+>  drivers/video/backlight/lcd.c        | 1 +
+>  drivers/video/backlight/lm3630a_bl.c | 4 ++--
+>  drivers/video/backlight/lms501kf03.c | 8 --------
+>  drivers/video/backlight/qcom-wled.c  | 8 --------
+>  6 files changed, 11 insertions(+), 20 deletions(-)
 
-I've fixed this and applied the patch.
+All applied to Backlight.
 
 -- 
 Lee Jones [李琼斯]
