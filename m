@@ -2,240 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4BF621C8B0
-	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Jul 2020 13:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21E221D173
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2020 10:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728729AbgGLLKx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 12 Jul 2020 07:10:53 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:50711 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbgGLLKw (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 12 Jul 2020 07:10:52 -0400
-Received: from fsav303.sakura.ne.jp (fsav303.sakura.ne.jp [153.120.85.134])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 06CBAKMo040327;
-        Sun, 12 Jul 2020 20:10:20 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav303.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp);
- Sun, 12 Jul 2020 20:10:20 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav303.sakura.ne.jp)
-Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 06CBAFJP040301
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Sun, 12 Jul 2020 20:10:19 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>
-Cc:     Dmitry Vyukov <dvyukov@google.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH] fbdev: Detect integer underflow at "struct fbcon_ops"->clear_margins.
-Date:   Sun, 12 Jul 2020 20:10:13 +0900
-Message-Id: <20200712111013.11881-2-penguin-kernel@I-love.SAKURA.ne.jp>
-X-Mailer: git-send-email 2.18.4
-In-Reply-To: <20200712111013.11881-1-penguin-kernel@I-love.SAKURA.ne.jp>
-References: <189fc902-db7c-9886-cc31-c0348435303a@i-love.sakura.ne.jp>
- <20200712111013.11881-1-penguin-kernel@I-love.SAKURA.ne.jp>
+        id S1728833AbgGMIOR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 13 Jul 2020 04:14:17 -0400
+Received: from mail.ispras.ru ([83.149.199.84]:39248 "EHLO mail.ispras.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728887AbgGMIOR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 13 Jul 2020 04:14:17 -0400
+X-Greylist: delayed 522 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jul 2020 04:14:16 EDT
+Received: from hellwig.intra.ispras.ru (unknown [10.10.2.182])
+        by mail.ispras.ru (Postfix) with ESMTPS id 327C140AAD8D;
+        Mon, 13 Jul 2020 08:05:33 +0000 (UTC)
+From:   Evgeny Novikov <novikov@ispras.ru>
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Evgeny Novikov <novikov@ispras.ru>,
+        Teddy Wang <teddy.wang@siliconmotion.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, ldv-project@linuxtesting.org
+Subject: [PATCH] fbdev: sm712fb: handle ioremap() errors in probe
+Date:   Mon, 13 Jul 2020 11:05:32 +0300
+Message-Id: <20200713080532.15504-1-novikov@ispras.ru>
+X-Mailer: git-send-email 2.16.4
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-I found that
+smtcfb_pci_probe() does not handle ioremap() errors for case 0x720. The
+patch fixes that exactly like for case 0x710/2.
 
-  const int fd = open("/dev/fb0", O_ACCMODE);
-  struct fb_var_screeninfo var = { };
-  ioctl(fd, FBIOGET_VSCREENINFO, &var);
-  var.xres = var.yres = 1;
-  ioctl(fd, FBIOPUT_VSCREENINFO, &var);
+Found by Linux Driver Verification project (linuxtesting.org).
 
-causes general protection fault in bitfill_aligned(), for vc_do_resize()
-updates vc->vc_{cols,rows} only when vc_do_resize() will return 0.
-
-[   20.102222] BUG: unable to handle page fault for address: ffffb80500d7b000
-[   20.102225] #PF: supervisor write access in kernel mode
-[   20.102226] #PF: error_code(0x0002) - not-present page
-[   20.102227] PGD 13a48c067 P4D 13a48c067 PUD 13a48d067 PMD 132525067 PTE 0
-[   20.102230] Oops: 0002 [#1] SMP
-[   20.102232] CPU: 3 PID: 2786 Comm: a.out Not tainted 5.8.0-rc4+ #749
-[   20.102233] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 02/27/2020
-[   20.102237] RIP: 0010:bitfill_aligned+0x87/0x120 [cfbfillrect]
-[   20.102277] Call Trace:
-[   20.102281]  cfb_fillrect+0x159/0x340 [cfbfillrect]
-[   20.102747]  vmw_fb_fillrect+0x12/0x30 [vmwgfx]
-[   20.102755]  bit_clear_margins+0x92/0xf0 [fb]
-[   20.102760]  fbcon_clear_margins+0x4c/0x50 [fb]
-[   20.102763]  fbcon_switch+0x321/0x570 [fb]
-[   20.102771]  redraw_screen+0xe0/0x250
-[   20.102775]  fbcon_modechanged+0x164/0x1b0 [fb]
-[   20.102779]  fbcon_update_vcs+0x15/0x20 [fb]
-[   20.102781]  fb_set_var+0x364/0x3c0 [fb]
-[   20.102817]  do_fb_ioctl+0x2ff/0x3f0 [fb]
-[   20.103139]  fb_ioctl+0x2e/0x40 [fb]
-[   20.103141]  ksys_ioctl+0x86/0xc0
-[   20.103146]  __x64_sys_ioctl+0x15/0x20
-[   20.103148]  do_syscall_64+0x54/0xa0
-[   20.103151]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-If vc_do_resize() fails (e.g. kzalloc() failure) when var.xres or var.yres
-is going to shrink, bit_clear_margins() hits integer underflow bug due to
-info->var.xres < (vc->vc_cols * cw) or info->var.yres < (vc->vc_rows * ch).
-Unexpectedly large rw or bh will try to overrun the __iomem region and
-causes general protection fault.
-
-This crash is easily reproducible by calling vc_do_resize(vc, 0, 0)
-which the reproducer above will do. Since fbcon_modechanged() is doing
-
-  cols = FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
-  rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
-  cols /= vc->vc_font.width;
-  rows /= vc->vc_font.height;
-  vc_resize(vc, cols, rows);
-  (...snipped...)
-  update_screen(vc);
-
-, var.xres < vc->vc_font.width makes cols = 0 and var.yres < vc->vc_font.height
-makes rows = 0. But vc_do_resize() does not set vc->vc_cols = vc->vc_rows = 0
-due to
-
-  new_cols = (cols ? cols : vc->vc_cols);
-  new_rows = (lines ? lines : vc->vc_rows);
-
-exception.
-
-Of course, the root problem is that callers of do_vc_resize() are not
-handling vc_do_resize() failures, but it might not be easy to handle
-them under complicated dependency. Therefore, as a band-aid workaround,
-this patch checks integer underflow in "struct fbcon_ops"->clear_margins
-call, assuming that vc->vc_cols * vc->vc_font.width and
-vc->vc_rows * vc->vc_font.heigh do not cause integer overflow.
-
-I hope that we can survive even if info->var.{xres,yres} were increased
-but vc->vc_{cols,rows} were not increased due to kzalloc() failure, for
-the __iomem memory for cfb_fillrect() seems to be allocated upon driver
-load.
-
-By the way, syzbot has several reports which are stalling inside filling
-functions. Although reproducer for [1] is not found yet, it has tried
-
-  r0 = openat$fb0(0xffffffffffffff9c, &(0x7f0000000180)='/dev/fb0\x00', 0x0, 0x0)
-  ioctl$FBIOPUT_VSCREENINFO(r0, 0x4601, &(0x7f0000000000)={0x0, 0x0, 0x0, 0x500, 0x0, 0x0, 0x4})
-
-which corresponds to
-
-  const int fd = open("/dev/fb0", O_ACCMODE);
-  struct fb_var_screeninfo var = { };
-  var.yres_virtual = 0x500;
-  var.bits_per_pixel = 4;
-  ioctl(fd, FBIOPUT_VSCREENINFO, &var);
-
-and somehow hit unexpectedly long bit_clear_margins() loops. I don't know
-why syzbot does not hit general protection fault, but it would depend on
-environment because in my VMware environment ioctl(FBIOPUT_VSCREENINFO)
-returns -EINVAL if var.xres == var.yres == 0.
-
-[1] https://syzkaller.appspot.com/bug?id=91ecc3bf32ab1a551c33a39dab7fc0c8cd7b7e16
-
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Evgeny Novikov <novikov@ispras.ru>
 ---
- drivers/video/fbdev/core/bitblit.c   | 4 ++--
- drivers/video/fbdev/core/fbcon_ccw.c | 4 ++--
- drivers/video/fbdev/core/fbcon_cw.c  | 4 ++--
- drivers/video/fbdev/core/fbcon_ud.c  | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/sm712fb.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
-index ca935c09a261..35ebeeccde4d 100644
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -216,7 +216,7 @@ static void bit_clear_margins(struct vc_data *vc, struct fb_info *info,
- 	region.color = color;
- 	region.rop = ROP_COPY;
- 
--	if (rw && !bottom_only) {
-+	if ((int) rw > 0 && !bottom_only) {
- 		region.dx = info->var.xoffset + rs;
- 		region.dy = 0;
- 		region.width = rw;
-@@ -224,7 +224,7 @@ static void bit_clear_margins(struct vc_data *vc, struct fb_info *info,
- 		info->fbops->fb_fillrect(info, &region);
- 	}
- 
--	if (bh) {
-+	if ((int) bh > 0) {
- 		region.dx = info->var.xoffset;
- 		region.dy = info->var.yoffset + bs;
- 		region.width = rs;
-diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
-index dfa9a8aa4509..78f3a5621478 100644
---- a/drivers/video/fbdev/core/fbcon_ccw.c
-+++ b/drivers/video/fbdev/core/fbcon_ccw.c
-@@ -201,7 +201,7 @@ static void ccw_clear_margins(struct vc_data *vc, struct fb_info *info,
- 	region.color = color;
- 	region.rop = ROP_COPY;
- 
--	if (rw && !bottom_only) {
-+	if ((int) rw > 0 && !bottom_only) {
- 		region.dx = 0;
- 		region.dy = info->var.yoffset;
- 		region.height = rw;
-@@ -209,7 +209,7 @@ static void ccw_clear_margins(struct vc_data *vc, struct fb_info *info,
- 		info->fbops->fb_fillrect(info, &region);
- 	}
- 
--	if (bh) {
-+	if ((int) bh > 0) {
- 		region.dx = info->var.xoffset + bs;
- 		region.dy = 0;
-                 region.height = info->var.yres_virtual;
-diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
-index ce08251bfd38..fd098ff17574 100644
---- a/drivers/video/fbdev/core/fbcon_cw.c
-+++ b/drivers/video/fbdev/core/fbcon_cw.c
-@@ -184,7 +184,7 @@ static void cw_clear_margins(struct vc_data *vc, struct fb_info *info,
- 	region.color = color;
- 	region.rop = ROP_COPY;
- 
--	if (rw && !bottom_only) {
-+	if ((int) rw > 0 && !bottom_only) {
- 		region.dx = 0;
- 		region.dy = info->var.yoffset + rs;
- 		region.height = rw;
-@@ -192,7 +192,7 @@ static void cw_clear_margins(struct vc_data *vc, struct fb_info *info,
- 		info->fbops->fb_fillrect(info, &region);
- 	}
- 
--	if (bh) {
-+	if ((int) bh > 0) {
- 		region.dx = info->var.xoffset;
- 		region.dy = info->var.yoffset;
-                 region.height = info->var.yres;
-diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
-index 1936afc78fec..e165a3fad29a 100644
---- a/drivers/video/fbdev/core/fbcon_ud.c
-+++ b/drivers/video/fbdev/core/fbcon_ud.c
-@@ -231,7 +231,7 @@ static void ud_clear_margins(struct vc_data *vc, struct fb_info *info,
- 	region.color = color;
- 	region.rop = ROP_COPY;
- 
--	if (rw && !bottom_only) {
-+	if ((int) rw > 0 && !bottom_only) {
- 		region.dy = 0;
- 		region.dx = info->var.xoffset;
- 		region.width  = rw;
-@@ -239,7 +239,7 @@ static void ud_clear_margins(struct vc_data *vc, struct fb_info *info,
- 		info->fbops->fb_fillrect(info, &region);
- 	}
- 
--	if (bh) {
-+	if ((int) bh > 0) {
- 		region.dy = info->var.yoffset;
- 		region.dx = info->var.xoffset;
-                 region.height  = bh;
+diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
+index 6a1b4a853d9e..0171b23fa211 100644
+--- a/drivers/video/fbdev/sm712fb.c
++++ b/drivers/video/fbdev/sm712fb.c
+@@ -1602,6 +1602,14 @@ static int smtcfb_pci_probe(struct pci_dev *pdev,
+ 		sfb->fb->fix.mmio_start = mmio_base;
+ 		sfb->fb->fix.mmio_len = 0x00200000;
+ 		sfb->dp_regs = ioremap(mmio_base, 0x00200000 + smem_size);
++		if (!sfb->dp_regs) {
++			dev_err(&pdev->dev,
++				"%s: unable to map memory mapped IO!\n",
++				sfb->fb->fix.id);
++			err = -ENOMEM;
++			goto failed_fb;
++		}
++
+ 		sfb->lfb = sfb->dp_regs + 0x00200000;
+ 		sfb->mmio = (smtc_regbaseaddress =
+ 		    sfb->dp_regs + 0x000c0000);
 -- 
-2.18.4
+2.16.4
 
