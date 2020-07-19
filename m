@@ -2,100 +2,165 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 956BF22215F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Jul 2020 13:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADB6225134
+	for <lists+linux-fbdev@lfdr.de>; Sun, 19 Jul 2020 12:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728208AbgGPL1x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 16 Jul 2020 07:27:53 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:61315 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726383AbgGPL1t (ORCPT
+        id S1726012AbgGSKKU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 19 Jul 2020 06:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725988AbgGSKKT (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 16 Jul 2020 07:27:49 -0400
-Received: from fsav103.sakura.ne.jp (fsav103.sakura.ne.jp [27.133.134.230])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 06GBRL97041795;
-        Thu, 16 Jul 2020 20:27:21 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav103.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav103.sakura.ne.jp);
- Thu, 16 Jul 2020 20:27:21 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav103.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 06GBRLEi041792
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Thu, 16 Jul 2020 20:27:21 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: [PATCH v2] fbdev: Detect integer underflow at "struct
- fbcon_ops"->clear_margins.
-To:     Daniel Vetter <daniel@ffwll.ch>
-References: <adff5d10-fe35-62d4-74c5-182958c5ada7@i-love.sakura.ne.jp>
- <20200715015102.3814-1-penguin-kernel@I-love.SAKURA.ne.jp>
- <20200715094836.GD2571@kadam>
- <9e6eac10-c5c3-f518-36cc-9ea32fb5d7fe@i-love.sakura.ne.jp>
- <b50f85c7-80e5-89c5-0aca-31d8e9892665@i-love.sakura.ne.jp>
- <20200715151220.GE2571@kadam>
- <adfa8720-c411-dfe6-6b0f-7591dd95396c@i-love.sakura.ne.jp>
- <20200716100006.GN3278063@phenom.ffwll.local>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        syzbot <syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        George Kennedy <george.kennedy@oracle.com>,
-        Jiri Slaby <jslaby@suse.com>,
-        Dmitry Vyukov <dvyukov@google.com>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <b202b74b-6a7b-e2be-2350-72144331303b@i-love.sakura.ne.jp>
-Date:   Thu, 16 Jul 2020 20:27:21 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Sun, 19 Jul 2020 06:10:19 -0400
+Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963A0C0619D2;
+        Sun, 19 Jul 2020 03:10:19 -0700 (PDT)
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 6DB27BC078;
+        Sun, 19 Jul 2020 10:10:14 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     robh+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        b.zolnierkie@samsung.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH for v5.9] ARM: dts: mxs: Replace HTTP links with HTTPS ones
+Date:   Sun, 19 Jul 2020 12:10:08 +0200
+Message-Id: <20200719101008.57623-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-In-Reply-To: <20200716100006.GN3278063@phenom.ffwll.local>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++++++
+X-Spam-Level: ******
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
+X-Spam: Yes
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2020/07/16 19:00, Daniel Vetter wrote:
-> On Thu, Jul 16, 2020 at 12:29:00AM +0900, Tetsuo Handa wrote:
->> On 2020/07/16 0:12, Dan Carpenter wrote:
->>> I've complained about integer overflows in fbdev for a long time...
->>>
->>> What I'd like to see is something like the following maybe.  I don't
->>> know how to get the vc_data in fbmem.c so it doesn't include your checks
->>> for negative.
->>
->> Yes. Like I said "Thus, I consider that we need more sanity/constraints checks." at
->> https://lore.kernel.org/lkml/b1e7dd6a-fc22-bba8-0abb-d3e779329bce@i-love.sakura.ne.jp/ ,
->> we want basic checks. That's a task for fbdev people who should be familiar with
->> necessary constraints.
-> 
-> I think the worldwide supply of people who understand fbdev and willing to
-> work on it is roughly 0. So if someone wants to fix this mess properly
-> (which likely means adding tons of over/underflow checks at entry points,
-> since you're never going to catch the driver bugs, there's too many and
-> not enough people who care) they need to fix this themselves.
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-But I think we can enforce reasonable constraint which is much stricter than Dan's basic_checks()
-(which used INT_MAX). For example, do we need to accept var->{xres,yres} >= 1048576, for
-"32768 rows or cols" * "32 pixels per character" = 1045876 and vc_do_resize() accepts only
-rows and cols < 32768 ?
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
 
-> 
-> Just to avoid confusion here.
-> 
->> Anyway, my two patches are small and low cost; can we apply these patches regardless
->> of basic checks?
-> 
-> Which two patches where?
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+ (Actually letting a shell for loop submit all this stuff for me.)
 
-[PATCH v3] vt: Reject zero-sized screen buffer size.
- from https://lkml.kernel.org/r/20200712111013.11881-1-penguin-kernel@I-love.SAKURA.ne.jp
+ If there are any URLs to be removed completely
+ or at least not (just) HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
 
-[PATCH v2] fbdev: Detect integer underflow at "struct fbcon_ops"->clear_margins.
- from https://lkml.kernel.org/r/20200715015102.3814-1-penguin-kernel@I-love.SAKURA.ne.jp
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
+
+ Sorry again to all maintainers who complained about subject lines.
+ Now I realized that you want an actually perfect prefixes,
+ not just subsystem ones.
+ I tried my best...
+ And yes, *I could* (at least half-)automate it.
+ Impossible is nothing! :)
+
+
+ arch/arm/boot/dts/imx23-pinfunc.h     | 4 ++--
+ arch/arm/boot/dts/imx28-pinfunc.h     | 4 ++--
+ arch/arm/boot/dts/imx53-tx53-x13x.dts | 4 ++--
+ arch/arm/boot/dts/mxs-pinfunc.h       | 4 ++--
+ include/video/imx-ipu-v3.h            | 4 ++--
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx23-pinfunc.h b/arch/arm/boot/dts/imx23-pinfunc.h
+index 5c0f32ca3a93..f9d7eb6679de 100644
+--- a/arch/arm/boot/dts/imx23-pinfunc.h
++++ b/arch/arm/boot/dts/imx23-pinfunc.h
+@@ -7,8 +7,8 @@
+  * License. You may obtain a copy of the GNU General Public License
+  * Version 2 at the following locations:
+  *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * https://www.opensource.org/licenses/gpl-license.html
++ * https://www.gnu.org/copyleft/gpl.html
+  */
+ 
+ #ifndef __DT_BINDINGS_MX23_PINCTRL_H__
+diff --git a/arch/arm/boot/dts/imx28-pinfunc.h b/arch/arm/boot/dts/imx28-pinfunc.h
+index e11f69ba0fe4..ffd5412b70ae 100644
+--- a/arch/arm/boot/dts/imx28-pinfunc.h
++++ b/arch/arm/boot/dts/imx28-pinfunc.h
+@@ -7,8 +7,8 @@
+  * License. You may obtain a copy of the GNU General Public License
+  * Version 2 at the following locations:
+  *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * https://www.opensource.org/licenses/gpl-license.html
++ * https://www.gnu.org/copyleft/gpl.html
+  */
+ 
+ #ifndef __DT_BINDINGS_MX28_PINCTRL_H__
+diff --git a/arch/arm/boot/dts/imx53-tx53-x13x.dts b/arch/arm/boot/dts/imx53-tx53-x13x.dts
+index 6cdf2082c742..a34d98cf6ed4 100644
+--- a/arch/arm/boot/dts/imx53-tx53-x13x.dts
++++ b/arch/arm/boot/dts/imx53-tx53-x13x.dts
+@@ -41,8 +41,8 @@
+  * License. You may obtain a copy of the GNU General Public License
+  * Version 2 at the following locations:
+  *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * https://www.opensource.org/licenses/gpl-license.html
++ * https://www.gnu.org/copyleft/gpl.html
+  */
+ 
+ /dts-v1/;
+diff --git a/arch/arm/boot/dts/mxs-pinfunc.h b/arch/arm/boot/dts/mxs-pinfunc.h
+index c6da987b20cb..6766292eee30 100644
+--- a/arch/arm/boot/dts/mxs-pinfunc.h
++++ b/arch/arm/boot/dts/mxs-pinfunc.h
+@@ -7,8 +7,8 @@
+  * License. You may obtain a copy of the GNU General Public License
+  * Version 2 at the following locations:
+  *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * https://www.opensource.org/licenses/gpl-license.html
++ * https://www.gnu.org/copyleft/gpl.html
+  */
+ 
+ #ifndef __DT_BINDINGS_MXS_PINCTRL_H__
+diff --git a/include/video/imx-ipu-v3.h b/include/video/imx-ipu-v3.h
+index 06b0b57e996c..749490e3c66e 100644
+--- a/include/video/imx-ipu-v3.h
++++ b/include/video/imx-ipu-v3.h
+@@ -5,8 +5,8 @@
+  * Public License.  You may obtain a copy of the GNU Lesser General
+  * Public License Version 2.1 or later at the following locations:
+  *
+- * http://www.opensource.org/licenses/lgpl-license.html
+- * http://www.gnu.org/copyleft/lgpl.html
++ * https://www.opensource.org/licenses/lgpl-license.html
++ * https://www.gnu.org/copyleft/lgpl.html
+  */
+ 
+ #ifndef __DRM_IPU_H__
+-- 
+2.27.0
+
