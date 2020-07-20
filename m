@@ -2,116 +2,101 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA531225BBC
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Jul 2020 11:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9A7E226EE7
+	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Jul 2020 21:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbgGTJgB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Jul 2020 05:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39082 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726492AbgGTJgB (ORCPT
+        id S1730962AbgGTTS5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 20 Jul 2020 15:18:57 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:57709 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728874AbgGTTS5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Jul 2020 05:36:01 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411A3C061794
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Jul 2020 02:36:01 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id t198so13920759oie.7
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Jul 2020 02:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZNxm2z54xhtj6yCPRO7kYC1arlUA7YqvRKAbrJcyWVo=;
-        b=KiGF/HsWcmzhjD7saOtN9N9aH75StsVlQ/1S2IA09fhK1R/SZTJmj7RM+DWKlLxYqv
-         2/gLh+uyQEIB83t6faaB5dc4ARdpa0P0dUsrPviFw5+kNMvNiQEyT5S1ncWlKBiWHeBy
-         ccvgEH+vUe2joF4Nr+HmHmLmuU4jhUIXFwtPlKc0r/Z5ItmKo/W91elVSOoG6CwhxTXV
-         nTZuvb7J7zSIYDk7+VybcSsPbLwnkXMq80wExFt671KwzDj3TURBvPxkShK17Nzapygy
-         VbArsmLzRZRGDVpszWZn5wqElPngJwW19YwjZ+HHIIAohpUScewhGJPhnG2mEAOsU7vZ
-         XDGA==
+        Mon, 20 Jul 2020 15:18:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1595272735;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=1Kbu8ZJB+PbpYpnvxeXN5DGnvBoImp+SwBun1XbwpDw=;
+        b=e0F2J7/dBWRF2ANA5jdbc3z5Pg+kkbBwr6HeWdkdtKCutJPjedNzSH3TyJ2WfqYRVrucgD
+        bThkCTzQ548BQZNFPmQd8hCbE1j3VK90oWcXBTtaFqJEYDdeLpXAL21ElII4O58GOQ1OV7
+        H9X3wIUCnjqfP17rffq89Exhw9CtoRc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-379-2NgHycbsM0CrUflxrTidiQ-1; Mon, 20 Jul 2020 15:18:53 -0400
+X-MC-Unique: 2NgHycbsM0CrUflxrTidiQ-1
+Received: by mail-qk1-f197.google.com with SMTP id x4so3017214qkx.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 20 Jul 2020 12:18:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZNxm2z54xhtj6yCPRO7kYC1arlUA7YqvRKAbrJcyWVo=;
-        b=Pp6828+4fqwnyMyvhiZQdpOU0y4AbARfc7cQbYKhxb5FG/6cym+k4+1O43aDaQCbRe
-         0Za8+aaRLD/F0or7zPam7lTAJsEfPCseEtVv5WJJde35f5KYVAivek7avs9ftV7Kume4
-         xA6mJqrLU/jU1iC6Ypy+QV8sOAneNhd4NvXCxJY3y/u648lCK61r8Bgq+6cdK9dwuOZd
-         RSWawt+yZb3P17xDPonTNeqR5YpspEiD8X2wl5ikg5Te6D95QC4XiOHR9s6YNRiZ+aix
-         qKqIMMo6ZN7xGstH1o9oZXVPh7JimtpWVzYyLDc5eb9R2mV/EqkyitbDn94juZq+gi3v
-         GBEg==
-X-Gm-Message-State: AOAM532ffc0RTau7jsVe5KjLsqQF3U9P4byg7PCA0XDK8d1dYlKTR6bU
-        XHkj7/vCj46euNZi+sXgVuTonchnfR7sOpW7a6Xk0MXC
-X-Google-Smtp-Source: ABdhPJwYawHU9BgFp4Os8MlY50BY20HmfIBRmAYllJxQPF5ceGK/3AOWwRSuWsoqzXUefbv4w7dWQRqrnAh5aUgShSU=
-X-Received: by 2002:a54:4e1d:: with SMTP id a29mr15004596oiy.139.1595237760397;
- Mon, 20 Jul 2020 02:36:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <36f3542011c34c4a9509f00c666a514a@kontron.com>
-In-Reply-To: <36f3542011c34c4a9509f00c666a514a@kontron.com>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Mon, 20 Jul 2020 10:35:24 +0100
-Message-ID: <CADVatmOmhA5E6Qi23YtdZjtoS=dKKCk1bujw9dEY-sKrGAt30A@mail.gmail.com>
-Subject: Re: SM750 : from which driver should I start to add a new transmitter ?
-To:     Gilles Buloz <Gilles.Buloz@kontron.com>
-Cc:     "greg@kroah.com" <greg@kroah.com>,
-        "teddy.wang@siliconmotion.com" <teddy.wang@siliconmotion.com>,
-        LFBDEV <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1Kbu8ZJB+PbpYpnvxeXN5DGnvBoImp+SwBun1XbwpDw=;
+        b=LKrt20OhQ1PYGQZgfMvdQy2giBytJW4Tj3/y1OAkCpCloSpC/S/TezdkxQfRVOmmHI
+         xn9Fva3hFyePEbfWsLKo0xbpDgKVwaCe00Q+82FeFI4ysLEUcTu7l9xpxYC+HXCPPf/5
+         grAvreR12JNATui5MCx92IJuJ7nqO8DNzfXHQUW6I1DtoNLfwm5x1x937E9z7mbJYdWY
+         /VYk06CS7xXnO4AvmqL9AfaDAq0iic9xNihFjKcCu+mCLvbKArOrsIhJXouayKFvETla
+         rgfI/OyZN0xyXyl5klp+m1iHKdK1yaXz7fr8dGV2XtEdJ5tzP2BRp/HW51gvwiFfbZit
+         PVJg==
+X-Gm-Message-State: AOAM5333rvFvVkqK2cDlfkfex07FsujHOAfA0XNxojfBEn8nZqhESJqW
+        IrIxf/A4CWuU7w7jIiDBIgEISojLyrHZWwqnvKuoWlZn9nd8YR9UkmWS0dlFnyupn2JTSm9fQ4h
+        iWejLW4EqAq2K/ahK2c3ptiA=
+X-Received: by 2002:ac8:bc2:: with SMTP id p2mr26252066qti.374.1595272733343;
+        Mon, 20 Jul 2020 12:18:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwnHhkZMNBQS0nyRzKMd1uLYdyrRKd2rgZ6H9zo8r0jm3gmVaJyLQcNPC2s6t9n52ICM5SvqQ==
+X-Received: by 2002:ac8:bc2:: with SMTP id p2mr26252034qti.374.1595272733050;
+        Mon, 20 Jul 2020 12:18:53 -0700 (PDT)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id c80sm335957qkg.72.2020.07.20.12.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2020 12:18:52 -0700 (PDT)
+From:   trix@redhat.com
+To:     b.zolnierkie@samsung.com, jhubbard@nvidia.com, sam@ravnborg.org,
+        daniel.vetter@ffwll.ch, gustavo@embeddedor.com, arnd@arndb.de,
+        jani.nikula@intel.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
+Subject: [PATCH] video: fbdev: pvr2fb: initialize variables
+Date:   Mon, 20 Jul 2020 12:18:45 -0700
+Message-Id: <20200720191845.20115-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.1
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-HI Gilles, (Added fbdev and dri list)
+From: Tom Rix <trix@redhat.com>
 
-On Mon, Jul 20, 2020 at 10:18 AM Gilles Buloz <Gilles.Buloz@kontron.com> wr=
-ote:
->
-> Dear developers,
->
->
-> My company is manufacturing M2 graphics modules based on SM750. and I nee=
-d to add support for an ANX9404 transmitter (for DP). I'm wondering which d=
-river you would recommend to start my development :
->
-> - your SM750 framebuffer driver is available in the kernel under drivers/=
-staging/sm750fb/. It is clean and maintained.
+clang static analysis reports this repesentative error
 
-Yes, and I know many companies who are using SM750 uses this driver,
-but the fact remains that it can be removed from staging any time as
-it can never migrate out of staging,
+pvr2fb.c:1049:2: warning: 1st function call argument
+  is an uninitialized value [core.CallAndMessage]
+        if (*cable_arg)
+        ^~~~~~~~~~~~~~~
 
->
-> - I'm currently using another driver from SiliconMotion I got through Inn=
-odisk (another modules manufacturer) supporting SM750/SM768 and labelled "S=
-iliconMotion GPU DRM Driver". But the code is not very clean and produces l=
-ots of warning when building, and seems no more maintained. I even don't ha=
-ve the name nor the email of the developer. However it already works fine w=
-ith our current HDMI transmitter.
->
->
-> Having a look to the sm750fb kernel driver, the TODO file says : "must be=
- ported to the atomic kms framework in the drm subsystem (which will give y=
-ou a basic fbdev driver for free)".
+Problem is that cable_arg depends on the input loop to
+set the cable_arg[0].  If it does not, then some random
+value from the stack is used.
 
-Yes.
+A similar problem exists for output_arg.
 
->
-> It seems my current driver is already of this kind (DRM driver using mode=
-setting Xorg module). I can send you the source code of this driver as it i=
-s open source If you want to see which driver I mean.
+So initialize cable_arg and output_arg.
 
-Is it the same as the one I have at gitlab
-(https://gitlab.com/sudipm/sm750/tree/sm750) ? If it is same then it
-will not be accepted in drm subsystem as it needs to be cleaned and I
-will need to add "atomic" to it. Well, atomic was the main blocker.
-But, if the driver that you have has been already converted to be an
-atomic driver then please send it to me and I can clean it up and
-submit.
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/video/fbdev/pvr2fb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
+index 2d9f69b93392..f4add36cb5f4 100644
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -1028,6 +1028,8 @@ static int __init pvr2fb_setup(char *options)
+ 	if (!options || !*options)
+ 		return 0;
+ 
++	cable_arg[0] = output_arg[0] = 0;
++
+ 	while ((this_opt = strsep(&options, ","))) {
+ 		if (!*this_opt)
+ 			continue;
+-- 
+2.18.1
 
-
---
-Regards
-Sudip
