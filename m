@@ -2,114 +2,186 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2EB22829C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Jul 2020 16:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12602284DF
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Jul 2020 18:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728156AbgGUOrR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 Jul 2020 10:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728127AbgGUOrR (ORCPT
+        id S1730135AbgGUQHX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Jul 2020 12:07:23 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:36957 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729999AbgGUQHW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 Jul 2020 10:47:17 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199F8C061794
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 Jul 2020 07:47:17 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id c80so3126374wme.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 Jul 2020 07:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=fNGxz0EZnvsEYVO1d5B3FCu46i18q7LLNyU2Zb0GsXw=;
-        b=FZlxfbBzMv/Mv99bS4q6XH2M9JQIzudAk8C+E9ynRtLRrlX+FFqRTkY6dUUJTYVsx9
-         MbwQz4rp3eDGY+uDX/JEllnSNunccztui3HhWwSzWhUtXNWe6A578ErRwy6TFgtQbIY6
-         wyNiTkrJ9rzJmvTWpye+mu3S49o+qB5+w/hvsS/+u6kdFvsS5aRuDajMVSEkwV+Kk7Sq
-         qqLf+fmbamozD6zTBYAHp4OlhWXRl9EO/4rW2H//ctPY7jHXtp0c0q3u6WZzWFqCR06A
-         Ns7hAnG9p0XM18hzRwptDvr/Y70R9is31f9lNp2/uqwTiPM9h2XP2U7EWC4/rZObBP1B
-         go0A==
+        Tue, 21 Jul 2020 12:07:22 -0400
+Received: by mail-il1-f195.google.com with SMTP id r12so16882261ilh.4;
+        Tue, 21 Jul 2020 09:07:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=fNGxz0EZnvsEYVO1d5B3FCu46i18q7LLNyU2Zb0GsXw=;
-        b=ulse61ZrcOPv3bn+FDb7lGpj+0Uo4TVjBnwycfcE9wZVpfkXGGYZ9QSdGWl69hK5BS
-         L3gaT4idD27bxbdCm1++rVk2VjUeGYvYlEVwX7uFtkN5hqLu+AupiQZSAv8HvMDDgjZr
-         8mUqeDk9FHXaF9WUhN/cO3jocaB+0QZvZO3p297eyy6kdSGiMHBPbbhU49Bo4o5+t7Iv
-         ez2u+eJ7BTwgbSkjOr+yumFp4F4mG0sxEPCgV8TMzF80E7wj9uMJW6bfaEkOEELzWqLu
-         Zxi1Fr8o/ABCowGGHWZq9dlpUS5T5XcDqKs6BTXI/rz3Y819e2GLZpbw1ZHzWTDCKcin
-         2DJw==
-X-Gm-Message-State: AOAM530v2tDuymPPSnEyEWVcnrMLAgU033waST5Z+/qlOnE0GYSezpuJ
-        iUBAhOLdyU7L6lt8DQk7NgZiqg==
-X-Google-Smtp-Source: ABdhPJxElqrmQU4NxdvdqG6pNVbw5C9a920GKqPa8jgL90mmqhRnnOi+UUmFOIFCOVpkQwnSzyvuXg==
-X-Received: by 2002:a1c:59c2:: with SMTP id n185mr4607804wmb.104.1595342835775;
-        Tue, 21 Jul 2020 07:47:15 -0700 (PDT)
-Received: from dell ([2.27.167.94])
-        by smtp.gmail.com with ESMTPSA id y17sm21855229wrh.63.2020.07.21.07.47.14
+         :mime-version:content-disposition:in-reply-to;
+        bh=AWT6HTVnGa5OoA145kFbOVcYaqGdpzuCOlaAtGKUKy8=;
+        b=HLFzFucJPUm0vBdRj8rnp6obmcT9PtQJ7t+APoiRNAIUsWroNRA12R4ucsVdgml5xR
+         GXbbnk6YjsrxvQZdq0Py8zK/lluzgR78qxmaVhYboPqTaJRTSxOWntLpHvhCUR06VPdP
+         aBINVQoxpACptLAkuiNp7r4O4V65fKcuUVg/jR39SehWg/Ee6zwPY4q8f9VrTbdHU2xs
+         GxYPJ2cfiam1n+TOGRwmyJRqevEQx655kcb+72AGtJvTcJEgy0sJ7qmNQB7oi3NtFXOT
+         McXA8HOr1eT+Rj67qiQHIlZDZ2Z2L/k/KeYWRPa5o6smRFhL04vJEyRtrlN89BF7/qzS
+         Wz8A==
+X-Gm-Message-State: AOAM530HLUzYJSF4Ag9lG1q9SbNENJwU7mVAuytsrcoIFSbO1hoA9meF
+        pPU0RYvwiyfL3GlUZbFBGg==
+X-Google-Smtp-Source: ABdhPJxk0ryfRp5Ip5DVR+SmEj772J0qYAPqjLlJ2FWea2yXLBozmmKfdjVr2hzURUDYB/jA3x3ozg==
+X-Received: by 2002:a05:6e02:4ca:: with SMTP id f10mr28975574ils.291.1595347640457;
+        Tue, 21 Jul 2020 09:07:20 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id m6sm11123394ilb.39.2020.07.21.09.07.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2020 07:47:15 -0700 (PDT)
-Date:   Tue, 21 Jul 2020 15:47:11 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Hulk Robot <hulkci@huawei.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH -next] backlight: cr_bllcd: Remove unused variable
- 'intensity'
-Message-ID: <20200721144711.GF621928@dell>
-References: <20200721134841.33893-1-weiyongjun1@huawei.com>
+        Tue, 21 Jul 2020 09:07:18 -0700 (PDT)
+Received: (nullmailer pid 384253 invoked by uid 1000);
+        Tue, 21 Jul 2020 16:07:13 -0000
+Date:   Tue, 21 Jul 2020 10:07:13 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, b.zolnierkie@samsung.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH for v5.9] ARM: dts: mxs: Replace HTTP links with HTTPS
+ ones
+Message-ID: <20200721160713.GA382903@bogus>
+References: <20200719101008.57623-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200721134841.33893-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200719101008.57623-1-grandmaster@al2klimov.de>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 21 Jul 2020, Wei Yongjun wrote:
-
-> Gcc report unused-variable warning as follows:
+On Sun, Jul 19, 2020 at 12:10:08PM +0200, Alexander A. Klimov wrote:
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
 > 
-> drivers/video/backlight/cr_bllcd.c:62:6: warning:
->  unused variable 'intensity' [-Wunused-variable]
->    62 |  int intensity = bd->props.brightness;
->       |      ^~~~~~~~~
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
 > 
-> After commit 24d34617c24f ("backlight: cr_bllcd: Introduce
-> gpio-backlight semantics"), this variable is never used, this
-> commit removing it.
-> 
-> Fixes: 24d34617c24f ("backlight: cr_bllcd: Introduce gpio-backlight semantics")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 > ---
->  drivers/video/backlight/cr_bllcd.c | 1 -
->  1 file changed, 1 deletion(-)
-
-Thanks for the patch, but this has already been fixed.
-
-> diff --git a/drivers/video/backlight/cr_bllcd.c b/drivers/video/backlight/cr_bllcd.c
-> index a24d42e1ea3c..4ad0a72531fe 100644
-> --- a/drivers/video/backlight/cr_bllcd.c
-> +++ b/drivers/video/backlight/cr_bllcd.c
-> @@ -59,7 +59,6 @@ struct cr_panel {
->  
->  static int cr_backlight_set_intensity(struct backlight_device *bd)
->  {
-> -	int intensity = bd->props.brightness;
->  	u32 addr = gpio_bar + CRVML_PANEL_PORT;
->  	u32 cur = inl(addr);
->  
+>  Continuing my work started at 93431e0607e5.
+>  See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+>  (Actually letting a shell for loop submit all this stuff for me.)
 > 
+>  If there are any URLs to be removed completely
+>  or at least not (just) HTTPSified:
+>  Just clearly say so and I'll *undo my change*.
+>  See also: https://lkml.org/lkml/2020/6/27/64
+> 
+>  If there are any valid, but yet not changed URLs:
+>  See: https://lkml.org/lkml/2020/6/26/837
+> 
+>  If you apply the patch, please let me know.
+> 
+>  Sorry again to all maintainers who complained about subject lines.
+>  Now I realized that you want an actually perfect prefixes,
+>  not just subsystem ones.
+>  I tried my best...
+>  And yes, *I could* (at least half-)automate it.
+>  Impossible is nothing! :)
+> 
+> 
+>  arch/arm/boot/dts/imx23-pinfunc.h     | 4 ++--
+>  arch/arm/boot/dts/imx28-pinfunc.h     | 4 ++--
+>  arch/arm/boot/dts/imx53-tx53-x13x.dts | 4 ++--
+>  arch/arm/boot/dts/mxs-pinfunc.h       | 4 ++--
+>  include/video/imx-ipu-v3.h            | 4 ++--
+>  5 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/imx23-pinfunc.h b/arch/arm/boot/dts/imx23-pinfunc.h
+> index 5c0f32ca3a93..f9d7eb6679de 100644
+> --- a/arch/arm/boot/dts/imx23-pinfunc.h
+> +++ b/arch/arm/boot/dts/imx23-pinfunc.h
+> @@ -7,8 +7,8 @@
+>   * License. You may obtain a copy of the GNU General Public License
+>   * Version 2 at the following locations:
+>   *
+> - * http://www.opensource.org/licenses/gpl-license.html
+> - * http://www.gnu.org/copyleft/gpl.html
+> + * https://www.opensource.org/licenses/gpl-license.html
+> + * https://www.gnu.org/copyleft/gpl.html
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Replace the license text with SPDX tags instead.
+
+>   */
+>  
+>  #ifndef __DT_BINDINGS_MX23_PINCTRL_H__
+> diff --git a/arch/arm/boot/dts/imx28-pinfunc.h b/arch/arm/boot/dts/imx28-pinfunc.h
+> index e11f69ba0fe4..ffd5412b70ae 100644
+> --- a/arch/arm/boot/dts/imx28-pinfunc.h
+> +++ b/arch/arm/boot/dts/imx28-pinfunc.h
+> @@ -7,8 +7,8 @@
+>   * License. You may obtain a copy of the GNU General Public License
+>   * Version 2 at the following locations:
+>   *
+> - * http://www.opensource.org/licenses/gpl-license.html
+> - * http://www.gnu.org/copyleft/gpl.html
+> + * https://www.opensource.org/licenses/gpl-license.html
+> + * https://www.gnu.org/copyleft/gpl.html
+>   */
+>  
+>  #ifndef __DT_BINDINGS_MX28_PINCTRL_H__
+> diff --git a/arch/arm/boot/dts/imx53-tx53-x13x.dts b/arch/arm/boot/dts/imx53-tx53-x13x.dts
+> index 6cdf2082c742..a34d98cf6ed4 100644
+> --- a/arch/arm/boot/dts/imx53-tx53-x13x.dts
+> +++ b/arch/arm/boot/dts/imx53-tx53-x13x.dts
+> @@ -41,8 +41,8 @@
+>   * License. You may obtain a copy of the GNU General Public License
+>   * Version 2 at the following locations:
+>   *
+> - * http://www.opensource.org/licenses/gpl-license.html
+> - * http://www.gnu.org/copyleft/gpl.html
+> + * https://www.opensource.org/licenses/gpl-license.html
+> + * https://www.gnu.org/copyleft/gpl.html
+>   */
+>  
+>  /dts-v1/;
+> diff --git a/arch/arm/boot/dts/mxs-pinfunc.h b/arch/arm/boot/dts/mxs-pinfunc.h
+> index c6da987b20cb..6766292eee30 100644
+> --- a/arch/arm/boot/dts/mxs-pinfunc.h
+> +++ b/arch/arm/boot/dts/mxs-pinfunc.h
+> @@ -7,8 +7,8 @@
+>   * License. You may obtain a copy of the GNU General Public License
+>   * Version 2 at the following locations:
+>   *
+> - * http://www.opensource.org/licenses/gpl-license.html
+> - * http://www.gnu.org/copyleft/gpl.html
+> + * https://www.opensource.org/licenses/gpl-license.html
+> + * https://www.gnu.org/copyleft/gpl.html
+>   */
+>  
+>  #ifndef __DT_BINDINGS_MXS_PINCTRL_H__
+> diff --git a/include/video/imx-ipu-v3.h b/include/video/imx-ipu-v3.h
+> index 06b0b57e996c..749490e3c66e 100644
+> --- a/include/video/imx-ipu-v3.h
+> +++ b/include/video/imx-ipu-v3.h
+> @@ -5,8 +5,8 @@
+>   * Public License.  You may obtain a copy of the GNU Lesser General
+>   * Public License Version 2.1 or later at the following locations:
+>   *
+> - * http://www.opensource.org/licenses/lgpl-license.html
+> - * http://www.gnu.org/copyleft/lgpl.html
+> + * https://www.opensource.org/licenses/lgpl-license.html
+> + * https://www.gnu.org/copyleft/lgpl.html
+>   */
+>  
+>  #ifndef __DRM_IPU_H__
+> -- 
+> 2.27.0
+> 
