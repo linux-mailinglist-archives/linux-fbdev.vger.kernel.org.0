@@ -2,93 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBDE222DC2D
-	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Jul 2020 07:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A10D22DD5E
+	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Jul 2020 10:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725747AbgGZFU5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 26 Jul 2020 01:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
+        id S1726455AbgGZI5R (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 26 Jul 2020 04:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725298AbgGZFU5 (ORCPT
+        with ESMTP id S1725794AbgGZI5R (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 26 Jul 2020 01:20:57 -0400
-Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E2DC0619D2;
-        Sat, 25 Jul 2020 22:20:56 -0700 (PDT)
-Received: by mail-qv1-xf41.google.com with SMTP id t6so1108589qvw.1;
-        Sat, 25 Jul 2020 22:20:56 -0700 (PDT)
+        Sun, 26 Jul 2020 04:57:17 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6242C0619D2;
+        Sun, 26 Jul 2020 01:57:16 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id c6so940341pje.1;
+        Sun, 26 Jul 2020 01:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=10G3Z7zc2hpC9xFkXBhwCWtTHJ66WyVHYUrUeWXwqKc=;
-        b=M6tMLNPmHDwRPfUV/IcFUmlGGdPnUDIJGtLFqruOJH7NnHWLTk1cw4HxXlnFBwh4K1
-         g/yT+XHVjAcliIlb83NW843FatIudzqZ5kOFuTdbe6jF3auvR+aYkC6qPoliSDXoaxyk
-         Y1DS0Mg1uPEVk5hJae6iSEWZyLH7GbB9YsO+zYldksunAUV8viyeTbjp3ZtqyCn0r2FY
-         BZpHH5axCbqggTHuvzQQAYi1mC9PQ2SDVJOU4eVT8WSQbDoeqVnaVe7jC2kUBgkfLCj+
-         /o5Z+OmSCmovhr/qByM3tPIiWDoMKEvhivDScza+wYRgayCxMscK5i4bAN/F5O+KjAT7
-         zwqw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZP6JsF3L+gDvWgHfD54eIIL78/CR3lRmnvV/akntuxo=;
+        b=KKEnX2zyJ6WkI8ZbudaqCNi0gmqCxgGR74WNSBQn1L5ax2cCLiA4yIxbco/HI8MUEe
+         /PWnKwGDsY2c4uH3zi7/nNB2V3aKPytCWS3gguyLYHNVQT1thhG25x7sp1KJBmraHmWh
+         r2sGLen+0xjKZxb2J9K7oQ7IQTnWzz/b9jq+n5oVOF4ZUSMy7sb+cvXakBzJiyN9vdHk
+         95zej/S8i0suWDfeg2ZLV5uLS4Jra1N01tVcu5BP/zccUYoirpfeAzo0J+39lI9zaKge
+         bTvoPhu6kDIHbJ0suV41LNBb51EIHmjXorPfaKxRbwIbXMp03ES7a/6jD50ayrnFh81h
+         Kerg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=10G3Z7zc2hpC9xFkXBhwCWtTHJ66WyVHYUrUeWXwqKc=;
-        b=U7kLkIi+Y+XnW8xYfDWEurlN9ckpafeJ63jaop2xqWK4W1KZHJyOIPKQdL8SF6yyg8
-         nhRzWbpYNBBKO0egNJv22bHoWsDLAxX0bq99RcgUlZb6UMMZ+Qt8YI/JqthUGKuxWiYN
-         F87qEAimHHOKJmohm95z397EueoK1O2hegvMduJPKGmrnAWEKDEMNfkQpbpePBR10AeC
-         CJpKHjQ5Kfs1TPsESU2tMTE4GdkyZbl7oGSDUqOpVBUiMIy9nUkWZWtwfHwAkZYBqONB
-         ip3Z6R8lTEbXYzzReOskWbrJwZhgq1nZQcQv7oN3i5PNFUM+dSSvSAv8W2xfkFvMYsBg
-         F47w==
-X-Gm-Message-State: AOAM530y6daCu8hvsR/uq050GxCiS5pQQJwgy+hasI1d2ghYsLVABvqj
-        SkxIAOEvyQh3UMqEqyH2aDg=
-X-Google-Smtp-Source: ABdhPJwNOivgw43Vn9IA5nLTrZOB3NaVskEB1shd7sPm43WXFeLNIjFckNZ1t5DJKuOlDAzRNs9P1g==
-X-Received: by 2002:a0c:ffc6:: with SMTP id h6mr12098268qvv.251.1595740856028;
-        Sat, 25 Jul 2020 22:20:56 -0700 (PDT)
-Received: from linux.home ([2604:2000:1344:41d:159c:94c1:6e96:1b7e])
-        by smtp.googlemail.com with ESMTPSA id t65sm13364129qkf.119.2020.07.25.22.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2020 22:20:55 -0700 (PDT)
-From:   Gaurav Singh <gaurav1086@gmail.com>
-To:     gaurav1086@gmail.com,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZP6JsF3L+gDvWgHfD54eIIL78/CR3lRmnvV/akntuxo=;
+        b=gEW1R0TJyTFrFpqlFeeBAD6okNbiYD39qi8R3du10Eq4dVXyZxDhqKTEFMMtY4qGgg
+         lqFyAwNrUcteg964ky1dUnmU+bkoMtI7nv2B4SzxUovg6g+XW6hLBAmr3W9hqhddL1/9
+         NAR63ehD+5GaR5IH/WaYzW8SgPYJs2MsPevvEkAJaDhFFYkOWXB7j8bn2FkeaNUkZhNy
+         C/aFzEu13kcl4Lrvn/TssRAdegKNJ5L/AKmJHnffloYPAhOg+bWY1gg8DCdksTxVhyzQ
+         gNyp8hD9uLi2yeMV/+hYPSUQzwyKPNVxZasl2E7xBGFVYpssgbuyDHOujlmTsYkSYibu
+         KueQ==
+X-Gm-Message-State: AOAM530B7yLRRwVVCRxQpN0J55+qKGhEraSO/ty4QrQzPg0sJ0VMgTME
+        9g3mQhBTJ++BKagZLhojGVqglMCwd4VfPoCqwW4R43R6
+X-Google-Smtp-Source: ABdhPJz/011v164prAx72VNLA4uAtxCJ1iLFgTJpcujNZYr5oVQ2I6rVwrYZrx3eEti8ZKJeynfcAEuaKvMiXDR5oRA=
+X-Received: by 2002:a17:90a:498b:: with SMTP id d11mr14007458pjh.129.1595753836222;
+ Sun, 26 Jul 2020 01:57:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200726052047.9856-1-gaurav1086@gmail.com>
+In-Reply-To: <20200726052047.9856-1-gaurav1086@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 26 Jul 2020 11:57:00 +0300
+Message-ID: <CAHp75VcL9sT-Ff6FND1v5pWUF=Ey7MXE61uB5Ae3HMpJaOYaUg@mail.gmail.com>
+Subject: Re: [PATCH] [video/fbdev] mbxfb_remove: fix null pointer dereference
+To:     Gaurav Singh <gaurav1086@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         Jani Nikula <jani.nikula@intel.com>,
-        dri-devel@lists.freedesktop.org (open list:FRAMEBUFFER LAYER),
-        linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] [video/fbdev] mbxfb_remove: fix null pointer dereference
-Date:   Sun, 26 Jul 2020 01:20:45 -0400
-Message-Id: <20200726052047.9856-1-gaurav1086@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Function mbxfb_debugfs_remove() accesses fbi->par without NULL check,
-hence do the NULL check in the caller mbxfb_remove().
+On Sun, Jul 26, 2020 at 8:26 AM Gaurav Singh <gaurav1086@gmail.com> wrote:
+>
+> Function mbxfb_debugfs_remove() accesses fbi->par without NULL check,
+> hence do the NULL check in the caller mbxfb_remove().
 
-Signed-off-by: Gaurav Singh <gaurav1086@gmail.com>
----
- drivers/video/fbdev/mbx/mbxfb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+...
 
-diff --git a/drivers/video/fbdev/mbx/mbxfb.c b/drivers/video/fbdev/mbx/mbxfb.c
-index 6dc287c819cb..515c0cda1994 100644
---- a/drivers/video/fbdev/mbx/mbxfb.c
-+++ b/drivers/video/fbdev/mbx/mbxfb.c
-@@ -1012,11 +1012,10 @@ static int mbxfb_remove(struct platform_device *dev)
- 
- 	write_reg_dly(SYSRST_RST, SYSRST);
- 
--	mbxfb_debugfs_remove(fbi);
--
- 	if (fbi) {
- 		struct mbxfb_info *mfbi = fbi->par;
- 
-+		mbxfb_debugfs_remove(fbi);
- 		unregister_framebuffer(fbi);
- 		if (mfbi) {
- 			if (mfbi->platform_remove)
+> @@ -1012,11 +1012,10 @@ static int mbxfb_remove(struct platform_device *dev)
+>
+>         write_reg_dly(SYSRST_RST, SYSRST);
+>
+> -       mbxfb_debugfs_remove(fbi);
+> -
+
+>         if (fbi) {
+
+Can you explain how this is NULL on ->remove()?
+
+I bet this check is simply redundant. But you have to check and update
+commit message accordingly.
+
+>                 struct mbxfb_info *mfbi = fbi->par;
+>
+> +               mbxfb_debugfs_remove(fbi);
+>                 unregister_framebuffer(fbi);
+>                 if (mfbi) {
+>                         if (mfbi->platform_remove)
+
+
 -- 
-2.17.1
-
+With Best Regards,
+Andy Shevchenko
