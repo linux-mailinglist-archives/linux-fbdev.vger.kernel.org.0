@@ -2,176 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D877E231B06
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jul 2020 10:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A7C231B0C
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jul 2020 10:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727996AbgG2ISZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jul 2020 04:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59128 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726993AbgG2ISZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jul 2020 04:18:25 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9941C0619D2
-        for <linux-fbdev@vger.kernel.org>; Wed, 29 Jul 2020 01:18:24 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id q9so1249006oth.5
-        for <linux-fbdev@vger.kernel.org>; Wed, 29 Jul 2020 01:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uGI4csuNiLS6fTAVR1vQNcVBEWSJTSk1oAgwrrB5NsI=;
-        b=e+s6DHmgRnUm69dvY6m2+wPD1X7mXvPZP0fswGknSPRvoHeYYGhzmpEn1hRP36juI+
-         V7TLksSzFpiPGZ8iBtvuXY677+7945nVOo6cGw3h1DxW9Egpg1lITwCjHofkkZSgWJco
-         0eO2GF3rPRG9tVA7CqAt0TGLANGNbH2HvhkYU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uGI4csuNiLS6fTAVR1vQNcVBEWSJTSk1oAgwrrB5NsI=;
-        b=WV8N14t0TqljiamuXc0cGvGE547n9xX+3KpjK5PfCpK75B2QnQcMgbNci+InzVfZsD
-         aRPVUEQkC0vej2/jzOU10Hk8VPNUjjQDuZeeTpp0lGwvd4T+ikRXu9wcJbcJRkL/fcHw
-         NOVa+RwVgVZlkdMpfOtdMa2DLuf05q7mkQUfyDGXzp5w8B2tyIm627walVuA9J7Gkmmf
-         0BOmY9ynsVuAW55lZrOiQa9SDbpfjGrZi4kPtaJ+wc/VTjE6tF1DgoxNi0hxSSKn9FAX
-         AH9GaVOlvzrgGNJKJ7tLh0txmZcBei03+PPDBMbXxxUFVhXQPoOgfn1K5V92qrAzuyZZ
-         OP3g==
-X-Gm-Message-State: AOAM530re9AyjNj/EGV5p1E05WmaGjdj253FBhlP3NO3+p0GIuz5MMsS
-        zfW5SOeoImJemnS9zppu5DsjCYBkh2AxreWtvjLhxPlEumg=
-X-Google-Smtp-Source: ABdhPJzBH+27x3ZujuEpHEVy6Gcb6DYFt6r/ynfQcsmDo5vW4q292PZiJ8/qFIUa5jgMuBmctGSCddAR2m3AVK8RCQA=
-X-Received: by 2002:a9d:6052:: with SMTP id v18mr2509589otj.303.1596010704124;
- Wed, 29 Jul 2020 01:18:24 -0700 (PDT)
+        id S1727907AbgG2ITF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Jul 2020 04:19:05 -0400
+Received: from nsfocus.com ([221.122.62.131]:47372 "HELO nsfocus.com"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with SMTP
+        id S1727816AbgG2ITF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 Jul 2020 04:19:05 -0400
+Received: (qmail 8939 invoked from network); 29 Jul 2020 08:17:41 -0000
+Received: from unknown (HELO ?192.168.7.10?) (221.122.62.131)
+  by nsfocus.com with SMTP; 29 Jul 2020 08:17:41 -0000
+Subject: Re: [PATCH] vgacon: fix out of bounds write to the scrollback buffer
+To:     Jiri Slaby <jirislaby@kernel.org>, b.zolnierkie@samsung.com
+Cc:     linux-kernel@vger.kernel.org,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Kyungtae Kim <kt0755@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg KH <greg@kroah.com>, Solar Designer <solar@openwall.com>,
+        "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
+        Anthony Liguori <aliguori@amazon.com>,
+        Security Officers <security@kernel.org>,
+        linux-distros@vs.openwall.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+References: <c1f267aa-dfb3-91fa-3111-30c1676f1a91@kernel.org>
+From:   =?UTF-8?B?5byg5LqR5rW3?= <zhangyunhai@nsfocus.com>
+Autocrypt: addr=zhangyunhai@nsfocus.com; keydata=
+ xsFNBFXf+bQBEADB+vY6HC3E/hdYvhlVSXWcxXNxk2yHU+P2Rz0dWB5LibtRCm8SAdwFOBRr
+ iyws5OnV1T6j/HnXPR7ENtYbpL+fIcAv5o7jJyEl4cosbpDl0H88Tj/Py0YYEOJg0nm1F0LW
+ 0NlIRG3OSSJQ8UHsCzFPqHQnUJaymfwoyYgIexxkG4Oi+cXVHVnbV3Qafe3H+siB29dfPFuf
+ iZzPhIDnE2K/MF8/RmeB7CTc2Y4lc1CCbKiJsLYMx4CBrQ2qkGyC3XRorMfBRvhglmIY51Lx
+ nHrd5s2vS13YbeeOyU9l54SjipL6XQRdSo/j/xTJBhT7y/c22E52AtsqeuH7gJU7MQnkS+cp
+ FN2b2EcQdWlbUKIm3Tlbs0Y2vjV2cpNNDMc8uVGwddVeNdMjq9tXFkgLQww8SAEs+g15ai5v
+ /LiGy/4NJodl9wSiamsgjBSn8AuFJTazy99k6ug+wLYp0kzD/sB0Otg/UbR7yTS4xjwhyk09
+ WOk3/wLptYujh/0BBWpaCXsLW117PGFz/iSu7QAJhOdlNaaJYxOUDHB4dZPEpRSE6tGGYpZ6
+ AyHkgprFD/lpAluSsSbskjAgPCqdzrU6kZItcc1uu8QIh3Vd1j0iFo8sBLSrg0WXyE2N6mgg
+ MZxkMtQLxy3XkQ7iofoeqgvujufN3pyfBeBzCjRi30W72IOsdwARAQABzSZaaGFuZyBZdW5o
+ YWkgPHpoYW5neXVuaGFpQG5zZm9jdXMuY29tPsLBeQQTAQgAIwUCVd/5tAIbAwcLCQgHAwIB
+ BhUIAgkKCwQWAgMBAh4BAheAAAoJEP4mMEaS5e9PRhsQAJsAmfByeSyMLVFKqVV+A13ESSGn
+ zQW7SzVdcN++WgpGpSUpaQavCRKhzV6InJTUEVpPOphV3v/wFJL3cVYSfm1zxdjd63E116Ow
+ utq4PcavcPkRch9scTrHKKodxbrSwepD50iCqOiQZpVd+bPy14oT/naKCnif58H/9+ZEwgZ3
+ EQh79MBvzN29uzIc1e4sOFwCS+Ew3OrzLZWaNRPLnonsOAkTVEBcMXOxqx+XPexfKHHc4Ukf
+ omKJUO/Q8a7F1SlLa0jcY1Yq5AAAYFJ1DgwPqMVRF69+mE9C7Q9FBKXM8ShGF9VhYjefmBq1
+ UczE/idMAAlUvOVZ/eMeicn1QirKCISSw5yIkLhv8np+1ZBJo8oroEP87Z4JIStGa6sX7E3H
+ s7/3lo8M8oEDl4IyqbXkV/i/pXEiWCd2fVrq+2S45xPOJZgpJ9tKuRxcGYHku9U7LKVG3kni
+ YV/DqOGeCkoxv8mk9C8/CSfJaIrOwqLr86NFnNkL+lXaaPjvvKvpQ3ijIImtDI7TbK9n8Gzd
+ 8V6A7Oy0EqYtfjSp1yZkeF3viYWFyDGyiSuL3NhC0jszTWxQXFIvgUgjEDcYiaMVF1oBh7iA
+ MAuzUGjLd0cj4rjokSmYT2JrxQzx5PeUtIh7JXl1Zj0uBxg1s9y9OZ8mmYBwqZ/UdeYtnThe
+ 26MoIZ6+zsFNBFXf+bQBEADhCv4euKnMwXnMePjAkToO68fjA6qg1wNDzezo+xQcO01k23us
+ bTdvtkrAEhRkA/fy+M3q6yaP+STObQbF41Er0Bfmwtaxt8yXG5OmHNTpvBzM/aW5I9XNPCUj
+ NcOZDGadoPMmo50S0krzA/i6ah/KHnsaB6ZhWRQxXITKs9xxswuNuRIQ7u1VeQlmADh8mfJ8
+ YhFHCioeMSu7HNr+hI+jrZyUE1gPmSmLFnFZ96ONonN5pIJkGa0Lmdshn7nTsiu//QzPQasa
+ hFm4REKTauIFMchDmjkzhWCEHTheaYqzfqFRnsiQi1iOqQ7i+Mnt6YjLaGJe1ZfKQaNTJsvL
+ yInE3Ienoh3gVy4pEgC5wCbuBt7cZ9YYgjTN5JBGKZxahUd4kfto2L0ya5pLcjF1YVtYLaUI
+ xJ28h01tVU4zmiBMVmhCMS++fO3RdGwYSd49jOt0KKi26rukvuKgb16yjD6nNajlJpUsVOBP
+ n7165+7GKM6P2uFps2Qn39FxU29bGTxwHGjIYP7oc22wlh69SZ/EXDup4OhjifZnAyyMsHYq
+ DjLLT6Kjqvh0pDs/ay1+Hs8Qq2z9Bl2/Y4dqLmhtRHzPC3LXwn6OXYoiiojjO+z+aJ0AfdE1
+ s0iDw1oQhKCQsH6ReiLd3R1cmOovotyQREXDml136OPwEnWiL2sNH6dE/wARAQABwsFfBBgB
+ CAAJBQJV3/m0AhsMAAoJEP4mMEaS5e9PzywP/jdR9cn0s2PNa0fQEPo7Ai6v6qy2dHp0lopa
+ 8k/KoIpZEhgnFgy3aVL+vL+9AuaZfSdm3gwW4t4V5GbR5HilQ6Nfp0sJVpE8F/JOF1P9SLSy
+ fIsna0tcqE79/isyF+ockZwVK5rgwJHqEIzr50TOKob2yY4AF0ZFQUSrpU/AmE9OK1EH5d88
+ gIki0kOYQwteL8hLTjkRlecjiBSljA9V4VZVwpXyCHUDO3sCxJQYMaiSTjGEztswoAyUy0Q+
+ xnpzelyw670W/y9DAgafdaN5MJldyAapUOv8yIRSlQ5M2f3ZFyjJOAozNXfqXiuHkKoXgsbW
+ Sfh/o9HfPE5y8NCPJY1IoHRr1pUklwVNIwM77xpQxBFhBPNUbL43igdqRf6hApk4aJ/jT7pF
+ wPKclsAKfZTkqYOksT1Qh0FURhr8S6xUe3aV9omGXIOLGMIbpHuZSbP0akdHA0nzUY6HYbN1
+ 0T3X0bi33lOUefj2uAnhuPeReyAP02CjvkNJVfBRho3h/D56ofuPdvfAetT46d6y+tQVdoka
+ 5tO7oLXD/f5GPuDoYSjfOiIlU4d/tIDUdyXXfml0Ez8DZk0c+3z61TNXRDV1tzXKmC1oV+6m
+ Ql46hjmfjnRfvq72kL55kj+YzWjlM9h98+4vqknUPPYIq+lUz4hO7I3b64i5sPkBWtN7DLkm
+Message-ID: <c5a73038-f441-602b-584b-3d84622b1fb1@nsfocus.com>
+Date:   Wed, 29 Jul 2020 16:19:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Wed, 29 Jul 2020 10:18:12 +0200
-Message-ID: <CAKMK7uHeteS2+rKrZKrAM+zQO==hAX0XaVc9JfHPsdLTCtzKOw@mail.gmail.com>
-Subject: Re: [PATCH] vt: Handle recursion in vc_do_resize().
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <c1f267aa-dfb3-91fa-3111-30c1676f1a91@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jul 29, 2020 at 8:58 AM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
->
-> syzbot is reporting OOB read bug in vc_do_resize() [1] caused by memcpy()
-> based on outdated old_{rows,row_size} values, for resize_screen() can
-> recurse into vc_do_resize() which changes vc->vc_{cols,rows} that outdates
-> old_{rows,row_size} values which were read before calling resize_screen().
->
-> Minimal fix might be to read vc->vc_{rows,size_row} after resize_screen().
-> A different fix might be to forbid recursive vc_do_resize() request.
-> I can't tell which fix is the better.
->
-> But since I guess that new_cols == vc->vc_cols && new_rows == vc->vc_rows
-> check could become true after returning from resize_screen(), and I assume
-> that not calling clear_selection() when resize_screen() will return error
-> is harmless, let's redo the check by moving resize_screen() earlier.
->
-> [1] https://syzkaller.appspot.com/bug?id=c70c88cfd16dcf6e1d3c7f0ab8648b3144b5b25e
->
-> Reported-by: syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+On 2020/7/29 16:11, Jiri Slaby wrote:
+> But the loop checks for the overflow:
+>   if (vgacon_scrollback_cur->tail >= vgacon_scrollback_cur->size)
+>         vgacon_scrollback_cur->tail = 0;
+> 
+> So the first 2 iterations would write to the end of the buffer and this
+> 3rd one should have zeroed ->tail.
 
-Ok, I have actual insight on this one here, and I'm pretty sure this
-isn't the fix. Looking at the syzkaller splat we have a recursion of
-the form
+In the 2nd  iteration before the check:
+vgacon_scrollback_cur->tail is 65360 which is still less then
+vgacon_scrollback_cur->size(65440), so the ->tail won't be zeroed.
 
-fb_ioctl -> fb_set_var -> fbcon_update_vcs -> fbcon_resize -> fb_set_var
+Then it gose to the 3rd  iteration, overflow occurs.
 
-Which isn't supposed to be happening. I've dug around recently in
-fbcon code, and this is a fairly common issue: You can update fbcon
-state both from fb_ioctl, but also from the vc side. To avoid the
-above recursion problems the code is using FBINFO_MISC_USEREVENT, and
-should only set that from fb_ioctl entry points. That's all fairly
-fragile, so I've done a bit of reworking, e.g.
-
-commit de29ae5c092bd9a5360cfabf174b0f783248d278
-Author: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date:   Tue May 28 11:02:56 2019 +0200
-
-    fbmem: pull fbcon_fb_blanked out of fb_blank
-
-as an example.
-
-I think doing the same for fb_set_var, i.e. only calling
-fbcon_update_vcs for the 3 callers that want it, should fix this
-recursion. I think that's the much more robust fix instead of trying
-to paper over the fallout of this recursion here and everywhere else.
-
-Can you look into reworking your patch like that?
-
-Cheers, Daniel
-
-> ---
->  drivers/tty/vt/vt.c | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-> index 42d8c67..952a067 100644
-> --- a/drivers/tty/vt/vt.c
-> +++ b/drivers/tty/vt/vt.c
-> @@ -1217,7 +1217,24 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
->
->         if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
->                 return 0;
-> +       if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
-> +               return -EINVAL;
->
-> +       /*
-> +        * Since fbcon_resize() from resize_screen() can recurse into
-> +        * this function via fb_set_var(), handle recursion now.
-> +        */
-> +       err = resize_screen(vc, new_cols, new_rows, user);
-> +       if (err)
-> +               return err;
-> +       /* Reload values in case recursion changed vc->vc_{cols,rows}. */
-> +       new_cols = (cols ? cols : vc->vc_cols);
-> +       new_rows = (lines ? lines : vc->vc_rows);
-> +       new_row_size = new_cols << 1;
-> +       new_screen_size = new_row_size * new_rows;
-> +
-> +       if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
-> +               return 0;
->         if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
->                 return -EINVAL;
->         newscreen = kzalloc(new_screen_size, GFP_USER);
-> @@ -1238,13 +1255,6 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
->         old_rows = vc->vc_rows;
->         old_row_size = vc->vc_size_row;
->
-> -       err = resize_screen(vc, new_cols, new_rows, user);
-> -       if (err) {
-> -               kfree(newscreen);
-> -               vc_uniscr_free(new_uniscr);
-> -               return err;
-> -       }
-> -
->         vc->vc_rows = new_rows;
->         vc->vc_cols = new_cols;
->         vc->vc_size_row = new_row_size;
-> --
-> 1.8.3.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+Regards,
+Yunhai Zhang / NSFOCUS Security Team
 
 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+
