@@ -2,112 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E589523191B
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jul 2020 07:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF8D2319FB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jul 2020 09:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgG2Fab (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jul 2020 01:30:31 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:50915 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbgG2Fab (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jul 2020 01:30:31 -0400
-Received: from fsav110.sakura.ne.jp (fsav110.sakura.ne.jp [27.133.134.237])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 06T5UUEP052197;
-        Wed, 29 Jul 2020 14:30:30 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav110.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav110.sakura.ne.jp);
- Wed, 29 Jul 2020 14:30:30 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav110.sakura.ne.jp)
-Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 06T5UOZI052019
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Wed, 29 Jul 2020 14:30:30 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-Subject: [PATCH] vt: Handle recursion in vc_do_resize().
-Date:   Wed, 29 Jul 2020 14:30:20 +0900
-Message-Id: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
-X-Mailer: git-send-email 1.8.3.1
+        id S1727784AbgG2HCy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Jul 2020 03:02:54 -0400
+Received: from mx2.suse.de ([195.135.220.15]:37728 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726314AbgG2HCx (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 29 Jul 2020 03:02:53 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id E8C71AB55;
+        Wed, 29 Jul 2020 07:03:02 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     b.zolnierkie@samsung.com
+Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+        =?UTF-8?q?=E5=BC=A0=E4=BA=91=E6=B5=B7?= <zhangyunhai@nsfocus.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Kyungtae Kim <kt0755@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg KH <greg@kroah.com>, Solar Designer <solar@openwall.com>,
+        "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
+        Anthony Liguori <aliguori@amazon.com>,
+        Security Officers <security@kernel.org>,
+        linux-distros@vs.openwall.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Subject: [PATCH] vgacon: fix out of bounds write to the scrollback buffer
+Date:   Wed, 29 Jul 2020 09:02:49 +0200
+Message-Id: <20200729070249.20892-1-jslaby@suse.cz>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot is reporting OOB read bug in vc_do_resize() [1] caused by memcpy()
-based on outdated old_{rows,row_size} values, for resize_screen() can
-recurse into vc_do_resize() which changes vc->vc_{cols,rows} that outdates
-old_{rows,row_size} values which were read before calling resize_screen().
+The current vgacon's scroll up implementation uses a circural buffer
+in vgacon_scrollback_cur. It always advances tail to prepare it for the
+next write and caps it to zero if the next ->vc_size_row bytes won't fit.
 
-Minimal fix might be to read vc->vc_{rows,size_row} after resize_screen().
-A different fix might be to forbid recursive vc_do_resize() request.
-I can't tell which fix is the better.
+But when we change the VT size (e.g. by VT_RESIZE) in the meantime, the new
+line might not fit to the end of the scrollback buffer in the next
+attempt to scroll. This leads to various crashes as
+vgacon_scrollback_update writes out of the buffer:
+ BUG: unable to handle page fault for address: ffffc900001752a0
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ RIP: 0010:mutex_unlock+0x13/0x30
+...
+ Call Trace:
+  n_tty_write+0x1a0/0x4d0
+  tty_write+0x1a0/0x2e0
 
-But since I guess that new_cols == vc->vc_cols && new_rows == vc->vc_rows
-check could become true after returning from resize_screen(), and I assume
-that not calling clear_selection() when resize_screen() will return error
-is harmless, let's redo the check by moving resize_screen() earlier.
+Or to KASAN reports:
+BUG: KASAN: slab-out-of-bounds in vgacon_scroll+0x57a/0x8ed
 
-[1] https://syzkaller.appspot.com/bug?id=c70c88cfd16dcf6e1d3c7f0ab8648b3144b5b25e
+So check whether the line fits in the buffer and wrap if needed. Do it
+before the loop as console_sem is held and ->vc_size_row cannot change
+during the execution of vgacon_scrollback_cur. If it does change, we
+need to ensure it does not change elsewhere, not here.
 
-Reported-by: syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Also, we do not split the write of a line into chunks as that would
+break the consumers of the buffer. They expect ->cnt, ->tail and ->size
+to be in harmony and advanced by ->vc_size_row.
+
+I found few reports of this in the past, some with patches included,
+some even 2 years old:
+https://lore.kernel.org/lkml/CAEAjamsJnG-=TSOwgRbbb3B9Z-PA63oWmNPoKYWQ=Z=+X49akg@mail.gmail.com/
+https://lore.kernel.org/lkml/1589336932-35508-1-git-send-email-yangyingliang@huawei.com/
+
+This fixes CVE-2020-14331.
+
+Big thanks to guys mentioned in the Reported-and-debugged-by lines below
+who actually found the root cause.
+
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Reported-and-debugged-by: 张云海 <zhangyunhai@nsfocus.com>
+Reported-and-debugged-by: Yang Yingliang <yangyingliang@huawei.com>
+Reported-by: Kyungtae Kim <kt0755@gmail.com>
+Fixes: 15bdab959c9b ([PATCH] vgacon: Add support for soft scrollback)
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Greg KH <greg@kroah.com>
+Cc: Solar Designer <solar@openwall.com>
+Cc: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
+Cc: Anthony Liguori <aliguori@amazon.com>
+Cc: Security Officers <security@kernel.org>
+Cc: linux-distros@vs.openwall.org
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 ---
- drivers/tty/vt/vt.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/video/console/vgacon.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 42d8c67..952a067 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1217,7 +1217,24 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index f0f3d573f848..13194bb246f8 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -250,6 +250,11 @@ static void vgacon_scrollback_update(struct vc_data *c, int t, int count)
  
- 	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
- 		return 0;
-+	if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
-+		return -EINVAL;
+ 	p = (void *) (c->vc_origin + t * c->vc_size_row);
  
-+	/*
-+	 * Since fbcon_resize() from resize_screen() can recurse into
-+	 * this function via fb_set_var(), handle recursion now.
-+	 */
-+	err = resize_screen(vc, new_cols, new_rows, user);
-+	if (err)
-+		return err;
-+	/* Reload values in case recursion changed vc->vc_{cols,rows}. */
-+	new_cols = (cols ? cols : vc->vc_cols);
-+	new_rows = (lines ? lines : vc->vc_rows);
-+	new_row_size = new_cols << 1;
-+	new_screen_size = new_row_size * new_rows;
++	/* vc_size_row might have changed by VT_RESIZE in the meantime */
++	if ((vgacon_scrollback_cur->tail + c->vc_size_row) >=
++			vgacon_scrollback_cur->size)
++		vgacon_scrollback_cur->tail = 0;
 +
-+	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
-+		return 0;
- 	if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
- 		return -EINVAL;
- 	newscreen = kzalloc(new_screen_size, GFP_USER);
-@@ -1238,13 +1255,6 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
- 	old_rows = vc->vc_rows;
- 	old_row_size = vc->vc_size_row;
- 
--	err = resize_screen(vc, new_cols, new_rows, user);
--	if (err) {
--		kfree(newscreen);
--		vc_uniscr_free(new_uniscr);
--		return err;
--	}
--
- 	vc->vc_rows = new_rows;
- 	vc->vc_cols = new_cols;
- 	vc->vc_size_row = new_row_size;
+ 	while (count--) {
+ 		scr_memcpyw(vgacon_scrollback_cur->data +
+ 			    vgacon_scrollback_cur->tail,
 -- 
-1.8.3.1
+2.28.0
 
