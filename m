@@ -2,54 +2,32 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4861C2330D4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jul 2020 13:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 156C82330E7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jul 2020 13:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbgG3LQe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 30 Jul 2020 07:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727059AbgG3LQb (ORCPT
+        id S1726891AbgG3L1p (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 30 Jul 2020 07:27:45 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:54530 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726287AbgG3L1p (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 30 Jul 2020 07:16:31 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7237FC0619D2
-        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jul 2020 04:16:31 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id k4so23434102oik.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jul 2020 04:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LDbiiFfKtuBxFd870k3GH23jKEqkoS40hdkLsm0b4u0=;
-        b=MW2G1dbCbGNqMXJdESeyof+5APizl5+rWERSLL6laNDtD5a7Lo3BA/8sv4bJo1LFny
-         7tIJlRj8Z95VnTTJUHI9YPYqCrylfi1RoJj0bTTTcPkS/2ubCkmYTYpbKzNxrWQGzCrG
-         v/CiqvlxWTUixqyk/bRhLbkJXAIYOBC9ABju8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LDbiiFfKtuBxFd870k3GH23jKEqkoS40hdkLsm0b4u0=;
-        b=p8wy2WQNK9AFKlwuESqxpr3od6A7WAE6EYOPl2bXdk+Mpi/M6CLnDmbGa8QJuN77Nw
-         zYC8xPIheyh79BH5OPIPnpDo0WlpZ9s2mdYXOynPx1+fowY4Q2L8j/cwoNVtgIStDx0T
-         pgiJHvheqoEdmgUCQsmAxsqp5WxKnBNcQaTZX40DKHfbmhEaIGcHGvPARUge1QkuBI5/
-         ueXORUYah1OkDa+5xnSnUt33/Hno013TpsIELt065OLvZ+fG7EFSqwRpH+HpbIHJvIEu
-         w1BR2N7ztqcwx103UKo7GQDyOES4CPewltTv4RfTSod6SPDXBsAag4ASFqlzH8kvi7O4
-         FnFQ==
-X-Gm-Message-State: AOAM530tQao5uU2HOVOCHyvjQZnvYSK1kCZsDJbOWJuCqC3GdJdNKiD6
-        Lofa0mSMu0oMgDYt7va5NAjZnyncCjHJQRDHP5pzlg==
-X-Google-Smtp-Source: ABdhPJzfUiKobckCicQnGet8s1h12wCwGvx9XhS5QDydDKtM5O91UJihBhm6xQH2moRfPRJfpZDnoglFGhUO6YhtxLU=
-X-Received: by 2002:a05:6808:9b6:: with SMTP id e22mr425598oig.101.1596107790721;
- Thu, 30 Jul 2020 04:16:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
- <CAKMK7uHeteS2+rKrZKrAM+zQO==hAX0XaVc9JfHPsdLTCtzKOw@mail.gmail.com> <a3bb6544-064d-54a1-1215-d92188cb4209@i-love.sakura.ne.jp>
-In-Reply-To: <a3bb6544-064d-54a1-1215-d92188cb4209@i-love.sakura.ne.jp>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Thu, 30 Jul 2020 13:16:19 +0200
-Message-ID: <CAKMK7uGTL02SHbEazu5YEnEncO6c-+P6DXt1GWSVQ28enqLx2g@mail.gmail.com>
+        Thu, 30 Jul 2020 07:27:45 -0400
+Received: from fsav404.sakura.ne.jp (fsav404.sakura.ne.jp [133.242.250.103])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 06UBRToT022896;
+        Thu, 30 Jul 2020 20:27:30 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav404.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav404.sakura.ne.jp);
+ Thu, 30 Jul 2020 20:27:29 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav404.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 06UBRTGu022886
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Thu, 30 Jul 2020 20:27:29 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
 Subject: Re: [PATCH] fbmem: pull fbcon_update_vcs() out of fb_set_var()
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+To:     Daniel Vetter <daniel@ffwll.ch>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jslaby@suse.com>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
@@ -57,140 +35,33 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
+ <CAKMK7uHeteS2+rKrZKrAM+zQO==hAX0XaVc9JfHPsdLTCtzKOw@mail.gmail.com>
+ <a3bb6544-064d-54a1-1215-d92188cb4209@i-love.sakura.ne.jp>
+ <CAKMK7uGTL02SHbEazu5YEnEncO6c-+P6DXt1GWSVQ28enqLx2g@mail.gmail.com>
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Message-ID: <d4c97785-467a-6e04-b8bb-c8aa4177882a@i-love.sakura.ne.jp>
+Date:   Thu, 30 Jul 2020 20:27:26 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAKMK7uGTL02SHbEazu5YEnEncO6c-+P6DXt1GWSVQ28enqLx2g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jul 30, 2020 at 12:47 AM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
->
-> syzbot is reporting OOB read bug in vc_do_resize() [1] caused by memcpy()
-> based on outdated old_{rows,row_size} values, for resize_screen() can
-> recurse into vc_do_resize() which changes vc->vc_{cols,rows} that outdates
-> old_{rows,row_size} values which were saved before calling resize_screen().
->
-> Daniel Vetter explained that resize_screen() should not recurse into
-> fbcon_update_vcs() path due to FBINFO_MISC_USEREVENT being still set
-> when calling resize_screen().
->
-> Instead of masking FBINFO_MISC_USEREVENT before calling fbcon_update_vcs(),
-> we can remove FBINFO_MISC_USEREVENT by calling fbcon_update_vcs() only if
-> fb_set_var() returned 0. This change assumes that it is harmless to call
-> fbcon_update_vcs() when fb_set_var() returned 0 without reaching
-> fb_notifier_call_chain().
->
-> [1] https://syzkaller.appspot.com/bug?id=c70c88cfd16dcf6e1d3c7f0ab8648b3144b5b25e
->
-> Reported-and-tested-by: syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-> Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> ---
->  drivers/video/fbdev/core/fbmem.c   | 8 ++------
->  drivers/video/fbdev/core/fbsysfs.c | 4 ++--
->  drivers/video/fbdev/ps3fb.c        | 4 ++--
->  include/linux/fb.h                 | 2 --
->  4 files changed, 6 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> index 30e73ec..da7c88f 100644
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -957,7 +957,6 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
->  int
->  fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
->  {
-> -       int flags = info->flags;
->         int ret = 0;
->         u32 activate;
->         struct fb_var_screeninfo old_var;
-> @@ -1052,9 +1051,6 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
->         event.data = &mode;
->         fb_notifier_call_chain(FB_EVENT_MODE_CHANGE, &event);
->
-> -       if (flags & FBINFO_MISC_USEREVENT)
-> -               fbcon_update_vcs(info, activate & FB_ACTIVATE_ALL);
-> -
->         return 0;
->  }
->  EXPORT_SYMBOL(fb_set_var);
-> @@ -1105,9 +1101,9 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
->                         return -EFAULT;
->                 console_lock();
->                 lock_fb_info(info);
-> -               info->flags |= FBINFO_MISC_USEREVENT;
->                 ret = fb_set_var(info, &var);
-> -               info->flags &= ~FBINFO_MISC_USEREVENT;
-> +               if (!ret)
-> +                       fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
->                 unlock_fb_info(info);
->                 console_unlock();
->                 if (!ret && copy_to_user(argp, &var, sizeof(var)))
-> diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
-> index d54c88f..65dae05 100644
-> --- a/drivers/video/fbdev/core/fbsysfs.c
-> +++ b/drivers/video/fbdev/core/fbsysfs.c
-> @@ -91,9 +91,9 @@ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
->
->         var->activate |= FB_ACTIVATE_FORCE;
->         console_lock();
-> -       fb_info->flags |= FBINFO_MISC_USEREVENT;
->         err = fb_set_var(fb_info, var);
-> -       fb_info->flags &= ~FBINFO_MISC_USEREVENT;
-> +       if (!err)
-> +               fbcon_update_vcs(fb_info, var->activate & FB_ACTIVATE_ALL);
->         console_unlock();
->         if (err)
->                 return err;
-> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
-> index 9df78fb..4b4a99f 100644
-> --- a/drivers/video/fbdev/ps3fb.c
-> +++ b/drivers/video/fbdev/ps3fb.c
-> @@ -824,12 +824,12 @@ static int ps3fb_ioctl(struct fb_info *info, unsigned int cmd,
->                                 var = info->var;
->                                 fb_videomode_to_var(&var, vmode);
->                                 console_lock();
-> -                               info->flags |= FBINFO_MISC_USEREVENT;
->                                 /* Force, in case only special bits changed */
->                                 var.activate |= FB_ACTIVATE_FORCE;
->                                 par->new_mode_id = val;
->                                 retval = fb_set_var(info, &var);
-> -                               info->flags &= ~FBINFO_MISC_USEREVENT;
-> +                               if (!retval)
-> +                                       fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
+On 2020/07/30 20:16, Daniel Vetter wrote:
+> Patch looks good, except ... does this compile? fbcon_update_vcs is
+> defined in fbcon.h, and that doesn't seem to be included here ...
+> Maybe what we want is an fb_set_var_ioctl in fbmem.c so that the fbcon
+> interaction is a bit better hidden (but that's a bikeshed, feel free
+> to ignore). Also I have no idea what trickery you need to compile-test
+> ps3fb, that's why I'm asking :-)
 
-Patch looks good, except ... does this compile? fbcon_update_vcs is
-defined in fbcon.h, and that doesn't seem to be included here ...
-Maybe what we want is an fb_set_var_ioctl in fbmem.c so that the fbcon
-interaction is a bit better hidden (but that's a bikeshed, feel free
-to ignore). Also I have no idea what trickery you need to compile-test
-ps3fb, that's why I'm asking :-)
--Daniel
-
->                                 console_unlock();
->                         }
->                         break;
-> diff --git a/include/linux/fb.h b/include/linux/fb.h
-> index 3b4b2f0..b11eb02 100644
-> --- a/include/linux/fb.h
-> +++ b/include/linux/fb.h
-> @@ -400,8 +400,6 @@ struct fb_tile_ops {
->  #define FBINFO_HWACCEL_YPAN            0x2000 /* optional */
->  #define FBINFO_HWACCEL_YWRAP           0x4000 /* optional */
->
-> -#define FBINFO_MISC_USEREVENT          0x10000 /* event request
-> -                                                 from userspace */
->  #define FBINFO_MISC_TILEBLITTING       0x20000 /* use tile blitting */
->
->  /* A driver may set this flag to indicate that it does want a set_par to be
-> --
-> 1.8.3.1
->
->
-
-
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Right. I didn't prepare environment for compiling powerpc kernel.
+Kernel test robot found it and I already posted V2 patch as
+https://lkml.kernel.org/r/075b7e37-3278-cd7d-31ab-c5073cfa8e92@i-love.sakura.ne.jp .
