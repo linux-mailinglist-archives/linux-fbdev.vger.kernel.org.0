@@ -2,89 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08988233107
-	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jul 2020 13:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAD32332E7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jul 2020 15:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727794AbgG3LfR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 30 Jul 2020 07:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726631AbgG3LfR (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 30 Jul 2020 07:35:17 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48805C061794
-        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jul 2020 04:35:17 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id v6so9045662ota.13
-        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jul 2020 04:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MRzokrMc0Qm9FKeka5mjSS3X3+tAOXypP+ce1X7MQBI=;
-        b=iipVaGjfy4vwKxkDV4BAQroSsbhnoNOfVaRbNPsPbYc617UHV3vMKacI3QuoVFW4Ym
-         NMEfZrR2B+sQF5rf1QYFMQhm71yOP2XE0ErB0cuM7dlMVGT/r/UTqlQt9ZlRjsV3FiHj
-         KOP0wiur98KfxTYFxbJ78Ro9HO5aYJz9EPxPI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MRzokrMc0Qm9FKeka5mjSS3X3+tAOXypP+ce1X7MQBI=;
-        b=pHut19I0Ip6V0Tbgi3wEjuTkwqmeuC9G2oKY0xwAG4j6NcoCX0GOzitk0bkduyD5C5
-         yOudYTUiFroZ6z9Qtx5EMCUly12IyC/sg6K0hHcKwzIoEnWl6QfJvusKLYXq5wvj8O/x
-         T5qJl3mWBYmtqFMcFuyo6vpZ0q6zADZeAEsrRpZY/xWoKvbyg6LoCksqpEjRkYIQFCXv
-         mheiej3uZqzuxxilsDBTG8hB3tK2nMVZK/bKxHO5hBEIOi2PB1szrck9pf7xuQ8tzQfe
-         sME+Ig6aK9R27/hEDg7RxSX3qD7sYt6Joc35fwyIMm+7lySiiZqnqYdN8hSb32kOA+2g
-         1vvQ==
-X-Gm-Message-State: AOAM5304g6gSiUOsqTcSfbC0IZBUTfEeZfSdCjWMuG2QSGy75VBBj0D7
-        rfa1yzxz+b30CoalNEAklfZutly1gs0iKgEdDZM0pA==
-X-Google-Smtp-Source: ABdhPJyK3XjO3qAYxV/3DE11QmLPyeVuxGiJw5ED5uo8MdAzpo+p3AFXndZW5wHhjoS7i3OPw7tr1pOnjbzeng7wAi4=
-X-Received: by 2002:a9d:6052:: with SMTP id v18mr1821579otj.303.1596108916621;
- Thu, 30 Jul 2020 04:35:16 -0700 (PDT)
+        id S1726772AbgG3NYS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 30 Jul 2020 09:24:18 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:56128 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726281AbgG3NYS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 30 Jul 2020 09:24:18 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id A8389BDF52B708896333;
+        Thu, 30 Jul 2020 21:24:09 +0800 (CST)
+Received: from [127.0.0.1] (10.174.176.211) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.487.0; Thu, 30 Jul 2020
+ 21:24:04 +0800
+Subject: Re: [PATCH] vgacon: Fix an out-of-bounds in
+ vgacon_scrollback_update()
+To:     Jiri Slaby <jirislaby@kernel.org>, <b.zolnierkie@samsung.com>
+CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        =?UTF-8?B?5byg5LqR5rW3?= <zhangyunhai@nsfocus.com>
+References: <20200713105730.550334-1-yangyingliang@huawei.com>
+ <220220f1-48f7-46f6-952f-ab41fa57d6a1@kernel.org>
+From:   Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <c3714d73-d5fe-c77a-e554-bb1ff4fd6980@huawei.com>
+Date:   Thu, 30 Jul 2020 21:24:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
- <CAKMK7uHeteS2+rKrZKrAM+zQO==hAX0XaVc9JfHPsdLTCtzKOw@mail.gmail.com>
- <a3bb6544-064d-54a1-1215-d92188cb4209@i-love.sakura.ne.jp>
- <CAKMK7uGTL02SHbEazu5YEnEncO6c-+P6DXt1GWSVQ28enqLx2g@mail.gmail.com> <d4c97785-467a-6e04-b8bb-c8aa4177882a@i-love.sakura.ne.jp>
-In-Reply-To: <d4c97785-467a-6e04-b8bb-c8aa4177882a@i-love.sakura.ne.jp>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Thu, 30 Jul 2020 13:35:05 +0200
-Message-ID: <CAKMK7uH_Y6eFuLZOvsDbzk2D0S5uREjM_kwAFkcK1k0z9qXSug@mail.gmail.com>
-Subject: Re: [PATCH] fbmem: pull fbcon_update_vcs() out of fb_set_var()
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <220220f1-48f7-46f6-952f-ab41fa57d6a1@kernel.org>
+Content-Type: text/plain; charset="iso-8859-2"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.174.176.211]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jul 30, 2020 at 1:27 PM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
->
-> On 2020/07/30 20:16, Daniel Vetter wrote:
-> > Patch looks good, except ... does this compile? fbcon_update_vcs is
-> > defined in fbcon.h, and that doesn't seem to be included here ...
-> > Maybe what we want is an fb_set_var_ioctl in fbmem.c so that the fbcon
-> > interaction is a bit better hidden (but that's a bikeshed, feel free
-> > to ignore). Also I have no idea what trickery you need to compile-test
-> > ps3fb, that's why I'm asking :-)
->
-> Right. I didn't prepare environment for compiling powerpc kernel.
-> Kernel test robot found it and I already posted V2 patch as
-> https://lkml.kernel.org/r/075b7e37-3278-cd7d-31ab-c5073cfa8e92@i-love.sakura.ne.jp .
 
-Excellent. It's still stuck in a queue somewhere and hasn't reached my
-inbox, I'll queue it up as soon as I have it.
+On 2020/7/30 19:04, Jiri Slaby wrote:
+> On 13. 07. 20, 12:57, Yang Yingliang wrote:
+>> I got a slab-out-of-bounds report when I doing fuzz test.
+>>
+>> [  334.989515] ==================================================================
+>> [  334.989577] BUG: KASAN: slab-out-of-bounds in vgacon_scroll+0x57a/0x8ed
+>> [  334.989588] Write of size 1766 at addr ffff8883de69ff3e by task test/2658
+>> [  334.989593]
+>> [  334.989608] CPU: 3 PID: 2658 Comm: test Not tainted 5.7.0-rc5-00005-g152036d1379f #789
+>> [  334.989617] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.1-0-ga5cab58e9a3f-prebuilt.qemu.org 04/01/2014
+>> [  334.989624] Call Trace:
+>> [  334.989646]  dump_stack+0xe4/0x14e
+>> [  334.989676]  print_address_description.constprop.5+0x3f/0x60
+>> [  334.989699]  ? vgacon_scroll+0x57a/0x8ed
+>> [  334.989710]  __kasan_report.cold.8+0x92/0xaf
+>> [  334.989735]  ? vgacon_scroll+0x57a/0x8ed
+>> [  334.989761]  kasan_report+0x37/0x50
+>> [  334.989789]  check_memory_region+0x1c1/0x1e0
+>> [  334.989806]  memcpy+0x38/0x60
+>> [  334.989824]  vgacon_scroll+0x57a/0x8ed
+>> [  334.989876]  con_scroll+0x4ef/0x5e0
+> ...
+>> Because vgacon_scrollback_cur->tail plus memcpy size is greater than
+>> vgacon_scrollback_cur->size. Fix this by checking the memcpy size.
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> ---
+>>   drivers/video/console/vgacon.c | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+>> index 998b0de1812f..b51ffb9a208d 100644
+>> --- a/drivers/video/console/vgacon.c
+>> +++ b/drivers/video/console/vgacon.c
+>> @@ -243,6 +243,7 @@ static void vgacon_scrollback_startup(void)
+>>   static void vgacon_scrollback_update(struct vc_data *c, int t, int count)
+>>   {
+>>   	void *p;
+>> +	int size;
+>>   
+>>   	if (!vgacon_scrollback_cur->data || !vgacon_scrollback_cur->size ||
+>>   	    c->vc_num != fg_console)
+>> @@ -251,13 +252,17 @@ static void vgacon_scrollback_update(struct vc_data *c, int t, int count)
+>>   	p = (void *) (c->vc_origin + t * c->vc_size_row);
+>>   
+>>   	while (count--) {
+>> +		size = vgacon_scrollback_cur->size - vgacon_scrollback_cur->tail;
+>> +		if (size > c->vc_size_row)
+>> +			size = c->vc_size_row;
+>> +
+>>   		scr_memcpyw(vgacon_scrollback_cur->data +
+>>   			    vgacon_scrollback_cur->tail,
+>> -			    p, c->vc_size_row);
+>> +			    p, size);
+> Are you sure the consumer can handle split lines? As vgacon_scrolldelta
+> (soff in particular) looks to me like it doesn't.
+>
+> Have you tested you patch? I mean with soft scrollback on the vga console?
 
-Thanks, Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+I only test the patch with the reproduce program.
+
+
+Thanks,
+
+Yang
+
+>
+>>   		vgacon_scrollback_cur->cnt++;
+>> -		p += c->vc_size_row;
+>> -		vgacon_scrollback_cur->tail += c->vc_size_row;
+>> +		p += size;
+>> +		vgacon_scrollback_cur->tail += size;
+>>   
+>>   		if (vgacon_scrollback_cur->tail >= vgacon_scrollback_cur->size)
+>>   			vgacon_scrollback_cur->tail = 0;
+>>
+> thanks,
+
