@@ -2,99 +2,137 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D4172346CA
-	for <lists+linux-fbdev@lfdr.de>; Fri, 31 Jul 2020 15:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAB75234941
+	for <lists+linux-fbdev@lfdr.de>; Fri, 31 Jul 2020 18:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731098AbgGaNWm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 31 Jul 2020 09:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729995AbgGaNWm (ORCPT
+        id S1729074AbgGaQfm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 31 Jul 2020 12:35:42 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:55268 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728771AbgGaQfm (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 31 Jul 2020 09:22:42 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B610DC061574
-        for <linux-fbdev@vger.kernel.org>; Fri, 31 Jul 2020 06:22:41 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id j22so10949800lfm.2
-        for <linux-fbdev@vger.kernel.org>; Fri, 31 Jul 2020 06:22:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=iMBdpY4hb1WuGKsWVic0uuoxFZH0XRGRQy4caV0s8WkCI89paXhhhaODBfRz3QNbcP
-         ChyWdDeDhU8o3vKIWsuSGVrGzKelZTwM2W94STTnbyLAtqgLCedhLyrmQh3qjKuFK+1p
-         VU5U2f1cpcGLlKKpz3MqiSz0uL3uLSvZYCfkJtet0fb50DwpGC4x1CsIYpMM9Wzmq05k
-         XjTHRME6vJ6gSsc+nkbMPlFxyDbFi4CAr3RDm2dTir9QnZPYYXhiOIZ0v7jpLsockct1
-         DRr1rBTr6pBVVU/QVn0QppwKfkG4YVBIrAa15n7rf67x5YdKkp0hefC/330ixmpnDdIu
-         6lQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=rUzaR97fmim6oCOB4UkDtJ9NTxo8xON9oOC+ibtBg9go8Or7HnU4BLVjGo6nCYSJnW
-         hZaJSNXI8z9RMARtjKoHwLddoXqzpKxRwKmHNRD49ymLdAmW+a/YUXIF9GyYtdZk1VbK
-         InB/rz/cnwAZw7Q82sPycOkogPKOGXIxOR2za9YsdizOwz5pir1mDTEsmhlguE8lKRGF
-         J9X45LF42wJYBgaTIpkaOPZIytQz8jK/Sky2AZk4SA5knAojwfryzwnKIYXcPMyZNomW
-         ewrrsuxVAZ0F6Ne2WtyYhPRYqlOC5WHcx1nXgz31/zudOQurResxycfyV3sY6FDJKNl6
-         IksA==
-X-Gm-Message-State: AOAM533p22sxfXYbKtcVqtfNGlitX0A5NjRrbD9XuJ8vBQdvWbVYiqtk
-        m5owt+JPSiXV3ClJIv5q2OrrfdQxhMJwQIGYEMU=
-X-Google-Smtp-Source: ABdhPJzQen8jkclMh0ZNSe2X/MP699uO5+P/2TglQCGe0ik2IiCt32EDijL4H1s83MExxb+ohtnoAufVzEdlyNub7ps=
-X-Received: by 2002:a19:be83:: with SMTP id o125mr2048650lff.84.1596201759985;
- Fri, 31 Jul 2020 06:22:39 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6504:3083:0:0:0:0 with HTTP; Fri, 31 Jul 2020 06:22:39
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <mahasaliou112233@gmail.com>
-Date:   Fri, 31 Jul 2020 06:22:39 -0700
-Message-ID: <CAMvEq_3Ud_Q34_mYm8Wmi4ouCCNzTU07q-AKThhPB-eDggXE5w@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Fri, 31 Jul 2020 12:35:42 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06VGWxt2122023;
+        Fri, 31 Jul 2020 16:35:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : subject :
+ date : message-id; s=corp-2020-01-29;
+ bh=iFzxc1YO/OI/8nca19/oqfeQYCQ0TL+B2R2ElCT9KrQ=;
+ b=pEJNjH66lU/piSACI7rNs0s8RQRezEvaLRR40OMANCGxg5WU2AfA57eYYuZ7MIG2/HmU
+ YE3EDf+qVkrzXdFdzA+wlrTZhlx0/hkqcTq3uS8DTYqn70MZ7ehVuL1Af6nqfIpyx/32
+ sZhOoolHNASSxymkgNxlIQoORSsqrZtHyBh2Pdx+jvWIJgEp1z34Y4wctUbXXlF9NDRv
+ s4jWBEXQBCoWp09b6a0RKi7Sb7LZnFk1W+SwFI0kymU/H0Lk/eGfkYIkWHIpnl8XpcnP
+ vGihp+7VkcFEj4RUiVwGF1IBYjKG+MEh0yg1FEb5a5Gl09URGwDVNvuKQvflnB9pl68x 7Q== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 32hu1jt06e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 31 Jul 2020 16:35:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06VGWiae067471;
+        Fri, 31 Jul 2020 16:33:35 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 32mf70raj3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 31 Jul 2020 16:33:34 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06VGXXUE001003;
+        Fri, 31 Jul 2020 16:33:33 GMT
+Received: from dhcp-10-152-34-21.usdhcp.oraclecorp.com.com (/10.152.34.21)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 31 Jul 2020 09:33:33 -0700
+From:   George Kennedy <george.kennedy@oracle.com>
+To:     george.kennedy@oracle.com, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, b.zolnierkie@samsung.com,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dan.carpenter@oracle.com, dhaval.giani@oracle.com
+Subject: [PATCH 1/2] fbcon: prevent user font height or width change from causing potential out-of-bounds access
+Date:   Fri, 31 Jul 2020 12:33:11 -0400
+Message-Id: <1596213192-6635-1-git-send-email-george.kennedy@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9699 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=4 spamscore=0
+ mlxlogscore=999 adultscore=53 malwarescore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007310123
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9699 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=11 clxscore=1011
+ malwarescore=0 spamscore=0 suspectscore=4 bulkscore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007310123
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Add a check to fbcon_resize() to ensure that a possible change to user font
+height or user font width will not allow a font data out-of-bounds access.
+NOTE: must use original charcount in calculation as font charcount can
+change and cannot be used to determine the font data allocated size.
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reported-by: syzbot+38a3699c7eaf165b97a6@syzkaller.appspotmail.com
+---
+ drivers/video/fbdev/core/fbcon.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 8a31fc2..6616783 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2191,6 +2191,9 @@ static void updatescrollmode(struct fbcon_display *p,
+ 	}
+ }
+ 
++#define PITCH(w) (((w) + 7) >> 3)
++#define CALC_FONTSZ(h, p, c) ((h) * (p) * (c)) /* size = height * pitch * charcount */
++
+ static int fbcon_resize(struct vc_data *vc, unsigned int width, 
+ 			unsigned int height, unsigned int user)
+ {
+@@ -2200,6 +2203,24 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
+ 	struct fb_var_screeninfo var = info->var;
+ 	int x_diff, y_diff, virt_w, virt_h, virt_fw, virt_fh;
+ 
++	if (ops->p && ops->p->userfont && FNTSIZE(vc->vc_font.data)) {
++		int size;
++		int pitch = PITCH(vc->vc_font.width);
++
++		/*
++		 * If user font, ensure that a possible change to user font
++		 * height or width will not allow a font data out-of-bounds access.
++		 * NOTE: must use original charcount in calculation as font
++		 * charcount can change and cannot be used to determine the
++		 * font data allocated size.
++		 */
++		if (pitch <= 0)
++			return -EINVAL;
++		size = CALC_FONTSZ(vc->vc_font.height, pitch, FNTCHARCNT(vc->vc_font.data));
++		if (size > FNTSIZE(vc->vc_font.data))
++			return -EINVAL;
++	}
++
+ 	virt_w = FBCON_SWAP(ops->rotate, width, height);
+ 	virt_h = FBCON_SWAP(ops->rotate, height, width);
+ 	virt_fw = FBCON_SWAP(ops->rotate, vc->vc_font.width,
+@@ -2652,7 +2673,7 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
+ 	int size;
+ 	int i, csum;
+ 	u8 *new_data, *data = font->data;
+-	int pitch = (font->width+7) >> 3;
++	int pitch = PITCH(font->width);
+ 
+ 	/* Is there a reason why fbconsole couldn't handle any charcount >256?
+ 	 * If not this check should be changed to charcount < 256 */
+@@ -2668,7 +2689,7 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
+ 	if (fbcon_invalid_charcount(info, charcount))
+ 		return -EINVAL;
+ 
+-	size = h * pitch * charcount;
++	size = CALC_FONTSZ(h, pitch, charcount);
+ 
+ 	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
+ 
+-- 
+1.8.3.1
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
-
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
-
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
