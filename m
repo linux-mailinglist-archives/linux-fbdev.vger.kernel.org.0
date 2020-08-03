@@ -2,91 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAC523AD98
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Aug 2020 21:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D8623ADD6
+	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Aug 2020 21:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728400AbgHCTo5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 Aug 2020 15:44:57 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:42938 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728069AbgHCTo4 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 3 Aug 2020 15:44:56 -0400
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id ACF8380503;
-        Mon,  3 Aug 2020 21:44:52 +0200 (CEST)
-Date:   Mon, 3 Aug 2020 21:44:51 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     trix@redhat.com
-Cc:     b.zolnierkie@samsung.com, jhubbard@nvidia.com,
-        daniel.vetter@ffwll.ch, gustavo@embeddedor.com, arnd@arndb.de,
-        jani.nikula@intel.com, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] video: fbdev: pvr2fb: initialize variables
-Message-ID: <20200803194451.GB525506@ravnborg.org>
-References: <20200720191845.20115-1-trix@redhat.com>
+        id S1728102AbgHCT7K (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 3 Aug 2020 15:59:10 -0400
+Received: from smtprelay0136.hostedemail.com ([216.40.44.136]:36442 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727091AbgHCT7K (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 3 Aug 2020 15:59:10 -0400
+X-Greylist: delayed 385 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Aug 2020 15:59:10 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave08.hostedemail.com (Postfix) with ESMTP id A7CF41801806F
+        for <linux-fbdev@vger.kernel.org>; Mon,  3 Aug 2020 19:52:46 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 8CCEB180A9F23;
+        Mon,  3 Aug 2020 19:52:44 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:69:355:379:599:800:857:960:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2560:2563:2682:2685:2693:2828:2859:2904:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3622:3865:3867:3868:3870:3871:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:5007:6742:7974:9025:9592:10004:10400:10848:11026:11232:11658:11914:12043:12291:12296:12297:12438:12555:12683:12740:12760:12895:13439:14096:14097:14181:14659:14721:21063:21080:21324:21347:21451:21627:21773:21990:30054:30075:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: bath65_48004ae26fa0
+X-Filterd-Recvd-Size: 4366
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf18.hostedemail.com (Postfix) with ESMTPA;
+        Mon,  3 Aug 2020 19:52:42 +0000 (UTC)
+Message-ID: <101585b1d3c2a9db8fe394c51f64115e8bfc1754.camel@perches.com>
+Subject: Re: [PATCH][next] fbdev: Use fallthrough pseudo-keyword
+From:   Joe Perches <joe@perches.com>
+To:     Sam Ravnborg <sam@ravnborg.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Timur Tabi <timur@kernel.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Date:   Mon, 03 Aug 2020 12:52:40 -0700
+In-Reply-To: <20200803194024.GA525506@ravnborg.org>
+References: <20200707210539.GA12530@embeddedor>
+         <20200803194024.GA525506@ravnborg.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200720191845.20115-1-trix@redhat.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=20KFwNOVAAAA:8 a=e5mUnYsNAAAA:8
-        a=qnTn4qAwrYwZIjOlhbIA:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Tom,
+On Mon, 2020-08-03 at 21:41 +0200, Sam Ravnborg wrote:
+> On Tue, Jul 07, 2020 at 04:05:39PM -0500, Gustavo A. R. Silva wrote:
+> > Replace the existing /* fall through */ comments and its variants with
+> > the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+> > fall-through markings when it is the case.
+> > 
+> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+> > 
+> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> 
+> Thanks.
+> 
+> Fixed indent in arcfb.c while applying.
+> Applied to drm-misc-next and it will appear in 5.10
 
-On Mon, Jul 20, 2020 at 12:18:45PM -0700, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
-> 
-> clang static analysis reports this repesentative error
-> 
-> pvr2fb.c:1049:2: warning: 1st function call argument
->   is an uninitialized value [core.CallAndMessage]
->         if (*cable_arg)
->         ^~~~~~~~~~~~~~~
-> 
-> Problem is that cable_arg depends on the input loop to
-> set the cable_arg[0].  If it does not, then some random
-> value from the stack is used.
-> 
-> A similar problem exists for output_arg.
-> 
-> So initialize cable_arg and output_arg.
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
+Perhaps better would be to fix all the switch / case
+brace uses so that it looks more typical kernel style.
 
-Thanks, applied to drm-misc-next.
+> > diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
+> > index 6f7838979f0a..ae3d8e8b8d33 100644
+> > --- a/drivers/video/fbdev/arcfb.c
+> > +++ b/drivers/video/fbdev/arcfb.c
+> > @@ -419,7 +419,7 @@ static int arcfb_ioctl(struct fb_info *info,
+> >  			schedule();
+> >  			finish_wait(&arcfb_waitq, &wait);
+> >  		}
+> > -		/* fall through */
+> > +			fallthrough;
+> >  
+> >  		case FBIO_GETCONTROL2:
+> >  		{
 
-	Sam
+---
+ drivers/video/fbdev/arcfb.c | 52 ++++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-> ---
->  drivers/video/fbdev/pvr2fb.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
-> index 2d9f69b93392..f4add36cb5f4 100644
-> --- a/drivers/video/fbdev/pvr2fb.c
-> +++ b/drivers/video/fbdev/pvr2fb.c
-> @@ -1028,6 +1028,8 @@ static int __init pvr2fb_setup(char *options)
->  	if (!options || !*options)
->  		return 0;
->  
-> +	cable_arg[0] = output_arg[0] = 0;
-> +
->  	while ((this_opt = strsep(&options, ","))) {
->  		if (!*this_opt)
->  			continue;
-> -- 
-> 2.18.1
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
+index 6f7838979f0a..4419655e3e58 100644
+--- a/drivers/video/fbdev/arcfb.c
++++ b/drivers/video/fbdev/arcfb.c
+@@ -403,35 +403,33 @@ static int arcfb_ioctl(struct fb_info *info,
+ 	unsigned long flags;
+ 
+ 	switch (cmd) {
+-		case FBIO_WAITEVENT:
+-		{
+-			DEFINE_WAIT(wait);
+-			/* illegal to wait on arc if no irq will occur */
+-			if (!par->irq)
+-				return -EINVAL;
+-
+-			/* wait until the Arc has generated an interrupt
+-			 * which will wake us up */
+-			spin_lock_irqsave(&par->lock, flags);
+-			prepare_to_wait(&arcfb_waitq, &wait,
+-					TASK_INTERRUPTIBLE);
+-			spin_unlock_irqrestore(&par->lock, flags);
+-			schedule();
+-			finish_wait(&arcfb_waitq, &wait);
+-		}
+-		/* fall through */
++	case FBIO_WAITEVENT: {
++		DEFINE_WAIT(wait);
++		/* illegal to wait on arc if no irq will occur */
++		if (!par->irq)
++			return -EINVAL;
+ 
+-		case FBIO_GETCONTROL2:
+-		{
+-			unsigned char ctl2;
++		/* wait until the Arc has generated an interrupt
++		 * which will wake us up */
++		spin_lock_irqsave(&par->lock, flags);
++		prepare_to_wait(&arcfb_waitq, &wait, TASK_INTERRUPTIBLE);
++		spin_unlock_irqrestore(&par->lock, flags);
++		schedule();
++		finish_wait(&arcfb_waitq, &wait);
++		fallthrough;
++	}
+ 
+-			ctl2 = ks108_readb_ctl2(info->par);
+-			if (copy_to_user(argp, &ctl2, sizeof(ctl2)))
+-				return -EFAULT;
+-			return 0;
+-		}
+-		default:
+-			return -EINVAL;
++	case FBIO_GETCONTROL2: {
++		unsigned char ctl2;
++
++		ctl2 = ks108_readb_ctl2(info->par);
++		if (copy_to_user(argp, &ctl2, sizeof(ctl2)))
++			return -EFAULT;
++		return 0;
++	}
++
++	default:
++		return -EINVAL;
+ 	}
+ }
+ 
+
+
