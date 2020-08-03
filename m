@@ -2,87 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9544023A0AB
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Aug 2020 10:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6A223A0C0
+	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Aug 2020 10:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbgHCIIs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 Aug 2020 04:08:48 -0400
-Received: from mail-ej1-f66.google.com ([209.85.218.66]:40245 "EHLO
-        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbgHCIIs (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 3 Aug 2020 04:08:48 -0400
-Received: by mail-ej1-f66.google.com with SMTP id o18so37646380eje.7;
-        Mon, 03 Aug 2020 01:08:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=a0yu7M1tVw0zmP1gDFbyNUMxQCWzxTIkdFlcO1sI50Q=;
-        b=Tm9ZXWjzATs8hxYjcDO4hoclmKu7YD02YJ5lvDJcBvVEd7j5XcT74jAEvMfQqIKOu1
-         wxeiP0f793jY34Rw46P7wGrDsmfrQyc5rjyjO1t0Piy157bFFZ4ZtVukjKT3ONNMOOTp
-         uNuHLvvF7fx7uK1V5uNYAUrqaS0isDoqxK8z+d0DTrMBTjJURtZBVbGL8Qfn6IB2GrBP
-         5pyPX122yNQTwMDvNKftonRsHA9rRsbg652FfSBKAvy5F2uXSm/6dxRTZXxQoNmdjxrX
-         3ibdEUlMU1iQmJd4PUJrFXMX/a5ZhrCTaSzi2KaBG3mDs7csqZl2ZqstgRQR18zeHcXf
-         7JWg==
-X-Gm-Message-State: AOAM532ljj1tM4Vu7VKe3VQPfruWkAj/dny6znf3R3kPHrhSWcDvgmEI
-        ThrmWU5svLakYEFdMIOBMW+nu35D
-X-Google-Smtp-Source: ABdhPJwHcrqjaA28yGyrQjj55BAldR5dFDJiHH5/aOZ4EtnAnmSi9OPoDdHmcKT4tHNj8sn++fO6hg==
-X-Received: by 2002:a17:907:20db:: with SMTP id qq27mr16105471ejb.550.1596442125868;
-        Mon, 03 Aug 2020 01:08:45 -0700 (PDT)
-Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
-        by smtp.gmail.com with ESMTPSA id dm5sm6828068edb.32.2020.08.03.01.08.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Aug 2020 01:08:45 -0700 (PDT)
-Subject: Re: [PATCH] vgacon: fix out of bounds write to the scrollback buffer
-To:     =?UTF-8?B?5byg5LqR5rW3?= <zhangyunhai@nsfocus.com>,
-        Solar Designer <solar@openwall.com>
-Cc:     b.zolnierkie@samsung.com,
+        id S1725831AbgHCISo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 3 Aug 2020 04:18:44 -0400
+Received: from wnew2-smtp.messagingengine.com ([64.147.123.27]:36555 "EHLO
+        wnew2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725806AbgHCISo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 3 Aug 2020 04:18:44 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.west.internal (Postfix) with ESMTP id B6F8D39D;
+        Mon,  3 Aug 2020 04:18:42 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Mon, 03 Aug 2020 04:18:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:content-transfer-encoding:in-reply-to; s=fm1; bh=u
+        Yg8O5tEu1MB1f4fPfz/YQ+9s7iAK9BjD2NI3o25nXI=; b=kEokCWWjf1w75CiP2
+        mOWH0EMtEArBzu+goCbRnf/Pwn51Z4PeqCzP+FhJ0d4qFdwqgyIIXWJKAm/9EUak
+        pOOi9xzwsR6/R2Hk1cPknCp9+oss/qnOi12eQSdK1b0+3IlAVDoGc9VIwI9Jqfyp
+        L4JVLBh0G6bRo8vGv5X0e++3bG0f61hHPB6fpiLPV13GcAA7jy6yShTTI8idPYLw
+        h3SO6m6rgTrssBIibqBMNL38v6lXwbTl4wxsaftg1B1ECFgzQqvz8rgDnECWIZ51
+        0YfOzP/mtXrYdvyyxC6X4hmj0fk3UXd6fi3lzZdrx+RgkvCPWvS1eJKEVm+BhODO
+        EWxtQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=uYg8O5tEu1MB1f4fPfz/YQ+9s7iAK9BjD2NI3o25n
+        XI=; b=e7sMIB59EaA+qirLEGFZvki5fhh8kTVXm1uh/qSWkyUJoct4H98FXo8P2
+        ue1AZeCrPXyxwCV4gYNnmy+cthYq/Ghv97gU0XOJQlnOfk0cZpylHSquwCXMQKrn
+        l7z6cv9dqtyH84cYTCTbQJ/rUgcLJXXxas1Z/eBN8Rp11eWfjErgihSqWvTD+TEk
+        ViV0OlpaeHzyjKHKqdeYjPsv/OPUvKXWeir2DRPP6MLbbDUMlr6v3bx9IJD6Ksci
+        gdAVqYk2ukqZYL0Kex3x002a5vLiIoQWt+qikhHN1VCfZCyH+iAGJuZ1L8ewkuxe
+        z9m40G/RTVAvSYQ10MFnOlYA+Da1w==
+X-ME-Sender: <xms:X8gnXx40-Fij4qqxg1NmVi4wrgj7ZJ3YyY0ugFPpxdv_6AbYlJL4wg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduiedrjeeggddtvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeuheekhe
+    elffefieduteefkeejffdvueehjeejffehledugfetkedvleekudduvdenucfkphepkeef
+    rdekiedrkeelrddutdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:X8gnX-5AHziSfSW95WrBt3wm3qqP76mlHSsjh-ex6FSVlzJh0SbSPg>
+    <xmx:X8gnX4fRbDAIiPvOMBHxjlVn64PsXeNkFJzdDsi_x6reVf7qN9w6nA>
+    <xmx:X8gnX6Ls6-Hj_l2HcBIQNJquigyICPYJGBLy3041BFrjV-FP0tF5tA>
+    <xmx:YsgnX-V5PUsERTSBEKW1Qpn28sg4v5r_0rLLmtJaUdXXJwW9-m2CPi9U8JI>
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 22BA930600A9;
+        Mon,  3 Aug 2020 04:18:39 -0400 (EDT)
+Date:   Mon, 3 Aug 2020 10:18:23 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Jiri Slaby <jirislaby@kernel.org>
+Cc:     =?utf-8?B?5byg5LqR5rW3?= <zhangyunhai@nsfocus.com>,
+        Solar Designer <solar@openwall.com>, b.zolnierkie@samsung.com,
         Yang Yingliang <yangyingliang@huawei.com>,
         Kyungtae Kim <kt0755@gmail.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg KH <greg@kroah.com>,
         "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
         Anthony Liguori <aliguori@amazon.com>,
         xiao.zhang@windriver.com,
         DRI devel <dri-devel@lists.freedesktop.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Linux kernel mailing list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] vgacon: fix out of bounds write to the scrollback buffer
+Message-ID: <20200803081823.GD493272@kroah.com>
 References: <659f8dcf-7802-1ca1-1372-eb7fefd4d8f4@kernel.org>
  <dbcf2841-7718-2ba7-11e0-efa4b9de8de1@nsfocus.com>
  <9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com>
-From:   Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <9386c640-34dd-0a50-5694-4f87cc600e0f@kernel.org>
-Date:   Mon, 3 Aug 2020 10:08:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <9386c640-34dd-0a50-5694-4f87cc600e0f@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com>
-Content-Type: text/plain; charset=gbk
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <9386c640-34dd-0a50-5694-4f87cc600e0f@kernel.org>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+On Mon, Aug 03, 2020 at 10:08:43AM +0200, Jiri Slaby wrote:
+> Hi,
+> 
+> On 31. 07. 20, 7:22, å¼ äº‘æµ· wrote:
+> > Remove whitespace at EOL
+> 
+> I am fine with the patch. However it should be sent properly (inline
+> mail, having a PATCH subject etc. -- see
+> Documentation/process/submitting-patches.rst). git send-email after git
+> format-patch handles most of it.
+> 
+> There is also question who is willing to take it?
+> 
+> Bart? Greg? Should we route it via akpm, or will you Linus directly? (I
+> can sign off and resend the patch which was attached to the mail I am
+> replying to too, if need be.)
 
-On 31. 07. 20, 7:22, ÕÅÔÆº£ wrote:
-> Remove whitespace at EOL
-
-I am fine with the patch. However it should be sent properly (inline
-mail, having a PATCH subject etc. -- see
-Documentation/process/submitting-patches.rst). git send-email after git
-format-patch handles most of it.
-
-There is also question who is willing to take it?
-
-Bart? Greg? Should we route it via akpm, or will you Linus directly? (I
-can sign off and resend the patch which was attached to the mail I am
-replying to too, if need be.)
+I can take it, if Bart can't, just let me know.
 
 thanks,
--- 
-js
-suse labs
+
+greg k-h
