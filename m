@@ -2,152 +2,214 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 174D223AE4D
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 Aug 2020 22:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ECAA23B482
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Aug 2020 07:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728098AbgHCUjt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 Aug 2020 16:39:49 -0400
-Received: from gateway36.websitewelcome.com ([50.116.126.2]:34768 "EHLO
-        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728019AbgHCUjt (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 3 Aug 2020 16:39:49 -0400
-X-Greylist: delayed 1438 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Aug 2020 16:39:48 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway36.websitewelcome.com (Postfix) with ESMTP id 881D5408A560D
-        for <linux-fbdev@vger.kernel.org>; Mon,  3 Aug 2020 14:16:19 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 2gTjkEZXkXp2A2gTjki2Hx; Mon, 03 Aug 2020 14:50:36 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=a82iAoC3wtmd0m+CGqkI10oX4tlnLO4lUVTp19ttoWY=; b=Q5JMDgCXFYhlB8DQMrePj6N8Np
-        D0Gz7dV+h5LsRL5M7z/L/trKS+s6/WdO/qttVQUo2uvqbQH2sIMB85CAtIe1f9f3gGlJFrnuKIVgm
-        VjSG0WwuuO4Xs2HqAmv6tm4I9CzaKSO5wcijQ01IlKAZwCif2lO7pvMuTrKPcFsnAENYML886I+vq
-        pGi0DJhrIvOIat00jxgnQl+t0K772Z7RYxHcshTwqWbEtOGpAjmlvlPmf9I/LWTjb3VtjHd407FQd
-        OTKlT4yUbjFzCZT6KQBm/LpYqoKimMJVfbnT9r24kScwECInjGz/1E/uAPmQ3htOA+umWVq59fsAn
-        xjw8CN5g==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:41154 helo=[192.168.15.2])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1k2gTj-002LBi-91; Mon, 03 Aug 2020 14:50:35 -0500
-Subject: Re: [PATCH][next] fbdev: Use fallthrough pseudo-keyword
-To:     Sam Ravnborg <sam@ravnborg.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Timur Tabi <timur@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20200707210539.GA12530@embeddedor>
- <20200803194024.GA525506@ravnborg.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- AP7RWS474w==
-Message-ID: <6dd23644-bace-549f-8053-f0f1f99d9352@embeddedor.com>
-Date:   Mon, 3 Aug 2020 14:56:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727854AbgHDFiT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Aug 2020 01:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727076AbgHDFiT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Aug 2020 01:38:19 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD286C061756
+        for <linux-fbdev@vger.kernel.org>; Mon,  3 Aug 2020 22:38:18 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id c19so1388613wmd.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 03 Aug 2020 22:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Cv9dwVi/Wv30ZWHkdUpxmHaYyxiCbxozjhCWMQldsSA=;
+        b=hid86rnu5RdeUriBzIBEf2/tA0fNBYdk6DhoKMlhiCAMpSXUwfxj3XLOQYGYor+YKh
+         obVBT6XDDh/nIOP/LLJHUDkolrw4gukhJtqws5Ae8PJmgsBp4SXJvioc/neeKpv+QxUx
+         OCjfoxlE59A4ZzmPaytbEqYfW9PwqrL1k/rk0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=Cv9dwVi/Wv30ZWHkdUpxmHaYyxiCbxozjhCWMQldsSA=;
+        b=pzbMbW81V5P0auPMcs9UEAwLG8GvhTDOGyoq2mjPsr2LEZ2ML05UlzhOZZDq+W8L79
+         c2b5mFIM0bIbP7ZyMEBtuT5PGyhM3WPocqiON3yUAc0Qrk9SOPvksDVPho81mPzyQ4bS
+         G2txfZojEOxqsDrncvkbg/ukF+kSBbQa5m2nWepphgqghsK3kxUW8nwqn7pe7NEdC1mz
+         VbN/VyP2NY9ejGGR/WbA5VVfS3uBAOSLeS41NpUDUHgzMBWycs7mTPoQIAEWUfw4YINE
+         R97GeVngj7S0b//sPvRvMtVtOCpvR8lRP7bU3Hg1peqPRgGFp6MgnAhHhot3gu6Cwvqe
+         kw/A==
+X-Gm-Message-State: AOAM532Nbv047sl+VPnjPXyNnJO74wG2aBJBGZ+O6Y1eTWvdNJKXpJR0
+        Q40E1F/EIlDTFYOBWwoLqqWjzGaNDwg=
+X-Google-Smtp-Source: ABdhPJwNiZT+/GhP9T5Q5Ir4jlWN4SHDiYp7jXO8IwDtD5pgMdueTFiD3HJLFoEgCPNyMnmX+I4egQ==
+X-Received: by 2002:a7b:c257:: with SMTP id b23mr2251985wmj.164.1596519497267;
+        Mon, 03 Aug 2020 22:38:17 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id f63sm3156762wmf.9.2020.08.03.22.38.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2020 22:38:16 -0700 (PDT)
+Date:   Tue, 4 Aug 2020 07:38:14 +0200
+From:   daniel@ffwll.ch
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
+Subject: Re: [PATCH v2] fbmem: pull fbcon_update_vcs() out of fb_set_var()
+Message-ID: <20200804053814.GG6419@phenom.ffwll.local>
+Mail-Followup-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
+References: <1596000620-4075-1-git-send-email-penguin-kernel@I-love.SAKURA.ne.jp>
+ <CAKMK7uHeteS2+rKrZKrAM+zQO==hAX0XaVc9JfHPsdLTCtzKOw@mail.gmail.com>
+ <a3bb6544-064d-54a1-1215-d92188cb4209@i-love.sakura.ne.jp>
+ <075b7e37-3278-cd7d-31ab-c5073cfa8e92@i-love.sakura.ne.jp>
 MIME-Version: 1.0
-In-Reply-To: <20200803194024.GA525506@ravnborg.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1k2gTj-002LBi-91
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.2]) [187.162.31.110]:41154
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 11
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <075b7e37-3278-cd7d-31ab-c5073cfa8e92@i-love.sakura.ne.jp>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
-
-On 8/3/20 14:41, Sam Ravnborg wrote:
-> On Tue, Jul 07, 2020 at 04:05:39PM -0500, Gustavo A. R. Silva wrote:
->> Replace the existing /* fall through */ comments and its variants with
->> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
->> fall-through markings when it is the case.
->>
->> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
->>
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+On Thu, Jul 30, 2020 at 07:47:14PM +0900, Tetsuo Handa wrote:
+> syzbot is reporting OOB read bug in vc_do_resize() [1] caused by memcpy()
+> based on outdated old_{rows,row_size} values, for resize_screen() can
+> recurse into vc_do_resize() which changes vc->vc_{cols,rows} that outdates
+> old_{rows,row_size} values which were saved before calling resize_screen().
 > 
-> Thanks.
+> Daniel Vetter explained that resize_screen() should not recurse into
+> fbcon_update_vcs() path due to FBINFO_MISC_USEREVENT being still set
+> when calling resize_screen().
 > 
-> Fixed indent in arcfb.c while applying.
-> Applied to drm-misc-next and it will appear in 5.10
+> Instead of masking FBINFO_MISC_USEREVENT before calling fbcon_update_vcs(),
+> we can remove FBINFO_MISC_USEREVENT by calling fbcon_update_vcs() only if
+> fb_set_var() returned 0. This change assumes that it is harmless to call
+> fbcon_update_vcs() when fb_set_var() returned 0 without reaching
+> fb_notifier_call_chain().
+> 
+> [1] https://syzkaller.appspot.com/bug?id=c70c88cfd16dcf6e1d3c7f0ab8648b3144b5b25e
+> 
+> Reported-and-tested-by: syzbot <syzbot+c37a14770d51a085a520@syzkaller.appspotmail.com>
+> Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> Reported-by: kernel test robot <lkp@intel.com> for missing #include
+
+Thanks a lot for your patch, queued up to hopefully still make it for
+5.9-rc1.
+
+Cheers, Daniel
+
+> ---
+>  drivers/video/fbdev/core/fbmem.c   | 8 ++------
+>  drivers/video/fbdev/core/fbsysfs.c | 4 ++--
+>  drivers/video/fbdev/ps3fb.c        | 5 +++--
+>  include/linux/fb.h                 | 2 --
+>  4 files changed, 7 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index 30e73ec..da7c88f 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -957,7 +957,6 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
+>  int
+>  fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+>  {
+> -	int flags = info->flags;
+>  	int ret = 0;
+>  	u32 activate;
+>  	struct fb_var_screeninfo old_var;
+> @@ -1052,9 +1051,6 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
+>  	event.data = &mode;
+>  	fb_notifier_call_chain(FB_EVENT_MODE_CHANGE, &event);
+>  
+> -	if (flags & FBINFO_MISC_USEREVENT)
+> -		fbcon_update_vcs(info, activate & FB_ACTIVATE_ALL);
+> -
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL(fb_set_var);
+> @@ -1105,9 +1101,9 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+>  			return -EFAULT;
+>  		console_lock();
+>  		lock_fb_info(info);
+> -		info->flags |= FBINFO_MISC_USEREVENT;
+>  		ret = fb_set_var(info, &var);
+> -		info->flags &= ~FBINFO_MISC_USEREVENT;
+> +		if (!ret)
+> +			fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
+>  		unlock_fb_info(info);
+>  		console_unlock();
+>  		if (!ret && copy_to_user(argp, &var, sizeof(var)))
+> diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
+> index d54c88f..65dae05 100644
+> --- a/drivers/video/fbdev/core/fbsysfs.c
+> +++ b/drivers/video/fbdev/core/fbsysfs.c
+> @@ -91,9 +91,9 @@ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
+>  
+>  	var->activate |= FB_ACTIVATE_FORCE;
+>  	console_lock();
+> -	fb_info->flags |= FBINFO_MISC_USEREVENT;
+>  	err = fb_set_var(fb_info, var);
+> -	fb_info->flags &= ~FBINFO_MISC_USEREVENT;
+> +	if (!err)
+> +		fbcon_update_vcs(fb_info, var->activate & FB_ACTIVATE_ALL);
+>  	console_unlock();
+>  	if (err)
+>  		return err;
+> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+> index 9df78fb..203c254 100644
+> --- a/drivers/video/fbdev/ps3fb.c
+> +++ b/drivers/video/fbdev/ps3fb.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/freezer.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/fb.h>
+> +#include <linux/fbcon.h>
+>  #include <linux/init.h>
+>  
+>  #include <asm/cell-regs.h>
+> @@ -824,12 +825,12 @@ static int ps3fb_ioctl(struct fb_info *info, unsigned int cmd,
+>  				var = info->var;
+>  				fb_videomode_to_var(&var, vmode);
+>  				console_lock();
+> -				info->flags |= FBINFO_MISC_USEREVENT;
+>  				/* Force, in case only special bits changed */
+>  				var.activate |= FB_ACTIVATE_FORCE;
+>  				par->new_mode_id = val;
+>  				retval = fb_set_var(info, &var);
+> -				info->flags &= ~FBINFO_MISC_USEREVENT;
+> +				if (!retval)
+> +					fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
+>  				console_unlock();
+>  			}
+>  			break;
+> diff --git a/include/linux/fb.h b/include/linux/fb.h
+> index 3b4b2f0..b11eb02 100644
+> --- a/include/linux/fb.h
+> +++ b/include/linux/fb.h
+> @@ -400,8 +400,6 @@ struct fb_tile_ops {
+>  #define FBINFO_HWACCEL_YPAN		0x2000 /* optional */
+>  #define FBINFO_HWACCEL_YWRAP		0x4000 /* optional */
+>  
+> -#define FBINFO_MISC_USEREVENT          0x10000 /* event request
+> -						  from userspace */
+>  #define FBINFO_MISC_TILEBLITTING       0x20000 /* use tile blitting */
+>  
+>  /* A driver may set this flag to indicate that it does want a set_par to be
+> -- 
+> 1.8.3.1
 > 
 
-Thank you, Sam. :)
-
---
-Gustavo
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
