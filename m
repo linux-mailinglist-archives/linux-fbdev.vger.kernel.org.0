@@ -2,128 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44EE923CCEB
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Aug 2020 19:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C79423CE13
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Aug 2020 20:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728614AbgHERLe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 5 Aug 2020 13:11:34 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:25640 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728484AbgHERIi (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 5 Aug 2020 13:08:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1596647316;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=NXrvFSV+dNzT7Ew4OtdZ4sl3Tp8McXO1LQ3a/45Cy2g=;
-        b=EcJmCxzcZ7bIjzT8p2fD9r9DFXN5PtMFJjemYihJHR4uAtiKoWvBjwWqOk9kSn9ggH+S59
-        HiABS3ToP9hSmwJ272U6SN7hSZ4lurUNFMkW9KmlzWvPenZJeHiyBvLIaA/NGv5CWCKSsk
-        pFmFSBkgEdzaSe724K3ITd1F4hkxE6g=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-198-4nc9J-xgORG3P-Xe2vdOHA-1; Wed, 05 Aug 2020 10:52:19 -0400
-X-MC-Unique: 4nc9J-xgORG3P-Xe2vdOHA-1
-Received: by mail-qt1-f200.google.com with SMTP id u17so29521837qtq.13
-        for <linux-fbdev@vger.kernel.org>; Wed, 05 Aug 2020 07:52:19 -0700 (PDT)
+        id S1728575AbgHESLk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 5 Aug 2020 14:11:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729115AbgHESKG (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 5 Aug 2020 14:10:06 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A44C06179F;
+        Wed,  5 Aug 2020 11:09:13 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id c10so3487255pjn.1;
+        Wed, 05 Aug 2020 11:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x87wiamKK8IpHrYWyQZkX28BwuSCR2wXWSfYCvqc6Rg=;
+        b=iVu5YmbCMVDewJqlVtDIukhKIgmctZpLwDYBjjmVLQM1euBz+LL3Of/pjceORkGcXF
+         c7dONE40HnV+TknJtM2Tzk97+fvTlV+/t1CGUh342m0OcQFJXj3WM0uTeln70cX61qu9
+         USzcgm0fYccuXZypXeKskZxK8qIzOXDewtV0+HZtVr3fQWdBDKc4iYFVrAF7P6egb0GR
+         bqo4koVQOC1SSbnWDyviBLLNqEch7ix/IqZEB/fP5QPUzcpfpk2X+iBqi75Td6Hc40kk
+         hvRUQjHkYKlCXxoAF9Gy8JOpbx55jwzwCN39OL8vMFLiD6eYyLIlyo3Fz/LV9LgkvtuB
+         66zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=NXrvFSV+dNzT7Ew4OtdZ4sl3Tp8McXO1LQ3a/45Cy2g=;
-        b=BNnCDbBPZDy/Mq3t3GNwSAyN2dbUFnDwr7nF5utVQyTNwIibjwXb4/0xA7okIiKiKi
-         c0/Cv87fd18NRIfViyCOvNkO7JQTfloM3l52O1MR1Jvp6sik5tlbniZNjdhoxiaEpJE6
-         oYkLexqQ8HUXPngaUQcj4i2Z9HGad9vR2mdrewl1e9t3m8wTz7Dh008jIt7KZNK0Xh76
-         3L6K/3iVDY/mvCe52lZL70geLwGE4xIkWFx9tAbTcQohbTKFsPyShPEzxB6+qx5jB3rU
-         rjLWTxWupVmNl86xPdLdz8TCMr3N+s5oiboD9tBPiX9gtDy/ZHkOonqhNQCaSZfImdEg
-         31kA==
-X-Gm-Message-State: AOAM5312kU4OHmGs5S9RCAUmpufKmDNU9UM4wElqNMSk6ncd2SYimhji
-        zcTvoE1s1nYcQonGdo8RggG+9FLsd+6Z+kUkCUxh1IEtYob+uHkk3qW2MjuNkfmRzTOnJiBLdYs
-        sMM/ok1HXRyIIBLc/5xWmPZk=
-X-Received: by 2002:ac8:4a99:: with SMTP id l25mr3768029qtq.132.1596639139244;
-        Wed, 05 Aug 2020 07:52:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzp5tU+SNu4wENz/P1igk4DE3nEE4fftblfRV1X1lQLG3yUmxqeZIDzwczARUE/HJu8apixFA==
-X-Received: by 2002:ac8:4a99:: with SMTP id l25mr3768003qtq.132.1596639138881;
-        Wed, 05 Aug 2020 07:52:18 -0700 (PDT)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id 22sm1868301qkd.64.2020.08.05.07.52.16
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x87wiamKK8IpHrYWyQZkX28BwuSCR2wXWSfYCvqc6Rg=;
+        b=BLOuE6sH1xmXoGEOEo025t1RbqW7383coJ+TNm9u/we+TNw4t/JdiAkaXcEuuMrZ2E
+         Ich0cxkLHlJkHXQ90IVagY4ME8IsoDQ7Edxo9eRZ7pC3PzOtp8PddESOANftug9squ9T
+         rh60HEnhcWla13oD6Fkb/uWvUyXeLbeBEqXdsJfatGy83qGm4zmwzfv5scUqGnNeqDqq
+         4hUQLsp0ZLTSgzPVrgHtw1JMos339v83FSW0lRIaJOq/1yRjlePvvO9K20unKkO9Pms4
+         4IM9M96pN6pLaviyl4+Q4J9AxQ+7Hf1B7KTBdQ8lWjoRQ80MJGIK+NNdcyp7XWRXSrpd
+         wq+A==
+X-Gm-Message-State: AOAM532aiIal57tyaPlKsOu6vm2O/rq19/KrXQHJfX7iakWTFfCokAiU
+        CUlKeJILsOVIOAxG3xXBdXo=
+X-Google-Smtp-Source: ABdhPJwUy/xTCTo4J11cPRCLtgYVRxefF50v0a+BLy6A+JQtiPi2J2b5Wfa40r5V275kuWu/lnDLsg==
+X-Received: by 2002:a17:90b:4a0a:: with SMTP id kk10mr4515843pjb.30.1596650952734;
+        Wed, 05 Aug 2020 11:09:12 -0700 (PDT)
+Received: from varodek.iballbatonwifi.com ([103.105.152.86])
+        by smtp.gmail.com with ESMTPSA id t63sm4977510pfb.210.2020.08.05.11.09.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2020 07:52:17 -0700 (PDT)
-From:   trix@redhat.com
-To:     thomas@winischhofer.net, b.zolnierkie@samsung.com, akpm@osdl.org
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tom Rix <trix@redhat.com>
-Subject: [PATCH] video: fbdev: sis: fix null ptr dereference
-Date:   Wed,  5 Aug 2020 07:52:08 -0700
-Message-Id: <20200805145208.17727-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.1
+        Wed, 05 Aug 2020 11:09:12 -0700 (PDT)
+From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v1 00/12] video: fbdev: use generic power management
+Date:   Wed,  5 Aug 2020 23:37:10 +0530
+Message-Id: <20200805180722.244008-1-vaibhavgupta40@gmail.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+Linux Kernel Mentee: Remove Legacy Power Management.
 
-Clang static analysis reports this representative error
+The purpose of this patch series is to upgrade power management in video fbdev
+drivers. This has been done by upgrading .suspend() and .resume() callbacks.
 
-init.c:2501:18: warning: Array access (from variable 'queuedata') results
-  in a null pointer dereference
-      templ |= ((queuedata[i] & 0xc0) << 3);
+The upgrade makes sure that the involvement of PCI Core does not change the
+order of operations executed in a driver. Thus, does not change its behavior.
 
-This is the problem block of code
+In general, drivers with legacy PM, .suspend() and .resume() make use of PCI
+helper functions like pci_enable/disable_device_mem(), pci_set_power_state(),
+pci_save/restore_state(), pci_enable/disable_device(), etc. to complete
+their job.
 
-   if(ModeNo > 0x13) {
-      ...
-      if(SiS_Pr->ChipType == SIS_730) {
-	 queuedata = &FQBQData730[0];
-      } else {
-	 queuedata = &FQBQData[0];
-      }
-   } else {
+The conversion requires the removal of those function calls, change the
+callbacks' definition accordingly and make use of dev_pm_ops structure.
 
-   }
+All patches are compile-tested only.
 
-queuedata is not set in the else block
+Test tools:
+    - Compiler: gcc (GCC) 10.1.0
+    - allmodconfig build: make -j$(nproc) W=1 all
 
-Reviewing the old code, the arrays FQBQData730 and FQBQData were
-used directly.
+Vaibhav Gupta (12):
+  fbdev: gxfb: use generic power management
+  fbdev: lxfb: use generic power management
+  fbdev: via-core: use generic power management
+  fbdev: aty: use generic power management
+  fbdev: aty128fb: use generic power management
+  fbdev: nvidia: use generic power management
+  fbdev: savagefb: use generic power management
+  fbdev: cyber2000fb: use generic power management
+  fbdev: i740fb: use generic power management
+  fbdev: vt8623fb: use generic power management
+  fbdev: s3fb: use generic power management
+  fbdev: arkfb: use generic power management
 
-So hoist the setting of queuedata out of the if-else block.
+ drivers/video/fbdev/arkfb.c                  | 41 ++++++-------
+ drivers/video/fbdev/aty/aty128fb.c           | 51 ++++++++++------
+ drivers/video/fbdev/aty/atyfb_base.c         | 50 ++++++++++-----
+ drivers/video/fbdev/cyber2000fb.c            | 13 ++--
+ drivers/video/fbdev/geode/gxfb.h             |  5 --
+ drivers/video/fbdev/geode/gxfb_core.c        | 36 ++++++-----
+ drivers/video/fbdev/geode/lxfb.h             |  5 --
+ drivers/video/fbdev/geode/lxfb_core.c        | 37 +++++------
+ drivers/video/fbdev/geode/lxfb_ops.c         |  4 --
+ drivers/video/fbdev/geode/suspend_gx.c       |  4 --
+ drivers/video/fbdev/i740fb.c                 | 40 +++++-------
+ drivers/video/fbdev/nvidia/nvidia.c          | 64 +++++++++++---------
+ drivers/video/fbdev/s3fb.c                   | 39 +++++-------
+ drivers/video/fbdev/savage/savagefb_driver.c | 52 ++++++++++------
+ drivers/video/fbdev/via/via-core.c           | 39 +++++-------
+ drivers/video/fbdev/vt8623fb.c               | 41 ++++++-------
+ include/linux/via-core.h                     |  2 -
+ 17 files changed, 267 insertions(+), 256 deletions(-)
 
-Fixes: 544393fe584d ("[PATCH] sisfb update")
-
-Signed-off-by: Tom Rix <trix@redhat.com>
----
- drivers/video/fbdev/sis/init.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/video/fbdev/sis/init.c b/drivers/video/fbdev/sis/init.c
-index dfe3eb769638..fde27feae5d0 100644
---- a/drivers/video/fbdev/sis/init.c
-+++ b/drivers/video/fbdev/sis/init.c
-@@ -2428,6 +2428,11 @@ SiS_SetCRT1FIFO_630(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
- 
-    i = 0;
- 
-+	if (SiS_Pr->ChipType == SIS_730)
-+		queuedata = &FQBQData730[0];
-+	else
-+		queuedata = &FQBQData[0];
-+
-    if(ModeNo > 0x13) {
- 
-       /* Get VCLK  */
-@@ -2445,12 +2450,6 @@ SiS_SetCRT1FIFO_630(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
-       /* Get half colordepth */
-       colorth = colortharray[(SiS_Pr->SiS_ModeType - ModeEGA)];
- 
--      if(SiS_Pr->ChipType == SIS_730) {
--	 queuedata = &FQBQData730[0];
--      } else {
--	 queuedata = &FQBQData[0];
--      }
--
-       do {
- 	 templ = SiS_CalcDelay2(SiS_Pr, queuedata[i]) * VCLK * colorth;
- 
 -- 
-2.18.1
+2.27.0
 
