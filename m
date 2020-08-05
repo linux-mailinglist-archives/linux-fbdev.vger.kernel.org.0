@@ -2,66 +2,59 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD73223C261
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Aug 2020 01:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9F123C9EA
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Aug 2020 12:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727842AbgHDXw3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Aug 2020 19:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726011AbgHDXw2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Aug 2020 19:52:28 -0400
-X-Greylist: delayed 86248 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Aug 2020 16:52:27 PDT
-Received: from dockerbox (unknown [IPv6:2001:4800:7817:101:be76:4eff:fe04:a215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC72FC061756;
-        Tue,  4 Aug 2020 16:52:27 -0700 (PDT)
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by dockerbox (Postfix) with SMTP id 6F4DA5EC5A;
-        Mon,  7 Oct 2019 19:30:12 -0500 (CDT)
-Received: from [32.188.209.113] by 127.0.0.1 with SMTP; Mon, 07 Oct 2019 18:22:17 -0600
-Message-ID: <80v-q$4-o4pqyq0@6eeih174.p55>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     linkos@binet.lv
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
-Date:   Mon, 07 Oct 19 18:22:17 GMT
-X-Mailer: Microsoft Outlook Express 5.00.2615.200
+        id S1728384AbgHEKbN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 5 Aug 2020 06:31:13 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54936 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726294AbgHEK2d (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 5 Aug 2020 06:28:33 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1k3GeT-0003ml-DX; Wed, 05 Aug 2020 10:28:05 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] omapfb: fix spelling mistake "propert" -> "property"
+Date:   Wed,  5 Aug 2020 11:28:05 +0100
+Message-Id: <20200805102805.15353-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="_.A4476ECDD73A3"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---_.A4476ECDD73A3
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+There is a spelling mistake in a pr_err message. Fix it.
 
-Greetings
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-My name is Barrister Hans Erich.
-
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
-
-Your full names --------
-
-
-Your urgent response will be appreciated
-
-Thank you and God bless you.
-
-Barrister Hans Erich
-
-Yours sincerely,
-Barrister Hans Erich
-CONTACT: hanserich9helmut@gmail.com
-
---_.A4476ECDD73A3--
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+index 0b0ad20afd63..f560fa4d7786 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+@@ -787,7 +787,7 @@ static int venc_probe_of(struct platform_device *pdev)
+ 		venc.type = OMAP_DSS_VENC_TYPE_SVIDEO;
+ 		break;
+ 	default:
+-		dev_err(&pdev->dev, "bad channel propert '%d'\n", channels);
++		dev_err(&pdev->dev, "bad channel property '%d'\n", channels);
+ 		r = -EINVAL;
+ 		goto err;
+ 	}
+-- 
+2.27.0
 
