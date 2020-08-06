@@ -2,51 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5B423D73C
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Aug 2020 09:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 522B323D743
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Aug 2020 09:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727852AbgHFHYm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Aug 2020 03:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40900 "EHLO
+        id S1728168AbgHFH2n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 6 Aug 2020 03:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727105AbgHFHYl (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Aug 2020 03:24:41 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D23BC061574;
-        Thu,  6 Aug 2020 00:24:40 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id x6so11034054pgx.12;
-        Thu, 06 Aug 2020 00:24:40 -0700 (PDT)
+        with ESMTP id S1727891AbgHFH2m (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Aug 2020 03:28:42 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37536C061574;
+        Thu,  6 Aug 2020 00:28:42 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id p1so27052997pls.4;
+        Thu, 06 Aug 2020 00:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
         bh=XxdgRFlQigk4lLEnKCMOhpL5rmLS0bgdeVzH2zzhbYk=;
-        b=gLHgg2FDEjjPLyXBuhI/MzcN+g8tUjZ6ANigM+BEjYlSOioVM7Q9mJoOou77/wLgP8
-         q3C36bh00vAMR7Mp/11TiYzH7VLQ2jMkFJtu6v2kMh+VLDOSgOEtGHAMW/s9lQ81uO+T
-         L2DaDX7s1IYVTYdWEySZujl4UvhM8Wedfmaa5CJGbWShekQ8rroNHX8kwQmWWtf024vt
-         KquJx56ldPRmTa2VbMawPrCO/bME6t0aq3G/aJwcphoKKU3tugxrpsYV9oP5m5ltuACw
-         nzrPTPcOm3YiygFmsRLUSOiudU9l5EpOuVHAcpHhmr9RANsg9iUqu9pckY1beFS+dIiy
-         3b9A==
+        b=FlHv4vQ3VE/olmEyXl/0XGGhlOpr/3Wij7v72m3kCKiJ8HQN64oV/l2YU6MpViKD/c
+         VzriSXtzL1h10FtNlHeGdJFQdfemeX+u/yNotMOdpLtO+npHb1nsBD6M579Bd0RM7Akz
+         TbvVB8Ex6/YW7ZRmE/1vGxX7gl19yorBetIWPr5QIEY6AZB/kCh6NJFzppkjQnakoH6Q
+         RPTFCddX7l/tegFjdysNNCgDMYpgyQAyPKU5OFSIfzTzcDS6l3AHJoOrIerAQaIiUZHx
+         1QcqOue1z1k9sId/jFdRzdAEvJvU2sm8hJOYSNZ3y07QmZuV69+W9IRprFpWLBJmypFW
+         vKsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
         bh=XxdgRFlQigk4lLEnKCMOhpL5rmLS0bgdeVzH2zzhbYk=;
-        b=HIkhZXoSJqhqFdiu9zjfJ2hprsRSaNmeyI3iaXE1qI+Go/L2JGID4SY8TGhZdbunw6
-         0KDw3+4DjYf50tQCRwWVxsw4eHy9CE/50RXZmE6j7GleKQaIOalE4r+YzS8pBZ5Ortiq
-         yajxeideoSkDy8QkFJ9yjQD2lK+IQZv6hfbT43tyVWuqs8baS7s8FpYBrDu7QhrlShjI
-         CQm4ACGr7A/Gk136+z+2oQy2NfzKKL5Ezzoaux+4SvL3yoND/gLnYJPddsgoJCIHisCo
-         XUTsDzhW9DQIHt2klXH75PaM6OxdFmfJoTWrGJiuUUfG4J1zLDm6RQNE86nutJn3z8jK
-         N9DQ==
-X-Gm-Message-State: AOAM533cadU/U0EQOWVjsJV8MLsXhzTBxFZQfO8gj56x2XV0dKv+VAjd
-        FrPzKnFUsO2JqMI/VOeu4xs=
-X-Google-Smtp-Source: ABdhPJy5IRLInbKEewuJcoFWlYSZ7y95C3u9BHwPJBs5gSkClT1546uXOobVCr9Tbi0huxbgv3FyPg==
-X-Received: by 2002:a62:d084:: with SMTP id p126mr5801419pfg.287.1596698679368;
-        Thu, 06 Aug 2020 00:24:39 -0700 (PDT)
+        b=N4XCc1tJh2k3d9ngCi9jnrCUaod8QSFyQEQ9tYR47TkwjKujREK6j68FGbDKbozAEn
+         U5yYtB5HeBt4Q6RKzYJwRlvepDuXk68TFoEWDLHWhltpjjZaCbILYBqJdGuL0w1NWrKS
+         wteRymcXnpvJdGL+Rib4qemBLWV6tNBv9Jwi43mqV2pRAhbFsci5fNPsWm9daBHDtAQ8
+         s8OioX4A+ntNI71cMTluhy+C6Pzg0HLNCRhZoLjVQD1D1UUix9lMSTPR5a2gzPwfOQnz
+         RFL/XrmoZPhR9ybn3poG0AyX0Btt7NlK9ZUqPqWcWcxB/fszTmnNgHXwl7fBCtTcON1M
+         mpJw==
+X-Gm-Message-State: AOAM533v1nijGyzFnpuwOhfbWTsJj+JDlcqv1a+uP06PnTZAla5WmhLt
+        ZyIBdJQyWBphNBB1LOgKHKs=
+X-Google-Smtp-Source: ABdhPJy7rdcwXEx1kuFL2y1hDY5pQJYgbk0CrGVGdH58fTlyJBq3RxNFJpj108XYiC7FRL9fXS9JyQ==
+X-Received: by 2002:a17:90b:368c:: with SMTP id mj12mr6307408pjb.152.1596698921683;
+        Thu, 06 Aug 2020 00:28:41 -0700 (PDT)
 Received: from varodek.iballbatonwifi.com ([103.105.152.86])
-        by smtp.gmail.com with ESMTPSA id t28sm5665205pgn.81.2020.08.06.00.24.34
+        by smtp.gmail.com with ESMTPSA id e125sm6654646pfh.69.2020.08.06.00.28.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2020 00:24:38 -0700 (PDT)
+        Thu, 06 Aug 2020 00:28:41 -0700 (PDT)
 From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
 To:     Bjorn Helgaas <helgaas@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -62,9 +62,11 @@ Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         linux-kernel-mentees@lists.linuxfoundation.org,
         Shuah Khan <skhan@linuxfoundation.org>
 Subject: [PATCH v1 0/2] video: fbdev: radeonfb: PCI PM framework upgrade and fix-ups.
-Date:   Thu,  6 Aug 2020 12:52:54 +0530
-Message-Id: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
+Date:   Thu,  6 Aug 2020 12:56:56 +0530
+Message-Id: <20200806072658.592444-1-vaibhavgupta40@gmail.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
+References: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
