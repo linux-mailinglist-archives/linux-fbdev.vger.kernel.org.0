@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09AE9240F69
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 21:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F07240F26
+	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 21:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729721AbgHJTNP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 Aug 2020 15:13:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43862 "EHLO mail.kernel.org"
+        id S1729888AbgHJTNy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 Aug 2020 15:13:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45364 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729710AbgHJTNO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:13:14 -0400
+        id S1729508AbgHJTNx (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:13:53 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5DFD42224D;
-        Mon, 10 Aug 2020 19:13:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 850FB22DCC;
+        Mon, 10 Aug 2020 19:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086793;
+        s=default; t=1597086832;
         bh=FMih3/NXQq2ch2XERRB4MAPKDg5dZDiGVAUyMNS6M6c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NrQX74WdddMsimkkdB4LTn7axrAYaA73IhgMW9m9XYe7a7exYYgD6G9DLQSXgbAqu
-         LaGdfnV7uzIdn3P9y4oWmDR497/M1CRXrMCWZVAvcRa66zJuolFyxsUtdH9QjvWjWB
-         YGoC/bSTkrDW39ECuw5uCNddzrSjSBooy8ZtceQ0=
+        b=BZiOsAeRfMi0ma47KvqGmCOCJu3ncaNCzFMpeWSrepTbca3IbI5tgdA6nByn5pE0y
+         4LHd2twPHt1HvN32D6KYxdMV6EO6Nw+a1KIOtztJ+4QdhCETpWDhUKrdT55A4tFd0I
+         UyGVgZ0CHvIpNKtVfHyxaCaWEghGrN01JTPUb16Y=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Evgeny Novikov <novikov@ispras.ru>,
@@ -33,12 +33,12 @@ Cc:     Evgeny Novikov <novikov@ispras.ru>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 09/31] video: fbdev: neofb: fix memory leak in neo_scan_monitor()
-Date:   Mon, 10 Aug 2020 15:12:37 -0400
-Message-Id: <20200810191259.3794858-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 05/22] video: fbdev: neofb: fix memory leak in neo_scan_monitor()
+Date:   Mon, 10 Aug 2020 15:13:27 -0400
+Message-Id: <20200810191345.3795166-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810191259.3794858-1-sashal@kernel.org>
-References: <20200810191259.3794858-1-sashal@kernel.org>
+In-Reply-To: <20200810191345.3795166-1-sashal@kernel.org>
+References: <20200810191345.3795166-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
