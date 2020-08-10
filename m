@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10CAE2409BF
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 17:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334D9240998
+	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 17:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728841AbgHJP2N (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 Aug 2020 11:28:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34174 "EHLO mail.kernel.org"
+        id S1728956AbgHJP33 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 Aug 2020 11:29:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35872 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728835AbgHJP2H (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 Aug 2020 11:28:07 -0400
+        id S1728950AbgHJP32 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 Aug 2020 11:29:28 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6DE6A22BEA;
-        Mon, 10 Aug 2020 15:28:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D9BF22D02;
+        Mon, 10 Aug 2020 15:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597073286;
+        s=default; t=1597073368;
         bh=OzsmA25owFxj0rqitKR2MBowKesqp44jQTh/7yr6E94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eBwoNjuq6kFjCIfTLv+0HHrpcGG7FzuGmdYZI95lttqJnCeQSZA+eHOawl482Jpux
-         rVxVeZR2PnJYagy7aYeyuFos6rkeyuVi0Drf35M4m014zrN/2sDovEo//4APKUNyrE
-         J9AcuLSmmih8qOwKmyAiPHbtnnVSswBHU245h2DI=
+        b=DXs9dKyF+4zABJMBBDbwgCyz924Sx8WqH3b57gv1AOdG8zidF5jGeiViAZlKpbNBR
+         DUqVH/ZOh+Y0JTMPLpD7oonJgLYGGWTqgQzmoIhzSZo6xggVwBuXU64B8LqAN0fwjF
+         W0HG2NAGv2sTts9P+BJjjTDedCpgVGIXFguuD9dc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Anthony Liguori <aliguori@amazon.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 5.4 24/67] vgacon: Fix for missing check in scrollback handling
-Date:   Mon, 10 Aug 2020 17:21:11 +0200
-Message-Id: <20200810151810.614334777@linuxfoundation.org>
+Subject: [PATCH 4.19 13/48] vgacon: Fix for missing check in scrollback handling
+Date:   Mon, 10 Aug 2020 17:21:35 +0200
+Message-Id: <20200810151804.862471898@linuxfoundation.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810151809.438685785@linuxfoundation.org>
-References: <20200810151809.438685785@linuxfoundation.org>
+In-Reply-To: <20200810151804.199494191@linuxfoundation.org>
+References: <20200810151804.199494191@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
