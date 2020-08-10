@@ -2,134 +2,267 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 334D9240998
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 17:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C4B240B73
+	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 18:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728956AbgHJP33 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 Aug 2020 11:29:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35872 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728950AbgHJP32 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 Aug 2020 11:29:28 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        id S1727028AbgHJQzI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 Aug 2020 12:55:08 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:54398 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727018AbgHJQzI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 Aug 2020 12:55:08 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D9BF22D02;
-        Mon, 10 Aug 2020 15:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597073368;
-        bh=OzsmA25owFxj0rqitKR2MBowKesqp44jQTh/7yr6E94=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DXs9dKyF+4zABJMBBDbwgCyz924Sx8WqH3b57gv1AOdG8zidF5jGeiViAZlKpbNBR
-         DUqVH/ZOh+Y0JTMPLpD7oonJgLYGGWTqgQzmoIhzSZo6xggVwBuXU64B8LqAN0fwjF
-         W0HG2NAGv2sTts9P+BJjjTDedCpgVGIXFguuD9dc=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        =?UTF-8?q?=E5=BC=A0=E4=BA=91=E6=B5=B7?= <zhangyunhai@nsfocus.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Kyungtae Kim <kt0755@gmail.com>, linux-fbdev@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Solar Designer <solar@openwall.com>,
-        "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
-        Anthony Liguori <aliguori@amazon.com>,
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 3A159804D9;
+        Mon, 10 Aug 2020 18:55:00 +0200 (CEST)
+Date:   Mon, 10 Aug 2020 18:54:58 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 4.19 13/48] vgacon: Fix for missing check in scrollback handling
-Date:   Mon, 10 Aug 2020 17:21:35 +0200
-Message-Id: <20200810151804.862471898@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200810151804.199494191@linuxfoundation.org>
-References: <20200810151804.199494191@linuxfoundation.org>
-User-Agent: quilt/0.66
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 01/12] fbdev: gxfb: use generic power management
+Message-ID: <20200810165458.GA292825@ravnborg.org>
+References: <20200805180722.244008-1-vaibhavgupta40@gmail.com>
+ <20200805180722.244008-2-vaibhavgupta40@gmail.com>
+ <20200808111746.GA24172@ravnborg.org>
+ <20200810093948.GB6615@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200810093948.GB6615@gmail.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8 a=e5mUnYsNAAAA:8
+        a=3wanNKNTOeUfviNiXn8A:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Yunhai Zhang <zhangyunhai@nsfocus.com>
+Hi Vaibhav
+On Mon, Aug 10, 2020 at 03:09:48PM +0530, Vaibhav Gupta wrote:
+> On Sat, Aug 08, 2020 at 01:17:46PM +0200, Sam Ravnborg wrote:
+> > Hi Vaibhav
+> > 
+> > On Wed, Aug 05, 2020 at 11:37:11PM +0530, Vaibhav Gupta wrote:
+> > > Drivers using legacy power management .suspen()/.resume() callbacks
+> > > have to manage PCI states and device's PM states themselves. They also
+> > > need to take care of standard configuration registers.
+> > > 
+> > > Switch to generic power management framework using a single
+> > > "struct dev_pm_ops" variable
+> > 
+> > "to take the unnecessary load from the driver."
+> > - I do not parse the above - I cannot see what load is removed.
+> > But the code is simpler which is fine. The drawback is that we now
+> > always link in the suspend_gx functions but hopefultl the linker drops
+> > them later.
+> > 
+> > > This also avoids the need for the driver to directly call most of the PCI
+> > > helper functions and device power state control functions, as through
+> > > the generic framework PCI Core takes care of the necessary operations,
+> > > and drivers are required to do only device-specific jobs.
+> > Again, I do not see what calles are removed.
+> > A single check for the state is dropped - anything else?
+> >
+> Yeah, the commit messages are bit misleading, I have modified them. 
+> > > 
+> > > Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> > > ---
+> > >  drivers/video/fbdev/geode/gxfb.h       |  5 ----
+> > >  drivers/video/fbdev/geode/gxfb_core.c  | 36 ++++++++++++++------------
+> > >  drivers/video/fbdev/geode/suspend_gx.c |  4 ---
+> > >  3 files changed, 20 insertions(+), 25 deletions(-)
+> > > 
+> > > diff --git a/drivers/video/fbdev/geode/gxfb.h b/drivers/video/fbdev/geode/gxfb.h
+> > > index d2e9c5c8e294..792c111c21e4 100644
+> > > --- a/drivers/video/fbdev/geode/gxfb.h
+> > > +++ b/drivers/video/fbdev/geode/gxfb.h
+> > > @@ -21,7 +21,6 @@ struct gxfb_par {
+> > >  	void __iomem *dc_regs;
+> > >  	void __iomem *vid_regs;
+> > >  	void __iomem *gp_regs;
+> > > -#ifdef CONFIG_PM
+> > >  	int powered_down;
+> > >  
+> > >  	/* register state, for power management functionality */
+> > > @@ -36,7 +35,6 @@ struct gxfb_par {
+> > >  	uint64_t fp[FP_REG_COUNT];
+> > >  
+> > >  	uint32_t pal[DC_PAL_COUNT];
+> > > -#endif
+> > >  };
+> > >  
+> > >  unsigned int gx_frame_buffer_size(void);
+> > > @@ -49,11 +47,8 @@ void gx_set_dclk_frequency(struct fb_info *info);
+> > >  void gx_configure_display(struct fb_info *info);
+> > >  int gx_blank_display(struct fb_info *info, int blank_mode);
+> > >  
+> > > -#ifdef CONFIG_PM
+> > >  int gx_powerdown(struct fb_info *info);
+> > >  int gx_powerup(struct fb_info *info);
+> > > -#endif
+> > > -
+> > >  
+> > >  /* Graphics Processor registers (table 6-23 from the data book) */
+> > >  enum gp_registers {
+> > > diff --git a/drivers/video/fbdev/geode/gxfb_core.c b/drivers/video/fbdev/geode/gxfb_core.c
+> > > index d38a148d4746..44089b331f91 100644
+> > > --- a/drivers/video/fbdev/geode/gxfb_core.c
+> > > +++ b/drivers/video/fbdev/geode/gxfb_core.c
+> > > @@ -322,17 +322,14 @@ static struct fb_info *gxfb_init_fbinfo(struct device *dev)
+> > >  	return info;
+> > >  }
+> > >  
+> > > -#ifdef CONFIG_PM
+> > > -static int gxfb_suspend(struct pci_dev *pdev, pm_message_t state)
+> > > +static int __maybe_unused gxfb_suspend(struct device *dev)
+> > >  {
+> > > -	struct fb_info *info = pci_get_drvdata(pdev);
+> > > +	struct fb_info *info = dev_get_drvdata(dev);
+> > I do not see any dev_set_drvdata() so I guess we get a NULL pointer
+> > here which is not intended.
+> > Adding a dev_set_data() to gxfb_probe() would do the trick.
+> > 
+> gxfb_probe() invokes pci_set_drvdata(pdev, info) which in turn calls
+> dev_set_drvdata(&pdev->dev, data). Adding dev_get_drvdata() will be redundant.
+OK, not obvious but you are right that calling dev_get_drvdata() would
+be redundant and no need.
+There is a pci_get_drvdata() user left so we cannot just skip it and use
+the dev_set_drvdata() direct.
 
-commit ebfdfeeae8c01fcb2b3b74ffaf03876e20835d2d upstream.
+> 
+> > >  
+> > > -	if (state.event == PM_EVENT_SUSPEND) {
+> > > -		console_lock();
+> > > -		gx_powerdown(info);
+> > > -		fb_set_suspend(info, 1);
+> > > -		console_unlock();
+> > > -	}
+> > > +	console_lock();
+> > > +	gx_powerdown(info);
+> > > +	fb_set_suspend(info, 1);
+> > > +	console_unlock();
+> > >  
+> > >  	/* there's no point in setting PCI states; we emulate PCI, so
+> > >  	 * we don't end up getting power savings anyways */
+> > > @@ -340,9 +337,9 @@ static int gxfb_suspend(struct pci_dev *pdev, pm_message_t state)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > -static int gxfb_resume(struct pci_dev *pdev)
+> > > +static int __maybe_unused gxfb_resume(struct device *dev)
+> > >  {
+> > > -	struct fb_info *info = pci_get_drvdata(pdev);
+> > > +	struct fb_info *info = dev_get_drvdata(dev);
+> > >  	int ret;
+> > >  
+> > >  	console_lock();
+> > > @@ -356,7 +353,6 @@ static int gxfb_resume(struct pci_dev *pdev)
+> > >  	console_unlock();
+> > >  	return 0;
+> > >  }
+> > > -#endif
+> > >  
+> > >  static int gxfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> > >  {
+> > > @@ -467,15 +463,23 @@ static const struct pci_device_id gxfb_id_table[] = {
+> > >  
+> > >  MODULE_DEVICE_TABLE(pci, gxfb_id_table);
+> > >  
+> > > +static const struct dev_pm_ops gxfb_pm_ops = {
+> > > +#ifdef CONFIG_PM_SLEEP
+> > > +	.suspend	= gxfb_suspend,
+> > > +	.resume		= gxfb_resume,
+> > > +	.freeze		= NULL,
+> > > +	.thaw		= gxfb_resume,
+> > > +	.poweroff	= NULL,
+> > > +	.restore	= gxfb_resume,
+> > > +#endif
+> > > +};
+> > Can we use SET_SYSTEM_SLEEP_PM_OPS here?
+> > .freeze will be assigned gxfb_suspend, but gxfb_suspend will anyway be
+> > called as far as I read the code.
+> > Likewise for poweroff.
+> > 
+> Earlier, gxfb_suspend() performed each operation just for suspend event.
+> And as it was legacy code, it was invoked by pci_legacy_suspend() for
+> pci_pm_suspend(), pci_pm_freeze() and pci_pm_poweroff().
+> Thus, the code was wrapped inside "if" container:
+> 	if (state.event == PM_EVENT_SUSPEND) { }
+> 
+> After binding it with dev_pm_ops variable, pm->suspend() is invoked by just
+> pci_pm_suspend() which is required.
+> 
+> So I removed the "if" container and bind the callback with pm->suspend pointer
+> only.
+Looking at platform.c I got the impression that freeze() would call
+pci_legacy_suspend() anyway - but I may have missind something.
+So I guess this is OK then.
 
-vgacon_scrollback_update() always leaves enbough room in the scrollback
-buffer for the next call, but if the console size changed that room
-might not actually be enough, and so we need to re-check.
+I look forward for next revision with updated changelogs.
 
-The check should be in the loop since vgacon_scrollback_cur->tail is
-updated in the loop and count may be more than 1 when triggered by CSI M,
-as Jiri's PoC:
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-
-int main(int argc, char** argv)
-{
-        int fd = open("/dev/tty1", O_RDWR);
-        unsigned short size[3] = {25, 200, 0};
-        ioctl(fd, 0x5609, size); // VT_RESIZE
-
-        write(fd, "\e[1;1H", 6);
-        for (int i = 0; i < 30; i++)
-                write(fd, "\e[10M", 5);
-}
-
-It leads to various crashes as vgacon_scrollback_update writes out of
-the buffer:
- BUG: unable to handle page fault for address: ffffc900001752a0
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0002) - not-present page
- RIP: 0010:mutex_unlock+0x13/0x30
-...
- Call Trace:
-  n_tty_write+0x1a0/0x4d0
-  tty_write+0x1a0/0x2e0
-
-Or to KASAN reports:
-BUG: KASAN: slab-out-of-bounds in vgacon_scroll+0x57a/0x8ed
-
-This fixes CVE-2020-14331.
-
-Reported-by: 张云海 <zhangyunhai@nsfocus.com>
-Reported-by: Yang Yingliang <yangyingliang@huawei.com>
-Reported-by: Kyungtae Kim <kt0755@gmail.com>
-Fixes: 15bdab959c9b ([PATCH] vgacon: Add support for soft scrollback)
-Cc: stable@vger.kernel.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Solar Designer <solar@openwall.com>
-Cc: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
-Cc: Anthony Liguori <aliguori@amazon.com>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Yunhai Zhang <zhangyunhai@nsfocus.com>
-Link: https://lore.kernel.org/r/9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/video/console/vgacon.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -251,6 +251,10 @@ static void vgacon_scrollback_update(str
- 	p = (void *) (c->vc_origin + t * c->vc_size_row);
- 
- 	while (count--) {
-+		if ((vgacon_scrollback_cur->tail + c->vc_size_row) >
-+		    vgacon_scrollback_cur->size)
-+			vgacon_scrollback_cur->tail = 0;
-+
- 		scr_memcpyw(vgacon_scrollback_cur->data +
- 			    vgacon_scrollback_cur->tail,
- 			    p, c->vc_size_row);
-
-
+	Sam
+> 
+> Using SET_SYSTEM_PM_OPS will bring back the extra step of invoking gxfb_suspend()
+> for freeze and poweroff, even though the function will do nothing in that case.
+> 
+> Vaibhav Gupta
+> > 	Sam
+> > 
+> > > +
+> > >  static struct pci_driver gxfb_driver = {
+> > >  	.name		= "gxfb",
+> > >  	.id_table	= gxfb_id_table,
+> > >  	.probe		= gxfb_probe,
+> > >  	.remove		= gxfb_remove,
+> > > -#ifdef CONFIG_PM
+> > > -	.suspend	= gxfb_suspend,
+> > > -	.resume		= gxfb_resume,
+> > > -#endif
+> > > +	.driver.pm	= &gxfb_pm_ops,
+> > >  };
+> > >  
+> > >  #ifndef MODULE
+> > > diff --git a/drivers/video/fbdev/geode/suspend_gx.c b/drivers/video/fbdev/geode/suspend_gx.c
+> > > index 1110a527c35c..8c49d4e98772 100644
+> > > --- a/drivers/video/fbdev/geode/suspend_gx.c
+> > > +++ b/drivers/video/fbdev/geode/suspend_gx.c
+> > > @@ -11,8 +11,6 @@
+> > >  
+> > >  #include "gxfb.h"
+> > >  
+> > > -#ifdef CONFIG_PM
+> > > -
+> > >  static void gx_save_regs(struct gxfb_par *par)
+> > >  {
+> > >  	int i;
+> > > @@ -259,5 +257,3 @@ int gx_powerup(struct fb_info *info)
+> > >  	par->powered_down  = 0;
+> > >  	return 0;
+> > >  }
+> > > -
+> > > -#endif
+> > > -- 
+> > > 2.27.0
+> > > 
+> > > _______________________________________________
+> > > dri-devel mailing list
+> > > dri-devel@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/dri-devel
