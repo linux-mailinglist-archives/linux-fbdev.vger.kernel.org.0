@@ -2,97 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8403240435
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 11:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C56C240877
+	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Aug 2020 17:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbgHJJqF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 Aug 2020 05:46:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40234 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbgHJJqF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 Aug 2020 05:46:05 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D47BC061756;
-        Mon, 10 Aug 2020 02:46:05 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id mt12so4529318pjb.4;
-        Mon, 10 Aug 2020 02:46:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3fQqRDOEEK3chzUCl0lL9Ogs6I8yGgHjcMYgs480q6A=;
-        b=tJvq3feYTqDjpFSHsGa2nJp192C6I/gC+CaEBcq+Rjc10MIMDQEU3hwx8IX6Kd9idz
-         AruD5txahoyc/RfHJNXbJrjPl6nc7UFpzVUaQeNGh5Pn6Jt3C6tfMbmw3RcNqymAsb6f
-         IByBxrDQLihGva6ZJJSzfOCbQOMpoQ89ePpCdAc06+LDjHNe49iOuezNAf5j5IfaBJ/G
-         Kaf58/2KRp1dnSVJNv3TXUz7ETLosn6Q61C9Akr0W6sQHuPPrT7nj2IqhwwwPfHNaL3G
-         mArAkvtKlrcZT8j3HfLZqz4krYEZdlGTf2oFVGjHDUPYFOU3TK4n0dw6NweWPnPV3oP4
-         dIaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3fQqRDOEEK3chzUCl0lL9Ogs6I8yGgHjcMYgs480q6A=;
-        b=Pj7swVnK/iwmFca0JbzvUQJLQpeHJ+pVKRe3cWnX53cGG/38sYSgDVZW1w3yd4O1IB
-         /HaapkV9RtGrtqPWJ+Z+2Biq3fSDMbGe9ECiKCVCwVxDvmL65XzvlcC8twYzU4Xd0B0B
-         ecIeKy8jEzQYmAb9GIcDSLEPNU2yXHEcBVjZeAok2zzCqnnfJ+stl3optILokXXz4c6X
-         F1rYaTGOn1Q7AaMgOqAsPJLKnPbfdSNTFqJBciG7X6QdHJP6Zv/dnIPYXzWXMLd0FxRp
-         2VJ/eg5PM5s9XHUd8YZc4wmcfRhOIlU+WKmLU8dc+QNdDCJpklemVAQ473tMS8TaDYN8
-         Q6fg==
-X-Gm-Message-State: AOAM530PlqdEzr8Ji4xMrZTfxEMiozmQIhLNvh1QO+C4wxz1dpwbmo2h
-        sZNv3vD70iWAG+L9mQcMfNI=
-X-Google-Smtp-Source: ABdhPJwvz+1J3dgGouXI08GF3iGqfuD+/RYt1n1Cm2Iz11htOXNeqE5EI6zW35FtLcFUJzc2qTBLsw==
-X-Received: by 2002:a17:902:d3c6:: with SMTP id w6mr21348487plb.209.1597052764753;
-        Mon, 10 Aug 2020 02:46:04 -0700 (PDT)
-Received: from gmail.com ([103.105.152.86])
-        by smtp.gmail.com with ESMTPSA id l4sm9385502pgk.74.2020.08.10.02.45.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2020 02:46:04 -0700 (PDT)
-Date:   Mon, 10 Aug 2020 15:14:13 +0530
-From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        id S1728108AbgHJPVC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 Aug 2020 11:21:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51696 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728058AbgHJPU7 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 Aug 2020 11:20:59 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E8A7620656;
+        Mon, 10 Aug 2020 15:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597072858;
+        bh=OzsmA25owFxj0rqitKR2MBowKesqp44jQTh/7yr6E94=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=W4b8ZO7SnvBrljS26BfyNmTyLvtQYcw7ZaT6K4rJY1QGIR5HJ1B8Skwtny30T4C6v
+         VjgctvcS4ur+2wZmbxnq+skvIY4foVkW33gHSYbS3NvxeyY+l7fN7KVE+eGPKS3PIo
+         r9rid14XhNL7oloxc7One0HFiSHybLS1WRspV4vY=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org,
+        =?UTF-8?q?=E5=BC=A0=E4=BA=91=E6=B5=B7?= <zhangyunhai@nsfocus.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Kyungtae Kim <kt0755@gmail.com>, linux-fbdev@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Solar Designer <solar@openwall.com>,
+        "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
+        Anthony Liguori <aliguori@amazon.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Andres Salomon <dilinger@queued.net>,
-        Antonino Daplas <adaplas@gmail.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-geode@lists.infradead.org,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 01/12] fbdev: gxfb: use generic power management
-Message-ID: <20200810094413.GA7579@gmail.com>
-References: <20200805180722.244008-1-vaibhavgupta40@gmail.com>
- <20200805180722.244008-2-vaibhavgupta40@gmail.com>
- <20200808111746.GA24172@ravnborg.org>
- <20200810093948.GB6615@gmail.com>
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.8 23/38] vgacon: Fix for missing check in scrollback handling
+Date:   Mon, 10 Aug 2020 17:19:13 +0200
+Message-Id: <20200810151805.039678187@linuxfoundation.org>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200810151803.920113428@linuxfoundation.org>
+References: <20200810151803.920113428@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200810093948.GB6615@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-> > > -static int gxfb_suspend(struct pci_dev *pdev, pm_message_t state)
-> > > +static int __maybe_unused gxfb_suspend(struct device *dev)
-> > >  {
-> > > -	struct fb_info *info = pci_get_drvdata(pdev);
-> > > +	struct fb_info *info = dev_get_drvdata(dev);
-> > I do not see any dev_set_drvdata() so I guess we get a NULL pointer
-> > here which is not intended.
-> > Adding a dev_set_data() to gxfb_probe() would do the trick.
-> > 
-> gxfb_probe() invokes pci_set_drvdata(pdev, info) which in turn calls
-> dev_set_drvdata(&pdev->dev, data). Adding dev_get_drvdata() will be redundant.
-> 
-s/dev_get_drvdata/dev_set_drvdata
+From: Yunhai Zhang <zhangyunhai@nsfocus.com>
 
-Thanks
-Vaibhav Gupta
+commit ebfdfeeae8c01fcb2b3b74ffaf03876e20835d2d upstream.
+
+vgacon_scrollback_update() always leaves enbough room in the scrollback
+buffer for the next call, but if the console size changed that room
+might not actually be enough, and so we need to re-check.
+
+The check should be in the loop since vgacon_scrollback_cur->tail is
+updated in the loop and count may be more than 1 when triggered by CSI M,
+as Jiri's PoC:
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+
+int main(int argc, char** argv)
+{
+        int fd = open("/dev/tty1", O_RDWR);
+        unsigned short size[3] = {25, 200, 0};
+        ioctl(fd, 0x5609, size); // VT_RESIZE
+
+        write(fd, "\e[1;1H", 6);
+        for (int i = 0; i < 30; i++)
+                write(fd, "\e[10M", 5);
+}
+
+It leads to various crashes as vgacon_scrollback_update writes out of
+the buffer:
+ BUG: unable to handle page fault for address: ffffc900001752a0
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ RIP: 0010:mutex_unlock+0x13/0x30
+...
+ Call Trace:
+  n_tty_write+0x1a0/0x4d0
+  tty_write+0x1a0/0x2e0
+
+Or to KASAN reports:
+BUG: KASAN: slab-out-of-bounds in vgacon_scroll+0x57a/0x8ed
+
+This fixes CVE-2020-14331.
+
+Reported-by: 张云海 <zhangyunhai@nsfocus.com>
+Reported-by: Yang Yingliang <yangyingliang@huawei.com>
+Reported-by: Kyungtae Kim <kt0755@gmail.com>
+Fixes: 15bdab959c9b ([PATCH] vgacon: Add support for soft scrollback)
+Cc: stable@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Solar Designer <solar@openwall.com>
+Cc: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
+Cc: Anthony Liguori <aliguori@amazon.com>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Yunhai Zhang <zhangyunhai@nsfocus.com>
+Link: https://lore.kernel.org/r/9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ drivers/video/console/vgacon.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -251,6 +251,10 @@ static void vgacon_scrollback_update(str
+ 	p = (void *) (c->vc_origin + t * c->vc_size_row);
+ 
+ 	while (count--) {
++		if ((vgacon_scrollback_cur->tail + c->vc_size_row) >
++		    vgacon_scrollback_cur->size)
++			vgacon_scrollback_cur->tail = 0;
++
+ 		scr_memcpyw(vgacon_scrollback_cur->data +
+ 			    vgacon_scrollback_cur->tail,
+ 			    p, c->vc_size_row);
+
+
