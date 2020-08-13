@@ -2,74 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FCC724379F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Aug 2020 11:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D1FD243885
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Aug 2020 12:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726499AbgHMJZj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 Aug 2020 05:25:39 -0400
-Received: from sonic310-13.consmr.mail.bf2.yahoo.com ([74.6.135.123]:38169
-        "EHLO sonic310-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726072AbgHMJZi (ORCPT
+        id S1726249AbgHMKbf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 13 Aug 2020 06:31:35 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:35289 "EHLO
+        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726048AbgHMKbf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 Aug 2020 05:25:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1597310737; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=lMNb8RV+yYaYEtSJCrF2dlSzjK1cyMe0V4PrAQEe2pE/CbPkX4ho1IPsrGtmhW0nyMF4S3+wlQ5voOr5dzLd02amyBLaoYuRL5xZVxWkabLEu7MxKn6ylf/UjkAhxzimlf8PQPOSxjMIxptWw+JlKlJhlT1BxQwAeIOj5BsvX1e0H4wLJzbGz+jDBtk/rb4Ra2UWuvrdoY9046xmb1Ml4tOEMr6ZaZr5Q2vzMRDrS2j3p4VvQJ/B6Y1EfRzp+CRiG6nnnjK6dtV3Eix1/uuNp55l0jRsbCiwfYez9vN65yIE8WGurmIpygryNa82sTOy66W/fmPPSz7n1BrulW9Gag==
-X-YMail-OSG: lGkJ.hwVM1nnjD7txpfShrUg4HANs7bI6OWqENhzhw_r0N7P171knK9D.hp0rgD
- 1XGq4WqwfGvm5Kgzvw_xN11iu3w1V_oDKsMJTTX0bxcxAJ6t16jA4G6SF8swOO9PelgRAkrD3TcY
- 7dRkuc23fZecUzZ6_jRgxafQXVGkzmXzfikcQ9flNWBGsM6lUNj4x8QAW5e31djn0Un9zEs0OL6i
- ismMlmM48FiXG9Cgvs7f3H8XmGZlP5_vccYO5igHrnYcn780YGcGpqOhmgYXAW6KLxR6p7gCNA05
- uJfh.pXfYkTaYDCtXX0Qbcln.0Ma39htFfCbmrkQqzhkZEb_ql67nz7jDwWlFHVrj7NTCMdYBgz3
- ACWvRNlnIW2OLMjO_xbi89ORU80Hlvljorwc1Lh1wqIy7sFDL52mqHDjnOaaAK6RLeo0pT.Yt_Cu
- VVlGV8vE6yIqWp3uCfNNdA5KF6wAxJ8YnTmQ.6Di6JJr.40.aXFlBPU549QrEQTjBDMKvhYMSrYX
- U7g5uwByt08RlABqDGw2fFSEx3K_4xryG2X.bi0TaDLMs1F6lzhGmw0Dzn.XXTtqaSBN7wmnrsBZ
- kG5q7Ei73g2W1GrwjupkdRvwARKqjF2BLGvMcWk1MwYFfTc.93dPtyOCf7jGQxkXPhdrW6LxY4tD
- 6rxMF3XD13Kt3DyE2M6wLJuk3M4C2jnIMxLX0yvVMpFyUrpBfvksQfGJNfyHWN4MDVROaJvJLdr9
- 5.9dWBrQy.d0csGOasANjGmPeDu.BL1B01SM7nrou0GaNGBe4FxaoJWNSQUcWKPXwSHq4HVKCbXb
- EB6Hm4CAycoqxj.qn3gTje8M8I7_5PoCdi7kszhQogmHRgWEjK5PdjTASnaWTnK.DEnk8uoblcJU
- K9hT8npJUsBH3XgkJFSMk979bGpXDrbzUT9X.DlU8.fUgeo9t24iDXNsjRgOyIGlN_sOdT1ik5xk
- 8n6qeh.d9rtgbSG7wauUR43FnmL.KPrBEdV4kYiPEb2nXUB6aSWoFTMmcQ5FF3iM5OaVABJApAeK
- iOZm_4aDXCa7SIAgI9JwZvWpqSUhtlaihgqTlrMjLIeT65gfqJFC8RM4HwZ3xN2behAdUk4Z4l8O
- cCU8nMFI5Lj9viYWq8YQjMZFrPOr6_wOczvqYJT4TgO6Ov1mo_3aj4qbKaha1J_Bp0XHi0Mmixqm
- Qj_ux0qLobtnmdxxV207o0uSGNWmZzn4oSLrUWZKZDtZIndmmenEyqxfZkL6G5Ra_pKeMo7xn7eT
- kC2_cGhgdgdATChzITD7m6Ju4m81pSfth9fbqUsl9FvLa1F7qtkRTovLE8Vwjs7tUGBFcIKncOvs
- 2rensGTxOxhQABHN95MB_EWAQK8YxBZ067il1VAEIYdWICRk-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.bf2.yahoo.com with HTTP; Thu, 13 Aug 2020 09:25:37 +0000
-Date:   Thu, 13 Aug 2020 09:25:37 +0000 (UTC)
-From:   Ms Lisa Hugh <lisa.hugh111@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <1652134774.998311.1597310737469@mail.yahoo.com>
-Subject: YOUR CO-OPERATION FOR THIS BUSINESS(Ms Lisa hugh).
+        Thu, 13 Aug 2020 06:31:35 -0400
+Received: from [37.161.87.136] (port=46755 helo=[192.168.42.162])
+        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1k6AW9-000FlW-5k; Thu, 13 Aug 2020 12:31:29 +0200
+Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
+To:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-spi@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-media@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org
+References: <20200812203618.2656699-1-robh@kernel.org>
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+Message-ID: <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
+Date:   Thu, 13 Aug 2020 12:31:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1652134774.998311.1597310737469.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16455 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200812203618.2656699-1-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Hi Rob,
+
+On 12/08/20 22:36, Rob Herring wrote:
+> Clean-up incorrect indentation, extra spaces, long lines, and missing
+> EOF newline in schema files. Most of the clean-ups are for list
+> indentation which should always be 2 spaces more than the preceding
+> keyword.
+> 
+> Found with yamllint (which I plan to integrate into the checks).
+
+[...]
+
+> diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> index 3d4e1685cc55..28c6461b9a9a 100644
+> --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> @@ -95,10 +95,10 @@ allOf:
+>        # Devices without builtin crystal
+>        properties:
+>          clock-names:
+> -            minItems: 1
+> -            maxItems: 2
+> -            items:
+> -              enum: [ xin, clkin ]
+> +          minItems: 1
+> +          maxItems: 2
+> +          items:
+> +            enum: [ xin, clkin ]
+>          clocks:
+>            minItems: 1
+>            maxItems: 2
+
+Thanks for noticing, LGTM.
+
+[...]
+
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> index d7dac16a3960..36dc7b56a453 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> @@ -33,8 +33,8 @@ properties:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>  
+>    touchscreen-min-pressure:
+> -    description: minimum pressure on the touchscreen to be achieved in order for the
+> -                 touchscreen driver to report a touch event.
+> +    description: minimum pressure on the touchscreen to be achieved in order
+> +      for the touchscreen driver to report a touch event.
+
+Out of personal taste, I find the original layout more pleasant and
+readable. This third option is also good, especially for long descriptions:
+
+  description:
+    minimum pressure on the touchscreen to be achieved in order for the
+    touchscreen driver to report a touch event.
+
+At first glance yamllint seems to support exactly these two by default:
+
+> With indentation: {spaces: 4, check-multi-line-strings: true}
+> 
+> the following code snippet would PASS:
+> 
+> Blaise Pascal:
+>     Je vous écris une longue lettre parce que
+>     je n'ai pas le temps d'en écrire une courte.
+> 
+> the following code snippet would PASS:
+> 
+> Blaise Pascal: Je vous écris une longue lettre parce que
+>                je n'ai pas le temps d'en écrire une courte.
+> 
+> the following code snippet would FAIL:
+> 
+> Blaise Pascal: Je vous écris une longue lettre parce que
+>   je n'ai pas le temps d'en écrire une courte.
+> 
+(https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.indentation)
 
 
-Dear Friend,
+-- 
+Luca
 
-I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
-
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
-
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
-
-Note/ 50% for you why 50% for me after success of the transfer to your bank account.
-
-Below information is what i need from you so will can be reaching each other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa hugh.
