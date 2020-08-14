@@ -2,128 +2,143 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D9A243AF4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Aug 2020 15:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6FC6244B60
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Aug 2020 16:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726142AbgHMNqC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 Aug 2020 09:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726106AbgHMNqB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 Aug 2020 09:46:01 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE63C061384
-        for <linux-fbdev@vger.kernel.org>; Thu, 13 Aug 2020 06:46:00 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id r4so5322132wrx.9
-        for <linux-fbdev@vger.kernel.org>; Thu, 13 Aug 2020 06:46:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=+mDarYxBbq/J7Ixc+CG3XEZjLyzyzKfnJvqheYjMPSo=;
-        b=XYEFqrb5M5fB90DCMr82s6xu+3kUi6clBH3J28tKhMKeygyzSyUtxHNkRA/aXIPrip
-         /KqR/1taagrKL2diCV5inDH2lOvvXlLdeLhm3SxNslPAp9BnkdXdUkeaPxLrV07LMk8F
-         vnJEQrP2qAqie3vzkghqQtRDLvf8N2RATLMESMuSYNxOAendWUG/PVRbBlTNmYpRunj2
-         NqA9kyuj7qTxop4DFEjiMJUfkzt8sIEUFt/eCzfIzJYShJ8cI35gx4jmzRgqBK4FEbgP
-         nb9ccd1ky7aEbw2chQw5x5eD/J1I23/yWnTg2P0J1tgAo2d2umAFUtxPbYPA9gWBniYm
-         b7hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+mDarYxBbq/J7Ixc+CG3XEZjLyzyzKfnJvqheYjMPSo=;
-        b=RFhmnlMN7mcKovzJq/WxKdYjZN0sOSjceRNXqt415IFheLMXY+zlWow3mUzWMv6F6u
-         aTHqLmsH2NouB2fFQ/D0Ojkx5sqzT3znCJSNQGgyf06CW269QsWwtcb46lw+YLmF8Rho
-         S3353EGAUDLpHapcE3qpoJwv7dB8bjTzcn/Nl/WeXGQm65a6lAW5tROtK6yOkah7vSck
-         ZJlq/vR2f7CTdXiuInd0uvEEheyrBj1wZJFi0KWn5LW6sr295OSNiXIySXylhIXPMaD7
-         FxCq5tGpo1bWDz5HUmISXwWJDmaXM5QgD0r3IzdYigVmMW2TyB9gFPoWlKkwJOXoEE+t
-         VaCw==
-X-Gm-Message-State: AOAM532H4hprrLYyfz8b99WniuVcIjWi9nrHVRqggi0oO5t7uqBlDdgq
-        Q1Bn+des1bnE/XO1b8SSd1azRg==
-X-Google-Smtp-Source: ABdhPJx7xfjEhBxs/ZAYptGT+NyxCdP60vku9IappFsc1k/bm/potYSblfH9oTAcEG9YnIt13D4dGw==
-X-Received: by 2002:adf:ab46:: with SMTP id r6mr4167024wrc.260.1597326359282;
-        Thu, 13 Aug 2020 06:45:59 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id d14sm10603833wre.44.2020.08.13.06.45.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2020 06:45:57 -0700 (PDT)
-Date:   Thu, 13 Aug 2020 14:45:53 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Alexandru Stan <amstan@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-pwm@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Subject: Re: [PATCH 2/3] backlight: pwm_bl: Artificially add 0% during
- interpolation
-Message-ID: <20200813134553.2hykfvqjtgr4e2pl@holly.lan>
-References: <20200721042522.2403410-1-amstan@chromium.org>
- <20200720212502.2.Iab4d2192e4cf50226e0a58d58df7d90ef92713ce@changeid>
- <20200807082113.GI6419@phenom.ffwll.local>
+        id S1728072AbgHNOvj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Aug 2020 10:51:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43326 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726193AbgHNOvi (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 14 Aug 2020 10:51:38 -0400
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E2C6E208B3;
+        Fri, 14 Aug 2020 14:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597416697;
+        bh=2azDCJAW0WmwzjFoNP1+Xf1baXp64Ykp/VUpBlKju0s=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=bjfRL+mBKQdeXNIPuXX+sib3fYs2/XZWJHPOjPd4x196xwXtWkEnxkwGCGKCP+vXy
+         CxGeqKP68MgYI300g+hNTJd4uQCvZb/zOsnBdJ/cEKlyynKbLGyhuMbkA+R9Y9MLDY
+         rajai6Sqx8HGb8L035zTD4t0BSpxCLooD+BQeHTA=
+Received: by mail-ot1-f54.google.com with SMTP id t7so7776444otp.0;
+        Fri, 14 Aug 2020 07:51:36 -0700 (PDT)
+X-Gm-Message-State: AOAM531YqcS4MUxvcGOYChGHRoRMcVsEFsDHYR5LbkHA90TiOSl6Dmh8
+        R/b9TCtT0vzAo6TEwQr7L0CGI1coatN8YZannA==
+X-Google-Smtp-Source: ABdhPJzAQOVgwIRLTeJz+4kS8jI7uSM4yy2bV/QUkiEz2152JH8sgfiQxJMSY+wk4abg95jsoFr6h5Ymz6ZJoeFhB2g=
+X-Received: by 2002:a05:6830:1b79:: with SMTP id d25mr1995774ote.107.1597416696235;
+ Fri, 14 Aug 2020 07:51:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200807082113.GI6419@phenom.ffwll.local>
+References: <20200812203618.2656699-1-robh@kernel.org> <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
+In-Reply-To: <d5808e9c-07fe-1c28-b9a6-a16abe9df458@lucaceresoli.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 14 Aug 2020 08:51:24 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKekx0VO4NROwLrgrU8+L584HaLHM9i3kCZvU+g5myeGw@mail.gmail.com>
+Message-ID: <CAL_JsqKekx0VO4NROwLrgrU8+L584HaLHM9i3kCZvU+g5myeGw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        Linux HWMON List <linux-hwmon@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Linux Input <linux-input@vger.kernel.org>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux-ALSA <alsa-devel@alsa-project.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        netdev <netdev@vger.kernel.org>,
+        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
+        <linux-rtc@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Aug 07, 2020 at 10:21:13AM +0200, daniel@ffwll.ch wrote:
-> On Mon, Jul 20, 2020 at 09:25:21PM -0700, Alexandru Stan wrote:
-> > Some displays need the low end of the curve cropped in order to make
-> > them happy. In that case we still want to have the 0% point, even though
-> > anything between 0% and 5%(example) would be skipped.
-> > 
-> > Signed-off-by: Alexandru Stan <amstan@chromium.org>
-> > ---
-> > 
-> >  drivers/video/backlight/pwm_bl.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> > index 5193a72305a2..b24711ddf504 100644
-> > --- a/drivers/video/backlight/pwm_bl.c
-> > +++ b/drivers/video/backlight/pwm_bl.c
-> > @@ -349,6 +349,14 @@ static int pwm_backlight_parse_dt(struct device *dev,
-> >  			/* Fill in the last point, since no line starts here. */
-> >  			table[x2] = y2;
-> >  
-> > +			/*
-> > +			 * If we don't start at 0 yet we're increasing, assume
-> > +			 * the dts wanted to crop the low end of the range, so
-> > +			 * insert a 0 to provide a display off mode.
-> > +			 */
-> > +			if (table[0] > 0 && table[0] < table[num_levels - 1])
-> > +				table[0] = 0;
-> 
-> Isn't that what the enable/disable switch in backlights are for? There's
-> lots of backligh drivers (mostly the firmware variety) where setting the
-> backlight to 0 does not shut it off, it's just the lowest setting.
-> 
-> But I've not been involved in the details of these discussions.
+On Thu, Aug 13, 2020 at 4:31 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+>
+> Hi Rob,
+>
+> On 12/08/20 22:36, Rob Herring wrote:
+> > Clean-up incorrect indentation, extra spaces, long lines, and missing
+> > EOF newline in schema files. Most of the clean-ups are for list
+> > indentation which should always be 2 spaces more than the preceding
+> > keyword.
+> >
+> > Found with yamllint (which I plan to integrate into the checks).
+>
+> [...]
+>
+> > diff --git a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> > index 3d4e1685cc55..28c6461b9a9a 100644
+> > --- a/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> > +++ b/Documentation/devicetree/bindings/clock/idt,versaclock5.yaml
+> > @@ -95,10 +95,10 @@ allOf:
+> >        # Devices without builtin crystal
+> >        properties:
+> >          clock-names:
+> > -            minItems: 1
+> > -            maxItems: 2
+> > -            items:
+> > -              enum: [ xin, clkin ]
+> > +          minItems: 1
+> > +          maxItems: 2
+> > +          items:
+> > +            enum: [ xin, clkin ]
+> >          clocks:
+> >            minItems: 1
+> >            maxItems: 2
+>
+> Thanks for noticing, LGTM.
+>
+> [...]
+>
+> > diff --git a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> > index d7dac16a3960..36dc7b56a453 100644
+> > --- a/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> > +++ b/Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml
+> > @@ -33,8 +33,8 @@ properties:
+> >      $ref: /schemas/types.yaml#/definitions/uint32
+> >
+> >    touchscreen-min-pressure:
+> > -    description: minimum pressure on the touchscreen to be achieved in order for the
+> > -                 touchscreen driver to report a touch event.
+> > +    description: minimum pressure on the touchscreen to be achieved in order
+> > +      for the touchscreen driver to report a touch event.
+>
+> Out of personal taste, I find the original layout more pleasant and
+> readable. This third option is also good, especially for long descriptions:
+>
+>   description:
+>     minimum pressure on the touchscreen to be achieved in order for the
+>     touchscreen driver to report a touch event.
+>
+> At first glance yamllint seems to support exactly these two by default:
+>
+> > With indentation: {spaces: 4, check-multi-line-strings: true}
 
-It's been a long standing complaint that the backlight drivers are not
-consistent w.r.t. whether 0 means off or lowest. The most commonly used
-backlights (ACPI in particular) do not adopt 0 means off but lots of
-specific drivers do.
+Turning on check-multi-line-strings results in 10K+ warnings, so no.
 
-IMHO what is "right" depends on the display technology. For displays
-that are essentially black when the backlight is off and become
-difficult or impossible to read I'm a little dubious about standardizing
-on zero means off. There are situations when zero means off
-does make sense however. For example front-lit or transflexive displays
-are readable when the "backlight" is off and on these displays it would
-make sense.
+The other issue is the style ruamel.yaml wants to write out is as the
+patch does above. This matters when doing some scripted
+transformations where we read in the files and write them back out. I
+can somewhat work around that by first doing a pass with no changes
+and then another pass with the actual changes, but that's completely
+scriptable. Hopefully, ruamel learns to preserve the style better.
 
-
-Daniel.
+Rob
