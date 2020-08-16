@@ -2,97 +2,229 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E442457F5
-	for <lists+linux-fbdev@lfdr.de>; Sun, 16 Aug 2020 16:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59483245970
+	for <lists+linux-fbdev@lfdr.de>; Sun, 16 Aug 2020 22:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729537AbgHPO3Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 16 Aug 2020 10:29:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57064 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729462AbgHPO2x (ORCPT
+        id S1729432AbgHPUQM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 16 Aug 2020 16:16:12 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:59988 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728758AbgHPUQJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 16 Aug 2020 10:28:53 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E70C06134B
-        for <linux-fbdev@vger.kernel.org>; Sun, 16 Aug 2020 07:28:34 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id c19so11598500wmd.1
-        for <linux-fbdev@vger.kernel.org>; Sun, 16 Aug 2020 07:28:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=NAKDDu3zYGlp6/1rTFA3zLXzfLNUWElMFpld1DGXTqZ3f2C1G5vMMGgQBtzYdv61gR
-         j0gW2VjYzcAEQEK9JcrA+yGSHFEXNhE9RNkaz3uxkanP37gacJrIVytgT7/c7zGkA2Dy
-         XJB3L8ToVDoWAD9Rvm7U849RIrxncLk9xI9S/Uu5ZGT/cXsim2IUQmYeZsKFSBsv6kJT
-         3kDR9KLYjND6JPpx0YTAndrQaTelzP3558OkivI4ykhj79/nak1F6z80uX1/EQIXmTKV
-         I+kUa6Zt2XAbNuMItIuLndMdaWWyo32PYvWKoOywYCMLUV2UDlYdbpJ66arhF+MiPCa0
-         yMKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Duxa+mmNF3T3C2WDKsmzowR2OzvdY892XFjTPp0RWRI=;
-        b=FdBIM1ASLMUd/nqPz1ZIFh5Xmc9yYfog+TVPFRI1Yk9lkSS9xZQHndVutUO/1M9h16
-         ckKpfRkkpFy8b43M2/HzZh8B566eeo0Dp5V8ZvPfAaj7R0vJiG+d4/j8Z2dJq4gtp7S+
-         V33j41jplpFlryplloVmvY65m/aip0cOz8GyF4K4vSeSXavqkYrAdC076D+eO8ywvE5y
-         fUe8rDKhDTCmnCSMSgLUKBJtHAIXCq3E1AQegC4/ttLiwSddwUm8XWR8PqqSNQ3XivZC
-         RPZp1isLi9ZXhG3n04RTwIHzOKiPuiN+mvmU6AsLTa9InuB5yhmEmO3OWYQd8ZGpCoYg
-         2HwQ==
-X-Gm-Message-State: AOAM533miTqj0h7IZ2btk2yN/mF1G5BZ1uttjOrTuVoLfTHbeKzkBk5j
-        EyWLqFHUduapyQGOqpbZTm3lDgyoSSwziT+q0do=
-X-Google-Smtp-Source: ABdhPJydZZ8FQlFGmrB/EDLy0Z8gH5X03F6EFXypW4K1vf8iv94WhLhI3iwPKgeJEaRZZocHWED4lUmYPOBkTFPeX+4=
-X-Received: by 2002:a1c:a1c7:: with SMTP id k190mr10461870wme.1.1597588111746;
- Sun, 16 Aug 2020 07:28:31 -0700 (PDT)
+        Sun, 16 Aug 2020 16:16:09 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 6259F20027;
+        Sun, 16 Aug 2020 22:16:02 +0200 (CEST)
+Date:   Sun, 16 Aug 2020 22:16:01 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v2 01/12] fbdev: gxfb: use generic power management
+Message-ID: <20200816201601.GA1426650@ravnborg.org>
+References: <20200810165458.GA292825@ravnborg.org>
+ <20200810185723.15540-1-vaibhavgupta40@gmail.com>
+ <20200810185723.15540-2-vaibhavgupta40@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a5d:6cd3:0:0:0:0:0 with HTTP; Sun, 16 Aug 2020 07:28:30
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <confianzayrentabilidad@gmail.com>
-Date:   Sun, 16 Aug 2020 07:28:30 -0700
-Message-ID: <CANrrfX7wwL97G=jb--8nb9jH8oRO8T90L6NGSfg1HfnzMyyHcw@mail.gmail.com>
-Subject: Hello, Please
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200810185723.15540-2-vaibhavgupta40@gmail.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=f+hm+t6M c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8 a=Q4VJyNBwd-cc_6aBFL8A:9
+        a=CjuIK1q_8ugA:10
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Dear Friend,
+Hi Vaibhav
 
-I'm Mr. Scott Donald a Successful businessMan dealing with
-Exportation, I got your mail contact through search to let you know my
-intension and my Ugly Situation Am a dying Man here in Los Angeles
-California Hospital Bed in (USA), I Lost my Wife and my only Daughter
-for Covid-19 and I also have a problem in my Health and I can die
-anytime I Know,
+On Tue, Aug 11, 2020 at 12:27:12AM +0530, Vaibhav Gupta wrote:
+> Drivers should do only device-specific jobs. But in general, drivers using
+> legacy PCI PM framework for .suspend()/.resume() have to manage many PCI
+> PM-related tasks themselves which can be done by PCI Core itself. This
+> brings extra load on the driver and it directly calls PCI helper functions
+> to handle them.
+> 
+> Although the gxfb driver does not have that extra load,
+Sorry, but I am lost here.
+If this drivers does not have the extra load that you describe here then
+I really cannot see why it is relevant for this driver to describe it.
 
-I have a project that I am about to hand over to you. and I already
-instructed the Bankia S.A. Madrid, Spain(BSA) to transfer my fund sum
-of =C2=A33,7M GBP. Equivalent to =E2=82=AC4,077,033.91 EUR, to you as to en=
-able you
-to give 50% of this fund to Charitable Home in your State and take 50%
-don't think otherwise and why would anybody send someone you barely
-know to help you deliver a message, help me do this for the happiness
-of my soul and for God to mercy me and my Family and give Us a good
-place.
+This is a seldomly touched driver - so it helps if the changelog when we
+finally touch the code is easy to parse.
 
-please, do as I said there was someone from your State that I deeply
-love so very very much and I miss her so badly I have no means to
-reach any Charitable Home there. that is why I go for a personal
-search of the Country and State and I got your mail contact through
-search to let you know my Bitterness and please, help me is getting
-Dark I ask my Doctor to help me keep you notice failure for me to
-reach you in person Your urgent Response, here is my Doctor Whats-app
-Number for urgent notice +13019692737
+> we should switch to
+> the new generic framework by updating function signatures and define a
+> "struct dev_pm_ops" variable to bind PM callbacks so that we can remove
+> the legacy .suspend & .resume bindings.
+This part matches the patch - good.
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you.
+> Additionally, this helps us to
+> remove the unnecessary call to gxfb_suspend() in the event of Freeze and
+> Hibernate, as the function does nothing in their case.
+What I think you are explaining above is that the pci pm support
+will only call the suspend operation in case of suspend, so the 
+state.event == PM_EVENT_SUSPEND can be dropped in gxfb_suspend().
 
-My Regards.
+For reference later I would prefer that this is explained a bit
+more explicit - not that the changelog needs update anyway.
+> 
+> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Patch looks good, but please give the changelog one more go.
+I have not checked other patches - but I assume they would benefit
+from a similar clarification.
 
-Mr. Scott Donald
-CEO
+	Sam
+
+> ---
+>  drivers/video/fbdev/geode/gxfb.h       |  5 ----
+>  drivers/video/fbdev/geode/gxfb_core.c  | 36 ++++++++++++++------------
+>  drivers/video/fbdev/geode/suspend_gx.c |  4 ---
+>  3 files changed, 20 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/geode/gxfb.h b/drivers/video/fbdev/geode/gxfb.h
+> index d2e9c5c8e294..792c111c21e4 100644
+> --- a/drivers/video/fbdev/geode/gxfb.h
+> +++ b/drivers/video/fbdev/geode/gxfb.h
+> @@ -21,7 +21,6 @@ struct gxfb_par {
+>  	void __iomem *dc_regs;
+>  	void __iomem *vid_regs;
+>  	void __iomem *gp_regs;
+> -#ifdef CONFIG_PM
+>  	int powered_down;
+>  
+>  	/* register state, for power management functionality */
+> @@ -36,7 +35,6 @@ struct gxfb_par {
+>  	uint64_t fp[FP_REG_COUNT];
+>  
+>  	uint32_t pal[DC_PAL_COUNT];
+> -#endif
+>  };
+>  
+>  unsigned int gx_frame_buffer_size(void);
+> @@ -49,11 +47,8 @@ void gx_set_dclk_frequency(struct fb_info *info);
+>  void gx_configure_display(struct fb_info *info);
+>  int gx_blank_display(struct fb_info *info, int blank_mode);
+>  
+> -#ifdef CONFIG_PM
+>  int gx_powerdown(struct fb_info *info);
+>  int gx_powerup(struct fb_info *info);
+> -#endif
+> -
+>  
+>  /* Graphics Processor registers (table 6-23 from the data book) */
+>  enum gp_registers {
+> diff --git a/drivers/video/fbdev/geode/gxfb_core.c b/drivers/video/fbdev/geode/gxfb_core.c
+> index d38a148d4746..44089b331f91 100644
+> --- a/drivers/video/fbdev/geode/gxfb_core.c
+> +++ b/drivers/video/fbdev/geode/gxfb_core.c
+> @@ -322,17 +322,14 @@ static struct fb_info *gxfb_init_fbinfo(struct device *dev)
+>  	return info;
+>  }
+>  
+> -#ifdef CONFIG_PM
+> -static int gxfb_suspend(struct pci_dev *pdev, pm_message_t state)
+> +static int __maybe_unused gxfb_suspend(struct device *dev)
+>  {
+> -	struct fb_info *info = pci_get_drvdata(pdev);
+> +	struct fb_info *info = dev_get_drvdata(dev);
+>  
+> -	if (state.event == PM_EVENT_SUSPEND) {
+> -		console_lock();
+> -		gx_powerdown(info);
+> -		fb_set_suspend(info, 1);
+> -		console_unlock();
+> -	}
+> +	console_lock();
+> +	gx_powerdown(info);
+> +	fb_set_suspend(info, 1);
+> +	console_unlock();
+>  
+>  	/* there's no point in setting PCI states; we emulate PCI, so
+>  	 * we don't end up getting power savings anyways */
+> @@ -340,9 +337,9 @@ static int gxfb_suspend(struct pci_dev *pdev, pm_message_t state)
+>  	return 0;
+>  }
+>  
+> -static int gxfb_resume(struct pci_dev *pdev)
+> +static int __maybe_unused gxfb_resume(struct device *dev)
+>  {
+> -	struct fb_info *info = pci_get_drvdata(pdev);
+> +	struct fb_info *info = dev_get_drvdata(dev);
+>  	int ret;
+>  
+>  	console_lock();
+> @@ -356,7 +353,6 @@ static int gxfb_resume(struct pci_dev *pdev)
+>  	console_unlock();
+>  	return 0;
+>  }
+> -#endif
+>  
+>  static int gxfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  {
+> @@ -467,15 +463,23 @@ static const struct pci_device_id gxfb_id_table[] = {
+>  
+>  MODULE_DEVICE_TABLE(pci, gxfb_id_table);
+>  
+> +static const struct dev_pm_ops gxfb_pm_ops = {
+> +#ifdef CONFIG_PM_SLEEP
+> +	.suspend	= gxfb_suspend,
+> +	.resume		= gxfb_resume,
+> +	.freeze		= NULL,
+> +	.thaw		= gxfb_resume,
+> +	.poweroff	= NULL,
+> +	.restore	= gxfb_resume,
+> +#endif
+> +};
+> +
+>  static struct pci_driver gxfb_driver = {
+>  	.name		= "gxfb",
+>  	.id_table	= gxfb_id_table,
+>  	.probe		= gxfb_probe,
+>  	.remove		= gxfb_remove,
+> -#ifdef CONFIG_PM
+> -	.suspend	= gxfb_suspend,
+> -	.resume		= gxfb_resume,
+> -#endif
+> +	.driver.pm	= &gxfb_pm_ops,
+>  };
+>  
+>  #ifndef MODULE
+> diff --git a/drivers/video/fbdev/geode/suspend_gx.c b/drivers/video/fbdev/geode/suspend_gx.c
+> index 1110a527c35c..8c49d4e98772 100644
+> --- a/drivers/video/fbdev/geode/suspend_gx.c
+> +++ b/drivers/video/fbdev/geode/suspend_gx.c
+> @@ -11,8 +11,6 @@
+>  
+>  #include "gxfb.h"
+>  
+> -#ifdef CONFIG_PM
+> -
+>  static void gx_save_regs(struct gxfb_par *par)
+>  {
+>  	int i;
+> @@ -259,5 +257,3 @@ int gx_powerup(struct fb_info *info)
+>  	par->powered_down  = 0;
+>  	return 0;
+>  }
+> -
+> -#endif
+> -- 
+> 2.27.0
