@@ -2,97 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D98D424A8DD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 00:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 821C024AD75
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 05:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbgHSWHu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 19 Aug 2020 18:07:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36776 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbgHSWHt (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Aug 2020 18:07:49 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EC7C061383
-        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 15:07:49 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id o5so160638pgb.2
-        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 15:07:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=kf0ZzHRJMAbFMLLUKsjOglGhImKY7cyfAyt1lKaRTFE=;
-        b=XdSoOU8bhGfMFDMNkNB0PbGSyC9b/j1tzuVKEsB9zu7tjC2Vu7SEGSFi1W1cIQakbE
-         o9qXTs96ee/VmG7efkxn8wb4vmhSq0ewikBueR4YGGz4OVA6fjbIeZISd2TXUVABiNcj
-         2cRCBsILsz+/mHHhsf+pfXMZJsKWFTExc0Fuk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=kf0ZzHRJMAbFMLLUKsjOglGhImKY7cyfAyt1lKaRTFE=;
-        b=jq6/Xq/siDSTsTtPVJGsLcH14/wQwqMu3nCZN5mysVPGPmZAG5d1dN9uqnMnIU5/wX
-         78OGAAAmiYPex4u8CnLVDmfunMOlCEcftgA11rF1h5ObmrWc0HWVACEi0SXfrQWQSWMk
-         aOeBAXELW3v9HHmuC5elUxlFtxB+yH+Nfp6WeOShMkw+WURVMfxhFUz+Gv20U6X6dlh0
-         bOM7IMFn/1+GoJEq9ThlQ9EozG6R+RxlCM0D1nnYgWORx6bzNn0oMukPWRozCLMLrnCl
-         rjozcOGrAive8SJ+iYQI4TwfFS5zEJwJcDgvBva2AVg58Hl6EHUwj6CF8mJk+wQStM0Y
-         mb1Q==
-X-Gm-Message-State: AOAM530DAXMRDSw1zD6NEc1ymFocBYOg9l6nLum8QGHdsQ41PX4YVWyj
-        +RrQsXarlJ0GWf2pHKH3GNE+Kg==
-X-Google-Smtp-Source: ABdhPJxLBSOW/rpsj19Cs2xhJm2vDqZ4jNnT0/9og9Y8mFmIcYvE0rLxvkfRoBix9hXJmZPD7SaZlw==
-X-Received: by 2002:a62:6d04:: with SMTP id i4mr10910877pfc.188.1597874869067;
-        Wed, 19 Aug 2020 15:07:49 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id q25sm182088pfn.181.2020.08.19.15.07.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 15:07:48 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 15:07:46 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
+        id S1726698AbgHTDvB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 19 Aug 2020 23:51:01 -0400
+Received: from mail.zju.edu.cn ([61.164.42.155]:30040 "EHLO zju.edu.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726435AbgHTDvA (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 19 Aug 2020 23:51:00 -0400
+Received: by ajax-webmail-mail-app3 (Coremail) ; Thu, 20 Aug 2020 11:50:39
+ +0800 (GMT+08:00)
+X-Originating-IP: [10.192.85.18]
+Date:   Thu, 20 Aug 2020 11:50:39 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   dinghao.liu@zju.edu.cn
+To:     "Lee Jones" <lee.jones@linaro.org>
+Cc:     "Markus Elfring" <Markus.Elfring@web.de>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        syzbot <syzbot+017265e8553724e514e8@syzkaller.appspotmail.com>
-Subject: Re: [PATCH v3] vt: Reject zero-sized screen buffer size.
-Message-ID: <202008191452.0278B57D43@keescook>
-References: <189fc902-db7c-9886-cc31-c0348435303a@i-love.sakura.ne.jp>
- <20200712111013.11881-1-penguin-kernel@I-love.SAKURA.ne.jp>
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
+        "Bryan Wu" <cooloney@gmail.com>,
+        "Daniel Thompson" <daniel.thompson@linaro.org>,
+        "Gyungoh Yoo" <jack.yoo@skyworksinc.com>,
+        "Jingoo Han" <jingoohan1@gmail.com>, "Kangjie Lu" <kjlu@umn.edu>
+Subject: Re: Re: [PATCH] video: backlight: sky81452-backlight: Fix reference
+ count imbalance on error
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.12 build 20200616(0f5d8152)
+ Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
+In-Reply-To: <20200819165702.GC3248864@dell>
+References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
+ <20200819165702.GC3248864@dell>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200712111013.11881-1-penguin-kernel@I-love.SAKURA.ne.jp>
+Message-ID: <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: cC_KCgA3Ut4P8z1fu2TsAg--.44262W
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgoSBlZdtPnBhAAAsf
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbAIS07vEb7Iv0x
+        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
+        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
+        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
+        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIAIbVA2z4x0Y4vEx4A2jsIE14v26r
+        xl6s0DMIAIbVA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lV2xY62AIxVAIcxkEcVAq
+        07x20xvEncxIr21lV2xY6c02F40EFcxC0VAKzVAqx4xG6I80ewCS07vEYx0E2Ix0cI8IcV
+        AFwI0_Jr0_Jr4lV2xY6cIj6I8E87Iv67AKxVWUJVW8JwCS07vEOx8S6xCaFVCjc4AY6r1j
+        6r4UMIAIbVACI402YVCY1x02628vn2kIc2xKxwCS07vE7I0Y64k_MIAIbVCY0x0Ix7I2Y4
+        AK64vIr41lV2xY6xAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCS07vE4x8a6x804xWlV2xY
+        6xC20s026xCaFVCjc4AY6r1j6r4UMIAIbVC20s026c02F40E14v26r1j6r18MIAIbVC20s
+        026x8GjcxK67AKxVWUGVWUWwCS07vEx4CE17CEb7AF67AKxVWUtVW8ZwCS07vEIxAIcVC0
+        I7IYx2IY67AKxVWUJVWUCwCS07vEIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIAIbV
+        CI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCS07vEIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+        V2xY6IIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU=
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Jul 12, 2020 at 08:10:12PM +0900, Tetsuo Handa wrote:
-> [...]
-> @@ -1125,6 +1134,11 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
->  	if (!*vc->vc_uni_pagedir_loc)
->  		con_set_default_unimap(vc);
->  
-> +	err = -EINVAL;
-> +	if (vc->vc_cols > VC_MAXCOL || vc->vc_rows > VC_MAXROW ||
-> +	    vc->vc_screenbuf_size > KMALLOC_MAX_SIZE || !vc->vc_screenbuf_size)
-> +		goto err_free;
-> +	err = -ENOMEM;
->  	vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
->  	if (!vc->vc_screenbuf)
->  		goto err_free;
-
-I realize this patch already landed, but I wanted to remind folks to
-use the check_*_overflow() helpers, which can make a lot of this kind
-of stuff easier to deal with.
-
-For example, in this case, I think visual_init() could likely be changed
-to return success/failure and do all the sanity checking:
-
-	if (check_shl_overflow(vc->vc_cols, 1, &vc->vc_size_row) ||
-	    check_mul_overflow(vc->vc_rows, vc->vc_size_row, &vc->vc_screenbuf_size))
-		return -EINVAL;
-
-
--- 
-Kees Cook
+PiBPbiBXZWQsIDE5IEF1ZyAyMDIwLCBNYXJrdXMgRWxmcmluZyB3cm90ZToKPiAKPiA+ID4gV2hl
+biBvZl9wcm9wZXJ0eV9yZWFkX3UzMl9hcnJheSgpIHJldHVybnMgYW4gZXJyb3IgY29kZSwKPiA+
+ID4gYSBwYWlyaW5nIHJlZmNvdW50IGRlY3JlbWVudCBpcyBuZWVkZWQgdG8ga2VlcCBucCdzIHJl
+ZmNvdW50IGJhbGFuY2VkLgo+ID4gCj4gPiBDYW4gYW5vdGhlciBpbXBlcmF0aXZlIHdvcmRpbmcg
+YmUgaGVscGZ1bCBmb3IgdGhlIGNoYW5nZSBkZXNjcmlwdGlvbj8KPiA+IGh0dHBzOi8vZ2l0Lmtl
+cm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90cmVl
+L0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNoZXMucnN0P2lkPTE4NDQ1YmY0
+MDVjYjMzMTExN2JjOTg0MjdiMWJhNmYxMjQxOGFkMTcjbjE1MQo+ID4gCj4gPiBXb3VsZCBhbiBv
+dGhlciBjb21taXQgbWVzc2FnZSBiZSBhIGJpdCBuaWNlcj8KPiA+IAo+ID4gCj4gPiDigKYKPiA+
+ID4gKysrIGIvZHJpdmVycy92aWRlby9iYWNrbGlnaHQvc2t5ODE0NTItYmFja2xpZ2h0LmMKPiA+
+ID4gQEAgLTIxNyw2ICsyMTcsNyBAQCBzdGF0aWMgc3RydWN0IHNreTgxNDUyX2JsX3BsYXRmb3Jt
+X2RhdGEgKnNreTgxNDUyX2JsX3BhcnNlX2R0KAo+ID4gPiAgCQkJCQludW1fZW50cnkpOwo+ID4g
+PiAgCQlpZiAocmV0IDwgMCkgewo+ID4gPiAgCQkJZGV2X2VycihkZXYsICJsZWQtc291cmNlcyBu
+b2RlIGlzIGludmFsaWQuXG4iKTsKPiA+ID4gKwkJCW9mX25vZGVfcHV0KG5wKTsKPiA+ID4gIAkJ
+CXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOwo+ID4gPiAgCQl9Cj4gPiAKPiA+IEkgcHJvcG9zZSB0
+byBhZGQgdGhlIGp1bXAgdGFyZ2V0IOKAnHB1dF9ub2Rl4oCdIHNvIHRoYXQgYSBiaXQgb2YgY29t
+bW9uIGV4Y2VwdGlvbgo+ID4gaGFuZGxpbmcgY29kZSBjYW4gYmUgYmV0dGVyIHJldXNlZCBhdCB0
+aGUgZW5kIG9mIHRoaXMgZnVuY3Rpb24gaW1wbGVtZW50YXRpb24uCj4gPiAKPiA+IFJlZ2FyZHMs
+Cj4gPiBNYXJrdXMKPiAKPiBZb3UgY2FuIHNhZmVseSBpZ25vcmUgYW55IHJldmlldyBjb21tZW50
+cyBmcm9tIE1hcmt1cyEKPiAKPiBIb3dldmVyLCB0aGlzIHBhdGNoIGRvZXNuJ3QgYXBwZWFyIHRv
+IGJlIGluIG15IGluYm94Lgo+IAo+IEFueSBpZGVhcyBhcyB0byB3aHk/Cj4gCj4gLS0gCj4gTGVl
+IEpvbmVzIFvmnY7nkLzmlq9dCj4gU2VuaW9yIFRlY2huaWNhbCBMZWFkIC0gRGV2ZWxvcGVyIFNl
+cnZpY2VzCj4gTGluYXJvLm9yZyDilIIgT3BlbiBzb3VyY2Ugc29mdHdhcmUgZm9yIEFybSBTb0Nz
+Cj4gRm9sbG93IExpbmFybzogRmFjZWJvb2sgfCBUd2l0dGVyIHwgQmxvZwoKVGhhbmsgeW91IGZv
+ciB5b3VyIGFkdmljZS4gTXkgb3V0Ym94IHNob3dzIHRoYXQgdGhpcyBwYXRjaApoYXMgcmVhY2hl
+ZCB5b3VyIGVtYWlsIHNlcnZlciBzdWNjZXNzZnVsbHkuIE1heWJlIHRoaXMKZW5kZWQgdXAgaW4g
+eW91ciBqdW5rIG1haWwgZmlsZT8KClJlZ2FyZHMsCkRpbmdoYW8=
