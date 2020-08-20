@@ -2,118 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146A624AE78
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 07:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 169E524AF34
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 08:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725798AbgHTFfR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Aug 2020 01:35:17 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:38734 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbgHTFfQ (ORCPT
+        id S1726701AbgHTGXI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Aug 2020 02:23:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725952AbgHTGXH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Aug 2020 01:35:16 -0400
-Received: by mail-io1-f69.google.com with SMTP id e73so599495iof.5
-        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 22:35:16 -0700 (PDT)
+        Thu, 20 Aug 2020 02:23:07 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183A2C061384
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 23:23:06 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id r4so891138wrx.9
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 23:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=Rfe5cf8ONeOtyLL1u7/RmPWIu+jJLpGbwRQ//wGFeDM=;
+        b=HiW1tz0Re0iY3P915VZVsLzjSN7j7y5asxapsRDp7fVIOb5J7C5nLkBOeRcy6/JJWO
+         xarF8bqLYq3w6ERx3p2kDYIik/29V6DZuGZFbqbD5Lg+FXbhz2mHa1YMfX0w+jR8rkWO
+         iY0pyjp8BQL06RTpY8f2toCrB39wuV/Km9oeZE6fA14hiKCo/jtH4a/0KPCO7r1qhWRU
+         FNAOnALWdwnBpDjDXJ0Be/jxzmHL7udncEIr+KW82c4+7cIdVG/nvqcHm4Io6Wnqmi6X
+         s9pknqLptsmCuiGKZ+/gnKAYSR5v+OYRENLKCsp47kxlDJ8MR5JGEw5rgYU26AzZeeiJ
+         glnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=yD7MI1JGQtczkbJQBV7QYmOBcKMlevUe8LY67kKIiqI=;
-        b=dTtvC1Lf3mxw6GiMpEoAEU4mUXZ2cVSCw0kHXU/7f9lLvK1Sx0t6O4SRjLcOd6PkTg
-         7amx11kUzZjTksnCp/INV31OYa23joM1jcy6gVfTMdsrVE+h0jPSGNSIhV/o58usXb4R
-         4B6AnqiQ7hOZyezb/VUxpzg912ffU4YovgSYm/jLs1Meu7qL6yKvqYPY1D7fg62/A122
-         NZj4SlRpsJjXbYkT83u74/8q0ffKFDTAxX+2waBcBK/QXctgQ6wxyZYQmZoY4TRS6LQL
-         tRf75i+r1EZdw9CkVyrKsncezk8hytgXwR5aMa+Y335aqiXorbsJd6IV2/zBiaNx/QrT
-         RuwA==
-X-Gm-Message-State: AOAM533HPg8ev7EiEz46VLaFFW6YIW6FEQqspAey9Ngx7Al1HsSQ0TyT
-        I8BhPin3f5xzRiPmJPY6JE/e397lF8qTVvR+UGSMxzWk8jd6
-X-Google-Smtp-Source: ABdhPJzp2vXqVfB03OO5G2QrOVXEaldP2QyG/UjOVc4fKagkcLYqKaxfs21p25Aa8JixLOOebRHmONstJxAl4aqiygDvupgHLpY9
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=Rfe5cf8ONeOtyLL1u7/RmPWIu+jJLpGbwRQ//wGFeDM=;
+        b=oGxJ6On1mzOzpAAyJMzXbavjVg34BvVJiCZfT31G42xIuZoq1d2LhLm81g8mRcShJ1
+         unMdFqAGLQwHE+43EMozqDaqkUaqk11olb5SxnPvzF25jcv71AKiCGAJ4h0oShkn1NFf
+         /Qv8TfwiEL6Ne+TaIdKjqhcdljgM56oQ8gZfNbKuf4m22FXzKY5nvxV/IYpo0qoAymwk
+         Tcj11CkRj8kYtaqhROG7c1/kh/oBZRL+Ha0nO/WXn7zjhUIcg3sVfJaxbJ3cmOyOpwZ0
+         wo3hTpsa3ovAgUkq9ArUnhPkjk74MzANh21XXzqV9naWR9CBLWw2aV6Ym0HZQ6L1HWsY
+         hjVA==
+X-Gm-Message-State: AOAM530CHv3dV0Ok/m+tVgrevVxbyBdFXHb/1H9tzy3P3GilDaAHCDtd
+        o6g1jQlFna2J6cUwdl8T+7RM9w==
+X-Google-Smtp-Source: ABdhPJzrNMIAs3RWwn1qW6NmluXvS0ZXgMLj8VZFmRCLMLi1HODyj9WHOhedRDqWOEublp+0scrmyQ==
+X-Received: by 2002:adf:e506:: with SMTP id j6mr1495836wrm.287.1597904585322;
+        Wed, 19 Aug 2020 23:23:05 -0700 (PDT)
+Received: from dell ([95.149.164.62])
+        by smtp.gmail.com with ESMTPSA id t189sm2308285wmf.47.2020.08.19.23.23.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2020 23:23:04 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 07:23:01 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     dinghao.liu@zju.edu.cn
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bryan Wu <cooloney@gmail.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Jingoo Han <jingoohan1@gmail.com>, Kangjie Lu <kjlu@umn.edu>
+Subject: Re: Re: [PATCH] video: backlight: sky81452-backlight: Fix reference
+ count imbalance on error
+Message-ID: <20200820062301.GD3248864@dell>
+References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
+ <20200819165702.GC3248864@dell>
+ <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
 MIME-Version: 1.0
-X-Received: by 2002:a92:9996:: with SMTP id t22mr1295081ilk.216.1597901715584;
- Wed, 19 Aug 2020 22:35:15 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 22:35:15 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000024be1505ad487cbb@google.com>
-Subject: KASAN: global-out-of-bounds Read in fbcon_resize
-From:   syzbot <syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
-        dri-devel@lists.freedesktop.org, george.kennedy@oracle.com,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        natechancellor@gmail.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
 
-syzbot found the following issue on:
+> > On Wed, 19 Aug 2020, Markus Elfring wrote:
+> > 
+> > > > When of_property_read_u32_array() returns an error code,
+> > > > a pairing refcount decrement is needed to keep np's refcount balanced.
+> > > 
+> > > Can another imperative wording be helpful for the change description?
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=18445bf405cb331117bc98427b1ba6f12418ad17#n151
+> > > 
+> > > Would an other commit message be a bit nicer?
+> > > 
+> > > 
+> > > …
+> > > > +++ b/drivers/video/backlight/sky81452-backlight.c
+> > > > @@ -217,6 +217,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
+> > > >  					num_entry);
+> > > >  		if (ret < 0) {
+> > > >  			dev_err(dev, "led-sources node is invalid.\n");
+> > > > +			of_node_put(np);
+> > > >  			return ERR_PTR(-EINVAL);
+> > > >  		}
+> > > 
+> > > I propose to add the jump target “put_node” so that a bit of common exception
+> > > handling code can be better reused at the end of this function implementation.
+> > > 
+> > > Regards,
+> > > Markus
+> > 
+> > You can safely ignore any review comments from Markus!
+> > 
+> > However, this patch doesn't appear to be in my inbox.
+> > 
+> > Any ideas as to why?
+> > 
+> 
+> Thank you for your advice. My outbox shows that this patch
+> has reached your email server successfully. Maybe this
+> ended up in your junk mail file?
 
-HEAD commit:    8eb858df Add linux-next specific files for 20200819
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1158a00e900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cd187ef624ef7f02
-dashboard link: https://syzkaller.appspot.com/bug?extid=b38b1ef6edf0c74a8d97
-compiler:       gcc (GCC) 10.1.0-syz 20200507
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146a5589900000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=165aa636900000
+This has happened recently, so I was sure to check.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com
+Not there either unfortunately.
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in fbcon_resize+0x781/0x810 drivers/video/fbdev/core/fbcon.c:2206
-Read of size 4 at addr ffffffff8896d418 by task syz-executor732/6868
+Would you be kind enough to bounce/resend please?
 
-CPU: 0 PID: 6868 Comm: syz-executor732 Not tainted 5.9.0-rc1-next-20200819-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x18f/0x20d lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0x5/0x497 mm/kasan/report.c:383
- __kasan_report mm/kasan/report.c:513 [inline]
- kasan_report.cold+0x1f/0x37 mm/kasan/report.c:530
- fbcon_resize+0x781/0x810 drivers/video/fbdev/core/fbcon.c:2206
- resize_screen drivers/tty/vt/vt.c:1175 [inline]
- vc_do_resize+0x535/0x1150 drivers/tty/vt/vt.c:1246
- vt_ioctl+0x11d2/0x2cc0 drivers/tty/vt/vt_ioctl.c:1025
- tty_ioctl+0x1019/0x15f0 drivers/tty/tty_io.c:2656
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
- do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x440329
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffc8ff997d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440329
-RDX: 0000000020000040 RSI: 0000000000005609 RDI: 0000000000000004
-RBP: 00000000006ca018 R08: 000000000000000d R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401b90
-R13: 0000000000401c20 R14: 0000000000000000 R15: 0000000000000000
-
-The buggy address belongs to the variable:
- font_vga_8x16+0x58/0x60
-
-Memory state around the buggy address:
- ffffffff8896d300: 00 00 00 00 00 00 00 00 00 00 00 00 f9 f9 f9 f9
- ffffffff8896d380: 00 f9 f9 f9 f9 f9 f9 f9 00 00 00 00 00 f9 f9 f9
->ffffffff8896d400: f9 f9 f9 f9 00 00 00 00 00 00 00 00 00 00 00 00
-                            ^
- ffffffff8896d480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffffff8896d500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this issue, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
