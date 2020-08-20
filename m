@@ -2,89 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 821C024AD75
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 05:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F402624AE27
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 06:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726698AbgHTDvB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 19 Aug 2020 23:51:01 -0400
-Received: from mail.zju.edu.cn ([61.164.42.155]:30040 "EHLO zju.edu.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726435AbgHTDvA (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 19 Aug 2020 23:51:00 -0400
-Received: by ajax-webmail-mail-app3 (Coremail) ; Thu, 20 Aug 2020 11:50:39
- +0800 (GMT+08:00)
-X-Originating-IP: [10.192.85.18]
-Date:   Thu, 20 Aug 2020 11:50:39 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Lee Jones" <lee.jones@linaro.org>
-Cc:     "Markus Elfring" <Markus.Elfring@web.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
-        "Bryan Wu" <cooloney@gmail.com>,
-        "Daniel Thompson" <daniel.thompson@linaro.org>,
-        "Gyungoh Yoo" <jack.yoo@skyworksinc.com>,
-        "Jingoo Han" <jingoohan1@gmail.com>, "Kangjie Lu" <kjlu@umn.edu>
-Subject: Re: Re: [PATCH] video: backlight: sky81452-backlight: Fix reference
- count imbalance on error
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.12 build 20200616(0f5d8152)
- Copyright (c) 2002-2020 www.mailtech.cn zju.edu.cn
-In-Reply-To: <20200819165702.GC3248864@dell>
-References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
- <20200819165702.GC3248864@dell>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        id S1725768AbgHTE4V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Aug 2020 00:56:21 -0400
+Received: from mail-il1-f197.google.com ([209.85.166.197]:38291 "EHLO
+        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbgHTE4P (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 20 Aug 2020 00:56:15 -0400
+Received: by mail-il1-f197.google.com with SMTP id t79so758180ild.5
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 21:56:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=IV+LyH+BPu5J+Dtv08XtTCzIg9KfbMGVvqfxRyaesJ0=;
+        b=RoFfqXP7LgVZykkbO3HHN/DWhvUPFCI44yoUFBsWnyF8P3yE7WUhz2tmc8Y3/E7sts
+         KjU8FMj3CRUfuEHvl3IqdIjQSjgzis+cg83jBsKWhAY7gix1QRdTxI6ra6SN0rn5II3v
+         7aByxruioY5d47m+D7dG802+v5L4OCqAOUokwqWlbqQ5fS5slaKH/jhWW3FPe6LuX5An
+         8jicq16jkibjtGFHM/OaLM3XtfPv4L9lwL2/u3EfAC6BNzrSByY08xOmjpuqwlxGgn9r
+         sAySGrdl9f+q0RHODTfPKlzuhr6ZDcWwRFJiXeleACzKzXtcS2cqYt0GXxAHN6qQz+3N
+         z+Ww==
+X-Gm-Message-State: AOAM530tcWpnYP4d4vlFyaM9c+6eIy8vLeziFR9vUwkodZI0WKze/hud
+        dxY93YNV93fXv4+LNi2qUKGASvv7XrNdqoCRtm4WxgFEwp+k
+X-Google-Smtp-Source: ABdhPJzvndFcEzOxi42FfsPZucM5ZTRPrmX++CIV+o19zD4YzElcu7VQEdDp9jZRR2wIDznxF50kvGcjvyJefBVZTcytpRGmI6Nz
 MIME-Version: 1.0
-Message-ID: <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cC_KCgA3Ut4P8z1fu2TsAg--.44262W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgoSBlZdtPnBhAAAsf
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJTRUUUbAIS07vEb7Iv0x
-        C_Cr1lV2xY67kC6x804xWlV2xY67CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DMIAI
-        bVAFxVCF77xC64kEw24lV2xY67C26IkvcIIF6IxKo4kEV4ylV2xY628lY4IE4IxF12IF4w
-        CS07vE84x0c7CEj48ve4kI8wCS07vE84ACjcxK6xIIjxv20xvE14v26w1j6s0DMIAIbVA2
-        z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIAIbVA2z4x0Y4vEx4A2jsIE14v26r
-        xl6s0DMIAIbVA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lV2xY62AIxVAIcxkEcVAq
-        07x20xvEncxIr21lV2xY6c02F40EFcxC0VAKzVAqx4xG6I80ewCS07vEYx0E2Ix0cI8IcV
-        AFwI0_Jr0_Jr4lV2xY6cIj6I8E87Iv67AKxVWUJVW8JwCS07vEOx8S6xCaFVCjc4AY6r1j
-        6r4UMIAIbVACI402YVCY1x02628vn2kIc2xKxwCS07vE7I0Y64k_MIAIbVCY0x0Ix7I2Y4
-        AK64vIr41lV2xY6xAIw28IcVCjz48v1sIEY20_GFWkJr1UJwCS07vE4x8a6x804xWlV2xY
-        6xC20s026xCaFVCjc4AY6r1j6r4UMIAIbVC20s026c02F40E14v26r1j6r18MIAIbVC20s
-        026x8GjcxK67AKxVWUGVWUWwCS07vEx4CE17CEb7AF67AKxVWUtVW8ZwCS07vEIxAIcVC0
-        I7IYx2IY67AKxVWUJVWUCwCS07vEIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIAIbV
-        CI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCS07vEIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-        V2xY6IIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU=
+X-Received: by 2002:a02:9307:: with SMTP id d7mr1628969jah.71.1597899374117;
+ Wed, 19 Aug 2020 21:56:14 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 21:56:14 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000094c57905ad47f05e@google.com>
+Subject: KMSAN: uninit-value in soft_cursor
+From:   syzbot <syzbot+2741e4d93bff16ad8d4d@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        glider@google.com, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-PiBPbiBXZWQsIDE5IEF1ZyAyMDIwLCBNYXJrdXMgRWxmcmluZyB3cm90ZToKPiAKPiA+ID4gV2hl
-biBvZl9wcm9wZXJ0eV9yZWFkX3UzMl9hcnJheSgpIHJldHVybnMgYW4gZXJyb3IgY29kZSwKPiA+
-ID4gYSBwYWlyaW5nIHJlZmNvdW50IGRlY3JlbWVudCBpcyBuZWVkZWQgdG8ga2VlcCBucCdzIHJl
-ZmNvdW50IGJhbGFuY2VkLgo+ID4gCj4gPiBDYW4gYW5vdGhlciBpbXBlcmF0aXZlIHdvcmRpbmcg
-YmUgaGVscGZ1bCBmb3IgdGhlIGNoYW5nZSBkZXNjcmlwdGlvbj8KPiA+IGh0dHBzOi8vZ2l0Lmtl
-cm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90cmVl
-L0RvY3VtZW50YXRpb24vcHJvY2Vzcy9zdWJtaXR0aW5nLXBhdGNoZXMucnN0P2lkPTE4NDQ1YmY0
-MDVjYjMzMTExN2JjOTg0MjdiMWJhNmYxMjQxOGFkMTcjbjE1MQo+ID4gCj4gPiBXb3VsZCBhbiBv
-dGhlciBjb21taXQgbWVzc2FnZSBiZSBhIGJpdCBuaWNlcj8KPiA+IAo+ID4gCj4gPiDigKYKPiA+
-ID4gKysrIGIvZHJpdmVycy92aWRlby9iYWNrbGlnaHQvc2t5ODE0NTItYmFja2xpZ2h0LmMKPiA+
-ID4gQEAgLTIxNyw2ICsyMTcsNyBAQCBzdGF0aWMgc3RydWN0IHNreTgxNDUyX2JsX3BsYXRmb3Jt
-X2RhdGEgKnNreTgxNDUyX2JsX3BhcnNlX2R0KAo+ID4gPiAgCQkJCQludW1fZW50cnkpOwo+ID4g
-PiAgCQlpZiAocmV0IDwgMCkgewo+ID4gPiAgCQkJZGV2X2VycihkZXYsICJsZWQtc291cmNlcyBu
-b2RlIGlzIGludmFsaWQuXG4iKTsKPiA+ID4gKwkJCW9mX25vZGVfcHV0KG5wKTsKPiA+ID4gIAkJ
-CXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOwo+ID4gPiAgCQl9Cj4gPiAKPiA+IEkgcHJvcG9zZSB0
-byBhZGQgdGhlIGp1bXAgdGFyZ2V0IOKAnHB1dF9ub2Rl4oCdIHNvIHRoYXQgYSBiaXQgb2YgY29t
-bW9uIGV4Y2VwdGlvbgo+ID4gaGFuZGxpbmcgY29kZSBjYW4gYmUgYmV0dGVyIHJldXNlZCBhdCB0
-aGUgZW5kIG9mIHRoaXMgZnVuY3Rpb24gaW1wbGVtZW50YXRpb24uCj4gPiAKPiA+IFJlZ2FyZHMs
-Cj4gPiBNYXJrdXMKPiAKPiBZb3UgY2FuIHNhZmVseSBpZ25vcmUgYW55IHJldmlldyBjb21tZW50
-cyBmcm9tIE1hcmt1cyEKPiAKPiBIb3dldmVyLCB0aGlzIHBhdGNoIGRvZXNuJ3QgYXBwZWFyIHRv
-IGJlIGluIG15IGluYm94Lgo+IAo+IEFueSBpZGVhcyBhcyB0byB3aHk/Cj4gCj4gLS0gCj4gTGVl
-IEpvbmVzIFvmnY7nkLzmlq9dCj4gU2VuaW9yIFRlY2huaWNhbCBMZWFkIC0gRGV2ZWxvcGVyIFNl
-cnZpY2VzCj4gTGluYXJvLm9yZyDilIIgT3BlbiBzb3VyY2Ugc29mdHdhcmUgZm9yIEFybSBTb0Nz
-Cj4gRm9sbG93IExpbmFybzogRmFjZWJvb2sgfCBUd2l0dGVyIHwgQmxvZwoKVGhhbmsgeW91IGZv
-ciB5b3VyIGFkdmljZS4gTXkgb3V0Ym94IHNob3dzIHRoYXQgdGhpcyBwYXRjaApoYXMgcmVhY2hl
-ZCB5b3VyIGVtYWlsIHNlcnZlciBzdWNjZXNzZnVsbHkuIE1heWJlIHRoaXMKZW5kZWQgdXAgaW4g
-eW91ciBqdW5rIG1haWwgZmlsZT8KClJlZ2FyZHMsCkRpbmdoYW8=
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    ce8056d1 wip: changed copy_from_user where instrumented
+git tree:       https://github.com/google/kmsan.git master
+console output: https://syzkaller.appspot.com/x/log.txt?x=14dcd116900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3afe005fb99591f
+dashboard link: https://syzkaller.appspot.com/bug?extid=2741e4d93bff16ad8d4d
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=103f7891900000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2741e4d93bff16ad8d4d@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in soft_cursor+0xa89/0x13f0 drivers/video/fbdev/core/softcursor.c:61
+CPU: 0 PID: 12272 Comm: syz-executor.2 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ soft_cursor+0xa89/0x13f0 drivers/video/fbdev/core/softcursor.c:61
+ bit_cursor+0x38c6/0x3a40 drivers/video/fbdev/core/bitblit.c:386
+ fbcon_cursor+0x195e/0x1a60 drivers/video/fbdev/core/fbcon.c:1411
+ set_cursor drivers/tty/vt/vt.c:915 [inline]
+ redraw_screen+0x28ee/0x2980 drivers/tty/vt/vt.c:1031
+ vc_do_resize+0x36a8/0x38f0 drivers/tty/vt/vt.c:1314
+ vc_resize+0xc3/0xe0 drivers/tty/vt/vt.c:1334
+ fbcon_modechanged+0xdc1/0x1320 drivers/video/fbdev/core/fbcon.c:2990
+ fbcon_update_vcs+0x86/0xa0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_set_var+0x1420/0x1850 drivers/video/fbdev/core/fbmem.c:1056
+ do_fb_ioctl+0xc00/0x1150 drivers/video/fbdev/core/fbmem.c:1109
+ fb_ioctl+0x1e4/0x210 drivers/video/fbdev/core/fbmem.c:1185
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ ksys_ioctl fs/ioctl.c:753 [inline]
+ __do_sys_ioctl fs/ioctl.c:762 [inline]
+ __se_sys_ioctl+0x319/0x4d0 fs/ioctl.c:760
+ __x64_sys_ioctl+0x4a/0x70 fs/ioctl.c:760
+ do_syscall_64+0xad/0x160 arch/x86/entry/common.c:386
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x45d239
+Code: Bad RIP value.
+RSP: 002b:00007ff9aafacc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 000000000000d580 RCX: 000000000045d239
+RDX: 0000000020000000 RSI: 0000000000004601 RDI: 0000000000000003
+RBP: 000000000118cf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118cf4c
+R13: 000000000169fb6f R14: 00007ff9aafad9c0 R15: 000000000118cf4c
+
+Uninit was stored to memory at:
+ kmsan_save_stack_with_flags mm/kmsan/kmsan.c:144 [inline]
+ kmsan_internal_chain_origin+0xad/0x130 mm/kmsan/kmsan.c:310
+ kmsan_memcpy_memmove_metadata+0x272/0x2e0 mm/kmsan/kmsan.c:247
+ kmsan_memcpy_metadata+0xb/0x10 mm/kmsan/kmsan.c:267
+ __msan_memcpy+0x43/0x50 mm/kmsan/kmsan_instr.c:116
+ soft_cursor+0x44d/0x13f0 drivers/video/fbdev/core/softcursor.c:50
+ bit_cursor+0x38c6/0x3a40 drivers/video/fbdev/core/bitblit.c:386
+ fbcon_cursor+0x195e/0x1a60 drivers/video/fbdev/core/fbcon.c:1411
+ set_cursor drivers/tty/vt/vt.c:915 [inline]
+ redraw_screen+0x28ee/0x2980 drivers/tty/vt/vt.c:1031
+ vc_do_resize+0x36a8/0x38f0 drivers/tty/vt/vt.c:1314
+ vc_resize+0xc3/0xe0 drivers/tty/vt/vt.c:1334
+ fbcon_modechanged+0xdc1/0x1320 drivers/video/fbdev/core/fbcon.c:2990
+ fbcon_update_vcs+0x86/0xa0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_set_var+0x1420/0x1850 drivers/video/fbdev/core/fbmem.c:1056
+ do_fb_ioctl+0xc00/0x1150 drivers/video/fbdev/core/fbmem.c:1109
+ fb_ioctl+0x1e4/0x210 drivers/video/fbdev/core/fbmem.c:1185
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ ksys_ioctl fs/ioctl.c:753 [inline]
+ __do_sys_ioctl fs/ioctl.c:762 [inline]
+ __se_sys_ioctl+0x319/0x4d0 fs/ioctl.c:760
+ __x64_sys_ioctl+0x4a/0x70 fs/ioctl.c:760
+ do_syscall_64+0xad/0x160 arch/x86/entry/common.c:386
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Local variable ----cursor@bit_cursor created at:
+ bit_cursor+0xe3/0x3a40 drivers/video/fbdev/core/bitblit.c:239
+ bit_cursor+0xe3/0x3a40 drivers/video/fbdev/core/bitblit.c:239
+=====================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
