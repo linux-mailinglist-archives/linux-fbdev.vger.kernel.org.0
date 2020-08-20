@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8371C24B648
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 12:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F32DA24B8B2
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 13:26:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbgHTKej (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Aug 2020 06:34:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42660 "EHLO mail.kernel.org"
+        id S1730385AbgHTLZz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Aug 2020 07:25:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35104 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731370AbgHTKTS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Aug 2020 06:19:18 -0400
+        id S1730661AbgHTKGZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 20 Aug 2020 06:06:25 -0400
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2444320738;
-        Thu, 20 Aug 2020 10:19:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4DE462075E;
+        Thu, 20 Aug 2020 10:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597918757;
-        bh=MrYrebokHTAUJmrvRr3qLac/OCL5dZ4RwhVvxtvnVnA=;
+        s=default; t=1597917984;
+        bh=igrc9LS6KgOqAWwGySkc8AsRthglM0xdy+TPaKJVD3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LvrTkDVp3HPD3Zbvc7AzJd+dA0fpIm1izaL843avU9fAXnqaW61qG4jjpiDyTujj3
-         NnkQXjBPDH2UvEBFHkgNW9LCyoIuUXP6W7+YZU0+RV5hqp3QGfeoWB4jYBvTaFPT+/
-         Du9aCW3O36XropRTl1qd7qvW1oOb8QE7d33/c6Zg=
+        b=I6jDBOvTtIZDVrHXhQ+Tk3gzRW64dr9JE4gPUNv8JTN4+7HNsfZssiWAOafcNu1G9
+         IeYTZqL8J4A6u84FX5ot+f724dO8tifC8t4g1l9FjDlK5SW5qLc+2XedtuqpddhwC1
+         Xf7WNel8LX97CqPYtD8UsAq0E9ZAZnD57T2ria04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Anthony Liguori <aliguori@amazon.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 4.4 038/149] vgacon: Fix for missing check in scrollback handling
-Date:   Thu, 20 Aug 2020 11:21:55 +0200
-Message-Id: <20200820092127.580348981@linuxfoundation.org>
+Subject: [PATCH 4.14 013/228] vgacon: Fix for missing check in scrollback handling
+Date:   Thu, 20 Aug 2020 11:19:48 +0200
+Message-Id: <20200820091608.192283912@linuxfoundation.org>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200820092125.688850368@linuxfoundation.org>
-References: <20200820092125.688850368@linuxfoundation.org>
+In-Reply-To: <20200820091607.532711107@linuxfoundation.org>
+References: <20200820091607.532711107@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -113,7 +113,6 @@ Cc: Jiri Slaby <jirislaby@kernel.org>
 Signed-off-by: Yunhai Zhang <zhangyunhai@nsfocus.com>
 Link: https://lore.kernel.org/r/9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 ---
  drivers/video/console/vgacon.c |    4 ++++
@@ -121,16 +120,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/video/console/vgacon.c
 +++ b/drivers/video/console/vgacon.c
-@@ -220,6 +220,10 @@ static void vgacon_scrollback_update(str
+@@ -246,6 +246,10 @@ static void vgacon_scrollback_update(str
  	p = (void *) (c->vc_origin + t * c->vc_size_row);
  
  	while (count--) {
-+		if ((vgacon_scrollback_tail + c->vc_size_row) >
-+		    vgacon_scrollback_size)
-+			vgacon_scrollback_tail = 0;
++		if ((vgacon_scrollback_cur->tail + c->vc_size_row) >
++		    vgacon_scrollback_cur->size)
++			vgacon_scrollback_cur->tail = 0;
 +
- 		scr_memcpyw(vgacon_scrollback + vgacon_scrollback_tail,
+ 		scr_memcpyw(vgacon_scrollback_cur->data +
+ 			    vgacon_scrollback_cur->tail,
  			    p, c->vc_size_row);
- 		vgacon_scrollback_cnt++;
 
 
