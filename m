@@ -2,134 +2,151 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F32DA24B8B2
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 13:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABDF424B911
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 13:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730385AbgHTLZz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Aug 2020 07:25:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35104 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730661AbgHTKGZ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Aug 2020 06:06:25 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4DE462075E;
-        Thu, 20 Aug 2020 10:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597917984;
-        bh=igrc9LS6KgOqAWwGySkc8AsRthglM0xdy+TPaKJVD3k=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I6jDBOvTtIZDVrHXhQ+Tk3gzRW64dr9JE4gPUNv8JTN4+7HNsfZssiWAOafcNu1G9
-         IeYTZqL8J4A6u84FX5ot+f724dO8tifC8t4g1l9FjDlK5SW5qLc+2XedtuqpddhwC1
-         Xf7WNel8LX97CqPYtD8UsAq0E9ZAZnD57T2ria04=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org,
-        =?UTF-8?q?=E5=BC=A0=E4=BA=91=E6=B5=B7?= <zhangyunhai@nsfocus.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Kyungtae Kim <kt0755@gmail.com>, linux-fbdev@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Solar Designer <solar@openwall.com>,
-        "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>,
-        Anthony Liguori <aliguori@amazon.com>,
+        id S1727108AbgHTLid (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Aug 2020 07:38:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48544 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729896AbgHTLiV (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 20 Aug 2020 07:38:21 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A961C061387
+        for <linux-fbdev@vger.kernel.org>; Thu, 20 Aug 2020 04:38:21 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id x5so1290105wmi.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 20 Aug 2020 04:38:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=PCqH5LYqH1fQoc2ZlhhcJpxej9fx4SNk/neUhLB5CXQ=;
+        b=kWqe/UA4IlH3O+11v3/2px5lEMFfQ31ZebCjBKikx+V66zCdAJ6QLVvHLBkY70i761
+         wF8hZrIdwtgxAuHYBU2TDAMny5PvAVi5kMr3WCKAZ6FdMxZXpNosxy+pu+j16mG/P7uy
+         aQQltE97czfbBK1YLITqKzGzI1/kf/GquhMGxLZo5txY/v3gbLAjlM895Af/QZV/VORd
+         HjIcHMUVyEWjZ6vgziSlnrCppksKhT6SwjVD5f9CprcPFHSI87duwPVtC6dVG6dk7UNB
+         b1haTbJ+tAx0cSoR/WeoIxmT2JA4DwlEF35dQe+BcS0Fq0zF/SId8/OOc6gz3Me5kSnU
+         9zbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=PCqH5LYqH1fQoc2ZlhhcJpxej9fx4SNk/neUhLB5CXQ=;
+        b=n6K3CREWVTjjjP+YAV9qswkUp0A/FPwzDZYx9mgdC2OLlmsTVufdUuyvSiBM5+i35D
+         bNmmKgn35XFbUNGwoF38vSx/hHw7NXJDKX0LL+De5JBQ4WXvY0Fnk0vvJU1fnjzLOloN
+         /RhF5PlBQjb0KrlJn07z44Uewa20LbXgj9jpc/7dycyRT+znZrs1hnFazuXW0tMh1seD
+         w/a0xk73i0JV1/vw1jkWdibe3JAw9So0bHBEd0pu7WKWqjRIYchBw634ufBQY3L+g0fK
+         TQeLS+nP5bxThmjASDXv4GsoydQLhvCGu0oVi/9uoTcVNdLSLdmrZJsIovSobQCpdBj9
+         qVoQ==
+X-Gm-Message-State: AOAM533JKx0e2pOB9SMNf+yZa/T0nPIueuWMrxrlfvtshqVIcDszg/CL
+        SNptD3snCsxJAbj4asOPHFfQDQ==
+X-Google-Smtp-Source: ABdhPJz1Apj5RkSqr5Zdm+oy3sNRrie8RiOBYxfJ9CWqRIIWRLTwgUwaX0GjKX0vwV4cMAhQPZlwAQ==
+X-Received: by 2002:a05:600c:2157:: with SMTP id v23mr3002981wml.38.1597923499804;
+        Thu, 20 Aug 2020 04:38:19 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id j11sm3792749wrw.79.2020.08.20.04.38.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 04:38:19 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 12:38:17 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     dinghao.liu@zju.edu.cn, Markus Elfring <Markus.Elfring@web.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 4.14 013/228] vgacon: Fix for missing check in scrollback handling
-Date:   Thu, 20 Aug 2020 11:19:48 +0200
-Message-Id: <20200820091608.192283912@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200820091607.532711107@linuxfoundation.org>
-References: <20200820091607.532711107@linuxfoundation.org>
-User-Agent: quilt/0.66
+        Bryan Wu <cooloney@gmail.com>,
+        Gyungoh Yoo <jack.yoo@skyworksinc.com>,
+        Jingoo Han <jingoohan1@gmail.com>, Kangjie Lu <kjlu@umn.edu>
+Subject: Re: [PATCH] video: backlight: sky81452-backlight: Fix reference
+ count imbalance on error
+Message-ID: <20200820113817.742yvjvdy7a642ew@holly.lan>
+References: <321fb03d-2307-7f60-f437-cfb99184dfd6@web.de>
+ <20200819165702.GC3248864@dell>
+ <217e3c0c.b58c.17409fd7496.Coremail.dinghao.liu@zju.edu.cn>
+ <20200820062301.GD3248864@dell>
+ <3f9fbdb1.bc96.1740a9560d5.Coremail.dinghao.liu@zju.edu.cn>
+ <20200820074916.GE3248864@dell>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200820074916.GE3248864@dell>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Yunhai Zhang <zhangyunhai@nsfocus.com>
+On Thu, Aug 20, 2020 at 08:49:16AM +0100, Lee Jones wrote:
+> On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
+> 
+> > > On Thu, 20 Aug 2020, dinghao.liu@zju.edu.cn wrote:
+> > > 
+> > > > > On Wed, 19 Aug 2020, Markus Elfring wrote:
+> > > > > 
+> > > > > > > When of_property_read_u32_array() returns an error code,
+> > > > > > > a pairing refcount decrement is needed to keep np's refcount balanced.
+> > > > > > 
+> > > > > > Can another imperative wording be helpful for the change description?
+> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=18445bf405cb331117bc98427b1ba6f12418ad17#n151
+> > > > > > 
+> > > > > > Would an other commit message be a bit nicer?
+> > > > > > 
+> > > > > > 
+> > > > > > …
+> > > > > > > +++ b/drivers/video/backlight/sky81452-backlight.c
+> > > > > > > @@ -217,6 +217,7 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
+> > > > > > >  					num_entry);
+> > > > > > >  		if (ret < 0) {
+> > > > > > >  			dev_err(dev, "led-sources node is invalid.\n");
+> > > > > > > +			of_node_put(np);
+> > > > > > >  			return ERR_PTR(-EINVAL);
+> > > > > > >  		}
+> > > > > > 
+> > > > > > I propose to add the jump target “put_node” so that a bit of common exception
+> > > > > > handling code can be better reused at the end of this function implementation.
+> > > > > > 
+> > > > > > Regards,
+> > > > > > Markus
+> > > > > 
+> > > > > You can safely ignore any review comments from Markus!
+> > > > > 
+> > > > > However, this patch doesn't appear to be in my inbox.
+> > > > > 
+> > > > > Any ideas as to why?
+> > > > > 
+> > > > 
+> > > > Thank you for your advice. My outbox shows that this patch
+> > > > has reached your email server successfully. Maybe this
+> > > > ended up in your junk mail file?
+> > > 
+> > > This has happened recently, so I was sure to check.
+> > > 
+> > > Not there either unfortunately.
+> > > 
+> > > Would you be kind enough to bounce/resend please?
+> > 
+> > Sure.
+> 
+> Looks like you sent it *only* to me.  Please keep everyone else in Cc
+> when doing that, or I can't respond to everyone.
+> 
+> Anyway, besides the subject line (which I can fix easily), the patch
+> looks good to me, but Daniel T must review.
 
-commit ebfdfeeae8c01fcb2b3b74ffaf03876e20835d2d upstream.
-
-vgacon_scrollback_update() always leaves enbough room in the scrollback
-buffer for the next call, but if the console size changed that room
-might not actually be enough, and so we need to re-check.
-
-The check should be in the loop since vgacon_scrollback_cur->tail is
-updated in the loop and count may be more than 1 when triggered by CSI M,
-as Jiri's PoC:
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-
-int main(int argc, char** argv)
-{
-        int fd = open("/dev/tty1", O_RDWR);
-        unsigned short size[3] = {25, 200, 0};
-        ioctl(fd, 0x5609, size); // VT_RESIZE
-
-        write(fd, "\e[1;1H", 6);
-        for (int i = 0; i < 30; i++)
-                write(fd, "\e[10M", 5);
-}
-
-It leads to various crashes as vgacon_scrollback_update writes out of
-the buffer:
- BUG: unable to handle page fault for address: ffffc900001752a0
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0002) - not-present page
- RIP: 0010:mutex_unlock+0x13/0x30
-...
- Call Trace:
-  n_tty_write+0x1a0/0x4d0
-  tty_write+0x1a0/0x2e0
-
-Or to KASAN reports:
-BUG: KASAN: slab-out-of-bounds in vgacon_scroll+0x57a/0x8ed
-
-This fixes CVE-2020-14331.
-
-Reported-by: 张云海 <zhangyunhai@nsfocus.com>
-Reported-by: Yang Yingliang <yangyingliang@huawei.com>
-Reported-by: Kyungtae Kim <kt0755@gmail.com>
-Fixes: 15bdab959c9b ([PATCH] vgacon: Add support for soft scrollback)
-Cc: stable@vger.kernel.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Solar Designer <solar@openwall.com>
-Cc: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
-Cc: Anthony Liguori <aliguori@amazon.com>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Yunhai Zhang <zhangyunhai@nsfocus.com>
-Link: https://lore.kernel.org/r/9fb43895-ca91-9b07-ebfd-808cf854ca95@nsfocus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/video/console/vgacon.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -246,6 +246,10 @@ static void vgacon_scrollback_update(str
- 	p = (void *) (c->vc_origin + t * c->vc_size_row);
- 
- 	while (count--) {
-+		if ((vgacon_scrollback_cur->tail + c->vc_size_row) >
-+		    vgacon_scrollback_cur->size)
-+			vgacon_scrollback_cur->tail = 0;
-+
- 		scr_memcpyw(vgacon_scrollback_cur->data +
- 			    vgacon_scrollback_cur->tail,
- 			    p, c->vc_size_row);
+I've already offered a Reviewed-by for this patch. Perhaps it landed in
+the same place as the original patch...
 
 
+Daniel.
+
+> 
+> Reviewed-by: Lee Jones <lee.jones@linaro.org>
+
+> 
+> --
+> Lee Jones [李琼斯]
+> Senior Technical Lead - Developer Services
+> Linaro.org │ Open source software for Arm SoCs
+> Follow Linaro: Facebook | Twitter | Blog
