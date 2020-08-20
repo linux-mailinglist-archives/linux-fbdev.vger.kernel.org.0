@@ -2,43 +2,45 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F402624AE27
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 06:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 146A624AE78
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Aug 2020 07:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725768AbgHTE4V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Aug 2020 00:56:21 -0400
-Received: from mail-il1-f197.google.com ([209.85.166.197]:38291 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725793AbgHTE4P (ORCPT
+        id S1725798AbgHTFfR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Aug 2020 01:35:17 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:38734 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725778AbgHTFfQ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Aug 2020 00:56:15 -0400
-Received: by mail-il1-f197.google.com with SMTP id t79so758180ild.5
-        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 21:56:14 -0700 (PDT)
+        Thu, 20 Aug 2020 01:35:16 -0400
+Received: by mail-io1-f69.google.com with SMTP id e73so599495iof.5
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Aug 2020 22:35:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=IV+LyH+BPu5J+Dtv08XtTCzIg9KfbMGVvqfxRyaesJ0=;
-        b=RoFfqXP7LgVZykkbO3HHN/DWhvUPFCI44yoUFBsWnyF8P3yE7WUhz2tmc8Y3/E7sts
-         KjU8FMj3CRUfuEHvl3IqdIjQSjgzis+cg83jBsKWhAY7gix1QRdTxI6ra6SN0rn5II3v
-         7aByxruioY5d47m+D7dG802+v5L4OCqAOUokwqWlbqQ5fS5slaKH/jhWW3FPe6LuX5An
-         8jicq16jkibjtGFHM/OaLM3XtfPv4L9lwL2/u3EfAC6BNzrSByY08xOmjpuqwlxGgn9r
-         sAySGrdl9f+q0RHODTfPKlzuhr6ZDcWwRFJiXeleACzKzXtcS2cqYt0GXxAHN6qQz+3N
-         z+Ww==
-X-Gm-Message-State: AOAM530tcWpnYP4d4vlFyaM9c+6eIy8vLeziFR9vUwkodZI0WKze/hud
-        dxY93YNV93fXv4+LNi2qUKGASvv7XrNdqoCRtm4WxgFEwp+k
-X-Google-Smtp-Source: ABdhPJzvndFcEzOxi42FfsPZucM5ZTRPrmX++CIV+o19zD4YzElcu7VQEdDp9jZRR2wIDznxF50kvGcjvyJefBVZTcytpRGmI6Nz
+        bh=yD7MI1JGQtczkbJQBV7QYmOBcKMlevUe8LY67kKIiqI=;
+        b=dTtvC1Lf3mxw6GiMpEoAEU4mUXZ2cVSCw0kHXU/7f9lLvK1Sx0t6O4SRjLcOd6PkTg
+         7amx11kUzZjTksnCp/INV31OYa23joM1jcy6gVfTMdsrVE+h0jPSGNSIhV/o58usXb4R
+         4B6AnqiQ7hOZyezb/VUxpzg912ffU4YovgSYm/jLs1Meu7qL6yKvqYPY1D7fg62/A122
+         NZj4SlRpsJjXbYkT83u74/8q0ffKFDTAxX+2waBcBK/QXctgQ6wxyZYQmZoY4TRS6LQL
+         tRf75i+r1EZdw9CkVyrKsncezk8hytgXwR5aMa+Y335aqiXorbsJd6IV2/zBiaNx/QrT
+         RuwA==
+X-Gm-Message-State: AOAM533HPg8ev7EiEz46VLaFFW6YIW6FEQqspAey9Ngx7Al1HsSQ0TyT
+        I8BhPin3f5xzRiPmJPY6JE/e397lF8qTVvR+UGSMxzWk8jd6
+X-Google-Smtp-Source: ABdhPJzp2vXqVfB03OO5G2QrOVXEaldP2QyG/UjOVc4fKagkcLYqKaxfs21p25Aa8JixLOOebRHmONstJxAl4aqiygDvupgHLpY9
 MIME-Version: 1.0
-X-Received: by 2002:a02:9307:: with SMTP id d7mr1628969jah.71.1597899374117;
- Wed, 19 Aug 2020 21:56:14 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 21:56:14 -0700
+X-Received: by 2002:a92:9996:: with SMTP id t22mr1295081ilk.216.1597901715584;
+ Wed, 19 Aug 2020 22:35:15 -0700 (PDT)
+Date:   Wed, 19 Aug 2020 22:35:15 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000094c57905ad47f05e@google.com>
-Subject: KMSAN: uninit-value in soft_cursor
-From:   syzbot <syzbot+2741e4d93bff16ad8d4d@syzkaller.appspotmail.com>
-To:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        glider@google.com, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Message-ID: <00000000000024be1505ad487cbb@google.com>
+Subject: KASAN: global-out-of-bounds Read in fbcon_resize
+From:   syzbot <syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, george.kennedy@oracle.com,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        natechancellor@gmail.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
@@ -49,84 +51,61 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    ce8056d1 wip: changed copy_from_user where instrumented
-git tree:       https://github.com/google/kmsan.git master
-console output: https://syzkaller.appspot.com/x/log.txt?x=14dcd116900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3afe005fb99591f
-dashboard link: https://syzkaller.appspot.com/bug?extid=2741e4d93bff16ad8d4d
-compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=103f7891900000
+HEAD commit:    8eb858df Add linux-next specific files for 20200819
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=1158a00e900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cd187ef624ef7f02
+dashboard link: https://syzkaller.appspot.com/bug?extid=b38b1ef6edf0c74a8d97
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=146a5589900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=165aa636900000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2741e4d93bff16ad8d4d@syzkaller.appspotmail.com
+Reported-by: syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com
 
-=====================================================
-BUG: KMSAN: uninit-value in soft_cursor+0xa89/0x13f0 drivers/video/fbdev/core/softcursor.c:61
-CPU: 0 PID: 12272 Comm: syz-executor.2 Not tainted 5.8.0-rc5-syzkaller #0
+==================================================================
+BUG: KASAN: global-out-of-bounds in fbcon_resize+0x781/0x810 drivers/video/fbdev/core/fbcon.c:2206
+Read of size 4 at addr ffffffff8896d418 by task syz-executor732/6868
+
+CPU: 0 PID: 6868 Comm: syz-executor732 Not tainted 5.9.0-rc1-next-20200819-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
 Call Trace:
  __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x21c/0x280 lib/dump_stack.c:118
- kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
- __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
- soft_cursor+0xa89/0x13f0 drivers/video/fbdev/core/softcursor.c:61
- bit_cursor+0x38c6/0x3a40 drivers/video/fbdev/core/bitblit.c:386
- fbcon_cursor+0x195e/0x1a60 drivers/video/fbdev/core/fbcon.c:1411
- set_cursor drivers/tty/vt/vt.c:915 [inline]
- redraw_screen+0x28ee/0x2980 drivers/tty/vt/vt.c:1031
- vc_do_resize+0x36a8/0x38f0 drivers/tty/vt/vt.c:1314
- vc_resize+0xc3/0xe0 drivers/tty/vt/vt.c:1334
- fbcon_modechanged+0xdc1/0x1320 drivers/video/fbdev/core/fbcon.c:2990
- fbcon_update_vcs+0x86/0xa0 drivers/video/fbdev/core/fbcon.c:3048
- fb_set_var+0x1420/0x1850 drivers/video/fbdev/core/fbmem.c:1056
- do_fb_ioctl+0xc00/0x1150 drivers/video/fbdev/core/fbmem.c:1109
- fb_ioctl+0x1e4/0x210 drivers/video/fbdev/core/fbmem.c:1185
+ dump_stack+0x18f/0x20d lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0x5/0x497 mm/kasan/report.c:383
+ __kasan_report mm/kasan/report.c:513 [inline]
+ kasan_report.cold+0x1f/0x37 mm/kasan/report.c:530
+ fbcon_resize+0x781/0x810 drivers/video/fbdev/core/fbcon.c:2206
+ resize_screen drivers/tty/vt/vt.c:1175 [inline]
+ vc_do_resize+0x535/0x1150 drivers/tty/vt/vt.c:1246
+ vt_ioctl+0x11d2/0x2cc0 drivers/tty/vt/vt_ioctl.c:1025
+ tty_ioctl+0x1019/0x15f0 drivers/tty/tty_io.c:2656
  vfs_ioctl fs/ioctl.c:48 [inline]
- ksys_ioctl fs/ioctl.c:753 [inline]
- __do_sys_ioctl fs/ioctl.c:762 [inline]
- __se_sys_ioctl+0x319/0x4d0 fs/ioctl.c:760
- __x64_sys_ioctl+0x4a/0x70 fs/ioctl.c:760
- do_syscall_64+0xad/0x160 arch/x86/entry/common.c:386
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-RIP: 0033:0x45d239
-Code: Bad RIP value.
-RSP: 002b:00007ff9aafacc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 000000000000d580 RCX: 000000000045d239
-RDX: 0000000020000000 RSI: 0000000000004601 RDI: 0000000000000003
-RBP: 000000000118cf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118cf4c
-R13: 000000000169fb6f R14: 00007ff9aafad9c0 R15: 000000000118cf4c
+RIP: 0033:0x440329
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffc8ff997d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 0000000000440329
+RDX: 0000000020000040 RSI: 0000000000005609 RDI: 0000000000000004
+RBP: 00000000006ca018 R08: 000000000000000d R09: 00000000004002c8
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401b90
+R13: 0000000000401c20 R14: 0000000000000000 R15: 0000000000000000
 
-Uninit was stored to memory at:
- kmsan_save_stack_with_flags mm/kmsan/kmsan.c:144 [inline]
- kmsan_internal_chain_origin+0xad/0x130 mm/kmsan/kmsan.c:310
- kmsan_memcpy_memmove_metadata+0x272/0x2e0 mm/kmsan/kmsan.c:247
- kmsan_memcpy_metadata+0xb/0x10 mm/kmsan/kmsan.c:267
- __msan_memcpy+0x43/0x50 mm/kmsan/kmsan_instr.c:116
- soft_cursor+0x44d/0x13f0 drivers/video/fbdev/core/softcursor.c:50
- bit_cursor+0x38c6/0x3a40 drivers/video/fbdev/core/bitblit.c:386
- fbcon_cursor+0x195e/0x1a60 drivers/video/fbdev/core/fbcon.c:1411
- set_cursor drivers/tty/vt/vt.c:915 [inline]
- redraw_screen+0x28ee/0x2980 drivers/tty/vt/vt.c:1031
- vc_do_resize+0x36a8/0x38f0 drivers/tty/vt/vt.c:1314
- vc_resize+0xc3/0xe0 drivers/tty/vt/vt.c:1334
- fbcon_modechanged+0xdc1/0x1320 drivers/video/fbdev/core/fbcon.c:2990
- fbcon_update_vcs+0x86/0xa0 drivers/video/fbdev/core/fbcon.c:3048
- fb_set_var+0x1420/0x1850 drivers/video/fbdev/core/fbmem.c:1056
- do_fb_ioctl+0xc00/0x1150 drivers/video/fbdev/core/fbmem.c:1109
- fb_ioctl+0x1e4/0x210 drivers/video/fbdev/core/fbmem.c:1185
- vfs_ioctl fs/ioctl.c:48 [inline]
- ksys_ioctl fs/ioctl.c:753 [inline]
- __do_sys_ioctl fs/ioctl.c:762 [inline]
- __se_sys_ioctl+0x319/0x4d0 fs/ioctl.c:760
- __x64_sys_ioctl+0x4a/0x70 fs/ioctl.c:760
- do_syscall_64+0xad/0x160 arch/x86/entry/common.c:386
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+The buggy address belongs to the variable:
+ font_vga_8x16+0x58/0x60
 
-Local variable ----cursor@bit_cursor created at:
- bit_cursor+0xe3/0x3a40 drivers/video/fbdev/core/bitblit.c:239
- bit_cursor+0xe3/0x3a40 drivers/video/fbdev/core/bitblit.c:239
-=====================================================
+Memory state around the buggy address:
+ ffffffff8896d300: 00 00 00 00 00 00 00 00 00 00 00 00 f9 f9 f9 f9
+ ffffffff8896d380: 00 f9 f9 f9 f9 f9 f9 f9 00 00 00 00 00 f9 f9 f9
+>ffffffff8896d400: f9 f9 f9 f9 00 00 00 00 00 00 00 00 00 00 00 00
+                            ^
+ ffffffff8896d480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffffffff8896d500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
 
 
 ---
