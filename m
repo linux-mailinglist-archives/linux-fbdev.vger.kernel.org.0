@@ -2,91 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A71042506C3
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Aug 2020 19:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E254D250C0A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 01:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725601AbgHXRoQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Aug 2020 13:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726444AbgHXRoP (ORCPT
+        id S1728067AbgHXXE3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Aug 2020 19:04:29 -0400
+Received: from sonic305-31.consmr.mail.bf2.yahoo.com ([74.6.133.230]:44121
+        "EHLO sonic305-31.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727997AbgHXXE3 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Aug 2020 13:44:15 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76798C061573;
-        Mon, 24 Aug 2020 10:44:15 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id a5so9683451wrm.6;
-        Mon, 24 Aug 2020 10:44:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TXooCNGdhbuCs38z5vOfPrPzquVwWGwJseeAUQIr3dI=;
-        b=iTQCp4W4bnKDurMqnF9xz+FFQWCsZ7QeRAPt3KjIVEHR2InNqejYz6MyUzv93PW4aS
-         WyZwtA/F3UKwIaVU/KvdA3Nv9lp5LXXtirqDZpOniKaWsLeVW77XiGZEoE5d/0bYZkRC
-         FOyQX6o8HfXmo5r3GRobQe/q8ZGeNfZh6/gRc9gpX7z3daiXERyOK8VQm1Rz7csQFtpB
-         zZcUQK+RQI/FNAq+EELAMH9/0FmdCQpckS1vilSX1afoClvoQj7SFBCGvhJ/YykaKG/0
-         COheMc2pNwqdgg95ISwKlP8oF6sZLtIavbPS1iWIOlTS1Yqr3zijv+Cl1Tfv1BIRbm4n
-         r/9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TXooCNGdhbuCs38z5vOfPrPzquVwWGwJseeAUQIr3dI=;
-        b=pudCV+Lu7ngveoaLfSHBjWYKJfq+a4oEXyRWdX7Wx5iCL6ZcO7XIsM9ADYp/xCL781
-         VzorB/UEds2JfCy1mqN9mwT0JAUGJWIvMRDEhDqlv88VvRlDmj9x2E0nLJdAr48Ysq4o
-         eRAW1syu/8nLN8lOtGw6Pd/iCTDTVUvj60Bc2XWJaduZDeKzFqlVbg37m0vcSVC/y48v
-         7De6Ljvjc5cbgE3q5LlxRBcDP3lQM/He9MJflMaXwQM2AoFgTsPKGVE+DCR0VHA9dypj
-         0DIyFi1VDxlZE8f4WaJih1wmklyltg0yOMsuzMmcOotsy0RsMUENlBwtbm9vNj7enV0y
-         Lvlw==
-X-Gm-Message-State: AOAM532/l+eb+l0Vbrm180ByNqxIq2LuXSjWWAcPAzEmA3cZpXNBYe6m
-        NXbWA/Zs1no7Pf6UN0mCFQMtJLS6kflKTCJC
-X-Google-Smtp-Source: ABdhPJw7TMgowMg/jub8r23jyDF6m4NIDyBitGVovsMaVGfdJyBBpTjsvU/TA22pDCl+TmPubgjUgQ==
-X-Received: by 2002:adf:f086:: with SMTP id n6mr3470862wro.208.1598291054224;
-        Mon, 24 Aug 2020 10:44:14 -0700 (PDT)
-Received: from localhost.localdomain (cpc83661-brig20-2-0-cust443.3-3.cable.virginm.net. [82.28.105.188])
-        by smtp.gmail.com with ESMTPSA id a7sm446977wmj.24.2020.08.24.10.44.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2020 10:44:13 -0700 (PDT)
-From:   Alex Dewar <alex.dewar90@gmail.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Alex Dewar <alex.dewar90@gmail.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] video: fbdev: replace spurious snprintf() with sprintf()
-Date:   Mon, 24 Aug 2020 18:44:03 +0100
-Message-Id: <20200824174407.429817-1-alex.dewar90@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        Mon, 24 Aug 2020 19:04:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1598310268; bh=ecwGMGIu/CEPIOX80g8ywqUnb1xK0MPbBbcDj6fDce0=; h=To:From:Cc:Subject:Date:References:From:Subject; b=LgyGTQwn05Ie71ebubvRa5X4143rQ7pBiKZPclwqwH7I8h/vyCV3yrKb4t/TGaRfLbjiWwMm62bUFDO4YSnjv5cZQRIq/HoOQY8IppKYoYXoDp0V6Pb9ZiIKNH8FgFr4HF8MPP2tHB88cCxjJ+UpDacZifUHHiyHwqokIZYFk22k4/fGmI3cVEph+PqkeWlegHxAs3OIbJhX+x3yenT1/c5Njv0O982eqKeDyDbBElpMyQdpW1ZyKYi4sYcQ0qdU0iAL3rFol0n/J+Bx5AcIwuICg6C3JztuaP8RvV09sMoNIKc5+kLjSXyswCyowkjJwsWOExG2/eWxSLwTEU72+g==
+X-YMail-OSG: PcXmIx0VM1ksFWSh4ny4_Hdaewwt5TNaUqVTnPvgo1UqaldHXMxgxf8iLCG0XIX
+ aIdzD7Ho93RfBgAzS0aFZZuQ2BK2Lwekx9Z9Dbgdj6Lgn5INZ1LiKoO8o_P2.sI_KF.KYw_l2vNS
+ FxFUIA.NJC8ml74GBIbc9BxBITUd.vBdIRJioaSSEadil1m1_dWxw7VGrC7CGfPiUjxYWPWtkUuo
+ eLL_S6BWag_q7.tcl9nbwCWZe0kvVNWyD7ZB.cjDLL3XEpZtsvKEo_60GuCHxJ5E8vlMyeQp27RW
+ vKymX4jaXaKr1tWEfnxVKd24BsUKkc6VXzAdy4CsG1afZTgfGFlchkEgIqphqi7OK6BvFdmFTamD
+ 0unQHkpKlR1fR9cHOX.SLB8FMwoIQZHkMyz4KmVKlJ82I3LAM0XgqikSZ_S8DOBEBqTjVXQFEnRI
+ 5AwOjMPM5hW0NWZOzk8i75JlU7qMaTPaPRB.WTIhOs5FjBm2OWfRCW0rkn_lAI6jJMX9uUsvES36
+ .TUJRLjum9Jc27_E5SxLi33E7oPvwWM.TVnjZJG2Gfq0USUyzZeEgnAvbo8gXFlk90SO923SJXgM
+ O5z65wfGgO16iBoNbnKo0eYCOQGNzHUFKfnqVyMvmVtjp72qFItkF9_XguFDYZPHWjUBWhmBPXo_
+ bc6MRzHGpdWEBAElf5Cr7YBlJs7dKrm52oVKoGwZDQA_TqDyBcwfp2gAquGM1jLTEhcG_pxrtNEu
+ dQ5jLTMH4GNlmAOJT.wyNoy8SW5hxosh8PxpXcb.FS71Hg2Nqn0aAUq_imTRUvSY8cZyYTPCm0iP
+ Na7qWiRDAeh7Bzd61o_oQE0H8Ynl8NvF2a9SnHZFxhph87CJF0lAJh3z9lxWpybAiwqwPjJaALv3
+ oS3pBen61FVdP2tO1YgZBElXGa19Wy3NNNvWShlOaEf.uBklc5gWN278JI4oF2vF1v69XZUjcAxk
+ wOX.T30c7hWQO96dlFKToqZFKXvgqd8keoaxwoRAjeoncudePiFpSMuWoUU4eoWOGiGkC9RRWyde
+ rIyqd1XikUQ2x5BgBo3poWZMegRYhIbFeLibKvu_FuiR6z_yDMxbu4OBu9zYyjrmgw9vl3JafM6J
+ ysyJx6_jKRUPl5PvetaL6jHTPn21rNlQ76ND35uYjwuMdvHgAb24Bz8p.vT.yd5V1Vq70E_wCyxi
+ tO5_QtRYok200kgVuYwG4LVa3sXc2BOmbC5y6jkfokvnrxPHBFHHNYgb2W9sZZy0Lw6knOMraehH
+ lD7.K4Ua.QoHKV4J4i.ch1M6bcD9gHs41hb61ARA1vRYXAWBQXxZZcS3AonC_hcuQ51JQZbyZ.aF
+ jmlVj8sXIsE76DxL9p480E2lje576gk6xDKkaNV9tUekQ6wCq7gwUeSDr2c2ffq8wy9arRn3pegp
+ 3nFfpt6TK1VVlRsmFTPo3aFSCqE.RfeztDvDs_tD_iKqdkugZwlwjTK5hryukZd_RmfiBRVJeqko
+ NhTudWTn2TbxHS0LKdLP1i.bT8yRB0HoaNpmWeqjaLn2C2W4zPBgSsNvcuKtjLGzHXW3OU4Wq
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Mon, 24 Aug 2020 23:04:28 +0000
+Received: by smtp410.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 88b388f97aeaa05fe15c079342340778;
+          Mon, 24 Aug 2020 23:02:27 +0000 (UTC)
+To:     kernel-janitors@vger.kernel.org
+From:   Timo Aranjo <timo.aranjo@aol.com>
+Cc:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH] Staging: sm750fb: Fixed a coding style issue
+Message-ID: <1b596369-7c83-73ff-fd4e-ed0d7a714219@aol.com>
+Date:   Mon, 24 Aug 2020 18:02:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+References: <1b596369-7c83-73ff-fd4e-ed0d7a714219.ref@aol.com>
+X-Mailer: WebService/1.1.16455 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol Apache-HttpAsyncClient/4.1.4 (Java/11.0.7)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-par->vgapass is a u8, so if we are assuming that buf is at least
-PAGE_SIZE then the extra checking is pointless.
+ From 56c5eed5b0a3d299530264509a6a81594c4fb791 Mon Sep 17 00:00:00 2001
+From: "Timo A. Aranjo" <timo.aranjo@aol.com>
+Date: Mon, 24 Aug 2020 17:24:16 -0500
+Subject: [PATCH] Staging: sm750fb: Fixed a coding style issue
 
-Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
+I added a new-line because checkpatch gave a warning about there not being
+a new line after declarations.
+
+Signed-off-by: Timo Alejandro Aranjo <timo.aranjo@aol.com>
 ---
- drivers/video/fbdev/sstfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  drivers/staging/sm750fb/sm750.c | 1 +
+  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
-index afe6d1b7c3a0..c05cdabeb11c 100644
---- a/drivers/video/fbdev/sstfb.c
-+++ b/drivers/video/fbdev/sstfb.c
-@@ -733,7 +733,7 @@ static ssize_t show_vgapass(struct device *device, struct device_attribute *attr
- {
- 	struct fb_info *info = dev_get_drvdata(device);
- 	struct sstfb_par *par = info->par;
--	return snprintf(buf, PAGE_SIZE, "%d\n", par->vgapass);
-+	return sprintf(buf, "%d\n", par->vgapass);
- }
- 
- static struct device_attribute device_attrs[] = {
+diff --git a/drivers/staging/sm750fb/sm750.c 
+b/drivers/staging/sm750fb/sm750.c
+index 84fb585a5739..3da87387867e 100644
+--- a/drivers/staging/sm750fb/sm750.c
++++ b/drivers/staging/sm750fb/sm750.c
+@@ -411,6 +411,7 @@ static int __maybe_unused lynxfb_suspend(struct 
+device *dev)
+  {
+  	struct fb_info *info;
+  	struct sm750_dev *sm750_dev;
++
+  	sm750_dev = dev_get_drvdata(dev);
+
+  	console_lock();
 -- 
-2.28.0
+2.25.1
 
