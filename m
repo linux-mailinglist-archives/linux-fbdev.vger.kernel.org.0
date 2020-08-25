@@ -2,114 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C50C2512C3
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 09:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F27251387
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 09:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729376AbgHYHKj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Aug 2020 03:10:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38138 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729362AbgHYHKh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Aug 2020 03:10:37 -0400
-Received: from localhost (p54b333df.dip0.t-ipconnect.de [84.179.51.223])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C35662074D;
-        Tue, 25 Aug 2020 07:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598339436;
-        bh=FWfgAaWELOpnq9T2ZqffNJ7A9qnO3QfKuIy+OMg+Nkc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=f3Wq0A6wK+XyCx0NdyaVbiOp2OMrI3KPwj1V3RQ/NOii/Sv8XJMYsbLmiBZPZxHLr
-         0oPOxmO4ZW2uxwUXqLpZCKZIApP5fRkbLXbO9bWzKlL5g/hG5Vx0qfVAI9CAKfOqMV
-         tmM358uBo/FCFQE7cpCl+yIXbi94y/ptPbOUqIoI=
-Date:   Tue, 25 Aug 2020 09:10:33 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-media@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Whitespace clean-ups in schema files
-Message-ID: <20200825071033.GB1861@ninjato>
-References: <20200812203618.2656699-1-robh@kernel.org>
+        id S1729469AbgHYHsK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Aug 2020 03:48:10 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:44855 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729194AbgHYHsJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 25 Aug 2020 03:48:09 -0400
+Received: by mail-yb1-f194.google.com with SMTP id i10so6636671ybt.11;
+        Tue, 25 Aug 2020 00:48:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HfaePIFgkKDaQAvHyLocpP4Zlin9g8e2YzOSoHz2+5g=;
+        b=TdBnLyTH6xPp1R/3FBMAPWOlrOkbGHAkfm6pHDLU5T+N0HtXCJ3RrllGDgGBLnJjLf
+         vY+cOASe1zd79HSxG9nqp/+L3ihYG5DlKlRBwpbpIwBxPnccUOrNj3wqBguhN9sZbIsM
+         WU2LjM7rba/n7bAaChgl7FrVDDwyeiBnj+cwArMwLTJ9YiFpkUpdPFIhzthXkVyblAse
+         OXP6R0Hehnz/lPfFxWwJK2HgsVHIsldu+1RzjdM4t2FH4/F62c/1MqxH2ysUekY2KFW/
+         xC3O55b/Cpf79yPDJH0KT0OkyeZbEEOyaK7xxu6hVvcsJgAzunZC5IkSHupvvtzyaj1d
+         aNgw==
+X-Gm-Message-State: AOAM531OEz1Iu+MwnPnM8lWj2dT85MxTjDll7QxcaQZuV2f/fg3foca7
+        Jkgrwyb+E9eadO0Ps52I602QWwYTxzHxf5baXrE=
+X-Google-Smtp-Source: ABdhPJzzoQCHoXnnSY9x7+KhRyF3ktxgw1KVvIH0dVLRr/ri2WIgVCoeB1qGC/E8jcdRDplu5z/cKMya91xE/i8mUtU=
+X-Received: by 2002:a25:2b89:: with SMTP id r131mr12592617ybr.131.1598341688832;
+ Tue, 25 Aug 2020 00:48:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="JYK4vJDZwFMowpUq"
-Content-Disposition: inline
-In-Reply-To: <20200812203618.2656699-1-robh@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200825062900.11210-1-dinghao.liu@zju.edu.cn>
+In-Reply-To: <20200825062900.11210-1-dinghao.liu@zju.edu.cn>
+From:   Mathieu Malaterre <malat@debian.org>
+Date:   Tue, 25 Aug 2020 09:47:56 +0200
+Message-ID: <CA+7wUswtuOPqQ131F5LdH=7dH+sWZc+jmMHXpaYmTDUehvx5eQ@mail.gmail.com>
+Subject: Re: [PATCH] video: fbdev: radeon: Fix memleak in radeonfb_pci_register
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     kjlu@umn.edu, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Tue, Aug 25, 2020 at 9:27 AM Dinghao Liu <dinghao.liu@zju.edu.cn> wrote:
+>
+> When radeon_kick_out_firmware_fb() fails, info should be
+> freed just like the subsequent error paths.
+>
+> Fixes: 069ee21a82344 ("fbdev: Fix loading of module radeonfb on PowerMac")
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+> ---
+>  drivers/video/fbdev/aty/radeon_base.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+> index 3fe509cb9b87..13bd2bd5c043 100644
+> --- a/drivers/video/fbdev/aty/radeon_base.c
+> +++ b/drivers/video/fbdev/aty/radeon_base.c
+> @@ -2307,7 +2307,7 @@ static int radeonfb_pci_register(struct pci_dev *pdev,
+>
+>         ret = radeon_kick_out_firmware_fb(pdev);
+>         if (ret)
+> -               return ret;
+> +               goto err_release_fb;
 
---JYK4vJDZwFMowpUq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Good catch ! Thanks
 
-On Wed, Aug 12, 2020 at 02:36:18PM -0600, Rob Herring wrote:
-> Clean-up incorrect indentation, extra spaces, long lines, and missing
-> EOF newline in schema files. Most of the clean-ups are for list
-> indentation which should always be 2 spaces more than the preceding
-> keyword.
->=20
-> Found with yamllint (which I plan to integrate into the checks).
->=20
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-spi@vger.kernel.org
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-remoteproc@vger.kernel.org
-> Cc: linux-hwmon@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-mtd@lists.infradead.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-rtc@vger.kernel.org
-> Cc: linux-serial@vger.kernel.org
-> Cc: linux-usb@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Mathieu Malaterre <malat@debian.org>
 
-I trust you guys in figuring out the details, so for touching I2C:
-
-Acked-by: Wolfram Sang <wsa@kernel.org>
-
-
---JYK4vJDZwFMowpUq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl9EuWkACgkQFA3kzBSg
-KbZbPA/+MqNMzGTVXT++2afD+v/Qkum1LRbeldro+e0ewQSps4tnW/eHg9RaemYr
-BwxfsOZA+EJp0lGOnRM5/vhPMoInlSEwJSBlxtjratUScfPiR7D4ljKXGaUQv4IV
-l9cXBZuOeLnSerxdYsuGrs8M0uqe4rAc3jt/FGD4rSgawNTN1HieFaQ0vq/0I5Gi
-pyJv09alaosBuqNYc37Gqm9Ddk6xEJb8lvwrVqeS2ZGMFmfJuFlsuLKhwdgen/og
-Wik6VZEjyUHJbyZgkcwMn6rTVTnopK7E0RYmdap35Bh6MAZ3auQ4eQU2tktY3L0G
-+NL/ah9FAvmPH1RAR7KmXzZxVYX2ZoWm3AJVpCIvlc9toZI5NdOwdruT+KlTLHIY
-T0vs7B3wqsrD4pHputHdDtf9iSZDB0FiTi44yJjReI72Yb47gDXXK7tOcewvq33Y
-J9dv/HeT85ER8dZ3fCssLdOsIVSE5ZGaDGjP9M4hPo5ZqM5WlMcqW13gmBsEaY3W
-quFFx4pgOXFmnO+7fCb0OIoySeTtgCMNqSwekaNsrbK8dBsFhMx62IzUwwCwL8ST
-clLrMsK81BA4v5hiU1SXC5zAJJG1W0FEpGvIuQRa5YxW8goqwIJrEuvy8jWLhg1x
-kB4BNFdQdBMg8xw0GSHGDhOZhIxgC5t/fvrbiLmqazzmbfCE1i8=
-=71f2
------END PGP SIGNATURE-----
-
---JYK4vJDZwFMowpUq--
+>         /* request the mem regions */
+>         ret = pci_request_region(pdev, 0, "radeonfb framebuffer");
+> --
+> 2.17.1
+>
