@@ -2,81 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25E12251100
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 06:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358A9251210
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 08:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728889AbgHYE5Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Aug 2020 00:57:25 -0400
-Received: from smtprelay0198.hostedemail.com ([216.40.44.198]:59242 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728875AbgHYE5Y (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Aug 2020 00:57:24 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id B4CE01E09;
-        Tue, 25 Aug 2020 04:57:23 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:800:857:960:973:988:989:1260:1311:1314:1345:1359:1437:1515:1534:1541:1711:1730:1747:1777:1792:2393:2559:2562:3138:3139:3140:3141:3142:3353:3743:3865:3866:3867:3868:3870:3874:4321:5007:6261:7903:8879:10004:10848:11658:11914:12296:12297:12555:12895:13069:13311:13357:13894:14096:14181:14384:14394:14721:21067:21080:21524:21627:21773:30054:30075:30079,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: roll40_43024e127059
-X-Filterd-Recvd-Size: 2151
-Received: from joe-laptop.perches.com (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 25 Aug 2020 04:57:22 +0000 (UTC)
-From:   Joe Perches <joe@perches.com>
-To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 22/29] video: fbdev: Avoid comma separated statements
-Date:   Mon, 24 Aug 2020 21:56:19 -0700
-Message-Id: <3e56046e67e583ac93030297ff6d58c08ca54086.1598331149.git.joe@perches.com>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1728962AbgHYG3T (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Aug 2020 02:29:19 -0400
+Received: from spam.zju.edu.cn ([61.164.42.155]:23388 "EHLO zju.edu.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728912AbgHYG3T (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 25 Aug 2020 02:29:19 -0400
+Received: from localhost.localdomain (unknown [210.32.144.184])
+        by mail-app4 (Coremail) with SMTP id cS_KCgAnb_+sr0RfQp5LAQ--.5869S4;
+        Tue, 25 Aug 2020 14:29:04 +0800 (CST)
+From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
+To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Mathieu Malaterre <malat@debian.org>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] video: fbdev: radeon: Fix memleak in radeonfb_pci_register
+Date:   Tue, 25 Aug 2020 14:29:00 +0800
+Message-Id: <20200825062900.11210-1-dinghao.liu@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cS_KCgAnb_+sr0RfQp5LAQ--.5869S4
+X-Coremail-Antispam: 1UD129KBjvdXoWruF4DZFWkuF1rZF1fZw45trb_yoWfXrc_Cr
+        18uasrXayDGFykWr18WF15ZrWayrZrWF95Zrn7trZ3uFy7Wr1FgF45Zw18XFW5Ww47GF98
+        Jr1vgrWxZr4SkjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbxAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
+        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+        GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+        8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE14v_GF1l42xK82IYc2Ij64vIr41l
+        42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+        8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+        ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+        0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AK
+        xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0J
+        U-J5rUUUUU=
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgQDBlZdtPqDKgACst
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Use semicolons and braces.
+When radeon_kick_out_firmware_fb() fails, info should be
+freed just like the subsequent error paths.
 
-Signed-off-by: Joe Perches <joe@perches.com>
+Fixes: 069ee21a82344 ("fbdev: Fix loading of module radeonfb on PowerMac")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
 ---
- drivers/video/fbdev/tgafb.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/aty/radeon_base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/tgafb.c b/drivers/video/fbdev/tgafb.c
-index e9869135d833..666fbe2f671c 100644
---- a/drivers/video/fbdev/tgafb.c
-+++ b/drivers/video/fbdev/tgafb.c
-@@ -989,8 +989,10 @@ tgafb_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
- 	/* We can fill 2k pixels per operation.  Notice blocks that fit
- 	   the width of the screen so that we can take advantage of this
- 	   and fill more than one line per write.  */
--	if (width == line_length)
--		width *= height, height = 1;
-+	if (width == line_length) {
-+		width *= height;
-+		height = 1;
-+	}
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index 3fe509cb9b87..13bd2bd5c043 100644
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -2307,7 +2307,7 @@ static int radeonfb_pci_register(struct pci_dev *pdev,
  
- 	/* The write into the frame buffer must be aligned to 4 bytes,
- 	   but we are allowed to encode the offset within the word in
-@@ -1171,8 +1173,10 @@ copyarea_8bpp(struct fb_info *info, u32 dx, u32 dy, u32 sx, u32 sy,
- 	   More than anything else, these control how we do copies.  */
- 	depos = dy * line_length + dx;
- 	sepos = sy * line_length + sx;
--	if (backward)
--		depos += width, sepos += width;
-+	if (backward) {
-+		depos += width;
-+		sepos += width;
-+	}
+ 	ret = radeon_kick_out_firmware_fb(pdev);
+ 	if (ret)
+-		return ret;
++		goto err_release_fb;
  
- 	/* Next copy full words at a time.  */
- 	n32 = width / 32;
+ 	/* request the mem regions */
+ 	ret = pci_request_region(pdev, 0, "radeonfb framebuffer");
 -- 
-2.26.0
+2.17.1
 
