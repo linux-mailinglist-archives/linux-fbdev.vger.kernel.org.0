@@ -2,79 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7164251558
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 11:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED7CE25168F
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 12:21:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729271AbgHYJ2O (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Aug 2020 05:28:14 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41576 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726000AbgHYJ2O (ORCPT
+        id S1729777AbgHYKVh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Aug 2020 06:21:37 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:58864 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729698AbgHYKVh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Aug 2020 05:28:14 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07P9PTpt190836;
-        Tue, 25 Aug 2020 09:28:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=s1TuHGZpOLa28k1h/iYgPdytceu9SbCfGcyqcg+8fTw=;
- b=KIwRjhxVOmR0+G36YQzlTqMIYKtkOgJ6l4y4KcFr0bspJd1lYNz6gO3GO3GmhwkfH5Y7
- 6OZASZYuc2XBQoXGY7ml81xru6UPkYugRA1qiCReNyncp3+mYv65Mny/5cewnPj9Cckx
- EDXgaxdB1aOI4T5/CJBrdH1uRC2CwxqUVgdvX6KjVA+sa5PnTBZEcRef7IE8m9GgBOQn
- HjgMc6+k9Li1XCpTxy/V9nqkeJhROzx/eTynzmK71FD/NZw1a/R6y5xQqGV8SFtYHfgU
- ZSJJKpcpGeMtmP9ER7yzIF3oJel58zgYc1cwHnE1ZkO38L5LAG7xZfqcjSHx25z2NwFe yQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 333w6tqxrm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 Aug 2020 09:28:03 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07P9Olve116535;
-        Tue, 25 Aug 2020 09:28:02 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 333r9jnkmc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 25 Aug 2020 09:28:02 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07P9Rxti005040;
-        Tue, 25 Aug 2020 09:27:59 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 25 Aug 2020 02:27:58 -0700
-Date:   Tue, 25 Aug 2020 12:27:52 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Timo Aranjo <timo.aranjo@aol.com>
-Cc:     kernel-janitors@vger.kernel.org, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Staging: sm750fb: Fixed a coding style issue
-Message-ID: <20200825092752.GT1793@kadam>
-References: <1b596369-7c83-73ff-fd4e-ed0d7a714219.ref@aol.com>
- <1b596369-7c83-73ff-fd4e-ed0d7a714219@aol.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b596369-7c83-73ff-fd4e-ed0d7a714219@aol.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
- adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008250073
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 clxscore=1011 mlxscore=0 lowpriorityscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008250073
+        Tue, 25 Aug 2020 06:21:37 -0400
+Received: from fsav305.sakura.ne.jp (fsav305.sakura.ne.jp [153.120.85.136])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 07PALSCT030332;
+        Tue, 25 Aug 2020 19:21:28 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav305.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav305.sakura.ne.jp);
+ Tue, 25 Aug 2020 19:21:28 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav305.sakura.ne.jp)
+Received: from localhost.localdomain (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 07PALKrL030120
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 25 Aug 2020 19:21:27 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH] video: fbdev: fix potential OOB read in vga_8planes_imageblit()
+Date:   Tue, 25 Aug 2020 19:21:16 +0900
+Message-Id: <20200825102116.6703-1-penguin-kernel@I-love.SAKURA.ne.jp>
+X-Mailer: git-send-email 2.18.4
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This commit is corrupted.  Please read the first bit of
-Documentation/process/email-clients.rst
+Since transl_l[16] is accessed via cdat[y] >> 4, cdat[y] needs to be
+evaluated as an "unsigned char" value in order to fit 0...15 range.
 
-regards,
-dan carpenter
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+---
+ drivers/video/fbdev/vga16fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/vga16fb.c b/drivers/video/fbdev/vga16fb.c
+index a20eeb8308ff..578d3541e3d6 100644
+--- a/drivers/video/fbdev/vga16fb.c
++++ b/drivers/video/fbdev/vga16fb.c
+@@ -1121,7 +1121,7 @@ static void vga_8planes_imageblit(struct fb_info *info, const struct fb_image *i
+         char oldop = setop(0);
+         char oldsr = setsr(0);
+         char oldmask = selectmask();
+-        const char *cdat = image->data;
++	const unsigned char *cdat = image->data;
+ 	u32 dx = image->dx;
+         char __iomem *where;
+         int y;
+-- 
+2.18.4
 
