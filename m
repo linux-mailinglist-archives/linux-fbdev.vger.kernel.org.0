@@ -2,88 +2,144 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E254D250C0A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 01:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5D125112E
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Aug 2020 06:59:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728067AbgHXXE3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Aug 2020 19:04:29 -0400
-Received: from sonic305-31.consmr.mail.bf2.yahoo.com ([74.6.133.230]:44121
-        "EHLO sonic305-31.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727997AbgHXXE3 (ORCPT
+        id S1728528AbgHYE4u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Aug 2020 00:56:50 -0400
+Received: from smtprelay0018.hostedemail.com ([216.40.44.18]:35610 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725792AbgHYE4q (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Aug 2020 19:04:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1598310268; bh=ecwGMGIu/CEPIOX80g8ywqUnb1xK0MPbBbcDj6fDce0=; h=To:From:Cc:Subject:Date:References:From:Subject; b=LgyGTQwn05Ie71ebubvRa5X4143rQ7pBiKZPclwqwH7I8h/vyCV3yrKb4t/TGaRfLbjiWwMm62bUFDO4YSnjv5cZQRIq/HoOQY8IppKYoYXoDp0V6Pb9ZiIKNH8FgFr4HF8MPP2tHB88cCxjJ+UpDacZifUHHiyHwqokIZYFk22k4/fGmI3cVEph+PqkeWlegHxAs3OIbJhX+x3yenT1/c5Njv0O982eqKeDyDbBElpMyQdpW1ZyKYi4sYcQ0qdU0iAL3rFol0n/J+Bx5AcIwuICg6C3JztuaP8RvV09sMoNIKc5+kLjSXyswCyowkjJwsWOExG2/eWxSLwTEU72+g==
-X-YMail-OSG: PcXmIx0VM1ksFWSh4ny4_Hdaewwt5TNaUqVTnPvgo1UqaldHXMxgxf8iLCG0XIX
- aIdzD7Ho93RfBgAzS0aFZZuQ2BK2Lwekx9Z9Dbgdj6Lgn5INZ1LiKoO8o_P2.sI_KF.KYw_l2vNS
- FxFUIA.NJC8ml74GBIbc9BxBITUd.vBdIRJioaSSEadil1m1_dWxw7VGrC7CGfPiUjxYWPWtkUuo
- eLL_S6BWag_q7.tcl9nbwCWZe0kvVNWyD7ZB.cjDLL3XEpZtsvKEo_60GuCHxJ5E8vlMyeQp27RW
- vKymX4jaXaKr1tWEfnxVKd24BsUKkc6VXzAdy4CsG1afZTgfGFlchkEgIqphqi7OK6BvFdmFTamD
- 0unQHkpKlR1fR9cHOX.SLB8FMwoIQZHkMyz4KmVKlJ82I3LAM0XgqikSZ_S8DOBEBqTjVXQFEnRI
- 5AwOjMPM5hW0NWZOzk8i75JlU7qMaTPaPRB.WTIhOs5FjBm2OWfRCW0rkn_lAI6jJMX9uUsvES36
- .TUJRLjum9Jc27_E5SxLi33E7oPvwWM.TVnjZJG2Gfq0USUyzZeEgnAvbo8gXFlk90SO923SJXgM
- O5z65wfGgO16iBoNbnKo0eYCOQGNzHUFKfnqVyMvmVtjp72qFItkF9_XguFDYZPHWjUBWhmBPXo_
- bc6MRzHGpdWEBAElf5Cr7YBlJs7dKrm52oVKoGwZDQA_TqDyBcwfp2gAquGM1jLTEhcG_pxrtNEu
- dQ5jLTMH4GNlmAOJT.wyNoy8SW5hxosh8PxpXcb.FS71Hg2Nqn0aAUq_imTRUvSY8cZyYTPCm0iP
- Na7qWiRDAeh7Bzd61o_oQE0H8Ynl8NvF2a9SnHZFxhph87CJF0lAJh3z9lxWpybAiwqwPjJaALv3
- oS3pBen61FVdP2tO1YgZBElXGa19Wy3NNNvWShlOaEf.uBklc5gWN278JI4oF2vF1v69XZUjcAxk
- wOX.T30c7hWQO96dlFKToqZFKXvgqd8keoaxwoRAjeoncudePiFpSMuWoUU4eoWOGiGkC9RRWyde
- rIyqd1XikUQ2x5BgBo3poWZMegRYhIbFeLibKvu_FuiR6z_yDMxbu4OBu9zYyjrmgw9vl3JafM6J
- ysyJx6_jKRUPl5PvetaL6jHTPn21rNlQ76ND35uYjwuMdvHgAb24Bz8p.vT.yd5V1Vq70E_wCyxi
- tO5_QtRYok200kgVuYwG4LVa3sXc2BOmbC5y6jkfokvnrxPHBFHHNYgb2W9sZZy0Lw6knOMraehH
- lD7.K4Ua.QoHKV4J4i.ch1M6bcD9gHs41hb61ARA1vRYXAWBQXxZZcS3AonC_hcuQ51JQZbyZ.aF
- jmlVj8sXIsE76DxL9p480E2lje576gk6xDKkaNV9tUekQ6wCq7gwUeSDr2c2ffq8wy9arRn3pegp
- 3nFfpt6TK1VVlRsmFTPo3aFSCqE.RfeztDvDs_tD_iKqdkugZwlwjTK5hryukZd_RmfiBRVJeqko
- NhTudWTn2TbxHS0LKdLP1i.bT8yRB0HoaNpmWeqjaLn2C2W4zPBgSsNvcuKtjLGzHXW3OU4Wq
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Mon, 24 Aug 2020 23:04:28 +0000
-Received: by smtp410.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 88b388f97aeaa05fe15c079342340778;
-          Mon, 24 Aug 2020 23:02:27 +0000 (UTC)
-To:     kernel-janitors@vger.kernel.org
-From:   Timo Aranjo <timo.aranjo@aol.com>
-Cc:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
-        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH] Staging: sm750fb: Fixed a coding style issue
-Message-ID: <1b596369-7c83-73ff-fd4e-ed0d7a714219@aol.com>
-Date:   Mon, 24 Aug 2020 18:02:26 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Tue, 25 Aug 2020 00:56:46 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id B846B180A9F54;
+        Tue, 25 Aug 2020 04:56:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:541:857:966:967:973:988:989:1260:1311:1314:1345:1437:1515:1535:1544:1711:1730:1747:1777:1792:1801:2196:2199:2393:2525:2560:2563:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3865:3867:3868:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4385:4395:4605:5007:6119:6261:6737:6742:7875:9025:10004:10848:11026:11473:11658:11914:12043:12048:12050:12297:12438:12555:12679:12895:12986:13161:13229:13894:14096:14181:14394:14721:21080:21433:21451:21627:21740:21773:30054:30056,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: chalk60_631385f27059
+X-Filterd-Recvd-Size: 5825
+Received: from joe-laptop.perches.com (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf08.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 25 Aug 2020 04:56:38 +0000 (UTC)
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>, oprofile-list@lists.sf.net,
+        linux-ide@vger.kernel.org, drbd-dev@lists.linbit.com,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
+        linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-bcache@vger.kernel.org, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-fbdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: [PATCH 00/29] treewide: Convert comma separated statements
+Date:   Mon, 24 Aug 2020 21:55:57 -0700
+Message-Id: <cover.1598331148.git.joe@perches.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-References: <1b596369-7c83-73ff-fd4e-ed0d7a714219.ref@aol.com>
-X-Mailer: WebService/1.1.16455 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol Apache-HttpAsyncClient/4.1.4 (Java/11.0.7)
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
- From 56c5eed5b0a3d299530264509a6a81594c4fb791 Mon Sep 17 00:00:00 2001
-From: "Timo A. Aranjo" <timo.aranjo@aol.com>
-Date: Mon, 24 Aug 2020 17:24:16 -0500
-Subject: [PATCH] Staging: sm750fb: Fixed a coding style issue
+There are many comma separated statements in the kernel.
+See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
 
-I added a new-line because checkpatch gave a warning about there not being
-a new line after declarations.
+Convert the comma separated statements that are in if/do/while blocks
+to use braces and semicolons.
 
-Signed-off-by: Timo Alejandro Aranjo <timo.aranjo@aol.com>
----
-  drivers/staging/sm750fb/sm750.c | 1 +
-  1 file changed, 1 insertion(+)
+Many comma separated statements still exist but those are changes for
+another day.
 
-diff --git a/drivers/staging/sm750fb/sm750.c 
-b/drivers/staging/sm750fb/sm750.c
-index 84fb585a5739..3da87387867e 100644
---- a/drivers/staging/sm750fb/sm750.c
-+++ b/drivers/staging/sm750fb/sm750.c
-@@ -411,6 +411,7 @@ static int __maybe_unused lynxfb_suspend(struct 
-device *dev)
-  {
-  	struct fb_info *info;
-  	struct sm750_dev *sm750_dev;
-+
-  	sm750_dev = dev_get_drvdata(dev);
+Joe Perches (29):
+  coding-style.rst: Avoid comma statements
+  alpha: Avoid comma separated statements
+  ia64: Avoid comma separated statements
+  sparc: Avoid comma separated statements
+  ata: Avoid comma separated statements
+  drbd: Avoid comma separated statements
+  lp: Avoid comma separated statements
+  dma-buf: Avoid comma separated statements
+  drm/gma500: Avoid comma separated statements
+  drm/i915: Avoid comma separated statements
+  hwmon: (scmi-hwmon): Avoid comma separated statements
+  Input: MT - Avoid comma separated statements
+  bcache: Avoid comma separated statements
+  media: Avoid comma separated statements
+  mtd: Avoid comma separated statements
+  8390: Avoid comma separated statements
+  fs_enet: Avoid comma separated statements
+  wan: sbni: Avoid comma separated statements
+  s390/tty3270: Avoid comma separated statements
+  scai/arm: Avoid comma separated statements
+  media: atomisp: Avoid comma separated statements
+  video: fbdev: Avoid comma separated statements
+  fuse: Avoid comma separated statements
+  reiserfs: Avoid comma separated statements
+  lib/zlib: Avoid comma separated statements
+  lib: zstd: Avoid comma separated statements
+  ipv6: fib6: Avoid comma separated statements
+  sunrpc: Avoid comma separated statements
+  tools: Avoid comma separated statements
 
-  	console_lock();
+ Documentation/process/coding-style.rst        |  17 +
+ arch/alpha/kernel/pci_iommu.c                 |   8 +-
+ arch/alpha/oprofile/op_model_ev4.c            |  22 +-
+ arch/alpha/oprofile/op_model_ev5.c            |   8 +-
+ arch/ia64/kernel/smpboot.c                    |   7 +-
+ arch/sparc/kernel/smp_64.c                    |   7 +-
+ drivers/ata/pata_icside.c                     |  21 +-
+ drivers/block/drbd/drbd_receiver.c            |   6 +-
+ drivers/char/lp.c                             |   6 +-
+ drivers/dma-buf/st-dma-fence.c                |   7 +-
+ drivers/gpu/drm/gma500/mdfld_intel_display.c  |  44 ++-
+ drivers/gpu/drm/i915/gt/gen8_ppgtt.c          |   8 +-
+ drivers/gpu/drm/i915/gt/intel_gt_requests.c   |   6 +-
+ .../gpu/drm/i915/gt/selftest_workarounds.c    |   6 +-
+ drivers/gpu/drm/i915/intel_runtime_pm.c       |   6 +-
+ drivers/hwmon/scmi-hwmon.c                    |   6 +-
+ drivers/input/input-mt.c                      |  11 +-
+ drivers/md/bcache/bset.c                      |  12 +-
+ drivers/md/bcache/sysfs.c                     |   6 +-
+ drivers/media/i2c/msp3400-kthreads.c          |  12 +-
+ drivers/media/pci/bt8xx/bttv-cards.c          |   6 +-
+ drivers/media/pci/saa7134/saa7134-video.c     |   7 +-
+ drivers/mtd/devices/lart.c                    |  10 +-
+ drivers/net/ethernet/8390/axnet_cs.c          |  19 +-
+ drivers/net/ethernet/8390/lib8390.c           |  14 +-
+ drivers/net/ethernet/8390/pcnet_cs.c          |   6 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |  11 +-
+ drivers/net/wan/sbni.c                        | 101 +++---
+ drivers/s390/char/tty3270.c                   |   6 +-
+ drivers/scsi/arm/cumana_2.c                   |  19 +-
+ drivers/scsi/arm/eesox.c                      |   9 +-
+ drivers/scsi/arm/powertec.c                   |   9 +-
+ .../media/atomisp/pci/atomisp_subdev.c        |   6 +-
+ drivers/video/fbdev/tgafb.c                   |  12 +-
+ fs/fuse/dir.c                                 |  24 +-
+ fs/reiserfs/fix_node.c                        |  36 ++-
+ lib/zlib_deflate/deftree.c                    |  49 ++-
+ lib/zstd/compress.c                           | 120 ++++---
+ lib/zstd/fse_compress.c                       |  24 +-
+ lib/zstd/huf_compress.c                       |   6 +-
+ net/ipv6/ip6_fib.c                            |  12 +-
+ net/sunrpc/sysctl.c                           |   6 +-
+ tools/lib/subcmd/help.c                       |  10 +-
+ tools/power/cpupower/utils/cpufreq-set.c      |  14 +-
+ tools/testing/selftests/vm/gup_benchmark.c    |  18 +-
+ tools/testing/selftests/vm/userfaultfd.c      | 296 +++++++++++-------
+ 46 files changed, 694 insertions(+), 382 deletions(-)
+
 -- 
-2.25.1
+2.26.0
 
