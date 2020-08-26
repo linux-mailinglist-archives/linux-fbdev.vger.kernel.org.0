@@ -2,77 +2,72 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F37253967
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Aug 2020 22:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08440253A80
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Aug 2020 00:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbgHZUyH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Aug 2020 16:54:07 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:22582 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726739AbgHZUyH (ORCPT
+        id S1726809AbgHZW5v (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Aug 2020 18:57:51 -0400
+Received: from mail.tourhouse.com.br ([187.32.239.34]:48907 "EHLO
+        mail.tourhouse.com.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726186AbgHZW5u (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Aug 2020 16:54:07 -0400
-X-IronPort-AV: E=Sophos;i="5.76,357,1592863200"; 
-   d="scan'208";a="464849659"
-Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Aug 2020 22:54:06 +0200
-Date:   Wed, 26 Aug 2020 22:54:05 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Denis Efremov <efremov@linux.com>,
-        Bernie Thompson <bernie@plugable.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kbuild-all@lists.01.org
-Subject: [PATCH] coccinelle: api: fix kobj_to_dev.cocci warnings
-Message-ID: <alpine.DEB.2.22.394.2008262252270.2522@hadrien>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        Wed, 26 Aug 2020 18:57:50 -0400
+X-Greylist: delayed 15257 seconds by postgrey-1.27 at vger.kernel.org; Wed, 26 Aug 2020 18:57:49 EDT
+Received: from localhost (thmail.tourhouse.com.br [127.0.0.1])
+        by mail.tourhouse.com.br (iRedMail) with ESMTP id 102F8484258;
+        Wed, 26 Aug 2020 13:45:22 -0300 (-03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tourhouse.com.br;
+        s=202007; t=1598460322;
+        bh=d9F8tBy24C+QRNkQxvFLCLfoD8TpLLFwaQ/2qvUaBoE=;
+        h=Reply-To:From:Subject:Date:MIME-Version:Content-Type:
+         Content-Transfer-Encoding:Message-Id;
+        b=IK1nsP1Nastbyz/wNOrNsC+SjwegF4qfV4A7hIJ1RSo0GoSCaCApV//u4/fh2QrxY
+         lhXZLzOcBojIaEVLXcwKlXaSemT6SO6W0gZW16spnJCufjpKsCBGGpiSK7WpU4xXa6
+         JaQtRRiki5+kNQk/mKa9zhskrSm8LCJaLVTP7fiTxmBI6NDSynmYLsU2O1I6y0bKzn
+         9AKYFUp/Ynk5dY8MOFKyMY6E+fRMHPVl1gFH4ORmSyQeaMzQ6loh811M1trlic23wf
+         0WxQQSj107S5fcG5G08I9fe8S7vH80/6bDCMWL1dojtHECrLsKexZzcO8CgsrZnFKf
+         gmVDwcEtmdKlg==
+X-Virus-Scanned: Debian amavisd-new at thmail3.tourhouse.com.br
+Received: from mail.tourhouse.com.br ([127.0.0.1])
+        by localhost (thmail.tourhouse.com.br [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id nZlzi+0dvVET; Wed, 26 Aug 2020 13:45:21 -0300 (-03)
+Received: from User (unknown [167.114.43.82])
+        by mail.tourhouse.com.br (iRedMail) with ESMTPA id C788B48425A;
+        Wed, 26 Aug 2020 13:45:13 -0300 (-03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tourhouse.com.br;
+        s=202007; t=1598460321;
+        bh=d9F8tBy24C+QRNkQxvFLCLfoD8TpLLFwaQ/2qvUaBoE=;
+        h=Reply-To:From:Subject:Date:MIME-Version:Content-Type:
+         Content-Transfer-Encoding;
+        b=S6LAaQE3+l30ifmHdvSfnlZ19CmQn0JR8Isvfm/egHDIDwbkkqb3PRMZqp9ZxznTL
+         EQDoOfhGhJIuHrp/jPEsdZE1JAHWFfY/9B16RPvKRfLkmBj5yyr2FfU/MiKmhf7BHQ
+         10MvIVp35uNbEjVssEan7U+yMsy479W7GYe1heyj3nM0bwYOtrJaBzoD31gGS86xCt
+         5xNIVQEwc69+RbmMNLf/NhJlOcSETf4ikdLzAkDEt4zZqO2fSncKjexMRl6LtzSZgq
+         YP29H4aNBHicaAY55wMnMJOD5D0lEfhlmDyq0Zf3vrMOMTeF33tIAdUh6ZlwbA8HxL
+         MkMcsfaSzcGLg==
+Reply-To: <zhuq308@gmail.com>
+From:   "Mr.Qi zhu" <crm@tourhouse.com.br>
+Subject: Greetings
+Date:   Wed, 26 Aug 2020 18:45:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20200826164522.102F8484258@mail.tourhouse.com.br>
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: kernel test robot <lkp@intel.com>
+Hello
 
- Use kobj_to_dev() instead of container_of()
+Please confirm if you still use this e-mail. There is an inheritance that has your surname. Contact me for details at:(zhuq308@gmail.com)
 
-Generated by: scripts/coccinelle/api/kobj_to_dev.cocci
+greetings
 
-Fixes: a2fc3718bc22 ("coccinelle: api: add kobj_to_dev.cocci script")
-CC: Denis Efremov <efremov@linux.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
-
----
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/jlawall/linux.git for-5.10
-head:   a2fc3718bc22e85378085568ecc5765fb28cabce
-commit: a2fc3718bc22e85378085568ecc5765fb28cabce [3/3] coccinelle: api: add kobj_to_dev.cocci script
-:::::: branch date: 5 days ago
-:::::: commit date: 5 days ago
-
- udlfb.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -1457,7 +1457,7 @@ static ssize_t edid_show(
- 			struct file *filp,
- 			struct kobject *kobj, struct bin_attribute *a,
- 			 char *buf, loff_t off, size_t count) {
--	struct device *fbdev = container_of(kobj, struct device, kobj);
-+	struct device *fbdev = kobj_to_dev(kobj);
- 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
- 	struct dlfb_data *dlfb = fb_info->par;
-
-@@ -1479,7 +1479,7 @@ static ssize_t edid_store(
- 			struct file *filp,
- 			struct kobject *kobj, struct bin_attribute *a,
- 			char *src, loff_t src_off, size_t src_size) {
--	struct device *fbdev = container_of(kobj, struct device, kobj);
-+	struct device *fbdev = kobj_to_dev(kobj);
- 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
- 	struct dlfb_data *dlfb = fb_info->par;
- 	int ret;
+Mr.Qi zhu
