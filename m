@@ -2,77 +2,71 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7FFC2545C9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Aug 2020 15:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D318254FB3
+	for <lists+linux-fbdev@lfdr.de>; Thu, 27 Aug 2020 22:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbgH0NTu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 27 Aug 2020 09:19:50 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:10338 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727781AbgH0NTT (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 27 Aug 2020 09:19:19 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id C3F82C315B0D3867DA47;
-        Thu, 27 Aug 2020 21:00:57 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Thu, 27 Aug 2020
- 21:00:46 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <yanaijie@huawei.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH] video: fbdev: remove set but not used 'ulCoreClock'
-Date:   Thu, 27 Aug 2020 21:00:28 +0800
-Message-ID: <20200827130028.428893-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.25.4
+        id S1726826AbgH0UFO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 27 Aug 2020 16:05:14 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:21081
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726120AbgH0UFO (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 27 Aug 2020 16:05:14 -0400
+X-IronPort-AV: E=Sophos;i="5.76,359,1592863200"; 
+   d="scan'208";a="357455363"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2020 22:05:11 +0200
+Date:   Thu, 27 Aug 2020 22:05:10 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bernie Thompson <bernie@plugable.com>,
+        Denis Efremov <efremov@linux.com>,
+        kernel test robot <lkp@intel.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] coccinelle: api: fix kobj_to_dev.cocci warnings
+In-Reply-To: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
+Message-ID: <alpine.DEB.2.22.394.2008272204050.2482@hadrien>
+References: <13cd8bf4-06f9-04d7-e923-c397c506e8cc@web.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/mixed; boundary="8323329-1007646674-1598558711=:2482"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This addresses the following gcc warning with "make W=1":
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-drivers/video/fbdev/kyro/STG4000InitDevice.c: In function
-‘SetCoreClockPLL’:
-drivers/video/fbdev/kyro/STG4000InitDevice.c:247:6: warning: variable
-‘ulCoreClock’ set but not used [-Wunused-but-set-variable] // yanaijie
-fixed
-  247 |  u32 ulCoreClock;
-      |      ^~~~~~~~~~~
+--8323329-1007646674-1598558711=:2482
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/video/fbdev/kyro/STG4000InitDevice.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/kyro/STG4000InitDevice.c b/drivers/video/fbdev/kyro/STG4000InitDevice.c
-index 1d3f2080aa6f..edaeec2d9590 100644
---- a/drivers/video/fbdev/kyro/STG4000InitDevice.c
-+++ b/drivers/video/fbdev/kyro/STG4000InitDevice.c
-@@ -244,7 +244,6 @@ int SetCoreClockPLL(volatile STG4000REG __iomem *pSTGReg, struct pci_dev *pDev)
- {
- 	u32 F, R, P;
- 	u16 core_pll = 0, sub;
--	u32 ulCoreClock;
- 	u32 tmp;
- 	u32 ulChipSpeed;
- 
-@@ -282,7 +281,7 @@ int SetCoreClockPLL(volatile STG4000REG __iomem *pSTGReg, struct pci_dev *pDev)
- 	if (ulChipSpeed == 0)
- 		return -EINVAL;
- 
--	ulCoreClock = ProgramClock(REF_FREQ, CORE_PLL_FREQ, &F, &R, &P);
-+	ProgramClock(REF_FREQ, CORE_PLL_FREQ, &F, &R, &P);
- 
- 	core_pll |= ((P) | ((F - 2) << 2) | ((R - 2) << 11));
- 
--- 
-2.25.4
 
+On Thu, 27 Aug 2020, Markus Elfring wrote:
+
+> > Generated by: scripts/coccinelle/api/kobj_to_dev.cocci
+> >
+> > Fixes: a2fc3718bc22 ("coccinelle: api: add kobj_to_dev.cocci script")
+>
+> I wonder about such a combination of information.
+>
+> I find it reasonable that two function implementations should be adjusted
+> according to a generated patch.
+> Thus I imagine that not the mentioned SmPL script is “fixed”
+> but the affected source file “drivers/video/fbdev/udlfb.c” may be improved.
+> Will the subject “[PATCH] video: udlfb: Fix kobj_to_dev.cocci warnings”
+> (or “[PATCH] video: udlfb: Use kobj_to_dev() instead of container_of()”)
+> be more appropriate for the proposed commit message?
+
+It seems that 0-day picks up new semantic patches that are added to trees
+in kernel.org, but that it's strategy for generating the patch is not
+ideal.  I'll just drop these Fixes lines.
+
+julia
+--8323329-1007646674-1598558711=:2482--
