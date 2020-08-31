@@ -2,78 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F7825776B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Aug 2020 12:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 371A1257A64
+	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Aug 2020 15:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbgHaKhT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 31 Aug 2020 06:37:19 -0400
-Received: from www262.sakura.ne.jp ([202.181.97.72]:51950 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726249AbgHaKhP (ORCPT
+        id S1727103AbgHaN1y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 31 Aug 2020 09:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727053AbgHaN0s (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 31 Aug 2020 06:37:15 -0400
-Received: from fsav103.sakura.ne.jp (fsav103.sakura.ne.jp [27.133.134.230])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 07VAb8mb000380;
-        Mon, 31 Aug 2020 19:37:08 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav103.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav103.sakura.ne.jp);
- Mon, 31 Aug 2020 19:37:08 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav103.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 07VAb2OO099982
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-        Mon, 31 Aug 2020 19:37:08 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: [PATCH v2 (resend)] video: fbdev: fix OOB read in
- vga_8planes_imageblit()
-References: <11ad8786-e407-3289-8bd9-2745c4834718@i-love.sakura.ne.jp>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        DRI <dri-devel@lists.freedesktop.org>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-X-Forwarded-Message-Id: <11ad8786-e407-3289-8bd9-2745c4834718@i-love.sakura.ne.jp>
-Message-ID: <90b55ec3-d5b0-3307-9f7c-7ff5c5fd6ad3@i-love.sakura.ne.jp>
-Date:   Mon, 31 Aug 2020 19:37:00 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        Mon, 31 Aug 2020 09:26:48 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2177AC0619C6
+        for <linux-fbdev@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id v12so6653702ljc.10
+        for <linux-fbdev@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
+         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
+         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
+         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
+         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
+         wJdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=bfGShpTmBKnyTVhL7FE9xpEtk8wX/E6ar9DoY+sSwrpHMGzVnWO6gUi5qDjGvqlffW
+         exnGDAwRzu/ZGO5ji3jI/FWUEwHRrusx7fvUo/Pj5h3T04uX1lM4J44I4OUrtUI6N2eF
+         4tMeVIoE13Vka+MtLyup9IaZbxqfj4ZihL6KrbnwuB1rFtx6NU4nv3n2CTVOL4rbPG8x
+         exNyOdlOtgOnw0nFQcTkLXCxMPb+zLY01x0eNzQOJ6El3kHy0lRBzJvekCbmUUaqPqZ/
+         zsWN4t7Sd8QeYfvCxqAek044AOgMZg5UZU/zWLwI9P89BkD3LIOPueKQzAeGDYLtuoMx
+         yo4A==
+X-Gm-Message-State: AOAM533GmeNuLxwr2dfZPDthprskLRIrRBrfzRiC4m6DtktKCcIYliMC
+        QKBA321VuMg58cCQdlJLnb26jSI+dzHKi4v4I+A=
+X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
+X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
+ Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <11ad8786-e407-3289-8bd9-2745c4834718@i-love.sakura.ne.jp>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Reply-To: marie_avis12@yahoo.com
+Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
+ -0700 (PDT)
+From:   Miss Maris Avis <marie.avis11@gmail.com>
+Date:   Mon, 31 Aug 2020 13:26:18 +0000
+X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
+Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot is reporting OOB read at vga_8planes_imageblit() [1], for
-"cdat[y] >> 4" can become a negative value due to "const char *cdat".
+My Dear,
 
-[1] https://syzkaller.appspot.com/bug?id=0d7a0da1557dcd1989e00cb3692b26d4173b4132
+My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
+Father was dealing in Cocoa and Timber in this country before his
+death,  It is my pleasure to contact you for a business venture which
+I intend to establish in your country. Though I have not met with you
+before but I believe one has to risk confiding before you can succeed
+sometimes in life.
 
-Reported-by: syzbot <syzbot+69fbd3e01470f169c8c4@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
- drivers/video/fbdev/vga16fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I can confide in you for my brighter future since you are a human
+being like me. There is this huge amount of Ten Million five hundred
+thousand United States dollars. ($10.500.000.00) which my late Father
+kept for me in a suspense account with one of the bank here in Abidjan
+Cote d'Ivoire before he was assassinated by unknown persons, Now I
+have decided to invest these money in your country or anywhere safe
+enough for me.
 
-diff --git a/drivers/video/fbdev/vga16fb.c b/drivers/video/fbdev/vga16fb.c
-index a20eeb8308ff..578d3541e3d6 100644
---- a/drivers/video/fbdev/vga16fb.c
-+++ b/drivers/video/fbdev/vga16fb.c
-@@ -1121,7 +1121,7 @@ static void vga_8planes_imageblit(struct fb_info *info, const struct fb_image *i
-         char oldop = setop(0);
-         char oldsr = setsr(0);
-         char oldmask = selectmask();
--        const char *cdat = image->data;
-+	const unsigned char *cdat = image->data;
- 	u32 dx = image->dx;
-         char __iomem *where;
-         int y;
--- 
-2.18.4
+I want you to help me claim this fund from the bank and have it
+transfer into your personal account in your country for investment
+purposes in your country in these areas:
 
+1). Telecommunication
+2). The transport Industry
+3). Five Star Hotel
+4). Tourism
+5). Real Estate
 
+If you can be of assistance to me I will be pleased to offer you 20%
+of the total fund.
+
+I await your soonest response.
+
+Respectfully yours,
+Miss Marie Evis
+Tel: +225597438528
