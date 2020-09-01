@@ -2,95 +2,58 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 371A1257A64
-	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Aug 2020 15:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E9F258ACA
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Sep 2020 10:51:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727103AbgHaN1y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 31 Aug 2020 09:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727053AbgHaN0s (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 31 Aug 2020 09:26:48 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2177AC0619C6
-        for <linux-fbdev@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id v12so6653702ljc.10
-        for <linux-fbdev@vger.kernel.org>; Mon, 31 Aug 2020 06:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
-         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
-         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
-         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
-         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
-         wJdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=bfGShpTmBKnyTVhL7FE9xpEtk8wX/E6ar9DoY+sSwrpHMGzVnWO6gUi5qDjGvqlffW
-         exnGDAwRzu/ZGO5ji3jI/FWUEwHRrusx7fvUo/Pj5h3T04uX1lM4J44I4OUrtUI6N2eF
-         4tMeVIoE13Vka+MtLyup9IaZbxqfj4ZihL6KrbnwuB1rFtx6NU4nv3n2CTVOL4rbPG8x
-         exNyOdlOtgOnw0nFQcTkLXCxMPb+zLY01x0eNzQOJ6El3kHy0lRBzJvekCbmUUaqPqZ/
-         zsWN4t7Sd8QeYfvCxqAek044AOgMZg5UZU/zWLwI9P89BkD3LIOPueKQzAeGDYLtuoMx
-         yo4A==
-X-Gm-Message-State: AOAM533GmeNuLxwr2dfZPDthprskLRIrRBrfzRiC4m6DtktKCcIYliMC
-        QKBA321VuMg58cCQdlJLnb26jSI+dzHKi4v4I+A=
-X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
-X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
- Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
+        id S1727822AbgIAIvv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Sep 2020 04:51:51 -0400
+Received: from uho.ysoft.cz ([81.19.3.130]:39992 "EHLO uho.ysoft.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727915AbgIAIvu (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 1 Sep 2020 04:51:50 -0400
+X-Greylist: delayed 432 seconds by postgrey-1.27 at vger.kernel.org; Tue, 01 Sep 2020 04:51:49 EDT
+Received: from [10.1.8.111] (unknown [10.1.8.111])
+        by uho.ysoft.cz (Postfix) with ESMTP id 8046CA00D7;
+        Tue,  1 Sep 2020 10:44:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
+        s=20160406-ysoft-com; t=1598949875;
+        bh=mIdANwWwlPqHszzYGjhQKPmy/JsZ+HrTUgoApsidgoY=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=hgJzV6bbgTlG6jqkhi4G/K86n/3yxvlWgkaIxznqz/g03TnZpxBUf5V6impw8wE+S
+         HCuYNUHOmAQxJ7F1ihLVdNHeK6I8xK/JG9LNmPtoK1rf5XJoTDPR1krxDh5i04phrI
+         YQHWNRRSjTghnlmtZvgDNYl8L3cUh3GLPirE+++o=
+Subject: Re: [PATCH v4] video: fbdev: ssd1307fb: Added support to Column
+ offset
+To:     b.zolnierkie@samsung.com
+Cc:     Rodrigo Alencar <455.rodrigo.alencar@gmail.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
+References: <1595622138-3965-1-git-send-email-455.rodrigo.alencar@gmail.com>
+From:   =?UTF-8?B?TWljaGFsIFZva8OhxI0=?= <michal.vokac@ysoft.com>
+Message-ID: <d15729dd-63d1-7a06-f957-22eab6d74c9f@ysoft.com>
+Date:   Tue, 1 Sep 2020 10:44:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:18 +0000
-X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
-Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1595622138-3965-1-git-send-email-455.rodrigo.alencar@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-My Dear,
+On 24. 07. 20 22:22, Rodrigo Alencar wrote:
+> This patch provides support for displays like VGM128064B0W10,
+> which requires a column offset of 2, i.e., its segments starts
+> in SEG2 and ends in SEG129.
+> 
+> Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
+Hi Bartlomiej,
+what is the status of this patch? I would like to see this merged so I can send
+patches for our in-tree imx6dl-yapp4 device trees that need exactly this change.
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
-
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
-
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
-
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
-
-I await your soonest response.
-
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+Thank you,
+Michal
