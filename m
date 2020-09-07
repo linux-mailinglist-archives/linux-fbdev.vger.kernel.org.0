@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D4225F337
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 08:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A92725F33F
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 08:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726278AbgIGGeB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Sep 2020 02:34:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
+        id S1726286AbgIGGfn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Sep 2020 02:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726776AbgIGGeB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 02:34:01 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A0FC061573;
-        Sun,  6 Sep 2020 23:34:01 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id 7so7551993pgm.11;
-        Sun, 06 Sep 2020 23:34:01 -0700 (PDT)
+        with ESMTP id S1726278AbgIGGfm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 02:35:42 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DC5C061573;
+        Sun,  6 Sep 2020 23:35:42 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id d19so600144pld.0;
+        Sun, 06 Sep 2020 23:35:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=m15jCTtsBAUKP+0jfB9in9HIjBdPjBE4Y+TgmZ5/xE0=;
-        b=oKcX83qNAmH/enHKgQVFuUZrgn1v592Ii5llp56wrH1uuq47AuZF7tgvVTEacw8m5X
-         67Ha0oF50dm2WcuelnBDh7hoqksWVFv232g7FbvwYXSjOqnAxRGNrnBqxkuCn41Jk907
-         KGmT2IDHdkSTpTO7vySyW4tq1LLXCMObaVHpaPcUkV95g6ScpC8AuUk3d3DHA0Vfp/nj
-         WfGbFYRiW4klopM/ON/sZuPQKlaNz/uRCshXvOq5aat/oTI4z864Ux2Xa8tGvloE2UiV
-         drbQdLjifGkxsl/NBlYH1b8VSLUrm4bWyRrzVYrr8h0Z2RPhc0Wgw71cWYavkTCCdtzn
-         3BoQ==
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=Lght7Ifr1LpMt8ODv/ddonkYDgzWp8nZkg1/c/SjWJ8F+ZngJs82vf/xcGWrzRvqY7
+         ou1W681VqX+F9lu2Xqc0ZpV4i6UUyob9coYjA5tVJMOg07ZWGsDugXBqZBJWuaGCP+BS
+         IfGVH9pKNnx82dDz/31NRPQDtBYa2qeQEUGBeXAiBUqJB+6B7fsASnM0vRbJTHMC9Qmj
+         Wp5QykCr96OApc0FAUkWbPieinRUqhfSyP017+3ldlThqh0gNqvvYGQzol0Fi6Cm/Sp8
+         pdT+pA8htrY9tVfsBb6O2UMBh8LZF5FBkt/j1e/oP9MkvS737M2GOLwfKA0H7Cyfa2f5
+         lKJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=m15jCTtsBAUKP+0jfB9in9HIjBdPjBE4Y+TgmZ5/xE0=;
-        b=HVn78obfIpIYRQsjEAxdRu7dTIYvTu995NHdXq/xVxOl49X9aUUvr4fZyLx+HD7ZUm
-         4K9axayh6a0I54uZnqZS1FUQARZ2QLk/VSee6mdIiAriUX5jz8I90N+1kh04N7TGtkh3
-         Idg57JtfB1YKclXDvcI9Z9VzzZVjhn3lp3n1szr4fwfucVKZDXW33GMI0h8qktpHswkI
-         Nh86bcGPKKyxGxnzn9RubwUpIljpP7t5Yr9gaoT4dK0d5JNMCH7+rjzdJaMgLjheHTaR
-         Y/S2aQlploQLRK5ZOw87h8GoJgoSvefcUWJnGAyBoPww15AvwaQitBIlRVbfp6Zmpguq
-         a/4Q==
-X-Gm-Message-State: AOAM531MWw8ZY2n2h8FqGQZocALg+H/+2/eHASgb4CgirNDvpAekWF9Z
-        uDXOtxLAWeGJkCMHHWLdB5A=
-X-Google-Smtp-Source: ABdhPJw6ZH79o8HU3/QSSp52qMLeXwXaUJN0ob6XhOQCKSaHK7Tzit4rT2kSbg628qUever7ECTm0A==
-X-Received: by 2002:a62:8607:0:b029:13c:1611:6593 with SMTP id x7-20020a6286070000b029013c16116593mr16912878pfd.16.1599460440268;
-        Sun, 06 Sep 2020 23:34:00 -0700 (PDT)
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=c8PqAQVYtad1qJIcVZFhd/kZao542IWOBPfVEmqyHXOidEGnDS6Ea1b+DysAKrB+aI
+         X2GxxK2ZDB6wAdvgZ8YTrLmCAo0UsAKb4bEMjlsynaV4cTkTRx2EnRCS4P7+Wa1ikGgs
+         h2n/i9QvrTsp41LI9pvO5/s1+IPjgXyR3ENNzliVybpftNgar5X9TQX4ha09eavT2og9
+         hRcZ/wlD9UYSo68Tmn046ArGMdkPQA1Oa6VeFnrSKFd3OARPR3R5CZscnUzzcifgObQO
+         mila4IzCitX+fnQj2VtK40hFogGq5X8ldxfqMMlQBTiSZUxTtxK1+q2GOYuIbOqrYepL
+         W/Rg==
+X-Gm-Message-State: AOAM532BOGqR3LqFFRuuEkegkHwk0xfWgMGSVLPKOmF8EXwOKrpB0QO9
+        7YlxEgb4AEiJUJTlvYoqFLk=
+X-Google-Smtp-Source: ABdhPJwOD5kJx+DFcApvOWX+p/5e9qXZZ2sVaWifSzXJ6UpEB+RbV7/BqVTOwMBbgqsIz5Cei42hAg==
+X-Received: by 2002:a17:902:8c94:: with SMTP id t20mr17926553plo.76.1599460541415;
+        Sun, 06 Sep 2020 23:35:41 -0700 (PDT)
 Received: from gmail.com ([106.201.26.241])
-        by smtp.gmail.com with ESMTPSA id q82sm14767933pfc.139.2020.09.06.23.33.56
+        by smtp.gmail.com with ESMTPSA id y3sm11660330pjg.8.2020.09.06.23.35.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2020 23:33:59 -0700 (PDT)
-Date:   Mon, 7 Sep 2020 12:01:53 +0530
+        Sun, 06 Sep 2020 23:35:41 -0700 (PDT)
+Date:   Mon, 7 Sep 2020 12:03:47 +0530
 From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
 To:     Bjorn Helgaas <helgaas@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -61,21 +61,19 @@ Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org,
         linux-kernel-mentees@lists.linuxfoundation.org,
         Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v1 0/2] video: fbdev: radeonfb: PCI PM framework upgrade
- and fix-ups.
-Message-ID: <20200907063153.GA29062@gmail.com>
+Subject: Re: [PATCH v1 1/2] video: fbdev: aty: radeon_pm: remove redundant
+ CONFIG_PM container
+Message-ID: <20200907063347.GB29062@gmail.com>
 References: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
  <20200806072658.592444-1-vaibhavgupta40@gmail.com>
+ <20200806072658.592444-2-vaibhavgupta40@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200806072658.592444-1-vaibhavgupta40@gmail.com>
+In-Reply-To: <20200806072658.592444-2-vaibhavgupta40@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Please review this patch-series.
 
-Thank you
-Vaibhav Gupta
