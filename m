@@ -2,40 +2,31 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7740D25F89D
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 12:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F8E625FA4A
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 14:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728877AbgIGKj2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Sep 2020 06:39:28 -0400
-Received: from mail.netline.ch ([148.251.143.178]:34240 "EHLO
-        netline-mail3.netline.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728576AbgIGKj0 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 06:39:26 -0400
-X-Greylist: delayed 595 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Sep 2020 06:39:24 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by netline-mail3.netline.ch (Postfix) with ESMTP id 0C0B02A6042;
-        Mon,  7 Sep 2020 12:29:25 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at netline-mail3.netline.ch
-Received: from netline-mail3.netline.ch ([127.0.0.1])
-        by localhost (netline-mail3.netline.ch [127.0.0.1]) (amavisd-new, port 10024)
-        with LMTP id qXTjMtX9lbI6; Mon,  7 Sep 2020 12:29:24 +0200 (CEST)
-Received: from thor (212.174.63.188.dynamic.wline.res.cust.swisscom.ch [188.63.174.212])
-        by netline-mail3.netline.ch (Postfix) with ESMTPSA id CE6672A6016;
-        Mon,  7 Sep 2020 12:29:23 +0200 (CEST)
-Received: from [::1]
-        by thor with esmtp (Exim 4.94)
-        (envelope-from <michel@daenzer.net>)
-        id 1kFEOw-000Lc5-KY; Mon, 07 Sep 2020 12:29:22 +0200
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>
-References: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
- <20200907075559.GN2352366@phenom.ffwll.local>
-From:   =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>
+        id S1729183AbgIGMRQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Sep 2020 08:17:16 -0400
+Received: from kernel.crashing.org ([76.164.61.194]:59496 "EHLO
+        kernel.crashing.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726510AbgIGMPk (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 08:15:40 -0400
+X-Greylist: delayed 954 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Sep 2020 08:15:40 EDT
+Received: from localhost (gate.crashing.org [63.228.1.57])
+        (authenticated bits=0)
+        by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 087Bwjb2023420
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Mon, 7 Sep 2020 06:58:49 -0500
+Message-ID: <6161b96a30e51ff77a387a71eee6a46400530155.camel@kernel.crashing.org>
+Subject: Re: [PATCH v1 0/2] video: fbdev: radeonfb: PCI PM framework upgrade
+ and fix-ups.
+From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:     Daniel Vetter <daniel@ffwll.ch>,
+        Vaibhav Gupta <vaibhavgupta40@gmail.com>
 Cc:     Bjorn Helgaas <helgaas@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Bjorn Helgaas <bjorn@helgaas.com>,
         Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Thierry Reding <treding@nvidia.com>,
@@ -43,44 +34,141 @@ Cc:     Bjorn Helgaas <helgaas@kernel.org>,
         dri-devel@lists.freedesktop.org,
         Shuah Khan <skhan@linuxfoundation.org>,
         linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH v1 0/2] video: fbdev: radeonfb: PCI PM framework upgrade
- and fix-ups.
-Message-ID: <5ea9e575-e2ba-1f12-4894-3c0d271ea294@daenzer.net>
-Date:   Mon, 7 Sep 2020 12:29:22 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.1
-MIME-Version: 1.0
+Date:   Mon, 07 Sep 2020 21:58:44 +1000
 In-Reply-To: <20200907075559.GN2352366@phenom.ffwll.local>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-CA
-Content-Transfer-Encoding: 8bit
+References: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
+         <20200907075559.GN2352366@phenom.ffwll.local>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2020-09-07 9:55 a.m., Daniel Vetter wrote:
+On Mon, 2020-09-07 at 09:55 +0200, Daniel Vetter wrote:
 > On Thu, Aug 06, 2020 at 12:52:54PM +0530, Vaibhav Gupta wrote:
->> Linux Kernel Mentee: Remove Legacy Power Management.
->>
->> The original goal of the patch series is to upgrade the power management
->> framework of radeonfb fbdev driver. This has been done by upgrading .suspend()
->> and .resume() callbacks.
->>
->> The upgrade makes sure that the involvement of PCI Core does not change the
->> order of operations executed in a driver. Thus, does not change its behavior.
->>
->> During this process, it was found that "#if defined(CONFIG_PM)" at line 1434 is
->> redundant. This was introduced in the commit
->> 42ddb453a0cd ("radeon: Conditionally compile PM code").
+> > Linux Kernel Mentee: Remove Legacy Power Management. 
+> > 
+> > The original goal of the patch series is to upgrade the power
+> > management
+> > framework of radeonfb fbdev driver. This has been done by upgrading
+> > .suspend()
+> > and .resume() callbacks.
+> > 
+> > The upgrade makes sure that the involvement of PCI Core does not
+> > change the
+> > order of operations executed in a driver. Thus, does not change its
+> > behavior.
+> > 
+> > During this process, it was found that "#if defined(CONFIG_PM)" at
+> > line 1434 is
+> > redundant. This was introduced in the commit
+> > 42ddb453a0cd ("radeon: Conditionally compile PM code").
 > 
-> I do wonder whether it wouldn't be better to just outright delete these,
-> we have the drm radeon driver for pretty much all the same hardware ...
+> I do wonder whether it wouldn't be better to just outright delete
+> these,
+> we have the drm radeon driver for pretty much all the same hardware
+> ...
 
-In contrast to radeonfb, the radeon driver doesn't support 
-suspend-to-RAM on Apple PowerPC notebooks.
+The only thing is, afaik, the DRM drivers never got the D2/D3 code that
+I wrote for radeonfb to get old powerbooks to suspend/resume.
 
+Cheers,
+Ben.
 
--- 
-Earthling Michel Dänzer               |               https://redhat.com
-Libre software enthusiast             |             Mesa and X developer
+> -Daniel
+> 
+> > 
+> > ------------
+> > 
+> > Before 42ddb453a0cd:
+> > $ git show 65122f7e80b5:drivers/video/aty/radeon_pm.c | grep -n
+> > "#ifdef\|#if\|#else\|#endif\|#elif\|#ifndef"
+> > 
+> > Based on output in terminal:
+> > 
+> > 547:#ifdef CONFIG_PM
+> >        |-- 959:#ifdef CONFIG_PPC_PMAC
+> >        |-- 972:#endif
+> >        |-- 1291:#ifdef CONFIG_PPC_OF
+> >        |-- 1301:#endif /* CONFIG_PPC_OF */
+> >        |-- 1943:#ifdef CONFIG_PPC_OF
+> >                    |-- 2206:#if 0 /* Not ready yet */
+> >                    |-- 2508:#endif /* 0 */
+> >        |-- 2510:#endif /* CONFIG_PPC_OF */
+> >        |-- 2648:#ifdef CONFIG_PPC_PMAC
+> >        |-- 2654:#endif /* CONFIG_PPC_PMAC */
+> >        |-- 2768:#ifdef CONFIG_PPC_PMAC
+> >        |-- 2774:#endif /* CONFIG_PPC_PMAC */
+> >        |-- 2791:#ifdef CONFIG_PPC_OF__disabled
+> >        |-- 2801:#endif /* CONFIG_PPC_OF */
+> > 2803:#endif /* CONFIG_PM */
+> > 
+> > ------------
+> > 
+> > After 42ddb453a0cd:
+> > $ git show 42ddb453a0cd:drivers/video/aty/radeon_pm.c | grep -n
+> > "#ifdef\|#if\|#else\|#endif\|#elif\|#ifndef"
+> > 
+> > Based on output in terminal:
+> > 
+> > 547:#ifdef CONFIG_PM
+> >        |-- 959:#ifdef CONFIG_PPC_PMAC
+> >        |-- 972:#endif
+> >        |-- 1291:#ifdef CONFIG_PPC_OF
+> >        |-- 1301:#endif /* CONFIG_PPC_OF */
+> >        |-- 1430:#if defined(CONFIG_PM)
+> >                    |-- 1431:#if defined(CONFIG_X86) ||
+> > defined(CONFIG_PPC_PMAC)
+> >                    |-- 1944:#endif
+> >                    |-- 1946:#ifdef CONFIG_PPC_OF
+> >                                |-- 1947:#ifdef CONFIG_PPC_PMAC
+> >                                |-- 2208:#endif
+> >                    |-- 2209:#endif
+> >                    |-- 2211:#if 0 /* Not ready yet */
+> >                    |-- 2513:#endif /* 0 */
+> >        |-- 2515:#endif /* CONFIG_PPC_OF */
+> >        |-- 2653:#ifdef CONFIG_PPC_PMAC
+> >        |-- 2659:#endif /* CONFIG_PPC_PMAC */
+> >        |-- 2773:#ifdef CONFIG_PPC_PMAC
+> >        |-- 2779:#endif /* CONFIG_PPC_PMAC */
+> >        |-- 2796:#ifdef CONFIG_PPC_OF__disabled
+> >        |-- 2806:#endif /* CONFIG_PPC_OF */
+> > 2808:#endif /* CONFIG_PM */
+> > 
+> > ------------
+> > 
+> > This also affected the CONFIG_PPC_OF container (line 1943 at commit
+> > 65122f7e80b5)
+> > 
+> > The patch-series fixes it along with PM upgrade.
+> > 
+> > All patches are compile-tested only.
+> > 
+> > Test tools:
+> >     - Compiler: gcc (GCC) 10.1.0
+> >     - allmodconfig build: make -j$(nproc) W=1 all
+> > 
+> > Vaibhav Gupta (2):
+> >   video: fbdev: aty: radeon_pm: remove redundant CONFIG_PM
+> > container
+> >   fbdev: radeonfb:use generic power management
+> > 
+> >  drivers/video/fbdev/aty/radeon_base.c | 10 ++++---
+> >  drivers/video/fbdev/aty/radeon_pm.c   | 38 ++++++++++++++++++++---
+> > ----
+> >  drivers/video/fbdev/aty/radeonfb.h    |  3 +--
+> >  3 files changed, 35 insertions(+), 16 deletions(-)
+> > 
+> > -- 
+> > 2.27.0
+> > 
+> > _______________________________________________
+> > dri-devel mailing list
+> > dri-devel@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> 
+> 
+
