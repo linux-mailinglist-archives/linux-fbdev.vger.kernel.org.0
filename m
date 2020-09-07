@@ -2,221 +2,167 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E61325F38E
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 09:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FDB25F44F
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 09:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726389AbgIGHEt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Sep 2020 03:04:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
+        id S1727776AbgIGHud (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Sep 2020 03:50:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726918AbgIGHEj (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 03:04:39 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38283C061573;
-        Mon,  7 Sep 2020 00:04:39 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id s2so6029684pjr.4;
-        Mon, 07 Sep 2020 00:04:39 -0700 (PDT)
+        with ESMTP id S1727089AbgIGHuY (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 03:50:24 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B561C061575
+        for <linux-fbdev@vger.kernel.org>; Mon,  7 Sep 2020 00:50:22 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id e16so14708904wrm.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 07 Sep 2020 00:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=otRXxNiL4gSVNa6K+8BQSdss/DJNJyTyG/m0dhQQX4E=;
-        b=d/9XZbf8zBLic3hhAGLncVNdyG0TwyTfynJpAld5tq79kmX0SOkdpmDyqAIBL30wlb
-         aULzdbdV+lJvW3nEfzrmlVWkA4YIJSOLrTeUmi7aQQ+pkVLgEw7OqOud1NeumKrId6N1
-         Ktk/DAsQYVBQBGoHTyk86gZhkQ2SV0/Mdws9Y01qnoAjNYevPWVql7n9do/M7CNK7bsS
-         wELmhMdL4kmdkrd20bytyRPo/+a6+7Y/Q/uQ0Tydn7kRdbN1czFETmusI44MhYF8LVe9
-         yPF8mMXcwIgwj8uZgI4wf02cvNF3JsfJBpcahHN9JslE2567YXvYEZDZ3UZkT51MoviL
-         3hdQ==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=lgdO+wcLjjr5/DOIRw2FqQVZyOMD3aT5rG4YxEdLkHI=;
+        b=GkPf9CMa12TsOMNNJBhObX69nm4V7Y0Xa2p/7XNbxitfct8Q1DryNblIAOzMbOxw6Y
+         jcADz/kmPW8+B5VhR/JqxzVB1RSEADWmflOJPo4Tccb7Tmo5ZpoXPvUNtijUtv9TPuD/
+         +vMwTwyBQWCEbnbF69nTs4adshQcK3+J52FkQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=otRXxNiL4gSVNa6K+8BQSdss/DJNJyTyG/m0dhQQX4E=;
-        b=ZSnEoOzfWaWOMxkiGwaR4HdWTB1XlKIw/6iqq5pGZ8ivx61HGGotT9mEreUQb1CDGT
-         Q4I8TxKBa10OQnts4s93eUuuugT5NSXbCXJaKysGaAHMuAlPifBmkdA8P6uqiuFMEnfB
-         yuBAYFLTL2r16j6ae76qb2fEcxD5BHbYZGXDeEk3gTaFyzu8TbZ1ioXCPdU0ZbdBohSk
-         ANWKgHVn6UhU+MoOkMRxi9Q5K/PzZsuQXc9wjyMvGIb9qLc7js+pcgibZWQz/YHXG8+G
-         rncqT34QeieAeHZOyeZ5cxZpQgwH0LcrjlR/6SO0bXA7CwzQ5ms+0w3+pwM1roRmnejq
-         5wDg==
-X-Gm-Message-State: AOAM531KE5bRktysq5U+cTXzItscpoHm2lsyaAw27+dEMy5huIJDMd7g
-        sA4c2ipZsvFr5Ry497ojgjE=
-X-Google-Smtp-Source: ABdhPJziIj0PK6yoiJ5wRQoy70TbrlXD62vEEh0t/EONVWa+t0n3CsaU5tuooBUNzIBa8VXeI3MeXA==
-X-Received: by 2002:a17:902:ac8b:b029:d0:89f4:6220 with SMTP id h11-20020a170902ac8bb02900d089f46220mr16867680plr.8.1599462278714;
-        Mon, 07 Sep 2020 00:04:38 -0700 (PDT)
-Received: from varodek.localdomain ([106.201.26.241])
-        by smtp.gmail.com with ESMTPSA id 204sm6804733pfc.200.2020.09.07.00.04.34
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=lgdO+wcLjjr5/DOIRw2FqQVZyOMD3aT5rG4YxEdLkHI=;
+        b=mgK40r06zbZoCthkCDyO2rzG1vPyfa3eAkIMsGEb6t4q2ZwS1ClOCJRCwno/0pg9qe
+         1+EfqBk1ToYfz6DH6AbfItHcXNkG2bA1mp3q8/+FQ4SYf8LS8KcVmCQUmnX5/ZkRk51o
+         ZNW4SCctopnwNrz69eV7B/gXgVbWp/H+Mgka4/PAkKAd9Afz1GAoniO3X8OKPbA6jSKF
+         29rNyvTIIM3COTUIba4FGadJn/592CpmuedQfjW38BZPh4xWoO86Xqa9ljtJF1dP+zJ6
+         UK51Xojd220SkH0LjIoG3mO5hQZDdCDkDENSndA7YOFrsWkhh1g9EPrNHVcWCiiSSUDn
+         bpCw==
+X-Gm-Message-State: AOAM532/zI36lSD5ydfxDgaCYZ3nE0YLvfquAeln/1ziEn1qCMXU16pS
+        iim1SpwsS8qO4CTxEW5/QP7y4t5fjWpbvNaC
+X-Google-Smtp-Source: ABdhPJz2hCEhRCwXanS9ojpHGz4IM7r4firNCEytShrviFkem7VHOQUejqamyg5Ug83QblsoT0n85Q==
+X-Received: by 2002:a5d:5111:: with SMTP id s17mr20057301wrt.70.1599465021254;
+        Mon, 07 Sep 2020 00:50:21 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id 70sm27928097wme.15.2020.09.07.00.50.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2020 00:04:38 -0700 (PDT)
-From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Mon, 07 Sep 2020 00:50:20 -0700 (PDT)
+Date:   Mon, 7 Sep 2020 09:50:18 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Alexandru Stan <amstan@chromium.org>, linux-pwm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
-        Thierry Reding <treding@nvidia.com>
-Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v1 2/2] fbdev: radeonfb:use generic power management
-Date:   Mon,  7 Sep 2020 12:32:21 +0530
-Message-Id: <20200907070221.29938-3-vaibhavgupta40@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200907070221.29938-1-vaibhavgupta40@gmail.com>
-References: <20200907070221.29938-1-vaibhavgupta40@gmail.com>
+        dri-devel@lists.freedesktop.org,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Subject: Re: [PATCH 2/3] backlight: pwm_bl: Artificially add 0% during
+ interpolation
+Message-ID: <20200907075018.GM2352366@phenom.ffwll.local>
+Mail-Followup-To: Daniel Thompson <daniel.thompson@linaro.org>,
+        Alexandru Stan <amstan@chromium.org>, linux-pwm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+References: <20200721042522.2403410-1-amstan@chromium.org>
+ <20200720212502.2.Iab4d2192e4cf50226e0a58d58df7d90ef92713ce@changeid>
+ <20200904113822.xoyt4w5x7vwvh7cr@holly.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200904113822.xoyt4w5x7vwvh7cr@holly.lan>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Drivers using legacy PCI power management .suspend()/.resume() callbacks
-have to manage PCI states and device's PM states themselves. They also
-need to take care of standard configuration registers.
+On Fri, Sep 04, 2020 at 12:38:22PM +0100, Daniel Thompson wrote:
+> On Mon, Jul 20, 2020 at 09:25:21PM -0700, Alexandru Stan wrote:
+> > Some displays need the low end of the curve cropped in order to make
+> > them happy. In that case we still want to have the 0% point, even though
+> > anything between 0% and 5%(example) would be skipped.
+> 
+> For backlights it is not defined that 0 means off and, to be honest, 0
+> means off is actually rather weird for anything except transflexive
+> or front lit reflective displays[1]. There is a problem on several
+> systems that when the backlight slider is reduced to zero you can't
+> see the screen properly to turn it back up. This patch looks like it
+> would make that problem worse by hurting systems with will written
+> device trees.
+> 
+> There is some nasty legacy here: some backlight displays that are off
+> at zero and that sucks because userspace doesn't know whether zero is
+> off or lowest possible setting.
+> 
+> Nevertheless perhaps a better way to handle this case is for 0 to map to
+> 5% power and for the userspace to turn the backlight on/off as final
+> step in an animated backlight fade out (and one again for a fade in).
 
-Switch to generic power management framework using a "struct dev_pm_ops"
-variable to take the unnecessary load from the driver.
-This also avoids the need for the driver to directly call most of the PCI
-helper functions and device power state control functions, as through
-the generic framework PCI Core takes care of the necessary operations,
-and drivers are required to do only device-specific jobs.
+Afaik chromeos encodes "0 means off" somewhere in there stack. We've
+gotten similar patches for the i915 backlight driver when we started
+obeying the panel's lower limit in our pwm backlight driver thing that's
+sometimes used instead of acpi.
 
-Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
----
- drivers/video/fbdev/aty/radeon_base.c | 10 +++++---
- drivers/video/fbdev/aty/radeon_pm.c   | 36 +++++++++++++++++++++------
- drivers/video/fbdev/aty/radeonfb.h    |  3 +--
- 3 files changed, 35 insertions(+), 14 deletions(-)
+There's also the problem that with fancy panels with protocol (dsi, edp,
+...) shutting of the backlight completely out of the proper power sequence
+hangs the panel (for some panels at least), so providing a backlight off
+that doesn't go through the drm modeset sequence isn't always possible.
 
-diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
-index e116a3f9ad56..232dbe154666 100644
---- a/drivers/video/fbdev/aty/radeon_base.c
-+++ b/drivers/video/fbdev/aty/radeon_base.c
-@@ -2559,16 +2559,18 @@ static void radeonfb_pci_unregister(struct pci_dev *pdev)
-         framebuffer_release(info);
- }
- 
-+#ifdef CONFIG_PM
-+#define RADEONFB_PCI_PM_OPS (&radeonfb_pci_pm_ops)
-+#else
-+#define RADEONFB_PCI_PM_OPS NULL
-+#endif
- 
- static struct pci_driver radeonfb_driver = {
- 	.name		= "radeonfb",
- 	.id_table	= radeonfb_pci_table,
- 	.probe		= radeonfb_pci_register,
- 	.remove		= radeonfb_pci_unregister,
--#ifdef CONFIG_PM
--	.suspend       	= radeonfb_pci_suspend,
--	.resume		= radeonfb_pci_resume,
--#endif /* CONFIG_PM */
-+	.driver.pm	= RADEONFB_PCI_PM_OPS,
- };
- 
- #ifndef MODULE
-diff --git a/drivers/video/fbdev/aty/radeon_pm.c b/drivers/video/fbdev/aty/radeon_pm.c
-index b9af70bd656a..352d0bb4773a 100644
---- a/drivers/video/fbdev/aty/radeon_pm.c
-+++ b/drivers/video/fbdev/aty/radeon_pm.c
-@@ -2611,8 +2611,9 @@ static void radeon_set_suspend(struct radeonfb_info *rinfo, int suspend)
- 	}
- }
- 
--int radeonfb_pci_suspend(struct pci_dev *pdev, pm_message_t mesg)
-+static int radeonfb_pci_suspend_late(struct device *dev, pm_message_t mesg)
- {
-+	struct pci_dev *pdev = to_pci_dev(dev);
-         struct fb_info *info = pci_get_drvdata(pdev);
-         struct radeonfb_info *rinfo = info->par;
- 
-@@ -2660,11 +2661,6 @@ int radeonfb_pci_suspend(struct pci_dev *pdev, pm_message_t mesg)
- 	pmac_suspend_agp_for_card(pdev);
- #endif /* CONFIG_PPC_PMAC */
- 
--	/* It's unclear whether or when the generic code will do that, so let's
--	 * do it ourselves. We save state before we do any power management
--	 */
--	pci_save_state(pdev);
--
- 	/* If we support wakeup from poweroff, we save all regs we can including cfg
- 	 * space
- 	 */
-@@ -2689,7 +2685,6 @@ int radeonfb_pci_suspend(struct pci_dev *pdev, pm_message_t mesg)
- 			msleep(20);
- 			OUTREG(LVDS_GEN_CNTL, INREG(LVDS_GEN_CNTL) & ~(LVDS_DIGON));
- 		}
--		pci_disable_device(pdev);
- 	}
- 	/* If we support D2, we go to it (should be fixed later with a flag forcing
- 	 * D3 only for some laptops)
-@@ -2705,6 +2700,21 @@ int radeonfb_pci_suspend(struct pci_dev *pdev, pm_message_t mesg)
- 	return 0;
- }
- 
-+static int radeonfb_pci_suspend(struct device *dev)
-+{
-+	return radeonfb_pci_suspend_late(dev, PMSG_SUSPEND);
-+}
-+
-+static int radeonfb_pci_hibernate(struct device *dev)
-+{
-+	return radeonfb_pci_suspend_late(dev, PMSG_HIBERNATE);
-+}
-+
-+static int radeonfb_pci_freeze(struct device *dev)
-+{
-+	return radeonfb_pci_suspend_late(dev, PMSG_FREEZE);
-+}
-+
- static int radeon_check_power_loss(struct radeonfb_info *rinfo)
- {
- 	return rinfo->save_regs[4] != INPLL(CLK_PIN_CNTL) ||
-@@ -2712,8 +2722,9 @@ static int radeon_check_power_loss(struct radeonfb_info *rinfo)
- 	       rinfo->save_regs[3] != INPLL(SCLK_CNTL);
- }
- 
--int radeonfb_pci_resume(struct pci_dev *pdev)
-+static int radeonfb_pci_resume(struct device *dev)
- {
-+	struct pci_dev *pdev = to_pci_dev(dev);
-         struct fb_info *info = pci_get_drvdata(pdev);
-         struct radeonfb_info *rinfo = info->par;
- 	int rc = 0;
-@@ -2795,6 +2806,15 @@ int radeonfb_pci_resume(struct pci_dev *pdev)
- 	return rc;
- }
- 
-+const struct dev_pm_ops radeonfb_pci_pm_ops = {
-+	.suspend	= radeonfb_pci_suspend,
-+	.resume		= radeonfb_pci_resume,
-+	.freeze		= radeonfb_pci_freeze,
-+	.thaw		= radeonfb_pci_resume,
-+	.poweroff	= radeonfb_pci_hibernate,
-+	.restore	= radeonfb_pci_resume,
-+};
-+
- #ifdef CONFIG_PPC__disabled
- static void radeonfb_early_resume(void *data)
- {
-diff --git a/drivers/video/fbdev/aty/radeonfb.h b/drivers/video/fbdev/aty/radeonfb.h
-index 131b34dd65af..93f403cbb415 100644
---- a/drivers/video/fbdev/aty/radeonfb.h
-+++ b/drivers/video/fbdev/aty/radeonfb.h
-@@ -483,8 +483,7 @@ extern void radeon_delete_i2c_busses(struct radeonfb_info *rinfo);
- extern int radeon_probe_i2c_connector(struct radeonfb_info *rinfo, int conn, u8 **out_edid);
- 
- /* PM Functions */
--extern int radeonfb_pci_suspend(struct pci_dev *pdev, pm_message_t state);
--extern int radeonfb_pci_resume(struct pci_dev *pdev);
-+extern const struct dev_pm_ops radeonfb_pci_pm_ops;
- extern void radeonfb_pm_init(struct radeonfb_info *rinfo, int dynclk, int ignore_devlist, int force_sleep);
- extern void radeonfb_pm_exit(struct radeonfb_info *rinfo);
- 
+It's a bit a mess indeed :-/
+-Daniel
+
+> 
+> 
+> Daniel.
+> 
+> > 
+> > Signed-off-by: Alexandru Stan <amstan@chromium.org>
+> > ---
+> > 
+> >  drivers/video/backlight/pwm_bl.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+> > index 5193a72305a2..b24711ddf504 100644
+> > --- a/drivers/video/backlight/pwm_bl.c
+> > +++ b/drivers/video/backlight/pwm_bl.c
+> > @@ -349,6 +349,14 @@ static int pwm_backlight_parse_dt(struct device *dev,
+> >  			/* Fill in the last point, since no line starts here. */
+> >  			table[x2] = y2;
+> >  
+> > +			/*
+> > +			 * If we don't start at 0 yet we're increasing, assume
+> > +			 * the dts wanted to crop the low end of the range, so
+> > +			 * insert a 0 to provide a display off mode.
+> > +			 */
+> > +			if (table[0] > 0 && table[0] < table[num_levels - 1])
+> > +				table[0] = 0;
+> > +
+> >  			/*
+> >  			 * As we use interpolation lets remove current
+> >  			 * brightness levels table and replace for the
+> > -- 
+> > 2.27.0
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
 -- 
-2.27.0
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
