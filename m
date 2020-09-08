@@ -2,123 +2,121 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2CF72611D4
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 15:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E89BB2611C2
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 15:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729717AbgIHNMT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Sep 2020 09:12:19 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:44743 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729428AbgIHLh3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:37:29 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113629euoutp01161f2d8fdb4d4b9e8ce72571edff1bcd~yy_H2Kf4m0628106281euoutp01k
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:36:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200908113629euoutp01161f2d8fdb4d4b9e8ce72571edff1bcd~yy_H2Kf4m0628106281euoutp01k
+        id S1730172AbgIHNE7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Sep 2020 09:04:59 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:42634 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729633AbgIHLhj (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:37:39 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113644euoutp024e62cd8930e326d39b5feae15dc8a8f8~yy_WILeRA3236032360euoutp02o
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:36:44 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200908113644euoutp024e62cd8930e326d39b5feae15dc8a8f8~yy_WILeRA3236032360euoutp02o
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1599564989;
-        bh=Kc8g4q3Ac3+Qa8UrmMqh9k43eCe1IeEgdvXjJ8eQKzI=;
+        s=mail20170921; t=1599565004;
+        bh=m5SiHGtB7aCZeEWY7mux4FUg5x879IROw2zkg7TBLFc=;
         h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=QfLo8oK0Eiw6dryoCaITZsiBFK78fBZKfa8m/TUNhQQ0dhPpAsMuNaRKnbjH/fPVv
-         x4F1OUP9ev4okKrPRd1RF+X27mX7cNYhUjwcymMHVEj9kVnuPUImQS50H6Vo65zjSq
-         AmAzCdft74f/WMOIIkfNvNiZwRm+DpxaUwxxDyo4=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200908113628eucas1p2451921fed6f803aa85b3b60c1d21b43a~yy_HlA8Xi1825218252eucas1p28;
-        Tue,  8 Sep 2020 11:36:28 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 1F.25.05997.CBC675F5; Tue,  8
-        Sep 2020 12:36:28 +0100 (BST)
+        b=CzyQpw5K7szWGHITINdvKlIa5UqDlYA1UkJcYk5XZ3M6lvp7gzsyV3DA2PtPuVaG+
+         fqbvwA+53JYkmMyknvJXXV4yktv8+oxkyuw73TtS+RKoLMZIiHDXlTOo95G0AR9vZr
+         rF537hVoOZ/yq2I4oXbFRleIlWRLnzkTKINPEc6Q=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200908113644eucas1p103a7469440b3e66640ad0b64a26ff0aa~yy_V6qfQK0545005450eucas1p1z;
+        Tue,  8 Sep 2020 11:36:44 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id C2.3E.06456.BCC675F5; Tue,  8
+        Sep 2020 12:36:44 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113628eucas1p1de81379c154f7ac7411f7a09366e5ca4~yy_HPkb_Y0533705337eucas1p1L;
-        Tue,  8 Sep 2020 11:36:28 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        20200908113643eucas1p17854ce62206401d0fdf33653380a4b46~yy_VfbuY61373613736eucas1p1Q;
+        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
         eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113628eusmtrp180fbe1591f70cf7e8eba5417a8960dfa~yy_HO2qB91948319483eusmtrp1Y;
-        Tue,  8 Sep 2020 11:36:28 +0000 (GMT)
-X-AuditID: cbfec7f4-677ff7000000176d-13-5f576cbc27d2
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 5C.A1.06314.CBC675F5; Tue,  8
-        Sep 2020 12:36:28 +0100 (BST)
+        20200908113643eusmtrp13517167108b3686fb356fa7757cb01ac~yy_Ve19p62002320023eusmtrp1Y;
+        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
+X-AuditID: cbfec7f2-c30869c000001938-5a-5f576ccb4b05
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 09.94.06017.BCC675F5; Tue,  8
+        Sep 2020 12:36:43 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113628eusmtip2a2755ce1a1136c54be87ec7a727908ee~yy_G78Jcz1336713367eusmtip2f;
-        Tue,  8 Sep 2020 11:36:28 +0000 (GMT)
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200908113643eusmtip1a0e4ba746f1b94b17a4c1ddcf20074f6~yy_VIg-mD0442104421eusmtip1i;
+        Tue,  8 Sep 2020 11:36:43 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH 1/1] fbmem: add margin check to fb_check_caps()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        George Kennedy <george.kennedy@oracle.com>
-Cc:     linux-fbdev@vger.kernel.org, dhaval.giani@oracle.com,
-        dri-devel@lists.freedesktop.org
-Message-ID: <782b4c4d-b428-aa09-2757-d6243a4b174a@samsung.com>
-Date:   Tue, 8 Sep 2020 13:36:27 +0200
+Subject: Re: [PATCH] video: fbdev: fix setting of pixclock because a
+ pass-by-value error
+To:     Colin King <colin.king@canonical.com>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Jani Nikula <jani.nikula@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <ed082436-9ce3-23fd-679c-9cdf7b1da0cd@samsung.com>
+Date:   Tue, 8 Sep 2020 13:36:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200707194714.GA2571@kadam>
+In-Reply-To: <20200723170227.996229-1-colin.king@canonical.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOKsWRmVeSWpSXmKPExsWy7djPc7p7csLjDdZO0LJ4/W86i8Wn1XuY
-        La58fc9m8fnPWnaLE30fWB1YPe53H2fy+Pj0FovH501yAcxRXDYpqTmZZalF+nYJXBlHPjxl
-        K3jFXjFlynG2BsbNbF2MHBwSAiYSF+4rdzFycQgJrGCUuLCugR3C+cIo8f/gQWYI5zOjRM/n
-        s4xdjJxgHV37d7NCJJYzSuycch2q5S2jxL+bJ1lAqtgErCQmtq8C6xAWcJaY3bubGcQWEYiS
-        6F10CsxmFoiWuLF5E5jNK2An8fleC1gvi4CKxM5n/1lBbFGBCIlPDw6zQtQISpyc+QSshlNA
-        S6Ll6wR2iDniEreezGeCsOUltr+dA3a2hMB0domWJT/ZIc52kTh0axGULSzx6vgWKFtG4vTk
-        HhaIhnWMEn87XkB1b2eUWD75HxtElbXEnXO/wEHGLKApsX6XPkTYUWL7x3Z2SEjySdx4Kwhx
-        BJ/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27VzJfMERqVZSF6bheSdWUjemYWwdwEjyypG8dTS
-        4tz01GKjvNRyveLE3OLSvHS95PzcTYzA5HL63/EvOxh3/Uk6xCjAwajEw/vBKyxeiDWxrLgy
-        9xCjBAezkgiv09nTcUK8KYmVValF+fFFpTmpxYcYpTlYlMR5jRe9jBUSSE8sSc1OTS1ILYLJ
-        MnFwSjUw2v43LlgStdzq/3PPvAN8TDEpNtdNzh/02rH75YdPUo2pP5zOuE6fE9GsO3nesu8T
-        xA2+iF9697DjY8q6qulrGAPvHa2tm22yuj5QTyGI+cOMLSv2Gi7YKVr2Kvw/q+Px9a7bm9ql
-        X9g2uwZXX0+d877BK5x9bfg3oeLPDwJYY9KnFOUF73PPUWIpzkg01GIuKk4EAA9wESYqAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOIsWRmVeSWpSXmKPExsVy+t/xe7p7csLjDRbNFrJ4/W86i8Wn1XuY
-        La58fc9m8fnPWnaLE30fWB1YPe53H2fy+Pj0FovH501yAcxRejZF+aUlqQoZ+cUltkrRhhZG
-        eoaWFnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehlHPjxlK3jFXjFlynG2BsbNbF2MnBwS
-        AiYSXft3s3YxcnEICSxllPh/tZG5i5EDKCEjcXx9GUSNsMSfa11sEDWvGSWWLXsN1swmYCUx
-        sX0VI4gtLOAsMbt3N1iviECUxL7WCJAws0C0xIa5c8HKhQT2MkpcfCIIYvMK2El8vtfCAmKz
-        CKhI7Hz2nxXEFhWIkDi8YxYjRI2gxMmZT8BqOAW0JFq+TmCHmKku8WfeJWYIW1zi1pP5TBC2
-        vMT2t3OYJzAKzULSPgtJyywkLbOQtCxgZFnFKJJaWpybnltsqFecmFtcmpeul5yfu4kRGEnb
-        jv3cvIPx0sbgQ4wCHIxKPLwfvMLihVgTy4orcw8xSnAwK4nwOp09HSfEm5JYWZValB9fVJqT
-        WnyI0RTouYnMUqLJ+cAozyuJNzQ1NLewNDQ3Njc2s1AS5+0QOBgjJJCeWJKanZpakFoE08fE
-        wSnVwOg7u8u4/tCFJxXbtAoOmchNZQvKXj1JRGfR++Vq297JesT/TPX4nd/b73R9UvifgMBz
-        Ezm/R0+4FBUde5T/DkO7yn1xq7hKpiK2pWutYu3YhS9IXTsZeUPsS2PX9IrzDx74r7u2S3Pd
-        p0Vdy6SZHE6whddu0VtfnywrNaGLq0Bnzdb5hX++ByixFGckGmoxFxUnAgD98ImsugIAAA==
-X-CMS-MailID: 20200908113628eucas1p1de81379c154f7ac7411f7a09366e5ca4
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNKsWRmVeSWpSXmKPExsWy7djP87pncsLjDV70Mlr8Xt3LZrHw4V1m
+        iytf37NZ7LnzmtFi6y1pixN9H1gtLu+aw+bA7jGroZfNY++3BSwei/e8ZPK4332cyePzJrkA
+        1igum5TUnMyy1CJ9uwSujC0XO5gKTopVNEw4ztjAeFSwi5GTQ0LARKJ3TQt7FyMXh5DACkaJ
+        n1OusEE4Xxglvr2dzwzhfGaU6D67hQWmZV3vBqiq5YwSa/vOMkI4bxklerZcAqtiE7CSmNi+
+        ihHEFhaIklh85j3QEg4OEQFNifPnikDqmQUuMUpsnbsHrIZXwE7iyrJfbCA2i4CKxK+Tn5lA
+        bFGBCIlPDw6zQtQISpyc+QRsPqeAvcTlw2/BbGYBcYlbT+YzQdjyEtvfzgE7W0JgG7vElnMf
+        oM52kTj85AI7hC0s8er4FihbRuL05B4WiIZ1jBJ/O15AdW9nlFg++R8bRJW1xJ1zIOdxAK3Q
+        lFi/Sx8i7Cixq/kLM0hYQoBP4sZbQYgj+CQmbZsOFeaV6GgTgqhWk9iwbAMbzNqunSuZJzAq
+        zULy2iwk78xC8s4shL0LGFlWMYqnlhbnpqcWG+allusVJ+YWl+al6yXn525iBCah0/+Of9rB
+        +PVS0iFGAQ5GJR7eD15h8UKsiWXFlbmHGCU4mJVEeJ3Ono4T4k1JrKxKLcqPLyrNSS0+xCjN
+        waIkzmu86GWskEB6YklqdmpqQWoRTJaJg1OqgZEzsutJzd+tjyZMqArffPbD0rbj5x0OC6bt
+        5qhb1Sttn55R8++Qy2xzfReOTx4u1eteb4z2LtN8MMVWeply2Le9gT+XHuf9lTt/kqZT3P03
+        GULWOis1xKNfW++zdDoXcsOUvyEnNto42/zQD/5Lu1aFrGNfxp8RxFEvfcC04KD4lzvi8jFz
+        fiqxFGckGmoxFxUnAgCnkfvPPgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDIsWRmVeSWpSXmKPExsVy+t/xu7qnc8LjDQ4vUrX4vbqXzWLhw7vM
+        Fle+vmez2HPnNaPF1lvSFif6PrBaXN41h82B3WNWQy+bx95vC1g8Fu95yeRxv/s4k8fnTXIB
+        rFF6NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GVsu
+        djAVnBSraJhwnLGB8ahgFyMnh4SAicS63g1sXYxcHEICSxkllnd/Yuxi5ABKyEgcX18GUSMs
+        8edaF1TNa0aJxUdnsYIk2ASsJCa2r2IEsYUFoiQWn3nPDtIrIqApcf5cEUg9s8AlRokLR26w
+        QzRPAmpe9gWsmVfATuLKsl9sIDaLgIrEr5OfmUBsUYEIicM7ZjFC1AhKnJz5hAXE5hSwl7h8
+        +C2YzSygLvFn3iVmCFtc4taT+UwQtrzE9rdzmCcwCs1C0j4LScssJC2zkLQsYGRZxSiSWlqc
+        m55bbKRXnJhbXJqXrpecn7uJERhz24793LKDsetd8CFGAQ5GJR7eD15h8UKsiWXFlbmHGCU4
+        mJVEeJ3Ono4T4k1JrKxKLcqPLyrNSS0+xGgK9NxEZinR5HxgOsgriTc0NTS3sDQ0NzY3NrNQ
+        EuftEDgYIySQnliSmp2aWpBaBNPHxMEp1cDo+at/9qLNq3j/LRO5nFlSXGZ2qrx4kx/PqYe3
+        ny3jODC3bpF81+lJlp2rgmULtPonb9/88NuDNTO8OvfvbuIMnhj/sabt5sWi4G6hlX4zPnTW
+        u/vaXcj77cxcKmHRM48hUH310zNVPXb9W7fMDJ+7V43Z5+5FR80TMs0LF2tGBrtKcDhIPRJV
+        YinOSDTUYi4qTgQAKPrPVM8CAAA=
+X-CMS-MailID: 20200908113643eucas1p17854ce62206401d0fdf33653380a4b46
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200707194728eucas1p1d1f4239143f36967f86c4593604fb47f
+X-RootMTR: 20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200707194728eucas1p1d1f4239143f36967f86c4593604fb47f
-References: <1594149963-13801-1-git-send-email-george.kennedy@oracle.com>
-        <CGME20200707194728eucas1p1d1f4239143f36967f86c4593604fb47f@eucas1p1.samsung.com>
-        <20200707194714.GA2571@kadam>
+X-CMS-RootMailID: 20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897
+References: <CGME20200723170235eucas1p21b1e0f5ff092d550d65057ae2a31a897@eucas1p2.samsung.com>
+        <20200723170227.996229-1-colin.king@canonical.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-[ added dri-devel ML to Cc: ]
-
-On 7/7/20 9:47 PM, Dan Carpenter wrote:
-> On Tue, Jul 07, 2020 at 03:26:03PM -0400, George Kennedy wrote:
->> A fb_ioctl() FBIOPUT_VSCREENINFO call with invalid xres setting
->> or yres setting in struct fb_var_screeninfo will result in a
->> KASAN: vmalloc-out-of-bounds failure in bitfill_aligned() as
->> the margins are being cleared. The margins are cleared in
->> chunks and if the xres setting or yres setting is a value of
->> zero upto the chunk size, the failure will occur.
->>
->> Add a margin check to validate xres and yres settings.
->>
->> Signed-off-by: George Kennedy <george.kennedy@oracle.com>
->> Suggested-by: Dan Carpenter <dan.carpenter@oracle.com>
+On 7/23/20 7:02 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Suggested-by is perhaps a bit strong.  Let's change that to:
+> The pixclock is being set locally because it is being passed as a
+> pass-by-value argument rather than pass-by-reference, so the computed
+> pixclock is never being set in var->pixclock. Fix this by passing
+> by reference.
 > 
-> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+> [This dates back to 2002, I found the offending commit from the git
+> history git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git ]
+> 
+> Addresses-Coverity: ("Unused value")
+> Fixes: 115f4504a64a ("Removed currcon and other console related code. Very little is now left.")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Applied to drm-misc-next tree, thanks and sorry for the delay.
 
@@ -127,3 +125,62 @@ Best regards,
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
+
+> ---
+>  drivers/video/fbdev/vga16fb.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/vga16fb.c b/drivers/video/fbdev/vga16fb.c
+> index a20eeb8308ff..52f273af6cae 100644
+> --- a/drivers/video/fbdev/vga16fb.c
+> +++ b/drivers/video/fbdev/vga16fb.c
+> @@ -243,7 +243,7 @@ static void vga16fb_update_fix(struct fb_info *info)
+>  }
+>  
+>  static void vga16fb_clock_chip(struct vga16fb_par *par,
+> -			       unsigned int pixclock,
+> +			       unsigned int *pixclock,
+>  			       const struct fb_info *info,
+>  			       int mul, int div)
+>  {
+> @@ -259,14 +259,14 @@ static void vga16fb_clock_chip(struct vga16fb_par *par,
+>  		{     0 /* bad */,    0x00, 0x00}};
+>  	int err;
+>  
+> -	pixclock = (pixclock * mul) / div;
+> +	*pixclock = (*pixclock * mul) / div;
+>  	best = vgaclocks;
+> -	err = pixclock - best->pixclock;
+> +	err = *pixclock - best->pixclock;
+>  	if (err < 0) err = -err;
+>  	for (ptr = vgaclocks + 1; ptr->pixclock; ptr++) {
+>  		int tmp;
+>  
+> -		tmp = pixclock - ptr->pixclock;
+> +		tmp = *pixclock - ptr->pixclock;
+>  		if (tmp < 0) tmp = -tmp;
+>  		if (tmp < err) {
+>  			err = tmp;
+> @@ -275,7 +275,7 @@ static void vga16fb_clock_chip(struct vga16fb_par *par,
+>  	}
+>  	par->misc |= best->misc;
+>  	par->clkdiv = best->seq_clock_mode;
+> -	pixclock = (best->pixclock * div) / mul;		
+> +	*pixclock = (best->pixclock * div) / mul;
+>  }
+>  			       
+>  #define FAIL(X) return -EINVAL
+> @@ -497,10 +497,10 @@ static int vga16fb_check_var(struct fb_var_screeninfo *var,
+>  
+>  	if (mode & MODE_8BPP)
+>  		/* pixel clock == vga clock / 2 */
+> -		vga16fb_clock_chip(par, var->pixclock, info, 1, 2);
+> +		vga16fb_clock_chip(par, &var->pixclock, info, 1, 2);
+>  	else
+>  		/* pixel clock == vga clock */
+> -		vga16fb_clock_chip(par, var->pixclock, info, 1, 1);
+> +		vga16fb_clock_chip(par, &var->pixclock, info, 1, 1);
+>  	
+>  	var->red.offset = var->green.offset = var->blue.offset = 
+>  	var->transp.offset = 0;
+> 
