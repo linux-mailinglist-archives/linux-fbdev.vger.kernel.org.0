@@ -2,137 +2,175 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80777261199
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 14:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78980261185
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 14:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730188AbgIHMrT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Sep 2020 08:47:19 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:45570 "EHLO
+        id S1730178AbgIHMml (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Sep 2020 08:42:41 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:45573 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730086AbgIHLjH (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:39:07 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113703euoutp01afed14ec5ef42b00034be3ea91c49f58~yy_nqaC_q0570405704euoutp01c
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:37:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200908113703euoutp01afed14ec5ef42b00034be3ea91c49f58~yy_nqaC_q0570405704euoutp01c
+        with ESMTP id S1730112AbgIHLjI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:39:08 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113716euoutp01d5e10cc06110b7225f370dc760224c81~yy_0DEhYE0798607986euoutp01J
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:37:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200908113716euoutp01d5e10cc06110b7225f370dc760224c81~yy_0DEhYE0798607986euoutp01J
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1599565023;
-        bh=SPHqHJ2dbxrJnDJeFzqnDBnwxgoXZzlXQRb9kXnJBa8=;
+        s=mail20170921; t=1599565036;
+        bh=EHIPiCsP6+EBTPA70jdMAHPbGC9Ru4tdCPsKuauXX10=;
         h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=O3jj8gi/AO0E1B52SNjw5FN7MdGcw7UGSmhmNqsbyjBW2wRdStKiOjhA7FGnmQUiI
-         HpF2t+YY1W7gYT2QpEbyvYZYhVPkJi8euOhfQfeOpXtHW9GgFvju4W+QQUb2jYgp/d
-         LraEQuAFfyV1rjHvgyHFOVGWzMkRzYnu/8u0vg0M=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113702eucas1p1f007d60b8cfda0d86caed3f07dfa439c~yy_ncn2pU0115401154eucas1p1O;
-        Tue,  8 Sep 2020 11:37:02 +0000 (GMT)
+        b=D1G2dvPjSqdqWIDsXk6cd6cysNKM1Tjs3L+cpikP2X3ntpzvuZ/WtMALckD/ySr8m
+         4ksKJi8d23xTkeWPmCu12CAAU9C0h+rYQ7wb8af68rwK/Q/LgefVGY10ftP/FWVePJ
+         KUpe7/Ypyh8vEa847/Bm0DH+H23A27f9/lCfPz1w=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200908113716eucas1p26d54b11bf79e4e64f958932054c85698~yy_zwFGvi2028820288eucas1p2J;
+        Tue,  8 Sep 2020 11:37:16 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 10.A5.06318.EDC675F5; Tue,  8
-        Sep 2020 12:37:02 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id DF.45.05997.CEC675F5; Tue,  8
+        Sep 2020 12:37:16 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
         eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113702eucas1p2856ca25619baab242eb6ad71dbcedea8~yy_nES1Yn2030620306eucas1p28;
-        Tue,  8 Sep 2020 11:37:02 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113702eusmtrp1910d455ddaa3238b7aa9509289874b75~yy_nDj7lP2002320023eusmtrp1K;
-        Tue,  8 Sep 2020 11:37:02 +0000 (GMT)
-X-AuditID: cbfec7f5-38bff700000018ae-3a-5f576cdebe39
+        20200908113715eucas1p24824cc43d260e04b6bc2ddbd146b6673~yy_zZPlz23077930779eucas1p2D;
+        Tue,  8 Sep 2020 11:37:15 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200908113715eusmtrp2f5c113360443c68dec92b751de7f6275~yy_zW_ODq3046530465eusmtrp2J;
+        Tue,  8 Sep 2020 11:37:15 +0000 (GMT)
+X-AuditID: cbfec7f4-65dff7000000176d-ae-5f576cec7dfb
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 06.A4.06017.EDC675F5; Tue,  8
-        Sep 2020 12:37:02 +0100 (BST)
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 00.D1.06314.BEC675F5; Tue,  8
+        Sep 2020 12:37:15 +0100 (BST)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113702eusmtip2105dcc4b97067a1556ced319d65629b5~yy_mxOdWG1663016630eusmtip2I;
-        Tue,  8 Sep 2020 11:37:02 +0000 (GMT)
+        20200908113714eusmtip29ca97490ca12427a9b62f099359ca829~yy_yiViA11658216582eusmtip2U;
+        Tue,  8 Sep 2020 11:37:14 +0000 (GMT)
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] video: fbdev: sis: fix null ptr dereference
-To:     trix@redhat.com
-Cc:     thomas@winischhofer.net, akpm@osdl.org,
+Subject: Re: [PATCH v3 00/12] video: fbdev: use generic power management
+To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <2b8139d8-12c9-3685-9160-fc92ae08aac0@samsung.com>
-Date:   Tue, 8 Sep 2020 13:37:02 +0200
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <7660f403-ff17-04c2-91d3-1d1ff0510e87@samsung.com>
+Date:   Tue, 8 Sep 2020 13:37:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20200805145208.17727-1-trix@redhat.com>
+In-Reply-To: <20200819185654.151170-1-vaibhavgupta40@gmail.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGKsWRmVeSWpSXmKPExsWy7djP87r3csLjDS6/MLfYuaKH3eLK1/ds
-        Fif6PrBaXN41h81i9crH7BbXvpxmcWDzuN99nMnj2vmvjB7v911l8/i8Sc5jwYz/LAGsUVw2
-        Kak5mWWpRfp2CVwZf658ZivoE6i4tvgjawPjNJ4uRk4OCQETiVOXFrJ0MXJxCAmsYJRYeP8s
-        I0hCSOALo8SxqSEQic+MEsdXdjJ3MXKAdfSczYOIL2eUmHBwDiuE85ZR4teEw6wg3WwCVhIT
-        21eBTRIWcJDY0b+PDcQWERCW+PP5LxNIA7NAB6PExubf7CAJXgE7idV7voE1swioSEzatpsF
-        xBYViJD49ABiKK+AoMTJmU/A4pwCphLbvtxjBrGZBcQlbj2ZzwRhy0tsfzuHGWSBhMAqdoln
-        j36xQTzqIjG54S4ThC0s8er4FnYIW0bi9OQeFoiGdYwSfzteQHVvZ5RYPvkfVLe1xJ1zIJM4
-        gFZoSqzfpQ8RdpSYs3MKCyRc+CRuvBWEOIIP6IHp0ODilehoE4KoVpPYsGwDG8zarp0rmScw
-        Ks1C8tosJO/MQvLOLIS9CxhZVjGKp5YW56anFhvnpZbrFSfmFpfmpesl5+duYgSmntP/jn/d
-        wbjvT9IhRgEORiUeXg/fsHgh1sSy4srcQ4wSHMxKIrxOZ0/HCfGmJFZWpRblxxeV5qQWH2KU
-        5mBREuc1XvQyVkggPbEkNTs1tSC1CCbLxMEp1cBoX/l9oVHq3kcSz1ydLdev9G2t2Jq5tv+i
-        7e7t8bMedmY/4L4svc9+rZJJq+r9NxM5Li0pi8j6OuHy0j7BORadbGe2s3yavX9zs2C2iW/H
-        Sr3yX78SM36rndWvFQ7x0H9gWGzvfuzJlvZG0xU1JqcWelyz7WHgvbHkbNXWBVw5xfbTHb76
-        sZgosRRnJBpqMRcVJwIASmRhZzkDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsVy+t/xe7r3csLjDaZ3K1jsXNHDbnHl63s2
-        ixN9H1gtLu+aw2axeuVjdotrX06zOLB53O8+zuRx7fxXRo/3+66yeXzeJOexYMZ/lgDWKD2b
-        ovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1MlfTublNSczLLUIn27BL2MP1c+sxX0
-        CVRcW/yRtYFxGk8XIweHhICJRM/ZvC5GLg4hgaWMEs+PH2KCiMtIHF9f1sXICWQKS/y51sUG
-        UfOaUWL542fMIAk2ASuJie2rGEFsYQEHiR39+9hAbBGQhs9/mUAamAU6GCXa5y9ihugGcg72
-        bQDr4BWwk1i95xsriM0ioCIxadtuFhBbVCBC4vCOWVA1ghInZz4Bi3MKmEps+3IPbDOzgLrE
-        n3mXoGxxiVtP5jNB2PIS29/OYZ7AKDQLSfssJC2zkLTMQtKygJFlFaNIamlxbnpusZFecWJu
-        cWleul5yfu4mRmCsbTv2c8sOxq53wYcYBTgYlXh4P3iFxQuxJpYVV+YeYpTgYFYS4XU6ezpO
-        iDclsbIqtSg/vqg0J7X4EKMp0HMTmaVEk/OBaSCvJN7Q1NDcwtLQ3Njc2MxCSZy3Q+BgjJBA
-        emJJanZqakFqEUwfEwenVAPjpcw6u5tr/mzdsjFt/+0tSZtUpmdxagV05L+PNHXQvKn0+V+o
-        m+8ik5sNK6w23ngUwGjiUJRn2Lo4btHJE4fy04pvZzL/eb1b7cYL3+ufHVUmW8Y2+losWt/k
-        ZvZk01Xu9GMHslL4kw8sONrK8a5JOZV9m+PyO7e25xkYTQg8Mr1WYLmo0MxaJZbijERDLeai
-        4kQAOcTOCcsCAAA=
-X-CMS-MailID: 20200908113702eucas1p2856ca25619baab242eb6ad71dbcedea8
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+e0+dhVvXpePo4bRjKAwewo/e9iTuAhhCT0oypZeNJwPtmZl
+        0cPQUmn5yKSbpphomVmsMjccwcp8rIyyTFMxyMA0c9qKNLOcd5L/fc453+/vnC/8GEJxnvZj
+        jiQeFTSJKrWSdiVrn4+9WvpVvSdqee8VEo9l22lcnhaHz/W+RniyalyO3/4YpvHAi7s0Nnxq
+        p3CT3kbhy61WEmd96idxm6mIxpYCM8LVz27K8a2xRwibCysoXNedKcPl9cPURg++rf01wRvF
+        HjlfatDxtZZ2kjdUZdL8k+JqOd+b3SjjH5Sf4X//ykf837R+OV9+9R3NF5v0iP9uCNjB7nNd
+        FyOoj6QImmVhh1zj6lsikru9jxtzS6mzqMEjC7kwwK2GwYE+Igu5MgruFoKhV2YkFXYEzePN
+        pFR8R/AiXU/PWGy5Zrk0qETQXmNwqoYQ1FgbCIeK5tZA7oUq5OC5HA/6nkGZgz25IHjTIMoc
+        BoLrIuHGYIvcMWC5MMjsyps2kNxCmBDLptmL2wujH59SksYDmq/1kQ524TbAo6Z3048SnA98
+        6Ctx8nx4PFQ0nQi4hwyYO22UdPdWGKmvdmaYCwOND+USz4O/xhKZZKhB8Odiv9P9GEFl/qTT
+        sRa6W8enmJlasRjumZZJ7U1gS89EjjZwc6BjyEM6Yg7k1RYSUpuFixkKSb0I7lfcp2fWZhlv
+        EzlIKc6KJs6KI86KI/7fW4rIKuQj6LQJsYJ2ZaJwLFirStDqEmODo5MSDGjqa1onG+11yDRx
+        2II4BindWFv47igFpUrRnkiwIGAIpSe7+aX1oIKNUZ1IFTRJURqdWtBakD9DKn3YVWVfDii4
+        WNVRIV4QkgXNzFTGuPidRSXzii/Z2364BAWcCak91dnf4jZK+Ee8X5CaFNnbc/JzUIBahO2+
+        sdb9ezNGq6MLhn+ylr4LGzLMIV7eviPUnSLx+vqO7G+7GU38tkI9Eb9EHfeghNvZ4V4WvSaQ
+        DT2t89lVp4zsCLdHpZvcfYUtxpziidAQr/qKnrfWz36BaVuUpDZOtWIJodGq/gFz83HulgMA
+        AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCKsWRmVeSWpSXmKPExsVy+t/xe7qvc8LjDZZN1bH42f2FzWJJU4ZF
+        4/2LjBb/Vv1it7jy9T2bxasza9ksNj2+xmpxou8Dq0X/udMsFl2PX7BYXN41h83i0NS9jBZr
+        jixmt1jxcyujxd7py1gtdtzpZLJYsuc9q4Ogx+VrF5k9ds66y+6xYFOpx7ZD11g8Nq3qZPPY
+        P3cNu8f97uNMHpuX1Hv8/jGZ0eN/0wt2jyXTrrJ5zN3Vx+jxeZNcAG+Unk1RfmlJqkJGfnGJ
+        rVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5mWWqRvl2CXsaeU/4Fd8Qqdk5cwNrAeFSw
+        i5GTQ0LAROLDxL3sXYxcHEICSxklNj/cA+RwACVkJI6vL4OoEZb4c62LDaLmNaPE2/NTmUAS
+        bAJWEhPbVzGC2MICHhJ9d1+DxUUEdCQuHZ3FBNLALHCbReJGey8TRPckRol7W36AVfEK2El0
+        3p4E1s0ioCLxZ9YiMFtUIELi8I5ZjBA1ghInZz5hAbE5Bewltp64CtbLLKAu8WfeJWYIW1zi
+        1pP5UHF5ie1v5zBPYBSahaR9FpKWWUhaZiFpWcDIsopRJLW0ODc9t9hQrzgxt7g0L10vOT93
+        EyMwRWw79nPzDsZLG4MPMQpwMCrx8H7wCosXYk0sK67MPcQowcGsJMLrdPZ0nBBvSmJlVWpR
+        fnxRaU5q8SFGU6DnJjJLiSbnA9NXXkm8oamhuYWlobmxubGZhZI4b4fAwRghgfTEktTs1NSC
+        1CKYPiYOTqkGxk43lfXFTTrf3Of+6I6oXeRUccrYPMhtyZ0f0sJKbinvDnvd37rw8AH57O1f
+        TMIKJ6RztUgyrP4tWK1fe5dN0M7bdP7qC8x7pm/+JvjnfH7H3g1SPbxVJ1QubPhRftHWef35
+        uEPKD2XOPzjxaWLM4VK1lHslqpxVly916ZkeNp2xVHtngqeKvhJLcUaioRZzUXEiALK1rWon
+        AwAA
+X-CMS-MailID: 20200908113715eucas1p24824cc43d260e04b6bc2ddbd146b6673
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200805145226eucas1p1e0e6d9fa3c05f7e247365f0db17cbe38
+X-RootMTR: 20200819185901eucas1p2a6c54c905c199e6a04de8477cfa6539e
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200805145226eucas1p1e0e6d9fa3c05f7e247365f0db17cbe38
-References: <CGME20200805145226eucas1p1e0e6d9fa3c05f7e247365f0db17cbe38@eucas1p1.samsung.com>
-        <20200805145208.17727-1-trix@redhat.com>
+X-CMS-RootMailID: 20200819185901eucas1p2a6c54c905c199e6a04de8477cfa6539e
+References: <CGME20200819185901eucas1p2a6c54c905c199e6a04de8477cfa6539e@eucas1p2.samsung.com>
+        <20200819185654.151170-1-vaibhavgupta40@gmail.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-On 8/5/20 4:52 PM, trix@redhat.com wrote:
-> From: Tom Rix <trix@redhat.com>
+On 8/19/20 8:56 PM, Vaibhav Gupta wrote:
+> Linux Kernel Mentee: Remove Legacy Power Management.
 > 
-> Clang static analysis reports this representative error
+> The purpose of this patch series is to upgrade power management in video fbdev
+> drivers. This has been done by upgrading .suspend() and .resume() callbacks.
 > 
-> init.c:2501:18: warning: Array access (from variable 'queuedata') results
->   in a null pointer dereference
->       templ |= ((queuedata[i] & 0xc0) << 3);
+> The upgrade makes sure that the involvement of PCI Core does not change the
+> order of operations executed in a driver. Thus, does not change its behavior.
 > 
-> This is the problem block of code
+> In general, drivers with legacy PM, .suspend() and .resume() make use of PCI
+> helper functions like pci_enable/disable_device_mem(), pci_set_power_state(),
+> pci_save/restore_state(), pci_enable/disable_device(), etc. to complete
+> their job.
 > 
->    if(ModeNo > 0x13) {
->       ...
->       if(SiS_Pr->ChipType == SIS_730) {
-> 	 queuedata = &FQBQData730[0];
->       } else {
-> 	 queuedata = &FQBQData[0];
->       }
->    } else {
+> The conversion requires the removal of those function calls, change the
+> callbacks' definition accordingly and make use of dev_pm_ops structure.
 > 
->    }
+> All patches are compile-tested only.
 > 
-> queuedata is not set in the else block
+> Test tools:
+>     - Compiler: gcc (GCC) 10.1.0
+>     - allmodconfig build: make -j$(nproc) W=1 all
 > 
-> Reviewing the old code, the arrays FQBQData730 and FQBQData were
-> used directly.
+> Vaibhav Gupta (12):
+>   fbdev: gxfb: use generic power management
+>   fbdev: lxfb: use generic power management
+>   fbdev: via-core: use generic power management
+>   fbdev: aty: use generic power management
+>   fbdev: aty128fb: use generic power management
+>   fbdev: nvidia: use generic power management
+>   fbdev: savagefb: use generic power management
+>   fbdev: cyber2000fb: use generic power management
+>   fbdev: i740fb: use generic power management
+>   fbdev: vt8623fb: use generic power management
+>   fbdev: s3fb: use generic power management
+>   fbdev: arkfb: use generic power management
 > 
-> So hoist the setting of queuedata out of the if-else block.
-> 
-> Fixes: 544393fe584d ("[PATCH] sisfb update")
-> 
-> Signed-off-by: Tom Rix <trix@redhat.com>
+>  drivers/video/fbdev/arkfb.c                  | 41 ++++++-------
+>  drivers/video/fbdev/aty/aty128fb.c           | 51 ++++++++++------
+>  drivers/video/fbdev/aty/atyfb_base.c         | 50 ++++++++++-----
+>  drivers/video/fbdev/cyber2000fb.c            | 13 ++--
+>  drivers/video/fbdev/geode/gxfb.h             |  5 --
+>  drivers/video/fbdev/geode/gxfb_core.c        | 36 ++++++-----
+>  drivers/video/fbdev/geode/lxfb.h             |  5 --
+>  drivers/video/fbdev/geode/lxfb_core.c        | 37 +++++------
+>  drivers/video/fbdev/geode/lxfb_ops.c         |  4 --
+>  drivers/video/fbdev/geode/suspend_gx.c       |  4 --
+>  drivers/video/fbdev/i740fb.c                 | 40 +++++-------
+>  drivers/video/fbdev/nvidia/nvidia.c          | 64 +++++++++++---------
+>  drivers/video/fbdev/s3fb.c                   | 39 +++++-------
+>  drivers/video/fbdev/savage/savagefb_driver.c | 52 ++++++++++------
+>  drivers/video/fbdev/via/via-core.c           | 39 +++++-------
+>  drivers/video/fbdev/vt8623fb.c               | 41 ++++++-------
+>  include/linux/via-core.h                     |  2 -
+>  17 files changed, 267 insertions(+), 256 deletions(-)
 
 Applied to drm-misc-next tree, thanks.
 
@@ -141,38 +179,3 @@ Best regards,
 Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
-
-> ---
->  drivers/video/fbdev/sis/init.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/sis/init.c b/drivers/video/fbdev/sis/init.c
-> index dfe3eb769638..fde27feae5d0 100644
-> --- a/drivers/video/fbdev/sis/init.c
-> +++ b/drivers/video/fbdev/sis/init.c
-> @@ -2428,6 +2428,11 @@ SiS_SetCRT1FIFO_630(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
->  
->     i = 0;
->  
-> +	if (SiS_Pr->ChipType == SIS_730)
-> +		queuedata = &FQBQData730[0];
-> +	else
-> +		queuedata = &FQBQData[0];
-> +
->     if(ModeNo > 0x13) {
->  
->        /* Get VCLK  */
-> @@ -2445,12 +2450,6 @@ SiS_SetCRT1FIFO_630(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
->        /* Get half colordepth */
->        colorth = colortharray[(SiS_Pr->SiS_ModeType - ModeEGA)];
->  
-> -      if(SiS_Pr->ChipType == SIS_730) {
-> -	 queuedata = &FQBQData730[0];
-> -      } else {
-> -	 queuedata = &FQBQData[0];
-> -      }
-> -
->        do {
->  	 templ = SiS_CalcDelay2(SiS_Pr, queuedata[i]) * VCLK * colorth;
->  
-> 
