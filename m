@@ -2,222 +2,124 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 057AC2603F2
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Sep 2020 19:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 630A72610E2
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 13:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728925AbgIGR5c (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Sep 2020 13:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728879AbgIGR5a (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Sep 2020 13:57:30 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F343C061573
-        for <linux-fbdev@vger.kernel.org>; Mon,  7 Sep 2020 10:57:30 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id a65so15056979wme.5
-        for <linux-fbdev@vger.kernel.org>; Mon, 07 Sep 2020 10:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RsFG54GV+NP4F+IIVMuYkYvf7gdGYuBHjlNkFLPcIoM=;
-        b=jXFW2vpqo0B1JyOT5VBIuG9gyefyLdQ0ycGwHcTHninipd8+5VtxLgb8IkgYYvMt+v
-         8W+GI4P2cd8TxlUpDDrsjBQnd8tqBCLuASSa1+xYojW+R0KHtDvEovie75S1Z6YMzFju
-         JSavVRhxpqkmcQ+s4OQk1bVYh4yKB5g9BqEvk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=RsFG54GV+NP4F+IIVMuYkYvf7gdGYuBHjlNkFLPcIoM=;
-        b=hXVBRLkiTUAYL2o3bpvrGzWRZ78QUIFSlQGT90NZ2qE7KftbBaoKN0GW5OHQCdldez
-         5Y/hL8hkBELhRojz6eQi8kn0Mm43hvIEOmY8O7st1NG6By3nvp/HBw/YnQTYhaj55BR6
-         IDUik711ld9oKHCebl2+tithq6IRARdMd64oWVX5vFiaCWs3Us6UZOny7u2fUFUmbO2t
-         BJ+tuOea43gNUscocYECdWS72OtCA1LOaMalYpGKPLMsNSFcy7KwmvMilE8Hq0oAY6At
-         E2QdekvwJDxFQ7N7xpVAawhODwW4LH7TiRyWoQq+DDakDuq7kd/MFxOrdpoTk2djJcty
-         0oFw==
-X-Gm-Message-State: AOAM531nKwCsudkhTylP4mjTOGuSbW0ulLmd1ymS6Ag5UVNtUGDhOexX
-        cXzYt9C1QUXbORd/5Mf2ROcsRg==
-X-Google-Smtp-Source: ABdhPJwkSG6w/oKeAR2zEQQ1pJGVVVgYfJ7bv5Pg1nyA4WyBR3gTj1fQsBdjbM44Fhl2fJnj9VpuFQ==
-X-Received: by 2002:a7b:c387:: with SMTP id s7mr423949wmj.171.1599501448675;
-        Mon, 07 Sep 2020 10:57:28 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id 71sm30404303wrm.23.2020.09.07.10.57.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2020 10:57:27 -0700 (PDT)
-Date:   Mon, 7 Sep 2020 19:57:25 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thierry Reding <treding@nvidia.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH v1 0/2] video: fbdev: radeonfb: PCI PM framework upgrade
- and fix-ups.
-Message-ID: <20200907175725.GX2352366@phenom.ffwll.local>
-Mail-Followup-To: Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thierry Reding <treding@nvidia.com>, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20200806072256.585705-1-vaibhavgupta40@gmail.com>
- <20200907075559.GN2352366@phenom.ffwll.local>
- <20200907091621.GA30377@gmail.com>
+        id S1729844AbgIHLjv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Sep 2020 07:39:51 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:43264 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729791AbgIHLiY (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:38:24 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113720euoutp0281fcdf6d30e4539ad50aad7bea0729d7~yy_4J7QVx0099700997euoutp02J
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:37:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200908113720euoutp0281fcdf6d30e4539ad50aad7bea0729d7~yy_4J7QVx0099700997euoutp02J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1599565040;
+        bh=1h9+2inM7Mg8aWx/P256aTocGivRHYGhx4hK984Avz4=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=eM7LNp6H8AdiWyDX670XppKHrCA3q1xz2k4osH86YFOFz71hqZVrCEDRhBkdKr+yT
+         tLzZaS5vL+Kfzz9VrGow4ZBC+s4Ych2JxojtMBxZTgGLnv9irPNnVLS2LonPIGxxtv
+         ISh5a0ViW0mJnJDu9+4DoxkBnGchcIxyYBb/YWNc=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200908113720eucas1p1efe13d827620f5b16bf52cad57c4f95f~yy_3-etwL2000020000eucas1p1M;
+        Tue,  8 Sep 2020 11:37:20 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id D8.A5.06318.0FC675F5; Tue,  8
+        Sep 2020 12:37:20 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200908113720eucas1p228e03033858ec186c66ea45cd03fac6b~yy_3yc8cn2393723937eucas1p2A;
+        Tue,  8 Sep 2020 11:37:20 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200908113720eusmtrp113a3f3e5681354a2c21ecb09edd21bcf~yy_3x1dlp2045820458eusmtrp1T;
+        Tue,  8 Sep 2020 11:37:20 +0000 (GMT)
+X-AuditID: cbfec7f5-38bff700000018ae-6c-5f576cf0c478
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id D2.D1.06314.0FC675F5; Tue,  8
+        Sep 2020 12:37:20 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200908113720eusmtip2f40cce84b018f6a8b02cf08f64f9951c~yy_3ZAvFN1663016630eusmtip2R;
+        Tue,  8 Sep 2020 11:37:20 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH v2] lib/fonts: add font 6x8 for OLED display
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        kernel@pengutronix.de,
+        Sven Schneider <s.schneider@arkona-technologies.de>
+Message-ID: <421b685e-4932-9f12-e795-62e8460d9948@samsung.com>
+Date:   Tue, 8 Sep 2020 13:37:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200907091621.GA30377@gmail.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+In-Reply-To: <20200820084239.GB1001857@kroah.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRmVeSWpSXmKPExsWy7djPc7ofcsLjDTr6tC2aF69ns1g1dSeL
+        xYm+D6wWl3fNYbP4u30Ti8XRx7uZHNg8zt0+ze6xf+4ado/+vwYenzfJBbBEcdmkpOZklqUW
+        6dslcGV82/iDueAZS8W1aZPZGhjbWboYOTkkBEwkug+tZO1i5OIQEljBKLGu5Sc7hPOFUeLc
+        le1sEM5nRonzRx4xdzFygLU8fckJEV/OKHG4+x0LhPOWUeLFjB+sIHPZBKwkJravYgRpEBZw
+        kGjokgYxRQRiJHaeKwMpZxboZpTovfeSCSTOK2AnsXaZFkgni4CKxLUtL5hBbFGBCIlPDw6D
+        TeQVEJQ4OfMJ2NWcAoYSy490s4PYzALiEreezGeCsOUltr+dwwwyX0JgGbvEqbtXGCFudpHo
+        6OWA+FhY4tXxLewQtozE6ck9LBD16xgl/na8gGreziixfPI/Nogqa4k7536xgQxiFtCUWL9L
+        HyLsKLHq8moWiPl8EjfeCkLcwCcxadt0aFDxSnS0CUFUq0lsWLaBDWZt186VzBMYlWYh+WwW
+        km9mIflmFsLeBYwsqxjFU0uLc9NTi43zUsv1ihNzi0vz0vWS83M3MQITzel/x7/uYNz3J+kQ
+        owAHoxIPr4dvWLwQa2JZcWXuIUYJDmYlEV6ns6fjhHhTEiurUovy44tKc1KLDzFKc7AoifMa
+        L3oZKySQnliSmp2aWpBaBJNl4uCUamCc/c77R3X5nMfLQk9U7ZJgUbq6pbLldsd/vf88RsIp
+        qQf+t697N33PrN6N3VwKTKsDXC/kmm+a4vTfVG4Z39MVF6S8DGI/P9i7WtKuNXr3E8GHs1b0
+        rt1VuPcRO7vkwYCFG9dJ1z9fwXqQLSvz5d3SpBse36ZOuBv5zusZ1wf9GysTbT6emh4aqsRS
+        nJFoqMVcVJwIANRVxugwAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPIsWRmVeSWpSXmKPExsVy+t/xe7ofcsLjDXr2SFo0L17PZrFq6k4W
+        ixN9H1gtLu+aw2bxd/smFoujj3czObB5nLt9mt1j/9w17B79fw08Pm+SC2CJ0rMpyi8tSVXI
+        yC8usVWKNrQw0jO0tNAzMrHUMzQ2j7UyMlXSt7NJSc3JLEst0rdL0Mv4tvEHc8Ezlopr0yaz
+        NTC2s3QxcnBICJhIPH3J2cXIxSEksJRR4vu5H+wQcRmJ4+vLuhg5gUxhiT/Xutggal4zSlz6
+        cpsFJMEmYCUxsX0VI0i9sICDREOXNEhYRCBGYtq1GYwgNrNAN6PEn/X5EL1bGSU2/ZsMNp9X
+        wE5i7TItkBoWARWJa1teMIPYogIREod3zALr5RUQlDg58wnYKk4BQ4nlR7rZIWaqS/yZd4kZ
+        whaXuPVkPhOELS+x/e0c5gmMQrOQtM9C0jILScssJC0LGFlWMYqklhbnpucWG+oVJ+YWl+al
+        6yXn525iBEbWtmM/N+9gvLQx+BCjAAejEg/vB6+weCHWxLLiytxDjBIczEoivE5nT8cJ8aYk
+        VlalFuXHF5XmpBYfYjQFem4is5Rocj4w6vNK4g1NDc0tLA3Njc2NzSyUxHk7BA7GCAmkJ5ak
+        ZqemFqQWwfQxcXBKNTDG9vxYGFxSoNX5aO9OxVmKy+uZrFjDnxqtbYzpEfrgF3/fjOvv5Ifh
+        f7/nynLLVN929zRc9fLk5iXFHlMkdp9k/B6/TXlu3aW5d0u4bz1Z5Ck9a931eSusfU9t7ft7
+        tW/T1TMK021PPCy+uu3/norvhw2uTd9YtXFB1xpV0aepfrMD77i6tAWWKbEUZyQaajEXFScC
+        AJ4z7NbCAgAA
+X-CMS-MailID: 20200908113720eucas1p228e03033858ec186c66ea45cd03fac6b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200820084223eucas1p19fb46e7108c6e6def42162c6881a94d2
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200820084223eucas1p19fb46e7108c6e6def42162c6881a94d2
+References: <20200820082137.5907-1-s.hauer@pengutronix.de>
+        <CGME20200820084223eucas1p19fb46e7108c6e6def42162c6881a94d2@eucas1p1.samsung.com>
+        <20200820084239.GB1001857@kroah.com>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Sep 07, 2020 at 02:46:21PM +0530, Vaibhav Gupta wrote:
-> On Mon, Sep 07, 2020 at 09:55:59AM +0200, Daniel Vetter wrote:
-> > On Thu, Aug 06, 2020 at 12:52:54PM +0530, Vaibhav Gupta wrote:
-> > > Linux Kernel Mentee: Remove Legacy Power Management. 
-> > > 
-> > > The original goal of the patch series is to upgrade the power management
-> > > framework of radeonfb fbdev driver. This has been done by upgrading .suspend()
-> > > and .resume() callbacks.
-> > > 
-> > > The upgrade makes sure that the involvement of PCI Core does not change the
-> > > order of operations executed in a driver. Thus, does not change its behavior.
-> > > 
-> > > During this process, it was found that "#if defined(CONFIG_PM)" at line 1434 is
-> > > redundant. This was introduced in the commit
-> > > 42ddb453a0cd ("radeon: Conditionally compile PM code").
-> > 
-> > I do wonder whether it wouldn't be better to just outright delete these,
-> > we have the drm radeon driver for pretty much all the same hardware ...
-> > -Daniel
-> > 
-> Hello Daniel,
-> I don't have any problem in either way. My priority is to get rid of the
-> legacy .suspend and .resume pointers from "struct pci_driver" . Hence, modifying
-> every driver that is using them.
 
-Ok, also sounds like we can't just ditch it outright and merging your
-patches makes sense.
 
-Please note that Bart (he's usually picking up the fbdev patches) is on
-vacations until next week, I guess he'll then go and vacuum up everything
-for 5.10 as he usually does.
-
-Cheers, Daniel
-
+On 8/20/20 10:42 AM, Greg Kroah-Hartman wrote:
+> On Thu, Aug 20, 2020 at 10:21:37AM +0200, Sascha Hauer wrote:
+>> From: Sven Schneider <s.schneider@arkona-technologies.de>
+>>
+>> This font is derived from lib/fonts/font_6x10.c and is useful for small
+>> OLED displays
+>>
+>> Signed-off-by: Sven Schneider <s.schneider@arkona-technologies.de>
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > 
-> Vaibhav Gupta
-> > > 
-> > > ------------
-> > > 
-> > > Before 42ddb453a0cd:
-> > > $ git show 65122f7e80b5:drivers/video/aty/radeon_pm.c | grep -n "#ifdef\|#if\|#else\|#endif\|#elif\|#ifndef"
-> > > 
-> > > Based on output in terminal:
-> > > 
-> > > 547:#ifdef CONFIG_PM
-> > >        |-- 959:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 972:#endif
-> > >        |-- 1291:#ifdef CONFIG_PPC_OF
-> > >        |-- 1301:#endif /* CONFIG_PPC_OF */
-> > >        |-- 1943:#ifdef CONFIG_PPC_OF
-> > >                    |-- 2206:#if 0 /* Not ready yet */
-> > >                    |-- 2508:#endif /* 0 */
-> > >        |-- 2510:#endif /* CONFIG_PPC_OF */
-> > >        |-- 2648:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 2654:#endif /* CONFIG_PPC_PMAC */
-> > >        |-- 2768:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 2774:#endif /* CONFIG_PPC_PMAC */
-> > >        |-- 2791:#ifdef CONFIG_PPC_OF__disabled
-> > >        |-- 2801:#endif /* CONFIG_PPC_OF */
-> > > 2803:#endif /* CONFIG_PM */
-> > > 
-> > > ------------
-> > > 
-> > > After 42ddb453a0cd:
-> > > $ git show 42ddb453a0cd:drivers/video/aty/radeon_pm.c | grep -n "#ifdef\|#if\|#else\|#endif\|#elif\|#ifndef"
-> > > 
-> > > Based on output in terminal:
-> > > 
-> > > 547:#ifdef CONFIG_PM
-> > >        |-- 959:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 972:#endif
-> > >        |-- 1291:#ifdef CONFIG_PPC_OF
-> > >        |-- 1301:#endif /* CONFIG_PPC_OF */
-> > >        |-- 1430:#if defined(CONFIG_PM)
-> > >                    |-- 1431:#if defined(CONFIG_X86) || defined(CONFIG_PPC_PMAC)
-> > >                    |-- 1944:#endif
-> > >                    |-- 1946:#ifdef CONFIG_PPC_OF
-> > >                                |-- 1947:#ifdef CONFIG_PPC_PMAC
-> > >                                |-- 2208:#endif
-> > >                    |-- 2209:#endif
-> > >                    |-- 2211:#if 0 /* Not ready yet */
-> > >                    |-- 2513:#endif /* 0 */
-> > >        |-- 2515:#endif /* CONFIG_PPC_OF */
-> > >        |-- 2653:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 2659:#endif /* CONFIG_PPC_PMAC */
-> > >        |-- 2773:#ifdef CONFIG_PPC_PMAC
-> > >        |-- 2779:#endif /* CONFIG_PPC_PMAC */
-> > >        |-- 2796:#ifdef CONFIG_PPC_OF__disabled
-> > >        |-- 2806:#endif /* CONFIG_PPC_OF */
-> > > 2808:#endif /* CONFIG_PM */
-> > > 
-> > > ------------
-> > > 
-> > > This also affected the CONFIG_PPC_OF container (line 1943 at commit 65122f7e80b5)
-> > > 
-> > > The patch-series fixes it along with PM upgrade.
-> > > 
-> > > All patches are compile-tested only.
-> > > 
-> > > Test tools:
-> > >     - Compiler: gcc (GCC) 10.1.0
-> > >     - allmodconfig build: make -j$(nproc) W=1 all
-> > > 
-> > > Vaibhav Gupta (2):
-> > >   video: fbdev: aty: radeon_pm: remove redundant CONFIG_PM container
-> > >   fbdev: radeonfb:use generic power management
-> > > 
-> > >  drivers/video/fbdev/aty/radeon_base.c | 10 ++++---
-> > >  drivers/video/fbdev/aty/radeon_pm.c   | 38 ++++++++++++++++++++-------
-> > >  drivers/video/fbdev/aty/radeonfb.h    |  3 +--
-> > >  3 files changed, 35 insertions(+), 16 deletions(-)
-> > > 
-> > > -- 
-> > > 2.27.0
-> > > 
-> > > _______________________________________________
-> > > dri-devel mailing list
-> > > dri-devel@lists.freedesktop.org
-> > > https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> > 
-> > -- 
-> > Daniel Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Applied to drm-misc-next tree, thanks.
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
