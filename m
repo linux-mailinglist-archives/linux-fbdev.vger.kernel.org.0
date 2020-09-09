@@ -2,160 +2,166 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF772624EF
-	for <lists+linux-fbdev@lfdr.de>; Wed,  9 Sep 2020 04:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 063CB26312F
+	for <lists+linux-fbdev@lfdr.de>; Wed,  9 Sep 2020 18:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729971AbgIICMU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Sep 2020 22:12:20 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:43174 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727804AbgIICMS (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 22:12:18 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892AS5c094075;
-        Wed, 9 Sep 2020 02:11:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=vtum29krzlUsLIvRnyVxjLuvhWBtLTr/qnU9AvnGbCE=;
- b=xBu1bvtfDZ9503xniraz9muXI2Eg0qhYCYcOf6RobuyNUO3o1Po7XLCiySpH1j3NqLzx
- 2jgXXHktcetcwXVddyuNr8Y2tEFe3S1Fic84p/c7b/8cWZhzNvssHJn72rt+zNyDQI3g
- W6nGbDQrnBPjzFv3JHhmeBC2Lng7TyLH4twd3n8hvyY34Y8B6srBiufkC1dha4TbTt8U
- iYM7VJ+79F4uaHjvVJydS3mD7NcVtBky/+GEZFGwxEWNcRrsg0F0s6PbT0Xh+BU3JioS
- 8YO2a/M76MlnuYxeGIlhqTuBmwNwX5juOavRg+aCtHeGvwObjWNA43YKkCVKSbI3nWmM bw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 33c2mkxvtd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 09 Sep 2020 02:11:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 089252Ah095301;
-        Wed, 9 Sep 2020 02:09:40 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 33cmk53euj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Sep 2020 02:09:40 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08929Zlw022818;
-        Wed, 9 Sep 2020 02:09:35 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 08 Sep 2020 19:09:35 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        Joe Perches <joe@perches.com>, oprofile-list@lists.sf.net,
-        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
-        linaro-mm-sig@lists.linaro.org, drbd-dev@tron.linbit.com,
-        intel-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
-        reiserfs-devel@vger.kernel.org, linux-bcache@vger.kernel.org,
-        Jiri Kosina <trivial@kernel.org>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        sparclinux@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-scsi@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/29] treewide: Convert comma separated statements
-Date:   Tue,  8 Sep 2020 22:09:14 -0400
-Message-Id: <159961731707.5787.13988542229153933257.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
+        id S1730501AbgIIQCU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 9 Sep 2020 12:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727087AbgIIQCP (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 9 Sep 2020 12:02:15 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BA5C061232
+        for <linux-fbdev@vger.kernel.org>; Wed,  9 Sep 2020 07:45:42 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id e17so2553688wme.0
+        for <linux-fbdev@vger.kernel.org>; Wed, 09 Sep 2020 07:45:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5VKePPT3rsU28wXCAu1Xs2KBd1A5X4Nlem8vFp45sFs=;
+        b=N+MbeIjrkaWZSL1rnQBBMQ3t8EgtJ5pPqrCari+s74htlzysCeT43xiaa6jOYcy32h
+         4CDd9PSLQ49+GE9aRevle7XYa++OWOquZVftThJ4b3J3mk7MOdGIvX/YVJ4/atzSziBT
+         QHOhNZJHMYRC2WOAByxQXcbJ/TxQLqB4Sr3+9q2HGHmYaySmzrk2sQUUz+Kpl7Ek4wAU
+         cKekwJ1cvRmuB3pCyekrgNUPB9OXHj9eOSQD19+VXVp1lZB1x9oVUJJXVhHAbiYN+eAf
+         kA4jU0llu01THgYWYLbkq9qRnuFNG/4WMZXx0YeYtEuuVct/E2BvPHB6tDgTCXe1CJoG
+         BVVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5VKePPT3rsU28wXCAu1Xs2KBd1A5X4Nlem8vFp45sFs=;
+        b=Ak7HDeEwbWZu/BEIkbfd/JuH0dk1/Ey+kzRvPSsheO2edInUrTKDIkXRgZc3E8UuJY
+         VoaaS/RC/sqzmYFoEUBBLGgZ1he4UGj9199IWP10ryI3ViN/ydrbN71BDtavaR6gJr19
+         Ew9zhMpRChiWKQeP8Qx55x2aqzpozwT/UAL9iMCp5QsCui7mEExhY6B4XD+xIxm82haf
+         FclOhFoIwc9rIM3miTaparPBdDhEWSspAdbRS4TjQzN3QLMdAogD0A8wuSrCEDYVzOp9
+         xZCMe23YZlZkEEn5EQjV3m5zqBewBWLZRvw0qI839KobJCKkIrL7QajSCBjDcwU091x5
+         Hp4w==
+X-Gm-Message-State: AOAM532NOi45pj3zEKVA1nW8MscVPhAr+/ORlWww/hjkqWdx5sx6HXEJ
+        xYch6BTOrpHpNPYuiEpivpiTdA==
+X-Google-Smtp-Source: ABdhPJxqI/pYnfEs6qSjztlLK9/QHes6XgHB85V3brQWGlC3Taa9IcIFuEaRLZOMRfZ2rAfTnQSxVA==
+X-Received: by 2002:a1c:1904:: with SMTP id 4mr3865768wmz.119.1599662741033;
+        Wed, 09 Sep 2020 07:45:41 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
+        by smtp.gmail.com with ESMTPSA id v2sm4773397wrm.16.2020.09.09.07.45.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2020 07:45:39 -0700 (PDT)
+Date:   Wed, 9 Sep 2020 15:45:37 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Alexandru Stan <amstan@chromium.org>, linux-pwm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Subject: Re: [PATCH 2/3] backlight: pwm_bl: Artificially add 0% during
+ interpolation
+Message-ID: <20200909144537.daq2exfihhxm6bai@holly.lan>
+References: <20200721042522.2403410-1-amstan@chromium.org>
+ <20200720212502.2.Iab4d2192e4cf50226e0a58d58df7d90ef92713ce@changeid>
+ <20200904113822.xoyt4w5x7vwvh7cr@holly.lan>
+ <20200907075018.GM2352366@phenom.ffwll.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009090018
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009090018
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200907075018.GM2352366@phenom.ffwll.local>
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 24 Aug 2020 21:55:57 -0700, Joe Perches wrote:
-
-> There are many comma separated statements in the kernel.
-> See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
+On Mon, Sep 07, 2020 at 09:50:18AM +0200, Daniel Vetter wrote:
+> On Fri, Sep 04, 2020 at 12:38:22PM +0100, Daniel Thompson wrote:
+> > On Mon, Jul 20, 2020 at 09:25:21PM -0700, Alexandru Stan wrote:
+> > > Some displays need the low end of the curve cropped in order to make
+> > > them happy. In that case we still want to have the 0% point, even though
+> > > anything between 0% and 5%(example) would be skipped.
+> > 
+> > For backlights it is not defined that 0 means off and, to be honest, 0
+> > means off is actually rather weird for anything except transflexive
+> > or front lit reflective displays[1]. There is a problem on several
+> > systems that when the backlight slider is reduced to zero you can't
+> > see the screen properly to turn it back up. This patch looks like it
+> > would make that problem worse by hurting systems with will written
+> > device trees.
+> > 
+> > There is some nasty legacy here: some backlight displays that are off
+> > at zero and that sucks because userspace doesn't know whether zero is
+> > off or lowest possible setting.
+> > 
+> > Nevertheless perhaps a better way to handle this case is for 0 to map to
+> > 5% power and for the userspace to turn the backlight on/off as final
+> > step in an animated backlight fade out (and one again for a fade in).
 > 
-> Convert the comma separated statements that are in if/do/while blocks
-> to use braces and semicolons.
+> Afaik chromeos encodes "0 means off" somewhere in there stack. We've
+> gotten similar patches for the i915 backlight driver when we started
+> obeying the panel's lower limit in our pwm backlight driver thing that's
+> sometimes used instead of acpi.
+
+Out of interest... were they accepted?
+
+I did took a quick look at intel_panel.c and didn't see anything
+that appeared to be special casing zero but I thought I might double
+check.
+
+
+Daniel.
+
+
+> There's also the problem that with fancy panels with protocol (dsi, edp,
+> ...) shutting of the backlight completely out of the proper power sequence
+> hangs the panel (for some panels at least), so providing a backlight off
+> that doesn't go through the drm modeset sequence isn't always possible.
 > 
-> Many comma separated statements still exist but those are changes for
-> another day.
+> It's a bit a mess indeed :-/
+> -Daniel
 > 
-> [...]
-
-Applied to 5.10/scsi-queue, thanks!
-
-[01/29] coding-style.rst: Avoid comma statements
-        (no commit info)
-[02/29] alpha: Avoid comma separated statements
-        (no commit info)
-[03/29] ia64: Avoid comma separated statements
-        (no commit info)
-[04/29] sparc: Avoid comma separated statements
-        (no commit info)
-[05/29] ata: Avoid comma separated statements
-        (no commit info)
-[06/29] drbd: Avoid comma separated statements
-        (no commit info)
-[07/29] lp: Avoid comma separated statements
-        (no commit info)
-[08/29] dma-buf: Avoid comma separated statements
-        (no commit info)
-[09/29] drm/gma500: Avoid comma separated statements
-        (no commit info)
-[10/29] drm/i915: Avoid comma separated statements
-        (no commit info)
-[11/29] hwmon: (scmi-hwmon): Avoid comma separated statements
-        (no commit info)
-[12/29] Input: MT - Avoid comma separated statements
-        (no commit info)
-[13/29] bcache: Avoid comma separated statements
-        (no commit info)
-[14/29] media: Avoid comma separated statements
-        (no commit info)
-[15/29] mtd: Avoid comma separated statements
-        (no commit info)
-[16/29] 8390: Avoid comma separated statements
-        (no commit info)
-[17/29] fs_enet: Avoid comma separated statements
-        (no commit info)
-[18/29] wan: sbni: Avoid comma separated statements
-        (no commit info)
-[19/29] s390/tty3270: Avoid comma separated statements
-        (no commit info)
-[20/29] scsi: arm: Avoid comma separated statements
-        https://git.kernel.org/mkp/scsi/c/a08a07326510
-[21/29] media: atomisp: Avoid comma separated statements
-        (no commit info)
-[22/29] video: fbdev: Avoid comma separated statements
-        (no commit info)
-[23/29] fuse: Avoid comma separated statements
-        (no commit info)
-[24/29] reiserfs: Avoid comma separated statements
-        (no commit info)
-[25/29] lib/zlib: Avoid comma separated statements
-        (no commit info)
-[26/29] lib: zstd: Avoid comma separated statements
-        (no commit info)
-[27/29] ipv6: fib6: Avoid comma separated statements
-        (no commit info)
-[28/29] sunrpc: Avoid comma separated statements
-        (no commit info)
-[29/29] tools: Avoid comma separated statements
-        (no commit info)
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> > 
+> > 
+> > Daniel.
+> > 
+> > > 
+> > > Signed-off-by: Alexandru Stan <amstan@chromium.org>
+> > > ---
+> > > 
+> > >  drivers/video/backlight/pwm_bl.c | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > > 
+> > > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+> > > index 5193a72305a2..b24711ddf504 100644
+> > > --- a/drivers/video/backlight/pwm_bl.c
+> > > +++ b/drivers/video/backlight/pwm_bl.c
+> > > @@ -349,6 +349,14 @@ static int pwm_backlight_parse_dt(struct device *dev,
+> > >  			/* Fill in the last point, since no line starts here. */
+> > >  			table[x2] = y2;
+> > >  
+> > > +			/*
+> > > +			 * If we don't start at 0 yet we're increasing, assume
+> > > +			 * the dts wanted to crop the low end of the range, so
+> > > +			 * insert a 0 to provide a display off mode.
+> > > +			 */
+> > > +			if (table[0] > 0 && table[0] < table[num_levels - 1])
+> > > +				table[0] = 0;
+> > > +
+> > >  			/*
+> > >  			 * As we use interpolation lets remove current
+> > >  			 * brightness levels table and replace for the
+> > > -- 
+> > > 2.27.0
+> > _______________________________________________
+> > dri-devel mailing list
+> > dri-devel@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> 
+> -- 
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
