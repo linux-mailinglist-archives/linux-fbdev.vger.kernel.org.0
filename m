@@ -2,128 +2,160 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5BAA2611BE
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Sep 2020 15:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF772624EF
+	for <lists+linux-fbdev@lfdr.de>; Wed,  9 Sep 2020 04:12:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729813AbgIHNDo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Sep 2020 09:03:44 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:44925 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729635AbgIHLhk (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 07:37:40 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113650euoutp0142448cb36092e502d67df5a890169417~yy_b3iIXb0570205702euoutp01T
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Sep 2020 11:36:50 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200908113650euoutp0142448cb36092e502d67df5a890169417~yy_b3iIXb0570205702euoutp01T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1599565010;
-        bh=g5440TnfUUbLi30vNa07P7jouFmRBB7rucNUoU6i/8E=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=V090EhWDFrTzsPdP/INxD7HxK8udml6ICXBHv37R5dewamurmh5/BLBm0VhZkFwit
-         eEgZtTnFxefnBq6b7rvpR7q+s/f4/SPLW2pcQ6P93YoyagooMRGUJKaeQNS0SQhLga
-         sSQ7ssmdksVPndzwaGvxcGkDlzE+WYu7ps2ob2wk=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113650eucas1p1fdcd72f2a4c03cf2c852203be2ffb75a~yy_bkCV6k0524005240eucas1p1k;
-        Tue,  8 Sep 2020 11:36:50 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 2F.85.06318.2DC675F5; Tue,  8
-        Sep 2020 12:36:50 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113649eucas1p2c2fd05202aa5795554058866e11e571e~yy_bRI5cF0080300803eucas1p28;
-        Tue,  8 Sep 2020 11:36:49 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113649eusmtrp1648c91b18ae53c7a17db386efd24449a~yy_bQliCs2002320023eusmtrp1n;
-        Tue,  8 Sep 2020 11:36:49 +0000 (GMT)
-X-AuditID: cbfec7f5-371ff700000018ae-11-5f576cd28ec8
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 4C.94.06017.1DC675F5; Tue,  8
-        Sep 2020 12:36:49 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113649eusmtip1c65e586662a29c729c5ddbee20ef9cfc~yy_a4yt_k0553105531eusmtip15;
-        Tue,  8 Sep 2020 11:36:49 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH v4] video: fbdev: ssd1307fb: Added support to Column
- offset
-To:     Rob Herring <robh@kernel.org>,
-        Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Message-ID: <2f18ec01-6041-d3f2-787e-16490faf2fbe@samsung.com>
-Date:   Tue, 8 Sep 2020 13:36:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1729971AbgIICMU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Sep 2020 22:12:20 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:43174 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727804AbgIICMS (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Sep 2020 22:12:18 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892AS5c094075;
+        Wed, 9 Sep 2020 02:11:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=vtum29krzlUsLIvRnyVxjLuvhWBtLTr/qnU9AvnGbCE=;
+ b=xBu1bvtfDZ9503xniraz9muXI2Eg0qhYCYcOf6RobuyNUO3o1Po7XLCiySpH1j3NqLzx
+ 2jgXXHktcetcwXVddyuNr8Y2tEFe3S1Fic84p/c7b/8cWZhzNvssHJn72rt+zNyDQI3g
+ W6nGbDQrnBPjzFv3JHhmeBC2Lng7TyLH4twd3n8hvyY34Y8B6srBiufkC1dha4TbTt8U
+ iYM7VJ+79F4uaHjvVJydS3mD7NcVtBky/+GEZFGwxEWNcRrsg0F0s6PbT0Xh+BU3JioS
+ 8YO2a/M76MlnuYxeGIlhqTuBmwNwX5juOavRg+aCtHeGvwObjWNA43YKkCVKSbI3nWmM bw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 33c2mkxvtd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 09 Sep 2020 02:11:40 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 089252Ah095301;
+        Wed, 9 Sep 2020 02:09:40 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 33cmk53euj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Sep 2020 02:09:40 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08929Zlw022818;
+        Wed, 9 Sep 2020 02:09:35 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 08 Sep 2020 19:09:35 -0700
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+        Joe Perches <joe@perches.com>, oprofile-list@lists.sf.net,
+        linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
+        linaro-mm-sig@lists.linaro.org, drbd-dev@tron.linbit.com,
+        intel-gfx@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+        reiserfs-devel@vger.kernel.org, linux-bcache@vger.kernel.org,
+        Jiri Kosina <trivial@kernel.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        sparclinux@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-scsi@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/29] treewide: Convert comma separated statements
+Date:   Tue,  8 Sep 2020 22:09:14 -0400
+Message-Id: <159961731707.5787.13988542229153933257.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <cover.1598331148.git.joe@perches.com>
+References: <cover.1598331148.git.joe@perches.com>
 MIME-Version: 1.0
-In-Reply-To: <20200727204016.GA836415@bogus>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrAKsWRmVeSWpSXmKPExsWy7djP87qXcsLjDS5uZrf4ePcrs8X8I+dY
-        La58fc9mcaLvA6vF5V1z2Cz+79nB7sDmsXPWXXaPTas62Tzudx9n8vi8SS6AJYrLJiU1J7Ms
-        tUjfLoErY++V04wF09kqVn3/x9jA+JWli5GTQ0LAROLasRbGLkYuDiGBFYwSx+9dYYFwvjBK
-        XJr8iw3C+cwosWn9fkaYlp4VZ5ghEssZJdq7TrCCJIQE3jJKfHttAmKzCVhJTGxfBdTAwSEs
-        EChx9oE9SFhEIETicts9JhCbWaBGYtGRg8wgNq+AncSqeXPBbBYBFYmFzy6xgdiiAhESnx4c
-        ZoWoEZQ4OfMJ2NmcAjoSj068YYGYIy5x68l8qJnyEtvfzgG7TUJgEbvEo8vzoY52kfj7cC0r
-        hC0s8er4FnYIW0bi9OQeFoiGdYwSfzteQHVvZ5RYPvkfG0SVtcSdc6Cw4ABaoSmxfpc+RNhR
-        4s2jR8wgYQkBPokbbwUhjuCTmLRtOlSYV6KjTQiiWk1iw7INbDBru3auZJ7AqDQLyWuzkLwz
-        C8k7sxD2LmBkWcUonlpanJueWmycl1quV5yYW1yal66XnJ+7iRGYbk7/O/51B+O+P0mHGAU4
-        GJV4eD18w+KFWBPLiitzDzFKcDArifA6nT0dJ8SbklhZlVqUH19UmpNafIhRmoNFSZzXeNHL
-        WCGB9MSS1OzU1ILUIpgsEwenVANjyEH+5d9iDmbnpP2LurGW/6bNUvOjE1PEL5hfPXRVnTfq
-        wK7e780uAQ7MS4uzjy2Y3z7JqGK19Zm0FTsU9h1+ofmR+9hExo4pyUtmzPvBtnMF91qLKY86
-        E/9b7lGvaLz43mPOBs1A/5X3JvWwfF0abrYme+ohfWvNuG1Nc+7tnnSsb1bXbF/xCUosxRmJ
-        hlrMRcWJANjodZ8zAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIIsWRmVeSWpSXmKPExsVy+t/xu7oXc8LjDfad17f4ePcrs8X8I+dY
-        La58fc9mcaLvA6vF5V1z2Cz+79nB7sDmsXPWXXaPTas62Tzudx9n8vi8SS6AJUrPpii/tCRV
-        ISO/uMRWKdrQwkjP0NJCz8jEUs/Q2DzWyshUSd/OJiU1J7MstUjfLkEvY++V04wF09kqVn3/
-        x9jA+JWli5GTQ0LARKJnxRnmLkYuDiGBpYwSLdN3ADkcQAkZiePryyBqhCX+XOtig6h5zShx
-        8tUuZpAEm4CVxMT2VYwg9cICgRJnH9iDmCICIRJtS8NAKpgFaiS+Pt3NBNF6iFHi1OyFbCAJ
-        XgE7iVXz5oKNYRFQkVj47BJYXFQgQuLwjlmMEDWCEidnPgG7k1NAR+LRiTcsEEPVJf7Mu8QM
-        YYtL3HoynwnClpfY/nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz03OLjfSKE3OLS/PS
-        9ZLzczcxAqNr27GfW3Ywdr0LPsQowMGoxMP7wSssXog1say4MhfoKQ5mJRFep7On44R4UxIr
-        q1KL8uOLSnNSiw8xmgI9N5FZSjQ5Hxj5eSXxhqaG5haWhubG5sZmFkrivB0CB2OEBNITS1Kz
-        U1MLUotg+pg4OKUaGHvC4gQSNfQCQt4sXtx25v+N9BOlrSfkN81zv/aXVf0l08HnGjJpL/pc
-        8hha90/1Ydlr6zr9379H/Ocy/f7ohgukGdiefLIt9tCyBiON6Ub8Wv8TDE88cL+p9X7OK+sD
-        2ypYY/zPB82N/Dxhaf5Ju4xJ6ia/vHU0pYQVXDZlOvamNWj92uW6VYmlOCPRUIu5qDgRAOyu
-        cxLEAgAA
-X-CMS-MailID: 20200908113649eucas1p2c2fd05202aa5795554058866e11e571e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200727204022eucas1p2e9b7da30fb7157d3d6802833c0625e5d
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200727204022eucas1p2e9b7da30fb7157d3d6802833c0625e5d
-References: <1595622138-3965-1-git-send-email-455.rodrigo.alencar@gmail.com>
-        <CGME20200727204022eucas1p2e9b7da30fb7157d3d6802833c0625e5d@eucas1p2.samsung.com>
-        <20200727204016.GA836415@bogus>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009090018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009090018
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Mon, 24 Aug 2020 21:55:57 -0700, Joe Perches wrote:
 
-[ added dri-devel ML to Cc: ]
-
-On 7/27/20 10:40 PM, Rob Herring wrote:
-> On Fri, 24 Jul 2020 17:22:18 -0300, Rodrigo Alencar wrote:
->> This patch provides support for displays like VGM128064B0W10,
->> which requires a column offset of 2, i.e., its segments starts
->> in SEG2 and ends in SEG129.
->>
->> Signed-off-by: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
->> ---
->>  Documentation/devicetree/bindings/display/ssd1307fb.txt | 1 +
->>  drivers/video/fbdev/ssd1307fb.c                         | 8 ++++++--
->>  2 files changed, 7 insertions(+), 2 deletions(-)
->>
+> There are many comma separated statements in the kernel.
+> See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
+> Convert the comma separated statements that are in if/do/while blocks
+> to use braces and semicolons.
+> 
+> Many comma separated statements still exist but those are changes for
+> another day.
+> 
+> [...]
 
-Applied to drm-misc-next tree, thanks and sorry for the delay.
+Applied to 5.10/scsi-queue, thanks!
 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+[01/29] coding-style.rst: Avoid comma statements
+        (no commit info)
+[02/29] alpha: Avoid comma separated statements
+        (no commit info)
+[03/29] ia64: Avoid comma separated statements
+        (no commit info)
+[04/29] sparc: Avoid comma separated statements
+        (no commit info)
+[05/29] ata: Avoid comma separated statements
+        (no commit info)
+[06/29] drbd: Avoid comma separated statements
+        (no commit info)
+[07/29] lp: Avoid comma separated statements
+        (no commit info)
+[08/29] dma-buf: Avoid comma separated statements
+        (no commit info)
+[09/29] drm/gma500: Avoid comma separated statements
+        (no commit info)
+[10/29] drm/i915: Avoid comma separated statements
+        (no commit info)
+[11/29] hwmon: (scmi-hwmon): Avoid comma separated statements
+        (no commit info)
+[12/29] Input: MT - Avoid comma separated statements
+        (no commit info)
+[13/29] bcache: Avoid comma separated statements
+        (no commit info)
+[14/29] media: Avoid comma separated statements
+        (no commit info)
+[15/29] mtd: Avoid comma separated statements
+        (no commit info)
+[16/29] 8390: Avoid comma separated statements
+        (no commit info)
+[17/29] fs_enet: Avoid comma separated statements
+        (no commit info)
+[18/29] wan: sbni: Avoid comma separated statements
+        (no commit info)
+[19/29] s390/tty3270: Avoid comma separated statements
+        (no commit info)
+[20/29] scsi: arm: Avoid comma separated statements
+        https://git.kernel.org/mkp/scsi/c/a08a07326510
+[21/29] media: atomisp: Avoid comma separated statements
+        (no commit info)
+[22/29] video: fbdev: Avoid comma separated statements
+        (no commit info)
+[23/29] fuse: Avoid comma separated statements
+        (no commit info)
+[24/29] reiserfs: Avoid comma separated statements
+        (no commit info)
+[25/29] lib/zlib: Avoid comma separated statements
+        (no commit info)
+[26/29] lib: zstd: Avoid comma separated statements
+        (no commit info)
+[27/29] ipv6: fib6: Avoid comma separated statements
+        (no commit info)
+[28/29] sunrpc: Avoid comma separated statements
+        (no commit info)
+[29/29] tools: Avoid comma separated statements
+        (no commit info)
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
