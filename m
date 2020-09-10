@@ -2,231 +2,177 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 357EE263EEC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 10 Sep 2020 09:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1F7264004
+	for <lists+linux-fbdev@lfdr.de>; Thu, 10 Sep 2020 10:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726865AbgIJHsK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 10 Sep 2020 03:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49804 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726746AbgIJHsE (ORCPT
+        id S1730299AbgIJIa6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 10 Sep 2020 04:30:58 -0400
+Received: from esa3.microchip.iphmx.com ([68.232.153.233]:61294 "EHLO
+        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730356AbgIJIYj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 10 Sep 2020 03:48:04 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41198C061573
-        for <linux-fbdev@vger.kernel.org>; Thu, 10 Sep 2020 00:48:02 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id m6so5608771wrn.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 10 Sep 2020 00:48:02 -0700 (PDT)
+        Thu, 10 Sep 2020 04:24:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1599726278; x=1631262278;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=Yyq2EDCS2vKZmH5eLOYYicNPIXcRgkd+H8Ca+7FcXOc=;
+  b=cj/9uAeAlzEQFS2eT6rVQ1IFXEBDChgI2LEhqtY4jULOSg+toOJ/EPDz
+   fNwmimX5eNLs3iyo+7O2YceRwhb9OjNUoZI8ftb9utA8PClcPnH7MpT1G
+   B6a5d2HZh3q+SGlLj0Pbsqa/hCRIPnuBHpdhudv4uhs69zm1L9c5ktYw1
+   9PTVwt0Cv+rCyC7qXPtBQ2GMQwonSg3jWbTZcRAGCIgPV+Ln+ugGRPtBO
+   k3K/WKJbsdPkSSfjZ503xX9W6ZwYmyBwxYG5DNA1VQCA/kuEe3/x95wD5
+   mOpdLX6I4EyWUalzUhElLrvDCHUugaPehbn8/DGdfAgFUqTYgr108q8ud
+   A==;
+IronPort-SDR: ftLnKVJWWVARs6xE60k80lvcWvEF9LnNReTXi2pIeHcFd1pOvCbq5YtWKyNQKbgntoF3PJrEzZ
+ yGkW+CSPkTanXwFzN+yaXQvli7N+J9TDXD7EYbxy0puKvjPuscpCKfJznonLOJ1RssHzyGXWld
+ FEmXkljrjgcGdATyyJ52ywdn6YOedSeAiw39Unb2/iAlFSlX4xOSaPEQ1oDzJo6jB0orKUYHob
+ 8TPZOmriiXyQ/YsxyXR92KLsMxoOl9I7rBMGKN1j5VU4WXWSblm45hfVc18o3BtgyAUNaPQFAh
+ yGo=
+X-IronPort-AV: E=Sophos;i="5.76,412,1592895600"; 
+   d="scan'208";a="91279822"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Sep 2020 01:24:26 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Thu, 10 Sep 2020 01:24:22 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3
+ via Frontend Transport; Thu, 10 Sep 2020 01:24:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=itElKv30dbsNhtpfiKLkCOXYopTjtkZ9zEAzRioxDAmgifjIhq6QVV/lc6kfk0TIuSPX1OZAUrSDWVumK4tLXffHjOu4WRZugnRrQRvvAAgpCE7V1+zJn3PyPC0j6/G2aAtgoGzj2pGQVkq35HD5i3ZvkV68QA+ILQVSTYqBA+q+9/IrmOIYHSq5T7WknjE5tqhKpcoEPyxu0LHlp9MR91+nL0ffI8mb6UZ8R19c1Z8LDep20pLw6r6tPamTWrMJ0hAxNX35wsV6GMNcE6JFgdV5g0JfNl3CssuMyPR0eMKE/T9DeShiio5DN/5SR2TytdQ7bAPBSy6lDzF4x9zLmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/BE3UD6DmJgxUoBN4fm1O92DvDQlokRm7L2E5H8tZ/w=;
+ b=aw+E7ncriQCfdGAUGrQZUE/X01NpnQkPaMKg98SJOA6wY+Umt71j+ZM3yJT4X2e4Z3a1Nf1QLyhCWVWM5woSGiSrFRCtJ7Y+axoK5muAMFzy8K/q5zDKA+XhU43kGZTFp6nun78Bc4vdtny2nuHntBDykocQKzISfMU5cKF8KWDvMYiCfneJuxF9RID1NNZC8H0s/Flemt9H/8te0Tc5X4Wgyt0zHH2qftbjcUtGDix9JdV3FbJj+OP489jnkeYYjXBTFPWiX1axHsYPxivLdaeMUWo+d8svoqnPmKjaFYR7H+Czrws9kPnJiEDFXxT1EnrZJjVbs3wTlpHvyWTwVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=EzwOJPxFQZYC72dKxH1QwXbLeAK6MXsJW34CXePZsDk=;
-        b=NU3t/lYA4IuNCNtpekqscA2TyplAkzfP+R8MUCR3PvCAb8uJiYk1wOzzb8wwXS4UMr
-         DVA4tRl1Ve9Exjbx9S/0pONj/l6Gmg8wchly5ZcfOeQgRhaHAGu83K0TF5f78u/Lc85y
-         hkhIHeTu8rvomAvVXj5waA1W35Dcxm1hJK7BI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=EzwOJPxFQZYC72dKxH1QwXbLeAK6MXsJW34CXePZsDk=;
-        b=lv+0G4e2MyT/jvZtF4wm02SgCBRRbgmj5L7d+CDtKvLq/GVmXEx37tPmv6xlHB+Fom
-         ZTk+N2ieYXR2TayWBrKtIJ5a9r96CvBvj9Dzn562dxG3S8WBZqto3+lJEYbPePjvd7Xo
-         HG0MJ0NDE2KN0CZUcWd9cQkgultQ1i6VBlp1JhM8RYcvHq25w/i1GGG+DYnNwbGRrUW5
-         9TQlzP+MCy1IXJ74OObLIuj8I+eifYp2q7rgoiJ03vh4G+08mhiFOhm4R415v05Expzn
-         y6emF9kiqXiDZ1oQPoU9l7++P7nspWgxJUsD9DEg+f/MeUearmgro/8PFbPGlBSTUveg
-         U8Dw==
-X-Gm-Message-State: AOAM531y2o0+PKBcnQK/H9v0gLW5UdIXAz80/ctFzQdKOhkmVm48HWCy
-        irJfUoDEJXKJQPMeypaR3xM1ug==
-X-Google-Smtp-Source: ABdhPJyHnNn0zGerD4FHfuyk3jfmyvmU9pJsJ0jZ9yhN7+q1Nh4texQADwMpFBCQe7+lPrgnAcEOvw==
-X-Received: by 2002:a5d:4247:: with SMTP id s7mr7407060wrr.167.1599724079550;
-        Thu, 10 Sep 2020 00:47:59 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id h204sm2348153wmf.35.2020.09.10.00.47.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2020 00:47:58 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 09:47:56 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Alexandru Stan <amstan@chromium.org>,
-        linux-pwm <linux-pwm@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [PATCH 2/3] backlight: pwm_bl: Artificially add 0% during
- interpolation
-Message-ID: <20200910074756.GE438822@phenom.ffwll.local>
-Mail-Followup-To: Daniel Thompson <daniel.thompson@linaro.org>,
-        Alexandru Stan <amstan@chromium.org>,
-        linux-pwm <linux-pwm@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-References: <20200721042522.2403410-1-amstan@chromium.org>
- <20200720212502.2.Iab4d2192e4cf50226e0a58d58df7d90ef92713ce@changeid>
- <20200904113822.xoyt4w5x7vwvh7cr@holly.lan>
- <20200907075018.GM2352366@phenom.ffwll.local>
- <20200909144537.daq2exfihhxm6bai@holly.lan>
- <CAKMK7uEK5afDHT9n0s+eDYA1Qztf9Xxibz_rZDzy5F6G9EOEVw@mail.gmail.com>
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/BE3UD6DmJgxUoBN4fm1O92DvDQlokRm7L2E5H8tZ/w=;
+ b=nHI74pvWX9voKu6qjF0Kfqy5Sc0AGs+NSCuuZ7eJDs13Cd2LSPaaZXvb/ZjcOfT09uuWHM6p5pmozbJumZzu3LweHgExn3n4A3SazKZjxpV5HJ3Rfd1IYhfQ1vrLcAgTG/9j9wdLhYAt6RaeZr3RJVUTfyzdVhJVMpRZmeQD3Xk=
+Received: from BYAPR11MB3477.namprd11.prod.outlook.com (2603:10b6:a03:7c::28)
+ by BY5PR11MB4307.namprd11.prod.outlook.com (2603:10b6:a03:1bd::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Thu, 10 Sep
+ 2020 08:24:22 +0000
+Received: from BYAPR11MB3477.namprd11.prod.outlook.com
+ ([fe80::d1dd:de76:4e99:7c85]) by BYAPR11MB3477.namprd11.prod.outlook.com
+ ([fe80::d1dd:de76:4e99:7c85%7]) with mapi id 15.20.3348.019; Thu, 10 Sep 2020
+ 08:24:21 +0000
+From:   <Nicolas.Ferre@microchip.com>
+To:     <joe@perches.com>, <linux-kernel@vger.kernel.org>,
+        <trivial@kernel.org>
+CC:     <kees.cook@canonical.com>, <ndesaulniers@google.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kvmarm@lists.cs.columbia.edu>, <linux-mips@vger.kernel.org>,
+        <linux-s390@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>,
+        <linux-atm-general@lists.sourceforge.net>,
+        <netdev@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+        <linux-input@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-rdma@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
+        <dm-devel@redhat.com>, <linux-media@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <intel-wired-lan@lists.osuosl.org>, <oss-drivers@netronome.com>,
+        <linux-usb@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-nvme@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <linux-rtc@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <storagedev@microchip.com>, <sparclinux@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-parisc@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-afs@lists.infradead.org>, <ceph-devel@vger.kernel.org>,
+        <linux-nfs@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <dccp@vger.kernel.org>, <netfilter-devel@vger.kernel.org>,
+        <coreteam@netfilter.org>, <linux-sctp@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <Eugen.Hristev@microchip.com>,
+        <Ludovic.Desroches@microchip.com>
+Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+Thread-Topic: [trivial PATCH] treewide: Convert switch/case fallthrough; to
+ break;
+Thread-Index: AQHWh0vIy44IYF5A+kuaVLhVJ6ZdVw==
+Date:   Thu, 10 Sep 2020 08:24:21 +0000
+Message-ID: <c2929349-ca60-486d-3cad-a83321587c5f@microchip.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+authentication-results: perches.com; dkim=none (message not signed)
+ header.d=none;perches.com; dmarc=none action=none header.from=microchip.com;
+x-originating-ip: [2a01:cb1c:8c:b200:d11f:426b:f805:cbe2]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e351a690-85b8-47aa-f38f-08d85562eb8c
+x-ms-traffictypediagnostic: BY5PR11MB4307:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BY5PR11MB4307E000D4DA0597A74F9A31E0270@BY5PR11MB4307.namprd11.prod.outlook.com>
+x-bypassexternaltag: True
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: rwdyTK6oNx+pJXY+VYO8jlUUcB5LsJW3ZQhau0YhpysDI1uZrWJ+5KkXmnJNABVwRpL8mxf24YLlXWyB3yirjaXQ/srQXMAk73DmLRMX7FFSd/uWs59kXpR0gz7YIDZpkdEHXR8Ks47+GSWaldjUxHW1dDgr9Bml1Ile+LfAjDi5j/2WavAN5DcmiJhVV86brSYApECTF1sqFMiIoIfargGWcDiXjLp0xoZy1wTF5cYKXSjd2DGvBQRASj+UAeO1Pg9WFEX+2sgdqqFJ/HgGUzu9uaOU20bpHBTTwQw7yoVGql5DTXE+Xr30INsHw1gSuTyHpcI3KtFhJi6QDKEIl6ZhO0EwhNcia52tqGsvyefiqtKNAZSsmZhN9N/OPaNO
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3477.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(346002)(396003)(366004)(39860400002)(36756003)(6506007)(4744005)(53546011)(31686004)(4326008)(8676002)(31696002)(6512007)(186003)(478600001)(2616005)(107886003)(83380400001)(54906003)(110136005)(5660300002)(316002)(2906002)(6486002)(76116006)(71200400001)(91956017)(66476007)(66556008)(8936002)(66446008)(66946007)(64756008)(7416002)(7406005)(86362001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: CK3jnFjP+DaxTGoKSfijNwQSDSi+zYRAANKGWEe0w6BHoCBr3jeo8QFCPrdi+OpT1qz3lmVs3mCRxOmBtUGK5WN0AxOt0wvA3bBJRUyjBicAE+lDMsP7vy1cft0wcXBrEZgdgqF7VD1sQj+khtUTD5EsNnntahNSIGqwN+VZCKQ1QzjPtAbjR2oPP/LrPDKYk//qfKAomMDI7R2fpR0tTUzDMz48DEh+PQCCmr/krCP8U3KTB6FIGhilgI7TLOfsJcLS9qlGh0PGNeVy7GIerGvFEQfkR4YdlzVLyEKvYmf4EXR5wArGM6eS5MMbLL4vYVjGrhiNaJt+earGuTqyYiFZbc+uujPQG9qCWcGOhC7tSaJvV/BIkb7lV8g/yXvxSbayqkCXQ/s7jX+D9fM+ZWNqgoWbSd/P+uuCP7/8e33PXHOet1lAM1sUIHpLxk8RCyecYucN6ijlgMa8IdFcV7U+ZA3zH97/7OWVEtd6OgF0CR21Hki2raxtlS5sca+cVURYu2gcHFAMLULSgaOruMk5qcKurGsgOTL9NDY1H7Jpn1+7gJ+bMQIt2b5OxDFW2nSizeQSfqlNFoprGc6aS71OSv+MwkoEfhBi640q5sGrdYfhliWNj5HhbdiTLJVy1TBmrhSIzi6KODxmStaMlQzfe8a1Otv3042csYwXaPKEPC9i6WiYuHbWrvEwzSbxIsAABeXwAiTaxYC040N9rw==
+Content-Type: text/plain; charset="Windows-1252"
+Content-ID: <0B2726412C35D14B94E876CA5EB14904@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKMK7uEK5afDHT9n0s+eDYA1Qztf9Xxibz_rZDzy5F6G9EOEVw@mail.gmail.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3477.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e351a690-85b8-47aa-f38f-08d85562eb8c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2020 08:24:21.4887
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JW3oElxXZwEvl6R2z5GFIVkcX/+UpGKsEW8MKFxofB9W1y9KDMUkM69WnQUZrCOB/0mudh2ADBhfj0C34gWZhgepCXhZk3LC9prwi+CGg3E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB4307
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Sep 09, 2020 at 05:03:37PM +0200, Daniel Vetter wrote:
-> On Wed, Sep 9, 2020 at 4:45 PM Daniel Thompson
-> <daniel.thompson@linaro.org> wrote:
-> >
-> > On Mon, Sep 07, 2020 at 09:50:18AM +0200, Daniel Vetter wrote:
-> > > On Fri, Sep 04, 2020 at 12:38:22PM +0100, Daniel Thompson wrote:
-> > > > On Mon, Jul 20, 2020 at 09:25:21PM -0700, Alexandru Stan wrote:
-> > > > > Some displays need the low end of the curve cropped in order to make
-> > > > > them happy. In that case we still want to have the 0% point, even though
-> > > > > anything between 0% and 5%(example) would be skipped.
-> > > >
-> > > > For backlights it is not defined that 0 means off and, to be honest, 0
-> > > > means off is actually rather weird for anything except transflexive
-> > > > or front lit reflective displays[1]. There is a problem on several
-> > > > systems that when the backlight slider is reduced to zero you can't
-> > > > see the screen properly to turn it back up. This patch looks like it
-> > > > would make that problem worse by hurting systems with will written
-> > > > device trees.
-> > > >
-> > > > There is some nasty legacy here: some backlight displays that are off
-> > > > at zero and that sucks because userspace doesn't know whether zero is
-> > > > off or lowest possible setting.
-> > > >
-> > > > Nevertheless perhaps a better way to handle this case is for 0 to map to
-> > > > 5% power and for the userspace to turn the backlight on/off as final
-> > > > step in an animated backlight fade out (and one again for a fade in).
-> > >
-> > > Afaik chromeos encodes "0 means off" somewhere in there stack. We've
-> > > gotten similar patches for the i915 backlight driver when we started
-> > > obeying the panel's lower limit in our pwm backlight driver thing that's
-> > > sometimes used instead of acpi.
-> >
-> > Out of interest... were they accepted?
-> >
-> > I did took a quick look at intel_panel.c and didn't see anything
-> > that appeared to be special casing zero but I thought I might double
-> > check.
-> 
-> I don't think so. Just figured I bring this up since it might explain
-> why this is coming back again from an @chromium.com address.
+Joe,
 
-Thanks to Alexandru pointing at the right code it's clear this got fix,
-over 5 years ago:
+Please drop this chunk: it's a successive controller version number=20
+which are all backward compatible with "fallthrough" on each case so=20
+removing from this last one makes it inconsistent.
 
-https://source.chromium.org/chromiumos/_/chromium/chromiumos/platform2/+/6e83a6a8bb772ed8a2f939da1c7a152147c12789
+In sort: NACK for atmel-mci.
 
-	power: Write to bl_power when backlight reaches or leaves 0.
-	
-	Make InternalBacklight write FB_BLANK_UNBLANK to bl_power
-	just before setting the internal backlight brightness to a
-	nonzero value, and FB_BLANK_POWERDOWN to bl_power just
-	before setting the brightness to 0.
-	
-	This is needed for hardware that interprets a brightness
-	level of 0 as meaning "dim" rather than "off".
-	
-	BUG=chromium:396218
-	TEST=added unit tests
-	
-	Change-Id: I914e333ab41db623564d5a67beac89f1a62bce9d
-	Reviewed-on: https://chromium-review.googlesource.com/311010
-	Commit-Ready: Dan Erat <derat@chromium.org>
-	Tested-by: Dan Erat <derat@chromium.org>
-	Reviewed-by: Dan Erat <derat@chromium.org>
+Best regards,
+   Nicolas
 
-Cheers, Daniel
 
-> > > There's also the problem that with fancy panels with protocol (dsi, edp,
-> > > ...) shutting of the backlight completely out of the proper power sequence
-> > > hangs the panel (for some panels at least), so providing a backlight off
-> > > that doesn't go through the drm modeset sequence isn't always possible.
-> > >
-> > > It's a bit a mess indeed :-/
-> > > -Daniel
-> > >
-> > > >
-> > > >
-> > > > Daniel.
-> > > >
-> > > > >
-> > > > > Signed-off-by: Alexandru Stan <amstan@chromium.org>
-> > > > > ---
-> > > > >
-> > > > >  drivers/video/backlight/pwm_bl.c | 8 ++++++++
-> > > > >  1 file changed, 8 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-> > > > > index 5193a72305a2..b24711ddf504 100644
-> > > > > --- a/drivers/video/backlight/pwm_bl.c
-> > > > > +++ b/drivers/video/backlight/pwm_bl.c
-> > > > > @@ -349,6 +349,14 @@ static int pwm_backlight_parse_dt(struct device *dev,
-> > > > >                   /* Fill in the last point, since no line starts here. */
-> > > > >                   table[x2] = y2;
-> > > > >
-> > > > > +                 /*
-> > > > > +                  * If we don't start at 0 yet we're increasing, assume
-> > > > > +                  * the dts wanted to crop the low end of the range, so
-> > > > > +                  * insert a 0 to provide a display off mode.
-> > > > > +                  */
-> > > > > +                 if (table[0] > 0 && table[0] < table[num_levels - 1])
-> > > > > +                         table[0] = 0;
-> > > > > +
-> > > > >                   /*
-> > > > >                    * As we use interpolation lets remove current
-> > > > >                    * brightness levels table and replace for the
-> > > > > --
-> > > > > 2.27.0
-> > > > _______________________________________________
-> > > > dri-devel mailing list
-> > > > dri-devel@lists.freedesktop.org
-> > > > https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> > >
-> > > --
-> > > Daniel Vetter
-> > > Software Engineer, Intel Corporation
-> > > http://blog.ffwll.ch
-> > _______________________________________________
-> > dri-devel mailing list
-> > dri-devel@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> 
-> 
-> 
-> -- 
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+On 09/09/2020 at 22:06, Joe Perches wrote:
+> diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+> index 444bd3a0a922..8324312e4f42 100644
+> --- a/drivers/mmc/host/atmel-mci.c
+> +++ b/drivers/mmc/host/atmel-mci.c
+> @@ -2435,7 +2435,7 @@ static void atmci_get_cap(struct atmel_mci *host)
+>          case 0x100:
+>                  host->caps.has_bad_data_ordering =3D 0;
+>                  host->caps.need_reset_after_xfer =3D 0;
+> -               fallthrough;
+> +               break;
+>          case 0x0:
+>                  break;
+>          default:
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+
+--=20
+Nicolas Ferre
