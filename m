@@ -2,86 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FCC1264813
-	for <lists+linux-fbdev@lfdr.de>; Thu, 10 Sep 2020 16:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB2D2652B0
+	for <lists+linux-fbdev@lfdr.de>; Thu, 10 Sep 2020 23:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730993AbgIJOgW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 10 Sep 2020 10:36:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50860 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731158AbgIJOeQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 10 Sep 2020 10:34:16 -0400
-Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCAAC20855;
-        Thu, 10 Sep 2020 14:33:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599748419;
-        bh=0G7G667jJ2wLzt+yDf+HSMCCNH8aghZdGO9b0EnNJWQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EVD0MtwMK40ue8Yva5Nf+q97hPxufi58lFUJDEhyVkbP6r4lc6NxL1zt763eBBiIa
-         nJ5VFw7zVHrodSqZ78a1z0wj654tpJKFLtUVD8dFAzP9chKwA5xE+AhRKzUnGCpQFn
-         JB0NOTCHtcWRP7KhWCeAK26YMA+ctnpR7XP/NJ0c=
-Date:   Thu, 10 Sep 2020 09:39:00 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Jason Yan <yanaijie@huawei.com>
-Cc:     timur@kernel.org, b.zolnierkie@samsung.com,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH] video: fbdev: fsl-diu-fb: remove unneeded variable 'res'
-Message-ID: <20200910143900.GA4162@embeddedor>
-References: <20200910140558.1191423-1-yanaijie@huawei.com>
+        id S1728194AbgIJVWd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 10 Sep 2020 17:22:33 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:54746 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731001AbgIJOYF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 10 Sep 2020 10:24:05 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 79844F2DCA6CBF645C48;
+        Thu, 10 Sep 2020 22:06:21 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.487.0; Thu, 10 Sep 2020
+ 22:06:14 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <thomas@winischhofer.net>, <b.zolnierkie@samsung.com>,
+        <yanaijie@huawei.com>, <dri-devel@lists.freedesktop.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] video: fbdev: sis: remove unneeded semicolon
+Date:   Thu, 10 Sep 2020 22:05:36 +0800
+Message-ID: <20200910140536.1191150-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910140558.1191423-1-yanaijie@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.127.227]
+X-CFilter-Loop: Reflected
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 10:05:58PM +0800, Jason Yan wrote:
-> Eliminate the following coccicheck warning:
-> 
-> drivers/video/fbdev/fsl-diu-fb.c:1428:5-8: Unneeded variable: "res".
-> Return "0" on line 1450
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+Eliminate the following coccicheck warning:
 
-Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+drivers/video/fbdev/sis/sis_accel.h:143:72-73: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:144:72-73: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:145:72-73: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:273:75-76: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:274:75-76: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:275:73-74: Unneeded semicolon
+drivers/video/fbdev/sis/sis_accel.h:276:75-76: Unneeded semicolon
 
-Thanks
---
-Gustavo
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/video/fbdev/sis/sis_accel.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> ---
->  drivers/video/fbdev/fsl-diu-fb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-> index a547c21c7e92..e332017c6af6 100644
-> --- a/drivers/video/fbdev/fsl-diu-fb.c
-> +++ b/drivers/video/fbdev/fsl-diu-fb.c
-> @@ -1425,7 +1425,6 @@ static int fsl_diu_open(struct fb_info *info, int user)
->  static int fsl_diu_release(struct fb_info *info, int user)
->  {
->  	struct mfb_info *mfbi = info->par;
-> -	int res = 0;
->  
->  	spin_lock(&diu_lock);
->  	mfbi->count--;
-> @@ -1447,7 +1446,7 @@ static int fsl_diu_release(struct fb_info *info, int user)
->  	}
->  
->  	spin_unlock(&diu_lock);
-> -	return res;
-> +	return 0;
->  }
->  
->  static const struct fb_ops fsl_diu_ops = {
-> -- 
-> 2.25.4
-> 
+diff --git a/drivers/video/fbdev/sis/sis_accel.h b/drivers/video/fbdev/sis/sis_accel.h
+index c3dfd2a20cf9..98d209658662 100644
+--- a/drivers/video/fbdev/sis/sis_accel.h
++++ b/drivers/video/fbdev/sis/sis_accel.h
+@@ -140,9 +140,9 @@
+ 
+ #define SiS300Idle \
+   { \
+-  	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){}; \
+-  	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){}; \
+-  	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){}; \
++	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){} \
++	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){} \
++	while((MMIO_IN16(ivideo->mmio_vbase, BR(16)+2) & 0xE000) != 0xE000){} \
+   	CmdQueLen = MMIO_IN16(ivideo->mmio_vbase, 0x8240); \
+   }
+ /* (do three times, because 2D engine seems quite unsure about whether or not it's idle) */
+@@ -270,10 +270,10 @@
+ 
+ #define SiS310Idle \
+   { \
+-  	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){}; \
+-  	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){}; \
+-	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){}; \
+-  	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){}; \
++	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){} \
++	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){} \
++	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){} \
++	while( (MMIO_IN16(ivideo->mmio_vbase, Q_STATUS+2) & 0x8000) != 0x8000){} \
+   	CmdQueLen = 0; \
+   }
+ 
+-- 
+2.25.4
+
