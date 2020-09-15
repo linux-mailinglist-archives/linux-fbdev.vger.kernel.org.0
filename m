@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23719269CB4
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Sep 2020 05:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18528269D78
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Sep 2020 06:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbgIODwR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Sep 2020 23:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48942 "EHLO
+        id S1726187AbgIOE2B (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 15 Sep 2020 00:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726034AbgIODwQ (ORCPT
+        with ESMTP id S1726019AbgIOE17 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Sep 2020 23:52:16 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B713C06174A;
-        Mon, 14 Sep 2020 20:52:15 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id f2so1278918pgd.3;
-        Mon, 14 Sep 2020 20:52:15 -0700 (PDT)
+        Tue, 15 Sep 2020 00:27:59 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 910EDC06174A;
+        Mon, 14 Sep 2020 21:27:59 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id o16so1105185pjr.2;
+        Mon, 14 Sep 2020 21:27:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BJPJN5sO3W+sXjSDyG0vP1cfrrf1nDFvy9NDFxP8BC4=;
-        b=Icis/6D+2W0lPj6Y27XJFFduwInr03mL886eub4QPJa6xWHLz/zNVAC6NZTTZDPRPZ
-         zmgeXOe2euhuQh6H+TFM47fSaYbH7zraLa0jSa/rKKYeGY8B6hTPkJNcV9D+hT5VFvXL
-         zSaBXs8gGMflGlIkCSVroHah32T1v+dnx582sCyet6BSVZsIVzVoZEalkZOP9UlGcm2D
-         dAik9ZeFXEX/g+BZ9/u2zvFVQ7WXOPrEa9yPet3Xi8FbT962dlCXK0r7XlERS3Sfri4x
-         tLcpR8ipYfB1zW/OiNF8IbNHKCXNDzv0IDCaqwY31O0kb7D5Jw584obcHoSXxXrkJv3E
-         HKyQ==
+        bh=l2xAFfZO9faQ850NCjP3QR4K5y7DMG5mMFIU0Ld9H64=;
+        b=nssX0P1bZZxN5KkeWNrkhQuXfHMrZMaKSZzmQAq3h3BZGvfucG2LOki4GDARygm7E+
+         TI87gIJUj+9A6xuzrmtsmFJJdpYDV/zBSYcoe4zSsyjtqMMPeO9oOoU/u2ElxKtgBFv7
+         AvufAnCfnb9QyayJYDuPRt9RIPibDaC6eQkoxumFa0nMUdhdS27BLIweqU/4Agk7beiY
+         /JclK3N03cPjh2j7D769Yaj3CH4CZtq2P0lZf5N6EhmhUIsX1rUF5FL81GEXOBTGaaHU
+         dopk+puW4KU19s79XJEPboEC0JEWQV1FjA4cMmkX9Rnq1D5pTmphY73AjLyZTORQz26i
+         w/3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=BJPJN5sO3W+sXjSDyG0vP1cfrrf1nDFvy9NDFxP8BC4=;
-        b=gqwGnBXtxnGgbmVMKRdPAjlXHtRWc86AuMcVrNeBj+pVfmuLjVIacwlF2qydKsEC16
-         e94bIbHOBjkSNE/FW5kQFrqmKmI7YlovmHwwvn+IlIajIY3mljvtLOFvylEOYLSflicP
-         DoVp2FTThHvz1tyctImjPL6FkivLSWOT+tQcLifrhdW1L1isFb9ELlz6mzb0uBdq5cfm
-         vjC34IZFeEiDY5eid2ydGmxbsf/FEZCtBdCPpwWfCGUgyrz4VYM7Jruz7NBcZ6xsFrch
-         T1JiP7Q1WPKPqLCRoEvNpgZCTZ7IJEhKatRGTYhRU70UUdAU88OE8UNkNp0lCLMBiy8H
-         MUgg==
-X-Gm-Message-State: AOAM530cWu+qlfbNWcfca1WtpoKRjS590qTxoPrlJ5dpdt3nqtwtX/aI
-        SbTy3O+kVSbqHR2NWeIWT+mdICL4K19tzkas
-X-Google-Smtp-Source: ABdhPJzJMWewP7giq1Y6D68F6T84VnaUkXL0yd1eQJ4GqiY3WCz/rB0qAXdhE9hvi4au1vAkNmqxRQ==
-X-Received: by 2002:a63:441a:: with SMTP id r26mr13460205pga.290.1600141934504;
-        Mon, 14 Sep 2020 20:52:14 -0700 (PDT)
+        bh=l2xAFfZO9faQ850NCjP3QR4K5y7DMG5mMFIU0Ld9H64=;
+        b=aWlhnfd9XzGH1df0CSy7pXZpziNvPGRD6R81Bmbf9nvWOjdYUedjAQp3VKJ1hNOa7A
+         vGvMupVtPOJqkNjLiApwSE8cATpWKdvdOFXVF177SfdCkkrpF4QHf9Ip6JDarYd6iR2L
+         nIEB7+XWM/F0D5QQU4ssYxnKebfQPkK+XEJPfUDj19V0RViS9/kuU9CTDu9OyTFQPKdu
+         AF9ffXsbXCZvoh2iKm2HKIG1DO7kyepLG1YOa07VBLXVY/jwpUK/cfjDuk/PXWmXvv7E
+         vuBrF9+Cj00bnmAB5/oMI7HVpTpaFjVCJcLlArvOVAwKVjZ9FVfwrJ//xzWAZVHM8OIT
+         /T2A==
+X-Gm-Message-State: AOAM532TFgqAlW4EvC8acMC5e5+ok9QAQjS/qUMe7UEIIoMqR/wGB8jl
+        PHUPOYRrPG9dmUq4W2t7DTI=
+X-Google-Smtp-Source: ABdhPJyy3XjMKNT25MhUrDfQnFQj6LLYuJ9UbswDx3I0tqWLwdd7VWKSPMhZDScdymEfE7ZGfWiBZg==
+X-Received: by 2002:a17:902:d88c:b029:d1:e5ec:5ef5 with SMTP id b12-20020a170902d88cb02900d1e5ec5ef5mr18857plz.43.1600144079107;
+        Mon, 14 Sep 2020 21:27:59 -0700 (PDT)
 Received: from localhost.localdomain (sau-465d4-or.servercontrol.com.au. [43.250.207.1])
-        by smtp.gmail.com with ESMTPSA id d6sm10690356pjw.0.2020.09.14.20.52.04
+        by smtp.gmail.com with ESMTPSA id jz6sm10750244pjb.22.2020.09.14.21.27.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2020 20:52:13 -0700 (PDT)
+        Mon, 14 Sep 2020 21:27:58 -0700 (PDT)
 From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
 To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -56,9 +56,9 @@ Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
         nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
         torvalds@linux-foundation.org,
         Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] docs:fb:fbcon.rst:Remove the stale boot option for framebuffer i.e scrollback
-Date:   Tue, 15 Sep 2020 09:18:57 +0530
-Message-Id: <20200915034857.21384-1-unixbhaskar@gmail.com>
+Subject: [PATCH] docs : fb :  matroxfb.rst : Remove the stale information lines i.e framebuffer scrollback
+Date:   Tue, 15 Sep 2020 09:49:55 +0530
+Message-Id: <20200915041954.5110-1-unixbhaskar@gmail.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,91 +67,30 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This patch is the effect of commit hashes: 50145474f6ef4a9c19205b173da6264a644c7489 and
-973c096f6a85e5b5f2a295126ba6928d9a6afd45 
+This patch remove stale information lines from this file :  matroxfb.rst
 
-fbcon: remove soft scrollback code 
+In effect of the the commit hashes : 50145474f6ef4a9c19205b173da6264a644c7489  and
+973c096f6a85e5b5f2a295126ba6928d9a6afd45
 
-And adjusted the numbering for boot options too.
 
 Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
- Documentation/fb/fbcon.rst | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ Documentation/fb/matroxfb.rst | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/fb/fbcon.rst b/Documentation/fb/fbcon.rst
-index e57a3d1d085a..328f6980698c 100644
---- a/Documentation/fb/fbcon.rst
-+++ b/Documentation/fb/fbcon.rst
-@@ -87,15 +87,8 @@ C. Boot options
- 	Note, not all drivers can handle font with widths not divisible by 8,
- 	such as vga16fb.
+diff --git a/Documentation/fb/matroxfb.rst b/Documentation/fb/matroxfb.rst
+index f1859d98606e..6158c49c8571 100644
+--- a/Documentation/fb/matroxfb.rst
++++ b/Documentation/fb/matroxfb.rst
+@@ -317,8 +317,6 @@ Currently there are following known bugs:
+  - interlaced text mode is not supported; it looks like hardware limitation,
+    but I'm not sure.
+  - Gxx0 SGRAM/SDRAM is not autodetected.
+- - If you are using more than one framebuffer device, you must boot kernel
+-   with 'video=scrollback:0'.
+  - maybe more...
  
--2. fbcon=scrollback:<value>[k]
- 
--	The scrollback buffer is memory that is used to preserve display
--	contents that has already scrolled past your view.  This is accessed
--	by using the Shift-PageUp key combination.  The value 'value' is any
--	integer. It defaults to 32KB.  The 'k' suffix is optional, and will
--	multiply the 'value' by 1024.
--
--3. fbcon=map:<0123>
-+2. fbcon=map:<0123>
- 
- 	This is an interesting option. It tells which driver gets mapped to
- 	which console. The value '0123' is a sequence that gets repeated until
-@@ -116,7 +109,7 @@ C. Boot options
- 	Later on, when you want to map the console the to the framebuffer
- 	device, you can use the con2fbmap utility.
- 
--4. fbcon=vc:<n1>-<n2>
-+3. fbcon=vc:<n1>-<n2>
- 
- 	This option tells fbcon to take over only a range of consoles as
- 	specified by the values 'n1' and 'n2'. The rest of the consoles
-@@ -127,7 +120,7 @@ C. Boot options
- 	is typically located on the same video card.  Thus, the consoles that
- 	are controlled by the VGA console will be garbled.
- 
--5. fbcon=rotate:<n>
-+4. fbcon=rotate:<n>
- 
- 	This option changes the orientation angle of the console display. The
- 	value 'n' accepts the following:
-@@ -152,21 +145,21 @@ C. Boot options
- 	Actually, the underlying fb driver is totally ignorant of console
- 	rotation.
- 
--6. fbcon=margin:<color>
-+5. fbcon=margin:<color>
- 
- 	This option specifies the color of the margins. The margins are the
- 	leftover area at the right and the bottom of the screen that are not
- 	used by text. By default, this area will be black. The 'color' value
- 	is an integer number that depends on the framebuffer driver being used.
- 
--7. fbcon=nodefer
-+6. fbcon=nodefer
- 
- 	If the kernel is compiled with deferred fbcon takeover support, normally
- 	the framebuffer contents, left in place by the firmware/bootloader, will
- 	be preserved until there actually is some text is output to the console.
- 	This option causes fbcon to bind immediately to the fbdev device.
- 
--8. fbcon=logo-pos:<location>
-+7. fbcon=logo-pos:<location>
- 
- 	The only possible 'location' is 'center' (without quotes), and when
- 	given, the bootup logo is moved from the default top-left corner
-@@ -174,7 +167,7 @@ C. Boot options
- 	displayed due to multiple CPUs, the collected line of logos is moved
- 	as a whole.
- 
--9. fbcon=logo-count:<n>
-+8. fbcon=logo-count:<n>
- 
- 	The value 'n' overrides the number of bootup logos. 0 disables the
- 	logo, and -1 gives the default which is the number of online CPUs.
+ And following misfeatures:
 -- 
 2.26.2
 
