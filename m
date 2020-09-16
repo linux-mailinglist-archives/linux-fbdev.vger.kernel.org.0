@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8CBB26CF9F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 01:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9895326CFA6
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 01:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726714AbgIPX3n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 16 Sep 2020 19:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60766 "EHLO
+        id S1726839AbgIPX3u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 16 Sep 2020 19:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgIPX3l (ORCPT
+        with ESMTP id S1726485AbgIPX3p (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 16 Sep 2020 19:29:41 -0400
+        Wed, 16 Sep 2020 19:29:45 -0400
 Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E4CC06174A;
-        Wed, 16 Sep 2020 16:29:40 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id v196so33911pfc.1;
-        Wed, 16 Sep 2020 16:29:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E71C06174A;
+        Wed, 16 Sep 2020 16:29:45 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id d6so11326pfn.9;
+        Wed, 16 Sep 2020 16:29:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VOYtEk8KZWrcvtZ12wbyiXgSHJ3z1+Q3xen139w9qgI=;
-        b=eDzevpvUUV9bEk0cwG0ugKmwO4ounBKbrfuwPGHApNmNVoZ01y0p5LlDHKxm3SDUBD
-         CdfVk5xlKwro9dEUSneOJMpyQ1uL92YA82BwA3rOJQF0XmZDvJqrJ99zdD/KCesNEeW1
-         6zdajBngeO/tFvI7E1M/9FOoParvQpPcZIaVveq3RAcq8Gbied9xmjaVVd4Nhfdtfcwh
-         ybI2LzlPz5sE8YS/D9wPCN9bY1OwyUDnRy2ln0udYkLmyJ0AckuHvL11knQUE1EtqWDq
-         hPI8j8CSJRG+3SMSGSsqb8lDmRHM65BK8XLJahcBwVmJyX1TaQXvks7bZQxOEFKGboGh
-         22HA==
+        bh=R9Gw6+PM5z71+mLBKqII8RPfqr0DXLe+0fkTbe6vh6w=;
+        b=tth1Nh/XQ96Hj5oCinWcQ2Jk+3xdLMXzDw8xIBWeF5PcgupbqWguKg/c08xeECM8pG
+         uYYvUUIhBbk/Arj8lzMcjWaPe8Zx3UK9NrXxBm2Q2ZmbXyoEjBQ50cnek9COerWEEc9p
+         9aj2b1qlhKWiH8EW8fw7NrWmsh3Yu54OUY8FXXxq2RWy1CpCUA7TRqsJitPIMhlk/QJu
+         RKfpiP1GQL3T6CsitBINMUyYd+cehiPrIBoNY0Lo0UwcVNm5S7UUKvTQwjbVmOJgFouH
+         1fpGpIDp7+hOXdh5+lfdct02Cllk46hpoNmqTy9OaFLLzOCEZlJbl6kwPEkSWQl7Z5Rc
+         vKbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VOYtEk8KZWrcvtZ12wbyiXgSHJ3z1+Q3xen139w9qgI=;
-        b=Pbu7fyReidox7JJWF2W1tapDpt5rBsl3B0z8OkHfDsIQaEGlHqxmIqqUpaT/tNMXFQ
-         OLbkoZ/+W4IU46VSoouICfx+J+UtIUFD5QfSK2PvhDpZXGsYAkVCPEaSnhP2nyFWuOZx
-         jeYFZtz/EanGTCm9PlCQ+uGuxW+VhL5y+Vc5zUDsUpMMWCPzVvTsogno5jD3HWaW5qWx
-         n2St1c5En8FjIpPSk4i1jHiIZ6GCkNL4AfHlGBaCi9FLatJY4ilKhVe9BQvl/CLp09Eu
-         qNVpYRjIJ2a1tBX0mRxI8B9QxkZmnazFFicB8Uug0qq+oGu5WJ2Tn//8wTT6esHqnjCm
-         Kf4g==
-X-Gm-Message-State: AOAM530u6XCH5fA9a8KVSNhGXRulahEAg/eLkw0PlSUbRoIrgFqAJ5Bv
-        Jc8t8c6Cczj/6s9kcpGsdX8=
-X-Google-Smtp-Source: ABdhPJwa+2NAh4mm3To4oBtqglSVETowI3JwufWM839p7L74VFz6f98xoG3dt76WbkwZjmZiYC3eig==
-X-Received: by 2002:a63:5d07:: with SMTP id r7mr7505957pgb.440.1600298980041;
-        Wed, 16 Sep 2020 16:29:40 -0700 (PDT)
+        bh=R9Gw6+PM5z71+mLBKqII8RPfqr0DXLe+0fkTbe6vh6w=;
+        b=uiBbhyqVr49dNzAPA4LXbD/3CE9GKo/58bhv9DFY9jonR/elyqzRXXeC7Ebc1PwCnW
+         VrLzunFfJNONfsyM/NMMLTJoLZYhbY5KwzkSx5QUnpiHqKeARe5GpOOxuVIIP1hiD5ZM
+         jbjXzJm+TL/3LdPTtr9gIJxPJldXyZXSDvNX85uU7ga4iyGLZsfoGTapKmEdXP6Q15VO
+         ruBK9jystE3O7TWxUYzhMvDPPs/YcXpAI1mBeqYyQCbl4DZVIv7lXFNnxnMfRupZLTy4
+         dOclIKPFJldjdmWlQf74X8mqEmxZjBfqtNOZEHBAFZaSwIIcfGhtsbfXNmLInGKzWjif
+         WXZA==
+X-Gm-Message-State: AOAM531cl9G7/lEaTdUulnfRtMlVzy22pteVC1NNry4/MPAbeq9/u2rO
+        SQcdL0a3LptBFNt4l/Y6PNA=
+X-Google-Smtp-Source: ABdhPJyCnFrPabBdWCyLPPtMJja+gOhWvlL7wM89YS7TmpqjwDflag2Hdqv+S7qniKqbtV+wHVr3xg==
+X-Received: by 2002:a63:384f:: with SMTP id h15mr1923748pgn.144.1600298984670;
+        Wed, 16 Sep 2020 16:29:44 -0700 (PDT)
 Received: from localhost.localdomain (sau-ff5be-or.servercontrol.com.au. [43.250.207.3])
-        by smtp.gmail.com with ESMTPSA id u14sm18366213pfm.80.2020.09.16.16.29.30
+        by smtp.gmail.com with ESMTPSA id m13sm4880196pgl.68.2020.09.16.16.29.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2020 16:29:39 -0700 (PDT)
+        Wed, 16 Sep 2020 16:29:43 -0700 (PDT)
 From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
 To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -56,9 +56,9 @@ Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
         nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
         torvalds@linux-foundation.org,
         Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH v3] docs: fb: Remove matroxfb scrollback boot option
-Date:   Thu, 17 Sep 2020 04:43:01 +0530
-Message-Id: <20200916231301.32066-1-unixbhaskar@gmail.com>
+Subject: [PATCH v3] docs: fb: Remove sstfb scrollback boot option
+Date:   Thu, 17 Sep 2020 04:51:41 +0530
+Message-Id: <20200916232141.17311-1-unixbhaskar@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,33 +67,34 @@ List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-This patch remove the reference of scrollback option from this file. This
-is related to the below commits.
+This patch remove the reference of scrollback from this file. This is related to 
+these below commits.
 
 Commit 973c096f6a85(vgacon: remove software scrollback support)
 Commit 50145474f6ef(fbcon: remove soft scrollback code)
 
 Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
-Correcting the previous versions errors. Proper changelog, subject text.
-Trying to incorporate Willy's and Greg's suggestions.
+This version correcting the previous versions errors. Proper changelog and subject 
+text. Trying to incorporate Willy's and Greg's suggestions.
 
- Documentation/fb/matroxfb.rst | 2 --
- 1 file changed, 2 deletions(-)
+ Documentation/fb/sstfb.rst | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/Documentation/fb/matroxfb.rst b/Documentation/fb/matroxfb.rst
-index f1859d98606e..6158c49c8571 100644
---- a/Documentation/fb/matroxfb.rst
-+++ b/Documentation/fb/matroxfb.rst
-@@ -317,8 +317,6 @@ Currently there are following known bugs:
-  - interlaced text mode is not supported; it looks like hardware limitation,
-    but I'm not sure.
-  - Gxx0 SGRAM/SDRAM is not autodetected.
-- - If you are using more than one framebuffer device, you must boot kernel
--   with 'video=scrollback:0'.
-  - maybe more...
+diff --git a/Documentation/fb/sstfb.rst b/Documentation/fb/sstfb.rst
+index 8e8c1b940359..42466ff49c58 100644
+--- a/Documentation/fb/sstfb.rst
++++ b/Documentation/fb/sstfb.rst
+@@ -185,9 +185,6 @@ Bugs
+   contact me.
+ - The 24/32 is not likely to work anytime soon, knowing that the
+   hardware does ... unusual things in 24/32 bpp.
+-- When used with another video board, current limitations of the linux
+-  console subsystem can cause some troubles, specifically, you should
+-  disable software scrollback, as it can oops badly ...
  
- And following misfeatures:
+ Todo
+ ====
 -- 
 2.28.0
 
