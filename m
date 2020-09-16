@@ -2,95 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3073426B954
-	for <lists+linux-fbdev@lfdr.de>; Wed, 16 Sep 2020 03:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7B626BA10
+	for <lists+linux-fbdev@lfdr.de>; Wed, 16 Sep 2020 04:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726166AbgIPBXm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 15 Sep 2020 21:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726023AbgIPBXl (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 15 Sep 2020 21:23:41 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473B4C06174A;
-        Tue, 15 Sep 2020 18:23:41 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id s65so2986358pgb.0;
-        Tue, 15 Sep 2020 18:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=R+68u2MIINSbQZ35J94IbVZzxe7hVNzyM2OvbuirUZ8=;
-        b=lX7GyUTznKTKSRirfofKbf1FX+Zt3luuetp6BMJU7MdX169lJGLx5syQFENwO9fmiK
-         9Lxma/uxJzYvOnN8tkFg2NcR9FOfa0ki+LPvPqY2Xh8KJkwc/jc4I6PM4K0waCPacxNN
-         lkXzJgd2uakxRG5WVhWjCKwSpYNxK2wB8EtUxRFEpf9EnK7zQboo0PSUdyF0H7Q+UHBR
-         X0cEJhlhghxHkos+RuUo+OfhIPq+xwbBqq19Eo7IUU60fPUR15JMv/N0ETvvKn4dn2hu
-         AHpqccjlGU6W4lOd8/uf76ftk8Dh1iGXRMFMQ82GT+nSTKya3wmkAQOiqOugvWkUgMqN
-         1X6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=R+68u2MIINSbQZ35J94IbVZzxe7hVNzyM2OvbuirUZ8=;
-        b=k1GDNGSl1lmOUh9LNuS7tugW7hd9WJvQwJ2/2rQrwIeCGXBTbM6ZEBjS751zBuqPCS
-         XRtlAJ20kZuqnHmcRucUEmn0XFVa6KJWrVrb1tMnvwmA5qUbpe6C1dUY9V6YyeDguRnP
-         e74sKT2YEqOAC8GtG1ru9sPcU5kwn3RL6QUoQ78xALvKAh9iodfxNlswyKICBJ35+DUo
-         412fqVzQiLFNOUmnaIDOc7tTmb67LV1Vmf/yLc1lb7QmHv72ouIS/NKAc+ROPLCpN8at
-         2L+xtuWACOwB0+/8f9Gw64yVQVd7p0oyHtzNGFkYEpfmGuPtVn1Xs/nF9u6WBXqUIoNQ
-         F7GQ==
-X-Gm-Message-State: AOAM532TudbKkfPdobU8BrGevmc5UVHdc8LIR1VVAV3X6j2HdXk3Uvj2
-        gwqE8LkTDtJeoCaqDUdtTQYXiI3VhP/jNg==
-X-Google-Smtp-Source: ABdhPJxSqgszqpcGb1L8+kh/YnUqtC5288Dar3j+Jhb5QibFfS310JLFkyUPbOYJU8iE4Z5tsmaT5g==
-X-Received: by 2002:a65:4641:: with SMTP id k1mr16589709pgr.133.1600219420865;
-        Tue, 15 Sep 2020 18:23:40 -0700 (PDT)
-Received: from localhost.localdomain (sau-ff5be-or.servercontrol.com.au. [43.250.207.3])
-        by smtp.gmail.com with ESMTPSA id c4sm649920pjq.7.2020.09.15.18.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 18:23:39 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
-        daniel@ffwll.ch, yuanmingbuaa@gmail.com, w@1wt.eu,
-        nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
-        torvalds@linux-foundation.org,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] docs: fb: Removed the scrollback related option
-Date:   Wed, 16 Sep 2020 06:51:12 +0530
-Message-Id: <20200916012112.13054-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        id S1726269AbgIPC0h (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 15 Sep 2020 22:26:37 -0400
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:41852 "EHLO 1wt.eu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726200AbgIPC0h (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 15 Sep 2020 22:26:37 -0400
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id 08G2Pq0t013475;
+        Wed, 16 Sep 2020 04:25:52 +0200
+Date:   Wed, 16 Sep 2020 04:25:52 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Cc:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
+        daniel@ffwll.ch, yuanmingbuaa@gmail.com, nopitydays@gmail.com,
+        zhangyunhai@nsfocus.com, luto@amacapital.net,
+        torvalds@linux-foundation.org
+Subject: Re: [PATCH] docs: fb: Remove framebuffer scrollback option for boot
+Message-ID: <20200916022552.GB13409@1wt.eu>
+References: <20200915222511.17140-1-unixbhaskar@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200915222511.17140-1-unixbhaskar@gmail.com>
+User-Agent: Mutt/1.6.1 (2016-04-27)
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Bhaskar,
 
-This patch remove the scrollback related option.
+your patches still all use very similar subjects and commit messages
+which are pretty confusing as they only differ by words unrelated to
+their real differences. It is important that the commit messages help
+the reader guess what is being touched, so if you're splitting your
+work into multiple patches, you need to indicate the difference in
+each message. What I can propose to make things clearer:
 
-Commit 973c096f6a85(vgacon: remove software scrollback support)
-Commit 50145474f6ef(fbcon: remove soft scrollback code)
+    docs: fb: Remove framebuffer scrollback boot option
+    docs: fb: Remove matroxfb scrollback boot option
+    docs: fb: Remove sstfb scrollback boot option
+    docs: fb: Remove vesafb scrollback boot option
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- Documentation/fb/vesafb.rst | 2 --
- 1 file changed, 2 deletions(-)
+Alternately they can all be merged into the first one under the same
+name, but then the detailed commit message should specifically list
+them.
 
-diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
-index 6821c87b7893..f890a4f5623b 100644
---- a/Documentation/fb/vesafb.rst
-+++ b/Documentation/fb/vesafb.rst
-@@ -135,8 +135,6 @@ ypan	  enable display panning using the VESA protected mode
- 
-                 * scrolling (fullscreen) is fast, because there is
- 		  no need to copy around data.
--		* You'll get scrollback (the Shift-PgUp thing),
--		  the video memory can be used as scrollback buffer
- 
-           kontra:
- 
--- 
-2.26.2
+In addition below:
 
+On Wed, Sep 16, 2020 at 03:55:11AM +0530, Bhaskar Chowdhury wrote:
+> This patch remove the scrollback option under boot options.
+> Plus readjust the numbers for the options in that section.
+> 
+> Commit 973c096f6a85(vgacon: remove software scrollback support)
+> Commit 50145474f6ef(fbcon: remove soft scrollback code)
+
+This is still not clear. The message should indicate the "why" more
+than the "what" which can be figured from the patch. In addition,
+only the fbcon commit is a cause for these changes. Last, Greg
+mentioned that the format is 'commit xxx ("subject")'.
+
+What about this:
+
+  The "scrollback" boot option was removed by commit 50145474f6ef
+  ("fbcon: remove soft scrollback code"), but the doc for fbcon was
+  not updated.  This patch updates the fbcon doc and renumbers the
+  sections.
+
+If you merge all your patches together, you can have this:
+
+  The "scrollback" boot option was removed by commit 50145474f6ef
+  ("fbcon: remove soft scrollback code"), but the fb docs were not
+  updated.  This patch removes reference to this option in the fbcon,
+  matroxfb, sstfb and vesafb docs and renumbers the sections as needed.
+
+And please increase your version so that it's more obvious that this
+replaces previous series. Call it v3 or v4 or whatever higher than
+the highest you've ever sent so that it's easier for your readers to
+ignore the older ones. Ideally after your signed-off-by you should
+add a "---" line with a quick changelog indicating what changed from
+the previous ones (just for reviewers, this will not be merged), for
+example:
+
+   Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+   ---
+   v3: clarify message description, update all fb drivers in the same patch
+   v2: reword commit message
+
+Hoping this helps,
+Willy
