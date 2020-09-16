@@ -2,155 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B85726B15B
-	for <lists+linux-fbdev@lfdr.de>; Wed, 16 Sep 2020 00:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1478126B645
+	for <lists+linux-fbdev@lfdr.de>; Wed, 16 Sep 2020 02:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727565AbgIOW22 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 15 Sep 2020 18:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727660AbgIOW2A (ORCPT
+        id S1727278AbgIPABp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 15 Sep 2020 20:01:45 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:49784 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727124AbgIPABn (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 15 Sep 2020 18:28:00 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C8FC06174A;
-        Tue, 15 Sep 2020 15:27:59 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id v14so499285pjd.4;
-        Tue, 15 Sep 2020 15:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HqPwY8D5/2Rw/0M6IfuCI4L/UKIJJbUOuXp1DTvLlRA=;
-        b=BkzjLz5kiB/xuGCmoqqZxpS2LzVFv1Ex8tWMw9Gz3y3tcX9m21lRC8umgl3+FT7tra
-         wJplU2JBCidttN5t2XZEhDzFtBvAe0gGMeHhk0bxket7A5Z6DqlqGHh3+PI+8s3bHRv/
-         fTtOZJLDkc2B8BTdgCpLLHrIsn5bjYqeBeK/he1gyUUXkXjBMq1fVupqvjFoA9UJ3WXJ
-         M9krBtcHhd3NqtiLIkwsM5+MWra38TEUzQJfnbC9F7oTwSpuQi5uGcZqSKk28GtyMepo
-         6PYLgbjEtBnNZHDDnZI/8R4lSDTr3gEBr9EJeSrtynU0XWFn87oLzy3UiEVx7dExycjZ
-         tGIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HqPwY8D5/2Rw/0M6IfuCI4L/UKIJJbUOuXp1DTvLlRA=;
-        b=hDuvEM7KY1gtm5Ni4zzwVgDtK62u3Zl9WfIrjia2YN5Gn38ZfdjrAdz+HDvXoyF7SV
-         PNCGyofJN8L2TmW8y6wVx6DP4+fRLvNFNaZsmuQswV1v4NZ5569b0eVrzlJkU1E4lxbD
-         gxBHH5xZu7kJ6XG/UiPpi9xJkUQUVA8u8BHuQ+52Jy7/Ypid1cLrVvbpLRf34e+1mz8Z
-         HZxNCjlSB5+W+RFtuPjBQ3mcao/H8YNjGH9p3tIVhzx4rtHy+JE0mmPybLR8T7YfI/nu
-         QzgxFbP4lf1IDIH0AH2KgjtByTxlM9bdwi05QNVaDtcHJJJktUw5OTyFiq3igj/lfz62
-         GTIw==
-X-Gm-Message-State: AOAM533bA2rFnGsiquHGnsFVWC+PuqpBMll0zICCFL/xYyeatdyewe5/
-        7fDsOfNDPN74UoShEFryHp8=
-X-Google-Smtp-Source: ABdhPJyYpoBwd236OANinSrbO3oKUuVxCwfV5vxtAk5hZv5ChrdZt+X9Z3WxHzAR9HbgvAXYo7UtFQ==
-X-Received: by 2002:a17:902:7:b029:d1:e5e7:be08 with SMTP id 7-20020a1709020007b02900d1e5e7be08mr3702095pla.59.1600208877626;
-        Tue, 15 Sep 2020 15:27:57 -0700 (PDT)
-Received: from localhost.localdomain (sau-ff5be-or.servercontrol.com.au. [43.250.207.3])
-        by smtp.gmail.com with ESMTPSA id y6sm472038pji.1.2020.09.15.15.27.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 15:27:56 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
-        daniel@ffwll.ch, yuanmingbuaa@gmail.com, w@1wt.eu,
-        nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
-        torvalds@linux-foundation.org,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] docs: fb: Remove framebuffer scrollback option for boot
-Date:   Wed, 16 Sep 2020 03:55:11 +0530
-Message-Id: <20200915222511.17140-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        Tue, 15 Sep 2020 20:01:43 -0400
+Received: from fsav102.sakura.ne.jp (fsav102.sakura.ne.jp [27.133.134.229])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 08G01Fah025558;
+        Wed, 16 Sep 2020 09:01:15 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav102.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav102.sakura.ne.jp);
+ Wed, 16 Sep 2020 09:01:15 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav102.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 08G017YP025522
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Wed, 16 Sep 2020 09:01:15 +0900 (JST)
+        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Subject: Re: [PATCH] fbcon: Fix user font detection test at fbcon_resize().
+From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+To:     syzbot <syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com>,
+        george.kennedy@oracle.com, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, syzkaller-bugs@googlegroups.com
+Cc:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, natechancellor@gmail.com
+References: <00000000000024be1505ad487cbb@google.com>
+ <f6e3e611-8704-1263-d163-f52c906a4f06@I-love.SAKURA.ne.jp>
+Message-ID: <7c52e8cd-e4cb-cd0b-40d5-b9654aec09f3@I-love.SAKURA.ne.jp>
+Date:   Wed, 16 Sep 2020 09:01:06 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <f6e3e611-8704-1263-d163-f52c906a4f06@I-love.SAKURA.ne.jp>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-fbdev-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This patch remove the scrollback option under boot options.
-Plus readjust the numbers for the options in that section.
+Greg, will you pick up this patch?
 
-Commit 973c096f6a85(vgacon: remove software scrollback support)
-Commit 50145474f6ef(fbcon: remove soft scrollback code)
+It seems that finding the real cause of [3] and actually fixing [3] will be difficult.
+Since I can't reproduce [3] locally, I will have to try flood of "#syz test" requests
+for debug printk() patches.
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- Documentation/fb/fbcon.rst | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
-
-diff --git a/Documentation/fb/fbcon.rst b/Documentation/fb/fbcon.rst
-index e57a3d1d085a..328f6980698c 100644
---- a/Documentation/fb/fbcon.rst
-+++ b/Documentation/fb/fbcon.rst
-@@ -87,15 +87,8 @@ C. Boot options
- 	Note, not all drivers can handle font with widths not divisible by 8,
- 	such as vga16fb.
- 
--2. fbcon=scrollback:<value>[k]
- 
--	The scrollback buffer is memory that is used to preserve display
--	contents that has already scrolled past your view.  This is accessed
--	by using the Shift-PageUp key combination.  The value 'value' is any
--	integer. It defaults to 32KB.  The 'k' suffix is optional, and will
--	multiply the 'value' by 1024.
--
--3. fbcon=map:<0123>
-+2. fbcon=map:<0123>
- 
- 	This is an interesting option. It tells which driver gets mapped to
- 	which console. The value '0123' is a sequence that gets repeated until
-@@ -116,7 +109,7 @@ C. Boot options
- 	Later on, when you want to map the console the to the framebuffer
- 	device, you can use the con2fbmap utility.
- 
--4. fbcon=vc:<n1>-<n2>
-+3. fbcon=vc:<n1>-<n2>
- 
- 	This option tells fbcon to take over only a range of consoles as
- 	specified by the values 'n1' and 'n2'. The rest of the consoles
-@@ -127,7 +120,7 @@ C. Boot options
- 	is typically located on the same video card.  Thus, the consoles that
- 	are controlled by the VGA console will be garbled.
- 
--5. fbcon=rotate:<n>
-+4. fbcon=rotate:<n>
- 
- 	This option changes the orientation angle of the console display. The
- 	value 'n' accepts the following:
-@@ -152,21 +145,21 @@ C. Boot options
- 	Actually, the underlying fb driver is totally ignorant of console
- 	rotation.
- 
--6. fbcon=margin:<color>
-+5. fbcon=margin:<color>
- 
- 	This option specifies the color of the margins. The margins are the
- 	leftover area at the right and the bottom of the screen that are not
- 	used by text. By default, this area will be black. The 'color' value
- 	is an integer number that depends on the framebuffer driver being used.
- 
--7. fbcon=nodefer
-+6. fbcon=nodefer
- 
- 	If the kernel is compiled with deferred fbcon takeover support, normally
- 	the framebuffer contents, left in place by the firmware/bootloader, will
- 	be preserved until there actually is some text is output to the console.
- 	This option causes fbcon to bind immediately to the fbdev device.
- 
--8. fbcon=logo-pos:<location>
-+7. fbcon=logo-pos:<location>
- 
- 	The only possible 'location' is 'center' (without quotes), and when
- 	given, the bootup logo is moved from the default top-left corner
-@@ -174,7 +167,7 @@ C. Boot options
- 	displayed due to multiple CPUs, the collected line of logos is moved
- 	as a whole.
- 
--9. fbcon=logo-count:<n>
-+8. fbcon=logo-count:<n>
- 
- 	The value 'n' overrides the number of bootup logos. 0 disables the
- 	logo, and -1 gives the default which is the number of online CPUs.
--- 
-2.26.2
+On 2020/09/11 7:57, Tetsuo Handa wrote:
+> syzbot is reporting OOB read at fbcon_resize() [1], for
+> commit 39b3cffb8cf31117 ("fbcon: prevent user font height or width change
+>  from causing potential out-of-bounds access") is by error using
+> registered_fb[con2fb_map[vc->vc_num]]->fbcon_par->p->userfont (which was
+> set to non-zero) instead of fb_display[vc->vc_num].userfont (which remains
+> zero for that display).
+> 
+> We could remove tricky userfont flag [2], for we can determine it by
+> comparing address of the font data and addresses of built-in font data.
+> But since that commit is failing to fix the original OOB read [3], this
+> patch keeps the change minimal in case we decide to revert altogether.
+> 
+> [1] https://syzkaller.appspot.com/bug?id=ebcbbb6576958a496500fee9cf7aa83ea00b5920
+> [2] https://syzkaller.appspot.com/text?tag=Patch&x=14030853900000
+> [3] https://syzkaller.appspot.com/bug?id=6fba8c186d97cf1011ab17660e633b1cc4e080c9
+> 
+> Reported-by: syzbot <syzbot+b38b1ef6edf0c74a8d97@syzkaller.appspotmail.com>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> Fixes: 39b3cffb8cf31117 ("fbcon: prevent user font height or width change from causing potential out-of-bounds access")
+> Cc: George Kennedy <george.kennedy@oracle.com>
+> ---
+>  drivers/video/fbdev/core/fbcon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index 66167830fefd..dae7ae7f225a 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -2203,7 +2203,7 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
+>  	struct fb_var_screeninfo var = info->var;
+>  	int x_diff, y_diff, virt_w, virt_h, virt_fw, virt_fh;
+>  
+> -	if (ops->p && ops->p->userfont && FNTSIZE(vc->vc_font.data)) {
+> +	if (p->userfont && FNTSIZE(vc->vc_font.data)) {
+>  		int size;
+>  		int pitch = PITCH(vc->vc_font.width);
+>  
+> 
 
