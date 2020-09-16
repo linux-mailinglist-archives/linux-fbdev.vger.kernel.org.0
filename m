@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9895326CFA6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 01:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF0126CFA2
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 01:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbgIPX3u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 16 Sep 2020 19:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
+        id S1726850AbgIPX3v (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 16 Sep 2020 19:29:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgIPX3p (ORCPT
+        with ESMTP id S1726806AbgIPX3t (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 16 Sep 2020 19:29:45 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E71C06174A;
-        Wed, 16 Sep 2020 16:29:45 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id d6so11326pfn.9;
-        Wed, 16 Sep 2020 16:29:45 -0700 (PDT)
+        Wed, 16 Sep 2020 19:29:49 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C22AC061756;
+        Wed, 16 Sep 2020 16:29:48 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id kk9so255046pjb.2;
+        Wed, 16 Sep 2020 16:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=R9Gw6+PM5z71+mLBKqII8RPfqr0DXLe+0fkTbe6vh6w=;
-        b=tth1Nh/XQ96Hj5oCinWcQ2Jk+3xdLMXzDw8xIBWeF5PcgupbqWguKg/c08xeECM8pG
-         uYYvUUIhBbk/Arj8lzMcjWaPe8Zx3UK9NrXxBm2Q2ZmbXyoEjBQ50cnek9COerWEEc9p
-         9aj2b1qlhKWiH8EW8fw7NrWmsh3Yu54OUY8FXXxq2RWy1CpCUA7TRqsJitPIMhlk/QJu
-         RKfpiP1GQL3T6CsitBINMUyYd+cehiPrIBoNY0Lo0UwcVNm5S7UUKvTQwjbVmOJgFouH
-         1fpGpIDp7+hOXdh5+lfdct02Cllk46hpoNmqTy9OaFLLzOCEZlJbl6kwPEkSWQl7Z5Rc
-         vKbw==
+        bh=UuUWLJEBodzYyAEVXki7mrsbF9tCcBb6YY03Mkqze7c=;
+        b=CYblctxPRdoz/n3QXAcmm2DKINKZv4X01IObYhEn+Oe1+Au/Gn5WgCVLKMbKKhorMM
+         QGkAqu/GhZ5Jhs8z//bxyuMFQItM8PgizbnEWETjehh27zTtmpfWe+Sa68o/UA71Oo96
+         SsG3Is+uGY50woklfE0ZZjJLOYo60x6HdB2MJwkqV64rL6NUhEOuXXM3+/tQcyoV2jfZ
+         xvxE3Njn46gXcYPlBK8liWdCtYOQjaL2pqnqoLoBi0RGa5Osj+NirFoOYgy4bQ2DUWDf
+         PjSwG5YurEoWQTQZ0ERWJFSLZOchR1NGwc+ie2YZjRFWiIuxS18Nw1acZ4iFZ011FKMz
+         0m/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=R9Gw6+PM5z71+mLBKqII8RPfqr0DXLe+0fkTbe6vh6w=;
-        b=uiBbhyqVr49dNzAPA4LXbD/3CE9GKo/58bhv9DFY9jonR/elyqzRXXeC7Ebc1PwCnW
-         VrLzunFfJNONfsyM/NMMLTJoLZYhbY5KwzkSx5QUnpiHqKeARe5GpOOxuVIIP1hiD5ZM
-         jbjXzJm+TL/3LdPTtr9gIJxPJldXyZXSDvNX85uU7ga4iyGLZsfoGTapKmEdXP6Q15VO
-         ruBK9jystE3O7TWxUYzhMvDPPs/YcXpAI1mBeqYyQCbl4DZVIv7lXFNnxnMfRupZLTy4
-         dOclIKPFJldjdmWlQf74X8mqEmxZjBfqtNOZEHBAFZaSwIIcfGhtsbfXNmLInGKzWjif
-         WXZA==
-X-Gm-Message-State: AOAM531cl9G7/lEaTdUulnfRtMlVzy22pteVC1NNry4/MPAbeq9/u2rO
-        SQcdL0a3LptBFNt4l/Y6PNA=
-X-Google-Smtp-Source: ABdhPJyCnFrPabBdWCyLPPtMJja+gOhWvlL7wM89YS7TmpqjwDflag2Hdqv+S7qniKqbtV+wHVr3xg==
-X-Received: by 2002:a63:384f:: with SMTP id h15mr1923748pgn.144.1600298984670;
-        Wed, 16 Sep 2020 16:29:44 -0700 (PDT)
+        bh=UuUWLJEBodzYyAEVXki7mrsbF9tCcBb6YY03Mkqze7c=;
+        b=I87QjYQx770697vtvqhPPXqGCjyXyLFd+e90CDKqFEEJcrIw0nRO6ozX434lYI7i+c
+         +iJV4TWMkfqvyt19doqI9dKyIMs8+eXshLjRb6h+uU1dc8uZrKhG7ABTcKwp5Uw1sqXb
+         iIUxNQghq+13SCmrXCxJ+vyOyzp0l898RMVkVynNwR6IKlDl/FwdO2ZUHXZ/Kc5erAjb
+         h7Fn58hok1Lv3gQ8etABKEdq1zsyJZxCPsqd4bQYpu2LLhCSB3JnwklXTc80Apkl8PXR
+         Nud9QtElbUoZjiCYAuF+zeTy44Cclmb3s2H6N7tZlsFtfk2e2/ooj47T6LoGLUMlWQAN
+         cJcA==
+X-Gm-Message-State: AOAM530VZEo32jGm0Gpx2tmHAesgPmKSXebHihdF2yXNnd2Vd5g8BJIa
+        eThdkP4C4SqJb2sQ3sCduQ3CXYKQwv3VlcUU
+X-Google-Smtp-Source: ABdhPJxNBVuDFVhKSTTFI7L9sfLTHC8yZgMtbiqinUiXm/Byu3HTHLh1h5J3mm5VXUGSn48iM50q3A==
+X-Received: by 2002:a17:902:59ce:b029:d1:e5e7:bde8 with SMTP id d14-20020a17090259ceb02900d1e5e7bde8mr8221612plj.72.1600298988110;
+        Wed, 16 Sep 2020 16:29:48 -0700 (PDT)
 Received: from localhost.localdomain (sau-ff5be-or.servercontrol.com.au. [43.250.207.3])
-        by smtp.gmail.com with ESMTPSA id m13sm4880196pgl.68.2020.09.16.16.29.34
+        by smtp.gmail.com with ESMTPSA id p11sm17898701pfq.130.2020.09.16.16.29.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2020 16:29:43 -0700 (PDT)
+        Wed, 16 Sep 2020 16:29:47 -0700 (PDT)
 From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
 To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -56,9 +56,9 @@ Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
         nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
         torvalds@linux-foundation.org,
         Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH v3] docs: fb: Remove sstfb scrollback boot option
-Date:   Thu, 17 Sep 2020 04:51:41 +0530
-Message-Id: <20200916232141.17311-1-unixbhaskar@gmail.com>
+Subject: [PATCH v3] docs: fb: Remove vesafb scrollback boot option
+Date:   Thu, 17 Sep 2020 04:59:00 +0530
+Message-Id: <20200916232900.23502-1-unixbhaskar@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,34 +67,33 @@ List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
-This patch remove the reference of scrollback from this file. This is related to 
-these below commits.
+This patch remove the reference of scrollback from this file. This is 
+related to these below commits.
 
 Commit 973c096f6a85(vgacon: remove software scrollback support)
 Commit 50145474f6ef(fbcon: remove soft scrollback code)
 
 Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
-This version correcting the previous versions errors. Proper changelog and subject 
-text. Trying to incorporate Willy's and Greg's suggestions.
+Correcting the previous versions errors. Proper changelog and subject text.
+Trying to incorporate Willy's and Greg's suggestions.
 
- Documentation/fb/sstfb.rst | 3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/fb/vesafb.rst | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/fb/sstfb.rst b/Documentation/fb/sstfb.rst
-index 8e8c1b940359..42466ff49c58 100644
---- a/Documentation/fb/sstfb.rst
-+++ b/Documentation/fb/sstfb.rst
-@@ -185,9 +185,6 @@ Bugs
-   contact me.
- - The 24/32 is not likely to work anytime soon, knowing that the
-   hardware does ... unusual things in 24/32 bpp.
--- When used with another video board, current limitations of the linux
--  console subsystem can cause some troubles, specifically, you should
--  disable software scrollback, as it can oops badly ...
+diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
+index 6821c87b7893..f890a4f5623b 100644
+--- a/Documentation/fb/vesafb.rst
++++ b/Documentation/fb/vesafb.rst
+@@ -135,8 +135,6 @@ ypan	  enable display panning using the VESA protected mode
  
- Todo
- ====
+                 * scrolling (fullscreen) is fast, because there is
+ 		  no need to copy around data.
+-		* You'll get scrollback (the Shift-PgUp thing),
+-		  the video memory can be used as scrollback buffer
+ 
+           kontra:
+ 
 -- 
 2.28.0
 
