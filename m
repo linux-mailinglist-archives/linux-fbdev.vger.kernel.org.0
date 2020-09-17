@@ -2,68 +2,54 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C558926DC99
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 15:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4321E26E0F9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 18:42:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbgIQNPI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Sep 2020 09:15:08 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:33708 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726478AbgIQNPC (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Sep 2020 09:15:02 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 948F8699CE1CC840A75F;
-        Thu, 17 Sep 2020 21:15:00 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 17 Sep 2020 21:14:52 +0800
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <gregkh@linuxfoundation.org>,
-        <daniel.vetter@ffwll.ch>, <jirislaby@kernel.org>,
-        <ndesaulniers@google.com>, <natechancellor@gmail.com>,
-        <george.kennedy@oracle.com>, <peda@axentia.se>
-CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <jingxiangfeng@huawei.com>
-Subject: [PATCH] fbcon: Remove the superfluous break
-Date:   Thu, 17 Sep 2020 21:15:15 +0800
-Message-ID: <20200917131515.147029-1-jingxiangfeng@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728584AbgIQQlV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Sep 2020 12:41:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45916 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728581AbgIQQiL (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 17 Sep 2020 12:38:11 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA182214D8;
+        Thu, 17 Sep 2020 16:38:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600360691;
+        bh=ZbFCcq9rxKOm2jqLy5LrwzzDX3URSfmspDs7nsDj/b4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rCNJ+LLShql7CSA8MK8XMSJoU5yHqPOcvX8RSdZ+Uy3bucYkDG2A2umXzQ/ST1PV/
+         /0LPrLjM8Pt6GJD9ZrU6VfiL5Ngoy4wpLfZs1Ataa/2ZcT5gCwDbo03z3Cigdp5rDI
+         0KuJFk2+UryYS9MrZGDGM2ChDfW8zB+iEppMSgcM=
+Date:   Thu, 17 Sep 2020 18:38:43 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Cc:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        corbet@lwn.net, rdunlap@infradead.org, daniel@ffwll.ch,
+        yuanmingbuaa@gmail.com, w@1wt.eu, nopitydays@gmail.com,
+        zhangyunhai@nsfocus.com, luto@amacapital.net,
+        torvalds@linux-foundation.org
+Subject: Re: [PATCH v4 0/4] docs: fb: Removed framebuffer scrollback related
+ documentations
+Message-ID: <20200917163843.GA721081@kroah.com>
+References: <cover.1600333774.git.unixbhaskar@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1600333774.git.unixbhaskar@gmail.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Remove the superfuous break, as there is a 'return' before it.
+On Thu, Sep 17, 2020 at 03:56:11PM +0530, Bhaskar Chowdhury wrote:
+> 
+> In this patch series, documentation get in sync with the code removal
+> of scrollback,by this commit 50145474f6ef ("fbcon: remove soft scrollback code"),
+> by eliminating the information related to it.
 
-Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
----
- drivers/video/fbdev/core/fbcon.c | 2 --
- 1 file changed, 2 deletions(-)
+Much nicer, thanks for sticking with it:
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 0b49b0f44edf..623359aadd1e 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1727,7 +1727,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 				    vc->vc_video_erase_char,
- 				    vc->vc_size_row * count);
- 			return true;
--			break;
- 
- 		case SCROLL_WRAP_MOVE:
- 			if (b - t - count > 3 * vc->vc_rows >> 2) {
-@@ -1818,7 +1817,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 				    vc->vc_video_erase_char,
- 				    vc->vc_size_row * count);
- 			return true;
--			break;
- 
- 		case SCROLL_WRAP_MOVE:
- 			if (b - t - count > 3 * vc->vc_rows >> 2) {
--- 
-2.17.1
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
