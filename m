@@ -2,88 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE8826D503
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 09:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6300526D61E
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 10:13:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726340AbgIQHrg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Sep 2020 03:47:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40622 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726354AbgIQHrf (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Sep 2020 03:47:35 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F76321D43;
-        Thu, 17 Sep 2020 07:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600328834;
-        bh=CALILkZxFAAAwnWnrpQMoX+SZOHKjQaj7OhbjiEzVps=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ldPCAyvT8fhBDn6tx7RoNJE/AnFWnL6/6xwKfONdmxDxHatfCnV61IJWkXI8lQy5b
-         sRb2m/tTY7mI1LlLh20/u8iI55yGN2agl7XcT6+DU37rB0RAMcELyCeWy4/Af9VeSV
-         OPkhdNHetiEEj8JjXJZF0R1ZJ8vz3lbmoCWYKwAM=
-Date:   Thu, 17 Sep 2020 09:47:47 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Cc:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, rdunlap@infradead.org, daniel@ffwll.ch,
-        yuanmingbuaa@gmail.com, w@1wt.eu, nopitydays@gmail.com,
-        zhangyunhai@nsfocus.com, luto@amacapital.net,
-        torvalds@linux-foundation.org
-Subject: Re: [PATCH v3] docs: fb: Remove framebuffer scrollback boot option
-Message-ID: <20200917074747.GA3332340@kroah.com>
-References: <20200916230150.14516-1-unixbhaskar@gmail.com>
+        id S1726419AbgIQINc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Sep 2020 04:13:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726515AbgIQINI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 17 Sep 2020 04:13:08 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD03DC061224
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Sep 2020 01:03:40 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id q9so1024954wmj.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Sep 2020 01:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
+        b=Xm9muXpLMfdw+3JTaQ5+6nxJDSneO0K8th2wgQ0VLh2VI2BmK+XWoQ9cDtIn8+KaRJ
+         B45Xbntr5JjNU8mF7nIZd8VP+CTHviEtF1Um5VazOhr6GEQCgh9bbRNIM6C+XWioNjmk
+         ImuOo8Gi8eD0FtSQ7hHZ1yPAo82BLFHJwGGg0UxKCYs0oMSSpMWIe45dJUN+DzUELaKQ
+         JzvvcS8KVPQMZJTfgm/lLBewbBl9UGKGHM3XV6hYGQwunOqgCSfJKO8sQaLl1M6X9BRD
+         K+XM2hJttDJQqNZl5Xftk9yd2fnhmTZR2ol6vfSH0itoQkT2+o/FcX7saxpuLl0f47l5
+         EzpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=TUShtxADeMIRUv08jDyFnIdO2h4AVdi1g89uLOtrWXw=;
+        b=QZgNcwPEFYAMQxLFf0Zb+FJLvlmbNCqlI6hz/vQY1PLV8wfV+6bq+vHF79Df17pE+o
+         Y58POjNBZgsPjHPo8YWifCW5HOi1nEwDN0/fQsMdaaemDAW3jNfKzgdIiWo7SLtNWHGw
+         ryWd5idN3VPTc0fTeHQqO4GCWB0RwegdmTXI3KeiPViigxiJG8ejBYURT7/GqUKrvBdR
+         v5fz1+EFpN8UoA9poGxt4nlr5u6yDiZCawBWq/pM/Yfj697EiH1TIE6yYFocUkKJFaDi
+         bNmqRl65NiZuDHGBZGgHV0SRZrWDgVMmhFGRZj9H0TEgS1laDoiF9mKF+6tnfjzryALf
+         b4dA==
+X-Gm-Message-State: AOAM5301uVuj5FO/aGBLnQAIShkttbAfnVwq6CW7aMyd8lZsMlT8FnEN
+        uSGPJt+o3uBCtb/MCYhJGNylwQ==
+X-Google-Smtp-Source: ABdhPJzTwzfeJOnCQh65prZummqH9JR09Yxja+zvv2OTSAZpPcom4k7xuvXSyH3Yv50qn/8+2aIWyQ==
+X-Received: by 2002:a1c:e256:: with SMTP id z83mr8793930wmg.33.1600329817598;
+        Thu, 17 Sep 2020 01:03:37 -0700 (PDT)
+Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
+        by smtp.gmail.com with ESMTPSA id a13sm9836030wme.26.2020.09.17.01.03.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2020 01:03:36 -0700 (PDT)
+Date:   Thu, 17 Sep 2020 10:03:35 +0200
+From:   Simon Horman <simon.horman@netronome.com>
+To:     Joe Perches <joe@perches.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Jiri Kosina <trivial@kernel.org>,
+        Kees Cook <kees.cook@canonical.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
+        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        nouveau@lists.freedesktop.org, linux-input@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
+        iommu@lists.linux-foundation.org, dm-devel@redhat.com,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+        oss-drivers@netronome.com, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
+        storagedev@microchip.com, sparclinux@vger.kernel.org,
+        linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, bpf@vger.kernel.org,
+        dccp@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-sctp@vger.kernel.org,
+        alsa-devel <alsa-devel@alsa-project.org>
+Subject: Re: [oss-drivers] [trivial PATCH] treewide: Convert switch/case
+ fallthrough; to break;
+Message-ID: <20200917080334.GB5769@netronome.com>
+References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200916230150.14516-1-unixbhaskar@gmail.com>
+In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Sep 17, 2020 at 04:31:50AM +0530, Bhaskar Chowdhury wrote:
-> This patch remove reference to this option in this document and 
-> renumbered the sections. This is related to below commits.
+On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
+> fallthrough to a separate case/default label break; isn't very readable.
 > 
-> Commit 973c096f6a85(vgacon: remove software scrollback support)
-> Commit 50145474f6ef(fbcon: remove soft scrollback code)
->  
+> Convert pseudo-keyword fallthrough; statements to a simple break; when
+> the next label is case or default and the only statement in the next
+> label block is break;
 > 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
-> ---
-> This version try to correct the previous errors, proper changelog text, subject
-> Trying to incorporate Willy's & Greg's suggestions
+> Found using:
+> 
+> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> 
+> Miscellanea:
+> 
+> o Move or coalesce a couple label blocks above a default: block.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
 
-Better, but...
+...
 
-This should be a patch series, properly numbered and threaded, right?
+> diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> index 252fe06f58aa..1d5b87079104 100644
+> --- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> +++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+> @@ -345,7 +345,7 @@ static int matching_bar(struct nfp_bar *bar, u32 tgt, u32 act, u32 tok,
+>  		baract = NFP_CPP_ACTION_RW;
+>  		if (act == 0)
+>  			act = NFP_CPP_ACTION_RW;
+> -		fallthrough;
+> +		break;
+>  	case NFP_PCIE_BAR_PCIE2CPP_MapType_FIXED:
+>  		break;
+>  	default:
 
-The text above still has the commit ids not properly referenced, and you
-have trailing whitespace in the text too.
+This is a cascading fall-through handling all map types.
+I don't think this change improves readability.
 
-Writing the changelog is often times the hardest part of a patch, as you
-are finding out.
-
-How about this example, for this specific patch, as a changelog text:
-
----------
-In commit 50145474f6ef ("fbcon: remove soft scrollback code"), the
-framebuffer scrollback mode was removed, but the documentation was not
-updated.  Properly update the documentation by removing the option that
-is no longer present, and update the section numbering because of the
-removal.
----------
-
-Doesn't that make more sense about what is happening here, and provide
-enough information that when someone 10+ years from now goes and tries
-to find out why a boot option went away, what exactly happened and why?
-
-Can you make this type of change to all 4 of these patches and resend
-them, with the proper change information below the --- line as a v4
-series?
-
-thanks,
-
-greg k-h
+...
