@@ -2,98 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A883126D91E
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 12:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB70126DADC
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 13:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726637AbgIQKcm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Sep 2020 06:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50296 "EHLO
+        id S1726955AbgIQL4j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Sep 2020 07:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726543AbgIQKce (ORCPT
+        with ESMTP id S1726868AbgIQL4b (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Sep 2020 06:32:34 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D688C06174A;
-        Thu, 17 Sep 2020 03:32:34 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id t7so1052600pjd.3;
-        Thu, 17 Sep 2020 03:32:34 -0700 (PDT)
+        Thu, 17 Sep 2020 07:56:31 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79242C06174A;
+        Thu, 17 Sep 2020 04:56:31 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id 7so1213271pgm.11;
+        Thu, 17 Sep 2020 04:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=54p7qoHzf7+ugk/+fGt4XtZ13EYtHqMRyG7/17c2q8Q=;
-        b=k5EHHddjSUw+zfRBSeYI+gdy9nTgri2kD2ZKlXVYmVOIxRYYyPdiIexnhlBjOvnZnF
-         A57KFb7oodOidv95tec2+ySSJ3w1GEdxQgWRBro4rEl3i8vNc6scx1ksOHx6Eq+AhzGv
-         BPKBT6KSBSIF7G2Pwit6eX1C1SwUZFnfKjJKdV11Km+QJBc3hyVpWC7pPTmnzy4M+YO4
-         jlZXDNFu19wcqYf46rZZ7fyhwvdayUHMiT99AP5TsRd+Lu5ymf5A4ZtF1BKye79moODE
-         d0Dh4EvOyRCrCbhzkbxRvL+vc8I8mYVE1tCL448OlS7oyYleyOdyaxZVxpmrzII6vT0J
-         KfIQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mwiQFVnuTHeY2gHO84RjfglTiONbgKCnCABvveUVThQ=;
+        b=fog2lnoBs5qYsr5GrZjMLZkHrGQzLIkBtCDjTB6v6YavrHLMIaty8smqYvFmhhMSG3
+         /0oWuGGlHgQ4Qmq6Tgzhi73UmJBCceymEh9Qb7pogguXjlESeoA0cXVCOdH6WYggopgS
+         hPmPcr3Fq1xge9VxAkQcMfxfIqbHyCHSznSrOPn7N7pM8bfElXrjMK9Dnekm0/Vdv/tt
+         M8mplQV1BCO+z1S9pm9dNswcjKy0W/wJN1FfwDltHSnP/LKHy63JEZfwKsKYbm6U8Eh6
+         YEvlwNz+CfywCbuGKHbx3ogbeEkqp+3Oe5CkzAAznQ6GNqqjhSblG/CIj6ZR33qnOSdY
+         LjKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=54p7qoHzf7+ugk/+fGt4XtZ13EYtHqMRyG7/17c2q8Q=;
-        b=q7wBZRNGXnJSoDkId4yyG+DFLOIzTjuxk/T3bNKWt2BqTBUfT1ryK7CLF19Q0rYktG
-         RW92TLhHO6QvscgQJ0RCeSTMwGVg01g2W92okubMEDNxIeDzFy/bekfOecnC6L1xn8RP
-         6Sg36qaanqqI+ppLMZ2psCxvrHpWmqb85Qku0ZS/xuXHJdjLRcLBAxQrBbp+W3TXUoa/
-         yIDrUhaEGAfT9E3Za7aNFrvUax5rg/my/fmcdqOoCZwDx/u+eR3ebNk0tiyb/7Oh2lrV
-         oKwuO5t7QZ5WH64cibnzmQm2eoAUt86Xd4TfBaxtgvYPNq94M2KL6CNm4UTG0sZYMvP+
-         RrZQ==
-X-Gm-Message-State: AOAM531qc1eFLblFQh2pOkDCwg6SsSL/R9IqEvxMbc9s7AhkYCiqRNyO
-        gWXwtzcCiAmY78VQEYC1cig=
-X-Google-Smtp-Source: ABdhPJxf1IPlHpZWbPGZkh8IgsqbIzWiJpHfAoaSybS31HlR6xoit1TTgna24ML3R54scVbQGkdvJg==
-X-Received: by 2002:a17:902:d888:b029:d0:cb2d:f274 with SMTP id b8-20020a170902d888b02900d0cb2df274mr27934127plz.13.1600338753820;
-        Thu, 17 Sep 2020 03:32:33 -0700 (PDT)
-Received: from localhost.localdomain (sau-465d4-or.servercontrol.com.au. [43.250.207.1])
-        by smtp.gmail.com with ESMTPSA id e207sm21781927pfh.171.2020.09.17.03.32.23
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mwiQFVnuTHeY2gHO84RjfglTiONbgKCnCABvveUVThQ=;
+        b=U3tPe93HDb1stiD6LzxDCENl41CzWvVySvjGplFahPUK1MfiabW2qmjIYlWiYjnsiC
+         A95T0tTLUvN+yqY8wlBnWP7oS8CoflQ4BI5zPsFjHDaWLvytX5veP4TTKZ5NtAq1GZCv
+         SHClwgtG1G4BBx/WltQA0PiG66HEIOZYJUqHrU1RoGC2wtTktnVk3Y/RYvsOrDir9ubk
+         tLrzLgf+EPFe+F5ybwgLQCrjFbEtQnvD8oe46O3kZtI6dZPO4rM7lri3Iizg4Qrw4QaJ
+         VIkIxj8PzQtMHtLdXD7Mg0wz7VUMS29iX9B6mny2aaoy0Q9QaYFdAxDzCYFrcS7hWxT+
+         EykA==
+X-Gm-Message-State: AOAM533A61GP944uShYPpi7zbXmMWxSIG+grxBqJ5yve69t7iIQAw8OP
+        nRXGYHRAZ9jtcRXYU/SHofE=
+X-Google-Smtp-Source: ABdhPJy5/dKEi8cR2pyPna5g/BJeYZVG7ok2M5MO3E6XURpkuvyW2XKc2jQ9nQoMnhscG7Sd2OX2ew==
+X-Received: by 2002:a62:3044:0:b029:142:2501:398b with SMTP id w65-20020a6230440000b02901422501398bmr10772327pfw.80.1600343790923;
+        Thu, 17 Sep 2020 04:56:30 -0700 (PDT)
+Received: from varodek.localdomain ([223.190.62.192])
+        by smtp.gmail.com with ESMTPSA id z1sm20174720pfz.70.2020.09.17.04.55.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2020 03:32:33 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     corbet@lwn.net, rdunlap@infradead.org, gregkh@linuxfoundation.org,
-        daniel@ffwll.ch, yuanmingbuaa@gmail.com, w@1wt.eu,
-        nopitydays@gmail.com, zhangyunhai@nsfocus.com, luto@amacapital.net,
-        torvalds@linux-foundation.org,
-        Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH 4/4] docs: fb: Remove vesafb scrollback boot option
-Date:   Thu, 17 Sep 2020 15:56:15 +0530
-Message-Id: <799e4d6ecca9aab53e823fc0001887d728be0aa5.1600333774.git.unixbhaskar@gmail.com>
+        Thu, 17 Sep 2020 04:56:30 -0700 (PDT)
+From:   Vaibhav Gupta <vaibhavgupta40@gmail.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>
+Cc:     Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v1] fbdev: aty: remove CONFIG_PM container
+Date:   Thu, 17 Sep 2020 17:23:14 +0530
+Message-Id: <20200917115313.725622-1-vaibhavgupta40@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1600333774.git.unixbhaskar@gmail.com>
-References: <cover.1600333774.git.unixbhaskar@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In commit 50145474f6ef ("fbcon: remove soft scrollback code"), the
-framebuffer scrollback mode was removed, but the documentation was not
-updated.  Properly update the documentation by removing the option that
-is no longer present,remove the scrollback option.
+The changes made in below mentioned commit removed CONFIG_PM containers
+from drivers/video/fbdev/aty/atyfb_base.c but not from
+drivers/video/fbdev/aty/atyfb.h for respective callbacks.
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+This resulted in error for implicit declaration for those callbacks.
+
+Fixes: 348b2956d5e6 ("fbdev: aty: use generic power management")
+
+Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
 ---
-Changes since V3:
-Following Willy's and Greg's suggestion,get rid of not relevant commit 
-hash and message from changelog and put a correct one.
- Documentation/fb/vesafb.rst | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/video/fbdev/aty/atyfb.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/fb/vesafb.rst b/Documentation/fb/vesafb.rst
-index 6821c87b7893..f890a4f5623b 100644
---- a/Documentation/fb/vesafb.rst
-+++ b/Documentation/fb/vesafb.rst
-@@ -135,8 +135,6 @@ ypan	  enable display panning using the VESA protected mode
+diff --git a/drivers/video/fbdev/aty/atyfb.h b/drivers/video/fbdev/aty/atyfb.h
+index a7833bc98225..551372f9b9aa 100644
+--- a/drivers/video/fbdev/aty/atyfb.h
++++ b/drivers/video/fbdev/aty/atyfb.h
+@@ -287,8 +287,8 @@ static inline void aty_st_8(int regindex, u8 val, const struct atyfb_par *par)
+ #endif
+ }
  
-                 * scrolling (fullscreen) is fast, because there is
- 		  no need to copy around data.
--		* You'll get scrollback (the Shift-PgUp thing),
--		  the video memory can be used as scrollback buffer
- 
-           kontra:
- 
+-#if defined(CONFIG_PM) || defined(CONFIG_PMAC_BACKLIGHT) || \
+-defined (CONFIG_FB_ATY_GENERIC_LCD) || defined (CONFIG_FB_ATY_BACKLIGHT)
++#if defined(CONFIG_PMAC_BACKLIGHT) || defined (CONFIG_FB_ATY_GENERIC_LCD) || \
++defined (CONFIG_FB_ATY_BACKLIGHT)
+ extern void aty_st_lcd(int index, u32 val, const struct atyfb_par *par);
+ extern u32 aty_ld_lcd(int index, const struct atyfb_par *par);
+ #endif
 -- 
 2.28.0
 
