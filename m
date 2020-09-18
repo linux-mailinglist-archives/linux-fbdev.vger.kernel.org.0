@@ -2,181 +2,137 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A3B26FA38
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 12:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E7A426FCC2
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 14:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbgIRKPN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Sep 2020 06:15:13 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:36475 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726421AbgIRKPN (ORCPT
+        id S1726406AbgIRMmN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Sep 2020 08:42:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39226 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbgIRMmI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Sep 2020 06:15:13 -0400
-Received: from threadripper.lan ([149.172.98.151]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1M1q8m-1kLQG00GBU-002Jcp; Fri, 18 Sep 2020 12:09:44 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     dri-devel@lists.freedesktop.org, hch@lst.de,
-        linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 3/3] fbdev: sbuslib: remove compat_alloc_user_space usage
-Date:   Fri, 18 Sep 2020 12:09:06 +0200
-Message-Id: <20200918100926.1447563-3-arnd@arndb.de>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200918100812.1447443-1-arnd@arndb.de>
-References: <20200918100812.1447443-1-arnd@arndb.de>
+        Fri, 18 Sep 2020 08:42:08 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCC1C06174A
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:42:07 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id g4so5482346wrs.5
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=SOcYopzpVA91Ur8JOndAUuW5kC5KQpU+aqaU8ciX7/I=;
+        b=XJthRxMj7p5FVQ8UB8QHPjpkyrZ1DYRAiW2zVjRAhJUW0e0QzTxX9S0LywyZSJEGAX
+         oQ6rcMf41/DYJXO67/Xq8aoMk84qRFYHTNdeA/7L9sScQbt/SEfZaJSlI5KxMxxR+CIT
+         M/6Aec09cMTtIOtfSD5s3TkOo40GHFODxElv0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=SOcYopzpVA91Ur8JOndAUuW5kC5KQpU+aqaU8ciX7/I=;
+        b=Z0S3vTsiduiHI9rEgBN1legXvFqCcXi1Q1N2gvpDBSKopsjkr428tr+Tbtaci7JxHI
+         4INLrFnfOWwmzCBZtqbwXWlzg6ds4jBEoE4RI9GuX8FhuuE+4rm/UcXVtqlLSvGPwg4P
+         WkwHIQgcHCMPHEPXs3FbOjR3dcX0hDz2xiYYB/ACMa+znPKao+GcNUodS0fSW3Csn5bx
+         ql0DpELbGf24B6TAx1E045L80EBKRQOYcS5FjGJay6gYX6cteueXWiTnFYVIBF5TfdTp
+         Ge8TTMnmO0lV+MrFZyWc81kBrAsaQnFNNKGiX3NqZfkPUEEwds1fPfOg3Wtp8vWktqZQ
+         n7Zw==
+X-Gm-Message-State: AOAM530sKM9t5StJ3/Qo3f6fP6Ux0FJXy92avNhO8XBX0icjzBAQ/7rA
+        85fri/vEtdcjEcuqJ/pLlmfolA==
+X-Google-Smtp-Source: ABdhPJzrTC3CW6AB1dTSGBrjqUS3H6j44ck9bWQgvGGmKSFb26qrBxqU+OHgoRbREA252KDgVlNEww==
+X-Received: by 2002:a5d:4a49:: with SMTP id v9mr41100529wrs.153.1600432926218;
+        Fri, 18 Sep 2020 05:42:06 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id d2sm5156057wro.34.2020.09.18.05.42.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2020 05:42:05 -0700 (PDT)
+Date:   Fri, 18 Sep 2020 14:42:03 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-geode@lists.infradead.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1] fbdev: aty: remove CONFIG_PM container
+Message-ID: <20200918124203.GY438822@phenom.ffwll.local>
+Mail-Followup-To: Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sam Ravnborg <sam@ravnborg.org>, Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Antonino Daplas <adaplas@gmail.com>, linux-fbdev@vger.kernel.org,
+        kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20200917115313.725622-1-vaibhavgupta40@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:HKl3xxYSvyhA+JIl+nlo9qpNjrLsxo9vURIHerUOHnl60TdZkan
- tzIABrGkg/YRq17ShVdHy9rPV3ryj1yGdazrJOt8995wSQs5asRLOTG1fOjR2FLcsmZNRR2
- l06hFlOQJDBUmwZvw35WRKJXxxSA7BHxfImIE3u1cpI1T9V0YB3ttyb5TMB1usfqWb00KGk
- N3kjYIIgYEOuRSiFZ5gYA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZctDqYWVmpc=:r9XG7x9rA9E56PRm2DddDG
- +9fQemgMOQsCR023LYVVbTHjvIYF5Ms0wNHGgAneOJGgba4BURko/x6dync7YO+5RaAnZ0xD8
- U+K8G+zGVJTIHCtCpXAKIjCZ9eT8nrFHMA03HDDKwbvy5DUUTViq/8m0iHMyIOAPlO1M3kL50
- Q/BBQ+CiS65xUfQHluubRUkBe+YIk87O6gKqTRkmyoG0ithn+GMv3bjJsjTyQRQvJNb1tIT4x
- Qs39Hvjyg4tR0I3CUTE8qIfA0n/IercCVePGMVQ3/1nSSq3myf6r5ym6K7TGrKXYvkjEW+Aop
- p7I+8kuTN/+WsmKec5BTEkY7r3y0AznbzLRkzLSai7w+R3LL1nOt4yL1uGKkLZJMoT+yC5mMj
- WdW5wQe92A75AuQN04tcSFCMRnoYKuyMLZ1zN0mq0kLMuXS5ptVgKUaSuiZ38rZlqgYyqTMig
- kXK3/dn3uLrg+fgOX1WmrlJe+F2BRC1gNZxSl5gSr3SwaeDLxwgHCTWWwMeATffZdJCLPGLho
- jXH3kdhzxTtoCGCfnqrUjujAVbC8XjVVpuDWRp149Dimcsj5GhSL7h8ASDc1dUV15rs30FJxR
- gpIBdxH4AnGZ1Rlp/BUKG910X2nccfw1IrFS0/JxDDkj+9kVQCy5jDPfsBvatMa+a21MOL0kb
- Usjavt2gqp63ekue8fUZYnrMUqzb/GVFpLWkc13d6fZEFV4a3t2Q4L8/iKhho+E2uueKLgaLR
- jg6p6lval73a6tOXGHccOqKprtITAp6BCjRsL46yOpcGwHKXwYHnPXGng7cO5yUUtrnEE19B1
- 5U3dKwUOM46slqVTjHjXN94gWT3T5/xXUhWEFz+J0xewczI8nmpKNk6gJ5EhOMMUff0aLWH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200917115313.725622-1-vaibhavgupta40@gmail.com>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is one of the last users of compat_alloc_user_space()
-and copy_in_user(). The actual handler is implemented in the
-same file and could be shared, but as I couldn't test this
-properly I leave the native case alone and just make a straight
-copy of it for the compat case, with a minimum set of
-modifications.
+On Thu, Sep 17, 2020 at 05:23:14PM +0530, Vaibhav Gupta wrote:
+> The changes made in below mentioned commit removed CONFIG_PM containers
+> from drivers/video/fbdev/aty/atyfb_base.c but not from
+> drivers/video/fbdev/aty/atyfb.h for respective callbacks.
+> 
+> This resulted in error for implicit declaration for those callbacks.
+> 
+> Fixes: 348b2956d5e6 ("fbdev: aty: use generic power management")
+> 
+> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> Reported-by: kernel test robot <lkp@intel.com>
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/video/fbdev/sbuslib.c | 95 ++++++++++++++++++++++++++---------
- 1 file changed, 70 insertions(+), 25 deletions(-)
+Applied, thanks.
+-Daniel
 
-diff --git a/drivers/video/fbdev/sbuslib.c b/drivers/video/fbdev/sbuslib.c
-index f728db9bcff8..da28c279a54b 100644
---- a/drivers/video/fbdev/sbuslib.c
-+++ b/drivers/video/fbdev/sbuslib.c
-@@ -192,28 +192,6 @@ int sbusfb_ioctl_helper(unsigned long cmd, unsigned long arg,
- EXPORT_SYMBOL(sbusfb_ioctl_helper);
- 
- #ifdef CONFIG_COMPAT
--static int fbiogetputcmap(struct fb_info *info, unsigned int cmd, unsigned long arg)
--{
--	struct fbcmap32 __user *argp = (void __user *)arg;
--	struct fbcmap __user *p = compat_alloc_user_space(sizeof(*p));
--	u32 addr;
--	int ret;
--
--	ret = copy_in_user(p, argp, 2 * sizeof(int));
--	ret |= get_user(addr, &argp->red);
--	ret |= put_user(compat_ptr(addr), &p->red);
--	ret |= get_user(addr, &argp->green);
--	ret |= put_user(compat_ptr(addr), &p->green);
--	ret |= get_user(addr, &argp->blue);
--	ret |= put_user(compat_ptr(addr), &p->blue);
--	if (ret)
--		return -EFAULT;
--	return info->fbops->fb_ioctl(info,
--			(cmd == FBIOPUTCMAP32) ?
--			FBIOPUTCMAP_SPARC : FBIOGETCMAP_SPARC,
--			(unsigned long)p);
--}
--
- int sbusfb_compat_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
- {
- 	switch (cmd) {
-@@ -230,9 +208,76 @@ int sbusfb_compat_ioctl(struct fb_info *info, unsigned int cmd, unsigned long ar
- 	case FBIOGCURMAX:
- 		return info->fbops->fb_ioctl(info, cmd, arg);
- 	case FBIOPUTCMAP32:
--		return fbiogetputcmap(info, cmd, arg);
--	case FBIOGETCMAP32:
--		return fbiogetputcmap(info, cmd, arg);
-+	case FBIOPUTCMAP_SPARC: {
-+		struct fbcmap32 c;
-+		struct fb_cmap cmap;
-+		u16 red, green, blue;
-+		u8 red8, green8, blue8;
-+		unsigned char __user *ured;
-+		unsigned char __user *ugreen;
-+		unsigned char __user *ublue;
-+		unsigned int i;
-+
-+		if (copy_from_user(&c, compat_ptr(arg), sizeof(c)))
-+		       return -EFAULT;
-+		ured = compat_ptr(c.red);
-+		ugreen = compat_ptr(c.green);
-+		ublue = compat_ptr(c.blue);
-+
-+		cmap.len = 1;
-+		cmap.red = &red;
-+		cmap.green = &green;
-+		cmap.blue = &blue;
-+		cmap.transp = NULL;
-+		for (i = 0; i < c.count; i++) {
-+			int err;
-+
-+			if (get_user(red8, &ured[i]) ||
-+			    get_user(green8, &ugreen[i]) ||
-+			    get_user(blue8, &ublue[i]))
-+				return -EFAULT;
-+
-+			red = red8 << 8;
-+			green = green8 << 8;
-+			blue = blue8 << 8;
-+
-+			cmap.start = c.index + i;
-+			err = fb_set_cmap(&cmap, info);
-+			if (err)
-+				return err;
-+		}
-+		return 0;
-+	}
-+	case FBIOGETCMAP32: {
-+		struct fbcmap32 c;
-+		unsigned char __user *ured;
-+		unsigned char __user *ugreen;
-+		unsigned char __user *ublue;
-+		struct fb_cmap *cmap = &info->cmap;
-+		unsigned int index, i;
-+		u8 red, green, blue;
-+
-+		if (copy_from_user(&c, compat_ptr(arg), sizeof(c)))
-+		       return -EFAULT;
-+		index = c.index;
-+		ured = compat_ptr(c.red);
-+		ugreen = compat_ptr(c.green);
-+		ublue = compat_ptr(c.blue);
-+
-+		if (index > cmap->len || c.count > cmap->len - index)
-+			return -EINVAL;
-+
-+		for (i = 0; i < c.count; i++) {
-+			red = cmap->red[index + i] >> 8;
-+			green = cmap->green[index + i] >> 8;
-+			blue = cmap->blue[index + i] >> 8;
-+			if (put_user(red, &ured[i]) ||
-+			    put_user(green, &ugreen[i]) ||
-+			    put_user(blue, &ublue[i]))
-+				return -EFAULT;
-+		}
-+		return 0;
-+	}
- 	default:
- 		return -ENOIOCTLCMD;
- 	}
+> ---
+>  drivers/video/fbdev/aty/atyfb.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/aty/atyfb.h b/drivers/video/fbdev/aty/atyfb.h
+> index a7833bc98225..551372f9b9aa 100644
+> --- a/drivers/video/fbdev/aty/atyfb.h
+> +++ b/drivers/video/fbdev/aty/atyfb.h
+> @@ -287,8 +287,8 @@ static inline void aty_st_8(int regindex, u8 val, const struct atyfb_par *par)
+>  #endif
+>  }
+>  
+> -#if defined(CONFIG_PM) || defined(CONFIG_PMAC_BACKLIGHT) || \
+> -defined (CONFIG_FB_ATY_GENERIC_LCD) || defined (CONFIG_FB_ATY_BACKLIGHT)
+> +#if defined(CONFIG_PMAC_BACKLIGHT) || defined (CONFIG_FB_ATY_GENERIC_LCD) || \
+> +defined (CONFIG_FB_ATY_BACKLIGHT)
+>  extern void aty_st_lcd(int index, u32 val, const struct atyfb_par *par);
+>  extern u32 aty_ld_lcd(int index, const struct atyfb_par *par);
+>  #endif
+> -- 
+> 2.28.0
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
 -- 
-2.27.0
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
