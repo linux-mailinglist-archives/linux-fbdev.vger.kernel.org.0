@@ -2,118 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D664226FCCC
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 14:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB4EA26FD79
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 14:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726154AbgIRMpj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Sep 2020 08:45:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39780 "EHLO
+        id S1726779AbgIRMsS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Sep 2020 08:48:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgIRMpj (ORCPT
+        with ESMTP id S1726703AbgIRMsR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Sep 2020 08:45:39 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E7BC06174A
-        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:45:39 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id k15so5478904wrn.10
-        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:45:39 -0700 (PDT)
+        Fri, 18 Sep 2020 08:48:17 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F91C061797
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:48:12 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id s13so5199834wmh.4
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Sep 2020 05:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=date:from:to:cc:subject:message-id:mail-followup-to:references
          :mime-version:content-disposition:in-reply-to;
-        bh=mkjGA7pXWKUs0Nfv07SZZRXfgMyaUHALkc311WYJd5c=;
-        b=IjP59USZ4bt/dNbg6oSq65GvWXtsZNBOpmHcvEGwUUe7X+YQ8CuVdvzCJGUW31mYN+
-         kutEcRAjJR4RcIEaSUCQ+2SZ1Rv35nHNuqPRysdFMn9OVDXJ9a8uh6YI7JPIBIExQFFw
-         1nb0o6gG1SpBjtUqoSxsN0I9Nz6cEgQsIpwa8=
+        bh=j6z/UJ7CNrSXR9o7Cfm16LszuY4Y2gIbIznxSeH0B9A=;
+        b=lG981rnRtgZAm6syEr1bZwt4N84LNEPYwI/TtyOO/VThTo/f9Li5vCEwYo6F3ZuutF
+         6Gslyar/X9Ttu77h6dUYdULlgBkFmFESpKnO8YxLOmCCqVxm+xNqSqCSvB8T2cqti2My
+         /HA7oinA8lX9Ie/JT9IPM3+mo8pr5NmmDoZmI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id
          :mail-followup-to:references:mime-version:content-disposition
          :in-reply-to;
-        bh=mkjGA7pXWKUs0Nfv07SZZRXfgMyaUHALkc311WYJd5c=;
-        b=oFbUhqRhSzPuGoHjOSDVttuT14ndvnrPSATuGmh6CukNaGpiEbb9hWgJqCelgJ4tPY
-         8XkMY/EjRuX/GMXi41PFJeAXma+gW4XvGWiYyAIFlxjim5GkUb6d4LdsZ+psUTK/N8lO
-         DlzI6FF9clC3v3qkqE8fbqxl5b1d/UNbXJpd/RlnwwqVcXKkVlX1G2JaoUH6fYyGn/VH
-         0rxTWfAB89aeMSGiWbVPgh/n8DgrhJlJFbfgVmzIIRFPIrTETb3zs4rFAFPXFIsR5w8o
-         VTaSqMxPij0mIuZcyQV4qhn+L6Ig54A1gkVjdxUeP+edXpbVxr4AuTu9j2uZLSJQ0Lak
-         wiNw==
-X-Gm-Message-State: AOAM532MoUtc9divWlLDay4FEyul1xDlZVmGNW5TlYYNlLY+FF864Z8O
-        umqAaeF/VITGh3Q8JiyW1eAASw==
-X-Google-Smtp-Source: ABdhPJyDK0gDuuHiczv9k6y+Mdkm1lj9HIgPKWCvChWYK5+PoIgy7TapyPO7BGOVyhxEfKVMzA4lGQ==
-X-Received: by 2002:adf:81a3:: with SMTP id 32mr37517353wra.368.1600433138210;
-        Fri, 18 Sep 2020 05:45:38 -0700 (PDT)
+        bh=j6z/UJ7CNrSXR9o7Cfm16LszuY4Y2gIbIznxSeH0B9A=;
+        b=MZb58Q7XSdJv5wchGJM+11ZJRrW/b9P5FjC82ZF3iE7VLYMrDfk2k7rkXAbnVoKr1j
+         mpPwyq6+TJ2lVgf3ZJ71GaJE9RBpWgALNaMHkqlqINyj+ZdIb6g59Ab5qS+EKVtTxBXs
+         Fp79n6fWdaWj8/s7rybVrb8CKem7Qs/OXcrU/0m+HTYOQeZvvXHbyrFSmbAk4LdAn/vY
+         i42yDsKYIYWOmmS0uDX2FjRaetMkNRGje+VhsEaquzNjzwpQyc4EBi81t/e8nGWbN0mH
+         WPpz81cKOKbc5aadH6L2BEK0Dh+geQi37rNQfnLJh3S3cL2XicXH69ZpyCF8sAMcxXCm
+         YZXw==
+X-Gm-Message-State: AOAM530z3Z5o9xvVXUUVRFEOF7oX+CTKDIJBGG8HoMltxJhwzCEMBR52
+        +OzeA27+/C/P+y4XGmB/1DdAHQ==
+X-Google-Smtp-Source: ABdhPJyAwBd6mEl7zhhB5tmC68RAnfpPY5rzLITEX8vAOCgabHANhMyPXmiUCR2jm9cGTwuUEaAfOw==
+X-Received: by 2002:a7b:c141:: with SMTP id z1mr15912912wmi.79.1600433290849;
+        Fri, 18 Sep 2020 05:48:10 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id e18sm4912651wrx.50.2020.09.18.05.45.36
+        by smtp.gmail.com with ESMTPSA id b18sm5415123wrn.21.2020.09.18.05.48.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2020 05:45:37 -0700 (PDT)
-Date:   Fri, 18 Sep 2020 14:45:35 +0200
+        Fri, 18 Sep 2020 05:48:10 -0700 (PDT)
+Date:   Fri, 18 Sep 2020 14:48:08 +0200
 From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>
-Cc:     b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
-        daniel.vetter@ffwll.ch, ndesaulniers@google.com,
-        gustavoars@kernel.org, jirislaby@kernel.org,
-        george.kennedy@oracle.com, natechancellor@gmail.com,
-        peda@axentia.se, krzysztof.h1@wp.pl, akpm@linux-foundation.org,
-        adaplas@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fbcon: Remove the superfluous break
-Message-ID: <20200918124535.GB438822@phenom.ffwll.local>
-Mail-Followup-To: Jing Xiangfeng <jingxiangfeng@huawei.com>,
-        b.zolnierkie@samsung.com, gregkh@linuxfoundation.org,
-        ndesaulniers@google.com, gustavoars@kernel.org,
-        jirislaby@kernel.org, george.kennedy@oracle.com,
-        natechancellor@gmail.com, peda@axentia.se, krzysztof.h1@wp.pl,
-        akpm@linux-foundation.org, adaplas@gmail.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200918010521.69950-1-jingxiangfeng@huawei.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>, hch@lst.de,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] fbdev: stop using compat_alloc_user_space
+Message-ID: <20200918124808.GD438822@phenom.ffwll.local>
+Mail-Followup-To: Arnd Bergmann <arnd@arndb.de>,
+        linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        "David S . Miller" <davem@davemloft.net>, hch@lst.de,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20200918100812.1447443-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200918010521.69950-1-jingxiangfeng@huawei.com>
+In-Reply-To: <20200918100812.1447443-1-arnd@arndb.de>
 X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Sep 18, 2020 at 09:05:21AM +0800, Jing Xiangfeng wrote:
-> Remove the superfluous break, as there is a 'return' before it.
+On Fri, Sep 18, 2020 at 12:08:10PM +0200, Arnd Bergmann wrote:
+> The fbdev code uses compat_alloc_user_space in a few of its
+> compat_ioctl handlers, which tends to be a bit more complicated
+> and error-prone than calling the underlying handlers directly,
+> so I would like to remove it completely.
 > 
-> Fixes: bad07ff74c32 ("fbcon: smart blitter usage for scrolling")
-> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> This modifies two such functions in fbdev, and removes another
+> one that is completely unused.
+> 
+>     Arnd
+> 
+> Arnd Bergmann (3):
+>   fbdev: simplify fb_getput_cmap()
+>   fbdev: sbuslib: remove unused FBIOSCURSOR32 helper
+>   fbdev: sbuslib: remove compat_alloc_user_space usage
 
-Applied to drm-misc-next, thanks.
+Looks all good, but we're also kinda looking for a new volunteer for
+handling fbdev patches ... drm-misc commit rights, still not interested?
 -Daniel
 
-> ---
->  drivers/video/fbdev/core/fbcon.c | 2 --
->  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-> index 0b49b0f44edf..623359aadd1e 100644
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -1727,7 +1727,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
->  				    vc->vc_video_erase_char,
->  				    vc->vc_size_row * count);
->  			return true;
-> -			break;
->  
->  		case SCROLL_WRAP_MOVE:
->  			if (b - t - count > 3 * vc->vc_rows >> 2) {
-> @@ -1818,7 +1817,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
->  				    vc->vc_video_erase_char,
->  				    vc->vc_size_row * count);
->  			return true;
-> -			break;
->  
->  		case SCROLL_WRAP_MOVE:
->  			if (b - t - count > 3 * vc->vc_rows >> 2) {
+>  drivers/video/fbdev/core/fbmem.c |  44 +++++------
+>  drivers/video/fbdev/sbuslib.c    | 124 ++++++++++++++++++-------------
+>  2 files changed, 90 insertions(+), 78 deletions(-)
+> 
 > -- 
-> 2.17.1
+> 2.27.0
 > 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
 
 -- 
 Daniel Vetter
