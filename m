@@ -2,97 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B007C26E636
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Sep 2020 22:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B15F926EA28
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 02:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726492AbgIQUFd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Sep 2020 16:05:33 -0400
-Received: from mga06.intel.com ([134.134.136.31]:35244 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726438AbgIQUFc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Sep 2020 16:05:32 -0400
-IronPort-SDR: 1EqDDV9SWySMMXQjgrHW1/Tq43ZTXe22s50bgNybd15hjg4bWdlaVn0ZUNNKZFGLILKPh0ZVw+
- 9up+rZjLo4DQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9747"; a="221336979"
-X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
-   d="scan'208";a="221336979"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 12:40:16 -0700
-IronPort-SDR: OJtaUmUU2VRk9KtKnU2JOdZ0Wx6lNOu+0+CFBjlBeB4odozE5Gxp9wTpGmmaUJi2k6Nfsj2iiR
- 1ryN5FpIrCvQ==
-X-IronPort-AV: E=Sophos;i="5.77,271,1596524400"; 
-   d="scan'208";a="483882946"
-Received: from jekeller-mobl1.amr.corp.intel.com (HELO [10.212.151.155]) ([10.212.151.155])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2020 12:40:13 -0700
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
- break;
-To:     Keith Busch <kbusch@kernel.org>, Joe Perches <joe@perches.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Jiri Kosina <trivial@kernel.org>,
-        Kees Cook <kees.cook@canonical.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-        linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        nouveau@lists.freedesktop.org, linux-input@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-rdma@vger.kernel.org,
-        iommu@lists.linux-foundation.org, dm-devel@redhat.com,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-        oss-drivers@netronome.com, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        storagedev@microchip.com, sparclinux@vger.kernel.org,
-        linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, bpf@vger.kernel.org,
-        dccp@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, linux-sctp@vger.kernel.org,
-        alsa-devel <alsa-devel@alsa-project.org>
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
- <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
-From:   Jacob Keller <jacob.e.keller@intel.com>
-Organization: Intel Corporation
-Message-ID: <321069c8-a4c1-56ff-49fb-4c2bce1e6352@intel.com>
-Date:   Thu, 17 Sep 2020 12:40:13 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.2
+        id S1726112AbgIRAuc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Sep 2020 20:50:32 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:13274 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726102AbgIRAuc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 17 Sep 2020 20:50:32 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A79DC255FB1C7A8DD48E;
+        Fri, 18 Sep 2020 08:50:28 +0800 (CST)
+Received: from [10.174.178.248] (10.174.178.248) by smtp.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server (TLS) id 14.3.487.0; Fri, 18 Sep
+ 2020 08:50:26 +0800
+Subject: Re: [PATCH] fbcon: Remove the superfluous break
+To:     Nick Desaulniers <ndesaulniers@google.com>
+References: <20200917131515.147029-1-jingxiangfeng@huawei.com>
+ <CAKwvOdnm-PkEt6T3HqB-NYNYADth0MJkXCvFsc-_gyqRE-nmcg@mail.gmail.com>
+CC:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Greg KH <gregkh@linuxfoundation.org>, <daniel.vetter@ffwll.ch>,
+        <jirislaby@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        <george.kennedy@oracle.com>, <peda@axentia.se>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        <linux-fbdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Joe Perches <joe@perches.com>
+From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
+Message-ID: <5F640451.7020704@huawei.com>
+Date:   Fri, 18 Sep 2020 08:50:25 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-In-Reply-To: <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <CAKwvOdnm-PkEt6T3HqB-NYNYADth0MJkXCvFsc-_gyqRE-nmcg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.248]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 
 
-On 9/9/2020 1:55 PM, Keith Busch wrote:
-> On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
->> diff --git a/crypto/tcrypt.c b/crypto/tcrypt.c
->> index eea0f453cfb6..8aac5bc60f4c 100644
->> --- a/crypto/tcrypt.c
->> +++ b/crypto/tcrypt.c
->> @@ -2464,7 +2464,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
->>  		test_hash_speed("streebog512", sec,
->>  				generic_hash_speed_template);
->>  		if (mode > 300 && mode < 400) break;
->> -		fallthrough;
->> +		break;
->>  	case 399:
->>  		break;
-> 
-> Just imho, this change makes the preceding 'if' look even more
-> pointless. Maybe the fallthrough was a deliberate choice? Not that my
-> opinion matters here as I don't know this module, but it looked a bit
-> odd to me.
-> 
+On 2020/9/18 1:36, Nick Desaulniers wrote:
+> On Thu, Sep 17, 2020 at 6:15 AM Jing Xiangfeng <jingxiangfeng@huawei.com> wrote:
+>>
+>> Remove the superfuous break, as there is a 'return' before it.
+>
+> superfluous (missed "l")
 
-Yea this does look very odd..
+Thanks for correcting!
+>
+>>
+>> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+>
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+>
+> Thanks for the patch; I audited the rest of the switch statements in
+> this translation unit; LGTM.
+>
+>> ---
+>>   drivers/video/fbdev/core/fbcon.c | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+>> index 0b49b0f44edf..623359aadd1e 100644
+>> --- a/drivers/video/fbdev/core/fbcon.c
+>> +++ b/drivers/video/fbdev/core/fbcon.c
+>> @@ -1727,7 +1727,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+>>                                      vc->vc_video_erase_char,
+>>                                      vc->vc_size_row * count);
+>>                          return true;
+>> -                       break;
+>>
+>>                  case SCROLL_WRAP_MOVE:
+>>                          if (b - t - count > 3 * vc->vc_rows >> 2) {
+>> @@ -1818,7 +1817,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
+>>                                      vc->vc_video_erase_char,
+>>                                      vc->vc_size_row * count);
+>>                          return true;
+>> -                       break;
+>>
+>>                  case SCROLL_WRAP_MOVE:
+>>                          if (b - t - count > 3 * vc->vc_rows >> 2) {
+>> --
+>> 2.17.1
+>>
+>
+>
