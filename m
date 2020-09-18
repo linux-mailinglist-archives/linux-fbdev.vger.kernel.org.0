@@ -2,106 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2D026ED90
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 04:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C577B26FA2E
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Sep 2020 12:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728212AbgIRCVs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Sep 2020 22:21:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48000 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727584AbgIRCRY (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:17:24 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8586623718;
-        Fri, 18 Sep 2020 02:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395437;
-        bh=5LskZOh2pD9zg+8IVR0T9t1IBdkFEYbOnCrQ+2yn3kE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=geZQFJA9lMxyDGerl1L/lE9xwjuYqOy010jrJ7q8t3luSkYPhpVlQlkoK7DAzFbvk
-         RSVBOUdbWc2WEJPJZfxnsZ5LvV5KggXW6Yn7Ijt0SivDFFdcPVkPmbnuwUsKzpvfSi
-         z4NMu3lXJ6oDBDaeXCZf+oHpdOxsX3rWDSHV7twU=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wen Yang <wen.yang99@zte.com.cn>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        dri-devel@lists.freedesktop.org,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 27/64] drm/omap: fix possible object reference leak
-Date:   Thu, 17 Sep 2020 22:16:06 -0400
-Message-Id: <20200918021643.2067895-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918021643.2067895-1-sashal@kernel.org>
-References: <20200918021643.2067895-1-sashal@kernel.org>
+        id S1726149AbgIRKOD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Sep 2020 06:14:03 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:33079 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726009AbgIRKOC (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 18 Sep 2020 06:14:02 -0400
+X-Greylist: delayed 313 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 06:14:02 EDT
+Received: from threadripper.lan ([149.172.98.151]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MNbtD-1k98Bu3muZ-00P8yi; Fri, 18 Sep 2020 12:08:34 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     dri-devel@lists.freedesktop.org, hch@lst.de,
+        linux-kernel@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 0/3] fbdev: stop using compat_alloc_user_space
+Date:   Fri, 18 Sep 2020 12:08:10 +0200
+Message-Id: <20200918100812.1447443-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:HqcSX/i6GHoFmyY01bRB6CKtbn8MaB27UT0Ol1JC5D61FuBVEpu
+ UPtbHHIjZAKhvhQIb6QZpWTk7Cvz8P5eKYlnmDMJqr7FJvy1X67irWQrLyhQzU6E69ytquW
+ ZfAToXAayZQo4NyFOk8sxVZoPPCvYtC28GytZbVhFJdZO9GwqVdM8lxXViaenpLZT7/zWSE
+ 0tFo8ku0w0LaTGLKnXUzQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZTOfjxmbW44=:7xKPROFVHvDGjNtGzWHNQx
+ Kbdhd3m8SRu/kjQBijH3F72mPu9pxQTIlrx5Tusa7N69Jx0ZHs182UKijT5vFYVuDzgw5v+WQ
+ HbPASGmBY/j0z8BM4ciPPZnnMK0Qrk85SnLDf5qXQU+MetLn3c5yVTZkBOsFcFdUqkExWmL3Y
+ bg8me4YzQOdZQ5tTv8D8xqt5CZpEziZSmX5e1A4HSox2VuU3BDtQH8e8FH2AIJBECl3mjduKc
+ vp7TDycVBgSimqTnI1FP2UL6rZmcV2L1UTCW4XLthY+cQHLLjMkFbCNjUwjzILo+laUdwOFhL
+ Wod8OE/e0jd5gPtiD3cTNExK9e2ijGL4MoCQvvcXb3xvdBiY2Bosew+Vli8xZzlplvXbWjaSl
+ SAUFboJzjRLZbPoC7p8T+Fgaa+QPucYvbj9Pm9iWScdGGK0AUunh41h5CifpkdAWUdwEcN/MX
+ InBOnURqDLGKYuNUnfXDSNQ+6sUoALYhpl0JwZdSogsKeDUVAuTpc/NCf4v+TQPR+olJnuVJ0
+ 4ARnPaf9y2X6OT9o9kHqaBErw+iw36Pcd0EEA0UGRv6bHPQzMGXQwLAE+gotRCEGQWS63k1i2
+ hc9Ft/rEzRzOI2zW86sStSeV4JHdf60aPHHI4WiSThwRevzuMJn++TOquA1xrfTbxPZMPHkYI
+ obBVkxvdNRqMl/kp9SYtIgWhVRyAa/nqbabq+glY3eFXmpRa5ASXZg5WgF2BtSzXW4dAXU9Gc
+ ZCG2oOcPqs2lPv5d36WPZuwSDaeFa/bXcfvhf03y5/XZIuqAHw5rTkgwEVgLRrrOkSSFTu/wn
+ tfIAw0ns7AqtvLo6TElduRyBobsRksY6P10troh/Ypw60mayUG84Fc1f5kEWhEfPclCqM0g
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Wen Yang <wen.yang99@zte.com.cn>
+The fbdev code uses compat_alloc_user_space in a few of its
+compat_ioctl handlers, which tends to be a bit more complicated
+and error-prone than calling the underlying handlers directly,
+so I would like to remove it completely.
 
-[ Upstream commit 47340e46f34a3b1d80e40b43ae3d7a8da34a3541 ]
+This modifies two such functions in fbdev, and removes another
+one that is completely unused.
 
-The call to of_find_matching_node returns a node pointer with refcount
-incremented thus it must be explicitly decremented after the last
-usage.
+    Arnd
 
-Detected by coccinelle with the following warnings:
-drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c:212:2-8: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 209, but without a corresponding object release within this function.
-drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c:237:1-7: ERROR: missing of_node_put; acquired a node pointer with refcount incremented on line 209, but without a corresponding object release within this function.
+Arnd Bergmann (3):
+  fbdev: simplify fb_getput_cmap()
+  fbdev: sbuslib: remove unused FBIOSCURSOR32 helper
+  fbdev: sbuslib: remove compat_alloc_user_space usage
 
-Signed-off-by: Wen Yang <wen.yang99@zte.com.cn>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/1554692313-28882-2-git-send-email-wen.yang99@zte.com.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/omap2/dss/omapdss-boot-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmem.c |  44 +++++------
+ drivers/video/fbdev/sbuslib.c    | 124 ++++++++++++++++++-------------
+ 2 files changed, 90 insertions(+), 78 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c b/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-index 8b6f6d5fdd68b..43186fa8a13c9 100644
---- a/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-+++ b/drivers/video/fbdev/omap2/dss/omapdss-boot-init.c
-@@ -194,7 +194,7 @@ static int __init omapdss_boot_init(void)
- 	dss = of_find_matching_node(NULL, omapdss_of_match);
- 
- 	if (dss == NULL || !of_device_is_available(dss))
--		return 0;
-+		goto put_node;
- 
- 	omapdss_walk_device(dss, true);
- 
-@@ -221,6 +221,8 @@ static int __init omapdss_boot_init(void)
- 		kfree(n);
- 	}
- 
-+put_node:
-+	of_node_put(dss);
- 	return 0;
- }
- 
 -- 
-2.25.1
+2.27.0
 
