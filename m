@@ -2,88 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96085274134
-	for <lists+linux-fbdev@lfdr.de>; Tue, 22 Sep 2020 13:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EEE52741F8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 22 Sep 2020 14:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgIVLr2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 22 Sep 2020 07:47:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48822 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726685AbgIVLp6 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 22 Sep 2020 07:45:58 -0400
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2A3AF23600;
-        Tue, 22 Sep 2020 11:45:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600775158;
-        bh=KhrRBx22Zo8YLhOA9Kmsv44o/2fP94Lgd5T40CutoBs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=FWJTE6FZ+J4+3x+ntnTY7/64zukYESEjiMiU5E6qFeJU30GV4POgqVGBpGRhXp9ty
-         TBH5y1L1hwg/AbJJ7mXIDGkORCpNYdNx2sdKkqqG4/N6LPUxaE3yQH/9J4EegfRmCt
-         c7XDKbCqIA88Y7+X3/RJcyxxbfxZj5EHA4Yn7Iu8=
-Received: by mail-ed1-f50.google.com with SMTP id l17so15804688edq.12;
-        Tue, 22 Sep 2020 04:45:58 -0700 (PDT)
-X-Gm-Message-State: AOAM530NOEgLALt5SEtgvbv6ByNOnnC35algt/HTHB3Jy+KF3vlI6m9k
-        Z0xCweVUkygJsSSGWBSfqfUNW41FnzR5Js8SCr8=
-X-Google-Smtp-Source: ABdhPJxPZwz2sZgxkwXAxO6r3UJuoTaSBzjBPnrsefm9nDa0zYZ4j5Qq7O92PIlts1wDcqr2WEJd93Xn/6QwzI6Xz3s=
-X-Received: by 2002:a50:e78f:: with SMTP id b15mr3529383edn.104.1600775156644;
- Tue, 22 Sep 2020 04:45:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200921210233.21449-1-krzk@kernel.org> <20200921210610.GA5338@amd>
- <CAJKOXPdwQc86H-S=C4v_1VCbd7RhC2Soepj_2LqG1e_E_bgAug@mail.gmail.com>
- <20200922093637.GK4792@sirena.org.uk> <346f2ecd-a015-7f26-b68d-10cf6b5343b6@ti.com>
-In-Reply-To: <346f2ecd-a015-7f26-b68d-10cf6b5343b6@ti.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Tue, 22 Sep 2020 13:45:44 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPfUsCMR4gbOvsasfgzhOe-7b3iHOboQeVhvKF7RvgQGsw@mail.gmail.com>
-Message-ID: <CAJKOXPfUsCMR4gbOvsasfgzhOe-7b3iHOboQeVhvKF7RvgQGsw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: move Milo Kim to credits
-To:     Dan Murphy <dmurphy@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
+        id S1726518AbgIVMVH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 22 Sep 2020 08:21:07 -0400
+Received: from m17618.mail.qiye.163.com ([59.111.176.18]:44225 "EHLO
+        m17618.mail.qiye.163.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726505AbgIVMVH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 22 Sep 2020 08:21:07 -0400
+Received: from vivo-HP-ProDesk-680-G4-PCI-MT.vivo.xyz (unknown [58.251.74.231])
+        by m17618.mail.qiye.163.com (Hmail) with ESMTPA id BC3364E1651;
+        Tue, 22 Sep 2020 20:14:32 +0800 (CST)
+From:   Wang Qing <wangqing@vivo.com>
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Bernie Thompson <bernie@plugable.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Cc:     Wang Qing <wangqing@vivo.com>
+Subject: [PATCH] video: use kobj_to_dev()
+Date:   Tue, 22 Sep 2020 20:14:24 +0800
+Message-Id: <1600776867-24226-1-git-send-email-wangqing@vivo.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+        oVCBIfWUFZGU1NT0pNSE5MT01IVkpNS0tMTE1DTEhKS0NVEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+        FZT0tIVUpKS0hKTFVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Pkk6Ljo4HD8YAg4wMA5IOEkV
+        LEkwCjJVSlVKTUtLTExNQ0xITktNVTMWGhIXVQwaFRwKEhUcOw0SDRRVGBQWRVlXWRILWUFZTkNV
+        SU5KVUxPVUlISllXWQgBWUFISkhJNwY+
+X-HM-Tid: 0a74b5bca43c9376kuwsbc3364e1651
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 22 Sep 2020 at 13:36, Dan Murphy <dmurphy@ti.com> wrote:
->
-> All
->
-> On 9/22/20 4:36 AM, Mark Brown wrote:
-> > On Tue, Sep 22, 2020 at 09:08:37AM +0200, Krzysztof Kozlowski wrote:
-> >> On Mon, 21 Sep 2020 at 23:06, Pavel Machek <pavel@ucw.cz> wrote:
-> >>> I believe normal way would be to mark the entries "orphaned", not to
-> >>> drop them altogether. Plus, I believe someone from TI is likely to
-> >>> step up.
-> >> These are entries for specific drivers so they are covered by the
-> >> subsystem maintainers. You believe someone will step up, I believe if
-> >> these were important for TI, they would find the person some time ago,
-> >> so the emails won't bounce... This was similar with BQ chargers where
-> > It's fairly common for mobile parts to get dropped relatively quickly as
-> > the technology moves fairly quickly in that market, I think a lot of teh
-> > parts that Milo was working on were mobile ones.
->
-> These specific drivers don't see many patches applied to them. These
-> drivers did have a few patches this year to fix random bugs.
->
-> Since I have worked in these other subsystems if replacing the
-> Maintainer is desired over removal then my name and email can be added
-> like I did with Andrews.
->
-> Dan Murphy <dmurphy@ti.com>
+Use kobj_to_dev() instead of container_of()
 
-I will add then yours name in v2 of this patch. Thanks for taking care of these.
+Signed-off-by: Wang Qing <wangqing@vivo.com>
+---
+ drivers/video/fbdev/aty/radeon_base.c | 4 ++--
+ drivers/video/fbdev/udlfb.c           | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index 3fe509c..878c39a
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -2200,7 +2200,7 @@ static ssize_t radeon_show_edid1(struct file *filp, struct kobject *kobj,
+ 				 struct bin_attribute *bin_attr,
+ 				 char *buf, loff_t off, size_t count)
+ {
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct fb_info *info = dev_get_drvdata(dev);
+         struct radeonfb_info *rinfo = info->par;
+ 
+@@ -2212,7 +2212,7 @@ static ssize_t radeon_show_edid2(struct file *filp, struct kobject *kobj,
+ 				 struct bin_attribute *bin_attr,
+ 				 char *buf, loff_t off, size_t count)
+ {
+-	struct device *dev = container_of(kobj, struct device, kobj);
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct fb_info *info = dev_get_drvdata(dev);
+         struct radeonfb_info *rinfo = info->par;
+ 
+diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
+index 5b014b4..f9b3c1c
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -1457,7 +1457,7 @@ static ssize_t edid_show(
+ 			struct file *filp,
+ 			struct kobject *kobj, struct bin_attribute *a,
+ 			 char *buf, loff_t off, size_t count) {
+-	struct device *fbdev = container_of(kobj, struct device, kobj);
++	struct device *fbdev = kobj_to_dev(kobj);
+ 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
+ 	struct dlfb_data *dlfb = fb_info->par;
+ 
+@@ -1479,7 +1479,7 @@ static ssize_t edid_store(
+ 			struct file *filp,
+ 			struct kobject *kobj, struct bin_attribute *a,
+ 			char *src, loff_t src_off, size_t src_size) {
+-	struct device *fbdev = container_of(kobj, struct device, kobj);
++	struct device *fbdev = kobj_to_dev(kobj);
+ 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
+ 	struct dlfb_data *dlfb = fb_info->par;
+ 	int ret;
+-- 
+2.7.4
+
