@@ -2,69 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E03277753
-	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Sep 2020 19:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1357A277A0D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Sep 2020 22:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728501AbgIXQ77 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 24 Sep 2020 12:59:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726458AbgIXQ76 (ORCPT
+        id S1726037AbgIXUS4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 24 Sep 2020 16:18:56 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:53958 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725208AbgIXUS4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 24 Sep 2020 12:59:58 -0400
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70A3C0613CE;
-        Thu, 24 Sep 2020 09:59:58 -0700 (PDT)
-Received: from lwn.net (localhost [127.0.0.1])
+        Thu, 24 Sep 2020 16:18:56 -0400
+X-Greylist: delayed 367 seconds by postgrey-1.27 at vger.kernel.org; Thu, 24 Sep 2020 16:18:55 EDT
+Received: from ravnborg.org (unknown [188.228.123.71])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id AB141750;
-        Thu, 24 Sep 2020 16:59:54 +0000 (UTC)
-Date:   Thu, 24 Sep 2020 10:59:52 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Cc:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rdunlap@infradead.org, gregkh@linuxfoundation.org, daniel@ffwll.ch,
-        yuanmingbuaa@gmail.com, w@1wt.eu, nopitydays@gmail.com,
-        zhangyunhai@nsfocus.com, luto@amacapital.net,
-        torvalds@linux-foundation.org
-Subject: Re: [PATCH v4 0/4] docs: fb: Removed framebuffer scrollback related
- documentations
-Message-ID: <20200924105952.1448fb46@lwn.net>
-In-Reply-To: <cover.1600333774.git.unixbhaskar@gmail.com>
-References: <cover.1600333774.git.unixbhaskar@gmail.com>
-Organization: LWN.net
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 7759420079;
+        Thu, 24 Sep 2020 22:12:47 +0200 (CEST)
+Date:   Thu, 24 Sep 2020 22:12:46 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Xiaofei Tan <tanxiaofei@huawei.com>
+Cc:     b.zolnierkie@samsung.com, arnd@arndb.de,
+        laurent.pinchart@ideasonboard.com, jani.nikula@intel.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linuxarm@huawei.com
+Subject: Re: [PATCH] fbdev: mx3fb: remove unused variable 'irq'
+Message-ID: <20200924201246.GH1223313@ravnborg.org>
+References: <1600334360-4214-1-git-send-email-tanxiaofei@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1600334360-4214-1-git-send-email-tanxiaofei@huawei.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=CaYmGojl c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=6gI2KA8OTFMSUhKLS0YA:9
+        a=CjuIK1q_8ugA:10
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 17 Sep 2020 15:56:11 +0530
-Bhaskar Chowdhury <unixbhaskar@gmail.com> wrote:
+On Thu, Sep 17, 2020 at 05:19:20PM +0800, Xiaofei Tan wrote:
+> Remove the variable 'irq' that is set but never used.
+> 
+> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
 
-> In this patch series, documentation get in sync with the code removal
-> of scrollback,by this commit 50145474f6ef ("fbcon: remove soft scrollback code"),
-> by eliminating the information related to it.
-> 
-> 
-> Changes since V3:
-> 
-> Remove the wrong commit hash and messages from all the 4 patches i.e 
-> Commit 973c096f6a85(vgacon: remove software scrollback support)
-> from the patches as suggested by Willy and Greg.
-> 
-> Patch 1: Remove the documentation related to framebuffer scrollback from the file
->    fbcon.rst
-> 
-> Patch 2: Remove the documentation  boot option for scrollback from the file matroxfb.rst
-> 
-> Patch 3: Remove the documentation scrollback option from sstfb.rst file.
-> 
-> Patch 4: Remove the documentation scrollback option from vesafb.rst file. 
+Thanks, applied to drm-misc-next.
 
-Set applied, thanks.
+	Sam
 
-jon
+> ---
+>  drivers/video/fbdev/mx3fb.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/mx3fb.c b/drivers/video/fbdev/mx3fb.c
+> index 603731a..894617d 100644
+> --- a/drivers/video/fbdev/mx3fb.c
+> +++ b/drivers/video/fbdev/mx3fb.c
+> @@ -1428,7 +1428,6 @@ static int init_fb_chan(struct mx3fb_data *mx3fb, struct idmac_channel *ichan)
+>  	struct device *dev = mx3fb->dev;
+>  	struct mx3fb_platform_data *mx3fb_pdata = dev_get_platdata(dev);
+>  	const char *name = mx3fb_pdata->name;
+> -	unsigned int irq;
+>  	struct fb_info *fbi;
+>  	struct mx3fb_info *mx3fbi;
+>  	const struct fb_videomode *mode;
+> @@ -1441,7 +1440,6 @@ static int init_fb_chan(struct mx3fb_data *mx3fb, struct idmac_channel *ichan)
+>  	}
+>  
+>  	ichan->client = mx3fb;
+> -	irq = ichan->eof_irq;
+>  
+>  	if (ichan->dma_chan.chan_id != IDMAC_SDC_0)
+>  		return -EINVAL;
+> -- 
+> 2.8.1
