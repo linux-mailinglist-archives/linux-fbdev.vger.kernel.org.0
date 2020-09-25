@@ -2,102 +2,178 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8EF27860A
-	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Sep 2020 13:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D8827897F
+	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Sep 2020 15:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728199AbgIYLhU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Sep 2020 07:37:20 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:39601 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728173AbgIYLhU (ORCPT
+        id S1728524AbgIYNZ4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 25 Sep 2020 09:25:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43888 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728121AbgIYNZ4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Sep 2020 07:37:20 -0400
-Received: from mail-qk1-f172.google.com ([209.85.222.172]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MvsMz-1kcL0R1AZj-00svBP; Fri, 25 Sep 2020 13:32:08 +0200
-Received: by mail-qk1-f172.google.com with SMTP id c2so2351821qkf.10;
-        Fri, 25 Sep 2020 04:32:08 -0700 (PDT)
-X-Gm-Message-State: AOAM533pkys8b2Lid9uQbJAD7ezFyLenFz/rIQSCMtnGRxxwuH5OVGm8
-        2mLnuN3RFo1KwyI6vK8F85vq2Kf6CZyn2SoydfM=
-X-Google-Smtp-Source: ABdhPJx6ewrlWaRTSHIqlQrw+rKO7nXCIyzMa6HgJMLyR6GVXtL8m3RFlHN9L9HcuFDN5VDSQuUZf+KvXWM6om9D0g0=
-X-Received: by 2002:ae9:c30d:: with SMTP id n13mr3632853qkg.138.1601033527016;
- Fri, 25 Sep 2020 04:32:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200918100812.1447443-1-arnd@arndb.de> <20200918124808.GD438822@phenom.ffwll.local>
- <20200924205436.GP1223313@ravnborg.org>
-In-Reply-To: <20200924205436.GP1223313@ravnborg.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 25 Sep 2020 13:31:51 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1P=oY9XexnXjk6F_wcbm8OnZ=70rXPTRED+Z6LjU9_QA@mail.gmail.com>
-Message-ID: <CAK8P3a1P=oY9XexnXjk6F_wcbm8OnZ=70rXPTRED+Z6LjU9_QA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] fbdev: stop using compat_alloc_user_space
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Fri, 25 Sep 2020 09:25:56 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8A0C0613D3
+        for <linux-fbdev@vger.kernel.org>; Fri, 25 Sep 2020 06:25:55 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id x23so3032907wmi.3
+        for <linux-fbdev@vger.kernel.org>; Fri, 25 Sep 2020 06:25:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yoij1P7j+Xx2RWFa9SVqI2FsfBHkpzDlIUwpiLGvHCs=;
+        b=O5Wv1IsSLOcxCzcYzyGteQ12YwvQDDgtGufFm3QgoL3W9ikTTvLPP56IBzaY85PZFs
+         p7JxOohdXRnM2KsAxLCSc5felltd/SWWA6JwHieEfFf8z6q8p7bV0yK56vOcTBaEQJZK
+         nQZdCFnKQyDz4RX3JYfbOSd9QXr6fN1Z9n6g0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=yoij1P7j+Xx2RWFa9SVqI2FsfBHkpzDlIUwpiLGvHCs=;
+        b=cqkvHEkvoLRxxIyPlFes7yXAdYrPGYYYTj5DSikZc8vX5yBbc9J6qM93N5GyVTctuF
+         A/RpJ97OM4DuS4wCaqoeoa08Vcy4UBrsz5bvixf3KqyeVQsHvJUU54/kaMIwjFr9gly8
+         vQZb8UC8JceKeKt0b/TXc8/t5EWCjv7DYR32suicxWbSFezfCDo8R0yiO9TW3PpS1xvg
+         L8VxiR8X4xrhal1f0gA6PLsmDYbiBMf9XQkHMrJVr7gUEYpo4dEB5EWMHOBmZXGks6uo
+         UMscqESfqRDOb2sZyiSzKz2xSrRBo6IWkqnBoXOOTQWUj5BywPrtEw2ozAqose+wSvIx
+         zLAQ==
+X-Gm-Message-State: AOAM533yrnWTkk2pEJYZtPRO4IUVEhWnDdpAmqqkT1bwiJL47ejbVUSu
+        arbQ4Z5Kf4ArGEgjkuj2kJSAQw==
+X-Google-Smtp-Source: ABdhPJyBZrVOoGGq5hPUstHZ/Y1HyDY0PIguaVz0GuDdkIvNUqMBJyEp1I87FKugY2GqQ8LaJuCahA==
+X-Received: by 2002:a7b:c1d3:: with SMTP id a19mr3071230wmj.19.1601040354194;
+        Fri, 25 Sep 2020 06:25:54 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id u2sm3275837wre.7.2020.09.25.06.25.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2020 06:25:53 -0700 (PDT)
+Date:   Fri, 25 Sep 2020 15:25:51 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Peilin Ye <yepeilin.cs@gmail.com>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Christoph Hellwig <hch@lst.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:mK9JJ4zRKrsJacf1kWV+j/IVwr3I225w8Edv+3Fd/rdctE5BPxV
- AbKC7XWzjk9f7C3cU/8l7eJbEFxj+qzXlckOhoEwlRzhTTJjJ+VwCaZiBeKGlNFBkkBJj8S
- Ys4WgyASQQgloKycTDgLRjWCRkF+Zius+T+wueJh4jziCGMW6Y3xyL/TCGiMa4msiCKCdXp
- Na812kwFxphrNkKGxKADA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SqLL+E287oc=:mQ3a8qayJmzpVRzUcc7+vy
- Lgrei6R5Sex8Zt3wquxC/1iEfdJMWq5+i9Xrm8cYNw6m1OYgGX4qI+ACIxiB4z6b38AHHngKi
- 26m0R6zr65glBKA210ii76XzK3L1zL8ZjUwF1KVWPHpO7suNnB19wqgb10hLU2Gz5RdpXCFNb
- yt0kgsWHKOKSAriNaVPccmrlzfO03KCwtovSHYWejHCuy1bFmDg+Mr03R1wk2XjZs+fBhhKzb
- Wst4NX78G5NAGGEQDedrX089KwmlVCU29sX8evj7d4GL8nXcdgyx6KaKKFnhg7Rj7GbZa9ZUt
- wMPeH32EgsH4bGxfJKBQJwvW2RgKT2JW5u6YAfiDvTZCz33Upd57u18hn7Wm2wGTFCstcCwlU
- HiPH0+Bx/4IE8shpd6mz1YpZfGSSgA2Vx/wzytxyfuTlr04O28n8zw8jK3mAfy1POMGoajvVY
- CXwoyoevYSwmOYpVZcYswluioo2VRJheAnsdh2VvDdtKKbSM6B6oe9PsfMcP0vmZaIspMqHET
- Fqeavx8kWiSHnJndduEpIezH0oXoiVEXUDJnQuthWOpz/LaPnRfmDnnoxmQ5MEQAZgqOBRRMN
- /DKMyexfW1i/bDBh8MAbsra1z6FXdN602O2lKxrJPHWbg287oATpdkPwyt6ZUmbGDXbg/ENcZ
- 87H8cxQY2ku4R10u21j3djKA9ZCdToWpmsIgvJmOL6xX9VUN+BiUPoXUjIg1X8HTPhtTlIZbM
- NS/7QC7z+Z9DVxDo7G8pgsPakw+d9cQEQA6xNPQXSjZFwKWBR68csoKyCy44jaWytwuXVxIOo
- +/HXDdHOmtIjbBNZeygsFLfH5DHUruPanYkZ1LMVwH8r7cTP1EFxIxFJDJjG70EnUDIeLn6PG
- Lqnt9bZuCzNdfo2E7StDUk88jo8g+kspP8ZVe+O04dkiSPu/TKB05XAxB08A4ch8sBVt625yv
- 6TxQ0jjemZ8PT5ZL5jIT6IvMj8RWI+SdvEZMUtS0aOdf2FGIoZYbW
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        syzkaller-bugs@googlegroups.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Prevent out-of-bounds access for built-in font data
+ buffers
+Message-ID: <20200925132551.GF438822@phenom.ffwll.local>
+Mail-Followup-To: Peilin Ye <yepeilin.cs@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        syzkaller-bugs@googlegroups.com, linux-kernel@vger.kernel.org
+References: <0000000000006b9e8d059952095e@google.com>
+ <cover.1600953813.git.yepeilin.cs@gmail.com>
+ <3f754d60-1d35-899c-4418-147d922e29af@kernel.org>
+ <20200925101300.GA890211@PWN>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200925101300.GA890211@PWN>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Sep 24, 2020 at 10:54 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Daniel/Arnd.
->
-> On Fri, Sep 18, 2020 at 02:48:08PM +0200, Daniel Vetter wrote:
-> > On Fri, Sep 18, 2020 at 12:08:10PM +0200, Arnd Bergmann wrote:
-> > > The fbdev code uses compat_alloc_user_space in a few of its
-> > > compat_ioctl handlers, which tends to be a bit more complicated
-> > > and error-prone than calling the underlying handlers directly,
-> > > so I would like to remove it completely.
-> > >
-> > > This modifies two such functions in fbdev, and removes another
-> > > one that is completely unused.
-> > >
-> > >     Arnd
-> > >
-> > > Arnd Bergmann (3):
-> > >   fbdev: simplify fb_getput_cmap()
-> > >   fbdev: sbuslib: remove unused FBIOSCURSOR32 helper
-> > >   fbdev: sbuslib: remove compat_alloc_user_space usage
-> >
-> > Looks all good, but we're also kinda looking for a new volunteer for
-> > handling fbdev patches ... drm-misc commit rights, still not interested?
->
-> Hi Daniel - I read the above as an a-b. And Arnd did not take the bait
-> it seems.
+On Fri, Sep 25, 2020 at 06:13:00AM -0400, Peilin Ye wrote:
+> Hi all!
+> 
+> On Fri, Sep 25, 2020 at 08:46:04AM +0200, Jiri Slaby wrote:
+> > > In order to perform a reliable range check, fbcon_get_font() needs to know
+> > > `FONTDATAMAX` for each built-in font under lib/fonts/. Unfortunately, we
+> > > do not keep that information in our font descriptor,
+> > > `struct console_font`:
+> > > 
+> > > (include/uapi/linux/kd.h)
+> > > struct console_font {
+> > > 	unsigned int width, height;	/* font size */
+> > > 	unsigned int charcount;
+> > > 	unsigned char *data;	/* font data with height fixed to 32 */
+> > > };
+> > > 
+> > > To make things worse, `struct console_font` is part of the UAPI, so we
+> > > cannot add a new field to keep track of `FONTDATAMAX`.
+> > 
+> > Hi,
+> > 
+> > but you still can define struct kernel_console_font containing struct
+> > console_font and the 4 more members you need in the kernel. See below.
+> > 
+> > > Fortunately, the framebuffer layer itself gives us a hint of how to
+> > > resolve this issue without changing UAPI. When allocating a buffer for a
+> > > user-provided font, fbcon_set_font() reserves four "extra words" at the
+> > > beginning of the buffer:
+> > > 
+> > > (drivers/video/fbdev/core/fbcon.c)
+> > > 	new_data = kmalloc(FONT_EXTRA_WORDS * sizeof(int) + size, GFP_USER);
+> > 
+> > I might be missing something (like coffee in the morning), but why don't
+> > you just:
+> > 1) declare struct font_data as
+> > {
+> >   unsigned sum, char_count, size, refcnt;
+> >   const unsigned char data[];
+> > }
+> > 
+> > Or maybe "struct console_font font" instead of "const unsigned char
+> > data[]", if need be.
+> > 
+> > 2) allocate by:
+> >   kmalloc(struct_size(struct font_data, data, size));
+> > 
+> > 3) use container_of wherever needed
+> > 
+> > That is you name the data on negative indexes using struct as you
+> > already have to define one.
+> > 
+> > Then you don't need the ugly macros with negative indexes. And you can
+> > pass this structure down e.g. to fbcon_do_set_font, avoiding potential
+> > mistakes in accessing data[-1] and similar.
+> 
+> Sorry that I didn't mention it in the cover letter, but yes, I've tried
+> this - a new `kernel_console_font` would be much cleaner than negative
+> array indexing.
+> 
+> The reason I ended up giving it up was, frankly speaking, these macros
+> are being used at about 30 places, and I am not familiar enough with the
+> framebuffer and newport_con code, so I wasn't confident how to clean
+> them up and plug in `kernel_console_font` properly...
+> 
+> Another reason was that, functions like fbcon_get_font() handle both user
+> fonts and built-in fonts, so I wanted a single solution for both of
+> them. I think we can't really introduce `kernel_console_font` while
+> keeping these macros, that would make the error handling logics etc.
+> very messy.
+> 
+> I'm not very sure what to do now. Should I give it another try cleaning
+> up all the macros?
+> 
+> And thank you for reviewing this!
 
-Ah right, I meant to reply but then forgot about it.
+I think the only way to make this work is that we have one place which
+takes in the userspace uapi struct, and then converts it once into a
+kernel_console_font. With all the error checking.
 
-I don't really want commit access, thanks for the offer.
+Then all internal code deals in terms of kernel_console_font, with
+properly typed and named struct members and helper functions and
+everything. And we might need a gradual conversion for this, so that first
+we can convert over invidual console drivers, then subsystems, until at
+the end we've pushed the conversion from uapi array to kernel_console_font
+all the way to the ioctl entry points.
 
-> Hi Arnd. checkpatch complained about some whitespace, which I fixed
-> while applying.
-> Will push to drm-misc-next tomorrow unless I hear anything else.
+But that's indeed a huge pile of work, and fair warning: fbcon is
+semi-orphaned, so by doing this you'll pretty much volunteer for
+maintainership :-)
 
-Great, thanks!
+But I'd be very happy to help get this done and throw some maintainership
+credentials at you in the proces ...
 
-        Arnd
+Cheers, Daniel
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
