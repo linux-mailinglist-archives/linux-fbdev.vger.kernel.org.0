@@ -2,87 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC88278B0F
-	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Sep 2020 16:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E03D278CD6
+	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Sep 2020 17:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbgIYOjo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Sep 2020 10:39:44 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:37110 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728038AbgIYOjo (ORCPT
+        id S1728306AbgIYPfS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 25 Sep 2020 11:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726990AbgIYPfS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Sep 2020 10:39:44 -0400
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id 4B1EC80682;
-        Fri, 25 Sep 2020 16:39:39 +0200 (CEST)
-Date:   Fri, 25 Sep 2020 16:39:37 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Fri, 25 Sep 2020 11:35:18 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007B7C0613CE;
+        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id x16so2110316pgj.3;
+        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=H/9+qYXF9GN9bRK/C5H5FmZN11jhXx2ehr1k98ass28=;
+        b=bQGnqsi9trU4rchmHNT+IDgA2k6+MHytIahgg3FdvAvXLkOqo3HSiPipNaPY6tzrU0
+         saZMEvvp18hb5cctMiXbAwwdqEtAcLz7sPvZhAyVhlZpBF4LYs/hKpLIA5BlM5T20YeV
+         tPTDEoH1GxEm2CV8U0/mJ2mOBJ9L7PUKyJbQqCPOnpyX8ohd15TlgMC+DsiZGV26XGE+
+         2z1CA7TU+0K7gKWYNUiZQKGUlLyMebr9WRQx81Q6djTGlGxLXvfJaDgaOcnN1p4Ru3Hc
+         IRA49OvXD0yIN8n62rf0CT17tM4MRnhc4nUc9FKLj1sZrJjcK+wxUdsUOgzFdSL/g+p4
+         fzdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=H/9+qYXF9GN9bRK/C5H5FmZN11jhXx2ehr1k98ass28=;
+        b=SHIVpHzOYLnbYvNc/Y/rhGHcxdmPJ52KM7Gss0amO2fRARLO0eGVIjShinIzBfmnLo
+         LKU0IefsUmtsyXM80wKUuxtNcjW4c9fTKntZrHjGrUI+mQf3DoNAW3JZmSvNmelwmyj4
+         iemIlve27H10HdY7DGz6FBYQ7XVB9iH0w+CVmKqwpbfzyOGB8QFo7wiFH70iWugLtx/H
+         9yYUm2GWV9T1W0RFDxrvDeS6I06Yl9TIAIboHyklRX/62rKSNqmpmhVa1epTzLKKDjhj
+         b8FErzvEc4R0HyXgfdyO1C6JbLV6/6B7cGs/7Ovqo9X4n56Mkc5Jc5B+WkUtDYn8vVs9
+         QYXQ==
+X-Gm-Message-State: AOAM533y5mREOHNm7GNEwXZHUjXvnIhpQCX+QNXqYvyTbYDfmC0IR54t
+        SeL7V+1BrM63+U557q+s8g==
+X-Google-Smtp-Source: ABdhPJypCGDd/spbzL267gES6OYRMPR4S4hEJjiFO5vQCn8uHug/BJxwZZg36Chf8IEvIzbCNPLsJw==
+X-Received: by 2002:a62:7c43:0:b029:139:858b:8033 with SMTP id x64-20020a627c430000b0290139858b8033mr4515529pfc.3.1601048117493;
+        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
+Received: from PWN (n11212042027.netvigator.com. [112.120.42.27])
+        by smtp.gmail.com with ESMTPSA id 123sm2680229pgd.83.2020.09.25.08.35.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2020 08:35:16 -0700 (PDT)
+Date:   Fri, 25 Sep 2020 11:35:09 -0400
+From:   Peilin Ye <yepeilin.cs@gmail.com>
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Jiri Slaby <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 0/3] fbdev: stop using compat_alloc_user_space
-Message-ID: <20200925143937.GA1929717@ravnborg.org>
-References: <20200918100812.1447443-1-arnd@arndb.de>
- <20200918124808.GD438822@phenom.ffwll.local>
- <20200924205436.GP1223313@ravnborg.org>
- <CAK8P3a1P=oY9XexnXjk6F_wcbm8OnZ=70rXPTRED+Z6LjU9_QA@mail.gmail.com>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        syzkaller-bugs@googlegroups.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Prevent out-of-bounds access for built-in font data
+ buffers
+Message-ID: <20200925153509.GA895804@PWN>
+References: <0000000000006b9e8d059952095e@google.com>
+ <cover.1600953813.git.yepeilin.cs@gmail.com>
+ <3f754d60-1d35-899c-4418-147d922e29af@kernel.org>
+ <20200925101300.GA890211@PWN>
+ <20200925132551.GF438822@phenom.ffwll.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a1P=oY9XexnXjk6F_wcbm8OnZ=70rXPTRED+Z6LjU9_QA@mail.gmail.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=A5ZCwZeG c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=7gkXJVJtAAAA:8 a=7mFfxD536KHiRXcuot4A:9
-        a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+In-Reply-To: <20200925132551.GF438822@phenom.ffwll.local>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 01:31:51PM +0200, Arnd Bergmann wrote:
-> On Thu, Sep 24, 2020 at 10:54 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> >
-> > Hi Daniel/Arnd.
-> >
-> > On Fri, Sep 18, 2020 at 02:48:08PM +0200, Daniel Vetter wrote:
-> > > On Fri, Sep 18, 2020 at 12:08:10PM +0200, Arnd Bergmann wrote:
-> > > > The fbdev code uses compat_alloc_user_space in a few of its
-> > > > compat_ioctl handlers, which tends to be a bit more complicated
-> > > > and error-prone than calling the underlying handlers directly,
-> > > > so I would like to remove it completely.
-> > > >
-> > > > This modifies two such functions in fbdev, and removes another
-> > > > one that is completely unused.
-> > > >
-> > > >     Arnd
-> > > >
-> > > > Arnd Bergmann (3):
-> > > >   fbdev: simplify fb_getput_cmap()
-> > > >   fbdev: sbuslib: remove unused FBIOSCURSOR32 helper
-> > > >   fbdev: sbuslib: remove compat_alloc_user_space usage
-> > >
-> > > Looks all good, but we're also kinda looking for a new volunteer for
-> > > handling fbdev patches ... drm-misc commit rights, still not interested?
-> >
-> > Hi Daniel - I read the above as an a-b. And Arnd did not take the bait
-> > it seems.
-> 
-> Ah right, I meant to reply but then forgot about it.
-> 
-> I don't really want commit access, thanks for the offer.
-> 
-> > Hi Arnd. checkpatch complained about some whitespace, which I fixed
-> > while applying.
-> > Will push to drm-misc-next tomorrow unless I hear anything else.
-> 
-> Great, thanks!
-Pushed now.
+On Fri, Sep 25, 2020 at 03:25:51PM +0200, Daniel Vetter wrote:
+> I think the only way to make this work is that we have one place which
+> takes in the userspace uapi struct, and then converts it once into a
+> kernel_console_font. With all the error checking.
 
-	Sam
+Ah, I didn't think of that! When trying to introduce
+`kernel_console_font` I ended up using the uapi version and the kernel
+version in parallel...
+
+> Then all internal code deals in terms of kernel_console_font, with
+> properly typed and named struct members and helper functions and
+> everything. And we might need a gradual conversion for this, so that first
+> we can convert over invidual console drivers, then subsystems, until at
+> the end we've pushed the conversion from uapi array to kernel_console_font
+> all the way to the ioctl entry points.
+> 
+> But that's indeed a huge pile of work, and fair warning: fbcon is
+> semi-orphaned, so by doing this you'll pretty much volunteer for
+> maintainership :-)
+>
+> But I'd be very happy to help get this done and throw some maintainership
+> credentials at you in the proces ...
+
+Sounds exciting, I will be glad to do this! I'm just a beginner, but I
+will try to do what I can do.
+
+Thank you,
+Peilin Ye
 
