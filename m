@@ -2,167 +2,401 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69403279A88
-	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Sep 2020 17:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B516F279B18
+	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Sep 2020 19:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729788AbgIZPzs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 26 Sep 2020 11:55:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725208AbgIZPzr (ORCPT
+        id S1729527AbgIZRCA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 26 Sep 2020 13:02:00 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:62505 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726210AbgIZRCA (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 26 Sep 2020 11:55:47 -0400
-Received: from mail-oo1-xc41.google.com (mail-oo1-xc41.google.com [IPv6:2607:f8b0:4864:20::c41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7B4C0613CE
-        for <linux-fbdev@vger.kernel.org>; Sat, 26 Sep 2020 08:55:47 -0700 (PDT)
-Received: by mail-oo1-xc41.google.com with SMTP id w25so1504974oos.10
-        for <linux-fbdev@vger.kernel.org>; Sat, 26 Sep 2020 08:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1Yr/lJ6INo+GSizfX73ntp7C9B3Ucb54qJR65v8Nt24=;
-        b=EcDJTX6xM4u/n/vl62aion5FfYc2CnNy5nhm4La6wNTHhy3T3S7tR3Vhki29HdGHR2
-         2dgU0tk5pHKkZD8HcWuKhYWW7wdSuSsOKE19d6flUQ9RF2JD5BY9cGGUHAuaDCxq7/ih
-         eYYWwS3WigVPwb+Hcq4tr2oJce3SjBjme8F/Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1Yr/lJ6INo+GSizfX73ntp7C9B3Ucb54qJR65v8Nt24=;
-        b=Kp05Ce0MGjLUF/cxoUhnSgLMvvrW0yuOD3Y4lUoPrxnCSBXvwdFfEB6domBPrjSfVu
-         RteBMy1thRTi+ecXq7LvTk06ESPAiiMviP0RNvOmzn0J8Pc6+rSncYx3vbPDB6LThlFY
-         wAg+y2300C9x7nyMI5v1DGYO777kco1wdtjZyzA3IsvlLsmToqWUHV2MplMu41KTMvmz
-         7HQDEFAJ7ICjLSCF+JUl3yMQ7SndCznR8+VUIutX8BJbZ5NLtvnvhFdh3jk5EbGuBTja
-         4xwnKpxn2aNzerj7n82OYKAqLNQc4bZM0OSCRYrJmNIoo/vaFgevyz5wmzUc9AgnshXg
-         xffA==
-X-Gm-Message-State: AOAM53242if4cgK/CS/wfPzbd7VxrqvYvhm8mPghu+3mZ/JCWwODStEh
-        UibpBlVWpuBDS2l/YhgLSyRqn+VZY/i+iqLsYt/KcQ==
-X-Google-Smtp-Source: ABdhPJy3e3VPHJqY/6IOF3yCkA7vof5E5Mmdfb6nINvQcHMvxbm0SpYIbvPX70H3yZ82xpSLd/cX7zjYwt9BXURpR9w=
-X-Received: by 2002:a4a:3b44:: with SMTP id s65mr4356478oos.85.1601135746873;
- Sat, 26 Sep 2020 08:55:46 -0700 (PDT)
+        Sat, 26 Sep 2020 13:02:00 -0400
+X-Greylist: delayed 2192 seconds by postgrey-1.27 at vger.kernel.org; Sat, 26 Sep 2020 13:01:56 EDT
+Received: from fsav401.sakura.ne.jp (fsav401.sakura.ne.jp [133.242.250.100])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 08QGPMB5001682;
+        Sun, 27 Sep 2020 01:25:22 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav401.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav401.sakura.ne.jp);
+ Sun, 27 Sep 2020 01:25:22 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav401.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 08QGPJBR001666
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Sun, 27 Sep 2020 01:25:22 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Subject: Re: KASAN: use-after-free Read in bit_putcs
+To:     syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
+        b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch, deller@gmx.de,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        syzkaller-bugs@googlegroups.com
+References: <000000000000226d3f05b02dd607@google.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Message-ID: <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
+Date:   Sun, 27 Sep 2020 01:25:17 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-References: <00000000000056a39205b0324001@google.com>
-In-Reply-To: <00000000000056a39205b0324001@google.com>
-From:   Daniel Vetter <daniel.vetter@ffwll.ch>
-Date:   Sat, 26 Sep 2020 17:55:36 +0200
-Message-ID: <CAKMK7uHBpqXpO7BQWewxbsUMUpmm20WysjLiiYxzvwfq7mDEsw@mail.gmail.com>
-Subject: Re: KASAN: global-out-of-bounds Read in bit_putcs (2)
-To:     syzbot <syzbot+a889d70ef11d6e0f6f22@syzkaller.appspotmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Helge Deller <deller@gmx.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <000000000000226d3f05b02dd607@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Sep 26, 2020 at 9:19 AM syzbot
-<syzbot+a889d70ef11d6e0f6f22@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    171d4ff7 Merge tag 'mmc-v5.9-rc4-2' of git://git.kernel.or..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=126e918d900000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=240e2ebab67245c7
-> dashboard link: https://syzkaller.appspot.com/bug?extid=a889d70ef11d6e0f6f22
-> compiler:       gcc (GCC) 10.1.0-syz 20200507
->
-> Unfortunately, I don't have any reproducer for this issue yet.
-
-Looking at the backtrace, this could be fixed by the font size checks
-I just pushed:
-
-commit 5af08640795b2b9a940c9266c0260455377ae262 (HEAD ->
-drm-misc-fixes, drm-misc/for-linux-next-fixes,
-drm-misc/drm-misc-fixes)
-Author: Peilin Ye <yepeilin.cs@gmail.com>
-Date:   Thu Sep 24 09:43:48 2020 -0400
-
-    fbcon: Fix global-out-of-bounds read in fbcon_get_font()
-
-But just an educated guess, no more.
--Daniel
-
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+a889d70ef11d6e0f6f22@syzkaller.appspotmail.com
->
-> ==================================================================
-> BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer include/linux/fb.h:654 [inline]
-> BUG: KASAN: global-out-of-bounds in bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
-> BUG: KASAN: global-out-of-bounds in bit_putcs+0xbb6/0xd20 drivers/video/fbdev/core/bitblit.c:185
-> Read of size 1 at addr ffffffff88db78e9 by task syz-executor.4/16465
->
-> CPU: 0 PID: 16465 Comm: syz-executor.4 Not tainted 5.9.0-rc6-syzkaller #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> Call Trace:
->  __dump_stack lib/dump_stack.c:77 [inline]
->  dump_stack+0x198/0x1fd lib/dump_stack.c:118
->  print_address_description.constprop.0.cold+0x5/0x497 mm/kasan/report.c:383
->  __kasan_report mm/kasan/report.c:513 [inline]
->  kasan_report.cold+0x1f/0x37 mm/kasan/report.c:530
->  __fb_pad_aligned_buffer include/linux/fb.h:654 [inline]
->  bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
->  bit_putcs+0xbb6/0xd20 drivers/video/fbdev/core/bitblit.c:185
->  fbcon_putcs+0x35a/0x450 drivers/video/fbdev/core/fbcon.c:1308
->  do_update_region+0x399/0x630 drivers/tty/vt/vt.c:675
->  redraw_screen+0x658/0x790 drivers/tty/vt/vt.c:1034
->  fbcon_do_set_font+0x718/0x880 drivers/video/fbdev/core/fbcon.c:2438
->  fbcon_copy_font+0x12f/0x1a0 drivers/video/fbdev/core/fbcon.c:2453
->  con_font_copy drivers/tty/vt/vt.c:4719 [inline]
->  con_font_op+0x65b/0x1140 drivers/tty/vt/vt.c:4734
->  vt_k_ioctl drivers/tty/vt/vt_ioctl.c:473 [inline]
->  vt_ioctl+0x21c9/0x2e90 drivers/tty/vt/vt_ioctl.c:852
->  tty_ioctl+0x1019/0x15f0 drivers/tty/tty_io.c:2656
->  vfs_ioctl fs/ioctl.c:48 [inline]
->  __do_sys_ioctl fs/ioctl.c:753 [inline]
->  __se_sys_ioctl fs/ioctl.c:739 [inline]
->  __x64_sys_ioctl+0x193/0x200 fs/ioctl.c:739
->  do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
->  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> RIP: 0033:0x45e179
-> Code: 3d b2 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 0b b2 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-> RSP: 002b:00007fe2e03e5c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 0000000000010840 RCX: 000000000045e179
-> RDX: 0000000020000400 RSI: 0000000000004b72 RDI: 0000000000000003
-> RBP: 000000000118cf80 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 000000000118cf4c
-> R13: 00007ffff7397e9f R14: 00007fe2e03e69c0 R15: 000000000118cf4c
->
-> The buggy address belongs to the variable:
->  oid_index+0x109/0xae0
->
-> Memory state around the buggy address:
->  ffffffff88db7780: 00 00 00 00 01 f9 f9 f9 f9 f9 f9 f9 00 00 00 00
->  ffffffff88db7800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06 f9
-> >ffffffff88db7880: f9 f9 f9 f9 00 02 f9 f9 f9 f9 f9 f9 00 01 f9 f9
->                                                           ^
->  ffffffff88db7900: f9 f9 f9 f9 00 04 f9 f9 f9 f9 f9 f9 00 00 02 f9
->  ffffffff88db7980: f9 f9 f9 f9 00 03 f9 f9 f9 f9 f9 f9 07 f9 f9 f9
-> ==================================================================
->
->
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+A simplified reproducer and debug printk() patch shown below reported that
+vc_font.height is increased to 9 via ioctl(VT_RESIZEX) after it was once
+decreased from 16 to 2 via ioctl(PIO_FONT).
 
 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Since vc_resize() with v.v_rows == 0 preserves current vc->vc_rows value,
+this reproducer is bypassing
+
+	if (v.v_clin) {
+		int rows = v.v_vlin / v.v_clin;
+		if (v.v_rows != rows) {
+			if (v.v_rows) /* Parameters don't add up */
+				return -EINVAL;
+			v.v_rows = rows;
+		}
+	}
+
+check by setting v.v_vlin == 1 and v.v_clin == 9.
+
+If v.v_vcol > 0 and v.v_vcol != vc->vc_cols (though this reproducer is passing
+v.v_vcol == 0), tty_do_resize() from vc_do_resize() from vc_resize() can make
+"struct tty_struct"->winsize.ws_ypixel = 1 despite
+"struct tty_struct"->winsize.vc->vc_rows = vc->vc_rows (which is usually larger
+than 1). Does such winsize (a row has 1 / vc->vc_rows pixel) make sense?
+
+
+
+Since I don't know the meaning of "struct vt_consize"->v_clin (which is commented
+with "/* number of pixel rows per character */" but does it mean font size ?),
+I don't know why we can assign that value to vcp->vc_font.height via
+
+	if (v.v_clin)
+		vcp->vc_font.height = v.v_clin;
+
+in vt_resizex(). While ioctl(PIO_FONT) needs to pass vc->vc_sw->con_font_set()
+check in con_font_set(), ioctl(VT_RESIZEX) does not pass it in vt_resizex()...
+
+Since this problem does not happen if I remove
+
+	if (v.v_clin)
+		vcp->vc_font.height = v.v_clin;
+
+ from vt_resizex(), I guess that some variables are getting confused by change
+of vc->vc_font.height ...
+
+  #define VT_RESIZE     0x5609  /* set kernel's idea of screensize */
+  #define VT_RESIZEX    0x560A  /* set kernel's idea of screensize + more */
+
+Hmm, what comes to the "+ more" part? Who is using VT_RESIZEX ?
+If nobody is using VT_RESIZEX, better to make VT_RESIZEX == VT_RESIZE ?
+
+----------
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/kd.h>
+#include <linux/vt.h>
+
+int main(int argc, char *argv[])
+{
+        int fd = open("/dev/tty1", 3);
+        static char fontdata[8192] = { 2, 3 };
+        struct vt_consize v_c = { 0, 0, 1, 9, 0, 0 };
+        ioctl(fd, PIO_FONT, fontdata);
+        ioctl(fd, VT_RESIZEX, &v_c);
+        return 0;
+}
+----------
+
+----------
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index a4e520bdd521..df6b7abd1068 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -769,64 +769,70 @@ static int vt_resizex(struct vc_data *vc, struct vt_consize __user *cs)
+ {
+ 	struct vt_consize v;
+ 	int i;
++	int ret = 0;
+ 
+ 	if (copy_from_user(&v, cs, sizeof(struct vt_consize)))
+ 		return -EFAULT;
+ 
+-	/* FIXME: Should check the copies properly */
+-	if (!v.v_vlin)
+-		v.v_vlin = vc->vc_scan_lines;
++	console_lock();
++	for (i = 0; i < MAX_NR_CONSOLES; i++) {
++		struct vc_data *vcp = vc_cons[i].d;
+ 
+-	if (v.v_clin) {
+-		int rows = v.v_vlin / v.v_clin;
+-		if (v.v_rows != rows) {
+-			if (v.v_rows) /* Parameters don't add up */
+-				return -EINVAL;
+-			v.v_rows = rows;
++		if (!vcp)
++			continue;
++		if (v.v_clin) {
++			int rows = (v.v_vlin ? v.v_vlin : vcp->vc_scan_lines) / v.v_clin;
++			if (v.v_rows != rows) {
++				if (v.v_rows) { /* Parameters don't add up */
++					ret = -EINVAL;
++					break;
++				}
++				v.v_rows = rows;
++			}
+ 		}
+-	}
+-
+-	if (v.v_vcol && v.v_ccol) {
+-		int cols = v.v_vcol / v.v_ccol;
+-		if (v.v_cols != cols) {
+-			if (v.v_cols)
+-				return -EINVAL;
+-			v.v_cols = cols;
++		if (v.v_vcol && v.v_ccol) {
++			int cols = v.v_vcol / v.v_ccol;
++			if (v.v_cols != cols) {
++				if (v.v_cols) {
++					ret = -EINVAL;
++					break;
++				}
++				v.v_cols = cols;
++			}
++		}
++		if (v.v_clin > 32) {
++			ret = -EINVAL;
++			break;
+ 		}
+ 	}
++	printk(KERN_INFO "vc=%px v.v_rows=%hu v.v_cols=%hu v.v_vlin=%hu v.v_clin=%u v.v_vcol=%hu v.v_ccol=%hu ret=%d\n", vc, v.v_rows, v.v_cols, v.v_vlin, v.v_clin, v.v_vcol, v.v_ccol, ret);
++	for (i = 0; !ret && i < MAX_NR_CONSOLES; i++) {
++		unsigned int save_scan_lines;
++		unsigned int save_font_height;
++		struct vc_data *vcp = vc_cons[i].d;
+ 
+-	if (v.v_clin > 32)
+-		return -EINVAL;
+-
+-	for (i = 0; i < MAX_NR_CONSOLES; i++) {
+-		struct vc_data *vcp;
+-
+-		if (!vc_cons[i].d)
++		if (!vcp)
+ 			continue;
+-		console_lock();
+-		vcp = vc_cons[i].d;
+-		if (vcp) {
+-			int ret;
+-			int save_scan_lines = vcp->vc_scan_lines;
+-			int save_font_height = vcp->vc_font.height;
+-
+-			if (v.v_vlin)
+-				vcp->vc_scan_lines = v.v_vlin;
+-			if (v.v_clin)
+-				vcp->vc_font.height = v.v_clin;
+-			vcp->vc_resize_user = 1;
+-			ret = vc_resize(vcp, v.v_cols, v.v_rows);
+-			if (ret) {
+-				vcp->vc_scan_lines = save_scan_lines;
+-				vcp->vc_font.height = save_font_height;
+-				console_unlock();
+-				return ret;
+-			}
++		save_scan_lines = vcp->vc_scan_lines;
++		save_font_height = vcp->vc_font.height;
++		if (v.v_vlin)
++			vcp->vc_scan_lines = v.v_vlin;
++		if (v.v_clin)
++			vcp->vc_font.height = v.v_clin;
++		printk(KERN_INFO "vcp=%px before: ->vc_rows=%u ->vc_cols=%u ->vc_scan_lines=%u save_scan_lines=%u ->vc_font.height=%u save_font_height=%u\n",
++		       vcp, vcp->vc_rows, vcp->vc_cols, vcp->vc_scan_lines, save_scan_lines, vcp->vc_font.height, save_font_height);
++		vcp->vc_resize_user = 1;
++		ret = vc_resize(vcp, v.v_cols, v.v_rows);
++		printk(KERN_INFO "vcp=%px after: ->vc_rows=%u ->vc_cols=%u ->vc_scan_lines=%u save_scan_lines=%u ->vc_font.height=%u save_font_height=%u ret=%d\n",
++		       vcp, vcp->vc_rows, vcp->vc_cols, vcp->vc_scan_lines, save_scan_lines, vcp->vc_font.height, save_font_height, ret);
++		if (ret) {
++			vcp->vc_scan_lines = save_scan_lines;
++			vcp->vc_font.height = save_font_height;
+ 		}
+-		console_unlock();
+ 	}
++	console_unlock();
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /*
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 9725ecd1255b..c1b9f43ff657 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -181,6 +181,8 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 		dst = fb_get_buffer_offset(info, &info->pixmap, size);
+ 		image.data = dst;
+ 
++		printk(KERN_DEBUG "%s: width=%u cellsize=%u count=%d maxcnt=%u scan_align=%u buf_align=%u image.width=%u image.height=%u pitch=%u\n",
++		       __func__, width, cellsize, count, maxcnt, scan_align, buf_align, image.width, image.height, pitch);
+ 		if (!mod)
+ 			bit_putcs_aligned(vc, info, s, attribute, cnt, pitch,
+ 					  width, cellsize, &image, buf, dst);
+----------
+
+----------
+[  297.298013] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.312092] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.324735] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.337634] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.350185] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.361861] [ T2823] bit_putcs: width=1 cellsize=16 count=80 maxcnt=512 scan_align=0 buf_align=0 image.width=640 image.height=16 pitch=80
+[  297.474116] [ T2823] bit_putcs: width=1 cellsize=16 count=28 maxcnt=512 scan_align=0 buf_align=0 image.width=224 image.height=16 pitch=28
+[  297.481866] [ T2823] bit_putcs: width=1 cellsize=16 count=4 maxcnt=512 scan_align=0 buf_align=0 image.width=32 image.height=16 pitch=4
+[  297.483529] [ T2823] bit_putcs: width=1 cellsize=16 count=1 maxcnt=512 scan_align=0 buf_align=0 image.width=8 image.height=16 pitch=1
+[  297.484792] [ T2823] bit_putcs: width=1 cellsize=16 count=7 maxcnt=512 scan_align=0 buf_align=0 image.width=56 image.height=16 pitch=7
+[  357.373828] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.375232] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.376821] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.378256] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.379684] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+(...snipped...)
+[  357.720089] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.721519] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.722962] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.724390] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.725834] [ T2940] bit_putcs: width=1 cellsize=2 count=80 maxcnt=4096 scan_align=0 buf_align=0 image.width=640 image.height=2 pitch=80
+[  357.727876] [ T2940] vc=ffff8880d69b6000 v.v_rows=0 v.v_cols=0 v.v_vlin=1 v.v_clin=9 v.v_vcol=0 v.v_ccol=0 ret=0
+[  357.727933] [ T2940] vcp=ffff8880d69b6000 before: ->vc_rows=240 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=400 ->vc_font.height=9 save_font_height=2
+[  357.727994] [ T2940] vcp=ffff8880d69b6000 after: ->vc_rows=240 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=400 ->vc_font.height=9 save_font_height=2 ret=0
+[  357.728050] [ T2940] vcp=ffff8880d46d9000 before: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16
+[  357.728110] [ T2940] vcp=ffff8880d46d9000 after: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16 ret=0
+[  357.728167] [ T2940] vcp=ffff8880d40a8000 before: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16
+[  357.728227] [ T2940] vcp=ffff8880d40a8000 after: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16 ret=0
+[  357.728283] [ T2940] vcp=ffff8880d46fb000 before: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16
+[  357.728344] [ T2940] vcp=ffff8880d46fb000 after: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16 ret=0
+[  357.728400] [ T2940] vcp=ffff8880d46f9000 before: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16
+[  357.728460] [ T2940] vcp=ffff8880d46f9000 after: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16 ret=0
+[  357.728516] [ T2940] vcp=ffff8880ce2d1000 before: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16
+[  357.728616] [ T2940] vcp=ffff8880ce2d1000 after: ->vc_rows=30 ->vc_cols=80 ->vc_scan_lines=1 save_scan_lines=0 ->vc_font.height=9 save_font_height=16 ret=0
+[  357.743762] [    C0] bit_putcs: width=1 cellsize=9 count=68 maxcnt=910 scan_align=0 buf_align=0 image.width=544 image.height=9 pitch=68
+[  357.743783] [    C0] ==================================================================
+[  357.743803] [    C0] BUG: KASAN: slab-out-of-bounds in bit_putcs+0x6a0/0x980
+[  357.743822] [    C0] Read of size 1 at addr ffff8880d46ff343 by task a.out/2940
+[  357.743830] [    C0]
+[  357.743848] [    C0] CPU: 0 PID: 2940 Comm: a.out Not tainted 5.9.0-rc6+ #635
+[  357.743871] [    C0] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  357.743880] [    C0] Call Trace:
+[  357.743891] [    C0]  dump_stack+0x161/0x1c3
+[  357.743902] [    C0]  ? bit_putcs+0x6a0/0x980
+[  357.743914] [    C0]  ? bit_putcs+0x6a0/0x980
+[  357.743932] [    C0]  print_address_description.constprop.0.cold+0xd3/0x4c5
+[  357.743944] [    C0]  ? log_store.cold+0x16/0x16
+[  357.743956] [    C0]  ? vprintk_func+0xe2/0x155
+[  357.743968] [    C0]  ? bit_putcs+0x6a0/0x980
+[  357.743979] [    C0]  ? bit_putcs+0x6a0/0x980
+[  357.743992] [    C0]  kasan_report.cold+0x1f/0x42
+[  357.744003] [    C0]  ? bit_putcs+0x6a0/0x980
+[  357.744014] [    C0]  bit_putcs+0x6a0/0x980
+[  357.744026] [    C0]  ? bit_clear+0x2f0/0x2f0
+[  357.744038] [    C0]  ? find_held_lock+0x85/0xa0
+[  357.744052] [    C0]  ? raw_notifier_call_chain+0x31/0x40
+[  357.744067] [    C0]  ? fb_get_color_depth.part.0+0x57/0xe0
+[  357.744082] [    C0]  ? __sanitizer_cov_trace_switch+0x49/0x80
+[  357.744093] [    C0]  fbcon_putcs+0x1d8/0x1e0
+[  357.744105] [    C0]  ? bit_clear+0x2f0/0x2f0
+[  357.744118] [    C0]  vt_console_print+0x72d/0x870
+[  357.744130] [    C0]  ? fb_flashcursor+0x230/0x230
+[  357.744144] [    C0]  ? screen_glyph_unicode+0x140/0x140
+[  357.744157] [    C0]  ? rwlock_bug.part.0+0x50/0x50
+[  357.744171] [    C0]  ? screen_glyph_unicode+0x140/0x140
+[  357.744183] [    C0]  console_unlock+0x92c/0xb30
+[  357.744195] [    C0]  vt_ioctl.cold+0x182/0x3a2
+[  357.744210] [    C0]  ? complete_change_console+0x1e0/0x1e0
+[  357.744222] [    C0]  ? find_held_lock+0x85/0xa0
+[  357.744237] [    C0]  ? debug_check_no_obj_freed+0x18d/0x276
+[  357.744249] [    C0]  ? lock_downgrade+0x3e0/0x3e0
+[  357.744261] [    C0]  ? find_held_lock+0x85/0xa0
+[  357.744274] [    C0]  ? lock_is_held_type+0xbf/0xf0
+[  357.744285] [    C0]  ? putname+0xa7/0xc0
+[  357.744296] [    C0]  ? putname+0xa7/0xc0
+[  357.744306] [    C0]  ? putname+0xa7/0xc0
+[  357.744322] [    C0]  ? __sanitizer_cov_trace_switch+0x49/0x80
+[  357.744336] [    C0]  ? complete_change_console+0x1e0/0x1e0
+[  357.744361] [    C0]  ? tty_ioctl+0x7c4/0xec0
+[  357.744373] [    C0]  tty_ioctl+0x7c4/0xec0
+[  357.744387] [    C0]  ? kmem_cache_free.part.0+0x1b0/0x1e0
+[  357.744399] [    C0]  ? tty_vhangup+0x30/0x30
+[  357.744414] [    C0]  ? __sanitizer_cov_trace_switch+0x49/0x80
+[  357.744426] [    C0]  ? do_vfs_ioctl+0x224/0xc50
+[  357.744439] [    C0]  ? ioctl_file_clone+0x140/0x140
+[  357.744452] [    C0]  ? file_open_root+0x420/0x420
+[  357.744467] [    C0]  ? check_preemption_disabled+0x50/0x130
+[  357.744479] [    C0]  ? lock_is_held_type+0xbf/0xf0
+[  357.744495] [    C0]  ? syscall_enter_from_user_mode+0x1c/0x60
+[  357.744509] [    C0]  ? rcu_read_lock_sched_held+0xa0/0xd0
+[  357.744521] [    C0]  ? mark_held_locks+0x24/0x90
+[  357.744533] [    C0]  ? tty_vhangup+0x30/0x30
+[  357.744545] [    C0]  __x64_sys_ioctl+0xec/0x140
+[  357.744557] [    C0]  do_syscall_64+0x31/0x70
+[  357.744572] [    C0]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  357.744583] [    C0] RIP: 0033:0x7f9b8316150b
+[  357.744632] [    C0] Code: 0f 1e fa 48 8b 05 85 39 0d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 55 39 0d 00 f7 d8 64 89 01 48
+[  357.744647] [    C0] RSP: 002b:00007ffe190139b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[  357.744680] [    C0] RAX: ffffffffffffffda RBX: 000055dc2ea7b220 RCX: 00007f9b8316150b
+[  357.744701] [    C0] RDX: 00007ffe190139cc RSI: 000000000000560a RDI: 0000000000000003
+[  357.744721] [    C0] RBP: 0000000000000003 R08: 0000000000000000 R09: 00007f9b83257d50
+[  357.744741] [    C0] R10: 0000000000000000 R11: 0000000000000246 R12: 000055dc2ea7b130
+[  357.744762] [    C0] R13: 00007ffe19013ad0 R14: 0000000000000000 R15: 0000000000000000
+[  357.744769] [    C0]
+[  357.744781] [    C0] Allocated by task 2940:
+[  357.744793] [    C0]  kasan_save_stack+0x1f/0x40
+[  357.744808] [    C0]  __kasan_kmalloc.constprop.0+0xbf/0xd0
+[  357.744819] [    C0]  __kmalloc+0x57d/0x9d0
+[  357.744831] [    C0]  fbcon_set_font+0x1a6/0x4a0
+[  357.744843] [    C0]  con_font_op+0x8e2/0xac0
+[  357.744854] [    C0]  vt_ioctl+0x1186/0x21a0
+[  357.744866] [    C0]  tty_ioctl+0x7c4/0xec0
+[  357.744878] [    C0]  __x64_sys_ioctl+0xec/0x140
+[  357.744889] [    C0]  do_syscall_64+0x31/0x70
+[  357.744905] [    C0]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  357.744912] [    C0]
+[  357.744932] [    C0] The buggy address belongs to the object at ffff8880d46ff000
+[  357.744949] [    C0]  which belongs to the cache kmalloc-1k of size 1024
+[  357.744967] [    C0] The buggy address is located 835 bytes inside of
+[  357.744985] [    C0]  1024-byte region [ffff8880d46ff000, ffff8880d46ff400)
+[  357.745000] [    C0] The buggy address belongs to the page:
+[  357.745027] [    C0] page:00000000878ccadc refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xd46ff
+[  357.745040] [    C0] flags: 0xfffe0000000200(slab)
+[  357.745063] [    C0] raw: 00fffe0000000200 ffffea00032a0808 ffffea00035ae308 ffff8880d6840700
+[  357.745086] [    C0] raw: 0000000000000000 ffff8880d46ff000 0000000100000002 ffff8880cbe8b281
+[  357.745103] [    C0] page dumped because: kasan: bad access detected
+[  357.745117] [    C0] page->mem_cgroup:ffff8880cbe8b281
+[  357.745125] [    C0]
+[  357.745140] [    C0] Memory state around the buggy address:
+[  357.745162] [    C0]  ffff8880d46ff200: 00 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  357.745186] [    C0]  ffff8880d46ff280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  357.745208] [    C0] >ffff8880d46ff300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  357.745224] [    C0]                                            ^
+[  357.745246] [    C0]  ffff8880d46ff380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  357.745267] [    C0]  ffff8880d46ff400: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  357.745288] [    C0] ==================================================================
+[  357.745305] [    C0] Disabling lock debugging due to kernel taint
+[  357.745349] [    C0] bit_putcs: width=1 cellsize=9 count=46 maxcnt=910 scan_align=0 buf_align=0 image.width=368 image.height=9 pitch=46
+[  357.759878] [    C0] bit_putcs: width=1 cellsize=9 count=80 maxcnt=910 scan_align=0 buf_align=0 image.width=640 image.height=9 pitch=80
+[  357.759910] [    C0] bit_putcs: width=1 cellsize=9 count=74 maxcnt=910 scan_align=0 buf_align=0 image.width=592 image.height=9 pitch=74
+[  357.775006] [    C0] bit_putcs: width=1 cellsize=9 count=80 maxcnt=910 scan_align=0 buf_align=0 image.width=640 image.height=9 pitch=80
+----------
+
