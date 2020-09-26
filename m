@@ -2,103 +2,175 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E03D278CD6
-	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Sep 2020 17:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFE7F27961F
+	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Sep 2020 04:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgIYPfS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Sep 2020 11:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726990AbgIYPfS (ORCPT
+        id S1728871AbgIZCDR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 25 Sep 2020 22:03:17 -0400
+Received: from mail-io1-f69.google.com ([209.85.166.69]:50462 "EHLO
+        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727495AbgIZCDR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Sep 2020 11:35:18 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007B7C0613CE;
-        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id x16so2110316pgj.3;
-        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=H/9+qYXF9GN9bRK/C5H5FmZN11jhXx2ehr1k98ass28=;
-        b=bQGnqsi9trU4rchmHNT+IDgA2k6+MHytIahgg3FdvAvXLkOqo3HSiPipNaPY6tzrU0
-         saZMEvvp18hb5cctMiXbAwwdqEtAcLz7sPvZhAyVhlZpBF4LYs/hKpLIA5BlM5T20YeV
-         tPTDEoH1GxEm2CV8U0/mJ2mOBJ9L7PUKyJbQqCPOnpyX8ohd15TlgMC+DsiZGV26XGE+
-         2z1CA7TU+0K7gKWYNUiZQKGUlLyMebr9WRQx81Q6djTGlGxLXvfJaDgaOcnN1p4Ru3Hc
-         IRA49OvXD0yIN8n62rf0CT17tM4MRnhc4nUc9FKLj1sZrJjcK+wxUdsUOgzFdSL/g+p4
-         fzdQ==
+        Fri, 25 Sep 2020 22:03:17 -0400
+Received: by mail-io1-f69.google.com with SMTP id b16so3500109iod.17
+        for <linux-fbdev@vger.kernel.org>; Fri, 25 Sep 2020 19:03:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=H/9+qYXF9GN9bRK/C5H5FmZN11jhXx2ehr1k98ass28=;
-        b=SHIVpHzOYLnbYvNc/Y/rhGHcxdmPJ52KM7Gss0amO2fRARLO0eGVIjShinIzBfmnLo
-         LKU0IefsUmtsyXM80wKUuxtNcjW4c9fTKntZrHjGrUI+mQf3DoNAW3JZmSvNmelwmyj4
-         iemIlve27H10HdY7DGz6FBYQ7XVB9iH0w+CVmKqwpbfzyOGB8QFo7wiFH70iWugLtx/H
-         9yYUm2GWV9T1W0RFDxrvDeS6I06Yl9TIAIboHyklRX/62rKSNqmpmhVa1epTzLKKDjhj
-         b8FErzvEc4R0HyXgfdyO1C6JbLV6/6B7cGs/7Ovqo9X4n56Mkc5Jc5B+WkUtDYn8vVs9
-         QYXQ==
-X-Gm-Message-State: AOAM533y5mREOHNm7GNEwXZHUjXvnIhpQCX+QNXqYvyTbYDfmC0IR54t
-        SeL7V+1BrM63+U557q+s8g==
-X-Google-Smtp-Source: ABdhPJypCGDd/spbzL267gES6OYRMPR4S4hEJjiFO5vQCn8uHug/BJxwZZg36Chf8IEvIzbCNPLsJw==
-X-Received: by 2002:a62:7c43:0:b029:139:858b:8033 with SMTP id x64-20020a627c430000b0290139858b8033mr4515529pfc.3.1601048117493;
-        Fri, 25 Sep 2020 08:35:17 -0700 (PDT)
-Received: from PWN (n11212042027.netvigator.com. [112.120.42.27])
-        by smtp.gmail.com with ESMTPSA id 123sm2680229pgd.83.2020.09.25.08.35.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2020 08:35:16 -0700 (PDT)
-Date:   Fri, 25 Sep 2020 11:35:09 -0400
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Jiri Slaby <jirislaby@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        syzkaller-bugs@googlegroups.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Prevent out-of-bounds access for built-in font data
- buffers
-Message-ID: <20200925153509.GA895804@PWN>
-References: <0000000000006b9e8d059952095e@google.com>
- <cover.1600953813.git.yepeilin.cs@gmail.com>
- <3f754d60-1d35-899c-4418-147d922e29af@kernel.org>
- <20200925101300.GA890211@PWN>
- <20200925132551.GF438822@phenom.ffwll.local>
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=NC2wUH41jP18o/wjPjgQ83NFv0wnrPzqydTUpCudUfo=;
+        b=nIvF3LVNL6lEsTl8Mt7O8z/2pMASYYDUv+znoUmt304lJ7f0AnBwoeaKr+RaxVdW2R
+         y5Lkp/WK5d6Ikg9OAZOFo0EqjlQa2ytLWab/z9E8YYcr+nqhN5x+sgFWjtam2UdOoUSY
+         we3Hu+0AnQnWalFWGe/AcevMUdsqo/qkduJQqymgSMVZ7lrt8wyee0cvx6NhRLMdX9d+
+         vOncYmI3GwXG/hPBrCaVa79gebohstaIeJnB3Ya0zCsYK4Fs+Jss2pTpnP0QJgra305y
+         HhHX86r5esmJ2lqSDdhDvN3UHTXTB18Oee1g+W++hNlIWp6bAkQDjjadS9f+6NB3fwSC
+         Youw==
+X-Gm-Message-State: AOAM531NnQCglsDNgycfkr9pvc1iAVPLkE5gI0fAOeNg8TfnLtpyAr3o
+        HnmaByFJASOeD2SObsBGDREPcAtpzia487RzgJFmMeJRsY5+
+X-Google-Smtp-Source: ABdhPJx4Isq0YfHLtYAudG7Z8MoW/JHCXhhrlzbGPODTmqFpxpR/6szS8gR2pFh+V9ciHxmvv2mb7VLe19d8Ai2+4TzctwgbaKE7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200925132551.GF438822@phenom.ffwll.local>
+X-Received: by 2002:a92:99cb:: with SMTP id t72mr2471688ilk.172.1601085796148;
+ Fri, 25 Sep 2020 19:03:16 -0700 (PDT)
+Date:   Fri, 25 Sep 2020 19:03:16 -0700
+In-Reply-To: <00000000000064653f059f419b58@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000226d3f05b02dd607@google.com>
+Subject: Re: KASAN: use-after-free Read in bit_putcs
+From:   syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch, deller@gmx.de,
+        dri-devel@lists.freedesktop.org, gregkh@linuxfoundation.org,
+        jirislaby@kernel.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, penguin-kernel@I-love.SAKURA.ne.jp,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Sep 25, 2020 at 03:25:51PM +0200, Daniel Vetter wrote:
-> I think the only way to make this work is that we have one place which
-> takes in the userspace uapi struct, and then converts it once into a
-> kernel_console_font. With all the error checking.
+syzbot has found a reproducer for the following issue on:
 
-Ah, I didn't think of that! When trying to introduce
-`kernel_console_font` I ended up using the uapi version and the kernel
-version in parallel...
+HEAD commit:    171d4ff7 Merge tag 'mmc-v5.9-rc4-2' of git://git.kernel.or..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13b41d03900000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=240e2ebab67245c7
+dashboard link: https://syzkaller.appspot.com/bug?extid=b308f5fd049fbbc6e74f
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=143d11d3900000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=150d16e5900000
 
-> Then all internal code deals in terms of kernel_console_font, with
-> properly typed and named struct members and helper functions and
-> everything. And we might need a gradual conversion for this, so that first
-> we can convert over invidual console drivers, then subsystems, until at
-> the end we've pushed the conversion from uapi array to kernel_console_font
-> all the way to the ioctl entry points.
-> 
-> But that's indeed a huge pile of work, and fair warning: fbcon is
-> semi-orphaned, so by doing this you'll pretty much volunteer for
-> maintainership :-)
->
-> But I'd be very happy to help get this done and throw some maintainership
-> credentials at you in the proces ...
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com
 
-Sounds exciting, I will be glad to do this! I'm just a beginner, but I
-will try to do what I can do.
+==================================================================
+BUG: KASAN: use-after-free in __fb_pad_aligned_buffer include/linux/fb.h:654 [inline]
+BUG: KASAN: use-after-free in bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
+BUG: KASAN: use-after-free in bit_putcs+0xbb6/0xd20 drivers/video/fbdev/core/bitblit.c:185
+Read of size 1 at addr ffff88809df498fe by task syz-executor859/6860
 
-Thank you,
-Peilin Ye
+CPU: 1 PID: 6860 Comm: syz-executor859 Not tainted 5.9.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x198/0x1fd lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0xae/0x497 mm/kasan/report.c:383
+ __kasan_report mm/kasan/report.c:513 [inline]
+ kasan_report.cold+0x1f/0x37 mm/kasan/report.c:530
+ __fb_pad_aligned_buffer include/linux/fb.h:654 [inline]
+ bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
+ bit_putcs+0xbb6/0xd20 drivers/video/fbdev/core/bitblit.c:185
+ fbcon_putcs+0x35a/0x450 drivers/video/fbdev/core/fbcon.c:1308
+ con_flush drivers/tty/vt/vt.c:2575 [inline]
+ do_con_write+0xb6b/0x1dd0 drivers/tty/vt/vt.c:2905
+ con_write+0x22/0xb0 drivers/tty/vt/vt.c:3250
+ process_output_block drivers/tty/n_tty.c:595 [inline]
+ n_tty_write+0x3ce/0xf80 drivers/tty/n_tty.c:2333
+ do_tty_write drivers/tty/tty_io.c:962 [inline]
+ tty_write+0x4d9/0x870 drivers/tty/tty_io.c:1046
+ vfs_write+0x2b0/0x730 fs/read_write.c:576
+ ksys_write+0x12d/0x250 fs/read_write.c:631
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x4403c9
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffd97e140c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004403c9
+RDX: 0000000000001006 RSI: 0000000020000180 RDI: 0000000000000006
+RBP: 00000000006cb018 R08: 00000000004002c8 R09: 00000000004002c8
+R10: 000000000000000d R11: 0000000000000246 R12: 0000000000401c30
+R13: 0000000000401cc0 R14: 0000000000000000 R15: 0000000000000000
+
+Allocated by task 6860:
+ kasan_save_stack+0x1b/0x40 mm/kasan/common.c:48
+ kasan_set_track mm/kasan/common.c:56 [inline]
+ __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:461
+ __do_kmalloc mm/slab.c:3655 [inline]
+ __kmalloc+0x1b0/0x360 mm/slab.c:3664
+ kmalloc include/linux/slab.h:559 [inline]
+ kzalloc include/linux/slab.h:666 [inline]
+ tomoyo_init_log+0x1376/0x1ee0 security/tomoyo/audit.c:275
+ tomoyo_supervisor+0x34d/0xef0 security/tomoyo/common.c:2097
+ tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+ tomoyo_env_perm+0x17f/0x1f0 security/tomoyo/environ.c:63
+ tomoyo_environ security/tomoyo/domain.c:674 [inline]
+ tomoyo_find_next_domain+0x1438/0x1f77 security/tomoyo/domain.c:881
+ tomoyo_bprm_check_security security/tomoyo/tomoyo.c:101 [inline]
+ tomoyo_bprm_check_security+0x121/0x1a0 security/tomoyo/tomoyo.c:91
+ security_bprm_check+0x45/0xa0 security/security.c:840
+ search_binary_handler fs/exec.c:1807 [inline]
+ exec_binprm fs/exec.c:1860 [inline]
+ bprm_execve+0x879/0x1b10 fs/exec.c:1931
+ do_execveat_common+0x626/0x7c0 fs/exec.c:2026
+ do_execve fs/exec.c:2094 [inline]
+ __do_sys_execve fs/exec.c:2170 [inline]
+ __se_sys_execve fs/exec.c:2165 [inline]
+ __x64_sys_execve+0x8f/0xc0 fs/exec.c:2165
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Freed by task 6860:
+ kasan_save_stack+0x1b/0x40 mm/kasan/common.c:48
+ kasan_set_track+0x1c/0x30 mm/kasan/common.c:56
+ kasan_set_free_info+0x1b/0x30 mm/kasan/generic.c:355
+ __kasan_slab_free+0xd8/0x120 mm/kasan/common.c:422
+ __cache_free mm/slab.c:3418 [inline]
+ kfree+0x10e/0x2b0 mm/slab.c:3756
+ tomoyo_supervisor+0x36e/0xef0 security/tomoyo/common.c:2149
+ tomoyo_audit_env_log security/tomoyo/environ.c:36 [inline]
+ tomoyo_env_perm+0x17f/0x1f0 security/tomoyo/environ.c:63
+ tomoyo_environ security/tomoyo/domain.c:674 [inline]
+ tomoyo_find_next_domain+0x1438/0x1f77 security/tomoyo/domain.c:881
+ tomoyo_bprm_check_security security/tomoyo/tomoyo.c:101 [inline]
+ tomoyo_bprm_check_security+0x121/0x1a0 security/tomoyo/tomoyo.c:91
+ security_bprm_check+0x45/0xa0 security/security.c:840
+ search_binary_handler fs/exec.c:1807 [inline]
+ exec_binprm fs/exec.c:1860 [inline]
+ bprm_execve+0x879/0x1b10 fs/exec.c:1931
+ do_execveat_common+0x626/0x7c0 fs/exec.c:2026
+ do_execve fs/exec.c:2094 [inline]
+ __do_sys_execve fs/exec.c:2170 [inline]
+ __se_sys_execve fs/exec.c:2165 [inline]
+ __x64_sys_execve+0x8f/0xc0 fs/exec.c:2165
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+The buggy address belongs to the object at ffff88809df49800
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 254 bytes inside of
+ 1024-byte region [ffff88809df49800, ffff88809df49c00)
+The buggy address belongs to the page:
+page:000000001b295380 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9df49
+flags: 0xfffe0000000200(slab)
+raw: 00fffe0000000200 ffffea00027dc7c8 ffff8880aa041850 ffff8880aa040700
+raw: 0000000000000000 ffff88809df49000 0000000100000002 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88809df49780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88809df49800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88809df49880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                                ^
+ ffff88809df49900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88809df49980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
 
