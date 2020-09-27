@@ -2,167 +2,210 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9626E279C35
-	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Sep 2020 21:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11345279D29
+	for <lists+linux-fbdev@lfdr.de>; Sun, 27 Sep 2020 02:25:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729921AbgIZTkH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 26 Sep 2020 15:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729291AbgIZTkG (ORCPT
+        id S1726382AbgI0AZN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 26 Sep 2020 20:25:13 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:51394 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726587AbgI0AZM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 26 Sep 2020 15:40:06 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E131AC0613CE;
-        Sat, 26 Sep 2020 12:40:06 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id x22so5991926pfo.12;
-        Sat, 26 Sep 2020 12:40:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=z/Wf/3QHi80/sQfmdSfCdx2ZY+b1si1Ve9CIncWZLPc=;
-        b=Aqu4VvvcLLk8HRAROUrSqzdPdruCf748+CbScaaqaVpUZOmVe5KHuLzgjLAUbmXs3t
-         vzhSzKDX7QJh092q8/yOtbNLGv5fYkBGp5RlZ/pmc6PSELNxK0uHhvPimuv+qygP9fwj
-         ytRePrY9vej5lD0YjDMxX7WyrBpm7G9QnzS+kZBwhX8udZvh/wfHUwYN8DuVboYwmUwt
-         5wc/bKjQKp+IvFsvlsVrefOFP8w0n/xVWhrakv2bnuywehSIJKIJwh5Dbq5e0cfwqeNv
-         ZcVp0SxthLG152MZvD3saw2RfTCc3m887GGs7sTu96v1HVu3wDGBBn6Hjw0F1fYLb/pw
-         r6Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=z/Wf/3QHi80/sQfmdSfCdx2ZY+b1si1Ve9CIncWZLPc=;
-        b=YxeQ67CJ/KMzJihDL9BzULAozaWzvh8wvvbOkABIlH0aCAL+fPNqYFKqQfv7q6kCNJ
-         1aXlFvw0n33TzPZmmO1Ky28hkRApnrjVXO8z+EixA1BNZ1TrM8Edv81NTn72uqHoDrQu
-         ouIJjmyB/CRUX3Wgo6e4av4eSG0JRn0qHdn+oe9By8RoGcc3Rc6liA0Kc1Jr+6UybKmi
-         inaZKxNmdJXL+ujak/Y5qoo9nmc0uvBpvh/+CYDtHWEDF6qel12WYWFiHR47SXomOvDy
-         utaZieK9LS8XhzLG/Ela13kzLzzgXIEa8lRb/dXukstMhUqGYis+H94+Ym5dSboRRf0j
-         WH0A==
-X-Gm-Message-State: AOAM530LSPGSQuuydSVLQpoCglxFNo9wE4gwcryugd4Nn0cyHoS6Ka+8
-        jtmujwNYYSzPmJMKVtMbLigRp/N+Hz8ochA=
-X-Google-Smtp-Source: ABdhPJx++z5PLIkM2jj3Fb7/bzZyOIB/WkNavwfESpUe2Pl7KYRs/XdphoGaWDKJtwgYKU/tQtJqbg==
-X-Received: by 2002:a62:4ed6:0:b029:142:2501:35ec with SMTP id c205-20020a624ed60000b0290142250135ecmr4801624pfb.76.1601149206406;
-        Sat, 26 Sep 2020 12:40:06 -0700 (PDT)
-Received: from PWN ([161.117.41.183])
-        by smtp.gmail.com with ESMTPSA id s70sm5557357pgc.11.2020.09.26.12.40.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 12:40:05 -0700 (PDT)
-Date:   Sat, 26 Sep 2020 15:39:57 -0400
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
+        Sat, 26 Sep 2020 20:25:12 -0400
+Received: from fsav302.sakura.ne.jp (fsav302.sakura.ne.jp [153.120.85.133])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 08R0P9TR053146;
+        Sun, 27 Sep 2020 09:25:09 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav302.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav302.sakura.ne.jp);
+ Sun, 27 Sep 2020 09:25:09 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav302.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 08R0P8G8053139
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+        Sun, 27 Sep 2020 09:25:08 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Subject: Re: KASAN: use-after-free Read in bit_putcs
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+To:     syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
         b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch, deller@gmx.de,
         gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        syzkaller-bugs@googlegroups.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        yepeilin.cs@gmail.com
-Subject: Re: KASAN: use-after-free Read in bit_putcs
-Message-ID: <20200926193957.GA1033221@PWN>
+        syzkaller-bugs@googlegroups.com,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <000000000000226d3f05b02dd607@google.com>
  <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
+Message-ID: <47907f77-b14b-b433-45c6-a315193f0c1a@i-love.sakura.ne.jp>
+Date:   Sun, 27 Sep 2020 09:25:07 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 01:25:17AM +0900, Tetsuo Handa wrote:
-> A simplified reproducer and debug printk() patch shown below reported that
-> vc_font.height is increased to 9 via ioctl(VT_RESIZEX) after it was once
-> decreased from 16 to 2 via ioctl(PIO_FONT).
+On 2020/09/27 4:39, Peilin Ye wrote:
+> On Sun, Sep 27, 2020 at 01:25:17AM +0900, Tetsuo Handa wrote:
+>> Since I don't know the meaning of "struct vt_consize"->v_clin (which is commented
+>> with "/* number of pixel rows per character */" but does it mean font size ?),
+>> I don't know why we can assign that value to vcp->vc_font.height via
+>>
+>> 	if (v.v_clin)
+>> 		vcp->vc_font.height = v.v_clin;
+>>
+>> in vt_resizex(). While ioctl(PIO_FONT) needs to pass vc->vc_sw->con_font_set()
+>> check in con_font_set(), ioctl(VT_RESIZEX) does not pass it in vt_resizex()...
+>>
+>> Since this problem does not happen if I remove
+>>
+>> 	if (v.v_clin)
+>> 		vcp->vc_font.height = v.v_clin;
 > 
+> Hi Tetsuo!
 > 
+>>  from vt_resizex(), I guess that some variables are getting confused by change
+>> of vc->vc_font.height ...
 > 
-> Since vc_resize() with v.v_rows == 0 preserves current vc->vc_rows value,
-> this reproducer is bypassing
+> Yes, see bit_putcs():
 > 
-> 	if (v.v_clin) {
-> 		int rows = v.v_vlin / v.v_clin;
-> 		if (v.v_rows != rows) {
-> 			if (v.v_rows) /* Parameters don't add up */
-> 				return -EINVAL;
-> 			v.v_rows = rows;
-> 		}
-> 	}
+> (drivers/video/fbdev/core/bitblit.c)
+> static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+> 		      const unsigned short *s, int count, int yy, int xx,
+> 		      int fg, int bg)
+> {
+> 	struct fb_image image;
+> 	u32 width = DIV_ROUND_UP(vc->vc_font.width, 8);
+> 	u32 cellsize = width * vc->vc_font.height;
+> 	    ^^^^^^^^		   ^^^^^^^^^^^^^^
 > 
-> check by setting v.v_vlin == 1 and v.v_clin == 9.
+> `cellsize` is now too large. Later, in bit_putcs_aligned():
 > 
-> If v.v_vcol > 0 and v.v_vcol != vc->vc_cols (though this reproducer is passing
-> v.v_vcol == 0), tty_do_resize() from vc_do_resize() from vc_resize() can make
-> "struct tty_struct"->winsize.ws_ypixel = 1 despite
-> "struct tty_struct"->winsize.vc->vc_rows = vc->vc_rows (which is usually larger
-> than 1). Does such winsize (a row has 1 / vc->vc_rows pixel) make sense?
+> 	while (cnt--) {
+> 		src = vc->vc_font.data + (scr_readw(s++)&
+> 					  charmask)*cellsize;
+> 						    ^^^^^^^^
 > 
+> `src` goes out of bounds of the data buffer. At first glance I guess
+> this is an out-of-bound read reported as a use-after-free read? The
+> crashlog says:
+
+How this OOB access is reported varies.
+
 > 
+> To resolve this out-of-bound issue for now, I think the easiest way
+> is to add a range check in bit_putcs(), or bit_putcs_aligned().
 > 
-> Since I don't know the meaning of "struct vt_consize"->v_clin (which is commented
-> with "/* number of pixel rows per character */" but does it mean font size ?),
-> I don't know why we can assign that value to vcp->vc_font.height via
-> 
-> 	if (v.v_clin)
-> 		vcp->vc_font.height = v.v_clin;
-> 
-> in vt_resizex(). While ioctl(PIO_FONT) needs to pass vc->vc_sw->con_font_set()
-> check in con_font_set(), ioctl(VT_RESIZEX) does not pass it in vt_resizex()...
-> 
-> Since this problem does not happen if I remove
-> 
-> 	if (v.v_clin)
-> 		vcp->vc_font.height = v.v_clin;
+> ...but yeah, that `VT_RESIZEX` ioctl looks really buggy, and is already
+> causing more issues:
 
-Hi Tetsuo!
+At least, since not all fonts have height == 32 (e.g. font_vga_8x8 is height == 8),
+allow changing vc->vc_font.height with only
 
->  from vt_resizex(), I guess that some variables are getting confused by change
-> of vc->vc_font.height ...
+	if (v.v_clin > 32)
+		return -EINVAL;
 
-Yes, see bit_putcs():
+validation in VT_RESIZEX looks wrong. This needs more validations.
 
-(drivers/video/fbdev/core/bitblit.c)
-static void bit_putcs(struct vc_data *vc, struct fb_info *info,
-		      const unsigned short *s, int count, int yy, int xx,
-		      int fg, int bg)
-{
-	struct fb_image image;
-	u32 width = DIV_ROUND_UP(vc->vc_font.width, 8);
-	u32 cellsize = width * vc->vc_font.height;
-	    ^^^^^^^^		   ^^^^^^^^^^^^^^
 
-`cellsize` is now too large. Later, in bit_putcs_aligned():
 
-	while (cnt--) {
-		src = vc->vc_font.data + (scr_readw(s++)&
-					  charmask)*cellsize;
-						    ^^^^^^^^
+By the way, can we find a user of VT_RESIZEX? As far as I googled with "VT_RESIZEX",
+I couldn't find a userspace program; only explanation of VT_RESIZEX and kernel patches
+related to VT_RESIZEX are found. Also, while console_ioctl(4) man page says
 
-`src` goes out of bounds of the data buffer. At first glance I guess
-this is an out-of-bound read reported as a use-after-free read? The
-crashlog says:
+  Any parameter may be set to zero, indicating "no change"
 
-[  149.732103][ T6693] Allocated by task 6667:
-[ 149.732115][ T6693] kasan_save_stack (mm/kasan/common.c:48)
-[ 149.732121][ T6693] __kasan_kmalloc.constprop.0 (mm/kasan/common.c:56 mm/kasan/common.c:461)
-[ 149.732126][ T6693] __kmalloc (mm/slab.c:3656 mm/slab.c:3664)
-[ 149.732133][ T6693] alloc_pipe_info (fs/pipe.c:810)
-[ 149.732139][ T6693] create_pipe_files (fs/pipe.c:883 fs/pipe.c:914)
-[ 149.732145][ T6693] do_pipe2 (fs/pipe.c:965 fs/pipe.c:1012)
+, the assignment
 
-I'm not sure, but I don't think a buffer allocated in fs/pipe.c is
-related here. Maybe they just live near each other on the heap?
+	if (!v.v_vlin)
+		v.v_vlin = vc->vc_scan_lines;
 
-To resolve this out-of-bound issue for now, I think the easiest way
-is to add a range check in bit_putcs(), or bit_putcs_aligned().
+changes the meaning to
 
-...but yeah, that `VT_RESIZEX` ioctl looks really buggy, and is already
-causing more issues:
+   If v_vlin parameter is set to zero, the value for associated console is copied
+   to each console (instead of preserving current value for that console)
 
-KASAN: global-out-of-bounds Read in fbcon_get_font
-Link: https://syzkaller.appspot.com/bug?id=08b8be45afea11888776f897895aef9ad1c3ecfd
+. Maybe for now we can try this (effectively making VT_RESIZEX == VT_RESIZE) ?
 
-This was also caused by `VT_RESIZEX`...
+ vt_ioctl.c |   57 ++++++++++-----------------------------------------------
+ 1 file changed, 10 insertions(+), 47 deletions(-)
 
-Thank you,
-Peilin Ye
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index a4e520bdd521..bc33938e2f20 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -773,58 +773,21 @@ static int vt_resizex(struct vc_data *vc, struct vt_consize __user *cs)
+ 	if (copy_from_user(&v, cs, sizeof(struct vt_consize)))
+ 		return -EFAULT;
+ 
+-	/* FIXME: Should check the copies properly */
+-	if (!v.v_vlin)
+-		v.v_vlin = vc->vc_scan_lines;
+-
+-	if (v.v_clin) {
+-		int rows = v.v_vlin / v.v_clin;
+-		if (v.v_rows != rows) {
+-			if (v.v_rows) /* Parameters don't add up */
+-				return -EINVAL;
+-			v.v_rows = rows;
+-		}
+-	}
+-
+-	if (v.v_vcol && v.v_ccol) {
+-		int cols = v.v_vcol / v.v_ccol;
+-		if (v.v_cols != cols) {
+-			if (v.v_cols)
+-				return -EINVAL;
+-			v.v_cols = cols;
+-		}
+-	}
+-
+-	if (v.v_clin > 32)
+-		return -EINVAL;
++	if (v.v_vlin)
++		pr_info_once("\"struct vt_consize\"->v_vlin is ignored. Please report if you need this.\n");
++	if (v.v_clin)
++		pr_info_once("\"struct vt_consize\"->v_clin is ignored. Please report if you need this.\n");
+ 
++	console_lock();
+ 	for (i = 0; i < MAX_NR_CONSOLES; i++) {
+-		struct vc_data *vcp;
++		vc = vc_cons[i].d;
+ 
+-		if (!vc_cons[i].d)
+-			continue;
+-		console_lock();
+-		vcp = vc_cons[i].d;
+-		if (vcp) {
+-			int ret;
+-			int save_scan_lines = vcp->vc_scan_lines;
+-			int save_font_height = vcp->vc_font.height;
+-
+-			if (v.v_vlin)
+-				vcp->vc_scan_lines = v.v_vlin;
+-			if (v.v_clin)
+-				vcp->vc_font.height = v.v_clin;
+-			vcp->vc_resize_user = 1;
+-			ret = vc_resize(vcp, v.v_cols, v.v_rows);
+-			if (ret) {
+-				vcp->vc_scan_lines = save_scan_lines;
+-				vcp->vc_font.height = save_font_height;
+-				console_unlock();
+-				return ret;
+-			}
++		if (vc) {
++			vc->vc_resize_user = 1;
++			vc_resize(vc, v.v_cols, v.v_rows);
+ 		}
+-		console_unlock();
+ 	}
++	console_unlock();
+ 
+ 	return 0;
+ }
 
