@@ -2,69 +2,32 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7373F27D3FF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Sep 2020 18:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB37127D428
+	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Sep 2020 19:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728947AbgI2Q5C (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 29 Sep 2020 12:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59798 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727871AbgI2Q5C (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 29 Sep 2020 12:57:02 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D4CC061755
-        for <linux-fbdev@vger.kernel.org>; Tue, 29 Sep 2020 09:57:02 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id e17so5340214wme.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 29 Sep 2020 09:57:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nQq4copkzrTWJFWPrIjoaGpC7LzDugYFHrKyuAj+WCk=;
-        b=MzZghrQtN3nF8Y/lUEqyS+JQazMX4C8+eDh7eh/JV1dh3GOplVIGXXBw19lWPfy3ie
-         4KC69ffpLyrDofRK+U2y6PDp9oQE6MdrBUO29+NC4yMyvU8RzsbuzWKxPr26qCD5YsPr
-         R42W/BKz4oQEgnTPwd62+BkpjZfezYgWC17ls=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=nQq4copkzrTWJFWPrIjoaGpC7LzDugYFHrKyuAj+WCk=;
-        b=Np5IRdnZBAXUrjlwKzFPSizfuBEQ8EsHbWkwmoPQB5lSnAy3Eug1a81lUkS9nyTrJa
-         pvsPd0jX+4BAOxEohbyZIJuIOHZqEt31YCH+Sa7M/1gkpwX0bYCrWhTqV4BbG5173lna
-         b8TxIR5ise+eo3sTr/+4PqeLlDRDau1sm6IaXZu4E5MGoW1ZnTTwNA/uNT9/FQoqWAHh
-         jT/89uMgF9w3+XNpqXwP5Rd1vxoaNramoOhUS7nNB7wV2TVdC1EwU+UwlMLR3c77h0l/
-         m5g2DwXB4sAs6dFd+bXFFAo/GN3zQP6gfacjLXeWu3SGGoszq09Z3AcODkDZCbcsaHmg
-         gRAg==
-X-Gm-Message-State: AOAM532aQOr5q4v6tqU14Q4deiyWSHJJB7yP+PTBmURXCfnq3zT9MTcZ
-        MR7fX0WzAroyplzPHaKlTcGGAA==
-X-Google-Smtp-Source: ABdhPJxSWkIHkpAEXbL2VmRDFNprfEkhWbClVdbLQTZbv7RVDpq4HuSembcT2Wrqfw7IxPzBCnBXdw==
-X-Received: by 2002:a1c:6607:: with SMTP id a7mr5501099wmc.142.1601398620840;
-        Tue, 29 Sep 2020 09:57:00 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id u126sm8002518wmu.9.2020.09.29.09.56.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2020 09:56:59 -0700 (PDT)
-Date:   Tue, 29 Sep 2020 18:56:57 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Martin Hostettler <textshell@uchuujin.de>
-Cc:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        Peilin Ye <yepeilin.cs@gmail.com>,
-        syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
-        b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch, deller@gmx.de,
-        syzkaller-bugs@googlegroups.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        George Kennedy <george.kennedy@oracle.com>
-Subject: Re: [PATCH] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
-Message-ID: <20200929165657.GS438822@phenom.ffwll.local>
-Mail-Followup-To: Martin Hostettler <textshell@uchuujin.de>,
+        id S1728205AbgI2RKh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 29 Sep 2020 13:10:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727543AbgI2RKh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 29 Sep 2020 13:10:37 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B8D92071E;
+        Tue, 29 Sep 2020 17:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601399435;
+        bh=yeOAgtszboNZyIpMDHULVmYWzcVi/wr1D+owgmOWf8k=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=GtNtLUhdCOFNrHB3HGBsskZwghH2wKdL2glg2wSnt59jU03dflxktbsN0j2gVL78z
+         zW7TF/l50z3Eswma+PSi4XZCxh20ZY7vEPIdubOPobJ8wzwZ4vqGTFE4JDVqWi+Jmo
+         XpwXDh5LhsLDzdE/x/R1TVaNDAwRXK9Va8C/2Cr8=
+Date:   Tue, 29 Sep 2020 19:10:40 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Martin Hostettler <textshell@uchuujin.de>,
         Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        Peilin Ye <yepeilin.cs@gmail.com>,
+        jirislaby@kernel.org, Peilin Ye <yepeilin.cs@gmail.com>,
         syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
         b.zolnierkie@samsung.com, deller@gmx.de,
         syzkaller-bugs@googlegroups.com,
@@ -72,6 +35,8 @@ Mail-Followup-To: Martin Hostettler <textshell@uchuujin.de>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         George Kennedy <george.kennedy@oracle.com>
+Subject: Re: [PATCH] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
+Message-ID: <20200929171040.GB1351851@kroah.com>
 References: <000000000000226d3f05b02dd607@google.com>
  <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
  <47907f77-b14b-b433-45c6-a315193f0c1a@i-love.sakura.ne.jp>
@@ -81,63 +46,67 @@ References: <000000000000226d3f05b02dd607@google.com>
  <20200928175956.GF24673@neutronstar.dyndns.org>
  <100dfd3f-3415-80ae-a6cf-30d15f7ca49f@i-love.sakura.ne.jp>
  <20200929105203.GG24673@neutronstar.dyndns.org>
+ <20200929165657.GS438822@phenom.ffwll.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200929105203.GG24673@neutronstar.dyndns.org>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+In-Reply-To: <20200929165657.GS438822@phenom.ffwll.local>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 12:52:03PM +0200, Martin Hostettler wrote:
-> On Tue, Sep 29, 2020 at 10:12:46AM +0900, Tetsuo Handa wrote:
-> > On 2020/09/29 2:59, Martin Hostettler wrote:
-> > > On Sun, Sep 27, 2020 at 08:46:30PM +0900, Tetsuo Handa wrote:
-> > >> VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
-> > >> comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
-> > >>
+On Tue, Sep 29, 2020 at 06:56:57PM +0200, Daniel Vetter wrote:
+> On Tue, Sep 29, 2020 at 12:52:03PM +0200, Martin Hostettler wrote:
+> > On Tue, Sep 29, 2020 at 10:12:46AM +0900, Tetsuo Handa wrote:
+> > > On 2020/09/29 2:59, Martin Hostettler wrote:
+> > > > On Sun, Sep 27, 2020 at 08:46:30PM +0900, Tetsuo Handa wrote:
+> > > >> VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
+> > > >> comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
+> > > >>
+> > > > 
+> > > > It seems this is/was used by "svgatextmode" which seems to be at
+> > > > http://www.ibiblio.org/pub/Linux/utils/console/
+> > > > 
+> > > > Not sure if that kind of software still has a chance to work nowadays.
+> > > > 
 > > > 
-> > > It seems this is/was used by "svgatextmode" which seems to be at
-> > > http://www.ibiblio.org/pub/Linux/utils/console/
+> > > Thanks for the information.
 > > > 
-> > > Not sure if that kind of software still has a chance to work nowadays.
+> > > It seems that v.v_vlin = curr_textmode->VDisplay / (MOFLG_ISSET(curr_textmode, ATTR_DOUBLESCAN) ? 2 : 1)
+> > > and v.v_clin = curr_textmode->FontHeight . Thus, v.v_clin is font's height and seems to be non-zero.
+> > > But according to https://bugs.gentoo.org/19485 , people are using kernel framebuffer instead.
 > > > 
 > > 
-> > Thanks for the information.
+> > Yes, this seems to be from pre framebuffer times.
 > > 
-> > It seems that v.v_vlin = curr_textmode->VDisplay / (MOFLG_ISSET(curr_textmode, ATTR_DOUBLESCAN) ? 2 : 1)
-> > and v.v_clin = curr_textmode->FontHeight . Thus, v.v_clin is font's height and seems to be non-zero.
-> > But according to https://bugs.gentoo.org/19485 , people are using kernel framebuffer instead.
+> > Back in the days "svga" was the wording you got for "pokes svga card
+> > hardware registers from userspace drivers". And textmode means font
+> > rendering is done via (fixed function in those times) hardware scanout
+> > engine. Of course having only to update 2 bytes per character was a huge
+> > saving early on. Likely this is also before vesa VBE was reliable.
 > > 
+> > So i guess the point where this all starts going wrong allowing the X parts
+> > of the api to be combined with FB based rendering at all? Sounds the only
+> > user didn't use that combination and so it was never tested?
+> > 
+> > Then again, this all relates to hardware from 20 years ago...
 > 
-> Yes, this seems to be from pre framebuffer times.
+> Imo userspace modesetting should be burned down anywhere we can. We've
+> gotten away with this in drivers/gpu by just seamlessly transitioning to
+> kernel drivers.
 > 
-> Back in the days "svga" was the wording you got for "pokes svga card
-> hardware registers from userspace drivers". And textmode means font
-> rendering is done via (fixed function in those times) hardware scanout
-> engine. Of course having only to update 2 bytes per character was a huge
-> saving early on. Likely this is also before vesa VBE was reliable.
-> 
-> So i guess the point where this all starts going wrong allowing the X parts
-> of the api to be combined with FB based rendering at all? Sounds the only
-> user didn't use that combination and so it was never tested?
-> 
-> Then again, this all relates to hardware from 20 years ago...
+> Since th only userspace we've found seems to be able to cope if this ioctl
+> doesn't do anything, my vote goes towards ripping it out completely and
+> doing nothing in there. Only question is whether we should error or fail
+> with a silent success: Former is safer, latter can avoid a few regression
+> reports since the userspace tools keep "working", and usually people don't
+> notice for stuff this old. It worked in drivers/gpu :-)
 
-Imo userspace modesetting should be burned down anywhere we can. We've
-gotten away with this in drivers/gpu by just seamlessly transitioning to
-kernel drivers.
+This patch just ignores the ioctl and keeps on going, so userspace
+"shouldn't" notice it :)
 
-Since th only userspace we've found seems to be able to cope if this ioctl
-doesn't do anything, my vote goes towards ripping it out completely and
-doing nothing in there. Only question is whether we should error or fail
-with a silent success: Former is safer, latter can avoid a few regression
-reports since the userspace tools keep "working", and usually people don't
-notice for stuff this old. It worked in drivers/gpu :-)
+And it's in linux-next now, so all should be good.
 
-Cheers, Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+thanks,
+
+greg k-h
