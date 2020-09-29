@@ -2,91 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC9027C2CC
-	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Sep 2020 12:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E1527CDD7
+	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Sep 2020 14:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728242AbgI2KwF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 29 Sep 2020 06:52:05 -0400
-Received: from static.85-10-192-230.clients.your-server.de ([85.10.192.230]:49477
-        "EHLO mxout.uchuujin.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727403AbgI2KwF (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 29 Sep 2020 06:52:05 -0400
-Received: by neutronstar.dyndns.org (Postfix, from userid 1000)
-        id 95E361430A410; Tue, 29 Sep 2020 12:52:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=uchuujin.de; s=h;
-        t=1601376723; bh=S4qRhmQnANACcgAsVG/DL9GYSVFl4YpEydWlE5Zr2Ds=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kQ5SCbFzDRm4dN6U+6m/9xGYPd9nKBC0cDUYWnO70jRjSK1W6dsLgFyeYAHhRRkK4
-         hGvGy2CfTg+VS/p2BwjSZvM7VU/0YSpcRkDH2kyYOHmIr6gi1q3vz/cWxZiySJHhsj
-         /QdFJQt/aJOQqzNYzWtK5xjTmBCa2JSOFUnjnlpVbzDVH/WYHFlIbUpSPfJJVi/Ofv
-         bPPRXvGYyq2xbfho+O+8CxyeN5ryfqTSejVkrZBp4whlcwSwAsqReID7WjQNgUbk8p
-         lCTmS673EGxk/BpX9j7jzcaISeLJq44r+QtnpNnjeZP/RSw3x9GbctyGQawjVtn5F8
-         vvfWOcjWk3/Hw==
-Date:   Tue, 29 Sep 2020 12:52:03 +0200
-From:   Martin Hostettler <textshell@uchuujin.de>
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Martin Hostettler <textshell@uchuujin.de>,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        Peilin Ye <yepeilin.cs@gmail.com>,
-        syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
-        b.zolnierkie@samsung.com, daniel.vetter@ffwll.ch, deller@gmx.de,
-        syzkaller-bugs@googlegroups.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        George Kennedy <george.kennedy@oracle.com>
-Subject: Re: [PATCH] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
-Message-ID: <20200929105203.GG24673@neutronstar.dyndns.org>
-References: <000000000000226d3f05b02dd607@google.com>
- <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
- <47907f77-b14b-b433-45c6-a315193f0c1a@i-love.sakura.ne.jp>
- <494395bc-a7dd-fdb1-8196-a236a266ef54@i-love.sakura.ne.jp>
- <20200927092701.GA1037755@PWN>
- <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
- <20200928175956.GF24673@neutronstar.dyndns.org>
- <100dfd3f-3415-80ae-a6cf-30d15f7ca49f@i-love.sakura.ne.jp>
+        id S1729429AbgI2MrK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 29 Sep 2020 08:47:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43162 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728818AbgI2LGM (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 29 Sep 2020 07:06:12 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B4B8321D46;
+        Tue, 29 Sep 2020 11:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601377571;
+        bh=9rCrCU/IlF42dXf6kWQ22ZRUzkR1Au7ZM8NK732koDk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=vLN47IcCv+02TtMy39Ki5OQQeSkY6tqmy55VgoWoO3itK7B3l2D+TswXT8Cdkc7Ju
+         glO3f4W0ko11rHnkiSlyZgBpidgodNt5eVwTlc+kXEWbX1OmAjRxqf77TOmRfQMuaN
+         YfEZWCAEBmIiYbvriksi5NAnDqTKA/dzBzDjQHE0=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        linux-usb@vger.kernel.org,
+        Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        "James E.J. Bottomley" <jejb@parisc-linux.org>,
+        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+        linux-parisc@vger.kernel.org, Ajay Kaher <akaher@vmware.com>
+Subject: [PATCH 4.4 80/85] tty: vt, consw->con_scrolldelta cleanup
+Date:   Tue, 29 Sep 2020 13:00:47 +0200
+Message-Id: <20200929105932.191358795@linuxfoundation.org>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200929105928.198942536@linuxfoundation.org>
+References: <20200929105928.198942536@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <100dfd3f-3415-80ae-a6cf-30d15f7ca49f@i-love.sakura.ne.jp>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 10:12:46AM +0900, Tetsuo Handa wrote:
-> On 2020/09/29 2:59, Martin Hostettler wrote:
-> > On Sun, Sep 27, 2020 at 08:46:30PM +0900, Tetsuo Handa wrote:
-> >> VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
-> >> comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
-> >>
-> > 
-> > It seems this is/was used by "svgatextmode" which seems to be at
-> > http://www.ibiblio.org/pub/Linux/utils/console/
-> > 
-> > Not sure if that kind of software still has a chance to work nowadays.
-> > 
-> 
-> Thanks for the information.
-> 
-> It seems that v.v_vlin = curr_textmode->VDisplay / (MOFLG_ISSET(curr_textmode, ATTR_DOUBLESCAN) ? 2 : 1)
-> and v.v_clin = curr_textmode->FontHeight . Thus, v.v_clin is font's height and seems to be non-zero.
-> But according to https://bugs.gentoo.org/19485 , people are using kernel framebuffer instead.
-> 
+From: Jiri Slaby <jslaby@suse.cz>
 
-Yes, this seems to be from pre framebuffer times.
+commit 97293de977365fe672daec2523e66ef457104921 upstream.
 
-Back in the days "svga" was the wording you got for "pokes svga card
-hardware registers from userspace drivers". And textmode means font
-rendering is done via (fixed function in those times) hardware scanout
-engine. Of course having only to update 2 bytes per character was a huge
-saving early on. Likely this is also before vesa VBE was reliable.
+* allow NULL consw->con_scrolldelta (some consoles define an empty
+  hook)
+* => remove empty hooks now
+* return value of consw->con_scrolldelta is never checked => make the
+  function void
+* document consw->con_scrolldelta a bit
 
-So i guess the point where this all starts going wrong allowing the X parts
-of the api to be combined with FB based rendering at all? Sounds the only
-user didn't use that combination and so it was never tested?
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: Thomas Winischhofer <thomas@winischhofer.net>
+Cc: linux-usb@vger.kernel.org
+Cc: Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: "James E.J. Bottomley" <jejb@parisc-linux.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: Ajay Kaher <akaher@vmware.com>
+[ for 4.4.y backport, only do the first change above, to prevent
+.con_scrolldelta from being called if not present - gregkh]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/tty/vt/vt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Then again, this all relates to hardware from 20 years ago...
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -2484,7 +2484,7 @@ static void console_callback(struct work
+ 	if (scrollback_delta) {
+ 		struct vc_data *vc = vc_cons[fg_console].d;
+ 		clear_selection();
+-		if (vc->vc_mode == KD_TEXT)
++		if (vc->vc_mode == KD_TEXT && vc->vc_sw->con_scrolldelta)
+ 			vc->vc_sw->con_scrolldelta(vc, scrollback_delta);
+ 		scrollback_delta = 0;
+ 	}
 
- - Martin Hostettler
+
