@@ -2,111 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB37127D428
-	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Sep 2020 19:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEED827DC6D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 30 Sep 2020 01:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728205AbgI2RKh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 29 Sep 2020 13:10:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47992 "EHLO mail.kernel.org"
+        id S1728291AbgI2XGR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 29 Sep 2020 19:06:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727543AbgI2RKh (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 29 Sep 2020 13:10:37 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        id S1728113AbgI2XGR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 29 Sep 2020 19:06:17 -0400
+Received: from earth.universe (unknown [185.213.155.232])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B8D92071E;
-        Tue, 29 Sep 2020 17:10:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3EAC720897;
+        Tue, 29 Sep 2020 23:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601399435;
-        bh=yeOAgtszboNZyIpMDHULVmYWzcVi/wr1D+owgmOWf8k=;
-        h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=GtNtLUhdCOFNrHB3HGBsskZwghH2wKdL2glg2wSnt59jU03dflxktbsN0j2gVL78z
-         zW7TF/l50z3Eswma+PSi4XZCxh20ZY7vEPIdubOPobJ8wzwZ4vqGTFE4JDVqWi+Jmo
-         XpwXDh5LhsLDzdE/x/R1TVaNDAwRXK9Va8C/2Cr8=
-Date:   Tue, 29 Sep 2020 19:10:40 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Martin Hostettler <textshell@uchuujin.de>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        jirislaby@kernel.org, Peilin Ye <yepeilin.cs@gmail.com>,
-        syzbot <syzbot+b308f5fd049fbbc6e74f@syzkaller.appspotmail.com>,
-        b.zolnierkie@samsung.com, deller@gmx.de,
-        syzkaller-bugs@googlegroups.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        s=default; t=1601420776;
+        bh=Y7zr4AlIKP2gAU27J/dUuw6tyc73EiyJRq/8jkALbnM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fGVJwLWCsaeD4J7CkuuII0mMaGAv32FlyrBGhuC6wP5hQEp1apRnpxuH/gIIEfEIz
+         9CQTVBmYYJreN3ZN05RbPYD+p7SKyktJ4d9i3Kok9KUBQc1fFfTXeyrw3Iq5FYSnTG
+         PY65vBOD4vE36ce+nxaGZtsnUDWUmQSFahscL9no=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 2B0363C0C84; Wed, 30 Sep 2020 01:06:14 +0200 (CEST)
+Date:   Wed, 30 Sep 2020 01:06:14 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dan Murphy <dmurphy@ti.com>, Mark Brown <broonie@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-iio@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-leds@vger.kernel.org, linux-pm@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        George Kennedy <george.kennedy@oracle.com>
-Subject: Re: [PATCH] vt_ioctl: make VT_RESIZEX behave like VT_RESIZE
-Message-ID: <20200929171040.GB1351851@kroah.com>
-References: <000000000000226d3f05b02dd607@google.com>
- <bbcef674-4ac6-c933-b55d-8961ada97f4c@i-love.sakura.ne.jp>
- <47907f77-b14b-b433-45c6-a315193f0c1a@i-love.sakura.ne.jp>
- <494395bc-a7dd-fdb1-8196-a236a266ef54@i-love.sakura.ne.jp>
- <20200927092701.GA1037755@PWN>
- <4933b81b-9b1a-355b-df0e-9b31e8280ab9@i-love.sakura.ne.jp>
- <20200928175956.GF24673@neutronstar.dyndns.org>
- <100dfd3f-3415-80ae-a6cf-30d15f7ca49f@i-love.sakura.ne.jp>
- <20200929105203.GG24673@neutronstar.dyndns.org>
- <20200929165657.GS438822@phenom.ffwll.local>
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v2] MAINTAINERS: add Dan Murphy as TP LP8xxx drivers
+ maintainer
+Message-ID: <20200929230614.mxyxko4u4jsdw3n6@earth.universe>
+References: <20200922152839.2744-1-krzk@kernel.org>
+ <fe4609b5-5aab-46ed-5280-9a4742b97fe5@ti.com>
+ <20200923205857.5af407ee@archlinux>
+ <CAJKOXPdWD47OvK7qQ4Md2t3U=NmSf=j5hNjBq4+8CgZKLdup=Q@mail.gmail.com>
+ <20200924122331.GI4678@dell>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="vo4t74hlgmpxejui"
 Content-Disposition: inline
-In-Reply-To: <20200929165657.GS438822@phenom.ffwll.local>
+In-Reply-To: <20200924122331.GI4678@dell>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 06:56:57PM +0200, Daniel Vetter wrote:
-> On Tue, Sep 29, 2020 at 12:52:03PM +0200, Martin Hostettler wrote:
-> > On Tue, Sep 29, 2020 at 10:12:46AM +0900, Tetsuo Handa wrote:
-> > > On 2020/09/29 2:59, Martin Hostettler wrote:
-> > > > On Sun, Sep 27, 2020 at 08:46:30PM +0900, Tetsuo Handa wrote:
-> > > >> VT_RESIZEX was introduced in Linux 1.3.3, but it is unclear that what
-> > > >> comes to the "+ more" part, and I couldn't find a user of VT_RESIZEX.
-> > > >>
-> > > > 
-> > > > It seems this is/was used by "svgatextmode" which seems to be at
-> > > > http://www.ibiblio.org/pub/Linux/utils/console/
-> > > > 
-> > > > Not sure if that kind of software still has a chance to work nowadays.
-> > > > 
-> > > 
-> > > Thanks for the information.
-> > > 
-> > > It seems that v.v_vlin = curr_textmode->VDisplay / (MOFLG_ISSET(curr_textmode, ATTR_DOUBLESCAN) ? 2 : 1)
-> > > and v.v_clin = curr_textmode->FontHeight . Thus, v.v_clin is font's height and seems to be non-zero.
-> > > But according to https://bugs.gentoo.org/19485 , people are using kernel framebuffer instead.
-> > > 
-> > 
-> > Yes, this seems to be from pre framebuffer times.
-> > 
-> > Back in the days "svga" was the wording you got for "pokes svga card
-> > hardware registers from userspace drivers". And textmode means font
-> > rendering is done via (fixed function in those times) hardware scanout
-> > engine. Of course having only to update 2 bytes per character was a huge
-> > saving early on. Likely this is also before vesa VBE was reliable.
-> > 
-> > So i guess the point where this all starts going wrong allowing the X parts
-> > of the api to be combined with FB based rendering at all? Sounds the only
-> > user didn't use that combination and so it was never tested?
-> > 
-> > Then again, this all relates to hardware from 20 years ago...
-> 
-> Imo userspace modesetting should be burned down anywhere we can. We've
-> gotten away with this in drivers/gpu by just seamlessly transitioning to
-> kernel drivers.
-> 
-> Since th only userspace we've found seems to be able to cope if this ioctl
-> doesn't do anything, my vote goes towards ripping it out completely and
-> doing nothing in there. Only question is whether we should error or fail
-> with a silent success: Former is safer, latter can avoid a few regression
-> reports since the userspace tools keep "working", and usually people don't
-> notice for stuff this old. It worked in drivers/gpu :-)
 
-This patch just ignores the ioctl and keeps on going, so userspace
-"shouldn't" notice it :)
+--vo4t74hlgmpxejui
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-And it's in linux-next now, so all should be good.
+Hi,
 
-thanks,
+On Thu, Sep 24, 2020 at 01:23:31PM +0100, Lee Jones wrote:
+> On Thu, 24 Sep 2020, Krzysztof Kozlowski wrote:
+>=20
+> > On Wed, 23 Sep 2020 at 22:01, Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > On Wed, 23 Sep 2020 11:53:33 -0500
+> > > Dan Murphy <dmurphy@ti.com> wrote:
+> > >
+> > > > Hello
+> > > >
+> > > > On 9/22/20 10:28 AM, Krzysztof Kozlowski wrote:
+> > > > > Milo Kim's email in TI bounces with permanent error (550: Invalid
+> > > > > recipient).  Last email from him on LKML was in 2017.  Move Milo =
+Kim to
+> > > > > credits and add Dan Murphy from TI to look after:
+> > > > >   - TI LP855x backlight driver,
+> > > > >   - TI LP8727 charger driver,
+> > > > >   - TI LP8788 MFD (ADC, LEDs, charger and regulator) drivers.
+> > > > >
+> > > > > Cc: Dan Murphy <dmurphy@ti.com>
+> > > > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > >
+> > > > Acked-by: Dan Murphy <dmurphy@ti.com>
+> > > >
+> > > Not sure who will pick this one up, but
+> > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >=20
+> > I guess whoever is first. :)
+> > This spans across systems but the common part is MFD, so maybe Lee -
+> > could you pick it up?
+>=20
+> Yes, I'll handle it.
 
-greg k-h
+Acked-by: Sebastian Reichel <sre@kernel.org>
+
+-- Sebastian
+
+--vo4t74hlgmpxejui
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl9zvd8ACgkQ2O7X88g7
++poBWg/+MKAsn+8M2gk8ABqp84IGjPTY6eP4iD+eD0CLBmoiqpYPQdfHww494a/3
+4BNGOgGz1g+ZLs31Lc9FWY6/UfDR85/2+hlz8DOTHRCb0t6XyScPMG4zXPs1mwVO
+xG3geK9/wksCwaalOpRio04VipltRriZqdkOoTrQ34CnZF0/O7swS1uVbQRSuRhD
+6ymSnrJlkZpzzguwkD0MMZmcK6W4lA5dB77i8/Ot+9bYYJ/YBdQCg7Fb0xlD69Q/
+hevry6Z1mrp1DlITou+TX2QKsiKTGYovKvN5omrZUKKsLs22IaSFMYpDzwWyvsia
+PnBaQaWIohbfm1r+5e53Ld0nGbChg7FTWAhJUxbM4I2WZ0q9O3TY8/EhTPEYHoF+
++GGMVf1xGcbMl+8P45CXnftOlOJYTAk+kfbTHqdy2uHHuEUdM+sPsMVnc7OBITZq
+prJu1dA2NU83gGLuFk9Phk7tuta65MbY5OBibcgpr3kpn93inaarlzhsd8GQ8UVf
+Ags0NXfsIob+u73GpMJP7wx38ZVIftXv63ZWjpifmTtbVWiZC2L6uR1zkTGCsHzE
+Oh5tT2I/bZsXZK0Segmjq8xnRJ3Z7a/fnR/BSf+m7vUQIZuHvgMuqwU0mnsbF4uv
+7SXIoQvBp2nJgYRShV2DH2XyQWAiZVojT5KYlaXADtqVZl2AfFQ=
+=SsLs
+-----END PGP SIGNATURE-----
+
+--vo4t74hlgmpxejui--
