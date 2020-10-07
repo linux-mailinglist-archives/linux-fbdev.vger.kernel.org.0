@@ -2,85 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 487F8285DE9
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Oct 2020 13:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7550285F3B
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Oct 2020 14:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728040AbgJGLM2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 7 Oct 2020 07:12:28 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:36875 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728053AbgJGLM2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 7 Oct 2020 07:12:28 -0400
-Received: from mail-qk1-f172.google.com ([209.85.222.172]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MFL4B-1kAQtf0kIb-00FgTQ; Wed, 07 Oct 2020 13:07:22 +0200
-Received: by mail-qk1-f172.google.com with SMTP id s4so2154757qkf.7;
-        Wed, 07 Oct 2020 04:07:21 -0700 (PDT)
-X-Gm-Message-State: AOAM530I3FnQRJpTJ6aSFHpdwsFvISnTtTOhARmj5ZJjbGs66pJZslPe
-        nSDZdeFQBdpCOaEo/97epcqxJXfZlY6eS6U/aDc=
-X-Google-Smtp-Source: ABdhPJzv49GK72G1X8a28drCtbBnhsqm87k5a2dAC3nqOLHjuohsHhfE83fzukBmdWOct5Xcuk6frrtwL5rFwz31X4E=
-X-Received: by 2002:a37:b686:: with SMTP id g128mr2180775qkf.286.1602068840973;
- Wed, 07 Oct 2020 04:07:20 -0700 (PDT)
+        id S1728037AbgJGMd4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 7 Oct 2020 08:33:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727927AbgJGMdz (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 7 Oct 2020 08:33:55 -0400
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5308AC0613D4
+        for <linux-fbdev@vger.kernel.org>; Wed,  7 Oct 2020 05:33:54 -0700 (PDT)
+Received: by mail-yb1-xb42.google.com with SMTP id h9so1701970ybm.4
+        for <linux-fbdev@vger.kernel.org>; Wed, 07 Oct 2020 05:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=h3Ze7BXhZsxXnZWGIdiBlSy/jmMvFR6c7dm01g4irDE=;
+        b=BWaTS1ChCFcRIdXtrNTDM3Yp1owQfPR5J6IPW2ts5bkNB3kXf5Ib7Ybjso4SmHeIGC
+         AocK7/L0Qy1gPrvrfFuHUvdLuDIyVJMB/o5zXvadfvvtUoyjtrh2ap8HLXs2FU0dkvT+
+         NJOCAMFkvlhTX5lnl9DMpPFju0bnDDXxgoS2FfL0xY92meHbWeq35AbdNTGmbyHMUWqy
+         ejhwCu59Q2T/IlFK8b6JY3tSDwPcXQv/waD28cyLD2NCQniPKzp8g0vpxqrySxDF50WR
+         p1+xPIS+PxCrHdrcQAJ1sVvaNgsKdUk5Vi9BNdvoAAZEwniV0Or5cX+fU0QOarasLrOG
+         UkTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=h3Ze7BXhZsxXnZWGIdiBlSy/jmMvFR6c7dm01g4irDE=;
+        b=D/lTUcKpTB4Fv4lZEbhxYvCS/+rGVBkCRn60tMw5bMIdL6B7nURcOVG50UnlXl3L4P
+         7V881xhFVWZTF8CKIEHW4UEu/NXV02BMFxhavlKLq/bGTrI4LxKTlvdXNRHMlJJufHc7
+         29KScZ6t1BbJsUjmGctC46NiTFFCvSZEX/NyWmj2AkQ6X/LraEOCsWyq8hMAr0QWojou
+         u08Fhzne6ftvr6LysHnDOxQA9Ht3W/NaeuN4zENliowEywhoCITj4YXUhMzi1rYea6WC
+         RqvBgUR771SIkXemKjcQBsWqcihmbMMXxhf/ndeD9WQPeLHKphSVXEwDRYVRojry7MeQ
+         IlNg==
+X-Gm-Message-State: AOAM53197xm9IxGIjvYJp+AtrerqPHTyKoDNplRaqQT/13ydVGqDux43
+        GNhX+VJH9Po7LciyvGpWNjP7FGicwjr+70BHCiY=
+X-Google-Smtp-Source: ABdhPJz2AbnnHHdvCALbf0jM7U3HRexbVBzRB3XsQoOsIDuVoUBx6uJ7007xu0wHTOoGoZ+PsXYPfHY9WeQQLAiZPpo=
+X-Received: by 2002:a25:4116:: with SMTP id o22mr3553088yba.119.1602074033290;
+ Wed, 07 Oct 2020 05:33:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201007074447.797968-1-hch@lst.de> <20201007074447.797968-2-hch@lst.de>
- <CAK8P3a0UHEsND+vJjhtj2GKQpMjMCqD55vQ9+2u-SCrThe3wTw@mail.gmail.com>
- <20201007085911.GA17356@lst.de> <CAK8P3a2w1Q4coFLnW4sDQEC_01uwWWUkuGyqj=r=x3jtB8uhNA@mail.gmail.com>
- <20201007104046.GB24327@lst.de>
-In-Reply-To: <20201007104046.GB24327@lst.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 7 Oct 2020 13:07:05 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1JdeCxr16+wAnYqLwJBuLqTgS7h-UCoiXD5OijQ-evyg@mail.gmail.com>
-Message-ID: <CAK8P3a1JdeCxr16+wAnYqLwJBuLqTgS7h-UCoiXD5OijQ-evyg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] fbdev/sbuslib: remove FBIOSCURSOR/FBIOGCURSOR leftovers
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>
+Received: by 2002:a05:7000:4ecc:0:0:0:0 with HTTP; Wed, 7 Oct 2020 05:33:52
+ -0700 (PDT)
+From:   Anna Martins <amartinsr96@gmail.com>
+Date:   Wed, 7 Oct 2020 12:33:52 +0000
+Message-ID: <CAP9mPBq28qe3PMN=ckOE0vGdbFrwCCRaPtisPm5rX9TZCGuUpw@mail.gmail.com>
+Subject: Message from Martins
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:rOrBrvb30/YQ2GkeltCxczg6eoQx6rFDvU0z0VK1h7cVATtQU0U
- 8llwJPUcfTNW7kNgh0oB83woSlVqRrMIcLAJ51m44fVfo1ALnF7ndJYrvZ/nnfHhI6jVFS5
- KVORfDi2iourk0tpszdmypLf6oUavWS/exH9R07K3T0gaaqkNh0vvrRMQtk5KzkbjmE9FY8
- nUQeOHGm5JDY4LmgqZDkA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ViNGxr4Dv1Q=:s+s+nBfA+CCj9OjJU4z4Hw
- 0LXEvNmftnGZBYgcUU6yTYBLuBfBTBXOYSy+9gkHb0lnCLjycWKlbKxd2mVPNMoMqVERywdkh
- P2eAJXNZwyc8FuXFnWlBvF6QJmlEVqdVMcdAJfwQwlfwXssyeQfuHXqziVS5CNTZXKLzwW6tZ
- mkJNdlyRFlx75SUguvP+X/Gck2GHp/sFFmC44GMxDnLRvAxDfbylByJSlYbtYGr0fi5pKoTvB
- +UEJ3ow1PukpwirxozZUAkh3c5a5+yWq76TCdShSLtfVpEGSY6xUnOXYOopvk40g0lGBJBd+v
- JWbR6lznpBNvwdppbhb0t4URmkd14+cHgJurjVZqlAXsecyTHOosOondYec8NmXjuIgBTiX2k
- d7lMO0q2/U2fkFI3s8p5IGu8U5VwTI7VPcAA4KpYS6b5L0GH0To105AudYGAVI0FW5NA5AKOy
- YeFYsuy3ULYUCgr1Ok3lXe7hlvG7GFyga8USEWKqFw9weudqvsuO+05XdEq1bsY4tv6IF50ws
- EcPvo4LkXwl/ZEf9YHptkSBKT57jsM7uuKO+RxnUsv1OHoZD/Z0mqP+5f8wpSkAERrt36jrHN
- gBvQSUkEiO9k9KhEpbdxgwKbrzczN9oAogk6dIe1IcWWZjmJOA0TDzWx90z5OAmv8QrAFP5Ml
- b8I49sMprCG899UsG0A/9Ptwpk9XGqAM5MD4FsWu4pEH2KaHwkcqtQhrESO6tEWC66g2iQgKP
- e20A8p8ycpY5sb0Z20h2WRlBG0bdRGlrnaNhuknjyvMnysOEMp+F4tRw/JIsZeWXy7HnT+3xl
- 1j/IcxYSC82FQwr4VtxzG2MFfX0j19X2znmjVKrX555ksbyeO76/cIppTz7KBkMUUs0hyJA
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Oct 7, 2020 at 12:40 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Wed, Oct 07, 2020 at 11:28:58AM +0200, Arnd Bergmann wrote:
-> > The only one I have actually given up on is the atomisp staging driver,
-> > which uses an awful hack, copying the x86 implementation of
-> > copy_in_user()/compat_alloc_user_space() into the driver.
->
-> That is gross.  Just mark the driver as broken for now.
-
-Ah, it seems that Hans has already done that in commit 57e6b6f2303e
-("media: atomisp_fops.c: disable atomisp_compat_ioctl32"), which
-removes the only reference to this code. In this case, I think a one-line
-change to stop building that file would be best, then if anyone ever
-wants to fix the bug that Hans and Sakari found, they get to do also
-deal with replacing compat_alloc_user_space().
-
-I'll send a patch for that right away, the patch I have in my tree was
-so evil that I hadn't dared submit that, but it was useful for
-compile-testing the compat_alloc_user_space() removal patch.
-
-   Arnd
+Hi dear,
+Did you receive my message yesterday?
+I want to tell you a very important thing that you can achieve
+return to my personal email address (
+martinsanna390@gmail.com) so that we can discuss it privately. My
+Regards, Martins
