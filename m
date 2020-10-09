@@ -2,89 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F0A8288763
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 12:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E73B288825
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 13:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732129AbgJIK5S (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Oct 2020 06:57:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48756 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732340AbgJIK5S (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Oct 2020 06:57:18 -0400
-X-Greylist: delayed 416 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Oct 2020 03:57:17 PDT
-Received: from forward104o.mail.yandex.net (forward104o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::607])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8CC7C0613D6
-        for <linux-fbdev@vger.kernel.org>; Fri,  9 Oct 2020 03:57:17 -0700 (PDT)
-Received: from mxback24j.mail.yandex.net (mxback24j.mail.yandex.net [IPv6:2a02:6b8:0:1619::224])
-        by forward104o.mail.yandex.net (Yandex) with ESMTP id 365F2941A69;
-        Fri,  9 Oct 2020 13:50:15 +0300 (MSK)
-Received: from myt5-ca5ec8faf378.qloud-c.yandex.net (myt5-ca5ec8faf378.qloud-c.yandex.net [2a02:6b8:c12:2514:0:640:ca5e:c8fa])
-        by mxback24j.mail.yandex.net (mxback/Yandex) with ESMTP id okL3AxZNq0-oFkqon2q;
-        Fri, 09 Oct 2020 13:50:15 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1602240615;
-        bh=CNch+vPnwA5gD9ynJvrV3P/4cnROJTStRNgK9v0tNtw=;
-        h=Subject:From:To:Date:Message-ID;
-        b=gJalr+F1mHNkX35ftppMt7Y8FIOPgKxwcvqGd1sBb5kmomfaTRseDiii7H1PV9dVq
-         IA5IUvfw1/25tlK4OEYXelBLxh9ERp0ZUD7GiBkByL6N52wyZ+9szTPV2qtTt+xSER
-         R2tPeT8WKJ4GdxItvnMe+A6fmOZv5Se3TZp7WHgk=
-Authentication-Results: mxback24j.mail.yandex.net; dkim=pass header.i=@yandex.ru
-Received: by myt5-ca5ec8faf378.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id r0yopRirzr-oEk4HRM1;
-        Fri, 09 Oct 2020 13:50:14 +0300
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client certificate not present)
-To:     linux-fbdev@vger.kernel.org,
+        id S1732480AbgJIL7b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Oct 2020 07:59:31 -0400
+Received: from mx2.suse.de ([195.135.220.15]:40290 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732456AbgJIL7b (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 9 Oct 2020 07:59:31 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id DE972AD1A;
+        Fri,  9 Oct 2020 11:59:28 +0000 (UTC)
+Subject: Re: drmfb console switching problems/questions
+To:     stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
         Linux kernel <linux-kernel@vger.kernel.org>
-From:   stsp <stsp2@yandex.ru>
-Subject: drmfb console switching problems/questions
-Message-ID: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
-Date:   Fri, 9 Oct 2020 13:50:13 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
+Date:   Fri, 9 Oct 2020 13:59:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+In-Reply-To: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="JURA3xtcP0EYmRfuLZ0TwQyRNkOJdomBF"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi!
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--JURA3xtcP0EYmRfuLZ0TwQyRNkOJdomBF
+Content-Type: multipart/mixed; boundary="r4Zq18ekkqdRrrSmLiYBaFEdMmZyzJwyK";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
+ Linux kernel <linux-kernel@vger.kernel.org>
+Message-ID: <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
+Subject: Re: drmfb console switching problems/questions
+References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
+In-Reply-To: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
 
-I am trying to run my sdl1-based app
-under linux kms framebuffer (amdgpudrmfb
-in my case).
-The app itself works perfectly, but
-console switching is not.
+--r4Zq18ekkqdRrrSmLiYBaFEdMmZyzJwyK
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-If I switch the console while the app
-is drawing, then it will corrupt the
-VC I switched to. It will just draw on
-top of the VC's content.
-Question: is this expected? Is drm
-framebuffer global, rather than per-vc?
-If so, should I somehow freeze my
-app when it is switched away? And
-why would it be the case, with the
-modern video cards that have multi
-gigas of RAM on board?
+Hi
 
-If my app crashes without a clean
-shutdown, then the framebuffer kinda
-hangs. I can switch to other VCs but
-I don't see their content. All I see is
-the last drawing of my app. If I happen
-to have an X server on some other VC,
-then switching to it immediately unhangs
-everything, and I can switch back.
-In fact, even if I hit Ctrl-Alt-Del, then
-fb immediately unhangs (by systemd
-or plymouth or whoever else). But for
-example SAK combo doesn't unhang.
-So it seems to be very simple to hang
-the framebuffer, and is quite difficult
-to recover.
-Question: is this an expected behaviour
-or a drmfb bug?
+Am 09.10.20 um 12:50 schrieb stsp:
+> Hi!
+>=20
+> I am trying to run my sdl1-based app
+> under linux kms framebuffer (amdgpudrmfb
+> in my case).
+> The app itself works perfectly, but
+> console switching is not.
+>=20
+> If I switch the console while the app
+> is drawing, then it will corrupt the
+> VC I switched to. It will just draw on
+> top of the VC's content.
+> Question: is this expected? Is drm
+> framebuffer global, rather than per-vc?
+> If so, should I somehow freeze my
+> app when it is switched away? And
+> why would it be the case, with the
+> modern video cards that have multi
+> gigas of RAM on board?
+>=20
+> If my app crashes without a clean
+> shutdown, then the framebuffer kinda
+> hangs. I can switch to other VCs but
+> I don't see their content. All I see is
+> the last drawing of my app. If I happen
+> to have an X server on some other VC,
+> then switching to it immediately unhangs
+> everything, and I can switch back.
+> In fact, even if I hit Ctrl-Alt-Del, then
+> fb immediately unhangs (by systemd
+> or plymouth or whoever else). But for
+> example SAK combo doesn't unhang.
+> So it seems to be very simple to hang
+> the framebuffer, and is quite difficult
+> to recover.
+> Question: is this an expected behaviour
+> or a drmfb bug?
 
-Thanks!
+Fbdev exposes the video ram (or a shadow buffer of it) to all
+applications. Only one can draw at the same time. It's a limitation of
+the design. To fix this, your application has to stop drawing when you
+switch consoles.
 
+Best regards
+Thomas
+
+>=20
+> Thanks!
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--r4Zq18ekkqdRrrSmLiYBaFEdMmZyzJwyK--
+
+--JURA3xtcP0EYmRfuLZ0TwQyRNkOJdomBF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl+AUJ0UHHR6aW1tZXJt
+YW5uQHN1c2UuZGUACgkQaA3BHVMLeiPbdQf/QDlWQY6YM/uMGqvFJmh1L9lEv5OS
+f75bd6w4iwMFgYyOdC3isCRrEZOO4vymqpInN3sUTFymOKXx5V+ng4+rHEAltCnk
+KFJine41W84o+aRfIxeA+IQa44BXfrh8H3zlRnyonjifwZ3ujEQOfi3vJ7nNIovy
+AMXrScHSAIxPFavpKnEB1erE90ij67ufoIgv0ifVTBQPTBrujgpD1kuH5moGg38w
+mFXyEjshh8n8WwUmnB3VeEWZV1NHGVvMiXvnMhQIW7WutdPYEprIG/5BuC0HJNTK
+fKo8zRrEuLR8hdufxCKQUzsB1HGYsgUCAoMqIeQNSenpRuc47J4C5Q6lEA==
+=pZ/y
+-----END PGP SIGNATURE-----
+
+--JURA3xtcP0EYmRfuLZ0TwQyRNkOJdomBF--
