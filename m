@@ -2,128 +2,65 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CE6C2889D6
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 15:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 000A1288A7B
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 16:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733299AbgJINbL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Oct 2020 09:31:11 -0400
-Received: from mx2.suse.de ([195.135.220.15]:41672 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732173AbgJINbL (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 9 Oct 2020 09:31:11 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id DD513AC3F;
-        Fri,  9 Oct 2020 13:31:08 +0000 (UTC)
+        id S1729272AbgJIOOr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Oct 2020 10:14:47 -0400
+Received: from forward101p.mail.yandex.net ([77.88.28.101]:49173 "EHLO
+        forward101p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726471AbgJIOOr (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 9 Oct 2020 10:14:47 -0400
+Received: from mxback10g.mail.yandex.net (mxback10g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:171])
+        by forward101p.mail.yandex.net (Yandex) with ESMTP id AC43226448F3;
+        Fri,  9 Oct 2020 17:14:44 +0300 (MSK)
+Received: from iva1-bc1861525829.qloud-c.yandex.net (iva1-bc1861525829.qloud-c.yandex.net [2a02:6b8:c0c:a0e:0:640:bc18:6152])
+        by mxback10g.mail.yandex.net (mxback/Yandex) with ESMTP id C5mD5bxPqh-EiWW1dRw;
+        Fri, 09 Oct 2020 17:14:44 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1602252884;
+        bh=4IQ2UZqrxX06X24xfc0QT/4vwxH62r4bVpdGWVMTZd8=;
+        h=In-Reply-To:From:Date:References:To:Subject:Message-ID;
+        b=pEgnJQLS9BDCjQlqqh5+Jw1h4zcGZG02vaHgSDpXQMt8N+f5X91ty7VSUiyUTtggT
+         MLpS5nLZF6SN/L1Uv41nMrYmF7g1WRf/S0fOH8ppMxdqWdHErxApAf1WSJrU2SSXma
+         DEX8D4I0EHQPoC0/9dN3jhtrVvPU8A2UxfZLjBok=
+Authentication-Results: mxback10g.mail.yandex.net; dkim=pass header.i=@yandex.ru
+Received: by iva1-bc1861525829.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id 7JDfKQrgBy-Eim4k5Fq;
+        Fri, 09 Oct 2020 17:14:44 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
 Subject: Re: drmfb console switching problems/questions
-To:     stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-fbdev@vger.kernel.org,
         Linux kernel <linux-kernel@vger.kernel.org>
 References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
  <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
  <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
  <e2118f89-2c55-ec12-1e33-f2ba418af914@suse.de>
  <cacba527-fe32-e80c-4659-799452741791@yandex.ru>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
-Date:   Fri, 9 Oct 2020 15:31:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
+From:   stsp <stsp2@yandex.ru>
+Message-ID: <e3f40930-6927-042f-7857-e843e1e24236@yandex.ru>
+Date:   Fri, 9 Oct 2020 17:14:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-In-Reply-To: <cacba527-fe32-e80c-4659-799452741791@yandex.ru>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="OuhsM6hLiBvItfYpOSeTxcQ3jJj9Q09ak"
+In-Reply-To: <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---OuhsM6hLiBvItfYpOSeTxcQ3jJj9Q09ak
-Content-Type: multipart/mixed; boundary="fZrlL9ftKBHdbItsmntY63Uze25lS4hVM";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
- Linux kernel <linux-kernel@vger.kernel.org>
-Message-ID: <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
-Subject: Re: drmfb console switching problems/questions
-References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
- <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
- <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
- <e2118f89-2c55-ec12-1e33-f2ba418af914@suse.de>
- <cacba527-fe32-e80c-4659-799452741791@yandex.ru>
-In-Reply-To: <cacba527-fe32-e80c-4659-799452741791@yandex.ru>
-
---fZrlL9ftKBHdbItsmntY63Uze25lS4hVM
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-Am 09.10.20 um 15:19 schrieb stsp:
-> 09.10.2020 15:58, Thomas Zimmermann =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
->> Hi
->>
->> Am 09.10.20 um 14:16 schrieb stsp:
->>> 09.10.2020 14:59, Thomas Zimmermann =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
->>>> Fbdev exposes the video ram (or a shadow buffer of it) to all
->>>> applications. Only one can draw at the same time. It's a limitation =
-of
->>>> the design. To fix this, your application has to stop drawing when y=
-ou
->>>> switch consoles.
->>> OK, thanks for info.
->>> Quite a sad news, if you ask me.
->>> Is there any ongoing work at solving that?
->> I don't think so. Both, SDL1 and fbdev, are pretty much dead these day=
-s.
->> The solution to fbdev is DRM, which does not have these problems.
->>
->> You could your application under X11 to use SDL's X backend. X would d=
-o
->> all the VC handling then.
-> That of course works.
-> I was trying w/o X.
-> Do you think it is possible for
-> me to test other techniques of
-> drawing under kms console?
-> Or fbcon and X are all that we
-> have?
-
-I can't say for sure. IIRC SDL2 can use DRM directly. If your
-application is stuck at SDL1, fbdev or X11 are the only realistic
-options. But the SDL dev could probably give you a better answer.
-
-Best regards
-Thomas
-
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---fZrlL9ftKBHdbItsmntY63Uze25lS4hVM--
-
---OuhsM6hLiBvItfYpOSeTxcQ3jJj9Q09ak
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl+AZhkUHHR6aW1tZXJt
-YW5uQHN1c2UuZGUACgkQaA3BHVMLeiPXBwf/ZrKP64JecPLZsG/MiEQ+KIeF8qgs
-jJsKcghIksbGyI7DO+eyjtkQXeTSbMDeDL1NlXkE3+mGgKfX6eN4/bOI1oZsA/I2
-YOHEuhgTznvWlAUfdGtkkQmSaA3iRdu/FWYQNgnz1A9HijiunGeR0/n8ZjsTeksU
-oMeMK9QPql9hsBtptXGNjYmAexpZPG6YbGtpmUjFJfaRMIu2wFjJKhQBLD7e3pvf
-1tHgN3CBPWbDNsmqPRMIsQgagwmgTRBWwJDSuHSirY3cRV8p+jB0MzFHDbNfSuiY
-AZR9rbIv9LBekg8oqfdtm1dLQl7rWgoC+OYqhfwXnDsMqID0y14eNmXVcA==
-=C1dt
------END PGP SIGNATURE-----
-
---OuhsM6hLiBvItfYpOSeTxcQ3jJj9Q09ak--
+09.10.2020 16:31, Thomas Zimmermann пишет:
+> I can't say for sure. IIRC SDL2 can use DRM directly.
+Yes, that was a great hint indeed,
+thanks. It didn't work for me in the past
+(a year ago or so), so I added SDL1
+support. But now I re-tried, and it indeed
+works!
+And, as far as I can tell, the hanging
+behaviour does not happen, at least
+not that simple.
+Thank you.
