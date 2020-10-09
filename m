@@ -2,54 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29812287DCE
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Oct 2020 23:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0A8288763
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 12:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729850AbgJHVS2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Oct 2020 17:18:28 -0400
-Received: from [58.87.100.240] ([58.87.100.240]:45364 "EHLO
-        mail.hebei-kuixing.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1726766AbgJHVS1 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 8 Oct 2020 17:18:27 -0400
-X-Greylist: delayed 668 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Oct 2020 17:18:22 EDT
-Received: from localhost (unknown [127.0.0.1])
-        by mail.hebei-kuixing.com (Postfix) with ESMTP id AC1A460E64;
-        Thu,  8 Oct 2020 21:07:07 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at hebei-kuixing.com
-Received: from mail.hebei-kuixing.com ([127.0.0.1])
-        by localhost (mail.hebei-kuixing.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 2baZvT9QzwCy; Fri,  9 Oct 2020 05:07:06 +0800 (CST)
-Received: from User (unknown [185.248.12.71])
-        by mail.hebei-kuixing.com (Postfix) with ESMTPA id 0E9CB60E6A;
-        Fri,  9 Oct 2020 05:06:50 +0800 (CST)
-Reply-To: <kim.leang2011@yahoo.com>
-From:   " Kim Leang" <sales@hebei-kuixing.com>
-Subject: Greeting!
-Date:   Fri, 9 Oct 2020 00:07:05 +0300
+        id S1732129AbgJIK5S (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Oct 2020 06:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732340AbgJIK5S (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Oct 2020 06:57:18 -0400
+X-Greylist: delayed 416 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Oct 2020 03:57:17 PDT
+Received: from forward104o.mail.yandex.net (forward104o.mail.yandex.net [IPv6:2a02:6b8:0:1a2d::607])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8CC7C0613D6
+        for <linux-fbdev@vger.kernel.org>; Fri,  9 Oct 2020 03:57:17 -0700 (PDT)
+Received: from mxback24j.mail.yandex.net (mxback24j.mail.yandex.net [IPv6:2a02:6b8:0:1619::224])
+        by forward104o.mail.yandex.net (Yandex) with ESMTP id 365F2941A69;
+        Fri,  9 Oct 2020 13:50:15 +0300 (MSK)
+Received: from myt5-ca5ec8faf378.qloud-c.yandex.net (myt5-ca5ec8faf378.qloud-c.yandex.net [2a02:6b8:c12:2514:0:640:ca5e:c8fa])
+        by mxback24j.mail.yandex.net (mxback/Yandex) with ESMTP id okL3AxZNq0-oFkqon2q;
+        Fri, 09 Oct 2020 13:50:15 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1602240615;
+        bh=CNch+vPnwA5gD9ynJvrV3P/4cnROJTStRNgK9v0tNtw=;
+        h=Subject:From:To:Date:Message-ID;
+        b=gJalr+F1mHNkX35ftppMt7Y8FIOPgKxwcvqGd1sBb5kmomfaTRseDiii7H1PV9dVq
+         IA5IUvfw1/25tlK4OEYXelBLxh9ERp0ZUD7GiBkByL6N52wyZ+9szTPV2qtTt+xSER
+         R2tPeT8WKJ4GdxItvnMe+A6fmOZv5Se3TZp7WHgk=
+Authentication-Results: mxback24j.mail.yandex.net; dkim=pass header.i=@yandex.ru
+Received: by myt5-ca5ec8faf378.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id r0yopRirzr-oEk4HRM1;
+        Fri, 09 Oct 2020 13:50:14 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+To:     linux-fbdev@vger.kernel.org,
+        Linux kernel <linux-kernel@vger.kernel.org>
+From:   stsp <stsp2@yandex.ru>
+Subject: drmfb console switching problems/questions
+Message-ID: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
+Date:   Fri, 9 Oct 2020 13:50:13 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20201008210707.AC1A460E64@mail.hebei-kuixing.com>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Greeting!
+Hi!
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+I am trying to run my sdl1-based app
+under linux kms framebuffer (amdgpudrmfb
+in my case).
+The app itself works perfectly, but
+console switching is not.
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+If I switch the console while the app
+is drawing, then it will corrupt the
+VC I switched to. It will just draw on
+top of the VC's content.
+Question: is this expected? Is drm
+framebuffer global, rather than per-vc?
+If so, should I somehow freeze my
+app when it is switched away? And
+why would it be the case, with the
+modern video cards that have multi
+gigas of RAM on board?
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+If my app crashes without a clean
+shutdown, then the framebuffer kinda
+hangs. I can switch to other VCs but
+I don't see their content. All I see is
+the last drawing of my app. If I happen
+to have an X server on some other VC,
+then switching to it immediately unhangs
+everything, and I can switch back.
+In fact, even if I hit Ctrl-Alt-Del, then
+fb immediately unhangs (by systemd
+or plymouth or whoever else). But for
+example SAK combo doesn't unhang.
+So it seems to be very simple to hang
+the framebuffer, and is quite difficult
+to recover.
+Question: is this an expected behaviour
+or a drmfb bug?
 
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+Thanks!
 
-Thanks and have a nice day,
-Mr. Kim Leang.
