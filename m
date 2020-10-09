@@ -2,77 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A3F288893
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 14:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A7E9288971
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 14:59:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731374AbgJIMWE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Oct 2020 08:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33634 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731118AbgJIMWE (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Oct 2020 08:22:04 -0400
-X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Oct 2020 05:22:03 PDT
-Received: from forward101j.mail.yandex.net (forward101j.mail.yandex.net [IPv6:2a02:6b8:0:801:2::101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4A8C0613D2
-        for <linux-fbdev@vger.kernel.org>; Fri,  9 Oct 2020 05:22:03 -0700 (PDT)
-Received: from forward100q.mail.yandex.net (forward100q.mail.yandex.net [IPv6:2a02:6b8:c0e:4b:0:640:4012:bb97])
-        by forward101j.mail.yandex.net (Yandex) with ESMTP id 18FCF1BE1BA7;
-        Fri,  9 Oct 2020 15:16:37 +0300 (MSK)
-Received: from mxback8q.mail.yandex.net (mxback8q.mail.yandex.net [IPv6:2a02:6b8:c0e:42:0:640:b38f:32ec])
-        by forward100q.mail.yandex.net (Yandex) with ESMTP id 13B1A7080004;
-        Fri,  9 Oct 2020 15:16:37 +0300 (MSK)
-Received: from vla3-3dd1bd6927b2.qloud-c.yandex.net (vla3-3dd1bd6927b2.qloud-c.yandex.net [2a02:6b8:c15:350f:0:640:3dd1:bd69])
-        by mxback8q.mail.yandex.net (mxback/Yandex) with ESMTP id r7DUHYblvr-GadGW3bS;
-        Fri, 09 Oct 2020 15:16:37 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1602245797;
-        bh=WUtDIoR4iluD92A4YT4RWnCJ9f15qpCaPNrXb1hVUIY=;
-        h=In-Reply-To:To:Subject:From:Date:References:Message-ID;
-        b=eEWjC4eS2JvWh/ezlhmazTdv/1MfFkWjW6w+qoen1KTguwsnBc39qK7yAPCwjWCYJ
-         V290RJiXYMUlwqZDUnh9M0G9+flJIVEpRPAv0X42TUdRDPuwHsPqXfQoQz0MunNvsc
-         856bBh1OT0vraTkn7V1+oM2++ymWdrmtXOfsJJlk=
-Authentication-Results: mxback8q.mail.yandex.net; dkim=pass header.i=@yandex.ru
-Received: by vla3-3dd1bd6927b2.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id yGnkQcd4j8-GanqWC9S;
-        Fri, 09 Oct 2020 15:16:36 +0300
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client certificate not present)
-From:   stsp <stsp2@yandex.ru>
+        id S1732985AbgJIM7F (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Oct 2020 08:59:05 -0400
+Received: from mx2.suse.de ([195.135.220.15]:36514 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732686AbgJIM7F (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 9 Oct 2020 08:59:05 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id DF2F2AF80;
+        Fri,  9 Oct 2020 12:59:02 +0000 (UTC)
 Subject: Re: drmfb console switching problems/questions
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-fbdev@vger.kernel.org,
+To:     stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
         Linux kernel <linux-kernel@vger.kernel.org>
 References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
  <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
-Message-ID: <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
-Date:   Fri, 9 Oct 2020 15:16:25 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <e2118f89-2c55-ec12-1e33-f2ba418af914@suse.de>
+Date:   Fri, 9 Oct 2020 14:58:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="M5HWfsROMBtVeEnVUOr9Di9KQ5NWpqinj"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-09.10.2020 14:59, Thomas Zimmermann пишет:
-> Fbdev exposes the video ram (or a shadow buffer of it) to all
-> applications. Only one can draw at the same time. It's a limitation of
-> the design. To fix this, your application has to stop drawing when you
-> switch consoles.
-OK, thanks for info.
-Quite a sad news, if you ask me.
-Is there any ongoing work at solving that?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--M5HWfsROMBtVeEnVUOr9Di9KQ5NWpqinj
+Content-Type: multipart/mixed; boundary="D2o1fIkniFuo7qM01ZekkWlhSq1xQYKyK";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: stsp <stsp2@yandex.ru>, linux-fbdev@vger.kernel.org,
+ Linux kernel <linux-kernel@vger.kernel.org>
+Message-ID: <e2118f89-2c55-ec12-1e33-f2ba418af914@suse.de>
+Subject: Re: drmfb console switching problems/questions
+References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
+ <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
+ <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
+In-Reply-To: <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
 
-Anyway, the fact that fb can
-permanently hang, is, I suppose,
-another problem - the one that
-can't be worked around in an app.
-I suspect it is the result of sdl doing
-ioctl(console_fd, KDSETMODE, KD_GRAPHICS);
-After which, I think, redrawing on a
-VC switch became disabled.
-Would it make sense to improve SAK
-to unfreeze from that? Otherwise its
-too easy to hang the screen permanently,
-and no way to recover.
+--D2o1fIkniFuo7qM01ZekkWlhSq1xQYKyK
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+Am 09.10.20 um 14:16 schrieb stsp:
+> 09.10.2020 14:59, Thomas Zimmermann =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+>> Fbdev exposes the video ram (or a shadow buffer of it) to all
+>> applications. Only one can draw at the same time. It's a limitation of=
+
+>> the design. To fix this, your application has to stop drawing when you=
+
+>> switch consoles.
+> OK, thanks for info.
+> Quite a sad news, if you ask me.
+> Is there any ongoing work at solving that?
+
+I don't think so. Both, SDL1 and fbdev, are pretty much dead these days.
+The solution to fbdev is DRM, which does not have these problems.
+
+You could your application under X11 to use SDL's X backend. X would do
+all the VC handling then. For SDL advice you should ask on the SDL
+mailing list.
+
+>=20
+> Anyway, the fact that fb can
+> permanently hang, is, I suppose,
+> another problem - the one that
+> can't be worked around in an app.
+> I suspect it is the result of sdl doing
+> ioctl(console_fd, KDSETMODE, KD_GRAPHICS);
+> After which, I think, redrawing on a
+> VC switch became disabled.
+> Would it make sense to improve SAK
+> to unfreeze from that? Otherwise its
+> too easy to hang the screen permanently,
+> and no way to recover.
+
+That 'hung-up' problem you described sounds like the fbdev console does
+not correctly redraw itself. But I don't know where the related code is
+located.
+
+Best regards
+Thomas
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--D2o1fIkniFuo7qM01ZekkWlhSq1xQYKyK--
+
+--M5HWfsROMBtVeEnVUOr9Di9KQ5NWpqinj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFIBAEBCAAyFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl+AXpMUHHR6aW1tZXJt
+YW5uQHN1c2UuZGUACgkQaA3BHVMLeiNWdAf/Y5A3n2fl8B4PiBhTsI2gOaA4SHmk
+ld8C+gKmkAdTLXSDXXqvIuGFLYow4Q4wDpJI1VMsj2d5fWWcfSBGv/QOMFnsduBt
+rDVRFn8XTiFmAErCrhbUC1wlGQRLThWzmPft8vKUVtWm2EyP/nL6fF8qT9V13vm0
+yhVqSqH7zrI0T7bDOUkPNsHeDvKp/aHrRmi2cU1paYTWuY95S8vUNU3J52kdcpLy
+76rFzTBOIgB0vBtyMnVa/L3s+99D/xPHJbUe7NzjIwDSBOsXMgYYc+qRSLCaB0TS
+zQwGXUAzxX/s2Q8akUsAw9vyR/BxIageZWpQ+oVLZFhHnssEFi2iaWelLQ==
+=7cbK
+-----END PGP SIGNATURE-----
+
+--M5HWfsROMBtVeEnVUOr9Di9KQ5NWpqinj--
