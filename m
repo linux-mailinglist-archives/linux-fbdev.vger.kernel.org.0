@@ -2,65 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 000A1288A7B
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Oct 2020 16:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A595028C9A8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Oct 2020 10:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729272AbgJIOOr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Oct 2020 10:14:47 -0400
-Received: from forward101p.mail.yandex.net ([77.88.28.101]:49173 "EHLO
-        forward101p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726471AbgJIOOr (ORCPT
+        id S2390585AbgJMIB3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 13 Oct 2020 04:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390549AbgJMIB2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 9 Oct 2020 10:14:47 -0400
-Received: from mxback10g.mail.yandex.net (mxback10g.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:171])
-        by forward101p.mail.yandex.net (Yandex) with ESMTP id AC43226448F3;
-        Fri,  9 Oct 2020 17:14:44 +0300 (MSK)
-Received: from iva1-bc1861525829.qloud-c.yandex.net (iva1-bc1861525829.qloud-c.yandex.net [2a02:6b8:c0c:a0e:0:640:bc18:6152])
-        by mxback10g.mail.yandex.net (mxback/Yandex) with ESMTP id C5mD5bxPqh-EiWW1dRw;
-        Fri, 09 Oct 2020 17:14:44 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail; t=1602252884;
-        bh=4IQ2UZqrxX06X24xfc0QT/4vwxH62r4bVpdGWVMTZd8=;
-        h=In-Reply-To:From:Date:References:To:Subject:Message-ID;
-        b=pEgnJQLS9BDCjQlqqh5+Jw1h4zcGZG02vaHgSDpXQMt8N+f5X91ty7VSUiyUTtggT
-         MLpS5nLZF6SN/L1Uv41nMrYmF7g1WRf/S0fOH8ppMxdqWdHErxApAf1WSJrU2SSXma
-         DEX8D4I0EHQPoC0/9dN3jhtrVvPU8A2UxfZLjBok=
-Authentication-Results: mxback10g.mail.yandex.net; dkim=pass header.i=@yandex.ru
-Received: by iva1-bc1861525829.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id 7JDfKQrgBy-Eim4k5Fq;
-        Fri, 09 Oct 2020 17:14:44 +0300
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (Client certificate not present)
-Subject: Re: drmfb console switching problems/questions
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-fbdev@vger.kernel.org,
-        Linux kernel <linux-kernel@vger.kernel.org>
-References: <17980f58-c2d2-ac58-88ce-e21b5a56da39@yandex.ru>
- <df4d1918-dcb1-4951-6280-f178ecbbfc2f@suse.de>
- <70ce31ca-5922-584c-8631-3853c488f3c7@yandex.ru>
- <e2118f89-2c55-ec12-1e33-f2ba418af914@suse.de>
- <cacba527-fe32-e80c-4659-799452741791@yandex.ru>
- <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
-From:   stsp <stsp2@yandex.ru>
-Message-ID: <e3f40930-6927-042f-7857-e843e1e24236@yandex.ru>
-Date:   Fri, 9 Oct 2020 17:14:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        Tue, 13 Oct 2020 04:01:28 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B84C0613D0
+        for <linux-fbdev@vger.kernel.org>; Tue, 13 Oct 2020 01:01:27 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id w21so16225912pfc.7
+        for <linux-fbdev@vger.kernel.org>; Tue, 13 Oct 2020 01:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kobb2e1tlICZgkQS/oGVtY54aK5l9kHJ2QZVBKXSGxE=;
+        b=HvRYgaNc6roOxiu+jeMNUaEvL5jd+9FuF8oUyy0Qut6ZicDzpSKH3rWKcSKeygEjEn
+         yb0slmgyi3zc3tFthbRId+EYOgfZZFgKsSyDAhoLqFIbgcMmoSRBIMdI4D74fUepQXuR
+         VahaQpxlXCfl8FLlEz1J7risjgxjMtLieTEX0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kobb2e1tlICZgkQS/oGVtY54aK5l9kHJ2QZVBKXSGxE=;
+        b=VpdhetJEPeiLCzAI2BXbcKegSySTHy28Sh/5MMN3yEGiTOuIR2qP2toB4OYtsvj1ff
+         yGmJUKdQt21liywEhdcPj0qhT78FQy7v5uegICmVBceuph7bV59LmvXS3/1lxbDmgxNm
+         BH7DI0WW40xwSqHqvrozBtgpRoDCcyrn5gQ7V+qHdFTeCmUWjLJ5yTqlxBAHwnMj7w7O
+         /p1OSwtWjs3BlneJecl4bWp8YGaSVL1Celx2UAq7MhbKZSM713ClELJaZaUyZSfwJilB
+         PMxp83Ce15fLKK4/OYhThWQPdJRpVOPT6xUy1beqrTScYRRBVvT5zhCYyqvXywk9O2pR
+         JWjw==
+X-Gm-Message-State: AOAM532dOlBayqwFNBgqMpp4zKCiDpfsDB1CSZyeTE9yr20JCYz4Qpr4
+        o/nnqGQ6+ylIhdvtFE6C/GCepA==
+X-Google-Smtp-Source: ABdhPJxP6pxFhLR56ZtuQO0U0FlPcp8Gjo0ZGCypcR6tvA2syik1UwDJOMcOKfmi863CHLyQwReK/Q==
+X-Received: by 2002:a62:2a94:0:b029:155:3225:6fd0 with SMTP id q142-20020a622a940000b029015532256fd0mr25008896pfq.64.1602576086840;
+        Tue, 13 Oct 2020 01:01:26 -0700 (PDT)
+Received: from alex-desktop.lan (c-73-63-253-164.hsd1.ca.comcast.net. [73.63.253.164])
+        by smtp.gmail.com with ESMTPSA id y124sm14956924pfy.28.2020.10.13.01.01.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2020 01:01:26 -0700 (PDT)
+From:   Alexandru Stan <amstan@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Alexandru Stan <amstan@chromium.org>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+Subject: [PATCH v2 0/3] PWM backlight interpolation adjustments
+Date:   Tue, 13 Oct 2020 01:01:00 -0700
+Message-Id: <20201013080103.410133-1-amstan@chromium.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <050632f0-6440-1254-2aed-931dd515ff37@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-09.10.2020 16:31, Thomas Zimmermann пишет:
-> I can't say for sure. IIRC SDL2 can use DRM directly.
-Yes, that was a great hint indeed,
-thanks. It didn't work for me in the past
-(a year ago or so), so I added SDL1
-support. But now I re-tried, and it indeed
-works!
-And, as far as I can tell, the hanging
-behaviour does not happen, at least
-not that simple.
-Thank you.
+I was trying to adjust the brightness-levels for the trogdor boards:
+https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/2291209
+Like on a lot of panels, trogdor's low end needs to be cropped,
+and now that we have the interpolation stuff I wanted to make use of it
+and bake in even the curve that's customary to have on chromebooks.
+
+I found the current behavior of the pwm_bl driver a little unintuitive
+and non-linear. See patch 1 for a suggested fix for this.
+
+A few veyron dts files were relying on this (perhaps weird) behavior.
+Those devices also want a minimum brightness like trogdor, so changed
+them to use the new way.
+
+Finally, given that trogdor's dts is part of linux-next now, add the
+brightness-levels to it, since that's the original reason I was looking at
+this.
+
+Changes in v2:
+- Fixed type promotion in the driver
+- Removed "backlight: pwm_bl: Artificially add 0% during interpolation",
+userspace works just fine without it because it already knows how to use
+bl_power for turning off the display.
+- Added brightness-levels to trogdor as well, now the dts is upstream.
+
+
+Alexandru Stan (3):
+  backlight: pwm_bl: Fix interpolation
+  ARM: dts: rockchip: veyron: Remove 0 point from brightness-levels
+  arm64: dts: qcom: trogdor: Add brightness-levels
+
+ arch/arm/boot/dts/rk3288-veyron-jaq.dts      |  2 +-
+ arch/arm/boot/dts/rk3288-veyron-minnie.dts   |  2 +-
+ arch/arm/boot/dts/rk3288-veyron-tiger.dts    |  2 +-
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi |  9 +++
+ drivers/video/backlight/pwm_bl.c             | 70 +++++++++-----------
+ 5 files changed, 43 insertions(+), 42 deletions(-)
+
+-- 
+2.28.0
+
