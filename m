@@ -2,44 +2,45 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2DB28DBF9
-	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Oct 2020 10:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318C528DC27
+	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Oct 2020 10:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbgJNIte (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 14 Oct 2020 04:49:34 -0400
-Received: from smtp25.cstnet.cn ([159.226.251.25]:46790 "EHLO cstnet.cn"
+        id S1726747AbgJNI5n (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 14 Oct 2020 04:57:43 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25]:55216 "EHLO cstnet.cn"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726147AbgJNIte (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 14 Oct 2020 04:49:34 -0400
+        id S1725970AbgJNI5n (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 14 Oct 2020 04:57:43 -0400
 Received: from localhost.localdomain (unknown [124.16.141.241])
-        by APP-05 (Coremail) with SMTP id zQCowACHjo6Su4ZfalFxAg--.31249S2;
-        Wed, 14 Oct 2020 16:49:24 +0800 (CST)
+        by APP-05 (Coremail) with SMTP id zQCowADHqLV0vYZfzIpxAg--.4329S2;
+        Wed, 14 Oct 2020 16:57:25 +0800 (CST)
 From:   Xu Wang <vulab@iscas.ac.cn>
-To:     b.zolnierkie@samsung.com, pakki001@umn.edu, yuehaibing@huawei.com
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] omapfb/dss: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
-Date:   Wed, 14 Oct 2020 08:49:20 +0000
-Message-Id: <20201014084920.25813-1-vulab@iscas.ac.cn>
+To:     b.zolnierkie@samsung.com, gustavoars@kernel.org, arnd@arndb.de,
+        daniel.vetter@ffwll.ch, jani.nikula@intel.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: [PATCH] video: fbdev: sh_mobile_lcdcfb: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
+Date:   Wed, 14 Oct 2020 08:57:22 +0000
+Message-Id: <20201014085722.26069-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: zQCowACHjo6Su4ZfalFxAg--.31249S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFy8CFyfJFWDAr15Kry3Jwb_yoWkXrX_C3
-        WDurZxGFZ0gw4Ik34ktws8ArZ7tFyvvFWrWr92v3yfKFy7Wry3ZrWDArsxA39rWF40yF4j
-        vwnFg3W8Ar1fCjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb2xYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-        w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GFyl42xK82IY
-        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
-        87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4DGYDUUUU
+X-CM-TRANSID: zQCowADHqLV0vYZfzIpxAg--.4329S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrZFy8CFyfJF4UXFWDGFWktFb_yoW8JrWrp3
+        W8ZFyFy397Zr1DKan8ArWjgF1Yva45tFyrZFykKa45uF9xAF1UXFy5t3s2qFn5JFZYyrWa
+        yryjqa45uF18uFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkIb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+        8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xSY4AK67AK6r43MxAIw28I
+        cxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2
+        IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI
+        42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42
+        IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
+        z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Tv3UUUUUU==
 X-Originating-IP: [124.16.141.241]
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiAxAJA13qZbuZhgAAsv
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCgYJA1z4jD+P4AAAs+
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -50,33 +51,33 @@ remove them.
 
 Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/venc.c | 6 ++----
+ drivers/video/fbdev/sh_mobile_lcdcfb.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-index 0b0ad20afd63..8895fb8493d8 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-@@ -890,8 +890,7 @@ static int venc_remove(struct platform_device *pdev)
- 
- static int venc_runtime_suspend(struct device *dev)
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index c1043420dbd3..c0952cc96bdb 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -341,8 +341,7 @@ static void lcdc_wait_bit(struct sh_mobile_lcdc_priv *priv,
+ static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
  {
--	if (venc.tv_dac_clk)
--		clk_disable_unprepare(venc.tv_dac_clk);
-+	clk_disable_unprepare(venc.tv_dac_clk);
- 
- 	dispc_runtime_put();
- 
-@@ -906,8 +905,7 @@ static int venc_runtime_resume(struct device *dev)
- 	if (r < 0)
- 		return r;
- 
--	if (venc.tv_dac_clk)
--		clk_prepare_enable(venc.tv_dac_clk);
-+	clk_prepare_enable(venc.tv_dac_clk);
- 
- 	return 0;
+ 	if (atomic_inc_and_test(&priv->hw_usecnt)) {
+-		if (priv->dot_clk)
+-			clk_prepare_enable(priv->dot_clk);
++		clk_prepare_enable(priv->dot_clk);
+ 		pm_runtime_get_sync(priv->dev);
+ 	}
  }
+@@ -351,8 +350,7 @@ static void sh_mobile_lcdc_clk_off(struct sh_mobile_lcdc_priv *priv)
+ {
+ 	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
+ 		pm_runtime_put(priv->dev);
+-		if (priv->dot_clk)
+-			clk_disable_unprepare(priv->dot_clk);
++		clk_disable_unprepare(priv->dot_clk);
+ 	}
+ }
+ 
 -- 
 2.17.1
 
