@@ -2,30 +2,30 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF4BF28EE29
-	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Oct 2020 10:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C6D28EE38
+	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Oct 2020 10:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387656AbgJOIIJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 15 Oct 2020 04:08:09 -0400
-Received: from mx2.suse.de ([195.135.220.15]:41092 "EHLO mx2.suse.de"
+        id S2387783AbgJOIIe convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 15 Oct 2020 04:08:34 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45078 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728048AbgJOIGB (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 15 Oct 2020 04:06:01 -0400
+        id S2387766AbgJOIIa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 15 Oct 2020 04:08:30 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 03440AF84;
-        Thu, 15 Oct 2020 08:05:59 +0000 (UTC)
-Date:   Thu, 15 Oct 2020 10:05:57 +0200
+        by mx2.suse.de (Postfix) with ESMTP id DED40AE85;
+        Thu, 15 Oct 2020 08:08:28 +0000 (UTC)
+Date:   Thu, 15 Oct 2020 10:08:27 +0200
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     b.zolnierkie@samsung.com, jani.nikula@intel.com,
-        daniel.vetter@ffwll.ch, linux-fbdev@vger.kernel.org,
+Cc:     b.zolnierkie@samsung.com, pakki001@umn.edu, yuehaibing@huawei.com,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] au1100fb: Remove NULL pointer check before
- clk_enable/disable
-Message-ID: <20201015100557.402f831f@linux-uq9g>
-In-Reply-To: <20201014082137.23320-1-vulab@iscas.ac.cn>
-References: <20201014082137.23320-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] omapfb/dss: Remove redundant null check before
+ clk_prepare_enable/clk_disable_unprepare
+Message-ID: <20201015100827.1115fa9b@linux-uq9g>
+In-Reply-To: <20201014084920.25813-1-vulab@iscas.ac.cn>
+References: <20201014084920.25813-1-vulab@iscas.ac.cn>
 Organization: SUSE Software Solutions Germany GmbH
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
@@ -35,50 +35,44 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi
+On Wed, 14 Oct 2020 08:49:20 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
 
-On Wed, 14 Oct 2020 08:21:37 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
-
-> Because clk_enable, clk_disable, clk_prepare, and clk_unprepare already
-> checked NULL clock parameter, so the additional checks are unnecessary,
-> just remove them.
-
-All clk_*() functions seem to handle NULL pointers gracefully, so you can
-also remove these checks from the driver's _probe and _remove functions.
-
-Best regards
-Thomas
-
+> Because clk_prepare_enable() and clk_disable_unprepare() already checked
+> NULL clock parameter, so the additional checks are unnecessary, just
+> remove them.
 > 
 > Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
 > ---
->  drivers/video/fbdev/au1100fb.c | 6 ++----
+>  drivers/video/fbdev/omap2/omapfb/dss/venc.c | 6 ++----
 >  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/au1100fb.c b/drivers/video/fbdev/au1100fb.c
-> index 37a6512feda0..3659dfbb81c1 100644
-> --- a/drivers/video/fbdev/au1100fb.c
-> +++ b/drivers/video/fbdev/au1100fb.c
-> @@ -560,8 +560,7 @@ int au1100fb_drv_suspend(struct platform_device *dev,
-> pm_message_t state) /* Blank the LCD */
->  	au1100fb_fb_blank(VESA_POWERDOWN, &fbdev->info);
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+> b/drivers/video/fbdev/omap2/omapfb/dss/venc.c index
+> 0b0ad20afd63..8895fb8493d8 100644 ---
+> a/drivers/video/fbdev/omap2/omapfb/dss/venc.c +++
+> b/drivers/video/fbdev/omap2/omapfb/dss/venc.c @@ -890,8 +890,7 @@ static
+> int venc_remove(struct platform_device *pdev) 
+>  static int venc_runtime_suspend(struct device *dev)
+>  {
+> -	if (venc.tv_dac_clk)
+> -		clk_disable_unprepare(venc.tv_dac_clk);
+> +	clk_disable_unprepare(venc.tv_dac_clk);
 >  
-> -	if (fbdev->lcdclk)
-> -		clk_disable(fbdev->lcdclk);
-> +	clk_disable(fbdev->lcdclk);
+>  	dispc_runtime_put();
 >  
->  	memcpy(&fbregs, fbdev->regs, sizeof(struct au1100fb_regs));
+> @@ -906,8 +905,7 @@ static int venc_runtime_resume(struct device *dev)
+>  	if (r < 0)
+>  		return r;
 >  
-> @@ -577,8 +576,7 @@ int au1100fb_drv_resume(struct platform_device *dev)
+> -	if (venc.tv_dac_clk)
+> -		clk_prepare_enable(venc.tv_dac_clk);
+> +	clk_prepare_enable(venc.tv_dac_clk);
 >  
->  	memcpy(fbdev->regs, &fbregs, sizeof(struct au1100fb_regs));
->  
-> -	if (fbdev->lcdclk)
-> -		clk_enable(fbdev->lcdclk);
-> +	clk_enable(fbdev->lcdclk);
->  
->  	/* Unblank the LCD */
->  	au1100fb_fb_blank(VESA_NO_BLANKING, &fbdev->info);
+>  	return 0;
+>  }
 
 
 
