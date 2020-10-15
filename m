@@ -2,85 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0107328EE42
-	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Oct 2020 10:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D443A28F3BF
+	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Oct 2020 15:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387865AbgJOIKh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 15 Oct 2020 04:10:37 -0400
-Received: from mx2.suse.de ([195.135.220.15]:47584 "EHLO mx2.suse.de"
+        id S2387916AbgJONxS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 15 Oct 2020 09:53:18 -0400
+Received: from edge.kilargo.pl ([77.252.52.110]:24065 "EHLO edge.kilargo.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387827AbgJOIKS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 15 Oct 2020 04:10:18 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id D227EB20A;
-        Thu, 15 Oct 2020 08:10:16 +0000 (UTC)
-Date:   Thu, 15 Oct 2020 10:10:15 +0200
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     b.zolnierkie@samsung.com, gustavoars@kernel.org, arnd@arndb.de,
-        daniel.vetter@ffwll.ch, jani.nikula@intel.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] video: fbdev: sh_mobile_lcdcfb: Remove redundant null
- check before clk_prepare_enable/clk_disable_unprepare
-Message-ID: <20201015101015.6dbd25ce@linux-uq9g>
-In-Reply-To: <20201014085722.26069-1-vulab@iscas.ac.cn>
-References: <20201014085722.26069-1-vulab@iscas.ac.cn>
-Organization: SUSE Software Solutions Germany GmbH
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S2387851AbgJONxR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 15 Oct 2020 09:53:17 -0400
+X-Greylist: delayed 593 seconds by postgrey-1.27 at vger.kernel.org; Thu, 15 Oct 2020 09:52:17 EDT
+Received: from mail.kilargo.pl (77.252.52.107) by edge.kilargo.pl
+ (77.252.52.109) with Microsoft SMTP Server (TLS) id 8.3.485.1; Thu, 15 Oct
+ 2020 15:41:37 +0200
+Received: from User (185.248.12.71) by MAIL.kilargo.pl (172.22.0.36) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Oct 2020 14:54:49 +0200
+Reply-To: <kim.leang2011@yahoo.com>
+From:   Kim Leang <mechanik@kilargo.pl>
+Subject: Greeting! !!
+Date:   Thu, 15 Oct 2020 15:54:53 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <3fbd9a3dc5e04de19174c5184ffa4827@mail.kilargo.pl>
+To:     Undisclosed recipients:;
+X-Originating-IP: [185.248.12.71]
+X-ClientProxiedBy: mail.kilargo.pl (172.22.0.36) To MAIL.kilargo.pl
+ (172.22.0.36)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A295AAB9B6B647163
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 14 Oct 2020 08:57:22 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
+Greeting!
 
-> Because clk_prepare_enable() and clk_disable_unprepare() already checked
-> NULL clock parameter, so the additional checks are unnecessary, just
-> remove them.
-> 
-> Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
 
-> ---
->  drivers/video/fbdev/sh_mobile_lcdcfb.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> b/drivers/video/fbdev/sh_mobile_lcdcfb.c index c1043420dbd3..c0952cc96bdb
-> 100644 --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> @@ -341,8 +341,7 @@ static void lcdc_wait_bit(struct sh_mobile_lcdc_priv
-> *priv, static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
->  {
->  	if (atomic_inc_and_test(&priv->hw_usecnt)) {
-> -		if (priv->dot_clk)
-> -			clk_prepare_enable(priv->dot_clk);
-> +		clk_prepare_enable(priv->dot_clk);
->  		pm_runtime_get_sync(priv->dev);
->  	}
->  }
-> @@ -351,8 +350,7 @@ static void sh_mobile_lcdc_clk_off(struct
-> sh_mobile_lcdc_priv *priv) {
->  	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
->  		pm_runtime_put(priv->dev);
-> -		if (priv->dot_clk)
-> -			clk_disable_unprepare(priv->dot_clk);
-> +		clk_disable_unprepare(priv->dot_clk);
->  	}
->  }
->  
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
 
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
 
-
--- 
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 Nürnberg, Germany
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Felix Imendörffer
+Thanks and have a nice day,
+Mr. Kim Leang.
