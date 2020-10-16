@@ -2,95 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3045D290392
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Oct 2020 12:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E118290CF5
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Oct 2020 22:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395517AbgJPK42 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 16 Oct 2020 06:56:28 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35088 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2395510AbgJPK42 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Oct 2020 06:56:28 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id CD1D7AF2C;
-        Fri, 16 Oct 2020 10:56:26 +0000 (UTC)
-Date:   Fri, 16 Oct 2020 12:56:25 +0200
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     linux-fbdev@vger.kernel.org, arnd@arndb.de,
-        b.zolnierkie@samsung.com, jani.nikula@intel.com,
-        daniel.vetter@ffwll.ch, gustavoars@kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] video: fbdev: sh_mobile_lcdcfb: Remove redundant null
- check before clk_prepare_enable/clk_disable_unprepare
-Message-ID: <20201016125625.7d2b5bd7@linux-uq9g>
-In-Reply-To: <20201015101015.6dbd25ce@linux-uq9g>
-References: <20201014085722.26069-1-vulab@iscas.ac.cn>
-        <20201015101015.6dbd25ce@linux-uq9g>
-Organization: SUSE Software Solutions Germany GmbH
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S2389479AbgJPU6l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 16 Oct 2020 16:58:41 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:33680 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388086AbgJPU6l (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 16 Oct 2020 16:58:41 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 3528520030;
+        Fri, 16 Oct 2020 22:58:37 +0200 (CEST)
+Date:   Fri, 16 Oct 2020 22:58:36 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Li Heng <liheng40@huawei.com>
+Cc:     tomi.valkeinen@ti.com, b.zolnierkie@samsung.com,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH -next] video: Remove set but not used variable
+Message-ID: <20201016205836.GB1496366@ravnborg.org>
+References: <1600957106-13741-1-git-send-email-liheng40@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1600957106-13741-1-git-send-email-liheng40@huawei.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=S433PrkP c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=IkcTkHD0fZMA:10 a=i0EeH86SAAAA:8 a=e5mUnYsNAAAA:8
+        a=ta2fmmrRsy9J0w49oKkA:9 a=QEXdDO2ut3YA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 15 Oct 2020 10:10:15 +0200 Thomas Zimmermann <tzimmermann@suse.de>
-wrote:
+Hi Li Heng
 
-> On Wed, 14 Oct 2020 08:57:22 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
+On Thu, Sep 24, 2020 at 10:18:26PM +0800, Li Heng wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> > Because clk_prepare_enable() and clk_disable_unprepare() already checked
-> > NULL clock parameter, so the additional checks are unnecessary, just
-> > remove them.
-> > 
-> > Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+> drivers/video/fbdev/sis/300vtbl.h:1064:28: warning:
+> ‘SiS300_CHTVVCLKSONTSC’ defined but not used [-Wunused-const-variable=]
 > 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Li Heng <liheng40@huawei.com>
 
-Merged into drm-misc-next. Thanks!
+Thanks, now applied to drm-misc-next.
 
-> > ---
-> >  drivers/video/fbdev/sh_mobile_lcdcfb.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > b/drivers/video/fbdev/sh_mobile_lcdcfb.c index c1043420dbd3..c0952cc96bdb
-> > 100644 --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-> > @@ -341,8 +341,7 @@ static void lcdc_wait_bit(struct sh_mobile_lcdc_priv
-> > *priv, static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
-> >  {
-> >  	if (atomic_inc_and_test(&priv->hw_usecnt)) {
-> > -		if (priv->dot_clk)
-> > -			clk_prepare_enable(priv->dot_clk);
-> > +		clk_prepare_enable(priv->dot_clk);
-> >  		pm_runtime_get_sync(priv->dev);
-> >  	}
-> >  }
-> > @@ -351,8 +350,7 @@ static void sh_mobile_lcdc_clk_off(struct
-> > sh_mobile_lcdc_priv *priv) {
-> >  	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
-> >  		pm_runtime_put(priv->dev);
-> > -		if (priv->dot_clk)
-> > -			clk_disable_unprepare(priv->dot_clk);
-> > +		clk_disable_unprepare(priv->dot_clk);
-> >  	}
-> >  }
-> >  
+	Sam
+
+> ---
+>  drivers/video/fbdev/sis/300vtbl.h | 2 --
+>  1 file changed, 2 deletions(-)
 > 
+> diff --git a/drivers/video/fbdev/sis/300vtbl.h b/drivers/video/fbdev/sis/300vtbl.h
+> index e4b4a26..26b19f7 100644
+> --- a/drivers/video/fbdev/sis/300vtbl.h
+> +++ b/drivers/video/fbdev/sis/300vtbl.h
+> @@ -1061,8 +1061,6 @@ static const unsigned char SiS300_CHTVVCLKUNTSC[]  = { 0x29,0x29,0x29,0x29,0x2a,
 > 
+>  static const unsigned char SiS300_CHTVVCLKONTSC[]  = { 0x2c,0x2c,0x2c,0x2c,0x2d,0x2b };
 > 
-
-
-
--- 
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 Nürnberg, Germany
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Felix Imendörffer
+> -static const unsigned char SiS300_CHTVVCLKSONTSC[] = { 0x2c,0x2c,0x2c,0x2c,0x2d,0x2b };
+> -
+>  static const unsigned char SiS300_CHTVVCLKUPAL[]   = { 0x2f,0x2f,0x2f,0x2f,0x2f,0x31 };
+> 
+>  static const unsigned char SiS300_CHTVVCLKOPAL[]   = { 0x2f,0x2f,0x2f,0x2f,0x30,0x32 };
+> --
+> 2.7.4
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
