@@ -2,31 +2,32 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8308290247
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Oct 2020 11:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3045D290392
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Oct 2020 12:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406425AbgJPJx7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 16 Oct 2020 05:53:59 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42374 "EHLO mx2.suse.de"
+        id S2395517AbgJPK42 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 16 Oct 2020 06:56:28 -0400
+Received: from mx2.suse.de ([195.135.220.15]:35088 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406424AbgJPJx6 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Oct 2020 05:53:58 -0400
+        id S2395510AbgJPK42 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 16 Oct 2020 06:56:28 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 5F341AD0D;
-        Fri, 16 Oct 2020 09:53:57 +0000 (UTC)
-Date:   Fri, 16 Oct 2020 11:53:56 +0200
+        by mx2.suse.de (Postfix) with ESMTP id CD1D7AF2C;
+        Fri, 16 Oct 2020 10:56:26 +0000 (UTC)
+Date:   Fri, 16 Oct 2020 12:56:25 +0200
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     b.zolnierkie@samsung.com, pakki001@umn.edu, yuehaibing@huawei.com,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] omapfb/dss: Remove redundant null check before
- clk_prepare_enable/clk_disable_unprepare
-Message-ID: <20201016115356.34c1620b@linux-uq9g>
-In-Reply-To: <20201015100827.1115fa9b@linux-uq9g>
-References: <20201014084920.25813-1-vulab@iscas.ac.cn>
-        <20201015100827.1115fa9b@linux-uq9g>
+Cc:     linux-fbdev@vger.kernel.org, arnd@arndb.de,
+        b.zolnierkie@samsung.com, jani.nikula@intel.com,
+        daniel.vetter@ffwll.ch, gustavoars@kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: sh_mobile_lcdcfb: Remove redundant null
+ check before clk_prepare_enable/clk_disable_unprepare
+Message-ID: <20201016125625.7d2b5bd7@linux-uq9g>
+In-Reply-To: <20201015101015.6dbd25ce@linux-uq9g>
+References: <20201014085722.26069-1-vulab@iscas.ac.cn>
+        <20201015101015.6dbd25ce@linux-uq9g>
 Organization: SUSE Software Solutions Germany GmbH
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
@@ -36,10 +37,10 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, 15 Oct 2020 10:08:27 +0200 Thomas Zimmermann <tzimmermann@suse.de>
+On Thu, 15 Oct 2020 10:10:15 +0200 Thomas Zimmermann <tzimmermann@suse.de>
 wrote:
 
-> On Wed, 14 Oct 2020 08:49:20 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
+> On Wed, 14 Oct 2020 08:57:22 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
 > 
 > > Because clk_prepare_enable() and clk_disable_unprepare() already checked
 > > NULL clock parameter, so the additional checks are unnecessary, just
@@ -53,33 +54,33 @@ wrote:
 Merged into drm-misc-next. Thanks!
 
 > > ---
-> >  drivers/video/fbdev/omap2/omapfb/dss/venc.c | 6 ++----
+> >  drivers/video/fbdev/sh_mobile_lcdcfb.c | 6 ++----
 > >  1 file changed, 2 insertions(+), 4 deletions(-)
 > > 
-> > diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-> > b/drivers/video/fbdev/omap2/omapfb/dss/venc.c index
-> > 0b0ad20afd63..8895fb8493d8 100644 ---
-> > a/drivers/video/fbdev/omap2/omapfb/dss/venc.c +++
-> > b/drivers/video/fbdev/omap2/omapfb/dss/venc.c @@ -890,8 +890,7 @@ static
-> > int venc_remove(struct platform_device *pdev) 
-> >  static int venc_runtime_suspend(struct device *dev)
+> > diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> > b/drivers/video/fbdev/sh_mobile_lcdcfb.c index c1043420dbd3..c0952cc96bdb
+> > 100644 --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> > +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> > @@ -341,8 +341,7 @@ static void lcdc_wait_bit(struct sh_mobile_lcdc_priv
+> > *priv, static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
 > >  {
-> > -	if (venc.tv_dac_clk)
-> > -		clk_disable_unprepare(venc.tv_dac_clk);
-> > +	clk_disable_unprepare(venc.tv_dac_clk);
-> >  
-> >  	dispc_runtime_put();
-> >  
-> > @@ -906,8 +905,7 @@ static int venc_runtime_resume(struct device *dev)
-> >  	if (r < 0)
-> >  		return r;
-> >  
-> > -	if (venc.tv_dac_clk)
-> > -		clk_prepare_enable(venc.tv_dac_clk);
-> > +	clk_prepare_enable(venc.tv_dac_clk);
-> >  
-> >  	return 0;
+> >  	if (atomic_inc_and_test(&priv->hw_usecnt)) {
+> > -		if (priv->dot_clk)
+> > -			clk_prepare_enable(priv->dot_clk);
+> > +		clk_prepare_enable(priv->dot_clk);
+> >  		pm_runtime_get_sync(priv->dev);
+> >  	}
 > >  }
+> > @@ -351,8 +350,7 @@ static void sh_mobile_lcdc_clk_off(struct
+> > sh_mobile_lcdc_priv *priv) {
+> >  	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
+> >  		pm_runtime_put(priv->dev);
+> > -		if (priv->dot_clk)
+> > -			clk_disable_unprepare(priv->dot_clk);
+> > +		clk_disable_unprepare(priv->dot_clk);
+> >  	}
+> >  }
+> >  
 > 
 > 
 > 
