@@ -2,96 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D90822918C8
-	for <lists+linux-fbdev@lfdr.de>; Sun, 18 Oct 2020 20:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F01291ED0
+	for <lists+linux-fbdev@lfdr.de>; Sun, 18 Oct 2020 21:55:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgJRSPB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 18 Oct 2020 14:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50880 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727042AbgJRSPA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 18 Oct 2020 14:15:00 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DC9C061755;
-        Sun, 18 Oct 2020 11:15:00 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id t22so879799plr.9;
-        Sun, 18 Oct 2020 11:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=m6FHgeh68XrW5HEPqio+CAfOtISNqMru1HN9CgXSmBM=;
-        b=QjCP1EX34ML3REAsHj1Tuktcn2Qgs9vEAzg++SANXEotQatxk6cJ78+W/luVFvsA3f
-         nZNkGM2go1F8nkwh6yEUQxVkyIZOSgSO3THq+0gpiY9p60SUuVvKhDWBbHi94riAC158
-         JDorjfMHTqFwVLz0lpon1zH2WyRinDTgAZqYzF5ngx3ClF81QhYn6cp4wIPpq813dIHK
-         s7GRgyT580BXrnwrATopGB49vaMilA8vdkf2slNeGdl9j549H3kzxrpyicj+1Et8ki3p
-         9ODKdJhrDhod8Zt2o3IZRnrNOqE1O08i1zPH79d/5aAdF4rk6sX2svj7btVZGfC3j9ov
-         5k2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=m6FHgeh68XrW5HEPqio+CAfOtISNqMru1HN9CgXSmBM=;
-        b=j4+bSgWeA1DDsCPVpHOUCfKesxlYxnEa0AO7FwYk9Mn2eXcMeH/pYj8UuiIN00r44B
-         ik9v0pQp4kdZsDwEDAY5GNdhobw5OLwM8nrXD68CCCN8du9UfNIzdpi1Rc/aCPEuEeQP
-         l/W7rJevnTB1Jlpoe8Sg3bv2rKkF/hEgD2PEMFE2LA5OaV/gXcVlZDECRFJuWIOCTVcm
-         Xf1ATDNCPGwXdAmDNvizGwhiEU9iSYDSqnqwrSHxeVf8GdyvkMqm7yYYQ6BGeoJ1glol
-         QVhhSuBRTudB8Wsr/L8hKJPISl9DDmkn+3BRCwcHpAfO52zhUWNFKUofaBbXe+8JG4cO
-         RLaw==
-X-Gm-Message-State: AOAM5336zbMIGgDrVUgUa5vpPLdR+laAhxMTFLjQZ32qGUiLoiPVBzA1
-        kup/P34X1JW7+VFmmS5tXg==
-X-Google-Smtp-Source: ABdhPJyD/RAMVd1M8vP32mGD/W3N7UjeH/8THUOCAjyc/6MDKMhug8g9/itU+OYPPf0q61CKLJRo6g==
-X-Received: by 2002:a17:902:8a8a:b029:d5:ab9e:1d5d with SMTP id p10-20020a1709028a8ab02900d5ab9e1d5dmr14061857plo.32.1603044900146;
-        Sun, 18 Oct 2020 11:15:00 -0700 (PDT)
-Received: from localhost.localdomain ([161.117.41.183])
-        by smtp.gmail.com with ESMTPSA id u65sm9511516pfc.11.2020.10.18.11.14.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2020 11:14:59 -0700 (PDT)
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     Daniel Vetter <daniel@ffwll.ch>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S2388281AbgJRTze (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 18 Oct 2020 15:55:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728572AbgJRTTy (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:19:54 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C217F222EC;
+        Sun, 18 Oct 2020 19:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603048793;
+        bh=7FhvxEzjT00hcJe2A4kMsdfABA3zFVZWm25OuutXf9M=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dyM91xtqZATQCh9yNtKiOFEqQvPl/GINZl3NrowCMWRRkrdJqziIWVAcwBQ+j0lbR
+         +hUjTUW1XxLoUXa7Yf0wBKZfzXPSFNCsDt7kp33Q6u7VmZjufQM7O4Wmju7mNORnjX
+         G2pu7GwlgeAooeTfheJOsg4Ya1AC3AIYTEJKhYrQ=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     George Kennedy <george.kennedy@oracle.com>,
+        syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Dhaval Giani <dhaval.giani@oracle.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sven Schneider <s.schneider@arkona-technologies.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-doc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Peilin Ye <yepeilin.cs@gmail.com>
-Subject: [PATCH 2/2] docs: fb: Add font_6x8 to available built-in fonts
-Date:   Sun, 18 Oct 2020 14:14:10 -0400
-Message-Id: <717bb41dda8e2ed615f3faadfbc3e215de726d38.1603037079.git.yepeilin.cs@gmail.com>
+        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.9 088/111] fbmem: add margin check to fb_check_caps()
+Date:   Sun, 18 Oct 2020 15:17:44 -0400
+Message-Id: <20201018191807.4052726-88-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <926453876c92caac34cba8545716a491754d04d5.1603037079.git.yepeilin.cs@gmail.com>
-References: <926453876c92caac34cba8545716a491754d04d5.1603037079.git.yepeilin.cs@gmail.com>
+In-Reply-To: <20201018191807.4052726-1-sashal@kernel.org>
+References: <20201018191807.4052726-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Recently we added a new 6x8 font in commit e2028c8e6bf9 ("lib/fonts: add
-font 6x8 for OLED display"). Add its name to the "compiled-in fonts"
-list.
+From: George Kennedy <george.kennedy@oracle.com>
 
-Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+[ Upstream commit a49145acfb975d921464b84fe00279f99827d816 ]
+
+A fb_ioctl() FBIOPUT_VSCREENINFO call with invalid xres setting
+or yres setting in struct fb_var_screeninfo will result in a
+KASAN: vmalloc-out-of-bounds failure in bitfill_aligned() as
+the margins are being cleared. The margins are cleared in
+chunks and if the xres setting or yres setting is a value of
+zero upto the chunk size, the failure will occur.
+
+Add a margin check to validate xres and yres settings.
+
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Reported-by: syzbot+e5fd3e65515b48c02a30@syzkaller.appspotmail.com
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Dhaval Giani <dhaval.giani@oracle.com>
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/1594149963-13801-1-git-send-email-george.kennedy@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/fb/fbcon.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmem.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/fb/fbcon.rst b/Documentation/fb/fbcon.rst
-index 9aad964b767c..57f66de2f7e1 100644
---- a/Documentation/fb/fbcon.rst
-+++ b/Documentation/fb/fbcon.rst
-@@ -81,7 +81,7 @@ C. Boot options
- 1. fbcon=font:<name>
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 6815bfb7f5724..e33bf1c386926 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1006,6 +1006,10 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 		return 0;
+ 	}
  
- 	Select the initial font to use. The value 'name' can be any of the
--	compiled-in fonts: 10x18, 6x10, 7x14, Acorn8x8, MINI4x6,
-+	compiled-in fonts: 10x18, 6x10, 6x8, 7x14, Acorn8x8, MINI4x6,
- 	PEARL8x8, ProFont6x11, SUN12x22, SUN8x16, TER16x32, VGA8x16, VGA8x8.
++	/* bitfill_aligned() assumes that it's at least 8x8 */
++	if (var->xres < 8 || var->yres < 8)
++		return -EINVAL;
++
+ 	ret = info->fbops->fb_check_var(var, info);
  
- 	Note, not all drivers can handle font with widths not divisible by 8,
+ 	if (ret)
 -- 
 2.25.1
 
