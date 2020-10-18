@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CC1291DC9
-	for <lists+linux-fbdev@lfdr.de>; Sun, 18 Oct 2020 21:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C54291D08
+	for <lists+linux-fbdev@lfdr.de>; Sun, 18 Oct 2020 21:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729752AbgJRTsC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 18 Oct 2020 15:48:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34700 "EHLO mail.kernel.org"
+        id S1731043AbgJRTm3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 18 Oct 2020 15:42:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729699AbgJRTWG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:22:06 -0400
+        id S1730511AbgJRTXy (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:23:54 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9A7FD22365;
-        Sun, 18 Oct 2020 19:22:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BDE44222E9;
+        Sun, 18 Oct 2020 19:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603048925;
-        bh=gso6STyjOqktB9BpQ65BQqrnebgWWcHpYowKIcR6/BY=;
+        s=default; t=1603049033;
+        bh=MoBhK/7Ht9x5KVldjiEmNJ4N0GxtlmSpLJsWAMgpVXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SQsvClmAG9IM2dxPrkbAd0mxLCp/QU/ybLh+FEIpAT0+qGt0XOkT1Pl3pTgoCFlPc
-         SJpcCKyvMF/2mUp3DsW+gF/7GUAbEMBor4IwSCAxcf8lyu4s7LoLSALZHZ4UHD6i9K
-         NBGYp7F9XzYYRyMSJh1alqqGqY0eotEEQbtrE0dY=
+        b=IXwxhRpkE8P8OnnZ1q3yvfnD4C2O8bIuvrpdkJdN2g2TkSwTW+MBy2nZv9pH/KBXq
+         IvaJR6LrX7VZiM14A9hqclsU1kRlkEIj41wAhJFq1nyjDJdmRNFeY+rk4GA4/GJJI/
+         +i1dYZltAnaLSMp70CH+VE8f2327RZG7t+k90egg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     George Kennedy <george.kennedy@oracle.com>,
@@ -31,12 +31,12 @@ Cc:     George Kennedy <george.kennedy@oracle.com>,
         Dhaval Giani <dhaval.giani@oracle.com>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 082/101] fbmem: add margin check to fb_check_caps()
-Date:   Sun, 18 Oct 2020 15:20:07 -0400
-Message-Id: <20201018192026.4053674-82-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 65/80] fbmem: add margin check to fb_check_caps()
+Date:   Sun, 18 Oct 2020 15:22:16 -0400
+Message-Id: <20201018192231.4054535-65-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201018192026.4053674-1-sashal@kernel.org>
-References: <20201018192026.4053674-1-sashal@kernel.org>
+In-Reply-To: <20201018192231.4054535-1-sashal@kernel.org>
+References: <20201018192231.4054535-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -70,10 +70,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index da7c88ffaa6a8..1136b569ccb7c 100644
+index 97abcd497c7e0..bf76dadbed87f 100644
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1006,6 +1006,10 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+@@ -1001,6 +1001,10 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
  		return 0;
  	}
  
