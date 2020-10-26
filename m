@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15F8B299E57
-	for <lists+linux-fbdev@lfdr.de>; Tue, 27 Oct 2020 01:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F6E29A0C6
+	for <lists+linux-fbdev@lfdr.de>; Tue, 27 Oct 2020 01:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439558AbgJ0AOJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 26 Oct 2020 20:14:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33198 "EHLO mail.kernel.org"
+        id S2408958AbgJZXt6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 26 Oct 2020 19:49:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48238 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2411621AbgJ0ALc (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 26 Oct 2020 20:11:32 -0400
+        id S2408796AbgJZXts (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:49:48 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C30E7216FD;
-        Tue, 27 Oct 2020 00:11:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 87AC9222D9;
+        Mon, 26 Oct 2020 23:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603757491;
-        bh=SxMbSgR8oVo7ZAAJ9C1b775WC8FXTUk+UVCr21uKT50=;
+        s=default; t=1603756188;
+        bh=W2bEeiQAfoQioyqsnBUOJWlPraJVYRnpniBcf1u+A3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=we/zrHMaAC47jKjPckTuej3Kz4ZZXPtau9Q7f40Ymzxpk+XEM6s9w7BA8PSyTnQmr
-         NzKQ7kaWtTbypvWf9BrWjBbKZRbcbBfPMwBvJ+8KjFers5expy7BKm54UDue4Bcxjs
-         rp8D9gyg4FKK4SsClBBlRfROeflr34I38ihqum3U=
+        b=XVxJQetIutCf6pWSF4NWuYMWmcHldexAM1Q0djcfge4o1TRc9LaMhg9g2kQgGjEBZ
+         K2/Mjt6MGpCAdiohMYKePXUtNxL/xum794pfFH7Etjnc4GMXWE6sYg2MapDDcrlnYc
+         FdXthSkmLZE/JU5R9q8tl54HFeTo7l49ARaVmOsc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tom Rix <trix@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
@@ -30,12 +30,12 @@ Cc:     Tom Rix <trix@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.4 06/25] video: fbdev: pvr2fb: initialize variables
-Date:   Mon, 26 Oct 2020 20:11:04 -0400
-Message-Id: <20201027001123.1027642-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.9 034/147] video: fbdev: pvr2fb: initialize variables
+Date:   Mon, 26 Oct 2020 19:47:12 -0400
+Message-Id: <20201026234905.1022767-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201027001123.1027642-1-sashal@kernel.org>
-References: <20201027001123.1027642-1-sashal@kernel.org>
+In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
+References: <20201026234905.1022767-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
-index 750a384bf1915..1a015a6b682e7 100644
+index 2d9f69b93392a..f4add36cb5f4d 100644
 --- a/drivers/video/fbdev/pvr2fb.c
 +++ b/drivers/video/fbdev/pvr2fb.c
-@@ -1029,6 +1029,8 @@ static int __init pvr2fb_setup(char *options)
+@@ -1028,6 +1028,8 @@ static int __init pvr2fb_setup(char *options)
  	if (!options || !*options)
  		return 0;
  
