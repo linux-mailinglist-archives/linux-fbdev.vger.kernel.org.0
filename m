@@ -2,91 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C476029DB31
-	for <lists+linux-fbdev@lfdr.de>; Thu, 29 Oct 2020 00:44:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7053E29DAFE
+	for <lists+linux-fbdev@lfdr.de>; Thu, 29 Oct 2020 00:42:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387927AbgJ1XoH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 28 Oct 2020 19:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39730 "EHLO
+        id S1726443AbgJ1XmV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 28 Oct 2020 19:42:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388023AbgJ1XoH (ORCPT
+        with ESMTP id S1726033AbgJ1XmD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 28 Oct 2020 19:44:07 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6220CC0613CF;
-        Wed, 28 Oct 2020 16:44:07 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id o3so808217pgr.11;
-        Wed, 28 Oct 2020 16:44:07 -0700 (PDT)
+        Wed, 28 Oct 2020 19:42:03 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8000CC0613CF
+        for <linux-fbdev@vger.kernel.org>; Wed, 28 Oct 2020 16:42:03 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id v6so946749lfa.13
+        for <linux-fbdev@vger.kernel.org>; Wed, 28 Oct 2020 16:42:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Jfk3J2HWTP8PctuzhKYdTIaLNJsr6tS1vv/WAefJOL0=;
-        b=MY7NJazs/V1vUwMi4z64c6d2TDVii3D2bzDs+hYBOL3KCq+kyeids1ajNncKl+6S4U
-         SUpT3/5hpVoT6fVwbwdNMsXA67mDufbWhNjqKj2UJ7pxXVp2jQBLY9uvFaQ+8PalmjKD
-         RDNsTp/LvRReFmAdZT64QpwonfJm8PKXyflUxC2nuwlrUcMPWDHJ+OEOe4Lf/Jcuz1Zd
-         2NyLCT2ef+4C2hcHL1iJw+IeJ874gHWVmKPpS1ffWMVq+F9r2C9NTTMOCNMeQJgTahE8
-         LINwUu5dTDzMSdMC/UaN8kSzEuv/w5BBA9nEmfcFXdiRgseBVErEk9DUyp9wz4AoJLPf
-         sbsw==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MqJgj12KEJs6fU7vsaZp1Zad0GwpjvOq3iDuYwNSKEM=;
+        b=HbMnmzUIdW65cArOXl4cxhjxhl24W4BkuF46r+l9KuAA489q1/INMfhCTAZa/qP9tr
+         Qf3JV0B6pUcyx3bmwSbfeOu7c2cPnvNE1GQQPQwdSS6LFqUq1In36GW+vrCrB7ELPscs
+         klqGfM+scER373h2wgZbQQOdGQdWIM9OCaK44=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Jfk3J2HWTP8PctuzhKYdTIaLNJsr6tS1vv/WAefJOL0=;
-        b=CWqllSM5wfLx+dnIO/Symn03hl+VWOvBdqgo+31k/tjA5ggmijeSMudSQfHvkutoFJ
-         H8D5d1e6wjGOA9ehCVyJG/rj9YSCP2a9BSoV84wL+l1PpAxQrOi67jyECLuY5+r9RzXw
-         iGD1ZWbgoGnESxtoLH/4K4ZiQYq/GZxIimpEVLMhBCG4bP52f+pummJf15Nmgxlt3Sd4
-         ecHtlLw2LCvUKaJCuOFg6K33NfQ92iwjzXZ2xoMTFGygu728zA+lYFyjSE50ZUPy0ayE
-         cnViHn2op6ZsNSvi/3YsXSEZHTHJk1CaaGLDa1WB94ROpSk6raO8fGm5rQ0LQza5j4EY
-         Yh8w==
-X-Gm-Message-State: AOAM530noToKHDc7J7wf9ek1gUkWN7jUoF1ptqnjfsIbNkxXEBq6YJhz
-        8vWjPcDscrkODyu8NPYuCk2XG88R295B
-X-Google-Smtp-Source: ABdhPJzl3xHaVJZAUQPn41OZaKgSP6iI7ParKyNDpI0aA7iG1PjFKK7B+EOvYd02InEBSYnve9JMkQ==
-X-Received: by 2002:a17:902:b113:b029:d3:c5c2:e667 with SMTP id q19-20020a170902b113b02900d3c5c2e667mr5709126plr.35.1603865470392;
-        Tue, 27 Oct 2020 23:11:10 -0700 (PDT)
-Received: from PWN (n11212042025.netvigator.com. [112.120.42.25])
-        by smtp.gmail.com with ESMTPSA id t10sm3819423pjr.37.2020.10.27.23.11.07
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=MqJgj12KEJs6fU7vsaZp1Zad0GwpjvOq3iDuYwNSKEM=;
+        b=e+mx8hwb1msKEcQ+ez18P7Itb8VaOdm9w1yxOhCTMRI6vm9qtDbafCZdJ6S9SdZUew
+         LeLZIcIQ9n9OJ/SLbVU092/9wzg9hsWzcuNUwWJd1upzUm3MxqtiZn43WgUHXEDyQlR6
+         z8ZzSK68dTzUjqrY9sz5JsyJBrpPda+yll2UX6tpDmA/Dxfcgzs2WMFgRTigmyR/m/f8
+         0N/ogsiAvyIEu9cfZMahvaE5ksczEKOEiABmy0Y2dK8F/B3PDO+1b8ZVSUFNKBOCjCFN
+         HWvMJsu+MGAy8/qBQUu1G9L68/D6JLszKfGI9lqa6/NI86dZE3RxQoXhARVjWQ+EC14I
+         FbBw==
+X-Gm-Message-State: AOAM533QlshPrI/iMxssYnWnjZiM/VZYB42e0lJhKWIAboxyuC3s46XA
+        2EfnW20mBgzeBmOoPdZWfdWo35NeG+ZAK/vK
+X-Google-Smtp-Source: ABdhPJwbS8Eg9TtDj0k/jB3qA+LrlhDy+5dZr0SvO23CrdBwVE/Fau9mDKVPDFQwkwvE41EP0TOEUQ==
+X-Received: by 2002:adf:fe48:: with SMTP id m8mr7296470wrs.127.1603873127564;
+        Wed, 28 Oct 2020 01:18:47 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id j17sm5657301wrw.68.2020.10.28.01.18.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 23:11:09 -0700 (PDT)
-Date:   Wed, 28 Oct 2020 02:11:03 -0400
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wed, 28 Oct 2020 01:18:46 -0700 (PDT)
+Date:   Wed, 28 Oct 2020 09:18:44 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Peilin Ye <yepeilin.cs@gmail.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jiri Slaby <jirislaby@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sven Schneider <s.schneider@arkona-technologies.de>,
+        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] Fonts: Make font size unsigned in font_desc
+Message-ID: <20201028081844.GS401619@phenom.ffwll.local>
+Mail-Followup-To: Peilin Ye <yepeilin.cs@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jiri Slaby <jirislaby@kernel.org>, linux-parisc@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/5] Fonts: Add charcount field to font_desc
-Message-ID: <20201028061103.GA1206440@PWN>
 References: <cover.1603788511.git.yepeilin.cs@gmail.com>
  <cb5bb49a33ff54fef41e719ee9d301a6a73c5f9c.1603788512.git.yepeilin.cs@gmail.com>
  <54f7d42e07eca2a2f13669575a9de88023ebc1ac.1603788512.git.yepeilin.cs@gmail.com>
- <6c28279a10dbe7a7e5ac3e3a8dd7c67f8d63a9f2.1603788512.git.yepeilin.cs@gmail.com>
- <20201027185935.GN401619@phenom.ffwll.local>
+ <20201027185058.GM401619@phenom.ffwll.local>
+ <20201028054307.GA1205568@PWN>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201027185935.GN401619@phenom.ffwll.local>
+In-Reply-To: <20201028054307.GA1205568@PWN>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Oct 27, 2020 at 07:59:35PM +0100, Daniel Vetter wrote:
-> On Tue, Oct 27, 2020 at 12:34:26PM -0400, Peilin Ye wrote:
-> > Subsystems are assuming the number of characters of our built-in fonts.
-> > Include that information in our kernel font descriptor, `struct
-> > font_desc`.
+On Wed, Oct 28, 2020 at 01:43:07AM -0400, Peilin Ye wrote:
+> On Tue, Oct 27, 2020 at 07:50:58PM +0100, Daniel Vetter wrote:
+> > On Tue, Oct 27, 2020 at 12:33:05PM -0400, Peilin Ye wrote:
+> > > It is improper to define `width` and `height` as signed in `struct
+> > > font_desc`. Make them unsigned. Also, change the corresponding printk()
+> > > format identifiers from `%d` to `%u`, in sti_select_fbfont().
+> > > 
+> > > Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
 > > 
-> > Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+> > I'm not entirely sure of the motivation here ... height/width should never
+> > ever be even close to the limit here. Or have you seen integer math that
+> > could potentially go wrong if we go with unsigned instead of int?
 > 
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Oh... No, I have not. I just thought we shouldn't represent a length
+> using a signed value. Also, width and height in console_font are
+> unsigned int - that shouldn't matter that much though.
+
+Oh this is actually a good reason, since that's the uapi structure. And so
+using the exact same signedness should help a bit with accidental casting
+bugs.
+
+If you mention this in the commit message I think this is good to go.
+-Daniel
+
 > 
-> atm can't merge this because we need a backmerge of maybe -rc2 into
-> drm-misc-next first. Please remind me if this doesn't land next week.
+> [3/5] doesn't hunk properly without this patch, I'll send a v2 for [3/5]
+> soon.
+> 
+> Peilin
+> 
 
-Sure, thanks for reviewing these!
-
-Peilin
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
