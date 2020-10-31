@@ -2,87 +2,170 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF512A1300
-	for <lists+linux-fbdev@lfdr.de>; Sat, 31 Oct 2020 03:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76EB12A13F4
+	for <lists+linux-fbdev@lfdr.de>; Sat, 31 Oct 2020 08:27:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbgJaCjK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 30 Oct 2020 22:39:10 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:35286 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725536AbgJaCjI (ORCPT
+        id S1726073AbgJaH1D (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 31 Oct 2020 03:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50752 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725800AbgJaH1D (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 30 Oct 2020 22:39:08 -0400
-X-Greylist: delayed 66465 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 22:38:58 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=nK3IDYT+DT+afspoRk1vnh030x
-        JBANriWCpwGFqkJTHXsxgXz4zPu7XOm+ROYW+1LhSp6Xws1Wm9Gxv0Soi++3fpbt9358vEM1Vilpv
-        5xlCNIs/Y8Yak5vs3SvhE9OTE/TC6Vf04ze0iphAaRgUliWRhAsWS8s68bwFyUv4tdChHxOH/JwR2
-        Vv+jWIv637j1UH3aZ6QLvXZrjdEmRucUTVxZtH4VnCDjrc4XZi9EwE5rzVsYDmyiNG+eYB+1QY+/8
-        bPWWeacOm9DyYRD9g3bLyiVv0uincEH4/sdJ6fuUSabQfGsi095GX6rsmNCONVo4/rhE4INecsjOZ
-        9QdrBN4A==;
-Received: from [::1] (port=55352 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPRU-0006Ky-OT; Fri, 30 Oct 2020 16:07:24 +0800
+        Sat, 31 Oct 2020 03:27:03 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85141C0613D5;
+        Sat, 31 Oct 2020 00:27:03 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id gi3so519060pjb.3;
+        Sat, 31 Oct 2020 00:27:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iuNBtGDh3GuSA2eKznKy/F5TkdS26fRroHOEG3pO17c=;
+        b=SrX3hCDZ7xS4x9fg991BD6OjiIncp3p82vByYKuRBgT7s5flaA6HxV+Yco2lJP7h0x
+         6fFtzs4G22KyoEnjI37FAZP8KzfLPKJiMTbCDnfCmk17M9TWjbRJ6h3wBedLqhB8pjb4
+         /uJXGDW4Uxae41ztHOcM4h1YY8tefGlGItVDnfABg/QgjYUd9FUva8kGwRbhgyrxYo6H
+         CImYd62zdikkr8M8FttgEvV6L3ohv6rMjNfvZfu3hX3Tj6DCXcntC/tVMJ66PiCx/97W
+         iDrNWt9RmjG+ePFSJsjvrOhfD3jDIsZO5co59yypK9r+2FoMsvfs+uH3NpCDg5IQwatE
+         RUDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iuNBtGDh3GuSA2eKznKy/F5TkdS26fRroHOEG3pO17c=;
+        b=HBDBznv+pZFDPiKBuN6U4vYqTxaVrzEkI6kQdx7vZsL52OlB5P2KRTaPF+gC0Z8N6G
+         PKoVseskA1OSb/Sc6fOeE34BW0jRxBYAdMhuntN0JUwz+j9VvrayLrLJhvBAT+rvuP8H
+         +Dv8bV55XOC4nyrgbgI1c5xuwEnzgQI8MfDfQNlUWpP3j1faHCIrmew9Fao3KUbbRlbR
+         rjt7ku0zyOttaI2/UTXyLc/9qxqRBySB9S47i3CmU8udl03kJZnrxuM8fO7q5e0H3czR
+         0Kk4jhxPWknr0ms3wxKPhjsUAbntSIgK3uo/7A4NTatgwMCP3RJx/qQNufFMFydIDZgi
+         Si/g==
+X-Gm-Message-State: AOAM532u4BtGmjRe7tEPvk2kzBPPqozfrZdNb3EHHgAMVRN+VXow0GgY
+        ZKwLFkyb236HjhVM0MBBnw==
+X-Google-Smtp-Source: ABdhPJyqBDEZ+Cnvw1QGEXJk9kInS+eaEDpbOK8w0OyGN/ZJAG4L+UEsgPxEBNlZPDkCjgsrVkcsVQ==
+X-Received: by 2002:a17:902:b7c4:b029:d6:855a:df2c with SMTP id v4-20020a170902b7c4b02900d6855adf2cmr12579781plz.26.1604129222649;
+        Sat, 31 Oct 2020 00:27:02 -0700 (PDT)
+Received: from localhost.localdomain (59-125-13-244.HINET-IP.hinet.net. [59.125.13.244])
+        by smtp.gmail.com with ESMTPSA id x10sm7460005pfc.88.2020.10.31.00.26.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2020 00:27:01 -0700 (PDT)
+From:   Peilin Ye <yepeilin.cs@gmail.com>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Thomas Winischhofer <thomas@winischhofer.net>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        George Kennedy <george.kennedy@oracle.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Peter Rosin <peda@axentia.se>, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, Peilin Ye <yepeilin.cs@gmail.com>
+Subject: [PATCH 1/2] console: Remove dummy con_font_op() callback implementations
+Date:   Sat, 31 Oct 2020 03:24:41 -0400
+Message-Id: <c5563eeea36aae7bd72ea2e985bc610d585ece40.1604128639.git.yepeilin.cs@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:07:24 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <8970d4ac30f8022b0ae628d9b69a2d43@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+`struct console_font` is a UAPI structure, thus ideally should not be
+used for kernel internal abstraction. Remove some dummy .con_font_set,
+.con_font_default and .con_font_copy `struct consw` callback
+implementations, to make it cleaner.
 
+Patch "fbcon: Prevent global-out-of-bounds read in fbcon_copy_font()"
+depends on this patch, so Cc: stable.
 
+Cc: stable@vger.kernel.org
+Suggested-by: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+---
+Context: https://lore.kernel.org/lkml/CAKMK7uFY2zv0adjKJ_ORVFT7Zzwn075MaU0rEU7_FuqENLR=UA@mail.gmail.com/
+
+ drivers/usb/misc/sisusbvga/sisusb_con.c | 21 ---------------------
+ drivers/video/console/dummycon.c        | 20 --------------------
+ 2 files changed, 41 deletions(-)
+
+diff --git a/drivers/usb/misc/sisusbvga/sisusb_con.c b/drivers/usb/misc/sisusbvga/sisusb_con.c
+index c63e545fb105..dfa0d5ce6012 100644
+--- a/drivers/usb/misc/sisusbvga/sisusb_con.c
++++ b/drivers/usb/misc/sisusbvga/sisusb_con.c
+@@ -1345,24 +1345,6 @@ static int sisusbdummycon_blank(struct vc_data *vc, int blank, int mode_switch)
+ 	return 0;
+ }
+ 
+-static int sisusbdummycon_font_set(struct vc_data *vc,
+-				   struct console_font *font,
+-				   unsigned int flags)
+-{
+-	return 0;
+-}
+-
+-static int sisusbdummycon_font_default(struct vc_data *vc,
+-				       struct console_font *font, char *name)
+-{
+-	return 0;
+-}
+-
+-static int sisusbdummycon_font_copy(struct vc_data *vc, int con)
+-{
+-	return 0;
+-}
+-
+ static const struct consw sisusb_dummy_con = {
+ 	.owner =		THIS_MODULE,
+ 	.con_startup =		sisusbdummycon_startup,
+@@ -1375,9 +1357,6 @@ static const struct consw sisusb_dummy_con = {
+ 	.con_scroll =		sisusbdummycon_scroll,
+ 	.con_switch =		sisusbdummycon_switch,
+ 	.con_blank =		sisusbdummycon_blank,
+-	.con_font_set =		sisusbdummycon_font_set,
+-	.con_font_default =	sisusbdummycon_font_default,
+-	.con_font_copy =	sisusbdummycon_font_copy,
+ };
+ 
+ int
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index 2a0d0bda7faa..f1711b2f9ff0 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -124,23 +124,6 @@ static int dummycon_switch(struct vc_data *vc)
+ 	return 0;
+ }
+ 
+-static int dummycon_font_set(struct vc_data *vc, struct console_font *font,
+-			     unsigned int flags)
+-{
+-	return 0;
+-}
+-
+-static int dummycon_font_default(struct vc_data *vc,
+-				 struct console_font *font, char *name)
+-{
+-	return 0;
+-}
+-
+-static int dummycon_font_copy(struct vc_data *vc, int con)
+-{
+-	return 0;
+-}
+-
+ /*
+  *  The console `switch' structure for the dummy console
+  *
+@@ -159,8 +142,5 @@ const struct consw dummy_con = {
+ 	.con_scroll =	dummycon_scroll,
+ 	.con_switch =	dummycon_switch,
+ 	.con_blank =	dummycon_blank,
+-	.con_font_set =	dummycon_font_set,
+-	.con_font_default =	dummycon_font_default,
+-	.con_font_copy =	dummycon_font_copy,
+ };
+ EXPORT_SYMBOL_GPL(dummy_con);
 -- 
-Sir/Madam,
+2.25.1
 
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
-
-Regards,
-John Galvan
-
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
