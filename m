@@ -2,53 +2,135 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B01E72AFEAE
-	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Nov 2020 06:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EADA02B04A7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Nov 2020 13:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729604AbgKLFjW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 12 Nov 2020 00:39:22 -0500
-Received: from mail-proxy102.phy.heteml.jp ([157.7.189.102]:60950 "EHLO
-        mail-proxy102.phy.heteml.jp" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728130AbgKLDcF (ORCPT
+        id S1728176AbgKLMDC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 12 Nov 2020 07:03:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36422 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727920AbgKLMDB (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 Nov 2020 22:32:05 -0500
-X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Nov 2020 22:32:03 EST
-Received: from mail-proxy102.phy.heteml.jp (localhost [127.0.0.1])
-        by mail-proxy102.phy.heteml.jp (Postfix) with ESMTP id E68169C10B9;
-        Thu, 12 Nov 2020 12:25:19 +0900 (JST)
-Received: from 127.0.0.1 (127.0.0.1)
- by mail-proxy102.phy.heteml.jp (HETEML-Fsecure);
- Thu, 12 Nov 2020 12:25:19 +0900 (JST)
-X-Virus-Status: clean(HETEML-Fsecure)
-Received: from User (unknown [52.231.203.57])
-        (Authenticated sender: form@healingart-n.jp)
-        by mail-proxy102.phy.heteml.jp (Postfix) with ESMTPA;
-        Thu, 12 Nov 2020 12:25:19 +0900 (JST)
-Reply-To: <reemhashimymail@gmail.com>
-From:   "Reem" <form@healingart-n.jp>
-Subject: Hello Friend  12/11/2020
-Date:   Thu, 12 Nov 2020 03:25:21 -0000
+        Thu, 12 Nov 2020 07:03:01 -0500
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE63C0613D1;
+        Thu, 12 Nov 2020 04:03:00 -0800 (PST)
+Received: by mail-pg1-x543.google.com with SMTP id e21so3977710pgr.11;
+        Thu, 12 Nov 2020 04:03:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/43Y/3X/hoeBtmO8tqJUraisqf0fxkJhB8uqeEFrzsw=;
+        b=hwyvUEoF0ZgAg8kegnX9ZqNSfajqoiDUgKk2VSuxnB6ZIVrBYmn3hHEyewkqOvK/7h
+         3jNlfSMC4E+cc5ItSQefgb3IhXrpUcAVFR1xsBngAkt1BfO1bY3eF3Tjmv/La4PvF//h
+         WNj+GXkq1Hc+Zmc1if00t22HFKQg/nNuAha8Sk2F5v86mE/XxaCwaezwEft6YbONmZQi
+         T4DLj78b3cIV9xNiYpOTi8Hi3jsWAdz7vV2VVnENzNO6tq465Tl1NIoUMemqGKo9h43f
+         EShLKeu1p0tLur6Gijq9ygdhyCQ48uYH+/UMXwJNI8cBjAlcZEsI95DELrp6maT5ToiT
+         Akeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/43Y/3X/hoeBtmO8tqJUraisqf0fxkJhB8uqeEFrzsw=;
+        b=lW1B/cuxhmsQ8XAwSNxPoHGH7ZGC1gf06QYEyPoSsqWYW4kKHhyoqzMP7y3P5Z/hox
+         QMYpSis37IUPjlbirXkk36fDSgRniTGmIZqTGWg/y5Yi3OC/Rz8giW5aOHpxlaaRNmSL
+         IhDV9QIcGJKl+KoEb545WZoZig6A7B7tU9w6sAKZVzgkw7eG5t0GziyBHzLjlfqL5yTg
+         3zNKghBipQx9CbbRFsVc0kb7wZK8bgh6c0OVJLH5zNe0z6bw2621kT5bZ9axiaLI7agR
+         LF6IidG15hdKAWCGHiBW5ICDzy9lFY+ElMo4aunYAISS9FuK/1Geb0mSUcm0/aQ0Nl6Z
+         33dw==
+X-Gm-Message-State: AOAM5300urU85JYUvg2OCMjWLDmscvvvxjzQjsFGEO0iQOn8SdpJpL9E
+        agEhJJmaiB1IMBFos4zjPw==
+X-Google-Smtp-Source: ABdhPJxaZyjPL9SkN0EysVCsBndTodxnZWlLB+Bj+yVl/0dZWbi6ZKNItjLgJglmEO95sB65ql1bUg==
+X-Received: by 2002:a63:c34d:: with SMTP id e13mr21802306pgd.22.1605182579963;
+        Thu, 12 Nov 2020 04:02:59 -0800 (PST)
+Received: from localhost.localdomain ([221.124.243.27])
+        by smtp.gmail.com with ESMTPSA id t8sm3729264pje.23.2020.11.12.04.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2020 04:02:59 -0800 (PST)
+From:   Peilin Ye <yepeilin.cs@gmail.com>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, Peilin Ye <yepeilin.cs@gmail.com>
+Subject: [PATCH v3 0/5] console: Miscellaneous clean-ups, do not use FNTCHARCNT() in fbcon.c
+Date:   Thu, 12 Nov 2020 07:02:21 -0500
+Message-Id: <cover.1605169912.git.yepeilin.cs@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20201112032519.E68169C10B9@mail-proxy102.phy.heteml.jp>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-My name is Reem Hashimy, the Emirates Minister of State and Managing Director of the United Arab Emirates (Dubai) World Expo 2020 Committee which has been postponed to October 2021 to March 2022 because of the Covid-19 pandemic.
- 
-I am writing to you to manage the funds I received as financial gratification from various foreign companies I assisted to receive a participation approval to the coming event. The amount is $44,762,906.00 United States dollars. But I can not personally manage the fund in my country because of the sensitive nature of my office and the certain restriction on married Muslim women.
+Hi all,
 
-For this reason, an agreement was reached with a consulting firm to direct the various financial gifts into an open beneficiary account in my name with a bank where it will be possible for me to instruct the transfer of ownership right to a third party for investment purpose; which is the reason I am contacting you to receive the fund and manage it as my investment partner. Note that the fund is NOT connected to any criminal or terrorist activity.
- 
-On your indication of interest with your information to include your name, your phone number and contact mailing address; I will instruct the consulting firm to process the fund from the bank to your country for investment purposes.
+This is a collection of some miscellaneous clean-ups for fbcon and some
+console drivers. Since v2, I rebased them on linux-next, added some
+Reviewed-by: tags from Daniel and Greg, and rewrote the commit messages as
+suggested by Jiri. See [1] for v2 links.
 
-Regards.
-Reem Hashimy.
+It does the following:
+
+  - Garbage collect KD_FONT_OP_COPY callbacks since we disabled it
+    recently. Mark it as obsolete.
+  - Delete dummy con_font_op() callbacks. (Reviewed by Greg)
+
+  - Add a charcount field to our new font descriptor, `struct font_desc`.
+    (Reviewed by Daniel)
+  - Do not use a hard-coded 256 for built-in font charcount in
+    console/sticore.c, use the new charcount field of `struct font_desc`
+    instead. (Reviewed by Daniel)
+  - Similarly, in fbcon.c, avoid using the magic negative-indexing macro,
+    FNTCHARCNT(). Set `vc->vc_font.charcount` properly and always use that
+    instead.
+
+Daniel, hopefully [5/5] removes FNTCHARCNT() for ever, but I have not
+tested it sufficiently yet. I remember you mentioned elsewhere that
+"fbtest.c" is insufficient for framebuffer testing, then how should we
+test it? The first 4 patches should be fine.
+
+Please reference commit messages for more information. Thank you!
+
+[1] v2 links:
+
+2/5: https://lore.kernel.org/lkml/c5563eeea36aae7bd72ea2e985bc610d585ece40.1604306433.git.yepeilin.cs@gmail.com/
+3/5: https://lore.kernel.org/lkml/20201028060533.1206307-1-yepeilin.cs@gmail.com/
+4/5: https://lore.kernel.org/lkml/c38042bbf5c9777c84900d56c09f3c156b32af48.1603788512.git.yepeilin.cs@gmail.com/
+5/5: https://lore.kernel.org/lkml/20201028155139.1220549-1-yepeilin.cs@gmail.com/
+
+Peilin Ye (5):
+  console: Delete unused con_font_copy() callback implementations
+  console: Delete dummy con_font_set() and con_font_default() callback implementations
+  Fonts: Add charcount field to font_desc
+  parisc/sticore: Avoid hard-coding built-in font charcount
+  fbcon: Avoid using FNTCHARCNT() and hard-coded built-in font charcount
+
+ drivers/usb/misc/sisusbvga/sisusb_con.c | 21 --------
+ drivers/video/console/dummycon.c        | 20 --------
+ drivers/video/console/sticore.c         |  8 +--
+ drivers/video/fbdev/core/fbcon.c        | 68 ++++++++-----------------
+ drivers/video/fbdev/core/fbcon_rotate.c |  3 +-
+ drivers/video/fbdev/core/tileblit.c     |  4 +-
+ include/linux/console.h                 |  1 -
+ include/linux/font.h                    |  1 +
+ include/uapi/linux/kd.h                 |  2 +-
+ lib/fonts/font_10x18.c                  |  1 +
+ lib/fonts/font_6x10.c                   |  1 +
+ lib/fonts/font_6x11.c                   |  1 +
+ lib/fonts/font_6x8.c                    |  1 +
+ lib/fonts/font_7x14.c                   |  1 +
+ lib/fonts/font_8x16.c                   |  1 +
+ lib/fonts/font_8x8.c                    |  1 +
+ lib/fonts/font_acorn_8x8.c              |  1 +
+ lib/fonts/font_mini_4x6.c               |  1 +
+ lib/fonts/font_pearl_8x8.c              |  1 +
+ lib/fonts/font_sun12x22.c               |  1 +
+ lib/fonts/font_sun8x16.c                |  1 +
+ lib/fonts/font_ter16x32.c               |  1 +
+ 22 files changed, 42 insertions(+), 99 deletions(-)
+
+-- 
+2.25.1
+
