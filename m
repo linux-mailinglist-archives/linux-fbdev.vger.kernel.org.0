@@ -2,102 +2,56 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6FB02B8D89
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Nov 2020 09:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDDA2B8FAF
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Nov 2020 11:00:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726755AbgKSIdK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 19 Nov 2020 03:33:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726096AbgKSIdJ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 19 Nov 2020 03:33:09 -0500
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752A8C0613CF;
-        Thu, 19 Nov 2020 00:33:08 -0800 (PST)
-Received: by mail-pg1-x541.google.com with SMTP id i13so3566460pgm.9;
-        Thu, 19 Nov 2020 00:33:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=AWtaE3tXlX6KkF6SbACxjxmzIgZO2jw7wJIis4kxiFE=;
-        b=erzuebpFnP6Gt2cVg+ear4rCVwZ7bV1TMmBphb8RKyD3jrIiAaNEYF/RsgesHqObP0
-         He6fyxoxyGGmeUZVMu55DzEB7jcra6cRQnvkfN30U6IDH2AVMoZ3r4zz+yw4phczW/Jg
-         5DjouAw+3mtdOjcmUn00gTai5TFmLOOALsNQjAMBdj0hv+RDsdHAH6LIu1vdCvwZuRvk
-         ABxoG8DSqgG6cKZwCREawmItYpU4ofbFmo8XNIFaxMPJZ2Bz3RTZj4T3PbEz2A4i54tL
-         vDc5j2p+cebrIwdKl0TAv9l5C1jvtPY8WU0arSK9KRm8+cU0n/85YEKbOOyC1USDLDGC
-         ff+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AWtaE3tXlX6KkF6SbACxjxmzIgZO2jw7wJIis4kxiFE=;
-        b=UTru85PJ+51NhWm+g+7vyk5yu7eP+C22Y/WKbxYhFSYvl2aJpVGXC61FryXM/byrP6
-         tqQBAwItWE+nbuoiW7yn92uxIMFm1jRsAM1Y+QMl5AYFY8huFsT6mB49gIe+U/EZGPAa
-         Doo1Ly1kH1zHVXMAp7/kXdKUGaqiXXhZQp4P2ECVxeh5OGloapHiXGRIV3H7KeUM7HGO
-         /Vf4Jp0+d7bBIgLez3AjND0ltD05dujlZdb/b3s53KcGb3ih2o83BA+4087JhGYUWoEU
-         NNgTd9BYrzzl/Y0Z4mXhegHpGfSuac+PgJvJH3TJ9doPJqRETOUP+ySUYWik1ml6bFlE
-         u/Xw==
-X-Gm-Message-State: AOAM533nYzIQIKsYDKDuLWDqrGZET8MwDJSrcKDmPILr9voEPOHQbOpM
-        XGF0RdpSTFlGOGJXu4Uj3zcoy8UyixunGPg=
-X-Google-Smtp-Source: ABdhPJw2SvWZ1XI9W5K8nt/BB7nN8YTnKz+xeBgYnSGTG7BKTqQH4kXyF10cnpjO+13wTWBoHwQsNw==
-X-Received: by 2002:a63:c745:: with SMTP id v5mr11584885pgg.389.1605774787959;
-        Thu, 19 Nov 2020 00:33:07 -0800 (PST)
-Received: from PWN (59-125-13-244.HINET-IP.hinet.net. [59.125.13.244])
-        by smtp.gmail.com with ESMTPSA id z5sm1626030pgi.27.2020.11.19.00.33.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 00:33:07 -0800 (PST)
-Date:   Thu, 19 Nov 2020 03:32:57 -0500
-From:   Peilin Ye <yepeilin.cs@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Vetter <daniel@ffwll.ch>
-Cc:     Jiri Slaby <jirislaby@kernel.org>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] console: Miscellaneous clean-ups, do not use
- FNTCHARCNT() in fbcon.c
-Message-ID: <20201119083257.GA9468@PWN>
-References: <cover.1605169912.git.yepeilin.cs@gmail.com>
- <20201113211633.GY401619@phenom.ffwll.local>
- <X68NFzaAuImemnqh@kroah.com>
- <20201114081021.GA11811@PWN>
- <X6/K/S9V7rj2hI5p@kroah.com>
- <X6/L/lE2pA7csBwd@kroah.com>
+        id S1725873AbgKSKAR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 19 Nov 2020 05:00:17 -0500
+Received: from tigeramira.ro ([88.158.78.30]:38974 "EHLO mail.tigeramira.ro"
+        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1725816AbgKSKAR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 19 Nov 2020 05:00:17 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 26FC1CA5B75
+        for <linux-fbdev@vger.kernel.org>; Mon, 16 Nov 2020 18:27:18 +0200 (EET)
+Received: from mail.tigeramira.ro ([127.0.0.1])
+        by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id CKj5qOxJRYeO for <linux-fbdev@vger.kernel.org>;
+        Mon, 16 Nov 2020 18:27:15 +0200 (EET)
+Received: from mail.tigeramira.ro (localhost [127.0.0.1])
+        by mail.tigeramira.ro (Postfix) with ESMTP id 574B1C2BB41
+        for <linux-fbdev@vger.kernel.org>; Sun, 15 Nov 2020 08:08:41 +0200 (EET)
+Received: from [156.96.44.214] (unknown [192.168.12.254])
+        by mail.tigeramira.ro (Postfix) with ESMTP id EA541998CC2
+        for <linux-fbdev@vger.kernel.org>; Fri, 13 Nov 2020 19:08:02 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <X6/L/lE2pA7csBwd@kroah.com>
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan::,
+To:     linux-fbdev@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Fri, 13 Nov 2020 08:08:12 -0800
+Reply-To: hmurrah39@gmail.com
+Message-Id: <20201113170803.EA541998CC2@mail.tigeramira.ro>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Nov 14, 2020 at 01:22:22PM +0100, Greg Kroah-Hartman wrote:
-> Ah, here's a hint:
-> 	https://wiki.archlinux.org/index.php/Linux_console#Fonts
-> 
-> The setfont tool should help you out here.
+Hello linux-fbdev@vger.kernel.org
 
-setfont seems to work fine, I tried Georgian-Fixed16 (256 chars) and
-Uni2-VGA16 (512 chars) under /usr/share/consolefonts/ in my Ubuntu box,
-including setting all consoles to the same font:
 
-for i in {1..6}; do
-        sudo setfont -C /dev/tty${i} /usr/share/consolefonts/Georgian-Fixed16.psf.gz
-done
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-Font rotation also seems to work fine:
 
-for i in {1..4}; do
-        echo $i | sudo tee /sys/class/graphics/fbcon/rotate
-        sleep 1
-done
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
-One last thing I can think of is tile blitting, but I don't have the
-hardware (e.g. a Matrox G400 card, see FB_TILEBLITTING in
-drivers/video/fbdev/Kconfig) at hand, nor did I figure out how to
-simulate it after searching for a while.  However based on the other
-tests above I believe vc->vc_font.charcount is set properly.
 
-Thanks,
-Peilin Ye
+Please get back to me if you are interested for more
 
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
