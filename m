@@ -2,69 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EC6D2BFBC7
-	for <lists+linux-fbdev@lfdr.de>; Sun, 22 Nov 2020 22:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4412BFBE8
+	for <lists+linux-fbdev@lfdr.de>; Sun, 22 Nov 2020 23:08:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725932AbgKVVyW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 22 Nov 2020 16:54:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34450 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgKVVyW (ORCPT
+        id S1726131AbgKVWFp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 22 Nov 2020 17:05:45 -0500
+Received: from asavdk4.altibox.net ([109.247.116.15]:51306 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725797AbgKVWFp (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 22 Nov 2020 16:54:22 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D965C0613CF;
-        Sun, 22 Nov 2020 13:54:22 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id lv15so14764183ejb.12;
-        Sun, 22 Nov 2020 13:54:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=VE9SyktpEDsxZKyhosHCOEROCS5N9bOvyvrjxk48ES9doSJ7BQQaHJQ9cYg9jsmz3K
-         qpj6VnAmpgJjNKWXG2w3HeddBATA0i379flZokEuw7ekAYAK7K4aycIQEJ4/CV66r2F9
-         ia9LJBemwpR2PjBHtEHLrB5Zm2yyuzaPX6+QLxSotiX6cJy5TjUsMKHgVvcs9OsmBLSF
-         g6jQ/1BYPHfRtJMNmVykcYm1tADJ7A5yQrvQ4Ym7sDXkiNyI6b7k+F9W9WlENQtbK/16
-         RgghyDvB/4bEl362cMF8x4q0CFn8Me495ukybbhez4P/V/0AxUckJF+GdpzjNgsiMP22
-         kICw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=holMzMixu6L4mPkY4KLX0AXrH3B7KLU6Q1+gVZ1hbDo=;
-        b=Q+d06UgE5Ugm21+kXxW2jMwtakv/Qq8VJG5k5fMZYSO1ni4/znRrgfeF3YIKGXmgWV
-         3LTmmkXMkmkP7HtWXP38+T4PWz89koEzB8WGmDO3jQ0MkSMRxlTQXWSKDqQVQ7ieynJl
-         sWId/n+FWWasj2gOx/wH2Xod3HC0MmzRn+PTAJGGSPUG3feyNPUP0a8e3M5d8RHt/jMI
-         79TLOi3WTsgkcTTCXwS5rycOmS1pOsXYOLYebdbAqIJ4/5UeKG+/r0EJ+p65hrw0Zy/v
-         oYAshbkYKyoeg7/EyRttJrEQczzrXRzKzivGw+goDwDES9I8/aQYwpy2v2d62y54NJio
-         urXg==
-X-Gm-Message-State: AOAM532+0lTajvkhb/1IzkjwnGkcJFPQiXaero7lN4vyzaG+lI5xB9I2
-        RTPYIMPaGcT52EY2B1D5Pt4YifGh7EA=
-X-Google-Smtp-Source: ABdhPJy7sQ2YBEMqAgg7yhrCbwdD1kN+avSXceXHu86Op69GkJDol8uTq55y0FusJ+SQw/hEkgfq0A==
-X-Received: by 2002:a17:907:2076:: with SMTP id qp22mr24510111ejb.436.1606082060633;
-        Sun, 22 Nov 2020 13:54:20 -0800 (PST)
-Received: from [192.168.43.48] ([197.210.35.67])
-        by smtp.gmail.com with ESMTPSA id i19sm3978482ejz.71.2020.11.22.13.54.15
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 22 Nov 2020 13:54:20 -0800 (PST)
-Message-ID: <5fbade0c.1c69fb81.9b3f2.1056@mx.google.com>
-Sender: Lena Torres <ad482289@gmail.com>
-From:   Adelina Zeuki <anglicaramose@gmail.com>
-X-Google-Original-From: "Adelina Zeuki" <  adelinazeuki@gmail.comm >
-Content-Type: text/plain; charset="iso-8859-1"
+        Sun, 22 Nov 2020 17:05:45 -0500
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id D662A80567;
+        Sun, 22 Nov 2020 23:05:41 +0100 (CET)
+Date:   Sun, 22 Nov 2020 23:05:40 +0100
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Andres Salomon <dilinger@queued.net>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-geode@lists.infradead.org,
+        linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 134/141] video: fbdev: lxfb_ops: Fix fall-through
+ warnings for Clang
+Message-ID: <20201122220540.GC566387@ravnborg.org>
+References: <cover.1605896059.git.gustavoars@kernel.org>
+ <9c1dcb12aae7c7ff0907ffb99ffd227656cbe444.1605896060.git.gustavoars@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Hello !!
-To:     Recipients <adelinazeuki@gmail.comm>
-Date:   Sun, 22 Nov 2020 21:54:08 +0000
-Reply-To: adelinazeuki@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c1dcb12aae7c7ff0907ffb99ffd227656cbe444.1605896060.git.gustavoars@kernel.org>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=VafZwmh9 c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=iH7RfIX4AAAA:20 a=VwQbUJbxAAAA:8
+        a=qwgYBgRIEWy96sd6CT4A:9 a=CjuIK1q_8ugA:10 a=VlZU0XKO32wA:10
+        a=AjGcO6oz07-iQ99wixmX:22
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi dear,
+Hi Gustavo,
+On Fri, Nov 20, 2020 at 12:40:32PM -0600, Gustavo A. R. Silva wrote:
+> In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
+> by explicitly adding a break statement instead of letting the code fall
+> through to the next case.
+> 
+> Link: https://github.com/KSPP/linux/issues/115
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Can i talk with you ?
+Thanks, applied this and the following patch to drm-misc-next.
+Looks forward to have this warning enabled.
+
+One can only wonder how many hours will be saved by lettting the
+compiler tell you a break is missing. This is the kind of bugs you can
+stare you blind at.
+
+	Sam
