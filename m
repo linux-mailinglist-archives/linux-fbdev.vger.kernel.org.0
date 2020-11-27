@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF1C2C6E79
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 03:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 086B82C6E76
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 03:31:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730624AbgK1C3Q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 27 Nov 2020 21:29:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56562 "EHLO
+        id S1728995AbgK1C2T (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Nov 2020 21:28:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731056AbgK0T66 (ORCPT
+        with ESMTP id S1731037AbgK0T71 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 27 Nov 2020 14:58:58 -0500
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3946C0613D4
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:48 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id d20so8514001lfe.11
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:48 -0800 (PST)
+        Fri, 27 Nov 2020 14:59:27 -0500
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE16C061A04
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:59 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id s27so8559701lfp.5
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=n7AUSPOHxh+ROspnXmAGmt29lw2/92P6Xx7q8Q73sVQ=;
-        b=rtFG8lhgrSILnbwb3Lrt+6OpeHbZNZZZ0Hk1Pq3EWdYR4I2S5LnrPrBzUfYZdnhLbD
-         NvK9RUJ9xGorG4tNxoKdBJ82XL2i8RQ04daPP5LdoFpZ5lZhxqs6KOh1eSj0w9JDaEWs
-         kxhsYH47ImmndKEPH6OoKLEcPH0Ei1WHeekziKNNKCbiBTWrB4dPDNM659FywgbWkLjL
-         syfH61UpKOOV4ilWc+dl+pdPB9hiUwUvphw+JRZZbGoS1fet27fx8K5LZezyUNZWqGpH
-         oKkfek3UuGGeZo3m4GxX3ZegpL4xG8XJIvJLoC53LI2iYHIw0aLB76MnGLTcyklWZdf6
-         Ig2Q==
+        bh=UH09h1yaTBjOi1rndtqeEtocB9Ydxx+E8RryiPhl80I=;
+        b=DuI8PFRuFcBEsab+erd77IHuvnY8X2uavYqsppgZq2LhEVglNoLcdL2BBbegGr/ffA
+         jqV6CGbool+G7prxO3WrStTbRpUgua91b8UoI3yTSErWryrT1eoP5cy9djZbHSmMpwA3
+         Il1crCMOXNVjF0avCjJ0dY0mqZGOR2XnLRuNLKlAiuknGJuSScTo4aEW/I6coBAiPsk9
+         032Rl39gk2bLbb1zLfjE1hPfun2hzuUFZj7ko8/KuZ7DF1TYVxCJXBM31PkFilNyTWH1
+         ICqt/hxIKKB2Hvf2rcb63Y8scqnddxVFCSoFlfPV9hkU1vmGRXYzb6GXvtmvqaFjyH8w
+         jMEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=n7AUSPOHxh+ROspnXmAGmt29lw2/92P6Xx7q8Q73sVQ=;
-        b=saBBhJjyf6UY5g5+mArpD0EJUQP7dcwJhRo7eqE3QTRG3BNWYHbAFKQu3ir1+6WyaY
-         8hpddTunqOrZEoaZ9rvIzYbvi2HhZqG3K6ftapGe9LYmCpV8slZgSW/rcXYUFdrB+doO
-         ch/ZKP+xIY56L+NWlnXKovRqW+BoVaYZCn7BqtqoyX1e6J6NDNXe7sukexNYah0CbwB7
-         wpg9JdW5kOGamWctgI0NIPzLwjeDQWiD3F+IC5A9BTnuHwtLIl7MJ0hq+omAC0pz8GgO
-         zhC9oVH1GZwaCI3GCufxyfVw25oqpw5t4chQzq3drv9rpm6hI5cppLEO0+HjUmzpylQm
-         7Odg==
-X-Gm-Message-State: AOAM5307c0MQqQDXp5/7A4w5Am0YnWEdhGH5ES9X4qt/vTFlcmnX3GBn
-        0+NPUD9HLjlaJ1vJLI0VlaIhpkFSkUrosao0
-X-Google-Smtp-Source: ABdhPJwT6Vp8ufL83Vnm7rhaXWMBXozvqUMkmLlmRs0l1JHZOollRcQVcjhC7wW8zOiKw6exXOpPFA==
-X-Received: by 2002:a05:6512:358d:: with SMTP id m13mr4193587lfr.435.1606507127242;
-        Fri, 27 Nov 2020 11:58:47 -0800 (PST)
+        bh=UH09h1yaTBjOi1rndtqeEtocB9Ydxx+E8RryiPhl80I=;
+        b=mshMvtAaB568sszdIQgAmECY1qj1JxJTNWruVDf0tgG+rCStioE9Xg+cOELLVn8uq/
+         m9+U3AUre2blH9QFLNcB3hmR5zyNxDje8o0pNNJhXYpZuIYMw+EepHK5zaTvdeadS9nk
+         706K5DV2Z/nLfweFAwCV9odgBvUYrpSh5pao+gX38T0ci+nU+QMW7rDkBQdDHooQ2fRM
+         P/CQANdrFXkUGAbF2abtkrfQ0T2d2q8QvZBd+UZ/p4vGIwZAa3zTjI31r7IRhKf5WLZk
+         rxJaU3IIi+YVS8M/MBe0aZlX54eTkLMzvQX8e1ix1VGWzjfUvsN0ETYwg5v5qrtaDYqZ
+         ZpIQ==
+X-Gm-Message-State: AOAM532/nFLaMJdn0NCq1PJHlmv4jMg1uDAiyso00nvB/vA6EHa3l1DD
+        uFIfjkcFnBp7HCeAn6jMK+jTpto/ZAYJ59sh
+X-Google-Smtp-Source: ABdhPJxv8ewp8sQd6Y48H9pROFlcKOQZd2NriGhQnvxkdr/vjO74fh63W/MTIpiiLYtQco3gQo3/7A==
+X-Received: by 2002:a19:c1c4:: with SMTP id r187mr4910882lff.518.1606507137770;
+        Fri, 27 Nov 2020 11:58:57 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:9d62:990:4557:451])
-        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.58.44
+        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.58.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 11:58:46 -0800 (PST)
+        Fri, 27 Nov 2020 11:58:57 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -88,9 +88,9 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v1 05/28] video: fbdev: aty: Fix W=1 warnings in atyfb_base
-Date:   Fri, 27 Nov 2020 20:58:02 +0100
-Message-Id: <20201127195825.858960-6-sam@ravnborg.org>
+Subject: [PATCH v1 09/28] video: fbdev: sis: Fix W=1 warnings in init.c
+Date:   Fri, 27 Nov 2020 20:58:06 +0100
+Message-Id: <20201127195825.858960-10-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201127195825.858960-1-sam@ravnborg.org>
 References: <20201127195825.858960-1-sam@ravnborg.org>
@@ -100,73 +100,98 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix W=1 warnings about variables assigned but never used.
-
-- Drop variables that was never used
-- Avoid using a local variable by moving the expression to an if
-  condition
+Fix several W=1 warnings.
+This removes a lot of unused code - which is always a good thing to do.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Joe Perches <joe@perches.com>
-Cc: Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc: Jason Yan <yanaijie@huawei.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Thomas Winischhofer <thomas@winischhofer.net>
 ---
- drivers/video/fbdev/aty/atyfb_base.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/sis/init.c | 34 ++++++----------------------------
+ 1 file changed, 6 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index c8feff0ee8da..d1eb9218debb 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -2360,22 +2360,20 @@ static int aty_init(struct fb_info *info)
- #ifdef CONFIG_FB_ATY_GX
- 	if (!M64_HAS(INTEGRATED)) {
- 		u32 stat0;
--		u8 dac_type, dac_subtype, clk_type;
-+		u8 dac_subtype, clk_type;
- 		stat0 = aty_ld_le32(CNFG_STAT0, par);
- 		par->bus_type = (stat0 >> 0) & 0x07;
- 		par->ram_type = (stat0 >> 3) & 0x07;
- 		ramname = aty_gx_ram[par->ram_type];
- 		/* FIXME: clockchip/RAMDAC probing? */
--		dac_type = (aty_ld_le32(DAC_CNTL, par) >> 16) & 0x07;
-+		aty_ld_le32(DAC_CNTL, par);
- #ifdef CONFIG_ATARI
- 		clk_type = CLK_ATI18818_1;
--		dac_type = (stat0 >> 9) & 0x07;
--		if (dac_type == 0x07)
-+		if (((stat0 >> 9) & 0x07) == 0x07)
- 			dac_subtype = DAC_ATT20C408;
- 		else
- 			dac_subtype = (aty_ld_8(SCRATCH_REG1 + 1, par) & 0xF0) | dac_type;
- #else
--		dac_type = DAC_IBMRGB514;
- 		dac_subtype = DAC_IBMRGB514;
- 		clk_type = CLK_IBMRGB514;
- #endif
-@@ -3062,7 +3060,6 @@ static int atyfb_setup_sparc(struct pci_dev *pdev, struct fb_info *info,
- 	if (dp == of_console_device) {
- 		struct fb_var_screeninfo *var = &default_var;
- 		unsigned int N, P, Q, M, T, R;
--		u32 v_total, h_total;
- 		struct crtc crtc;
- 		u8 pll_regs[16];
- 		u8 clock_cntl;
-@@ -3078,9 +3075,6 @@ static int atyfb_setup_sparc(struct pci_dev *pdev, struct fb_info *info,
- 		crtc.gen_cntl = aty_ld_le32(CRTC_GEN_CNTL, par);
- 		aty_crtc_to_var(&crtc, var);
+diff --git a/drivers/video/fbdev/sis/init.c b/drivers/video/fbdev/sis/init.c
+index fde27feae5d0..b77ea1a8825a 100644
+--- a/drivers/video/fbdev/sis/init.c
++++ b/drivers/video/fbdev/sis/init.c
+@@ -2648,7 +2648,7 @@ static void
+ SiS_SetCRT1ModeRegs(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+ 		unsigned short ModeIdIndex, unsigned short RRTI)
+ {
+-   unsigned short data, infoflag = 0, modeflag, resindex;
++   unsigned short data, infoflag = 0, modeflag;
+ #ifdef CONFIG_FB_SIS_315
+    unsigned char  *ROMAddr  = SiS_Pr->VirtualRomBase;
+    unsigned short data2, data3;
+@@ -2659,7 +2659,7 @@ SiS_SetCRT1ModeRegs(struct SiS_Private *SiS_Pr, unsigned short ModeNo,
+    if(SiS_Pr->UseCustomMode) {
+       infoflag = SiS_Pr->CInfoFlag;
+    } else {
+-      resindex = SiS_GetResInfo(SiS_Pr, ModeNo, ModeIdIndex);
++      SiS_GetResInfo(SiS_Pr, ModeNo, ModeIdIndex);
+       if(ModeNo > 0x13) {
+ 	 infoflag = SiS_Pr->SiS_RefIndex[RRTI].Ext_InfoFlag;
+       }
+@@ -3538,17 +3538,13 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+ 			struct fb_var_screeninfo *var, bool writeres
+ )
+ {
+-   unsigned short HRE, HBE, HRS, HBS, HDE, HT;
+-   unsigned short VRE, VBE, VRS, VBS, VDE, VT;
+-   unsigned char  sr_data, cr_data, cr_data2;
+-   int            A, B, C, D, E, F, temp;
++   unsigned short HRE, HBE, HRS, HDE;
++   unsigned short VRE, VBE, VRS, VDE;
++   unsigned char  sr_data, cr_data;
++   int            B, C, D, E, F, temp;
  
--		h_total = var->xres + var->right_margin + var->hsync_len + var->left_margin;
--		v_total = var->yres + var->lower_margin + var->vsync_len + var->upper_margin;
+    sr_data = crdata[14];
+ 
+-   /* Horizontal total */
+-   HT =  crdata[0] | ((unsigned short)(sr_data & 0x03) << 8);
+-   A = HT + 5;
 -
- 		/*
- 		 * Read the PLL to figure actual Refresh Rate.
- 		 */
+    /* Horizontal display enable end */
+    HDE = crdata[1] | ((unsigned short)(sr_data & 0x0C) << 6);
+    E = HDE + 1;
+@@ -3557,9 +3553,6 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+    HRS = crdata[4] | ((unsigned short)(sr_data & 0xC0) << 2);
+    F = HRS - E - 3;
+ 
+-   /* Horizontal blank start */
+-   HBS = crdata[2] | ((unsigned short)(sr_data & 0x30) << 4);
+-
+    sr_data = crdata[15];
+    cr_data = crdata[5];
+ 
+@@ -3588,13 +3581,6 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+    sr_data = crdata[13];
+    cr_data = crdata[7];
+ 
+-   /* Vertical total */
+-   VT  = crdata[6] |
+-	 ((unsigned short)(cr_data & 0x01) << 8) |
+-	 ((unsigned short)(cr_data & 0x20) << 4) |
+-	 ((unsigned short)(sr_data & 0x01) << 10);
+-   A = VT + 2;
+-
+    /* Vertical display enable end */
+    VDE = crdata[10] |
+ 	 ((unsigned short)(cr_data & 0x02) << 7) |
+@@ -3609,14 +3595,6 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+ 	 ((unsigned short)(sr_data & 0x08) << 7);
+    F = VRS + 1 - E;
+ 
+-   cr_data2 = (crdata[16] & 0x01) << 5;
+-
+-   /* Vertical blank start */
+-   VBS = crdata[11] |
+-	 ((unsigned short)(cr_data  & 0x08) << 5) |
+-	 ((unsigned short)(cr_data2 & 0x20) << 4) |
+-	 ((unsigned short)(sr_data  & 0x04) << 8);
+-
+    /* Vertical blank end */
+    VBE = crdata[12] | ((unsigned short)(sr_data & 0x10) << 4);
+    temp = VBE - ((E - 1) & 511);
 -- 
 2.27.0
 
