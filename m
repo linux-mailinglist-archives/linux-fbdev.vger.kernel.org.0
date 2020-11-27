@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5E872C6E7C
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 03:31:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4012C6E7A
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 03:31:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730366AbgK1C3y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 27 Nov 2020 21:29:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
+        id S1730858AbgK1C3Z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Nov 2020 21:29:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730990AbgK0T6i (ORCPT
+        with ESMTP id S1729672AbgK0T6o (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 27 Nov 2020 14:58:38 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C22CC0617A7
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:38 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id d8so8583486lfa.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:38 -0800 (PST)
+        Fri, 27 Nov 2020 14:58:44 -0500
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A79FC0613D4
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:43 -0800 (PST)
+Received: by mail-lj1-x242.google.com with SMTP id z1so7129307ljn.4
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:58:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Mlrk2a7fx8lHdZe7HNocdybelF9nJ2xwpzGpya7/neM=;
-        b=nbyG5HWv8PYaV2MYSK/V9y026abFr5qp19r6Mx+qPclojBrt+pbh0WG2/n1piQOA3P
-         uiimF504mugGaPERuOR019mjir/88EOl6cR5iCAfGJTPcIV/2G+i+ESDivkT2zpess2j
-         1zVJKOceqHS6J/oZQFCYH6/3zFxVW9iPqVljmIiQSu3iKYWtG1vTsRSoW9MjLNOTxidQ
-         wncSiavaru70qkQme1ffLM4DzwQTHZpSpnNLSekMRwjhEuJKCVX9e8Hjqh4OpS5gIN1G
-         yUBhSTjZ85t0S4j2PKLTjbd7Dk/oAsAN77B0d4QfWUSLXQslevnjmXOg7FipUasZZZj+
-         Ub+w==
+        bh=EVfT86QX+ZDTrJRF8dQQHF/3gUwiFpKsxjnoB2Y1zu0=;
+        b=pNd5jXk94PdmMLkBuGrzXr5VZIBW1q4/xg/xvm8uzlWcYxvNlIoog29ix8O5eeFt69
+         tDiNvMPfY65I0w27OPdUQpExtBaF1oC03M6/njKb87rLyTOAqe9X3s8YvSpmrZK7GSTy
+         pN4AHHdFO0/+yVCNc/xawLRkTrtjdIfnFkQKwAta5zkNKDrkhdcd4UgR+yOOKyZ5rRQA
+         zNaj3P+Aa3W4vi6QSkptOCD7yJDl/nzgZnCOd3103/rTMcaYvblNF42qdxGTSZIWGwTl
+         KO5iUJB3JAh/gbw1Hco1syS42CJWlYzO4rvzedDiIdjlxoHecchXXRIF+i1fVfLvQTXk
+         lrfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=Mlrk2a7fx8lHdZe7HNocdybelF9nJ2xwpzGpya7/neM=;
-        b=KS01arImDUwZyPvIvzSkUhvwa2SCW3ilgi3l83tx2Mao25cOEhYgC1IVGHOKnMCfFd
-         8LHnT80UPPNk4lBCSiTh16IGhs8JMeYwMqHJIqDz3RqpCGQ3pH+qrotugPWfblqqCU0i
-         Z8pZHx0MImJnDugVvgsQjIheusuYgjYxzI1owDbg8LANE+DSIpxXBdOCJ6G/TkY5plEG
-         uuigAWIwkqmw39y+6kYSQUmv+BrVHicPgyHYq3ThI6h9dWtmzOcSDyjvj1qObvsG+xu/
-         ILR1AQzhz/TXX80i1jzNwMXN00ututFq25Kdiee6Y76VKWh6YmFPr5Yvp8qrmLAk3O8N
-         AlFA==
-X-Gm-Message-State: AOAM530GSCzwNkIaBrn98AsC05pxKA2kXadppCOIguD8B8Gxt0liE5qc
-        tGwrUEDvTim/9BPzJKn746ZF6m7f0se2ao55
-X-Google-Smtp-Source: ABdhPJy1IKpFfgA/xgo2/hiiEZA4+34JhNpEV0cwiEJVzRGd+sjjU7oUZDTPsmHJEcur9GoPNNk63w==
-X-Received: by 2002:a19:f243:: with SMTP id d3mr3981629lfk.534.1606507116602;
-        Fri, 27 Nov 2020 11:58:36 -0800 (PST)
+        bh=EVfT86QX+ZDTrJRF8dQQHF/3gUwiFpKsxjnoB2Y1zu0=;
+        b=Ggqx2Wo0fZbXgKDjBhQaxTBKX7hOwJazgoltuYzZx387Q83irQ1wtB5M3BpE8h9QTP
+         1eC14g+fL1CNofE6TcIF5K/5oqaSHChSZzbumKF3H8BPokjnBAc/7XjhXDEHvgTlGZMF
+         zpxLfEU6kZdqbBARCL0WqTnTsLUiHemdwkWt/Trm9391AaVvvV+IQCexK5vOKNv7QcY6
+         Jflhj/dlnZY90khkFDcviNYuMyLFiq473kd+eriusXceAPTaMBZFVRt1nAWozG1kceFS
+         5px0ivwLttj7AzUnbJCxuBhVL4uByETeuYqRFAYiAsniL4BiCjWMQY6kBGqTsFzFGnz3
+         HfEQ==
+X-Gm-Message-State: AOAM530+hoC1Aj5WtgpkUrW3BbLIQLVSx/3NKpy58HdmBJnhL+1zU7wJ
+        Olf6TeUrHmm8C23KXx5bPkekyeGAqV4xgy2A
+X-Google-Smtp-Source: ABdhPJzXp9uTUQQnInL9K0DV22npUNTpOloTCcvJ9aj3htoMz9+JJ2m34eR+Chve2GRiCw8Q4sNScw==
+X-Received: by 2002:a2e:b529:: with SMTP id z9mr4499212ljm.307.1606507121906;
+        Fri, 27 Nov 2020 11:58:41 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:9d62:990:4557:451])
-        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.58.34
+        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.58.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 11:58:36 -0800 (PST)
+        Fri, 27 Nov 2020 11:58:41 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -88,9 +88,9 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v1 01/28] video: Fix W=1 warnings in of_videomode + of_display_timing
-Date:   Fri, 27 Nov 2020 20:57:58 +0100
-Message-Id: <20201127195825.858960-2-sam@ravnborg.org>
+Subject: [PATCH v1 03/28] video: fbdev: core: Fix W=1 warnings in fbmon + fb_notify
+Date:   Fri, 27 Nov 2020 20:58:00 +0100
+Message-Id: <20201127195825.858960-4-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201127195825.858960-1-sam@ravnborg.org>
 References: <20201127195825.858960-1-sam@ravnborg.org>
@@ -100,48 +100,53 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix trivial W=1 warnings.
-Update kernel-doc to avoid the warnings.
+Fix W=1 warnings by updating kernel-doc to follow the correct syntax.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-fbdev@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
 ---
- drivers/video/of_display_timing.c | 1 +
- drivers/video/of_videomode.c      | 8 ++++----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fb_notify.c | 3 ++-
+ drivers/video/fbdev/core/fbmon.c     | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
-index abc9ada798ee..f93b6abbe258 100644
---- a/drivers/video/of_display_timing.c
-+++ b/drivers/video/of_display_timing.c
-@@ -52,6 +52,7 @@ static int parse_timing_property(const struct device_node *np, const char *name,
- /**
-  * of_parse_display_timing - parse display_timing entry from device_node
-  * @np: device_node with the properties
-+ * @dt: display_timing that contains the result. I may be partially written in case of errors
-  **/
- static int of_parse_display_timing(const struct device_node *np,
- 		struct display_timing *dt)
-diff --git a/drivers/video/of_videomode.c b/drivers/video/of_videomode.c
-index 67aff2421c29..a5bb02f02b44 100644
---- a/drivers/video/of_videomode.c
-+++ b/drivers/video/of_videomode.c
-@@ -13,10 +13,10 @@
- #include <video/videomode.h>
+diff --git a/drivers/video/fbdev/core/fb_notify.c b/drivers/video/fbdev/core/fb_notify.c
+index 74c2da528884..d85717b6e14a 100644
+--- a/drivers/video/fbdev/core/fb_notify.c
++++ b/drivers/video/fbdev/core/fb_notify.c
+@@ -38,7 +38,8 @@ EXPORT_SYMBOL(fb_unregister_client);
  
  /**
-- * of_get_videomode - get the videomode #<index> from devicetree
-- * @np - devicenode with the display_timings
-- * @vm - set to return value
-- * @index - index into list of display_timings
-+ * of_get_videomode: get the videomode #<index> from devicetree
-+ * @np: devicenode with the display_timings
-+ * @vm: set to return value
-+ * @index: index into list of display_timings
-  *	    (Set this to OF_USE_NATIVE_MODE to use whatever mode is
-  *	     specified as native mode in the DT.)
+  * fb_notifier_call_chain - notify clients of fb_events
+- *
++ * @val: value passed to callback
++ * @v: pointer passed to callback
+  */
+ int fb_notifier_call_chain(unsigned long val, void *v)
+ {
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index 1bf82dbc9e3c..b0e690f41025 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -605,6 +605,7 @@ static void get_detailed_timing(unsigned char *block,
+  * fb_create_modedb - create video mode database
+  * @edid: EDID data
+  * @dbsize: database size
++ * @specs: monitor specifications, may be NULL
   *
+  * RETURNS: struct fb_videomode, @dbsize contains length of database
+  *
+@@ -1100,7 +1101,6 @@ static u32 fb_get_hblank_by_hfreq(u32 hfreq, u32 xres)
+  *                                    2 * M
+  *        M = 300;
+  *        C = 30;
+-
+  */
+ static u32 fb_get_hblank_by_dclk(u32 dclk, u32 xres)
+ {
 -- 
 2.27.0
 
