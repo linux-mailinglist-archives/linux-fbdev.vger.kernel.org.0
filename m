@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D1B2C6E38
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 02:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E73272C6E32
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 02:36:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730166AbgK1Bh2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 27 Nov 2020 20:37:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56676 "EHLO
+        id S1730018AbgK1BcP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Nov 2020 20:32:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731114AbgK0T71 (ORCPT
+        with ESMTP id S1731126AbgK0T71 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Fri, 27 Nov 2020 14:59:27 -0500
 Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7947EC061A56
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:59:15 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id 142so7095055ljj.10
-        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:59:15 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12A0C08C5F2
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:59:17 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id y16so7155185ljk.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Nov 2020 11:59:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=bZVUjqZPvk9JmE5Zg9zhFjt8GTdbfi/4bsMjlewJUWk=;
-        b=XrtZdKGu5/hNrxeMcY7JQje+7wV52fu30Ck/RUr5wsZpyQJcANFJZ39N0KWddETdEX
-         fOPkmhKTz1DW+fwvSOBvpDKgWwNZ91XoVSfOPIDK33hQY0hcdC9JHsjlQdYjok5aakxe
-         1lDcFQ05uuljUZIeMgpbYUPatcYhMAqNE6jakOSRD6eCrf/VCMhQPcWqVxtIQEk6WaS7
-         /EuO9akDGzU266dv9OuffMUYSiox7QhVCEhyN3qTkL+CAKWNhEeQKfxGHd6uqH2Hz+EP
-         T4PIJQr2oREk9yV+SGzpgGoKrWxRkM5vR9tVIniIgYrgPTHJ8/gR4vcb+WJm7nPWuFIT
-         Jk3w==
+        bh=mRaQzSKHKEuFE/qSNI079F7TkEGyaY0pXgqjdW2jv1k=;
+        b=F5kbqnNAjMLimvM6NUli0+DihWCFYsBD33fOr3p163gxIURDv8B6jteJoEoQ+geGjs
+         MaShloEU1MtW6yhoNx/S2FtEUiP/7S0bg73YNb68VLyN+2NS/JHHXYq/MRDrl+j7d7Qs
+         apXomIG4x8rmWcntA311Xv5TtIvKNpWMQ+cb2zkPlxhYuHglLRxZ+Xvh3yVfhmM9lD9W
+         JllBNk9cOxuFLM2zmwQc8VfnmQYPwmQqBFcMfBMPTcNa7qxUor4JsVKfnWzCHQvP1QKT
+         lb6tD8ZSHCEjGsUQXad9S939PolnZeDXHL8rxy8QaDpTsTyRy/dZxjqXXBF2+Bk4rC8g
+         LuVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=bZVUjqZPvk9JmE5Zg9zhFjt8GTdbfi/4bsMjlewJUWk=;
-        b=BLWQKacQfxayCXiZmstOvozXYaSaljYXmE8ma3i/+HsxwLSSA/H6OotEZ72p6P/44S
-         IN42H9o0MyOwJ6VTdzZQi1GL/+GEbJL4Oj10jne4+icqXpPRDkKPJDkqqlHO+eam4KHq
-         aQ0We3E5RkQAV4xqpkNDxajV4zCkhXe2sjP7jRU+oSotsU+Niz2rQ/8oqLxHwwggurSu
-         07ZJvlxq4eFSqoAqJJLDJJicuI1ivasZ21/TDC1nJ6M6iLIE7tXdYdj+44mqHEz7+FF8
-         x6fFZAPw21IjGYHYovTZG3wk408HQqeiUL8y4EDkeLez0yVRtTIB5SGDwk0o+/mqzs1c
-         wqkw==
-X-Gm-Message-State: AOAM532quIdkILaIs/6YAT1+ixlG+JZcSemBr/B6tYuXOij2nTGYmivP
-        JYKlFlbhixkjPhqD33QgY8PlG3yEyPze/G7O
-X-Google-Smtp-Source: ABdhPJzIf2J8nBqop7fmYzkcGAkj+y2xNYn0qrO6QCTJJblj1YqU+JBYf2vFEz2ZVBbbWeDXxgiKVw==
-X-Received: by 2002:a2e:9510:: with SMTP id f16mr4618994ljh.408.1606507153729;
-        Fri, 27 Nov 2020 11:59:13 -0800 (PST)
+        bh=mRaQzSKHKEuFE/qSNI079F7TkEGyaY0pXgqjdW2jv1k=;
+        b=BvICOvb7XVHPvM+KuXXl0AfpqtKfyqF3mZ/w2Ct8/K2E7NSYhSLp6Kal83JqHouQkt
+         bAFR1PYgNIzUU5FlHMjgYbP7a9HwuxEZNCQ1dz5/zN1rwrE8Ce18Bov5E58P5vWuQzUg
+         8jZrCM844v7/Vagx9qW9GbbvsJ27rzrAyyRZrqkRbT/FX0zMOarsuFNfJhLKKAqU7D0o
+         PSSb0hY5uf4zl6aoslmhenYSQyim9g/+XrQ7ZHI+/tLc9NcPK8h2GRp9IwV1ramcdvfu
+         5nO3RosT4d71b2TqPzW6LXHyxAwFdru187ricrGxkFLHITkv3mqT77ki42RrPefm8br7
+         LauA==
+X-Gm-Message-State: AOAM530cn+nRIyYhpjw3WbL0uOT1AQNRYOCtyV2u3wFhffE4pgl7gBfz
+        xK7e5NZfnsqobegnV0dUSbB0/wdAerzOwQke
+X-Google-Smtp-Source: ABdhPJxny0VqK6KTdW128+jhrnmUhcAiAPM8ah698YeRpDAV9+q/qAnWBVSKNtaRbwkos5sr5AZ61Q==
+X-Received: by 2002:a2e:8796:: with SMTP id n22mr4325949lji.345.1606507156297;
+        Fri, 27 Nov 2020 11:59:16 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:9d62:990:4557:451])
-        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.59.11
+        by smtp.gmail.com with ESMTPSA id c6sm1070415ljj.140.2020.11.27.11.59.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 11:59:13 -0800 (PST)
+        Fri, 27 Nov 2020 11:59:15 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -87,11 +87,10 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Xiaofei Tan <tanxiaofei@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v1 15/28] video: fbdev: neofb: Fix W=1 warnings
-Date:   Fri, 27 Nov 2020 20:58:12 +0100
-Message-Id: <20201127195825.858960-16-sam@ravnborg.org>
+        Xiaofei Tan <tanxiaofei@huawei.com>
+Subject: [PATCH v1 16/28] video: fbdev: hgafb: Fix W=1 warnings
+Date:   Fri, 27 Nov 2020 20:58:13 +0100
+Message-Id: <20201127195825.858960-17-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201127195825.858960-1-sam@ravnborg.org>
 References: <20201127195825.858960-1-sam@ravnborg.org>
@@ -101,51 +100,37 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix W=1 warnigns by removing unused code
+Fix kernel-doc comments.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Evgeny Novikov <novikov@ispras.ru>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Ferenc Bakonyi <fero@drama.obuda.kando.hu>
+Cc: linux-nvidia@lists.surfsouth.com
 ---
- drivers/video/fbdev/neofb.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/video/fbdev/hgafb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/neofb.c b/drivers/video/fbdev/neofb.c
-index 09a20d4ab35f..c0f4f402da3f 100644
---- a/drivers/video/fbdev/neofb.c
-+++ b/drivers/video/fbdev/neofb.c
-@@ -1843,7 +1843,6 @@ static int neo_init_hw(struct fb_info *info)
- 	struct neofb_par *par = info->par;
- 	int videoRam = 896;
- 	int maxClock = 65000;
--	int CursorMem = 1024;
- 	int CursorOff = 0x100;
+diff --git a/drivers/video/fbdev/hgafb.c b/drivers/video/fbdev/hgafb.c
+index a45fcff1461f..69af72937844 100644
+--- a/drivers/video/fbdev/hgafb.c
++++ b/drivers/video/fbdev/hgafb.c
+@@ -358,7 +358,7 @@ static int hga_card_detect(void)
+ /**
+  *	hgafb_open - open the framebuffer device
+  *	@info:pointer to fb_info object containing info for current hga board
+- *	@int:open by console system or userland.
++ *	@init:open by console system or userland.
+  */
  
- 	DBG("neo_init_hw");
-@@ -1895,19 +1894,16 @@ static int neo_init_hw(struct fb_info *info)
- 	case FB_ACCEL_NEOMAGIC_NM2070:
- 	case FB_ACCEL_NEOMAGIC_NM2090:
- 	case FB_ACCEL_NEOMAGIC_NM2093:
--		CursorMem = 2048;
- 		CursorOff = 0x100;
- 		break;
- 	case FB_ACCEL_NEOMAGIC_NM2097:
- 	case FB_ACCEL_NEOMAGIC_NM2160:
--		CursorMem = 1024;
- 		CursorOff = 0x100;
- 		break;
- 	case FB_ACCEL_NEOMAGIC_NM2200:
- 	case FB_ACCEL_NEOMAGIC_NM2230:
- 	case FB_ACCEL_NEOMAGIC_NM2360:
- 	case FB_ACCEL_NEOMAGIC_NM2380:
--		CursorMem = 1024;
- 		CursorOff = 0x1000;
+ static int hgafb_open(struct fb_info *info, int init)
+@@ -372,7 +372,7 @@ static int hgafb_open(struct fb_info *info, int init)
+ /**
+  *	hgafb_open - open the framebuffer device
+  *	@info:pointer to fb_info object containing info for current hga board
+- *	@int:open by console system or userland.
++ *	@init:open by console system or userland.
+  */
  
- 		par->neo2200 = (Neo2200 __iomem *) par->mmio_vbase;
+ static int hgafb_release(struct fb_info *info, int init)
 -- 
 2.27.0
 
