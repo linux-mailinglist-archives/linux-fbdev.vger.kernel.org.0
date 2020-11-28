@@ -2,83 +2,163 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8812C7317
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:13:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ADFB2C732A
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:13:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729806AbgK1VuA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Nov 2020 16:50:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S2389470AbgK1VuB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Nov 2020 16:50:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730619AbgK0TwS (ORCPT
+        with ESMTP id S1731740AbgK1SzO (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 27 Nov 2020 14:52:18 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902C7C08ED7E;
-        Fri, 27 Nov 2020 11:39:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=zh33VXt2kD9yseJRxvL3v4GkB6ZavkT8ap7D2dRM1n8=; b=Kxodjbz5/uSV3yCNi49zqnvc9d
-        3raTqFO3DiDczmMVk1/JjntTXeZ/X77jY563rcj7pjhEu1BJGTUKoPczByUNK/PIs51HKBFkx07ZX
-        9CTkD5y1ChxR2ODhz1KXEEeJQWSeUrD5ourjvkNfwGkX8dNq2AC94Qtp1eaBSfdM8+dJJ5QyXu9t0
-        HO1kFuDTP3fu+Swwwy3nCaiSC8J0IrbHiExcFLV2Vvdp3CYFs0c3WAfl8Tg6TdkNt0mfJwcUmYy0u
-        jKfb7/97qOSSdbg8dXfAD0KGuolv1NIuONfs7jvm5+ypn+Wq94EbneCCQgBNsNe85jUvdbRspjEpk
-        aZWL6cMw==;
-Received: from [2602:306:c5a2:a380:9e7b:efff:fe40:2b26]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kijaQ-0005cI-6b; Fri, 27 Nov 2020 19:39:18 +0000
-Subject: Re: [PATCH 2/2] powerpc/ps3: make system bus's remove and shutdown
- callbacks return void
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Jens Axboe <axboe@kernel.dk>, Jim Paris <jim@jtan.com>,
+        Sat, 28 Nov 2020 13:55:14 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972C4C02B8E7
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 00:28:25 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id s8so7897761wrw.10
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 00:28:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=cTkHTcSrLgZszRAVwj45rxiuIrfPvRKqnrUG46P7sq0=;
+        b=cKkBRCT9v3oLHM8wav0akpMQBP5NQv6bQKs+GZ/8ukgTgbOwh1PuqROZURCCkNwi3T
+         SMdHme0S8PmFhAuBAjz7gWpNURcXbFOsyZXGUbYn2fj+yfX7HYHyirHocDl3LiMNeqPd
+         UtYUN1gfGUh+Hi15h+UHpO44QyIPVkuyG82ZOMrmqTc94dnrldHSf0Q9PIP0kep3mPch
+         thvjtJasTUNy2zutYM2Nu6EY40cQow+/BXRMbZr/T6FWXL2YMRRwaI2XO/xdrDDOQ+sI
+         +Xt4OSwpB8LRJeNy2zANynlgqFw7ryU38BPxYOnqZiS2EgYTfCyhy2yFdKKcpORqZ82K
+         NMDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=cTkHTcSrLgZszRAVwj45rxiuIrfPvRKqnrUG46P7sq0=;
+        b=Ib/2vAtdegFFgSPYtZlv9VzPpp2pOGDxXlpaJxuz+zZYt7Zgy/TuK7NCWPOFOj1QpL
+         vCdqs+BloTJhzUKMRwRhbREYWsBttLjh39R+0VHqIq92FvByMnEMdf9gzBBO+GLAc4ZE
+         Ee0xByIfQ0FZ/Soqy0pD63EVZp0IiN8jcEmnAvjCBAQSf49nVBk5eTOoqVMSkdbfgxJM
+         VGT+8AhR/sGUaFZJ+ZlauAGafJ01kzWarJM8pQ9FUa2cf1RUR/r1bhKUAkKwPdhyXVR6
+         XfqVCV6oNlrqWSlWp+nX1iPTOaI03ThWiN3c2WbLkAyrt7moe3aHPkosHc8MRBshhUe8
+         Vskw==
+X-Gm-Message-State: AOAM533/s5CkcKeNQiVWlyGPrc3HgH7C5w1K2+jB1YALtWIU57hbrvEq
+        O1M6L7UO71t9rdspfLjfv6pIWg==
+X-Google-Smtp-Source: ABdhPJzeYRmsxFZn2ZwidIPjzPMgaEV7J3TB5ydD8HIA0sG5PSBN25cXxEFEWF0I3IINU4+ZI56Q1Q==
+X-Received: by 2002:adf:e449:: with SMTP id t9mr16202556wrm.257.1606552104332;
+        Sat, 28 Nov 2020 00:28:24 -0800 (PST)
+Received: from dell ([91.110.221.235])
+        by smtp.gmail.com with ESMTPSA id z19sm16842255wmk.12.2020.11.28.00.28.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Nov 2020 00:28:23 -0800 (PST)
+Date:   Sat, 28 Nov 2020 08:28:20 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Aditya Pakki <pakki001@umn.edu>,
+        Alexander Klimov <grandmaster@al2klimov.de>,
+        Alex Dewar <alex.dewar90@gmail.com>,
+        Antonino Daplas <adaplas@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Evgeny Novikov <novikov@ispras.ru>,
+        Ferenc Bakonyi <fero@drama.obuda.kando.hu>,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+        George Kennedy <george.kennedy@oracle.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org,
-        linux-block@vger.kernel.org, netdev@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20201126165950.2554997-1-u.kleine-koenig@pengutronix.de>
- <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
-From:   Geoff Levand <geoff@infradead.org>
-Message-ID: <d3705daf-f48c-20a8-e3a8-a2f121099a16@infradead.org>
-Date:   Fri, 27 Nov 2020 11:39:12 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Gustavo Silva <gustavoars@kernel.org>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Jason Yan <yanaijie@huawei.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Joe Perches <joe@perches.com>,
+        Kristoffer Ericson <kristoffer.ericson@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-nvidia@lists.surfsouth.com,
+        Michal Januszewski <spock@gentoo.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Peilin Ye <yepeilin.cs@gmail.com>,
+        Peter Rosin <peda@axentia.se>,
+        Qilong Zhang <zhangqilong3@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        Thomas Zimemrmann <tzimmermann@suse.de>,
+        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>
+Subject: Re: [PATCH v1 01/28] video: Fix W=1 warnings in of_videomode +
+ of_display_timing
+Message-ID: <20201128082820.GX2455276@dell>
+References: <20201127195825.858960-1-sam@ravnborg.org>
+ <20201127195825.858960-2-sam@ravnborg.org>
 MIME-Version: 1.0
-In-Reply-To: <20201126165950.2554997-2-u.kleine-koenig@pengutronix.de>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201127195825.858960-2-sam@ravnborg.org>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 11/26/20 8:59 AM, Uwe Kleine-König wrote:
-> The driver core ignores the return value of struct device_driver::remove
-> because there is only little that can be done. For the shutdown callback
-> it's ps3_system_bus_shutdown() which ignores the return value.
+On Fri, 27 Nov 2020, Sam Ravnborg wrote:
+
+> Fix trivial W=1 warnings.
+> Update kernel-doc to avoid the warnings.
+
+Can you put what's being fixed in the subject line please?
+
+"fix w=1 warnings" is very bland and this it is unlikely to be the
+only w=1 warning that gets fixed in these files, so has a high likely
+hood of having an identical subject-line as a previous/future patch.
+
+With regards to the latter point; I have personally found subject
+lines to be a pretty reliable way of maintaining/backporting older
+kernels.  The nomenclature here would taint that pretty readily.
+
+> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: linux-fbdev@vger.kernel.org
+> ---
+>  drivers/video/of_display_timing.c | 1 +
+>  drivers/video/of_videomode.c      | 8 ++++----
+>  2 files changed, 5 insertions(+), 4 deletions(-)
 > 
-> To simplify the quest to make struct device_driver::remove return void,
-> let struct ps3_system_bus_driver::remove return void, too. All users
-> already unconditionally return 0, this commit makes it obvious that
-> returning an error code is a bad idea and ensures future users behave
-> accordingly.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
+> index abc9ada798ee..f93b6abbe258 100644
+> --- a/drivers/video/of_display_timing.c
+> +++ b/drivers/video/of_display_timing.c
+> @@ -52,6 +52,7 @@ static int parse_timing_property(const struct device_node *np, const char *name,
+>  /**
+>   * of_parse_display_timing - parse display_timing entry from device_node
+>   * @np: device_node with the properties
+> + * @dt: display_timing that contains the result. I may be partially written in case of errors
+>   **/
+>  static int of_parse_display_timing(const struct device_node *np,
+>  		struct display_timing *dt)
+> diff --git a/drivers/video/of_videomode.c b/drivers/video/of_videomode.c
+> index 67aff2421c29..a5bb02f02b44 100644
+> --- a/drivers/video/of_videomode.c
+> +++ b/drivers/video/of_videomode.c
+> @@ -13,10 +13,10 @@
+>  #include <video/videomode.h>
+>  
+>  /**
+> - * of_get_videomode - get the videomode #<index> from devicetree
+> - * @np - devicenode with the display_timings
+> - * @vm - set to return value
+> - * @index - index into list of display_timings
+> + * of_get_videomode: get the videomode #<index> from devicetree
+> + * @np: devicenode with the display_timings
+> + * @vm: set to return value
+> + * @index: index into list of display_timings
+>   *	    (Set this to OF_USE_NATIVE_MODE to use whatever mode is
+>   *	     specified as native mode in the DT.)
+>   *
 
-Seems OK with v5.9 on PS3.
-
-Tested by: Geoff Levand <geoff@infradead.org>
-
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
