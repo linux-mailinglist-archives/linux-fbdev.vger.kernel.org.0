@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0A12C764C
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A42D92C765A
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387716AbgK1WmN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Nov 2020 17:42:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49206 "EHLO
+        id S1728350AbgK1Wmo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Nov 2020 17:42:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387679AbgK1WmM (ORCPT
+        with ESMTP id S1726014AbgK1Wmn (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Nov 2020 17:42:12 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C40C0617A7
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:32 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id f18so10578706ljg.9
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:32 -0800 (PST)
+        Sat, 28 Nov 2020 17:42:43 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100C2C061A04
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:34 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id s27so12748871lfp.5
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=kZ9ZgHWmJyOywbHzVVtwWtTG6YhIEQd9QstxbodpcBQ=;
-        b=S0c68Zk+pF34kAn1jifJ7j61hFiv24XXgHlCdXnCscJJaMe3DhkHymeJf31QSOWTZt
-         w23t3x4hST+caW1FOsEXWM4cxQR9p3lqbEh01FmIhxTzm9IO0NoPvqNRsYy/7Qi9QRw/
-         Kpwq1matftd2bCkk8fwc8H8+ZiQ5416y39eY8V1Pp9zZuxf2DW5K7r4Y3/6owZGkNFZf
-         ZPUyUwqQZ+kAOZPuAahXFeTK8ifShm5ehxN++I6tZFO2+TUI1UXymRVycWkTtFsBL2B4
-         MZEhjNIiM3C4MnnHsJjjIXUu4VAz3pKDuRWlgFvwMqdhkUC0UO7hdRVwB7sCK8YQzG/f
-         bN1Q==
+        bh=pEqxbCWX9q9yDbDvSbn0kwCSjD77LNJ8Br1S/hGjS4Y=;
+        b=Rv/zkpFM80luzwk9qz8tKKHWMQ6AMMsclRVZq8PzkJM18cISEnSccV7Z8NIypZ1jW/
+         UpJkema7xmGdArdEUTxR3gSPeu/62Fr6qy4keamZ0qJNqIQD4YRj1StMsnasqAFSSZ2i
+         nF68Z1WHShiUim0pi8VvWJKFAcfN8Jfhke8fy9mYSrj/rvKau8xzj8LEJo+jBhVJUZeD
+         Clfkv1bN3MyIy9fOm7S9V8Pc+2ayjfrjqSUkchx1EursTN5wqxO9Bb4YCYAyII3W9mYP
+         nwn5OYVYnhEOLz4R7WWkyxFs8r+3ZzFCNbcB4d4Y9Fjkmr9TXb3rUL4DXvKhIu65S/qb
+         vfjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=kZ9ZgHWmJyOywbHzVVtwWtTG6YhIEQd9QstxbodpcBQ=;
-        b=DfbpuRAlW3OgNf0frfzoxsd/oKgY2IY0i3/DIK5/s+/6GPYrrn44Gsk0oQv0CzWplm
-         CuEbSr1aujnqfWmMwQ5ms30avmGGakJUsLmj9BNYhb8QQnEuOtkMKML1J/C1I/vfCW8g
-         HCb9peCWODVi3R71D+Im9kWWVm9Sobz1D8IzAsK6Q+XFcB9OCF9+xUlP/A/LQuGkPCvy
-         aqvZzbBguIy8h3yRMMDO85wuuaT70wEnLjogipI25K45K43BpzoNxC1Uy/3cZ2IBtH1v
-         RRdhzZZAvo85dbz1hEUbOS/p1/wB+lKjM0GNAYhEpLMy8EE2ZFveGfWM7gINbJclWSGt
-         AFvg==
-X-Gm-Message-State: AOAM532TukQRWI0Ut9xWf95B7uFoVtiKM75ut1u4Se7Qz4mJdIO9ABxp
-        tRHAEYGIQmNriiRmeJD22X0JAh3p1R4gig==
-X-Google-Smtp-Source: ABdhPJx4ymyjTnrmJSY6wFWclm51YzQlOTykubVxGPg/z9CJJLqHiLChQ9ZhrpimkKUPyuqHo1PtyQ==
-X-Received: by 2002:a2e:161b:: with SMTP id w27mr6607806ljd.429.1606603290409;
-        Sat, 28 Nov 2020 14:41:30 -0800 (PST)
+        bh=pEqxbCWX9q9yDbDvSbn0kwCSjD77LNJ8Br1S/hGjS4Y=;
+        b=iM/ZYCoEeC/qxPjZahIXQIKPKUh5RgdFSBb9SS1vzYhg564INaWfhjWryAEgqAlbnO
+         vNdFpd9VqISUe1rkkSmEQRD7/oSdKqZmSEd6gky03S8gyb2QDUp7rcyYfQq7w6b2Ji1w
+         9d1kC40LjHEQtn3m6fn6xK2yYbbXlPQRw72KiYVI4DP3IrUZj6HWIzS0cXyAPt6qSc19
+         6717KQANaDQUqumaFZj8ItZSVV53ATqmkDEIc+wzgQnGOxd1oYnGiE3/pjqq0vRYqsDv
+         AkyU++Jy6CdWbfPEEPkv4JnxC4H7q6+4FMYMLAy0NWsaBgHs96UOtJ7rar66IrXy006O
+         JrKQ==
+X-Gm-Message-State: AOAM531Ct5qw0NxFrlQJHUmWikr1znzNtG+xpbh8FLfu1Yib/yWYb6OH
+        bVskH82wbHPKr8GWVIsOQT2JnwWEQwYlcQ==
+X-Google-Smtp-Source: ABdhPJxCfP77M8/2JZ9sjq/1cfSJg2rs/6jPaUmktbALDcsy2SGRemB6E1qPPqvUpiL7ISv6YIEbXA==
+X-Received: by 2002:a19:3817:: with SMTP id f23mr6381269lfa.587.1606603292296;
+        Sat, 28 Nov 2020 14:41:32 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:a4c7:9ff9:a160:aad0])
-        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.41.28
+        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.41.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 14:41:29 -0800 (PST)
+        Sat, 28 Nov 2020 14:41:31 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -84,10 +84,11 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v2 04/28] video: fbdev: aty: Delete unused variable in radeon_monitor
-Date:   Sat, 28 Nov 2020 23:40:50 +0100
-Message-Id: <20201128224114.1033617-5-sam@ravnborg.org>
+        Xiaofei Tan <tanxiaofei@huawei.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v2 05/28] video: fbdev: aty: Fix set but not used warnings
+Date:   Sat, 28 Nov 2020 23:40:51 +0100
+Message-Id: <20201128224114.1033617-6-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201128224114.1033617-1-sam@ravnborg.org>
 References: <20201128224114.1033617-1-sam@ravnborg.org>
@@ -97,38 +98,85 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix warning about variable that is asssigned a value but never used.
-The variable was indeed never used so delete it.
+Fix W=1 warnings about variables assigned but never used.
 
-Keep the call to radeon_probe_i2c_connector() as it may have
-side-effects. It is unlikely but I could not verify that is was safe to
-drop the call.
+- Drop variables that was set but never used
+- Make variable definition conditional om ATARI
+
+v2:
+  - Fix m68k build error (kernel test robot)
+  - Improve subject (Lee Jones)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-fbdev@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com> # m68k build fix
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Joe Perches <joe@perches.com>
+Cc: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc: Jason Yan <yanaijie@huawei.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jani Nikula <jani.nikula@intel.com>
 ---
- drivers/video/fbdev/aty/radeon_monitor.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/aty/radeon_monitor.c b/drivers/video/fbdev/aty/radeon_monitor.c
-index 9966c58aa26c..df55e23b7a5a 100644
---- a/drivers/video/fbdev/aty/radeon_monitor.c
-+++ b/drivers/video/fbdev/aty/radeon_monitor.c
-@@ -488,12 +488,10 @@ void radeon_probe_screens(struct radeonfb_info *rinfo,
- #if defined(DEBUG) && defined(CONFIG_FB_RADEON_I2C)
- 		{
- 			u8 *EDIDs[4] = { NULL, NULL, NULL, NULL };
--			int mon_types[4] = {MT_NONE, MT_NONE, MT_NONE, MT_NONE};
- 			int i;
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index c8feff0ee8da..83c8e809955a 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -2353,6 +2353,9 @@ static int aty_init(struct fb_info *info)
+ 	int gtb_memsize, has_var = 0;
+ 	struct fb_var_screeninfo var;
+ 	int ret;
++#ifdef CONFIG_ATARI
++	u8 dac_type;
++#endif
  
- 			for (i = 0; i < 4; i++)
--				mon_types[i] = radeon_probe_i2c_connector(rinfo,
--									  i+1, &EDIDs[i]);
-+				radeon_probe_i2c_connector(rinfo, i + 1, &EDIDs[i]);
- 		}
- #endif /* DEBUG */
+ 	init_waitqueue_head(&par->vblank.wait);
+ 	spin_lock_init(&par->int_lock);
+@@ -2360,13 +2363,12 @@ static int aty_init(struct fb_info *info)
+ #ifdef CONFIG_FB_ATY_GX
+ 	if (!M64_HAS(INTEGRATED)) {
+ 		u32 stat0;
+-		u8 dac_type, dac_subtype, clk_type;
++		u8 dac_subtype, clk_type;
+ 		stat0 = aty_ld_le32(CNFG_STAT0, par);
+ 		par->bus_type = (stat0 >> 0) & 0x07;
+ 		par->ram_type = (stat0 >> 3) & 0x07;
+ 		ramname = aty_gx_ram[par->ram_type];
+ 		/* FIXME: clockchip/RAMDAC probing? */
+-		dac_type = (aty_ld_le32(DAC_CNTL, par) >> 16) & 0x07;
+ #ifdef CONFIG_ATARI
+ 		clk_type = CLK_ATI18818_1;
+ 		dac_type = (stat0 >> 9) & 0x07;
+@@ -2375,7 +2377,6 @@ static int aty_init(struct fb_info *info)
+ 		else
+ 			dac_subtype = (aty_ld_8(SCRATCH_REG1 + 1, par) & 0xF0) | dac_type;
+ #else
+-		dac_type = DAC_IBMRGB514;
+ 		dac_subtype = DAC_IBMRGB514;
+ 		clk_type = CLK_IBMRGB514;
+ #endif
+@@ -3062,7 +3063,6 @@ static int atyfb_setup_sparc(struct pci_dev *pdev, struct fb_info *info,
+ 	if (dp == of_console_device) {
+ 		struct fb_var_screeninfo *var = &default_var;
+ 		unsigned int N, P, Q, M, T, R;
+-		u32 v_total, h_total;
+ 		struct crtc crtc;
+ 		u8 pll_regs[16];
+ 		u8 clock_cntl;
+@@ -3078,9 +3078,6 @@ static int atyfb_setup_sparc(struct pci_dev *pdev, struct fb_info *info,
+ 		crtc.gen_cntl = aty_ld_le32(CRTC_GEN_CNTL, par);
+ 		aty_crtc_to_var(&crtc, var);
+ 
+-		h_total = var->xres + var->right_margin + var->hsync_len + var->left_margin;
+-		v_total = var->yres + var->lower_margin + var->vsync_len + var->upper_margin;
+-
  		/*
+ 		 * Read the PLL to figure actual Refresh Rate.
+ 		 */
 -- 
 2.27.0
 
