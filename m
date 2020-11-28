@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD8662C7665
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0F12C7667
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732698AbgK1Wnb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1729806AbgK1Wnb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Sat, 28 Nov 2020 17:43:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49426 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730785AbgK1Wn3 (ORCPT
+        with ESMTP id S1732694AbgK1Wn3 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Sat, 28 Nov 2020 17:43:29 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF0FC0613D1
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:03 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id s27so12750239lfp.5
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:03 -0800 (PST)
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF8AC08E85F
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:05 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id d8so12778173lfa.1
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=5MJlaKcTS845wbNZGaIoS2kPxxU74n2R9tKR7IOQIuA=;
-        b=tvzCFnaKarri4MrMt/OOBX4UYabnmocLUjuejQpGNQHUbU1DV6B8ZgY3G77V3kezjS
-         TjZKXyvlQ9iCHDG6ntv/X/orBmg0DjjdkGE6hTXPdAuSBP2EYE1V8VsonslrBQw9+mGb
-         FD854fbfMhhp0lNLk880C3CTN4ruQLvxeqY3O4+fCM8IRdEhz5qLr15AO69rFVOYqyzZ
-         svz4z+Qz8nd4wmxP3lb28IIk1+Bl24bS8CGDh5JSpkdhBS0ouH65+e0hekQ5q/QfxGFC
-         DNnmoyu4ginXvCr6uQdvL6yx9/fXSAVcuv+WiZz0VrA8PRDNzTrGcFt5rkgJYY29QCr7
-         8upA==
+        bh=i/jzMmTNfIIHRAzbdgJUlI30eY/5E6v51csqIZVPdm8=;
+        b=H1SQRZSraI92a5O8JSNe2407lQpbO/+p9TDZYNkqAVUoapJk9fO+eGsW9hEC0PhPwQ
+         MpND47D0UvArbcEQ6WCBHFbfL+Yj82bjKGsmbi1NL9P+Drah4BbSv2KWIwjIa7VtDKSC
+         HLFX0TiM836LhxAnGD8VZIcFRVe37KjZkVD8bly5ogDokaCOe6rZkpYUE9zBOXZwIJeP
+         jHP0XeZr/46sh5nl2Uo7tv5amK8nJqhQe+6A7RJqP8KEyG7ZABXvV1PIT0/j9J/XvlFW
+         Pgvazywpu8LHLmRdFfaCSXUNq84LG/HMHt9XKr3njllPiDQ6VOrnopdZ3PVQFeD4IFqZ
+         mzZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=5MJlaKcTS845wbNZGaIoS2kPxxU74n2R9tKR7IOQIuA=;
-        b=mcekx80I/4T1FzhBXkkyIHM+v9XyiueGqwKxDKKQMgwMdih4v3AoW82yRt3+is8e7E
-         Jp5VebJMEwlPzJy9fb9sfkL2OlbogjHpTBBjw7wT2eoX+Wse2u4pO/Ei8adU2UKXZSoE
-         7Y3xjyTASsUr+PpQ/kb96R1g90xDcCydAoj15NgB/MnmdPQAPhu9HBZ6Q4KILHncB3pn
-         uHVf5gwtXecB/y9+Mo+qTsqFKE19HTO5emZ1Jp2YXoXSTN8dktZ8KJa0yOgN0ok9W/jc
-         yvcuJpeN3PZlq2y4CPqdRdfofdEZ8BXSBSukzqIA8DxoaDW0SOwWwxWF3h/S13kzuVGf
-         /CyA==
-X-Gm-Message-State: AOAM533SHNc4HvmMjV8LvzH8CYy85Nb/vhd1zcCkv0YFzNGuOyUr139m
-        Iet10FasApQf1wxb7aWbi4+GBu48VCfSTA==
-X-Google-Smtp-Source: ABdhPJxedjLhnAr5B6nJvt/A/46S2ueviNNylSrgyAirvdAVc5ST23a882taVbnarg8qv8rIuZvs4g==
-X-Received: by 2002:ac2:446f:: with SMTP id y15mr6344891lfl.415.1606603321907;
-        Sat, 28 Nov 2020 14:42:01 -0800 (PST)
+        bh=i/jzMmTNfIIHRAzbdgJUlI30eY/5E6v51csqIZVPdm8=;
+        b=Ka7HvpHX3Qqp1I32Sd8x4W94q7pTEArpvY1S+lcW+PwpvBdrtkhF3ni14PIFfBZEW/
+         x++avLNm9nSrFc1BpKu4luDGwlkxBUOoaGeiDVRe7qe6XakxRdNGUV1Kacmi/yYyp7N/
+         lwT2ZzOnarhZ5QlksALfbbMwjm/8PPLwTVu36Kcttsz5tM0Coc4NHHDG25tthybAAYmv
+         lELyy3uQTRF7e+Ksg2bV5tJUYsDY9LiXdAppjxnralHsP12nNDIXiPj/NlmXzRQyFMJY
+         p4G3327SEssn1hvNxcxdgGVjcMJW3Ulq1e4GwkNSoLqyvzKYL+AOotQnKAYaFyZypwH0
+         y6bg==
+X-Gm-Message-State: AOAM531SANIsRxTvTK8ZWkKQfBAM9VdkiJlzDAx0TFG+fQCVyS+dn5Eh
+        XbellldqMoOVdOg69QpGATzCUBrbWCUYCQ==
+X-Google-Smtp-Source: ABdhPJxtO7VXEd89T+Ciyiy6CaN38D1Nxk/voiHrw2OR7xLLx2fqYvJc1vd+oWe7rP3sXbswetx3Nw==
+X-Received: by 2002:a19:fc0d:: with SMTP id a13mr6540657lfi.276.1606603323803;
+        Sat, 28 Nov 2020 14:42:03 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:a4c7:9ff9:a160:aad0])
-        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.00
+        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 14:42:01 -0800 (PST)
+        Sat, 28 Nov 2020 14:42:03 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -85,9 +85,9 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v2 21/28] video: fbdev: tmiofb: Fix set but not used warnings
-Date:   Sat, 28 Nov 2020 23:41:07 +0100
-Message-Id: <20201128224114.1033617-22-sam@ravnborg.org>
+Subject: [PATCH v2 22/28] video: fbdev: omapfb: Fix set but not used warnings in dsi
+Date:   Sat, 28 Nov 2020 23:41:08 +0100
+Message-Id: <20201128224114.1033617-23-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201128224114.1033617-1-sam@ravnborg.org>
 References: <20201128224114.1033617-1-sam@ravnborg.org>
@@ -97,46 +97,82 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix W=1 warnings by avoiding local variables and use direct references.
+Fix several W=1 warnings.
+This removes unused code and avoids an assignment by moving
+the use inside the conditional block.
+
+The register read FLD_GET(r, 15, 8) could be dropped as it was done a
+few lines before too.
 
 v2:
   - Updated subject (Lee)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Aditya Pakki <pakki001@umn.edu>
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 Cc: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/tmiofb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/fbdev/tmiofb.c b/drivers/video/fbdev/tmiofb.c
-index 50111966c981..b70faa3850f2 100644
---- a/drivers/video/fbdev/tmiofb.c
-+++ b/drivers/video/fbdev/tmiofb.c
-@@ -802,10 +802,8 @@ static int tmiofb_remove(struct platform_device *dev)
- 	const struct mfd_cell *cell = mfd_get_cell(dev);
- 	struct fb_info *info = platform_get_drvdata(dev);
- 	int irq = platform_get_irq(dev, 0);
--	struct tmiofb_par *par;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+index 6f9c25fec994..72d45a02c3ac 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+@@ -1178,13 +1178,12 @@ static int dsi_regulator_init(struct platform_device *dsidev)
  
- 	if (info) {
--		par = info->par;
- 		unregister_framebuffer(info);
+ static void _dsi_print_reset_status(struct platform_device *dsidev)
+ {
+-	u32 l;
+ 	int b0, b1, b2;
  
- 		tmiofb_hw_stop(dev);
-@@ -816,8 +814,8 @@ static int tmiofb_remove(struct platform_device *dev)
- 		free_irq(irq, info);
+ 	/* A dummy read using the SCP interface to any DSIPHY register is
+ 	 * required after DSIPHY reset to complete the reset of the DSI complex
+ 	 * I/O. */
+-	l = dsi_read_reg(dsidev, DSI_DSIPHY_CFG5);
++	dsi_read_reg(dsidev, DSI_DSIPHY_CFG5);
  
- 		iounmap(info->screen_base);
--		iounmap(par->lcr);
--		iounmap(par->ccr);
-+		iounmap(((struct tmiofb_par *)info->par)->lcr);
-+		iounmap(((struct tmiofb_par *)info->par)->ccr);
+ 	if (dss_has_feature(FEAT_DSI_REVERSE_TXCLKESC)) {
+ 		b0 = 28;
+@@ -3627,7 +3626,7 @@ static int dsi_proto_config(struct platform_device *dsidev)
+ static void dsi_proto_timings(struct platform_device *dsidev)
+ {
+ 	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
+-	unsigned tlpx, tclk_zero, tclk_prepare, tclk_trail;
++	unsigned tlpx, tclk_zero, tclk_prepare;
+ 	unsigned tclk_pre, tclk_post;
+ 	unsigned ths_prepare, ths_prepare_ths_zero, ths_zero;
+ 	unsigned ths_trail, ths_exit;
+@@ -3646,7 +3645,6 @@ static void dsi_proto_timings(struct platform_device *dsidev)
  
- 		framebuffer_release(info);
- 	}
+ 	r = dsi_read_reg(dsidev, DSI_DSIPHY_CFG1);
+ 	tlpx = FLD_GET(r, 20, 16) * 2;
+-	tclk_trail = FLD_GET(r, 15, 8);
+ 	tclk_zero = FLD_GET(r, 7, 0);
+ 
+ 	r = dsi_read_reg(dsidev, DSI_DSIPHY_CFG2);
+@@ -4040,7 +4038,6 @@ static int dsi_update(struct omap_dss_device *dssdev, int channel,
+ {
+ 	struct platform_device *dsidev = dsi_get_dsidev_from_dssdev(dssdev);
+ 	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
+-	u16 dw, dh;
+ 
+ 	dsi_perf_mark_setup(dsidev);
+ 
+@@ -4049,11 +4046,8 @@ static int dsi_update(struct omap_dss_device *dssdev, int channel,
+ 	dsi->framedone_callback = callback;
+ 	dsi->framedone_data = data;
+ 
+-	dw = dsi->timings.x_res;
+-	dh = dsi->timings.y_res;
+-
+ #ifdef DSI_PERF_MEASURE
+-	dsi->update_bytes = dw * dh *
++	dsi->update_bytes = dsi->timings.x_res * dsi->timings.y_res *
+ 		dsi_get_pixel_size(dsi->pix_fmt) / 8;
+ #endif
+ 	dsi_update_screen_dispc(dsidev);
 -- 
 2.27.0
 
