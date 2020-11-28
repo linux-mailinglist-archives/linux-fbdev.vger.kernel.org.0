@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A91F2C7669
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F5B2C7662
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732694AbgK1Wne (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Nov 2020 17:43:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49444 "EHLO
+        id S2388271AbgK1WnK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Nov 2020 17:43:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732712AbgK1Wne (ORCPT
+        with ESMTP id S2388310AbgK1WnJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Nov 2020 17:43:34 -0500
+        Sat, 28 Nov 2020 17:43:09 -0500
 Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37F0C08E862
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:12 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id f18so10580150ljg.9
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:12 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CCDC0613D2
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:14 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id s9so10558405ljo.11
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ZRt4lLEdkGpEheHIyz2EqOhIIOjIMs1Mga1VdLe78eQ=;
-        b=VoeefBvOMOJ6OPNTHJueecfrE6MmXuxLmNAA7cf5fmmxdPCgKYiwLWmH2i/opDC6sb
-         t2wUpQXZ0vl5Aq+uHV8XCavGj69kuY9c/wcywlu+r13J3tGkHyrSdt5gMtmDv1Or3Ieo
-         yd4NDx9JHaO3gnY3c+ayBjJbt6aOVoHx11VW2VKsVwOOiaPXataGW/2aFjxZPHDZzRnR
-         XWtn5MCmb/sz+kQbC/3AxqOkJtdleD6MXcqtqkossYU0oqoWKpofMfqz2eMEv2PIxj1k
-         Gs2DOrVRDxy78Lc4rwOQt6RY8+A6k13+Er2FE81M5dM0UojhZULp9TpP5VCeNlliMwkz
-         MosQ==
+        bh=BP0tdGdOicm/g6FYqITXj/E741V7SOdfxHbuSnOa2vI=;
+        b=A4+pA68yf5NQVAPnKHbZYVBDWIiXGs+Bvvu5J6D3tuTktlHbucucuyXSkvyUy1Z1ad
+         qugn8GtpY2nk3MyGG1NB0/O+SXqhFzV50AwcMgZMDEIzlcPovhiNq/Vp3PCTW362qNUS
+         akY1e5rXqcvvcDXERh7JZfSHWjcCL7TT1XmLL6eKoNkpqDIadVv/n/BApO2EhP/R519x
+         Xwk9g4doicNQ+LGaenNYRm+DemOqIRzrgbI3ZIYi5/QYHt4ULU/wupW4572a5bKokc1P
+         GCVqE5qF8LeEuIz06k9OEgsBZgfX2rLwP5Lto5zDv6y9chUDrSbEr65fc8MNx0jvyhTX
+         Xoag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=ZRt4lLEdkGpEheHIyz2EqOhIIOjIMs1Mga1VdLe78eQ=;
-        b=G2hN3cUBBoqqNLzTXNcmsBpovOEcUXPh9aLC3XfPtNms3hSHRQDWu96kVJoSHiRJ0r
-         pqs9WBwPQsr3h6s3QJBzIm/hGSGFRntifmdi7/Sem9CM/EtbLwuhHlirrvcFVN1sBKYG
-         I/hzh49KitLUbqyDmAINRSB3f6cqgD3TyauULqUezBn+o1avI0BWJwq1TPqjLm3NgZW2
-         9Oc7dbxTmhi1BTYEyNIrZ0ZJnN45+OzSG0cGy90vZ2pQMTw8iLq6n308KV4KKZktk7F2
-         KRifLHKMZBWo1EANaE3YW1RHUVVmAYng93nETzryTm7822qs3tCusIWkcEd3qIdTQsuu
-         C/Mg==
-X-Gm-Message-State: AOAM533FMZgs/zGrrwv8Rwuox2HLEEsxzG43pDsixs/H10fxLh6NNSr2
-        XxbOzv+DTvGCR8tISH3es5uXWOzctjUCnA==
-X-Google-Smtp-Source: ABdhPJw5sH53JFBNC5Ek0t8nEkH9FBrmhoJ3Sp4EDqPZMMaNkgPKGnG3059fsYGH0P8ePoAWQa4rXg==
-X-Received: by 2002:a2e:2416:: with SMTP id k22mr6507511ljk.201.1606603331314;
-        Sat, 28 Nov 2020 14:42:11 -0800 (PST)
+        bh=BP0tdGdOicm/g6FYqITXj/E741V7SOdfxHbuSnOa2vI=;
+        b=LW4GJGtoMntx4KhtNm+tG+g57nO1EXwacXzeWdqQnQDW7DrW3fWmp0ndKd9jLcu8MU
+         v96QfKvecSob9Kgjt0P5l8E4V90eDO+bZE6t2AelEcgU1JMQelpAIU4gMZJVr90SOAwc
+         xihO1hTccjohy24gYLsuxnOTKHoY2uN8XsFV8dT/WKCYrFr9fo8NMyhrghvMAi7r62Ge
+         99BZKtPTG9H7CHA0Gke0L2POYNVg2p1aw9cRbDQTJDXH993ReHbQhvLsM8F3rIcz2VS5
+         AJyni3KduCR9rp6/XH7WsAsbPLopl2QBUdGP2eaxIOfnP74CwbN1PDtV6tor6palLQkD
+         2Rlw==
+X-Gm-Message-State: AOAM531HYFdv/rOzv0/YBqC4GmFeEnF34zuqut7s7O6VE4KH1CtsyryI
+        oKoEQTj8gW9ZLXiKXiw0y5ZLpdaQbKIW1A==
+X-Google-Smtp-Source: ABdhPJwwf1ZWhffUvstO1LtukDoI2Zp+qJq1Q3l5sM/werUk5+/LklnUG0w4Xy6qOp1ekvjP6B84Ew==
+X-Received: by 2002:a2e:888a:: with SMTP id k10mr6395463lji.341.1606603333226;
+        Sat, 28 Nov 2020 14:42:13 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:a4c7:9ff9:a160:aad0])
-        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.09
+        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 14:42:10 -0800 (PST)
+        Sat, 28 Nov 2020 14:42:12 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -84,11 +84,10 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Xiaofei Tan <tanxiaofei@huawei.com>,
-        Michal Januszewski <spock@gentoo.org>
-Subject: [PATCH v2 26/28] video: fbdev: uvesafb: Fix string related warnings
-Date:   Sat, 28 Nov 2020 23:41:12 +0100
-Message-Id: <20201128224114.1033617-27-sam@ravnborg.org>
+        Xiaofei Tan <tanxiaofei@huawei.com>
+Subject: [PATCH v2 27/28] video: fbdev: cirrusfb: Fix kernel-doc and set but not used warnings
+Date:   Sat, 28 Nov 2020 23:41:13 +0100
+Message-Id: <20201128224114.1033617-28-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201128224114.1033617-1-sam@ravnborg.org>
 References: <20201128224114.1033617-1-sam@ravnborg.org>
@@ -98,42 +97,93 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Two W=1 string related warnings.
-- Using strncpy to copy string without null-termination generates a
-  warning.  Use memcpy to copy only the relevant chars
+Fix warnings:
+- drop kernel-doc for the two debug functions to avoid the warnings
+- delete unused code
 
-- Fix a potential bug with a very long string, subtract one from the
-  length to make room for the termination null.
+v2:
+  - Updated subject (Lee)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Michal Januszewski <spock@gentoo.org>
-Cc: linux-fbdev@vger.kernel.org
+Cc: Thomas Zimemrmann <tzimmermann@suse.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/uvesafb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/cirrusfb.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index 8ee0fc9c63cf..45dc8da191e4 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -423,7 +423,7 @@ static int uvesafb_vbe_getinfo(struct uvesafb_ktask *task,
- 	task->t.flags = TF_VBEIB;
- 	task->t.buf_len = sizeof(struct vbe_ib);
- 	task->buf = &par->vbe_ib;
--	strncpy(par->vbe_ib.vbe_signature, "VBE2", 4);
-+	memcpy(par->vbe_ib.vbe_signature, "VBE2", 4);
- 
- 	err = uvesafb_exec(task);
- 	if (err || (task->t.regs.eax & 0xffff) != 0x004f) {
-@@ -1871,7 +1871,7 @@ static ssize_t v86d_show(struct device_driver *dev, char *buf)
- static ssize_t v86d_store(struct device_driver *dev, const char *buf,
- 		size_t count)
+diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
+index e9027172c0f5..93802abbbc72 100644
+--- a/drivers/video/fbdev/cirrusfb.c
++++ b/drivers/video/fbdev/cirrusfb.c
+@@ -2463,8 +2463,6 @@ static void AttrOn(const struct cirrusfb_info *cinfo)
+  */
+ static void WHDR(const struct cirrusfb_info *cinfo, unsigned char val)
  {
--	strncpy(v86d_path, buf, PATH_MAX);
-+	strncpy(v86d_path, buf, PATH_MAX - 1);
- 	return count;
+-	unsigned char dummy;
+-
+ 	if (is_laguna(cinfo))
+ 		return;
+ 	if (cinfo->btype == BT_PICASSO) {
+@@ -2473,18 +2471,18 @@ static void WHDR(const struct cirrusfb_info *cinfo, unsigned char val)
+ 		WGen(cinfo, VGA_PEL_MSK, 0x00);
+ 		udelay(200);
+ 		/* next read dummy from pixel address (3c8) */
+-		dummy = RGen(cinfo, VGA_PEL_IW);
++		RGen(cinfo, VGA_PEL_IW);
+ 		udelay(200);
+ 	}
+ 	/* now do the usual stuff to access the HDR */
+ 
+-	dummy = RGen(cinfo, VGA_PEL_MSK);
++	RGen(cinfo, VGA_PEL_MSK);
+ 	udelay(200);
+-	dummy = RGen(cinfo, VGA_PEL_MSK);
++	RGen(cinfo, VGA_PEL_MSK);
+ 	udelay(200);
+-	dummy = RGen(cinfo, VGA_PEL_MSK);
++	RGen(cinfo, VGA_PEL_MSK);
+ 	udelay(200);
+-	dummy = RGen(cinfo, VGA_PEL_MSK);
++	RGen(cinfo, VGA_PEL_MSK);
+ 	udelay(200);
+ 
+ 	WGen(cinfo, VGA_PEL_MSK, val);
+@@ -2492,7 +2490,7 @@ static void WHDR(const struct cirrusfb_info *cinfo, unsigned char val)
+ 
+ 	if (cinfo->btype == BT_PICASSO) {
+ 		/* now first reset HDR access counter */
+-		dummy = RGen(cinfo, VGA_PEL_IW);
++		RGen(cinfo, VGA_PEL_IW);
+ 		udelay(200);
+ 
+ 		/* and at the end, restore the mask value */
+@@ -2800,9 +2798,9 @@ static void bestclock(long freq, int *nom, int *den, int *div)
+ 
+ #ifdef CIRRUSFB_DEBUG
+ 
+-/**
++/*
+  * cirrusfb_dbg_print_regs
+- * @base: If using newmmio, the newmmio base address, otherwise %NULL
++ * @regbase: If using newmmio, the newmmio base address, otherwise %NULL
+  * @reg_class: type of registers to read: %CRT, or %SEQ
+  *
+  * DESCRIPTION:
+@@ -2847,7 +2845,7 @@ static void cirrusfb_dbg_print_regs(struct fb_info *info,
+ 	va_end(list);
  }
- static DRIVER_ATTR_RW(v86d);
+ 
+-/**
++/*
+  * cirrusfb_dbg_reg_dump
+  * @base: If using newmmio, the newmmio base address, otherwise %NULL
+  *
 -- 
 2.27.0
 
