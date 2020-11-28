@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 567642C766B
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F29E22C765E
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730594AbgK1WnY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Nov 2020 17:43:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49410 "EHLO
+        id S2387814AbgK1WnG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Nov 2020 17:43:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729806AbgK1WnY (ORCPT
+        with ESMTP id S2388241AbgK1WnE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Nov 2020 17:43:24 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1A8CC061A56
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:57 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id i17so10604929ljd.3
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:57 -0800 (PST)
+        Sat, 28 Nov 2020 17:43:04 -0500
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F98C08C5F2
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:59 -0800 (PST)
+Received: by mail-lj1-x242.google.com with SMTP id s9so10557821ljo.11
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:41:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FUS2l8ow10S8HSMYNfPD1C147gZPvQOjrsInjizZFWo=;
-        b=ZuXVD4U+vOHha9du/xh79eB8mXwGkHog3AcYCmOiX/kyAI0CkHLEW4enjKDEADRidd
-         TEDCXyWF5O8L3obC0yEOfyv7VjYtT5EmyOXth8pyNpjR8iD+YMpeYLfMGXC2H+DIBzBf
-         Z4XvUtva0NtPBnsOYAOpJ4N7uLjCl5fZItorbBSj/Qjir5m8IIKwCoEPaOX+826UL4bq
-         pqXBJ/hdtIg19IZPJWrWPR7W3lQwOLMJADR5y9bMuFKcw0AwockLuPZgbW13duq6ezUN
-         7kPQNGdRNwy6Pk5ZipS7fWaRqk/cctTHFv4Um1eRK1ATYLWt0wZppPuPWeprwXOhI22P
-         i38Q==
+        bh=6ly/Z1yYuSnGcVTY2GvWV0FTJyRU84GpNxZ//3QWCM8=;
+        b=XdE+tpdRtCE6buzA19hei71zINn4l4fFqUFVe6IoD1/xcVmv3ktBz40TsQO/8S+Y5M
+         KloOnjhUZh9VgpR+4eQIYrWDVFO8UbYu+nhrLggsPyJjRJXkiGlqREHjn4Xr/My8Gzj3
+         yXsc07B+W64ChsaDNIxi0waUEMK9W3NJMvPP8XLizVCXXGYr2wFU5XiKXgKgmn6cJ+yc
+         gaeT2zwHv/QLpbRyyUvcOVyeVIQu7fK3B7QU8ZUy8Jxb2l2dhdnCXo5t/wBry3pNXSPO
+         YuN7G8+aKJj+KHnzSlscrc1hclR9raQgczphM2tw2h6Xx7tyTgQZajeYvbQ3R6Sf2O0o
+         6ffw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=FUS2l8ow10S8HSMYNfPD1C147gZPvQOjrsInjizZFWo=;
-        b=CgWgFP931cbt0HF+6ASUDmxfjrAxGY6fShSfRjskOe9wsJWgyuim4b1/m6UDsi9eVG
-         oJ2JsFmg2IEFp3E2dk5IIuMe3xoXT2jUAXGqiSC6DNuDrY462P3PVtE8ft3wMxSNP2Jc
-         rUHx2/WWN6ThsXOBajvYFN9yqK9iibgbC/lI6ei61IozaA2g/hKgufmoDEVtw8/6tE/P
-         0F79wkuCgkjhpOaf0Usdy/3Hd5mqnJbpT+w7/pwK5XsHYZiqDfg+NMnntzHtUbOXs9fK
-         cx599irq7TXlCP+TNkc+3mYTT6fB0bop+tB+7evHSFxngs4fdp705xmvMvbTATwGbctt
-         9V0w==
-X-Gm-Message-State: AOAM530Aekfi2mYuulG/Othw5YM6D6Ap/R+1nF1cFFbrIpus4l1UJ+KN
-        /yYXT8KJIjxFLtcH9ayc94cLBCfZNnUNnA==
-X-Google-Smtp-Source: ABdhPJwQp91sOBtClqT2B4BDuivw06O2VWWo97mJ17fzP30e5uvOsf2Sl/QfFQYeZZd1g8R+upOYhA==
-X-Received: by 2002:a05:651c:48f:: with SMTP id s15mr6322341ljc.412.1606603316230;
-        Sat, 28 Nov 2020 14:41:56 -0800 (PST)
+        bh=6ly/Z1yYuSnGcVTY2GvWV0FTJyRU84GpNxZ//3QWCM8=;
+        b=md58JwC9cQp5vHqEZlYZQl8zx6Gn69OLP7ASyiyjb4hgMhkOD9AFR6oq3nvXSfCgbM
+         AaWhe8pfg/3wLbqKrd6gm0PDjZSfDK02raqJ4KFc+C7Ustc23mMJ2XzSPqyfC5i2yRBa
+         Ju7BtyM1Nwe+cjX15rlaYQQkDzDLXL2LgoMAXu/bEbQwoHQzmWw72yE78zfpSdS2ZwGY
+         1+aE2qIpqiv4OcBEoD+boWXghTQ5SexaKRJ5L0Keb1MlVFG+O5Fe99tieJ+PNtecRc6l
+         7GA03LYnlnA+VDX9YC9Nqesa0hbKv6YyHnwPeL8B3nT2ECs0PrFSWnK9lOjp3g2Bk3kJ
+         CnOA==
+X-Gm-Message-State: AOAM530/wvXrtvfelLKvKMZX1Lned2GOi6jvD5c5sUQ1Fy76iDCdYeTh
+        mOvtk5uIkrghuTvuHC5YzGJ4CJpMpN+dXw==
+X-Google-Smtp-Source: ABdhPJzxpWU9gC8X+uyFS5KiJHbVQ53c0gnB+Hw2Pp+j5BbMcnz5pe+A0pF19jy6LZS7IWaJHxicpw==
+X-Received: by 2002:a2e:9652:: with SMTP id z18mr6752831ljh.106.1606603318096;
+        Sat, 28 Nov 2020 14:41:58 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:a4c7:9ff9:a160:aad0])
-        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.41.54
+        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.41.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 14:41:55 -0800 (PST)
+        Sat, 28 Nov 2020 14:41:57 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -85,9 +85,9 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v2 18/28] video: fbdev: mx3fb: Fix kernel-doc, set but not used and string warnings
-Date:   Sat, 28 Nov 2020 23:41:04 +0100
-Message-Id: <20201128224114.1033617-19-sam@ravnborg.org>
+Subject: [PATCH v2 19/28] video: fbdev: sstfb: Updated logging to fix set but not used warnings
+Date:   Sat, 28 Nov 2020 23:41:05 +0100
+Message-Id: <20201128224114.1033617-20-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201128224114.1033617-1-sam@ravnborg.org>
 References: <20201128224114.1033617-1-sam@ravnborg.org>
@@ -97,93 +97,67 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix W=1 warnings:
-- Fix kernel-doc
-- Drop unused code/variables
-- Use memcpy to copy a string without zero-termination
-  strncpy() generates a warning
+Fix set but not used warnings by introducing no_printk variants
+for the internal logging system for this driver.
+
+Fix a new warning that popped up now that logging was checked for
+correct printf format strings.
+
+A more invasive fix had been to replace all the internal logging with
+standard logging primitives - thats for another day.
 
 v2:
-  - Updated subject (Lee)
+  - Update subject (Lee)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Xiaofei Tan <tanxiaofei@huawei.com>
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Alex Dewar <alex.dewar90@gmail.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: linux-fbdev@vger.kernel.org
 Cc: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/mx3fb.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/sstfb.c | 2 +-
+ include/video/sstfb.h       | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/mx3fb.c b/drivers/video/fbdev/mx3fb.c
-index 894617ddabcb..fabb271337ed 100644
---- a/drivers/video/fbdev/mx3fb.c
-+++ b/drivers/video/fbdev/mx3fb.c
-@@ -445,7 +445,6 @@ static void sdc_enable_channel(struct mx3fb_info *mx3_fbi)
- static void sdc_disable_channel(struct mx3fb_info *mx3_fbi)
- {
- 	struct mx3fb_data *mx3fb = mx3_fbi->mx3fb;
--	uint32_t enabled;
- 	unsigned long flags;
+diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
+index c05cdabeb11c..27d4b0ace2d6 100644
+--- a/drivers/video/fbdev/sstfb.c
++++ b/drivers/video/fbdev/sstfb.c
+@@ -1390,7 +1390,7 @@ static int sstfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	        fix->smem_start, info->screen_base,
+ 	        fix->smem_len >> 20);
  
- 	if (mx3_fbi->txd == NULL)
-@@ -453,7 +452,7 @@ static void sdc_disable_channel(struct mx3fb_info *mx3_fbi)
+-	f_ddprintk("regbase_virt: %#lx\n", par->mmio_vbase);
++	f_ddprintk("regbase_virt: %p\n", par->mmio_vbase);
+ 	f_ddprintk("membase_phys: %#lx\n", fix->smem_start);
+ 	f_ddprintk("fbbase_virt: %p\n", info->screen_base);
  
- 	spin_lock_irqsave(&mx3fb->lock, flags);
- 
--	enabled = sdc_fb_uninit(mx3_fbi);
-+	sdc_fb_uninit(mx3_fbi);
- 
- 	spin_unlock_irqrestore(&mx3fb->lock, flags);
- 
-@@ -732,7 +731,7 @@ static int mx3fb_unmap_video_memory(struct fb_info *fbi);
- 
- /**
-  * mx3fb_set_fix() - set fixed framebuffer parameters from variable settings.
-- * @info:	framebuffer information pointer
-+ * @fbi:	framebuffer information pointer
-  * @return:	0 on success or negative error code on failure.
-  */
- static int mx3fb_set_fix(struct fb_info *fbi)
-@@ -740,7 +739,7 @@ static int mx3fb_set_fix(struct fb_info *fbi)
- 	struct fb_fix_screeninfo *fix = &fbi->fix;
- 	struct fb_var_screeninfo *var = &fbi->var;
- 
--	strncpy(fix->id, "DISP3 BG", 8);
-+	memcpy(fix->id, "DISP3 BG", 8);
- 
- 	fix->line_length = var->xres_virtual * var->bits_per_pixel / 8;
- 
-@@ -1105,6 +1104,8 @@ static void __blank(int blank, struct fb_info *fbi)
- 
- /**
-  * mx3fb_blank() - blank the display.
-+ * @blank:	blank value for the panel
-+ * @fbi:	framebuffer information pointer
-  */
- static int mx3fb_blank(int blank, struct fb_info *fbi)
- {
-@@ -1126,7 +1127,7 @@ static int mx3fb_blank(int blank, struct fb_info *fbi)
- /**
-  * mx3fb_pan_display() - pan or wrap the display
-  * @var:	variable screen buffer information.
-- * @info:	framebuffer information pointer.
-+ * @fbi:	framebuffer information pointer.
-  *
-  * We look only at xoffset, yoffset and the FB_VMODE_YWRAP flag
-  */
-@@ -1387,6 +1388,8 @@ static int mx3fb_unmap_video_memory(struct fb_info *fbi)
- 
- /**
-  * mx3fb_init_fbinfo() - initialize framebuffer information object.
-+ * @dev: the device
-+ * @ops:	framebuffer device operations
-  * @return:	initialized framebuffer structure.
-  */
- static struct fb_info *mx3fb_init_fbinfo(struct device *dev,
+diff --git a/include/video/sstfb.h b/include/video/sstfb.h
+index 28384f354773..d4a5e41d1173 100644
+--- a/include/video/sstfb.h
++++ b/include/video/sstfb.h
+@@ -23,7 +23,7 @@
+ #  define SST_DEBUG_FUNC 1
+ #  define SST_DEBUG_VAR  1
+ #else
+-#  define dprintk(X...)
++#  define dprintk(X...)		no_printk(X)
+ #  define SST_DEBUG_REG  0
+ #  define SST_DEBUG_FUNC 0
+ #  define SST_DEBUG_VAR  0
+@@ -48,7 +48,7 @@
+ #if (SST_DEBUG_FUNC > 1)
+ #  define f_ddprintk(X...)	dprintk(" " X)
+ #else
+-#  define f_ddprintk(X...)
++#  define f_ddprintk(X...)	no_printk(X)
+ #endif
+ #if (SST_DEBUG_FUNC > 2)
+ #  define f_dddprintk(X...)	dprintk(" " X)
 -- 
 2.27.0
 
