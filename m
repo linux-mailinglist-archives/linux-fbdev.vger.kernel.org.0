@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0F12C7667
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BB22C7661
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Nov 2020 23:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729806AbgK1Wnb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Nov 2020 17:43:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
+        id S2388318AbgK1WnJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Nov 2020 17:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732694AbgK1Wn3 (ORCPT
+        with ESMTP id S2388271AbgK1WnJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Nov 2020 17:43:29 -0500
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF8AC08E85F
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:05 -0800 (PST)
-Received: by mail-lf1-x141.google.com with SMTP id d8so12778173lfa.1
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:05 -0800 (PST)
+        Sat, 28 Nov 2020 17:43:09 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E7B9C08E860
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:07 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id z1so10598742ljn.4
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Nov 2020 14:42:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=i/jzMmTNfIIHRAzbdgJUlI30eY/5E6v51csqIZVPdm8=;
-        b=H1SQRZSraI92a5O8JSNe2407lQpbO/+p9TDZYNkqAVUoapJk9fO+eGsW9hEC0PhPwQ
-         MpND47D0UvArbcEQ6WCBHFbfL+Yj82bjKGsmbi1NL9P+Drah4BbSv2KWIwjIa7VtDKSC
-         HLFX0TiM836LhxAnGD8VZIcFRVe37KjZkVD8bly5ogDokaCOe6rZkpYUE9zBOXZwIJeP
-         jHP0XeZr/46sh5nl2Uo7tv5amK8nJqhQe+6A7RJqP8KEyG7ZABXvV1PIT0/j9J/XvlFW
-         Pgvazywpu8LHLmRdFfaCSXUNq84LG/HMHt9XKr3njllPiDQ6VOrnopdZ3PVQFeD4IFqZ
-         mzZA==
+        bh=tdC3cUaEksOqJq+sL/p6xZwzgeMpzcgI0nIv+Qg+xyQ=;
+        b=db0u5+lExLWY4Gcbn8xuBCD7WyKO6XHbkpd5i1lVs5fIGDjOE7f0rpUc+FMjmqXEvY
+         oTKMaJ76x5pp5L0cRp9DinMl03rqVZzTwy/wQbxQOulOdsU/OT+hugE3Ay3GARU2/Ey7
+         bpcTSl+DWpzTJsPEGmFjcNTGfmSL+C25VfjOi7TwjbUq9J/ZRdPLce5mJKrs4Br5TBjS
+         Ro/DeNhpUC5x+Dne7yQG4Y2CnnEzBp0ACn3lptugY42ovFlK8e/qXx/Hcoxd+7qgOdbj
+         21uQOll3f6Qwj6mOAm2uyQGZEWKBc9QGcaKz6PzMRPeBvFLaBaL4Wpnsi46LTikdD1rm
+         94JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=i/jzMmTNfIIHRAzbdgJUlI30eY/5E6v51csqIZVPdm8=;
-        b=Ka7HvpHX3Qqp1I32Sd8x4W94q7pTEArpvY1S+lcW+PwpvBdrtkhF3ni14PIFfBZEW/
-         x++avLNm9nSrFc1BpKu4luDGwlkxBUOoaGeiDVRe7qe6XakxRdNGUV1Kacmi/yYyp7N/
-         lwT2ZzOnarhZ5QlksALfbbMwjm/8PPLwTVu36Kcttsz5tM0Coc4NHHDG25tthybAAYmv
-         lELyy3uQTRF7e+Ksg2bV5tJUYsDY9LiXdAppjxnralHsP12nNDIXiPj/NlmXzRQyFMJY
-         p4G3327SEssn1hvNxcxdgGVjcMJW3Ulq1e4GwkNSoLqyvzKYL+AOotQnKAYaFyZypwH0
-         y6bg==
-X-Gm-Message-State: AOAM531SANIsRxTvTK8ZWkKQfBAM9VdkiJlzDAx0TFG+fQCVyS+dn5Eh
-        XbellldqMoOVdOg69QpGATzCUBrbWCUYCQ==
-X-Google-Smtp-Source: ABdhPJxtO7VXEd89T+Ciyiy6CaN38D1Nxk/voiHrw2OR7xLLx2fqYvJc1vd+oWe7rP3sXbswetx3Nw==
-X-Received: by 2002:a19:fc0d:: with SMTP id a13mr6540657lfi.276.1606603323803;
-        Sat, 28 Nov 2020 14:42:03 -0800 (PST)
+        bh=tdC3cUaEksOqJq+sL/p6xZwzgeMpzcgI0nIv+Qg+xyQ=;
+        b=VL61BrDzRDwzFp2BYMLo69Qh365P4VM59qAtGvaC5Ie63xDwAUb5nLv2RdRHe5iThp
+         +VUujn9SHoNU0dU2VJm5XeMTp+8BK3xrrvU0f238CJMW5xlKOWB2TRE9uliBiHTM5B7p
+         wKGQAH+rlWJLGpZDfpLBzdYWyRGYTutxnbTYV644ex1FVmxYC1YLRobXdohCdbZpkQyy
+         ++d9GomCLD6SsLZWPnqjFi16k+e4Py+q4Tsl6A1uu1q6f5qQdqQF2wZF0DyigzXsENsX
+         5NIuub/PnntCO0jrmRfs4K7wYS6axfYkJ4gpF1VTPNc0OOE1COIEtlPPlgP2yAnAnFVr
+         lvfw==
+X-Gm-Message-State: AOAM531Mh33fIfF7H44sAKMuRqWV3xgQ7mJp/tDKeW1ud5NDKG1JOwf3
+        1vyIRTAtiDuhdoFIOHw39Fpwcxi6xVarcw==
+X-Google-Smtp-Source: ABdhPJx/J0hfsr/rR0D6AcWR9QDUgP6LXUVbit09Oa3JEO3/0y2BPi8pZg+WoICFuvvaeWhd3bZjMA==
+X-Received: by 2002:a2e:6f04:: with SMTP id k4mr6716005ljc.220.1606603325686;
+        Sat, 28 Nov 2020 14:42:05 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:a4c7:9ff9:a160:aad0])
-        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.02
+        by smtp.gmail.com with ESMTPSA id w21sm1236857lff.280.2020.11.28.14.42.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Nov 2020 14:42:03 -0800 (PST)
+        Sat, 28 Nov 2020 14:42:05 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -85,9 +85,9 @@ Cc:     Aditya Pakki <pakki001@umn.edu>,
         Thomas Zimemrmann <tzimmermann@suse.de>,
         Vaibhav Gupta <vaibhavgupta40@gmail.com>,
         Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: [PATCH v2 22/28] video: fbdev: omapfb: Fix set but not used warnings in dsi
-Date:   Sat, 28 Nov 2020 23:41:08 +0100
-Message-Id: <20201128224114.1033617-23-sam@ravnborg.org>
+Subject: [PATCH v2 23/28] video: fbdev: omapfb: Fix set but not used warnings in hdmi*_core
+Date:   Sat, 28 Nov 2020 23:41:09 +0100
+Message-Id: <20201128224114.1033617-24-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201128224114.1033617-1-sam@ravnborg.org>
 References: <20201128224114.1033617-1-sam@ravnborg.org>
@@ -97,82 +97,67 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix several W=1 warnings.
-This removes unused code and avoids an assignment by moving
-the use inside the conditional block.
-
-The register read FLD_GET(r, 15, 8) could be dropped as it was done a
-few lines before too.
+Fix a few W=1 warnings about unused assignments.
+Drop the unused error code.
 
 v2:
-  - Updated subject (Lee)
+  - Subject updated (Lee)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Aditya Pakki <pakki001@umn.edu>
 Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Qilong Zhang <zhangqilong3@huawei.com>
+Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
 Cc: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c | 4 ++--
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-index 6f9c25fec994..72d45a02c3ac 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-@@ -1178,13 +1178,12 @@ static int dsi_regulator_init(struct platform_device *dsidev)
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
+index 726c190862d4..e6363a420933 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
+@@ -679,7 +679,7 @@ int hdmi4_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
+ 	struct hdmi_audio_format audio_format;
+ 	struct hdmi_audio_dma audio_dma;
+ 	struct hdmi_core_audio_config acore;
+-	int err, n, cts, channel_count;
++	int n, cts, channel_count;
+ 	unsigned int fs_nr;
+ 	bool word_length_16b = false;
  
- static void _dsi_print_reset_status(struct platform_device *dsidev)
- {
--	u32 l;
- 	int b0, b1, b2;
+@@ -741,7 +741,7 @@ int hdmi4_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
+ 		return -EINVAL;
+ 	}
  
- 	/* A dummy read using the SCP interface to any DSIPHY register is
- 	 * required after DSIPHY reset to complete the reset of the DSI complex
- 	 * I/O. */
--	l = dsi_read_reg(dsidev, DSI_DSIPHY_CFG5);
-+	dsi_read_reg(dsidev, DSI_DSIPHY_CFG5);
+-	err = hdmi_compute_acr(pclk, fs_nr, &n, &cts);
++	hdmi_compute_acr(pclk, fs_nr, &n, &cts);
  
- 	if (dss_has_feature(FEAT_DSI_REVERSE_TXCLKESC)) {
- 		b0 = 28;
-@@ -3627,7 +3626,7 @@ static int dsi_proto_config(struct platform_device *dsidev)
- static void dsi_proto_timings(struct platform_device *dsidev)
- {
- 	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
--	unsigned tlpx, tclk_zero, tclk_prepare, tclk_trail;
-+	unsigned tlpx, tclk_zero, tclk_prepare;
- 	unsigned tclk_pre, tclk_post;
- 	unsigned ths_prepare, ths_prepare_ths_zero, ths_zero;
- 	unsigned ths_trail, ths_exit;
-@@ -3646,7 +3645,6 @@ static void dsi_proto_timings(struct platform_device *dsidev)
+ 	/* Audio clock regeneration settings */
+ 	acore.n = n;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
+index eda29d3032e1..cb63bc0e92ca 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
+@@ -790,7 +790,7 @@ int hdmi5_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
+ 	struct hdmi_audio_format audio_format;
+ 	struct hdmi_audio_dma audio_dma;
+ 	struct hdmi_core_audio_config core_cfg;
+-	int err, n, cts, channel_count;
++	int n, cts, channel_count;
+ 	unsigned int fs_nr;
+ 	bool word_length_16b = false;
  
- 	r = dsi_read_reg(dsidev, DSI_DSIPHY_CFG1);
- 	tlpx = FLD_GET(r, 20, 16) * 2;
--	tclk_trail = FLD_GET(r, 15, 8);
- 	tclk_zero = FLD_GET(r, 7, 0);
+@@ -833,7 +833,7 @@ int hdmi5_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
+ 		return -EINVAL;
+ 	}
  
- 	r = dsi_read_reg(dsidev, DSI_DSIPHY_CFG2);
-@@ -4040,7 +4038,6 @@ static int dsi_update(struct omap_dss_device *dssdev, int channel,
- {
- 	struct platform_device *dsidev = dsi_get_dsidev_from_dssdev(dssdev);
- 	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
--	u16 dw, dh;
+-	err = hdmi_compute_acr(pclk, fs_nr, &n, &cts);
++	hdmi_compute_acr(pclk, fs_nr, &n, &cts);
+ 	core_cfg.n = n;
+ 	core_cfg.cts = cts;
  
- 	dsi_perf_mark_setup(dsidev);
- 
-@@ -4049,11 +4046,8 @@ static int dsi_update(struct omap_dss_device *dssdev, int channel,
- 	dsi->framedone_callback = callback;
- 	dsi->framedone_data = data;
- 
--	dw = dsi->timings.x_res;
--	dh = dsi->timings.y_res;
--
- #ifdef DSI_PERF_MEASURE
--	dsi->update_bytes = dw * dh *
-+	dsi->update_bytes = dsi->timings.x_res * dsi->timings.y_res *
- 		dsi_get_pixel_size(dsi->pix_fmt) / 8;
- #endif
- 	dsi_update_screen_dispc(dsidev);
 -- 
 2.27.0
 
