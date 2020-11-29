@@ -2,93 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0C6E2C7B78
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Nov 2020 22:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF562C7B7E
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 Nov 2020 22:55:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725950AbgK2Vxt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Nov 2020 16:53:49 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:40206 "EHLO
+        id S1727773AbgK2VzI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 Nov 2020 16:55:08 -0500
+Received: from asavdk3.altibox.net ([109.247.116.14]:40296 "EHLO
         asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgK2Vxs (ORCPT
+        with ESMTP id S1726512AbgK2VzI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Nov 2020 16:53:48 -0500
+        Sun, 29 Nov 2020 16:55:08 -0500
 Received: from ravnborg.org (unknown [188.228.123.71])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 1697720031;
-        Sun, 29 Nov 2020 22:52:59 +0100 (CET)
-Date:   Sun, 29 Nov 2020 22:52:57 +0100
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 61BBD2002C;
+        Sun, 29 Nov 2020 22:54:21 +0100 (CET)
+Date:   Sun, 29 Nov 2020 22:54:20 +0100
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
-        Evgeny Novikov <novikov@ispras.ru>,
-        Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Aditya Pakki <pakki001@umn.edu>,
-        Xiaofei Tan <tanxiaofei@huawei.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Alex Dewar <alex.dewar90@gmail.com>,
-        Jason Yan <yanaijie@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Qilong Zhang <zhangqilong3@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Gustavo Silva <gustavoars@kernel.org>,
-        Peter Rosin <peda@axentia.se>,
-        George Kennedy <george.kennedy@oracle.com>,
-        Kristoffer Ericson <kristoffer.ericson@gmail.com>,
-        Alexander Klimov <grandmaster@al2klimov.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Joe Perches <joe@perches.com>,
-        Peilin Ye <yepeilin.cs@gmail.com>,
-        Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 28/28] video: fbdev: s1d13xxxfb: Fix kernel-doc and
- set but not used warnings
-Message-ID: <20201129215257.GD1162850@ravnborg.org>
-References: <20201128224114.1033617-1-sam@ravnborg.org>
- <20201128224114.1033617-29-sam@ravnborg.org>
- <18caca15-a6e7-cb4b-3028-c010922bda80@suse.de>
+To:     trix@redhat.com
+Cc:     b.zolnierkie@samsung.com, pakki001@umn.edu,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] omapfb: fbcon: remove trailing semicolon in macro
+ definition
+Message-ID: <20201129215420.GE1162850@ravnborg.org>
+References: <20201127190508.2842786-1-trix@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <18caca15-a6e7-cb4b-3028-c010922bda80@suse.de>
+In-Reply-To: <20201127190508.2842786-1-trix@redhat.com>
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
         a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=lyPckR2nilxX3eVW8GIA:9 a=CjuIK1q_8ugA:10
+        a=kj9zAlcOel0A:10 a=20KFwNOVAAAA:8 a=lSec57_JDs9yAHf9QvQA:9
+        a=CjuIK1q_8ugA:10 a=HngZt1h-djAA:10
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Thomas.
+Hi Tom,
+On Fri, Nov 27, 2020 at 11:05:08AM -0800, trix@redhat.com wrote:
+> From: Tom Rix <trix@redhat.com>
+> 
+> The macro use will already have a semicolon.
+> 
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-On Sun, Nov 29, 2020 at 10:59:22AM +0100, Thomas Zimmermann wrote:
-> 
-> 
-> Am 28.11.20 um 23:41 schrieb Sam Ravnborg:
-> > Fix following W=1 warnings:
-> > - Fix set but not nused variables which was used only for logging.
-> 
-> s/nused/used
-> 
-> s/which was/that were
-> 
-> Otherwise
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Fixed and applied to drm-misc-next.
-
-Thanks for the a-b's and r-b. Are you up to take a look at the remaining
-24 patches? It is all simple patches so should be doable in limited time.
+Thanks, applied to drm-misc-next.
 
 	Sam
