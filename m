@@ -2,76 +2,54 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E592CDEA8
-	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Dec 2020 20:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 358892CF830
+	for <lists+linux-fbdev@lfdr.de>; Sat,  5 Dec 2020 01:48:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726661AbgLCTTD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 3 Dec 2020 14:19:03 -0500
-Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:43677 "EHLO
-        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725793AbgLCTTC (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 3 Dec 2020 14:19:02 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id F3395118E;
-        Thu,  3 Dec 2020 14:17:56 -0500 (EST)
-Received: from imap21 ([10.202.2.71])
-  by compute4.internal (MEProxy); Thu, 03 Dec 2020 14:17:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aeam.us; h=
-        mime-version:message-id:date:from:to:subject:content-type; s=
-        fm3; bh=0QKkKaOlfBtPrPmktIoa9gtE6Rl3VEYghJFS+T/ppBE=; b=14xcV8Dg
-        zTZx/VnBAhsaQu9gXG5QmPZmWj0h1qvaSOKJDaQT/GQ4uxUdHoQb/2z2m1ZyfTYS
-        O6VUHNVnqsPyp7MZZsJhnswsOPU/pQFRSAs33ChIiteUbGs8FU4joNagMT7U4iWX
-        G2NydrUeTSgAVapky0T5Xu1gJyMAhch68odfJZt7Z7fV62hakKeN2IryH1/xg1x6
-        gHAIIMkMLZI+qIwtEiqtnb5VypOOzCODSPFPfsbHkFh94oX5mLnMgD8xaE/PIgVi
-        Cdx2sozDqiEdzH1+qd0kFRlLn+hOizL7MqfcPRk464iY7qgMQLgEv40XWQHRYfDq
-        dVMP2UDGCarkAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=content-type:date:from:message-id
-        :mime-version:subject:to:x-me-proxy:x-me-proxy:x-me-sender
-        :x-me-sender:x-sasl-enc; s=fm1; bh=0QKkKaOlfBtPrPmktIoa9gtE6Rl3V
-        EYghJFS+T/ppBE=; b=briFTnrCy26ZeC9oIU2r4lr80AoTLLnYZIm8SU7RNcdac
-        ed04M7i5JcPpbyNYYVJkemt7V3J0vOCLSr2mLkSYCvMLSuNyfxTWnIoWLigbpOQ7
-        TsYcyFtNq3ihfEAtOXNeY5cIJAycL/96WNiyfkA+kBGx6yvm+BuIAjaNusNoQaNE
-        eUCnV3qG1DNfPZv7sPYQV5/KAu4vx4rAddiEZLF2Zae7qfXdM04Xit2yV8DD0YqU
-        jzqI/Hu5PiNoDh/KOkx6yL3dCTa97tIriqPM3+0R9v0c9dfCNGjrvdmZHTkbEfs0
-        o/E1x8ZQ1Wnl0TvZtXwRPsxYkwgHho5Nq72Zil4sg==
-X-ME-Sender: <xms:5DnJX3X3v1fppnh2Q-wMYr1-FTMsTkNRdUovFljQlH5-du_6R9TH9w>
-    <xme:5DnJX_mW4bJuRgTZc9wWz_FbNkQuKHPc7pGICdQMWosNXJRnSMdjQ4ZerOCSofwG-
-    ShmRupOcziYstTkLjs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrudeiiedguddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecunecujfgurhepofgfggfkfffhvffutgesthdtre
-    dtreertdenucfhrhhomhepfdfuihguucfuphhrhidfuceoshhiugesrggvrghmrdhusheq
-    necuggftrfgrthhtvghrnhepueekheeiueeugeevvdejhfeiuefgvdekvdduvdegudfghe
-    efvedtgeetvdehudetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepshhiugesrggvrghmrdhush
-X-ME-Proxy: <xmx:5DnJXzZWneqKrYs5OOwcAZCK3wXsDSDjp2qZGI_FbfqHa9faOH8RXQ>
-    <xmx:5DnJXyWlHdMplmY_lfNuuYMBWpTvE3sWyR4nIsXEsoviN52Ti7oAAg>
-    <xmx:5DnJXxlTXhbb3T-AxKjKZbBJDOEZ2yuz_Qvd1h7lr9rWznZOXPFHLA>
-    <xmx:5DnJX_RPmhSdVQghR9-KJBZiyhHEe-ST_hbiQtsTU3RNW6wOJskzFw>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id B4A4D6F6005E; Thu,  3 Dec 2020 14:17:39 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-622-g4a97c0b-fm-20201115.001-g4a97c0b3
-Mime-Version: 1.0
-Message-Id: <f2317141-18db-473a-b025-98c01e115e0a@www.fastmail.com>
-Date:   Thu, 03 Dec 2020 13:17:35 -0600
-From:   "Sid Spry" <sid@aeam.us>
-To:     arm-linux-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: msm_fb data readout, writeback panel readout
-Content-Type: text/plain
+        id S1730966AbgLEAq7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 4 Dec 2020 19:46:59 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:49526 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726485AbgLEAq5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 4 Dec 2020 19:46:57 -0500
+X-Greylist: delayed 14573 seconds by postgrey-1.27 at vger.kernel.org; Fri, 04 Dec 2020 19:46:41 EST
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id 274A31A5589;
+        Sat,  5 Dec 2020 04:44:55 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id E5C39838858;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id B84F6838260;
+        Sat,  5 Dec 2020 04:44:54 +0900 (JST)
+MIME-Version: 1.0
+Message-ID: <20201204194454.00002B21.0147@hyogo-dai.ac.jp>
+Date:   Sat, 05 Dec 2020 04:44:54 +0900
+From:   "Dr.Raymond" <tabata@hyogo-dai.ac.jp>
+To:     <infocarferr1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information. 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--4.326-5.0-31-10
+X-imss-scan-details: No--4.326-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: +T4Z3mpR0x5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce/bj
+        Enpjm61/Gf23dqZJjE4Erxo5p8V1/E1+zyfzlN7y/sToY2qzpx7w5nZ/qYg41XEWw1TkKAjcYff
+        qdBtG2ocgOkCKsW/kbuunGEBqPil++coAzulIP8gMTyJMXCOBhj9BWL7GG0LsKrauXd3MZDUZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello, how do I read out the data currently on a display?  My device is
-a msm-based Android phone, the device nodes are at /dev/graphics/fb{0,1} using
-msm_fb. The fb1 device is a "writeback panel" which in my understanding
-maintains a readable buffer meant for things like screen capture.
+infocarfer@aim.com
 
-I can't find any information on getting data from the buffer, and was informed
-there may be compression getting in the way. I found reference to the flag to
-turn it off, but would prefer to make use of it. Can anyone help?
 
-Thanks in advance!
+
