@@ -2,51 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE7842D06CF
-	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2E82D06CC
+	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:04:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727828AbgLFTEg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 6 Dec 2020 14:04:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58764 "EHLO
+        id S1727719AbgLFTEa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 6 Dec 2020 14:04:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727617AbgLFTEg (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:04:36 -0500
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A57D5C061A56
-        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:17 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id w13so2185765lfd.5
-        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:17 -0800 (PST)
+        with ESMTP id S1727617AbgLFTEa (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:04:30 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58129C08C5F2
+        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:19 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id x23so5656132lji.7
+        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/SfLL6p8Oi2QG40QnuZputxs/YKRkVGSLvwvUqAWetc=;
-        b=dzhegX2f5Ql3PjQBuil9z4sEYgr3337KW2qQckQ6pQGqbvHHs3CVckmYm5Un20ZhkN
-         wdkTRTeoGd4YUyQFFb9U0U8n93rtfAEylUq//N9tgc51Uj0heyF4pNIBSnYX3+NsBMg3
-         VlU4KJFbgS+nYglZ1sGrjauXI4h68vGNSOgCJRgtnTxfmkIhYAinfPZNDvHX3dZZVEpJ
-         D8Uhz593GGEn0bnW/ZX+fvM/7cLfUcJ5KPkfia0Y4F+7Jzk8Drd3lORKZBfzTHoV+FZS
-         vBppZ4WLbjFRLdfxltCmYT0j7Y1+AMNgraJP+91Ox1B9CubxR0yjYf9zDFUhIyR8iYzU
-         sulA==
+        bh=sXUs3Mthn2WNxe9bljzB5KJJxtMgTykEfGBU86F6xiE=;
+        b=Q4dR21nP1jZzsA/PsBN5qV0FqAKg4TkCjUyfsDCiyitQByJY5pO5fmgCAt3HViK+Vu
+         XRUL2l0cD9wsZRjDwcbB0ZkNdr2Ir8Z7fcIEcrCiLQ53YeGHkSqqOUbj4eNSOg27SQ2e
+         VuiJFCYExB03CZXF1PU6lkLv//+TmUU088Jb20M90SzVM9CX147uj+6nsdoHGclTz2ug
+         h7Enp9lKWI4SeKqcS7nXNJbi6m28/YpB2nLY/XwFy9XMEryms6GgsPuePANX6hSoCvmW
+         db092ppYA0YCdY9Z8mQQsgWKkITED7TNoaGGzceIxon6WPvVxvSHD/htfnVZo8eKukOP
+         QYaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=/SfLL6p8Oi2QG40QnuZputxs/YKRkVGSLvwvUqAWetc=;
-        b=qbjuPUrG/AEwVxm82nAidkinMSql6dBFg7gPPdUA0Hrsryb1l9NTCQg/V0IlONyOZd
-         2RwU/oARZJKtJyZuxJTmbw8LIGnsNre7lm4zkx2SlS10iLj5PhCNRjMOF0rcG4+3GYLX
-         VZyTJVOm/MCIS+8M7y40Lt35cFqsXqKMc1ohVlXzj7FllItU5YZ9o3wZww34Rk0g52Hs
-         Gopgner+6k5UF6GxubmU38esgRr0JnRXsGJxMiPAlgzmRuwwLSiXUfsr0j9pEMz7RU4Y
-         /aYZN5usvH4piGHYAGogtjdNLErvGIX4bwqUmcATdMp1mq6DaSApsc+bXSTXaFnHSLDc
-         RsPQ==
-X-Gm-Message-State: AOAM532vydpoj4FOJv4evKT+X3/YTyVFGmsZe9tuUODqX4TitjpSuREU
-        +8aPzIsfW5Bi/teXDCzl1wfrLm7t5nTo6g==
-X-Google-Smtp-Source: ABdhPJwxko1cTuuCkRnEsGsx7KovNmq7vPKRcW8CEJXVJu5saQZRJ120DnppqSpeigQFs93cZ9Bi5g==
-X-Received: by 2002:ac2:46f3:: with SMTP id q19mr7197990lfo.76.1607281396030;
-        Sun, 06 Dec 2020 11:03:16 -0800 (PST)
+        bh=sXUs3Mthn2WNxe9bljzB5KJJxtMgTykEfGBU86F6xiE=;
+        b=I2aruokWXu5jzT/515+vDqvY7XsPYVHHEgntazDCobUXikiCP7UrciIAJ3XcyFwE6Q
+         dbj8ekfwF3X4ee7oE2v8ZRs/Mx/ILQfQzNYS2JEcNfIQkTraI5kKoSDuJfVIP/RBUgUT
+         ps78HIpZFHm6k92/gquuUmA2RRyDQm6z06gXMYa/6W/innhsZ7dtIU8vcOmk/qGo7DdM
+         LqF1+A21yyubpeNMK5LZddJnv4BRanL5WrKrsH6ljuCfrOgGsC/AFmXTr2BvftADNIu5
+         VFo5cfRJikJdMDQp9AgMWjp7dgDhPFPY6UQ8B1rnxkXcilj4r4uIvsEKvUlI3aP6petd
+         iNHA==
+X-Gm-Message-State: AOAM531ETIOLINTs0I7bnRqIXi+vUFbVl2Ht5N6IuWeFHpmv1dQ4NfzG
+        WTNfPBCOTEpCk++kGjxgR0s8L0XBtC2HAQ==
+X-Google-Smtp-Source: ABdhPJzb0KQuWgqAs1QxpFLIbzjo0hp3iVTcDNFOfPyUb7EI83W2N6g7hHXWSCKUuYPdd+iJRhnYvw==
+X-Received: by 2002:a05:651c:10d4:: with SMTP id l20mr6957942ljn.389.1607281397682;
+        Sun, 06 Dec 2020 11:03:17 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:c1c3:bbc6:3ac5:732d])
-        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.03.14
+        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.03.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Dec 2020 11:03:15 -0800 (PST)
+        Sun, 06 Dec 2020 11:03:17 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -74,9 +74,9 @@ Cc:     Alexander Klimov <grandmaster@al2klimov.de>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Tony Prisk <linux@prisktech.co.nz>
-Subject: [PATCH v3 11/13] video: fbdev: efifb: Fix set but not used warning for screen_pitch
-Date:   Sun,  6 Dec 2020 20:02:45 +0100
-Message-Id: <20201206190247.1861316-12-sam@ravnborg.org>
+Subject: [PATCH v3 12/13] video: fbdev: controlfb: Fix set but not used warnings
+Date:   Sun,  6 Dec 2020 20:02:46 +0100
+Message-Id: <20201206190247.1861316-13-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201206190247.1861316-1-sam@ravnborg.org>
 References: <20201206190247.1861316-1-sam@ravnborg.org>
@@ -86,37 +86,39 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-screen_pitch was asssigned a value which was never used.
-Drop it to fix the warning
+The controlfb driver has a number of dummy defines for IO operations.
+They were introduced in commit a07a63b0e24d
+("video: fbdev: controlfb: add COMPILE_TEST support").
+
+The write variants did not use their value parameter in the
+dummy versions, resulting in set but not used warnings.
+Fix this by adding "(void)val" to silence the compiler.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Peter Jones <pjones@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 ---
- drivers/video/fbdev/efifb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/fbdev/controlfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-index e57c00824965..b80ba3d2a9b8 100644
---- a/drivers/video/fbdev/efifb.c
-+++ b/drivers/video/fbdev/efifb.c
-@@ -139,7 +139,7 @@ static bool efifb_bgrt_sanity_check(struct screen_info *si, u32 bmp_width)
- 
- static void efifb_show_boot_graphics(struct fb_info *info)
- {
--	u32 bmp_width, bmp_height, bmp_pitch, screen_pitch, dst_x, y, src_y;
-+	u32 bmp_width, bmp_height, bmp_pitch, dst_x, y, src_y;
- 	struct screen_info *si = &screen_info;
- 	struct bmp_file_header *file_header;
- 	struct bmp_dib_header *dib_header;
-@@ -193,7 +193,6 @@ static void efifb_show_boot_graphics(struct fb_info *info)
- 	bmp_width = dib_header->width;
- 	bmp_height = abs(dib_header->height);
- 	bmp_pitch = round_up(3 * bmp_width, 4);
--	screen_pitch = si->lfb_linelength;
- 
- 	if ((file_header->bitmap_offset + bmp_pitch * bmp_height) >
- 				bgrt_image_size)
+diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
+index 2df56bd303d2..509311471d51 100644
+--- a/drivers/video/fbdev/controlfb.c
++++ b/drivers/video/fbdev/controlfb.c
+@@ -64,9 +64,9 @@
+ #undef in_le32
+ #undef out_le32
+ #define in_8(addr)		0
+-#define out_8(addr, val)
++#define out_8(addr, val)	(void)(val)
+ #define in_le32(addr)		0
+-#define out_le32(addr, val)
++#define out_le32(addr, val)	(void)(val)
+ #define pgprot_cached_wthru(prot) (prot)
+ #else
+ static void invalid_vram_cache(void __force *addr)
 -- 
 2.27.0
 
