@@ -2,51 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30BB32D06D0
-	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCD52D06D3
+	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:04:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbgLFTEX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 6 Dec 2020 14:04:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
+        id S1727375AbgLFTE3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 6 Dec 2020 14:04:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727375AbgLFTEX (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:04:23 -0500
+        with ESMTP id S1727617AbgLFTE3 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:04:29 -0500
 Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9347CC061A52
-        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:11 -0800 (PST)
-Received: by mail-lj1-x242.google.com with SMTP id t22so12714155ljk.0
-        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:11 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F36BC061A53
+        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:13 -0800 (PST)
+Received: by mail-lj1-x242.google.com with SMTP id y16so12712701ljk.1
+        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Q2c8TosX3R/8fyI6+6hbgfajIYltmGAIh3MuAuO3wgI=;
-        b=U8MIJ/hnXOrYJTIg5Ty/f9FVT3L8hXf/9YHCObVYWGeyhdDQDyxfUUfBTi+qMkjNEI
-         OMTiD6lSuOFYPNUnRzv6kA7UjQTaO5R1tVf6tctjhXhObK4IjjAtiEGPkrtqtNGah3nx
-         nit27kclFdW4q+r77Bc9rijfIQBZtU5/yCmxzGAgRBcPA3t3+UWy66kO9NBJ5Q9rom9c
-         F+4stSsq2cJzJbR0dNnOEg9WjpJaFvIHHjP3HnUYTVhyHN/D3V/IfR+HiQx9MvNzhWo0
-         0QT235RW3/8/oKvO+K8TPKJ7Mrf0FvPUvccFrTjNsdZrFNBYUR+L5iTkIBrehcYMBsgv
-         8JNw==
+        bh=9YJ8hNiC7fcBnhr6W4yRKfHMapnKQoLUJY6svzs3To0=;
+        b=LaLHUm1Z4gGqnGZ3KZ7SHqaALYkoq/yZxYDzkQbZYV0PMY0w52MBCPt//V8+5dKQSB
+         g+UgMgIcXOB/tO/E/S/ZOeqmDZyduyPkSz6vCyBp1j0j0R/blDyXa5ncboNUSyWNMmMF
+         7z4bu82pAwrOMfKemks/fqOWwajOskvq7e+ffV9CjCxa+f0cR7uOpNMx1E+RO/dH8/pA
+         8ku81TvvuYNVjpeSAv5GkdkAwNrotvjHD2EbOid95GXlW7DZFpHvs5+mNU86MN3GadvI
+         RKAzjz2ik6cq7BN/9mn2RHD6G9PdUsn7mATzpH4xmVpu2xIiZ3Uf98S7duMImpKVvfVl
+         +15g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=Q2c8TosX3R/8fyI6+6hbgfajIYltmGAIh3MuAuO3wgI=;
-        b=Y1YpRXSkqpJmAzfwkEU+i4Ao9u9phv4FoCzQAcBMWP1t1UV4qbVtLBBy9a3tcyKfdq
-         r/YOWgmuj0kXKAAwPupm92SAy3WOma6NbqLa8iJxbiBXLC8gN8MNAhWRsttVd8aKSqkN
-         59ai9MlzTpMC0FGNdUzXCeTlg0moChcPkoU/XRL73xlwaqMxF56hrnsHIiS0JD2UNXck
-         zWzvLrRebZdc/NS3el/zeslNqvQha5haOpdjj9QpFNPrHRM9Sqxg+LgHlXFfO1efmoKY
-         0B2edXhHz72MeoTLkm+B7Vhal/x/raRxMQ8QtaBrPsGP2IWbUZPE2B/Z4rmaybzizZZT
-         NEmA==
-X-Gm-Message-State: AOAM532+oFMi+iTEhE++LeiPrbzMmSUBtdpS/BeECD8xaMoUbz91bHPJ
-        ph2Ryd3MWUQ4B0NYyL7l2TztbiOl8/1btQ==
-X-Google-Smtp-Source: ABdhPJwh2HgCsQBPCpyq5dqu0dPDQ9AeMbjlOSyw3cv3zGiXAtMUTvcVRxOeuj+jvb/oXUKuQwIJMw==
-X-Received: by 2002:a2e:3c15:: with SMTP id j21mr7596976lja.440.1607281389929;
-        Sun, 06 Dec 2020 11:03:09 -0800 (PST)
+        bh=9YJ8hNiC7fcBnhr6W4yRKfHMapnKQoLUJY6svzs3To0=;
+        b=OplR5t5/Fro9OT3+vK2IjUikfsmXDN+CxDGm01+UhNk5jvwi3FUE43i9yk83H3iFnt
+         bVdhZ/J52IdifGqUw9+YCGdrd6L6efWidkoIFcXOM8yhG27ywEH7E4kEPS3AuhQukpb2
+         j69BHcGNziZ9MJearzFEUWSr6kOZOP9UxHJ1Uyk+Z2VwiO+k7QXaCHHPJnEnw007D+k8
+         /CdfTRqoq4kpUDUVgo5OSFAZ3MljsEUTIynQurvs9SZI/YCFzIaWdxNoJxsDQEv4ozyB
+         Lce0pDugNQYbVWC8LFOU4x2fK6ozlWJj757+NzpaQQrEQaeyS/y5UZDR6ziN/xhpXKuJ
+         DnzA==
+X-Gm-Message-State: AOAM533XRKE8vqA8Zy9qqJqgOhuUfHkic+XQ3gWEe3/KtDf0BBCpMBEC
+        y9RkECx3EkuClDv0DjUOrGGCqdeHV5lzfA==
+X-Google-Smtp-Source: ABdhPJziPsnplTe7NiMrRGdNc3o7SXo2FpWEV9XqodakF7dSDg151GPsQjMackM7Ag3jGTKj591jlg==
+X-Received: by 2002:a2e:894b:: with SMTP id b11mr7761708ljk.439.1607281391398;
+        Sun, 06 Dec 2020 11:03:11 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:c1c3:bbc6:3ac5:732d])
-        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.03.08
+        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.03.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Dec 2020 11:03:09 -0800 (PST)
+        Sun, 06 Dec 2020 11:03:10 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -74,9 +74,9 @@ Cc:     Alexander Klimov <grandmaster@al2klimov.de>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Tony Prisk <linux@prisktech.co.nz>
-Subject: [PATCH v3 07/13] video: fbdev: mmp: Fix kernel-doc warning for lcd_spi_write
-Date:   Sun,  6 Dec 2020 20:02:41 +0100
-Message-Id: <20201206190247.1861316-8-sam@ravnborg.org>
+Subject: [PATCH v3 08/13] video: fbdev: wmt_ge_rops: Fix function not declared warnings
+Date:   Sun,  6 Dec 2020 20:02:42 +0100
+Message-Id: <20201206190247.1861316-9-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201206190247.1861316-1-sam@ravnborg.org>
 References: <20201206190247.1861316-1-sam@ravnborg.org>
@@ -86,30 +86,27 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add missing parameter and drop parameter that is not present
+Include own header to fix "function not declared" warnings.
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrzej Hajda <a.hajda@samsung.com>
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Tony Prisk <linux@prisktech.co.nz>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/video/fbdev/mmp/hw/mmp_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/wmt_ge_rops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/mmp/hw/mmp_spi.c b/drivers/video/fbdev/mmp/hw/mmp_spi.c
-index 1911a47769b6..16401eb95c6c 100644
---- a/drivers/video/fbdev/mmp/hw/mmp_spi.c
-+++ b/drivers/video/fbdev/mmp/hw/mmp_spi.c
-@@ -17,8 +17,8 @@
+diff --git a/drivers/video/fbdev/wmt_ge_rops.c b/drivers/video/fbdev/wmt_ge_rops.c
+index 2445cfe617a9..42255d27a1db 100644
+--- a/drivers/video/fbdev/wmt_ge_rops.c
++++ b/drivers/video/fbdev/wmt_ge_rops.c
+@@ -11,6 +11,7 @@
+ #include <linux/fb.h>
+ #include <linux/platform_device.h>
+ #include "core/fb_draw.h"
++#include "wmt_ge_rops.h"
  
- /**
-  * spi_write - write command to the SPI port
-+ * @spi:  the SPI device.
-  * @data: can be 8/16/32-bit, MSB justified data to write.
-- * @len:  data length.
-  *
-  * Wait bus transfer complete IRQ.
-  * The caller is expected to perform the necessary locking.
+ #define GE_COMMAND_OFF		0x00
+ #define GE_DEPTH_OFF		0x04
 -- 
 2.27.0
 
