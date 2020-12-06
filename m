@@ -2,51 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6EB02D06C6
-	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 304DA2D06C7
+	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Dec 2020 20:03:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727038AbgLFTDm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 6 Dec 2020 14:03:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58624 "EHLO
+        id S1727009AbgLFTDu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 6 Dec 2020 14:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726602AbgLFTDm (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:03:42 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7C0C0613D1
-        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:02 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id o24so12679554ljj.6
-        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:01 -0800 (PST)
+        with ESMTP id S1726440AbgLFTDt (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Dec 2020 14:03:49 -0500
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 971C7C0613D2
+        for <linux-fbdev@vger.kernel.org>; Sun,  6 Dec 2020 11:03:03 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id r24so14873261lfm.8
+        for <linux-fbdev@vger.kernel.org>; Sun, 06 Dec 2020 11:03:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=awoxLOM24BlPDDqXjccUiIDJsTqNec5B33IQuldBAcA=;
-        b=P5PNaFqQt3Yi6PZWkmUYqAJgQuDA/89Ks30XOudshL9zK381d4NWbc1uodB//UHAfc
-         HTvn64yb6lGi9hcQh9QITUkTv7+fUOaS7TKiKVbVSuKdPrxFND1N3fXGyyEw7nKng+7s
-         +mf+kOMFsoBz/AElgTQboTbNhPzEgGAzuHyrT8cJ0S0zxOqEFPBXjUl8emTYeZu97F4A
-         laCvoGTSEqnMc08Y40jy5iVbAC86aMm8Xs54zO1wU4rnMsFRsk8/eUiYNxBqfyzpYpiT
-         vYJe6IToXWhfEKlCngFRlpJcolu6GUdOlepGDbYPvysd6DwHh3Fr467MliJ9uYaqKsVQ
-         P54A==
+        bh=AWKed4odfdsIU5AGoPrFhmgmtEnPpwRuMDNnFb1mat8=;
+        b=BD38NveQzbi0GZYDlRS4ddm+TOpNJuvzIK01AZxXT3QyMCEPJ4dI5vbixKjs17NbNB
+         64eAdShaMM/tV24LtAnyv5OASJu+J6B5OKMKormP1iPZXTd5mQPycd9PKBAGNwtvQzEj
+         P3tctVPAhd0gQAhLn533Y/KZQLpN+7LaC17r0O+xQJaFJ/0LpWlN8LX/X0CLAMgyP/44
+         8N9p9sAgWvVTT57VjRJEbZJpIUBDWzVooUnWcJm3hrZKWKi8KHlAw/B+f5BOawWAHaYV
+         0fBNuY9Wv1RalrCsxj/ueAjI1XFkmU2rTpLi517r2HfYn04yjxOoSDTu83YsvHeFXHjv
+         EBww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=awoxLOM24BlPDDqXjccUiIDJsTqNec5B33IQuldBAcA=;
-        b=jQwnvWZFDqbVY2DFeFhFbdxkRjdF8piaXH6uBKivSipud/hWFLSl/FrxvyBQGj2I5v
-         MiyeRW0UByPaTqh9wpjRRBwsblzfoR+92z0qDCi3F5SN9hOj78n1mth11fqbTuhpvfKi
-         +bVZMF5lPfxBEqmrXE0FjxYCgZXVhCvqWuMugc9P+1Bcc2RlByzFedXruXAdnAj/gOFh
-         DSLQR2vlohLMpWba08QufNpYnUgbCpqNe9D1hFlsHeH7sdIeBZ70AihYAL07zwiO9m+K
-         U5uTgZWcquJrBETcg5l5SEcZSkAGC0T0vln+9NAqnsrctIU+YUZTQvIc3tXeLGGji9hL
-         zBHw==
-X-Gm-Message-State: AOAM532atqcvwJLEZvuwX3FHxzEM/Z23d9ooZ6KdjtCNTqVNG9M6QmWM
-        xEg3BvcMt+R4BT7iR9xjUCmea/LTzRHlmA==
-X-Google-Smtp-Source: ABdhPJwFKM/Zl7jOyF45tkIXB6X8zzxGd1xx4NWx6nsFo3s5UcMXstc7DIYYaoWF/J47Mjh04zw6vw==
-X-Received: by 2002:a2e:a40e:: with SMTP id p14mr4886244ljn.63.1607281380392;
-        Sun, 06 Dec 2020 11:03:00 -0800 (PST)
+        bh=AWKed4odfdsIU5AGoPrFhmgmtEnPpwRuMDNnFb1mat8=;
+        b=EjWvgJQej4Hex1J+jdPecFnR/siTbmg4UJFZICVWJMVkw2ljMN6t4JdOBg/F5FPwkp
+         vdgrbYYi2yeLsD7LcNA9qv9B6amDBJSEdbNjJtoQx5ux09kmVxqxKrMfN4m8Bvh1WKKj
+         PpLiJ73QAL/Yo5usNXT5dEvMMcPdMm/Jota9jcsyRq9+XTD83ugJuLwSF5Z5txmqwIQs
+         SUrKomACoKFD1cyhgJAe54nfe4XYkC8+fIddVaC0wyQywT1rv2nvdUHIkH/ErRZacK5K
+         DelIKtZBWWPigyl/cezo7NabzLM4DyxqEY9DFoyHIPkzgQZwmtnMDglfG9mIoSttKV1G
+         0kBw==
+X-Gm-Message-State: AOAM5304VwSp+ysqWVqxwurDaCKyz/ww9mV5oStDI/IHOAs9K0ZrYosr
+        pgD7JF2pZJ62c5XPnYAWi6wB9hwlZvjQgg==
+X-Google-Smtp-Source: ABdhPJxMMFbAmqvduYmjI39HUAlAX90pPZ/380NwlD2kk4yJ4yuH78VuVYftT/yg8SyxScng+YNcqQ==
+X-Received: by 2002:ac2:46ef:: with SMTP id q15mr6523183lfo.2.1607281381884;
+        Sun, 06 Dec 2020 11:03:01 -0800 (PST)
 Received: from saturn.localdomain ([2a00:fd00:8060:1c00:c1c3:bbc6:3ac5:732d])
-        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.02.58
+        by smtp.gmail.com with ESMTPSA id v28sm2483865ljv.29.2020.12.06.11.03.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Dec 2020 11:02:59 -0800 (PST)
+        Sun, 06 Dec 2020 11:03:01 -0800 (PST)
 Sender: Sam Ravnborg <sam.ravnborg@gmail.com>
 From:   Sam Ravnborg <sam@ravnborg.org>
 To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -73,12 +73,10 @@ Cc:     Alexander Klimov <grandmaster@al2klimov.de>,
         Thierry Reding <thierry.reding@gmail.com>,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Thomas Zimmermann <tzimmermann@suse.de>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Ferenc Bakonyi <fero@drama.obuda.kando.hu>,
-        linux-nvidia@lists.surfsouth.com
-Subject: [PATCH v3 01/13] video: fbdev: hgafb: Fix kernel-doc warnings
-Date:   Sun,  6 Dec 2020 20:02:35 +0100
-Message-Id: <20201206190247.1861316-2-sam@ravnborg.org>
+        Tony Prisk <linux@prisktech.co.nz>
+Subject: [PATCH v3 02/13] video: fbdev: core: Fix kernel-doc warnings in fbmon + fb_notify
+Date:   Sun,  6 Dec 2020 20:02:36 +0100
+Message-Id: <20201206190247.1861316-3-sam@ravnborg.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20201206190247.1861316-1-sam@ravnborg.org>
 References: <20201206190247.1861316-1-sam@ravnborg.org>
@@ -88,51 +86,82 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Fix kernel-doc comments.
+Fix kernel-doc warnings reported when using W=1
 
 v2:
-  - Updated subject (Lee)
+  - Improve subject (Lee)
 
 v3:
-  - Add space after ':' (Randy)
-  - Fix name of function in comment
+  - Add RETURNS documentation (Thomas)
 
 Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Ferenc Bakonyi <fero@drama.obuda.kando.hu>
-Cc: linux-nvidia@lists.surfsouth.com
 Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
 ---
- drivers/video/fbdev/hgafb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/core/fb_notify.c | 10 ++++++++++
+ drivers/video/fbdev/core/fbmon.c     |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/hgafb.c b/drivers/video/fbdev/hgafb.c
-index a45fcff1461f..8bbac7182ad3 100644
---- a/drivers/video/fbdev/hgafb.c
-+++ b/drivers/video/fbdev/hgafb.c
-@@ -357,8 +357,8 @@ static int hga_card_detect(void)
+diff --git a/drivers/video/fbdev/core/fb_notify.c b/drivers/video/fbdev/core/fb_notify.c
+index 74c2da528884..4e39c61fae1f 100644
+--- a/drivers/video/fbdev/core/fb_notify.c
++++ b/drivers/video/fbdev/core/fb_notify.c
+@@ -19,6 +19,9 @@ static BLOCKING_NOTIFIER_HEAD(fb_notifier_list);
+ /**
+  *	fb_register_client - register a client notifier
+  *	@nb: notifier block to callback on events
++ *
++ *	RETURNS:
++ *	0 on success, negative error code on failure.
+  */
+ int fb_register_client(struct notifier_block *nb)
+ {
+@@ -29,6 +32,9 @@ EXPORT_SYMBOL(fb_register_client);
+ /**
+  *	fb_unregister_client - unregister a client notifier
+  *	@nb: notifier block to callback on events
++ *
++ *	RETURNS:
++ *	0 on success, negative error code on failure.
+  */
+ int fb_unregister_client(struct notifier_block *nb)
+ {
+@@ -38,7 +44,11 @@ EXPORT_SYMBOL(fb_unregister_client);
  
  /**
-  *	hgafb_open - open the framebuffer device
-- *	@info:pointer to fb_info object containing info for current hga board
-- *	@int:open by console system or userland.
-+ *	@info: pointer to fb_info object containing info for current hga board
-+ *	@init: open by console system or userland.
+  * fb_notifier_call_chain - notify clients of fb_events
++ * @val: value passed to callback
++ * @v: pointer passed to callback
+  *
++ * RETURNS:
++ * The return value of the last notifier function
   */
- 
- static int hgafb_open(struct fb_info *info, int init)
-@@ -370,9 +370,9 @@ static int hgafb_open(struct fb_info *info, int init)
- }
- 
- /**
-- *	hgafb_open - open the framebuffer device
-- *	@info:pointer to fb_info object containing info for current hga board
-- *	@int:open by console system or userland.
-+ *	hgafb_release - open the framebuffer device
-+ *	@info: pointer to fb_info object containing info for current hga board
-+ *	@init: open by console system or userland.
+ int fb_notifier_call_chain(unsigned long val, void *v)
+ {
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index 1bf82dbc9e3c..b0e690f41025 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -605,6 +605,7 @@ static void get_detailed_timing(unsigned char *block,
+  * fb_create_modedb - create video mode database
+  * @edid: EDID data
+  * @dbsize: database size
++ * @specs: monitor specifications, may be NULL
+  *
+  * RETURNS: struct fb_videomode, @dbsize contains length of database
+  *
+@@ -1100,7 +1101,6 @@ static u32 fb_get_hblank_by_hfreq(u32 hfreq, u32 xres)
+  *                                    2 * M
+  *        M = 300;
+  *        C = 30;
+-
   */
- 
- static int hgafb_release(struct fb_info *info, int init)
+ static u32 fb_get_hblank_by_dclk(u32 dclk, u32 xres)
+ {
 -- 
 2.27.0
 
