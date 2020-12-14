@@ -2,52 +2,65 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E99F2D9C27
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Dec 2020 17:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F9E2D9BB4
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Dec 2020 17:06:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439834AbgLNQFk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Dec 2020 11:05:40 -0500
-Received: from server.kenspensetc.com ([185.148.128.76]:48008 "EHLO
-        server.kenspensetc.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439358AbgLNQFj (ORCPT
+        id S1728154AbgLNQEQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Dec 2020 11:04:16 -0500
+Received: from mail-ed1-f44.google.com ([209.85.208.44]:42195 "EHLO
+        mail-ed1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728209AbgLNQEP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Dec 2020 11:05:39 -0500
-Received: from localhost ([127.0.0.1]:47936 helo=server.kenspensetc.com)
-        by server.kenspensetc.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <sender@ridecals.com>)
-        id 1knLn0-00029V-6J; Thu, 10 Dec 2020 08:15:22 -0500
-Received: from [70.32.0.46] ([70.32.0.46]) by ridecals.com (Horde Framework)
- with HTTPS; Thu, 10 Dec 2020 08:15:22 -0500
-Date:   Thu, 10 Dec 2020 08:15:22 -0500
-Message-ID: <20201210081522.Horde.GEA1j18D53oi4VTUxYWD_87@ridecals.com>
-From:   Russell Branting <sender@ridecals.com>
-Subject: Vital
-Reply-to: Goodagent01@gmail.com
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+        Mon, 14 Dec 2020 11:04:15 -0500
+Received: by mail-ed1-f44.google.com with SMTP id v22so17663504edt.9;
+        Mon, 14 Dec 2020 08:03:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=1R4GDxWiInTOSiMoQjKp8/x2VzpM54rp3XHLP51YQwI=;
+        b=P2B2HFCf/Pr/voP7CqYiDGHeitRT+zhl9e7MoR9NxrDScm7wj7os+v3yNCQbLNK1d2
+         qu64k6l41tZrJGj5fMxwuKFHnseHFPNkB1DFHKglgV+m/S5o37F61hXjzygYsjy+cPnt
+         UEDXodoHUgFAE1tq5b2gD18x9iJ+VYA8o/6LCuTcyACMv8N57FHXFQCZ+8AGLKUOWLbg
+         YTfGU4FfW4qdYCUymlJajuXg2fZYW5u4DAGSSKwOv697Eu2YDrJkVd0qRGj4KxisCA5v
+         WWE0CFVOAGwOYN4FBOXXrOhNmWRcrjAzYTCJgUyScQKfT6JvTet5umXFn9+mklDrtdNA
+         XX5w==
+X-Gm-Message-State: AOAM532Oodlab53wxX7HY+kDCakYJVW3VHZtfr/DZODGI1l7fDL79xM7
+        WQbowBUmNS5smI4QcSymxu8=
+X-Google-Smtp-Source: ABdhPJzHHpwR8U0nzeJSHKtRQNJXEPTkA0gNm/3ZDzH5g+76QEADqu0ZfPZUY/ikA7431T6AhNY6JA==
+X-Received: by 2002:a50:9dc9:: with SMTP id l9mr25315986edk.377.1607961813452;
+        Mon, 14 Dec 2020 08:03:33 -0800 (PST)
+Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
+        by smtp.googlemail.com with ESMTPSA id f18sm15784210edt.60.2020.12.14.08.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Dec 2020 08:03:30 -0800 (PST)
+Date:   Mon, 14 Dec 2020 17:03:26 +0100
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Cc:     b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] fbdev: s3c2410fb: convert comma to semicolon
+Message-ID: <20201214160326.GE2493@kozik-lap>
+References: <20201214133317.3622-1-zhengyongjun3@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.kenspensetc.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - ridecals.com
-X-Get-Message-Sender-Via: server.kenspensetc.com: authenticated_id: sender9@ridecals.com
-X-Authenticated-Sender: server.kenspensetc.com: sender9@ridecals.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20201214133317.3622-1-zhengyongjun3@huawei.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Mon, Dec 14, 2020 at 09:33:17PM +0800, Zheng Yongjun wrote:
+> Replace a comma between expression statements by a semicolon.
+> 
+> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+> ---
+>  drivers/video/fbdev/s3c2410fb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-I am instructed to inform you of your appointment as the next of kin  
-to your deceased relative estate. Kindly indicate your acceptance by  
-reconfirming your Full Name, Address & Phone Number for immediate  
-processing of the funds release to your control OR the deceased  
-deposited funds will be declared unclaimed.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-
+Best regards,
+Krzysztof
