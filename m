@@ -2,64 +2,152 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 502112D9291
-	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Dec 2020 06:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAEAE2D94C4
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Dec 2020 10:17:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729937AbgLNFWh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Dec 2020 00:22:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727418AbgLNFWh (ORCPT
+        id S2439634AbgLNJOC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Dec 2020 04:14:02 -0500
+Received: from mail-io1-f71.google.com ([209.85.166.71]:54809 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439626AbgLNJNw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Dec 2020 00:22:37 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9EF3C0613CF
-        for <linux-fbdev@vger.kernel.org>; Sun, 13 Dec 2020 21:21:56 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id lt17so20800986ejb.3
-        for <linux-fbdev@vger.kernel.org>; Sun, 13 Dec 2020 21:21:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=r7pRR0kqw+JyeF2gB49UUhXa4p5TRehJ+ObmEzr4CYY=;
-        b=T68BbpiNkPmE+/+h3O2lwXfqIEN/MVtCD7SbQ3KY9nKckXn4dLMa5fV4Qd/vRj86g8
-         5sDd2C8ecD7eA2YEJe9cWQz6E/OYPPWVHMPqkmHMLk78KNJih/PVyC5mbrZKiP6erjq/
-         CN7JTV0ou+PbQ5Go3PDfY3IuQGND9wFPRH8+80HaI/Afu8sJ1CCwLX6qtGAbrTHLK8RE
-         oj52UCG6Ub2TY08JuZkKNz3QPOVb5VvugcLL6PZMEZzw9MLs1E4XNvecYTARLmEsgZpf
-         27RmAAtdJqBT9CX1C76uVNNdB/06oQH0LFgO4E1PxJGg7OZuowOOnx3BuVMDxCcDaKsf
-         23Tw==
+        Mon, 14 Dec 2020 04:13:52 -0500
+Received: by mail-io1-f71.google.com with SMTP id w26so10521432iox.21
+        for <linux-fbdev@vger.kernel.org>; Mon, 14 Dec 2020 01:13:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=r7pRR0kqw+JyeF2gB49UUhXa4p5TRehJ+ObmEzr4CYY=;
-        b=K0ArlsNP6q4wVtT1mEEMh6AapB+m5El0WLlkC3tTNNAIHNYeVlB4jmbJaCcPB1l7EB
-         JqXukkg4luA1lh7m4jQ59Rvnc9VM/U/mtK2X1X9VDLOnKtqF3DLGGooxNrya2829Xd/l
-         N9TaJo1mfCXIdJRYML+2pOmv7MNTFR82eL825/GFNgV8tARy9BhSMHoimbZ/2LHvttDR
-         X0VZxxCJKaeuNx3p6RhYHxsSblwf5C5YlotaXq5YeHeuPps+96v+DS+JSoJfoRTvw1wg
-         F07GOtYoSyz+UxfDVBhW89NC/CsRMiQcHkY2yPhUlk3cC/nDXsbLID/Jeh2vArbuC5bm
-         2zYw==
-X-Gm-Message-State: AOAM533fOg6LkQDPliQfaQfEFvVA3b36lzo6UomMScOyV93tCYTveEvx
-        S2GNeCKyEFds1cTphJw2g6tR2cKwyLJqG8z7MJ4=
-X-Google-Smtp-Source: ABdhPJycDxzcv7ivONNkud1S6nIx7hT7iL53/IZ1YYQONlc5syDEWm78QpIae5TJ38Qiz0pClkawrzY3epcOgN9xDc8=
-X-Received: by 2002:a17:906:40d3:: with SMTP id a19mr20654136ejk.98.1607923315365;
- Sun, 13 Dec 2020 21:21:55 -0800 (PST)
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=Xwq+h39/FNGcyxtgEq8iwiPV6bbaAoQGXtrZlx1lkEA=;
+        b=HCYVU4nhHnqHvOJXHwMdQtxgguuDVC39FN0u+ajI930anu5Qfzg4S/wojL80ZFGrbj
+         flP+Cg1icu3TLUgkis49bSsWOP43gA252re55OyjMZajBubwwOiK8A9UF8aQVJj1z0QM
+         46SCqFDfmfl3nE2Sob4CqFJ2apDwualEsDpSSkNpybGY5Syw2T8lLkVWVTWfGlQJB3lz
+         lJyfkulviGH7zpusmVjXAbIyITugnAWwtOelFvEDIng8SLOowEGzq54LlvrtEGcUNDJG
+         +bPhqmOyxQGKLy6JyapPgtkXFVHP2QgwVGWIcnIG0GD+14r1XxmIvR7BC5bEn2FpVXTJ
+         zQLg==
+X-Gm-Message-State: AOAM5321Xhdu3cCgzDmAQSXBbDWTPjmI/WD0YFTaL0cIWYe35Yba2msl
+        MHGAlUdBXsd6W0WMMlbfKUltKnbjdF/Lqox8rDQPyV9o6Dj0
+X-Google-Smtp-Source: ABdhPJw8ZFAjwxvmwvqPi0SPPyyv9Z+QTUIXnzL62HLv85D0ycwzfSH4pN+2ewuQ8JhjdX086viZYubBgKBUbuHzI2tIbDYzaqrl
 MIME-Version: 1.0
-Received: by 2002:aa7:c88f:0:0:0:0:0 with HTTP; Sun, 13 Dec 2020 21:21:55
- -0800 (PST)
-Reply-To: korblgeorg1000@gmail.com
-From:   =?UTF-8?B?R2VvcmcgS8OWUkJM?= <mgeaaaaa25@gmail.com>
-Date:   Mon, 14 Dec 2020 05:21:55 +0000
-Message-ID: <CAGSHzspn7o0x_QY2_VGKTKfK=qsP8Z5P=DWYoUWa0MOM=aJyqw@mail.gmail.com>
-Subject: ///////////////Greetings,
-To:     undisclosed-recipients:;
+X-Received: by 2002:a92:998c:: with SMTP id t12mr10118400ilk.140.1607937191228;
+ Mon, 14 Dec 2020 01:13:11 -0800 (PST)
+Date:   Mon, 14 Dec 2020 01:13:11 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000001aba8205b6690d78@google.com>
+Subject: memory leak in dlfb_usb_probe
+From:   syzbot <syzbot+c9e365d7f450e8aa615d@syzkaller.appspotmail.com>
+To:     b.zolnierkie@samsung.com, bernie@plugable.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Thanks for the piece of information I received about you through your
-Facebook profile. However, I will need your cooperation to distribute
-a humanitarian aid in order to make a proper financial arrangement for
-the project accordingly.
-Regards.
-Georg
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    a68a0262 mm/madvise: remove racy mm ownership check
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1538046b500000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4305fa9ea70c7a9f
+dashboard link: https://syzkaller.appspot.com/bug?extid=c9e365d7f450e8aa615d
+compiler:       gcc (GCC) 10.1.0-syz 20200507
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1779cc13500000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1173d00f500000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c9e365d7f450e8aa615d@syzkaller.appspotmail.com
+
+BUG: memory leak
+unreferenced object 0xffff88810adde100 (size 32):
+  comm "kworker/1:0", pid 17, jiffies 4294947788 (age 19.520s)
+  hex dump (first 32 bytes):
+    10 30 c3 0d 81 88 ff ff c0 fa 63 12 81 88 ff ff  .0........c.....
+    00 30 c3 0d 81 88 ff ff 80 d1 3a 08 81 88 ff ff  .0........:.....
+  backtrace:
+    [<0000000019512953>] kmalloc include/linux/slab.h:552 [inline]
+    [<0000000019512953>] kzalloc include/linux/slab.h:664 [inline]
+    [<0000000019512953>] dlfb_alloc_urb_list drivers/video/fbdev/udlfb.c:1892 [inline]
+    [<0000000019512953>] dlfb_usb_probe.cold+0x289/0x988 drivers/video/fbdev/udlfb.c:1704
+    [<0000000072160152>] usb_probe_interface+0x177/0x370 drivers/usb/core/driver.c:396
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+    [<00000000de0a5a5c>] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:431
+    [<00000000463fbcb4>] __device_attach+0x122/0x250 drivers/base/dd.c:912
+    [<00000000b881a711>] bus_probe_device+0xc6/0xe0 drivers/base/bus.c:491
+    [<00000000364bbda5>] device_add+0x5ac/0xc30 drivers/base/core.c:2936
+    [<00000000eecca418>] usb_set_configuration+0x9de/0xb90 drivers/usb/core/message.c:2159
+    [<00000000edfeca2d>] usb_generic_driver_probe+0x8c/0xc0 drivers/usb/core/generic.c:238
+    [<000000001830872b>] usb_probe_device+0x5c/0x140 drivers/usb/core/driver.c:293
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+    [<00000000de0a5a5c>] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:431
+
+BUG: memory leak
+unreferenced object 0xffff8881083ad180 (size 192):
+  comm "kworker/1:0", pid 17, jiffies 4294947788 (age 19.520s)
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 98 d1 3a 08 81 88 ff ff  ..........:.....
+  backtrace:
+    [<00000000a7783a78>] kmalloc include/linux/slab.h:557 [inline]
+    [<00000000a7783a78>] usb_alloc_urb+0x66/0xe0 drivers/usb/core/urb.c:74
+    [<0000000082822843>] dlfb_alloc_urb_list drivers/video/fbdev/udlfb.c:1897 [inline]
+    [<0000000082822843>] dlfb_usb_probe.cold+0x2aa/0x988 drivers/video/fbdev/udlfb.c:1704
+    [<0000000072160152>] usb_probe_interface+0x177/0x370 drivers/usb/core/driver.c:396
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+    [<00000000de0a5a5c>] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:431
+    [<00000000463fbcb4>] __device_attach+0x122/0x250 drivers/base/dd.c:912
+    [<00000000b881a711>] bus_probe_device+0xc6/0xe0 drivers/base/bus.c:491
+    [<00000000364bbda5>] device_add+0x5ac/0xc30 drivers/base/core.c:2936
+    [<00000000eecca418>] usb_set_configuration+0x9de/0xb90 drivers/usb/core/message.c:2159
+    [<00000000edfeca2d>] usb_generic_driver_probe+0x8c/0xc0 drivers/usb/core/generic.c:238
+    [<000000001830872b>] usb_probe_device+0x5c/0x140 drivers/usb/core/driver.c:293
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+
+BUG: memory leak
+unreferenced object 0xffff88811263fb20 (size 32):
+  comm "kworker/1:0", pid 17, jiffies 4294947788 (age 19.530s)
+  hex dump (first 32 bytes):
+    00 fb 63 12 81 88 ff ff 10 30 c3 0d 81 88 ff ff  ..c......0......
+    00 30 c3 0d 81 88 ff ff c0 53 c8 0b 81 88 ff ff  .0.......S......
+  backtrace:
+    [<0000000019512953>] kmalloc include/linux/slab.h:552 [inline]
+    [<0000000019512953>] kzalloc include/linux/slab.h:664 [inline]
+    [<0000000019512953>] dlfb_alloc_urb_list drivers/video/fbdev/udlfb.c:1892 [inline]
+    [<0000000019512953>] dlfb_usb_probe.cold+0x289/0x988 drivers/video/fbdev/udlfb.c:1704
+    [<0000000072160152>] usb_probe_interface+0x177/0x370 drivers/usb/core/driver.c:396
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+    [<00000000de0a5a5c>] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:431
+    [<00000000463fbcb4>] __device_attach+0x122/0x250 drivers/base/dd.c:912
+    [<00000000b881a711>] bus_probe_device+0xc6/0xe0 drivers/base/bus.c:491
+    [<00000000364bbda5>] device_add+0x5ac/0xc30 drivers/base/core.c:2936
+    [<00000000eecca418>] usb_set_configuration+0x9de/0xb90 drivers/usb/core/message.c:2159
+    [<00000000edfeca2d>] usb_generic_driver_probe+0x8c/0xc0 drivers/usb/core/generic.c:238
+    [<000000001830872b>] usb_probe_device+0x5c/0x140 drivers/usb/core/driver.c:293
+    [<00000000a8d6726f>] really_probe+0x159/0x480 drivers/base/dd.c:554
+    [<00000000c3ce4b0e>] driver_probe_device+0x84/0x100 drivers/base/dd.c:738
+    [<00000000e942e01c>] __device_attach_driver+0xee/0x110 drivers/base/dd.c:844
+    [<00000000de0a5a5c>] bus_for_each_drv+0xb7/0x100 drivers/base/bus.c:431
+
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
