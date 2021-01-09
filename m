@@ -2,92 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AA722EF878
-	for <lists+linux-fbdev@lfdr.de>; Fri,  8 Jan 2021 21:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB2B2F03F5
+	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Jan 2021 22:58:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727180AbhAHT7f (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 8 Jan 2021 14:59:35 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:59142 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726650AbhAHT7f (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 8 Jan 2021 14:59:35 -0500
-Received: from ravnborg.org (unknown [188.228.123.71])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 1984E20021;
-        Fri,  8 Jan 2021 20:58:40 +0100 (CET)
-Date:   Fri, 8 Jan 2021 20:58:39 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
-        kernel@collabora.com
-Subject: Re: [PATCHv1] video: omapfb2: Make standard and custom DSI command
- mode panel driver mutually exclusive
-Message-ID: <20210108195839.GA1429715@ravnborg.org>
-References: <20210108122540.657501b2@canb.auug.org.au>
- <20210108112441.14609-1-sebastian.reichel@collabora.com>
+        id S1726254AbhAIV5P (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 9 Jan 2021 16:57:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726080AbhAIV5O (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Jan 2021 16:57:14 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FE4C061786
+        for <linux-fbdev@vger.kernel.org>; Sat,  9 Jan 2021 13:56:33 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id m12so31715886lfo.7
+        for <linux-fbdev@vger.kernel.org>; Sat, 09 Jan 2021 13:56:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=1BE9dnFeMlO87yw0Pb6LWjNYqQ7ZqkZnHENkJwfeBeE=;
+        b=kqjmufw4R0a54o32RxwlEZKtexKoJi/g4TMx700LLgDKOmmKwAScUmAR4wvbBjBoOz
+         KpQeshGOHTLAzFd+CfjuYjcCz/dRLe1VvHM10Vj7gk9CZT7bTEUNeadN5q9ZkVrKXJvl
+         nBpGrt8XtayQNONoViR0SPAIBQkDKp3fb+ImufiMcokyIo+dcXBBG6bTPMK+UJIQJCn5
+         IvvAKiQJfvTO9GOomq+eg1V+bmCpPM2wtPzp26Z2LQJxeJqj9HxemZgXCYKbBYeK2goJ
+         jk8GBQK9n3NRNYH4SPhk9KJFl3VHTg0+EP0iW1O61OHucdbZc37Ut1ro/idAJHFNuAY6
+         pQdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=1BE9dnFeMlO87yw0Pb6LWjNYqQ7ZqkZnHENkJwfeBeE=;
+        b=RjeJS7cXNuPqv4WfMik+mXQbAh1d8BkBQCbJpBKVwLR0gejz+gufTOzxw3fhoRnWEf
+         im+3VERyNB35T51Y7rKef5vzDKCLolzKW+aJP0awOdUtYB/C9MzOfLQAM5FA8m3uJNci
+         Zgo5FLXFK/pBRraQ+eAhLT+gT7KhXUWt9cA1EGiXjnTh9Opg3N3OrT9T+k7ROtk1ySVB
+         /AQzPikF8b4aPPnFOrV2T2tiyJzqqQZ5eVu+EI9iuSeehtn3xhkNqduOg74DyK/ZzutO
+         9aFX0kXmalVXwT4viUOabadWFHj36PXuQMQkYCR3VXbzwaRMKdsrClt0iPjGz/JyE0qi
+         OXZQ==
+X-Gm-Message-State: AOAM531I9v7jXV0n9ZGReIImAAsoNv0s3NbWe1/dwoHjWo7zjh6gMXe/
+        uzPCCRpEBkoCEQinZumm5LqGvjPj3hF3khOr1A==
+X-Google-Smtp-Source: ABdhPJzBzfPlVrVXooq2otekgnDsiyzVV3lrgnyUEAmPqy7grveh0w+mcINT596M2+Oc+95NvD77krr4LKG4UIyTIJQ=
+X-Received: by 2002:a2e:89d7:: with SMTP id c23mr4120818ljk.282.1610229391575;
+ Sat, 09 Jan 2021 13:56:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210108112441.14609-1-sebastian.reichel@collabora.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=Ibmpp1ia c=1 sm=1 tr=0
-        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
-        a=kj9zAlcOel0A:10 a=rOUgymgbAAAA:8 a=QX4gbG5DAAAA:8 a=7gkXJVJtAAAA:8
-        a=bFzB3eAsRtkcaW2KersA:9 a=CjuIK1q_8ugA:10 a=MP9ZtiD8KjrkvI0BhSjB:22
-        a=AbAUZ8qAyYyZVLSsDulk:22 a=E9Po1WZjFZOl8hwRPBS3:22
+Received: by 2002:ac2:55ae:0:0:0:0:0 with HTTP; Sat, 9 Jan 2021 13:56:31 -0800 (PST)
+Reply-To: mrkasimmohamed15@gmail.com
+From:   "Dr.Kasim Mohamed" <ellaemiantor2@gmail.com>
+Date:   Sat, 9 Jan 2021 13:56:31 -0800
+Message-ID: <CAHRdPM4GTkeGbiM3q22+jzLEcCq7A-DtUso+5wB0yGpQmmLj_w@mail.gmail.com>
+Subject: Please Urgent Response
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sebatian,
+-- 
+I am Mr Kasim Mohamed
 
-On Fri, Jan 08, 2021 at 12:24:41PM +0100, Sebastian Reichel wrote:
-> Standard DRM panel driver for DSI command mode panel used by omapfb2 is also
-> available now. Just like the other panels its module name clashes with the
-> module from drivers/video/fbdev/omap2/omapfb/displays, part of the deprecated
-> omapfb2 fbdev driver. As omapfb2 can only be compiled when the omapdrm driver
-> is disabled, and the DRM panel drivers are useless in that case, make the
-> omapfb2 panel depend on the standard DRM panels being disabled to fix
-> the name clash.
-> 
-> Fixes: cf64148abcfd ("drm/panel: Move OMAP's DSI command mode panel driver")
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-
-For a backport this looks good:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-
-But why is it it we need omapfb at all when we have omapdrm?
-Can we sunset all or some parts of omap support in video/?
-If not, what is missing to do so.
-
-	Sam
-
-> ---
-> Laurent introduced and fixed the same issue for the other panels and
-> this simply replicates the same solution for DSI command mode panel.
-> ---
->  drivers/video/fbdev/omap2/omapfb/displays/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/displays/Kconfig b/drivers/video/fbdev/omap2/omapfb/displays/Kconfig
-> index 744416dc530e..384d74a126dc 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/displays/Kconfig
-> +++ b/drivers/video/fbdev/omap2/omapfb/displays/Kconfig
-> @@ -43,6 +43,7 @@ config FB_OMAP2_PANEL_DPI
->  config FB_OMAP2_PANEL_DSI_CM
->  	tristate "Generic DSI Command Mode Panel"
->  	depends on BACKLIGHT_CLASS_DEVICE
-> +	depends on DRM_PANEL_DSI_CM = n
->  	help
->  	  Driver for generic DSI command mode panels.
->  
-> -- 
-> 2.29.2
+Hi Friend I am a bank director of the UBA Bank Plc bf .I want to
+transfer an abandoned sum of 27.5 millions USD  to you through ATM
+VISA CARD .50% will be for you. No risk involved. Contact me for more
+details. Kindly reply me back to my alternative email
+address(mrkasimmohamed15@gmail.com) Mr kasim mohamed
