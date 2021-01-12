@@ -2,64 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB2B2F03F5
-	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Jan 2021 22:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 314AB2F2E97
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Jan 2021 13:03:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbhAIV5P (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 9 Jan 2021 16:57:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726080AbhAIV5O (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Jan 2021 16:57:14 -0500
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FE4C061786
-        for <linux-fbdev@vger.kernel.org>; Sat,  9 Jan 2021 13:56:33 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id m12so31715886lfo.7
-        for <linux-fbdev@vger.kernel.org>; Sat, 09 Jan 2021 13:56:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=1BE9dnFeMlO87yw0Pb6LWjNYqQ7ZqkZnHENkJwfeBeE=;
-        b=kqjmufw4R0a54o32RxwlEZKtexKoJi/g4TMx700LLgDKOmmKwAScUmAR4wvbBjBoOz
-         KpQeshGOHTLAzFd+CfjuYjcCz/dRLe1VvHM10Vj7gk9CZT7bTEUNeadN5q9ZkVrKXJvl
-         nBpGrt8XtayQNONoViR0SPAIBQkDKp3fb+ImufiMcokyIo+dcXBBG6bTPMK+UJIQJCn5
-         IvvAKiQJfvTO9GOomq+eg1V+bmCpPM2wtPzp26Z2LQJxeJqj9HxemZgXCYKbBYeK2goJ
-         jk8GBQK9n3NRNYH4SPhk9KJFl3VHTg0+EP0iW1O61OHucdbZc37Ut1ro/idAJHFNuAY6
-         pQdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=1BE9dnFeMlO87yw0Pb6LWjNYqQ7ZqkZnHENkJwfeBeE=;
-        b=RjeJS7cXNuPqv4WfMik+mXQbAh1d8BkBQCbJpBKVwLR0gejz+gufTOzxw3fhoRnWEf
-         im+3VERyNB35T51Y7rKef5vzDKCLolzKW+aJP0awOdUtYB/C9MzOfLQAM5FA8m3uJNci
-         Zgo5FLXFK/pBRraQ+eAhLT+gT7KhXUWt9cA1EGiXjnTh9Opg3N3OrT9T+k7ROtk1ySVB
-         /AQzPikF8b4aPPnFOrV2T2tiyJzqqQZ5eVu+EI9iuSeehtn3xhkNqduOg74DyK/ZzutO
-         9aFX0kXmalVXwT4viUOabadWFHj36PXuQMQkYCR3VXbzwaRMKdsrClt0iPjGz/JyE0qi
-         OXZQ==
-X-Gm-Message-State: AOAM531I9v7jXV0n9ZGReIImAAsoNv0s3NbWe1/dwoHjWo7zjh6gMXe/
-        uzPCCRpEBkoCEQinZumm5LqGvjPj3hF3khOr1A==
-X-Google-Smtp-Source: ABdhPJzBzfPlVrVXooq2otekgnDsiyzVV3lrgnyUEAmPqy7grveh0w+mcINT596M2+Oc+95NvD77krr4LKG4UIyTIJQ=
-X-Received: by 2002:a2e:89d7:: with SMTP id c23mr4120818ljk.282.1610229391575;
- Sat, 09 Jan 2021 13:56:31 -0800 (PST)
+        id S1731952AbhALMDb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Jan 2021 07:03:31 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:39670 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727729AbhALMDb (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 12 Jan 2021 07:03:31 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 12E091F45198
+Received: by earth.universe (Postfix, from userid 1000)
+        id C46B83C0C94; Tue, 12 Jan 2021 13:02:46 +0100 (CET)
+Date:   Tue, 12 Jan 2021 13:02:46 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Sam Ravnborg <sam@ravnborg.org>
+Cc:     Tomi Valkeinen <tomba@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+        kernel@collabora.com
+Subject: Re: [PATCHv1] video: omapfb2: Make standard and custom DSI command
+ mode panel driver mutually exclusive
+Message-ID: <20210112120246.ujhjyylrlgfrfvig@earth.universe>
+References: <20210108122540.657501b2@canb.auug.org.au>
+ <20210108112441.14609-1-sebastian.reichel@collabora.com>
+ <20210108195839.GA1429715@ravnborg.org>
 MIME-Version: 1.0
-Received: by 2002:ac2:55ae:0:0:0:0:0 with HTTP; Sat, 9 Jan 2021 13:56:31 -0800 (PST)
-Reply-To: mrkasimmohamed15@gmail.com
-From:   "Dr.Kasim Mohamed" <ellaemiantor2@gmail.com>
-Date:   Sat, 9 Jan 2021 13:56:31 -0800
-Message-ID: <CAHRdPM4GTkeGbiM3q22+jzLEcCq7A-DtUso+5wB0yGpQmmLj_w@mail.gmail.com>
-Subject: Please Urgent Response
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iijg5xf7wxvodjnw"
+Content-Disposition: inline
+In-Reply-To: <20210108195839.GA1429715@ravnborg.org>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-I am Mr Kasim Mohamed
 
-Hi Friend I am a bank director of the UBA Bank Plc bf .I want to
-transfer an abandoned sum of 27.5 millions USD  to you through ATM
-VISA CARD .50% will be for you. No risk involved. Contact me for more
-details. Kindly reply me back to my alternative email
-address(mrkasimmohamed15@gmail.com) Mr kasim mohamed
+--iijg5xf7wxvodjnw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+[replace Tomi's TI mail address with something working]
+
+Hi,
+
+On Fri, Jan 08, 2021 at 08:58:39PM +0100, Sam Ravnborg wrote:
+> Hi Sebastian,
+>=20
+> On Fri, Jan 08, 2021 at 12:24:41PM +0100, Sebastian Reichel wrote:
+> > Standard DRM panel driver for DSI command mode panel used by omapfb2 is=
+ also
+> > available now. Just like the other panels its module name clashes with =
+the
+> > module from drivers/video/fbdev/omap2/omapfb/displays, part of the depr=
+ecated
+> > omapfb2 fbdev driver. As omapfb2 can only be compiled when the omapdrm =
+driver
+> > is disabled, and the DRM panel drivers are useless in that case, make t=
+he
+> > omapfb2 panel depend on the standard DRM panels being disabled to fix
+> > the name clash.
+> >=20
+> > Fixes: cf64148abcfd ("drm/panel: Move OMAP's DSI command mode panel dri=
+ver")
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+>=20
+> For a backport this looks good:
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+
+Thanks.
+
+> But why is it it we need omapfb at all when we have omapdrm?
+
+I think there are two reasons omapfb has not been killed yet. One
+reason was missing support for manually updated DSI panels, which
+have been working since 1 or 2 kernel releases now. The other reason
+is some people using it in combination with an out-of-tree PowerVR
+kernel driver. There is currently work going on to use a more recent
+PowerVR driver based on omapdrm driven by Maemo Leste people.
+
+> Can we sunset all or some parts of omap support in video/?
+> If not, what is missing to do so.
+
+IDK the exact status of the PowerVR work and have not been using
+omapfb myself for years. I don't think there is a reason to rush
+this, so my suggestion is removing it in 3 steps giving people
+the chance to complain:
+
+1. Add 'depends on EXPERT' to 'FB_OMAP2' and add deprecation notice
+   referencing omapdrm in help text in 5.12
+2. Add 'depends on BROKEN' in 5.13
+3. Drop drivers/video/fbdev/omap2 afterwards
+
+-- Sebastian
+
+--iijg5xf7wxvodjnw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/9j9YACgkQ2O7X88g7
++prP1A//Vgw/MQFN4Vxba+rQpa+HIzqlPLKGsiMXfU4Xhix/+Csd+gL8u+8rWNjG
++Fx+MeNgwQPnyGXnHoi822auQ2s5XVJkRjXH5tKxmW5Emu0W+xKvZMlZ552WlJ0u
+w9Y6689o+enXxXizPHM4o1fyl6K5NPBZu/9z8xjn0IkWnZU8zYMo+/fEetRGMW06
+VbZvZkKynGV8kjWXhwATJx/Xk+ZU7ZvY5z+d6LP26alM5fxVhl1ODxPEo5ADPvX8
+Ue8fpNzXowu+GcfHZbWlFdZlG6Vr1IsiOG/gyzWKVTR3wIyzFTBSiYBJMGIcKfI1
+FtnrO6Pqrp9mxDSzW9MpaIF97+QZ84QvN98ot5BLl7FTP/NCBUk312Wv9xaWC7Du
+MKZ9RzIB1rhOni/5sGOsEQkNT+77GlKfU87HwbyDzYzYBTrWkfYMOPkdmRG6RXhg
+nyBgPSY4cbeA8n25j+YUV85P6k1OtTLcaosDAw22RNe8IGe7NvWvcPvzhNpXa1oa
+nHMMuqVT0ZblCP35vW8HfqQ5mkhzeVE5HM6qGooddTRPZx0zEo5CbbWn0qg983ln
+DV33qMVCzUpqUpwJw1TSjfZJM8ieHVcajQ7hvRWkpw/+Grr//ejCcnmht+nbSRIe
+HNqAi8JOmKLHfELAMaNRpJZniA+BWGSPW27h7sRdXelW8p2dzSA=
+=lu/2
+-----END PGP SIGNATURE-----
+
+--iijg5xf7wxvodjnw--
