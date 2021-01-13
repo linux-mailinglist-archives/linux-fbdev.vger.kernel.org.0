@@ -2,59 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E182F4DBA
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76C942F4DDF
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727513AbhAMOvx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Jan 2021 09:51:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41750 "EHLO
+        id S1727170AbhAMOw7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Jan 2021 09:52:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727479AbhAMOvv (ORCPT
+        with ESMTP id S1727703AbhAMOwR (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Jan 2021 09:51:51 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 954EFC061388
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:37 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id g25so3769827wmh.1
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:37 -0800 (PST)
+        Wed, 13 Jan 2021 09:52:17 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26C3C061389
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:38 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id h17so1654487wmq.1
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=dqYcKMvvBegfm3VenU/QB6olxRoFuHKFr2cjTUmqS/8=;
-        b=S9AVj327o2YowF2UVDBy78wryMVcbl0h9+66FkKjsJ6i8WFxR9bdMBpvD09HQSKrBK
-         vo1ZGwrQgRIbO8nXV14mGFMY7xN/8efJxg72LA+jGfLxFGqANW5Hq1Sp7x03fIgx6wh9
-         GIQHviMB4xL7Ezvs1yhHlV4tpH+kRDmAfbGsmQRRzOL0kTysvdv5asLys1CLRMxMQw3j
-         KSElJsxQsL2ag8A2zAltelJHGfRZI0Wa5LkJq72Dlg5v5NEk61ys0mgDyU45DAojoCL2
-         n+AyXgib6ItiEzC+zdVYwT+v/wpNd5HLgmYqxPkzAM1ka3F9mHglqwUXvhnOweZ6cRBz
-         nA+A==
+        bh=GZEx6Psm5kmVFzQRuV4hKShFUTuX59E1ZZSqS64lTO4=;
+        b=qCaU5/PwjTYjtfnriB60Z9oLOr+vFl/C6eE9S2SqWRzje404GBkmpQhafug/AkVxOy
+         cQQpoF2TPpvHLZ2G0WwI0m9I3+iSy5mECHxCRPxdVQEqbEaiQAKEQ21H2Puw7RerAiVE
+         wFP15HZbbxQs2PH85CQiCco+76nv2mFTwq9YLxfrDpX1dbHfhcDj5xFdWbHJisbQiGp9
+         gXFKfd2QUbQryXwNq3Wq2jJyOgsjiru7oncOJDfA+X11+HkluVlV1zwafJGTb/u8E2G8
+         MRaYmLZI/XB7G9OUxyfbsMCiS30QwhZAVeTDBJWC+SfdIRLhSlZ+MEl7DCFddFc+gJo3
+         s87Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dqYcKMvvBegfm3VenU/QB6olxRoFuHKFr2cjTUmqS/8=;
-        b=nHa3V5bl69CUbVj4BOb7kz4wKSuE0g8F+6n1Sva3ifHhtooi37k9e211vIATHpHfs8
-         nEXBSJd4UyqDz1gk71gMWXrfQG9HTxHNwKNqFW8YTLRsqexOoLQTTNgSsm0GU5VO7IGH
-         jkLJzjdttTwBoazjh8+s6PbxPZJhbqAIhMVT8pezkV08NEAkORKi/y9jFigeYbrdEEjK
-         9I6Y542lWpFenoTdk6SncLPhe/6X4FiD1grdFHj3pbhmWXVr+0BBeiuCpmu7boDp1NCh
-         Jxsq4B8iHLihPcmnz7R7rixL02SjICby6u3Wgg2AVhUWOKiUDe5p64Bpa1cjZYlwDFjG
-         pwTg==
-X-Gm-Message-State: AOAM533wPgsRYiyr4WR75KUi0pPJl7tsKXraPHAEqt4hAPdpTjn0S0FJ
-        2uTJNWCWIG2Ge18OpM9urD92Pw==
-X-Google-Smtp-Source: ABdhPJy4RotZ5wPboUC1kdYhrUWx9GlS9eDgIJqXfbaNL8FlpjQa2No/+N3798NUVzIh33Csn1WwcA==
-X-Received: by 2002:a05:600c:2255:: with SMTP id a21mr2599659wmm.122.1610549436394;
-        Wed, 13 Jan 2021 06:50:36 -0800 (PST)
+        bh=GZEx6Psm5kmVFzQRuV4hKShFUTuX59E1ZZSqS64lTO4=;
+        b=gRYM7eAz28xkGAhyo10bKZWg7TeNPTT6mv/zQCmztXOennS6nAN5g3tYswmBG0CYAp
+         F/yqMvvhX+d6YrtWWJCDTt0OQgcKCtwAyi/+KadU+oS4fXtVWtPdc1oMHzhfOHcHFlXI
+         YyiCvSUd/yN4KmwFs7+RsSaPpUoKA1/G3u+EG2XR2xSsvuyW2UUIqYMKKN7KUQq33JbE
+         hjd5guuHkN3J8KFyt7Ly3upVQZIthwZNJlQecLLlaI3as4DNrWghkioCrNuku5Cbs/1C
+         pfWOofyPmymvd45oQqEKbMkHH5ldA4O+RpBVVbXVQzg3OnLEaHtqApiH0DCUG5KmwdFa
+         YARQ==
+X-Gm-Message-State: AOAM532A70Saha3NfSdRnIgt+UD26kvktWwv8KuxKdbkNjFsCO0e4dC3
+        vIsDKAOlEVDYg91IZy2LVbN08Q==
+X-Google-Smtp-Source: ABdhPJzXGlHjQWCGWlwH0MsHBEeXn1e8tUGwLxoT/K65Pbdak+HaHN+93bMx8dcQNJlERhqlDPiH6w==
+X-Received: by 2002:a1c:40d6:: with SMTP id n205mr2609520wma.0.1610549437515;
+        Wed, 13 Jan 2021 06:50:37 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.34
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:35 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:36 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, daniel.mantione@freepascal.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 14/31] video: fbdev: aty: mach64_ct: Remove some set but unused variables
-Date:   Wed, 13 Jan 2021 14:49:52 +0000
-Message-Id: <20210113145009.1272040-15-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 15/31] video: fbdev: via: lcd: Remove unused variable 'mode_crt_table'
+Date:   Wed, 13 Jan 2021 14:49:53 +0000
+Message-Id: <20210113145009.1272040-16-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -67,59 +68,34 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/aty/mach64_ct.c: In function ‘aty_init_pll_ct’:
- drivers/video/fbdev/aty/mach64_ct.c:405:46: warning: variable ‘vga_dsp_on_off’ set but not used [-Wunused-but-set-variable]
- drivers/video/fbdev/aty/mach64_ct.c:405:30: warning: variable ‘vga_dsp_config’ set but not used [-Wunused-but-set-variable]
- drivers/video/fbdev/aty/mach64_ct.c:405:18: warning: variable ‘dsp_on_off’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/via/lcd.c: In function ‘viafb_lcd_set_mode’:
+ drivers/video/fbdev/via/lcd.c:540:29: warning: variable ‘mode_crt_table’ set but not used [-Wunused-but-set-variable]
 
-Cc: daniel.mantione@freepascal.org
-Cc: dri-devel@lists.freedesktop.org
+Cc: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
 Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/aty/mach64_ct.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ drivers/video/fbdev/via/lcd.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/aty/mach64_ct.c b/drivers/video/fbdev/aty/mach64_ct.c
-index f87cc81f4fa2b..23eececa1e9d7 100644
---- a/drivers/video/fbdev/aty/mach64_ct.c
-+++ b/drivers/video/fbdev/aty/mach64_ct.c
-@@ -402,7 +402,7 @@ static int aty_init_pll_ct(const struct fb_info *info, union aty_pll *pll)
- 	struct atyfb_par *par = (struct atyfb_par *) info->par;
- 	u8 mpost_div, xpost_div, sclk_post_div_real;
- 	u32 q, memcntl, trp;
--	u32 dsp_config, dsp_on_off, vga_dsp_config, vga_dsp_on_off;
-+	u32 dsp_config;
- #ifdef DEBUG
- 	int pllmclk, pllsclk;
- #endif
-@@ -488,25 +488,10 @@ static int aty_init_pll_ct(const struct fb_info *info, union aty_pll *pll)
+diff --git a/drivers/video/fbdev/via/lcd.c b/drivers/video/fbdev/via/lcd.c
+index 4a869402d120d..088b962076b51 100644
+--- a/drivers/video/fbdev/via/lcd.c
++++ b/drivers/video/fbdev/via/lcd.c
+@@ -537,11 +537,9 @@ void viafb_lcd_set_mode(const struct fb_var_screeninfo *var, u16 cxres,
+ 	u32 clock;
+ 	struct via_display_timing timing;
+ 	struct fb_var_screeninfo panel_var;
+-	const struct fb_videomode *mode_crt_table, *panel_crt_table;
++	const struct fb_videomode *panel_crt_table;
  
- 	/* Allow BIOS to override */
- 	dsp_config = aty_ld_le32(DSP_CONFIG, par);
--	dsp_on_off = aty_ld_le32(DSP_ON_OFF, par);
--	vga_dsp_config = aty_ld_le32(VGA_DSP_CONFIG, par);
--	vga_dsp_on_off = aty_ld_le32(VGA_DSP_ON_OFF, par);
- 
- 	if (dsp_config)
- 		pll->ct.dsp_loop_latency = (dsp_config & DSP_LOOP_LATENCY) >> 16;
--#if 0
--	FIXME: is it relevant for us?
--	if ((!dsp_on_off && !M64_HAS(RESET_3D)) ||
--		((dsp_on_off == vga_dsp_on_off) &&
--		(!dsp_config || !((dsp_config ^ vga_dsp_config) & DSP_XCLKS_PER_QW)))) {
--		vga_dsp_on_off &= VGA_DSP_OFF;
--		vga_dsp_config &= VGA_DSP_XCLKS_PER_QW;
--		if (ATIDivide(vga_dsp_on_off, vga_dsp_config, 5, 1) > 24)
--			pll->ct.fifo_size = 32;
--		else
--			pll->ct.fifo_size = 24;
--	}
--#endif
-+
- 	/* Exit if the user does not want us to tamper with the clock
- 	rates of her chip. */
- 	if (par->mclk_per == 0) {
+ 	DEBUG_MSG(KERN_INFO "viafb_lcd_set_mode!!\n");
+-	/* Get mode table */
+-	mode_crt_table = viafb_get_best_mode(set_hres, set_vres, 60);
+ 	/* Get panel table Pointer */
+ 	panel_crt_table = viafb_get_best_mode(panel_hres, panel_vres, 60);
+ 	viafb_fill_var_timing_info(&panel_var, panel_crt_table);
 -- 
 2.25.1
 
