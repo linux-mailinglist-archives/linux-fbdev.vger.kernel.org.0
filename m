@@ -2,60 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 391EC2F4DAF
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 423EA2F4DF7
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbhAMOvR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Jan 2021 09:51:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
+        id S1726989AbhAMOym (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Jan 2021 09:54:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727019AbhAMOvQ (ORCPT
+        with ESMTP id S1727348AbhAMOvm (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Jan 2021 09:51:16 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E5E7C0617B0
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:23 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id m4so2388917wrx.9
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:23 -0800 (PST)
+        Wed, 13 Jan 2021 09:51:42 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B7AC0617B1
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:25 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id a6so1850658wmc.2
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9ZA26LGPctNuqP7mpV6XCcQsQZ+HB0XmYF1B/7L0jYA=;
-        b=YtqFI8RDxxpW9mdQOUk2m2f1SEWXkWNA5Pijok8cpdh3D28yUmkArEeHKDJHaMEw2D
-         PdgSAP9Q4tLae/SkYSJ5eTZDO+n6pFatwv/TqUUoiuB320K732eTGq0iXq8oR/tNfkIH
-         9Y7pMmU2dnvUJlE7Cdikh+7Q8gG1oq1Nl7lwW/RGcLXR8b/1SFcPKGDY/yVn+9vcaOw5
-         ZsO4KDnuoqv4twTiAyGApWz9SY9RChb3/M/q2nVmM21sVoOCVxHdSCQemO93T1g3lrAj
-         3Lx+99Zkwfs70d4L1iYYRAQVeIVTso9ON+bmqWt1gSMmPn5bt/vIUtmLPizMCW6GT2UM
-         qWZA==
+        bh=41nyWegGgkKSptjKwd6Aeq/y24rv95GTAFlb1D5g4Jo=;
+        b=pafm/yTul1VI6VgZ+awVR07fmX3mqTQQWpRtjlYSoHGu/InZpKlZn+TF3rRl17XSwP
+         nVwCaHHy9o1NrbzI5Kqe7jaZlv2VbjcglCPPckq0exelBS2rP9Xphp3ItgG6M8CLTIda
+         FwhjulzLUtcgvHitUQ8ektKlAMQXC7BiliexBGYJjJwdb+W/YgPFIvtHlO2IzbtQIst3
+         2lSsdNd4+01TS9ZC+VwxrTVSuKXlQqv7Nl4gEzF2GdRsihWAM07i9laFCMuZ/apY4wep
+         urDKWRfnc3vXE09BZNPfdVc8mjTIaiELGUowzaRoZqOiyF9oz78MBZlpqlJsYGj2kyLL
+         xurg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9ZA26LGPctNuqP7mpV6XCcQsQZ+HB0XmYF1B/7L0jYA=;
-        b=sNy/rXDyoi+JNd/0eP4e7zJNDrclamzIw+b28gyQdWOpwzzz0BaeO0eGlsRGMSH4Ww
-         X3l7TdD7/vIzyJ2L6ggj9zfnYBsm89UPEIbpvi3OBtygiGogfQxKr+/WjWCql/t8CJ5C
-         6QxLAOB3B5OIwQRVz9okhLx3ITExsn0oMccdMz53I2B2obvd4FFH/YR8UcBBceZUsanY
-         JGmkOqgWELMqDMMAtz1NIIiIv9RDtZbtzdNQvi17mxz7iQEkDqI5nmEFFjG4o9LY7yIQ
-         dXx48VDK8YG5WUzkhEDwf/9xgjrxKSPOBN5kLJM0FacajfjLef3iG/7+WvP78QUJ/ynB
-         HAHw==
-X-Gm-Message-State: AOAM5320PQjDdl+d/eumW/sr4daELWW+xiNvRl6i2GdGaQV1KgVK3Hih
-        HOXNX+xP/LRvqhiuT2fyTAsw+w==
-X-Google-Smtp-Source: ABdhPJybD9xMfIqt11fPwnFfiI93H9p+YPj4ju8Xk0ywP3UrRKbDeRkdo75NDlfYMlTY1EKiKvzaMA==
-X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr2935428wrw.379.1610549422311;
-        Wed, 13 Jan 2021 06:50:22 -0800 (PST)
+        bh=41nyWegGgkKSptjKwd6Aeq/y24rv95GTAFlb1D5g4Jo=;
+        b=HRZldCDk97JbK8A6MkVBJD98KzDbku8cQQ843fDSGO62JGP0Ql8ycDhuPM3L/0w+9S
+         PFOPwslB/skm7Jj2l+yQAmo/t9Q4eTrwXDeOxx1AYPu/us6hBAnlP6ooRXKdaQVHXJiI
+         UNihOj0X9gS4X6prtjrRxBEfg0xAHo0HuOKfxVi2H7Lj+7oS3kfuKmvjzXM6+QeRcr74
+         vWWvz6F7aPepn2+DqWxxkdT8V2WK3Rj2CGZLsvmot36tKfrmaFYeMivM9UqilLtWq//a
+         Vi4tJ38MH+SaZ4uqs43Dc4Lw9Oil6FL77TFAsiR0c5gr/62gQP0hPxTa2bjRapA2K57O
+         9gJA==
+X-Gm-Message-State: AOAM530bPmIm7s0OlWevH6fgrvzEgFuVMKGDmdDvx76HkJYQ1/tfTmAY
+        UK13gy4Ml0Nqzm6/dVoJQUYTcQ==
+X-Google-Smtp-Source: ABdhPJzywTsfi9Vnx2cWTPz0rA/vBrZ4+HLSZp3gHQQkVIeaDidlu8J3N598S3+EfWlm4YxHB5jcVA==
+X-Received: by 2002:a1c:a145:: with SMTP id k66mr2551920wme.18.1610549423835;
+        Wed, 13 Jan 2021 06:50:23 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.20
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:21 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:22 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Antonino Daplas <adaplas@pol.net>,
-        Brad Douglas <brad@neruo.com>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH 06/31] video: fbdev: core: fb_notify: Demote non-conformant kernel-doc header
-Date:   Wed, 13 Jan 2021 14:49:44 +0000
-Message-Id: <20210113145009.1272040-7-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Antonino Daplas <adaplas@gmail.com>,
+        Ani Joshi <ajoshi@shell.unixbox.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 07/31] video: fbdev: riva: fbdev: Fix some kernel-doc misdemeanours
+Date:   Wed, 13 Jan 2021 14:49:45 +0000
+Message-Id: <20210113145009.1272040-8-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -67,33 +67,71 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/core/fb_notify.c:44: warning: Function parameter or member 'val' not described in 'fb_notifier_call_chain'
- drivers/video/fbdev/core/fb_notify.c:44: warning: Function parameter or member 'v' not described in 'fb_notifier_call_chain'
+ drivers/video/fbdev/riva/fbdev.c:485: warning: Function parameter or member 'data8' not described in 'rivafb_load_cursor_image'
+ drivers/video/fbdev/riva/fbdev.c:485: warning: Excess function parameter 'data' description in 'rivafb_load_cursor_image'
+ drivers/video/fbdev/riva/fbdev.c:863: warning: Function parameter or member 'var' not described in 'rivafb_do_maximize'
+ drivers/video/fbdev/riva/fbdev.c:863: warning: Function parameter or member 'nom' not described in 'rivafb_do_maximize'
+ drivers/video/fbdev/riva/fbdev.c:1229: warning: Excess function parameter 'con' description in 'rivafb_pan_display'
 
-Cc: Antonino Daplas <adaplas@pol.net>
-Cc: Brad Douglas <brad@neruo.com>
-Cc: dri-devel@lists.freedesktop.org
+Cc: Antonino Daplas <adaplas@gmail.com>
+Cc: Ani Joshi <ajoshi@shell.unixbox.com>
 Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/core/fb_notify.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/fbdev/riva/fbdev.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fb_notify.c b/drivers/video/fbdev/core/fb_notify.c
-index 74c2da5288848..1f142182fb40e 100644
---- a/drivers/video/fbdev/core/fb_notify.c
-+++ b/drivers/video/fbdev/core/fb_notify.c
-@@ -36,9 +36,8 @@ int fb_unregister_client(struct notifier_block *nb)
+diff --git a/drivers/video/fbdev/riva/fbdev.c b/drivers/video/fbdev/riva/fbdev.c
+index ce55b9d2e862b..8adf9cf353410 100644
+--- a/drivers/video/fbdev/riva/fbdev.c
++++ b/drivers/video/fbdev/riva/fbdev.c
+@@ -464,12 +464,12 @@ static inline void reverse_order(u32 *l)
+ 
+ /**
+  * rivafb_load_cursor_image - load cursor image to hardware
+- * @data: address to monochrome bitmap (1 = foreground color, 0 = background)
++ * @data8: address to monochrome bitmap (1 = foreground color, 0 = background)
+  * @par:  pointer to private data
+- * @w:    width of cursor image in pixels
+- * @h:    height of cursor image in scanlines
+  * @bg:   background color (ARGB1555) - alpha bit determines opacity
+  * @fg:   foreground color (ARGB1555)
++ * @w:    width of cursor image in pixels
++ * @h:    height of cursor image in scanlines
+  *
+  * DESCRIPTiON:
+  * Loads cursor image based on a monochrome source and mask bitmap.  The
+@@ -840,19 +840,15 @@ static void riva_update_var(struct fb_var_screeninfo *var,
+ 	NVTRACE_LEAVE();
  }
- EXPORT_SYMBOL(fb_unregister_client);
  
 -/**
+- * rivafb_do_maximize - 
 +/*
-  * fb_notifier_call_chain - notify clients of fb_events
-- *
-  */
- int fb_notifier_call_chain(unsigned long val, void *v)
- {
++ * rivafb_do_maximize
+  * @info: pointer to fb_info object containing info for current riva board
+- * @var:
+- * @nom:
+- * @den:
+  *
+  * DESCRIPTION:
+  * .
+  *
+  * RETURNS:
+  * -EINVAL on failure, 0 on success
+- * 
+  *
+  * CALLED FROM:
+  * rivafb_check_var()
+@@ -1214,7 +1210,6 @@ static int rivafb_set_par(struct fb_info *info)
+ /**
+  * rivafb_pan_display
+  * @var: standard kernel fb changeable data
+- * @con: TODO
+  * @info: pointer to fb_info object containing info for current riva board
+  *
+  * DESCRIPTION:
 -- 
 2.25.1
 
