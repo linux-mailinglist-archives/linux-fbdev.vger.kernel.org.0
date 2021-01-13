@@ -2,60 +2,59 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAD22F4DBD
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 256162F4DC6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbhAMOwC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Jan 2021 09:52:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
+        id S1727690AbhAMOwN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Jan 2021 09:52:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727630AbhAMOwB (ORCPT
+        with ESMTP id S1727676AbhAMOwM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Jan 2021 09:52:01 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2752C061383
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:34 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id g10so1855227wmh.2
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:34 -0800 (PST)
+        Wed, 13 Jan 2021 09:52:12 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D075C061385
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:36 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id a6so1851287wmc.2
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=j7fOAdOMSh9+aZXnWVlTBiJqXaPtT0tmJFJgVlyDPug=;
-        b=wkKY3gUVpw4qP/WuQzc8XjrzRncVeSuZ6NzeUbALePTgU3Yrbw7YLTdHcXZj56nxVU
-         5Jh4wNloszsqH/vVqJxDDwBSRrJ2OCTzKTPcd5JzNVT5XIiv2M5crt5y5UskqbNAQTBB
-         KvR9s7UwwCew+cXB1M/8JHMnIwXdbQxIScTfFklRChWJUy40Q3CuOodobSh9Um18qIvs
-         FEHYZzDJPaKk06OPv4/h1Mi2+ufc5Xt/BqkVcO0w1K9kWocAZk5NMITW/2XtGYuEHFGY
-         KaZnlzcDkLV1OrVCrmMpjQPrdUpM4TmeGqpdDN4K+fWyND84c6a9egSMvCEW1eojZ/Tv
-         wkMw==
+        bh=hcCYDUMcS26jDuM5+gRx+fiSHXa/31pKXfkIX189fZc=;
+        b=WKJOrwZ97W06sGNe/8643fsBAhUrIy3pw+p8/Z4nnVsXP2eywnUTF/fuu6aqQ7IqnV
+         6bqyAhBD4abY+s60Rl5IZigMaAmPXz8Uw2c1DpBJK4PQxmaJxmh9tA+R2LxW1BhiiZTk
+         yiuf3i9VtB5gHvfNiYKnHs1w8ffM0OURr8SS6DOOcwdI/uLEYMkd3eiV0TcMkLorYNz2
+         63JkGhf4cM01/SzrmAxd+HQf+HPnQA/eQoOZlRp6Lb9kAQGSlV4OiRy91CNfm/Ap5ieG
+         bufuyVkbrh7vj7Mtxphu1YXK2MYICuU0icBn09Vb30KwCkk8oOWznjZavOmb2Rr1w40u
+         CRDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=j7fOAdOMSh9+aZXnWVlTBiJqXaPtT0tmJFJgVlyDPug=;
-        b=opm9PeHfXMYbO+wKL0puXzWOtmtIsrt9ibWJ1Y84mvpxSb1vfcOrr6d8mffXyhS+tH
-         Gqc6R3B4KRQQPBthnhNI1PA3p8rIZWoNXAePBmfH6rSIpCjvAlQI6kXFXTJsFWY5wO82
-         OkitS5xAB8DCm98T/80KVzZDtP333HRxOVhKMeqeMb0JTlrdD+bKDin2XcTSlcd/8BMS
-         sg0pp6x47M4zjJSMPvHFL/sNnG1Mqb6cgCb7JcNapGOJvqebfF4yExrSQqASUnC3Yrew
-         D+78KKqIJWD7LKymmFywUvjULJy1X+35D2rAgUndlDiv/9u7W+PWcuA+AlqBmJOSpe/1
-         wTAA==
-X-Gm-Message-State: AOAM532W35P9HIibKBMjoL5j0bECT5tHklR5bu/C54Z40YOY6krkNeFC
-        x2v7b/tHRISxOHyvs9AeMwQEENEEfHn/qYQM
-X-Google-Smtp-Source: ABdhPJwgWbKyROyg3P7kZzj3BsF17xohBzHH0P8bPH1Fo1biBkBRZcCRyPVkV1Whe5OHdIZxjMwpOQ==
-X-Received: by 2002:a1c:cc14:: with SMTP id h20mr2564071wmb.180.1610549433405;
-        Wed, 13 Jan 2021 06:50:33 -0800 (PST)
+        bh=hcCYDUMcS26jDuM5+gRx+fiSHXa/31pKXfkIX189fZc=;
+        b=aMUORw5MJZJVgqvGAPJGDPz0Kk1jHmVIc/K9p5NjeGmBOXp4cSM10DbEDRlkZ6zcfv
+         /i1uo9hOFLjKMHuCbogsuT1vgXmk/JEo9OeevgiYwTOIc8bXPH+Vl4O40pps6DOgLc0t
+         QQkgiNXtAD/5e1JnaYlKEnFeFIzZ2gweihw2NBr2oPBZVs/rd6jDYhLGfqbfjzhILwMp
+         AVzw/38Mj4uqM0mQ9vOFoukGLndmIZ2VJtjG0o/R07nigaBZdV2OpeN8sAKV2UWZTOvP
+         djUC8gWLc9tOIx7am434UMc6kmLJfRbfCkbTb8sK4D5U/GhB4R+q+oHde91Ra1DS/n3d
+         LiPQ==
+X-Gm-Message-State: AOAM5334WLXbV6QIDWlgD5NADNRSZBppef6cRZn7kCQKFBvqqI7MMQxC
+        ZWfyxgZRQiuSXI6499JqJTOL1TF8giRjtbAp
+X-Google-Smtp-Source: ABdhPJxI/06Eq2Rl5+qCibE+uAUvKG7ngE/AQ/AKyFAKVjTjbxsN6HN/O2nM7Z2/XWrJTZE0EwxiWQ==
+X-Received: by 2002:a1c:2d92:: with SMTP id t140mr2585614wmt.114.1610549434915;
+        Wed, 13 Jan 2021 06:50:34 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.31
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:32 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:34 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 12/31] video: fbdev: sis: oem310: Remove some unused static const tables
-Date:   Wed, 13 Jan 2021 14:49:50 +0000
-Message-Id: <20210113145009.1272040-13-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH 13/31] video: fbdev: nvidia: nv_setup: Remove a couple of unused 'tmp' variables
+Date:   Wed, 13 Jan 2021 14:49:51 +0000
+Message-Id: <20210113145009.1272040-14-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -68,48 +67,45 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/sis/oem310.h:213:28: warning: ‘SiS_TVDelay661_301B’ defined but not used [-Wunused-const-variable=]
- drivers/video/fbdev/sis/oem310.h:203:28: warning: ‘SiS_TVDelay661_301’ defined but not used [-Wunused-const-variable=]
+ drivers/video/fbdev/nvidia/nv_setup.c: In function ‘NVWriteAttr’:
+ drivers/video/fbdev/nvidia/nv_setup.c:92:14: warning: variable ‘tmp’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/nvidia/nv_setup.c: In function ‘NVReadAttr’:
+ drivers/video/fbdev/nvidia/nv_setup.c:104:14: warning: variable ‘tmp’ set but not used [-Wunused-but-set-variable]
 
-Cc: Thomas Winischhofer <thomas@winischhofer.net>
-Cc: dri-devel@lists.freedesktop.org
+Cc: Antonino Daplas <adaplas@gmail.com>
 Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/sis/oem310.h | 20 --------------------
- 1 file changed, 20 deletions(-)
+ drivers/video/fbdev/nvidia/nv_setup.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/oem310.h b/drivers/video/fbdev/sis/oem310.h
-index 8fce56e4482c0..5f7b503ed2a06 100644
---- a/drivers/video/fbdev/sis/oem310.h
-+++ b/drivers/video/fbdev/sis/oem310.h
-@@ -200,26 +200,6 @@ static const unsigned char SiS310_TVDelayCompensation_651302LV[] =	/* M650, 651,
- 	0x33,0x33
- };
- 
--static const unsigned char SiS_TVDelay661_301[] =			/* 661, 301 */
--{
--	0x44,0x44,
--	0x44,0x44,
--	0x00,0x00,
--	0x44,0x44,
--	0x44,0x44,
--	0x44,0x44
--};
--
--static const unsigned char SiS_TVDelay661_301B[] =			/* 661, 301B et al */
--{
--	0x44,0x44,
--	0x44,0x44,
--	0x00,0x00,
--	0x44,0x44,
--	0x44,0x44,
--	0x44,0x44
--};
--
- static const unsigned char SiS310_TVDelayCompensation_LVDS[] =		/* LVDS */
+diff --git a/drivers/video/fbdev/nvidia/nv_setup.c b/drivers/video/fbdev/nvidia/nv_setup.c
+index 2fa68669613af..47a96a066f998 100644
+--- a/drivers/video/fbdev/nvidia/nv_setup.c
++++ b/drivers/video/fbdev/nvidia/nv_setup.c
+@@ -89,9 +89,7 @@ u8 NVReadSeq(struct nvidia_par *par, u8 index)
+ }
+ void NVWriteAttr(struct nvidia_par *par, u8 index, u8 value)
  {
- 	0x0a,0x0a,
+-	volatile u8 tmp;
+-
+-	tmp = VGA_RD08(par->PCIO, par->IOBase + 0x0a);
++	VGA_RD08(par->PCIO, par->IOBase + 0x0a);
+ 	if (par->paletteEnabled)
+ 		index &= ~0x20;
+ 	else
+@@ -101,9 +99,7 @@ void NVWriteAttr(struct nvidia_par *par, u8 index, u8 value)
+ }
+ u8 NVReadAttr(struct nvidia_par *par, u8 index)
+ {
+-	volatile u8 tmp;
+-
+-	tmp = VGA_RD08(par->PCIO, par->IOBase + 0x0a);
++	VGA_RD08(par->PCIO, par->IOBase + 0x0a);
+ 	if (par->paletteEnabled)
+ 		index &= ~0x20;
+ 	else
 -- 
 2.25.1
 
