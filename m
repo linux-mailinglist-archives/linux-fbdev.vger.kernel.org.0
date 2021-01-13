@@ -2,65 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 779AF2F4DBC
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5821D2F4DC0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:52:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727424AbhAMOvy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Jan 2021 09:51:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41760 "EHLO
+        id S1727599AbhAMOwD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Jan 2021 09:52:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727494AbhAMOvx (ORCPT
+        with ESMTP id S1727630AbhAMOwC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Jan 2021 09:51:53 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FACC061342
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:43 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id t30so2435605wrb.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:43 -0800 (PST)
+        Wed, 13 Jan 2021 09:52:02 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914BDC061345
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:44 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id 91so2407125wrj.7
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ZRcivOWCu86KtmbW2EK6Np9SsvS7JZY4Xqa/qkwVtkE=;
-        b=t1ER4nwN/WPM6fNnm/Mdum0Pojlr01P78z/COYqJ1z5HyIHjWoDRfik8SQHtBQqxQK
-         YmiySxijr8E0W29ccNGw29mWFYTILvz8yqxd4Jhjz4xgCEkubT+0KFcPLzD/bqSuhqOv
-         bwbne25dLdz4tncYRuqLl24YT+dNFgIwqI2SBJY9J4cgkiSXbIrT5qKhC9+mgB4yvQc0
-         udbu5Cayvxz6NRQyXKyHcIRbULqdBiGQkpmclevO2khhsi+G7TZ0owLOrYnOEnlNsCCt
-         PsWXGjmGYEWJlNT1uNBNNRB3QkWWj1iQNibwkHhjoWky2+41zMmhl3Ve1ioMsvWRW5MO
-         3aKQ==
+        bh=8AKZe0pvPLHu3x895juPn/Z4GbXtcqzxxje+6pz86KU=;
+        b=MweOdz1mBiZ3YANYAenthalC1RAZ2L7YBzcfY2mxwBScLf0FZ7dfPLhGVCYJ3wStLt
+         C3s1vvBrFa415Wr1aCWWYyc6yuvzFexaNiSTEv/rsPJ+qSMCxbo/gkIkbK6PkL7+YYiN
+         j4X4qJFw6IVfKE3+eKxdcIPKq3uf/B3BN8WWKumhwaTV44EooXi7ZrrsGRMN/hPU9R9g
+         aM2d+N3S2d8PdXVSrkZFhnz4GytrdOwPuh2vbjAk7nR/Um1bObWFqsibjGktJZnkTX2+
+         LSnF9sH+yRTO8ixzJlE682O8bs4obJ1NQRctXzq69GkYjy20O7QmRaSjmdm9hW95TO4e
+         51pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ZRcivOWCu86KtmbW2EK6Np9SsvS7JZY4Xqa/qkwVtkE=;
-        b=SBbbOuTNvBE7pw9yR77hAMlWZy/+Yt3gXP9F9vrM58iNMC+wTk1y9uqRxTZmTShZeY
-         ICSrfAWdzyXm80335xIs+7UDSozgkSkOVS2lsQCJ3hnqyCXfEqiMBejF4qCIq+OKwQY7
-         z1NrjnxRvZPL/pCvoS7QbNvAqxMDLuClbzKB+pEZ7aryOuaVe82LIB+O9wHRNZW27HCw
-         UtHabtpn1hCwQ2Fi5WIofUK6CX59sf3Ot8DsTGZudghNw8RurzLP5KuQpOmKDAYxs1Hj
-         5lCWHUi7W4oefloUqd1a/ye8Vi5HRWQc7gTaJMJdbBGT1PGB0U6XBFtmR1hWiKHvw+Nh
-         YmZQ==
-X-Gm-Message-State: AOAM533flWwt2V1Lj9M5cCyThDBtf1h7GVuJzaPmoMfGkhfLmEN0vO4D
-        92XNNF342FFyEwrTIfXNcH4NpQ==
-X-Google-Smtp-Source: ABdhPJySPsgzKgHkiIcO4ZfvmXeUEmf0jtG+A5MVr9yGI+9UHHrTEsVD5G/gBIMGMpLdJt4RrmnaQg==
-X-Received: by 2002:a5d:530c:: with SMTP id e12mr3033393wrv.54.1610549442170;
-        Wed, 13 Jan 2021 06:50:42 -0800 (PST)
+        bh=8AKZe0pvPLHu3x895juPn/Z4GbXtcqzxxje+6pz86KU=;
+        b=QvEcU2Y9gxFE4oGBqjbqY2owOba2PQxJ6qIeMGNpW1E5305rcKqIhW8WNxtJvuUA4b
+         SWLXBn9Ggk8P+TL+X8XmE+KItnYr2MJEv7BZqzThS8YeoC/1ai3546q+PkF6gpzF6cYC
+         YEuin9OML4X+J6HYXGxfMEaQ8zOWqnQcteZbRgUKF2JrQFrI0rnaB26m2o6ZIh+2HAj+
+         nTySH9Dijkxnn/5zaywAXCyotnKzPH8N5eTtaVqcev/ObJEkmXXpNXJOcal+VgrcHe87
+         /3LTlVSDm5yh5XgYEovOZVoMHQQ8qJernEaLykz2YGvamhO77Hw2sgfTcOlZ802pnfhe
+         nzlQ==
+X-Gm-Message-State: AOAM533hEMpfPES/S9PBCRbl3dnnN1SBmcmcALo6AWkdQbwMWuqQr1fL
+        QNUX/THoCWxmpmUc40+u79YPbA==
+X-Google-Smtp-Source: ABdhPJw5rVCSN67wNU6TdCizFMPeOQwAc4JEScwBmwUscxQjY1orEkpeVLOPrWKc5N9q4Vjxl5enIA==
+X-Received: by 2002:a05:6000:124e:: with SMTP id j14mr3073602wrx.310.1610549443321;
+        Wed, 13 Jan 2021 06:50:43 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.41
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:41 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:42 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Hannu Mallat <hmallat@cc.hut.fi>,
-        Frodo Looijaard <frodol@dds.nl>,
-        Philip Edelbrock <phil@netroedge.com>,
-        Ralph Metzler <rjkm@thp.uni-koeln.de>,
-        "Mark D. Studebaker" <mdsxyz123@yahoo.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 19/31] video: fbdev: tdfxfb: Remove unused variable 'tmp'
-Date:   Wed, 13 Jan 2021 14:49:57 +0000
-Message-Id: <20210113145009.1272040-20-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, carter@compsci.bristol.ac.uk,
+        William Rucklidge <wjr@cs.cornell.edu>,
+        Jes Sorensen <jds@kom.auc.dk>,
+        Emmanuel Marty <core@ggi-project.org>,
+        Jakub Jelinek <jj@ultra.linux.cz>, Martin Mares <mj@ucw.cz>,
+        Brad Douglas <brad@neruo.com>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+Subject: [PATCH 20/31] video: fbdev: core: fbcon: Mark 'pending' as __maybe_unused
+Date:   Wed, 13 Jan 2021 14:49:58 +0000
+Message-Id: <20210113145009.1272040-21-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -71,39 +70,40 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+'pending' is only used if FBCONDEBUG is defined.
+
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/tdfxfb.c: In function ‘att_outb’:
- drivers/video/fbdev/tdfxfb.c:209:16: warning: variable ‘tmp’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/core/fbcon.c: In function ‘fbcon_exit’:
+ drivers/video/fbdev/core/fbcon.c:3295:7: warning: variable ‘pending’ set but not used [-Wunused-but-set-variable]
 
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Hannu Mallat <hmallat@cc.hut.fi>
-Cc: Frodo Looijaard <frodol@dds.nl>
-Cc: Philip Edelbrock <phil@netroedge.com>
-Cc: Ralph Metzler <rjkm@thp.uni-koeln.de>
-Cc: "Mark D. Studebaker" <mdsxyz123@yahoo.com>
+Cc: carter@compsci.bristol.ac.uk
+Cc: William Rucklidge <wjr@cs.cornell.edu>
+Cc: Jes Sorensen <jds@kom.auc.dk>
+Cc: Emmanuel Marty <core@ggi-project.org>
+Cc: Jakub Jelinek <jj@ultra.linux.cz>
+Cc: Martin Mares <mj@ucw.cz>
+Cc: Brad Douglas <brad@neruo.com>
 Cc: dri-devel@lists.freedesktop.org
 Cc: linux-fbdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/tdfxfb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
-index f056d80f6359f..67e37a62b07c3 100644
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -206,9 +206,7 @@ static inline u8 crt_inb(struct tdfx_par *par, u32 idx)
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index bf61598bf1c39..f3d628fd07dc1 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -3292,7 +3292,7 @@ static void fbcon_exit(void)
+ #endif
  
- static inline void att_outb(struct tdfx_par *par, u32 idx, u8 val)
- {
--	unsigned char tmp;
--
--	tmp = vga_inb(par, IS1_R);
-+	vga_inb(par, IS1_R);
- 	vga_outb(par, ATT_IW, idx);
- 	vga_outb(par, ATT_IW, val);
- }
+ 	for_each_registered_fb(i) {
+-		int pending = 0;
++		int __maybe_unused pending = 0;
+ 
+ 		mapped = 0;
+ 		info = registered_fb[i];
 -- 
 2.25.1
 
