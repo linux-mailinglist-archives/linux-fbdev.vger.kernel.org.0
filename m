@@ -2,60 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF972F4DE1
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E7FC2F4DD2
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726952AbhAMOxH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 13 Jan 2021 09:53:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
+        id S1727721AbhAMOwT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 13 Jan 2021 09:52:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727693AbhAMOwN (ORCPT
+        with ESMTP id S1727714AbhAMOwS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 13 Jan 2021 09:52:13 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2396C061358
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:51 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id e25so1865359wme.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:51 -0800 (PST)
+        Wed, 13 Jan 2021 09:52:18 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C50C06135B
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:53 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id n16so3770066wmc.0
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fiTAiO1+djM4LYXjGKueW16bvgv2sBtNiLbtIOEARdk=;
-        b=IDza5YLilamkwPDT+g2/a0lofmuncKNpAv/y/6ZQX7PTgZHHrzIscPArIaLwzgGk21
-         +PTQkWm+NELC+KC9BFDcWCwiEBGUoc7D99iVhf/b8Zau/fF4+imDj62ocQwZfhj48s7p
-         G301bdVxqdgcGdeZ0mOu5lmhiQU2WC/WPRGqNZpFfUOiJAjYflnQOI3iCRme45LwRAT5
-         UA87z3v5OeC740plgM+jScryysn9swGK41grynXPhZPBHzL1uyI195awHeRx0r0D+KV6
-         M3YDyk1IDQxUtVgKliH+QZdMV6naG94aZh3W2EpFGPxDHMNQ6+AhIUIbY31cyP7lq5uP
-         Fxpw==
+        bh=RvwJoM6XPaTXW+swhyuXIxTf/L820o0O05r3Nn2BahU=;
+        b=nid9QSSJw0nnYpdBxWNfeDxySbsTdIoMqZnUcmEnH52+LjrzqEPdVxtuCSQU+wNDQp
+         62FqX/weiPQySDiuQC9amofCPbG5004lDcrdnsnbkZYpzAuZJWvH09KtuoWBDRa2aWSO
+         AocjLmQI+CLfzX2ZsW6YPb2EJJtPlz/GlBtg1LtWbQlVwwHB11QS8Mte86K91VCLTbrK
+         fFJLvGRnloBApapS2VcH6Q1I7KdGDGhrjWmsEMB+WKoFpwYMTT3bIWKLWXdKJxr7Xn8w
+         cAkIudEJcSr3GiCxwMMFUlqXuSrqw8ck0D0hkmDyZxfdnSB9sa3sIlBp8zjyERLJw0nR
+         orsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fiTAiO1+djM4LYXjGKueW16bvgv2sBtNiLbtIOEARdk=;
-        b=uodIqTmS7Vk3X7hvx6+Ec6XFN11Y7N0XEEcb9WLJ9Me489jK6b5R6KlnAFVAlzM/3U
-         IKba0XM+fjEQEh/8Uy/uUj0ll2w3wa4UbwmMGtOshqZr32ZzCogxKesMuGHCmMukCwNv
-         6h68/3voGEsWQwnpLu56Jdq3YdMgpmbZNi48e3B3hdpJvwPnTXlrrReCj99ZOoxszPPw
-         ZdEfB18JoFpgIWEbFly2uB0K31JK2I/yG2zMI68ooiiGKss9Mu39j6TXBiBldy3A8GLX
-         FVzLfm3L0QtBKGWqCgcsNBwPHTE9l9xaXIoeJaMjIY5EmMYnaYtNQ7TbOYnAuEZ13rJB
-         1xXw==
-X-Gm-Message-State: AOAM531MmRcg7qociE34S579NO1w7sDXTnn7LcnGVFODsK1nVQC5KUVa
-        uvPanPyMDYGEiIiZdQDYYifW2g==
-X-Google-Smtp-Source: ABdhPJzn0hsHSArPV+PdoU3MwAI+uaM7MfxzC+Q9pFqpa5/9nfQ0iIqmvEqP+hOl9RxA7AZoMzJjNw==
-X-Received: by 2002:a1c:988f:: with SMTP id a137mr2554157wme.130.1610549450459;
-        Wed, 13 Jan 2021 06:50:50 -0800 (PST)
+        bh=RvwJoM6XPaTXW+swhyuXIxTf/L820o0O05r3Nn2BahU=;
+        b=bqaX4xHIzPFlJkXaqKV93ZqyGi3ZOdIW1XAuVNsyJOPRqweb3SF5ZKY0DQx0IRXrM/
+         WaxurL9zZKg5k/W82q95VvYdONAzvbFQSYqUW+uuhbi/rpLvwcbVpKmQ0UnLjkxvJTaZ
+         5GLWREa8Jq89q52lGEECZsKCtKWZotI6adlEu7MOvtZ6MuFSzNov5GUzNukTvcvSHOJb
+         EFbjE34RN3N8F/KeWgsHXdp8gp8ZJkATvvI2jTsPj4eUEGV2ljCxB92WsAmy6zYaWOfA
+         41uvdPuSlIHMf3k100Yxgk9oEXB2W2IH7kzerNKAK8x3OKujydBTvztUdx/krPfNRs6z
+         4Sng==
+X-Gm-Message-State: AOAM5304xGNSc3aK2lv7slRwby48HLFU5YRwLqQun47vwXDnHxn1Jzpb
+        x6XdGTMEtwzf7eg8A2AHnUw1akpklVjIiOxF
+X-Google-Smtp-Source: ABdhPJxfLq1AkB7CSlngKBkLh9QrvLjSYsWJajt2KPoiRKEuRYNd2u3c5lDCPhIKbXF1gj4rQNYUUA==
+X-Received: by 2002:a7b:c85a:: with SMTP id c26mr2464833wml.160.1610549452072;
+        Wed, 13 Jan 2021 06:50:52 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.49
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:49 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:51 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Antonino Daplas <adaplas@gmail.com>,
-        Jeff Garzik <jgarzik@pobox.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH 26/31] video: fbdev: riva: riva_hw: Remove set but unused variables 'vus_p' and 'vus_n'
-Date:   Wed, 13 Jan 2021 14:50:04 +0000
-Message-Id: <20210113145009.1272040-27-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH 27/31] video: fbdev: sis: init: Remove unused variables 'cr_data2', 'VT' and 'HT'
+Date:   Wed, 13 Jan 2021 14:50:05 +0000
+Message-Id: <20210113145009.1272040-28-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -68,41 +68,65 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/riva/riva_hw.c: In function ‘nv10CalcArbitration’:
- drivers/video/fbdev/riva/riva_hw.c:845:23: warning: variable ‘vus_p’ set but not used [-Wunused-but-set-variable]
- drivers/video/fbdev/riva/riva_hw.c:845:16: warning: variable ‘vus_n’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/sis/init.c: In function ‘SiS_Generic_ConvertCRData’:
+ drivers/video/fbdev/sis/init.c:3543:37: warning: variable ‘cr_data2’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/sis/init.c:3542:39: warning: variable ‘VT’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/sis/init.c:3541:39: warning: variable ‘HT’ set but not used [-Wunused-but-set-variable]
 
-Cc: Antonino Daplas <adaplas@gmail.com>
-Cc: Jeff Garzik <jgarzik@pobox.com>
-Cc: linux-fbdev@vger.kernel.org
+Cc: Thomas Winischhofer <thomas@winischhofer.net>
 Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/riva/riva_hw.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/sis/init.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/video/fbdev/riva/riva_hw.c b/drivers/video/fbdev/riva/riva_hw.c
-index 4ee63f7d84d3e..2bc510c24aa9e 100644
---- a/drivers/video/fbdev/riva/riva_hw.c
-+++ b/drivers/video/fbdev/riva/riva_hw.c
-@@ -842,7 +842,7 @@ static void nv10CalcArbitration
-     int found, mclk_extra, mclk_loop, cbs, m1;
-     int mclk_freq, pclk_freq, nvclk_freq, mp_enable;
-     int us_m, us_m_min, us_n, us_p, crtc_drain_rate;
--    int vus_m, vus_n, vus_p;
-+    int vus_m;
-     int vpm_us, us_video, cpm_us, us_crt,clwm;
-     int clwm_rnd_down;
-     int m2us, us_pipe_min, p1clk, p2;
-@@ -924,8 +924,6 @@ static void nv10CalcArbitration
-       us_pipe_min = us_m_min + us_n + us_p;
+diff --git a/drivers/video/fbdev/sis/init.c b/drivers/video/fbdev/sis/init.c
+index 4510272ad297a..b77ea1a8825a5 100644
+--- a/drivers/video/fbdev/sis/init.c
++++ b/drivers/video/fbdev/sis/init.c
+@@ -3538,16 +3538,13 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+ 			struct fb_var_screeninfo *var, bool writeres
+ )
+ {
+-   unsigned short HRE, HBE, HRS, HDE, HT;
+-   unsigned short VRE, VBE, VRS, VDE, VT;
+-   unsigned char  sr_data, cr_data, cr_data2;
++   unsigned short HRE, HBE, HRS, HDE;
++   unsigned short VRE, VBE, VRS, VDE;
++   unsigned char  sr_data, cr_data;
+    int            B, C, D, E, F, temp;
  
-       vus_m = mclk_loop *1000*1000 / mclk_freq; /* Mclk latency in us */
--      vus_n = (4)*1000*1000 / nvclk_freq;/* nvclk latency in us */
--      vus_p = 0*1000*1000 / pclk_freq;/* pclk latency in us */
+    sr_data = crdata[14];
  
-       if(video_enable) {
-         crtc_drain_rate = pclk_freq * bpp/8; /* MB/s */
+-   /* Horizontal total */
+-   HT =  crdata[0] | ((unsigned short)(sr_data & 0x03) << 8);
+-
+    /* Horizontal display enable end */
+    HDE = crdata[1] | ((unsigned short)(sr_data & 0x0C) << 6);
+    E = HDE + 1;
+@@ -3584,12 +3581,6 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+    sr_data = crdata[13];
+    cr_data = crdata[7];
+ 
+-   /* Vertical total */
+-   VT  = crdata[6] |
+-	 ((unsigned short)(cr_data & 0x01) << 8) |
+-	 ((unsigned short)(cr_data & 0x20) << 4) |
+-	 ((unsigned short)(sr_data & 0x01) << 10);
+-
+    /* Vertical display enable end */
+    VDE = crdata[10] |
+ 	 ((unsigned short)(cr_data & 0x02) << 7) |
+@@ -3604,8 +3595,6 @@ SiS_Generic_ConvertCRData(struct SiS_Private *SiS_Pr, unsigned char *crdata,
+ 	 ((unsigned short)(sr_data & 0x08) << 7);
+    F = VRS + 1 - E;
+ 
+-   cr_data2 = (crdata[16] & 0x01) << 5;
+-
+    /* Vertical blank end */
+    VBE = crdata[12] | ((unsigned short)(sr_data & 0x10) << 4);
+    temp = VBE - ((E - 1) & 511);
 -- 
 2.25.1
 
