@@ -2,60 +2,62 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 352A62F4DEE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9262F4DED
+	for <lists+linux-fbdev@lfdr.de>; Wed, 13 Jan 2021 15:55:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727943AbhAMOyA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        id S1727053AbhAMOyA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
         Wed, 13 Jan 2021 09:54:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41692 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727487AbhAMOvw (ORCPT
+        with ESMTP id S1727489AbhAMOvw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Wed, 13 Jan 2021 09:51:52 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEBEC06138E
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:41 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id c124so1837584wma.5
-        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:40 -0800 (PST)
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E81C061786
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:42 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id 91so2406992wrj.7
+        for <linux-fbdev@vger.kernel.org>; Wed, 13 Jan 2021 06:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=fDDpX4Tq8YbOoBzLmaAPLoJ0FkV3kIft9xiJt5MwHsk=;
-        b=P/TckwyC+Zpm96Xw3jhnQcTPN4yEDByRSGHhaDy4FTUtGMu06Iu1Lz1wyjqkxnYGD8
-         Ka0UeFrgp+iGG7nEK9sOqDisiaFpLSK1hp1DISbHIQX8TDn4GphpHRUfABx50dTEboH0
-         qeaFWlT7UN/Vu7aoSNXpYCaMFlK+DfSHuhMJjBshrb8gKl2yGkzp7JIUWGPZphFnEfly
-         608DGRjP7K/CPR0c/OxOSedMrPcUuDd1OSXearvHBAU6PUJXtpFKR1uPWbedCfsb9D0l
-         VZxN7mXIKLzNxEZYF8QgplqX7VbOWBfbEy/IEpStDEkkgxcfNRAH9CcHckNWX7BTHpf7
-         EMTA==
+        bh=K8LGsHawy1FykMfSNgFdlsHpkSijq6aQuT4rYUHFPB4=;
+        b=vlfUbYCaI8nbSGsNOrvP4jNkRNNQft4Td7Q/qK7df3eMXHJiNDMJ7WqrL+lctbGzof
+         irvEGx52lUUHqOlSxdne5KYtvcv637NvMYUh46CWn0hYxBYGrnYgpxsFeL+hxHB7aXZz
+         nKEugO/vNXJaQpOyOYQD1cz7XxScABklnzNnXh+KI5q1rPET24SGQL0t9lgX19e+C7fR
+         eFsxphGPTVhjYYo/VvE2TbVEkj/Dq8F69zcFARqN+rtlR6zQXNuUSLhFlkcsV/wpyhQh
+         1eMd62z5eauJMxNi8y0gGmRjshelxQz5tkvi3VyP8GGcTFLF5ZpE7yXf3E7Hveu5aQgK
+         93FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fDDpX4Tq8YbOoBzLmaAPLoJ0FkV3kIft9xiJt5MwHsk=;
-        b=WCwPZHXk5C9IxYQIM0SwT+7QpmlFmdg+5cw5pYv1HuuORZwOmJ4FR05gQCImVAUQUF
-         EtmkDfF48E5m9uEVXNAVaGFC2OS9kofvgjpgzbNy0KksAS14wTVHdA3Cqp6FHeu+R6V5
-         s2n3yAxdO0FHqIUGeN1tUG8+3weda1MU7esvpIV3TgatlWONhDR4ChjaPoS//RgEunDi
-         LB+LaELyR8iboxwT5+KEIR8pNJ/vFkIxKgraWfpS6Y+1K8RMnd1sJz185n11qrt6qLc9
-         PRHtdq49Vso0TPAfA4svWpt6TU96TehMgtOYYYJP7Ir4ZV0quuA4iOjXkL3AMEbreTLB
-         mo0A==
-X-Gm-Message-State: AOAM532xpLmq2z1vDgMAAIlnMjetRdtqVLVoYmFwEHUePzrgCN7kIalF
-        folXql+nLArzcP+xBjCAYDvUOw==
-X-Google-Smtp-Source: ABdhPJzYqXQr0JAQFjeee0qoDpAYIIkOJfbnlgTUbeOjt6+QKL+q1AvPdGMRRUWutIMa4sTg1X4bsA==
-X-Received: by 2002:a1c:a5d8:: with SMTP id o207mr2598878wme.30.1610549439832;
-        Wed, 13 Jan 2021 06:50:39 -0800 (PST)
+        bh=K8LGsHawy1FykMfSNgFdlsHpkSijq6aQuT4rYUHFPB4=;
+        b=r7YllQOxqn797bBto8A1MGV9hXitT3NH6UZ4SdmJqi0yp+Dj43QUE6+t/mg+X4Imao
+         yRjqovk4V8nI9Q6mj/+fkvXEsiV+t+ulHEuLJNHdKTO4F3FJHkDDAz6F5H2vcl4HYEP+
+         4Zr0odT4ajHWOMeD43eV2Yl3YwB8kqpwV7ZjY3zrvZ5ZqdBV5Rp8LlX1HYwOHOqOdLSg
+         43awESUO36GO3h12uzhpxptA9MYF+QpbfL8dk96MZtv8v5w5oYQ/+SpP+R2vxHCuPH4X
+         JRRzgmKtWaE0ZnuGQP+61wUTgqKEI6G5Ocj/Jn76Sx+6qbIlzm4Fqlsj85WeCh/sWtmw
+         503g==
+X-Gm-Message-State: AOAM5316eZZHPnhvGS/w7PlRJTfjUdfFbk5oaq+yUrvToYACB7VTpRXN
+        K4diP8u3et1PbDk0pjolH7790Q==
+X-Google-Smtp-Source: ABdhPJwDJgxU/PSj6fZ35ddRgyivt16zN5Q0Jj9wVZXocDRBHdXbn58OnsQtAexupAPNKExN9UaOeg==
+X-Received: by 2002:adf:f18a:: with SMTP id h10mr3188792wro.244.1610549441019;
+        Wed, 13 Jan 2021 06:50:41 -0800 (PST)
 Received: from dell.default ([91.110.221.229])
-        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.38
+        by smtp.gmail.com with ESMTPSA id t188sm3273433wmf.9.2021.01.13.06.50.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 06:50:39 -0800 (PST)
+        Wed, 13 Jan 2021 06:50:40 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH 17/31] video: fbdev: aty: radeon_monitor: Remove unused variable 'mon_types'
-Date:   Wed, 13 Jan 2021 14:49:55 +0000
-Message-Id: <20210113145009.1272040-18-lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Evgeny Novikov <novikov@ispras.ru>,
+        Mike Rapoport <rppt@kernel.org>,
+        Oliver Kropp <dok@directfb.org>,
+        "Thomas J. Moore" <dark@mama.indstate.edu>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH 18/31] video: fbdev: neofb: Remove unused variable 'CursorMem'
+Date:   Wed, 13 Jan 2021 14:49:56 +0000
+Message-Id: <20210113145009.1272040-19-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210113145009.1272040-1-lee.jones@linaro.org>
 References: <20210113145009.1272040-1-lee.jones@linaro.org>
@@ -68,35 +70,59 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/video/fbdev/aty/radeon_monitor.c: In function ‘radeon_probe_screens’:
- drivers/video/fbdev/aty/radeon_monitor.c:491:8: warning: variable ‘mon_types’ set but not used [-Wunused-but-set-variable]
+ drivers/video/fbdev/neofb.c: In function ‘neo_init_hw’:
+ drivers/video/fbdev/neofb.c:1846:6: warning: variable ‘CursorMem’ set but not used [-Wunused-but-set-variable]
 
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-fbdev@vger.kernel.org
+Cc: Evgeny Novikov <novikov@ispras.ru>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Oliver Kropp <dok@directfb.org>
+Cc: "Thomas J. Moore" <dark@mama.indstate.edu>
 Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/video/fbdev/aty/radeon_monitor.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/video/fbdev/neofb.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/video/fbdev/aty/radeon_monitor.c b/drivers/video/fbdev/aty/radeon_monitor.c
-index 9966c58aa26cd..5ff01aa389381 100644
---- a/drivers/video/fbdev/aty/radeon_monitor.c
-+++ b/drivers/video/fbdev/aty/radeon_monitor.c
-@@ -488,12 +488,10 @@ void radeon_probe_screens(struct radeonfb_info *rinfo,
- #if defined(DEBUG) && defined(CONFIG_FB_RADEON_I2C)
- 		{
- 			u8 *EDIDs[4] = { NULL, NULL, NULL, NULL };
--			int mon_types[4] = {MT_NONE, MT_NONE, MT_NONE, MT_NONE};
- 			int i;
+diff --git a/drivers/video/fbdev/neofb.c b/drivers/video/fbdev/neofb.c
+index 09a20d4ab35f2..bec199a34037e 100644
+--- a/drivers/video/fbdev/neofb.c
++++ b/drivers/video/fbdev/neofb.c
+@@ -1843,7 +1843,6 @@ static int neo_init_hw(struct fb_info *info)
+ 	struct neofb_par *par = info->par;
+ 	int videoRam = 896;
+ 	int maxClock = 65000;
+-	int CursorMem = 1024;
+ 	int CursorOff = 0x100;
  
- 			for (i = 0; i < 4; i++)
--				mon_types[i] = radeon_probe_i2c_connector(rinfo,
--									  i+1, &EDIDs[i]);
-+				radeon_probe_i2c_connector(rinfo, i+1, &EDIDs[i]);
- 		}
- #endif /* DEBUG */
- 		/*
+ 	DBG("neo_init_hw");
+@@ -1895,26 +1894,22 @@ static int neo_init_hw(struct fb_info *info)
+ 	case FB_ACCEL_NEOMAGIC_NM2070:
+ 	case FB_ACCEL_NEOMAGIC_NM2090:
+ 	case FB_ACCEL_NEOMAGIC_NM2093:
+-		CursorMem = 2048;
+ 		CursorOff = 0x100;
+ 		break;
+ 	case FB_ACCEL_NEOMAGIC_NM2097:
+ 	case FB_ACCEL_NEOMAGIC_NM2160:
+-		CursorMem = 1024;
+ 		CursorOff = 0x100;
+ 		break;
+ 	case FB_ACCEL_NEOMAGIC_NM2200:
+ 	case FB_ACCEL_NEOMAGIC_NM2230:
+ 	case FB_ACCEL_NEOMAGIC_NM2360:
+ 	case FB_ACCEL_NEOMAGIC_NM2380:
+-		CursorMem = 1024;
+ 		CursorOff = 0x1000;
+ 
+ 		par->neo2200 = (Neo2200 __iomem *) par->mmio_vbase;
+ 		break;
+ 	}
+ /*
+-	info->sprite.size = CursorMem;
+ 	info->sprite.scan_align = 1;
+ 	info->sprite.buf_align = 1;
+ 	info->sprite.flags = FB_PIXMAP_IO;
 -- 
 2.25.1
 
