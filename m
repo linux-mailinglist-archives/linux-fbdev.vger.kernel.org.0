@@ -2,72 +2,143 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E1382FB3CE
-	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Jan 2021 09:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 164662FD08E
+	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Jan 2021 13:59:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726302AbhASINH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 19 Jan 2021 03:13:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731777AbhASIM3 (ORCPT
+        id S1726769AbhATMkg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 20 Jan 2021 07:40:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30216 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726852AbhATLRl (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 19 Jan 2021 03:12:29 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 290EAC061573
-        for <linux-fbdev@vger.kernel.org>; Tue, 19 Jan 2021 00:11:48 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id j18so4643050wmi.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 19 Jan 2021 00:11:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=CseN3BiBpJYn6k+hUUx2TxuA3gS6VM1QHXLDLxQNUzc=;
-        b=O1PPH4nqCalT6VEZN9yDr3VU64f0BnZXNVwAGRvrkC3v8YNR2p3veTD2ru0lR8noCB
-         olK8/TReyNLmuD0DJmkoZiutTDl7dtHZXteRWjuFesZMWb3SXPCpipcLy42xeBlvamt7
-         vb7XfZ5BWxomQb4Ariu2RgoveCvWVTLmx+61pXkldLjlsQV5yJdxWvREHDWfYtJs3chX
-         Vpj4csmlObt41UaziVCFaUoCIPkFLotpDsz29LWRKNENp71nu7UGiSWy0QO9cisTI5jV
-         4AdM0MOSgqGYHD25etDoT0BqGenVUKh0hWfaGDB9Q2lUbF91n8fcWgDyRVf9oHRma1uy
-         OSKA==
+        Wed, 20 Jan 2021 06:17:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611141374;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0SH3cllGy47s4uG7KKFq5cbuIDOd88jk3S+0uW2/kAA=;
+        b=O/rdABI4nug1bUxneT3Ec/xRuK9fIVbLfQmGzn3aJAyxMa3fGh7BDlhtIVy7Iyb0MSCQSJ
+        4ct+2tVV4JMD25MDM16JvTbh03H8exLrX2n2Ej1zOtX5KU5ckFXRiHoA6ytAi5H6SMuMXC
+        L2ago3BYqjWuyH7Qj8ANOmRQJkf5YAI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-501-0OxIlTREMH-AmQja9ty0eQ-1; Wed, 20 Jan 2021 06:16:06 -0500
+X-MC-Unique: 0OxIlTREMH-AmQja9ty0eQ-1
+Received: by mail-ed1-f70.google.com with SMTP id n8so8945507edo.19
+        for <linux-fbdev@vger.kernel.org>; Wed, 20 Jan 2021 03:16:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=CseN3BiBpJYn6k+hUUx2TxuA3gS6VM1QHXLDLxQNUzc=;
-        b=GurQGpxE+snGKmd4ONqN+QZwq44TtOJrfD7lOCXqQWnkoNG9TQ6D5d0Dj2oGkueoQv
-         Gip84uS5UqLvE7zs04ifPQxl0oLGa9DxGx5lhZvAMV+iiUYKrykNPqnO+vo6Q81YroAW
-         3Sbl2jAMpIi3Gy9TWn8A+DZDWR6+kZbF02n2lb2ZnAYsEV8Gf15Rfl8DpYqp5KD+FiDP
-         rQQygEXpC0Lfbfv/KBMvosTnRuyqie95HucC0Mb4Y9ch1NpL5Yx3BYuWYEylDABb7wS/
-         09deUdcDgEotVzoBTPitN0UH+WjcVLPApHzACeociVZX55mFBn68mzxVYgtOKvgpDWp5
-         X9iQ==
-X-Gm-Message-State: AOAM531lyF4y0YToslTGQL/Gp1eB09Nyu4Re0hT8EjJ0LRGCQa+YQatj
-        CkbSW0PbDbmSkcCT8J9SDXFeWqIvseFagVDiZ6U=
-X-Google-Smtp-Source: ABdhPJw3S0D3SEpyH3gxjGC4qdLfXqr7KKaMflOCrIs/nKq2UQPa9BD9vz8JcddTfoOi+c5AtZGsSkXzgU2hB8E0Hnc=
-X-Received: by 2002:a1c:2e8b:: with SMTP id u133mr2843613wmu.189.1611043906741;
- Tue, 19 Jan 2021 00:11:46 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=0SH3cllGy47s4uG7KKFq5cbuIDOd88jk3S+0uW2/kAA=;
+        b=Xxa9o87i4rP8d0QWL/zsq5XWBfqOyfNneYdb5f+Z6aEQU6rHTI0HsMm3qaQNGYlvsm
+         TH+3QcnkDzS9ewhIcpvrZ+YNGhksEUimLfzW/oWYEqCIjP1KQi/lwRlMvCWlHBvxbEJw
+         A6VqCBSIPsDwMKUuhESQEctq9sBP/ZzuOoLFfX7KeKpnNvvQ1Kp2k+wEg/kCycMLMxL3
+         lREu+Sx9PEsrgoPd7SPfA11Q0K2j7h6paIO+T8oFoPNtKnwbD0peTKWizt/y9qT0k5Gq
+         G23Gg7Glvfg1vrp+PlgJIx7l1tUI3kdPrx9PEuOKy4KEJLJw/YYZuvSMJ160hxjiVo6B
+         Naxg==
+X-Gm-Message-State: AOAM533rjnWRakH4LILObcy+LgQj/1mKqpOMuckS8aw4RFr/CaetZ7bS
+        P4RXJsvv1AdNusxxLejp+J1Pfk8fU0Ukduz/stI9ne3NwmG9decjm3Ic8fPFXaUye+DObL+i8C4
+        FaM6786kMcIBrlxw5que5V/E=
+X-Received: by 2002:a05:6402:b6f:: with SMTP id cb15mr6813588edb.277.1611141365200;
+        Wed, 20 Jan 2021 03:16:05 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwF2jPpquEnV42x9rBfnay/MufY16FX0dQBH+/yFA2JSgaTGzzyq/yUsEFfmDEcT9RdGF+T3w==
+X-Received: by 2002:a05:6402:b6f:: with SMTP id cb15mr6813578edb.277.1611141365064;
+        Wed, 20 Jan 2021 03:16:05 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id k16sm747754ejd.78.2021.01.20.03.16.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Jan 2021 03:16:03 -0800 (PST)
+Subject: Re: [PATCH] video: fbdev: simplefb: Fix info message during probe
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Peter Robinson <pbrobinson@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+References: <20201228183934.1117012-1-pbrobinson@gmail.com>
+ <b00bd27c-70b5-9ef1-85a1-11e733af78da@redhat.com>
+ <X/c/OwqdMtmqzOZq@phenom.ffwll.local>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <1acc822f-b7a5-b0be-5533-32528080850a@redhat.com>
+Date:   Wed, 20 Jan 2021 12:16:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Reply-To: paulwagne7@gmail.com
-Sender: avionprecision1@gmail.com
-Received: by 2002:adf:f10a:0:0:0:0:0 with HTTP; Tue, 19 Jan 2021 00:11:46
- -0800 (PST)
-From:   Paul Wagner <pw9076424@gmail.com>
-Date:   Tue, 19 Jan 2021 09:11:46 +0100
-X-Google-Sender-Auth: W5_1QmhG0NxBOLVXkXSyjZxfUmE
-Message-ID: <CAABQx0Z5v-Xv=rjW2tSCXqrfjvT1+sVjHEe3RRsYbuY9vfCjow@mail.gmail.com>
-Subject: =?UTF-8?B?U2Now7ZuZW4gVGFn?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <X/c/OwqdMtmqzOZq@phenom.ffwll.local>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hallo,
+Hi,
 
-Mein Name ist Paul Wagner, ein Familienanwalt des verstorbenen Herrn
-Thomas. Ich habe einen Vorschlag f=C3=BCr Sie bez=C3=BCglich meines verstor=
-benen
-Mandanten Thomas . Bitte schreiben Sie mir f=C3=BCr weitere Einzelheiten
-zur=C3=BCck.
+On 1/7/21 6:04 PM, Daniel Vetter wrote:
+> Hi Hans,
+> 
+> On Tue, Dec 29, 2020 at 02:02:30PM +0100, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 12/28/20 7:39 PM, Peter Robinson wrote:
+>>> The info message was showing the mapped address for the framebuffer. To avoid
+>>> security problems, all virtual addresses are converted to __ptrval__, so
+>>> the message has pointless information:
+>>>
+>>> simple-framebuffer 3ea9b000.framebuffer: framebuffer at 0x3ea9b000, 0x12c000 bytes, mapped to 0x(____ptrval____)
+>>>
+>>> Drop the extraneous bits to clean up the message:
+>>>
+>>> simple-framebuffer 3ea9b000.framebuffer: framebuffer at 0x3ea9b000, 0x12c000 bytes
+>>>
+>>> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+>>
+>> Thanks, patch looks good to me:
+>>
+>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> Since you have commit rights for drm-misc I'm assuming you're also going
+> to push this one?
 
-Gr=C3=BC=C3=9Fe
-Paul Wagner
+I knew there was some discussion about using drm-misc for drivers/video/fbdev stuff
+but I missed that it was decided to go ahead with that.
+
+Good to know that this is handled through drm-misc now.
+
+I've pushed this patch to drm-misc-next.
+
+Regards,
+
+Hans
+
+
+
+>>> ---
+>>>  drivers/video/fbdev/simplefb.c | 5 ++---
+>>>  1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
+>>> index 533a047d07a2..62f0ded70681 100644
+>>> --- a/drivers/video/fbdev/simplefb.c
+>>> +++ b/drivers/video/fbdev/simplefb.c
+>>> @@ -477,9 +477,8 @@ static int simplefb_probe(struct platform_device *pdev)
+>>>  	simplefb_clocks_enable(par, pdev);
+>>>  	simplefb_regulators_enable(par, pdev);
+>>>  
+>>> -	dev_info(&pdev->dev, "framebuffer at 0x%lx, 0x%x bytes, mapped to 0x%p\n",
+>>> -			     info->fix.smem_start, info->fix.smem_len,
+>>> -			     info->screen_base);
+>>> +	dev_info(&pdev->dev, "framebuffer at 0x%lx, 0x%x bytes\n",
+>>> +			     info->fix.smem_start, info->fix.smem_len);
+>>>  	dev_info(&pdev->dev, "format=%s, mode=%dx%dx%d, linelength=%d\n",
+>>>  			     params.format->name,
+>>>  			     info->var.xres, info->var.yres,
+>>>
+>>
+>> _______________________________________________
+>> dri-devel mailing list
+>> dri-devel@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> 
+
