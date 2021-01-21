@@ -2,96 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 575022FE535
-	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Jan 2021 09:40:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF8B62FEC62
+	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Jan 2021 14:55:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726236AbhAUIkI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 21 Jan 2021 03:40:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57086 "EHLO
+        id S1726885AbhAUNz3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 21 Jan 2021 08:55:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727960AbhAUITW (ORCPT
+        with ESMTP id S1729669AbhAUNqu (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 21 Jan 2021 03:19:22 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D28C061575
-        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 00:18:31 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id b26so1311139lff.9
-        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 00:18:31 -0800 (PST)
+        Thu, 21 Jan 2021 08:46:50 -0500
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB89C061798
+        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 05:44:56 -0800 (PST)
+Received: by mail-pg1-x542.google.com with SMTP id i5so1398825pgo.1
+        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 05:44:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=X9zmG8lFAdgbl7MVHthMb9bEiasw1dUK/9s7H2sIrUM=;
-        b=pszAplo8PbBItpgM0mt4DipHkkEhHD8xwY6JogpbuJz/s3ougGts5GbW7TKt62vO/4
-         TUmHMSni0X2TmOzTk3BHxwIinbQ979ge4G1tuq5Al9WljSGCUiNmXt6C26cbrJllGkp3
-         BWgXFZNx2Pi749Feh/RzKwbg9EioVqdEKiclha3sr8mowl5Nuw9LCKmPhe+/2EbZHd2p
-         /IM4UYJn4YXYLA2hq2eXUei8cguk0ursC9wf3m0BJ41snPna0TpIK+grXT9kFmaxXU58
-         kkLMw26SCYMQfPv9OPfzvK87uwyifb9QQ63N6+kM54wGjoa/KS+udQSpWrJld8maTPkK
-         oibA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Pbq+A1C9xMvSSwBqPmOBGqMeTMSztSHw9CFNu3KhGsk=;
+        b=p9E8qZlGfF++h23QRmDt+ga434mEGSePuVwm2gSdCFIBfxDnd/DBAatMdZeHKf4s/N
+         gIN5ZJdBh2DeHp2U+kRFyt13qmOd33Bnsg4gIYSp1nlp5+okNP7w9cmjDMaiwSsVYGfR
+         b+KIdNcrQrJD+0W/WNRrCgq7c+nayfCwMAKE0kuvfWb+lYq3UGii2jAbEhC1JFa3TE80
+         ffVI8vwtYqBGifcMZqZ0H+dJg0zCzpzLGHDNlCvELG+wO+6FUsO30d0mkmfH6mBPShzz
+         0ZOk+zO0f3pbfHjvN5M5pIyYTYC0fKPgKoYvHr3hWWXxFPd08htlmCvUa4WIVugsGmGG
+         V7Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=X9zmG8lFAdgbl7MVHthMb9bEiasw1dUK/9s7H2sIrUM=;
-        b=QVkJEl2CyhdcWnhfRgS4patBv00HyMlctiMwhEugHrCXLtwTZ8zZmp2CoDZFLWGId7
-         ai1VKp26Q0ataCRYb5GA19m8HnEJy+1B6/tdH3p3miF+7sRtQUZXTQCiTgdy3/065GR0
-         MvOB/9TEdUq1DbWYliXB+xeTnXaVFs31axmdB/aCnjO+5/Ua0NJ89v5quxWOnMSDQoV9
-         Tknlk98LGmqwCE7qZ/RS9Ss9w4Vdff6j3nIMmGPCnIQt5GvOQux43wh3o/V94dfUKCE2
-         62VW6yXYqYwyu50bSSwIai6K550ndo+/tiq9JqcWy1H63S4lriNF+pfFxa6nsJqNE2fB
-         ytKg==
-X-Gm-Message-State: AOAM533rPGuPZ6gZ2pzQvOrfC8NknOBqrGoR5gFqZa23dx/7bGu+6N3y
-        UTeO4lyNnUhREPEK8gcGZ18YmZgFR9P4Qek6XOX1oIox9Y8=
-X-Google-Smtp-Source: ABdhPJwWKqB7p7EFe0bvSLHNANt+2tNmrkVB+zflr6eHstYDpl0wpfjCpGbHyGItGEm3TJR95QUse+jDyAAqb+G/0p0=
-X-Received: by 2002:a19:ac0c:: with SMTP id g12mr6220151lfc.51.1611217110022;
- Thu, 21 Jan 2021 00:18:30 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Pbq+A1C9xMvSSwBqPmOBGqMeTMSztSHw9CFNu3KhGsk=;
+        b=Itygp5JXM51dh/kOuc6lquyAISU/Rvxp+Yu/1HlsXhQSM4YLOMyQ7Z90pk3FjLZWyb
+         1W/kGTqQneL+w+UugWqlJNCrVQ4WXUs7wsNWW9pLLYTd3r5e8svaVJ9+czpcweHVuB+/
+         rfCcCGA6lZMXpXvbTdoyLYHyiIAbcs2FcD8yPmib8hORjA3ntbztIUQakKYFQNyPgGY2
+         oPDYtdGgewUGY87k1qyiGgqRaG7L3fylpRqDHRUZFTKSenTLYVIimPqLYKcWlru24AmU
+         5angnVIQ+kcnjGAghhdjLewzVRrGRkRXAiCosAdVkKlJKjK6p+S7ShHAeQatwTDhv6Rv
+         Doyg==
+X-Gm-Message-State: AOAM532BRned5gW1g6xsN31dZV7fybxy+U9yRGVA96vWZ5yyQwXdGw0s
+        dd8RVZSl1Js5gbkEmpF9qp+buVZyFBpVcQWjzFU=
+X-Google-Smtp-Source: ABdhPJzUHHzZSl+nJ/KP4iKEWVa4MhsTV4xdaDc4NHg9KvbjCkAcC2EtQCFalVHPKSISCrHQ8X1ns/qIJ4tABfR+644=
+X-Received: by 2002:a65:4542:: with SMTP id x2mr14789283pgr.90.1611236695982;
+ Thu, 21 Jan 2021 05:44:55 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ab3:209:0:0:0:0:0 with HTTP; Thu, 21 Jan 2021 00:18:28 -0800 (PST)
-In-Reply-To: <CACgpvh=Ni6cb4Octw5BtfqoK=sNAG9yik-c05vNqxYB0wjma-g@mail.gmail.com>
-References: <CACgpvh=Ni6cb4Octw5BtfqoK=sNAG9yik-c05vNqxYB0wjma-g@mail.gmail.com>
-From:   willson mutanda <jkdodj9474@gmail.com>
-Date:   Thu, 21 Jan 2021 00:18:28 -0800
-Message-ID: <CACgpvh=-==_iiJCgYOvhLYnKrHPUW3jOMKeEvvSNOw2bxzN=dg@mail.gmail.com>
-Subject: Hello Dear
+Received: by 2002:a17:90b:88a:0:0:0:0 with HTTP; Thu, 21 Jan 2021 05:44:55
+ -0800 (PST)
+Reply-To: delivery.postoffice@post.com
+From:   "Ms.Rania Al-Araj" <zeb.benaiah37@gmail.com>
+Date:   Thu, 21 Jan 2021 14:44:55 +0100
+Message-ID: <CAFDeX-iqxGQ+UhriOct57=ZMDvS_8AzfC_ukria40GFHmU_SHw@mail.gmail.com>
+Subject: Your visa debit card is working online
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello my friend
+ATTN; DEAR,
 
-My name is Willson J. Mutanda. Personal assistance to Mr. Andrew  who
-is a Gold and Diamond mining contractor and a business man here in
-South Africa who passed away a few years ago. I am writing to you due
-to the urgency of the matter, all effort to locate his relatives after
-his sudden death failed.
+This is Ms.Rania Al-Araj ,I have registered your ATM CARD to the POST
+OFFICE BENIN REPUBLIC so that they will Post it to your home address
+and I believe your current address is still the same. Your total
+amount in the envelope is $3.2 Million USD and the POST OFFICE assured
+me that there will be no stoppage until it get to your hand. I want
+you to contact them and re- confirm your address where to Post it.
 
-Please, I demand your consent to present you as his heir. I want you
-to stand as his relative to inherit his Bitcoin investment valued at
-(Two  Million two hundred British Pounds) with the Investment company
-before it will be confiscated. The fund has been dormant since 2015,
-the Company is about to confiscate the Investment as an unclaimed
-deposit.
+Contact Dr. Yunus Luqmani,
+03 BP 1000,COTONOU
+BENIN REPUBLIC.
+E-mail: (delivery.postoffice@post.com)
+Your full information for the Postal.
+PHONE NUMBER;
+FULL NAME: ==============
+COUNTRY: ==============
+CITY: ==============
+CURRENT HOME ADDRESS: ===========
+TELEPHONE/CELL PHONE NUMBER.=========
+AGE/OCCUPATION: =============
+SEX/A COPY OF YOUR IDENTIFICATION: ===============
 
-I got your contact on the internet and decided to contact you as you
-have the same name as my master. And I hope you will not expose me
-even if you don=E2=80=99t want to help me. This deal should be a secret
-between me and you even after archiving this aim.
+The manager, informed me that it will take good 3 days to get to your
+house and your Envelope accumulate. Your Current address has to be
+reconfirmed when contacting the post office.
 
- I can guarantee that this case will be executed under a legitimate
-arrangement that will protect you and me from any breach of law.  All
-I require from you is your honest cooperation to enable us to see this
-transaction through. I hope to hear from you immediately after you
-read this message for more details.
-
-Please contact my private email below for security reasons if you are
-willing to assist me on this urgent matter. I learnt your language is
-not English; please respond to me with English if you can write with
-English
-
-
-Thanks in advance and God bless you,
-willson  j mutanda
-
-Email:  mutanda.j.willson@gmail.com
+Thanks & remain blessed.
+Ms.Rania Al-Araj
