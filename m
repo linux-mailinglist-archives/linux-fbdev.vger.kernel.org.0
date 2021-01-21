@@ -2,148 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 743832FD09C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 20 Jan 2021 13:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 575022FE535
+	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Jan 2021 09:40:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729276AbhATMoA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 20 Jan 2021 07:44:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
+        id S1726236AbhAUIkI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 21 Jan 2021 03:40:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389001AbhATL1j (ORCPT
+        with ESMTP id S1727960AbhAUITW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 20 Jan 2021 06:27:39 -0500
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9186AC061794
-        for <linux-fbdev@vger.kernel.org>; Wed, 20 Jan 2021 03:26:58 -0800 (PST)
-Received: by mail-oo1-xc36.google.com with SMTP id o5so5695113oop.12
-        for <linux-fbdev@vger.kernel.org>; Wed, 20 Jan 2021 03:26:58 -0800 (PST)
+        Thu, 21 Jan 2021 03:19:22 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D28C061575
+        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 00:18:31 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id b26so1311139lff.9
+        for <linux-fbdev@vger.kernel.org>; Thu, 21 Jan 2021 00:18:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bF3kJZOcFi9epN2Ju/OMLYe+R+7Hhk1D0YWcdHI0mig=;
-        b=izVJ/aoMWHJbBtduNtBlv80fvfk4AMOqCR1fVP89sgP4r1KzlitBLQVhei6IdNwC0b
-         n139tWO/jSeG5PB6CmVmJY/ngiDl4uSYqzvBe3JTIqv/BXJAvevrNxctX/wuVegCPkIT
-         q/Vce9FeMPEifc1MdK3IfX/Pwv9tpaXjf7bEk=
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=X9zmG8lFAdgbl7MVHthMb9bEiasw1dUK/9s7H2sIrUM=;
+        b=pszAplo8PbBItpgM0mt4DipHkkEhHD8xwY6JogpbuJz/s3ougGts5GbW7TKt62vO/4
+         TUmHMSni0X2TmOzTk3BHxwIinbQ979ge4G1tuq5Al9WljSGCUiNmXt6C26cbrJllGkp3
+         BWgXFZNx2Pi749Feh/RzKwbg9EioVqdEKiclha3sr8mowl5Nuw9LCKmPhe+/2EbZHd2p
+         /IM4UYJn4YXYLA2hq2eXUei8cguk0ursC9wf3m0BJ41snPna0TpIK+grXT9kFmaxXU58
+         kkLMw26SCYMQfPv9OPfzvK87uwyifb9QQ63N6+kM54wGjoa/KS+udQSpWrJld8maTPkK
+         oibA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bF3kJZOcFi9epN2Ju/OMLYe+R+7Hhk1D0YWcdHI0mig=;
-        b=fACHXHVX1QbYzUfizggkOPxJOHxidsr8bW5O3vS3EA5glIuATAT43I4zqke4Xwsckd
-         kSO3wu1fO9XDRoDN1pQgrhdW0Lp3mLRKWYw7Ufe5z4lU6zCwWutl7gR4+57lYDjwH1Ol
-         PDX+sX9M4EzwwBO2eqm+0hA8iCQSYbQy31vxxSwmBiBvG057qQfwAz/ErTAcUgGzsVx/
-         VKnY7ORsgaA5zNM4sjOvDis3oUEOlnW4Eakksver9XX411wRScMJngXt7NllMHm/wSXg
-         ldhbOyruN5HPKFXcjCP+8E8MxsNr7vvzoueyOnemxXRf+V2dDpGhiczkEsiZ6M/z+eWW
-         g2hw==
-X-Gm-Message-State: AOAM531mhGNfeDZiougmSBG9FFlnE9wSmyGQwecj4g9KZ0nhrN6VIlJA
-        TZHTIJvH2RhRXX4glvNlR1qEi2F6f6Wf0FRotZ+VI1xYb0XRog==
-X-Google-Smtp-Source: ABdhPJzNf7GDDsKuO2fEPJuRtbJE2LbjunBUPbWEIL8J3gYPW9q007/lCbZ0N5RfnJfLcLzge73Xp86JPERY/PFsHNs=
-X-Received: by 2002:a4a:11c2:: with SMTP id 185mr5917268ooc.85.1611142017564;
- Wed, 20 Jan 2021 03:26:57 -0800 (PST)
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=X9zmG8lFAdgbl7MVHthMb9bEiasw1dUK/9s7H2sIrUM=;
+        b=QVkJEl2CyhdcWnhfRgS4patBv00HyMlctiMwhEugHrCXLtwTZ8zZmp2CoDZFLWGId7
+         ai1VKp26Q0ataCRYb5GA19m8HnEJy+1B6/tdH3p3miF+7sRtQUZXTQCiTgdy3/065GR0
+         MvOB/9TEdUq1DbWYliXB+xeTnXaVFs31axmdB/aCnjO+5/Ua0NJ89v5quxWOnMSDQoV9
+         Tknlk98LGmqwCE7qZ/RS9Ss9w4Vdff6j3nIMmGPCnIQt5GvOQux43wh3o/V94dfUKCE2
+         62VW6yXYqYwyu50bSSwIai6K550ndo+/tiq9JqcWy1H63S4lriNF+pfFxa6nsJqNE2fB
+         ytKg==
+X-Gm-Message-State: AOAM533rPGuPZ6gZ2pzQvOrfC8NknOBqrGoR5gFqZa23dx/7bGu+6N3y
+        UTeO4lyNnUhREPEK8gcGZ18YmZgFR9P4Qek6XOX1oIox9Y8=
+X-Google-Smtp-Source: ABdhPJwWKqB7p7EFe0bvSLHNANt+2tNmrkVB+zflr6eHstYDpl0wpfjCpGbHyGItGEm3TJR95QUse+jDyAAqb+G/0p0=
+X-Received: by 2002:a19:ac0c:: with SMTP id g12mr6220151lfc.51.1611217110022;
+ Thu, 21 Jan 2021 00:18:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20201228183934.1117012-1-pbrobinson@gmail.com>
- <b00bd27c-70b5-9ef1-85a1-11e733af78da@redhat.com> <X/c/OwqdMtmqzOZq@phenom.ffwll.local>
- <1acc822f-b7a5-b0be-5533-32528080850a@redhat.com>
-In-Reply-To: <1acc822f-b7a5-b0be-5533-32528080850a@redhat.com>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Wed, 20 Jan 2021 12:26:46 +0100
-Message-ID: <CAKMK7uHX3C8Dmb8wyypJkOXZQgdrF8P1PxJB4e4mnSm12n68Bg@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: simplefb: Fix info message during probe
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Peter Robinson <pbrobinson@gmail.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>
+Received: by 2002:ab3:209:0:0:0:0:0 with HTTP; Thu, 21 Jan 2021 00:18:28 -0800 (PST)
+In-Reply-To: <CACgpvh=Ni6cb4Octw5BtfqoK=sNAG9yik-c05vNqxYB0wjma-g@mail.gmail.com>
+References: <CACgpvh=Ni6cb4Octw5BtfqoK=sNAG9yik-c05vNqxYB0wjma-g@mail.gmail.com>
+From:   willson mutanda <jkdodj9474@gmail.com>
+Date:   Thu, 21 Jan 2021 00:18:28 -0800
+Message-ID: <CACgpvh=-==_iiJCgYOvhLYnKrHPUW3jOMKeEvvSNOw2bxzN=dg@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jan 20, 2021 at 12:16 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 1/7/21 6:04 PM, Daniel Vetter wrote:
-> > Hi Hans,
-> >
-> > On Tue, Dec 29, 2020 at 02:02:30PM +0100, Hans de Goede wrote:
-> >> Hi,
-> >>
-> >> On 12/28/20 7:39 PM, Peter Robinson wrote:
-> >>> The info message was showing the mapped address for the framebuffer. To avoid
-> >>> security problems, all virtual addresses are converted to __ptrval__, so
-> >>> the message has pointless information:
-> >>>
-> >>> simple-framebuffer 3ea9b000.framebuffer: framebuffer at 0x3ea9b000, 0x12c000 bytes, mapped to 0x(____ptrval____)
-> >>>
-> >>> Drop the extraneous bits to clean up the message:
-> >>>
-> >>> simple-framebuffer 3ea9b000.framebuffer: framebuffer at 0x3ea9b000, 0x12c000 bytes
-> >>>
-> >>> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-> >>
-> >> Thanks, patch looks good to me:
-> >>
-> >> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> >
-> > Since you have commit rights for drm-misc I'm assuming you're also going
-> > to push this one?
->
-> I knew there was some discussion about using drm-misc for drivers/video/fbdev stuff
-> but I missed that it was decided to go ahead with that.
->
-> Good to know that this is handled through drm-misc now.
+Hello my friend
 
-This is official since a while:
+My name is Willson J. Mutanda. Personal assistance to Mr. Andrew  who
+is a Gold and Diamond mining contractor and a business man here in
+South Africa who passed away a few years ago. I am writing to you due
+to the urgency of the matter, all effort to locate his relatives after
+his sudden death failed.
 
-commit 6a7553e8d84d5322d883cb83bb9888c49a0f04e0
-Author: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Date:   Fri Aug 9 15:46:40 2019 +0200
+Please, I demand your consent to present you as his heir. I want you
+to stand as his relative to inherit his Bitcoin investment valued at
+(Two  Million two hundred British Pounds) with the Investment company
+before it will be confiscated. The fund has been dormant since 2015,
+the Company is about to confiscate the Investment as an unclaimed
+deposit.
 
-   MAINTAINERS: handle fbdev changes through drm-misc tree
+I got your contact on the internet and decided to contact you as you
+have the same name as my master. And I hope you will not expose me
+even if you don=E2=80=99t want to help me. This deal should be a secret
+between me and you even after archiving this aim.
 
-Cheers, Daniel
+ I can guarantee that this case will be executed under a legitimate
+arrangement that will protect you and me from any breach of law.  All
+I require from you is your honest cooperation to enable us to see this
+transaction through. I hope to hear from you immediately after you
+read this message for more details.
 
->
-> I've pushed this patch to drm-misc-next.
->
-> Regards,
->
-> Hans
->
->
->
-> >>> ---
-> >>>  drivers/video/fbdev/simplefb.c | 5 ++---
-> >>>  1 file changed, 2 insertions(+), 3 deletions(-)
-> >>>
-> >>> diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-> >>> index 533a047d07a2..62f0ded70681 100644
-> >>> --- a/drivers/video/fbdev/simplefb.c
-> >>> +++ b/drivers/video/fbdev/simplefb.c
-> >>> @@ -477,9 +477,8 @@ static int simplefb_probe(struct platform_device *pdev)
-> >>>     simplefb_clocks_enable(par, pdev);
-> >>>     simplefb_regulators_enable(par, pdev);
-> >>>
-> >>> -   dev_info(&pdev->dev, "framebuffer at 0x%lx, 0x%x bytes, mapped to 0x%p\n",
-> >>> -                        info->fix.smem_start, info->fix.smem_len,
-> >>> -                        info->screen_base);
-> >>> +   dev_info(&pdev->dev, "framebuffer at 0x%lx, 0x%x bytes\n",
-> >>> +                        info->fix.smem_start, info->fix.smem_len);
-> >>>     dev_info(&pdev->dev, "format=%s, mode=%dx%dx%d, linelength=%d\n",
-> >>>                          params.format->name,
-> >>>                          info->var.xres, info->var.yres,
-> >>>
-> >>
-> >> _______________________________________________
-> >> dri-devel mailing list
-> >> dri-devel@lists.freedesktop.org
-> >> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> >
->
+Please contact my private email below for security reasons if you are
+willing to assist me on this urgent matter. I learnt your language is
+not English; please respond to me with English if you can write with
+English
 
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Thanks in advance and God bless you,
+willson  j mutanda
+
+Email:  mutanda.j.willson@gmail.com
