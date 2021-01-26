@@ -2,197 +2,126 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6C1304C56
-	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jan 2021 23:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A06304C5A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jan 2021 23:40:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729408AbhAZWid (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 26 Jan 2021 17:38:33 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:47619 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393980AbhAZSDm (ORCPT
+        id S1729466AbhAZWjD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 Jan 2021 17:39:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57732 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2391680AbhAZSWz (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 26 Jan 2021 13:03:42 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l4SaJ-00032e-0a; Tue, 26 Jan 2021 18:56:59 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l4SaD-0007NA-AL; Tue, 26 Jan 2021 18:56:53 +0100
-Date:   Tue, 26 Jan 2021 18:56:52 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-rtc@vger.kernel.org,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-serial@vger.kernel.org, coresight@lists.linaro.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-crypto@vger.kernel.org,
-        kernel@pengutronix.de, Leo Yan <leo.yan@linaro.org>,
-        dmaengine@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Mike Leach <mike.leach@linaro.org>
-Subject: Re: [PATCH v3 4/5] amba: Make the remove callback return void
-Message-ID: <20210126175652.3caoqfnsky2es42f@pengutronix.de>
-References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
- <20210126165835.687514-5-u.kleine-koenig@pengutronix.de>
- <3e42b2ea-c713-31b2-9c86-c49a70d8e1f4@arm.com>
+        Tue, 26 Jan 2021 13:22:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611685288;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fJzmx/FDrJMCCLLcPZO2xno8mAW17V5sI1Mz8ht2blY=;
+        b=I+EpKpG8iGnVhd7z3gyGW8tpSsUQtm+QAegZ2x/njCGxl8uC4lkC7IB0PTJ1BRs7/d9P1A
+        S/Tev6POPJDR0dHw/y+r7/TQ8UYshV/CPRjoaZBgcTzd7uAD6FiiGldegPApXExD8ew6EI
+        bG0tPnQLh5h26JlwuOLx1h4gYlubWDA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-505-HIxeCZ2DNiWixeoS2pS0Ug-1; Tue, 26 Jan 2021 13:21:26 -0500
+X-MC-Unique: HIxeCZ2DNiWixeoS2pS0Ug-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4A7B9801817;
+        Tue, 26 Jan 2021 18:21:24 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-114-192.ams2.redhat.com [10.36.114.192])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7FA946F80A;
+        Tue, 26 Jan 2021 18:21:21 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@kernel.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH v1 1/2] video: fbdev: acornfb: remove free_unused_pages()
+Date:   Tue, 26 Jan 2021 19:21:12 +0100
+Message-Id: <20210126182113.19892-2-david@redhat.com>
+In-Reply-To: <20210126182113.19892-1-david@redhat.com>
+References: <20210126182113.19892-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2x4mwcdrgqmlamtu"
-Content-Disposition: inline
-In-Reply-To: <3e42b2ea-c713-31b2-9c86-c49a70d8e1f4@arm.com>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+This function is never used and it is one of the last remaining user of
+__free_reserved_page(). Let's just drop it.
 
---2x4mwcdrgqmlamtu
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ drivers/video/fbdev/acornfb.c | 34 ----------------------------------
+ 1 file changed, 34 deletions(-)
 
-Hello,
+diff --git a/drivers/video/fbdev/acornfb.c b/drivers/video/fbdev/acornfb.c
+index bcc92aecf666..1b72edc01cfb 100644
+--- a/drivers/video/fbdev/acornfb.c
++++ b/drivers/video/fbdev/acornfb.c
+@@ -921,40 +921,6 @@ static int acornfb_detect_monitortype(void)
+ 	return 4;
+ }
+ 
+-/*
+- * This enables the unused memory to be freed on older Acorn machines.
+- * We are freeing memory on behalf of the architecture initialisation
+- * code here.
+- */
+-static inline void
+-free_unused_pages(unsigned int virtual_start, unsigned int virtual_end)
+-{
+-	int mb_freed = 0;
+-
+-	/*
+-	 * Align addresses
+-	 */
+-	virtual_start = PAGE_ALIGN(virtual_start);
+-	virtual_end = PAGE_ALIGN(virtual_end);
+-
+-	while (virtual_start < virtual_end) {
+-		struct page *page;
+-
+-		/*
+-		 * Clear page reserved bit,
+-		 * set count to 1, and free
+-		 * the page.
+-		 */
+-		page = virt_to_page(virtual_start);
+-		__free_reserved_page(page);
+-
+-		virtual_start += PAGE_SIZE;
+-		mb_freed += PAGE_SIZE / 1024;
+-	}
+-
+-	printk("acornfb: freed %dK memory\n", mb_freed);
+-}
+-
+ static int acornfb_probe(struct platform_device *dev)
+ {
+ 	unsigned long size;
+-- 
+2.29.2
 
-On Tue, Jan 26, 2021 at 05:08:40PM +0000, Suzuki K Poulose wrote:
-> On 1/26/21 4:58 PM, Uwe Kleine-K=F6nig wrote:
-> > All amba drivers return 0 in their remove callback. Together with the
-> > driver core ignoring the return value anyhow, it doesn't make sense to
-> > return a value here.
-> >=20
-> > Change the remove prototype to return void, which makes it explicit that
-> > returning an error value doesn't work as expected. This simplifies chan=
-ging
-> > the core remove callback to return void, too.
-> >=20
-> > Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> > Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > Acked-by: Krzysztof Kozlowski <krzk@kernel.org> # for drivers/memory
-> > Acked-by: Mark Brown <broonie@kernel.org>
->  > Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
->=20
-> >   drivers/hwtracing/coresight/coresight-etm4x-core.c | 4 +---
->=20
-> You are most likely to have a conflict for the above file, with what is
-> in coresight/next. It should be easy to resolve.
-
-I'm surprised to see that the remove callback introduced in 2952ecf5df33
-("coresight: etm4x: Refactor probing routine") has an __exit annotation.
-
-With .suppress_bind_attrs =3D true you don't need a remove callback at
-all. (And without .suppress_bind_attrs =3D true the remove callback must
-have no __exit annotation.)
-
-This make me looking at commit 45fe7befe0db ("coresight: remove broken
-__exit annotations") by Arnd. Unless I miss something the better change
-would have been to remove the unused remove callbacks instead of dropping
-their __exit annotation?!
-
-Anyhow, my conflict resolution looks as follows:
-
-diff --cc drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 82787cba537d,473ab7480a36..000000000000
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@@ -1703,6 -1903,28 +1903,27 @@@ static int __exit etm4_remove_dev(struc
-  	cpus_read_unlock();
- =20
-  	coresight_unregister(drvdata->csdev);
-+=20
-+ 	return 0;
-+ }
-+=20
- -static int __exit etm4_remove_amba(struct amba_device *adev)
-++static void __exit etm4_remove_amba(struct amba_device *adev)
-+ {
-+ 	struct etmv4_drvdata *drvdata =3D dev_get_drvdata(&adev->dev);
-+=20
-+ 	if (drvdata)
- -		return etm4_remove_dev(drvdata);
- -	return 0;
-++		etm4_remove_dev(drvdata);
-+ }
-+=20
-+ static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
-+ {
-+ 	int ret =3D 0;
-+ 	struct etmv4_drvdata *drvdata =3D dev_get_drvdata(&pdev->dev);
-+=20
-+ 	if (drvdata)
-+ 		ret =3D etm4_remove_dev(drvdata);
-+ 	pm_runtime_disable(&pdev->dev);
-+ 	return ret;
-  }
- =20
-  static const struct amba_id etm4_ids[] =3D {
-
-If this series should make it in for 5.12 we probably need an immutable
-branch between hwtracing and amba.
-
-> Otherwise, the changes look good for the drivers/hwtracing/coresight/*
->=20
-> Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-Thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2x4mwcdrgqmlamtu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmAQV+EACgkQwfwUeK3K
-7AmVuQf6AtGutKPgbsyG3MlTDGKL2CFRBxCLR4sxog0b3QoNLrxr97ZAm+29XP+R
-/C9AgAEdBYZEp/2H2BkQe8cuBFS4UgHD/WEPZ5cI+JN475DZiqoF6T0qdSyCMF8m
-zEDDLZljJzggeci88eRuo1WxD4fyaD//srG7TdZYqXjasRvJ7uKPN4yTi7TrbMtU
-ECXScjnQQcZQPBSaUSqOzJfFs5iGDejv5lIG/emf+7QYEDD+AftUvKNVv/FyQYmL
-2jPJY9rLusZQGMxlZWQMyo5AzhkjmMkXv3GJVOiLzAUiEZ6WfU0kdtrZuzScshOW
-IRo6dRIxQLZOE4k2D+rDx3M/+KGaZQ==
-=Ozgm
------END PGP SIGNATURE-----
-
---2x4mwcdrgqmlamtu--
