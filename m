@@ -2,270 +2,155 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E9E304780
-	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jan 2021 20:08:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 453CF304C44
+	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jan 2021 23:38:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729529AbhAZGAd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 26 Jan 2021 01:00:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33308 "EHLO
+        id S1728682AbhAZWhY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 Jan 2021 17:37:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726117AbhAYJPz (ORCPT
+        with ESMTP id S2391922AbhAZRfV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 25 Jan 2021 04:15:55 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EA2C0611C2;
-        Mon, 25 Jan 2021 01:14:28 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id u11so7175843plg.13;
-        Mon, 25 Jan 2021 01:14:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Uuz1cWK615KjsyzAn5B4uJHEFhZmMkBz735HYYCWLVw=;
-        b=h/AIA79zizQQWojMq6zI+7TjxgSNttvCWo/+HGGBWb3sk7UE2Ca2RaycAW6/fXal6h
-         RzoL80f2C9Wyua8eX9hB2eb0UVf9KnDI2VfeZVnOcsc0c4NE8QGisnZoIy8m8tCw3ceo
-         vOL0S4bjzdbfDaFNX2lENvCM8ZHEy/+WwP5aFXLG9k2g72TwPQE9AMfW3Ob60acOuhac
-         PlGtxE8DLVNXD45cgC/cTlqyqgwNwQ+XF/53fbVJUTlOtmX03qPW9UWwrG7ID/bDQc1h
-         PRdNb79irDYNhfm4zfPtxFEUtTbTveFrJOY1K3wTaMNX5tsqPKNWdWcVERzgpbBnVSEu
-         ZxxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Uuz1cWK615KjsyzAn5B4uJHEFhZmMkBz735HYYCWLVw=;
-        b=isy86x8roF+OT5p5KoUiAMQZbbnerl0ZI82vUcruMqRctJD5mUKheTVu/FQGarUWp/
-         91WshTYj121JGTYpszCDfysuZ7GH+hrpe0kZ6Y7Iw9tblEl5Oa05Ge2hkHG3JLboyVlY
-         YFRhWxOo8/UkafhxopfjihSKEMEvKTZdmwS4W9DeUmkrjORRfUfaRh/+HquH+HP/xuiA
-         n6ds9Qy4JHJtMk48x2DMiG7Ycp7Q8CyUxIGPgrCRyFE5dZeln/o3qJxERKHHReImaM7/
-         zguKYLlRb2GBjtmnW3e+XuBdR5W/JVxxeDTYmOWvQAHGAZJIbRYHZNWYI+Id7/tWlNML
-         neyw==
-X-Gm-Message-State: AOAM530jY7e/vvTSaXZQBpgpGGJveUIJZ8UVauRR5fnwe3QfDUVLbTKn
-        AXbkCfgsRHLck1cW5gtynXU=
-X-Google-Smtp-Source: ABdhPJyXozHSNR3fCJUy/gHIy4qAmev22ABOH8/+wjpYGHD2zR3SUBsJ5+AJ2vN67e7SzkUYmysjIg==
-X-Received: by 2002:a17:90a:17a5:: with SMTP id q34mr4549773pja.47.1611566067755;
-        Mon, 25 Jan 2021 01:14:27 -0800 (PST)
-Received: from bf-rmsz-10.ccdomain.com ([103.220.76.197])
-        by smtp.gmail.com with ESMTPSA id p13sm15184063pjz.49.2021.01.25.01.14.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 25 Jan 2021 01:14:26 -0800 (PST)
-From:   Carlis <zhangxuezhi3@gmail.com>
-To:     gregkh@linuxfoundation.org
-Cc:     colin.king@canonical.com, oliver.graute@kococonnector.com,
-        zhangxuezhi1@yulong.com, mh12gx2825@gmail.com, sbrivio@redhat.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] fbtft: add tearing signal detect
-Date:   Mon, 25 Jan 2021 17:14:30 +0800
-Message-Id: <1611566070-84944-1-git-send-email-zhangxuezhi3@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        Tue, 26 Jan 2021 12:35:21 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A416C0613ED
+        for <linux-fbdev@vger.kernel.org>; Tue, 26 Jan 2021 09:34:41 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1l4RgD-00045p-EA; Tue, 26 Jan 2021 17:59:01 +0100
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1l4Rg3-0003hY-Ft; Tue, 26 Jan 2021 17:58:51 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Russell King <linux@armlinux.org.uk>,
+        Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Eric Auger <eric.auger@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig.org@pengutronix.de>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, coresight@lists.linaro.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: [PATCH v3 0/5] amba: minor fix and various cleanups
+Date:   Tue, 26 Jan 2021 17:58:30 +0100
+Message-Id: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: zhangxuezhi <zhangxuezhi1@yulong.com>
+From: Uwe Kleine-König <u.kleine-koenig.org@pengutronix.de
 
-For st7789v ic,add tearing signal detect to avoid screen tearing
+Hello,
 
-Signed-off-by: zhangxuezhi <zhangxuezhi1@yulong.com>
----
-v3:modify author name
----
- drivers/staging/fbtft/fb_st7789v.c | 134 ++++++++++++++++++++++++++++++++++++-
- drivers/staging/fbtft/fbtft.h      |   1 +
- 2 files changed, 134 insertions(+), 1 deletion(-)
+Changes since v2 sent with Message-Id:
+20201124133139.3072124-1-uwe@kleine-koenig.org:
 
-diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-index 3a280cc..5426276 100644
---- a/drivers/staging/fbtft/fb_st7789v.c
-+++ b/drivers/staging/fbtft/fb_st7789v.c
-@@ -9,9 +9,12 @@
- #include <linux/delay.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/interrupt.h>
-+#include <linux/completion.h>
- #include <linux/module.h>
- #include <video/mipi_display.h>
--
-+#include <linux/gpio/consumer.h>
- #include "fbtft.h"
- 
- #define DRVNAME "fb_st7789v"
-@@ -66,6 +69,38 @@ enum st7789v_command {
- #define MADCTL_MX BIT(6) /* bitmask for column address order */
- #define MADCTL_MY BIT(7) /* bitmask for page address order */
- 
-+#define SPI_PANEL_TE_TIMEOUT	400
-+static struct mutex te_mutex;/*mutex for tearing line*/
-+static struct completion spi_panel_te;
-+
-+static irqreturn_t spi_panel_te_handler(int irq, void *data)
-+{
-+	complete(&spi_panel_te);
-+	return IRQ_HANDLED;
-+}
-+
-+static void enable_spi_panel_te_irq(struct fbtft_par *par, bool enable)
-+{
-+	static int te_irq_count;
-+
-+	if (!par->gpio.te) {
-+		pr_err("%s:%d,SPI panel TE GPIO not configured\n",
-+		       __func__, __LINE__);
-+		return;
-+	}
-+
-+	mutex_lock(&te_mutex);
-+
-+	if (enable) {
-+		if (++te_irq_count == 1)
-+			enable_irq(gpiod_to_irq(par->gpio.te));
-+	} else {
-+		if (--te_irq_count == 0)
-+			disable_irq(gpiod_to_irq(par->gpio.te));
-+	}
-+	mutex_unlock(&te_mutex);
-+}
-+
- /**
-  * init_display() - initialize the display controller
-  *
-@@ -82,6 +117,29 @@ enum st7789v_command {
-  */
- static int init_display(struct fbtft_par *par)
- {
-+	int rc;
-+	struct device *dev = par->info->device;
-+
-+	par->gpio.te = devm_gpiod_get_index_optional(dev, "te", 0, GPIOD_IN);
-+	if (par->gpio.te) {
-+		init_completion(&spi_panel_te);
-+		mutex_init(&te_mutex);
-+		rc = devm_request_irq(dev,
-+				      gpiod_to_irq(par->gpio.te),
-+				     spi_panel_te_handler, IRQF_TRIGGER_RISING,
-+				     "TE_GPIO", par);
-+		if (rc) {
-+			pr_err("TE request_irq failed.\n");
-+			devm_gpiod_put(dev, par->gpio.te);
-+			par->gpio.te = NULL;
-+		} else {
-+			disable_irq_nosync(gpiod_to_irq(par->gpio.te));
-+			pr_info("TE request_irq completion.\n");
-+		}
-+	} else {
-+		pr_err("%s:%d, TE gpio not specified\n",
-+		       __func__, __LINE__);
-+	}
- 	/* turn off sleep mode */
- 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
- 	mdelay(120);
-@@ -137,6 +195,9 @@ static int init_display(struct fbtft_par *par)
- 	 */
- 	write_reg(par, PWCTRL1, 0xA4, 0xA1);
- 
-+    /*Tearing Effect Line On*/
-+	if (par->gpio.te)
-+		write_reg(par, 0x35, 0x00);
- 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
- 
- 	if (HSD20_IPS)
-@@ -145,6 +206,76 @@ static int init_display(struct fbtft_par *par)
- 	return 0;
- }
- 
-+/*****************************************************************************
-+ *
-+ *   int (*write_vmem)(struct fbtft_par *par);
-+ *
-+ *****************************************************************************/
-+
-+/* 16 bit pixel over 8-bit databus */
-+int st7789v_write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
-+{
-+	u16 *vmem16;
-+	__be16 *txbuf16 = par->txbuf.buf;
-+	size_t remain;
-+	size_t to_copy;
-+	size_t tx_array_size;
-+	int i;
-+	int rc, ret = 0;
-+	size_t startbyte_size = 0;
-+
-+	fbtft_par_dbg(DEBUG_WRITE_VMEM, par, "st7789v ---%s(offset=%zu, len=%zu)\n",
-+		      __func__, offset, len);
-+
-+	remain = len / 2;
-+	vmem16 = (u16 *)(par->info->screen_buffer + offset);
-+
-+	if (par->gpio.dc)
-+		gpiod_set_value(par->gpio.dc, 1);
-+
-+	/* non buffered write */
-+	if (!par->txbuf.buf)
-+		return par->fbtftops.write(par, vmem16, len);
-+
-+	/* buffered write */
-+	tx_array_size = par->txbuf.len / 2;
-+
-+	if (par->startbyte) {
-+		txbuf16 = par->txbuf.buf + 1;
-+		tx_array_size -= 2;
-+		*(u8 *)(par->txbuf.buf) = par->startbyte | 0x2;
-+		startbyte_size = 1;
-+	}
-+
-+	while (remain) {
-+		to_copy = min(tx_array_size, remain);
-+		dev_dbg(par->info->device, "    to_copy=%zu, remain=%zu\n",
-+			to_copy, remain - to_copy);
-+
-+		for (i = 0; i < to_copy; i++)
-+			txbuf16[i] = cpu_to_be16(vmem16[i]);
-+
-+		vmem16 = vmem16 + to_copy;
-+		if (par->gpio.te) {
-+			enable_spi_panel_te_irq(par, true);
-+			reinit_completion(&spi_panel_te);
-+			rc = wait_for_completion_timeout(&spi_panel_te,
-+							 msecs_to_jiffies(SPI_PANEL_TE_TIMEOUT));
-+			if (rc == 0)
-+				pr_err("wait panel TE time out\n");
-+		}
-+		ret = par->fbtftops.write(par, par->txbuf.buf,
-+								startbyte_size + to_copy * 2);
-+		if (par->gpio.te)
-+			enable_spi_panel_te_irq(par, false);
-+		if (ret < 0)
-+			return ret;
-+		remain -= to_copy;
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * set_var() - apply LCD properties like rotation and BGR mode
-  *
-@@ -259,6 +390,7 @@ static int blank(struct fbtft_par *par, bool on)
- 	.gamma = HSD20_IPS_GAMMA,
- 	.fbtftops = {
- 		.init_display = init_display,
-+		.write_vmem = st7789v_write_vmem16_bus8,
- 		.set_var = set_var,
- 		.set_gamma = set_gamma,
- 		.blank = blank,
-diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-index 76f8c09..93bac05 100644
---- a/drivers/staging/fbtft/fbtft.h
-+++ b/drivers/staging/fbtft/fbtft.h
-@@ -212,6 +212,7 @@ struct fbtft_par {
- 		struct gpio_desc *wr;
- 		struct gpio_desc *latch;
- 		struct gpio_desc *cs;
-+		struct gpio_desc *te;
- 		struct gpio_desc *db[16];
- 		struct gpio_desc *led[16];
- 		struct gpio_desc *aux[16];
+ - Rebase to v5.11-rc1 (which resulted in a few conflicts in
+   drivers/hwtracing).
+ - Add various Acks.
+ - Send to more maintainers directly (which I think is one of the
+   reasons why there are so few Acks).
+
+For my taste patch 4 needs some more acks (drivers/char/hw_random,
+drivers/dma, drivers/gpu/drm/pl111, drivers/i2c, drivers/mmc,
+drivers/vfio, drivers/watchdog and sound/arm have no maintainer feedback
+yet).
+
+My suggestion is to let this series go in via Russell King (who cares
+for amba). Once enough Acks are there I can also provide a tag for
+merging into different trees. Just tell me if you prefer this solution.
+
+Would be great if this could make it for v5.12, but I'm aware it's
+already late in the v5.11 cycle so it might have to wait for v5.13.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (5):
+  amba: Fix resource leak for drivers without .remove
+  amba: reorder functions
+  vfio: platform: simplify device removal
+  amba: Make the remove callback return void
+  amba: Make use of bus_type functions
+
+ drivers/amba/bus.c                            | 234 +++++++++---------
+ drivers/char/hw_random/nomadik-rng.c          |   3 +-
+ drivers/dma/pl330.c                           |   3 +-
+ drivers/gpu/drm/pl111/pl111_drv.c             |   4 +-
+ drivers/hwtracing/coresight/coresight-catu.c  |   3 +-
+ .../hwtracing/coresight/coresight-cpu-debug.c |   4 +-
+ .../hwtracing/coresight/coresight-cti-core.c  |   4 +-
+ drivers/hwtracing/coresight/coresight-etb10.c |   4 +-
+ .../coresight/coresight-etm3x-core.c          |   4 +-
+ .../coresight/coresight-etm4x-core.c          |   4 +-
+ .../hwtracing/coresight/coresight-funnel.c    |   4 +-
+ .../coresight/coresight-replicator.c          |   4 +-
+ drivers/hwtracing/coresight/coresight-stm.c   |   4 +-
+ .../hwtracing/coresight/coresight-tmc-core.c  |   4 +-
+ drivers/hwtracing/coresight/coresight-tpiu.c  |   4 +-
+ drivers/i2c/busses/i2c-nomadik.c              |   4 +-
+ drivers/input/serio/ambakmi.c                 |   3 +-
+ drivers/memory/pl172.c                        |   4 +-
+ drivers/memory/pl353-smc.c                    |   4 +-
+ drivers/mmc/host/mmci.c                       |   4 +-
+ drivers/rtc/rtc-pl030.c                       |   4 +-
+ drivers/rtc/rtc-pl031.c                       |   4 +-
+ drivers/spi/spi-pl022.c                       |   5 +-
+ drivers/tty/serial/amba-pl010.c               |   4 +-
+ drivers/tty/serial/amba-pl011.c               |   3 +-
+ drivers/vfio/platform/vfio_amba.c             |  15 +-
+ drivers/video/fbdev/amba-clcd.c               |   4 +-
+ drivers/watchdog/sp805_wdt.c                  |   4 +-
+ include/linux/amba/bus.h                      |   2 +-
+ sound/arm/aaci.c                              |   4 +-
+ 30 files changed, 157 insertions(+), 198 deletions(-)
+
+
+base-commit: 5c8fe583cce542aa0b84adc939ce85293de36e5e
 -- 
-1.9.1
+2.29.2
 
