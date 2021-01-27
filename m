@@ -2,91 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6661B306210
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jan 2021 18:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 497313062BB
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jan 2021 18:54:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235254AbhA0RcB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 27 Jan 2021 12:32:01 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:57766 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235996AbhA0RaB (ORCPT
+        id S1344309AbhA0Ry0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 27 Jan 2021 12:54:26 -0500
+Received: from smtprelay0213.hostedemail.com ([216.40.44.213]:41604 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1344272AbhA0RyO (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 27 Jan 2021 12:30:01 -0500
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1611768553;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gV4s82FEuVJugdNoRBb0xE+COjn/uKSW2UKMDbD6jHQ=;
-        b=wuR6CRkyif58OjIS/1cWiPhdkXgbh0OqmSlzr7gMAtiiifGyw7zj8i7FN1PfpPjucFGtZg
-        CA1lCRgAHYo766uQ0mV0iaP5l4k2JuL7uaQF4DhG88oUB0jsOTiNUe45KPn/WeV/mp5xcW
-        2Wj74lJO1uAMK/1hcdw6stC+FgTFqwI2i9kzTd+FtnLqZ1vd6aTy8Y6pKTE2CZX4DCAtd8
-        zTiPqDaAa7AQfweHPFdkFyMEWwFZcXMDFe4IV+qvOssPV9a0TraLPIajnhVptgqQhDKyl+
-        OTGE2j8s413MmOvIzgLY6bkRtFHqRsHHrx2kqvZSFjnSwBFf0209WFc1lYduuQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1611768553;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gV4s82FEuVJugdNoRBb0xE+COjn/uKSW2UKMDbD6jHQ=;
-        b=NaDYvA+wOnqKU2brmmYmjgXx9Os1WNewhM31jbnuz8NnIT52LlmN3YFszE6p1b0tADmnBN
-        v0WyuLWIENFZMKAg==
-To:     linux-omap@vger.kernel.org
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 2/2] video: omapfb: Remove WARN_ON(in_interrupt()).
-Date:   Wed, 27 Jan 2021 18:29:02 +0100
-Message-Id: <20210127172902.145335-3-bigeasy@linutronix.de>
-In-Reply-To: <20210127172902.145335-1-bigeasy@linutronix.de>
-References: <20210127172902.145335-1-bigeasy@linutronix.de>
+        Wed, 27 Jan 2021 12:54:14 -0500
+X-Greylist: delayed 625 seconds by postgrey-1.27 at vger.kernel.org; Wed, 27 Jan 2021 12:54:13 EST
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave07.hostedemail.com (Postfix) with ESMTP id 6FAF71801A08E
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 Jan 2021 17:43:46 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 5D03B181D3026;
+        Wed, 27 Jan 2021 17:43:00 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2525:2553:2560:2563:2682:2685:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:4823:5007:6742:7514:7652:9025:10004:10400:10848:11232:11658:11783:11914:12043:12297:12555:12663:12740:12895:12986:13069:13311:13357:13439:13846:13894:14181:14659:14721:14777:21080:21433:21627:21819:30054:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:2,LUA_SUMMARY:none
+X-HE-Tag: crowd66_500673e27598
+X-Filterd-Recvd-Size: 2238
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf15.hostedemail.com (Postfix) with ESMTPA;
+        Wed, 27 Jan 2021 17:42:57 +0000 (UTC)
+Message-ID: <3f7b25d21c10a4dc7da5d507d6d6a6a5bc93447b.camel@perches.com>
+Subject: Re: [PATCH v10] staging: fbtft: add tearing signal detect
+From:   Joe Perches <joe@perches.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     carlis <zhangxuezhi3@gmail.com>,
+        Andy Whitcroft <apw@canonical.com>, devel@driverdev.osuosl.org,
+        linux-fbdev@vger.kernel.org, mh12gx2825@gmail.com,
+        oliver.graute@kococonnector.com, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, sbrivio@redhat.com,
+        colin.king@canonical.com, zhangxuezhi1@yulong.com
+Date:   Wed, 27 Jan 2021 09:42:56 -0800
+In-Reply-To: <20210127144946.GF2696@kadam>
+References: <1611754972-151016-1-git-send-email-zhangxuezhi3@gmail.com>
+         <YBFv+12xfsoxacDb@kroah.com> <20210127220809.000026fb@gmail.com>
+         <YBF08Xf7qaZx3YZ1@kroah.com> <20210127221708.00002568@gmail.com>
+         <YBF30EEUkhEMY5ti@kroah.com> <20210127144946.GF2696@kadam>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
+On Wed, 2021-01-27 at 17:49 +0300, Dan Carpenter wrote:
+> On Wed, Jan 27, 2021 at 03:25:20PM +0100, Greg KH wrote:
 
-dsi_sync_vc() uses in_interrupt() to create a warning if the function is
-used in non-preemptible context.
+> > Andy and Joe, there's something wrong here that is missing the fact that
+> > a line is being indented with spaces and not tabs in the patch
+> > at https://lore.kernel.org/r/1611754972-151016-1-git-send-email-zhangxuezhi3@gmail.com
+> > 
+> > Any ideas what broke?
+> 
+>     /*Tearing Effect Line On*/
+> 
+> Comments are the exception to the "no spaces at the start of a line"
+> rule.  I was expecting that the kbuild-bot would send a Smatch warning
+> for inconsistent indenting, but comments are not counted there either.
+> 
+> I'm sort of surprised that we don't have checkpatch rule about the
+> missing space characters.  It should be: "/* Tearing Effect Line On */".
 
-The usage of in_interrupt() in drivers is phased out and Linus clearly
-requested that code which changes behaviour depending on context should
-either be separated or the context be conveyed in an argument passed by the
-caller, which usually knows the context.
+You could always write your own rule...
 
-The wait_for_completion() function (used in dsi_sync_vc_vp() and
-dsi_sync_vc_l4() has already a check if it is invoked from proper
-context.
+checkpatch doesn't care if a comment looks like
 
-Remove WARN_ON(in_interrupt()) from the driver.
+    /********************/
+or
+    /*foobarfoobarfoobar*/
 
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbd=
-ev/omap2/omapfb/dss/dsi.c
-index dc34bb04b865c..df90091de75f8 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-@@ -2373,8 +2373,6 @@ static int dsi_sync_vc(struct platform_device *dsidev=
-, int channel)
-=20
- 	WARN_ON_ONCE(!dsi_bus_is_locked(dsidev));
-=20
--	WARN_ON(in_interrupt());
--
- 	if (!dsi_vc_is_enabled(dsidev, channel))
- 		return 0;
-=20
---=20
-2.30.0
 
