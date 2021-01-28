@@ -2,105 +2,101 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F4E3079AA
-	for <lists+linux-fbdev@lfdr.de>; Thu, 28 Jan 2021 16:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A1A307F34
+	for <lists+linux-fbdev@lfdr.de>; Thu, 28 Jan 2021 21:10:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232372AbhA1P1C (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 28 Jan 2021 10:27:02 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:34456 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231875AbhA1P1A (ORCPT
+        id S231184AbhA1UJy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 28 Jan 2021 15:09:54 -0500
+Received: from spe6-3.ucebox.co.za ([197.242.159.209]:33672 "EHLO
+        spe6-3.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231351AbhA1UH4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 28 Jan 2021 10:27:00 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10SFJuIQ118435;
-        Thu, 28 Jan 2021 15:26:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=2gLXiKCgRSS7kTFwCYui5MzR6pPKfBNKiPKEY7OQMgY=;
- b=gXPKERt+Fh24YexAqdwWgz3yhxChk94LGX69wA793D+trr/TxxloojLJnSyA1RsPXAkx
- StsSDCcYK1Wlef9js1oC27V4MOyz+/YqYazJZ7KtSkrgfyOxx61wrC55KA4NKf3MdYkJ
- udMvFA3iwbEz7cf6KrCQy33px8mJDTmXzedBYXl2PIHdA5cCB3j8vZyxjlvEks8ShR41
- OXkcmdVMsbOtYgUrfisN5ComUBjSkr5noqKvUOo2+GB/uEOIz9i7YxKHQU9uomZvW6Im
- rEartVXsyEFV7bz/imqdDxA3n9Z0V9NnIJBXJpDO5rW+EMwxDeemMkf1aWFKhrQPwDzQ dA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 368b7r4pg9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Jan 2021 15:26:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10SFJqP9134457;
-        Thu, 28 Jan 2021 15:24:07 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 368wju6y2h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 28 Jan 2021 15:24:07 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 10SFO21G020707;
-        Thu, 28 Jan 2021 15:24:02 GMT
-Received: from kadam (/102.36.221.92)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 28 Jan 2021 07:24:01 -0800
-Date:   Thu, 28 Jan 2021 18:23:52 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Carlis <zhangxuezhi3@gmail.com>,
-        "open list:STAGING SUBSYSTEM" <devel@driverdev.osuosl.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        Deepak R Varma <mh12gx2825@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        oliver.graute@kococonnector.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        Colin King <colin.king@canonical.com>, zhangxuezhi1@yulong.com
-Subject: Re: [PATCH v12] staging: fbtft: add tearing signal detect
-Message-ID: <20210128152352.GH2696@kadam>
-References: <1611838435-151774-1-git-send-email-zhangxuezhi3@gmail.com>
- <CAHp75Vd=ijxnamuSYuxNLeyhGMCod=HaXWrQ0W0+3QCsQAychg@mail.gmail.com>
+        Thu, 28 Jan 2021 15:07:56 -0500
+X-Greylist: delayed 6416 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 15:07:02 EST
+Received: from cornucopia.aserv.co.za ([154.0.175.203])
+        by spe4.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <manornutgrovemanor@gmail.com>)
+        id 1l5Brs-0002Dc-Q5; Thu, 28 Jan 2021 20:18:43 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 37618C1250;
+        Thu, 28 Jan 2021 20:17:07 +0200 (SAST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75Vd=ijxnamuSYuxNLeyhGMCod=HaXWrQ0W0+3QCsQAychg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9877 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280079
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9877 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
- adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 clxscore=1011 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101280079
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 28 Jan 2021 20:17:07 +0200
+From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Invitation To Quote
+User-Agent: Roundcube Webmail/1.4.1
+Message-ID: <b09951c581c69bcd4c3d48c21f6885b3@gmail.com>
+X-Sender: manornutgrovemanor@gmail.com
+X-Originating-IP: 154.0.175.203
+X-Afrihost-Domain: pesci.aserv.co.za
+X-Afrihost-Username: 154.0.175.203
+Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
+X-Afrihost-Outgoing-Class: unsure
+X-Afrihost-Outgoing-Evidence: Combined (0.71)
+X-Recommended-Action: accept
+X-Filter-ID: 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
+ F2m4bBx/YCvbzEWyHpfJdFJnGm+sTRDggxgVxQ==
+X-Report-Abuse-To: spam@spe1.ucebox.co.za
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 04:33:02PM +0200, Andy Shevchenko wrote:
-> > +               init_completion(&spi_panel_te);
-> > +               rc = devm_request_irq(dev,
-> 
-> > +                                     gpiod_to_irq(par->gpio.te),
-> 
-> ...and here simply use irq.
-> 
-> > +                                    spi_panel_te_handler, IRQF_TRIGGER_RISING,
-> > +                                    "TE_GPIO", par);
-> 
-> > +               if (IS_ERR(rc))
-> 
-> This is wrong. rc is integer no IS_ERR() is required. Ditto for
-> PTR_ERR(). Have you even looked for these macros implementations?
-> 
+Good Day Sir
 
-Yeah...  It leads to a compile warning:
+We are please to invite you/your company to quote the following item
+listed
+below:
 
-	warning: passing argument 1 of ‘IS_ERR’ makes pointer from integer without a cast [-Wint-conversion]
+Product/Model No: TM9653 PRESSURE REGULATOR
+Product Name:MEKO
+Qty. 30 units
 
-regards,
-dan carpenter
+Compulsory,Kindly send your quotation
+for immediate approval.
 
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
