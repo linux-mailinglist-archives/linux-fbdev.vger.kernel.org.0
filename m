@@ -2,143 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61CF9309EA3
-	for <lists+linux-fbdev@lfdr.de>; Sun, 31 Jan 2021 21:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C78730CDA8
+	for <lists+linux-fbdev@lfdr.de>; Tue,  2 Feb 2021 22:10:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbhAaUIh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 31 Jan 2021 15:08:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42324 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbhAaTqL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 31 Jan 2021 14:46:11 -0500
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D85EC061356;
-        Sun, 31 Jan 2021 09:33:20 -0800 (PST)
-Received: by mail-pg1-x544.google.com with SMTP id z21so10432182pgj.4;
-        Sun, 31 Jan 2021 09:33:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/kqzKgRXAJuYCJnf9qlqUQ95/4dPlUVexaDClNJu+4o=;
-        b=dHvdkQ1j42EiilplhPDB6FhMNUf5ZXLmE/uzaLLqe0OXGT7dcsL7G95zRkDlrlN3f1
-         G4VK+txzHPVHWBdH+epzhHSC4vYX0Z0BDgeYkEH9gD5gAKiz3BMn90itchE/OWGv655N
-         RnNX45jveBHIdz6Fia3lJ78SR2RYjmNXMAigH9Dzg9BXMITx1Ryj4fX0PbvtDtkeLpVZ
-         a5D0q47TCAvw/H026XC55s4TCK+VjLVyeCBSC5BgXVQc+TdNfm53TXhmt+I9LlK0RpID
-         aS7aVxf0F9rW0fwPiByzapSFkmDfZibac4dt7sZgbjdUU1JP+ihY7/HwC6Fple5Hk0Ts
-         /DAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/kqzKgRXAJuYCJnf9qlqUQ95/4dPlUVexaDClNJu+4o=;
-        b=n+4iMnw7jSKwxOTl278WoKWQVbZSAT2qEUfGrkZqQG4n0478a4XMZ7Tq9Zrdr+Lp/E
-         hrz/TMF1ITWByAjbZg5diw6Jz+SUovrzq/3WrB3Ovqgfx760qC/ZwP++1UuLDAADE46H
-         Q+QMdUhFP35BWzJEjympsSwHhOmVDySIDiMBscJ98LoWoNU3XPf5lqXZK7ERzKZFM7H5
-         li8jEwbKP1NIOPGbwisYvv66rz4T1H5THWZdrGaY8p9vG82v7i1413Tue7AOEaz1aJ4r
-         cWUDSYHVDusV/2q2bOGysIcouNXSGAgNd1GcvnpMe7BZdbtfx8+K8OyDn+eLeMPggy9W
-         uiDw==
-X-Gm-Message-State: AOAM5300JMIC4zAIAmCytc21L7ADjtiCrIZKC7hNVoF8jYN0jCtUA+db
-        AhjwfNDd/SfXc+IagYmiGo4=
-X-Google-Smtp-Source: ABdhPJys/KIIkqbArr3BBk6zxyfIuIi9uPQFd4sUr7ipe/WtqEH4D4K7cPU/+BVgCni/eif1aK0rvQ==
-X-Received: by 2002:a62:774a:0:b029:1be:ca30:53ad with SMTP id s71-20020a62774a0000b02901beca3053admr12869186pfc.42.1612114399971;
-        Sun, 31 Jan 2021 09:33:19 -0800 (PST)
-Received: from localhost ([2402:3a80:11ea:e144:a2a4:c5ff:fe20:7222])
-        by smtp.gmail.com with ESMTPSA id 72sm14944814pfw.170.2021.01.31.09.33.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Jan 2021 09:33:19 -0800 (PST)
-From:   Kumar Kartikeya Dwivedi <memxor@gmail.com>
-To:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
-        linux-kernel@vger.kernel.org
-Cc:     Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-        Vaibhav Agarwal <vaibhav.sr@gmail.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Marc Dietrich <marvin24@gmx.de>,
-        Jens Frederich <jfrederich@gmail.com>,
-        Daniel Drake <dsd@laptop.org>,
-        Jon Nettleton <jon.nettleton@gmail.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Florian Schilhabel <florian.c.schilhabel@googlemail.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Teddy Wang <teddy.wang@siliconmotion.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        William Cohen <wcohen@redhat.com>,
-        Robert Richter <rric@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        greybus-dev@lists.linaro.org, ac100@lists.launchpad.net,
-        linux-tegra@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH 13/13] staging: wimax: Switch from strlcpy to strscpy
-Date:   Sun, 31 Jan 2021 22:58:34 +0530
-Message-Id: <20210131172838.146706-14-memxor@gmail.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210131172838.146706-1-memxor@gmail.com>
-References: <20210131172838.146706-1-memxor@gmail.com>
+        id S233786AbhBBVKV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 2 Feb 2021 16:10:21 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:65313 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S231256AbhBBVKS (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 2 Feb 2021 16:10:18 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=TP5ImnyHcJd6ZOutD2G4fr5f8wWoUQwQgOLW2PI/280OHeTqlZLToIxAIofahXeo75Wu3EjCyPUkWCAvONVwZu0fevODO9NabCWAisW+z0dGu9MXtR6qZycknhfK+mQQvORufc2uJdOyxsLmIaqgju02ah6NTaY7MUrrDAsnypqV/dHvFc1ZCeNq9M9cnBgI6P8moRvB3Uy5b0Di8H1i0zAyCi2Ui0iRGfGkTkO0ugXob5Evs8zBCz+bQn
+        OGNJsvkyEuoIiGf1dhK8ZygeNRPTDeubCEGrI3iP2v+CePRDNJj0O+GADoZLV93dYARi5DbbBgbqte2GtdOqu1KHIrhw==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Sat, 30 Jan 2021 02:13:52 +0000
+Message-ID: <8F335769-7194-475D-8960-10F7C26454EB@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Sat, 30 Jan 2021 02:13:50 -0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-strlcpy is marked as deprecated in Documentation/process/deprecated.rst,
-and there is no functional difference when the caller expects truncation
-(when not checking the return value). strscpy is relatively better as it
-also avoids scanning the whole source string.
+Hello,
 
-This silences the related checkpatch warnings from:
-5dbdb2d87c29 ("checkpatch: prefer strscpy to strlcpy")
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
----
- drivers/staging/wimax/i2400m/netdev.c | 6 +++---
- drivers/staging/wimax/i2400m/usb.c    | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-diff --git a/drivers/staging/wimax/i2400m/netdev.c b/drivers/staging/wimax/i2400m/netdev.c
-index 8339d600e..cd06eaf75 100644
---- a/drivers/staging/wimax/i2400m/netdev.c
-+++ b/drivers/staging/wimax/i2400m/netdev.c
-@@ -561,11 +561,11 @@ static void i2400m_get_drvinfo(struct net_device *net_dev,
- {
- 	struct i2400m *i2400m = net_dev_to_i2400m(net_dev);
- 
--	strlcpy(info->driver, KBUILD_MODNAME, sizeof(info->driver));
--	strlcpy(info->fw_version, i2400m->fw_name ? : "",
-+	strscpy(info->driver, KBUILD_MODNAME, sizeof(info->driver));
-+	strscpy(info->fw_version, i2400m->fw_name ? : "",
- 		sizeof(info->fw_version));
- 	if (net_dev->dev.parent)
--		strlcpy(info->bus_info, dev_name(net_dev->dev.parent),
-+		strscpy(info->bus_info, dev_name(net_dev->dev.parent),
- 			sizeof(info->bus_info));
- }
- 
-diff --git a/drivers/staging/wimax/i2400m/usb.c b/drivers/staging/wimax/i2400m/usb.c
-index f250d03ce..481b1ccde 100644
---- a/drivers/staging/wimax/i2400m/usb.c
-+++ b/drivers/staging/wimax/i2400m/usb.c
-@@ -333,8 +333,8 @@ static void i2400mu_get_drvinfo(struct net_device *net_dev,
- 	struct i2400mu *i2400mu = container_of(i2400m, struct i2400mu, i2400m);
- 	struct usb_device *udev = i2400mu->usb_dev;
- 
--	strlcpy(info->driver, KBUILD_MODNAME, sizeof(info->driver));
--	strlcpy(info->fw_version, i2400m->fw_name ? : "",
-+	strscpy(info->driver, KBUILD_MODNAME, sizeof(info->driver));
-+	strscpy(info->fw_version, i2400m->fw_name ? : "",
- 		sizeof(info->fw_version));
- 	usb_make_path(udev, info->bus_info, sizeof(info->bus_info));
- }
--- 
-2.29.2
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
 
