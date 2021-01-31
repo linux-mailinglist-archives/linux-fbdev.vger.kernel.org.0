@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F12C309EA7
-	for <lists+linux-fbdev@lfdr.de>; Sun, 31 Jan 2021 21:09:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A79DF309E80
+	for <lists+linux-fbdev@lfdr.de>; Sun, 31 Jan 2021 21:03:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbhAaUIi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 31 Jan 2021 15:08:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42330 "EHLO
+        id S231574AbhAaUDV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 31 Jan 2021 15:03:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231208AbhAaTqL (ORCPT
+        with ESMTP id S231380AbhAaTs0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 31 Jan 2021 14:46:11 -0500
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B15AC061793;
-        Sun, 31 Jan 2021 09:31:15 -0800 (PST)
-Received: by mail-pl1-x643.google.com with SMTP id y10so4410762plk.7;
-        Sun, 31 Jan 2021 09:31:15 -0800 (PST)
+        Sun, 31 Jan 2021 14:48:26 -0500
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF3FC061794;
+        Sun, 31 Jan 2021 09:31:26 -0800 (PST)
+Received: by mail-pf1-x441.google.com with SMTP id j12so9991737pfj.12;
+        Sun, 31 Jan 2021 09:31:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TEuL+hVALlT8knIGIfWrKAZ33sVizOsXkuWP5jla1Js=;
-        b=ANSbmVI1xwMVRP1E0zjIWUnQq6BtG0DwLwTiHADYdhlxw+zYHUFBREJvvy1Ftb24W7
-         wyXCThnYlwN/wCCjn6aXE1sbHGDpfKlQdGAnjo4OBYMR31sblgGE59ToHFB9zQZCwH+/
-         6Ct4bxT1MTB5R+04ZmXaKmt64SSh5yiQ2dw5J420g0LA3Q3ta1PKeWyhNENozGoB1Sbv
-         lgs9zi/fY7QXvt1MD1QzlCr54G9o4hwxiS9EoR7jsvu5+ffww09twJrJbikAY8LqrdLt
-         FFhCrwiVdkW/mFVkFj9FiN03y1OATjCPUhUJwI5e0UX7dW4MdgGPnSujGAb/fehHbUl+
-         GYxw==
+        bh=elcSuzCsfiYge55RbGFb9kTR1L7/5bJ4aw6jmtvexpM=;
+        b=WpI7Td9mz/HM9oDzyPiwhy3IQV1iTBEOIEuZa/D/SKv6J/4n+bccfqaJqtRyeBFtkU
+         AIunppgOPhltRXbfPQ6i0CdmjTT4pKHeTUOtLCVsoMBKww5Jz3NbeS3SPRY1nGl3ZL98
+         dlF0yT1h4whxfcj5bDWsLxsIOKibEfYPvaYWUwEpmk+9xaCMF7BIEcGIPL6YWg0IGrK0
+         s0GFcDAQ140iZGRdWkBHTMyeoMmOeCVyJEAnQu+L3l3DNAxKFhE2O82X41fLo6AoDgbV
+         SoHs/+ef54Us6Jh+NeZKEQz8yE/n3lBzU/QbQ3xu+pAVSawxWsUo1qFRP6kOTiXfbspM
+         xm3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TEuL+hVALlT8knIGIfWrKAZ33sVizOsXkuWP5jla1Js=;
-        b=g6OzSXSc7nTG1etEfzMCrHdL1/wyBlR5giurjuq7SQskiF/49/AM6Q6ow2pV7dtQZP
-         g9bwOVE2qafKuqsp4Chhwx1au0KWCI0R3Js58CdmQVSgBF3HXP3xSf/ucGskYgyzXPqZ
-         9wexbVPr+MDqDLjKKongnC6SOKlMNy3r0NBe1XKXTckjDY0Tzi5KM9/hzOvtBc59g8kN
-         DXD+wK36PyBmIrLcrxpygqLBtBYrFJoUcZTidjXcCQFKn6yicn2quSgn8MXnd7o6cjTR
-         /ezL40WkXlSHwAEMrr8I8QkLoyKma9TWxHugTUlxB9MNjZCiHihaHz9ETXYJgNCN6WJT
-         HxmQ==
-X-Gm-Message-State: AOAM532s8j+N3gPMIcFX0DBD0xLSwJXjMRf+CG8/RZTnFrLs5sX6B/GG
-        mqW1K8FT8AtfNO1Vv1Mct4Fq1Kyg2vq1gw==
-X-Google-Smtp-Source: ABdhPJwClbOYDSZgU1qyhZKF5sKoWjPX/HRVrzUbA9w6Ly4Wkml4MfQKKspYRwVmGG102CbvmJnvxg==
-X-Received: by 2002:a17:902:b116:b029:e1:58b2:2280 with SMTP id q22-20020a170902b116b02900e158b22280mr2028228plr.29.1612114274980;
-        Sun, 31 Jan 2021 09:31:14 -0800 (PST)
+        bh=elcSuzCsfiYge55RbGFb9kTR1L7/5bJ4aw6jmtvexpM=;
+        b=FPJ6tHs0n5p4lAT7WqCnJK1BrHpukeqIrcx3byIy1GUjkPjJQiqwGCEMstJxhrDZ9C
+         F1TsfYRcu/8pbuo22kUKAVKY/T63XH8r1dmEKo2iZXIy12hwnsGP5KjUeQeztbsHZ5SC
+         R+c0JFLwW4RS0dAkal9DhK4fWJ8WgFJDdg9besVvEnRgTeau78QlZD+ifjVtT1EveN9I
+         wY4pguidBZT9YZKj+KaCeLZGcvt2B3lepkaZvc91QvdtYocMeI5AEeUnVN6JDMp0I6ji
+         j5r2FG5CndoOlTWt1poVKOygO58Co+l3DAYb1b2Rif0C1rRafe9bDS+bkz1oJVzsC+Db
+         Dg3Q==
+X-Gm-Message-State: AOAM533OEKXJ2LOo2/ATnnP0c1j4qKMdKbHAvsoJI1SQdUykPW2Lit1X
+        yFuY072qsNIb9qrY9WR3MHc=
+X-Google-Smtp-Source: ABdhPJyxYeeH+ESPtB0JAl+VwK7F+t4XhpvKZBK/qumKbzweqJodO0pWHAslA+k1SpI5/DtlxhBkKQ==
+X-Received: by 2002:a63:1a44:: with SMTP id a4mr13091045pgm.41.1612114286266;
+        Sun, 31 Jan 2021 09:31:26 -0800 (PST)
 Received: from localhost ([2402:3a80:11ea:e144:a2a4:c5ff:fe20:7222])
-        by smtp.gmail.com with ESMTPSA id r194sm14995355pfr.168.2021.01.31.09.31.13
+        by smtp.gmail.com with ESMTPSA id q22sm15746139pgi.66.2021.01.31.09.31.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Jan 2021 09:31:14 -0800 (PST)
+        Sun, 31 Jan 2021 09:31:25 -0800 (PST)
 From:   Kumar Kartikeya Dwivedi <memxor@gmail.com>
 To:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
         linux-kernel@vger.kernel.org
@@ -71,17 +71,17 @@ Cc:     Kumar Kartikeya Dwivedi <memxor@gmail.com>,
         Teddy Wang <teddy.wang@siliconmotion.com>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
         Al Viro <viro@zeniv.linux.org.uk>,
-        William Cohen <wcohen@redhat.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Mike Rapoport <rppt@kernel.org>,
+        William Cohen <wcohen@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Robert Richter <rric@kernel.org>, greybus-dev@lists.linaro.org,
         ac100@lists.launchpad.net, linux-tegra@vger.kernel.org,
         linux-fbdev@vger.kernel.org
-Subject: [PATCH 02/13] staging: greybus: Switch from strlcpy to strscpy
-Date:   Sun, 31 Jan 2021 22:58:23 +0530
-Message-Id: <20210131172838.146706-3-memxor@gmail.com>
+Subject: [PATCH 03/13] staging: fsl-dpaa2: Switch from strlcpy to strscpy
+Date:   Sun, 31 Jan 2021 22:58:24 +0530
+Message-Id: <20210131172838.146706-4-memxor@gmail.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210131172838.146706-1-memxor@gmail.com>
 References: <20210131172838.146706-1-memxor@gmail.com>
@@ -101,100 +101,36 @@ This silences the related checkpatch warnings from:
 
 Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 ---
- drivers/staging/greybus/audio_helper.c   | 2 +-
- drivers/staging/greybus/audio_module.c   | 2 +-
- drivers/staging/greybus/audio_topology.c | 6 +++---
- drivers/staging/greybus/power_supply.c   | 2 +-
- drivers/staging/greybus/spilib.c         | 4 ++--
- 5 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/staging/fsl-dpaa2/ethsw/ethsw-ethtool.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/greybus/audio_helper.c b/drivers/staging/greybus/audio_helper.c
-index 3011b8abc..1ed4772d2 100644
---- a/drivers/staging/greybus/audio_helper.c
-+++ b/drivers/staging/greybus/audio_helper.c
-@@ -166,7 +166,7 @@ static int gbaudio_remove_controls(struct snd_card *card, struct device *dev,
- 			snprintf(id.name, sizeof(id.name), "%s %s", prefix,
- 				 control->name);
- 		else
--			strlcpy(id.name, control->name, sizeof(id.name));
-+			strscpy(id.name, control->name, sizeof(id.name));
- 		id.numid = 0;
- 		id.iface = control->iface;
- 		id.device = control->device;
-diff --git a/drivers/staging/greybus/audio_module.c b/drivers/staging/greybus/audio_module.c
-index a243d60f0..0f9fdc077 100644
---- a/drivers/staging/greybus/audio_module.c
-+++ b/drivers/staging/greybus/audio_module.c
-@@ -342,7 +342,7 @@ static int gb_audio_probe(struct gb_bundle *bundle,
- 	/* inform above layer for uevent */
- 	dev_dbg(dev, "Inform set_event:%d to above layer\n", 1);
- 	/* prepare for the audio manager */
--	strlcpy(desc.name, gbmodule->name, GB_AUDIO_MANAGER_MODULE_NAME_LEN);
-+	strscpy(desc.name, gbmodule->name, GB_AUDIO_MANAGER_MODULE_NAME_LEN);
- 	desc.vid = 2; /* todo */
- 	desc.pid = 3; /* todo */
- 	desc.intf_id = gbmodule->dev_id;
-diff --git a/drivers/staging/greybus/audio_topology.c b/drivers/staging/greybus/audio_topology.c
-index 662e3e8b4..e816e4db5 100644
---- a/drivers/staging/greybus/audio_topology.c
-+++ b/drivers/staging/greybus/audio_topology.c
-@@ -200,7 +200,7 @@ static int gbcodec_mixer_ctl_info(struct snd_kcontrol *kcontrol,
- 			return -EINVAL;
- 		name = gbaudio_map_controlid(module, data->ctl_id,
- 					     uinfo->value.enumerated.item);
--		strlcpy(uinfo->value.enumerated.name, name, NAME_SIZE);
-+		strscpy(uinfo->value.enumerated.name, name, NAME_SIZE);
- 		break;
- 	default:
- 		dev_err(comp->dev, "Invalid type: %d for %s:kcontrol\n",
-@@ -1047,7 +1047,7 @@ static int gbaudio_tplg_create_widget(struct gbaudio_module_info *module,
- 	}
+diff --git a/drivers/staging/fsl-dpaa2/ethsw/ethsw-ethtool.c b/drivers/staging/fsl-dpaa2/ethsw/ethsw-ethtool.c
+index d7f4ed1df..0af2e9914 100644
+--- a/drivers/staging/fsl-dpaa2/ethsw/ethsw-ethtool.c
++++ b/drivers/staging/fsl-dpaa2/ethsw/ethsw-ethtool.c
+@@ -38,19 +38,19 @@ static void dpaa2_switch_get_drvinfo(struct net_device *netdev,
+ 	u16 version_major, version_minor;
+ 	int err;
  
- 	/* Prefix dev_id to widget control_name */
--	strlcpy(temp_name, w->name, NAME_SIZE);
-+	strscpy(temp_name, w->name, NAME_SIZE);
- 	snprintf(w->name, NAME_SIZE, "GB %d %s", module->dev_id, temp_name);
+-	strlcpy(drvinfo->driver, KBUILD_MODNAME, sizeof(drvinfo->driver));
++	strscpy(drvinfo->driver, KBUILD_MODNAME, sizeof(drvinfo->driver));
  
- 	switch (w->type) {
-@@ -1169,7 +1169,7 @@ static int gbaudio_tplg_process_kcontrols(struct gbaudio_module_info *module,
- 		}
- 		control->id = curr->id;
- 		/* Prefix dev_id to widget_name */
--		strlcpy(temp_name, curr->name, NAME_SIZE);
-+		strscpy(temp_name, curr->name, NAME_SIZE);
- 		snprintf(curr->name, NAME_SIZE, "GB %d %s", module->dev_id,
- 			 temp_name);
- 		control->name = curr->name;
-diff --git a/drivers/staging/greybus/power_supply.c b/drivers/staging/greybus/power_supply.c
-index ec96f2888..75cb170e0 100644
---- a/drivers/staging/greybus/power_supply.c
-+++ b/drivers/staging/greybus/power_supply.c
-@@ -449,7 +449,7 @@ static int __gb_power_supply_set_name(char *init_name, char *name, size_t len)
+ 	err = dpsw_get_api_version(port_priv->ethsw_data->mc_io, 0,
+ 				   &version_major,
+ 				   &version_minor);
+ 	if (err)
+-		strlcpy(drvinfo->fw_version, "N/A",
++		strscpy(drvinfo->fw_version, "N/A",
+ 			sizeof(drvinfo->fw_version));
+ 	else
+ 		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+ 			 "%u.%u", version_major, version_minor);
  
- 	if (!strlen(init_name))
- 		init_name = "gb_power_supply";
--	strlcpy(name, init_name, len);
-+	strscpy(name, init_name, len);
+-	strlcpy(drvinfo->bus_info, dev_name(netdev->dev.parent->parent),
++	strscpy(drvinfo->bus_info, dev_name(netdev->dev.parent->parent),
+ 		sizeof(drvinfo->bus_info));
+ }
  
- 	while ((ret < len) && (psy = power_supply_get_by_name(name))) {
- 		power_supply_put(psy);
-diff --git a/drivers/staging/greybus/spilib.c b/drivers/staging/greybus/spilib.c
-index fc27c52de..672d540d3 100644
---- a/drivers/staging/greybus/spilib.c
-+++ b/drivers/staging/greybus/spilib.c
-@@ -455,10 +455,10 @@ static int gb_spi_setup_device(struct gb_spilib *spi, u8 cs)
- 	dev_type = response.device_type;
- 
- 	if (dev_type == GB_SPI_SPI_DEV)
--		strlcpy(spi_board.modalias, "spidev",
-+		strscpy(spi_board.modalias, "spidev",
- 			sizeof(spi_board.modalias));
- 	else if (dev_type == GB_SPI_SPI_NOR)
--		strlcpy(spi_board.modalias, "spi-nor",
-+		strscpy(spi_board.modalias, "spi-nor",
- 			sizeof(spi_board.modalias));
- 	else if (dev_type == GB_SPI_SPI_MODALIAS)
- 		memcpy(spi_board.modalias, response.name,
 -- 
 2.29.2
 
