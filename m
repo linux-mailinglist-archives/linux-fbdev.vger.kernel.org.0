@@ -2,158 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5114E30FB3B
-	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Feb 2021 19:23:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 200F8310330
+	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Feb 2021 04:11:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239028AbhBDSVx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 4 Feb 2021 13:21:53 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:42951 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239010AbhBDSVj (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 4 Feb 2021 13:21:39 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l7jAm-0002WQ-TD; Thu, 04 Feb 2021 19:16:08 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l7jAV-0005Pi-Pr; Thu, 04 Feb 2021 19:15:51 +0100
-Date:   Thu, 4 Feb 2021 19:15:51 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-fbdev@vger.kernel.org,
-        Alessandro Zummo <a.zummo@towertech.it>, kvm@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
-        Jaroslav Kysela <perex@perex.cz>,
-        Eric Anholt <eric@anholt.net>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig.org@pengutronix.de>, linux-i2c@vger.kernel.org,
-        Jiri Slaby <jirislaby@kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-rtc@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Takashi Iwai <tiwai@suse.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mike Leach <mike.leach@linaro.org>,
-        linux-watchdog@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        coresight@lists.linaro.org, Vladimir Zapolskiy <vz@mleia.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Matt Mackall <mpm@selenic.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        linux-crypto@vger.kernel.org, kernel@pengutronix.de,
-        Leo Yan <leo.yan@linaro.org>, dmaengine@vger.kernel.org
-Subject: Re: [GIT PULL] immutable branch for amba changes targeting v5.12-rc1
-Message-ID: <20210204181551.ethtuzm65flujmwe@pengutronix.de>
-References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
- <20210202135350.36nj3dmcoq3t7gcf@pengutronix.de>
- <YBlcTXlxemmC2lgr@kroah.com>
- <20210204165224.GA1463@shell.armlinux.org.uk>
- <YBwnUrQqlAz2LDPI@kroah.com>
- <20210204165951.GB1463@shell.armlinux.org.uk>
+        id S229997AbhBEDJQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 4 Feb 2021 22:09:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229692AbhBEDJK (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 4 Feb 2021 22:09:10 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12302C06178A;
+        Thu,  4 Feb 2021 19:08:30 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id j11so4806535wmi.3;
+        Thu, 04 Feb 2021 19:08:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=qKV6lK/xTrI0xWZI/8Vwj4HWtece1YWaUDe9sPcNOebT0x9iH9t9HcfJIQkpWQqu4j
+         9tLsV973I65GjSCqyS40JivInipCupY+1WZAfBNpdOynDt+97z63FrcpdVze5raYfFI1
+         ELiZ/G9wyN0fnfIjx/4fXB0vrZdvzQZF98iXIaty+2RnmRohcZKyquzcoEI7HJVOKKX+
+         EiIOfD4L+JHLtQCVKSDCCxXZVCK4MxNFtPjEIW4ZVaTqiXLcosgUnVu2mpqrz5slCIU6
+         OojTwfk4ppz8i2nlpZs6lLbHMceui26pWhk6A71VZRttpKbJam5k9i/jzM4/k1VhIFAv
+         //BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=fGZY9xPP13GVBXXMytLVmy4dUT3ZCBl7ro2iO2tzQB9V6NtlHlU1WIffRCKLZpGpFs
+         TunlGsH4Zvq3K0GInppg3DWQ6nFY9zo9OCTlLbfqbcT/PQPkayTxHnhgG2AAoU5/1HfN
+         VVucPa+R3cd9on/7Iwf4zdH1ndpzYsxtKOnL6VSymQawxuZsW8hrz9e2OeLzl/dgaQK9
+         HWox4Vg3ubaB7uc8Cr/eNL0mbPl41XDD6k59/uPPLfyvGi2GihpvQ5611x2QMqQ2sXYc
+         SWixN9YRCcnHIfjyWkM9XdAjD15+wAcu2Pbtukm6aIqL6TRZflV0fIny7xopeB0Td1ei
+         oFpg==
+X-Gm-Message-State: AOAM530acKnINW+aC3ADGhAO15HtsmlJf59mPZLjJWA5yurPXOhlWe0j
+        flfCEAyHDuKpQDhkTU0jfxbUDMcg6nY66w==
+X-Google-Smtp-Source: ABdhPJzMvxq+Dz6Cd25sA4YjrzKq+MpOJZGous+0kvBheLF8WnJDbF6X9Nj/FnREqpI7o/SY4LFdpA==
+X-Received: by 2002:a1c:3185:: with SMTP id x127mr1593295wmx.117.1612494508861;
+        Thu, 04 Feb 2021 19:08:28 -0800 (PST)
+Received: from [192.168.1.6] ([154.124.28.35])
+        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.24
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 04 Feb 2021 19:08:27 -0800 (PST)
+Message-ID: <601cb6ab.1c69fb81.5ea54.2ea9@mx.google.com>
+Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
+From:   calantha camara <sgt.andersonskylar0@gmail.com>
+X-Google-Original-From: calantha camara
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mw66hszyvu2hxhxe"
-Content-Disposition: inline
-In-Reply-To: <20210204165951.GB1463@shell.armlinux.org.uk>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: hi dear
+To:     Recipients <calantha@vger.kernel.org>
+Date:   Fri, 05 Feb 2021 03:08:17 +0000
+Reply-To: calanthac20@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-
---mw66hszyvu2hxhxe
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Feb 04, 2021 at 04:59:51PM +0000, Russell King - ARM Linux admin wr=
-ote:
-> On Thu, Feb 04, 2021 at 05:56:50PM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Feb 04, 2021 at 04:52:24PM +0000, Russell King - ARM Linux admi=
-n wrote:
-> > > On Tue, Feb 02, 2021 at 03:06:05PM +0100, Greg Kroah-Hartman wrote:
-> > > > I'm glad to take this through my char/misc tree, as that's where the
-> > > > other coresight changes flow through.  So if no one else objects, I=
- will
-> > > > do so...
-> > >=20
-> > > Greg, did you end up pulling this after all? If not, Uwe produced a v=
-2.
-> > > I haven't merged v2 yet as I don't know what you've done.
-> >=20
-> > I thought you merged this?
->=20
-> I took v1, and put it in a branch I've promised in the past not to
-> rebase/rewind. Uwe is now asking for me to take a v2 or apply a patch
-> on top.
->=20
-> The only reason to produce an "immutable" branch is if it's the basis
-> for some dependent work and you need that branch merged into other
-> people's trees... so the whole "lets produce a v2" is really odd
-> workflow... I'm confused about what I should do, and who has to be
-> informed which option I take.
->=20
-> I'm rather lost here too.
-
-Sorry to have cause this confusion. After I saw that my initial tag
-missed to adapt a driver I wanted to make it easy for you to fix the
-situation.
-So I created a patch to fix it and created a second tag with the patch
-squashed in. Obviously only one of them have to be picked and I hoped
-you (=3D Russell + Greg) would agree which option to pick.
-
-My preference would be if you both pick up v2 of the tag to yield a
-history that is bisectable without build problems, but if Russell (who
-already picked up the broken tag) considers his tree immutable and so
-isn't willing to rebase, then picking up the patch is the way to go.
-
-I suggest that Russell descides which option he wants to pick and tells
-Greg to do the same!?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---mw66hszyvu2hxhxe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmAcOdQACgkQwfwUeK3K
-7AlatwgAoTySm2q5g+gxl/CCA9C6tYko2Pu8wLkL3YfNBIgf05iOJ9G8Miwhd95G
-eDv5Ue6LEvHVOMZHbbZMliKzacCtSGzzhTpNpIcL7SZH/Vu0nyB8qGbN+PAm+rsX
-K54DEaOvyPIcDUkuXgUGC2e0nXjg7499oDQs/rajEADbs8ECpDvKCTRYczmQ6E8v
-VS9a/GOt/WDa0dqOdAt6OfxirahLKjPQC1/FS1kcREk1QBYbH6TqM/t8b4t0ED9p
-A5RYkSHAXArD/ifkinbRDUIhLY7XzhBYGEiiNgwCCtsbHE06GP/BNPlXMj6+fLAY
-g/wGBoyP1j9OrCrpGDnsy/oyv64XRg==
-=Rv8c
------END PGP SIGNATURE-----
-
---mw66hszyvu2hxhxe--
+do you speak Eglish
