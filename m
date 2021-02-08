@@ -2,254 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB2E312491
-	for <lists+linux-fbdev@lfdr.de>; Sun,  7 Feb 2021 15:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABEF0312BB3
+	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Feb 2021 09:33:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229725AbhBGOCf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 7 Feb 2021 09:02:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbhBGOCe (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 7 Feb 2021 09:02:34 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEBCBC06174A;
-        Sun,  7 Feb 2021 06:01:53 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id e9so6438999plh.3;
-        Sun, 07 Feb 2021 06:01:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=BKfhCVrNE1G6tN7jQvqfXJj8IfC/ZteJhEq5g/yoxvw=;
-        b=A0bWvrmJDtsuEOYxobKagLrEDwfpdGfBUXyNxSLL2RleOEw8xPFdDHa0z3VhfGU29d
-         tUEzSPNkG4BykmsXy5ycaLpCIpWPa/9z8y8Z1p3C0VlkmVlY+aivkjLO0jDWYyAM6dL7
-         GPtRwsL6Km2m7ZteMjy0Juw3C2ctMjWJ/KF92jijWzS1FhkcJvvL1w7Y5V88tJT11fSe
-         kUIuBt2cwYDSmO0L7DdBPDTzzC6bM4eJN/L2bEOFpmdk2Lfsmmbu5ykiIhqmAaRWqqw1
-         XfNFUorWIE0cV9Q9mgJWDShf97oijQgK5KerxxbXeVY9Fcta/xRjF33FBN5419O7gEoE
-         EIig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=BKfhCVrNE1G6tN7jQvqfXJj8IfC/ZteJhEq5g/yoxvw=;
-        b=qbPc7YnWTKsz4LUzJcZAnKzdKPXuFrXHfvI5+FDIORW3O1V9Fq7L8yrxpMo5SxOveb
-         MWV00ZjlbZMTfKZFM9i6KLcoG6P2yfq/8KftZ45KNd/VAof3HjCmrelyLF4GSb94kat4
-         pK4y+pZehxOPR9aM8RDAi8xF0p5UFQ+ijdtl/EWHh5VS5q/oWL75jV6Bm/2iCMInoO+F
-         qY5dC7AHscRhpguAbKJStvyW6FiRHLKy84CPefiMp65sqWxR7OlmtMi2HEWNt9EfMDZK
-         JbhOZ5VTEfY+w6jt7nxCMzhT9xX8XCRa5cHkL3qSlREqWUFcUKC/aij/HdG3anDK6TmF
-         VUVw==
-X-Gm-Message-State: AOAM53329SmnEJkNCaf8GllUj/x83cwQpxo6GJ2p6rxMjq770qwkHMQc
-        fhsr8E9OHhCJ5G8o7Np335gXLFNXzIatqrNo
-X-Google-Smtp-Source: ABdhPJzDD68MGez2ZZeZZdxvQqsQi2a9z4QnBhFgoIJxSTyQ6l8TOC604eXe9zh39aOBBeYk9QX4Dg==
-X-Received: by 2002:a17:902:e5cc:b029:df:bc77:3aba with SMTP id u12-20020a170902e5ccb02900dfbc773abamr12569541plf.72.1612706512920;
-        Sun, 07 Feb 2021 06:01:52 -0800 (PST)
-Received: from bf-rmsz-10.ccdomain.com ([103.220.76.197])
-        by smtp.gmail.com with ESMTPSA id lf4sm13826283pjb.0.2021.02.07.06.01.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 Feb 2021 06:01:52 -0800 (PST)
-From:   Carlis <zhangxuezhi3@gmail.com>
-To:     gregkh@linuxfoundation.org
-Cc:     colin.king@canonical.com, oliver.graute@kococonnector.com,
-        zhangxuezhi1@yulong.com, mh12gx2825@gmail.com, sbrivio@redhat.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v15] staging: fbtft: add tearing signal detect
-Date:   Sun,  7 Feb 2021 22:01:57 +0800
-Message-Id: <1612706517-124617-1-git-send-email-zhangxuezhi3@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        id S230035AbhBHIaM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 8 Feb 2021 03:30:12 -0500
+Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:39111 "EHLO
+        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229894AbhBHIaI (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 8 Feb 2021 03:30:08 -0500
+Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
+        id 5BC52607E9FB; Mon,  8 Feb 2021 05:29:22 -0300 (-03)
+Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C1044607AAA4;
+        Mon,  8 Feb 2021 05:29:16 -0300 (-03)
+Received: from User (unknown [52.235.38.23])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 78375465E268;
+        Mon,  8 Feb 2021 05:26:42 -0300 (-03)
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <stefy@macrometrica.com.br>
+Subject: Re:reply
+Date:   Mon, 8 Feb 2021 08:29:15 -0000
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
+X-Mandic-Sender: stefy@macrometrica.com.br
+Message-Id: <20210208082916.C1044607AAA4@smtp-18.smtp.mandic.prv>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Carlis <zhangxuezhi1@yulong.com>
+Hello,
 
-For st7789v IC, when we need continuous full screen refresh, it is best to
-wait for the tearing effect line signal to arrive to avoid screen tearing.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Signed-off-by: Carlis <zhangxuezhi1@yulong.com>
----
-v15: change ret value return logic in write_vmem.
-v14: change to define TE completion and TE irq only in st7789v.
-v13: change TE completion to par data struct member and add a new
-     function to deal te gpio request, add new write_vmem function.
-v12: change dev_err to dev_err_probe and add space in comments start, and
-     delete te_mutex, change te wait logic.
-v11: remove devm_gpio_put and change a dev_err to dev_info.
-v10: additional notes.
-v9: change pr_* to dev_*.
-v8: delete a log line.
-v7: return error value when request fail.
-v6: add te gpio request fail deal logic.
-v5: fix log print.
-v4: modify some code style and change te irq set function name.
-v3: modify author and signed-off-by name.
-v2: add release te gpio after irq request fail.
----
- drivers/staging/fbtft/fb_st7789v.c | 115 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 115 insertions(+)
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-index 3a280cc..abe9395 100644
---- a/drivers/staging/fbtft/fb_st7789v.c
-+++ b/drivers/staging/fbtft/fb_st7789v.c
-@@ -7,9 +7,13 @@
- 
- #include <linux/bitops.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/interrupt.h>
-+#include <linux/completion.h>
- #include <linux/module.h>
-+
- #include <video/mipi_display.h>
- 
- #include "fbtft.h"
-@@ -66,6 +70,62 @@ enum st7789v_command {
- #define MADCTL_MX BIT(6) /* bitmask for column address order */
- #define MADCTL_MY BIT(7) /* bitmask for page address order */
- 
-+/* 60Hz for 16.6ms, configured as 2*16.6ms */
-+#define PANEL_TE_TIMEOUT_MS  33
-+
-+static struct completion panel_te; /* completion for panel TE line */
-+static int irq_te; /* Linux IRQ for LCD TE line */
-+
-+static irqreturn_t panel_te_handler(int irq, void *data)
-+{
-+	complete(&panel_te);
-+	return IRQ_HANDLED;
-+}
-+
-+/*
-+ * init_tearing_effect_line() - init tearing effect line.
-+ * @par: FBTFT parameter object.
-+ *
-+ * Return: 0 on success, or a negative error code otherwise.
-+ */
-+static int init_tearing_effect_line(struct fbtft_par *par)
-+{
-+	struct device *dev = par->info->device;
-+	struct gpio_desc *te;
-+	int rc, irq;
-+
-+	te = gpiod_get_optional(dev, "te", GPIOD_IN);
-+	if (IS_ERR(te))
-+		return dev_err_probe(dev, PTR_ERR(te), "Failed to request te GPIO\n");
-+
-+	/* if te is NULL, indicating no configuration, directly return success */
-+	if (!te) {
-+		irq_te = 0;
-+		return 0;
-+	}
-+
-+	irq = gpiod_to_irq(te);
-+
-+	/* GPIO is locked as an IRQ, we may drop the reference */
-+	gpiod_put(te);
-+
-+	if (irq < 0)
-+		return irq;
-+
-+	irq_te = irq;
-+	init_completion(&panel_te);
-+
-+	/* The effective state is high and lasts no more than 1000 microseconds */
-+	rc = devm_request_irq(dev, irq_te, panel_te_handler,
-+			      IRQF_TRIGGER_RISING, "TE_GPIO", par);
-+	if (rc)
-+		return dev_err_probe(dev, rc, "TE IRQ request failed.\n");
-+
-+	disable_irq_nosync(irq_te);
-+
-+	return 0;
-+}
-+
- /**
-  * init_display() - initialize the display controller
-  *
-@@ -82,6 +142,12 @@ enum st7789v_command {
-  */
- static int init_display(struct fbtft_par *par)
- {
-+	int rc;
-+
-+	rc = init_tearing_effect_line(par);
-+	if (rc)
-+		return rc;
-+
- 	/* turn off sleep mode */
- 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
- 	mdelay(120);
-@@ -137,6 +203,10 @@ static int init_display(struct fbtft_par *par)
- 	 */
- 	write_reg(par, PWCTRL1, 0xA4, 0xA1);
- 
-+	/* TE line output is off by default when powering on */
-+	if (irq_te)
-+		write_reg(par, MIPI_DCS_SET_TEAR_ON, 0x00);
-+
- 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
- 
- 	if (HSD20_IPS)
-@@ -145,6 +215,50 @@ static int init_display(struct fbtft_par *par)
- 	return 0;
- }
- 
-+/*
-+ * write_vmem() - write data to display.
-+ * @par: FBTFT parameter object.
-+ * @offset: offset from screen_buffer.
-+ * @len: the length of data to be writte.
-+ *
-+ * Return: 0 on success, or a negative error code otherwise.
-+ */
-+static int write_vmem(struct fbtft_par *par, size_t offset, size_t len)
-+{
-+	struct device *dev = par->info->device;
-+	int ret;
-+
-+	if (irq_te) {
-+		enable_irq(irq_te);
-+		reinit_completion(&panel_te);
-+		ret = wait_for_completion_timeout(&panel_te,
-+						  msecs_to_jiffies(PANEL_TE_TIMEOUT_MS));
-+		if (ret == 0)
-+			dev_err(dev, "wait panel TE timeout\n");
-+
-+		disable_irq(irq_te);
-+	}
-+
-+	switch (par->pdata->display.buswidth) {
-+	case 8:
-+		ret = fbtft_write_vmem16_bus8(par, offset, len);
-+		break;
-+	case 9:
-+		ret = fbtft_write_vmem16_bus9(par, offset, len);
-+		break;
-+	case 16:
-+		ret = fbtft_write_vmem16_bus16(par, offset, len);
-+		break;
-+	default:
-+		dev_err(dev, "Unsupported buswidth %d\n",
-+			par->pdata->display.buswidth);
-+		ret = 0;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * set_var() - apply LCD properties like rotation and BGR mode
-  *
-@@ -259,6 +373,7 @@ static int blank(struct fbtft_par *par, bool on)
- 	.gamma = HSD20_IPS_GAMMA,
- 	.fbtftops = {
- 		.init_display = init_display,
-+		.write_vmem = write_vmem,
- 		.set_var = set_var,
- 		.set_gamma = set_gamma,
- 		.blank = blank,
--- 
-1.9.1
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
+Regards,
+Ms. Reem.
