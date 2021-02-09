@@ -2,143 +2,79 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE9F316AD9
-	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Feb 2021 17:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22FC8316D96
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Feb 2021 19:02:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232112AbhBJQNr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 10 Feb 2021 11:13:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35690 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbhBJQNo (ORCPT
+        id S232734AbhBJSBh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 10 Feb 2021 13:01:37 -0500
+Received: from spam.auroraoh.com ([24.56.89.101]:47136 "EHLO
+        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233684AbhBJR7U (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 10 Feb 2021 11:13:44 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373B6C06174A
-        for <linux-fbdev@vger.kernel.org>; Wed, 10 Feb 2021 08:13:03 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id y134so2303720wmd.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 10 Feb 2021 08:13:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=9EqkICeAqFea9hutcJE8LTJk6fkCLGfHmOvQQmMvAJM=;
-        b=Hh49I+GceO/gmkekotuymhn3rjlU3YIypVisjoLOygTP1mgYBpzmbiY1B+Z5kDHv1H
-         X+1p+H/pZbOPlldO65mL33J/nmB6ms47MC+u60d9S34oT4MiRfwDpZZWh/qETmt/Om/y
-         olUsvQGKt/zp/HREvWDezf3EVhY9WQSBDq//vrYo+RtlXuw1teA/flfEzF4rT2UCYUo6
-         WEyPCuv9rP7JAXB7hd4Zk5CXQfiPo2bj7YDV4C/V4SfKbO6gG7O8nWSxiVamK32i6r03
-         Vi1DcAM4Whf1JnAWKjVWawTmQnF73oyA7TPneeQ1mIDpdIwY/evQfcTuEdgRAkLg3tZr
-         f/6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=9EqkICeAqFea9hutcJE8LTJk6fkCLGfHmOvQQmMvAJM=;
-        b=i7fO/JwM+krwQwRemJeAtAd79LDhd34Ngc82UcBbCje2XlCOALZLJHkmIBvG/Npe5B
-         Jm9tasqsROFSG2z3Qsp8D+0hASzMcpt+EIuo/vhGmaXpa3y0JOLgH2adcVT2WDauNtlQ
-         bHNUgwiw6bEMlDSLV0KiPFsqexlA0HE4qhoLMyafgouJbqfncrQW6SYsLVMAISxunE/O
-         AjJ17Kn58LcZq3kbipFBtnROaOqbbGEZlwmdLheGAKtImiAHosKBYDEDMnm0rSPCDWny
-         iIORRTyIbjpXC1TCIuCz45g1CQ3H9XdmkUeKQn/X+as5KY1D32oy/49PHkqU9k97dKXI
-         l5hA==
-X-Gm-Message-State: AOAM531R93dgGNqAC9qgrxJT3iqwqdOscpnMiQZNmEba2csMdE7BZ0iF
-        EPLGf/TaXINkGDojjfz8uxZDMg==
-X-Google-Smtp-Source: ABdhPJxwjN9tnOjYE29ii/KagRZk+egL7JyD+GF9hT3oJWkCY7DOqROK+nqMjm3eItHTGs95G9LYOA==
-X-Received: by 2002:a05:600c:216:: with SMTP id 22mr3432179wmi.111.1612973581930;
-        Wed, 10 Feb 2021 08:13:01 -0800 (PST)
-Received: from x1 ([91.110.221.237])
-        by smtp.gmail.com with ESMTPSA id x9sm3275333wmb.14.2021.02.10.08.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Feb 2021 08:13:00 -0800 (PST)
-Date:   Wed, 10 Feb 2021 16:12:58 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        dri-devel@lists.freedesktop.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] video: use getter/setter functions
-Message-ID: <20210210161258.GA124276@x1>
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
- <20210210082341.GH220368@dell>
- <YCPbxSHWMipTz+mB@phenom.ffwll.local>
+        Wed, 10 Feb 2021 12:59:20 -0500
+X-ASG-Debug-ID: 1612979891-112c0d6a799e8b0003-vAdIZz
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id RGytFTEIEFolFEj5; Wed, 10 Feb 2021 12:58:12 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:43:16 -0500
+Content-Type: text/plain; charset="iso-8859-1"
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YCPbxSHWMipTz+mB@phenom.ffwll.local>
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To:     Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From:   <januskad@auroraoh.com>
+Date:   Tue, 9 Feb 2021 15:43:15 +0800
+Reply-To: <cfolimiited@gmail.com>
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <8a74435f-3c35-4b52-8955-3a1b291858bc@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612979891
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87890
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.00 NO_REAL_NAME           From: does not include a real name
+        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+                                   Address
+        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 10 Feb 2021, Daniel Vetter wrote:
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
 
-> On Wed, Feb 10, 2021 at 08:23:41AM +0000, Lee Jones wrote:
-> > On Tue, 09 Feb 2021, Julia Lawall wrote:
-> > 
-> > > Use getter and setter functions, for platform_device structures and a
-> > > spi_device structure.
-> > > 
-> > > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> > > 
-> > > ---
-> > >  drivers/video/backlight/qcom-wled.c                                  |    2 +-
-> > 
-> > This patch is fine.
-> > 
-> > Could you please split it out and submit it separately though please.
-> 
-> Or just apply the entire patch through backlight tree, there's nothing
-> going on in fbdev anyway I think.
-> 
-> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
 
-I can do that.  Is that an fbdev Ack?
+Please contact us for more details;
 
-> > >  drivers/video/fbdev/amifb.c                                          |    4 ++--
-> > >  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
-> > >  drivers/video/fbdev/imxfb.c                                          |    2 +-
-> > >  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
-> > >  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
-> > >  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
-> > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
-> > >  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
-> > >  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
-> > >  10 files changed, 16 insertions(+), 16 deletions(-)
-> > 
-> > ...]
-> > 
-> > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > index 3bc7800eb0a9..091f07e7c145 100644
-> > > --- a/drivers/video/backlight/qcom-wled.c
-> > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
-> > >  
-> > >  static int wled_remove(struct platform_device *pdev)
-> > >  {
-> > > -	struct wled *wled = dev_get_drvdata(&pdev->dev);
-> > > +	struct wled *wled = platform_get_drvdata(pdev);
-> > >  
-> > >  	mutex_destroy(&wled->lock);
-> > >  	cancel_delayed_work_sync(&wled->ovp_work);
-> > 
-> > For my own reference (apply this as-is to your sign-off block):
-> > 
-> >   Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
-> > 
-> 
+
+Kind regards,
+
+Paul McCann
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
+
