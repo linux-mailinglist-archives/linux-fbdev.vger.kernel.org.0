@@ -2,128 +2,246 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81A3F314316
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Feb 2021 23:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 030A9315908
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Feb 2021 22:59:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbhBHWjD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 Feb 2021 17:39:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35128 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbhBHWjB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Feb 2021 17:39:01 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF644C061788;
-        Mon,  8 Feb 2021 14:38:21 -0800 (PST)
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612823899;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=v0cq3WK986SUH+YkubdosVAvIMlSY7yYpl0TWaVW1sQ=;
-        b=wuwra8SrIErSfUEvj46Wmh4CpVPpBAnZBmNF4wCyT1u4UhvfrSvb2NW9wYUfSXi37IkEoU
-        oEYNHL9bgB/n1/yZoBInp+B7RDD2KizFqPICjE94ofmycg9xKsq+id3Gwb4UrmpJ+XKor1
-        H3gzYfc0VtkE6GEgHj8+rkWpLQ74HzbkYKjlhFUnaV+00Zhy09oB9EHnBdzPWKysFARZpA
-        NfbbXmFxJ3C6uhUrJ6EUlpx9Wq9o0UEdmwjER8hh+yXmU2QAoHQc25caGgFns27M7PJuH7
-        bRUBGrl4d7LTJpiBUwuZI7wFto4EX4RYfaNxHHzf9x3nDiOlg0DxNa76bODtcg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612823899;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=v0cq3WK986SUH+YkubdosVAvIMlSY7yYpl0TWaVW1sQ=;
-        b=x8XMjFq1YWqgn/3UQwkMOZ42YQcUoy9EzkqPUkf3l/Y2t3VRpF2H5ckJPaIuOMFQxuFOgI
-        z1/Q+GJSz87c8kCA==
-To:     linux-fbdev@vger.kernel.org
-Cc:     dri-devel@lists.freedesktop.org,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Collingbourne <pcc@google.com>
-Subject: [PATCH 3/3] video: fbdev: amba-clcd: Always use msleep() for waiting
-Date:   Mon,  8 Feb 2021 23:38:10 +0100
-Message-Id: <20210208223810.388502-4-bigeasy@linutronix.de>
-In-Reply-To: <20210208223810.388502-1-bigeasy@linutronix.de>
-References: <20210208223810.388502-1-bigeasy@linutronix.de>
+        id S233378AbhBIVyv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 Feb 2021 16:54:51 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:48669 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234391AbhBIVOm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 9 Feb 2021 16:14:42 -0500
+X-IronPort-AV: E=Sophos;i="5.81,166,1610406000"; 
+   d="scan'208";a="492125976"
+Received: from palace.lip6.fr ([132.227.105.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-SHA; 09 Feb 2021 22:13:29 +0100
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     Fabio Estevam <festevam@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: [PATCH] video: use getter/setter functions
+Date:   Tue,  9 Feb 2021 22:13:25 +0100
+Message-Id: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The driver uses in_atomic() to distinguish between mdelay() and msleep().
+Use getter and setter functions, for platform_device structures and a
+spi_device structure.
 
-The usage of in_interrupt() in drivers is phased out and Linus clearly
-requested that code which changes behaviour depending on context should
-either be separated or the context be conveyed in an argument passed by the
-caller, which usually knows the context.
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-I traced the usage of in_interrupt() back to its initial merge:
-    bfe694f833643 ("[ARM] Add ARM AMBA CLCD framebuffer driver.")
-    https://git.kernel.org/history/history/c/bfe694f833643
-
-The driver has been removed and added back in the meantime.
-I've been looking for the IRQ context as described in the comment and
-couldn't find it. The functions calling clcdfb_sleep() also call
-conditionally backlight_update_status() which acquires a mutex. If it is
-okay to acquire a mutex then it is okay to use msleep() since both
-functions must be used in preemptible context.
-
-Replace clcdfb_sleep() with msleep().
-
-Cc: Peter Collingbourne <pcc@google.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- drivers/video/fbdev/amba-clcd.c | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ drivers/video/backlight/qcom-wled.c                                  |    2 +-
+ drivers/video/fbdev/amifb.c                                          |    4 ++--
+ drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
+ drivers/video/fbdev/imxfb.c                                          |    2 +-
+ drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
+ drivers/video/fbdev/xilinxfb.c                                       |    2 +-
+ 10 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/video/fbdev/amba-clcd.c b/drivers/video/fbdev/amba-clc=
-d.c
-index 33595cc4778e9..9ec969e136bfd 100644
---- a/drivers/video/fbdev/amba-clcd.c
-+++ b/drivers/video/fbdev/amba-clcd.c
-@@ -35,19 +35,6 @@
- /* This is limited to 16 characters when displayed by X startup */
- static const char *clcd_name =3D "CLCD FB";
-=20
--/*
-- * Unfortunately, the enable/disable functions may be called either from
-- * process or IRQ context, and we _need_ to delay.  This is _not_ good.
-- */
--static inline void clcdfb_sleep(unsigned int ms)
--{
--	if (in_atomic()) {
--		mdelay(ms);
--	} else {
--		msleep(ms);
--	}
--}
--
- static inline void clcdfb_set_start(struct clcd_fb *fb)
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 3bc7800eb0a9..091f07e7c145 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
+ 
+ static int wled_remove(struct platform_device *pdev)
  {
- 	unsigned long ustart =3D fb->fb.fix.smem_start;
-@@ -77,7 +64,7 @@ static void clcdfb_disable(struct clcd_fb *fb)
- 		val &=3D ~CNTL_LCDPWR;
- 		writel(val, fb->regs + fb->off_cntl);
-=20
--		clcdfb_sleep(20);
-+		msleep(20);
- 	}
- 	if (val & CNTL_LCDEN) {
- 		val &=3D ~CNTL_LCDEN;
-@@ -109,7 +96,7 @@ static void clcdfb_enable(struct clcd_fb *fb, u32 cntl)
- 	cntl |=3D CNTL_LCDEN;
- 	writel(cntl, fb->regs + fb->off_cntl);
-=20
--	clcdfb_sleep(20);
-+	msleep(20);
-=20
- 	/*
- 	 * and now apply power.
---=20
-2.30.0
+-	struct wled *wled = dev_get_drvdata(&pdev->dev);
++	struct wled *wled = platform_get_drvdata(pdev);
+ 
+ 	mutex_destroy(&wled->lock);
+ 	cancel_delayed_work_sync(&wled->ovp_work);
+diff --git a/drivers/video/fbdev/xilinxfb.c b/drivers/video/fbdev/xilinxfb.c
+index ca4ff658cad0..ffbf900648d9 100644
+--- a/drivers/video/fbdev/xilinxfb.c
++++ b/drivers/video/fbdev/xilinxfb.c
+@@ -472,7 +472,7 @@ static int xilinxfb_of_probe(struct platform_device *pdev)
+ 	if (of_find_property(pdev->dev.of_node, "rotate-display", NULL))
+ 		pdata.rotate_screen = 1;
+ 
+-	dev_set_drvdata(&pdev->dev, drvdata);
++	platform_set_drvdata(pdev, drvdata);
+ 	return xilinxfb_assign(pdev, drvdata, &pdata);
+ }
+ 
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index 884b16efa7e8..7f8debd2da06 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -657,7 +657,7 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ static int imxfb_init_fbinfo(struct platform_device *pdev)
+ {
+ 	struct imx_fb_platform_data *pdata = dev_get_platdata(&pdev->dev);
+-	struct fb_info *info = dev_get_drvdata(&pdev->dev);
++	struct fb_info *info = platform_get_drvdata(pdev);
+ 	struct imxfb_info *fbi = info->par;
+ 	struct device_node *np;
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+index e3d441ade241..2c03608addcd 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+@@ -713,7 +713,7 @@ static int hdmi5_bind(struct device *dev, struct device *master, void *data)
+ 	int irq;
+ 
+ 	hdmi.pdev = pdev;
+-	dev_set_drvdata(&pdev->dev, &hdmi);
++	platform_set_drvdata(pdev, &hdmi);
+ 
+ 	mutex_init(&hdmi.lock);
+ 	spin_lock_init(&hdmi.audio_playing_lock);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+index 496b43bdad21..800bd108e834 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+@@ -672,7 +672,7 @@ static int hdmi4_bind(struct device *dev, struct device *master, void *data)
+ 	int irq;
+ 
+ 	hdmi.pdev = pdev;
+-	dev_set_drvdata(&pdev->dev, &hdmi);
++	platform_set_drvdata(pdev, &hdmi);
+ 
+ 	mutex_init(&hdmi.lock);
+ 	spin_lock_init(&hdmi.audio_playing_lock);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+index 58c7aa279ab1..daa313f14335 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+@@ -399,7 +399,7 @@ module_param(dsi_perf, bool, 0644);
+ 
+ static inline struct dsi_data *dsi_get_dsidrv_data(struct platform_device *dsidev)
+ {
+-	return dev_get_drvdata(&dsidev->dev);
++	return platform_get_drvdata(dsidev);
+ }
+ 
+ static inline struct platform_device *dsi_get_dsidev_from_dssdev(struct omap_dss_device *dssdev)
+@@ -5266,7 +5266,7 @@ static int dsi_bind(struct device *dev, struct device *master, void *data)
+ 		return -ENOMEM;
+ 
+ 	dsi->pdev = dsidev;
+-	dev_set_drvdata(&dsidev->dev, dsi);
++	platform_set_drvdata(dsidev, dsi);
+ 
+ 	spin_lock_init(&dsi->irq_lock);
+ 	spin_lock_init(&dsi->errors_lock);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
+index e2e7fe6f89ee..99ce6e955a46 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
+@@ -55,7 +55,7 @@ static struct dpi_data *dpi_get_data_from_dssdev(struct omap_dss_device *dssdev)
+ /* only used in non-DT mode */
+ static struct dpi_data *dpi_get_data_from_pdev(struct platform_device *pdev)
+ {
+-	return dev_get_drvdata(&pdev->dev);
++	return platform_get_drvdata(pdev);
+ }
+ 
+ static struct dss_pll *dpi_get_pll(enum omap_channel channel)
+@@ -784,7 +784,7 @@ static int dpi_bind(struct device *dev, struct device *master, void *data)
+ 
+ 	dpi->pdev = pdev;
+ 
+-	dev_set_drvdata(&pdev->dev, dpi);
++	platform_set_drvdata(pdev, dpi);
+ 
+ 	mutex_init(&dpi->lock);
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
+index 0f93a260e432..1bec7a4422e8 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
+@@ -239,7 +239,7 @@ static struct omap_dss_driver lb035q02_ops = {
+ static int lb035q02_probe_of(struct spi_device *spi)
+ {
+ 	struct device_node *node = spi->dev.of_node;
+-	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
++	struct panel_drv_data *ddata = spi_get_drvdata(spi);
+ 	struct omap_dss_device *in;
+ 	struct gpio_desc *gpio;
+ 
+@@ -277,7 +277,7 @@ static int lb035q02_panel_spi_probe(struct spi_device *spi)
+ 	if (ddata == NULL)
+ 		return -ENOMEM;
+ 
+-	dev_set_drvdata(&spi->dev, ddata);
++	spi_set_drvdata(spi, ddata);
+ 
+ 	ddata->spi = spi;
+ 
+@@ -318,7 +318,7 @@ static int lb035q02_panel_spi_probe(struct spi_device *spi)
+ 
+ static int lb035q02_panel_spi_remove(struct spi_device *spi)
+ {
+-	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
++	struct panel_drv_data *ddata = spi_get_drvdata(spi);
+ 	struct omap_dss_device *dssdev = &ddata->dssdev;
+ 	struct omap_dss_device *in = ddata->in;
+ 
+diff --git a/drivers/video/fbdev/da8xx-fb.c b/drivers/video/fbdev/da8xx-fb.c
+index e38c0e3f9c61..005ac3c17aa1 100644
+--- a/drivers/video/fbdev/da8xx-fb.c
++++ b/drivers/video/fbdev/da8xx-fb.c
+@@ -1066,7 +1066,7 @@ static void lcd_da8xx_cpufreq_deregister(struct da8xx_fb_par *par)
+ 
+ static int fb_remove(struct platform_device *dev)
+ {
+-	struct fb_info *info = dev_get_drvdata(&dev->dev);
++	struct fb_info *info = platform_get_drvdata(dev);
+ 	struct da8xx_fb_par *par = info->par;
+ 	int ret;
+ 
+@@ -1482,7 +1482,7 @@ static int fb_probe(struct platform_device *device)
+ 	da8xx_fb_var.activate = FB_ACTIVATE_FORCE;
+ 	fb_set_var(da8xx_fb_info, &da8xx_fb_var);
+ 
+-	dev_set_drvdata(&device->dev, da8xx_fb_info);
++	platform_set_drvdata(device, da8xx_fb_info);
+ 
+ 	/* initialize the vsync wait queue */
+ 	init_waitqueue_head(&par->vsync_wait);
+diff --git a/drivers/video/fbdev/amifb.c b/drivers/video/fbdev/amifb.c
+index 226682550b4b..6e07a97bbd31 100644
+--- a/drivers/video/fbdev/amifb.c
++++ b/drivers/video/fbdev/amifb.c
+@@ -3736,7 +3736,7 @@ static int __init amifb_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto free_irq;
+ 
+-	dev_set_drvdata(&pdev->dev, info);
++	platform_set_drvdata(pdev, info);
+ 
+ 	err = register_framebuffer(info);
+ 	if (err)
+@@ -3764,7 +3764,7 @@ static int __init amifb_probe(struct platform_device *pdev)
+ 
+ static int __exit amifb_remove(struct platform_device *pdev)
+ {
+-	struct fb_info *info = dev_get_drvdata(&pdev->dev);
++	struct fb_info *info = platform_get_drvdata(pdev);
+ 
+ 	unregister_framebuffer(info);
+ 	fb_dealloc_cmap(&info->cmap);
 
