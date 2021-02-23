@@ -2,101 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986E2321E70
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 Feb 2021 18:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D008F3229E5
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Feb 2021 13:01:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231511AbhBVRqM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 Feb 2021 12:46:12 -0500
-Received: from mga02.intel.com ([134.134.136.20]:24831 "EHLO mga02.intel.com"
+        id S232682AbhBWL4l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Feb 2021 06:56:41 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231424AbhBVRqJ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 Feb 2021 12:46:09 -0500
-IronPort-SDR: rlaw+47Kcov8FKANGLsYuu9VT0dgmZsgQ510JHT8pWTrZfabxG5HlUZXrjSdIo1pByIwQUFXpj
- xzm45moi5EPw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9903"; a="171667212"
-X-IronPort-AV: E=Sophos;i="5.81,197,1610438400"; 
-   d="scan'208";a="171667212"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2021 09:44:23 -0800
-IronPort-SDR: ERgDbyS7rqIZAZc0h//AyX3Ku7nLtBisSAASciYbwNNcDLF0KMtxkdQMFXT34Ugo3gMZyDDjF2
- yRRtgG3l83Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,197,1610438400"; 
-   d="scan'208";a="441454668"
-Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.171])
-  by orsmga001.jf.intel.com with SMTP; 22 Feb 2021 09:44:05 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Mon, 22 Feb 2021 19:44:03 +0200
-Date:   Mon, 22 Feb 2021 19:44:03 +0200
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        David Airlie <airlied@linux.ie>,
-        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH] fbdev: atyfb: add stubs for aty_{ld,st}_lcd()
-Message-ID: <YDPtYx1uU5Y4HNZ7@intel.com>
-References: <20210222032853.21483-1-rdunlap@infradead.org>
+        id S232501AbhBWLyb (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:54:31 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:52:20 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:34 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210222032853.21483-1-rdunlap@infradead.org>
-X-Patchwork-Hint: comment
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Feb 21, 2021 at 07:28:53PM -0800, Randy Dunlap wrote:
-> Fix build errors when these functions are not defined.
-> 
-> ../drivers/video/fbdev/aty/atyfb_base.c: In function 'aty_power_mgmt':
-> ../drivers/video/fbdev/aty/atyfb_base.c:2002:7: error: implicit declaration of function 'aty_ld_lcd'; did you mean 'aty_ld_8'? [-Werror=implicit-function-declaration]
->  2002 |  pm = aty_ld_lcd(POWER_MANAGEMENT, par);
-> ../drivers/video/fbdev/aty/atyfb_base.c:2004:2: error: implicit declaration of function 'aty_st_lcd'; did you mean 'aty_st_8'? [-Werror=implicit-function-declaration]
->  2004 |  aty_st_lcd(POWER_MANAGEMENT, pm, par);
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> ---
->  drivers/video/fbdev/aty/atyfb_base.c |    9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> --- linux-next-20210219.orig/drivers/video/fbdev/aty/atyfb_base.c
-> +++ linux-next-20210219/drivers/video/fbdev/aty/atyfb_base.c
-> @@ -175,6 +175,15 @@ u32 aty_ld_lcd(int index, const struct a
->  		return aty_ld_le32(LCD_DATA, par);
->  	}
->  }
-> +#else /* defined(CONFIG_PMAC_BACKLIGHT) || defined(CONFIG_FB_ATY_BACKLIGHT) \
-> +	 defined(CONFIG_FB_ATY_GENERIC_LCD) */
+Hello,
 
-A better fix would seem to be to include these functions if
-CONFIG_PPC_PMAC is enabled. Otherwise the PM code will surely
-not work correctly. Though I'm not sure if that PPC PM
-code makes any sense w/o LCD/backlight support anyway.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-> +void aty_st_lcd(int index, u32 val, const struct atyfb_par *par)
-> +{ }
-> +
-> +u32 aty_ld_lcd(int index, const struct atyfb_par *par)
-> +{
-> +	return 0;
-> +}
->  #endif /* defined(CONFIG_PMAC_BACKLIGHT) || defined (CONFIG_FB_ATY_GENERIC_LCD) */
->  
->  #ifdef CONFIG_FB_ATY_GENERIC_LCD
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
--- 
-Ville Syrjälä
-Intel
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
