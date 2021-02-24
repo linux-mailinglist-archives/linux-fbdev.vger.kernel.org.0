@@ -2,60 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D008F3229E5
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Feb 2021 13:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2CA1323649
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Feb 2021 04:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232682AbhBWL4l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 23 Feb 2021 06:56:41 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
+        id S232319AbhBXDwJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 23 Feb 2021 22:52:09 -0500
+Received: from m42-2.mailgun.net ([69.72.42.2]:14873 "EHLO m42-2.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbhBWLyb (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:54:31 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:52:20 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:34 +0000
-MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+        id S232568AbhBXDwG (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 23 Feb 2021 22:52:06 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1614138707; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=BvCkg/paXzY5wotaiWjohuLxYHDvmIcymi+lM0WTGmY=; b=B/uvXepky/ljDFSmxsO43rVMRlJaqd4uE8SAX85FPaKXw6LQ2J6OWANwTsDKVwLRsT7ZbWSe
+ 3WnI7pf4Onxj0KMVs57fKyFWBf6zSIfGzYy57ruIzndnkNqH9CKJILoWwFS2q0CBfFADd4jh
+ fEbNNURrKblSNzgwsU5bZ8/U5pg=
+X-Mailgun-Sending-Ip: 69.72.42.2
+X-Mailgun-Sid: WyI4YmIzMiIsICJsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
+ 6035cd35ba0866383082da78 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Feb 2021 03:51:17
+ GMT
+Sender: kgunda=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EB220C433CA; Wed, 24 Feb 2021 03:51:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+Received: from kgunda-linux.qualcomm.com (unknown [202.46.22.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kgunda)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BF4A9C433ED;
+        Wed, 24 Feb 2021 03:51:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BF4A9C433ED
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kgunda@codeaurora.org
+From:   Kiran Gunda <kgunda@codeaurora.org>
+To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        lee.jones@linaro.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
+        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, Kiran Gunda <kgunda@codeaurora.org>
+Subject: [PATCH V1 1/2] backlight: qcom-wled: Fix FSC update issue for WLED5
+Date:   Wed, 24 Feb 2021 09:20:47 +0530
+Message-Id: <1614138648-2963-2-git-send-email-kgunda@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1614138648-2963-1-git-send-email-kgunda@codeaurora.org>
+References: <1614138648-2963-1-git-send-email-kgunda@codeaurora.org>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+Currently, for WLED5, after FSC register update MOD_SYNC_BIT
+is toggled instead of SYNC_BIT. MOD_SYNC_BIT has to be toggled
+after the brightness update and SYNC_BIT has to be toggled after
+FSC update for WLED5. Fix it.
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+---
+ drivers/video/backlight/qcom-wled.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 3bc7800..aef52b9 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -348,7 +348,7 @@ static int wled3_sync_toggle(struct wled *wled)
+ 	return rc;
+ }
+ 
+-static int wled5_sync_toggle(struct wled *wled)
++static int wled5_mod_sync_toggle(struct wled *wled)
+ {
+ 	int rc;
+ 	u8 val;
+@@ -445,10 +445,23 @@ static int wled_update_status(struct backlight_device *bl)
+ 			goto unlock_mutex;
+ 		}
+ 
+-		rc = wled->wled_sync_toggle(wled);
+-		if (rc < 0) {
+-			dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
+-			goto unlock_mutex;
++		if (wled->version < 5) {
++			rc = wled->wled_sync_toggle(wled);
++			if (rc < 0) {
++				dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
++				goto unlock_mutex;
++			}
++		} else {
++			/*
++			 * For WLED5 toggling the MOD_SYNC_BIT updates the
++			 * brightness
++			 */
++			rc = wled5_mod_sync_toggle(wled);
++			if (rc < 0) {
++				dev_err(wled->dev, "wled mod sync failed rc:%d\n",
++					rc);
++				goto unlock_mutex;
++			}
+ 		}
+ 	}
+ 
+@@ -1459,7 +1472,7 @@ static int wled_configure(struct wled *wled)
+ 		size = ARRAY_SIZE(wled5_opts);
+ 		*cfg = wled5_config_defaults;
+ 		wled->wled_set_brightness = wled5_set_brightness;
+-		wled->wled_sync_toggle = wled5_sync_toggle;
++		wled->wled_sync_toggle = wled3_sync_toggle;
+ 		wled->wled_cabc_config = wled5_cabc_config;
+ 		wled->wled_ovp_delay = wled5_ovp_delay;
+ 		wled->wled_auto_detection_required =
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+ a Linux Foundation Collaborative Project
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
