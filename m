@@ -2,24 +2,24 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DE6328375
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Mar 2021 17:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E8B3284EE
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Mar 2021 17:49:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237767AbhCAQSy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Mar 2021 11:18:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56668 "EHLO mail.kernel.org"
+        id S234604AbhCAQpd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Mar 2021 11:45:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43462 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237747AbhCAQSn (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 1 Mar 2021 11:18:43 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6A36964E54;
-        Mon,  1 Mar 2021 16:16:53 +0000 (UTC)
+        id S234556AbhCAQk6 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 1 Mar 2021 11:40:58 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6AF9864ED9;
+        Mon,  1 Mar 2021 16:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1614615414;
-        bh=MHKz4ZfKfa6/GOuM1K95FrexJoKp56iRc1lVGLiCp44=;
+        s=korg; t=1614616118;
+        bh=6DiDhhDVMJtr2qP/TseStO3xH99XjbzC85OAo4XHrqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jPEqX3uY/DJXOWyiOUbVkhCli6DNGW9oYMaKrY52EHfJwYuuxoI7FX5y/6hMm/Zuh
-         GmVZJzo8iZLG3FnHVXQ3LbokEmzWavoKzc1aN/Oux1pfj0bvQI/ogcst61cnC4w4Bz
-         OxyOu707lXHrjCarZmkc7S5A+zfk5h+MFtJHYKxQ=
+        b=WWkDuGG5qcLd7/c9UnxeKe3yQX/xMqrPPWffT6lacbDtSFE1m2oJNL3WMSC465JoZ
+         vMqmMkCS/zdhLm7Io3X33dEWJ1A3tk5iuulYuWRZtq7wnzd9qqpIRRxjJ6mJq4zvKd
+         917/uyQO4RxWa8hFpmZxTAJDkzVZ3jLkPwE/iJxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -34,12 +34,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 20/93] fbdev: aty: SPARC64 requires FB_ATY_CT
-Date:   Mon,  1 Mar 2021 17:12:32 +0100
-Message-Id: <20210301161007.892764932@linuxfoundation.org>
+Subject: [PATCH 4.14 041/176] fbdev: aty: SPARC64 requires FB_ATY_CT
+Date:   Mon,  1 Mar 2021 17:11:54 +0100
+Message-Id: <20210301161023.014716561@linuxfoundation.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210301161006.881950696@linuxfoundation.org>
-References: <20210301161006.881950696@linuxfoundation.org>
+In-Reply-To: <20210301161020.931630716@linuxfoundation.org>
+References: <20210301161020.931630716@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 6873be0344486..e24e77e31529e 100644
+index 5e58f5ec0a28e..d00588d9b0258 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
-@@ -1397,6 +1397,7 @@ config FB_ATY
+@@ -1411,6 +1411,7 @@ config FB_ATY
  	select FB_CFB_IMAGEBLIT
  	select FB_BACKLIGHT if FB_ATY_BACKLIGHT
  	select FB_MACMODES if PPC
@@ -94,7 +94,7 @@ index 6873be0344486..e24e77e31529e 100644
  	help
  	  This driver supports graphics boards with the ATI Mach64 chips.
  	  Say Y if you have such a graphics board.
-@@ -1407,7 +1408,6 @@ config FB_ATY
+@@ -1421,7 +1422,6 @@ config FB_ATY
  config FB_ATY_CT
  	bool "Mach64 CT/VT/GT/LT (incl. 3D RAGE) support"
  	depends on PCI && FB_ATY
