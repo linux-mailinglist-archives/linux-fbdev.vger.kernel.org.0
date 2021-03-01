@@ -2,24 +2,24 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55A56328833
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Mar 2021 18:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BD2328AC1
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Mar 2021 19:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236131AbhCARf1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Mar 2021 12:35:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49394 "EHLO mail.kernel.org"
+        id S239224AbhCASW3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Mar 2021 13:22:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39424 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231921AbhCAR3K (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 1 Mar 2021 12:29:10 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A07A564F26;
-        Mon,  1 Mar 2021 16:51:53 +0000 (UTC)
+        id S239257AbhCASU0 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 1 Mar 2021 13:20:26 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B6EA865307;
+        Mon,  1 Mar 2021 17:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1614617514;
-        bh=kYtrwMyuIXEmaRw+BlL+OR8PhJw/2fbTIYcdQFjf9Xw=;
+        s=korg; t=1614620555;
+        bh=K+OjDIPYCbxWk0EUBLNudxD/OFd+ePHa1hMiMN+nUjs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1/Bx6el1TU9uvOijWx+/r5ELBTUh2hgDhMU/PLyKz/evOCLqJiR2N9dWsSXtnLBQG
-         +sD7Dy2pNYRkd/ViBoqfOlrsYWazNuaR2WGWozebarGPGrCAzb8M8+guvpzxEXB/Mv
-         Wv/U2VRzqx2+7vpl7NE4eGa2iNs3fLvPAwiWUqkY=
+        b=EUDWYybSwo2C4X0Jivqmz73eoiOY9FSvGITzikmcpnwZE1rX08O3Q4X9LfhM0hX+t
+         x/7Rc8T0F7+nE8d1ypV00vsMMjsVYFGrYk26YlKPav5R6KmHWLu+I9BXGiqdfWF27H
+         bbJxEmVoDqVeNsA1q5MAAT3fPz/e6Khn7LFdwxEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -34,12 +34,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/340] fbdev: aty: SPARC64 requires FB_ATY_CT
-Date:   Mon,  1 Mar 2021 17:10:14 +0100
-Message-Id: <20210301161051.770571449@linuxfoundation.org>
+Subject: [PATCH 5.11 168/775] fbdev: aty: SPARC64 requires FB_ATY_CT
+Date:   Mon,  1 Mar 2021 17:05:36 +0100
+Message-Id: <20210301161209.944252582@linuxfoundation.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210301161048.294656001@linuxfoundation.org>
-References: <20210301161048.294656001@linuxfoundation.org>
+In-Reply-To: <20210301161201.679371205@linuxfoundation.org>
+References: <20210301161201.679371205@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -83,7 +83,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 1e70e838530ee..a7e5f12687b70 100644
+index cfb7f5612ef0f..4f02db65dedec 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
 @@ -1269,6 +1269,7 @@ config FB_ATY
