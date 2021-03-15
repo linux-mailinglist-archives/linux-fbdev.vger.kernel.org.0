@@ -2,127 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB22B33B26C
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Mar 2021 13:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF96333C30F
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Mar 2021 18:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbhCOMWG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 15 Mar 2021 08:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51748 "EHLO
+        id S234782AbhCOQ7q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 15 Mar 2021 12:59:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbhCOMWC (ORCPT
+        with ESMTP id S234738AbhCOQ7V (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 15 Mar 2021 08:22:02 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A92BC061763
-        for <linux-fbdev@vger.kernel.org>; Mon, 15 Mar 2021 05:22:02 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id mm21so65741377ejb.12
-        for <linux-fbdev@vger.kernel.org>; Mon, 15 Mar 2021 05:22:02 -0700 (PDT)
+        Mon, 15 Mar 2021 12:59:21 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D048DC061763
+        for <linux-fbdev@vger.kernel.org>; Mon, 15 Mar 2021 09:59:20 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id v9so58009063lfa.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 15 Mar 2021 09:59:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=68jlXxwTfNA20UssG/iOwv7H5x/KNjvMb7lpLxpsr3I=;
-        b=yPJ9K0uCd7YGDEC+SW1zRnYgaV/ijooR+XEo2KF+DFUyskFZKPUPdupNDM1Bzmc5rQ
-         TtZpoymKCPamfltgDPQxthzkNZAE2qzehzZ2i2V6Cd9dM2ZKH6NqCN3hiM6tljCNl1fU
-         gkXSxSKbYCbmdKCB/RXQVP8VxFWWip56KDiq+t8B2hH0/3k/jqHAarwhuAH5DG4UQSZN
-         t0YhY5h0cPCKBmQe9zy/rs6Poz+lMk8wKyhOpjT5mA8T6kYuPCUMkyUrqLiwd588bsR6
-         9E58gCUZoI+2Nd78ZYNpRPgTV58Zi/zC/J863ffmLXeqQYu1FDchlegQf4BE4R1t+OAj
-         e+Yw==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=eLaM2VJC2VPxWCmJI4pRm7gIwsdtcXVX+gwqcmG5feM136k/MJaMOmGBB2kdOk6Af4
+         OdHMopIeKZg49h5cW6vGbxvuQTW/SkQ9HuA/ev1jJcl0AAurwCe0DNziSPl1EC93VQ1C
+         ZhL/pBGs4yClRQ+yNSuJ3e3yxg7nGxyN7EkaEc9UnMX6RUqxH4o2rsWq+1OyBGhsQ60t
+         mlr/pvPbTkbXwuQ72wwZySMbV7eKPbN/RoefzS3gvRqxUNqqkiwACUnwYhkfp8NF4XOV
+         usiuSlIdkRdT/XFr8JMUz5dBUV3A2ubIZJBv5AzJJikhHdudGeMH2zRoSMkB+ojxPFvS
+         VkOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=68jlXxwTfNA20UssG/iOwv7H5x/KNjvMb7lpLxpsr3I=;
-        b=krk2W3US5DaEqp0xlqdXBX3IK2s4WlfDbFAtDIVahuUkn5Xlf0/0/uIRqljAOEWP0Y
-         JJ+TQRZWNYgtehuvnJjX4TKh4JV1w8lHx4sf/DqKCxlSfCmKZLSxAHEj535X7XTYZzAY
-         RGcGPXiz+Pw9Y7Q1Dk9RcPnFBXgROlXLJYUv4sG5JCG4rrHAW4EkhiIBheiYKiD+ED4k
-         vwdQnExZ5szLlOKBXT1P58yfFOwUQrudlu9w0GT2fotqzG5R+XPaaV6SLCiNGcVhVQd8
-         Lt3R4qHWPhG2lb6NVN5YVLNLE8eam9WO/RIOPCUh5ui3vf+5h+CAEcsRrBIW+elWvaZ3
-         L1sA==
-X-Gm-Message-State: AOAM530bywZakn/sS5OQ7iZCsnUhv++KQqCPRRayPHCM/rqwcn36+99R
-        Em9bdVymNI0vK+tVnuKFZe2U1VEE5VAbY5Yy
-X-Google-Smtp-Source: ABdhPJyOEJdU7zKKbglgyC3DnGahjOi0AdhGWWGjA6h4Bp8+9nk2Nlz0nQcAh6QvJyPGbwi3KZ/SCA==
-X-Received: by 2002:a17:906:789:: with SMTP id l9mr22968222ejc.161.1615810920902;
-        Mon, 15 Mar 2021 05:22:00 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id z17sm7270134eju.27.2021.03.15.05.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Mar 2021 05:22:00 -0700 (PDT)
-Date:   Mon, 15 Mar 2021 12:21:58 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Obeida Shamoun <oshmoun100@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
-Message-ID: <20210315122158.ptqi6xvngf6ihjum@maple.lan>
-References: <20210314101110.48024-1-marijn.suijten@somainline.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=Tt0qk9xnwraAacVcs47CXOH4bwWGJWgejdCqwGD9neC7qM/oD/DYPWrNPr6zqvHCbb
+         U8W94iF3nnZHu0/5Jlrzkq9pPp7eto2LCdeK7lSnPL8HQR6s1B9FytlGbv54VquopSr4
+         GcDKCTL/3utYCEo3Cf/27SjN5WO5P4GEi1psaNfSjBEWmsgMGPlcT+yW+RbgGo5xy00B
+         4Ixeuv64Vs9oTlDH11MTNnJfNcDt79zp8idxDcUNpmH973LXkGSg+j9+8rG/InwgkDjP
+         yVKZRPBpAm6onXnAQ0tDcLpK5hjEi2VLax//0EeJPVjh0G+XnAZJb5GnVEDnQwBPofmu
+         bYnQ==
+X-Gm-Message-State: AOAM533wzaFqtQs1nSloDPUuKigc37YNcwP9F8Df+/QwTmw8FS7gGLlU
+        +eQYpRqMjlGJNix7AWYNZN/VnPN3GyYYEfmvT68=
+X-Google-Smtp-Source: ABdhPJz7/gfpeD06O79Pnw07FE/mA8Ji4e09y71x9+hvfgu2S8MD9xmK2/Q/AOYN3ItI3qPG23+Pfv2arGi/0+HLTes=
+X-Received: by 2002:a05:6512:370f:: with SMTP id z15mr8619417lfr.562.1615827559310;
+ Mon, 15 Mar 2021 09:59:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210314101110.48024-1-marijn.suijten@somainline.org>
+Received: by 2002:a05:651c:1382:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:59:18
+ -0700 (PDT)
+Reply-To: ezbtg22@gmail.com
+From:   "Mrs.Glenn" <mrganuserge@gmail.com>
+Date:   Mon, 15 Mar 2021 09:59:18 -0700
+Message-ID: <CA+Wfa7YG6kanV1cpekUWYP2FGpSSSKYxaq+gNSZdX+nSoPjTrA@mail.gmail.com>
+Subject: From Mrs.Glenn
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Mar 14, 2021 at 11:11:10AM +0100, Marijn Suijten wrote:
-> From: Obeida Shamoun <oshmoun100@googlemail.com>
-> 
-> WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
-> Therefore, use the sink address as base instead of the ctrl address.
-> 
-> This fixes the sync toggle on wled4, which can be observed by the fact
-> that adjusting brightness now works.
-> 
-> It has no effect on wled3 because sink and ctrl base addresses are the
-> same.  This allows adjusting the brightness without having to disable
-> then reenable the module.
-> 
-> Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+-- 
+Dear Beloved,
 
-LGTM, although an acked-by from Kiran would be nice to have:
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
+in a hospital bed in Israel. I am 59 years and childless; my husband
+is dead. I was diagnosed with terminal cancer. And my doctor just
+predicted that I have but very limited time to live due to damages in
+my system and as a result of that I decided to dispose my 10.5 million
+US dollars to a God-fearing one for the continuation of charitable
+work. This is why I located you.My guess about you may not be accurate
+because I came across your contact at the humanitarian calendar event
+of the year but I believe in God who  divinely directed me to you for
+this solemn proposal of charitable work. I wholeheartedly wish to
+bequeath my fortune to you as a God-fearing person for the
+continuation of charitable work anywhere around the world.
 
+I shall be going in for a surgery operations soonest and desire this
+money to be transferred to you as I do not wish to leave this money in
+the bank because bankers might misuse it for their own interest after
+my death. As soon as I receive your quick reply assuring me that you
+will utilize the money as I instructed you for the benefit of the less
+privilege, I shall give you more details and also instruct my bank to
+release the money to you for the charity project. I hope you receive
+this mail in good health.
 
-Daniel.
+Because I don t know what will be my situation in next minute,
 
+I am waiting for your reply.
 
-> ---
->  drivers/video/backlight/qcom-wled.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 091f07e7c145..fc8b443d10fd 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -336,13 +336,13 @@ static int wled3_sync_toggle(struct wled *wled)
->  	unsigned int mask = GENMASK(wled->max_string_count - 1, 0);
->  
->  	rc = regmap_update_bits(wled->regmap,
-> -				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> +				wled->sink_addr + WLED3_SINK_REG_SYNC,
->  				mask, mask);
->  	if (rc < 0)
->  		return rc;
->  
->  	rc = regmap_update_bits(wled->regmap,
-> -				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> +				wled->sink_addr + WLED3_SINK_REG_SYNC,
->  				mask, WLED3_SINK_REG_SYNC_CLEAR);
->  
->  	return rc;
-> -- 
-> 2.30.2
-> 
+Yours sincerely,
+Mrs Elizabet Glenn.
