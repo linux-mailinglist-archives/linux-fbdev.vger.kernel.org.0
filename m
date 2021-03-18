@@ -2,106 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED70033ECBB
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Mar 2021 10:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D09E33FD72
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Mar 2021 03:55:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbhCQJQI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 17 Mar 2021 05:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43412 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbhCQJQE (ORCPT
+        id S229949AbhCRCzJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 17 Mar 2021 22:55:09 -0400
+Received: from gateway21.websitewelcome.com ([192.185.45.210]:47876 "EHLO
+        gateway21.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230507AbhCRCyv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 17 Mar 2021 05:16:04 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF962C061760
-        for <linux-fbdev@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id b9so1008685wrt.8
-        for <linux-fbdev@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
-        b=uMXE+VtjZWadyYCebKZ3fIggjz4V1ChdYHWACmzHieC+U5oQgoCuWUExVACd5lgsxw
-         w8s4oFwYG2AfLmamwBO9l9q/0TJ0gCkYFIuji6TWH18CtdAPoR6InemljL7TIsIXKRtt
-         4A7O7wFyg52FK5pUVZzz0oLvx9BjVIqhabtjd6KLq01ti84V3Jhp4GcEDmBBZ3vOAH1e
-         fUDXTKuJbq6ffGadIu8bCA9YpaFqktUqK6fzurFSa82mW9TodOD9yp+4OW+3IXowiWBO
-         aa59V0PpQbYGVaH6WRVool0cghcBDK8OnkTMFtqO/nFZAO4i2WcpJTi7t9ouldiPeFE6
-         4N9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
-        b=B4DfMXHI1Tp6TVUOvqsJb4SJVWyn0q1Y6Hy/eTS1CNiCSeT5i6BIxrOxptMKS3vCM9
-         I9Of8V2R0fGQ0K7+HYupH4E7TUDCMk97x698vQoQmLEppygVyQNnL6ggU9ZTJSW1QSgR
-         vEI1w6JPknsg8s7RBIcfp4gsAgRrs1e58UBARjwh9VqYb4ZdOHzAX5e+Vt9CXJZmGNIP
-         xQaEBcPKJBDRiPwj+gexFdWf2vlpzHNpOOKmDq9ZnqOo5fm+G5uABPX8BbJxblA7m3is
-         rdlU8Ffu5eMNmFGzykHiQXRWHi7uTe2OHE8RdqKd/kCTwIMxR1Ixf0puZE7iHhhRYklK
-         rb8A==
-X-Gm-Message-State: AOAM5310591MXJVIjOxvf7AFoehBYC6OKq1zTbw4jS1C4r/zVnT1wTdI
-        HZR8jLuyt9B6p6sJE9UfvU/kgg==
-X-Google-Smtp-Source: ABdhPJzccso7yYfvjZ0BNG+B/bhDroptmdi0xF07T+f0b52aGSdXhB4T8OlAfzgB2MnMHmOq7BNizg==
-X-Received: by 2002:a5d:4587:: with SMTP id p7mr3343208wrq.205.1615972562580;
-        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
-Received: from dell ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id p14sm1765900wmc.30.2021.03.17.02.16.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
-Date:   Wed, 17 Mar 2021 09:16:00 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Obeida Shamoun <oshmoun100@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
-Message-ID: <20210317091600.GJ701493@dell>
-References: <20210314101110.48024-1-marijn.suijten@somainline.org>
+        Wed, 17 Mar 2021 22:54:51 -0400
+X-Greylist: delayed 806 seconds by postgrey-1.27 at vger.kernel.org; Wed, 17 Mar 2021 22:54:51 EDT
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+        by gateway21.websitewelcome.com (Postfix) with ESMTP id 3E116400E5764
+        for <linux-fbdev@vger.kernel.org>; Wed, 17 Mar 2021 21:54:51 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id MioFl3IhWMGeEMioFlrykw; Wed, 17 Mar 2021 21:54:51 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=kyaSur+AVF/eZzNQuGBhQHivPm6TStIKn+Qw+aned7E=; b=zGMj/6k3W3aDYn8aL7/lXpG97v
+        MC7eBhhc2fBXe2lT/moJp6YmozGaXzd/RV2gqGJw37Eq5pZ7NE/g9T1qA8CSoGCCPl67l9EXsc6rw
+        YysFu8SwpD3tqkJG+W5Auj2gXhk9ZqTqBFKZkdkafDSGLRjhMJPzTBhsEOr69oM0O50+AmN/uVmRP
+        qOQa9WE0h/RZ/jrayy//uNqRNqZpvuM+TTtjC64O3dC9/KjaaO4cyjNl0AjRTCkdTIyqlQUv50sWf
+        /JIp0ruRkXS8B0Jbhic3QbvOBVYuOsbgWc5Sa8wOSkmjHPmMXDVuOmNMT4yuE6vSwxBec6jm3klA8
+        XFZ83OPQ==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:40896 helo=[192.168.15.8])
+        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1lMioE-004GQg-Tf; Wed, 17 Mar 2021 21:54:50 -0500
+Subject: Re: [PATCH] drivers/video/fbdev:modify 0 to NULL
+To:     Chunyou Tang <tangchunyou@163.com>
+Cc:     gustavoars@kernel.org, sam@ravnborg.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, tangchunyou@yulong.com
+References: <20210318023329.488-1-tangchunyou@163.com>
+ <20f1664e-df4c-d085-cb25-1d05e8a793a3@embeddedor.com>
+ <20210318104718.00005767@163.com>
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Message-ID: <5202c72d-4246-1a4e-37fa-7caf2d9c1ce3@embeddedor.com>
+Date:   Wed, 17 Mar 2021 20:54:41 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
+In-Reply-To: <20210318104718.00005767@163.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210314101110.48024-1-marijn.suijten@somainline.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1lMioE-004GQg-Tf
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8]) [187.162.31.110]:40896
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 12
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, 14 Mar 2021, Marijn Suijten wrote:
 
-> From: Obeida Shamoun <oshmoun100@googlemail.com>
-> 
-> WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
-> Therefore, use the sink address as base instead of the ctrl address.
-> 
-> This fixes the sync toggle on wled4, which can be observed by the fact
-> that adjusting brightness now works.
-> 
-> It has no effect on wled3 because sink and ctrl base addresses are the
-> same.  This allows adjusting the brightness without having to disable
-> then reenable the module.
-> 
-> Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/video/backlight/qcom-wled.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks.
+On 3/17/21 21:47, Chunyou Tang wrote:
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> I think "if (info == NULL)" is more intuitive,and there have many
+> compare likes "if (info == NULL)" in this file.
+
+In that case, all those instances should be changed to if (!foo), instead.
+
+--
+Gustavo
