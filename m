@@ -2,102 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE43934A94B
-	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Mar 2021 15:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04DB34A957
+	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Mar 2021 15:12:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbhCZOJe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 26 Mar 2021 10:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230115AbhCZOJS (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 26 Mar 2021 10:09:18 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F985C0613AA;
-        Fri, 26 Mar 2021 07:09:18 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id cl21-20020a17090af695b02900c61ac0f0e9so5642812pjb.1;
-        Fri, 26 Mar 2021 07:09:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=h+bhUb5pCuEYh025FUBqhTIp//Tbcm99mGV1EArYpWE=;
-        b=Cd+G377/rdX6Bw06AG5m11TwNuzgPRsnhn0+penE/Q5ZwFX7VD6eQf1frs4G31+CAH
-         aGcCei6VpcaqQrqfoTjQ3sRVJqsQTYubVfYrkgV9fkuLO4tKbAdKQ4mmxZaqy9bUAWFg
-         a0Mita0wtS6ziHMdkrt3EGQd9g1AXg4QKVCxQN7S0DqLqpyNorqUglvSR08D7CuWpVdl
-         E79cEr0A8aTQfxV9NRgseeg288n1PBdz5L3+58dj1LnD1jFQrgdaxCa9+yvS+zFSQNzQ
-         Sx1zQ9iXDw7+Ory+S+3p3KHJ7ixhC5N9r3uN3Nl0Z6E/aNsXjNzeRDdZ9SuOUDHbjk3j
-         N7ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=h+bhUb5pCuEYh025FUBqhTIp//Tbcm99mGV1EArYpWE=;
-        b=EzenEeGXtuAbSKPCODZwX+spOMH2MGhRkmX9eMm4FlkNb1kwQXcWe6rroAp4hSzdwY
-         WnF69ylVvRcHWrANFITXeIxp0MA/HODIT0jvfmU6M6YQ/rBsK4J19cnep7B8yWhPK9Ag
-         5o2QrZnT+RF/TqK8wtMFJZW0DkxvOJu9BZTeXzJbOdquaJRbzCgnms7Nkq5QhOM5mgKN
-         26hrf+jTww2x0XFpCnKll3D0s7YSei8mWyKpys44iLioHGIReO1ZPZrxmtHxZQ4ssZhc
-         3yekTOq9VvmudGZFSb5KUTh1dcLg3ujPwmR50FdfQ6kiXRU7fwmfjdB6++8iMjPTm5or
-         BWtA==
-X-Gm-Message-State: AOAM533s2E10dNQIAC4lu/VjaMzkF8HqUZPlKsnFPknki/YM4syNdKUp
-        +9AZ3PKyjS9IGqljVsoz6b2InfAfSBirAgGl
-X-Google-Smtp-Source: ABdhPJxszqiKf4suKiwiqLf+J7gikvo+wVRhKUs8+Qga0N4et1pAwlcxfGUpK7kIzTFACqwWz1cjeg==
-X-Received: by 2002:a17:902:7792:b029:e6:caba:f836 with SMTP id o18-20020a1709027792b02900e6cabaf836mr15272990pll.41.1616767757973;
-        Fri, 26 Mar 2021 07:09:17 -0700 (PDT)
-Received: from bf-rmsz-10.ccdomain.com ([103.220.76.197])
-        by smtp.gmail.com with ESMTPSA id mr5sm8923717pjb.53.2021.03.26.07.09.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 26 Mar 2021 07:09:17 -0700 (PDT)
-From:   Carlis <zhangxuezhi3@gmail.com>
-To:     gregkh@linuxfoundation.org
+        id S229848AbhCZOMN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 26 Mar 2021 10:12:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44990 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229986AbhCZOMK (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 26 Mar 2021 10:12:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3610061A02;
+        Fri, 26 Mar 2021 14:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1616767929;
+        bh=dNtp5Lk+sXW82yd48pelyEyjW5yjUsssA7DFylEmuLw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Fn7DSFHS3yMmhMAxVGz2owWcH9UTzABGUdycSuUGVI97ByV7+kVg/yckeuv35Lt7e
+         cv+5S5tvgWEuIQoSnN4jeQZWN5WrNGv3dgPSbk0wG9HiB4yTZCb1cpTSWIPa9YP8q2
+         sjMem1eA+dIs2chvYQ56Ej8OauQsXcmxKoNwZ3X4=
+Date:   Fri, 26 Mar 2021 15:12:07 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Carlis <zhangxuezhi3@gmail.com>
 Cc:     zhangxuezhi1@yulong.com, dri-devel@lists.freedesktop.org,
         linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: fbtft: change '16 bit' to '16-bit'
-Date:   Fri, 26 Mar 2021 22:09:30 +0800
-Message-Id: <1616767770-70063-1-git-send-email-zhangxuezhi3@gmail.com>
-X-Mailer: git-send-email 1.9.1
+Subject: Re: [PATCH] staging: fbtft: change '16 bit' to '16-bit'
+Message-ID: <YF3rt28vKzt7CDIh@kroah.com>
+References: <1616767770-70063-1-git-send-email-zhangxuezhi3@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1616767770-70063-1-git-send-email-zhangxuezhi3@gmail.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: "carlis.zhang_cp" <zhangxuezhi1@yulong.com>
+On Fri, Mar 26, 2021 at 10:09:30PM +0800, Carlis wrote:
+> From: "carlis.zhang_cp" <zhangxuezhi1@yulong.com>
+> 
+> Change '16 bit' to '16-bit' for a same style.
 
-Change '16 bit' to '16-bit' for a same style.
+Why?  This is up to the author.
 
-Signed-off-by: carlis.zhang_cp <zhangxuezhi1@yulong.com>
----
- drivers/staging/fbtft/fbtft-bus.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> Signed-off-by: carlis.zhang_cp <zhangxuezhi1@yulong.com>
 
-diff --git a/drivers/staging/fbtft/fbtft-bus.c b/drivers/staging/fbtft/fbtft-bus.c
-index 63c65dd..7040131 100644
---- a/drivers/staging/fbtft/fbtft-bus.c
-+++ b/drivers/staging/fbtft/fbtft-bus.c
-@@ -117,7 +117,7 @@ void fbtft_write_reg8_bus9(struct fbtft_par *par, int len, ...)
-  *
-  *****************************************************************************/
- 
--/* 16 bit pixel over 8-bit databus */
-+/* 16-bit pixel over 8-bit databus */
- int fbtft_write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
- {
- 	u16 *vmem16;
-@@ -172,7 +172,7 @@ int fbtft_write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
- }
- EXPORT_SYMBOL(fbtft_write_vmem16_bus8);
- 
--/* 16 bit pixel over 9-bit SPI bus: dc + high byte, dc + low byte */
-+/* 16-bit pixel over 9-bit SPI bus: dc + high byte, dc + low byte */
- int fbtft_write_vmem16_bus9(struct fbtft_par *par, size_t offset, size_t len)
- {
- 	u8 *vmem8;
-@@ -228,7 +228,7 @@ int fbtft_write_vmem8_bus8(struct fbtft_par *par, size_t offset, size_t len)
- }
- EXPORT_SYMBOL(fbtft_write_vmem8_bus8);
- 
--/* 16 bit pixel over 16-bit databus */
-+/* 16-bit pixel over 16-bit databus */
- int fbtft_write_vmem16_bus16(struct fbtft_par *par, size_t offset, size_t len)
- {
- 	u16 *vmem16;
--- 
-1.9.1
+Please use a real name, not an email-alias as a name.
 
+thanks,
+
+greg k-h
