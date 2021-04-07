@@ -2,66 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 724F73566DE
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Apr 2021 10:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440103566E6
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Apr 2021 10:32:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241377AbhDGIcQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 7 Apr 2021 04:32:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54922 "EHLO mail.kernel.org"
+        id S232290AbhDGIdF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 7 Apr 2021 04:33:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235328AbhDGIcQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 7 Apr 2021 04:32:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4F94A61246;
-        Wed,  7 Apr 2021 08:32:06 +0000 (UTC)
+        id S244921AbhDGIdE (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 7 Apr 2021 04:33:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2CEB861246;
+        Wed,  7 Apr 2021 08:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1617784326;
-        bh=r74abV0HnQhwcnFE9x4s3tE7D4/Va11TGitx5tmoBZk=;
+        s=korg; t=1617784375;
+        bh=YnQM4Dntg6MnBX1n5CpMjAINjqZ8OgHrYo45v3FHX10=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gAkFggY4GxEY5JTKLyGWfpcqP55G6bHc6irB5KEyY/OOTYZKBH9sBMeC7/bGmvNDY
-         ndlIcfYmf3/fINPA/suIvyrSL+R6V80rDuSRodJo9X3An160as6vvgU3ma1hNTJvxM
-         1Q7fv6QEirV8ZBLUcQ24CV3V9n+eQjd59jJ5z45U=
-Date:   Wed, 7 Apr 2021 10:32:04 +0200
+        b=tn7dNqH1vKL0Rig5ICBourpNf7ZvbdSNFRcVB1q1W68R1RmEmXGlztoXbllHKBc8u
+         WfL73vHS08P3vkRBpIQyJjMO8yugTS7+q5UcRPxrcIz3L6UzZBMHJCE8rc28QAexUw
+         IUVy6sXR+AcsTyLAWYRpAwCIQqmZH1kfEtRKRKz4=
+Date:   Wed, 7 Apr 2021 10:32:53 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Pavle Rohalj <pavle.rohalj@gmail.com>
 Cc:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
         linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 02/49] staging: sm750fb: Rename dviInit to dvi_init
- and update param names
-Message-ID: <YG1uBAIOgwA2FYUB@kroah.com>
+Subject: Re: [PATCH v2 00/49] *** SUBJECT HERE ***
+Message-ID: <YG1uNX1ZaZ106iy8@kroah.com>
 References: <cover.1617776878.git.pavle.rohalj@gmail.com>
- <6c6ecf7eee7d41492dbbcc4410db7eefd1fbb13d.1617776878.git.pavle.rohalj@gmail.com>
+ <YG1aVx3UuXR2JrC+@kroah.com>
+ <YG1cCtbvINJ52tGT@localhost.localdomain>
+ <YG1gDV6vqnUtDnbT@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6c6ecf7eee7d41492dbbcc4410db7eefd1fbb13d.1617776878.git.pavle.rohalj@gmail.com>
+In-Reply-To: <YG1gDV6vqnUtDnbT@kroah.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Apr 06, 2021 at 11:36:01PM -0700, Pavle Rohalj wrote:
-> Fix "Avoid CamelCase" checkpatch.pl checks for the function dviInit and
-> its parameter names in ddk750_dvi.h.
+On Wed, Apr 07, 2021 at 09:32:29AM +0200, Greg KH wrote:
+> On Wed, Apr 07, 2021 at 12:15:22AM -0700, Pavle Rohalj wrote:
+> > On Wed, Apr 07, 2021 at 09:08:07AM +0200, Greg KH wrote:
+> > > On Tue, Apr 06, 2021 at 11:35:54PM -0700, Pavle Rohalj wrote:
+> > > > Changes in v2:
+> > > >     - Removed type information from variable names
+> > > >     - Broken up the changes into smaller patches
+> > > 
+> > > Your subject is very odd :(
+> > 
+> > Sorry about that, I overlooked the fact that I reran format-patch. The
+> > subject should be:
+> > 
+> > [PATCH] staging: sm750fb: Convert camel case to snake case
+> > 
+> > Should I resubmit?
 > 
-> Signed-off-by: Pavle Rohalj <pavle.rohalj@gmail.com>
-> ---
->  drivers/staging/sm750fb/ddk750_dvi.c |  2 +-
->  drivers/staging/sm750fb/ddk750_dvi.h | 20 ++++++++++----------
->  2 files changed, 11 insertions(+), 11 deletions(-)
+> Not yet, let me review these first, I think they might need some work...
 > 
-> diff --git a/drivers/staging/sm750fb/ddk750_dvi.c b/drivers/staging/sm750fb/ddk750_dvi.c
-> index db19bf732482..943cbcafcffa 100644
-> --- a/drivers/staging/sm750fb/ddk750_dvi.c
-> +++ b/drivers/staging/sm750fb/ddk750_dvi.c
-> @@ -30,7 +30,7 @@ static struct dvi_ctrl_device dcft_supported_dvi_controller[] = {
->  #endif
->  };
->  
-> -int dviInit(unsigned char edge_select,
-> +int dvi_init(unsigned char edge_select,
 
-Why is this a global function?  Just make it static and remove it from
-the .h file.
+Ok, now you can fix them up, I stopped after reviewing patch 02/49,
+these need some work.
 
 thanks,
 
