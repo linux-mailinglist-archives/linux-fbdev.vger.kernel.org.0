@@ -2,86 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01064361FE3
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Apr 2021 14:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5906362044
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Apr 2021 14:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243504AbhDPMbm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 16 Apr 2021 08:31:42 -0400
-Received: from mga17.intel.com ([192.55.52.151]:56273 "EHLO mga17.intel.com"
+        id S235262AbhDPMwb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 16 Apr 2021 08:52:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35856 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235292AbhDPMbk (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 16 Apr 2021 08:31:40 -0400
-IronPort-SDR: CQBbidF0kieiP8ggen32ipYGEx9UtPRmtQEdwypTpA5tNkFpt9LJJ38zjJ/rnQF+YSw6Cj7IuJ
- UEtNBmtY6qRQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9955"; a="175140199"
-X-IronPort-AV: E=Sophos;i="5.82,226,1613462400"; 
-   d="scan'208";a="175140199"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2021 05:31:16 -0700
-IronPort-SDR: IxumiiRIJwpJIuwk28rwAKWbEPw6iGRwlTfxtJIvWbuclrEnn3yybu9rpcJwu3q4mtazbBUoOp
- RDfvU03krWpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,226,1613462400"; 
-   d="scan'208";a="522699204"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Apr 2021 05:31:14 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id C093D142; Fri, 16 Apr 2021 15:31:31 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v1 2/2] fbtft: Don't spam logs when probe is deferred
-Date:   Fri, 16 Apr 2021 15:31:17 +0300
-Message-Id: <20210416123117.4993-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210416123117.4993-1-andriy.shevchenko@linux.intel.com>
+        id S235225AbhDPMw1 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 16 Apr 2021 08:52:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BDDFD61107;
+        Fri, 16 Apr 2021 12:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1618577523;
+        bh=hwJ8s62yDIzmzZA0XYf+y6HvC+HhisQjYC0WgN+PGKw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=G2m/SWVf8QKqq/Btcd4gPFqAbLsDT34XDLpJddTRhYn/QOuv+nKJIwxo3d7jjSkDU
+         1kAc68zdjhib0EwVoAVObGVbxEAG44nHvsCbKiduv7cvk1eaydVObPt+GcJUWUNW1B
+         jgyNLtAyDs+vdJYNMEiRjh+obC8KOE9gUdTmYock=
+Date:   Fri, 16 Apr 2021 14:51:59 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Jan Sebastian =?iso-8859-1?Q?G=F6tte?= <linux@jaseg.net>,
+        Phil Reid <preid@electromag.com.au>,
+        Nishad Kamdar <nishadkamdar@gmail.com>
+Subject: Re: [PATCH v1 1/2] fbtft: Rectify GPIO handling
+Message-ID: <YHmIb2YrwfzZa7Wh@kroah.com>
 References: <20210416123117.4993-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210416123117.4993-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When requesting GPIO line the probe can be deferred.
-In such case don't spam logs with an error message.
-This can be achieved by switching to dev_err_probe().
+On Fri, Apr 16, 2021 at 03:31:16PM +0300, Andy Shevchenko wrote:
+> The infamous commit c440eee1a7a1 ("Staging: fbtft: Switch to
+> the GPIO descriptor interface") broke GPIO handling completely.
+> It has already four commits to rectify and it seems not enough.
+> In order to fix the mess here we:
+> 
+>   1) Set default to "inactive" for all requested pins
+> 
+>   2) Fix CS, RD, and WR pins polarity since it's active low and
+>      GPIO descriptor interface takes it into consideration from
+>      the Device Tree or ACPI
+> 
+>   3) Fix RESET pin polarity in the places missed by the commit
+>      b918d1c27066 ("Staging: fbtft: Fix reset assertion when using gpio descriptor")
+> 
+>   4) Consolidate chip activation (CS assert) under default
+>      ->reset() callback
+> 
+> To summarize the expectations about polarity for GPIOs:
+> 
+>    #RD			Low
+>    #WR			Low
+>    #CS			Low
+>    #RESET		Low
+>    DC or RS		High
+>    RW			High
+>    Data	0..15		High
+> 
+> See also Adafruit learning course [1] for the example of the schematics.
+> 
+> While at it, drop unneeded NULL checks, since GPIO API is tolerant to that.
+> At the end, update TODO to mark this job eventually done.
+> 
+> [1]: https://learn.adafruit.com/adafruit-2-8-and-3-2-color-tft-touchscreen-breakout-v2/downloads
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/staging/fbtft/fbtft-core.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+Shouldn't this be broken up into "one patch per thing" from your list
+above?  Feels like you did a lot of different things all in the same
+patch :(
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 67c3b1975a4d..a564907c4fa1 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -75,20 +75,16 @@ static int fbtft_request_one_gpio(struct fbtft_par *par,
- 				  struct gpio_desc **gpiop)
- {
- 	struct device *dev = par->info->device;
--	int ret = 0;
- 
- 	*gpiop = devm_gpiod_get_index_optional(dev, name, index,
- 					       GPIOD_OUT_LOW);
--	if (IS_ERR(*gpiop)) {
--		ret = PTR_ERR(*gpiop);
--		dev_err(dev,
--			"Failed to request %s GPIO: %d\n", name, ret);
--		return ret;
--	}
-+	if (IS_ERR(*gpiop))
-+		dev_err_probe(dev, PTR_ERR(*gpiop), "Failed to request %s GPIO\n", name);
-+
- 	fbtft_par_dbg(DEBUG_REQUEST_GPIOS, par, "%s: '%s' GPIO\n",
- 		      __func__, name);
- 
--	return ret;
-+	return 0;
- }
- 
- static int fbtft_request_gpios(struct fbtft_par *par)
--- 
-2.30.2
+thanks,
 
+greg k-h
