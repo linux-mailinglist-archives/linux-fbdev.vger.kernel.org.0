@@ -2,79 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0410D36607E
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Apr 2021 21:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215C7366A8D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Apr 2021 14:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233548AbhDTT71 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 20 Apr 2021 15:59:27 -0400
-Received: from smtprelay0166.hostedemail.com ([216.40.44.166]:35464 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233541AbhDTT7Y (ORCPT
+        id S238466AbhDUMRJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 21 Apr 2021 08:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56006 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238379AbhDUMRJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 20 Apr 2021 15:59:24 -0400
-Received: from omf01.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 6E69C181D3030;
-        Tue, 20 Apr 2021 19:58:51 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf01.hostedemail.com (Postfix) with ESMTPA id F010F1727C;
-        Tue, 20 Apr 2021 19:58:49 +0000 (UTC)
-Message-ID: <c5de33a3cd1dc18688fc2bb7cf6a84aedcc5a041.camel@perches.com>
-Subject: Re: [PATCH 1/1] video: hyperv_fb: Add ratelimit on error message
-From:   Joe Perches <joe@perches.com>
-To:     Michael Kelley <mikelley@microsoft.com>, kys@microsoft.com,
-        haiyangz@microsoft.com, sthemmin@microsoft.com, wei.liu@kernel.org,
-        linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date:   Tue, 20 Apr 2021 12:58:48 -0700
-In-Reply-To: <1618933459-10585-1-git-send-email-mikelley@microsoft.com>
-References: <1618933459-10585-1-git-send-email-mikelley@microsoft.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.38.1-1 
+        Wed, 21 Apr 2021 08:17:09 -0400
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D18C06138F
+        for <linux-fbdev@vger.kernel.org>; Wed, 21 Apr 2021 05:16:34 -0700 (PDT)
+Received: by mail-vs1-xe41.google.com with SMTP id t23so4690208vso.11
+        for <linux-fbdev@vger.kernel.org>; Wed, 21 Apr 2021 05:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=n3eH8fc7c63400pMFay9v4NYcLZ+o0vJKsl88V8S4Zg=;
+        b=WfW+TPlnupdaNvX2n6vfZpELGw782QQLTkCHxWR1LzZ3p1zDC7/9cixGnqi7FTrt/t
+         v29cEOJsXZHvSO+dg45vC+X+mhVuUm0YwzXybd+sT5V7c/s+MuM5WKk0ycUSJPv++K9o
+         AGwoU/AJM2UQlTaKeWAt7xhNgNobFv7hAZH9Ev+X1A9dSKBIB6ol4tISt5ST2aU+rKwz
+         ylg+pb0kwWIqh8RPdEW1Yqr0ecJ6Psz+6f104WhFAVi0/Y98Aqmq4y+xucQMmp29AuDt
+         7RL0655eKuQXXT+NqWUyaamcPTorEqT9n90Oth6Wg7OVBrRbjehLgbK9xv7IJz+tAvWi
+         WjjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=n3eH8fc7c63400pMFay9v4NYcLZ+o0vJKsl88V8S4Zg=;
+        b=eEurvyzVjRWjtAPHw6S2DOKUcKBR5haeJhpWErER3GBjRvUyMOegB3Jta9v5oIqgup
+         YjnBUfLCw9jgSv3rie78XuFK9VslptHXGpjcqKrGVv+3CUFPM0dvXYnjtjTlROfAqJdB
+         FBKegGEQxYUUonVsBtL8MjS/5y9EORQJVDXOeV6YEX8T4zpTXP+yEJij8DVIbsSTitpP
+         YaSXDXumPfLA01P82v5wwO3p1/DFJ5Nomri66Sus8RUBLV4c3xuGJeNyPQ1KaNur7zGG
+         LW7CNJ9T4tDAWvGkJeq7NvwD/xP3IQaDfrwbUU84lOukiuIf9HS/fsBQGgFdY2OwCW9W
+         4ZIQ==
+X-Gm-Message-State: AOAM532i0Ldv2erBvLtLW0tlNjN6RnxoEn7kXIR4kr3cCYku1v6/n2eL
+        EUspfGTOLY+kCr12s5leGcCoeGqvUql8Uc95gcs=
+X-Google-Smtp-Source: ABdhPJyG8s0lXc4xHBZJAmU4J9OY9vh6VBojIDjH/NoLcOs4Uicfju5YtvEb6P0bT5eXyV/XMAOqyvYVSrfvT5c3vJ0=
+X-Received: by 2002:a67:7f14:: with SMTP id a20mr11131435vsd.46.1619007393069;
+ Wed, 21 Apr 2021 05:16:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: F010F1727C
-X-Spam-Status: No, score=0.10
-X-Stat-Signature: wp7o7gzq7pg8kxru5xh3thy9zy7qob7b
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19dJn8qDTGT/B7MaqDP5Xqh09MwTqzF5cI=
-X-HE-Tag: 1618948729-943129
+Received: by 2002:a67:ead3:0:0:0:0:0 with HTTP; Wed, 21 Apr 2021 05:16:32
+ -0700 (PDT)
+From:   Mark Jackson <fredrickbrown78654@gmail.com>
+Date:   Wed, 21 Apr 2021 05:16:32 -0700
+Message-ID: <CAJJVq4f=mWEXFM943Mc0=CvmyG058skcLfuxeahjdUN2senjnA@mail.gmail.com>
+Subject: Your ATM CARD For Compensation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 2021-04-20 at 08:44 -0700, Michael Kelley wrote:
-> Due to a full ring buffer, the driver may be unable to send updates to
-> the Hyper-V host.  But outputing the error message can make the problem
-> worse because console output is also typically written to the frame
-> buffer.  As a result, in some circumstances the error message is output
-> continuously.
-> 
-> Break the cycle by rate limiting the error message.  Also output
-> the error code for additional diagnosability.
-> 
-> Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+My Dear Friend
 
-None of the callers of this function ever check the return status.
-Why is important/useful to emit this message at all?
+This letter is to acknowledge the substantial contributions of time and
+energy you have made in trying to assist to claim the fund through
+your account, despite that it failed us because of your inability to
+continue financing the transaction.
 
-> ---
->  drivers/video/fbdev/hyperv_fb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-> index 4dc9077..a7e6eea 100644
-> --- a/drivers/video/fbdev/hyperv_fb.c
-> +++ b/drivers/video/fbdev/hyperv_fb.c
-> @@ -308,7 +308,7 @@ static inline int synthvid_send(struct hv_device *hdev,
->  			       VM_PKT_DATA_INBAND, 0);
->  
-> 
->  	if (ret)
-> -		pr_err("Unable to send packet via vmbus\n");
-> +		pr_err_ratelimited("Unable to send packet via vmbus; error %d\n", ret);
->  
-> 
->  	return ret;
->  }
+Besides I'm happy to inform you that I have succeeded in transferring
+the fund out of my home Country with the help of a new partner from
+Tuvalu.
 
+I am now in Tuvalu for investment and Tuvalu is composed of 9 coral
+atolls along a 360 mile chain in Polynesia. They gained independence
+in 1978 the former Ellice Islands.
 
+Therefore in appreciation of your earlier assistance, I have decided to
+compensate you with the sum of $850.000.00 USD which I raised in ATM
+CARD on your favour.
+
+This fund I have given to you has been deposited with a bank which has
+already opened an account and issued to you ATM CARD worth
+US$850.000.00 (Eight Hundred and Fifty Thousand United States Dollars)
+The ATM CARD is withdrawable from any ATM Machine in the world.
+
+So feel free and contact my Personal assistance (PA) in Benin
+Republic, his name is Mr.Stephen Pena
+
+Address: Carre 1299, Ste Rita City
+Cotonou,Benin Republic
+
+Email: ( spenaneoris@gmail.com )
+
+and instruct him to send the ATM CARD to you.
+
+Please do let me know immediately you receive it.
+
+Regards,
+Mr.Mark Jackson
