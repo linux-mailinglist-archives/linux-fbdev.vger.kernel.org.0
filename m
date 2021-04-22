@@ -2,74 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7392436705C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Apr 2021 18:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B74367ED9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Apr 2021 12:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242619AbhDUQmS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 21 Apr 2021 12:42:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242472AbhDUQmS (ORCPT
+        id S235097AbhDVKl5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 22 Apr 2021 06:41:57 -0400
+Received: from mail-oi1-f170.google.com ([209.85.167.170]:39649 "EHLO
+        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230270AbhDVKl5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 21 Apr 2021 12:42:18 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D360AC06138B
-        for <linux-fbdev@vger.kernel.org>; Wed, 21 Apr 2021 09:41:44 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id c3so10595493pfo.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 21 Apr 2021 09:41:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GEiqTcwIYygHUUwapLNNYA1FZwL2ut2yHDf7Ce3qLZs=;
-        b=BSzSaPsjSzmYbizPE8rTqWbkgM8baz0/6+lycnEoI1Qahw0RMU2EmDUxyCVZ/8wzXh
-         hcSAI7Dv01IZh5tQ4CRvYvmcQu+r1SpYhSfFP1nYZp14hYGPpWiIzKvWgHRhV4om1+Lr
-         /GIsEo87wLSBAxknclhdmw99LJ+rHAdtPgcu9cbtAsxnddvMTOsPN1DA7n1YNxtfZQcb
-         RVh+Xj/Dms4Ev9/jcalWmDmYx27E69BHXv5qMH8KLTLiINb92Y0r4/wdW75o9DcFv2uu
-         C9aTpbnSaSaW3lwDIvpx3GhmLKxDtMuhXHxtBNxm6yOTImoFVU2LqJmAyo512JttJ6Vv
-         AP1w==
+        Thu, 22 Apr 2021 06:41:57 -0400
+Received: by mail-oi1-f170.google.com with SMTP id i81so45379016oif.6;
+        Thu, 22 Apr 2021 03:41:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GEiqTcwIYygHUUwapLNNYA1FZwL2ut2yHDf7Ce3qLZs=;
-        b=MYyCfq+fAImigNg1hgaNcMkYKHWCmiJvksmlKUgRAGck5qS+2D3GCd0W48rt7JYiYy
-         Eu+Onaff0W2DGLO4BELmC/T4LzhagokQW5p7dl2YXBhfaUfFM72QUJJM2kJljzBHiVo6
-         3r5Oc7726LwHFQtBmA5l8As7UBl+ufTROXlDhpYEHy6zFWeSfjwGfJ8sEnCVEUunxa1F
-         91pGToVDCSJ2EYTg3XLs0TAz8aLa1rUtsMHo8t4A5Mbup3B2NjTrpfBroJL5ordKxWiZ
-         3IuEjVYP2ntUTWnmSdm70E+ITiGbQog0k1nKwlqLvtHOCCB5M8ls67ylWXJ0C7MfhwaW
-         kwOw==
-X-Gm-Message-State: AOAM530275AHOhkCpwSfAU1k+BBi8dT+vQpJjP4Pa//b+FZ6Ny+c+hXu
-        rX+X8V3NGj9poGHciLcQnCCcyfohYKw/nXL3yWc=
-X-Google-Smtp-Source: ABdhPJwDYf41xfoSdu/lZoEIMN+yk/9ZVLqOVs1xZ0rGaMvOsdRfU51+pvKuMEVCZphMEpLRH/koIKUHAaMg7Jh7Gbg=
-X-Received: by 2002:a65:4485:: with SMTP id l5mr5940476pgq.209.1619023304237;
- Wed, 21 Apr 2021 09:41:44 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZkoWU4pOXOH5nl2P4HSwkzSQBpPMbT0VUfATt/sd1IE=;
+        b=avThzTXjdBxubTm8QOc/sOqvZpmRUcLRVS6dfT1bCchkKrNpBf0EupxdGct0AOAOsI
+         hlEHKRYPGgemhk9LQ09NyQ6hutlN+dzDnaniqZ9WIrpyRLNFUdF9e4Q1/EmS9hwbnY41
+         3FHk5G1TyQfp6sIxsZ58VaVFaaiMq7n1cMkWV82ZTJTpEVgpmki7A21jzSe6yVelAoxc
+         RwB4ucDxBQB0U35Aug48yV+ZjR+bgFyqIEf5GfJgd8u5TkxhLI0t3U9wxqeqipj8CetA
+         O+Zl+LpS00F/gyEqA7R2jnBAMDyI3yMfj1XLEc7q8p224+hdFx5V/ArS25Gf3hDb448f
+         AZCw==
+X-Gm-Message-State: AOAM533d0S656lpegxZoI5197zSqguhISYpytJVDhHBY5bz+SrtbHQIa
+        tQmmCdLnK/dbmpf/n7gNP5RdCq2lV/FLE27dJnM=
+X-Google-Smtp-Source: ABdhPJz/8mzbKbTdBB4a2vYn5MZT4pcwu5nhZkckeIyYN1aDX+TAJ2gNPiuemuE0Conc0rPMX5voV09Ws9cAelaN388=
+X-Received: by 2002:aca:2107:: with SMTP id 7mr6822209oiz.8.1619088082362;
+ Thu, 22 Apr 2021 03:41:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:7300:c0f:b029:7:75f9:547d with HTTP; Wed, 21 Apr 2021
- 09:41:43 -0700 (PDT)
-Reply-To: sroomf70@gmail.com
-From:   "Mr. Pierre Eldaher" <pierre.eldaher57@gmail.com>
-Date:   Wed, 21 Apr 2021 09:41:43 -0700
-Message-ID: <CAGZKiwr_RYzzdKgWMjFzCdzjDrnBAPfNF==ebM7HiJJrXDaHJA@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
+References: <20210413170508.968148-1-kai.heng.feng@canonical.com>
+ <CADnq5_P7_7jOZWTo+KCj3jOpmyDPN8eH3jNTgg3xLC4V9QM7kQ@mail.gmail.com>
+ <CAKMK7uHR0VDk=C+u1d5qiiqQP+3ad5_gXQwvmPbJ56mG=3RjpQ@mail.gmail.com> <CADnq5_MpDz9myx8HiKihq-6_Ud48sN=NXN1_ga7WZa9LguzSjA@mail.gmail.com>
+In-Reply-To: <CADnq5_MpDz9myx8HiKihq-6_Ud48sN=NXN1_ga7WZa9LguzSjA@mail.gmail.com>
+From:   Sudeep Holla <sudeep.holla@arm.com>
+Date:   Thu, 22 Apr 2021 11:41:11 +0100
+Message-ID: <CAPKp9uYEwNfmBndCWt5BSZ7VQ+JHAhzd6aBsN8WO1nmMUQ2Mcw@mail.gmail.com>
+Subject: Re: [PATCH] efifb: Check efifb_pci_dev before using it
+To:     Alex Deucher <alexdeucher@gmail.com>,
+        "open list:EFIFB FRAMEBUFFER DRIVER" <linux-fbdev@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
+        pjones@redhat.com
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        open list <linux-kernel@vger.kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sudeep Holla <sudeep.holla@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-Greetings,
-From Mr. Pierre Herald, we notify you through our official mail but no
-respond from you before sending you with this private email hope you
-Received the Fund that was paid to your account? do not hesitate to
-keep us notice as soon as possible to enable us make the balance
-transfer into your nominated account. awaiting your urgent
-notification.
+On Wed, Apr 14, 2021 at 8:20 AM Alex Deucher <alexdeucher@gmail.com> wrote:
+>
+> On Tue, Apr 13, 2021 at 2:37 PM Daniel Vetter <daniel@ffwll.ch> wrote:
+> >
+> > On Tue, Apr 13, 2021 at 8:02 PM Alex Deucher <alexdeucher@gmail.com> wrote:
+> > >
+> > > On Tue, Apr 13, 2021 at 1:05 PM Kai-Heng Feng
+> > > <kai.heng.feng@canonical.com> wrote:
+> > > >
+> > > > On some platforms like Hyper-V and RPi4 with UEFI firmware, efifb is not
+> > > > a PCI device.
+> > > >
+> > > > So make sure efifb_pci_dev is found before using it.
+> > > >
+> > > > Fixes: a6c0fd3d5a8b ("efifb: Ensure graphics device for efifb stays at PCI D0")
+> > > > BugLink: https://bugs.launchpad.net/bugs/1922403
+> > > > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > >
+> > > Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+> >
+> > fbdev is in drm-misc, so maybe you can push this one too?
+>
+> Yes, pushed.  Thanks!
+>
 
-Thanks
-Mr. Pierre Eldaher,
-Foreign Remittance
+Can we have this pushed into the branch that gets merged into linux-next.
+I still don't see this fix in -next and we are unable to do testing on our
+platform as we hit a boot crash without this as reported in [1]. We prefer
+running tests on -next without any additional patches or reverts, hence
+the nagging, sorry for that.
 
-Best regards
-Prof. Dr Diane
-Head of Foreign Operation
+Regards,
+Sudeep
+
+[1] https://lore.kernel.org/dri-devel/20210415102224.2764054-1-sudeep.holla@arm.com/
