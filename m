@@ -2,89 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08F8C36C5D1
-	for <lists+linux-fbdev@lfdr.de>; Tue, 27 Apr 2021 14:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B4936D7F8
+	for <lists+linux-fbdev@lfdr.de>; Wed, 28 Apr 2021 15:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235489AbhD0MLQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 27 Apr 2021 08:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235476AbhD0MLP (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 27 Apr 2021 08:11:15 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6711C061574;
-        Tue, 27 Apr 2021 05:10:31 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id t22so6941485pgu.0;
-        Tue, 27 Apr 2021 05:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yFns5/VsmEuhW6BFWribM/FHEmMkehdcNDcB3HXxuuw=;
-        b=HNETH0OLfLiShq7AcW+L88ywPZDO8cU6Y6ThAvLx4MoB+YWrRf4Pq3xMYOjS9nJaXc
-         xBlPQl402XFA9l/GEHmI6/aO7otQIMfCwyOr7vmJqqrDEq6txh7URe5y1rslCUt0zxlb
-         0wXm1NL3Xfk5BgOArWcqNvWYkI3cXlvm1+02gz0SAOaAH2HtLpUMNYj8MDgci0ReAMzd
-         k92/kisjqNKvdGAu8ElYjtP4vzwCT+B5O4oZBfPvw+2NqKWiv/fjvJsiXjm+3o4ng0Ow
-         KC9niJ3R00A0lG9mwUg0Y1cX8PXFBgdA10W5FciKCTemu4pRML51RMcREDN1+IIt1fde
-         blYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yFns5/VsmEuhW6BFWribM/FHEmMkehdcNDcB3HXxuuw=;
-        b=AVwVpRLsvG91wRm9SKdBnv8t/jr80/bPYTdzdGcA/NxgR17eMRTow16PFkN4Z0wNgf
-         oZ8mUBl2RJbifhKCNgBTw6CAKGjYGpE9rnLOnXsqrDkOOxAP225t/XZjod/c+Wdp80tT
-         7FeUD3aStbbQ9BzwJbJIqwLVHu9ck81vAQ0uv7d7egjDLQeN0yszxmPVcTTqP8xG6fHq
-         +44z76WA7oe8WmnYjxLXWa8qjHIVmJBs+CGBMHj3JkqQfmzkfMflZ/ob4n8P6pEmDSVn
-         oXfXFRNAoaCogOANl4taXpBRhVAW7yJwbdpl2Oir7jLLulP7pz+ttc9IUHtrnXt5yIU+
-         SPPA==
-X-Gm-Message-State: AOAM531BKilKvxxqj/7Wr4s9lxJkwW/bXn5rlcwcH2b/lLVr/svR5f3g
-        tzgNZpKMFCtjDL8VafKKGlLQkK6wzOZKq4Wz9O8=
-X-Google-Smtp-Source: ABdhPJzxZgX8TOkf06ULjK9UhatMG6bwCZGoTYAzSH7DAex31IQ5gsrlyM/5e/vVr5Nvm8eb9Y29b5AE65ZU6gtJ7wU=
-X-Received: by 2002:a63:a847:: with SMTP id i7mr21248455pgp.203.1619525431391;
- Tue, 27 Apr 2021 05:10:31 -0700 (PDT)
+        id S239753AbhD1NFU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 28 Apr 2021 09:05:20 -0400
+Received: from mga14.intel.com ([192.55.52.115]:4685 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239723AbhD1NFU (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 28 Apr 2021 09:05:20 -0400
+IronPort-SDR: y1kyJck//U6UKIL/BKh0QoNOn0qctb/rtph+bmyBCYjc32K1J19AOcc++jzhGvwFPqMlqLdomz
+ R/ANxMfaTxjw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9968"; a="196289531"
+X-IronPort-AV: E=Sophos;i="5.82,258,1613462400"; 
+   d="scan'208";a="196289531"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2021 06:04:10 -0700
+IronPort-SDR: 3QGh9xcon7o8Mp/hrhfZkbayi1BOBXSAL7vus/SsVtZ6XM3u9KH4XiYSHzy6btL+rwkJAgkd40
+ DGI50JdUwa4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,258,1613462400"; 
+   d="scan'208";a="536952502"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 28 Apr 2021 06:04:06 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B29843C8; Wed, 28 Apr 2021 16:04:22 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Phil Reid <preid@electromag.com.au>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v3 0/4] staging: fbtft: Fixing GPIO handling issues
+Date:   Wed, 28 Apr 2021 16:04:11 +0300
+Message-Id: <20210428130415.55406-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210416142044.17766-1-andriy.shevchenko@linux.intel.com> <YIfwZ/oPVB9splQq@kroah.com>
-In-Reply-To: <YIfwZ/oPVB9splQq@kroah.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 27 Apr 2021 15:10:14 +0300
-Message-ID: <CAHp75VdkPWKVSYmYqerMs=6BpkS81KcL9DnYGL5XbkMm-rrW9g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] fbtft: Replace custom ->reset() with generic one
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Apr 27, 2021 at 2:09 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> On Fri, Apr 16, 2021 at 05:20:41PM +0300, Andy Shevchenko wrote:
-> > The custom ->reset() repeats the generic one, replace it.
-> >
-> > Note, in newer kernels the context of the function is a sleeping one,
-> > it's fine to switch over to the sleeping functions. Keeping the reset
-> > line asserted longer than 20 microseconds is also okay, it's an idling
-> > state of the hardware.
-> >
-> > Fixes: b2ebd4be6fa1 ("staging: fbtft: add fb_agm1264k-fl driver")
->
-> What does this "fix"?  A bug or just a "it shouldn't have been done this
-> way"?
+This series fixes a number of GPIO handling issues after converting this driver
+to use descriptors.
 
-There is nothing to fix actually, it's rather a pointer where this
-change has been missed for some reason. I'll remove the tag.
+The series has been tested on HX8347d display with parallel interface. Without
+first patch it's not working.
 
-> And as others pointed out, if you could put "staging: fbtft:" as a
-> prefix here, that would be much better.
+In v3:
+ - added staging prefix (Fabio)
+ - slightly amended commit message in the patch 1
+ - added Rb tag (Phil)
+ - dropped Fixes tag from the patch 2 (Greg)
 
-Got it, thanks!
+Andy Shevchenko (4):
+  staging: fbtft: Rectify GPIO handling
+  staging: fbtft: Replace custom ->reset() with generic one
+  staging: fbtft: Don't spam logs when probe is deferred
+  staging: fbtft: Update TODO
+
+ drivers/staging/fbtft/TODO             |  5 -----
+ drivers/staging/fbtft/fb_agm1264k-fl.c | 30 +++++++-------------------
+ drivers/staging/fbtft/fb_bd663474.c    |  4 ----
+ drivers/staging/fbtft/fb_ili9163.c     |  4 ----
+ drivers/staging/fbtft/fb_ili9320.c     |  1 -
+ drivers/staging/fbtft/fb_ili9325.c     |  4 ----
+ drivers/staging/fbtft/fb_ili9340.c     |  1 -
+ drivers/staging/fbtft/fb_s6d1121.c     |  4 ----
+ drivers/staging/fbtft/fb_sh1106.c      |  1 -
+ drivers/staging/fbtft/fb_ssd1289.c     |  4 ----
+ drivers/staging/fbtft/fb_ssd1325.c     |  2 --
+ drivers/staging/fbtft/fb_ssd1331.c     |  6 ++----
+ drivers/staging/fbtft/fb_ssd1351.c     |  1 -
+ drivers/staging/fbtft/fb_upd161704.c   |  4 ----
+ drivers/staging/fbtft/fb_watterott.c   |  1 -
+ drivers/staging/fbtft/fbtft-bus.c      |  3 +--
+ drivers/staging/fbtft/fbtft-core.c     | 25 +++++++++------------
+ drivers/staging/fbtft/fbtft-io.c       | 12 +++++------
+ 18 files changed, 27 insertions(+), 85 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.2
+
