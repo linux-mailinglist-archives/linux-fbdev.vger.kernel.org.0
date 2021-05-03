@@ -2,88 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B53AC371E1D
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 May 2021 19:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FCBF371E6F
+	for <lists+linux-fbdev@lfdr.de>; Mon,  3 May 2021 19:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235247AbhECRL0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 May 2021 13:11:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234996AbhECRJW (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 3 May 2021 13:09:22 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFECC06138D;
-        Mon,  3 May 2021 10:08:29 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id h20so3176024plr.4;
-        Mon, 03 May 2021 10:08:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WrRWmFjrLRqx+OLwKIC7R/uG9pdSkec2h+vi6VT8VLY=;
-        b=Jp74gdkkTmgDo9v4VOfTpJWRqlLJFaozRUNlQT7QkD5ejT0wnbC50osv1BWfZqR/qq
-         Ba4U5mUYkXkha4Z4pxqJ/CPZR7j7vcOZ4mOs7ks7D/OniKWFLQ0QeSVylaOnlHu3tFah
-         PvZbNIVFG7qeMhr6zz6zSR2DL5LCjy3RnqNS+H9cmjYfR/27ZMkDmLv0fDyXAeFZvMD1
-         WnVIGY76KEtZrqr4kaP+vXWQaQylfPx/bWxiYC7prQAnTPFDT8skawp6RHzJyuZAekxg
-         92y+HljpwYO4uNzy9fGbUm5IYxIbSNIAzM5okopoBm5Cy8j3R4MjfanI+ReWGcJmwurM
-         pAIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WrRWmFjrLRqx+OLwKIC7R/uG9pdSkec2h+vi6VT8VLY=;
-        b=tgVCdfMPRWmpoND1fO3BjByeYjmCGCXaLaXkYfWkeXknMOwC4/KP8o8ttRhU5R2kQJ
-         7YdEJyntouUp9yOuPqiwz7HxZJfjM7bbiJCxvS8MXWbKV3ifxtmC7AchdEe4OSG/ACJY
-         frQfnWYhWZ/nhDROCuX5dtMLALs2Dr6U93b00IM/93Eap8NXh88+BdSraRQNTa/mGe1b
-         gGN2NQ/zapNBekuFL6w39Cmalcti/sRn6vOvkUhLcA7W0ipVM4sS6V9s7XL3WoXUKHtL
-         pq1AvrcD7lx8QzKNpBDblwA6/k7I3lv27FVhamoJ98p7MIHV9QK5CqIsI9nUrFPwluPN
-         l7Kg==
-X-Gm-Message-State: AOAM531/n5QUGA9udvwSK0LIFxCvvmg3/zmy8SiCLAFNPt0yj8U+nK0W
-        M6/hGyzD0tKeVqWKVj7dCFpZz3XL07KV5ossgD4=
-X-Google-Smtp-Source: ABdhPJxMSaqHagIBw/RaN/Jrt5UgDo95VR2FBt5AZ/JmWispzseF85caEUVyTm8/e3OxIIvge/eTA9e/CFlO1Lga2Yk=
-X-Received: by 2002:a17:902:264:b029:eb:3d3a:a09c with SMTP id
- 91-20020a1709020264b02900eb3d3aa09cmr21437040plc.0.1620061708582; Mon, 03 May
- 2021 10:08:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210428130415.55406-1-andriy.shevchenko@linux.intel.com>
- <20210428130415.55406-2-andriy.shevchenko@linux.intel.com> <YJAm6D2LUtVz1YNa@kroah.com>
-In-Reply-To: <YJAm6D2LUtVz1YNa@kroah.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 3 May 2021 20:08:12 +0300
-Message-ID: <CAHp75VeBbjpczF0ggQ3STySnj15dthPNF_-=b9VXNeMyb_LY8g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] staging: fbtft: Rectify GPIO handling
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        id S232509AbhECRWQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 3 May 2021 13:22:16 -0400
+Received: from mga01.intel.com ([192.55.52.88]:63289 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232381AbhECRWO (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 3 May 2021 13:22:14 -0400
+IronPort-SDR: 1ABURqoDmOBEfn4n1B3i4bkFCnmzpZGExPFx6qzpxQLpDhyCoJVfUHKmBRj2Ny4epPhLD5Hv1C
+ ZzxXdw1+8fSQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9973"; a="218587847"
+X-IronPort-AV: E=Sophos;i="5.82,270,1613462400"; 
+   d="scan'208";a="218587847"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2021 10:21:02 -0700
+IronPort-SDR: VrOy76AmqL4T0zx2YUWVBg0Fv1E91Qppz4mp+c/5r3/3lWJQrPK0ypGqdfbZu+NHR3lcBMLMk6
+ nr5JcqrYUv0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,270,1613462400"; 
+   d="scan'208";a="450456779"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 03 May 2021 10:21:00 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id AA8C414B; Mon,  3 May 2021 20:21:19 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Phil Reid <preid@electromag.com.au>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.net>,
-        Nishad Kamdar <nishadkamdar@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v4 0/5] staging: fbtft: Fixing GPIO handling issues
+Date:   Mon,  3 May 2021 20:21:09 +0300
+Message-Id: <20210503172114.27891-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, May 3, 2021 at 7:46 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> On Wed, Apr 28, 2021 at 04:04:12PM +0300, Andy Shevchenko wrote:
+This series fixes a number of GPIO handling issues after converting this driver
+to use descriptors.
 
-> > Fixes: 92e3e884887c ("Staging: staging: fbtft: Fix GPIO handling")
-> > Fixes: b918d1c27066 ("Staging: staging: fbtft: Fix reset assertion when using gpio descriptor")
-> > Fixes: dbc4f989c878 ("Staging: staging: fbtft: Fix probing of gpio descriptor")
-> > Fixes: c440eee1a7a1 ("Staging: staging: fbtft: Switch to the gpio descriptor interface")
->
-> I get the following error when trying to apply this:
+The series has been tested on HX8347d display with parallel interface. Without
+first patch it's not working.
 
-Argh, i replaced over all commit messages when added staging prefix.
-Thanks for catching this!
+In v4:
+- fixed Fixes tags (Greg)
+- added return statement to dev_err_probe() (Dan)
+- new patch to support orientation on HX8347d
 
-> Please fix up for your next version of this series.
+In v3:
+- added staging prefix (Fabio)
+- slightly amended commit message in the patch 1
+- added Rb tag (Phil)
+- dropped Fixes tag from the patch 2 (Greg)
 
-Will do!
+Andy Shevchenko (5):
+  staging: fbtft: Rectify GPIO handling
+  staging: fbtft: Don't spam logs when probe is deferred
+  staging: fbtft: Add support for orientation on Himax HX8347d
+  staging: fbtft: Replace custom ->reset() with generic one
+  staging: fbtft: Update TODO
+
+ drivers/staging/fbtft/TODO             |  5 -----
+ drivers/staging/fbtft/fb_agm1264k-fl.c | 30 +++++++-------------------
+ drivers/staging/fbtft/fb_bd663474.c    |  4 ----
+ drivers/staging/fbtft/fb_hx8347d.c     | 29 ++++++++++++++++++++++---
+ drivers/staging/fbtft/fb_ili9163.c     |  4 ----
+ drivers/staging/fbtft/fb_ili9320.c     |  1 -
+ drivers/staging/fbtft/fb_ili9325.c     |  4 ----
+ drivers/staging/fbtft/fb_ili9340.c     |  1 -
+ drivers/staging/fbtft/fb_s6d1121.c     |  4 ----
+ drivers/staging/fbtft/fb_sh1106.c      |  1 -
+ drivers/staging/fbtft/fb_ssd1289.c     |  4 ----
+ drivers/staging/fbtft/fb_ssd1325.c     |  2 --
+ drivers/staging/fbtft/fb_ssd1331.c     |  6 ++----
+ drivers/staging/fbtft/fb_ssd1351.c     |  1 -
+ drivers/staging/fbtft/fb_upd161704.c   |  4 ----
+ drivers/staging/fbtft/fb_watterott.c   |  1 -
+ drivers/staging/fbtft/fbtft-bus.c      |  3 +--
+ drivers/staging/fbtft/fbtft-core.c     | 25 +++++++++------------
+ drivers/staging/fbtft/fbtft-io.c       | 12 +++++------
+ 19 files changed, 53 insertions(+), 88 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.2
+
