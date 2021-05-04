@@ -2,70 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9A1371E5E
-	for <lists+linux-fbdev@lfdr.de>; Mon,  3 May 2021 19:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81C4372417
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 May 2021 03:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbhECRWI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 3 May 2021 13:22:08 -0400
-Received: from mga06.intel.com ([134.134.136.31]:7412 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231299AbhECRWE (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 3 May 2021 13:22:04 -0400
-IronPort-SDR: RGlBeDZXWglezH/HjeR/cRqIBjnXxao28zNUnZ+0q4/3W8e5hm6DyoV39ZIO/eJa903S2GVwbz
- 9wlwyq6DAFeg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9973"; a="259080140"
-X-IronPort-AV: E=Sophos;i="5.82,270,1613462400"; 
-   d="scan'208";a="259080140"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2021 10:21:05 -0700
-IronPort-SDR: QFj6XrTZZjjDNCdv/d0EwzzJ5NTva9iC54/5d99ziVuUUgvD9NKjBQ0WKD4PO6ZyQXZceOlnDY
- tntO1a87N82A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,270,1613462400"; 
-   d="scan'208";a="606706383"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 03 May 2021 10:21:03 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 00C9129A; Mon,  3 May 2021 20:21:19 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Phil Reid <preid@electromag.com.au>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v4 5/5] staging: fbtft: Update TODO
-Date:   Mon,  3 May 2021 20:21:14 +0300
-Message-Id: <20210503172114.27891-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210503172114.27891-1-andriy.shevchenko@linux.intel.com>
-References: <20210503172114.27891-1-andriy.shevchenko@linux.intel.com>
+        id S229499AbhEDBF7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 3 May 2021 21:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49990 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229497AbhEDBF6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 3 May 2021 21:05:58 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64655C061574;
+        Mon,  3 May 2021 18:05:04 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id u25so9110039ljg.7;
+        Mon, 03 May 2021 18:05:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=r9D/Vv46NFUDS7eEuuQgoKUOv2tmGGOdBAwQyrDcRjQ=;
+        b=UxDctmF7VvjRqvdlfyHMqNtpKHFRKap27sX97KfPpVoeIPDxGsVw1OYBYVdm/L46RI
+         mA95gpLDg+C2PlFRKB3QTF9Tn0jMCV1C4GS2XiPGbANUTpFgeIHrTOQHP5aFycX5yzlw
+         ZtikYubAOE1fjVTnkFss3IopJFRP6Rztzg0aelsRrR8Nd4c9j0itS4xQJFjJ/xxZoJeg
+         G3an5vGGWDam5tgKt5NnI+GO4j7q4SprGw8beLUBt+6ejuOr2J8W3cjXabIye1x6NvyN
+         6yyjNr+DKoPLNjFfOUErDqRdQFmp+ZLM+ZzKrsO0g1lzT8KUgC0Zi0JNgXzHBZ0+Ioy0
+         ZvHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=r9D/Vv46NFUDS7eEuuQgoKUOv2tmGGOdBAwQyrDcRjQ=;
+        b=VGBJ+dXFvhjTTxc6SDt9rWmjPMLswq+U4OyDsxB/K5lS58MygAcRSBN1cGrJndxky1
+         8EMy26hJALt+F5YqLp1tl0NEfSQysdeuZGKsXiJJM0jhWQwRAirpXmgyhhBs1zPqgfqP
+         dbKl9D6wBLXPArxTJXP2P5CkVwRGsiaXj6vDZuF1bWAhngf6OGsauH4fIq8gsPWa2UX9
+         qNoEjmRyq8aooHZcTIfThqvYAB9sB3YR2emSyPJxySImIk4aRnrbWGyTd70TgpDeGg3J
+         hgbrWHR4iMQdaWtu0EwmT3ImR9qk1DgyQAayujQ1vgGJa/ezb9mVwJeXHouFMRCN4nUx
+         ZcOw==
+X-Gm-Message-State: AOAM531KtYYeIfqzJzRF+VCK87KARTfBYZ1xFNXQRJtv5BMesY11favN
+        9Tblh2qXPdpm9Uk9YfWyaL3SPg1fO+QnC9tNFZG8G+PfXWc=
+X-Google-Smtp-Source: ABdhPJzAZ3RjpbIHD2cbAWNsd/YGWoRRNdDV4/3/bb7xfoEpcaVivxBQIxquPZHLE0/2FfsQfCnw0959+31Ihtfub2Y=
+X-Received: by 2002:a2e:9656:: with SMTP id z22mr6658800ljh.168.1620090302762;
+ Mon, 03 May 2021 18:05:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1619421491-31494-1-git-send-email-u0084500@gmail.com>
+ <1619421491-31494-3-git-send-email-u0084500@gmail.com> <20210430201054.GA3805118@robh.at.kernel.org>
+In-Reply-To: <20210430201054.GA3805118@robh.at.kernel.org>
+From:   ChiYuan Huang <u0084500@gmail.com>
+Date:   Tue, 4 May 2021 09:04:51 +0800
+Message-ID: <CADiBU3_Nvx99yhukNVgmyiZyAugiVF7OfMoqudUM5_gk8GpPRg@mail.gmail.com>
+Subject: Re: [RESEND PATCH v6 3/4] mfd: rt4831: Adds DT binding document for
+ Richtek RT4831
+To:     Rob Herring <robh@kernel.org>
+Cc:     b.zolnierkie@samsung.com, lkml <linux-kernel@vger.kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        lgirdwood@gmail.com,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee.jones@linaro.org>,
+        linux-fbdev@vger.kernel.org, cy_huang <cy_huang@richtek.com>,
+        jingoohan1@gmail.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
+        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Now, after a few fixes we may consider the conversion to
-the GPIO descriptor API is done.
+HI,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/staging/fbtft/TODO | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/drivers/staging/fbtft/TODO b/drivers/staging/fbtft/TODO
-index a9f4802bb6be..e72a08bf221c 100644
---- a/drivers/staging/fbtft/TODO
-+++ b/drivers/staging/fbtft/TODO
-@@ -1,8 +1,3 @@
--* convert all uses of the old GPIO API from <linux/gpio.h> to the
--  GPIO descriptor API in <linux/gpio/consumer.h> and look up GPIO
--  lines from device tree, ACPI or board files, board files should
--  use <linux/gpio/machine.h>
--
- * convert all these over to drm_simple_display_pipe and submit for inclusion
-   into the DRM subsystem under drivers/gpu/drm - fbdev doesn't take any new
-   drivers anymore.
--- 
-2.30.2
-
+Rob Herring <robh@kernel.org> =E6=96=BC 2021=E5=B9=B45=E6=9C=881=E6=97=A5 =
+=E9=80=B1=E5=85=AD =E4=B8=8A=E5=8D=884:10=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Mon, 26 Apr 2021 15:18:10 +0800, cy_huang wrote:
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> >
+> > Adds DT binding document for Richtek RT4831.
+> >
+> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> > ---
+> > Resend this v6 patch series to loop devicetree reviewers.
+> > ---
+> >  .../devicetree/bindings/mfd/richtek,rt4831.yaml    | 90 ++++++++++++++=
+++++++++
+> >  1 file changed, 90 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt483=
+1.yaml
+> >
+>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+Will merge in next v7. Thanks.
