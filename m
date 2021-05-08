@@ -2,81 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BED1376C9B
-	for <lists+linux-fbdev@lfdr.de>; Sat,  8 May 2021 00:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45585377103
+	for <lists+linux-fbdev@lfdr.de>; Sat,  8 May 2021 11:44:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbhEGWZu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 7 May 2021 18:25:50 -0400
-Received: from bosmailout03.eigbox.net ([66.96.186.3]:45669 "EHLO
-        bosmailout03.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGWZo (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 May 2021 18:25:44 -0400
-X-Greylist: delayed 1816 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:25:34 EDT
-Received: from bosmailscan08.eigbox.net ([10.20.15.8])
-        by bosmailout03.eigbox.net with esmtp (Exim)
-        id 1lf8QM-0003Fa-7M; Fri, 07 May 2021 17:54:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=I+6Bb1DJY/YYTRas0wZTN+AC1D
-        vtIg40M7SDAM/b29+/wY3GjGjzug9/OzX2aPoevJgNlEKSTs0SrEPfP3WhSQM0PCLHlkQfkyX8QT9
-        UZ7TTwAz03WtyNGtE+DdqqC0pYUcPkHvqE4MDSKlo5Vm1z1vJqGpkJRtWe2MFWIr6++JBuHOfV7Fd
-        34Die1lJ1lpPfDh70Zq++IiTaMjdlcGGo7pbn4hVn1WweIC9h772TR5+6npXCISSeeyCgPsBbikdE
-        ZWIrJkpukBwvBgblKKCxDugovauKoCEDbS56mNadJP+sg7ztteNlHrnEQFJYYsCNrcdD1v8ilxnSi
-        f8nqykSw==;
-Received: from [10.115.3.32] (helo=bosimpout12)
-        by bosmailscan08.eigbox.net with esmtp (Exim)
-        id 1lf8QK-0002fP-Rn; Fri, 07 May 2021 17:54:16 -0400
-Received: from boswebmail06.eigbox.net ([10.20.16.6])
-        by bosimpout12 with 
-        id 1xuC2500D07qujN01xuFUj; Fri, 07 May 2021 17:54:16 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=homestead)
-        by boswebmail06.eigbox.net with esmtp (Exim)
-        id 1lf8PX-0006IT-Ae; Fri, 07 May 2021 17:53:27 -0400
-Received: from [197.239.81.229]
- by emailmg.homestead.com
- with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:53:27 -0400
+        id S229797AbhEHJpr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 8 May 2021 05:45:47 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:33062 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229583AbhEHJpq (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 8 May 2021 05:45:46 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1489iWBS019624;
+        Sat, 8 May 2021 09:44:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=+7ZZyYeUYy9IQ3ZxTjAWfnpZ4ty+iYLlka/hAfiNP4U=;
+ b=IFce8VSQZEA2AAnfDoQWgi7u7nQeClHrqAsEhnZvR8cwkDtMg7HaWsi/8cs54RViMSjv
+ HE6GsNm7ThtDlcvVzyFv7aR4NkoPZQUi3P4HkZoHUCUE8oYem1Q+2TIS/wN4uujjq2uU
+ ZTFwBY6ZNiv9NVcJXE8KES9VjJ+zlSmLd7SYM5J6LRyWUgcasW8jfmCJxezqLQ8wmraN
+ 1e05dEOqVkTrDxRRaLFkjQkWk4yEjNa4n4RH/kp2jNTwwBw5/Wwpv6nc68zai1qQNnlU
+ 3wy7d1EwLSVFfdePqykkp9hvc63Zqni6HxLeWJDP8KiaaNXe7WA45w6BCs+DGEal5Nmj Rw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 38dg5b8djg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 May 2021 09:44:32 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1489iUoF179553;
+        Sat, 8 May 2021 09:44:32 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by aserp3020.oracle.com with ESMTP id 38djf0uadg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 May 2021 09:44:32 +0000
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 1489iVcf179564;
+        Sat, 8 May 2021 09:44:31 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 38djf0uadd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 May 2021 09:44:31 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 1489iTfm005380;
+        Sat, 8 May 2021 09:44:29 GMT
+Received: from kadam (/102.36.221.92)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 08 May 2021 02:44:28 -0700
+Date:   Sat, 8 May 2021 12:43:50 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Pavle Rohalj <pavle.rohalj@gmail.com>
+Cc:     sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/49] staging: sm750fb: Rename dviInit to dvi_init
+ and update param names
+Message-ID: <20210508094350.GJ1955@kadam>
+References: <cover.1617776878.git.pavle.rohalj@gmail.com>
+ <6c6ecf7eee7d41492dbbcc4410db7eefd1fbb13d.1617776878.git.pavle.rohalj@gmail.com>
 MIME-Version: 1.0
-Date:   Fri, 07 May 2021 21:53:27 +0000
-From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
-To:     undisclosed-recipients:;
-Subject: URGENT REPLY NEEDED
-Reply-To: suzara2017malingwan@gmail.com
-Mail-Reply-To: suzara2017malingwan@gmail.com
-Message-ID: <4c6a48748f6731dac9b66cce1916443b@godsofu4.com>
-X-Sender: fast65@godsofu4.com
-User-Agent: Roundcube Webmail/1.3.14
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-EN-AuthUser: fast65@godsofu4.com
-Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6c6ecf7eee7d41492dbbcc4410db7eefd1fbb13d.1617776878.git.pavle.rohalj@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-GUID: TzmPJEEHRRvF5WfjN67V6i6ygZ5sj5wF
+X-Proofpoint-ORIG-GUID: TzmPJEEHRRvF5WfjN67V6i6ygZ5sj5wF
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9977 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 adultscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2105080070
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+On Tue, Apr 06, 2021 at 11:36:01PM -0700, Pavle Rohalj wrote:
+> Fix "Avoid CamelCase" checkpatch.pl checks for the function dviInit and
+> its parameter names in ddk750_dvi.h.
+> 
+> Signed-off-by: Pavle Rohalj <pavle.rohalj@gmail.com>
+> ---
+>  drivers/staging/sm750fb/ddk750_dvi.c |  2 +-
+>  drivers/staging/sm750fb/ddk750_dvi.h | 20 ++++++++++----------
+>  2 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/staging/sm750fb/ddk750_dvi.c b/drivers/staging/sm750fb/ddk750_dvi.c
+> index db19bf732482..943cbcafcffa 100644
+> --- a/drivers/staging/sm750fb/ddk750_dvi.c
+> +++ b/drivers/staging/sm750fb/ddk750_dvi.c
+> @@ -30,7 +30,7 @@ static struct dvi_ctrl_device dcft_supported_dvi_controller[] = {
+>  #endif
+>  };
+>  
+> -int dviInit(unsigned char edge_select,
+> +int dvi_init(unsigned char edge_select,
+>  	    unsigned char bus_select,
+>  	    unsigned char dual_edge_clk_select,
+>  	    unsigned char hsync_enable,
 
+The fact that you were able to change this without changing any callers
+suggests that this is not used.  In that case, just delete it instead
+of renaming it.
 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
+regards,
+dan carpenter
 
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
-
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
-
-With kind regards
-Mrs Suzara Maling Wan
