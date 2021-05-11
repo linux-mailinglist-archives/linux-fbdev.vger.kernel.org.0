@@ -2,56 +2,40 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DBD2378437
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 May 2021 12:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E33379B21
+	for <lists+linux-fbdev@lfdr.de>; Tue, 11 May 2021 02:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbhEJKvL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 10 May 2021 06:51:11 -0400
-Received: from onstation.org ([52.200.56.107]:33058 "EHLO onstation.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232113AbhEJKsQ (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 10 May 2021 06:48:16 -0400
-X-Greylist: delayed 309 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 06:48:14 EDT
-Received: from localhost (c-98-239-145-235.hsd1.wv.comcast.net [98.239.145.235])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: masneyb)
-        by onstation.org (Postfix) with ESMTPSA id 3A7E73E9FF;
-        Mon, 10 May 2021 10:41:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onstation.org;
-        s=default; t=1620643319;
-        bh=6y+Fzt4oWzPMV01Ga2YdSBHuWTVF3ofTAHQn+x+PJmY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YRE1U8Rj3MLTexBrgPH+cxlh/pQd518l2EkidlivYwlL0QLIWEs+Q/XPyrcTPg0cl
-         d3GxrPsgj7yEbpcP93H6/l3TfKPWhulcdoVQpMVo7ZRnqspkf6ljinyrCx0k2sLvkB
-         a+hApArrdIQRbvrAJNJwBQw786fkrByiVubdkGSw=
-Date:   Mon, 10 May 2021 06:41:58 -0400
-From:   Brian Masney <masneyb@onstation.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Dan Murphy <dmurphy@ti.com>
-Subject: Re: [PATCH v1 1/1] backlight: lm3630a_bl: Put fwnode in error case
- during ->probe()
-Message-ID: <20210510104158.GA296@onstation.org>
-References: <20210510095716.3302910-1-andy.shevchenko@gmail.com>
+        id S230196AbhEKAVK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 10 May 2021 20:21:10 -0400
+Received: from [125.7.54.12] ([125.7.54.12]:51032 "EHLO
+        snhve01-ext-001.mktdns.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S230057AbhEKAVK (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 10 May 2021 20:21:10 -0400
+X-MSFBL: 67Si4Ag1hnHamfGTOU1JXonGA3EzCVP6rvQBwL+2Jl4=|eyJnIjoiYmctc25odmU
+        wMWQtMDEiLCJiIjoic25odmUwMS1tdGEwMS0xMjUtNy01NC0xMiIsInUiOiIldmN
+        0eF9tZXNze21rdG9NYWlsaW5nSUR9IiwiciI6ImxpbnV4LWZiZGV2QHZnZXIua2V
+        ybmVsLm9yZyJ9
+Reply-To: <avislmarie@yahoo.com>
+Message-ID: <56.9B.20919.8ADC9906@snhve01-mta01.marketo.org>
+From:   "COMPANY" <marieaviss@gmail.com>
+Subject: Re: Business inquiries 05:11:2021
+Date:   Mon, 10 May 2021 17:19:37 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210510095716.3302910-1-andy.shevchenko@gmail.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, May 10, 2021 at 12:57:16PM +0300, Andy Shevchenko wrote:
-> device_for_each_child_node() bumps a reference counting of a returned variable.
-> We have to balance it whenever we return to the caller.
-> 
-> Fixes: 8fbce8efe15cd ("backlight: lm3630a: Add firmware node support")
-> Cc: Brian Masney <masneyb@onstation.org>
-> Cc: Dan Murphy <dmurphy@ti.com>
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-Reviewed-by: Brian Masney <masneyb@onstation.org>
-
+Hello
+How are you doing today?
+I am willing to initiate a business relationship with you.
+Yours sincerely
+MA/PM
