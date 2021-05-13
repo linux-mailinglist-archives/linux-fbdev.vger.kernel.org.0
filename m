@@ -2,70 +2,53 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A7D37F272
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 May 2021 06:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE4EF37F50D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 May 2021 11:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230260AbhEME6F (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 May 2021 00:58:05 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3739 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbhEME6F (ORCPT
+        id S232549AbhEMJwu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 13 May 2021 05:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37602 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230338AbhEMJwt (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 May 2021 00:58:05 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FgfSB6FQ9zpdqc;
-        Thu, 13 May 2021 12:53:30 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.498.0; Thu, 13 May 2021
- 12:56:52 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <linux-fbdev@vger.kernel.org>
-CC:     <b.zolnierkie@samsung.com>
-Subject: [PATCH -next] fbdev: chipsfb: chips_init() can be static
-Date:   Thu, 13 May 2021 12:59:17 +0800
-Message-ID: <20210513045917.622849-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        Thu, 13 May 2021 05:52:49 -0400
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3DB5FC061574
+        for <linux-fbdev@vger.kernel.org>; Thu, 13 May 2021 02:51:40 -0700 (PDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+        id 87E3392009C; Thu, 13 May 2021 11:51:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by angie.orcam.me.uk (Postfix) with ESMTP id 792E892009B;
+        Thu, 13 May 2021 11:51:35 +0200 (CEST)
+Date:   Thu, 13 May 2021 11:51:35 +0200 (CEST)
+From:   "Maciej W. Rozycki" <macro@orcam.me.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Martin Hostettler <textshell@uchuujin.de>,
+        Peilin Ye <yepeilin.cs@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] VT_RESIZEX fixes
+Message-ID: <alpine.DEB.2.21.2105131132100.3032@angie.orcam.me.uk>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-chips_init() only used within this file. It should be static.
+Hi,
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/video/fbdev/chipsfb.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ This is a minor update to the previous version of the series, adding a 
+clarification to 3/3 as to the problem the original fix to which caused 
+the functional regression the removal of extra VT_RESIZEX parameter 
+handling caused.  No change to actual code.
 
-diff --git a/drivers/video/fbdev/chipsfb.c b/drivers/video/fbdev/chipsfb.c
-index 998067b701fa..81198faf8159 100644
---- a/drivers/video/fbdev/chipsfb.c
-+++ b/drivers/video/fbdev/chipsfb.c
-@@ -66,11 +66,6 @@
- 	inb(0x3da); read_ind(num, var, 0x3c0, 0x3c1); \
- } while (0)
- 
--/*
-- * Exported functions
-- */
--int chips_init(void);
--
- static int chipsfb_pci_init(struct pci_dev *dp, const struct pci_device_id *);
- static int chipsfb_check_var(struct fb_var_screeninfo *var,
- 			     struct fb_info *info);
-@@ -498,7 +493,7 @@ static struct pci_driver chipsfb_driver = {
- #endif
- };
- 
--int __init chips_init(void)
-+static int __init chips_init(void)
- {
- 	if (fb_get_options("chipsfb", NULL))
- 		return -ENODEV;
--- 
-2.25.1
+ See individual change descriptions for details.
 
+ Please apply.
+
+  Maciej
