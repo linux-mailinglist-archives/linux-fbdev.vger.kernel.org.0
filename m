@@ -2,62 +2,51 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED13E3996AC
-	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Jun 2021 02:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A35E399A98
+	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Jun 2021 08:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbhFCAHg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 2 Jun 2021 20:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbhFCAHf (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Jun 2021 20:07:35 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBD5C06174A
-        for <linux-fbdev@vger.kernel.org>; Wed,  2 Jun 2021 17:05:41 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id a15so3263015qta.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 02 Jun 2021 17:05:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mjcG7yb0p2PCjeChIEZx/qwcbpSV6pjnKIr2LM5z6DM=;
-        b=NrcYLu/c53UvNnWkwbC+Vo+HdEds3SEb3xPgCuHxo4K2YM1dbNKZNmSzwYZHDBimzc
-         /HlEvWxgkdSDYuT61IXOSAgsufEDnEsWcHBZGATvUQlpot1ws1yWvFR0PLqUAmoWOF2Z
-         O4ys4RorI7/0D48LzE7XFm+v2Hdo8l1d1u9rY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mjcG7yb0p2PCjeChIEZx/qwcbpSV6pjnKIr2LM5z6DM=;
-        b=Hm4lz1cMd9K3ExiJ29wQTBfVtAP4/yHvEVdG8VBRfcrC/weA1HwbTBBly8GqiinOjt
-         qAM7Rf4hz/4xxS49wrrhZ1NJhs4p7MUNUqeLPc6rN/YjeiYhYQQetLrl8qVTF+glGE72
-         vK1uV+hPPN0Hr0k4msq7hZ7x1OPi4LxcLt8PuOjMZGO/wcWhXPDhxLdEbrj+1H3YsrBE
-         hrk7ElieECzs2tzQRYpWSIFVKrqS/7B3b/0irgFZjSyVgT4cYxq7+TXb0CBo/1BWTyiY
-         AktYqz/fPRPQH1ddI0S7q38xLhfPcHHaTSBUCccwoDnqkQ55cd1ToJUptAdf6/rRFlwO
-         QzkA==
-X-Gm-Message-State: AOAM5309ej0NtKcXZ0MwOu0qrIVz6i1/vVABetsZ2ood25OWrlFysRpV
-        u4LNBc/JSTiXU/eUj9XITZKjm6Ji6zj7fg==
-X-Google-Smtp-Source: ABdhPJy/r+xqcwqArE4VTwHG0H0Qoks7FsrYIaeA+6ARTFiV1F3NP8NpTiDh2eUBtLHhVWpyzFt8VQ==
-X-Received: by 2002:ac8:5f0b:: with SMTP id x11mr26949998qta.160.1622678740204;
-        Wed, 02 Jun 2021 17:05:40 -0700 (PDT)
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
-        by smtp.gmail.com with ESMTPSA id m15sm817603qtn.47.2021.06.02.17.05.40
-        for <linux-fbdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jun 2021 17:05:40 -0700 (PDT)
-Received: by mail-yb1-f182.google.com with SMTP id i4so6334310ybe.2
-        for <linux-fbdev@vger.kernel.org>; Wed, 02 Jun 2021 17:05:40 -0700 (PDT)
-X-Received: by 2002:a25:8191:: with SMTP id p17mr50542159ybk.405.1622678728912;
- Wed, 02 Jun 2021 17:05:28 -0700 (PDT)
+        id S229734AbhFCG2L (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 3 Jun 2021 02:28:11 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:55098 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229697AbhFCG2L (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 3 Jun 2021 02:28:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1622701586; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=JQ5eM5aH4kIpWWTZt6DlDA3K6TzSLosXUzhL8Jtxdjs=;
+ b=XxTje0pLEQu9lT4iB87OkaZiwRq5w9TYojmDEX35Jkk/6PnvH/VX4ZmtptF1dPly+fdwu7fT
+ mAklk6d19IYqaacaLcst4WsaspaDieEqFrIEZMjfRYRym13iTLU1IKURtwhEhmO5DEFSZ6mL
+ eo/zdpxxgbBmNtd8rBmyJ5AQi0A=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI4YmIzMiIsICJsaW51eC1mYmRldkB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 60b87612f726fa41881220c6 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 03 Jun 2021 06:26:26
+ GMT
+Sender: rajeevny=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 41F6DC4360C; Thu,  3 Jun 2021 06:26:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rajeevny)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B7A8C433D3;
+        Thu,  3 Jun 2021 06:26:24 +0000 (UTC)
 MIME-Version: 1.0
-References: <1622390172-31368-1-git-send-email-rajeevny@codeaurora.org> <1622390172-31368-3-git-send-email-rajeevny@codeaurora.org>
-In-Reply-To: <1622390172-31368-3-git-send-email-rajeevny@codeaurora.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Wed, 2 Jun 2021 17:05:17 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WuWKHo1YLRTtN_dcMDuoc9erpwaGTb6WNgwHeDLuz8qw@mail.gmail.com>
-Message-ID: <CAD=FV=WuWKHo1YLRTtN_dcMDuoc9erpwaGTb6WNgwHeDLuz8qw@mail.gmail.com>
-Subject: Re: [v5 2/5] drm/panel-simple: Support DP AUX backlight
-To:     Rajeev Nandan <rajeevny@codeaurora.org>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 03 Jun 2021 11:56:24 +0530
+From:   rajeevny@codeaurora.org
+To:     Doug Anderson <dianders@chromium.org>
 Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         freedreno <freedreno@lists.freedesktop.org>,
@@ -78,53 +67,49 @@ Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
         Krishna Manikandan <mkrishn@codeaurora.org>,
         Lee Jones <lee.jones@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [v5 1/5] drm/panel: add basic DP AUX backlight support
+In-Reply-To: <CAD=FV=XMVKP=nK+-eTpxNK-AQ66rqvfMj_Q0TZrsG-CEWtbw8Q@mail.gmail.com>
+References: <1622390172-31368-1-git-send-email-rajeevny@codeaurora.org>
+ <1622390172-31368-2-git-send-email-rajeevny@codeaurora.org>
+ <CAD=FV=XMVKP=nK+-eTpxNK-AQ66rqvfMj_Q0TZrsG-CEWtbw8Q@mail.gmail.com>
+Message-ID: <3f088fcc07800323b4cb24af4b972514@codeaurora.org>
+X-Sender: rajeevny@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+On 03-06-2021 05:35, Doug Anderson wrote:
+> Hi,
+> 
+> On Sun, May 30, 2021 at 8:57 AM Rajeev Nandan <rajeevny@codeaurora.org> 
+> wrote:
+>> 
 
-On Sun, May 30, 2021 at 8:57 AM Rajeev Nandan <rajeevny@codeaurora.org> wrote:
->
-> If there is no backlight specified in the device tree and the panel
-> has access to the DP AUX channel then create a DP AUX backlight if
-> supported by the panel.
->
-> Signed-off-by: Rajeev Nandan <rajeevny@codeaurora.org>
-> ---
->
-> This patch depends on [1] (drm/panel: panel-simple: Stash DP AUX bus;
-> allow using it for DDC) and the previous patch (2/5) of this series.
->
-> Changes in v4:
-> - New
->
-> Changes in v5:
-> - Address review comments and move backlight functions to drm_panel.c (Douglas)
-> - Create and register DP AUX backlight if there is no backlight specified in the
->   device tree and panel has the DP AUX channel. (Douglas)
-> - The new drm_panel_dp_aux_backlight() will do the drm_edp_backlight_supported() check.
->
-> [1] https://lore.kernel.org/dri-devel/20210524165920.v8.7.I18e60221f6d048d14d6c50a770b15f356fa75092@changeid/
->
->  drivers/gpu/drm/panel/panel-simple.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-> index b09be6e..047fad5 100644
-> --- a/drivers/gpu/drm/panel/panel-simple.c
-> +++ b/drivers/gpu/drm/panel/panel-simple.c
-> @@ -800,6 +800,12 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc,
->         if (err)
->                 goto disable_pm_runtime;
->
-> +       if (!panel->base.backlight && panel->aux) {
-> +               err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
-> +               if (err)
-> +                       goto disable_pm_runtime;
-> +       }
+> 
+> Other than the two nits (ordering of memory allocation and word
+> wrapping in a comment), this looks good to me. Feel free to add my
+> Reviewed-by tag when you fix the nits.
+> 
+> NOTE: Even though I have commit access to drm-misc now, I wouldn't
+> feel comfortable merging this to drm-misc myself without review
+> feedback from someone more senior. Obviously we're still blocked on my
+> and Lyude's series landing first, but even assuming those just land
+> as-is we'll need some more adult supervision before this can land. ;-)
+> That being said, I personally think this looks pretty nice now.
+> 
+> 
+> -Doug
 
-It's so nice now!
+Thank you, Doug.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+I'll address the review comments of this patch and another patch (v5 
+3/5)
+in the next spin. I'll wait for Lyude to check this series, as she 
+wanted
+to review it in a few days.
+
+
+Thanks,
+Rajeev
+
