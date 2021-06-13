@@ -2,90 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DD33A4E8B
-	for <lists+linux-fbdev@lfdr.de>; Sat, 12 Jun 2021 14:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C713A5B02
+	for <lists+linux-fbdev@lfdr.de>; Mon, 14 Jun 2021 01:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbhFLMLN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 12 Jun 2021 08:11:13 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:29689 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231288AbhFLMLL (ORCPT
+        id S232154AbhFMXel (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 13 Jun 2021 19:34:41 -0400
+Received: from mail-wm1-f41.google.com ([209.85.128.41]:33517 "EHLO
+        mail-wm1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232282AbhFMXeh (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 12 Jun 2021 08:11:11 -0400
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 12 Jun 2021 05:09:11 -0700
-X-QCInternal: smtphost
-Received: from ironmsg02-blr.qualcomm.com ([10.86.208.131])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 12 Jun 2021 05:09:09 -0700
-X-QCInternal: smtphost
-Received: from rajeevny-linux.qualcomm.com ([10.204.66.121])
-  by ironmsg02-blr.qualcomm.com with ESMTP; 12 Jun 2021 17:38:32 +0530
-Received: by rajeevny-linux.qualcomm.com (Postfix, from userid 2363605)
-        id 4425721465; Sat, 12 Jun 2021 17:38:31 +0530 (IST)
-From:   Rajeev Nandan <rajeevny@codeaurora.org>
-To:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org
-Cc:     Rajeev Nandan <rajeevny@codeaurora.org>,
-        linux-kernel@vger.kernel.org, thierry.reding@gmail.com,
-        sam@ravnborg.org, robdclark@gmail.com, dianders@chromium.org,
-        lyude@redhat.com, jani.nikula@intel.com, robh@kernel.org,
-        laurent.pinchart@ideasonboard.com, a.hajda@samsung.com,
-        daniel.thompson@linaro.org, hoegsberg@chromium.org,
-        abhinavk@codeaurora.org, seanpaul@chromium.org,
-        kalyan_t@codeaurora.org, mkrishn@codeaurora.org,
-        lee.jones@linaro.org, jingoohan1@gmail.com,
-        linux-fbdev@vger.kernel.org
-Subject: [v6 2/5] drm/panel-simple: Support DP AUX backlight
-Date:   Sat, 12 Jun 2021 17:37:59 +0530
-Message-Id: <1623499682-2140-3-git-send-email-rajeevny@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1623499682-2140-1-git-send-email-rajeevny@codeaurora.org>
-References: <1623499682-2140-1-git-send-email-rajeevny@codeaurora.org>
+        Sun, 13 Jun 2021 19:34:37 -0400
+Received: by mail-wm1-f41.google.com with SMTP id s70-20020a1ca9490000b02901a589651424so8563448wme.0;
+        Sun, 13 Jun 2021 16:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iK+fdotc8MDTLXOWsCA+bd9ELHLX8yC6MN1FxLYw3Rc=;
+        b=ZBhL+xgB8mqWh3eLJJg3Z/iYwp+jlCYPiX8tmO8GhAowJpOg07QRw/MEPdckTj/kp+
+         ICniI5hVwGsS2PIQIlWz7735puYXK6TjX8gWwBgKxk0KY9JxzNDK4HNgatOrSXbe0Lc2
+         RF0bXch20IlR9KFs1iQsEc71ZlALOhvwrD83oO0VUwuxRnCiT+evKwNP8clkkhJYsdLG
+         2v3+5cf4d/Y1NCYCiml07nL8BeVVxec9FZ3KQ80Bn22GIvZNAaaBk93WERvanqg9kWA0
+         ZPH0exFbl36gqe7DWFdUYcjT3IueXbJU+jsky+TmkOdUHxBzQ1/+qlZBtvQrxT8vDCzz
+         AoUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iK+fdotc8MDTLXOWsCA+bd9ELHLX8yC6MN1FxLYw3Rc=;
+        b=PO2F8DyGH8PQ0FeKbJ7b04R5e8EKgS74Ti6jXQf/dxYuehAxESXiruvmGy8ih5WzDE
+         G9wV/pAePtVR56X+NGceuB+BMlOMA6vD8INiIyd2t+qvBl6wQRNNCSH5kC8UVCgP4WR/
+         kUtuo63Y5SVGpvl1Ql/jXzAJcntoHx0m0byB0VYbs5O+Ett7AT4OEmrRlKxW+1I8gCCw
+         95iHpLAF4wCzgsUIuVUotn8kxh1Y2hEYc0j+Ta56lG8x1rsNjd/sn4ugtd4GOJjPlA6a
+         Dk8mUtfRMejQYsf5supx7niu1VRqimA0ugmypJAw9+yuTURPMvI0nud965z+hiuGe8+S
+         EiFQ==
+X-Gm-Message-State: AOAM532iB0vBqGJIN5/EP8sbuQaDdHs+45M6IfC8cCJ2JCHZ+2VsEDx5
+        I1ej3i2UdyEP+Nc/haaoqAE=
+X-Google-Smtp-Source: ABdhPJxxWZyZQBZ1JBZMI/iWKh4B0GGXrb7nldKK0n8tdDlT0f6lu/3UG+BAm2A+FtPRs1yAgbiy6w==
+X-Received: by 2002:a7b:c304:: with SMTP id k4mr29800169wmj.68.1623627079836;
+        Sun, 13 Jun 2021 16:31:19 -0700 (PDT)
+Received: from localhost.localdomain ([195.245.23.224])
+        by smtp.gmail.com with ESMTPSA id i9sm17882511wrn.54.2021.06.13.16.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Jun 2021 16:31:18 -0700 (PDT)
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Nikita Shubin <nikita.shubin@maquefel.me>
+Cc:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, dmaengine@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] Prepare EP93xx drivers for Common Clock Framework
+Date:   Mon, 14 Jun 2021 01:30:34 +0200
+Message-Id: <20210613233041.128961-1-alexander.sverdlin@gmail.com>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If there is no backlight specified in the device tree and the panel
-has access to the DP AUX channel then create a DP AUX backlight if
-supported by the panel.
+Nikita posted a patch converting EP93xx to use Common Clock Framework. It
+turns out some cleanup is necessary in the EP93xx drivers to avoid
+"Enabling unprepared" clock warnings.
 
-Signed-off-by: Rajeev Nandan <rajeevny@codeaurora.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
+Patches with stack traces in the commit messages are tested on EP9302.
 
-(no changes since v5)
+Link: https://lore.kernel.org/patchwork/patch/1435884/
 
-This patch depends on the previous patch (2/5) of this series.
+Alexander Sverdlin (7):
+  iio: ep93xx: Prepare clock before using it
+  spi: spi-ep93xx: Prepare clock before using it
+  Input: ep93xx_keypad: Prepare clock before using it
+  video: ep93xx: Prepare clock before using it
+  dmaengine: ep93xx: Prepare clock before using it
+  ASoC: cirrus: i2s: Prepare clock before using it
+  pwm: ep93xx: Prepare clock before using it
 
-Changes in v4:
-- New
+ drivers/dma/ep93xx_dma.c               |  6 +++---
+ drivers/iio/adc/ep93xx_adc.c           |  6 +++---
+ drivers/input/keyboard/ep93xx_keypad.c |  4 ++--
+ drivers/pwm/pwm-ep93xx.c               | 12 ++++++------
+ drivers/spi/spi-ep93xx.c               |  4 ++--
+ drivers/video/fbdev/ep93xx-fb.c        |  4 ++--
+ sound/soc/cirrus/ep93xx-i2s.c          | 12 ++++++------
+ 7 files changed, 24 insertions(+), 24 deletions(-)
 
-Changes in v5:
-- Address review comments and move backlight functions to drm_panel.c (Douglas)
-- Create and register DP AUX backlight if there is no backlight specified in the
-  device tree and panel has the DP AUX channel. (Douglas)
-- The new drm_panel_dp_aux_backlight() will do the drm_edp_backlight_supported() check.
-
- drivers/gpu/drm/panel/panel-simple.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index df6fbd1..26555ec 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -800,6 +800,12 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc,
- 	if (err)
- 		goto disable_pm_runtime;
- 
-+	if (!panel->base.backlight && panel->aux) {
-+		err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
-+		if (err)
-+			goto disable_pm_runtime;
-+	}
-+
- 	drm_panel_add(&panel->base);
- 
- 	return 0;
 -- 
-2.7.4
+2.32.0
 
