@@ -2,96 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BA63A740C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Jun 2021 04:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C43D3A74E2
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Jun 2021 05:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbhFOChA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 14 Jun 2021 22:37:00 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:6489 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbhFOCg7 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 14 Jun 2021 22:36:59 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G3rxp00n6zZhKV;
-        Tue, 15 Jun 2021 09:55:41 +0800 (CST)
-Received: from dggpeml500020.china.huawei.com (7.185.36.88) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 15 Jun 2021 09:58:36 +0800
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml500020.china.huawei.com (7.185.36.88) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 15 Jun 2021 09:58:35 +0800
-Subject: Re: [PATCH -next] video: fbdev: intelfb: Remove set but not used
- variable 'val'
-To:     <mbroemme@libmpq.org>, <linux-fbdev@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-CC:     <weiyongjun1@huawei.com>, <yuehaibing@huawei.com>,
-        <yangjihong1@huawei.com>, <yukuai3@huawei.com>
-References: <20210527085904.3861173-1-libaokun1@huawei.com>
-From:   "libaokun (A)" <libaokun1@huawei.com>
-Message-ID: <253d3e4d-c843-df88-5299-7b7b3dfd3c5b@huawei.com>
-Date:   Tue, 15 Jun 2021 09:58:35 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S230117AbhFODTZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 14 Jun 2021 23:19:25 -0400
+Received: from mga11.intel.com ([192.55.52.93]:14782 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229868AbhFODTY (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 14 Jun 2021 23:19:24 -0400
+IronPort-SDR: pTqv5eVJDgwHO1ZWtKU0xqM2AZJPqjw3cehDiuSF7LhhEq+Eyvdf7A9z7hXFc1LKobELBHgSV4
+ pfT9E5TWAMaw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10015"; a="202879192"
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="202879192"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 18:08:57 -0700
+IronPort-SDR: m8YrB9Yd4usLrMSp/h4lqUHwCbGVQo7pLituvmU1gNRLs8LagHH5JCFvkOw23mRlA4Jsrwgnrq
+ Gp1VlLZVuD1g==
+X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
+   d="scan'208";a="450065067"
+Received: from shao2-debian.sh.intel.com (HELO localhost) ([10.239.13.11])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 18:08:55 -0700
+Date:   Tue, 15 Jun 2021 09:08:53 +0800
+From:   kernel test robot <rong.a.chen@intel.com>
+To:     Ingo Molnar <mingo@kernel.org>
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [tip:tmp.tmp2 302/364] drivers/video/backlight/rave-sp-backlight.c:
+ linux/backlight.h is included more than once.
+Message-ID: <20210615010853.GM237458@shao2-debian>
 MIME-Version: 1.0
-In-Reply-To: <20210527085904.3861173-1-libaokun1@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.174]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500020.china.huawei.com (7.185.36.88)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-ping
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git tmp.tmp2
+head:   adcceb5eb7aee38e4a9c15bdf599655f0e1b1324
+commit: 3fb8658426ac271948eb757e1c5a5554afdc5cf8 [302/364] sched/headers, fb: Simplify <linux/fb.h> dependencies
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
 
-在 2021/5/27 16:59, Baokun Li 写道:
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> drivers/video/fbdev/intelfb/intelfb_i2c.c: In function 'intelfb_gpio_setscl':
-> drivers/video/fbdev/intelfb/intelfb_i2c.c:58:6: warning:
->   variable ‘val’ set but not used [-Wunused-but-set-variable]
-> drivers/video/fbdev/intelfb/intelfb_i2c.c: In function 'intelfb_gpio_setsda':
-> drivers/video/fbdev/intelfb/intelfb_i2c.c:69:6: warning:
->   variable ‘val’ set but not used [-Wunused-but-set-variable]
->
-> It never used since introduction.
->
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->   drivers/video/fbdev/intelfb/intelfb_i2c.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/video/fbdev/intelfb/intelfb_i2c.c b/drivers/video/fbdev/intelfb/intelfb_i2c.c
-> index 3300bd31d9d7..4df2f1f8a18e 100644
-> --- a/drivers/video/fbdev/intelfb/intelfb_i2c.c
-> +++ b/drivers/video/fbdev/intelfb/intelfb_i2c.c
-> @@ -55,22 +55,20 @@ static void intelfb_gpio_setscl(void *data, int state)
->   {
->   	struct intelfb_i2c_chan *chan = data;
->   	struct intelfb_info *dinfo = chan->dinfo;
-> -	u32 val;
->   
->   	OUTREG(chan->reg, (state ? SCL_VAL_OUT : 0) |
->   	       SCL_DIR | SCL_DIR_MASK | SCL_VAL_MASK);
-> -	val = INREG(chan->reg);
-> +	INREG(chan->reg);
->   }
->   
->   static void intelfb_gpio_setsda(void *data, int state)
->   {
->   	struct intelfb_i2c_chan *chan = data;
->   	struct intelfb_info *dinfo = chan->dinfo;
-> -	u32 val;
->   
->   	OUTREG(chan->reg, (state ? SDA_VAL_OUT : 0) |
->   	       SDA_DIR | SDA_DIR_MASK | SDA_VAL_MASK);
-> -	val = INREG(chan->reg);
-> +	INREG(chan->reg);
->   }
->   
->   static int intelfb_gpio_getscl(void *data)
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+
+includecheck warnings: (new ones prefixed by >>)
+>> drivers/video/backlight/rave-sp-backlight.c: linux/backlight.h is included more than once.
+--
+>> drivers/video/backlight/lm3639_bl.c: linux/backlight.h is included more than once.
+--
+>> drivers/video/backlight/kb3886_bl.c: linux/backlight.h is included more than once.
+--
+>> drivers/video/backlight/da9052_bl.c: linux/backlight.h is included more than once.
+--
+>> drivers/video/backlight/cr_bllcd.c: linux/backlight.h is included more than once.
+
+Please review and possibly fold the followup patch.
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
