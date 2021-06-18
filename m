@@ -2,42 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA223ACA37
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Jun 2021 13:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D693AD44D
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Jun 2021 23:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234176AbhFRLqX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 18 Jun 2021 07:46:23 -0400
-Received: from [210.180.118.67] ([210.180.118.67]:35018 "EHLO blank.cafe24.com"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233927AbhFRLqV (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Jun 2021 07:46:21 -0400
-X-Greylist: delayed 108571 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Jun 2021 07:46:21 EDT
-Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
-        (authenticated bits=0)
-        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15IBhlCE011250
-        for <linux-fbdev@vger.kernel.org>; Fri, 18 Jun 2021 20:44:10 +0900
-Message-Id: <202106181144.15IBhlCE011250@blank.cafe24.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S234545AbhFRVUE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 18 Jun 2021 17:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233969AbhFRVUE (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 18 Jun 2021 17:20:04 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E66C061574
+        for <linux-fbdev@vger.kernel.org>; Fri, 18 Jun 2021 14:17:54 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1luLs7-0006kT-D9; Fri, 18 Jun 2021 23:17:51 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1luLs5-0007AJ-Nt; Fri, 18 Jun 2021 23:17:49 +0200
+Date:   Fri, 18 Jun 2021 23:17:46 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     linux-fbdev@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        kernel@pengutronix.de, Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH] backlight: lm3630a: convert to atomic PWM API and check
+ for errors
+Message-ID: <20210618211746.2kuwm3hlrhefuczl@pengutronix.de>
+References: <20210618085844.231751-1-u.kleine-koenig@pengutronix.de>
+ <20210618103109.j7vtuif4taldtt5d@maple.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: BUSINESS LOAN/PROJECT FUNDING...67
-To:     linux-fbdev@vger.kernel.org
-From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
-Date:   Fri, 18 Jun 2021 14:44:47 +0300
-Reply-To: ssbinvestmentsllc@citromail.hu
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xw5l75a42p7hetib"
+Content-Disposition: inline
+In-Reply-To: <20210618103109.j7vtuif4taldtt5d@maple.lan>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear Sir/Madam,
 
-Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
- 
-Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
+--xw5l75a42p7hetib
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- 
-Best Regards.
-Smith Green
-E:info@ssbinvestmentsllc.us
-International investment broker
+On Fri, Jun 18, 2021 at 11:31:09AM +0100, Daniel Thompson wrote:
+> On Fri, Jun 18, 2021 at 10:58:44AM +0200, Uwe Kleine-K=F6nig wrote:
+> > The practical upside here is that this only needs a single API call to
+> > program the hardware which (depending on the underlaying hardware) can
+> > be more effective and prevents glitches.
+> >=20
+> > Up to now the return value of the pwm functions was ignored. Fix this
+> > and propagate the error to the caller.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>=20
+> New code looks OK but these changes reveal just how crazy the return codes
+> from this driver's update_status() methods are since now the new (PWM) er=
+ror path is
+> structured completely differently to the existing (I2C) error path.
+
+Indeed, while working on the patch I noticed that sometimes a positive
+value is returned but failed to note that when I sent out the patch.
+
+> Are you OK to add a patch *before* this one to fix the existing code
+> paths before making the PWM changes?
+
+I didn't do that because I was unsure what is the right thing to do. Now
+that you confirmed the documentation I can add such a patch. Will add
+this to my todo list.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--xw5l75a42p7hetib
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDNDXcACgkQwfwUeK3K
+7Ak+cQf+IAfvHGYaQofmq45aZXwZgNDF6M7Sc8SyxX99h3woKvRWdD21cmkA09j9
+mAVOhOyIbbT2QUl25VRiLlN2ZThcWukxR3dHsM0SSc4ddC2dnRcEG5zHmko3xxCF
+UjGDrG6gL/Opz1gz6XD2sTI3bvc/KkQJ9jTLPW9tQfQ835X+mRYGE6puFyAI4Rf/
+drN5Kzk43O2jJj0VJCxxrrOKG+MmL51KpNuFDOA/AWhIYQkO1S6rKd55SVk/ArJH
+bifTXnodbIFULG1EfQpiDfk2f+uAa0J4jlffhvszlc00jaLU6pUzngchd8dKL6Me
+tGAHDwZGboR9h3unn9iv55I6fx50nw==
+=c04F
+-----END PGP SIGNATURE-----
+
+--xw5l75a42p7hetib--
