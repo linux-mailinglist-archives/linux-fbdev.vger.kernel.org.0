@@ -2,104 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2D693AD44D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Jun 2021 23:17:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F2213AD988
+	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Jun 2021 12:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234545AbhFRVUE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 18 Jun 2021 17:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233969AbhFRVUE (ORCPT
+        id S232181AbhFSKni (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 19 Jun 2021 06:43:38 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:64758 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231940AbhFSKne (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 18 Jun 2021 17:20:04 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E66C061574
-        for <linux-fbdev@vger.kernel.org>; Fri, 18 Jun 2021 14:17:54 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1luLs7-0006kT-D9; Fri, 18 Jun 2021 23:17:51 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1luLs5-0007AJ-Nt; Fri, 18 Jun 2021 23:17:49 +0200
-Date:   Fri, 18 Jun 2021 23:17:46 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     linux-fbdev@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        kernel@pengutronix.de, Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH] backlight: lm3630a: convert to atomic PWM API and check
- for errors
-Message-ID: <20210618211746.2kuwm3hlrhefuczl@pengutronix.de>
-References: <20210618085844.231751-1-u.kleine-koenig@pengutronix.de>
- <20210618103109.j7vtuif4taldtt5d@maple.lan>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xw5l75a42p7hetib"
-Content-Disposition: inline
-In-Reply-To: <20210618103109.j7vtuif4taldtt5d@maple.lan>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+        Sat, 19 Jun 2021 06:43:34 -0400
+Received: from ironmsg09-lv.qualcomm.com ([10.47.202.153])
+  by alexa-out.qualcomm.com with ESMTP; 19 Jun 2021 03:41:23 -0700
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg09-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 19 Jun 2021 03:41:22 -0700
+X-QCInternal: smtphost
+Received: from rajeevny-linux.qualcomm.com ([10.204.66.121])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 19 Jun 2021 16:10:34 +0530
+Received: by rajeevny-linux.qualcomm.com (Postfix, from userid 2363605)
+        id 3B519214FC; Sat, 19 Jun 2021 16:10:33 +0530 (IST)
+From:   Rajeev Nandan <rajeevny@codeaurora.org>
+To:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org
+Cc:     Rajeev Nandan <rajeevny@codeaurora.org>,
+        linux-kernel@vger.kernel.org, thierry.reding@gmail.com,
+        sam@ravnborg.org, robdclark@gmail.com, dianders@chromium.org,
+        lyude@redhat.com, jani.nikula@intel.com, robh@kernel.org,
+        laurent.pinchart@ideasonboard.com, a.hajda@samsung.com,
+        daniel.thompson@linaro.org, hoegsberg@chromium.org,
+        abhinavk@codeaurora.org, seanpaul@chromium.org,
+        kalyan_t@codeaurora.org, mkrishn@codeaurora.org,
+        lee.jones@linaro.org, jingoohan1@gmail.com,
+        linux-fbdev@vger.kernel.org
+Subject: [v7 0/5] drm: Support basic DPCD backlight in panel-simple and add a new panel ATNA33XC20
+Date:   Sat, 19 Jun 2021 16:10:25 +0530
+Message-Id: <1624099230-20899-1-git-send-email-rajeevny@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+This series adds the support for the eDP panel that needs the backlight
+controlling over the DP AUX channel using DPCD registers of the panel
+as per the VESA's standard.
 
---xw5l75a42p7hetib
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series also adds support for the Samsung eDP AMOLED panel that
+needs DP AUX to control the backlight, and introduces new delays in the
+@panel_desc.delay to support this panel.
 
-On Fri, Jun 18, 2021 at 11:31:09AM +0100, Daniel Thompson wrote:
-> On Fri, Jun 18, 2021 at 10:58:44AM +0200, Uwe Kleine-K=F6nig wrote:
-> > The practical upside here is that this only needs a single API call to
-> > program the hardware which (depending on the underlaying hardware) can
-> > be more effective and prevents glitches.
-> >=20
-> > Up to now the return value of the pwm functions was ignored. Fix this
-> > and propagate the error to the caller.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> New code looks OK but these changes reveal just how crazy the return codes
-> from this driver's update_status() methods are since now the new (PWM) er=
-ror path is
-> structured completely differently to the existing (I2C) error path.
+This patch series depends on the following two series:
+- Doug's series [1], exposed the DP AUX channel to the panel-simple.
+- Lyude's series [2], introduced new drm helper functions for DPCD
+  backlight.
 
-Indeed, while working on the patch I noticed that sometimes a positive
-value is returned but failed to note that when I sent out the patch.
+This series is the logical successor to the series [3].
 
-> Are you OK to add a patch *before* this one to fix the existing code
-> paths before making the PWM changes?
+Changes in v1:
+- Created dpcd backlight helper with very basic functionality, added
+  backlight registration in the ti-sn65dsi86 bridge driver.
 
-I didn't do that because I was unsure what is the right thing to do. Now
-that you confirmed the documentation I can add such a patch. Will add
-this to my todo list.
+Changes in v2:
+- Created a new DisplayPort aux backlight driver and moved the code from
+  drm_dp_aux_backlight.c (v1) to the new driver.
 
-Best regards
-Uwe
+Changes in v3:
+- Fixed module compilation (kernel test bot).
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Changes in v4:
+- Added basic DPCD backlight support in panel-simple.
+- Added support for a new Samsung panel ATNA33XC20 that needs DPCD
+  backlight controlling and has a requirement of delays between enable
+  GPIO and regulator.
 
---xw5l75a42p7hetib
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v5:
+Addressed review suggestions from Douglas:
+- Created a new API drm_panel_dp_aux_backlight() in drm_panel.c
+- Moved DP AUX backlight functions from panel-simple.c to drm_panel.c
+- panel-simple probe() calls drm_panel_dp_aux_backlight() to create
+  backlight when the backlight phandle is not specified in panel DT
+  and DP AUX channel is present.
+- Added check for drm_edp_backlight_supported() before registering.
+- Removed the @uses_dpcd_backlight flag from panel_desc as this
+  should be auto-detected.
+- Updated comments/descriptions.
 
------BEGIN PGP SIGNATURE-----
+Changes in v6:
+- Rebased
+- Updated wanrning messages, fixed word wrapping in comments.
+- Fixed ordering of memory allocation
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDNDXcACgkQwfwUeK3K
-7Ak+cQf+IAfvHGYaQofmq45aZXwZgNDF6M7Sc8SyxX99h3woKvRWdD21cmkA09j9
-mAVOhOyIbbT2QUl25VRiLlN2ZThcWukxR3dHsM0SSc4ddC2dnRcEG5zHmko3xxCF
-UjGDrG6gL/Opz1gz6XD2sTI3bvc/KkQJ9jTLPW9tQfQ835X+mRYGE6puFyAI4Rf/
-drN5Kzk43O2jJj0VJCxxrrOKG+MmL51KpNuFDOA/AWhIYQkO1S6rKd55SVk/ArJH
-bifTXnodbIFULG1EfQpiDfk2f+uAa0J4jlffhvszlc00jaLU6pUzngchd8dKL6Me
-tGAHDwZGboR9h3unn9iv55I6fx50nw==
-=c04F
------END PGP SIGNATURE-----
+Changes in v7:
+- Updated the disable_to_power_off and power_to_enable panel delays
+as discovered at <https://crrev.com/c/2966167> (Douglas)
 
---xw5l75a42p7hetib--
+[1] https://lore.kernel.org/dri-devel/20210525000159.3384921-1-dianders@chromium.org/
+[2] https://lore.kernel.org/dri-devel/20210514181504.565252-1-lyude@redhat.com/
+[3] https://lore.kernel.org/dri-devel/1619416756-3533-1-git-send-email-rajeevny@codeaurora.org/
+
+Rajeev Nandan (5):
+  drm/panel: add basic DP AUX backlight support
+  drm/panel-simple: Support DP AUX backlight
+  drm/panel-simple: Support for delays between GPIO & regulator
+  dt-bindings: display: simple: Add Samsung ATNA33XC20
+  drm/panel-simple: Add Samsung ATNA33XC20
+
+ .../bindings/display/panel/panel-simple.yaml       |   2 +
+ drivers/gpu/drm/drm_panel.c                        | 108 +++++++++++++++++++++
+ drivers/gpu/drm/panel/panel-simple.c               |  67 +++++++++++++
+ include/drm/drm_panel.h                            |  15 ++-
+ 4 files changed, 188 insertions(+), 4 deletions(-)
+
+-- 
+2.7.4
+
