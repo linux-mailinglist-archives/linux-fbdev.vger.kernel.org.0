@@ -2,104 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 880A83ADEC7
-	for <lists+linux-fbdev@lfdr.de>; Sun, 20 Jun 2021 15:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929983AE00D
+	for <lists+linux-fbdev@lfdr.de>; Sun, 20 Jun 2021 21:40:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbhFTNix (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 20 Jun 2021 09:38:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
+        id S229897AbhFTTmv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 20 Jun 2021 15:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbhFTNib (ORCPT
+        with ESMTP id S229872AbhFTTmv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 20 Jun 2021 09:38:31 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34FD4C061766
-        for <linux-fbdev@vger.kernel.org>; Sun, 20 Jun 2021 06:36:16 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id p66so12604768iod.8
-        for <linux-fbdev@vger.kernel.org>; Sun, 20 Jun 2021 06:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
-        b=uDIEtWfgl91FDet7ZYX1u1ozW0abpKvg4acx3thqXBCDoYcWKg7eyNZSXNk+51VeuJ
-         sYbwx77CCJt/Xl1UBy7P++4/uHOQjQcptGzc4BiJd5A/7x+FLCtsFr6R08yAScCPxE/G
-         ycRitdP5UZQCPHBcljPWiYz9qooX9+o9VlIcE1iBIKjgWFsG58IfpnIZmKh5Mer/et0Q
-         Wvv2McVtUA6rn+iTugaAQulni5t+7gIBWkpgi42U+JEUmcEEUifIxcViVFyKhDEEgfNV
-         A33afccbptAYxVMQ3XRd6cg8QS8Vl2AEYQyihFbFLRpIaiCXlHMQE4BSfPfytvzUMqcd
-         FXMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
-        b=RNxiQZKDjVyXu45meM4MZZU/knD1DPzVnVk6w/gNj9O3VvUgtOTWN+/E6gXHnv35cF
-         FY/RhDD7zOlKS5Xocs7xecA3AjyVBFq8MBt/1JoZJ7yM9e6bf4MY+H1bgkpWYIRJVyYW
-         gAtl7ecgt4dmee6IfNfF+vtfsZSA4Dhkq30NGBbm505akvpjAuQS/wBrAj+zCb5xphyi
-         up2ghd/Q11oZr9K5zz8SmCWoaHPuN9gFR0f9POv2j/WxRx8Z5Q8CJBV7BUC/lsEau5kV
-         6soQmUh9UMIbbNlISebRuKCqU6lSKIJid18SWKN1/oyI4JIe1kljGguZGlObzX6zFc+3
-         fxDQ==
-X-Gm-Message-State: AOAM5307bZl3HSGBV8JVkVDtjSjzqCLHsNtAK6tRStn2/HcSOZnNChyn
-        nCQ5qoWlGWDqwSguQKTNxBSQ7Eh3OW3AwUFR8AE=
-X-Google-Smtp-Source: ABdhPJwOQ5lA8oaPxit1UXNypL8Kah2QWj0jtAWNuj5/Z8/Rl7T8YsfxHtOIriCZuXo1tXOWzxp5d5YlbnVjDFRsY5Q=
-X-Received: by 2002:a02:a810:: with SMTP id f16mr12630337jaj.64.1624196175568;
- Sun, 20 Jun 2021 06:36:15 -0700 (PDT)
+        Sun, 20 Jun 2021 15:42:51 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D44C061574
+        for <linux-fbdev@vger.kernel.org>; Sun, 20 Jun 2021 12:40:37 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lv3J5-0001PS-GS; Sun, 20 Jun 2021 21:40:35 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lv3J4-0002I6-8g; Sun, 20 Jun 2021 21:40:34 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     linux-fbdev@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        kernel@pengutronix.de, dri-devel@lists.freedesktop.org
+Subject: [PATCH v2 1/2] backlight: lm3630a: fix return code of .update_status() callback
+Date:   Sun, 20 Jun 2021 21:39:27 +0200
+Message-Id: <20210620193928.14467-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:1baf:0:0:0:0 with HTTP; Sun, 20 Jun 2021 06:36:14
- -0700 (PDT)
-Reply-To: sarahkoffi389@yahoo.co.jp
-From:   Sarah Koffi <sarah.koffi101@gmail.com>
-Date:   Sun, 20 Jun 2021 15:36:14 +0200
-Message-ID: <CA+ifgLE1g7jgi567M2HhZfvRSUF63Hu6stsW+ysX=3U-=qnn6Q@mail.gmail.com>
-Subject: Greetings From Mrs. Sarah Koffi
-To:     sarahkoffi389@yahoo.co.jp
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Greetings From Mrs. Sarah Koffi
+According to <linux/backlight.h> .update_status() is supposed to
+return 0 on success and a negative error code otherwise. Adapt
+lm3630a_bank_a_update_status() to actually do it.
 
-I'm contacting you based on your good profiles I read and for a good
-reasons, I am in search of a property to buy in your country as I
-intended to come over to your
-country for investment, Though I have not meet with you before but I
-believe that one has to risk confiding in someone to succeed sometimes
-in life.
+While touching that also add the error code to the failure message.
 
-My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
-Federal Government of Sudan and he has a personal Oil firm in Bentiu
-Oil zone town and Upper
-Nile city. What I have experience physically, I don't wish to
-experience it again in my life due to the recent civil Ethnic war
-cause by our President Mr. Salva Kiir
-and the rebel leader Mr Riek Machar, I have been Under United Nation
-refuge camp in chad to save my life and that of my little daughter.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/video/backlight/lm3630a_bl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Though, I do not know how you will feel to my proposal, but the truth
-is that I sneaked into Chad our neighboring country where I am living
-now as a refugee.
-I escaped with my little daughter when the rebels bust into our house
-and killed my husband as one of the big oil dealers in the country,
-ever since then, I have being on the run.
+diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
+index e88a2b0e5904..16a2658a72e1 100644
+--- a/drivers/video/backlight/lm3630a_bl.c
++++ b/drivers/video/backlight/lm3630a_bl.c
+@@ -190,7 +190,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+ 	if ((pwm_ctrl & LM3630A_PWM_BANK_A) != 0) {
+ 		lm3630a_pwm_ctrl(pchip, bl->props.brightness,
+ 				 bl->props.max_brightness);
+-		return bl->props.brightness;
++		return 0;
+ 	}
+ 
+ 	/* disable sleep */
+@@ -210,8 +210,8 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+ 	return 0;
+ 
+ out_i2c_err:
+-	dev_err(pchip->dev, "i2c failed to access\n");
+-	return bl->props.brightness;
++	dev_err(pchip->dev, "i2c failed to access (%pe)\n", ERR_PTR(ret));
++	return ret;
+ }
+ 
+ static int lm3630a_bank_a_get_brightness(struct backlight_device *bl)
 
-I left my country and move to Chad our neighboring country with the
-little ceasefire we had, due to the face to face peace meeting accord
-coordinated by the US Secretary of State, Mr John Kerry and United
-Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
-and the rebel leader Mr Riek Machar to stop this war.
+base-commit: 6efb943b8616ec53a5e444193dccf1af9ad627b5
+-- 
+2.30.2
 
-I want to solicit for your partnership with trust to invest the $8
-million dollars deposited by my late husband in Bank because my life
-is no longer safe in our country, since the rebels are looking for the
-families of all the oil business men in the country to kill, saying
-that they are they one that is milking the country dry.
-
-I will offer you 20% of the total fund for your help while I will
-partner with you for the investment in your country.
-If I get your reply.
-
-I will wait to hear from you so as to give you details.With love from
-
- i need you to contact me here sarahkoffi389@yahoo.co.jp
-
-Mrs. Sarah Koffi
