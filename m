@@ -2,90 +2,59 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 286FF3AD982
-	for <lists+linux-fbdev@lfdr.de>; Sat, 19 Jun 2021 12:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485853ADD99
+	for <lists+linux-fbdev@lfdr.de>; Sun, 20 Jun 2021 10:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232132AbhFSKni (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 19 Jun 2021 06:43:38 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:34766 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231894AbhFSKne (ORCPT
+        id S229838AbhFTIH7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Sun, 20 Jun 2021 04:07:59 -0400
+Received: from 6-200-5-45.rpnnetprovedor.com.br ([45.5.200.6]:59317 "EHLO
+        srv01.rpnnetprovedor.com.br" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229679AbhFTIHp (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 19 Jun 2021 06:43:34 -0400
-Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
-  by alexa-out.qualcomm.com with ESMTP; 19 Jun 2021 03:41:23 -0700
-X-QCInternal: smtphost
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 19 Jun 2021 03:41:22 -0700
-X-QCInternal: smtphost
-Received: from rajeevny-linux.qualcomm.com ([10.204.66.121])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 19 Jun 2021 16:10:36 +0530
-Received: by rajeevny-linux.qualcomm.com (Postfix, from userid 2363605)
-        id E2855214FC; Sat, 19 Jun 2021 16:10:35 +0530 (IST)
-From:   Rajeev Nandan <rajeevny@codeaurora.org>
-To:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org
-Cc:     Rajeev Nandan <rajeevny@codeaurora.org>,
-        linux-kernel@vger.kernel.org, thierry.reding@gmail.com,
-        sam@ravnborg.org, robdclark@gmail.com, dianders@chromium.org,
-        lyude@redhat.com, jani.nikula@intel.com, robh@kernel.org,
-        laurent.pinchart@ideasonboard.com, a.hajda@samsung.com,
-        daniel.thompson@linaro.org, hoegsberg@chromium.org,
-        abhinavk@codeaurora.org, seanpaul@chromium.org,
-        kalyan_t@codeaurora.org, mkrishn@codeaurora.org,
-        lee.jones@linaro.org, jingoohan1@gmail.com,
-        linux-fbdev@vger.kernel.org
-Subject: [v7 2/5] drm/panel-simple: Support DP AUX backlight
-Date:   Sat, 19 Jun 2021 16:10:27 +0530
-Message-Id: <1624099230-20899-3-git-send-email-rajeevny@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1624099230-20899-1-git-send-email-rajeevny@codeaurora.org>
-References: <1624099230-20899-1-git-send-email-rajeevny@codeaurora.org>
+        Sun, 20 Jun 2021 04:07:45 -0400
+Received: from [84.38.130.143] (helo=IP-130-143.dataclub.eu)
+        by srv01.rpnnetprovedor.com.br with esmtpa (Exim 4.92.2)
+        (envelope-from <robertnellsona@citromail.hu>)
+        id 1lusSR-0006A6-NN
+        for linux-fbdev@vger.kernel.org; Sun, 20 Jun 2021 05:05:31 -0300
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: CAN YOU INVEST WITH ME?...6
+To:     linux-fbdev@vger.kernel.org
+From:   "Mr.  Robert" <robertnellsona@citromail.hu>
+Date:   Sun, 20 Jun 2021 11:05:23 +0300
+Reply-To: robertnellsona@citromail.hu
+Message-Id: <E1lusSR-0006A6-NN@srv01.rpnnetprovedor.com.br>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If there is no backlight specified in the device tree and the panel
-has access to the DP AUX channel then create a DP AUX backlight if
-supported by the panel.
 
-Signed-off-by: Rajeev Nandan <rajeevny@codeaurora.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
+ATTENTION; linux-fbdev@vger.kernel.org,
 
-(no changes since v5)
+IMPORTANT INVESTMENT INFORMATION
 
-This patch depends on the previous patch (2/5) of this series.
+We have a good investment program going on now.
+We have $95m USD for Investment in your Country.
+We use this opportunity to invest you to join the investment program and you will never regret it.
+Please kindly invest with us and you will be receiving monthly income/return/profit every month.
+We can also give you Loan, 
 
-Changes in v4:
-- New
+We have: 
 
-Changes in v5:
-- Address review comments and move backlight functions to drm_panel.c (Douglas)
-- Create and register DP AUX backlight if there is no backlight specified in the
-  device tree and panel has the DP AUX channel. (Douglas)
-- The new drm_panel_dp_aux_backlight() will do the drm_edp_backlight_supported() check.
+1. Short Term Loan, 
 
- drivers/gpu/drm/panel/panel-simple.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+2. Medium Term Loan 
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index df6fbd1..26555ec 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -800,6 +800,12 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc,
- 	if (err)
- 		goto disable_pm_runtime;
- 
-+	if (!panel->base.backlight && panel->aux) {
-+		err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
-+		if (err)
-+			goto disable_pm_runtime;
-+	}
-+
- 	drm_panel_add(&panel->base);
- 
- 	return 0;
--- 
-2.7.4
+3. and Long Term Loan, 
 
+There is no need of collateral security. We will use our company to sign agreement and guarantee on your behalf and our Lawyer will sign on your behalf.
+
+Reply for more detail.
+
+Thank you Sir.
+
+Robert Nellson.
+INVESTMENT MANAGER.
