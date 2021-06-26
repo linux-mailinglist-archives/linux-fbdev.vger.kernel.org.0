@@ -2,90 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3493B4F9D
-	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Jun 2021 18:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939133B507E
+	for <lists+linux-fbdev@lfdr.de>; Sun, 27 Jun 2021 01:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230429AbhFZQyi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 26 Jun 2021 12:54:38 -0400
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:43051 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230270AbhFZQyb (ORCPT
+        id S230151AbhFZXcz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 26 Jun 2021 19:32:55 -0400
+Received: from fgw20-4.mail.saunalahti.fi ([62.142.5.107]:13792 "EHLO
+        fgw20-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230354AbhFZXcy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 26 Jun 2021 12:54:31 -0400
-Received: from ironmsg07-lv.qualcomm.com ([10.47.202.151])
-  by alexa-out.qualcomm.com with ESMTP; 26 Jun 2021 09:52:08 -0700
-X-QCInternal: smtphost
-Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
-  by ironmsg07-lv.qualcomm.com with ESMTP/TLS/AES256-SHA; 26 Jun 2021 09:52:06 -0700
-X-QCInternal: smtphost
-Received: from rajeevny-linux.qualcomm.com ([10.204.66.121])
-  by ironmsg01-blr.qualcomm.com with ESMTP; 26 Jun 2021 22:21:23 +0530
-Received: by rajeevny-linux.qualcomm.com (Postfix, from userid 2363605)
-        id A927B21478; Sat, 26 Jun 2021 22:21:20 +0530 (IST)
-From:   Rajeev Nandan <rajeevny@codeaurora.org>
-To:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org
-Cc:     Rajeev Nandan <rajeevny@codeaurora.org>,
-        linux-kernel@vger.kernel.org, thierry.reding@gmail.com,
-        sam@ravnborg.org, robdclark@gmail.com, dianders@chromium.org,
-        lyude@redhat.com, jani.nikula@intel.com, robh@kernel.org,
-        laurent.pinchart@ideasonboard.com, a.hajda@samsung.com,
-        daniel.thompson@linaro.org, hoegsberg@chromium.org,
-        abhinavk@codeaurora.org, seanpaul@chromium.org,
-        kalyan_t@codeaurora.org, mkrishn@codeaurora.org,
-        lee.jones@linaro.org, jingoohan1@gmail.com,
-        linux-fbdev@vger.kernel.org
-Subject: [v8 2/6] drm/panel-simple: Support DP AUX backlight
-Date:   Sat, 26 Jun 2021 22:21:04 +0530
-Message-Id: <1624726268-14869-3-git-send-email-rajeevny@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1624726268-14869-1-git-send-email-rajeevny@codeaurora.org>
-References: <1624726268-14869-1-git-send-email-rajeevny@codeaurora.org>
+        Sat, 26 Jun 2021 19:32:54 -0400
+X-Greylist: delayed 964 seconds by postgrey-1.27 at vger.kernel.org; Sat, 26 Jun 2021 19:32:54 EDT
+Received: from macbook.musicnaut.iki.fi (85-76-11-157-nat.elisa-mobile.fi [85.76.11.157])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id 3ec9cd77-d6d4-11eb-ba24-005056bd6ce9;
+        Sun, 27 Jun 2021 02:14:25 +0300 (EEST)
+Date:   Sun, 27 Jun 2021 02:14:23 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Pavel Skripkin <paskripkin@gmail.com>
+Cc:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
+Message-ID: <20210626231423.GA38365@macbook.musicnaut.iki.fi>
+References: <20210625223323.13930-1-paskripkin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210625223323.13930-1-paskripkin@gmail.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If there is no backlight specified in the device tree and the panel
-has access to the DP AUX channel then create a DP AUX backlight if
-supported by the panel.
+Hi,
 
-Signed-off-by: Rajeev Nandan <rajeevny@codeaurora.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
+On Sat, Jun 26, 2021 at 01:33:23AM +0300, Pavel Skripkin wrote:
+> In case of allocation failures, all code paths was jumping
+> to this code:
+> 
+> err:
+> 	kfree(fbi);
+> 	kfree(var);
+> 	kfree(fbops);
+> 
+> 	return r;
+> 
+> Since all 3 pointers placed on stack and don't initialized, they
+> will be filled with some random values, which leads to
+> deferencing random pointers in kfree(). Fix it by rewriting
+> error handling path.
 
-(no changes since v5)
+They are initialized before the first goto:
 
-This patch depends on the previous patch (2/5) of this series.
+[...]
+	fbi = NULL;
+	var = NULL;
+	fbops = NULL;
 
-Changes in v4:
-- New
+	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
+	if (fbi == NULL) {
+		r = -ENOMEM;
+		goto err;
+	}
+[...]
 
-Changes in v5:
-- Address review comments and move backlight functions to drm_panel.c (Douglas)
-- Create and register DP AUX backlight if there is no backlight specified in the
-  device tree and panel has the DP AUX channel. (Douglas)
-- The new drm_panel_dp_aux_backlight() will do the drm_edp_backlight_supported() check.
-
- drivers/gpu/drm/panel/panel-simple.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index df6fbd1..26555ec 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -800,6 +800,12 @@ static int panel_simple_probe(struct device *dev, const struct panel_desc *desc,
- 	if (err)
- 		goto disable_pm_runtime;
- 
-+	if (!panel->base.backlight && panel->aux) {
-+		err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
-+		if (err)
-+			goto disable_pm_runtime;
-+	}
-+
- 	drm_panel_add(&panel->base);
- 
- 	return 0;
--- 
-2.7.4
-
+A.
