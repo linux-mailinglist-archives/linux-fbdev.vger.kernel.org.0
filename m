@@ -2,145 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199473B4A93
-	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Jun 2021 00:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2F3F3B4F9B
+	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Jun 2021 18:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbhFYWgE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Jun 2021 18:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbhFYWgE (ORCPT
+        id S230215AbhFZQyh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 26 Jun 2021 12:54:37 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:44926 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230257AbhFZQya (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Jun 2021 18:36:04 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17707C061574;
-        Fri, 25 Jun 2021 15:33:42 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id k10so18730086lfv.13;
-        Fri, 25 Jun 2021 15:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9NMDPaGNwo9dp++pt7dEDvz6yBvTGcBoymI++g12NOc=;
-        b=XxeooSIoZSkGhXTTLzsaf8YXlV0sKShLzgUbVXnUr+3uwjIxtVEAvtn/nLYxqjjS+E
-         645gOFtwDu27Q2bAAHc1zQcxXFbXxzSxfIZhsikD9NAkQtowjvqVchR1yrMRrcr3yaGc
-         oG89m+lOmnnzs6JW0urF1QbP5OqI5hZg/9Jnz9Zs7O8csPTsI0+1T/sF8vRN4F34ulaO
-         jN0E5IiFX+v3fHdTikeXUT+tPYBiENiOPFZ5MEntFVJJ1mx9Fin/wN/atCa6UNVG1s34
-         HbD7SNrvdHKSxq1DP43W6eGaSw8NRSBhDXqdrJpu6uhntRQPxAqupsG5Ep8oRmof/4P4
-         qiPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9NMDPaGNwo9dp++pt7dEDvz6yBvTGcBoymI++g12NOc=;
-        b=FVvAq50/xWj9AEb5hCPIjXw70LZG6VULZNqlmkcg5Bp17gbqAeCONM2kmS3mhDZuB8
-         YC9zUUOnPRg2nwaj6FL4XUyeGBdSRPZ/MEscLGL1/YRuh3Z/+OXFByINxRjZ8jzdfHdC
-         wMH/TB/iGge95cpmP99oZSspjM0OuKYFexkN+kV0nbAa3KZ++WQzE/lx28WRDfG9HxDe
-         CCo+GpJsoHpHMf6L9hqgqSu5T9jzomrU/wj7HyWntKDtJcG0rLSG7JoPFAUKuni/3yyI
-         XazgQpE/jVwA3hQjcSHHuAoRqJET4rjdCqW6BthsOupIWZtiUkpKddNws/1ALNvUmclp
-         MraQ==
-X-Gm-Message-State: AOAM532B8OwUB7Px7clKTjYM3ZH0ucKvxoD8rmbqBsFGvUyXtYYPoXP+
-        ZNSiHsUdmufcu++qx//hlUM=
-X-Google-Smtp-Source: ABdhPJxw0w49mOJH8eZ2E+fmYpRltbdOf6mNxIn28I5KywQCjMRXPg6FGSFpgOtx0JdQRn+GFIukdA==
-X-Received: by 2002:ac2:4281:: with SMTP id m1mr9344466lfh.164.1624660420338;
-        Fri, 25 Jun 2021 15:33:40 -0700 (PDT)
-Received: from localhost.localdomain ([94.103.225.155])
-        by smtp.gmail.com with ESMTPSA id p26sm707610ljn.94.2021.06.25.15.33.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 15:33:39 -0700 (PDT)
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Pavel Skripkin <paskripkin@gmail.com>
-Subject: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
-Date:   Sat, 26 Jun 2021 01:33:23 +0300
-Message-Id: <20210625223323.13930-1-paskripkin@gmail.com>
-X-Mailer: git-send-email 2.32.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sat, 26 Jun 2021 12:54:30 -0400
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 26 Jun 2021 09:52:07 -0700
+X-QCInternal: smtphost
+Received: from ironmsg01-blr.qualcomm.com ([10.86.208.130])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 26 Jun 2021 09:52:05 -0700
+X-QCInternal: smtphost
+Received: from rajeevny-linux.qualcomm.com ([10.204.66.121])
+  by ironmsg01-blr.qualcomm.com with ESMTP; 26 Jun 2021 22:21:15 +0530
+Received: by rajeevny-linux.qualcomm.com (Postfix, from userid 2363605)
+        id 9423D21478; Sat, 26 Jun 2021 22:21:13 +0530 (IST)
+From:   Rajeev Nandan <rajeevny@codeaurora.org>
+To:     dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org
+Cc:     Rajeev Nandan <rajeevny@codeaurora.org>,
+        linux-kernel@vger.kernel.org, thierry.reding@gmail.com,
+        sam@ravnborg.org, robdclark@gmail.com, dianders@chromium.org,
+        lyude@redhat.com, jani.nikula@intel.com, robh@kernel.org,
+        laurent.pinchart@ideasonboard.com, a.hajda@samsung.com,
+        daniel.thompson@linaro.org, hoegsberg@chromium.org,
+        abhinavk@codeaurora.org, seanpaul@chromium.org,
+        kalyan_t@codeaurora.org, mkrishn@codeaurora.org,
+        lee.jones@linaro.org, jingoohan1@gmail.com,
+        linux-fbdev@vger.kernel.org
+Subject: [v8 0/6] drm: Support basic DPCD backlight in panel-simple and add a new panel ATNA33XC20
+Date:   Sat, 26 Jun 2021 22:21:02 +0530
+Message-Id: <1624726268-14869-1-git-send-email-rajeevny@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In case of allocation failures, all code paths was jumping
-to this code:
+This series adds the support for the eDP panel that needs the backlight
+controlling over the DP AUX channel using DPCD registers of the panel
+as per the VESA's standard.
 
-err:
-	kfree(fbi);
-	kfree(var);
-	kfree(fbops);
+This series also adds support for the Samsung eDP AMOLED panel that
+needs DP AUX to control the backlight, and introduces new delays in the
+@panel_desc.delay to support this panel.
 
-	return r;
+This patch series depends on the following two series:
+- Doug's series [1], exposed the DP AUX channel to the panel-simple.
+- Lyude's series [2], introduced new drm helper functions for DPCD
+  backlight.
 
-Since all 3 pointers placed on stack and don't initialized, they
-will be filled with some random values, which leads to
-deferencing random pointers in kfree(). Fix it by rewriting
-error handling path.
+This series is the logical successor to the series [3].
 
-Fixes: 897044e99e43 ("OMAP: DSS2: OMAPFB: Reduce stack usage")
-Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
----
- .../video/fbdev/omap2/omapfb/omapfb-main.c    | 21 +++++++++----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Changes in v1:
+- Created dpcd backlight helper with very basic functionality, added
+  backlight registration in the ti-sn65dsi86 bridge driver.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-index a3decc7fadde..6a302138ebeb 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-@@ -2025,21 +2025,19 @@ static int omapfb_mode_to_timings(const char *mode_str,
- 	fbops = NULL;
- 
- 	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
--	if (fbi == NULL) {
--		r = -ENOMEM;
--		goto err;
--	}
-+	if (fbi == NULL)
-+		return -ENOMEM;
- 
- 	var = kzalloc(sizeof(*var), GFP_KERNEL);
- 	if (var == NULL) {
- 		r = -ENOMEM;
--		goto err;
-+		goto err_var;
- 	}
- 
- 	fbops = kzalloc(sizeof(*fbops), GFP_KERNEL);
- 	if (fbops == NULL) {
- 		r = -ENOMEM;
--		goto err;
-+		goto err_fbops;
- 	}
- 
- 	fbi->fbops = fbops;
-@@ -2047,7 +2045,7 @@ static int omapfb_mode_to_timings(const char *mode_str,
- 	r = fb_find_mode(var, fbi, mode_str, NULL, 0, NULL, 24);
- 	if (r == 0) {
- 		r = -EINVAL;
--		goto err;
-+		goto err_find;
- 	}
- 
- 	if (display->driver->get_timings) {
-@@ -2088,11 +2086,12 @@ static int omapfb_mode_to_timings(const char *mode_str,
- 
- 	r = 0;
- 
--err:
--	kfree(fbi);
--	kfree(var);
-+err_find:
- 	kfree(fbops);
--
-+err_fbops:
-+	kfree(var);
-+err_var:
-+	kfree(fbi);
- 	return r;
- }
- 
+Changes in v2:
+- Created a new DisplayPort aux backlight driver and moved the code from
+  drm_dp_aux_backlight.c (v1) to the new driver.
+
+Changes in v3:
+- Fixed module compilation (kernel test bot).
+
+Changes in v4:
+- Added basic DPCD backlight support in panel-simple.
+- Added support for a new Samsung panel ATNA33XC20 that needs DPCD
+  backlight controlling and has a requirement of delays between enable
+  GPIO and regulator.
+
+Changes in v5:
+Addressed review suggestions from Douglas:
+- Created a new API drm_panel_dp_aux_backlight() in drm_panel.c
+- Moved DP AUX backlight functions from panel-simple.c to drm_panel.c
+- panel-simple probe() calls drm_panel_dp_aux_backlight() to create
+  backlight when the backlight phandle is not specified in panel DT
+  and DP AUX channel is present.
+- Added check for drm_edp_backlight_supported() before registering.
+- Removed the @uses_dpcd_backlight flag from panel_desc as this
+  should be auto-detected.
+- Updated comments/descriptions.
+
+Changes in v6:
+- Rebased
+- Updated wanrning messages, fixed word wrapping in comments.
+- Fixed ordering of memory allocation
+
+Changes in v7:
+- Updated the disable_to_power_off and power_to_enable panel delays
+as discovered at <https://crrev.com/c/2966167> (Douglas)
+
+Changes in v8:
+- Now using backlight_is_blank() to get the backlight blank status (Sam Ravnborg)
+- Added a new patch #4 to fix the warnings for eDP panel description (Sam Ravnborg)
+
+[1] https://lore.kernel.org/dri-devel/20210525000159.3384921-1-dianders@chromium.org/
+[2] https://lore.kernel.org/dri-devel/20210514181504.565252-1-lyude@redhat.com/
+[3] https://lore.kernel.org/dri-devel/1619416756-3533-1-git-send-email-rajeevny@codeaurora.org/
+
+Rajeev Nandan (6):
+  drm/panel: add basic DP AUX backlight support
+  drm/panel-simple: Support DP AUX backlight
+  drm/panel-simple: Support for delays between GPIO & regulator
+  drm/panel-simple: Update validation warnings for eDP panel description
+  dt-bindings: display: simple: Add Samsung ATNA33XC20
+  drm/panel-simple: Add Samsung ATNA33XC20
+
+ .../bindings/display/panel/panel-simple.yaml       |   2 +
+ drivers/gpu/drm/drm_panel.c                        | 108 +++++++++++++++++++++
+ drivers/gpu/drm/panel/panel-simple.c               |  73 +++++++++++++-
+ include/drm/drm_panel.h                            |  15 ++-
+ 4 files changed, 190 insertions(+), 8 deletions(-)
+
 -- 
-2.32.0
+2.7.4
 
