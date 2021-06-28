@@ -2,115 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5825F3B529B
-	for <lists+linux-fbdev@lfdr.de>; Sun, 27 Jun 2021 10:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C97323B6A80
+	for <lists+linux-fbdev@lfdr.de>; Mon, 28 Jun 2021 23:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229507AbhF0Iuw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 27 Jun 2021 04:50:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43194 "EHLO
+        id S233056AbhF1Vnt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 28 Jun 2021 17:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbhF0Iuw (ORCPT
+        with ESMTP id S232131AbhF1Vnr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 27 Jun 2021 04:50:52 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D719BC061574;
-        Sun, 27 Jun 2021 01:48:26 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id f30so25712280lfj.1;
-        Sun, 27 Jun 2021 01:48:26 -0700 (PDT)
+        Mon, 28 Jun 2021 17:43:47 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0DD7C061760
+        for <linux-fbdev@vger.kernel.org>; Mon, 28 Jun 2021 14:41:20 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id k206so4847069oif.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 28 Jun 2021 14:41:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=4Dr7IlCFxFMjzD5ZoiWZkQrtRVuiEBN/27kUtcpWfMU=;
-        b=TI3aLnYRD0arKqMnRsDNfa/vCBd+Y0g1C5LivRwwsMLRUzUasYfwVo84CC2nFbxR24
-         fhHPFLaop/O7TnCXlmdBKuZ2dVxcliIfIeXm60w+g8tbxvByi8kGWz//SguzkuXGKi3e
-         hXsczrECSS/p45p3JFODhJYp1SVfWHVNClHNU3kDyy5v8MRF3W4qmwmsdXfCtRwl/USm
-         u7anhww0TYZ6mWGFScQibL/ofbOsLVkmpWUqHkcwoYyGNHvfjBPdosFyx2XezOXGzTZk
-         442gVwS0SglQ7JkDiucb0FPREfd58fRHflgDLQHfa7pK03paeVeJZWGxDG4uzXHffGMF
-         RsHw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=j9mpOs7UzWPzyjWQu9/DuhIDcvPPjYxqkKSRuEITA14=;
+        b=gK/3Reea6Oud6FCF7kcFUZs10ymUaScxQZlTVVsPxx8KExad4+/+DHcw3Euvx9BeaG
+         ZKvM2aMfxMot6/CWpNvSJzsLhqu/Bt+S+t3x2+t0GG7fpQz5yEAIR91XH3vcR2BwE53y
+         Z1kPRaTefn/47F+wKAgI8vrBPml895/byQJs2D/FKgNWSZSc1RGelGNQd/n1B6F9gRo6
+         6dOpxiEMnf1pYD1UMWTKWeYeAvuQnSARmZr+LRT/wVs8hmB1b7vqFNd2qu96iwTeZgBv
+         koW1Y4QrrwHfSBMiaTMFGfAkEFOWk4DMYB76UHpu041KkjqyK4W51gfKAt8LsgQhlBMx
+         2aOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=4Dr7IlCFxFMjzD5ZoiWZkQrtRVuiEBN/27kUtcpWfMU=;
-        b=nhRjVnI6z3zSVJsWEXJERfqgjv9fKS7M87d+L3Tb67rtH2rfE1EUam6fj9Gl4NhOBx
-         R9nOr2i5Tsi5WjWez8SOgkPBOHej2vLUEfkq/e/YlvfIcBYEJmgi2rdJWwPxiseIN6Yz
-         dbfH6T1qiypbBKILKjttAwglszya8zVREsMS4rPKx8576gM8dMrOl+azRUqis4BpQ3hI
-         yFH4mJeZWDZPDPXBlwh5MGdUBHsvtwRWPMBbMU3j/tMcCIGm/2WtqBz/eoweXwoQcGas
-         LNk39EnAC1Jf01r1qM4CuXDfHORc0W5hj5R8c6m9cH3WChM6TTosd+i1r4w++k7ZZDyD
-         JoSA==
-X-Gm-Message-State: AOAM5318ISyl5JhONODnjndFwh0v19fk0AsWuXVwa1amxOSxz8mA19ON
-        VRhxpnpKu93/vLKfysWn4tY=
-X-Google-Smtp-Source: ABdhPJzR+MkVprcpoGGzZSSVXUV+lH5UnwMEPYmOcsb2fn4Bud+wu9dT2w8b64laAvqaUxWHv5HElw==
-X-Received: by 2002:a05:6512:32a6:: with SMTP id q6mr15279057lfe.308.1624783705197;
-        Sun, 27 Jun 2021 01:48:25 -0700 (PDT)
-Received: from localhost.localdomain ([185.215.60.89])
-        by smtp.gmail.com with ESMTPSA id b7sm982604lfb.121.2021.06.27.01.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jun 2021 01:48:24 -0700 (PDT)
-Date:   Sun, 27 Jun 2021 11:48:16 +0300
-From:   Pavel Skripkin <paskripkin@gmail.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
-Message-ID: <20210627114816.5e9d042b@gmail.com>
-In-Reply-To: <20210626231423.GA38365@macbook.musicnaut.iki.fi>
-References: <20210625223323.13930-1-paskripkin@gmail.com>
-        <20210626231423.GA38365@macbook.musicnaut.iki.fi>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-suse-linux-gnu)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=j9mpOs7UzWPzyjWQu9/DuhIDcvPPjYxqkKSRuEITA14=;
+        b=VtwEglCMQVTnNafdNEJtDuuT7SkmYjUfM3BU9emB/GiIl9K974hfwHrQ0UU/A9GdII
+         oeYLK14R4+7rAVm1BTYvWyv1ydsRyaMhKCk9A0lSecptf0aIi9grPWf2xgkc4yAc2hIy
+         H6ep0uV36xv46Sy98fSeBipsDWBV5GzhdUDBZtodo906HojTyEB0GPuORspVICKcnNrL
+         jF6Wr7hqASXS9vhXWe3Ox6W18O917d7Yo0tiHwtADUf6BhPlrE3MdflhPqaE8BHa1kpG
+         5asliVfZH+lJLVndh9z9LvbRDxWpnTm/CrTVqpMPfic/sxtWCS91AG+HOx7h7axxM54u
+         dalA==
+X-Gm-Message-State: AOAM531lk25DJr8K1YFzZ/UxxJvSSl916tDX0PwMJGlsL651dSD7fXU6
+        8duO2PFhX0Uz4zevK21OO6qjgHAqU637586roeECVl/I7Eg=
+X-Google-Smtp-Source: ABdhPJx/sEpM+GrC34Pb6D4MNO1CKn/QaWwcU+Vx3Z0CAExD2NxPoWlooIJngrZwKjhVwc5/2XkyTRKYOHRS63XQumE=
+X-Received: by 2002:aca:3385:: with SMTP id z127mr18583516oiz.142.1624916479804;
+ Mon, 28 Jun 2021 14:41:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6839:1406:0:0:0:0 with HTTP; Mon, 28 Jun 2021 14:41:19
+ -0700 (PDT)
+Reply-To: alahmedhassan5602@gmail.com
+From:   Ahmed Hassan <mlouisabesson@gmail.com>
+Date:   Mon, 28 Jun 2021 21:41:19 +0000
+Message-ID: <CADkod8VuTvTPXTj0mwpejq4sNEEX8GqCneF+FJQ+94fS8RGMKg@mail.gmail.com>
+Subject: I need your cooperation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, 27 Jun 2021 02:14:23 +0300
-Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+Hello,
 
-> Hi,
-> 
-> On Sat, Jun 26, 2021 at 01:33:23AM +0300, Pavel Skripkin wrote:
-> > In case of allocation failures, all code paths was jumping
-> > to this code:
-> > 
-> > err:
-> > 	kfree(fbi);
-> > 	kfree(var);
-> > 	kfree(fbops);
-> > 
-> > 	return r;
-> > 
-> > Since all 3 pointers placed on stack and don't initialized, they
-> > will be filled with some random values, which leads to
-> > deferencing random pointers in kfree(). Fix it by rewriting
-> > error handling path.
-> 
-> They are initialized before the first goto:
-> 
-> [...]
-> 	fbi = NULL;
-> 	var = NULL;
-> 	fbops = NULL;
-> 
-> 	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
-> 	if (fbi == NULL) {
-> 		r = -ENOMEM;
-> 		goto err;
-> 	}
-> [...]
-> 
+I know that this mail will come to you as a surprise as we have never
+met before, but need not to worry as I am contacting you independently
+of my investigation and no one is informed of this communication. I
+need your urgent assistance in transferring the sum of $11.3million
+immediately to your private account.The money has been here in our
+Bank lying dormant for years now without anybody coming for the claim
+of it.
 
-Hi! 
+I want to release the money to you as a relative to our deceased
+customer (the account owner) who died along with his supposed Next of
+Kin on 16th October 2005. The Banking laws here do not allow such
+money to stay more than 16 years, because the money will be recalled
+to the Bank treasury account as unclaimed funds.
 
-Im sorry for this, I should not stay to late night reviewing the code
-next time :(
+By indicating your interest I will send you the full details on how
+the business will be executed.
 
+Please respond urgently and delete if you are not interested.
 
-
-
-With regards,
-Pavel Skripkin
+Best Regards,
+Ahmed Hassan
