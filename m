@@ -2,104 +2,47 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBAD3BF74E
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jul 2021 11:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35D873C14A4
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jul 2021 15:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231241AbhGHJNu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Jul 2021 05:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34178 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231190AbhGHJNt (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Jul 2021 05:13:49 -0400
-Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C150FC061574
-        for <linux-fbdev@vger.kernel.org>; Thu,  8 Jul 2021 02:11:07 -0700 (PDT)
-Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id E194282DE8;
-        Thu,  8 Jul 2021 11:11:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1625735463;
-        bh=v4bVoRD53O4Rz8K6iYCnCgki569VZie03IcR3yzZahg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dOieoYE8YXLDAIzAxx6hfonY3mCuzzwin8M8jbaBmvdjStMAYSZLun9NSdJgwGxPM
-         0mst50bKbrNtwIbg0+0P3Hub4GDxbLPU2jFRqHqYt7JLR29dihA1KFKk4jmcqHcMws
-         CPx7gDnqLAIdUz3hy7Z9QRFsT0bDf6Eyw2UEnWdDVHQ4Ol0bbb2mDfPQLtb+9wCtwh
-         86E3g9JJAt0bLFYbM4jUfIT8bKuEBheoZD2ifPduey8Ld49TYXF0mHSYLSGJ4hSZNI
-         54mRCXTUga7KAwVlezwgkVjenkaKiN1AeiOpjEovx+cESYrsnBlyfHBUZzO8YD3QPy
-         ZIG/6YazpxuDA==
-From:   Marek Vasut <marex@denx.de>
-To:     dri-devel@lists.freedesktop.org
-Cc:     linux-fbdev@vger.kernel.org, Marek Vasut <marex@denx.de>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Meghana Madhyastha <meghana.madhyastha@gmail.com>,
-        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Sean Paul <seanpaul@chromium.org>,
-        Thierry Reding <treding@nvidia.com>
-Subject: [PATCH] video: backlight: Only set maximum brightness for gpio-backlight
-Date:   Thu,  8 Jul 2021 11:10:58 +0200
-Message-Id: <20210708091058.56317-1-marex@denx.de>
-X-Mailer: git-send-email 2.30.2
+        id S231152AbhGHNuY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Jul 2021 09:50:24 -0400
+Received: from mx-n03.wc2.phx1.stabletransit.com ([207.246.242.249]:48156 "HELO
+        mx-n03.wc2.phx1.stabletransit.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S231843AbhGHNuX (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Thu, 8 Jul 2021 09:50:23 -0400
+X-Greylist: delayed 899 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 09:50:13 EDT
+Received: by mx-n03.wc2.phx1.stabletransit.com (Postfix, from userid 114)
+        id C4FC6161980; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
+        mx-n03.wc2.phx1.stabletransit.com
+X-Spam-Level: **
+X-Spam-Status: No, score=2.6 required=6.0 tests=BAYES_50,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_SHORT,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.2
+X-Spam-Virus: No
+Received: from php-v027.wc2.phx1.stabletransit.com (unknown [10.40.206.156])
+        by mx-n03.wc2.phx1.stabletransit.com (Postfix) with ESMTP id 0B69A16003E
+        for <linux-fbdev@vger.kernel.org>; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+Received: from digilu (uid 2914979)
+        (envelope-from mabeljohnson@citromail.hu)
+        id 2017e
+        by php-v027.wc2.phx1.stabletransit.com (DragonFly Mail Agent v0.11);
+        Thu, 08 Jul 2021 08:32:30 -0500
+To:     linux-fbdev@vger.kernel.org
+Subject: WORK OF GOD.
+X-PHP-Originating-Script: 2914979:class.engine.php(12) : runtime-created function
+Date:   Thu, 8 Jul 2021 08:32:30 -0500
+From:   MARY JOHNSON <mabeljohnson@citromail.hu>
+Reply-To: mj224294@gmail.com
+Message-ID: <1a132b57ec99f674753edff2240845c9@jackieleestudio.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The note in c2adda27d202f ("video: backlight: Add of_find_backlight helper
-in backlight.c") says that gpio-backlight uses brightness as power state.
-Other backlight drivers do not, so limit this workaround to gpio-backlight.
-
-This fixes the case where e.g. pwm-backlight can perfectly well be set to
-brightness 0 on boot in DT, which without this patch leads to the display
-brightness to be max instead of off.
-
-Fixes: c2adda27d202f ("video: backlight: Add of_find_backlight helper in backlight.c")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Meghana Madhyastha <meghana.madhyastha@gmail.com>
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Sean Paul <seanpaul@chromium.org>
-Cc: Thierry Reding <treding@nvidia.com>
----
- drivers/video/backlight/backlight.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/backlight/backlight.c b/drivers/video/backlight/backlight.c
-index 537fe1b376ad7..dfb66171dec41 100644
---- a/drivers/video/backlight/backlight.c
-+++ b/drivers/video/backlight/backlight.c
-@@ -676,6 +676,7 @@ EXPORT_SYMBOL(of_find_backlight_by_node);
- static struct backlight_device *of_find_backlight(struct device *dev)
- {
- 	struct backlight_device *bd = NULL;
-+	bool is_gpio_backlight = false;
- 	struct device_node *np;
- 
- 	if (!dev)
-@@ -685,6 +686,8 @@ static struct backlight_device *of_find_backlight(struct device *dev)
- 		np = of_parse_phandle(dev->of_node, "backlight", 0);
- 		if (np) {
- 			bd = of_find_backlight_by_node(np);
-+			is_gpio_backlight =
-+				of_device_is_compatible(np, "gpio-backlight");
- 			of_node_put(np);
- 			if (!bd)
- 				return ERR_PTR(-EPROBE_DEFER);
-@@ -692,7 +695,7 @@ static struct backlight_device *of_find_backlight(struct device *dev)
- 			 * Note: gpio_backlight uses brightness as
- 			 * power state during probe
- 			 */
--			if (!bd->props.brightness)
-+			if (is_gpio_backlight && !bd->props.brightness)
- 				bd->props.brightness = bd->props.max_brightness;
- 		}
- 	}
--- 
-2.30.2
+I am Mrs. Mary Johnson,78years,an aging widow suffering from cancer, I am on admission at a hospital.I would like to willfully entrust the rest of my monetary assets to you, Kindly reply back with your full Name, cellphone, address, to enable me to send you a letter of authorization to contact my bank first inland bank nigeria plc so that they can transfer my funds to your account for the purpose of helping the poor as indicated on my WILL.
 
