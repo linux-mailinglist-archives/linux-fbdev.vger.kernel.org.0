@@ -2,89 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C44B3B9336
-	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Jul 2021 16:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBAD3BF74E
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jul 2021 11:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233911AbhGAO0q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 1 Jul 2021 10:26:46 -0400
-Received: from mail.perfometal.com.mx ([189.254.247.121]:51200 "EHLO
-        mail.perfometal.com.mx" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233916AbhGAO0q (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 1 Jul 2021 10:26:46 -0400
-X-Greylist: delayed 507 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Jul 2021 10:26:45 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.perfometal.com.mx (Postfix) with ESMTP id 0AB842E3CA0
-        for <linux-fbdev@vger.kernel.org>; Thu,  1 Jul 2021 09:07:17 -0500 (CDT)
-Received: from mail.perfometal.com.mx ([127.0.0.1])
-        by localhost (mail.perfometal.com.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id IpYBWD4lTCnc for <linux-fbdev@vger.kernel.org>;
-        Thu,  1 Jul 2021 09:07:16 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.perfometal.com.mx (Postfix) with ESMTP id 91AF82E3E2C
-        for <linux-fbdev@vger.kernel.org>; Thu,  1 Jul 2021 09:07:16 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.perfometal.com.mx 91AF82E3E2C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perfometal.com.mx;
-        s=3A0FA91E-31DD-11E8-B68C-D82C58F618A5; t=1625148436;
-        bh=oRf4hafTjaaOaJHgsB2UCmGcuaJ+74kOwTcHMct92j0=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=PPUqeUSTUK/MuS3QZSGJdi0UOm7i09vS2xocWjXQafuKm+ZGtZnEUcqnVtrIrYF/+
-         1rGc411GszrJZykaBiP8Y+rMTElzbD+V7PH5GCLFySFw24dlThalit7BX3qWInGnvk
-         xhfyrbeQbfQcfyVEJP64L6CFiO12h5+7DeFEAaeEGej4OhB/Vm7/WGu1U5yY8ZmxoG
-         KNbhVgh3BZZOMFMphg13Z6HsXxZdkNRokSIVgrpC4jGLaH06+B+VCBtK8aUY67o3a7
-         tLDzxSG9ynQHp43VCkjKqGHofIPm5XimBpmP7Yo1Z7tcE0P0v3BYgfhG8W5o8uswbV
-         o2OjscZESlxRw==
-X-Virus-Scanned: amavisd-new at mail.perfometal.com.mx
-Received: from mail.perfometal.com.mx ([127.0.0.1])
-        by localhost (mail.perfometal.com.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id fcFaT0VZPYn6 for <linux-fbdev@vger.kernel.org>;
-        Thu,  1 Jul 2021 09:07:16 -0500 (CDT)
-Received: from [37.49.225.19] (unknown [37.49.225.19])
-        by mail.perfometal.com.mx (Postfix) with ESMTPSA id B14E42E391C
-        for <linux-fbdev@vger.kernel.org>; Thu,  1 Jul 2021 09:07:15 -0500 (CDT)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S231241AbhGHJNu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 8 Jul 2021 05:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231190AbhGHJNt (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Jul 2021 05:13:49 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C150FC061574
+        for <linux-fbdev@vger.kernel.org>; Thu,  8 Jul 2021 02:11:07 -0700 (PDT)
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id E194282DE8;
+        Thu,  8 Jul 2021 11:11:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1625735463;
+        bh=v4bVoRD53O4Rz8K6iYCnCgki569VZie03IcR3yzZahg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dOieoYE8YXLDAIzAxx6hfonY3mCuzzwin8M8jbaBmvdjStMAYSZLun9NSdJgwGxPM
+         0mst50bKbrNtwIbg0+0P3Hub4GDxbLPU2jFRqHqYt7JLR29dihA1KFKk4jmcqHcMws
+         CPx7gDnqLAIdUz3hy7Z9QRFsT0bDf6Eyw2UEnWdDVHQ4Ol0bbb2mDfPQLtb+9wCtwh
+         86E3g9JJAt0bLFYbM4jUfIT8bKuEBheoZD2ifPduey8Ld49TYXF0mHSYLSGJ4hSZNI
+         54mRCXTUga7KAwVlezwgkVjenkaKiN1AeiOpjEovx+cESYrsnBlyfHBUZzO8YD3QPy
+         ZIG/6YazpxuDA==
+From:   Marek Vasut <marex@denx.de>
+To:     dri-devel@lists.freedesktop.org
+Cc:     linux-fbdev@vger.kernel.org, Marek Vasut <marex@denx.de>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Meghana Madhyastha <meghana.madhyastha@gmail.com>,
+        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        Sean Paul <seanpaul@chromium.org>,
+        Thierry Reding <treding@nvidia.com>
+Subject: [PATCH] video: backlight: Only set maximum brightness for gpio-backlight
+Date:   Thu,  8 Jul 2021 11:10:58 +0200
+Message-Id: <20210708091058.56317-1-marex@denx.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Note This
-To:     linux-fbdev@vger.kernel.org
-From:   "Mr. Mmedin Williams" <VENTAS@PERFOMETAL.COM.MX>
-Date:   Thu, 01 Jul 2021 16:13:23 +0200
-Reply-To: mmedinwilliamss@outlook.com
-Message-Id: <20210701140715.B14E42E391C@mail.perfometal.com.mx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear =
+The note in c2adda27d202f ("video: backlight: Add of_find_backlight helper
+in backlight.c") says that gpio-backlight uses brightness as power state.
+Other backlight drivers do not, so limit this workaround to gpio-backlight.
 
+This fixes the case where e.g. pwm-backlight can perfectly well be set to
+brightness 0 on boot in DT, which without this patch leads to the display
+brightness to be max instead of off.
 
-This proposal might come to you as a surprise since it is from someone you =
-do not know or had meant before, I had to contact you believing that you ar=
-e a reputable person and as such, you cannot abscond with my share of the m=
-oney at the conclusion of this transaction.
+Fixes: c2adda27d202f ("video: backlight: Add of_find_backlight helper in backlight.c")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Meghana Madhyastha <meghana.madhyastha@gmail.com>
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Sean Paul <seanpaul@chromium.org>
+Cc: Thierry Reding <treding@nvidia.com>
+---
+ drivers/video/backlight/backlight.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-I am Mr. Mmedin Williams, the director, and coordinator of the Finance and =
-Contract Department of the Minerals and Energy with the South African Gover=
-nment. The crux of this letter is that the finance/contract department of t=
-he DME deliberately over-inflated the contract values of the various contra=
-ct awarded. In the course of disbursement of the original contract value, m=
-y office was able to track down the sum of (US$20.5 Million) Twenty Million=
- Five Hundred Thousand United States Dollars as the over-invoiced sum. This=
- money is now floating in the DME domiciliary account with the South Africa=
-n Reserve Bank (SARB).
+diff --git a/drivers/video/backlight/backlight.c b/drivers/video/backlight/backlight.c
+index 537fe1b376ad7..dfb66171dec41 100644
+--- a/drivers/video/backlight/backlight.c
++++ b/drivers/video/backlight/backlight.c
+@@ -676,6 +676,7 @@ EXPORT_SYMBOL(of_find_backlight_by_node);
+ static struct backlight_device *of_find_backlight(struct device *dev)
+ {
+ 	struct backlight_device *bd = NULL;
++	bool is_gpio_backlight = false;
+ 	struct device_node *np;
+ 
+ 	if (!dev)
+@@ -685,6 +686,8 @@ static struct backlight_device *of_find_backlight(struct device *dev)
+ 		np = of_parse_phandle(dev->of_node, "backlight", 0);
+ 		if (np) {
+ 			bd = of_find_backlight_by_node(np);
++			is_gpio_backlight =
++				of_device_is_compatible(np, "gpio-backlight");
+ 			of_node_put(np);
+ 			if (!bd)
+ 				return ERR_PTR(-EPROBE_DEFER);
+@@ -692,7 +695,7 @@ static struct backlight_device *of_find_backlight(struct device *dev)
+ 			 * Note: gpio_backlight uses brightness as
+ 			 * power state during probe
+ 			 */
+-			if (!bd->props.brightness)
++			if (is_gpio_backlight && !bd->props.brightness)
+ 				bd->props.brightness = bd->props.max_brightness;
+ 		}
+ 	}
+-- 
+2.30.2
 
-I and my colleague now want to quickly transfer this fund to a safe nominat=
-ed foreign bank account for investment abroad. We are not allowed as a matt=
-er of government policy to operate any foreign account because of our statu=
-s as civil/public servants. Hence the need to solicit for a partner abroad =
-to enable us to transfer this money into your foreign bank account. Upon yo=
-ur acceptance of this proposal, we have also agreed on a sharing ratio of.
-
-Upon your follow up response, then we can proceed with next step.
-
-Regards,
-
-Mr. Mmedin Williams
-42 Homestead Road, Rivonia, Sandton
-Johannesburg South Africa.
-Tel: +27-664621269
