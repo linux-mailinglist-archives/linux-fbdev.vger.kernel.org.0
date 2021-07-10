@@ -2,27 +2,27 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17AF3C3123
-	for <lists+linux-fbdev@lfdr.de>; Sat, 10 Jul 2021 04:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0348B3C31AA
+	for <lists+linux-fbdev@lfdr.de>; Sat, 10 Jul 2021 04:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235010AbhGJCkN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 9 Jul 2021 22:40:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58438 "EHLO mail.kernel.org"
+        id S235401AbhGJCnq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Jul 2021 22:43:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33764 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235793AbhGJCjr (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 9 Jul 2021 22:39:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3550061422;
-        Sat, 10 Jul 2021 02:35:54 +0000 (UTC)
+        id S235392AbhGJCmy (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 9 Jul 2021 22:42:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B754A613DC;
+        Sat, 10 Jul 2021 02:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625884555;
-        bh=lAu+LTAR349mDL0w4BHlXProjoot0ns5zpTda0DaVLw=;
+        s=k20201202; t=1625884745;
+        bh=p58epB/5XPf9VoPg+aVuld8nvvB+GnyYnomEpyTlmtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e4qjD1qKpaipYGHYlSsEIP8DpG+apnXsX1KyB1IrGvYIrrzMqVBjE54MXrT0koqJp
-         KI2WmL/qHnhoXvwYJwKy2MUtWeHjOC3n59tcD1yNrbq0TFVJw2nR1k0hV/Z0eBEm6d
-         bIO6YLcukyJzZC2rUHTuhoarVPkiKFfdsNkrFqgh9ET4K1baMQsYOr+PJpx0O+DkxT
-         xhyBH1gNU2JTzUHGiTwvL7oJ/01qfTJo72r9MMBa7LCLbh5RQ7KPG8Clb9FgLnHxgj
-         2gZBIsdBzxxojcED6Hnf1azVjX45P2sUP/5eMwZzYdoc0we/xBgrvjIXxpp5/uIgdr
-         hgJtDljYNuXXg==
+        b=RTGdlvbfdUD5I0oxng4J/M86/7SY//Ses4uUbSdWlcrd+Lca9Hy4nbQITf681Y/iw
+         AaPhh0LQbxj2QxFBsJxJxNFCYUV79KtjWTtkK8hQHE0YP7ZIDglQR1PiMs38SoqGru
+         pALrgxNY0Gqw9gCAQvHNySzoca3iwbf5e47r3dnvhzuMOJCNrPEEMa0fmggUWdWr7O
+         DKXu7TmOxgRxPj+dN1Ga0BHUw3fR35uGkr3I59N6Tg1tP1o0XZ7CbsNT3SBT1CbAuE
+         4oDdl5mHBvVp0MveCXS/Exvtzxj0vCMaiF1M6rpZ7SR6uk+bOQbum4yI/OTyR0FRqQ
+         u9lOBXReuv39g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
@@ -31,12 +31,12 @@ Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
         Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 27/33] backlight: lm3630a: Fix return code of .update_status() callback
-Date:   Fri,  9 Jul 2021 22:35:09 -0400
-Message-Id: <20210710023516.3172075-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 22/26] backlight: lm3630a: Fix return code of .update_status() callback
+Date:   Fri,  9 Jul 2021 22:36:00 -0400
+Message-Id: <20210710023604.3172486-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210710023516.3172075-1-sashal@kernel.org>
-References: <20210710023516.3172075-1-sashal@kernel.org>
+In-Reply-To: <20210710023604.3172486-1-sashal@kernel.org>
+References: <20210710023604.3172486-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-index ef2553f452ca..f17e5a8860fa 100644
+index 1771220b2437..90a24b975240 100644
 --- a/drivers/video/backlight/lm3630a_bl.c
 +++ b/drivers/video/backlight/lm3630a_bl.c
-@@ -184,7 +184,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+@@ -183,7 +183,7 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
  	if ((pwm_ctrl & LM3630A_PWM_BANK_A) != 0) {
  		lm3630a_pwm_ctrl(pchip, bl->props.brightness,
  				 bl->props.max_brightness);
@@ -78,7 +78,7 @@ index ef2553f452ca..f17e5a8860fa 100644
  	}
  
  	/* disable sleep */
-@@ -204,8 +204,8 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+@@ -203,8 +203,8 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
  	return 0;
  
  out_i2c_err:
@@ -89,7 +89,7 @@ index ef2553f452ca..f17e5a8860fa 100644
  }
  
  static int lm3630a_bank_a_get_brightness(struct backlight_device *bl)
-@@ -261,7 +261,7 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
+@@ -260,7 +260,7 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
  	if ((pwm_ctrl & LM3630A_PWM_BANK_B) != 0) {
  		lm3630a_pwm_ctrl(pchip, bl->props.brightness,
  				 bl->props.max_brightness);
@@ -98,7 +98,7 @@ index ef2553f452ca..f17e5a8860fa 100644
  	}
  
  	/* disable sleep */
-@@ -281,8 +281,8 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
+@@ -280,8 +280,8 @@ static int lm3630a_bank_b_update_status(struct backlight_device *bl)
  	return 0;
  
  out_i2c_err:
