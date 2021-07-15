@@ -2,74 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E12743C9931
-	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Jul 2021 08:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D38E83CA42F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Jul 2021 19:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234002AbhGOG5l (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 15 Jul 2021 02:57:41 -0400
-Received: from mail-vk1-f175.google.com ([209.85.221.175]:44644 "EHLO
-        mail-vk1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232953AbhGOG5l (ORCPT
+        id S235506AbhGOR2g (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 15 Jul 2021 13:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37430 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234448AbhGOR2f (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 15 Jul 2021 02:57:41 -0400
-Received: by mail-vk1-f175.google.com with SMTP id s74so1066825vka.11;
-        Wed, 14 Jul 2021 23:54:48 -0700 (PDT)
+        Thu, 15 Jul 2021 13:28:35 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EAD9C061764
+        for <linux-fbdev@vger.kernel.org>; Thu, 15 Jul 2021 10:25:42 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id g24so4578918pji.4
+        for <linux-fbdev@vger.kernel.org>; Thu, 15 Jul 2021 10:25:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=A07qw47jpyx7/pJf1ZS9aQv4pD7PiHBZWlsl9UoiurRqqc+7ZndQI51YdaaD0nkecu
+         Qd4i+G02coH8O2I/r6ZupOF8oYSIAoIwVq4zkuCtuhDJYsbynWGQdegcG7aq+QxGg/bp
+         poyp2DbaibSeABlojQr/pIAqMWExNaHg4RIE+IQzBlXdCiQq16Yp/UqkBXwITYu4DgIP
+         XTs1gXkC7Br62pPmJXs/2nF+jRhXCAs3iAxTxuy51YthTghMWE/kONdSGZKCG8sWM+Ev
+         WU1ATEDaIH5W63c7UQCvZTdM21+mq9I9FOl7BCTb650pCRFEJMZ521zklByg85zlNwmj
+         7b/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cTwyBQY31SR0k9D6ud/qHazq+KVSjgeC457BWvTVmiM=;
-        b=Oo378yNP9ynS3pY2feOGPtF7AswYcrwi85ucqMny0fgQEdMfLkpTbVUQGee33sUUEC
-         EIfc9d24ATuRYOZqJzrAfcjZjY0trhLnGpL5Fao1iivahIdul8KcobwIKjlBU7STzFK9
-         cOMvb/bxpu2fg2OQl2cmAxiSp4xHzlFY9MTMTFKP5wrgtnQmeHOivyy2XXEjc5pppvc+
-         NxYcYJXeGVL8KRqruCJp6lvrRYB1IDcAKSvkrXZGlL/jsDxO3CZV7ysNLoXLt2ooYAsv
-         AdAMQ/adoCGi2HDkJghRqveGXTWImfOKD8jIJq5niMAjJOMessV30S6tN46be/KWTVUu
-         MSNQ==
-X-Gm-Message-State: AOAM5302gGzMmOxQonohirC3jVbygbJUwzemjQRzS9YVUj5XzwHcB7Z6
-        /Rkre7Ac/pICYt6IdjoaIZONHaJ8VXqX3ObccDk=
-X-Google-Smtp-Source: ABdhPJwpwUUWe4BFauukF4jBR4wGnmFd1K5ch7H5PTp1oLbLQs8rxa4S50A9H18uIxoc8/R0vmbeR/Pfefns8mnnR08=
-X-Received: by 2002:a05:6122:a12:: with SMTP id 18mr3950937vkn.1.1626332088002;
- Wed, 14 Jul 2021 23:54:48 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=WW69mr7NtVHK4tCeZVXZq69+jbOQfhcI6mq7ceKl8oSf3c/KyB4OQSualGnTBUZq2i
+         IWq1e+r5BuVZXLilj8DRRIc/S1IuS2oTu2RWBOXNjSCMZ+sDKir6oVcA4CNNHx8nu1c2
+         xc+XBKL3O4tcdlDZTruQxESgt9fqU/gOKGvAJ2xPDtwJQa17FzYFOPyxLmoQqwQ280r7
+         GZ7X0wiX2KxaOLETM2l3k2+v5Fl4av7wlxVbZCxQMMl4qr9kCkS3b3wjo3VXc9Mz4BA2
+         TSUSA7rGuAuVoOaaOE3n1a3BFna01RQoWlGdSREBQf9vmnldK+35oq3D3VYiN02pcuRY
+         nb8w==
+X-Gm-Message-State: AOAM533HjfyCvmpcylpBxx1Ko4HdyvFnsQJSfisEGrs90TYhEaljRmRB
+        X2pesY0bmT3Tt4aMwL+LY8FQtrybmepcacb85C8=
+X-Google-Smtp-Source: ABdhPJyZMrq1Z7I3pjjmyAtUHW3ABh0oEghTe77F5dAxRk/llsByjQhtZ30eIUOoh7sIooPsLTy5+nPJ1BCNgIavtsM=
+X-Received: by 2002:a17:90b:d8f:: with SMTP id bg15mr10963237pjb.152.1626369941880;
+ Thu, 15 Jul 2021 10:25:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210714145804.2530727-1-geert@linux-m68k.org> <YO8CT+Hcw1wfhnH5@ravnborg.org>
-In-Reply-To: <YO8CT+Hcw1wfhnH5@ravnborg.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 15 Jul 2021 08:54:36 +0200
-Message-ID: <CAMuHMdVjXhTE2x8mRrinmh9CCrdXQr+BYPfP-peaZ4AsLwsaaA@mail.gmail.com>
-Subject: Re: [PATCH resend 0/5] video: fbdev: ssd1307fb: Optimizations and improvements
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Maxime Ripard <mripard@kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>
+Received: by 2002:a05:6a10:fc85:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:25:41
+ -0700 (PDT)
+Reply-To: faty.muhamad@gmail.com
+From:   Ms Fatima Muhammad <general.infofederalreserve@gmail.com>
+Date:   Thu, 15 Jul 2021 17:25:41 +0000
+Message-ID: <CAJzJz_Dwu6rUxmnqq1QV9qD4hugxutFJZuENGUwx7RamXm5txA@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sam,
+Hello Dear,
 
-On Wed, Jul 14, 2021 at 5:27 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Wed, Jul 14, 2021 at 04:57:59PM +0200, Geert Uytterhoeven wrote:
-> > This patch series optimizes console operations on ssd1307fb, after the
-> > customary fixes and cleanups.
->
-> What is required to to have a drm driver that could do the same?
+My name is Ms.Fatima Muhammad., Please forgive me for stressing you
+with my predicaments and I sorry to approach you through this media
+because is serves the fastest means of  my communication right now,
 
-Add monochrome support to DRM?
+I came across your Email from my personal search and I decided to
+contact you believing you will be honest to fulfill my business
+proposal which I believe that will be a very good opportunity for both
+of us. Please it is my pleasure to contact you today for a business
+partnership investments projects worth $4.6 million USD which I intend
+to establish in your country..
 
-> Note: I will take a look at the patches a bit later.
+Pls If this business proposal offends your moral and ethic values do
+accept my apology. therefore kindly contact me immediately if you are
+interested for more details.
 
-TIA!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thank you for your wiliness to help me
+Yours Sincerely Fatima Muhammad
