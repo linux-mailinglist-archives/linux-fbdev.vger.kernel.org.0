@@ -2,99 +2,60 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 980F53D179A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Jul 2021 22:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B1003D1820
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Jul 2021 22:29:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbhGUT3x (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 21 Jul 2021 15:29:53 -0400
-Received: from phobos.denx.de ([85.214.62.61]:35412 "EHLO phobos.denx.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229461AbhGUT3w (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 21 Jul 2021 15:29:52 -0400
-Received: from [IPv6:::1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 4454F8164D;
-        Wed, 21 Jul 2021 22:10:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1626898227;
-        bh=Nxg6D9/LNvGyyanXCtwvpqzrW0bClFd5ufksR+iD2ro=;
-        h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
-        b=q5moY773ha3x3um5//G43YCFsmvOk/oy05rHfEQsbrUfVEacfY3dwlf4N+uPGqPZ+
-         OqtYJAyqPx+7fXQ+Ru0YSkHKGAo1FNR7VbfjKgLiVpjAmtn1Hu/ZpjD9SK4iKsR95u
-         UV42HlgMUraA3/ZhN83ZQDDeihOeiU/UAJp4l9/WOk7aJwXX2DonyfeIU3mnL7Pi1J
-         vyNX3J+JaE0vpJkM0+IHWrvpID3P3p8ufsQoQmWD4wTkWsCTiyK0OjbiHw6VScknMX
-         zdIxFVNKSSFRx6jvU1SxSi/kRZRvnJtUx0XrahDtE40JDSWPr2GSkwcbALO5KevWI/
-         Ci4FyV5bpmL0g==
-Subject: Re: [PATCH] backlight: pwm_bl: Avoid backlight flicker if backlight
- control GPIO is input
-From:   Marek Vasut <marex@denx.de>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Thierry Reding <treding@nvidia.com>, linux-pwm@vger.kernel.org
-References: <20210718211415.143709-1-marex@denx.de>
- <20210719112202.4fvmn57ibgy3yesa@maple.lan>
- <bbaad78e-91c7-0787-fa72-b5cfabcc6dbd@denx.de>
- <20210721104914.4difos6w3ysjelnv@maple.lan>
- <fee1ad9e-ae70-1644-5444-6c894473b48e@denx.de>
- <20210721164319.uaf4qyr62dnktadv@maple.lan>
- <f8b2bc71-2d2d-09f1-913d-0a6b93a1da31@denx.de>
-Message-ID: <7c354dc1-11d5-ed80-ed74-59c1aa6a9a31@denx.de>
-Date:   Wed, 21 Jul 2021 22:10:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S231195AbhGUTre (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 21 Jul 2021 15:47:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54336 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231247AbhGUTrd (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 21 Jul 2021 15:47:33 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801AFC061575
+        for <linux-fbdev@vger.kernel.org>; Wed, 21 Jul 2021 13:28:09 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id t3so3999217edc.7
+        for <linux-fbdev@vger.kernel.org>; Wed, 21 Jul 2021 13:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PW7YFhmqS4DTa/p80+tHuagWONXzWgXUWr3je8KQHyM=;
+        b=jcH1xMmsUJAzo0EQmLSsY8GoxsptuzMfXUP0/YS9MtcUdNpRXRsW0WsrTdS1GeJnIV
+         1CUjHjChp0AN8ZbAX7Y+luM+Jd5hK9yzBq3NIe/GUCiEJZ2ulHdWbQPJAmpgQJXfNzMc
+         1QKE37Si7N1631OpGzcXpfuutwYw8IPt7vRsXHJSrlS0fQnz2I/N/unilgjkTjvQc7yf
+         P815AI74qLwdQMT5n6veXEAnOsKianFsw1JXKf58ZUK3dGBZbHpIl3y4cx/2leW++xWa
+         GyopukiCO64dEW3BIkt1M2youCxCWmBuoxzRoGa/KFQ+T58fVj3By2q9v82/V59+995G
+         h0lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PW7YFhmqS4DTa/p80+tHuagWONXzWgXUWr3je8KQHyM=;
+        b=qon2p5p4Xr+7Ay+WacqMN9XJ7V12j4shd8DaztNWqM8IHPh+BAn5gG7/GascBJk4nv
+         1TEKoiwvCAe0q2Sda+PnMUvPjwOdfaB92ApTzBEkDzdJVZkKKUGkVHQ+7gQ+PoKdKb4q
+         XGTGIpaHqe97MO68OZMNdlccOCh8axCp9Fxv0yaF6AE9iRf62gfHK6QvB4oCtDl1pBl4
+         +dM/+jpM7vcAS9XolWMy7W9ixQSV9u9u4em79yxcSRwDT9sdRP7j3a9k/pYOSZp2Iigt
+         uuCBQlnD5KPkfVDQNla1snZpn2SMyQdR402LHIcN6Rws+nihAvaazsnEMwLQZMw/r3Tc
+         zSPg==
+X-Gm-Message-State: AOAM531d4Dc4dcKy8EthFzJEIkEqHVSPS3LiJo7w6w4v/sl+yqsHfZFv
+        n7PrdrnoZM+5jtxSOvUlkcOc10fV54W8LmBLou0=
+X-Google-Smtp-Source: ABdhPJwUSxhsmVc+0xcacNfUZmuwMCULaUZiEDncQa2wfTOkSZ2zre4aFDi5hAtTe6IqOCNmzHZvfYyYfBPCDVC03Jw=
+X-Received: by 2002:a05:6402:168f:: with SMTP id a15mr50549264edv.3.1626899288020;
+ Wed, 21 Jul 2021 13:28:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <f8b2bc71-2d2d-09f1-913d-0a6b93a1da31@denx.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
+Received: by 2002:a17:907:76cc:0:0:0:0 with HTTP; Wed, 21 Jul 2021 13:28:07
+ -0700 (PDT)
+Reply-To: marriothoteljobsca@gmail.com
+From:   Marriott Hotel <vickyemeka811@gmail.com>
+Date:   Wed, 21 Jul 2021 20:28:07 +0000
+Message-ID: <CAEFxj5vE7bOxY6+SDpNaf_3Lz4k6wtmeO6MqGQPFv6fJc4hKRA@mail.gmail.com>
+Subject: Hello
+To:     cclems@ukr.net
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 7/21/21 9:01 PM, Marek Vasut wrote:
-
-[...]
-
->>>> @@ -486,18 +500,6 @@ static int pwm_backlight_probe(struct 
->>>> platform_device *pdev)
->>>>            goto err_alloc;
->>>>        }
->>>> -    /*
->>>> -     * If the GPIO is not known to be already configured as output, 
->>>> that
->>>> -     * is, if gpiod_get_direction returns either 1 or -EINVAL, 
->>>> change the
->>>> -     * direction to output and set the GPIO as active.
->>>> -     * Do not force the GPIO to active when it was already output 
->>>> as it
->>>> -     * could cause backlight flickering or we would enable the 
->>>> backlight too
->>>> -     * early. Leave the decision of the initial backlight state for 
->>>> later.
->>>> -     */
->>>> -    if (pb->enable_gpio &&
->>>> -        gpiod_get_direction(pb->enable_gpio) != 0)
->>>> -        gpiod_direction_output(pb->enable_gpio, 1);
->>>
->>> pwm_backlight_initial_power_state() is still called after 
->>> pwm_apply_state()
->>> in pwm_backlight_probe(), so that might still be too late, no ?
->>
->> The initial pwm_apply_state() is essentially a nop or, perhaps, a sanity
->> check if you prefer to think if it that way.
->>
->> It can change the PWM period in some (non-DT) cases but only if the PWM
->> is not already running... and the change of period should not start it
->> running.
-> 
-> All right, let me give this a try.
-
-ACK, for this case I have here, this works too. Can you submit a proper 
-patch, including my AB/TB and I think also the Fixes tag ?
+I sent a letter to your mail, but did not receive a response from you.
+Did you receive my previous message?
