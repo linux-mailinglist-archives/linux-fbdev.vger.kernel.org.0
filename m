@@ -2,83 +2,72 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E141C3D56BD
-	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jul 2021 11:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A553D56FF
+	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jul 2021 12:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233006AbhGZJCX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 26 Jul 2021 05:02:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48118 "EHLO
+        id S232617AbhGZJXv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 26 Jul 2021 05:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232990AbhGZJCX (ORCPT
+        with ESMTP id S233070AbhGZJXs (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 26 Jul 2021 05:02:23 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67827C061757;
-        Mon, 26 Jul 2021 02:42:51 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id x15so10178528oic.9;
-        Mon, 26 Jul 2021 02:42:51 -0700 (PDT)
+        Mon, 26 Jul 2021 05:23:48 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843D7C061757;
+        Mon, 26 Jul 2021 03:04:09 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id k1so10825095plt.12;
+        Mon, 26 Jul 2021 03:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tmkea5YDHGw17k/ybnZR0rAFGmyibzBzYCKsHFjIEzA=;
-        b=pyjNPEEUkCDlGg18k4xOqInTRq+09N4hGdKi4FyCWX8axPRjR3KlqaZWcmGqrm+rSp
-         gBiTp843hbax36haDP969DsSTuB0w+2oz0yClZpj07zj6uTib9llPknRlALQOO+64y4L
-         sPWUYohijjrikV83ag9J0Bbib04C921VrSrKC7hURd8QyrJiS0wE5RwkKUS8T/UjziGw
-         XaV6b9NAyx7EEssBgXkV6L7KSpyuicP5wNiQjiZBlCaQ9VAu2U0JVyX5uwFzhql4GiSx
-         opipW05EZwpCsBBb8H3/JL/LWAhvkXextIeeLnjZ3OMMRfvE4we815oNII91P5/p4UwY
-         iaZg==
+        h=from:to:cc:subject:date:message-id;
+        bh=iTthFeXuLSiIUMa3m+4Ohdcl4oADyXk96wm5bV/p9oU=;
+        b=vJIdihC+g2Azx04o9rgoCp7rnMd632rNxshuywo9qNg5Wy055TCu8SPgXGacBtOKwg
+         /YG7QLuuuZpp697xTiltPGa9+1p2yxkbTHktCC5avzFW9YLjjCrxwMAVQ6JhGinRXyxx
+         znUuws0MdbPwxYGTj7UhhUDARdSJdeQjEpCoESByilP/ji12jRu+ubKxNZpeMLOgKsUZ
+         iNojZFYEY8OOZX4OsH8htGq3f7pxhup4sz5jOd/j9GzBSBVbSBAGYL22kBfyvIRcgqvu
+         a0HqMttUJVK2JyARnGwiUGOOxUmCuN9RlL6y2C6lmiN3m2k9ro37ecVX26DBs3BR274g
+         kSkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tmkea5YDHGw17k/ybnZR0rAFGmyibzBzYCKsHFjIEzA=;
-        b=CINrgsHEoDCo3AMEsO2+zwzvRLnmmmkS3sKSzZi+8fdeK8O9tnFLg2Mr1wSRZGstXA
-         83caq7s8YmeOdYeZA056DECeNBtb7dC+cICN4gSoWkvlGrAnDtmdGuUcmUZnAeuH6ezn
-         hjpCNj4TcTxdLSdr4NZ85Ecn3k6TK1ncp5kplMekNgKrI7bxaWzXCNfM8cnm9B82Gnhb
-         2G2G9rra22dEnhD9xxyuugb45pMhcS0dTuAJme78h8oqLalXlbxmzNaKcSqiubE2NCbr
-         PtewfibrE07RjgoCqxAB0uzemLJxYRYcbP4yBtOK3wS/VQSSTYn4Ujt+xGBI1V24pjNY
-         wZXQ==
-X-Gm-Message-State: AOAM5324z8iyTPS6lS24XjuBliQALsPvrUPFfsXF6CPL5O14miRKOnDw
-        ELWH9DpaszD/3LfYDOlTvl9ypJtP1y/WaT8XQQ==
-X-Google-Smtp-Source: ABdhPJxIgzRyC9Q9Eo0c7XHCyPeYoTsLo1zcVEOgH0skxN2GsCcZOc3VeoF4D0/YO4Ckd1zJwLLPp4dH+9ovajf1R5M=
-X-Received: by 2002:a05:6808:1448:: with SMTP id x8mr10606901oiv.57.1627292570863;
- Mon, 26 Jul 2021 02:42:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <1627179054-29903-1-git-send-email-zheyuma97@gmail.com> <YP3HI0rm9jVwm3ma@ravnborg.org>
-In-Reply-To: <YP3HI0rm9jVwm3ma@ravnborg.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=iTthFeXuLSiIUMa3m+4Ohdcl4oADyXk96wm5bV/p9oU=;
+        b=GbEmAIjwJyYuTKKa+tN+PW7wSTE8j0HBxmDnVLT+p5jMaRwG+siXj0A5zSk1wzUUcl
+         7nrGE7Ka0eBgk/1VcWG+tnjIVtd5iLDzgjawGMhEcbakMuOj5H/QLsoSe98/a6YDHj/J
+         eihOziECTgSzdOc+bvEpU7I5QPmf6e/MjGEN2Kx0ypftL643VQp9Ke/2QIOwByRU6RM7
+         SRZuOqu2FPadzfhobGNfu3tcRPswoOjlIxV694NcNvm79VkIFUH9KWmOd0cNKUL8wgB0
+         Sf7MCivy2rKXFgdMqyxD0ie44k5z2oc+9kVE1VxeX0xY3TLcLcASzcZnaMOi7qHzdsQC
+         2ngg==
+X-Gm-Message-State: AOAM531+NiCWrxVbbnPTfXZveKO9Smv1c2I3w0EjPpFGA1avJJ0nPMlk
+        v1Vlq7Qom+AqJWis2LrZsQ==
+X-Google-Smtp-Source: ABdhPJzrNNFsW1crC5/beByynKLR7eFw1C9JM/3djwpzVQGlwUVN78ImeoktPNI+9MZkIGv1dY5/vA==
+X-Received: by 2002:a17:90b:46c9:: with SMTP id jx9mr5665906pjb.70.1627293848939;
+        Mon, 26 Jul 2021 03:04:08 -0700 (PDT)
+Received: from vultr.guest ([107.191.53.97])
+        by smtp.gmail.com with ESMTPSA id ft7sm13504530pjb.32.2021.07.26.03.04.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 26 Jul 2021 03:04:08 -0700 (PDT)
 From:   Zheyu Ma <zheyuma97@gmail.com>
-Date:   Mon, 26 Jul 2021 17:42:39 +0800
-Message-ID: <CAMhUBj=hkmDjo4MseGsYRwwofQdeUm4HChsRWdwE0XF4WY9x9Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] add checks against divide error
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     adaplas@gmail.com, linux-fbdev@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+To:     adaplas@gmail.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH v2 0/3] Error out if 'pixclock' equals zero
+Date:   Mon, 26 Jul 2021 10:03:52 +0000
+Message-Id: <1627293835-17441-1-git-send-email-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jul 26, 2021 at 4:18 AM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Zheyu,
->
-> On Sun, Jul 25, 2021 at 02:10:51AM +0000, Zheyu Ma wrote:
-> > Zheyu Ma (3):
-> >   video: fbdev: kyro: add a check against divide error
-> >   video: fbdev: riva: add a check against divide error
-> >   video: fbdev: asiliantfb: add a check against divide error
->
-> I would prefer something a bit more descriptive - like:
->
-> video: fbdev: <driver>: Error out if pixclk equals zero
->
-> Please respin so we have something like the above.
-> I looked briefly at the patches, they looked fine.
+Zheyu Ma (3):
+  video: fbdev: asiliantfb: Error out if 'pixclock' equals zero
+  video: fbdev: kyro: Error out if 'pixclock' equals zero
+  video: fbdev: riva: Error out if 'pixclock' equals zero
 
-Thanks for your valuable comments, I will re-edit the commit log and
-send the patches.
+ drivers/video/fbdev/asiliantfb.c | 3 +++
+ drivers/video/fbdev/kyro/fbdev.c | 3 +++
+ drivers/video/fbdev/riva/fbdev.c | 3 +++
+ 3 files changed, 9 insertions(+)
 
-Regards,
-Zheyu Ma
+-- 
+2.17.6
+
