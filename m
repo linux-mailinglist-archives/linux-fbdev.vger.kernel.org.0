@@ -2,73 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 916AE3D6E30
-	for <lists+linux-fbdev@lfdr.de>; Tue, 27 Jul 2021 07:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DCD73D777B
+	for <lists+linux-fbdev@lfdr.de>; Tue, 27 Jul 2021 15:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234905AbhG0Fft (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 27 Jul 2021 01:35:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47496 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234997AbhG0Ffa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 27 Jul 2021 01:35:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 553D0610E5;
-        Tue, 27 Jul 2021 05:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1627364130;
-        bh=QZn3Y/5lDoT1CB5x1bzBxI7iva5uev1ci/Z3NrJyvcQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ccFT+eHKP9bc15BaEMLa0POjMZRlzJJ/bNL6ZlM0iKkYA2E8+J4RecniBbiKJMcJt
-         yO6L9yEahBpHTQyKj3ulr5lRfoWTq528otNILO+BEik6p5573scCcYY5hsxQFPtkiv
-         EKEJighbKoKHmGImych7iaIwt8bDWRy17Hv1rsf8=
-Date:   Tue, 27 Jul 2021 07:35:28 +0200
-From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To:     =?utf-8?B?dGNzX2tlcm5lbCjohb7orq/kupHlhoXmoLjlvIDlj5HogIUp?= 
-        <tcs_kernel@tencent.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>,
-        "daniel.vetter@ffwll.ch" <daniel.vetter@ffwll.ch>,
-        "yepeilin.cs@gmail.com" <yepeilin.cs@gmail.com>,
-        "penguin-kernel@I-love.SAKURA.ne.jp" 
-        <penguin-kernel@i-love.sakura.ne.jp>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "george.kennedy@oracle.com" <george.kennedy@oracle.com>,
-        "ducheng2@gmail.com" <ducheng2@gmail.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [Internet]Re: [PATCH] fbcon: Out-Of-Bounds write in
- sys_imageblit, add range check
-Message-ID: <YP+bINav7znIU6xF@kroah.com>
-References: <D5DF8A1C-5FA2-426B-AAB4-3199AEA0A02E@tencent.com>
- <YP68cQ4WVVusCv0N@ravnborg.org>
- <28F2D8E8-B519-40F6-B6CD-98A0FAD67CD7@tencent.com>
+        id S236998AbhG0Nto (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 27 Jul 2021 09:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38278 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232492AbhG0Ntj (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 27 Jul 2021 09:49:39 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7403C0619E1
+        for <linux-fbdev@vger.kernel.org>; Tue, 27 Jul 2021 06:47:38 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:b0a9:7e88:5ca4:551a])
+        by xavier.telenet-ops.be with bizsmtp
+        id aDnb250021fSPfK01Dnbz1; Tue, 27 Jul 2021 15:47:37 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1m8NQk-001Pbz-Ll; Tue, 27 Jul 2021 15:47:34 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1m8NQk-00Fnh8-9y; Tue, 27 Jul 2021 15:47:34 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Sam Ravnborg <sam@ravnborg.org>, Maxime Ripard <mripard@kernel.org>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v2 0/5] video: fbdev: ssd1307fb: Optimizations and improvements
+Date:   Tue, 27 Jul 2021 15:47:25 +0200
+Message-Id: <20210727134730.3765898-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <28F2D8E8-B519-40F6-B6CD-98A0FAD67CD7@tencent.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jul 27, 2021 at 01:53:13AM +0000, tcs_kernel(腾讯云内核开发者) wrote:
-> yres and vyres can be controlled by user mode paramaters, and cause p->vrows to become a negative value. While this value be passed to real_y function, the ypos will be out of screen range.
-> This is an out-of-bounds write bug.
-> I think updatescrollmode is the right place to validate values supplied by a user ioctl, because only here makes --operation,and 0 is a legal value before that.
+	Hi all,
 
-Please wrap your changelog text.
+This patch series optimizes console operations on ssd1307fb, after the
+customary fixes and cleanups.
 
-> 
-> Signed-off-by: Tencent Cloud System tcs_kernel@tencent.com
+Currently, each screen update triggers an I2C transfer of all screen
+data, up to 1 KiB of data for a 128x64 display, which takes at least 20
+ms in Fast mode.  While many displays are smaller, and thus require less
+data to be transferred, 20 ms is still an optimistic value, as the
+actual data transfer may be much slower, especially on bitbanged I2C
+drivers.  After this series, the amount of data transfer is reduced, as
+fillrect, copyarea, and imageblit only update the rectangle that
+changed.
 
-That is not the name of a person :(
+Changes compared to v1[1]:
+  - Add Acked-by,
+  - Use two separate helpers instead of a single combined helper,
+  - Reorder operands in DIV_ROUND_UP() to improve readability.
 
-And the format isn't correct, so there's nothing we can do with this
-patch, and the patch itself is corrupted and could not be applied :(
+This has been tested on an Adafruit FeatherWing OLED with an SSD1306
+controller and a 128x32 OLED, connected to an OrangeCrab ECP5 FPGA board
+running a 64 MHz VexRiscv RISC-V softcore, where it reduced the CPU
+usage for blinking the cursor from more than 70% to ca. 10%.
 
-Also, what about checking these values earlier?  How can the value be 0
-earlier and be acceptable?  Putting bounds on the user-provided values
-would be much easier, right?
+Thanks for applying!
 
-thanks,
+[1] https://lore.kernel.org/dri-devel/20210714145804.2530727-1-geert@linux-m68k.org
 
-greg k-h
+Geert Uytterhoeven (5):
+  video: fbdev: ssd1307fb: Propagate errors via
+    ssd1307fb_update_display()
+  video: fbdev: ssd1307fb: Simplify ssd1307fb_update_display()
+  video: fbdev: ssd1307fb: Extract ssd1307fb_set_{col,page}_range()
+  video: fbdev: ssd1307fb: Optimize screen updates
+  video: fbdev: ssd1307fb: Cache address ranges
+
+ drivers/video/fbdev/ssd1307fb.c | 151 ++++++++++++++++++++++----------
+ 1 file changed, 104 insertions(+), 47 deletions(-)
+
+-- 
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
