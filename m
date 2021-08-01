@@ -2,109 +2,89 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E63763DCB68
-	for <lists+linux-fbdev@lfdr.de>; Sun,  1 Aug 2021 13:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 230D53DCBE4
+	for <lists+linux-fbdev@lfdr.de>; Sun,  1 Aug 2021 15:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231577AbhHALl0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 1 Aug 2021 07:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231461AbhHALl0 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 1 Aug 2021 07:41:26 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77959C0613CF;
-        Sun,  1 Aug 2021 04:41:17 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id q2so16428598plr.11;
-        Sun, 01 Aug 2021 04:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V7CbcU24c2EcgEh6gPwl360Lbo6a4Vh6iTk5nFSY/dA=;
-        b=qZkxBAhluE0p43cVISH+ol5q1lT+cnqxEql+NIpY08L6/PwowG/tSK7brsoB2dM+g4
-         IsHCS42s3dWQ01GIdqQ2VK4IM4bOGJ/yx24/hAOvNqWJwbxbsCpKnF2rkFffMdNgwFrC
-         6NjZdCRVEFlKZINxUnEFV2Xkrte76bs6chq7lWN6s9gbkliRtcbETJiv3JjWBY+ROuau
-         7QBHcX8eOM8aLEoJRqNtPiQlkpD6wYCOuSCf3CNuwnvCF9AIupQzAS+CZdWu+b/WV2XR
-         qiQPlqwMe4USOYxSrqo6WEDk1pAoQV5dne9UdThjajtzvP3R06+MzqdQCnGXvELPeNu9
-         9QWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V7CbcU24c2EcgEh6gPwl360Lbo6a4Vh6iTk5nFSY/dA=;
-        b=rhjN0+cvtH1UbHxWwBoo4DUYT1LYbmoJd7jraURwRnyWJp26Mc9BPpG2sUqWUG3WMs
-         CS+7hXp1nx0mN4iraqBxAD++mM5z9Zu7xByYOoo0VJs2m4XBIMafzYRIBUe7L9cvKCed
-         G86+QjIMPpvoKWKYtHdLALaNnOmzIsIm0M9ph5btjCrQRcFqauT6rIAYbj5nDMTdI89K
-         aexxV2P5ojENbanlU1L5H7hObCPkz7w0le2fYzGz229iRPFN+ERe4F49khxqph3jSf0S
-         GRTep5l1FVyb6dBiuP8lc0OwdomAkiwKFc4NfRZEGxadHKXSmaEKeGdrbMZVqdLdBexB
-         Qihg==
-X-Gm-Message-State: AOAM532J3joKURSTds1NX5+pVGQvJJXtiaSSF4MjkbxvTcOivszjBkcU
-        fkRvVwvbQGaoLVXiRMTjuXddqT+1IZz/Jsc2DYc=
-X-Google-Smtp-Source: ABdhPJydhwxZ12g/won3lYfp7ROJMWycWxQ5X9RiPATUxhjXxXP+UgIyRIZYxpjob21kv49ZmMn2kBq09Ob2FCmxc98=
-X-Received: by 2002:a63:1457:: with SMTP id 23mr1761825pgu.203.1627818076930;
- Sun, 01 Aug 2021 04:41:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210801085155.3170-1-len.baker@gmx.com>
-In-Reply-To: <20210801085155.3170-1-len.baker@gmx.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 1 Aug 2021 14:40:40 +0300
-Message-ID: <CAHp75VcD_Kqedpkw-Pj+uQbWqdu_9FhXqJS5TuGUPoVv2x45-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Remove all strcpy() uses
-To:     Len Baker <len.baker@gmx.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        id S231546AbhHANgW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 1 Aug 2021 09:36:22 -0400
+Received: from mout.gmx.net ([212.227.17.21]:38527 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232027AbhHANfe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 1 Aug 2021 09:35:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1627824855;
+        bh=Q/dcoSBUFR0wkRhCtWTaj2W+MgEtc+eWAxQm14Cb/Lc=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=Off6RzThUjmsVS5ZtJbBRxOQDs1SmQwvn5QgY962YAs51ZTpHFTowGf1WC7Ei1FAO
+         yIsLbSD75IwpasBqZzSHf8B3RNpo/KIhdE5OUeudiX0TcD0ev5fX59X2wy9G2J6gDQ
+         0Zw8MorDm7sIK2BTzWyeyN2KE+3o59A+bpzyhJ3M=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from titan ([79.150.72.99]) by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MKbkC-1mSxyd2auy-00KzLZ; Sun, 01
+ Aug 2021 15:34:15 +0200
+Date:   Sun, 1 Aug 2021 15:34:04 +0200
+From:   Len Baker <len.baker@gmx.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Len Baker <len.baker@gmx.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Phil Reid <preid@electromag.com.au>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
         linux-staging@lists.linux.dev,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 0/3] Remove all strcpy() uses
+Message-ID: <20210801133404.GA5988@titan>
+References: <20210801085155.3170-1-len.baker@gmx.com>
+ <CAHp75VcD_Kqedpkw-Pj+uQbWqdu_9FhXqJS5TuGUPoVv2x45-Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcD_Kqedpkw-Pj+uQbWqdu_9FhXqJS5TuGUPoVv2x45-Q@mail.gmail.com>
+X-Provags-ID: V03:K1:4+Pp4U/a3eSnM89ROA2oEnBRHBcVjHUvh/sOFYn7YGYbhQXrOK3
+ gIIzhRk1TOmkGk1sFHh2YVEYJjCu1Qso3Id/QdM0w58LyJbBIhqgHBWjfnAfzaG4/mbcDJZ
+ rEwEZpDxC59TL9nSjLQbEIHAXdSmp47hSiul/4wX3151mcV8guZYKlnDmYdVsx1rnIhtdQT
+ daY6wAb19kHUDxREuLOPg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TOOnf/w1Jdk=:/0N54ezEkdw4FzS5U1m82p
+ BYkyYs7ZB1sM1mtlLA0StOdcoX20D8NuiciAiVB1x24xveLcMHpzYqSNLknYDh5fiC36Ymu1d
+ aGGW+Wb/gItkYj7w7T/TvYKhHJo5RaggnRNq9EuP+isCSYxLMQjU1l5r0jLNHqhGuY54S+M6s
+ GEuM7J8VgACMNJXe+jxdYV/0ctHImxvZvJ/8GJNhxXKL/GMXQyAdjj1rf9e7Yj+Yt/vLbwVhK
+ zD3NxNzjUReXeiiNhdq/m/USxW6uVPzV81hzEiEfFbXTZHsmQVIxD5k9Z91jgIEol5Xzhpwcj
+ fNpnF35tBur3M8z3KHdGwNBtDkcQ6Zln9DnWFv1eu4dMiVlRVTcXfi9kYfouWARkr/xoXtgft
+ R/1bRFS4r3zIXc23nbFniqL8J7YtO2ndH8p4EhaQLFG4CBrPOkZ+DQ3ZqshxSUjrUuO7uJSJ0
+ vLb/B2OasUxn9GRBsA55qM0W2XDrlSQgtj3Hlw1lof54FUl3v4wg0K+ijPJn7jED2NBk5Wfks
+ Z6GiZyKgnbShIJtW0mJGhF67ilRyNcNCWV690KUwx8zuSs79kgooEWfKaYy2ft22t1EW16y1S
+ /MzYEzm9TdqzlPLVnZUS92b6JquQ0Fv80XAhF4O0FnWVvZGUw3lPbBPME5tYgxL/JocyVlkCh
+ Zb4JtUtirKOARRBCAAjwltLdi4EAT77yB4COqp4/J/SnQcRa7pbeUKd3Al3rHMq82SJRSSR/B
+ uUgHP9pKS2PxZ6Q7DENJKkbcOjlU9mxdlKnK33dd9uJTeINI2HZ2/79pbUhJtwY0+8hnglrQ7
+ Fw8ZVHQJkEltHq0WRJhT6anNebqQseQsc0XUKCgt6kRvWuKEs+91ULK2l6h4BnGUCJ/B12CWu
+ oFnPz6y/kv+U0Ayodd7JZ/ifwMSwlZF8SiEb/kDTIpqhAAq3+7QodfQD0/1F4z6tuyM9HnD3W
+ QtUwfJlG8/tSawhQGkbOmF+k1dwvlbkcXX0h8Bm5E1D5Y0GZan/D6Y7JlG/5grkZlwvccCHA3
+ 9kZar2RXyi+uNWu06pHCcsCBz60mhQie9tv8yABFEhyZug7RI9pxwRBYpDmJS2CmEraVnICcO
+ BcTCpHvPf+Gzcu2uDSLHe7cAK7zfZ+wdGUO
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sun, Aug 1, 2021 at 11:53 AM Len Baker <len.baker@gmx.com> wrote:
->
-> strcpy() performs no bounds checking on the destination buffer. This
-> could result in linear overflows beyond the end of the buffer, leading
-> to all kinds of misbehaviors. So, this serie removes all strcpy uses
-> from the "staging/fbtft" subsystem.
->
-> Also, refactor the code a bit to follow the kernel coding-style and
-> avoid unnecessary variable initialization.
+Hi Andy,
 
-I don't see patch 3 (even on lore.kernel.org).
+On Sun, Aug 01, 2021 at 02:40:40PM +0300, Andy Shevchenko wrote:
+> On Sun, Aug 1, 2021 at 11:53 AM Len Baker <len.baker@gmx.com> wrote:
+> >
+> > strcpy() performs no bounds checking on the destination buffer. This
+> > could result in linear overflows beyond the end of the buffer, leading
+> > to all kinds of misbehaviors. So, this serie removes all strcpy uses
+> > from the "staging/fbtft" subsystem.
+> >
+> > Also, refactor the code a bit to follow the kernel coding-style and
+> > avoid unnecessary variable initialization.
+>
+> I don't see patch 3 (even on lore.kernel.org).
 
-Greg, Geert, does it make sense to move this driver outside of staging?
-I would volunteer to maintain it there.
+Due to my email provider restrictions (number of emails per hour), I
+need to send an email every x time.
 
-> Changelog v1 -> v2
-> - Add two new commits to clean the code.
-> - Use the "%*ph" format specifier instead of strscpy() function (Geert
->   Uytterhoeven)
->
-> Changelog v2 -> v3
-> - Change the initialization of the "j" variable in the "for" loop and
->   update the code accordingly (Andy Shevchenko).
-> - Improve the commit message to inform that the "%*ph" replacement
->   won't cut output earlier than requested (Andy Shevchenko).
-> - Don't remove the braces in the "if" statement due to the presence of
->   the comment (Geert Uytterhoeven).
->
-> Len Baker (3):
->   staging/fbtft: Remove all strcpy() uses
->   staging/fbtft: Remove unnecessary variable initialization
->   staging/fbtft: Fix braces coding style
->
->  drivers/staging/fbtft/fbtft-core.c | 23 ++++++++++-------------
->  1 file changed, 10 insertions(+), 13 deletions(-)
->
-> --
-> 2.25.1
->
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Len
