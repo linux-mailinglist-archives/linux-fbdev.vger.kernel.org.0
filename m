@@ -2,74 +2,101 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5AA3DCF4C
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Aug 2021 06:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28BD63DD73C
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Aug 2021 15:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbhHBEYO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 Aug 2021 00:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231496AbhHBEYN (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Aug 2021 00:24:13 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573FAC0617BA
-        for <linux-fbdev@vger.kernel.org>; Sun,  1 Aug 2021 21:23:58 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id x14so22644303edr.12
-        for <linux-fbdev@vger.kernel.org>; Sun, 01 Aug 2021 21:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=czeOQMYeZau4ejaBbgDdCuklRCyHoHRlo6xUfJcAj3bciaGtFBitiUib5a5MwOumE9
-         w7/Jn7bBNsLcP1+CHZ7cIXH8h+QOe2ioJtROZD2bqhS/lqEvaNcrldVE+LZBhK9CNKw9
-         GasUZeZx/Kcocc9jX4O3VqyeOrpbJXFle0t9OXPFTLvjA0ffc0WpqgkYu8CQSXrFRLzD
-         Yc8UR7mKpLCqpwn4ZFojN5x09EwrnOTDpyVyuL9REZStwkguR4uL/4srDE+vjWW4JCu8
-         Sy5z9ei3l3c7g9TC5s6E8Wj1tuL0hGAP5lkkVvlHQCNnMoccEAC8Z+koQ2tbRnEruEUY
-         O8Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=UGdvOLMUMr9aDqSyzogpLvb1D4ezKLhtve2vrQb0vAZf95Cl/cbW1IofFImKxvaFh1
-         BAjVZ6stJPMVniLOFfaxCxkowqy9ZteetMCZ6ts83boKFfdBQCLEqGgOCwdjGstAOVv5
-         bMyhN0/QuIGimYgLP9A5sTAiYxHy/vqFna4GjdgHaBzoveWJEWNq7OI/8b93NPtHzqvS
-         qk3gC39TxFaEoC/HbjJF9/QchpvaTjx9cZhFKaO1wPkgufjIqtmf7A/GUXdkJx5SM/wK
-         CQ0Oz3z8d175GtpbuJ3qeD4V16QnH0+Xu48f0dsCdcnHSHjaiVhKlpojVvLjoPo5wSMg
-         8qBQ==
-X-Gm-Message-State: AOAM532/uTQFrZoHGktgxyom/zgst3SW8C12pchTcGDXXY7VrNGEckmg
-        Puyq0Farwj7hEbI+ghMQwy74+FSiiNk4CGpMOIk=
-X-Google-Smtp-Source: ABdhPJxItSnYdNOJr/eCcDJG9Ed81FEJCtux30e3VMRN30hf/TzQyuXNRWDf+H2IgaMscJY+xnmH/x8e0HLuRnwx6WI=
-X-Received: by 2002:a50:d70a:: with SMTP id t10mr16749153edi.253.1627878237019;
- Sun, 01 Aug 2021 21:23:57 -0700 (PDT)
+        id S233719AbhHBNgF (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Aug 2021 09:36:05 -0400
+Received: from mga12.intel.com ([192.55.52.136]:54230 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233925AbhHBNgF (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 2 Aug 2021 09:36:05 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10063"; a="193050284"
+X-IronPort-AV: E=Sophos;i="5.84,289,1620716400"; 
+   d="scan'208";a="193050284"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2021 06:35:55 -0700
+X-IronPort-AV: E=Sophos;i="5.84,289,1620716400"; 
+   d="scan'208";a="520567355"
+Received: from ideak-desk.fi.intel.com ([10.237.68.141])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2021 06:35:53 -0700
+From:   Imre Deak <imre.deak@intel.com>
+To:     linux-fbdev@vger.kernel.org,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        intel-gfx@lists.freedesktop.org
+Subject: [PATCH] fbdev/efifb: Release PCI device's runtime PM ref during FB destroy
+Date:   Mon,  2 Aug 2021 16:35:51 +0300
+Message-Id: <20210802133551.1904964-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:23:56
- -0700 (PDT)
-Reply-To: ablahikazabl67@gmail.com
-From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
-Date:   Mon, 2 Aug 2021 05:23:56 +0100
-Message-ID: <CAKwBCXvLzgfEHCKMKUxki4k1yYap9oH1ox=muoK9koBZXish5g@mail.gmail.com>
-Subject: More Authentic Information
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Atm the EFI FB driver gets a runtime PM reference for the associated GFX
+PCI device during driver probing and releases it only when removing the
+driver.
+
+When fbcon switches to the FB provided by the PCI device's driver (for
+instance i915/drmfb), the EFI FB will get only unregistered without the
+EFI FB driver getting unloaded, keeping the runtime PM reference
+acquired during driver probing. This reference will prevent the PCI
+driver from runtime suspending the device.
+
+Fix this by releasing the RPM reference from the EFI FB's destroy hook,
+called when the FB gets unregistered.
+
+Fixes: a6c0fd3d5a8b ("efifb: Ensure graphics device for efifb stays at PCI D0")
+Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/video/fbdev/efifb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index 8ea8f079cde26..25cdea32b9633 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -47,6 +47,8 @@ static bool use_bgrt = true;
+ static bool request_mem_succeeded = false;
+ static u64 mem_flags = EFI_MEMORY_WC | EFI_MEMORY_UC;
+ 
++static struct pci_dev *efifb_pci_dev;	/* dev with BAR covering the efifb */
++
+ static struct fb_var_screeninfo efifb_defined = {
+ 	.activate		= FB_ACTIVATE_NOW,
+ 	.height			= -1,
+@@ -243,6 +245,9 @@ static inline void efifb_show_boot_graphics(struct fb_info *info) {}
+ 
+ static void efifb_destroy(struct fb_info *info)
+ {
++	if (efifb_pci_dev)
++		pm_runtime_put(&efifb_pci_dev->dev);
++
+ 	if (info->screen_base) {
+ 		if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
+ 			iounmap(info->screen_base);
+@@ -333,7 +338,6 @@ ATTRIBUTE_GROUPS(efifb);
+ 
+ static bool pci_dev_disabled;	/* FB base matches BAR of a disabled device */
+ 
+-static struct pci_dev *efifb_pci_dev;	/* dev with BAR covering the efifb */
+ static struct resource *bar_resource;
+ static u64 bar_offset;
+ 
+@@ -603,8 +607,6 @@ static int efifb_remove(struct platform_device *pdev)
+ 	unregister_framebuffer(info);
+ 	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
+ 	framebuffer_release(info);
+-	if (efifb_pci_dev)
+-		pm_runtime_put(&efifb_pci_dev->dev);
+ 
+ 	return 0;
+ }
 -- 
-Dear Partner,
+2.27.0
 
-I am soliciting your partnership to relocate $12.5 Million to your
-country for investment on my behalf and you will be entitled to 30% of
-the sum once the transaction is successful made.
-
-Please indicate your genuine interest if you are capable so that i
-will send you the authentic details and documents of the transaction
-in awareness with some of my fellow Directors in the bank.
-
-If you are interested, here is my private Email address:
-(ablahikazabl67@gmail.com)
-For more authentic and legit information.
-
-
-Regards :  Abdoulahi Kazim
