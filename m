@@ -2,89 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 230D53DCBE4
-	for <lists+linux-fbdev@lfdr.de>; Sun,  1 Aug 2021 15:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A5AA3DCF4C
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Aug 2021 06:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231546AbhHANgW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 1 Aug 2021 09:36:22 -0400
-Received: from mout.gmx.net ([212.227.17.21]:38527 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232027AbhHANfe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 1 Aug 2021 09:35:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1627824855;
-        bh=Q/dcoSBUFR0wkRhCtWTaj2W+MgEtc+eWAxQm14Cb/Lc=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=Off6RzThUjmsVS5ZtJbBRxOQDs1SmQwvn5QgY962YAs51ZTpHFTowGf1WC7Ei1FAO
-         yIsLbSD75IwpasBqZzSHf8B3RNpo/KIhdE5OUeudiX0TcD0ev5fX59X2wy9G2J6gDQ
-         0Zw8MorDm7sIK2BTzWyeyN2KE+3o59A+bpzyhJ3M=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from titan ([79.150.72.99]) by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MKbkC-1mSxyd2auy-00KzLZ; Sun, 01
- Aug 2021 15:34:15 +0200
-Date:   Sun, 1 Aug 2021 15:34:04 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Len Baker <len.baker@gmx.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Phil Reid <preid@electromag.com.au>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 0/3] Remove all strcpy() uses
-Message-ID: <20210801133404.GA5988@titan>
-References: <20210801085155.3170-1-len.baker@gmx.com>
- <CAHp75VcD_Kqedpkw-Pj+uQbWqdu_9FhXqJS5TuGUPoVv2x45-Q@mail.gmail.com>
+        id S229595AbhHBEYO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231496AbhHBEYN (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 Aug 2021 00:24:13 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573FAC0617BA
+        for <linux-fbdev@vger.kernel.org>; Sun,  1 Aug 2021 21:23:58 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id x14so22644303edr.12
+        for <linux-fbdev@vger.kernel.org>; Sun, 01 Aug 2021 21:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=czeOQMYeZau4ejaBbgDdCuklRCyHoHRlo6xUfJcAj3bciaGtFBitiUib5a5MwOumE9
+         w7/Jn7bBNsLcP1+CHZ7cIXH8h+QOe2ioJtROZD2bqhS/lqEvaNcrldVE+LZBhK9CNKw9
+         GasUZeZx/Kcocc9jX4O3VqyeOrpbJXFle0t9OXPFTLvjA0ffc0WpqgkYu8CQSXrFRLzD
+         Yc8UR7mKpLCqpwn4ZFojN5x09EwrnOTDpyVyuL9REZStwkguR4uL/4srDE+vjWW4JCu8
+         Sy5z9ei3l3c7g9TC5s6E8Wj1tuL0hGAP5lkkVvlHQCNnMoccEAC8Z+koQ2tbRnEruEUY
+         O8Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=UGdvOLMUMr9aDqSyzogpLvb1D4ezKLhtve2vrQb0vAZf95Cl/cbW1IofFImKxvaFh1
+         BAjVZ6stJPMVniLOFfaxCxkowqy9ZteetMCZ6ts83boKFfdBQCLEqGgOCwdjGstAOVv5
+         bMyhN0/QuIGimYgLP9A5sTAiYxHy/vqFna4GjdgHaBzoveWJEWNq7OI/8b93NPtHzqvS
+         qk3gC39TxFaEoC/HbjJF9/QchpvaTjx9cZhFKaO1wPkgufjIqtmf7A/GUXdkJx5SM/wK
+         CQ0Oz3z8d175GtpbuJ3qeD4V16QnH0+Xu48f0dsCdcnHSHjaiVhKlpojVvLjoPo5wSMg
+         8qBQ==
+X-Gm-Message-State: AOAM532/uTQFrZoHGktgxyom/zgst3SW8C12pchTcGDXXY7VrNGEckmg
+        Puyq0Farwj7hEbI+ghMQwy74+FSiiNk4CGpMOIk=
+X-Google-Smtp-Source: ABdhPJxItSnYdNOJr/eCcDJG9Ed81FEJCtux30e3VMRN30hf/TzQyuXNRWDf+H2IgaMscJY+xnmH/x8e0HLuRnwx6WI=
+X-Received: by 2002:a50:d70a:: with SMTP id t10mr16749153edi.253.1627878237019;
+ Sun, 01 Aug 2021 21:23:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VcD_Kqedpkw-Pj+uQbWqdu_9FhXqJS5TuGUPoVv2x45-Q@mail.gmail.com>
-X-Provags-ID: V03:K1:4+Pp4U/a3eSnM89ROA2oEnBRHBcVjHUvh/sOFYn7YGYbhQXrOK3
- gIIzhRk1TOmkGk1sFHh2YVEYJjCu1Qso3Id/QdM0w58LyJbBIhqgHBWjfnAfzaG4/mbcDJZ
- rEwEZpDxC59TL9nSjLQbEIHAXdSmp47hSiul/4wX3151mcV8guZYKlnDmYdVsx1rnIhtdQT
- daY6wAb19kHUDxREuLOPg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TOOnf/w1Jdk=:/0N54ezEkdw4FzS5U1m82p
- BYkyYs7ZB1sM1mtlLA0StOdcoX20D8NuiciAiVB1x24xveLcMHpzYqSNLknYDh5fiC36Ymu1d
- aGGW+Wb/gItkYj7w7T/TvYKhHJo5RaggnRNq9EuP+isCSYxLMQjU1l5r0jLNHqhGuY54S+M6s
- GEuM7J8VgACMNJXe+jxdYV/0ctHImxvZvJ/8GJNhxXKL/GMXQyAdjj1rf9e7Yj+Yt/vLbwVhK
- zD3NxNzjUReXeiiNhdq/m/USxW6uVPzV81hzEiEfFbXTZHsmQVIxD5k9Z91jgIEol5Xzhpwcj
- fNpnF35tBur3M8z3KHdGwNBtDkcQ6Zln9DnWFv1eu4dMiVlRVTcXfi9kYfouWARkr/xoXtgft
- R/1bRFS4r3zIXc23nbFniqL8J7YtO2ndH8p4EhaQLFG4CBrPOkZ+DQ3ZqshxSUjrUuO7uJSJ0
- vLb/B2OasUxn9GRBsA55qM0W2XDrlSQgtj3Hlw1lof54FUl3v4wg0K+ijPJn7jED2NBk5Wfks
- Z6GiZyKgnbShIJtW0mJGhF67ilRyNcNCWV690KUwx8zuSs79kgooEWfKaYy2ft22t1EW16y1S
- /MzYEzm9TdqzlPLVnZUS92b6JquQ0Fv80XAhF4O0FnWVvZGUw3lPbBPME5tYgxL/JocyVlkCh
- Zb4JtUtirKOARRBCAAjwltLdi4EAT77yB4COqp4/J/SnQcRa7pbeUKd3Al3rHMq82SJRSSR/B
- uUgHP9pKS2PxZ6Q7DENJKkbcOjlU9mxdlKnK33dd9uJTeINI2HZ2/79pbUhJtwY0+8hnglrQ7
- Fw8ZVHQJkEltHq0WRJhT6anNebqQseQsc0XUKCgt6kRvWuKEs+91ULK2l6h4BnGUCJ/B12CWu
- oFnPz6y/kv+U0Ayodd7JZ/ifwMSwlZF8SiEb/kDTIpqhAAq3+7QodfQD0/1F4z6tuyM9HnD3W
- QtUwfJlG8/tSawhQGkbOmF+k1dwvlbkcXX0h8Bm5E1D5Y0GZan/D6Y7JlG/5grkZlwvccCHA3
- 9kZar2RXyi+uNWu06pHCcsCBz60mhQie9tv8yABFEhyZug7RI9pxwRBYpDmJS2CmEraVnICcO
- BcTCpHvPf+Gzcu2uDSLHe7cAK7zfZ+wdGUO
-Content-Transfer-Encoding: quoted-printable
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:23:56
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:23:56 +0100
+Message-ID: <CAKwBCXvLzgfEHCKMKUxki4k1yYap9oH1ox=muoK9koBZXish5g@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Andy,
+-- 
+Dear Partner,
 
-On Sun, Aug 01, 2021 at 02:40:40PM +0300, Andy Shevchenko wrote:
-> On Sun, Aug 1, 2021 at 11:53 AM Len Baker <len.baker@gmx.com> wrote:
-> >
-> > strcpy() performs no bounds checking on the destination buffer. This
-> > could result in linear overflows beyond the end of the buffer, leading
-> > to all kinds of misbehaviors. So, this serie removes all strcpy uses
-> > from the "staging/fbtft" subsystem.
-> >
-> > Also, refactor the code a bit to follow the kernel coding-style and
-> > avoid unnecessary variable initialization.
->
-> I don't see patch 3 (even on lore.kernel.org).
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
 
-Due to my email provider restrictions (number of emails per hour), I
-need to send an email every x time.
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
 
-Regards,
-Len
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
+
+
+Regards :  Abdoulahi Kazim
