@@ -2,71 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E22443E2415
-	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Aug 2021 09:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248F73E2C43
+	for <lists+linux-fbdev@lfdr.de>; Fri,  6 Aug 2021 16:11:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243207AbhHFHaW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Aug 2021 03:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46038 "EHLO
+        id S236220AbhHFOLf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 6 Aug 2021 10:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243752AbhHFH35 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Aug 2021 03:29:57 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701CCC0617A5
-        for <linux-fbdev@vger.kernel.org>; Fri,  6 Aug 2021 00:29:38 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id bq29so16196866lfb.5
-        for <linux-fbdev@vger.kernel.org>; Fri, 06 Aug 2021 00:29:38 -0700 (PDT)
+        with ESMTP id S235485AbhHFOLC (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Aug 2021 10:11:02 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCF5C0617BC
+        for <linux-fbdev@vger.kernel.org>; Fri,  6 Aug 2021 07:10:43 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id p38so18288218lfa.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 06 Aug 2021 07:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=S8hrMOkRIKWXnlbvvGNFrIHfYV6V1z5YkWAHxwOXUYxxC8N3LiTN9glGQ2DiWN1xDE
-         Hh3rKj/hdIAvTguqkVhDq2ZZW1BOgvCvL9Qk+CcNjdmFT4gDNds54li83az6Sqi1oLAy
-         lEtlvVh6RBEDNB6XiA2buRcEGVqAgydMp1545DsyCEfRzvHtvU+ql1haiRHcCgWkw1yf
-         BYM7YGWkWa+8xDMugdi1vwK2y0IKa/hfp1qU1lg83P8PI9vU1aCsX7fdU2hCK0h/AdLm
-         8lfuHv6cc7rQ8qXy+JyWFP0ULm/IFjRtCJpVuMZj4jz3Y/O4Ky9ECT5QsonVnQmXtLEk
-         NEog==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=q3xyYt1HrVQnyL1KZndhIFKim0Z6RZXWCajZa6+jKaUt/xPBmWrU2b2TpwIqgxHoY3
+         6sUeXJPoUC3zz+xqx5Y/7bh16ON7BcCcP2liy5jl/yv+hyxVGmxIcBCDJXoapuOO0RIl
+         REN9Zv+ClhtVVEMybVDTEUTnyt+YraWqvgNO4CiPEvSNbjJp0ymaQzc4FwPALfOqM4La
+         f+KzIMXFoGuca5XlZdCXXnnqi+xUiOGsem/cV9JUjNFonSZWOzEGazowyEr2eG3dp5DR
+         pLBa7cN2FmOkeXw/dSFAaB7k29Eu0Yivashc8iQbXHlro4ZoI7aiyRP21+G8wGDlMmu6
+         HPDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=uVdgwtuEWLKpCB4tvDKL/t6BxAEax8hOey5Fuc8TvtC0KGN8kqgaM9xsT5WwyulWM4
-         Be4PwUE5JCeVPwwkNgqn8fmMOu+KnU1XeM8SeAlp7FmJN5zj5O4dhoFRfGiQdQtnzdxN
-         3L+Q2bOlCstJ9owz/VNLzqUUQLz1NVk+AGxLOqoQScnEgDlMTP3HuLUsZlDHy99DTIAw
-         vJG9+tbdSJkTJDpWEXXStlq60S/5Fugdk7fHsQDqJifJnhE68PI3UfFigBBumbkmPRPa
-         U0ERJrfZJXWM3CyGS5LxeOTd6VelVnQKHsnlqkX9K2u7Nds9GPLxQRUI9jfgZIGWsBri
-         mUhQ==
-X-Gm-Message-State: AOAM530parY1H5x22TFrLp5BVRhcKCFBwJtEDQpKbDKbk/7wGE63MMXO
-        t5NwQ/7RZw4Azg+9nHVUq7v/twThEGkx9psnWts=
-X-Google-Smtp-Source: ABdhPJw+FoO2zb3EIWp7af02dnW2W68eB99YbPty0uGqiQ85J1LeZdxJ+e74K5sop59wRdrZeR6fdgdyLq2YULA7Hrw=
-X-Received: by 2002:ac2:4106:: with SMTP id b6mr6532965lfi.89.1628234976751;
- Fri, 06 Aug 2021 00:29:36 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
+        b=e1ooHzns2s/TWiVj1yAT13z7A6WvbAfHUdCk1sxh+s5Dk8Hwarnz0NTs89PG65WgpU
+         I90WpzJa3wM6pwSOu0f+pNPr7TmEUkPl7P6JWBT6cyu9Hya63bsDErwhg0a3pG69rSWr
+         yD5b+Mo0dPPj47bP1JHcF4i70AU+kUjTQEwzdCi3Ou/uMiGk3qUCZAf3016vzZnI7Qga
+         G+rfQOGJQEunam+JCU+mUt0ajcLze94c6Zu4cvmD52h4OSfJGquu3yTj6nFdSPj+JZMP
+         OQOdOozuCeanBnk/2qSr8bwMeZ8br6x5ejG8njFIqUlWOCX7KeGqLJQXFAr/18EWqhEg
+         lVdQ==
+X-Gm-Message-State: AOAM530rv0syjyyPj9tct6NBtsAd/XfvOf8JqeQJVmD0OgULlz8fyC6q
+        C0Z79RfaQS2pXwG+S4yejP0SilpSPA8wbeP7evoydeM09QFL1T2tdw==
+X-Google-Smtp-Source: ABdhPJx229jhz+o+nQwdgIkoqR5HwLh3S4+JGHt0eG+5fB4X3WTmNmInTj1ZpuXDIVm9CYEhhFZzLyuZYbLrplGdX6A=
+X-Received: by 2002:a05:6402:3094:: with SMTP id de20mr13526197edb.272.1628259031175;
+ Fri, 06 Aug 2021 07:10:31 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: godwinppter@gmail.com
-Sender: maxwelljohn205@gmail.com
-Received: by 2002:a05:6520:4026:b029:11a:2df:67e7 with HTTP; Fri, 6 Aug 2021
- 00:29:36 -0700 (PDT)
-From:   Godwin Pete <godwinnpeter@gmail.com>
-Date:   Fri, 6 Aug 2021 09:29:36 +0200
-X-Google-Sender-Auth: G4ciys2VbqSoLFQ1eKtcZRQGn1U
-Message-ID: <CAHiReTy_O9awCFk--U4HxGZcFukL2fCXW=7BnOORyauD3wLNHg@mail.gmail.com>
-Subject: Reply Urgently
-To:     undisclosed-recipients:;
+Received: by 2002:a54:26cf:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:10:30 -0700 (PDT)
+Reply-To: mrmaxwellwatford@gmail.com
+From:   Maxwell Watford <orchowskiruthi@gmail.com>
+Date:   Fri, 6 Aug 2021 14:10:30 +0000
+Message-ID: <CA+q9Q6OJB6Z0+y=5_3MBDNGkAUG9rVxg7bZVma38uDOvJ+sOGw@mail.gmail.com>
+Subject: i need your reply
+To:     orchowskiruthi@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-My good friend,
+Greetings,
 
-I just want to know if you, can help me to transfer the amount of
-($6Million). After the transfer we have to share it, 50% for me, and
-50% for you. Please let me know if you can help me for more
-information in regards with the transfer. I hope you can work with me
-honestly?
+We are writing to you from Ecowas Finance Controller Office Lome Togo,
+because we have received a file from the Ministry of Finance Lome-
+Togo, concerning an Inherited Fund bearing your name on it, And after
+our verifications, we found out that the funds belong to you.
 
+It has been awarded and I will like to guide you to claim the funds.
+Please contact me at my private email address
+(mrmaxwellwatford@gmail.com) for more information and directive
 
-Thanks.
-
-Godwin Peter,
+I am looking forward to your urgent reply,
+Best regards
+Mr Maxwell Watford
