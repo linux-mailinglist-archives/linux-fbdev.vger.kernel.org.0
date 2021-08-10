@@ -2,56 +2,56 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78FED3E5B7D
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Aug 2021 15:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 693533E5B84
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Aug 2021 15:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241516AbhHJN0J (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Aug 2021 09:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
+        id S241470AbhHJN0M (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Aug 2021 09:26:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241295AbhHJN0C (ORCPT
+        with ESMTP id S241487AbhHJN0J (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Aug 2021 09:26:02 -0400
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2397EC06136C
-        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:04 -0700 (PDT)
-Received: by mail-vs1-xe2c.google.com with SMTP id s196so7243895vsc.10
-        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:04 -0700 (PDT)
+        Tue, 10 Aug 2021 09:26:09 -0400
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A72C0611A1
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:19 -0700 (PDT)
+Received: by mail-ua1-x92e.google.com with SMTP id ay13so772410uab.5
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:from:date:message-id:subject:to;
         bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
-        b=mb2/SRyh0rDHNQB5qjmpqFn/mJ4oSZuwSL5HeUAQnWxYDlLyDOQ33Slk8PcAya0Am9
-         xWVQm7QIF5Cpwsc+I+mF8q2icdI/OD8BTySvuOKmUQS76S9msRd4omkpSQd2xskBnDF9
-         i+Xdn6Kf02ukqL26YWbTqthFCmFUP73hQ3osrtD+fn5nepc2+RU5yNMR5kCMq52q0Bug
-         UdcG7gBjXn2LTGm58n5Mj8RHr+r9Su51SHVkcleou6oeG/TRvKWnA8B+tA9FP372tQer
-         nOo8g3hbQ//BbZDWPg3rU7o52K9f7PAf11QWsOcjzda2BgQixvGQ70ikcZtfa8WG1pok
-         5S2A==
+        b=kOh14FitoB9U2PaTp3uIqHyYqKEs6t18OvOOvu+iAnvHEkFq00qzgT2ECD7IyInWdw
+         z9iB8rYRr5bcjFDNYHLceSnRtmy1b8Ph5zwBL+YjsQovg4cH+w05DBwZ6AMgQ7yy0MX1
+         FmBpJ91vA3+zIcNUe41UKu5oWnrfB2ZKJc74CCH5I0qfhqGUHEmqQ0LQNDKP20rGZMYO
+         /FtElEYTREws0eb0m9BnUKzKBMkUWo0fdRv01WiferKYMJGmLxiQmI0xQ74GVdEkgP20
+         7U0yEYAn/QXkMYn0No+0KmzZR7hUsbggmgqSR4jFZyv68D3pAV4jhXc7FvUKeVlttOe9
+         Nb0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
          :to;
         bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
-        b=p+omZ/SI27YHW9HsAWlXkq7SW/ffiJcHvpGzUJz+dpgXxygC7fMqz1+nTVB6sHtdl/
-         2Fu+uF630+ybhwtEHGQdxpGlbH/BEPLyb2Sop0OFZ8oHlbHSDZJG89lhkoKHXLHgpTDq
-         btjDjAoXSbqJlK6LzxMgTJc1kg/M4CfddPjPOmzOf8Pf7/VhsFZZrQgIhveTrH6PSkfV
-         DSoIek0GeinoPWTv4gJFS4D/kkqsKdVY4KTYDt73SzgWcYzvRVkvS7nwviQ2efD3FPUO
-         IRr+lxbn+zMMZCK07WcZXTUqUNiGErBlCV/4rNQAZE2QgA6x+S4yV6FTdMmZNwR+MvBC
-         eXww==
-X-Gm-Message-State: AOAM532z3v6PxW+WQCmAM013u79O1ZxnCgru5wiS/KQa9vjw2x+nPMO7
-        OCzVR1SBNpuFMJLAnpj9VOwyk9f/DaY5j6WDUM4=
-X-Google-Smtp-Source: ABdhPJzYw7FX+0/PaiInOC0/5LWCnRa1W8cJSVX/0WopdPsIxYZK/frH8YKowBWQYxUBysCmsjd1FXHsJKbHkI6UY30=
-X-Received: by 2002:a67:1c05:: with SMTP id c5mr21521596vsc.25.1628601903364;
- Tue, 10 Aug 2021 06:25:03 -0700 (PDT)
+        b=qn7POMhdFxG53x3CZCzEKS9RVRX4/VifMPAwB17cTSuzVDL9D9xkQa/r5VwMuivRP7
+         No45YVp0s7sGT8WXrIovms/5EKJs9T4QNPc5Qf1obH03iSJlfEgTPRzNyfvoVVcg7XKm
+         usrE4JzojZ8Jz+NSKso584qnhlw838Gk6lDWlAM7xvnvjCP8IFus+sfgUgwv4O6LsRvb
+         R6RC3e+osIN9wzKoEn29H7dj0hpfkxYHMiYib04kqW0tFLByMtspuoA81mGXH3r7vjSz
+         AATxdoqynVWYfOiKWv8JU38hyuIsZWw4wGJgnT5OjFtn1eXcxqSQfKAn7oocGhsflK5D
+         H56A==
+X-Gm-Message-State: AOAM533EjgdJLMYj0eYWaX76zdhKHz9fdFQY5jBy3RZ9sJRM6hN6btyP
+        8so25+hn/uGvody5EiLJTMzCr9gC3/gKZhjpYOU=
+X-Google-Smtp-Source: ABdhPJzBtN4B1qYxjklP2CwTIM1gv9H5A1l1v1VYjAj4ztkwhGaeypcdS7XlkKJpOKNSdQCA5AGvWj2GKwKTwyJH5G0=
+X-Received: by 2002:ab0:45eb:: with SMTP id u98mr9179530uau.119.1628601918837;
+ Tue, 10 Aug 2021 06:25:18 -0700 (PDT)
 MIME-Version: 1.0
 Sender: immeublesourou@gmail.com
-Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:25:02
+Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:25:18
  -0700 (PDT)
 From:   John Kumor <owo219901@gmail.com>
-Date:   Wed, 11 Aug 2021 01:25:02 +1200
-X-Google-Sender-Auth: JzrISdmqWmHPz_hUxz5yyfdLiEg
-Message-ID: <CAHdg_cSocru1R4avJ0xPR2kzOVjvoos2iD5+OVRe+-U05Szqew@mail.gmail.com>
-Subject: Urgent
+Date:   Wed, 11 Aug 2021 01:25:18 +1200
+X-Google-Sender-Auth: XGjI0u7jkX-OcRR3ODRKanJPbIg
+Message-ID: <CAHdg_cSaxjz3sU3maBXXWd8U6YBj6Qc0ZaGx9Zi0Gm4uB1pQbQ@mail.gmail.com>
+Subject: 
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
