@@ -2,153 +2,64 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E1C3E558F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Aug 2021 10:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78FED3E5B7D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Aug 2021 15:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbhHJIg5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Aug 2021 04:36:57 -0400
-Received: from mga18.intel.com ([134.134.136.126]:62364 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229459AbhHJIg5 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Aug 2021 04:36:57 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10070"; a="202031445"
-X-IronPort-AV: E=Sophos;i="5.84,309,1620716400"; 
-   d="scan'208";a="202031445"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 01:36:35 -0700
-X-IronPort-AV: E=Sophos;i="5.84,309,1620716400"; 
-   d="scan'208";a="525949750"
-Received: from ideak-desk.fi.intel.com ([10.237.68.141])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 01:36:32 -0700
-Date:   Tue, 10 Aug 2021 11:36:29 +0300
-From:   Imre Deak <imre.deak@intel.com>
-To:     linux-fbdev@vger.kernel.org,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        intel-gfx@lists.freedesktop.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: Re: [Intel-gfx] [PATCH v2] fbdev/efifb: Release PCI device's runtime
- PM ref during FB destroy
-Message-ID: <20210810083629.GA2517380@ideak-desk.fi.intel.com>
-References: <20210802133551.1904964-1-imre.deak@intel.com>
- <20210809133146.2478382-1-imre.deak@intel.com>
+        id S241516AbhHJN0J (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 10 Aug 2021 09:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241295AbhHJN0C (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 10 Aug 2021 09:26:02 -0400
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2397EC06136C
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:04 -0700 (PDT)
+Received: by mail-vs1-xe2c.google.com with SMTP id s196so7243895vsc.10
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 Aug 2021 06:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=mb2/SRyh0rDHNQB5qjmpqFn/mJ4oSZuwSL5HeUAQnWxYDlLyDOQ33Slk8PcAya0Am9
+         xWVQm7QIF5Cpwsc+I+mF8q2icdI/OD8BTySvuOKmUQS76S9msRd4omkpSQd2xskBnDF9
+         i+Xdn6Kf02ukqL26YWbTqthFCmFUP73hQ3osrtD+fn5nepc2+RU5yNMR5kCMq52q0Bug
+         UdcG7gBjXn2LTGm58n5Mj8RHr+r9Su51SHVkcleou6oeG/TRvKWnA8B+tA9FP372tQer
+         nOo8g3hbQ//BbZDWPg3rU7o52K9f7PAf11QWsOcjzda2BgQixvGQ70ikcZtfa8WG1pok
+         5S2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=p+omZ/SI27YHW9HsAWlXkq7SW/ffiJcHvpGzUJz+dpgXxygC7fMqz1+nTVB6sHtdl/
+         2Fu+uF630+ybhwtEHGQdxpGlbH/BEPLyb2Sop0OFZ8oHlbHSDZJG89lhkoKHXLHgpTDq
+         btjDjAoXSbqJlK6LzxMgTJc1kg/M4CfddPjPOmzOf8Pf7/VhsFZZrQgIhveTrH6PSkfV
+         DSoIek0GeinoPWTv4gJFS4D/kkqsKdVY4KTYDt73SzgWcYzvRVkvS7nwviQ2efD3FPUO
+         IRr+lxbn+zMMZCK07WcZXTUqUNiGErBlCV/4rNQAZE2QgA6x+S4yV6FTdMmZNwR+MvBC
+         eXww==
+X-Gm-Message-State: AOAM532z3v6PxW+WQCmAM013u79O1ZxnCgru5wiS/KQa9vjw2x+nPMO7
+        OCzVR1SBNpuFMJLAnpj9VOwyk9f/DaY5j6WDUM4=
+X-Google-Smtp-Source: ABdhPJzYw7FX+0/PaiInOC0/5LWCnRa1W8cJSVX/0WopdPsIxYZK/frH8YKowBWQYxUBysCmsjd1FXHsJKbHkI6UY30=
+X-Received: by 2002:a67:1c05:: with SMTP id c5mr21521596vsc.25.1628601903364;
+ Tue, 10 Aug 2021 06:25:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210809133146.2478382-1-imre.deak@intel.com>
+Sender: immeublesourou@gmail.com
+Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:25:02
+ -0700 (PDT)
+From:   John Kumor <owo219901@gmail.com>
+Date:   Wed, 11 Aug 2021 01:25:02 +1200
+X-Google-Sender-Auth: JzrISdmqWmHPz_hUxz5yyfdLiEg
+Message-ID: <CAHdg_cSocru1R4avJ0xPR2kzOVjvoos2iD5+OVRe+-U05Szqew@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Kai-Heng, Alex,
-
-could you add your ack if the fix looks ok and you're ok if I push it to
-the i915 tree?
-
-Thanks,
-Imre
-
-On Mon, Aug 09, 2021 at 04:31:46PM +0300, Imre Deak wrote:
-> Atm the EFI FB platform driver gets a runtime PM reference for the
-> associated GFX PCI device during probing the EFI FB platform device and
-> releases it only when the platform device gets unbound.
-> 
-> When fbcon switches to the FB provided by the PCI device's driver (for
-> instance i915/drmfb), the EFI FB will get only unregistered without the
-> EFI FB platform device getting unbound, keeping the runtime PM reference
-> acquired during the platform device probing. This reference will prevent
-> the PCI driver from runtime suspending the device.
-> 
-> Fix this by releasing the RPM reference from the EFI FB's destroy hook,
-> called when the FB gets unregistered.
-> 
-> While at it assert that pm_runtime_get_sync() didn't fail.
-> 
-> v2:
-> - Move pm_runtime_get_sync() before register_framebuffer() to avoid its
->   race wrt. efifb_destroy()->pm_runtime_put(). (Daniel)
-> - Assert that pm_runtime_get_sync() didn't fail.
-> - Clarify commit message wrt. platform/PCI device/driver and driver
->   removal vs. device unbinding.
-> 
-> Fixes: a6c0fd3d5a8b ("efifb: Ensure graphics device for efifb stays at PCI D0")
-> Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch> (v1)
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> ---
->  drivers/video/fbdev/efifb.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-> index 8ea8f079cde26..edca3703b9640 100644
-> --- a/drivers/video/fbdev/efifb.c
-> +++ b/drivers/video/fbdev/efifb.c
-> @@ -47,6 +47,8 @@ static bool use_bgrt = true;
->  static bool request_mem_succeeded = false;
->  static u64 mem_flags = EFI_MEMORY_WC | EFI_MEMORY_UC;
->  
-> +static struct pci_dev *efifb_pci_dev;	/* dev with BAR covering the efifb */
-> +
->  static struct fb_var_screeninfo efifb_defined = {
->  	.activate		= FB_ACTIVATE_NOW,
->  	.height			= -1,
-> @@ -243,6 +245,9 @@ static inline void efifb_show_boot_graphics(struct fb_info *info) {}
->  
->  static void efifb_destroy(struct fb_info *info)
->  {
-> +	if (efifb_pci_dev)
-> +		pm_runtime_put(&efifb_pci_dev->dev);
-> +
->  	if (info->screen_base) {
->  		if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
->  			iounmap(info->screen_base);
-> @@ -333,7 +338,6 @@ ATTRIBUTE_GROUPS(efifb);
->  
->  static bool pci_dev_disabled;	/* FB base matches BAR of a disabled device */
->  
-> -static struct pci_dev *efifb_pci_dev;	/* dev with BAR covering the efifb */
->  static struct resource *bar_resource;
->  static u64 bar_offset;
->  
-> @@ -569,17 +573,22 @@ static int efifb_probe(struct platform_device *dev)
->  		pr_err("efifb: cannot allocate colormap\n");
->  		goto err_groups;
->  	}
-> +
-> +	if (efifb_pci_dev)
-> +		WARN_ON(pm_runtime_get_sync(&efifb_pci_dev->dev) < 0);
-> +
->  	err = register_framebuffer(info);
->  	if (err < 0) {
->  		pr_err("efifb: cannot register framebuffer\n");
-> -		goto err_fb_dealoc;
-> +		goto err_put_rpm_ref;
->  	}
->  	fb_info(info, "%s frame buffer device\n", info->fix.id);
-> -	if (efifb_pci_dev)
-> -		pm_runtime_get_sync(&efifb_pci_dev->dev);
->  	return 0;
->  
-> -err_fb_dealoc:
-> +err_put_rpm_ref:
-> +	if (efifb_pci_dev)
-> +		pm_runtime_put(&efifb_pci_dev->dev);
-> +
->  	fb_dealloc_cmap(&info->cmap);
->  err_groups:
->  	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
-> @@ -603,8 +612,6 @@ static int efifb_remove(struct platform_device *pdev)
->  	unregister_framebuffer(info);
->  	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
->  	framebuffer_release(info);
-> -	if (efifb_pci_dev)
-> -		pm_runtime_put(&efifb_pci_dev->dev);
->  
->  	return 0;
->  }
-> -- 
-> 2.27.0
-> 
+My dear,
+Greetings! I trust that all is well with you and your family. Did you
+receive my previous email?
+Regards
+John Kumor.
