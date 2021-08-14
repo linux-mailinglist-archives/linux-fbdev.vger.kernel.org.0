@@ -2,94 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 775903EB74A
-	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Aug 2021 17:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9513EBF90
+	for <lists+linux-fbdev@lfdr.de>; Sat, 14 Aug 2021 04:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241079AbhHMPBR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 13 Aug 2021 11:01:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46678 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241052AbhHMPBR (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 13 Aug 2021 11:01:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BDF7E610F7;
-        Fri, 13 Aug 2021 15:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1628866850;
-        bh=6RC6vslFjh+wQ8aj4nLqwnEjlCwuuO/dIriJN4spDOU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Q5nskbAqluCwv1ZaznzfE/fQY3JWn0B9SKicAEJHrm1haXbQ7RCSqc434mUzOfsgK
-         NfZJgizQZaTPiMBKMfZMtfogIhi79RFVigtolj9VowNQTi+PbWl9uNoVSBqXuDC6xN
-         dXkf2sPnSL6UO+rmXL97gx0jg3QDbn/4pRNDU7tM=
-Date:   Fri, 13 Aug 2021 17:00:47 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Oliver Graute <oliver.graute@kococonnector.com>
-Cc:     oliver.graute@gmail.com, Carlis <zhangxuezhi1@yulong.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] staging: fbtft: fb_st7789v: reset display before
- initialization
-Message-ID: <YRaJH5Sj+X4Z3xH/@kroah.com>
-References: <20210813125928.3734-1-oliver.graute@kococonnector.com>
+        id S236512AbhHNCGp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 13 Aug 2021 22:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236519AbhHNCGo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 13 Aug 2021 22:06:44 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6EFC0612E7
+        for <linux-fbdev@vger.kernel.org>; Fri, 13 Aug 2021 19:06:16 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id d16so225094ljq.4
+        for <linux-fbdev@vger.kernel.org>; Fri, 13 Aug 2021 19:06:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=7Xq9jb2sUMv3xaNw7Q5Cgt7yCkc3M0xn16Wn4AtIDKI=;
+        b=bMjFQnnAZpaPHPewg53a/655rlJcZF3F6tOCYZw1vRKDz/xIJdx97rNr27JLkW56nx
+         /iUhkVkrv2vt56YQtzEazhRgIPy/DINH4WyHeEexrKrG7liGbayL7Temc7NGvW0bB8Ad
+         jYLKY+nfNSoS1rYKoflW5LtIinkjSZBTTSJCtk74RyRz5/H1kPwLgMirqvm1jZ9Q2lvS
+         mysy6xLOxs0wYu9KWpVs3ZVzmyzuM6cY3iz+yVlGPkz3Lkb+v57sIQRRUb+ypy4gjifF
+         STYdF7upxk4m3MFQNQv0T7Zw+Yt5F/OYhuRsX60kpa6PLdNBh1LpNqMT51M2pasOSTPy
+         0wUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=7Xq9jb2sUMv3xaNw7Q5Cgt7yCkc3M0xn16Wn4AtIDKI=;
+        b=apv5A433OAU1CFadbGGzakvKoJVCgsgU+KADc5wSz3Ka1CKozOjayTW1a6BxTbDzhA
+         jZozV7iwZ/RL71LrFJ/q57UZ9WlH49SkgSjWscYgha3nFsRcvRPvYGSMqzrGcKKXPWZ0
+         eaycQt5UhSGBZo8MUJbBy3hfcSi6MUaqKHnMe6V6orMIGlkYngZJeoULM0CZurb/aLEu
+         z9CgBFkyuygTuyGg0CVcO48mPGk7TTs3jdENIT6wmvhaEhu8ZC5hSTfkEJZ9D/g90IBu
+         ku07r5YwNbNtmNd851Y93f8yBrEfO0s3O3w9/+y9YAenOPiro1/+o6uLBxP8ylSbGJ2A
+         IRRg==
+X-Gm-Message-State: AOAM533oXfR+fLfOO0S8L6wR/uzmsLmNpYYMq7Bj4R6dokphUzIKqQDk
+        AyJmf4dOEBgGtXipmh21wsgAatwku8JGj6gOMpE=
+X-Google-Smtp-Source: ABdhPJynvegPmhEjUi/stm1v/NRwCcvEqe4+RCpcxOCwnF//w8aRyIcHmBxFidm29bl0vBPsC1zhmU0XtHDcktPhkc0=
+X-Received: by 2002:a2e:b1d3:: with SMTP id e19mr3920584lja.6.1628906774714;
+ Fri, 13 Aug 2021 19:06:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210813125928.3734-1-oliver.graute@kococonnector.com>
+Received: by 2002:a05:6520:380d:b029:132:4f79:3ded with HTTP; Fri, 13 Aug 2021
+ 19:06:14 -0700 (PDT)
+Reply-To: deedeepaul@yandex.com
+From:   Deedee Paul <deedeepaul212@gmail.com>
+Date:   Sat, 14 Aug 2021 02:06:14 +0000
+Message-ID: <CADS-zP8AceijWYuKjjfFaC4WB2nM3FQqvpU1ob6Xb=P4w5FpkA@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Aug 13, 2021 at 02:59:27PM +0200, Oliver Graute wrote:
-> In rare cases the display is flipped or mirrored. This was observed more
-> often in a low temperature environment. A clean reset on init_display()
-> should help to get registers in a sane state.
-> 
-> Signed-off-by: Oliver Graute <oliver.graute@kococonnector.com>
-> ---
->  drivers/staging/fbtft/fb_st7789v.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/staging/fbtft/fb_st7789v.c b/drivers/staging/fbtft/fb_st7789v.c
-> index 3a280cc1892c..0a2dbed9ffc7 100644
-> --- a/drivers/staging/fbtft/fb_st7789v.c
-> +++ b/drivers/staging/fbtft/fb_st7789v.c
-> @@ -82,6 +82,8 @@ enum st7789v_command {
->  {
->  	int rc;
-> 
-> +	par->fbtftops.reset(par);
-> +
->  	rc = init_tearing_effect_line(par);
->  	if (rc)
->  		return rc;
-> -- 
-> 2.17.1
-> 
-> 
+Attention: Beneficiary,
 
-Hi,
+This is to officially inform you that we have been having meetings for
+the past weeks now which ended Two days ago with Mr. John W. Ashe,
+President of the 68th session of the UN General Assembly, Mr. David
+R.Malpass. the World Bank President and Hon. Mrs. Christine Laggard
+(IMF) Director General, in the meeting we talked about how to
+compensate Scam victim's people and all the people that were affected
+the most by this Coronavirus pandemic.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Your email address was successfully selected for this donation with others.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+The United Nations have agreed to compensate you with the sum of
+($150,000.00) One hundred and fifty thousand United States Dollars. We
+have arranged your payment through WORLD ATM MASTERCARD which is the
+latest instruction from the World Bank Group.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/SubmittingPatches for what needs to be done
-  here to properly describe this.
+For the collection of your WORLD ATM MASTERCARD contact our
+representative Rev. David Wood, send to him your contact address where
+you want your MASTERCARD to be sent to you, like
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+1. Your Full Name: .........
+2. Your Country and Your Delivery Home Address: ........
+3. Your Telephone: ..............
 
-thanks,
+His e-mail address: (ddavidwood1@yandex.com) He is a Canadian (UN)
+representative Agent.
 
-greg k-h's patch email bot
+Thanks.
+Tel: 1 513 452 4352.
+Mr. Michael M=C3=B8ller Director-General of the United Nations Office
