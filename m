@@ -2,73 +2,125 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B96473F9282
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Aug 2021 04:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19FF23F97BE
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Aug 2021 12:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231497AbhH0CoZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 26 Aug 2021 22:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233556AbhH0CoY (ORCPT
+        id S244751AbhH0KBj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 27 Aug 2021 06:01:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20214 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233102AbhH0KBf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 26 Aug 2021 22:44:24 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E24AC061796
-        for <linux-fbdev@vger.kernel.org>; Thu, 26 Aug 2021 19:43:36 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id u16so8105088wrn.5
-        for <linux-fbdev@vger.kernel.org>; Thu, 26 Aug 2021 19:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=oQICvEVdYwAUqNTzWpb8/l7kSvds45XXdlddo87uN1NJQXofX3ebHttVEzZReNjahL
-         3Kx/WAP+NTVh6RImZtFU7EKGlmBkRKEisOBYCmX2oIxO4bMKFfBPhMxckANR9U6csEGA
-         2JLFumqEzSBeli8e+LuUaG2BrNtLOQrVMGlyfg886jaYttJW2XvrEHVxVkeoCbr8txPa
-         AkNhhuU4NqQr+tGEZtonwKhZxM0FveqLUKfN8i243Fi2DJPgIYhBgP5iWEpDPb+bpOQ+
-         XRz0fTPtn2Tttrv6cDacJ3R3lGtdMc4Z6CiS4Ott/Yk7z7dlcz7crDD8UYGfUmNeqToY
-         sqJA==
+        Fri, 27 Aug 2021 06:01:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1630058446;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=+aJr1NTbvoxTLmIeJJqoJBHarMi/IcOrX6ArL1A6zIk=;
+        b=PbVGfIjiz7rN88M6gc2yEsSrTnURPzWA5/Alg5Yj+FmCBGJKyGJQoReGvPfjUrq0glT429
+        oAeAgxojq2JyltVujCn+YHcqyNApgR1B8Tf185Rgx80A7mtMmO05D7M0e7e0YDmK1noO/m
+        RXq5xPlIIF3ZpqUkSVAzJCdMe865rQE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-457-Sn5_tb4LMROggzpCfbS9UQ-1; Fri, 27 Aug 2021 06:00:43 -0400
+X-MC-Unique: Sn5_tb4LMROggzpCfbS9UQ-1
+Received: by mail-wr1-f71.google.com with SMTP id p1-20020adfcc81000000b001576cccf12cso1703119wrj.6
+        for <linux-fbdev@vger.kernel.org>; Fri, 27 Aug 2021 03:00:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=cqJd0HrYaUEt1txrTyQXpFDUM4X+6rEM5xF9fwESjxQsTyw4PFRbv+lZ66x8D03cyn
-         cpwQskl9SzpDoD5eyz+m4G3EXoF0KmmSNiMS12g7w57MBka6CAMwB0TIMROUnghPT+r2
-         nGpsRRWvBc2/XBdy5NTbsHKvXIIqEzx95SweAE7iMw61dqDcRxh2+Kb0NTCA4gQePqts
-         oezX+UUYMs2/wVGH0EFFctMKAeOokMUSzc0GjkFL7iH49r4tyRs3ovQqEA7mJPdvnjYC
-         R9zujR4v+hJFxbGzIRqUOZsIku4byIkNT0+wIKfPJ6f25xwubgoRfqzMBtQuRdFdakZ9
-         6aYQ==
-X-Gm-Message-State: AOAM533lLW7R0/MFFic22HnqhNYJSQNng0SiP7tPFqRG+K31cXMojBX2
-        6LRnYNJ0pIBlSqKuXycrZDn3gWPu8YEfv2BEI2Q=
-X-Google-Smtp-Source: ABdhPJxxHn36mD9X7gnFi/vDQ/NT94z4Z9Y/VJNvZu6F0svpW3RYr67hK5dD71rLERqFPGnIUeVbU7wOTTr1I7D+6PY=
-X-Received: by 2002:adf:f984:: with SMTP id f4mr7452796wrr.331.1630032215135;
- Thu, 26 Aug 2021 19:43:35 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+aJr1NTbvoxTLmIeJJqoJBHarMi/IcOrX6ArL1A6zIk=;
+        b=WnL3Oar/MY+8ul7EcMG9JY4nrIAMFY7cPZKQUrvZyPeMMHbjOA33WxwkgXzGsUYxop
+         slBXdVFAFtUxlls98YbxB7WKD0lgyVconKwVTq25sWiFYBwnqJNWPbwr8U9y8Smaz9xk
+         8SVLU9lE9U9S0hiw+T2fA/UWozCLHNW0jttOTZX4FUV5HWTr2PUT7FsgSpY+Ycmr6JWN
+         MbtsU1nypdH8/CYCMOuzSmkbjOtoi6487shsuyujrBccp/ehjLNucFG7sC85XZxGmbtY
+         mxQ4DpzQLvlFRrCdHOYEhizB0k5kmmlXYFS4scDDoCRx1LC0d+VtuPZrLLJA/E8Wjxar
+         Mzxg==
+X-Gm-Message-State: AOAM531qMfMUT2jDLscG/KRmXRBtBoX7i2O2vypkYTkoRTVcYCRKdYcN
+        TW7eZ2i94xe/DgXmoxF9uoGGD23rw1AS7H146PSFtWyo3iHbOd6l1MBWc7a1jOcIvUfrThhPjaq
+        F5NPKzsez2DaZpO/+uv2QS/E=
+X-Received: by 2002:a05:600c:428a:: with SMTP id v10mr18455113wmc.25.1630058441647;
+        Fri, 27 Aug 2021 03:00:41 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwD3l80v92gfAfOSZ8b1Ut69bemPoE/9nlRVQcrJ7xuf3wtFFgtxktW5NFZYCYctIfnyuFMVA==
+X-Received: by 2002:a05:600c:428a:: with SMTP id v10mr18455078wmc.25.1630058441335;
+        Fri, 27 Aug 2021 03:00:41 -0700 (PDT)
+Received: from minerva.home ([92.176.231.106])
+        by smtp.gmail.com with ESMTPSA id z17sm1121267wrh.66.2021.08.27.03.00.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Aug 2021 03:00:40 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     "H . Peter Anvin" <hpa@zytor.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fbdev@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Maxime Ripard <mripard@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Robinson <pbrobinson@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ingo Molnar <mingo@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Javier Martinez Canillas <javierm@redhat.com>
+Subject: [RFC PATCH 0/4] Allow to use DRM fbdev emulation layer with CONFIG_FB disabled
+Date:   Fri, 27 Aug 2021 12:00:23 +0200
+Message-Id: <20210827100027.1577561-1-javierm@redhat.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:a1c:a341:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:43:34
- -0700 (PDT)
-From:   johno williams <johnow614@gmail.com>
-Date:   Thu, 26 Aug 2021 14:43:34 -1200
-Message-ID: <CADzD+E34REXhgwwNE0=Cnh1Mo3Fs-9k6yKtyGEH7UqL8+FcxDQ@mail.gmail.com>
-Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear Beneficiary,
+This patch series splits the fbdev core support in two different Kconfig
+symbols: FB and FB_CORE. The motivation for this is to allow CONFIG_FB to
+be disabled, while still using fbcon with the DRM fbdev emulation layer.
 
-Following your pending fund for years and the delay you imposed in
-receiving it,We have called back your fund to this office as directed
-by the Finance Office and we will be paying you directly through the
-BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
-RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
-ANY FURTHER DELAY.
+The reason for doing this is that now with simpledrm we could just boot
+with simpledrm -> real DRM driver, without needing any legacy fbdev driver
+(e.g: efifb or simplefb) even for the early console.
 
-NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
-THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
+We want to do that in the Fedora kernel, but currently need to keep option
+CONFIG_FB enabled and all fbdev drivers explicitly disabled, which makes
+the configuration harder to maintain.
 
-Send your full details with Banking details to enable us commence the
-transfer process immediately through the BOA BANK IN NEW YORK,USA OR
-DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
+It is a RFC because I'm not that familiar with the fbdev core, but I have
+tested and works with CONFIG_DRM_FBDEV_EMULATION=y and CONFIG_FB disabled.
+This config automatically disables all the fbdev drivers that is our goal.
 
-John O.Williams.
+Patch 1/4 is just a clean up, patch 2/4 moves a couple of functions out of
+fbsysfs.o, that are not related to sysfs attributes creation and finally
+patch 3/4 makes the fbdev split that is mentioned above.
+
+Patch 4/4 makes the DRM fbdev emulation depend on the new FB_CORE symbol
+instead of FB. This could be done as a follow-up but for completeness is
+also included in this series.
+
+Best regards,
+Javier
+
+
+Javier Martinez Canillas (4):
+  fbdev: Rename fb_*_device() functions names to match what they do
+  fbdev: Move framebuffer_{alloc,release}() functions to fbmem.c
+  fbdev: Split frame buffer support in FB and FB_CORE symbols
+  drm: Make fbdev emulation depend on FB_CORE instead of FB
+
+ arch/x86/Makefile                  |  2 +-
+ arch/x86/video/Makefile            |  2 +-
+ drivers/gpu/drm/Kconfig            |  2 +-
+ drivers/video/console/Kconfig      |  2 +-
+ drivers/video/fbdev/Kconfig        | 57 +++++++++++++---------
+ drivers/video/fbdev/core/Makefile  | 13 +++--
+ drivers/video/fbdev/core/fbmem.c   | 73 ++++++++++++++++++++++++++--
+ drivers/video/fbdev/core/fbsysfs.c | 77 +-----------------------------
+ include/linux/fb.h                 | 18 ++++++-
+ 9 files changed, 134 insertions(+), 112 deletions(-)
+
+-- 
+2.31.1
+
