@@ -2,102 +2,88 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E41F3FB0DA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 07:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 232173FB0FA
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 07:57:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231404AbhH3Fpz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Aug 2021 01:45:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42078 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229936AbhH3Fpz (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Aug 2021 01:45:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C38FD60F57;
-        Mon, 30 Aug 2021 05:45:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1630302301;
-        bh=LU8rgY0nlcLGJ0Odp4fZfzKGSi2dMFgS4N01IWoDkt0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HayGxGtZ83S7vi18Gk6XUrcgt28QrdBKOAD024qt/XbwSyxM4105omlig777Sf/6K
-         7Dtv2P+YWO4u9FaOwjIFpaGJdGTWbDfbo2Ooy17hqbRftxkrfZ+fSvC8q5RDxgfCer
-         LGEQKYd/ylznu56w1ZhtnU2weyK+B0e+mBsAQINc=
-Date:   Mon, 30 Aug 2021 07:44:57 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     tcs.kernel@gmail.com
-Cc:     daniel.vetter@ffwll.ch, willy@infradead.org,
-        george.kennedy@oracle.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        arnd@arndb.de, penguin-kernel@i-love.sakura.ne.jp,
-        Haimin Zhang <tcs_kernel@tencent.com>
-Subject: Re: [PATCH V4] fbcon: fix fbcon out-of-bounds write in sys_imageblit
-Message-ID: <YSxwWcvyNtu2QtJ5@kroah.com>
-References: <1630294223-7225-1-git-send-email-tcs_kernel@tencent.com>
+        id S232358AbhH3F6N (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Aug 2021 01:58:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232316AbhH3F6N (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 30 Aug 2021 01:58:13 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6132EC061575
+        for <linux-fbdev@vger.kernel.org>; Sun, 29 Aug 2021 22:57:20 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id ia27so28699027ejc.10
+        for <linux-fbdev@vger.kernel.org>; Sun, 29 Aug 2021 22:57:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=RzIkdEm5aJl66a3p0t6hmEQ+Qv+8MFJLxj5JlLxnEbs=;
+        b=MOtChdEHePAN1YjMbExFNrz19uqYHWTsWOSnaB6pIqNrMq93VAZ4khn2nS5PGpDpjT
+         8sOg70Tuubu14CIXKQbCa2TvO2Ut3vVm7OZEnGNVe8kQLoa2RJFM1ruc9BBn4b1MiMWi
+         DEQmpw+XHqvSzTwwLQLkYMX52Vzb4dhFiRlNyDLG2q1DfPVdVWCSk+VLgOimjC7rGR0e
+         APU81ROR+DfL/wU2RqEeZru0N4SPMfsdC8iNOCwExQKYxGTT+Wyhk2nq6wXWCwDJ+jQa
+         4ypNTTLp2+bn7hXE8viNM6zvNlJC8299LyUiOWXXSv1xLWDzS4JdWbnhAfBAHy2JRhMZ
+         qz3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=RzIkdEm5aJl66a3p0t6hmEQ+Qv+8MFJLxj5JlLxnEbs=;
+        b=uQL6ndxjb5gZw5kcClsYb9C45b3zEA2qD4h2RjEfFr3WSUHZtZBqmAwrURorFd3Wh5
+         1C85Dk8NAOl1sgozF59gxnDWn1XuhLNKgfJzCq6LUP26H53+OexPs8J3EDz3KtkdTdtE
+         wCcdYn1mSwaqfag/AR74ErECH6mqhWQ2w8Y1OZTKhjyzgx0oXbUF32cMISXsNiXM/1dK
+         5wGVWYJ745LHi4fSO9pW8bVLOJoYOhQljb7JlO0lagKADVc94ee2jjhXjjykrOCdOzbV
+         1s/BMeQetyOlnp8bKx8B8RpNUGLS+0ZaL91/EcFZU+X3D4m1ORebO7MMrY34XREZ4LAH
+         a45Q==
+X-Gm-Message-State: AOAM53210aA6yYNanwa+GPlU6UUp+/dz2F6VYLjg8wHQMPaATF14GE3N
+        fhKKmVY7VPnTfd1ifKQsXPdf7JMoV2iXAUNDqXc=
+X-Google-Smtp-Source: ABdhPJx0clIwZL+lBwOZztmlBbPPNk4pr6Wz/U6xn4pf6MdkciMrdFW/uYfAIU7c61wXvU/y7zdYA5PcggwJLfd0DSg=
+X-Received: by 2002:a17:906:fc7:: with SMTP id c7mr22799728ejk.333.1630303038517;
+ Sun, 29 Aug 2021 22:57:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1630294223-7225-1-git-send-email-tcs_kernel@tencent.com>
+Reply-To: godwinppter@gmail.com
+Sender: godwinpeter2401@gmail.com
+Received: by 2002:a54:3251:0:0:0:0:0 with HTTP; Sun, 29 Aug 2021 22:57:17
+ -0700 (PDT)
+From:   Godwin Pete <godwinnpeter@gmail.com>
+Date:   Mon, 30 Aug 2021 07:57:17 +0200
+X-Google-Sender-Auth: ZJ__LrJx60DqPuPUreKw55RH4BI
+Message-ID: <CAGyeThDzTgef9heEdsbJK0v_W5X+CR-XrFWRVc289DSiLdwd9g@mail.gmail.com>
+Subject: For your information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Aug 30, 2021 at 11:30:23AM +0800, tcs.kernel@gmail.com wrote:
-> From: Haimin Zhang <tcs_kernel@tencent.com>
-> 
-> yres and vyres can be controlled by user mode parameters, and cause
-> p->vrows to become a negative value. While this value be passed to real_y
-> function, the ypos will be out of screen range.This is an out-of-bounds
-> write bug.
-> some driver will check xres and yres in fb_check_var callback,but some not
-> so we add a common check after that callback.
-> 
-> Signed-off-by: Haimin Zhang <tcs_kernel@tencent.com>
-> Signed-off-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> ---
->  drivers/video/fbdev/core/fbmem.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> index 1c85514..5599372 100644
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -1013,6 +1013,10 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
->  	if (ret)
->  		return ret;
->  
-> +	/* virtual resolution cannot be smaller than visible resolution. */
-> +	if (var->yres_virtual < var->yres || var->xres_virtual < var->xres)
-> +		return -EINVAL;
-> +
->  	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_NOW)
->  		return 0;
->  
-> -- 
-> 1.8.3.1
-> 
-
 Hi,
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+I just want to use this little opportunity to inform you about my
+success towards the transfer. I'm currently out of the country for an
+investment with part of my share, after completing the transfer with
+an Indian business man. But i will visit your country, next year.
+After the completion of my project. Please, contact my secretary to
+send you the (ATM) card which I've already credited with the sum of
+($500,000.00). Just contact her to help you in receiving the (ATM)
+card. I've explained everything to her before my trip. This is what I
+can do for you because, you couldn't help in the transfer, but for the
+fact that you're the person whom I've contacted initially, for the
+transfer. I decided to give this ($500,000.00) as a compensation for
+being contacted initially for the transfer. I always try to make the
+difference, in dealing with people any time I come in contact with
+them. I'm also trying to show that I'm quite a different person from
+others whose may have a different purpose within them. I believe that
+you will render some help to me when I, will visit your country, for
+another investment there. So contact my secretary for the card, Her
+contact are as follows,
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Full name: Mrs, Jovita Dumuije,
+Country: Burkina Faso
+Email: jovitadumuije@gmail.com
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/SubmittingPatches for what needs to be done
-  here to properly describe this.
+Thanks, and hope for a good corporation with you in future.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Godwin Peter,
