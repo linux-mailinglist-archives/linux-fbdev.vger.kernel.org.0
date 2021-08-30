@@ -2,88 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 232173FB0FA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 07:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3013FB252
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 10:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbhH3F6N (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Aug 2021 01:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        id S233890AbhH3IRU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Aug 2021 04:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232316AbhH3F6N (ORCPT
+        with ESMTP id S234766AbhH3IRU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Aug 2021 01:58:13 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6132EC061575
-        for <linux-fbdev@vger.kernel.org>; Sun, 29 Aug 2021 22:57:20 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id ia27so28699027ejc.10
-        for <linux-fbdev@vger.kernel.org>; Sun, 29 Aug 2021 22:57:20 -0700 (PDT)
+        Mon, 30 Aug 2021 04:17:20 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E801DC061760
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 01:16:26 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id eb14so11133180edb.8
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 01:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=RzIkdEm5aJl66a3p0t6hmEQ+Qv+8MFJLxj5JlLxnEbs=;
-        b=MOtChdEHePAN1YjMbExFNrz19uqYHWTsWOSnaB6pIqNrMq93VAZ4khn2nS5PGpDpjT
-         8sOg70Tuubu14CIXKQbCa2TvO2Ut3vVm7OZEnGNVe8kQLoa2RJFM1ruc9BBn4b1MiMWi
-         DEQmpw+XHqvSzTwwLQLkYMX52Vzb4dhFiRlNyDLG2q1DfPVdVWCSk+VLgOimjC7rGR0e
-         APU81ROR+DfL/wU2RqEeZru0N4SPMfsdC8iNOCwExQKYxGTT+Wyhk2nq6wXWCwDJ+jQa
-         4ypNTTLp2+bn7hXE8viNM6zvNlJC8299LyUiOWXXSv1xLWDzS4JdWbnhAfBAHy2JRhMZ
-         qz3w==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4V8zQGj1Gqf1F2tUDyAxGYR3CqJxPsTeRp5ZOBqSIDQ=;
+        b=TuRY2sKW4BSfhJDjqVGbNRktK9LKQd2XLWSD40j4bkwxZWVIoWgb227dKGlbXTtTY5
+         AEV0TuIGQPvrFZ6iy4MYEhgyGjzIMrilibmAUyqrwhDs4+AVxXMienXkDEGlpbaRnTFh
+         hTFf9cDd5j+dozZN/drbUiSS0HawPZce23FDc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=RzIkdEm5aJl66a3p0t6hmEQ+Qv+8MFJLxj5JlLxnEbs=;
-        b=uQL6ndxjb5gZw5kcClsYb9C45b3zEA2qD4h2RjEfFr3WSUHZtZBqmAwrURorFd3Wh5
-         1C85Dk8NAOl1sgozF59gxnDWn1XuhLNKgfJzCq6LUP26H53+OexPs8J3EDz3KtkdTdtE
-         wCcdYn1mSwaqfag/AR74ErECH6mqhWQ2w8Y1OZTKhjyzgx0oXbUF32cMISXsNiXM/1dK
-         5wGVWYJ745LHi4fSO9pW8bVLOJoYOhQljb7JlO0lagKADVc94ee2jjhXjjykrOCdOzbV
-         1s/BMeQetyOlnp8bKx8B8RpNUGLS+0ZaL91/EcFZU+X3D4m1ORebO7MMrY34XREZ4LAH
-         a45Q==
-X-Gm-Message-State: AOAM53210aA6yYNanwa+GPlU6UUp+/dz2F6VYLjg8wHQMPaATF14GE3N
-        fhKKmVY7VPnTfd1ifKQsXPdf7JMoV2iXAUNDqXc=
-X-Google-Smtp-Source: ABdhPJx0clIwZL+lBwOZztmlBbPPNk4pr6Wz/U6xn4pf6MdkciMrdFW/uYfAIU7c61wXvU/y7zdYA5PcggwJLfd0DSg=
-X-Received: by 2002:a17:906:fc7:: with SMTP id c7mr22799728ejk.333.1630303038517;
- Sun, 29 Aug 2021 22:57:18 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=4V8zQGj1Gqf1F2tUDyAxGYR3CqJxPsTeRp5ZOBqSIDQ=;
+        b=OfnIbH7G/M81GG1vQ69eZhvj9RQ8U2X8wEuYaUnMs5jIZDeYGb3Eir06nEsR4uHe9P
+         TUSjttpfsuZTYcrgywL/UQXNQG9w0uVM+hkRUN67cYVkSP1WrDa7RFRCaCcllk7gi2e9
+         ZJ3N/nwjJT0KvNuHXsIEdidFHDO/L/F3JW60Ie+1sSv3Q9gdGloEOxt1B4DxN8MRFkMK
+         ifj5nBKJHaLXE4ACgpd3lCi/0/F5GWpCDAMm/EP7iTocDB3Pa8+5v/hANdTb0wI3zr2Z
+         zI+ehLfVFE26MetJQHkC0FjR0gtCXJF/0iU5ZhVgjvjDOLFYOg9o4v8gRFxb12Mbh5fk
+         j6ug==
+X-Gm-Message-State: AOAM530yoH5EMWOme4jFvuv1rNh/wsU1tfjJoMMaFAN2K89GKFqri1pn
+        +u+qaoMbvAaQ3/lFSG14le9XXQ==
+X-Google-Smtp-Source: ABdhPJzrm65vrU6FbeDHBqEE0r78ZCI76NdXsgPcErghrJZM0wZPOGz21FvSxt91jZIRA0bIPWz8rg==
+X-Received: by 2002:a50:998f:: with SMTP id m15mr22603150edb.193.1630311385540;
+        Mon, 30 Aug 2021 01:16:25 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id q5sm7275049edt.50.2021.08.30.01.16.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Aug 2021 01:16:25 -0700 (PDT)
+Date:   Mon, 30 Aug 2021 10:16:14 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     tcs.kernel@gmail.com
+Cc:     daniel.vetter@ffwll.ch, willy@infradead.org,
+        george.kennedy@oracle.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de, gregkh@linuxfoundation.org,
+        penguin-kernel@i-love.sakura.ne.jp,
+        Haimin Zhang <tcs_kernel@tencent.com>
+Subject: Re: [PATCH V4] fbcon: fix fbcon out-of-bounds write in sys_imageblit
+Message-ID: <YSyTzlUEhrxD7rU4@phenom.ffwll.local>
+Mail-Followup-To: tcs.kernel@gmail.com, willy@infradead.org,
+        george.kennedy@oracle.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        arnd@arndb.de, gregkh@linuxfoundation.org,
+        penguin-kernel@i-love.sakura.ne.jp,
+        Haimin Zhang <tcs_kernel@tencent.com>
+References: <1630294223-7225-1-git-send-email-tcs_kernel@tencent.com>
 MIME-Version: 1.0
-Reply-To: godwinppter@gmail.com
-Sender: godwinpeter2401@gmail.com
-Received: by 2002:a54:3251:0:0:0:0:0 with HTTP; Sun, 29 Aug 2021 22:57:17
- -0700 (PDT)
-From:   Godwin Pete <godwinnpeter@gmail.com>
-Date:   Mon, 30 Aug 2021 07:57:17 +0200
-X-Google-Sender-Auth: ZJ__LrJx60DqPuPUreKw55RH4BI
-Message-ID: <CAGyeThDzTgef9heEdsbJK0v_W5X+CR-XrFWRVc289DSiLdwd9g@mail.gmail.com>
-Subject: For your information
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1630294223-7225-1-git-send-email-tcs_kernel@tencent.com>
+X-Operating-System: Linux phenom 5.10.0-8-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+On Mon, Aug 30, 2021 at 11:30:23AM +0800, tcs.kernel@gmail.com wrote:
+> From: Haimin Zhang <tcs_kernel@tencent.com>
+> 
+> yres and vyres can be controlled by user mode parameters, and cause
+> p->vrows to become a negative value. While this value be passed to real_y
+> function, the ypos will be out of screen range.This is an out-of-bounds
+> write bug.
+> some driver will check xres and yres in fb_check_var callback,but some not
+> so we add a common check after that callback.
+> 
+> Signed-off-by: Haimin Zhang <tcs_kernel@tencent.com>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
 
-I just want to use this little opportunity to inform you about my
-success towards the transfer. I'm currently out of the country for an
-investment with part of my share, after completing the transfer with
-an Indian business man. But i will visit your country, next year.
-After the completion of my project. Please, contact my secretary to
-send you the (ATM) card which I've already credited with the sum of
-($500,000.00). Just contact her to help you in receiving the (ATM)
-card. I've explained everything to her before my trip. This is what I
-can do for you because, you couldn't help in the transfer, but for the
-fact that you're the person whom I've contacted initially, for the
-transfer. I decided to give this ($500,000.00) as a compensation for
-being contacted initially for the transfer. I always try to make the
-difference, in dealing with people any time I come in contact with
-them. I'm also trying to show that I'm quite a different person from
-others whose may have a different purpose within them. I believe that
-you will render some help to me when I, will visit your country, for
-another investment there. So contact my secretary for the card, Her
-contact are as follows,
+Does this fix a syzbot crash or how was this discovered?
+-Daniel
 
-Full name: Mrs, Jovita Dumuije,
-Country: Burkina Faso
-Email: jovitadumuije@gmail.com
+> ---
+>  drivers/video/fbdev/core/fbmem.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index 1c85514..5599372 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1013,6 +1013,10 @@ static int fb_check_caps(struct fb_info *info, struct fb_var_screeninfo *var,
+>  	if (ret)
+>  		return ret;
+>  
+> +	/* virtual resolution cannot be smaller than visible resolution. */
+> +	if (var->yres_virtual < var->yres || var->xres_virtual < var->xres)
+> +		return -EINVAL;
+> +
+>  	if ((var->activate & FB_ACTIVATE_MASK) != FB_ACTIVATE_NOW)
+>  		return 0;
+>  
+> -- 
+> 1.8.3.1
+> 
 
-Thanks, and hope for a good corporation with you in future.
-
-Godwin Peter,
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
