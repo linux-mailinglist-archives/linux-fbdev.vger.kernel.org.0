@@ -2,99 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B893FB8AA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 17:01:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 699383FB8C3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 17:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233162AbhH3PB4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Aug 2021 11:01:56 -0400
-Received: from mail-vs1-f48.google.com ([209.85.217.48]:33330 "EHLO
-        mail-vs1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237123AbhH3PB4 (ORCPT
+        id S237236AbhH3PHx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Aug 2021 11:07:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57810 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237187AbhH3PHw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Aug 2021 11:01:56 -0400
-Received: by mail-vs1-f48.google.com with SMTP id bf15so7486565vsb.0;
-        Mon, 30 Aug 2021 08:01:02 -0700 (PDT)
+        Mon, 30 Aug 2021 11:07:52 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37DDC061575
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id q70so28765976ybg.11
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=Q+Y0vhwco500Y05ylOmEB6X3jfVg0W+7mov6++1Cqcg=;
+        b=rP0EreE3FeNS8ZIbMq7iavwmdfA4FZSHAJavuWbSyVQNGrmA1ZOdxKFijKL1YJ8Gmj
+         hMndDSk6DWnZpeY5qGwNcaNhCAGkQJofClfSbNVhSqiNNhFapSZ4q4CTi62/rsKAWi4S
+         EoyB7d5zoaSXWnZOCS9YkHWSlDZbizDNfVbYaQ5AccsRZ4fRv73n7SEZlx12OjKjnI4u
+         uACT5jr0N7NGRYhmbr+pGSTZmZ6r0Vbk2HqpYtR6AnomqRRaSs6p9yU03US5rG9ZFtFa
+         yrG9DY6lHWC6x9Rd/mYcdPHnYhVenKBT8eDLuwuDiBWcAqpu26r5q+wuqiuhq7U8qaWE
+         DSUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=u13jY3wSZM31fcmpr4GBs3113ESNVPQ9w7zIuFDRtqA=;
-        b=S26MupTMB9lNp+e5CmUl21PLpFTAmE0SKz2wgO6NHFMjhxkQYKALAhKAv0IFFt9U5S
-         bObtw7oPJiQxRQCxz/jg0p3gidQP8VsVmiIrJ99iEoeW2fNdhO/WONT7/IosJ9ZTqf3u
-         ZTx3vk2tyuWs5pJ3mwrn/7ssMs9DxXrn8F5BiACPqU7ji2Srw5FYv3ozQhGJvnqoON3O
-         8aE6ZCytDW9tX/aoQfApzaa4qfpKS65ll++ppM/mCee8gzhlnREp/sgMnD0EMaC/vqMB
-         3yRW8oyebOVZMIRoavNBlDICwOZJLdzDnCN0eTT38fhAlvugREM/KbVXtWIjYmzR885q
-         vkuw==
-X-Gm-Message-State: AOAM533yF3lMvv23mYatvcdpRVN5B5kMy23Gm4Xjr8BzNXKv+zYt3Wma
-        OlVLTLDmWc1FLlAkLGiBAYTLoebQ8/HIuyBFxL4=
-X-Google-Smtp-Source: ABdhPJycXkCL/LhUbLlVUIVrKZgwucuUJ5aj2ffNWq+81tLkWAXOEw1KSPDM3UaKy+3i0pGmd6eAWJNnwA27a2ky+cc=
-X-Received: by 2002:a67:c789:: with SMTP id t9mr15437109vsk.60.1630335661896;
- Mon, 30 Aug 2021 08:01:01 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=Q+Y0vhwco500Y05ylOmEB6X3jfVg0W+7mov6++1Cqcg=;
+        b=UP2w1bmtpK11+ccqRabraCk8wsBSincHSvNtFAVcnR7aZzPaa0BiuwwtWm0VBZruci
+         /8ajrWZFU5HkvrrsfANWh0Bxlj5GnGm9Q6ZszQpZZvlYMRuf1kliaAJVUe8Ar9sJTng1
+         lr00r1rPZsRTOqWMKJ4xP6X7xB0a+hLVuvbIfspmZpjGkjbZukTilz0L1LuO80GjH6Aj
+         28b5V7FWaGt4aPGJTOUYgychIWq0zeLy/cWTIzRj7Jl3tknRVnL17usVCcqXRULTQUYy
+         FLr5jkwdNy3Z1rQj9jbD0pRZPo0HMr0IyoKF/gudTurw/W+Fkyl5IieZyPAHvZ96DyQt
+         pJTA==
+X-Gm-Message-State: AOAM530Bp/GE1JpDfCI8z/8XeyIKA30dbYh5U13UL9xprCN3wbcQKUhT
+        alyATYIf4hNfEyDH35jUKZEOguDasn4rzq2GJdw=
+X-Google-Smtp-Source: ABdhPJywl/iukw3PA2ttUuYo3Lo8IKZyRjC3F+7B1CTPPIks5fhNjWho9F6EtBwSUghzBFo4ldfKBR7FNCDnqJF4rIg=
+X-Received: by 2002:a25:4189:: with SMTP id o131mr24409664yba.352.1630336018273;
+ Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <000000000000815b9605c70e74f8@google.com> <131b24e5-ee31-6f7b-42b4-c34583711913@infradead.org>
- <2fccb5d3-191c-924e-159f-1c9d423e282f@i-love.sakura.ne.jp>
- <CAMuHMdV=xVhEHLEoYt3OF+kmGrLOr6t7SP1sghSmp9JqXD+3Og@mail.gmail.com>
- <20210830130000.GW7722@kadam> <8ed0ca59-226b-2d0e-b1ae-82305202558d@i-love.sakura.ne.jp>
- <20210830134719.GI12231@kadam> <03d0f549-9731-8b06-1393-60d4bef27884@i-love.sakura.ne.jp>
- <CAMuHMdXp7D02Z_Hs4wT9y4WeNzqdxHMgExiOzVauvpfgf4Veig@mail.gmail.com>
- <ba78b9a5-08a5-36d3-7c6f-e26ee239d92f@i-love.sakura.ne.jp> <CAMuHMdWLTPBatefOgdVpfcqQoBw-D1F-_+-+23WdoQfwBcrz6A@mail.gmail.com>
-In-Reply-To: <CAMuHMdWLTPBatefOgdVpfcqQoBw-D1F-_+-+23WdoQfwBcrz6A@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 30 Aug 2021 17:00:49 +0200
-Message-ID: <CAMuHMdUtjd7Uf9VPEEztL+raasLdRqfMN55S8B8Nqoh0vxuk1g@mail.gmail.com>
-Subject: Re: [syzbot] BUG: unable to handle kernel paging request in vga16fb_fillrect
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        syzbot <syzbot+04168c8063cfdde1db5e@syzkaller.appspotmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Colin King <colin.king@canonical.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        syzkaller-bugs@googlegroups.com
+Sender: iqbalfarrukh60@gmail.com
+Received: by 2002:a05:6918:2427:b0:59:3104:8bc1 with HTTP; Mon, 30 Aug 2021
+ 08:06:58 -0700 (PDT)
+From:   "Mr.Sal kavar" <salkavar2@gmail.com>
+Date:   Mon, 30 Aug 2021 16:06:58 +0100
+X-Google-Sender-Auth: zcPYC2-kBXihuFaWrd25uYkGTHU
+Message-ID: <CAL3Nt6iLK3ec5WA8b8EcbRuh4F9peLZ+ZeEegzrGnNzZTm_Z9g@mail.gmail.com>
+Subject: Yours Faithful,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Tetsuo,
+I assume you and your family are in good health. I am the foreign
+operations Manager.
 
-On Mon, Aug 30, 2021 at 4:53 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Mon, Aug 30, 2021 at 4:38 PM Tetsuo Handa
-> <penguin-kernel@i-love.sakura.ne.jp> wrote:
-> > On 2021/08/30 23:30, Geert Uytterhoeven wrote:
-> > > The highest possible value of maxmem inside vga16fb_check_var()
-> > > is 65536.
-> >
-> > Yes.
-> >
-> > >
-> > > So I believe
-> > >
-> > >     if (array_size(vxres, vyres) > maxmem)
-> > >
-> > > should work fine.
-> >
-> > My intent is to check at common path than individual module so that we don't
-> > need to add same check to every module. Same approach is proposed at
-> > https://lkml.kernel.org/r/1630294223-7225-1-git-send-email-tcs_kernel@tencent.com .
->
-> Which I believe is wrong.
-> Thanks for the pointer, I will reply to the actual patch...
+This being a wide world in which it can be difficult to make new
+acquaintances and because it is virtually impossible to know who is
+trustworthy and who can be believed, i have decided to repose
+confidence in you after much fasting and prayer. It is only because of
+this that I have decided to confide in you and to share with you this
+confidential business.
 
-Upon second look, that patch is not really wrong, as the check happens
-after calling into info->fbops->fb_check_var().
+overdue and unclaimed sum of $15.5m, (Fifteen Million Five Hundred
+Thousand Dollars Only) when the account holder suddenly passed on, he
+left no beneficiary who would be entitled to the receipt of this fund.
+For this reason, I have found it expedient to transfer this fund to a
+trustworthy individual with capacity to act as foreign business
+partner.
 
-Gr{oetje,eeting}s,
+Thus i humbly request your assistance to claim this fund. Upon the
+transfer of this fund in your account, you will take 45% as your share
+from the total fund, 10% will be shared to Charity Organizations in
+both country and 45% will be for me.
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Yours Faithful,
+Mr.Sal Kavar.
