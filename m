@@ -2,83 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 699383FB8C3
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 17:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C14D3FB9BE
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Aug 2021 18:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237236AbhH3PHx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 Aug 2021 11:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237187AbhH3PHw (ORCPT
+        id S237726AbhH3QGe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 Aug 2021 12:06:34 -0400
+Received: from www262.sakura.ne.jp ([202.181.97.72]:65360 "EHLO
+        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237659AbhH3QGe (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 Aug 2021 11:07:52 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37DDC061575
-        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id q70so28765976ybg.11
-        for <linux-fbdev@vger.kernel.org>; Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=Q+Y0vhwco500Y05ylOmEB6X3jfVg0W+7mov6++1Cqcg=;
-        b=rP0EreE3FeNS8ZIbMq7iavwmdfA4FZSHAJavuWbSyVQNGrmA1ZOdxKFijKL1YJ8Gmj
-         hMndDSk6DWnZpeY5qGwNcaNhCAGkQJofClfSbNVhSqiNNhFapSZ4q4CTi62/rsKAWi4S
-         EoyB7d5zoaSXWnZOCS9YkHWSlDZbizDNfVbYaQ5AccsRZ4fRv73n7SEZlx12OjKjnI4u
-         uACT5jr0N7NGRYhmbr+pGSTZmZ6r0Vbk2HqpYtR6AnomqRRaSs6p9yU03US5rG9ZFtFa
-         yrG9DY6lHWC6x9Rd/mYcdPHnYhVenKBT8eDLuwuDiBWcAqpu26r5q+wuqiuhq7U8qaWE
-         DSUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=Q+Y0vhwco500Y05ylOmEB6X3jfVg0W+7mov6++1Cqcg=;
-        b=UP2w1bmtpK11+ccqRabraCk8wsBSincHSvNtFAVcnR7aZzPaa0BiuwwtWm0VBZruci
-         /8ajrWZFU5HkvrrsfANWh0Bxlj5GnGm9Q6ZszQpZZvlYMRuf1kliaAJVUe8Ar9sJTng1
-         lr00r1rPZsRTOqWMKJ4xP6X7xB0a+hLVuvbIfspmZpjGkjbZukTilz0L1LuO80GjH6Aj
-         28b5V7FWaGt4aPGJTOUYgychIWq0zeLy/cWTIzRj7Jl3tknRVnL17usVCcqXRULTQUYy
-         FLr5jkwdNy3Z1rQj9jbD0pRZPo0HMr0IyoKF/gudTurw/W+Fkyl5IieZyPAHvZ96DyQt
-         pJTA==
-X-Gm-Message-State: AOAM530Bp/GE1JpDfCI8z/8XeyIKA30dbYh5U13UL9xprCN3wbcQKUhT
-        alyATYIf4hNfEyDH35jUKZEOguDasn4rzq2GJdw=
-X-Google-Smtp-Source: ABdhPJywl/iukw3PA2ttUuYo3Lo8IKZyRjC3F+7B1CTPPIks5fhNjWho9F6EtBwSUghzBFo4ldfKBR7FNCDnqJF4rIg=
-X-Received: by 2002:a25:4189:: with SMTP id o131mr24409664yba.352.1630336018273;
- Mon, 30 Aug 2021 08:06:58 -0700 (PDT)
+        Mon, 30 Aug 2021 12:06:34 -0400
+Received: from fsav312.sakura.ne.jp (fsav312.sakura.ne.jp [153.120.85.143])
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 17UG571e040414;
+        Tue, 31 Aug 2021 01:05:07 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Received: from www262.sakura.ne.jp (202.181.97.72)
+ by fsav312.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav312.sakura.ne.jp);
+ Tue, 31 Aug 2021 01:05:07 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav312.sakura.ne.jp)
+Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+        (authenticated bits=0)
+        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 17UG56nK040407
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+        Tue, 31 Aug 2021 01:05:07 +0900 (JST)
+        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
+Subject: [PATCH] fbmem: don't allow too huge resolutions
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     syzbot <syzbot+04168c8063cfdde1db5e@syzkaller.appspotmail.com>,
+        akpm@linux-foundation.org, b.zolnierkie@samsung.com,
+        colin.king@canonical.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        masahiroy@kernel.org, syzkaller-bugs@googlegroups.com,
+        Randy Dunlap <rdunlap@infradead.org>
+References: <000000000000815b9605c70e74f8@google.com>
+ <131b24e5-ee31-6f7b-42b4-c34583711913@infradead.org>
+ <2fccb5d3-191c-924e-159f-1c9d423e282f@i-love.sakura.ne.jp>
+ <339bfb21-8e80-c7d9-46dd-c416f87c50c0@infradead.org>
+From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Message-ID: <535e404d-03bf-8e7a-b296-132a2a98c599@i-love.sakura.ne.jp>
+Date:   Tue, 31 Aug 2021 01:05:05 +0900
+User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Sender: iqbalfarrukh60@gmail.com
-Received: by 2002:a05:6918:2427:b0:59:3104:8bc1 with HTTP; Mon, 30 Aug 2021
- 08:06:58 -0700 (PDT)
-From:   "Mr.Sal kavar" <salkavar2@gmail.com>
-Date:   Mon, 30 Aug 2021 16:06:58 +0100
-X-Google-Sender-Auth: zcPYC2-kBXihuFaWrd25uYkGTHU
-Message-ID: <CAL3Nt6iLK3ec5WA8b8EcbRuh4F9peLZ+ZeEegzrGnNzZTm_Z9g@mail.gmail.com>
-Subject: Yours Faithful,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <339bfb21-8e80-c7d9-46dd-c416f87c50c0@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-I assume you and your family are in good health. I am the foreign
-operations Manager.
+syzbot is reporting page fault at vga16fb_fillrect() [1], for
+vga16fb_check_var() is failing to detect multiplication overflow.
 
-This being a wide world in which it can be difficult to make new
-acquaintances and because it is virtually impossible to know who is
-trustworthy and who can be believed, i have decided to repose
-confidence in you after much fasting and prayer. It is only because of
-this that I have decided to confide in you and to share with you this
-confidential business.
+  if (vxres * vyres > maxmem) {
+    vyres = maxmem / vxres;
+    if (vyres < yres)
+      return -ENOMEM;
+  }
 
-overdue and unclaimed sum of $15.5m, (Fifteen Million Five Hundred
-Thousand Dollars Only) when the account holder suddenly passed on, he
-left no beneficiary who would be entitled to the receipt of this fund.
-For this reason, I have found it expedient to transfer this fund to a
-trustworthy individual with capacity to act as foreign business
-partner.
+Since no module would accept too huge resolutions where multiplication
+overflow happens, let's reject in the common path.
 
-Thus i humbly request your assistance to claim this fund. Upon the
-transfer of this fund in your account, you will take 45% as your share
-from the total fund, 10% will be shared to Charity Organizations in
-both country and 45% will be for me.
+This patch does not use array_size(), for array_size() is allowed to
+return UINT_MAX on 32bits even if overflow did not happen. We want to
+detect only overflow here, for individual module will recheck with more
+strict limits as needed.
 
-Yours Faithful,
-Mr.Sal Kavar.
+Link: https://syzkaller.appspot.com/bug?extid=04168c8063cfdde1db5e [1]
+Reported-by: syzbot <syzbot+04168c8063cfdde1db5e@syzkaller.appspotmail.com>
+Debugged-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: syzbot <syzbot+04168c8063cfdde1db5e@syzkaller.appspotmail.com>
+---
+ drivers/video/fbdev/core/fbmem.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 1c855145711b..9f5075dc2345 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1008,6 +1008,11 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 	if (var->xres < 8 || var->yres < 8)
+ 		return -EINVAL;
+ 
++	/* Don't allow u32 * u32 to overflow. */
++	if ((u64) var->xres * var->yres > UINT_MAX ||
++	    (u64) var->xres_virtual * var->yres_virtual > UINT_MAX)
++		return -EINVAL;
++
+ 	ret = info->fbops->fb_check_var(var, info);
+ 
+ 	if (ret)
+-- 
+2.18.4
+
+
