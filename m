@@ -2,109 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1F74056BF
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Sep 2021 15:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0AB405A73
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Sep 2021 17:52:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357042AbhIINXJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Sep 2021 09:23:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36120 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1358964AbhIINLk (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:11:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EBAD460F4A;
-        Thu,  9 Sep 2021 12:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188894;
-        bh=P2dWfA3+6h1FBHe0VI/ugsM4VtXffXqmR7Mk0eeENhk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jysc4NaCRM7uabsEsZ7vsymbZDN/kVETtt0UCYB27o1vsR6K1aEnS5XvXHgahePuQ
-         HeFu1ol5G6LROJByB0i8dVFIZaAxgA+6ZETZvpvLpk2O9sRaKIwbuKCAZCBkbBg3Yk
-         nvX3DIQVs2SbGtuZv7yl9FULUZ8pYAHdG3TTy/dC73zNNICbTpxZyiPbfRjR6xSCTl
-         X2Y/ZuHwfGYO8SBCw6wU8ghTi4wFlHRfx/7NGlxWDoZYInDIr5lAIy0yy1wE0O3t/b
-         Zo+51BT27vmtx6Em6YFbgNh0Tuz4P0g+syxipI825TzA6q/6Fsblr7H7Q5teZj0pTK
-         fIZGuqAbSXNIQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zheyu Ma <zheyuma97@gmail.com>, Sam Ravnborg <sam@ravnborg.org>,
-        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.4 14/35] video: fbdev: riva: Error out if 'pixclock' equals zero
-Date:   Thu,  9 Sep 2021 08:00:55 -0400
-Message-Id: <20210909120116.150912-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909120116.150912-1-sashal@kernel.org>
-References: <20210909120116.150912-1-sashal@kernel.org>
+        id S231974AbhIIPx6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Sep 2021 11:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35624 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234363AbhIIPx5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Sep 2021 11:53:57 -0400
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21461C061574;
+        Thu,  9 Sep 2021 08:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
+        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:Subject:References:Cc:To:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=uwZkGDe+5yKUNrBX24pEyL/TFCLpIwoT4rE5dF+jo9Q=; b=R6+gKJvEWq5xj0o2GwdFVFdGgr
+        9ujtFg02VpVABYtSj1TKtBQfOOSp0HbJePYERRYAcgg6x6rMR4KxKavPzAwCk+JHpeYe8rkBM2d1S
+        cCjeFCUsmdJu4j9kozpED3Gt9PsvFKcSXokJOVteEffE/2WCy2U6EdscAI1DDQAsi/wC5SVnJjvvx
+        K5BKf+Z1AdHq1NAdDZBdnFgerfV5qZr8syfGd7extn3SHY60xXCgRkb4o0/mZQY9Ck05DPZ65UFcX
+        9USVju7taOb2+U8v5QubsB30NsHwojaILxcVi5vfGwWAAE8RMv3Ycv62J1tLvH8+vlFNkI3v3BEyl
+        lK10fUEg==;
+Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:60364 helo=[192.168.10.61])
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <noralf@tronnes.org>)
+        id 1mOMLz-0001BY-VF; Thu, 09 Sep 2021 17:52:43 +0200
+To:     sam@ravnborg.org
+Cc:     airlied@linux.ie, bp@alien8.de, dri-devel@lists.freedesktop.org,
+        gregkh@linuxfoundation.org, hdegoede@redhat.com, hpa@zytor.com,
+        javierm@redhat.com, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
+        mingo@redhat.com, mripard@kernel.org, pbrobinson@gmail.com,
+        tglx@linutronix.de, tzimmermann@suse.de, x86@kernel.org
+References: <YS+Lhz9gg/0Caa+0@ravnborg.org>
+Subject: Re: [RFC PATCH 0/4] Allow to use DRM fbdev emulation layer with
+ CONFIG_FB disabled
+From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Message-ID: <2527f0ef-dae1-9ad5-84a4-00712c44940d@tronnes.org>
+Date:   Thu, 9 Sep 2021 17:52:40 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YS+Lhz9gg/0Caa+0@ravnborg.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Zheyu Ma <zheyuma97@gmail.com>
 
-[ Upstream commit f92763cb0feba247e0939ed137b495601fd072a5 ]
+> Hi Daniel,
+>
+> >
+> > I think for a substantial improvement here in robustness what you really
+> > want is
+> > - kmscon in userspace
+> > - disable FB layer
+> > - ideally also disable console/vt layer in the kernel
+> > - have a minimal emergency/boot-up log thing in drm, patches for that
+> >   floated around a few times
+>
+> I assume you refer to this work by David Herrmann:
+> "[RFC] drm: add kernel-log renderer"
+> https://lists.freedesktop.org/archives/dri-devel/2014-March/055136.html
+>
 
-The userspace program could pass any values to the driver through
-ioctl() interface. If the driver doesn't check the value of 'pixclock',
-it may cause divide error.
+There's also this:
 
-Fix this by checking whether 'pixclock' is zero first.
+[PATCH v2 0/3] drm: Add panic handling
+https://lore.kernel.org/dri-devel/20190311174218.51899-1-noralf@tronnes.org/
 
-The following log reveals it:
-
-[   33.396850] divide error: 0000 [#1] PREEMPT SMP KASAN PTI
-[   33.396864] CPU: 5 PID: 11754 Comm: i740 Not tainted 5.14.0-rc2-00513-gac532c9bbcfb-dirty #222
-[   33.396883] RIP: 0010:riva_load_video_mode+0x417/0xf70
-[   33.396969] Call Trace:
-[   33.396973]  ? debug_smp_processor_id+0x1c/0x20
-[   33.396984]  ? tick_nohz_tick_stopped+0x1a/0x90
-[   33.396996]  ? rivafb_copyarea+0x3c0/0x3c0
-[   33.397003]  ? wake_up_klogd.part.0+0x99/0xd0
-[   33.397014]  ? vprintk_emit+0x110/0x4b0
-[   33.397024]  ? vprintk_default+0x26/0x30
-[   33.397033]  ? vprintk+0x9c/0x1f0
-[   33.397041]  ? printk+0xba/0xed
-[   33.397054]  ? record_print_text.cold+0x16/0x16
-[   33.397063]  ? __kasan_check_read+0x11/0x20
-[   33.397074]  ? profile_tick+0xc0/0x100
-[   33.397084]  ? __sanitizer_cov_trace_const_cmp4+0x24/0x80
-[   33.397094]  ? riva_set_rop_solid+0x2a0/0x2a0
-[   33.397102]  rivafb_set_par+0xbe/0x610
-[   33.397111]  ? riva_set_rop_solid+0x2a0/0x2a0
-[   33.397119]  fb_set_var+0x5bf/0xeb0
-[   33.397127]  ? fb_blank+0x1a0/0x1a0
-[   33.397134]  ? lock_acquire+0x1ef/0x530
-[   33.397143]  ? lock_release+0x810/0x810
-[   33.397151]  ? lock_is_held_type+0x100/0x140
-[   33.397159]  ? ___might_sleep+0x1ee/0x2d0
-[   33.397170]  ? __mutex_lock+0x620/0x1190
-[   33.397180]  ? trace_hardirqs_on+0x6a/0x1c0
-[   33.397190]  do_fb_ioctl+0x31e/0x700
-
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/1627293835-17441-4-git-send-email-zheyuma97@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/riva/fbdev.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/video/fbdev/riva/fbdev.c b/drivers/video/fbdev/riva/fbdev.c
-index f1ad2747064b..6e5e29fe13db 100644
---- a/drivers/video/fbdev/riva/fbdev.c
-+++ b/drivers/video/fbdev/riva/fbdev.c
-@@ -1088,6 +1088,9 @@ static int rivafb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
- 	int mode_valid = 0;
- 	
- 	NVTRACE_ENTER();
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	switch (var->bits_per_pixel) {
- 	case 1 ... 8:
- 		var->red.offset = var->green.offset = var->blue.offset = 0;
--- 
-2.30.2
-
+Noralf.
