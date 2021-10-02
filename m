@@ -2,86 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BA0141EF50
-	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Oct 2021 16:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD1841FB6D
+	for <lists+linux-fbdev@lfdr.de>; Sat,  2 Oct 2021 14:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354448AbhJAOV7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 1 Oct 2021 10:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51738 "EHLO
+        id S232960AbhJBMF2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 2 Oct 2021 08:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354434AbhJAOV6 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Oct 2021 10:21:58 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3D5C061775
-        for <linux-fbdev@vger.kernel.org>; Fri,  1 Oct 2021 07:20:14 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id v127so7333741wme.5
-        for <linux-fbdev@vger.kernel.org>; Fri, 01 Oct 2021 07:20:14 -0700 (PDT)
+        with ESMTP id S232935AbhJBMF1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 2 Oct 2021 08:05:27 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41C3C061570;
+        Sat,  2 Oct 2021 05:03:41 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id z184so1532206iof.5;
+        Sat, 02 Oct 2021 05:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=TkvezXZi1fkQu2wSS8sN2XxyukeSXc1Ehs+Ng7L0v2o=;
-        b=M37+gLJCudNwkTp3onhQJxl5TOiJ+FpReycB0OQLaRNEuWn1E3vnJuOczX97Uweqru
-         jNnu7MsRbuYvB1nlUzf6sJsFOAAo9bxuptxMabl2H3kVl8wZK+HtrbvNaY0K13RLGA7Y
-         cjBugFhfb27ajXQKgIhGNCuQS8sVlRR0lj/14pOJOki6xNOn4pdafgoxcNYW1QscNQcx
-         KUeg0/EQs2mnzVr/8+sfA8yoYiwArhzRHcUXxmFvpVrn9SR8rEjvqwtygf5HLUutijZF
-         aO6aZxd4+9mh5m7MMNgwbBmqEMsmFSG1uz26QSDG6SvB5bowL5YIFS1T1GxGymoPYZBF
-         55ZA==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=YxWIlaBSYFvjD6wxI3Im7HD0DUa8SKawF0d7t45AEzKjL6m83eOsT6rgZdQRGCng74
+         6RLcJMZhzHbNym1o2udNgSV2epSTH0qAv/gDWDsxACfpBL7vOUGDwWmGmUaO2SE5P8uY
+         T63X4axLx9vlrJbw970R//6K5CXkIsOYNNanoWJo6B81ZE00DEyRoVjZrAUA3RQ+9ju3
+         SZYoVWN+Ed+cukZyyntSGlKOmbEpXAJVn5nVjU9PttbC0fy1k1kkmOWz1VvVx3VvX7FT
+         7VoKZi/ug9VIcJXMy54+WPXzQ6H5V7BFKbJ6aHn+8SZElmbcl8wcN4j53q3jHLdvow5u
+         jyoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=TkvezXZi1fkQu2wSS8sN2XxyukeSXc1Ehs+Ng7L0v2o=;
-        b=6IEKIRD43r0zj5RWXfn6Q4OhtNWeq9WDggC0GInlDQLyXN4Xpeyr9F7A6HP4sQRYBR
-         VWgTizwu/ZhJX5Mdx+3EaU4LvSZWtcf0AqUDKIeBObTWzkrjQFLOFQMmtcQL+WnerDEi
-         Er6iFhm706RY1aM1bmPBHT0VRSwt23gRAfrRz94dN2Q8RuCt4B8233ZUe/hEzf3lLkbe
-         4ZmS/zQ1Id6ckZ6rhGVlrDlpS+GE7O2uXwacSyNorAh2fZ2jfgSqSHDGudqdBGMCDzDr
-         ycjYulETBuTl9v/eaAXijr6aIl3F4Wwmd4WOuSqEFr5A9H4jHyEi0ceP7PZroqFPD81X
-         rCrg==
-X-Gm-Message-State: AOAM531W8UlDj91V6JfaaXK6dmARWtrIQ7man5/7n0fW0wE1lUy5Gvrj
-        WiFq7g2k28onSICK+eRqiTo1NDmy5OfDHQ==
-X-Google-Smtp-Source: ABdhPJzxtZlp1kEw8K9aNJvxGPN2K1mx0SKE8o8iaolaSDtaINwMztEVAHUiLcBZbVwCmCnCJqmBGQ==
-X-Received: by 2002:a7b:cde8:: with SMTP id p8mr4695246wmj.160.1633098013189;
-        Fri, 01 Oct 2021 07:20:13 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id d129sm8300815wmd.23.2021.10.01.07.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Oct 2021 07:20:12 -0700 (PDT)
-Date:   Fri, 1 Oct 2021 15:20:10 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] backlight: hx8357: Add SPI device ID table
-Message-ID: <20211001142010.weg4w3doowdsj3ch@maple.lan>
-References: <20210922151014.49719-1-broonie@kernel.org>
- <20210927094200.a7d73sl2k4x5xjch@maple.lan>
- <20210927114727.GB4199@sirena.org.uk>
- <20210927132417.lixg3ojhnwlleht3@maple.lan>
- <20210927133055.GD4199@sirena.org.uk>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=LmOqDwxqDDyQv8S5r8mgiOrkAdVuYjTHRPeL3SEcVCmf7iltEE+9E/WZ/p4a/Rn6OK
+         r3NIfiwPWf7KMH2N8E7aj9oaEc65LBtP0zvNSXYapgvfoiGp/gn4pQr6YnnJ321thhXg
+         UPVYssUs2StzWAD4Fo7masaaFkiOnbLL5nVv/dCZJIbtpy0aOis4w8Sq2+zDrQJpYgJ2
+         BgAockzdWQXrw276F+kR1NCbmuusK8c+G5aTErF1zxB/C4qJBdeiCmLoNqfxrhcADHs1
+         C+A9TlKq/pvb05UIgyvRzQeVCHUz2Vc2jXMdDry12eLQagUSqyM6oyQG9mzJutcKherx
+         5Ckw==
+X-Gm-Message-State: AOAM531n/GcSWL+Qoyf2OX/kqSmiAkrV6zyLjg67Vu5E6w2n/478Pi66
+        /U4B72F0Qpia4whCxpJUMQqm5jkVFMT4Yf+6K6E=
+X-Google-Smtp-Source: ABdhPJz2q09A+517W2EVe9dbDivdnk3AEH6BZaUlyYLwJiT4IN/1ySl0KWhD1PmrDJ75/9gz6SNXe4y+mLeDTP26TSo=
+X-Received: by 2002:a05:6638:104:: with SMTP id x4mr2547380jao.145.1633176221400;
+ Sat, 02 Oct 2021 05:03:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210927133055.GD4199@sirena.org.uk>
+Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:03:41 -0700 (PDT)
+Reply-To: unitednnation0@gmail.com
+From:   "U.n" <wadebaye33@gmail.com>
+Date:   Sat, 2 Oct 2021 00:03:41 -1200
+Message-ID: <CACE0T5XLJ2ZM5W28B0Dyv4Rc8vqA8pN78J4Aso6XvTW_kxoNmQ@mail.gmail.com>
+Subject: Attention
+To:     unitednnation0@gmail.com
+Cc:     pberger@brimson.com, alborchers@steinerpoint.com,
+        xavyer@ix.netcom.com, support@connecttech.com,
+        steve.glendinning@shawell.net, luca.risolia@studio.unibo.it,
+        stern@rowland.harvard.edu, oneukum@suse.de,
+        linux-uvc-devel@lists.sourceforge.net,
+        laurent.pinchart@ideasonboard.com, jussi.kivilinna@mbnet.fi,
+        sarah.a.sharp@linux.intel.com, royale@zerezo.com,
+        jdike@addtoit.com, richard@nod.at,
+        user-mode-linux-devel@lists.sourceforge.net,
+        user-mode-linux-user@lists.sourceforge.net, hjk@hansjkoch.de,
+        kzak@redhat.com, util-linux@vger.kernel.org, spock@gentoo.org,
+        hirofumi@mail.parknet.co.jp, alex.williamson@redhat.com,
+        pawel@osciak.com, m.szyprowski@samsung.com,
+        kyungmin.park@samsung.com, amit.shah@redhat.com,
+        rusty@rustcorp.com.au, mst@redhat.com, kvm@vger.kernel.org,
+        rl@hellgate.ch, brucechang@via.com.tw, HaraldWelte@viatech.com,
+        FlorianSchandinat@gmx.de, linux-fbdev@vger.kernel.org,
+        romieu@fr.zoreil.com, kaber@trash.net, florian@openwrt.org,
+        openwrt-devel@lists.openwrt.org, martyn.welch@ge.com,
+        manohar.vanga@gmail.com, gregkh@linuxfoundation.org,
+        devel@driverdev.osuosl.org, sbhatewara@vmware.com,
+        arvindkumar@vmware.com, pv-drivers@vmware.com, lrg@ti.com,
+        juergh@gmail.com, vt8231@hiddenengine.co.uk,
+        tony.olech@elandigitalsystems.com, linux-mmc@vger.kernel.org,
+        linux-usb@vger.kernel.org, zbr@ioremap.net, m.hulsman@tudelft.nl,
+        r.marek@assembler.cz, khali@linux-fr.org,
+        lm-sensors@lm-sensors.org, pierre@ossman.eu, wim@iguana.be,
+        linux-watchdog@vger.kernel.org, zaga@fly.cc.fer.hr,
+        linux-scsi@vger.kernel.org, dh.herrmann@googlemail.com,
+        david@hardeman.nu, inaky.perez-gonzalez@intel.com,
+        linux-wimax@intel.com, wimax@linuxwimax.org, mitr@volny.cz,
+        acme@ghostprotocols.net, lrg@slimlogic.co.uk,
+        linux-input@vger.kernel.org, broonie@opensource.wolfsonmicro.com,
+        patches@opensource.wolfsonmicro.com, tj@kernel.org,
+        andrew.hendry@gmail.com, linux-x25@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
+        x86@kernel.org, mjg@redhat.com,
+        platform-driver-x86@vger.kernel.org, tony.luck@intel.com,
+        bp@alien8.de, linux-edac@vger.kernel.org, mchehab@redhat.com,
+        jeremy@goop.org, virtualization@lists.linux-foundation.org,
+        stefano.stabellini@eu.citrix.com, ian.campbell@citrix.com,
+        netdev@vger.kernel.org, konrad.wilk@oracle.com,
+        xen-devel@lists.xensource.com, bpm@sgi.com, elder@kernel.org,
+        xfs@oss.sgi.com, anirudh@xilinx.com, John.Linn@xilinx.com,
+        grant.likely@secretlab.ca, jacmet@sunsite.dk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 02:30:56PM +0100, Mark Brown wrote:
-> On Mon, Sep 27, 2021 at 02:24:17PM +0100, Daniel Thompson wrote:
-> 
-> > In that case what is the point of including unconsumed driver data? Most
-> > DT centric drivers that included this for modalias reasons leave it
-> > NULL.
-> 
-> It's mainly there because it's generated fairly mechanically from the OF
-> ID table - there's no great reason for it to be there while all
-> instantiation is done via DT.
-
-Ok. If there's no plan to change the driver to pick it up from the table then
-let's remove the redundant values. They just make it look like somebody forgot
-something in the probe method (instead of it being a deliberate choice).
+--=20
 
 
-Daniel.
+Attention Sir/Madam
+This is the United Nation (UN). We the United Nations (UN) Globally
+has approved (US$2.500,000)( two Million Five hundred thousand
+dollars) compensation as part of our responsibilities for humanitarian
+Aid for fighting against CoronaVirus and you are among the lucky ones.
+
+
+This compensation is for the most affected countries, communities and
+families across the global. Your funds were deposited with Bank in USA
+to transfer your funds to you via Internet Banking. You have to send
+your full details as state below:with this email Address
+  ( unitednnation0@gmail.com )
+Your full names:
+Address:
+Telephone:
+Occupation:
+
+
+
+Yours Sincerely
+Mr. Ant=C3=B3nio Guterres
+United Nations (UN).
