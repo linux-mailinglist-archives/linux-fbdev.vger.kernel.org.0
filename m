@@ -2,128 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD1841FB6D
-	for <lists+linux-fbdev@lfdr.de>; Sat,  2 Oct 2021 14:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB524217A2
+	for <lists+linux-fbdev@lfdr.de>; Mon,  4 Oct 2021 21:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232960AbhJBMF2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 2 Oct 2021 08:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbhJBMF1 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 2 Oct 2021 08:05:27 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41C3C061570;
-        Sat,  2 Oct 2021 05:03:41 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id z184so1532206iof.5;
-        Sat, 02 Oct 2021 05:03:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=YxWIlaBSYFvjD6wxI3Im7HD0DUa8SKawF0d7t45AEzKjL6m83eOsT6rgZdQRGCng74
-         6RLcJMZhzHbNym1o2udNgSV2epSTH0qAv/gDWDsxACfpBL7vOUGDwWmGmUaO2SE5P8uY
-         T63X4axLx9vlrJbw970R//6K5CXkIsOYNNanoWJo6B81ZE00DEyRoVjZrAUA3RQ+9ju3
-         SZYoVWN+Ed+cukZyyntSGlKOmbEpXAJVn5nVjU9PttbC0fy1k1kkmOWz1VvVx3VvX7FT
-         7VoKZi/ug9VIcJXMy54+WPXzQ6H5V7BFKbJ6aHn+8SZElmbcl8wcN4j53q3jHLdvow5u
-         jyoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=LmOqDwxqDDyQv8S5r8mgiOrkAdVuYjTHRPeL3SEcVCmf7iltEE+9E/WZ/p4a/Rn6OK
-         r3NIfiwPWf7KMH2N8E7aj9oaEc65LBtP0zvNSXYapgvfoiGp/gn4pQr6YnnJ321thhXg
-         UPVYssUs2StzWAD4Fo7masaaFkiOnbLL5nVv/dCZJIbtpy0aOis4w8Sq2+zDrQJpYgJ2
-         BgAockzdWQXrw276F+kR1NCbmuusK8c+G5aTErF1zxB/C4qJBdeiCmLoNqfxrhcADHs1
-         C+A9TlKq/pvb05UIgyvRzQeVCHUz2Vc2jXMdDry12eLQagUSqyM6oyQG9mzJutcKherx
-         5Ckw==
-X-Gm-Message-State: AOAM531n/GcSWL+Qoyf2OX/kqSmiAkrV6zyLjg67Vu5E6w2n/478Pi66
-        /U4B72F0Qpia4whCxpJUMQqm5jkVFMT4Yf+6K6E=
-X-Google-Smtp-Source: ABdhPJz2q09A+517W2EVe9dbDivdnk3AEH6BZaUlyYLwJiT4IN/1ySl0KWhD1PmrDJ75/9gz6SNXe4y+mLeDTP26TSo=
-X-Received: by 2002:a05:6638:104:: with SMTP id x4mr2547380jao.145.1633176221400;
- Sat, 02 Oct 2021 05:03:41 -0700 (PDT)
+        id S238921AbhJDTfw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 4 Oct 2021 15:35:52 -0400
+Received: from relay03.th.seeweb.it ([5.144.164.164]:35695 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238633AbhJDTfu (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 4 Oct 2021 15:35:50 -0400
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 126E51F673;
+        Mon,  4 Oct 2021 21:27:43 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Courtney Cavin <courtney.cavin@sonymobile.com>,
+        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/10] backlight: qcom-wled: fix and solidify handling of enabled-strings
+Date:   Mon,  4 Oct 2021 21:27:31 +0200
+Message-Id: <20211004192741.621870-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:03:41 -0700 (PDT)
-Reply-To: unitednnation0@gmail.com
-From:   "U.n" <wadebaye33@gmail.com>
-Date:   Sat, 2 Oct 2021 00:03:41 -1200
-Message-ID: <CACE0T5XLJ2ZM5W28B0Dyv4Rc8vqA8pN78J4Aso6XvTW_kxoNmQ@mail.gmail.com>
-Subject: Attention
-To:     unitednnation0@gmail.com
-Cc:     pberger@brimson.com, alborchers@steinerpoint.com,
-        xavyer@ix.netcom.com, support@connecttech.com,
-        steve.glendinning@shawell.net, luca.risolia@studio.unibo.it,
-        stern@rowland.harvard.edu, oneukum@suse.de,
-        linux-uvc-devel@lists.sourceforge.net,
-        laurent.pinchart@ideasonboard.com, jussi.kivilinna@mbnet.fi,
-        sarah.a.sharp@linux.intel.com, royale@zerezo.com,
-        jdike@addtoit.com, richard@nod.at,
-        user-mode-linux-devel@lists.sourceforge.net,
-        user-mode-linux-user@lists.sourceforge.net, hjk@hansjkoch.de,
-        kzak@redhat.com, util-linux@vger.kernel.org, spock@gentoo.org,
-        hirofumi@mail.parknet.co.jp, alex.williamson@redhat.com,
-        pawel@osciak.com, m.szyprowski@samsung.com,
-        kyungmin.park@samsung.com, amit.shah@redhat.com,
-        rusty@rustcorp.com.au, mst@redhat.com, kvm@vger.kernel.org,
-        rl@hellgate.ch, brucechang@via.com.tw, HaraldWelte@viatech.com,
-        FlorianSchandinat@gmx.de, linux-fbdev@vger.kernel.org,
-        romieu@fr.zoreil.com, kaber@trash.net, florian@openwrt.org,
-        openwrt-devel@lists.openwrt.org, martyn.welch@ge.com,
-        manohar.vanga@gmail.com, gregkh@linuxfoundation.org,
-        devel@driverdev.osuosl.org, sbhatewara@vmware.com,
-        arvindkumar@vmware.com, pv-drivers@vmware.com, lrg@ti.com,
-        juergh@gmail.com, vt8231@hiddenengine.co.uk,
-        tony.olech@elandigitalsystems.com, linux-mmc@vger.kernel.org,
-        linux-usb@vger.kernel.org, zbr@ioremap.net, m.hulsman@tudelft.nl,
-        r.marek@assembler.cz, khali@linux-fr.org,
-        lm-sensors@lm-sensors.org, pierre@ossman.eu, wim@iguana.be,
-        linux-watchdog@vger.kernel.org, zaga@fly.cc.fer.hr,
-        linux-scsi@vger.kernel.org, dh.herrmann@googlemail.com,
-        david@hardeman.nu, inaky.perez-gonzalez@intel.com,
-        linux-wimax@intel.com, wimax@linuxwimax.org, mitr@volny.cz,
-        acme@ghostprotocols.net, lrg@slimlogic.co.uk,
-        linux-input@vger.kernel.org, broonie@opensource.wolfsonmicro.com,
-        patches@opensource.wolfsonmicro.com, tj@kernel.org,
-        andrew.hendry@gmail.com, linux-x25@vger.kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, hpa@zytor.com,
-        x86@kernel.org, mjg@redhat.com,
-        platform-driver-x86@vger.kernel.org, tony.luck@intel.com,
-        bp@alien8.de, linux-edac@vger.kernel.org, mchehab@redhat.com,
-        jeremy@goop.org, virtualization@lists.linux-foundation.org,
-        stefano.stabellini@eu.citrix.com, ian.campbell@citrix.com,
-        netdev@vger.kernel.org, konrad.wilk@oracle.com,
-        xen-devel@lists.xensource.com, bpm@sgi.com, elder@kernel.org,
-        xfs@oss.sgi.com, anirudh@xilinx.com, John.Linn@xilinx.com,
-        grant.likely@secretlab.ca, jacmet@sunsite.dk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
+This patchset fixes WLED's handling of enabled-strings: besides some
+cleanup it is now actually possible to specify a non-contiguous array of
+enabled strings (not necessarily starting at zero) and the values from
+DT are now validated to prevent possible unexpected out-of-bounds
+register and array element accesses.
+Off-by-one mistakes in the maximum number of strings, also causing
+out-of-bounds access, have been addressed as well.
 
+Marijn Suijten (10):
+  backlight: qcom-wled: Pass number of elements to read to
+    read_u32_array
+  backlight: qcom-wled: Use cpu_to_le16 macro to perform conversion
+  backlight: qcom-wled: Override num-strings when enabled-strings is set
+  backlight: qcom-wled: Validate enabled string indices in DT
+  backlight: qcom-wled: Fix off-by-one maximum with default num_strings
+  backlight: qcom-wled: Remove unnecessary 4th default string in wled3
+  backlight: qcom-wled: Provide enabled_strings default for wled 4 and 5
+  backlight: qcom-wled: Remove unnecessary double whitespace
+  backlight: qcom-wled: Consistently use enabled-strings in
+    set_brightness
+  backlight: qcom-wled: Consider enabled_strings in autodetection
 
-Attention Sir/Madam
-This is the United Nation (UN). We the United Nations (UN) Globally
-has approved (US$2.500,000)( two Million Five hundred thousand
-dollars) compensation as part of our responsibilities for humanitarian
-Aid for fighting against CoronaVirus and you are among the lucky ones.
+ drivers/video/backlight/qcom-wled.c | 88 ++++++++++++++++++-----------
+ 1 file changed, 55 insertions(+), 33 deletions(-)
 
+-- 
+2.33.0
 
-This compensation is for the most affected countries, communities and
-families across the global. Your funds were deposited with Bank in USA
-to transfer your funds to you via Internet Banking. You have to send
-your full details as state below:with this email Address
-  ( unitednnation0@gmail.com )
-Your full names:
-Address:
-Telephone:
-Occupation:
-
-
-
-Yours Sincerely
-Mr. Ant=C3=B3nio Guterres
-United Nations (UN).
