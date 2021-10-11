@@ -2,81 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFB22428B88
-	for <lists+linux-fbdev@lfdr.de>; Mon, 11 Oct 2021 12:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9401C428C9B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 11 Oct 2021 14:08:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236168AbhJKK6d (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 11 Oct 2021 06:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51564 "EHLO
+        id S236445AbhJKMJ5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 11 Oct 2021 08:09:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236084AbhJKK6V (ORCPT
+        with ESMTP id S236439AbhJKMJ4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:58:21 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE76C06161C
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id m22so54952130wrb.0
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
-         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
-         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
-         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
-         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
-         +E4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=5l99MjzhX4w8D58ATXbYuWW443Zlklciq7HhqGIS2L+kZMVEMkqxk+QPebMSEf9wY0
-         NOVIvEmCwIakUmIJSETt9PS7RgrGs/PcEpDL3YzCzIOxCaq9mt5ErjxsZthXCfxzNPuJ
-         91LVu1K0qQzZ0eSq2fLoxh4RGTqGtTlLc/lbb1eMepjEU3psqrVQXeOCbT85ZgxUMnt/
-         oyHz1ukRGbtmWO43Vmf7hDUl27FSIaGGaOJ3ga1v8obZULdun/L1r36bRyKCT3U8wUrU
-         cI4RvHPAcp5afQxAsKZEg/aMMMgjs8RvMniar2/a2h8RwGqGJrWzs03TuMu1m49SpEV7
-         EEuw==
-X-Gm-Message-State: AOAM533sAz1bvPz9Ya4M/WIkvIf83l2N294L1hU7DZlsQeGCJbqw0+my
-        UiH3shqmmfiQ/Fn68W4yZjrRArt+hewqqP5Bc+0WzQd61Bw5PQ==
-X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
-X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
- Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
+        Mon, 11 Oct 2021 08:09:56 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0CB0C06161C;
+        Mon, 11 Oct 2021 05:07:56 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4HScxh5lgHz4xbX;
+        Mon, 11 Oct 2021 23:07:52 +1100 (AEDT)
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linuxppc-dev@lists.ozlabs.org, Stan Johnson <userm57@yahoo.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Finn Thain <fthain@linux-m68k.org>,
+        dri-devel@lists.freedesktop.org
+In-Reply-To: <884a54f1e5cb774c1d9b4db780209bee5d4f6718.1631712563.git.christophe.leroy@csgroup.eu>
+References: <884a54f1e5cb774c1d9b4db780209bee5d4f6718.1631712563.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] video: fbdev: use memset_io() instead of memset()
+Message-Id: <163395400552.4094789.12015421663855128336.b4-ty@ellerman.id.au>
+Date:   Mon, 11 Oct 2021 23:06:45 +1100
 MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
- -0700 (PDT)
-Reply-To: ramcharan9910@outlook.com
-From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:55:59 -0700
-Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
-Subject: Thank You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Please I am writing to notify you again on my intention to list your
-name as a beneficiary to the total sum of GBP6.350 million (Six
-million, Three hundred and fifty thousand British Pounds Sterlings) in
-the intent of the deceased (name now withheld since this is my second
-letter to you).
+On Wed, 15 Sep 2021 15:34:35 +0200, Christophe Leroy wrote:
+> While investigating a lockup at startup on Powerbook 3400C, it was
+> identified that the fbdev driver generates alignment exception at
+> startup:
+> 
+> 	--- interrupt: 600 at memset+0x60/0xc0
+> 	NIP:  c0021414 LR: c03fc49c CTR: 00007fff
+> 	REGS: ca021c10 TRAP: 0600   Tainted: G        W          (5.14.2-pmac-00727-g12a41fa69492)
+> 	MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 44008442  XER: 20000100
+> 	DAR: cab80020 DSISR: 00017c07
+> 	GPR00: 00000007 ca021cd0 c14412e0 cab80000 00000000 00100000 cab8001c 00000004
+> 	GPR08: 00100000 00007fff 00000000 00000000 84008442 00000000 c0006fb4 00000000
+> 	GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00100000
+> 	GPR24: 00000000 81800000 00000320 c15fa400 c14d1878 00000000 c14d1800 c094e19c
+> 	NIP [c0021414] memset+0x60/0xc0
+> 	LR [c03fc49c] chipsfb_pci_init+0x160/0x580
+> 	--- interrupt: 600
+> 	[ca021cd0] [c03fc46c] chipsfb_pci_init+0x130/0x580 (unreliable)
+> 	[ca021d20] [c03a3a70] pci_device_probe+0xf8/0x1b8
+> 	[ca021d50] [c043d584] really_probe.part.0+0xac/0x388
+> 	[ca021d70] [c043d914] __driver_probe_device+0xb4/0x170
+> 	[ca021d90] [c043da18] driver_probe_device+0x48/0x144
+> 	[ca021dc0] [c043e318] __driver_attach+0x11c/0x1c4
+> 	[ca021de0] [c043ad30] bus_for_each_dev+0x88/0xf0
+> 	[ca021e10] [c043c724] bus_add_driver+0x190/0x22c
+> 	[ca021e40] [c043ee94] driver_register+0x9c/0x170
+> 	[ca021e60] [c0006c28] do_one_initcall+0x54/0x1ec
+> 	[ca021ed0] [c08246e4] kernel_init_freeable+0x1c0/0x270
+> 	[ca021f10] [c0006fdc] kernel_init+0x28/0x11c
+> 	[ca021f30] [c0017148] ret_from_kernel_thread+0x14/0x1c
+> 	Instruction dump:
+> 	7d4601a4 39490777 7d4701a4 39490888 7d4801a4 39490999 7d4901a4 39290aaa
+> 	7d2a01a4 4c00012c 4bfffe88 0fe00000 <4bfffe80> 9421fff0 38210010 48001970
+> 
+> [...]
 
-I contacted you because you bear the surname identity and therefore
-can present you as the beneficiary to inherit the account proceeds of
-the deceased since there is no written "WILL" or trace to the deceased
-family relatives. My aim is to present you to my Bank Authorities as
-the Next of Kin to our deceased client. I will guide you all through
-the Claim procedure by providing all relevant Information and guiding
-you in your decisions and response to the Bank Management. All the
-papers will be processed after your acceptance.
+Applied to powerpc/next.
 
-In your acceptance of this deal, I request that you kindly forward to
-me your letter of acceptance; your current telephone and fax numbers
-,age, occupational status and a forwarding address to enable me submit
-to the Bank Management the details as the Next of Kin to their
-deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
+[1/1] video: fbdev: use memset_io() instead of memset()
+      https://git.kernel.org/powerpc/c/f2719b26ae27282c145202ffd656d5ff1fe737cc
 
-Yours faithfully,
-Cr.David Ramcharan
+cheers
