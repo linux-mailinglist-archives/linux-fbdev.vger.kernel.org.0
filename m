@@ -2,136 +2,184 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A2642A88B
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Oct 2021 17:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF8F42A8B1
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Oct 2021 17:42:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237571AbhJLPmP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Oct 2021 11:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47634 "EHLO
+        id S237386AbhJLPoU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Oct 2021 11:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237587AbhJLPmJ (ORCPT
+        with ESMTP id S236864AbhJLPoU (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Oct 2021 11:42:09 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C7EC06176C
-        for <linux-fbdev@vger.kernel.org>; Tue, 12 Oct 2021 08:40:04 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maJsj-0008P8-SS; Tue, 12 Oct 2021 17:39:57 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maJse-0004je-Tx; Tue, 12 Oct 2021 17:39:52 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1maJse-0004Z6-Sr; Tue, 12 Oct 2021 17:39:52 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        Tue, 12 Oct 2021 11:44:20 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFBAC061570;
+        Tue, 12 Oct 2021 08:42:18 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id g10so1290807edj.1;
+        Tue, 12 Oct 2021 08:42:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=H5OJKGHhb12cbBhIkOEVY2gJnukL9FN05ea6u1g8Ems=;
+        b=fmki5fEnr2QZdmejR7IvjqoeZTDrquzPOwrj/9VAvbRiDtutM8RYqfV1GX4UtijXO9
+         l9wpy23RqdIBZaUu0t0n3tvlwJepe8XWy3SVQaqmVmSG74dQfQYwSR+crtCddWMDOSFq
+         0x7uESYTSsE+rxPiiXFBotTpGQjdVbd0PId06jgC0laHCp6g6cHsjrqt+U1tIlq7kU7J
+         n67SMC2KVmKwWbR81vmqAOHGvDuvHW17nGiTJXrtWgHPLNLIPP8r9RDj6aqDJonqWxJk
+         28A363OBLx8Om53I9N9gaHi38VVCL9840hbT3uwOUjIoaUXDdEWqgW+JIcUZEq6317cy
+         Be1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=H5OJKGHhb12cbBhIkOEVY2gJnukL9FN05ea6u1g8Ems=;
+        b=aaZrFQ0xoPM13PxwsPJc4p/4BOa/wtS0NN6m/54A+PUvlBNJQmSXwdOYE6cCaHq4jV
+         95Q47dUEPnLMr0DP9ufqqDwQGQztuukIQx0F6Yz6TFIViP0sfwcDcpgZUWfQSTp+XmOW
+         hW+AlDHSQkWQhsKfofO1W3iN+72zygrcOHj9KENxsLJnXoc2hlkKYmwXmkIaAHRs5sK5
+         X1Z4W/J3TbFsiVbNnHWk3/wdb3gCG/56TmYMf3EcWFeSjQUMml+l3r3qBEjBh6j/LtPd
+         qhb0XHTK7A75qvHMmYLrL/JJ7IPZukMlwYnqPbTmbiHqSYW/e/7aCJ6MJgyydTbA/xgq
+         eS6g==
+X-Gm-Message-State: AOAM532q/rcpnPf4nYcp7i0dy+saT69aIV8VncfEQ79iR3JeOfw248/z
+        B5UmlASoptjluvNWBpAkl1B+ktZ5XnrhWUyKyKM=
+X-Google-Smtp-Source: ABdhPJyq3IvnlDoPn+uU3tU76YH7XHRrXJj4IkaFmiXSrPtBQT/+M63VK9AeTvtzw+b4xXROKMZIihwfPxgt+5wvDxw=
+X-Received: by 2002:a17:906:eb86:: with SMTP id mh6mr34177816ejb.141.1634053336853;
+ Tue, 12 Oct 2021 08:42:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de> <20211012153945.2651412-20-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211012153945.2651412-20-u.kleine-koenig@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 12 Oct 2021 21:41:29 +0300
+Message-ID: <CAHp75VcUVRL0Cr7rGEngM=DTmsSr-kyg4uyRNhwZ_xisZDww4A@mail.gmail.com>
+Subject: Re: [PATCH v2 19/20] staging: fbtft: Make fbtft_remove_common()
+ return void
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Len Baker <len.baker@gmx.com>, Mark Brown <broonie@kernel.org>,
         Phil Reid <preid@electromag.com.au>,
-        dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
-        linux-fbdev@vger.kernel.org, linux-spi@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
         linux-staging@lists.linux.dev
-Subject: [PATCH v2 19/20] staging: fbtft: Make fbtft_remove_common() return void
-Date:   Tue, 12 Oct 2021 17:39:44 +0200
-Message-Id: <20211012153945.2651412-20-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
-References: <20211012153945.2651412-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=/RLR4bDyADQRwzANF6ER5sKrX+JFDYSh90Q0J5N84UY=; m=6FiNYI6au9uFB2IoKzr/cKU1LkGxlwoXSYCPM/+GX+Y=; p=wOY1n0CZ/7bAct64lOvb3N+O46QD12yDtQU8vjW2ZLM=; g=617a3f39318dbfdbd2bc6b4d809ee0c624c7a08a
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFlrDIACgkQwfwUeK3K7AlRlgf+KW+ zCwB5yRA4XahfU4N7wEcoQOaol/eZYbQB+BPqzOx3W7M/m2wfjvvQ4H2s3r9EqyqgIM+TdFj5pBGc 7DCoGIopGX9VUUf2piVRYIvFNXdr9FvJz7CZK6TfIcKQK4J6cOiRVQEba8JjlhRHw59NjDI6KlJTU jPeqHDZhY68JfSFoZjIQ6pmCNnhZ5CE6N3gqi1Ya3Gc5kyniecxUE3DLV8FDoNoOtab73ZAHG8Tn8 WPJEb6Hkvv1mbjbxu20jJu7ZWcse728icuFy6MoAq4T7D8JmOqL4YPg1uzpj2M2Jd1S5DjHnDIvCa V2qrI+mqEmgZM+9mAQmYbhCacNgrA6A==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-fbtft_remove_common() is only called with a non-NULL fb_info. (All
-callers are in remove callbacks and the matching probe callbacks set
-driver data accordingly.) So fbtft_remove_common() always returns zero.
-Make it return void instead which makes it easier to see in the callers
-that there is no error to handle.
+On Tue, Oct 12, 2021 at 6:40 PM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@pengutronix.de> wrote:
+>
+> fbtft_remove_common() is only called with a non-NULL fb_info. (All
+> callers are in remove callbacks and the matching probe callbacks set
+> driver data accordingly.) So fbtft_remove_common() always returns zero.
+> Make it return void instead which makes it easier to see in the callers
+> that there is no error to handle.
+>
+> Also the return value of platform and spi remove callbacks is ignored
+> anyway and not freeing resources in .remove() is a bad idea.
 
-Also the return value of platform and spi remove callbacks is ignored
-anyway and not freeing resources in .remove() is a bad idea.
+Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/staging/fbtft/fbtft-core.c | 8 +-------
- drivers/staging/fbtft/fbtft.h      | 8 +++++---
- 2 files changed, 6 insertions(+), 10 deletions(-)
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/staging/fbtft/fbtft-core.c | 8 +-------
+>  drivers/staging/fbtft/fbtft.h      | 8 +++++---
+>  2 files changed, 6 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/f=
+btft-core.c
+> index ed992ca605eb..9c9eab1182a6 100644
+> --- a/drivers/staging/fbtft/fbtft-core.c
+> +++ b/drivers/staging/fbtft/fbtft-core.c
+> @@ -1318,23 +1318,17 @@ EXPORT_SYMBOL(fbtft_probe_common);
+>   * @info: Framebuffer
+>   *
+>   * Unregisters and releases the framebuffer
+> - *
+> - * Return: 0 if successful, negative if error
+>   */
+> -int fbtft_remove_common(struct device *dev, struct fb_info *info)
+> +void fbtft_remove_common(struct device *dev, struct fb_info *info)
+>  {
+>         struct fbtft_par *par;
+>
+> -       if (!info)
+> -               return -EINVAL;
+>         par =3D info->par;
+>         if (par)
+>                 fbtft_par_dbg(DEBUG_DRIVER_INIT_FUNCTIONS, par,
+>                               "%s()\n", __func__);
+>         fbtft_unregister_framebuffer(info);
+>         fbtft_framebuffer_release(info);
+> -
+> -       return 0;
+>  }
+>  EXPORT_SYMBOL(fbtft_remove_common);
+>
+> diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.=
+h
+> index 76f8c090a837..6869f3603b0e 100644
+> --- a/drivers/staging/fbtft/fbtft.h
+> +++ b/drivers/staging/fbtft/fbtft.h
+> @@ -252,7 +252,7 @@ void fbtft_unregister_backlight(struct fbtft_par *par=
+);
+>  int fbtft_init_display(struct fbtft_par *par);
+>  int fbtft_probe_common(struct fbtft_display *display, struct spi_device =
+*sdev,
+>                        struct platform_device *pdev);
+> -int fbtft_remove_common(struct device *dev, struct fb_info *info);
+> +void fbtft_remove_common(struct device *dev, struct fb_info *info);
+>
+>  /* fbtft-io.c */
+>  int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len);
+> @@ -283,7 +283,8 @@ static int fbtft_driver_remove_spi(struct spi_device =
+*spi)                 \
+>  {                                                                       =
+   \
+>         struct fb_info *info =3D spi_get_drvdata(spi);                   =
+    \
+>                                                                          =
+  \
+> -       return fbtft_remove_common(&spi->dev, info);                     =
+  \
+> +       fbtft_remove_common(&spi->dev, info);                            =
+  \
+> +       return 0;                                                        =
+  \
+>  }                                                                       =
+   \
+>                                                                          =
+  \
+>  static int fbtft_driver_probe_pdev(struct platform_device *pdev)        =
+   \
+> @@ -295,7 +296,8 @@ static int fbtft_driver_remove_pdev(struct platform_d=
+evice *pdev)          \
+>  {                                                                       =
+   \
+>         struct fb_info *info =3D platform_get_drvdata(pdev);             =
+    \
+>                                                                          =
+  \
+> -       return fbtft_remove_common(&pdev->dev, info);                    =
+  \
+> +       fbtft_remove_common(&pdev->dev, info);                           =
+  \
+> +       return 0;                                                        =
+  \
+>  }                                                                       =
+   \
+>                                                                          =
+  \
+>  static const struct of_device_id dt_ids[] =3D {                         =
+     \
+> --
+> 2.30.2
+>
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index ed992ca605eb..9c9eab1182a6 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -1318,23 +1318,17 @@ EXPORT_SYMBOL(fbtft_probe_common);
-  * @info: Framebuffer
-  *
-  * Unregisters and releases the framebuffer
-- *
-- * Return: 0 if successful, negative if error
-  */
--int fbtft_remove_common(struct device *dev, struct fb_info *info)
-+void fbtft_remove_common(struct device *dev, struct fb_info *info)
- {
- 	struct fbtft_par *par;
- 
--	if (!info)
--		return -EINVAL;
- 	par = info->par;
- 	if (par)
- 		fbtft_par_dbg(DEBUG_DRIVER_INIT_FUNCTIONS, par,
- 			      "%s()\n", __func__);
- 	fbtft_unregister_framebuffer(info);
- 	fbtft_framebuffer_release(info);
--
--	return 0;
- }
- EXPORT_SYMBOL(fbtft_remove_common);
- 
-diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-index 76f8c090a837..6869f3603b0e 100644
---- a/drivers/staging/fbtft/fbtft.h
-+++ b/drivers/staging/fbtft/fbtft.h
-@@ -252,7 +252,7 @@ void fbtft_unregister_backlight(struct fbtft_par *par);
- int fbtft_init_display(struct fbtft_par *par);
- int fbtft_probe_common(struct fbtft_display *display, struct spi_device *sdev,
- 		       struct platform_device *pdev);
--int fbtft_remove_common(struct device *dev, struct fb_info *info);
-+void fbtft_remove_common(struct device *dev, struct fb_info *info);
- 
- /* fbtft-io.c */
- int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len);
-@@ -283,7 +283,8 @@ static int fbtft_driver_remove_spi(struct spi_device *spi)                 \
- {                                                                          \
- 	struct fb_info *info = spi_get_drvdata(spi);                       \
- 									   \
--	return fbtft_remove_common(&spi->dev, info);                       \
-+	fbtft_remove_common(&spi->dev, info);                              \
-+	return 0;                                                          \
- }                                                                          \
- 									   \
- static int fbtft_driver_probe_pdev(struct platform_device *pdev)           \
-@@ -295,7 +296,8 @@ static int fbtft_driver_remove_pdev(struct platform_device *pdev)          \
- {                                                                          \
- 	struct fb_info *info = platform_get_drvdata(pdev);                 \
- 									   \
--	return fbtft_remove_common(&pdev->dev, info);                      \
-+	fbtft_remove_common(&pdev->dev, info);                             \
-+	return 0;                                                          \
- }                                                                          \
- 									   \
- static const struct of_device_id dt_ids[] = {                              \
--- 
-2.30.2
 
+--=20
+With Best Regards,
+Andy Shevchenko
