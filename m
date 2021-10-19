@@ -2,98 +2,111 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 962D2433281
-	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Oct 2021 11:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A49EB433578
+	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Oct 2021 14:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235125AbhJSJlG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 19 Oct 2021 05:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
+        id S230129AbhJSMLs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 19 Oct 2021 08:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235090AbhJSJlE (ORCPT
+        with ESMTP id S235356AbhJSMLr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 19 Oct 2021 05:41:04 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D842C06176D
-        for <linux-fbdev@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id n7so19640439iod.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
-         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
-         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
-         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
-         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
-         AvJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=Hb73Eq2nzO1lt+kOuNjT7TZs5A3lXgTa5FEmPqQ+OyS33Wq9yxL6EbCkn51q36dUJN
-         3k3IhAu9BSo34jZ7JNn9vSqtl821X1OMQmvqrD1VOqe9M/6ce0eaoM3AgakAAtV/RFKc
-         5G+6NfZARt4gQes4R2HDYtmi0HungvwRcupgGHGOcWA/Mx2Pxg1A8jHFBuUIgECk1+0G
-         aL2L5XYzTIf9iCOEwHqbw/N5zpcEUfDPn5w8UeOqAd/iMW1sOgit6kEBpkleCFdv8NZ+
-         ipsqzf+m1zNit0pO1zDcZztVPkvYq2Vl/+ZMIRGxM8ab5xV9GGmzDsHjbFwQRFsGYBxk
-         HgVg==
-X-Gm-Message-State: AOAM5305Av44P47x1dVnvS3XJ8WP62lExNIMUeyUZpo/8EM76PyYHZAu
-        58d+KyeqWKvTP2q60CxtUjUBtHG4ft6hffd0GSk=
-X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
-X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
- Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+        Tue, 19 Oct 2021 08:11:47 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0105AC06161C
+        for <linux-fbdev@vger.kernel.org>; Tue, 19 Oct 2021 05:09:35 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mcnvw-0007lu-PW; Tue, 19 Oct 2021 14:09:32 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mcnvv-0002tE-9K; Tue, 19 Oct 2021 14:09:31 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mcnvv-0005Ih-8N; Tue, 19 Oct 2021 14:09:31 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     linux-fbdev@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH] video: backlight: ili9320: Make ili9320_remove() return void
+Date:   Tue, 19 Oct 2021 14:09:27 +0200
+Message-Id: <20211019120927.3822792-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
- -0700 (PDT)
-Reply-To: megaritalouisdrayfu199@yahoo.com
-From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
-Date:   Mon, 18 Oct 2021 21:38:50 -1200
-Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
-Subject: Charitable funds to help the less privilege!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=RZYESF66hZfDyWU+b5WASFcMA9DmtfHkhRF6XoE8Ojw=; m=WhH+Bx1/1uVSZ44lHZDVbyJMFOU/mieXkcDGUQhQnns=; p=ykZu7sGpRLez8bbIDcs78swRkDoY3LVlT+edbNOTLqk=; g=ba7faedb192066ac6a8eb382323501df27e7b664
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFutXQACgkQwfwUeK3K7AmoJQgAlhL HLb1VdkVnmqgoodI4R83bacFEbj0EFLMJaUqYBSx46p9c+uwJdioF4GfSyy6uXPZmhBWlc4x4oT6x +F8Prfeu8FMDN9HJctnb7OoQiOY2oUGBJp9r1uVpWHbFeKJFz9lpPPy73YZV7znGMAajD2EIqRmsh 05CvRapwuVzpjACzrQgmxI7WNF6/qyWJ9mmEFR9rFrv4u0elBhvsZfRcm5d2mlYTq9bIpj3JGTPng pUHtFhCP9VxsKuPeni6JXxbZr/vG4uNz73lXIzJKMDW2CSt2wNYlwDjIg3GnoVNDN8iaYEadby7nm EUESjEFRCt3AO3EYF8a2OHBRbLm9rHA==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Hello,
+Up to now ili9320_remove() returns zero unconditionally. Make it return
+void instead which makes it easier to see in the callers that there is
+no error to handle.
 
-I am sorry to encroach into your privacy in this manner, my name
-Margarita Louis-Dreyfus , I find it pleasurable to offer you my
-partnership in business, i only pray at this time that your email
-address is still valid. I want to solicit your attention to receive
-money on my behalf for humanitarian project to help the less
-priviledge.
+Also the return value of spi remove callbacks is ignored anyway.
 
-The purpose of my contacting you is because my status would not permit
-me to do this alone. Given my current state of health, I have decided
-to donate Ninety -Eight Million United State Dollars to establish a
-foundation with your help to reach out to the less privilege, orphans,
-sick and homeless people in your country who will receive their
-blessings as i promised my God before i leave this earth.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/video/backlight/ili9320.c   | 3 +--
+ drivers/video/backlight/ili9320.h   | 2 +-
+ drivers/video/backlight/vgg2432a4.c | 4 +++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-I got your contact through my personal search, you were revealed as
-being quite astute in private entrepreneurship, and i have no doubt
-that you can handle this huge financial transaction. Please contact my
-executor for more information:
+diff --git a/drivers/video/backlight/ili9320.c b/drivers/video/backlight/ili9320.c
+index 168ac79523d7..2acd2708f8ca 100644
+--- a/drivers/video/backlight/ili9320.c
++++ b/drivers/video/backlight/ili9320.c
+@@ -251,10 +251,9 @@ int ili9320_probe_spi(struct spi_device *spi,
+ }
+ EXPORT_SYMBOL_GPL(ili9320_probe_spi);
+ 
+-int ili9320_remove(struct ili9320 *ili)
++void ili9320_remove(struct ili9320 *ili)
+ {
+ 	ili9320_power(ili, FB_BLANK_POWERDOWN);
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ili9320_remove);
+ 
+diff --git a/drivers/video/backlight/ili9320.h b/drivers/video/backlight/ili9320.h
+index fc59e389d59a..8213cc6e9184 100644
+--- a/drivers/video/backlight/ili9320.h
++++ b/drivers/video/backlight/ili9320.h
+@@ -68,7 +68,7 @@ extern int ili9320_write_regs(struct ili9320 *ili,
+ extern int ili9320_probe_spi(struct spi_device *spi,
+ 			     struct ili9320_client *cli);
+ 
+-extern int ili9320_remove(struct ili9320 *lcd);
++extern void ili9320_remove(struct ili9320 *lcd);
+ extern void ili9320_shutdown(struct ili9320 *lcd);
+ 
+ /* PM */
+diff --git a/drivers/video/backlight/vgg2432a4.c b/drivers/video/backlight/vgg2432a4.c
+index 9bf277ca4ae9..3567b45f9ba9 100644
+--- a/drivers/video/backlight/vgg2432a4.c
++++ b/drivers/video/backlight/vgg2432a4.c
+@@ -235,7 +235,9 @@ static int vgg2432a4_probe(struct spi_device *spi)
+ 
+ static int vgg2432a4_remove(struct spi_device *spi)
+ {
+-	return ili9320_remove(spi_get_drvdata(spi));
++	ili9320_remove(spi_get_drvdata(spi));
++
++	return 0;
+ }
+ 
+ static void vgg2432a4_shutdown(struct spi_device *spi)
+-- 
+2.30.2
 
-Mr. Ford Spencer(Attorney at Law).
-For: Mrs. Margarita Louis-Dreyfus
-LEGAL DEPARTMENT LAWSON & ASSOCIATES
-(JUSTICE, FAIRPLAY & EQUITY)
-Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
-Office: +1-970-414-1400
-+1-702-714-3422
-Mobile: +1 916 269 2733
-Fax: +1-970-414-1433
-=C2=AE Property of Steven C Spence PA.
-
-Your earliest response to this letter will be appreciated.
-
-Kind Regards,
-
-Mrs. Margarita Louis-Dreyfus.
