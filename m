@@ -2,90 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE9E4376E0
-	for <lists+linux-fbdev@lfdr.de>; Fri, 22 Oct 2021 14:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019B34383E1
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 Oct 2021 15:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232070AbhJVMYO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 22 Oct 2021 08:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
+        id S230476AbhJWNvD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 23 Oct 2021 09:51:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbhJVMYK (ORCPT
+        with ESMTP id S230452AbhJWNvD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 22 Oct 2021 08:24:10 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A48C06122C
-        for <linux-fbdev@vger.kernel.org>; Fri, 22 Oct 2021 05:21:52 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id z20so1542832edc.13
-        for <linux-fbdev@vger.kernel.org>; Fri, 22 Oct 2021 05:21:52 -0700 (PDT)
+        Sat, 23 Oct 2021 09:51:03 -0400
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A00C061766
+        for <linux-fbdev@vger.kernel.org>; Sat, 23 Oct 2021 06:48:44 -0700 (PDT)
+Received: by mail-ua1-x92a.google.com with SMTP id o12so8956427uap.0
+        for <linux-fbdev@vger.kernel.org>; Sat, 23 Oct 2021 06:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
-         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
-         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
-         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
-         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
-         4QUQ==
+        d=usp.br; s=usp-google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding;
+        bh=iX6cmvyeDuJOkrf+xUpE4t3ouX8J2Wth4BJQBEZvdC0=;
+        b=PJeoeHi87FNVFRvOrlMgjLSB19zOHxvaqVaQoUrbBe4NYsqIzVz13D19jqP7YYPmwm
+         bfOeMMKrEDvAySkNkHtCod8Valdbum9uQXv6b4ehR91WNPb5RyQHcNY21EqgWoAeml9C
+         1bFNYL6FXCBfcemkgqOhOGE3NdntABHsUYg3NTdi36gfFBk/ORKUVxzJnwhDISNtuEcg
+         sK0Y0LIgTc+8oLv4H5GSpEnV67xHMeZV3OCAKSYuxVsQ2MO5QxQozKNP77ObQ8gJ1wAO
+         ZO2LNyw8+Bex+C7bDFkZ4CqHqYmpMNq5XBOD0utmjYZigVejjziwpqx5ocw9i4Fzx+0X
+         gKEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=Ssbji/2hWecf1yuZF/TZyVFi3WYuhkGmNH9okMI8OzeErRfgfCRD6YNJikmsTY4ZNO
-         eQSOv+4KupPIWF1pFSWQn9Sq+U6AOaILGsVo+z4FZn/JXJYYlVSxPGbvQFqX5tk11kqY
-         0kguop+YCrKmmmqds4TYYf7SVAQyD+tBOd/YToEzKVnoL1PLThixWwcJQhwIR6iCF3LE
-         mO7cah1CcbiVzNXyek4srvLc7bct8WZ80NcZRobZAznjkoZVFSuhollT4weV1ywoxIMA
-         b2mi93BWcQHHxAVzSaYT8Um1Ovx1g4sWf0OBRan7oCZUSZjmjslq/IQWt45YOIjydIvj
-         my6A==
-X-Gm-Message-State: AOAM531ecZ/NkjLJ+DefXKbYZ3uSwQyGOmVfhl8RwHf6mpCuhpjflKJ3
-        kR46QCg7lu/iDmsr3C4y1E2S79fNSZCP+8uxUeI=
-X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
-X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
- Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding;
+        bh=iX6cmvyeDuJOkrf+xUpE4t3ouX8J2Wth4BJQBEZvdC0=;
+        b=Q0Vt5HWbM/Qwdguj6Kq2i0/6iMNl3evuhk75ss5/4CoUnDppkhb+kk4q9PRaoO+4aH
+         nIigqHR3pw6XTgNkFbR/ToM1d3NUxLs/KUh/Z2gT9QzgBlaTxEbC4fBobaHgsoaWupZm
+         a2ziuT1SoPDrcefJd7xT+Q6z9lT6VnbF9GO2KreY2ATAtfdWRMLlT3r9CFqdO5JsCc7e
+         g7aIKtx3hnG7i4IVoGoE3zzAxrCYWLBCAFMbUkkUeX99qivJY0g6kuzRZdpSs1YZ2YIA
+         bT4ccq5IyghiXbejeZQNHojkKD/7TKqLN1doaTCxRdjOa2BFp8b9anPqFs9W7++odAIU
+         fiuQ==
+X-Gm-Message-State: AOAM5318KSlOTEJq9Ipa3r2C6QQVfQek8msZBYixNpTEBu51u479SgrZ
+        1/CLh+gVfpM+t9YrVjageFYB5Q==
+X-Google-Smtp-Source: ABdhPJwxdDl4z01c9F66VI9AyRP7pXIo6Ntzy4KZdke4zr3ikYJXWWXs5oUwbePIExZg4WIuUSkp0A==
+X-Received: by 2002:a67:ea0b:: with SMTP id g11mr6728954vso.2.1634996923166;
+        Sat, 23 Oct 2021 06:48:43 -0700 (PDT)
+Received: from fedora ([187.64.134.142])
+        by smtp.gmail.com with ESMTPSA id m184sm6687249vsc.6.2021.10.23.06.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Oct 2021 06:48:42 -0700 (PDT)
+Date:   Sat, 23 Oct 2021 10:48:38 -0300
+From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
+To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, thierry.reding@gmail.com
+Cc:     u.kleine-koenig@pengutronix.de, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: [PATCH] backlight: lp855x: Switch to atomic PWM API
+Message-ID: <YXQStu5yv4bwj2Tn@fedora>
 MIME-Version: 1.0
-Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
- -0700 (PDT)
-Reply-To: bahadur.rayanby@gmail.com
-From:   Ryan Bahadur <dr.philposman7@gmail.com>
-Date:   Fri, 22 Oct 2021 05:21:48 -0700
-Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
-Subject: CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Remove legacy PWM interface (pwm_config, pwm_enable, pwm_disable) and
+replace it for the atomic PWM API.
+
+Signed-off-by: Maíra Canal <maira.canal@usp.br>
+---
+ drivers/video/backlight/lp855x_bl.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
+index e94932c69f54..dd63141a0d26 100644
+--- a/drivers/video/backlight/lp855x_bl.c
++++ b/drivers/video/backlight/lp855x_bl.c
+@@ -236,6 +236,7 @@ static void lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
+ 	unsigned int period = lp->pdata->period_ns;
+ 	unsigned int duty = br * period / max_br;
+ 	struct pwm_device *pwm;
++	struct pwm_state state;
+ 
+ 	/* request pwm device with the consumer name */
+ 	if (!lp->pwm) {
+@@ -244,19 +245,19 @@ static void lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
+ 			return;
+ 
+ 		lp->pwm = pwm;
+-
+-		/*
+-		 * FIXME: pwm_apply_args() should be removed when switching to
+-		 * the atomic PWM API.
+-		 */
+-		pwm_apply_args(pwm);
+ 	}
+ 
+-	pwm_config(lp->pwm, duty, period);
++	pwm_init_state(pwm, &state);
++
++	state.duty_cycle = duty;
++	state.period = period;
++
+ 	if (duty)
+-		pwm_enable(lp->pwm);
++		state.enabled = true;
+ 	else
+-		pwm_disable(lp->pwm);
++		state.enabled = false;
++
++	pwm_apply_state(pwm, &state);
+ }
+ 
+ static int lp855x_bl_update_status(struct backlight_device *bl)
 -- 
-Greetings,
+2.31.1
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
-
-I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
-
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
-
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
-
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-bahadur.rayanby@gmail.com}
-
-Regards
-Mr.Ryan Bahadur
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
