@@ -2,181 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BDAC43C355
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Oct 2021 08:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC38843C6B0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Oct 2021 11:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236188AbhJ0G4b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 27 Oct 2021 02:56:31 -0400
-Received: from mail-ua1-f41.google.com ([209.85.222.41]:44851 "EHLO
-        mail-ua1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231776AbhJ0G4a (ORCPT
+        id S232425AbhJ0JqG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 27 Oct 2021 05:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34486 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241272AbhJ0Jpr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 27 Oct 2021 02:56:30 -0400
-Received: by mail-ua1-f41.google.com with SMTP id e5so2976752uam.11;
-        Tue, 26 Oct 2021 23:54:05 -0700 (PDT)
+        Wed, 27 Oct 2021 05:45:47 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD16C0613B9
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 Oct 2021 02:43:22 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id h14so1065382qtb.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 Oct 2021 02:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=VWxEs5WjHGJZV9rZ2I4DPQ44YOYFkrn8z8UBcYgDlP8=;
+        b=pcsJskDLayVRgo11VnvqEOxaSgCmTqbVGuRYMAN3FzvpALKW8blEDSCTVSNLflHE6o
+         1tzfuhRPbNhz42GU3eaWpf6xwe0kXJvf45m/RxwwJHIuho4lfF9zvjEY4Q/3gAB2hFgL
+         zaymbwqtUNew2SF+1291LuxGJgvqXo4cQNL2iAGlKXBJeiKLacFYMZm2V8tDAYfedGbJ
+         z+tXEyhKV9ix6gCV/0/w5K+j0w7hmdAsv4v+fOit+JZ2HwCaOjU8wH2UwatPNEjnUPCZ
+         RQa8o6fbzVJd9n/0bs6Q8PAob1JTSPTjzMGhXo4/WnsK6WO/DTCo/9YxvysHCQOA/JGV
+         c5xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uHeQsCzj+NuIoaUijS+BqVs1TYH9sOv+TDs8LySkQvc=;
-        b=m7vXgr+jgGuHrDKqzGF9AKOmvSaw+8jt1pSGe/+LpQDCbUK7SPdtku8gvHD4LtEUfK
-         RgpreFDTlVHmk3hrk9M6MkSMbVUOL0yMtmAV6DfW7Vl3B6vnjpfEtStwSgeWGM0yATTm
-         4MKMmrGIx3S4bGMJK+sPOklXzClM36w/gAlxjVA+bMiN/TzAmBzUOEJsDNqYXKE9aWli
-         jye8wuEZ8sXk/nSHBOEafpzNoUsV9H4XaszGnGW5sh1RQ6iMg5KAU+TxZ7NHFAKoTJog
-         z/hJDolUeOyyTDJg5OlGxjh3nGVhP5q/2A+4nr9eqSEqBUDuQwNcFLtO9+m6PZeCgJgn
-         z8bw==
-X-Gm-Message-State: AOAM53346ZIv/MXLwXh2no8bg54ndz/kqTfGUBmkeBFI4KR458Jn0mcB
-        E0++w6eAtOHl88lx9XR45dR4lWAZLTG1XA==
-X-Google-Smtp-Source: ABdhPJzTdk0nQVLJvERT3qsUiM5rO1tfFcej6c4uFrsdarZyP9KKaVl3zhqNPkBSoaVMRLKBLTHyhg==
-X-Received: by 2002:ab0:720f:: with SMTP id u15mr27966737uao.54.1635317644908;
-        Tue, 26 Oct 2021 23:54:04 -0700 (PDT)
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com. [209.85.222.45])
-        by smtp.gmail.com with ESMTPSA id a126sm1956027vsc.27.2021.10.26.23.54.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Oct 2021 23:54:04 -0700 (PDT)
-Received: by mail-ua1-f45.google.com with SMTP id v20so3000276uaj.9;
-        Tue, 26 Oct 2021 23:54:04 -0700 (PDT)
-X-Received: by 2002:ab0:2bd2:: with SMTP id s18mr28311148uar.78.1635317644217;
- Tue, 26 Oct 2021 23:54:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=VWxEs5WjHGJZV9rZ2I4DPQ44YOYFkrn8z8UBcYgDlP8=;
+        b=rCs3ux/QR9NnKRFEBNU4JubV1LK9aCJVJTcQOrfuDeb9LfqEI3V+A8yudgcsSBfQ/q
+         CAq9i3mYiBJb9KmJOyHwkySfrjqaYPpdimb2U/WoSoe3CU7+VZ7+0FVnTE0BmBkzP3bd
+         KtgORPSNlcTG1ZBOeiquFsplBJVYn7GdPhNX/d1wxZybuxcGbL7jUX5qtTdNxeULT/S/
+         3lMCw5RwpBokkeUyQkVk80TAc+9mLnoeMl8uJF9w2dbfi6MfiWnIl9GPjxrqNjw/gmBU
+         6Tm1E95aXl1BlRzrsj/tZdhrVk9AQBLiQs+tHcZ9zdS0b1fiSq4apjEWwDWJmJE8lFiX
+         VNeA==
+X-Gm-Message-State: AOAM532SsS2D8bWw3at3Sn67LGL508vS5rUunqU0vhcNl1anMlewaBso
+        gYWKwWpk0a6o5teV8O/5xx3W4/8IDmq1uMWqmpVuw+VRX3IyNQ==
+X-Google-Smtp-Source: ABdhPJyOK/uw1vdjXDNHiDmtOwucoegVX85mE4cv8lzz3xoe4JzUOsw0RIEOOrH5Uc9ZwKDngB0sqWwmtVUQUKv5k4I=
+X-Received: by 2002:ac8:5407:: with SMTP id b7mr30941205qtq.27.1635327801635;
+ Wed, 27 Oct 2021 02:43:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <1635188490-15082-1-git-send-email-george.kennedy@oracle.com>
- <YXcAbXJfg/jKCo5h@kroah.com> <0ddb1c19-64b0-4117-7a92-c3d2fcddfdcf@oracle.com>
- <CAMuHMdWcU7wy1dxa_MXuHoUTWebvq6ShP820Bn_v+8tx7-TEdg@mail.gmail.com>
- <c73402dd-ec3f-4df7-6a16-36fb276a50f4@oracle.com> <CAMuHMdVHt=9N274SG+B7W83JbVVnbz_U5Nkejs_PR2HqvZvJgQ@mail.gmail.com>
- <d2119d59-89e4-34aa-86df-38fee2a0c6ef@oracle.com> <CAMuHMdUZq00r7QYeAKGm36UKpGwH_uEGMvwHBzRi9_nxV-dRhg@mail.gmail.com>
- <4cf6a155-85b7-649b-066d-e56da87dc8fd@oracle.com>
-In-Reply-To: <4cf6a155-85b7-649b-066d-e56da87dc8fd@oracle.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 27 Oct 2021 08:53:53 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVJ=92S9Ds66cYZO+96THsOkz-jjYPWUgsJ6oRibEMoCA@mail.gmail.com>
-Message-ID: <CAMuHMdVJ=92S9Ds66cYZO+96THsOkz-jjYPWUgsJ6oRibEMoCA@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: cirrusfb: check pixclock to avoid divide by zero
-To:     George Kennedy <george.kennedy@oracle.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:6214:27e5:0:0:0:0 with HTTP; Wed, 27 Oct 2021 02:43:21
+ -0700 (PDT)
+Reply-To: jackpotcharityclaims@gmail.com
+From:   Charles W Jackson Jr <jannetrobert12@gmail.com>
+Date:   Wed, 27 Oct 2021 10:43:21 +0100
+Message-ID: <CAEpoZdfuwgt8aqB-T1EFQ_jCqw9BaZ+C49QhJ6p7f2wSZRbOPQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Gemeinn=C3=BCtzige_Anspr=C3=BCche?=
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi George,
-
-On Wed, Oct 27, 2021 at 3:13 AM George Kennedy
-<george.kennedy@oracle.com> wrote:
-> On 10/26/2021 1:12 PM, Geert Uytterhoeven wrote:
-> > On Tue, Oct 26, 2021 at 5:48 PM George Kennedy
-> > <george.kennedy@oracle.com> wrote:
-> >> On 10/26/2021 10:11 AM, Geert Uytterhoeven wrote:
-> >>> On Tue, Oct 26, 2021 at 3:38 PM George Kennedy
-> >>> <george.kennedy@oracle.com> wrote:
-> >>>> On 10/26/2021 4:30 AM, Geert Uytterhoeven wrote:
-> >>>>> On Mon, Oct 25, 2021 at 9:37 PM George Kennedy
-> >>>>> <george.kennedy@oracle.com> wrote:
-> >>>>>> On 10/25/2021 3:07 PM, Greg KH wrote:
-> >>>>>>> On Mon, Oct 25, 2021 at 02:01:30PM -0500, George Kennedy wrote:
-> >>>>>>>> Do a sanity check on pixclock value before using it as a divisor.
-> >>>>>>>>
-> >>>>>>>> Syzkaller reported a divide error in cirrusfb_check_pixclock.
-> >>>>>>>>
-> >>>>>>>> divide error: 0000 [#1] SMP KASAN PTI
-> >>>>>>>> CPU: 0 PID: 14938 Comm: cirrusfb_test Not tainted 5.15.0-rc6 #1
-> >>>>>>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2
-> >>>>>>>> RIP: 0010:cirrusfb_check_var+0x6f1/0x1260
-> >>>>>>>>
-> >>>>>>>> Call Trace:
-> >>>>>>>>      fb_set_var+0x398/0xf90
-> >>>>>>>>      do_fb_ioctl+0x4b8/0x6f0
-> >>>>>>>>      fb_ioctl+0xeb/0x130
-> >>>>>>>>      __x64_sys_ioctl+0x19d/0x220
-> >>>>>>>>      do_syscall_64+0x3a/0x80
-> >>>>>>>>      entry_SYSCALL_64_after_hwframe+0x44/0xae
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-> >>>>>>>> --- a/drivers/video/fbdev/cirrusfb.c
-> >>>>>>>> +++ b/drivers/video/fbdev/cirrusfb.c
-> >>>>>>>> @@ -477,6 +477,9 @@ static int cirrusfb_check_pixclock(const struct fb_var_screeninfo *var,
-> >>>>>>>>         struct cirrusfb_info *cinfo = info->par;
-> >>>>>>>>         unsigned maxclockidx = var->bits_per_pixel >> 3;
-> >>>>>>>>
-> >>>>>>>> +    if (!var->pixclock)
-> >>>>>>>> +            return -EINVAL;
-> >>>>> This is not correct: fbdev drivers should round up invalid values,
-> >>>>> and only return an error if rounding up cannot yield a valid value.
-> >>>> What default value would you recommend? Here are examples of some of the
-> >>>> possible cirrusfb pixclock values:
-> >>>> 40000: 25MHz
-> >>>> 20000: 50Mhz
-> >>>> 12500: 80Mhz
-> >>> You should pick the lowest supported value.
-> >> In bestclock() the frequency value ("freq") is not allowed to go below 8000.
-> >>
-> >>           if (freq < 8000)
-> >>                   freq = 8000;
-> >>
-> >> If pixclock is passed in as zero to cirrusfb_check_pixclock(), is it ok
-> >> to then set the value of pixclock to 125000, which will result in "freq"
-> >> being set to 8000 (or adjust the passed in pixclock value to make sure
-> >> "freq" does not get below 8000)?
-> > No, clock rate is the inverse of clock period.
-> > So the smallest clock period (fb_var_screeninfo.pixclock) corresponds
-> > to the largest clock rate (freq in bestclock()).
->
-> How about this?
->
-> This gets the frequency derived from pixclock to maxclock or rounds up
-> pixclock to get the frequency as close to maxclock as possible.
->
-> diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
-> index 93802ab..2e8e620 100644
-> --- a/drivers/video/fbdev/cirrusfb.c
-> +++ b/drivers/video/fbdev/cirrusfb.c
-> @@ -620,6 +620,18 @@ static int cirrusfb_check_var(struct
-> fb_var_screeninfo *var,
->                  return -EINVAL;
->          }
->
-> +       if (!var->pixclock) {
-> +               long maxclock;
-> +               unsigned maxclockidx = var->bits_per_pixel >> 3;
-> +
-> +               maxclock =
-> cirrusfb_board_info[cinfo->btype].maxclock[maxclockidx];
-> +
-> +               var->pixclock = KHZ2PICOS(maxclock);
-> +               while (PICOS2KHZ(var->pixclock) > maxclock) {
-> +                       var->pixclock++;
-> +               }
-> +       }
-> +
->          if (cirrusfb_check_pixclock(var, info))
->                  return -EINVAL;
->
-> The work can't be done in cirrusfb_check_pixclock() as var->pixclock is
-> read-only because "var" is "const struct fb_var_screeninfo *var".
-
-Perhaps the const should be dropped from the var parameter, so the
-rounding can be done in the function where it makes most sense,
-and where most of the above operations are already done?
-
-Then, you can simplify:
-
--        freq = PICOS2KHZ(var->pixclock);
-+        freq = PICOS2KHZ(var->pixclock ? : 1);
-
-and change the "if (freq > maxclock) return -EINVAL" to use maxclock
-instead.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--=20
+Ich bin Charles W Jackson Jr., der Gewinner der Powerball-Lotterie von
+344 Millionen Dollar. Ich spende 3,5 Millionen US-Dollar im Namen
+meiner Familie, um 10 Menschen und kleinen Unternehmen zu helfen.
+Kontaktieren Sie mich =C3=BCber
+E-Mail: jackpotcharityclaims@gmail.com f=C3=BCr weitere Details.
