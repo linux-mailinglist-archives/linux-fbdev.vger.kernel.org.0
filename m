@@ -2,97 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD30D43DCA1
-	for <lists+linux-fbdev@lfdr.de>; Thu, 28 Oct 2021 10:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD3B043DF51
+	for <lists+linux-fbdev@lfdr.de>; Thu, 28 Oct 2021 12:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbhJ1IHk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 28 Oct 2021 04:07:40 -0400
-Received: from mail-ua1-f51.google.com ([209.85.222.51]:40614 "EHLO
-        mail-ua1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJ1IHj (ORCPT
+        id S230180AbhJ1Kyo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 28 Oct 2021 06:54:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230162AbhJ1Kyj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 28 Oct 2021 04:07:39 -0400
-Received: by mail-ua1-f51.google.com with SMTP id e2so9924732uax.7;
-        Thu, 28 Oct 2021 01:05:12 -0700 (PDT)
+        Thu, 28 Oct 2021 06:54:39 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD74C06122D
+        for <linux-fbdev@vger.kernel.org>; Thu, 28 Oct 2021 03:52:12 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id 205so9888444ljf.9
+        for <linux-fbdev@vger.kernel.org>; Thu, 28 Oct 2021 03:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
+         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
+         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
+         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
+         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
+         gaRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8hX6YWh2Qu9VP/L6RLPs/omkiX7ZNKmtW4SWOeHX3y0=;
-        b=0D452tJFovFsb28l7v8CzT1Pao9gaPuuh8ggUyZSvjyNtzhi6qYGi3DWYDq6ag5Lh9
-         Ibwehkvvj+Wiie9e8TX474wlJAk29NT7gMLJTQvgzc5tzO6lDx3YsE5Y6Pn4gK7mrkY2
-         pngMokbYHJhR/p1hwDWOzXQvDAW+YAOD5EGnBRwHc84r8iGFrO8Z2U5BxeEVK/A7EjvL
-         G7KVzFONOH/kTbf+ZSAW+1Z05FVZJJ/EwSfm/9c0e9zeJS7FyoOYuiBvUbcmmlZTVW45
-         x9Y4kCcbo4RKzTlAvopz5t7p7DdNVm92Sy+z21i3Y8TNNOLmNggDLt1BPVK9qNHXkuQy
-         xQTQ==
-X-Gm-Message-State: AOAM532odL91nfi74V7Yrb+wKmu7EQ4G09Kt0fI+7w0nyUcrXRmQotPg
-        68AJqHtWFx7Jg6tgJlzvKkme6lMnjHIgng==
-X-Google-Smtp-Source: ABdhPJzYFmsfJReHY44qrah1tHIFTN2DVuIo0LlSaq/kJvzBBBL4aIlGSolsvPNWRT1xnCKBmUmWbA==
-X-Received: by 2002:a67:2c95:: with SMTP id s143mr2916623vss.0.1635408312403;
-        Thu, 28 Oct 2021 01:05:12 -0700 (PDT)
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
-        by smtp.gmail.com with ESMTPSA id y25sm343891vkb.42.2021.10.28.01.05.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 01:05:12 -0700 (PDT)
-Received: by mail-vk1-f178.google.com with SMTP id h133so2564703vke.10;
-        Thu, 28 Oct 2021 01:05:11 -0700 (PDT)
-X-Received: by 2002:a1f:1604:: with SMTP id 4mr2695337vkw.11.1635408311641;
- Thu, 28 Oct 2021 01:05:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=PbTOKtShtAPfN6Yf5sJckctzRVfPujwME/Ya7figoOu5sLPUGHAse/xAhg1KTgCPk2
+         CthRUuuetwAPEf3/ClWj2kTRN4cD3E8YRH/L0tTl/PCQA2K0K4a5mSN/xglzm+l2ePbm
+         McUMRJHCnsem9bB0+W1z2RtFQCbOiYvDC8K9l818kSDeBb84nBLxCZ3z4JdjxzSqnOp3
+         2p4OF94p3LApTu6euLSH406W6VpBblvNnEqpKquhCDAHngBMNcTlmTTABlMjUNL98P93
+         SpY/c/sRMn+3LN8YrOWEqvO88MuBpohKlcwYNjqB6RWeyrCX5h05DnrEJohnlONPAM5p
+         Aj0g==
+X-Gm-Message-State: AOAM530wzuKYybhLuuwVkAPEqwmGRmi/MArLJION/q9vWQWLb3vJ6vyF
+        qIbaVl3AGsWE/gm2r+T2OLDh6s9Wm21YmPQ9xOI=
+X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
+X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
+ Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <1635366613-22507-1-git-send-email-george.kennedy@oracle.com>
-In-Reply-To: <1635366613-22507-1-git-send-email-george.kennedy@oracle.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 28 Oct 2021 10:05:00 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXcO1K7da=4Ck2X0Rc_pfaM32dDKf0EfdDXNG0HL18h5Q@mail.gmail.com>
-Message-ID: <CAMuHMdXcO1K7da=4Ck2X0Rc_pfaM32dDKf0EfdDXNG0HL18h5Q@mail.gmail.com>
-Subject: Re: [PATCH v2] video: fbdev: cirrusfb: check pixclock to avoid divide
- by zero
-To:     George Kennedy <george.kennedy@oracle.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+ -0700 (PDT)
+Reply-To: aabdulwalialhashmi@gmail.com
+From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
+Date:   Thu, 28 Oct 2021 03:52:09 -0700
+Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
+Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Oct 27, 2021 at 10:32 PM George Kennedy
-<george.kennedy@oracle.com> wrote:
-> Do a sanity check on pixclock value to avoid divide by zero.
->
-> If the pixclock value is zero, the cirrusfb driver will round up
-> pixclock to get the derived frequency as close to maxclock as
-> possible.
->
-> Syzkaller reported a divide error in cirrusfb_check_pixclock.
->
-> divide error: 0000 [#1] SMP KASAN PTI
-> CPU: 0 PID: 14938 Comm: cirrusfb_test Not tainted 5.15.0-rc6 #1
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2
-> RIP: 0010:cirrusfb_check_var+0x6f1/0x1260
->
-> Call Trace:
->  fb_set_var+0x398/0xf90
->  do_fb_ioctl+0x4b8/0x6f0
->  fb_ioctl+0xeb/0x130
->  __x64_sys_ioctl+0x19d/0x220
->  do_syscall_64+0x3a/0x80
->  entry_SYSCALL_64_after_hwframe+0x44/0xae
->
-> Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+-- 
+Greetings,
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-Gr{oetje,eeting}s,
+I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
 
-                        Geert
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+He is from your country and shares the same last name with you.
+
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
+
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
+
+Please kindly get back to me for more details if I can TRUST YOU.{
+aabdulwalialhashmi@gmail.com }
+
+Regards
+Abdulwali Alhashmi
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands
