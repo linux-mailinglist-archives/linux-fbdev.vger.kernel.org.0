@@ -2,61 +2,158 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E6D447AFC
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Nov 2021 08:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D85C447BF9
+	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Nov 2021 09:37:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237808AbhKHHaX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 Nov 2021 02:30:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237779AbhKHHaJ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Nov 2021 02:30:09 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75290C06122C
-        for <linux-fbdev@vger.kernel.org>; Sun,  7 Nov 2021 23:27:23 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id g14so58052821edz.2
-        for <linux-fbdev@vger.kernel.org>; Sun, 07 Nov 2021 23:27:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=lohGAXI96njXpZ5r6vgYlUkp2V68iRMzDV25uaLpmT1WmpX2h0YNNnPekuKOrJR7Hh
-         rCcmOUgGjsAkeHEvvQCkM6ux+TyqL0CqGbf0IPfL8V+eIKLF7r3X9QWFup/xVl2xV9qZ
-         NGc0LQ7JpvXhk+YTEHFaFd2QnuENE8mCWi0drmIQkANv1zf9DM6Bfjx/yF/A/b9RtJFU
-         CT2DuJeqJ7evq+rJKQgmUSCIg2GjkqvLZlnb0ekZ1/3u7apFf2k73Uqo2u8YZ8hKmOIw
-         ZGA3M8LZJFGSmW3P+nQyYMCLCtL13s+WCsnPOmCuuFd5xieMsN0vbLhindKIE3OfrP6U
-         BcYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
-        b=jY3jROPl1YznRJFIaD7+3C5Gg8MYKBqcpwrOrNPobmXavq7Yx7XCGlWJI+YaAVnPPl
-         ww+1FDiWhd9XwqbtVB366DN/QSb4DWoo/cuMGu6CEslf0OnHhAYL2gLIS0tCcPBfHrFZ
-         Gl4TWf0jfZ7jTUgOT3VMZhxnPzCcUQX549q6Py/jZ0ZdGORuj+wlaDVXQ1ta8CkkptHq
-         Y9ZqrT+IXwYjQ0IEUiBUmu/+lnrmbdgArYbyxc57Z1H2TTWXtOmNV3xQOpYfVbVZg8v2
-         V0W8os4qahXdZUxTE/d9TgDTgyyzaF44SZ7M+7+GGGNGFbG5JSpHJ+mzVa6GQ5oUJs9R
-         KCIQ==
-X-Gm-Message-State: AOAM533u0dEYTuoMKiG5zm5pEA6XrOM5pX8YTehwGCSoQL2RV1cI3Nxv
-        q3Yjj+A0oEQtDB7SR8ypYxwZIA5zE5xBAyHtYnI=
-X-Google-Smtp-Source: ABdhPJwiROS9SRRNMvDLES4YHo6uT5d60ZUwIiFmBNAm9OxEfLgMU9cee9PqVQWim0XNVifN/Rk5vWcyMQ7rvBndYNE=
-X-Received: by 2002:a05:6402:557:: with SMTP id i23mr66769092edx.176.1636356441798;
- Sun, 07 Nov 2021 23:27:21 -0800 (PST)
+        id S237233AbhKHIjr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 8 Nov 2021 03:39:47 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:57924 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235223AbhKHIjq (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Nov 2021 03:39:46 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F14361FD6D;
+        Mon,  8 Nov 2021 08:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1636360621; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m47UAY2ZcyR+FhtsO4aVyPTcYB/9rHV9T+gQ8c/5pAk=;
+        b=Minh2m7rxvc2DMoW2LH2qYO5gOW8gSGAozwRYB+8B9kXCTsrC0Miapuo/aA5erTLxKXKSh
+        2mU2pl2sVD3/3MkJ8Zo0noDflkpKrie3hsR/SUR3pmgOWP/1/iFmO0dn7D3eLzKL4aqMPQ
+        WDZU10opHeLjOri0PsD/mR75lJbI5r8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1636360621;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=m47UAY2ZcyR+FhtsO4aVyPTcYB/9rHV9T+gQ8c/5pAk=;
+        b=zxMYzuYR8k8tv1u7IyuPNqP9W/yVx0pwwR0sgi6Y7WDU2lNWog4FyUqLChzcaH3SiHZHxH
+        y3UM/b2PNn/DDRCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C559A139CF;
+        Mon,  8 Nov 2021 08:37:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id VSr1Lq3hiGGzXAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 08 Nov 2021 08:37:01 +0000
+Message-ID: <312d6427-67ff-67c5-b662-23127bb76d12@suse.de>
+Date:   Mon, 8 Nov 2021 09:37:01 +0100
 MIME-Version: 1.0
-Received: by 2002:a50:2501:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 23:27:21 -0800 (PST)
-Reply-To: mariaschaefler@gmx.com
-From:   Maria Schaefler <ziskoraa@gmail.com>
-Date:   Mon, 8 Nov 2021 07:27:21 +0000
-Message-ID: <CAJh0FjiFL7uihMBL6ckYO8FJ6tnzM+tBivU2c60yDbG14LZLeA@mail.gmail.com>
-Subject: MY HEART CHOOSE YOU.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH/RFT] fbdev driver for HP Visualize FX cards
+Content-Language: en-US
+To:     Sven Schnelle <svens@stackframe.org>
+Cc:     linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Helge Deller <deller@gmx.de>
+References: <20211031195347.13754-1-svens@stackframe.org>
+ <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de>
+ <87r1c0s1bt.fsf@x1.stackframe.org>
+ <e21cdf83-2178-7c59-2585-a6012f861f68@suse.de>
+ <87o86x80am.fsf@x1.stackframe.org>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <87o86x80am.fsf@x1.stackframe.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Ua3NsWBcmIn5JzZRJKhoK9GM"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Given my current state of health, I have decided to donate what I
-inherited from my late husband to you to help the poor and needy. I am
-Mrs Maria Schaefler,a 57years old dying woman. I was diagnosed for
-cancer about 2 years ago and I have few months to live according to
-medical experts. Email me for my directives
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM
+Content-Type: multipart/mixed; boundary="------------ECTrUU3oVoAPEqx5K8r4DiqJ";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Sven Schnelle <svens@stackframe.org>
+Cc: linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel <dri-devel@lists.freedesktop.org>, Helge Deller <deller@gmx.de>
+Message-ID: <312d6427-67ff-67c5-b662-23127bb76d12@suse.de>
+Subject: Re: [PATCH/RFT] fbdev driver for HP Visualize FX cards
+References: <20211031195347.13754-1-svens@stackframe.org>
+ <cd0f90d9-7dba-af33-f88b-289fc6f80b51@suse.de>
+ <87r1c0s1bt.fsf@x1.stackframe.org>
+ <e21cdf83-2178-7c59-2585-a6012f861f68@suse.de>
+ <87o86x80am.fsf@x1.stackframe.org>
+In-Reply-To: <87o86x80am.fsf@x1.stackframe.org>
+
+--------------ECTrUU3oVoAPEqx5K8r4DiqJ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+
+SGkNCg0KQW0gMDYuMTEuMjEgdW0gMjI6MDIgc2NocmllYiBTdmVuIFNjaG5lbGxlOg0KPiBU
+aG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JpdGVzOg0KPiANCj4+
+IEhpDQo+Pg0KPj4gQW0gMDEuMTEuMjEgdW0gMDk6NTQgc2NocmllYiBTdmVuIFNjaG5lbGxl
+Og0KPj4+IEhpIFRob21hcywNCj4+PiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4gd3JpdGVzOg0KPj4+IFRoYW5rcywgaSB3YXNuJ3QgYXdhcmUgYXMgaSBub3Jt
+YWxseSBkb24ndCBkbyBhbnkgZ3JhcGhpY3MgcmVsYXRlZA0KPj4+IGRldmVsb3BtZW50LiBJ
+IHRha2UgYSBsb29rIGF0IGRyaSBhbmQgcG9ydCB0aGUgZHJpdmVyLCB3aGljaCBpcw0KPj4+
+IGhvcGVmdWxseSBub3QgdG9vIGhhcmQuDQo+Pg0KPj4gU291bmRzIGdvb2QuDQo+Pg0KPj4g
+VGhlIG9uZSBiaWcgZGlmZmVyZW5jZSB3aGVuIGNvbnZlcnRpbmcgaXMgdGhhdCBEUk0gcmVh
+bGx5IHdhbnRzDQo+PiBkcml2ZXJzIHRvIHN1cHBvcnQgMzItYml0IFhSR0IgY29sb3JzLiBJ
+dCdzIG5vdCBhIERSTSBsaW1pdGF0aW9uIHBlcg0KPj4gc2UsIGJ1dCBhIHJlcXVpcmVtZW50
+IG9mIHRvZGF5J3MgdXNlcnNwYWNlIHByb2dyYW1zLiBBRkFJQ1MgeW91ciBmYmRldg0KPj4g
+ZHJpdmVyIHVzZXMgYSAyNTYtY29sb3IgcGFsZXR0ZSBmb3JtYXQuIFNvIHRoZSBEUk0gZHJp
+dmVyIHdvdWxkIGhhdmUNCj4+IHRvIGNvbnZlcnQNCj4+IFhSR0I4ODg4IHRvIDgtYml0IFJH
+QjMzMiBhbmQgaW5zdGFsbCBhIGNvcnJlc3BvbmRpbmcgcGFsZXR0ZS4gRG9uJ3QNCj4+IHdv
+cnJ5LCBpdCdzIGVhc3kuIFRha2UgYSBsb29rIGF0IHRoZSBjaXJydXMgZHJpdmVyIGZvciBh
+IHNpbXBsZSBEUk0NCj4+IGRyaXZlci4gWzFdDQo+IA0KPiBJIGhhdmUgY29udmVydGVkIHRo
+ZSBkcml2ZXIsIA0KDQpDb29sIQ0KDQo+IGJ1dCBhbSB1c2luZyBGT1JNQVRfQzggYmVjYXVz
+ZSBpIGhhdmVuJ3QNCj4gZmlndXJlZCBvdXQgeWV0IGhvdyB0byBzd2l0Y2ggdGhlIGNhcmQg
+dG8gWFJHQjg4ODguIFRoYXQncyBzdGlsbCBvbiB0aGUNCj4gVE9ETyBsaXN0Lg0KDQpEb24n
+dCB3b3JyeS4gQXMgSSBvdXRsaW5lZCAsIHlvdSBjYW4gc3RpbGwgY29udmVydCBhbnkgaW1h
+Z2UgZnJvbSANClhSR0I4ODggdG8gUkdCMzMyIGFuZCBkaXNwbGF5IHRoaXMgaW5zdGVhZC4N
+Cg0KPiANCj4gT25lIHF1ZXN0aW9uIGFib3V0IGh3IGJsaXR0aW5nOiB3aXRoIHRoZSBvbGQg
+ZmJkZXYgZnJhbWV3b3JrIG9uZSBjb3VsZA0KPiByZXBsYWNlIHRoZSBmYl9pbWFnZWJsaXQg
+ZnVuY3Rpb24uIEZvciBub3JtYWwgY29uc29sZSB0ZXh0LCB0aGlzDQo+IGZ1bmN0aW9uIGdl
+dHMgY2FsbGVkIHdpdGggYSBtb25vY2hyb21lIGJpdG1hcCwgYW5kIGFuIGZnL2JnIGNvbG9y
+IHZhbHVlLg0KPiBUaGlzIG1ha2VzIGl0IGVhc3kgdG8gdXNlIEhXIGFjY2VsZXJhdGVkIGJs
+aXR0aW5nIGZvciB0ZXh0LiBJbiB0aGUNCj4gZ3B1L2RybSBkcml2ZXJzIGkgdGhpbmsgaSBm
+b3VuZCBvbmx5IG9uZSBkcml2ZXIgKG5vdXZlYXUpIGRvaW5nIHRoaXMgYW5kDQo+IHRoYXQg
+d2FzIHZpYSB0aGUgZHJtIGZiZGV2IGxheWVyLg0KPiANCj4gSXMgdGhhdCBzdGlsbCB0aGUg
+d2F5IHRvIGdvLCBvciBpcyB0aGVyZSBhIGJldHRlciB3YXkgdG8gZG8gSFcgYWNjZWxlcmF0
+ZWQNCj4gdGV4dCBibGl0dGluZz8NCg0KU2ltcGx5IGNhbGwgZHJtX2ZiZGV2X2dlbmVyaWNf
+c2V0dXAoKSBhZnRlciByZWdpc3RlcmluZyB0aGUgZGV2aWNlLiBUaGlzIA0Kc2hvdWxkIGdp
+dmUgeW91IGEgY29uc29sZS4NCg0KRG9uJ3QgYm90aGVyIGFib3V0IEhXLWFjY2VsZXJhdGVk
+IGJsaXR0aW5nLiBGcm9tIHdoYXQgSSd2ZSBoZWFyZCwgaXQgDQpiYXJlbHkgbWFrZXMgYSBk
+aWZmZXJlbmNlIG5vd2FkYXlzLiBBbmQgb3VyIGdlbmVyaWMgaGVscGVycyBoYXZlIHBsZW50
+eSANCm9mIGZlYXR1cmVzLiBOb3QgdXNpbmcgdGhlbSB0byBnZXQgYSBzbWFsbCBiZW5lZml0
+IGZyb20gSFcgYmxpdHRpbmcgDQppc24ndCB3b3J0aCBpdC4NCg0KQmVzdCByZWdhcmRzDQpU
+aG9tYXMNCg0KPiANCj4gVGhhbmtzDQo+IFN2ZW4NCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1l
+cm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRp
+b25zIEdlcm1hbnkgR21iSA0KTWF4ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBHZXJt
+YW55DQooSFJCIDM2ODA5LCBBRyBOw7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8aHJlcjogSXZv
+IFRvdGV2DQo=
+
+--------------ECTrUU3oVoAPEqx5K8r4DiqJ--
+
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmGI4a0FAwAAAAAACgkQlh/E3EQov+As
+UA//YRuNTmiRQXom7SSQzZ3yOLLxko9XIy1O/rHT3EkobAlu7juFnpc05SFas3IOGhQQo2oVJ6OT
+DC9Fe1wdDyO8913hroZ34kqw60VnWY8ifcfp58EMJaJ+OVb+7t9mU3/8l+HHy79YtFN6hglJ/pJj
+43ETrryJZDJPVoOJX2tKvVHEI83DS4NHKZBEHjMiS8/O8V5+UnzZhRdwC1KR9+4QkXD8i6YEzTku
+hCDWjrHF+k4ZPgP85AYgzxV7VrTsMg1AHjTESU+LrY/aE9HH7azFznLLU3hmMrsiUIui7c8On+Tf
+OzAWpdFntmEe2CDkp6HjgWPibZB6kcyw20CkQq/TK5VoY5ZooAeCvrluHz0Em9k/o/9W44jfFViX
+msd+quuitzCRWOgP4GykiqqwIbaUEVAvy8vgU6vCN2y5drHV80FKP2FYMhf7L/8J7GuAOMTe9v5g
+hkYxp+Lxye01CpQCooiiBbDXUjp9mQkCsOOrL0SC+ElJks3qSSQM5NHd8En/CoWibwaZxbwIHN2P
+PuA283K/XVhm7cH4YXgv2o4zPLFe2bpaJwvmBlM3BCJ6flY/qQaK31Q4LfGqTX8Bqs/c94Ew8xDB
+1PwAH67fvIZ7PB5OH3UMrrCRPdGsJOWk2SE+6dNgOPHuHcWqIamAeY9mWR0czhEGu7Lp4Jk/4DoY
+oGs=
+=bT6n
+-----END PGP SIGNATURE-----
+
+--------------Ua3NsWBcmIn5JzZRJKhoK9GM--
