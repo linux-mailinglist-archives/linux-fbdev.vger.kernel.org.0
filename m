@@ -2,121 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2649452E98
-	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Nov 2021 11:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58496453081
+	for <lists+linux-fbdev@lfdr.de>; Tue, 16 Nov 2021 12:28:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233691AbhKPKEm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 16 Nov 2021 05:04:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:37738 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233228AbhKPKEk (ORCPT
+        id S234886AbhKPLbA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 16 Nov 2021 06:31:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235073AbhKPLaa (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 16 Nov 2021 05:04:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637056903;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=533DJPrDDxlMGTv0pnxjgO+BwgxyEzDlbPhO6HwlUb4=;
-        b=IMJbRc71ULBSUHRPlKAJ1ahgAjNowOWQB2GmfGP+vIwUepZsFkxjbpNP7vsa+u23uSzUzw
-        IhsYXBYXk8eMPmSWezzdYvK0kjNCJZ3/DPkgs4g6wLAuBj8OvOEm1W9TwdLqBTFhtcVeUT
-        VzDSNKR+SMFOf7JUZ6ZlejVOT3dh0uo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-207-E9WLAbTPOaKrv0NYFkYEpA-1; Tue, 16 Nov 2021 05:01:41 -0500
-X-MC-Unique: E9WLAbTPOaKrv0NYFkYEpA-1
-Received: by mail-wm1-f72.google.com with SMTP id v62-20020a1cac41000000b0033719a1a714so1179690wme.6
-        for <linux-fbdev@vger.kernel.org>; Tue, 16 Nov 2021 02:01:41 -0800 (PST)
+        Tue, 16 Nov 2021 06:30:30 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAA3C061208
+        for <linux-fbdev@vger.kernel.org>; Tue, 16 Nov 2021 03:26:47 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id i8-20020a7bc948000000b0030db7b70b6bso1663080wml.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 16 Nov 2021 03:26:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=JHkobXVvRWKPjJgpwGctsZrNZAaUXURTmWtz1PAwkjpShtnw2xIe4IxyGotDPuzibC
+         Q5mot2AR1EdZp0YszaR3r2ybEOx2FNi+mf9boXaZtQYZk2aaSxUll9YDCw62bdI1DnLQ
+         oIH4ijYH8dimZ9b18CZOM02DemPbh5TPbp0IZQP6LRYEW6CI4vBuyYF3v6dQKruXhra0
+         ISrh3nRfCz/kgnPaZL6TX2CyZGhX8FthNY6hgTSNy87Rzf6pOs269tH9u40KOKtFP2VF
+         vmbdlhp1YbM/ub4lOMlme0/ipfqvkOa6H2ey7QjU3Yr8TVzgn7XtIn6eo6g0+GjlmkU9
+         mnhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=533DJPrDDxlMGTv0pnxjgO+BwgxyEzDlbPhO6HwlUb4=;
-        b=lUEiZfzWnKhpe0YvMetk+84aqlvnN5GzZ/mzO0z9s7/wb64534yIaC5QTRnoAtvNSU
-         BR61K2SDaHge4bTckgPq0xtMwdFhCQsLD6csacRlSIiSDCx3FUABHNd8rv7LN/Cmeu4O
-         4T2BQLwvWS7hgNSb3IuAs/m1LIuTqJy3v+is1dHChUCLRXGQR6nMKN0Tb1pM/FTVxwCx
-         BKeEejsGv/WGVOZ+rfL0n9DJDOUk3oalnihyTqb5bcVN//C23gSBk+MjPWGe1QbT9Pm1
-         UGLN9AksgDmMxKA58j+tkS6FrqkLFGS3upqcx10DG+uFedAb3Qy3JRTwbPn2wkbaiSoK
-         KyQA==
-X-Gm-Message-State: AOAM531cWdZYIg3vkP4tU7G+kD+mRC0NsK6exB5nbB7jTfJ+Su8nzqdg
-        34/+5UpIPYDOfNPwdY5FGdMKJjmjRGF8/D1cUCmANLpAhBI5o4HU66z6xgSipd76luG2uus+s98
-        3M/RoU6ELPnacfdf0kHhwpDY=
-X-Received: by 2002:a05:600c:24d:: with SMTP id 13mr6163781wmj.156.1637056900628;
-        Tue, 16 Nov 2021 02:01:40 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwlGjWi8alUIqPMmPz5/NWCmPlLiqtCNyw7It2G0hrbpLCRkisY1dNBJt1D//kFA9f//Tcinw==
-X-Received: by 2002:a05:600c:24d:: with SMTP id 13mr6163736wmj.156.1637056900360;
-        Tue, 16 Nov 2021 02:01:40 -0800 (PST)
-Received: from [192.168.1.102] (91.pool90-171-47.dynamic.orange.es. [90.171.47.91])
-        by smtp.gmail.com with ESMTPSA id t11sm16568630wrz.97.2021.11.16.02.01.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Nov 2021 02:01:39 -0800 (PST)
-Message-ID: <7cbadb2a-b6e9-f264-9d95-b76c7071af27@redhat.com>
-Date:   Tue, 16 Nov 2021 11:01:38 +0100
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=yGurb2/j2wq1TqURWLjplkIo/4p767AklwbFTs0fJKX7agoKFmOfKJHgINm3bQXqHI
+         q67vBRoFTR7ky6lhe49W/oieAvMpji4rSELcy6xV4cjMNqEJrPJbQ+yCqsc7jsSHZn0y
+         b+su578h9lqe9kwdUWNW5WCWysEt3WFR21tkvA43wUMnYadqwKSr3+PwIT/Ccy97ShT2
+         j6n0m4SxOUcdxVCNPaRJc35baXcgn89X/zuhGh3oQlbeOalEfXOy1ol54ktGx3ebVuNP
+         Yw74Eb6svpaYMjK1W0Q+hhFGjQ9BPoOwpSpjQ4vmNAYQR3nBwlaksAg3RKwH8Q7Pkggt
+         WwNA==
+X-Gm-Message-State: AOAM530jJRqppEeArB0+7AsLmbAAneDVJR5FMFD+lzQF+BBfYqWtlE5+
+        ainM+4OoM4VFMQSjraAY+As3sn0xOy1F6oTKK1s=
+X-Google-Smtp-Source: ABdhPJxY17HC6nmGOHWE6iqbA8wRJP0vZMHkpbaBLpxjBs8AHHbhGKQYmexWpwcaaXI+7XwIdfO/LY/kc1YAwclgHr0=
+X-Received: by 2002:a1c:f213:: with SMTP id s19mr68487015wmc.169.1637062003979;
+ Tue, 16 Nov 2021 03:26:43 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2] fbdev: Prevent probing generic drivers if a FB is
- already registered
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Peter Jones <pjones@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ilya Trukhanov <lahvuun@gmail.com>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Borislav Petkov <bp@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20211111111120.1344613-1-javierm@redhat.com>
- <CAMuHMdWA2V_KDpcpMw3yRKmN+6YDjmysJoz6D-6JjJs-3+XYTQ@mail.gmail.com>
- <579a584a-68af-d5c9-0547-30cb1592d46f@redhat.com>
- <CAMuHMdWotEN1TtTr7douLkQPkpXE-rQgamM3GOYO1XNHbUiguw@mail.gmail.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <CAMuHMdWotEN1TtTr7douLkQPkpXE-rQgamM3GOYO1XNHbUiguw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:600c:3b97:0:0:0:0 with HTTP; Tue, 16 Nov 2021 03:26:43
+ -0800 (PST)
+Reply-To: ebodrdickson1020@gmail.com
+From:   "Dr.Dickson Ebo" <drdicksonelo1023@gmail.com>
+Date:   Tue, 16 Nov 2021 03:26:43 -0800
+Message-ID: <CABq-xD5cMc7YDaqm-jE=T02sHTTAJFwPRjYALiWxVYa2NbnX+Q@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Geert,
+Finance and Audit Department, Zenith Bank Plc.
 
-On 11/16/21 10:43, Geert Uytterhoeven wrote:
+The President of the Federal Republic of Nigeria through the Zenith
+International Bank Nigeria PLC has released your
+Contract/Inheritance/Compensation Fund.
 
-[snip]
+Kindly get back to us as soon as possible.
 
->>
->> So this is already a fragile solution and $SUBJECT doesn't make things worse
->> IMO. Since not having something like this can lead to issues as reported by:
->>
->> https://lore.kernel.org/all/20211110200253.rfudkt3edbd3nsyj@lahvuun/
->>
->> We could probably do some smarter here by providing a function that checks
->> if the registered fbdev drivers matches the aperture base. But I'm unsure
->> if that's worth it. After all, fbdev drivers are likely to be disabled by
->> most distros soon now that we have the simpledrm driver.
-> 
-> Checking the aperture base is what was done in all other cases of
-> preventing generic (fbdev) drivers from stepping on specific drivers'
-> toes...
-> 
-
-Ok, I can re-spin the patch checking if the aperture ranges overlap. There's
-an apertures_overlap() function in drivers/video/fbdev/core/fbmem.c that can
-be exported for fbdev drivers to use.
-
-Another option is to just say that DRM drivers should be built as a module if
-the {efi,simple}fb driver are built-in.
-
-Best regards,
--- 
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+Yours faithfully,
+Dr. Dickson Ebo.
