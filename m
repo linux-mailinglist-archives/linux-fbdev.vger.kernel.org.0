@@ -2,99 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E27E455706
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Nov 2021 09:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F22455B9F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Nov 2021 13:37:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244592AbhKRIhC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 18 Nov 2021 03:37:02 -0500
-Received: from mail-vk1-f178.google.com ([209.85.221.178]:43905 "EHLO
-        mail-vk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231745AbhKRIg7 (ORCPT
+        id S1344734AbhKRMk4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 18 Nov 2021 07:40:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45940 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344732AbhKRMk4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 18 Nov 2021 03:36:59 -0500
-Received: by mail-vk1-f178.google.com with SMTP id f7so3314221vkf.10;
-        Thu, 18 Nov 2021 00:33:59 -0800 (PST)
+        Thu, 18 Nov 2021 07:40:56 -0500
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861AFC061766
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Nov 2021 04:37:56 -0800 (PST)
+Received: by mail-qv1-xf44.google.com with SMTP id v2so4418662qve.11
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Nov 2021 04:37:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=MPZiBVeMHca1j4Sh9MPQqbWDzkaYge/S5imT36JhPo0=;
+        b=SYi9hppxJ4ix9DA/KEdQXfavJ9uqAh1woI869x36PZEEGGlS737M3+mnRYiMmF48fO
+         2wLudny3iG6Y+hEZkSmdAXmo7c5YS7DMnr9H9L6HNutg9zVlm+DZoYWJsYSx3P0Jx0mE
+         Yvn7KH7EoRywm6onRs+6L2vJMCHvkzNF7DdQBBnqJj5qRgt6dhejYuC0ET/L44bHwUsv
+         70DAn1Z28MAatm55OYIxzwOAldghicpQJQwR/c7gXUMhXiToYNG0uWDKFpmhxsBe6JHx
+         RJZryBQSmVCQXIpfxSErm9WpyHQoOfyRQC4l/8lrxmxphSNnD+bgR70lBVfKtuc7MxiU
+         PNuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZHqYNDJJeUEUo7A1lpPpFJOTlOxuy2hnNwzoc1obFj4=;
-        b=oBS12w+9eoB+GNK5ttaheySAoQCi5//SWrMXplOzeMxA2iLOEtHROkDKhmy9KOEups
-         QY+Br51pQc1iTBVUdSLcUHeY4w4/cD84JFzzkYaILeNY4XuV1eVGlF/IY3EmwdlTM2EX
-         B8zsLhD5Ydz+1pyJaway/rZUchv7O2nLYMZ+eLjGGnsrg8NVfGvCaSdUytb0/YSv8O8B
-         U1zU9NcyznDONM/HlZfrZE1cOkvYfZHEN6COp7+gz1/4PgVEhnQOBQ3u0azawlIJNQAl
-         KgPrnYddatJVJ6ZEf5xdNhqFKZLaezkw/Y1vYQ2FZ/HFEFjRORxKB5DSNmx1WY0v3enK
-         JACg==
-X-Gm-Message-State: AOAM533lq04oRS1U+BtW9JWXd8rFbPsOs96AaFhomQUfAIVLG2A0j6if
-        MM51zapppiHezV0U5WGBINpZGmQoxSKuWw==
-X-Google-Smtp-Source: ABdhPJw9zNRA1CPsFkP107X/6FhORafVKbRo6lA4KacCUoDjaNiz5H76ur4ROy1DEjGph3EDGz+vuQ==
-X-Received: by 2002:a05:6122:2158:: with SMTP id m24mr33991798vkd.1.1637224439099;
-        Thu, 18 Nov 2021 00:33:59 -0800 (PST)
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
-        by smtp.gmail.com with ESMTPSA id c21sm1238238vso.21.2021.11.18.00.33.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Nov 2021 00:33:58 -0800 (PST)
-Received: by mail-ua1-f52.google.com with SMTP id i6so11962945uae.6;
-        Thu, 18 Nov 2021 00:33:57 -0800 (PST)
-X-Received: by 2002:a05:6102:e82:: with SMTP id l2mr78426134vst.37.1637224437450;
- Thu, 18 Nov 2021 00:33:57 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=MPZiBVeMHca1j4Sh9MPQqbWDzkaYge/S5imT36JhPo0=;
+        b=XhrhrdjQp0K4enPztM1vg211wSPByVlcLKbk3QI4B6sqeZNg6JLKvxHOnD6ZEXjb0O
+         MShInPrL6vbjvQR+TulEVzcPQRvjuDEmxRXl7I1ku0cnWeeS6YSjU6lAFf7EHy0Ygd9i
+         31eW8W4tkpkZq5M6f8mBp3WXL4o75RpQKheDP0kQSXI6ONO1h1cCCyxQ07X0OEVjk0FX
+         +KjVzxG/yU2jH+YAmQs7VhTI0fEaZtv3/Widj4rHMQm0Ypf5TcUzXOeqcsYd21q9WpNh
+         oTb9LYi2JsCyuqgOH981usJ/x5DOrhtmX+Iofdk917/HxYPlE7+WoXsIe6/6zP4N3ywZ
+         jChw==
+X-Gm-Message-State: AOAM530Q56z9gI3o2S6iSA8FQczjnEqCvk8Vdge2crA7FZYICWtgo6sv
+        LXp69STuCip06NP8/9Sqldf36oQ5fd33EPVCiOQ=
+X-Google-Smtp-Source: ABdhPJybmNBANFlN10q2IiFqD/V0UbYnzqQzIZ+YHuaRpWlMzbYu2j81lEWQvb4WQkqlwn26ACy/XYkZ5Q4wWI72FaQ=
+X-Received: by 2002:a0c:ebca:: with SMTP id k10mr64698651qvq.51.1637239075630;
+ Thu, 18 Nov 2021 04:37:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20211117121829.11141-1-guozhengkui@vivo.com>
-In-Reply-To: <20211117121829.11141-1-guozhengkui@vivo.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 18 Nov 2021 09:33:46 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWxSBSb0zA=_Httx53ocJ5qtKUHArq_+pCAWKB9ppzn1g@mail.gmail.com>
-Message-ID: <CAMuHMdWxSBSb0zA=_Httx53ocJ5qtKUHArq_+pCAWKB9ppzn1g@mail.gmail.com>
-Subject: Re: [PATCH] video: omapfb: Use scnprintf() instead of snprintf()
-To:     Guo Zhengkui <guozhengkui@vivo.com>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        "open list:OMAP FRAMEBUFFER SUPPORT" <linux-fbdev@vger.kernel.org>,
-        "open list:OMAP FRAMEBUFFER SUPPORT" <linux-omap@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
-        open list <linux-kernel@vger.kernel.org>, kernel@vivo.com,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>, cocci@inria.fr
+Received: by 2002:a0c:f68d:0:0:0:0:0 with HTTP; Thu, 18 Nov 2021 04:37:55
+ -0800 (PST)
+Reply-To: UNCC-CH@outlook.com
+From:   United Nations Compensation Commission <hamisuchizo59@gmail.com>
+Date:   Thu, 18 Nov 2021 04:37:55 -0800
+Message-ID: <CA+nAkfQR9hyhpg9UvA8GyDQT7XFcoNTmfcYjQgyX36PC8vMkkA@mail.gmail.com>
+Subject: =?UTF-8?Q?Beg=C3=BCnstigter?=
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Guo,
+--=20
+Achtung: Beg=C3=BCnstigter,
 
-CC cocci
+Dies ist das zweite Mal, dass wir Sie =C3=BCber die Statue Ihre
+Entsch=C3=A4digungsfonds in H=C3=B6he von 5.500.000,00 =E2=82=AC (f=C3=BCnf=
+ Millionen)
+f=C3=BCnfhundertttt Euro) besteht. Bitte geh=C3=B6rt Sie uns, dass
+wir von der UNCC autorisiert wurden, Ihre Entsch=C3=A4digungsgelder in H=C3=
+=B6he
+von =E2=82=AC 5.500.000,00 an Sie erfreugeben. F=C3=BCr Ihren eigenen Anspr=
+uch
+wenden Sie sich
 
-On Wed, Nov 17, 2021 at 1:58 PM Guo Zhengkui <guozhengkui@vivo.com> wrote:
-> Fix following warnings:
-> ./drivers/video/fbdev/omap/omapfb_main.c:1382:8-16:
-> WARNING: use scnprintf or sprintf
-> ./drivers/video/fbdev/omap/omapfb_main.c:1306:8-16:
-> WARNING: use scnprintf or sprintf
->
-> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+Wir empfehlen Ihnen daher, sich an unseren Direktor der
+Auslands=C3=BCberweisungsabteilung, MR Hartmut Wenner, zu wenden und ihn zu
+bitten, Ihnen die Einzelheiten zur Beschaffung Ihres Geldes
+mitzuteilen
 
-Thanks for your patch!
-
-> --- a/drivers/video/fbdev/omap/omapfb_main.c
-> +++ b/drivers/video/fbdev/omap/omapfb_main.c
-> @@ -1303,7 +1303,7 @@ static ssize_t omapfb_show_panel_name(struct device *dev,
->  {
->         struct omapfb_device *fbdev = dev_get_drvdata(dev);
->
-> -       return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
-> +       return scnprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
->  }
-
-I guess all of these should use sysfs_emit() instead.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Regisseur
+MR Hartmut Wenner
+E-MAIL: UNCC-CH@outlook.com
+Entsch=C3=A4digungskommission der politischen Nationen
