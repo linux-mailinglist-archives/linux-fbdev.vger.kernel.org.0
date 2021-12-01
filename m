@@ -2,128 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7DB463F27
-	for <lists+linux-fbdev@lfdr.de>; Tue, 30 Nov 2021 21:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9038464CF7
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Dec 2021 12:34:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343652AbhK3U0U (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 30 Nov 2021 15:26:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52964 "EHLO
+        id S1348973AbhLALhw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235402AbhK3U0R (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 30 Nov 2021 15:26:17 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB93C061574
-        for <linux-fbdev@vger.kernel.org>; Tue, 30 Nov 2021 12:22:57 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id l16so47064426wrp.11
-        for <linux-fbdev@vger.kernel.org>; Tue, 30 Nov 2021 12:22:57 -0800 (PST)
+        with ESMTP id S1348968AbhLALhm (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Dec 2021 06:37:42 -0500
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B8AC0613B8
+        for <linux-fbdev@vger.kernel.org>; Wed,  1 Dec 2021 03:34:14 -0800 (PST)
+Received: by mail-ua1-x934.google.com with SMTP id j14so48062109uan.10
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Dec 2021 03:34:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=02uY4AmojDwifo7LgepwuVCqs4Jz+sFd/07AQHN7lY0=;
-        b=jbF/TxWeIOG9zF+Sg6hp+nRBv7Ql9V7HNVmAjWhvG7abajbX923ZC/ZZs+GFWcFKjp
-         JpHt3aGvrrWCQAXAaV8IjEWvrRk+E3Qfl71sdfYM7jWB+7sH8sernuoAs7OZl4ljHY1z
-         ArHlhlavWip4kdFPzLyrdOMRCbwf1xTqcT+arquc+ngNhHn0ieqwUmFuWi3aaQW/9nnk
-         iLa53Wx/Yjo30/xm2KgOtU2vqczHgVVlCx/v5kqwDzNU09uRLlggFDVt5i8XGdvVRugd
-         XbeG1iMzmFe/7bsrtrrb8HI4FWRRSC6vCntmUbwmM4InTF/yc2485UuWWZoHNppHOOhl
-         o/uQ==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
+         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
+         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
+         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
+         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
+         Af5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=02uY4AmojDwifo7LgepwuVCqs4Jz+sFd/07AQHN7lY0=;
-        b=rlQsI2Vl0N6/soaB0ZkjH9lTi0rIx3YYF5LTdy+A6PsWQA1Di7wRFJU3y7JBwO5P3s
-         1G1xD33BTLfYCPseP2FWoIVGIjJb4pVun+kiyepJa7KJ4NXrKEOVfo1IAq2DValOkXjW
-         gUos095GdPBKiCz/x2xG3t16brH6nX5cco8oe5Nq1DyxCn77kN60clhhN1gJgBz1g23y
-         lnDCM8dY5aurnLN8NN8Rmo8jWoQXECWLVFe3zhqX+rtBU2Hoxs4r9djBdvXPd5ooDFrc
-         LCCNEMjqG7tJo841to2dxvrhtOsvKM7vVatyLl7W5pz9sgtXpGzSHAX2Q9HdELXUA5TQ
-         0V4Q==
-X-Gm-Message-State: AOAM530lh0ca47RJmgvhv7CzXXLKAH8rI547XMobLCFBROuZOCyv+Cuo
-        MD4ZJdX9u11BKAWWgVkhFZQ=
-X-Google-Smtp-Source: ABdhPJzJTgk7rUqaZ3m5/DRW8UjR5XiojzKeXyklSH+D4g5cHUFuA0L9SjbjHQ/YuoUjc9TpybqKSw==
-X-Received: by 2002:a5d:64e7:: with SMTP id g7mr1264073wri.350.1638303776509;
-        Tue, 30 Nov 2021 12:22:56 -0800 (PST)
-Received: from ?IPV6:2003:ea:8f1a:f00:cdea:1258:1cb4:5e92? (p200300ea8f1a0f00cdea12581cb45e92.dip0.t-ipconnect.de. [2003:ea:8f1a:f00:cdea:1258:1cb4:5e92])
-        by smtp.googlemail.com with ESMTPSA id m125sm3216445wmm.39.2021.11.30.12.22.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Nov 2021 12:22:56 -0800 (PST)
-Message-ID: <8597bdf2-c383-43b5-6205-f78c90b4957a@gmail.com>
-Date:   Tue, 30 Nov 2021 21:22:50 +0100
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=1xf4mY3MhBlhzZ6mDpazalRkyYnhdtgQ4GwMMpOVAt481rdx7Gowo5jhSOLU8BkPtq
+         sEZtinzPts4aQNxNzNOjpEeIKJ7SBEI7/QJWrl6bq232Odws0tgo4JDkpB0wbqTZ11iu
+         PCK8wFmCKujh0u29u1il23xC7g11LnSK2JgaaQMkAelehtVkbuVfFS5GdK3CcGyI8tMS
+         053JyCZft1CwK0JcBzXo3Nvcl2jL13m5g6tjGArP9YYHOct2kyjaGJ7Jkc/7cXNdbFoa
+         ALeQnsGOe9bLq7KGZYNprdYBIwOUse/3nA0tSVMZbzJdG87Supb998NZHhg5qVwFXPi3
+         vJHA==
+X-Gm-Message-State: AOAM5316m22SrsJ0weVWLk+NiNszsq33JH0I+/pxa8pYSaCP2GekkhBu
+        +ub3O//+zSfHPhSEupDWwB/38iJEsVNJ8XsiDGEQAeZAXpc=
+X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
+X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
+ Wed, 01 Dec 2021 03:33:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH] staging: fbtft: add spi_device_id table
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        linux-staging@lists.linux.dev
-References: <aadbd32c-c0ab-4c8a-c590-3334f736f224@gmail.com>
- <CAMuHMdU_90XdFZM6kVA78XUX+7+Jm1WqjBmBN7irVOY3k-Gcfg@mail.gmail.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-In-Reply-To: <CAMuHMdU_90XdFZM6kVA78XUX+7+Jm1WqjBmBN7irVOY3k-Gcfg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:58 -0800
+X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
+Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 30.11.2021 09:16, Geert Uytterhoeven wrote:
-> Hi Heiner,
-> 
-> On Mon, Nov 29, 2021 at 10:12 PM Heiner Kallweit <hkallweit1@gmail.com> wrote:
->> After 5fa6863ba692 ("spi: Check we have a spi_device_id for each DT
->> compatible") we need the following to make the SPI core happy.
->>
->> Works for me with a SH1106-based OLED display.
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> 
-> Thanks for your patch!
-> 
->> --- a/drivers/staging/fbtft/fbtft.h
->> +++ b/drivers/staging/fbtft/fbtft.h
->> @@ -307,12 +307,19 @@ static const struct of_device_id dt_ids[] = {                              \
->>                                                                            \
->>  MODULE_DEVICE_TABLE(of, dt_ids);                                           \
->>                                                                            \
->> +static const struct spi_device_id spi_ids[] = {                            \
->> +       { .name = _compatible },                                           \
-> 
-> Shouldn't this be the part of _compatible after the "<vendor>," prefix?
-> 
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-You're right. I was fooled by a new bug in SPI core that made the warning
-suddenly disappear:
-https://patchwork.kernel.org/project/spi-devel-general/patch/44b2ad71-dc4b-801c-237f-9c233f675c0d@gmail.com/
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
->> +       {},                                                                \
->> +};                                                                         \
->> +                                                                          \
->> +MODULE_DEVICE_TABLE(spi, spi_ids);                                        \
->>                                                                            \
->>  static struct spi_driver fbtft_driver_spi_driver = {                       \
->>         .driver = {                                                        \
->>                 .name   = _name,                                           \
->>                 .of_match_table = dt_ids,                                  \
->>         },                                                                 \
->> +       .id_table = spi_ids,                                               \
->>         .probe  = fbtft_driver_probe_spi,                                  \
->>         .remove = fbtft_driver_remove_spi,                                 \
->>  };                                                                         \
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> 
+Your Names: |
+Address: |
 
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
+
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
+
+Regards.
+Mrs ORGIL BAATAR
