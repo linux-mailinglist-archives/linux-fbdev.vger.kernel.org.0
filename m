@@ -2,117 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E08467861
-	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Dec 2021 14:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AC1846880A
+	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Dec 2021 23:14:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381091AbhLCNeV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 3 Dec 2021 08:34:21 -0500
-Received: from esa.microchip.iphmx.com ([68.232.153.233]:41282 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381161AbhLCNeQ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Dec 2021 08:34:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1638538253; x=1670074253;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=IVzJ6uRZKJICUulg8tUewqaz2kUK3rrMEjcvHyFkaFA=;
-  b=ryKk5XllkOAVzx8HRWpybWU8f2RlC4KZ0T5IHrW4XcGMhErT/3PU7Bpu
-   G32Wz7f4U15MApDekc0E/rmFB6TdgeU97/ANAslqzdeg1QtD43Bza7nUE
-   amyPqe1Yx0qAmTO0Tqw6uSAPnbETgDlJGAf3aH0cTn2EvzoxZoj6hub+h
-   QGIjk7X+859+h3wdUd7mutvnL2uJ92ZT5WxD4ui7Ri41Qbk+da5EGaGwy
-   py52rczIscHWIlz+svR+dOWYUYi/9lkGtOqb/6vAn6W06iTjnnR460AbE
-   bRxZa7/pS5oh9VxZHqLLoC5JOn12zN2wq/8XDc4zAETwBXRzEHWjE1c7G
-   g==;
-IronPort-SDR: A1LAoFzyfcnhi0uZIwbn8U+XV2yMea2jYd7ocZ8ThxWpi8kmngxwGaYG0KUHzGyJsyzopkIFs9
- xQ/kBAF1rfHSMYIipVk9BWzrbkgjGQlARx/OdUY1Io+Ct9tfdF7hnf+zemINw+Mydn3B1wT6cX
- Vrjocu1ZWVRQMS1pZ53nCtqPQxcYlAYjEX3bSQ1m84Ytnu8CMvaUUbj+j0hNns1qVxS+KK/JS6
- B3XhZIsGmBkHIVQT/Ztc41SDXV9FFEDgNvk8tiFny0RgZ4uB96zOEMNAlNWeiMRiXvf2Z3osr0
- Oz93s+Kg/pE3iZED4OJ8+mm1
-X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
-   d="scan'208";a="145433415"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Dec 2021 06:30:52 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Fri, 3 Dec 2021 06:30:51 -0700
-Received: from [10.159.245.112] (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2176.14 via Frontend
- Transport; Fri, 3 Dec 2021 06:30:49 -0700
-Subject: Re: [PATCH] video: fbdev: atmel_lcdfb: fix an error code in
- atmel_lcdfb_probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20211203095808.GE2480@kili>
-From:   Nicolas Ferre <nicolas.ferre@microchip.com>
-Organization: microchip
-Message-ID: <b09117ad-40bb-4abb-1f40-c31c5ca5989b@microchip.com>
-Date:   Fri, 3 Dec 2021 14:30:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229445AbhLDWRX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 4 Dec 2021 17:17:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229516AbhLDWRW (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Dec 2021 17:17:22 -0500
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C054C0613F8
+        for <linux-fbdev@vger.kernel.org>; Sat,  4 Dec 2021 14:13:56 -0800 (PST)
+Received: by mail-yb1-xb35.google.com with SMTP id g17so19966909ybe.13
+        for <linux-fbdev@vger.kernel.org>; Sat, 04 Dec 2021 14:13:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=N5DhA+n6UJSAz6Ft1NTY91Ftj5wKhHYLdUBvUL+ORbE=;
+        b=DzI6c/2052ToimeuuqlhZYoaslJJBOZtgqUKqtnREuj6YLWvWJqKOtimTVP1gSg52S
+         x9N4gSOfxpbSmW4fPgGXgOEPWe5cigpYwzjN2uvu2VBCCoLnVXMWbgoQKFlfw5S51ijr
+         EIb/XjciohFeZp238UbjYUmAJOhe+acM2rXVsnvanZu3iSC8G92cFET+yH9laftTsnCS
+         awobfsaCrU12eic7AnjFivjHPizMS4ugTEiu6kF99J5g+CV9XKe8o/N1FKjYl/fJg73F
+         Lf3pEJmUp6dR/0wvEEBH9reW5Ac5kiI/eOCxJH77yAikdCCtWAuUasQvn/hxwYMtN/KV
+         Tcrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=N5DhA+n6UJSAz6Ft1NTY91Ftj5wKhHYLdUBvUL+ORbE=;
+        b=NF9E3b+EIq3TE6xoAM1yzAwM+HteWGb3EkquvASVUrKwdnZA+1pmlRpjQqBZe+mv2J
+         pho3vEAKwy/VtaJwCtnNEjvtabVgf4k5Wtxr7N/0mt01sknHRZNoEnI8AQca44ZLixrR
+         yrGcUKDF0mln81Lrgoh+V2tJ87Pu/NJnmSvoWYJrJxAkAtXFGSLyXyNH4Pna/fk7pIyu
+         dMBKv/s79PY2Qi1Wmn7zeYj5+so0QMKe+jqWl+tsubQpCp7dw/wzV8QeSoQBuVnARRRj
+         D2qotbCEguv6AFEcGHZ4qJpsPmCBcO5M/43zoz5KZrxz43Pms5Y0OfagiidkpH1C6w1P
+         PgDQ==
+X-Gm-Message-State: AOAM530cWyRiiJe+8qPWDouoXs+8aMJWVmlqzigzkYpvUp9K7WL2kKn9
+        zqI/K6hods5iqv7orIAm45ByZTPuTniN/vRi4I0=
+X-Google-Smtp-Source: ABdhPJw18EEYeT3S0mGs11kLNHlajLGHYLR57b7yCFtrGlgdjsYrYLgKLyAONE8crCR9H90y6KhHunYdg9j6lBwAvYM=
+X-Received: by 2002:a25:ac24:: with SMTP id w36mr31122526ybi.118.1638656035578;
+ Sat, 04 Dec 2021 14:13:55 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20211203095808.GE2480@kili>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:7108:6104:0:0:0:0 with HTTP; Sat, 4 Dec 2021 14:13:55
+ -0800 (PST)
+Reply-To: mohammedshamekh24@gmail.com
+From:   Mrmohammed shamekh <yousefzongo994@gmail.com>
+Date:   Sat, 4 Dec 2021 14:13:55 -0800
+Message-ID: <CAHQV77hSg5bwbC5KofeiajZ6qjxdPF=0Htm+vvk9mgJxs+gMfg@mail.gmail.com>
+Subject: THE AMOUNT IS 27.5 MILLIOMS USD
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 03/12/2021 at 10:58, Dan Carpenter wrote:
-> If "sinfo->config" is not found, then return -ENODEV.  Don't
-> return success.
-> 
-> Fixes: b985172b328a ("video: atmel_lcdfb: add device tree suport")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Dear Friend,
 
-Looks good to me: thanks Dan!
+Greetings.
 
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+How are you doing today i hope fine?
 
-Best regards,
-   Nicolas
+I came across your e-mail contact prior a private search while in need
+of your assistance. My name  Mr  mohammed   shamekh  =E2=80=99 I work with =
+the
+department of Audit and accounting manager here in UBA Bank of Africa,
+There is this fund that was keep in my custody years ago and I need
+your assistance for the transferring of this fund to your bank account
+for both of us benefit for life time investment and the amount is (US
+$27,500. Million Dollars).
 
-> ---
->   drivers/video/fbdev/atmel_lcdfb.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-> index 355b6120dc4f..1fc8de4ecbeb 100644
-> --- a/drivers/video/fbdev/atmel_lcdfb.c
-> +++ b/drivers/video/fbdev/atmel_lcdfb.c
-> @@ -1062,15 +1062,16 @@ static int __init atmel_lcdfb_probe(struct platform_device *pdev)
-> 
->          INIT_LIST_HEAD(&info->modelist);
-> 
-> -       if (pdev->dev.of_node) {
-> -               ret = atmel_lcdfb_of_init(sinfo);
-> -               if (ret)
-> -                       goto free_info;
-> -       } else {
-> +       if (!pdev->dev.of_node) {
->                  dev_err(dev, "cannot get default configuration\n");
->                  goto free_info;
->          }
-> 
-> +       ret = atmel_lcdfb_of_init(sinfo);
-> +       if (ret)
-> +               goto free_info;
-> +
-> +       ret = -ENODEV;
->          if (!sinfo->config)
->                  goto free_info;
-> 
-> --
-> 2.20.1
-> 
+I have every inquiry details to make the bank believe you and release
+the fund to your bank account in within 7 banking working days with
+your full co-operation with me after success Note 50% for you while
+50% for me after success of the transfer of the funds to your bank
+account okay.
 
+WAITING TO HEAR FROM YOU.
+THANKS.
 
--- 
-Nicolas Ferre
+ Mr  mohammed   shamekh ,
