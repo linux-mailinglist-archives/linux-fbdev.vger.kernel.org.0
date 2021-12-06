@@ -2,84 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC1846880A
-	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Dec 2021 23:14:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AA04691D1
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Dec 2021 09:53:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbhLDWRX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 4 Dec 2021 17:17:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbhLDWRW (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Dec 2021 17:17:22 -0500
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C054C0613F8
-        for <linux-fbdev@vger.kernel.org>; Sat,  4 Dec 2021 14:13:56 -0800 (PST)
-Received: by mail-yb1-xb35.google.com with SMTP id g17so19966909ybe.13
-        for <linux-fbdev@vger.kernel.org>; Sat, 04 Dec 2021 14:13:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=N5DhA+n6UJSAz6Ft1NTY91Ftj5wKhHYLdUBvUL+ORbE=;
-        b=DzI6c/2052ToimeuuqlhZYoaslJJBOZtgqUKqtnREuj6YLWvWJqKOtimTVP1gSg52S
-         x9N4gSOfxpbSmW4fPgGXgOEPWe5cigpYwzjN2uvu2VBCCoLnVXMWbgoQKFlfw5S51ijr
-         EIb/XjciohFeZp238UbjYUmAJOhe+acM2rXVsnvanZu3iSC8G92cFET+yH9laftTsnCS
-         awobfsaCrU12eic7AnjFivjHPizMS4ugTEiu6kF99J5g+CV9XKe8o/N1FKjYl/fJg73F
-         Lf3pEJmUp6dR/0wvEEBH9reW5Ac5kiI/eOCxJH77yAikdCCtWAuUasQvn/hxwYMtN/KV
-         Tcrw==
+        id S239769AbhLFI5I convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Mon, 6 Dec 2021 03:57:08 -0500
+Received: from mail-ua1-f41.google.com ([209.85.222.41]:41488 "EHLO
+        mail-ua1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229542AbhLFI5B (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Dec 2021 03:57:01 -0500
+Received: by mail-ua1-f41.google.com with SMTP id p37so18049427uae.8;
+        Mon, 06 Dec 2021 00:53:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=N5DhA+n6UJSAz6Ft1NTY91Ftj5wKhHYLdUBvUL+ORbE=;
-        b=NF9E3b+EIq3TE6xoAM1yzAwM+HteWGb3EkquvASVUrKwdnZA+1pmlRpjQqBZe+mv2J
-         pho3vEAKwy/VtaJwCtnNEjvtabVgf4k5Wtxr7N/0mt01sknHRZNoEnI8AQca44ZLixrR
-         yrGcUKDF0mln81Lrgoh+V2tJ87Pu/NJnmSvoWYJrJxAkAtXFGSLyXyNH4Pna/fk7pIyu
-         dMBKv/s79PY2Qi1Wmn7zeYj5+so0QMKe+jqWl+tsubQpCp7dw/wzV8QeSoQBuVnARRRj
-         D2qotbCEguv6AFEcGHZ4qJpsPmCBcO5M/43zoz5KZrxz43Pms5Y0OfagiidkpH1C6w1P
-         PgDQ==
-X-Gm-Message-State: AOAM530cWyRiiJe+8qPWDouoXs+8aMJWVmlqzigzkYpvUp9K7WL2kKn9
-        zqI/K6hods5iqv7orIAm45ByZTPuTniN/vRi4I0=
-X-Google-Smtp-Source: ABdhPJw18EEYeT3S0mGs11kLNHlajLGHYLR57b7yCFtrGlgdjsYrYLgKLyAONE8crCR9H90y6KhHunYdg9j6lBwAvYM=
-X-Received: by 2002:a25:ac24:: with SMTP id w36mr31122526ybi.118.1638656035578;
- Sat, 04 Dec 2021 14:13:55 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Fa88EzZGCDt/on2PK9adyVtAB10G/5IDqGLBZHmYHC8=;
+        b=KwokwK+RWxPJONzaBX8LW92uSZYvFMvjms4fcn7b8sY+Vxxf30fX1uUtUChrcTL3Y8
+         BcZBtuAVWRFFlBDzaQbR4v3arKPEPVKikf6GrMCwGxMuaB4aX+AwyfqkKw/ghwHRS1hA
+         v7Rxv8aMIqbDJQ4kt4SixOGAp+TUCXKePJeNfWlsfmaWf9c2SusvdkprF8GquokCX4bc
+         nzZ54yWFGqVOY8wlHpo3hTm7QNBmub1YkdbMAVFZZKLuPkyk5xL5HcUbS/JYhNvHfhAn
+         LYVwmzsYx5vD9R03oAlOZX4fgp0Zt1allNSvPmh0TO7e7KiCp/BqMwNy+w1ewPsD2GcB
+         a9eA==
+X-Gm-Message-State: AOAM531hTxCdQE2WPJZSoXtjHpfX8yyvUvikFCqrQsEf8XBwceNWonfq
+        76teORUolKYynP0+6F1sF5NgHCIKk5faig==
+X-Google-Smtp-Source: ABdhPJx7TrOfwq0LRXcD21wSqv37jDZ2rzVbRdyhdz+0sZFakCyNOnds9WaOmZhrI2bipq90C/Zswg==
+X-Received: by 2002:a67:6741:: with SMTP id b62mr34771718vsc.59.1638780812702;
+        Mon, 06 Dec 2021 00:53:32 -0800 (PST)
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com. [209.85.222.53])
+        by smtp.gmail.com with ESMTPSA id b11sm3694883vsp.6.2021.12.06.00.53.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Dec 2021 00:53:32 -0800 (PST)
+Received: by mail-ua1-f53.google.com with SMTP id t13so18046140uad.9;
+        Mon, 06 Dec 2021 00:53:32 -0800 (PST)
+X-Received: by 2002:a9f:3e01:: with SMTP id o1mr37900038uai.89.1638780812238;
+ Mon, 06 Dec 2021 00:53:32 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7108:6104:0:0:0:0 with HTTP; Sat, 4 Dec 2021 14:13:55
- -0800 (PST)
-Reply-To: mohammedshamekh24@gmail.com
-From:   Mrmohammed shamekh <yousefzongo994@gmail.com>
-Date:   Sat, 4 Dec 2021 14:13:55 -0800
-Message-ID: <CAHQV77hSg5bwbC5KofeiajZ6qjxdPF=0Htm+vvk9mgJxs+gMfg@mail.gmail.com>
-Subject: THE AMOUNT IS 27.5 MILLIOMS USD
-To:     undisclosed-recipients:;
+References: <20211124150757.17929-1-noralf@tronnes.org> <20211124150757.17929-2-noralf@tronnes.org>
+In-Reply-To: <20211124150757.17929-2-noralf@tronnes.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 6 Dec 2021 09:53:21 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUhtwXVFNCzijdtXtuRD=VeHQm2sEQ8WZfin6uBmY0QHg@mail.gmail.com>
+Message-ID: <CAMuHMdUhtwXVFNCzijdtXtuRD=VeHQm2sEQ8WZfin6uBmY0QHg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] dt-bindings: display: sitronix,st7735r: Fix backlight
+ in example
+To:     =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        David Lechner <david@lechnology.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        Dave Stevenson <dave.stevenson@raspberrypi.com>,
+        Maxime Ripard <maxime@cerno.tech>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear Friend,
+On Thu, Nov 25, 2021 at 4:17 PM Noralf Trønnes <noralf@tronnes.org> wrote:
+> The backlight property was lost during conversion to yaml in commit
+> abdd9e3705c8 ("dt-bindings: display: sitronix,st7735r: Convert to DT schema").
+> Put it back.
+>
+> Fixes: abdd9e3705c8 ("dt-bindings: display: sitronix,st7735r: Convert to DT schema")
+> Signed-off-by: Noralf Trønnes <noralf@tronnes.org>
 
-Greetings.
+Mea culpa
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-How are you doing today i hope fine?
+Gr{oetje,eeting}s,
 
-I came across your e-mail contact prior a private search while in need
-of your assistance. My name  Mr  mohammed   shamekh  =E2=80=99 I work with =
-the
-department of Audit and accounting manager here in UBA Bank of Africa,
-There is this fund that was keep in my custody years ago and I need
-your assistance for the transferring of this fund to your bank account
-for both of us benefit for life time investment and the amount is (US
-$27,500. Million Dollars).
+                        Geert
 
-I have every inquiry details to make the bank believe you and release
-the fund to your bank account in within 7 banking working days with
-your full co-operation with me after success Note 50% for you while
-50% for me after success of the transfer of the funds to your bank
-account okay.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-WAITING TO HEAR FROM YOU.
-THANKS.
-
- Mr  mohammed   shamekh ,
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
