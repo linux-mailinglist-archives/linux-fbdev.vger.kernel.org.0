@@ -2,72 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD7346E4C1
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Dec 2021 10:01:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F4C46ED4A
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Dec 2021 17:39:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbhLIJEv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Dec 2021 04:04:51 -0500
-Received: from szxga08-in.huawei.com ([45.249.212.255]:29109 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231602AbhLIJEv (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Dec 2021 04:04:51 -0500
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4J8nxr74yJz1DJyF;
-        Thu,  9 Dec 2021 16:58:24 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Thu, 9 Dec
- 2021 17:01:16 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <sam@ravnborg.org>, <b.zolnierkie@samsung.com>
-CC:     <dri-devel@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] video: fbdev: controlfb: Fix COMPILE_TEST build
-Date:   Thu, 9 Dec 2021 17:01:13 +0800
-Message-ID: <20211209090113.37756-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S241243AbhLIQn3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Dec 2021 11:43:29 -0500
+Received: from fanzine2.igalia.com ([213.97.179.56]:42096 "EHLO
+        fanzine2.igalia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237594AbhLIQn3 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Dec 2021 11:43:29 -0500
+X-Greylist: delayed 2352 seconds by postgrey-1.27 at vger.kernel.org; Thu, 09 Dec 2021 11:43:28 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:Cc:To:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=uQm73i/SP9nDAwtnCDdFJdGwSWts5HhgvbF+8/OlYWI=; b=niubyPA5iUr8u1NrlH8/EszIgN
+        izee9wd9bTJMaselSh4RK/XNr2psA8MWTmJsGuDRR9ZHGUn1FC/OXNBs+J2tr9btf1r9Atg6ZKoOV
+        M6qy8zuJofVZcHN1E4hDmbUFS8aPTuckD26T5EPDXjCqQoVENpVJ4XKx2EpugQMZcU82n9sAdmtr/
+        XTWkiR6ibFILabpmDCnHzWwIA8EB3pvdGRSdgGdLwZao8oUS7kRfan36IrjsGWLhghe8ofYhli2yJ
+        gRtPpHRpFM61JJzRFrIFQD3ML7jt5+HFn5lmds9hwZ+xBKETz4xZLCFceiqVleKqS9M5aPgN9+E3N
+        sBOE9/gQ==;
+Received: from [177.103.99.151] (helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1mvLqG-0008HM-8F; Thu, 09 Dec 2021 17:00:20 +0100
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: Reuse framebuffer after a kexec (amdgpu / efifb)
+To:     linux-fbdev@vger.kernel.org, kexec@lists.infradead.org,
+        amd-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, alexander.deucher@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, pjones@redhat.com,
+        Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
+        Vivek Goyal <vgoyal@redhat.com>, kraxel@redhat.com,
+        kasong@redhat.com,
+        =?UTF-8?Q?Samuel_Iglesias_Gons=c3=a1lvez?= <siglesias@igalia.com>,
+        gpiccoli@igalia.com, kernel@gpiccoli.net
+Message-ID: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
+Date:   Thu, 9 Dec 2021 13:00:04 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If PPC_BOOK3S, PPC_PMAC and PPC32 is n, COMPILE_TEST build fails:
+Hi all, I have a question about the possibility of reusing a framebuffer
+after a regular (or panic) kexec - my case is with amdgpu (APU, aka, not
+a separate GPU hardware), but I guess the question is kinda generic
+hence I've looped most of the lists / people I think does make sense
+(apologies for duplicates).
 
-drivers/video/fbdev/controlfb.c:70:0: error: "pgprot_cached_wthru" redefined [-Werror]
- #define pgprot_cached_wthru(prot) (prot)
 
-In file included from ./arch/powerpc/include/asm/pgtable.h:20:0,
-                 from ./include/linux/pgtable.h:6,
-                 from ./include/linux/mm.h:33,
-                 from drivers/video/fbdev/controlfb.c:37:
-./arch/powerpc/include/asm/nohash/pgtable.h:243:0: note: this is the location of the previous definition
- #define pgprot_cached_wthru(prot) (__pgprot((pgprot_val(prot) & ~_PAGE_CACHE_CTL) | \
+The context is: we have a hardware that has an amdgpu-controlled device
+(Vangogh model) and as soon as the machine boots, efifb is providing
+graphics - I understand the UEFI/GRUB outputs rely in EFI framebuffer as
+well. As soon amdgpu module is available, kernel loads it and it takes
+over the GPU, providing graphics. The kexec_file_load syscall allows to
+pass a valid screen_info structure, so by kexec'ing a new kernel, we
+have again efifb taking over on boot time, but this time I see nothing
+in the screen. I've manually blacklisted amdgpu in this new kexec'ed
+kernel, I'd like to rely in the simple framebuffer - the goal is to have
+a tiny kernel kexec'ed. I'm using kernel version 5.16.0-rc4.
 
-Fixes: a07a63b0e24d ("video: fbdev: controlfb: add COMPILE_TEST support")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/video/fbdev/controlfb.c | 2 ++
- 1 file changed, 2 insertions(+)
+I've done some other experiments, for exemple: I've forced screen_info
+model to match VLFB, so vesafb took over after the kexec, with the same
+result. Also noticed that BusMaster bit was off after kexec, in the AMD
+APU PCIe device, so I've set it on efifb before probe, and finally
+tested the same things in qemu, with qxl, all with the same result
+(blank screen).
+The most interesting result I got (both with amdgpu and qemu/qxl) is
+that if I blacklist these drivers and let the machine continue using
+efifb since the beginning, after kexec the efifb is still able to
+produce graphics.
 
-diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
-index 509311471d51..bd59e7b11ed5 100644
---- a/drivers/video/fbdev/controlfb.c
-+++ b/drivers/video/fbdev/controlfb.c
-@@ -67,7 +67,9 @@
- #define out_8(addr, val)	(void)(val)
- #define in_le32(addr)		0
- #define out_le32(addr, val)	(void)(val)
-+#ifndef pgprot_cached_wthru
- #define pgprot_cached_wthru(prot) (prot)
-+#endif
- #else
- static void invalid_vram_cache(void __force *addr)
- {
--- 
-2.17.1
+Which then led me to think that likely there's something fundamentally
+"blocking" the reuse of the simple framebuffer after kexec, like maybe
+DRM stack is destroying the old framebuffer somehow? What kind of
+preparation is required at firmware level to make the simple EFI VGA
+framebuffer work, and could we perform this in a kexec (or "save it"
+before the amdgpu/qxl drivers take over and reuse later)?
 
+Any advice is greatly appreciated!
+Thanks in advance,
+
+
+Guilherme
