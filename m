@@ -2,133 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6CD046ECC8
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Dec 2021 17:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B250446F1F3
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Dec 2021 18:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbhLIQNa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 9 Dec 2021 11:13:30 -0500
-Received: from mail-bn8nam11on2051.outbound.protection.outlook.com ([40.107.236.51]:26112
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229598AbhLIQNa (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 9 Dec 2021 11:13:30 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CXJgMPV07fcyPGZRV53ceIweTIn0bPETjkL9FtEtgZ6NbNWgiXzoJKK8SIhheFZl32XXEcL3i8z94Yma1lMWbTwwp3EEHoXOqGD7z6WMdaVE8DWRMMdWDn0TP4VsqINMJKjzLzMkM16kIJ3lDA+rmMiDTPZ+oF2oVlKKL1S7JFOWsf7iJ/uPtevb/xbFnPyPwSycazes7d24eX1XiZpKz68Fu5dt/RoS2phbfgr/Ad7Xe3jHYWiApMp2Wvy2lbu+sGStkPZuk00rog5+/RqIvc+mhwJO1Z+2dcuR800e2OUr7B642maDBGgg+n73bIJAL+sUe6f0ySRQzlcQS7aIqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dIQH8dKpSFLhB+6g7X8O5rMBjVCtA9Mcd/eAtP0sNZc=;
- b=UG2ylpu0ejkdtQZu8YDU8RkiDnAyknOfGSVjJGizlwsbgXKScdyveRwYYYlMjhaYwsZb49PKsGppX2QSm5Cnm8U9duunZ5wYe4MGFQiduUGjIy/Q4g9s+ksYt/40pSeE5Jhs0ORA0l3qL7FenG7vtSn9rHcQoz+80XZuCbw04IQTY1vogRKJd47C+94RB7Sio3ohO+7OExsg0JVkUJxMlMDVG1DTI67hiV00CG/D9BDLE0mcROkGFiMBgXUkah7JZhFchExXWyHGJIl2DqI8tTuewRadfmDlTQjpKkOhIIvvVBm+JoC7JBTSHagAfAP81UUJ6+vXT35mYUjc0wxe9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dIQH8dKpSFLhB+6g7X8O5rMBjVCtA9Mcd/eAtP0sNZc=;
- b=BzAUGNbmSldpStLN7oBXUHi6psZ3cbQi+8J2TCNE2LLQZahFtKgFvvMSgkYR03AhS7GFFBy2D43ifL0E7JVMaFs8HE5yAhRqX+evVQOJ5RYrR752m8uwnVfFBNYpyMm2JsOJkXP1m8t6zDAy5MtoLI2SSj424pybOS/sIr9bVLg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MWHPR1201MB0192.namprd12.prod.outlook.com
- (2603:10b6:301:5a::14) by MWHPR12MB1342.namprd12.prod.outlook.com
- (2603:10b6:300:e::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21; Thu, 9 Dec
- 2021 16:09:53 +0000
-Received: from MWHPR1201MB0192.namprd12.prod.outlook.com
- ([fe80::d16c:a6d5:5d2e:f9d4]) by MWHPR1201MB0192.namprd12.prod.outlook.com
- ([fe80::d16c:a6d5:5d2e:f9d4%12]) with mapi id 15.20.4755.024; Thu, 9 Dec 2021
- 16:09:53 +0000
-Subject: Re: Reuse framebuffer after a kexec (amdgpu / efifb)
-To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-fbdev@vger.kernel.org, kexec@lists.infradead.org,
-        amd-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, alexander.deucher@amd.com,
-        Xinhui.Pan@amd.com, pjones@redhat.com,
-        Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>, kraxel@redhat.com,
-        kasong@redhat.com,
-        =?UTF-8?Q?Samuel_Iglesias_Gons=c3=a1lvez?= <siglesias@igalia.com>,
-        kernel@gpiccoli.net
-References: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-Message-ID: <bb02d57c-d850-b319-9e76-663c0c2f8eed@amd.com>
-Date:   Thu, 9 Dec 2021 17:09:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-ClientProxiedBy: AM6P195CA0028.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:209:81::41) To MWHPR1201MB0192.namprd12.prod.outlook.com
- (2603:10b6:301:5a::14)
+        id S243013AbhLIRfi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 9 Dec 2021 12:35:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243006AbhLIRfh (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 9 Dec 2021 12:35:37 -0500
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3AE8C061746
+        for <linux-fbdev@vger.kernel.org>; Thu,  9 Dec 2021 09:32:03 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id t23so9685832oiw.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 09 Dec 2021 09:32:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hJMC/6XGazdnpccU1SQFAtAT2eakAt5TuZ88RaVgxf4=;
+        b=eaLDWdfmaDJowcYporVuPQkkPacWkuZRRERLd1GACogc2yYGlTn5IDnpIJc5mytXH4
+         G/opa3HpphlOfK8X5P/kXyD543tW27MG3AslNkWsNnW3ggm3ab3fsWwkBi/Ylin2u6ia
+         RsgiLjLCdxaylUkoUpbixv1XciOxOepBy238qS6+C6TZStvE9tQ5sH9E6vM4WniyvcJV
+         x1vg/0T5dqnm2QpeQMZUTGhCHXbfjHtnVcaSH7Wld71CkZdiIRLom0/Y+uPPqNOP4ubQ
+         aD/Tg18M+4pkVQHTB1rjodGfVBvQpk5BsdoixzTgp04VGI+Hm8GnSuOii8/OSjKnkiup
+         KWcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hJMC/6XGazdnpccU1SQFAtAT2eakAt5TuZ88RaVgxf4=;
+        b=mERIwnw2Qcjy/8SOmr63tGj78crQlajkQCVwQgeiNH5DvqQRdrPVsWnqcO51l8cMcM
+         lURTvLHhYpmyBLNIVS6y2J5tOyCqBADiYGeJ2CXWbTefogRaowmXXTKop2UHHPD04Xw7
+         F2hdpRGJGvzvy8GX/07oT9y64XHZVYw3FeiezcR13nUtXoj23Hmu8gtDpAsy4tgTt4wJ
+         XEcgottMTtlCNrN8f+FvkiAODUMPsahj2LG15BnINd7lCbRxWR7jcBOmSiV2pul80wut
+         6ecLFLBkeFl2E/PPvBAQEk1K5T2XYmNnOscyiqFnkcWWFarK9fyYMU5Sy1xljujtqZu1
+         b3+w==
+X-Gm-Message-State: AOAM533QCaGdmNc4fNDT0HjS8lyqolDL2zcXTzoUZss3AlkaboqUdF1E
+        q4JfgoXi3lEdzzD2vhomy8WxG+mcAsnB3C9Pu3s=
+X-Google-Smtp-Source: ABdhPJy6MHVWih4d5IPimIIFxsxWSoGf18XPipyVKTtGgk4agVOpT2bIzZbdI42ON7pCuoF5rqlXzl4H8MRN5iRXWCk=
+X-Received: by 2002:a05:6808:300b:: with SMTP id ay11mr7080461oib.120.1639071121305;
+ Thu, 09 Dec 2021 09:32:01 -0800 (PST)
 MIME-Version: 1.0
-Received: from [IPv6:2a02:908:1252:fb60:76cf:54fe:ebe4:b83c] (2a02:908:1252:fb60:76cf:54fe:ebe4:b83c) by AM6P195CA0028.EURP195.PROD.OUTLOOK.COM (2603:10a6:209:81::41) with Microsoft SMTP Server (version=TLS1_2, cipher=) via Frontend Transport; Thu, 9 Dec 2021 16:09:50 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e9e3eeb9-f6bb-4abd-2b30-08d9bb2e55f5
-X-MS-TrafficTypeDiagnostic: MWHPR12MB1342:EE_
-X-Microsoft-Antispam-PRVS: <MWHPR12MB13427BFAB762F993F784A3E683709@MWHPR12MB1342.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RDbzvSScDPk/9EsXPEXxtn5rKAh7XWcbVWso0X+ZblQ6CsyVUbOouS6jirKkGMQ6XFKLQ0claXSC5LXK01DsISFLJyomeT1gIW+tYci1+OmOaXokJf2GGqmydmd0F8yjJTzZjVYhUg1dOe1i8KkA97yndLshm1lUrJZNhnbLnG+S1U4OnTOayNRrC5u5pMi1OGjOC12Q6NBOiQ/Xu+8tKTDKL7BG6urA8gYkJYjBEXHFPNP4eTStm6m1VImMfUFjWHQe7+FmSnainsPy18zIaFbErGCuxQ8+RZaOm8obbqsFi1gMowtudpmGldETPPwSzXhOsgtvNxjSd35e6xyon/2757uhC3CF28DzXxO3F58OwXJMWkuOgocJMuXGzvKHaobv3yppEBpA76f+e9MMm8mdlfSVwOFWP/BUGPLlImJ8mmr1qmUULab/abg82NosydjQh2k5d46jSAkQU9wD2tXzTzh+N33AEZLAqUgy18qnwuzHZiiRCDdIfNspO8xfnZ3c9JRo63+5wEB3OH2KgpC0Iv7ovh8+2Vl/kWbB6f7b25Cha2KI1xPFYh7EO5B2TjHI+VurpVfGcC6Fagp+0qVNdhXL29i8Uv3NvqBNhLAm3qlaUg+oe1E4pI2uhRgAif9HxICouk3okm8CDh1fbZDj+HtaNNbx6Hek5MApPaKREegWbi7PtZps8xDZx8hEi6soFO7cR1VS/caJkN+g4cXn5r+Km4UgY+AirSOTohTbmt26eyXdjyUjVU/vv2Ws
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1201MB0192.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(66476007)(4326008)(66556008)(8676002)(8936002)(2616005)(508600001)(66946007)(36756003)(7416002)(6666004)(83380400001)(86362001)(31696002)(316002)(2906002)(31686004)(38100700002)(5660300002)(186003)(54906003)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SktzTW9CTGpXczZGU0NCcjQwWVRTSDVlMnRPeHNGcFVldWZMN2FFcDVNb2Nv?=
- =?utf-8?B?RTAwcUVtMnl1Mzg2eEJjUEMvOGx3VUdidVMzbGZrVXVlaUJhM3duaEorL0ZJ?=
- =?utf-8?B?RnNrNUlGS1IrQ1pXdlJjV2JPK2xXVmRIdWdueERoRnl6WDNoemJzOFNZbUdH?=
- =?utf-8?B?WHcrTzhYY3VvTWVQQWgzbE4vZ3NtU2JQalZobnFMdUZka3MzSWlaUjljc09m?=
- =?utf-8?B?NGlhbGpwd2psbGxoUVU3dGhsQit3SGp4dTljOFFKQWFMSEpsMlRMWWc4NlU4?=
- =?utf-8?B?WUROeVhlenRIUkIrd3ZTL0ozbmJhQ0czeWtzZ1llMm9CcEtHck52SEw3emFu?=
- =?utf-8?B?MmdvR1l1ZFEyMGdzOTBvK1RtVUY4UjVMa0UxcDBWMXdmcWo0bVJLRkhEYXkv?=
- =?utf-8?B?SVFMcTJVSTJQVWRWOUNRMFRiOVN1TlJ3dkt4c1NEUUR6dUhvcnJkRkxBdDZV?=
- =?utf-8?B?cElKZ3BWbHZIR3FnU0IxRi8vZ1NJeXVIN1QycWJEUitnb2RvSzNrZVFFL0Ey?=
- =?utf-8?B?cXh6d2Y3MS9RdUF1L1ljWlNCMmdFY2dOVlp2L0QzcW5ZZEVPUlNvM2lXRlhp?=
- =?utf-8?B?eVYvU1VEVUhSZ1ViLzdnS1lTTWJUZ1hBSjA1dUhURnRQSk9mT2IxNnM0Tkxl?=
- =?utf-8?B?dmVVRTdZTUxEVU01MGVFcGdhNStmOGpZNDBFN3E2RFF3U04wQjZxb3IvK3Iz?=
- =?utf-8?B?YW4vZENjUDBJRTljR09kbFRXcW4yejJKMm5oNi9ydU5VWWlRSGFabHhwS3Jk?=
- =?utf-8?B?cGxJcVBraHV6YnNZMm51T3ZDSUtUZ0ZKRi9wVEswdHhoTXJORUgvcHFKWDFS?=
- =?utf-8?B?Nys1Z2NON2FXWjI0MUduS2RBTzZXc3dlbGp1Qjg4bkJlSDRJNE5YbDM5VTQw?=
- =?utf-8?B?dDNIWjNwdFdLWW01NzlYYzh6YVMzZmRZRzQ0eGdjS0xzUkZIVENHTlFEMVl2?=
- =?utf-8?B?Smd3QjJyNE44THFMcldUdFdyZW5BeDBhbEs0RUdON3BQRGV1R1AxRXN0WmVF?=
- =?utf-8?B?UHVrT1Ewd0dJTzhHdWFyc3A1QkFyUDBjT1BUdFU4TnVscEtuZTdsaWJxcWJt?=
- =?utf-8?B?VDc2ZmtOZldtMGE5aExHam5ObThxUGhPbEprUjVkZEZJWGFkbk4wcmFySWNG?=
- =?utf-8?B?clV1ZmVnZklqUVZKUUxUWGJuVGRwTytEVEwxdGJlaW05aUQwTEFtQlJvMjkz?=
- =?utf-8?B?dFo5RmY0MWV2Ukc3UEd1NXdLUHFBQUJ6MFpLdnRJV3V2K3lCQmRRdEtvWTY0?=
- =?utf-8?B?cWFTWGprd0U5TC91NnYxZW13Nlg3RDJNdGVLVzZrOTR6RC85MUVsb09WaEhO?=
- =?utf-8?B?dmVQaU9xdXZFUjhabWVST2M0ZndUMy9xQ0draGFvdHVLVnZYOFFVMkY3b0Fa?=
- =?utf-8?B?TWlpdEhtWjl1NGthMlVrSkJhUVF5SGt0VVVzemIvWE5xeGxiQU1sejAyUVNG?=
- =?utf-8?B?Ti9hTWxsOFZPLzJiK0xiaS9hZ2FCMERBTEdJK3VKekQrenBSKzV3S3h6VTFs?=
- =?utf-8?B?aDExcEErOE1yNjRnRFZiN3BEQXg0b0pkR2p6Y3RXN1dOTm1YeVA4MkR1SkRM?=
- =?utf-8?B?eERxcTZGVHVBZkg4VnhLWFN6eGVtTTZCaTd4TDZ2RWp2dUpCbGRDWUNTdDNK?=
- =?utf-8?B?ekhkRkQzeDRXYlU4M1hNRXoxOXN1QiswQXdRQTVTSXl5cS9HRm5KTlovMGJW?=
- =?utf-8?B?UXFwOFl1d3kwbWZySkJIMit1V0NTSU5Qd016N1Y5YVpXSUtzRlUvL3JlaVU4?=
- =?utf-8?B?alV0MVZ6aHdxMHVrOFRSbFlMOFNNZDBSeGZHbE1DeTZYZFEzbFJvUFRsMkVW?=
- =?utf-8?B?S1hGRy9YaXpKMUFBVlA2QTVLUFBja1dLMjdyZjZuWVAxbEJ2ZmQxWmIzNEpU?=
- =?utf-8?B?Z2IrbFRZVVVCTk9GSEZESFA5QXFSaGFEaktkWmFGclVzS2Fhblk1WkcwWUZs?=
- =?utf-8?B?aFlwOUFIU0lKaHpJMDQ0YkZTOHk2cHZTdXNTMVA1amxIUU00RGpXZXJzcGJ5?=
- =?utf-8?B?REZ4cmU0UVNpcHBUMWhmQ0cwejJseUZjdkRhN25BQzgydk1VYUlXUDdvckVI?=
- =?utf-8?B?eFA1U1d5bzJmR2N3NUx0d1A5TUtmbGdlOUxTbElrLzdBNUJsNHh6S0IzRHhO?=
- =?utf-8?B?WEZXWXJNVnBFbWo2Z0UyZExwNXI0Z1NzUDhjWEtjUDREdGV3ejF2cnRFYTcr?=
- =?utf-8?Q?9+5g1WZLsQ/wwmmS9TTa/7o=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9e3eeb9-f6bb-4abd-2b30-08d9bb2e55f5
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1201MB0192.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2021 16:09:53.6465
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ag49N4Z13oCkQr5Kf9W2CW8i/HQ33D/yfc357i2iykxGRaRSbyK9aT7LvbQ1cF1m
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR12MB1342
+References: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
+In-Reply-To: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 9 Dec 2021 12:31:50 -0500
+Message-ID: <CADnq5_O8x3_8f7GZ=tme55-QW+nqMJ2YoqvROjDPg2YZP2catQ@mail.gmail.com>
+Subject: Re: Reuse framebuffer after a kexec (amdgpu / efifb)
+To:     "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     "open list:EFIFB FRAMEBUFFER DRIVER" <linux-fbdev@vger.kernel.org>,
+        kexec@lists.infradead.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        kernel@gpiccoli.net, kasong@redhat.com,
+        Baoquan He <bhe@redhat.com>,
+        =?UTF-8?Q?Samuel_Iglesias_Gons=C3=A1lvez?= <siglesias@igalia.com>,
+        xinhui pan <Xinhui.Pan@amd.com>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, pjones@redhat.com,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "Deucher, Alexander" <alexander.deucher@amd.com>,
+        Dave Young <dyoung@redhat.com>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Vivek Goyal <vgoyal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Guilherme,
-
-Am 09.12.21 um 17:00 schrieb Guilherme G. Piccoli:
+On Thu, Dec 9, 2021 at 12:04 PM Guilherme G. Piccoli
+<gpiccoli@igalia.com> wrote:
+>
 > Hi all, I have a question about the possibility of reusing a framebuffer
 > after a regular (or panic) kexec - my case is with amdgpu (APU, aka, not
 > a separate GPU hardware), but I guess the question is kinda generic
@@ -164,25 +108,21 @@ Am 09.12.21 um 17:00 schrieb Guilherme G. Piccoli:
 > preparation is required at firmware level to make the simple EFI VGA
 > framebuffer work, and could we perform this in a kexec (or "save it"
 > before the amdgpu/qxl drivers take over and reuse later)?
-
-unfortunately what you try here will most likely not work easily.
-
-During bootup the ASIC is initialized in a VGA compatibility mode by the 
-VBIOS which also allows efifb to display something. And among the first 
-things amdgpu does is to disable this compatibility mode :)
-
-What you need to do to get this working again is to issue a PCIe reset 
-of the GPU and then re-init the ASIC with the VBIOS tables.
-
-Alex should know more details about how to do this.
-
-Regards,
-Christian.
-
 >
+
+Once the driver takes over, none of the pre-driver state is retained.
+You'll need to load the driver in the new kernel to initialize the
+displays.  Note the efifb doesn't actually have the ability to program
+any hardware, it just takes over the memory region that was used for
+the pre-OS framebuffer and whatever display timing was set up by the
+GOP driver prior to the OS loading.  Once that OS driver has loaded
+the area is gone and the display configuration may have changed.
+
+Alex
+
+
 > Any advice is greatly appreciated!
 > Thanks in advance,
 >
 >
 > Guilherme
-
