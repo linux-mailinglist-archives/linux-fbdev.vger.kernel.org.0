@@ -2,63 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E640F46FEC0
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Dec 2021 11:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6347146FF84
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Dec 2021 12:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232876AbhLJKcI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 10 Dec 2021 05:32:08 -0500
-Received: from smtpbg604.qq.com ([59.36.128.82]:41067 "EHLO smtpbg604.qq.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229685AbhLJKcI (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 10 Dec 2021 05:32:08 -0500
-X-QQ-mid: bizesmtp41t1639132106te84a0qj
-Received: from localhost.localdomain (unknown [182.148.15.171])
-        by esmtp6.qq.com (ESMTP) with 
-        id ; Fri, 10 Dec 2021 18:28:22 +0800 (CST)
-X-QQ-SSF: 01000000002000905000B00A0000000
-X-QQ-FEAT: 2YircyAZcttVhO3fNgRwuEXtz87LTwFhcBlCiG1QLK3XgbXoBrgSmwW3KZlln
-        ClgP9V7qQ+F75WRCB1RUIwPgBENsseluzGqw03+lzOpbJvLsS5UksoEO1map0Kxx4g0QVuW
-        wtcfC6FcMQHIvQzqM2/5kDwHlAdNdg9eECDrvtNEOPN+UNR6M1I50ZkJGx0r57ztQxqVqNi
-        RZDCTqr4j4Axjk0KtOertRlyuRinAhpTXVrBWgqfkDgEFNijbKM+CK2zwSCKcoVmNuS9J1n
-        gFRnT79e96iHkEFbjdX+XTjMfVdsp10FiYKZmoCQFVj1zF1gpa6UfMiVwnKXyHvA5QIg==
-X-QQ-GoodBg: 0
-From:   Chunyang Zhong <zhongchunyang@cdjrlc.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chunyang Zhong <zhongchunyang@cdjrlc.com>
-Subject: [PATCH] =?UTF-8?q?video:=20ocfb:=20add=20const=20to=20of=5Fdevice?= =?UTF-8?q?=5Fid=C2=A0?=
-Date:   Fri, 10 Dec 2021 18:28:16 +0800
-Message-Id: <20211210102816.9187-1-zhongchunyang@cdjrlc.com>
-X-Mailer: git-send-email 2.34.1
+        id S235145AbhLJLOl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 10 Dec 2021 06:14:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230266AbhLJLOl (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Fri, 10 Dec 2021 06:14:41 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0C0C061746
+        for <linux-fbdev@vger.kernel.org>; Fri, 10 Dec 2021 03:11:06 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id 13so13148004ljj.11
+        for <linux-fbdev@vger.kernel.org>; Fri, 10 Dec 2021 03:11:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=MJP7wImtBDw8H4PK2aZ3ZntvFPd8o+wyHEJQi9qm7e4=;
+        b=ozRqeI6PiJ1SUodHHLxl9rkuEB7gIJUkVYEtUnD4EHM0Zdv9zY+vozq2PTytUd8LyU
+         oiD05rS8vvGDv4ucPjTr/gvGb30/xjuBFjRSta1INyFNWNRNT+l1e9b6jfarc48/mmFf
+         SdxwFMa85guMliblp+yV55tUFGuLXST7Zijp+o0ipyKgA4tCPBkX/4iZXMO1CsrMFN9Z
+         2qTW6G9me2bvGiIDY0oCxR6M2I/ItbsvEDWV5p6AjbuHkTyAEjZ5hDqaiFMr0AQ8Ss0k
+         KDh+IrdCEzNv86KdRP/dgUQQMaSIg4Z5SJktr2/kqUHIgLYgnnzAsPLMPxksTfwgpiW5
+         QD8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=MJP7wImtBDw8H4PK2aZ3ZntvFPd8o+wyHEJQi9qm7e4=;
+        b=Dd9JvI91CmEuSxwtlYItZWalpOX5XR2B3MbSczYvPTavxf78aTnceLqeFYK3FAfXsH
+         s2Fn9p1mgFYANQpjgj9UhPaNREtUR669c+AMqi4E+P/1fOkTuPoGHNryOJiTIuob5PeY
+         g+1KSzUFyofKIINy0yYd3n4LnqW/Obw3CNzHHDoXKQsCjMXy3VJs7FbckDN10zCb7Fdc
+         9Tsyoe+s8qbgmioYsHLIp8wllJFC99uqCV8fZGjwrXBDVv6mGAa1xTbNCypPfKwq/2Li
+         8j5XSsRLqB48OlzHDrg66rY9QKxx/Zs4DV8UCF01pmfYFtuB9WQ9MON9l66k8LG/cQnl
+         cA1g==
+X-Gm-Message-State: AOAM533sQQVfdbuwj+x/vu6uF3rj+1xwYo1Inibajhh2GlCZ1OPcYO+I
+        pysnEXP0FHJBCSh0B130I2P1Y4MUQrj1HvIZ6J0=
+X-Google-Smtp-Source: ABdhPJzR2E3Qffakp2UIfyp4Ad8SBtniBqOGj4Ktlf6aXow5BZaIcgCUBolcaexrJH7pvaX38R/YKQktZUNj3JCjeRw=
+X-Received: by 2002:a2e:22c3:: with SMTP id i186mr12480943lji.417.1639134664571;
+ Fri, 10 Dec 2021 03:11:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam4
+Received: by 2002:aa6:da94:0:b0:14d:1db:1375 with HTTP; Fri, 10 Dec 2021
+ 03:11:04 -0800 (PST)
+Reply-To: t50730171@gmail.com
+From:   Maria-Elisabeth_Schaeffler <sofiamoraa12@gmail.com>
+Date:   Fri, 10 Dec 2021 14:11:04 +0300
+Message-ID: <CAMVcRWopkUbP8YxA+Hh_Kiu6wEo_aS95_3tw-jkBz8SrWynsFA@mail.gmail.com>
+Subject: Re
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-struct of_device_id should normally be const.
+--=20
+Ich bin Maria-Elisabeth Schaeffler, Ihre Spende von 1.500.000,00 Euro ist
+noch verf=C3=BCgbar.E-Mail f=C3=BCr weitere Informationen
 
-Signed-off-by: Chunyang Zhong <zhongchunyang@cdjrlc.com>
----
- drivers/video/fbdev/ocfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/ocfb.c b/drivers/video/fbdev/ocfb.c
-index bfa4ed421148..da7e1457e58f 100644
---- a/drivers/video/fbdev/ocfb.c
-+++ b/drivers/video/fbdev/ocfb.c
-@@ -387,7 +387,7 @@ static int ocfb_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--static struct of_device_id ocfb_match[] = {
-+static const struct of_device_id ocfb_match[] = {
- 	{ .compatible = "opencores,ocfb", },
- 	{},
- };
--- 
-2.34.1
-
+Gr=C3=BC=C3=9Fe
+Maria-Elisabeth_Schaeffler
