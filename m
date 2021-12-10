@@ -2,67 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6347146FF84
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Dec 2021 12:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47455470272
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Dec 2021 15:09:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235145AbhLJLOl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 10 Dec 2021 06:14:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230266AbhLJLOl (ORCPT
+        id S232663AbhLJOMo (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 10 Dec 2021 09:12:44 -0500
+Received: from fanzine2.igalia.com ([213.97.179.56]:45966 "EHLO
+        fanzine2.igalia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232310AbhLJOMn (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 10 Dec 2021 06:14:41 -0500
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0C0C061746
-        for <linux-fbdev@vger.kernel.org>; Fri, 10 Dec 2021 03:11:06 -0800 (PST)
-Received: by mail-lj1-x244.google.com with SMTP id 13so13148004ljj.11
-        for <linux-fbdev@vger.kernel.org>; Fri, 10 Dec 2021 03:11:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=MJP7wImtBDw8H4PK2aZ3ZntvFPd8o+wyHEJQi9qm7e4=;
-        b=ozRqeI6PiJ1SUodHHLxl9rkuEB7gIJUkVYEtUnD4EHM0Zdv9zY+vozq2PTytUd8LyU
-         oiD05rS8vvGDv4ucPjTr/gvGb30/xjuBFjRSta1INyFNWNRNT+l1e9b6jfarc48/mmFf
-         SdxwFMa85guMliblp+yV55tUFGuLXST7Zijp+o0ipyKgA4tCPBkX/4iZXMO1CsrMFN9Z
-         2qTW6G9me2bvGiIDY0oCxR6M2I/ItbsvEDWV5p6AjbuHkTyAEjZ5hDqaiFMr0AQ8Ss0k
-         KDh+IrdCEzNv86KdRP/dgUQQMaSIg4Z5SJktr2/kqUHIgLYgnnzAsPLMPxksTfwgpiW5
-         QD8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=MJP7wImtBDw8H4PK2aZ3ZntvFPd8o+wyHEJQi9qm7e4=;
-        b=Dd9JvI91CmEuSxwtlYItZWalpOX5XR2B3MbSczYvPTavxf78aTnceLqeFYK3FAfXsH
-         s2Fn9p1mgFYANQpjgj9UhPaNREtUR669c+AMqi4E+P/1fOkTuPoGHNryOJiTIuob5PeY
-         g+1KSzUFyofKIINy0yYd3n4LnqW/Obw3CNzHHDoXKQsCjMXy3VJs7FbckDN10zCb7Fdc
-         9Tsyoe+s8qbgmioYsHLIp8wllJFC99uqCV8fZGjwrXBDVv6mGAa1xTbNCypPfKwq/2Li
-         8j5XSsRLqB48OlzHDrg66rY9QKxx/Zs4DV8UCF01pmfYFtuB9WQ9MON9l66k8LG/cQnl
-         cA1g==
-X-Gm-Message-State: AOAM533sQQVfdbuwj+x/vu6uF3rj+1xwYo1Inibajhh2GlCZ1OPcYO+I
-        pysnEXP0FHJBCSh0B130I2P1Y4MUQrj1HvIZ6J0=
-X-Google-Smtp-Source: ABdhPJzR2E3Qffakp2UIfyp4Ad8SBtniBqOGj4Ktlf6aXow5BZaIcgCUBolcaexrJH7pvaX38R/YKQktZUNj3JCjeRw=
-X-Received: by 2002:a2e:22c3:: with SMTP id i186mr12480943lji.417.1639134664571;
- Fri, 10 Dec 2021 03:11:04 -0800 (PST)
+        Fri, 10 Dec 2021 09:12:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version
+        :Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=5yk3PMdMrly9uoExh+OEJE1DOXMyGVLKP7rSdgJVNZ0=; b=CYBEqPPI/qPh3lyUNsyrrYX2Nv
+        lqhMQ6zLZOAdDzQm21vf9mkn3VErM30Lm62X5Q/f5on8aVDl7RwqADEhQT/p+AbIe07hul7Ow1YBB
+        isrQ1H5dgyFsX8UHAX0SL/jKR8q7f4ZWMMBZrG19OOVqh1ZKB71ebEmulfFhy4B0ZLQXT4NNe7cwt
+        acfoPnjkWqahpSAWTL+5Rky6isDgycmQmr3L7JeCpVBipGYMzf+XCcQonc25sd7+oqth/Bhr1WG3Y
+        c6/QfxSyP6PDRC3P30k/H5OshUQdXWB5yKqgqWjfWxv1hJku4llANmXorT9ePwzkqm+o95hRRT6M8
+        fAx27O+A==;
+Received: from [177.103.99.151] (helo=[192.168.1.60])
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1mvgZv-0000a6-Oc; Fri, 10 Dec 2021 15:08:52 +0100
+Subject: Re: Reuse framebuffer after a kexec (amdgpu / efifb)
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Alex Deucher <alexdeucher@gmail.com>,
+        Gerd Hoffmann <kraxel@redhat.com>
+Cc:     "open list:EFIFB FRAMEBUFFER DRIVER" <linux-fbdev@vger.kernel.org>,
+        kexec@lists.infradead.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        kernel@gpiccoli.net, Baoquan He <bhe@redhat.com>,
+        =?UTF-8?Q?Samuel_Iglesias_Gons=c3=a1lvez?= <siglesias@igalia.com>,
+        xinhui pan <Xinhui.Pan@amd.com>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, pjones@redhat.com,
+        "Deucher, Alexander" <alexander.deucher@amd.com>,
+        Dave Young <dyoung@redhat.com>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Vivek Goyal <vgoyal@redhat.com>
+References: <62aab616-53cb-ff9f-c5f3-169c547bd1ee@igalia.com>
+ <CADnq5_O8x3_8f7GZ=tme55-QW+nqMJ2YoqvROjDPg2YZP2catQ@mail.gmail.com>
+ <a1f4d263-b3d2-4ceb-8a89-948c8129500f@igalia.com>
+ <CADnq5_N9ptK4c86LO77YcrF5_M==hket+L7eYjsGCaKbORO=ug@mail.gmail.com>
+ <eaea0143-a961-b83c-3c6c-4d612cd003bc@igalia.com>
+ <6d3c7acf-a23f-3073-56ed-375ccb8cc815@suse.de>
+From:   "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Message-ID: <99b38881-8c63-de04-50f8-aa4119b52b25@igalia.com>
+Date:   Fri, 10 Dec 2021 11:08:33 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:aa6:da94:0:b0:14d:1db:1375 with HTTP; Fri, 10 Dec 2021
- 03:11:04 -0800 (PST)
-Reply-To: t50730171@gmail.com
-From:   Maria-Elisabeth_Schaeffler <sofiamoraa12@gmail.com>
-Date:   Fri, 10 Dec 2021 14:11:04 +0300
-Message-ID: <CAMVcRWopkUbP8YxA+Hh_Kiu6wEo_aS95_3tw-jkBz8SrWynsFA@mail.gmail.com>
-Subject: Re
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <6d3c7acf-a23f-3073-56ed-375ccb8cc815@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Ich bin Maria-Elisabeth Schaeffler, Ihre Spende von 1.500.000,00 Euro ist
-noch verf=C3=BCgbar.E-Mail f=C3=BCr weitere Informationen
+Thanks a lot Alex / Gerd and Thomas, very informative stuff! I'm glad
+there are projects to collect/save the data and reuse after a kdump,
+this is very useful.
+
+I'll continue my study on the atombios thing of AMD and QXL, maybe at
+least we can make it work in qemu, that'd be great (like a small
+initdriver to reprogram de paravirtual device on kexec boot).
+
+Cheers,
 
 
-Gr=C3=BC=C3=9Fe
-Maria-Elisabeth_Schaeffler
+Guilherme
