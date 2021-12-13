@@ -2,79 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E30C14716F7
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Dec 2021 22:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D936C47227C
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Dec 2021 09:27:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231602AbhLKV6W (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 11 Dec 2021 16:58:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54054 "EHLO
+        id S229960AbhLMI1N (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 13 Dec 2021 03:27:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231613AbhLKV6U (ORCPT
+        with ESMTP id S229890AbhLMI1M (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 11 Dec 2021 16:58:20 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC34C061D76
-        for <linux-fbdev@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id r11so39951168edd.9
-        for <linux-fbdev@vger.kernel.org>; Sat, 11 Dec 2021 13:58:19 -0800 (PST)
+        Mon, 13 Dec 2021 03:27:12 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87E3C0613FE
+        for <linux-fbdev@vger.kernel.org>; Mon, 13 Dec 2021 00:27:11 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id w1so49176122edc.6
+        for <linux-fbdev@vger.kernel.org>; Mon, 13 Dec 2021 00:27:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=SOBkDHN1upt351fJGA10IENq8Lskn6OtfiA/mtFXWwbxNo6rK0VqMIikUbNdR10QL9
-         NEz57nH7+DwD4ui2QjR5G0PDUg/x30DeYlpAViKmfLpj6c8owgTXHIRe2HlXrWJIYspc
-         p1qexb7VgQzyxOs2U317jKWC2PVt5FsJQNP/qzuU8HlodfKZxoIrg2Y5u0+UlgiuF7n+
-         KF6xHlFhNhhV0WZH+n1XpQNFkro1//sIniT/eC7+Qq7omDixZHJ42uWefxucVRQsgqoP
-         MP9jAyQEdDJw2KiXunMshfyB4wcDGfWvxehuLHSr6op0i/Er4qRI4zT2OKxsbV2QjSnP
-         PYpQ==
+        bh=9qNVJJUEkc7Dcqq+w3jXBP/JOAXOW45KnRjiowBHvGk=;
+        b=lGsG+RSK6fKMObsJQ7Iti5lpYgJ6YDHFJh2yVwO4XuHD8dveHSTYe/H5vctCR3EceI
+         XqKuogxu2fO0A5lqmYqIOpALu/ZAlwyN5MpiGyuxrhGT4dFdyWMvGpLMx8bvZsddP9hp
+         uygNMnJ/yqA/HLuo9RxL3P+UaNjwUw8FVJxoH5ME1qus3y9LosZQt6MPD+Go9ivr+x+I
+         5NBCzSlBofWA0sfijE46EUYppcRu4UKN9UbgQuwQlhr8/MVWSyaIoK6EGtTLTPMvbQQ1
+         YS5aqS6H4kpadwXpvOh44y1zf//CCrxgItwxZNG/CI17aEzqwFI/8ITqQJIsV4zBY6wg
+         c6OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=fytrlX/rpFExfbg+F+wC3rh05O0Qaj+9pkICjk8s5y1AkbGIuxDcK/tpwuwpHK4mFs
-         Z1H/lvjqg1hhYb7KKDWlGrcpdDDNhktKBSbkMOSSHeUt7PCf1FMBBq8059oLyuVgMtu3
-         q6zZXwm1UkgebSsWoUWkvfubegCZVWP8sgqbXFYwlIr2HLrqHu9q/PCA/ONVAhEtj3dG
-         GnbolxZ9msL+jU+MGNJDSletxTVvTA0qW+nOTT6xdihAVf1PL3B0qGTBbR7WOH+SMxgK
-         REgOcH/NgEdsKnaDg4MLkKfdDmsnuVXVf7HLIEI3ZfjJFupP/yZrN6gxJSw10v/aN3iN
-         q4rg==
-X-Gm-Message-State: AOAM531LlHL/gxH6gX8YytLBwgsQD+IVaqaMz6Fe0DEl8lCTogX77sT/
-        tZzD/5PKcggARLHfW2BugNwb2TV8Vo0D2e6ZmYU=
-X-Google-Smtp-Source: ABdhPJxTVLquc00JfCv8xmVg6F+Df36Ax6F8m8eI1vWHtjjPBaUzu2dvtxl/29t2QJINStCFpJhLct20UqzajIEroTA=
-X-Received: by 2002:a17:907:6da2:: with SMTP id sb34mr33325880ejc.509.1639259897490;
- Sat, 11 Dec 2021 13:58:17 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9qNVJJUEkc7Dcqq+w3jXBP/JOAXOW45KnRjiowBHvGk=;
+        b=vyCNUGvb7ok2wsJhEKE+5+ETTp3m435CykjOZlTdHQtJ1A9tmFULg9M/X3OyPoR8gb
+         F7VDR/Qk1up+RKv1td+YQQyWZRCxejw96T4tCTzBf86u6tcDjFxfpI9OmedvK0n0x7el
+         5Mo//GIHqnkOacI6a0fN40z2bJLI/bzpOiZiEaj5qMajzfqsYiH4tATPdJ0/EM5aXVdb
+         Oieqovj0UmjDw4g7ZR1DbxoUh4FVT9BhkeSsKtuYlrK/xzX8z28SFuFABbVQN2pbqBei
+         NrbuvG8fUfgCwDveUW3LNG0JBCbWPVzdF9trSMZQWaaNfskYWkQ8xLmBu0acP3psIBwJ
+         1A2A==
+X-Gm-Message-State: AOAM530GcItHudwTxQ4fh/Nbw2w7KY/vhgNUD9T2S82d+lpegfsbzBlz
+        bvAiAO9vfQv1nD1T8r97vH+wAQ==
+X-Google-Smtp-Source: ABdhPJzJQzH9IbD0iKwzxP+OhiHo4OBp+NQ23YW0riJPC6Agdl1/DHF8upIV5V9+Kb8bNnWCgPyEyg==
+X-Received: by 2002:a17:907:608f:: with SMTP id ht15mr41645248ejc.300.1639384030231;
+        Mon, 13 Dec 2021 00:27:10 -0800 (PST)
+Received: from localhost.localdomain ([2a02:a210:20c5:8c80:7d0a:cd68:c339:f426])
+        by smtp.gmail.com with ESMTPSA id b11sm6062432ede.62.2021.12.13.00.27.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Dec 2021 00:27:09 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        de Goede <hdegoede@redhat.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Rob Herring <robh@kernel.org>, Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH 00/10] dt-binding patches for sm6350
+Date:   Mon, 13 Dec 2021 09:26:01 +0100
+Message-Id: <20211213082614.22651-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Reply-To: martinafrancis022@gmail.com
-Sender: rebeccaalhajidangombe@gmail.com
-Received: by 2002:a17:907:94d3:0:0:0:0 with HTTP; Sat, 11 Dec 2021 13:58:16
- -0800 (PST)
-From:   Martina Francis <martinafrancis61@gmail.com>
-Date:   Sat, 11 Dec 2021 13:58:16 -0800
-X-Google-Sender-Auth: QI6h_ccu4Os7HpLN5lf7FmNkMqQ
-Message-ID: <CANadOMYJBdKak2aObykULF4gdU88=OTR03g+XDqpCofMfFracg@mail.gmail.com>
-Subject: Bom Dia meu querido
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Bom Dia meu querido,
-Como vai voc=C3=AA hoje, meu nome =C3=A9 Dona Martina Francis, uma vi=C3=BA=
-va doente.
-Eu tenho um fundo de doa=C3=A7=C3=A3o de ($ 2.700.000,00 USD) MILH=C3=95ES =
-que quero
-doar atrav=C3=A9s de voc=C3=AA para ajudar os =C3=B3rf=C3=A3os, vi=C3=BAvas=
-, deficientes
-f=C3=ADsicos e casas de caridade.
+This series adds compatibles to the dt-bindings documentation where it
+was missed before.
 
-Por favor, volte para mim imediatamente ap=C3=B3s ler esta mensagem para
-obter mais detalhes sobre esta agenda humanit=C3=A1ria.
+Finally, the last patch solves some further dtbs_check errors by
+modifying the sm6350.dtsi to match the binding docs more closely.
 
-Deus te aben=C3=A7oe enquanto espero sua resposta.
-Sua irm=C3=A3.
+Please note, that the first patch from Konrad is a resend that wasn't
+picked up when sent to the lists in August 2021.
 
-Sra. Martina Francis.
+Konrad Dybcio (1):
+  dt-bindings: arm: msm: Add LLCC for SM6350
+
+Luca Weiss (9):
+  dt-bindings: firmware: scm: Add SM6350 compatible
+  dt-bindings: qcom,pdc: Add SM6350 compatible
+  dt-bindings: phy: qcom,qusb2: Add SM6350 compatible
+  dt-bindings: thermal: tsens: Add SM6350 compatible
+  dt-bindings: usb: qcom,dwc3: Add SM6350 compatible
+  dt-bindings: watchdog: Add SM6350 and SM8250 compatible
+  dt-bindings: arm: msm: Don't mark LLCC interrupt as required
+  dt-bindings: simple-framebuffer: allow standalone compatible
+  arm64: dts: qcom: sm6350: Fix validation errors
+
+ .../devicetree/bindings/arm/msm/qcom,llcc.yaml   |  2 +-
+ .../bindings/display/simple-framebuffer.yaml     | 12 +++++++-----
+ .../devicetree/bindings/firmware/qcom,scm.txt    |  1 +
+ .../bindings/interrupt-controller/qcom,pdc.txt   |  5 +++--
+ .../devicetree/bindings/phy/qcom,qusb2-phy.yaml  |  1 +
+ .../devicetree/bindings/thermal/qcom-tsens.yaml  |  1 +
+ .../devicetree/bindings/usb/qcom,dwc3.yaml       |  1 +
+ .../devicetree/bindings/watchdog/qcom-wdt.yaml   |  2 ++
+ arch/arm64/boot/dts/qcom/sm6350.dtsi             | 16 ++++++++--------
+ 9 files changed, 25 insertions(+), 16 deletions(-)
+
+-- 
+2.34.1
+
