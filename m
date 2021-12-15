@@ -2,65 +2,72 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 456664751A3
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Dec 2021 05:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BC0A4762D0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Dec 2021 21:12:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230148AbhLOEdz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 14 Dec 2021 23:33:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236534AbhLOEdz (ORCPT
+        id S233166AbhLOULn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 15 Dec 2021 15:11:43 -0500
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:41495 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231579AbhLOULm (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 14 Dec 2021 23:33:55 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E7DC061574
-        for <linux-fbdev@vger.kernel.org>; Tue, 14 Dec 2021 20:33:55 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id v22so20616893qtx.8
-        for <linux-fbdev@vger.kernel.org>; Tue, 14 Dec 2021 20:33:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Un4Qg2mtadAK4QldVbLnA81+HtRHjcmdeWxKah39+H0=;
-        b=Swe158upuzOcGtWgnaFnRZs+lNuJefeK6Y+TEo5HXrxRCoQvg8gz1uPVXpgvmtUriv
-         cZRqFljY0NQlD9HL/gBY7sJpc+HgXV2xIz2eAZ5xamCa18P+KkW+LcC14S1i4GkpVWWI
-         QjcB4+Hmgq1TB3S+Hq5wqjcUsKMPLpHleIeEE2mWqPXUBGZSETQKBZiI+NBis4OiXxqL
-         8xq4RNnEYLoovA2PsuFngM56NdPiFT/I+/DZ/Iwpu66hBqqzdWZuL9KNlOIBsXCgMyQY
-         ERHDctVFU7lF4y0si1jzN0ECGn+rbgkSfMXJoATYw28kBCECq9HTmHgzPKGKPAtRrj9r
-         Vm6w==
+        Wed, 15 Dec 2021 15:11:42 -0500
+Received: by mail-oi1-f172.google.com with SMTP id u74so33202683oie.8;
+        Wed, 15 Dec 2021 12:11:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=Un4Qg2mtadAK4QldVbLnA81+HtRHjcmdeWxKah39+H0=;
-        b=sQfR4TR0frWKBbcy10k4V5B4DhkLW/7OEvnQb48OH6dzdP459UqlpYr7WM8iosS4zX
-         RNHF8ySBClDjoc13hpzNIl4RppAO1lNKQRbfhjw8kKhdvsHUbskHM67GmNKln/R5j1sl
-         4Y2/vAk8O39ffYQAXq95ULuOP1Qdc6NdHszwvg25arcKykUJnx9aV0xFOREDf3EoCnSO
-         qahYjq0fTm1jGIjTpQj5JPaHhhxf9AhpV6iCbMLSaH56Xqz4aIKY448t6NioxOVRh0vy
-         geW5BX3tkPpIqgdr5khyxt7bkWU9inGSc2gIdopaXOW5f2cchQkI39OEHfAqPyRMOfGG
-         aciw==
-X-Gm-Message-State: AOAM531NoaimjvAQl1X6WVw1ELpnH0J22s+osNnzUUDDvlhjbRPUmUs9
-        eMZ1Ee9lYJuxOxLUHs/7BAdZocGVnHXS+ge53lQ=
-X-Google-Smtp-Source: ABdhPJztChy36AVbPnFcNM/p7rkO7ZZtSZGFpNkFDL26x8ZDtuAo6SDcVQkY3A39+uALcl3qIF8ik4nfW1doWfMP+P0=
-X-Received: by 2002:a05:622a:40a:: with SMTP id n10mr10348362qtx.161.1639542834119;
- Tue, 14 Dec 2021 20:33:54 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Cmkh2Es9i+8G9hTWcV5pi5vTt+BeIBoGLAmd/MNJvhA=;
+        b=rHlH7992kDmAW+WsyErx+09JpmdGdhepl53qn+WtU4mA1yb4dpdSl0S4dE9ZWAUsvX
+         vP6kM7YCwKed/OM7fpo44/YtFTOcxbctopFuGAu2xx/5d9b+IbFbPpQW1T6uzHUkjKKE
+         dGLjticDX0O1Ce9ph0qLB42j3v6LAxoR6OHV/NU8AUze1C8wYPPW2ZFuNWkCBx4SEn5l
+         /OTdpCFTrosuNUfPDZ5jWh9+d9+mWc0hOYpN22ZPFNtjVvTp8aAH27WGvdkD4K0JZHZK
+         hxk/jCCpXMl3dFxgIkNxy1qwl6L8w1QEpJb/rRPOuxpAZpkB4wMkrVw2b8+LipaWxpvM
+         8A6Q==
+X-Gm-Message-State: AOAM531fJz+/aIP1V43B/Fu8PNFbDEjHY/Qy6cYcbmVF2bgcIGZr0iFP
+        WBugT9Z6TocRsfji9lpnPQ==
+X-Google-Smtp-Source: ABdhPJyM1ZMlrf4TO+CVAER9wA5DaXo2npuenGcEbYZYr9u3fHtpFP4yfaVSSVT0qgkXzTvNNTxF8g==
+X-Received: by 2002:aca:1c02:: with SMTP id c2mr1417576oic.53.1639599102086;
+        Wed, 15 Dec 2021 12:11:42 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id b22sm514322oib.41.2021.12.15.12.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 12:11:41 -0800 (PST)
+Received: (nullmailer pid 1756808 invoked by uid 1000);
+        Wed, 15 Dec 2021 20:11:40 -0000
+Date:   Wed, 15 Dec 2021 14:11:40 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>,
+        phone-devel@vger.kernel.org, David Airlie <airlied@linux.ie>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/10] dt-bindings: simple-framebuffer: allow standalone
+ compatible
+Message-ID: <YbpL/MG0xZyVD01B@robh.at.kernel.org>
+References: <20211213082614.22651-1-luca.weiss@fairphone.com>
+ <20211213082614.22651-10-luca.weiss@fairphone.com>
 MIME-Version: 1.0
-Sender: landrlne2000@gmail.com
-Received: by 2002:a05:6214:5186:0:0:0:0 with HTTP; Tue, 14 Dec 2021 20:33:53
- -0800 (PST)
-From:   "Mrs. Lia Ahil Ahil" <mrsliaahila@gmail.com>
-Date:   Wed, 15 Dec 2021 04:33:53 +0000
-X-Google-Sender-Auth: Y2oNkbAIg9Z7Bw6ED4qZpLLwaDo
-Message-ID: <CAAtc_K8vZhqCt3daoBU2ueFAsM99qqtuZD2UzrDU91RLu7JxDQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211213082614.22651-10-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Gr=C3=BC=C3=9Fe, wie geht es dir heute, hast du die E-Mail erhalten, die ic=
-h dir
-vor ein paar Tagen geschickt habe? Bitte melde dich f=C3=BCr weitere
-Informationen bei mir zur=C3=BCck
+On Mon, 13 Dec 2021 09:26:10 +0100, Luca Weiss wrote:
+> Qualcomm platforms use "simple-framebuffer" without a more specific
+> compatible. Allow that in the binding doc.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  .../bindings/display/simple-framebuffer.yaml         | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+
+Acked-by: Rob Herring <robh@kernel.org>
