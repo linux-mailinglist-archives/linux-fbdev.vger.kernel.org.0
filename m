@@ -2,94 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A95D5481DEC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Dec 2021 17:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D77481E24
+	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Dec 2021 17:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240435AbhL3QGa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 30 Dec 2021 11:06:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S241314AbhL3QgT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 30 Dec 2021 11:36:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238908AbhL3QG3 (ORCPT
+        with ESMTP id S241210AbhL3QgS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 30 Dec 2021 11:06:29 -0500
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB03C061574;
-        Thu, 30 Dec 2021 08:06:28 -0800 (PST)
-Received: by mail-wr1-x42c.google.com with SMTP id v11so51316177wrw.10;
-        Thu, 30 Dec 2021 08:06:28 -0800 (PST)
+        Thu, 30 Dec 2021 11:36:18 -0500
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6748DC06173E
+        for <linux-fbdev@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
+Received: by mail-ed1-x541.google.com with SMTP id f5so100058996edq.6
+        for <linux-fbdev@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
+        h=mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=x0Z4VfhJECgT1/vs4niZzj7+Z6gvqhAPOkKcI0mAqoc=;
-        b=ipzs2Z2aIE/u3K6VQ0AbCXqJ8wzmf1CopsYvKY+Qnn/ypMJrQW++LKWeEAwsV267tf
-         t/OWBLVKSyFw0wHISAQYQ/sekslWFw+GrVzFpI2MXI+UUgXxYiJnRgyfaUcgYLs5Nbc5
-         OU4JWJ+vwyVDzJbMgAD/7iEZaV+serEDsV9EO6Q+mLPRybz+otJsAr9upP8DSB9ux1y7
-         C3ZIYUS+20ZWs3XKnn++HN1OxbYZrd/hWqjy0MeN+9OO5294IDMdhtAUM/m7bOuNEj09
-         R2c0HsgYjT3+g57nvb2HtHm56oclfA62XnLRfylNZNz+mv1MqDvvyoM3JLoj+slwMRF2
-         HwjQ==
+        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
+        b=Tl2guSR4m3xEw3rpULIHJ++wqFW/SYEQmQ7WMIbnHy2zYaUoARg7cK9PknZf6cN0W3
+         Peuy4aLjRGAefGaAUwuauVVgDEtZLCzlwjNxLtx80PQlCxoGSnVjxl5sdsVysUIYKcXe
+         ZHEvY5FhgjEl58lOLJ1A9t4h30umP/Ypa+sfhqsYwU7Yrt1WkeUurBVz0ENELi+zsR3u
+         BJQNY1VfxHUUaE/8TT5cdKRGj8c4KYFh+H7dGlxuQ+DG6onDg8Jr518b+Y5yocGrGcCe
+         yh+h+XVHDxXODtQ3qlmex9RXZy1vi5EDfVkrKOrMBn882gkRab822AE3oOXEEvSNp6yc
+         Cq3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=x0Z4VfhJECgT1/vs4niZzj7+Z6gvqhAPOkKcI0mAqoc=;
-        b=f4x8gtobQecwUVp9tnKQ1itwB9jRS47fc0xsb3g9qkVjvGdjRfIJR1i55ExwU0rd25
-         YWD6efBhXHo305qa0xnlRE5VGYFjm7jkulFVd9V5mj7SHaLC9dLtxgc8SJaOQJMz72Jc
-         H9PXL2qxYjKnEVAO/NhTCpFFdUnB+e2IhvHH1uNPQmY845E88+GeC/m+lEwH/EZ3kqfn
-         X3ZEJ4dZYlCRgQkgOrFXjXrGvX0pTK9ToggDBvCExBziYNS8xKYJ5W88Ot8AV3ska5bk
-         d74saj+/tUeKpkBl2tyraYezh6ajdCwVsdQbxt8wF5HtGUi2BLG9wmfQL8Kx0hqex2zN
-         QHIA==
-X-Gm-Message-State: AOAM533++NehMkajvWCGrSXM6cl8LLdgyb6AGo7oWCnoZeKmY3MzeZ2l
-        oou5pgpCl5lbFIjq/HDtVSWGyC0Zmpe8e4gi
-X-Google-Smtp-Source: ABdhPJwh/LJEO882P8Cm7xI3bzxI9mqZ37vTY5joIviEvK7W3BI5qy21cL58BLPI6V+WVVtkmMpCMA==
-X-Received: by 2002:a05:6000:1241:: with SMTP id j1mr27249409wrx.601.1640880387487;
-        Thu, 30 Dec 2021 08:06:27 -0800 (PST)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id r7sm23477675wrt.77.2021.12.30.08.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Dec 2021 08:06:27 -0800 (PST)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: [PATCH] video: fbdev: s3c-fb: remove redundant initialization of pointer bufs
-Date:   Thu, 30 Dec 2021 16:06:26 +0000
-Message-Id: <20211230160626.404072-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.33.1
+        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
+        b=7toPR/16wFJ4zpjnlh0M/HFRBEqQSCwsM4yqlcDuhFGslxdtNy6//9H4NkyPkBCj+q
+         o7GNVaT6Vaz4HgqCDXCWb2Sml5+ThgkKVRF3YPPtB64uzeQ5vsb9f6W/YaBcYJsKj5VG
+         HhOvezI+AlYaD6Rhji8giJMTAiJa1qP18ImRna497R0QIyp22JqM2GSfjdhsQ2L2tctW
+         tYzPCFQ1gMoT5cZ3iUe05frV4pjtRne6n+vMfbf60q0NmeS4y8L9swsWKb9rTILACf6m
+         Ymw9+C71UKiQQX5c0lw6C6+hI/OcHl2XWmb7FGR321jNOlhGd5MwmP1+fk6nR/3UJ/F5
+         ojQQ==
+X-Gm-Message-State: AOAM533fL0rwYkgxUxVMosNxtyyVv7TRrjBqbznvgRDLZ2msHIubfV2Z
+        K4DR44BCh8aju9W+V2Qq+MBjRxWAI6Uuzz+5ztM=
+X-Google-Smtp-Source: ABdhPJzOomp7dfsSHzp32oQmbyN2PzdvUl16PkfjdGA/zQ1JLDHrj2HPGycg1+BKCtW6WdYSjbqXMvD8Y4OnayGP3mo=
+X-Received: by 2002:a17:907:9805:: with SMTP id ji5mr25733798ejc.431.1640882176818;
+ Thu, 30 Dec 2021 08:36:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6402:524a:0:0:0:0 with HTTP; Thu, 30 Dec 2021 08:36:16
+ -0800 (PST)
+From:   saleem norman <norsaleem74@gmail.com>
+Date:   Thu, 30 Dec 2021 08:36:16 -0800
+Message-ID: <CALzdWh_x5jjnnv1r9eGK9qr1a48HO-KCPT0FhG6Jv8RmohjA0g@mail.gmail.com>
+Subject: DEAR FRIEND CONTACTS MY SECRETARY HIS E-MAIL nelson_salah@aol.com.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Pointer bufs is being initialized with a value that is never read, it
-is being re-assigned with a different value later on. The assignment
-is redundant and can be removed. Cleans up clang-scan warning:
+I'M SORRY BUT HAPPY TO INFORM YOU ABOUT MY SUCCESS IN GETTING THOSE
+FUNDS TRANSFERRED UNDER THE CO-OPERATION OF A NEW PARTNER FROM
+PARAGUAY THOUGH I TRIED MY BEST TO INVOLVE YOU IN THE GOLD/DIAMOND
+BUSINESS BUT GOD DECIDED THE WHOLE SITUATIONS. PRESENTLY AM IN UNITED
+ARAB EMIRATES FOR INVESTMENT PROJECTS WITH MY OWN SHARE OF THE TOTAL
+SUM OF THE MONEY. MEANWHILE, I DIDN'T FORGET YOU=E2=80=99RE PAST EFFORTS AN=
+D
+ATTEMPTS TO ASSIST ME IN TRANSFERRING THOSE FUNDS DESPITE THAT
+EVERYTHING FAILED US SOMEHOW. NOW CONTACT MY SECRETARY IN BURKINA
+FASO. MR. NELSON SALAH BY NAME: HIS E-MAIL nelson_salah@aol.com.
 
-drivers/video/fbdev/s3c-fb.c:492:16: warning: Value stored to 'buf'
-during its initialization is never read [deadcode.DeadStores]
-        void __iomem *buf = regs;
+ASK HIM TO SEND YOU THE VISA CARD TOTAL SUM OF $2.500, 000.00.USD
+WHICH I KEPT FOR YOUR COMPENSATION FOR ALL THE PAST EFFORTS AND
+ATTEMPT TO ASSIST ME IN THIS MATTER. I DEEPLY APPRECIATED YOUR EFFORTS
+AT THAT TIME VERY MUCH. SO FEEL FREE AND KEEP IN TOUCHED WITH MY
+SECRETARY; MR. NELSON SALAH AND INSTRUCT HIM WHERE TO SEND THE VISA
+CARD VALUE SUM OF $2.500, 000.00.USD TO YOU. NOW THIS AMOUNT IS ME AND
+THE NEW PARTNER CONTRIBUTE AND OFFER YOU THIS AMOUNT
+$1.500.000.00.USD. IS FROM MY OWN SHARE WHILE MY NEW PARTNER SUPPORTED
+YOU ALSO WITH SUM OF $ 1000000.USD. FROM HIS OWN SHARE ALSO BECAUSE I
+EXPLAIN THE WHOLE FACTS TO HIM THAT YOU ARE THE FIRST PERSON I
+CONTACTED THAT WANTED TO ASSIST ME WHILE YOU COULD NOT MAKE IT AND HE
+SAID OKAY THERE'S NO PROBLEM.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/video/fbdev/s3c-fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+SO YOU HAVE TO KEEP THE WHOLE SECRET ABOUT MY SUCCESS, BECAUSE I
+BELIEVE ONLY YOU KNOW HOW I MADE THIS MONEY SO TRY TO KEEP EVERYTHING
+SECRET. I HOPE YOU UNDERSTAND THE REASON WHY THIS HUGE AMOUNT OF FUNDS
+WAS KEPT FOR YOU? PLEASE DO LET ME KNOW IMMEDIATELY YOU RECEIVE THE
+VISA CARD SO THAT WE CAN SHARE THE JOY AFTER ALL THE SUFFERINGS AT
+THAT TIME; IN THIS MOMENT OF TIME, I'M VERY BUSY HERE BECAUSE OF THE
+INVESTMENT PROJECTS WHICH MYSELF AND THE NEW PARTNER ARE HAVING AT
+HAND, FINALLY;
 
-diff --git a/drivers/video/fbdev/s3c-fb.c b/drivers/video/fbdev/s3c-fb.c
-index 3b134e1bbc38..68408c499627 100644
---- a/drivers/video/fbdev/s3c-fb.c
-+++ b/drivers/video/fbdev/s3c-fb.c
-@@ -489,7 +489,7 @@ static int s3c_fb_set_par(struct fb_info *info)
- 	struct s3c_fb_win *win = info->par;
- 	struct s3c_fb *sfb = win->parent;
- 	void __iomem *regs = sfb->regs;
--	void __iomem *buf = regs;
-+	void __iomem *buf;
- 	int win_no = win->index;
- 	u32 alpha = 0;
- 	u32 data;
--- 
-2.33.1
+REMEMBER THAT I HAVE ALREADY FORWARD THE INSTRUCTION TO THE SECRETARY
+ON YOUR BEHALF TO RECEIVE THAT MONEY, SO FEEL FREE TO KEEP IN TOUCH
+WITH HIM, SO THAT HE WILL SEND THE VISA CARD VALUE SUM OF
+$2.500,000.00.USD. TWO MILLION FIVE HUNDRED THOUSAND UNITED STATE
+DOLLARS TO YOU WITHOUT ANY DELAY.
 
+BEST REGARDS,
+MR. NORMAN SALEEM.
