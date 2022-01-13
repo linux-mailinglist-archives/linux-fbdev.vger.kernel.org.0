@@ -2,107 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 887CE48E048
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jan 2022 23:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E447848E061
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jan 2022 23:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237533AbiAMWc0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 Jan 2022 17:32:26 -0500
-Received: from outbound3.eu.mailhop.org ([52.29.21.168]:13864 "EHLO
-        outbound3.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237652AbiAMWcX (ORCPT
+        id S238006AbiAMWhf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 13 Jan 2022 17:37:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233376AbiAMWhf (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 Jan 2022 17:32:23 -0500
-X-Greylist: delayed 1801 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Jan 2022 17:32:22 EST
-ARC-Seal: i=1; a=rsa-sha256; t=1642110372; cv=none;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        b=uennW3yVcMIzJ0RkJuN4g8GIrLxFLIfDRHEsh9iL73IRCu0bpq5H135TaiK261VPPU1CeYvue5/Yr
-         Xe+f2rm2n4g/r15Q6RGT6E44t81u2ZQlW5ITNjYz4QRRLqx5WxLDBOuPFiovyw80qzFPlFWdECfWTN
-         RJFo00IdtTHhENvWbmn3Bn8AcPeBqu3N2DEJ/k5oJFd7+8saP6VvN9mfL4WEGBB9QLcgiW27bLgSZO
-         4npZc6prj6rSPKkg5jHoVifVViJoqcgq5vR00aZuqSvUzVWAOY+vdlEzcthlXckeLcwITH/i2aneTi
-         NWHC3vCJp83q2OZf9yEIVP717xmd+1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=arc-outbound20181012;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:dkim-signature:dkim-signature:from;
-        bh=rNWUHGGDvJfQLWY/taj1SWuCMTjnvjFPnINSJEKI1nY=;
-        b=umlXFqOegdeuW0i6SozAUVanrJXKIAq1QORnUnO4R+4cjIHdl3cJtZ5xq5UtEET2OjqQ+yEGonhQk
-         IVosFw+tywLXvaBVLweVRWXILm+lPmoQxc/VOBNqZEx0nHFmuj2Td6NYeficIoLOEcrn2wnpV5+j/n
-         QZFtGAXVPkwA3zOj6zrEiYZw6iJnCi9YBPEvOJiZhV03PDYZ/Uh1kHKUBUPExz3UllSl+seCC+kDJc
-         4+CHwwaQ//I/Db79egLJemY7jWDBGVU2YEnBVI7a7tSpJdneTPrWSvqUtmNURFT00juGrqt1xct+P1
-         XkpGRnomY54q63p02z8CoeXWP687JCQ==
-ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
-        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
-        dmarc=none header.from=stackframe.org;
-        arc=none header.oldest-pass=0;
+        Thu, 13 Jan 2022 17:37:35 -0500
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F322CC06173E
+        for <linux-fbdev@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
+Received: by mail-pj1-x1043.google.com with SMTP id b1-20020a17090a990100b001b14bd47532so12514977pjp.0
+        for <linux-fbdev@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=stackframe.org; s=duo-1634547266507-560c42ae;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=rNWUHGGDvJfQLWY/taj1SWuCMTjnvjFPnINSJEKI1nY=;
-        b=RZuusrOs3EEIxaRIEGZabYaW7WRXhVybWvqucjpgddag6UgRP0fGLtb/iHpIeBGWLOp+T1fVBlaWO
-         FlUR0K1DsAhSF5TLmAu/Yxjus2U9T87D/i1+qmZLVCBBfGz+u2bnIJkN/Xcnx2g3XlSghD8Ly9cYTq
-         U9wtIRwew2uYuavg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=outbound.mailhop.org; s=dkim-high;
-        h=content-type:mime-version:message-id:in-reply-to:date:references:subject:cc:
-         to:from:from;
-        bh=rNWUHGGDvJfQLWY/taj1SWuCMTjnvjFPnINSJEKI1nY=;
-        b=qzXT/BXVCWUn9Aj0QVMxnMm/giqAVWL+LdsEFu095+2rX7grGODOG4jeRf4KcziPEUrFkfkhDuH3M
-         NOor7sHEYMd6nhJZInocaH8ibq3vVAVtJibB3UrJ63pLuFznpOf59cwWAZDSK/M0XxksUh30LM0v+5
-         p19gRfpPqzpxagBjD2PS4kR5NAom/oCxLdMzO2HE3Fbj4TqlOEg+LZGKYpEZe0fpxRP42NnnuG2gjI
-         z2cPCq0oKuzj+F5eCyMsUxKoNiHOtrofjofgpzUoLOOnNCxYlXyVggv2ZLQqQsnEkpitO4tWSTeqf2
-         VNTtPvI/JAQEzwc6BPStWy7bglPtCQQ==
-X-Originating-IP: 91.207.61.48
-X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 35ec3706-74ba-11ec-ba80-95b64d6800c5
-X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
-X-Mail-Handler: DuoCircle Outbound SMTP
-Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
-        by outbound3.eu.mailhop.org (Halon) with ESMTPSA
-        id 35ec3706-74ba-11ec-ba80-95b64d6800c5;
-        Thu, 13 Jan 2022 21:46:07 +0000 (UTC)
-Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
-        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <svens@stackframe.org>)
-        id 1n87v3-004SHi-8E; Thu, 13 Jan 2022 23:46:05 +0200
-From:   Sven Schnelle <svens@stackframe.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Hamza Mahfooz <someguy@effective-light.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: fbdev: Garbage collect fbdev scrolling acceleration
-References: <feea8303-2b83-fc36-972c-4fc8ad723bde@gmx.de>
-Date:   Thu, 13 Jan 2022 22:46:03 +0100
-In-Reply-To: <feea8303-2b83-fc36-972c-4fc8ad723bde@gmx.de> (Helge Deller's
-        message of "Thu, 13 Jan 2022 17:36:22 +0100")
-Message-ID: <87zgnz71ic.fsf@x1.stackframe.org>
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=hw2QHm9/aNktZ/qzuQXSkRUy05slaJ/WvDaiJCgGHFMXySDZvvIGzDhgSbZJUdTECM
+         MdsyglRV4bVtBlgs6NlTa2OZZQb8UXHcvDPyZenDaXGGB84cNoYGLo+l8eZZsEvrq5Im
+         0QFow4ZK52miBtwwdUrm32z8LGCqAekGP4+gI9Ckh2M8rFBHbSy7KEygQ4ef7wXS5trM
+         eFTTa4l+9bAEL29bXzLat9kocoX9b3C/W7UZsV2aG0QfATMgYjukBkx35MGQ/J/HWHpf
+         i43S30wchEYddd+UGoUtoAPFM19QSkZ6V57ux5a34QRW2VhSVilvHcgeI6HktJQ3BvcY
+         srrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
+        b=gEavG7cPtxF5wX0j7iqaywzFmrYarqwskV4cC3lb6V5KoWMSrn+zqmD3NgIbt6u9w0
+         l9P5ydmT+xzxtxdVOq1ETLUPDeIt7sVGZ1CFDF1+776r4vTrOrjcwVHCa0/Dgi3gnSp3
+         +mA+v591nWjeqFuoWwnmRXukuVu2D+KYgosys6gSyC7rLt2uuBxYr0OBwT+4WpjB5nsr
+         dG8hmfguQu509FXjH35iwZAU2Ip8srqGunlJSl0p8sIoUbHemcrkJ5ENp8FwRPflOIQx
+         hpUKuT4PrB7CvtYkO//k8KEHuZUE//QSyOuWKF+n8HJBQFP8xCPn6WWehxSM5n4f6LHu
+         94sQ==
+X-Gm-Message-State: AOAM532+pC3JY4AWYxBdisu6I6ImIt9I4iLMmmGwh+J1znhLjMt6+43R
+        kgnLfN+isGjg28JaFe+31NSOmrfYHfEZKjwlLKk=
+X-Google-Smtp-Source: ABdhPJxxHHvBgEhkMJqFxQL/kHCrtCcslOvL/VrT0n33mBCtCD1qSBM5W9SIxZcamVWgaajkCahPxuLA483LYyDvu8U=
+X-Received: by 2002:a17:902:c443:b0:14a:30f2:95e8 with SMTP id
+ m3-20020a170902c44300b0014a30f295e8mr6471213plm.43.1642113454449; Thu, 13 Jan
+ 2022 14:37:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:37:33
+ -0800 (PST)
+Reply-To: mchristophdaniel@gmail.com
+From:   Marcus Galois <marcus.galois@gmail.com>
+Date:   Thu, 13 Jan 2022 23:37:33 +0100
+Message-ID: <CANqBaXW+7Aw2P_8Sghn0knonQ3qJaAEAJ69RZesm9MBxFDG_5A@mail.gmail.com>
+Subject: Good News Finally.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Helge Deller <deller@gmx.de> writes:
+Hello friend.
 
-> I may have missed some discussions, but I'm objecting against this patch:
->
-> 	b3ec8cdf457e5 ("fbdev: Garbage collect fbdev scrolling acceleration, part 1 (from TODO list)")
->
-> Can we please (partly) revert it and restore the scrolling behaviour,
-> where fbcon uses fb_copyarea() to copy the screen contents instead of
-> redrawing the whole screen?
->
-> I'm fine with dropping the ypan-functionality.
->
-> Maybe on fast new x86 boxes the performance difference isn't huge,
-> but for all old systems, or when emulated in qemu, this makes
-> a big difference.
->
-> Helge
+You might find it so difficult to remember me, though it is indeed a
+very long time, I am much delighted to contact you again after a long
+period of time, I remember you despite circumstances that made things
+not worked out as we projected then. I want to inform you that the
+transaction we're doing together then finally worked out and I decided
+to contact you and to let you know because of your tremendous effort
+to make things work out then.
 
-I second that. For most people, the framebuffer isn't important as
-they're mostly interested in getting to X11/wayland as fast as possible.
-But for systems like servers without X11 it's nice to have a fast
-console.
+Meanwhile I must inform you that I'm presently in Caribbean Island for
+numerous business negotiation with some partners. with my sincere
+heart i have decided to compensate you with USD$900,000 for your
+dedication then on our transaction, you tried so much that period and
+I appreciated your effort. I wrote a cheque/check on your name, as
+soon as you receive it, you let me know.
+
+Contact my secretary now on his email: mchristophdaniel@gmail.com
+Name: Mr. Christoph Daniel
+
+You are to forward to him your Name........ Address.......,Phone
+number......for shipment/dispatch of the cheque/Check to you
+
+Regards,
+Mr. Marcus Galois
