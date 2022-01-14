@@ -2,84 +2,109 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E447848E061
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jan 2022 23:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF5048EEDA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jan 2022 17:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238006AbiAMWhf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 13 Jan 2022 17:37:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
+        id S243667AbiANQ7E (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jan 2022 11:59:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233376AbiAMWhf (ORCPT
+        with ESMTP id S243659AbiANQ7D (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 13 Jan 2022 17:37:35 -0500
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F322CC06173E
-        for <linux-fbdev@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
-Received: by mail-pj1-x1043.google.com with SMTP id b1-20020a17090a990100b001b14bd47532so12514977pjp.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 13 Jan 2022 14:37:34 -0800 (PST)
+        Fri, 14 Jan 2022 11:59:03 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F801C06173E
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jan 2022 08:59:03 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id o3so16601028wrh.10
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jan 2022 08:59:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=hw2QHm9/aNktZ/qzuQXSkRUy05slaJ/WvDaiJCgGHFMXySDZvvIGzDhgSbZJUdTECM
-         MdsyglRV4bVtBlgs6NlTa2OZZQb8UXHcvDPyZenDaXGGB84cNoYGLo+l8eZZsEvrq5Im
-         0QFow4ZK52miBtwwdUrm32z8LGCqAekGP4+gI9Ckh2M8rFBHbSy7KEygQ4ef7wXS5trM
-         eFTTa4l+9bAEL29bXzLat9kocoX9b3C/W7UZsV2aG0QfATMgYjukBkx35MGQ/J/HWHpf
-         i43S30wchEYddd+UGoUtoAPFM19QSkZ6V57ux5a34QRW2VhSVilvHcgeI6HktJQ3BvcY
-         srrQ==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tg4oCMG6li+TDjSwe6u86VlYXa8liJ00jWszISs+oTI=;
+        b=XEOBIwW/kQkclrF8e9c9xVwCab3wDlckLrQdSpSP8Q6g248n17tpuLNk/YrLR5DN5G
+         polByyx+FxbcK+p4gvaiqo0wiHU6seMH9LcQqa7YxAMPHhQcjYrh6Vgp7B4/6dVr6OKN
+         TU6gfhObqGnrBwxCL2NDWL66X4p7lARMmmf0Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=gEavG7cPtxF5wX0j7iqaywzFmrYarqwskV4cC3lb6V5KoWMSrn+zqmD3NgIbt6u9w0
-         l9P5ydmT+xzxtxdVOq1ETLUPDeIt7sVGZ1CFDF1+776r4vTrOrjcwVHCa0/Dgi3gnSp3
-         +mA+v591nWjeqFuoWwnmRXukuVu2D+KYgosys6gSyC7rLt2uuBxYr0OBwT+4WpjB5nsr
-         dG8hmfguQu509FXjH35iwZAU2Ip8srqGunlJSl0p8sIoUbHemcrkJ5ENp8FwRPflOIQx
-         hpUKuT4PrB7CvtYkO//k8KEHuZUE//QSyOuWKF+n8HJBQFP8xCPn6WWehxSM5n4f6LHu
-         94sQ==
-X-Gm-Message-State: AOAM532+pC3JY4AWYxBdisu6I6ImIt9I4iLMmmGwh+J1znhLjMt6+43R
-        kgnLfN+isGjg28JaFe+31NSOmrfYHfEZKjwlLKk=
-X-Google-Smtp-Source: ABdhPJxxHHvBgEhkMJqFxQL/kHCrtCcslOvL/VrT0n33mBCtCD1qSBM5W9SIxZcamVWgaajkCahPxuLA483LYyDvu8U=
-X-Received: by 2002:a17:902:c443:b0:14a:30f2:95e8 with SMTP id
- m3-20020a170902c44300b0014a30f295e8mr6471213plm.43.1642113454449; Thu, 13 Jan
- 2022 14:37:34 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=tg4oCMG6li+TDjSwe6u86VlYXa8liJ00jWszISs+oTI=;
+        b=5i5ZAQgQq4dBQRbukd2wft4ppilQggJUc9aPNh4Sbhx52ti4KuKk43G0BvsglnEaWj
+         bsd37oNUA9PN9bIZPn7iLFcGeTgwfYlnBZ/TsJyIAzyJfJ8a6KDtIqzZLJVOvNb379Nx
+         X9KHy18f4HfJqHDKkhjIj+5d7k9ZHCivBUrzv9nwoVIHSY5vzvTArLb9La4W/udVEoFN
+         j29OwJoWgRrtUccqQSdT2njK0zob5gGnkXaUXnLXa86uuJVElUq8TvRHe9clraKaset6
+         tDUxjQFN28lIs7vBxf4Kti7LcJazmdwwn/DPtprDiE/X8TL+HduSCg9fA7kbT5+CfjSp
+         kXeg==
+X-Gm-Message-State: AOAM530z/qjXwPj4hTJ7OROOJgWObpV9F4P9hY5D3gLgVZ3hJ2UsRhlz
+        Px+1BDpDenYAu9s9YXz3Bq/Lwg==
+X-Google-Smtp-Source: ABdhPJyKiq9MKoMx2tCGoLdeoS50UBy5IjTi4zD8ToVwJYkKEf3eHDu/vOLA1ET+NX5npL0uE0wh8w==
+X-Received: by 2002:a5d:6903:: with SMTP id t3mr8826258wru.353.1642179541790;
+        Fri, 14 Jan 2022 08:59:01 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id u17sm1549490wrt.37.2022.01.14.08.59.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jan 2022 08:59:01 -0800 (PST)
+Date:   Fri, 14 Jan 2022 17:58:59 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Colin Ian King <colin.i.king@gmail.com>
+Cc:     Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, llvm@lists.linux.dev,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] video: fbdev: s3c-fb: remove redundant initialization of
+ pointer bufs
+Message-ID: <YeGr01WGTSy+PYXr@phenom.ffwll.local>
+Mail-Followup-To: Colin Ian King <colin.i.king@gmail.com>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, llvm@lists.linux.dev,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211230160626.404072-1-colin.i.king@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:37:33
- -0800 (PST)
-Reply-To: mchristophdaniel@gmail.com
-From:   Marcus Galois <marcus.galois@gmail.com>
-Date:   Thu, 13 Jan 2022 23:37:33 +0100
-Message-ID: <CANqBaXW+7Aw2P_8Sghn0knonQ3qJaAEAJ69RZesm9MBxFDG_5A@mail.gmail.com>
-Subject: Good News Finally.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211230160626.404072-1-colin.i.king@gmail.com>
+X-Operating-System: Linux phenom 5.10.0-8-amd64 
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello friend.
+On Thu, Dec 30, 2021 at 04:06:26PM +0000, Colin Ian King wrote:
+> Pointer bufs is being initialized with a value that is never read, it
+> is being re-assigned with a different value later on. The assignment
+> is redundant and can be removed. Cleans up clang-scan warning:
+> 
+> drivers/video/fbdev/s3c-fb.c:492:16: warning: Value stored to 'buf'
+> during its initialization is never read [deadcode.DeadStores]
+>         void __iomem *buf = regs;
+> 
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 
-You might find it so difficult to remember me, though it is indeed a
-very long time, I am much delighted to contact you again after a long
-period of time, I remember you despite circumstances that made things
-not worked out as we projected then. I want to inform you that the
-transaction we're doing together then finally worked out and I decided
-to contact you and to let you know because of your tremendous effort
-to make things work out then.
+Both of your dead store fixes queued up in drm-misc-next for 5.18.
+-Daniel
 
-Meanwhile I must inform you that I'm presently in Caribbean Island for
-numerous business negotiation with some partners. with my sincere
-heart i have decided to compensate you with USD$900,000 for your
-dedication then on our transaction, you tried so much that period and
-I appreciated your effort. I wrote a cheque/check on your name, as
-soon as you receive it, you let me know.
+> ---
+>  drivers/video/fbdev/s3c-fb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/video/fbdev/s3c-fb.c b/drivers/video/fbdev/s3c-fb.c
+> index 3b134e1bbc38..68408c499627 100644
+> --- a/drivers/video/fbdev/s3c-fb.c
+> +++ b/drivers/video/fbdev/s3c-fb.c
+> @@ -489,7 +489,7 @@ static int s3c_fb_set_par(struct fb_info *info)
+>  	struct s3c_fb_win *win = info->par;
+>  	struct s3c_fb *sfb = win->parent;
+>  	void __iomem *regs = sfb->regs;
+> -	void __iomem *buf = regs;
+> +	void __iomem *buf;
+>  	int win_no = win->index;
+>  	u32 alpha = 0;
+>  	u32 data;
+> -- 
+> 2.33.1
+> 
 
-Contact my secretary now on his email: mchristophdaniel@gmail.com
-Name: Mr. Christoph Daniel
-
-You are to forward to him your Name........ Address.......,Phone
-number......for shipment/dispatch of the cheque/Check to you
-
-Regards,
-Mr. Marcus Galois
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
