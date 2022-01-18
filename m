@@ -2,168 +2,136 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 982A34923FC
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 11:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6690149246E
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 12:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235348AbiARKpm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jan 2022 05:45:42 -0500
-Received: from mout.gmx.net ([212.227.17.20]:36519 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235240AbiARKpm (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jan 2022 05:45:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1642502731;
-        bh=JW+QcUwSTe/qvoccvRFDM6uCr/IeefTcWJCBZIb73JE=;
-        h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
-        b=FUoqr2g6SrdxgbR7s3ZBQzgB6sf5/IzzwT+GDFZBQPHyfBcjzHzRbEwEzMKAhnT4M
-         pXZAH9qJYjA53LMfM5wG4P2aICpoxOeK9PAiKq7Am7HlpfCUKhWMNcgQ6uGvM1fgaN
-         MbtZ/oV0MDQ8ah9iW0mAWS9rph88+IHgV6ltWy88=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.155.155]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7zBb-1mEFXF39ON-0154Gr; Tue, 18
- Jan 2022 11:45:30 +0100
-Message-ID: <c2526855-233e-c785-ddca-e89c79ca9676@gmx.de>
-Date:   Tue, 18 Jan 2022 11:44:25 +0100
+        id S239015AbiARLO3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jan 2022 06:14:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234277AbiARLO2 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 18 Jan 2022 06:14:28 -0500
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5183EC061574
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jan 2022 03:14:28 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id 60-20020a9d0142000000b0059103eb18d4so23623844otu.2
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jan 2022 03:14:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IE2Bi6BX71GxVQQunYcWXmzILspUK92Ha2RwuVxfI6g=;
+        b=LhkdNE7Wa26DngF4QUM7KSJu6ffhXhV5rJMzNxMrt1cOP43VQAYu3S47MmjB6Tokyu
+         g+i+uC7VE/qqn2eyLWNhPtarxTba/7Rt8z1VALemM5KSN00/UOLhnIKU9xtl0pFEv+3h
+         4yH4xyvyE6otKaXhN2fXWk3QwgUS3V76OsszQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IE2Bi6BX71GxVQQunYcWXmzILspUK92Ha2RwuVxfI6g=;
+        b=3M3+s2Knw8qmpLrv80Ui98hU6nzChGGJXsLAI4d1yAbUpiIiTMgJPwB6EJmxqr37LY
+         0J8OyLemp9iJlAYKkL8xduW1gPDMYnKfNJJ0jc4nDwcsYEjRyJ3IYjH7lkE/i3Ne3jTc
+         XEvushcI5ixaEyVN5DWttiHQNjuDg2UCQ7AYoJ+w0tqQEcQ1V3bBUMHGJu/fei6pl5bc
+         KIZIQ8RxT9HjRbsrXgTTkq9jFultXvU18qttqPC2g/jWl1YyNJOjnkHNQKLP2q0KxDyZ
+         IbJ8pRHgLNkTHnJqeMIGa2If8nP/2t8Lr/a9+U8rwo9mrdH5H7r63MYN5iGvBQm1N4uV
+         9LBA==
+X-Gm-Message-State: AOAM530WgZ5/dqcmIknaXH599LYjtbR0DAyz6MY7V37+A9rzs5OSpG7X
+        3ZY5ObUrIvtt/RClRduLX3tD93nXso6usFrV9KO4bw==
+X-Google-Smtp-Source: ABdhPJz/h9I5sASIC1KgAr2w0o6g5bvtKYeaZaU2ifc/uG9A1tp3zEkGuLQZ79GYR8K7qHRcO4txTn0Lx+0OAr5LxfE=
+X-Received: by 2002:a9d:685a:: with SMTP id c26mr19640268oto.239.1642504467576;
+ Tue, 18 Jan 2022 03:14:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
+References: <YeG8ydoJNWWkGrTb@ls3530> <CAKMK7uGdJckdM+fg+576iJXsqzCOUg20etPBMwRLB9U7GcG01Q@mail.gmail.com>
+ <c80ed72c-2eb4-16dd-a7ad-57e9dde59ba1@gmx.de> <CAKMK7uHVHn9apB6YYbLSwu+adEB2Fqp4FM0z582zf4F-v3_GnQ@mail.gmail.com>
+ <cf21018b-f231-7538-169e-2ad450643cbf@gmx.de> <97d49bca-f5f7-dba4-b62d-b6fcdd4276ac@suse.de>
+ <e19563aa-21a3-e13c-4143-847bd77a38c7@gmx.de> <e4242fe9-13b1-91b5-d254-992f48115589@gmx.de>
+ <CAKb7UvgXaeX7FRUK_Q35N=2zBms8WgCe=ZBKr3dHrixoJWtvqw@mail.gmail.com>
+In-Reply-To: <CAKb7UvgXaeX7FRUK_Q35N=2zBms8WgCe=ZBKr3dHrixoJWtvqw@mail.gmail.com>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Tue, 18 Jan 2022 12:14:16 +0100
+Message-ID: <CAKMK7uH+88f6_NANd1F3ux7+j3iXg+AYWsNrVktuZOAAfc9Ngg@mail.gmail.com>
 Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
-Content-Language: en-US
-From:   Helge Deller <deller@gmx.de>
-To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     Daniel Vetter <daniel@ffwll.ch>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Sven Schnelle <svens@stackframe.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+To:     Ilia Mirkin <imirkin@alum.mit.edu>
+Cc:     Helge Deller <deller@gmx.de>,
         Thomas Zimmermann <tzimmermann@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <c80ed72c-2eb4-16dd-a7ad-57e9dde59ba1@gmx.de>
- <20220117125716.yjwxsze35j2ndn2i@sirius.home.kraxel.org>
- <CAMuHMdW=Zpp2mHbrBx7i0WN8PqY3XpK5qpyAyYxgf9n88edpug@mail.gmail.com>
- <70530b62-7b3f-db88-7f1a-f89b824e5825@suse.de>
- <CAMuHMdW5M=zEuGEnQQc3JytDhoxCKRiq0QFw+HOPp0YMORzidw@mail.gmail.com>
- <57d276d3-aa12-fa40-6f90-dc19ef393679@gmx.de>
- <CAKMK7uE7jnTtetB5ovGeyPxHq4ymhbWmQXWmSVw-V1vP3iNAKQ@mail.gmail.com>
- <b32ffceb-ea90-3d26-f20e-29ae21c68fcf@gmx.de>
- <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org>
- <ebe9c076-e2a9-0cb7-eb6a-ae71c075975e@gmx.de>
- <20220118091615.3ih5n7vhd6tgmnku@sirius.home.kraxel.org>
- <ffef1042-e1af-d5b5-b140-ae24fcc1855b@gmx.de>
-In-Reply-To: <ffef1042-e1af-d5b5-b140-ae24fcc1855b@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lmGpmKheriWIpGTC9y29Op8mC39RE4Ab6zzfHl/6o98L6WwynYR
- 6NhK0wilkiCZsfmY5AWLyEJK9Lghxg5Zja6JIpAExEb+wWiIC+fvJnLTfDG2u/+cDFHUPl+
- oDLW0D58BnAwNvS85SrQc1Eh3cdbwyFcpoKE9X8yvJ6GcxwbWjuUHOw3ZhauRyPDJZsptAd
- OHXGO4NEsQm1qxmdUNNag==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TGVFCWwRQW4=:p6xqOSVgld85oN8cqabdFQ
- zaPoklAxiGlRmy414zJsMaZwHZVX3od/N4qo1Ykk6WpM2AckbND/X0q/oq0tuqYyTn8dfbfMY
- 1+QJEy+3LjPV9ywyXE5IW0dZDGEaFv3S3rHkV77h9n6BoSfz24DQ7mi7nZUUbqAAgPGRQrYxY
- qS0PSCUapyBn9LG8CzVgXhLFrbOMJ0Iy9qx4zFYSi5zL0GbpdG5JH9AgIcsif0DSD/vvycr7T
- hLoI9/vU5X2f6+O2h4pCTza96hrh8wuvLlukaABJR9Fg1P48Bj+hC22AMrygKGhWt8x64A4o6
- sgzrmBbx125qMqjfHO0EKknQN5WZ1gOK4BChkqOr9yPVrblA8XeFBpWVPfSkJE/G+gzKvWKiq
- XBY7/inRtZh3JE06MtxgRqjwolepbxkeFrqDyrGFhOKuj59J/UC61pFpeqY36C3xver9/RgL4
- uQcJPRrvm32WBlNakUPhkE1NyzblQH4+1+lkJJ4LwYlf0Ftopt1LQrQb/pe2GbC+tTs6x4aKT
- 2lFP5l3Cr/abjHdiJbhr1bQ/+k1bqO/Na1OuIVQOjAWf9HOE7WyxyvczTxUczSQKBQG/5ieuL
- tDTl3NLlK5dFsiz+/h2x//8qQ7f9VnvqM7aLHnF1eZrAB5iYnold00pRzkEouSre0/Rhd7xV/
- z6ssIUGOnbF7+OKRXy+d1kAbgWd7oS/KuRV20VkFD7uaOq0R4Up7n8kPUrF9wwgQcgW6e98xq
- OeKRPLyDNgAMKyY4peT7PX2WKDaol8cOULTtknDHZu7EMNlFaSlCC6tul1ZyQcQmM4ek2rXTJ
- N3FgtLMg1p7yN2258fGAHnG+riSUAv0P0pRsfF/nE/bTkyOobXKszbUQ9ms19769ObLFVNDOk
- QZM2dGZ56IpDizCbRI1HKa2dN/oolD98rd9FgEzNJ8lIAaQ1CaphDayrPMw5YPcXPorJQ2l8Y
- RMcR1QB/vLKql6cfhNK9OERGZhrjxngmWlLViVQboY8W0sTwmnIreQdnManOLntKNSnGj41rR
- Z1FLsarFU3XIEU7UHjHxmtPg4wITvUfdrsDwb5YzC7Rvn573J8kFhF0jJnvZEDtoGzy2Ugmfl
- 2FMGI/43j5SOy8=
+        linux-fbdev <linux-fbdev@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 1/18/22 11:13, Helge Deller wrote:
-> On 1/18/22 10:16, Gerd Hoffmann wrote:
->> On Tue, Jan 18, 2022 at 09:20:43AM +0100, Helge Deller wrote:
->>> On 1/18/22 07:29, Gerd Hoffmann wrote:
->>>>> Please correct me if I'm wrong, but text-console emulation/scrolling=
- on DRM is
->>>>> currently unaccelerated and bound to Truecolour modes only,
->>>>
->>>> Yes.  Adding support for formats beside argb8888 to the drm fbcon
->>>> emulation shouldn't be that much of a problem though.
->>>
->>> Really? Assuming a graphic card which runs with only 256 colors frameb=
-uffer
->>> is easily supported by DRM, and you can use fbcon without using lots o=
-f memcpy()?
->>
->> Driver: programming a fixed color cube palette, then use RGB332.
->>
->> fbcon/fbdev emulation: RGB332 support must be added I think.  But both
->> argb888 and rgb565 are supported today, so it should not be hard to fin=
-d
->> the places where you have to add some code to handle RGB332 too.
+On Mon, Jan 17, 2022 at 10:55 PM Ilia Mirkin <imirkin@alum.mit.edu> wrote:
 >
-> I'd expect that that framework is provided by DRM developers if there is=
- the wish
-> to get rid of old fbdev and transition existing drivers over to use DRM.
+> On Mon, Jan 17, 2022 at 2:47 PM Helge Deller <deller@gmx.de> wrote:
+> >
+> > On 1/17/22 17:21, Helge Deller wrote:
+> > > On 1/17/22 16:58, Thomas Zimmermann wrote:
+> > >> Hi
+> > >>
+> > >> Am 17.01.22 um 16:42 schrieb Helge Deller:
+> > >>> [...]
+> > >>>>> c) reintroduce the state where fbcon is fast on fbdev. This is important for non-DRM machines,
+> > >>>>>     either when run on native hardware or in an emulator.
+> > >>>>> d) not break DRM development
+> > >>>>>
+> > >>>>> Especially regarding c) I complained in [1] and got no feedback. I really would like to
+> > >>>>> understand where the actual problems were and what's necessary to fix them.
+> > >>>>>
+> > >>>>> Helge
+> > >>>>>
+> > >>>>> [1] https://lore.kernel.org/r/feea8303-2b83-fc36-972c-4fc8ad723bde@gmx.de
+> > >>
+> > >> Seems like few people read linux-fbdev these days.
+> > >> I suggest to partly revert the patch to the point were performance
+> > >> gets better again.
+> > > Yes, *please*!
+> > > That would solve my biggest concern.
+> > >
+> > > As far as I can see that's only 2 commits to be reverted:
+> > > b3ec8cdf457e - "fbdev: Garbage collect fbdev scrolling acceleration, part 1 (from TODO list)"
+> > > 39aead8373b3 - "fbcon: Disable accelerated scrolling"for-next-next
+> > >
+> > > I think both were not related to any 0-day bug reports (but again, I might be wrong).
+> >
+> > I did some more checking...
+> >
+> > Both patches are not related to DRM, since no DRM driver sets the
+> > FBINFO_HWACCEL_COPYAREA or FBINFO_HWACCEL_FILLRECT flags.
 >
->>>> Acceleration is harder.  The scroll acceleration had issues nobody
->>>> addressed for years, and on modern hardware it is simply not used, wh=
-ich
->>>> is probably the reason nobody stepped up fixing things and it ended u=
-p
->>>> being dropped.
->>>
->>> The DRM layer doesn't use scroll acceleration.
->>> More than 30 other existing fbdev drivers use it.
->>
->> Yes.  The world shifted from 2d acceleration to 3d acceleration.  Moder=
-n
->> hardware simply has no classic blitter any more.  Which is a problem
->> when it comes to keeping scroll acceleration alive, it is already a ver=
-y
->> niche use case and it will only become worse ...
->
-> For me it's Ok that the DRM drivers don't use 2d acceleration (as it is =
-today
-> with the arguments mentioned multiple times).
-> But the patches broke existing fbdev acceleration which is available by
-> the fbdev drivers. That's a big regression from point of fbdev.
->
->>>> Bringing it back is much more work than just reverting the commits re=
-moving it.
->>>
->>> Reverting those commits have no effect on DRM's usage of fbcon.
->>> But reverting those commits bring back scroll acceleration for all oth=
-ers.
->>> I'm trying to find out which patches did apparently fixed such issues
->>> for the REDRAW case. If you have a pointer it would be helpful.
->>
->> IIRC the code had a bunch of races and syzkaller flagged problems.
->> I didn't follow very closely though.
->
-> That's sad.
-> Nevertheless I wonder if the changes which were apparently done for
-> the SCROLL_REDRAW case (on the higher level?) didn't also fixed the issu=
-es
-> for SCROLL_MOVE.
+> These used to be set by, at least, nouveau (which is a drm driver).
+> And yeah, console responsiveness is _way_ worse without that. People
+> keep pushing the messaging that it's the same speed to do it as
+> memcpy, but that's just not the case in my experience, on a pretty
+> bog-standard x86 desktop. The support got dumped, and it felt pretty
+> clear from the messaging at the time, "too bad". Would love to see it
+> come back.
 
-I've just looked through all patches in drivers/video which were tagged
-with syzbot or syzkaller back to year 2005. The vast majority fixed the
-reported issues on a higher level, e.g. when screen is to be resized,
-or when font size is to be changed. The few ones which touched driver
-code fixed a real driver bug, e.g. by adding a check.
+You need to add in a shadow buffer and it's fast. The problem is that
+the default fbcon sw code just replaces a hw blitter, and so does a
+_lot_ of memmoves reading from wc/uc memory. Which is an absolute
+disaster and results in a slideshow.
 
-NONE of those patches touched either the SCROLL_MOVE or the SCROLL_REDRAW =
-case.
-That means, I see no reason why SCROLL_MOVE had to be ripped-out and just
-SCROLL_REDRAW had to be used instead, other than simply "it's not being
-used by DRM, so let's pull it out".
-The patches which removed SCROLL_MOVE support simply ignored the fact
-that SCROLL_MOVE is still heavily used by fbdev (non-DRM).
+Once you stop doing that the thing is pretty reasonable, which would
+also be what all the userspace sw compositors are doing. Fact that no
+one bothers to roll this out for most drivers just shows how little
+people care about accelerated fbcon.
+-Daniel
 
-I don't see a reason why the two patches which removed SCROLL_MOVE
-shouldn't be reverted. Or what am I missing?
 
-Helge
+>
+> Cheers,
+>
+>   -ilia
+
+
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
