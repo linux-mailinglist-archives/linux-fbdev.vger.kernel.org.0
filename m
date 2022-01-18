@@ -2,92 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 470384920FD
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 09:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F43492112
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 09:22:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234461AbiARIKn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jan 2022 03:10:43 -0500
-Received: from mail-ua1-f46.google.com ([209.85.222.46]:41942 "EHLO
-        mail-ua1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234311AbiARIKn (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jan 2022 03:10:43 -0500
-Received: by mail-ua1-f46.google.com with SMTP id i10so13060063uab.8;
-        Tue, 18 Jan 2022 00:10:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VAQlLcFBVgyKQTaBnoQmFYzL/LSJbyFvZ8WuVXWI65o=;
-        b=JwFBjHy22YvCQM3WaWTkZG0ypHBTNGIldGDxsI+2WZEbJn1yKepEDDNzdAkqhjeBnI
-         Zr2N71RmPpTSrsIDyr7XByvesAUuy+LNHfeAk4Kt/OO3+qRDbbnQszw+RhWzqurK24fF
-         dBKY7n6V/De8OhU83y0y+CjvqPPAtdcyW7gIeBeN/H63nCTbFLpotMsmozhSZtZKorB9
-         i3qDinyR1rZkh12QEOCQihzDy3lGowHeQ6f+iJueuetIDLt2SmkGxGdSH53pQukJRS5u
-         sfp8jDQTPAOcpdH+/fcoLs7aFqX4CxRfhVXJd4sH+vQfrnF17+T9krA3Kk7Qx+sWiTK7
-         Ngyg==
-X-Gm-Message-State: AOAM530zmE/k60Y6JWvwbVa9gtaHrexBAkgx6f7MsOCW39sGT76t0bom
-        PDZPDiz9xX15Z9T787x8KBxLMZ5Y71mlsA==
-X-Google-Smtp-Source: ABdhPJzZQfTIWi1bNE06O+L/CpV8DZV57I78oHTtj0EjpKg9hsL1NLm82Ig4PmoPPooR9MzCuLxF8Q==
-X-Received: by 2002:ab0:3913:: with SMTP id b19mr8983984uaw.82.1642493442122;
-        Tue, 18 Jan 2022 00:10:42 -0800 (PST)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
-        by smtp.gmail.com with ESMTPSA id u7sm801776vsg.34.2022.01.18.00.10.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jan 2022 00:10:41 -0800 (PST)
-Received: by mail-ua1-f48.google.com with SMTP id 2so10302077uax.10;
-        Tue, 18 Jan 2022 00:10:41 -0800 (PST)
-X-Received: by 2002:a67:e985:: with SMTP id b5mr7881629vso.77.1642493441373;
- Tue, 18 Jan 2022 00:10:41 -0800 (PST)
+        id S1344045AbiARIWA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jan 2022 03:22:00 -0500
+Received: from mout.gmx.net ([212.227.15.19]:39811 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343729AbiARIV7 (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 18 Jan 2022 03:21:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1642494109;
+        bh=iEnrxoLs+M+Xhm5bqXFfPM9bJaACNANweZulGOVxe2s=;
+        h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=it/n+Bu20A+rDNDARaFFa+TClsrGy3v7xNggTzObRv2hWXBJDaiS5QWdmqVX5CnEA
+         riJkhb7xVYVNa+VoRz2xhGni4zmOrFtS5R5N5C3yjt5YOONt86IfERImdTEruH1aR0
+         R8PbyBV1//daa3DnuVQYelqwCjUS6UdF1TbDj69k=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.155.155]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtfJd-1mJpgI0h8p-00v9Bg; Tue, 18
+ Jan 2022 09:21:49 +0100
+Message-ID: <ebe9c076-e2a9-0cb7-eb6a-ae71c075975e@gmx.de>
+Date:   Tue, 18 Jan 2022 09:20:43 +0100
 MIME-Version: 1.0
-References: <YeG8ydoJNWWkGrTb@ls3530> <CAKMK7uGdJckdM+fg+576iJXsqzCOUg20etPBMwRLB9U7GcG01Q@mail.gmail.com>
- <c80ed72c-2eb4-16dd-a7ad-57e9dde59ba1@gmx.de> <20220117125716.yjwxsze35j2ndn2i@sirius.home.kraxel.org>
- <CAMuHMdW=Zpp2mHbrBx7i0WN8PqY3XpK5qpyAyYxgf9n88edpug@mail.gmail.com>
- <70530b62-7b3f-db88-7f1a-f89b824e5825@suse.de> <CAMuHMdW5M=zEuGEnQQc3JytDhoxCKRiq0QFw+HOPp0YMORzidw@mail.gmail.com>
- <57d276d3-aa12-fa40-6f90-dc19ef393679@gmx.de> <CAKMK7uE7jnTtetB5ovGeyPxHq4ymhbWmQXWmSVw-V1vP3iNAKQ@mail.gmail.com>
- <b32ffceb-ea90-3d26-f20e-29ae21c68fcf@gmx.de> <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org>
-In-Reply-To: <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 18 Jan 2022 09:10:29 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWXWA2h7zrZa_nnqR_qNdsOdHJS=Vf1YExhvs08KukoNg@mail.gmail.com>
-Message-ID: <CAMuHMdWXWA2h7zrZa_nnqR_qNdsOdHJS=Vf1YExhvs08KukoNg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-US
 To:     Gerd Hoffmann <kraxel@redhat.com>
-Cc:     Helge Deller <deller@gmx.de>, Daniel Vetter <daniel@ffwll.ch>,
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         Sven Schnelle <svens@stackframe.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         DRI Development <dri-devel@lists.freedesktop.org>,
         Javier Martinez Canillas <javierm@redhat.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <YeG8ydoJNWWkGrTb@ls3530>
+ <CAKMK7uGdJckdM+fg+576iJXsqzCOUg20etPBMwRLB9U7GcG01Q@mail.gmail.com>
+ <c80ed72c-2eb4-16dd-a7ad-57e9dde59ba1@gmx.de>
+ <20220117125716.yjwxsze35j2ndn2i@sirius.home.kraxel.org>
+ <CAMuHMdW=Zpp2mHbrBx7i0WN8PqY3XpK5qpyAyYxgf9n88edpug@mail.gmail.com>
+ <70530b62-7b3f-db88-7f1a-f89b824e5825@suse.de>
+ <CAMuHMdW5M=zEuGEnQQc3JytDhoxCKRiq0QFw+HOPp0YMORzidw@mail.gmail.com>
+ <57d276d3-aa12-fa40-6f90-dc19ef393679@gmx.de>
+ <CAKMK7uE7jnTtetB5ovGeyPxHq4ymhbWmQXWmSVw-V1vP3iNAKQ@mail.gmail.com>
+ <b32ffceb-ea90-3d26-f20e-29ae21c68fcf@gmx.de>
+ <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org>
+From:   Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
+In-Reply-To: <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:prWw9Xzsb49CRbqWjcdFLIUei76xAcWz2JUkyRqfu6+rvcGmd7o
+ MpFTdhlErIj5qC+iOCYB7gLwlqvPwELibl4pUuPJK9rLPx2JJpeg+uJpUmbQUwDNbXZ5dNc
+ svt0Q1GTrGyNf7GrJCs5/9KQYDG41yqUF0RUd4crRs8DSoJ2gMW5AsMSFGR0Rrs27+kfAWN
+ rB88KhNOGtfKEk7RAh8QA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CprwXkI8ZOI=:TgwiIbvFKPZjAL3KebNfYh
+ 3KExnKEjR0oUcn7JWXiFZ+6gda2EkX20oih1TkXpdKQWCgyK/gFNWNVJrVUi97x7wlHCPKECn
+ vz2nO6Ee8htWmtmAbyJOJnZ9o9gy3YkekEbOuiFayEAjerZy+QT2pWhqiHo0Im8n73H9Q+rTN
+ xT6ZvDFJQi2cCpeUEkiro4ekhWlEtMGueN7ILWjFD0Ydgu0WfjIcI13nXzGUNqAN1wObOPXEe
+ kcfLBMrpiCBBB1i1ISNdgYyLNP74MwhikRDkfLev16OM6FcCp0qX4StpSKEEzTeQ98qDN0skn
+ u2gdNo2MyxWayMFrVzvvPysykU90bRPZjWcmqRCJCbiIaZKh98kU84CfdG2iP6LIpPnWzxHR5
+ KDunMMUm32ZAw+szYFtDnwAatJFRYA8CRuGJ76fsFvK+aYMrYrD0Q15MxyqJ5kb+2JkaMu070
+ LtdfjVZwr/CGCGYFea2xDHHiQPL4LTt5Nr6cAMz0XCV69rxRkhplrggGGpjWo1TA/xUhSix+W
+ aj632CRP/F4NL1v19yYP3gO2FZ7+4OWL6Ds6pEqhyKXVMfBSc+QP4x43Xv3vFCSbKwTdkzCHA
+ nRQ4pJ/Hp9c2BgXPtK7hJAdzznCweiktAeUjZvmbt6kIbKsTg7FypagkCwI6Ny6CsxeVIlyXw
+ 1OUCzQIns+TKzvJqMqQ+P/NaHgn3uz8wwAz83kr9xFoPL8eLB+xIbBDOUKkaIKwAyxPfzkFtV
+ XFIHGtOOQpk4R6V3nZK3nrP9COyyN2tWnfCDGvSF32Fu2biWIz1+cnOzyVtXE5/yeCpIP8i5v
+ 4yuyeAxu7Thkkztc6tPHpIKkSzqULxzUxtqViFsN7+x9OLez7PgRLZeYR0+MAWGWz/iVv+Niw
+ DXN+DoAGOay3BQolOA6THzysTCrFNZbkoNQO6oZd8cIvw0v7S9eGT13DXfXRvJQUzRn4LRW6Y
+ DOVVjjSXrrqfbQAjdlF7KZr1wyiwB/SdxcsbCk41Qc9T6FHYZLq/ZqRM+LiKcsUVYbMKe3ZD2
+ 12to/9cUh3FqkyrpuLn3IIXdMDR+ox9JxP/A8zWPxmCbjYdi7ZfX0D2zhb0EwPKpUXPnbMz1X
+ ABrSsl1epg843o=
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Gerd,
+On 1/18/22 07:29, Gerd Hoffmann wrote:
+>> Please correct me if I'm wrong, but text-console emulation/scrolling on=
+ DRM is
+>> currently unaccelerated and bound to Truecolour modes only,
+>
+> Yes.  Adding support for formats beside argb8888 to the drm fbcon
+> emulation shouldn't be that much of a problem though.
 
-On Tue, Jan 18, 2022 at 7:30 AM Gerd Hoffmann <kraxel@redhat.com> wrote:
+Really? Assuming a graphic card which runs with only 256 colors framebuffe=
+r
+is easily supported by DRM, and you can use fbcon without using lots of me=
+mcpy()?
+
+> Acceleration is harder.  The scroll acceleration had issues nobody
+> addressed for years, and on modern hardware it is simply not used, which
+> is probably the reason nobody stepped up fixing things and it ended up
+> being dropped.
+
+The DRM layer doesn't use scroll acceleration.
+More than 30 other existing fbdev drivers use it.
+
+> Bringing it back is much more work than just reverting the commits remov=
+ing it.
+
+Reverting those commits have no effect on DRM's usage of fbcon.
+But reverting those commits bring back scroll acceleration for all others.
+I'm trying to find out which patches did apparently fixed such issues
+for the REDRAW case. If you have a pointer it would be helpful.
+
 > Also note that using a shadow framebuffer allows to decouple fbcon
 > updates and scanout framebuffer updates.  Can be used to speed up
 > things without depending on the 2d blitter.
 
-Assuming accesses to the shadow frame buffer are faster than accesses
-to the scanout frame buffer. While this is true on modern hardware,
-this is not the case on all hardware.  Especially if the shadow frame
-buffer has a higher depth (XRGB8888) than the scanout frame buffer
-(e.g. Cn)...
+Not on older hardware.
 
-The funny thing is that the systems we are interested in, once used
-to be known for their graphics capabilities and/or performance...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Helge
