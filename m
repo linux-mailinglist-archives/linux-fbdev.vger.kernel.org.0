@@ -2,91 +2,141 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 704FA492342
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 10:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 820BA492420
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 11:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234781AbiARJyJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jan 2022 04:54:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:38936 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234856AbiARJx6 (ORCPT
+        id S238043AbiARKvW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jan 2022 05:51:22 -0500
+Received: from outbound5a.eu.mailhop.org ([3.124.88.253]:11615 "EHLO
+        outbound5a.eu.mailhop.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234494AbiARKvW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jan 2022 04:53:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642499637;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XDuwTuoJ9YB+ODFSUsA012oaBLCLX1OTiYl269u+isg=;
-        b=aDvfS29WOR6kg8PPi7qmw1f+qBuI26F//gXJ2OKuGaKUJx1UIs2dJqriswW6rrIWqBkN5M
-        VOn6ZlZ8Bkz6azBJ0HanYzzC02sVyOnzaNJWLHeg3y3fR/iwIRMtNC7+XAr2b48j3pKyW9
-        x20KvHwCFoeDevBy6Am0S08rdQH7bbo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-pOEjfmZ9PQSzXe8hW18vow-1; Tue, 18 Jan 2022 04:53:56 -0500
-X-MC-Unique: pOEjfmZ9PQSzXe8hW18vow-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B944B3E743;
-        Tue, 18 Jan 2022 09:53:54 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.49])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E38F6F129;
-        Tue, 18 Jan 2022 09:53:54 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id B94AD18000A6; Tue, 18 Jan 2022 10:53:52 +0100 (CET)
-Date:   Tue, 18 Jan 2022 10:53:52 +0100
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     Pekka Paalanen <ppaalanen@gmail.com>
-Cc:     Sven Schnelle <svens@stackframe.org>,
-        dri-devel@lists.freedesktop.org, Helge Deller <deller@gmx.de>,
-        linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org
+        Tue, 18 Jan 2022 05:51:22 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1642500317; cv=none;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        b=Xov+PwYfgjEeA+fegLVcooWnnBB6aaCMoT7FYzEcZsG9DTDK4XC3iZy7DhQmyNT4CyjSfnqzuP0MH
+         SLhUDNlH1/tBTpnkzrcR2w6PDeE/G7lYxq+YA8AwHJ/EXync8k/frgX5TPqMXxO93M810s1USoWu6u
+         MfRHJSYWgf3aaHWWDpc4Up+aEn6IlLSrGF0rGgUPs36dvt8NdeEipCEwWIUviWmPtZGyH+MB25Cui2
+         RYTxX5E1ccmzKugqjAZjOtaSX6dXKYLwdt2WXysObxULM4fGsbQPrRyi6n7/ocYF7zqMIyuc/dimma
+         VZmhyPpzE+gYRmG143DMeKBBDr/zo6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=arc-outbound20181012;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:dkim-signature:dkim-signature:from;
+        bh=+nnzxvvQj7+bvjQcSTQPnIo0ojYxhfwmrLpYQ8reS7o=;
+        b=QEjX+HUTpBwhrngljwl9WJG7EVkw80G6K/hfqUXEbm7LC4qR7PwMmbLUfYewushFcT2hF8MCLu9mD
+         hKOye5Bh/tNCzbQe13G755vq2I8+He2yPSv9SqS0C+6Sus/Loz9F07CeTsGMEi38Sasyof+B50IrQr
+         hpQW8Mv+/dY/+6jqmUSJAeVUPDWk68IpayDJbrQdmHPR4BZlHzG+7H1d+4cvOEQqflCZiQ7gU9cV2r
+         13GjMVV+N7jGd1WOnjiMKhNz1fgYyrWqndd9Flck788+NgJfNggq52PaILkxswwC67kds3a41iuD8Q
+         gmuFWYer4mOYfiPxUzWVli5VLGEXSJA==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+        spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=91.207.61.48;
+        dmarc=none header.from=stackframe.org;
+        arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=stackframe.org; s=duo-1634547266507-560c42ae;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:from;
+        bh=+nnzxvvQj7+bvjQcSTQPnIo0ojYxhfwmrLpYQ8reS7o=;
+        b=bxHvMxbl5ntdEp+6XLmItF/hxD10ToBwYre08e+FlQmA74fF/ccBqQiMIcYe+d+Lyj4ybM4t0sQBt
+         I/pNyEqVO9xn5rYE+naazMJ3LcX0m3EO7UTH6I5PIjuZ+opPjdXRxSaZfHAUvEJTer4SzxBwbs/VDZ
+         gX0C1QKizq7goO3k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=outbound.mailhop.org; s=dkim-high;
+        h=content-transfer-encoding:content-type:mime-version:message-id:in-reply-to:
+         date:references:subject:cc:to:from:from;
+        bh=+nnzxvvQj7+bvjQcSTQPnIo0ojYxhfwmrLpYQ8reS7o=;
+        b=pWEf8RqoSlJW6MG02oIJd0fcFPHtwGSAqcs+K0FqJVn1OTouF/8AYmJXZDeODEpQ0OxQPtX3HOhhc
+         kfOrFkl/C+a2cw+jsgHoUOO9xxHAxJgpCn5wRTT7mv0U2mf7ybuOslv82HITN++NnrrKyNIQxYLImh
+         x5EGL9mhemxmCX/sdBEBfQEkJdvvPkCSpHkZU2GHyQA2J3LgGmJFXrSt1hE19P+EAS3xcxvWyit6bA
+         gxKPPfII/I6DwX2T6wx6I3u1ikBPqW6qno+I4tOBTCfE2HcCrERowc4UwXzn23Gl1Tomjmtf1l0S/z
+         QA2/AwM9485CylFlf/1pf/bPk5TPWyA==
+X-Originating-IP: 91.207.61.48
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: 1f77ca2d-7846-11ec-92ec-95b64d6800c5
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (propper.duncanthrax.net [91.207.61.48])
+        by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+        id 1f77ca2d-7846-11ec-92ec-95b64d6800c5;
+        Tue, 18 Jan 2022 10:05:12 +0000 (UTC)
+Received: from hsi-kbw-109-193-149-228.hsi7.kabel-badenwuerttemberg.de ([109.193.149.228] helo=x1.stackframe.org.stackframe.org)
+        by mail.duncanthrax.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <svens@stackframe.org>)
+        id 1n9lMU-004ylN-Hg; Tue, 18 Jan 2022 12:05:10 +0200
+From:   Sven Schnelle <svens@stackframe.org>
+To:     Michel =?utf-8?Q?D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
-Message-ID: <20220118095352.xsb6fqacw4p276c5@sirius.home.kraxel.org>
 References: <YeG8ydoJNWWkGrTb@ls3530>
- <c48ad8ae-aea5-43fa-882f-dccb90dde9a4@suse.de>
- <87bl0amc6s.fsf@x1.stackframe.org>
- <20220118103323.4bae3a7d@eldfell>
+        <c48ad8ae-aea5-43fa-882f-dccb90dde9a4@suse.de>
+        <87bl0amc6s.fsf@x1.stackframe.org>
+        <a922343d-8805-3446-c000-cf7969699823@mailbox.org>
+Date:   Tue, 18 Jan 2022 11:05:08 +0100
+In-Reply-To: <a922343d-8805-3446-c000-cf7969699823@mailbox.org> ("Michel
+        =?utf-8?Q?D=C3=A4nzer=22's?= message of "Tue, 18 Jan 2022 09:58:13 +0100")
+Message-ID: <87h7a1l5pn.fsf@x1.stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220118103323.4bae3a7d@eldfell>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jan 18, 2022 at 10:33:23AM +0200, Pekka Paalanen wrote:
-> On Mon, 17 Jan 2022 19:47:39 +0100
-> Sven Schnelle <svens@stackframe.org> wrote:
-> 
-> > I also tested the speed on my Thinkpad X1 with Intel graphics, and there
-> > a dmesg with 919 lines one the text console took about 2s to display. In
-> > x11, i measure 22ms. This might be unfair because encoding might be
-> > different, but i cannot confirm the 'memcpy' is faster than hardware
-> > blitting' point. I think if that would be the case, no-one would care
-> > about 2D acceleration.
-> 
-> I think that is an extremely unfair comparison, because a graphical
-> terminal app is not going to render every line of text streamed to it.
-> It probably renders only the final view alone if you simply run
-> 'dmesg', skipping the first 800-900 lines completely.
+Hi Michel,
 
-Probably more like "render on every vblank", but yes, unlike fbcon it
-surely wouldn't render every single character sent to the terminal.
+Michel D=C3=A4nzer <michel.daenzer@mailbox.org> writes:
 
-Also acceleration on modern hardware is more like "compose window
-content using the 3d engine" than "use 2d blitter to scroll the window".
+> On 2022-01-17 19:47, Sven Schnelle wrote:
+>>=20
+>>>  * There's no new development in fbdev and there are no new
+>>>    drivers. Everyone works on DRM, which is better in most
+>>>    regards. The consequence is that userspace is slowly loosing the
+>>>   ability to use fbdev.
+>>=20
+>> That might be caused by the fact that no new drivers are accepted for
+>> fbdev. I wrote a driver for the HP Visualize FX5/10 cards end of last
+>> year which was rejected for inclusion into fbdev[1].
+>>=20
+>> Based on your recommendation i re-wrote the whole thing in DRM. This
+>> works but has several drawbacks:
+>>=20
+>> - no modesetting. With fbdev, i can nicely switch resolutions with
+>>   fbset. That doesn't work, and i've been told that this is not supporte=
+d[2]
+>>=20
+>> - It is *much* slower than fbset with hardware blitting. I would have to
+>>   dig out the numbers, but it's in the ratio of 1:15. The nice thing
+>>   with fbdev blitting is that i get an array of pixels and the
+>>   foreground/background colors all of these these pixels should have.
+>>   With the help of the hardware blitting, i can write 32 pixels at once
+>>   with every 32-bit transfer.
+>>=20
+>>   With DRM, the closest i could find was DRM_FORMAT_C8, which means one
+>>   byte per pixel. So i can put 4 pixels into one 32-bit transfer.
+>>=20
+>>   fbdev also clears the lines with hardware blitting, which is much
+>>   faster than clearing it with memcpy.
+>>=20
+>>   Based on your recommendation i also verified that pci coalescing is
+>>   enabled.
+>>=20
+>>   These numbers are with DRM's unnatural scrolling behaviour - it seems
+>>   to scroll several (text)lines at once if it takes to much time. I
+>>   guess if DRM would scroll line by line it would be even slower.
+>>=20
+>>   If DRM would add those things - hardware clearing of memory regions,
+>>   hw blitting for text with a FG/BG color and modesetting i wouldn't
+>>   care about fbdev at all. But right now, it's working way faster for me.
+>
+> A DRM driver can implement the same fbdev acceleration hooks as an fbdev =
+driver.
 
-> Maybe fbcon should do the same when presented with a flood of text,
-> but I don't know how or why it works like it works.
+But i guess i can still only use the DRM_FORMAT_* encodings with that?
+What i need is a pixel bitmap with separate FG/BG colors. Is that
+possible?
 
-fbcon could do the same, i.e. render to fbdev in a 60Hz timer instead of
-doing it synchronously.
-
-take care,
-  Gerd
-
+/Sven
