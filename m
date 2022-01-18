@@ -2,84 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A703492894
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 15:39:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D71492D09
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 19:13:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240056AbiAROjU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jan 2022 09:39:20 -0500
-Received: from mail-4022.proton.ch ([185.70.40.22]:61534 "EHLO
-        mail-4022.proton.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235722AbiAROjU (ORCPT
+        id S1347843AbiARSNz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jan 2022 13:13:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233793AbiARSNx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jan 2022 09:39:20 -0500
-Date:   Tue, 18 Jan 2022 14:39:14 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=emersion.fr;
-        s=protonmail2; t=1642516758;
-        bh=pTGiM9Eqjwi0l/eloFZx82RA/+Eanez+YibOS4Y8RVY=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:From:To:Cc;
-        b=qcKe/r6MWaQtqzD8hRMIUaR4NRtuHsQ2KoIqWAN2uDXjtROUcntz425JzbReKzcmV
-         jcF4hrzH/xOqw6/0KSdh79fqWlolg+vUvLR0iW3QNc5L6OzeWlplPLyuinyFVtwXHN
-         qN6wypuk36g/5RAqXqIQDC+CDOkpLDS6uMSDl5qJD+UqSx8VLiy5Ehc8/Vq8r//LNq
-         M1H9Fy7UoavHbclldC6ubpFO7LH0PfRvGxAFCyAvLiQeAO+7uM7VS1vSCevuHFxiTF
-         HcUHjWsZ6tATuEVvW46ZgiZbrJhrtvo7r+eCMCqrzStt21c874lg+V2Df34dE/CdHw
-         MYJpS8FljcDCA==
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-From:   Simon Ser <contact@emersion.fr>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sven Schnelle <svens@stackframe.org>
-Reply-To: Simon Ser <contact@emersion.fr>
-Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
-Message-ID: <vUIPai73T-nuC9ppTs9iaxFwCLWyB3ip7A3zfbhJTyYBqlqJLbOU217hKMAjZNrSnSdeKJa_3cnsr3S7vsK1QuxH22ESAGN-iZXF0DigALU=@emersion.fr>
-In-Reply-To: <3f96f393-e59d-34ac-c98b-46180e2225cd@suse.de>
-References: <YeG8ydoJNWWkGrTb@ls3530> <70530b62-7b3f-db88-7f1a-f89b824e5825@suse.de> <CAMuHMdW5M=zEuGEnQQc3JytDhoxCKRiq0QFw+HOPp0YMORzidw@mail.gmail.com> <57d276d3-aa12-fa40-6f90-dc19ef393679@gmx.de> <CAKMK7uE7jnTtetB5ovGeyPxHq4ymhbWmQXWmSVw-V1vP3iNAKQ@mail.gmail.com> <b32ffceb-ea90-3d26-f20e-29ae21c68fcf@gmx.de> <20220118062947.6kfuam6ah63z5mmn@sirius.home.kraxel.org> <CAMuHMdWXWA2h7zrZa_nnqR_qNdsOdHJS=Vf1YExhvs08KukoNg@mail.gmail.com> <3f96f393-e59d-34ac-c98b-46180e2225cd@suse.de>
+        Tue, 18 Jan 2022 13:13:53 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB11C061574
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jan 2022 10:13:53 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n9szM-000880-TH; Tue, 18 Jan 2022 19:13:48 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n9szK-00B2zq-Tk; Tue, 18 Jan 2022 19:13:46 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n9szJ-0006zF-K4; Tue, 18 Jan 2022 19:13:45 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Noralf Tronnes <notro@tronnes.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, kernel@pengutronix.de
+Subject: [PATCH 1/2] staging: fbtft: Fix error path in fbtft_driver_module_init()
+Date:   Tue, 18 Jan 2022 19:13:37 +0100
+Message-Id: <20220118181338.207943-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1441; h=from:subject; bh=gJiA8AksyJTrtpGrzRfF50OuBu19LDZN1xB1saUxAWQ=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBh5wNJFwDFQehIYnjVfgYfBt2NN9k1zG22si9Ri/8c S5fL84aJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYecDSQAKCRDB/BR4rcrsCbkLCA CMkktbQyNtmyTjX2Jy5zZT5GMGpn+o+jgaJObINj8Q2HSqz4hu5YuO23ib1z+scTXKXMoabCUYTqPl lfRCJHOlyxO8shOKTdvs/U66r1+Sy1pl0B6kyLAKmZYv+WSApKCCHH9URQXBwtkH4aAkkQpqrF+3Tw iz+HSbK676qIaG/aW5SWts2WSSruXzYwZSDIaS4Jt+KZkWf40agCIN5WEotN8N+bVCiVX3XOmgpmdG tRSOtkvnd8ff96S721N4CYsNFfS3tPtsTy7BofK1+sAYro3D1B42wAwuBywJ997GZyTG0IQQNUqclZ eZPgnMdjffd5X1xMXg9PfGTzYYovlH
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tuesday, January 18th, 2022 at 15:23, Thomas Zimmermann <tzimmermann@sus=
-e.de> wrote:
+If registering the platform driver fails, the function must not return
+without undoing the spi driver registration first.
 
-> Am 18.01.22 um 09:10 schrieb Geert Uytterhoeven:
-> > Hi Gerd,
-> >
-> > On Tue, Jan 18, 2022 at 7:30 AM Gerd Hoffmann <kraxel@redhat.com> wrote=
-:
-> >> Also note that using a shadow framebuffer allows to decouple fbcon
-> >> updates and scanout framebuffer updates.  Can be used to speed up
-> >> things without depending on the 2d blitter.
-> >
-> > Assuming accesses to the shadow frame buffer are faster than accesses
-> > to the scanout frame buffer. While this is true on modern hardware,
-> > this is not the case on all hardware.  Especially if the shadow frame
-> > buffer has a higher depth (XRGB8888) than the scanout frame buffer
-> > (e.g. Cn)...
-> >
-> > The funny thing is that the systems we are interested in, once used
-> > to be known for their graphics capabilities and/or performance...
->
-> What I still don't understand: why are you so keen on maintaining an
-> interface that only serves the console? Nothing else uses fbdev these
-> days. Why not improve DRM/userspace to the point where it fits your
-> requirements? Long-term, the latter would make a lot more sense.
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/staging/fbtft/fbtft.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-+1
+diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
+index 4cdec34e23d2..55677efc0138 100644
+--- a/drivers/staging/fbtft/fbtft.h
++++ b/drivers/staging/fbtft/fbtft.h
+@@ -334,7 +334,10 @@ static int __init fbtft_driver_module_init(void)                           \
+ 	ret = spi_register_driver(&fbtft_driver_spi_driver);               \
+ 	if (ret < 0)                                                       \
+ 		return ret;                                                \
+-	return platform_driver_register(&fbtft_driver_platform_driver);    \
++	ret = platform_driver_register(&fbtft_driver_platform_driver);     \
++	if (ret < 0)                                                       \
++		spi_unregister_driver(&fbtft_driver_spi_driver);           \
++	return ret;                                                        \
+ }                                                                          \
+ 									   \
+ static void __exit fbtft_driver_module_exit(void)                          \
 
-If you need any help with adapting user-space, feel free to ping me. I'd be
-interested in discussing, providing feedback and potentially user-space
-patches.
+base-commit: 0c947b893d69231a9add855939da7c66237ab44f
+-- 
+2.34.1
+
