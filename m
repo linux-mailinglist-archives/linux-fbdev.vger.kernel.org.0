@@ -2,104 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A89FB4921BB
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 09:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 558C1492213
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Jan 2022 10:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345107AbiARI6W (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Jan 2022 03:58:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
+        id S1345215AbiARJGw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Jan 2022 04:06:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345101AbiARI6V (ORCPT
+        with ESMTP id S1345255AbiARJGu (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Jan 2022 03:58:21 -0500
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D7DC061574;
-        Tue, 18 Jan 2022 00:58:21 -0800 (PST)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:105:465:1:3:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4JdN3G6Hy2zQjhc;
-        Tue, 18 Jan 2022 09:58:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-        t=1642496296;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=NAxLU0mYbTsljTv5PTOd37yr52jarIfsaW4h+9H3yw0=;
-        b=airmWeIz27QYgz7d3e/3yuC4vceSng6waZCW0gvaE4E7UYuc1aILplg0H/6OPwoKca2OOW
-        p/7g3rC61zZyA1RBswOsiJ8l5paqxrht/2/wAAoURZzmvEqCX88rTeakdn52counfXs2jT
-        hLMSuMrfGKbh1N1QsHKVbiOLbfPH+7pBBUz8oEy2W7slhIJVzluhXwckG4F2KCW4qGnTqP
-        8GiGjsw99EkV686MEWouB11b1Pgf+c8NzWH72DspddW0o+nCT6VKxRvIcWL1lrQQ4n3BgW
-        arDsjb31MI+9alqTWT7WYRzcXVeV7xAo9yEI8Ju/HuE9/f3iLZWJL9vLRxFvVA==
-Message-ID: <a922343d-8805-3446-c000-cf7969699823@mailbox.org>
-Date:   Tue, 18 Jan 2022 09:58:13 +0100
+        Tue, 18 Jan 2022 04:06:50 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48BE4C061751
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jan 2022 01:06:50 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id c10so53754837ybb.2
+        for <linux-fbdev@vger.kernel.org>; Tue, 18 Jan 2022 01:06:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
+        b=bFbIZFrO20tVeHnfrbOf5kTdx0G/SAT5rW1Plwk765tZmY9OhnAnZt7H9wAnCdcz0t
+         KGJJ1IFvRrlIFyyf3OpODiLX2uvvgMkLZb2Pg3rHkla7YrWm8dPVkIdD4jxKBl9tZjgU
+         YEl9+0y7OM4wfPZG8wq4wesxMyTvlzvu9lrqm5xr/w4/bam5fdKYM4J5WdaYsNqKgTWU
+         peY41oy9PyZYn5UvpKGp90sGZmOyQG9GENoHsPtFEHTH/uwtUvtDitTmc5V6YGpXcdMm
+         nerXyKU+7yxDNkfVyR5CNiy+px+Ve13ICnm6vqwtNL37/aB+VGhLUW1YNzEKoSuYdMTG
+         8i9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
+        b=qkRv5+F5gSH07KAnnm+uH0Sq0CnhC/OFNYZN5hN6HfwsbtRKtAliv4yxQrh9lT6YAM
+         /EVFPgzkKgLjLwivoM+kDqzybT//7GyIVrzQZ/0ErZItUT6IDDV6OGMtXgzU0D3FyvOO
+         qeGmvZ4iBu3g7K9sv8+Iw7xACWZtKbsEW+NHQwhtjpIGuCptlrOelK3pVjrnR9neb4P+
+         IUjST8aXxuGPJo3OrGwZ9JqJvW0ksYE4o3Wahivd+3dYPpyuFR86sE4djwgW5pnZ3LG5
+         m6QKJ2XmDhbiCVBFcS84mb2+H8PLDTSlNhmNonh49CdBW2FngnIx0FnjmvG6CxaiRPLO
+         fO3g==
+X-Gm-Message-State: AOAM531DaDrqmH4s8aiivFccCIM5/r0Whv7PGYeu+dOyZSxTClMOy9do
+        nJn9XTS6EFkZ+kF8+N5cMmq7WIfOyXseLND/7Cw=
+X-Google-Smtp-Source: ABdhPJwRbsRQ+CkmlR6OPnnbiekPrQEpsaTCCbWKAEH0vyO2CmbC3DSpp7LM58snge5WfZ7fe2WRq4+EERNT8vI3Ay0=
+X-Received: by 2002:a5b:34b:: with SMTP id q11mr31498784ybp.652.1642496809442;
+ Tue, 18 Jan 2022 01:06:49 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [PATCH] MAINTAINERS: Add Helge as fbdev maintainer
-Content-Language: en-CA
-To:     Sven Schnelle <svens@stackframe.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <YeG8ydoJNWWkGrTb@ls3530>
- <c48ad8ae-aea5-43fa-882f-dccb90dde9a4@suse.de>
- <87bl0amc6s.fsf@x1.stackframe.org>
-From:   =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel.daenzer@mailbox.org>
-In-Reply-To: <87bl0amc6s.fsf@x1.stackframe.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:06:48
+ -0800 (PST)
+Reply-To: asil.ajwad@gmail.com
+From:   Asil Ajwad <graceyaogokamboule@gmail.com>
+Date:   Mon, 17 Jan 2022 21:06:48 -1200
+Message-ID: <CA+Yy_gA7+jE7dqD=WebdT7kitHvMACkH44b4SxL-MC_huN-uuA@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2022-01-17 19:47, Sven Schnelle wrote:
-> 
->>  * There's no new development in fbdev and there are no new
->>    drivers. Everyone works on DRM, which is better in most
->>    regards. The consequence is that userspace is slowly loosing the
->>   ability to use fbdev.
-> 
-> That might be caused by the fact that no new drivers are accepted for
-> fbdev. I wrote a driver for the HP Visualize FX5/10 cards end of last
-> year which was rejected for inclusion into fbdev[1].
-> 
-> Based on your recommendation i re-wrote the whole thing in DRM. This
-> works but has several drawbacks:
-> 
-> - no modesetting. With fbdev, i can nicely switch resolutions with
->   fbset. That doesn't work, and i've been told that this is not supported[2]
-> 
-> - It is *much* slower than fbset with hardware blitting. I would have to
->   dig out the numbers, but it's in the ratio of 1:15. The nice thing
->   with fbdev blitting is that i get an array of pixels and the
->   foreground/background colors all of these these pixels should have.
->   With the help of the hardware blitting, i can write 32 pixels at once
->   with every 32-bit transfer.
-> 
->   With DRM, the closest i could find was DRM_FORMAT_C8, which means one
->   byte per pixel. So i can put 4 pixels into one 32-bit transfer.
-> 
->   fbdev also clears the lines with hardware blitting, which is much
->   faster than clearing it with memcpy.
-> 
->   Based on your recommendation i also verified that pci coalescing is
->   enabled.
-> 
->   These numbers are with DRM's unnatural scrolling behaviour - it seems
->   to scroll several (text)lines at once if it takes to much time. I
->   guess if DRM would scroll line by line it would be even slower.
-> 
->   If DRM would add those things - hardware clearing of memory regions,
->   hw blitting for text with a FG/BG color and modesetting i wouldn't
->   care about fbdev at all. But right now, it's working way faster for me.
-
-A DRM driver can implement the same fbdev acceleration hooks as an fbdev driver.
-
-(Most DRM drivers never bothered because the HW is more complex than traditional 2D accelerators, and can't safely be used under all circumstances where fbdev acceleration hooks could get called from. That's not an issue for a traditional 2D accelerator driver though)
-
-
 -- 
-Earthling Michel Dänzer            |                  https://redhat.com
-Libre software enthusiast          |         Mesa and Xwayland developer
+Greetings,
+
+I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
+an ATM Visa Card to withdraw money at, ATM Cash Machine in your
+country, if yes I want to transfer abounded fund the sum of $10.5million
+US-Dollars, to you from my country, this is part of the money that was
+abounded by our late old client a politician who unfortunately lost
+his life and was forced out of power Du to his greedy act, the bank will
+
+change the account details to your name, and apply for a Visa Card
+with your details, the Visa Card will be send to you, and you can be
+withdrawing money with it always, whatever any amount you withdraw
+daily, you will send 60% to me and you will take 40%, the Visa Card
+and the bank account will be on your name, I will be waiting for your
+response for more details, thanks to you a lot for giving me your time.
+
+regards,
+Mr.Asil Ajwad.
