@@ -2,101 +2,157 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D644F495B57
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jan 2022 08:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C882E495C49
+	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Jan 2022 09:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379308AbiAUH5a (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Jan 2022 02:57:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24862 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1379235AbiAUH4h (ORCPT
+        id S1349700AbiAUIra (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 21 Jan 2022 03:47:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51816 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349499AbiAUIrV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Jan 2022 02:56:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642751795;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=m2Ho/lCZKO10EzmqqcIcm9qmBssIoEL4oIglAIQFltM=;
-        b=NkUymEuQfICVF0n6My8trFNrxc1UYZmm2CcebWHGKCjguESu7csN5XnwTJ/WWtIFUgmpYR
-        GCKXWRRkCDnH1N53D49jqHYnzDjxmJpCllho7F/ST4Y/cTOqT0EOm6/5cn84jCa4mDDRv6
-        fkKka2+B9+jSx6P+Bo4vy6NxrOvAswE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-308-qmajEbmeOGKJKS2Wspa7_w-1; Fri, 21 Jan 2022 02:56:30 -0500
-X-MC-Unique: qmajEbmeOGKJKS2Wspa7_w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 088D084DA42;
-        Fri, 21 Jan 2022 07:56:27 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.47])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 22F6970D21;
-        Fri, 21 Jan 2022 07:56:17 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id A8B8F180060F; Fri, 21 Jan 2022 08:20:06 +0100 (CET)
-Date:   Fri, 21 Jan 2022 08:20:06 +0100
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-fbdev@vger.kernel.org, Sven Schnelle <svens@stackframe.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Ilia Mirkin <imirkin@alum.mit.edu>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Pavel Machek <pavel@ucw.cz>, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sam Ravnborg <sam@ravnborg.org>, Claudio Suarez <cssk@net-c.es>
-Subject: Re: [PATCH 2/2] Revert "fbcon: Disable accelerated scrolling"
-Message-ID: <20220121072006.ylw2hdl7jbkbwnre@sirius.home.kraxel.org>
-References: <20220119110839.33187-1-deller@gmx.de>
- <20220119110839.33187-3-deller@gmx.de>
- <YelyGDNDTn1Aq/hm@phenom.ffwll.local>
- <6c000477-002b-d125-b945-2c4831bad8a5@gmx.de>
+        Fri, 21 Jan 2022 03:47:21 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 267C2C061574
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jan 2022 00:47:21 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id a10-20020a9d260a000000b005991bd6ae3eso10898859otb.11
+        for <linux-fbdev@vger.kernel.org>; Fri, 21 Jan 2022 00:47:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wTU29Vd39alUth1lv80uW9+OTVBlyJFtnlVs7XZ4g0U=;
+        b=ZFu2SshhTOHKlkc/b+4TRfashMda7GnAW3h5UHdHgEqpU676K6+mNXoXBA2LdQ2I6i
+         Uohcjg/m8sqM7DsAjG5pRUo3ZDOvVhnEaVLkjDecHFQzgvPZUUyOKGn82fPYSgIEaelI
+         3CJdSa0m60uHDFC4uGviXk1TV/OlhWShMWVs8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wTU29Vd39alUth1lv80uW9+OTVBlyJFtnlVs7XZ4g0U=;
+        b=Dp7eRvrIS+WZBtfxiP4Dqsmc9BscTjHPLP0Obm/r9QhQNYXs+2YivzjUkbNTfmQxKp
+         WXPyQJhbss11sXgYGSvB8gdj5XIpgfCChbOcCsFNQM6eQiQe36YIL4VPC9mJx7RRPnzW
+         YSZ7xvv3LsBkMsZ+y8BA1O90LplRIscZQcLRxPFCCTkQ6UQY93liFIkmrbJKKwt2P7Xr
+         IeWtK5hH8sflJa0RkHBU6zFRFFkFQMitvwIUcqxZqgy7M0Zrf2kEhM9OBhehltgpkPAu
+         2qGdfzUN3NkHmuV5/MkSMaV6H8UwhQJkbYz08E4CH1YrQl/vqXN3PSpg5lzO+r7Lktp/
+         7Y8Q==
+X-Gm-Message-State: AOAM5311719Qg5yuXTe48XIdFiEHnNUbwqHdYQjpVZAAE+J0b8Fys4nu
+        IBacEyzMNT5nfxxT4yBctEORhGz0aMC79k+mRaFFYghfBmc=
+X-Google-Smtp-Source: ABdhPJyp37Qj+oFvVhbsorkMGIDruzMkeIfPB0ZqbOaZMHPBpGWsl25ldzc2vCd3lW5DSHjdU4E82ZQloH0SZMkT8Ls=
+X-Received: by 2002:a9d:685a:: with SMTP id c26mr2020145oto.239.1642754840485;
+ Fri, 21 Jan 2022 00:47:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6c000477-002b-d125-b945-2c4831bad8a5@gmx.de>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+References: <Yeg11pHSqx29yg/T@ls3530>
+In-Reply-To: <Yeg11pHSqx29yg/T@ls3530>
+From:   Daniel Vetter <daniel@ffwll.ch>
+Date:   Fri, 21 Jan 2022 09:47:09 +0100
+Message-ID: <CAKMK7uGeGBBvTGFyBxLwvTAxEWwXMS8U1rrYUb_7gbui-jV+KA@mail.gmail.com>
+Subject: Re: [GIT PULL] fbdev updates & fixes for v5.17-rc1
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-  Hi,
+On Wed, Jan 19, 2022 at 5:02 PM Helge Deller <deller@gmx.de> wrote:
+>
+> The following changes since commit 0c947b893d69231a9add855939da7c66237ab44f:
+>
+>   Merge tag '5.17-rc-part1-smb3-fixes' of git://git.samba.org/sfrench/cifs-2.6 (2022-01-17 09:53:21 +0200)
+>
+> are available in the Git repository at:
+>
+>   http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/fbdev-5.17-2
+>
+> for you to fetch changes up to 842086bc7262a36f002e0361f9dc351556cae3f3:
+>
+>   video: fbdev: controlfb: Fix COMPILE_TEST build (2022-01-17 22:39:37 +0100)
+>
+> ----------------------------------------------------------------
+> fbdev updates for v5.17-rc1
+>
+> A first bunch of updates and fixes for the following fbdev & backlight drivers:
+> ocfb, aty128fb, mb862xx, omapfb, qcom-wled, dt-bindings, hyperv_fb,
+> lm3630a_bl, omap2, controlfb, matroxfb
+>
+> Nothing really important, mostly cleanups, const conversions, added null
+> pointer/boundary checks and build fixes.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-> > So if this really has to come back then I think the pragmatic approach is
-> > to do it behind a CONFIG_FBCON_ACCEL, default n, and with a huge warning
-> > that enabling that shouldn't be done for any distro which only enables
-> > firmware and drm fbdev drivers.
-> 
-> Thanks for coming back on this, but quite frankly I don't understand
-> that request. How should that warning look like, something along:
-> "BE WARNED: The framebuffer text console on your non-DRM supported
-> graphic card will then run faster and smoother if you enable this option."
-> That doesn't make sense. People and distros would want to enable that.
+Not sure whether Linus missed this or just wanted to let the
+discussion settle first. But since this is all random patches for
+drivers that many distros don't even enable anymore there's no issues
+here, and I very much welcome someone volunteering to pick these up.
+I'd expect there's a pile more since it's been 1-2 years since Bart
+took care of these and merged them consistently.
 
-Nope.  Most distros want disable fbdev drivers rather sooner than later.
-The fbdev drivers enabled in the fedora kernel today:
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-	CONFIG_FB_VGA16=m
-	CONFIG_FB_VESA=y
-	CONFIG_FB_EFI=y
-	CONFIG_FB_SSD1307=m
+Cheers, Daniel
 
-CONFIG_FB_VESA + CONFIG_FB_EFI will go away soon, with simpledrm taking
-over their role.
+>
+> ----------------------------------------------------------------
+> Chunyang Zhong (1):
+>       video: ocfb: add const to of_device_id
+>
+> Colin Ian King (2):
+>       fbdev: aty128fb: make some arrays static const
+>       video: fbdev: mb862xx: remove redundant assignment to pointer ptr
+>
+> Greg Kroah-Hartman (1):
+>       omapfb: use default_groups in kobj_type
+>
+> Jiasheng Jiang (1):
+>       video: fbdev: Check for null res pointer
+>
+> Luca Weiss (2):
+>       backlight: qcom-wled: Add PM6150L compatible
+>       dt-bindings: simple-framebuffer: allow standalone compatible
+>
+> Michael Kelley (1):
+>       video: hyperv_fb: Fix validation of screen resolution
+>
+> Minghao Chi (1):
+>       drivers/video: remove redundant res variable
+>
+> Xu Wang (2):
+>       backlight: lm3630a_bl: Remove redundant 'flush_workqueue()' calls
+>       fbdev: omap2: omapfb: Remove redundant 'flush_workqueue()' calls
+>
+> Yang Guang (1):
+>       video: fbdev: use swap() to make code cleaner
+>
+> YueHaibing (1):
+>       video: fbdev: controlfb: Fix COMPILE_TEST build
+>
+> Z. Liu (1):
+>       matroxfb: set maxvram of vbG200eW to the same as vbG200 to avoid black screen
+>
+>  .../devicetree/bindings/display/simple-framebuffer.yaml  | 12 +++++++-----
+>  drivers/video/backlight/lm3630a_bl.c                     |  1 -
+>  drivers/video/backlight/qcom-wled.c                      |  1 +
+>  drivers/video/fbdev/aty/aty128fb.c                       | 10 ++++++----
+>  drivers/video/fbdev/aty/mach64_ct.c                      |  4 +---
+>  drivers/video/fbdev/controlfb.c                          |  2 ++
+>  drivers/video/fbdev/hyperv_fb.c                          | 16 +++-------------
+>  drivers/video/fbdev/imxfb.c                              |  2 ++
+>  drivers/video/fbdev/matrox/matroxfb_base.c               |  2 +-
+>  drivers/video/fbdev/mb862xx/mb862xxfb_accel.c            |  2 +-
+>  drivers/video/fbdev/ocfb.c                               |  2 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c     |  3 ++-
+>  drivers/video/fbdev/omap2/omapfb/dss/manager-sysfs.c     |  3 ++-
+>  drivers/video/fbdev/omap2/omapfb/dss/overlay-sysfs.c     |  3 ++-
+>  drivers/video/fbdev/omap2/omapfb/omapfb-main.c           |  1 -
+>  drivers/video/fbdev/sis/sis_main.c                       |  2 +-
+>  16 files changed, 32 insertions(+), 34 deletions(-)
 
-> And if a distro *just* has firmware and drm fbdev drivers enabled,
-> none of the non-DRM graphic cards would be loaded anyway and this code
-> wouldn't be executed anyway.
 
-Yes, exactly.  That's why there is no point in compiling that code.
 
-take care,
-  Gerd
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
