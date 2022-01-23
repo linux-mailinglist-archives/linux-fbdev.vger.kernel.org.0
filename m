@@ -2,200 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49CBD4973D4
-	for <lists+linux-fbdev@lfdr.de>; Sun, 23 Jan 2022 18:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7E44975D4
+	for <lists+linux-fbdev@lfdr.de>; Sun, 23 Jan 2022 22:56:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbiAWRwT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 23 Jan 2022 12:52:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239351AbiAWRwQ (ORCPT
+        id S240276AbiAWV4J (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 23 Jan 2022 16:56:09 -0500
+Received: from mail-wr1-f52.google.com ([209.85.221.52]:35772 "EHLO
+        mail-wr1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234697AbiAWV4J (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 23 Jan 2022 12:52:16 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2EBC06173B
-        for <linux-fbdev@vger.kernel.org>; Sun, 23 Jan 2022 09:52:16 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nBh29-0007aF-Qo; Sun, 23 Jan 2022 18:52:09 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nBh28-00BycG-BF; Sun, 23 Jan 2022 18:52:07 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nBh26-000tza-R3; Sun, 23 Jan 2022 18:52:06 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-fbdev@vger.kernel.org, Noralf Tronnes <notro@tronnes.org>,
-        linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH 2/5] staging: fbtft: Deduplicate driver registration macros
-Date:   Sun, 23 Jan 2022 18:51:58 +0100
-Message-Id: <20220123175201.34839-3-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
-References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+        Sun, 23 Jan 2022 16:56:09 -0500
+Received: by mail-wr1-f52.google.com with SMTP id r14so10161166wrp.2;
+        Sun, 23 Jan 2022 13:56:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vkJFe+YpdQY4B8W9DqTO7FJ3H0EJ0x5TwT+iBVw2iXM=;
+        b=KSeKjlhBhcm2ff2wysuzkBEqVY0FfqG8GkotEE7okGFte66MxjyOXgm/D0fvQzN4qY
+         4SozoVwcadIspEPOyjPUyhcGdHIZ0q5K7h02/SRUQE8Omj3h16N+MwwVAEPXSwpVDa3v
+         CHTmclWv0/WnpjdSayihNTU91xb/33v2Hwl8BMJqJulaKA/IfLyyXw+OuYyrqi4FSU9Z
+         oKSwln06As8xO1SwDVGxwq405yBtMaF/XSZAXLZjIfwClxSfMbkA3yeZIYNV1Rs85h16
+         uUuVF/wr8Mh6yPyv6VBhMCAjVoR9KVq9cUJOgb1Qj8akmcNilfuTN+ctWXvSHrnHbCdV
+         kG0Q==
+X-Gm-Message-State: AOAM532ESay871oXaBdJBnNjVm/rlWdl8KWw6NW6gFJNwr9QXqE64UVt
+        vCz97N3FaUixnSfdxGLuxY0=
+X-Google-Smtp-Source: ABdhPJwhnlwrjUsCsa0+KILQxWz6IQlGaxe4OdxYSDfPAdjw5uuWKbL38sD7/aPt9aqlGF50rVLWKA==
+X-Received: by 2002:a05:6000:1a8e:: with SMTP id f14mr12188363wry.518.1642974967958;
+        Sun, 23 Jan 2022 13:56:07 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id i2sm2779615wmq.23.2022.01.23.13.56.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jan 2022 13:56:07 -0800 (PST)
+Date:   Sun, 23 Jan 2022 21:56:06 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Haiyang Zhang <haiyangz@microsoft.com>
+Cc:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Wei Hu <weh@microsoft.com>, Dexuan Cui <decui@microsoft.com>,
+        "drawat.floss@gmail.com" <drawat.floss@gmail.com>,
+        hhei <hhei@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH 1/1] video: hyperv_fb: Fix validation of screen resolution
+Message-ID: <20220123215606.fzycryooluavtar4@liuwe-devbox-debian-v2>
+References: <1642360711-2335-1-git-send-email-mikelley@microsoft.com>
+ <MN2PR21MB1295CE3BD15D4EB257A158DCCA569@MN2PR21MB1295.namprd21.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6082; h=from:subject; bh=foBmuuEI1He7NuGg3QW3ixnzXwI1LphRcPTFGI3t6X8=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBh7ZWvvuKPqNnlGxkliBrLUAPrmqBmyjgXYcMtZRKf /OdSJuKJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYe2VrwAKCRDB/BR4rcrsCQKdB/ 9sBcrdFWuKD0qO5mR5tfx7V99RsL9sa3essPy4tP8F1zgmNlTI+c/J1M7jmBWqkVi++cVYuMXpmSIK KiijgTxGBFHiLiYNjgP/fAymP0jHYKH3wHWWfclIN2e7gfhCsgrxEQU7NTtYMvn95rqgxunuYQiTGl CmlZHDzsSpxAmVUxWcnc8FUi8nrO6LYKp+UR6y47c1RxsmBBvys/7eJKwR+1kgueeeD2grtULKWqgr 5QIF0deXNH1uj85z3vf93rT/L/0zWIWiCtgM34u6J39dCh5X2T2jjtorNcYMs+2Dj7oNLfss3CFi9G /KRKOrig0xxNdVmMyl6neeSDKdjmJF
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN2PR21MB1295CE3BD15D4EB257A158DCCA569@MN2PR21MB1295.namprd21.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The two macros FBTFT_REGISTER_DRIVER and FBTFT_REGISTER_SPI_DRIVER
-contain quite some duplication: Both define an spi driver and an of device
-table and the differences are quite subtle.
+On Sun, Jan 16, 2022 at 09:53:06PM +0000, Haiyang Zhang wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Michael Kelley (LINUX) <mikelley@microsoft.com>
+> > Sent: Sunday, January 16, 2022 2:19 PM
+> > To: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang <haiyangz@microsoft.com>; Stephen
+> > Hemminger <sthemmin@microsoft.com>; wei.liu@kernel.org; Wei Hu <weh@microsoft.com>; Dexuan
+> > Cui <decui@microsoft.com>; drawat.floss@gmail.com; hhei <hhei@redhat.com>; linux-
+> > kernel@vger.kernel.org; linux-hyperv@vger.kernel.org; linux-fbdev@vger.kernel.org; dri-
+> > devel@lists.freedesktop.org
+> > Cc: Michael Kelley (LINUX) <mikelley@microsoft.com>
+> > Subject: [PATCH 1/1] video: hyperv_fb: Fix validation of screen resolution
+> > 
+> > In the WIN10 version of the Synthetic Video protocol with Hyper-V,
+> > Hyper-V reports a list of supported resolutions as part of the protocol
+> > negotiation. The driver calculates the maximum width and height from
+> > the list of resolutions, and uses those maximums to validate any screen
+> > resolution specified in the video= option on the kernel boot line.
+> > 
+> > This method of validation is incorrect. For example, the list of
+> > supported resolutions could contain 1600x1200 and 1920x1080, both of
+> > which fit in an 8 Mbyte frame buffer.  But calculating the max width
+> > and height yields 1920 and 1200, and 1920x1200 resolution does not fit
+> > in an 8 Mbyte frame buffer.  Unfortunately, this resolution is accepted,
+> > causing a kernel fault when the driver accesses memory outside the
+> > frame buffer.
+> > 
+> > Instead, validate the specified screen resolution by calculating
+> > its size, and comparing against the frame buffer size.  Delete the
+> > code for calculating the max width and height from the list of
+> > resolutions, since these max values have no use.  Also add the
+> > frame buffer size to the info message to aid in understanding why
+> > a resolution might be rejected.
+> > 
+> > Fixes: 67e7cdb4829d ("video: hyperv: hyperv_fb: Obtain screen resolution from Hyper-V
+> > host")
+> > Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+[...]
+> 
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> 
 
-So create two new macros and use both twice.
-
-Link: https://lore.kernel.org/r/20220118181338.207943-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/staging/fbtft/fbtft.h | 93 ++++++++++++++---------------------
- 1 file changed, 36 insertions(+), 57 deletions(-)
-
-diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-index 55677efc0138..6a7545b5bcd2 100644
---- a/drivers/staging/fbtft/fbtft.h
-+++ b/drivers/staging/fbtft/fbtft.h
-@@ -272,21 +272,40 @@ void fbtft_write_reg8_bus9(struct fbtft_par *par, int len, ...);
- void fbtft_write_reg16_bus8(struct fbtft_par *par, int len, ...);
- void fbtft_write_reg16_bus16(struct fbtft_par *par, int len, ...);
- 
-+#define FBTFT_DT_TABLE(_compatible)						\
-+static const struct of_device_id dt_ids[] = {					\
-+	{ .compatible = _compatible },						\
-+	{},									\
-+};										\
-+MODULE_DEVICE_TABLE(of, dt_ids);
-+
-+#define FBTFT_SPI_DRIVER(_name, _compatible, _display, _spi_ids)		\
-+										\
-+static int fbtft_driver_probe_spi(struct spi_device *spi)			\
-+{										\
-+	return fbtft_probe_common(_display, spi, NULL);				\
-+}										\
-+										\
-+static int fbtft_driver_remove_spi(struct spi_device *spi)			\
-+{										\
-+	struct fb_info *info = spi_get_drvdata(spi);				\
-+										\
-+	fbtft_remove_common(&spi->dev, info);					\
-+	return 0;								\
-+}										\
-+										\
-+static struct spi_driver fbtft_driver_spi_driver = {				\
-+	.driver = {								\
-+		.name = _name,							\
-+		.of_match_table = dt_ids,					\
-+	},									\
-+	.id_table = _spi_ids,							\
-+	.probe = fbtft_driver_probe_spi,					\
-+	.remove = fbtft_driver_remove_spi,					\
-+};
-+
- #define FBTFT_REGISTER_DRIVER(_name, _compatible, _display)                \
- 									   \
--static int fbtft_driver_probe_spi(struct spi_device *spi)                  \
--{                                                                          \
--	return fbtft_probe_common(_display, spi, NULL);                    \
--}                                                                          \
--									   \
--static int fbtft_driver_remove_spi(struct spi_device *spi)                 \
--{                                                                          \
--	struct fb_info *info = spi_get_drvdata(spi);                       \
--									   \
--	fbtft_remove_common(&spi->dev, info);                              \
--	return 0;                                                          \
--}                                                                          \
--									   \
- static int fbtft_driver_probe_pdev(struct platform_device *pdev)           \
- {                                                                          \
- 	return fbtft_probe_common(_display, NULL, pdev);                   \
-@@ -300,22 +319,9 @@ static int fbtft_driver_remove_pdev(struct platform_device *pdev)          \
- 	return 0;                                                          \
- }                                                                          \
- 									   \
--static const struct of_device_id dt_ids[] = {                              \
--	{ .compatible = _compatible },                                     \
--	{},                                                                \
--};                                                                         \
--									   \
--MODULE_DEVICE_TABLE(of, dt_ids);                                           \
-+FBTFT_DT_TABLE(_compatible)						   \
- 									   \
--									   \
--static struct spi_driver fbtft_driver_spi_driver = {                       \
--	.driver = {                                                        \
--		.name   = _name,                                           \
--		.of_match_table = dt_ids,                                  \
--	},                                                                 \
--	.probe  = fbtft_driver_probe_spi,                                  \
--	.remove = fbtft_driver_remove_spi,                                 \
--};                                                                         \
-+FBTFT_SPI_DRIVER(_name, _compatible, _display, NULL)			   \
- 									   \
- static struct platform_driver fbtft_driver_platform_driver = {             \
- 	.driver = {                                                        \
-@@ -351,42 +357,15 @@ module_exit(fbtft_driver_module_exit);
- 
- #define FBTFT_REGISTER_SPI_DRIVER(_name, _comp_vend, _comp_dev, _display)	\
- 										\
--static int fbtft_driver_probe_spi(struct spi_device *spi)			\
--{										\
--	return fbtft_probe_common(_display, spi, NULL);				\
--}										\
--										\
--static int fbtft_driver_remove_spi(struct spi_device *spi)			\
--{										\
--	struct fb_info *info = spi_get_drvdata(spi);				\
--										\
--	fbtft_remove_common(&spi->dev, info);					\
--	return 0;								\
--}										\
--										\
--static const struct of_device_id dt_ids[] = {					\
--	{ .compatible = _comp_vend "," _comp_dev },				\
--	{},									\
--};										\
--										\
--MODULE_DEVICE_TABLE(of, dt_ids);						\
-+FBTFT_DT_TABLE(_comp_vend "," _comp_dev)					\
- 										\
- static const struct spi_device_id spi_ids[] = {					\
- 	{ .name = _comp_dev },							\
- 	{},									\
- };										\
--										\
- MODULE_DEVICE_TABLE(spi, spi_ids);						\
- 										\
--static struct spi_driver fbtft_driver_spi_driver = {				\
--	.driver = {								\
--		.name  = _name,							\
--		.of_match_table = dt_ids,					\
--	},									\
--	.id_table = spi_ids,							\
--	.probe  = fbtft_driver_probe_spi,					\
--	.remove = fbtft_driver_remove_spi,					\
--};										\
-+FBTFT_SPI_DRIVER(_name, _comp_vend "," _comp_dev, _display, spi_ids)		\
- 										\
- module_spi_driver(fbtft_driver_spi_driver);
- 
--- 
-2.34.1
-
+Applied to hyperv-fixes. Thanks.
