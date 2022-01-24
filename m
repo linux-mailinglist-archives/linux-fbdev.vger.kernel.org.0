@@ -2,90 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ACF949820E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jan 2022 15:25:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64369498214
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jan 2022 15:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237785AbiAXOZ4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Jan 2022 09:25:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:32746 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234478AbiAXOZz (ORCPT
+        id S238109AbiAXO0j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Jan 2022 09:26:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238094AbiAXO0i (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Jan 2022 09:25:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643034354;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7lR4CEZmUA7KU2EEtClbGSv2hJzPsx0avoRxay7giE0=;
-        b=TDDR+5FFmTPEA0WmZ6+iRsbBcYKyTlQqN8eJi8LEy0unw4D3MI24SHEJuzeSCSZgANulEy
-        uOmKwQLkiZGYy3WQBqtEYGFgpCRFdaNu7cAYHVD+60/hJ7Sccy5bdf5vomgVfPK+Yw0z32
-        jlKjyXo7bhH2TJ3na2df2gcOWCYiLss=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-341-GnVLtp6OPDykZ2omVoDY-g-1; Mon, 24 Jan 2022 09:25:53 -0500
-X-MC-Unique: GnVLtp6OPDykZ2omVoDY-g-1
-Received: by mail-wr1-f69.google.com with SMTP id m18-20020adfa3d2000000b001d926bdf34aso1708996wrb.11
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jan 2022 06:25:53 -0800 (PST)
+        Mon, 24 Jan 2022 09:26:38 -0500
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99393C06173D
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jan 2022 06:26:38 -0800 (PST)
+Received: by mail-pf1-x441.google.com with SMTP id u130so11845814pfc.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jan 2022 06:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=mJCRKkjCob9Fmdw08Os+BXHHRpJKOelFsPCnwD4wdWE=;
+        b=O1ZQ/vSyaGUnLWQlmomluPrfanNEViqhNX8NLCWg9AbmEZgJkQCaQDMkdd0VQHPF0M
+         tiTeCIqRABkL7PMu2QH7Y4mE9UHMBSZSiu6Oh1PqJuw6nt55n7UN4iaQIU1J1tbL9ord
+         SduRsZ5fCLFkr0c84VYF3GV9xB41R3UZtl6MjHAN4ORY06jsrSsGXTlfmEVpr2HIJO5A
+         19fdoEYhpHTW5TsW2/+InVw9HbeKiEqQb68QvBs+7rp38lh0JuL/i7ZAMnbEowE1Qg9u
+         5ulB7L3yZuhkh7UgmaE2hkMOwqSTi4g9aLsYsJIdD4x1FW+vMv3oQty1mplJApwYzQCx
+         H2fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=7lR4CEZmUA7KU2EEtClbGSv2hJzPsx0avoRxay7giE0=;
-        b=u382o7EtJi5qZdjOflO/v5w45OTeQVpNwWzrNrWjQ09NmuEopEUKXAMpi3BotgN9Jy
-         9bvSRDZujWAz0dkbyHQ78979rqlWzDmxMBiPyABD3s+jrw7IMvWlbxE43HGUI3v3VZ7X
-         QGJhxtJAKpZZRM5Ql6tUhFJuCHOuT6zeXDq2/7jj4sZAXP7Dppw+DG0my7qZn4g3Py8k
-         ZdslZHwcjYb1iON/LB6UihoIjmRyQnKQvFZwi6biE9+5VDFZs/bFwYoiu7SqlIqjJcqA
-         kpzsTvouWEGwQACq0ek+N1p4iaI/Pv0IPjwV6Kpr48/oe70aR7TnDEjbObI7OMeb5iMH
-         8WKA==
-X-Gm-Message-State: AOAM531okkGhGwf7mHV8dzu00jbT41LtOdDjhDiGmErqExyagA2hqhnS
-        o1m3y6Eg/P+Dv4iiyj5ZH2n/w1t6pYyGyecdRKN60wxBp0VoCBxAuhWVCne6xR4O+GYmeG9BGBf
-        aH8dDpcxOHdJRQ+IyYZNwXW4=
-X-Received: by 2002:a05:600c:1d21:: with SMTP id l33mr2085586wms.134.1643034352134;
-        Mon, 24 Jan 2022 06:25:52 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzIp5WYmpvxAnkgICIFMWJqVkRpKEZirVZ1OoWVlrqMrxGRvVgHs08iWCn81KmI17eLy1xm9Q==
-X-Received: by 2002:a05:600c:1d21:: with SMTP id l33mr2085569wms.134.1643034351912;
-        Mon, 24 Jan 2022 06:25:51 -0800 (PST)
-Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id u15sm1881620wrs.17.2022.01.24.06.25.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jan 2022 06:25:51 -0800 (PST)
-Message-ID: <811fa19c-5bce-4752-2fc9-720a6e34f484@redhat.com>
-Date:   Mon, 24 Jan 2022 15:25:50 +0100
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=mJCRKkjCob9Fmdw08Os+BXHHRpJKOelFsPCnwD4wdWE=;
+        b=eNBoksZVBDWbUsTpOoAYB8bB+2diLATipg4r8RvbIq7btmCto5AbalXQE9LaISz85S
+         PpnbQ2bAuFugFQV+CFIC0M9PBhEtAL86DhFjaInfNgfL+hyVs7+GN6UBRJ/JA2qe+64W
+         pG6syDN9QZdA+ZCZtFYZxvkAIoycQya13cXbtS9ZYdB9Pq+gB6+59/48R3nWoXAkNvpv
+         Y17IH1IzDFZu6pprX+th01hWalCvRzFG3MYDQ1VGDJhsi3yX2sJpxqdbzHilX6uClGZL
+         kjkN3OXG7OrSPGHGO15kd4zwHKyQnMm7JMnyYCyOjPCyFbjf//pVo0MSpmAs6GV9jyVR
+         xNvg==
+X-Gm-Message-State: AOAM531AgNW9d7gKb/VeY0X9PuGkhw02zN1ewby0vEA0QFo9udtPXquN
+        Wy09LXKdxD40MNfpg4TpWPMpUCN2m9lYPBxchUw=
+X-Google-Smtp-Source: ABdhPJyMtw/1AHAD7vxQlJ8JIvQIXKoTVtMbDJEq9SHpvoD2wVmpnP6h719OB5YLgDjku/scZPT7sK5uPbk5SsOBZKQ=
+X-Received: by 2002:aa7:914a:0:b0:4c6:c181:5251 with SMTP id
+ 10-20020aa7914a000000b004c6c1815251mr14447039pfi.41.1643034398020; Mon, 24
+ Jan 2022 06:26:38 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 5/5] drm: Add TODO item for requesting memory regions
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>, zackr@vmware.com,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
-        hdegoede@redhat.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20220124123659.4692-1-tzimmermann@suse.de>
- <20220124123659.4692-6-tzimmermann@suse.de>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220124123659.4692-6-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:90b:17c8:0:0:0:0 with HTTP; Mon, 24 Jan 2022 06:26:37
+ -0800 (PST)
+Reply-To: mrsaishag45@gmail.com
+From:   Mrs Aisha Al-Qaddafi <mrsaishag89@gmail.com>
+Date:   Mon, 24 Jan 2022 06:26:37 -0800
+Message-ID: <CAF-3XQSiUkPNE2Unby_X0U5kmnw1VETFvOoN+NVHg1BP20yEZg@mail.gmail.com>
+Subject: Dear Friend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 1/24/22 13:36, Thomas Zimmermann wrote:
-> Add a TODO item about requesting  memory regions for each driver. The
-> current DRM drivers don't do this consistently.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Dear Friend,
 
-Best regards,
--- 
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+I came across your e-mail contact prior a private search while in need
+of your assistance. My name is Aisha Gaddafi a single
 
+Mother and a Widow with three Children. I am the only biological
+Daughter of late Libyan President (Late Colonel Muammar
+
+Gaddafi).
+
+I have investment funds worth Twenty Seven Million Five Hundred
+Thousand United State Dollar ($27.500.000.00 ) and i need a
+
+trusted investment Manager/Partner because of my current refugee
+status, however, I am interested in you for investment
+
+project assistance in your country, may be from there, we can build
+business relationship in the nearest future.
+
+I am willing to negotiate investment/business profit sharing ratio
+with you base on the future investment earning profits.
+If you are willing to handle this project on my behalf kindly reply
+Best Regards
+Mrs Aisha Gaddafi
