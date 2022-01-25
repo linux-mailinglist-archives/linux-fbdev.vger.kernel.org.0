@@ -2,153 +2,263 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED0A49AFED
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 10:40:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D14149B06C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 10:43:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1458103AbiAYJRw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jan 2022 04:17:52 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:44860 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1456937AbiAYJNh (ORCPT
+        id S1574705AbiAYJgS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jan 2022 04:36:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1573970AbiAYJa4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jan 2022 04:13:37 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 4611721102;
-        Tue, 25 Jan 2022 09:13:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1643102016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0f8u6l1rSEWvkufMI8ina28FmuKJX6XQLv6xbvgDjRI=;
-        b=XmuNtMlEfBGmi/BUmCM2moSJrZby00dCneo9dyzEec/BDLPEC/00r+Xmu7idaiDOZIcm8o
-        nqWgW2ntP8NOmcxBJPeToSFKChG4ovggmhm+TCofJvbjnUPIaX4KvyyWNtJ9elFipq5Z9d
-        uymg1s2yAl/pwnY9AworsEBtbAXS95Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1643102016;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0f8u6l1rSEWvkufMI8ina28FmuKJX6XQLv6xbvgDjRI=;
-        b=kXRWYNwJSDTsbNWMnBqYfZnED59Mbx4hanJaU5WNyaYfCUidRT1oE5ngcvBHsaIbgov2NG
-        VaoVpdLpCJkvVdAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 104BD13DA2;
-        Tue, 25 Jan 2022 09:13:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id suMmA0C/72EgQQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 25 Jan 2022 09:13:36 +0000
-Message-ID: <7db5ae33-d4be-4b27-7dc1-d7b58db86b9f@suse.de>
-Date:   Tue, 25 Jan 2022 10:13:35 +0100
+        Tue, 25 Jan 2022 04:30:56 -0500
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3D2C0613E6
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jan 2022 01:30:54 -0800 (PST)
+Received: by mail-ua1-x92c.google.com with SMTP id y4so36267458uad.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Jan 2022 01:30:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1mm7+Qmz3LImo4aFwbhXIFkzVEgm/HAOzd6fbdAVMrg=;
+        b=kCmCEgQ+xOVJqgvY6mIiDwGpng9RE64Ri/x5bVEJVgfKmrbder8yB0SJa9j3j/iO6u
+         VSlwxJi1GtMfRaX9rz0Fi8V70QZmpTm/yg+yqKEhFTP/kvAigM6NlkG016BHxBuEGBud
+         aKKG3vXyGKhkWECz7g02ij5pN8RBjRbfSAGJhF2s+s/E8Wzq61/RmUZzmkHINs6y38kj
+         8W/C1tUsfkR71I5xYVxyEgRhxjIz/FmTGO/CwLqL3papla/+aWUpb3kyrOT/GpbDGqeC
+         c1kCPdzAMoEjl9Ka3L/ozlubTR502/GpTZoRLS5kuqKqPkl9NQ2lJSPzTzJVIDppuhpp
+         EfLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1mm7+Qmz3LImo4aFwbhXIFkzVEgm/HAOzd6fbdAVMrg=;
+        b=gmLAqKIv2291cFcQM0O3YEmFRnNh9aNjdxYK1k3MIB+MArgv1Hh9dNzQx/9c+FalIK
+         5bnVeGxmevGIwvkv98ouocgQ2p+NfhDTUuRPF3iRfPC/mlWfpGiEm7woLcRDpnGRcBUR
+         hAiD7lxWC2EKedAu240N0oJcbc4ZhCePG26gUD65FcwF053qY2/3zOXLd4lkwo+eyhaP
+         jpontZZezuNlrY5cGBYSaq0C019/roByu7WoEiA1sSjTDifn4km2M5epfqJxB4CblHq7
+         MwBtKLI18zsBvndXjWe8zckO+o6prVwPNNGha/zDzQa02BjZh0I7glDqELzFiAUZUZSs
+         ve1Q==
+X-Gm-Message-State: AOAM530drUoHbWEsJhF9J8wgLOMp0FKIMa31MkqwGtpgb45GXKuP4DXY
+        0+movujHa0dKMYEuRzWR7XKMMgTFye30UIq+LC11cA==
+X-Google-Smtp-Source: ABdhPJwHGGkAwOnsd7qe0zHQAqHAUzi5PBqvJQ90yr1sdZ5zdG5wkLeKm2Z8HhNpFMDsTHL1nOGUCrWQS9pCXlyV9Y0=
+X-Received: by 2002:a67:8c2:: with SMTP id 185mr712613vsi.19.1643103053912;
+ Tue, 25 Jan 2022 01:30:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 0/5] sysfb: Fix memory-region management
-Content-Language: en-US
-To:     zackr@vmware.com, javierm@redhat.com, jfalempe@redhat.com,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
-        hdegoede@redhat.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20220125091222.21457-1-tzimmermann@suse.de>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20220125091222.21457-1-tzimmermann@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------X7EyffL3Ohse0sYzthLdmPiy"
+References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de>
+From:   Lee Jones <lee.jones@linaro.org>
+Date:   Tue, 25 Jan 2022 09:30:43 +0000
+Message-ID: <CAF2Aj3g0uxj7=m+USWz9QvmQ511DN83e9WsVDW-484aEdix4hg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] spi: make remove callback a void function
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Mark Brown <broonie@kernel.org>,
+        =?UTF-8?B?TWFyZWsgQmVow7pu?= <kabel@kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Emma Anholt <emma@anholt.net>,
+        David Lechner <david@lechnology.com>,
+        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
+        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Charles-Antoine Couret <charles-antoine.couret@nexvision.fr>,
+        Antti Palosaari <crope@iki.fi>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Eric Piel <eric.piel@tremplin-utc.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Thomas Kopp <thomas.kopp@microchip.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Woojung Huh <woojung.huh@microchip.com>,
+        UNGLinuxDriver@microchip.com,
+        =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Harry Morris <h.morris@cascoda.com>,
+        Varka Bhadram <varkabhadram@gmail.com>,
+        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Christian Lamparter <chunkeey@googlemail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Claudiu Beznea <Claudiu.Beznea@microchip.com>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Mark Greer <mgreer@animalcreek.com>,
+        Benson Leung <bleung@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        James Schulman <james.schulman@cirrus.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Maxime Ripard <mripard@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        =?UTF-8?Q?Ronald_Tschal=C3=A4r?= <ronald@innovation.ch>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Heiko Schocher <hs@denx.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Colin Ian King <colin.king@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+        Matt Kline <matt@bitbashing.io>,
+        Torin Cooper-Bennun <torin@maxiluxsystems.com>,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        =?UTF-8?Q?Stefan_M=C3=A4tje?= <stefan.maetje@esd.eu>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Nanyong Sun <sunnanyong@huawei.com>,
+        Yang Shen <shenyang39@huawei.com>,
+        dingsenjie <dingsenjie@yulong.com>,
+        Aditya Srivastava <yashsri421@gmail.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michael Walle <michael@walle.cc>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        wengjianfeng <wengjianfeng@yulong.com>,
+        Sidong Yang <realwakka@gmail.com>,
+        Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
+        Zhang Qilong <zhangqilong3@huawei.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
+        Davidlohr Bueso <dbueso@suse.de>, Claudius Heine <ch@denx.de>,
+        Jiri Prchal <jiri.prchal@aksignal.cz>,
+        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+        linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org,
+        platform-driver-x86@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        kernel@pengutronix.de, Noralf Tronnes <notro@tronnes.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Guenter Roeck <groeck@google.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------X7EyffL3Ohse0sYzthLdmPiy
-Content-Type: multipart/mixed; boundary="------------EXHECe7kI5TgMH873zoiJcsX";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: zackr@vmware.com, javierm@redhat.com, jfalempe@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, hdegoede@redhat.com
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Message-ID: <7db5ae33-d4be-4b27-7dc1-d7b58db86b9f@suse.de>
-Subject: Re: [PATCH 0/5] sysfb: Fix memory-region management
-References: <20220125091222.21457-1-tzimmermann@suse.de>
-In-Reply-To: <20220125091222.21457-1-tzimmermann@suse.de>
+My usual mailer won't let me reply to this many people, so I'm using Gmail.
 
---------------EXHECe7kI5TgMH873zoiJcsX
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+No idea what chaos this will cause, but here goes ...
 
-VGhpcyB2MiBvZiB0aGUgcGF0Y2hzZXQuIEkgZm9yZ290IHRvIGFkYXB0IHRoZSBzdWJqZWN0
-IGxpbmUgOi8NCg0KQW0gMjUuMDEuMjIgdW0gMTA6MTIgc2NocmllYiBUaG9tYXMgWmltbWVy
-bWFubjoNCj4gUmVxdWVzdCBmcmFtZWJ1ZmZlciBtZW1vcnkgaW4gc2ltcGxlZHJtIGFuZCBz
-aW1wbGVmYi4gRG8gYSBob3QtdW5wbHVnDQo+IG9wZXJhdGlvbiB3aGVuIHJlbW92aW5nIGZi
-ZGV2IGZpcm13YXJlIGRyaXZlcnMuDQo+IA0KPiBBZnRlciBiZWluZyB1bmxvYWRlZCBieSBh
-IGhhcmR3YXJlIGRyaXZlciwgc2ltcGxlZmIgbGVhdmVzIGJlaGluZCB0aGUNCj4gZmlybXdh
-cmUgZnJhbWVidWZmZXIncyBwbGF0Zm9ybSBkZXZpY2UuIFRoaXMgcHJldmVudHMgb3RoZXIg
-ZHJpdmVycw0KPiBmcm9tIGFjcXVpcmluZyB0aGUgbWVtb3J5IGFzIHJlcG9ydGVkIGF0IFsx
-XS4NCj4gDQo+IFBhdGNoIDEgY2hhbmdlcyB0aGUgcmVtb3ZhbCBjb2RlIG9mIHJlbW92ZV9j
-b25mbGljdGluZ19mcmFtZWJ1ZmZlcnMoKQ0KPiB0byByZW1vdmUgdGhlIHVuZGVybHlpbmcg
-ZGV2aWNlIGFuZCB0aGUgcnNwIG1lbW9yeSByZWdpb24uDQo+IA0KPiBQYXRjaGVzIDIgdG8g
-NCB1cGRhdGUgc3lzZmIgYW5kIGl0cyBkcml2ZXJzLiBUaGUgc3lzZmIgY29kZSBkb2VzIG5v
-DQo+IGxvbmdlciBtYXJrIHRoZSBmcmFtZWJ1ZmZlciBtZW1vcnkgd2l0aCBJT1JFU09VUkNF
-X0JVU1kuIEluc3RlYWQsIHRoZQ0KPiBkZXZpY2UgZHJpdmVycyBhY3F1aXJlIHRoZSBtZW1v
-cnkgd2hlbiB0aGV5IHByb2JlIHRoZSBkZXZpY2UuDQo+IA0KPiBQYXRjaCA1IGFkZHMgYSB0
-b2RvIGl0ZW0gdG8gYWNxdWlyZSBtZW1vcnkgcmVnaW9ucyBpbiBhbGwgRFJNIGRyaXZlcnMu
-DQo+IA0KPiBUZXN0ZWQgd2l0aCBzaW1wbGVkcm0gYW5kIHNpbXBsZWZiLg0KPiANCj4gWzFd
-IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2RyaS1kZXZlbC8yMDIyMDExNzE4MDM1OS4xODEx
-NC0xLXphY2tAa2RlLm9yZy8NCj4gDQo+IHYyOg0KPiAJKiBmaXggcG9zc2libGUgTlVMTCBk
-ZXJlZiBpbiBzaW1wbGVkcm0gKEpvY2VseW4pDQo+IAkqIHZhcmlvdXMgc3R5bGUgZml4ZXMg
-KEphdmllcikNCj4gDQo+IEphdmllciBNYXJ0aW5leiBDYW5pbGxhcyAoMSk6DQo+ICAgIGRy
-aXZlcnMvZmlybXdhcmU6IERvbid0IG1hcmsgYXMgYnVzeSB0aGUgc2ltcGxlLWZyYW1lYnVm
-ZmVyIElPDQo+ICAgICAgcmVzb3VyY2UNCj4gDQo+IFRob21hcyBaaW1tZXJtYW5uICg0KToN
-Cj4gICAgZmJkZXY6IEhvdC11bnBsdWcgZmlybXdhcmUgZmIgZGV2aWNlcyBvbiBmb3JjZWQg
-cmVtb3ZhbA0KPiAgICBkcm0vc2ltcGxlZHJtOiBSZXF1ZXN0IG1lbW9yeSByZWdpb24gaW4g
-ZHJpdmVyDQo+ICAgIGZiZGV2L3NpbXBsZWZiOiBSZXF1ZXN0IG1lbW9yeSByZWdpb24gaW4g
-ZHJpdmVyDQo+ICAgIGRybTogQWRkIFRPRE8gaXRlbSBmb3IgcmVxdWVzdGluZyBtZW1vcnkg
-cmVnaW9ucw0KPiANCj4gICBEb2N1bWVudGF0aW9uL2dwdS90b2RvLnJzdCAgICAgICAgfCAx
-NSArKysrKysrDQo+ICAgZHJpdmVycy9maXJtd2FyZS9zeXNmYl9zaW1wbGVmYi5jIHwgIDIg
-Ky0NCj4gICBkcml2ZXJzL2dwdS9kcm0vdGlueS9zaW1wbGVkcm0uYyAgfCAyMiArKysrKysr
-Ky0tLQ0KPiAgIGRyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9mYm1lbS5jICB8IDI5ICsrKysr
-KysrKysrKy0tDQo+ICAgZHJpdmVycy92aWRlby9mYmRldi9zaW1wbGVmYi5jICAgIHwgNjUg
-KysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLQ0KPiAgIGluY2x1ZGUvbGludXgvZmIu
-aCAgICAgICAgICAgICAgICB8ICAxICsNCj4gICA2IGZpbGVzIGNoYW5nZWQsIDEwNSBpbnNl
-cnRpb25zKCspLCAyOSBkZWxldGlvbnMoLSkNCj4gDQo+IA0KPiBiYXNlLWNvbW1pdDogMGJi
-ODFiNWQ2ZGI1ZjY4OWI2N2Y5ZDhiMzUzMjMyMzVjNDVlODkwZg0KPiBwcmVyZXF1aXNpdGUt
-cGF0Y2gtaWQ6IGMyYjJmMDhmMGVjY2M5ZjVkZjBjMGRhNDlmYTFkMzYyNjdkZWIxMWQNCj4g
-cHJlcmVxdWlzaXRlLXBhdGNoLWlkOiBjNjdlNWQ4ODZhNDdiN2QwMjY2ZDgxMTAwODM3NTU3
-ZmRhMzRjYjI0DQo+IHByZXJlcXVpc2l0ZS1wYXRjaC1pZDogOGU1MjE0M2E2Y2Q3YjhmYjc4
-OWU2NTYyMDhmNmVkZGU3MWQwZjQ5OQ0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFw
-aGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55
-IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFueQ0KKEhSQiAz
-NjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBUb3Rldg0K
+> The value returned by an spi driver's remove function is mostly ignored.
+> (Only an error message is printed if the value is non-zero that the
+> error is ignored.)
+>
+> So change the prototype of the remove function to return no value. This
+> way driver authors are not tempted to assume that passing an error to
+> the upper layer is a good idea. All drivers are adapted accordingly.
+> There is no intended change of behaviour, all callbacks were prepared to
+> return 0 before.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
 
---------------EXHECe7kI5TgMH873zoiJcsX--
+[...]
 
---------------X7EyffL3Ohse0sYzthLdmPiy
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+>  drivers/mfd/arizona-spi.c                             |  4 +---
+>  drivers/mfd/da9052-spi.c                             |  3 +--
+>  drivers/mfd/ezx-pcap.c                                |  4 +---
+>  drivers/mfd/madera-spi.c                             |  4 +---
+>  drivers/mfd/mc13xxx-spi.c                           |  3 +--
+>  drivers/mfd/rsmu_spi.c                                |  4 +---
+>  drivers/mfd/stmpe-spi.c                               |  4 +---
+>  drivers/mfd/tps65912-spi.c                          |  4 +---
 
------BEGIN PGP SIGNATURE-----
+>  drivers/video/backlight/ams369fg06.c         |  3 +--
+>  drivers/video/backlight/corgi_lcd.c               |  3 +--
+>  drivers/video/backlight/ili922x.c                    |  3 +--
+>  drivers/video/backlight/l4f00242t03.c           |  3 +--
+>  drivers/video/backlight/lms501kf03.c            |  3 +--
+>  drivers/video/backlight/ltv350qv.c                 |  3 +--
+>  drivers/video/backlight/tdo24m.c                  |  3 +--
+>  drivers/video/backlight/tosa_lcd.c                |  4 +---
+>  drivers/video/backlight/vgg2432a4.c            |  4 +---
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmHvvz8FAwAAAAAACgkQlh/E3EQov+BV
-wQ/+JRhbBAMDfQVdj1O7ClB5TOyxbO4c1EUvsvSo4AKORz1mPeNY9lyov7KyBgAla5JdbhVSpDXQ
-iXFrZ+RpQ/MZJmNWEyC7Zyk/xtf5AN002nNLruulBEdwlORXAGUWD7I0eoehTURMgCdSSaqJpU/E
-DPm/K5cqcWiOcKjv8NS/xVvPCqFYdc+8toSouAsfwYdzF7riO+9cPBkRNoAURLkzkraLZ0pyN74t
-JXJhBCAYbZqYiPbKUijTtJZH1woyJqstP7lQQuKu+hZNsz6rKUuNndE7/rtxrt0oHXNLYm2s29xx
-5lfnzKks8+82vrkD+PMVRe5fkgPYKv8p+UQ2U5hG3D0NEeLG5qNtrlbtfYyC1nrT8MeWCEv6pOoW
-y80rp1f7l/2cIEvqpZXkfG2QZVDSjJ1Rq3s2VmDyTNRoh7Fh5xiIr4pZQNSsqpTXR/wh9i+ihAni
-7e0J5zifT5qAI0euZYNbkqBYCDICFIL8dJ7eCux6XQ2g/uLJA6OXwlJcRxvJDVMBSOAo2wCuMj2J
-GBhez4IZAmJTtxt7dRGBVItMtENRSVABxG0Be97VcLhjTQlEtUN7BvN0AIU30ndNIjuLPh7Y62MC
-pIjjkc77UK7meC99kpbirQWz4Gm//W9tXzfk/MSmF+1gaf86U5dkZzDS43qif0YncNFzUcMyeD6U
-TTk=
-=uaVI
------END PGP SIGNATURE-----
+If it's okay with Mark, it's okay with me.
 
---------------X7EyffL3Ohse0sYzthLdmPiy--
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
+--=20
+Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+Linaro Services Principle Technical Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
