@@ -2,73 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE7949AD2F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 08:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3295349AE23
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 09:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1391675AbiAYHK2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jan 2022 02:10:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1391637AbiAYHCb (ORCPT
+        id S1451253AbiAYIgb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jan 2022 03:36:31 -0500
+Received: from mail-ua1-f46.google.com ([209.85.222.46]:43557 "EHLO
+        mail-ua1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378716AbiAYIbL (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jan 2022 02:02:31 -0500
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E8DC078513
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jan 2022 21:41:42 -0800 (PST)
-Received: by mail-yb1-xb35.google.com with SMTP id c10so58484838ybb.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jan 2022 21:41:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=omchJdYJcVvbnbx3iWDsqNfzfvgFxRY5UV8d5JFHFd0Qxp4Fs99oOTWbnsLJvmkGLO
-         KJ9h0aIZipzZCxLYUC1EbKJQXjsTnrYD4skWPu5L6KEa7WwksJ/DgfAKn2I//FvNz16e
-         yvRSMjBJIkfJOiN7QosmIFzfX6t0OymUxXq/kzoldmt5Tk4SMXy3poAlzZfnj4tLqkCO
-         r1uVZjBjIcfKcTHUm4yIRwmNGijXGA0OAhFYRol/6hiAAZJ37V1K6a3bLM+XpGdFXGos
-         hPiIHyT9XSW8aiVFGjIdHRgRcnWLHkX21ZW87GvspRwlXlL9xuI6dXFZXWxBZnRTJWgA
-         Bk5w==
+        Tue, 25 Jan 2022 03:31:11 -0500
+Received: by mail-ua1-f46.google.com with SMTP id 2so36010766uax.10;
+        Tue, 25 Jan 2022 00:31:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=r/1zSuFd7ywO/43vwR03c/YzkayqrMCiGSiLaE3MGVPYJ3sUcoK0G5ScMwVtTuc8rd
-         bptvQrmyTFqHDnmzL2OEeH3dE+dzkyNdr6pxDzI8+4HtOahzo6er/NuutGz1V6OyQvP7
-         NsOWU5RwYYRANhrCc5JJm5J53BQ3eZc+H/LiLtq7LCfVlEIT6IAdftGGOX8d+R52G3Ow
-         J+QGzkRMjoG85Rh/RVMR2fN6Ru0YBknBaxf/RrHtSTw0duc37MpTKvH6wZQlGKZI9/N2
-         57TM7PulMMgpKCQ6dRNWMlq6Ek/+G3KKP4DS2w6JWc7GPC/xjFjHcjmYHp4DErRXW5sL
-         JQeA==
-X-Gm-Message-State: AOAM532OtAgCFMlyv2x7wEAtBdo7B0LkcwKTKPWfMlWFC+xIK2nwTf6j
-        bcftZi1C56tXdJ1qKwWf8Y+JjEKqObNUfJbcfRc=
-X-Google-Smtp-Source: ABdhPJwywiwyTtOCXfovmJIEM7Vqt+PFDzMW3tzxRj90P3fJDPhIlV2jOd/vI9WPw47eCab8Z7S4n4qldrLRD5Ly+Sc=
-X-Received: by 2002:a25:d783:: with SMTP id o125mr27594671ybg.710.1643089301256;
- Mon, 24 Jan 2022 21:41:41 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pLI0NpGLcGeDoF34x+JYc6mPOV18pDeJSnyNKlPba8Q=;
+        b=TMLwVV3hrUCluoGXaXVhrftAQcy+sXzBTmpRQCwigyQkH8S+uHsf6cTAs3/a/1WCOo
+         vIl60cYJltLZHUV96I2BxgDFNS7bAGnG6kmPmoHG+jttawGBfaztS2V0rmSYvAIie9B1
+         qVn6NY5if9Tp8sBZSlborqZOrkMz68eB3PwrVp5dcNscD2TeOBIM/6OQR2t0jqD06eU7
+         /GxeYk0uNmBMhdnU3da0AqSJjg84noKvvdiqBaCgIavVrCRUW+qtFMDqGUfrXxh/12xA
+         tweUQ8X+UPumZY77H+vmJ3EKLAD7QNOjsZpG9G+5QAs0K2s4mtleRW0QnLCmNq8CTzWR
+         zXhA==
+X-Gm-Message-State: AOAM53206UPQ4h0dzez1vtZ0JiXeBL/WiwIjn4UiqH58qBVaTzKrXp4i
+        OEcMUz8ZyQEIW0iHR6Isg1PnsZpx2IZBbw==
+X-Google-Smtp-Source: ABdhPJxpjdJDribpVcDra03EIq7OWZb34v9lo+Fpl8H3H3jYQcXcl13zKthK6guNb3KUbZMEwF79qQ==
+X-Received: by 2002:a67:a642:: with SMTP id r2mr6980301vsh.36.1643099468907;
+        Tue, 25 Jan 2022 00:31:08 -0800 (PST)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
+        by smtp.gmail.com with ESMTPSA id o131sm3283974vkc.42.2022.01.25.00.31.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jan 2022 00:31:08 -0800 (PST)
+Received: by mail-ua1-f43.google.com with SMTP id b16so35995215uaq.4;
+        Tue, 25 Jan 2022 00:31:08 -0800 (PST)
+X-Received: by 2002:a67:c18e:: with SMTP id h14mr3289857vsj.5.1643099467906;
+ Tue, 25 Jan 2022 00:31:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7000:ad9d:0:0:0:0 with HTTP; Mon, 24 Jan 2022 21:41:40
- -0800 (PST)
-Reply-To: danielseyba@yahoo.com
-From:   Seyba Daniel <mrssuzaramaling19@gmail.com>
-Date:   Tue, 25 Jan 2022 06:41:40 +0100
-Message-ID: <CAKN-9XgQjuMspSnu-F01fv+Bgr6eZEygpsR3pZ-5cF=m78av-Q@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
+References: <20220124210319.325512-1-deller@gmx.de>
+In-Reply-To: <20220124210319.325512-1-deller@gmx.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 25 Jan 2022 09:30:56 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU5m2z1FmYi2-+rwpr4xc8F_V4TivKcddzA6oVReUijOQ@mail.gmail.com>
+Message-ID: <CAMuHMdU5m2z1FmYi2-+rwpr4xc8F_V4TivKcddzA6oVReUijOQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Fix regression introduced by disabling accelerated
+ scrolling in fbcon
+To:     Helge Deller <deller@gmx.de>
+Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Sven Schnelle <svens@stackframe.org>,
+        Claudio Suarez <cssk@net-c.es>, Pavel Machek <pavel@ucw.cz>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Ilia Mirkin <imirkin@alum.mit.edu>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+Cc regressions
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+On Mon, Jan 24, 2022 at 10:04 PM Helge Deller <deller@gmx.de> wrote:
+> This series reverts two patches which disabled scrolling acceleration in
+> fbcon/fbdev. Those patches introduced a regression for fbdev-supported graphic
+> cards because of the performance penalty by doing screen scrolling by software
+> instead of using existing 2D hardware acceleration.
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+In the mean time, a userspace regression has been reported, too:
+https://lwn.net/Articles/882054/
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=988039
 
-So please confirm interest by responding back.
+Gr{oetje,eeting}s,
 
-My dearest regards
+                        Geert
 
-Seyba Daniel
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
