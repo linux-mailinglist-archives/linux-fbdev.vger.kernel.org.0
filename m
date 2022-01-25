@@ -2,44 +2,43 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D7149BCE3
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 21:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 429E549BD51
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Jan 2022 21:40:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbiAYUVV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Jan 2022 15:21:21 -0500
-Received: from mga03.intel.com ([134.134.136.65]:16186 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231687AbiAYUVU (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Jan 2022 15:21:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643142080; x=1674678080;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5bzSfljY1YSz8887v/yq7xlM6sikYIoDRsSS5+W86wQ=;
-  b=PwurqGaDbIUN6c3pVDM4Tpx0bSEGFG41pElQeFEs70aQwxdlcL/cXtjl
-   YbmIWuksrBakBWKelrxxeSrTejIqPg6e7MoBKuJJ8AqxF2GCCUG7cqZ4h
-   RAZYFGX1KbYKqAqMv4qzTii03L7n/FB8mbEytEfMVL68VQVCKmLW/q3Zk
-   lgoXvhAjNZF5Ew0hOyB4p9s4Dsx1WMkZ6die+h8pVqRw0dIpqfD3opXkz
-   mpeHaD9vDmvLieASYMsLtM2K3Nk1nn6cOTb+7Z2KHwq1VBrv+JT0/6rt5
-   OHnBCcmtv/1co7YHlTEeUEoKIh98Qhtx0rfnvVWHQ2FokX3E4Y9nLBefD
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10238"; a="246353990"
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="246353990"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 12:21:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="624600071"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 25 Jan 2022 12:21:09 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 83E2F287; Tue, 25 Jan 2022 22:21:22 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S232324AbiAYUkg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Jan 2022 15:40:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39082 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232290AbiAYUkd (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 25 Jan 2022 15:40:33 -0500
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185C5C06173B;
+        Tue, 25 Jan 2022 12:40:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=mvUJSAebKkRB+lgViRYbpCTTlvrAohmMaeU/GWRYPN8=; b=YTwMSEuPR7d+zRgdkpSBHn3QOM
+        8N8N7raV22tIBHgVeYcKS0NQ2nKGsd6UTLl6e1WeveHS/ETV9KPODONVoNc2mF/EEYuw8YICsylAM
+        RI8knU3CXNCS9QvuEXRmdU+w1ytqSDLg3y34FZ0p1EXrq9wIJ5KHNqLgFIEINHwY3ugv8kAUR0jbN
+        XmpvyAxG1bw6XKVkZJNdTu8gk5dzB4iPa5K72YbrLjNq5FVClIo7RBJ3w5zo4/rJ9Y+fNwKcAb5ku
+        c+JuGGiW+PCmjY/t+VVX8BJv1XsbdhS+F2i5PFLLlP9+LWN9JMzFE99PImgIAQny0AbjtHrL2Cbpb
+        QvfHYGcg==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nCSbz-003Ywk-Pp; Tue, 25 Jan 2022 20:40:20 +0000
+Message-ID: <34f76f2a-1e41-d7ef-d135-7be56dba88ae@infradead.org>
+Date:   Tue, 25 Jan 2022 12:40:14 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v1 4/4] fbtft: Replace 'depends on FB_TFT' by 'if FB_TFT
+ ... endif'
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Phillip Potter <phil@philpotter.co.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Lee Jones <lee.jones@linaro.org>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         Carlis <zhangxuezhi1@yulong.com>, linux-kernel@vger.kernel.org,
@@ -47,216 +46,37 @@ To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         dri-devel@lists.freedesktop.org
 Cc:     Michael Hennerich <michael.hennerich@analog.com>,
         Helge Deller <deller@gmx.de>, Andy Shevchenko <andy@kernel.org>
-Subject: [PATCH v1 4/4] fbtft: Replace 'depends on FB_TFT' by 'if FB_TFT ... endif'
-Date:   Tue, 25 Jan 2022 22:21:17 +0200
-Message-Id: <20220125202118.63362-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220125202118.63362-1-andriy.shevchenko@linux.intel.com>
 References: <20220125202118.63362-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20220125202118.63362-5-andriy.shevchenko@linux.intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220125202118.63362-5-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Replace 'depends on FB_TFT' by 'if FB_TFT ... endif'
-for the sake of deduplication.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/video/fbtft/Kconfig | 33 ++++-----------------------------
- 1 file changed, 4 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/video/fbtft/Kconfig b/drivers/video/fbtft/Kconfig
-index 4d29e8c1014e..14ea3c6a60da 100644
---- a/drivers/video/fbtft/Kconfig
-+++ b/drivers/video/fbtft/Kconfig
-@@ -10,87 +10,75 @@ menuconfig FB_TFT
- 	select FB_DEFERRED_IO
- 	select FB_BACKLIGHT
- 
-+if FB_TFT
-+
- config FB_TFT_AGM1264K_FL
- 	tristate "FB driver for the AGM1264K-FL LCD display"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for the AGM1264K-FL LCD display (two Samsung KS0108 compatible chips)
- 
- config FB_TFT_BD663474
- 	tristate "FB driver for the BD663474 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for BD663474
- 
- config FB_TFT_HX8340BN
- 	tristate "FB driver for the HX8340BN LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for HX8340BN
- 
- config FB_TFT_HX8347D
- 	tristate "FB driver for the HX8347D LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for HX8347D
- 
- config FB_TFT_HX8353D
- 	tristate "FB driver for the HX8353D LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for HX8353D
- 
- config FB_TFT_HX8357D
- 	tristate "FB driver for the HX8357D LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for HX8357D
- 
- config FB_TFT_ILI9163
- 	tristate "FB driver for the ILI9163 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9163
- 
- config FB_TFT_ILI9320
- 	tristate "FB driver for the ILI9320 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9320
- 
- config FB_TFT_ILI9325
- 	tristate "FB driver for the ILI9325 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9325
- 
- config FB_TFT_ILI9340
- 	tristate "FB driver for the ILI9340 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9340
- 
- config FB_TFT_ILI9341
- 	tristate "FB driver for the ILI9341 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9341
- 
- config FB_TFT_ILI9481
- 	tristate "FB driver for the ILI9481 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9481
- 
- config FB_TFT_ILI9486
- 	tristate "FB driver for the ILI9486 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ILI9486
- 
- config FB_TFT_PCD8544
- 	tristate "FB driver for the PCD8544 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for PCD8544
- 
-@@ -108,62 +96,52 @@ config FB_TFT_S6D02A1
- 
- config FB_TFT_S6D1121
- 	tristate "FB driver for the S6D1211 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for S6D1121
- 
- config FB_TFT_SEPS525
- 	tristate "FB driver for the SEPS525 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for SEPS525
- 	  Say Y if you have such a display that utilizes this controller.
- 
- config FB_TFT_SH1106
- 	tristate "FB driver for the SH1106 OLED Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SH1106
- 
- config FB_TFT_SSD1289
- 	tristate "FB driver for the SSD1289 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SSD1289
- 
- config FB_TFT_SSD1305
- 	tristate "FB driver for the SSD1305 OLED Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SSD1305
- 
- config FB_TFT_SSD1306
- 	tristate "FB driver for the SSD1306 OLED Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SSD1306
- 
- config FB_TFT_SSD1331
- 	tristate "FB driver for the SSD1331 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SSD1331
- 
- config FB_TFT_SSD1351
- 	tristate "FB driver for the SSD1351 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Framebuffer support for SSD1351
- 
- config FB_TFT_ST7735R
- 	tristate "FB driver for the ST7735R LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for ST7735R
- 
- config FB_TFT_ST7789V
- 	tristate "FB driver for the ST7789V LCD Controller"
--	depends on FB_TFT
- 	help
- 	  This enables generic framebuffer support for the Sitronix ST7789V
- 	  display controller. The controller is intended for small color
-@@ -173,30 +151,27 @@ config FB_TFT_ST7789V
- 
- config FB_TFT_TINYLCD
- 	tristate "FB driver for tinylcd.com display"
--	depends on FB_TFT
- 	help
- 	  Custom Framebuffer support for tinylcd.com display
- 
- config FB_TFT_TLS8204
- 	tristate "FB driver for the TLS8204 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for TLS8204
- 
- config FB_TFT_UC1611
- 	tristate "FB driver for the UC1611 LCD controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for UC1611
- 
- config FB_TFT_UC1701
- 	tristate "FB driver for the UC1701 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for UC1701
- 
- config FB_TFT_UPD161704
- 	tristate "FB driver for the uPD161704 LCD Controller"
--	depends on FB_TFT
- 	help
- 	  Generic Framebuffer support for uPD161704
-+
-+endif
+On 1/25/22 12:21, Andy Shevchenko wrote:
+> Replace 'depends on FB_TFT' by 'if FB_TFT ... endif'
+> for the sake of deduplication.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/video/fbtft/Kconfig | 33 ++++-----------------------------
+>  1 file changed, 4 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/video/fbtft/Kconfig b/drivers/video/fbtft/Kconfig
+> index 4d29e8c1014e..14ea3c6a60da 100644
+> --- a/drivers/video/fbtft/Kconfig
+> +++ b/drivers/video/fbtft/Kconfig
+> @@ -10,87 +10,75 @@ menuconfig FB_TFT
+
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+thanks.
+
 -- 
-2.34.1
-
+~Randy
