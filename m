@@ -2,92 +2,93 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB5249CA80
-	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jan 2022 14:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 807D049CA86
+	for <lists+linux-fbdev@lfdr.de>; Wed, 26 Jan 2022 14:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234991AbiAZNPO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 26 Jan 2022 08:15:14 -0500
-Received: from mga06.intel.com ([134.134.136.31]:25921 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234520AbiAZNPN (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 26 Jan 2022 08:15:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643202913; x=1674738913;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jvn1DT8hkIC9aHCBN88BfzW6xWKdrEbGQoRpjkz2lt4=;
-  b=jodYnQlA0gn+YmW3inc+Gbg3xO/VpLOOx57Fe9doyytS6VeT6CV3hhGA
-   GIykQJtXYtr5RWYWT5XBPyqJMHjpR1PRVn4C2fSVPTL3h8T/g8mS9ohhd
-   Rae6EgSlLsWwQmF/fyBk2xKnASA9arZlp/qG8BC6QtcHycTi2Or8nCGRy
-   XSOGLwoq/WMphOOzF3kSh+K/M1FuyQpfI/n9DYxfM4bXdePRq4FZUmMLq
-   mbNrwVyJk9x2QIOlKl321CD/Gd1N+mJDGBHlFs/avL0CXUK/iSTRrkrhY
-   WXjP882sRjZuTqF0r1SYhKTJjkmT4jkuxRa/mDqkisCk5UuSlN8XMwh81
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10238"; a="307260494"
-X-IronPort-AV: E=Sophos;i="5.88,318,1635231600"; 
-   d="scan'208";a="307260494"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2022 05:15:12 -0800
-X-IronPort-AV: E=Sophos;i="5.88,318,1635231600"; 
-   d="scan'208";a="597459201"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2022 05:15:09 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nCi7f-00EbZf-0w;
-        Wed, 26 Jan 2022 15:14:03 +0200
-Date:   Wed, 26 Jan 2022 15:14:02 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andy@kernel.org>, linux-fbdev@vger.kernel.org,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Phillip Potter <phil@philpotter.co.uk>,
-        Carlis <zhangxuezhi1@yulong.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH v1 1/4] fbtft: Unorphan the driver
-Message-ID: <YfFJGrfMi0E1ySmH@smile.fi.intel.com>
-References: <20220125202118.63362-1-andriy.shevchenko@linux.intel.com>
- <20220125202118.63362-2-andriy.shevchenko@linux.intel.com>
- <YfEG2qVO9K9G+g1d@kroah.com>
- <CAKMK7uGoRC9a4cMCADTipV67oivfWvTw=6RYm2kOthB_bhWnXQ@mail.gmail.com>
- <f671a112-880d-1526-a395-360947b40c5a@gmx.de>
- <CAKMK7uFhJPpiHqL-040ozbCM=QxiWNrFHp1gOEUvpEUjxbwAQQ@mail.gmail.com>
+        id S238180AbiAZNPi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 26 Jan 2022 08:15:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40952 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238176AbiAZNPi (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 26 Jan 2022 08:15:38 -0500
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0773C06161C;
+        Wed, 26 Jan 2022 05:15:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
+        ; s=ds202112; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        Subject:References:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=+IAzmFFliQBWK1jxk5QRuab/DHt3yG8sbu9RtQ8KG3U=; b=WKCmxyu3faFRsMWLIvU0J7bgYR
+        Y8Bo94NeFTAglGptabYLcDXOI5CW9WelY7qQNOUHdUWnLJH4XXp48USKv5U0/lfbJTlz/F8PiBo9F
+        8q4sW7kQnqmqr/BUBPPBqJMT3zbzv4M3q6W2DErSRDGws4vXWtsXept5mkLKq7ctKfzh7AZsrBZsU
+        EzgXPd6k2/fWvVct7ssNbbiao34Hia+0s+i/qDxoEro3VXDEVzfaZQMG37We/HSkNI/kmA74gwh6i
+        gjLRptuEoAV6q4cILBtBPRGrdTOCx+Qgs9A92xeKg0Xy9SNqoTr1po8sCCzot45/SOHTtBu8VPJ5a
+        h9U0dWAA==;
+Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:56599 helo=[192.168.10.61])
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <noralf@tronnes.org>)
+        id 1nCi98-0000PP-D8; Wed, 26 Jan 2022 14:15:34 +0100
+Message-ID: <dc392272-80ae-dbbd-df26-c7ffa6239cf0@tronnes.org>
+Date:   Wed, 26 Jan 2022 14:15:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKMK7uFhJPpiHqL-040ozbCM=QxiWNrFHp1gOEUvpEUjxbwAQQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+To:     andriy.shevchenko@linux.intel.com
+Cc:     andy@kernel.org, deller@gmx.de, dri-devel@lists.freedesktop.org,
+        gregkh@linuxfoundation.org, hkallweit1@gmail.com,
+        lee.jones@linaro.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+        michael.hennerich@analog.com, phil@philpotter.co.uk,
+        zhangxuezhi1@yulong.com
+References: <20220125202118.63362-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 0/4] fbtft: Unorphan the driver for maintenance
+From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+In-Reply-To: <20220125202118.63362-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jan 26, 2022 at 12:27:19PM +0100, Daniel Vetter wrote:
-> On Wed, Jan 26, 2022 at 12:18 PM Helge Deller <deller@gmx.de> wrote:
-> > On 1/26/22 11:31, Daniel Vetter wrote:
+>
+> Since we got a maintainer for fbdev, I would like to
+> unorphan fbtft (with the idea of sending PRs to Helge)
+> and move it out of staging since there is no more clean
+> up work expected and no more drivers either.
+>
+> Thoughts?
 
-...
+Here's a driver I have been working on:
 
-> > You are describing a transitioning over to DRM - which is Ok.
-> > But on that way there is no need to ignore, deny or even kill usage scenarios
-> > which are different compared to your usage scenarios (e.g. embedded devices,
-> > old platforms, slow devices, slow busses, no 3D hardware features,
-> > low-color devices, ...).
-> 
-> This patchset isn't about killing existing support.
-> 
-> This is about adding new drivers to a subsystem where consensus the
-> past 6 years or so was that it's closed for new drivers.
+drm/panel: Add MIPI DBI compatible SPI driver
+https://lore.kernel.org/dri-devel/20220125175700.37408-1-noralf@tronnes.org/
 
-You mean fbdev?
+It should replace the SPI part of these fbtft drivers if accepted:
 
--- 
-With Best Regards,
-Andy Shevchenko
+$ grep -lr MIPI_DCS drivers/staging/fbtft/ | grep -v "-" | uniq | sort
+drivers/staging/fbtft/fb_hx8340bn.c
+drivers/staging/fbtft/fb_hx8353d.c
+drivers/staging/fbtft/fb_hx8357d.c
+drivers/staging/fbtft/fb_ili9163.c
+drivers/staging/fbtft/fb_ili9340.c
+drivers/staging/fbtft/fb_ili9341.c
+drivers/staging/fbtft/fb_ili9481.c
+drivers/staging/fbtft/fb_ili9486.c
+drivers/staging/fbtft/fb_s6d02a1.c
+drivers/staging/fbtft/fb_st7735r.c
+drivers/staging/fbtft/fb_st7789v.c
+drivers/staging/fbtft/fb_tinylcd.c
 
+There's no support for the parallel interface on these controllers in
+drm. Support could be added to drivers/gpu/drm/drm_mipi_dbi.c.
 
+Here's a status report I wrote 2 years ago:
+
+fbtft: 5 years in staging
+https://lore.kernel.org/dri-devel/a6cef26c-0f4b-47f0-d249-71f53891526b@tronnes.org/
+
+Noralf.
