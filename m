@@ -2,116 +2,67 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FC394A32E1
-	for <lists+linux-fbdev@lfdr.de>; Sun, 30 Jan 2022 01:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 466A74A33BB
+	for <lists+linux-fbdev@lfdr.de>; Sun, 30 Jan 2022 05:28:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353598AbiA3Aco (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 29 Jan 2022 19:32:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
+        id S1354151AbiA3E2R (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 29 Jan 2022 23:28:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353593AbiA3Acn (ORCPT
+        with ESMTP id S1354171AbiA3E2Q (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 29 Jan 2022 19:32:43 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614C2C06173B;
-        Sat, 29 Jan 2022 16:32:43 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id p125so8728516pga.2;
-        Sat, 29 Jan 2022 16:32:43 -0800 (PST)
+        Sat, 29 Jan 2022 23:28:16 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B85FC06175F
+        for <linux-fbdev@vger.kernel.org>; Sat, 29 Jan 2022 20:28:15 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id r65so30347393ybc.11
+        for <linux-fbdev@vger.kernel.org>; Sat, 29 Jan 2022 20:28:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=lgImJfjptdc33ZuQjXSFN+7hVN4hLMNWcHtJCWzb0jk=;
-        b=YubEnvHsv/crv/QQxQbzdWy0fDh/hJi6DsG2ALzDJKTtR10XIsakvC9+nkSBu1WdFS
-         XfBSh5P7XJHrytzbkcalqUKunVx5cQEUyPOPrz7Foy7uO20XFrYo7EtDG3LugITf17AC
-         AYleJTKTWeKFiuXWKvStwRibqsv9HkDM4jwplWgBMRdecMIqQTmO8gE1ChALqDUj4LhF
-         4pFCmA1nM7cfyYc+DyPSCoNE1L8X3JnagmHmt7vAsHpJjH0wLoL/4tbPQubzSixnmDFV
-         YVmTfxmRg9qD9eGkQhnQPp2SfFDTDyrxatjk+n/xE8IVQn59h20dXLwoCc8gVsVwBX8E
-         slUQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
+         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
+         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
+         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
+         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
+         5U2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=lgImJfjptdc33ZuQjXSFN+7hVN4hLMNWcHtJCWzb0jk=;
-        b=AI6W3+ZpzbKe46j0I0wyfRtV98R4HIwXttI1sZ5jUcZo5bdhQuchdY2hZUx9vg19IF
-         OhtA9cwJ83mLBsLSCjruAuwbeg7p1ptLY/rYHVizB1IGl76eRaa/mN0GH8/YuETMsAuw
-         c7UmeYsfyoCaUiU+LaEssYZfrwxyxGKmNKDUROONehCqCsH1eibXDcU5mj9DiSV3PEJt
-         3axMosciPKqR4fkcoLVyMnTj+EHTJ1pnXwhfIQYSVkkHV56OYRgcaqmDTvZHBd9fOuG1
-         BBHDUDZ078FXEcn+13pYTTBGdy3aWnlLoC/cgD9QEI6pv62lAjyXnLvNDBCNbqCjPAjT
-         OShg==
-X-Gm-Message-State: AOAM530W3YlhXes3DEi6PGzKp/3CWJcvKv4kubYWpn677Pvh4JQAAOqN
-        gt/viLEsWJtWadoov18JnPyIPcY0DnI=
-X-Google-Smtp-Source: ABdhPJzEPfsjnGSZFRUq5OlVjEdAYdbrAKC61FZ5zRV/iwdi8PN7s751/DKYpysmpUagxm8TfPMiQA==
-X-Received: by 2002:a63:6a87:: with SMTP id f129mr2144667pgc.0.1643502762598;
-        Sat, 29 Jan 2022 16:32:42 -0800 (PST)
-Received: from [10.1.1.24] (222-155-5-102-adsl.sparkbb.co.nz. [222.155.5.102])
-        by smtp.gmail.com with ESMTPSA id l4sm14120413pfu.90.2022.01.29.16.32.37
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 29 Jan 2022 16:32:41 -0800 (PST)
-Subject: Re: [PATCH] m68k: mm: Remove check for VM_IO to fix deferred I/O
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org
-References: <20220128173006.1713210-1-geert@linux-m68k.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <63c80eba-7c55-2a92-8078-c63cec3c9efb@gmail.com>
-Date:   Sun, 30 Jan 2022 13:32:35 +1300
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
+        b=PGIRjqSeiTSGSgsvsfqm3W5PC4tfMKlt4o/sP0PETN8QwTwfPrXPuU7DhcXA5G2X6x
+         fZuA7KgnaZjYVfnTy5dH0PJ9UG9G6Ic8YuTS7UjSDQatCtNLkE31ivV9/Ey6vwFZbCWD
+         86pSANd9meXwvoXyNOXmwmhQ88Bsj+vh6o99a8dbZNx3aYVAFesxNLDo9xiYHwt+q1AF
+         dGJ7B7k+gqWbMVZNTGqq5aXq8pJrfKlH+cWklCFWm16fRIvxmxrVx6t3bA95LntZGreF
+         K6iYfLCoifocKQHeebZJUDZIxchafCjA6qq/oO50vecxj/9pK3q45k60OC+2WQjKuS3I
+         qsiA==
+X-Gm-Message-State: AOAM531nNDoGO2+YUCst2a5FObMomWHlCr0ZPj2GTIj+QwD6t1c4j/7b
+        J3/c/bdYLHXB7f2mmVYEUfBQd9v8b+rquSpXPC8=
+X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
+X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
+ Sat, 29 Jan 2022 20:28:13 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220128173006.1713210-1-geert@linux-m68k.org>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
+ 20:28:13 -0800 (PST)
+Reply-To: mrs.bill.chantalone01@gmail.com
+From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
+Date:   Sun, 30 Jan 2022 05:28:13 +0100
+Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
+Subject: Hello....
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Geert,
+You have been compensated with the sum of 9.5 million dollars in this
+united nation the payment will be issue into atm visa  card and send
+to you from the santander bank we need your address and your
+Whatsapp number  + 1 6465853907  this my email.ID
+( mrs.bill.chantal.roland@gmail.com )  contact  me
 
-testing this patch on my Falcon 030, I'm seeing a weird error checking 
-and mounting the root filesystem (pata-falcon). The system appears to 
-sit idle, never completing the journal recovery and mount. Still 
-investigating that.
+Thanks my
 
-Can't see how that would be caused by your patch, just saying I could 
-not yet test it.
-
-Cheers,
-
-	Michael
-
-
-Am 29.01.2022 um 06:30 schrieb Geert Uytterhoeven:
-> When an application accesses a mapped frame buffer backed by deferred
-> I/O, it receives a segmentation fault.  Fix this by removing the check
-> for VM_IO in do_page_fault().
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
-> This check was never present in a fault handler on any other
-> architecture than m68k.
-> Some digging revealed that it was added in v2.1.106, but I couldn't find
-> an email with a patch adding it.  That same kernel version extended the
-> use of the hwreg_present() helper to HP9000/300, so the check might have
-> been needed there, perhaps only during development?
-> The Atari kernel relies heavily on hwreg_present() (both the success and
-> failure cases), and these still work, at least on ARAnyM.
-> ---
->  arch/m68k/mm/fault.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/arch/m68k/mm/fault.c b/arch/m68k/mm/fault.c
-> index 1493cf5eac1e7a39..71aa9f6315dc8028 100644
-> --- a/arch/m68k/mm/fault.c
-> +++ b/arch/m68k/mm/fault.c
-> @@ -93,8 +93,6 @@ int do_page_fault(struct pt_regs *regs, unsigned long address,
->  	vma = find_vma(mm, address);
->  	if (!vma)
->  		goto map_err;
-> -	if (vma->vm_flags & VM_IO)
-> -		goto acc_err;
->  	if (vma->vm_start <= address)
->  		goto good_area;
->  	if (!(vma->vm_flags & VM_GROWSDOWN))
->
+mrs bill chantal
