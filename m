@@ -2,128 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C06554A408B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Jan 2022 11:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E99E4A40FD
+	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Jan 2022 12:01:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233361AbiAaK4Y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 31 Jan 2022 05:56:24 -0500
-Received: from mga04.intel.com ([192.55.52.120]:2925 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239344AbiAaK4X (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 31 Jan 2022 05:56:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643626583; x=1675162583;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OuO1IfCUQIyBRQpisujqsE19OD9uCQ6nnnGF+2ZPWvc=;
-  b=kJLj/JFZoBuNapXXAhscC6qMeouzCIhRxSYYL29DDmO2Z6OQBp/F2cv7
-   iSt/o1MYFHGnNgyFf9MwmPdhyfYF9TxmHNrDu9ef0oNaV898VvqZLO35p
-   a9dGbXHbdtxfqMDhFBH1VLMHrAp0W8QX8+jwXbv7yB9lknqftjy9DVZYP
-   J72EOAyWk670Bj9855XUX/mffMHxkFwdsJcy+y4vqI1WMvSX9lxz2DC59
-   vsi7ZmiObGj7dYeDmOg4wOp5/ot5+PINVJj6ik5rs7kQ/NUJ2jTO6oSw2
-   kio41ovwfqt+yBpEgXM30PBYle0+9I8buL744aSz8sF4S4oBUliQR9KrX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="246271982"
-X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="246271982"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 02:56:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="675691815"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 31 Jan 2022 02:56:20 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nEUM7-000Rnz-MA; Mon, 31 Jan 2022 10:56:19 +0000
-Date:   Mon, 31 Jan 2022 18:55:39 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Yizhuo Zhai <yzhai003@ucr.edu>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        linux-fbdev@vger.kernel.org, Xiyu Yang <xiyuyang19@fudan.edu.cn>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Helge Deller <deller@gmx.de>, Zheyu Ma <zheyuma97@gmail.com>,
-        linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-        Yizhuo Zhai <yzhai003@ucr.edu>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] fbdev: fbmem: Fix the implicit type casting
-Message-ID: <202201311810.zlRDWfNU-lkp@intel.com>
-References: <20220131065719.1552958-1-yzhai003@ucr.edu>
+        id S1358617AbiAaLBj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 31 Jan 2022 06:01:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1358503AbiAaLAe (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Mon, 31 Jan 2022 06:00:34 -0500
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFC0AC0613F4
+        for <linux-fbdev@vger.kernel.org>; Mon, 31 Jan 2022 02:59:46 -0800 (PST)
+Received: by mail-io1-xd44.google.com with SMTP id d188so16314568iof.7
+        for <linux-fbdev@vger.kernel.org>; Mon, 31 Jan 2022 02:59:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=OjUeAkMVzEddLMMo5PnTCjKyhCs1ageGmC5+cFdXpsSEtg6JbUDTvXCRmwfTUCSofJ
+         slj36zZmhn3J4uwPw0DJBjnv3hUS5m+nEauuYDUNcCWjc1f+d0I+yOjKIUc0Pgz+j5Ue
+         rRdRGfWkjcSXGfwT+M+UDneKFOQe0c6aLr+5TauC2FupNgb1qyGc5yiIkJ8k0NAmHZhf
+         anrjd59/OgrastnWs4ZkrvFaIDjw5pd3eh107tNZ/TuMjnW3micCxNZKM2MDkg13GKwm
+         O5Q6tfm8j18o2CLpoCl1kG865M+uxrSOQqgPJI+OJu79ECke4sTf94bEwDsB5fZLVwuG
+         tdrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=ItiSpIF+Ylo8IQRTHtL1wwNbabnDDIcUY6/yCN7VWW6Rq43Jeoilhq5/IuNgo8jweF
+         DY5L2TDSSdZYehW9elF1nmWj8BO72JT4Ire35bJ881GYTpZCpXev3hCzko1w7SUhPdHw
+         I/EdJWZ0HwhjgA+8KeEI3NPMVtGVkzy141lIN0mGMyiOxxWNWE0/fNykVXsrv6As8qkg
+         1BDddc/8/WlrVZHWg+oMsRMHLvJp9TKtUEf1JRcvHRd9hMZe/Q3C2resSUQRmJrO6rSo
+         ofjvXYUveakSJIzrbOdcDpOWNZj1kVsJqvvVMMvJeu9J4wtwvFihziXyMinH+42MPHRM
+         q++Q==
+X-Gm-Message-State: AOAM532PuI2XaaHLDS4RuWZf7gmUDkxXpG5/Z8R5Jsxw8GiyIEcB8017
+        q+Lx1HB4pd7Q9IT4P4GaqK0DAm4vHi35NYhRCgE=
+X-Google-Smtp-Source: ABdhPJx07OLMUPeEc0ImjaiJBKF2Mcc3ZmsWTIoSvX2FNfz03c1HE0RFqesREnjvPqYHKyL/ALkhu5ugV57XI3T5t/k=
+X-Received: by 2002:a6b:441a:: with SMTP id r26mr10856124ioa.211.1643626786286;
+ Mon, 31 Jan 2022 02:59:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220131065719.1552958-1-yzhai003@ucr.edu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Reply-To: daniellakyle60@gmail.com
+Sender: drdanielmorris11111@gmail.com
+Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 02:59:45
+ -0800 (PST)
+From:   Mrs daniell akyle <daniellakyle60@gmail.com>
+Date:   Mon, 31 Jan 2022 11:59:45 +0100
+X-Google-Sender-Auth: xE_x512-NJSetLeK1z_d90RC9Q0
+Message-ID: <CAKFcj-P8h0HeDMtZZnog7Sh8cFMKV7095BN2fQnUMpCGPgmhFg@mail.gmail.com>
+Subject: Ahoj
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Yizhuo,
-
-Thank you for the patch! Yet something to improve:
-
-[auto build test ERROR on linus/master]
-[also build test ERROR on v5.17-rc2 next-20220131]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Yizhuo-Zhai/fbdev-fbmem-Fix-the-implicit-type-casting/20220131-150528
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git 26291c54e111ff6ba87a164d85d4a4e134b7315c
-config: x86_64-randconfig-a013-20220131 (https://download.01.org/0day-ci/archive/20220131/202201311810.zlRDWfNU-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 2cdbaca3943a4d6259119f185656328bd3805b68)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/b8f540468e70290c8278fc2611adc2f9b38f821f
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Yizhuo-Zhai/fbdev-fbmem-Fix-the-implicit-type-casting/20220131-150528
-        git checkout b8f540468e70290c8278fc2611adc2f9b38f821f
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> drivers/video/fbdev/core/fbmem.c:1067:1: error: conflicting types for 'fb_blank'
-   fb_blank(struct fb_info *info, unsigned long blank)
-   ^
-   include/linux/fb.h:591:12: note: previous declaration is here
-   extern int fb_blank(struct fb_info *info, int blank);
-              ^
-   1 error generated.
-
-
-vim +/fb_blank +1067 drivers/video/fbdev/core/fbmem.c
-
-  1065	
-  1066	int
-> 1067	fb_blank(struct fb_info *info, unsigned long blank)
-  1068	{
-  1069		struct fb_event event;
-  1070		int ret = -EINVAL;
-  1071	
-  1072		if (blank > FB_BLANK_POWERDOWN)
-  1073			blank = FB_BLANK_POWERDOWN;
-  1074	
-  1075		event.info = info;
-  1076		event.data = &blank;
-  1077	
-  1078		if (info->fbops->fb_blank)
-  1079			ret = info->fbops->fb_blank(blank, info);
-  1080	
-  1081		if (!ret)
-  1082			fb_notifier_call_chain(FB_EVENT_BLANK, &event);
-  1083	
-  1084		return ret;
-  1085	}
-  1086	EXPORT_SYMBOL(fb_blank);
-  1087	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Pozdravy
+Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
+Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
+ilip=C3=ADn=C3=A1ch, kde jsem
+podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
+=ADraj=C3=ADc=C3=AD,
+vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
+lehliv=C3=A9 osob=C4=9B
+kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
+=9B privilegovan=C3=BDm. Chci
+poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
+vn=C3=AD organizace
+ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
+ab=C3=ADdku p=C5=99ijmout
+a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
+k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
+pozdravy
+Pan=C3=AD Daniella Kyleov=C3=A1
