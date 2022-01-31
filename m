@@ -2,149 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C54404A4FEA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Jan 2022 21:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 028534A4FFA
+	for <lists+linux-fbdev@lfdr.de>; Mon, 31 Jan 2022 21:15:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378097AbiAaUMt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 31 Jan 2022 15:12:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24532 "EHLO
+        id S1378454AbiAaUPv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 31 Jan 2022 15:15:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:43223 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1378229AbiAaUMq (ORCPT
+        by vger.kernel.org with ESMTP id S1378425AbiAaUPv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 31 Jan 2022 15:12:46 -0500
+        Mon, 31 Jan 2022 15:15:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643659965;
+        s=mimecast20190719; t=1643660150;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vM3bdlw6HomnmKXTkmUtit4bHCKLqTmZACNhurI9HbE=;
-        b=J1zjzZjmXbOeesI86OFEXW97UgR7iYiY32bCJy43g8WV0rsORx/SSzvpFi/gzn8UU+JXDh
-        hwF0Bgdy4hhxH1SXQwCosQJTyleNmFxrBgmSYvURZbQUquOegrM0agsf8YKt13mfTjyMc/
-        ied+irhL7jQ/Suu0T37reYVyAhyo48I=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=P/KHNPBIlcRDaY5ETa8oTdy0xiJiz17FpbXZqN4X7V4=;
+        b=OoLJot0H+vf0ohfIJX9ItZagq+Z/conCPSuJkpAUZfSlGZeOlb1E8f/RtjqYFREau6lJgE
+        5LMWM7IsRPx2DOTUn9LJEPfE+RNvDwRGC00AoWFA6fF9k8I83duu78sh1hXeN90FrrsKa1
+        yEH9JyG7A3VDyXPXFqbDD+bRHZuOtAI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-640-yVXwJVlfPiuNNEe-Xr-Ydw-1; Mon, 31 Jan 2022 15:12:42 -0500
-X-MC-Unique: yVXwJVlfPiuNNEe-Xr-Ydw-1
-Received: by mail-wm1-f71.google.com with SMTP id f7-20020a1cc907000000b0034b63f314ccso81176wmb.6
-        for <linux-fbdev@vger.kernel.org>; Mon, 31 Jan 2022 12:12:42 -0800 (PST)
+ us-mta-209-J4PZJVXjNnm28HWu8VlEQA-1; Mon, 31 Jan 2022 15:15:48 -0500
+X-MC-Unique: J4PZJVXjNnm28HWu8VlEQA-1
+Received: by mail-wm1-f69.google.com with SMTP id v19-20020a05600c215300b003538af20eb7so21733wml.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 31 Jan 2022 12:15:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=vM3bdlw6HomnmKXTkmUtit4bHCKLqTmZACNhurI9HbE=;
-        b=vcYFFhKYPZa/yd/1yPUPvzTSyzr0laSu2qzP3JE6duHGZbSJMzo9ZlkJsCAVTYKZHm
-         9/50RZ9djgtGppHdQiDn3Lu+DPxdzG/fsN+VkzFRJ1186yiJL/Z1GXWDLHtaC1JsTb8U
-         r2apYvEmhfVKTeSq2rscjTLRCHW3illw+rR+oysJWjJtuYaNdKyprOid6cV2SCupCctS
-         gb1Ls9qv85X4Yu5Ho8oVahtczcYN4US9dJqmhryu7UNWycp7OnPQA8YimfF2LZtIq79i
-         gLtw4FlHBpyrcqC9HyH9raPXon8PDwxgs7HUduDBsc8G/bB61mC5tgna8Wo/k+lVsW02
-         fe5Q==
-X-Gm-Message-State: AOAM5320Q8hJB/3Dxf4FlHknUktB9QOoBms7Tl28Ij7GEnEh+OHNDFeq
-        Ho5T1HRqGMV1xcEzUr0fwhUKCsHWHieB/HwYK+z69XCPodr23IcPxKFOwrOOLvsqLACsgMiCbem
-        mglzByyTRnMj0B2HY59M0lU0=
-X-Received: by 2002:adf:f784:: with SMTP id q4mr19229420wrp.59.1643659960634;
-        Mon, 31 Jan 2022 12:12:40 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx3Q9aJyDDEzKcgl6ZRCOab6CbkULBPR+XNfldCqUZBAmgsUN/1rCzA6CjueKUxmVTW7C4q8w==
-X-Received: by 2002:adf:f784:: with SMTP id q4mr19229412wrp.59.1643659960459;
-        Mon, 31 Jan 2022 12:12:40 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P/KHNPBIlcRDaY5ETa8oTdy0xiJiz17FpbXZqN4X7V4=;
+        b=lC1LmxxF7yFJeBZ/oRGOhuxP7L2Y0KdMAE2MtWHmaJUblr+TmAFHU/G0U/BSufOxcs
+         IEIaAn7wH1thCM30J3F6yrkf6ftnNtUBEemzw4UwRPNAJbLUTadM9ykSrkzE9NwCQb4B
+         WpOrl1I0/uNYmQO8vIrXrN8Xm7LdWW3t3wrLOIGexTUKSm1bMfIs5XEu8OFr1coW/vHg
+         V/ZDFi3nyYJdXKPTzz3BKQgB7d29Y6jlnxHe0N4cFbOfw9z+RXD/yXl8NzL9wNFQPOzd
+         pll/Vl1hsarW5EPb1bzsb4QMqS6OvmZzeezZ/vgrgSNAdYLoFhD1eP1zjp4oguvvk50i
+         Ne2A==
+X-Gm-Message-State: AOAM530pN6N1+LjgyNCJam42Nv+eevgFnaAxYbah3lPfl+01yt98cDKr
+        fNtCslxtOS4J0cQ5uUYNlTUWSgwRH263riTIIMoNAt6wkSZ+jSX57BNmCYz36Jn8SegCp1gpLkL
+        BTnVNM2DXunVV/srIykRxo94=
+X-Received: by 2002:a05:6000:1568:: with SMTP id 8mr19296556wrz.54.1643660147627;
+        Mon, 31 Jan 2022 12:15:47 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwkX67HueJQ6/s9AOMuGXHq/iOmq0TwIP4aXBdkOVjFwHzTVLicQvA1eGq6qlRfaX+3usULDg==
+X-Received: by 2002:a05:6000:1568:: with SMTP id 8mr19296541wrz.54.1643660147387;
+        Mon, 31 Jan 2022 12:15:47 -0800 (PST)
 Received: from minerva.home ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id i9sm15124660wry.32.2022.01.31.12.12.39
+        by smtp.gmail.com with ESMTPSA id o3sm12574638wrq.70.2022.01.31.12.15.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jan 2022 12:12:40 -0800 (PST)
+        Mon, 31 Jan 2022 12:15:47 -0800 (PST)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     linux-kernel@vger.kernel.org
-Cc:     linux-fbdev@vger.kernel.org, Maxime Ripard <maxime@cerno.tech>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        dri-devel@lists.freedesktop.org,
-        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 2/4] drm/format-helper: Add drm_fb_gray8_to_mono_reversed()
-Date:   Mon, 31 Jan 2022 21:12:22 +0100
-Message-Id: <20220131201225.2324984-3-javierm@redhat.com>
+        Maxime Ripard <maxime@cerno.tech>,
+        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 4/4] MAINTAINERS: Add entry for Solomon SSD1307 OLED displays DRM driver
+Date:   Mon, 31 Jan 2022 21:15:37 +0100
+Message-Id: <20220131201537.2325487-1-javierm@redhat.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220131201225.2324984-1-javierm@redhat.com>
-References: <20220131201225.2324984-1-javierm@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add support to convert 8-bit grayscale to reversed monochrome for drivers
-that control monochromatic displays, that only have 1 bit per pixel depth.
+To make sure that tools like the get_maintainer.pl script will suggest
+to Cc me if patches are posted for this driver.
 
-This helper function was based on repaper_gray8_to_mono_reversed() from
-the drivers/gpu/drm/tiny/repaper.c driver.
+Also include the Device Tree binding for the old ssd1307fb fbdev driver
+since the new DRM driver was made compatible with the existing binding.
 
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
 
- drivers/gpu/drm/drm_format_helper.c | 35 +++++++++++++++++++++++++++++
- include/drm/drm_format_helper.h     |  2 ++
- 2 files changed, 37 insertions(+)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
-index 0f28dd2bdd72..bf477c136082 100644
---- a/drivers/gpu/drm/drm_format_helper.c
-+++ b/drivers/gpu/drm/drm_format_helper.c
-@@ -584,3 +584,38 @@ int drm_fb_blit_toio(void __iomem *dst, unsigned int dst_pitch, uint32_t dst_for
- 	return -EINVAL;
- }
- EXPORT_SYMBOL(drm_fb_blit_toio);
-+
-+/**
-+ * drm_fb_gray8_to_mono_reversed - Convert grayscale to reversed monochrome
-+ * @dst: reversed monochrome destination buffer
-+ * @src: 8-bit grayscale source buffer
-+ * @clip: Clip rectangle area to copy
-+ *
-+ * DRM doesn't have native monochrome or grayscale support.
-+ * Such drivers can announce the commonly supported XR24 format to userspace
-+ * and use drm_fb_xrgb8888_to_gray8() to convert to grayscale and then this
-+ * helper function to convert to the native format.
-+ */
-+void drm_fb_gray8_to_mono_reversed(void *dst, void *src, const struct drm_rect *clip)
-+{
-+	size_t width = drm_rect_width(clip);
-+	size_t height = drm_rect_width(clip);
-+
-+	u8 *mono = dst, *gray8 = src;
-+	unsigned int y, xb, i;
-+
-+	for (y = 0; y < height; y++)
-+		for (xb = 0; xb < width / 8; xb++) {
-+			u8 byte = 0x00;
-+
-+			for (i = 0; i < 8; i++) {
-+				int x = xb * 8 + i;
-+
-+				byte >>= 1;
-+				if (gray8[y * width + x] >> 7)
-+					byte |= BIT(7);
-+			}
-+			*mono++ = byte;
-+		}
-+}
-+EXPORT_SYMBOL(drm_fb_gray8_to_mono_reversed);
-diff --git a/include/drm/drm_format_helper.h b/include/drm/drm_format_helper.h
-index b30ed5de0a33..cd4c8b7c78de 100644
---- a/include/drm/drm_format_helper.h
-+++ b/include/drm/drm_format_helper.h
-@@ -43,4 +43,6 @@ int drm_fb_blit_toio(void __iomem *dst, unsigned int dst_pitch, uint32_t dst_for
- 		     const void *vmap, const struct drm_framebuffer *fb,
- 		     const struct drm_rect *rect);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d03ad8da1f36..2e6c3aad5d71 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6102,6 +6102,13 @@ T:	git git://anongit.freedesktop.org/drm/drm-misc
+ F:	Documentation/devicetree/bindings/display/repaper.txt
+ F:	drivers/gpu/drm/tiny/repaper.c
  
-+void drm_fb_gray8_to_mono_reversed(void *dst, void *vaddr, const struct drm_rect *clip);
++DRM DRIVER FOR SOLOMON SSD1307 OLED DISPLAYS
++M:	Javier Martinez Canillas <javierm@redhat.com>
++S:	Maintained
++T:	git git://anongit.freedesktop.org/drm/drm-misc
++F:	Documentation/devicetree/bindings/display/solomon,ssd1307fb.yaml
++F:	drivers/gpu/drm/tiny/ssd1307.c
 +
- #endif /* __LINUX_DRM_FORMAT_HELPER_H */
+ DRM DRIVER FOR QEMU'S CIRRUS DEVICE
+ M:	Dave Airlie <airlied@redhat.com>
+ M:	Gerd Hoffmann <kraxel@redhat.com>
 -- 
 2.34.1
 
