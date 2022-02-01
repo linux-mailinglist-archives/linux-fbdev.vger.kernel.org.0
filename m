@@ -2,133 +2,162 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F4C4A5B61
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 12:46:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 510534A5B89
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 12:48:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237353AbiBALp6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Feb 2022 06:45:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:34434 "EHLO
+        id S237575AbiBALsw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Feb 2022 06:48:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:46160 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237253AbiBALp5 (ORCPT
+        by vger.kernel.org with ESMTP id S237587AbiBALsr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 1 Feb 2022 06:45:57 -0500
+        Tue, 1 Feb 2022 06:48:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643715957;
+        s=mimecast20190719; t=1643716127;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ULqxq85+QXgVuXkXrsFWoQ+Jj3hdrBT3Ayah3/h4Tac=;
-        b=PfcO40Wx941Fs+5jlVj0SlHB5Rsbeexq+XpGc2NqXKeaScJvlJsICTc3a/BLqYAtHGCEFw
-        ATM3v3hg4inG9EyUWDfASjR4MGQ4ioQprTX1WfH5nLe7cFeFGT+/DPKNVhhPYmRQkmMSp5
-        2s3vp9i0fcpJIf4yimVkrcuHtJydBt8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=HAQrcI0deDlNA9eCisSMwUR/TZsbNGoMTXQyByv6Pq0=;
+        b=VRBAKh1Ai5vH0ajraEih6JrMLbejf57xM3h9aW/lsbpM/JvRs73cXJTmQxVM0jlrWCF2rs
+        4s1hCcfIbpQ05eSqZLQo0o4ThwCORgcI+iJTj9kMnbXTUGjHEWpVb8oU+T2VasOZvSAmQU
+        B4JytFc3tvf3YgS8swy8aEd+AJNaizI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-300-z6NBInhmPluTTki-LI0krw-1; Tue, 01 Feb 2022 06:45:56 -0500
-X-MC-Unique: z6NBInhmPluTTki-LI0krw-1
-Received: by mail-wm1-f69.google.com with SMTP id q127-20020a1ca785000000b00352a4860babso872617wme.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 01 Feb 2022 03:45:55 -0800 (PST)
+ us-mta-161--1mIqCbEMPuR9D6UKcAINg-1; Tue, 01 Feb 2022 06:48:46 -0500
+X-MC-Unique: -1mIqCbEMPuR9D6UKcAINg-1
+Received: by mail-wr1-f69.google.com with SMTP id c10-20020adfa30a000000b001d79c73b64bso5943898wrb.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 01 Feb 2022 03:48:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=ULqxq85+QXgVuXkXrsFWoQ+Jj3hdrBT3Ayah3/h4Tac=;
-        b=e2ZSLpqTHzIqYgZmkgQuQhcLq7aSMH5EZ3PgFtRLvXTNJBSOrtDPpbdyENVBNP0nsc
-         ph0OMwEw6t4MCqUimS11F9jwl0ln6/+ZBwgNTn3rtTsV8Mm6CT3sOueA5qSce31yjSjM
-         IxDx7x7EOkHkUr+MVYk+26TLVg7NeCF+oIcdw06oToYgAztCQ4KWWusSq/9jpHwoIiEI
-         MudA1ajPI6GNhtEFGMCvXnwIKP2Z2bRiyNQxcJLN0OR/gyGYus0MJK4UYdV7g6asxtLC
-         6QHDlSZ2Jlnqs3eoJtdCEhHtvXa8sGVaJuIx6bjhYhoFX0tYIpFRNi2xnFdINXrfit6G
-         lm0w==
-X-Gm-Message-State: AOAM533/t/XhvKGo+f3Tk/RxNu7ayzojdwRPZhw8Yd/V1M/87LmLVtLI
-        4WywoEqGuBFlERIc7Y3Xv8e6n5FRCcuTCAVU8rA/vzgb0E9AySJ8/noAtz59C8rxpalk/0q9P/v
-        CCgxZWoUSQixGfqpw220Le6k=
-X-Received: by 2002:a05:6000:42:: with SMTP id k2mr20919094wrx.79.1643715954914;
-        Tue, 01 Feb 2022 03:45:54 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxu53NCCBkPLUIyYKlJCJN/UR7WXCnqrTa2SCyLCQ+kIZ18n0Z2nEp2RQQD+B1odXGUsfHjbw==
-X-Received: by 2002:a05:6000:42:: with SMTP id k2mr20919072wrx.79.1643715954648;
-        Tue, 01 Feb 2022 03:45:54 -0800 (PST)
+        bh=HAQrcI0deDlNA9eCisSMwUR/TZsbNGoMTXQyByv6Pq0=;
+        b=tQcgL6XKVbeNlW0DXIcKABLYeQJjwRrTX9XbaMTqwb8e9PmN4UIA38bw8KaotUhEa/
+         egoK6wH9ODvHDxr8vN7QaLiPykOTaij8LlzlvgWRV8MoG05Lg+QfByswAbElREc1zgfw
+         CRwdCHio0Wa70fUWz4mhUMSpxCGrI+tulZ5FYWppeJPl3U6LEQlfvS3pt1vjsdCAg9Ms
+         bj7G0MxL1I+2O093fI8iIVmb8miBn6WggLKo9v4kchm02ODEPKCkRP2026Oex8uE7wd6
+         X0TPQimiFREBAxUiFW6EGN5yw/KlPWcv16eFYLeAITD+egUNry/+KSOS/ANZ6yXiUXOj
+         napw==
+X-Gm-Message-State: AOAM530aSsMngqqVY/Df5NRqKqfCsq+5ZK1F184MjqP8ILas6WBfwRZj
+        VYD6molmtjLoXxsBd2D7dtsnL8A4GBk27+7iqVsn/GqMwECkG2jlCtgrmkTK7+mqLBsdLYCjRnM
+        ZI7tMxX4j6YeeXwS1v+IXOIQ=
+X-Received: by 2002:adf:f58f:: with SMTP id f15mr12076475wro.192.1643716124452;
+        Tue, 01 Feb 2022 03:48:44 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzd9BlV0HRMbyk/XwhfXyaNQQpXbeT1Gbtln4v7etwlKLUXdBdHLLvcKWVu2NnD4Vi+vIyooQ==
+X-Received: by 2002:adf:f58f:: with SMTP id f15mr12076463wro.192.1643716124242;
+        Tue, 01 Feb 2022 03:48:44 -0800 (PST)
 Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id h11sm1811015wmb.12.2022.02.01.03.45.53
+        by smtp.gmail.com with ESMTPSA id g6sm14023059wrq.97.2022.02.01.03.48.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 03:45:54 -0800 (PST)
-Message-ID: <9ddd8a8c-4aa9-bc4a-5637-66197a7342d1@redhat.com>
-Date:   Tue, 1 Feb 2022 12:45:53 +0100
+        Tue, 01 Feb 2022 03:48:43 -0800 (PST)
+Message-ID: <c10f8a68-6c45-41ec-7061-ff69360f1fbb@redhat.com>
+Date:   Tue, 1 Feb 2022 12:48:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 3/4] drm/tiny: Add driver for Solomon SSD1307 OLED
- displays
+Subject: Re: [PATCH 2/4] drm/format-helper: Add
+ drm_fb_gray8_to_mono_reversed()
 Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-fbdev@vger.kernel.org, Maxime Ripard <maxime@cerno.tech>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         dri-devel@lists.freedesktop.org,
         =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Maxime Ripard <maxime@cerno.tech>
-References: <20220131202916.2374502-1-javierm@redhat.com>
- <YfhVBtv1UIA7bJja@ravnborg.org>
- <3aac291a-b30e-2775-336f-66dd08d634e2@redhat.com>
- <YfkA4ER/52I2v1JP@smile.fi.intel.com>
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>
+References: <20220131201225.2324984-1-javierm@redhat.com>
+ <20220131201225.2324984-3-javierm@redhat.com>
+ <e52560f0-bd0c-b51b-af1b-bd4be2df8702@suse.de>
 From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <YfkA4ER/52I2v1JP@smile.fi.intel.com>
+In-Reply-To: <e52560f0-bd0c-b51b-af1b-bd4be2df8702@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2/1/22 10:44, Andy Shevchenko wrote:
-> On Tue, Feb 01, 2022 at 01:14:22AM +0100, Javier Martinez Canillas wrote:
->> On 1/31/22 22:30, Sam Ravnborg wrote:
->>> On Mon, Jan 31, 2022 at 09:29:16PM +0100, Javier Martinez Canillas wrote:
+Hello Thomas,
+
+Thanks a lot for your feedback.
+
+On 2/1/22 10:59, Thomas Zimmermann wrote:
+> Hi
 > 
-> ...
-> 
->>> The driver uses the pwms property for the backlight.
->>> It would have been much better to bite the bullet and require the
->>> backlight to be specified using a backlight node in the DT.
->>> This is the standard way to do it and then the driver could use the
->>> existing backlight driver rather than embedding a backlight driver here.
->>>
+> Am 31.01.22 um 21:12 schrieb Javier Martinez Canillas:
+>> Add support to convert 8-bit grayscale to reversed monochrome for drivers
+>> that control monochromatic displays, that only have 1 bit per pixel depth.
 >>
->> I did consider that. Because that would allow me to use a struct drm_panel
->> and as you said make the core to manage the backlight. But then decied to
->> just keep the backward compatibility with the existing binding to make it
->> easier for users to migrate to the DRM driver.
->>
->> I wonder if we could make the driver to support both ? That is, to query
->> if there's a backlight with drm_panel_of_backlight() and if not found then
->> registering it's own backlight like the driver is currently doing.
+>> This helper function was based on repaper_gray8_to_mono_reversed() from
+>> the drivers/gpu/drm/tiny/repaper.c driver.
 > 
-> If we keep 100% backward compatibility, just drop the old driver.
-> After all module name is not so important as compatibility strings.
+> You could convert repaper to the new helper.
 >
 
-As mentioned I don't believe those two things are related. You could make it
-backward compatible but still keep the old driver around until no one else
-would care about it.
+Yes, I plan to do it but was out of scope for this patch series.
 
-This DRM driver is brand new and there may be bugs, performance issues and
-whatnot. At least I won't propose to remove the old fbdev driver but would
-want people using DRM to have a choice.
- 
-> The problem with no backward compatibility means that removal of old driver
-> makes users unhappy since DT is kinda ABI and we do not break it.
+>>
+>> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+>> ---
+>>
+>>   drivers/gpu/drm/drm_format_helper.c | 35 +++++++++++++++++++++++++++++
+>>   include/drm/drm_format_helper.h     |  2 ++
+>>   2 files changed, 37 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
+>> index 0f28dd2bdd72..bf477c136082 100644
+>> --- a/drivers/gpu/drm/drm_format_helper.c
+>> +++ b/drivers/gpu/drm/drm_format_helper.c
+>> @@ -584,3 +584,38 @@ int drm_fb_blit_toio(void __iomem *dst, unsigned int dst_pitch, uint32_t dst_for
+>>   	return -EINVAL;
+>>   }
+>>   EXPORT_SYMBOL(drm_fb_blit_toio);
+>> +
+>> +/**
+>> + * drm_fb_gray8_to_mono_reversed - Convert grayscale to reversed monochrome
+>> + * @dst: reversed monochrome destination buffer
+>> + * @src: 8-bit grayscale source buffer
+>> + * @clip: Clip rectangle area to copy
+>> + *
+>> + * DRM doesn't have native monochrome or grayscale support.
+>> + * Such drivers can announce the commonly supported XR24 format to userspace
+>> + * and use drm_fb_xrgb8888_to_gray8() to convert to grayscale and then this
+>> + * helper function to convert to the native format.
+>> + */
+>> +void drm_fb_gray8_to_mono_reversed(void *dst, void *src, const struct drm_rect *clip)
 > 
+> IMHO it would be better to have a function that converts xrgb8888 to 
+> mono and let it handle the intermediate step of gray8.
+>
 
-I think that's the crux of the issue. Do we want people to update their
-kernel but using their existing Device Tree and be able to switch to the
-DRM driver ?
+That's a good idea. I'll add that too.
 
-My take is that we should and that's why I kept the backward compatibility.
+>> +{
+>> +	size_t width = drm_rect_width(clip);
+>> +	size_t height = drm_rect_width(clip);
+>> +
+>> +	u8 *mono = dst, *gray8 = src;
+>> +	unsigned int y, xb, i;
+>> +
+>> +	for (y = 0; y < height; y++)
+>> +		for (xb = 0; xb < width / 8; xb++) {
+> 
+> The inner loop should probably go into a separate helper function. See 
+> the drm_fb_*_line() helpers in this file
+>
+> At some point, we's want to have a single blit helper that takes source 
+> and destination formats/buffers. It would then pick the correct per-line 
+> helper for the conversion. So yeah, we'd want something composable.
+>
 
-Maybe we could do that in the meantime and at some point introduce new DT
-bindings (with a different compatible string) that would use the latest
-and greatest conventions in DT ? That seems to be a good compromise.
+Agreed. I'll split that into a separate helper function.
 
 Best regards,
 -- 
