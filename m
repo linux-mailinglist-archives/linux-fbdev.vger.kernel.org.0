@@ -2,111 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1984A5EA3
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 15:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8631A4A5EEB
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 16:03:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239475AbiBAOyY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Feb 2022 09:54:24 -0500
-Received: from mail-ua1-f44.google.com ([209.85.222.44]:40890 "EHLO
-        mail-ua1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239536AbiBAOyY (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Feb 2022 09:54:24 -0500
-Received: by mail-ua1-f44.google.com with SMTP id w21so13977390uan.7;
-        Tue, 01 Feb 2022 06:54:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kzlQhpMq4Ctc2cxxIgF+2UWQv9yJB23c2S2KJFtJK5I=;
-        b=45yp7NFXNwmKIOiLsyRll/NNZOxk4C+TmfeoLBB5oudMYOpfRAkqlR3qFYm0yH644W
-         fja5KYoJGLfIk8KZ9O1mi7i0BUpaNdMe4X/kAdKEuv6isyl1gPq6SiRokz/tV8CR+nga
-         YELgNY9mK///FGIRcDGiCIExw5tXzjlShqgbVYJ7Tq7fuvi32WhF7X0Cbfu1bUH6lwu9
-         pEkp7x08F6ssqETSxF/NSeDGY4/BC6fVSCtsj6qZQuGUg0ZVwGaIv52bHmIPekAi99uk
-         pLgLLdBpLtewf8cd+/XaXZWHLCY+RZ0ZRx8q3yguk/Zc0r/+q5E2K6p7XlZzbMlbNBdP
-         Wrog==
-X-Gm-Message-State: AOAM532nWNh4q2jKur9xraS8zVcotvcN1b6Nmjl9iUWhWGS81pLZCS7y
-        JS+d2l49dmcE25jkUjizRVOo9nEg10MN+gQH
-X-Google-Smtp-Source: ABdhPJwXKkRxVjNJEd5j1UGzhpYT9mh5Ph2kMcYOaqssL83fo4/KNkwui1fitOtYbUlV3kh1g+Fcfw==
-X-Received: by 2002:ab0:b3:: with SMTP id 48mr9612857uaj.85.1643727263177;
-        Tue, 01 Feb 2022 06:54:23 -0800 (PST)
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
-        by smtp.gmail.com with ESMTPSA id w188sm4298830vsb.32.2022.02.01.06.54.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 06:54:22 -0800 (PST)
-Received: by mail-vs1-f53.google.com with SMTP id a19so16373344vsi.2;
-        Tue, 01 Feb 2022 06:54:21 -0800 (PST)
-X-Received: by 2002:a67:a401:: with SMTP id n1mr9369281vse.38.1643727260868;
- Tue, 01 Feb 2022 06:54:20 -0800 (PST)
+        id S239712AbiBAPDf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Feb 2022 10:03:35 -0500
+Received: from mout.gmx.net ([212.227.17.22]:43617 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239685AbiBAPDe (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Tue, 1 Feb 2022 10:03:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1643727768;
+        bh=nvs4NamF8w3PSAtLVFdwadPiUvfzFg613upYNZ/yXSg=;
+        h=X-UI-Sender-Class:Date:To:Cc:References:From:Subject:In-Reply-To;
+        b=Ig2IPZ5zKlouxpflVVmYYGrUePr/LI8+qLrp7aZA4uucD+2hXbYwRZLq855afcj7/
+         1C1nsPz7s9e8i+8N7F1wnisBRN0mfKm2sAbMpx8DRuRWuiFg04oBnMytrkdwEQpEIQ
+         DQTyXsVmllotv/hXvaZbbuOUiJ+3eYZuhKq4mj3U=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.146.124]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MwQXN-1mP0sn1g4j-00sNis; Tue, 01
+ Feb 2022 16:02:48 +0100
+Message-ID: <b1c1f68d-4620-2429-66bd-33d806d31457@gmx.de>
+Date:   Tue, 1 Feb 2022 16:02:40 +0100
 MIME-Version: 1.0
-References: <20220131210552.482606-1-daniel.vetter@ffwll.ch> <20220131210552.482606-2-daniel.vetter@ffwll.ch>
-In-Reply-To: <20220131210552.482606-2-daniel.vetter@ffwll.ch>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 1 Feb 2022 15:54:09 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWxFFMJ6W70SJzJynfAuqF=NjHbx64-=vgo=FQL_fqNVA@mail.gmail.com>
-Message-ID: <CAMuHMdWxFFMJ6W70SJzJynfAuqF=NjHbx64-=vgo=FQL_fqNVA@mail.gmail.com>
-Subject: Re: [PATCH 01/21] MAINTAINERS: Add entry for fbdev core
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dave Airlie <airlied@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Pavel Machek <pavel@ucw.cz>, Sam Ravnborg <sam@ravnborg.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Claudio Suarez <cssk@net-c.es>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Sven Schnelle <svens@stackframe.org>,
-        Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-US
+To:     Yizhuo Zhai <yzhai003@ucr.edu>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Zheyu Ma <zheyuma97@gmail.com>,
+        Xiyu Yang <xiyuyang19@fudan.edu.cn>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+References: <20220131065719.1552958-1-yzhai003@ucr.edu>
+From:   Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] fbdev: fbmem: Fix the implicit type casting
+In-Reply-To: <20220131065719.1552958-1-yzhai003@ucr.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8rcnp3IDWKRjEYPQV485Zi+kFbcxjfN0d1QI0X2MU7OVul75bod
+ eQuXX8jdrKjMIB2fbFNnodmCyPeknr4i/kfQBcukaVrSA3NwBE0B1kXD4gZR7qZqfK6SHW+
+ P5Z3tyGBWi0S9W4OBNjklGZGQ+uS0XMCezCx8oxze65ATS7BFRkOph2vBGq3QOogmBUJFqh
+ HohuYWpL/6NFwDvUyuDtA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8Rn0yXCvoSI=:wCSp2dm5E03DqfVW0te626
+ y3QbpDpBUuTKWhC/2BhKHIV114JvdTj7FO7RgQjiIh0KVHFyDX7evBCCP7F7QZ1ym7TRzJ9Zd
+ n0RjjMB5hei2NBwh1vXhjC7GF+gyG1PwKcEiNrYRjEgeDHRQ3HYYmyJK03F0F6HzWx7tmBnyL
+ B6cNR7yC4WT0uB/OkuthjxwrEOL2HALsrdV74B6i4dvAfRLdet1ddKocbBqLpW0o6LQG1k3AD
+ SQyeaSEztHEG2F9zKvC0uEaJjKPaiSTZuMyXeXiOIOW9jDiLM56Q2vKR0WnnRDH659abnY4o9
+ nE+nlgTcCp78zrEd8D3r+tG1yBMKLhid/cVKvlQM4s+xZ9PIbZX0yAxyj6HVQYyGKtCaOmpu0
+ Np4Jw35NnT7pfFo7vih+wmRc+D6K7Q2O0DxWgT60fwt1ia7v40fq40xZJXAO6XyWHPyCw9v2g
+ Zb4rs/ro/DKlt4r/+Zk0470cy5Hj+wiuAXftlxMUp3E4naFS8ah1YPILH7JfRn3XI5/QXz3hn
+ Uo6mWMn///bBb6RBSCUawnYKSuFTvUqztCr8NUuW0+vt0kO7OM/L9HpoGijp5Q14kpISNLVbr
+ 4F8o9A5rGgdNMHHiLwZmxst6Ir+m9e7X6xyjdEUcbhe7fma3wWzba54WQwIbRk33qAHWeFFyK
+ h++uWp0yaOiYo05cMbaoIUdpcKB41YSD5638kF6NQtSuYHu9wGHHRnsI36i1JzJ17XZ9tLDaJ
+ wnxL2qRxBLK5bLLioFBPKq0l17iOm+T47NgBa9+RGUmRM6a6iUf+OoTcMRATCSnMkG1F2Swi6
+ Qj9e+XDFcZi1I1Iew5pDjzvtJxsdKTIdUArCPaUpEJ3i8vIhRLoEU3YQDKVxPIbdzndhvxM95
+ nQ/6MMGob1zcMXn7AOZ4Cfj5u5zbl6h0IIYogZeAs73GQeVem2p1FdITwZYy4085v2MfB4pjl
+ yvF1AdneaI+JZcr9OjM31zQrRW9vIB77/i+g4VHydbDZewVNxBqXlAmw6mac2FmS0IgQ65bxc
+ Y4CO9SIvE/gKzU627zJIG1jMzE7BxSwIfLv4kDuxuQ6tR7KfNZSn+3EBl6f1LBos4J2aWdf4M
+ /gNvQFfC3+A13s=
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 10:06 PM Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
-> Ever since Tomi extracted the core code in 2014 it's been defacto me
-> maintaining this, with help from others from dri-devel and sometimes
-> Linus (but those are mostly merge conflicts):
+On 1/31/22 07:57, Yizhuo Zhai wrote:
+> In function do_fb_ioctl(), the "arg" is the type of unsigned long,
+
+yes, because it comes from the ioctl framework...
+
+> and in "case FBIOBLANK:" this argument is casted into an int before
+> passig to fb_blank().
+
+which makes sense IMHO.
+
+> In fb_blank(), the comparision if (blank > FB_BLANK_POWERDOWN) would
+> be bypass if the original "arg" is a large number, which is possible
+> because it comes from the user input.
+
+The main problem I see with your patch is that you change the behaviour.
+Let's assume someone passes in -1UL.
+With your patch applied, this means the -1 (which is e.g. 0xffffffff on 32=
+bit)
+is converted to a positive integer and will be capped to FB_BLANK_POWERDOW=
+N.
+Since most blank functions just check and react on specific values, you ch=
+anged
+the behaviour that the screen now gets blanked at -1, while it wasn't befo=
+re.
+
+One could now argue, that it's undefined behaviour if people
+pass in wrong values, but anyway, it's different now.
+
+So, your patch isn't wrong. I'm just not sure if this is what we want...
+
+Helge
+
+
+> Signed-off-by: Yizhuo Zhai <yzhai003@ucr.edu>
+> ---
+>  drivers/video/fbdev/core/fbmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> $ git shortlog -ns  drivers/video/fbdev/core/ | head -n5
->     35  Daniel Vetter
->     23  Linus Torvalds
->     10  Hans de Goede
->      9  Dave Airlie
->      6  Peter Rosin
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core=
+/fbmem.c
+> index 0fa7ede94fa6..a5f71c191122 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1064,7 +1064,7 @@ fb_set_var(struct fb_info *info, struct fb_var_scr=
+eeninfo *var)
+>  EXPORT_SYMBOL(fb_set_var);
 >
-> I think ideally we'd also record that the various firmware fb drivers
-> (efifb, vesafb, ...) are also maintained in drm-misc because for the
-> past few years the patches have either been to fix handover issues
-> with drm drivers, or caused handover issues with drm drivers. So any
-> other tree just doesn't make sense. But also, there's plenty of
-> outdated MAINTAINER entries for these with people and git trees that
-> haven't been active in years, so maybe let's just leave them alone.
-> And furthermore distros are now adopting simpledrm as the firmware fb
-> driver, so hopefully the need to care about the fbdev firmware drivers
-> will go down going forward.
->
-> Note that drm-misc is group maintained, I expect that to continue like
-> we've done before, so no new expectations that patches all go through
-> my hands. That would be silly. This also means I'm happy to put any
-> other volunteer's name in the M: line, but otherwise git log says I'm
-> the one who's stuck with this.
-
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>  int
+> -fb_blank(struct fb_info *info, int blank)
+> +fb_blank(struct fb_info *info, unsigned long blank)
+>  {
