@@ -2,162 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD9A04A5EE9
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 16:03:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C91C4A5FA9
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 16:10:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239713AbiBAPDf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Feb 2022 10:03:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:57539 "EHLO
+        id S239827AbiBAPKy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Feb 2022 10:10:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:23088 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239692AbiBAPDe (ORCPT
+        by vger.kernel.org with ESMTP id S234200AbiBAPKx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 1 Feb 2022 10:03:34 -0500
+        Tue, 1 Feb 2022 10:10:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643727814;
+        s=mimecast20190719; t=1643728253;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wPLTvSXEJtxG27SsdT3y+GsVxpcB9uraDlu1oQaaT6o=;
-        b=FctOW/9QgpLr6G1TVeutqJT5b1zOFRU2ZP5GrGpU45xkiWxtXhujMFAR9g/L15b76qYc4u
-        NC2AgTxLCUWqGJxtTDwWbrSx7TwuMPL+1gNn5Uo3QrTZrqi58XuGYn3EZP3Fu5ho5j7Fkk
-        3qKV4GG84DPc40AiyfkKRIggP1JY+L8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=Xahi6KlHV6F4VQ/xZVlvC1YTaLt1tqgz8laoIFbavo4=;
+        b=KnJs+m9WmWD2cDEpzquJb6QH4bop2cYJVnN632+2P9VWFq9NWNzZ5Op+rPk6E0y9R3F2U2
+        x2WnzoW28rSIMkN2VssIXC/x40w0osyTmXQJZrZQnVcQc1Og8BysD4zTcqg3HQmHorh5B3
+        gq4vmj+YWHKe1hhIKWJUo9f+sTBtj5c=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-553-Gpu670o8OpKsu95cV9uprQ-1; Tue, 01 Feb 2022 10:03:33 -0500
-X-MC-Unique: Gpu670o8OpKsu95cV9uprQ-1
-Received: by mail-wr1-f69.google.com with SMTP id z1-20020adfbbc1000000b001df54394cebso5280640wrg.20
-        for <linux-fbdev@vger.kernel.org>; Tue, 01 Feb 2022 07:03:33 -0800 (PST)
+ us-mta-665-ZGsKlv9tP1mCTfiobFf88g-1; Tue, 01 Feb 2022 10:10:51 -0500
+X-MC-Unique: ZGsKlv9tP1mCTfiobFf88g-1
+Received: by mail-wm1-f70.google.com with SMTP id l20-20020a05600c1d1400b0035153bf34c3so1769755wms.2
+        for <linux-fbdev@vger.kernel.org>; Tue, 01 Feb 2022 07:10:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=wPLTvSXEJtxG27SsdT3y+GsVxpcB9uraDlu1oQaaT6o=;
-        b=4uKeMysu4OangcoGHUbIHnqEJebykUSYRpqm114+fHh7OLO9y4NdALtOXBs0LPykxL
-         ebeGDUJLame545OoAvIzcNR+zEgU4RLCxf0O0U3ffcm+biveidfQXL11UOYhXQjrJKN8
-         j0+wzROllDIfudsyvtlCD9GRq2FLaTjoPgZ3Oo0rB3+xl1YxyVdWLkqpn1w0CF+nUObj
-         jpk3XuzD2ITZ3FJbby7o8NT09WwA0YIP0tl6GthNns1+iFhhkM/Dh7JuR++oxb+OFQrh
-         FFdCZOaE+U36f8knNOMChQD2kWHCFDLjRFFq0KtVziFzuap8n+s+QsAa2123V9IDaCXg
-         qrDA==
-X-Gm-Message-State: AOAM533V3UFXyL4phWC7o1qtTeiyZDbBAkIP69o8lN9vddsYew6Qs9tQ
-        NHQbXh8d5D77BUp9f1lGVm5hnwP60gH6JmrAWgn/i2e095kxN5B2zqnzasYmS6Lw6ERO/Hvin72
-        UcoY+dSelEYRXihcjx1B4rp0=
-X-Received: by 2002:adf:f701:: with SMTP id r1mr21141486wrp.557.1643727812093;
-        Tue, 01 Feb 2022 07:03:32 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyD7IWYf2w/UYRoUr7WHXdQ9VbX1SC5Yn+ZVdm0j1WeFTSfMhrKanoXWWOixVKguyUocjP+4A==
-X-Received: by 2002:adf:f701:: with SMTP id r1mr21141458wrp.557.1643727811754;
-        Tue, 01 Feb 2022 07:03:31 -0800 (PST)
+        bh=Xahi6KlHV6F4VQ/xZVlvC1YTaLt1tqgz8laoIFbavo4=;
+        b=6gW5yLnv8+AdY44HQ4sdXvP+RnpcMcxcqDw4xtZP5PIK0vu7fgBuVTX+5d9HCQO5VP
+         OR3M4PLYawl+cgdErX81fvGRKU+e/760qP1l+rVpzTktKjB8lkYnzvVcFmGyUZh+z3Z0
+         SmUZZ2oL0z3sw0HUJdIv3Li69jwPaku6YwRBSGMKegtEBXR+lAz30C7DZR6cezzbQLVN
+         xju5OuQoejpKNnIC0hN3xWtGQH17QuUFNHi13GHDvwouRYnc3ciOVHq3mgDTc1UfW4+5
+         nzvBb1z2zH3ZlAQRC8pzvP+b7tJqXmHzxWxA/Lk0Azw8RJWtXBn/17eFHZPXQoV239MB
+         +fZg==
+X-Gm-Message-State: AOAM532ZU6lacxMwNSxYlKk7Vpyp911dsxkovqr+0tyQvU8D6VPP5be4
+        tJuJKEObR6Q9hi4jSSQ04RhadPebRkV0ZHRvhIF43mapyFkPazonAvZ5JsDMAHvS0tKXt05mfqu
+        ZXLdvkiFbhEBX/LCdTA5XRh4=
+X-Received: by 2002:a05:6000:1a8c:: with SMTP id f12mr11663239wry.153.1643728250668;
+        Tue, 01 Feb 2022 07:10:50 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxdwGp2Pak+qnkxqFSHlJ5WHAuF3l8gqYjbIl9n8aNA5CLl+rlgxDBFzggA+hPhyEXVYtJztA==
+X-Received: by 2002:a05:6000:1a8c:: with SMTP id f12mr11663221wry.153.1643728250430;
+        Tue, 01 Feb 2022 07:10:50 -0800 (PST)
 Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id o12sm17764493wry.115.2022.02.01.07.03.30
+        by smtp.gmail.com with ESMTPSA id x4sm15296308wrp.13.2022.02.01.07.10.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 07:03:31 -0800 (PST)
-Message-ID: <abf63995-a529-1e80-18c3-df473a3e7a9c@redhat.com>
-Date:   Tue, 1 Feb 2022 16:03:30 +0100
+        Tue, 01 Feb 2022 07:10:50 -0800 (PST)
+Message-ID: <b4fe0d36-c4ef-6f7e-e47d-f98f6055ea92@redhat.com>
+Date:   Tue, 1 Feb 2022 16:10:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 0/4] drm/tiny: Add driver for Solomon SSD1307 OLED
+Subject: Re: [PATCH 3/4] drm/tiny: Add driver for Solomon SSD1307 OLED
  displays
 Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Mark Brown <broonie@kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+        dri-devel@lists.freedesktop.org,
         =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>
-References: <20220131201225.2324984-1-javierm@redhat.com>
- <YfhM97cVH3+lJKg0@ravnborg.org> <Yfj/XGRRDNABsLPm@smile.fi.intel.com>
- <f8d71acb-5c8b-ac4e-0c32-38eb66af04c3@redhat.com>
- <CAMuHMdVP6ER119r2KAegjZes1a=KWZ47z6j=kgQ0oNx1oeUJ+w@mail.gmail.com>
- <51f54519-bb8b-f108-1c1e-4fed101ca5ef@redhat.com>
- <CAMuHMdVwUfv7pXhPazsgG6t=X=aVtDQkFUk_=mUuFH8Fscx8wg@mail.gmail.com>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Maxime Ripard <maxime@cerno.tech>
+References: <20220131202916.2374502-1-javierm@redhat.com>
+ <YfhVBtv1UIA7bJja@ravnborg.org>
+ <3aac291a-b30e-2775-336f-66dd08d634e2@redhat.com>
+ <YfkA4ER/52I2v1JP@smile.fi.intel.com>
+ <9ddd8a8c-4aa9-bc4a-5637-66197a7342d1@redhat.com>
+ <Yfk9fuazUSgI6C9n@smile.fi.intel.com>
 From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <CAMuHMdVwUfv7pXhPazsgG6t=X=aVtDQkFUk_=mUuFH8Fscx8wg@mail.gmail.com>
+In-Reply-To: <Yfk9fuazUSgI6C9n@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Geert,
-
-On 2/1/22 15:14, Geert Uytterhoeven wrote:
-> Hi Javier,
+On 2/1/22 15:02, Andy Shevchenko wrote:
+> On Tue, Feb 01, 2022 at 12:45:53PM +0100, Javier Martinez Canillas wrote:
+>> On 2/1/22 10:44, Andy Shevchenko wrote:
+>>> On Tue, Feb 01, 2022 at 01:14:22AM +0100, Javier Martinez Canillas wrote:
 > 
-> On Tue, Feb 1, 2022 at 2:09 PM Javier Martinez Canillas
-> <javierm@redhat.com> wrote:
->> On 2/1/22 12:38, Geert Uytterhoeven wrote:
->>>> Since the current binding has a compatible "ssd1305fb-i2c", we could make the
->>>> new one "ssd1305drm-i2c" or better, just "ssd1305-i2c".
->>>
->>> DT describes hardware, not software policy.
->>> If the hardware is the same, the DT bindings should stay the same.
+> ...
+> 
+>>> The problem with no backward compatibility means that removal of old driver
+>>> makes users unhappy since DT is kinda ABI and we do not break it.
 >>>
 >>
->> Yes I know that but the thing is that the current binding don't describe
->> the hardware correctly. For instance, don't use a backlight DT node as a
->> property of the panel and have this "fb" suffix in the compatible strings.
+>> I think that's the crux of the issue. Do we want people to update their
+>> kernel but using their existing Device Tree and be able to switch to the
+>> DRM driver ?
 >>
->> Having said that, my opinion is that we should just keep with the existing
->> bindings and make compatible to that even if isn't completely correct.
+>> My take is that we should and that's why I kept the backward compatibility.
 >>
->> Since that will ease adoption of the new DRM driver and allow users to use
->> it without the need to update their DTBs.
+>> Maybe we could do that in the meantime and at some point introduce new DT
+>> bindings (with a different compatible string) that would use the latest
+>> and greatest conventions in DT ? That seems to be a good compromise.
 > 
-> To me it looks like the pwms property is not related to the backlight
-> at all, and only needed for some variants?
+> I have over-read in this discussion that current binding is not fully
+> correct from hw perspective. If it's indeed the case (and I believe it's),
+> then probably we should come with brand new driver with ssd130x name and
+> incompatible bindingas (*).
+>
+> Otherwise in this driver we continue to be incorrect in them.
 >
 
-I was reading the datasheets of the ssd1305, ssd1306 and ssd1307. Only the
-first one mentions anything about a PWM and says:
-
-  In phase 3, the OLED driver switches to use current source to drive the
-  OLED pixels and this is the current drive stage. SSD1305 employs PWM
-  (Pulse Width Modulation) method to control the brightness of area color
-  A, B, C, D color individually. The longer the waveform in current drive
-  stage is, the brighter is the pixel and vice versa.
-
-  After finishing phase 3, the driver IC will go back to phase 1 to display
-  the next row image data. This threestep cycle is run continuously to refresh
-  image display on OLED panel. 
-
-The way I understand this is that the PWM isn't used for the backlight
-but instead to power the IC and allow to display the actual pixels ?
-
-And this matches what Maxime mentioned in this patch:
-
-https://linux-arm-kernel.infradead.narkive.com/5i44FnQ8/patch-1-2-video-ssd1307fb-add-support-for-ssd1306-oled-controller
-
-  The Solomon SSD1306 OLED controller is very similar to the SSD1307,
-  except for the fact that the power is given through an external PWM for
-  the 1307, and while the 1306 can generate its own power without any PWM. 
-
-> And the actual backlight code seems to be about internal contrast
-> adjustment?
-> 
-> So if the pwms usage is OK, what other reasons are there to break
-> DT compatibility? IMHO just the "fb" suffix is not a good reason.
+See the comment from Geert. I believe we should use the existing binding.
+ 
+> *) But even though I think it would be good if you take the old one under your
+>    maintainership.
 >
 
-Absolutely agreed with you on this. It seems we should just use the existing
-binding and make the driver compatible with that. The only value is that the
-drm_panel infrastructure could be used, but making it backward compatible is
-more worthy IMO.
+Sure, now that I got familiar with the ssd130x devices, I'll be happy to
+help with the ssd1307fb driver maintainership.
 
-Best regards, -- 
+Best regards,
+-- 
 Javier Martinez Canillas
 Linux Engineering
 Red Hat
