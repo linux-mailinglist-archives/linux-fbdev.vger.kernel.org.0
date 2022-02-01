@@ -2,142 +2,190 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6B74A597A
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 10:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A8D4A5987
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Feb 2022 10:59:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236191AbiBAJtP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 1 Feb 2022 04:49:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:55801 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236197AbiBAJtN (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 1 Feb 2022 04:49:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643708952;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+        id S236139AbiBAJ7t (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 1 Feb 2022 04:59:49 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:45380 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234247AbiBAJ7t (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 1 Feb 2022 04:59:49 -0500
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id E229A210FD;
+        Tue,  1 Feb 2022 09:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1643709584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=tgw5tIdcmG3vshG+0+gBxrtdGFyTyK1rBRl6JhXtTTs=;
-        b=b0AekkaNbctE920K6Gxz+ZSHo7chWXSfBrumcq4wnk/1/rnWRVq2Sfrvv1NSiWtkRHie2B
-        mahXkClxK8X7O/2/SA/XNVMxFSAnJ4nvW2xKz62ND0DAyHGPy5BJ1WTggdMgFox4Al8vDH
-        ToDn8+HoFl8UM/69AC6vo3sjbxSajpU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-203-GSVZBHDWO9-L-uTA8-HwCw-1; Tue, 01 Feb 2022 04:49:06 -0500
-X-MC-Unique: GSVZBHDWO9-L-uTA8-HwCw-1
-Received: by mail-wr1-f69.google.com with SMTP id e15-20020adf9bcf000000b001de055937d4so5744560wrc.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 01 Feb 2022 01:49:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=tgw5tIdcmG3vshG+0+gBxrtdGFyTyK1rBRl6JhXtTTs=;
-        b=pW4bfwGLDWSv9625ZiFhP8kzUx2DPMmv//w2NAUrGHIXa8qDVYgb4h2H8yp30rFEVX
-         NvhBwffWAcM9u1tieORBalen2K22gG68yGCDiH9klEPXlDux623p5b7AUG+VF9uFGbnw
-         HXDDi0apeYyrr7cZ6RyxbshfmTi8redDJvhrFNrGxBAXBUomzvVCgHI4SyJNXsitgIfH
-         2qyoIiZzYYTww+qxg7ThfP7y+9cFb9alyO38TpHChuZQIh4m6VAA/BkOVdKIo5Vmm2xz
-         PTxubK5k2WutwC/NhVEtBHPpLNlkIarWGgW0u5vE4B+CPxjNHJuxolYtz9/QdPaXZr0V
-         mBqw==
-X-Gm-Message-State: AOAM533HzzmjC4rn/8T8R6fMZNUP8hMMtatXgZkQv35sGbIAINkCg/Ml
-        o1rbIFGIfx7gK/M5TptCY2sHTL9uEfOktyp4Ra0IGn28o+dGNSzHy4SzgEi3OtZyK3cARB6uE0n
-        Y7MZ/ciTb7wQVU7dxLpaj7RE=
-X-Received: by 2002:a05:600c:3b11:: with SMTP id m17mr1026414wms.192.1643708945623;
-        Tue, 01 Feb 2022 01:49:05 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxhdmeA5uA8GuAXm+vPaWNlMLqtSa4TRUAHzW7ciPujCzAtcTIso4F/n2y/BPseeK89sy1Vtw==
-X-Received: by 2002:a05:600c:3b11:: with SMTP id m17mr1026395wms.192.1643708945346;
-        Tue, 01 Feb 2022 01:49:05 -0800 (PST)
-Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id n10sm17584320wrf.96.2022.02.01.01.49.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Feb 2022 01:49:04 -0800 (PST)
-Message-ID: <b0788b3d-9c77-0e96-0969-380d21663909@redhat.com>
-Date:   Tue, 1 Feb 2022 10:49:03 +0100
+        bh=AWVMTKwpBvNkP4x+vpwGKvTDQlGoJ5efseO1EXwFiYs=;
+        b=wuNAVfqysCupPrBG9MnqT3pK7WYv6T1JS3UBkytso/oHyoURJFeoFgypkFpQT5jZI8obbu
+        Fl7/Lg3wKWHcOFCWp8jNsEnRDL4Q56SzUZvKhjnCQUroNhqOlFwher3yElAuOBVgVxC7xh
+        hNmxSwFka24pLWW1oO8s5Lx1Dj/zDEQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1643709584;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=AWVMTKwpBvNkP4x+vpwGKvTDQlGoJ5efseO1EXwFiYs=;
+        b=uJaaeJdby6mlwS8ODeaoTHbamXYQo1WUTGdkoLWLm42MSSfuK2/s/X8d+BSaKVPtQrYrJO
+        CeBJOpKMhruvGJCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9ABE413D3C;
+        Tue,  1 Feb 2022 09:59:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id EMxLJJAE+WGFfwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 01 Feb 2022 09:59:44 +0000
+Message-ID: <e52560f0-bd0c-b51b-af1b-bd4be2df8702@suse.de>
+Date:   Tue, 1 Feb 2022 10:59:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 0/4] drm/tiny: Add driver for Solomon SSD1307 OLED
- displays
+Subject: Re: [PATCH 2/4] drm/format-helper: Add
+ drm_fb_gray8_to_mono_reversed()
 Content-Language: en-US
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Simon Ser <contact@emersion.fr>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        Mark Brown <broonie@kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
+To:     Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-fbdev@vger.kernel.org, Maxime Ripard <maxime@cerno.tech>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>
+        dri-devel@lists.freedesktop.org,
+        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>
 References: <20220131201225.2324984-1-javierm@redhat.com>
- <tIMIWqepcZGntnez-1ss4Kn4K8btXnzDRL7EWd19-745WK90YIC19E_4di9RNvB3gtx-PzWEjBEGQLPNJE_x0T1yyyaWFCoFcCiG4StR9RU=@emersion.fr>
- <wuXPJN-K-rvjoV51c4EBmTBScov8rcJTPoYmlfHe04_-4wD1khVxo9HnUsP7UFd5m4AkzGSw2hXe_c77jbSRhjEJ0JZIYwuvuIkcv_KsR-Y=@emersion.fr>
- <CAMuHMdXKZ=BkvVqdpiNPNJgxm9SzQ3Z0n4SqV2-4oPRveybd6g@mail.gmail.com>
- <qmhzv6kqs6QdAOP3bNB39glOpc8eeJ6flgjfjcaBniT-shDKZkxo5uB71weGOUKxPE6dq_WBhtHmY5vMmuYwqMoHgtMWnX0ESE5R1Y5g5F8=@emersion.fr>
- <CAKMK7uGPuhrDf8fdDgfuPt5rzO30Rm54T7GvWb203NRbVoVDgw@mail.gmail.com>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <CAKMK7uGPuhrDf8fdDgfuPt5rzO30Rm54T7GvWb203NRbVoVDgw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220131201225.2324984-3-javierm@redhat.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20220131201225.2324984-3-javierm@redhat.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------qSy9ZyMQcR6YyrgAX3KXLO4R"
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2/1/22 09:38, Daniel Vetter wrote:
-> On Tue, Feb 1, 2022 at 9:34 AM Simon Ser <contact@emersion.fr> wrote:
->>
->> On Tuesday, February 1st, 2022 at 09:26, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->>
->>> What's the story with the Rn formats?
->>>
->>> The comments say "n bpp Red", while this is a monochrome (even
->>> inverted) display?
->>
->> I don't think the color matters that much. "Red" was picked just because it was
->> an arbitrary color, to make the difference with e.g. C8. Or am I mistaken?
-> 
-> The red comes from gl, where with shaders it really doesn't matter
-> what meaning you attach to channels, but really just how many you
-> have. So 2-channel formats are called RxGx, 3-channel RxGxBx,
-> 4-channel RxGxBxAx and single-channel Rx. And we use drm_fourcc for
-> interop in general, hence why these exist.
-> 
-> We should probably make a comment that this really isn't a red channel
-> when used for display it's a greyscale/intensity format. Aside from
-> that documentation gap I think reusing Rx formats for
-> greyscale/intensity for display makes perfect sense.
-> -Daniel
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------qSy9ZyMQcR6YyrgAX3KXLO4R
+Content-Type: multipart/mixed; boundary="------------et6SNU6Ma5wh3NwfKwTsjkTR";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Javier Martinez Canillas <javierm@redhat.com>,
+ linux-kernel@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, Maxime Ripard <maxime@cerno.tech>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ dri-devel@lists.freedesktop.org, =?UTF-8?Q?Noralf_Tr=c3=b8nnes?=
+ <noralf@tronnes.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@linux.ie>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>
+Message-ID: <e52560f0-bd0c-b51b-af1b-bd4be2df8702@suse.de>
+Subject: Re: [PATCH 2/4] drm/format-helper: Add
+ drm_fb_gray8_to_mono_reversed()
+References: <20220131201225.2324984-1-javierm@redhat.com>
+ <20220131201225.2324984-3-javierm@redhat.com>
+In-Reply-To: <20220131201225.2324984-3-javierm@redhat.com>
 
-To sump up the conversation in the #dri-devel channel, these drivers
-should support the following formats:
+--------------et6SNU6Ma5wh3NwfKwTsjkTR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-1) Dx (Daniel suggested that for darkness, but inverted mono)
-2) Rx (single-channel for grayscale)
-3) RxGxBxAx (4-channel fake 32-bpp truecolor)
+SGkNCg0KQW0gMzEuMDEuMjIgdW0gMjE6MTIgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
+aWxsYXM6DQo+IEFkZCBzdXBwb3J0IHRvIGNvbnZlcnQgOC1iaXQgZ3JheXNjYWxlIHRvIHJl
+dmVyc2VkIG1vbm9jaHJvbWUgZm9yIGRyaXZlcnMNCj4gdGhhdCBjb250cm9sIG1vbm9jaHJv
+bWF0aWMgZGlzcGxheXMsIHRoYXQgb25seSBoYXZlIDEgYml0IHBlciBwaXhlbCBkZXB0aC4N
+Cj4gDQo+IFRoaXMgaGVscGVyIGZ1bmN0aW9uIHdhcyBiYXNlZCBvbiByZXBhcGVyX2dyYXk4
+X3RvX21vbm9fcmV2ZXJzZWQoKSBmcm9tDQo+IHRoZSBkcml2ZXJzL2dwdS9kcm0vdGlueS9y
+ZXBhcGVyLmMgZHJpdmVyLg0KDQpZb3UgY291bGQgY29udmVydCByZXBhcGVyIHRvIHRoZSBu
+ZXcgaGVscGVyLg0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBKYXZpZXIgTWFydGluZXogQ2Fu
+aWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4gLS0tDQo+IA0KPiAgIGRyaXZlcnMvZ3B1
+L2RybS9kcm1fZm9ybWF0X2hlbHBlci5jIHwgMzUgKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysNCj4gICBpbmNsdWRlL2RybS9kcm1fZm9ybWF0X2hlbHBlci5oICAgICB8ICAyICsr
+DQo+ICAgMiBmaWxlcyBjaGFuZ2VkLCAzNyBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9ncHUvZHJtL2RybV9mb3JtYXRfaGVscGVyLmMgYi9kcml2ZXJzL2dw
+dS9kcm0vZHJtX2Zvcm1hdF9oZWxwZXIuYw0KPiBpbmRleCAwZjI4ZGQyYmRkNzIuLmJmNDc3
+YzEzNjA4MiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL2RybV9mb3JtYXRfaGVs
+cGVyLmMNCj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2RybV9mb3JtYXRfaGVscGVyLmMNCj4g
+QEAgLTU4NCwzICs1ODQsMzggQEAgaW50IGRybV9mYl9ibGl0X3RvaW8odm9pZCBfX2lvbWVt
+ICpkc3QsIHVuc2lnbmVkIGludCBkc3RfcGl0Y2gsIHVpbnQzMl90IGRzdF9mb3INCj4gICAJ
+cmV0dXJuIC1FSU5WQUw7DQo+ICAgfQ0KPiAgIEVYUE9SVF9TWU1CT0woZHJtX2ZiX2JsaXRf
+dG9pbyk7DQo+ICsNCj4gKy8qKg0KPiArICogZHJtX2ZiX2dyYXk4X3RvX21vbm9fcmV2ZXJz
+ZWQgLSBDb252ZXJ0IGdyYXlzY2FsZSB0byByZXZlcnNlZCBtb25vY2hyb21lDQo+ICsgKiBA
+ZHN0OiByZXZlcnNlZCBtb25vY2hyb21lIGRlc3RpbmF0aW9uIGJ1ZmZlcg0KPiArICogQHNy
+YzogOC1iaXQgZ3JheXNjYWxlIHNvdXJjZSBidWZmZXINCj4gKyAqIEBjbGlwOiBDbGlwIHJl
+Y3RhbmdsZSBhcmVhIHRvIGNvcHkNCj4gKyAqDQo+ICsgKiBEUk0gZG9lc24ndCBoYXZlIG5h
+dGl2ZSBtb25vY2hyb21lIG9yIGdyYXlzY2FsZSBzdXBwb3J0Lg0KPiArICogU3VjaCBkcml2
+ZXJzIGNhbiBhbm5vdW5jZSB0aGUgY29tbW9ubHkgc3VwcG9ydGVkIFhSMjQgZm9ybWF0IHRv
+IHVzZXJzcGFjZQ0KPiArICogYW5kIHVzZSBkcm1fZmJfeHJnYjg4ODhfdG9fZ3JheTgoKSB0
+byBjb252ZXJ0IHRvIGdyYXlzY2FsZSBhbmQgdGhlbiB0aGlzDQo+ICsgKiBoZWxwZXIgZnVu
+Y3Rpb24gdG8gY29udmVydCB0byB0aGUgbmF0aXZlIGZvcm1hdC4NCj4gKyAqLw0KPiArdm9p
+ZCBkcm1fZmJfZ3JheThfdG9fbW9ub19yZXZlcnNlZCh2b2lkICpkc3QsIHZvaWQgKnNyYywg
+Y29uc3Qgc3RydWN0IGRybV9yZWN0ICpjbGlwKQ0KDQpJTUhPIGl0IHdvdWxkIGJlIGJldHRl
+ciB0byBoYXZlIGEgZnVuY3Rpb24gdGhhdCBjb252ZXJ0cyB4cmdiODg4OCB0byANCm1vbm8g
+YW5kIGxldCBpdCBoYW5kbGUgdGhlIGludGVybWVkaWF0ZSBzdGVwIG9mIGdyYXk4Lg0KDQo+
+ICt7DQo+ICsJc2l6ZV90IHdpZHRoID0gZHJtX3JlY3Rfd2lkdGgoY2xpcCk7DQo+ICsJc2l6
+ZV90IGhlaWdodCA9IGRybV9yZWN0X3dpZHRoKGNsaXApOw0KPiArDQo+ICsJdTggKm1vbm8g
+PSBkc3QsICpncmF5OCA9IHNyYzsNCj4gKwl1bnNpZ25lZCBpbnQgeSwgeGIsIGk7DQo+ICsN
+Cj4gKwlmb3IgKHkgPSAwOyB5IDwgaGVpZ2h0OyB5KyspDQo+ICsJCWZvciAoeGIgPSAwOyB4
+YiA8IHdpZHRoIC8gODsgeGIrKykgew0KDQpUaGUgaW5uZXIgbG9vcCBzaG91bGQgcHJvYmFi
+bHkgZ28gaW50byBhIHNlcGFyYXRlIGhlbHBlciBmdW5jdGlvbi4gU2VlIA0KdGhlIGRybV9m
+Yl8qX2xpbmUoKSBoZWxwZXJzIGluIHRoaXMgZmlsZQ0KDQpBdCBzb21lIHBvaW50LCB3ZSdz
+IHdhbnQgdG8gaGF2ZSBhIHNpbmdsZSBibGl0IGhlbHBlciB0aGF0IHRha2VzIHNvdXJjZSAN
+CmFuZCBkZXN0aW5hdGlvbiBmb3JtYXRzL2J1ZmZlcnMuIEl0IHdvdWxkIHRoZW4gcGljayB0
+aGUgY29ycmVjdCBwZXItbGluZSANCmhlbHBlciBmb3IgdGhlIGNvbnZlcnNpb24uIFNvIHll
+YWgsIHdlJ2Qgd2FudCBzb21ldGhpbmcgY29tcG9zYWJsZS4NCg0KQmVzdCByZWdhcmRzDQpU
+aG9tYXMNCg0KPiArCQkJdTggYnl0ZSA9IDB4MDA7DQo+ICsNCj4gKwkJCWZvciAoaSA9IDA7
+IGkgPCA4OyBpKyspIHsNCj4gKwkJCQlpbnQgeCA9IHhiICogOCArIGk7DQo+ICsNCj4gKwkJ
+CQlieXRlID4+PSAxOw0KPiArCQkJCWlmIChncmF5OFt5ICogd2lkdGggKyB4XSA+PiA3KQ0K
+PiArCQkJCQlieXRlIHw9IEJJVCg3KTsNCj4gKwkJCX0NCj4gKwkJCSptb25vKysgPSBieXRl
+Ow0KPiArCQl9DQo+ICt9DQo+ICtFWFBPUlRfU1lNQk9MKGRybV9mYl9ncmF5OF90b19tb25v
+X3JldmVyc2VkKTsNCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvZHJtL2RybV9mb3JtYXRfaGVs
+cGVyLmggYi9pbmNsdWRlL2RybS9kcm1fZm9ybWF0X2hlbHBlci5oDQo+IGluZGV4IGIzMGVk
+NWRlMGEzMy4uY2Q0YzhiN2M3OGRlIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2RybS9kcm1f
+Zm9ybWF0X2hlbHBlci5oDQo+ICsrKyBiL2luY2x1ZGUvZHJtL2RybV9mb3JtYXRfaGVscGVy
+LmgNCj4gQEAgLTQzLDQgKzQzLDYgQEAgaW50IGRybV9mYl9ibGl0X3RvaW8odm9pZCBfX2lv
+bWVtICpkc3QsIHVuc2lnbmVkIGludCBkc3RfcGl0Y2gsIHVpbnQzMl90IGRzdF9mb3INCj4g
+ICAJCSAgICAgY29uc3Qgdm9pZCAqdm1hcCwgY29uc3Qgc3RydWN0IGRybV9mcmFtZWJ1ZmZl
+ciAqZmIsDQo+ICAgCQkgICAgIGNvbnN0IHN0cnVjdCBkcm1fcmVjdCAqcmVjdCk7DQo+ICAg
+DQo+ICt2b2lkIGRybV9mYl9ncmF5OF90b19tb25vX3JldmVyc2VkKHZvaWQgKmRzdCwgdm9p
+ZCAqdmFkZHIsIGNvbnN0IHN0cnVjdCBkcm1fcmVjdCAqY2xpcCk7DQo+ICsNCj4gICAjZW5k
+aWYgLyogX19MSU5VWF9EUk1fRk9STUFUX0hFTFBFUl9IICovDQoNCi0tIA0KVGhvbWFzIFpp
+bW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29s
+dXRpb25zIEdlcm1hbnkgR21iSA0KTWF4ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBH
+ZXJtYW55DQooSFJCIDM2ODA5LCBBRyBOw7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8aHJlcjog
+SXZvIFRvdGV2DQo=
 
-The format preference will be in that order, so if user-space is able
-to use Dx then there won't be a need for any conversion and just the
-native format will be used.
+--------------et6SNU6Ma5wh3NwfKwTsjkTR--
 
-If using Rx then only a Rx -> Dx conversion will happen and the last
-format will require the less performant RxGxBxAx -> Rx -> Dx path.
+--------------qSy9ZyMQcR6YyrgAX3KXLO4R
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-But we still need RxGxBxAx as a fallback for compatibility with the
-existing user-space, so all this could be done as a follow-up as an
-optimization and shouldn't block monochromatic panel drivers IMO.
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
--- 
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmH5BJAFAwAAAAAACgkQlh/E3EQov+Al
+GA//aZsOpU/IbLLjxohUzQKhSfvxVAfcI4beI+X4ExNEGJpT7/PD9x8pEwdc1f8xe3ckErt0c3hE
+HX8CXRo3g9QHvSqZDUjghqKFK2yrZwWa2pFhHsNBs6/ceqsyueOX7Z9yrs+Pw/UNWD9mj9jdV0m5
+fkNgMDijSfEcfPrZLstkniYkRQH5vT7en1gYwZDmwCrKG1F2Dwhhwa9g902OMAJYcdkCuxIHwOL2
+iUR94kIGzoqbCSoqd5Lal7v69zMRdkDVoVUxM7/941dRoxLH0towmeLJbiV0d+tCoCXyIS/VTQlF
+MruOZSdJzYjRsHTLp8iKi1idIyf8PXBujbJc40xZ8T2EbKu/wq263rA45pvJD2Hz+d/CeS5NHJSM
+7r4S4/BKUZ9URTNEGfilNSLsjiTuTDEHNsbI3boAKueFzPbYD5A4rsaYZ2B3paQu5hDq+TDVCqfk
+KFcV7eYfVsB2fHHJx7rzutUReMPX6xLQeQmr9QrJ/hImmGdYfM/17bklmykOXU61cSIcC6kfGTXE
+x7QW3IMPHGclodh7EVKFdpATg4xdzeh8HHwC6dtq9XdZ1GbgMGv9GykXl82gYy3pJSjbeISZ9ylH
+TTpK4IYiQqqndjLWCf8Rtaue5R7TLIsb4XiaGzDjEc/W1gK54zGy0ujI1eNrFSlzxdohV8kYciyv
+c8U=
+=FKrc
+-----END PGP SIGNATURE-----
 
+--------------qSy9ZyMQcR6YyrgAX3KXLO4R--
