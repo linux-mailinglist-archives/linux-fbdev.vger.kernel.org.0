@@ -2,102 +2,181 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 900D84AA186
-	for <lists+linux-fbdev@lfdr.de>; Fri,  4 Feb 2022 22:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FB34AA6FF
+	for <lists+linux-fbdev@lfdr.de>; Sat,  5 Feb 2022 06:56:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239409AbiBDVCU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 4 Feb 2022 16:02:20 -0500
-Received: from mail-io1-f46.google.com ([209.85.166.46]:35751 "EHLO
-        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232318AbiBDVCU (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 4 Feb 2022 16:02:20 -0500
-Received: by mail-io1-f46.google.com with SMTP id 9so8979425iou.2;
-        Fri, 04 Feb 2022 13:02:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=io04bmdGVqb9L2Bxd+sAlyc8gW4AQtHE1d41YIHwSP4=;
-        b=f5K09bfB2V8VOpwD5UTblb8pag1oDpq95g5udCLeVRmEgm9kxF7LZcjM56peHbtKtH
-         G8IqQ5dXQ+x+VfP4wKO4+cP9AGvMzJJg76sGrAh3T6kolc95/BDogPEos6MXzO19ONpw
-         ZZQ7c5mu+6qmvVx6k7D38u2l0S40v9Xb9ZQBTuwDWfMteP/HnjynCkw1ax+XAwpbqsOZ
-         WlN46qkLJAVGmHO20CLtarhwIRCf+Hl6GTcb0O1eiTRDNRts7FjhjyuaKFr4mMfXjcJi
-         /5Z+sGVQNBU/XVLAw9y3DD20r1WTp1HbubvyxsGvF+ZDlrDStLCAKhTkrgVnGYZ//dII
-         14XQ==
-X-Gm-Message-State: AOAM533BBBzu68cQeBF6sQdbNRfy3Rw5awiVQNTNTke955tlXaV/q0dn
-        lA14pB/en+fulUKxkH1//XEE6dd9oMQyTJBzdh0=
-X-Google-Smtp-Source: ABdhPJxrFRPQc2dIB/rpJG3OFUuQ3pqcG6UwllwxN96YeNR7QHh9tWGlPWYKr5Z1Fter5IjlcEsyr2Pk7BW+lIpqJYs=
-X-Received: by 2002:a05:6602:158b:: with SMTP id e11mr418853iow.93.1644008539441;
- Fri, 04 Feb 2022 13:02:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20220204134347.1187749-1-javierm@redhat.com> <20220204134347.1187749-2-javierm@redhat.com>
- <47100413-db63-1efa-45e9-028dfc430b7e@suse.de>
-In-Reply-To: <47100413-db63-1efa-45e9-028dfc430b7e@suse.de>
-From:   Ilia Mirkin <imirkin@alum.mit.edu>
-Date:   Fri, 4 Feb 2022 16:02:08 -0500
-Message-ID: <CAKb7UvgxhLFT4aqYSE+=dpqfuTkvr62tsGmQP5H46mAytaQBRg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] drm/format-helper: Add drm_fb_{xrgb8888,gray8}_to_mono_reversed()
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-fbdev <linux-fbdev@vger.kernel.org>,
+        id S1343938AbiBEF4r (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 5 Feb 2022 00:56:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343878AbiBEF4n (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 5 Feb 2022 00:56:43 -0500
+Received: from mx1.smtp.larsendata.com (mx1.smtp.larsendata.com [91.221.196.215])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F44C061346
+        for <linux-fbdev@vger.kernel.org>; Fri,  4 Feb 2022 21:56:41 -0800 (PST)
+Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
+        by mx1.smtp.larsendata.com (Halon) with ESMTPS
+        id 4b8b6b7d-839f-11ec-b20b-0050568c148b;
+        Tue, 01 Feb 2022 20:41:13 +0000 (UTC)
+Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sam@ravnborg.org)
+        by mail01.mxhotel.dk (Postfix) with ESMTPSA id AFE1A194B9E;
+        Tue,  1 Feb 2022 21:40:13 +0100 (CET)
+Date:   Tue, 1 Feb 2022 21:40:09 +0100
+X-Report-Abuse-To: abuse@mxhotel.dk
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Javier Martinez Canillas <javierm@redhat.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Mark Brown <broonie@kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
         Maxime Ripard <maxime@cerno.tech>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Content-Type: text/plain; charset="UTF-8"
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 0/4] drm/tiny: Add driver for Solomon SSD1307 OLED
+ displays
+Message-ID: <YfmaqUBqCrgp0QdO@ravnborg.org>
+References: <20220131201225.2324984-1-javierm@redhat.com>
+ <YfhM97cVH3+lJKg0@ravnborg.org>
+ <Yfj/XGRRDNABsLPm@smile.fi.intel.com>
+ <f8d71acb-5c8b-ac4e-0c32-38eb66af04c3@redhat.com>
+ <CAMuHMdVP6ER119r2KAegjZes1a=KWZ47z6j=kgQ0oNx1oeUJ+w@mail.gmail.com>
+ <51f54519-bb8b-f108-1c1e-4fed101ca5ef@redhat.com>
+ <CAMuHMdVwUfv7pXhPazsgG6t=X=aVtDQkFUk_=mUuFH8Fscx8wg@mail.gmail.com>
+ <abf63995-a529-1e80-18c3-df473a3e7a9c@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abf63995-a529-1e80-18c3-df473a3e7a9c@redhat.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Feb 4, 2022 at 10:53 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
-> Hi
->
-> Am 04.02.22 um 14:43 schrieb Javier Martinez Canillas:
-> > Add support to convert XR24 and 8-bit grayscale to reversed monochrome for
-> > drivers that control monochromatic panels, that only have 1 bit per pixel.
-> >
-> > The drm_fb_gray8_to_mono_reversed() helper was based on the function that
-> > does the same in the drivers/gpu/drm/tiny/repaper.c driver.
-> >
-> > Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-> > ---
-> >
-> > (no changes since v1)
-> >
-> >   drivers/gpu/drm/drm_format_helper.c | 80 +++++++++++++++++++++++++++++
-> >   include/drm/drm_format_helper.h     |  7 +++
-> >   2 files changed, 87 insertions(+)
-> >
-> > diff --git a/drivers/gpu/drm/drm_format_helper.c b/drivers/gpu/drm/drm_format_helper.c
-> > index 0f28dd2bdd72..cdce4b7c25d9 100644
-> > --- a/drivers/gpu/drm/drm_format_helper.c
-> > +++ b/drivers/gpu/drm/drm_format_helper.c
-> > @@ -584,3 +584,83 @@ int drm_fb_blit_toio(void __iomem *dst, unsigned int dst_pitch, uint32_t dst_for
-> >       return -EINVAL;
-> >   }
-> >   EXPORT_SYMBOL(drm_fb_blit_toio);
-> > +
-> > +static void drm_fb_gray8_to_mono_reversed_line(u8 *dst, const u8 *src, size_t pixels)
-> > +{
-> > +     unsigned int xb, i;
-> > +
-> > +     for (xb = 0; xb < pixels / 8; xb++) {
->
-> In practice, all mode widths are multiples of 8 because VGA mandated it.
-> So it's ok-ish to assume this here. You should probably at least print a
-> warning somewhere if (pixels % 8 != 0)
+Hi Javier,
 
-Not sure if it's relevant, but 1366x768 was a fairly popular laptop
-resolution. There's even a dedicated drm_mode_fixup_1366x768 in
-drm_edid.c. (Would it have killed them to add 2 more horizontal
-pixels? Apparently.)
+On Tue, Feb 01, 2022 at 04:03:30PM +0100, Javier Martinez Canillas wrote:
+> Hello Geert,
+> 
+> On 2/1/22 15:14, Geert Uytterhoeven wrote:
+> > Hi Javier,
+> > 
+> > On Tue, Feb 1, 2022 at 2:09 PM Javier Martinez Canillas
+> > <javierm@redhat.com> wrote:
+> >> On 2/1/22 12:38, Geert Uytterhoeven wrote:
+> >>>> Since the current binding has a compatible "ssd1305fb-i2c", we could make the
+> >>>> new one "ssd1305drm-i2c" or better, just "ssd1305-i2c".
+> >>>
+> >>> DT describes hardware, not software policy.
+> >>> If the hardware is the same, the DT bindings should stay the same.
+Only if the bindings describe the HW in a correct way that is.
 
-Cheers,
+> >>>
+> >>
+> >> Yes I know that but the thing is that the current binding don't describe
+> >> the hardware correctly. For instance, don't use a backlight DT node as a
+> >> property of the panel and have this "fb" suffix in the compatible strings.
+> >>
+> >> Having said that, my opinion is that we should just keep with the existing
+> >> bindings and make compatible to that even if isn't completely correct.
+> >>
+> >> Since that will ease adoption of the new DRM driver and allow users to use
+> >> it without the need to update their DTBs.
+> > 
+> > To me it looks like the pwms property is not related to the backlight
+> > at all, and only needed for some variants?
+> >
+> 
+> I was reading the datasheets of the ssd1305, ssd1306 and ssd1307. Only the
+> first one mentions anything about a PWM and says:
+> 
+>   In phase 3, the OLED driver switches to use current source to drive the
+>   OLED pixels and this is the current drive stage. SSD1305 employs PWM
+>   (Pulse Width Modulation) method to control the brightness of area color
+>   A, B, C, D color individually. The longer the waveform in current drive
+>   stage is, the brighter is the pixel and vice versa.
+> 
+>   After finishing phase 3, the driver IC will go back to phase 1 to display
+>   the next row image data. This threestep cycle is run continuously to refresh
+>   image display on OLED panel. 
+> 
+> The way I understand this is that the PWM isn't used for the backlight
+> but instead to power the IC and allow to display the actual pixels ?
+> 
+> And this matches what Maxime mentioned in this patch:
+> 
+> https://linux-arm-kernel.infradead.narkive.com/5i44FnQ8/patch-1-2-video-ssd1307fb-add-support-for-ssd1306-oled-controller
+> 
+>   The Solomon SSD1306 OLED controller is very similar to the SSD1307,
+>   except for the fact that the power is given through an external PWM for
+>   the 1307, and while the 1306 can generate its own power without any PWM.
 
-  -ilia
+I took a look at the datasheets - and all ssd1305, ssd1306 and ssd1307
+are the same. They have timing constrains on the Vcc.
+The random schematic I found on the net showed me that a PWM was used to
+control the Vcc voltage - which again is used to control the brightness.
+
+All the above has nothing to do with backlight - I had this mixed up in
+my head.
+
+So my current understanding:
+- solomon,ssd1307fb.yaml should NOT include a backlight node - because
+  the backlight is something included in the ssd130x device and not
+  something separate.
+- 1305, 1306, and 1307 (I did not check 1309) all requires a Vcc
+  supply that shall be turned on/off according to the datasheet.
+  This implies that we need a regulaator for Vcc - and the regulator
+  could be a pwm based regulator or something else - the HW do not care.
+- But I can see that several design connect Vcc to a fixed voltage,
+  so I am not too sure about this part.
+
+I think the correct binding would have
+
+    ssd1307 => regulator => pwm
+
+So the ssd1307 binding references a regulator, and the regulator
+may use an pwm or may use something else.
+
+The current binding references a vbat supply - but the datasheet do not
+mention any vbat. It is most likely modelling the Vdd supply.
+
+Right now my take is to go the simple route:
+- Keep the binding as is and just use the pwm as already implemented
+- Likewise keep the backlight as is
+
+Last I recommend to drop the fbdev variant - if the drm driver has any
+regressions we can fix them. And I do not see any other way to move
+users over. Unless their setup breaks then they do not change.
+
+> 
+> > And the actual backlight code seems to be about internal contrast
+> > adjustment?
+> > 
+> > So if the pwms usage is OK, what other reasons are there to break
+> > DT compatibility? IMHO just the "fb" suffix is not a good reason.
+> >
+> 
+> Absolutely agreed with you on this. It seems we should just use the existing
+> binding and make the driver compatible with that. The only value is that the
+> drm_panel infrastructure could be used, but making it backward compatible is
+> more worthy IMO.
+Using drm_panel here would IMO just complicate things - it is not that
+we will see many different panels (I think).
+
+	Sam
