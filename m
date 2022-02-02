@@ -2,130 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF5A64A71EB
-	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Feb 2022 14:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1474A726A
+	for <lists+linux-fbdev@lfdr.de>; Wed,  2 Feb 2022 14:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232946AbiBBNsa (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 2 Feb 2022 08:48:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiBBNs3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 2 Feb 2022 08:48:29 -0500
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AE34C061714;
-        Wed,  2 Feb 2022 05:48:29 -0800 (PST)
-Received: by mail-ot1-x334.google.com with SMTP id g15-20020a9d6b0f000000b005a062b0dc12so19496950otp.4;
-        Wed, 02 Feb 2022 05:48:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Uu884ediVQVvJM3ZzCLfpTG+ntZuBEo87SA1KIuOuM0=;
-        b=UuvxzlJp9adTcB4epAAVweTNAsxOGsy+9dgSgBz2IxuUFw2v2WVeVkJQA8SvIqoawM
-         BIVikL3qoGFEVX3pciAfMW+Zpbyk6BaaVLApudc0M0u6g6ogN/UqM858NWiK7EJdBW9W
-         Wewg6qYRjA8ZYl5c8a1l72R2nU5agi0BR0B3DIgb8YY4jX9wIm9zzm2Du8AOwBkJueQW
-         m0j3d3cnwKTw+KmmZPkE2S9t0E6Dzqy6UqV7yCGvIDQBziQWJmsy5pj5gPDiEyEpv8D8
-         jiWDXszqcjGVNI2A2hL9T69hJ2Q+m2fnCBvcvPCO0jq5SvsuHJRnbi4vv7QVp2gURKnV
-         JMdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Uu884ediVQVvJM3ZzCLfpTG+ntZuBEo87SA1KIuOuM0=;
-        b=v7nQppoWXAPdTLOvCs7K7RNkq4qW82dHf8WWui+xTy9NbrcIfPfxSXuYpqi7875by+
-         hiyhoMLZL1Z/u8/ftZyv7RSz6b+9dKDdOCnCvnF0Iuge7IyUZSj/9yp/H2VFNu7Ot6bq
-         zZNTVxHNnEAtaHOxNnPfT5VsHMEp6Aq9lnwT4g8//eQkQVk2QiCpszs08fm71gHKOP1x
-         hZrrMBzcv5e118zua29dEjzZkflGSfLz1sgiFvAKNXTnXAH/Q9iKoHLgl64gBJaLaHsj
-         Nk8PClbccHUUCL0alFHeiFppWla8cUrnvizRd/RMLQO4YF/8pijy7Gm/muUyfxDn5kkg
-         8mPA==
-X-Gm-Message-State: AOAM5326g6FOVMNOg+SWWEPzalWb6CoRK3RWmE0txGHcHO1yB0Ro4AJ7
-        MtuU8Zr82Fyxz/JhGvuUpR7MRIcmEth1FsfTPM8=
-X-Google-Smtp-Source: ABdhPJwigQJstWLtxI0ElSovHNJx6WRVGD0F5N1ydlyffTBNNCafbHWtsFqtK4UihV0E85NiyjbLer9ZQe5qShM0GNk=
-X-Received: by 2002:a9d:e94:: with SMTP id 20mr16685522otj.200.1643809708794;
- Wed, 02 Feb 2022 05:48:28 -0800 (PST)
+        id S231849AbiBBNzv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 2 Feb 2022 08:55:51 -0500
+Received: from mout.gmx.net ([212.227.15.15]:44911 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230378AbiBBNzg (ORCPT <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 2 Feb 2022 08:55:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1643810132;
+        bh=9kPU2SgWIl2EzJNwN4/tE9rBG4gYJqWzuyVOZfzz6uM=;
+        h=X-UI-Sender-Class:From:To:Subject:Date;
+        b=SlEb6IJoXKAm+U2H0YtzCnntK6PkYt6udTk8afaC8dGYr4S+gz2JZlvCEm0nTzv+3
+         GQKXRLbN1ZXfGqMvXcsqxtupPgdRzohdV0XPGIGayqjHi2U9NHghTkR3MOqsAX2M+Z
+         VHORuUKys5RbAOPyZVSh0TFccLV9ozjyvSEyt8Rw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from p100.fritz.box ([92.116.163.171]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M6lpM-1n9DQY1VJG-008Jeb; Wed, 02
+ Feb 2022 14:55:32 +0100
+From:   Helge Deller <deller@gmx.de>
+To:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        linux-fbdev@vger.kernel.org,
+        DRI Development <dri-devel@lists.freedesktop.org>
+Subject: [PATCH v4 0/3] Fix regression introduced by disabling accelerated scrolling in fbcon
+Date:   Wed,  2 Feb 2022 14:55:28 +0100
+Message-Id: <20220202135531.92183-1-deller@gmx.de>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20220131210552.482606-1-daniel.vetter@ffwll.ch>
- <20220131210552.482606-2-daniel.vetter@ffwll.ch> <20220202113126.3rgzqkhnorrbfj6b@houat>
-In-Reply-To: <20220202113126.3rgzqkhnorrbfj6b@houat>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 2 Feb 2022 08:48:17 -0500
-Message-ID: <CADnq5_M6Q0L7UmXtGryOEL51Etz_MTwM4T1D0rb3KxY1bunUvw@mail.gmail.com>
-Subject: Re: [PATCH 01/21] MAINTAINERS: Add entry for fbdev core
-To:     Maxime Ripard <maxime@cerno.tech>
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        "open list:EFIFB FRAMEBUFFER DRIVER" <linux-fbdev@vger.kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sven Schnelle <svens@stackframe.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Claudio Suarez <cssk@net-c.es>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:nnGqynUr7n1KN1v8NmrpEx2V/sKRynbcFTjY/ZnC29V/hPI9t+x
+ 6oltBpYzf3LNuSCM2EdUclQk362M4o5XtyKj506kKzq6fJ8r2sxjVlniG7VM0/9eSPhZFS8
+ rsJa2yUI9ZmTPD0rLJx9XPpHplYvQfNHNXUZp/Tqk/tNeNNNRcyvMxuFuvZNlYsx8PgoUBF
+ O2uQnm6Gmx6F2UwigiKWA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:t6QzmaGKEdg=:WadYA2o7BhHzHXXZ6B8vD+
+ VzlL6EiDhAdUL3W9aCk9nby8kMVJkCyfaEj0fmOnxXUCkZReTXXE+xAK9tgCGfAI5wKMMWk/r
+ qhwRTdXw/7nH/an/XtX2+rs3e2KyozSURFFMnx9ymeGWa/wTPH1jgVCclyR1rJpJQgC1zW3H0
+ is4RIpgduTx5EeHqKP3tUGRIIeFTgheO1ZHXKYz7cguVHsPafsI9PRJpEIpvi0ktUPo+fX0mn
+ 9fACs/Nf3WZrnnRZHNaowUyXNytNNGXOu0pimw7N9S0pnfpFQUDyqFDpARnzM28a0RdIDCUfd
+ +Zg4XnvPl2cRfiGH+DkndPst2CG/w/cZGhuzn2DIspannSZNHiO4aKuvbhpBVI7ZBoOYeeH8d
+ pzzgRnhvwcEKItZgGBYv9KlXOy9fuwnK8vFQxznxjI+GocFbzPkeWLeVXi3CIjTiQ2egDJYnz
+ cJ7Enh6pF6vP7ZzKdZVcHu2vfO4Dn/NXjBAsniC/lqPPMt8qJnaOrqzWVk+5a1v5cQ+I9dIXU
+ ALUag0+TTk2UJGFaHRbPdFnqHUbqXz2iTWowvaX6Y2J81Eq9V2+zQGZCrTaMlRY58VcQ833r9
+ VvVLG3PBiq/B/dsBX1TqX2yoB4mtmppkm3jNw6iyhitPq+Sl5uO+7b4NKrz7HXx4OFXeVcL3l
+ 2kPnie6N8r8/SbCt0Tok6++RGghcRaUhF4LkaRWY4e+N5VTR0gltc+PrQBqyb7eIbgUHr1QGe
+ /ZtukWU/JNfQm9OfEohx6QV720cTPDJJKqY7cI8lg57zH/u1U6szbYp1Farj7ZkjRDWyGG/2x
+ 645N+2QUYLtf9hHhoITMoEBE6Ftc92scmedQDIBAvxlqy7NpH0gdrT5UsJRdXejV89GqKxVHP
+ XzdNfC0DFT4OFS8GdBXI5r+NrO/yEugyV/z2/3/XR5oQUIShEGipYrpQrX0v1uS1m5tqjOosK
+ bcR1MaxVx+/8ErhtxbyAAmHk3KRzLI3b/iTM9xSkRTwPCxge58Q7sN2BOIHJjNYMIMWnGs+zx
+ +duZEALKgVGvuvgQlgowMURZoPQOwqmzvG+tD+h5JhXY+jxSQKZIjmqZ/++saq2G3+fcrbh5z
+ s8hTdafn43XXUc=
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-
-On Wed, Feb 2, 2022 at 6:31 AM Maxime Ripard <maxime@cerno.tech> wrote:
->
-> On Mon, Jan 31, 2022 at 10:05:32PM +0100, Daniel Vetter wrote:
-> > Ever since Tomi extracted the core code in 2014 it's been defacto me
-> > maintaining this, with help from others from dri-devel and sometimes
-> > Linus (but those are mostly merge conflicts):
-> >
-> > $ git shortlog -ns  drivers/video/fbdev/core/ | head -n5
-> >     35  Daniel Vetter
-> >     23  Linus Torvalds
-> >     10  Hans de Goede
-> >      9  Dave Airlie
-> >      6  Peter Rosin
-> >
-> > I think ideally we'd also record that the various firmware fb drivers
-> > (efifb, vesafb, ...) are also maintained in drm-misc because for the
-> > past few years the patches have either been to fix handover issues
-> > with drm drivers, or caused handover issues with drm drivers. So any
-> > other tree just doesn't make sense. But also, there's plenty of
-> > outdated MAINTAINER entries for these with people and git trees that
-> > haven't been active in years, so maybe let's just leave them alone.
-> > And furthermore distros are now adopting simpledrm as the firmware fb
-> > driver, so hopefully the need to care about the fbdev firmware drivers
-> > will go down going forward.
-> >
-> > Note that drm-misc is group maintained, I expect that to continue like
-> > we've done before, so no new expectations that patches all go through
-> > my hands. That would be silly. This also means I'm happy to put any
-> > other volunteer's name in the M: line, but otherwise git log says I'm
-> > the one who's stuck with this.
-> >
-> > Cc: Dave Airlie <airlied@gmail.com>
-> > Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-> > Cc: Pavel Machek <pavel@ucw.cz>
-> > Cc: Sam Ravnborg <sam@ravnborg.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: Javier Martinez Canillas <javierm@redhat.com>
-> > Cc: DRI Development <dri-devel@lists.freedesktop.org>
-> > Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-> > Cc: Claudio Suarez <cssk@net-c.es>
-> > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: Daniel Vetter <daniel.vetter@intel.com>
-> > Cc: Sven Schnelle <svens@stackframe.org>
-> > Cc: Gerd Hoffmann <kraxel@redhat.com>
-> > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
->
-> Acked-by: Maxime Ripard <maxime@cerno.tech>
->
-> Maxime
+This series reverts two patches which disabled scrolling acceleration in=0D
+fbcon/fbdev. Those patches introduced a regression for fbdev-supported grap=
+hic=0D
+cards because of the performance penalty by doing screen scrolling by softw=
+are=0D
+instead of using existing 2D hardware acceleration.=0D
+=0D
+The third patch introduces a new config option=0D
+CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION, which -if enabled- switches=
+=0D
+fbcon to utilize the bitblt and fillrect hardware acceleration in the=0D
+framebuffer console. If disabled, such acceleration will not be used, even =
+if=0D
+it is supported by the graphics hardware driver.=0D
+=0D
+This series is being discussed on linux-fbdev and dri-devel mailing lists.=
+=0D
+=0D
+Updates in v3:=0D
+- respin with fixes to build rotation code=0D
+=0D
+Updates in v4:=0D
+- changed the Kconfig option and Kconfig help text=0D
+=0D
+Helge Deller (3):=0D
+  Revert "fbdev: Garbage collect fbdev scrolling acceleration, part 1=0D
+    (from TODO list)"=0D
+  Revert "fbcon: Disable accelerated scrolling"=0D
+  fbcon: Add option to enable legacy hardware acceleration=0D
+=0D
+ Documentation/gpu/todo.rst              |  24 -=0D
+ drivers/video/console/Kconfig           |  20 +=0D
+ drivers/video/fbdev/core/bitblit.c      |  16 +=0D
+ drivers/video/fbdev/core/fbcon.c        | 557 +++++++++++++++++++++++-=0D
+ drivers/video/fbdev/core/fbcon.h        |  72 +++=0D
+ drivers/video/fbdev/core/fbcon_ccw.c    |  28 +-=0D
+ drivers/video/fbdev/core/fbcon_cw.c     |  28 +-=0D
+ drivers/video/fbdev/core/fbcon_rotate.h |   9 +=0D
+ drivers/video/fbdev/core/fbcon_ud.c     |  37 +-=0D
+ drivers/video/fbdev/core/tileblit.c     |  16 +=0D
+ drivers/video/fbdev/skeletonfb.c        |  12 +-=0D
+ include/linux/fb.h                      |   2 +-=0D
+ 12 files changed, 753 insertions(+), 68 deletions(-)=0D
+=0D
+-- =0D
+2.34.1=0D
+=0D
