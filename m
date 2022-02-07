@@ -2,90 +2,121 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D8C14ABFA0
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Feb 2022 14:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF6FD4ABFAC
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Feb 2022 14:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245584AbiBGN2F (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Feb 2022 08:28:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44102 "EHLO
+        id S1346689AbiBGN2o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Feb 2022 08:28:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358150AbiBGNGm (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Feb 2022 08:06:42 -0500
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB501C043188;
-        Mon,  7 Feb 2022 05:06:40 -0800 (PST)
-Received: by mail-ua1-f54.google.com with SMTP id 60so22715473uae.1;
-        Mon, 07 Feb 2022 05:06:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JZStMkBCEdUkIJefmCWfZykazV+/zPRZRIGtWs+bRb0=;
-        b=zVdog81bqfyQClBj3TjJwffNUnRqGYEEVIpDRMVlDr9RDc+EpYhhnE+FRsgLBvX/IB
-         QL5/DEpfp9Skv3Z1x9duy4515pCf/sR/sMLQwFSjMUsWOYDlSTqTbRXLglnVjfETbqGE
-         MBzNy9ZZfpsCs+gQN3+2YFlVk8oEwOWJzwgKQwnBTuLY2iCLLW2EIDB7dwVyF1qQGcYm
-         S36oDCIoiOtkBuSV/w3RQmVF7TLG58pgD4gjUeKSX8G7tO1b5M+cS15K6zEgvAnejVQS
-         clwBuKfNjoOLVyL1ATiQN77JC84wOjbkBNOXn/IqHpnXVtDMbeXWc99pUwnjzAg0HNPl
-         7cxw==
-X-Gm-Message-State: AOAM532CMcnYIwC1DqksPdcsl5Y85meiYP01b4V8fyJBSHjSYq+MHI99
-        t6pBWM53xFJk0J8d7v2tmxAMUqbZc3hvdQ==
-X-Google-Smtp-Source: ABdhPJzFQTtECeDvgEBcBOSXjqDqXP8RaSF++Sk1oQ1ZdlJX6MzhU4MqKtE0UqYWw/BSLoTtS2zJ7w==
-X-Received: by 2002:a67:3341:: with SMTP id z62mr4394352vsz.70.1644239199785;
-        Mon, 07 Feb 2022 05:06:39 -0800 (PST)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id w3sm2326819vkd.5.2022.02.07.05.06.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Feb 2022 05:06:39 -0800 (PST)
-Received: by mail-ua1-f50.google.com with SMTP id g18so12473821uak.5;
-        Mon, 07 Feb 2022 05:06:39 -0800 (PST)
-X-Received: by 2002:a67:b00e:: with SMTP id z14mr4329049vse.57.1644239199108;
- Mon, 07 Feb 2022 05:06:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20220128173006.1713210-1-geert@linux-m68k.org> <c1034042-f8f4-b5c9-3b0a-8d1aa1efc8e7@gmail.com>
-In-Reply-To: <c1034042-f8f4-b5c9-3b0a-8d1aa1efc8e7@gmail.com>
+        with ESMTP id S1448277AbiBGNKO (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Feb 2022 08:10:14 -0500
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A392AC043181
+        for <linux-fbdev@vger.kernel.org>; Mon,  7 Feb 2022 05:10:13 -0800 (PST)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:8923:c5e0:fe66:f22f])
+        by laurent.telenet-ops.be with bizsmtp
+        id sDAB2600F2zxJMx01DABvF; Mon, 07 Feb 2022 14:10:11 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1nH3mU-0004SC-OS; Mon, 07 Feb 2022 14:10:10 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1nH3mU-009F6e-7W; Mon, 07 Feb 2022 14:10:10 +0100
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 7 Feb 2022 14:06:28 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWS2Eh3c-=GPj8GpMwYesGXqSgwo3__cTfM5_5h5=qYyQ@mail.gmail.com>
-Message-ID: <CAMuHMdWS2Eh3c-=GPj8GpMwYesGXqSgwo3__cTfM5_5h5=qYyQ@mail.gmail.com>
-Subject: Re: [PATCH] m68k: mm: Remove check for VM_IO to fix deferred I/O
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux MM <linux-mm@kvack.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+To:     linux-m68k@lists.linux-m68k.org
+Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] m68k: defconfig: Update defconfigs for v5.17-rc3
+Date:   Mon,  7 Feb 2022 14:10:08 +0100
+Message-Id: <20220207131008.2202977-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 3:22 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> Am 29.01.2022 um 06:30 schrieb Geert Uytterhoeven:
-> > When an application accesses a mapped frame buffer backed by deferred
-> > I/O, it receives a segmentation fault.  Fix this by removing the check
-> > for VM_IO in do_page_fault().
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
->
-> Works fine on my Falcon030 when applied to v5.16.
->
-> Tested-by: Michael Schmitz <schmitzmic@gmail.com>
+  - Enable the new option for legacy fbcon hardware acceleration code on
+    all platforms that have a frame buffer device that can make use of
+    this.
 
-Thanks, queued in the m68k for-v5.18 branch.
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+The following drivers set
+FBINFO_HWACCEL_(COPYAREA|FILLRECT|IMAGEBLIT|ROTATE|XPAN|YPAN|YWRAP):
+  - FB_AMIGA,
+  - FB_ATY (not enabled in atari_defconfig, hence ignored),
+  - FB_CIRRUS,
+  - FB_68328 (nommu, hence ignored).
 
-Gr{oetje,eeting}s,
+The following drivers implement hardware acceleration, but do not set
+any of the FBINFO_HWACCEL_* flags:
+  - FB_APOLLO,
+  - FB_HP300.
+Probably they should be updated to set the appropriate flags?
+---
+ arch/m68k/configs/amiga_defconfig  | 1 +
+ arch/m68k/configs/apollo_defconfig | 1 +
+ arch/m68k/configs/hp300_defconfig  | 1 +
+ arch/m68k/configs/multi_defconfig  | 1 +
+ 4 files changed, 4 insertions(+)
 
-                        Geert
+diff --git a/arch/m68k/configs/amiga_defconfig b/arch/m68k/configs/amiga_defconfig
+index eb930b9633602aff..49f301c57df5fb06 100644
+--- a/arch/m68k/configs/amiga_defconfig
++++ b/arch/m68k/configs/amiga_defconfig
+@@ -432,6 +432,7 @@ CONFIG_FB_AMIGA_ECS=y
+ CONFIG_FB_AMIGA_AGA=y
+ CONFIG_FB_FM2=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
+ CONFIG_LOGO=y
+ CONFIG_SOUND=m
+ CONFIG_DMASOUND_PAULA=m
+diff --git a/arch/m68k/configs/apollo_defconfig b/arch/m68k/configs/apollo_defconfig
+index 5acd495c83ceb756..405997b614472b80 100644
+--- a/arch/m68k/configs/apollo_defconfig
++++ b/arch/m68k/configs/apollo_defconfig
+@@ -390,6 +390,7 @@ CONFIG_PTP_1588_CLOCK=m
+ # CONFIG_HWMON is not set
+ CONFIG_FB=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
+ CONFIG_LOGO=y
+ # CONFIG_LOGO_LINUX_VGA16 is not set
+ # CONFIG_LOGO_LINUX_CLUT224 is not set
+diff --git a/arch/m68k/configs/hp300_defconfig b/arch/m68k/configs/hp300_defconfig
+index 89dd800e7ad24354..048d9b114eb43489 100644
+--- a/arch/m68k/configs/hp300_defconfig
++++ b/arch/m68k/configs/hp300_defconfig
+@@ -392,6 +392,7 @@ CONFIG_PTP_1588_CLOCK=m
+ # CONFIG_HWMON is not set
+ CONFIG_FB=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
+ CONFIG_LOGO=y
+ # CONFIG_LOGO_LINUX_MONO is not set
+ # CONFIG_LOGO_LINUX_VGA16 is not set
+diff --git a/arch/m68k/configs/multi_defconfig b/arch/m68k/configs/multi_defconfig
+index 00757de800b62c90..7df61e743591a028 100644
+--- a/arch/m68k/configs/multi_defconfig
++++ b/arch/m68k/configs/multi_defconfig
+@@ -494,6 +494,7 @@ CONFIG_FB_ATARI=y
+ CONFIG_FB_VALKYRIE=y
+ CONFIG_FB_MAC=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION=y
+ CONFIG_LOGO=y
+ CONFIG_SOUND=m
+ CONFIG_DMASOUND_ATARI=m
+-- 
+2.25.1
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
