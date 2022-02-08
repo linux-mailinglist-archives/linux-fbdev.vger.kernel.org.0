@@ -2,57 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB8A4AE3C1
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Feb 2022 23:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 915C14AE3C6
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Feb 2022 23:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386723AbiBHWX1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Feb 2022 17:23:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35176 "EHLO
+        id S1387385AbiBHWX2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Feb 2022 17:23:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386682AbiBHVIb (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Feb 2022 16:08:31 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A52C0612BA
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Feb 2022 13:08:30 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id o1-20020a1c4d01000000b0034d95625e1fso1986124wmh.4
-        for <linux-fbdev@vger.kernel.org>; Tue, 08 Feb 2022 13:08:30 -0800 (PST)
+        with ESMTP id S1386691AbiBHVIc (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Feb 2022 16:08:32 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D78DC0612BC
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Feb 2022 13:08:31 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id k3-20020a1ca103000000b0037bdea84f9cso176822wme.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 08 Feb 2022 13:08:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=eaQEqDf6woJi3JiGI0Bz61Ya75WtHMc/MVZQW5TAKz8=;
-        b=Egg8oW7w6vMCpi1QxSmX4D765EsgDJVXy+e89vdOj8VcgxsKKhCN6MHYC5vkBV761s
-         UZkEzvw/pVj18r5pq4K0q9wZy7ZoHXN1MAbHYkOa+oJLstJKNQv5k6+g7Gk+7eItm4GS
-         7OnwkrdQ5S0dTeSDESYXlh317nK1+2lW6IHTs=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=1IuiSyqatCt+l1wk5WgkOInkMrehuaZuz9Mxu04TsqY=;
+        b=avHkOSu+x6pfmx4+fLtEewoBxnRMkJmK8t/rEpPIL34bWtfdlDa2+3sCJJZi5z4PuV
+         ckFrSEhaJ0yEOaXqGl9xGK8CTEVT5ZIucUpSjA4gWTpu5UtAWEHI7DaOygEQd+miUzVZ
+         fXH6kBN8oggwje5UwlVqhRF2IcoTAxLW3cqWs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=eaQEqDf6woJi3JiGI0Bz61Ya75WtHMc/MVZQW5TAKz8=;
-        b=0IwE1ok/SPw/yYMUIyLs0q5pwwbmpC51f0XROEkYybyFZ9x0vDOoPB18wERMxZttmd
-         XBPqun5Or9/EjxY6MLHyHp7JdFUhAAuEnitxQGA7Bgsa1HWrRdEAD3202QRpuN3zPPNx
-         BhZVsYOvrBfmUl3Ot9bwPlT83lnFLJlLfvz0BxxLvayBuN5GZIjqkr+QKftG5M5Cgl5w
-         /g5T5hNQrYaLB2YRuh2E8TqUlpuvvf0/u9uDhVmD7y3MWsFN/rEX/kAMUo9hFDgnNj+t
-         8WkItPzeMKBG5TAtU+/fBAlG3Yv/FruTfYSEkXC3WdoqXyardsiA5vriCEsvVAqa1j01
-         8YiQ==
-X-Gm-Message-State: AOAM532YYyFY2wPL5DKVrEO1MxqaMGk1oCyntUi7ebJkEUuVOUasDR9m
-        KAgCDJND+LBWnpn4MVZ1Z0lGbA==
-X-Google-Smtp-Source: ABdhPJyXbSnYegLxjgnRWGI973+iKOjTBJ+gW9TXNIyD3WsZiijJNxjj56AALEMQ0pOnnNO/sxirJw==
-X-Received: by 2002:a05:600c:4854:: with SMTP id j20mr1210243wmo.78.1644354509133;
-        Tue, 08 Feb 2022 13:08:29 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=1IuiSyqatCt+l1wk5WgkOInkMrehuaZuz9Mxu04TsqY=;
+        b=ia1YcMyNaPXhGlQIuDPK1QRFV0hsTQpdKSu8PWfJShuHSv63NM6IuzziRRtFrr5tMo
+         +A3UnhDhUp7V4mgg26TMe1fRZoI7u6rvykBwFmZuZnwMl8sJ4A74cw8UXXaiB44SDq6O
+         JxL/T+oZkd9CbEjUNQX7CWSb3q65YBpbrioMBFTsqoD4bTjiqsZZFdxNe3Xyypx+nHZX
+         8KlqqssaSm7Zq99tfETEGudV+M8UM/ySB16jCUh62REylfEszrjUCW/+EzSo+u0WNbZK
+         PoXFEgWm0k5pK99jF3ndshiZXHwlXjQ5JMcKwQx/omc9zStBm09wfSsXo4pBo0ifmrLb
+         RSJA==
+X-Gm-Message-State: AOAM533ylyFJPp+ek8nvrjfiTFKRQ0jMmAqFsrBz9MlUlyAd8KKgpDQm
+        UiFqYd13EMbs3LzNu9gIxZZIEQ==
+X-Google-Smtp-Source: ABdhPJyUoNAHSJRgncTABvPUK493XLqXy+tMNLIpUB+u6ODVBYoOWnDUowuWpfEK97CmfZnMhYogLg==
+X-Received: by 2002:a1c:7915:: with SMTP id l21mr2580207wme.154.1644354510218;
+        Tue, 08 Feb 2022 13:08:30 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id o14sm3033561wmr.3.2022.02.08.13.08.28
+        by smtp.gmail.com with ESMTPSA id o14sm3033561wmr.3.2022.02.08.13.08.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 13:08:28 -0800 (PST)
+        Tue, 08 Feb 2022 13:08:29 -0800 (PST)
 From:   Daniel Vetter <daniel.vetter@ffwll.ch>
 To:     DRI Development <dri-devel@lists.freedesktop.org>
 Cc:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
         linux-fbdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: [PATCH v2 00/19] fbcon patches, take two
-Date:   Tue,  8 Feb 2022 22:08:05 +0100
-Message-Id: <20220208210824.2238981-1-daniel.vetter@ffwll.ch>
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Helge Deller <deller@gmx.de>, Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Du Cheng <ducheng2@gmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Claudio Suarez <cssk@net-c.es>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v2 01/19] fbcon: delete a few unneeded forward decl
+Date:   Tue,  8 Feb 2022 22:08:06 +0100
+Message-Id: <20220208210824.2238981-2-daniel.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220208210824.2238981-1-daniel.vetter@ffwll.ch>
+References: <20220208210824.2238981-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -65,48 +76,69 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi all,
+I didn't bother with any code movement to fix the others, these just
+got a bit in the way.
 
-Second round, mostly just compile fixed and some minor polish to commit
-messages. Also MAINTAINERS patch and fbcon scrolling patches are out
-because they landed already.
+v2: Rebase on top of Helge's reverts.
 
-There's still a handful here that need review (and somehow intel-gfx-ci
-just keeled over on this).
+Acked-by: Sam Ravnborg <sam@ravnborg.org> (v1)
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org> (v1)
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Du Cheng <ducheng2@gmail.com>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: Claudio Suarez <cssk@net-c.es>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/video/fbdev/core/fbcon.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-Cheers, Daniel
-
-Daniel Vetter (19):
-  fbcon: delete a few unneeded forward decl
-  fbcon: Move fbcon_bmove(_rec) functions
-  fbcon: Introduce wrapper for console->fb_info lookup
-  fbcon: delete delayed loading code
-  fbdev/sysfs: Fix locking
-  fbcon: Use delayed work for cursor
-  fbcon: Replace FBCON_FLAGS_INIT with a boolean
-  fb: Delete fb_info->queue
-  fbcon: Extract fbcon_open/release helpers
-  fbcon: Ditch error handling for con2fb_release_oldinfo
-  fbcon: move more common code into fb_open()
-  fbcon: use lock_fb_info in fbcon_open/release
-  fbcon: Consistently protect deferred_takeover with console_lock()
-  fbcon: Move console_lock for register/unlink/unregister
-  fbcon: Move more code into fbcon_release
-  fbcon: untangle fbcon_exit
-  fbcon: Maintain a private array of fb_info
-  Revert "fbdev: Prevent probing generic drivers if a FB is already
-    registered"
-  fbdev: Make registered_fb[] private to fbmem.c
-
- drivers/video/fbdev/core/fbcon.c   | 692 ++++++++++++++---------------
- drivers/video/fbdev/core/fbcon.h   |   8 +-
- drivers/video/fbdev/core/fbmem.c   |  35 +-
- drivers/video/fbdev/core/fbsysfs.c |   2 +
- drivers/video/fbdev/efifb.c        |  11 -
- drivers/video/fbdev/simplefb.c     |  11 -
- include/linux/fb.h                 |   8 +-
- 7 files changed, 342 insertions(+), 425 deletions(-)
-
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 2fc1b80a26ad..235eaab37d84 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -163,29 +163,14 @@ static int fbcon_cursor_noblink;
+  *  Interface used by the world
+  */
+ 
+-static const char *fbcon_startup(void);
+-static void fbcon_init(struct vc_data *vc, int init);
+-static void fbcon_deinit(struct vc_data *vc);
+-static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+-			int width);
+-static void fbcon_putc(struct vc_data *vc, int c, int ypos, int xpos);
+-static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
+-			int count, int ypos, int xpos);
+ static void fbcon_clear_margins(struct vc_data *vc, int bottom_only);
+-static void fbcon_cursor(struct vc_data *vc, int mode);
+ static void fbcon_bmove(struct vc_data *vc, int sy, int sx, int dy, int dx,
+ 			int height, int width);
+-static int fbcon_switch(struct vc_data *vc);
+-static int fbcon_blank(struct vc_data *vc, int blank, int mode_switch);
+ static void fbcon_set_palette(struct vc_data *vc, const unsigned char *table);
+ 
+ /*
+  *  Internal routines
+  */
+-static __inline__ void ywrap_up(struct vc_data *vc, int count);
+-static __inline__ void ywrap_down(struct vc_data *vc, int count);
+-static __inline__ void ypan_up(struct vc_data *vc, int count);
+-static __inline__ void ypan_down(struct vc_data *vc, int count);
+ static void fbcon_bmove_rec(struct vc_data *vc, struct fbcon_display *p, int sy, int sx,
+ 			    int dy, int dx, int height, int width, u_int y_break);
+ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
+@@ -194,8 +179,8 @@ static void fbcon_redraw_move(struct vc_data *vc, struct fbcon_display *p,
+ 			      int line, int count, int dy);
+ static void fbcon_modechanged(struct fb_info *info);
+ static void fbcon_set_all_vcs(struct fb_info *info);
+-static void fbcon_start(void);
+ static void fbcon_exit(void);
++
+ static struct device *fbcon_device;
+ 
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_ROTATION
 -- 
 2.34.1
 
