@@ -2,148 +2,214 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4E94AE1CD
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Feb 2022 20:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32CC44AE39B
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Feb 2022 23:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385576AbiBHTA6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Feb 2022 14:00:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
+        id S1386537AbiBHWXl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Feb 2022 17:23:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385782AbiBHTAr (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Feb 2022 14:00:47 -0500
-Received: from mx2.smtp.larsendata.com (mx2.smtp.larsendata.com [91.221.196.228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090FAC0612C0
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Feb 2022 11:00:45 -0800 (PST)
-Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
-        by mx2.smtp.larsendata.com (Halon) with ESMTPS
-        id 90d0ca10-8911-11ec-ac19-0050568cd888;
-        Tue, 08 Feb 2022 19:01:47 +0000 (UTC)
-Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: sam@ravnborg.org)
-        by mail01.mxhotel.dk (Postfix) with ESMTPSA id 3DFC3194B5C;
-        Tue,  8 Feb 2022 20:00:41 +0100 (CET)
-Date:   Tue, 8 Feb 2022 20:00:38 +0100
-X-Report-Abuse-To: abuse@mxhotel.dk
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
+        with ESMTP id S1386245AbiBHTvM (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Feb 2022 14:51:12 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67100C0612C0
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Feb 2022 11:51:09 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id h6so249030wrb.9
+        for <linux-fbdev@vger.kernel.org>; Tue, 08 Feb 2022 11:51:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=BvBYtnROK0NJX3e3ojisBGf1paUJFvCP5ALRDikwoCo=;
+        b=TWDZjxkf7M6rgIp4JfZtaKW4Sjca9LqbZMy9b+5DrAZaJ2rDVB9YJtodNNsdrAJlf4
+         WYG9TGJZgkRvaXASeEw7DPJThBOR1JCHe7M4V1UyHCI0s7YkznBYBFAF4r8yIE5My8rD
+         nzSIuGCwjR9kuhafqLbUr25bqyY6ReIBIOcSQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=BvBYtnROK0NJX3e3ojisBGf1paUJFvCP5ALRDikwoCo=;
+        b=zARgolbktNUoFxVPK1jJuK9xJNd06bj+EE2H8TVmcVHerIWU3jgjlJ+tnsqLt2a4ZJ
+         5AXvLgXCRHYP9k4b2bpZ9f6BD+11pZg40P+ZpFcbIvXkditk//Oxk32QMmmOAxaRBxSm
+         fus5ssmOP5dzL7YEkzLi6QHV9eEOU7AxJO5DfUiIkYfgI/mQIUtUKtL+fwixjTrMoqWy
+         0qelRTcjxPSY4/om07A2dH5EaEmSsd9VQQflBjW6sbX2X334XYp3ilSI7iyS0z3d57DN
+         QgvGSDGmrBAtH41voCkDqpNoyfOr93cnEU8LambldsNBqLPBbKgUO3O7ry2Bf7Vo6DF5
+         JVMA==
+X-Gm-Message-State: AOAM532iYRRl8xdYLbYcRSlQiG/azkJq6ZrkKkkFn7qjJrNj/g7SR0Ko
+        AsG+zg+YP7mR/KHZL86W6r1ysQ==
+X-Google-Smtp-Source: ABdhPJx3tBpO0LLVvJvdPoySy41lhcsT/t4WBAmc1/sxYixWb4kanChwoDH9nrVUpWQo3RbB0d6VVg==
+X-Received: by 2002:a05:6000:178d:: with SMTP id e13mr4611824wrg.317.1644349867919;
+        Tue, 08 Feb 2022 11:51:07 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id n126sm1930000wmn.27.2022.02.08.11.51.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Feb 2022 11:51:07 -0800 (PST)
+Date:   Tue, 8 Feb 2022 20:51:05 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Sam Ravnborg <sam@ravnborg.org>
 Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-fbdev@vger.kernel.org, Zheyu Ma <zheyuma97@gmail.com>,
-        Xiyu Yang <xiyuyang19@fudan.edu.cn>,
-        Jens Frederich <jfrederich@gmail.com>,
+        linux-fbdev@vger.kernel.org, Du Cheng <ducheng2@gmail.com>,
         Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
         Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        linux-staging@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Claudio Suarez <cssk@net-c.es>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Jon Nettleton <jon.nettleton@gmail.com>,
-        Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH 21/21] fbdev: Make registered_fb[] private to fbmem.c
-Message-ID: <YgK91i6zHWPBwYOq@ravnborg.org>
+        Daniel Vetter <daniel.vetter@intel.com>
+Subject: Re: [Intel-gfx] [PATCH 11/21] fbcon: Extract fbcon_open/release
+ helpers
+Message-ID: <YgLJqeRX0BWF4j29@phenom.ffwll.local>
+Mail-Followup-To: Sam Ravnborg <sam@ravnborg.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        linux-fbdev@vger.kernel.org, Du Cheng <ducheng2@gmail.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>, Claudio Suarez <cssk@net-c.es>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Vetter <daniel.vetter@intel.com>
 References: <20220131210552.482606-1-daniel.vetter@ffwll.ch>
- <20220131210552.482606-22-daniel.vetter@ffwll.ch>
+ <20220131210552.482606-12-daniel.vetter@ffwll.ch>
+ <YfxF4jq7BLX5rJe5@ravnborg.org>
+ <YgJ0relUFpnxRvhg@phenom.ffwll.local>
+ <YgK1Qz6eIKD9wHre@ravnborg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220131210552.482606-22-daniel.vetter@ffwll.ch>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <YgK1Qz6eIKD9wHre@ravnborg.org>
+X-Operating-System: Linux phenom 5.10.0-8-amd64 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Daniel,
-
-On Mon, Jan 31, 2022 at 10:05:52PM +0100, Daniel Vetter wrote:
-> Well except when the olpc dcon fbdev driver is enabled, that thing
-> digs around in there in rather unfixable ways.
+On Tue, Feb 08, 2022 at 07:24:03PM +0100, Sam Ravnborg wrote:
+> Hi Daniel,
 > 
-> Cc oldc_dcon maintainers as fyi.
+> On Tue, Feb 08, 2022 at 02:48:29PM +0100, Daniel Vetter wrote:
+> > On Thu, Feb 03, 2022 at 10:15:14PM +0100, Sam Ravnborg wrote:
+> > > Hi Daniel,
+> > > 
+> > > On Mon, Jan 31, 2022 at 10:05:42PM +0100, Daniel Vetter wrote:
+> > > > There's two minor behaviour changes in here:
+> > > > - in error paths we now consistently call fb_ops->fb_release
+> > > > - fb_release really can't fail (fbmem.c ignores it too) and there's no
+> > > >   reasonable cleanup we can do anyway.
+> > > > 
+> > > > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> > > > Cc: Daniel Vetter <daniel@ffwll.ch>
+> > > > Cc: Claudio Suarez <cssk@net-c.es>
+> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> > > > Cc: Du Cheng <ducheng2@gmail.com>
+> > > > ---
+> > > >  drivers/video/fbdev/core/fbcon.c | 107 +++++++++++++++----------------
+> > > >  1 file changed, 53 insertions(+), 54 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> > > > index fa30e1909164..eea2ee14b64c 100644
+> > > > --- a/drivers/video/fbdev/core/fbcon.c
+> > > > +++ b/drivers/video/fbdev/core/fbcon.c
+> > > > @@ -680,19 +680,37 @@ static int fbcon_invalid_charcount(struct fb_info *info, unsigned charcount)
+> > > >  
+> > > >  #endif /* CONFIG_MISC_TILEBLITTING */
+> > > >  
+> > > > +static int fbcon_open(struct fb_info *info)
+> > > > +{
+> > > > +	if (!try_module_get(info->fbops->owner))
+> > > > +		return -ENODEV;
+> > > > +
+> > > > +	if (info->fbops->fb_open &&
+> > > > +	    info->fbops->fb_open(info, 0)) {
+> > > > +		module_put(info->fbops->owner);
+> > > > +		return -ENODEV;
+> > > > +	}
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static void fbcon_release(struct fb_info *info)
+> > > > +{
+> > > > +	if (info->fbops->fb_release)
+> > > > +		info->fbops->fb_release(info, 0);
+> > > > +
+> > > > +	module_put(info->fbops->owner);
+> > > > +}
+> > > >  
+> > > >  static int con2fb_acquire_newinfo(struct vc_data *vc, struct fb_info *info,
+> > > >  				  int unit, int oldidx)
+> > > >  {
+> > > >  	struct fbcon_ops *ops = NULL;
+> > > > -	int err = 0;
+> > > > -
+> > > > -	if (!try_module_get(info->fbops->owner))
+> > > > -		err = -ENODEV;
+> > > > +	int err;
+> > > >  
+> > > > -	if (!err && info->fbops->fb_open &&
+> > > > -	    info->fbops->fb_open(info, 0))
+> > > > -		err = -ENODEV;
+> > > > +	err = fbcon_open(info);
+> > > > +	if (err)
+> > > > +		return err;
+> > > >  
+> > > >  	if (!err) {
+> > > >  		ops = kzalloc(sizeof(struct fbcon_ops), GFP_KERNEL);
+> > > > @@ -713,7 +731,7 @@ static int con2fb_acquire_newinfo(struct vc_data *vc, struct fb_info *info,
+> > > >  
+> > > >  	if (err) {
+> > > >  		con2fb_map[unit] = oldidx;
+> > > > -		module_put(info->fbops->owner);
+> > > > +		fbcon_release(info);
+> > > >  	}
+> > > >  
+> > > >  	return err;
+> > > > @@ -724,45 +742,34 @@ static int con2fb_release_oldinfo(struct vc_data *vc, struct fb_info *oldinfo,
+> > > >  				  int oldidx, int found)
+> > > >  {
+> > > >  	struct fbcon_ops *ops = oldinfo->fbcon_par;
+> > > > -	int err = 0, ret;
+> > > > +	int ret;
+> > > >  
+> > > > -	if (oldinfo->fbops->fb_release &&
+> > > > -	    oldinfo->fbops->fb_release(oldinfo, 0)) {
+> > > > -		con2fb_map[unit] = oldidx;
+> > > The old code assigns con2fb_map[unit] before is calls
+> > > newinfo->fbops->fb_release).
+> > > I wonder if there can be any callback to fbcon where the value
+> > > of con2fb_map[unit] matters?
+> > 
+> > It's all protected by console_lock, so other threads cannot see the
+> > inconsistent state.
+> > 
+> > Essentially everything in fbcon.c is protected by console_lock().
+> > 
+> > Do you want me to hammer this in somewhere (maybe in the commit message),
+> > or good enough for your ack?
 > 
-> Cc: Jens Frederich <jfrederich@gmail.com>
-> Cc: Jon Nettleton <jon.nettleton@gmail.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-staging@lists.linux.dev
-> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-> Cc: Zhen Lei <thunder.leizhen@huawei.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Xiyu Yang <xiyuyang19@fudan.edu.cn>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: Zheyu Ma <zheyuma97@gmail.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
+> No need to spell it out more.
 
-with the build thingy fixed:
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+I think this was a very good question, since I had to spend a few minutes
+figuring out what exactly and why I've done it too.
 
-I do wonder if there is a more clean way to trigger a blank
-in the main fbdev driver from the olpc driver.
+So I'll add this explainer, it really should have been in the commit
+message!
 
-The current hack is not nice and it would be good to see it gone.
+> Add my a-b and apply it.
 
-	Sam
+Well I need to resend, since there was a minor change due to rebasing on
+top of Helge's fbcon scrolling patches instead of mine.
 
-> ---
->  drivers/video/fbdev/core/fbmem.c | 8 ++++++--
->  include/linux/fb.h               | 7 +++----
->  2 files changed, 9 insertions(+), 6 deletions(-)
+Thanks for your review
+-Daniel
 > 
-> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-> index 904ef1250677..dad6572942fa 100644
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -48,10 +48,14 @@
->  static DEFINE_MUTEX(registration_lock);
->  
->  struct fb_info *registered_fb[FB_MAX] __read_mostly;
-> -EXPORT_SYMBOL(registered_fb);
-> -
->  int num_registered_fb __read_mostly;
-> +#if IS_ENABLED(CONFIG_OLPC_DCON)
-> +EXPORT_SYMBOL(registered_fb);
->  EXPORT_SYMBOL(num_registered_fb);
-> +#endif
-> +#define for_each_registered_fb(i)		\
-> +	for (i = 0; i < FB_MAX; i++)		\
-> +		if (!registered_fb[i]) {} else
->  
->  bool fb_center_logo __read_mostly;
->  
-> diff --git a/include/linux/fb.h b/include/linux/fb.h
-> index a8a00d2ba1f3..e236817502c2 100644
-> --- a/include/linux/fb.h
-> +++ b/include/linux/fb.h
-> @@ -622,16 +622,15 @@ extern int fb_get_color_depth(struct fb_var_screeninfo *var,
->  extern int fb_get_options(const char *name, char **option);
->  extern int fb_new_modelist(struct fb_info *info);
->  
-> +#if IS_ENABLED(CONFIG_OLPC_DCON)
->  extern struct fb_info *registered_fb[FB_MAX];
-> +
->  extern int num_registered_fb;
-> +#endif
->  extern bool fb_center_logo;
->  extern int fb_logo_count;
->  extern struct class *fb_class;
->  
-> -#define for_each_registered_fb(i)		\
-> -	for (i = 0; i < FB_MAX; i++)		\
-> -		if (!registered_fb[i]) {} else
-> -
->  static inline void lock_fb_info(struct fb_info *info)
->  {
->  	mutex_lock(&info->lock);
-> -- 
-> 2.33.0
+> 	Sam
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
