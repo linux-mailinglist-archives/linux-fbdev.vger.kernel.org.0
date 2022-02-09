@@ -2,75 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 937EF4AEDAB
-	for <lists+linux-fbdev@lfdr.de>; Wed,  9 Feb 2022 10:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 475004AEE36
+	for <lists+linux-fbdev@lfdr.de>; Wed,  9 Feb 2022 10:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234387AbiBIJJv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 9 Feb 2022 04:09:51 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:48564 "EHLO
+        id S229517AbiBIJlc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 9 Feb 2022 04:41:32 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:58122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233465AbiBIJJs (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 9 Feb 2022 04:09:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4C29EE03C074
-        for <linux-fbdev@vger.kernel.org>; Wed,  9 Feb 2022 01:09:41 -0800 (PST)
+        with ESMTP id S236456AbiBIJgT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 9 Feb 2022 04:36:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D0F66E061472
+        for <linux-fbdev@vger.kernel.org>; Wed,  9 Feb 2022 01:36:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644397414;
+        s=mimecast20190719; t=1644399301;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uXHl6zWfNshnr52NE5ioPZcgRmeozRVAlTsdeYXbxCY=;
-        b=FlWTfFjU44DcO/9Bm1nlVenHmBIZh6JXlsoPYsfWyQ5mOYlsHS7rC8zT+3jif+3af4q0Yu
-        QoeLQwbCWAp/chOKVqZPYXwgvAsZNbNINris5bF3453jiD9EI1iYppSm+VF1nqnveFTb50
-        uxlYCtIH7/DzxCa8YuQMtKuojrjMx9A=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=IVaOePIAiXFw8U75tAHDUKWkv70g1B3730fSEy8H3OQ=;
+        b=OxVx82ScEGi85ReLcx9/ylCvy8tLNLcsknSZGFM+11yFdPqWq6kUIb7dbTtzuHgT1kMbx4
+        YBx1tYHPCKqKk8cWYXy8KgBM5Yg9EA9I3rvtZ4YCLojQJ8Tjr/dd9XcqCcwygFB0doQG2i
+        jlUKkCa060MR37k+wbLhPyOXzpXZayg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-Yz4XTb8tPaCImnvtgAyvVA-1; Wed, 09 Feb 2022 04:03:33 -0500
-X-MC-Unique: Yz4XTb8tPaCImnvtgAyvVA-1
-Received: by mail-wm1-f72.google.com with SMTP id l9-20020a05600c1d0900b0037be9e5f7e8so107816wms.7
-        for <linux-fbdev@vger.kernel.org>; Wed, 09 Feb 2022 01:03:33 -0800 (PST)
+ us-mta-59-XegtZ9oCNm21dO5MFSmBOA-1; Wed, 09 Feb 2022 04:12:24 -0500
+X-MC-Unique: XegtZ9oCNm21dO5MFSmBOA-1
+Received: by mail-wr1-f70.google.com with SMTP id e11-20020adf9bcb000000b001e316b01456so826449wrc.21
+        for <linux-fbdev@vger.kernel.org>; Wed, 09 Feb 2022 01:12:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=uXHl6zWfNshnr52NE5ioPZcgRmeozRVAlTsdeYXbxCY=;
-        b=R8ANBqXV02/cbSGMBQKP8L7O0HLnRh5F6YtBrscWUsCUU1fJekibYHOFF7OnJsUyau
-         QSLtleUS0icSRMxGscypObsPAh6JsR8tepwMWmWhRz07tZPB8DGZxlFA3U7yRlAbM7Qb
-         ALIn/RqHCUgW4/M/OOYlLq22p8arrWm9YHMpSrAYMQdMze2E8FBt28njRZu/JqyAaZCb
-         bCaCYzRp623e2Xg9RpKM+uPGOERqLnwx4RUa8yQd0YMblXEjx7VsmFiptJ4oibckGew4
-         QwAyVfCv86TeyoKzjphGNyYSH+d3Ge70eUIKeAJ1HS82loYKI23GHKwt62GSGH5+F2xd
-         C/0g==
-X-Gm-Message-State: AOAM532ay8/u31qH1gU24xlSIrpu5YZzGYsqqD8YpiRODTjUcUYW8zhN
-        R+4v0KAyDLGB9EHJ8DKqr6Ols24uq8U9kXOBXb74xEZsTZrpDx2AZLgmJoYRFR4lF053TNP4jWt
-        Skv2HLHQ04Ha6u9pARM0eit8=
-X-Received: by 2002:a05:600c:2251:: with SMTP id a17mr1662580wmm.166.1644397411406;
-        Wed, 09 Feb 2022 01:03:31 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxT7Pib7rdcqP+VtxNfxLQQztTdcyWavTVBGg58Xcbl17d1EFyRBBvpQE+HBcC8rsWkQwEpBw==
-X-Received: by 2002:a05:600c:2251:: with SMTP id a17mr1662550wmm.166.1644397411097;
-        Wed, 09 Feb 2022 01:03:31 -0800 (PST)
+        bh=IVaOePIAiXFw8U75tAHDUKWkv70g1B3730fSEy8H3OQ=;
+        b=uUIpIGyFVU3KBg6BABsuskqHrw4BRpmIPzlmSL6NCyhc+7WrUKo762ajUJ++xM6hS0
+         fIrLzjJ6zpyc+Ekm6E1HrOBFYsvnIuGPyTppQ5eAHT+FM4qycvwx4GyK39qQ9nFYEyoJ
+         HyXgqwW25BQcvJyqjGy7M6oXIx1pTRcQceuhipIQbdC4EglKmTdSUu3/z1dX/zVMOmR/
+         GTWVn44kmBHDNTOgujgtDUDXw4Ys7ga9r3ku/Piiu8dBGt8H+mLwtAFPEnxSUnvm+eO1
+         IweSNnGRNO0QhKVr/NfaVguxzm6IajoHTLUULMrgRjW8XrbvXxieJFCZpgiHaGhAhNzR
+         WF1w==
+X-Gm-Message-State: AOAM530ZKSILRm1MoSThsj6BI70wc+kQ5pL+aNBEvB/57mRyqWemPg5d
+        Uw+5RutB+Ec4gAUuWuqQqg42m3iNPsM07GH985Dg5yQXi4hcOQmalZPDfW27Ni//P3e1yph4uIp
+        yw5HMPjW7uUwMlz+cbH/Bugg=
+X-Received: by 2002:a05:600c:3b97:: with SMTP id n23mr116344wms.116.1644397943072;
+        Wed, 09 Feb 2022 01:12:23 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxmy9te2m+nFf5NChLb1Oyfbsc9hQqFDn/UG2mRdylATQQhkHE0nZ3daEy/SuR9+qJRmFJzGg==
+X-Received: by 2002:a05:600c:3b97:: with SMTP id n23mr116329wms.116.1644397942870;
+        Wed, 09 Feb 2022 01:12:22 -0800 (PST)
 Received: from minerva.home ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id z1sm4058866wmk.32.2022.02.09.01.03.29
+        by smtp.gmail.com with ESMTPSA id m30sm4588068wms.34.2022.02.09.01.12.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Feb 2022 01:03:30 -0800 (PST)
+        Wed, 09 Feb 2022 01:12:22 -0800 (PST)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Maxime Ripard <maxime@cerno.tech>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-fbdev@vger.kernel.org,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>
-Subject: [PATCH v3 4/7] drm/solomon: Add SSD130X OLED displays I2C support
-Date:   Wed,  9 Feb 2022 10:03:11 +0100
-Message-Id: <20220209090314.2511959-5-javierm@redhat.com>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Maxime Ripard <maxime@cerno.tech>,
+        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH v3 5/7] (WIP) drm/solomon: Add SSD130X OLED displays SPI support
+Date:   Wed,  9 Feb 2022 10:12:04 +0100
+Message-Id: <20220209091204.2513437-1-javierm@redhat.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220209090314.2511959-1-javierm@redhat.com>
 References: <20220209090314.2511959-1-javierm@redhat.com>
@@ -87,102 +82,100 @@ List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 The ssd130x driver only provides the core support for these devices but it
-does not have any bus transport logic. Add a driver to interface over I2C.
+does not have any bus transport logic. Add a driver to interface over SPI.
 
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
 
 Changes in v3:
-- Add a separate driver for SSD130X chips I2C support (Andy Shevchenko)
+- Add a separate driver for SSD130X chips SPI support (Andy Shevchenko)
 
  drivers/gpu/drm/solomon/Kconfig       |   9 ++
  drivers/gpu/drm/solomon/Makefile      |   1 +
- drivers/gpu/drm/solomon/ssd130x-i2c.c | 117 ++++++++++++++++++++++++++
- 3 files changed, 127 insertions(+)
- create mode 100644 drivers/gpu/drm/solomon/ssd130x-i2c.c
+ drivers/gpu/drm/solomon/ssd130x-spi.c | 114 ++++++++++++++++++++++++++
+ 3 files changed, 124 insertions(+)
+ create mode 100644 drivers/gpu/drm/solomon/ssd130x-spi.c
 
 diff --git a/drivers/gpu/drm/solomon/Kconfig b/drivers/gpu/drm/solomon/Kconfig
-index c969c358a4a7..47e16bc20e0d 100644
+index 47e16bc20e0d..16a2098f438c 100644
 --- a/drivers/gpu/drm/solomon/Kconfig
 +++ b/drivers/gpu/drm/solomon/Kconfig
-@@ -10,3 +10,12 @@ config DRM_SSD130X
- 	  the appropriate bus transport in your chip also must be selected.
+@@ -19,3 +19,12 @@ config DRM_SSD130X_I2C
+ 	  Say Y here if the SSD130X OLED display is connected via I2C bus.
  
- 	  If M is selected the module will be called ssd130x.
+ 	  If M is selected the module will be called ssd130x-i2c.
 +
-+config DRM_SSD130X_I2C
-+	tristate "DRM support for Solomon SSD130X OLED displays (I2C bus)"
-+	depends on DRM_SSD130X && I2C
-+	select REGMAP_I2C
++config DRM_SSD130X_SPI
++	tristate "DRM support for Solomon SSD130X OLED displays (SPI bus)"
++	depends on DRM_SSD130X && SPI
++	select REGMAP_SPI
 +	help
-+	  Say Y here if the SSD130X OLED display is connected via I2C bus.
++	  Say Y here if the SSD130X OLED display is connected via SPI bus.
 +
-+	  If M is selected the module will be called ssd130x-i2c.
++	  If M is selected the module will be called ssd130x-spi.
 diff --git a/drivers/gpu/drm/solomon/Makefile b/drivers/gpu/drm/solomon/Makefile
-index f685addb19fe..4bfc5acb0447 100644
+index 4bfc5acb0447..b5fc792257d7 100644
 --- a/drivers/gpu/drm/solomon/Makefile
 +++ b/drivers/gpu/drm/solomon/Makefile
-@@ -1 +1,2 @@
+@@ -1,2 +1,3 @@
  obj-$(CONFIG_DRM_SSD130X)	+= ssd130x.o
-+obj-$(CONFIG_DRM_SSD130X_I2C)	+= ssd130x-i2c.o
-diff --git a/drivers/gpu/drm/solomon/ssd130x-i2c.c b/drivers/gpu/drm/solomon/ssd130x-i2c.c
+ obj-$(CONFIG_DRM_SSD130X_I2C)	+= ssd130x-i2c.o
++obj-$(CONFIG_DRM_SSD130X_SPI)	+= ssd130x-spi.o
+diff --git a/drivers/gpu/drm/solomon/ssd130x-spi.c b/drivers/gpu/drm/solomon/ssd130x-spi.c
 new file mode 100644
-index 000000000000..ff5f8992b2ff
+index 000000000000..ccc56d2f3026
 --- /dev/null
-+++ b/drivers/gpu/drm/solomon/ssd130x-i2c.c
-@@ -0,0 +1,117 @@
++++ b/drivers/gpu/drm/solomon/ssd130x-spi.c
+@@ -0,0 +1,114 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * DRM driver for Solomon SSD130X OLED displays (I2C bus)
++ * DRM driver for Solomon SSD130X OLED displays (SPI bus)
 + *
 + * Copyright 2022 Red Hat Inc.
 + * Authors: Javier Martinez Canillas <javierm@redhat.com>
-+ *
-+ * Based on drivers/video/fbdev/ssd1307fb.c
-+ * Copyright 2012 Free Electrons
 + */
-+#include <linux/i2c.h>
++#include <linux/spi/spi.h>
 +#include <linux/module.h>
 +
 +#include "ssd130x.h"
 +
-+#define DRIVER_NAME	"ssd130x-i2c"
-+#define DRIVER_DESC	"DRM driver for Solomon SSD130X OLED displays (I2C)"
++#define DRIVER_NAME	"ssd130x-spi"
++#define DRIVER_DESC	"DRM driver for Solomon SSD130X OLED displays (SPI)"
 +
-+static const struct regmap_config ssd130x_i2c_regmap_config = {
++static const struct regmap_config ssd130x_spi_regmap_config = {
 +	.reg_bits = 8,
 +	.val_bits = 8,
 +};
 +
-+static int ssd130x_i2c_probe(struct i2c_client *client)
++static int ssd130x_spi_probe(struct spi_device *spi)
 +{
 +	struct ssd130x_device *ssd130x;
 +	struct regmap *regmap;
 +
-+	regmap = devm_regmap_init_i2c(client, &ssd130x_i2c_regmap_config);
++	regmap = devm_regmap_init_spi(spi, &ssd130x_spi_regmap_config);
 +	if (IS_ERR(regmap))
 +		return PTR_ERR(regmap);
 +
-+	ssd130x = ssd130x_probe(&client->dev, regmap);
++	ssd130x = ssd130x_probe(&spi->dev, regmap);
 +
 +	if (IS_ERR(ssd130x))
 +		return PTR_ERR(ssd130x);
 +
-+	i2c_set_clientdata(client, ssd130x);
++	spi_set_drvdata(spi, ssd130x);
 +
 +	return 0;
 +}
 +
-+static int ssd130x_i2c_remove(struct i2c_client *client)
++static int ssd130x_spi_remove(struct spi_device *spi)
 +{
-+	struct ssd130x_device *ssd130x = i2c_get_clientdata(client);
++	struct ssd130x_device *ssd130x = spi_get_drvdata(spi);
 +
 +	return ssd130x_remove(ssd130x);
 +}
 +
-+static void ssd130x_i2c_shutdown(struct i2c_client *client)
++static void ssd130x_spi_shutdown(struct spi_device *spi)
 +{
-+	struct ssd130x_device *ssd130x = i2c_get_clientdata(client);
++	struct ssd130x_device *ssd130x = spi_get_drvdata(spi);
 +
 +	ssd130x_shutdown(ssd130x);
 +}
@@ -215,35 +208,35 @@ index 000000000000..ff5f8992b2ff
 +
 +static const struct of_device_id ssd130x_of_match[] = {
 +	{
-+		.compatible = "solomon,ssd1305fb-i2c",
++		.compatible = "solomon,ssd1305fb-spi",
 +		.data = (void *)&ssd130x_ssd1305_deviceinfo,
 +	},
 +	{
-+		.compatible = "solomon,ssd1306fb-i2c",
++		.compatible = "solomon,ssd1306fb-spi",
 +		.data = (void *)&ssd130x_ssd1306_deviceinfo,
 +	},
 +	{
-+		.compatible = "solomon,ssd1307fb-i2c",
++		.compatible = "solomon,ssd1307fb-spi",
 +		.data = (void *)&ssd130x_ssd1307_deviceinfo,
 +	},
 +	{
-+		.compatible = "solomon,ssd1309fb-i2c",
++		.compatible = "solomon,ssd1309fb-spi",
 +		.data = (void *)&ssd130x_ssd1309_deviceinfo,
 +	},
 +	{ /* sentinel */ },
 +};
 +MODULE_DEVICE_TABLE(of, ssd130x_of_match);
 +
-+static struct i2c_driver ssd130x_i2c_driver = {
++static struct spi_driver ssd130x_spi_driver = {
 +	.driver = {
 +		.name = DRIVER_NAME,
 +		.of_match_table = ssd130x_of_match,
 +	},
-+	.probe_new = ssd130x_i2c_probe,
-+	.remove = ssd130x_i2c_remove,
-+	.shutdown = ssd130x_i2c_shutdown,
++	.probe = ssd130x_spi_probe,
++	.remove = ssd130x_spi_remove,
++	.shutdown = ssd130x_spi_shutdown,
 +};
-+module_i2c_driver(ssd130x_i2c_driver);
++module_spi_driver(ssd130x_spi_driver);
 +
 +MODULE_DESCRIPTION(DRIVER_DESC);
 +MODULE_AUTHOR("Javier Martinez Canillas <javierm@redhat.com>");
