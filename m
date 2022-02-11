@@ -2,89 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 022EA4B2530
-	for <lists+linux-fbdev@lfdr.de>; Fri, 11 Feb 2022 13:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C844B2549
+	for <lists+linux-fbdev@lfdr.de>; Fri, 11 Feb 2022 13:12:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234461AbiBKMGE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 11 Feb 2022 07:06:04 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51402 "EHLO
+        id S1349852AbiBKMLc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 11 Feb 2022 07:11:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234432AbiBKMGD (ORCPT
+        with ESMTP id S1349830AbiBKMLb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 11 Feb 2022 07:06:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A8BB9F5E
-        for <linux-fbdev@vger.kernel.org>; Fri, 11 Feb 2022 04:06:02 -0800 (PST)
+        Fri, 11 Feb 2022 07:11:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E249BD5A
+        for <linux-fbdev@vger.kernel.org>; Fri, 11 Feb 2022 04:11:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644581161;
+        s=mimecast20190719; t=1644581490;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BASHV7aFfw3qHYbxs7gIYxsZkBm2pYuduv5XXGleEkc=;
-        b=Lg1CNixSW3/U5mGxbr0OPUFlwnvdiOjWoGeolxFq0lyRs0mUNabd4UTIL8PQGaNKyI21EA
-        Ahg23A/P1/BvEGyYJMkkNFcyJ4+fN1dohEUvp+6Aw5iMy4BcGIpbPQ7FxmPyXpgNEnl0IS
-        r+vyKHUZj4/PpxnkPmdHSdv+ssWb+o0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=rbeS5Q0QdhSeqbBe2L7Sp2F6l+GpdK7iWbNe2W3yu0w=;
+        b=Jkk5JIUtiTJQ91JlidV11G+xGEvtzGNzpGHKfueu9qRFskfvcuBwAYnP7K2ULgYJsBiAtQ
+        yClh4gzwRfWiv4DgZZzGLEMNjDxSwRxC6CcM+p82FEql4cKpAVOpTSEy/D/+tMDWSSy5cO
+        5AMhE7pVIuzVp2L/7iT1VFn0FPWmOdw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-656-Y2UpJxvYPraeImJIYjnhyg-1; Fri, 11 Feb 2022 07:06:00 -0500
-X-MC-Unique: Y2UpJxvYPraeImJIYjnhyg-1
-Received: by mail-wm1-f72.google.com with SMTP id c7-20020a1c3507000000b0034a0dfc86aaso5807714wma.6
-        for <linux-fbdev@vger.kernel.org>; Fri, 11 Feb 2022 04:06:00 -0800 (PST)
+ us-mta-659-3vLr4AzFNlqnD5fqnVmLyA-1; Fri, 11 Feb 2022 07:11:28 -0500
+X-MC-Unique: 3vLr4AzFNlqnD5fqnVmLyA-1
+Received: by mail-wm1-f70.google.com with SMTP id t2-20020a7bc3c2000000b003528fe59cb9so2429527wmj.5
+        for <linux-fbdev@vger.kernel.org>; Fri, 11 Feb 2022 04:11:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=BASHV7aFfw3qHYbxs7gIYxsZkBm2pYuduv5XXGleEkc=;
-        b=ut5c2u+HIpcWITZ+i4ZMh2GQ529PFj8IEt6/3qYK8e9tDZ33XJVFmXH/ihISheBgD9
-         k0ml4KnzuAKVAKgFombMBlP5nQelsGk0oBsb7OFZavdpjHLE1zp8OWq8pe3VptaThjbg
-         7kinqgKkYEwJAYS0+zODzygaxNsnysJGsA3icjHqVYvbrvVAYkiSjOaEMHfVRNbWAlhL
-         bx76yBjqzOIef5WEv9G8K0al6m5+1pI0LAkegDsYowLWx13WCwh0XkrpdVkvGpFOCc0X
-         APcgfNY1N7nOC6svXmE0fnbdNCOKGKuHPNF8QAXMAVZ0+9cqRc45HgX/l664WEyVnVxl
-         fdUw==
-X-Gm-Message-State: AOAM533JzvkNN44Y9RQ/+zO8SRL0aJnqYfqXb7HgrA2Nl84FUaRevmPu
-        lCMjqAvZU33gNVAaHBXJvdOyGZS4T8oD0xGcrZmCTNnhfg9FZ8bWRMTSlJ3disQLQSYmE4XvM0X
-        hMetjp2WK7BITXKu0fzX+ipY=
-X-Received: by 2002:a5d:5692:: with SMTP id f18mr1182598wrv.285.1644581159523;
-        Fri, 11 Feb 2022 04:05:59 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJy/wwEdn1CDOpccM3hGHhbtDnjh87iUZ0MvvFV8jLkai8DaWkcExzOlYAiyBmaBdWNEv6pKZQ==
-X-Received: by 2002:a5d:5692:: with SMTP id f18mr1182575wrv.285.1644581159299;
-        Fri, 11 Feb 2022 04:05:59 -0800 (PST)
+        bh=rbeS5Q0QdhSeqbBe2L7Sp2F6l+GpdK7iWbNe2W3yu0w=;
+        b=MnY9nwVadaABSP/C28n+Sye/I3GuZhndIFa+W22MFoFbzCLoegTTQljhz6ywMhXGLf
+         w3nlA9wcUfNXeD+5H6o+qxvqf5JpJSipYXPG5y2mZxhieFIA2Gh/ZYuRRtrJdZrJ6td1
+         3wJEOOnJtdmcYXuRWWr0Jewxq/bRTX/ri0n3rA8Kl+QUe62FRqu92sWGlBL91FvdKCCr
+         KwSt1fNwUtojeZ3diUDl1Yf4QyCHM+DP7AcP5VUirvXHHMcdy0niOOAxrRZ5y3ezAypQ
+         6WLoGiNgdSWHmCD4QqCoSdjrx7TXyNs0Sxrp4ULiyodfHPynS6hOzmzPoNpJtdLBEHLU
+         D6Lw==
+X-Gm-Message-State: AOAM532QICw/uBT/myUjvHCvwbgz2IiNnFJZNbgZmhjr0HNxQdaq1Q02
+        a5kxWbzNP3hOLE5JAt/0OUlwlZhsZ/HKIB4c+3SeC/RH/Ji9eNzVCCD3dupjDSrhK1UUKTl4TQs
+        l+WQ8ElbYMM+1BZJsOvpktlY=
+X-Received: by 2002:a5d:6d09:: with SMTP id e9mr1244669wrq.2.1644581487725;
+        Fri, 11 Feb 2022 04:11:27 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJySb3y5ME4crlsH+b8xOVBwDu7OcH0jhhdufGAdmsHfpAHWgWr7LCf0VAonkSs7ThGU8Oo4sg==
+X-Received: by 2002:a5d:6d09:: with SMTP id e9mr1244650wrq.2.1644581487542;
+        Fri, 11 Feb 2022 04:11:27 -0800 (PST)
 Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id g8sm1531531wrd.9.2022.02.11.04.05.58
+        by smtp.gmail.com with ESMTPSA id v9sm9980052wrw.84.2022.02.11.04.11.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Feb 2022 04:05:59 -0800 (PST)
-Message-ID: <eed8200c-7716-ce4f-dac5-bd6f0345b631@redhat.com>
-Date:   Fri, 11 Feb 2022 13:05:57 +0100
+        Fri, 11 Feb 2022 04:11:27 -0800 (PST)
+Message-ID: <431f26fb-5943-eb58-9ad5-eda787966ad2@redhat.com>
+Date:   Fri, 11 Feb 2022 13:11:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH v4 3/6] drm: Add driver for Solomon SSD130x OLED displays
+Subject: Re: [PATCH v4 1/6] drm/format-helper: Add
+ drm_fb_xrgb8888_to_gray8_line()
 Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-fbdev@vger.kernel.org, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Maxime Ripard <maxime@cerno.tech>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Lee Jones <lee.jones@linaro.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-pwm@vger.kernel.org
+        Sam Ravnborg <sam@ravnborg.org>
 References: <20220211091927.2988283-1-javierm@redhat.com>
- <20220211091927.2988283-4-javierm@redhat.com>
- <YgZJpi4llqr93U9Y@smile.fi.intel.com>
+ <20220211091927.2988283-2-javierm@redhat.com>
+ <YgY6OqN+guBlt/ED@smile.fi.intel.com>
+ <4fa465d9-4fac-4199-9a04-d8e09d164308@redhat.com>
+ <YgZEuXvJ2ZiOyNS+@smile.fi.intel.com>
+ <7560cd10-0a7c-3fda-da83-9008833e3901@suse.de> <87pmnt7gm3.fsf@intel.com>
 From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <YgZJpi4llqr93U9Y@smile.fi.intel.com>
+In-Reply-To: <87pmnt7gm3.fsf@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -97,168 +94,38 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2/11/22 12:33, Andy Shevchenko wrote:
-> On Fri, Feb 11, 2022 at 10:19:24AM +0100, Javier Martinez Canillas wrote:
->> This adds a DRM driver for SSD1305, SSD1306, SSD1307 and SSD1309 Solomon
->> OLED display controllers.
->>
->> It's only the core part of the driver and a bus specific driver is needed
->> for each transport interface supported by the display controllers.
-> 
-> ...
-> 
->> +#include <linux/backlight.h>
->> +#include <linux/bitfield.h>
-> 
-> bits.h
+Hello Jani,
 
-Ok, missed that both weren't in the same macro.
-
-> (FYI, specifically sent a patch few days ago to add explicitly the inclusions
->  that needed for bitfield operations in the example inside bitfield.h).
-> 
->> +#include <linux/delay.h>
->> +#include <linux/gpio/consumer.h>
->> +#include <linux/property.h>
->> +#include <linux/pwm.h>
->> +#include <linux/regulator/consumer.h>
-> 
-> ...
-> 
->> +#define SSD130X_SET_ADDRESS_MODE_HORIZONTAL	(0x00)
->> +#define SSD130X_SET_ADDRESS_MODE_VERTICAL	(0x01)
->> +#define SSD130X_SET_ADDRESS_MODE_PAGE		(0x02)
->> +
->> +#define SSD130X_SET_AREA_COLOR_MODE_ENABLE	(0x1e)
->> +#define SSD130X_SET_AREA_COLOR_MODE_LOW_POWER	(0x05)
-> 
-> Do the parentheses add anything here?
->
-
-Not really, the fbdev driver used it and I understood that was
-a convention to denote that these are command options and not a
-command or register. I'll drop them.
-
-> ...
-> 
->> +/*
->> + * Helper to write command (SSD130X_COMMAND). The fist variadic argument
->> + * is the command to write and the following are the command options.
-> 
-> This is not correct explanation. Please, rephrase to show that _each_ of the
-> options is sent with a preceding command.
->
-
-It's a correct explanation IMO from the caller point of view. The first argument
-is the command sent (i.e: SSD130X_SET_ADDRESS_MODE) and the next ones are the
-the command options (i.e: SSD130X_SET_ADDRESS_MODE_HORIZONTAL).
-
-The fact that each command and options are preceding with a SSD130X_COMMAND
-value is part of the protocol of the device and a detail that's abstracted
-away by this helper function to the callers.
-
->> + */
->> +static int ssd130x_write_cmd(struct ssd130x_device *ssd130x, int count,
->> +				    /* u8 cmd, u8 option, ... */...)
->> +{
->> +	va_list ap;
->> +	u8 value;
->> +	int ret;
->> +
->> +	va_start(ap, count);
->> +
->> +	do {
->> +		value = va_arg(ap, int);
->> +		ret = regmap_write(ssd130x->regmap, SSD130X_COMMAND, (u8)value);
->> +		if (ret)
->> +			goto out_end;
->> +	} while (--count);
->> +
->> +out_end:
->> +	va_end(ap);
->> +
->> +	return ret;
->> +}
-> 
-> ...
-> 
->> +	if (ssd130x->device_info->need_pwm) {
-> 
-> Yeah, unfortunately we still don't have pwm_get_optional()...
-> 
->> +		ret = ssd130x_pwm_enable(ssd130x);
->> +		if (ret) {
->> +			dev_err(dev, "Failed to enable PWM: %d\n", ret);
->> +			regulator_disable(ssd130x->vcc_reg);
->> +			return ret;
->> +		}
->> +	}
-> 
-> ...
-> 
->> +static void ssd130x_power_off(struct ssd130x_device *ssd130x)
->> +{
-> 
->> +	if (ssd130x->device_info->need_pwm) {
-> 
-> Redundant check. The two below are NULL-aware.
->
-
-Ok, I'll drop it.
-
->> +		pwm_disable(ssd130x->pwm);
->> +		pwm_put(ssd130x->pwm);
->> +	}
->> +
->> +	regulator_disable(ssd130x->vcc_reg);
->> +}
-> 
-> ...
-> 
->> +	ret = ssd130x_write_cmd(ssd130x, 2, SSD130X_SET_COM_PINS_CONFIG, compins);
->> +	if (ret < 0)
->> +		return ret;
-> 
->> +
->> +
-> 
-> One blank line is enough.
->
-
-Indeed, that was a left over when changing this to use the macros.
- 
-> ...
-> 
->> +	for (i = y / 8; i < y / 8 + pages; i++) {
->> +		int m = 8;
->> +
->> +		/* Last page may be partial */
->> +		if (8 * (i + 1) > ssd130x->height)
->> +			m = ssd130x->height % 8;
-> 
-> Perhaps it can be moved out of the loop with refactored piece below.
->
-
-Not sure I'm following since it depends on the for loop iterator value.
+On 2/11/22 13:05, Jani Nikula wrote:
 
 [snip]
 
->> +	bl = devm_backlight_device_register(dev, dev_name(dev), dev, ssd130x,
->> +					    &ssd130xfb_bl_ops, NULL);
->> +	if (IS_ERR(bl)) {
+>>>> I don't see why a while loop would be an improvement here TBH.
+>>>
+>>> Less letters to parse when reading the code.
+>>
+>> It's a simple refactoring of code that has worked well so far. Let's 
+>> leave it as-is for now.
 > 
->> +		ret = PTR_ERR(bl);
->> +		dev_err_probe(dev, ret, "Unable to register backlight device\n");
->> +		return ERR_PTR(ret);
+> IMO *always* prefer a for loop over while or do-while.
 > 
-> 		dev_err_probe(dev, PTR_ERR(bl), "Unable to register backlight device\n");
-> 		return bl;
+> The for (i = 0; i < N; i++) is such a strong paradigm in C. You
+> instantly know how many times you're going to loop, at a glance. Not so
+> with with the alternatives, which should be used sparingly.
 > 
-> ?
+> And yes, the do-while suggested above is buggy, and you actually need to
+> stop and think to see why.
+>
 
-No, because this function's return value is a struct ssd130x_device pointer,
-not a struct backlight_device pointer.
+Absolutely agree.
 
+These format conversion helpers are not trivial to read and understand (at
+least for me). In my opinion the code should be written in a way that ease
+readability and make as robust and less error prone as possible.
+ 
+> 
+> BR,
+> Jani.
 Best regards,
 -- 
 Javier Martinez Canillas
