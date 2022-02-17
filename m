@@ -2,128 +2,103 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F5A04B9CEC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Feb 2022 11:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9789F4B9D37
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Feb 2022 11:34:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232380AbiBQKQc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 17 Feb 2022 05:16:32 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36788 "EHLO
+        id S237143AbiBQKe0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 17 Feb 2022 05:34:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232438AbiBQKQb (ORCPT
+        with ESMTP id S234991AbiBQKeZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 17 Feb 2022 05:16:31 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5312AB504
-        for <linux-fbdev@vger.kernel.org>; Thu, 17 Feb 2022 02:16:17 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id t14so7489523ljh.8
-        for <linux-fbdev@vger.kernel.org>; Thu, 17 Feb 2022 02:16:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version;
-        bh=Nmn0JSXYFz1hIDL1/wW7UG7AeNYS6zrR/HrLEhvymsE=;
-        b=jR5xb9r/gmmYnscXhbvJ2QQFvZ6Ss1wVD9Vgdl8RN+VGj0IvjYWjpCjQnnW2Xp115Z
-         33UAKaPW8ddVE9BCglp69WejxAyB3gMkg4k710k7R741WZgG46RUpRvo8i6a6cdxxlhs
-         QGM7xHRKGoxZnr/gNaci9GzhUr6ItBwg307/59qxzryDHvTCsTf+RbwTBJjXhBVPgkFd
-         hyi2WNIaRGkRHhxMKSARuoTE8ZMGhVhwtlZLDRs5IJu2DSXTXmMWwiD8E3jvvD6BplSg
-         0FCWayja7aYhNPGvYJjoAyPzdIwUvuCHQUnvowYB0/MvvyJzWXHPlxppq/yTIq651B13
-         zwkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version;
-        bh=Nmn0JSXYFz1hIDL1/wW7UG7AeNYS6zrR/HrLEhvymsE=;
-        b=QP+RM3IML4Hf+jZ/rLn2URCp0kQJj+iEN+SaXBGgF2PHkg2+cz2PMxeKkGJU+a9e6R
-         f/UUcCqbu9HDPVZCVdfrwixoE4+lRwOV4K4Tuz7BnFxP5edG8oa3L0NfEc0ILinP0bVn
-         yhKqTTvS/xc5kmBoQ1Ao1sg3Btq6G7KYc8Kln/+07W/Cwt/7FG10DSGQmHZuigUmILRR
-         2Q88IVo+J8augnrJSsOZY5Wa8PdkGSnpp21zTiqCngiUij3jURm/JpFqh7xWKB/DBidu
-         TxDT6OFttkE4IqiWpTcWoAeBnF+VSmUqBgSDSfhgDmNwK+k5Q3hkUJyeFYJqevYi8P5+
-         +B8A==
-X-Gm-Message-State: AOAM531ZTa9xfdgsYiVWH01SchQa79xn7gM2RAfcPKpfT1w4eErPxd2G
-        d0BOXj9rNlCeY9dPRs1uNew=
-X-Google-Smtp-Source: ABdhPJxge2OqSJsRoRKCis0JK1JOOZ0Hr2b1Ohcf8DyG+ZIs9S178aJsxYZE+MEzrO8QphYqbbEt8g==
-X-Received: by 2002:a05:651c:c7:b0:244:f9d7:7c48 with SMTP id 7-20020a05651c00c700b00244f9d77c48mr1800342ljr.300.1645092975792;
-        Thu, 17 Feb 2022 02:16:15 -0800 (PST)
-Received: from eldfell ([194.136.85.206])
-        by smtp.gmail.com with ESMTPSA id t20sm88159lfe.277.2022.02.17.02.16.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Feb 2022 02:16:15 -0800 (PST)
-Date:   Thu, 17 Feb 2022 12:16:12 +0200
-From:   Pekka Paalanen <ppaalanen@gmail.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] linux/fb.h: Spelling s/palette/palette/
-Message-ID: <20220217121612.66011b8c@eldfell>
-In-Reply-To: <20220216083922.2913515-1-geert@linux-m68k.org>
-References: <20220216083922.2913515-1-geert@linux-m68k.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Thu, 17 Feb 2022 05:34:25 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CCEFFF8C
+        for <linux-fbdev@vger.kernel.org>; Thu, 17 Feb 2022 02:34:08 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id B1D5A1F37D;
+        Thu, 17 Feb 2022 10:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1645094047; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=TogbLB2YWZU4Ebgwufr1Y/9MrmIOZddMkz5APOYEyk0=;
+        b=ejSElkuDIFJvnD8mhqer3og8gtKnJc7hI+VIrcQpad3nTbw1WZZEj80+BubB7OCu8a4b8M
+        AMVdKKpM4z4sWHApxq6ROWnPY3+aWPI5hkNGhgJ3s92kfrMnlb4nog2r6trSeKNTIcqUto
+        fDHlzMsv7ohc75VjU4+XFOvT+ayyJY8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1645094047;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=TogbLB2YWZU4Ebgwufr1Y/9MrmIOZddMkz5APOYEyk0=;
+        b=Utrpn1eilMnXnNzAQL9CM4MzrpYhhydPnsCh0IzX4VjMneXiTrj/BwcDaeYFliFbTL2pZ7
+        Q+ROS9kWmQxS9wDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 860A413DD8;
+        Thu, 17 Feb 2022 10:34:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id QuOgH58kDmLQQgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 17 Feb 2022 10:34:07 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     daniel@ffwll.ch, deller@gmx.de, javierm@redhat.com,
+        geert@linux-m68k.org
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/2] fbdev: Improve performance of fbdev console
+Date:   Thu, 17 Feb 2022 11:34:03 +0100
+Message-Id: <20220217103405.26492-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/_HUuAzPNnPIuJlK_Inr6/=4";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---Sig_/_HUuAzPNnPIuJlK_Inr6/=4
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Optimize performance of the fbdev console for the common case of
+software-based clearing and image blitting.
 
-On Wed, 16 Feb 2022 09:39:22 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+The commit descripton of each patch contains resuls os a simple
+microbenchmark. I also tested the full patchset's effect on the
+console output by printing directory listings (i7-4790, FullHD,
+simpledrm, kernel with debugging).
 
-> Fix a misspelling of "palette" in a comment.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
->  include/uapi/linux/fb.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/include/uapi/linux/fb.h b/include/uapi/linux/fb.h
-> index 4c14e8be7267761b..3a49913d006c9bf6 100644
-> --- a/include/uapi/linux/fb.h
-> +++ b/include/uapi/linux/fb.h
-> @@ -182,7 +182,7 @@ struct fb_fix_screeninfo {
->   *
->   * For pseudocolor: offset and length should be the same for all color
->   * components. Offset specifies the position of the least significant bit
-> - * of the pallette index in a pixel value. Length indicates the number
-> + * of the palette index in a pixel value. Length indicates the number
->   * of available palette entries (i.e. # of entries =3D 1 << length).
->   */
->  struct fb_bitfield {
+  > time find /usr/share/doc -type f
 
-Reviewed-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+In the unoptimized case:
 
+  real    0m6.173s
+  user    0m0.044s
+  sys     0m6.107s
 
-Thanks,
-pq
+With optimizations applied:
 
---Sig_/_HUuAzPNnPIuJlK_Inr6/=4
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+  real    0m4.754s
+  user    0m0.044s
+  sys     0m4.698s
 
------BEGIN PGP SIGNATURE-----
+In the optimized case, printing the directory listing is ~25% faster
+than before.
 
-iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmIOIGwACgkQI1/ltBGq
-qqc2wBAAimjDWNfhRvmN1ywJLVoX6Zm68Sz18nAxeBNxhwkSMOU02YP3CbyL2gPA
-Rn0eL/PpbG9sJV1hZqHgskZILdV5u6rNTHY5HBYSV0PAIjSOpNUKHQkXg405vFrm
-ywEx32oUFuUIGV+c455v6qy1kubU/GwBRdXvFiD+IX+VgenW6I9fu71ZPJeq6D0f
-Vhb0p48pd03hBLhgs0405OvHcOra/4aPcFHhx57AVd7DGDvOS0PGmhElCLluKeiB
-5CLtAh1MC1Y7nafoRNJ5hquOCx14kWPBk1cOmxGcZ5RP9aA/66gKnB7wE7UVYNP9
-TIiKr68O6ocvuKy5iBYgjmXWabugbIvl+YozDKj/UvQpRcE5UxiHUjLu3mYYfypb
-OTuOPTbJiTtTjvnMkwk16ex/SwLEd3tK1c0wubbnZ/RcW3vlrL23IX72b6bYohca
-/jIIU3r7WCZdCYa5qmdkfAkm2sDbOw0YqHT1JseGvqdG53Cp+9YtUdsd7wXF3xhL
-CWMLhI94FQOUmfOcDhBWvgq2Lpe5uhh/daAQsaZUfYO1oBQWaw1GRPLg6urnTouC
-YSP17QPPkG6pjEY3XhQeWsPaFXxCTCu+4FoqZSpuC8lEjrA/ObuziSr8/uvNoZW1
-fRLJYTvVwt7vyEPohUvwIwBImwajIV6rnJS7V8j4fQj+SdW+Czg=
-=75si
------END PGP SIGNATURE-----
+Thomas Zimmermann (2):
+  fbdev: Improve performance of sys_fillrect()
+  fbdev: Improve performance of sys_imageblit()
 
---Sig_/_HUuAzPNnPIuJlK_Inr6/=4--
+ drivers/video/fbdev/core/sysfillrect.c | 16 ++------
+ drivers/video/fbdev/core/sysimgblt.c   | 51 ++++++++++++++++++++------
+ 2 files changed, 42 insertions(+), 25 deletions(-)
+
+-- 
+2.34.1
+
