@@ -2,117 +2,119 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A094C5144
-	for <lists+linux-fbdev@lfdr.de>; Fri, 25 Feb 2022 23:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB0E64C537F
+	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Feb 2022 04:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235770AbiBYWMC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Feb 2022 17:12:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
+        id S229685AbiBZDM0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 25 Feb 2022 22:12:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235406AbiBYWMB (ORCPT
+        with ESMTP id S229655AbiBZDMZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Feb 2022 17:12:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7351E52E17
-        for <linux-fbdev@vger.kernel.org>; Fri, 25 Feb 2022 14:11:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1645827088;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=j3VxtWAMog8m5ArNU/BgenbWuy7FcGC+lz0O8q97Sw8=;
-        b=Rewd7viwx0OkgPiaqXpobyInoqsiuuerWpBNC106v713Afn/XHSb2peqa4G1s3kaTv7N6p
-        uSakCapbVyrMYHknpbg1mpS28HKX2h8xwOz7vET0YP5VWbMG6veipUI+zK7QcfhtqEYJ1l
-        8fB44oX7A2E9yFzHgkxII8ap0CAhzNI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-403-dZSR364iOa6eJp7RVph1zA-1; Fri, 25 Feb 2022 17:11:27 -0500
-X-MC-Unique: dZSR364iOa6eJp7RVph1zA-1
-Received: by mail-wr1-f72.google.com with SMTP id p9-20020adf9589000000b001e333885ac1so1172833wrp.10
-        for <linux-fbdev@vger.kernel.org>; Fri, 25 Feb 2022 14:11:27 -0800 (PST)
+        Fri, 25 Feb 2022 22:12:25 -0500
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40DFC2671EB
+        for <linux-fbdev@vger.kernel.org>; Fri, 25 Feb 2022 19:11:52 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id y5so2696000wmi.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 25 Feb 2022 19:11:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=1WmTiruYcLYjgfCVpwaSh4JcERuBX8rKufTgiQZnbQI=;
+        b=BoqVQHt6JQ5I7JtsAWqwrjbfn676fu98HobhqaiOHHD1sRoS3hA18X7nI2SVy+M+WP
+         hiQUZBOE1sHRErmv1tEiQgtvwDoSPWc2P+uqdMjbYpGHNNEINDkfj4G2VamoWPNLKTw6
+         ZrNp6QT4hGAT0hNGeBULSBRpBQSRcwFg/T1ZZQ1hF7jxfMOtOYzuKwjq3CUHRJGlU3KT
+         r3KpAH2NXK7xHdO1cea/fmOErT5J0DQcPK+IyqcROjigOp+ArFXI3mxvmSS8yBbYZMET
+         v+5ACRSXLz3MqwJ/vfTxFpnh0vNqOGsLuQyv3QV8cPn1BmjQMKnXpdk96B7Z61AsZ13v
+         vAog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=j3VxtWAMog8m5ArNU/BgenbWuy7FcGC+lz0O8q97Sw8=;
-        b=C6LM1F3SmeHVWE1EIC1/tOm6gnbxZ8uZr7jQMzHr1X+WbQdh9S7lvr/mdHX0dcgc6x
-         WaNkEDnH8NlEpEjtaH6aNIXmbXNYGy7DieL1ALrFbMbHn8I5E1/4KpbutibzWf/9FZtK
-         PbGc3A7bbka/lVhXLEegbY/Bisa+KQLgB/uorbORntiCYujbRi68pQ6VDEth1afTlX2A
-         M4iWR5gOa9kQfeGOht+ux6TUBFpS4Pt7H0KkUjitV7vlqX8rtfunAVgjNpWB97yksgDj
-         fHIPrnBOg8Ksf2H4C9J82JR5B9iqZYu8BR+/syPeFF4q+SqXtFZ9p4rijaT/psjduNFn
-         SNjg==
-X-Gm-Message-State: AOAM533XSxB2Z/HLd9AiGBHE7AAicwToYMtcVLuswfAfjEmbf4HdgYp6
-        Jj5xoB6zbaeT6KSp/KYcRWbuv8kl6+hux6d9vSDDh0NUqKhCgTDxITF8eVjYOmGWsRXe8GnFsoy
-        Mq5wdlAFhc6EY1Kq8alIXSKo=
-X-Received: by 2002:adf:e3d0:0:b0:1ea:9be0:3162 with SMTP id k16-20020adfe3d0000000b001ea9be03162mr7706146wrm.205.1645827086222;
-        Fri, 25 Feb 2022 14:11:26 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxpYbnDqQh/prWaTqz6c8tOt2xrJUKB8Clt1MsSwRkjB7ijhcF6OjzqFxBwoqAxNJNzJXwD4g==
-X-Received: by 2002:adf:e3d0:0:b0:1ea:9be0:3162 with SMTP id k16-20020adfe3d0000000b001ea9be03162mr7706135wrm.205.1645827086036;
-        Fri, 25 Feb 2022 14:11:26 -0800 (PST)
-Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id l26-20020a05600c1d1a00b00380def7d3desm3652202wms.17.2022.02.25.14.11.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Feb 2022 14:11:25 -0800 (PST)
-Message-ID: <272b6278-b153-1e12-a542-0f9706c592a6@redhat.com>
-Date:   Fri, 25 Feb 2022 23:11:24 +0100
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to:content-transfer-encoding;
+        bh=1WmTiruYcLYjgfCVpwaSh4JcERuBX8rKufTgiQZnbQI=;
+        b=7dMsNRf4PA9lmItF12P+VSHJZt3z90Ddtm+TRT7HwdDmJeGLNk0wxWRrSjUmIDDisL
+         vABPkihM3Jf0xTK2F3RCI7XygFLzFTI7+gFGdpfTTt1c1ox34ONJ+4dRlP4Gcg03Zdp4
+         H6DPaiH3VmZi+FMWlDpb2BMErOORljfEiRRHuwBa7CTpyIQ8ERsW+iVPU/yfAUMlE9l2
+         MtM38TISFDgiyLGsOzbwyCJVLVZT9KlyepFmzXBR8wH5ovjJ7cDuzU0I9Z2pv6Cugz/b
+         5NvRKJ0z6KBo42FsAj0CtpusgTSzWrUb5/fz8NUHcWOTQS9Np0Fo/btWGUumrAfsUKvS
+         pGCA==
+X-Gm-Message-State: AOAM530RcVFUc8Fb6its+F4cwarcgpABHv/bUFVzlrNTFKgwH7t0GUel
+        V80SD9nYUF+rsRxfjb34qvggQXMzyYDHaUzozI4=
+X-Google-Smtp-Source: ABdhPJynBaHqyA9yHQVDtUXwYZu1XZSnKSikSc2o1MJUOrZ2kl3jzS0+YiR6UJwkMky63l/7BUQbuGZeFCU8Z4g9pcs=
+X-Received: by 2002:a05:600c:a4b:b0:37b:ea2b:5583 with SMTP id
+ c11-20020a05600c0a4b00b0037bea2b5583mr5104668wmq.139.1645845110032; Fri, 25
+ Feb 2022 19:11:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v4 3/3] efifb: Remove redundant efifb_setup_from_dmi stub
-Content-Language: en-US
-To:     Michal Suchanek <msuchanek@suse.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Martin Mares <mj@ucw.cz>,
-        Helge Deller <deller@gmx.de>, Ard Biesheuvel <ardb@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        David Herrmann <dh.herrmann@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-video@atrey.karlin.mff.cuni.cz,
-        linux-efi@vger.kernel.org
-References: <1f13e6f2-a87c-83ac-7119-8632c8c8ac8e@redhat.com>
- <7416c439d68e9e96068ea5c77e05c99c7df41750.1645822213.git.msuchanek@suse.de>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <7416c439d68e9e96068ea5c77e05c99c7df41750.1645822213.git.msuchanek@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Sender: ag2439229@gmail.com
+Received: by 2002:adf:c793:0:0:0:0:0 with HTTP; Fri, 25 Feb 2022 19:11:49
+ -0800 (PST)
+From:   aisha gaddafi <madamisha00@gmail.com>
+Date:   Sat, 26 Feb 2022 04:11:49 +0100
+X-Google-Sender-Auth: PBXvlLd4xQgHcAfA8zzlHoyNdQA
+Message-ID: <CALz623FZ2SReVUMHC8AK13M9qK+f=gw4ko=n_dTUbaef5=g40w@mail.gmail.com>
+Subject: I want to invest in your country
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,MILLION_HUNDRED,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY,URG_BIZ autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [ag2439229[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [madamisha00[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.6 URG_BIZ Contains urgent matter
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  3.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 2/25/22 21:51, Michal Suchanek wrote:
-> efifb is the only user of efifb_setup_from_dmi which is provided by
-> sysfb which is selected by efifb. That makes the stub redundant.
-> 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
+--=20
+Greetings Sir/Madam.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-
--- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+I want to invest in your country
+May i use this medium to open a mutual communication with you, and
+seeking your acceptance towards investing in your country under your
+management as my partner, My name is Aisha Gaddafi , i am a Widow and
+single Mother with three Children, the only biological Daughter of
+late Libyan President (Late Colonel Muammar Gaddafi) and presently i
+am under political asylum protection by the  Government of this
+nation.
+I have funds worth =E2=80=9CTwenty Seven Million Five Hundred Thousand Unit=
+ed
+State Dollars=E2=80=9D -$27.500.000.00 US Dollars which i want to entrust o=
+n
+you for investment project in your country. If you are willing to
+handle this project on my behalf, kindly reply urgent to enable me
+provide you more details to start the transfer process.
+I shall appreciate your urgent response through my email address
+below: madamgadafiaisha@gmail.com
+Thanks
+Yours Truly Aisha
