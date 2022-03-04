@@ -2,245 +2,581 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D4C4CC769
-	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Mar 2022 21:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 585054CCBE7
+	for <lists+linux-fbdev@lfdr.de>; Fri,  4 Mar 2022 03:43:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236368AbiCCU7d (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 3 Mar 2022 15:59:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58952 "EHLO
+        id S232537AbiCDCnz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 3 Mar 2022 21:43:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236395AbiCCU7b (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 3 Mar 2022 15:59:31 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1300342EE3
-        for <linux-fbdev@vger.kernel.org>; Thu,  3 Mar 2022 12:58:45 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 92ACF1F387;
-        Thu,  3 Mar 2022 20:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1646341123; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UGKPWdswBenK67eQjyzqzCZAIpf0aWbVZ9VytjJasTw=;
-        b=u5ehuTqRLSvIpHum2nwBwBaKqq+xFxMDx7RiR8Ny5v2Y50i5Z8asdG70yJMb5HGmb9zlsx
-        ZvtSmDXulMJXYnzTDeJsHkMqAvBYnN66dxtESSYO+oZrqawICWGDuWA2FvpDYCjTPv9yU5
-        GouRFKZDasJSxqhK+KY3gSBuukJA3R4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1646341123;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UGKPWdswBenK67eQjyzqzCZAIpf0aWbVZ9VytjJasTw=;
-        b=r61MdzQz4lpwo78o/VqXJ878NqMVOZUueoFBSDJZgwLBrXo5BofSAWM4WPg6c1eqqZGdjv
-        Pv1lLE5wDG3eHGBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5F4D613AEE;
-        Thu,  3 Mar 2022 20:58:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id EGpWFgMsIWJoHAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 03 Mar 2022 20:58:43 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     daniel@ffwll.ch, airlied@linux.ie, mripard@kernel.org,
-        maarten.lankhorst@linux.intel.com, deller@gmx.de,
-        javierm@redhat.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 9/9] drm/virtio: Implement dumb_create_fbdev with GEM SHMEM helpers
-Date:   Thu,  3 Mar 2022 21:58:39 +0100
-Message-Id: <20220303205839.28484-10-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220303205839.28484-1-tzimmermann@suse.de>
-References: <20220303205839.28484-1-tzimmermann@suse.de>
+        with ESMTP id S231310AbiCDCny (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 3 Mar 2022 21:43:54 -0500
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA245D5FB;
+        Thu,  3 Mar 2022 18:43:01 -0800 (PST)
+X-UUID: ddcd53243d804e7dac19bd61d4c6cad4-20220304
+X-UUID: ddcd53243d804e7dac19bd61d4c6cad4-20220304
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <ck.hu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1831687328; Fri, 04 Mar 2022 10:42:55 +0800
+Received: from mtkexhb02.mediatek.inc (172.21.101.103) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 4 Mar 2022 10:42:53 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by mtkexhb02.mediatek.inc
+ (172.21.101.103) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 4 Mar
+ 2022 10:42:53 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Fri, 4 Mar 2022 10:42:53 +0800
+Message-ID: <5c86954704df2c4e71cca2ce10c35641b65c78f1.camel@mediatek.com>
+Subject: Re: [PATCH v8 15/19] drm/mediatek: Add mt8195 Embedded DisplayPort
+ driver
+From:   CK Hu <ck.hu@mediatek.com>
+To:     Guillaume Ranquet <granquet@baylibre.com>,
+        <chunkuang.hu@kernel.org>, <p.zabel@pengutronix.de>,
+        <airlied@linux.ie>, <daniel@ffwll.ch>, <robh+dt@kernel.org>,
+        <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>,
+        <chunfeng.yun@mediatek.com>, <kishon@ti.com>, <vkoul@kernel.org>,
+        <deller@gmx.de>, <jitao.shi@mediatek.com>,
+        <angelogioacchino.delregno@collabora.com>
+CC:     <dri-devel@lists.freedesktop.org>,
+        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-phy@lists.infradead.org>, <linux-fbdev@vger.kernel.org>,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        kernel test robot <lkp@intel.com>
+Date:   Fri, 4 Mar 2022 10:42:53 +0800
+In-Reply-To: <20220218145437.18563-16-granquet@baylibre.com>
+References: <20220218145437.18563-1-granquet@baylibre.com>
+         <20220218145437.18563-16-granquet@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Implement struct drm_driver.dumb_create_fbdev with the helpers
-provided by GEM SHMEM. Fbdev deferred I/O will now work without
-an intermediate shadow buffer for mmap.
+Hi, Guillaume:
 
-As the virtio driver replaces several of the regular GEM SHMEM
-functions with its own implementation, some additional code is
-necessary make fbdev optimization work. Especially, the driver
-has to provide buffer-object functions for fbdev. Add the hook
-struct drm_driver.gem_create_object_fbdev, which is similar to
-struct drm_driver.gem_create_object and allows for the creation
-of dedicated fbdev buffer objects. Wire things up within GEM
-SHMEM.
+On Fri, 2022-02-18 at 15:54 +0100, Guillaume Ranquet wrote:
+> From: Markus Schneider-Pargmann <msp@baylibre.com>
+> 
+> This patch adds a DisplayPort driver for the Mediatek mt8195 SoC.
+> 
+> It supports the mt8195, the embedded DisplayPort units. It offers
+> hot-plug-detection and DisplayPort 1.4 with up to 4 lanes.
+> 
+> The driver creates a child device for the phy. The child device will
+> never exist without the parent being active. As they are sharing a
+> register range, the parent passes a regmap pointer to the child so
+> that
+> both can work with the same register range. The phy driver sets
+> device
+> data that is read by the parent to get the phy device that can be
+> used
+> to control the phy properties.
+> 
+> This driver is based on an initial version by
+> Jason-JH.Lin <jason-jh.lin@mediatek.com>.
+> 
+> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> ---
+>  drivers/gpu/drm/mediatek/Kconfig       |    7 +
+>  drivers/gpu/drm/mediatek/Makefile      |    2 +
+>  drivers/gpu/drm/mediatek/mtk_dp.c      | 2358
+> ++++++++++++++++++++++++
+>  drivers/gpu/drm/mediatek/mtk_dp_reg.h  |  568 ++++++
+>  drivers/gpu/drm/mediatek/mtk_drm_drv.c |    1 +
+>  drivers/gpu/drm/mediatek/mtk_drm_drv.h |    1 +
+>  6 files changed, 2937 insertions(+)
+>  create mode 100644 drivers/gpu/drm/mediatek/mtk_dp.c
+>  create mode 100644 drivers/gpu/drm/mediatek/mtk_dp_reg.h
+> 
+> 
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/gpu/drm/drm_gem_shmem_helper.c  |  7 +++-
- drivers/gpu/drm/virtio/virtgpu_drv.c    |  2 +
- drivers/gpu/drm/virtio/virtgpu_drv.h    |  2 +
- drivers/gpu/drm/virtio/virtgpu_object.c | 54 +++++++++++++++++++++++--
- include/drm/drm_drv.h                   | 10 +++++
- 5 files changed, 71 insertions(+), 4 deletions(-)
+[snip]
 
-diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index ab7cb7d896c3..225aa17895bd 100644
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -71,7 +71,12 @@ __drm_gem_shmem_create(struct drm_device *dev, size_t size, bool private, bool f
- 
- 	size = PAGE_ALIGN(size);
- 
--	if (dev->driver->gem_create_object) {
-+	if (dev->driver->gem_create_object_fbdev && fbdev) {
-+		obj = dev->driver->gem_create_object_fbdev(dev, size);
-+		if (IS_ERR(obj))
-+			return ERR_CAST(obj);
-+		shmem = to_drm_gem_shmem_obj(obj);
-+	} else if (dev->driver->gem_create_object) {
- 		obj = dev->driver->gem_create_object(dev, size);
- 		if (IS_ERR(obj))
- 			return ERR_CAST(obj);
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index 5f25a8d15464..ee414f6e785a 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -203,6 +203,7 @@ static const struct drm_driver driver = {
- 	.postclose = virtio_gpu_driver_postclose,
- 
- 	.dumb_create = virtio_gpu_mode_dumb_create,
-+	.dumb_create_fbdev = virtio_gpu_mode_dumb_create, // same as dumb_create
- 	.dumb_map_offset = virtio_gpu_mode_dumb_mmap,
- 
- #if defined(CONFIG_DEBUG_FS)
-@@ -215,6 +216,7 @@ static const struct drm_driver driver = {
- 	.gem_prime_import_sg_table = virtgpu_gem_prime_import_sg_table,
- 
- 	.gem_create_object = virtio_gpu_create_object,
-+	.gem_create_object_fbdev = virtio_gpu_create_object_fbdev,
- 	.fops = &virtio_gpu_driver_fops,
- 
- 	.ioctls = virtio_gpu_ioctls,
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
-index 0a194aaad419..71556c21c029 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.h
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
-@@ -449,6 +449,8 @@ void virtio_gpu_fence_event_process(struct virtio_gpu_device *vdev,
- void virtio_gpu_cleanup_object(struct virtio_gpu_object *bo);
- struct drm_gem_object *virtio_gpu_create_object(struct drm_device *dev,
- 						size_t size);
-+struct drm_gem_object *virtio_gpu_create_object_fbdev(struct drm_device *dev,
-+						      size_t size);
- int virtio_gpu_object_create(struct virtio_gpu_device *vgdev,
- 			     struct virtio_gpu_object_params *params,
- 			     struct virtio_gpu_object **bo_ptr,
-diff --git a/drivers/gpu/drm/virtio/virtgpu_object.c b/drivers/gpu/drm/virtio/virtgpu_object.c
-index f293e6ad52da..255f2d650451 100644
---- a/drivers/gpu/drm/virtio/virtgpu_object.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_object.c
-@@ -132,8 +132,8 @@ bool virtio_gpu_is_shmem(struct virtio_gpu_object *bo)
- 	return bo->base.base.funcs == &virtio_gpu_shmem_funcs;
- }
- 
--struct drm_gem_object *virtio_gpu_create_object(struct drm_device *dev,
--						size_t size)
-+static struct drm_gem_object *__virtio_gpu_create_object(struct drm_device *dev,
-+							 size_t size)
- {
- 	struct virtio_gpu_object_shmem *shmem;
- 	struct drm_gem_shmem_object *dshmem;
-@@ -143,10 +143,58 @@ struct drm_gem_object *virtio_gpu_create_object(struct drm_device *dev,
- 		return ERR_PTR(-ENOMEM);
- 
- 	dshmem = &shmem->base.base;
--	dshmem->base.funcs = &virtio_gpu_shmem_funcs;
- 	return &dshmem->base;
- }
- 
-+struct drm_gem_object *virtio_gpu_create_object(struct drm_device *dev,
-+						size_t size)
-+{
-+	struct drm_gem_object *obj;
-+
-+	obj = __virtio_gpu_create_object(dev, size);
-+	if (IS_ERR(obj))
-+		return obj;
-+	obj->funcs = &virtio_gpu_shmem_funcs;
-+
-+	return obj;
-+}
-+
-+#if defined(CONFIG_DRM_FBDEV_EMULATION)
-+static const struct drm_gem_object_funcs virtio_gpu_shmem_funcs_fbdev = {
-+	.free = virtio_gpu_free_object,
-+	.open = virtio_gpu_gem_object_open,
-+	.close = virtio_gpu_gem_object_close,
-+	.print_info = drm_gem_shmem_object_print_info,
-+	.export = virtgpu_gem_prime_export,
-+	.pin = drm_gem_shmem_object_pin,
-+	.unpin = drm_gem_shmem_object_unpin,
-+	.get_sg_table = drm_gem_shmem_object_get_sg_table,
-+	.vmap = drm_gem_shmem_object_vmap,
-+	.vunmap = drm_gem_shmem_object_vunmap,
-+	.mmap = drm_gem_shmem_object_mmap_fbdev,
-+	.vm_ops = &drm_gem_shmem_vm_ops_fbdev,
-+};
-+
-+struct drm_gem_object *virtio_gpu_create_object_fbdev(struct drm_device *dev,
-+						      size_t size)
-+{
-+	struct drm_gem_object *obj;
-+
-+	obj = __virtio_gpu_create_object(dev, size);
-+	if (IS_ERR(obj))
-+		return obj;
-+	obj->funcs = &virtio_gpu_shmem_funcs_fbdev;
-+
-+	return obj;
-+}
-+#else
-+struct drm_gem_object *virtio_gpu_create_object_fbdev(struct drm_device *dev,
-+						      size_t size)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
-+#endif
-+
- static int virtio_gpu_object_shmem_init(struct virtio_gpu_device *vgdev,
- 					struct virtio_gpu_object *bo,
- 					struct virtio_gpu_mem_entry **ents,
-diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
-index da4a095de1e7..9081281c1f39 100644
---- a/include/drm/drm_drv.h
-+++ b/include/drm/drm_drv.h
-@@ -298,6 +298,16 @@ struct drm_driver {
- 	struct drm_gem_object *(*gem_create_object)(struct drm_device *dev,
- 						    size_t size);
- 
-+	/**
-+	 * @gem_create_object_fbdev: constructor for gem objects that back fbdev
-+	 *
-+	 * Hook for allocating the GEM object struct, for use by the CMA
-+	 * and SHMEM GEM helpers. Returns a GEM object on success, or an
-+	 * ERR_PTR()-encoded error code otherwise.
-+	 */
-+	struct drm_gem_object *(*gem_create_object_fbdev)(struct drm_device *dev,
-+							  size_t size);
-+
- 	/**
- 	 * @prime_handle_to_fd:
- 	 *
--- 
-2.35.1
+> +
+> +struct mtk_dp_train_info {
+> +	bool tps3;
+> +	bool tps4;
+> +	bool sink_ssc;
+> +	bool cable_plugged_in;
+
+Move to external display port patch.
+
+> +	bool cable_state_change;
+
+Move to external display port patch.
+
+> +	bool cr_done;
+> +	bool eq_done;
+> +
+> +	// link_rate is in multiple of 0.27Gbps
+> +	int link_rate;
+> +	int lane_count;
+> +
+> +	int irq_status;
+
+Move to external display port patch.
+
+> +	int check_cap_count;
+> +};
+> +
+> 
+
+[snip]
+
+> +
+> +// Same values as used for DP Spec MISC0 bits 5,6,7
+> +enum mtk_dp_color_depth {
+> +	MTK_DP_COLOR_DEPTH_6BIT = 0,
+> +	MTK_DP_COLOR_DEPTH_8BIT = 1,
+
+Only 8bits is used, so drop other definition.
+
+> +	MTK_DP_COLOR_DEPTH_10BIT = 2,
+> +	MTK_DP_COLOR_DEPTH_12BIT = 3,
+> +	MTK_DP_COLOR_DEPTH_16BIT = 4,
+> +	MTK_DP_COLOR_DEPTH_UNKNOWN = 5,
+> +};
+> +
+> 
+
+[snip]
+
+> +
+> +struct mtk_dp {
+> +	struct device *dev;
+> +	struct platform_device *phy_dev;
+> +	struct phy *phy;
+> +	struct dp_cal_data cal_data;
+> +
+> +	struct drm_device *drm_dev;
+> +	struct drm_bridge bridge;
+> +	struct drm_bridge *next_bridge;
+> +	struct drm_dp_aux aux;
+> +
+> +	/* Protects edid as it is used in both bridge ops and IRQ
+> handler */
+> +	struct mutex edid_lock;
+> +	struct edid *edid;
+> +
+> +	u8 rx_cap[DP_RECEIVER_CAP_SIZE];
+> +
+> +	struct mtk_dp_info info;
+> +	enum mtk_dp_state state;
+> +
+> +	struct mtk_dp_train_info train_info;
+> +	enum mtk_dp_train_state train_state;
+> +	unsigned int input_fmt;
+> +
+> +	struct regmap *regs;
+> +	struct clk *dp_tx_clk;
+> +
+> +	bool enabled;
+> +
+> +	bool has_fec;
+> +	/* Protects the mtk_dp struct */
+> +	struct mutex dp_lock;
+> +
+> +	hdmi_codec_plugged_cb plugged_cb;
+> +	struct device *codec_dev;
+> +	u8 connector_eld[MAX_ELD_BYTES];
+
+Move this to dp audio patch.
+
+> +	struct drm_connector *conn;
+> +};
+> +
+> 
+
+[snip]
+
+> +
+> +static void mtk_dp_set_color_format(struct mtk_dp *mtk_dp,
+> +				    enum mtk_dp_color_format
+> color_format)
+> +{
+> +	u32 val;
+> +
+> +	mtk_dp->info.format = color_format;
+
+When call into this function from mtk_dp_video_config(), it calls
+
+mtk_dp_set_color_format(mtk_dp, mtk_dp->info.format);
+
+It looks weird that you pass mtk_dp->info.format into this function and
+set it to it. So I would like this function to be pure register
+setting, and move this variable keeping out of this function.
+
+
+> +
+> +	// Update MISC0
+> +	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_3034,
+> +			   color_format << DP_TEST_COLOR_FORMAT_SHIFT,
+> +			   DP_TEST_COLOR_FORMAT_MASK);
+> +
+> +	switch (color_format) {
+> +	case MTK_DP_COLOR_FORMAT_YUV_422:
+> +		val = PIXEL_ENCODE_FORMAT_DP_ENC0_P0_YCBCR422;
+> +		break;
+> +	case MTK_DP_COLOR_FORMAT_YUV_420:
+> +		val = PIXEL_ENCODE_FORMAT_DP_ENC0_P0_YCBCR420;
+> +		break;
+> +	case MTK_DP_COLOR_FORMAT_YONLY:
+> +	case MTK_DP_COLOR_FORMAT_RAW:
+> +	case MTK_DP_COLOR_FORMAT_RESERVED:
+> +	case MTK_DP_COLOR_FORMAT_UNKNOWN:
+> +		drm_warn(mtk_dp->drm_dev, "Unsupported color format:
+> %d\n",
+> +			 color_format);
+> +		fallthrough;
+> +	case MTK_DP_COLOR_FORMAT_RGB_444:
+> +	case MTK_DP_COLOR_FORMAT_YUV_444:
+> +		val = PIXEL_ENCODE_FORMAT_DP_ENC0_P0_RGB;
+> +		break;
+> +	}
+> +
+> +	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_303C, val,
+> +			   PIXEL_ENCODE_FORMAT_DP_ENC0_P0_MASK);
+> +}
+> +
+> 
+
+[snip]
+
+> +
+> +static void mtk_dp_pg_disable(struct mtk_dp *mtk_dp)
+> +{
+> +	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_3038, 0,
+> +			   VIDEO_SOURCE_SEL_DP_ENC0_P0_MASK);
+> +	mtk_dp_update_bits(mtk_dp, MTK_DP_ENC0_P0_31B0,
+> +			   4 << PGEN_PATTERN_SEL_SHIFT,
+> PGEN_PATTERN_SEL_MASK);
+> +}
+> +
+> +static bool mtk_dp_plug_state(struct mtk_dp *mtk_dp)
+
+Move this function to external dp patch.
+
+> +{
+> +	return !!(mtk_dp_read(mtk_dp, MTK_DP_TRANS_P0_3414) &
+> +		  HPD_DB_DP_TRANS_P0_MASK);
+> +}
+> +
+> 
+
+[snip]
+
+> +
+> +static void mtk_dp_train_set_pattern(struct mtk_dp *mtk_dp, int
+> pattern)
+> +{
+> +	if (pattern < 0 || pattern > 4) {
+
+Never happen, remove this checking.
+
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Implementation error, no such pattern %d\n",
+> pattern);
+> +		return;
+> +	}
+> +
+> +	if (pattern == 1) // TPS1
+> +		mtk_dp_set_idle_pattern(mtk_dp, false);
+> +
+> +	mtk_dp_update_bits(mtk_dp,
+> +			   MTK_DP_TRANS_P0_3400,
+> +			   pattern ? BIT(pattern - 1) <<
+> PATTERN1_EN_DP_TRANS_P0_SHIFT : 0,
+> +			   PATTERN1_EN_DP_TRANS_P0_MASK |
+> PATTERN2_EN_DP_TRANS_P0_MASK |
+> +			   PATTERN3_EN_DP_TRANS_P0_MASK |
+> +			   PATTERN4_EN_DP_TRANS_P0_MASK);
+> +}
+> +
+> 
+
+[snip]
+
+> +
+> +static void mtk_dp_setup_tu(struct mtk_dp *mtk_dp)
+> +{
+> +	u32 sram_read_start = MTK_DP_TBC_BUF_READ_START_ADDR;
+
+It's not necessary to have a initial value.
+
+> +
+> +	if (mtk_dp->train_info.lane_count > 0) {
+> +		sram_read_start = min_t(u32,
+> +					MTK_DP_TBC_BUF_READ_START_ADDR,
+> +					mtk_dp->info.timings.vm.hactive 
+> /
+> +					(mtk_dp->train_info.lane_count
+> * 4 * 2 * 2));
+> +		mtk_dp_set_sram_read_start(mtk_dp, sram_read_start);
+> +	}
+> +
+> +	mtk_dp_setup_encoder(mtk_dp);
+> +}
+> +
+> 
+
+[snip]
+
+> +static void mtk_dp_train_handler(struct mtk_dp *mtk_dp)
+> +{
+> +	int ret = 0;
+> +	int i = 50;
+> +
+> +	do {
+> +		if (mtk_dp->train_state == MTK_DP_TRAIN_STATE_NORMAL)
+> +			continue;
+> +
+> +		switch (mtk_dp->train_state) {
+> +		case MTK_DP_TRAIN_STATE_STARTUP:
+> +			mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_CHECKCAP;
+> +			break;
+> +
+> +		case MTK_DP_TRAIN_STATE_CHECKCAP:
+> +			if (mtk_dp_parse_capabilities(mtk_dp)) {
+> +				mtk_dp->train_info.check_cap_count = 0;
+> +				mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_CHECKEDID;
+> +			} else {
+> +				mtk_dp->train_info.check_cap_count++;
+> +
+> +				if (mtk_dp->train_info.check_cap_count
+> >
+> +					MTK_DP_CHECK_SINK_CAP_TIMEOUT_C
+> OUNT) {
+> +					mtk_dp-
+> >train_info.check_cap_count = 0;
+> +					mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_DPIDLE;
+> +					ret = -ETIMEDOUT;
+> +				}
+> +			}
+> +			break;
+> +
+> +		case MTK_DP_TRAIN_STATE_CHECKEDID:
+> +			mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_TRAINING_PRE;
+> +			break;
+> +
+> +		case MTK_DP_TRAIN_STATE_TRAINING_PRE:
+> +			mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_TRAINING;
+> +			break;
+> +
+> +		case MTK_DP_TRAIN_STATE_TRAINING:
+> +			ret = mtk_dp_train_start(mtk_dp);
+> +			if (!ret) {
+> +				mtk_dp_video_mute(mtk_dp, true);
+> +				mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_NORMAL;
+> +				mtk_dp_fec_enable(mtk_dp, mtk_dp-
+> >has_fec);
+> +			} else if (ret != -EAGAIN) {
+> +				mtk_dp->train_state =
+> MTK_DP_TRAIN_STATE_DPIDLE;
+> +			}
+> +
+> +			ret = 0;
+> +			break;
+> +
+> +		case MTK_DP_TRAIN_STATE_NORMAL:
+> +			break;
+> +		case MTK_DP_TRAIN_STATE_DPIDLE:
+> +			break;
+> +		default:
+
+You have list all 7 states, why need default?
+
+> +			break;
+> +		}
+> +	} while (ret && i--);
+
+Why keep in this loop while error happen?
+
+> +
+> +	if (ret)
+> +		drm_err(mtk_dp->drm_dev, "Train handler failed %d\n",
+> ret);
+> +}
+> +
+> 
+
+[snip]
+
+> +static void mtk_dp_state_handler(struct mtk_dp *mtk_dp)
+> +{
+> +	switch (mtk_dp->state) {
+> +	case MTK_DP_STATE_INITIAL:
+> +		mtk_dp_video_mute(mtk_dp, true);
+> +		mtk_dp->state = MTK_DP_STATE_IDLE;
+> +		break;
+> +
+> +	case MTK_DP_STATE_IDLE:
+> +		if (mtk_dp->train_state == MTK_DP_TRAIN_STATE_NORMAL)
+> +			mtk_dp->state = MTK_DP_STATE_PREPARE;
+> +		break;
+> +
+> +	case MTK_DP_STATE_PREPARE:
+> +		mtk_dp_video_config(mtk_dp);
+> +		mtk_dp_video_enable(mtk_dp, true);
+> +
+> +		mtk_dp->state = MTK_DP_STATE_NORMAL;
+> +		break;
+> +
+> +	case MTK_DP_STATE_NORMAL:
+> +		if (mtk_dp->train_state != MTK_DP_TRAIN_STATE_NORMAL) {
+> +			mtk_dp_video_mute(mtk_dp, true);
+> +			mtk_dp->state = MTK_DP_STATE_IDLE;
+> +		}
+> +		break;
+> +
+> +	default:
+
+There is no default case, so remove this.
+
+> +		break;
+> +	}
+> +}
+> +
+> 
+
+[snip]
+
+> +
+> +static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+> +				    struct drm_connector *connector)
+> +{
+> +	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
+> +	bool enabled = mtk_dp->enabled;
+> +	struct edid *new_edid = NULL;
+> +
+> +	if (!enabled)
+
+Would DRM core make this happen?
+
+> +		drm_bridge_chain_pre_enable(bridge);
+> +
+> +	drm_dp_dpcd_writeb(&mtk_dp->aux, DP_SET_POWER,
+> DP_SET_POWER_D0);
+> +	usleep_range(2000, 5000);
+> +
+> +	if (mtk_dp_plug_state(mtk_dp))
+> +		new_edid = drm_get_edid(connector, &mtk_dp->aux.ddc);
+> +
+> +	if (!enabled)
+> +		drm_bridge_chain_post_disable(bridge);
+> +
+> +	mutex_lock(&mtk_dp->edid_lock);
+> +	kfree(mtk_dp->edid);
+> +	mtk_dp->edid = NULL;
+> +
+> +	if (!new_edid) {
+> +		mutex_unlock(&mtk_dp->edid_lock);
+> +		return NULL;
+> +	}
+> +
+> +	mtk_dp->edid = drm_edid_duplicate(new_edid);
+> +	mutex_unlock(&mtk_dp->edid_lock);
+> +
+> +	return new_edid;
+> +}
+> +
+> 
+
+[snip]
+
+> +
+> +static void mtk_dp_bridge_atomic_enable(struct drm_bridge *bridge,
+> +					struct drm_bridge_state
+> *old_state)
+> +{
+> +	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
+> +	struct drm_connector_state *conn_state;
+> +	struct drm_crtc *crtc;
+> +	struct drm_crtc_state *crtc_state;
+> +
+> +	mtk_dp->conn =
+> drm_atomic_get_new_connector_for_encoder(old_state->base.state,
+> +								bridge-
+> >encoder);
+> +	if (!mtk_dp->conn) {
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Can't enable bridge as connector is
+> missing\n");
+> +		return;
+> +	}
+> +
+> +	memcpy(mtk_dp->connector_eld, mtk_dp->conn->eld,
+> MAX_ELD_BYTES);
+> +
+> +	conn_state =
+> +		drm_atomic_get_new_connector_state(old_state-
+> >base.state, mtk_dp->conn);
+> +	if (!conn_state) {
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Can't enable bridge as connector state is
+> missing\n");
+> +		return;
+> +	}
+> +
+> +	crtc = conn_state->crtc;
+> +	if (!crtc) {
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Can't enable bridge as connector state doesn't
+> have a crtc\n");
+> +		return;
+> +	}
+> +
+> +	crtc_state = drm_atomic_get_new_crtc_state(old_state-
+> >base.state, crtc);
+> +	if (!crtc_state) {
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Can't enable bridge as crtc state is
+> missing\n");
+> +		return;
+> +	}
+> +
+> +	mtk_dp_parse_drm_mode_timings(mtk_dp, &crtc_state-
+> >adjusted_mode);
+
+I think this bridge should implement mode_set() and these code is moved
+to mode_set().
+
+Regards,
+CK
+
+> +	if (!mtk_dp_parse_capabilities(mtk_dp)) {
+> +		drm_err(mtk_dp->drm_dev,
+> +			"Can't enable bridge as nothing is plugged
+> in\n");
+> +		return;
+> +	}
+> +
+> +	/* Training */
+> +	mtk_dp_train_handler(mtk_dp);
+> +	mtk_dp_state_handler(mtk_dp);
+> +	mtk_dp->enabled = true;
+> +}
+> +
+> 
 
