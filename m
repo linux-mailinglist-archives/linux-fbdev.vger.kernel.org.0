@@ -2,121 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B233F4CDF16
-	for <lists+linux-fbdev@lfdr.de>; Fri,  4 Mar 2022 22:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5704CE99A
+	for <lists+linux-fbdev@lfdr.de>; Sun,  6 Mar 2022 07:51:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbiCDUsw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 4 Mar 2022 15:48:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
+        id S233032AbiCFGvq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 6 Mar 2022 01:51:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbiCDUsv (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 4 Mar 2022 15:48:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0AD9122EDC6
-        for <linux-fbdev@vger.kernel.org>; Fri,  4 Mar 2022 12:48:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646426881;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fIKaFpflRd9hwR16NlF6OnU9QoRFMeWutPRp1q0p0c0=;
-        b=Kymd+0nor5iFAX8KXPTdCHiaaTy2tUT7Xwzn6cz/MyzOeXekeb/BZ8WUJiWuO8agipjEpn
-        U5r6XoDRVoI8QCyDxBiy9eSIJMeAyMPw23qWxWSjlyX6GrJ2512/0s/Bgxh+pyL2Hto/CX
-        rKp5yJlOTlnwr/9NWSL0jRfGypW2K0w=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-519-8KuYjqMdNQKNtkFQ6M50Ew-1; Fri, 04 Mar 2022 15:48:00 -0500
-X-MC-Unique: 8KuYjqMdNQKNtkFQ6M50Ew-1
-Received: by mail-wm1-f72.google.com with SMTP id h206-20020a1c21d7000000b003552c13626cso4588566wmh.3
-        for <linux-fbdev@vger.kernel.org>; Fri, 04 Mar 2022 12:47:59 -0800 (PST)
+        with ESMTP id S233037AbiCFGvo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 6 Mar 2022 01:51:44 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA49D52E18
+        for <linux-fbdev@vger.kernel.org>; Sat,  5 Mar 2022 22:50:50 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id s25so16310929lji.5
+        for <linux-fbdev@vger.kernel.org>; Sat, 05 Mar 2022 22:50:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=KDgAx1nMZI4VA0728iAuqALj69hyn7X0WLLUiz2m+OH09NDtWJqkn0K0IjhaqXccDL
+         nYA9IS56U+BvEYDp5ZuYOTDJ28DkbGQXOo4nCoFRXwOq8btCUGBKve+nLdvXGAtQGfZd
+         8/3HmQyIohZytZNIAaZ2YSJ+VGfF2cuAbX+92kqJIy7dPjcCYPV+qxcIVHj5OJkNioe8
+         RnnPJV63I7FofbcYlKCR7cawwHR+Gyj/OksLFoNh7LOBENUnMHRRrWfgS+R5N0DbQgRd
+         FM7OvtlHYW5haJ9bCovh/xFv8pj40s/F/HFWyLhlvxnDTkjGlvvz7xTkeBicCtgptiHh
+         fIkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=fIKaFpflRd9hwR16NlF6OnU9QoRFMeWutPRp1q0p0c0=;
-        b=gn72bCpyPjuWiQrz/+HM9FCwOlSjvBZt0Tno+04L+hJFGnKtkqYgGD/gF3wL4h+W+h
-         0kQTlEapdFJnq2A9ZoOWIFGYf6V6k/K6nHCK5kCCPJcPoZ/5s8o62AAdIcB51KSeC+ZM
-         ffTBgTyvnn7qfv1AjVGjK8aBjwCVN/ZKh7xc05nS353u4e2DVzQZl2p65VNKH2kKqlcj
-         I5rY9ozx5I0p3GfuG6kWemPZjGb9BvT9SoEJlQDsYCENJ9Oo6xW8RwKr36zv/fAuzrmO
-         5pbPFeXSCv4M8MDoeKxroOyVr6RuF+Lj9r3LZTSx3n8Ce2Dr2OnjKPoLgkRjdJCUhgXl
-         2LTA==
-X-Gm-Message-State: AOAM531cbImHT7O+WI74mK1O/0W8lw8EkSEfAwmNY0MkQnYTySDwfvmc
-        v0s2uWy1P9OtSSeTAca4XqzlsoSzaR3XdoaaFKzrOt85LIOlhk7w6Jx7zzKf6NN8RBdcMT0ZBqB
-        9i+kbpSZggzfUWDi+BXXW/dY=
-X-Received: by 2002:a5d:6c66:0:b0:1f0:5fd5:697 with SMTP id r6-20020a5d6c66000000b001f05fd50697mr365415wrz.65.1646426878900;
-        Fri, 04 Mar 2022 12:47:58 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzltMdM718VwuVL5pcJNjWElXTGeJCCvXaeW2MlBTYMP981ds1+0SMQ7OOkDx5SiXxjBKq6wA==
-X-Received: by 2002:a5d:6c66:0:b0:1f0:5fd5:697 with SMTP id r6-20020a5d6c66000000b001f05fd50697mr365399wrz.65.1646426878644;
-        Fri, 04 Mar 2022 12:47:58 -0800 (PST)
-Received: from [192.168.1.102] ([92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id x3-20020a5d6b43000000b001e317fb86ecsm5110984wrw.57.2022.03.04.12.47.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Mar 2022 12:47:58 -0800 (PST)
-Message-ID: <8d1c3caf-96ad-ae4c-021e-ac38f179dfcb@redhat.com>
-Date:   Fri, 4 Mar 2022 21:47:56 +0100
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=WyP72ZtdMe35tZqEGy3wR8tn3r7hVZvu0lMQbLsIuXmFCckMMVZIsokIBPvLqwXQw6
+         wxnpLgU9enfk3wgbV04dgjhrZmeLqk6PqYrLIrlyxSwiZCguSA7daqM0EPZeEXW2LHsU
+         J0IaJP01RNqv4oYUFY6+YqexlAta3srqJa6nodHTBm/0nPJxiJ0c8/R0rFo0q7cj9zzz
+         frJirucuhJ50h+zXzWnShOpXhpLuxqugfPZUpMmMXIhHHYfUaxeZUNKDndZxzfnF1RM4
+         aeq9j3U/l9rrnAt7kfA7tVLWS3ySA+PQnv9pvBX1ACPGYCTtYf0v8uR0yUxCRWmaAabo
+         r2BA==
+X-Gm-Message-State: AOAM532Ott7J6Wx/X8+7iAB+8XnN29YfuMtJN3Bpadmx8RwPKMbfKN6b
+        pvVvjW7tjuWxABXwOC0qyUrlu1yX+fNmjqogKdA=
+X-Google-Smtp-Source: ABdhPJzq04i8VJyC6uwySEx5tzgrtxCg/XL0hqdBTWFWm66/zQAuy3m2ubrZV75jrYUP9jvmG0PdhfRUhLuebg8/B7w=
+X-Received: by 2002:a2e:94c7:0:b0:247:de4e:e9bc with SMTP id
+ r7-20020a2e94c7000000b00247de4ee9bcmr2397951ljh.397.1646549448778; Sat, 05
+ Mar 2022 22:50:48 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] simpldrm: Enable boot time VESA graphic mode selection.
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-Cc:     linux-fbdev@vger.kernel.org, x86@kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, David Airlie <airlied@linux.ie>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Helge Deller <deller@gmx.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-video@atrey.karlin.mff.cuni.cz,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Maxime Ripard <maxime@cerno.tech>,
-        "H. Peter Anvin" <hpa@zytor.com>, Martin Mares <mj@ucw.cz>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Daniel Mack <daniel@zonque.org>
-References: <20220218093334.24830-1-msuchanek@suse.de>
- <354f3cfd-bfa0-3ebe-3d67-705423d9294e@suse.de>
- <20220302193846.GT3113@kunlun.suse.cz>
- <2ba8497f-ba6d-558b-d782-bb3ee67d23ec@redhat.com>
- <81f87874-4aa8-265d-a0ed-c8a67708a92a@suse.de>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <81f87874-4aa8-265d-a0ed-c8a67708a92a@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawyann@gmail.com
+Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sat, 5 Mar 2022 22:50:48 -0800 (PST)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sun, 6 Mar 2022 06:50:48 +0000
+X-Google-Sender-Auth: NOWRSnt_sskMD3s295a30bcHvEs
+Message-ID: <CACppo47TD9J4Sy+vaJu1wXHqd88WqFwMNn6OdkY1khwXu3TuFw@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Thomas,
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-On 3/4/22 21:00, Thomas Zimmermann wrote:
-> Hi,
-> 
-> I've merged the patches into drm-misc-fixes. Thanks a lot to both of you.
-> 
-
-Ard already picked these through the efi tree:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git/log/
-
-> Best regards
-> Thomas
-> 
--- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
-
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
