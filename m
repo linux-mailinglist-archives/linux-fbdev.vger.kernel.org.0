@@ -2,69 +2,77 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E4F4E4793
-	for <lists+linux-fbdev@lfdr.de>; Tue, 22 Mar 2022 21:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02ED54E5BE3
+	for <lists+linux-fbdev@lfdr.de>; Thu, 24 Mar 2022 00:37:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbiCVUfL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 22 Mar 2022 16:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38420 "EHLO
+        id S1345691AbiCWXhu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 23 Mar 2022 19:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233871AbiCVUfL (ORCPT
+        with ESMTP id S1345968AbiCWXht (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 22 Mar 2022 16:35:11 -0400
-Received: from smtp.smtpout.orange.fr (smtp06.smtpout.orange.fr [80.12.242.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A962458B
-        for <linux-fbdev@vger.kernel.org>; Tue, 22 Mar 2022 13:33:42 -0700 (PDT)
-Received: from pop-os.home ([90.126.236.122])
-        by smtp.orange.fr with ESMTPA
-        id WlCGnBrc3IQAdWlCGn8qgV; Tue, 22 Mar 2022 21:33:41 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Tue, 22 Mar 2022 21:33:41 +0100
-X-ME-IP: 90.126.236.122
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+        Wed, 23 Mar 2022 19:37:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15FC26E781;
+        Wed, 23 Mar 2022 16:36:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B4F55B8217F;
+        Wed, 23 Mar 2022 23:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8342BC340EE;
+        Wed, 23 Mar 2022 23:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648078576;
+        bh=OhUtQJJcoj3Jnk+YaF08+vf4O/Og/N3qZbD+HriaA6o=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=FxYxD7nCVLDq6hbcb3BiqybyqBqZNuMPjqlSSwRXchs5bpYJ/FdHkokYDmMRSwtg8
+         Emnn3ie0xYYJyPLLiHISd5/3FvuPX5i8WLGJ1g3Hq0qe2D4N2skzt3SLdgNR+aD1S6
+         SmJehFYCaRYRVDw2wAulnS1y6Fxyl/4LpozIeUXzLThQ2UdG3Li8XlejVFYtvRL+vL
+         2dFoZedKeCHigpzmKnBrQ3Np2dbspRdXcEs5dHgl6QL3ECRO1jELBgYqQWf+jVfCsS
+         FRO050UwMzvGWg2WaT6z+6898bli1aiZOo8m5LKDmWc9EFRiVxicJ7VY5Q904ID3z8
+         msZeTBvnX7DLQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 71078E6D402;
+        Wed, 23 Mar 2022 23:36:16 +0000 (UTC)
+Subject: Re: [GIT PULL] fbdev updates & fixes for v5.18-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <YjokKxSLtqMwyLyB@ls3530>
+References: <YjokKxSLtqMwyLyB@ls3530>
+X-PR-Tracked-List-Id: Direct Rendering Infrastructure - Development
+ <dri-devel.lists.freedesktop.org>
+X-PR-Tracked-Message-Id: <YjokKxSLtqMwyLyB@ls3530>
+X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/for-5.18/fbdev-1
+X-PR-Tracked-Commit-Id: e445c8b2aa2df0e49f6037886c32d54a5e3960b1
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 9c4b86ebf5bfdaceba4bedbaf76e4ff745db17ef
+Message-Id: <164807857645.14397.13955122823620181053.pr-tracker-bot@kernel.org>
+Date:   Wed, 23 Mar 2022 23:36:16 +0000
 To:     Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH] video: of: display_timing: Remove a redundant zeroing of memory
-Date:   Tue, 22 Mar 2022 21:33:38 +0100
-Message-Id: <99f22ad1068fbbbc95acea59871cd408cde2623d.1647981212.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.32.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-of_parse_display_timing() already call memset(0) on its 2nd argument, so
-there is no need to clear it explicitly before calling this function.
+The pull request you sent on Tue, 22 Mar 2022 20:31:55 +0100:
 
-Use kmalloc() instead of kzalloc() to save a few cycles.
+> http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/for-5.18/fbdev-1
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/video/of_display_timing.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/9c4b86ebf5bfdaceba4bedbaf76e4ff745db17ef
 
-diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
-index f93b6abbe258..bebd371c6b93 100644
---- a/drivers/video/of_display_timing.c
-+++ b/drivers/video/of_display_timing.c
-@@ -199,7 +199,7 @@ struct display_timings *of_get_display_timings(const struct device_node *np)
- 		struct display_timing *dt;
- 		int r;
- 
--		dt = kzalloc(sizeof(*dt), GFP_KERNEL);
-+		dt = kmalloc(sizeof(*dt), GFP_KERNEL);
- 		if (!dt) {
- 			pr_err("%pOF: could not allocate display_timing struct\n",
- 				np);
+Thank you!
+
 -- 
-2.32.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
