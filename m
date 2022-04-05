@@ -2,54 +2,35 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B65E14F4FBE
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Apr 2022 04:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8EA54F4F8D
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Apr 2022 04:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356136AbiDFA7e (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 5 Apr 2022 20:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60442 "EHLO
+        id S1391767AbiDFAxT (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 5 Apr 2022 20:53:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1457600AbiDEQPE (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 5 Apr 2022 12:15:04 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D50B1571F
-        for <linux-fbdev@vger.kernel.org>; Tue,  5 Apr 2022 09:13:04 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id n63-20020a1c2742000000b0038d0c31db6eso1992088wmn.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 05 Apr 2022 09:13:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=j/6AMeSlOUOklImXXq0k1qDNIpWDz1k0LAxbI2CUBOc=;
-        b=FyaCCuuFy9tOl30wxr6e96Z3cFL7OrVt/8eP0fwts2VMuhkb/CLSu1/fprs7Mj7Bcm
-         JOXo02HlIwiYQh1e997f+MdWcecZ+If13hmlFh6awBHakX3Z4zR1KO/F4NbB+j0/Qvkg
-         UlV1l7HYJS86X268Ec6D0VUkAh6CvGABxjw9g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=j/6AMeSlOUOklImXXq0k1qDNIpWDz1k0LAxbI2CUBOc=;
-        b=yYVV0BoDS3oR8QFM6nOr6nJbh2v6LCa0uxyRu+zPrQSOrBazpCCsncedL40Bz59Ox9
-         WBNplUwXobwLX4DM1M1CCeB5moGaq3DfFaAHmRZtC+leD/5EDe2L3aIUVcoxDjf8Z2Wf
-         qQ2Yx9V6LXeg3wKf9i3kmzCRBD8RinDLqSJWv90VqFrlXXmpsAewr8M6uq5OK6uctM7d
-         bivLPAKslfh2dukp4ofP1VtVn6LMjueIhXCcZvu4DXBkTRrL1MJAEX58af7ORvPV7yv2
-         mE0XYcIvCnNalRBlxRHCvYt3ifqnCm9OF8RnQldfaKxajSSHaf855NbpoWN2PbfhY7kB
-         WJMg==
-X-Gm-Message-State: AOAM530Oedu5bk33UPIgVidDNP5ybfWinH0mUROHnIbq2FOHLs3hd2dz
-        KvTuC1x4ISdl+iDbSP28Y3tdYFk+ondv2shNrlI=
-X-Google-Smtp-Source: ABdhPJyTSMKxjq/kxlxpLkNeNaut64OQCKi4vDYixf1wKouhmg08rIvbjri2RGMzH4UqWc57UcO3oA==
-X-Received: by 2002:a05:600c:1f14:b0:38c:946f:6812 with SMTP id bd20-20020a05600c1f1400b0038c946f6812mr3766945wmb.192.1649175182404;
-        Tue, 05 Apr 2022 09:13:02 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id v15-20020a056000144f00b002057eac999fsm12857768wrx.76.2022.04.05.09.13.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Apr 2022 09:13:01 -0700 (PDT)
-Date:   Tue, 5 Apr 2022 18:12:59 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        with ESMTP id S1457784AbiDEQq7 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 5 Apr 2022 12:46:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170FB192BB;
+        Tue,  5 Apr 2022 09:45:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B52D4B81E8B;
+        Tue,  5 Apr 2022 16:44:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1500C385A0;
+        Tue,  5 Apr 2022 16:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1649177097;
+        bh=61W5tdtwR51stSR81iRAWsuqYDjP2UpQYgTajUtPAOI=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=MMWz1zh6ko5iZ3bVvpvZEfGA+rV8cpA+oe8eW8R149O9v7x2JD521DyTjWa80ynqD
+         4qKOble5ee77T2al2BUqrRv5RnAs2ohORmTook9oLHh4/6qkdEZD2zlxDA605e7tqH
+         oSWlKAf9yaMh6tjJdZA3/t6Tx6PpKTZXh1s9UXQk=
+Date:   Tue, 5 Apr 2022 18:44:54 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Javier Martinez Canillas <javierm@redhat.com>,
         DRI Development <dri-devel@lists.freedesktop.org>,
         Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
@@ -63,21 +44,8 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Peter Jones <pjones@redhat.com>
 Subject: Re: [PATCH v2 18/19] Revert "fbdev: Prevent probing generic drivers
  if a FB is already registered"
-Message-ID: <Ykxqi82sOEd2Zg1K@phenom.ffwll.local>
-Mail-Followup-To: Greg KH <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Zack Rusin <zackr@vmware.com>, Hans de Goede <hdegoede@redhat.com>,
-        Ilya Trukhanov <lahvuun@gmail.com>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Peter Jones <pjones@redhat.com>
-References: <20220208210824.2238981-19-daniel.vetter@ffwll.ch>
- <4ae20b63-f452-fdb4-ced6-d4968a8d69f0@redhat.com>
+Message-ID: <YkxyBt8Zee8qrEbT@kroah.com>
+References: <4ae20b63-f452-fdb4-ced6-d4968a8d69f0@redhat.com>
  <Ykv/k/WoVemoCJJA@phenom.ffwll.local>
  <YkwAhSt9HlbxcuZo@phenom.ffwll.local>
  <408ffe9b-f09f-dc7e-7f5e-a93b311a06fa@redhat.com>
@@ -86,14 +54,14 @@ References: <20220208210824.2238981-19-daniel.vetter@ffwll.ch>
  <CAKMK7uH4GgDQJZguT-k0QmgEAHYHuDEbBtjYje51_Rtqzud0yw@mail.gmail.com>
  <CAMuHMdWr0L0r+MVU-=+_yeHKwK8BjF7_EJQxiJT5jMqS9FJUeQ@mail.gmail.com>
  <YkxFHUdm/YeiVY+D@kroah.com>
+ <Ykxqi82sOEd2Zg1K@phenom.ffwll.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YkxFHUdm/YeiVY+D@kroah.com>
-X-Operating-System: Linux phenom 5.10.0-8-amd64 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <Ykxqi82sOEd2Zg1K@phenom.ffwll.local>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,172 +69,126 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Apr 05, 2022 at 03:33:17PM +0200, Greg KH wrote:
-> On Tue, Apr 05, 2022 at 03:24:40PM +0200, Geert Uytterhoeven wrote:
-> > Hi Daniel,
-> > 
-> > On Tue, Apr 5, 2022 at 1:48 PM Daniel Vetter <daniel@ffwll.ch> wrote:
-> > > On Tue, 5 Apr 2022 at 11:52, Javier Martinez Canillas
-> > > <javierm@redhat.com> wrote:
-> > > > On 4/5/22 11:24, Daniel Vetter wrote:
-> > > > > On Tue, 5 Apr 2022 at 11:19, Javier Martinez Canillas
-> > > > >> This is how I think that work, please let me know if you see something
-> > > > >> wrong in my logic:
-> > > > >>
-> > > > >> 1) A PCI device of OF device is registered for the GPU, this attempt to
-> > > > >>    match a registered driver but no driver was registered that match yet.
-> > > > >>
-> > > > >> 2) The efifb driver is built-in, will be initialized according to the link
-> > > > >>    order of the objects under drivers/video and the fbdev driver is registered.
-> > > > >>
-> > > > >>    There is no platform device or PCI/OF device registered that matches.
-> > > > >>
-> > > > >> 3) The DRM driver is built-in, will be initialized according to the link
-> > > > >>    order of the objects under drivers/gpu and the DRM driver is registered.
-> > > > >>
-> > > > >>    This matches the device registered in (1) and the DRM driver probes.
-> > > > >>
-> > > > >> 4) The DRM driver .probe kicks out any conflicting DRM drivers and pdev
-> > > > >>    before registering the DRM device.
-> > > > >>
-> > > > >>    There are no conflicting drivers or platform device at this point.
-> > > > >>
-> > > > >> 5) Latter at some point the drivers/firmware/sysfb.c init function is
-> > > > >>    executed, and this registers a platform device for the generic fb.
-> > > > >>
-> > > > >>    This device matches the efifb driver registered in (2) and the fbdev
-> > > > >>    driver probes.
-> > > > >>
-> > > > >>    Since that happens *after* the DRM driver already matched, probed
-> > > > >>    and registered the DRM device, that is a bug and what the reverted
-> > > > >>    patch worked around.
-> > > > >>
-> > > > >> So we need to prevent (5) if (1) and (3) already happened. Having a flag
-> > > > >> set in the fbdev core somewhere when remove_conflicting_framebuffers()
-> > > > >> is called could be a solution indeed.
-> > > > >>
-> > > > >> That is, the fbdev core needs to know that a DRM driver already probed
-> > > > >> and make register_framebuffer() fail if info->flag & FBINFO_MISC_FIRMWARE
-> > > > >>
-> > > > >> I can attempt to write a patch for that.
+On Tue, Apr 05, 2022 at 06:12:59PM +0200, Daniel Vetter wrote:
+> On Tue, Apr 05, 2022 at 03:33:17PM +0200, Greg KH wrote:
+> > On Tue, Apr 05, 2022 at 03:24:40PM +0200, Geert Uytterhoeven wrote:
+> > > Hi Daniel,
+> > > 
+> > > On Tue, Apr 5, 2022 at 1:48 PM Daniel Vetter <daniel@ffwll.ch> wrote:
+> > > > On Tue, 5 Apr 2022 at 11:52, Javier Martinez Canillas
+> > > > <javierm@redhat.com> wrote:
+> > > > > On 4/5/22 11:24, Daniel Vetter wrote:
+> > > > > > On Tue, 5 Apr 2022 at 11:19, Javier Martinez Canillas
+> > > > > >> This is how I think that work, please let me know if you see something
+> > > > > >> wrong in my logic:
+> > > > > >>
+> > > > > >> 1) A PCI device of OF device is registered for the GPU, this attempt to
+> > > > > >>    match a registered driver but no driver was registered that match yet.
+> > > > > >>
+> > > > > >> 2) The efifb driver is built-in, will be initialized according to the link
+> > > > > >>    order of the objects under drivers/video and the fbdev driver is registered.
+> > > > > >>
+> > > > > >>    There is no platform device or PCI/OF device registered that matches.
+> > > > > >>
+> > > > > >> 3) The DRM driver is built-in, will be initialized according to the link
+> > > > > >>    order of the objects under drivers/gpu and the DRM driver is registered.
+> > > > > >>
+> > > > > >>    This matches the device registered in (1) and the DRM driver probes.
+> > > > > >>
+> > > > > >> 4) The DRM driver .probe kicks out any conflicting DRM drivers and pdev
+> > > > > >>    before registering the DRM device.
+> > > > > >>
+> > > > > >>    There are no conflicting drivers or platform device at this point.
+> > > > > >>
+> > > > > >> 5) Latter at some point the drivers/firmware/sysfb.c init function is
+> > > > > >>    executed, and this registers a platform device for the generic fb.
+> > > > > >>
+> > > > > >>    This device matches the efifb driver registered in (2) and the fbdev
+> > > > > >>    driver probes.
+> > > > > >>
+> > > > > >>    Since that happens *after* the DRM driver already matched, probed
+> > > > > >>    and registered the DRM device, that is a bug and what the reverted
+> > > > > >>    patch worked around.
+> > > > > >>
+> > > > > >> So we need to prevent (5) if (1) and (3) already happened. Having a flag
+> > > > > >> set in the fbdev core somewhere when remove_conflicting_framebuffers()
+> > > > > >> is called could be a solution indeed.
+> > > > > >>
+> > > > > >> That is, the fbdev core needs to know that a DRM driver already probed
+> > > > > >> and make register_framebuffer() fail if info->flag & FBINFO_MISC_FIRMWARE
+> > > > > >>
+> > > > > >> I can attempt to write a patch for that.
+> > > > > >
+> > > > > > Ah yeah that could be an issue. I think the right fix is to replace
+> > > > > > the platform dev unregister with a sysfb_unregister() function in
+> > > > > > sysfb.c, which is synced with a common lock with the sysfb_init
+> > > > > > function and a small boolean. I think I can type that up quickly for
+> > > > > > v3.
 > > > > >
-> > > > > Ah yeah that could be an issue. I think the right fix is to replace
-> > > > > the platform dev unregister with a sysfb_unregister() function in
-> > > > > sysfb.c, which is synced with a common lock with the sysfb_init
-> > > > > function and a small boolean. I think I can type that up quickly for
-> > > > > v3.
+> > > > > It's more complicated than that since sysfb is just *one* of the several
+> > > > > places where platform devices can be registered for video devices.
+> > > > >
+> > > > > For instance, the vga16fb driver registers its own platform device in
+> > > > > its module_init() function so that can also happen after the conflicting
+> > > > > framebuffers (and associated devices) were removed by a DRM driver probe.
+> > > > >
+> > > > > I tried to minimize the issue for that particular driver with commit:
+> > > > >
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0499f419b76f
+> > > > >
+> > > > > But the point stands, it all boils down to the fact that you have two
+> > > > > different subsystems registering video drivers and they don't know all
+> > > > > about each other to take a proper decision.
+> > > > >
+> > > > > Right now the drm_aperture_remove_conflicting_framebuffers() call signals
+> > > > > in one direction from DRM to fbdev but there isn't a communication in the
+> > > > > other direction, from fbdev to DRM.
+> > > > >
+> > > > > I believe the correct fix would be for the fbdev core to keep a list of
+> > > > > the apertures struct that are passed to remove_conflicting_framebuffers(),
+> > > > > that way it will know what apertures are not available anymore and prevent
+> > > > > to register any fbdev framebuffer that conflicts with one already present.
 > > > >
-> > > > It's more complicated than that since sysfb is just *one* of the several
-> > > > places where platform devices can be registered for video devices.
+> > > > Hm that still feels like reinventing a driver model, badly.
 > > > >
-> > > > For instance, the vga16fb driver registers its own platform device in
-> > > > its module_init() function so that can also happen after the conflicting
-> > > > framebuffers (and associated devices) were removed by a DRM driver probe.
+> > > > I think there's two cleaner solutions:
+> > > > - move all the firmware driver platform_dev into sysfb.c, and then
+> > > > just bind the special cases against that (e.g. offb, vga16fb and all
+> > > > these). Then we'd have one sysfb_try_unregister(struct device *dev)
+> > > > interface that fbmem.c uses.
+> > > > - let fbmem.c call into each of these firmware device providers, which
+> > > > means some loops most likely (like we can't call into vga16fb), so
+> > > > probably need to move that into fbmem.c and it all gets a bit messy.
 > > > >
-> > > > I tried to minimize the issue for that particular driver with commit:
+> > > > > Let me know if you think that makes sense and I can attempt to write a fix.
 > > > >
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0499f419b76f
-> > > >
-> > > > But the point stands, it all boils down to the fact that you have two
-> > > > different subsystems registering video drivers and they don't know all
-> > > > about each other to take a proper decision.
-> > > >
-> > > > Right now the drm_aperture_remove_conflicting_framebuffers() call signals
-> > > > in one direction from DRM to fbdev but there isn't a communication in the
-> > > > other direction, from fbdev to DRM.
-> > > >
-> > > > I believe the correct fix would be for the fbdev core to keep a list of
-> > > > the apertures struct that are passed to remove_conflicting_framebuffers(),
-> > > > that way it will know what apertures are not available anymore and prevent
-> > > > to register any fbdev framebuffer that conflicts with one already present.
-> > >
-> > > Hm that still feels like reinventing a driver model, badly.
-> > >
-> > > I think there's two cleaner solutions:
-> > > - move all the firmware driver platform_dev into sysfb.c, and then
-> > > just bind the special cases against that (e.g. offb, vga16fb and all
-> > > these). Then we'd have one sysfb_try_unregister(struct device *dev)
-> > > interface that fbmem.c uses.
-> > > - let fbmem.c call into each of these firmware device providers, which
-> > > means some loops most likely (like we can't call into vga16fb), so
-> > > probably need to move that into fbmem.c and it all gets a bit messy.
-> > >
-> > > > Let me know if you think that makes sense and I can attempt to write a fix.
-> > >
-> > > I still think unregistering the platform_dev properly makes the most
+> > > > I still think unregistering the platform_dev properly makes the most
+> > > 
+> > > That doesn't sound very driver-model-aware to me. The device is what
+> > > the driver binds to; it does not cease to exist.
 > > 
-> > That doesn't sound very driver-model-aware to me. The device is what
-> > the driver binds to; it does not cease to exist.
-> 
-> I agree, that sounds odd.
-> 
-> The device should always stick around (as the bus creates it), it's up
-> to the driver to bind to the device as needed.
-
-The device actually disappears when the real driver takes over.
-
-The firmware fb is a special thing which only really exists as long as the
-firmware is in charge of the display hardware. As soon as a real driver
-takes over, it stops being a thing.
-
-And since a driver without a device is a bit a funny thing, we have been
-pushing towards a model where the firmware code sets up a platform_device
-for this fw interface, and the fw driver (efifb, simplefb and others like
-that) bind against it. And then we started to throw out that
-platform_device (which unbinds the fw driver and prevents it from ever
-rebinding), except in the wrong layer so there's a few races.
-
-Should we throw out all that code and replace it with something else? What
-would that be like?
-
-Note that the fw side generally has not much clue which real device on
-some bus it corresponds to, that part is done through a bunch of magic
-tricks. Some of them are simply "I'm taking over a display, pls through
-out all fw drivers just to be sure".
-
-> > > sense, and feels like the most proper linux device model solution
-> > > instead of hacks on top - if the firmware fb is unuseable because a
-> > > native driver has taken over, we should nuke that. And also the
-> > > firmware fb driver would then just bind to that platform_dev if it
-> > > exists, and only if it exists. Also I think it should be the
-> > > responsibility of whichever piece of code that registers these
-> > > platform devices to ensure that platform_dev actually still exists.
-> > > That's why I think pushing all that code into sysfb.c is probably the
-> > > cleanest solution.
+> > I agree, that sounds odd.
 > > 
-> > Can't you unbind the generic driver first, and bind the specific driver
-> > afterwards? Alike writing to sysfs unbind/driver_override/bind,
-> > but from code?
+> > The device should always stick around (as the bus creates it), it's up
+> > to the driver to bind to the device as needed.
 > 
-> That too feels odd, what is so special about the fbdev code that the
-> normal driver functions do not work for them?  It shouldn't matter if
-> multiple subsystems register video devices, why can't we handle more
-> than one fb device?
-
-The specific driver binds to a completely different device (this one is
-more real), and sometimes has not much clue about what exactly the
-fw/legacy driver is doing.
-
-The special thing is that in fbdev we have "drivers" which are extremely
-thin shims around the fw driver, which has done all the real display setup
-for us. I don't think any other subsystem bothers with this, e.g. input
-just tells the fw to get lost and never tries to use the fw input support
-(stuff like the old horrors of emulating usb kbd as a ps/2 device and
-things like that which fw tended to do). Only with display drivers do we
-have this world where fairly often a fw driver is loaded first, and then
-quite a bit later in the boot process, the real driver loads. It's a bit
-like early serial console perhaps, to reduce the gap between when the
-kernel loads and when the real display driver is ready.
-
-Cheers, Daniel
-
-
+> The device actually disappears when the real driver takes over.
 > 
-> thanks,
+> The firmware fb is a special thing which only really exists as long as the
+> firmware is in charge of the display hardware. As soon as a real driver
+> takes over, it stops being a thing.
 > 
-> greg k-h
+> And since a driver without a device is a bit a funny thing, we have been
+> pushing towards a model where the firmware code sets up a platform_device
+> for this fw interface, and the fw driver (efifb, simplefb and others like
+> that) bind against it. And then we started to throw out that
+> platform_device (which unbinds the fw driver and prevents it from ever
+> rebinding), except in the wrong layer so there's a few races.
+> 
+> Should we throw out all that code and replace it with something else? What
+> would that be like?
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Ah, no, sorry, I didn't know that at all.
+
+That sounds semi-sane, just fix the races by moving the layer elsewhere?
+
