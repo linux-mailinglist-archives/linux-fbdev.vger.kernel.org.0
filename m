@@ -2,33 +2,33 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E65304FDA3D
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Apr 2022 12:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EE144FD93D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Apr 2022 12:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233655AbiDLJvr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 12 Apr 2022 05:51:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
+        id S229685AbiDLJvz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Apr 2022 05:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355125AbiDLH1K (ORCPT
+        with ESMTP id S1359225AbiDLHmw (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Apr 2022 03:27:10 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263A148332;
-        Tue, 12 Apr 2022 00:07:11 -0700 (PDT)
+        Tue, 12 Apr 2022 03:42:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DBEC29CA5;
+        Tue, 12 Apr 2022 00:20:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 831A4B81B4D;
-        Tue, 12 Apr 2022 07:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC52C385A8;
-        Tue, 12 Apr 2022 07:07:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29560616B2;
+        Tue, 12 Apr 2022 07:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CD4C385A5;
+        Tue, 12 Apr 2022 07:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1649747228;
-        bh=sXplmjtci3GWzKPGj7qmndHKq1WQI2fvhmgLsZ33CEY=;
+        s=korg; t=1649748052;
+        bh=m3tZRxMr7S8zSbKcnoVMQqq10GyW2aQbMlmVavnojeY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ya39TrhC7pOQ5dpmI0Ywg74BhsGI+zqKBPjvQh0+8MaElBhMIFRKoTzwDuoerDDoi
-         JeUrkx6Cmc1g8VrL7R4+hpJXxdCEyTq1XmSEqAj5F1gw7I8WTLOxDefkbKBi+S+9CB
-         oRHSoHA/2WN5pcGUDBBPU+ThFJH6QIrWDgX6fPzI=
+        b=o4d5oc5leogTQ7ZP6BjcfkOJbIzCbiAw9b6yFVA+I12IMmR/WwcdO2s36GlreLuKy
+         xugTBf7eTxlLa0PMIKdjQbckUANpoMYYL7kipAQhN1zarWQmDKXLota/V8RLieB47i
+         XdZ+jaD8wa3lZD8ViB42/vRAAeyUP0kJKi6eeXlQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
         Guenter Roeck <linux@roeck-us.net>,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH 5.16 249/285] fbdev: Fix unregistering of framebuffers without device
-Date:   Tue, 12 Apr 2022 08:31:46 +0200
-Message-Id: <20220412062950.845598901@linuxfoundation.org>
+Subject: [PATCH 5.17 302/343] fbdev: Fix unregistering of framebuffers without device
+Date:   Tue, 12 Apr 2022 08:32:00 +0200
+Message-Id: <20220412063000.040458442@linuxfoundation.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220412062943.670770901@linuxfoundation.org>
-References: <20220412062943.670770901@linuxfoundation.org>
+In-Reply-To: <20220412062951.095765152@linuxfoundation.org>
+References: <20220412062951.095765152@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -145,7 +145,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1581,7 +1581,14 @@ static void do_remove_conflicting_frameb
+@@ -1583,7 +1583,14 @@ static void do_remove_conflicting_frameb
  			 * If it's not a platform device, at least print a warning. A
  			 * fix would add code to remove the device from the system.
  			 */
