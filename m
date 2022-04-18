@@ -2,113 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD6E2504736
-	for <lists+linux-fbdev@lfdr.de>; Sun, 17 Apr 2022 10:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B90C5055FD
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Apr 2022 15:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbiDQIhq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 17 Apr 2022 04:37:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58378 "EHLO
+        id S241603AbiDRNbb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 18 Apr 2022 09:31:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232255AbiDQIhp (ORCPT
+        with ESMTP id S244832AbiDRNa5 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 17 Apr 2022 04:37:45 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 088CD1A83D
-        for <linux-fbdev@vger.kernel.org>; Sun, 17 Apr 2022 01:35:09 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id bc42so5086811vkb.12
-        for <linux-fbdev@vger.kernel.org>; Sun, 17 Apr 2022 01:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z+v8ugHyK4Bi1bsAOtuex5rzJWIULuLfF++ZnJg6JJs=;
-        b=oNJc2INf8Rhr5FB/7dmVLUtXIN32Zpr+JOws5mZo8yLIZkx20k3ktobg4cFsyHfo10
-         opyovUTmrMqZBrjIIPL8dwM3Cl42hbyZvaLR8TbrZDbPh7rgV94AneypUIz7gx5LvazE
-         zDLFkcDX1nbPbvLE1YDjvnnDO6sd+MeRRKk7hJojVtPLOuB8iX7Tisqm37Yqye5BOvOD
-         qrtEmC9HZPFnF8UhgjxviHDBiEkp+KFrjrNS6AiUfUOujeKcrIPlTDjJJypvibkN2ZRc
-         Fcc5bL7t8fX01QLLow126XRV2cU5sFntAnAB/7YbhrXrCEA2hg1PeuWagasZGrwW/+fq
-         MCiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z+v8ugHyK4Bi1bsAOtuex5rzJWIULuLfF++ZnJg6JJs=;
-        b=EUvmRDxfbWy4i2+ifAcuuljW6COIWGr9Sf3T3+b/85RPNMZdCYVyacU+SQNmv2imJ2
-         3hv+Nanv6Uax00gRMUNyx56ny74+aizREP8W13BkA7l/VXOP4yGUDKYGZf2fnzcGFjUU
-         HYrzE6u7uPhVZF0eYenbucL2w4lYkp5xn+u3r12fKkQ4OOoZ/AGjGPdZn0m9hP1Zucto
-         o9aeXnJxUcs3ky6Kt2Dt46RCZeiEDEd/D/DpAUpDXF9XHiwmsiPnnaq44Tp0E5YPGrba
-         lqFKAzEumbtrXQNzhcuDL2IrNBEZDyNf7T6sKbkiRF/pjy63kyvAl37SUtd+XfEYe8cQ
-         kqHQ==
-X-Gm-Message-State: AOAM532dF1oBqPngtvy3rI8CXfRElBeoTw0zEfQARJZ+ogELNUgslxZu
-        iOnhcTopEQWJEofISWbGSc49W3DubW3sVarm9+c=
-X-Google-Smtp-Source: ABdhPJw9Xt2OFrIK7hURg4kp9HjRikv5sLzHEzVl1NzDr5ZjkMyPbwTBECFNWcwqZlk35V3UQisOkE0Lf5eHqEkQTho=
-X-Received: by 2002:a1f:5105:0:b0:345:252e:b0f5 with SMTP id
- f5-20020a1f5105000000b00345252eb0f5mr1463329vkb.22.1650184508047; Sun, 17 Apr
- 2022 01:35:08 -0700 (PDT)
+        Mon, 18 Apr 2022 09:30:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1AC1EC4D;
+        Mon, 18 Apr 2022 05:55:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A575F6115A;
+        Mon, 18 Apr 2022 12:55:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98571C385A1;
+        Mon, 18 Apr 2022 12:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1650286541;
+        bh=qW1x31HnZxqlWv9yLK7leVGiHSRFHxjgpFRqN+3ePM4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=bgSTcaxb0dDI/PHPt1aylF28ruTXr9mu5FngDlLKwh+4aKlTDscnUU5FarV6jJUwQ
+         3cQfwsMw1Gi0NciBEQV4cKPM8ywCFijawl7W5bdOMdl48fmUVB1mwkCapnzMfXfxiT
+         gKUBwVKgJ/9V//DUpEkfcge++TCyBslbrMIFJRWM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Tim Gardner <tim.gardner@canonical.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 165/284] video: fbdev: nvidiafb: Use strscpy() to prevent buffer overflow
+Date:   Mon, 18 Apr 2022 14:12:26 +0200
+Message-Id: <20220418121216.436578242@linuxfoundation.org>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20220418121210.689577360@linuxfoundation.org>
+References: <20220418121210.689577360@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Received: by 2002:a05:612c:2303:b0:2a3:2b46:b7d with HTTP; Sun, 17 Apr 2022
- 01:35:07 -0700 (PDT)
-Reply-To: markwillima00@gmail.com
-From:   Mark <muhammadsuleima888@gmail.com>
-Date:   Sun, 17 Apr 2022 01:35:07 -0700
-Message-ID: <CANCcrFBrB3Qw8Ab_hBy19n0Ch6+XNpkXj3PjXKrc26cej7s+Kg@mail.gmail.com>
-Subject: Re: Greetings!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:a41 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [markwillima00[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [muhammadsuleima888[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [muhammadsuleima888[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello,
+From: Tim Gardner <tim.gardner@canonical.com>
 
-The HSBC Bank is a financial institution in United Kingdom. We
-promotes long-term,sustainable and broad-based economic growth in
-developing and emerging countries by providing financial support like
-loans and investment to large, small and
-medium-sized companies (SMEs) as well as fast-growing enterprises
-which in turn helps to create secure and permanent jobs and reduce
-poverty.
+[ Upstream commit 37a1a2e6eeeb101285cd34e12e48a881524701aa ]
 
-If you need fund to promotes your business, project(Project Funding),
-Loan, planning, budgeting and expansion of your business(s) , do not
-hesitate to indicate your interest as we are here to serve you better
-by granting your request.
+Coverity complains of a possible buffer overflow. However,
+given the 'static' scope of nvidia_setup_i2c_bus() it looks
+like that can't happen after examiniing the call sites.
+
+CID 19036 (#1 of 1): Copy into fixed size buffer (STRING_OVERFLOW)
+1. fixed_size_dest: You might overrun the 48-character fixed-size string
+  chan->adapter.name by copying name without checking the length.
+2. parameter_as_source: Note: This defect has an elevated risk because the
+  source argument is a parameter of the current function.
+ 89        strcpy(chan->adapter.name, name);
+
+Fix this warning by using strscpy() which will silence the warning and
+prevent any future buffer overflows should the names used to identify the
+channel become much longer.
+
+Cc: Antonino Daplas <adaplas@gmail.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/nvidia/nv_i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/nvidia/nv_i2c.c b/drivers/video/fbdev/nvidia/nv_i2c.c
+index d7994a173245..0b48965a6420 100644
+--- a/drivers/video/fbdev/nvidia/nv_i2c.c
++++ b/drivers/video/fbdev/nvidia/nv_i2c.c
+@@ -86,7 +86,7 @@ static int nvidia_setup_i2c_bus(struct nvidia_i2c_chan *chan, const char *name,
+ {
+ 	int rc;
+ 
+-	strcpy(chan->adapter.name, name);
++	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
+ 	chan->adapter.owner = THIS_MODULE;
+ 	chan->adapter.class = i2c_class;
+ 	chan->adapter.algo_data = &chan->algo;
+-- 
+2.34.1
 
 
-Thank you
-Mr:Mark
+
