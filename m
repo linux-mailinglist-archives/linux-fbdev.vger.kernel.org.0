@@ -2,293 +2,260 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DF62514655
-	for <lists+linux-fbdev@lfdr.de>; Fri, 29 Apr 2022 12:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C52514BAC
+	for <lists+linux-fbdev@lfdr.de>; Fri, 29 Apr 2022 15:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356949AbiD2KL7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 29 Apr 2022 06:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42202 "EHLO
+        id S1376759AbiD2N4q (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 29 Apr 2022 09:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357031AbiD2KL5 (ORCPT
+        with ESMTP id S1376642AbiD2Nzx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 29 Apr 2022 06:11:57 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E97C6656
-        for <linux-fbdev@vger.kernel.org>; Fri, 29 Apr 2022 03:08:39 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 71FF31F892;
-        Fri, 29 Apr 2022 10:08:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1651226918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=g4sLPij89w3k5VoKx9rw2Me2uBaBBiNssY9a90Y7KfY=;
-        b=tpSWHhZ60Lw5uiTId6bVwodTz47OYt4mISS5N74nQ9ikjY2Qty2KuKho2AwhEKEJH/WQhT
-        lssEBeIuJ47ecgHnnV0sVCRzuE/olyYcBxwqnWyeI9Hz+TkoNnU1RYZVs4f1s1VJaFO9T7
-        aCjgKcSBjbBRSbRQmGkzkPr1+v5FAGI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1651226918;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=g4sLPij89w3k5VoKx9rw2Me2uBaBBiNssY9a90Y7KfY=;
-        b=UdVJ7sPyIdl+BKErLHPYpPjkL9C925DOISL+GwbPncMz+Ou+eP4eXAwZ3TQmlMOX4fq5xB
-        cJ7zLvFV5YL/7pBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4103113B08;
-        Fri, 29 Apr 2022 10:08:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id GN8SDya5a2JiFwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 29 Apr 2022 10:08:38 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     javierm@redhat.com, sam@ravnborg.org, daniel@ffwll.ch,
-        deller@gmx.de, airlied@linux.ie, maarten.lankhorst@linux.intel.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v4 5/5] fbdev: Use pageref offset for deferred-I/O writeback
-Date:   Fri, 29 Apr 2022 12:08:34 +0200
-Message-Id: <20220429100834.18898-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <20220429100834.18898-1-tzimmermann@suse.de>
-References: <20220429100834.18898-1-tzimmermann@suse.de>
+        Fri, 29 Apr 2022 09:55:53 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E640798F5C;
+        Fri, 29 Apr 2022 06:51:45 -0700 (PDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23TDhXa1012223;
+        Fri, 29 Apr 2022 13:51:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=YxpQ3H20/E/Qr4kvVqxRNsgC1Qp0/t94nuLJRCpv7+M=;
+ b=ba0d/eme8fiOJggWKPdM63j8iZzS0dV+ujelJirQrODtCNi3LINi4WVoWEq8LzjCjVGi
+ /RX2GdswJ9CRchzdDVvqtI+bQ6ODvHEsj7ipKabP0PCbYVc4dIkIgMHn9Z7RZgrsu4CL
+ TeeYP2kyygC0wVRW3/8B18Ov7XllfPtAAE/ny+J7mF0oibL0h3a1SsIwjxI548NVSWWu
+ nljOETV37F/bTtCr8XCjs2180DRLyPkGPoxrsD1YrapG986Sb89LpIIqqwJMETrOd91h
+ 03hOU6ikAyI8KMRglGO1ZcbwrXzSOgFx/GMeZH7p/gNqW2KOW2lxcwReDTj5UTmYWyVL Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frh5eg4em-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Apr 2022 13:51:40 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23TDjFHE015966;
+        Fri, 29 Apr 2022 13:51:40 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frh5eg4de-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Apr 2022 13:51:40 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23TDS1XP027891;
+        Fri, 29 Apr 2022 13:51:37 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma04fra.de.ibm.com with ESMTP id 3fm938yanb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Apr 2022 13:51:37 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 23TDpZ1S14483964
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 29 Apr 2022 13:51:35 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3EBEB4C046;
+        Fri, 29 Apr 2022 13:51:35 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E6C8B4C040;
+        Fri, 29 Apr 2022 13:51:34 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 29 Apr 2022 13:51:34 +0000 (GMT)
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
+        dri-devel@lists.freedesktop.org (open list:FRAMEBUFFER LAYER)
+Subject: [PATCH 25/37] video: handle HAS_IOPORT dependencies
+Date:   Fri, 29 Apr 2022 15:50:42 +0200
+Message-Id: <20220429135108.2781579-45-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220429135108.2781579-1-schnelle@linux.ibm.com>
+References: <20220429135108.2781579-1-schnelle@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: InHxbhdQi1mqvRnQs6ej_0Pyk52_uHFc
+X-Proofpoint-ORIG-GUID: 3NvGqrZMpP351LnInEIDCvckvqAO5eg2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-29_06,2022-04-28_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1011 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2204290078
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Use pageref->offset instead of page->index for deferred-I/O writeback
-where appropriate. Distinguishes between file-mapping offset and video-
-memory offset. While at it, also remove unnecessary references to
-struct page.
+In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+not being declared. We thus need to add HAS_IOPORT as dependency for
+those drivers using them and guard inline code in headers.
 
-Fbdev's deferred-I/O code uses the two related page->index and
-pageref->offset. The former is the page offset in the mapped file,
-the latter is the byte offset in the video memory (or fbdev screen
-buffer). It's the same value for fbdev drivers, but for DRM the values
-can be different. Because GEM buffer objects are mapped at an offset
-in the DRM device file, page->index has this offset added to it as well.
-We currently don't hit this case in DRM, because all affected mappings
-of GEM memory are performed with an internal, intermediate shadow buffer.
-
-The value of page->index is required by page_mkclean(), which we
-call to reset the mappings during the writeback phase of the deferred
-I/O. The value of pageref->offset is for conveniently getting an offset
-into video memory in fb helpers.
-
-v4:
-	* fix commit message (Javier)
-
-Suggested-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_fb.c     |  3 +--
- drivers/staging/fbtft/fbtft-core.c     |  9 +++------
- drivers/video/fbdev/broadsheetfb.c     | 13 ++++++-------
- drivers/video/fbdev/hyperv_fb.c        |  3 +--
- drivers/video/fbdev/metronomefb.c      |  9 ++++-----
- drivers/video/fbdev/sh_mobile_lcdcfb.c |  3 +--
- drivers/video/fbdev/smscufx.c          |  3 +--
- drivers/video/fbdev/udlfb.c            |  6 ++----
- drivers/video/fbdev/xen-fbfront.c      |  3 +--
- 9 files changed, 20 insertions(+), 32 deletions(-)
+ drivers/video/fbdev/Kconfig | 25 +++++++++++++------------
+ include/video/vga.h         |  8 ++++++++
+ 2 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fb.c b/drivers/gpu/drm/vmwgfx/vmwgfx_fb.c
-index 9a3dc5c4eec8..0ba9739f406d 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_fb.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fb.c
-@@ -327,8 +327,7 @@ static void vmw_deferred_io(struct fb_info *info, struct list_head *pagereflist)
- 	min = ULONG_MAX;
- 	max = 0;
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *page = pageref->page;
--		start = page->index << PAGE_SHIFT;
-+		start = pageref->offset;
- 		end = start + PAGE_SIZE - 1;
- 		min = min(min, start);
- 		max = max(max, end);
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 8774bffe94cc..60b2278d8b16 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -327,7 +327,6 @@ static void fbtft_deferred_io(struct fb_info *info, struct list_head *pagereflis
- 	struct fbtft_par *par = info->par;
- 	unsigned int dirty_lines_start, dirty_lines_end;
- 	struct fb_deferred_io_pageref *pageref;
--	unsigned long index;
- 	unsigned int y_low = 0, y_high = 0;
- 	int count = 0;
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 93b8d84c34cf..e7d27c0602d5 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -343,7 +343,7 @@ config FB_IMX
  
-@@ -341,14 +340,12 @@ static void fbtft_deferred_io(struct fb_info *info, struct list_head *pagereflis
+ config FB_CYBER2000
+ 	tristate "CyberPro 2000/2010/5000 support"
+-	depends on FB && PCI && (BROKEN || !SPARC64)
++	depends on FB && PCI && HAS_IOPORT && (BROKEN || !SPARC64)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -436,6 +436,7 @@ config FB_FM2
+ config FB_ARC
+ 	tristate "Arc Monochrome LCD board support"
+ 	depends on FB && (X86 || COMPILE_TEST)
++	depends on HAS_IOPORT
+ 	select FB_SYS_FILLRECT
+ 	select FB_SYS_COPYAREA
+ 	select FB_SYS_IMAGEBLIT
+@@ -1242,7 +1243,7 @@ config FB_RADEON_DEBUG
  
- 	/* Mark display lines as dirty */
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *page = pageref->page;
- 		count++;
--		index = page->index << PAGE_SHIFT;
--		y_low = index / info->fix.line_length;
--		y_high = (index + PAGE_SIZE - 1) / info->fix.line_length;
-+		y_low = pageref->offset / info->fix.line_length;
-+		y_high = (pageref->offset + PAGE_SIZE - 1) / info->fix.line_length;
- 		dev_dbg(info->device,
- 			"page->index=%lu y_low=%d y_high=%d\n",
--			page->index, y_low, y_high);
-+			pageref->page->index, y_low, y_high);
- 		if (y_high > info->var.yres - 1)
- 			y_high = info->var.yres - 1;
- 		if (y_low < dirty_lines_start)
-diff --git a/drivers/video/fbdev/broadsheetfb.c b/drivers/video/fbdev/broadsheetfb.c
-index 883a3ac03189..55e62dd96f9b 100644
---- a/drivers/video/fbdev/broadsheetfb.c
-+++ b/drivers/video/fbdev/broadsheetfb.c
-@@ -932,7 +932,7 @@ static void broadsheetfb_dpy_update(struct broadsheetfb_par *par)
- static void broadsheetfb_dpy_deferred_io(struct fb_info *info, struct list_head *pagereflist)
+ config FB_ATY128
+ 	tristate "ATI Rage128 display support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1265,7 +1266,7 @@ config FB_ATY128_BACKLIGHT
+ 
+ config FB_ATY
+ 	tristate "ATI Mach64 display support" if PCI || ATARI
+-	depends on FB && !SPARC32
++	depends on FB && HAS_IOPORT && !SPARC32
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1315,7 +1316,7 @@ config FB_ATY_BACKLIGHT
+ 
+ config FB_S3
+ 	tristate "S3 Trio/Virge support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1374,7 +1375,7 @@ config FB_SAVAGE_ACCEL
+ 
+ config FB_SIS
+ 	tristate "SiS/XGI display support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1404,7 +1405,7 @@ config FB_SIS_315
+ 
+ config FB_VIA
+ 	tristate "VIA UniChrome (Pro) and Chrome9 display support"
+-	depends on FB && PCI && GPIOLIB && I2C && (X86 || COMPILE_TEST)
++	depends on FB && PCI && GPIOLIB && I2C && HAS_IOPORT && (X86 || COMPILE_TEST)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1442,7 +1443,7 @@ endif
+ 
+ config FB_NEOMAGIC
+ 	tristate "NeoMagic display support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_MODE_HELPERS
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+@@ -1470,7 +1471,7 @@ config FB_KYRO
+ 
+ config FB_3DFX
+ 	tristate "3Dfx Banshee/Voodoo3/Voodoo5 display support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_IMAGEBLIT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+@@ -1518,7 +1519,7 @@ config FB_VOODOO1
+ 
+ config FB_VT8623
+ 	tristate "VIA VT8623 support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1532,7 +1533,7 @@ config FB_VT8623
+ 
+ config FB_TRIDENT
+ 	tristate "Trident/CyberXXX/CyberBlade support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -1554,7 +1555,7 @@ config FB_TRIDENT
+ 
+ config FB_ARK
+ 	tristate "ARK 2000PV support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+@@ -2226,7 +2227,7 @@ config FB_SSD1307
+ 
+ config FB_SM712
+ 	tristate "Silicon Motion SM712 framebuffer support"
+-	depends on FB && PCI
++	depends on FB && PCI && HAS_IOPORT
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
+ 	select FB_CFB_IMAGEBLIT
+diff --git a/include/video/vga.h b/include/video/vga.h
+index d334e64c1c19..53cb52c0fddb 100644
+--- a/include/video/vga.h
++++ b/include/video/vga.h
+@@ -201,18 +201,26 @@ extern int restore_vga(struct vgastate *state);
+  
+ static inline unsigned char vga_io_r (unsigned short port)
  {
- 	u16 y1 = 0, h = 0;
--	int prev_index = -1;
-+	unsigned long prev_offset = ULONG_MAX;
- 	struct fb_deferred_io_pageref *pageref;
- 	int h_inc;
- 	u16 yres = info->var.yres;
-@@ -943,22 +943,21 @@ static void broadsheetfb_dpy_deferred_io(struct fb_info *info, struct list_head
++#ifdef CONFIG_HAS_IOPORT
+ 	return inb_p(port);
++#else
++	return 0xff;
++#endif
+ }
  
- 	/* walk the written page list and swizzle the data */
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *cur = pageref->page;
--		if (prev_index < 0) {
-+		if (prev_offset == ULONG_MAX) {
- 			/* just starting so assign first page */
--			y1 = (cur->index << PAGE_SHIFT) / xres;
-+			y1 = pageref->offset / xres;
- 			h = h_inc;
--		} else if ((prev_index + 1) == cur->index) {
-+		} else if ((prev_offset + PAGE_SIZE) == pageref->offset) {
- 			/* this page is consecutive so increase our height */
- 			h += h_inc;
- 		} else {
- 			/* page not consecutive, issue previous update first */
- 			broadsheetfb_dpy_update_pages(info->par, y1, y1 + h);
- 			/* start over with our non consecutive page */
--			y1 = (cur->index << PAGE_SHIFT) / xres;
-+			y1 = pageref->offset / xres;
- 			h = h_inc;
- 		}
--		prev_index = cur->index;
-+		prev_offset = pageref->offset;
- 	}
+ static inline void vga_io_w (unsigned short port, unsigned char val)
+ {
++#ifdef CONFIG_HAS_IOPORT
+ 	outb_p(val, port);
++#endif
+ }
  
- 	/* if we still have any pages to update we do so now */
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 550cf0990070..8359a513b600 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -437,8 +437,7 @@ static void synthvid_deferred_io(struct fb_info *p, struct list_head *pagereflis
- 	 * value to yres.
- 	 */
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *page = pageref->page;
--		start = page->index << PAGE_SHIFT;
-+		start = pageref->offset;
- 		end = start + PAGE_SIZE - 1;
- 		y1 = start / p->fix.line_length;
- 		y2 = end / p->fix.line_length;
-diff --git a/drivers/video/fbdev/metronomefb.c b/drivers/video/fbdev/metronomefb.c
-index f581c73d39df..9fd4bb85d735 100644
---- a/drivers/video/fbdev/metronomefb.c
-+++ b/drivers/video/fbdev/metronomefb.c
-@@ -473,11 +473,10 @@ static void metronomefb_dpy_deferred_io(struct fb_info *info, struct list_head *
+ static inline void vga_io_w_fast (unsigned short port, unsigned char reg,
+ 				  unsigned char val)
+ {
++#ifdef CONFIG_HAS_IOPORT
+ 	outw(VGA_OUT16VAL (val, reg), port);
++#endif
+ }
  
- 	/* walk the written page list and swizzle the data */
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *cur = pageref->page;
--		cksum = metronomefb_dpy_update_page(par,
--					(cur->index << PAGE_SHIFT));
--		par->metromem_img_csum -= par->csum_table[cur->index];
--		par->csum_table[cur->index] = cksum;
-+		unsigned long pgoffset = pageref->offset >> PAGE_SHIFT;
-+		cksum = metronomefb_dpy_update_page(par, pageref->offset);
-+		par->metromem_img_csum -= par->csum_table[pgoffset];
-+		par->csum_table[pgoffset] = cksum;
- 		par->metromem_img_csum += cksum;
- 	}
- 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index d36c2e63f516..de86a04782fd 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -445,8 +445,7 @@ static int sh_mobile_lcdc_sginit(struct fb_info *info, struct list_head *pageref
- 	sg_init_table(ch->sglist, nr_pages_max);
- 
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *page = pageref->page;
--		sg_set_page(&ch->sglist[nr_pages++], page, PAGE_SIZE, 0);
-+		sg_set_page(&ch->sglist[nr_pages++], pageref->page, PAGE_SIZE, 0);
- 	}
- 
- 	return nr_pages;
-diff --git a/drivers/video/fbdev/smscufx.c b/drivers/video/fbdev/smscufx.c
-index 7f00605bc0d1..d7aa5511c361 100644
---- a/drivers/video/fbdev/smscufx.c
-+++ b/drivers/video/fbdev/smscufx.c
-@@ -970,10 +970,9 @@ static void ufx_dpy_deferred_io(struct fb_info *info, struct list_head *pagerefl
- 	list_for_each_entry(pageref, pagereflist, list) {
- 		/* create a rectangle of full screen width that encloses the
- 		 * entire dirty framebuffer page */
--		struct page *cur = pageref->page;
- 		const int x = 0;
- 		const int width = dev->info->var.xres;
--		const int y = (cur->index << PAGE_SHIFT) / (width * 2);
-+		const int y = pageref->offset / (width * 2);
- 		int height = (PAGE_SIZE / (width * 2)) + 1;
- 		height = min(height, (int)(dev->info->var.yres - y));
- 
-diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
-index c3758613abff..e19cb8cc7a66 100644
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -810,11 +810,9 @@ static void dlfb_dpy_deferred_io(struct fb_info *info, struct list_head *pageref
- 
- 	/* walk the written page list and render each to device */
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *cur = pageref->page;
--
- 		if (dlfb_render_hline(dlfb, &urb, (char *) info->fix.smem_start,
--				  &cmd, cur->index << PAGE_SHIFT,
--				  PAGE_SIZE, &bytes_identical, &bytes_sent))
-+				      &cmd, pageref->offset, PAGE_SIZE,
-+				      &bytes_identical, &bytes_sent))
- 			goto error;
- 		bytes_rendered += PAGE_SIZE;
- 	}
-diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
-index bc8244b9ce03..3bed357a9870 100644
---- a/drivers/video/fbdev/xen-fbfront.c
-+++ b/drivers/video/fbdev/xen-fbfront.c
-@@ -191,8 +191,7 @@ static void xenfb_deferred_io(struct fb_info *fb_info, struct list_head *pageref
- 	miny = INT_MAX;
- 	maxy = 0;
- 	list_for_each_entry(pageref, pagereflist, list) {
--		struct page *page = pageref->page;
--		beg = page->index << PAGE_SHIFT;
-+		beg = pageref->offset;
- 		end = beg + PAGE_SIZE - 1;
- 		y1 = beg / fb_info->fix.line_length;
- 		y2 = end / fb_info->fix.line_length;
+ static inline unsigned char vga_mm_r (void __iomem *regbase, unsigned short port)
 -- 
-2.36.0
+2.32.0
 
