@@ -2,121 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C771F517524
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 May 2022 18:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 559B351774B
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 May 2022 21:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241335AbiEBQ4i (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 2 May 2022 12:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36994 "EHLO
+        id S234475AbiEBTY5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 2 May 2022 15:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242265AbiEBQ4d (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 May 2022 12:56:33 -0400
-X-Greylist: delayed 95 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 02 May 2022 09:53:04 PDT
-Received: from na01-obe.outbound.protection.outlook.com (unknown [52.101.56.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76771AE63;
-        Mon,  2 May 2022 09:53:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W1jOZJ4WbNLczMyKCwjZ8MQI/UTjIeUYhI3SP5fbQ0QmgZEJgQTyypvIfdIwNuDY7mtMeYJI1cKkGeWCny7PMDmc/+Xqgf5EP7FMntor8oF0Rxvi/EL1w/offK3hlM3lKlrkIFKotfz+j2CM4FX9iHv+NtQ1b/VUESIq0m1zHymbDgaTPpkwv5GIpYoor/zaduh83/7LThCuhWUSqTFBSMlqjyE1H/ByXx2UPybJsdopbzyX20B7lAdS21nVCMm8ptXwA1XEF/9LZt1577FUemNQ97ZoZ23h2egCIq6iaxgBcySpyhgFpiLe2x63R3isK3RPJh5L4IbE9nfUKJOllQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f/Q7CqmIrXWTJW6KP03YP2l7/pKl9BfEPheXtcb5nyg=;
- b=llmOkeiecwMECfdefLJroXHawJ+2Wo2FoM0hpFapIjvN+3WHG/CdbJ3r+/0gbMNeFspTADewjY9bECVbBQlbztlN0x+luZUo3YUFnH8O3ZBHgNyjwJiCadYyvmWzwcHAOZleAb6tK1pJR5ekKDarXfGSakblNaMM/g06PvlTKiEzas6vcCeYx43y/zxhh2yYMsiEoei1FV0Ujb+aTKzDmX8fgBQH0yyl6mY3sckiRZ7rdA+7XPeYoGCqfAAORRgG8kdTqNrTz6L7kcWw8CpuwSO7cTo8lYNidDlm9YrQekPNH8NHA4brC6hRov/ZLmWT9rR+SWngkEDlh8DRxT7+Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f/Q7CqmIrXWTJW6KP03YP2l7/pKl9BfEPheXtcb5nyg=;
- b=b7FgZ5tODXorjjwgImOSbf8W/pDixmeTH6GL6wMbwhkj0B2vvyqrEgC7b1bghHM1GlNJDXgNNvEMMKtHWT3UKFsA4FTYA0ysS2XPAVqwsFJz9iUncF6z1dEDocFBn8PxaXzRI0px5UKg+aRjGEPR/ZMNbU/zI/MPfyTlarTezTw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from DM6PR21MB1370.namprd21.prod.outlook.com (2603:10b6:5:16b::28)
- by DM6PR21MB1180.namprd21.prod.outlook.com (2603:10b6:5:161::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.4; Mon, 2 May
- 2022 16:37:07 +0000
-Received: from DM6PR21MB1370.namprd21.prod.outlook.com
- ([fe80::588e:9ede:461a:2372]) by DM6PR21MB1370.namprd21.prod.outlook.com
- ([fe80::588e:9ede:461a:2372%4]) with mapi id 15.20.5250.004; Mon, 2 May 2022
- 16:37:07 +0000
-From:   Michael Kelley <mikelley@microsoft.com>
-To:     kys@microsoft.com, haiyangz@microsoft.com, sthemmin@microsoft.com,
-        wei.liu@kernel.org, linux-kernel@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, vkuznets@redhat.com,
-        decui@microsoft.com, drawat.floss@gmail.com, airlied@linux.ie,
-        daniel@ffwll.ch, jejb@linux.ibm.com, martin.petersen@oracle.com,
-        deller@gmx.de, dri-devel@lists.freedesktop.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org
-Cc:     mikelley@microsoft.com
-Subject: [PATCH 4/4] drm/hyperv: Remove support for Hyper-V 2008 and 2008R2/Win7
-Date:   Mon,  2 May 2022 09:36:31 -0700
-Message-Id: <1651509391-2058-5-git-send-email-mikelley@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1651509391-2058-1-git-send-email-mikelley@microsoft.com>
-References: <1651509391-2058-1-git-send-email-mikelley@microsoft.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MW2PR2101CA0020.namprd21.prod.outlook.com
- (2603:10b6:302:1::33) To DM6PR21MB1370.namprd21.prod.outlook.com
- (2603:10b6:5:16b::28)
+        with ESMTP id S233034AbiEBTY5 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 2 May 2022 15:24:57 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D55F7C;
+        Mon,  2 May 2022 12:21:26 -0700 (PDT)
+Received: from mail-yw1-f182.google.com ([209.85.128.182]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MxE1Q-1o1DiO25O4-00xb47; Mon, 02 May 2022 21:21:24 +0200
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-2ec42eae76bso158737117b3.10;
+        Mon, 02 May 2022 12:21:23 -0700 (PDT)
+X-Gm-Message-State: AOAM532dexJ22ra+J/GQiTXBV9KGVIFRF7Vg4bUMZYJMFJ7qK4mz/9yz
+        b9U2gbk8Ia7hVOXAcuTbhHdwawHZSC3RAHe0a9o=
+X-Google-Smtp-Source: ABdhPJwUfMAOks7BnV4AzKQEtr1EDQTOee83IkNCHoU3D+nfieXOKuWmJ4Tp85gou+YPOwWYc3gRkPoRLjpjhxYBTNE=
+X-Received: by 2002:a81:ad7:0:b0:2e6:84de:3223 with SMTP id
+ 206-20020a810ad7000000b002e684de3223mr12927652ywk.209.1651519282261; Mon, 02
+ May 2022 12:21:22 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c1684c8c-944d-4e0a-6444-08da2c59ff79
-X-MS-TrafficTypeDiagnostic: DM6PR21MB1180:EE_
-X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-X-Microsoft-Antispam-PRVS: <DM6PR21MB1180E39CED978D6542A63E95D7C19@DM6PR21MB1180.namprd21.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: J4pTyf8BzTuf4lgsgVJmsZzV1m06ZP0ZdtesfJjVp1HWkhK+FSmUfu1kIg2IT2e9IBEpyrvQ/Zh0Ar6ym09LVPDB3ePGmkX/xw4+doYYwVm2NiDtd25NpxTOmRgzncwuDA213QMhcBHZTiBc/LIwWLhyaq54619tDsKAMFQYT0a+dCgwqweRk4x/CNrCpVWQb8c4+AJ/rAV9ZvD+fi/PMeFQ8i17bW+O34VpmtbYDkhi6U/NYBtvMI3L3wsjkPD3GBO4qJ9fcD2xKSBqsrxl6GDirF+PUhDFkK//ZF5IM5MuMPzE+Le/KnYzSYf1fp6F0IujIO2pKnTdkramAoZT07kc0PKJhJ2KUYun9Hb+TdcPngtihrRyW4b+owdn2UQey8L+i8NCJyX2JbeQdKbyNpquwv4OC7pwaGVDDfQCXE8UDrmnvzJWClbMzHZaObLp55kJ41DVFkMyzYQDSghyp33DI1YNsE+I6lQsTuxz4bhmKSTN8PLcKaD4iHV95dGKZcCVQU4MmKYEhiv6cWjjVRvgbiYX2XGyHNx1nMm7J2dn+vGEnDLO9Hd8muNZSQWa94ahJ369FWp+OeydDlX6PXkGFRGh3j77zTX/p2jmfjMh1ETlrjUBNbTvgExyxRclsZEGUA6n5BRAI5kH4mJmGPYJTQ4RLBJ/xwZxUHUxzxiNnDkQtu8fwS9L7PEViw3oZyGsiehENoyVb1MD8WM3Y6bPLnwo08I3qaUDgC8/DdOmkJlYxYgoUlt/88uzRTDcViP1DvtAgd/DFU8gifqU2A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1370.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(451199009)(82950400001)(7416002)(10290500003)(66946007)(6486002)(66556008)(66476007)(2616005)(107886003)(6512007)(26005)(921005)(5660300002)(6506007)(83380400001)(508600001)(82960400001)(86362001)(6666004)(316002)(8936002)(38350700002)(38100700002)(186003)(52116002)(4326008)(36756003)(8676002)(2906002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kQfFLCwxFkW77JGzTBl0d88VVAFHRINR1oXNL0fgV1eanIgaLCi+qirYUu5T?=
- =?us-ascii?Q?ryHluB20wy1ctFAJpx2llZP/pgM0GCr4iNVmEr9o/VoflAucBx/qin8IHBJP?=
- =?us-ascii?Q?9MhDQv3xEaT+PqxNF0myTyFsgxzYkRrPwTikj83QuzkyzEHp1MDMeAe5xs4R?=
- =?us-ascii?Q?oMFKrfQdhy/8BGU4Cwjoygb+SiPrCXRjbL3bwM1pvilPpeUe/T620gKAru6f?=
- =?us-ascii?Q?/cLA/JsBTey02tSgA8AsRc7wrW+gdJyM8H1OrI/Jrf94h4DDveSBA6hWBnLt?=
- =?us-ascii?Q?Pvvl6SZyYGcdP62obDKKIPGMSAT8dOhF8TQRak3M6oPsPKuLCljVCSE95Tkh?=
- =?us-ascii?Q?85knlKYKQi6W5gkVYC6rOSBpXVKlBX4gAHKLsuKthzirIDB+HAefTCJ2fDVO?=
- =?us-ascii?Q?pnnncVBRE/yqFvuel71g4zbRWNfV51L6VBsgrSAOdXEJ7m1yuTMrH4h/7aG3?=
- =?us-ascii?Q?A8W46EtG9OXKVIdYTjYsbJWPjZ/hPD43bmpIWDF2GdhtKrcR4lNR3Mc6iej0?=
- =?us-ascii?Q?re1+gCkxarTDlZIrmgJJfn8fx8oPQjvv0GNHMVMVJLi7NhyGHGulmpioC9PK?=
- =?us-ascii?Q?C1Zr2uRNmqHi+WgonNyQc7W9qGU4/vaT5dbaRMvRRLH3Z/iOYc+cuyhtmIs5?=
- =?us-ascii?Q?scfZgtqlm5DdsHugNLZWl5GnLIj0AcIzIUAhED88L/b1UqQvugZdeZMs8u1W?=
- =?us-ascii?Q?gapdwMu7PWAteKhmtGs6xVgfXmXV/hzBi8S97mCH/eFufOYJTq/rqx+2RLYp?=
- =?us-ascii?Q?9b+5zUPPkOWLX6ml9AwUGgv8bUpu2pZfBuWFRwRz+BMP5qLGJ8p75V5byN7h?=
- =?us-ascii?Q?1kJ9fpbQYv8QuUlQwDcHhMcWJQ7lr28HLDjtqF9jD+E7TWeqSK2ntQ5kaH5f?=
- =?us-ascii?Q?3Fu95Hvwzk6+k1QESqsMmtYQQE4xxgXNCy+8w5HWsvPKLoGYtxIJNFRgz8+l?=
- =?us-ascii?Q?heSfX9FAjypfCeGuin6xiNYACdN8AQdQvw8FFzYQTJcvMVQyqQjWtF+7aJLW?=
- =?us-ascii?Q?wTz8JLx8VUyHGJ8/kq33xbQW6qofofdQbQYEGlAN2GZ5VbVL3VWI9GvZun8c?=
- =?us-ascii?Q?pLtvyQzITiwvQ9mb43Lvmi1qw4cXBdhPRXvesJUILQHzxwxEasJBFp3Iq0Xb?=
- =?us-ascii?Q?ePbc1l2ELzMFwOm2Z50M5E/PPgh45bvScfjW0bAB+P8xMprVjPnhjuu3bivb?=
- =?us-ascii?Q?cfkf/mC1pb/jVtqdRsMOvn1JUcaPO9fWm4TWBkQTykiReizQFnB2DCp8La4F?=
- =?us-ascii?Q?UM6OP+B0aQoXVAo77A023nAcEQ9OP0kSKuYHLrL0agRQgssBQ11BD6T00ZL0?=
- =?us-ascii?Q?TO7svVbiQVfTa2P+TRydsgQwZXvKLKnrpjtfPmR9R3g/cpqgUveuhSw1WBPL?=
- =?us-ascii?Q?KglI3B3Yb2EGWixAgYEPtFRqHs9gXg76aZO/mKkUlDEJZrhi/ihaToJ4Bwli?=
- =?us-ascii?Q?YXOWqw330Q6bjNu0aCvptvhPBYEiMFHWAHo7x/EUMNLt+VVXUsirdBvZoA27?=
- =?us-ascii?Q?aykMpR4kX1vkMCdnq0IGs2f97Sifs7zdx21bthMlk3UeZ8CvQGT4fJhTaw9+?=
- =?us-ascii?Q?7x7JorSuF2CjglInCEmcii3abP+K4r66QuCC0UjjBCgtaFughXUCytPUI7Hp?=
- =?us-ascii?Q?zr4eZCpbtBShPcszrJG5jBhNOQ0RnLfzsFgAmtAePEee1rIUqWo8bGWWxV8n?=
- =?us-ascii?Q?/tJzl+nNpiYdQuCNu02kvLjXi3AnNmN1XHpysfJsGjtHUs/M/F+NFBFx6vWU?=
- =?us-ascii?Q?ilNlaL/gra2juxFZ3zHnQD1g/C0gEZY=3D?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1684c8c-944d-4e0a-6444-08da2c59ff79
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1370.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2022 16:37:07.7353
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3UtRDPArWZI/KLjZXUlPUZJJ+16zbSJUY93iF+cjQpU28y4ixFVzvXHf6CPNZAV3qDsF4joL7bAUIWWD1PX4eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR21MB1180
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
+References: <20220419163810.2118169-1-arnd@kernel.org> <20220422234150.GA3442771@roeck-us.net>
+ <CAK8P3a3qZdEqnJ2nTOKwDMossngOgCpEvZq4cQMPQjSsUoU=6g@mail.gmail.com>
+ <3b4046ed-fd75-13ea-fac3-06469172806c@roeck-us.net> <CAK8P3a1LzEG1vo+5nMrnL3TOMcbSKJ3u=StcfY8dajV2raUBjA@mail.gmail.com>
+ <3df135a2-17f5-d6c6-b4a8-e1a60e254297@roeck-us.net> <CAK8P3a2EHMQPN4ny9sXXuReFG0jN0hyRV7h9v_AR_0pqpOU41w@mail.gmail.com>
+ <CAK8P3a09+nFS3g1rgvTW9da3tMiAhHjkjZVs1QOJOj8TJ-9MDg@mail.gmail.com>
+ <6f1b27fa-96d1-4be7-ac6a-762610314f2a@roeck-us.net> <8d6d453a-e6fc-439b-2f34-e60c22fc9e98@roeck-us.net>
+ <CAK8P3a2Ekvis1YcrJZtuga+XQdbeTC98PkOszCpS2DiZri7VMQ@mail.gmail.com>
+ <149509dd-f43d-1b27-4395-81eab4ff3455@roeck-us.net> <CAK8P3a05vFdBnXXAMPVS82xX29+uinvWPcWxAgvj0TfoOk+1kg@mail.gmail.com>
+ <b13783aa-9225-d52a-3800-c97ad772688b@roeck-us.net> <CAK8P3a3S5OjkKq_u5FpnwzYv+0+typya6Z4MzTez5ZH+do00xQ@mail.gmail.com>
+ <CAK8P3a3jiqf_zpBsZyvAb5ZtkwDa7KkqExqDAdpY_pYqkr_NgQ@mail.gmail.com> <4dcdbfe2-9edf-320b-d123-3b62c8b5e28e@roeck-us.net>
+In-Reply-To: <4dcdbfe2-9edf-320b-d123-3b62c8b5e28e@roeck-us.net>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 2 May 2022 21:21:05 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0ogn1wgPBDHkT=Fb8ufA+y8Ax1Qov2-vRXfC08QqnrQA@mail.gmail.com>
+Message-ID: <CAK8P3a0ogn1wgPBDHkT=Fb8ufA+y8Ax1Qov2-vRXfC08QqnrQA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/48] ARM: PXA multiplatform support
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Philipp Zabel <philipp.zabel@gmail.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Paul Parsons <lost.distance@yahoo.com>,
+        Sergey Lapin <slapin@ossfans.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Helge Deller <deller@gmx.de>, Mark Brown <broonie@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        IDE-ML <linux-ide@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        patches@opensource.cirrus.com, linux-leds@vger.kernel.org,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-mtd <linux-mtd@lists.infradead.org>,
+        linux-rtc@vger.kernel.org, USB list <linux-usb@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:LSvvD9ealIOnZB+N8uP6cECWasA2Jd3X8iq0Cc9U/iVYsnBKg9o
+ ytWvTRMzIQZCGD0e1i7o1EpHdePM1NG9xgkirUzKNRG6DSfKxic3mGGZTfGFL1U7ldQBAtb
+ wZn+CIpiZcMaiJxAbFO8IcYLfu9Ti5wj+O+27MhczGNb74PleKViT5c7M7wD+VsSs1l36KF
+ rLwC2CFIQOhBN9KmrpHoQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fbjVa8gY3qo=:Gwe5l2mvYrqeN0P6ZafGZX
+ oSrefPBFecdfxw+f2yj2mmY/LNx/cpo7UkhFA7eG9/WUJjjyAjSQUz+mL0/OLnp5lOAILv+rL
+ wZJbWfmd2byNsZvHnyZ6D5nRZ9KFAfpxvn1a4TBEFQ2s6dROZbMe9Z6w690de8hT7BEqQ8k+s
+ 2bjXyLFsN8Lw+n44zSR1HGla2yhwhqOQHrKMmcfLR0GbieiOL0Z45Hx8rP9m3k7YGdbArZBKJ
+ gE91irW27MSLEy8/RxVLsPwOx7ErZb6Dh/Jwf33SIqPA/tH2GKjHxro5Afx1pz6CyXFh8S0Bm
+ q+g6PuJlDIXiAG/IhRohR8uQM0G8Qy5vvnkeo2ejvxHQpHuSbP5kjX9vUZJckhnDgEtxImPJp
+ +GnTaCuQjlnSHZteZWplbiaHTDCmszD6xNYQGYWhMuttlCO+btnl4MwI/OXOedY8xdJf3RzpQ
+ sHkSX3XL5lLbnPreGSdIsT7mNybINie0NBh/J7jj8Ghl+KZJvFnfTEGdoAxOBf/mffcyQ+mTW
+ MMmnnIdw8pdSTWgXXDsu+rgJhFZH9CSMCIMUJjFpGaFZkZdfOctv6bVjTzxFgLZP6p/QGZpRv
+ xcMjPjwUGouwAtJDc+IwqidtHZsi+5+VWNyxGpo/aSdufJFzWEiXxcN2szr+Ne1ePoobkPQ6W
+ INOTn8vgyN3/Kfge/OT/t5/jjqKuyputjRD3BtqSfG7QOKmIoUj4uxQCxtpiVS9zq/sHII562
+ S0gInb219DnDLHdLByJXGuuihG0d/ry6f2WJyeNaw7HHKivck2Il58WyKzkeKHJ9xp3zsW+Yq
+ ZZ2wJiLLtye20JCTyQ5nrKv8EToRmeSZd8QIQexpc0p+nhZshM=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -124,82 +103,35 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The DRM Hyper-V driver has special case code for running on the first
-released versions of Hyper-V: 2008 and 2008 R2/Windows 7.  These versions
-are now out of support (except for extended security updates) and lack
-support for performance features that are needed for effective production
-usage of Linux guests.
+On Mon, May 2, 2022 at 6:26 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> With v5.18-rc1-49-gcb813018b5c1, I still get:
+>
+> [    0.797668] RAMDISK: Couldn't find valid RAM disk image starting at 0.
+> [    0.805262] /dev/root: Can't open blockdev
+> [    0.805487] VFS: Cannot open root device "(null)" or unknown-block(0,0): error -6
+> [    0.805674] Please append a correct "root=" boot option; here are the available partitions:
+>
+> when trying to boot z2 from initrd.
+>
+> The other problems are gone.
 
-The negotiation of the VMbus protocol versions required by these old
-Hyper-V versions has been removed from the VMbus driver.  So now remove
-the handling of these VMbus protocol versions from the DRM Hyper-V
-driver.
+Ok, progress!
 
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
----
- drivers/gpu/drm/hyperv/hyperv_drm_proto.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+What is your qemu command line? I see that z2 has no pcmcia device, so
+I tried booting
+from MMC, but this already fails with 5.18-rc1 without any of my
+patches, giving me
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-index c0155c6..76a182a 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-@@ -18,16 +18,16 @@
- #define SYNTHVID_VERSION(major, minor) ((minor) << 16 | (major))
- #define SYNTHVID_VER_GET_MAJOR(ver) (ver & 0x0000ffff)
- #define SYNTHVID_VER_GET_MINOR(ver) ((ver & 0xffff0000) >> 16)
-+
-+/* Support for VERSION_WIN7 is removed. #define is retained for reference. */
- #define SYNTHVID_VERSION_WIN7 SYNTHVID_VERSION(3, 0)
- #define SYNTHVID_VERSION_WIN8 SYNTHVID_VERSION(3, 2)
- #define SYNTHVID_VERSION_WIN10 SYNTHVID_VERSION(3, 5)
- 
--#define SYNTHVID_DEPTH_WIN7 16
- #define SYNTHVID_DEPTH_WIN8 32
--#define SYNTHVID_FB_SIZE_WIN7 (4 * 1024 * 1024)
-+#define SYNTHVID_WIDTH_WIN8 1600
-+#define SYNTHVID_HEIGHT_WIN8 1200
- #define SYNTHVID_FB_SIZE_WIN8 (8 * 1024 * 1024)
--#define SYNTHVID_WIDTH_MAX_WIN7 1600
--#define SYNTHVID_HEIGHT_MAX_WIN7 1200
- 
- enum pipe_msg_type {
- 	PIPE_MSG_INVALID,
-@@ -496,12 +496,6 @@ int hyperv_connect_vsp(struct hv_device *hdev)
- 	case VERSION_WIN8:
- 	case VERSION_WIN8_1:
- 		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN8);
--		if (!ret)
--			break;
--		fallthrough;
--	case VERSION_WS2008:
--	case VERSION_WIN7:
--		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN7);
- 		break;
- 	default:
- 		ret = hyperv_negotiate_version(hdev, SYNTHVID_VERSION_WIN10);
-@@ -513,18 +507,15 @@ int hyperv_connect_vsp(struct hv_device *hdev)
- 		goto error;
- 	}
- 
--	if (hv->synthvid_version == SYNTHVID_VERSION_WIN7)
--		hv->screen_depth = SYNTHVID_DEPTH_WIN7;
--	else
--		hv->screen_depth = SYNTHVID_DEPTH_WIN8;
-+	hv->screen_depth = SYNTHVID_DEPTH_WIN8;
- 
- 	if (hyperv_version_ge(hv->synthvid_version, SYNTHVID_VERSION_WIN10)) {
- 		ret = hyperv_get_supported_resolution(hdev);
- 		if (ret)
- 			drm_err(dev, "Failed to get supported resolution from host, use default\n");
- 	} else {
--		hv->screen_width_max = SYNTHVID_WIDTH_MAX_WIN7;
--		hv->screen_height_max = SYNTHVID_HEIGHT_MAX_WIN7;
-+		hv->screen_width_max = SYNTHVID_WIDTH_WIN8;
-+		hv->screen_height_max = SYNTHVID_HEIGHT_WIN8;
- 	}
- 
- 	hv->mmio_megabytes = hdev->channel->offermsg.offer.mmio_megabytes;
--- 
-1.8.3.1
+[    0.697481] Creating 3 MTD partitions on "physmap-flash":
+[    0.698161] 0x000000000000-0x000000040000 : "U-Boot Bootloader"
+[    0.702815] 0x000000040000-0x000000060000 : "U-Boot Environment"
+[    0.706541] 0x000000060000-0x000000800000 : "Flash"
+[    0.718066] pxa2xx-mci pxa2xx-mci.0: incomplete constraints, dummy
+supplies not allowed
+[    0.718501] pxa2xx-mci pxa2xx-mci.0: incomplete constraints, dummy
+supplies not allowed
 
+Do  you have MMC or some other rootfs working without my patch series?
+
+     Arnd
