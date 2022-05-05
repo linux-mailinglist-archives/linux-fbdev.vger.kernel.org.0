@@ -2,74 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B1E851BFFD
-	for <lists+linux-fbdev@lfdr.de>; Thu,  5 May 2022 14:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BBB51C024
+	for <lists+linux-fbdev@lfdr.de>; Thu,  5 May 2022 15:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240959AbiEENBC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 5 May 2022 09:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
+        id S240670AbiEENGG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 5 May 2022 09:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237178AbiEENBB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 May 2022 09:01:01 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DC14EA35
-        for <linux-fbdev@vger.kernel.org>; Thu,  5 May 2022 05:57:21 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id i27so8537668ejd.9
-        for <linux-fbdev@vger.kernel.org>; Thu, 05 May 2022 05:57:21 -0700 (PDT)
+        with ESMTP id S230213AbiEENGF (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 5 May 2022 09:06:05 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1EAF532D0
+        for <linux-fbdev@vger.kernel.org>; Thu,  5 May 2022 06:02:25 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id dk23so8587756ejb.8
+        for <linux-fbdev@vger.kernel.org>; Thu, 05 May 2022 06:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=FM/Z6quK2HFXaGlKN2qHDcgt6AtRbU+Icwi43NmIU6g=;
-        b=e7ujymya9ex2b8NDhVyC0LmZepjwDZX1dOJK1JDnnmGuRG6AyTOFnHJ4J2V7rtz1p/
-         FBP0QGnQxWCfs+GWzsqJKxqz66EmleSHDZtXvbKHaBCbdrS6bFMgGWAdoBaq5hRTvKk1
-         IAbU4QUVUeqgtXnBEA9JGXIncA6nXjki8yuyg=
+         :mime-version:content-disposition:in-reply-to;
+        bh=BOm9C+H5cCzRKeEZrFMRYiRqzZ6UOwUcjZY2tv0sRpc=;
+        b=Kxw8nwKJ8DvGjh9azZysybfe83qaqPbJNMBImiHRRShDE9cAQIVUPwpNRzMYyqJDWn
+         dsRQVs0f6iLibcVuVSZkqpqhNIFiDlD3wJgApXaHgV2OLHQUNm6UMFbpquj9a984Ath2
+         YYzt5AvkVS0kW+QS7oh5lGjcn6amGHjvw2cFc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id
          :mail-followup-to:references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=FM/Z6quK2HFXaGlKN2qHDcgt6AtRbU+Icwi43NmIU6g=;
-        b=qVxmU/7oXUS/BOUDs/qMN11lue2GlwYlzayuRlrz/q8+L6r3NztjkcXUDV9S0sLd4Q
-         Osw5dKb7uh/TlKzxn1dAqo0AB+/Rpj3+NKdZUGqo07V3YJ2825risUsR1UM2YAz8guVu
-         S6sHW3IluiBVhywr1KegplrjnnLcdYpVtVm6axOKN0wA2bzISP2rmBh1GDmqFoiofeKV
-         umBheEb8eRmF4Wdt2xuJAHiMIMr1+utyUcDNgaznyp9HKdC1ojO29+82Y2iVaO+O/fxc
-         WzFYrT45Ek1byvWGQaOIGf3ooVJ4/8hxAw+J2yz5qDGR+dWhhtm236FIrpjrQ5a0hFZN
-         +6fQ==
-X-Gm-Message-State: AOAM530hUHg0N+4EhJuZJDmT0JrXcO5QMDY8GgNKTaEuFvFuze1zgdKj
-        WZ5PMiF2dB/3wWiRBfSHT+S9Lg==
-X-Google-Smtp-Source: ABdhPJydB+X7T3Uinb/cc9VMJSsCVdAEUcKhuzhNyoyqd8YRzscpNiO1NJQT0fjm1pOxqN4/qUBFXA==
-X-Received: by 2002:a17:906:58ca:b0:6f4:444f:31ef with SMTP id e10-20020a17090658ca00b006f4444f31efmr19843303ejs.135.1651755440390;
-        Thu, 05 May 2022 05:57:20 -0700 (PDT)
+         :in-reply-to;
+        bh=BOm9C+H5cCzRKeEZrFMRYiRqzZ6UOwUcjZY2tv0sRpc=;
+        b=7nWAQNs4zlny4Zqp7a1IXQy7zLlmCe1k85mEox/IkJ+Dett7cG9zkjTs8yq6qMCePK
+         xbtVXOc7UgwgDAkR2/a3MFnfSc3XulDPFDqglFdcZGIdCsMXXZAoDbJunvJyKC0CJsgV
+         vGJfxKi2/oMoIAJy4GBaB8jz3x/8e5RFAo1ZnmsnFvEaNzyyJlujCECMUCNs7bbbA7yN
+         0kg8Y3p7LI2GHUMQaEPC4hs6sRIzLNeXLmAhnJ8mx1stRULY7MwmXx7+yvPBFdBPYtsp
+         3lj6pLp9AmG0a8DexwvZsfs07xw96wfen6RbSy5ranoJ8IG9B+7sh1x/MTB42zXEdMe3
+         X/HQ==
+X-Gm-Message-State: AOAM531xdW9d7jVG6Px779WRVflthm+Le0r4HLo6kOal9UZBFmTAE/FI
+        otCgRLgke6UIbD39+V2X9mf5oNVyuhqptA==
+X-Google-Smtp-Source: ABdhPJztrJUrelAEmEd/ZSyj3JbJlOid+Hsdae80sL28sjz9o0jSUsQ4xsro3xCtUCPLNWG8pnxaUA==
+X-Received: by 2002:a17:907:3f86:b0:6db:b745:f761 with SMTP id hr6-20020a1709073f8600b006dbb745f761mr25395823ejc.610.1651755744294;
+        Thu, 05 May 2022 06:02:24 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id n15-20020a05640206cf00b0042617ba6386sm823998edy.16.2022.05.05.05.57.19
+        by smtp.gmail.com with ESMTPSA id d3-20020a170907272300b006f3ef214da4sm767144ejl.10.2022.05.05.06.02.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 May 2022 05:57:19 -0700 (PDT)
-Date:   Thu, 5 May 2022 14:57:18 +0200
+        Thu, 05 May 2022 06:02:23 -0700 (PDT)
+Date:   Thu, 5 May 2022 15:02:21 +0200
 From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+To:     Javier Martinez Canillas <javierm@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
         Daniel Vetter <daniel.vetter@ffwll.ch>,
         Helge Deller <deller@gmx.de>, dri-devel@lists.freedesktop.org,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH 2/3] fbdev/simplefb: Cleanup fb_info in .fb_destroy
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] fbdev: vesafb: Cleanup fb_info in .fb_destroy
  rather than .remove
-Message-ID: <YnPJroqQ+oxqJqIx@phenom.ffwll.local>
-Mail-Followup-To: Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        Helge Deller <deller@gmx.de>, dri-devel@lists.freedesktop.org,
-        Hans de Goede <hdegoede@redhat.com>
-References: <20220504215151.55082-1-javierm@redhat.com>
- <20220504215722.56970-1-javierm@redhat.com>
- <974f4d00-89bc-a2da-6d65-ca4207300794@suse.de>
+Message-ID: <YnPK3RLPdtvFze+8@phenom.ffwll.local>
+Mail-Followup-To: Javier Martinez Canillas <javierm@redhat.com>,
+        linux-kernel@vger.kernel.org, Helge Deller <deller@gmx.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+References: <20220505113128.264963-1-javierm@redhat.com>
+ <20220505113128.264963-5-javierm@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <974f4d00-89bc-a2da-6d65-ca4207300794@suse.de>
+In-Reply-To: <20220505113128.264963-5-javierm@redhat.com>
 X-Operating-System: Linux phenom 5.10.0-8-amd64 
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -81,97 +75,79 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, May 05, 2022 at 09:29:40AM +0200, Thomas Zimmermann wrote:
-> Hi
+On Thu, May 05, 2022 at 01:31:27PM +0200, Javier Martinez Canillas wrote:
+> The driver is calling framebuffer_release() in its .remove callback, but
+> this will cause the struct fb_info to be freed too early. Since it could
+> be that a reference is still hold to it if user-space opened the fbdev.
 > 
-> Am 04.05.22 um 23:57 schrieb Javier Martinez Canillas:
-> > The driver is calling framebuffer_release() in its .remove callback, but
-> > this will cause the struct fb_info to be freed too early. Since it could
-> > be that a reference is still hold to it if user-space opened the fbdev.
-> > 
-> > This would lead to a use-after-free error if the framebuffer device was
-> > unregistered but later a user-space process tries to close the fbdev fd.
-> > 
-> > The correct thing to do is to only unregister the framebuffer in the
-> > driver's .remove callback, but do any cleanup in the fb_ops.fb_destroy.
-> > 
-> > Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+> This would lead to a use-after-free error if the framebuffer device was
+> unregistered but later a user-space process tries to close the fbdev fd.
 > 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> The correct thing to do is to only unregister the framebuffer in the
+> driver's .remove callback, but do any cleanup in the fb_ops.fb_destroy.
 > 
-> Please see my question below.
+> Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+> ---
 > 
-> > ---
-> > 
-> >   drivers/video/fbdev/simplefb.c | 8 +++++++-
-> >   1 file changed, 7 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-> > index 94fc9c6d0411..2c198561c338 100644
-> > --- a/drivers/video/fbdev/simplefb.c
-> > +++ b/drivers/video/fbdev/simplefb.c
-> > @@ -84,6 +84,10 @@ struct simplefb_par {
-> >   static void simplefb_clocks_destroy(struct simplefb_par *par);
-> >   static void simplefb_regulators_destroy(struct simplefb_par *par);
-> > +/*
-> > + * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
-> > + * of unregister_framebuffer() or fb_release(). Do any cleanup here.
-> > + */
-> >   static void simplefb_destroy(struct fb_info *info)
-> >   {
-> >   	struct simplefb_par *par = info->par;
-> > @@ -94,6 +98,8 @@ static void simplefb_destroy(struct fb_info *info)
-> >   	if (info->screen_base)
-> >   		iounmap(info->screen_base);
-> > +	framebuffer_release(info);
-> > +
-> >   	if (mem)
-> >   		release_mem_region(mem->start, resource_size(mem));
+> Changes in v2:
+> - Also do the change for vesafb (Thomas Zimmermann).
 > 
-> The original problem with fbdev hot-unplug was that vmwgfx needed the
-> framebuffer region to be released. If we release it only after userspace
-> closed it's final file descriptor, vmwgfx could have already failed.
+>  drivers/video/fbdev/vesafb.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
 > 
-> I still don't fully get why this code apparently works or at least doesn't
-> blow up occasionally. Any ideas?
+> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
+> index df6de5a9dd4c..1f03a449e505 100644
+> --- a/drivers/video/fbdev/vesafb.c
+> +++ b/drivers/video/fbdev/vesafb.c
+> @@ -179,6 +179,10 @@ static int vesafb_setcolreg(unsigned regno, unsigned red, unsigned green,
+>  	return err;
+>  }
+>  
+> +/*
+> + * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
+> + * of unregister_framebuffer() or fb_release(). Do any cleanup here.
+> + */
+>  static void vesafb_destroy(struct fb_info *info)
+>  {
+>  	struct vesafb_par *par = info->par;
+> @@ -187,7 +191,13 @@ static void vesafb_destroy(struct fb_info *info)
+>  	arch_phys_wc_del(par->wc_cookie);
+>  	if (info->screen_base)
+>  		iounmap(info->screen_base);
+> +
+> +	if (((struct vesafb_par *)(info->par))->region)
+> +		release_region(0x3c0, 32);
 
-See my other reply, releasing hw stuff should be done from ->remove, not
-->fb_destroy.
+This move seems rather iffy, so maybe justify it with "makes the code
+exactly as busted before 27599aacbaef ("fbdev: Hot-unplug firmware fb
+devices on forced removal")"
 
-Also note that none of the patches discussed moved around anything here,
-we simply leaked things a bit when only unregistering the fb and not going
-through the device->remove callback. I guess in practice it works because
-unregistering the device sends out a uevent, and userspace then closes all
-it's device fd as a reaction to that, and usually that's fast enough to
-not upset anyone?
+Also same comments as on v1 about adding more details about what/how this
+fixes, with that: Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-No idea tbh.
--Daniel
-
-> Best regards
-> Thomas
-> 
-> >   }
-> > @@ -545,8 +551,8 @@ static int simplefb_remove(struct platform_device *pdev)
-> >   {
-> >   	struct fb_info *info = platform_get_drvdata(pdev);
-> > +	/* simplefb_destroy takes care of info cleanup */
-> >   	unregister_framebuffer(info);
-> > -	framebuffer_release(info);
-> >   	return 0;
-> >   }
-> 
+> +
+>  	release_mem_region(info->apertures->ranges[0].base, info->apertures->ranges[0].size);
+> +
+> +	framebuffer_release(info);
+>  }
+>  
+>  static struct fb_ops vesafb_ops = {
+> @@ -484,10 +494,8 @@ static int vesafb_remove(struct platform_device *pdev)
+>  {
+>  	struct fb_info *info = platform_get_drvdata(pdev);
+>  
+> +	/* vesafb_destroy takes care of info cleanup */
+>  	unregister_framebuffer(info);
+> -	if (((struct vesafb_par *)(info->par))->region)
+> -		release_region(0x3c0, 32);
+> -	framebuffer_release(info);
+>  
+>  	return 0;
+>  }
 > -- 
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 Nürnberg, Germany
-> (HRB 36809, AG Nürnberg)
-> Geschäftsführer: Ivo Totev
-
-
-
+> 2.35.1
+> 
 
 -- 
 Daniel Vetter
