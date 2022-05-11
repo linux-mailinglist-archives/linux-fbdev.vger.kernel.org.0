@@ -2,134 +2,105 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B25852114A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 May 2022 11:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADEFC522B37
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 May 2022 06:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239190AbiEJJtJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 May 2022 05:49:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S236182AbiEKEjb (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 May 2022 00:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239148AbiEJJtG (ORCPT
+        with ESMTP id S236784AbiEKEj0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 May 2022 05:49:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BD0E529BC53
-        for <linux-fbdev@vger.kernel.org>; Tue, 10 May 2022 02:44:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1652175894;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZIkeEVePGlxbsvPHtH0nGpkFA24GFXTnSwZmVR9DJTA=;
-        b=AMmj/VzNJnMjy+5NXP8aEbX55HY5xyiQhF0oPs4MaOoKv7ZXaTs7MUW69oSmoq7l2HOLB7
-        RGfhZoCQNX0Pl8K+NnK/4WTpCukBWEXKzSHqhpNYQQ4rn+xyQUSfxPQwXoRW+v0OyuTIPX
-        CyzqCmJL2YKptYxKJm0Ka38/DpOW1I8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-388-CUdfPOIoNQGx0qoY9Haz1w-1; Tue, 10 May 2022 05:44:52 -0400
-X-MC-Unique: CUdfPOIoNQGx0qoY9Haz1w-1
-Received: by mail-wm1-f69.google.com with SMTP id k16-20020a7bc310000000b0038e6cf00439so575887wmj.0
-        for <linux-fbdev@vger.kernel.org>; Tue, 10 May 2022 02:44:51 -0700 (PDT)
+        Wed, 11 May 2022 00:39:26 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D9114CB61
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 May 2022 21:39:22 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-ed9a75c453so1451129fac.11
+        for <linux-fbdev@vger.kernel.org>; Tue, 10 May 2022 21:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
+         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
+         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
+         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
+         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
+         wrQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ZIkeEVePGlxbsvPHtH0nGpkFA24GFXTnSwZmVR9DJTA=;
-        b=hP+Cnk+/LxThZ86V2rbsj/BQzRcWtF6Vd0TVNqGn/3uoNw5CrQaEmc0UJ26XGJOU3J
-         izawP3DOM0PvxAbED1y1nq5hJHR2JA5odopKYLHXAO/ZqcJr0AfKBwD7ahigo+5jveEv
-         KNhqa3jXbnQ9DKDrV/njbYfL0PloDNNAsUjIDo87Jj55ygasWJBlgV4NyHj8yh/HDyz7
-         onh9zz+6hRh7uV8tgEXB0qX+Zd/qFcgzrwMrHsezg/TNxqLrTZ+DKvTcamFMvrEbdx/2
-         VUFhiOXujiNTu1crvSR5PefMnXBiCMsX0oF8EdpZrAfJZfjY++t1N0Ug2pNcqTXYGqeY
-         CZ7A==
-X-Gm-Message-State: AOAM532Ci4oY4d/+RVideHxkEZHJB3vO2r29fKIXawmpoDx6E5CCkwFR
-        a4lVPy9Ug4IaMrW204s4Y2aEVOvPnF9Qk3HaefIpLfzOnNeXllm/1fBgaiG26pGq/xPDa10EC6a
-        EExqQ4US9BoIwgUglLCVNNbg=
-X-Received: by 2002:a1c:3587:0:b0:381:50ff:cbd with SMTP id c129-20020a1c3587000000b0038150ff0cbdmr27255205wma.140.1652175890834;
-        Tue, 10 May 2022 02:44:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwqZdOByE2SRyxmDOrncLZ/RO7E0TZVermOqH+9uwM0OqnYhPpwaZ5UwYEr+j+uTXKTM8aeLw==
-X-Received: by 2002:a1c:3587:0:b0:381:50ff:cbd with SMTP id c129-20020a1c3587000000b0038150ff0cbdmr27255188wma.140.1652175890613;
-        Tue, 10 May 2022 02:44:50 -0700 (PDT)
-Received: from [192.168.1.129] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id p6-20020a05600c358600b0039429bfebeasm6470780wmq.2.2022.05.10.02.44.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 May 2022 02:44:50 -0700 (PDT)
-Message-ID: <c148afe9-f10a-8751-d761-2480c05a137a@redhat.com>
-Date:   Tue, 10 May 2022 11:44:49 +0200
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
+        b=Futn/QMjbf4B3H1XJD+KRahzA+wdIqPZeAUlHEB/55xKJYp7gFmYfyB+bsoQophFTc
+         PaEJJEc4K9sd6AxhNg/g3rDhMV3Fix/8N/g/E8oau/XlOy32qwrxZRl4kkEvzApycvQX
+         vwW75ZV0nWKvvRflkBs0nhO+qf6LgsDdazuOUBTcIVr2aw6rR5m2+PDNieBKuXQQA/xh
+         fZ2VIHkiYqLuKmR6R27WYbzmkzFxYyzBCj0Wb005zc4OsgvLpmdqQhJp4DZFLrkyFlFP
+         Jqef7FljcHAkTnTGBbbU347mIIop0s9oGLo0+PCtzGkDoTBqdFvSqkU0PgY+qPZzaNzm
+         t+rQ==
+X-Gm-Message-State: AOAM530amQI3nyOzlhb15eGmS93+tzJvf6yF9OTnf0vnX+f58QLjRRr+
+        sYLN5ddqHdoaqC26455yx7RTmUpPC+C4k2Xlj4js7srhD24IoQ==
+X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
+X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
+ gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
+ May 2022 21:39:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v3 1/4] fbdev: Prevent possible use-after-free in
- fb_release()
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
-        linux-fbdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-        dri-devel@lists.freedesktop.org,
-        Daniel Vetter <daniel.vetter@intel.com>
-References: <20220505215947.364694-1-javierm@redhat.com>
- <20220505220413.365977-1-javierm@redhat.com>
- <753d0350-42dc-389b-b10b-4533ddcf32ac@intel.com>
- <1f788b8f-0bea-1818-349e-b1bc907bf251@redhat.com>
- <a339df59-9e00-c7cb-e33d-2ac626443639@intel.com>
- <3b7fe4fe-fdec-cef2-4e0e-309d9dc4a8af@redhat.com>
- <b5ab1c49-04e7-36c3-677d-2989b79e50ca@suse.de>
- <2bf27b09-0896-1849-254f-d5b19abdc892@redhat.com>
- <fc3e8a40-664f-07ae-7474-c0412a1ab1b5@intel.com>
- <1c36d431-d5c0-7278-c9e0-61867e9dc174@redhat.com>
- <79aaea41-5dab-f896-ab3d-d6bc9a5de615@suse.de>
- <2d8d8583-3a39-b826-dd83-ba5bc4c5b082@redhat.com>
- <7ffd92d7-9c07-fa9c-dc95-9e82719fd237@suse.de>
- <71ebd5f7-64d0-510a-6f1b-29921fca19fa@suse.de>
- <35ffd96d-3cbe-12dd-c1ea-878299ec173c@redhat.com>
- <23ae6eaa-c281-9fc1-2c64-dd953ad2f5f1@suse.de>
-From:   Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <23ae6eaa-c281-9fc1-2c64-dd953ad2f5f1@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
+ -0700 (PDT)
+From:   Private Mail <privatemail1961@gmail.com>
+Date:   Tue, 10 May 2022 21:39:10 -0700
+Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
+Subject: Have you had this? It is for your Benefit
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
+        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
+        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 5/10/22 11:39, Thomas Zimmermann wrote:
+Our Ref: BG/WA0151/2022
 
-[snip]
+Dear Beneficiary
 
->>
->> 3) Set .fb_destroy to drm_fbdev_fb_destroy() if isn't set by drivers when
->>     they call drm_fb_helper_initial_config() or drm_fb_helper_fill_info().
->>
->> I'm leaning towards option (3). Then the fb_info release will be automatic
->> whether drivers are using the generic setup or a custom one.
-> 
-> IMHO this would just be another glitch to paper over all the broken 
-> code. And if you follow through drm_fbdev_fb_helper(), [1] it'll call 
-> _fini at some point and probably blow up in some other way. Instances of 
-> struct fb_ops are also usually const.
-> 
-> The only reliable way AFAICT is to do what generic fbdev does: use 
-> unregister_framebuffer and do the software cleanup somewhere within 
-> fb_destroy. And then fix all drivers to use that pattern.
-> 
+Subject: An Estate of US$15.8 Million
 
-Right. We can't really abstract this away from drivers that are not
-using the generic fbdev helpers. So then they will have to provide
-their own .fb_destroy() callback and do the cleanup.
+Blount and Griffin Genealogical Investigators specializes in probate
+research to locate missing heirs and beneficiaries to estates in the
+United Kingdom and Europe.
 
--- 
-Best regards,
+We can also help you find wills, obtain copies of certificates, help
+you to administer an estate, as well as calculating how an estate,
+intestacy or trust should be distributed.
 
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+You may be entitled to a large pay out for an inheritance in Europe
+worth US$15.8 million. We have discovered an estate belonging to the
+late Depositor has remained unclaimed since he died in 2011 and we
+have strong reasons to believe you are the closest living relative to
+the deceased we can find.
 
+You may unknowingly be the heir of this person who died without
+leaving a will (intestate). We will conduct a probate research to
+prove your entitlement, and can submit a claim on your behalf all at
+no risk to yourselves.
+
+Our service fee of 10% will be paid to us after you have received the estate.
+
+The estate transfer process should take just a matter of days as we
+have the mechanism and expertise to get this done very quickly. This
+message may come to you as a shock, however we hope to work with you
+to transfer the estate to you as quickly as possible.
+
+Feel free to email our senior case worker Mr. Malcolm Casey on email:
+malcolmcasey68@yahoo.com for further discussions.
+
+With warm regards,
+
+Mr. Blount W. Gort, CEO.
+Blount and Griffin Associates Inc
