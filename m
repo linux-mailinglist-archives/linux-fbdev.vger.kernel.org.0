@@ -2,63 +2,61 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA783523E98
-	for <lists+linux-fbdev@lfdr.de>; Wed, 11 May 2022 22:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 938B652459F
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 May 2022 08:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347600AbiEKUOc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 11 May 2022 16:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52664 "EHLO
+        id S1350280AbiELGXc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 12 May 2022 02:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbiEKUOa (ORCPT
+        with ESMTP id S1350109AbiELGXa (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 11 May 2022 16:14:30 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163645AECE
-        for <linux-fbdev@vger.kernel.org>; Wed, 11 May 2022 13:14:29 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id y74so3133832vsy.7
-        for <linux-fbdev@vger.kernel.org>; Wed, 11 May 2022 13:14:29 -0700 (PDT)
+        Thu, 12 May 2022 02:23:30 -0400
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F922590AE
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 May 2022 23:23:27 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id q10so5284226oia.9
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 May 2022 23:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=cGqzklWXWDVELhuS+xgTophtvKPosdcmMHaKUXqQOh0=;
-        b=Zt/b536x6W6lxrj7WSSyJ3R79/SObpYlAuibOK028NnHb0ZkrZKGQaeWhGDvnfd0rZ
-         rvcHO8nlZxh9Ys3+Vo4Y5staczP4dZTPiy7vAc/0g2Vm+VUxd6f8kKk7Ck1UYVio0lAP
-         CQWU7nMp6TNeNtHKhv4Rpee40pbRItjLHC7uwU07NHkMck6/+Sk4x+rKe2p7Qsix22vJ
-         6if9mu80NrvliAFKz9V6td3VwnF7OxcEH9J3GKUN3oSJTn9PQIci+z1Jk/epelo1Nxqb
-         2Trazwg3YuJa2Moz2lzZF+ylu42K69BkmgHS/oeRpjbfR7pm4KEWSIje2n4ssGbnq/Da
-         /dwQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=e3lMmzLEEo9uKNn+GEq/CC8Y3S70VLZ4rzRZ6Vhxax8=;
+        b=AcV6S/7xzY8/8o4h54VXALSo/shWLG3oww8MEP9PGssn7ELQYftuYQUdiOZyRs0R0w
+         jCHf0TClGN1WalShLaibVLoPPBjqkEnIucdASH8dTvUCocPmT52EvlYDlxtNYCMw86lo
+         Ivuu2mH3n8LyBXo+EzfwJgGtvqELVvufW+jt5uvkZu8Nofl319WNepcuHHAYVbh3T1Eg
+         n74mT+G9rK73Qz0PvFY6kmmQOHqrS7/ayPtF6VrsK+onSVVH/ZDeyZmWbkFcW154tzJh
+         qf3jzLRy3j3sWZ5/39S0iuk85IQSGwWkFwpSgwOugVL5AA3CZentrJt85OWXCAxO/33X
+         /cnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=cGqzklWXWDVELhuS+xgTophtvKPosdcmMHaKUXqQOh0=;
-        b=UbO3PnQRfLB9QiFmpTxSdVplL7rN0h+nEtBx/Qc6Fjx51PXqWAYy0dfrHxj2fBQuQm
-         PxyMtzvTqG0e/wovVn/qeL77pK2qrCOIL27+nko8gk1ww2y8CWzlwlmo/7q2lB2jx1Gy
-         FeG1dCeXiryp8PHqiPMiGfNi0V3KPRBsimXmBlKUGxExYS0xp66KLxfFCBhde5LzBisw
-         SbxkZmkr7Wkh1pDLecdlnzQVPLccHrfW9QfnzvQkBMBUTm/dl6h3vlIrtKRjgTE50t03
-         tff33mS6hVgzn+UCujShv67bhGCYBIbN031tCP45baj3pdzH6JMLE0imrddrG+Ndbncq
-         h73w==
-X-Gm-Message-State: AOAM532YVpQEUdH9aPAxX+5LhkCOtui9J27BRsi8z84PaTgjolSLpiaC
-        zAyQ8Odr45FuWl55dweN3OgVlOO5Yz1Ase98bFU=
-X-Google-Smtp-Source: ABdhPJz94QPolV8Q9u+ZGAqId7oCkbxCM9t58kplepURfRm/t3W45SCpLYTPciTyKA6pzYqG2tShTyWNtYdFh6OzdQU=
-X-Received: by 2002:a67:ff0f:0:b0:32c:cf89:a66d with SMTP id
- v15-20020a67ff0f000000b0032ccf89a66dmr14738250vsp.17.1652300068167; Wed, 11
- May 2022 13:14:28 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=e3lMmzLEEo9uKNn+GEq/CC8Y3S70VLZ4rzRZ6Vhxax8=;
+        b=5/HOWL1f22E4S88g29SddoKfLeYVf0Cw/R7UwMdZFzRjn2KUpbC4tePKZwF3cAoryz
+         FHIpIKlNpkaRpgTHkQ74ImV4VSpZYFE3IBK48cAJj7EH2o1jbMc7mnJdq9TjWxi4c5OL
+         w6YMOzkiP97o15QI6vSDUUYp1odI/Z3d0B5IvDzDRvJ3jhAE3R/qR9w9MgAbah/MvQhz
+         5psk2uiXsLs1ujITl8zXqaQDjg2smVPV5w/WS30mww6ifODU1vL0mniRuJinwywNlhQ+
+         8D43iuy3zHwnnwnpe0eC4CL3WrG1dIIVCkZ+1v+Q3z8t0e6cJlUPCGzUD4LPNgqoqkAI
+         tfMw==
+X-Gm-Message-State: AOAM531+l9mQybFHheSF1vtpk7O0le3Bk0Ed5Z6mYMoD2UScJvBmy+pl
+        4s35jR1nmwjY6PKMRB63f0oYJkPUN218768T+C1iwIR5
+X-Google-Smtp-Source: ABdhPJzOQaQ5Br/k+UDB2/KVFCykTN4kEL/HLQaRtK0cjeA7fbWIF2VeuYyQ+IC1IZEu+KMbYKNVGo0SnaJJbBzJ/r0=
+X-Received: by 2002:a05:6808:1927:b0:326:9b99:abb6 with SMTP id
+ bf39-20020a056808192700b003269b99abb6mr4446037oib.255.1652336606291; Wed, 11
+ May 2022 23:23:26 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6122:255:0:0:0:0 with HTTP; Wed, 11 May 2022 13:14:27
- -0700 (PDT)
-Reply-To: frankmorsonn@aol.com
-From:   Barrister Frank Morrison <arth5jhson@gmail.com>
-Date:   Wed, 11 May 2022 21:14:27 +0100
-Message-ID: <CAON3qUjNZSm201dRHBD5bbFzzVVz=10350Am37-fbxCOHuCahQ@mail.gmail.com>
-Subject: Lkd
-To:     arth5jhson@gmail.com
+References: <CAGRSmLsJMZ1aO7E7vjOzHNXyNGXc9A39wVB9PEGkJ8m4eW7sTg@mail.gmail.com>
+In-Reply-To: <CAGRSmLsJMZ1aO7E7vjOzHNXyNGXc9A39wVB9PEGkJ8m4eW7sTg@mail.gmail.com>
+From:   "David F." <df7729@gmail.com>
+Date:   Wed, 11 May 2022 23:23:15 -0700
+Message-ID: <CAGRSmLtQ8HXvbTYQPxkwqk3E8EOyqMWedBM0KOsPp7NFQ6uh8g@mail.gmail.com>
+Subject: Fwd: Waking from sleep results in no video?
+To:     linux-fbdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -66,7 +64,23 @@ List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
 Hello,
-I'm Barrister Arthur Johnson. Please I wish to have a communication with you.
-I am waiting for your answer.
-Regards,
-Barr.Arthur Johnson
+
+I have a boot disk using framebuffer video.  If I put the system to
+deep mem sleep via:
+
+echo -n mem > /sys/power/state
+
+Then the system wakes (either by having to press the power button or
+keyboard or sometimes it just comes back on) and while I can use the
+keyboard and type things I can tell are working, the video screen
+stays black.  I tried on multiple systems with different video
+adapters and even connectors, one using HDMI, another DVI, another old
+VGA.  In no case does the video come back on.  The monitors just say
+nothing detected.
+
+Is there any trick to get the frame buffer video working again?
+
+Is there any kernel config options I should be including in the build
+for it to work with power management?
+
+Thanks!!
