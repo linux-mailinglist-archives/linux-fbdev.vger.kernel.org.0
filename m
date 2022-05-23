@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCCB8530EF9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 23 May 2022 15:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FA1531024
+	for <lists+linux-fbdev@lfdr.de>; Mon, 23 May 2022 15:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234404AbiEWKus (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 23 May 2022 06:50:48 -0400
+        id S234386AbiEWKuv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 23 May 2022 06:50:51 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234369AbiEWKur (ORCPT
+        with ESMTP id S234395AbiEWKur (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Mon, 23 May 2022 06:50:47 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562434D601
-        for <linux-fbdev@vger.kernel.org>; Mon, 23 May 2022 03:50:38 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id p19so35305wmg.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 23 May 2022 03:50:38 -0700 (PDT)
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32BD04D617
+        for <linux-fbdev@vger.kernel.org>; Mon, 23 May 2022 03:50:45 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id bg25so8475836wmb.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 23 May 2022 03:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9kcLUBotzLBWsSM+XKMOYKEqXoBbWAI2/g1wkvMXv9A=;
-        b=wh38wPdib0QZVPJgdOnloTBSSVwn+v2SiQsXc+HMxTSw4dJvGqZExNPjO/Qogfw91k
-         UHfx2YhMeUYRKKs7nJhga6joi//bW8xGvS511Fwo1T5BuG+4tObMV2E/4aOGQTjbT1mY
-         H2gf9SYcD4YHeVfY4NEqicSWSWdZ7KYAp/lf/IqZrJj+O9h6Z5vPvgw9daQiBKT/N8Y2
-         1RWYR875LwJNFuER+4S4D5Iz86KK+t9LBeQxlbrvyEabwJuhmCDgAtWOvDTMJVGLW2V5
-         SFYhoO4GKq1salmQs2DYIJa6iaukVGFbia1FCU9gHUNexDzgZ1Fp9zw1YBrHfZDPmQR4
-         jNBw==
+        bh=Ro/qKrk7X6klQMfSiDiwo/RvTYcnnsoepoqTff03G4Y=;
+        b=K29wO0ggdqdppPdkWtuN2ZADX0K3Yqof8o/g4mDzkUMBavn4HHc+KPJwSCm7m4vzDU
+         pM2iHEeLaEhpEg0HRURiniDIgmXS9s+h9RUBtz5faVA9M+uNJOS2s3aRM6E6jK9f6CQx
+         ZsBNw1/TcjUmDo4jgtnarRJluH7zcJczMA2bH9RN0R4aUIvos9srcERnwQ+V3HE29eF3
+         PUKQcoVwtPA1MYZcJqMkGXfNAvQla0jD3wNoxuTrSWaiZyYpnMLevNQKreTYSdMP+DOi
+         eKpmJHGgOP3TgmfCAibcMh1WnAWcErvEuUaboHnShSmxBxK8PYbvHZBelRPWe68MAn+b
+         x2Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9kcLUBotzLBWsSM+XKMOYKEqXoBbWAI2/g1wkvMXv9A=;
-        b=MkfBNPNAxGoEBlaiZP0UX2wRCSftalhTyIxFFWIyLTJ/srxet7JP0cjFz5YABBeuUS
-         0s4K/p7CkqmWyz1jNHFihdp3szslaDXwbVgDf2SYiH+2JZtW+dqVtccPtO9aMna8L/hn
-         lrQMqPwj6yM0+20c+CO/gjXFuKQA+NXtnfVOCsSBfkwNiEDHme5atERB9riYs0Ik6TYR
-         y5Z7g/35Ir2YPAGJ7yJ403CIfhdqXBeEm/JE1HTMmtHlQeakelqLavv8YgIAsLqEzced
-         0llDNXD2ciuOXuTTGSL7HyXG3iw4cThy2SXeXv2Li7xXf73E7jCxRcCjBGxLK7nuzLSC
-         1+ow==
-X-Gm-Message-State: AOAM533Z9gb5b+RqLjstLtfWP6Ay3YgWBPxRNFyq10KGRKXrMG64lvVi
-        ItWHKiItIwdTSnEEvBGSOQ8Uzg==
-X-Google-Smtp-Source: ABdhPJxPS+KTZasA5ageYxTFjUEG0m36tj6pEdAqsaM2Y2Wpquy5awACSjaGeKvPrs5SAhDfVgQ9XA==
-X-Received: by 2002:a05:600c:35c6:b0:394:856d:fb07 with SMTP id r6-20020a05600c35c600b00394856dfb07mr19475094wmq.131.1653303037284;
-        Mon, 23 May 2022 03:50:37 -0700 (PDT)
+        bh=Ro/qKrk7X6klQMfSiDiwo/RvTYcnnsoepoqTff03G4Y=;
+        b=aontzxW5B/NnMMTWWG8cqz8x9RRg61HGmXseC3k2vpN6OEGe9ZSMTsEPwu2Wr1NXfw
+         uQeuQeZuF5SQQzpz0MsDIAe2AVIJhBgL2qG8riP1mX/HQKB/jjLF9G7SOIVv7GT1rah+
+         Ns3Gy3yQDObXb4etENVg8IngdothcSlr2e19jel/YCtDEpL7ol21J5UXKa/ZgwkM3i/7
+         JdyEFbOJ5MFNhxXNF0zsHi0saxUqSRPWtGQGi/xZVSHg1nCo9i9hIPU12moJNGcy6K9t
+         yaslqJPP1ZlLnvjNJDgCrwWdc9vzFBAKFdpNl6QtxpxPouiux3+lFsj+H8iEph57sTE2
+         5BUQ==
+X-Gm-Message-State: AOAM533RQVq8Es7iR44Vt31zSJOHMuDQCTi6eRoRxQmYqlbYIKy1By7a
+        Tk2vU2IOi9GP32ap1y105cipKA==
+X-Google-Smtp-Source: ABdhPJzvihFTuYQI9KJCujY6AAsplQgAQKhgzZsvez9L+MrU1itYoTWpwtNW/xpzcC8Xx0p4ysAyCw==
+X-Received: by 2002:a05:600c:4e4d:b0:397:5009:bcf1 with SMTP id e13-20020a05600c4e4d00b003975009bcf1mr2136001wmq.66.1653303043727;
+        Mon, 23 May 2022 03:50:43 -0700 (PDT)
 Received: from localhost.localdomain (2a02-8440-6141-9d1b-3074-96af-9642-0003.rev.sfr.net. [2a02:8440:6141:9d1b:3074:96af:9642:3])
-        by smtp.gmail.com with ESMTPSA id n11-20020a7bc5cb000000b003942a244f38sm8453607wmk.17.2022.05.23.03.50.35
+        by smtp.gmail.com with ESMTPSA id n11-20020a7bc5cb000000b003942a244f38sm8453607wmk.17.2022.05.23.03.50.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 May 2022 03:50:36 -0700 (PDT)
+        Mon, 23 May 2022 03:50:43 -0700 (PDT)
 From:   Guillaume Ranquet <granquet@baylibre.com>
 To:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Philipp Zabel <p.zabel@pengutronix.de>,
@@ -63,14 +63,16 @@ To:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Vinod Koul <vkoul@kernel.org>, Helge Deller <deller@gmx.de>,
         CK Hu <ck.hu@mediatek.com>, Jitao shi <jitao.shi@mediatek.com>
-Cc:     Markus Schneider-Pargmann <msp@baylibre.com>,
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Rex-BC Chen <rex-bc.chen@mediatek.com>,
         dri-devel@lists.freedesktop.org,
         linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-phy@lists.infradead.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v10 05/21] video/hdmi: Add audio_infoframe packing for DP
-Date:   Mon, 23 May 2022 12:47:38 +0200
-Message-Id: <20220523104758.29531-6-granquet@baylibre.com>
+Subject: [PATCH v10 06/21] drm/mediatek: dpi: move dpi limits to SoC config
+Date:   Mon, 23 May 2022 12:47:39 +0200
+Message-Id: <20220523104758.29531-7-granquet@baylibre.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220523104758.29531-1-granquet@baylibre.com>
 References: <20220523104758.29531-1-granquet@baylibre.com>
@@ -78,197 +80,121 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Markus Schneider-Pargmann <msp@baylibre.com>
+Add flexibility by moving the dpi limits to the SoC specific config
 
-Similar to HDMI, DP uses audio infoframes as well which are structured
-very similar to the HDMI ones.
-
-This patch adds a helper function to pack the HDMI audio infoframe for
-DP, called hdmi_audio_infoframe_pack_for_dp().
-hdmi_audio_infoframe_pack_only() is split into two parts. One of them
-packs the payload only and can be used for HDMI and DP.
-
-Also constify the frame parameter in hdmi_audio_infoframe_check() as
-it is passed to hdmi_audio_infoframe_check_only() which expects a const.
-
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
 Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Rex-BC Chen <rex-bc.chen@mediatek.com>
 ---
- drivers/video/hdmi.c           | 82 ++++++++++++++++++++++++++--------
- include/drm/dp/drm_dp_helper.h |  2 +
- include/linux/hdmi.h           |  7 ++-
- 3 files changed, 71 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/hdmi.c b/drivers/video/hdmi.c
-index 947be761dfa4..5f50237554ed 100644
---- a/drivers/video/hdmi.c
-+++ b/drivers/video/hdmi.c
-@@ -21,6 +21,7 @@
-  * DEALINGS IN THE SOFTWARE.
-  */
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 4554e2de1430..4746eb342567 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -125,6 +125,7 @@ struct mtk_dpi_conf {
+ 	bool edge_sel_en;
+ 	const u32 *output_fmts;
+ 	u32 num_output_fmts;
++	const struct mtk_dpi_yc_limit *limit;
+ };
  
-+#include <drm/dp/drm_dp_helper.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/errno.h>
-@@ -381,12 +382,34 @@ static int hdmi_audio_infoframe_check_only(const struct hdmi_audio_infoframe *fr
-  *
-  * Returns 0 on success or a negative error code on failure.
-  */
--int hdmi_audio_infoframe_check(struct hdmi_audio_infoframe *frame)
-+int hdmi_audio_infoframe_check(const struct hdmi_audio_infoframe *frame)
- {
- 	return hdmi_audio_infoframe_check_only(frame);
+ static void mtk_dpi_mask(struct mtk_dpi *dpi, u32 offset, u32 val, u32 mask)
+@@ -235,9 +236,10 @@ static void mtk_dpi_config_fb_size(struct mtk_dpi *dpi, u32 width, u32 height)
+ 	mtk_dpi_mask(dpi, DPI_SIZE, height << VSIZE, VSIZE_MASK);
  }
- EXPORT_SYMBOL(hdmi_audio_infoframe_check);
  
-+static void
-+hdmi_audio_infoframe_pack_payload(const struct hdmi_audio_infoframe *frame,
-+				  u8 *buffer)
-+{
-+	u8 channels;
-+
-+	if (frame->channels >= 2)
-+		channels = frame->channels - 1;
-+	else
-+		channels = 0;
-+
-+	buffer[0] = ((frame->coding_type & 0xf) << 4) | (channels & 0x7);
-+	buffer[1] = ((frame->sample_frequency & 0x7) << 2) |
-+		 (frame->sample_size & 0x3);
-+	buffer[2] = frame->coding_type_ext & 0x1f;
-+	buffer[3] = frame->channel_allocation;
-+	buffer[4] = (frame->level_shift_value & 0xf) << 3;
-+
-+	if (frame->downmix_inhibit)
-+		buffer[4] |= BIT(7);
-+}
-+
- /**
-  * hdmi_audio_infoframe_pack_only() - write HDMI audio infoframe to binary buffer
-  * @frame: HDMI audio infoframe
-@@ -404,7 +427,6 @@ EXPORT_SYMBOL(hdmi_audio_infoframe_check);
- ssize_t hdmi_audio_infoframe_pack_only(const struct hdmi_audio_infoframe *frame,
- 				       void *buffer, size_t size)
+-static void mtk_dpi_config_channel_limit(struct mtk_dpi *dpi,
+-					 struct mtk_dpi_yc_limit *limit)
++static void mtk_dpi_config_channel_limit(struct mtk_dpi *dpi)
  {
--	unsigned char channels;
- 	u8 *ptr = buffer;
- 	size_t length;
- 	int ret;
-@@ -420,28 +442,13 @@ ssize_t hdmi_audio_infoframe_pack_only(const struct hdmi_audio_infoframe *frame,
++	const struct mtk_dpi_yc_limit *limit = dpi->conf->limit;
++
+ 	mtk_dpi_mask(dpi, DPI_Y_LIMIT, limit->y_bottom << Y_LIMINT_BOT,
+ 		     Y_LIMINT_BOT_MASK);
+ 	mtk_dpi_mask(dpi, DPI_Y_LIMIT, limit->y_top << Y_LIMINT_TOP,
+@@ -449,7 +451,6 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
+ 				    struct drm_display_mode *mode)
+ {
+-	struct mtk_dpi_yc_limit limit;
+ 	struct mtk_dpi_polarities dpi_pol;
+ 	struct mtk_dpi_sync_param hsync;
+ 	struct mtk_dpi_sync_param vsync_lodd = { 0 };
+@@ -484,11 +485,6 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
+ 	dev_dbg(dpi->dev, "Got  PLL %lu Hz, pixel clock %lu Hz\n",
+ 		pll_rate, vm.pixelclock);
  
- 	memset(buffer, 0, size);
- 
--	if (frame->channels >= 2)
--		channels = frame->channels - 1;
--	else
--		channels = 0;
+-	limit.c_bottom = 0x0010;
+-	limit.c_top = 0x0FE0;
+-	limit.y_bottom = 0x0010;
+-	limit.y_top = 0x0FE0;
 -
- 	ptr[0] = frame->type;
- 	ptr[1] = frame->version;
- 	ptr[2] = frame->length;
- 	ptr[3] = 0; /* checksum */
+ 	dpi_pol.ck_pol = MTK_DPI_POLARITY_FALLING;
+ 	dpi_pol.de_pol = MTK_DPI_POLARITY_RISING;
+ 	dpi_pol.hsync_pol = vm.flags & DISPLAY_FLAGS_HSYNC_HIGH ?
+@@ -536,7 +532,7 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
+ 	else
+ 		mtk_dpi_config_fb_size(dpi, vm.hactive, vm.vactive);
  
--	/* start infoframe payload */
--	ptr += HDMI_INFOFRAME_HEADER_SIZE;
--
--	ptr[0] = ((frame->coding_type & 0xf) << 4) | (channels & 0x7);
--	ptr[1] = ((frame->sample_frequency & 0x7) << 2) |
--		 (frame->sample_size & 0x3);
--	ptr[2] = frame->coding_type_ext & 0x1f;
--	ptr[3] = frame->channel_allocation;
--	ptr[4] = (frame->level_shift_value & 0xf) << 3;
--
--	if (frame->downmix_inhibit)
--		ptr[4] |= BIT(7);
-+	hdmi_audio_infoframe_pack_payload(frame,
-+					  ptr + HDMI_INFOFRAME_HEADER_SIZE);
+-	mtk_dpi_config_channel_limit(dpi, &limit);
++	mtk_dpi_config_channel_limit(dpi);
+ 	mtk_dpi_config_bit_num(dpi, dpi->bit_num);
+ 	mtk_dpi_config_channel_swap(dpi, dpi->channel_swap);
+ 	mtk_dpi_config_yc_map(dpi, dpi->yc_map);
+@@ -790,12 +786,20 @@ static const u32 mt8183_output_fmts[] = {
+ 	MEDIA_BUS_FMT_RGB888_2X12_BE,
+ };
  
- 	hdmi_infoframe_set_checksum(buffer, length);
++static const struct mtk_dpi_yc_limit mtk_dpi_limit = {
++	.c_bottom = 0x0010,
++	.c_top = 0x0FE0,
++	.y_bottom = 0x0010,
++	.y_top = 0x0FE0,
++};
++
+ static const struct mtk_dpi_conf mt8173_conf = {
+ 	.cal_factor = mt8173_calculate_factor,
+ 	.reg_h_fre_con = 0xe0,
+ 	.max_clock_khz = 300000,
+ 	.output_fmts = mt8173_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
++	.limit = &mtk_dpi_limit,
+ };
  
-@@ -479,6 +486,43 @@ ssize_t hdmi_audio_infoframe_pack(struct hdmi_audio_infoframe *frame,
- }
- EXPORT_SYMBOL(hdmi_audio_infoframe_pack);
+ static const struct mtk_dpi_conf mt2701_conf = {
+@@ -805,6 +809,7 @@ static const struct mtk_dpi_conf mt2701_conf = {
+ 	.max_clock_khz = 150000,
+ 	.output_fmts = mt8173_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
++	.limit = &mtk_dpi_limit,
+ };
  
-+/**
-+ * hdmi_audio_infoframe_pack_for_dp - Pack a HDMI Audio infoframe for DisplayPort
-+ *
-+ * @frame:      HDMI Audio infoframe
-+ * @sdp:        secondary data packet for display port. This is filled with the
-+ * appropriate: data
-+ * @dp_version: Display Port version to be encoded in the header
-+ *
-+ * Packs a HDMI Audio Infoframe to be sent over Display Port. This function
-+ * fills the secondary data packet to be used for Display Port.
-+ *
-+ * Return: Number of total written bytes or a negative errno on failure.
-+ */
-+ssize_t
-+hdmi_audio_infoframe_pack_for_dp(const struct hdmi_audio_infoframe *frame,
-+				 struct dp_sdp *sdp, u8 dp_version)
-+{
-+	int ret;
-+
-+	ret = hdmi_audio_infoframe_check(frame);
-+	if (ret)
-+		return ret;
-+
-+	memset(sdp->db, 0, sizeof(sdp->db));
-+
-+	/* Secondary-data packet header */
-+	sdp->sdp_header.HB0 = 0;
-+	sdp->sdp_header.HB1 = frame->type;
-+	sdp->sdp_header.HB2 = DP_SDP_AUDIO_INFOFRAME_HB2;
-+	sdp->sdp_header.HB3 = (dp_version & 0x3f) << 2;
-+
-+	hdmi_audio_infoframe_pack_payload(frame, sdp->db);
-+
-+	return frame->length + 4;
-+}
-+EXPORT_SYMBOL(hdmi_audio_infoframe_pack_for_dp);
-+
- /**
-  * hdmi_vendor_infoframe_init() - initialize an HDMI vendor infoframe
-  * @frame: HDMI vendor infoframe
-diff --git a/include/drm/dp/drm_dp_helper.h b/include/drm/dp/drm_dp_helper.h
-index 51e02cf75277..d4adb479263e 100644
---- a/include/drm/dp/drm_dp_helper.h
-+++ b/include/drm/dp/drm_dp_helper.h
-@@ -1576,6 +1576,8 @@ int drm_dp_bw_code_to_link_rate(u8 link_bw);
- #define DP_SDP_VSC_EXT_CEA		0x21 /* DP 1.4 */
- /* 0x80+ CEA-861 infoframe types */
+ static const struct mtk_dpi_conf mt8183_conf = {
+@@ -813,6 +818,7 @@ static const struct mtk_dpi_conf mt8183_conf = {
+ 	.max_clock_khz = 100000,
+ 	.output_fmts = mt8183_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8183_output_fmts),
++	.limit = &mtk_dpi_limit,
+ };
  
-+#define DP_SDP_AUDIO_INFOFRAME_HB2	0x1b
-+
- /**
-  * struct dp_sdp_header - DP secondary data packet header
-  * @HB0: Secondary Data Packet ID
-diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
-index c8ec982ff498..2f4dcc8d060e 100644
---- a/include/linux/hdmi.h
-+++ b/include/linux/hdmi.h
-@@ -336,7 +336,12 @@ ssize_t hdmi_audio_infoframe_pack(struct hdmi_audio_infoframe *frame,
- 				  void *buffer, size_t size);
- ssize_t hdmi_audio_infoframe_pack_only(const struct hdmi_audio_infoframe *frame,
- 				       void *buffer, size_t size);
--int hdmi_audio_infoframe_check(struct hdmi_audio_infoframe *frame);
-+int hdmi_audio_infoframe_check(const struct hdmi_audio_infoframe *frame);
-+
-+struct dp_sdp;
-+ssize_t
-+hdmi_audio_infoframe_pack_for_dp(const struct hdmi_audio_infoframe *frame,
-+				 struct dp_sdp *sdp, u8 dp_version);
+ static const struct mtk_dpi_conf mt8192_conf = {
+@@ -821,6 +827,7 @@ static const struct mtk_dpi_conf mt8192_conf = {
+ 	.max_clock_khz = 150000,
+ 	.output_fmts = mt8173_output_fmts,
+ 	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
++	.limit = &mtk_dpi_limit,
+ };
  
- enum hdmi_3d_structure {
- 	HDMI_3D_STRUCTURE_INVALID = -1,
+ static int mtk_dpi_probe(struct platform_device *pdev)
 -- 
 2.35.1
 
