@@ -2,117 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37AD5370B6
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 May 2022 13:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65FE5371FE
+	for <lists+linux-fbdev@lfdr.de>; Sun, 29 May 2022 20:04:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbiE2LPD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 May 2022 07:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50264 "EHLO
+        id S231372AbiE2SEE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 29 May 2022 14:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbiE2LPA (ORCPT
+        with ESMTP id S229876AbiE2SEE (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 May 2022 07:15:00 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01BE986C3;
-        Sun, 29 May 2022 04:14:59 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id p22so12840254lfo.10;
-        Sun, 29 May 2022 04:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=5FtteHWZGo9XZ7scso44Da3d3+hVMECLmg5cp5RvsAY=;
-        b=Jv3DqjnltHSi5wiXkkj3jSTxfoxCmb9HpnfqeHUGAAnEuQPf+ixHyeNtS/qdjzdD0x
-         eYlb6mAMZe1PShKaa7/QxrVXbNhrrupjAulXsNqyUZs6B+5RIE/X8eripqVTbgp20+1w
-         YRg6odmSu/oZPGwzI8igNILfLyxIkMQtbFYAEgZ6aC23eeycYNCxGDCsMmj6lzllS+Ip
-         5CZvvI+uGBCksVkAnNyzLzcM5URli1DDmrZPsQbcnTrJSkYTXjlAV8mDkaCrbWgmu8Mf
-         z/MMBIveREAaC0lSGskaj6Alx4RMCQF59ZPbg1YQ9URT1wJ8g2tJqZS1+OryPUjAW/7B
-         4RJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=5FtteHWZGo9XZ7scso44Da3d3+hVMECLmg5cp5RvsAY=;
-        b=N+csYAMTdsg27HkB0iXa6VbYhQN7OnsnyWF1krJXzBI7aPAdpfcU0MrjhMJQ9zUB5F
-         lzCzQ9aMlvcxjBiVbqfVWypOhwmoCfIPq6rJ7+NYOPP3io0MgTaNgddHsp4Z/m1WucWY
-         o6/xhIWm8wtgbuUUlaIiG9MtH+YbzjnjBVoFa1qWEM9Vb6P8c4bX3dvwni+sLB7XOrJF
-         OjDRrEsZJ7ZfMlVkbLIF/egIv1wcqLLIiOy/mx0QeoAUMz2F4Lu+SYePXG4QdHS3hc9O
-         LvWzoFhlfKT7XWRpwKal9jK6oX6m1BqIvp4XIIhaPXb3qe0wT/ipZGcPtqHsTZW/ZHI6
-         mbWg==
-X-Gm-Message-State: AOAM532Ub7JLXT7QH7nYGxfWbsqdBq3RXkxSEvl1lUOhCJ0WEmMdo+f5
-        NzrpMrSj7eVRY1kkRts/KBs=
-X-Google-Smtp-Source: ABdhPJzEhP78Xi4TzBQreFDbg7R8/FB1cQkOqRpNRPZgf0mrOTSHXW/wpv/2YqHXr304f1c2jGHVFA==
-X-Received: by 2002:ac2:44db:0:b0:478:ae7c:ca3d with SMTP id d27-20020ac244db000000b00478ae7cca3dmr13831031lfm.571.1653822897793;
-        Sun, 29 May 2022 04:14:57 -0700 (PDT)
-Received: from dell.intranet (93-181-165-181.internetia.net.pl. [93.181.165.181])
-        by smtp.gmail.com with ESMTPSA id n17-20020ac24911000000b0047255d211eesm1729897lfi.285.2022.05.29.04.14.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 May 2022 04:14:57 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Helge Deller <deller@gmx.de>, Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tomi Valkeinen <tomba@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Imre Deak <imre.deak@solidboot.com>,
-        Trilok Soni <soni.trilok@gmail.com>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: Re: [PATCH] video: fbdev: omap: Add prototype for hwa742_update_window_async() to avoid build warning
-Date:   Sun, 29 May 2022 13:14:56 +0200
-Message-ID: <4460689.LvFx2qVVIh@dell>
-In-Reply-To: <YpMXF9luBc4Sjr9h@ls3530>
-References: <YpMXF9luBc4Sjr9h@ls3530>
+        Sun, 29 May 2022 14:04:04 -0400
+X-Greylist: delayed 5241 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 May 2022 11:04:01 PDT
+Received: from mx.sb-roscoff.fr (mx.sb-roscoff.fr [193.52.39.203])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B61964BD6;
+        Sun, 29 May 2022 11:04:01 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mx.sb-roscoff.fr (Postfix) with ESMTP id 97F95225D65;
+        Sun, 29 May 2022 17:30:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mx.sb-roscoff.fr
+Received: from mx.sb-roscoff.fr ([127.0.0.1])
+        by localhost (mx.sb-roscoff.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id uzxxGK7uxwgL; Sun, 29 May 2022 17:30:43 +0200 (CEST)
+Received: from web11.sb-roscoff.fr (web11.sb-roscoff.fr [192.168.1.181])
+        by mx.sb-roscoff.fr (Postfix) with ESMTP id C5319225BF3;
+        Sun, 29 May 2022 17:28:23 +0200 (CEST)
+Received: from 141.11.28.159
+        (SquirrelMail authenticated user sgarric)
+        by web11.sb-roscoff.fr with HTTP;
+        Sun, 29 May 2022 17:28:24 +0200
+Message-ID: <1bface92207363f7077be37c71aa39a3.squirrel@web11.sb-roscoff.fr>
+Date:   Sun, 29 May 2022 17:28:24 +0200
+Subject: =?iso-8859-1?Q?Gesch=E4ft?=
+From:   "Dave Ramsden" <sgarric@sb-roscoff.fr>
+Reply-To: davrsd1@aol.com
+User-Agent: SquirrelMail/1.4.22
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+To:     undisclosed-recipients:;
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Helge,
-
-On Sunday, 29 May 2022 08:47:51 CEST Helge Deller wrote:
-> The symbol hwa742_update_window_async() is exported, but there is no
-> prototype defined for it. That's why gcc complains:
-> 
-> drivers-video-fbdev-omap-hwa742.c:warning:no-previous-prototype-for-hwa742_update_window_async
-> 
-> Add the prototype, but I wonder if we couldn't drop exporting the symbol
-> instead. Since omapfb_update_window_async() is exported the same way,
-> are there any users outside of the tree?
-
-It looks like there are no non-local users of any of those two functions 
-either, so we could make them static, and I'm not aware of any out of tree 
-users, but let's ask more deeply involved people.  Tony, Aaro, Tomi, can 
-you please confirm?
-
-Thanks,
-Janusz
-
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> diff --git a/drivers/video/fbdev/omap/omapfb.h b/drivers/video/fbdev/omap/omapfb.h
-> index d930152c289c..0c753ccbc1c0 100644
-> --- a/drivers/video/fbdev/omap/omapfb.h
-> +++ b/drivers/video/fbdev/omap/omapfb.h
-> @@ -229,5 +229,9 @@ extern int  omapfb_update_window_async(struct fb_info *fbi,
->  				       struct omapfb_update_window *win,
->  				       void (*callback)(void *),
->  				       void *callback_data);
-> +extern int  hwa742_update_window_async(struct fb_info *fbi,
-> +				       struct omapfb_update_window *win,
-> +				       void (*callback)(void *),
-> +				       void *callback_data);
-> 
->  #endif /* __OMAPFB_H */
-> 
 
 
 
+Ich bin Herr. Dave Ramsden und ich arbeiten mit der Bank of England
+zusammen. Ich habe einen lukrativen Geschäftsvorschlag für Sie, den ich
+Ihnen als Antwort auf diese E-Mail mit Einzelheiten zur Prüfung zukommen
+lassen werde.
+
+Bitte senden Sie Ihre Antwort, wenn möglich, auf Englisch, um weitere
+Einzelheiten zu erhalten.
+
+Mit freundlichen Grüßen,
+David Ramsden
+_____________________________________
+Persönlicher Assistent: Sarah Garric
 
