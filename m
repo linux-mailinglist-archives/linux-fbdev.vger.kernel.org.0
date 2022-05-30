@@ -2,110 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0AEA5384AA
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 May 2022 17:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5586F5387D5
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 May 2022 21:44:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238486AbiE3PWA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 May 2022 11:22:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
+        id S240241AbiE3Tod (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 May 2022 15:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242911AbiE3PUv (ORCPT
+        with ESMTP id S233186AbiE3Toc (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 May 2022 11:20:51 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 371C211AFF5
-        for <linux-fbdev@vger.kernel.org>; Mon, 30 May 2022 07:22:51 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id p74so11446310iod.8
-        for <linux-fbdev@vger.kernel.org>; Mon, 30 May 2022 07:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=Uon8wdSqHAkD3+idsDwqsw5/RYE9GUuamAt3cXARqV3NAeDaGTFSLoXs/G0hoAHt+5
-         codSJJxeeG8vzFjwPvQIVi8pQwh8BHkUEnJ12EbeOHHixGjwXNoKXbv093UEgoEUQfeX
-         Wod0GKDhAdiR/Ye/ytirv8v0lLWuUvpQJix1wPyUwccxWGh+xUage9MXo7G5h4Fk521r
-         DI2oe8/v8oseOn3Ob0K+CIOBqiMgej7MNHpUOxL774B1gIBhklt7oanUcWy5rMkcHIBO
-         DPJxFGRqOeAdN5gDE89YSbgO4qUovR5BE7nFCFMjyJGWrnHFIj5hKg5UUE4gd+cXFCdp
-         hO1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=XJqXgw0Qi4Ge6Q57wB4GlvotoYnhUuSq68y9152a6AE=;
-        b=6gBU3IT9AzUGkzshgpGGFi0k9AsfJX288LNbv1/x6ThFWcaU8KETYpYRFMiIoJD9s5
-         zsrpbwCaZz4Ct4SpT68lfoXlcSK4kYOvzAnRaxYbL+Nu3MsSCD7lUcCBQYBGHMlZhleR
-         u7QR6Cqv9w72LDunGcqeRAYTpunmAbBMH056yfmZPcXfiHKzIMyqTb2o7PtDSpoUO4Pb
-         vsn3WYmvVM8o3qnjlaqs9CDglEnFMjaXz32SSPl65N+CozT4ktVdrCqAQbwzEOF63h/I
-         /nzyY1husqwYiItxpJ8/qc7YkbJvQVpJc/ke5/94qCAzdOYA93PohX2S6o92UzavcP1F
-         Jglg==
-X-Gm-Message-State: AOAM532yZ9vDe2iV3KLWyB3VSmuSAJrt6hN9THorkqt0cPx8M4687WSy
-        rj1NsuhzAhrN4pISyOt79y4EBUhBbVbZplw4hJw=
-X-Google-Smtp-Source: ABdhPJwtvJ+07dKTyr7TpOGjLPDpnwsexIyHiV/hfgzfTPNlT+ipRRN6pgsw9s1i3X6T+BTCXU16HSeeuxtReVm1TBY=
-X-Received: by 2002:a05:6638:498e:b0:32e:be76:f908 with SMTP id
- cv14-20020a056638498e00b0032ebe76f908mr20858880jab.66.1653920570933; Mon, 30
- May 2022 07:22:50 -0700 (PDT)
+        Mon, 30 May 2022 15:44:32 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6C37378B;
+        Mon, 30 May 2022 12:44:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1653939865;
+        bh=9cmrvCRTdgXaup6Nc51jhXQLb5o1bU8es4kMpmpQUeU=;
+        h=X-UI-Sender-Class:Date:From:To:Subject;
+        b=PX4+QIVmbFbqVxJY9Upeo6loo+EQC9OILx1a6Eza4o/dm4wCBm51hLX+ihEd4RXFr
+         tFV57Z9OCZ5lYgbEmfV147t4zcZi2ZxM3blpp3Bsb54NSujwhh4byZs6JbmQtGl/Qt
+         tQw82dNvC6sKklfIsnZvM7voV3cvp0oqcsgyYz1Q=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ls3530 ([92.116.163.222]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeCtj-1nLs473SHH-00bGtt; Mon, 30
+ May 2022 21:44:24 +0200
+Date:   Mon, 30 May 2022 21:44:08 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [GIT PULL] fbdev updates & fixes for v5.19-rc1
+Message-ID: <YpUeiCcb0ntt7wct@ls3530>
 MIME-Version: 1.0
-Received: by 2002:a05:6622:f06:0:0:0:0 with HTTP; Mon, 30 May 2022 07:22:50
- -0700 (PDT)
-Reply-To: barristerbenjamin221@gmail.com
-From:   Attorney Amadou <koadaidrissa1@gmail.com>
-Date:   Mon, 30 May 2022 07:22:50 -0700
-Message-ID: <CAOh7+P_+cJJknP6BJXj8NWX7nn8nkbA=aoSG2t49pestA9PG0g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:d44 listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [koadaidrissa1[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [barristerbenjamin221[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [koadaidrissa1[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:NIiHrl8+99HDFndqQ4eAHjEOWGUJ6ZR9dfFwtTRsiV6jUjHuQM4
+ 98addmh+DJXAOrkJVdSKVLJGn/IeJsCP5VJQDnDvDHTJdOx7ntFwvfXOIjtXJJIEztgXxGb
+ IDO2gWWAyLCiO1gbmj8chSL0sElA7+HhnodCHemBYPiToJdIL2CCMEhTLL0TKLahhJLxuZa
+ MFvvxCmMHEymoEQ1vCjVw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1qOfKNMH/l4=:l6l1bQdjImuctlhMGbESh4
+ J8r8yCr3I/oezt0iAtFK9tvXbpv21Kwpu4+Fx3SOaEgk+kZefuP2bBRfhSwDl5p6m7Yk2R751
+ XBB1yfy0I9vNs91OcCjOBnscx4H7akk9nNZDArzOgift8tBTRVHpea/B83GfxOXNnzH9uDhup
+ bPXsYmTjOpDL/EBJMN8UcDM/OOibisvyW5+aKfjIdwwi8P+UzzEK+OH5DEjRFuMi7f7vY0S7G
+ a66ai6kl+xVyK/FP+s8x88njXEk2YX0hunptr+M+BokmF+FU5T/CAevhVfFhUMRy8+ReT9C7b
+ ty6imZRXK7WGHFKhPyAOUvzHQECIg5i+Ia2R+gljZaYWCg1wc10dXI1gKJJ9Spt/HYP4hkYNo
+ vphzdLbHQVtlfiCJt9sS/hhMBcgbTMyz4jUPbs42cRQ3U71bm/LouurXY1SQE0KTXKxP+7/wL
+ EMngrRYnPZGd5t5u5G6SMBDS6Yne3foNfFfHzP/b7U8vN1d8UsjDc7qtLVZAzumTnfekz228u
+ MRIxpAkY+fyGbblLKGdepaS/YUT/UoGcWIePo0PQw14EpOBUDrnl0pI1yUUEbhVdRRNYUn4AU
+ T1wdcFO+v5n4xd9DQjez1TTPM1eBu5gMg+MVvGANkXm7537MXqdGfZxaXM96UVWokkenmDYt0
+ 6k8QQVD14uTkbBdek2l57g1meglR5pFPoJJzVvgKoN0kxwclALMIE5wEP8gMaFBvCcNSyhLFe
+ 51gmlgPMuCojmLwjzioAZsUZS12d5dftcnxVDSHsO9WKgpzCMmgHBJyBzcN3ekVG4ohFIISsq
+ kRb39aSWMO7YZbvMni53Clg9mv0Ig8GeUgMIeqa8n83dcmkDbG6yij7gHCzlnn0N0IKaFbpGV
+ /h826F95xfRV5M4tduCHSqPX5CTPPNPJqFI6R2y0dubqhVrDZaSGJnIjFhnFKDsQa5hn+5Tuq
+ 4fsWVjXvfgAEoOscLL86oJxNLT/PJnIrnccokuvcsW/XhIKeMY+R7g27dNu71FuKTa4pO3HZA
+ DnrDmI37ZOQLamBV5aNG5rslhPZ3C+LAdh2mI40PAch1LJtUzv0OKzzoo0vQ2VucAzipPIWiy
+ ozrgbnE+tCKyvi4pFdPAvehwiWvlbLC+oKBgp9qhnJNlUMSPbhQxRFr6w==
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-SGVsbG8gZGVhciBmcmllbmQuDQoNClBsZWFzZSBJIHdpbGwgbG92ZSB0byBkaXNjdXNzIHNvbWV0
-aGluZyB2ZXJ5IGltcG9ydGFudCB3aXRoIHlvdSwgSQ0Kd2lsbCBhcHByZWNpYXRlIGl0IGlmIHlv
-dSBncmFudCBtZSBhdWRpZW5jZS4NCg0KU2luY2VyZWx5Lg0KQmFycmlzdGVyIEFtYWRvdSBCZW5q
-YW1pbiBFc3EuDQouLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCuimquaEm+OB
-quOCi+WPi+S6uuOAgeOBk+OCk+OBq+OBoeOBr+OAgg0KDQrnp4Hjga/jgYLjgarjgZ/jgajpnZ7l
-uLjjgavph43opoHjgarjgZPjgajjgavjgaTjgYTjgaboqbHjgZflkIjjgYbjga7jgYzlpKflpb3j
-gY3jgafjgZnjgIHjgYLjgarjgZ/jgYznp4HjgavogbTooYbjgpLkuI7jgYjjgabjgY/jgozjgozj
-gbDnp4Hjga/jgZ3jgozjgpLmhJ/orJ3jgZfjgb7jgZnjgIINCg0K5b+D44GL44KJ44CCDQrjg5Dj
-g6rjgrnjgr/jg7zjgqLjg57jg4njgqXjg5njg7Pjgrjjg6Pjg5/jg7NFc3HjgIINCg==
+The following changes since commit 42226c989789d8da4af1de0c31070c96726d990c:
+
+  Linux 5.18-rc7 (2022-05-15 18:08:58 -0700)
+
+are available in the Git repository at:
+
+  http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/for-5.19/fbdev-1
+
+for you to fetch changes up to 79b66128f13f5c22dea03a2197495c4b96ab31f5:
+
+  video: fbdev: omap: Add prototype for hwa742_update_window_async() (2022-05-29 10:20:15 +0200)
+
+----------------------------------------------------------------
+fbdev fixes and updates for kernel v5.19-rc1
+
+A buch of small fixes and cleanups, including:
+
+- vesafb: Fix a use-after-free due early fb_info cleanup
+- clcdfb: Fix refcount leak in clcdfb_of_vram_setup
+- hyperv_fb: Allow resolutions with size > 64 MB for Gen1
+- pxa3xx-gcu: release the resources correctly in pxa3xx_gcu_probe/remove()
+- omapfb: Prevent compiler warning regarding hwa742_update_window_async()
+
+----------------------------------------------------------------
+Helge Deller (1):
+      video: fbdev: omap: Add prototype for hwa742_update_window_async()
+
+Javier Martinez Canillas (1):
+      video: fbdev: vesafb: Fix a use-after-free due early fb_info cleanup
+
+Miaoqian Lin (1):
+      video: fbdev: clcdfb: Fix refcount leak in clcdfb_of_vram_setup
+
+Minghao Chi (2):
+      video: fbdev: omapfb: simplify the return expression of dsi_init_pll_data()
+      video: fbdev: omapfb: simplify the return expression of nec_8048_connect()
+
+Saurabh Sengar (1):
+      video: fbdev: hyperv_fb: Allow resolutions with size > 64 MB for Gen1
+
+Tom Rix (1):
+      video: fbdev: xen: remove setting of 'transp' parameter
+
+Yang Yingliang (1):
+      video: fbdev: pxa3xx-gcu: release the resources correctly in pxa3xx_gcu_probe/remove()
+
+pengfuyuan (1):
+      video: fbdev: radeon: Fix spelling typo in comment
+
+ drivers/video/fbdev/amba-clcd.c                       |  5 ++++-
+ drivers/video/fbdev/hyperv_fb.c                       | 19 +------------------
+ drivers/video/fbdev/omap/omapfb.h                     |  4 ++++
+ .../omap2/omapfb/displays/panel-nec-nl8048hl11.c      |  7 +------
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c       |  8 +-------
+ drivers/video/fbdev/pxa3xx-gcu.c                      | 12 +++++++-----
+ drivers/video/fbdev/vesafb.c                          |  5 +++--
+ drivers/video/fbdev/xen-fbfront.c                     |  1 -
+ include/video/radeon.h                                |  2 +-
+ 9 files changed, 22 insertions(+), 41 deletions(-)
