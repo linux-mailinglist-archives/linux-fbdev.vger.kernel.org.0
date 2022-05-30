@@ -2,162 +2,200 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A8F053771B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 May 2022 10:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16AB5376DE
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 May 2022 10:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233613AbiE3IVQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 30 May 2022 04:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
+        id S233795AbiE3Ijd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 May 2022 04:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232803AbiE3IVL (ORCPT
+        with ESMTP id S233685AbiE3Ijb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 30 May 2022 04:21:11 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 304446CF72;
-        Mon, 30 May 2022 01:21:10 -0700 (PDT)
-X-UUID: 982407c30d5946e9ab684d23f77821d1-20220530
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.5,REQID:168ee1fe-803a-40b0-b12e-f89bb2b057ae,OB:0,LO
-        B:0,IP:0,URL:5,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:0
-X-CID-META: VersionHash:2a19b09,CLOUDID:c66ac1b8-3c45-407b-8f66-25095432a27a,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
-        ,QS:0,BEC:nil
-X-UUID: 982407c30d5946e9ab684d23f77821d1-20220530
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <ck.hu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 610165319; Mon, 30 May 2022 16:21:04 +0800
-Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Mon, 30 May 2022 16:21:02 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 30 May 2022 16:21:02 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 30 May 2022 16:21:02 +0800
-Message-ID: <5253064d45064cc89d7c3c75d217b8fcb059766e.camel@mediatek.com>
-Subject: Re: [PATCH v10 10/21] drm/mediatek: dpi: move hvsize_mask to SoC
- config
-From:   CK Hu <ck.hu@mediatek.com>
-To:     Guillaume Ranquet <granquet@baylibre.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Mon, 30 May 2022 04:39:31 -0400
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C46370925
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 May 2022 01:39:30 -0700 (PDT)
+Received: by mail-qv1-f53.google.com with SMTP id c12so242166qvr.3
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 May 2022 01:39:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=d8SPd3n38l95dEtxPv4gdTmZ3OWEYGAzL0sZiwgOqrc=;
+        b=ig1OGjJfQ/tPWCUpytV4byFZ4oVxy3CaEZzyCsoaGqOS4Z7prtX8QZ7H6tIc0RM9ZI
+         jC15oxppTpHFNcnjQD3mR8p/BH91tCxeRdq3PoiuDRCQj8tW0MA4nyMFScIt5wAhkpcd
+         WFl9+8hfxy9yB1VkavvvMKOTQ4SZ9Mb6FsQtnx40SWvHm3Oq3vvQx0AVDhiyGEo6sYqw
+         YpeWoeaa8C2tzyI6t8rPcb45vVrmfRSkBBaDswu1PeagWu6m1ijx+mGMDf+hh/aeSZhU
+         L8jbMteUfgSO9IPhAQBN+A14D9p9MNZ9IPvKyafSohbFRnHePa9Q82UHB0K3uJwSMJqM
+         WX1Q==
+X-Gm-Message-State: AOAM530PUbkNCZP4eKk0sbiwQj6kMClzHIUE3BrczcGa2sPpFwQWYP0I
+        7NDcTbab50CVdkWWYbOcOBjPu7MrfSa8Fg==
+X-Google-Smtp-Source: ABdhPJw2vnHQq45s1dsYH7uFApNIYhCTz4AfhwPOa/ikCv/DsAd9D0UNHrr0CZeAIJSQ+3AxmEIgPg==
+X-Received: by 2002:ad4:56f3:0:b0:464:43a9:2d96 with SMTP id cr19-20020ad456f3000000b0046443a92d96mr6963645qvb.29.1653899969322;
+        Mon, 30 May 2022 01:39:29 -0700 (PDT)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com. [209.85.219.179])
+        by smtp.gmail.com with ESMTPSA id d10-20020ac8118a000000b002f39b99f684sm6964421qtj.30.2022.05.30.01.39.28
+        for <linux-fbdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 May 2022 01:39:28 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id z7so17878237ybf.7
+        for <linux-fbdev@vger.kernel.org>; Mon, 30 May 2022 01:39:28 -0700 (PDT)
+X-Received: by 2002:a05:6902:120e:b0:634:6f29:6b84 with SMTP id
+ s14-20020a056902120e00b006346f296b84mr52772984ybu.604.1653899663236; Mon, 30
+ May 2022 01:34:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191014140416.28517-1-tzimmermann@suse.de> <20191014140416.28517-10-tzimmermann@suse.de>
+ <CAMuHMdU9p7KUy3WEFox9KgZBHGZGNO2y5m8tLVbzGGVHu2iNYQ@mail.gmail.com> <8b79b40b-9786-9ddf-0dc9-89efbab38c7f@suse.de>
+In-Reply-To: <8b79b40b-9786-9ddf-0dc9-89efbab38c7f@suse.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 30 May 2022 10:34:10 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX7webJ0_R8uj=nagTHJY6viLGkhv2hmc9X48gwz1JDew@mail.gmail.com>
+Message-ID: <CAMuHMdX7webJ0_R8uj=nagTHJY6viLGkhv2hmc9X48gwz1JDew@mail.gmail.com>
+Subject: Re: [PATCH v2 09/15] drm/fbconv: Mode-setting pipeline enable / disable
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        "Kishon Vijay Abraham I" <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>, "Helge Deller" <deller@gmx.de>,
-        Jitao shi <jitao.shi@mediatek.com>
-CC:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Rex-BC Chen <rex-bc.chen@mediatek.com>,
-        <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-phy@lists.infradead.org>, <linux-fbdev@vger.kernel.org>
-Date:   Mon, 30 May 2022 16:21:02 +0800
-In-Reply-To: <20220523104758.29531-11-granquet@baylibre.com>
-References: <20220523104758.29531-1-granquet@baylibre.com>
-         <20220523104758.29531-11-granquet@baylibre.com>
+        Sean Paul <sean@poorly.run>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        ajax@redhat.com,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Mathieu Malaterre <malat@debian.org>, michel@daenzer.net,
+        Jonathan Corbet <corbet@lwn.net>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, Guillaume:
+Hi Thomas,
 
-On Mon, 2022-05-23 at 12:47 +0200, Guillaume Ranquet wrote:
-> Add flexibility by moving the hvsize mask to SoC specific config
+On Mon, May 30, 2022 at 9:47 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> first of all, thanks for looking at the patch.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Thank you, your patch series helped a lot.
 
-> 
-> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> Reviewed-by: AngeloGioacchino Del Regno <
-> angelogioacchino.delregno@collabora.com>
-> Reviewed-by: Rex-BC Chen <rex-bc.chen@mediatek.com>
-> ---
->  drivers/gpu/drm/mediatek/mtk_dpi.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c
-> b/drivers/gpu/drm/mediatek/mtk_dpi.c
-> index bf098f36a466..6eeda222a973 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-> @@ -129,6 +129,8 @@ struct mtk_dpi_conf {
->  	bool swap_input_support;
->  	/* Mask used for HWIDTH, HPORCH, VSYNC_WIDTH and VSYNC_PORCH
-> (no shift) */
->  	u32 dimension_mask;
-> +	/* HSIZE and VSIZE mask (no shift) */
-> +	u32 hvsize_mask;
->  	const struct mtk_dpi_yc_limit *limit;
->  };
->  
-> @@ -243,8 +245,10 @@ static void mtk_dpi_config_interface(struct
-> mtk_dpi *dpi, bool inter)
->  
->  static void mtk_dpi_config_fb_size(struct mtk_dpi *dpi, u32 width,
-> u32 height)
->  {
-> -	mtk_dpi_mask(dpi, DPI_SIZE, width << HSIZE, HSIZE_MASK);
-> -	mtk_dpi_mask(dpi, DPI_SIZE, height << VSIZE, VSIZE_MASK);
-> +	mtk_dpi_mask(dpi, DPI_SIZE, width << HSIZE,
-> +		     dpi->conf->hvsize_mask << HSIZE);
-> +	mtk_dpi_mask(dpi, DPI_SIZE, height << VSIZE,
-> +		     dpi->conf->hvsize_mask << VSIZE);
->  }
->  
->  static void mtk_dpi_config_channel_limit(struct mtk_dpi *dpi)
-> @@ -816,6 +820,7 @@ static const struct mtk_dpi_conf mt8173_conf = {
->  	.is_ck_de_pol = true,
->  	.swap_input_support = true,
->  	.dimension_mask = HPW_MASK,
-> +	.hvsize_mask = HSIZE_MASK,
->  	.limit = &mtk_dpi_limit,
->  };
->  
-> @@ -829,6 +834,7 @@ static const struct mtk_dpi_conf mt2701_conf = {
->  	.is_ck_de_pol = true,
->  	.swap_input_support = true,
->  	.dimension_mask = HPW_MASK,
-> +	.hvsize_mask = HSIZE_MASK,
->  	.limit = &mtk_dpi_limit,
->  };
->  
-> @@ -841,6 +847,7 @@ static const struct mtk_dpi_conf mt8183_conf = {
->  	.is_ck_de_pol = true,
->  	.swap_input_support = true,
->  	.dimension_mask = HPW_MASK,
-> +	.hvsize_mask = HSIZE_MASK,
->  	.limit = &mtk_dpi_limit,
->  };
->  
-> @@ -853,6 +860,7 @@ static const struct mtk_dpi_conf mt8192_conf = {
->  	.is_ck_de_pol = true,
->  	.swap_input_support = true,
->  	.dimension_mask = HPW_MASK,
-> +	.hvsize_mask = HSIZE_MASK,
->  	.limit = &mtk_dpi_limit,
->  };
->  
+> Am 28.05.22 um 22:17 schrieb Geert Uytterhoeven:
+> > On Mon, Oct 14, 2019 at 4:05 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> >> The display mode is set by converting the DRM display mode to an
+> >> fb_info state and handling it to the fbdev driver's fb_setvar()
+> >> function. This also requires a color depth, which we take from the
+> >> value of struct drm_mode_config.preferred_depth
+> >>
+> >> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> >
+> >> --- a/drivers/gpu/drm/drm_fbconv_helper.c
+> >> +++ b/drivers/gpu/drm/drm_fbconv_helper.c
+> >> @@ -919,6 +919,24 @@ static int drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
+> >>          return 0;
+> >>   }
+> >>
+> >> +static int drm_fbconv_update_fb_var_screeninfo_from_simple_display_pipe(
+> >> +       struct fb_var_screeninfo *fb_var, struct drm_simple_display_pipe *pipe)
+> >> +{
+> >> +       struct drm_plane *primary = pipe->crtc.primary;
+> >> +       struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
+> >> +
+> >> +       if (primary && primary->state && primary->state->fb)
+> >> +               return drm_fbconv_update_fb_var_screeninfo_from_framebuffer(
+> >> +                       fb_var, primary->state->fb,
+> >> +                       modeset->fb_info->fix.smem_len);
+> >> +
+> >> +       fb_var->xres_virtual = fb_var->xres;
+> >> +       fb_var->yres_virtual = fb_var->yres;
+> >> +       fb_var->bits_per_pixel = modeset->dev->mode_config.preferred_depth;
+> >
+> > This looks wrong to me: IMHO bits_per_pixel should be derived from
+> > the fourcc format of the _new_ mode to be set...
+>
+> Indeed, this appears to be wrong.
 
+OK.
+
+>
+> >
+> >> +
+> >> +       return 0;
+> >> +}
+> >> +
+> >>   /**
+> >>    * drm_fbconv_simple_display_pipe_mode_valid - default implementation for
+> >>    *     struct drm_simple_display_pipe_funcs.mode_valid
+> >> @@ -950,6 +968,28 @@ bool drm_fbconv_simple_display_pipe_mode_fixup(
+> >>          struct drm_crtc *crtc, const struct drm_display_mode *mode,
+> >>          struct drm_display_mode *adjusted_mode)
+> >>   {
+> >> +       struct drm_simple_display_pipe *pipe =
+> >> +               container_of(crtc, struct drm_simple_display_pipe, crtc);
+> >> +       struct drm_fbconv_modeset *modeset = drm_fbconv_modeset_of_pipe(pipe);
+> >> +       struct fb_var_screeninfo fb_var;
+> >> +       int ret;
+> >> +
+> >> +       if (!modeset->fb_info->fbops->fb_check_var)
+> >> +               return true;
+> >> +
+> >> +       drm_fbconv_init_fb_var_screeninfo_from_mode(&fb_var, mode);
+> >> +
+> >> +       ret = drm_fbconv_update_fb_var_screeninfo_from_simple_display_pipe(
+> >> +               &fb_var, &modeset->pipe);
+> >> +       if (ret)
+> >> +               return true;
+> >> +
+> >> +       ret = modeset->fb_info->fbops->fb_check_var(&fb_var, modeset->fb_info);
+> >
+> > ... hence this fails if the requested mode is valid with the new
+> > fourcc format, but invalid with the old (but preferred) depth.
+> > E.g. due to bandwidth limitations, a high-resolution mode is valid
+> > with a low color depth, while a high color depth is limited to lower
+> > resolutions.
+>
+> I tested the helpers with various fbdev drivers and modified them until
+> all of these drivers produced at least some output. I'm not surprised
+> that there are still bugs.
+
+As usual, the devil is in the details ;-)
+
+The other issue I was facing are the non-rounding KHZ2PICOS() and
+PICOS2KHZ() macros, and the numerous back-and-forth conversions:
+a valid pixclock in kHz is converted to a valid pixclock in ps,
+and accepted.  The returned pixclock in ps is slightly different,
+and converted to an invalid pixclock in kHz, hence rejected in the
+next iteration (remember: fb_ops.fb_check_var() should only round up
+values to match, never round down)...
+
+> > Unfortunately we do not know the new fourcc format here, as both
+> > drm_simple_display_pipe_funcs.mode_{valid,fixup}() are passed
+> > the mode (from drm_mode_set.mode), but not the new format (from
+> > drm_mode_set.fb->format).
+> >
+> > Am I missing something? Is the new format available in some other way?
+>
+> We can always get the format from the new plane state of
+> modeset->pipe->plane. We'd have this in the atomic_check call. And it
+> appears that drm_fbconv_simple_display_pipe_check() is a better place
+> for this code anyway.
+
+Thanks, I'll give that a try!
+
+Anyway, I finally made some progress with KMS-style mode-setting inside
+my ataridrm driver. Before, I relied solely on initial fbdev-style
+mode-setting in the probe function.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
