@@ -2,70 +2,178 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B65FE5371FE
-	for <lists+linux-fbdev@lfdr.de>; Sun, 29 May 2022 20:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDDD05375B3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 30 May 2022 09:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231372AbiE2SEE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 May 2022 14:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
+        id S233749AbiE3Ho2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 30 May 2022 03:44:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbiE2SEE (ORCPT
+        with ESMTP id S229677AbiE3Ho1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 May 2022 14:04:04 -0400
-X-Greylist: delayed 5241 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 May 2022 11:04:01 PDT
-Received: from mx.sb-roscoff.fr (mx.sb-roscoff.fr [193.52.39.203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B61964BD6;
-        Sun, 29 May 2022 11:04:01 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mx.sb-roscoff.fr (Postfix) with ESMTP id 97F95225D65;
-        Sun, 29 May 2022 17:30:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mx.sb-roscoff.fr
-Received: from mx.sb-roscoff.fr ([127.0.0.1])
-        by localhost (mx.sb-roscoff.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uzxxGK7uxwgL; Sun, 29 May 2022 17:30:43 +0200 (CEST)
-Received: from web11.sb-roscoff.fr (web11.sb-roscoff.fr [192.168.1.181])
-        by mx.sb-roscoff.fr (Postfix) with ESMTP id C5319225BF3;
-        Sun, 29 May 2022 17:28:23 +0200 (CEST)
-Received: from 141.11.28.159
-        (SquirrelMail authenticated user sgarric)
-        by web11.sb-roscoff.fr with HTTP;
-        Sun, 29 May 2022 17:28:24 +0200
-Message-ID: <1bface92207363f7077be37c71aa39a3.squirrel@web11.sb-roscoff.fr>
-Date:   Sun, 29 May 2022 17:28:24 +0200
-Subject: =?iso-8859-1?Q?Gesch=E4ft?=
-From:   "Dave Ramsden" <sgarric@sb-roscoff.fr>
-Reply-To: davrsd1@aol.com
-User-Agent: SquirrelMail/1.4.22
+        Mon, 30 May 2022 03:44:27 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A149186D7;
+        Mon, 30 May 2022 00:44:25 -0700 (PDT)
+X-UUID: 1b2e193ca81d4d3ab3c6bc4e7bade5ba-20220530
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:382f089c-6b74-4bad-aa62-6ee3d61d10e2,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:-5
+X-CID-META: VersionHash:2a19b09,CLOUDID:d1d0bfb8-3c45-407b-8f66-25095432a27a,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:0,BEC:nil
+X-UUID: 1b2e193ca81d4d3ab3c6bc4e7bade5ba-20220530
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
+        (envelope-from <ck.hu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1065852529; Mon, 30 May 2022 15:44:20 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Mon, 30 May 2022 15:44:19 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 30 May 2022 15:44:18 +0800
+Message-ID: <356624f3283f9203007ab21bedf15744d86e16f8.camel@mediatek.com>
+Subject: Re: [PATCH v10 07/21] drm/mediatek: dpi: implement a CK/DE pol
+ toggle in SoC config
+From:   CK Hu <ck.hu@mediatek.com>
+To:     Guillaume Ranquet <granquet@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        "Kishon Vijay Abraham I" <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>, "Helge Deller" <deller@gmx.de>,
+        Jitao shi <jitao.shi@mediatek.com>
+CC:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Rex-BC Chen <rex-bc.chen@mediatek.com>,
+        <dri-devel@lists.freedesktop.org>,
+        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-phy@lists.infradead.org>, <linux-fbdev@vger.kernel.org>
+Date:   Mon, 30 May 2022 15:44:19 +0800
+In-Reply-To: <20220523104758.29531-8-granquet@baylibre.com>
+References: <20220523104758.29531-1-granquet@baylibre.com>
+         <20220523104758.29531-8-granquet@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Hi, Guillaume:
 
+On Mon, 2022-05-23 at 12:47 +0200, Guillaume Ranquet wrote:
+> Adds a bit of flexibility to support SoCs without CK/DE pol support
 
+It seems that DP_INTF has no CK/DE pol function. If so, could you
+explain why DP_INTF has this difference with DPI?
 
-Ich bin Herr. Dave Ramsden und ich arbeiten mit der Bank of England
-zusammen. Ich habe einen lukrativen Geschäftsvorschlag für Sie, den ich
-Ihnen als Antwort auf diese E-Mail mit Einzelheiten zur Prüfung zukommen
-lassen werde.
+Regards,
+CK
 
-Bitte senden Sie Ihre Antwort, wenn möglich, auf Englisch, um weitere
-Einzelheiten zu erhalten.
-
-Mit freundlichen Grüßen,
-David Ramsden
-_____________________________________
-Persönlicher Assistent: Sarah Garric
+> 
+> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+> Reviewed-by: AngeloGioacchino Del Regno <
+> angelogioacchino.delregno@collabora.com>
+> Reviewed-by: Rex-BC Chen <rex-bc.chen@mediatek.com>
+> ---
+>  drivers/gpu/drm/mediatek/mtk_dpi.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c
+> b/drivers/gpu/drm/mediatek/mtk_dpi.c
+> index 4746eb342567..545a1337cc89 100644
+> --- a/drivers/gpu/drm/mediatek/mtk_dpi.c
+> +++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+> @@ -125,6 +125,7 @@ struct mtk_dpi_conf {
+>  	bool edge_sel_en;
+>  	const u32 *output_fmts;
+>  	u32 num_output_fmts;
+> +	bool is_ck_de_pol;
+>  	const struct mtk_dpi_yc_limit *limit;
+>  };
+>  
+> @@ -211,13 +212,20 @@ static void mtk_dpi_config_pol(struct mtk_dpi
+> *dpi,
+>  			       struct mtk_dpi_polarities *dpi_pol)
+>  {
+>  	unsigned int pol;
+> +	unsigned int mask;
+>  
+> -	pol = (dpi_pol->ck_pol == MTK_DPI_POLARITY_RISING ? 0 : CK_POL)
+> |
+> -	      (dpi_pol->de_pol == MTK_DPI_POLARITY_RISING ? 0 : DE_POL)
+> |
+> -	      (dpi_pol->hsync_pol == MTK_DPI_POLARITY_RISING ? 0 :
+> HSYNC_POL) |
+> +	mask = HSYNC_POL | VSYNC_POL;
+> +	pol = (dpi_pol->hsync_pol == MTK_DPI_POLARITY_RISING ? 0 :
+> HSYNC_POL) |
+>  	      (dpi_pol->vsync_pol == MTK_DPI_POLARITY_RISING ? 0 :
+> VSYNC_POL);
+> -	mtk_dpi_mask(dpi, DPI_OUTPUT_SETTING, pol,
+> -		     CK_POL | DE_POL | HSYNC_POL | VSYNC_POL);
+> +	if (dpi->conf->is_ck_de_pol) {
+> +		mask |= CK_POL | DE_POL;
+> +		pol |= (dpi_pol->ck_pol == MTK_DPI_POLARITY_RISING ?
+> +			0 : CK_POL) |
+> +		       (dpi_pol->de_pol == MTK_DPI_POLARITY_RISING ?
+> +			0 : DE_POL);
+> +	}
+> +
+> +	mtk_dpi_mask(dpi, DPI_OUTPUT_SETTING, pol, mask);
+>  }
+>  
+>  static void mtk_dpi_config_3d(struct mtk_dpi *dpi, bool en_3d)
+> @@ -799,6 +807,7 @@ static const struct mtk_dpi_conf mt8173_conf = {
+>  	.max_clock_khz = 300000,
+>  	.output_fmts = mt8173_output_fmts,
+>  	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
+> +	.is_ck_de_pol = true,
+>  	.limit = &mtk_dpi_limit,
+>  };
+>  
+> @@ -809,6 +818,7 @@ static const struct mtk_dpi_conf mt2701_conf = {
+>  	.max_clock_khz = 150000,
+>  	.output_fmts = mt8173_output_fmts,
+>  	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
+> +	.is_ck_de_pol = true,
+>  	.limit = &mtk_dpi_limit,
+>  };
+>  
+> @@ -818,6 +828,7 @@ static const struct mtk_dpi_conf mt8183_conf = {
+>  	.max_clock_khz = 100000,
+>  	.output_fmts = mt8183_output_fmts,
+>  	.num_output_fmts = ARRAY_SIZE(mt8183_output_fmts),
+> +	.is_ck_de_pol = true,
+>  	.limit = &mtk_dpi_limit,
+>  };
+>  
+> @@ -827,6 +838,7 @@ static const struct mtk_dpi_conf mt8192_conf = {
+>  	.max_clock_khz = 150000,
+>  	.output_fmts = mt8173_output_fmts,
+>  	.num_output_fmts = ARRAY_SIZE(mt8173_output_fmts),
+> +	.is_ck_de_pol = true,
+>  	.limit = &mtk_dpi_limit,
+>  };
+>  
 
