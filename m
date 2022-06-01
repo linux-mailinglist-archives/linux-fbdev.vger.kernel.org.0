@@ -2,68 +2,83 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CFA5399AB
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jun 2022 00:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9EE539E27
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jun 2022 09:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348532AbiEaWrC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 31 May 2022 18:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
+        id S238591AbiFAH0T (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Jun 2022 03:26:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348400AbiEaWrA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 31 May 2022 18:47:00 -0400
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84FFDA466;
-        Tue, 31 May 2022 15:46:58 -0700 (PDT)
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-f2a4c51c45so355449fac.9;
-        Tue, 31 May 2022 15:46:58 -0700 (PDT)
+        with ESMTP id S1344870AbiFAH0S (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Jun 2022 03:26:18 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09DE64EA3A
+        for <linux-fbdev@vger.kernel.org>; Wed,  1 Jun 2022 00:26:16 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id z7so915754edm.13
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Jun 2022 00:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=yFS3Rnzfb0unp6UI0nuTf8G/mfgDKJWNbf+GB8d9uhI=;
+        b=yzkX1bG3uR7Qmo+F7Qn+hD60uiQC931MBqEyL6CGfUOrTBWOWU+fSEZRlHsxL+o36H
+         DaqBipXoh9uvBx5bddczFUvjkjeXBBibFH//xj8nkC6+BldNDlqO97uoNDCMjCR2tpbh
+         iXPv3e4OV0sFLNf+AQh/N2HDdJtQ+bcBqcEhEHrumECnJcXgYb0c9sI5pRHJ8gOZ+I4j
+         RKTmx02GpCBTx63+I8GebWfp/M1OilGCQSjE68nmPHe2DS2B4ln1SMWm5hTC543D1aM4
+         c1kvAk/OltrRUqX0oU3syh9MOBrJ4FDVR9It+1wYbKDr/j4x1mN/vt4gTx3gFDbEUdsS
+         MqPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=AE9Fbrj6BPIXSH+6mmzzM5HJbPbBIVW+lbxzy622FhY=;
-        b=FC7YLCXVp+3Ey9OIsvgjO8KDG576KFeauHlGw9t9IKSPQoYy+B6Ehbg9N7Ys8Qmj2b
-         LmcAk4uBcXej5lFY3eJX00+fNT8nCYwM/FRlLQfSW+e63Gm5Ym6KP9OzTPCEBOOS4Nyb
-         9zDQIgoWggBTkFJizFd/bNEYl5SFd/MmWq8FTMjpzoQchlx9V8rP/Wn/KsfApTRhgMSS
-         LaPB5j8BSqzY4JQskTvNxp8wnrjQAM7K4YKN4W+xacuhXcIEcwiq4ZwFZ4MqP4kNam4g
-         7BvXB8v5N932AluPgFhuJUMJPCODzVK25uYIeDByuuvShMa0raQfnf/DEX1Q0e4kpZxD
-         VB+w==
-X-Gm-Message-State: AOAM531mZzff7zTh95UL62AZHhRlpQ7yBeIKsHZgTgAJaKmDydXz1SO+
-        k26Mv1kGjKXdj/z5e2B4Vg==
-X-Google-Smtp-Source: ABdhPJz9hzTJNp12uYZ4vHIk6ZhMev4DpgOt2zBvhqRIr7g1l5auyN0vlOttAqh+FCiKDf2dw2zOIw==
-X-Received: by 2002:a05:6870:b254:b0:ec:6ca4:c89f with SMTP id b20-20020a056870b25400b000ec6ca4c89fmr15083367oam.272.1654037217725;
-        Tue, 31 May 2022 15:46:57 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id u3-20020a056830248300b0060603221247sm7000503ots.23.2022.05.31.15.46.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 15:46:57 -0700 (PDT)
-Received: (nullmailer pid 2476555 invoked by uid 1000);
-        Tue, 31 May 2022 22:46:54 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     heikki.krogerus@linux.intel.com, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, pavel@ucw.cz, sre@kernel.org,
-        dri-devel@lists.freedesktop.org, gregkh@linuxfoundation.org,
-        jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        lgirdwood@gmail.com, linux-leds@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux@roeck-us.net,
-        chunfeng.yun@mediatek.com, linux-usb@vger.kernel.org,
-        alice_chen@richtek.com, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, cy_huang@richtek.com,
-        robh+dt@kernel.org, chiaen_wu@richtek.com,
-        linux-fbdev@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
-        linux-pm@vger.kernel.org, lars@metafoo.de
-In-Reply-To: <20220531111900.19422-5-peterwu.pub@gmail.com>
-References: <20220531111900.19422-1-peterwu.pub@gmail.com> <20220531111900.19422-5-peterwu.pub@gmail.com>
-Subject: Re: [RESEND 04/14] dt-bindings: leds: Add Mediatek MT6370 flashlight binding
-Date:   Tue, 31 May 2022 17:46:54 -0500
-Message-Id: <1654037214.468113.2476554.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=yFS3Rnzfb0unp6UI0nuTf8G/mfgDKJWNbf+GB8d9uhI=;
+        b=TqM8cnaNHrBfwHTSSHXNkKcyMUzOE/oIK/K/8X3Jq35WvH+uG8DclUHm36f+b1nubP
+         Nynww7PeIpJZoM3xc74oLzgeNYgn2fE0EUFyvwGuF15SKyS09dxWjT8qgVZYzpP2JdJT
+         e2tyynJtthbxjqECCRnu8WzJHucZEUFiJHVho/MZs/QljOZDS1dgg8Yg7PelGKaiSgri
+         LY3+6sheLEOOtaEbkRJlFW07ebK5MkF8EYgCFCUNWROGMIOehlreufWeylS8NKiW/19r
+         vcWgNHHQSUdeobMKCPEBPWCkX3KQiNdvHGQfmz44Kuawop6V2OXwnXvMvZomhRZ4GONu
+         JsiA==
+X-Gm-Message-State: AOAM5317yMx70eXgCDm9q51Y5h5eKMa46qnn4J4QKr0yXz7kKPtbIFLV
+        PHMfTOntGRU/ORKN6tVbHGxoLw==
+X-Google-Smtp-Source: ABdhPJyfhUlStTcZTz+Ssrs2TvVIfO4c18Qt7HTJuB/uTfvjqG5vQ05BQvumt+AGIXmDE9LMcb26HA==
+X-Received: by 2002:a05:6402:40ce:b0:42b:9d1:96e6 with SMTP id z14-20020a05640240ce00b0042b09d196e6mr66557011edb.262.1654068374634;
+        Wed, 01 Jun 2022 00:26:14 -0700 (PDT)
+Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id h15-20020a170906110f00b006fe98c7c7a9sm359838eja.85.2022.06.01.00.26.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Jun 2022 00:26:14 -0700 (PDT)
+Message-ID: <1f349852-34a7-ff27-3c34-462128802340@linaro.org>
+Date:   Wed, 1 Jun 2022 09:26:12 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 09/14] dt-bindings: usb: Add Mediatek MT6370 TCPC binding
+ documentation
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     cy_huang@richtek.com, alice_chen@richtek.com,
+        chiaen_wu@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20220531102809.11976-1-peterwu.pub@gmail.com>
+ <20220531102809.11976-10-peterwu.pub@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220531102809.11976-10-peterwu.pub@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,41 +86,71 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 31 May 2022 19:18:50 +0800, ChiaEn Wu wrote:
-> From: Alice Chen <alice_chen@richtek.com>
+On 31/05/2022 12:28, ChiaEn Wu wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
 > 
-> Add Mediatek MT6370 flashlight binding documentation
+> Add Mediatek MT6370 TCPC binding documentation.
 > 
-> Signed-off-by: Alice Chen <alice_chen@richtek.com>
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
 > ---
->  .../leds/mediatek,mt6370-flashlight.yaml      | 48 +++++++++++++++++++
->  1 file changed, 48 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml
+>  .../bindings/usb/mediatek,mt6370-tcpc.yaml    | 35 +++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml b/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+> new file mode 100644
+> index 000000000000..49316633f92f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/usb/mediatek,mt6370-tcpc.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: Mediatek MT6370 Type-C Port Switch and Power Delivery controller DT bindings
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+s/DT bindings//
 
-yamllint warnings/errors:
+> +
+> +maintainers:
+> +  - ChiYuan Huang <cy_huang@richtek.com>
+> +
+> +description: |
+> +  Mediatek MT6370 is a multi-functional device. It integrates charger, ADC, flash, RGB indicators,
+> +  regulators (DSV/VIBLDO), and TypeC Port Switch with Power Delivery controller.
+> +  This document only describes MT6370 Type-C Port Switch and Power Delivery controller.
 
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml: $id: relative path/filename doesn't match actual path or filename
-	expected: http://devicetree.org/schemas/leds/mediatek,mt6370-flashlight.yaml#
+These lines do not look like wrapped at 80.
 
-doc reference errors (make refcheckdocs):
-Warning: Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/mt6370.yaml
-Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml: Documentation/devicetree/bindings/mfd/mt6370.yaml
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - mediatek,mt6370-tcpc
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  connector:
+> +    type: object
+> +    $ref: /schemas/connector/usb-connector.yaml#
 
-See https://patchwork.ozlabs.org/patch/
+You need unevaluatedProperties:false within connector.
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+> +    description:
+> +      Properties for usb c connector.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+Skip description, it's not helpful.
 
-pip3 install dtschema --upgrade
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
 
-Please check and re-submit.
 
+Best regards,
+Krzysztof
