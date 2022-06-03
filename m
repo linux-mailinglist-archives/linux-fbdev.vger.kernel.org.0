@@ -2,61 +2,66 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCFC853BF53
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Jun 2022 22:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02FAE53CDCA
+	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jun 2022 19:10:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbiFBUIs (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 2 Jun 2022 16:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
+        id S1344248AbiFCRK2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 3 Jun 2022 13:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238829AbiFBUIr (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 2 Jun 2022 16:08:47 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28773A1BB
-        for <linux-fbdev@vger.kernel.org>; Thu,  2 Jun 2022 13:08:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1654200520;
-        bh=MWdsFO0Da7lpg/6VkR6yrv6S008xzfO8/q3kNEiYJGM=;
-        h=X-UI-Sender-Class:Date:From:To:Subject;
-        b=giIqeTa0rELXJlbOGCzv2gUnTIWLop8tmTvxkzDq4u+Gw1uFD55zOUPMCVwPoaF5F
-         eu+R5WEm/ioaiHPas2d6DN/ce9E2qqymjwFPcfdC9Sj8EWFcoPJNZanZ4n3HxI/imN
-         NctUZSEyuAMjVMUErWLGuNnbqt5P8YOJP6Faoq6g=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100 ([92.116.181.14]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N33Il-1nmuzF0Ttd-013MdC; Thu, 02
- Jun 2022 22:08:40 +0200
-Date:   Thu, 2 Jun 2022 22:08:38 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH] fbcon: Fix accelerated fbdev scrolling while logo is still
- shown
-Message-ID: <YpkYxk7wsBPx3po+@p100>
+        with ESMTP id S230480AbiFCRK0 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 3 Jun 2022 13:10:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869CE5251B;
+        Fri,  3 Jun 2022 10:10:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0B46BB823AB;
+        Fri,  3 Jun 2022 17:10:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2A6C385B8;
+        Fri,  3 Jun 2022 17:10:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654276222;
+        bh=Yhb8OPp1sSwZzVcLGVjDxYrN0vlwebO9faHuTNWhG4o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pJUj26xM3omq1XfJzae2/kNYP0GNrKZJAlX6qQvFkoORdgX2jatgBaZhjITDetyo4
+         6Ho3r8JCZNDTqYqTywpriBv1enouc70JPjw/sYrT7zAqOY3+TbCZUGrBVxnV0twFzb
+         vBFIAuE6Owl4SCoC0jyhKAh0Wkj62wDDrGkEYuY9ZHlH2kkn5YxDGMdMJ4lJ4ZJtOM
+         8FilAtIOaatwJZHh8x0+lYlCL4U9MemxvnRqpNaXZGP17ucBaA6OSj8utHuAIdF2Zq
+         mOVjuiYHKrUQzkdqfZZndqYO3gcqFcQLMxn6f/bbPrMbEy5YxC7w8yXCWqyVB3lzQC
+         zN8eYoz/vFcNw==
+Date:   Fri, 3 Jun 2022 18:19:17 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, lars@metafoo.de, lgirdwood@gmail.com,
+        broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        ChiYuan Huang <cy_huang@richtek.com>, alice_chen@richtek.com,
+        chiaen_wu@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [RESEND 10/14] iio: adc: mt6370: Add Mediatek MT6370 support
+Message-ID: <20220603181917.3f737913@jic23-huawei>
+In-Reply-To: <CABtFH5Lg43EXS7juhXQ2wQFZzkpD7YB8rM6UFT=U9BDOKcbaNw@mail.gmail.com>
+References: <20220531111900.19422-1-peterwu.pub@gmail.com>
+        <20220531111900.19422-11-peterwu.pub@gmail.com>
+        <20220531142102.00007df0@Huawei.com>
+        <CABtFH5Lg43EXS7juhXQ2wQFZzkpD7YB8rM6UFT=U9BDOKcbaNw@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:hVfaPk/9jZny26PcD/WxhWiObtc1MLuJNdonRgwBiVzzDnIV7SK
- UoSuD0ggVXDDKP2Tn2USwM7ZrUl6zb88GkTZERFK4sKl+i0SlUq2Py5WnNfrt4Carg1hroW
- N/dyy4J9X5IsA39mp767lUk9hKA9Tgf3hBKpXsMjOFJAaq751L2toavGTqHStSHi4QjhqDr
- c5Xb8j0z5+edI4jeE9EYg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0WOHpmXwUx0=:5r2dFs4uvkyMP/n1t9ledo
- veQcGH68JUzpjkanLCv8ZStH//t4BBPvILVjqoTEMtxp5RqPzUbhXrYx3UcMCms12XZCrS5CQ
- S+8DwEYGA3fARlRS6rIdJD1eq5231Tvomd6GHGvmzz0ffFEfOZ+74PkidF98qgOrGypnhTMh7
- WjuyN6RYx5k/4N0KY43oXLBIkf7pxmDpbXoQusgfuHJz6zXsLV+pA60e/VpwPIDVQJ7aZjodA
- bGAPH/DyLU8ZQyVbP20UZzytE+AmO+3uetxL4RCacOB5FFI+WqpymH/F7cLVlXtRYOoNpTus/
- HFjLllfxN8Ec6nBDtTIZR9Sw9GvoOAZIl5V8Ifk3VVkMo3RFyVeEzbP2Oc0DikBv4pdKstNpL
- oHC8mqhdk2WyXcii6QC6dSrNJZqwqMbN8Q0B4PI+9Gc7UnDkts8vP0RP8vwLsBJq4UlOJ983g
- JHssvAkUxLX+d57PMhle9eLKG2XZukfZ/o5o0P1B9AJFBdsv4/hZaSbGrW/Tg55qvd300kSsk
- 5fgkmHhqJQD/n4CFMZADVA9RpuBV5IVe8SOhJPFUd2fuL1eVx2Y0lYQZ40umoMNl0mcUqMTD1
- /kL6vwCObiZIj+4sV4JkLq0HQIlzezuo0zjB2HfhbE4i0v2ypmsUXcdRMSCCmbZ1hfwAtdon5
- SPsfEpkIj5BRRx/F+n3vU0DXmZJgTQHVV3OJUO+zx7C0OtEt5YToW8VYYNg37PwKFvh78MG8Z
- DjVy3YTctp5AguJqXoQitvze1SFIMZvvujtIddCzI7b7ih1gPO5tUralw1DU2g15YUiBUw2ef
- Sa6g2im3la33Ye3RImdlSnKRyvSEbU1OpCP2OAbSWQism4vWkAlryJqPnQYU8qSZHEUPXWp2q
- mmS3XUp7A5Pa2QfpklKRNXGhYzDO1ztJTsaQ8k+tOee4RnByW8DQCIfvwUX3M3iY12w9BAx/9
- hgigysppmkJ+SnsEfkEPfTGP80SLm0LxZs0rrF/R9mcRm8PSysd42nHLXznAXaXcB+ZLkbTy8
- VpLZlzseQint1oZBZ4icKKI3uxwW4y1CXGKOjKqMNLNG7GHqJAAIjO60JAGDCFPeRG0mwVipp
- iWT1r0eaZGh/9gd4BQauhI63poMviL9SXrZ
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,42 +70,79 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There is no need to directly skip over to the SCROLL_REDRAW case while
-the logo is still shown.
+> >  
+> > > +
+> > > +#define MT6370_AICR_400MA            0x6
+> > > +#define MT6370_ICHG_500MA            0x4
+> > > +#define MT6370_ICHG_900MA            0x8
+> > > +
+> > > +#define ADC_CONV_TIME_US             35000
+> > > +#define ADC_CONV_POLLING_TIME                1000
+> > > +
+> > > +struct mt6370_adc_data {
+> > > +     struct device *dev;
+> > > +     struct regmap *regmap;
+> > > +     struct mutex lock;  
+> >
+> > All locks need documentation.  What is the scope of the lock?
+> > Looks like it protects device state when doing setup, wait for read, read
+> > cycles.  
+> 
+> This mutex lock is for preventing the different adc channel from being
+> read at the same time.
+> So, if I just change its name to adc_chan_lock or adc_lock and add the
+> comment for this mutex lock, does this change meet your requirement
 
-When using DRM, this change has no effect because the code will reach
-the SCROLL_REDRAW case immediately anyway.
+Yes
 
-But if you run an accelerated fbdev driver and have
-FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION enabled, console scrolling is
-slowed down by factors so that it feels as if you use a 9600 baud
-terminal.
+> 
+> >  
+> > > +};
+> > > +
+> > > +static int mt6370_adc_read_scale(struct mt6370_adc_data *priv,
+> > > +                              int chan, int *val1, int *val2)
+> > > +{
+> > > +     unsigned int reg_val;
+> > > +     int ret;
+> > > +
+> > > +     switch (chan) {
+> > > +     case MT6370_CHAN_VBAT:
+> > > +     case MT6370_CHAN_VSYS:
+> > > +     case MT6370_CHAN_CHG_VDDP:
+> > > +             *val1 = 5000;  
+> >
+> > This seems very large.  Voltages are in millivolts
+> > as per Documentation/ABI/testing/sysfs-bus-iio
+> > and this means each step is 5 volts.
+> >
+> > So value in mv is currently 5 * _raw
+> >  
+> 
+> OK, I got it. Also, I will add the ABI file in the next version. Thanks!
+Only add ABI documentation for anything non-standard.
 
-So, drop those unnecessary checks and speed up fbdev console
-acceleration during bootup.
+The documentation scripts really don't like repeats!
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
+> 
+> > > +static const char * const mt6370_channel_labels[MT6370_CHAN_MAX] = {  
+> >
+> > Perhaps define an enum with which to index this and the chan spec
+> > and hence ensure they end up matching.
+> >  [vbusdiv5] = "vbusdiv5", etc
+> >  
+> 
+> Do you mean that I can refine this const char array to the following array??
+> 
+> static const char * const mt6370_channel_labels[MT6370_CHAN_MAX] = {
+>     [MT6370_CHAN_VBUSDIV5] =  "vbusdiv5",
+>     [MT6370_CHAN_VBUSDIV2] =  "vbusdiv2",
+>     ...
+>     ...
+>     [MT6370_CHAN_TEMP_JC] =  "temp_jc",
+> };
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index c2f9e5711c39..8eb5b73e98bc 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1706,8 +1706,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 	case SM_UP:
- 		if (count > vc->vc_rows)	/* Maximum realistic size */
- 			count = vc->vc_rows;
--		if (logo_shown >= 0)
--			goto redraw_up;
- 		switch (fb_scrollmode(p)) {
- 		case SCROLL_MOVE:
- 			fbcon_redraw_blit(vc, info, p, t, b - t - count,
-@@ -1796,8 +1794,6 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
- 	case SM_DOWN:
- 		if (count > vc->vc_rows)	/* Maximum realistic size */
- 			count = vc->vc_rows;
--		if (logo_shown >= 0)
--			goto redraw_down;
- 		switch (fb_scrollmode(p)) {
- 		case SCROLL_MOVE:
- 			fbcon_redraw_blit(vc, info, p, b - 1, b - t - count,
+Yes
+
+thanks,
+
+Jonathan
