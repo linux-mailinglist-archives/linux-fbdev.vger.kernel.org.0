@@ -2,91 +2,81 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379E4542007
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jun 2022 02:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD61542010
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jun 2022 02:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382400AbiFHAOD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 7 Jun 2022 20:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46214 "EHLO
+        id S1382176AbiFHAOm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 7 Jun 2022 20:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389442AbiFGWxT (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jun 2022 18:53:19 -0400
-X-Greylist: delayed 2719 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 12:48:37 PDT
-Received: from 4.mo575.mail-out.ovh.net (4.mo575.mail-out.ovh.net [46.105.59.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5062DF139
-        for <linux-fbdev@vger.kernel.org>; Tue,  7 Jun 2022 12:48:36 -0700 (PDT)
-Received: from player797.ha.ovh.net (unknown [10.108.16.222])
-        by mo575.mail-out.ovh.net (Postfix) with ESMTP id B08DB244AA
-        for <linux-fbdev@vger.kernel.org>; Tue,  7 Jun 2022 19:10:24 +0000 (UTC)
+        with ESMTP id S1837632AbiFHAAR (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 7 Jun 2022 20:00:17 -0400
+X-Greylist: delayed 607 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 12:39:12 PDT
+Received: from 16.mo550.mail-out.ovh.net (16.mo550.mail-out.ovh.net [178.33.104.224])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35FC02AC571
+        for <linux-fbdev@vger.kernel.org>; Tue,  7 Jun 2022 12:39:11 -0700 (PDT)
+Received: from player698.ha.ovh.net (unknown [10.111.172.211])
+        by mo550.mail-out.ovh.net (Postfix) with ESMTP id 5078C246CE
+        for <linux-fbdev@vger.kernel.org>; Tue,  7 Jun 2022 19:23:52 +0000 (UTC)
 Received: from sk2.org (82-65-25-201.subs.proxad.net [82.65.25.201])
         (Authenticated sender: steve@sk2.org)
-        by player797.ha.ovh.net (Postfix) with ESMTPSA id 894BD273DCB28;
-        Tue,  7 Jun 2022 19:10:15 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-102R004c1185a33-f4c2-4b0e-9337-679f3581da73,
+        by player698.ha.ovh.net (Postfix) with ESMTPSA id 6FA302B48041C;
+        Tue,  7 Jun 2022 19:23:45 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-110S00469d172a2-4b38-4c8e-95e7-ea9a2b73ce1c,
                     38FB55E0ED6224772C245AF554E1AE62085133ED) smtp.auth=steve@sk2.org
 X-OVh-ClientIp: 82.65.25.201
 From:   Stephen Kitt <steve@sk2.org>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Stephen Kitt <steve@sk2.org>
-Subject: [PATCH 4/4] backlight: tosa: Use backlight helper
-Date:   Tue,  7 Jun 2022 21:09:25 +0200
-Message-Id: <20220607190925.1134737-5-steve@sk2.org>
+To:     Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Helge Deller <deller@gmx.de>, Paul Mackerras <paulus@samba.org>
+Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stephen Kitt <steve@sk2.org>
+Subject: [PATCH 0/7] fbdev: Use backlight helpers
+Date:   Tue,  7 Jun 2022 21:23:28 +0200
+Message-Id: <20220607192335.1137249-1-steve@sk2.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220607190925.1134737-1-steve@sk2.org>
-References: <20220607190925.1134737-1-steve@sk2.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 11718366230841099910
+X-Ovh-Tracer-Id: 11945798012241282694
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedruddthedgudefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefuthgvphhhvghnucfmihhtthcuoehsthgvvhgvsehskhdvrdhorhhgqeenucggtffrrghtthgvrhhnpeeghffhleeigffhteeiffelveefhfeiudehkedtgefhgedvleffgfejgfdtveeigeenucfkpheptddrtddrtddrtddpkedvrdeihedrvdehrddvtddunecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehplhgrhigvrhejleejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhfsgguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehjeeh
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedruddthedgudefiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefuthgvphhhvghnucfmihhtthcuoehsthgvvhgvsehskhdvrdhorhhgqeenucggtffrrghtthgvrhhnpeelgeetueejffejfeejvefhtddufeejgfetleegtddukeelieelvddvteduveejtdenucfkpheptddrtddrtddrtddpkedvrdeihedrvdehrddvtddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehplhgrhigvrheileekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhfsgguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehhedt
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Instead of retrieving the backlight brightness in struct
-backlight_properties manually, and then checking whether the backlight
-should be on at all, use backlight_get_brightness() which does all
-this and insulates this from future changes.
+backlight_properties.fb_blank is deprecated. The states it represents
+are handled by other properties; but instead of accessing those
+properties directly, drivers should use the helpers provided by
+backlight.h, even in cases where fb_blank isn't involved.
 
-Signed-off-by: Stephen Kitt <steve@sk2.org>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
----
- drivers/video/backlight/tosa_bl.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+This will ultimately allow fb_blank to be removed.
 
-diff --git a/drivers/video/backlight/tosa_bl.c b/drivers/video/backlight/tosa_bl.c
-index 6df6fcd132e3..5bbb769f9746 100644
---- a/drivers/video/backlight/tosa_bl.c
-+++ b/drivers/video/backlight/tosa_bl.c
-@@ -50,13 +50,8 @@ static void tosa_bl_set_backlight(struct tosa_bl_data *data, int brightness)
- 
- static int tosa_bl_update_status(struct backlight_device *dev)
- {
--	struct backlight_properties *props = &dev->props;
- 	struct tosa_bl_data *data = bl_get_data(dev);
--	int power = max(props->power, props->fb_blank);
--	int brightness = props->brightness;
--
--	if (power)
--		brightness = 0;
-+	int brightness = backlight_get_brightness(dev);
- 
- 	tosa_bl_set_backlight(data, brightness);
- 
+Stephen Kitt (7):
+  fbdev: aty128fb: Use backlight helper
+  fbdev: atyfb: Use backlight helper
+  fbdev: radeon: Use backlight helper
+  fbdev: mx3fb: Use backlight helper
+  fbdev: nvidia: Use backlight helper
+  fbdev: omapfb: panel-dsi-cm: Use backlight helper
+  fbdev: riva: Use backlight helper
+
+ drivers/video/fbdev/aty/aty128fb.c                       | 6 ++----
+ drivers/video/fbdev/aty/atyfb_base.c                     | 8 +-------
+ drivers/video/fbdev/aty/radeon_backlight.c               | 6 +-----
+ drivers/video/fbdev/mx3fb.c                              | 7 +------
+ drivers/video/fbdev/nvidia/nv_backlight.c                | 8 +-------
+ drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c | 8 +-------
+ drivers/video/fbdev/riva/fbdev.c                         | 8 +-------
+ 7 files changed, 8 insertions(+), 43 deletions(-)
+
+
+base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
 -- 
 2.30.2
 
