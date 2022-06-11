@@ -2,110 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD42547697
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jun 2022 18:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A278E54774D
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jun 2022 21:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231393AbiFKQve (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 11 Jun 2022 12:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50906 "EHLO
+        id S229518AbiFKT25 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 11 Jun 2022 15:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233455AbiFKQvd (ORCPT
+        with ESMTP id S229445AbiFKT24 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 11 Jun 2022 12:51:33 -0400
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B242E6BC;
-        Sat, 11 Jun 2022 09:51:32 -0700 (PDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4LL3km2WgVz9t4V;
-        Sat, 11 Jun 2022 18:51:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Lyxc5OlcYbSP; Sat, 11 Jun 2022 18:51:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4LL3kl4Q65z9tPh;
-        Sat, 11 Jun 2022 18:51:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 79A8D8B781;
-        Sat, 11 Jun 2022 18:51:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id W-cpnlqeV72J; Sat, 11 Jun 2022 18:51:27 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.192])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 06D538B77E;
-        Sat, 11 Jun 2022 18:51:26 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25BGpEt2741180
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sat, 11 Jun 2022 18:51:14 +0200
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25BGpE1t741179;
-        Sat, 11 Jun 2022 18:51:14 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, deller@gmx.de,
-        manoj@linux.ibm.com, mrochs@linux.ibm.com, ukrishn@linux.ibm.com,
-        jejb@linux.ibm.com, martin.petersen@oracle.com, tzimmermann@suse.de
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH 4/4] powerpc: Finally remove unnecessary headers from asm/prom.h
-Date:   Sat, 11 Jun 2022 18:51:00 +0200
-Message-Id: <187891a76d7f2eea1b75b5aa897fec62ca18f0e9.1654966253.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <a1dfa936043eeed715e8cda7f8690fe553ba7c1a.1654966253.git.christophe.leroy@csgroup.eu>
-References: <a1dfa936043eeed715e8cda7f8690fe553ba7c1a.1654966253.git.christophe.leroy@csgroup.eu>
+        Sat, 11 Jun 2022 15:28:56 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB782AE05
+        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id k5-20020a17090a404500b001e8875e6242so2320889pjg.5
+        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:subject:message-id:mime-version:content-disposition;
+        bh=fkcLoppbFaFE3EzImC9gkv8PHfWwzU3e+JthHBIngDc=;
+        b=DGwn22O/l5zavKEfbkvcNLbcxVHYLdTSm0cucTkN9N5qRnSHCaU28OFMsZ/yjhNTD5
+         E+BngapjJo+waTgYhbzpSIeCBOW24slrEJkR6/DxA1nGN5mLqJXWGkdKlTsBVy//blsC
+         iBj2zG/k+aNrRrkrNxWhQYCRBoGPMB7Vxv6aHqgwKZZnG/x5CA8scPfBRmlhpyx0jhF0
+         XL1zNT7vrLttXyhdO4tsBrXamku1gUMki3oBr+5KR+k6g4vewpb/HzRVfxMnqo8pBOSc
+         h67f46Vm9VjNo1g65Gb3pIHcUr6CvCPmoYFALmJB5UXlIwJScru83xllay0UT4rOSCmk
+         PVNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition;
+        bh=fkcLoppbFaFE3EzImC9gkv8PHfWwzU3e+JthHBIngDc=;
+        b=ANq42YSFN8/+MzN+IP8N8C5ge6RHD3vCNreYSQA1p58uUdvaD1P73fqnaNtrRX6gpO
+         VQ99a/HM9FOnlFrdDyau3uuqlVyzv1yxAn/N5pudKT6dxQhZcaPwOxSxO3VdIe3XeHJQ
+         igqbbFpepcVygyszw4R77i8gOfCRsfJcDYKQIBHOn3HSFGZMn5JkQ3QelqQi8M93xi5o
+         DPjjmEg86r88wKTd0btjrK5KcKFQOEH95qzpXCcBAKJC3T8Ahpng1YSoqT4a8xclrh9i
+         WOs8KgohtgrlZzDOb+pA3VpPmgAF5UamXK1VXRrKo+mLAg59KBJpeoSzWm+YP3bh8H1W
+         LauA==
+X-Gm-Message-State: AOAM530UovoXcM8lkRyp5Ju4HbgTa71nQ/ZSD0jTYHQOyd0uYbdP/BoT
+        5dc7z5zq7svnDV6I8NL9EwdwKzGpvthk5w==
+X-Google-Smtp-Source: ABdhPJy+jrKftSDis/r3HmC1zM6Xfi1XkBfdBdln32OzUXIwgXwTVHFtv/IHhrMfbZhdt58HIbYNmg==
+X-Received: by 2002:a17:902:e889:b0:167:523c:6011 with SMTP id w9-20020a170902e88900b00167523c6011mr41693640plg.114.1654975735438;
+        Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
+Received: from ubuntu ([175.124.254.119])
+        by smtp.gmail.com with ESMTPSA id x14-20020aa7918e000000b0051c0fe8fb8csm1996568pfa.95.2022.06.11.12.28.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jun 2022 12:28:54 -0700 (PDT)
+Date:   Sat, 11 Jun 2022 12:28:51 -0700
+From:   Hyunwoo Kim <imv4bel@gmail.com>
+To:     deller@gmx.de, linux-fbdev@vger.kernel.org
+Subject: [PATCH] pxa3xx-gcu: Fix integer overflow in pxa3xx_gcu_write
+Message-ID: <20220611192851.GA482606@ubuntu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1654966257; l=1119; s=20211009; h=from:subject:message-id; bh=itD5+bDLtYc+2iYXxBP9QmALVM+RjdRtxOZhjnKzBYg=; b=gsABDeddGKDSjK3Vl2jQm77znS7PcwAAZc1Nf1o+nYMw48ieIDWqx+54KMOjE+swfN/blRWWvuYQ R7uF8lmtCDVATXa+MyMUPJvWsVWwhX3ga+O98NIGCqv4U8854wy5
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Remove all headers included from asm/prom.h which are not used
-by asm/prom.h itself.
+In pxa3xx_gcu_write, a count parameter of
+type size_t is passed to words of type int.
+Then, copy_from_user may cause a heap overflow because
+it is used as the third argument of copy_from_user.
 
-Declare struct device_node and struct property locally to
-avoid including of.h
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 ---
- arch/powerpc/include/asm/prom.h | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/pxa3xx-gcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/prom.h
-index 5c80152e8f18..93f112133934 100644
---- a/arch/powerpc/include/asm/prom.h
-+++ b/arch/powerpc/include/asm/prom.h
-@@ -12,15 +12,9 @@
-  * Updates for PPC64 by Peter Bergner & David Engebretsen, IBM Corp.
-  */
- #include <linux/types.h>
--#include <asm/irq.h>
--#include <linux/atomic.h>
--
--/* These includes should be removed once implicit includes are cleaned up. */
--#include <linux/of.h>
--#include <linux/of_fdt.h>
--#include <linux/of_address.h>
--#include <linux/of_irq.h>
--#include <linux/platform_device.h>
-+
-+struct device_node;
-+struct property;
+diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
+index 043cc8f9ef1c..5ca6d37e365f 100644
+--- a/drivers/video/fbdev/pxa3xx-gcu.c
++++ b/drivers/video/fbdev/pxa3xx-gcu.c
+@@ -389,7 +389,7 @@ pxa3xx_gcu_write(struct file *file, const char *buff,
+ 	priv->shared->num_words += words;
  
- #define OF_DT_BEGIN_NODE	0x1		/* Start of node, full name */
- #define OF_DT_END_NODE		0x2		/* End node */
+ 	/* Last word reserved for batch buffer end command */
+-	if (words >= PXA3XX_GCU_BATCH_WORDS)
++	if (words >= PXA3XX_GCU_BATCH_WORDS || words < 0)
+ 		return -E2BIG;
+ 
+ 	/* Wait for a free buffer */
 -- 
-2.35.3
+2.25.1
 
