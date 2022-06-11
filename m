@@ -2,132 +2,73 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C96B6546FDE
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jun 2022 01:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270F4547465
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jun 2022 13:48:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231666AbiFJXNc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 10 Jun 2022 19:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42618 "EHLO
+        id S231578AbiFKLsU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 11 Jun 2022 07:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347135AbiFJXNZ (ORCPT
+        with ESMTP id S230367AbiFKLsS (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 10 Jun 2022 19:13:25 -0400
-X-Greylist: delayed 7801 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 10 Jun 2022 16:13:22 PDT
-Received: from 16.mo583.mail-out.ovh.net (16.mo583.mail-out.ovh.net [87.98.174.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93BD11A25
-        for <linux-fbdev@vger.kernel.org>; Fri, 10 Jun 2022 16:13:21 -0700 (PDT)
-Received: from player696.ha.ovh.net (unknown [10.110.115.195])
-        by mo583.mail-out.ovh.net (Postfix) with ESMTP id 6F81421A8F
-        for <linux-fbdev@vger.kernel.org>; Fri, 10 Jun 2022 20:43:26 +0000 (UTC)
-Received: from sk2.org (82-65-25-201.subs.proxad.net [82.65.25.201])
-        (Authenticated sender: steve@sk2.org)
-        by player696.ha.ovh.net (Postfix) with ESMTPSA id BB97B2147BC18;
-        Fri, 10 Jun 2022 20:43:13 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-110S004e6fa79bf-d8bb-4492-9659-0d8f13915340,
-                    3EA6D779A65D7DCBA15D92F127CD72011C01B2E3) smtp.auth=steve@sk2.org
-X-OVh-ClientIp: 82.65.25.201
-Date:   Fri, 10 Jun 2022 22:43:06 +0200
-From:   Stephen Kitt <steve@sk2.org>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Noralf =?UTF-8?B?VHI=?= =?UTF-8?B?w7hubmVz?= 
-        <noralf@tronnes.org>, Thomas Zimmermann <tzimmermann@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Len Baker <len.baker@gmx.com>, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] staging: ftbft: Use backlight helper
-Message-ID: <20220610224306.325a6c91@heffalump.sk2.org>
-In-Reply-To: <YqOoI6g6GVw0Z1s/@ravnborg.org>
-References: <20220607185516.1129900-1-steve@sk2.org>
-        <YqOoI6g6GVw0Z1s/@ravnborg.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        Sat, 11 Jun 2022 07:48:18 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A3F56FAD
+        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 04:48:17 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id f65so1479736pgc.7
+        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 04:48:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=XbdOdn7uobFHsuN9XLMlNq65m3JV0c6v1jahkCkk1ss=;
+        b=UvaIwvyQ4ZdHoblTiuRRXOZnkO1bZC9zJWB6UtSzqJKaJUUrdZUkLrSfRrFxMpFS1K
+         SbeM1YHoA7BXA/6eQikO2Cved34bdIAPT3r6JwNuVzMcMbEpsasGWm0e3iYr+8NsoT6y
+         /Ed8Ap/DVydu/UVK+ZBDWdoaepoh/43SlPtzz2HSC1sKPVrSE4g4V0OG8KgxtH5u+lxS
+         hcrKr9LnSTVk+lOZywT89+HSo5WDSCHiGBSEt0cfdjZouvbGXQEqM+u+B/wVPCkcvtTL
+         7FVorIWy9bthXyaFMo2WluTQlVJn+pRgNzGlO/uCOv0acP1/TuYumz5crxVKTQyW7P0Q
+         OAew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=XbdOdn7uobFHsuN9XLMlNq65m3JV0c6v1jahkCkk1ss=;
+        b=Nj/6LpnxgO1m6jF54FG/5duTdDpMEAKwHlHjYRDNdGCogjuy7OwcDnJUUyCji3B4NY
+         F2CuON5ML9uRFpmdNWjXRuePFjOPhbElb90u20h8AWNtkH3lxSyP0LZQWaH4Y9FaDlaG
+         uxOVApS+DiB2nWGvRIgD8micdxgYJ9oP9s5BC5o+a2jDfWYtXs4HnoU3aMhuxbdAo5qz
+         N9Odlglkgr2NF+xZKhgU/VPME42WZwNrRJHu71x2LWoiVWCxXA1s3lW4j46X9BZejH4o
+         ZxVVF7bBZ95xJMjoKbqQo3ubduN6rZ7PuZWHx3+/emSlY3A6h5aSE02usGc75CrrHkBW
+         g4kg==
+X-Gm-Message-State: AOAM531SxMgj0ZGzgto25q7zV861psHb7OVm+v7HilbO/hiOKY8Ndu4A
+        sDiOXD8uA4cOp1fxM2vTTRkZ6I/Z4AWdmJ0PWW0=
+X-Google-Smtp-Source: ABdhPJzwRSmASWNb8Ugyf209EbrC1T+AbN+iRHPmzefuwRpSgCkBgYrhE4Pn5d8Mc3q5Owd/YSvmTs5WZmmWL04Df9c=
+X-Received: by 2002:a05:6a00:2390:b0:51c:21e1:782 with SMTP id
+ f16-20020a056a00239000b0051c21e10782mr30137029pfc.21.1654948096245; Sat, 11
+ Jun 2022 04:48:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/P4JAIYCU.yYfgTXqhIkbYUV";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Ovh-Tracer-Id: 12460897219021866630
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrudduuddgudehtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtsehgtderreertdejnecuhfhrohhmpefuthgvphhhvghnucfmihhtthcuoehsthgvvhgvsehskhdvrdhorhhgqeenucggtffrrghtthgvrhhnpeeiheevvdeugeejffefteffvefhieegjeevhfekjeejvdelgfefkeehhfdufffhjeenucfkpheptddrtddrtddrtddpkedvrdeihedrvdehrddvtddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehplhgrhigvrheileeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhfsgguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkeef
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6a20:d043:b0:84:2d19:269e with HTTP; Sat, 11 Jun 2022
+ 04:48:15 -0700 (PDT)
+Reply-To: stefanopessina92@gmail.com
+From:   stefano pessina <nicholasmbivii506@gmail.com>
+Date:   Sat, 11 Jun 2022 04:48:15 -0700
+Message-ID: <CAAVPN7h-rsBffsuFve4baEjOht30Hz-W5YOZVcBuSbEaFoxq0w@mail.gmail.com>
+Subject: =?UTF-8?B?R2zDvGNrd3Vuc2No?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---Sig_/P4JAIYCU.yYfgTXqhIkbYUV
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Sam,
-
-On Fri, 10 Jun 2022 22:22:59 +0200, Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Tue, Jun 07, 2022 at 08:55:16PM +0200, Stephen Kitt wrote:
-> > backlight_properties.fb_blank is deprecated. The states it represents
-> > are handled by other properties; but instead of accessing those
-> > properties directly, drivers should use the helpers provided by
-> > backlight.h.
-> >=20
-> > Instead of manually checking the power state in struct
-> > backlight_properties, use backlight_is_blank().
-> >=20
-> > Signed-off-by: Stephen Kitt <steve@sk2.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Cc: "Noralf Tr=C3=B8nnes" <noralf@tronnes.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: Javier Martinez Canillas <javierm@redhat.com>
-> > Cc: Len Baker <len.baker@gmx.com>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: linux-fbdev@vger.kernel.org
-> > Cc: linux-staging@lists.linux.dev
-> > ---
-> >  drivers/staging/fbtft/fb_ssd1351.c | 3 +--
-> >  drivers/staging/fbtft/fbtft-core.c | 3 +--
-> >  2 files changed, 2 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/staging/fbtft/fb_ssd1351.c
-> > b/drivers/staging/fbtft/fb_ssd1351.c index 6fd549a424d5..b8d55aa8c5c7
-> > 100644 --- a/drivers/staging/fbtft/fb_ssd1351.c
-> > +++ b/drivers/staging/fbtft/fb_ssd1351.c
-> > @@ -196,8 +196,7 @@ static int update_onboard_backlight(struct
-> > backlight_device *bd) "%s: power=3D%d, fb_blank=3D%d\n",
-> >  		      __func__, bd->props.power, bd->props.fb_blank); =20
-> Could you try to kill this use of props.fb_blank too?      ^^^^^^
-> A local variable should do the trick.
-
-I have a pending patch changing this to show props.state instead, that way
-the debug info shows all the backlight-relevant information from props. How
-does that sound?
-
-Regards,
-
-Stephen
-
---Sig_/P4JAIYCU.yYfgTXqhIkbYUV
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmKjrNoACgkQgNMC9Yht
-g5xQdg/+Orvis6KeWgiLd8jL6lqXH9XOKSzUodRrAYjprDDP0ZJq0NCh7JbJW+q3
-OYkz1CNJ4/vsMOFU7lYPEPDRZqX+VHj2XBR11YZWTzUVi1f+ivSw/kDd5jzGe5xs
-opvDdvBTlUniPy3LAs84Z1unuX0P6JgTwvKX3oiBMgww1ym8b9B3Ha2nswe3yUI2
-kjOUfz+Zv86RtoPF3R/LBPv4aP1UmVL3/Bgg1Qnb2llzb3L3JlUq6V5BtUuxj+CC
-vie/Wsfgsx9KXPa+GZUCaxm1q9uVUV21zHvZ3mCA5gew9jLg5wEFHmySony+2n+C
-wAd+0MY7tlL+YjfV9Ccgvvo39CHe0Wan10HpWWQNwfAQgdpTHmeI8cZ+Uho85sb2
-QF3+Jz/mrnlSjHG4lqPLs0bXGb/rpVsDPbiivOWzamJGQyOx14VvrUrKyLUpLh4A
-BcB88hAvQ9z4pz8o3rkzfqi70KbDjbBpxQrpCXcwmBICUpfsm0ufteHA/7lSNEwq
-EXlDYFA66tyohK0IGuDUOf7wvDuuQjyqO8/Kc5+/xBDdlTPts3eDqmIaAF9ydTpZ
-5+pgEJITNAcHm/ig5/Kjxkye4q6DAWKEX10FUBWmm6lpc90i3NuWHGDTpC7Ru3yl
-C5F9TZVMLyarmt00UEPhkARbBJrzOXqHGXQDWyiNxGCg1OB+GTc=
-=EB3v
------END PGP SIGNATURE-----
-
---Sig_/P4JAIYCU.yYfgTXqhIkbYUV--
+--=20
+Die Summe von 1.500.000,00 =E2=82=AC wurde Ihnen von STEFANO PESSINA
+gespendet. Bitte kontaktieren Sie uns f=C3=BCr weitere Informationen per
+stefanopessina92@gmail.com
