@@ -2,92 +2,122 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A278E54774D
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jun 2022 21:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E225479EE
+	for <lists+linux-fbdev@lfdr.de>; Sun, 12 Jun 2022 13:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbiFKT25 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 11 Jun 2022 15:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
+        id S236447AbiFLLcc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 12 Jun 2022 07:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiFKT24 (ORCPT
+        with ESMTP id S236408AbiFLLcb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 11 Jun 2022 15:28:56 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB782AE05
-        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id k5-20020a17090a404500b001e8875e6242so2320889pjg.5
-        for <linux-fbdev@vger.kernel.org>; Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
+        Sun, 12 Jun 2022 07:32:31 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CB92A420
+        for <linux-fbdev@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id c2so3945216edf.5
+        for <linux-fbdev@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:subject:message-id:mime-version:content-disposition;
-        bh=fkcLoppbFaFE3EzImC9gkv8PHfWwzU3e+JthHBIngDc=;
-        b=DGwn22O/l5zavKEfbkvcNLbcxVHYLdTSm0cucTkN9N5qRnSHCaU28OFMsZ/yjhNTD5
-         E+BngapjJo+waTgYhbzpSIeCBOW24slrEJkR6/DxA1nGN5mLqJXWGkdKlTsBVy//blsC
-         iBj2zG/k+aNrRrkrNxWhQYCRBoGPMB7Vxv6aHqgwKZZnG/x5CA8scPfBRmlhpyx0jhF0
-         XL1zNT7vrLttXyhdO4tsBrXamku1gUMki3oBr+5KR+k6g4vewpb/HzRVfxMnqo8pBOSc
-         h67f46Vm9VjNo1g65Gb3pIHcUr6CvCPmoYFALmJB5UXlIwJScru83xllay0UT4rOSCmk
-         PVNA==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
+        b=HutqJca9cz10+fhpLBqF5pkCfmNuVpB/QmLPLH2RoeSpp+88FPj9DCRLsYlrV60IRI
+         yfGt8kTQJ3+U5hD05c9eQjOTUDndc3kFmmCKtoZcJTw6iEXGeaPRZUwBIb2hL10aHe3A
+         7EbObtS3e/RUerZDq6P0if6rMoEsasBL0IeuLIxwTHpNu3CceyHT/j7BTvAXuGh/jXn3
+         mZ2PnrRRlC0NrnYO4yqGRbm/BexgsBU/ybIJL5KQreT4XiaErEnB2fMcohiz3+qsoqp8
+         Xl5GKvTeAgRog3ZkHFVKaziM00o+HwG/FDCDlODVc32UellWfe2pLGmko+Rt8jRhNdyv
+         b+pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition;
-        bh=fkcLoppbFaFE3EzImC9gkv8PHfWwzU3e+JthHBIngDc=;
-        b=ANq42YSFN8/+MzN+IP8N8C5ge6RHD3vCNreYSQA1p58uUdvaD1P73fqnaNtrRX6gpO
-         VQ99a/HM9FOnlFrdDyau3uuqlVyzv1yxAn/N5pudKT6dxQhZcaPwOxSxO3VdIe3XeHJQ
-         igqbbFpepcVygyszw4R77i8gOfCRsfJcDYKQIBHOn3HSFGZMn5JkQ3QelqQi8M93xi5o
-         DPjjmEg86r88wKTd0btjrK5KcKFQOEH95qzpXCcBAKJC3T8Ahpng1YSoqT4a8xclrh9i
-         WOs8KgohtgrlZzDOb+pA3VpPmgAF5UamXK1VXRrKo+mLAg59KBJpeoSzWm+YP3bh8H1W
-         LauA==
-X-Gm-Message-State: AOAM530UovoXcM8lkRyp5Ju4HbgTa71nQ/ZSD0jTYHQOyd0uYbdP/BoT
-        5dc7z5zq7svnDV6I8NL9EwdwKzGpvthk5w==
-X-Google-Smtp-Source: ABdhPJy+jrKftSDis/r3HmC1zM6Xfi1XkBfdBdln32OzUXIwgXwTVHFtv/IHhrMfbZhdt58HIbYNmg==
-X-Received: by 2002:a17:902:e889:b0:167:523c:6011 with SMTP id w9-20020a170902e88900b00167523c6011mr41693640plg.114.1654975735438;
-        Sat, 11 Jun 2022 12:28:55 -0700 (PDT)
-Received: from ubuntu ([175.124.254.119])
-        by smtp.gmail.com with ESMTPSA id x14-20020aa7918e000000b0051c0fe8fb8csm1996568pfa.95.2022.06.11.12.28.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jun 2022 12:28:54 -0700 (PDT)
-Date:   Sat, 11 Jun 2022 12:28:51 -0700
-From:   Hyunwoo Kim <imv4bel@gmail.com>
-To:     deller@gmx.de, linux-fbdev@vger.kernel.org
-Subject: [PATCH] pxa3xx-gcu: Fix integer overflow in pxa3xx_gcu_write
-Message-ID: <20220611192851.GA482606@ubuntu>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
+        b=s2NL71tEJEeDCE23ApO3ZmA9hVoDx8O89S4wWuvaVwFv0JbTMT0Obyo9iX/P+x/hr6
+         9RWgYobHTtwWFxcWMX7E8bJcgrjbylsgHVjjcq0BfbirxCObpmvceODOEN7RnJ/FJ0kq
+         L5nAQcH8zhcVQWtV+AibTHvmGFyzVPQI79bG8cmyWLkqF/qY58pUP5ELS3hIfo/E7Bby
+         F9MpZsqv5rYF764AtpIkkU/rLeZLGIyqC0TLVmAno7+De6HGj/RhYABikjkV6Gjl0XZg
+         mJ0hH2Jf54Rd8ji0ym+IjAwp+EdxDHgemKSE2PBicedksG3mtYAKH3zYvYXtde2VmAp1
+         vCuA==
+X-Gm-Message-State: AOAM533lPz0/UEfPMQ5EBGRrQAFzoGJo+1+Aw4j10wwoSGul/jFkRF4N
+        5qiF8ySbGVF7XpNpPTxRiVrrwywhl7P9f2JefwU=
+X-Google-Smtp-Source: ABdhPJwdx/ts4yT81TfY9H4jSVwEQwJ2e/fPBdkfFmfsPIbmOM0FEcnF1voZtHMiIfkmIVV3xB+6Fmj8j1iYk6t89oo=
+X-Received: by 2002:a05:6402:d05:b0:425:b5c8:faeb with SMTP id
+ eb5-20020a0564020d0500b00425b5c8faebmr60549161edb.273.1655033547542; Sun, 12
+ Jun 2022 04:32:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Sender: mariajohn0331@gmail.com
+Received: by 2002:a54:3a4a:0:0:0:0:0 with HTTP; Sun, 12 Jun 2022 04:32:26
+ -0700 (PDT)
+From:   MARIA ROLAND <mariaroland74@gmail.com>
+Date:   Sun, 12 Jun 2022 04:32:26 -0700
+X-Google-Sender-Auth: Co32K8Guj2mgf2O-dHQRzwqxqMY
+Message-ID: <CAEmdD2WEq8iFu03odoUHJOLqaAfOodUu9x8Et1FumwjSBv0eHw@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:52e listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6902]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mariajohn0331[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mariajohn0331[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In pxa3xx_gcu_write, a count parameter of
-type size_t is passed to words of type int.
-Then, copy_from_user may cause a heap overflow because
-it is used as the third argument of copy_from_user.
+Greetings,
 
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- drivers/video/fbdev/pxa3xx-gcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I sent this mail praying it will find you in a good condition, since I
+myself am in a very critical health condition in which I sleep every
+night  without knowing if I may be alive to see the next day. I am
+Mrs. Maria Roland, a widow suffering from a long time illness. I have
+some funds I  inherited from my late husband, the sum of
+($11,000,000.00) my Doctor told me recently that I have serious
+sickness which is a cancer problem. What disturbs me most is my stroke
+sickness. Having known my condition, I decided to donate this fund to
+a good person that will utilize it the way I am going to instruct
+herein. I need a very honest God.
 
-diff --git a/drivers/video/fbdev/pxa3xx-gcu.c b/drivers/video/fbdev/pxa3xx-gcu.c
-index 043cc8f9ef1c..5ca6d37e365f 100644
---- a/drivers/video/fbdev/pxa3xx-gcu.c
-+++ b/drivers/video/fbdev/pxa3xx-gcu.c
-@@ -389,7 +389,7 @@ pxa3xx_gcu_write(struct file *file, const char *buff,
- 	priv->shared->num_words += words;
- 
- 	/* Last word reserved for batch buffer end command */
--	if (words >= PXA3XX_GCU_BATCH_WORDS)
-+	if (words >= PXA3XX_GCU_BATCH_WORDS || words < 0)
- 		return -E2BIG;
- 
- 	/* Wait for a free buffer */
--- 
-2.25.1
+fearing a person who can claim this money and use it for Charity
+works, for orphanages, widows and also build schools for less
+privileges that will be named after my late husband if possible and to
+promote the word of God and the effort that the house of God is
+maintained. I do not want a situation where this money will be used in
+an ungodly manner. That's why I' making this decision. I'm not afraid
+of death so I know where I'm going. I accept this decision because I
+do not have any child who will inherit this money after I die. Please
+I want your sincere and urgent answer to know if you will be able to
+execute this project, and I will give you more information on how the
+fund will be transferred to your bank account. I am waiting for your reply,
 
+May God Bless you,
+
+Mrs. Maria Roland,
