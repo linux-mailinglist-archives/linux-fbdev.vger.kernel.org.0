@@ -2,75 +2,141 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9315254B1B6
-	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Jun 2022 14:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFF854B2FB
+	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Jun 2022 16:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236706AbiFNMpQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 14 Jun 2022 08:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S234671AbiFNOQu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 14 Jun 2022 10:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356920AbiFNMpH (ORCPT
+        with ESMTP id S231754AbiFNOQt (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 14 Jun 2022 08:45:07 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA88144756
-        for <linux-fbdev@vger.kernel.org>; Tue, 14 Jun 2022 05:45:04 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1014b2752c1so5296104fac.11
-        for <linux-fbdev@vger.kernel.org>; Tue, 14 Jun 2022 05:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=lBFrwc11MgcaK75qf3EwNhKoIfwLYz4Dn7scEjO7Hwc=;
-        b=BLPt3Whga/35puJNJe8qXtvQa8qVmyqziKSeeoay2BkfZzLmL2kjet48QjIHlqGgqM
-         hJrfxQdJK5AoxDU7CWdC0FstM42nB5BZMl1HL4Pk4iVJwSU+vC6w1KJrj5xMhekFVmm0
-         0MsIGOyg25y6/oyEKGPZ7dh2cYRSV76IiiqZklsjUfvRcFiBLZiWJ82kwuTL3P2i2hd9
-         i0H7+mIdGJAQNJEMwtTL54gB8P0jwnVjKn7y3GnaCbX2/WcnBcAJOnSXOQLimrsbE/Au
-         Ug673+luECUcnElmy46JUA2aaQBd8SEIBO9pdN8O8H126eLKdTlUNuGrlPKdwayk15FE
-         osgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=lBFrwc11MgcaK75qf3EwNhKoIfwLYz4Dn7scEjO7Hwc=;
-        b=Rvxw64CNeGQhxK7iv+oyM8ZZqjNdlcNiNvVHh5ZaATDarfcyH4Dt+Jn9aJ7yjY5Mxv
-         O1HmvTSi2H3+/DWcyxWQ6OXhrVvSdY9K2zLKqua6UDrrlkMZlqRpCZqGCAW4Bc3LHx3f
-         h8+0JKAWwnOE6AgOeWy9zLuNcKFhODGu9S3a1TRZ40//Ez/0Rx2BQZSjUhpuPRxq58v6
-         LbwJ1e/1Ia/RDM2M30wSWQO6XdgrFk/+zb6o7ET8QvA+y5uhi708UP/X6Yb+aKwdIe5O
-         wA3cAgRS0KtvcxV15ECm12jQi0Cw/pdpX9ZRoYKoAB1Jo/XDq6Qvet9aHJ2kbXPuBuhf
-         jVuQ==
-X-Gm-Message-State: AJIora/lCDirMhd34IGzifgYv4ROS2s75V6i+w2Pvd3CulrJJrY2O6lM
-        5oB5MG4GJW8hqQnYhpSceLg48mFlmIC0mEwqJms=
-X-Google-Smtp-Source: AGRyM1sAfOuObHV26Bg5/54l4JTOQHohavQsoKJhsRr0ubOd+Plp6gyN7sZbwNgPwBQs7yUKGU1CtTrAFYTKfLds5oU=
-X-Received: by 2002:a05:6870:648a:b0:f8:7602:8402 with SMTP id
- cz10-20020a056870648a00b000f876028402mr2144743oab.194.1655210704163; Tue, 14
- Jun 2022 05:45:04 -0700 (PDT)
+        Tue, 14 Jun 2022 10:16:49 -0400
+X-Greylist: delayed 553 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Jun 2022 07:16:45 PDT
+Received: from mx3.securetransport.de (mx3.securetransport.de [116.203.31.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D542F3A9
+        for <linux-fbdev@vger.kernel.org>; Tue, 14 Jun 2022 07:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+        s=dhelectronicscom; t=1655215552;
+        bh=kZWe6Zc/bv5y1c1ZqXyxmMpzmoXjoTrNmG4TQBrLGXc=;
+        h=From:To:CC:Subject:Date:From;
+        b=Bn6KL59vtQ2XwQWrgwfpvmx+vrRJxkE38aajl1hPEdhFiqEfkWlhgnmx452oispNt
+         7CCHu+dCo5jfaDDgoRAZ0A8s2m92ta8ZXGXf8aMp6cYOBpyaz6+zX9/mCjz6Y2G/NQ
+         CThsZmMojAiGBWDGYT5rmU9utEsTfI8j3AfbomUfsCq4ESfRChN7ZvtBl8qlqx/5gb
+         bW6B3Met3wMCKUItB4UPLIRlm1+UKoWBygcfAHlZloKg6Ho1QEHMTh8Nut7xqrerL3
+         EOqKzJnjXG8FatzxDWfJLtOv6r+7VfDSgt0BGgOpECnBsnuEw0NFXsXzFT272JDMT8
+         5cfDLXHZ+IS1A==
+X-secureTransport-forwarded: yes
+From:   Dominik Kierner <dkierner@dh-electronics.com>
+Complaints-To: abuse@cubewerk.de
+To:     Javier Martinez Canillas <javierm@redhat.com>
+CC:     "airlied@linux.ie" <airlied@linux.ie>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "daniel.vetter@ffwll.ch" <daniel.vetter@ffwll.ch>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "geert@linux-m68k.org" <geert@linux-m68k.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "maxime@cerno.tech" <maxime@cerno.tech>,
+        "noralf@tronnes.org" <noralf@tronnes.org>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v6 3/6] drm: Add driver for Solomon SSD130x OLED displays
+Thread-Topic: [PATCH v6 3/6] drm: Add driver for Solomon SSD130x OLED displays
+Thread-Index: Adh/98yd/bFLOXDpTTiVpWIDbnNb5w==
+Date:   Tue, 14 Jun 2022 14:05:36 +0000
+Message-ID: <4dfc32123d1d4e38ae1afdd3f33109a9@dh-electronics.com>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Received: by 2002:a8a:c46:0:b0:42d:ab20:ed24 with HTTP; Tue, 14 Jun 2022
- 05:45:03 -0700 (PDT)
-From:   Daniel Affum <danielaffum05@gmail.com>
-Date:   Tue, 14 Jun 2022 15:45:03 +0300
-Message-ID: <CAPkju_OnkYx0C6OwsrBS51C+hwRyz43LzORShgubPkwu8j7XxQ@mail.gmail.com>
-Subject: Confirm Receipt
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Dear,
+Hello Javier
 
-I am Daniel Affum a retired civil servant i have a  business to
-discuss with you from the Eastern part of Africa aimed at agreed
-percentage upon your acceptance of my hand in business and friendship.
-Kindly respond to me if you are interested to partner with me for an
-update.Very important.
+On 6/14/22 13:39, Javier Martinez Canillas wrote:
 
-Yours Sincerely,
-Daniel Affum.
-Reply to:danielaffum005@yahoo.com
+> > I always understood regulator_get_optional() as a way of not having to =
+rely on a dummy,
+> > when a regulator is not present, but please correct me, if I am wrong o=
+n this.
+> > The dummies would only be necessary for the mandatory supplies VCC and =
+VDD.
+> >
+>=20
+> Yes, that's what I tried to say. That's regulator_get() and not _optional=
+()
+> the function that will provide a dummy regulator if isn't physically pres=
+ent:
+>=20
+> https://elixir.bootlin.com/linux/latest/source/drivers/regulator/core.c#L=
+2067
+>=20
+> > You mean this part of the documentation of regulator_get_optional(), co=
+rrect?:
+> >
+> >> * This is intended for use by consumers for devices which can have
+> >> * some supplies unconnected in normal use, such as some MMC devices.
+> >> * It can allow the regulator core to provide stub supplies for other
+> >> * supplies requested using normal regulator_get() calls without
+> >> * disrupting the operation of drivers that can handle absent
+> >> * supplies.
+> >
+> >
+> So for example when you just use a voltage rail in let's say a board pin =
+header
+> then you will need to define supply nodes with compatible =3D "regulator-
+> fixed" ?
+
+Exactly.
+
+> That is indeed more accurate from a hardware description point of view bu=
+t I'm
+> not convinced that this is something worth to break DT backward compatibi=
+lity.
+
+> You also mentioned (IIUC) that the regulators could be made optional and =
+their
+> presence be used as an indication that an atomic charge pump configuratio=
+n can
+> be made instead of using the current ssd130x->display_settings.use_charge=
+_pump.
+>=20
+> I think that would prefer that the latter option, but will let others to =
+chime
+> in since maybe I'm not correct on the preferred approach.
+
+Yes, here the reference for the former approach:
+Chapter 2 "Charge Pump Regulator" on Page 62 of the SSD1306 datasheet:
+https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf
+
+Just a TL;DR of the former approach for easier discussion:
+The logic supply VDD would always be mandatory.
+The low voltage supply VBAT would be optional and probed first.
+If found, it would supersede the "high" voltage driving supply VCC and
+the charge pump would be enabled. If VBAT is not found, then VCC is
+mandatory and the charge pump will not be enabled.
+
+
+--
+Best regards
+
+Dominik Kierner
+Research & Development
+DH electronics
+
