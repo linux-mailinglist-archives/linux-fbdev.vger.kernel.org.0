@@ -2,163 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68370552C96
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Jun 2022 10:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A4D3552EC9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Jun 2022 11:41:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346525AbiFUIFj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 21 Jun 2022 04:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
+        id S1349061AbiFUJkP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 21 Jun 2022 05:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348059AbiFUIFT (ORCPT
+        with ESMTP id S1349349AbiFUJkH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 21 Jun 2022 04:05:19 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DEF9598;
-        Tue, 21 Jun 2022 01:05:17 -0700 (PDT)
-X-UUID: e0277822d01a440bb699fe1d22a5f8a0-20220621
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:c17b9320-9d59-46d2-9efc-5410dfa22f82,OB:10,L
-        OB:30,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,A
-        CTION:release,TS:45
-X-CID-INFO: VERSION:1.1.6,REQID:c17b9320-9d59-46d2-9efc-5410dfa22f82,OB:10,LOB
-        :30,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:45
-X-CID-META: VersionHash:b14ad71,CLOUDID:0889a02d-1756-4fa3-be7f-474a6e4be921,C
-        OID:8d11524cbd9e,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: e0277822d01a440bb699fe1d22a5f8a0-20220621
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <ck.hu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 940616836; Tue, 21 Jun 2022 16:05:10 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Tue, 21 Jun 2022 16:05:09 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.3 via Frontend
- Transport; Tue, 21 Jun 2022 16:05:09 +0800
-Message-ID: <a3b133645d2f7bb333e0cdde8f5968c73a6aa72c.camel@mediatek.com>
-Subject: Re: [PATCH v11 05/10] drm/mediatek: Add MT8195 Embedded DisplayPort
- driver
-From:   CK Hu <ck.hu@mediatek.com>
-To:     Bo-Chen Chen <rex-bc.chen@mediatek.com>, <chunkuang.hu@kernel.org>,
-        <p.zabel@pengutronix.de>, <daniel@ffwll.ch>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
-        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
-        <airlied@linux.ie>
-CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
-        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
-        <angelogioacchino.delregno@collabora.com>,
-        <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Tue, 21 Jun 2022 16:05:08 +0800
-In-Reply-To: <20220610105522.13449-6-rex-bc.chen@mediatek.com>
-References: <20220610105522.13449-1-rex-bc.chen@mediatek.com>
-         <20220610105522.13449-6-rex-bc.chen@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Tue, 21 Jun 2022 05:40:07 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E61B27CEA
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 Jun 2022 02:39:56 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id x21so3779571uat.2
+        for <linux-fbdev@vger.kernel.org>; Tue, 21 Jun 2022 02:39:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
+         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
+         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
+         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
+         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
+         Q2/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=0SoQJd6z0y4ouYa7S4njYzVn06hYTmmLIZ8cPq6XruqWysN5Z52pCdQlwHRBqyiaPv
+         rax6VOWobhGJkp3CLyzKwrRVElHsUf9Zh6S4qeaEzDYXwLhMLJxCM0z3LAU7/rn7Yil0
+         I7ynxtF6URZBNfye5DttXJuCpFwJeva7h74xWYO5aKAPZvmdb4gs/dMpiq++cIrTkwJv
+         aIB6F0fl1jDs+5iX6nalp63i/OKEwDb4GvFCOdOSgmsCzgDeBLVSBFt9rPcWt0wdHfiD
+         wk5xP9hsJKlCsfYDsC6di+sUOegHZZJ9NEyriFGFVOky7Nu5az+2uBfu1XOzKkQixAuu
+         bdaQ==
+X-Gm-Message-State: AJIora+k8RbjyJqiEol8kqyDfqSfc1bkNJw2d56l8QjAjwjdmu7u2Q02
+        JCxnRzVLCnoELzzeQgyyFY+qWuoYaRMoYd6s3qezyBGHi1SeAnnL
+X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
+X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
+ z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
+ Jun 2022 02:39:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
+ 02:39:44 -0700 (PDT)
+Reply-To: dimitryedik@gmail.com
+From:   Dimitry Edik <lsbthdwrds@gmail.com>
+Date:   Tue, 21 Jun 2022 02:39:44 -0700
+Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
+Subject: Dear Partner,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:933 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lsbthdwrds[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, Bo-Chen:
+Hello Dear,
 
-On Fri, 2022-06-10 at 18:55 +0800, Bo-Chen Chen wrote:
-> From: Markus Schneider-Pargmann <msp@baylibre.com>
-> 
-> This patch adds a embedded displayport driver for the MediaTek mt8195
-> SoC.
-> 
-> It supports the MT8195, the embedded DisplayPort units. It offers
-> DisplayPort 1.4 with up to 4 lanes.
-> 
-> The driver creates a child device for the phy. The child device will
-> never exist without the parent being active. As they are sharing a
-> register range, the parent passes a regmap pointer to the child so
-> that
-> both can work with the same register range. The phy driver sets
-> device
-> data that is read by the parent to get the phy device that can be
-> used
-> to control the phy properties.
-> 
-> This driver is based on an initial version by
-> Jitao shi <jitao.shi@mediatek.com>
-> 
-> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> [Bo-Chen: Cleanup the drivers and modify comments from reviewers]
-> Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> ---
+My Name is Dimitry Edik from Russia A special assistance to my Russia
+boss who deals in oil import and export He was killed by the Ukraine
+soldiers at the border side. He supplied
+oil to the Philippines company and he was paid over 90 per cent of the
+transaction and the remaining $18.6 Million dollars have been paid into a
+Taiwan bank in the Philippines..i want a partner that will assist me
+with the claims. Is a (DEAL ) 40% for you and 60% for me
+I have all information for the claims.
+Kindly read and reply to me back is 100 per cent risk-free
 
-[snip]
-
-> +
-> +static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
-> +{
-> +	u8 val;
-> +	struct mtk_dp_train_info *train_info = &mtk_dp->train_info;
-> +
-> +	drm_dp_dpcd_writeb(&mtk_dp->aux, DP_SET_POWER,
-> DP_SET_POWER_D0);
-> +	usleep_range(2000, 5000);
-> +
-> +	drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
-> +
-> +	mtk_dp->rx_cap[DP_TRAINING_AUX_RD_INTERVAL] &=
-> DP_TRAINING_AUX_RD_MASK;
-
-You never use mtk_dp->rx_cap[DP_TRAINING_AUX_RD_INTERVAL], why do you
-modify it?
-
-> +
-> +	train_info->link_rate = min_t(int, mtk_dp->max_linkrate,
-> +				      mtk_dp->rx_cap[mtk_dp-
-> >max_linkrate]);
-> +	train_info->lane_count = min_t(int, mtk_dp->max_lanes,
-> +				       drm_dp_max_lane_count(mtk_dp-
-> >rx_cap));
-> +
-> +	train_info->tps3 = drm_dp_tps3_supported(mtk_dp->rx_cap);
-> +	train_info->tps4 = drm_dp_tps4_supported(mtk_dp->rx_cap);
-> +
-> +	train_info->sink_ssc = !!(mtk_dp->rx_cap[DP_MAX_DOWNSPREAD] &
-> +				  DP_MAX_DOWNSPREAD_0_5);
-> +
-
-train_info->sink_ssc = drm_dp_max_downspread(mtk_dp->rx_cap);
-
-Regards,
-CK
-
-> +	train_info->sink_ssc = false;
-> +
-> +	drm_dp_dpcd_readb(&mtk_dp->aux, DP_MSTM_CAP, &val);
-> +	if (val & DP_MST_CAP) {
-> +		/* Clear DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0 */
-> +		drm_dp_dpcd_readb(&mtk_dp->aux,
-> +				  DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
-> &val);
-> +		if (val)
-> +			drm_dp_dpcd_writeb(&mtk_dp->aux,
-> +					   DP_DEVICE_SERVICE_IRQ_VECTOR
-> _ESI0,
-> +					   val);
-> +	}
-> +
-> +	return 0;
-> +}
-
+Yours Sincerely
+Dimitry Edik
