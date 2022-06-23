@@ -2,61 +2,43 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB39A554E56
-	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Jun 2022 17:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83346557434
+	for <lists+linux-fbdev@lfdr.de>; Thu, 23 Jun 2022 09:46:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359010AbiFVPED (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 22 Jun 2022 11:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36606 "EHLO
+        id S229451AbiFWHqN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 23 Jun 2022 03:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358976AbiFVPD4 (ORCPT
+        with ESMTP id S230412AbiFWHqN (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 22 Jun 2022 11:03:56 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE443D1E7
-        for <linux-fbdev@vger.kernel.org>; Wed, 22 Jun 2022 08:03:51 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-101e1a33fe3so12589384fac.11
-        for <linux-fbdev@vger.kernel.org>; Wed, 22 Jun 2022 08:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=lmXhPRDXrnlbYClAFJkfHZYdowqXsf1nTuDLZnU/Y1W/T6TJ8ApbIv950i47frAtN/
-         OtndHJQoWJG+weygm2GuosJduERMEzUHLtTF4oGKopzqXa+c5O1ob2p5JuwuGNaCZz0D
-         0k2iO6ZG6gpeVsjTt5A+NLMvCH8qDkpG8Ex3xIMBpunG6BNJWrlCGLJYo7boJK6pvBIx
-         W4x550ST0gVpK9sdxwL58OfMVVl7H7xG/39bSvJCxipLUGbdwSBY6WRzvY6hd28wfB/N
-         vDKUfqITg8PxsgA4g6gEDGmS0K0dBg3KSntFmGDvcmLKkvSy/F4e+TYysqkO/txSQBCJ
-         afFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=TroMlld0SCzszkZM0n2GDPQiZn/OSldcZQYc4EivrsniSmljUtzpAz66YpZesgmrs/
-         R+2O4HZkE8sm2zySH1NC9VxaPCiNAASWGP05htiUB0Q720vBOmApR4qQLBN/tnai1jZM
-         XBUl5AJH0nLz/EfOvKIhJjE//+38gssmUPbB2U1jXS6uedNfI4DuPlLW0Gm1Izf6Md59
-         XkCPO7J0w7nBkCRII0r+NGl6X5efoizPcbusPGQON+J95WXiVdIIpxa+bdierWaC+Giy
-         CMBX8KUQ3ta30MwcEJDY7WJNR+ex8BvMXYIRN+0p3VDgG5xa4lUV+CFVeIDDtHISj+aW
-         YzTQ==
-X-Gm-Message-State: AJIora/uRmTld13tyfrHeX4jwxgrfOtMcHzh11OOuC0ahC8JmVarYbpS
-        noXOX4oTHXSs67HaFsVMsBrtC+Oa5XCU77ngIbUkGapqXcu+5GIP
-X-Google-Smtp-Source: AGRyM1ulxotWsDV/SS5wzW6q4zt5LXu3F658bS4StYWI/FgPuIBqBz38zqk7aydOTm9FXxU+wDfnf428k+eRTEG/aD8=
-X-Received: by 2002:a17:90b:1988:b0:1ec:f52d:90d4 with SMTP id
- mv8-20020a17090b198800b001ecf52d90d4mr1796737pjb.70.1655910220864; Wed, 22
- Jun 2022 08:03:40 -0700 (PDT)
+        Thu, 23 Jun 2022 03:46:13 -0400
+Received: from mail.onlinesuccesses.pl (mail.onlinesuccesses.pl [198.244.150.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A83546B23
+        for <linux-fbdev@vger.kernel.org>; Thu, 23 Jun 2022 00:46:12 -0700 (PDT)
+Received: by mail.onlinesuccesses.pl (Postfix, from userid 1002)
+        id 6C29FAF245; Thu, 23 Jun 2022 07:42:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onlinesuccesses.pl;
+        s=mail; t=1655970206;
+        bh=nE8HqilgMh4dy7+Z8ksfg7Bc9rmPeQtYFq3/3YR2ODU=;
+        h=Date:From:To:Subject:From;
+        b=SK2RxOdPkuOHBSpo1QNlVKhy49e76Jdd4kHgAI6yxkKj/hdXForMsQbuSSP5nsQCm
+         MUrWAy1TkXdRIuAJS12llz74qabInmeyR3hh3+3hA77lIrZZdrN+HgIMtnBd7LXSwQ
+         bOKqQYQ80fcRaPPNTQjOwK7BXhNI3RbvKakwW9chJwjImG2B5xHHbDRasmCwqwqoRN
+         j35UQ0TfWKrfAay7l7McQMQQmKHforVsnEsG60Ocahoa5A4n/qr/nvwgGeVb96vs1U
+         kF6vO3bVkW3Stj0FHdJxx1RQoy2EDHZHSOcMV4k3wO0r0Myfj1UvdO0J+mH8/ziCby
+         zrXgC3i5RV6CQ==
+Received: by mail.onlinesuccesses.pl for <linux-fbdev@vger.kernel.org>; Thu, 23 Jun 2022 07:41:20 GMT
+Message-ID: <20220623064501-0.1.51.1ms0e.0.k6e78noj01@onlinesuccesses.pl>
+Date:   Thu, 23 Jun 2022 07:41:20 GMT
+From:   "Wiktor Zielonko" <wiktor.zielonko@onlinesuccesses.pl>
+To:     <linux-fbdev@vger.kernel.org>
+Subject: Ruch z pierwszej pozycji w Google
+X-Mailer: mail.onlinesuccesses.pl
 MIME-Version: 1.0
-Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
- 08:03:40 -0700 (PDT)
-Reply-To: sales0212@asonmedsystemsinc.com
-From:   Prasad Ronni <lerwickfinance7@gmail.com>
-Date:   Wed, 22 Jun 2022 16:03:40 +0100
-Message-ID: <CAFkto5vTxj70kORZJZdwOGowXjsZ399eo6DJj=8T==7paSuHTw@mail.gmail.com>
-Subject: Service Needed.
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -65,11 +47,22 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-Hi,
+Dzie=C5=84 dobry,=20
 
-Are you currently open to work as our executive company representative
-on contractual basis working remotely? If yes, we will be happy to
-share more details. Looking forward to your response.
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
 
-Regards,
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
+
+
+Pozdrawiam serdecznie,
+Wiktor Zielonko
