@@ -2,65 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E7C55ACD7
-	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Jun 2022 00:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05EE155ACE9
+	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Jun 2022 00:28:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233375AbiFYWGk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 25 Jun 2022 18:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
+        id S233533AbiFYW16 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 25 Jun 2022 18:27:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233386AbiFYWGj (ORCPT
+        with ESMTP id S233530AbiFYW14 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 25 Jun 2022 18:06:39 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D24120B9
-        for <linux-fbdev@vger.kernel.org>; Sat, 25 Jun 2022 15:06:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656194792;
-        bh=cL0l7EYk7Gr+7cdvpNWmUqqHHHMGkB914fzT0oYSaE8=;
-        h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
-        b=Z6NjoG3JehTfC3JD3q18GSY45JR1RQqK9LqKyNDUiU+75NZrRyH2xsInl41Y2Xi1Q
-         qiGrSxUOlst8F+pCe1wArVyOFL9lAfyVANGADu/msg71XpDumeN4k4Pr9FFruhaOaY
-         cxXfn0qQInqewJGv7gA7G0neIBR4eh2+dck3qUMs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.162.44]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVN6t-1oCCBL0eBT-00SR0G; Sun, 26
- Jun 2022 00:06:32 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     dri-devel@lists.freedesktop.org, daniel.vetter@ffwll.ch,
-        linux-fbdev@vger.kernel.org
-Subject: [PATCH v3 4/4] fbmem: Prevent invalid virtual screen sizes
-Date:   Sun, 26 Jun 2022 00:06:30 +0200
-Message-Id: <20220625220630.333705-5-deller@gmx.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20220625220630.333705-1-deller@gmx.de>
-References: <20220625220630.333705-1-deller@gmx.de>
+        Sat, 25 Jun 2022 18:27:56 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF08C31
+        for <linux-fbdev@vger.kernel.org>; Sat, 25 Jun 2022 15:27:55 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id cw10so11639344ejb.3
+        for <linux-fbdev@vger.kernel.org>; Sat, 25 Jun 2022 15:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=HMEA4S/foPT09jS8kwk/DI5PFsIZiXHCulkpaRC/cMc=;
+        b=Rs2PRm2e4bEIRWn7rEMlhXgz5dsI1a9YEf9uQle7MRv1Vum4pehM9b9ASQyVz0lieT
+         9JdUxRP6ypFEH2r7I2V/x348gJVbqwEC+HiyZmiqwfT/u4tM+yGqSQVE3Q4tnzNBedyX
+         1isN078R4i+bHEBRzNKVFpD5vXvUIS+fcf80k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HMEA4S/foPT09jS8kwk/DI5PFsIZiXHCulkpaRC/cMc=;
+        b=pY2JIEms9DPOWsDJvMa0FSgmu23FnWc0SfxYil89S+mIEBJu1D/DMoxQTeGAQYT3Jl
+         smJonuimTIVuVSAnZyTAdtyms777R2bT97hqFU+Cs9rz3hUP6wmXC09GqDc+MF7bPBeD
+         PoCgkUxjppDWhS2KkNLQ82BYMIQCcoJWpt5iJp8E5AJezGCr1fIAakY6Rzgg567snaxW
+         C6FX8rVXLWiCGTjOa2Te5jAhoB1YDiGcaFhTBTDU+ODt3C0M/HHGaKfpiENu5lYxu257
+         S7PtVxru9Y8ks7pq+5Di6iYYYOVoAUWMzHjwhpla0velAsOS0NetwuYeL8Kcl+VY6z3s
+         ak5Q==
+X-Gm-Message-State: AJIora+4eC/CmUWWCWAiH4VZuzXkyySeVmjXrPVf/89BQCG+hsOC482C
+        SD6xZRbGfzs3lj/plkawHHSP6A==
+X-Google-Smtp-Source: AGRyM1uhQtTW+avKSN5jUGIq6mcVEY1qRBqoklhRM83omd0hzACr022PZjwQmuGaEroG4miRaEvDNw==
+X-Received: by 2002:a17:907:3f84:b0:724:2ec:b474 with SMTP id hr4-20020a1709073f8400b0072402ecb474mr5759117ejc.644.1656196073984;
+        Sat, 25 Jun 2022 15:27:53 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id p5-20020aa7c4c5000000b004376bc57de5sm2083254edr.84.2022.06.25.15.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jun 2022 15:27:53 -0700 (PDT)
+Date:   Sun, 26 Jun 2022 00:27:51 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Daniel Vetter <daniel@ffwll.ch>, linux-fbdev@vger.kernel.org,
+        daniel.vetter@ffwll.ch, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 1/4] fbcon: Disallow setting font bigger than screen
+ size
+Message-ID: <YreL5+HQdicqwfcj@phenom.ffwll.local>
+References: <20220625122502.68095-1-deller@gmx.de>
+ <20220625122502.68095-2-deller@gmx.de>
+ <YrcDgjpgeqSZtSOE@phenom.ffwll.local>
+ <feee43e4-fad3-b8c8-852b-ab85804416b6@gmx.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gquswi0ApXZgSzlnh0iSNH95/VhiqmO6Gpcab5NAlqj7elPx4BP
- 5nXyjBNb59rvWQXoL8RIoB0B4Wj0EZjaDAsKRb8lVYPTApEn2Nf3wLtjBlS8VXkSAUa0QN+
- DKrleacuIaruWpsW3dqzyAsKx1BwOAfLVpeRPFwcbux0XPW73AfNO6NJKpoudSOZ2Zl6BnM
- xfjzEdYLN2KUDUzitUrMg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:b1zdCS+WlXY=:6CtS0Iew/H9ZY79ULxuL9V
- /5W25kw/OB9HWWV+3uhaMFScvM6NigKE4fzwyE/uIYrVHwwCbvJMwHac1DC4LFpu0PJGK39h+
- 8uWhhBTklv9OFVWXCCJKOH5nWyY+HD7lbVLlctzHyt0GgDcD9exaD72seoAM8d25Dy+A7nmnx
- 3blO6ls4hqBGiCohVh6sHZ/HLcnwQTvA2dt0KjNjhDuWNlrG4Z7IQoUm6rfvgtxuUASxbhLNh
- +nhSmkrbDPBwTi2joO2Q+Wl8T1nZfoDlUD7+TO1iEu2zMXfEJn9yrNnfBnV0lM1I3CNnhFxCa
- fLwn9o8HTCZU0gtEslk7jKEBfd+I/+8QS3mp9cFVfOrwfziY7iZvq9c09/vAieeggCwTbO1nx
- ETfilnhirEmDHHxPE7AW0WXn/c4PULCHWiANeE6IEEFHHDfXUxTTnox112lJ49p4/O6YNPmqX
- SmFwEyOQmKW3yfywFGySrA1j9/VlT5CWOyYTqjNQWPNRr8o6NRF/gGO+Piu7aU7IxM4Ngsa6q
- rKQUHzEhEcbjMtaTqwWfDsnSYL4dQTx/WiatpRsCn9jg/G0+gDbHNu3+/sIuo2TdVzrdg25CC
- p2m1zuVeu0sfB52Ufs8kOg/gTYe8BWht7GuxswSi+1e5YGJOWOYVvM/ERlKGMAw6OnTmZbQPN
- EZyIqUxqYfHnpZM0dpTekncrswcNr7bwXZ86vF+qHUVpEfSoSS1IhOkurLzV/3v4RH88ss4s1
- BRTWh3P3Hrbp4qRUCkWyn0uTMO8mQH7TwlPIu6vpcaJQWJryAp4lhRgIF6/jMkwu8JAo4UIlR
- qFtEFeWmdfl5xDrbn6JJWW2HjNfssAD2LV2ImH/SlxWi4SoWlrk8j6p6bJ6UB2hDngyoPVQLs
- vjulhUa6MIktxI8qxIm04JG1X8ZqWSCPwI4AYnguZPv18r0HmJqCwDvuuDdvRDqy8bX71kZnt
- BItz6Rurl6p31SYNAx3fz+YeeODOc4UCYCB6gGG1JdvHS9qdJDLQWjrUaUZq+lAh3CbHKAmfs
- Ef1UKTilCR1uFRQFX3qHgEb9TJUeRAb2GlwBeStAd9drESk5vERCQbb9JlYqKEz75sOzBCagK
- 4Y4WQIXQ+NKcGhKlfFKtZux44CkRpUch4hn0cHzaG2JUWhL83e7I9mnFA==
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <feee43e4-fad3-b8c8-852b-ab85804416b6@gmx.de>
+X-Operating-System: Linux phenom 5.10.0-8-amd64 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,35 +72,71 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Prevent that drivers or the user sets the virtual screen resolution
-smaller than the physical screen resolution.  This is important, because
-otherwise we may get accesses outside of the graphics memory area.
+On Sat, Jun 25, 2022 at 04:53:25PM +0200, Helge Deller wrote:
+> On 6/25/22 14:45, Daniel Vetter wrote:
+> > On Sat, Jun 25, 2022 at 02:24:59PM +0200, Helge Deller wrote:
+> >> Prevent that users set a font size which is bigger than the physical screen.
+> >> It's unlikely this may happen (because screens are usually much larger than the
+> >> fonts and each font char is limited to 32x32 pixels), but it may happen on
+> >> smaller screens/LCD displays.
+> >>
+> >> Signed-off-by: Helge Deller <deller@gmx.de>
+> >> Cc: stable@vger.kernel.org # v4.14+
+> >> ---
+> >>  drivers/video/fbdev/core/fbcon.c | 5 +++++
+> >>  1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> >> index c4e91715ef00..e162d5e753e5 100644
+> >> --- a/drivers/video/fbdev/core/fbcon.c
+> >> +++ b/drivers/video/fbdev/core/fbcon.c
+> >> @@ -2469,6 +2469,11 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
+> >>  	if (charcount != 256 && charcount != 512)
+> >>  		return -EINVAL;
+> >>
+> >> +	/* font bigger than screen resolution ? */
+> >> +	if (font->width  > FBCON_SWAP(info->var.rotate, info->var.xres, info->var.yres) ||
+> >> +	    font->height > FBCON_SWAP(info->var.rotate, info->var.yres, info->var.xres))
+> >> +		return -EINVAL;
+> >
+> > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> 
+> Thanks!
+> 
+> > Maybe as a safety follow up patch, we have a few copies of the below:
+> >
+> > 	cols = FBCON_SWAP(ops->rotate, info->var.xres, info->var.yres);
+> > 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+> > 	cols /= vc->vc_font.width;
+> > 	rows /= vc->vc_font.height;
+> >
+> > Might be good to extract that into a helper and also add
+> >
+> > 	WARN_ON(!cols);
+> > 	WARN_ON(!rows);
+> 
+> That's not needed then.
+> The checks I added above will ensure that cols and rows are both greater than 0.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.4+
-=2D--
- drivers/video/fbdev/core/fbmem.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Yeah I reviewed it too, but I don't trust review all over the place.
+Especially with something like fbcon with entry points from everywhere.
+-Daniel
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/f=
-bmem.c
-index 160389365a36..b6e1d0f2b974 100644
-=2D-- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1006,6 +1006,12 @@ fb_set_var(struct fb_info *info, struct fb_var_scre=
-eninfo *var)
- 	if (var->xres < 8 || var->yres < 8)
- 		return -EINVAL;
+> > to make sure we really didn't screw this up and give syzkaller et all an
+> > easier time finding bugs - it doesn't need to discover the full exploit,
+> > only needs to get to this here.
+> >
+> > Also maybe even check that cols/rows is within reasons, like smaller than
+> > BIT(24) or so (so that we have a bunch of headroom for overflows).
+> 
+> Not needed either.
+> cols and rows is the screen size divided by an value between 1-32 (the max
+> font size). So, since screen size is already the higest limit, cols&rows
+> will always be smaller than screen size (and > 0).
+> 
+> Helge
 
-+	/* make sure virtual resolution >=3D physical resolution */
-+	if (var->xres_virtual < var->xres)
-+		return -EINVAL;
-+	if (var->yres_virtual < var->yres)
-+		return -EINVAL;
-+
- 	/* Too huge resolution causes multiplication overflow. */
- 	if (check_mul_overflow(var->xres, var->yres, &unused) ||
- 	    check_mul_overflow(var->xres_virtual, var->yres_virtual, &unused))
-=2D-
-2.35.3
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
