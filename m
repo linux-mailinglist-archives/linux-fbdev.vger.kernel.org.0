@@ -2,91 +2,54 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA1A55D455
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jun 2022 15:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2DB55D2D8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jun 2022 15:11:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239224AbiF0Q2V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 27 Jun 2022 12:28:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58054 "EHLO
+        id S243674AbiF1CVJ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 27 Jun 2022 22:21:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239230AbiF0Q2R (ORCPT
+        with ESMTP id S243563AbiF1CUb (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 27 Jun 2022 12:28:17 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DFCAB4BE
-        for <linux-fbdev@vger.kernel.org>; Mon, 27 Jun 2022 09:28:13 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id b26so1439350wrc.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 27 Jun 2022 09:28:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=RFbscGfZ1HvqkolFfPgOHxRAqCYKsO6AGhI1CWcF3U0=;
-        b=QL9P5fYJiAGJ0cVberqQxZgecUlCyO035Rs/RHERScTvlSGjFZWJwcJ83NKx7icnCf
-         MmmkqeK7/MKYHkhThvS+4I5n6eilA1iv0cTdd1jM4UXHDDaaVEXvSnXIRzJWnCUCUcUi
-         hfbpR0k3AwYuP7wFzDx1Qb4iWIpTN9nBpMOsMz5YzOvQfMZ+aNGdk1BwqtUaNtHKCBDC
-         fA9t5x0TJ4kWUQmeUPz8VsbAvV+0a4AUoZiJIyO7qENghiYMyKTM8whwQHTooEBVZnfa
-         hv7NO7jkwT4JYF/WPaOvNMBn/r4c0lJo2uE2cyoUPVH1HBvXxtPYqUUryaiaIppTOHk7
-         Xteg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=RFbscGfZ1HvqkolFfPgOHxRAqCYKsO6AGhI1CWcF3U0=;
-        b=77nOHoklfhilsAPtN2EmgXd9kpafYzwUn+TfE/6/jVSgBAu22HBktM8z0XSpm3vToA
-         nGVOWkrCstDjzE2oAEHEpZHcy6bPz2OxhjmKYpxsoq6CFa+gugooMjmhyd0gT0uauCTm
-         MTXhGHzripcWUZl9HQBDcc8YBT8L2TDi00ypMkgNjecxAlYpqNI8iPzk7EzeO74joxNa
-         joyjZV3r4wmlbYjwH6IDqZcrYuQt5hOSibFNFOGPwbAZysR2BVgeemfIMtn/VKTdrdpz
-         e5NkTHA9YyxaZMUO4L9WLYWg9exw/ULEXzBp7OpMEOHTZBA8KeQEgxqztK0EyN1pkVsc
-         9q9Q==
-X-Gm-Message-State: AJIora/Nur6JT/pxkC2D9qcX/XQNeLM5I7HxZE1EcOFFsWNeMrUU2Tg9
-        8OJsNH+Ba5UGcl73xazw00Yp9A==
-X-Google-Smtp-Source: AGRyM1tWghCzrhvaQKuNnG4CtD67zaV7MVCuo84J73jDL9LXJFGuDL/uN51RLsUeyYqHqBL/FNulUA==
-X-Received: by 2002:a5d:5966:0:b0:21b:80b5:ecc3 with SMTP id e38-20020a5d5966000000b0021b80b5ecc3mr12930472wri.130.1656347292409;
-        Mon, 27 Jun 2022 09:28:12 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id m17-20020adfe0d1000000b0021b866397a7sm11132854wri.1.2022.06.27.09.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jun 2022 09:28:12 -0700 (PDT)
-Date:   Mon, 27 Jun 2022 17:28:09 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>,
-        ChiYuan Huang <cy_huang@richtek.com>
-Subject: Re: [PATCH v2 08/15] mfd: mt6370: Add Mediatek MT6370 support
-Message-ID: <YrnamaUx236MsNQa@google.com>
-References: <20220613111146.25221-1-peterwu.pub@gmail.com>
- <20220613111146.25221-9-peterwu.pub@gmail.com>
- <Yqph8jwHU8rPooJA@google.com>
- <CABtFH5KLVQFYOBGZ--9+s4GrHXbsDao-yL-KCFwL3FD_kbNhjg@mail.gmail.com>
- <Yrm7NTID16g8gM5t@google.com>
- <CABtFH5L7B_kEvG5E2Um5EANEScJPTfQthyLNfCbvoHq_YDpXxQ@mail.gmail.com>
+        Mon, 27 Jun 2022 22:20:31 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EE424BC2;
+        Mon, 27 Jun 2022 19:20:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 542CFB81C12;
+        Tue, 28 Jun 2022 02:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE655C341CA;
+        Tue, 28 Jun 2022 02:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656382807;
+        bh=IUT6pKmVPJ2q3phpRNPVddGlPUiUqgs/H5gsyFOvhSY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=tXsx3J9Yvnl1CnZCy4mloqKO0HIFVE1tjILSzmNuJY0kSs2zkRwCF1IplQ0mmSt7o
+         gWGzjylXeK3sKNqZe12tqikEE+uULHSFrICgf3LgvF+M9kh8eyfLGA7qwRAfCeGXNd
+         7/oQmg+Aj3hYBHqX5zJ03jAZm8md3KjMkbFhUcWY7ECI2NnHgdP1reodBN3vEaXcJe
+         Z9n3MMQrn0nrYWZUACTwJk48u9CZo7gaS4tz8CaGuE1mVV3Kw2rSnQJoNCoZi5Uhmd
+         VH+VPjw/eQo4xJAghIdBl/dK4Usl0vpc6Xj14ge+xDmx3FqyVFL202KIw/zSZzBv7Z
+         nXw0jRiNEJ1qQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Xiang wangx <wangxiang@cdjrlc.com>, Helge Deller <deller@gmx.de>,
+        Sasha Levin <sashal@kernel.org>, daniel.vetter@ffwll.ch,
+        cssk@net-c.es, tzimmermann@suse.de, bhelgaas@google.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.18 30/53] video: fbdev: skeletonfb: Fix syntax errors in comments
+Date:   Mon, 27 Jun 2022 22:18:16 -0400
+Message-Id: <20220628021839.594423-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220628021839.594423-1-sashal@kernel.org>
+References: <20220628021839.594423-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABtFH5L7B_kEvG5E2Um5EANEScJPTfQthyLNfCbvoHq_YDpXxQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -95,41 +58,32 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-[...]
+From: Xiang wangx <wangxiang@cdjrlc.com>
 
-> > > > > +#define MT6370_IRQ_DSV_VPOS_OCP              124
-> > > > > +#define MT6370_IRQ_DSV_BST_OCP               125
-> > > > > +#define MT6370_IRQ_DSV_VNEG_SCP              126
-> > > > > +#define MT6370_IRQ_DSV_VPOS_SCP              127
-> > > > > +
-> > > > > +struct mt6370_info {
-> > > > > +     struct i2c_client *i2c[MT6370_MAX_I2C];
-> > > > > +     struct device *dev;
-> > > > > +     struct regmap *regmap;
-> > > > > +     struct regmap_irq_chip_data *irq_data;
-> > > > > +};
-> > > >
-> > > > Can we shove all of the above into a header file?
-> > >
-> > > Well... In Patch v1, we put these "#define IRQ" into
-> > > "include/dt-bindings/mfd/mediatek,mt6370.h".
-> > > But the reviewer of DT files hoped us to remove this header file, we
-> > > put these "#define IRQ" in this .c file.
-> > > Shall we leave them here or put them into the header file in
-> > > "driver/power/supply/mt6370-charger.h"?
-> >
-> > Where are they used?
-> 
-> Sorry, I wrote the wrong path last time...
-> What I should say last time was to put them into the header file into
-> "driver/mfd/mt6370.h"
-> These "#define IRQ" are just used in "driver/mfd/mt6370.c"
-> I’m really sorry for making this mistake...
+[ Upstream commit fc378794a2f7a19cf26010dc33b89ba608d4c70f ]
 
-Yes, that would be fine.
+Delete the redundant word 'its'.
 
+Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/skeletonfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/skeletonfb.c b/drivers/video/fbdev/skeletonfb.c
+index bcacfb6934fa..3d4d78362ede 100644
+--- a/drivers/video/fbdev/skeletonfb.c
++++ b/drivers/video/fbdev/skeletonfb.c
+@@ -96,7 +96,7 @@ static const struct fb_fix_screeninfo xxxfb_fix = {
+ 
+     /*
+      * 	Modern graphical hardware not only supports pipelines but some 
+-     *  also support multiple monitors where each display can have its  
++     *  also support multiple monitors where each display can have
+      *  its own unique data. In this case each display could be  
+      *  represented by a separate framebuffer device thus a separate 
+      *  struct fb_info. Now the struct xxx_par represents the graphics
 -- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.35.1
+
