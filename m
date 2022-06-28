@@ -2,122 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 760AF55CEDF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jun 2022 15:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9DE455C5DD
+	for <lists+linux-fbdev@lfdr.de>; Tue, 28 Jun 2022 14:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343899AbiF1IkS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 28 Jun 2022 04:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34732 "EHLO
+        id S1345324AbiF1LHO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 28 Jun 2022 07:07:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbiF1IkN (ORCPT
+        with ESMTP id S1345302AbiF1LHM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 28 Jun 2022 04:40:13 -0400
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D640275D9
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jun 2022 01:40:13 -0700 (PDT)
-Received: by mail-qv1-f44.google.com with SMTP id i17so18913396qvo.13
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jun 2022 01:40:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2YpN+xGTRMUaw3KBiJiQ1vTuL3RZYxt01a0NoSjORfw=;
-        b=Bag+a5H8fidHptI9CF+vpPhiA39nI3ghtM6o8kpR4g15BuPmItqeLl6qYmA/Qo/Tek
-         vHdzCa7zbDFxaHcJqbOy4VpOept/gGm60yrx78VsHDG30s2A50WH0ku3CLyUFS49lHYx
-         AgE+Aj8NDc04igqAQ708Iooba53jPTuqP6Ip0frPKjiBP8MAbncOrbltog9tK9yKSYUu
-         td/63gSlE3EDayUesGj3BgFTBuI51AebACqIV/i44M1OQkkbqRfKwfLLpl16S0MffGgm
-         gDEiizM12EXku1jvmYjJfmBHo2lsJ7xSQV/pzgOhAPcC8Ta4oxBRHr5Bhm5UzvzKJqTc
-         lnrw==
-X-Gm-Message-State: AJIora8Q1zJbLCCLpbf/zo74d4/90ZxMBvp7fyYr7YxfVYrBrN/MYTpf
-        vc8+B3dxm73gWkci6oMMnPy8RjkSAQR9Gg==
-X-Google-Smtp-Source: AGRyM1v5/L02rI4CB0SntlnYUlXyipT84tCyyCvGz0ORa3NdA6DBlJOSce989IuiUFuRY6y2IiNAHQ==
-X-Received: by 2002:ad4:4305:0:b0:470:4058:4fc9 with SMTP id c5-20020ad44305000000b0047040584fc9mr2650418qvs.94.1656405612289;
-        Tue, 28 Jun 2022 01:40:12 -0700 (PDT)
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
-        by smtp.gmail.com with ESMTPSA id t14-20020a05620a004e00b006a6d20386f6sm9882620qkt.42.2022.06.28.01.40.11
-        for <linux-fbdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jun 2022 01:40:12 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id i15so21100229ybp.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 28 Jun 2022 01:40:11 -0700 (PDT)
-X-Received: by 2002:a5b:6c1:0:b0:669:a7c3:4c33 with SMTP id
- r1-20020a5b06c1000000b00669a7c34c33mr18412036ybq.543.1656405611671; Tue, 28
- Jun 2022 01:40:11 -0700 (PDT)
+        Tue, 28 Jun 2022 07:07:12 -0400
+X-Greylist: delayed 3635 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 28 Jun 2022 04:06:59 PDT
+Received: from www2055.sakura.ne.jp (www2055.sakura.ne.jp [59.106.171.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265E831933;
+        Tue, 28 Jun 2022 04:06:58 -0700 (PDT)
+Received: from fsav315.sakura.ne.jp (fsav315.sakura.ne.jp [153.120.85.146])
+        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25S97Gs4026639;
+        Tue, 28 Jun 2022 18:07:16 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Received: from www2055.sakura.ne.jp (59.106.171.65)
+ by fsav315.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav315.sakura.ne.jp);
+ Tue, 28 Jun 2022 18:07:16 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav315.sakura.ne.jp)
+Received: from www2055.sakura.ne.jp (localhost [127.0.0.1])
+        by www2055.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 25S97Dso026581;
+        Tue, 28 Jun 2022 18:07:16 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Received: (from kkden@localhost)
+        by www2055.sakura.ne.jp (8.15.2/8.15.2/Submit) id 25S97DN6026577;
+        Tue, 28 Jun 2022 18:07:13 +0900 (JST)
+        (envelope-from 1955@kkden.co.jp)
+Message-Id: <202206280907.25S97DN6026577@www2055.sakura.ne.jp>
+X-Authentication-Warning: www2055.sakura.ne.jp: kkden set sender to 1955@kkden.co.jp using -f
+Subject: THIS IS VERY CONFIDENTIAL
+From:   Steve Dibenedetto <1955@kkden.co.jp>
+To:     stevedibenedetto17@gmail.com
 MIME-Version: 1.0
-References: <20220626102853.124108-1-deller@gmx.de> <20220626102853.124108-4-deller@gmx.de>
-In-Reply-To: <20220626102853.124108-4-deller@gmx.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 28 Jun 2022 10:39:59 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV5zLoQWi2qd9HpP65WEvCw_q3VTsZ0MnBV1t8xM7KFUw@mail.gmail.com>
-Message-ID: <CAMuHMdV5zLoQWi2qd9HpP65WEvCw_q3VTsZ0MnBV1t8xM7KFUw@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] fbcon: Prevent that screen size is smaller than
- font size
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Date:   Tue, 28 Jun 2022 18:07:13 +0900
+Content-Type: text/plain; charset="ISO-2022-JP"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Helge,
 
-On Sun, Jun 26, 2022 at 12:33 PM Helge Deller <deller@gmx.de> wrote:
-> We need to prevent that users configure a screen size which is smaller than the
-> currently selected font size. Otherwise rendering chars on the screen will
-> access memory outside the graphics memory region.
->
-> This patch adds a new function fbcon_modechange_possible() which
-> implements this check and which later may be extended with other checks
-> if necessary.  The new function is called from the FBIOPUT_VSCREENINFO
-> ioctl handler in fbmem.c, which will return -EINVAL if userspace asked
-> for a too small screen size.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Cc: stable@vger.kernel.org # v5.4+
+Hello,
 
-Thanks for your patch, which is now commit f0b6a66d33ca6e7e ("fbcon:
-Prevent that screen size is smaller than font size") in fbdev/for-next
+My name is Steve Dibenedetto.
+I apologize to have contacted you this way without a direct relationship. There is an opportunity to collaborate with me in the sourcing of some materials needed by our company for production of the different medicines we are researching.
 
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
+I'm aware that this might be totally outside your professional specialization, but it will be a great source for generating extra revenue. I  discovered a manufacturer who can supply us at a lower rate than our company's previous purchases.
+I will give you more specific details when/if I receive feedback from you showing interest.
 
-> --- a/drivers/video/fbdev/core/fbmem.c
-> +++ b/drivers/video/fbdev/core/fbmem.c
-> @@ -1112,7 +1112,9 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
->                         return -EFAULT;
->                 console_lock();
->                 lock_fb_info(info);
-> -               ret = fb_set_var(info, &var);
-> +               ret = fbcon_modechange_possible(info, &var);
-
-Again, this should be done (if done at all) after the call to
-fb_ops.check_var(), as it breaks the FBIOPUT_VSCREENINFO rounding rule.
-
-What if the user just wants to display graphics, not text?
-Can't the text console be disabled instead?
-
-> +               if (!ret)
-> +                       ret = fb_set_var(info, &var);
->                 if (!ret)
->                         fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
->                 unlock_fb_info(info);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Warm Regards  
+Steve Dibenedetto
+Production & Control Manager,
+Green Field Laboratories
+Gothic House, Barker Gate,
+Nottingham, NG1 1JU,
+United Kingdom.
