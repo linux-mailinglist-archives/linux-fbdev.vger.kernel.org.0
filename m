@@ -2,97 +2,151 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD82560AC6
-	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jun 2022 22:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2297560AE3
+	for <lists+linux-fbdev@lfdr.de>; Wed, 29 Jun 2022 22:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229776AbiF2UAf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 29 Jun 2022 16:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
+        id S229966AbiF2UGN (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 29 Jun 2022 16:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230041AbiF2UAe (ORCPT
+        with ESMTP id S229714AbiF2UGM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 29 Jun 2022 16:00:34 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D296546
-        for <linux-fbdev@vger.kernel.org>; Wed, 29 Jun 2022 13:00:31 -0700 (PDT)
+        Wed, 29 Jun 2022 16:06:12 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43FCD35869
+        for <linux-fbdev@vger.kernel.org>; Wed, 29 Jun 2022 13:06:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1656532826;
-        bh=SsyOzrNfen9QSl5eCWj5qx7UuBmcX7tHqF8EIXkCPfU=;
-        h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
-        b=LP7HwpA51b8s2igA9tMKOyKG8KqBnTH0Q7KftF6+TBpjZNmspwqSdJgltRQ0hojSb
-         OSfJHX0e5BMMfSJFDJc0CBS9yHy7ly9mW5l1Zpip7Hruxy+yGpvS8K+rfZWdadeJoU
-         B5yNNP9ME60L3jtVBfDaiBiIAKHUc3JpAezkr3Pk=
+        s=badeba3b8450; t=1656533165;
+        bh=9MAVZ3xrTPh8AYx1aq2x2X7367U1zqasYfzFWVMUtK4=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=KMPHyOD8tPgLLDm6yc5kKly2pyRprbjItGEmRId2BPpuNSwXFP2gkZBsybTRcu+9R
+         oCjm1iPojT1j/vwPcUV3dse7v1gZehTc7WxmaLuotSqcEEtHNhT9P7HAA9fT4Eh1Jp
+         9mRTbD6li/tlCyiBiPojRYjw//jrEImNLpVvaJTE=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from p100.fritz.box ([92.116.135.51]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M9nxn-1o1Qey3tHp-005tdD; Wed, 29
- Jun 2022 22:00:25 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     daniel.vetter@ffwll.ch, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, geert@linux-m68k.org
-Subject: [PATCH 5/5] fbcon: Use fbcon_info_from_console() in fbcon_modechange_possible()
-Date:   Wed, 29 Jun 2022 22:00:24 +0200
-Message-Id: <20220629200024.187187-6-deller@gmx.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20220629200024.187187-1-deller@gmx.de>
-References: <20220629200024.187187-1-deller@gmx.de>
+Received: from [192.168.20.60] ([92.116.135.51]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4QwW-1nfb8V0T5y-011OCV; Wed, 29
+ Jun 2022 22:06:05 +0200
+Message-ID: <e0224c85-dc03-ad8f-85e7-51325899ac38@gmx.de>
+Date:   Wed, 29 Jun 2022 22:05:36 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v6 3/4] fbcon: Prevent that screen size is smaller than
+ font size
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>
+References: <20220626102853.124108-1-deller@gmx.de>
+ <20220626102853.124108-4-deller@gmx.de>
+ <CAMuHMdV5zLoQWi2qd9HpP65WEvCw_q3VTsZ0MnBV1t8xM7KFUw@mail.gmail.com>
+ <f3b01426-1cd4-40b9-7dd7-0965c4c0611c@gmx.de>
+ <CAMuHMdUz1OMe+opM2b=XyYpQc4ynCyamXGFTjkbnzMr3wFvb8g@mail.gmail.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <CAMuHMdUz1OMe+opM2b=XyYpQc4ynCyamXGFTjkbnzMr3wFvb8g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qgR2YkR2U9Hhrf/Lb7ITElH+EopY19iZaEZNkKj6yg28vpgyZcx
- ZhYKieMegQ3Hkll49prgqNn1NspvOL5cUPuEPohg8mSjzXc/VrbhOymGhxjzKZMs2rFcc1U
- Gc3E6usfmCgAArUCYk5N6m5a+HZ3BR8XtZxqhYegY4mxJE5nTpgDcNNnuraDLbdDWf9SeA2
- K2b0Om1l8JENDF0XbyliQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gwVllAQRozg=:O4QIxmyOqHYKduFMAQwiJL
- fo328kdPr3uZzgORGAMWIqPNE/3yrQwom1yaQ/AkANObRb70Q3+Rhke+H+fPdYKi6gZjSbhcQ
- GihsOUAmAMPUqf8EStIlXc1q9oHkMDo7PT8XyRjQAou2/zOEgpcU0Y88zWXfd/3aA+G+KpT8M
- kPGJX6pzP+ADKroB51givNh+XAWtt9QkGO/FyitngqfJNVZ+YVL4cwJrfldLDUIdspJibzMkg
- oD0hBrWeM0m/rtkyaj46Bic1OrCxdIeaJT0IxqG+v8EZ86BsMz9HsJ0lKbwV4Rfh1j9/fHIU7
- hSgFmn1y+a7f0PMYKKgH9+6TlB36ycqKii+xhXOcbk3XNFmQ1keNAXXwPzh8h/lE+h9moNTG8
- 8im/BVkJYwTd8UFvA6CBAMP8o62uv394wkWEuHNv3A1Air4QSXWNi00JEYYI+PMHv3jPjNoG5
- 3YuzsOaTqT1NKW77uAzcaxbXO3ML+hbWfiIwNoweLfkGXgSwEnNEMnll9i+XgNSLXeeCuwIqV
- 2hg5PPT3RRsWHE11x77ReYEqD6WeP+E3ShFajsj9f4muBg14jytaSmmlLe2x8CYJ2sGIB92cS
- 7d+Syz55gcOW1VdN/6ZAMqv6qC60Na04BavlQEIIbenfWyzsJTiVoo+kO0XfynIkuTvtELsZt
- Ypjl366A3IZmZH+YEpqESUlalfOn1RK5n4lZRX8P2nrtuOHq5Da6ApskIJKd2QEFEYO6z69Nv
- +4r+4WkuvcVNdL0F6fEtrl0VqdGlGw/TkCrbPoivrnSaJPQtVPc5CLtuodAlWs6+jGp8gpRTq
- 4a8Ya5msCHxo4lzKd8MTTxuwHqw4w1GT5VlvSk4eGrQMHAJhE1SWcXusj/OzLXz0VVj0BVc8b
- S/fJr7acf3rEy54OvXghQxMPWHSVxbdMkOjQapwto7NMxPQSkB5esu39KrgKQY/6dXGvLzJNn
- KrGkXFNnpWUWWO8yDdkcT1ZBwAG9PxarRodh0rLJRA4cFZ6yBYYzlwLHaiyrcB5S4GUPKB779
- E+woaROme9z7Z+X/8UoTHlkJbyM0ZO0QkNZrY05eeBn/onVwQYB3PX/H3ZLoOy1ZjnQqGvyVO
- JL9j7z/nY2c44ntPRET6Rax5iLuc/mK1N1HpQia3bQTqD+n7sDGlkALAw==
+X-Provags-ID: V03:K1:CWqgo1+Ci9R/2f4bBXRRQjPy772oMPSOIaQ5xRgV9H3VneZh9eI
+ ptHcT7GGl7y/SOAwiixJ51bzsGS/Rf+p3ckFp6Vilkk4rbQLuApJdbBnzGd8OmlFSE8UmSm
+ jMyQBggULXMQ1y3Uebcn2QN81RySZKC7PdYCnMRVaHy7CBUfRFNwvu9B6eCZSCU7FRauCIQ
+ iiYcTIkn3uBP+70Z3W+xw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lALLXqdfIiY=:u2lIIo0e/zXabzUSq0N5hx
+ rh6vN7c0nvOQpkNfADI/Az5bdKE0ucs5tYPxmR5JrMEm6D1uQh8j7cMFaHvm8F2z5FPAwYrx6
+ dW8kxOs8aBnpDtiD1vEa6CNJRNLtBAEm0NEKflVTUEV++jojZHJl1j85ZTrqMethOoVHYouJg
+ fZbDmgGb2xFRv+1BWogpXXlmqorEIBFto5PfOY73viz46AJUkn+sEnF/2AXKdULax8dr+BV0A
+ knLl1FRAu+2Chjffx3Phv6cYf76i7gMhYDq/XqBWjrrngbpHHo40YEyD0+A2kC9mZiS5+cMrR
+ rd+1H6xiwtDSWyj5uS893D6jfLe0eFo8CG98gvN4BEUcQG7DwJj0ad/vzj30ReEhV6PjBKXMo
+ YEr8O+pt8iNHB2YMB56L+6wGRH03Smq+JhxzHzz/bFQYNo6jz92Kk9wThqs9KbVBNJPhgymDt
+ aVwa+ikTZbRl+ZmBsI/CFaAXHb4T0R/QkmgJERngvG/zARdjhzz1FdCX4e4K0zi2T3FUxEFj7
+ sOfU9UGFKCKqXO/PNCjqgSjARoXAlHkbK9dg7uvrskQgRS7MSxux+3BQAlvIS5ft4Dmy1pLVb
+ IIeM5CHYT5g8BEMOBifY/Ueehqh4wyvT+rNhSFpaGIEE93Mj4PRvyS85k0Ava29PU20gNcQPh
+ zlwngUqgaohEaBmZlXNaeEoM3guAguDEcu2yVf6HGbCzKYo076elfZxWIXUkJslTvfN6Az25u
+ AWY4PhI0Th58m9ytMrPXv8ELOPpEH14LFB/zqFXCaDbIbwNElaRPBtZkxfoTeiL3ka8p0pod7
+ hqcHL+SAUB6T8s5G51d9jtIov3T0lKEkwiViKVI7zdkg3UvOpWBhvItPp/ZaKoG2sDY7d2zPT
+ 13YOfpPh2dckyrO3Waf5EK0nrFvNavqNWCnYd1s9VJc48buPmr0gVZSQ/XoQLVKipcKDvS7xj
+ o1vTzsOVf02amTmic0nR8kG2oyRul+M/juYgv8HtzuIVAn7us/kmxHTCK+36XVn3JtCSDpT23
+ dM/v0Ure7YbQ6GB5EGzH5rTtpFcDoByWGyFbgYsbcLMc6qByLYJ1jPyL+rmjxxMfkpBdIdiRH
+ PiF7pHxslipHwBVZ/U2QsnzRso4b7ToBOsdGSpVRWqbtbI8sLBn3Rb3UA==
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Use the fbcon_info_from_console() wrapper which was added to kernel
-v5.19 with commit 409d6c95f9c6 ("fbcon: Introduce wrapper for console->fb_=
-info lookup").
+On 6/29/22 09:03, Geert Uytterhoeven wrote:
+> Hi Helge,
+>
+> On Tue, Jun 28, 2022 at 10:52 PM Helge Deller <deller@gmx.de> wrote:
+>> On 6/28/22 10:39, Geert Uytterhoeven wrote:
+>>> On Sun, Jun 26, 2022 at 12:33 PM Helge Deller <deller@gmx.de> wrote:
+>>>> We need to prevent that users configure a screen size which is smalle=
+r than the
+>>>> currently selected font size. Otherwise rendering chars on the screen=
+ will
+>>>> access memory outside the graphics memory region.
+>>>>
+>>>> This patch adds a new function fbcon_modechange_possible() which
+>>>> implements this check and which later may be extended with other chec=
+ks
+>>>> if necessary.  The new function is called from the FBIOPUT_VSCREENINF=
+O
+>>>> ioctl handler in fbmem.c, which will return -EINVAL if userspace aske=
+d
+>>>> for a too small screen size.
+>>>>
+>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>>> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>>>> Cc: stable@vger.kernel.org # v5.4+
+>>>
+>>> Thanks for your patch, which is now commit f0b6a66d33ca6e7e ("fbcon:
+>>> Prevent that screen size is smaller than font size") in fbdev/for-next
+>
+>>>> --- a/drivers/video/fbdev/core/fbmem.c
+>>>> +++ b/drivers/video/fbdev/core/fbmem.c
+>>>> @@ -1112,7 +1112,9 @@ static long do_fb_ioctl(struct fb_info *info, u=
+nsigned int cmd,
+>>>>                         return -EFAULT;
+>>>>                 console_lock();
+>>>>                 lock_fb_info(info);
+>>>> -               ret =3D fb_set_var(info, &var);
+>>>> +               ret =3D fbcon_modechange_possible(info, &var);
+>>>
+>>> Again, this should be done (if done at all) after the call to
+>>> fb_ops.check_var(), as it breaks the FBIOPUT_VSCREENINFO rounding rule=
+.
+>>>
+>>> What if the user just wants to display graphics, not text?
+>>
+>> Yes, I need to go back to an older version here too and check that
+>> the test is only run on text consoles.
+>> That check was dropped, due feedback that you could switch
+>> back from graphics (e.g. X11) to text console at any time....so the
+>> check for text-only is not correct.
+>>
+>>> Can't the text console be disabled instead?
+>>
+>> I think the solution is to return failure if switching back to text mod=
+e isn't possible if
+>> fonts are bigger than the screen resolution. That will be another patch=
+.
+>
+> Isn't the font a per-VC setting? Hence can't you change resolution,
+> switch to a different VC, and run into this?
+>
+> I think the only real solution is to set the number of text columns
+> and/or rows to zero, and make sure that is handled correctly.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- drivers/video/fbdev/core/fbcon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I agree, there doesn't seem to be a simple solution.
+On the other hand, such usecase seems very unlikely.
+If you have a proposal for a pacth I'd welcome it.
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/f=
-bcon.c
-index 278c065722b7..ec1cfc6c2451 100644
-=2D-- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2752,7 +2752,7 @@ int fbcon_modechange_possible(struct fb_info *info, =
-struct fb_var_screeninfo *va
- 	for (i =3D first_fb_vc; i <=3D last_fb_vc; i++) {
- 		vc =3D vc_cons[i].d;
- 		if (!vc || vc->vc_mode !=3D KD_TEXT ||
--			   registered_fb[con2fb_map[i]] !=3D info)
-+			   fbcon_info_from_console(i) !=3D info)
- 			continue;
+Anyway, I've just sent out a new patch series. It does not include any pat=
+ch
+for this theoretical problem yet.
 
- 		if (vc->vc_font.width  > FBCON_SWAP(var->rotate, var->xres, var->yres) =
-||
-=2D-
-2.35.3
-
+Helge
