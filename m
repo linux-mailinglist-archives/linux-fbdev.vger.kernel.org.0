@@ -2,60 +2,58 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EAD5562325
-	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jun 2022 21:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E07562344
+	for <lists+linux-fbdev@lfdr.de>; Thu, 30 Jun 2022 21:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236823AbiF3Tb1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 30 Jun 2022 15:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
+        id S236491AbiF3ThD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 30 Jun 2022 15:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbiF3Tb0 (ORCPT
+        with ESMTP id S235686AbiF3ThD (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 30 Jun 2022 15:31:26 -0400
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40FFB433B7;
-        Thu, 30 Jun 2022 12:31:25 -0700 (PDT)
-Received: by mail-qv1-f41.google.com with SMTP id y14so689101qvs.10;
-        Thu, 30 Jun 2022 12:31:25 -0700 (PDT)
+        Thu, 30 Jun 2022 15:37:03 -0400
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21A0443AED
+        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jun 2022 12:37:00 -0700 (PDT)
+Received: by mail-qv1-f52.google.com with SMTP id i17so679732qvo.13
+        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jun 2022 12:37:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZgxuFddNswMaFAXw3XokbvDGJHJxBrbwCZoDWZ01t3w=;
-        b=7UB47xqQUvaAzQj8y2rFP9U+E7hXGC/pl60UVOoK12w8O7IAp9VPnVBsTNPAYzGfXy
-         pK1Cy1QLEtk1TT51WOqZN0NmevGHFxGnF5J6SlLH2DHGVSeZIrcXa1ifiLb/ROIj5exY
-         nTgjREyIiphYHDnlaUMH0BM0F6bLA6jwICzRBYY8QoKnXEtXQbcCTFiCdanwCJpcHgZd
-         Ue4mJ20Pkv2OHxYwARUcCo0F0x9HDQJDwdkfjgSEBIegxkKtSPGR6gNq2BXOuKat9D3r
-         wItWcoNql5SgItqVbcEO0XKz0eqUja6Ni2om3ezdwUqv4TyduAylCQS0es9yg5UPZZ6Y
-         7kGg==
-X-Gm-Message-State: AJIora+rNN1je4sm/C8HbJPJ4f0PqcW2ziIUP8GlizDK2XaYjktLJYLz
-        lnzubtlKP+DbdbYAPP7h506Fw4YdYd0pMQ==
-X-Google-Smtp-Source: AGRyM1tjbYoi+H4sY8LKK6TBoRDRGWdbQpaib6CIbSslw/AYG4s8dkrCUfNqY+N5GOQBa/nT19cWNw==
-X-Received: by 2002:a05:6214:3001:b0:46e:762d:e53e with SMTP id ke1-20020a056214300100b0046e762de53emr13185836qvb.125.1656617483944;
-        Thu, 30 Jun 2022 12:31:23 -0700 (PDT)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id o1-20020a05620a2a0100b006a6f68c8a87sm6849385qkp.126.2022.06.30.12.31.22
+        bh=p6c5f2NCl92cN1Bu7KR0c/XkNY03WVgxoY3koBCNk38=;
+        b=hnFvnt5auXbdDw4HDTPaP+fwOF8D7eYobaIw2p49FaDBO0loqjo1d8jUIT/X6SlEqx
+         Ubu0qcJKguVIqAd3LcDo8iOJS5cI0XrkbWcg2valByz6XUOdg1ZK+d0ei+Iqr+6mWeAB
+         9stUJJ68U7gYq8F34SyA5AXs/n3R/5hwrHqQaXfrjR8lQCJHlFY/G79GLwMRWOs/WoME
+         ETeaTUurcKf53rgniMZjYzN7FNsg8sdGMSwowkuQl8QHBCYU3MlEpDIsBN2muXpRUY8W
+         Kkcz4Tp6DQh3dCpuI8hXDHbcazplSE2vVndRPnuqE5lMDq8d0MmdF/mqhK+ya/ndV3BV
+         PPtQ==
+X-Gm-Message-State: AJIora/yxT91OoXEk6AgnFSnNBtHu4/vUp05vXupMk/JHnk4GL3NtpQO
+        5cHW122NrKjtXs3QNm2elHcxBA2DT5VdQQ==
+X-Google-Smtp-Source: AGRyM1uj+Jaq10bN+7GtW7RItfpj4USzuvBixdeod/haTSr8xi4uym8sDcB7V+j199oVHv2AYwQayA==
+X-Received: by 2002:a05:622a:50d:b0:304:f438:c464 with SMTP id l13-20020a05622a050d00b00304f438c464mr9268347qtx.323.1656617818835;
+        Thu, 30 Jun 2022 12:36:58 -0700 (PDT)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com. [209.85.219.182])
+        by smtp.gmail.com with ESMTPSA id n65-20020a37a444000000b006aee8fa79adsm15494348qke.36.2022.06.30.12.36.58
+        for <linux-fbdev@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jun 2022 12:31:23 -0700 (PDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-3178acf2a92so3260657b3.6;
-        Thu, 30 Jun 2022 12:31:22 -0700 (PDT)
-X-Received: by 2002:a81:a092:0:b0:318:5c89:a935 with SMTP id
- x140-20020a81a092000000b003185c89a935mr12869945ywg.383.1656617482577; Thu, 30
- Jun 2022 12:31:22 -0700 (PDT)
+        Thu, 30 Jun 2022 12:36:58 -0700 (PDT)
+Received: by mail-yb1-f182.google.com with SMTP id d5so213701yba.5
+        for <linux-fbdev@vger.kernel.org>; Thu, 30 Jun 2022 12:36:58 -0700 (PDT)
+X-Received: by 2002:a05:6902:120e:b0:634:6f29:6b84 with SMTP id
+ s14-20020a056902120e00b006346f296b84mr11068429ybu.604.1656617818106; Thu, 30
+ Jun 2022 12:36:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220628022657.597208-1-sashal@kernel.org> <20220628022657.597208-8-sashal@kernel.org>
-In-Reply-To: <20220628022657.597208-8-sashal@kernel.org>
+References: <20220629200024.187187-1-deller@gmx.de> <20220629200024.187187-3-deller@gmx.de>
+ <CAMuHMdXJRBywf+h_u1jgA6X7hLSByDDwSkskff47a0BHfd93iA@mail.gmail.com> <0c418b7d-474a-3f93-a1fb-2f13c4d19941@gmx.de>
+In-Reply-To: <0c418b7d-474a-3f93-a1fb-2f13c4d19941@gmx.de>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 30 Jun 2022 21:31:11 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV4xPPGv0U4QZkyA-AT07AjYVGGJdKjpQyZCtAH4hYKWQ@mail.gmail.com>
-Message-ID: <CAMuHMdV4xPPGv0U4QZkyA-AT07AjYVGGJdKjpQyZCtAH4hYKWQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 4.9 08/13] video: fbdev: simplefb: Check before
- clk_put() not needed
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, Yihao Han <hanyihao@vivo.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Helge Deller <deller@gmx.de>,
+Date:   Thu, 30 Jun 2022 21:36:46 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUoMJ6CmiKDh4MW_b-7uoxEF+H6QimsA7SfcE5kjo17vw@mail.gmail.com>
+Message-ID: <CAMuHMdUoMJ6CmiKDh4MW_b-7uoxEF+H6QimsA7SfcE5kjo17vw@mail.gmail.com>
+Subject: Re: [PATCH 2/5] fbcon: Fix up user-provided virtual screen size
+To:     Helge Deller <deller@gmx.de>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         DRI Development <dri-devel@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -69,37 +67,60 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sasha,
+Hi Helge,
 
-On Tue, Jun 28, 2022 at 4:32 AM Sasha Levin <sashal@kernel.org> wrote:
-> From: Yihao Han <hanyihao@vivo.com>
+On Thu, Jun 30, 2022 at 9:31 PM Helge Deller <deller@gmx.de> wrote:
+> On 6/30/22 21:00, Geert Uytterhoeven wrote:
+> > On Wed, Jun 29, 2022 at 10:00 PM Helge Deller <deller@gmx.de> wrote:
+> >> The virtual screen size can't be smaller than the physical screen size.
+> >> Based on the general rule that we round up user-provided input if
+> >> neccessary, adjust the virtual screen size as well if needed.
+> >>
+> >> Signed-off-by: Helge Deller <deller@gmx.de>
+> >> Cc: stable@vger.kernel.org # v5.4+
+> >
+> > Thanks for your patch!
+> >
+> >> --- a/drivers/video/fbdev/core/fbmem.c
+> >> +++ b/drivers/video/fbdev/core/fbmem.c
+> >> @@ -1106,6 +1106,11 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+> >>                         return -EFAULT;
+> >>                 console_lock();
+> >>                 lock_fb_info(info);
+> >> +               /* adjust virtual screen size if user missed it */
+> >> +               if (var.xres_virtual < var.xres)
+> >> +                       var.xres_virtual = var.xres;
+> >> +               if (var.yres_virtual < var.yres)
+> >> +                       var.yres_virtual = var.yres;
+> >>                 ret = fb_set_var(info, &var);
+> >>                 if (!ret)
+> >>                         fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
+> >
+> > Given "[PATCH 4/5] fbmem: Prevent invalid virtual screen sizes in
+> > fb_set_var", I don't think we need this patch.
 >
-> [ Upstream commit 5491424d17bdeb7b7852a59367858251783f8398 ]
+> We do.
+
+Why? It will be caught by [PATCH 4/5].
+
+> > Moreover, this
+> > patch will prevent triggering the WARN_ON()s in [PATCH 4/5]
 >
-> clk_put() already checks the clk ptr using !clk and IS_ERR()
-
-While I think that is true for all clock implementations in v5.19-rc4,
-it is not true for v4.9.320.
-
-> so there is no need to check it again before calling it.
+> Right.
 >
-> Signed-off-by: Yihao Han <hanyihao@vivo.com>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > in the most common buggy case of drivers plainly ignoring var.[xy]res_virtual.
+>
+> In summary:
+> This patch #2 is fixing up user-space invalid input and is not
+> allowed to trigger any WARN_ON().
 
-> --- a/drivers/video/fbdev/simplefb.c
-> +++ b/drivers/video/fbdev/simplefb.c
-> @@ -231,8 +231,7 @@ static int simplefb_clocks_init(struct simplefb_par *par,
->                 if (IS_ERR(clock)) {
->                         if (PTR_ERR(clock) == -EPROBE_DEFER) {
->                                 while (--i >= 0) {
-> -                                       if (par->clks[i])
-> -                                               clk_put(par->clks[i]);
-> +                                       clk_put(par->clks[i]);
->                                 }
->                                 kfree(par->clks);
->                                 return -EPROBE_DEFER;
+It's the responsibility of the driver to at least look at its parameters.
+What other invalid values might it let pass, that we cannot catch
+at the generic level?
+
+> We could drop patch #4, but then we wouldn't catch bad drivers.
+
+I do want to keep patch #4.
 
 Gr{oetje,eeting}s,
 
