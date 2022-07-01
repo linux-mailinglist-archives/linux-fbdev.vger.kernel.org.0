@@ -2,197 +2,147 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93BE0562BC6
-	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Jul 2022 08:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 990E4562C97
+	for <lists+linux-fbdev@lfdr.de>; Fri,  1 Jul 2022 09:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234983AbiGAG2c (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 1 Jul 2022 02:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
+        id S232365AbiGAH2h (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 1 Jul 2022 03:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234193AbiGAG2Y (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Jul 2022 02:28:24 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130EB101D5;
-        Thu, 30 Jun 2022 23:28:19 -0700 (PDT)
-X-UUID: 91811ca6c2924fdea75ffc103b4b6ccc-20220701
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.7,REQID:8404843f-f21f-4704-b6c4-d7094d8f5cf8,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:-5
-X-CID-META: VersionHash:87442a2,CLOUDID:a99b4586-57f0-47ca-ba27-fe8c57fbf305,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 91811ca6c2924fdea75ffc103b4b6ccc-20220701
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <rex-bc.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 903881029; Fri, 01 Jul 2022 14:28:13 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Fri, 1 Jul 2022 14:28:12 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Fri, 1 Jul 2022 14:28:12 +0800
-From:   Bo-Chen Chen <rex-bc.chen@mediatek.com>
-To:     <chunkuang.hu@kernel.org>, <p.zabel@pengutronix.de>,
-        <daniel@ffwll.ch>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
-        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
-        <airlied@linux.ie>
-CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
-        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
-        <angelogioacchino.delregno@collabora.com>, <ck.hu@mediatek.com>,
-        <liangxu.xu@mediatek.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Subject: [PATCH v13 10/10] drm/mediatek: fix no audio when resolution change
-Date:   Fri, 1 Jul 2022 14:28:08 +0800
-Message-ID: <20220701062808.18596-11-rex-bc.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220701062808.18596-1-rex-bc.chen@mediatek.com>
-References: <20220701062808.18596-1-rex-bc.chen@mediatek.com>
+        with ESMTP id S231313AbiGAH2f (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 1 Jul 2022 03:28:35 -0400
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26AB528E0F
+        for <linux-fbdev@vger.kernel.org>; Fri,  1 Jul 2022 00:28:34 -0700 (PDT)
+Received: by mail-qv1-f49.google.com with SMTP id g6so1087979qvt.5
+        for <linux-fbdev@vger.kernel.org>; Fri, 01 Jul 2022 00:28:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ItiQX8JxxOqPGnMxDgw8fRBl9Ocf7hYz3g9osOjYopM=;
+        b=iCrzaerGJM9zJBhJTS2TQEZtEFQ3RBUZ2xBq0gGDF2xkJoFHK8Xa01pqh8CT+HhyXU
+         XJv4A5hkv0mckCBFaVKsBIrKhNvnjnLb+H0WJcMD/x8+puwBAX7Dkm8gdmEfQ3UU6FCn
+         OLIFov0JwdH/zDRn2jI1y5ybAWMpdWyQJMSh56LmSbfY6cjmYGdv7AKWsG++Mp9EXx3Z
+         pGNofUk64lr7wPiV1vDtJTgcK7vVvoZZsOzbytvp4l6Msf0smH5q8sdnaIbHSmq+IPnV
+         79giZ5kBJzEa4/xLjBERGMnpfGLby6vrEQ9Y04w7s4ySGaKotk7141hX1BG9L9DmGIb6
+         1NMA==
+X-Gm-Message-State: AJIora+OhUtueH7M+LrvTVVnrdLcWGDUZy1lD3DpP+xuUQuGxn4qBZOf
+        Fhs/4F98JMZXzOhHV06z6n+uISb64rhSLQ==
+X-Google-Smtp-Source: AGRyM1tkgszaTt//IuTYDjIooA9ZTu1Ow9WyPubaznESUBu4sim+zmXBqyvw/3Y4i2kKtyXmj+ajYQ==
+X-Received: by 2002:ac8:5953:0:b0:317:cfd0:1a72 with SMTP id 19-20020ac85953000000b00317cfd01a72mr11352601qtz.483.1656660513075;
+        Fri, 01 Jul 2022 00:28:33 -0700 (PDT)
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
+        by smtp.gmail.com with ESMTPSA id c3-20020ac84e03000000b00304f55e56e4sm14071006qtw.40.2022.07.01.00.28.32
+        for <linux-fbdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Jul 2022 00:28:32 -0700 (PDT)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-3176b6ed923so15012197b3.11
+        for <linux-fbdev@vger.kernel.org>; Fri, 01 Jul 2022 00:28:32 -0700 (PDT)
+X-Received: by 2002:a81:74c5:0:b0:31b:ca4b:4bc4 with SMTP id
+ p188-20020a8174c5000000b0031bca4b4bc4mr15131919ywc.358.1656660512246; Fri, 01
+ Jul 2022 00:28:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220629200024.187187-1-deller@gmx.de> <20220629200024.187187-3-deller@gmx.de>
+ <CAMuHMdXJRBywf+h_u1jgA6X7hLSByDDwSkskff47a0BHfd93iA@mail.gmail.com>
+ <0c418b7d-474a-3f93-a1fb-2f13c4d19941@gmx.de> <CAMuHMdUoMJ6CmiKDh4MW_b-7uoxEF+H6QimsA7SfcE5kjo17vw@mail.gmail.com>
+ <d57655b2-44d1-4083-c4e9-ef4f004f2b64@gmx.de> <CAMuHMdXk9Kz4-pv7-M9tufj-pruhOZWw_b51fegkr2JSqzL65g@mail.gmail.com>
+ <cae3dc86-8156-eef5-1af4-b16cb2a42849@gmx.de>
+In-Reply-To: <cae3dc86-8156-eef5-1af4-b16cb2a42849@gmx.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 1 Jul 2022 09:28:20 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdViqMgpiB2a-cLt1viVMgGbBz_Q=youNsWdLPYxcXxFpA@mail.gmail.com>
+Message-ID: <CAMuHMdViqMgpiB2a-cLt1viVMgGbBz_Q=youNsWdLPYxcXxFpA@mail.gmail.com>
+Subject: Re: [PATCH 2/5] fbcon: Fix up user-provided virtual screen size
+To:     Helge Deller <deller@gmx.de>
+Cc:     Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        DRI Development <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When switching resolutions, config the audio setting with the
-previous audio parameters.
+Hi Helge,
 
-Signed-off-by: Jitao Shi <jitao.shi@mediatek.com>
-Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
----
- drivers/gpu/drm/mediatek/mtk_dp.c | 54 ++++++++++---------------------
- 1 file changed, 17 insertions(+), 37 deletions(-)
+On Thu, Jun 30, 2022 at 10:10 PM Helge Deller <deller@gmx.de> wrote:
+> On 6/30/22 22:00, Geert Uytterhoeven wrote:
+> > On Thu, Jun 30, 2022 at 9:46 PM Helge Deller <deller@gmx.de> wrote:
+> >> On 6/30/22 21:36, Geert Uytterhoeven wrote:
+> >>> On Thu, Jun 30, 2022 at 9:31 PM Helge Deller <deller@gmx.de> wrote:
+> >>>> On 6/30/22 21:00, Geert Uytterhoeven wrote:
+> >>>>> On Wed, Jun 29, 2022 at 10:00 PM Helge Deller <deller@gmx.de> wrote:
+> >>>>>> The virtual screen size can't be smaller than the physical screen size.
+> >>>>>> Based on the general rule that we round up user-provided input if
+> >>>>>> neccessary, adjust the virtual screen size as well if needed.
+> >>>>>>
+> >>>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+> >>>>>> Cc: stable@vger.kernel.org # v5.4+
+> >>>>>
+> >>>>> Thanks for your patch!
+> >>>>>
+> >>>>>> --- a/drivers/video/fbdev/core/fbmem.c
+> >>>>>> +++ b/drivers/video/fbdev/core/fbmem.c
+> >>>>>> @@ -1106,6 +1106,11 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+> >>>>>>                         return -EFAULT;
+> >>>>>>                 console_lock();
+> >>>>>>                 lock_fb_info(info);
+> >>>>>> +               /* adjust virtual screen size if user missed it */
+> >>>>>> +               if (var.xres_virtual < var.xres)
+> >>>>>> +                       var.xres_virtual = var.xres;
+> >>>>>> +               if (var.yres_virtual < var.yres)
+> >>>>>> +                       var.yres_virtual = var.yres;
+> >>>>>>                 ret = fb_set_var(info, &var);
+> >>>>>>                 if (!ret)
+> >>>>>>                         fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
+> >>>>>
+> >>>>> Given "[PATCH 4/5] fbmem: Prevent invalid virtual screen sizes in
+> >>>>> fb_set_var", I don't think we need this patch.
+> >>>>
+> >>>> We do.
+> >>>
+> >>> Why? It will be caught by [PATCH 4/5].
+> >>
+> >> Right, it will be caught by patch #4.
+> >> But if you drop this part, then everytime a user runs
+> >>         fbset -xres 800 -yres 600 -xvres 200
+> >> users will get the KERNEL BUG WARNING (from patch #4) including
+> >> a kernel backtrace in their syslogs.
+> >
+> > No, they will only see that warning if they are using a broken fbdev
+> > driver that implements .fb_check_var(), but fails to validate or
+> > update the passed geometry.
+>
+> IMHO this argument is mood.
+> That way you put pressure on and need such simple code in
+> each single driver to fix it up, instead of cleaning it up at a central
+> place.
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index f1d800b0c76e..a72631cb1888 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -105,7 +105,7 @@ struct mtk_dp_audio_cfg {
- struct mtk_dp_info {
- 	u32 depth;
- 	enum dp_pixelformat format;
--	struct mtk_dp_audio_cfg audio_caps;
-+	struct mtk_dp_audio_cfg audio_cur_cfg;
- 	struct mtk_dp_timings timings;
- };
- 
-@@ -1879,9 +1879,7 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 						 struct mtk_dp_audio_cfg *cfg)
- {
- 	struct cea_sad *sads;
--	int sad_count;
--	int i;
--	bool ret = false;
-+	int ret;
- 
- 	if (mtk_dp_is_edp(mtk_dp))
- 		return false;
-@@ -1892,36 +1890,16 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 		dev_err(mtk_dp->dev, "EDID not found!\n");
- 		return false;
- 	}
--	sad_count = drm_edid_to_sad(mtk_dp->edid, &sads);
--	mutex_unlock(&mtk_dp->edid_lock);
- 
--	if (sad_count <= 0) {
-+	ret = drm_edid_to_sad(mtk_dp->edid, &sads);
-+	mutex_unlock(&mtk_dp->edid_lock);
-+	if (ret <= 0) {
- 		drm_info(mtk_dp->drm_dev, "The SADs is NULL\n");
- 		return false;
- 	}
--
--	for (i = 0; i < sad_count; i++) {
--		int sample_rate, word_length;
--
--		/* Only PCM supported at the moment */
--		if (sads[i].format != HDMI_AUDIO_CODING_TYPE_PCM)
--			continue;
--
--		sample_rate = drm_cea_sad_get_sample_rate(&sads[i]);
--		word_length =
--			drm_cea_sad_get_uncompressed_word_length(&sads[i]);
--		if (sample_rate <= 0 || word_length <= 0)
--			continue;
--
--		cfg->channels = sads[i].channels;
--		cfg->word_length_bits = word_length;
--		cfg->sample_rate = sample_rate;
--		ret = true;
--		break;
--	}
- 	kfree(sads);
- 
--	return ret;
-+	return true;
- }
- 
- static void mtk_dp_train_change_mode(struct mtk_dp *mtk_dp)
-@@ -2097,13 +2075,13 @@ static int mtk_dp_training(struct mtk_dp *mtk_dp)
- 
- 	mtk_dp->audio_enable =
- 		mtk_dp_edid_parse_audio_capabilities(mtk_dp,
--						     &mtk_dp->info.audio_caps);
-+						     &mtk_dp->info.audio_cur_cfg);
- 	if (mtk_dp->audio_enable) {
--		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_caps);
-+		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 		mtk_dp_audio_mute(mtk_dp, false);
- 	} else {
--		memset(&mtk_dp->info.audio_caps, 0,
--		       sizeof(mtk_dp->info.audio_caps));
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	return 0;
-@@ -2526,6 +2504,9 @@ static void mtk_dp_bridge_atomic_disable(struct drm_bridge *bridge,
- 	if (mtk_dp_plug_state(mtk_dp)) {
- 		drm_dp_dpcd_writeb(&mtk_dp->aux, DP_SET_POWER, DP_SET_POWER_D3);
- 		usleep_range(2000, 3000);
-+	} else {
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	mtk_dp_video_mute(mtk_dp, true);
-@@ -2736,18 +2717,17 @@ static int mtk_dp_audio_hw_params(struct device *dev, void *data,
- 				  struct hdmi_codec_params *params)
- {
- 	struct mtk_dp *mtk_dp = dev_get_drvdata(dev);
--	struct mtk_dp_audio_cfg cfg;
- 
- 	if (!mtk_dp->enabled) {
- 		pr_err("%s, DP is not ready!\n", __func__);
- 		return -ENODEV;
- 	}
- 
--	cfg.channels = params->cea.channels;
--	cfg.sample_rate = params->sample_rate;
--	cfg.word_length_bits = 24;
-+	mtk_dp->info.audio_cur_cfg.channels = params->cea.channels;
-+	mtk_dp->info.audio_cur_cfg.sample_rate = params->sample_rate;
-+	mtk_dp->info.audio_cur_cfg.word_length_bits = 24;
- 
--	mtk_dp_audio_setup(mtk_dp, &cfg);
-+	mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 
- 	return 0;
- }
--- 
-2.18.0
+Most hardware has restrictions on resolution (e.g. xres must be a
+multiple of N), so the driver has to round up the resolution to make
+it fit.  And after that the driver has to validate and update the
+virtual resolution again anyway...
 
+If a driver does not support changing the video mode, it can leave
+out the .fb_check_var() and .fb_set_par() callbacks, so the fbdev
+core will ignore the userspace-supplied parameters, and reinstate
+the single supported mode. See e.g. "[PATCH] drm/fb-helper:
+Remove helpers to change frame buffer config"
+(https://lore.kernel.org/all/20220629105658.1373770-1-geert@linux-m68k.org).
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
