@@ -2,122 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25DEE568D73
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Jul 2022 17:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52EAB568F21
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Jul 2022 18:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234200AbiGFPea (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 6 Jul 2022 11:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45696 "EHLO
+        id S233871AbiGFQ2c (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 6 Jul 2022 12:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234072AbiGFPeL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 6 Jul 2022 11:34:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D1527FFF;
-        Wed,  6 Jul 2022 08:32:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 12C04B81D8E;
-        Wed,  6 Jul 2022 15:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D92AC3411C;
-        Wed,  6 Jul 2022 15:32:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657121566;
-        bh=dJ/ClODH9MSblUyY3ISrR3RfultNhLe428VSshkHzf4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sEOTeR3O4+FDm62kEvp+gwMLbOTEPNRgpxROQA/b8CFvOgrg1KNYDVv+qXjqDHSl+
-         7Fk0sDp+bca/EqtKIpnPebQKHhBo9Z5hiHkGi946KUBVnxVfYNa+N+3C3quP5K87kb
-         4hRmbPVuSstk3NazCZPtUf3+mV5A1na/spwZXzrod29Kesi5oH9hta/7kXyyOKQQ4r
-         JDT1I+KoAEuKImdb9qvymp2+POPaokAiLU9+HvnazMb1YjIRPwzb83ddxCIFULHOpQ
-         cs1lS/MzN+IF8/jXBFGmdP3CmzKrskq7rGxa02OjJ7f5zDeB0M9yIc6ojA1KlGBaXR
-         Sohqlw7EpI/HA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sasha Levin <sashal@kernel.org>, daniel@ffwll.ch,
-        deller@gmx.de, sam@ravnborg.org, tzimmermann@suse.de,
-        alexander.deucher@amd.com, zheyuma97@gmail.com,
-        thunder.leizhen@huawei.com, deng.changcheng@zte.com.cn,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 13/18] fbdev: Disable sysfb device registration when removing conflicting FBs
-Date:   Wed,  6 Jul 2022 11:31:48 -0400
-Message-Id: <20220706153153.1598076-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220706153153.1598076-1-sashal@kernel.org>
-References: <20220706153153.1598076-1-sashal@kernel.org>
+        with ESMTP id S233546AbiGFQ2a (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 6 Jul 2022 12:28:30 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221E4E0DA
+        for <linux-fbdev@vger.kernel.org>; Wed,  6 Jul 2022 09:28:29 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-10c0119dd16so11061639fac.6
+        for <linux-fbdev@vger.kernel.org>; Wed, 06 Jul 2022 09:28:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Uk0kx353H+gGEfDDNFmV1k9XciWZTV5g6S3ovbgNaYc=;
+        b=jfxR98uW8mivqMQRsEutT68oCesPJMze1b9dnufU69LcAb7+VMSEM4kdZmAYz9u9kC
+         myMY3CT95YyEVNVHT0KArxREZdMHPMqrXKUNUYWZrWpknz5lG4PMeNH4Hnh5eiit8X+Y
+         1BYRHVDlych7JNdKFIssbwoLFrWRUhFPfTpgZJbtijG6wRI02xV3dJNcDYLFoYMNHyBC
+         AE61dn3FGsY1Tdl4JEa8rswfKV/qFp1cO9bg6yS2LmslQEObZN1SUmNyumrT7H3N604m
+         hI1HOmBpp8eLySQlj25H+6vIfl0EZu3X2KHCxjhljGvy4zZLx1i6/QLsTsXTuDVrzQXh
+         qOTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Uk0kx353H+gGEfDDNFmV1k9XciWZTV5g6S3ovbgNaYc=;
+        b=VDXmwsT0x3raYlOwTBe7E9IUayf4farvU+gg5d/xQmNPNlmNBv/YyZaJ8+BrBB3JZQ
+         V7Y8pvjAf2DMjywTHEqjs1HQVGtzqu1gJanDFojz8AC+tRyLO290YmlyzwEnvh3BjFcc
+         nFKdTgo3UZL8UIdYf8Zmcij3gRLL2jHMr8XT+W+gp2p46oCBvEIGHrAbSvAnuFc5ys93
+         3AwZp8zdt8EUtXDK4u99XvkoJBox/vCaHD7xkNznbFmecwPOgfCDmungYU8TIL8qEhc9
+         lGRJ/I15oyFEMCRp2tsU+QckH1dGIoq1GBwwgFNWMmGOi5+XpsVAZcgcCl7qqGCrijSY
+         zWpA==
+X-Gm-Message-State: AJIora+x2lN95yKQT2XsfNA7PF9S5uqpqlcA77RDRjpAdEx/+0YYJ/GS
+        cBun9+3lZ4/H9X04G1qGeuZUSb9gDVcW6ykBexU=
+X-Google-Smtp-Source: AGRyM1s/X09qgNORRz85jhI+9ILmarjRfTjOEEzd7P7pwaQcCVXR6oA+P6A/wmCJPaeSZ/kSYk0vLFBKB9KYSvYs4GE=
+X-Received: by 2002:a05:6870:7022:b0:10b:f0ea:d441 with SMTP id
+ u34-20020a056870702200b0010bf0ead441mr12097057oae.39.1657124909133; Wed, 06
+ Jul 2022 09:28:29 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a4a:4545:0:0:0:0:0 with HTTP; Wed, 6 Jul 2022 09:28:28 -0700 (PDT)
+Reply-To: sgtkaylla202@gmail.com
+From:   Kayla Manthey <avrielharry73@gmail.com>
+Date:   Wed, 6 Jul 2022 16:28:28 +0000
+Message-ID: <CAFSKFDbpVNA81Hkx+=hxnQf-_MX=ibj8SJG+LAUFA94U3fHvYw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Javier Martinez Canillas <javierm@redhat.com>
-
-[ Upstream commit ee7a69aa38d87a3bbced7b8245c732c05ed0c6ec ]
-
-The platform devices registered by sysfb match with firmware-based DRM or
-fbdev drivers, that are used to have early graphics using a framebuffer
-provided by the system firmware.
-
-DRM or fbdev drivers later are probed and remove conflicting framebuffers,
-leading to these platform devices for generic drivers to be unregistered.
-
-But the current solution has a race, since the sysfb_init() function could
-be called after a DRM or fbdev driver is probed and request to unregister
-the devices for drivers with conflicting framebuffes.
-
-To prevent this, disable any future sysfb platform device registration by
-calling sysfb_disable(), if a driver requests to remove the conflicting
-framebuffers.
-
-Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220607182338.344270-4-javierm@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/core/fbmem.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 0371ad233fdf..ba9c66a95ada 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -19,6 +19,7 @@
- #include <linux/kernel.h>
- #include <linux/major.h>
- #include <linux/slab.h>
-+#include <linux/sysfb.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
- #include <linux/vt.h>
-@@ -1774,6 +1775,17 @@ int remove_conflicting_framebuffers(struct apertures_struct *a,
- 		do_free = true;
- 	}
- 
-+	/*
-+	 * If a driver asked to unregister a platform device registered by
-+	 * sysfb, then can be assumed that this is a driver for a display
-+	 * that is set up by the system firmware and has a generic driver.
-+	 *
-+	 * Drivers for devices that don't have a generic driver will never
-+	 * ask for this, so let's assume that a real driver for the display
-+	 * was already probed and prevent sysfb to register devices later.
-+	 */
-+	sysfb_disable();
-+
- 	mutex_lock(&registration_lock);
- 	do_remove_conflicting_framebuffers(a, name, primary);
- 	mutex_unlock(&registration_lock);
--- 
-2.35.1
-
+LS0gDQrQl9C00YDQsNCy0L4g0LTRgNCw0LPQsA0K0JLQtSDQvNC+0LvQsNC8LCDQtNCw0LvQuCDR
+mNCwINC00L7QsdC40LLRgtC1INC80L7RmNCw0YLQsCDQv9GA0LXRgtGF0L7QtNC90LAg0L/QvtGA
+0LDQutCwLCDQstC4INCx0LvQsNCz0L7QtNCw0YDQsNC8Lg0K
