@@ -2,29 +2,29 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21AD956C0D8
-	for <lists+linux-fbdev@lfdr.de>; Fri,  8 Jul 2022 20:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A59D56C042
+	for <lists+linux-fbdev@lfdr.de>; Fri,  8 Jul 2022 20:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239505AbiGHSWk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 8 Jul 2022 14:22:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
+        id S239488AbiGHSWi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 8 Jul 2022 14:22:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239286AbiGHSVq (ORCPT
+        with ESMTP id S239267AbiGHSVq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>); Fri, 8 Jul 2022 14:21:46 -0400
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF7183F23
-        for <linux-fbdev@vger.kernel.org>; Fri,  8 Jul 2022 11:21:40 -0700 (PDT)
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C6783F05
+        for <linux-fbdev@vger.kernel.org>; Fri,  8 Jul 2022 11:21:38 -0700 (PDT)
 Received: from ramsan.of.borg ([84.195.186.194])
-        by michel.telenet-ops.be with bizsmtp
-        id siMf2700i4C55Sk06iMfjW; Fri, 08 Jul 2022 20:21:40 +0200
+        by laurent.telenet-ops.be with bizsmtp
+        id siMd270044C55Sk01iMdqM; Fri, 08 Jul 2022 20:21:38 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1o9sbg-002fKl-Kz; Fri, 08 Jul 2022 20:21:36 +0200
+        id 1o9sbg-002fKm-Is; Fri, 08 Jul 2022 20:21:36 +0200
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1o9sbg-00BtPX-35; Fri, 08 Jul 2022 20:21:36 +0200
+        id 1o9sbg-00BtPb-3x; Fri, 08 Jul 2022 20:21:36 +0200
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
 To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <mripard@kernel.org>,
@@ -35,10 +35,12 @@ To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
         Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 0/5] drm/modes: Command line mode selection fixes and improvements
-Date:   Fri,  8 Jul 2022 20:21:24 +0200
-Message-Id: <cover.1657301107.git.geert@linux-m68k.org>
+Subject: [PATCH 1/5] drm/modes: parse_cmdline: Handle empty mode name part
+Date:   Fri,  8 Jul 2022 20:21:25 +0200
+Message-Id: <64e2e9b14c26df28908789374253fd12072c26c2.1657301107.git.geert@linux-m68k.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1657301107.git.geert@linux-m68k.org>
+References: <cover.1657301107.git.geert@linux-m68k.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
@@ -50,41 +52,35 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-	Hi all,
+If no mode name part was specified, mode_end is zero, and the "ret ==
+mode_end" check does the wrong thing.
 
-This patch series contains fixes and improvements for specifying video
-modes on the kernel command line.
+Fix this by checking for a non-zero return value instead.
+While at it, skip all named mode handling when mode_end is zero, as it
+is futile.
 
-This has been tested on ARAnyM using a work-in-progress Atari DRM driver
-(more info and related patches can be found in [1]).
+Fixes: 7b1cce760afe38b4 ("drm/modes: parse_cmdline: Allow specifying stand-alone options")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ drivers/gpu/drm/drm_modes.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for your comments!
-
-[1] "[PATCH v3 00/10] drm: Add support for low-color frame buffer formats"
-    https://lore.kernel.org/r/cover.1657294931.git.geert@linux-m68k.org
-
-Geert Uytterhoeven (5):
-  drm/modes: parse_cmdline: Handle empty mode name part
-  drm/modes: Extract drm_mode_parse_cmdline_named_mode()
-  drm/modes: parse_cmdline: Make mode->*specified handling more uniform
-  drm/modes: Add support for driver-specific named modes
-  drm/modes: parse_cmdline: Add support for named modes containing
-    dashes
-
- drivers/gpu/drm/drm_modes.c | 57 ++++++++++++++++++++++++++-----------
- include/drm/drm_connector.h | 10 +++++++
- 2 files changed, 50 insertions(+), 17 deletions(-)
-
+diff --git a/drivers/gpu/drm/drm_modes.c b/drivers/gpu/drm/drm_modes.c
+index 14b746f7ba975954..30a7be97707bfb16 100644
+--- a/drivers/gpu/drm/drm_modes.c
++++ b/drivers/gpu/drm/drm_modes.c
+@@ -1823,9 +1823,9 @@ bool drm_mode_parse_command_line_for_connector(const char *mode_option,
+ 	}
+ 
+ 	/* First check for a named mode */
+-	for (i = 0; i < ARRAY_SIZE(drm_named_modes_whitelist); i++) {
++	for (i = 0; mode_end && i < ARRAY_SIZE(drm_named_modes_whitelist); i++) {
+ 		ret = str_has_prefix(name, drm_named_modes_whitelist[i]);
+-		if (ret == mode_end) {
++		if (ret) {
+ 			if (refresh_ptr)
+ 				return false; /* named + refresh is invalid */
+ 
 -- 
 2.25.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
