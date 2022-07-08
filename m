@@ -2,68 +2,46 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 468B856BA98
-	for <lists+linux-fbdev@lfdr.de>; Fri,  8 Jul 2022 15:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0246756C061
+	for <lists+linux-fbdev@lfdr.de>; Fri,  8 Jul 2022 20:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238084AbiGHNX5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 8 Jul 2022 09:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
+        id S239163AbiGHSVS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 8 Jul 2022 14:21:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238066AbiGHNX4 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 8 Jul 2022 09:23:56 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B69A2B1A1;
-        Fri,  8 Jul 2022 06:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657286635; x=1688822635;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oYhBSaiW1UBg6AWLFa9PNoYfdaB2PrXd0fUmsivGyyY=;
-  b=PhuXGwVY1TZnShiJAMKicWkdRuZX2MvDshcaUMo4xfAH8Ci+U8kkxWIq
-   VcAVfN4TI3S3xBowshT5zWG50cJbnyflou0cZBus2+yD5Xs05wA+qh22A
-   vV8FOmwPbqOEjs7tlHb5eMq4c04DZjOK+QMRqd5lFsSR650QjZrPWpymj
-   psrJZYXITZoYRSYw1+r4fFTpgVHgneNLEDG/aIO05IZlEupYwknOkvERi
-   egUXgDroTUmoKEIBItPduFkN4xVD7LS97QGzcsdW9naQBxsONYTtPCPNX
-   Z9HgosGsX2BWLIuGvE5cmBoMnOMthp24Eh8Lvn74pEtswotSBY8UsJq5M
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10401"; a="283029515"
-X-IronPort-AV: E=Sophos;i="5.92,255,1650956400"; 
-   d="scan'208";a="283029515"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2022 06:23:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,255,1650956400"; 
-   d="scan'208";a="594118872"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 08 Jul 2022 06:23:50 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o9nxV-000NWE-Rw;
-        Fri, 08 Jul 2022 13:23:49 +0000
-Date:   Fri, 8 Jul 2022 21:23:29 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, deller@gmx.de,
-        manoj@linux.ibm.com, mrochs@linux.ibm.com, ukrishn@linux.ibm.com,
-        jejb@linux.ibm.com, martin.petersen@oracle.com, tzimmermann@suse.de
-Cc:     kbuild-all@lists.01.org,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 3/4] powerpc: Remove asm/prom.h from asm/mpc52xx.h and
- asm/pci.h
-Message-ID: <202207082135.sstYWd2x-lkp@intel.com>
-References: <cf5243343e2364c2b40f22ee5ad9a6e2453d1121.1657264228.git.christophe.leroy@csgroup.eu>
+        with ESMTP id S239096AbiGHSVP (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 8 Jul 2022 14:21:15 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F00C082396
+        for <linux-fbdev@vger.kernel.org>; Fri,  8 Jul 2022 11:21:10 -0700 (PDT)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by laurent.telenet-ops.be with bizsmtp
+        id siM7270094C55Sk01iM7mo; Fri, 08 Jul 2022 20:21:08 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1o9sbC-002fGb-Lh; Fri, 08 Jul 2022 20:21:06 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1o9sbC-00BtJ3-7L; Fri, 08 Jul 2022 20:21:06 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v3 00/10] drm: Add support for low-color frame buffer formats
+Date:   Fri,  8 Jul 2022 20:20:45 +0200
+Message-Id: <cover.1657294931.git.geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf5243343e2364c2b40f22ee5ad9a6e2453d1121.1657264228.git.christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,157 +49,124 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Christophe,
+	Hi all,
 
-I love your patch! Yet something to improve:
+A long outstanding issue with the DRM subsystem has been the lack of
+support for low-color displays, as used typically on older desktop
+systems, and on small embedded displays.
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on mkp-scsi/for-next linus/master v5.19-rc5 next-20220708]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This patch series adds support for color-indexed frame buffer formats
+with 2, 4, and 16 colors.  It has been tested on ARAnyM using a
+work-in-progress Atari DRM driver supporting 2, 4, 16, 256, and 65536
+colors, with text console operation, fbtest, and modetest.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220708-151246
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-randconfig-m031-20220708 (https://download.01.org/0day-ci/archive/20220708/202207082135.sstYWd2x-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/e04280406bcc48b3e940fdd770fa9a7c62185e02
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220708-151246
-        git checkout e04280406bcc48b3e940fdd770fa9a7c62185e02
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/edac/
+Overview:
+  - Patch 1 introduces a helper, to be used by later patches in the
+    series,
+  - Patch 2 introduces a flag to indicate color-indexed formats,
+  - Patches 3 and 4 correct calculations of bits per pixel for sub-byte
+    pixel formats,
+  - Patches 5 and 6 introduce the new C[124] formats,
+  - Patch 7 fixes an untested code path,
+  - Patch 8 documents the use of "red" for light-on-dark displays,
+  - Patches 9 and 10 add more fourcc codes for light-on-dark and
+    dark-on-light frame buffer formats, which may be useful for e.g. the
+    ssd130x and repaper drivers.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Changes compared to v2[1]:
+  - Add Reviewed-by,
+  - Document fill order,
+  - Fix FB_VISUAL_TRUECOLOR,
+  - Replace light-on-dark/dark-on-light by direct/inverse relationship
+    between channel value and brightness.
 
-All errors (new ones prefixed by >>):
+Changes compared to v1[2]:
+  - Reshuffle patches,
+  - New patch "[PATCH v2 02/10] drm/fourcc: Add
+    drm_format_info.is_color_indexed flag",
+  - Improve pixel descriptions,
+  - Require depth to match bpp in drm_mode_legacy_fb_format(),
+  - Set .is_color_indexed flag.
+  - Use drm_format_info_bpp() helper instead of deprecated .depth field
+    or format-dependent calculations,
+  - Use new .is_color_indexed field instead of checking against a list
+    of formats,
+  - Add Acked-by,
+  - Replace FIXME by TODO comment,
+  - New patch "[PATCH v2 08/10] [RFC] drm/fourcc: Document that
+    single-channel "red" can be any color",
+  - Add rationale for adding new formats,
+  - Add D[248] for completeness.
 
-   drivers/edac/mpc85xx_edac.c: In function 'mpc85xx_l2_err_probe':
->> drivers/edac/mpc85xx_edac.c:514:15: error: implicit declaration of function 'of_address_to_resource' [-Werror=implicit-function-declaration]
-     514 |         res = of_address_to_resource(op->dev.of_node, 0, &r);
-         |               ^~~~~~~~~~~~~~~~~~~~~~
->> drivers/edac/mpc85xx_edac.c:559:30: error: implicit declaration of function 'irq_of_parse_and_map' [-Werror=implicit-function-declaration]
-     559 |                 pdata->irq = irq_of_parse_and_map(op->dev.of_node, 0);
-         |                              ^~~~~~~~~~~~~~~~~~~~
->> drivers/edac/mpc85xx_edac.c:566:25: error: implicit declaration of function 'irq_dispose_mapping' [-Werror=implicit-function-declaration]
-     566 |                         irq_dispose_mapping(pdata->irq);
-         |                         ^~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+Notes:
+  - This is the first patch series in a series of 3:
+      - To make high-color modes work on big-endian, you also need [3],
+      - To make mode selection on the command line work for Atari video
+	modes, you need [4].
+  - There is also a related series of 3 patch series for modetest:
+      - Using modetest with low-color formats (C[124]) requires [5],
+      - Using modetest with high-color formats (RG16, XR24) requires
+	[6],
+      - Using modetest with video mode names containing dashes requires
+	[7].
+  - As this was used on emulated hardware only, and I do not have Atari
+    hardware, I do not have performance figures to compare with fbdev.
+    I hope to do proper measuring with an Amiga DRM driver, eventually.
+  - While the Atari DRM driver is not fit for submission yet, you can
+    find it at [8], if you are adventurous.
 
+Thanks for your comments!
 
-vim +/of_address_to_resource +514 drivers/edac/mpc85xx_edac.c
+[1] "[PATCH v2 00/10] drm: Add support for low-color frame buffer
+    formats"
+    https://lore.kernel.org/r/cover.1646683502.git.geert@linux-m68k.org/
+[2] "[PATCH 0/8] drm: Add support for low-color frame buffer formats"
+    https://lore.kernel.org/r/20220215165226.2738568-1-geert@linux-m68k.org/
+[3] "[PATCH 0/3] drm: Endianness fixes"
+    https://lore.kernel.org/r/cover.1657300532.git.geert@linux-m68k.org
+[4] "[PATCH 0/5] drm/modes: Command line mode selection fixes and
+    improvements"
+    https://lore.kernel.org/r/cover.1657301107.git.geert@linux-m68k.org
+[5] "[PATCH libdrm v2 00/10] Add support for low-color frame buffer
+    formats"
+    https://lore.kernel.org/r/cover.1657302034.git.geert@linux-m68k.org
+[6] "[PATCH libdrm v2 00/10] Big-endian fixes"
+    https://lore.kernel.org/r/cover.1657302103.git.geert@linux-m68k.org
+[7] "[PATCH libdrm] modetest: Add support for named modes containing
+    dashes"
+[8] https://git.kernel.org/pub/scm/linux/kernel/git/geert/linux-m68k.git/log/?h=atari-drm-wip
 
-a9a753d53204bf Dave Jiang         2008-02-07  488  
-9b3c6e85c2cfa7 Greg Kroah-Hartman 2012-12-21  489  static int mpc85xx_l2_err_probe(struct platform_device *op)
-a9a753d53204bf Dave Jiang         2008-02-07  490  {
-a9a753d53204bf Dave Jiang         2008-02-07  491  	struct edac_device_ctl_info *edac_dev;
-a9a753d53204bf Dave Jiang         2008-02-07  492  	struct mpc85xx_l2_pdata *pdata;
-a9a753d53204bf Dave Jiang         2008-02-07  493  	struct resource r;
-a9a753d53204bf Dave Jiang         2008-02-07  494  	int res;
-a9a753d53204bf Dave Jiang         2008-02-07  495  
-a9a753d53204bf Dave Jiang         2008-02-07  496  	if (!devres_open_group(&op->dev, mpc85xx_l2_err_probe, GFP_KERNEL))
-a9a753d53204bf Dave Jiang         2008-02-07  497  		return -ENOMEM;
-a9a753d53204bf Dave Jiang         2008-02-07  498  
-a9a753d53204bf Dave Jiang         2008-02-07  499  	edac_dev = edac_device_alloc_ctl_info(sizeof(*pdata),
-a9a753d53204bf Dave Jiang         2008-02-07  500  					      "cpu", 1, "L", 1, 2, NULL, 0,
-a9a753d53204bf Dave Jiang         2008-02-07  501  					      edac_dev_idx);
-a9a753d53204bf Dave Jiang         2008-02-07  502  	if (!edac_dev) {
-a9a753d53204bf Dave Jiang         2008-02-07  503  		devres_release_group(&op->dev, mpc85xx_l2_err_probe);
-a9a753d53204bf Dave Jiang         2008-02-07  504  		return -ENOMEM;
-a9a753d53204bf Dave Jiang         2008-02-07  505  	}
-a9a753d53204bf Dave Jiang         2008-02-07  506  
-a9a753d53204bf Dave Jiang         2008-02-07  507  	pdata = edac_dev->pvt_info;
-a9a753d53204bf Dave Jiang         2008-02-07  508  	pdata->name = "mpc85xx_l2_err";
-a9a753d53204bf Dave Jiang         2008-02-07  509  	edac_dev->dev = &op->dev;
-a9a753d53204bf Dave Jiang         2008-02-07  510  	dev_set_drvdata(edac_dev->dev, edac_dev);
-a9a753d53204bf Dave Jiang         2008-02-07  511  	edac_dev->ctl_name = pdata->name;
-a9a753d53204bf Dave Jiang         2008-02-07  512  	edac_dev->dev_name = pdata->name;
-a9a753d53204bf Dave Jiang         2008-02-07  513  
-a26f95fed31d91 Anatolij Gustschin 2010-06-03 @514  	res = of_address_to_resource(op->dev.of_node, 0, &r);
-a9a753d53204bf Dave Jiang         2008-02-07  515  	if (res) {
-88857ebe7116b0 York Sun           2016-08-09  516  		pr_err("%s: Unable to get resource for L2 err regs\n", __func__);
-a9a753d53204bf Dave Jiang         2008-02-07  517  		goto err;
-a9a753d53204bf Dave Jiang         2008-02-07  518  	}
-a9a753d53204bf Dave Jiang         2008-02-07  519  
-a9a753d53204bf Dave Jiang         2008-02-07  520  	/* we only need the error registers */
-a9a753d53204bf Dave Jiang         2008-02-07  521  	r.start += 0xe00;
-a9a753d53204bf Dave Jiang         2008-02-07  522  
-28f65c11f2ffb3 Joe Perches        2011-06-09  523  	if (!devm_request_mem_region(&op->dev, r.start, resource_size(&r),
-28f65c11f2ffb3 Joe Perches        2011-06-09  524  				     pdata->name)) {
-88857ebe7116b0 York Sun           2016-08-09  525  		pr_err("%s: Error while requesting mem region\n", __func__);
-a9a753d53204bf Dave Jiang         2008-02-07  526  		res = -EBUSY;
-a9a753d53204bf Dave Jiang         2008-02-07  527  		goto err;
-a9a753d53204bf Dave Jiang         2008-02-07  528  	}
-a9a753d53204bf Dave Jiang         2008-02-07  529  
-28f65c11f2ffb3 Joe Perches        2011-06-09  530  	pdata->l2_vbase = devm_ioremap(&op->dev, r.start, resource_size(&r));
-a9a753d53204bf Dave Jiang         2008-02-07  531  	if (!pdata->l2_vbase) {
-88857ebe7116b0 York Sun           2016-08-09  532  		pr_err("%s: Unable to setup L2 err regs\n", __func__);
-a9a753d53204bf Dave Jiang         2008-02-07  533  		res = -ENOMEM;
-a9a753d53204bf Dave Jiang         2008-02-07  534  		goto err;
-a9a753d53204bf Dave Jiang         2008-02-07  535  	}
-a9a753d53204bf Dave Jiang         2008-02-07  536  
-a9a753d53204bf Dave Jiang         2008-02-07  537  	out_be32(pdata->l2_vbase + MPC85XX_L2_ERRDET, ~0);
-a9a753d53204bf Dave Jiang         2008-02-07  538  
-a9a753d53204bf Dave Jiang         2008-02-07  539  	orig_l2_err_disable = in_be32(pdata->l2_vbase + MPC85XX_L2_ERRDIS);
-a9a753d53204bf Dave Jiang         2008-02-07  540  
-a9a753d53204bf Dave Jiang         2008-02-07  541  	/* clear the err_dis */
-a9a753d53204bf Dave Jiang         2008-02-07  542  	out_be32(pdata->l2_vbase + MPC85XX_L2_ERRDIS, 0);
-a9a753d53204bf Dave Jiang         2008-02-07  543  
-a9a753d53204bf Dave Jiang         2008-02-07  544  	edac_dev->mod_name = EDAC_MOD_STR;
-a9a753d53204bf Dave Jiang         2008-02-07  545  
-a9a753d53204bf Dave Jiang         2008-02-07  546  	if (edac_op_state == EDAC_OPSTATE_POLL)
-a9a753d53204bf Dave Jiang         2008-02-07  547  		edac_dev->edac_check = mpc85xx_l2_check;
-a9a753d53204bf Dave Jiang         2008-02-07  548  
-a9a753d53204bf Dave Jiang         2008-02-07  549  	mpc85xx_set_l2_sysfs_attributes(edac_dev);
-a9a753d53204bf Dave Jiang         2008-02-07  550  
-a9a753d53204bf Dave Jiang         2008-02-07  551  	pdata->edac_idx = edac_dev_idx++;
-a9a753d53204bf Dave Jiang         2008-02-07  552  
-a9a753d53204bf Dave Jiang         2008-02-07  553  	if (edac_device_add_device(edac_dev) > 0) {
-956b9ba156dbfd Joe Perches        2012-04-29  554  		edac_dbg(3, "failed edac_device_add_device()\n");
-a9a753d53204bf Dave Jiang         2008-02-07  555  		goto err;
-a9a753d53204bf Dave Jiang         2008-02-07  556  	}
-a9a753d53204bf Dave Jiang         2008-02-07  557  
-a9a753d53204bf Dave Jiang         2008-02-07  558  	if (edac_op_state == EDAC_OPSTATE_INT) {
-a26f95fed31d91 Anatolij Gustschin 2010-06-03 @559  		pdata->irq = irq_of_parse_and_map(op->dev.of_node, 0);
-a9a753d53204bf Dave Jiang         2008-02-07  560  		res = devm_request_irq(&op->dev, pdata->irq,
-a18c3f16a907b8 Borislav Petkov    2014-09-30  561  				       mpc85xx_l2_isr, IRQF_SHARED,
-a9a753d53204bf Dave Jiang         2008-02-07  562  				       "[EDAC] L2 err", edac_dev);
-a9a753d53204bf Dave Jiang         2008-02-07  563  		if (res < 0) {
-88857ebe7116b0 York Sun           2016-08-09  564  			pr_err("%s: Unable to request irq %d for MPC85xx L2 err\n",
-88857ebe7116b0 York Sun           2016-08-09  565  				__func__, pdata->irq);
-a9a753d53204bf Dave Jiang         2008-02-07 @566  			irq_dispose_mapping(pdata->irq);
-a9a753d53204bf Dave Jiang         2008-02-07  567  			res = -ENODEV;
-a9a753d53204bf Dave Jiang         2008-02-07  568  			goto err2;
-a9a753d53204bf Dave Jiang         2008-02-07  569  		}
-a9a753d53204bf Dave Jiang         2008-02-07  570  
-88857ebe7116b0 York Sun           2016-08-09  571  		pr_info(EDAC_MOD_STR " acquired irq %d for L2 Err\n", pdata->irq);
-a9a753d53204bf Dave Jiang         2008-02-07  572  
-a9a753d53204bf Dave Jiang         2008-02-07  573  		edac_dev->op_state = OP_RUNNING_INTERRUPT;
-a9a753d53204bf Dave Jiang         2008-02-07  574  
-a9a753d53204bf Dave Jiang         2008-02-07  575  		out_be32(pdata->l2_vbase + MPC85XX_L2_ERRINTEN, L2_EIE_MASK);
-a9a753d53204bf Dave Jiang         2008-02-07  576  	}
-a9a753d53204bf Dave Jiang         2008-02-07  577  
-a9a753d53204bf Dave Jiang         2008-02-07  578  	devres_remove_group(&op->dev, mpc85xx_l2_err_probe);
-a9a753d53204bf Dave Jiang         2008-02-07  579  
-956b9ba156dbfd Joe Perches        2012-04-29  580  	edac_dbg(3, "success\n");
-88857ebe7116b0 York Sun           2016-08-09  581  	pr_info(EDAC_MOD_STR " L2 err registered\n");
-a9a753d53204bf Dave Jiang         2008-02-07  582  
-a9a753d53204bf Dave Jiang         2008-02-07  583  	return 0;
-a9a753d53204bf Dave Jiang         2008-02-07  584  
-a9a753d53204bf Dave Jiang         2008-02-07  585  err2:
-a9a753d53204bf Dave Jiang         2008-02-07  586  	edac_device_del_device(&op->dev);
-a9a753d53204bf Dave Jiang         2008-02-07  587  err:
-a9a753d53204bf Dave Jiang         2008-02-07  588  	devres_release_group(&op->dev, mpc85xx_l2_err_probe);
-a9a753d53204bf Dave Jiang         2008-02-07  589  	edac_device_free_ctl_info(edac_dev);
-a9a753d53204bf Dave Jiang         2008-02-07  590  	return res;
-a9a753d53204bf Dave Jiang         2008-02-07  591  }
-a9a753d53204bf Dave Jiang         2008-02-07  592  
+Geert Uytterhoeven (10):
+  drm/fourcc: Add drm_format_info_bpp() helper
+  drm/fourcc: Add drm_format_info.is_color_indexed flag
+  drm/client: Use actual bpp when allocating frame buffers
+  drm/framebuffer: Use actual bpp for DRM_IOCTL_MODE_GETFB
+  drm/fourcc: Add DRM_FORMAT_C[124]
+  drm/fb-helper: Add support for DRM_FORMAT_C[124]
+  drm/gem-fb-helper: Use actual bpp for size calculations
+  drm/fourcc: Clarify the meaning of single-channel "red"
+  [RFC] drm/fourcc: Add DRM_FORMAT_R[124]
+  [RFC] drm/fourcc: Add DRM_FORMAT_D[1248]
+
+ drivers/gpu/drm/drm_client.c                 |   4 +-
+ drivers/gpu/drm/drm_fb_helper.c              | 101 ++++++++++++++-----
+ drivers/gpu/drm/drm_fourcc.c                 |  55 +++++++++-
+ drivers/gpu/drm/drm_framebuffer.c            |   2 +-
+ drivers/gpu/drm/drm_gem_framebuffer_helper.c |  12 +--
+ include/drm/drm_fourcc.h                     |   4 +
+ include/uapi/drm/drm_fourcc.h                |  32 +++++-
+ 7 files changed, 167 insertions(+), 43 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
