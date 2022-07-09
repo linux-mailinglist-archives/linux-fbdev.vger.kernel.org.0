@@ -2,76 +2,130 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A12356C84A
-	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Jul 2022 11:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E61B956C89C
+	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Jul 2022 12:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbiGIJU3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 9 Jul 2022 05:20:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33018 "EHLO
+        id S229497AbiGIKHC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 9 Jul 2022 06:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiGIJU2 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Jul 2022 05:20:28 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 515FB66AC6
-        for <linux-fbdev@vger.kernel.org>; Sat,  9 Jul 2022 02:20:23 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id b11so1316494eju.10
-        for <linux-fbdev@vger.kernel.org>; Sat, 09 Jul 2022 02:20:23 -0700 (PDT)
+        with ESMTP id S229462AbiGIKHB (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Jul 2022 06:07:01 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309474AD4F;
+        Sat,  9 Jul 2022 03:07:00 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id a5so1229594wrx.12;
+        Sat, 09 Jul 2022 03:07:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=TKvyPiNZ+anjmYa10tWJwFVa+LgbgMa6tcU0LfkkBNI=;
-        b=Rw4EfubfZ/faCl4SO4kGUHTsF29gYmjUZN5r9EX2QvJZu1MCNedG9zlXeV2AhFrD+e
-         SXaisYWxi2fUxcpk19A/i7AtZbMpv3lr7KUgXbxpkLIIUEJyCshVIYNhva/EaDsmb0pp
-         34YplPkczi2T6yFHhiVl87ULuueLNlq21qgKhbgzefk/zgF3MSAJ/EB94FuyhPSFpwaS
-         LQjwd8/JA89CMxd1TzBKztR50rgjHQG/1pn1q4sYpKoJjmXYoL3DuCwTrbCj9+TXy7u2
-         AhJgLh9STUmqhDuCm1GQgtrOxx/JMJRJrDLbc1QMj3bXzNJMrA0fbQKeShJ/tnNmoYAB
-         5OTQ==
+        h=date:from:to:subject:message-id:mime-version:content-disposition;
+        bh=S5D5zyYSVc5bYEUxb7MqmQQ/xud6/l4/rKt8C+dOKPo=;
+        b=J6xj2JgUG2AXybfK0eo0+w3XOakF/s1IPQBftgOLpHE3Yp/WUvnbPBTVmmde2XZ9c9
+         htaxDp+2uKsttpa47BO8sHTnr4cgxk1tS4RO7iIcr4IMzDRDr95p892ZK29FDWxhUN0V
+         y4GAT6ZdADQqzzpG85wLdNbOai9fJJOdJ3lWtj4amvleseSmDOKKiwVxIXFRF8I9B1kz
+         EIyyldMAoa2K0RQKuJd/ifqmKBUKVsJhc74Xhu32V++xtyTZ62gXqWkp7lpkg2Lix8YC
+         puL69MDFPNFAMrxy6MDKrLbp3Zl6da2C1mz9wntQ/aI94bxqSYMgiHvGjVI13Uw1nn3J
+         q18A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=TKvyPiNZ+anjmYa10tWJwFVa+LgbgMa6tcU0LfkkBNI=;
-        b=UsNY4ewY9zrPgmUVTOfh6sW4EjdrNgXVXRU/Pb3B1uiLlNsLSmsfeBnXjhnOMT4sq0
-         zFdpw/HNKGBnHr7N+1DMhF+eFrAUiBJTpVG7o094uOymiYx9qLhpCzAY6EnohslJc2P3
-         cBRUIg/kopLqrQn/WiIg05UhPGp5VFapYMiIJQ4cYDV1igUcJQ3jpwbvEZi/0+/Pxe9I
-         53mR9WQRjOrjV7qOKrkZ30oeqSfXKos1oZp+7nlCU7++fj95p2FOCBNRHrNNY8pE36v0
-         gQT44EBzesFvhOX1Gg7e+0jPGdEgBfudTb5i1+zwBxfxlhmuvMfEWK0wSnNTn63lIIRl
-         nzDQ==
-X-Gm-Message-State: AJIora+RRmJZCr9HsJZGMdTCPqNoZau4R+2A1g8MxnjVa1PuSlHGOiJ9
-        gFKvbIb0HIJl9X8RcGpuGaXw25EhUAvFjgIZXL0=
-X-Google-Smtp-Source: AGRyM1u+lkUomLC9sj7m2S98v3aFMbUcPQRo+XYLcmPa7mGw7szcEoVya6ud7PjqcZccMjpswFD4wRZfo1uSn8ZwKfk=
-X-Received: by 2002:a17:907:1c8f:b0:6e8:f898:63bb with SMTP id
- nb15-20020a1709071c8f00b006e8f89863bbmr8101819ejc.721.1657358421741; Sat, 09
- Jul 2022 02:20:21 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition;
+        bh=S5D5zyYSVc5bYEUxb7MqmQQ/xud6/l4/rKt8C+dOKPo=;
+        b=lRX7wksgQEnKdVlMzcJyeYDyFpmNVnwmVgT4aeNNIb15lTGINovnEFMKizxveNZM3O
+         HrbBckgoI9zswq3l7w0+j4t2k/BON2S72qdD0ZHdhS5do2+x0iUlAbqiViwqiwebH13D
+         +06cKdi7YPDJk5es0L+NS8P7CBjtCxmn3HW1/ci+ZZ1rDdKuqySoUqXt7jmSQq2LLiHj
+         g0o2Yg4LL+o6o0Gr3KJPhRwJkdUtDz9srWKZaElhNNp8pYSp/mbYRd8AMvYbPp0XIa6U
+         KyzL5KAvIaAZ9pwWnYogzMxxxoBWXRgj1gx09wwzJPcbIl4AQ+1FjBS92ZXW8UIa6cZB
+         nQHg==
+X-Gm-Message-State: AJIora+BLDW8fdp1VhxhVW4FTUNM2pWsCcXIaxaNCl9Tx+FrhGnH1La4
+        khxgIqOwQJFctBrwqV1MWMJbEAUl5FbPdHkV
+X-Google-Smtp-Source: AGRyM1tewS4z2taUnVOHwc/upLIlIYpD86273il6dbaFWgZu7U7GIfgnZCxK7zM/oA89WedBCs1puQ==
+X-Received: by 2002:adf:d08c:0:b0:21d:768b:c56a with SMTP id y12-20020adfd08c000000b0021d768bc56amr7517095wrh.318.1657361218685;
+        Sat, 09 Jul 2022 03:06:58 -0700 (PDT)
+Received: from mandalorian.koija ([2a02:587:4ba0:ca00:ca84:2153:48dd:9a6])
+        by smtp.gmail.com with ESMTPSA id n68-20020a1c2747000000b0039c96b97359sm1053376wmn.37.2022.07.09.03.06.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Jul 2022 03:06:58 -0700 (PDT)
+Date:   Sat, 9 Jul 2022 13:06:56 +0300
+From:   Christos Kollintzas <c.kollintzas.92@gmail.com>
+To:     gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: fbtft: replace udelay with usleep_range
+Message-ID: <YslTQLhM7GSaGXki@mandalorian.koija>
 MIME-Version: 1.0
-Received: by 2002:a17:907:a40c:0:0:0:0 with HTTP; Sat, 9 Jul 2022 02:20:21
- -0700 (PDT)
-From:   John Jacob <jjacobvsusa@gmail.com>
-Date:   Sat, 9 Jul 2022 12:20:21 +0300
-Message-ID: <CAKZDKkCKN5p+6LNhGP=88n5ZYzzERAMdH-XX-DunqQw+dsw0iQ@mail.gmail.com>
-Subject: Confirm Receipt
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello Dear,
+Adhere to Linux kernel coding style.
 
-I am Daniel Affum a retired civil servant i have a  business to
-discuss with you from the Eastern part of Africa aimed at agreed
-percentage upon your acceptance of my hand in business and friendship.
-Kindly respond to me if you are interested to partner with me for an
-update.Very important.
+Reported by checkpatch:
 
-Yours Sincerely,
-Jacob John.
-For,
-Daniel Affum.
-Reply to: danielaffum005@yahoo.com
+CHECK: usleep_range is preferred over udelay
+
+Signed-off-by: Christos Kollintzas <c.kollintzas.92@gmail.com>
+---
+ drivers/staging/fbtft/fb_upd161704.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/staging/fbtft/fb_upd161704.c b/drivers/staging/fbtft/fb_upd161704.c
+index c680160d6380..eeafbab4ace1 100644
+--- a/drivers/staging/fbtft/fb_upd161704.c
++++ b/drivers/staging/fbtft/fb_upd161704.c
+@@ -32,27 +32,27 @@ static int init_display(struct fbtft_par *par)
+ 
+ 	/* oscillator start */
+ 	write_reg(par, 0x003A, 0x0001);	/*Oscillator 0: stop, 1: operation */
+-	udelay(100);
++	usleep_range(100, 110);
+ 
+ 	/* y-setting */
+ 	write_reg(par, 0x0024, 0x007B);	/* amplitude setting */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0025, 0x003B);	/* amplitude setting */
+ 	write_reg(par, 0x0026, 0x0034);	/* amplitude setting */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0027, 0x0004);	/* amplitude setting */
+ 	write_reg(par, 0x0052, 0x0025);	/* circuit setting 1 */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0053, 0x0033);	/* circuit setting 2 */
+ 	write_reg(par, 0x0061, 0x001C);	/* adjustment V10 positive polarity */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0062, 0x002C);	/* adjustment V9 negative polarity */
+ 	write_reg(par, 0x0063, 0x0022);	/* adjustment V34 positive polarity */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0064, 0x0027);	/* adjustment V31 negative polarity */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0065, 0x0014);	/* adjustment V61 negative polarity */
+-	udelay(10);
++	usleep_range(10, 15);
+ 	write_reg(par, 0x0066, 0x0010);	/* adjustment V61 negative polarity */
+ 
+ 	/* Basical clock for 1 line (BASECOUNT[7:0]) number specified */
+@@ -60,7 +60,7 @@ static int init_display(struct fbtft_par *par)
+ 
+ 	/* Power supply setting */
+ 	write_reg(par, 0x0019, 0x0000);	/* DC/DC output setting */
+-	udelay(200);
++	usleep_range(200, 210);
+ 	write_reg(par, 0x001A, 0x1000);	/* DC/DC frequency setting */
+ 	write_reg(par, 0x001B, 0x0023);	/* DC/DC rising setting */
+ 	write_reg(par, 0x001C, 0x0C01);	/* Regulator voltage setting */
+-- 
+2.20.1
+
