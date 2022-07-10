@@ -2,92 +2,116 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E67556CA42
-	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Jul 2022 17:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D38856CF34
+	for <lists+linux-fbdev@lfdr.de>; Sun, 10 Jul 2022 15:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbiGIPHV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 9 Jul 2022 11:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47612 "EHLO
+        id S229579AbiGJNA0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 10 Jul 2022 09:00:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiGIPHU (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Jul 2022 11:07:20 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2C743310
-        for <linux-fbdev@vger.kernel.org>; Sat,  9 Jul 2022 08:07:19 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id u12so473418uap.11
-        for <linux-fbdev@vger.kernel.org>; Sat, 09 Jul 2022 08:07:19 -0700 (PDT)
+        with ESMTP id S229469AbiGJNAZ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Sun, 10 Jul 2022 09:00:25 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE41642C;
+        Sun, 10 Jul 2022 06:00:24 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id o19-20020a05600c511300b003a2de48b4bbso2212771wms.5;
+        Sun, 10 Jul 2022 06:00:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=S6qZgE2uPwn/d1eg70KlTI5Q2QqMPkD9Yhl3y2T9a6U=;
-        b=KxSCPghrjFUv31Ms++e9GVPWtkY6rY/jH/g+51FNSssTeMvAxnmCV+8eq+B74E+b1U
-         uJ0R/j2EXxZ4eELUPSGQAsrOY7voZL0ORKvDlf8RkvNAPNZdESmLHBJOAL3R0Q6EV5DP
-         N6vWho1BmqXCVgyo7GfkB5ur4DvvcUuLaA3r5Qg6Q3xXWKm+eiSu99+6QrWPCRtHjqTS
-         eFXVE1hsvLWygElDtKVUazyKudTom3DKGo+Mv+B/764ri7OTlRMkueZA1kaDt48FgVSP
-         7/NU8UQ2AWfkNO/Zlua71jxqLEa+ySCrCme9U9NNYodL4D+q81z1DPgW8OB4H5kBu7Yc
-         D11w==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=URkBqTaJYZiBKaHkMPyuusVxdAfWQV7wmB1QtdU3dqc=;
+        b=H28NNWSz9kCHmESG/8FbsQ+m+Jzxy0qUH0fyz1nTVT1VnfBfH5jiuEPkD53FXHjSzn
+         B/1dX86SUM+LrKgLI+OYmFPx82FdsB7V7yt8sf5XzwbtSzPbPhDXFQePbTiQi3lyyDyP
+         gMD3/4c+Za4D22NF6y4FK7z/NMbKVISAdm+vnmThUgp797/YBqaFhAmGGecJT+SZcrvc
+         nZn0bWReEM8Dfarg2Hm6x7djFxVUPsFttf22okgYsWEwwHRp6hldOhLKJUHUfEK3zrDn
+         HiqibjwQLKcAMiflSho4wiD/UVJX6XpYIzFXuACDbKgxRHdZNZO8RPbciEo4gE2fs92g
+         WkIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=S6qZgE2uPwn/d1eg70KlTI5Q2QqMPkD9Yhl3y2T9a6U=;
-        b=BZAaYYei89Ifm2LPxmw0GcmxGlwSD4OLB90xeMHZoezupRheR6pehYbcvXq4P86oGF
-         Socb0wsG524QhbAv+Ciz37Y4zTzOkc5Us11/ctblqoykVNZanz1D8H8S5xwO90uV7TLl
-         DJaUUEajX8G3LBvrkR21dZ1WMjl39GZE7RRyfK8FpYQqGorwklZ/G5163KUCKTX96POi
-         wVQDzfDygeyieTRiiroqVOWCos0CrwT7z245yMnZAmGfImVPWd0c3okiwWY7GpWIFM93
-         FzZeXF8iyr0iZsQB457qGX1snRaZ9G/O7VK+z8rhy4OjlxNi6faryC7DLc1yFT+emjSo
-         ZwEA==
-X-Gm-Message-State: AJIora9X/ABCQ8aBIZ0WyE0C7DT1wMvop0R0hfFvU4iKVpuJS1cJnKpv
-        CJaAzf3RCMaxQU8o7Eyb9oLG2J0aKRpKeol1LV0=
-X-Google-Smtp-Source: AGRyM1uY/lfAagfKt6MUwqy5h+d3m26gcVuoVxcR+lzSdxw6U15575gzAL6lAssR+DeAgUwnypB8M+3zuJWxmA4NMFA=
-X-Received: by 2002:ab0:7d08:0:b0:382:80d2:6767 with SMTP id
- y8-20020ab07d08000000b0038280d26767mr3432530uaw.33.1657379237868; Sat, 09 Jul
- 2022 08:07:17 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=URkBqTaJYZiBKaHkMPyuusVxdAfWQV7wmB1QtdU3dqc=;
+        b=KojpgyeKoH2cLjkG0xmtD2aPZuhOAbdEo9wkqDXnqebBrOz6PArZzIebMTDwVDX8d6
+         RC6/BWrLOZXiorJmKMaIlCmdg1W9VwNqDPmTeaphieCauXNkyvq7nS7W7qzZ1L0+PQzK
+         rr5hf8rvjVyxSt1DZIzQ2by+GrBnVVtwNi6Qa4YdKqbrT2pEvwgpfZp4wvxkVT6Q0fbK
+         NvIFgWBWckZnjZYcR9RRfBgqTszrAIfRxRYNLm8ve3hl0XkhB6MyO474UlR3iKoTCHJS
+         3o0++BgyGJJI8lFE4CvKmLRDAzIgAsGASjI1F48Vjhx/EBLtAhGwq6coeAlL/hJIUBiG
+         WycA==
+X-Gm-Message-State: AJIora8Vl5Rx5OHe8cHufP82IIaMPm/3nKqUHfDyTKo9jQvejNaOH0gH
+        zsI7VcNenxAAyWwtNXzNv1M=
+X-Google-Smtp-Source: AGRyM1vsTGSbf96VTwX0XNh02DsOlmP27A9LgNPMyEn1EV6Jd3PuivbWE971HAL4v79NdOzdGIsDng==
+X-Received: by 2002:a05:600c:4f4d:b0:3a1:98de:abde with SMTP id m13-20020a05600c4f4d00b003a198deabdemr10439595wmq.36.1657458022784;
+        Sun, 10 Jul 2022 06:00:22 -0700 (PDT)
+Received: from mandalorian.koija ([2a02:587:4ba0:ca00:f1ee:516:279c:45e9])
+        by smtp.gmail.com with ESMTPSA id j2-20020a05600c2b8200b0039c8a22554bsm3876989wmc.27.2022.07.10.06.00.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Jul 2022 06:00:22 -0700 (PDT)
+Date:   Sun, 10 Jul 2022 16:00:19 +0300
+From:   Christos Kollintzas <c.kollintzas.92@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: replace udelay with usleep_range
+Message-ID: <YsrNY+uU8tUXJiPV@mandalorian.koija>
+References: <YslTQLhM7GSaGXki@mandalorian.koija>
+ <YslY25NnW6O5Tn+p@kroah.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:3151:0:0:0:0:0 with HTTP; Sat, 9 Jul 2022 08:07:13 -0700 (PDT)
-Reply-To: info@nitoscebu.com
-From:   "Robert Avtandilyan." <sanusilamid742@gmail.com>
-Date:   Sat, 9 Jul 2022 16:07:13 +0100
-Message-ID: <CAOaQi2BGiZh0tc3ex7WTSnS+WHFso_wt9Hju2Z0pRfEc63ynyQ@mail.gmail.com>
-Subject: Urgent Call to Rescue
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_MONEY_PERCENT,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YslY25NnW6O5Tn+p@kroah.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-Hello,
+On Sat, Jul 09, 2022 at 12:30:51PM +0200, Greg KH wrote:
+> On Sat, Jul 09, 2022 at 01:06:56PM +0300, Christos Kollintzas wrote:
+> > Adhere to Linux kernel coding style.
+> > 
+> > Reported by checkpatch:
+> > 
+> > CHECK: usleep_range is preferred over udelay
+> > 
+> > Signed-off-by: Christos Kollintzas <c.kollintzas.92@gmail.com>
+> > ---
+> >  drivers/staging/fbtft/fb_upd161704.c | 18 +++++++++---------
+> >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/drivers/staging/fbtft/fb_upd161704.c b/drivers/staging/fbtft/fb_upd161704.c
+> > index c680160d6380..eeafbab4ace1 100644
+> > --- a/drivers/staging/fbtft/fb_upd161704.c
+> > +++ b/drivers/staging/fbtft/fb_upd161704.c
+> > @@ -32,27 +32,27 @@ static int init_display(struct fbtft_par *par)
+> >  
+> >  	/* oscillator start */
+> >  	write_reg(par, 0x003A, 0x0001);	/*Oscillator 0: stop, 1: operation */
+> > -	udelay(100);
+> > +	usleep_range(100, 110);
+> 
+> When doing these types of changes, you really need access to the
+> hardware involved in order to be able to properly test it.
+> 
+> Especially for this type of function which is trying to do timing
+> changes which the hardware requires.
+> 
+> Did you test this on the real hardware and did it work properly?
+> 
+> thanks,
+> 
+> greg k-h
 
-Greetings from Moscow - Russia.
+I did not.
 
-I got your contact from the internet, though I didn't keep record of
-the exact website on the internet since I'm not sure if you would be
-interested in the deal.
+I will try to find the hardware and send a patch that is
+properly tested.
 
-I closed my Oil & Gas deal in Russia because of US, EU & NATO Members
-Sanctions on Russia from making wire transfer to all over Europe,
-America and Asia due to Russia military invasion on Ukraine. But
-before the sanction i have pulled my money $125, 500, 000. 00 USD from
-my bank accounts in Russia and i want you to help me and receive the
-money cash in suitcases for safe keeping place / account for
-investment.
+thanks,
 
-Please the earlier the better. You are entitled to 10% of the total
-sum for your help, and another 15% of profit accruing from profit on
-investments as your share benefits.
-
-I look forward to your reply for further details ASAP.
-
-Yours truly,
-
-Robert Avtandilyan.
+Christos Kollintzas
