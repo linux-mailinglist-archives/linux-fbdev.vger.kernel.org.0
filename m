@@ -2,93 +2,124 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8869E5707A4
-	for <lists+linux-fbdev@lfdr.de>; Mon, 11 Jul 2022 17:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492C6570858
+	for <lists+linux-fbdev@lfdr.de>; Mon, 11 Jul 2022 18:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231744AbiGKPvH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 11 Jul 2022 11:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44668 "EHLO
+        id S231969AbiGKQ3G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 11 Jul 2022 12:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbiGKPu7 (ORCPT
+        with ESMTP id S230442AbiGKQ26 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 11 Jul 2022 11:50:59 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6AE077A51
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 Jul 2022 08:50:40 -0700 (PDT)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by andre.telenet-ops.be with bizsmtp
-        id trqe2700J4C55Sk01rqe5Y; Mon, 11 Jul 2022 17:50:38 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1oAvgD-0036xI-Rt; Mon, 11 Jul 2022 17:50:37 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1oAvgD-006siC-6A; Mon, 11 Jul 2022 17:50:37 +0200
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Michael Schmitz <schmitzmic@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-fbdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 10/10] [RFC] video: fbdev: atari: Remove backward bug-compatibility
-Date:   Mon, 11 Jul 2022 17:50:34 +0200
-Message-Id: <52d52566a80bfd00acdcfc28a24799d3fbf638f6.1657554353.git.geert@linux-m68k.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1657554353.git.geert@linux-m68k.org>
-References: <cover.1657554353.git.geert@linux-m68k.org>
+        Mon, 11 Jul 2022 12:28:58 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C6E252AC;
+        Mon, 11 Jul 2022 09:28:55 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4LhTpq4n5Pz9sc5;
+        Mon, 11 Jul 2022 18:28:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1657556931;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=h0Ew8vbJofZiPTnLGbAIznC2oE+zfCyp3d/IQXhvecc=;
+        b=rcoAD+Bs62GqPvCNjiEGidlJpdRBXoEBlje7Y9vABleFkDiJLxNqThyTi4EFd51BtU3YWz
+        ZPzrRXtF9atPnrgz5i2Mlb7USqMaRMUChdpXzhczAeMRDB1M2BunGUW87Dvrnf2nydwiHw
+        0oGij+ZZqVAED2m69wDjRXs+eFVqP3EC24ifAHkfGgiM4+7MH8dA3g0sUT3oCl4L2WLDIy
+        f62L/iLIxxO4pksmxpiGSXniLBdOsEiFIEE3EmFHTtRbDpREKBc1NTPX40P5eqmlBlhOTU
+        5VNUwkvdSAVas3LWvcmpMEGMaHJOjfwiGcq2IOnLsWeMCsGYXC5jmmVSB0hqIg==
+Message-ID: <a1249136-ac01-c873-f61b-0c8e812909bd@mailbox.org>
+Date:   Mon, 11 Jul 2022 18:28:50 +0200
 MIME-Version: 1.0
+Subject: Re: [PATCH 1/3] drm/fourcc: Add missing big-endian XRGB1555 and
+ RGB565 formats
+Content-Language: en-CA
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux/m68k <linux-m68k@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>,
+        Gerd Hoffmann <kraxel@redhat.com>
+References: <cover.1657300532.git.geert@linux-m68k.org>
+ <0744671ac096a12f0d538906bd324efa71b11400.1657300532.git.geert@linux-m68k.org>
+ <96a87833-d878-dde9-e335-9ea51a4ba406@mailbox.org>
+ <CAMuHMdUgdbZeoFLFL8+Hm-6fG9cg5Wzq++JED3KR5P9YZtRQ4A@mail.gmail.com>
+From:   =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel.daenzer@mailbox.org>
+In-Reply-To: <CAMuHMdUgdbZeoFLFL8+Hm-6fG9cg5Wzq++JED3KR5P9YZtRQ4A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-MBO-RS-ID: 2b4b7a29c4e7fa0b9d9
+X-MBO-RS-META: 979tt788gbjputer4sjzcn38y86iouji
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-As of v2.1.0, falcon_decode_var() contains a quirk to fix a rounding
-error, as explained by Günther Kelleter on Fri, 30 Aug 1996:
+On 2022-07-11 17:30, Geert Uytterhoeven wrote:
+> Hi Michel,
+> 
+> On Mon, Jul 11, 2022 at 5:23 PM Michel Dänzer
+> <michel.daenzer@mailbox.org> wrote:
+>> On 2022-07-08 20:21, Geert Uytterhoeven wrote:
+>>> As of commit eae06120f1974e1a ("drm: refuse ADDFB2 ioctl for broken
+>>> bigendian drivers"), drivers must set the
+>>> quirk_addfb_prefer_host_byte_order quirk to make the drm_mode_addfb()
+>>> compat code work correctly on big-endian machines.
+>>>
+>>> While that works fine for big-endian XRGB8888 and ARGB8888, which are
+>>> mapped to the existing little-endian BGRX8888 and BGRA8888 formats, it
+>>> does not work for big-endian XRGB1555 and RGB565, as the latter are not
+>>> listed in the format database.
+>>>
+>>> Fix this by adding the missing formats.  Limit this to big-endian
+>>> platforms, as there is currently no need to support these formats on
+>>> little-endian platforms.
+>>>
+>>> Fixes: 6960e6da9cec3f66 ("drm: fix drm_mode_addfb() on big endian machines.")
+>>> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>>> ---
+>>> Cirrus is the only driver setting quirk_addfb_prefer_host_byte_order
+>>> and supporting RGB565 or XRGB1555, but no one tried that on big-endian?
+>>> Cirrus does not support DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN
+>>> in cirrus_fb_create, so you cannot get a graphical text console.
+>>>
+>>> Do we need these definitions on little-endian platforms, too?
+>>> Would it be better to use "DRM_FORMAT_{XRGB1555,RGB565} |
+>>> DRM_FORMAT_BIG_ENDIAN" instead of "DRM_FORMAT_HOST_{XRGB1555,RGB565}" in
+>>> formats[]?
+>>
+>> The intention of DRM_FORMAT_HOST_* is that they are macros in include/drm/drm_fourcc.h which just map to little endian formats defined in drivers/gpu/drm/drm_fourcc.c. Since this is not possible for big endian hosts for XRGB1555 or RGB565 (or any other format with non-8-bit components), this isn't applicable here.
+> 
+> I read that as that you prefer to write
+> "DRM_FORMAT_{XRGB1555,RGB565} | DRM_FORMAT_BIG_ENDIAN" in formats[]?
 
-    This diff removes the now obsolete Falcon video option "pwrsave", and
-    fixes a rounding error that is triggered by the resolution switching X
-    server (those who use the pixel clock value 39722 in their /etc/fb.modes
-    should change it to 39721).
+In other drivers for hardware which can access these formats as big endian, yes.
 
-However, this causes the modified video mode returned by
-falcon_decode_var() to not match the video mode returned by
-falcon_encode_var().  Fix this by dropping the quirk.
+Note that AFAIK little if any user-space code uses DRM_FORMAT_BIG_ENDIAN yet though.
 
-Unfortunately /etc/fb.modes in fbset was never updated, so the
-"640x480-60" mode still contains the wrong pixclock.
-Hence this change may introduce a regression.
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
-Any comments?
----
- drivers/video/fbdev/atafb.c | 4 ----
- 1 file changed, 4 deletions(-)
+>> It's also doubtful that Cirrus hardware would access these formats as big endian (drivers/gpu/drm/tiny/cirrus.c has no endianness references at all, and the hardware was surely designed for x86 first and foremost).
+>>
+>> Instead, fbcon (and user space) needs to convert to little endian when using DRM_FORMAT_HOST_{XRGB1555,RGB565} with the cirrus driver on big endian hosts.
+> 
+> Yeah, probably the cirrus driver can use some fixes...
 
-diff --git a/drivers/video/fbdev/atafb.c b/drivers/video/fbdev/atafb.c
-index e8b178e732e2c785..2bc4089865e60ac2 100644
---- a/drivers/video/fbdev/atafb.c
-+++ b/drivers/video/fbdev/atafb.c
-@@ -1008,10 +1008,6 @@ static int falcon_decode_var(struct fb_var_screeninfo *var,
- 	else if (yres_virtual < yres)
- 		yres_virtual = yres;
- 
--	/* backward bug-compatibility */
--	if (var->pixclock > 1)
--		var->pixclock -= 1;
--
- 	par->hw.falcon.line_width = bpp * xres / 16;
- 	par->hw.falcon.line_offset = bpp * (xres_virtual - xres) / 16;
- 
+I suspect the fix here would rather need to be in the DRM glue code for fbcon than in the driver. Or maybe some kind of byte-swapping helper(s) which can be used by drivers.
+
+
 -- 
-2.25.1
-
+Earthling Michel Dänzer            |                  https://redhat.com
+Libre software enthusiast          |         Mesa and Xwayland developer
