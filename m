@@ -2,110 +2,203 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 252D4571565
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Jul 2022 11:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151A457182D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Jul 2022 13:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbiGLJK5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Tue, 12 Jul 2022 05:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
+        id S232503AbiGLLMl (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 12 Jul 2022 07:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbiGLJK5 (ORCPT
+        with ESMTP id S229830AbiGLLMj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 12 Jul 2022 05:10:57 -0400
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573F99CE1C;
-        Tue, 12 Jul 2022 02:10:56 -0700 (PDT)
-Received: by mail-qt1-f180.google.com with SMTP id ck6so8903898qtb.7;
-        Tue, 12 Jul 2022 02:10:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ogZIuR/DNUWYAnvjSDu9n0AhaTeKYHQRl89eLWPlDEo=;
-        b=LuOleYcdeHnvbeF4+x6flEaNrBNwKMUHbUSbpcs/5g9PEwrySYPAnXFdEo7HEWbztp
-         Bfxqv+GALPjapKa0Q2A5x1iN3FJAfhgixuuU9j+IxMgiiHCHMuGzSSq83OCk6SS1aCJy
-         jTe4XjnRz//eVrWyeofe+EUP3Q1OMS1k7AoomtwSPP8nU+PMp9h3p2vIRbWal0Pdc4ld
-         dFcQHK6BY87mLcLte9DdCbvhw8SZY4n5L0+Fr/ER5hfQR93+04g50SOXXXKrxIfaK8c2
-         bZyxHtJwxUrohZ85VoXcKZqXNtsN05JQQ7rKfbUZLpSOaIuHn3oTv1YKRzMhcLrqMAQr
-         gOUA==
-X-Gm-Message-State: AJIora/rdgB/36xYDKlvw4UEtdFHwVyAuwGAGZchdR7JuititvGEE+Tm
-        bg+7Waavy35R+FQh6J1ix8UWoGyoWYGsNQ==
-X-Google-Smtp-Source: AGRyM1vK8rlLBJMjSaehJAPkF1WdlWuzbUVpQZAsxgJKYrBqBxRy98haDwT6SmP4butduEfh/TCx1g==
-X-Received: by 2002:a05:622a:60f:b0:31c:c5da:eb49 with SMTP id z15-20020a05622a060f00b0031cc5daeb49mr16659451qta.443.1657617055390;
-        Tue, 12 Jul 2022 02:10:55 -0700 (PDT)
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
-        by smtp.gmail.com with ESMTPSA id u20-20020a05622a011400b0031ea53f4c5esm7264192qtw.83.2022.07.12.02.10.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Jul 2022 02:10:54 -0700 (PDT)
-Received: by mail-yb1-f171.google.com with SMTP id g4so12882139ybg.9;
-        Tue, 12 Jul 2022 02:10:54 -0700 (PDT)
-X-Received: by 2002:a05:6902:701:b0:66e:a06d:53d7 with SMTP id
- k1-20020a056902070100b0066ea06d53d7mr20639488ybt.604.1657617053347; Tue, 12
- Jul 2022 02:10:53 -0700 (PDT)
+        Tue, 12 Jul 2022 07:12:39 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11141B027E;
+        Tue, 12 Jul 2022 04:12:31 -0700 (PDT)
+X-UUID: 5537eae4c25a47e0bbcede1411d1b35e-20220712
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:58da59a8-9a2a-4c87-b6f7-5e25c1c58ef8,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:-5
+X-CID-META: VersionHash:0f94e32,CLOUDID:c37a1364-0b3f-4b2c-b3a6-ed5c044366a0,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:1,File:nil
+        ,QS:nil,BEC:nil,COL:0
+X-UUID: 5537eae4c25a47e0bbcede1411d1b35e-20220712
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+        (envelope-from <rex-bc.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 2070216113; Tue, 12 Jul 2022 19:12:25 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Tue, 12 Jul 2022 19:12:24 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Tue, 12 Jul 2022 19:12:24 +0800
+From:   Bo-Chen Chen <rex-bc.chen@mediatek.com>
+To:     <chunkuang.hu@kernel.org>, <p.zabel@pengutronix.de>,
+        <daniel@ffwll.ch>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
+        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
+        <airlied@linux.ie>
+CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
+        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
+        <angelogioacchino.delregno@collabora.com>, <ck.hu@mediatek.com>,
+        <liangxu.xu@mediatek.com>, <dri-devel@lists.freedesktop.org>,
+        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-fbdev@vger.kernel.org>,
+        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>
+Subject: [PATCH v14 00/10] drm/mediatek: Add MT8195 DisplayPort driver
+Date:   Tue, 12 Jul 2022 19:12:13 +0800
+Message-ID: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <cover.1657300532.git.geert@linux-m68k.org> <0744671ac096a12f0d538906bd324efa71b11400.1657300532.git.geert@linux-m68k.org>
- <96a87833-d878-dde9-e335-9ea51a4ba406@mailbox.org> <CAMuHMdUgdbZeoFLFL8+Hm-6fG9cg5Wzq++JED3KR5P9YZtRQ4A@mail.gmail.com>
- <20220712074715.kopstlvz4q6npaye@sirius.home.kraxel.org> <CAMuHMdVrf7fgzumcSnZJ3OMGqA34YExXcF3O15YXYpA1ykgKyQ@mail.gmail.com>
- <20220712083907.3ic7bltstaskz72n@sirius.home.kraxel.org> <CAMuHMdVhxE9aayG8qRMwUuBryiR_ng08m63_+GY8htFCSmUiWg@mail.gmail.com>
- <20220712090305.44jq3olwhwypisoc@sirius.home.kraxel.org> <69a6aac7-0d48-7361-9750-8f242d374d60@mailbox.org>
-In-Reply-To: <69a6aac7-0d48-7361-9750-8f242d374d60@mailbox.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 12 Jul 2022 11:10:41 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWxbF6OsP0+c5hqxDTfHu+Wetcitk1yFiOPECoLtD6zyg@mail.gmail.com>
-Message-ID: <CAMuHMdWxbF6OsP0+c5hqxDTfHu+Wetcitk1yFiOPECoLtD6zyg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] drm/fourcc: Add missing big-endian XRGB1555 and
- RGB565 formats
-To:     =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
-Cc:     Gerd Hoffmann <kraxel@redhat.com>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@linux.ie>,
-        "Linux/m68k" <linux-m68k@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Michel,
+This patch is separated from v10 which is including dp driver, phy driver
+and dpintf driver. This series is only contained the DisplayPort driver.
 
-On Tue, Jul 12, 2022 at 11:09 AM Michel Dänzer
-<michel.daenzer@mailbox.org> wrote:
-> On 2022-07-12 11:03, Gerd Hoffmann wrote:
-> >>> As described above DRM_FORMAT_HOST_RGB565 means bigendian on bigendian
-> >>> hosts and little endian on little endian hosts.  Which is not correct
-> >>> when your hardware does big endian no matter what.
-> >>
-> >> But (a) drm_driver_legacy_fb_format() uses DRM_FORMAT_HOST_RGB565
-> >> if quirk_addfb_prefer_host_byte_order is set,
-> >
-> > Ah, right.  Missed that in 'git grep' output.  Given that traditional
-> > fbdev behavior is to expect native byte order using
-> > DRM_FORMAT_HOST_RGB565 there makes sense indeed.
-> >
-> > Scratch my comment about it being unused then ;)
->
-> DRM_FORMAT_RGB565 | DRM_FORMAT_BIG_ENDIAN is still what the driver should use conceptually, and should match DRM_FORMAT_HOST_RGB565 in drm_driver_legacy_fb_format on a big endian host (which is presumably always the case for the atari driver).
+This series can be tested using 5.19-rc2 kernel and I test it in MT8195
+Tomato Chromebook. Modetest these modes:
 
-Sure, I'll update the patch accordingly.
+for eDP:
+  #0 2256x1504 60.00 2256 2304 2336 2536 1504 1507 1513 1549 235690 flags: phsync, nvsync; type: preferred, driver
+  #1 2256x1504 48.00 2256 2304 2336 2536 1504 1507 1513 1549 188550 flags: phsync, nvsync; type: driver
 
-Gr{oetje,eeting}s,
+for DP:
+  #0 1920x1080 60.00 1920 2008 2052 2200 1080 1084 1089 1125 148500 flags: phsync, pvsync; type: preferred, driver
+  #1 1920x1080 59.94 1920 2008 2052 2200 1080 1084 1089 1125 148352 flags: phsync, pvsync; type: driver
+  #2 1920x1080 50.00 1920 2448 2492 2640 1080 1084 1089 1125 148500 flags: phsync, pvsync; type: driver
+  #3 1680x1050 59.95 1680 1784 1960 2240 1050 1053 1059 1089 146250 flags: nhsync, pvsync; type: driver
+  #4 1600x900 60.00 1600 1624 1704 1800 900 901 904 1000 108000 flags: phsync, pvsync; type: driver
+  #5 1280x1024 60.02 1280 1328 1440 1688 1024 1025 1028 1066 108000 flags: phsync, pvsync; type: driver
+  #6 1280x800 59.81 1280 1352 1480 1680 800 803 809 831 83500 flags: nhsync, pvsync; type: driver
+  #7 1280x720 60.00 1280 1390 1430 1650 720 725 730 750 74250 flags: phsync, pvsync; type: driver
+  #8 1280x720 59.94 1280 1390 1430 1650 720 725 730 750 74176 flags: phsync, pvsync; type: driver
+  #9 1280x720 50.00 1280 1720 1760 1980 720 725 730 750 74250 flags: phsync, pvsync; type: driver
+  #10 1024x768 60.00 1024 1048 1184 1344 768 771 777 806 65000 flags: nhsync, nvsync; type: driver
+  #11 800x600 60.32 800 840 968 1056 600 601 605 628 40000 flags: phsync, pvsync; type: driver
+  #12 720x576 50.00 720 732 796 864 576 581 586 625 27000 flags: nhsync, nvsync; type: driver
+  #13 720x480 60.00 720 736 798 858 480 489 495 525 27027 flags: nhsync, nvsync; type: driver
+  #14 720x480 59.94 720 736 798 858 480 489 495 525 27000 flags: nhsync, nvsync; type: driver
+  #15 640x480 60.00 640 656 752 800 480 490 492 525 25200 flags: nhsync, nvsync; type: driver
+  #16 640x480 59.94 640 656 752 800 480 490 492 525 25175 flags: nhsync, nvsync; type: driver
 
-                        Geert
+Changes from v13 for dp driver:
+dt-binding:
+  - Move data-lanes to port.
+dp drivers:
+  - Reporting for data-lanes using port.
+  - Remove unnecessary drivers.
+  - Refine mtk_dp_aux_transfer().
+  - Refine mtk_dp_hpd_isr_handler().
+  - Remove fec related drivers.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Changes from v12 for dp driver:
+dt-binding:
+  - Fix build error.
+embedded dp drivers:
+  - Revise Kconfig to let this driver independent.
+  - Drop some unused/redundant drivers.
+  - Move some features to patches of external dp and audio.
+  - Refine format error control flow.
+  - Add error control of write register functions.
+  - Use mtk sip common definitions.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Changes from v11 for dp driver:
+dt-binding:
+  - Use data-lanes to determine the max supported lane numbers.
+  - Add mhz to max-linkrate to show the units.
+embedded dp drivers:
+  - Modify Makefile.
+  - Drop some unused/redundant drivers.
+  - Move some features to patches of external dp and audio.
+  - Modify break condition of training loop to control cr/eq fail.
+  - Replace some function/definition with ones of common drm drivers.
+  - Remove dp_lock mutex because it's only locked in power_on/off.
+  - Add drm_dp_aux_(un)register in mtk_dp_bridge_(de)attach.
+
+Changes from v10 for dp driver:
+- Drop return value for write registers to make code more clear.
+- Refine training state.
+- Add property for dt-binding.
+- Add new bug fix patches for audio and suspend.
+- Rebase to v5.19-rc1.
+
+Changes from v9:
+- The DP-Phy is back to being a child device of the DP driver (as in v8)
+- hot plug detection has been added back to Embedded Display Port... as
+  after discussing with mediatek experts, this is needed eventhough the
+  Embedded Display port is not un-pluggable
+- rebased on linux-next
+- simplified/split train_handler function, as suggested by Rex
+- added comments on the sleep/delays present in the code
+- removed previous patch introducing retries when receiving AUX_DEFER as
+  this is already handled in the dp_aux framework
+- added max-lane and max-linkrate device tree u8 properties instead of
+  hardcoded #defines
+
+Older revisions:
+RFC - https://lore.kernel.org/linux-mediatek/20210816192523.1739365-1-msp@baylibre.com/
+v1  - https://lore.kernel.org/linux-mediatek/20210906193529.718845-1-msp@baylibre.com/
+v2  - https://lore.kernel.org/linux-mediatek/20210920084424.231825-1-msp@baylibre.com/
+v3  - https://lore.kernel.org/linux-mediatek/20211001094443.2770169-1-msp@baylibre.com/
+v4  - https://lore.kernel.org/linux-mediatek/20211011094624.3416029-1-msp@baylibre.com/
+v5  - https://lore.kernel.org/all/20211021092707.3562523-1-msp@baylibre.com/
+v6  - https://lore.kernel.org/linux-mediatek/20211110130623.20553-1-granquet@baylibre.com/
+v7  - https://lore.kernel.org/linux-mediatek/20211217150854.2081-1-granquet@baylibre.com/
+v8  - https://lore.kernel.org/linux-mediatek/20220218145437.18563-1-granquet@baylibre.com/
+v9  - https://lore.kernel.org/all/20220327223927.20848-1-granquet@baylibre.com/
+v10 - https://lore.kernel.org/all/20220523104758.29531-1-granquet@baylibre.com/
+v11 - https://lore.kernel.org/r/20220610105522.13449-1-rex-bc.chen@mediatek.com
+v12 - https://lore.kernel.org/all/20220627080341.5087-1-rex-bc.chen@mediatek.com/
+v13 - https://lore.kernel.org/all/20220701062808.18596-1-rex-bc.chen@mediatek.com/
+
+Bo-Chen Chen (2):
+  drm/mediatek: set monitor to DP_SET_POWER_D3 to avoid garbage
+  drm/mediatek: Use cached audio config when changing resolution
+
+Guillaume Ranquet (4):
+  drm/edid: Convert cea_sad helper struct to kernelDoc
+  drm/edid: Add cea_sad helpers for freq/length
+  drm/mediatek: Add MT8195 External DisplayPort support
+  drm/mediatek: DP audio support for MT8195
+
+Jitao Shi (1):
+  drm/mediatek: add hpd debounce
+
+Markus Schneider-Pargmann (3):
+  dt-bindings: mediatek,dp: Add Display Port binding
+  video/hdmi: Add audio_infoframe packing for DP
+  drm/mediatek: Add MT8195 Embedded DisplayPort driver
+
+ .../display/mediatek/mediatek,dp.yaml         |  115 +
+ drivers/gpu/drm/drm_edid.c                    |   73 +
+ drivers/gpu/drm/mediatek/Kconfig              |    9 +
+ drivers/gpu/drm/mediatek/Makefile             |    2 +
+ drivers/gpu/drm/mediatek/mtk_dp.c             | 2951 +++++++++++++++++
+ drivers/gpu/drm/mediatek/mtk_dp_reg.h         |  545 +++
+ drivers/video/hdmi.c                          |   82 +-
+ include/drm/display/drm_dp.h                  |    2 +
+ include/drm/drm_edid.h                        |   26 +-
+ include/linux/hdmi.h                          |    7 +-
+ 10 files changed, 3789 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/mediatek/mediatek,dp.yaml
+ create mode 100644 drivers/gpu/drm/mediatek/mtk_dp.c
+ create mode 100644 drivers/gpu/drm/mediatek/mtk_dp_reg.h
+
+-- 
+2.18.0
+
