@@ -2,191 +2,98 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10BFD5746A8
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 10:24:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76C80574718
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 10:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232656AbiGNIYh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 Jul 2022 04:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50378 "EHLO
+        id S236397AbiGNIhP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 Jul 2022 04:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbiGNIYg (ORCPT
+        with ESMTP id S236864AbiGNIhC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 Jul 2022 04:24:36 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C5939B9B;
-        Thu, 14 Jul 2022 01:24:34 -0700 (PDT)
-X-UUID: fb79233c50374ef9906d04a084b2510a-20220714
-X-CID-UNFAMILIAR: 1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:be979295-5b6b-48f0-bea5-673219d4f0ee,OB:10,L
-        OB:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:54,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:54
-X-CID-INFO: VERSION:1.1.8,REQID:be979295-5b6b-48f0-bea5-673219d4f0ee,OB:10,LOB
-        :0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:54,FILE:0,RULE:Release_HamU,ACT
-        ION:release,TS:54
-X-CID-META: VersionHash:0f94e32,CLOUDID:8e02f832-b9e4-42b8-b28a-6364427c76bb,C
-        OID:d8d06ba71f39,Recheck:0,SF:28|16|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: fb79233c50374ef9906d04a084b2510a-20220714
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
-        (envelope-from <rex-bc.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1261772095; Thu, 14 Jul 2022 16:24:31 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
- Thu, 14 Jul 2022 16:24:29 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.3 via Frontend
- Transport; Thu, 14 Jul 2022 16:24:29 +0800
-Message-ID: <b04f4a68e012157db43f8f7b0887d611f790a9c5.camel@mediatek.com>
-Subject: Re: [PATCH v14 05/10] drm/mediatek: Add MT8195 Embedded DisplayPort
- driver
-From:   Rex-BC Chen <rex-bc.chen@mediatek.com>
-To:     CK Hu <ck.hu@mediatek.com>,
-        "chunkuang.hu@kernel.org" <chunkuang.hu@kernel.org>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "mripard@kernel.org" <mripard@kernel.org>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "airlied@linux.ie" <airlied@linux.ie>
-CC:     "msp@baylibre.com" <msp@baylibre.com>,
-        "granquet@baylibre.com" <granquet@baylibre.com>,
-        Jitao Shi =?UTF-8?Q?=28=E7=9F=B3=E8=AE=B0=E6=B6=9B=29?= 
-        <jitao.shi@mediatek.com>,
-        "wenst@chromium.org" <wenst@chromium.org>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>,
-        LiangXu Xu =?UTF-8?Q?=28=E5=BE=90=E4=BA=AE=29?= 
-        <LiangXu.Xu@mediatek.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Project_Global_Chrome_Upstream_Group 
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Thu, 14 Jul 2022 16:24:24 +0800
-In-Reply-To: <8fad0421bb7a61ae5e2ecabfc93790f1e2f30b63.camel@mediatek.com>
-References: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
-         <20220712111223.13080-6-rex-bc.chen@mediatek.com>
-         <8fad0421bb7a61ae5e2ecabfc93790f1e2f30b63.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Thu, 14 Jul 2022 04:37:02 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B23F3ED4D
+        for <linux-fbdev@vger.kernel.org>; Thu, 14 Jul 2022 01:37:01 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id v16so1531920wrd.13
+        for <linux-fbdev@vger.kernel.org>; Thu, 14 Jul 2022 01:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=XrPG1uZaQRn1UCA0WJJ2pmJQ1csZW3HabgB7E+QXuACfRhko5FjAocWwoGAFMQM+4K
+         maoBv4gTZQXqu9EJzYUg27HWYGn7H4ps8X1YfFKAamIhhLSUESO1F6QG9mJgGHe0KMpr
+         yS6EmWRT7znGhWAi5CHDysnG1OxosqIxRYFf098GB0Xs4T6zMcBwQ+Ijt6ciUPeVVUwm
+         NwEO+Wz1v4Oa+mBtHNRupxuLErGpDho6oqFPRIm2MU+57eHEreDtv9TWX6BBq17KbV3w
+         UCTpqQeOnk576xhvUmMdcgTy5b4PgstjqS11/4Py/0diTc9tD3MngzVuJ3uMtq9Qr/CL
+         qkvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=u7aJeBMfN1xvZTvkYsBBC7QuxOL8awd3pxKnPVqFTNa1VWWnDxD+q4PJa5UnrwsfLl
+         sYq47ZYkuKdGcrKnPCCFVmEOo+TCbnbWIskT0Bh2rbaQgri6XaOP9k9NCTiV8bpsEl9V
+         YPD+YeGKOPsPDEsX9rvyJPdoCiY54MnbFF3gYK223pO/gVAuDz91zB8+KLwUj1XbvagL
+         GQ7oowolF7vjKBfNQN+plW9K5MmE8LHho9aEyCxa3jzo53JX1vSNHcfRzT7rb2AwbzN6
+         aPAy4UBh0t6E7yN1SfNTORfLw/DnzXqbhnC7u+tzUFNqYK4gmh7+iHuA0r6CwVGITFf9
+         2KTw==
+X-Gm-Message-State: AJIora9vWSOjIr1XxJLhw8WzQbB6yhAs49lU78VV87FQw9l4OywLO7bC
+        NeiOI0toyzfs/UB9ofVqKQ9jlnt9g6xyrnSFIh9/5MLRI3+owQ==
+X-Google-Smtp-Source: AGRyM1u3j4Kh8ROf600mZ9n+2mzPHZx1NFVtrSntlSiwIK2NP6HVto6IIpM3hlWxyt39lgmrdSwWdCXGiGrSzCPb6JE=
+X-Received: by 2002:a05:6512:3d27:b0:489:e623:f244 with SMTP id
+ d39-20020a0565123d2700b00489e623f244mr4930609lfv.236.1657787809582; Thu, 14
+ Jul 2022 01:36:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:36:48
+ -0700 (PDT)
+Reply-To: abdwabbomaddahm@gmail.com
+From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
+Date:   Thu, 14 Jul 2022 09:36:48 +0100
+Message-ID: <CAFC-3ifKFkAVLmD=8z4VAKFLX0pV+_h5OJ=Ks62m+0uk+DimKQ@mail.gmail.com>
+Subject: Get back to me... URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:42c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4708]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [abdwabbomaddah746[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [abdwabbomaddah746[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, 2022-07-13 at 16:10 +0800, CK Hu wrote:
-> Hi, Bo-Chen:
-> 
-> On Tue, 2022-07-12 at 19:12 +0800, Bo-Chen Chen wrote:
-> > From: Markus Schneider-Pargmann <msp@baylibre.com>
-> > 
-> > This patch adds a embedded displayport driver for the MediaTek
-> > mt8195
-> > SoC.
-> > 
-> > It supports the MT8195, the embedded DisplayPort units. It offers
-> > DisplayPort 1.4 with up to 4 lanes.
-> > 
-> > The driver creates a child device for the phy. The child device
-> > will
-> > never exist without the parent being active. As they are sharing a
-> > register range, the parent passes a regmap pointer to the child so
-> > that
-> > both can work with the same register range. The phy driver sets
-> > device
-> > data that is read by the parent to get the phy device that can be
-> > used
-> > to control the phy properties.
-> > 
-> > This driver is based on an initial version by
-> > Jitao shi <jitao.shi@mediatek.com>
-> > 
-> > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> > Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> > Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> > ---
-> 
-> [snip]
-> 
-> > +
-> > +struct mtk_dp_timings {
-> > +	struct videomode vm;
-> > +};
-> > +
-> > +struct mtk_dp_irq_sta {
-> > +	bool hpd_inerrupt;
-> > +};
-> > +
-> > +struct mtk_dp_train_info {
-> > +	bool tps3;
-> > +	bool tps4;
-> > +	bool sink_ssc;
-> > +	bool cable_plugged_in;
-> > +	bool cable_state_change;
-> > +	bool cr_done;
-> > +	bool eq_done;
-> > +	/* link_rate is in multiple of 0.27Gbps */
-> > +	int link_rate;
-> > +	int lane_count;
-> > +	struct mtk_dp_irq_sta irq_sta;
-> 
-> There is only one member in struct mtk_dp_irq_sta, so drop struct
-> mtk_dp_irq_sta and use bool hpd_inerrupt directly here.
-> 
-
-Hello CK,
-
-ok, I will drop this.
-
-> > +};
-> > +
-> > +struct mtk_dp_info {
-> > +	u32 depth;
-> > +	enum dp_pixelformat format;
-> > +	struct mtk_dp_timings timings;
-> 
-> There is only one member in struct mtk_dp_timings, so drop struct
-> mtk_dp_timings and use struct videomode vm directly here.
-> 
-
-This structure will add more variable in following patch.
-whole struct is like,
-struct mtk_dp_timings {
-	struct videomode vm;
-	u8 frame_rate;
-	u32 pix_rate_khz;
-};
-
-I want to keep this.
-
-BRs,
-Bo-Chen
-
-
-> Regards,
-> CK
-> 
-> > +};
-> > +
-> 
-> 
-
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
+Abd-Wabbo Maddah
