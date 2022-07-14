@@ -2,241 +2,146 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15552574ABD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 12:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C50574B97
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 13:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238445AbiGNKfI (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 Jul 2022 06:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
+        id S237816AbiGNLMu (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 Jul 2022 07:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238435AbiGNKe7 (ORCPT
+        with ESMTP id S230354AbiGNLMt (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 Jul 2022 06:34:59 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED854BD11;
-        Thu, 14 Jul 2022 03:34:47 -0700 (PDT)
-X-UUID: c013a5dc163c45d0a257b8428da23a83-20220714
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:b3b081c3-be57-49b0-935c-67e6ab94d8c1,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:0
-X-CID-META: VersionHash:0f94e32,CLOUDID:3e64fb32-b9e4-42b8-b28a-6364427c76bb,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: c013a5dc163c45d0a257b8428da23a83-20220714
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <ck.hu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 2014864201; Thu, 14 Jul 2022 18:34:43 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Thu, 14 Jul 2022 18:34:42 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.3 via Frontend
- Transport; Thu, 14 Jul 2022 18:34:42 +0800
-Message-ID: <c5b54815c3667d38473a48d365af8d7520d1acdf.camel@mediatek.com>
-Subject: Re: [PATCH v14 05/10] drm/mediatek: Add MT8195 Embedded DisplayPort
- driver
-From:   CK Hu <ck.hu@mediatek.com>
-To:     Rex-BC Chen <rex-bc.chen@mediatek.com>,
-        "chunkuang.hu@kernel.org" <chunkuang.hu@kernel.org>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "mripard@kernel.org" <mripard@kernel.org>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "airlied@linux.ie" <airlied@linux.ie>
-CC:     "msp@baylibre.com" <msp@baylibre.com>,
-        "granquet@baylibre.com" <granquet@baylibre.com>,
-        Jitao Shi =?UTF-8?Q?=28=E7=9F=B3=E8=AE=B0=E6=B6=9B=29?= 
-        <jitao.shi@mediatek.com>,
-        "wenst@chromium.org" <wenst@chromium.org>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>,
-        LiangXu Xu =?UTF-8?Q?=28=E5=BE=90=E4=BA=AE=29?= 
-        <LiangXu.Xu@mediatek.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Project_Global_Chrome_Upstream_Group 
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Thu, 14 Jul 2022 18:34:41 +0800
-In-Reply-To: <1f698bb3d5d50a6e508cd48e905c8c69415c2fd9.camel@mediatek.com>
-References: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
-         <20220712111223.13080-6-rex-bc.chen@mediatek.com>
-         <24726b8a5994961b966cf90b1f56c71a844d274a.camel@mediatek.com>
-         <1f698bb3d5d50a6e508cd48e905c8c69415c2fd9.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Thu, 14 Jul 2022 07:12:49 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B6A27FFC;
+        Thu, 14 Jul 2022 04:12:48 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 65E0E6601A3B;
+        Thu, 14 Jul 2022 12:12:46 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1657797167;
+        bh=ofHlqQBpp6w/LA7oamUpNLobhMVnwMZheJEW2td7o8w=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=hxx6klICvRWNySKOsGblV95bRhvescjpQujgbjCRX5WR8cHK8YBCFmePUXLNdZAUJ
+         8daIIbAvbjJdtaHbNLzzU0MZYK+UI12ZPzThokFgSrbD/XPnJLOBcBEsWz2ab7+7O0
+         4pGavv5mW0qgixNldFjda4Bhuu0VqYBN5qjr2v6OBe7bn4cuKsO0n01rsTVrm1omn/
+         Y3xawh772Qm9CHqZrASorTMJykvqxsrsNbXeui+7WBpStCqCyqMac4K2QWHt2cTAMj
+         Ab1AAc/1FTdxBUVEwNjnQyH81x2MyqKV8xz0t10xb7F6E8IrwW37akgsIi1RKXqAIM
+         L4WYLItI2jFKQ==
+Message-ID: <67b3a842-66aa-2336-3955-d5aa760cdd4b@collabora.com>
+Date:   Thu, 14 Jul 2022 13:12:43 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v14 03/10] drm/edid: Add cea_sad helpers for freq/length
+Content-Language: en-US
+To:     Bo-Chen Chen <rex-bc.chen@mediatek.com>, chunkuang.hu@kernel.org,
+        p.zabel@pengutronix.de, daniel@ffwll.ch, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, mripard@kernel.org,
+        tzimmermann@suse.de, matthias.bgg@gmail.com, deller@gmx.de,
+        airlied@linux.ie
+Cc:     msp@baylibre.com, granquet@baylibre.com, jitao.shi@mediatek.com,
+        wenst@chromium.org, ck.hu@mediatek.com, liangxu.xu@mediatek.com,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-fbdev@vger.kernel.org,
+        Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
+ <20220712111223.13080-4-rex-bc.chen@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220712111223.13080-4-rex-bc.chen@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, Bo-Chen:
+Il 12/07/22 13:12, Bo-Chen Chen ha scritto:
+> From: Guillaume Ranquet <granquet@baylibre.com>
+> 
+> This patch adds two helper functions that extract the frequency and word
+> length from a struct cea_sad.
+> 
+> For these helper functions new defines are added that help translate the
+> 'freq' and 'byte2' fields into real numbers.
+> 
+> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+> Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+> ---
+>   drivers/gpu/drm/drm_edid.c | 73 ++++++++++++++++++++++++++++++++++++++
+>   include/drm/drm_edid.h     | 14 ++++++++
+>   2 files changed, 87 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> index bc43e1b32092..79316d7f1fd8 100644
+> --- a/drivers/gpu/drm/drm_edid.c
+> +++ b/drivers/gpu/drm/drm_edid.c
+> @@ -4916,6 +4916,79 @@ int drm_edid_to_speaker_allocation(const struct edid *edid, u8 **sadb)
+>   }
+>   EXPORT_SYMBOL(drm_edid_to_speaker_allocation);
+>   
+> +/**
+> + * drm_cea_sad_get_sample_rate - Extract the sample rate from cea_sad
+> + * @sad: Pointer to the cea_sad struct
+> + *
+> + * Extracts the cea_sad frequency field and returns the sample rate in Hz.
+> + *
+> + * Return: Sample rate in Hz or a negative errno if parsing failed.
+> + */
+> +int drm_cea_sad_get_sample_rate(const struct cea_sad *sad)
+> +{
+> +	switch (sad->freq) {
+> +	case DRM_CEA_SAD_FREQ_32KHZ:
+> +		return 32000;
+> +	case DRM_CEA_SAD_FREQ_44KHZ:
+> +		return 44100;
+> +	case DRM_CEA_SAD_FREQ_48KHZ:
+> +		return 48000;
+> +	case DRM_CEA_SAD_FREQ_88KHZ:
+> +		return 88200;
+> +	case DRM_CEA_SAD_FREQ_96KHZ:
+> +		return 96000;
+> +	case DRM_CEA_SAD_FREQ_176KHZ:
+> +		return 176400;
+> +	case DRM_CEA_SAD_FREQ_192KHZ:
+> +		return 192000;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +EXPORT_SYMBOL(drm_cea_sad_get_sample_rate);
+> +
+> +static bool drm_cea_sad_is_pcm(const struct cea_sad *sad)
+> +{
+> +	switch (sad->format) {
+> +	case HDMI_AUDIO_CODING_TYPE_PCM:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
 
-On Thu, 2022-07-14 at 17:09 +0800, Rex-BC Chen wrote:
-> On Thu, 2022-07-14 at 14:51 +0800, CK Hu wrote:
-> > Hi, Bo-Chen:
-> > 
-> > On Tue, 2022-07-12 at 19:12 +0800, Bo-Chen Chen wrote:
-> > > From: Markus Schneider-Pargmann <msp@baylibre.com>
-> > > 
-> > > This patch adds a embedded displayport driver for the MediaTek
-> > > mt8195
-> > > SoC.
-> > > 
-> > > It supports the MT8195, the embedded DisplayPort units. It offers
-> > > DisplayPort 1.4 with up to 4 lanes.
-> > > 
-> > > The driver creates a child device for the phy. The child device
-> > > will
-> > > never exist without the parent being active. As they are sharing
-> > > a
-> > > register range, the parent passes a regmap pointer to the child
-> > > so
-> > > that
-> > > both can work with the same register range. The phy driver sets
-> > > device
-> > > data that is read by the parent to get the phy device that can be
-> > > used
-> > > to control the phy properties.
-> > > 
-> > > This driver is based on an initial version by
-> > > Jitao shi <jitao.shi@mediatek.com>
-> > > 
-> > > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> > > Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> > > Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> > > ---
-> > 
-> > [snip]
-> > 
-> > > +static int mtk_dp_train_tps_2_3(struct mtk_dp *mtk_dp, u8
-> > > target_linkrate,
-> > > +				u8 target_lane_count, int
-> > > *iteration_count,
-> > > +				u8 *lane_adjust,  int *status_control,
-> > > +				u8 *prev_lane_adjust)
-> > > +{
-> > > +	u8 val;
-> > > +	u8 link_status[DP_LINK_STATUS_SIZE] = {};
-> > > +
-> > > +	if (*status_control == 1) {
-> > > +		if (mtk_dp->train_info.tps4) {
-> > > +			mtk_dp_train_set_pattern(mtk_dp, 4);
-> > > +			val = DP_TRAINING_PATTERN_4;
-> > > +		} else if (mtk_dp->train_info.tps3) {
-> > > +			mtk_dp_train_set_pattern(mtk_dp, 3);
-> > > +			val = DP_LINK_SCRAMBLING_DISABLE |
-> > > +				DP_TRAINING_PATTERN_3;
-> > > +		} else {
-> > > +			mtk_dp_train_set_pattern(mtk_dp, 2);
-> > > +			val = DP_LINK_SCRAMBLING_DISABLE |
-> > > +				DP_TRAINING_PATTERN_2;
-> > > +		}
-> > > +		drm_dp_dpcd_writeb(&mtk_dp->aux,
-> > > +				   DP_TRAINING_PATTERN_SET, val);
-> > > +		drm_dp_dpcd_read(&mtk_dp->aux,
-> > > +				 DP_ADJUST_REQUEST_LANE0_1,
-> > > lane_adjust,
-> > > +				 sizeof(*lane_adjust) * 2);
-> > > +
-> > > +		mtk_dp_train_update_swing_pre(mtk_dp,
-> > > +					      target_lane_count,
-> > > lane_adjust);
-> > > +		*status_control = 2;
-> > > +		(*iteration_count)++;
-> > > +	}
-> > > +
-> > > +	drm_dp_link_train_channel_eq_delay(&mtk_dp->aux, mtk_dp-
-> > > > rx_cap);
-> > > 
-> > > +
-> > > +	drm_dp_dpcd_read_link_status(&mtk_dp->aux, link_status);
-> > > +
-> > > +	if (!drm_dp_clock_recovery_ok(link_status, target_lane_count)) 
-> > 
-> > I think this checking is redundant. I think we could just keep
-> > drm_dp_channel_eq_ok() and drop drm_dp_clock_recovery_ok() here
-> > because
-> > if drm_dp_clock_recovery_ok() fail, it imply that
-> > drm_dp_channel_eq_ok() would fail. So just check
-> > drm_dp_channel_eq_ok()
-> > is enough.
-> > 
-> > Regards,
-> > CK
-> > 
-> > > {
-> > > +		mtk_dp->train_info.cr_done = false;
-> > > +		mtk_dp->train_info.eq_done = false;
-> > > +		dev_dbg(mtk_dp->dev, "Link train EQ fail\n");
-> > > +		return -EINVAL;
-> > > +	}
-> > > +
-> > > +	if (drm_dp_channel_eq_ok(link_status, target_lane_count)) {
-> > > +		mtk_dp->train_info.eq_done = true;
-> > > +		dev_dbg(mtk_dp->dev, "Link train EQ pass\n");
-> > > +		return 0;
-> > > +	}
-> > > +
-> 
-> Hello CK,
-> 
-> do you mean like this?
-> if (drm_dp_channel_eq_ok(link_status, target_lane_count)) {
->   mtk_dp-
-> > train_info.eq_done = true;
-> 
->   dev_dbg(mtk_dp->dev, "Link train EQ pass\n");
->   return 0;
-> } else {
->   mtk_dp->train_info.cr_done = false;
->   mtk_dp->train_info.eq_done = false;
->   dev_dbg(mtk_dp->dev, "Link train EQ fail\n");
->   return -EINVAL;
-> }
+Are you sure that you need this helper? That's used only in one function...
+...if you really need this one, though, I don't think that using a switch
+is the best option here.
 
-No, I mean just remove drm_dp_clock_recovery_ok() checking. When
-drm_dp_channel_eq_ok() fail, it should keep retry. If clock recovery
-has some problem, drm_dp_channel_eq_ok() would be finally out of retry
-count.
+Unless anyone is against that (please, reason?), I would be for doing it like:
 
-Regards,
-CK
+	return sad->format == HDMI_AUDIO_CODING_TYPE_PCM;
 
-> 
-> BRs,
-> Bo-Chen
-> 
-> > > +	if (*prev_lane_adjust == link_status[4])
-> > > +		(*iteration_count)++;
-> > > +	else
-> > > +		*prev_lane_adjust = link_status[4];
-> > > +
-> > > +	return -EAGAIN;
-> > > +}
-> > > +
-> > 
-> > 
-> 
-> 
+Everything else looks good to me (and working, too).
 
+Cheers,
+Angelo
