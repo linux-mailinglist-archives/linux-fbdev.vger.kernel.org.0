@@ -2,145 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F065D57499E
-	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 11:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E03C574AD8
+	for <lists+linux-fbdev@lfdr.de>; Thu, 14 Jul 2022 12:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235985AbiGNJux (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 14 Jul 2022 05:50:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58626 "EHLO
+        id S238408AbiGNKjM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 14 Jul 2022 06:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234301AbiGNJuT (ORCPT
+        with ESMTP id S238387AbiGNKjI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 14 Jul 2022 05:50:19 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8FAC12D26;
-        Thu, 14 Jul 2022 02:50:07 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id l11so2244959ybu.13;
-        Thu, 14 Jul 2022 02:50:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UBLXrSfINFn+OkykEbtev0CVHfJNR4Ha91FDbpJe6vw=;
-        b=jco1TUUJamGLBjUMKQJxmHydRs46RlrJYGVBVuXrdgoujFg+bNA+FRuqu9xySWKxm+
-         iJ1MtPVhlh7NDYej/YkFvBQH1rWl4haWJzS8oJMmpCSCAzDBnx5brocoXUfXiB/uAfdM
-         OFCWFOj+Wa/coQ+L/p2yRun8h9nxwhqAUhtPNkhFXDvtJQmjTfMKd8aLu5aGAQ9r4rKt
-         pG3Pip2NDEZSbCM/gpswT2iVdDW8lMLvPHmzuu6unQZJ9SrI3aON/fekc5ofeaTFY0gc
-         5sGqoeNtKloDBRE9yF69b0PWXyQ8T9A1xzHCn4bZ9woFCXpR/laDfNHFMvp3+dX42tLc
-         fMvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UBLXrSfINFn+OkykEbtev0CVHfJNR4Ha91FDbpJe6vw=;
-        b=E7GOkMxKQvvxTeKx1WSSygnh68cvDjSYCp+lefeV/QDM912R3H2C6Y/dSo+9W+tsi+
-         yz21Ew4YxkhiNaZyOKtOH+y/cmbooM8xuG1XIbmcXFRPbBtn9YtlS+3UGEOG3Pq+HHJj
-         xpaWEaOyA1pRCaMMXLmCy6qfuDesdeEbS8YbAwYfQ9ur3VkI4vDMGI4gvN08Elp7eiNe
-         VYVVsSb0VfaIvkL5wZRnJZo3qwEP3eHG91p+0MmSoYeKhQsHhH778BrL/c2iuw4cThKW
-         U56TAyCOM1wjAKqHgmdhs/MO4wujVlAfoPAVuJDoZJnqSYp8CWjlFY4otQokoLt0RN4X
-         keoQ==
-X-Gm-Message-State: AJIora/NIu+kSPoBMxcmQNc7R1Ed2Ovi5gqPSTpMSOaNsixBR++rk7Tx
-        SEZvltegrip4HzPXO2DDsK6UrSxIqUIBdKNG+Hg=
-X-Google-Smtp-Source: AGRyM1uVizFvY1JstQJgDopDPPcpsJilLyYnoZh/AYBxHpJVN7WLVW/f3jKrRS5Q3mGaEk9B3sqdSTOJVu/pQIHekz4=
-X-Received: by 2002:a25:df97:0:b0:66f:6e7c:b3c0 with SMTP id
- w145-20020a25df97000000b0066f6e7cb3c0mr7544434ybg.93.1657792207178; Thu, 14
- Jul 2022 02:50:07 -0700 (PDT)
+        Thu, 14 Jul 2022 06:39:08 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8946B545D3
+        for <linux-fbdev@vger.kernel.org>; Thu, 14 Jul 2022 03:39:03 -0700 (PDT)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by laurent.telenet-ops.be with bizsmtp
+        id uyf1270184C55Sk01yf1Eh; Thu, 14 Jul 2022 12:39:03 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1oBvwx-003The-6V; Thu, 14 Jul 2022 12:20:03 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1oBulZ-00Bf1B-G5; Thu, 14 Jul 2022 11:04:13 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v2 0/5] drm/modes: Command line mode selection fixes and improvements
+Date:   Thu, 14 Jul 2022 11:04:05 +0200
+Message-Id: <cover.1657788997.git.geert@linux-m68k.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-14-peterwu.pub@gmail.com>
- <CAHp75VdwEc9AW1w8ejsxkw+sBTF1dumd99QyzTY9BZaXiViRWQ@mail.gmail.com>
- <CABtFH5K-2+2hbpvpq2nPE5AsznkQxZF2r3MVC64Q39DJhVuUtA@mail.gmail.com>
- <CAHp75VevDwdAKLYEWJgnMDvzuPuFibLuVqH-GKazEOT76wM6_A@mail.gmail.com>
- <CABtFH5LT1Ct_9-B_XRrGwYFmL5kGS6KHR7dNVyUO5z4sTy_6oA@mail.gmail.com>
- <CAHp75VcU_9Ao2CoqiUDZHqhVOjEMZor+hctPp3YYP4HOjYLDUg@mail.gmail.com> <20220714094709.6ekfnfcf5sktiegi@maple.lan>
-In-Reply-To: <20220714094709.6ekfnfcf5sktiegi@maple.lan>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 14 Jul 2022 11:49:30 +0200
-Message-ID: <CAHp75VdVSvux3HRPOj=xWXZoBdn1e=nSmWi9+BZUX69XAPcZPg@mail.gmail.com>
-Subject: Re: [PATCH v4 13/13] video: backlight: mt6370: Add Mediatek MT6370 support
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jul 14, 2022 at 11:47 AM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
->
-> On Thu, Jul 14, 2022 at 11:27:07AM +0200, Andy Shevchenko wrote:
-> > On Thu, Jul 14, 2022 at 9:13 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> > > I have tried two methods so far, as follows
-> > > -------------------------------------------------------------
-> > > /*
-> > >  * prop_val =  1      -->  1 steps --> b'00
-> > >  * prop_val =  2 ~  4 -->  4 steps --> b'01
-> > >  * prop_val =  5 ~ 16 --> 16 steps --> b'10
-> > >  * prop_val = 17 ~ 64 --> 64 steps --> b'11
-> > > */
-> >
-> > So, for 1 --> 0, for 2 --> 1, for 5 --> 2, and for 17 --> 3.
-> > Now, consider x - 1:
-> > 0  ( 0 ) --> 0
-> > 1  (2^0) --> 1
-> > 4  (2^2) --> 2
-> > 16 (2^4) --> 3
-> > 64 (2^6) --> ? (but let's consider that the range has been checked already)
-> >
-> > Since we take the lower limit, it means ffs():
-> >
-> >   y = (ffs(x - 1) + 1) / 2;
-> >
-> > Does it work for you?
->
-> To be honest, for this tiny table, writing code that *doesn't* require intricate
-> deciphering together with a huge comment saying what is does would probably be
-> better:
->
->                 prop_val = (prop_val <=  1 ? 0 :
->                             prop_val <=  4 ? 1 :
->                             prop_val <= 16 ? 2 :
->                                              3);
->
-> This would be "obviously correct" and require no comment.
+	Hi all,
 
-Agree. It will also limit checking (and whatever needed for that).
+This patch series contains fixes and improvements for specifying video
+modes on the kernel command line.
+
+Changes compared to v1[1]:
+  - Add Reviewed-by, Acked-by,
+  - Keep length check.
+
+This has been tested on ARAnyM using a work-in-progress Atari DRM driver
+(more info and related patches can be found in [2]).
+
+Thanks for your comments!
+
+[1] "[PATCH 0/5] drm/modes: Command line mode selection fixes and
+    improvements"
+    https://lore.kernel.org/r/cover.1657301107.git.geert@linux-m68k.org
+[2] "[PATCH v3 00/10] drm: Add support for low-color frame buffer formats"
+    https://lore.kernel.org/r/cover.1657294931.git.geert@linux-m68k.org
+
+Geert Uytterhoeven (5):
+  drm/modes: parse_cmdline: Handle empty mode name part
+  drm/modes: Extract drm_mode_parse_cmdline_named_mode()
+  drm/modes: parse_cmdline: Make mode->*specified handling more uniform
+  drm/modes: Add support for driver-specific named modes
+  drm/modes: parse_cmdline: Add support for named modes containing
+    dashes
+
+ drivers/gpu/drm/drm_modes.c | 56 ++++++++++++++++++++++++++-----------
+ include/drm/drm_connector.h | 10 +++++++
+ 2 files changed, 49 insertions(+), 17 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
