@@ -2,197 +2,79 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 649A857847E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Jul 2022 15:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75B2578A02
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Jul 2022 21:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235613AbiGRN4b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 18 Jul 2022 09:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54116 "EHLO
+        id S234191AbiGRTBM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 18 Jul 2022 15:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235376AbiGRN4a (ORCPT
+        with ESMTP id S234236AbiGRTBI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 18 Jul 2022 09:56:30 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCA12613B;
-        Mon, 18 Jul 2022 06:56:29 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id j29-20020a05600c1c1d00b003a2fdafdefbso7392931wms.2;
-        Mon, 18 Jul 2022 06:56:29 -0700 (PDT)
+        Mon, 18 Jul 2022 15:01:08 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621B82F653
+        for <linux-fbdev@vger.kernel.org>; Mon, 18 Jul 2022 12:01:07 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-31e45527da5so19106667b3.5
+        for <linux-fbdev@vger.kernel.org>; Mon, 18 Jul 2022 12:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5GaiY4B+fVcmnXKAwsi7m8Aj4lGUBvR7I/9W6/qWXhE=;
-        b=d6a2HGJ1DOesvRkrVZgSQ6iPEldBTUlBgQ9k3NnGUVcyNgxyKIcTc2kdsPDQKUOOsh
-         4J/nvEVxTTl0E4onnZS0zUwKWxO9pjnNCxaD0wWN9PVUybjFPl6RI42KIuQHh4vfkShP
-         fJQlXkKDNfpR7KD5Tx3SaGwhuYeDulAK9P9Z9Y+u2LOt3QOnTyc5mgmLl+C/m4bqct+H
-         giOxHhFobOt82+YV6AxC1RpEI/zA+Ycz3NIWz/ErQN2V/axhvGGex1JNxkWjgMyy5t2n
-         hhs2muTFQoUTJSosvO9Qpp180LKtT7CoNF5pYFKvDX2EJhZBU36QFMOIJKTt5qcIpZQi
-         /qwQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=IQXHlBQ3jHSYUTt89EYBBYMpS/rXYtHBaNUJ6e2ZzB07/ETpvOJM0/ZijryokIEfDh
+         oJG0jiachEiIldTcksV5XzU+dy3csOVeMrzVRYAIpdf4PUrGYfI/KNNvcLIWjvmc8oHa
+         yWKlPWKnOFkuEw2Mq2CzZYpqcRK9kJ+LygeUXE0izxh4s3I+nauj1w40rP+480vJCi+X
+         rAPSoEvo8wXV23cydMjOZnuzBivYToT/OwjRuq1iqX/8Isb8Rqougy46FnOdoQuh9Z/u
+         z7xKihQATs9EIIDqpmGAQl/2n//vpMk3ZDpLHQioaLk/1hVBrL4som/CgeyT77yPFwbn
+         VU6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5GaiY4B+fVcmnXKAwsi7m8Aj4lGUBvR7I/9W6/qWXhE=;
-        b=5zZpZym5kmiSbEq3B4j6q6ZxrXgyln0A83cpPOE5SShvv6Rz26oWaI+pgUy0KtNG9N
-         gBmUIaZYRRMWgg1oQf8VOOSfKFIAOmPDCTiuTMHJRZZZ2DBBlDrA5hd9r/OWdFROGQko
-         x46pxDgNCHhXF2ll61qUfjNKV+Zl0ZQ7pL9p15ScxWOiHe7GLb3pkpOhfZK42aO30KmK
-         Qs+/pyMPzI7ST1omR8qCwd+EXYnRXu0aYkkqTlvxVxUxNAYzFQnXg2VKOFaecPkO+17X
-         dnDqefqikzdysRiiUOCNPRHEyw66/etXoZj2dYQRPEFvREo3apfkem6g22+OCiXcRQAB
-         dUjg==
-X-Gm-Message-State: AJIora8S4+ejdwkLtLdTcDleA2NJK1kMDn9ibsHJfD7p7Pl/tb+CONB6
-        k2E8Is69xNuqx7j59R2GwF4lsFzCuwM8ZsBlLV8=
-X-Google-Smtp-Source: AGRyM1t+b+B57G30zmJ6SDH+MUo5HsflVXfg85sd+e8uS0SrrTs9lUsnJSmOWUJajxJe7O8JYC1jvg/HjWwDmFR7Nok=
-X-Received: by 2002:a05:600c:19c8:b0:3a1:792e:f913 with SMTP id
- u8-20020a05600c19c800b003a1792ef913mr32475753wmq.182.1658152587885; Mon, 18
- Jul 2022 06:56:27 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
+        b=3T1jL2Pkif0lZJiHu6MzOARG8et0WqWWjt5WFKpKIxsCL6exbxWOrlgzxjZJRZMpQg
+         p1P1P+R8EbrgEHqaDqlqwFOl90oLo70FnTVfVajaMVhHuanaVOPptt54iCcY6nfkPjAv
+         6pnUuWZ+Ba1GM0ed6c4X13oG1+064DNvlpfmchSVadOx8B6dMOw6gPbR1rA7qW9shCVM
+         O5a3hK1hYf4tLHCHxQb9vRxNCafudc+S9gQzQo79aeHo/p1KdxDqX0IJ7nbZZbG0dcJb
+         zElKQUz3+m2Q+isTRvj77VCrV/RfQ/C6dOvZa+B+3P4RNjkSEVaxwG6CK3EKmLvAXJii
+         EoKQ==
+X-Gm-Message-State: AJIora/Kx6mfaPjGh5ffSLgmmQQT5I56W7G1D/1PnxKCjzlRMg0DuVA0
+        OZDmw2Gdcna/YFU2fLokxAxcuO9l1sjj/ioYmO4=
+X-Google-Smtp-Source: AGRyM1sOF4caZ/Mzb7i1HwUB8dyXYAmjf9y+Pd1nVHRKiUHeMR6opOrMc10oZNu5DLkN2HS0cpkKNGEh0T+MU99Jmes=
+X-Received: by 2002:a81:5747:0:b0:31d:1bb8:65b7 with SMTP id
+ l68-20020a815747000000b0031d1bb865b7mr30830046ywb.168.1658170865217; Mon, 18
+ Jul 2022 12:01:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-9-peterwu.pub@gmail.com>
- <CAHp75VdCgdTOu-CdNo9XGY+PrhPh93v_CkAHJC6hkArsKeiXbA@mail.gmail.com>
- <20220718080831.GA31509@cyhuang-hp-elitebook-840-g3.rt> <CAHp75Ve2_UcS9e3pJC2j4FBc21=S8878tQusyxNV1mXtQG423w@mail.gmail.com>
-In-Reply-To: <CAHp75Ve2_UcS9e3pJC2j4FBc21=S8878tQusyxNV1mXtQG423w@mail.gmail.com>
-From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Mon, 18 Jul 2022 21:56:15 +0800
-Message-ID: <CADiBU3-DbJpD_pyGaOsh8EF=0NpCWgUP5T=RHgxXzwqZzwCyQA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
- tcpci driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
+Received: by 2002:a05:6919:4004:b0:cc:50ff:b3d8 with HTTP; Mon, 18 Jul 2022
+ 12:01:04 -0700 (PDT)
+Reply-To: lilywilliam989@gmail.com
+From:   Lily William <sgtalberts@gmail.com>
+Date:   Mon, 18 Jul 2022 11:01:04 -0800
+Message-ID: <CALPTejMFgL0Bg7jCKa7j+5KxVv_jnSM4ZPq-QhHCiUpG_ZswsQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=
-=8818=E6=97=A5 =E9=80=B1=E4=B8=80 =E6=99=9A=E4=B8=8A7:39=E5=AF=AB=E9=81=93=
-=EF=BC=9A
->
-> On Mon, Jul 18, 2022 at 10:08 AM ChiYuan Huang <u0084500@gmail.com> wrote=
-:
-> > On Fri, Jul 15, 2022 at 03:10:42PM +0200, Andy Shevchenko wrote:
-> > > On Fri, Jul 15, 2022 at 1:28 PM ChiaEn Wu <peterwu.pub@gmail.com> wro=
-te:
->
-> ...
->
-> > > > This commit add support for the Type-C & Power Delivery controller =
-in
-> > >
-> > > This commit add -> Add
-> > >
-> > Upper case? Or rewrite it as 'This commit is to add .....'?
->
-> Please, read this documentation [1] for better understanding. It
-> should clarify this and perhaps other possible questions.
->
-> [1]: https://www.kernel.org/doc/html/latest/process/submitting-patches.ht=
-ml#describe-your-changes
->
-I'm thinking why to change it from 'add' to "Add'.
-Ah, I misunderstand it.
-> > > > MediaTek MT6370 IC.
->
-> ...
->
-> > > > +       ret =3D devm_request_threaded_irq(dev, priv->irq, NULL,
-> > > > +                                       mt6370_irq_handler, IRQF_ON=
-ESHOT,
-> > > > +                                       dev_name(dev), priv);
-> > > > +       if (ret) {
-> > >
-> > > > +               tcpci_unregister_port(priv->tcpci);
-> > >
-> > > This is wrong.
-> > > You mixed devm_ with non-devm. Either drop devm_ *after* the first
-> > > non-devm_ call, or convert everything to be managed.
-> > >
-> > How about to add 'devm_add_action_or_reset' for tcpci_unregister_port?
-> > This will convert all as 'devm_' version.
->
-> I think it would work, that wrapper was designed to cover cases like this=
-.
->
-> > > > +               return dev_err_probe(dev, ret, "Failed to allocate =
-irq\n");
-> > > > +       }
->
-> ...
->
-> > > > +static int mt6370_tcpc_remove(struct platform_device *pdev)
-> > > > +{
-> > > > +       struct mt6370_priv *priv =3D platform_get_drvdata(pdev);
-> > >
-> > > > +       disable_irq(priv->irq);
-> > >
-> > > Why?
-> > > An ugly workaround due to ordering issues in ->probe()?
-> > >
-> > Yes, due to the ordering in probe.
-> > 'bus remove' will be called before device resource releases.
-> >
-> > Like as you said, another way is to convert all as non-devm
-> > version after 'tcpci_unregister_port'.
-> >
-> > If to keep the original order, 'disable_irq' before
-> > 'tcpci_unregister_port' can make the flow more safe.
-> >
-> > Or you can think one case if irq triggers after
-> > 'tcpci_unregister_port'. Null pointer occurs.
-> >
-> > Anyway, in next revision, I'll convert all to be 'devm_' version.
-> > For this remove callback, only 'dev_pm_clear_wake_irq' and
-> > 'device_init_wakeup' will be kept.
-> >
-> > Is this better?
->
-> Sounds like a plan!
->
-Already did. Just to double confirm the changes.
-Thanks. All are clear.
-> > > > +       tcpci_unregister_port(priv->tcpci);
-> > > > +       dev_pm_clear_wake_irq(&pdev->dev);
-> > > > +       device_init_wakeup(&pdev->dev, false);
-> > > > +
-> > > > +       return 0;
-> > > > +}
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Hi Dear,
+
+My name is Dr Lily William from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
+
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
+
+Thanks
+
+With love
+Lily
