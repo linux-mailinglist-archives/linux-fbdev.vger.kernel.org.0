@@ -2,167 +2,274 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B2157E6A6
-	for <lists+linux-fbdev@lfdr.de>; Fri, 22 Jul 2022 20:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5EBA57F0D6
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 Jul 2022 19:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236047AbiGVSh6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 22 Jul 2022 14:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
+        id S233478AbiGWR6M (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 23 Jul 2022 13:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbiGVSh4 (ORCPT
+        with ESMTP id S233098AbiGWR5w (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 22 Jul 2022 14:37:56 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E385EA0271
-        for <linux-fbdev@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id u19so9075776lfs.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
-        b=GsqhyOyvPqQLTvBum+zuJxJdCWumdKt28rH2mPmYbBK74XD17jt60KtD0pMHpo/hya
-         vb9wzTzbNdeHuA/5g/kHobFtb0+H7CYDfb4AvZumRqW3JnejJKFeINvR34dlTLchYXjz
-         j0UREVOivqXUfB4/IgLh/3GwMH3nmWpkN29OsnadwZiyJhvuC8Ke+A7q5rONII1LLIRN
-         ur9/WC2nNosjE3LvdRSxF0kGBq3CGOT6wxtYRhP1t3tA3RPVu4/9VS+clhFLMjMPW09o
-         1TD97bVIN/s+O48yV/5C3XwcnVszKfIepyHe6JQqce4HYChtqdx1Ean31k2MwSuBhPl2
-         mZzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
-        b=QZM0dzZMZbtg66aNrrVTQB5UOkFEO+rSY5FiZq848/yiqTb69G8t/oi3WaYCjax7aK
-         X2qVgCSbJbyoP6SAFeJQ3mJHaJ3u9rxwalOWzowvs7GLLS+KEw6NSnQHY6qv6tR9u6WT
-         PF3o23kCY5h0lYJqukA31+5GuyoOGHr0fUeMUVdE4mopwORKkI7B6rH+Wc2rD6v/o3Mb
-         QXDNfHOzO0Rr+w0K/+lbs8vPiII4aoGgfvIAofEgjf6xr62m5gTCoRLgmVB++0erD44P
-         xQZkdUX0Fb6cyM8H/qipa919864N3Wugow11AjHSEshBJR27vXIJiB6rrCR/MS6lmKPI
-         CIpQ==
-X-Gm-Message-State: AJIora/bmrGtMvLA97Gb4KBsMLfuq66qgMUJmPHYbfvCeJDrERwPnaBf
-        /9cHs8298WUP1nfS2Yt7Tu0Aqw==
-X-Google-Smtp-Source: AGRyM1t4tkeV7OyDpZcsS6qCtak/AfOICQG9L4dyANvy9yS4TYY7Ac7Z+0mbnuyWn6CiHaHsFou02A==
-X-Received: by 2002:a05:6512:2622:b0:481:5b17:58e7 with SMTP id bt34-20020a056512262200b004815b1758e7mr478609lfb.600.1658515073264;
-        Fri, 22 Jul 2022 11:37:53 -0700 (PDT)
-Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
-        by smtp.gmail.com with ESMTPSA id d15-20020a0565123d0f00b0048a7222eb8bsm1008194lfv.135.2022.07.22.11.37.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Jul 2022 11:37:52 -0700 (PDT)
-Message-ID: <1a03d894-3f4c-fb57-5f05-ad7bf11f5488@linaro.org>
-Date:   Fri, 22 Jul 2022 20:37:49 +0200
+        Sat, 23 Jul 2022 13:57:52 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728711AD89
+        for <linux-fbdev@vger.kernel.org>; Sat, 23 Jul 2022 10:57:50 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oFJNq-0007TY-NT; Sat, 23 Jul 2022 19:57:46 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oFJNo-002l3m-LB; Sat, 23 Jul 2022 19:57:44 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oFJNn-00736y-FD; Sat, 23 Jul 2022 19:57:43 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Helge Deller <deller@gmx.de>, Shawn Guo <shawnguo@kernel.org>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-fbdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 1/4] video: fb: imxfb: Drop platform data support
+Date:   Sat, 23 Jul 2022 19:57:17 +0200
+Message-Id: <20220723175720.76933-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 1/6] dt-bindings: panel: explicitly list SPI CPHA and CPOL
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Marek Belisko <marek@goldelico.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Christian Eggers <ceggers@arri.de>,
-        Beniamin Bia <beniamin.bia@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
-        Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
-        Cristian Pop <cristian.pop@analog.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Matheus Tavares <matheus.bernardino@usp.br>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Stefan Wahren <stefan.wahren@in-tech.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
-        linux-spi@vger.kernel.org
-References: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
- <20220721153155.245336-2-krzysztof.kozlowski@linaro.org>
- <20220721193004.GA1783390-robh@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220721193004.GA1783390-robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6660; h=from:subject; bh=y89wE7182nnsNf8FmAenMhLhHybFXcToTl7us5lNukY=; b=owGbwMvMwMV48I9IxdpTbzgZT6slMSTdMcuLjXbLuqlU5rggvf+zdJrix7nr1n/3N9R567RVWpnh yXzhTkZjFgZGLgZZMUWWuiItsQkSa/7blSzhhhnEygQyhYGLUwAmEh3LwbDgQ/EeiTWc88NUs4Uyrs pmqMoutdd11e0zUTtoPz3VZVv11Fhvzta5S2613CreZqcTXO//SppTVn9ypjvTPHuz7wETO8XPKdum r2yoTm1Ydt5msRPHHaUT3ie2n9mmf8v0yBmFJ3de+h9Se1u+yP1wXH329je3Qxt3NaXvWKQuwier4D rv7NpvaQXWT2Na2fyfvLNQeKbaXFopJjz1ndcttYKbJqv+XJTfmDq1wbHy0DP1I05P1R4fFFwU6LGu /rtgmrtNuL4F91fZqLtbO7/1rVf1srgTsqvR5n75wwviFj9y09e4LdWJeHXp7dxls0KCdXdqfdLb96 mrX3exoENsVal+XLLn/786TAU2AA==
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 21/07/2022 21:30, Rob Herring wrote:
-> On Thu, Jul 21, 2022 at 05:31:50PM +0200, Krzysztof Kozlowski wrote:
->> The spi-cpha and spi-cpol properties are device specific and should be
->> accepted only if device really needs them.  Explicitly list them in
->> device bindings in preparation of their removal from generic
->> spi-peripheral-props.yaml schema.
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>  .../bindings/display/panel/lgphilips,lb035q02.yaml   | 10 ++++++++++
->>  .../bindings/display/panel/samsung,ld9040.yaml       | 10 ++++++++++
->>  .../bindings/display/panel/samsung,lms380kf01.yaml   | 12 +++++++++---
->>  .../bindings/display/panel/samsung,lms397kf04.yaml   | 12 +++++++++---
->>  .../bindings/display/panel/samsung,s6d27a1.yaml      | 12 +++++++++---
->>  .../bindings/display/panel/sitronix,st7789v.yaml     | 10 ++++++++++
->>  .../devicetree/bindings/display/panel/tpo,td.yaml    | 10 ++++++++++
->>  7 files changed, 67 insertions(+), 9 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> index 5e4e0e552c2f..0bd7bbad5b94 100644
->> --- a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> +++ b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> @@ -21,6 +21,16 @@ properties:
->>    enable-gpios: true
->>    port: true
->>  
->> +  spi-cpha:
->> +    type: boolean
->> +    description:
->> +      The device requires shifted clock phase (CPHA) mode.
->> +
->> +  spi-cpol:
->> +    type: boolean
->> +    description:
->> +      The device requires inverse clock polarity (CPOL) mode.
-> 
-> Not great duplicating the type and description everywhere.
-> 
-> We can move the definition back to spi-controller.yaml, so then that 
-> does type checking of the property, but not presence/absence checks.
+No source file but the driver itself includes the header containing the
+platform data definition. The last user is gone since commit
+8485adf17a15 ("ARM: imx: Remove imx device directory").
 
-If I understand correctly, all client devices (which do no reference
-spi-controller) will need to explicitly mention CPHA/CPOL. Good idea.
+So we can safely drop platform data support.
 
-Best regards,
-Krzysztof
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/video/fbdev/imxfb.c               | 99 ++++++++---------------
+ include/linux/platform_data/video-imxfb.h | 12 ---
+ 2 files changed, 34 insertions(+), 77 deletions(-)
+
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index a2f644c97f28..85a5bf5639d9 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -656,7 +656,6 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ 
+ static int imxfb_init_fbinfo(struct platform_device *pdev)
+ {
+-	struct imx_fb_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 	struct imxfb_info *fbi = info->par;
+ 	struct device_node *np;
+@@ -690,25 +689,20 @@ static int imxfb_init_fbinfo(struct platform_device *pdev)
+ 	info->fbops			= &imxfb_ops;
+ 	info->flags			= FBINFO_FLAG_DEFAULT |
+ 					  FBINFO_READS_FAST;
+-	if (pdata) {
+-		fbi->lscr1			= pdata->lscr1;
+-		fbi->dmacr			= pdata->dmacr;
+-		fbi->pwmr			= pdata->pwmr;
+-	} else {
+-		np = pdev->dev.of_node;
+-		info->var.grayscale = of_property_read_bool(np,
+-						"cmap-greyscale");
+-		fbi->cmap_inverse = of_property_read_bool(np, "cmap-inverse");
+-		fbi->cmap_static = of_property_read_bool(np, "cmap-static");
+ 
+-		fbi->lscr1 = IMXFB_LSCR1_DEFAULT;
++	np = pdev->dev.of_node;
++	info->var.grayscale = of_property_read_bool(np,
++					"cmap-greyscale");
++	fbi->cmap_inverse = of_property_read_bool(np, "cmap-inverse");
++	fbi->cmap_static = of_property_read_bool(np, "cmap-static");
+ 
+-		of_property_read_u32(np, "fsl,lpccr", &fbi->pwmr);
++	fbi->lscr1 = IMXFB_LSCR1_DEFAULT;
+ 
+-		of_property_read_u32(np, "fsl,lscr1", &fbi->lscr1);
++	of_property_read_u32(np, "fsl,lpccr", &fbi->pwmr);
+ 
+-		of_property_read_u32(np, "fsl,dmacr", &fbi->dmacr);
+-	}
++	of_property_read_u32(np, "fsl,lscr1", &fbi->lscr1);
++
++	of_property_read_u32(np, "fsl,dmacr", &fbi->dmacr);
+ 
+ 	return 0;
+ }
+@@ -863,10 +857,10 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	struct imxfb_info *fbi;
+ 	struct lcd_device *lcd;
+ 	struct fb_info *info;
+-	struct imx_fb_platform_data *pdata;
+ 	struct resource *res;
+ 	struct imx_fb_videomode *m;
+ 	const struct of_device_id *of_id;
++	struct device_node *display_np;
+ 	int ret, i;
+ 	int bytes_per_pixel;
+ 
+@@ -884,8 +878,6 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	if (!res)
+ 		return -ENODEV;
+ 
+-	pdata = dev_get_platdata(&pdev->dev);
+-
+ 	info = framebuffer_alloc(sizeof(struct imxfb_info), &pdev->dev);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -898,43 +890,34 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto failed_init;
+ 
+-	if (pdata) {
+-		if (!fb_mode)
+-			fb_mode = pdata->mode[0].mode.name;
+-
+-		fbi->mode = pdata->mode;
+-		fbi->num_modes = pdata->num_modes;
+-	} else {
+-		struct device_node *display_np;
+-		fb_mode = NULL;
+-
+-		display_np = of_parse_phandle(pdev->dev.of_node, "display", 0);
+-		if (!display_np) {
+-			dev_err(&pdev->dev, "No display defined in devicetree\n");
+-			ret = -EINVAL;
+-			goto failed_of_parse;
+-		}
++	fb_mode = NULL;
+ 
+-		/*
+-		 * imxfb does not support more modes, we choose only the native
+-		 * mode.
+-		 */
+-		fbi->num_modes = 1;
+-
+-		fbi->mode = devm_kzalloc(&pdev->dev,
+-				sizeof(struct imx_fb_videomode), GFP_KERNEL);
+-		if (!fbi->mode) {
+-			ret = -ENOMEM;
+-			of_node_put(display_np);
+-			goto failed_of_parse;
+-		}
++	display_np = of_parse_phandle(pdev->dev.of_node, "display", 0);
++	if (!display_np) {
++		dev_err(&pdev->dev, "No display defined in devicetree\n");
++		ret = -EINVAL;
++		goto failed_of_parse;
++	}
+ 
+-		ret = imxfb_of_read_mode(&pdev->dev, display_np, fbi->mode);
++	/*
++	 * imxfb does not support more modes, we choose only the native
++	 * mode.
++	 */
++	fbi->num_modes = 1;
++
++	fbi->mode = devm_kzalloc(&pdev->dev,
++			sizeof(struct imx_fb_videomode), GFP_KERNEL);
++	if (!fbi->mode) {
++		ret = -ENOMEM;
+ 		of_node_put(display_np);
+-		if (ret)
+-			goto failed_of_parse;
++		goto failed_of_parse;
+ 	}
+ 
++	ret = imxfb_of_read_mode(&pdev->dev, display_np, fbi->mode);
++	of_node_put(display_np);
++	if (ret)
++		goto failed_of_parse;
++
+ 	/* Calculate maximum bytes used per pixel. In most cases this should
+ 	 * be the same as m->bpp/8 */
+ 	m = &fbi->mode[0];
+@@ -1001,13 +984,6 @@ static int imxfb_probe(struct platform_device *pdev)
+ 
+ 	info->fix.smem_start = fbi->map_dma;
+ 
+-	if (pdata && pdata->init) {
+-		ret = pdata->init(fbi->pdev);
+-		if (ret)
+-			goto failed_platform_init;
+-	}
+-
+-
+ 	INIT_LIST_HEAD(&info->modelist);
+ 	for (i = 0; i < fbi->num_modes; i++)
+ 		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
+@@ -1059,9 +1035,6 @@ static int imxfb_probe(struct platform_device *pdev)
+ failed_register:
+ 	fb_dealloc_cmap(&info->cmap);
+ failed_cmap:
+-	if (pdata && pdata->exit)
+-		pdata->exit(fbi->pdev);
+-failed_platform_init:
+ 	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
+ 		    fbi->map_dma);
+ failed_map:
+@@ -1079,7 +1052,6 @@ static int imxfb_probe(struct platform_device *pdev)
+ 
+ static int imxfb_remove(struct platform_device *pdev)
+ {
+-	struct imx_fb_platform_data *pdata;
+ 	struct fb_info *info = platform_get_drvdata(pdev);
+ 	struct imxfb_info *fbi = info->par;
+ 	struct resource *res;
+@@ -1092,9 +1064,6 @@ static int imxfb_remove(struct platform_device *pdev)
+ 
+ 	unregister_framebuffer(info);
+ 	fb_dealloc_cmap(&info->cmap);
+-	pdata = dev_get_platdata(&pdev->dev);
+-	if (pdata && pdata->exit)
+-		pdata->exit(fbi->pdev);
+ 	dma_free_wc(&pdev->dev, fbi->map_size, info->screen_buffer,
+ 		    fbi->map_dma);
+ 	iounmap(fbi->regs);
+diff --git a/include/linux/platform_data/video-imxfb.h b/include/linux/platform_data/video-imxfb.h
+index 02812651af7d..b80a156a6617 100644
+--- a/include/linux/platform_data/video-imxfb.h
++++ b/include/linux/platform_data/video-imxfb.h
+@@ -55,16 +55,4 @@ struct imx_fb_videomode {
+ 	unsigned char	bpp;
+ };
+ 
+-struct imx_fb_platform_data {
+-	struct imx_fb_videomode *mode;
+-	int		num_modes;
+-
+-	u_int		pwmr;
+-	u_int		lscr1;
+-	u_int		dmacr;
+-
+-	int (*init)(struct platform_device *);
+-	void (*exit)(struct platform_device *);
+-};
+-
+ #endif /* ifndef __MACH_IMXFB_H__ */
+
+base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
+-- 
+2.36.1
+
