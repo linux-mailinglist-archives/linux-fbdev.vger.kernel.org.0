@@ -2,215 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7009D58140F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jul 2022 15:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FFDA581304
+	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jul 2022 14:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233407AbiGZNWx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 26 Jul 2022 09:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42082 "EHLO
+        id S233594AbiGZMSZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 Jul 2022 08:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231154AbiGZNWx (ORCPT
+        with ESMTP id S231981AbiGZMSZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 26 Jul 2022 09:22:53 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52FB52BB31;
-        Tue, 26 Jul 2022 06:22:47 -0700 (PDT)
-X-UUID: 26dc3eeed2d74fedb77701fe27d90ddd-20220726
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:db6dc055-fe34-4f64-8398-18f5f1dc8141,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:45
-X-CID-INFO: VERSION:1.1.8,REQID:db6dc055-fe34-4f64-8398-18f5f1dc8141,OB:0,LOB:
-        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACTIO
-        N:release,TS:45
-X-CID-META: VersionHash:0f94e32,CLOUDID:2efa8bb3-06d2-48ef-b2dd-540836705165,C
-        OID:c054147f60fb,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 26dc3eeed2d74fedb77701fe27d90ddd-20220726
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <rex-bc.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 636267679; Tue, 26 Jul 2022 21:22:40 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
- Tue, 26 Jul 2022 13:22:32 +0000
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Tue, 26 Jul 2022 18:06:51 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n2.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
- Transport; Tue, 26 Jul 2022 18:06:51 +0800
-Message-ID: <c70db24fb66f844a2b53c229fff6e943e99398db.camel@mediatek.com>
-Subject: Re: [PATCH v14 05/10] drm/mediatek: Add MT8195 Embedded DisplayPort
- driver
-From:   Rex-BC Chen <rex-bc.chen@mediatek.com>
-To:     CK Hu <ck.hu@mediatek.com>,
-        "chunkuang.hu@kernel.org" <chunkuang.hu@kernel.org>,
-        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "mripard@kernel.org" <mripard@kernel.org>,
-        "tzimmermann@suse.de" <tzimmermann@suse.de>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
-        "airlied@linux.ie" <airlied@linux.ie>
-CC:     "msp@baylibre.com" <msp@baylibre.com>,
-        "granquet@baylibre.com" <granquet@baylibre.com>,
-        "Jitao Shi =?UTF-8?Q?=28=E7=9F=B3=E8=AE=B0=E6=B6=9B=29?=" 
-        <jitao.shi@mediatek.com>,
-        "wenst@chromium.org" <wenst@chromium.org>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>,
-        "LiangXu Xu =?UTF-8?Q?=28=E5=BE=90=E4=BA=AE=29?=" 
-        <LiangXu.Xu@mediatek.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        Project_Global_Chrome_Upstream_Group 
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Tue, 26 Jul 2022 18:06:50 +0800
-In-Reply-To: <80f223c8ecf262a62feb047d39b9ea2d8655fd14.camel@mediatek.com>
-References: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
-         <20220712111223.13080-6-rex-bc.chen@mediatek.com>
-         <378f904a445e90d65048ed07a1a55fd8c633f934.camel@mediatek.com>
-         <9c5b85034ec77be80d771ce3a17260453f007728.camel@mediatek.com>
-         <80f223c8ecf262a62feb047d39b9ea2d8655fd14.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        Tue, 26 Jul 2022 08:18:25 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D142E13F9E;
+        Tue, 26 Jul 2022 05:18:22 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id i13so8372689edj.11;
+        Tue, 26 Jul 2022 05:18:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uFNBuksRAUHG8SQKGfIMoqHF0ZeQIQql/Pes//0/1FE=;
+        b=p25ViQRAGjIzoqbyw32XacT85JsM0ATOnc/aJ7f4OQUM+aio/Y993fmTKcDeocHCd9
+         Ip6z+1IDcK1emNmby8GCnHh8nTAZJOit+jilIBMN3MN8BHArbq5Y7jX0AdPoo5PJRGP+
+         qBAvo4C0uBT25Q/8kqgwUa9AThgrYs6OVHHMaOpyea8oHPpg79QNvmgM1Uz/oDBPwnAl
+         AufVZdMZG9DZBf3rhJ84O3aYj5LM94YzLZW6y/dSBdJHdO6Du6+eIPe3NFTEc8T9fHX5
+         OTqmGMZhfJaXrcwzJtTP8MEOT5b0nUwAv/+Z19lTei3pSAbzl6AU10dk5npcBMsgvF/p
+         dQxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uFNBuksRAUHG8SQKGfIMoqHF0ZeQIQql/Pes//0/1FE=;
+        b=cNPpWFqrhdUYHBqsgEaKSBbbCWj+L+Ph7rG5Vg/7tJqlHs9dmJPxGmZAUZLAI3R4Ik
+         LQNHuKIA+fNSCbYisXlsazusZ18iTXASS+Xw0fUFivYKXPm3I5ESHF3u6pVcO+Dqs5DX
+         EzKjBjWvyXHgqqHff8Kqt5vRgEv0s93RtydqdX4/F7wWDygs95G/ytCu2dTC8J8sREI0
+         iWWz1brG+cEbncvzjLJ1Ep5lEVqRdHDDLlgqgiJdRBgxqSO9cB9XmoLOCPCc6NOFIjsJ
+         eRBoOct2RcXQE9Rlb6hZQQt6x03vQpSpYdZWNXIw8wc49M3/zyIGiYbhFsGwcmWK84Ku
+         GnEQ==
+X-Gm-Message-State: AJIora9udDXmKi0XUWumhr7oTYzH83T+bzAVHWjLznKPMo+0lGED8+7i
+        KnuVjbACRyRoSw2A6Eg3XQwXUwwa4f0Au59k6rY=
+X-Google-Smtp-Source: AGRyM1uzT38suKCsbCmFfyzBHLwwuulTdOWUnr3cD4+NYEDfZRxNjDpqwVCvJTRb6rCtiz3um/F+ZSKguXrhc6flE20=
+X-Received: by 2002:a05:6402:50c9:b0:43c:163a:4d5f with SMTP id
+ h9-20020a05640250c900b0043c163a4d5fmr7812854edb.386.1658837901255; Tue, 26
+ Jul 2022 05:18:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-12-peterwu.pub@gmail.com>
+ <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com> <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
+In-Reply-To: <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 26 Jul 2022 14:17:44 +0200
+Message-ID: <CAHp75Vd4ApTju2LCCHQ1skgOjttwWo5b2NF3u+zbGyVnnFKNhA@mail.gmail.com>
+Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
+ sink type LED Indicator support
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, 2022-07-26 at 17:34 +0800, CK Hu wrote:
-> On Tue, 2022-07-26 at 14:42 +0800, Rex-BC Chen wrote:
-> > On Mon, 2022-07-25 at 17:16 +0800, CK Hu wrote:
-> > > Hi, Bo-Chen:
-> > > 
-> > > On Tue, 2022-07-12 at 19:12 +0800, Bo-Chen Chen wrote:
-> > > > From: Markus Schneider-Pargmann <msp@baylibre.com>
-> > > > 
-> > > > This patch adds a embedded displayport driver for the MediaTek
-> > > > mt8195
-> > > > SoC.
-> > > > 
-> > > > It supports the MT8195, the embedded DisplayPort units. It
-> > > > offers
-> > > > DisplayPort 1.4 with up to 4 lanes.
-> > > > 
-> > > > The driver creates a child device for the phy. The child device
-> > > > will
-> > > > never exist without the parent being active. As they are
-> > > > sharing
-> > > > a
-> > > > register range, the parent passes a regmap pointer to the child
-> > > > so
-> > > > that
-> > > > both can work with the same register range. The phy driver sets
-> > > > device
-> > > > data that is read by the parent to get the phy device that can
-> > > > be
-> > > > used
-> > > > to control the phy properties.
-> > > > 
-> > > > This driver is based on an initial version by
-> > > > Jitao shi <jitao.shi@mediatek.com>
-> > > > 
-> > > > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> > > > Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> > > > Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> > > > ---
-> > > 
-> > > [snip]
-> > > 
-> > > > +
-> > > > +static int mtk_dp_training(struct mtk_dp *mtk_dp)
-> > > > +{
-> > > > +	short max_retry = 50;
-> > > > +	int ret;
-> > > > +
-> > > > +	do {
-> > > > +		ret = mtk_dp_train_start(mtk_dp);
-> > > > +		if (!ret)
-> > > > +			break;
-> > > > +		else if (ret != -EAGAIN)
-> > > > +			return ret;
-> > > > +	} while (--max_retry);
-> > > 
-> > > mtk_dp_train_start() would never return -EAGAIN, so drop this
-> > > while
-> > > loop.
-> > > 
-> > > Regards,
-> > > CK
-> > > 
-> > 
-> > Hello CK,
-> > 
-> > the function will not return -EAGAIN, but we still want to retry 50
-> > times if mtk_dp_train_start() is failed. If we retry 50 times and
-> > it
-> > is
-> > still failed. We can confirm there are some issues for the device.
-> > 
-> > I will remove the else if of -EAGAIN and keep th while loop.
-> 
-> In this version, it never retry. And I believe you've tested this no-
-> retry version. If this no-retry version works fine, why do you insist
-> on retry? If you really need retry, merge this retry into
-> mtk_dp_train_start() because mtk_dp_train_start() have already retry.
-> 
-> Regards,
-> CK
-> 
+On Tue, Jul 26, 2022 at 1:46 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> On Mon, Jul 25, 2022 at 4:41 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 
-Hello Ck,
+...
 
-There are many different devices we are not testing for DP devices.
-I think we need to keep this.
-This retry is for restart with init state.
+> > > +struct mt6370_led {
+> > > +       union {
+> > > +               struct led_classdev isink;
+> > > +               struct led_classdev_mc mc;
+> > > +       };
+> >
+> > Where is the field that makes union work?
+>
+> Just for saving memory space.
+> Because these led_classdevs do not be used at the same time.
+> Or do you think it would be better to rewrite it as follows?
+> -------------------------------------------------------------------------------------
+> struct mt6370_led {
+>        struct led_classdev isink;
+>        struct led_classdev_mc mc;
+>        struct mt6370_priv *priv;
+>        u32 default_state;
+>        u32 index;
+> };
+> -------------------------------------------------------------------------------------
 
-I think it's better to keep it here and it's more clear.
+You obviously didn't get what I'm talking about...
+Each union to work properly should have an associated variable that
+holds the information of which field of the union is in use. Do you
+have such a variable? If not, how does your code know which one to
+use? If yes, add a proper comment there.
 
-I will remain the comments above, and I think it's enough.
-
-BRs,
-Bo-Chen
-
-> > 
-> > BRs,
-> > Bo-Chen
-> > > > 
-> > > > +	if (!max_retry)
-> > > > +		return -ETIMEDOUT;
-> > > > +
-> > > > +	ret = mtk_dp_video_config(mtk_dp);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +	mtk_dp_video_enable(mtk_dp, true);
-> > > > +
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > 
-> > > 
-> > 
-> > 
-> 
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
