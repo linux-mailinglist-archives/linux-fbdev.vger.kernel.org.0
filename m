@@ -2,242 +2,215 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE5D581290
-	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jul 2022 14:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7009D58140F
+	for <lists+linux-fbdev@lfdr.de>; Tue, 26 Jul 2022 15:22:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239001AbiGZMAU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 26 Jul 2022 08:00:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
+        id S233407AbiGZNWx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 26 Jul 2022 09:22:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238946AbiGZMAC (ORCPT
+        with ESMTP id S231154AbiGZNWx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 26 Jul 2022 08:00:02 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503E433374
-        for <linux-fbdev@vger.kernel.org>; Tue, 26 Jul 2022 04:59:59 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id v13so12047536wru.12
-        for <linux-fbdev@vger.kernel.org>; Tue, 26 Jul 2022 04:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FeVAQTj8/mAfkMvlMLcvvaBxhrv6NPtimQHZr0slSEU=;
-        b=xGMvXn3lMLClPC6eYxENOclGIczqTe4up2YIXe+hB4oiUuGwxnYbUcVPOjQ6uneBOn
-         qF0JJhM66ZwzVuCuaD7h9ruyKVimYkfqcqQ4Kis3hhGc6TDEmPdt9pvCx2Q/ZtTFFx7/
-         RxQQz5GA+s0dhVW4w4r7ML655as4ZXTF5j/m2lzozaDmwFuFXQ4lqKSN8sMMdxCI/075
-         EWmE3VOrwt0RYvxBgte5TLjVz2Oaxglc4K/5fpz76xOLgwZrsFKVQt2JZRFWNVwF+Ble
-         KiAB1b+a9gGWGvWz9lI4jQ8rsd/MCa4vLoay1yTaFYPW+XO+7sLz7zjt1JKcROEGLX+Z
-         CX+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FeVAQTj8/mAfkMvlMLcvvaBxhrv6NPtimQHZr0slSEU=;
-        b=7QTSO5vu55qJtDaCbBw1IPUtjhJvT7pZprKuuUJ7y49vrRk9I28sKUL8q9khqzMV40
-         svrh6ZeWYINJNTO1dXlkibzcu3phw3I+FStBtn99DImD8aYelk8E1h2jpTbAjXwdH+Zn
-         wENah9F46NrGPMcJbcws6WVTUY1JXE1sa+faZSYfAyJrjs/nNOjmefTfX48pU4J/lUTm
-         /Xtlyffod+VWktrLHsJK7CtO7x0xU5a+fMVPOk5VNZHcKyM22m2FFlYrSiYdzN1GDKx3
-         ItecTfUsdspPXH6jz5owlrl3PYE+rU9SF/+yajaAgRDB3c40N8A+3/h9TsDl4ygv0Gm+
-         0+lg==
-X-Gm-Message-State: AJIora8hle+/gRGbhC0fb9APYSkesg2aUuTjbj7/ltFcWGEthPbjHm+G
-        P+Q3XbsBH6icYBILcXBCchXSZg==
-X-Google-Smtp-Source: AGRyM1uehfvDpwjgQ4OdVhAkG8XtMk/rrGDztYqeesidU3gudI8NvtnBD1+DZaV4TdshdsyfIFIYLQ==
-X-Received: by 2002:a5d:6d0b:0:b0:21d:9f26:f84a with SMTP id e11-20020a5d6d0b000000b0021d9f26f84amr10703197wrq.155.1658836797777;
-        Tue, 26 Jul 2022 04:59:57 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id bn20-20020a056000061400b0021e86504736sm6131350wrb.16.2022.07.26.04.59.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Jul 2022 04:59:57 -0700 (PDT)
-Date:   Tue, 26 Jul 2022 12:59:54 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
+        Tue, 26 Jul 2022 09:22:53 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52FB52BB31;
+        Tue, 26 Jul 2022 06:22:47 -0700 (PDT)
+X-UUID: 26dc3eeed2d74fedb77701fe27d90ddd-20220726
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.8,REQID:db6dc055-fe34-4f64-8398-18f5f1dc8141,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACT
+        ION:release,TS:45
+X-CID-INFO: VERSION:1.1.8,REQID:db6dc055-fe34-4f64-8398-18f5f1dc8141,OB:0,LOB:
+        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,ACTIO
+        N:release,TS:45
+X-CID-META: VersionHash:0f94e32,CLOUDID:2efa8bb3-06d2-48ef-b2dd-540836705165,C
+        OID:c054147f60fb,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:0,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 26dc3eeed2d74fedb77701fe27d90ddd-20220726
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <rex-bc.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 636267679; Tue, 26 Jul 2022 21:22:40 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
+ Tue, 26 Jul 2022 13:22:32 +0000
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.792.15; Tue, 26 Jul 2022 18:06:51 +0800
+Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n2.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
+ Transport; Tue, 26 Jul 2022 18:06:51 +0800
+Message-ID: <c70db24fb66f844a2b53c229fff6e943e99398db.camel@mediatek.com>
+Subject: Re: [PATCH v14 05/10] drm/mediatek: Add MT8195 Embedded DisplayPort
+ driver
+From:   Rex-BC Chen <rex-bc.chen@mediatek.com>
+To:     CK Hu <ck.hu@mediatek.com>,
+        "chunkuang.hu@kernel.org" <chunkuang.hu@kernel.org>,
+        "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "krzysztof.kozlowski+dt@linaro.org" 
+        <krzysztof.kozlowski+dt@linaro.org>,
+        "mripard@kernel.org" <mripard@kernel.org>,
+        "tzimmermann@suse.de" <tzimmermann@suse.de>,
+        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "airlied@linux.ie" <airlied@linux.ie>
+CC:     "msp@baylibre.com" <msp@baylibre.com>,
+        "granquet@baylibre.com" <granquet@baylibre.com>,
+        "Jitao Shi =?UTF-8?Q?=28=E7=9F=B3=E8=AE=B0=E6=B6=9B=29?=" 
+        <jitao.shi@mediatek.com>,
+        "wenst@chromium.org" <wenst@chromium.org>,
+        "angelogioacchino.delregno@collabora.com" 
+        <angelogioacchino.delregno@collabora.com>,
+        "LiangXu Xu =?UTF-8?Q?=28=E5=BE=90=E4=BA=AE=29?=" 
+        <LiangXu.Xu@mediatek.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-mediatek@lists.infradead.org" 
         <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370
- support
-Message-ID: <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
-References: <20220722102407.2205-1-peterwu.pub@gmail.com>
- <20220722102407.2205-14-peterwu.pub@gmail.com>
- <20220725103128.xtaw2c4y5fobowg7@maple.lan>
- <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
- <20220726093058.2fz2p2vg7xpfsnfe@maple.lan>
- <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        Project_Global_Chrome_Upstream_Group 
+        <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Date:   Tue, 26 Jul 2022 18:06:50 +0800
+In-Reply-To: <80f223c8ecf262a62feb047d39b9ea2d8655fd14.camel@mediatek.com>
+References: <20220712111223.13080-1-rex-bc.chen@mediatek.com>
+         <20220712111223.13080-6-rex-bc.chen@mediatek.com>
+         <378f904a445e90d65048ed07a1a55fd8c633f934.camel@mediatek.com>
+         <9c5b85034ec77be80d771ce3a17260453f007728.camel@mediatek.com>
+         <80f223c8ecf262a62feb047d39b9ea2d8655fd14.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MAY_BE_FORGED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 07:28:48PM +0800, ChiaEn Wu wrote:
-> On Tue, Jul 26, 2022 at 5:31 PM Daniel Thompson
-> <daniel.thompson@linaro.org> wrote:
-> ...
-> > > > Does the MT6372 support more steps than this? In other words does it use
-> > > > a fourteen bit scale or does it use an 11-bit scale at a different
-> > > > register location?
-> > >
-> > > Hi Daniel,
-> > >
-> > > Thanks for your reply.
-> > > Yes, MT6372 can support 16384 steps and uses a 14-bit scale register
-> > > location. But the maximum current of each
-> > > channel of MT6372 is the same as MT6370 and MT6371, both 30mA.
-> > > The main reason why MT6372 is designed this way is that one of the
-> > > customers asked for a more delicate
-> > > adjustment of the backlight brightness. But other customers actually
-> > > do not have such requirements.
-> > > Therefore, we designed it this way for maximum compatibility in software.
->
-> Sorry for I used of the wrong word, I mean is 'driver', not
-> higher-level software
->
-> >
-> > I don't think that is an acceptable approach for the upstream kernel.
-> >
-> > To be "compatible" with (broken) software this driver ends up reducing
-> > the capability of the upstream kernel to the point it becomes unable to
-> > meet requirements for delicate adjustment (requirements that were
-> > sufficiently important to change the hardware design so you could meet
-> > them).
->
-> Originally, we just wanted to use one version of the driver to cover
-> all the SubPMIC of the 6370 series(6370~6372).
-> And, the users who use this series SubPMIC can directly apply this
-> driver to drive the backlight device without knowing the underlying
-> hardware.
-> To achieve this goal, we have designed it to look like this.
+On Tue, 2022-07-26 at 17:34 +0800, CK Hu wrote:
+> On Tue, 2022-07-26 at 14:42 +0800, Rex-BC Chen wrote:
+> > On Mon, 2022-07-25 at 17:16 +0800, CK Hu wrote:
+> > > Hi, Bo-Chen:
+> > > 
+> > > On Tue, 2022-07-12 at 19:12 +0800, Bo-Chen Chen wrote:
+> > > > From: Markus Schneider-Pargmann <msp@baylibre.com>
+> > > > 
+> > > > This patch adds a embedded displayport driver for the MediaTek
+> > > > mt8195
+> > > > SoC.
+> > > > 
+> > > > It supports the MT8195, the embedded DisplayPort units. It
+> > > > offers
+> > > > DisplayPort 1.4 with up to 4 lanes.
+> > > > 
+> > > > The driver creates a child device for the phy. The child device
+> > > > will
+> > > > never exist without the parent being active. As they are
+> > > > sharing
+> > > > a
+> > > > register range, the parent passes a regmap pointer to the child
+> > > > so
+> > > > that
+> > > > both can work with the same register range. The phy driver sets
+> > > > device
+> > > > data that is read by the parent to get the phy device that can
+> > > > be
+> > > > used
+> > > > to control the phy properties.
+> > > > 
+> > > > This driver is based on an initial version by
+> > > > Jitao shi <jitao.shi@mediatek.com>
+> > > > 
+> > > > Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> > > > Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+> > > > Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+> > > > ---
+> > > 
+> > > [snip]
+> > > 
+> > > > +
+> > > > +static int mtk_dp_training(struct mtk_dp *mtk_dp)
+> > > > +{
+> > > > +	short max_retry = 50;
+> > > > +	int ret;
+> > > > +
+> > > > +	do {
+> > > > +		ret = mtk_dp_train_start(mtk_dp);
+> > > > +		if (!ret)
+> > > > +			break;
+> > > > +		else if (ret != -EAGAIN)
+> > > > +			return ret;
+> > > > +	} while (--max_retry);
+> > > 
+> > > mtk_dp_train_start() would never return -EAGAIN, so drop this
+> > > while
+> > > loop.
+> > > 
+> > > Regards,
+> > > CK
+> > > 
+> > 
+> > Hello CK,
+> > 
+> > the function will not return -EAGAIN, but we still want to retry 50
+> > times if mtk_dp_train_start() is failed. If we retry 50 times and
+> > it
+> > is
+> > still failed. We can confirm there are some issues for the device.
+> > 
+> > I will remove the else if of -EAGAIN and keep th while loop.
+> 
+> In this version, it never retry. And I believe you've tested this no-
+> retry version. If this no-retry version works fine, why do you insist
+> on retry? If you really need retry, merge this retry into
+> mtk_dp_train_start() because mtk_dp_train_start() have already retry.
+> 
+> Regards,
+> CK
+> 
 
-You don't need a second driver to support two different values for
-max-brightness. The same driver can support both ranges with nothing but
-a small tweak during the driver probe function.
+Hello Ck,
 
+There are many different devices we are not testing for DP devices.
+I think we need to keep this.
+This retry is for restart with init state.
 
-> ...
-> > > > > +
-> > > > > +     if (brightness) {
-> > > > > +             brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
-> > > > > +             brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
-> > > > > +
-> > > > > +             /*
-> > > > > +              * To make MT6372 using 14 bits to control the brightness
-> > > > > +              * backward compatible with 11 bits brightness control
-> > > > > +              * (like MT6370 and MT6371 do), we left shift the value
-> > > > > +              * and pad with 1 to remaining bits. Hence, the MT6372's
-> > > > > +              * backlight brightness will be almost the same as MT6370's
-> > > > > +              * and MT6371's.
-> > > > > +              */
-> > > > > +             if (priv->vid_type == MT6370_VID_6372) {
-> > > > > +                     brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
-> > > > > +                     brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
-> > > > > +             }
-> > > >
-> > > > This somewhat depends on the answer to the first question above, but
-> > > > what is the point of this shifting? If the range is 14-bit then the
-> > > > driver should set max_brightness to 16384 and present the full range of
-> > > > the MT6372 to the user.
-> > >
-> > > So should we make all 16384 steps of MT6372 available to users?
-> >
-> > Yes.
-> >
-> >
-> > > Does that mean the DTS needs to be modified as well?
-> >
-> > Yes... the property to set initial brightness needs a 14-bit range.
-> >
-> > It would also be a good idea to discuss with the DT maintainers whether
-> > you should introduce a second compatible string (ending 6372) in order
-> > to allow the DT validation checks to detect accidental use of MT6372
-> > ranges on MT6370 hardware.
->
-> hmmm... I have just thought about it,
-> maybe I can just modify the maximum value of default-brightness and
-> max-brightness in DT to 16384,
-> modify the description and add some comments.
+I think it's better to keep it here and it's more clear.
 
-What for?
+I will remain the comments above, and I think it's enough.
 
-All the other backlight drivers (there are >130 of them) expose the hardware
-range[1]. Most userspaces will already know how to handle that (by reading
-the max_brightness and, if it is recent enough, also the scale
-properties in sysfs).
+BRs,
+Bo-Chen
 
-I'm still don't understand why one should fix a bug in the userspace by
-implementing a hack in the driver.
+> > 
+> > BRs,
+> > Bo-Chen
+> > > > 
+> > > > +	if (!max_retry)
+> > > > +		return -ETIMEDOUT;
+> > > > +
+> > > > +	ret = mtk_dp_video_config(mtk_dp);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +	mtk_dp_video_enable(mtk_dp, true);
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > 
+> > > 
+> > 
+> > 
+> 
+> 
 
-
-[1] Well almost. The PWM backlight driver does contain support for
-    dead-spot avoidance and to allow the adoption of exponential scale.
-    However this  purpose of these is based on how PWM backlights work
-
-
-
-> And then on the driver side,
-> we can use mt6370_check_vendor_info( ) to determine whether it is MT6372.
-> If no, then in mt6370_bl_update_status(), first brightness_val / 8 and then set.
-> In mt6370_bl_get_brightness(), first brightness_val * 8 and then return;
->
-> If I do this change, does this meet your requirements?
-
-Not really.
-
-It's still misleading a sophisticated userspace, which may make bad
-rounding decisions for backlight animation, in order to support a broken
-one.
-
-
-> > > Or, for the reasons, I have just explained (just one customer has this
-> > > requirement), then we do not make any changes for compatibility
-> > > reasons?
-> >
-> > I'd be curious what the compatiblity reasons are. In other words what
-> > software breaks?
->
-> The reason is as above. We just hope the users who use this series SubPMIC can
-> directly apply this driver to drive the backlight device without
-> knowing the underlying hardware.
-> Not software breaks.
-
-As above, ignoring the max_brightness property is a bug in the
-userspace. I'm still unclear why sending faked ranges to userspace
-it a better solution than fixing the userspace.
-
-
-Daniel.
