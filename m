@@ -2,69 +2,95 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B58D581F47
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jul 2022 06:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF5458200D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jul 2022 08:25:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240394AbiG0ExV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 27 Jul 2022 00:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46046 "EHLO
+        id S229766AbiG0GZ0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 27 Jul 2022 02:25:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229781AbiG0ExJ (ORCPT
+        with ESMTP id S229653AbiG0GZZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 27 Jul 2022 00:53:09 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41FA53F33C;
-        Tue, 26 Jul 2022 21:52:33 -0700 (PDT)
-X-UUID: 4b0e5d3b1afe47abb582850006ebf2c6-20220727
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:b6ba0407-073e-49ac-a0b0-677d9c21190d,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:-5
-X-CID-META: VersionHash:0f94e32,CLOUDID:2f17fc15-4d40-4085-b6be-c498a879f53d,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 4b0e5d3b1afe47abb582850006ebf2c6-20220727
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw02.mediatek.com
-        (envelope-from <rex-bc.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1512119747; Wed, 27 Jul 2022 12:52:29 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with ShadowRedundancy id 15.2.792.3;
- Wed, 27 Jul 2022 04:52:24 +0000
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Wed, 27 Jul 2022 12:50:39 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.15 via Frontend Transport; Wed, 27 Jul 2022 12:50:39 +0800
-From:   Bo-Chen Chen <rex-bc.chen@mediatek.com>
-To:     <chunkuang.hu@kernel.org>, <p.zabel@pengutronix.de>,
-        <daniel@ffwll.ch>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
-        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
-        <airlied@linux.ie>
-CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
-        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
-        <angelogioacchino.delregno@collabora.com>, <ck.hu@mediatek.com>,
-        <liangxu.xu@mediatek.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Subject: [PATCH v15 11/11] drm/mediatek: Use cached audio config when changing resolution
-Date:   Wed, 27 Jul 2022 12:50:35 +0800
-Message-ID: <20220727045035.32225-12-rex-bc.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220727045035.32225-1-rex-bc.chen@mediatek.com>
-References: <20220727045035.32225-1-rex-bc.chen@mediatek.com>
+        Wed, 27 Jul 2022 02:25:25 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E695712D19;
+        Tue, 26 Jul 2022 23:25:23 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id h22so12042590qta.3;
+        Tue, 26 Jul 2022 23:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3TPo7Ien9QeOugxuEK5vZ4jEbRvQ6L+0JHSHIFL79V8=;
+        b=Ju/fvdD+2tscdEHB4jMKbtF6QmWjmZhx4K1G8NkrcLADIpn1JSvESTmxlpt3R4JNiz
+         UREKmBz7PU2Y4uvwc4LZREeVj+DUEo2k1jrd7hNHdeyJaPFWuyOYHw16/YljzGwcQaoU
+         IH9nnG8x+s+fp3W9UU/Nffn3iiGxPKEQbqR3X0123vmqEq4yNkiC0A2VH4Sesf85arfJ
+         RzfM19DJEhBx9KsylbfN02wrMkNXOO4yndJf2oYfq2BmSNFuvo9Rdv3pkq/RJsxGlZB+
+         ENmHhdFgodOhI3rw8EXt41BmEN6clXlYa2qisFRSVLQ9+VWdxO1/quC1BwvjDvoQk+pS
+         Zcuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3TPo7Ien9QeOugxuEK5vZ4jEbRvQ6L+0JHSHIFL79V8=;
+        b=iqFal68E1zaedbcIYcQYIkhKL87sYiIoqMlCCFJZowvBL1KUyCT8UJJSTw0UoGnzJW
+         qsdQCURIllSlfylVh9/rACW+dumioy2mrf5So2nDPY4K+MNa7ui+sk8C0XLmL2zgt9Dj
+         F+jTqclpjIOPGpo+5MaxL5yXNCH9iZx3Dw8vmJkgiXtbbinV1Papa9/IqJ+oUMqW0aw3
+         RIy/KYvRqmAV/0dqXCipn+cMop9sBdIrkRJbfkxGV3KjyK2hirgA+/E2oF7UrXjJ198S
+         YEMeG7twuhbZITNOt/jFAeKkPjcbq//+z3LSgiQLcOCrIqRfJmNi2vFvXX1vcIhAzer7
+         b7Rg==
+X-Gm-Message-State: AJIora8Q/4iS8owyFsjmlFLNAb+wVE2C9n7sPfvbtrldBKpQI0Ok1sQu
+        hhwgUJDDRpDpG6muK3wOf9Zn6W1LjN1MoSwr4rE=
+X-Google-Smtp-Source: AGRyM1tfME3ecCaCTfMzeCQrYhvxtlKmxqJRxH1lMRN/F0J8TcAZeGQUzQp4E/o76yd4w8Asm4EShy68HPneD7bl0pE=
+X-Received: by 2002:a05:622a:1742:b0:31f:ef:f6eb with SMTP id
+ l2-20020a05622a174200b0031f00eff6ebmr17635908qtk.548.1658903123036; Tue, 26
+ Jul 2022 23:25:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-14-peterwu.pub@gmail.com>
+ <20220725103128.xtaw2c4y5fobowg7@maple.lan> <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
+ <20220726093058.2fz2p2vg7xpfsnfe@maple.lan> <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
+ <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
+In-Reply-To: <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Wed, 27 Jul 2022 14:24:46 +0800
+Message-ID: <CABtFH5K3LLw9ZqY0Qrrx_8xs+3ioJpzP0=_HptmoDY6tvu2JVg@mail.gmail.com>
+Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,134 +98,161 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When the audio is playing, we need to use the original configuration to
-set the audio instead of using new configuration. Therefore, use the
-cached audio configuration during a resolution switch to avoid loss of
-sound.
+On Tue, Jul 26, 2022 at 7:59 PM Daniel Thompson
+<daniel.thompson@linaro.org> wrote:
 
-Signed-off-by: Jitao Shi <jitao.shi@mediatek.com>
-Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/gpu/drm/mediatek/mtk_dp.c | 54 ++++++++++---------------------
- 1 file changed, 17 insertions(+), 37 deletions(-)
+ ...
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 4fc61e0a1963..0acf246abe9b 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -94,7 +94,7 @@ struct mtk_dp_info {
- 	struct videomode vm;
- 	u8 frame_rate;
- 	u32 pix_rate_khz;
--	struct mtk_dp_audio_cfg audio_caps;
-+	struct mtk_dp_audio_cfg audio_cur_cfg;
- };
- 
- struct dp_cal_data {
-@@ -1799,9 +1799,7 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 						 struct mtk_dp_audio_cfg *cfg)
- {
- 	struct cea_sad *sads;
--	int sad_count;
--	int i;
--	bool ret = false;
-+	int ret;
- 
- 	if (mtk_dp_is_edp(mtk_dp))
- 		return false;
-@@ -1812,36 +1810,16 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 		dev_err(mtk_dp->dev, "EDID not found!\n");
- 		return false;
- 	}
--	sad_count = drm_edid_to_sad(mtk_dp->edid, &sads);
--	mutex_unlock(&mtk_dp->edid_lock);
- 
--	if (sad_count <= 0) {
-+	ret = drm_edid_to_sad(mtk_dp->edid, &sads);
-+	mutex_unlock(&mtk_dp->edid_lock);
-+	if (ret <= 0) {
- 		drm_info(mtk_dp->drm_dev, "The SADs is NULL\n");
- 		return false;
- 	}
--
--	for (i = 0; i < sad_count; i++) {
--		int sample_rate, word_length;
--
--		/* Only PCM supported at the moment */
--		if (sads[i].format != HDMI_AUDIO_CODING_TYPE_PCM)
--			continue;
--
--		sample_rate = drm_cea_sad_get_sample_rate(&sads[i]);
--		word_length =
--			drm_cea_sad_get_uncompressed_word_length(&sads[i]);
--		if (sample_rate <= 0 || word_length <= 0)
--			continue;
--
--		cfg->channels = sads[i].channels;
--		cfg->word_length_bits = word_length;
--		cfg->sample_rate = sample_rate;
--		ret = true;
--		break;
--	}
- 	kfree(sads);
- 
--	return ret;
-+	return true;
- }
- 
- static void mtk_dp_train_change_mode(struct mtk_dp *mtk_dp)
-@@ -2024,13 +2002,13 @@ static int mtk_dp_training(struct mtk_dp *mtk_dp)
- 
- 	mtk_dp->audio_enable =
- 		mtk_dp_edid_parse_audio_capabilities(mtk_dp,
--						     &mtk_dp->info.audio_caps);
-+						     &mtk_dp->info.audio_cur_cfg);
- 	if (mtk_dp->audio_enable) {
--		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_caps);
-+		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 		mtk_dp_audio_mute(mtk_dp, false);
- 	} else {
--		memset(&mtk_dp->info.audio_caps, 0,
--		       sizeof(mtk_dp->info.audio_caps));
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	return 0;
-@@ -2404,6 +2382,9 @@ static void mtk_dp_bridge_atomic_disable(struct drm_bridge *bridge,
- 	if (mtk_dp_plug_state(mtk_dp)) {
- 		drm_dp_dpcd_writeb(&mtk_dp->aux, DP_SET_POWER, DP_SET_POWER_D3);
- 		usleep_range(2000, 3000);
-+	} else {
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	mtk_dp_video_mute(mtk_dp, true);
-@@ -2603,18 +2584,17 @@ static int mtk_dp_audio_hw_params(struct device *dev, void *data,
- 				  struct hdmi_codec_params *params)
- {
- 	struct mtk_dp *mtk_dp = dev_get_drvdata(dev);
--	struct mtk_dp_audio_cfg cfg;
- 
- 	if (!mtk_dp->enabled) {
- 		dev_err(mtk_dp->dev, "%s, DP is not ready!\n", __func__);
- 		return -ENODEV;
- 	}
- 
--	cfg.channels = params->cea.channels;
--	cfg.sample_rate = params->sample_rate;
--	cfg.word_length_bits = 24;
-+	mtk_dp->info.audio_cur_cfg.channels = params->cea.channels;
-+	mtk_dp->info.audio_cur_cfg.sample_rate = params->sample_rate;
-+	mtk_dp->info.audio_cur_cfg.word_length_bits = 24;
- 
--	mtk_dp_audio_setup(mtk_dp, &cfg);
-+	mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 
- 	return 0;
- }
+> > > > > Does the MT6372 support more steps than this? In other words does it use
+> > > > > a fourteen bit scale or does it use an 11-bit scale at a different
+> > > > > register location?
+> > > >
+> > > > Hi Daniel,
+> > > >
+> > > > Thanks for your reply.
+> > > > Yes, MT6372 can support 16384 steps and uses a 14-bit scale register
+> > > > location. But the maximum current of each
+> > > > channel of MT6372 is the same as MT6370 and MT6371, both 30mA.
+> > > > The main reason why MT6372 is designed this way is that one of the
+> > > > customers asked for a more delicate
+> > > > adjustment of the backlight brightness. But other customers actually
+> > > > do not have such requirements.
+> > > > Therefore, we designed it this way for maximum compatibility in software.
+> >
+> > Sorry for I used of the wrong word, I mean is 'driver', not
+> > higher-level software
+> >
+> > >
+> > > I don't think that is an acceptable approach for the upstream kernel.
+> > >
+> > > To be "compatible" with (broken) software this driver ends up reducing
+> > > the capability of the upstream kernel to the point it becomes unable to
+> > > meet requirements for delicate adjustment (requirements that were
+> > > sufficiently important to change the hardware design so you could meet
+> > > them).
+> >
+> > Originally, we just wanted to use one version of the driver to cover
+> > all the SubPMIC of the 6370 series(6370~6372).
+> > And, the users who use this series SubPMIC can directly apply this
+> > driver to drive the backlight device without knowing the underlying
+> > hardware.
+> > To achieve this goal, we have designed it to look like this.
+>
+> You don't need a second driver to support two different values for
+> max-brightness. The same driver can support both ranges with nothing but
+> a small tweak during the driver probe function.
+>
+>
+> > ...
+> > > > > > +
+> > > > > > +     if (brightness) {
+> > > > > > +             brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
+> > > > > > +             brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
+> > > > > > +
+> > > > > > +             /*
+> > > > > > +              * To make MT6372 using 14 bits to control the brightness
+> > > > > > +              * backward compatible with 11 bits brightness control
+> > > > > > +              * (like MT6370 and MT6371 do), we left shift the value
+> > > > > > +              * and pad with 1 to remaining bits. Hence, the MT6372's
+> > > > > > +              * backlight brightness will be almost the same as MT6370's
+> > > > > > +              * and MT6371's.
+> > > > > > +              */
+> > > > > > +             if (priv->vid_type == MT6370_VID_6372) {
+> > > > > > +                     brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
+> > > > > > +                     brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
+> > > > > > +             }
+> > > > >
+> > > > > This somewhat depends on the answer to the first question above, but
+> > > > > what is the point of this shifting? If the range is 14-bit then the
+> > > > > driver should set max_brightness to 16384 and present the full range of
+> > > > > the MT6372 to the user.
+> > > >
+> > > > So should we make all 16384 steps of MT6372 available to users?
+> > >
+> > > Yes.
+> > >
+> > >
+> > > > Does that mean the DTS needs to be modified as well?
+> > >
+> > > Yes... the property to set initial brightness needs a 14-bit range.
+> > >
+> > > It would also be a good idea to discuss with the DT maintainers whether
+> > > you should introduce a second compatible string (ending 6372) in order
+> > > to allow the DT validation checks to detect accidental use of MT6372
+> > > ranges on MT6370 hardware.
+> >
+> > hmmm... I have just thought about it,
+> > maybe I can just modify the maximum value of default-brightness and
+> > max-brightness in DT to 16384,
+> > modify the description and add some comments.
+>
+> What for?
+>
+> All the other backlight drivers (there are >130 of them) expose the hardware
+> range[1]. Most userspaces will already know how to handle that (by reading
+> the max_brightness and, if it is recent enough, also the scale
+> properties in sysfs).
+>
+> I'm still don't understand why one should fix a bug in the userspace by
+> implementing a hack in the driver.
+>
+>
+> [1] Well almost. The PWM backlight driver does contain support for
+>     dead-spot avoidance and to allow the adoption of exponential scale.
+>     However this  purpose of these is based on how PWM backlights work
+>
+> > And then on the driver side,
+> > we can use mt6370_check_vendor_info() to determine whether it is MT6372.
+> > If no, then in mt6370_bl_update_status(), first brightness_val / 8 and then set.
+> > In mt6370_bl_get_brightness(), first brightness_val * 8 and then return;
+> >
+> > If I do this change, does this meet your requirements?
+>
+> Not really.
+>
+> It's still misleading a sophisticated userspace, which may make bad
+> rounding decisions for backlight animation, in order to support a broken
+> one.
+>
+>
+> > > > Or, for the reasons, I have just explained (just one customer has this
+> > > > requirement), then we do not make any changes for compatibility
+> > > > reasons?
+> > >
+> > > I'd be curious what the compatiblity reasons are. In other words what
+> > > software breaks?
+> >
+> > The reason is as above. We just hope the users who use this series SubPMIC can
+> > directly apply this driver to drive the backlight device without
+> > knowing the underlying hardware.
+> > Not software breaks.
+>
+> As above, ignoring the max_brightness property is a bug in the
+> userspace. I'm still unclear why sending faked ranges to userspace
+> it a better solution than fixing the userspace.
+
+Ok, I got it!
+If I add a second compatible string (like 'mediatek,mt6372-backlight')
+in the DT section,
+and append 'if-then-else' to determine the correct maximum value of
+'default-brightness' and 'max-brightness',
+Also, I will append 'bled exponential mode' to make user control using
+linear or exponential mode.
+These changes I will explain to DT's maintainer again.
+
+Back to the driver section,
+do I still need to use the register to confirm again whether this
+SubPMIC used now is MT6372 and record this information? (using
+'mt6370_check_vendor_info()')
+I am afraid that the user who uses the MT6370 hardware, but the DT
+compatible string is set to 'mediatek,mt6372-backlight'.
+This may cause errors when update/get brightness values.
+So I hope the driver here can check again to make sure the
+'default-brightness', 'max-brightness', can be updated/got correctly.
+I don't know if this will make you feel redundant if I do this??
+
+Thank you so much!
+
 -- 
-2.18.0
-
+Best Regards,
+ChiaEn Wu
