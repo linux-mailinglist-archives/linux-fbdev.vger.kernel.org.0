@@ -2,148 +2,233 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 765EE5823BD
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jul 2022 12:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A93FB582FB7
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 Jul 2022 19:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230057AbiG0KEj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 27 Jul 2022 06:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42412 "EHLO
+        id S229915AbiG0RaL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 27 Jul 2022 13:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiG0KEi (ORCPT
+        with ESMTP id S241749AbiG0R1N (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 27 Jul 2022 06:04:38 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8503D1707A;
-        Wed, 27 Jul 2022 03:04:37 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id s9so1513421edd.8;
-        Wed, 27 Jul 2022 03:04:37 -0700 (PDT)
+        Wed, 27 Jul 2022 13:27:13 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A857E339
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 Jul 2022 09:47:03 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id u20so12658673ljk.0
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 Jul 2022 09:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=B+itH6nCjnZkG3yJTUkgH3T3RkzlJIEijujwFkNTeHs=;
-        b=cG/IRfZwWO83wiK8SoAZgFegp/oSsSTdk6uMQXsyEzBbyDQ15vq0yzVYGG9pEdfz0Z
-         ZOOouCQXEYxdPO6EleD7jGQocetQsqrcx2C7y57nBleaH3XWNh/p9EZXeeMxomYeea0n
-         ccGpQbPM3KyJhbgX8FqfpXge+UD+lyXVuyBlv7AUvzyTYioFKkLUVdtqpGd8x6O73yOd
-         o3BHcOkkAf6zj76YWhjS7ePObKwBxNP5KslRU9Zg6sRbYapoWTeSb3rLO4m4qR/dd5mY
-         Xo/AD9faus7q33rPJGp/5b3BvXu4+tVOAzawSfBgIW64yo4mi098uiZmqwCRYHPukGG4
-         n1TA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/yOyu6GWLTGzcNYsjeLpWfd27RAacTfDstKqyrSAoE=;
+        b=zftOa3M+Qu3zYg8ILzX3Ol1djhj/t7SAeRxKo972bNgpWrEhJmClL+UZJsvsRWxOSV
+         8YI2mWF521w9R+aNiQ6iKDDtb7skefK3alDkEo6BmHQN+oUIAACk602U2irOo/AIwH86
+         i4pVQhhseEc8K7cqlXODXGwym4vCD4qbbwS9QksbzonBYHSVGUrzPJV0b57ArJjbO9vC
+         Pob8fY5MMnhQdmtQww3LEKd9bSKQKIwje2tvqVKXYv8LtIWfIpeTHPamspElaXoe1jhC
+         E3fY9mKLFffhlf+V519K2wx1AhWxbEeRXvU/hHUYcGP/vVM/o2ZFJeno4AtnaWeSrmrv
+         VORQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=B+itH6nCjnZkG3yJTUkgH3T3RkzlJIEijujwFkNTeHs=;
-        b=WZvdnm+5h1mw7E7184OppTLgdI+dpROLmMCyx5DBGjK/s80lN7hvcVQI+oj4ijVu/Q
-         U4dDqaslZPcIQSTZTNBqHNyt7PlVm51pJDfIFXczr6RwYbT0QHOvS04HopHySpRF5UCq
-         9c8dP2KT5jWGqgSq9Q9C04l4sp7OzPGptXAsbRD04zI/TV//5afpOaB1k+CRyfw/pUre
-         bC1L8TGz5SzKC7rm7Fga6ocYtemAPWsqUcgc62QBKsh0cJVAuTnYlWsXWvnbysMBOi/L
-         6fwPu65OLjoeDnX9yCYsccd5hQMQ4zmMiR/jV9lHcNxucQblpkj6aAxQh0RHmBtdb7Dr
-         VzbA==
-X-Gm-Message-State: AJIora8gA4iaqKaVRMNGG8fVnCyEJHFxIQO4B38XkaQtAB3q4kbM+SkH
-        l5KStbo1QYRQPa3HInvHJTaz5Z1pCP6Cg2eppd0=
-X-Google-Smtp-Source: AGRyM1uwEejs5nDWqG+s979XFdwYwQmE2ZsEpW0n4nQQ7TCJsCqlYSNktlo34cJclnigei8K3rZk9qCXUcGHByv5Ilw=
-X-Received: by 2002:a05:6402:501d:b0:437:e000:a898 with SMTP id
- p29-20020a056402501d00b00437e000a898mr22474219eda.265.1658916275876; Wed, 27
- Jul 2022 03:04:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-12-peterwu.pub@gmail.com>
- <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com>
- <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
- <CAHp75Vd4ApTju2LCCHQ1skgOjttwWo5b2NF3u+zbGyVnnFKNhA@mail.gmail.com> <CABtFH5+bQx5ym5jOzCPJWbZ23WtGYYwS7cMRt2g3ipEEqTb3JA@mail.gmail.com>
-In-Reply-To: <CABtFH5+bQx5ym5jOzCPJWbZ23WtGYYwS7cMRt2g3ipEEqTb3JA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 27 Jul 2022 12:03:59 +0200
-Message-ID: <CAHp75Vf7jeG_DmD3sZnerFDEVpMxDiL9DkMBddAk-kJH7Hfttg@mail.gmail.com>
-Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
- sink type LED Indicator support
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/yOyu6GWLTGzcNYsjeLpWfd27RAacTfDstKqyrSAoE=;
+        b=HDM2hXcKeFvIzObN0yKnv1y7HunhDJHT1TXQJc0TWPQOg6SkLagUrWE5FxeLmva3qT
+         KMUabe6ReUidDG66cJpVB2yHGreccls1incjsrbzl/PgtKlXd0DADXKvnPldEC2Gwkg6
+         Tg5rdQmfaRiXsTY8y1lQfjxKjxCob1gZwJaBRwnw7+NOXrAOuOJ1pu2Mvhf++8VTwVKy
+         ByR7q8cseO6NnMFh/PvCZg6bzMshYjhqbVm5MckdEnGVBoNyWpwCRUSoBlir0Yzp04Is
+         NSzd7Woy9eNbFX8pgiiGO/8MeUG16JnEjgX8qJGSiFp2DpTp7TYNu9ccoUuJdqjOwph7
+         BCgA==
+X-Gm-Message-State: AJIora9qNSscVfoAioBlDDBj3yknaedJpaqJ3nBx1basq5UIR/0R/e0o
+        R94oI5bUcrFhy3pwU244L1N8ig==
+X-Google-Smtp-Source: AGRyM1shwAJq5nKlVyuZgIIaEFt3mg7AsEO781aqRRSC7Qt8FRX7YiWFyEaXLzhx6TvoTrEe0YwYGA==
+X-Received: by 2002:a05:651c:11c5:b0:25e:22c9:19e1 with SMTP id z5-20020a05651c11c500b0025e22c919e1mr1242993ljo.428.1658940421850;
+        Wed, 27 Jul 2022 09:47:01 -0700 (PDT)
+Received: from krzk-bin.lan (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id 18-20020ac25f52000000b0048910301774sm3375149lfz.307.2022.07.27.09.46.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Jul 2022 09:47:01 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Robert Jones <rjones@gateworks.com>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 00/10] dt-bindings: iio: use spi-peripheral-props.yaml
+Date:   Wed, 27 Jul 2022 18:46:36 +0200
+Message-Id: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jul 27, 2022 at 9:37 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> On Tue, Jul 26, 2022 at 8:18 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
->
-> ...
->
-> > > Just for saving memory space.
-> > > Because these led_classdevs do not be used at the same time.
-> > > Or do you think it would be better to rewrite it as follows?
-> > > -------------------------------------------------------------------------------------
-> > > struct mt6370_led {
-> > >        struct led_classdev isink;
-> > >        struct led_classdev_mc mc;
-> > >        struct mt6370_priv *priv;
-> > >        u32 default_state;
-> > >        u32 index;
-> > > };
-> > > -------------------------------------------------------------------------------------
-> >
-> > You obviously didn't get what I'm talking about...
-> > Each union to work properly should have an associated variable that
-> > holds the information of which field of the union is in use. Do you
-> > have such a variable? If not, how does your code know which one to
-> > use? If yes, add a proper comment there.
-> >
->
-> Ummm... from my understanding,
-> if the colors of these four LEDs are set to 'LED_COLOR_ID_RGB' or
-> 'LED_COLOR_ID_MULTI' in DT,
-> their 'led->index' will be set to 'MT6370_VIRTUAL_MULTICOLOR' in
-> 'mt6370_leds_probe()'.
-> If so, these led devices will be set as 'struct led_classdev_mc' and
-> use related ops functions in 'mt6370_init_led_properties()'.
-> Instead, they whose 'led->index' is not 'MT6370_VIRTUAL_MULTICOLOR'
-> will be set as 'struct led_classdev'.
-> So, maybe the member 'index' of the 'struct mt6370_led' is what you
-> describe the information of which field of the union is in use?
+Technically, this depends on [1] merged to SPI tree, if we want to
+preserve existing behavior of not allowing SPI CPHA and CPOL in each of
+schemas in this patch.
 
-From this description it sounds like it is.
+If this patch comes independently via different tree, the SPI CPHA and
+CPOL will be allowed for brief period of time, before [1] is merged.
+This will not have negative impact, just DT schema checks will be
+loosened for that period.
 
-> I will add the proper comment here to describe this thing. I'm so
-> sorry for misunderstanding your mean last time.
+[1] https://lore.kernel.org/all/20220722191539.90641-2-krzysztof.kozlowski@linaro.org/
 
-Yes, please add a compressed version of what you said above to the code.
+Changes since v1
+================
+1. Continue the rework for entire IIO.
+v1: https://lore.kernel.org/all/20220715095302.214276-1-krzysztof.kozlowski@linaro.org/
+
+Best regards,
+Krzysztof
+
+Krzysztof Kozlowski (10):
+  dt-bindings: iio: adc: use spi-peripheral-props.yaml
+  dt-bindings: iio: accel: use spi-peripheral-props.yaml
+  dt-bindings: iio: amplifiers: adi,ada4250: use
+    spi-peripheral-props.yaml
+  dt-bindings: iio: dac: use spi-peripheral-props.yaml
+  dt-bindings: iio: frequency: adf4371: use spi-peripheral-props.yaml
+  dt-bindings: iio: health: ti,afe4403: use spi-peripheral-props.yaml
+  dt-bindings: iio: imu: use spi-peripheral-props.yaml
+  dt-bindings: iio: potentiometer: use spi-peripheral-props.yaml
+  dt-bindings: iio: samsung,sensorhub-rinato: use
+    spi-peripheral-props.yaml
+  dt-bindings: iio: temperature: use spi-peripheral-props.yaml
+
+ .../bindings/iio/accel/adi,adis16201.yaml     |  7 ++---
+ .../bindings/iio/accel/adi,adis16240.yaml     |  7 ++---
+ .../bindings/iio/accel/adi,adxl313.yaml       |  9 +++----
+ .../bindings/iio/accel/adi,adxl345.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl355.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl367.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl372.yaml       |  7 ++---
+ .../bindings/iio/accel/bosch,bma220.yaml      |  7 ++---
+ .../bindings/iio/accel/bosch,bma255.yaml      |  5 +++-
+ .../bindings/iio/accel/bosch,bmi088.yaml      |  7 ++---
+ .../bindings/iio/accel/fsl,mma7455.yaml       |  7 ++---
+ .../bindings/iio/accel/kionix,kxsd9.yaml      |  7 ++---
+ .../bindings/iio/accel/murata,sca3300.yaml    |  5 +++-
+ .../bindings/iio/accel/nxp,fxls8962af.yaml    |  7 ++---
+ .../bindings/iio/adc/adi,ad7124.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7192.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7280a.yaml         |  7 ++---
+ .../bindings/iio/adc/adi,ad7292.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7298.yaml          |  6 +++--
+ .../bindings/iio/adc/adi,ad7476.yaml          |  8 +++---
+ .../bindings/iio/adc/adi,ad7606.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |  7 ++---
+ .../bindings/iio/adc/adi,ad7923.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7949.yaml          |  7 ++---
+ .../bindings/iio/adc/holt,hi8435.yaml         |  7 ++---
+ .../bindings/iio/adc/lltc,ltc2496.yaml        |  8 +++---
+ .../bindings/iio/adc/maxim,max1027.yaml       |  5 +++-
+ .../bindings/iio/adc/maxim,max11100.yaml      |  7 +++--
+ .../bindings/iio/adc/maxim,max1118.yaml       | 26 ++++++++++---------
+ .../bindings/iio/adc/maxim,max1241.yaml       |  7 ++---
+ .../bindings/iio/adc/microchip,mcp3201.yaml   |  6 +++--
+ .../bindings/iio/adc/microchip,mcp3911.yaml   |  5 +++-
+ .../bindings/iio/adc/ti,adc0832.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,adc084s021.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,adc108s102.yaml       |  6 +++--
+ .../bindings/iio/adc/ti,adc12138.yaml         |  7 ++---
+ .../bindings/iio/adc/ti,adc128s052.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,adc161s626.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,ads124s08.yaml        |  7 ++---
+ .../bindings/iio/adc/ti,ads131e08.yaml        |  7 ++---
+ .../bindings/iio/adc/ti,ads8344.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,ads8688.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,tlc4541.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,tsc2046.yaml          |  7 ++---
+ .../bindings/iio/amplifiers/adi,ada4250.yaml  |  7 ++---
+ .../bindings/iio/dac/adi,ad5064.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5360.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5380.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5421.yaml          |  7 ++---
+ .../bindings/iio/dac/adi,ad5449.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5624r.yaml         |  9 ++++---
+ .../bindings/iio/dac/adi,ad5686.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5755.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5758.yaml          |  4 +--
+ .../bindings/iio/dac/adi,ad5761.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5764.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5770r.yaml         |  7 ++---
+ .../bindings/iio/dac/adi,ad5791.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad8801.yaml          |  7 +++--
+ .../bindings/iio/dac/microchip,mcp4922.yaml   |  9 ++++---
+ .../bindings/iio/dac/ti,dac082s085.yaml       |  9 ++++---
+ .../bindings/iio/dac/ti,dac7311.yaml          |  7 ++---
+ .../bindings/iio/dac/ti,dac7612.yaml          |  7 ++---
+ .../bindings/iio/frequency/adf4371.yaml       |  7 ++---
+ .../bindings/iio/health/ti,afe4403.yaml       |  9 ++++---
+ .../bindings/iio/imu/adi,adis16460.yaml       |  7 ++---
+ .../bindings/iio/imu/adi,adis16480.yaml       |  9 ++++---
+ .../bindings/iio/imu/bosch,bmi160.yaml        |  7 ++---
+ .../bindings/iio/imu/invensense,icm42600.yaml |  6 +++--
+ .../bindings/iio/imu/invensense,mpu6050.yaml  |  5 ++--
+ .../bindings/iio/imu/nxp,fxos8700.yaml        |  7 ++---
+ .../bindings/iio/imu/st,lsm6dsx.yaml          |  9 ++++---
+ .../iio/potentiometer/microchip,mcp41010.yaml |  9 ++++---
+ .../iio/potentiometer/microchip,mcp4131.yaml  |  9 ++++---
+ .../iio/samsung,sensorhub-rinato.yaml         |  9 ++++---
+ .../iio/temperature/maxim,max31855k.yaml      |  4 +--
+ .../iio/temperature/maxim,max31856.yaml       |  6 +++--
+ .../iio/temperature/maxim,max31865.yaml       |  6 +++--
+ 78 files changed, 324 insertions(+), 249 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.34.1
+
