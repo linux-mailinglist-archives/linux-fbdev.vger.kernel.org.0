@@ -2,106 +2,143 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB84586DD8
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Aug 2022 17:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74952586E02
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Aug 2022 17:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231855AbiHAPhC (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Aug 2022 11:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40386 "EHLO
+        id S231928AbiHAPpS (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Aug 2022 11:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232301AbiHAPg7 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Aug 2022 11:36:59 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66CB62A429
-        for <linux-fbdev@vger.kernel.org>; Mon,  1 Aug 2022 08:36:57 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id b21so12726644ljk.8
-        for <linux-fbdev@vger.kernel.org>; Mon, 01 Aug 2022 08:36:57 -0700 (PDT)
+        with ESMTP id S232660AbiHAPpR (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Aug 2022 11:45:17 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF61E5F57
+        for <linux-fbdev@vger.kernel.org>; Mon,  1 Aug 2022 08:45:14 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id w15so3648391ljw.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 01 Aug 2022 08:45:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=UKcP1FDF09nj1k3uYCs67Q7ZyiUIjGtO/8/Bj2O390UgRgAJaQbdj4bNFv73NHa6D2
-         iYDxlXmYJBF3bZ+BbTGm686z3m5B8jXpwu0YmqjPCoKHCXX42ltrt2aAmH4sQv+ccJN+
-         OHyZ31OJTJwijh8OV8oO5eWh1/bM4pqSqK2uyo052aPr6eVSdk1CVQkx424vXYMEZQTj
-         HsS77Ky28UOjl0KpgsmMPfvxGbLfejaevmoaRlv0kRAHXIpr67GF1/t31ULjMlw9VGDc
-         NI+pGTJBLZwknk3P787XURm2/kBy3STaEpJiGhVmWsgdrf7IgJXaPWV7ssfsuJ7alB0a
-         /1Uw==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=0zyZ2hFRDCL/PAB+77dCIxgz+ZJjPhAukCUQAK9K37I=;
+        b=NmBGuOwDmFWyAOTwqfb7d0MouyyUkpKz34kkXOGcVYw0WRLvLsRd4fzADyU365P/wJ
+         4/kuB9jG8oBgZrBtB86EZlee2Yt8ZPCxja9c1dHOFQz2eCXJfGsfdSxHPW9jdazR1A99
+         25LR9NouXBhS9+9ZbzDYMr7QxJlW/U+E96aX0ihqOp32X0ZnbLjk5f8MoUrW/RhkyuqC
+         HF+M5aB7NuAUv2biIB0egFdMSiT5o6au74UTgfRpQ02KgJmUlHYvIp+arg/VNkCjd/Oi
+         5woCRF4s/3oLhjdAdqLnJ+IRKxk1C2YZu1MVihCyHcCbBUIRxgiqNK5hZe+Bxt870hmG
+         dhsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=kwx+Y/BtV8aZemWvcZp2FvMFbUjLvNRKePhOEsgC/5Rz22JDtLhTBE4ejmsee8iYBB
-         R1DY1rhAyxK9DAEkKKjUvz6j0e4WN9+HTWIuLlcH58vg9tG07FfAW5yWBwCOIms9/pUw
-         6E89Ey4FmGatvvVxnoUTBDwrz8w9Yy0cG4c4ugXGnSuD+pbpkbC8oEVIQH1mf+JCG6Oq
-         pl1S+Ojw/QZ2BT9dKszBIlrwZZpL6oi0za2XWHwyvrGIELcyr6acmmxoF9TarJFS5q/2
-         tmiJBGEeqN5zaK7b+s5GsRsUYxQVN4ftg/tNrUZCiLoQySc6L2IirQ4Vas2qUWBqhX2e
-         Qisw==
-X-Gm-Message-State: AJIora82RoBDnpuWn93SQOy4dfZcSc6dT5PqMrJzg+R+18YP21kwBC0M
-        PLiXfNJbb0bwH1kp++6snxnjZUtgjav5k40z0oE=
-X-Google-Smtp-Source: AGRyM1vmE9FJ4oaYsT2Hr55xmADsiyPljwE7zY7KjJ0BGtCDobMH8efpf5FFXcSqHPDNiB3EqFhLCRIlfACfnG64NOA=
-X-Received: by 2002:a2e:be90:0:b0:25e:1496:a0b8 with SMTP id
- a16-20020a2ebe90000000b0025e1496a0b8mr5475533ljr.194.1659368215756; Mon, 01
- Aug 2022 08:36:55 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=0zyZ2hFRDCL/PAB+77dCIxgz+ZJjPhAukCUQAK9K37I=;
+        b=ZwOc17XWXQJ3c47h4aMFZqsJMFbX4hgpzBlA26/TYFvWx6o/0DdK4WOJkiGUE74tb+
+         GK72X3GegFKiHnHIeMPVEp1reYTcUcOGRspy+N92AxApNiXL6P8cWA8NGLAQvn8/58Y7
+         Jjmx/Nb2Es2LSvbsZgnDcMfW3lhS2QcCSHldMomf4R5gxfwZBk3w3y3yDPP9h/mPvFDK
+         Y/ba0FiDcmnS/3tzXX5kiCukjwVtvGVOROxpOviado0H3MrZmmclkEyVyWj+nY/TQe1S
+         49PFhBbu8db5wnKXOsx/P1CmA7z77+3nkhTrjelPVRj0vBNH9hrGM/zoxfBaDSw0oOhc
+         09nQ==
+X-Gm-Message-State: AJIora9c+fjVsJG/XS9oTWMJZTGPn6XUlR80d/nFkFZ6R0eoDc9bztkO
+        jGbefJLMW0taM4agyzyHLHxmfw==
+X-Google-Smtp-Source: AGRyM1tioJLRexsAbEzPR5s9tl1SAoqjdAsmrvPwSvCHuyovgYJvBqfWj3511GuPNaK88Y3DupzQPQ==
+X-Received: by 2002:a2e:8247:0:b0:25d:b515:92e with SMTP id j7-20020a2e8247000000b0025db515092emr5248224ljh.527.1659368713339;
+        Mon, 01 Aug 2022 08:45:13 -0700 (PDT)
+Received: from [192.168.1.6] ([213.161.169.44])
+        by smtp.gmail.com with ESMTPSA id g7-20020a056512118700b0047dace7c7e5sm1769765lfr.212.2022.08.01.08.45.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Aug 2022 08:45:12 -0700 (PDT)
+Message-ID: <bd829586-f052-03c3-aa68-e5a2be84b6bb@linaro.org>
+Date:   Mon, 1 Aug 2022 17:45:07 +0200
 MIME-Version: 1.0
-Received: by 2002:aa6:cb52:0:b0:1fa:aaed:e6d9 with HTTP; Mon, 1 Aug 2022
- 08:36:55 -0700 (PDT)
-From:   Bright Gawayn <gben68387@gmail.com>
-Date:   Mon, 1 Aug 2022 21:06:55 +0530
-Message-ID: <CAG1+V0zQ=FhBLNLT__co7DHJWC=eYBw480NBDxjx-Za_ZVMuzw@mail.gmail.com>
-Subject: Lucrative business proposal very urgent!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 00/10] dt-bindings: iio: use spi-peripheral-props.yaml
+Content-Language: en-US
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Robert Jones <rjones@gateworks.com>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
+ <20220730224643.GB11662@wunner.de>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220730224643.GB11662@wunner.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:241 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5008]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [gben68387[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [gben68387[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.5 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hello dear My name is Mr Bright Gawayn,  It's my pleasure to contact you today.
+On 31/07/2022 00:46, Lukas Wunner wrote:
+> On Wed, Jul 27, 2022 at 06:46:36PM +0200, Krzysztof Kozlowski wrote:
+>>  78 files changed, 324 insertions(+), 249 deletions(-)
+> 
+> Pardon me for being dense, but what is the benefit of this series
+> that justifies inflating the schema definitions by a total of 75 lines?
 
-We use a certain raw material in our pharmaceutical firm for the
-manufacture of animal vaccines and many more.
+The commits were explaining rationale, so let me bring it here. The
+benefits are:
+This allows using all properties typical for SPI-connected devices, even
+these which device bindings author did not tried yet.
 
-My intention is to give you the new contact information of the local
-manufacturer of this raw material in India and every details regarding
-how to supply the material to my company if you're interested, my
-company pays in advance for this material.
+Also, what I did not mention in commit msg, this makes sure, that
+spi-xxx properties have a type, which is validated by
+spi-peripheral-props.yaml. Otherwise, when someone puts bogus data as
+spi-max-frequency (e.g. phandle) and checks only with that device
+schema, no errors are reported.
 
-Due to some reasons, which I will explain in my next email, I cannot
-procure this material and supply it to my company myself due to the
-fact that I am a staff in the company.
-
-Please get back to me as soon as possible for full detail if you are interested.
-
-Thanks and regards
-Bright.
+Best regards,
+Krzysztof
