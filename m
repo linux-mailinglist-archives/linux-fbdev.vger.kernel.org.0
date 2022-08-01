@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53C70586EB4
-	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Aug 2022 18:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E05586ECC
+	for <lists+linux-fbdev@lfdr.de>; Mon,  1 Aug 2022 18:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232827AbiHAQid (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 1 Aug 2022 12:38:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59426 "EHLO
+        id S233760AbiHAQl0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 1 Aug 2022 12:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbiHAQi3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Aug 2022 12:38:29 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD3AB3A
-        for <linux-fbdev@vger.kernel.org>; Mon,  1 Aug 2022 09:38:25 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id b21so12919912ljk.8
-        for <linux-fbdev@vger.kernel.org>; Mon, 01 Aug 2022 09:38:25 -0700 (PDT)
+        with ESMTP id S233799AbiHAQlZ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 1 Aug 2022 12:41:25 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737EEF3A
+        for <linux-fbdev@vger.kernel.org>; Mon,  1 Aug 2022 09:41:18 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id u1so7945926lfq.4
+        for <linux-fbdev@vger.kernel.org>; Mon, 01 Aug 2022 09:41:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
         bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=UpgXbpfO0w/dJq4k0vuSl6sUdwOXFPzo72SUDWGRn4yCt6QTXqfTKNyPrrLSbJ8yzY
-         7SvNYiuTJto9ZKlzvm5aoeOkIg+OLPLmA7JtBAqJNAo3ZwaSjplZ/wAzKUOl+dDU/dDK
-         hYOtZRuneAEXUY6rJcSHGhuzX712qrYQrFpKbC7RuKjQlSCmwGRK5sGDya2wx4XaUf+k
-         IlVzDxfqSKvxeU6NrU/S6TRC1i25W9OIICD2HGjN/h5O8s28u9oHxFPUHjB6EjmlL3W1
-         LOFyxwAfOSDkgEr1jZ/ZsXk1P0uSiTY0XrYgKEkG3SBkCMdWMSlGcFhfScKKMVApzTc3
-         wpBg==
+        b=Bxl5axUsg9q1jblhPn/sD0+XJcBD3bAcmC9Aes5ip1ahcImMEHBlh+Er+rhf8FIO5i
+         +XJNmIRVpjVrbiySb5O5JjfIYrlkw/mOOo1qLRe9SX6sdqO1Rz2KXY4WbugpN4fJWRij
+         CC78UfV1dMZkmuojiTGc3RQBuAg37lvfWIZxpBN7oIZ+TFFhJCkZYKmkXCGO1XSk++os
+         BEc9uqs1UR2e1JE6FJCIOTKylSGKLi8i6iImu/1NRs2zwpfONk1G3Sx/5wm/96rkxk/n
+         idBjkyW5OxynxwIdfLGjdySuoKDi/2Cx+yQ5t/sygpVds2zaObagHbRvikV7OatiZuWO
+         7vpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
         bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=I0gPXDMknyj7CxBmnQ6tw7YDnofa56xeG7QDcHoD2MeGuoVvrm1RYQ58WI2BljTY8D
-         eNYhqU5mpY/7xEOU5bGmtSu4D9L2Z6HvA36O8k2jXXsrm5owD1gw65EwTLbyt5wpGiUg
-         666z4AprZv88lY2+hMgzoCKuFVTswLc5abLiAq5ukgLtba9J+Ntn7mHnPF4qVMJGVOru
-         LreW67CS0jXULPWvJvVAanu74Bv9W+WQpDqkEx5yOHZrtquif4Zwvvl1btXazTyE0BrL
-         cdOZb0c/ZLqJMRE8tUhOsqN7s2l1rYkEZ6t+YQKxi/w1BD7QoXqv7GmLjFA36HEhB4kR
-         u0vw==
-X-Gm-Message-State: AJIora8/H7DI5YETcUV4+zNvid36bDVdlFXrIqDJDgZtvhvFKhMmm2+8
-        9Tav7AzmvKDup/Bt0WJXZzn10mCvZu3l+wyKc9Q=
-X-Google-Smtp-Source: AGRyM1uhfxKvD7WlSvnzrbGlwEuRLAbxrb3yEpNH1m/q+RCiRS7C4p1DxknGjCMobov/SaZ/nFOLCAAIjg3qtSJ3b84=
-X-Received: by 2002:a2e:be90:0:b0:25e:1496:a0b8 with SMTP id
- a16-20020a2ebe90000000b0025e1496a0b8mr5567966ljr.194.1659371903861; Mon, 01
- Aug 2022 09:38:23 -0700 (PDT)
+        b=pD1V4HnsihAChZuOeXifM3LK619MFiSBwVuEK/gn+IHdjTXfCA021rBmuMlHXHBMLQ
+         FOMHnlHHXcI/GbuzwMhANu+OZ6lXrEnxTxPfYSVy9HreZs/S6caXUH7FrWAgjLLDCM7z
+         bQZ2rJA3l8YFYtKbxIjDD2HmkQ1lpNG54bDijvmQ/+6VMnkF8VK2bI/keLtJkKj0LkEh
+         aW80ELbVXeOrsn3yYmu4FHquiYbMa9Nz4hYmAFdR9CA5IN3krC8LvB7m5iXyaAVJ6x8B
+         tNIFm/faxfXyxCcwOQRUKXL9nk2zelNFbeiGhQmOd6ZlDZQ3bBxX2UrHzQDNNHAOENDx
+         YwoA==
+X-Gm-Message-State: ACgBeo2B85IRFWHYV/4MZ4Vq/90mpRYXd2Gnk4d2pbSdoU83m2RQT9Gr
+        Nyt9UpuVa7Rs5BERe66fwQBNSlVxBDqbuNOx3hU=
+X-Google-Smtp-Source: AA6agR7hKhHIm3F/ejmSJp6d9SbrPg4lDvobGmT+31j9yOEF5/lXFTH1cRKmZ7l8KWQdcnShwsngG5SjR8Fu/Me3Bwc=
+X-Received: by 2002:a05:6512:2c8a:b0:48a:f7e9:973f with SMTP id
+ dw10-20020a0565122c8a00b0048af7e9973fmr2082578lfb.5.1659372076778; Mon, 01
+ Aug 2022 09:41:16 -0700 (PDT)
 MIME-Version: 1.0
 Received: by 2002:aa6:cb52:0:b0:1fa:aaed:e6d9 with HTTP; Mon, 1 Aug 2022
- 09:38:23 -0700 (PDT)
+ 09:41:16 -0700 (PDT)
 From:   Bright Gawayn <gben68387@gmail.com>
-Date:   Mon, 1 Aug 2022 22:08:23 +0530
-Message-ID: <CAG1+V0w-Pt5No3wNn5Sm7K_0Y_mZnH5=drEjS3cseB6w-yBsLg@mail.gmail.com>
+Date:   Mon, 1 Aug 2022 22:11:16 +0530
+Message-ID: <CAG1+V0wE_akdUeEq+pYde2NDn1FBw6gG03M1=wDyPkOui2q5Hw@mail.gmail.com>
 Subject: Lucrative business proposal very urgent!
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
@@ -58,10 +58,10 @@ X-Spam-Status: Yes, score=6.9 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
         version=3.4.6
 X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
         *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:242 listed in]
+        *      [2a00:1450:4864:20:0:0:0:142 listed in]
         [list.dnswl.org]
         *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
+        *      [score: 0.5011]
         *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
         *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
         *      provider
