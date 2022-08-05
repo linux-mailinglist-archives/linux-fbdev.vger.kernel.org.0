@@ -2,69 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD5B58A94E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Aug 2022 12:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2401F58A9B1
+	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Aug 2022 12:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240627AbiHEKPQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 5 Aug 2022 06:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
+        id S239251AbiHEKvj (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 5 Aug 2022 06:51:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240599AbiHEKPN (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 Aug 2022 06:15:13 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916C2FD;
-        Fri,  5 Aug 2022 03:15:10 -0700 (PDT)
-X-UUID: 3e7b18dba3fe4f4d858146a3d6ddfe5c-20220805
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=sGX6YzjigDRiefwq1x9TnO0pG3WTYmLcs7/JWY07XCk=;
-        b=dbU4CWEAgTI3N3A1dt6XycD6D57MpJUI8a4RfZTvNzY7dknN5xCfQovSOsPXSk3+/58vjJ/a0aXBQa9XHpT5+ctJCNjZ2dKvM3aq8IMVcZJnZ1nJ1rqR0PUqwfXbvFkKe1aV0uBmVdVPhSh6LVIHWwJlGhf7jRl+xt1LiX7Kybc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.8,REQID:d34b1369-3efb-4565-a8f0-01e15deb4436,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:-5
-X-CID-META: VersionHash:0f94e32,CLOUDID:fd10e19b-da39-4e3b-a854-56c7d2111b46,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,QS:nil,BEC:nil,COL:0
-X-UUID: 3e7b18dba3fe4f4d858146a3d6ddfe5c-20220805
-Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
-        (envelope-from <rex-bc.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1036865094; Fri, 05 Aug 2022 18:15:01 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Fri, 5 Aug 2022 18:15:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 5 Aug 2022 18:15:00 +0800
-From:   Bo-Chen Chen <rex-bc.chen@mediatek.com>
-To:     <chunkuang.hu@kernel.org>, <p.zabel@pengutronix.de>,
-        <daniel@ffwll.ch>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
-        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
-        <airlied@linux.ie>
-CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
-        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
-        <angelogioacchino.delregno@collabora.com>, <ck.hu@mediatek.com>,
-        <liangxu.xu@mediatek.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Subject: [PATCH v16 8/8] drm/mediatek: Use cached audio config when changing resolution
-Date:   Fri, 5 Aug 2022 18:14:59 +0800
-Message-ID: <20220805101459.3386-9-rex-bc.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220805101459.3386-1-rex-bc.chen@mediatek.com>
-References: <20220805101459.3386-1-rex-bc.chen@mediatek.com>
+        with ESMTP id S237666AbiHEKvi (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 Aug 2022 06:51:38 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E6811C03;
+        Fri,  5 Aug 2022 03:51:36 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id b21so1707818qte.12;
+        Fri, 05 Aug 2022 03:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=t6fXAhWVUFAuj9fGZxy9SW8dxs2cVUbQslkXYvZLT+w=;
+        b=O9VzxhCkEHHB8OFxr9GvZKHnDiomK3qEuWR7pUzw2hB+0X9CBFlifvyIaM9mDy4nCO
+         la/vWCEN6rpYojHsH4rEKsMQZsIHjToOoqEHu0Af3R8eq2qZAqnOVaM1H+97rdouLwkx
+         Ozt0YL23GvxiQP7RVfJJG58KFwIOsknow2DXLTfHBQGlz36jhezD5F24tUBd0OMioQge
+         OSrUOHyghaXqQoTFy69qcTwKHUVY3EOIQL80GOl27jDh27LFQsXr/iukdVdUSUp7gfCJ
+         oUwSwk3ntoO8FtXaOvWeiGPycaUw2QqTjfWuavbPDSR0pncTLyDrRlQYA46Vq1Ex+/oL
+         He6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=t6fXAhWVUFAuj9fGZxy9SW8dxs2cVUbQslkXYvZLT+w=;
+        b=G3syfdSy/NkriZd7wRYTS+KmPi8LiBGATTu5wFGvpVzQxzdVwnLE9IiJYTNeqhKjWR
+         TOllPC6GjspT1nGqsM7C/BTXwiTw+/fxlmUVc77Gh0LWj/tEezWqynj/jOxxKSG7k27A
+         gz1BOit7N1iA527PCx6MfkuHCeWdFlWYuUu7X4xQEMhNpjoxe33BPhr/n2zAIwtnmrz7
+         bhyYX/i0mtLecwOeABbG++DpJJSA5TScaz7E40kbrcXSrqQOSqCmCkZ0jyiecpH3MUgI
+         xU2l1HoXvov7+pAb0CkfiVQqhPQoCOyK9iwmt4RsnphFmB1hDwAt2GMJbiVvW9axAWdm
+         b3Og==
+X-Gm-Message-State: ACgBeo1IRhw8E1aUwYNiWwbZl9A/3hmcZC7HJIbAUMvWc7fi2KoMXe5c
+        RpZp9VzqQmavMTOapZPS2ebrwAzvsYF0Hmy2bmk=
+X-Google-Smtp-Source: AA6agR5K3dv/wqvSJHsdvtimgpDw6LDloHXKTbPrFyY/hLxfC65YOp0ehjqgYs6C7QzUOyT9KMDQsDyHqMEiIgtFDo0=
+X-Received: by 2002:ac8:7d49:0:b0:340:81b1:e320 with SMTP id
+ h9-20020ac87d49000000b0034081b1e320mr5211944qtb.61.1659696695901; Fri, 05 Aug
+ 2022 03:51:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_CSS
+References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-9-peterwu.pub@gmail.com>
+In-Reply-To: <20220805070610.3516-9-peterwu.pub@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 5 Aug 2022 12:50:59 +0200
+Message-ID: <CAHp75Ve7OOaVU=Xm5D7nRsCAhDYi3Eq3x4YscPYdJrBqO+AM-g@mail.gmail.com>
+Subject: Re: [PATCH v7 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
+ tcpci driver
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,202 +97,288 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-When the audio is playing, we need to use the original configuration to
-set the audio instead of using new configuration. Therefore, use the
-cached audio configuration during a resolution switch to avoid loss of
-sound.
+On Fri, Aug 5, 2022 at 9:07 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+>
+> From: ChiYuan Huang <cy_huang@richtek.com>
+>
+> The MediaTek MT6370 is a highly-integrated smart power management IC,
+> which includes a single cell Li-Ion/Li-Polymer switching battery
+> charger, a USB Type-C & Power Delivery (PD) controller, dual
+> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
+> a display bias driver and a general LDO for portable devices.
+>
+> Add a support for the Type-C & Power Delivery controller in
+> MediaTek MT6370 IC.
 
-Signed-off-by: Jitao Shi <jitao.shi@mediatek.com>
-Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/gpu/drm/mediatek/mtk_dp.c | 108 +++++-------------------------
- 1 file changed, 17 insertions(+), 91 deletions(-)
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 3efac9920304..e725e3104147 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -45,18 +45,6 @@
- #define MTK_DP_TRAIN_DOWNSCALE_RETRY 8
- #define MTK_DP_VERSION 0x11
- 
--#define MTK_DP_CEA_SAD_FREQ_32KHZ  BIT(0)
--#define MTK_DP_CEA_SAD_FREQ_44KHZ  BIT(1)
--#define MTK_DP_CEA_SAD_FREQ_48KHZ  BIT(2)
--#define MTK_DP_CEA_SAD_FREQ_88KHZ  BIT(3)
--#define MTK_DP_CEA_SAD_FREQ_96KHZ  BIT(4)
--#define MTK_DP_CEA_SAD_FREQ_176KHZ BIT(5)
--#define MTK_DP_CEA_SAD_FREQ_192KHZ BIT(6)
--
--#define MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_16BIT BIT(0)
--#define MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_20BIT BIT(1)
--#define MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_24BIT BIT(2)
--
- struct mtk_dp_train_info {
- 	bool tps3;
- 	bool tps4;
-@@ -106,7 +94,7 @@ struct mtk_dp_info {
- 	struct videomode vm;
- 	u8 frame_rate;
- 	u32 pix_rate_khz;
--	struct mtk_dp_audio_cfg audio_caps;
-+	struct mtk_dp_audio_cfg audio_cur_cfg;
- };
- 
- struct dp_cal_data {
-@@ -413,48 +401,6 @@ static void mtk_dp_pg_enable(struct mtk_dp *mtk_dp, bool enable)
- 			   4 << PGEN_PATTERN_SEL_SHIFT, PGEN_PATTERN_SEL_MASK);
- }
- 
--static int mtk_dp_cea_sad_get_sample_rate(const struct cea_sad *sad)
--{
--	switch (sad->freq) {
--	case MTK_DP_CEA_SAD_FREQ_32KHZ:
--		return 32000;
--	case MTK_DP_CEA_SAD_FREQ_44KHZ:
--		return 44100;
--	case MTK_DP_CEA_SAD_FREQ_48KHZ:
--		return 48000;
--	case MTK_DP_CEA_SAD_FREQ_88KHZ:
--		return 88200;
--	case MTK_DP_CEA_SAD_FREQ_96KHZ:
--		return 96000;
--	case MTK_DP_CEA_SAD_FREQ_176KHZ:
--		return 176400;
--	case MTK_DP_CEA_SAD_FREQ_192KHZ:
--		return 192000;
--	default:
--		return -EINVAL;
--	}
--}
--
--static int mtk_dp_cea_sad_get_uncompressed_word_length(const struct cea_sad *sad)
--{
--	if (sad->format != HDMI_AUDIO_CODING_TYPE_PCM) {
--		pr_err("Unable to get the uncompressed word length for format: %u\n",
--		       sad->format);
--		return -EINVAL;
--	}
--
--	switch (sad->byte2) {
--	case MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_16BIT:
--		return 16;
--	case MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_20BIT:
--		return 20;
--	case MTK_DP_CEA_SAD_UNCOMPRESSED_WORD_24BIT:
--		return 24;
--	default:
--		return -EINVAL;
--	}
--}
--
- static void mtk_dp_audio_setup_channels(struct mtk_dp *mtk_dp,
- 					struct mtk_dp_audio_cfg *cfg)
- {
-@@ -1859,9 +1805,7 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 						 struct mtk_dp_audio_cfg *cfg)
- {
- 	struct cea_sad *sads;
--	int sad_count;
--	int i;
--	bool ret = false;
-+	int ret;
- 
- 	if (!mtk_dp->data->audio_supported)
- 		return false;
-@@ -1872,36 +1816,16 @@ static bool mtk_dp_edid_parse_audio_capabilities(struct mtk_dp *mtk_dp,
- 		dev_err(mtk_dp->dev, "EDID not found!\n");
- 		return false;
- 	}
--	sad_count = drm_edid_to_sad(mtk_dp->edid, &sads);
--	mutex_unlock(&mtk_dp->edid_lock);
- 
--	if (sad_count <= 0) {
-+	ret = drm_edid_to_sad(mtk_dp->edid, &sads);
-+	mutex_unlock(&mtk_dp->edid_lock);
-+	if (ret <= 0) {
- 		drm_info(mtk_dp->drm_dev, "The SADs is NULL\n");
- 		return false;
- 	}
--
--	for (i = 0; i < sad_count; i++) {
--		int sample_rate, word_length;
--
--		/* Only PCM supported at the moment */
--		if (sads[i].format != HDMI_AUDIO_CODING_TYPE_PCM)
--			continue;
--
--		sample_rate = mtk_dp_cea_sad_get_sample_rate(&sads[i]);
--		word_length =
--			mtk_dp_cea_sad_get_uncompressed_word_length(&sads[i]);
--		if (sample_rate <= 0 || word_length <= 0)
--			continue;
--
--		cfg->channels = sads[i].channels;
--		cfg->word_length_bits = word_length;
--		cfg->sample_rate = sample_rate;
--		ret = true;
--		break;
--	}
- 	kfree(sads);
- 
--	return ret;
-+	return true;
- }
- 
- static void mtk_dp_train_change_mode(struct mtk_dp *mtk_dp)
-@@ -2070,13 +1994,13 @@ static int mtk_dp_training(struct mtk_dp *mtk_dp)
- 
- 	mtk_dp->audio_enable =
- 		mtk_dp_edid_parse_audio_capabilities(mtk_dp,
--						     &mtk_dp->info.audio_caps);
-+						     &mtk_dp->info.audio_cur_cfg);
- 	if (mtk_dp->audio_enable) {
--		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_caps);
-+		mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 		mtk_dp_audio_mute(mtk_dp, false);
- 	} else {
--		memset(&mtk_dp->info.audio_caps, 0,
--		       sizeof(mtk_dp->info.audio_caps));
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	return 0;
-@@ -2442,6 +2366,9 @@ static void mtk_dp_bridge_atomic_disable(struct drm_bridge *bridge,
- 	if (mtk_dp_plug_state(mtk_dp)) {
- 		drm_dp_dpcd_writeb(&mtk_dp->aux, DP_SET_POWER, DP_SET_POWER_D3);
- 		usleep_range(2000, 3000);
-+	} else {
-+		memset(&mtk_dp->info.audio_cur_cfg, 0,
-+		       sizeof(mtk_dp->info.audio_cur_cfg));
- 	}
- 
- 	mtk_dp_video_mute(mtk_dp, true);
-@@ -2641,18 +2568,17 @@ static int mtk_dp_audio_hw_params(struct device *dev, void *data,
- 				  struct hdmi_codec_params *params)
- {
- 	struct mtk_dp *mtk_dp = dev_get_drvdata(dev);
--	struct mtk_dp_audio_cfg cfg;
- 
- 	if (!mtk_dp->enabled) {
- 		dev_err(mtk_dp->dev, "%s, DP is not ready!\n", __func__);
- 		return -ENODEV;
- 	}
- 
--	cfg.channels = params->cea.channels;
--	cfg.sample_rate = params->sample_rate;
--	cfg.word_length_bits = 24;
-+	mtk_dp->info.audio_cur_cfg.channels = params->cea.channels;
-+	mtk_dp->info.audio_cur_cfg.sample_rate = params->sample_rate;
-+	mtk_dp->info.audio_cur_cfg.word_length_bits = 24;
- 
--	mtk_dp_audio_setup(mtk_dp, &cfg);
-+	mtk_dp_audio_setup(mtk_dp, &mtk_dp->info.audio_cur_cfg);
- 
- 	return 0;
- }
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+>
+> v7
+> - Revise 'devm_add_action_or_reset(dev, ...)' to one line
+> - Revise 'return regmap_update_bits(...)' with using positive
+>   conditional
+> ---
+>  drivers/usb/typec/tcpm/Kconfig        |  11 ++
+>  drivers/usb/typec/tcpm/Makefile       |   1 +
+>  drivers/usb/typec/tcpm/tcpci_mt6370.c | 207 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 219 insertions(+)
+>  create mode 100644 drivers/usb/typec/tcpm/tcpci_mt6370.c
+>
+> diff --git a/drivers/usb/typec/tcpm/Kconfig b/drivers/usb/typec/tcpm/Kconfig
+> index 073fd2e..e6b88ca 100644
+> --- a/drivers/usb/typec/tcpm/Kconfig
+> +++ b/drivers/usb/typec/tcpm/Kconfig
+> @@ -35,6 +35,17 @@ config TYPEC_MT6360
+>           USB Type-C. It works with Type-C Port Controller Manager
+>           to provide USB PD and USB Type-C functionalities.
+>
+> +config TYPEC_TCPCI_MT6370
+> +       tristate "MediaTek MT6370 Type-C driver"
+> +       depends on MFD_MT6370
+> +       help
+> +         MediaTek MT6370 is a multi-functional IC that includes
+> +         USB Type-C. It works with Type-C Port Controller Manager
+> +         to provide USB PD and USB Type-C functionalities.
+> +
+> +         This driver can also be built as a module. The module
+> +         will be called "tcpci_mt6370".
+> +
+>  config TYPEC_TCPCI_MAXIM
+>         tristate "Maxim TCPCI based Type-C chip driver"
+>         help
+> diff --git a/drivers/usb/typec/tcpm/Makefile b/drivers/usb/typec/tcpm/Makefile
+> index 7d499f3..906d9dc 100644
+> --- a/drivers/usb/typec/tcpm/Makefile
+> +++ b/drivers/usb/typec/tcpm/Makefile
+> @@ -6,4 +6,5 @@ typec_wcove-y                           := wcove.o
+>  obj-$(CONFIG_TYPEC_TCPCI)              += tcpci.o
+>  obj-$(CONFIG_TYPEC_RT1711H)            += tcpci_rt1711h.o
+>  obj-$(CONFIG_TYPEC_MT6360)             += tcpci_mt6360.o
+> +obj-$(CONFIG_TYPEC_TCPCI_MT6370)       += tcpci_mt6370.o
+>  obj-$(CONFIG_TYPEC_TCPCI_MAXIM)                += tcpci_maxim.o
+> diff --git a/drivers/usb/typec/tcpm/tcpci_mt6370.c b/drivers/usb/typec/tcpm/tcpci_mt6370.c
+> new file mode 100644
+> index 0000000..c5bb201
+> --- /dev/null
+> +++ b/drivers/usb/typec/tcpm/tcpci_mt6370.c
+> @@ -0,0 +1,207 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2022 Richtek Technology Corp.
+> + *
+> + * Author: ChiYuan Huang <cy_huang@richtek.com>
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_wakeup.h>
+> +#include <linux/pm_wakeirq.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/usb/tcpci.h>
+> +#include <linux/usb/tcpm.h>
+> +
+> +#define MT6370_REG_SYSCTRL8    0x9B
+> +
+> +#define MT6370_AUTOIDLE_MASK   BIT(3)
+> +
+> +#define MT6370_VENDOR_ID       0x29CF
+> +#define MT6370_TCPC_DID_A      0x2170
+> +
+> +struct mt6370_priv {
+> +       struct device *dev;
+> +       struct regulator *vbus;
+> +       struct tcpci *tcpci;
+> +       struct tcpci_data tcpci_data;
+> +};
+> +
+> +static const struct reg_sequence mt6370_reg_init[] = {
+> +       REG_SEQ(0xA0, 0x1, 1000),
+> +       REG_SEQ(0x81, 0x38, 0),
+> +       REG_SEQ(0x82, 0x82, 0),
+> +       REG_SEQ(0xBA, 0xFC, 0),
+> +       REG_SEQ(0xBB, 0x50, 0),
+> +       REG_SEQ(0x9E, 0x8F, 0),
+> +       REG_SEQ(0xA1, 0x5, 0),
+> +       REG_SEQ(0xA2, 0x4, 0),
+> +       REG_SEQ(0xA3, 0x4A, 0),
+> +       REG_SEQ(0xA4, 0x01, 0),
+> +       REG_SEQ(0x95, 0x01, 0),
+> +       REG_SEQ(0x80, 0x71, 0),
+> +       REG_SEQ(0x9B, 0x3A, 1000),
+> +};
+> +
+> +static int mt6370_tcpc_init(struct tcpci *tcpci, struct tcpci_data *data)
+> +{
+> +       u16 did;
+> +       int ret;
+> +
+> +       ret = regmap_register_patch(data->regmap, mt6370_reg_init,
+> +                                   ARRAY_SIZE(mt6370_reg_init));
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = regmap_raw_read(data->regmap, TCPC_BCD_DEV, &did, sizeof(u16));
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (did == MT6370_TCPC_DID_A)
+> +               return regmap_write(data->regmap, TCPC_FAULT_CTRL, 0x80);
+> +
+> +       return 0;
+> +}
+> +
+> +static int mt6370_tcpc_set_vconn(struct tcpci *tcpci, struct tcpci_data *data,
+> +                                bool enable)
+> +{
+> +       return regmap_update_bits(data->regmap, MT6370_REG_SYSCTRL8,
+> +                                 MT6370_AUTOIDLE_MASK,
+> +                                 enable ? 0 : MT6370_AUTOIDLE_MASK);
+> +}
+> +
+> +static int mt6370_tcpc_set_vbus(struct tcpci *tcpci, struct tcpci_data *data,
+> +                               bool source, bool sink)
+> +{
+> +       struct mt6370_priv *priv = container_of(data, struct mt6370_priv,
+> +                                               tcpci_data);
+> +       int ret;
+> +
+> +       ret = regulator_is_enabled(priv->vbus);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       if (ret && !source)
+> +               return regulator_disable(priv->vbus);
+> +
+> +       if (!ret && source)
+> +               return regulator_enable(priv->vbus);
+> +
+> +       return 0;
+> +}
+> +
+> +static irqreturn_t mt6370_irq_handler(int irq, void *dev_id)
+> +{
+> +       struct mt6370_priv *priv = dev_id;
+> +
+> +       return tcpci_irq(priv->tcpci);
+> +}
+> +
+> +static int mt6370_check_vendor_info(struct mt6370_priv *priv)
+> +{
+> +       struct regmap *regmap = priv->tcpci_data.regmap;
+> +       u16 vid;
+> +       int ret;
+> +
+> +       ret = regmap_raw_read(regmap, TCPC_VENDOR_ID, &vid, sizeof(u16));
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (vid != MT6370_VENDOR_ID)
+> +               return dev_err_probe(priv->dev, -ENODEV,
+> +                                    "Vendor ID not correct 0x%02x\n", vid);
+> +
+> +       return 0;
+> +}
+> +
+> +static void mt6370_unregister_tcpci_port(void *tcpci)
+> +{
+> +       tcpci_unregister_port(tcpci);
+> +}
+> +
+> +static int mt6370_tcpc_probe(struct platform_device *pdev)
+> +{
+> +       struct mt6370_priv *priv;
+> +       struct device *dev = &pdev->dev;
+> +       int irq, ret;
+> +
+> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +       if (!priv)
+> +               return -ENOMEM;
+> +
+> +       priv->dev = dev;
+> +
+> +       priv->tcpci_data.regmap = dev_get_regmap(dev->parent, NULL);
+> +       if (!priv->tcpci_data.regmap)
+> +               return dev_err_probe(dev, -ENODEV, "Failed to init regmap\n");
+> +
+> +       ret = mt6370_check_vendor_info(priv);
+> +       if (ret)
+> +               return ret;
+> +
+> +       irq = platform_get_irq(pdev, 0);
+> +       if (irq < 0)
+> +               return dev_err_probe(dev, irq, "Failed to get irq\n");
+> +
+> +       /* Assign TCPCI feature and ops */
+> +       priv->tcpci_data.auto_discharge_disconnect = 1;
+> +       priv->tcpci_data.init = mt6370_tcpc_init;
+> +       priv->tcpci_data.set_vconn = mt6370_tcpc_set_vconn;
+> +
+> +       priv->vbus = devm_regulator_get_optional(dev, "vbus");
+> +       if (!IS_ERR(priv->vbus))
+> +               priv->tcpci_data.set_vbus = mt6370_tcpc_set_vbus;
+> +
+> +       priv->tcpci = tcpci_register_port(dev, &priv->tcpci_data);
+> +       if (IS_ERR(priv->tcpci))
+> +               return dev_err_probe(dev, PTR_ERR(priv->tcpci),
+> +                                    "Failed to register tcpci port\n");
+> +
+> +       ret = devm_add_action_or_reset(dev, mt6370_unregister_tcpci_port, priv->tcpci);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = devm_request_threaded_irq(dev, irq, NULL, mt6370_irq_handler,
+> +                                       IRQF_ONESHOT, dev_name(dev), priv);
+> +       if (ret)
+> +               return dev_err_probe(dev, ret, "Failed to allocate irq\n");
+> +
+> +       device_init_wakeup(dev, true);
+> +       dev_pm_set_wake_irq(dev, irq);
+> +
+> +       return 0;
+> +}
+> +
+> +static int mt6370_tcpc_remove(struct platform_device *pdev)
+> +{
+> +       dev_pm_clear_wake_irq(&pdev->dev);
+> +       device_init_wakeup(&pdev->dev, false);
+> +
+> +       return 0;
+> +}
+> +
+> +static const struct of_device_id mt6370_tcpc_devid_table[] = {
+> +       { .compatible = "mediatek,mt6370-tcpc" },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(of, mt6370_tcpc_devid_table);
+> +
+> +static struct platform_driver mt6370_tcpc_driver = {
+> +       .driver = {
+> +               .name = "mt6370-tcpc",
+> +               .of_match_table = mt6370_tcpc_devid_table,
+> +       },
+> +       .probe = mt6370_tcpc_probe,
+> +       .remove = mt6370_tcpc_remove,
+> +};
+> +module_platform_driver(mt6370_tcpc_driver);
+> +
+> +MODULE_AUTHOR("ChiYuan Huang <cy_huang@richtek.com>");
+> +MODULE_DESCRIPTION("MT6370 USB Type-C Port Controller Interface Driver");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.7.4
+>
+
+
 -- 
-2.18.0
-
+With Best Regards,
+Andy Shevchenko
