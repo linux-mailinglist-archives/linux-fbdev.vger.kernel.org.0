@@ -2,140 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C83FC58C491
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Aug 2022 10:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F077758C54A
+	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Aug 2022 11:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237331AbiHHIES (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 Aug 2022 04:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35864 "EHLO
+        id S241930AbiHHJKY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 8 Aug 2022 05:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231496AbiHHIER (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Aug 2022 04:04:17 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17C413D3F;
-        Mon,  8 Aug 2022 01:04:09 -0700 (PDT)
-X-UUID: 5e3ad97a77e34191ada0152c7f724a11-20220808
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=rLpQA2HDs6HPyBnCtsxUkBeWCCaY6SEoWDsQLMWSn6E=;
-        b=VnyxvmC2wet1tG9LzRfZZB/QlP00LMJ4f5KHU7soY0SXhxZa3CTGSAkr/N0l7AFxty0mLRFXdX94h9iew3sRF3XSmAhoKSjH49JVsJTu2NX0RGYF2XC/KYfzSO0JkafFHGvfkhzYxXzsdtM1kw45mqlQU12YdHinxe/x8DxZXAU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.9,REQID:d35900d0-85e1-4926-9341-baac68d5a81f,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_H
-        am,ACTION:release,TS:0
-X-CID-META: VersionHash:3d8acc9,CLOUDID:f8d90d9c-da39-4e3b-a854-56c7d2111b46,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,Bulk:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 5e3ad97a77e34191ada0152c7f724a11-20220808
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-        (envelope-from <ck.hu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1122278036; Mon, 08 Aug 2022 16:04:03 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.792.15; Mon, 8 Aug 2022 16:04:01 +0800
-Received: from mtksdccf07 (172.21.84.99) by mtkmbs11n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.792.15 via Frontend
- Transport; Mon, 8 Aug 2022 16:04:01 +0800
-Message-ID: <575181dc6cdd1fcf391e840c0fcd5722b954a457.camel@mediatek.com>
-Subject: Re: [PATCH v16 3/8] drm/mediatek: Add MT8195 Embedded DisplayPort
- driver
-From:   CK Hu <ck.hu@mediatek.com>
-To:     Bo-Chen Chen <rex-bc.chen@mediatek.com>, <chunkuang.hu@kernel.org>,
-        <p.zabel@pengutronix.de>, <daniel@ffwll.ch>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <mripard@kernel.org>,
-        <tzimmermann@suse.de>, <matthias.bgg@gmail.com>, <deller@gmx.de>,
-        <airlied@linux.ie>
-CC:     <msp@baylibre.com>, <granquet@baylibre.com>,
-        <jitao.shi@mediatek.com>, <wenst@chromium.org>,
-        <angelogioacchino.delregno@collabora.com>,
-        <liangxu.xu@mediatek.com>, <dri-devel@lists.freedesktop.org>,
-        <linux-mediatek@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>,
-        <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Date:   Mon, 8 Aug 2022 16:04:01 +0800
-In-Reply-To: <20220805101459.3386-4-rex-bc.chen@mediatek.com>
-References: <20220805101459.3386-1-rex-bc.chen@mediatek.com>
-         <20220805101459.3386-4-rex-bc.chen@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+        with ESMTP id S234370AbiHHJKX (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Aug 2022 05:10:23 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC866583
+        for <linux-fbdev@vger.kernel.org>; Mon,  8 Aug 2022 02:10:22 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id e127so12637608yba.12
+        for <linux-fbdev@vger.kernel.org>; Mon, 08 Aug 2022 02:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=2ER2WW01ET2wH1WV2jGlyhputEhjwKA2tNpxchjmONE=;
+        b=BXONmG4NT7Ps0k3vlwo+5xQkbC0wR7bD23e2Idydv5gt4/tkSJ5iIaQb0wq3ab/A+a
+         aUL4zwLj5a1eyo3a+CLSLsCb3hAaSxhjIyJ1vgl5GpaYgi5OC2bqFCXv/cD6netBbbX6
+         Tx3nJqFmDlXHOgv/8N53WShK1xRedTz7YizG0EQ+d6+Zn54cQnePxEwSsvpJ9Bm2kAh6
+         rcy4zTsy5gz0KNlNIf7ZoxH4nRwifKu05WcmJrn6aJtL3dAK08hL8lPgIfWygcqSGBwi
+         VkO6uLjjD9F5LS5eaiWYQOwnj8jaKMC8wLjTgmKV972zelkc2S0ha0Lb+w+BtCW4FQGH
+         9qNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=2ER2WW01ET2wH1WV2jGlyhputEhjwKA2tNpxchjmONE=;
+        b=ngxKTjUxNtWDazP3CBnjV6Iv0mhO8ve3tSfVIRTrfe4BG4zvTH5xKORLKG5aud5YQw
+         JaRijsSapV+f+EhidK2shRRlAWjWit1JyRr85qMWr+3txp8ubb3Q4PjJMVY/DXCaq6i9
+         W0JBix+zRQwZY51wW6siJnbrw+AnCi06vmjWfng5tnpd8HWdRo/nDTFg8jfGMT0ZjT9L
+         64ui+AioDEGP+bsiTKwSv7H5eNP95y3DTl1mIwHQBdG1sw4wWbk+Y9L7eRbgp1S520jL
+         D+wUoh+L5lMUrsaR/5Yn6wBC21sX8sXxLDLBtkHQucA1x/bU9oxP+f5qZ4laxNAEhf1e
+         lLMg==
+X-Gm-Message-State: ACgBeo3Dg6Y35/0bfPy5pp7WPpi2QZdUZfvPzrj0byhojPKGKOG0IyS3
+        2yNQ0NDId58IEk4fPaEv26oHuzPvH/ab2LGcz3k=
+X-Google-Smtp-Source: AA6agR6ww8LBWAcj4WbUTZx9wZCglfi8vTK455s3Sjg/D48I0T3JlccLImfEudV5PbJMV3GB6lWP8FnqDqG6iWKcIFQ=
+X-Received: by 2002:a05:6902:690:b0:67b:af6b:bc92 with SMTP id
+ i16-20020a056902069000b0067baf6bbc92mr9677412ybt.459.1659949821415; Mon, 08
+ Aug 2022 02:10:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-MTK:  N
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7110:4a9c:b0:18e:7ed4:6c87 with HTTP; Mon, 8 Aug 2022
+ 02:10:21 -0700 (PDT)
+Reply-To: Drlisawilliams919@gmail.com
+From:   Drlisawilliams <grahamkhudori@gmail.com>
+Date:   Mon, 8 Aug 2022 11:10:21 +0200
+Message-ID: <CAOPDNSG+QRY9xPP8WKYA6+BxbOe-x_QGsyRVE9MG-w8RHz5yVQ@mail.gmail.com>
+Subject: Hi Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi, Bo-Chen:
+Hi Dear,
 
-On Fri, 2022-08-05 at 18:14 +0800, Bo-Chen Chen wrote:
-> From: Markus Schneider-Pargmann <msp@baylibre.com>
-> 
-> This patch adds a embedded displayport driver for the MediaTek mt8195
-> SoC.
-> 
-> It supports the MT8195, the embedded DisplayPort units. It offers
-> DisplayPort 1.4 with up to 4 lanes.
-> 
-> The driver creates a child device for the phy. The child device will
-> never exist without the parent being active. As they are sharing a
-> register range, the parent passes a regmap pointer to the child so
-> that
-> both can work with the same register range. The phy driver sets
-> device
-> data that is read by the parent to get the phy device that can be
-> used
-> to control the phy properties.
-> 
-> This driver is based on an initial version by
-> Jitao shi <jitao.shi@mediatek.com>
-> 
-> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
-> Signed-off-by: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> Tested-by: AngeloGioacchino Del Regno <
-> angelogioacchino.delregno@collabora.com>
-> Reviewed-by: AngeloGioacchino Del Regno <
-> angelogioacchino.delregno@collabora.com>
-> ---
+My name is Dr Lisa Williams from the United States.I am a French and
+American nationality (dual) living in the U.S and sometimes in France
+for Work Purpose.
 
-[snip]
+I hope you consider my friend request. I will share some of my pics
+and more details about myself when I get your response.
 
-> +
-> +static enum drm_mode_status
-> +mtk_dp_bridge_mode_valid(struct drm_bridge *bridge,
-> +			 const struct drm_display_info *info,
-> +			 const struct drm_display_mode *mode)
-> +{
-> +	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
-> +	u32 rx_linkrate = (u32)mtk_dp->train_info.link_rate * 27000;
-> +	u32 bpp = info->color_formats & DRM_COLOR_FORMAT_YCBCR422 ? 16
-> : 24;
-> +
-> +	if (rx_linkrate * mtk_dp->train_info.lane_count < mode->clock *
-> bpp / 8)
-> +		return MODE_CLOCK_HIGH;
-> +
-> +	if (mode->clock > 600000)
-
-If the clock has pass the linkrate and land_count limitation, the clock
-would be OK because the linkrate and lane_count is trained. Why need to
-check 600000?
-
-Regards,
-CK
-
-> +		return MODE_CLOCK_HIGH;
-> +
-> +	return MODE_OK;
-> +}
-> +
-
+Thanks
+With love
+Lisa
