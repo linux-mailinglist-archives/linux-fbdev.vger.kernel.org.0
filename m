@@ -2,78 +2,134 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F077758C54A
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Aug 2022 11:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A4658C628
+	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Aug 2022 12:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241930AbiHHJKY (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 Aug 2022 05:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
+        id S242343AbiHHKQZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 8 Aug 2022 06:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234370AbiHHJKX (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Aug 2022 05:10:23 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC866583
-        for <linux-fbdev@vger.kernel.org>; Mon,  8 Aug 2022 02:10:22 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id e127so12637608yba.12
-        for <linux-fbdev@vger.kernel.org>; Mon, 08 Aug 2022 02:10:22 -0700 (PDT)
+        with ESMTP id S237284AbiHHKQW (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Aug 2022 06:16:22 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B74FD13
+        for <linux-fbdev@vger.kernel.org>; Mon,  8 Aug 2022 03:16:21 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id o2so4642960lfb.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 08 Aug 2022 03:16:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=2ER2WW01ET2wH1WV2jGlyhputEhjwKA2tNpxchjmONE=;
-        b=BXONmG4NT7Ps0k3vlwo+5xQkbC0wR7bD23e2Idydv5gt4/tkSJ5iIaQb0wq3ab/A+a
-         aUL4zwLj5a1eyo3a+CLSLsCb3hAaSxhjIyJ1vgl5GpaYgi5OC2bqFCXv/cD6netBbbX6
-         Tx3nJqFmDlXHOgv/8N53WShK1xRedTz7YizG0EQ+d6+Zn54cQnePxEwSsvpJ9Bm2kAh6
-         rcy4zTsy5gz0KNlNIf7ZoxH4nRwifKu05WcmJrn6aJtL3dAK08hL8lPgIfWygcqSGBwi
-         VkO6uLjjD9F5LS5eaiWYQOwnj8jaKMC8wLjTgmKV972zelkc2S0ha0Lb+w+BtCW4FQGH
-         9qNw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZSWhWVIMTdJmNV7dT9qbKSPZrPrjVzwG2y9B/jqm4bI=;
+        b=wGcPgMyieO9cFvxTr79rS8AREemXIwc2wUFNElRfqEBdu9/xR5fsJEYyDhTDCpnFU5
+         5XQthhQY2MGzL+JC/gVaFgeMpiHud6rGrIfIArCUVLUxFgpBiR+OT3G0n3jgDS9pGxqY
+         24uzj13OFJGEuWH7D51hwsfbRXhSrGL61Ri87xWfoZEnwTjUmcKJ9Md6qb+El90tUsp0
+         qRdiqyG1WDavMTJtM9WybGesHfpCnseXWIhvasJxOuzkhjQ3TTJkiYTsqugKCDTuV5WC
+         0wvpdFIKSTfIb9VJwK6AdgDQfLBmXlRopfSfJRJn/8ekWknLSVL7XSE9mJMWcth8Vmo+
+         KNSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=2ER2WW01ET2wH1WV2jGlyhputEhjwKA2tNpxchjmONE=;
-        b=ngxKTjUxNtWDazP3CBnjV6Iv0mhO8ve3tSfVIRTrfe4BG4zvTH5xKORLKG5aud5YQw
-         JaRijsSapV+f+EhidK2shRRlAWjWit1JyRr85qMWr+3txp8ubb3Q4PjJMVY/DXCaq6i9
-         W0JBix+zRQwZY51wW6siJnbrw+AnCi06vmjWfng5tnpd8HWdRo/nDTFg8jfGMT0ZjT9L
-         64ui+AioDEGP+bsiTKwSv7H5eNP95y3DTl1mIwHQBdG1sw4wWbk+Y9L7eRbgp1S520jL
-         D+wUoh+L5lMUrsaR/5Yn6wBC21sX8sXxLDLBtkHQucA1x/bU9oxP+f5qZ4laxNAEhf1e
-         lLMg==
-X-Gm-Message-State: ACgBeo3Dg6Y35/0bfPy5pp7WPpi2QZdUZfvPzrj0byhojPKGKOG0IyS3
-        2yNQ0NDId58IEk4fPaEv26oHuzPvH/ab2LGcz3k=
-X-Google-Smtp-Source: AA6agR6ww8LBWAcj4WbUTZx9wZCglfi8vTK455s3Sjg/D48I0T3JlccLImfEudV5PbJMV3GB6lWP8FnqDqG6iWKcIFQ=
-X-Received: by 2002:a05:6902:690:b0:67b:af6b:bc92 with SMTP id
- i16-20020a056902069000b0067baf6bbc92mr9677412ybt.459.1659949821415; Mon, 08
- Aug 2022 02:10:21 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZSWhWVIMTdJmNV7dT9qbKSPZrPrjVzwG2y9B/jqm4bI=;
+        b=4edJHeV7s4sA2JOC7BFEfr143pA0vcP0vNxeAO4xGOAppwoZsSbAGf3p6ISMc9FAgt
+         GijjKc1+fYM1WJwZk4xsi5CsR8blUiJlD5I0AWU+wnn2nOM0RYH6tjccSg7LQP4eOZrZ
+         tXl5rYNX5fh6XO8inMkxYR9pGZbk6afZYEGJJuKaWYCMK+TPBUbhDknCiSpHoymTo88N
+         NNy7CE4+DHz4HWNF0zvy7mZ9NS7NmFKIu/tJfqs3kNUeODw4uwRzn5Rnn7tjIF2f0pkE
+         hljrMR8w8Uz7U10+8xEFfyX8Qli5fx4/S+KU33TbfG6Ou+v5a4dOkiUM8aiTe2idf7Vj
+         dhmQ==
+X-Gm-Message-State: ACgBeo1SR94Z1MkLt5iem6wEHM+4+q+SkRRrBBeOJxJKfmQzml8yqUyc
+        bJnBs04UWR8JIaE6Jdnh/FJ+lA==
+X-Google-Smtp-Source: AA6agR6WbH/uUBPu/P11zqkM//sK+ay53hJ55+HI/jBG+cpCuOejT7yCoIJ5LI688QEEuBe0vJLETA==
+X-Received: by 2002:a05:6512:13a0:b0:48c:e86e:fe1a with SMTP id p32-20020a05651213a000b0048ce86efe1amr57526lfa.594.1659953779439;
+        Mon, 08 Aug 2022 03:16:19 -0700 (PDT)
+Received: from localhost.localdomain ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id b2-20020a056512070200b0048b193f677dsm1377489lfs.178.2022.08.08.03.16.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Aug 2022 03:16:18 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Lee Jones <lee@kernel.org>, linux-samsung-soc@vger.kernel.org,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Subject: [PATCH 1/3] MAINTAINERS: Drop Bartlomiej Zolnierkiewicz
+Date:   Mon,  8 Aug 2022 13:15:24 +0300
+Message-Id: <20220808101526.46556-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:7110:4a9c:b0:18e:7ed4:6c87 with HTTP; Mon, 8 Aug 2022
- 02:10:21 -0700 (PDT)
-Reply-To: Drlisawilliams919@gmail.com
-From:   Drlisawilliams <grahamkhudori@gmail.com>
-Date:   Mon, 8 Aug 2022 11:10:21 +0200
-Message-ID: <CAOPDNSG+QRY9xPP8WKYA6+BxbOe-x_QGsyRVE9MG-w8RHz5yVQ@mail.gmail.com>
-Subject: Hi Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Dear,
+Bartlomiej's Samsung email address is not working since around last
+year and there was no follow up patch take over of the drivers, so drop
+the email from maintainers.
 
-My name is Dr Lisa Williams from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+---
 
-Thanks
-With love
-Lisa
+I assume that if other change was preferred, there was quite enough of
+time to send a patch for this. :)
+---
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2180312fe0a4..423c81f8ba61 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5369,8 +5369,8 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ F:	drivers/cpuidle/cpuidle-big_little.c
+ 
+ CPUIDLE DRIVER - ARM EXYNOS
+-M:	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+ M:	Daniel Lezcano <daniel.lezcano@linaro.org>
++R:	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ M:	Kukjin Kim <kgene@kernel.org>
+ L:	linux-pm@vger.kernel.org
+ L:	linux-samsung-soc@vger.kernel.org
+@@ -12404,7 +12404,6 @@ F:	drivers/power/supply/max77976_charger.c
+ 
+ MAXIM MUIC CHARGER DRIVERS FOR EXYNOS BASED BOARDS
+ M:	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+-M:	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+ L:	linux-pm@vger.kernel.org
+ S:	Supported
+ B:	mailto:linux-samsung-soc@vger.kernel.org
+@@ -12416,7 +12415,6 @@ F:	drivers/power/supply/max77693_charger.c
+ MAXIM PMIC AND MUIC DRIVERS FOR EXYNOS BASED BOARDS
+ M:	Chanwoo Choi <cw00.choi@samsung.com>
+ M:	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+-M:	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+ L:	linux-kernel@vger.kernel.org
+ S:	Supported
+ B:	mailto:linux-samsung-soc@vger.kernel.org
+@@ -17973,7 +17971,6 @@ F:	drivers/platform/x86/samsung-laptop.c
+ 
+ SAMSUNG MULTIFUNCTION PMIC DEVICE DRIVERS
+ M:	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+-M:	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+ L:	linux-kernel@vger.kernel.org
+ L:	linux-samsung-soc@vger.kernel.org
+ S:	Supported
+-- 
+2.34.1
+
