@@ -2,106 +2,142 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2680058CFF2
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 Aug 2022 23:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D503358D2F0
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Aug 2022 06:34:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244429AbiHHVyX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 Aug 2022 17:54:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
+        id S232434AbiHIEe0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 Aug 2022 00:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238737AbiHHVyW (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 Aug 2022 17:54:22 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C171837D
-        for <linux-fbdev@vger.kernel.org>; Mon,  8 Aug 2022 14:54:19 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id n8so15741086yba.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 08 Aug 2022 14:54:19 -0700 (PDT)
+        with ESMTP id S231913AbiHIEeY (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 Aug 2022 00:34:24 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D408A1ADB2
+        for <linux-fbdev@vger.kernel.org>; Mon,  8 Aug 2022 21:34:20 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id c17so15454816lfb.3
+        for <linux-fbdev@vger.kernel.org>; Mon, 08 Aug 2022 21:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=0mju038QvXa537rTiUR9MiJew252MCQeTZhm+7Zoicw=;
-        b=dVgIwohmtdaeW0+plGdaP4ebkwgl9TOmPIiJqwae0B1etAkYT1b9XI3BU2sRkjmQfz
-         T/T/p+zhPH2hrsBYeLgaJdk1CaeyMNIu9XucAdsaKrPIvmjAPr5z3kmLbfOkWv7c8GOw
-         rHMz96URH35zNkjYmSJoBiEOwjccCRxf629yUcZllODsmNanMEJkz81CDumdoRuQrU3a
-         OTYGRItyeS1h6rHzFM5rRVaYivr2W7gUdNxECLd6oqAQZrkpDVHZ4ARjICuS3aUk6eL3
-         ZesHrWPIvTrIzazQHpFfWog3AZp4B9FNexzxckn/AnKlYTQ9l7NC8cbOdeD5BE9qYg0p
-         D1ew==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=A2cJx4TzfVfLcjEZf5Am6QDuHfwBw6Iwol89LnoU7nc=;
+        b=Jj76Z/jKDUcmTCulxZCqo/LuRjfbdQf1qvEHt1HWkgnmwQAefjhDHIaaiCqEFvEYTN
+         LIRqrtBLpyDQ8XmzpE1wcv+p+OKdW6SOW/w9GO5PylbeCuI0ZpiUAHUNJLq5Gkzmwhv/
+         6n1C7kFTUqpWcEJ8OAyQ+Ang5aSyQJE6G0fB1tWDKiErdTS3TLHiMS4avkS+93E8vxaW
+         aqjdfDBBywZwi8o2eJWlhThCoJNNrrRzb4W5HfyWBg3IquciIg+hMO42TV9o6XKvXVys
+         s32eXG5huF8fXFNYFtyZcqyKdwWUDqkztx7dK4X0ml/kis8bFJll6EFESaMA9Q3vxNBi
+         GiNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=0mju038QvXa537rTiUR9MiJew252MCQeTZhm+7Zoicw=;
-        b=UYCQIFCWwPoopnqDYcGseTjdMFow/2my8funhknf8tumXMOdZuAA/p0kUrNCu5NYwd
-         8UXn/+vcoZU9mqZBMyky4A0Gl+Cn5S96N4wb3LNy6/TioLieSg7pIcVrZ1B9rjwHeESn
-         WJr3u6zR6S4neyRwtt6+Natb6YKRAwQFO0VDLQwFpeaWiypu1NcfiRteL3gGiSWQJBTl
-         wHbcRkBMaum+LuD38OKhoyP0BHi29jFZ6oi0q6ZfPmIsaOfGYKp4QyF8homMEweNumRq
-         ycXmxu4JoID2zCe7w62jgIsZo8JNiZA6G6T9NutsvfEJS1yAUy5r25rYRuTNAjmxondm
-         Va7g==
-X-Gm-Message-State: ACgBeo1p3/L4lcpyU6ID0f5BqBzthXOm0d2Xovm23G080FdHTut+yiRG
-        CtN/84Ei1VgX3PmuUKUncjsJxXHs8UU1vguFlLc=
-X-Google-Smtp-Source: AA6agR6cs8fyj2NNS6n06KxaMizoNvsIMuAuGM4zKp2UxDt/t/uTuJo0XO3udX0IHDvKVOR7l4ZEQS9fFyb75UsLogY=
-X-Received: by 2002:a5b:412:0:b0:66f:f648:53b4 with SMTP id
- m18-20020a5b0412000000b0066ff64853b4mr17805254ybp.280.1659995659124; Mon, 08
- Aug 2022 14:54:19 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=A2cJx4TzfVfLcjEZf5Am6QDuHfwBw6Iwol89LnoU7nc=;
+        b=E72u93Lq4cnKWr/NuA1iRpFidF5wL+TdWGqAJj+L/B8ckiNZ3zOye6ijluUc44C1uQ
+         pOLS9kAJB6tpz682s9JwnaMehgJnzMYLU5xSg0Df6AnWNmsCg+bXFNSnob9O1+7xst5n
+         WPq5M0SDD3rc6CTt5ch0v/SarlM3BEfuv64Kkibi5kWjMIjEXvmlGSEC6QG9q00wy7oE
+         5ggg80fR7SxlNZ7JLESlr0caIZ1q9lkACWqQWSobURP1d12CzK1ZCGwgH1eKyLzqzGwB
+         +IrHGqafI79O324AJBU58TT8youXGecVxLFI7aKuVa86qPRfJa9SYPPn0QpCbSQIWGD4
+         k3nQ==
+X-Gm-Message-State: ACgBeo1CQO8zgBm8J4qmSniUMp/SJu1acG1fe/x8ZtagNJ7KsguBumgN
+        9oxtwIhprgJEgok3djss1RJWXQ==
+X-Google-Smtp-Source: AA6agR4BZyPN7vBEUxb+Ezny+n+osGnBvWSa4FG9wknX3U75cx2BkOZ/jdDmNcMZm3gyQUiR3bv27A==
+X-Received: by 2002:a05:6512:ac5:b0:48c:ecd1:4f14 with SMTP id n5-20020a0565120ac500b0048cecd14f14mr2407443lfu.287.1660019659041;
+        Mon, 08 Aug 2022 21:34:19 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id s30-20020a05651c201e00b0025e778f6f13sm1431364ljo.4.2022.08.08.21.34.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Aug 2022 21:34:18 -0700 (PDT)
+Message-ID: <a2136b83-2c96-27c4-c262-d4e75614f9a7@linaro.org>
+Date:   Tue, 9 Aug 2022 07:34:16 +0300
 MIME-Version: 1.0
-Received: by 2002:a05:7108:146:0:0:0:0 with HTTP; Mon, 8 Aug 2022 14:54:18
- -0700 (PDT)
-Reply-To: uddinsubhanisheemakhaja@gmail.com
-From:   Sheema Khaja Waheed Uddin Subhan <johnkwame141@gmail.com>
-Date:   Mon, 8 Aug 2022 14:54:18 -0700
-Message-ID: <CAJjBxC9iFYZh668h_4CnejRKfTdfn--cOc=ihm03fr4_wWa32g@mail.gmail.com>
-Subject: You are the legal heir of the late (your country) gold merchant
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_95,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
+Content-Language: en-US
+To:     Andrew Davis <afd@ti.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Robert Jones <rjones@gateworks.com>,
+        Lee Jones <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-leds@vger.kernel.org, netdev@vger.kernel.org,
+        linux-pm@vger.kernel.org, alsa-devel@alsa-project.org
+References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
+ <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+ <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
+ <6ae15e00-36a4-09a8-112e-553ed8c5f4da@ti.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <6ae15e00-36a4-09a8-112e-553ed8c5f4da@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b2f listed in]
-        [list.dnswl.org]
-        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
-        *      [score: 0.9531]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [johnkwame141[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [johnkwame141[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
--- 
-Good day,
+On 08/08/2022 18:04, Andrew Davis wrote:
+> On 8/8/22 6:08 AM, Krzysztof Kozlowski wrote:
+>> On 08/08/2022 13:47, Krzysztof Kozlowski wrote:
+>>> Emails to Dan Murphy bounce ("550 Invalid recipient <dmurphy@ti.com>
+>>> (#5.1.1)").
+>>
+>>
+>> (...)
+>>
+>>>   description: |
+>>> diff --git a/Documentation/devicetree/bindings/power/supply/bq25980.yaml b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>>> index 4883527ab5c7..509a0667b04e 100644
+>>> --- a/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>>> +++ b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>>> @@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>   title: TI BQ25980 Flash Charger
+>>>   
+>>>   maintainers:
+>>> -  - Dan Murphy <dmurphy@ti.com>
+>>>     - Ricardo Rivera-Matos <r-rivera-matos@ti.com>
+>>
+>> Ricardo's also bounces... Does it mean TI is not interested in
+>> maintaining mainline support for its drivers?
+>>
+> 
+> TI is still interested in maintaining support here. But as we know folks
+> come and go, so giving specific emails might not be the best option.
+> Doesn't look like the schema here allows free-form strings, but if it did
+> I'd recommend the TI E2E Power-Management support forum[0] added. Any
+> questions on Linux/DT for these parts posted there would land on my desk
+> just the same, or to whomever is assigned in the future with maintaining
+> these drivers.
 
-How are you doing with your health and family?
+Currently an email address is required. I am not sure if there is
+intention to change it, because similarly to MAINTAINERS file email is
+the way of our communication. Also in MAINTAINERS we expect to have
+person's address (with M:) and for the lists there is a separate entry.
 
-Please i have important information for you, about your surname.
+> Either way, I have several of these parts and can support these. Feel free
+> to replace Dan's email with my email if that works better.
 
-We have a gold merchant from your country with the same surname as
-you, She died without any heir.
+Yes, that would be great, thanks!
 
-Please contact me via my E-Mail for more information:
-uddinsubhanisheemakhaja@gmail.com
-
-Thank you
-Sheema Khaja Waheed Uddin Subhan
+Best regards,
+Krzysztof
