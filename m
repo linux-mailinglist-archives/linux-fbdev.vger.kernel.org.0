@@ -2,92 +2,106 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F5258E0EC
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Aug 2022 22:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EA558E2DE
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 Aug 2022 00:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343606AbiHIUUB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 9 Aug 2022 16:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43404 "EHLO
+        id S229687AbiHIWQV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 Aug 2022 18:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245607AbiHIUUA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 Aug 2022 16:20:00 -0400
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CFC2559F;
-        Tue,  9 Aug 2022 13:19:59 -0700 (PDT)
-Received: by mail-qt1-f177.google.com with SMTP id cr9so6422204qtb.13;
-        Tue, 09 Aug 2022 13:19:59 -0700 (PDT)
+        with ESMTP id S229791AbiHIWPQ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 Aug 2022 18:15:16 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF631CFDB
+        for <linux-fbdev@vger.kernel.org>; Tue,  9 Aug 2022 15:15:14 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id l64so12679650pge.0
+        for <linux-fbdev@vger.kernel.org>; Tue, 09 Aug 2022 15:15:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
+         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
+         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
+         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
+         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
+         O1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=Zskxu9RM9shgea48JfI0eSWUYjVUqMyTAyaPDWwmlU0=;
-        b=DirQGtP7fdYlZSVxrfAt9rAizedg9vnBjhEOGH1I3Wd9kv9d3SvBZ+L1qwCBHzcJfq
-         e31pSNMdr0cmDTfBYMdlgLZds9WJ03orXMcvsFtlJSU9KT2I5zxhuNSyfGnagcl4YZ2T
-         z9XbD4KOFHlcZ5u8oKoXzS/pcV8plSdeqw+mcrhEVn+SgnDHjigoY2VeskkHf6ikvEn1
-         p4/Yha68OtdJKrN8RgTBrzATADqELlgZfyq1idRrHXmG6IVRaKrr9bPSRhIwQ6hR47oU
-         GXo3jKSpD1TsBomcI9IpzBIqOtVZquGEVa/FqQjWxxnccvHwRpOvjLQlAs1+1T1lutql
-         giMg==
-X-Gm-Message-State: ACgBeo0r30uGp2r8KZQJbSD+nZ0ZD2oelTOU1afm2BkTYk4P9shexVAg
-        CCiIoZGFOY2H5Qjee9F48KEeKKilnA==
-X-Google-Smtp-Source: AA6agR7JlRVRwfkkAMUq/uYFIjTvCyOZ3vlkrOzYv/HhQul/99ZRx/tch/zjFCjHPfvagIqDVoDy8w==
-X-Received: by 2002:a05:6638:14d5:b0:33f:8a96:c59c with SMTP id l21-20020a05663814d500b0033f8a96c59cmr11480702jak.254.1660076387557;
-        Tue, 09 Aug 2022 13:19:47 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id a23-20020a5d9ed7000000b00684a65f0c36sm1525213ioe.45.2022.08.09.13.19.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Aug 2022 13:19:47 -0700 (PDT)
-Received: (nullmailer pid 2326180 invoked by uid 1000);
-        Tue, 09 Aug 2022 20:19:45 -0000
-Date:   Tue, 9 Aug 2022 14:19:45 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     David Airlie <airlied@linux.ie>, Lee Jones <lee@kernel.org>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        linux-fbdev@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-samsung-soc@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 3/3] dt-bindings: display: simple-framebuffer: Drop
- Bartlomiej Zolnierkiewicz
-Message-ID: <20220809201945.GA2326091-robh@kernel.org>
-References: <20220808101526.46556-1-krzysztof.kozlowski@linaro.org>
- <20220808101526.46556-3-krzysztof.kozlowski@linaro.org>
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=VNXeudJdpCTxP5QC4L1j1KDFtiCUtWOyac0jiOCUkovqHzmN4xatLP4pkTL0joUUtb
+         MXWwgtKCt9xdrp7H/iInGXPmYUoCqlysyshExuz87UrfRvQ+qs306bjL8rjwiR81JuyF
+         /YrKQ94qxWRgZR8uchz9D+RiofyXCtKuvCS+3f+HZabrWutJIuXYzesTaTLS3J5C75L7
+         so/84Lg1fNaKHg9cgmcP0hNI+tgY+cbpMqOYKXEPeNZWKt6RE0u7BnEvZakdUkHpraQI
+         jXQoFZuIBMysla5jjbiD+hXMJ6WvA8+ruyOZihX0Hn4bvxPcOYe09OYMAuAfrl84AXfI
+         FQFw==
+X-Gm-Message-State: ACgBeo2mUQDmE9VMIm9Tm1R6MhSeZIJHr0WmDXNDl1T46wqO9a1berBf
+        SNBgVCN4fDAohdoPuIprKDbUqbgec4F+b2YLIVaAAu4gQoaCtQ==
+X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
+X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
+ v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
+ Aug 2022 15:15:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220808101526.46556-3-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
+ 15:15:03 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Tue, 9 Aug 2022 15:15:03 -0700
+Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:52c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alimoses07[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimoses07[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 08 Aug 2022 13:15:26 +0300, Krzysztof Kozlowski wrote:
-> Bartlomiej's Samsung email address is not working since around last
-> year and there was no follow up patch take over of the drivers, so drop
-> the email from maintainers.
-> 
-> Cc: Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> I assume that if other change was preferred, there was quite enough of
-> time to send a patch for this. :)
-> ---
->  .../devicetree/bindings/display/simple-framebuffer.yaml          | 1 -
->  1 file changed, 1 deletion(-)
-> 
+-- 
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
-Applied, thanks!
+My regards,
+Dr. Ali Moses..
+
+Sincerely,
+Prof. Chin Guang
