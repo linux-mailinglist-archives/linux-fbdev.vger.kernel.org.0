@@ -2,76 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDBB25A3910
-	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Aug 2022 19:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235635A39C3
+	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Aug 2022 21:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233712AbiH0RDZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 27 Aug 2022 13:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        id S231609AbiH0Tji (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 27 Aug 2022 15:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234030AbiH0RDV (ORCPT
+        with ESMTP id S231481AbiH0Tjg (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 27 Aug 2022 13:03:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1363C29C8C;
-        Sat, 27 Aug 2022 10:03:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E965D60DDB;
-        Sat, 27 Aug 2022 17:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5CFE8C433D6;
-        Sat, 27 Aug 2022 17:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661619800;
-        bh=Of7PCswaC3yU56t+vb5YYpZvtN+Wu46qqvVhYI4FK3Q=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=b8ay1DNeoR/aMCbTKfRZelbOmYpyhNSyqxwoW2lVmb7pI2Pbr0SXJdE9rpmFctL8f
-         M5YSzl4BnVefhlsLUgcpgHVWTjH3kGNg7Mhdz4Tr+WYdvgIYAYRMVLNDxNUToMHO9m
-         mGdOqyx5MbCTu9MVGx7RCf5Eknz41+h7ORV0mv+UJPX0DlwePAkfeRW1VBlmwMiD3s
-         vNXAaqAG4y0R4c7d0sJ6O5ARTq90dONEEcZCY7Cl0MaPKjQet0qL/9q1WBJWWz8Vn4
-         PRq4UVvWn0WgnoDY5f9mia6VtXosELMYcNGcb33YT+6Bctvlz8bmA0qL1/Oo8emCzg
-         g33gZQ9V7cooA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 486EFE2A03B;
-        Sat, 27 Aug 2022 17:03:20 +0000 (UTC)
-Subject: Re: [GIT PULL] fbdev updates & fixes for v6.0-rc3
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <YwkRD5hWd4F02dxc@ls3530>
-References: <YwkRD5hWd4F02dxc@ls3530>
-X-PR-Tracked-List-Id: Direct Rendering Infrastructure - Development
- <dri-devel.lists.freedesktop.org>
-X-PR-Tracked-Message-Id: <YwkRD5hWd4F02dxc@ls3530>
-X-PR-Tracked-Remote: http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/fbdev-for-6.0-rc3
-X-PR-Tracked-Commit-Id: a5a923038d70d2d4a86cb4e3f32625a5ee6e7e24
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 89b749d8552d78c4dd86dea86e2e6ba8aafab9fe
-Message-Id: <166161980028.20520.16122693737421245098.pr-tracker-bot@kernel.org>
-Date:   Sat, 27 Aug 2022 17:03:20 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Sat, 27 Aug 2022 15:39:36 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEAFA4B0C4;
+        Sat, 27 Aug 2022 12:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=t63ek6wzn1sWs76eOsCuIOgWn2uP5FVAKK7B50IIh4U=; b=K7t3NDw3OclQKkVe6WtTNwQyKi
+        svTVu5fXZrvNG3JQT/z0IU8aUNhm88NQaBz0oMVZblr8jLDbCcdRlt+y8czWf3YtGaJ9pdmsq2/X7
+        MYlxCsStEwCzdroDqzVPVKzBPFUbw/Cm8FdJ9Wry4FRuofNpPceo4LCcMxfcqN/nfCU9Xnpvczl/1
+        u0NtcyW59F8sQpWchIwmRXqkrVd3mxnWeQYK5SfqR/sGpa6maUW6BiVQ2c2rP73GwMr3lWx/rgbqO
+        ICtBIQAGuL8sF29MQKtKXe0Ba7NkJJgUB0R7Q5CG9Nv8pu6GfBVXdTZiHJPoPVnPD6P3cF9iX1S6l
+        JuKg+G0A==;
+Received: from [2601:1c0:6280:3f0::a6b3] (helo=casper.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oS1eV-001eoZ-3M; Sat, 27 Aug 2022 19:39:31 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Bernie Thompson <bernie@plugable.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Helge Deller <deller@gmx.de>, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org
+Subject: [PATCH] Documentation: fb: udlfb: clean up text and formatting
+Date:   Sat, 27 Aug 2022 12:39:25 -0700
+Message-Id: <20220827193925.19612-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The pull request you sent on Fri, 26 Aug 2022 20:29:35 +0200:
+Clean up punctuation, spelling, and formatting for command line usage
+and modprobe config file usage in udlfb.rst.
 
-> http://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev.git tags/fbdev-for-6.0-rc3
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Bernie Thompson <bernie@plugable.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+---
+ Documentation/fb/udlfb.rst |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/89b749d8552d78c4dd86dea86e2e6ba8aafab9fe
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+--- a/Documentation/fb/udlfb.rst
++++ b/Documentation/fb/udlfb.rst
+@@ -86,17 +86,21 @@ Module Options
+ Special configuration for udlfb is usually unnecessary. There are a few
+ options, however.
+ 
+-From the command line, pass options to modprobe
+-modprobe udlfb fb_defio=0 console=1 shadow=1
++From the command line, pass options to modprobe::
+ 
+-Or modify options on the fly at /sys/module/udlfb/parameters directory via
+-sudo nano fb_defio
+-change the parameter in place, and save the file.
++  modprobe udlfb fb_defio=0 console=1 shadow=1
++
++Or modify options on the fly at /sys/module/udlfb/parameters directory via::
++
++  sudo nano fb_defio
++  change the parameter in place, and save the file.
+ 
+ Unplug/replug USB device to apply with new settings
+ 
+-Or for permanent option, create file like /etc/modprobe.d/udlfb.conf with text
+-options udlfb fb_defio=0 console=1 shadow=1
++Or for permanent options, create a file like /etc/modprobe.d/udlfb.conf
++with text::
++
++  options udlfb fb_defio=0 console=1 shadow=1
+ 
+ Accepted boolean options:
+ 
