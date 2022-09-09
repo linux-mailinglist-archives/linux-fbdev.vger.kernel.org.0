@@ -2,184 +2,104 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DC685B2906
-	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Sep 2022 00:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5D2B5B2ECA
+	for <lists+linux-fbdev@lfdr.de>; Fri,  9 Sep 2022 08:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbiIHWGg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 8 Sep 2022 18:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41884 "EHLO
+        id S230434AbiIIGYt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 9 Sep 2022 02:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbiIHWG3 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 8 Sep 2022 18:06:29 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D1CF6D2B1C;
-        Thu,  8 Sep 2022 15:06:27 -0700 (PDT)
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 7928E204A5AD;
-        Thu,  8 Sep 2022 15:06:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7928E204A5AD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1662674787;
-        bh=clRlDW/UKU55qy4Nhd5brXYsUV02HVnxKRgDRmJFpXM=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=Z9VWtNQUK23jDB0GlWl74m51KMrqh0BhgccO2813dJAJmVKZrheyjY1er6b5u4WVH
-         WVEuz9ykp2wJgiWMnGERBZOCcnZl9ONv9mPMnG/E4jaEuxxYp1MYq+vcT4ZW/bjMxE
-         L402v8AfZ3/4KZVxkTXrxz9RqBjRapos5kNm6GsU=
-From:   eahariha@linux.microsoft.com
-To:     Deepak Rawat <drawat.floss@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Helge Deller <deller@gmx.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Easwar Hariharan <easwar.hariharan@microsoft.com>,
-        Colin Ian King <colin.i.king@googlemail.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hyperv@vger.kernel.org (open list:DRM DRIVER FOR HYPERV SYNTHETIC
-        VIDEO DEVICE),
-        dri-devel@lists.freedesktop.org (open list:DRM DRIVER FOR HYPERV
-        SYNTHETIC VIDEO DEVICE), linux-kernel@vger.kernel.org (open list),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-        linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
-        linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM)
-Subject: [PATCH 3/3] pci_ids: Add the various Microsoft PCI device IDs
-Date:   Thu,  8 Sep 2022 15:05:57 -0700
-Message-Id: <1662674757-31945-3-git-send-email-eahariha@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1662674757-31945-1-git-send-email-eahariha@linux.microsoft.com>
-References: <1662674757-31945-1-git-send-email-eahariha@linux.microsoft.com>
-X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230403AbiIIGYr (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 9 Sep 2022 02:24:47 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07BF220F75
+        for <linux-fbdev@vger.kernel.org>; Thu,  8 Sep 2022 23:24:43 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id v2-20020a056830090200b006397457afecso472221ott.13
+        for <linux-fbdev@vger.kernel.org>; Thu, 08 Sep 2022 23:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=WcH6UHGbsWFkewU/wT0fJawZxX15Zl4hkDGkeADuGdJGmv3t1iQNtgSoMnFwdIiKsl
+         x0SFF8bkohRdk9mKGKM+s9gauDKjJXrvYE2yTKQmchoZQEeCIon6bMdclwr30NYYePtN
+         LlWsahNYX+ZnmYtHuo+L3HiSHKxAxOAJsjY/zT5bRdtKkslqggYR6PeuSVU/Upq3p6Lx
+         v7+3Sl0ycmpNJAkDyyfB3vDmj0Ku1DLMT5UNXcPYiD+ne677L4tBdx+wZ+UEyMq3qhuC
+         L3qiWtmRltydGdTH8yRtHUUCoYBmNYblSu9kOey2R0GaJCd4zJFwUrFzR3gFC4Ma5YBK
+         ywXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=maMTM6hW1LREt6bqMWRw28OkPZ3JiScn6WQSErV/o0HS6onN4qBud0qYQKkMN0rxGP
+         oPvd3DJ30yCJWa5H0aJ9FWJnMe6pe/OKV0/6mpTVFLZcurC7PGhZTaucPLC/ZlseUe2A
+         GiWpk9brJ6yj+3Tp++Qvdrl4SSR0HlETbtb8b7u7WCLDX2yI3g01sFHLqWTw70YJnUED
+         zIFY4m5IW3WuUzWxx6RBc3aBvtUtR0DumbcuzqpexM2CDwByLPDEriUhplUFoElA3X3y
+         hjDoGDFS7tj08dl2J52WQ5EKmgBKJxIIy2znTwnB3XrjFmh/yy/Qkk1jK/G6UOVldOXP
+         VYng==
+X-Gm-Message-State: ACgBeo0FjH/nisVs/mIb0yZ7sMBGEExtH30LHaFyH8HOW9uBCktg7Fou
+        7L6s9zEZY1z+S0pBpPJcXuxvFSCSzZXEGisT+ak=
+X-Google-Smtp-Source: AA6agR5oQwYexb5IuYa5dQgOTrJVTByrVtuS9dapD7VlJ47FKqY17GiN0xDTC5NddRnxIwHXasBmKTYYBxKZ43rAUg0=
+X-Received: by 2002:a9d:6e0e:0:b0:652:6ed2:eb83 with SMTP id
+ e14-20020a9d6e0e000000b006526ed2eb83mr3789515otr.308.1662704682511; Thu, 08
+ Sep 2022 23:24:42 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6358:c27:b0:bc:944f:7c4e with HTTP; Thu, 8 Sep 2022
+ 23:24:42 -0700 (PDT)
+Reply-To: stefanopessina14@gmail.com
+From:   Stefano Pessina <prniceugochukwu@gmail.com>
+Date:   Thu, 8 Sep 2022 23:24:42 -0700
+Message-ID: <CA+eeEkAUSxvd2fRt0O=B0KtG8hzLpcviCGXBvO_1bui7P5TghQ@mail.gmail.com>
+Subject: Donation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:343 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stefanopessina14[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [prniceugochukwu[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Easwar Hariharan <easwar.hariharan@microsoft.com>
-
-Signed-off-by: Easwar Hariharan <easwar.hariharan@microsoft.com>
----
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c         | 4 +---
- drivers/net/ethernet/microsoft/mana/gdma.h      | 3 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 6 +++---
- drivers/video/fbdev/hyperv_fb.c                 | 6 ++----
- include/linux/pci_ids.h                         | 3 +++
- 5 files changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index 61083c7..695d3a7 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -23,8 +23,6 @@
- #define DRIVER_MAJOR 1
- #define DRIVER_MINOR 0
- 
--#define PCI_DEVICE_ID_HYPERV_VIDEO 0x5353
--
- DEFINE_DRM_GEM_FOPS(hv_fops);
- 
- static struct drm_driver hyperv_driver = {
-@@ -53,7 +51,7 @@ static void hyperv_pci_remove(struct pci_dev *pdev)
- static const struct pci_device_id hyperv_pci_tbl[] = {
- 	{
- 		.vendor = PCI_VENDOR_ID_MICROSOFT,
--		.device = PCI_DEVICE_ID_HYPERV_VIDEO,
-+		.device = PCI_DEVICE_ID_MICROSOFT_HYPERV_VIDEO,
- 	},
- 	{ /* end of list */ }
- };
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma.h b/drivers/net/ethernet/microsoft/mana/gdma.h
-index 4a6efe6..9d3a9f7 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma.h
-+++ b/drivers/net/ethernet/microsoft/mana/gdma.h
-@@ -476,9 +476,6 @@ struct gdma_eqe {
- 
- #define GDMA_SRIOV_REG_CFG_BASE_OFF	0x108
- 
--#define MANA_PF_DEVICE_ID 0x00B9
--#define MANA_VF_DEVICE_ID 0x00BA
--
- struct gdma_posted_wqe_info {
- 	u32 wqe_size_in_bu;
- };
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 00d8198..18cf168 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1333,7 +1333,7 @@ static void mana_gd_cleanup(struct pci_dev *pdev)
- 
- static bool mana_is_pf(unsigned short dev_id)
- {
--	return dev_id == MANA_PF_DEVICE_ID;
-+	return dev_id == PCI_DEVICE_ID_MICROSOFT_MANA_PF;
- }
- 
- static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -1466,8 +1466,8 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
- }
- 
- static const struct pci_device_id mana_id_table[] = {
--	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_PF_DEVICE_ID) },
--	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_VF_DEVICE_ID) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, PCI_DEVICE_ID_MICROSOFT_MANA_PF) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, PCI_DEVICE_ID_MICROSOFT_MANA_VF) },
- 	{ }
- };
- 
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index a502c80..b9277e5 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -73,8 +73,6 @@
- #define SYNTHVID_DEPTH_WIN8 32
- #define SYNTHVID_FB_SIZE_WIN8 (8 * 1024 * 1024)
- 
--#define PCI_DEVICE_ID_HYPERV_VIDEO 0x5353
--
- enum pipe_msg_type {
- 	PIPE_MSG_INVALID,
- 	PIPE_MSG_DATA,
-@@ -998,7 +996,7 @@ static int hvfb_getmem(struct hv_device *hdev, struct fb_info *info)
- 
- 	if (!gen2vm) {
- 		pdev = pci_get_device(PCI_VENDOR_ID_MICROSOFT,
--			PCI_DEVICE_ID_HYPERV_VIDEO, NULL);
-+			PCI_DEVICE_ID_MICROSOFT_HYPERV_VIDEO, NULL);
- 		if (!pdev) {
- 			pr_err("Unable to find PCI Hyper-V video\n");
- 			return -ENODEV;
-@@ -1312,7 +1310,7 @@ static int hvfb_resume(struct hv_device *hdev)
- static const struct pci_device_id pci_stub_id_table[] = {
- 	{
- 		.vendor      = PCI_VENDOR_ID_MICROSOFT,
--		.device      = PCI_DEVICE_ID_HYPERV_VIDEO,
-+		.device      = PCI_DEVICE_ID_MICROSOFT_HYPERV_VIDEO,
- 	},
- 	{ /* end of list */ }
- };
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index c008fda..0bef8e6 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2080,6 +2080,9 @@
- #define PCI_DEVICE_ID_VT1724		0x1724
- 
- #define PCI_VENDOR_ID_MICROSOFT  	0x1414
-+#define PCI_DEVICE_ID_MICROSOFT_HYPERV_VIDEO 	0x5353
-+#define PCI_DEVICE_ID_MICROSOFT_MANA_PF  	0x00B9
-+#define PCI_DEVICE_ID_MICROSOFT_MANA_VF  	0x00BA
- 
- #define PCI_VENDOR_ID_OXSEMI		0x1415
- #define PCI_DEVICE_ID_OXSEMI_12PCI840	0x8403
 -- 
-1.8.3.1
-
+I am Stefano Pessina, an  Italian business tycoon, investor, and
+philanthropist. the vice chairman, chief executive officer (CEO), and
+the single largest shareholder of Walgreens Boots Alliance. I gave
+away 25 percent of my personal wealth to charity. And I also pledged
+to give away the rest of 25% this year 2022 to Individuals.. I have
+decided to donate $2,200,000.00 to you. If you are interested in my
+donation, do contact me for more info
