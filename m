@@ -2,90 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8487D5B84A4
-	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Sep 2022 11:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E170E5B8643
+	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Sep 2022 12:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbiINJPX (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 14 Sep 2022 05:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
+        id S229768AbiINKYE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 14 Sep 2022 06:24:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231735AbiINJOS (ORCPT
+        with ESMTP id S229812AbiINKXX (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 14 Sep 2022 05:14:18 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FF17D787;
-        Wed, 14 Sep 2022 02:06:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id B8D4CCE1691;
-        Wed, 14 Sep 2022 09:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996A4C4314D;
-        Wed, 14 Sep 2022 09:06:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663146375;
-        bh=D381fk5d1YzIV/YWaShO6lobmBJRN/zGMxlzrf7L/8A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tryd/dD/YFFKYvdRccyDrusycGWee2K4rXskCrq18urkhfb4RKmSOa5/1O5MPdJx9
-         kehij66hpPV6CgWzXUickv8AEnS4SS2+0ByaO6YtejomUsOmjyjh1nxO6tqqNYKL9M
-         6Xeyk/XsG9NxF7Ovs2pw1YqNxlm5+Zgu8AcviKJ0iPHDxNfej0sOchLA3HMRVfQX8z
-         kpJjW0778mB3Hz0jUdYF6YG+0BefXbAQbauU1S+LkDmQpgl6kA7Cr1S1qxfWAQUSiT
-         By5iVQgN02ig6uTslrWewo9mXrSCiLGjZbm5OMSkO/ltp8cjGuDccxUIytUmgnjlH3
-         AUT2nJuKxG5zg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yihao Han <hanyihao@vivo.com>, Hans de Goede <hdegoede@redhat.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.9 08/13] video: fbdev: simplefb: Check before clk_put() not needed
-Date:   Wed, 14 Sep 2022 05:05:35 -0400
-Message-Id: <20220914090540.471725-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220914090540.471725-1-sashal@kernel.org>
-References: <20220914090540.471725-1-sashal@kernel.org>
+        Wed, 14 Sep 2022 06:23:23 -0400
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EE07C324;
+        Wed, 14 Sep 2022 03:23:18 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VPn2vi9_1663150986;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VPn2vi9_1663150986)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Sep 2022 18:23:16 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     deller@gmx.de
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH] video: fbdev: controlfb: Remove the unused function VAR_MATCH()
+Date:   Wed, 14 Sep 2022 18:22:59 +0800
+Message-Id: <20220914102301.87981-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Yihao Han <hanyihao@vivo.com>
+The function VAR_MATCH is defined in the controlfb.c file, but not
+called elsewhere, so delete this unused function.
 
-[ Upstream commit 5491424d17bdeb7b7852a59367858251783f8398 ]
+drivers/video/fbdev/controlfb.c:111:19: warning: unused function 'VAR_MATCH'.
 
-clk_put() already checks the clk ptr using !clk and IS_ERR()
-so there is no need to check it again before calling it.
-
-Signed-off-by: Yihao Han <hanyihao@vivo.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=2153
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 ---
- drivers/video/fbdev/simplefb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/fbdev/controlfb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index 61f799a515dc7..1efdbbc20f99e 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -231,8 +231,7 @@ static int simplefb_clocks_init(struct simplefb_par *par,
- 		if (IS_ERR(clock)) {
- 			if (PTR_ERR(clock) == -EPROBE_DEFER) {
- 				while (--i >= 0) {
--					if (par->clks[i])
--						clk_put(par->clks[i]);
-+					clk_put(par->clks[i]);
- 				}
- 				kfree(par->clks);
- 				return -EPROBE_DEFER;
+diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
+index aba46118b208..6bbcd9fc864e 100644
+--- a/drivers/video/fbdev/controlfb.c
++++ b/drivers/video/fbdev/controlfb.c
+@@ -108,13 +108,6 @@ static inline int PAR_EQUAL(struct fb_par_control *x, struct fb_par_control *y)
+ 	return (!DIRTY(cmode) && !DIRTY(xres) && !DIRTY(yres)
+ 		&& !DIRTY(vxres) && !DIRTY(vyres));
+ }
+-static inline int VAR_MATCH(struct fb_var_screeninfo *x, struct fb_var_screeninfo *y)
+-{
+-	return (!DIRTY(bits_per_pixel) && !DIRTY(xres)
+-		&& !DIRTY(yres) && !DIRTY(xres_virtual)
+-		&& !DIRTY(yres_virtual)
+-		&& !DIRTY_CMAP(red) && !DIRTY_CMAP(green) && !DIRTY_CMAP(blue));
+-}
+ 
+ struct fb_info_control {
+ 	struct fb_info		info;
 -- 
-2.35.1
+2.20.1.7.g153144c
 
