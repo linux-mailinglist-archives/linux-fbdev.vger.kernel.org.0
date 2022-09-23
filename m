@@ -2,677 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6B6D5E6124
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Sep 2022 13:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 767065E74A2
+	for <lists+linux-fbdev@lfdr.de>; Fri, 23 Sep 2022 09:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbiIVLdP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 22 Sep 2022 07:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60806 "EHLO
+        id S229815AbiIWHOm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 23 Sep 2022 03:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbiIVLdN (ORCPT
+        with ESMTP id S229794AbiIWHOj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 22 Sep 2022 07:33:13 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D953E21D5
-        for <linux-fbdev@vger.kernel.org>; Thu, 22 Sep 2022 04:33:12 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id AD49E1F8F3;
-        Thu, 22 Sep 2022 11:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1663846390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UbV9x2jU3flI5rGNZ7WWNwXyW3ji7UEK/qPGKuNibt4=;
-        b=eGhw8r5Ipc9lZtSAOfduIAyTcyKi0KSe9l8OXOtPPr9U7fbomAnqOwSqDR9zNzwZkdjDEI
-        /XhdxghR1u84nX/iziB3zUswMzPCNaBjimJbCoAsYKRNYv9AY4QwvAZgL167BMa7olqtne
-        F1QNJIeYOophJ/UwMTnk1Ft5D2raKDc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1663846390;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UbV9x2jU3flI5rGNZ7WWNwXyW3ji7UEK/qPGKuNibt4=;
-        b=mk3Mzosn3rQTUuq6hYJACO9mfw/1jtnng0WGFtxA/OreaE6sgto7b+HM8w0JHJVMp4Abzp
-        8r1c5MAO6NzQUqCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5D7DC13AF0;
-        Thu, 22 Sep 2022 11:33:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id yO3FFfZHLGPyPAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 22 Sep 2022 11:33:10 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch,
+        Fri, 23 Sep 2022 03:14:39 -0400
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303B31DA42
+        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 00:14:38 -0700 (PDT)
+Received: by mail-qt1-f179.google.com with SMTP id g23so7899426qtu.2
+        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 00:14:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=S3UyUtioqiLswQVfydApgd1DWgeD5a9i4NJMAx10xfU=;
+        b=NeKhEcUtotdcZlH7wKvtCg//Z6LZyK+6cNHW2DbF2kRhW0GWPFHgaMyBMDgNLo0xe2
+         56RfhCBTCgTh/XlvpVUkJHXN6HHQl+zvWewfq309gbgXMX9O9hPBNYrAP8VsDqXUnPbX
+         ryMQ17+MsPnWIFBNwXRAtAA6VSxg2j+xfxYSsLqnoi3Msk68aLbKw9kMTgitKW2nJ4cA
+         z7vY2kRBFOTdXdMSaU3nohV6Zq9oh3gAdpOgsoK+dP4qYrQfE3HpY6o9N4qXgSIdXJZw
+         Wjn/VKuXG1XiA7tpiVW5YCRPi7Cb/b3DVC4AhppZ7N2DrF37XMBRQj5JxjA9zIKPHkpy
+         9YcQ==
+X-Gm-Message-State: ACrzQf3xIE2Y0b313qyQ8PHsMGyRk2rclyuBVatqN7aTWZcY4VGyx2R0
+        S7sx6VTZIMbl6tWIziCsIaxe0XTIPfBTyw==
+X-Google-Smtp-Source: AMsMyM7hNPefdAwvR3jjtbnWjDtksisl6gB+Lp5O60GW8vlt7LpD7/sn3/lyN3mNV1lgWDaKuPijAw==
+X-Received: by 2002:ac8:5801:0:b0:35c:dc46:1a50 with SMTP id g1-20020ac85801000000b0035cdc461a50mr5944776qtg.216.1663917277138;
+        Fri, 23 Sep 2022 00:14:37 -0700 (PDT)
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
+        by smtp.gmail.com with ESMTPSA id h8-20020a05620a244800b006ce813bb306sm5149686qkn.125.2022.09.23.00.14.36
+        for <linux-fbdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 00:14:36 -0700 (PDT)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-3452214cec6so123456357b3.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 00:14:36 -0700 (PDT)
+X-Received: by 2002:a0d:de43:0:b0:349:31bd:e8d5 with SMTP id
+ h64-20020a0dde43000000b0034931bde8d5mr6762932ywe.283.1663917276015; Fri, 23
+ Sep 2022 00:14:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220922113306.11251-1-tzimmermann@suse.de> <20220922113306.11251-2-tzimmermann@suse.de>
+In-Reply-To: <20220922113306.11251-2-tzimmermann@suse.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 23 Sep 2022 09:14:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+Message-ID: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware framebuffers
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch,
         deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
         msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, geert@linux-m68k.org,
-        mark.cave-ayland@ilande.co.uk
-Cc:     linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 4/4] drm/ofdrm: Support color management
-Date:   Thu, 22 Sep 2022 13:33:06 +0200
-Message-Id: <20220922113306.11251-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220922113306.11251-1-tzimmermann@suse.de>
-References: <20220922113306.11251-1-tzimmermann@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        paulus@samba.org, mark.cave-ayland@ilande.co.uk,
+        linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Support the CRTC's color-management property and implement each model's
-palette support.
+Hi Thomas,
 
-The OF hardware has different methods of setting the palette. The
-respective code has been taken from fbdev's offb and refactored into
-per-model device functions. The device functions integrate this
-functionality into the overall modesetting.
+On Thu, Sep 22, 2022 at 1:33 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Open Firmware provides basic display output via the 'display' node.
+> DT platform code already provides a device that represents the node's
+> framebuffer. Add a DRM driver for the device. The display mode and
+> color format is pre-initialized by the system's firmware. Runtime
+> modesetting via DRM is not possible. The display is useful during
+> early boot stages or as error fallback.
+>
+> Similar functionality is already provided by fbdev's offb driver,
+> which is insufficient for modern userspace. The old driver includes
+> support for BootX device tree, which can be found on old 32-bit
+> PowerPC Macintosh systems. If these are still in use, the
+> functionality can be added to ofdrm or implemented in a new
+> driver. As with simpledrm, the fbdev driver cannot be selected if
+> ofdrm is already enabled.
 
-As palette handling is a CRTC property that depends on the primary
-plane's color format, the plane's atomic_check helper now updates the
-format field in ofdrm's custom CRTC state. The CRTC's atomic_flush
-helper updates the palette for the format as needed.
+Thanks for your patch!
 
-v3:
-	* lookup CRTC state with drm_atomic_get_new_crtc_state()
-	* access HW palette with writeb(), writel(), and readl() (Ben)
-	* declare register values as u32
+> The driver has been tested on qemu's ppc64le emulation. The device
+> hand-over has been tested with bochs.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/gpu/drm/tiny/ofdrm.c | 442 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 437 insertions(+), 5 deletions(-)
+Oh, tested on little-endian only ;-)
 
-diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-index 9a8e5696999c..f891588375e7 100644
---- a/drivers/gpu/drm/tiny/ofdrm.c
-+++ b/drivers/gpu/drm/tiny/ofdrm.c
-@@ -13,6 +13,7 @@
- #include <drm/drm_drv.h>
- #include <drm/drm_fb_helper.h>
- #include <drm/drm_format_helper.h>
-+#include <drm/drm_framebuffer.h>
- #include <drm/drm_gem_atomic_helper.h>
- #include <drm/drm_gem_framebuffer_helper.h>
- #include <drm/drm_gem_shmem_helper.h>
-@@ -31,6 +32,33 @@
- #define PCI_VENDOR_ID_ATI_R520	0x7100
- #define PCI_VENDOR_ID_ATI_R600	0x9400
- 
-+#define OFDRM_GAMMA_LUT_SIZE	256
-+
-+/* Definitions used by the Avivo palette  */
-+#define AVIVO_DC_LUT_RW_SELECT                  0x6480
-+#define AVIVO_DC_LUT_RW_MODE                    0x6484
-+#define AVIVO_DC_LUT_RW_INDEX                   0x6488
-+#define AVIVO_DC_LUT_SEQ_COLOR                  0x648c
-+#define AVIVO_DC_LUT_PWL_DATA                   0x6490
-+#define AVIVO_DC_LUT_30_COLOR                   0x6494
-+#define AVIVO_DC_LUT_READ_PIPE_SELECT           0x6498
-+#define AVIVO_DC_LUT_WRITE_EN_MASK              0x649c
-+#define AVIVO_DC_LUT_AUTOFILL                   0x64a0
-+#define AVIVO_DC_LUTA_CONTROL                   0x64c0
-+#define AVIVO_DC_LUTA_BLACK_OFFSET_BLUE         0x64c4
-+#define AVIVO_DC_LUTA_BLACK_OFFSET_GREEN        0x64c8
-+#define AVIVO_DC_LUTA_BLACK_OFFSET_RED          0x64cc
-+#define AVIVO_DC_LUTA_WHITE_OFFSET_BLUE         0x64d0
-+#define AVIVO_DC_LUTA_WHITE_OFFSET_GREEN        0x64d4
-+#define AVIVO_DC_LUTA_WHITE_OFFSET_RED          0x64d8
-+#define AVIVO_DC_LUTB_CONTROL                   0x6cc0
-+#define AVIVO_DC_LUTB_BLACK_OFFSET_BLUE         0x6cc4
-+#define AVIVO_DC_LUTB_BLACK_OFFSET_GREEN        0x6cc8
-+#define AVIVO_DC_LUTB_BLACK_OFFSET_RED          0x6ccc
-+#define AVIVO_DC_LUTB_WHITE_OFFSET_BLUE         0x6cd0
-+#define AVIVO_DC_LUTB_WHITE_OFFSET_GREEN        0x6cd4
-+#define AVIVO_DC_LUTB_WHITE_OFFSET_RED          0x6cd8
-+
- enum ofdrm_model {
- 	OFDRM_MODEL_UNKNOWN,
- 	OFDRM_MODEL_MACH64, /* ATI Mach64 */
-@@ -212,7 +240,14 @@ static enum ofdrm_model display_get_model_of(struct drm_device *dev, struct devi
-  * Open Firmware display device
-  */
- 
-+struct ofdrm_device;
-+
- struct ofdrm_device_funcs {
-+	void __iomem *(*cmap_ioremap)(struct ofdrm_device *odev,
-+				      struct device_node *of_node,
-+				      u64 fb_bas);
-+	void (*cmap_write)(struct ofdrm_device *odev, unsigned char index,
-+			   unsigned char r, unsigned char g, unsigned char b);
- };
- 
- struct ofdrm_device {
-@@ -227,6 +262,9 @@ struct ofdrm_device {
- 	const struct drm_format_info *format;
- 	unsigned int pitch;
- 
-+	/* colormap */
-+	void __iomem *cmap_base;
-+
- 	/* modesetting */
- 	uint32_t formats[8];
- 	struct drm_plane primary_plane;
-@@ -339,12 +377,322 @@ static struct resource *ofdrm_find_fb_resource(struct ofdrm_device *odev,
- 	return max_res;
- }
- 
-+/*
-+ * Colormap / Palette
-+ */
-+
-+static void __iomem *get_cmap_address_of(struct ofdrm_device *odev, struct device_node *of_node,
-+					 int bar_no, unsigned long offset, unsigned long size)
-+{
-+	struct drm_device *dev = &odev->dev;
-+	const __be32 *addr_p;
-+	u64 max_size, address;
-+	unsigned int flags;
-+	void __iomem *mem;
-+
-+	addr_p = of_get_pci_address(of_node, bar_no, &max_size, &flags);
-+	if (!addr_p)
-+		addr_p = of_get_address(of_node, bar_no, &max_size, &flags);
-+	if (!addr_p)
-+		return ERR_PTR(-ENODEV);
-+
-+	if ((flags & (IORESOURCE_IO | IORESOURCE_MEM)) == 0)
-+		return ERR_PTR(-ENODEV);
-+
-+	if ((offset + size) >= max_size)
-+		return ERR_PTR(-ENODEV);
-+
-+	address = of_translate_address(of_node, addr_p);
-+	if (address == OF_BAD_ADDR)
-+		return ERR_PTR(-ENODEV);
-+
-+	mem = devm_ioremap(dev->dev, address + offset, size);
-+	if (!mem)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return mem;
-+}
-+
-+static void __iomem *ofdrm_mach64_cmap_ioremap(struct ofdrm_device *odev,
-+					       struct device_node *of_node,
-+					       u64 fb_base)
-+{
-+	struct drm_device *dev = &odev->dev;
-+	u64 address;
-+	void __iomem *cmap_base;
-+
-+	address = fb_base & 0xff000000ul;
-+	address += 0x7ff000;
-+
-+	cmap_base = devm_ioremap(dev->dev, address, 0x1000);
-+	if (!cmap_base)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return cmap_base;
-+}
-+
-+static void ofdrm_mach64_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				    unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *addr = odev->cmap_base + 0xcc0;
-+	void __iomem *data = odev->cmap_base + 0xcc0 + 1;
-+
-+	writeb(index, addr);
-+	writeb(r, data);
-+	writeb(g, data);
-+	writeb(b, data);
-+}
-+
-+static void __iomem *ofdrm_rage128_cmap_ioremap(struct ofdrm_device *odev,
-+						struct device_node *of_node,
-+						u64 fb_base)
-+{
-+	return get_cmap_address_of(odev, of_node, 2, 0, 0x1fff);
-+}
-+
-+static void ofdrm_rage128_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				     unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *addr = odev->cmap_base + 0xb0;
-+	void __iomem *data = odev->cmap_base + 0xb4;
-+	u32 color = (r << 16) | (g << 8) | b;
-+
-+	writeb(index, addr);
-+	writel(color, data);
-+}
-+
-+static void __iomem *ofdrm_rage_m3a_cmap_ioremap(struct ofdrm_device *odev,
-+						 struct device_node *of_node,
-+						 u64 fb_base)
-+{
-+	return get_cmap_address_of(odev, of_node, 2, 0, 0x1fff);
-+}
-+
-+static void ofdrm_rage_m3a_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				      unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *dac_ctl = odev->cmap_base + 0x58;
-+	void __iomem *addr = odev->cmap_base + 0xb0;
-+	void __iomem *data = odev->cmap_base + 0xb4;
-+	u32 color = (r << 16) | (g << 8) | b;
-+	u32 val;
-+
-+	/* Clear PALETTE_ACCESS_CNTL in DAC_CNTL */
-+	val = readl(dac_ctl);
-+	val &= ~0x20;
-+	writel(val, dac_ctl);
-+
-+	/* Set color at palette index */
-+	writeb(index, addr);
-+	writel(color, data);
-+}
-+
-+static void __iomem *ofdrm_rage_m3b_cmap_ioremap(struct ofdrm_device *odev,
-+						 struct device_node *of_node,
-+						 u64 fb_base)
-+{
-+	return get_cmap_address_of(odev, of_node, 2, 0, 0x1fff);
-+}
-+
-+static void ofdrm_rage_m3b_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				      unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *dac_ctl = odev->cmap_base + 0x58;
-+	void __iomem *addr = odev->cmap_base + 0xb0;
-+	void __iomem *data = odev->cmap_base + 0xb4;
-+	u32 color = (r << 16) | (g << 8) | b;
-+	u32 val;
-+
-+	/* Set PALETTE_ACCESS_CNTL in DAC_CNTL */
-+	val = readl(dac_ctl);
-+	val |= 0x20;
-+	writel(val, dac_ctl);
-+
-+	/* Set color at palette index */
-+	writeb(index, addr);
-+	writel(color, data);
-+}
-+
-+static void __iomem *ofdrm_radeon_cmap_ioremap(struct ofdrm_device *odev,
-+					       struct device_node *of_node,
-+					       u64 fb_base)
-+{
-+	return get_cmap_address_of(odev, of_node, 1, 0, 0x1fff);
-+}
-+
-+static void __iomem *ofdrm_gxt2000_cmap_ioremap(struct ofdrm_device *odev,
-+						struct device_node *of_node,
-+						u64 fb_base)
-+{
-+	return get_cmap_address_of(odev, of_node, 0, 0x6000, 0x1000);
-+}
-+
-+static void ofdrm_gxt2000_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				     unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *data = ((unsigned int __iomem *)odev->cmap_base) + index;
-+	u32 color = (r << 16) | (g << 8) | b;
-+
-+	writel(color, data);
-+}
-+
-+static void __iomem *ofdrm_avivo_cmap_ioremap(struct ofdrm_device *odev,
-+					      struct device_node *of_node,
-+					      u64 fb_base)
-+{
-+	struct device_node *of_parent;
-+	void __iomem *cmap_base;
-+
-+	of_parent = of_get_parent(of_node);
-+	cmap_base = get_cmap_address_of(odev, of_parent, 0, 0, 0x10000);
-+	of_node_put(of_parent);
-+
-+	return cmap_base;
-+}
-+
-+static void ofdrm_avivo_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				   unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *lutsel = odev->cmap_base + AVIVO_DC_LUT_RW_SELECT;
-+	void __iomem *addr = odev->cmap_base + AVIVO_DC_LUT_RW_INDEX;
-+	void __iomem *data = odev->cmap_base + AVIVO_DC_LUT_30_COLOR;
-+	u32 color = (r << 22) | (g << 12) | (b << 2);
-+
-+	/* Write to both LUTs for now */
-+
-+	writel(1, lutsel);
-+	writeb(index, addr);
-+	writel(color, data);
-+
-+	writel(0, lutsel);
-+	writeb(index, addr);
-+	writel(color, data);
-+}
-+
-+static void __iomem *ofdrm_qemu_cmap_ioremap(struct ofdrm_device *odev,
-+					     struct device_node *of_node,
-+					     u64 fb_base)
-+{
-+#ifdef __BIG_ENDIAN
-+	static const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
-+#else
-+	static const __be32 io_of_addr[3] = { 0x00000001, 0x0, 0x0 };
-+#endif
-+
-+	struct drm_device *dev = &odev->dev;
-+	u64 address;
-+	void __iomem *cmap_base;
-+
-+	address = of_translate_address(of_node, io_of_addr);
-+	if (address == OF_BAD_ADDR)
-+		return ERR_PTR(-ENODEV);
-+
-+	cmap_base = devm_ioremap(dev->dev, address + 0x3c8, 2);
-+	if (!cmap_base)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return cmap_base;
-+}
-+
-+static void ofdrm_qemu_cmap_write(struct ofdrm_device *odev, unsigned char index,
-+				  unsigned char r, unsigned char g, unsigned char b)
-+{
-+	void __iomem *addr = odev->cmap_base;
-+	void __iomem *data = odev->cmap_base + 1;
-+
-+	writeb(index, addr);
-+	writeb(r, data);
-+	writeb(g, data);
-+	writeb(b, data);
-+}
-+
-+static void ofdrm_device_set_gamma_linear(struct ofdrm_device *odev,
-+					  const struct drm_format_info *format)
-+{
-+	struct drm_device *dev = &odev->dev;
-+	int i;
-+
-+	switch (format->format) {
-+	case DRM_FORMAT_RGB565:
-+		/* Use better interpolation, to take 32 values from 0 to 255 */
-+		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
-+			unsigned char r = i * 8 + i / 4;
-+			unsigned char g = i * 4 + i / 16;
-+			unsigned char b = i * 8 + i / 4;
-+
-+			odev->funcs->cmap_write(odev, i, r, g, b);
-+		}
-+		/* Green has one more bit, so add padding with 0 for red and blue. */
-+		for (i = OFDRM_GAMMA_LUT_SIZE / 8; i < OFDRM_GAMMA_LUT_SIZE / 4; i++) {
-+			unsigned char r = 0;
-+			unsigned char g = i * 4 + i / 16;
-+			unsigned char b = 0;
-+
-+			odev->funcs->cmap_write(odev, i, r, g, b);
-+		}
-+		break;
-+	case DRM_FORMAT_XRGB8888:
-+		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++)
-+			odev->funcs->cmap_write(odev, i, i, i, i);
-+		break;
-+	default:
-+		drm_warn_once(dev, "Unsupported format %p4cc for gamma correction\n",
-+			      &format->format);
-+		break;
-+	}
-+}
-+
-+static void ofdrm_device_set_gamma(struct ofdrm_device *odev,
-+				   const struct drm_format_info *format,
-+				   struct drm_color_lut *lut)
-+{
-+	struct drm_device *dev = &odev->dev;
-+	int i;
-+
-+	switch (format->format) {
-+	case DRM_FORMAT_RGB565:
-+		/* Use better interpolation, to take 32 values from lut[0] to lut[255] */
-+		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE / 8; i++) {
-+			unsigned char r = lut[i * 8 + i / 4].red >> 8;
-+			unsigned char g = lut[i * 4 + i / 16].green >> 8;
-+			unsigned char b = lut[i * 8 + i / 4].blue >> 8;
-+
-+			odev->funcs->cmap_write(odev, i, r, g, b);
-+		}
-+		/* Green has one more bit, so add padding with 0 for red and blue. */
-+		for (i = OFDRM_GAMMA_LUT_SIZE / 8; i < OFDRM_GAMMA_LUT_SIZE / 4; i++) {
-+			unsigned char r = 0;
-+			unsigned char g = lut[i * 4 + i / 16].green >> 8;
-+			unsigned char b = 0;
-+
-+			odev->funcs->cmap_write(odev, i, r, g, b);
-+		}
-+		break;
-+	case DRM_FORMAT_XRGB8888:
-+		for (i = 0; i < OFDRM_GAMMA_LUT_SIZE; i++) {
-+			unsigned char r = lut[i].red >> 8;
-+			unsigned char g = lut[i].green >> 8;
-+			unsigned char b = lut[i].blue >> 8;
-+
-+			odev->funcs->cmap_write(odev, i, r, g, b);
-+		}
-+		break;
-+	default:
-+		drm_warn_once(dev, "Unsupported format %p4cc for gamma correction\n",
-+			      &format->format);
-+		break;
-+	}
-+}
-+
- /*
-  * Modesetting
-  */
- 
- struct ofdrm_crtc_state {
- 	struct drm_crtc_state base;
-+
-+	/* Primary-plane format; required for color mgmt. */
-+	const struct drm_format_info *format;
- };
- 
- static struct ofdrm_crtc_state *to_ofdrm_crtc_state(struct drm_crtc_state *base)
-@@ -382,16 +730,30 @@ static int ofdrm_primary_plane_helper_atomic_check(struct drm_plane *plane,
- 						   struct drm_atomic_state *new_state)
- {
- 	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(new_state, plane);
-+	struct drm_framebuffer *new_fb = new_plane_state->fb;
- 	struct drm_crtc *new_crtc = new_plane_state->crtc;
- 	struct drm_crtc_state *new_crtc_state = NULL;
-+	struct ofdrm_crtc_state *new_ofdrm_crtc_state;
-+	int ret;
- 
- 	if (new_crtc)
- 		new_crtc_state = drm_atomic_get_new_crtc_state(new_state, new_plane_state->crtc);
- 
--	return drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
--						   DRM_PLANE_NO_SCALING,
--						   DRM_PLANE_NO_SCALING,
--						   false, false);
-+	ret = drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
-+						  DRM_PLANE_NO_SCALING,
-+						  DRM_PLANE_NO_SCALING,
-+						  false, false);
-+	if (ret)
-+		return ret;
-+	else if (!new_plane_state->visible)
-+		return 0;
-+
-+	new_crtc_state = drm_atomic_get_new_crtc_state(new_state, new_plane_state->crtc);
-+
-+	new_ofdrm_crtc_state = to_ofdrm_crtc_state(new_crtc_state);
-+	new_ofdrm_crtc_state->format = new_fb->format;
-+
-+	return 0;
- }
- 
- static void ofdrm_primary_plane_helper_atomic_update(struct drm_plane *plane,
-@@ -493,9 +855,42 @@ static enum drm_mode_status ofdrm_crtc_helper_mode_valid(struct drm_crtc *crtc,
- static int ofdrm_crtc_helper_atomic_check(struct drm_crtc *crtc,
- 					  struct drm_atomic_state *new_state)
- {
-+	static const size_t gamma_lut_length = OFDRM_GAMMA_LUT_SIZE * sizeof(struct drm_color_lut);
-+
-+	struct drm_device *dev = crtc->dev;
- 	struct drm_crtc_state *new_crtc_state = drm_atomic_get_new_crtc_state(new_state, crtc);
-+	int ret;
-+
-+	ret = drm_atomic_helper_check_crtc_state(new_crtc_state, false);
-+	if (ret)
-+		return ret;
-+
-+	if (new_crtc_state->color_mgmt_changed) {
-+		struct drm_property_blob *gamma_lut = new_crtc_state->gamma_lut;
- 
--	return drm_atomic_helper_check_crtc_state(new_crtc_state, false);
-+		if (gamma_lut && (gamma_lut->length != gamma_lut_length)) {
-+			drm_dbg(dev, "Incorrect gamma_lut length %zu\n", gamma_lut->length);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void ofdrm_crtc_helper_atomic_flush(struct drm_crtc *crtc, struct drm_atomic_state *state)
-+{
-+	struct ofdrm_device *odev = ofdrm_device_of_dev(crtc->dev);
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
-+	struct ofdrm_crtc_state *ofdrm_crtc_state = to_ofdrm_crtc_state(crtc_state);
-+
-+	if (crtc_state->enable && crtc_state->color_mgmt_changed) {
-+		const struct drm_format_info *format = ofdrm_crtc_state->format;
-+
-+		if (crtc_state->gamma_lut)
-+			ofdrm_device_set_gamma(odev, format, crtc_state->gamma_lut->data);
-+		else
-+			ofdrm_device_set_gamma_linear(odev, format);
-+	}
- }
- 
- /*
-@@ -506,6 +901,7 @@ static int ofdrm_crtc_helper_atomic_check(struct drm_crtc *crtc,
- static const struct drm_crtc_helper_funcs ofdrm_crtc_helper_funcs = {
- 	.mode_valid = ofdrm_crtc_helper_mode_valid,
- 	.atomic_check = ofdrm_crtc_helper_atomic_check,
-+	.atomic_flush = ofdrm_crtc_helper_atomic_flush,
- };
- 
- static void ofdrm_crtc_reset(struct drm_crtc *crtc)
-@@ -527,6 +923,7 @@ static struct drm_crtc_state *ofdrm_crtc_atomic_duplicate_state(struct drm_crtc
- 	struct drm_device *dev = crtc->dev;
- 	struct drm_crtc_state *crtc_state = crtc->state;
- 	struct ofdrm_crtc_state *new_ofdrm_crtc_state;
-+	struct ofdrm_crtc_state *ofdrm_crtc_state;
- 
- 	if (drm_WARN_ON(dev, !crtc_state))
- 		return NULL;
-@@ -535,7 +932,10 @@ static struct drm_crtc_state *ofdrm_crtc_atomic_duplicate_state(struct drm_crtc
- 	if (!new_ofdrm_crtc_state)
- 		return NULL;
- 
-+	ofdrm_crtc_state = to_ofdrm_crtc_state(crtc_state);
-+
- 	__drm_atomic_helper_crtc_duplicate_state(crtc, &new_ofdrm_crtc_state->base);
-+	new_ofdrm_crtc_state->format = ofdrm_crtc_state->format;
- 
- 	return &new_ofdrm_crtc_state->base;
- }
-@@ -588,27 +988,43 @@ static const struct ofdrm_device_funcs ofdrm_unknown_device_funcs = {
- };
- 
- static const struct ofdrm_device_funcs ofdrm_mach64_device_funcs = {
-+	.cmap_ioremap = ofdrm_mach64_cmap_ioremap,
-+	.cmap_write = ofdrm_mach64_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_rage128_device_funcs = {
-+	.cmap_ioremap = ofdrm_rage128_cmap_ioremap,
-+	.cmap_write = ofdrm_rage128_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_rage_m3a_device_funcs = {
-+	.cmap_ioremap = ofdrm_rage_m3a_cmap_ioremap,
-+	.cmap_write = ofdrm_rage_m3a_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_rage_m3b_device_funcs = {
-+	.cmap_ioremap = ofdrm_rage_m3b_cmap_ioremap,
-+	.cmap_write = ofdrm_rage_m3b_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_radeon_device_funcs = {
-+	.cmap_ioremap = ofdrm_radeon_cmap_ioremap,
-+	.cmap_write = ofdrm_rage128_cmap_write, /* same as Rage128 */
- };
- 
- static const struct ofdrm_device_funcs ofdrm_gxt2000_device_funcs = {
-+	.cmap_ioremap = ofdrm_gxt2000_cmap_ioremap,
-+	.cmap_write = ofdrm_gxt2000_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_avivo_device_funcs = {
-+	.cmap_ioremap = ofdrm_avivo_cmap_ioremap,
-+	.cmap_write = ofdrm_avivo_cmap_write,
- };
- 
- static const struct ofdrm_device_funcs ofdrm_qemu_device_funcs = {
-+	.cmap_ioremap = ofdrm_qemu_cmap_ioremap,
-+	.cmap_write = ofdrm_qemu_cmap_write,
- };
- 
- static struct drm_display_mode ofdrm_mode(unsigned int width, unsigned int height)
-@@ -767,6 +1183,17 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 		return ERR_PTR(-ENOMEM);
- 	iosys_map_set_vaddr_iomem(&odev->screen_base, screen_base);
- 
-+	if (odev->funcs->cmap_ioremap) {
-+		void __iomem *cmap_base = odev->funcs->cmap_ioremap(odev, of_node, fb_base);
-+
-+		if (IS_ERR(cmap_base)) {
-+			/* Don't fail; continue without colormap */
-+			ret = PTR_ERR(cmap_base);
-+		} else {
-+			odev->cmap_base = cmap_base;
-+		}
-+	}
-+
- 	/*
- 	 * Firmware framebuffer
- 	 */
-@@ -819,6 +1246,11 @@ static struct ofdrm_device *ofdrm_device_create(struct drm_driver *drv,
- 		return ERR_PTR(ret);
- 	drm_crtc_helper_add(crtc, &ofdrm_crtc_helper_funcs);
- 
-+	if (odev->cmap_base) {
-+		drm_mode_crtc_set_gamma_size(crtc, OFDRM_GAMMA_LUT_SIZE);
-+		drm_crtc_enable_color_mgmt(crtc, 0, false, OFDRM_GAMMA_LUT_SIZE);
-+	}
-+
- 	/* Encoder */
- 
- 	encoder = &odev->encoder;
--- 
-2.37.3
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tiny/ofdrm.c
+> +static const struct drm_format_info *display_get_validated_format(struct drm_device *dev,
+> +                                                                 u32 depth)
+> +{
+> +       const struct drm_format_info *info;
+> +       u32 format;
+> +
+> +       switch (depth) {
+> +       case 8:
+> +               format = drm_mode_legacy_fb_format(8, 8);
+> +               break;
+> +       case 15:
+> +       case 16:
+> +               format = drm_mode_legacy_fb_format(16, depth);
+> +               break;
+> +       case 32:
+> +               format = drm_mode_legacy_fb_format(32, 24);
 
+Shouldn't all of these use drm_driver_legacy_fb_format() (and the
+driver set drm_mode_config.quirk_addfb_prefer_host_byte_order) to have
+a chance of working on traditional big-endian PPC?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
