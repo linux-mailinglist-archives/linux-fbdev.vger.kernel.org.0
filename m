@@ -2,188 +2,99 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 527905E7505
-	for <lists+linux-fbdev@lfdr.de>; Fri, 23 Sep 2022 09:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30DC75E7552
+	for <lists+linux-fbdev@lfdr.de>; Fri, 23 Sep 2022 10:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbiIWHlZ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 23 Sep 2022 03:41:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
+        id S231173AbiIWICP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 23 Sep 2022 04:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbiIWHlY (ORCPT
+        with ESMTP id S230285AbiIWICM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 23 Sep 2022 03:41:24 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA9C128890
-        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 00:41:22 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 9DB30219CE;
-        Fri, 23 Sep 2022 07:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1663918880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MixGtf6XlGUYA0vR4YxCqSkg8gP1qXH1N0CGkhI3jh0=;
-        b=ee7gz6EAin02m1W7B+d9rEsCEdOARRI/z3WxQIhA1GXtVz2HpfKAgMq34DycgtRGChVO67
-        Hcg2L4f0dUtHXOtDAZY2FppTSWgwuuIszlnxv/vxXz1bFdmXkXAaTqb3k1O7i5KmAeJZZe
-        cNZYrTt/QVNCGnZYZY9BMYGk6dfS9fA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1663918880;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MixGtf6XlGUYA0vR4YxCqSkg8gP1qXH1N0CGkhI3jh0=;
-        b=8Yum5bkx+necVqMUpvlXtAYKbzm3GXFE749NcZtfUubNm51toekxFfslTRgGbDhhNCdWVt
-        sCnRQznu1p83CXAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 54BA813A00;
-        Fri, 23 Sep 2022 07:41:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id MJO9EyBjLWN7dAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 23 Sep 2022 07:41:20 +0000
-Message-ID: <be027064-32f2-03ec-ded6-23688aed749f@suse.de>
-Date:   Fri, 23 Sep 2022 09:41:19 +0200
+        Fri, 23 Sep 2022 04:02:12 -0400
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24D1D118B29
+        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 01:02:10 -0700 (PDT)
+Received: by mail-yb1-xb43.google.com with SMTP id 135so4331827ybl.9
+        for <linux-fbdev@vger.kernel.org>; Fri, 23 Sep 2022 01:02:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=/fuJxEvQ8hWJBVA+YQn5WV9w4flp3A4j0tI4rSSd1Ck=;
+        b=cfIxv64ssPCAsFkiNHHMFgdJK+aS3ek+iLqUHDY6WnbjhiOIdSnQ44wWRghl+HhmM+
+         ZgInIkmqqBXRmr0iLX3qhhwZFhR/JPfzleN6mm2nw1mLuOcoAzAHWkBFiHwZ7tqjMZgF
+         PsKRUIHjUUQqGprd2uONY74u1xE5BTvss8qSBbNp7Z+Aq70BRE20eriiNGYVyBXq+Hsq
+         b5rkcgTekY6IxWT4nPGAarRMzqwaFzSMb85FKRftobSoeGzks+ft+jlIfNWEogJG+3AZ
+         NOSobbcfUtAgxZtAvcYwJWnSzI9bh6dTNyppITL3cUvgwoUGwW3iGN9w6X1aRyfg5wnI
+         lcKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=/fuJxEvQ8hWJBVA+YQn5WV9w4flp3A4j0tI4rSSd1Ck=;
+        b=MqnG3pgGVnqbcg+BHyUTUn74GSNaniuVMvaFddidWB2NCIV+y6ydaW1t38blcHLJFI
+         zqRTvtJzLk8d2UJBTtTVmbN+R+MxulKY9c1eb1fkYGqa7rn04A49LQf5mxNJl8jdGMo7
+         ubxaHKMaA2QOkdgiqAsiUw6U1CcjxtmIvShpDIyBD4xL5e1Hai5zMnpdfptcbFUWkTkD
+         zQh8vfvWYPwmwSrhJz+F/8XMUtojZE8Lt3G7eE6oeebbXHhiTx0ns8K4io3RbXd9IyC6
+         +vh7sLktfEQKEqVgxQxt7CMrvI62doKO//wuGn2HS4CvrJlYFiddfdpsQUi4rmZeB5lL
+         JBtA==
+X-Gm-Message-State: ACrzQf2wirh2GizjeR56EkIXvwDVyyBb+jK5I6GDsiAsACVSkSTOd21Z
+        UpaickkV+OlH6NQjOTnFigjWYHEIwPGe9kI7GL8=
+X-Google-Smtp-Source: AMsMyM4xZCf+qxLt2Ywm13M7JqasT1TK3BugpgoPjyQSFw4MK8Zlc9YURZmRkEz6rKorJr4UyEvKaVmMnfEZ87d4MnU=
+X-Received: by 2002:a25:2f12:0:b0:6b3:e5e4:aeeb with SMTP id
+ v18-20020a252f12000000b006b3e5e4aeebmr7800323ybv.22.1663920129070; Fri, 23
+ Sep 2022 01:02:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware
- framebuffers
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch,
-        deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
-        msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, mark.cave-ayland@ilande.co.uk,
-        linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        dri-devel@lists.freedesktop.org
-References: <20220922113306.11251-1-tzimmermann@suse.de>
- <20220922113306.11251-2-tzimmermann@suse.de>
- <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-Content-Language: en-US
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------H91OYNMtRx6prswFu5pEb1hk"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a25:3256:0:0:0:0:0 with HTTP; Fri, 23 Sep 2022 01:02:08
+ -0700 (PDT)
+Reply-To: seybasaniel@gmail.com
+From:   Seyba Daniel <bellomouse33@gmail.com>
+Date:   Fri, 23 Sep 2022 10:02:08 +0200
+Message-ID: <CAC0qSW7sc6GUJtHgf3r23GFt653_aZzwewRn531NjpkWamAU7A@mail.gmail.com>
+Subject: HELLO,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.2 required=5.0 tests=BAYES_95,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b43 listed in]
+        [list.dnswl.org]
+        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
+        *      [score: 0.9789]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [bellomouse33[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [bellomouse33[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------H91OYNMtRx6prswFu5pEb1hk
-Content-Type: multipart/mixed; boundary="------------fzfqo0wFS1mmeexNmEqnr0AQ";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
- maxime@cerno.tech, sam@ravnborg.org, msuchanek@suse.de, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, mark.cave-ayland@ilande.co.uk,
- linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org
-Message-ID: <be027064-32f2-03ec-ded6-23688aed749f@suse.de>
-Subject: Re: [PATCH v3 1/4] drm/ofdrm: Add ofdrm for Open Firmware
- framebuffers
-References: <20220922113306.11251-1-tzimmermann@suse.de>
- <20220922113306.11251-2-tzimmermann@suse.de>
- <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
-In-Reply-To: <CAMuHMdW1echz6wc6Y2cfjrkPa2vZW+X4s83rXo7VebJ0E+qaqg@mail.gmail.com>
+I urgently seek your service to represent me in investing in
+your region / country and you will be rewarded for your service without
+affecting your present job with very little time invested in it, which you will
+be communicated in details upon response.
 
---------------fzfqo0wFS1mmeexNmEqnr0AQ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+My dearest regards
 
-SGkgR2VlcnQNCg0KQW0gMjMuMDkuMjIgdW0gMDk6MTQgc2NocmllYiBHZWVydCBVeXR0ZXJo
-b2V2ZW46DQo+IEhpIFRob21hcywNCj4gDQo+IE9uIFRodSwgU2VwIDIyLCAyMDIyIGF0IDE6
-MzMgUE0gVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+IHdyb3RlOg0K
-Pj4gT3BlbiBGaXJtd2FyZSBwcm92aWRlcyBiYXNpYyBkaXNwbGF5IG91dHB1dCB2aWEgdGhl
-ICdkaXNwbGF5JyBub2RlLg0KPj4gRFQgcGxhdGZvcm0gY29kZSBhbHJlYWR5IHByb3ZpZGVz
-IGEgZGV2aWNlIHRoYXQgcmVwcmVzZW50cyB0aGUgbm9kZSdzDQo+PiBmcmFtZWJ1ZmZlci4g
-QWRkIGEgRFJNIGRyaXZlciBmb3IgdGhlIGRldmljZS4gVGhlIGRpc3BsYXkgbW9kZSBhbmQN
-Cj4+IGNvbG9yIGZvcm1hdCBpcyBwcmUtaW5pdGlhbGl6ZWQgYnkgdGhlIHN5c3RlbSdzIGZp
-cm13YXJlLiBSdW50aW1lDQo+PiBtb2Rlc2V0dGluZyB2aWEgRFJNIGlzIG5vdCBwb3NzaWJs
-ZS4gVGhlIGRpc3BsYXkgaXMgdXNlZnVsIGR1cmluZw0KPj4gZWFybHkgYm9vdCBzdGFnZXMg
-b3IgYXMgZXJyb3IgZmFsbGJhY2suDQo+Pg0KPj4gU2ltaWxhciBmdW5jdGlvbmFsaXR5IGlz
-IGFscmVhZHkgcHJvdmlkZWQgYnkgZmJkZXYncyBvZmZiIGRyaXZlciwNCj4+IHdoaWNoIGlz
-IGluc3VmZmljaWVudCBmb3IgbW9kZXJuIHVzZXJzcGFjZS4gVGhlIG9sZCBkcml2ZXIgaW5j
-bHVkZXMNCj4+IHN1cHBvcnQgZm9yIEJvb3RYIGRldmljZSB0cmVlLCB3aGljaCBjYW4gYmUg
-Zm91bmQgb24gb2xkIDMyLWJpdA0KPj4gUG93ZXJQQyBNYWNpbnRvc2ggc3lzdGVtcy4gSWYg
-dGhlc2UgYXJlIHN0aWxsIGluIHVzZSwgdGhlDQo+PiBmdW5jdGlvbmFsaXR5IGNhbiBiZSBh
-ZGRlZCB0byBvZmRybSBvciBpbXBsZW1lbnRlZCBpbiBhIG5ldw0KPj4gZHJpdmVyLiBBcyB3
-aXRoIHNpbXBsZWRybSwgdGhlIGZiZGV2IGRyaXZlciBjYW5ub3QgYmUgc2VsZWN0ZWQgaWYN
-Cj4+IG9mZHJtIGlzIGFscmVhZHkgZW5hYmxlZC4NCj4gDQo+IFRoYW5rcyBmb3IgeW91ciBw
-YXRjaCENCj4gDQo+PiBUaGUgZHJpdmVyIGhhcyBiZWVuIHRlc3RlZCBvbiBxZW11J3MgcHBj
-NjRsZSBlbXVsYXRpb24uIFRoZSBkZXZpY2UNCj4+IGhhbmQtb3ZlciBoYXMgYmVlbiB0ZXN0
-ZWQgd2l0aCBib2Nocy4NCj4gDQo+IE9oLCB0ZXN0ZWQgb24gbGl0dGxlLWVuZGlhbiBvbmx5
-IDstKQ0KDQpJIHdpc2ggaXQgd2FzIGVhc2llciB0byB0ZXN0LiBCdXQgaXQncyBoYXJkIHRv
-IGZpbmQgaGFyZHdhcmUgYW5kIGEgTGludXggDQpmb3IgUG93ZXJQQyB0aGVzZSBkYXlzLCBz
-byBJIGhhdmUgbGltaXRlZCBvcHRpb25zIGZvciB0ZXN0aW5nLiBJdCdzIGp1c3QgDQpxZW11
-ICsgYSBjb21wYXRpYmxlIGRpc3RyaWJ1dGlvbiBmb3IgbWUuIE15IGFzc3VtcHRpb24gaGFz
-IGJlZW4gdGhhdCANCnBlb3BsZSB3aG8gd2hhdCB0byB1c2UgaXQgb24gYW55dGhpbmcgZWxz
-ZSB3b3VsZCBzZW5kIG1lIGEgcGF0Y2guDQoNCj4gDQo+PiAtLS0gL2Rldi9udWxsDQo+PiAr
-KysgYi9kcml2ZXJzL2dwdS9kcm0vdGlueS9vZmRybS5jDQo+PiArc3RhdGljIGNvbnN0IHN0
-cnVjdCBkcm1fZm9ybWF0X2luZm8gKmRpc3BsYXlfZ2V0X3ZhbGlkYXRlZF9mb3JtYXQoc3Ry
-dWN0IGRybV9kZXZpY2UgKmRldiwNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHUzMiBkZXB0aCkNCj4+ICt7
-DQo+PiArICAgICAgIGNvbnN0IHN0cnVjdCBkcm1fZm9ybWF0X2luZm8gKmluZm87DQo+PiAr
-ICAgICAgIHUzMiBmb3JtYXQ7DQo+PiArDQo+PiArICAgICAgIHN3aXRjaCAoZGVwdGgpIHsN
-Cj4+ICsgICAgICAgY2FzZSA4Og0KPj4gKyAgICAgICAgICAgICAgIGZvcm1hdCA9IGRybV9t
-b2RlX2xlZ2FjeV9mYl9mb3JtYXQoOCwgOCk7DQo+PiArICAgICAgICAgICAgICAgYnJlYWs7
-DQo+PiArICAgICAgIGNhc2UgMTU6DQo+PiArICAgICAgIGNhc2UgMTY6DQo+PiArICAgICAg
-ICAgICAgICAgZm9ybWF0ID0gZHJtX21vZGVfbGVnYWN5X2ZiX2Zvcm1hdCgxNiwgZGVwdGgp
-Ow0KPj4gKyAgICAgICAgICAgICAgIGJyZWFrOw0KPj4gKyAgICAgICBjYXNlIDMyOg0KPj4g
-KyAgICAgICAgICAgICAgIGZvcm1hdCA9IGRybV9tb2RlX2xlZ2FjeV9mYl9mb3JtYXQoMzIs
-IDI0KTsNCj4gDQo+IFNob3VsZG4ndCBhbGwgb2YgdGhlc2UgdXNlIGRybV9kcml2ZXJfbGVn
-YWN5X2ZiX2Zvcm1hdCgpIChhbmQgdGhlDQo+IGRyaXZlciBzZXQgZHJtX21vZGVfY29uZmln
-LnF1aXJrX2FkZGZiX3ByZWZlcl9ob3N0X2J5dGVfb3JkZXIpIHRvIGhhdmUNCj4gYSBjaGFu
-Y2Ugb2Ygd29ya2luZyBvbiB0cmFkaXRpb25hbCBiaWctZW5kaWFuIFBQQz8NCg0KVGhhdCdz
-IGEgZ29vZCBwb2ludC4gVGhlIG9mZmIgZHJpdmVyIHJlYWRzIHRoZSBlbmRpYW5lc3MgcHJv
-cGVydHkuIE9mZHJtIA0KY291bGQgZG8gdGhpcyBhbmQgc2V0IHRoZSBxdWlyayBiaXQgYWNj
-b3JkaW5nbHkuIEkgd29uJ3QgaGF2ZSB0aGUgb3B0aW9uIA0KdG8gdGVzdCBpdCwgYnV0IHRo
-ZSBjb2RlIHNlZW1zIGVhc3kgZW5vdWdoIHRvIGFkZCBpdC4gSSdsbCBtYWtlIGFuIGV4dHJh
-IA0KcGF0Y2ggZm9yIHRoaXMgaW4gdGhlIG5leHQgaXRlcmF0aW9uLg0KDQpCZXN0IHJlZ2Fy
-ZHMNClRob21hcw0KDQo+IA0KPiBHcntvZXRqZSxlZXRpbmd9cywNCj4gDQo+ICAgICAgICAg
-ICAgICAgICAgICAgICAgICBHZWVydA0KPiANCj4gLS0NCj4gR2VlcnQgVXl0dGVyaG9ldmVu
-IC0tIFRoZXJlJ3MgbG90cyBvZiBMaW51eCBiZXlvbmQgaWEzMiAtLSBnZWVydEBsaW51eC1t
-NjhrLm9yZw0KPiANCj4gSW4gcGVyc29uYWwgY29udmVyc2F0aW9ucyB3aXRoIHRlY2huaWNh
-bCBwZW9wbGUsIEkgY2FsbCBteXNlbGYgYSBoYWNrZXIuIEJ1dA0KPiB3aGVuIEknbSB0YWxr
-aW5nIHRvIGpvdXJuYWxpc3RzIEkganVzdCBzYXkgInByb2dyYW1tZXIiIG9yIHNvbWV0aGlu
-ZyBsaWtlIHRoYXQuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC0tIExp
-bnVzIFRvcnZhbGRzDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZl
-ciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KTWF4
-ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBHZXJtYW55DQooSFJCIDM2ODA5LCBBRyBO
-w7xybmJlcmcpDQpHZXNjaMOkZnRzZsO8aHJlcjogSXZvIFRvdGV2DQo=
-
---------------fzfqo0wFS1mmeexNmEqnr0AQ--
-
---------------H91OYNMtRx6prswFu5pEb1hk
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmMtYx8FAwAAAAAACgkQlh/E3EQov+D0
-fw//d5p+dv2wxW6Ft0+t/oE82gNR6WJD2p98G3tg+X3MZ6LKPI0NtIfjAAbzLer+1794p1q9YvYn
-TXEO9B9HwXx91GHxkL6HonzxVNIQaUmpjjrLoEHpdpxnWTTvHEVASSGEASLSn5FGvSjN125NZt0g
-uYcpZPiZupfVU6fg1MbgtAAYKOud/D54+WJqWUXJkaKoQ7DMp18FqalwBJjhlRzMYBRqjyPp0s9M
-4zvwhjgZKRyyRW15F0MkBU4YD4094YEiLBbpktuB4R4Bz7BV2OF+m3jj92BItH60gmIT2ui5cLYP
-avfqcD6D1biq1CIpMEd0bDYNvFcXZEpuP92ivSuz5dqtG7eufj+aF+JdiAtmAVHtDHG5G62NGvX0
-D6nchMfvII5cJi5nmu4iaWFvm76g85LF6XGZWeGjI6o3vbvXyihW6GPJoAjmghlRYXDxhYkwaQmq
-31UuCRfJaaq27evIBNZN39EqD18n1Y8xloljhT9dYfPXCxuTFjlpaUahMtNz/2JGjztC8ABJrFpX
-WwwRD26dXni0XScQSfp9SrMaZDocktYsXxwvEtjI2MfWrQFK1fnJCj4py1kcFcK227820lwZlBL4
-utCeQbh5Q4HWJJ2pL1Waejdw4lXW5jmy/6SZb5MUehrV8qv72VFKRUR249TgGms3XUYOdMhAiHFN
-h6Y=
-=Odhd
------END PGP SIGNATURE-----
-
---------------H91OYNMtRx6prswFu5pEb1hk--
+Seyba Daniel
