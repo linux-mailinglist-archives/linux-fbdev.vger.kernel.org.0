@@ -2,86 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5985ED8EA
-	for <lists+linux-fbdev@lfdr.de>; Wed, 28 Sep 2022 11:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70925EDAA0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 28 Sep 2022 12:53:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233466AbiI1J0V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 28 Sep 2022 05:26:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
+        id S233854AbiI1Kxx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 28 Sep 2022 06:53:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233818AbiI1J0E (ORCPT
+        with ESMTP id S233993AbiI1Kxa (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 28 Sep 2022 05:26:04 -0400
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6145F2ED5D
-        for <linux-fbdev@vger.kernel.org>; Wed, 28 Sep 2022 02:26:03 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Mcrdr1GbWzHqLK;
-        Wed, 28 Sep 2022 17:23:44 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 28 Sep 2022 17:26:01 +0800
-Received: from [10.174.178.174] (10.174.178.174) by
- dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Wed, 28 Sep 2022 17:26:00 +0800
-Subject: Re: [PATCH -next v3] backlight: gpio_backlight: Switch to use
- dev_err_probe() helper
-To:     Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>
-CC:     <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <jingoohan1@gmail.com>, <yangyingliang@huawei.com>
-References: <20220927033138.1945842-1-yangyingliang@huawei.com>
- <YzLW6zo/7k031jzi@maple.lan> <YzQPqjinYYAZdcR+@google.com>
-From:   Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <982139ba-2bc4-8865-f50d-4eaf78ed8bef@huawei.com>
-Date:   Wed, 28 Sep 2022 17:25:59 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Wed, 28 Sep 2022 06:53:30 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CED353894
+        for <linux-fbdev@vger.kernel.org>; Wed, 28 Sep 2022 03:50:27 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 213611F891;
+        Wed, 28 Sep 2022 10:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1664362212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=rvKjXOZrj9Wkmgpg1gpT8gS7uKDIb9UkBqyu7OJAIyo=;
+        b=eu2p8khAqGYaAgPD0U7yJFj05dU/KA0hqSYjHISQ6h82b6QO10/8mybWBFaJkjhKcpnAsC
+        5VPZUXi/MlU9MpC39eftRRvTTLCl/D1/Zkd2SeGv1hnXyA0S+flR6IVJ8GkW4wKpFuu4B8
+        iwrdepvHLOtOqDHk8wjpPAEEIClXEwQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1664362212;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=rvKjXOZrj9Wkmgpg1gpT8gS7uKDIb9UkBqyu7OJAIyo=;
+        b=48QzWCvsuPUQgcTrjJ477vilsoAWv9GwxlMZtaUaZq1DDjQTky/6TNckQNK+oXXXtO2ffk
+        ltpoqOWV2SCXhdDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C898E13A84;
+        Wed, 28 Sep 2022 10:50:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id cpIpMOMmNGMUEwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Wed, 28 Sep 2022 10:50:11 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch,
+        deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
+        msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, geert@linux-m68k.org,
+        mark.cave-ayland@ilande.co.uk
+Cc:     linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v4 0/5] drm: Add driver for PowerPC OF displays
+Date:   Wed, 28 Sep 2022 12:50:05 +0200
+Message-Id: <20220928105010.18880-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-In-Reply-To: <YzQPqjinYYAZdcR+@google.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.174.178.174]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi,
+PowerPC's Open Firmware offers a simple display buffer for graphics
+output. Add ofdrm, a DRM driver for the device. As with the existing
+simpledrm driver, the graphics hardware is pre-initialized by the
+firmware. The driver only provides blitting, no actual DRM modesetting
+is possible.
 
-On 2022/9/28 17:11, Lee Jones wrote:
-> On Tue, 27 Sep 2022, Daniel Thompson wrote:
->
->> On Tue, Sep 27, 2022 at 11:31:38AM +0800, Yang Yingliang wrote:
->>> In the probe path, dev_err() can be replaced with dev_err_probe()
->>> which will check if error code is -EPROBE_DEFER and prints the
->>> error name. It also sets the defer probe reason which can be
->>> checked later through debugfs. It's more simple in error path.
->>>
->>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
->> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
->
-> The original patch is not in my inbox.
->
-> Was I missed from the original mail?
-I have already add your mail address to my Cc list, when sending the patch.
+Patch 1 adds ofdrm, which has again been significantly reworked.
+The FWFB library has been removed infavor of various functions in
+existing DRM helper libraries. Ofdrm now supports damage iterators
+and synchronization for imported GEM BOs.
 
-Here is the early mail:
-V1:
-https://lore.kernel.org/linux-fbdev/f98b2e35-0f86-ffd0-db11-ca91930e153f@huawei.com/T/#t
+Patches 2 to 4 add support for color management. The code has been
+taken from fbdev's offb. I have no hardware available for testing the
+functionality. Qemu's stdvga apparently does not support gamma tables
+in RGB modes. I verified that the color management code is executed
+by running Gnome's night-mode settings, but the display's color tone
+does not change.
 
-V2:
-https://lore.kernel.org/linux-fbdev/7d8cfce2-ba08-afc0-de2d-972ee15b5865@huawei.com/T/#t
+Patch 5, which is new in version 4 of this patchset, adds support for
+big-endian scanout buffers. It works at least with qemu's ppc64
+emulation. Fbdev emulation and pixman rendering works. GL rendering
+produces incorrect colors.
 
-Thanks,
-Yang
+Tested by running fbdev emulation, Wayland Gnome, and Weston on qemu's
+ppc64le and ppc64 emulation. 
+
+Thomas Zimmermann (5):
+  drm/ofdrm: Add ofdrm for Open Firmware framebuffers
+  drm/ofdrm: Add CRTC state
+  drm/ofdrm: Add per-model device function
+  drm/ofdrm: Support color management
+  drm/ofdrm: Support big-endian scanout buffers
+
+ MAINTAINERS                         |    1 +
+ drivers/gpu/drm/drm_format_helper.c |   10 +
+ drivers/gpu/drm/tiny/Kconfig        |   13 +
+ drivers/gpu/drm/tiny/Makefile       |    1 +
+ drivers/gpu/drm/tiny/ofdrm.c        | 1421 +++++++++++++++++++++++++++
+ drivers/video/fbdev/Kconfig         |    1 +
+ 6 files changed, 1447 insertions(+)
+ create mode 100644 drivers/gpu/drm/tiny/ofdrm.c
+
+
+base-commit: eee1f4330f388247943e97b93008ef11ababfda0
+-- 
+2.37.3
+
