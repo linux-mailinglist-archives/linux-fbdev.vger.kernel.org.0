@@ -2,103 +2,150 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E97455FCB67
-	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Oct 2022 21:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F715FCD37
+	for <lists+linux-fbdev@lfdr.de>; Wed, 12 Oct 2022 23:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbiJLTS7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 12 Oct 2022 15:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51482 "EHLO
+        id S230178AbiJLV31 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Wed, 12 Oct 2022 17:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229746AbiJLTS6 (ORCPT
+        with ESMTP id S230202AbiJLV3R (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 12 Oct 2022 15:18:58 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC1FD8EFE
-        for <linux-fbdev@vger.kernel.org>; Wed, 12 Oct 2022 12:18:57 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id b2so17123304plc.7
-        for <linux-fbdev@vger.kernel.org>; Wed, 12 Oct 2022 12:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HfNZT46KpoZ6E+JcaCCJsllBrcf6mEq3qk/ybdRTrq0=;
-        b=X+DPYNJrssrHWrE1RZGFFcJAHcL8f3jkXOrZa2E/MM2M/to/lV2QrCFKS8bI7qt/0E
-         8/koq5Qr1X9hUTAPwaYWMWYd+CohHeCQZwo03o04Zwg3JXYnYwu93IAJaJCZbF767eTe
-         6z3UH6dskbodOaDb67ec4ZtUKpL9WlqzWt0Uo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HfNZT46KpoZ6E+JcaCCJsllBrcf6mEq3qk/ybdRTrq0=;
-        b=xCpdywI3AQWiNWRj9RIkWoNl7xIAE9NBxVKd3Df3tXBs3lvHBJjB5f6yOg0d1Ovoj8
-         EAGRjYeq8APDRKe+WpJB/nELPrF4TZlgfv06lwoEJvNDM7NGZ3GJOWj1MPI3MYBAPvXz
-         ssNlkrd5l8AknKJka1mwKiQtgmX1a5vAjVOyN3HSMkCWmYlxMpo8Qzr0U1ysIknR4uUz
-         yisGTZDkLT1mi3/TOQHeADVZuCm84pn0B2OQTBSF3DKIVqW2fqOzT+cELZ1yosd6oIlu
-         0JvqLBTpEta+9RaHnMBJ665GFkejeuzko8lmRT7xV6XXjiGuysHz8d0ijZvb1Ur+qdib
-         oatA==
-X-Gm-Message-State: ACrzQf2mv4uP1WUPum+YvTBkQjCtgHV7V7gCjaxoGcL2Eggg0IyL9igA
-        hmfZkigtJFgxUfm/BXn/RC8hog==
-X-Google-Smtp-Source: AMsMyM6/xIjOix8KD97FHd4GE6/wahQp6RRj0q3RGJzOPf50xMJPV0jcuY79BaTZXUVDboidomw0Gg==
-X-Received: by 2002:a17:90b:4c48:b0:20d:5c55:b8a8 with SMTP id np8-20020a17090b4c4800b0020d5c55b8a8mr6894465pjb.207.1665602337108;
-        Wed, 12 Oct 2022 12:18:57 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z19-20020aa79593000000b0056316f0b7f8sm250273pfj.33.2022.10.12.12.18.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 12:18:56 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] fbdev: MIPS supports iomem addresses
-Date:   Wed, 12 Oct 2022 12:18:54 -0700
-Message-Id: <20221012191838.never.778-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        Wed, 12 Oct 2022 17:29:17 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556C7120EC2
+        for <linux-fbdev@vger.kernel.org>; Wed, 12 Oct 2022 14:29:07 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-269-WPghBqosPyeNkdeVSYELTw-1; Wed, 12 Oct 2022 22:29:04 +0100
+X-MC-Unique: WPghBqosPyeNkdeVSYELTw-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.38; Wed, 12 Oct
+ 2022 22:29:02 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.040; Wed, 12 Oct 2022 22:29:02 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Joe Perches' <joe@perches.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-sctp@vger.kernel.org" <linux-sctp@vger.kernel.org>,
+        "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
+        "dev@openvswitch.org" <dev@openvswitch.org>,
+        "rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "dccp@vger.kernel.org" <dccp@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        "lvs-devel@vger.kernel.org" <lvs-devel@vger.kernel.org>,
+        "SHA-cyfmac-dev-list@infineon.com" <SHA-cyfmac-dev-list@infineon.com>,
+        "coreteam@netfilter.org" <coreteam@netfilter.org>,
+        "tipc-discussion@lists.sourceforge.net" 
+        <tipc-discussion@lists.sourceforge.net>,
+        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-actions@lists.infradead.org" 
+        <linux-actions@lists.infradead.org>,
+        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "linux-hams@vger.kernel.org" <linux-hams@vger.kernel.org>,
+        "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "cake@lists.bufferbloat.net" <cake@lists.bufferbloat.net>,
+        "brcm80211-dev-list.pdl@broadcom.com" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "linux-raid@vger.kernel.org" <linux-raid@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-f2fs-devel@lists.sourceforge.net" 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+        "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: RE: [PATCH v1 3/5] treewide: use get_random_u32() when possible
+Thread-Topic: [PATCH v1 3/5] treewide: use get_random_u32() when possible
+Thread-Index: AQHY3m9QJDmwhr5XuUa4Hi/RfD23ja4LRXVg
+Date:   Wed, 12 Oct 2022 21:29:02 +0000
+Message-ID: <d45bd258e033453b85a137112e7694e1@AcuMS.aculab.com>
+References: <20221005214844.2699-1-Jason@zx2c4.com>
+         <20221005214844.2699-4-Jason@zx2c4.com>
+ <f8ad3ba44d28dec1a5f7626b82c5e9c2aeefa729.camel@perches.com>
+In-Reply-To: <f8ad3ba44d28dec1a5f7626b82c5e9c2aeefa729.camel@perches.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1339; h=from:subject:message-id; bh=RSExtY7BNwRYriF1xMHXemT9zuCYbQ4xQoSpDfr8rVo=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBjRxMeloP/ixxePXeqRevP8QT9EZXyWJkUAg4g2qmM AE/qZjCJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCY0cTHgAKCRCJcvTf3G3AJmN4D/ 4hcVz71SZPswjgclHLavAl1hUb1O3LJ1wli7G8k2lX2OMCcN80qc088g6rbhMQOA1Ig6UWiLFJz6ZP 3mDl2lt1VDZ1nOdA6412wHxsH8eVGKhtT/KFln4bCbGPDfEIAh5Uh2ih9uDdJ+yUCHJZlMi0EueYsy ous3OfunCbRYnOJRm8VCCJYW8ow04uaO3Eiryj74ccpNGl8OZ0aZvnMSs0qCJpH7PLhmhKIDsnMDwJ Chvht0XOjXBshmliHA8U/1Zta3yXsufhHO1wtSKL7Orkkv9UZDsrnIoCRAKkZYctL8pov/Po7zES2Q rlBCf+Y094+ABm9epnmtuYCQMOOqFvNaGyzLzkqmqqVlS9sA2qQrWlZ95AlRLrPFfmlJ/rU0B6US4o 1d/nwuLYg7vLtnV5sZnuTBH2Ur+tH7b2HK5QHDsPrNlE4uHPB6XwtwcT+xst9sFKEDHFzNWvRdut/9 JEWP+4LDD5z38jIjzDkeq5Ujv7KmYbu5be4pUNsVW+jBQj9eSBxV5gktwCh9sMylU87Qgw6CrgUpZb bdgcoaPV8cTPL8br9Yt+eA+hm39dRSR+wcMRAJWI++zPLUXXZpwoGxlBNOhNqbudpn+QxRwgTChyFK G2AW+Sk5wgsR2sjAZYcVFlkbg1esbL1G8/zRrAd2wjAmeI1/6aRSWjAUPKmw==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Add MIPS to fb_* helpers list for iomem addresses. This silences Sparse
-warnings about lacking __iomem address space casts:
+From: Joe Perches
+> Sent: 12 October 2022 20:17
+> 
+> On Wed, 2022-10-05 at 23:48 +0200, Jason A. Donenfeld wrote:
+> > The prandom_u32() function has been a deprecated inline wrapper around
+> > get_random_u32() for several releases now, and compiles down to the
+> > exact same code. Replace the deprecated wrapper with a direct call to
+> > the real function.
+> []
+> > diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+> []
+> > @@ -734,7 +734,7 @@ static int send_connect(struct c4iw_ep *ep)
+> >  				   &ep->com.remote_addr;
+> >  	int ret;
+> >  	enum chip_type adapter_type = ep->com.dev->rdev.lldi.adapter_type;
+> > -	u32 isn = (prandom_u32() & ~7UL) - 1;
+> > +	u32 isn = (get_random_u32() & ~7UL) - 1;
+> 
+> trivia:
+> 
+> There are somewhat odd size mismatches here.
+> 
+> I had to think a tiny bit if random() returned a value from 0 to 7
+> and was promoted to a 64 bit value then truncated to 32 bit.
+> 
+> Perhaps these would be clearer as ~7U and not ~7UL
 
-drivers/video/fbdev/pvr2fb.c:800:9: sparse: sparse: incorrect type in argument 1 (different address spaces)
-drivers/video/fbdev/pvr2fb.c:800:9: sparse:     expected void const *
-drivers/video/fbdev/pvr2fb.c:800:9: sparse:     got char [noderef] __iomem *screen_base
+That makes no difference - the compiler will generate the same code.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/lkml/202210100209.tR2Iqbqk-lkp@intel.com/
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- include/linux/fb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The real question is WTF is the code doing?
+The '& ~7u' clears the bottom 3 bits.
+The '- 1' then sets the bottom 3 bits and decrements the
+(random) high bits.
 
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 07fcd0e56682..3822734a38c7 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -555,7 +555,7 @@ static inline struct apertures_struct *alloc_apertures(unsigned int max_num) {
- 
- #elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) ||	\
- 	defined(__hppa__) || defined(__sh__) || defined(__powerpc__) ||	\
--	defined(__arm__) || defined(__aarch64__)
-+	defined(__arm__) || defined(__aarch64__) || defined(__mips__)
- 
- #define fb_readb __raw_readb
- #define fb_readw __raw_readw
--- 
-2.34.1
+So is the same as get_random_u32() | 7.
+But I bet the coder had something else in mind.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
