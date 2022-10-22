@@ -2,78 +2,82 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 842DE608BBA
-	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Oct 2022 12:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91134608C41
+	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Oct 2022 13:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbiJVKjH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 22 Oct 2022 06:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
+        id S230519AbiJVLG4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 22 Oct 2022 07:06:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbiJVKiy (ORCPT
+        with ESMTP id S231162AbiJVLGd (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 22 Oct 2022 06:38:54 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA29A2EA95F
-        for <linux-fbdev@vger.kernel.org>; Sat, 22 Oct 2022 02:56:32 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id g10so5870103oif.10
-        for <linux-fbdev@vger.kernel.org>; Sat, 22 Oct 2022 02:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=nNMBkCIwl/6gK+toGqNRGG/YLL0fF324bx1qaOH1y4x3OIjxLq/HHYoLEQ6DIXVMhZ
-         yBP/JqjfeKgn2zVw2pvLxCg6MQgOccj9D0PS+BxibSDKUMZPqFuO1BH9rucwVtk0imfk
-         Uf1JB6y6hh5nwSF4l3nIHzMcJeO23qzW5xyKvOUo02NXv/UxA+fb1xfQ7gd0wj97+Png
-         rtJzhayXE1f7/T0HHp6tTaPH4f4DE9rtLLXyoMLmdIeuEqEwHYp6KAIXioE2APt9Vqok
-         QcnzNnKCtevhk7rrd2+8KLFUz2JMtjuKTuyIwbz60pUc4RihSWynNyvtYnVRFpjOFC8v
-         n2WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=bqGoQOd8sm/L4zoYDgIoX5T587w2m4QTByZdqtStc8qchFefhBwyRxUZQyb4Acu8Na
-         86CjmC9iaCRF50ZOFT4qvQo/esQ5WX4Dl1Or5jvE7ZH5xxkWD2I+gDAcvSptOEkr1/yH
-         tate3d/1iRW7D6clGKNRdav+NMePS2TaVxkolfWPPFxIQInYLCfTjjv3EepCndnKsj5X
-         mH6UdBDX8CErY4doK4j9AjB6p3W1wtqcW6qN2ykrk5V9zTMEJeOmg25jY90s/tcwdbGW
-         odZmA6UvrQOOs+G+54Fpil2vgmRBAwAnvI2XKPONwN4G2YRP1oN+LihUbhuYNLVTqKro
-         EKQA==
-X-Gm-Message-State: ACrzQf1v61LHKFBlUbixz+T/TwtAxD2MuaifE6NlTZN/265+YGDMSPtP
-        u1jLt9HziQ7JWLVgh5b28O03z9UJb5KOKNMf9iqPjvDHQEI=
-X-Google-Smtp-Source: AMsMyM7DV/UQjMDmfWUDARQEST583xXUpUhZuwI6Yo6QWpU1NylqbjJLzURvxWrib8B1x1GiMXZKxXX9K7ug1XjFr6Y=
-X-Received: by 2002:a05:6808:13d2:b0:355:1770:c6ef with SMTP id
- d18-20020a05680813d200b003551770c6efmr21666671oiw.284.1666427448022; Sat, 22
- Oct 2022 01:30:48 -0700 (PDT)
+        Sat, 22 Oct 2022 07:06:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C75FE5A3CE;
+        Sat, 22 Oct 2022 03:24:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5777D60B24;
+        Sat, 22 Oct 2022 10:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E7CC433D6;
+        Sat, 22 Oct 2022 10:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1666434250;
+        bh=l+9LqRHCf0p03ONxHuUbZfrISFee3GbEgSplOTK5/X8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Caijj8iAZMY3tIs9fYMyWcG2Rm1TdPtNWGkZTQSyeOCB32VfuGtdKVdXbhR/Ecvcq
+         HejXmyr+B52rYroWVCK8GzP9twmx+0SAP5xK3ndhMeDYHTL3kFG7qy58iClPKepnaq
+         OlMCuZYtjN2SZ0IIZepCV+Z1aHLzsWBcXih75q0c=
+Date:   Sat, 22 Oct 2022 12:24:08 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-omap@vger.kernel.org,
+        Kevin Hilman <khilman@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>, Bin Liu <b-liu@ti.com>,
+        Helge Deller <deller@gmx.de>, linux-usb@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 14/17] ARM: omap1: remove dead code
+Message-ID: <Y1PEyMdtirtZvbkQ@kroah.com>
+References: <20221019144119.3848027-1-arnd@kernel.org>
+ <20221019150410.3851944-1-arnd@kernel.org>
+ <20221019150410.3851944-14-arnd@kernel.org>
 MIME-Version: 1.0
-Reply-To: mrs.susanelwoodhara17@gmail.com
-Sender: mrs.arawayann01@gmail.com
-Received: by 2002:a05:6838:aea5:0:0:0:0 with HTTP; Sat, 22 Oct 2022 01:30:47
- -0700 (PDT)
-From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
-Date:   Sat, 22 Oct 2022 08:30:47 +0000
-X-Google-Sender-Auth: UfMdHY-IGn2vy7vhRxwr3_PMsYw
-Message-ID: <CAAOf0OErkdBB+pkMfQKO+67_RwCPJjBUpQs9uCH=U1CN1QD5=w@mail.gmail.com>
-Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221019150410.3851944-14-arnd@kernel.org>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-GOD BLESS YOU AS YOU REPLY URGENTLY
+On Wed, Oct 19, 2022 at 05:03:36PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> After the removal of the unused board files, I went through the
+> omap1 code to look for code that no longer has any callers
+> and remove that.
+> 
+> In particular, support for the omap7xx/omap8xx family is now
+> completely unused, so I'm only leaving omap15xx/omap16xx/omap59xx.
+> 
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: linux-omap@vger.kernel.org
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
- Hello Dear,
-Greetings, I am contacting you regarding an important information i
-have for you please reply to confirm your email address and for more
-details Thanks
-Regards
-Mrs Susan Elwood Hara.
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
