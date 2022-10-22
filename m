@@ -2,164 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 215D9608040
-	for <lists+linux-fbdev@lfdr.de>; Fri, 21 Oct 2022 22:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 842DE608BBA
+	for <lists+linux-fbdev@lfdr.de>; Sat, 22 Oct 2022 12:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbiJUUuz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 21 Oct 2022 16:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49656 "EHLO
+        id S230071AbiJVKjH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 22 Oct 2022 06:39:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbiJUUuv (ORCPT
+        with ESMTP id S230288AbiJVKiy (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 21 Oct 2022 16:50:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52351C25DF;
-        Fri, 21 Oct 2022 13:50:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1559661F74;
-        Fri, 21 Oct 2022 20:50:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233C9C433C1;
-        Fri, 21 Oct 2022 20:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666385443;
-        bh=QMX5heUyLImd+6hJQe5kHvBC9IDbbrmFRJqR9+d5odE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O4IU4IsPwf2qskLIG5MIdhKmMnn0pHcs7KK60yXRWra3j8cmhMAffwBPEz9G6cqye
-         M8To5Y0WzATvdGpdLwpLwhU/QvfGx0dId/V5ZrhxxKjNhKvx8YZ0r0q1iUrocaHknl
-         tllYiU6DcuJ0MdGhGzGhUtU/ZJ614RLNdiYsLX/tpDSw/8wz5z1l8GhxEA9yikMjOT
-         yaqK0CcRQdPfpUbquVCdgAZ/5ah33PE8M6jY3q14U1sBtm+xUvqJlNMT6wGKhta/O6
-         wHrS7UeTwer73/+Af8ndFtI+AAbmHpCUSVMm1P5RfKXkwBhL9FdMlKpKJHpCUelRlH
-         HxT4bVi8w+4UQ==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     linux-arm-kernel@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Helge Deller <deller@gmx.de>
-Cc:     linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: [PATCH 16/21] fbdev: remove s3c2410 framebuffer
-Date:   Fri, 21 Oct 2022 22:27:49 +0200
-Message-Id: <20221021203329.4143397-16-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20221021202254.4142411-1-arnd@kernel.org>
-References: <20221021202254.4142411-1-arnd@kernel.org>
+        Sat, 22 Oct 2022 06:38:54 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA29A2EA95F
+        for <linux-fbdev@vger.kernel.org>; Sat, 22 Oct 2022 02:56:32 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id g10so5870103oif.10
+        for <linux-fbdev@vger.kernel.org>; Sat, 22 Oct 2022 02:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=nNMBkCIwl/6gK+toGqNRGG/YLL0fF324bx1qaOH1y4x3OIjxLq/HHYoLEQ6DIXVMhZ
+         yBP/JqjfeKgn2zVw2pvLxCg6MQgOccj9D0PS+BxibSDKUMZPqFuO1BH9rucwVtk0imfk
+         Uf1JB6y6hh5nwSF4l3nIHzMcJeO23qzW5xyKvOUo02NXv/UxA+fb1xfQ7gd0wj97+Png
+         rtJzhayXE1f7/T0HHp6tTaPH4f4DE9rtLLXyoMLmdIeuEqEwHYp6KAIXioE2APt9Vqok
+         QcnzNnKCtevhk7rrd2+8KLFUz2JMtjuKTuyIwbz60pUc4RihSWynNyvtYnVRFpjOFC8v
+         n2WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=bqGoQOd8sm/L4zoYDgIoX5T587w2m4QTByZdqtStc8qchFefhBwyRxUZQyb4Acu8Na
+         86CjmC9iaCRF50ZOFT4qvQo/esQ5WX4Dl1Or5jvE7ZH5xxkWD2I+gDAcvSptOEkr1/yH
+         tate3d/1iRW7D6clGKNRdav+NMePS2TaVxkolfWPPFxIQInYLCfTjjv3EepCndnKsj5X
+         mH6UdBDX8CErY4doK4j9AjB6p3W1wtqcW6qN2ykrk5V9zTMEJeOmg25jY90s/tcwdbGW
+         odZmA6UvrQOOs+G+54Fpil2vgmRBAwAnvI2XKPONwN4G2YRP1oN+LihUbhuYNLVTqKro
+         EKQA==
+X-Gm-Message-State: ACrzQf1v61LHKFBlUbixz+T/TwtAxD2MuaifE6NlTZN/265+YGDMSPtP
+        u1jLt9HziQ7JWLVgh5b28O03z9UJb5KOKNMf9iqPjvDHQEI=
+X-Google-Smtp-Source: AMsMyM7DV/UQjMDmfWUDARQEST583xXUpUhZuwI6Yo6QWpU1NylqbjJLzURvxWrib8B1x1GiMXZKxXX9K7ug1XjFr6Y=
+X-Received: by 2002:a05:6808:13d2:b0:355:1770:c6ef with SMTP id
+ d18-20020a05680813d200b003551770c6efmr21666671oiw.284.1666427448022; Sat, 22
+ Oct 2022 01:30:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawayann01@gmail.com
+Received: by 2002:a05:6838:aea5:0:0:0:0 with HTTP; Sat, 22 Oct 2022 01:30:47
+ -0700 (PDT)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sat, 22 Oct 2022 08:30:47 +0000
+X-Google-Sender-Auth: UfMdHY-IGn2vy7vhRxwr3_PMsYw
+Message-ID: <CAAOf0OErkdBB+pkMfQKO+67_RwCPJjBUpQs9uCH=U1CN1QD5=w@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-The s3c24xx platform was removed, so the framebuffer driver is no longer
-needed.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/video/fbdev/Kconfig              |   33 +-
- drivers/video/fbdev/Makefile             |    1 -
- drivers/video/fbdev/s3c2410fb-regs-lcd.h |  143 ---
- drivers/video/fbdev/s3c2410fb.c          | 1142 ----------------------
- drivers/video/fbdev/s3c2410fb.h          |   48 -
- include/linux/platform_data/fb-s3c2410.h |   99 --
- 6 files changed, 4 insertions(+), 1462 deletions(-)
- delete mode 100644 drivers/video/fbdev/s3c2410fb-regs-lcd.h
- delete mode 100644 drivers/video/fbdev/s3c2410fb.c
- delete mode 100644 drivers/video/fbdev/s3c2410fb.h
- delete mode 100644 include/linux/platform_data/fb-s3c2410.h
-
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index d1d74269075a..fa5bdbf82d59 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1822,19 +1822,17 @@ config FB_SH_MOBILE_LCDC
- config FB_S3C
- 	tristate "Samsung S3C framebuffer support"
- 	depends on FB && HAVE_CLK && HAS_IOMEM
--	depends on (CPU_S3C2416 || ARCH_S3C64XX) || COMPILE_TEST
-+	depends on ARCH_S3C64XX || COMPILE_TEST
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
- 	help
- 	  Frame buffer driver for the built-in FB controller in the Samsung
--	  SoC line from the S3C2443 onwards, including the S3C2416, S3C2450,
--	  and the S3C64XX series such as the S3C6400 and S3C6410.
-+	  SoC line such as the S3C6400 and S3C6410.
- 
- 	  These chips all have the same basic framebuffer design with the
--	  actual capabilities depending on the chip. For instance the S3C6400
--	  and S3C6410 support 4 hardware windows whereas the S3C24XX series
--	  currently only have two.
-+	  actual capabilities depending on the chip. The S3C6400
-+	  and S3C6410 support 4 hardware windows.
- 
- 	  Currently the support is only for the S3C6400 and S3C6410 SoCs.
- 
-@@ -1844,29 +1842,6 @@ config FB_S3C_DEBUG_REGWRITE
- 	help
- 	  Show all register writes via pr_debug()
- 
--config FB_S3C2410
--	tristate "S3C2410 LCD framebuffer support"
--	depends on FB && ARCH_S3C24XX
--	select FB_CFB_FILLRECT
--	select FB_CFB_COPYAREA
--	select FB_CFB_IMAGEBLIT
--	help
--	  Frame buffer driver for the built-in LCD controller in the Samsung
--	  S3C2410 processor.
--
--	  This driver is also available as a module ( = code which can be
--	  inserted and removed from the running kernel whenever you want). The
--	  module will be called s3c2410fb. If you want to compile it as a module,
--	  say M here and read <file:Documentation/kbuild/modules.rst>.
--
--	  If unsure, say N.
--config FB_S3C2410_DEBUG
--	bool "S3C2410 lcd debug messages"
--	depends on FB_S3C2410
--	help
--	  Turn on debugging messages. Note that you can set/unset at run time
--	  through sysfs
--
- config FB_SM501
- 	tristate "Silicon Motion SM501 framebuffer support"
- 	depends on FB && MFD_SM501
-diff --git a/drivers/video/fbdev/Makefile b/drivers/video/fbdev/Makefile
-index 279cb0066aec..e6b0ae094b8b 100644
---- a/drivers/video/fbdev/Makefile
-+++ b/drivers/video/fbdev/Makefile
-@@ -98,7 +98,6 @@ obj-$(CONFIG_FB_S1D13XXX)	  += s1d13xxxfb.o
- obj-$(CONFIG_FB_SH7760)		  += sh7760fb.o
- obj-$(CONFIG_FB_IMX)              += imxfb.o
- obj-$(CONFIG_FB_S3C)		  += s3c-fb.o
--obj-$(CONFIG_FB_S3C2410)	  += s3c2410fb.o
- obj-$(CONFIG_FB_FSL_DIU)	  += fsl-diu-fb.o
- obj-$(CONFIG_FB_COBALT)           += cobalt_lcdfb.o
- obj-$(CONFIG_FB_IBM_GXT4500)	  += gxt4500.o
-diff --git a/drivers/video/fbdev/s3c2410fb-regs-lcd.h b/drivers/video/fbdev/s3c2410fb-regs-lcd.h
-deleted file mode 100644
-index 1e46f7a788e5..000000000000
-diff --git a/drivers/video/fbdev/s3c2410fb.c b/drivers/video/fbdev/s3c2410fb.c
-deleted file mode 100644
-index d8ae5258de46..000000000000
-diff --git a/drivers/video/fbdev/s3c2410fb.h b/drivers/video/fbdev/s3c2410fb.h
-deleted file mode 100644
-index cdd11e2f8859..000000000000
-diff --git a/include/linux/platform_data/fb-s3c2410.h b/include/linux/platform_data/fb-s3c2410.h
-deleted file mode 100644
-index 10c11e6316d6..000000000000
--- 
-2.29.2
-
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
