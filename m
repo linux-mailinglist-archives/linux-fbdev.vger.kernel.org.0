@@ -2,138 +2,155 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDB560B979
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Oct 2022 22:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B503360BD6E
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Oct 2022 00:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231261AbiJXUNO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Oct 2022 16:13:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
+        id S230131AbiJXWbx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Oct 2022 18:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbiJXUMn (ORCPT
+        with ESMTP id S230163AbiJXWbg (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Oct 2022 16:12:43 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271C1183DBE;
-        Mon, 24 Oct 2022 11:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1666636167;
-        bh=icVbzJtZ9pqflJ14jNdNOlB/DYImZ+gyK6fC/SDHPeo=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Kkvqf/+txMBi7sxfZs0V/5+nqVslh0tnBxX4/FfBbX4K5PxEYxT5PP/zpCOkVp7bv
-         AjdzA1IvFe+Vl83LXPdeQMLwEY5VuZuTJREUOnmXgB7DCslsdCKNZhD1ffx1GoVLqb
-         rKyNNUqFB0P2skYG5FNKeRZ8QSxQWKQjW3JNG1LI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.136.30]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MIdiZ-1oqd7434DN-00EaCt; Mon, 24
- Oct 2022 20:29:27 +0200
-Message-ID: <ec8edb92-a21b-6291-4275-d7cba97d7ad7@gmx.de>
-Date:   Mon, 24 Oct 2022 20:29:26 +0200
+        Mon, 24 Oct 2022 18:31:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4802710CF9D
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 13:54:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666644721;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Pm5HJkjYWeeX/qs3JDehVtgKORU0AuoMo2twQDux5eA=;
+        b=g3cstSwYbfpaeK74m6y2kGQGpyBwmGMF9Z6qdw/redLWoUjccw9p8nmHNJ+YIRmWDqE3he
+        QT9OcAwLHSiJip93h+TPOMgb/23xt5O+bfX7RR89AB5CwWGM4tjGqsHXMAaBcMxD/FbhEJ
+        uCH/KlqAW5Y0yXQHC3wYDEGT8Wysogs=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-552-4XTrl30DMyi0wlh7oy3Vjg-1; Mon, 24 Oct 2022 09:24:01 -0400
+X-MC-Unique: 4XTrl30DMyi0wlh7oy3Vjg-1
+Received: by mail-lf1-f72.google.com with SMTP id bp18-20020a056512159200b004a2c88a4e1eso2678953lfb.3
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 06:24:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pm5HJkjYWeeX/qs3JDehVtgKORU0AuoMo2twQDux5eA=;
+        b=eEe7AHtmJ7LNJU49RBBZFW7yTdW32nKBZXbnaSZhyYPzJ9ycYZ1Qu2FhEKTdS/cpqk
+         GOO+ibJ/k3v7K9AMSy+/e7ihhd1WYlOb22fK/4P9cG68Mff1u/RotVAp+v04PLbuf4sJ
+         PpvhOMbjHJv8mvsM6ffm1LFG7NLvTVrc+9tOznG/LEwEXsquwtfkBnHt15VI/Qs5FrMV
+         OQhPqwSThQPQbX+ad72FCo8nJaJpECGJ0LlbcFoKJ1BrAZ9QDtBiNVrjCG+XPCgjh77V
+         Ce16AvHpgr191Y2zrI07rmj+zk5CwhP9htK2PS5SwxIOLkGk5zC/B03z19t7JibuReWO
+         PFSw==
+X-Gm-Message-State: ACrzQf2XzO4i8QawAGOc0Z2UOC2nymu6NdK3anj31oiNtsVNfn01zSzN
+        pRWknBeZ9VcADM7Y0utlh4D9W6qWqgDN+OxNAyYXkAQGWYgn1ETzn5rQfkEPwzF1sWhTv+9aUmb
+        GDGUexVQKwDYXTDe3QPStnqM=
+X-Received: by 2002:a05:6512:298c:b0:4aa:54a:3a55 with SMTP id du12-20020a056512298c00b004aa054a3a55mr3494110lfb.633.1666617839510;
+        Mon, 24 Oct 2022 06:23:59 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM6nRpfOUd7fXfaQxZAoL/YNjVZG4I1hOQtgleKwhNKXvtlVx02RUh+6naoowPVHW1NVhRqxQg==
+X-Received: by 2002:a17:906:8a6a:b0:79e:2efe:e0 with SMTP id hy10-20020a1709068a6a00b0079e2efe00e0mr12680099ejc.401.1666617828842;
+        Mon, 24 Oct 2022 06:23:48 -0700 (PDT)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id b27-20020a17090630db00b0073dbaeb50f6sm15619252ejb.169.2022.10.24.06.23.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 06:23:48 -0700 (PDT)
+Message-ID: <84d86b61-7694-2e22-3593-b11b3ce33cf8@redhat.com>
+Date:   Mon, 24 Oct 2022 15:23:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.1
-Subject: Re: [PATCH] video: fbdev: sis: use explicitly signed char
+Subject: Re: [PATCH 00/22] Fallback to native backlight
 Content-Language: en-US
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Thomas Winischhofer <thomas@winischhofer.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <20221024162901.535972-1-Jason@zx2c4.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20221024162901.535972-1-Jason@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fgln+OSb5Fs7l921QypIIY6GvbB8Dpo8NbcH6CX//FlDdIZKoPn
- HTH8weoBRqVlYnQaJOUuVnLRopE3hTyC0rQ7NFop1qJoWADAuwh/gwd/DNyU80Z/nBkvvlj
- xLpYb1wKKdGZeA8sSZnuNeBXV4k3vo2v4nRR1R3a5fNPt5ryrwPOPk8q//T+CrXTBvb8tGY
- ylAA2rLff9VDqREvNVy4Q==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YeTgNuQ6oBE=:x+MrTPIRv+ADg3bGSjOX2x
- c8XbmCSjtFftDhFgoBgA63vaJowCwC+3di5UjTuwo1cjyBDugLxf99Ls4mxXN6KNNLDlOGAj3
- Wl6mR0AP9W+8LUZDKcgR9x2KCpFAxB7TRmVgTZk88Hvdh10HEecFZtsnjASzNO8/2eG8/PskI
- zCW1cPfDSUtI/WSbPa7xipFxEn0bVZTrkHYJEJucNxTHt47sb0MMTLPuKU305/eTDuJh2MnFy
- N7dUAut84zTqvFUU4rVzQEaytLznUNTgQWuMw8iJhg0Y9r1gxdBobn/uS7A7UwpBfvcO95+la
- ExXo7tBr/QBo2R1zZFQqkWyLFfgq3Ucb+aUoRrs8RCU5lp3A+epBw+c2uzINC6vK/bTysxH4u
- 74VxveNrMEvEJeCuNwYfaQuCUZWS03JmRx0e8zzV08dapRsrcIyXp90UUGCB0ofpbwRdKa6z4
- iVJS+44cs4OdFyrWLx+JvO3V2lW2Ha1db3TeAI9VZOZvaWPWtO6g3smWISdQxmx26grR9QzR8
- lJ7/VCImckMTs7vQOJleMD4MEatVye+/uZlIWjiuxRpIOwD4mH23TQvkwYlVXhNnZB/5GsqLz
- VUqAexb1W2LapEPynIWtHfq6YnO/C6tIguZH2VlDJctLyBTyY5Ldteibfif7AdyVT3wbM3fg2
- n5zXbAYkC8SArLNKh7IcZp/j+BSvyWaVeWjbChcVR4rtPN+mKVI1BPOUYspQKnVDix+qvsoSE
- uLcConOmvdqLBSSqMr/QhnSEN8rMQhQdcMJxiNm60kLCxDxmZPMBEQ/gcuWMJjIfQdxzCQzXx
- XMUEoYR2xhoeI2ejsM8HtXUrRjSf1Apkwn2dlggGOeQrwU6mA+BQiIYmNFITAcbeVZxxG6x8O
- 746n9OVaOt4FrW0BToKm4gwFWCF1UFE3c/CEWVbzDYx73EzfCMuD/Z/dtVcAYNxxwjhNnFDp5
- 8utlguY9KCJgr07er4rwSu0GsC3jknq0TAIeME9v16xKSDcc2TIVpo976zBvonR0+MPybIcCM
- h2H2g5OJOn9BrqbcG9Fk4omj8xfqBjsC2nI7ULK4ZNtwSNkL4RWX1lUChj6VQVFEHo5ptjBdt
- UYRiyhO9rWcu/rgcBPXb83TqbyZiBMwK61+QvZcn0+DacPRzUpqe9iHCYEohp87oJsMkDWf7g
- 5tWzTVkU2WEhcEoBQOaIM9TLnOhpui0xVHCt3i2ChLG+oBQnDCdeqVmhOuP3nugZ4AFSHjm5s
- 1Vj1RWF2rhVPMK22jsLg7C4VPdecfyXbhtdJXGBCMdC5/PesfYAfQcVD1YpLkNrA9PuFXEDXh
- RC9SkKW4N7S/kPU5B8dCwYXVWnbtCTZlsjLfNmRqDveBSnMo782+7qGudFzP/fPnD3AzOq2WG
- C4txTHKBUgDkTOOgru1dp0fjnM5oXhkcvzC4mApzEc+DFHwaxpAHbIp2ScSj95wpB6eVqAIlb
- sXZ20FkJ2MN+Mk7WiXrpUkwEEJdEn2cTKNP1vqFwpg4tR3vGSP7j4/hbYLpbli5f3N1phP2fq
- r6dpFpstHxDSUm+0+SFiELW5DZ+6atWpEcW35DAGYFASa
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        "Lee, Chun-Yi" <jlee@suse.com>, Mark Gross <markgross@kernel.org>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Cezary Jackiewicz <cezary.jackiewicz@gmail.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Jonathan Woithe <jwoithe@just42.net>,
+        Ike Panhc <ike.pan@canonical.com>,
+        Daniel Dadap <ddadap@nvidia.com>,
+        Kenneth Chan <kenneth.t.chan@gmail.com>,
+        Mattia Dongili <malattia@linux.it>,
+        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+        Azael Avalos <coproscefalo@gmail.com>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Robert Moore <robert.moore@intel.com>,
+        dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net,
+        ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
+        devel@acpica.org
+References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
+ <746e5cc6-516f-8f69-9d4b-8fe237de8fd6@redhat.com>
+ <edec5950-cec8-b647-ccb1-ba48f9b3bbb0@daynix.com>
+ <20221024131451.lvkesdg3kvyvbi7n@pali>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20221024131451.lvkesdg3kvyvbi7n@pali>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 10/24/22 18:29, Jason A. Donenfeld wrote:
-> With char becoming unsigned by default, and with `char` alone being
-> ambiguous and based on architecture, signed chars need to be marked
-> explicitly as such. This fixes warnings like:
->
-> drivers/video/fbdev/sis/init301.c:3549 SiS_GetCRT2Data301() warn: 'SiS_P=
-r->SiS_EModeIDTable[ModeIdIndex]->ROMMODEIDX661' is unsigned
->
-> Cc: Thomas Winischhofer <thomas@winischhofer.net>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-usb@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Hi,
 
-Applied to linux-fbdev git tree.
+On 10/24/22 15:14, Pali Rohár wrote:
+> On Monday 24 October 2022 21:58:57 Akihiko Odaki wrote:
+>> Regarding the second limitation, I don't even understand the difference
+>> between vendor and native. My guess is that a vendor backlight device uses
+>> vendor-specific ACPI interface, and a native one directly uses hardware
+>> registers. If my guess is correct, the difference between vendor and native
+>> does not imply that both of them are likely to exist at the same time. As
+>> the conclusion, there is no more motivation to try to de-duplicate the
+>> vendor/native combination than to try to de-duplicate combination of devices
+>> with a single type.
+> 
+> Hello! I just want to point one thing. On some Dell laptops there are
+> 3 different ways (= 3 different APIs) how to control display backlight.
+> There is ACPI driver (uses ACPI), GPU/DRM driver (i915.ko; uses directly
+> HW) and platform vendor driver (dell-laptop.ko; uses vendor BIOS or
+> firmware API).
 
-Thanks,
-Helge
+Right and that is just one example of laptops which can register both
+vendor + native backlight devices, which is why this whole series is
+a bad idea.
+
+Regards,
+
+Hans
 
 
-> ---
->   drivers/usb/misc/sisusbvga/sisusb_struct.h | 2 +-
->   drivers/video/fbdev/sis/vstruct.h          | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/usb/misc/sisusbvga/sisusb_struct.h b/drivers/usb/mi=
-sc/sisusbvga/sisusb_struct.h
-> index 3df64d2a9d43..a86032a26d36 100644
-> --- a/drivers/usb/misc/sisusbvga/sisusb_struct.h
-> +++ b/drivers/usb/misc/sisusbvga/sisusb_struct.h
-> @@ -91,7 +91,7 @@ struct SiS_Ext {
->   	unsigned char VB_ExtTVYFilterIndex;
->   	unsigned char VB_ExtTVYFilterIndexROM661;
->   	unsigned char REFindex;
-> -	char ROMMODEIDX661;
-> +	signed char ROMMODEIDX661;
->   };
->
->   struct SiS_Ext2 {
-> diff --git a/drivers/video/fbdev/sis/vstruct.h b/drivers/video/fbdev/sis=
-/vstruct.h
-> index ea94d214dcff..d7a14e63ba5a 100644
-> --- a/drivers/video/fbdev/sis/vstruct.h
-> +++ b/drivers/video/fbdev/sis/vstruct.h
-> @@ -148,7 +148,7 @@ struct SiS_Ext {
->   	unsigned char  VB_ExtTVYFilterIndex;
->   	unsigned char  VB_ExtTVYFilterIndexROM661;
->   	unsigned char  REFindex;
-> -	char           ROMMODEIDX661;
-> +	signed char    ROMMODEIDX661;
->   };
->
->   struct SiS_Ext2 {
+
+> Just every driver has different pre-calculated scaling
+> values. So sometimes user wants to choose different driver just because
+> it allows to set backlight level with "better" granularity. Registering
+> all 3 device drivers is bad as user does not want to see 3 display
+> panels and forcing registration of specific one without runtime option
+> is also bad (some of those drivers do not have to be suitable or has
+> worse granularity as other).
 
