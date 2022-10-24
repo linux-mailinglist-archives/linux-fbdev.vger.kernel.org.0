@@ -2,54 +2,54 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5DC60A21D
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Oct 2022 13:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A59660A269
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Oct 2022 13:43:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbiJXLj2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Oct 2022 07:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34244 "EHLO
+        id S231328AbiJXLnA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Oct 2022 07:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbiJXLie (ORCPT
+        with ESMTP id S231329AbiJXLm1 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Oct 2022 07:38:34 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461956B66B
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:37:53 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id f9so4052141pgj.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:37:53 -0700 (PDT)
+        Mon, 24 Oct 2022 07:42:27 -0400
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852BB1F2DD
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:39:47 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id f9so4052412pgj.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=daynix-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=28wDlqMofB1pExK+J7NJqLJ5sSPJ8IDYDWuGoZcg4WU=;
-        b=zPrE3Z79yDGzLtfx2QawETgF1lUMugvN0C6qQ0CWIaiD5/kUtQIJww0VDJMrkYc3N9
-         elYuVucHc32XKow2YGLm3Vr08Z5vsbFCWlv4vq7Nx1QXhYg0jtjzlw0H9CXWI7Ta2vol
-         6FUMEN9tnwiBaSCwpYfKwo7U/Mq0MJA9eOTbkI8+uvO7eXR9gmEds/Sy3ur7LFminYR1
-         NVY1BZW0FhIWVkiQMHh5J542GVxkeRWv1QNvckPM+a6g8eqefXzkOAt0+7UqdUmERKZa
-         J+mLK9mmXa4DfceGk2cEkxou1QrTtBSQu+UKjsPm36wMjvQrtPcLMKbyQMEJWea/JWpP
-         WvvA==
+        bh=aTWnIAAWrGsxFWyDKsfKu5xKbLpsLEHl3kQR801HKCo=;
+        b=MRe/lYU3QcRg+eNbrdoMjeONSL07r0OuDkWzCVk6tpzA20LxxB9dtVNP6GAZVtqzIg
+         /Ydi6DIu3Wy5fZXEZmacOcz+NqXiSg1SXC5+xE40BzARxzxxK4lzIbVbKWJmk00nhUWL
+         J95wLECXE4yV76gl9zFLYhn0sUtCfGQd7MZ3fPt+5gVvmN0pleQRDgrqZg3vefZrijSa
+         Yr0OxSWw7RuG0IesV0KfRF12UlNsEctSBC+ObKy3MmlA9Ekq0p3IRfhEG3FwtLPaqAOb
+         tgPmTvcjcO2SHlUmacRidezoVVwplJ41JEut0A62tZuMt+eaVkdbww0tkfz+m4Yo8zhg
+         FlhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=28wDlqMofB1pExK+J7NJqLJ5sSPJ8IDYDWuGoZcg4WU=;
-        b=gPh+tRMUm/9Xmw4X3GVJimUXQ11qMlaIA2LHzPvFfJQPAZa7hLbxWNSlB11ndWHFSw
-         rANjEhzRbRjDU+jCq1a9RcAGOWiLpN+9KhlqLehdHvyzc74XXplqeZgQWmH5xAwKT1yO
-         H88yPX80LBM+gqMn4lNVJ8iY6QUUYvdpXEB2MeUA7Ag0L1er6y1QI5s+2ToON/MaXSn0
-         m2/HTwNAv/m/i7s6K50CraXUngEPH8JewdJbgG9Nhycjy5R3fFiZyyJ6XDhBSWw+GwiG
-         p4fbWMb2oGovikohYt7Sv+quosmUebhWLlpnABUQhGpGj7BVWwv75xvG59Jl4KN3ddCn
-         U0oQ==
-X-Gm-Message-State: ACrzQf23Ks19y5eRuafenGt/DHC6PMZWnf/Rf3bCgScclQes7RHAVtHo
-        Tlx29dU+ezU9C9BEiuG5V8dEdA==
-X-Google-Smtp-Source: AMsMyM6SfjrakTfflVuQ8PwvI36ClP4mxWtm2JBvE32zMW6Lo2xtR9eBT667zzx11rUWR7R7KloyFA==
-X-Received: by 2002:a63:5702:0:b0:44b:290:f24f with SMTP id l2-20020a635702000000b0044b0290f24fmr27871108pgb.558.1666611399944;
-        Mon, 24 Oct 2022 04:36:39 -0700 (PDT)
+        bh=aTWnIAAWrGsxFWyDKsfKu5xKbLpsLEHl3kQR801HKCo=;
+        b=xs4tgG/xBnn7Dhn+n8qQxf7FRwAJc3oKJKm1je3eVTa+bRNuAXaHHHiAPqBno1oPFI
+         tkJBrL+BImhzMtvbg9tNs5D1tvBeOXWBxSacJo9mpOOMFW4YzLFEzyqoAmZLA5EtgJOr
+         /AuDI6dV6I2pO2CzK6qwaGYcxci0IeYrTqU+BQs7Zj6WcUBciigukehlighFWNlHsxeg
+         qJ0YN4o4Q7kTT6tbsGA+N9/6Dfs/ClcTxjWyxl4WL9LjGbEJCMaONAZFtWxoN5c+1It2
+         OJ/qsfE8AW2KQMSbf6Yu+e7i3Du6sSM3UgKvxZxp6/q4aDgYx78DKQFjqAzWgc3Y6sRz
+         0Mxg==
+X-Gm-Message-State: ACrzQf0aLtC9ZcGwmu+H1LQ992dGtpIk0nt4D7ZihWuyj8n0OIAkDA+p
+        fP1B5kWOjW0LcHY8qSPS0lpk9w==
+X-Google-Smtp-Source: AMsMyM4YJ5urGf6JLjky27R9T5sFwrnmf9RBCYrtUNpAE3TI6fc6EtzOOV4rZk9R6ICHsHu1MQHt3A==
+X-Received: by 2002:a63:64d:0:b0:46b:158f:102e with SMTP id 74-20020a63064d000000b0046b158f102emr28740541pgg.150.1666611408492;
+        Mon, 24 Oct 2022 04:36:48 -0700 (PDT)
 Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
-        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.36.31
+        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.36.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 04:36:39 -0700 (PDT)
+        Mon, 24 Oct 2022 04:36:47 -0700 (PDT)
 From:   Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -88,17 +88,18 @@ Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         acpi4asus-user@lists.sourceforge.net,
         ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
         devel@acpica.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 07/22] platform/x86: compal-laptop: Use acpi_video_get_backlight_types()
-Date:   Mon, 24 Oct 2022 20:34:58 +0900
-Message-Id: <20221024113513.5205-8-akihiko.odaki@daynix.com>
+Subject: [PATCH 08/22] platform/x86: eeepc-laptop: Use acpi_video_get_backlight_types()
+Date:   Mon, 24 Oct 2022 20:34:59 +0900
+Message-Id: <20221024113513.5205-9-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221024113513.5205-1-akihiko.odaki@daynix.com>
 References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 To:     unlisted-recipients:; (no To-header on input)
@@ -110,22 +111,22 @@ acpi_video_get_backlight_type() is now deprecated.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- drivers/platform/x86/compal-laptop.c | 2 +-
+ drivers/platform/x86/eeepc-laptop.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/compal-laptop.c b/drivers/platform/x86/compal-laptop.c
-index e10d2f64dfad..16ced03fa1b7 100644
---- a/drivers/platform/x86/compal-laptop.c
-+++ b/drivers/platform/x86/compal-laptop.c
-@@ -1043,7 +1043,7 @@ static int __init compal_init(void)
- 		return -ENODEV;
- 	}
+diff --git a/drivers/platform/x86/eeepc-laptop.c b/drivers/platform/x86/eeepc-laptop.c
+index a388a28b6f2a..91dea49f7c3d 100644
+--- a/drivers/platform/x86/eeepc-laptop.c
++++ b/drivers/platform/x86/eeepc-laptop.c
+@@ -1400,7 +1400,7 @@ static int eeepc_acpi_add(struct acpi_device *device)
+ 	if (result)
+ 		goto fail_platform;
  
 -	if (acpi_video_get_backlight_type() == acpi_backlight_vendor) {
 +	if ((acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR)) {
- 		struct backlight_properties props;
- 		memset(&props, 0, sizeof(struct backlight_properties));
- 		props.type = BACKLIGHT_PLATFORM;
+ 		result = eeepc_backlight_init(eeepc);
+ 		if (result)
+ 			goto fail_backlight;
 -- 
 2.37.3
 
