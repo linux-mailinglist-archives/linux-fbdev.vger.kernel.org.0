@@ -2,54 +2,54 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ACC560A256
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Oct 2022 13:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89DBB60A260
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Oct 2022 13:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231309AbiJXLlt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Oct 2022 07:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37988 "EHLO
+        id S231392AbiJXLm2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Oct 2022 07:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231304AbiJXLkB (ORCPT
+        with ESMTP id S231356AbiJXLlx (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Oct 2022 07:40:01 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E8C6EF2C
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:38:56 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id m2so3937969pjr.3
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:38:55 -0700 (PDT)
+        Mon, 24 Oct 2022 07:41:53 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA21713D6B
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:39:37 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id c8so5596197qvn.10
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Oct 2022 04:39:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=daynix-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H9DD2Qn9ukDVbti7MaHb2ytvRgr63Gh+pODc8Oxcvp0=;
-        b=mRQRZRI1N0fXR6ZhdjhBkiy9z0C8EnLK6gYwGYjqDkMwRaxlGNaP5gg/S/OvakJsTG
-         j3MIV/2byA9qIHOxO3TCYFuxurjFmMwHfitpAimtA/68MM/VooXLqLsYsaKwrvgYMTyB
-         6Z4pVEOBs5IqlX0BIZsa0XK+RYo2qG4L7wS6XkghOIRzy97bYyCuS6T2RVuWBkoNAZsp
-         5OAXJzzDB82KI6oAxhG3ADEUNMHcMWzihVTgmK2hw0ruNAkoMfJvZ4SJ61OJTiGkE4ET
-         XCl94Jv3FdldMl8SzpJhvBf/CL22EaB8WxpQl53oozj1okCtaLCSvY5Rm5InOnDmci1D
-         XpzQ==
+        bh=jiSdINSVFRYviECfxwDXkA1dnuYyyTGGZx7DJKOoYJs=;
+        b=iGtXR8pxJeARtYM65YtWK/rMT1cGkHNCbn5om85YN4tLiOmmeq2/FBvx3pSpv/m1Sr
+         Va9GHFdP0chf3eQTUSVDangVFZ/dqZDSfu19hibg9oS2kk/KlgfVT6JFeQ68GHunlhzC
+         se1sWoi2z1fTcKdw8FOIcyCxwwKqRbZobTBVM7iGls36LCpZ3DZIX0Tfn7Kb0gOkShSW
+         pNe8W3N4rMeldUr8oUAlIfVjHR6cNauEMm0EGdVKOdZI/PPmhyAtOJqcxE6jGzxL2wA6
+         7MgNHiUTVhnxOnZse4TBGZUhOboi/UB4XI8imIbLRZSiYGhvYc8SoFkFpIFpQvLUOsh+
+         Hp+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H9DD2Qn9ukDVbti7MaHb2ytvRgr63Gh+pODc8Oxcvp0=;
-        b=5TKgeqMnshI7tuHsaqk7iEkp21yvbeDxK8ZkkdZOl7Ru39EcsDoTItnlEEcrXNQhHa
-         k2tkFftIWZevaI9HB7trsuDcUEgyBEo/rzEiNydJdCcEwxg3tVRw/c9UuqvWQA3HK6Ln
-         X127LouC/++GGcgsS9oknJQxhPDEh/hwKoetoirZEtZyzEBbFSqctXDRvtUDtZwkw5gN
-         +uoTV/NqP1S1nHmMEgdCMzW/AHA6Ve+2AS1jqcuiW+TPt8MnDUc2aFQTnULpfvMeHtxM
-         Oh5eKIXtZuIZzyy3Slwm1y8AXqIjcTkFHTn2RTDFYMdIV+XBsHpJ0gvgXJFIvY836DiI
-         3trA==
-X-Gm-Message-State: ACrzQf212wYYMJsMz1+9vwLPAABCziLVPxHCFPa/Ce2MlrA8Mt5sViz3
-        GXISqLJIAtbYkxoPKly+DM21KQ==
-X-Google-Smtp-Source: AMsMyM4qEtYfk/brrspCDfsAk/ohN0i2+YSG3igNC8b1bqKv4WrKEdbaz330QILDZfX2MHi6JDfWfw==
-X-Received: by 2002:a17:90b:3912:b0:20d:4151:1b65 with SMTP id ob18-20020a17090b391200b0020d41511b65mr74871319pjb.233.1666611458874;
-        Mon, 24 Oct 2022 04:37:38 -0700 (PDT)
+        bh=jiSdINSVFRYviECfxwDXkA1dnuYyyTGGZx7DJKOoYJs=;
+        b=NGFpkjlv8tH7QwZTrJzVI5q4t7cEeMoRrDGUI0QUXuH4mZxQS01JbKVlOaAxNa3yli
+         A43r9W2Jm1lTKCisNo2zrWSt75Ljxr1ivgU8My9MySh7XMfBUWKDnAG5Nz6iwxtdrvzi
+         vHbidvJp9H1LBabUyvSwZdYLnFpQcGXl+Ws235UO4Ar2LicckQTc44VEJ9HjeJpsr36X
+         yuIjJtWbEPydE53MOMp9wgf8cAQfCO1ljCYhDgLv3T0sOEaByFbp5xjvuLxpLqb5K1Mc
+         Lc53+ZSb+dJhmqusi2IspudzohpkjkgZF+dVz0LhG1RfPHdwdiifUnXFJyZBioTma9+M
+         EkTw==
+X-Gm-Message-State: ACrzQf1MthMg2DRiKNKsBCpBkbnC1mlMrOtrf93GoSYsbpnecqD/jaoi
+        bgyHW48y/qlrsBYeocCXU2F7d8O5n49e2DE6
+X-Google-Smtp-Source: AMsMyM7XYF0/Ljt4MGKz/TruSqF/tNgb9whiXQXnKj0J8NH8HwiMDdKOolztUet8v/T3k84ugzg6BQ==
+X-Received: by 2002:a17:902:7297:b0:17f:93b5:5ecc with SMTP id d23-20020a170902729700b0017f93b55eccmr32624764pll.93.1666611467259;
+        Mon, 24 Oct 2022 04:37:47 -0700 (PDT)
 Received: from fedora.flets-east.jp ([2400:4050:c360:8200:8ae8:3c4:c0da:7419])
-        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.37.30
+        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001830ed575c3sm19475075plh.117.2022.10.24.04.37.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 04:37:38 -0700 (PDT)
+        Mon, 24 Oct 2022 04:37:46 -0700 (PDT)
 From:   Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -88,17 +88,17 @@ Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
         acpi4asus-user@lists.sourceforge.net,
         ibm-acpi-devel@lists.sourceforge.net, linux-fbdev@vger.kernel.org,
         devel@acpica.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 14/22] platform/x86: panasonic-laptop: Use acpi_video_get_backlight_types()
-Date:   Mon, 24 Oct 2022 20:35:05 +0900
-Message-Id: <20221024113513.5205-15-akihiko.odaki@daynix.com>
+Subject: [PATCH 15/22] platform/x86: samsung-laptop: Use acpi_video_get_backlight_types()
+Date:   Mon, 24 Oct 2022 20:35:06 +0900
+Message-Id: <20221024113513.5205-16-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221024113513.5205-1-akihiko.odaki@daynix.com>
 References: <20221024113513.5205-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 To:     unlisted-recipients:; (no To-header on input)
@@ -110,22 +110,22 @@ acpi_video_get_backlight_type() is now deprecated.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- drivers/platform/x86/panasonic-laptop.c | 2 +-
+ drivers/platform/x86/samsung-laptop.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index ad3083f9946d..eaf9469fabb3 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -999,7 +999,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 		goto out_input;
- 	}
+diff --git a/drivers/platform/x86/samsung-laptop.c b/drivers/platform/x86/samsung-laptop.c
+index b4aa8ba35d2d..8ba377df73e8 100644
+--- a/drivers/platform/x86/samsung-laptop.c
++++ b/drivers/platform/x86/samsung-laptop.c
+@@ -1574,7 +1574,7 @@ static int __init samsung_init(void)
+ 	samsung->handle_backlight = true;
+ 	samsung->quirks = quirks;
  
--	if (acpi_video_get_backlight_type() == acpi_backlight_vendor) {
-+	if ((acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR)) {
- 		/* initialize backlight */
- 		memset(&props, 0, sizeof(struct backlight_properties));
- 		props.type = BACKLIGHT_PLATFORM;
+-	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
++	if (!(acpi_video_get_backlight_types() & ACPI_BACKLIGHT_VENDOR))
+ 		samsung->handle_backlight = false;
+ 
+ 	ret = samsung_platform_init(samsung);
 -- 
 2.37.3
 
