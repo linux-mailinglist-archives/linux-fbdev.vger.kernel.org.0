@@ -2,128 +2,144 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7467B61F085
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Nov 2022 11:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCDEC61F128
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Nov 2022 11:49:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbiKGKYm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Nov 2022 05:24:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
+        id S231592AbiKGKtm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Nov 2022 05:49:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231970AbiKGKY1 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Nov 2022 05:24:27 -0500
-Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5B01901B
-        for <linux-fbdev@vger.kernel.org>; Mon,  7 Nov 2022 02:24:04 -0800 (PST)
-Received: by mail-qv1-xf41.google.com with SMTP id w10so7773719qvr.3
-        for <linux-fbdev@vger.kernel.org>; Mon, 07 Nov 2022 02:24:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=hhusAEVG4WhaeiTW98Ow4AVEVv+Rw09weXCgRGG3Lbc660UhGlNgRTGrEt/+/phsQZ
-         Tky4Gp2f7W8PDhtBwv6+OVpYBGpIGzpkibIGPajZRWXSDLAF1Vw3lj4og+mvYRuGrU8G
-         onpGztnmjU1w0rE1vPnokbxSeyQInDxLVC0Z8Ev0oaOo67ZgiUYD1ifjPZW1XzTIwvw9
-         vAjXEY3+2IzUZpbk23cOOFLt+ytCOHq8UxQqW5tpd05QRX8llE1kyfvCJEGrSr/HJD2j
-         yHxxljIjvkU70aMr2SpopNcLngkYJmB/tOSIPkC0IIkB1mdRtFPYIEQwd5+Ss2mLfGUE
-         0bhA==
-X-Gm-Message-State: ACrzQf1NYlHxrD6gmiu6onJgHhrYt5ei+Gd1pGn5GdE3Z+0Mzou0HdGx
-        hFWbZ5xKYY7XPIuAsurUO6Mfw/TgxCvGho1TuLfSpiwvg6Y=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        with ESMTP id S231588AbiKGKtl (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Nov 2022 05:49:41 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C538EF9
+        for <linux-fbdev@vger.kernel.org>; Mon,  7 Nov 2022 02:49:40 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 86B881F383;
+        Mon,  7 Nov 2022 10:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1667818179; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=nnkhv+SYQZ+M1HDhgReYoOWAxqV7BM04VF8ZrUO1cvc=;
+        b=oeeDb3DKvqdgfl9NLPGW0FVLyC1jIKi4XMEL0CqPtTrLCE4WLarYRwfZ3XBDqTfozkKMig
+        vWKo9nFSzqs6UfuzufmL6EVo09aNpMyfbVPlKz0jW4oG5I04ekX2sG/naHy8GEnIO29v1U
+        KNl+e3Hs+g5hq2gCNrig06REcCIdfOU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1667818179;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=nnkhv+SYQZ+M1HDhgReYoOWAxqV7BM04VF8ZrUO1cvc=;
+        b=eXj1lWs9XeeFHN+0so6kUbmrUTNco68FCVrp0aMEMZIm86PMVCAla7uotTL8rTV67/sUq2
+        uNmOd5Ftx8hlqVCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 66F8713494;
+        Mon,  7 Nov 2022 10:49:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id IrBPGMPiaGPkewAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 07 Nov 2022 10:49:39 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, daniel@ffwll.ch, javierm@redhat.com
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/2] video/fbdev: Support 'nomodeset' in PCI drivers 
+Date:   Mon,  7 Nov 2022 11:49:14 +0100
+Message-Id: <20221107104916.18733-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:f41 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
-        *      [score: 0.1486]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+Add support for the kernel's 'nomodeset' parameter to PCI-based
+fbdev drivers. The option prevents DRM drivers from loading if they
+could possibly displace a hardware-agnostic driver that runs on the
+firmware framebuffer. It is a fallback for systems on which the
+hardware's native driver does not work correctly.
+
+After the work on the aperture helpers and their integration with
+fbdev, it can happen that an fbdev driver replaces a hardware-
+agnostic DRM driver. Supporting the nomodeset parameter unifies
+the behavior among the graphics drivers and subsystems. An fbdev
+driver will not replace any hardware-agnostic driver with nomodeset
+given.
+
+Thomas Zimmermann (2):
+  drm: Move nomodeset kernel parameter to drivers/video
+  fbdev: Add support for the nomodeset kernel parameter
+
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ MAINTAINERS                                   |  2 +
+ drivers/gpu/drm/Kconfig                       |  7 +---
+ drivers/gpu/drm/Makefile                      |  1 -
+ drivers/staging/sm750fb/Kconfig               |  1 +
+ drivers/staging/sm750fb/sm750.c               |  4 ++
+ drivers/video/Kconfig                         |  4 ++
+ drivers/video/Makefile                        |  1 +
+ drivers/video/fbdev/Kconfig                   | 37 +++++++++++++++++++
+ drivers/video/fbdev/arkfb.c                   |  6 +++
+ drivers/video/fbdev/asiliantfb.c              |  5 +++
+ drivers/video/fbdev/aty/aty128fb.c            |  6 +++
+ drivers/video/fbdev/aty/atyfb_base.c          |  6 +++
+ drivers/video/fbdev/aty/radeon_base.c         |  6 +++
+ drivers/video/fbdev/carminefb.c               |  5 +++
+ drivers/video/fbdev/chipsfb.c                 |  5 +++
+ drivers/video/fbdev/cirrusfb.c                |  6 +++
+ drivers/video/fbdev/cyber2000fb.c             |  6 +++
+ drivers/video/fbdev/geode/Kconfig             |  3 ++
+ drivers/video/fbdev/geode/gx1fb_core.c        |  7 ++++
+ drivers/video/fbdev/geode/gxfb_core.c         |  7 ++++
+ drivers/video/fbdev/geode/lxfb_core.c         |  7 ++++
+ drivers/video/fbdev/gxt4500.c                 |  5 +++
+ drivers/video/fbdev/hyperv_fb.c               |  5 +++
+ drivers/video/fbdev/i740fb.c                  |  6 +++
+ drivers/video/fbdev/i810/i810_main.c          |  8 ++++
+ drivers/video/fbdev/imsttfb.c                 |  7 ++++
+ drivers/video/fbdev/intelfb/intelfbdrv.c      |  5 +++
+ drivers/video/fbdev/kyro/fbdev.c              |  6 +++
+ drivers/video/fbdev/matrox/matroxfb_base.c    |  5 +++
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c    |  5 +++
+ drivers/video/fbdev/neofb.c                   |  6 +++
+ drivers/video/fbdev/nvidia/nvidia.c           |  7 ++++
+ drivers/video/fbdev/pm2fb.c                   |  6 +++
+ drivers/video/fbdev/pm3fb.c                   |  6 +++
+ drivers/video/fbdev/pvr2fb.c                  |  7 ++++
+ drivers/video/fbdev/riva/fbdev.c              |  7 ++++
+ drivers/video/fbdev/s3fb.c                    |  6 +++
+ drivers/video/fbdev/savage/savagefb_driver.c  |  5 +++
+ drivers/video/fbdev/sis/sis_main.c            |  7 ++++
+ drivers/video/fbdev/skeletonfb.c              |  7 ++++
+ drivers/video/fbdev/sm712fb.c                 |  5 +++
+ drivers/video/fbdev/sstfb.c                   |  4 ++
+ drivers/video/fbdev/sunxvr2500.c              |  5 +++
+ drivers/video/fbdev/sunxvr500.c               |  5 +++
+ drivers/video/fbdev/tdfxfb.c                  |  6 +++
+ drivers/video/fbdev/tgafb.c                   |  6 +++
+ drivers/video/fbdev/tridentfb.c               |  6 +++
+ drivers/video/fbdev/vermilion/vermilion.c     |  7 ++++
+ drivers/video/fbdev/via/via-core.c            |  5 +++
+ drivers/video/fbdev/vt8623fb.c                |  6 +++
+ .../drm/drm_nomodeset.c => video/nomodeset.c} | 12 +++---
+ include/drm/drm_drv.h                         |  8 +++-
+ include/video/nomodeset.h                     |  8 ++++
+ 54 files changed, 319 insertions(+), 14 deletions(-)
+ rename drivers/{gpu/drm/drm_nomodeset.c => video/nomodeset.c} (63%)
+ create mode 100644 include/video/nomodeset.h
+
+
+base-commit: 3aa97a74d622aa26fe79cf4bd819b6a4fd176e90
+-- 
+2.38.0
+
