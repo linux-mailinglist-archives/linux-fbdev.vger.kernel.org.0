@@ -2,104 +2,128 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8BE861ED7E
-	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Nov 2022 09:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7467B61F085
+	for <lists+linux-fbdev@lfdr.de>; Mon,  7 Nov 2022 11:24:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231394AbiKGIw5 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 7 Nov 2022 03:52:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
+        id S232045AbiKGKYm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 7 Nov 2022 05:24:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbiKGIw4 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Nov 2022 03:52:56 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 180C115709;
-        Mon,  7 Nov 2022 00:52:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1667811157; bh=iRI7W/QU1cJZbiWjVLUSX5kKamrVwlbhRdK3X5/OYJc=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=nlsygfpqZU/71gN7QJEp82YXz7fNG+Ipuq5rAqofcc5tYsGdwHTz9Z9CLPBg1QRa/
-         mbTP3VCMxbKWJ8pZhQKxkf86KQyLupdoC2wuh8H9q9JXViU8ot90e2HU6xRJIcsz4H
-         V3J870dLBLn22gYFqkuK9clBFV1v8vOu0bTdfjcs4dhysuDsrEdBiwbcbywo3CHxFK
-         gVjl7NLmcQpgZtWZiJCXjRVxobowLGR7CB7E+ti2wSY9QjeNEjRHbvhv3uzaUzgHM2
-         T8CePU4+OwqC5Vw9q53+lFT+Ig3ox6KXT4vpgwsXX8GrMiMqHph7dYj97/09vORK11
-         Eun2ScIMnnmFQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.191.140]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhU9Z-1pWGQg08xf-00ehBl; Mon, 07
- Nov 2022 09:52:37 +0100
-Message-ID: <5e52528f-e4a7-0aa5-b795-0cff80a153ce@gmx.de>
-Date:   Mon, 7 Nov 2022 09:52:35 +0100
+        with ESMTP id S231970AbiKGKY1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 7 Nov 2022 05:24:27 -0500
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com [IPv6:2607:f8b0:4864:20::f41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5B01901B
+        for <linux-fbdev@vger.kernel.org>; Mon,  7 Nov 2022 02:24:04 -0800 (PST)
+Received: by mail-qv1-xf41.google.com with SMTP id w10so7773719qvr.3
+        for <linux-fbdev@vger.kernel.org>; Mon, 07 Nov 2022 02:24:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
+         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
+         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
+         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
+         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
+         SKzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
+        b=hhusAEVG4WhaeiTW98Ow4AVEVv+Rw09weXCgRGG3Lbc660UhGlNgRTGrEt/+/phsQZ
+         Tky4Gp2f7W8PDhtBwv6+OVpYBGpIGzpkibIGPajZRWXSDLAF1Vw3lj4og+mvYRuGrU8G
+         onpGztnmjU1w0rE1vPnokbxSeyQInDxLVC0Z8Ev0oaOo67ZgiUYD1ifjPZW1XzTIwvw9
+         vAjXEY3+2IzUZpbk23cOOFLt+ytCOHq8UxQqW5tpd05QRX8llE1kyfvCJEGrSr/HJD2j
+         yHxxljIjvkU70aMr2SpopNcLngkYJmB/tOSIPkC0IIkB1mdRtFPYIEQwd5+Ss2mLfGUE
+         0bhA==
+X-Gm-Message-State: ACrzQf1NYlHxrD6gmiu6onJgHhrYt5ei+Gd1pGn5GdE3Z+0Mzou0HdGx
+        hFWbZ5xKYY7XPIuAsurUO6Mfw/TgxCvGho1TuLfSpiwvg6Y=
+X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
+X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
+ p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
+ Nov 2022 02:23:52 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH] video: fbdev: pxafb: Remove unnecessary print function
- dev_err()
-Content-Language: en-US
-To:     arnd@arndb.de, b.zolnierkie@samsung.com, robert.jarzmik@free.fr,
-        ulf.hansson@linaro.org, wangqing@vivo.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-References: <278d64e0.bd.1844d4c7a95.Coremail.wangkailong@jari.cn>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <278d64e0.bd.1844d4c7a95.Coremail.wangkailong@jari.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
+ 02:23:51 -0800 (PST)
+Reply-To: contact@ammico.it
+From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
+Date:   Mon, 7 Nov 2022 11:23:51 +0100
+Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vgxJnNsimSpuwn3kVv4h30sgEDvxe1TqMkycvRhld3dN1CBbTNb
- cirLau/yhh7HBclzqrqixPy8ktn1jtwQSDFrpF/raYzeRgwoRV1ydCSr/8n1fL1QEK+GaEQ
- 4USchyiL5usUlQQdpEZEIY2RqExktJvP2Iw0YOVs+W2+FqV9NrtHrBUy88pRdpftPf7MzDg
- KsIrej/SrMpGuuMpEO7Jw==
-UI-OutboundReport: notjunk:1;M01:P0:Fi3ciiG9BaU=;3RmSQ8aQx9DarEbQVh70IdhJfSq
- CWBBzmhO/iJ/X6e96gqICmiDIOalEwt6rElV3glUyo5giZm1OezYS2kitoqKaH/AlGd1HYTD5
- Wo8Tr8LomMBiAq1ntaKaqpekRW04hvyyNFKtj+jW2YpKswkLh1xvpqGFjoQMykeQQ/DuuPf7A
- cBRr+njKZMUKbhjy4pGgkN4H0LOoy4krXKpbBM2UcXhzRNJFCXDaGd5FQ7CZpglZ01qCRWxIs
- +bSvdDYrgxBi2ssdBYl3nqokjbA7i81D+Y4iQhQLuirmQ5CfTphvNZvBlpklXKL6PMl4iZy2v
- OVnxZpEQInncGLivqyNfsQ4/f1jvMc4LWMOSfRi7Svw3r0B6FxSGKr1gHpM5MDezAATVYYuuU
- jGcCDhJkySG2TP9ANgL8iJL0rPE1BnT+C0t9NdoY+ii7sU8JxZcawOw+glTXF0nhEoo6fxm09
- uV42c85SorKuh1n8LPEF9NXP7zh1NY0SaHjwBbao842rbi+ybimkO9gTbETqdholj8UvK4TC0
- f1+mnomn7W1O7eX+pxMCPwW+DbQaseRDBml56Q1btmaAWNlO9ji8VPuS24HtqnUpkfFCy2bn+
- CXbCcY7ymPekQ9u5WeQSgZki/iJVa/y6lPJ9KBBGHlCvFGM1dGKojenAMDEOGfi1CAHZIZAOl
- pgfh1FmsNuyZbdbTuAz2XN8u2m+MSCbJmN0w7/iC1vv1zMxW9x97PZsw6H75ImgVq4fV44/hP
- FK8COyhE00FLJd8/yr56vSUER/sM3668Km+i48JIWh4nqsT+gPjwBe3ZH/3egOs8N0uTL/jLz
- B03qHXIjh6qVZ+P3GE0iGJuZteeLjtWxBmMz5kvijXH/WMPQ/eFyVaZ8TSwd0ozHSfNpWfWtj
- +BkT2BF4VDA7MGwft50GbL7eeu3xnm5fRrx3KiNTlq7n+bSt//b4LQai0DA6IhF5HuXS1kGyN
- kQJWeYCCVoXhbKdpjnDgVfeoNsc=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:f41 listed in]
+        [list.dnswl.org]
+        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+        *      [score: 0.1486]
+        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [977638ib[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 11/6/22 15:16, wangkailong@jari.cn wrote:
-> Eliminate the follow coccicheck warning:
->
-> ./drivers/video/fbdev/pxafb.c:2330:2-9: line 2330 is redundant because
-> platform_get_irq() already prints an error
->
-> Signed-off-by: KaiLong Wang <wangkailong@jari.cn>
-
-applied.
-Thanks!
-Helge
-
-> ---
->   drivers/video/fbdev/pxafb.c | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-> index 696ac5431180..c46ed78298ae 100644
-> --- a/drivers/video/fbdev/pxafb.c
-> +++ b/drivers/video/fbdev/pxafb.c
-> @@ -2327,7 +2327,6 @@ static int pxafb_probe(struct platform_device *dev=
-)
->
->   	irq =3D platform_get_irq(dev, 0);
->   	if (irq < 0) {
-> -		dev_err(&dev->dev, "no IRQ defined\n");
->   		ret =3D -ENODEV;
->   		goto failed_free_mem;
->   	}
-
+Hei ja miten voit?
+Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
+ toivolla
+v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
+leikkaus
+t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
+suudet selviyty=C3=A4.
+Mutta ennen kuin min=C3=A4
+Tee toinen vaarallinen operaatio, annan sen sinulle
+Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
+sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
+voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
+iden auttamista
+ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
+=C3=A4 minulla ei ole niit=C3=A4
+kenelt=C3=A4 perii rahaa.
+Vastaa minulle nopeasti
+terveisi=C3=A4
+Rouva Monika Evereen
+Florida, Amerikan Yhdysvallat
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+Hi and how are you?
+My name is Mrs. Evereen, I am sending this message with great hope for
+an immediate response, as I have to undergo heart reoperation in my
+current poor health with little chance of survival. But before I
+undertake the second dangerous operation, I will give you the
+$6,550,000 I have in my US bank account to invest well, manage and use
+the profits to run a charity project for me. I count helping the sick
+and the poor as my last wish on earth, because I have no one to
+inherit money from.
+Please give me a quick reply
+regards
+Mrs. Monika Evereen
+Florida, United States of America
