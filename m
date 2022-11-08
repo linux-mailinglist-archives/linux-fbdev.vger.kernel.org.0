@@ -2,90 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B160620F4B
-	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Nov 2022 12:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 467566210AB
+	for <lists+linux-fbdev@lfdr.de>; Tue,  8 Nov 2022 13:30:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233082AbiKHLkM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 8 Nov 2022 06:40:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        id S233955AbiKHMaK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 8 Nov 2022 07:30:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233103AbiKHLkK (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Nov 2022 06:40:10 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D52827FC0
-        for <linux-fbdev@vger.kernel.org>; Tue,  8 Nov 2022 03:40:08 -0800 (PST)
-Received: from dggpeml500025.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N65f26kbFzpSsj;
-        Tue,  8 Nov 2022 19:36:26 +0800 (CST)
-Received: from dggpeml500003.china.huawei.com (7.185.36.200) by
- dggpeml500025.china.huawei.com (7.185.36.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 8 Nov 2022 19:40:06 +0800
-Received: from huawei.com (10.175.103.91) by dggpeml500003.china.huawei.com
- (7.185.36.200) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 8 Nov
- 2022 19:40:06 +0800
-From:   Yu Liao <liaoyu15@huawei.com>
-To:     <lee@kernel.org>, <deller@gmx.de>
-CC:     <liwei391@huawei.com>, <linux-fbdev@vger.kernel.org>,
-        <liaoyu15@huawei.com>
-Subject: [PATCH] backlight: fix build error when CONFIG_ARCH_OMAP1_ANY=n
-Date:   Tue, 8 Nov 2022 19:38:35 +0800
-Message-ID: <20221108113835.4135655-1-liaoyu15@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S234042AbiKHMaH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 8 Nov 2022 07:30:07 -0500
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A275749B6B
+        for <linux-fbdev@vger.kernel.org>; Tue,  8 Nov 2022 04:30:06 -0800 (PST)
+Received: by mail-qk1-x731.google.com with SMTP id z1so8944541qkl.9
+        for <linux-fbdev@vger.kernel.org>; Tue, 08 Nov 2022 04:30:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=cigNPlEtEE1k5xiZ9PvVBazoo9lUtOBUwB6YZSwBfhiXaLfnGYlViGJ/CkI7QbpyRc
+         DUkc/pXyGXkzwxwNKmQ/AVr17gtcnro/HIxn3z8V8Vc+39bff1bepY3CjxGya/RlhJQD
+         pm03SLH1zh1vk5Et08W05yayJWnxdxRnbNjb7jCohrMzy/0/FJWKkATniYBbpKgsaBKE
+         Z+OGb8Lsc3JgCU/vlNmJzwFukVrY1yODwKOWdcEffdpTGbLPgR5Erg+jlwzjZKljWkGx
+         l6m9q0cv+BGPJ+GX+X1NDb4hrmrYY0d2qQvBndPhFSr7mcH+QfGu5TnM80huZaOEkW4m
+         IdPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=moHl5qprek+iZscghTN1KLGzwfZaKry086Qkk7jdguYnR7L7qx7amRU9gOPO509naO
+         0CKpU+al3ENE6NjDjSN5B2Xdke3zbd8thjfG6xIfBjryJSFjqYq0J3NqPzSuKp6hTyNt
+         cbHRwXzSYPj4SbRHhpiy9A/DNrCYyOOXgms+A+AjfowsRWsmmEkWxBgb36jh5Zy23zpf
+         mBWmmUxBwglIYxVSqG0f4hppRiRuxSEjvHWtnyV3lCWaYm3B3sGhyvT8/OOMr+y6T6Hu
+         Wenx3X3UJWxGCIWrTJQ8YXhDiZ68c+x+nmETDMQNOWK6SJHiWbOa/8tiMCjvxVI/RB7a
+         h6Ug==
+X-Gm-Message-State: ACrzQf29I2uVRe/7mYyph3NMzn9Jk0VcXNMx7q/G4gFUvYIZFc+XIa0o
+        O+CBWtvKSXyhS+Bh3si5IhuRU8CfYZ2OpvpZ1fI=
+X-Google-Smtp-Source: AMsMyM58hZ1EPsKu7coHtKEAadQRfLUwq2/6MbLEjdgMZ+NpfmCkJjte0dLlRzUMReSpEc0nbvrKDwByTED+/niEF+4=
+X-Received: by 2002:ae9:eb48:0:b0:6fa:d61:4510 with SMTP id
+ b69-20020ae9eb48000000b006fa0d614510mr37684535qkg.768.1667910605712; Tue, 08
+ Nov 2022 04:30:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500003.china.huawei.com (7.185.36.200)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6214:2f8a:b0:4bb:6e86:8303 with HTTP; Tue, 8 Nov 2022
+ 04:30:05 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   Mr Abraham <mr.abraham2021@gmail.com>
+Date:   Tue, 8 Nov 2022 12:30:05 +0000
+Message-ID: <CAJ2UK+YqK-OgWa-GbqjTU89edKqVZ5nqmL-j=gKpwP5uFtkvUA@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:731 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4987]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mr.abraham2021[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mr.abraham2021[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-If CONFIG_BACKLIGHT_OMAP1=y and CONFIG_ARCH_OMAP1_ANY=n, it leads a build
-error:
-
-	drivers/video/backlight/omap1_bl.o: In function `omapbl_probe':
-	omap1_bl.c:(.text+0x198): undefined reference to `omap_cfg_reg'
-
-Here is the link to the issue reported by kernel test bot:
-
-https://lore.kernel.org/lkml/202211060819.fHDGmrB4-lkp@intel.com/
-
-arch/arm/mach-omap1/mux.c where defines omap_cfg_reg() depends on
-CONFIG_ARCH_OMAP1_ANY, so make CONFIG_BACKLIGHT_OMAP1 depends on
-CONFIG_ARCH_OMAP1_ANY to fix it. ARCH_OMAP1_ANY depends on ARCH_OMAP1,
-so the following logic is equivalent:
-
-ARCH_OMAP1_ANY && (ARCH_OMAP1 || COMPILE_TEST) = ARCH_OMAP1_ANY
-
-Fixes: 7036440eab3e ("ARM: omap1: enable multiplatform")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Yu Liao <liaoyu15@huawei.com>
----
- drivers/video/backlight/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 936ba1e4d35e..ff66cfebe45a 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -211,7 +211,7 @@ config BACKLIGHT_LOCOMO
- 
- config BACKLIGHT_OMAP1
- 	tristate "OMAP1 PWL-based LCD Backlight"
--	depends on ARCH_OMAP1 || COMPILE_TEST
-+	depends on ARCH_OMAP1_ANY
- 	default ARCH_OMAP1
- 	help
- 	  This driver controls the LCD backlight level and power for
--- 
-2.25.1
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
