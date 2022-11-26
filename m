@@ -2,100 +2,85 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E3363927A
-	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Nov 2022 01:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D3156392C9
+	for <lists+linux-fbdev@lfdr.de>; Sat, 26 Nov 2022 01:35:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230070AbiKZAEO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 25 Nov 2022 19:04:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49992 "EHLO
+        id S230212AbiKZAfH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 25 Nov 2022 19:35:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiKZAEN (ORCPT
+        with ESMTP id S230116AbiKZAfG (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 25 Nov 2022 19:04:13 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9B13054E;
-        Fri, 25 Nov 2022 16:04:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=fCEpozuQZzSMlmSX68RJLiCk4zrpL6chfzTq9T/Cx5k=; b=EsUHG75+oID3GB27Y6g35LNJqk
-        uHV7H16V2AyNE9Jjrx5LcQPqA/7lRSatnFyjSsmv79n+xloLV5EdP5ct+xZ8ruRygleiDumHWKfzK
-        S+rH5/exa9VjcJqkwLGnH5bXeUy2Ml//sDH2MHlDC/gr7vmLxer2HPFg8MXv0UNcqlpjPLnuXG6r7
-        7fSvb5ynnF2yi9bVA3b4w+xqb27ZKPhojSap/CmdWytflOHw1QyNS2X8mSUzNBne+FEZPapvec5ZE
-        dVG2zaTgtidnqvc9J5awYuFTWkQ10LI6xLfBytJmpKoTvn4L6ytYKPXLHHkIXFvDSUoAb3Lru3zad
-        ll2nv8yA==;
-Received: from [2601:1c2:d80:3110::a2e7] (helo=casper.infradead.org)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oyig1-00A0ud-R3; Sat, 26 Nov 2022 00:04:14 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-        linuxppc-dev@lists.ozlabs.org, Daniel Vetter <daniel@ffwll.ch>,
-        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH] fbdev: make offb driver tristate
-Date:   Fri, 25 Nov 2022 16:04:01 -0800
-Message-Id: <20221126000401.25302-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.38.1
+        Fri, 25 Nov 2022 19:35:06 -0500
+X-Greylist: delayed 423 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Nov 2022 16:35:03 PST
+Received: from mail.psssf.go.tz (mail.psssf.go.tz [196.11.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150185B5B5;
+        Fri, 25 Nov 2022 16:35:02 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.psssf.go.tz (Postfix) with ESMTP id DDA6D10040BC;
+        Sat, 26 Nov 2022 03:26:15 +0300 (EAT)
+Received: from mail.psssf.go.tz ([127.0.0.1])
+        by localhost (mail.psssf.go.tz [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id KnMoM5RKyMME; Sat, 26 Nov 2022 03:26:15 +0300 (EAT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.psssf.go.tz (Postfix) with ESMTP id 9A60E1004111;
+        Sat, 26 Nov 2022 03:26:15 +0300 (EAT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.psssf.go.tz 9A60E1004111
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=psssf.go.tz;
+        s=psssfdkim; t=1669422375;
+        bh=GgFYceHPfP/4Ju84fndFJB/TSJ1oqCCcVK78ii2DXwQ=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Cy+/TibqOsRDZ+tAWqJVJv+eocn6iERHIJTFBXHXsPQUdmiNAqwmCLrjm/3NldWy1
+         JSSWGfNF1Pf2eRuK1RlSkoupqD7VX4kI+EXxvIwIgkFJHP4M6LXysskMgBw7US91eR
+         4ZIsbSb52tqcddIW8sOcyqyg/GCXTz4LQrE44u5i3wkDTdLW8MrDxJxYZW52hrHrW0
+         oZxo3i2tlZFbIcj/P4dbwD6UEi+WJvV1LYa10e51JfCN+IFmlyiBMvNoQh+vl6OCS8
+         G+osRr2Kt7pqJ1pPFGUhmlJWcbfn/Q6HLMxQnxRPqXuLfQwfgCwWZqRpfcMDCMbjV7
+         EJoySyF48aSQw==
+X-Virus-Scanned: amavisd-new at mail.psssf.go.tz
+Received: from mail.psssf.go.tz ([127.0.0.1])
+        by localhost (mail.psssf.go.tz [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id J-KYvJzBHMaE; Sat, 26 Nov 2022 03:26:15 +0300 (EAT)
+Received: from EC2AMAZ-O7KPIJ2.ec2.internal (ec2-3-238-242-41.compute-1.amazonaws.com [3.238.242.41])
+        by mail.psssf.go.tz (Postfix) with ESMTPSA id 6537B10040BC;
+        Sat, 26 Nov 2022 03:26:10 +0300 (EAT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: 
+To:     Recipients <lusajo.anderson@psssf.go.tz>
+From:   "Rowell" <lusajo.anderson@psssf.go.tz>
+Date:   Fri, 25 Nov 2022 19:27:45 -0500
+Reply-To: rowellhm0192@gmail.com
+Message-Id: <20221126002610.6537B10040BC@mail.psssf.go.tz>
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [196.11.255.52 listed in wl.mailspike.net]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 0.9993]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 0.9993]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [rowellhm0192[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Make the offb (Open Firmware frame buffer) driver tristate,
-i.e., so that it can be built as a loadable module.
-
-However, it still depends on the setting of DRM_OFDRM
-so that both of these drivers cannot be builtin at the same time
-nor can one be builtin and the other one a loadable module.
-
-Build-tested successfully with all combination of DRM_OFDRM and FB_OF.
-
-This fixes a build issue that Michal reported when FB_OF=y and
-DRM_OFDRM=m:
-
-powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x58): undefined reference to `cfb_fillrect'
-powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x60): undefined reference to `cfb_copyarea'
-powerpc64-linux-ld: drivers/video/fbdev/offb.o:(.data.rel.ro+0x68): undefined reference to `cfb_imageblit'
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Michal Suchánek <msuchanek@suse.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-
----
- drivers/video/fbdev/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -456,8 +456,8 @@ config FB_ATARI
- 	  chipset found in Ataris.
- 
- config FB_OF
--	bool "Open Firmware frame buffer device support"
--	depends on (FB = y) && PPC && (!PPC_PSERIES || PCI)
-+	tristate "Open Firmware frame buffer device support"
-+	depends on FB && PPC && (!PPC_PSERIES || PCI)
- 	depends on !DRM_OFDRM
- 	select APERTURE_HELPERS
- 	select FB_CFB_FILLRECT
+Hope you get my mail
