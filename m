@@ -2,88 +2,107 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC75663E23C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 30 Nov 2022 21:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF64763E2F9
+	for <lists+linux-fbdev@lfdr.de>; Wed, 30 Nov 2022 22:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbiK3Ujq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 30 Nov 2022 15:39:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
+        id S229618AbiK3Vz6 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 30 Nov 2022 16:55:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbiK3Ujp (ORCPT
+        with ESMTP id S229448AbiK3Vz4 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 30 Nov 2022 15:39:45 -0500
-Received: from sp13.canonet.ne.jp (sp13.canonet.ne.jp [210.134.168.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E49CC55AA5;
-        Wed, 30 Nov 2022 12:39:43 -0800 (PST)
-Received: from csp13.canonet.ne.jp (unknown [172.21.160.133])
-        by sp13.canonet.ne.jp (Postfix) with ESMTP id C33201E0694;
-        Thu,  1 Dec 2022 05:39:42 +0900 (JST)
-Received: from echeck13.canonet.ne.jp ([172.21.160.123])
-        by csp3 with ESMTP
-        id 0TrqpCSNExJr50TrqplOWB; Thu, 01 Dec 2022 05:39:42 +0900
-X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=S49nfKgP c=1 sm=1 tr=0
- ts=6387bf8e cx=g_jp:t_eml p=ZMph9Jy3UboA:10 p=et4T4aBE6iSmLst72HwA:9
- p=pOQp6VyLxH7D_L77S6qH:22 a=c8wCX2VJ6RehaN9m5YqYzw==:117
- a=yr9NA9NbXb0B05yJHQEWeQ==:17 a=PlGk70OYzacA:10 a=kj9zAlcOel0A:10
- a=sHyYjHe8cH0A:10 a=x7bEGLp0ZPQA:10 a=CjuIK1q_8ugA:10 a=0iaRBTTaEecA:10
- a=xo5jKAKm-U-Zyk2_beg_:22"
-X-CNT-CMCheck-Score: 100.00
-Received: from echeck13.canonet.ne.jp (localhost [127.0.0.1])
-        by esets.canonet.ne.jp (Postfix) with ESMTP id 822E61C026B;
-        Thu,  1 Dec 2022 05:39:42 +0900 (JST)
-X-Virus-Scanner: This message was checked by ESET Mail Security
-        for Linux/BSD. For more information on ESET Mail Security,
-        please, visit our website: http://www.eset.com/.
-Received: from smtp13.canonet.ne.jp (unknown [172.21.160.103])
-        by echeck13.canonet.ne.jp (Postfix) with ESMTP id 5B35E1C025B;
-        Thu,  1 Dec 2022 05:39:42 +0900 (JST)
-Received: from kanesaki-kawara.co.jp (webmail.canonet.ne.jp [210.134.169.250])
-        by smtp13.canonet.ne.jp (Postfix) with ESMTPA id 83DE915F962;
-        Thu,  1 Dec 2022 05:39:41 +0900 (JST)
+        Wed, 30 Nov 2022 16:55:56 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797407615A;
+        Wed, 30 Nov 2022 13:55:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=IYRKxi+onLBFbh4zY0bg9jQRkT3TX2p808M3H7FEIdk=; b=goeggzxiVtspFRe1gCJYV2AjAY
+        3Ien6lK0K0BV9wiAGtv//wzGWz+O8fXUKPwpErcqh4Hc6va6uoVte449UkPeVtdFBUyvgfz1CBA3h
+        WupqZvb7OgIQcJ3wjHdpYFVenXpiwYuYrQ+l9BRsQqbZjWQRJaptQaYsgH3WqLWeiWEJnPLEOBcE2
+        cJfLGab+Am3K/zwPuvgF/nkLtN1lnsFmdyi5fSWpGDDKkM3523z4ASMf/QcQ+tuiXzAprfodEI+Qf
+        Ix0WXRT0AG4kIZnHJnSzyVCRWbLkmAZlngq3lZ4WCsNSzwoV9vtu2K8SizYZkDWZe/Wb0iRRc0qh2
+        qVUd31gA==;
+Received: from [2601:1c2:d80:3110::a2e7] (helo=casper.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1p0V3d-00FKCY-3n; Wed, 30 Nov 2022 21:55:57 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Richard Weinberger <richard@nod.at>,
+        linux-um@lists.infradead.org, Daniel Vetter <daniel@ffwll.ch>,
+        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Andres Salomon <dilinger@queued.net>,
+        linux-geode@lists.infradead.org
+Subject: [PATCH 1/2] fbdev: geode: don't build on UML
+Date:   Wed, 30 Nov 2022 13:55:44 -0800
+Message-Id: <20221130215544.28497-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Message-ID: <20221130203941.000072C0.0617@kanesaki-kawara.co.jp>
-Date:   Thu, 01 Dec 2022 05:39:41 +0900
-From:   "Richard Lee" <junko@kanesaki-kawara.co.jp>
-To:     <INBOX@kanesaki-kawara.co.jp>
-Reply-To: <richardeeoo@gmail.com>
-Subject: INQUIRY
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-ORGANIZATION: Richard Lee
-X-MAILER: Active! mail
-X-EsetResult: clean, %VIRUSNAME%
-X-ESET-AS: R=SPAM;S=100;OP=CALC;TIME=1669840782;VERSION=7941;MC=4193393147;TRN=15;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
-X-I-ESET-AS: RN=442,624:0;RNP=richardeeoo@gmail.com
-X-ESET-Antispam: SPAM
-X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,
-        UNRESOLVED_TEMPLATE,XPRIO_SHORT_SUBJ autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5606]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [210.134.168.90 listed in bl.score.senderscore.com]
-        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  2.0 XPRIO_SHORT_SUBJ Has X Priority header + short subject
-X-Spam-Level: *******
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+The geode fbdev driver uses struct cpuinfo fields that are not present
+on ARCH=um, so don't allow this driver to be built on UML.
 
-Greetings,
+Prevents these build errors:
 
-I trust you are well. I sent you an email yesterday,
-I just want to confirm if you received it.
-Please let me know as soon as possible,
+In file included from ../arch/x86/include/asm/olpc.h:7:0,
+                 from ../drivers/mfd/cs5535-mfd.c:17:
+../arch/x86/include/asm/geode.h: In function ‘is_geode_gx’:
+../arch/x86/include/asm/geode.h:16:24: error: ‘struct cpuinfo_um’ has no member named ‘x86_vendor’
+  return ((boot_cpu_data.x86_vendor == X86_VENDOR_NSC) &&
+../arch/x86/include/asm/geode.h:16:39: error: ‘X86_VENDOR_NSC’ undeclared (first use in this function); did you mean ‘X86_VENDOR_ANY’?
+  return ((boot_cpu_data.x86_vendor == X86_VENDOR_NSC) &&
+../arch/x86/include/asm/geode.h:17:17: error: ‘struct cpuinfo_um’ has no member named ‘x86’
+   (boot_cpu_data.x86 == 5) &&
+../arch/x86/include/asm/geode.h:18:17: error: ‘struct cpuinfo_um’ has no member named ‘x86_model’
+   (boot_cpu_data.x86_model == 5));
+../arch/x86/include/asm/geode.h: In function ‘is_geode_lx’:
+../arch/x86/include/asm/geode.h:23:24: error: ‘struct cpuinfo_um’ has no member named ‘x86_vendor’
+  return ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) &&
+../arch/x86/include/asm/geode.h:23:39: error: ‘X86_VENDOR_AMD’ undeclared (first use in this function); did you mean ‘X86_VENDOR_ANY’?
+  return ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) &&
+../arch/x86/include/asm/geode.h:24:17: error: ‘struct cpuinfo_um’ has no member named ‘x86’
+   (boot_cpu_data.x86 == 5) &&
+../arch/x86/include/asm/geode.h:25:17: error: ‘struct cpuinfo_um’ has no member named ‘x86_model’
+   (boot_cpu_data.x86_model == 10));
 
-Thank you.
+Fixes: 68f5d3f3b654 ("um: add PCI over virtio emulation driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: linux-um@lists.infradead.org
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Andres Salomon <dilinger@queued.net>
+Cc: linux-geode@lists.infradead.org
+---
+ drivers/video/fbdev/geode/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-
+diff -- a/drivers/video/fbdev/geode/Kconfig b/drivers/video/fbdev/geode/Kconfig
+--- a/drivers/video/fbdev/geode/Kconfig
++++ b/drivers/video/fbdev/geode/Kconfig
+@@ -5,6 +5,7 @@
+ config FB_GEODE
+ 	bool "AMD Geode family framebuffer support"
+ 	depends on FB && PCI && (X86_32 || (X86 && COMPILE_TEST))
++	depends on !UML
+ 	help
+ 	  Say 'Y' here to allow you to select framebuffer drivers for
+ 	  the AMD Geode family of processors.
