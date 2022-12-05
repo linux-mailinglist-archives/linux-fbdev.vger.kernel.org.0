@@ -2,99 +2,78 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1569E642517
-	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Dec 2022 09:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC53642DAA
+	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Dec 2022 17:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232374AbiLEIy2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 5 Dec 2022 03:54:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45502 "EHLO
+        id S233056AbiLEQu2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 5 Dec 2022 11:50:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231540AbiLEIxv (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Dec 2022 03:53:51 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7095F7678;
-        Mon,  5 Dec 2022 00:52:57 -0800 (PST)
-Received: from dggpemm500013.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NQck06QY8z15N6H;
-        Mon,  5 Dec 2022 16:52:08 +0800 (CST)
-Received: from ubuntu1804.huawei.com (10.67.175.36) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 5 Dec 2022 16:52:55 +0800
-From:   Chen Zhongjin <chenzhongjin@huawei.com>
-To:     <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <chenzhongjin@huawei.com>, <daniel@ffwll.ch>, <deller@gmx.de>,
-        <sam@ravnborg.org>, <tzimmermann@suse.de>,
-        <geert+renesas@glider.be>,
-        <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
-Subject: [PATCH] fbcon: Fix memleak when fbcon_set_font() fails
-Date:   Mon, 5 Dec 2022 16:49:59 +0800
-Message-ID: <20221205084959.147904-1-chenzhongjin@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S232444AbiLEQtv (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Dec 2022 11:49:51 -0500
+Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D482A2713
+        for <linux-fbdev@vger.kernel.org>; Mon,  5 Dec 2022 08:49:05 -0800 (PST)
+Received: by mail-ua1-x942.google.com with SMTP id v21so4106461uam.1
+        for <linux-fbdev@vger.kernel.org>; Mon, 05 Dec 2022 08:49:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
+        b=EvWmzEra/azIE+dhpMGnktmqmSoesb8PSCiM/05QKkVO5anMKEbRHSG7nojCSOyYWk
+         9IDI1UgS5rC+uB5j5uOW4no2X6seMos8u1Uby8q6RKzl1vCALcAn7vpiT6rpclAi8Jt0
+         gPKoEl0xikkT9S+7dg4LTBa5X4VHIsnKU2e6OrEO/j4h9xN1NPllzu29Dg0k3gFH+bOt
+         HMDW+rYw/YqhqvZ6y4oXgIeqTNVodnF9zHtiwgFo2Y0tEc6ReoK23o3+Epe6dWg/8ai1
+         Z4r7fWQ42rAk0Fys+lVH3VBvE+2FTvVvceopyfVxKS8DxJV3KaRTE9M5zTY24mYt1gIO
+         /rEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
+        b=bQ8gtFChe6FHiF6v0XxUdH+vu0+PLnZjxsYz+DJ08Vy75G11bK621yV3LXSAq31wOO
+         E5PWlIwGnNBp864esNqHc1ztvQ9+Tm1Z9oA/ied3RhlSykRJRsl0WHDV+I6GUzzMWIyZ
+         4qv+B9pB4s5fOaxUexRi54cqvSnvcFTmx6ZDyy1flBowWTLqNmVDzEq2TvI+qYkaEZgX
+         JUpwUaXGwIa4m3tlhZHp+CABqbsJEBc+0auoOF7O/US1bTjoxU7dfcFoU4/rgkoTf2ph
+         tJ7QfCv8w3yHpNgfXR4HANGIgK8KxifWa8TjmybNWuNC+MJmTo8GNvR+0lD8VdXYWtg3
+         MQAQ==
+X-Gm-Message-State: ANoB5plgN6k4XdaTNeyZ9DipFXbxdvK+sd4qOJxIzUZpzXTgGxDYPHgE
+        QvBY+7cq3a44peQXvbrXzbCnJedhEPujnc+KkKwiSYvErap+cQ==
+X-Google-Smtp-Source: AA0mqf6rJpockmAlPLGWb5IdXxyZXi5oeB/VlA7nQtTh5mH5GBjbP93nFRUHbmrw3A3v2AKvxeLYo6EVgAyGoUC2980=
+X-Received: by 2002:a05:6830:61ce:b0:66b:e4e2:8d25 with SMTP id
+ cc14-20020a05683061ce00b0066be4e28d25mr41635604otb.152.1670258933537; Mon, 05
+ Dec 2022 08:48:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.175.36]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:7211:b0:dd:1fa2:ef73 with HTTP; Mon, 5 Dec 2022
+ 08:48:53 -0800 (PST)
+Reply-To: plml47@hotmail.com
+From:   Philip Manul <lometogo1999@gmail.com>
+Date:   Mon, 5 Dec 2022 08:48:53 -0800
+Message-ID: <CAFtqZGFXDNDSmyfAW1goTwuOjaKBWi=RMxR7avPMnWxdOUFKOg@mail.gmail.com>
+Subject: REP:
+To:     in <in@proposal.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzkaller reported a memleak:
-https://syzkaller.appspot.com/bug?id=7cc8bce62e201c60e36ef0133dab7f6b8afbc626
-
-BUG: memory leak
-unreferenced object 0xffff888111648000 (size 18448):
-  backtrace:
-    [<ffffffff8250c359>] kmalloc
-    [<ffffffff8250c359>] fbcon_set_font+0x1a9/0x470
-    [<ffffffff8262cd59>] con_font_set
-    [<ffffffff8262cd59>] con_font_op+0x3a9/0x600
-    ...
-
-It's because when fbcon_do_set_font() fails in fbcon_set_font(), it
-return error directly and doesn't free allocated memory 'new_data'.
-
-Reported-by: syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
- drivers/video/fbdev/core/fbcon.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index c0143d38df83..edb01d200b5b 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2480,7 +2480,7 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
- 	int w = font->width;
- 	int h = font->height;
- 	int size;
--	int i, csum;
-+	int i, csum, ret;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
- 
-@@ -2539,7 +2539,11 @@ static int fbcon_set_font(struct vc_data *vc, struct console_font *font,
- 			break;
- 		}
- 	}
--	return fbcon_do_set_font(vc, font->width, font->height, charcount, new_data, 1);
-+
-+	ret = fbcon_do_set_font(vc, font->width, font->height, charcount, new_data, 1);
-+	if (ret && i > last_fb_vc)
-+		kfree(new_data - FONT_EXTRA_WORDS * sizeof(int));
-+	return ret;
- }
- 
- static int fbcon_set_def_font(struct vc_data *vc, struct console_font *font, char *name)
--- 
-2.17.1
-
+--=20
+Guten tag,
+Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
+einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
+teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
+mein verstorbener Kunde, hat hier in meinem Land einen nicht
+beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
+Verfahren.
+Philip Manul.
