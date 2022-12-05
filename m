@@ -2,123 +2,139 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6342B63EAB7
-	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Dec 2022 08:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1CB64224C
+	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Dec 2022 05:34:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbiLAH70 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 1 Dec 2022 02:59:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37190 "EHLO
+        id S231192AbiLEEet (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 4 Dec 2022 23:34:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiLAH6u (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 1 Dec 2022 02:58:50 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FDA3FB81;
-        Wed, 30 Nov 2022 23:58:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1669881451; bh=5lj8vIDyBwi7A84crvGtUsrnfkuqUwlP8Sc8sKuHUnA=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=oeDYOI4NcYQuPxomBZOpIos8ctSu/YlWeW/cPAoaZYlQi1wW+G4FcXX8MWr6eNE0C
-         XdIsa1pZWpoAmGd8gJYeTuO6OQ6HABPtAy3AjTbERmqAn5xe19SJyoE926DLyRcCet
-         RtPNK2elZ+WqrYpFGdUbvga7xS3XfYMqoOic5wBQT5X00g/FTKgwRWaaWMufdPNAGM
-         HS16n5FcutBPImHh9dg8ZsXw/hKAz2whGS1LwOBbXITmYTP00wOxIWBePq1h8DuSPl
-         EValiiX3b5wrpZfIFu+p64bhpqtSPS6Pm7hisAmM+LnLSOwGMrw3DkZk4zW0pTsdv6
-         58Ns04jX5e1ZA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.178.52]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95iR-1oyG0y1t0Z-0166gC; Thu, 01
- Dec 2022 08:57:31 +0100
-Message-ID: <ee9cb30e-6a38-ee27-c6e6-bcc21f470c8e@gmx.de>
-Date:   Thu, 1 Dec 2022 08:57:29 +0100
+        with ESMTP id S231156AbiLEEer (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 4 Dec 2022 23:34:47 -0500
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E23B64D1
+        for <linux-fbdev@vger.kernel.org>; Sun,  4 Dec 2022 20:34:45 -0800 (PST)
+Received: by mail-il1-f199.google.com with SMTP id g4-20020a92cda4000000b00301ff06da14so11283213ild.11
+        for <linux-fbdev@vger.kernel.org>; Sun, 04 Dec 2022 20:34:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vcFrvjYpY9w3oBH5VMBrbCN5cG4DGtca+C+V9MNGNBY=;
+        b=1/i1gtGCc3S9sO4Mdv5AyMlOAyBeXvzqLChY0Z6v9Ss8XfpthIboSuCfSXhAW9ygf2
+         5QsTNcPVYI/wAfgTF0htvQ2Vpx0vjVK6OoHskD+45q3foaIYfzrHfXcfwDTXLlS15vBU
+         1lwqEIM0f5bKZP1I5KOAkP63sRNcYOCJnF5gxcpLuuyb+0U4f5aAruZTelXBBpg6fR+I
+         1mmh13zg+GQL4GsCh2rPXej2OVMVwSzqLV5BvOQAo4bXYRWSz2/Wu7dOm/HqCSBVqKIl
+         8UxlctuF7J9Fz+Jbr2g8QpwpeCgxUzFlxoa+FFEksLZAD7Id9+OI9Q0KACLZSlclzc9n
+         Le/A==
+X-Gm-Message-State: ANoB5pl8Q5ZDfNfmh7I1VPiDN8d7ECVdCmvq+qQrvH5tODf/XFHhc5e/
+        PqZ2eAVK86CuJqUfwiSI5e1sxHPlrEBYnyDM5Dp8IzttN0V1
+X-Google-Smtp-Source: AA0mqf7iyVepFf9uvSqFu+Czqel85Bx9rIZHqrT9xKNbJkXJrxGVTRza++ig5vx166ELXQ5StTz/hrZ9soFSQWNPcWfAbfhn3byU
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 2/2] fbdev: uvesafb: don't build on UML
-Content-Language: en-US
-To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Richard Weinberger <richard@nod.at>,
-        linux-um@lists.infradead.org, Daniel Vetter <daniel@ffwll.ch>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Michal Januszewski <spock@gentoo.org>
-References: <20221130215559.28969-1-rdunlap@infradead.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20221130215559.28969-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZksNENsIBlY8zmacmvPxeuE6AT4K0leodsrZiYiq7mTIKVSfSVH
- 0jp0Au8+7ohKaM6vvryTb+zUZEjOaqB86Du98BstOzTIE5YUH6acAbVxW33uK0sb3MwnJew
- 9E8gyJfUgueWkREmRnf5+rEGAEAEtxW3qsPdG70qdfo8XJXamtuPcd0tfYsE8UxaJYmm1BZ
- rhacJlkm6FIx64Y6ixXnA==
-UI-OutboundReport: notjunk:1;M01:P0:wz3wAo12j3U=;l30nBJ9gyV0KH2nJFRy6ACIHqrr
- 595JwtYcyKQn569+9vllPc2oaWd1WTR5bKeonkgZIWrh/LAVdloPZlwvdqDA/8WgR+bgJox9b
- mfTHuWIkqelJqGIZNzQUCURIjpRunCMx6xWoA1bQF9S3rhXRQGr1MLcJBRzB8WKgW5pKgPX+V
- LvZrVJovSRZf/dUyJvRqv2XGEqAiPLdSH9YQB3Gupx9bshsQVpRs+LCogeiLp+LsZnTyXhvhO
- pDdvQsSap4VU2CnD0bSZI9urromBMxg12aGLu02xHR6xSzDV6ZmyViIFozDrCq38mTINVCWaC
- 4mR41JzjHAAOopBTFejP6FUw7eMOPiRNWdXyLEQWW1pv+Ba4HRyWWvurdvcVJe5yZ86295a2q
- NnaeaSCohCG6aSW+iLO6gIn2igbrtZNdlxHoxdsPl7S+DfC5Z/oSOcZAnMEBz0DintchB/HKx
- Gwy7EvawoPvNu3NC8sJavjDU8oL2PjPppDzDfdJmfoxdxNQXIjbe2winZmbjZpB+1dYaryDhz
- LS5PLPZHh0ztnI3CwDj0BdH3LvvnND3OH8bVuBYIEFvDuXDs8z7KsHkuGZ7JRS0FWjbm56wuV
- ZkPioMdYauyBQdQP1mGPVuGwR8fcXN/hop0ZMi3jiKL8/v4gos6BNKs5NyZbcw2uM0TvgsTU2
- 8otH/0UTj6mgP42vzlWTi4oSmw/bn0v3fmNO+Zh3DTKByAjV9yzASsP8yFG4IKRITresl1XnV
- Xfu7FkHqjOyI0eX8w5VkWm1RfATHEndcL6dUv6Rbo2OOJ36PaBia/DRb4kjW6sc/UvfFRBlSF
- kF2cTwZsgljvi5tUEnvOC3N3zA6KV7NF8NVRdrGSUlniqwMc7azWC7RX96eWImnDweMjxwUyA
- 0fzBSMC86P/FtuYOlLplK5Dr75iyylEHEdNX1mHXALr4p0w3Bw8VvF56ivZe8KTjdvm+hp5pv
- Pvnxj27jekGKs6yrw+kDfuxjRJg=
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Received: by 2002:a5d:804e:0:b0:6dc:30bd:ed8f with SMTP id
+ b14-20020a5d804e000000b006dc30bded8fmr30399822ior.130.1670214884451; Sun, 04
+ Dec 2022 20:34:44 -0800 (PST)
+Date:   Sun, 04 Dec 2022 20:34:44 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000e2efc305ef0d341f@google.com>
+Subject: [syzbot] memory leak in fbcon_set_font (2)
+From:   syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
+To:     daniel@ffwll.ch, deller@gmx.de, dri-devel@lists.freedesktop.org,
+        geert+renesas@glider.be, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, sam@ravnborg.org,
+        syzkaller-bugs@googlegroups.com, tzimmermann@suse.de
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 11/30/22 22:55, Randy Dunlap wrote:
-> The uvesafb fbdev driver uses memory management information that is not
-> available on ARCH=3Dum, so don't allow this driver to be built on UML.
->
-> Prevents these build errors:
->
-> ../drivers/video/fbdev/uvesafb.c: In function =E2=80=98uvesafb_vbe_init=
-=E2=80=99:
-> ../drivers/video/fbdev/uvesafb.c:807:21: error: =E2=80=98__supported_pte=
-_mask=E2=80=99 undeclared (first use in this function)
->    807 |                 if (__supported_pte_mask & _PAGE_NX) {
-> ../drivers/video/fbdev/uvesafb.c:807:44: error: =E2=80=98_PAGE_NX=E2=80=
-=99 undeclared (first use in this function)
->    807 |                 if (__supported_pte_mask & _PAGE_NX) {
->
-> Fixes: 68f5d3f3b654 ("um: add PCI over virtio emulation driver")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: linux-um@lists.infradead.org
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Michal Januszewski <spock@gentoo.org>
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    c2bf05db6c78 Merge tag 'i2c-for-6.1-rc8' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=171883d5880000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=979161df0e247659
+dashboard link: https://syzkaller.appspot.com/bug?extid=25bdb7b1703639abd498
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14fff84d880000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=135806a7880000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/63cd45bf1d68/disk-c2bf05db.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bafbfb42c660/vmlinux-c2bf05db.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9f803a721cfc/bzImage-c2bf05db.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com
+
+BUG: memory leak
+unreferenced object 0xffff888111648000 (size 18448):
+  comm "syz-executor148", pid 3653, jiffies 4294970435 (age 13.520s)
+  hex dump (first 32 bytes):
+    85 44 7e c7 00 00 00 00 00 48 00 00 00 00 00 00  .D~......H......
+    92 30 86 d2 8c 38 30 9e e7 a3 05 00 9f 09 33 bb  .0...80.......3.
+  backtrace:
+    [<ffffffff814ee6d3>] __do_kmalloc_node mm/slab_common.c:943 [inline]
+    [<ffffffff814ee6d3>] __kmalloc+0xb3/0x120 mm/slab_common.c:968
+    [<ffffffff8250c359>] kmalloc include/linux/slab.h:558 [inline]
+    [<ffffffff8250c359>] fbcon_set_font+0x1a9/0x470 drivers/video/fbdev/core/fbcon.c:2508
+    [<ffffffff8262cd59>] con_font_set drivers/tty/vt/vt.c:4667 [inline]
+    [<ffffffff8262cd59>] con_font_op+0x3a9/0x600 drivers/tty/vt/vt.c:4713
+    [<ffffffff82618e3d>] vt_k_ioctl drivers/tty/vt/vt_ioctl.c:474 [inline]
+    [<ffffffff82618e3d>] vt_ioctl+0x14fd/0x1a80 drivers/tty/vt/vt_ioctl.c:752
+    [<ffffffff825fdaf5>] tty_ioctl+0x6d5/0xbe0 drivers/tty/tty_io.c:2771
+    [<ffffffff816200bc>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff816200bc>] __do_sys_ioctl fs/ioctl.c:870 [inline]
+    [<ffffffff816200bc>] __se_sys_ioctl fs/ioctl.c:856 [inline]
+    [<ffffffff816200bc>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
+    [<ffffffff8485c5e5>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff8485c5e5>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84a00087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+BUG: memory leak
+unreferenced object 0xffff888110b18000 (size 18448):
+  comm "syz-executor148", pid 3655, jiffies 4294971001 (age 7.860s)
+  hex dump (first 32 bytes):
+    85 44 7e c7 00 00 00 00 00 48 00 00 00 00 00 00  .D~......H......
+    92 30 86 d2 8c 38 30 9e e7 a3 05 00 9f 09 33 bb  .0...80.......3.
+  backtrace:
+    [<ffffffff814ee6d3>] __do_kmalloc_node mm/slab_common.c:943 [inline]
+    [<ffffffff814ee6d3>] __kmalloc+0xb3/0x120 mm/slab_common.c:968
+    [<ffffffff8250c359>] kmalloc include/linux/slab.h:558 [inline]
+    [<ffffffff8250c359>] fbcon_set_font+0x1a9/0x470 drivers/video/fbdev/core/fbcon.c:2508
+    [<ffffffff8262cd59>] con_font_set drivers/tty/vt/vt.c:4667 [inline]
+    [<ffffffff8262cd59>] con_font_op+0x3a9/0x600 drivers/tty/vt/vt.c:4713
+    [<ffffffff82618e3d>] vt_k_ioctl drivers/tty/vt/vt_ioctl.c:474 [inline]
+    [<ffffffff82618e3d>] vt_ioctl+0x14fd/0x1a80 drivers/tty/vt/vt_ioctl.c:752
+    [<ffffffff825fdaf5>] tty_ioctl+0x6d5/0xbe0 drivers/tty/tty_io.c:2771
+    [<ffffffff816200bc>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff816200bc>] __do_sys_ioctl fs/ioctl.c:870 [inline]
+    [<ffffffff816200bc>] __se_sys_ioctl fs/ioctl.c:856 [inline]
+    [<ffffffff816200bc>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
+    [<ffffffff8485c5e5>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff8485c5e5>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84a00087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+write to /proc/sys/kernel/hung_task_check_interval_secs failed: No such file or directory
+write to /proc/sys/kernel/softlockup_all_cpu_backtrace failed: No such file or directory
+write to /proc/sys/kernel/hung_task_check_interval_secs failed: No such file or directory
+write to /proc/sys/kernel/softlockup_all_cpu_backtrace failed: No such file or directory
 
 
-applied.
-Thanks!
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Helge
-
-> ---
->   drivers/video/fbdev/Kconfig |    1 +
->   1 file changed, 1 insertion(+)
->
-> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -609,6 +609,7 @@ config FB_TGA
->   config FB_UVESA
->   	tristate "Userspace VESA VGA graphics support"
->   	depends on FB && CONNECTOR
-> +	depends on !UML
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this issue, for details see:
+https://goo.gl/tpsmEJ#testing-patches
