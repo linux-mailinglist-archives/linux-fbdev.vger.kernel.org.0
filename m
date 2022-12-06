@@ -2,83 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 541F76437CA
-	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Dec 2022 23:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15F2864448B
+	for <lists+linux-fbdev@lfdr.de>; Tue,  6 Dec 2022 14:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbiLEWL7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 5 Dec 2022 17:11:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43106 "EHLO
+        id S231888AbiLFNb4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 6 Dec 2022 08:31:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233686AbiLEWLz (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Dec 2022 17:11:55 -0500
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E761A216
-        for <linux-fbdev@vger.kernel.org>; Mon,  5 Dec 2022 14:11:52 -0800 (PST)
-Received: from fsav411.sakura.ne.jp (fsav411.sakura.ne.jp [133.242.250.110])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 2B5MBo19027801;
-        Tue, 6 Dec 2022 07:11:50 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav411.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav411.sakura.ne.jp);
- Tue, 06 Dec 2022 07:11:50 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav411.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 2B5MAZtx027513
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Tue, 6 Dec 2022 07:10:35 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <d37c0147-3605-a876-9b85-16bcbc05eaa6@I-love.SAKURA.ne.jp>
-Date:   Tue, 6 Dec 2022 07:10:31 +0900
+        with ESMTP id S234110AbiLFNbz (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 6 Dec 2022 08:31:55 -0500
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D4422B26
+        for <linux-fbdev@vger.kernel.org>; Tue,  6 Dec 2022 05:31:53 -0800 (PST)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3e45d25de97so95466177b3.6
+        for <linux-fbdev@vger.kernel.org>; Tue, 06 Dec 2022 05:31:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=OeyCMsHYScRvVh8RXebzMnb6pRDfFrPhGFM5Oo/oZrwyoa5Qe6A4MFoFU3Mp0QEA1i
+         SYxbR4sBY6B2f4vL1OEJybUifemEqA8IjQX2J09dxjCQRODPxlkwi9ZEZSAu9TEhort/
+         rwllpgNt60odz5Nl0j8spOK2S4UH94zHMFD6KX6br/bHNI2fZHIzqWvZlcUTMKyD9vqw
+         pbBkxrH6eRDakHg6i3SDW/XG3pxdEfflEK99JxjqsHbJ7YAIkEj/5S6ueT5UYlPSmqQ/
+         Hub6z0zknduscVyttBCDKyxn8xzrz/kgtfd7lHkiDU9nHicul2vZth5Aja6oh/8jcMGO
+         G90g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=2059sc8PNvprAIUqx4sFydKriac1Y5yjrWo9NFcwDKZDud9YH+alZ9uIusxrwKywAp
+         LhgCOR9K06qhqYrCFgDDfHoetJ2mAtiWVzxLb0hioUHUyrkwdTU9OP67zxoHghEFi+r0
+         T+UPuOuBWrVznUxnhj6tgxD6/GBqU3Qt6fkt69HI97UfRCx0+p0zC9O0PyJzg73OjISU
+         OCvi6JqpmwxTMnDeyBP1+jdpHgfRPmg3D7ohSMoBaLrAsLwxz1v01AJ30Yy8rCCNVHLc
+         1uqe8YpEuN+y9rlxjCrMNBjFNL0+270C3Zq76J6Sgj6owe4XhdNwSsNyqr21uypX6DPg
+         nNAg==
+X-Gm-Message-State: ANoB5pnbV2WDi+BoEF1H9q6Tlq8Prp2+1M6L6D3inXJgZVVzb6TiWjlJ
+        Wb+DtUWj7GPgrBzz57or75ybq/o8aHA9kzXkYBI=
+X-Google-Smtp-Source: AA0mqf7Z2Y5k3chtNt8kbVNLNOAPCXtgRbw0oMU6LK5Q/RiR2Ia6QNch2ZuKx5+xFv9D2teTY/76/SaSp4zD3zNfpik=
+X-Received: by 2002:a81:5243:0:b0:3d2:2098:c5fb with SMTP id
+ g64-20020a815243000000b003d22098c5fbmr31214777ywb.121.1670333513086; Tue, 06
+ Dec 2022 05:31:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: [PATCH] fbdev: fbcon: release buffer when fbcon_do_set_font() failed
-Content-Language: en-US
-To:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
-        Shigeru Yoshida <syoshida@redhat.com>
-References: <000000000000e2efc305ef0d341f@google.com>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <000000000000e2efc305ef0d341f@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:a205:b0:314:d2a3:70a with HTTP; Tue, 6 Dec 2022
+ 05:31:52 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <mrkojofofone01@gmail.com>
+Date:   Tue, 6 Dec 2022 13:31:52 +0000
+Message-ID: <CACJtp8vgE8Nrmo+zWDrnXRqoM_o=MmruUY09Qi=4vFfLMPDrtA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-syzbot is reporting memory leak at fbcon_do_set_font() [1], for
-commit a5a923038d70 ("fbdev: fbcon: Properly revert changes when
-vc_resize() failed") missed that the buffer might be newly allocated
-by fbcon_set_font().
-
-Link: https://syzkaller.appspot.com/bug?extid=25bdb7b1703639abd498 [1]
-Reported-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: syzbot <syzbot+25bdb7b1703639abd498@syzkaller.appspotmail.com>
-Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
----
- drivers/video/fbdev/core/fbcon.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 098b62f7b701..8363f3b2b452 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2450,7 +2450,8 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
- 
- 	if (userfont) {
- 		p->userfont = old_userfont;
--		REFCOUNT(data)--;
-+		if (--REFCOUNT(data) == 0)
-+			kfree(data - FONT_EXTRA_WORDS * sizeof(int));
- 	}
- 
- 	vc->vc_font.width = old_width;
--- 
-2.34.1
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham
