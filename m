@@ -2,247 +2,148 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5478650B4E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Dec 2022 13:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 644B8650F98
+	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Dec 2022 17:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231490AbiLSMTk (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Dec 2022 07:19:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
+        id S229781AbiLSQFW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 19 Dec 2022 11:05:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbiLSMT0 (ORCPT
+        with ESMTP id S229618AbiLSQFV (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Dec 2022 07:19:26 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461D62BC3;
-        Mon, 19 Dec 2022 04:19:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1671452342; bh=IwceTt8tQkxF+Kusp4dyW7vLif+FlKFoH8SDEXZ9LeU=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Kk7BYjJvkA0flMJ1VLAhP+hY9ob9bNZeWigqh8RGyo96UBtRyiUms6ZcWvavJqw4E
-         wn8zhLylpse1gWIPOz+ROaNfGTPA73ir9lmYYAufJkeETWNnK3LIdUn3bmbzPbRK0k
-         N6w+O2gyfULYW4z8RorTXjcFzliPWOvJXUCLQvSy/co5N9a3kS9ARPbizpoD63rIIN
-         9YDhIbmRgwF3HaumJLAB7uw/Kh86KECdwgXhFmnP0/KblaFVgkwaDesD/k7hPQksTp
-         lG9SVlWgT8MNCyH2/KD+n7jN/5L/9BmAuqoaJ9oJewEuAPySxZra0W3Zt1gZsbNiIn
-         3yaaVj1iGI7/A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.151.196]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbRfv-1oafNf2DE1-00btLm; Mon, 19
- Dec 2022 13:19:02 +0100
-Message-ID: <d4eb5a9d-c2d3-08bf-6a9a-014e2d625a2e@gmx.de>
-Date:   Mon, 19 Dec 2022 13:19:01 +0100
+        Mon, 19 Dec 2022 11:05:21 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9DFF271;
+        Mon, 19 Dec 2022 08:05:19 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 8296C38144;
+        Mon, 19 Dec 2022 16:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1671465918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Zi9DGAHO0BaQvyNUt7EaCCw0VNS9QAUwHpcrOeBGrvY=;
+        b=ij+rxhcqW3W6+MWS3kO8nMtHYN3oDHlgFX/aDSZKOujL11P5YyA5Yp7J4PX+Ti5tiGaxVx
+        xHeFpGDS6Y790wnabdtJDtShIYRUJWofvBsZb2l3zrBeJHBo1xpeMSqN/+iClmeP6Oep6Y
+        0kAs05m6gO/Z7fZltjIngJrkka93pjc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1671465918;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Zi9DGAHO0BaQvyNUt7EaCCw0VNS9QAUwHpcrOeBGrvY=;
+        b=0p4gfUQSsxWvjADe+QY4pLfQhm4JPPLDWnJRyBCavXTyEkQMup1ME/v44uJTj5reo8Uvsk
+        RFnYZJeqyymWAzCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 487F613910;
+        Mon, 19 Dec 2022 16:05:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id TWe9EL6LoGPeZwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 19 Dec 2022 16:05:18 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     daniel@ffwll.ch, airlied@gmail.com, deller@gmx.de,
+        javierm@redhat.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 00/18] drm,fbdev: Remove apertures structure and FBINFO_MISC_FIRMWARE
+Date:   Mon, 19 Dec 2022 17:04:58 +0100
+Message-Id: <20221219160516.23436-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: matroxfb: cannot determine memory size
-Content-Language: en-US
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     "Z. Liu" <liuzx@knownsec.com>, linux-fbdev@vger.kernel.org,
-        it+linux-fbdev@molgen.mpg.de, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-References: <5da53ec5-3a9c-ec87-da20-69f140aaaa6b@molgen.mpg.de>
- <6ef71be5-def9-4578-3f73-c43c35d7e4a9@gmx.de>
- <dc0b1487-04f9-5a2f-e0f8-d157a74b6bcb@molgen.mpg.de> <Y5zhUl7r9z0lFJxc@p100>
- <48e83fa7-00a6-ba11-0db3-a165ce3c0699@molgen.mpg.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <48e83fa7-00a6-ba11-0db3-a165ce3c0699@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+dYkq1Fjbg6kdQ6/GU7LOac7RLcIsd2pDNfLwJ7+wfmLb2tUHkv
- UqQ+FHHxAX8O44ABxu0mrBr/zjQGZP1fnTBQlXo6YxBO1yMnZcjRQQ+xLsVF/oNg1La22tZ
- yrCZXLReq+0pTg0/4ieku+/BugWU+I3DDQX2uEqMzYLuS/G1AFyDuPLKzwtFtkHV9zdVI9y
- h/OU9hBa1CxeZm8Jy8mzg==
-UI-OutboundReport: notjunk:1;M01:P0:JoRRLq0488o=;zrYhF8BuqHVABNQgmbuJeLB9RWK
- ZEsj7/jNQsmLEUvvAPTleL9zB4ONCFAyieTr9gx1ubLtKGH6gRY6cILnQMZPlOyjEAhhqYWQy
- /tzUYR9ZyiJgApBG4gk8WTraY+bPA530SSaAKQ+uxt6btfLFikK8UFBk+jrkBboVyRUCyPeAd
- c5GbUaxxN0xVfQOS1yHBB0/CSifK1kMWE8brCESDeXyRvF7Q9v17H2nJD8fi7Ah+h0gBJEEt9
- l1+g39/Bg7KLgGw4RXws28F/gx1Z4hxkQHawDZyxQatxd+VYLo3waaPeulYnZGHLERRWvvOof
- 14tJNogytwsnBXSLsWvn/cNvKFp+i0rmoRaBeYwT7MH9RkazpF4wKS+9Icwl69jFO75fXK7fv
- kDBg+aTjyVFamQ5a84JnTkxQG5lLbmFG0ih70JsiQNM8phnYYLB5mIVdttc/5K1sYuEmQ6LZs
- cs4FNTilCbDGWJSqdx81TRGByspLe5AzNIxryUxDZ0J5BFt9Ec3c499sqMS+rFHvxtbOQ8zVI
- 241Lkalx736fzdW2GBo0p8eafpK6Uz5nsTvAVUrwzwGlLKnxzEHJxrmSEuulai1bvrObbLfdL
- upCUHPWhuOwDmnCpm+xNm4tBri9Fw5Bnmv3mPRrcv/Pw02TrkaOxWvrrIint6Zfs4peWWpMti
- xaV7qLo8VXMv1ibXJajEAqXPnHyE2MxXCWPiuw4+5slwMi+IToLpG5BTAdrc6Zeqj6eQTESzf
- 6/ZYZBYMZHvLd7X1wZXKlZdQs/pbEqTT2IAR+V8rWqPqx+duJPcEY6AL0dUXiP7RAxupfeR+y
- B0RGE9nyCnD+xM24bdtlcuiny0aCkb93oeHhrH4wxaLQZQKEb0mOP94j+3gZHnuOnlfW/O+Tx
- Y68pg269jr75Uj/+5snXjZb4UAd0iCZ+yjAb/+6NpJ9FOu/Ki+gBC79sgJrHpSsELtlPfvAlP
- sJl+kTEnj2Dc070sOsIq62nnr+M=
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 12/19/22 12:58, Paul Menzel wrote:
->
-> Dear Helge,
->
->
-> Am 16.12.22 um 22:21 schrieb Helge Deller:
->> * Paul Menzel <pmenzel@molgen.mpg.de>:
->>> [Cc: +regressions@, +stable@]
->>>
->>> #regzbot ^introduced: 62d89a7d49afe46e6b9bbe9e23b004ad848dbde4
->
->>> Am 16.12.22 um 00:02 schrieb Helge Deller:
->>>> On 12/15/22 17:39, Paul Menzel wrote:
->>>
->>>>> Between Linux 5.10.103 and 5.10.110/5.15.77, matrixfb fails to load.
->
-> [=E2=80=A6]
->
->>>>> ### 5.15.77
->>>>>
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 0.000000] Linux v=
-ersion 5.15.77.mx64.440 (root@theinternet.molgen.mpg.de) (gcc (GCC) 10.4.0=
-, GNU ld (GNU Binutils) 2.37) #1 SMP Tue Nov 8 15:42:33 CET 2022
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 0.000000] Command=
- line: root=3DLABEL=3Droot ro crashkernel=3D64G-:256M console=3DttyS0,1152=
-00n8 console=3Dtty0 init=3D/bin/systemd audit=3D0 random.trust_cpu=3Don sy=
-stemd.unified_cgroup_hierarchy
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=E2=80=A6]
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 0.000000] DMI: De=
-ll Inc. PowerEdge R715/0G2DP3, BIOS 1.5.2 04/19/2011
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=E2=80=A6]
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 9.436420] matroxf=
-b: Matrox MGA-G200eW (PCI) detected
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 9.444502] matroxf=
-b: cannot determine memory size
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 9.449316] matroxf=
-b: probe of 0000:0a:03.0 failed with error -1
->>>>>
->>>>> We see it on several systems:
->>>>>
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ lspci -nn -s 0a:03.0 # Dell PowerEd=
-ge R715
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0a:03.0 VGA compatible controller [03=
-00]: Matrox Electronics Systems Ltd. MGA G200eW WPCM450 [102b:0532] (rev 0=
-a)
->>>>>
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ lspci -nn -s 09:03.0 # Dell PowerEd=
-ge R910
->>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 09:03.0 VGA compatible controller [03=
-00]: Matrox Electronics Systems Ltd. MGA G200eW WPCM450 [102b:0532] (rev 0=
-a)
->
-> Also Dell PowerEdge R815.
->
-> [=E2=80=A6]
->
->>> I tested Linus=E2=80=99 master with commit 84e57d292203 (Merge tag
->>> 'exfat-for-6.2-rc1' of
->>> git://git.kernel.org/pub/scm/linux/kernel/git/linkinjeon/exfat) and th=
-e
->>> error is still there. Reverting commit fixes the issue.
->>>
->>> Tested on:
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 DMI: Dell Inc. PowerEdge R910/0KYD3D, BIOS 2.=
-10.0 08/29/2013
->>>
->>> Current master:
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.221595] matroxfb 0000:09:03.=
-0: vgaarb: deactivate vga console
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.228355] Console: switching t=
-o colour dummy device 80x25
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.234069] matroxfb: Matrox MGA=
--G200eW (PCI) detected
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.239316] PInS memtype =3D 7
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.242198] matroxfb: cannot det=
-ermine memory size
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 36.242209] matroxfb: probe of 0=
-000:09:03.0 failed with error -1
->>>
->>> After reverting 62d89a7d49af (video: fbdev: matroxfb: set maxvram of
->>> vbG200eW to the same as vbG200 to avoid black screen):
->>>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.140763] matroxfb 0000:09:03.=
-0: vgaarb: deactivate vga console
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.148057] Console: switching t=
-o colour dummy device 80x25
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.153789] matroxfb: Matrox MGA=
--G200eW (PCI) detected
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.159042] PInS memtype =3D 7
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.161953] matroxfb: 640x480x8b=
-pp (virtual: 640x13107)
->>> =C2=A0=C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 38.167175] matroxfb: framebuffe=
-r at 0xC5000000, mapped to 0x000000006f41c38c, size 8388608
->>>
->>>>> The master commit 62d89a7d49a was added to v5.18-rc1, and was also
->>>>> backported to the Linux 5.15 series in 5.15.33.
->>
->> Good.
->>
->> Could you test if the patch below works for you as well (on top of
->> git master) ? I believe the commit f8bf19f7f311 (video: fbdev:
->> matroxfb: set maxvram of vbG200eW to the same as vbG200 to avoid
->> black screen) changed the wrong value...
->
->> diff --git a/drivers/video/fbdev/matrox/matroxfb_base.c b/drivers/video=
-/fbdev/matrox/matroxfb_base.c
->> index 0d3cee7ae726..5192c7ac459a 100644
->> --- a/drivers/video/fbdev/matrox/matroxfb_base.c
->> +++ b/drivers/video/fbdev/matrox/matroxfb_base.c
->> @@ -1378,8 +1378,8 @@ static struct video_board vbG200 =3D {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .lowlevel =3D &matrox_G100
->> =C2=A0 };
->> =C2=A0 static struct video_board vbG200eW =3D {
->> -=C2=A0=C2=A0=C2=A0 .maxvram =3D 0x100000,
->> -=C2=A0=C2=A0=C2=A0 .maxdisplayable =3D 0x800000,
->> +=C2=A0=C2=A0=C2=A0 .maxvram =3D 0x800000,
->> +=C2=A0=C2=A0=C2=A0 .maxdisplayable =3D 0x100000,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .accelID =3D FB_ACCEL_MATROX_MGAG200,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .lowlevel =3D &matrox_G100
->> =C2=A0 };
->
-> Thank you. That worked.
->
->  =C2=A0=C2=A0=C2=A0 $ dmesg | grep -e matroxfb -e "Linux version" -e "DM=
-I:"
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 0.000000] Linux version 6.1.0.mx=
-64.440-13147-gfa99506bedb1 (pmenzel@dontpanic.molgen.mpg.de) (gcc (GCC) 11=
-.1.0, GNU ld (GNU Binutils) 2.37) #1 SMP PREEMPT_DYNAMIC Mon Dec 19 12:13:=
-21 CET 2022
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0=C2=A0 0.000000] DMI: Dell Inc. PowerEd=
-ge R815/04Y8PT, BIOS 3.4.0 03/23/2018
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 29.033666] matroxfb 0000:0a:03.0: vgaa=
-rb: deactivate vga console
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 29.046608] matroxfb: Matrox MGA-G200eW=
- (PCI) detected
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 29.054769] matroxfb: 640x480x8bpp (vir=
-tual: 640x1638)
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 29.059901] matroxfb: framebuffer at 0x=
-E4000000, mapped to 0x00000000d36c9776, size 8388608
->  =C2=A0=C2=A0=C2=A0 [=C2=A0=C2=A0 34.917829] matroxfb: Pixel PLL not loc=
-ked after 5 secs
->  =C2=A0=C2=A0=C2=A0 $ lspci -nn -s 0a:03.0
->  =C2=A0=C2=A0=C2=A0 0a:03.0 VGA compatible controller [0300]: Matrox Ele=
-ctronics Systems Ltd. MGA G200eW WPCM450 [102b:0532] (rev 0a)
->
->> If it works, can you send a patch?
->
-> Will do.
+Remove struct fb_info.apertures and FBINFO_MISC_FIRMWARE from fbdev
+and handle the aperture ownership without involving the fbdev core.
 
-Great.
+The apertures field in struct fb_info is a remnant from earlier
+ownership management for framebuffer apertures. When fbdev core code
+still handled ownership of the framebuffer among fbdev device drivers,
+generic drivers set the aperture ranges to claim the firmware scanout
+buffer for themselves.
 
-> If you have some explanation though, I could add to the commit message, =
-that=E2=80=99d be great.
+Now that we have a module with helpers that manage aperture and
+framebuffer ownership among drivers, the aperture field is not needed
+any longer. In fact, several drivers set this field, even though they
+are not generic fbdev drivers. Only drivers that set FBINFO_MISC_FIRMWARE
+can use apertures in a meaningful way.
 
-Look at the comment in the code, a few lines further down, for the vbG400 =
-card:
+To remove FBINFO_MISC_FIRMWARE, patches 1 and 2 remove it from fbcon. It
+was used to work around issues with font loading. That is now all handled
+in userspace.
 
-/* from doc it looks like that accelerator can draw only to low 16MB :-( D=
-irect accesses & displaying are OK for
-    whole 32MB */
-static struct video_board vbG400 =3D {
-         .maxvram =3D 0x2000000,
-         .maxdisplayable =3D 0x1000000,
+Patches 3 to 9 remove aperture setup from all non-generic drivers. These
+drivers are not for firmware graphics and do not have to set the values.
+For DRM, we do not need to allocate the apertures field any longer.
 
-it makes sense to have maxdisplayable smaller than maxvram.
-But Z Liu made maxvram lower than maxdisplayable.
+Patches 10 to 17 update all generic fbdev drivers to manage aperture
+ownership by themselves by called Linux aperture helpers. The setup of
+the apertures field and setting FBINFO_MISC_FIRMWARE is being removed as
+a result of that.
 
-Helge
+With all of its users gone, patch 18 removes FBINFO_MISC_FIRMWARE, struct
+fb_info.apertures and the fbdev core's aperture code.
+
+Tested with handover combinations of efifb, simpledrm and radeon.
+
+Thomas Zimmermann (18):
+  fbcon: Remove trailing whitespaces
+  Revert "fbcon: don't lose the console font across generic->chip driver
+    switch"
+  drm/gma500: Do not set struct fb_info.apertures
+  drm/i915: Do not set struct fb_info.apertures
+  drm/radeon: Do not set struct fb_info.apertures
+  drm/fb-helper: Do not allocate unused apertures structure
+  fbdev/clps711x-fb: Do not set struct fb_info.apertures
+  fbdev/hyperv-fb: Do not set struct fb_info.apertures
+  vfio-mdev/mdpy-fb: Do not set struct fb_info.apertures
+  fbdev/efifb: Add struct efifb_par for driver data
+  fbdev/efifb: Do not use struct fb_info.apertures
+  fbdev/offb: Allocate struct offb_par with framebuffer_alloc()
+  fbdev/offb: Do not use struct fb_info.apertures
+  fbdev/simplefb: Do not use struct fb_info.apertures
+  fbdev/vesafb: Remove trailing whitespaces
+  fbdev/vesafb: Do not use struct fb_info.apertures
+  fbdev/vga16fb: Do not use struct fb_info.apertures
+  drm/fbdev: Remove aperture handling and FBINFO_MISC_FIRMWARE
+
+ drivers/gpu/drm/drm_fb_helper.c            | 20 ++---------
+ drivers/gpu/drm/gma500/framebuffer.c       |  5 ---
+ drivers/gpu/drm/i915/display/intel_fbdev.c |  7 ----
+ drivers/gpu/drm/radeon/radeon_fb.c         |  4 ---
+ drivers/video/fbdev/clps711x-fb.c          | 10 +-----
+ drivers/video/fbdev/core/fbcon.c           | 41 ++++++++++------------
+ drivers/video/fbdev/core/fbmem.c           | 33 -----------------
+ drivers/video/fbdev/core/fbsysfs.c         |  1 -
+ drivers/video/fbdev/efifb.c                | 35 +++++++++++-------
+ drivers/video/fbdev/hyperv_fb.c            | 17 ++++-----
+ drivers/video/fbdev/offb.c                 | 33 +++++++++--------
+ drivers/video/fbdev/simplefb.c             | 19 +++++-----
+ drivers/video/fbdev/vesafb.c               | 37 ++++++++++---------
+ drivers/video/fbdev/vga16fb.c              | 15 +++-----
+ include/linux/fb.h                         | 22 ------------
+ samples/vfio-mdev/mdpy-fb.c                |  8 -----
+ 16 files changed, 99 insertions(+), 208 deletions(-)
+
+
+base-commit: d322881f7e33af24901ee8ccaec3beef82f21203
+prerequisite-patch-id: c2b2f08f0eccc9f5df0c0da49fa1d36267deb11d
+prerequisite-patch-id: c67e5d886a47b7d0266d81100837557fda34cb24
+prerequisite-patch-id: 3f204510fcbf9530d6540bd8e6128cce598988b6
+-- 
+2.39.0
+
