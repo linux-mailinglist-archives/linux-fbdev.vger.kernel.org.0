@@ -2,203 +2,100 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D734650FBC
-	for <lists+linux-fbdev@lfdr.de>; Mon, 19 Dec 2022 17:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A192651CE9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Dec 2022 10:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231840AbiLSQFi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 19 Dec 2022 11:05:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46708 "EHLO
+        id S229749AbiLTJL2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 20 Dec 2022 04:11:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbiLSQFZ (ORCPT
+        with ESMTP id S229758AbiLTJL0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 19 Dec 2022 11:05:25 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FC72BDB;
-        Mon, 19 Dec 2022 08:05:24 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id D43293814D;
-        Mon, 19 Dec 2022 16:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1671465922; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
+        Tue, 20 Dec 2022 04:11:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1DD17AAF
+        for <linux-fbdev@vger.kernel.org>; Tue, 20 Dec 2022 01:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1671527438;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=t7h0EXkUAVrRAP/PStW6XTr3++6xPsY6KDln6r0Rw7E=;
-        b=u7ZYAWmY4Z+/LC6wlTezBTokc/XIEsHEjQ0W0RANZpeMnaZT6GB8YMAcYXr0BPDL7bvS4k
-        s22o5XlBct47Iv4s8tcy2yfhv3zHzbqhQoxxkCRodTHaJfHYgYRtIbCq0z7lgLgd9RnnBc
-        /a8jRAX7O8tgFDgmnQc2P2eBtggVyXg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1671465922;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=t7h0EXkUAVrRAP/PStW6XTr3++6xPsY6KDln6r0Rw7E=;
-        b=BJX4LNDRHzlZuDQdhKAJdNuaEUMNlnC8x6UTj+YQKrfJXdrFTqCnUrzFA23uDEl5GEt0la
-        5U6oHMHbA4uvxZAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9E74313910;
-        Mon, 19 Dec 2022 16:05:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id cAPGJcKLoGPeZwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Mon, 19 Dec 2022 16:05:22 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     daniel@ffwll.ch, airlied@gmail.com, deller@gmx.de,
-        javierm@redhat.com
+        bh=Nkva43Ev6FmONs/91WyhlWJwflJzPv43uZcJFYvlalU=;
+        b=ZOz9yi8O6/fuTaqK9UF8rBB9tViyIklanR+2/D8Pg1cHkv/FseZD58SNNgCcVBFVw+WC5E
+        sBhslITFibruSdTiCcBXCV63EEpsIH8W+lonbrkZ0sHhtkCJl8ze2uP02ux1QU9OyVGGIy
+        ebBFYn/rHbaFHuGgh+AJ4qLBAzmtGJg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-207-ctGPAa36NnqAKxF9IC6Ruw-1; Tue, 20 Dec 2022 04:10:36 -0500
+X-MC-Unique: ctGPAa36NnqAKxF9IC6Ruw-1
+Received: by mail-wr1-f71.google.com with SMTP id i13-20020adfa50d000000b0025f5084b95dso1140855wrb.5
+        for <linux-fbdev@vger.kernel.org>; Tue, 20 Dec 2022 01:10:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nkva43Ev6FmONs/91WyhlWJwflJzPv43uZcJFYvlalU=;
+        b=sgFmTsGbnySftbdW8QwlItXMgPUh4YWIKz1a33sTKgk8vnc6rheB5SBbrjnB8BMOYA
+         gs7o4X+X50ZAHe7/Q1Yx+8TFx5xEs6b4YmhDH4H88YY0uJtk7WSBL0ryl75clnXGsrSG
+         3QpYuQfZTwrK+7yam3Ok670O/l3EC42wcmcquC5jJmbYwpIy/A+Hr8uf7TGtNi/hMG1R
+         DF9iCVU2wQpLQ+nwnokTipSSO3PVjkDo0yLomIvWsAKGXxKPT2iVO+A1Wg6NgJDlMIaG
+         FWkCQ+3fHfb+UCRtiypx5scVNlPgNZN6ZDPWiRmPr2aDyDIcuX+6Umdh8RD9ZSox5/cw
+         mHXQ==
+X-Gm-Message-State: AFqh2kpMkOPZ0e4+2ao5N9B1MPUF/OUUHqC32l56QpwGIwlFec1ed6nN
+        TgbiwUnSOTZT+VqeGaTXp4RZ42IgprFiZUaTgqv6tsEilleA/n87xDMkHIpaeiW3lnJ8jWBhPAo
+        1evtebmVC7i43Ntb16ry9uNs=
+X-Received: by 2002:a5d:624a:0:b0:242:19b3:67 with SMTP id m10-20020a5d624a000000b0024219b30067mr748878wrv.37.1671527435425;
+        Tue, 20 Dec 2022 01:10:35 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXvZ4T3pjgbBye4AD0pnUB9As/CnLPdlMjMDQrxm4f9mLfnMBPQihgpuK1r6jSAdZ8wsH7ZV9g==
+X-Received: by 2002:a5d:624a:0:b0:242:19b3:67 with SMTP id m10-20020a5d624a000000b0024219b30067mr748861wrv.37.1671527435215;
+        Tue, 20 Dec 2022 01:10:35 -0800 (PST)
+Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id v5-20020a5d59c5000000b00241fea203b6sm12177113wry.87.2022.12.20.01.10.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Dec 2022 01:10:34 -0800 (PST)
+Message-ID: <1ba311d8-efe5-c3f0-761e-1b5695dd5ba2@redhat.com>
+Date:   Tue, 20 Dec 2022 10:10:33 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 01/18] fbcon: Remove trailing whitespaces
+Content-Language: en-US
+To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
+        airlied@gmail.com, deller@gmx.de
 Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         intel-gfx@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 18/18] drm/fbdev: Remove aperture handling and FBINFO_MISC_FIRMWARE
-Date:   Mon, 19 Dec 2022 17:05:16 +0100
-Message-Id: <20221219160516.23436-19-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20221219160516.23436-1-tzimmermann@suse.de>
+        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org
 References: <20221219160516.23436-1-tzimmermann@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+ <20221219160516.23436-2-tzimmermann@suse.de>
+From:   Javier Martinez Canillas <javierm@redhat.com>
+In-Reply-To: <20221219160516.23436-2-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-There are no users left of struct fb_info.apertures and the flag
-FBINFO_MISC_FIRMWARE. Remove both and the aperture-ownership code
-in the fbdev core. All code for aperture ownership is now located
-in the fbdev drivers.
+On 12/19/22 17:04, Thomas Zimmermann wrote:
+> Fix coding style. No functional changes.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/video/fbdev/core/fbmem.c   | 33 ------------------------------
- drivers/video/fbdev/core/fbsysfs.c |  1 -
- include/linux/fb.h                 | 22 --------------------
- 3 files changed, 56 deletions(-)
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 3a6c8458eb8d..02217c33d152 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -13,7 +13,6 @@
- 
- #include <linux/module.h>
- 
--#include <linux/aperture.h>
- #include <linux/compat.h>
- #include <linux/types.h>
- #include <linux/errno.h>
-@@ -1653,32 +1652,6 @@ static void do_unregister_framebuffer(struct fb_info *fb_info)
- 	put_fb_info(fb_info);
- }
- 
--static int fb_aperture_acquire_for_platform_device(struct fb_info *fb_info)
--{
--	struct apertures_struct *ap = fb_info->apertures;
--	struct device *dev = fb_info->device;
--	struct platform_device *pdev;
--	unsigned int i;
--	int ret;
--
--	if (!ap)
--		return 0;
--
--	if (!dev_is_platform(dev))
--		return 0;
--
--	pdev = to_platform_device(dev);
--
--	for (ret = 0, i = 0; i < ap->count; ++i) {
--		ret = devm_aperture_acquire_for_platform_device(pdev, ap->ranges[i].base,
--								ap->ranges[i].size);
--		if (ret)
--			break;
--	}
--
--	return ret;
--}
--
- /**
-  *	register_framebuffer - registers a frame buffer device
-  *	@fb_info: frame buffer info structure
-@@ -1693,12 +1666,6 @@ register_framebuffer(struct fb_info *fb_info)
- {
- 	int ret;
- 
--	if (fb_info->flags & FBINFO_MISC_FIRMWARE) {
--		ret = fb_aperture_acquire_for_platform_device(fb_info);
--		if (ret)
--			return ret;
--	}
--
- 	mutex_lock(&registration_lock);
- 	ret = do_register_framebuffer(fb_info);
- 	mutex_unlock(&registration_lock);
-diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
-index 4d7f63892dcc..0c33c4adcd79 100644
---- a/drivers/video/fbdev/core/fbsysfs.c
-+++ b/drivers/video/fbdev/core/fbsysfs.c
-@@ -88,7 +88,6 @@ void framebuffer_release(struct fb_info *info)
- 	mutex_destroy(&info->bl_curve_mutex);
- #endif
- 
--	kfree(info->apertures);
- 	kfree(info);
- }
- EXPORT_SYMBOL(framebuffer_release);
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 96b96323e9cb..30183fd259ae 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -423,8 +423,6 @@ struct fb_tile_ops {
-  */
- #define FBINFO_MISC_ALWAYS_SETPAR   0x40000
- 
--/* where the fb is a firmware driver, and can be replaced with a proper one */
--#define FBINFO_MISC_FIRMWARE        0x80000
- /*
-  * Host and GPU endianness differ.
-  */
-@@ -499,30 +497,10 @@ struct fb_info {
- 	void *fbcon_par;                /* fbcon use-only private area */
- 	/* From here on everything is device dependent */
- 	void *par;
--	/* we need the PCI or similar aperture base/size not
--	   smem_start/size as smem_start may just be an object
--	   allocated inside the aperture so may not actually overlap */
--	struct apertures_struct {
--		unsigned int count;
--		struct aperture {
--			resource_size_t base;
--			resource_size_t size;
--		} ranges[0];
--	} *apertures;
- 
- 	bool skip_vt_switch; /* no VT switch on suspend/resume required */
- };
- 
--static inline struct apertures_struct *alloc_apertures(unsigned int max_num) {
--	struct apertures_struct *a;
--
--	a = kzalloc(struct_size(a, ranges, max_num), GFP_KERNEL);
--	if (!a)
--		return NULL;
--	a->count = max_num;
--	return a;
--}
--
- #define FBINFO_FLAG_DEFAULT	FBINFO_DEFAULT
- 
- /* This will go away
 -- 
-2.39.0
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
