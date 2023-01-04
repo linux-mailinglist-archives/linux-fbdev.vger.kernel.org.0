@@ -2,106 +2,70 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD5465D230
-	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Jan 2023 13:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E2E765D33F
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Jan 2023 13:54:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234029AbjADMQB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 4 Jan 2023 07:16:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43682 "EHLO
+        id S231722AbjADMyq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 4 Jan 2023 07:54:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233514AbjADMP7 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Jan 2023 07:15:59 -0500
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACD610B44
-        for <linux-fbdev@vger.kernel.org>; Wed,  4 Jan 2023 04:15:55 -0800 (PST)
-Received: by mail-vs1-xe34.google.com with SMTP id x65so21109839vsb.13
-        for <linux-fbdev@vger.kernel.org>; Wed, 04 Jan 2023 04:15:55 -0800 (PST)
+        with ESMTP id S230031AbjADMym (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Jan 2023 07:54:42 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207EE13EA3
+        for <linux-fbdev@vger.kernel.org>; Wed,  4 Jan 2023 04:54:42 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id c9so16214552qko.6
+        for <linux-fbdev@vger.kernel.org>; Wed, 04 Jan 2023 04:54:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RUY5y6zLuR5cWqeaKguClMSYR6J/UjlVX1mPxUIDiqs=;
-        b=VJmLCb73UryNuQbimr+CbNAQyBR7W4yGvyxJvyca8oDYvWVnVqj7g5bHUTN+kxCSqc
-         M6J5m4XgBf1sk+dTvoAU7kZ1UGKnRYcbHKwWWAiSylFKzDL9AvRUMuX41zUuYfiOBQt8
-         V+gbQmCWzQaN1FoOm8Rk+sSHWLB8Mw37LriXHhPp0pyv1AzBjWqqw2YXYqArPHATvAUt
-         7uw6BA9hAHu+IUt4BQM/Iv0SrdL95Qj2YjPaXiZ2QqMMcsU/9zaAliVp6E6dUfAsWEmf
-         v5MWVFAq7jOmXc9qPJjvooQFevpcsoWnMQvWx+ODemG+r4SHxzPc4nhaAaj8tTDgduQn
-         jETA==
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=WgtPiGBL7pKpeGAONT7jyOZBlPA87PF+BcZ0At3DRbjh8r4a90VkFTuegmf7v5I05U
+         8O8yRsMlEC8d3azBuhTVnh5a19IMri1yaM5CNo7nGSQjhbPmAzApkJwS9Ixgc01L8XVA
+         9+oXPryfLJjc92HnUP6sxIyah9VARXZTMfFxXMcqBFJ6snOmablGghR0F2+Y0sgoHgie
+         QmoiaDCXomaXijXUVGiYmzsfSWGfWMMdh1Ev9V0gp78bfPbYO2S9uBzuU4GRDkm7vJO6
+         RsJ5hkLkj5KAchsYozNwRuUxQUGpmscZ9Mbjv/HN5G//qfUumyrbxcj+0dSg+lcPq80U
+         5Wuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RUY5y6zLuR5cWqeaKguClMSYR6J/UjlVX1mPxUIDiqs=;
-        b=ZnY4z3oTyQE1OlgWvKk1AP79CcQPA17ftdYFNjLLVqlR8i5gr0PuUUBlRo+ekAfU+L
-         sF+VCfj48ImEj1dctTgNtdFd4nl1Pihd7GIXjKGWiLLUEr3TjmjK2Z1FWfTi2LfWG0xL
-         FY+chvRoZ2xxXzp8kje7Zu6HIScBj+FKzVvVdPgxkVaTeZmvoJb0JLOdTibKeYT2id18
-         y4ZhcVbWYU5XQzAsbgm5qClnXWToe/N+L90rA1Iwh6EipIAfqYYHiWN15A1T2HG5JCu7
-         GfPuGzxqMusk5akI4Fb5wflqfynqzEc7KPdioQI09h40TmmHONpBUhXPFlVAdOYJUdey
-         3m7g==
-X-Gm-Message-State: AFqh2krsZzDGZMtrgGgOM+Ki2nAFsVB3sssZdNjgzEug+834XpNdlzrz
-        3gID1f7nsibCtbxTiliS+Ii7T6Ww4oRQRl4V8o0=
-X-Google-Smtp-Source: AMrXdXs9Z6fy+tJM59MPMF0s8+Akct7I6gaT4gfcJFl0WIQDXbDv2TweXy/eYx9EaCLAbg4Zvcs+/VGDDKhatSS8Bfs=
-X-Received: by 2002:a67:5c03:0:b0:3ce:a7c5:3757 with SMTP id
- q3-20020a675c03000000b003cea7c53757mr587901vsb.63.1672834554496; Wed, 04 Jan
- 2023 04:15:54 -0800 (PST)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2m/uNsCm/OsAUZxAnJOSdXXDa9Gh4wg88n4VPL2lMU=;
+        b=s2B8+XYosDJIOKEulMU8qwE0I/bGLELMQZ4ufO4P6TVRmJvVVPrnyie0xOzMzmX7KM
+         fQuCgpiFmabYxLjEngQK4ZQvS8PaQ+m8b2oJRahM2GteRfSr5oklzqVEbM9NCd7g3EwV
+         VZ9RHaDLQ6+V3A/Y3JNpX0fMtCx+j9aC0meBlEG7EP/Z/2WQI5zcRSenX1ysTM99LEg5
+         pkMIQqaft07GBGTioINq/qVyLvFm08BsswVR34b4PDomJnBVW/OO0aZ7qhAe3HbckfjS
+         ODS0ghx+orbpGi9fww7qXpHxUQW26MtF0L4j6gNd8NNS9UsL+j5bM4w01IhZQsjuhOeq
+         XL5A==
+X-Gm-Message-State: AFqh2koldlYllJR/nhNH67KR9KcTdaY0oayf0Jf/jCcyZQogOiqCFLG1
+        cCpqC/kTg0OiP3dk/JCZ+LJwrwtyfGM/C2OPpU+kt+ZtPDo=
+X-Google-Smtp-Source: AMrXdXulKMdRBV/p4kXNikXMHFtLk5IOIYLDRJA7lpoRUfUF8+2cEqH8pHXLi4qSeE4J34Id+Th3n/mMQjaZgJWZFyc=
+X-Received: by 2002:a05:620a:8502:b0:704:ad9e:ad7 with SMTP id
+ pe2-20020a05620a850200b00704ad9e0ad7mr1970941qkn.574.1672836871311; Wed, 04
+ Jan 2023 04:54:31 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a9f:2d84:0:0:0:0:0 with HTTP; Wed, 4 Jan 2023 04:15:54 -0800 (PST)
-Reply-To: garryfoundation2022@gmail.com
-From:   Garry Myles <oluyedeblessing4@gmail.com>
-Date:   Wed, 4 Jan 2023 15:15:54 +0300
-Message-ID: <CAGHbOor6dJX1ws5Ji0MQYHOHZdAji7MraVGYpVYHXbgqs4W8Kw@mail.gmail.com>
+Received: by 2002:a05:6200:5d91:b0:4a5:78e9:2012 with HTTP; Wed, 4 Jan 2023
+ 04:54:30 -0800 (PST)
+Reply-To: Gregdenzell9@gmail.com
+From:   Greg Denzell <mzsophie@gmail.com>
+Date:   Wed, 4 Jan 2023 12:54:30 +0000
+Message-ID: <CAEoj5=a-iCsZoe4s4S8=o2P=8nfbDVvG8sm_YZ9wpP37ZOqYKA@mail.gmail.com>
 Subject: 
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e34 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.7409]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [oluyedeblessing4[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [garryfoundation2022[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [oluyedeblessing4[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
---=20
-Guten Tag
-Sie haben eine Spende von 2.000.000,00 =E2=82=AC von der GARRY CHARITY FOUN=
-DATION.
-Bitte kontaktieren Sie uns =C3=BCber: garryfoundation2022@gmail.com f=C3=BC=
-r
-weitere Informationen dar=C3=BCber, wie Sie diese Spende in Anspruch nehmen
-k=C3=B6nnen.
+Seasons Greetings!
 
-mit freundlichen Gr=C3=BC=C3=9Fen
-Garry Myles
+This will remind you again that I have not yet received your reply to
+my last message to you.
