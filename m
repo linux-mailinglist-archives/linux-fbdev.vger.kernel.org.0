@@ -2,116 +2,112 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 733EC65C3BE
-	for <lists+linux-fbdev@lfdr.de>; Tue,  3 Jan 2023 17:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DBBF65CD39
+	for <lists+linux-fbdev@lfdr.de>; Wed,  4 Jan 2023 07:41:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231229AbjACQUO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 3 Jan 2023 11:20:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
+        id S233373AbjADGki (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 4 Jan 2023 01:40:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238057AbjACQUK (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 3 Jan 2023 11:20:10 -0500
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9445C1A0
-        for <linux-fbdev@vger.kernel.org>; Tue,  3 Jan 2023 08:20:08 -0800 (PST)
-Received: from [141.14.14.97] (v097.vpnx.molgen.mpg.de [141.14.14.97])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0557960293A85;
-        Tue,  3 Jan 2023 17:20:07 +0100 (CET)
-Message-ID: <c11a7128-ec34-c497-e012-577a4928dc94@molgen.mpg.de>
-Date:   Tue, 3 Jan 2023 17:20:06 +0100
+        with ESMTP id S233330AbjADGkM (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 4 Jan 2023 01:40:12 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92607183A6
+        for <linux-fbdev@vger.kernel.org>; Tue,  3 Jan 2023 22:40:09 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id x26so15933134pfq.10
+        for <linux-fbdev@vger.kernel.org>; Tue, 03 Jan 2023 22:40:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Sm2IrX2as+k9LNhXBii+2EPLTtwp8Q7bZRIteVKR48Y=;
+        b=lxucC7WdJqs/f6vnO0xyjDIiYvkO1zIUbY5dvzc1gS3dAy3OfQQYNJY3qgkIp4IvGC
+         Oi3Qiq2J4RL2YPCvlge/HIY6+nyJiUXFhgSIFyzAmwWVXagd97/PUtXlb5jfygBt6BRf
+         fwWN260uJVbK/yc9R8WuWezkJeUQdhpjES8XGIHyH3AdF/AFkNlz+YfQuZN2gO1EmOPc
+         8KKIj6/qhE8i3Fe0WWEG9u5kvwBFlkiVo2YRHtZuVzM09AJ0QQD44w0muYyCcKVpzTF1
+         KpA5Z3tjS1NOBVAYcaIMzzN2x6CIMAwuhChhhugpiMtk+ck5Mr24ICxbQ/8nSTPVum7J
+         QJOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sm2IrX2as+k9LNhXBii+2EPLTtwp8Q7bZRIteVKR48Y=;
+        b=aYPJz4/wWHU+/2pkb2BedptZ8JyThRv9SCB717d9T+xRULqoXpiS4RdTQaVAFR4Ni0
+         d7PCH/Wf2kPShN3+evSfWFzI1uiWg1DAcygL0Tc2Z+JD+VQ7WiseksfYONbyGOfM+/wc
+         ZZ9kmaiwhtZDGMDeXnUTW6g/KOXZp+2U0Q1sWUpkoc7aqRLIxZtnDOpoTETycpUznBG9
+         XW177U1keHImMIQabroLjCQUOs9gHWmhzTvHFmRjyM0dyQEoAs4GYFIprcu03kT45SvR
+         /vwECMNKaUt2/c2WdwF2R72y4Ks5XCBpf1l3Va9HZ0kWqzUHAQelRx9avzE4Yripj+qd
+         u6eg==
+X-Gm-Message-State: AFqh2kqbqJt9xx29oC00WYeC8y2T73WFEaLar9aJggPHMBwWZsZfIdtd
+        SZfaiYTwoAY+VgQliaVFWHqR5hoyUkQTX/igPHM=
+X-Google-Smtp-Source: AMrXdXtzEgdGNYXviASYnSqNJC0ZiQxlpsBhKtwlV/fC9EHlEQAD4b0ufCVYBzwI8FMubEJLf3ti+D5YEYUYV8QjtJ4=
+X-Received: by 2002:a62:1d07:0:b0:582:e7c:f6f3 with SMTP id
+ d7-20020a621d07000000b005820e7cf6f3mr1157112pfd.8.1672814408803; Tue, 03 Jan
+ 2023 22:40:08 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: Why is mgag200 not used over matroxfb?
-Content-Language: en-US
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     "Z. Liu" <liuzx@knownsec.com>, Helge Deller <deller@gmx.de>,
-        linux-fbdev@vger.kernel.org, it+linux-fbdev@molgen.mpg.de
-References: <5da53ec5-3a9c-ec87-da20-69f140aaaa6b@molgen.mpg.de>
- <972999d3-b75d-5680-fcef-6e6905c52ac5@suse.de>
- <7b85b832-e6fd-fe42-c6a1-93ebb591383c@molgen.mpg.de>
-In-Reply-To: <7b85b832-e6fd-fe42-c6a1-93ebb591383c@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Reply-To: mrs.maryander1947@gmail.com
+Sender: mrs.janeval197@gmail.com
+Received: by 2002:a05:7300:7652:b0:94:fcda:856a with HTTP; Tue, 3 Jan 2023
+ 22:40:08 -0800 (PST)
+From:   "Mrs. Mary Anderson" <amrsmary16@gmail.com>
+Date:   Wed, 4 Jan 2023 06:40:08 +0000
+X-Google-Sender-Auth: jTqv_0vHyo2y0EStaK-jLA4ClSk
+Message-ID: <CAL+V8fx8n5YVCBnyPw3TzcFWBtXqZO5w+9A_JwP7BB54jJSoEA@mail.gmail.com>
+Subject: Dear Beloved,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5800]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:431 listed in]
+        [list.dnswl.org]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrs.janeval197[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrs.maryander1947[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [amrsmary16[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  1.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dear Thomas,
+Hello,
 
+Dear Beloved,
 
-I have to correct myself.
+I am Mrs. Mary Anderson, It is understandable that you may be a bit
+apprehensive because you do not know me, I found your email address
+from a Human resources database and decided to contact you. I would
+love to employ you into my charity work, I am ready to donate some
+money to you to carry on the Charity work in your country. Please
+reply so that i will give you further details and tell you about
+myself.
 
-
-Am 16.12.22 um 14:16 schrieb Paul Menzel:
-
-> Am 16.12.22 um 13:27 schrieb Thomas Zimmermann:
-> 
->> Am 15.12.22 um 17:39 schrieb Paul Menzel:
-> 
-> […]
-> 
->>> Between Linux 5.10.103 and 5.10.110/5.15.77, matrixfb fails to load.
->>
->> Off-topic, but related. matroxfb is obsolete and there's a maintained 
->> DRM replacement (mgag200) for this hardware.
-> 
-> I also remembered something like this in the back of my head. Though I 
-> thought about using simpledrm (`DRM_SIMPLEDRM`), we do not build though.
-> 
->> Is there anything missing from mgag200 that prevents you from switching?
-> No, it looks like the matroxfb modules take precedence over the mgag200 
-> module:
-> 
->      $ grep -e FB_MATROX -e MGAG /boot/config-5.15.77.mx64.440
->      CONFIG_DRM_MGAG200=m
->      CONFIG_FB_MATROX=m
->      CONFIG_FB_MATROX_MILLENIUM=y
->      CONFIG_FB_MATROX_MYSTIQUE=y
->      CONFIG_FB_MATROX_G=y
->      CONFIG_FB_MATROX_I2C=m
->      # CONFIG_FB_MATROX_MAVEN is not set
-> 
->      $ lsmod | grep matrox
->      matroxfb_base          28672  0
->      matroxfb_g450          16384  1 matroxfb_base
->      matroxfb_Ti3026        16384  1 matroxfb_base
->      matroxfb_accel         16384  1 matroxfb_base
->      matroxfb_DAC1064       20480  1 matroxfb_base
->      g450_pll               16384  2 matroxfb_g450,matroxfb_DAC1064
->      matroxfb_misc          20480  5 g450_pll,matroxfb_Ti3026,matroxfb_base,matroxfb_g450,matroxfb_DAC1064
-
-The search string was incorrect. The module mgag200, is loaded:
-
-     $ lsmod | grep mgag200
-     mgag200                36864  0
-     drm_kms_helper        241664  3 mgag200
-     drm                   524288  3 drm_kms_helper,mgag200
-     i2c_algo_bit           16384  1 mgag200
-
-and it is used according to `lspci`:
-
-     $ lspci -nn -k -s 09:03.
-     09:03.0 VGA compatible controller [0300]: Matrox Electronics 
-Systems Ltd. MGA G200eW WPCM450 [102b:0532] (rev 0a)
-         DeviceName: Embedded Video
-         Subsystem: Dell MGA G200eW WPCM450 [1028:02d3]
-         Kernel driver in use: mgag200
-         Kernel modules: matroxfb_base, mgag200
-
-So, it was only a cosmetic issue.
-
-
-Kind regards,
-
-Paul
+Yours Sincerely
+Mrs. Mary Anderson
