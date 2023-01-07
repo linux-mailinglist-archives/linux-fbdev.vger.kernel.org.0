@@ -2,148 +2,168 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34AAE660A34
-	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Jan 2023 00:20:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A583661102
+	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Jan 2023 19:27:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjAFXUB (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 6 Jan 2023 18:20:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41852 "EHLO
+        id S232830AbjAGS0u (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 7 Jan 2023 13:26:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjAFXUA (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 6 Jan 2023 18:20:00 -0500
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76EB4848FF;
-        Fri,  6 Jan 2023 15:19:59 -0800 (PST)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1322d768ba7so3239599fac.5;
-        Fri, 06 Jan 2023 15:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xrkX5xkEIRPtCscm6csPTufu9CiZDK4zYthOrxMdi9s=;
-        b=IzKCcfOm5QxzTMADdbbxl8ayD9YBk2GZVUm8qQthuVSfBUuLDERrkPUAc3G7/5B5pf
-         6s97IhewUNsaMx6D+l2U42aZ3Ob5zb6eZf15FrV1p2cRZXalO1Nmx6Wrw3IbZl/N6Yp1
-         9RtxJNBYm6ONbrWIYTitsYd5DycKUVijDr8k/VGOMV/fOR7pbFFRuz5H9uQ/H55IJdbb
-         ninmemoxebDxWJKadUuYAG1Z4cf9Ht/v2q6kAfX6oRao8tNZr9BNLnZtL1UffU+VphfT
-         pUHEecfDrXvo1qYVJb98uOFzM8TlIuL7YPpFoldTBfOGDxSOWZ200BT8piIrnXPVcivx
-         KKpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xrkX5xkEIRPtCscm6csPTufu9CiZDK4zYthOrxMdi9s=;
-        b=q+wiEDtTWp4Zjp607lfvBncz5hftNm2lazFzkGaqrmkdkf9t4kBkpHorRFUC0hh5Vd
-         /Se+uGm2uL9KzFxwnuRhj7vDq/CfSH43VNSfwEMdpEQUOuvKjaSUr5NsVJq4Cx+uwp5u
-         dlzQDveZ9vpo2L4uWKglKFlMEV2R6a68MSxJ4uUkc8cwewP7I7PaueB/sfRmMuoYPqMX
-         8w8bmA+lMlzQZZU/DdlEi0dBSLL3TFOKERAudV/7uIoHWgh9hZQC/KTMVBEsB/2PNmam
-         5/ANjKDpIjpZvqgZ0W28l66LGTOvKRBgYlzgjSTPC3t5GFkh63S5C0INMLPxli7QTtIP
-         tR8g==
-X-Gm-Message-State: AFqh2kpRGZ+9PI6pPXvnTLgg221qntjjOvcXEsplcf7YtzECfSdoBEGk
-        VMDnfLqAPd5NP0bVWfBt0Ch9BibFUIQ+NULwDmE=
-X-Google-Smtp-Source: AMrXdXs2YfOVRGfvirBoBH2dILSBsh8py8ufVw8s7A2EukCt7u3cQI/2MK45GFXF4VvUSMq3w5jrtYaepa7teCmjX7Y=
-X-Received: by 2002:a05:6870:1706:b0:144:dffd:8302 with SMTP id
- h6-20020a056870170600b00144dffd8302mr4600339oae.146.1673047198723; Fri, 06
- Jan 2023 15:19:58 -0800 (PST)
+        with ESMTP id S232585AbjAGS0Z (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Jan 2023 13:26:25 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57AF73FA25;
+        Sat,  7 Jan 2023 10:26:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 71F18B8047E;
+        Sat,  7 Jan 2023 18:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 15737C433F0;
+        Sat,  7 Jan 2023 18:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673115981;
+        bh=2NgRSukIsXpmr4ezznzNGR723w5oZTyOcLNPLclIT8w=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+        b=rlMftI1JL5hJ/vKUK6hgp9gjqtc3W7HcF+9QURm5qT53z5i/VXxG69OkwpfgZGbTR
+         ZVpNJGFKTfRa8zjCHKjYYcs7m7TmL7OEfI7xyG9CsORNNiOvUsNUjEI7IXpd05JSHG
+         YTt3BDLf1OGm6npZG9f0n1bFdbh0u/PprR0zcYL/enO+X84iEaGLlAktqThawoxhkj
+         /R/4nBSt0qLZJ/AU5ssdZjnZKdozQqiZtjlXmta12H7oTa7Oqfbenh8YDkr2AnwMfK
+         AzuPmmFgkbijCVt5UPeuA+6c0oh4f6aexZ0PqPZi2LyYYJVIfTWVwsKXqjoFJWGH7e
+         v5dB2Z0T0y+iA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.lore.kernel.org (Postfix) with ESMTP id EB3F6C54EBC;
+        Sat,  7 Jan 2023 18:26:20 +0000 (UTC)
+From:   Sam Ravnborg via B4 Submission Endpoint 
+        <devnull+sam.ravnborg.org@kernel.org>
+Date:   Sat, 07 Jan 2023 19:26:15 +0100
+Subject: [PATCH 01/15] video: fbdev: atmel_lcdfb: Rework backlight handling
 MIME-Version: 1.0
-References: <2711de96-fcbe-5611-657a-ab29becd2ff6@gmx.de> <CAKMK7uEOX5n64cjzMt9GRQaS13HFPFyOeqdrkmzc035U5_T8tg@mail.gmail.com>
- <CAKMK7uE7CAXO50JPQ6ziQGGehqfDK2UanBQbfLdUH2RwrwXUvw@mail.gmail.com>
- <CAO2zrtYDcOfvxpG6wPghPnWZVks+NL6N9VaynsBVoX7nHBcxuw@mail.gmail.com>
- <Y7hvhtHeivfsnBtE@phenom.ffwll.local> <CAO2zrtb9H=OWPbrgmqTxQnHqETt-P4K6AxiwdtN7guxUYL2NCw@mail.gmail.com>
- <Y7h++5sU/hGJ/yTS@phenom.ffwll.local> <CAO2zrtaB3GZRSzgWu2kV_jTojwuhtL_kFz0gpzPPVGe9D8kVbQ@mail.gmail.com>
- <Y7iQckF/6EMYVpQt@phenom.ffwll.local> <CAO2zrtY+mMBTLimW6aZhOGFqqw53EVdP0CT8ieW6iVUXevZ7ag@mail.gmail.com>
- <Y7ik3ONV5ba7UXQB@phenom.ffwll.local>
-In-Reply-To: <Y7ik3ONV5ba7UXQB@phenom.ffwll.local>
-From:   Hang Zhang <zh.nvgt@gmail.com>
-Date:   Fri, 6 Jan 2023 18:19:47 -0500
-Message-ID: <CAO2zrtYeJg6Zn1SicfBNKBjioO7i07D3ir86+w5v_wVHZYUAWw@mail.gmail.com>
-Subject: Re: [PATCH] fbmem: prevent potential use-after-free issues with console_lock()
-To:     Hang Zhang <zh.nvgt@gmail.com>, Helge Deller <deller@gmx.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org>
+References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
+In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
+To:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Helge Deller <deller@gmx.de>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Miguel Ojeda <ojeda@kernel.org>, Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, Stephen Kitt <steve@sk2.org>,
         Sam Ravnborg <sam@ravnborg.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Cc:     Daniel Vetter <daniel@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+X-Mailer: b4 0.11.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1673115978; l=2641;
+ i=sam@ravnborg.org; s=20230107; h=from:subject:message-id;
+ bh=00kGRCWi8cuXpKBxkvC737vLzE0DLWF6H/syUZozYj0=; =?utf-8?q?b=3Dn0gLcHxryjYg?=
+ =?utf-8?q?M/3rj8DxmkGGgj+kqUIxzuWt9FYoauHAwjD31UB8ShIRk/2wtjXq9fNHAF2YAhlJ?=
+ YGxA/gk7AfjT/Ak1jBRmIYhfO1fh+3b+KaplQZMvBeYtU5vrsyPE
+X-Developer-Key: i=sam@ravnborg.org; a=ed25519;
+ pk=R0+pqV7BRYOAeOIGkyOrSNke7arx5y3LkEuNi37YEyU=
+X-Endpoint-Received: by B4 Submission Endpoint for sam@ravnborg.org/20230107 with auth_id=22
+X-Original-From: Sam Ravnborg <sam@ravnborg.org>
+Reply-To: <sam@ravnborg.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Jan 6, 2023 at 5:46 PM Daniel Vetter <daniel@ffwll.ch> wrote:
->
-> On Fri, Jan 06, 2023 at 05:12:57PM -0500, Hang Zhang wrote:
-> > On Fri, Jan 6, 2023 at 4:19 PM Daniel Vetter <daniel@ffwll.ch> wrote:
-> > > On Fri, Jan 06, 2023 at 03:25:14PM -0500, Hang Zhang wrote:
-> > > > On Fri, Jan 6, 2023 at 3:05 PM Daniel Vetter <daniel@ffwll.ch> wrote:
-> > > > > On Fri, Jan 06, 2023 at 02:58:27PM -0500, Hang Zhang wrote:
-> > > > > > On Fri, Jan 6, 2023 at 1:59 PM Daniel Vetter <daniel@ffwll.ch> wrote:
-> > > > > > BTW, if this is worthed a fix and the performance of console_lock() is a
-> > > > > > major concern, then I think there may be alternative solutions like adding
-> > > > > > a lock_fb_info() to the free call chain - if that's better in performance,
-> > > > > > or maybe selectively protect the matroxfb ioctl but not vblank ioctl as you
-> > > > > > mentioned.
-> > > > >
-> > > > > Please start out with explaining what kind of bug your checker is seeing,
-> > > > > and why. Not how you're trying to fix it. Because I'm pretty sure there
-> > > > > isn't a bug, but since I've already spent a pile of time looking at this,
-> > > > > I want to make sure.
-> > > >
-> > > > We are sorry for the inconvenience caused, we'll follow these practices and
-> > > > guidelines in the future. Thank you!
-> > >
-> > > Once more: Please explain what you're static checker is seeing. I want to
-> > > understanding this, and I'm hoping at least someone involved in this
-> > > static checker can explain what it thinks is going on.
-> > >
-> > > Thanks, Daniel
-> > > --
-> > > Daniel Vetter
-> > > Software Engineer, Intel Corporation
-> > > http://blog.ffwll.ch
-> >
-> > Thank you for your interest, Daniel. The checker tries first to find
-> > the free and
-> > use sites of a certain object (in this case "fb_info"), then reason
-> > about whether
-> > the use can actually happen after the free (e.g., taking into account
-> > factors like
-> > state set/check, locks, etc.), if so, it will flag a potential
-> > use-after-free. As a static
-> > checker, is doesn't execute a program or generate a PoC. We then manually
-> > review each flagged issue by inspecting all related code. In this
-> > case, the checker
-> > (and us) are unaware of the lifetime management logic, which may cause
-> > problems.
->
-> Lifetime management is and absolute basic part in the linux kernel. So if
-> your checker flags every free which isn't protected by a lock, then you'll
-> creating endless amounts of false positives. Is this really what you're
-> doing?
->
-> I'm still very confused ...
-> -Daniel
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+From: Sam Ravnborg <sam@ravnborg.org>
 
-Hi, Daniel. Lock is only one of many factors we consider in the checker, so the
-actual workflow is certainly more complicated than "mark every free w/o lock".
-E.g., we also need to consider the data flow between use and free, the state
-check, etc. But as you know, it is very challenging for a static checker to
-automatically and accurately reason about everything in the code (automatic
-lifetime management analysis can also be tricky for a static analyzer), that's
-why we perform a manual review afterward. We will continue working on the
-checker to reduce its false alarms and submit higher-quality reports to the
-community following your guidelines. Thank you so much for your time!
+The atmel_lcdfb had code to save/restore power state.
+This is not needed so drop it.
 
-Best,
-Hang
+Introduce backlight_is_brightness() to make logic simpler.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ drivers/video/fbdev/atmel_lcdfb.c | 24 +++---------------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
+index 1fc8de4ecbeb..d297b3892637 100644
+--- a/drivers/video/fbdev/atmel_lcdfb.c
++++ b/drivers/video/fbdev/atmel_lcdfb.c
+@@ -49,7 +49,6 @@ struct atmel_lcdfb_info {
+ 	struct clk		*lcdc_clk;
+ 
+ 	struct backlight_device	*backlight;
+-	u8			bl_power;
+ 	u8			saved_lcdcon;
+ 
+ 	u32			pseudo_palette[16];
+@@ -109,32 +108,18 @@ static u32 contrast_ctr = ATMEL_LCDC_PS_DIV8
+ static int atmel_bl_update_status(struct backlight_device *bl)
+ {
+ 	struct atmel_lcdfb_info *sinfo = bl_get_data(bl);
+-	int			power = sinfo->bl_power;
+-	int			brightness = bl->props.brightness;
++	int brightness;
+ 
+-	/* REVISIT there may be a meaningful difference between
+-	 * fb_blank and power ... there seem to be some cases
+-	 * this doesn't handle correctly.
+-	 */
+-	if (bl->props.fb_blank != sinfo->bl_power)
+-		power = bl->props.fb_blank;
+-	else if (bl->props.power != sinfo->bl_power)
+-		power = bl->props.power;
+-
+-	if (brightness < 0 && power == FB_BLANK_UNBLANK)
+-		brightness = lcdc_readl(sinfo, ATMEL_LCDC_CONTRAST_VAL);
+-	else if (power != FB_BLANK_UNBLANK)
+-		brightness = 0;
++	brightness = backlight_get_brightness(bl);
+ 
+ 	lcdc_writel(sinfo, ATMEL_LCDC_CONTRAST_VAL, brightness);
++
+ 	if (contrast_ctr & ATMEL_LCDC_POL_POSITIVE)
+ 		lcdc_writel(sinfo, ATMEL_LCDC_CONTRAST_CTR,
+ 			brightness ? contrast_ctr : 0);
+ 	else
+ 		lcdc_writel(sinfo, ATMEL_LCDC_CONTRAST_CTR, contrast_ctr);
+ 
+-	bl->props.fb_blank = bl->props.power = sinfo->bl_power = power;
+-
+ 	return 0;
+ }
+ 
+@@ -155,8 +140,6 @@ static void init_backlight(struct atmel_lcdfb_info *sinfo)
+ 	struct backlight_properties props;
+ 	struct backlight_device	*bl;
+ 
+-	sinfo->bl_power = FB_BLANK_UNBLANK;
+-
+ 	if (sinfo->backlight)
+ 		return;
+ 
+@@ -173,7 +156,6 @@ static void init_backlight(struct atmel_lcdfb_info *sinfo)
+ 	sinfo->backlight = bl;
+ 
+ 	bl->props.power = FB_BLANK_UNBLANK;
+-	bl->props.fb_blank = FB_BLANK_UNBLANK;
+ 	bl->props.brightness = atmel_bl_get_brightness(bl);
+ }
+ 
+
+-- 
+2.34.1
