@@ -2,59 +2,38 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928DB6611BA
-	for <lists+linux-fbdev@lfdr.de>; Sat,  7 Jan 2023 22:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DE5661423
+	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Jan 2023 09:22:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232479AbjAGVCw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 7 Jan 2023 16:02:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37474 "EHLO
+        id S232543AbjAHIWp convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Sun, 8 Jan 2023 03:22:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbjAGVCv (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 7 Jan 2023 16:02:51 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3E043D80;
-        Sat,  7 Jan 2023 13:02:50 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-4b6255ce5baso65437427b3.11;
-        Sat, 07 Jan 2023 13:02:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JmL5h/5f9ZKkHhV7ji7KKVGJQTUq0yPHfnhiMRhXed0=;
-        b=IK5dGKTx88W2mfNkdSbqWACqkjubhVS9N14mCOb6xiNrTRTmnuplQafYC0im+wGspK
-         eOYeaF0MULlk8xs1MhOKyABR+2n5mu7ywO33aNQ9VX4GMkdSdCVqflFNfkdkPvE907aV
-         AbMRlhdfsnbXDXTGbNIAQfaGPRPsPMo8biAT31OQE9sPB82/31f0is5EfnCupoTz/Ke+
-         5qPrTwyq0HpYK24udJ89pRlkE2Z5QaSlpexv9uCe2Y49IpPc0IVSTp5co8YZkKYLFYOl
-         z+xqA+ASKB1ZQdTTr7sECFdnwcqnzJz4QBV2ycEBNoSYjk2aEYooKDaJopPZvE6w6Z6k
-         Ar3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JmL5h/5f9ZKkHhV7ji7KKVGJQTUq0yPHfnhiMRhXed0=;
-        b=O2Jt2D/UOX8udyJw4wmKiwmRJp1QZZDvWL8gSq+6byXI9i06Z5PMsbU6ZWUsdhkoVG
-         MfGZwjwLJCITxyV+wd++Fwcr1rYoLAI23Rm2RfzCNY88alsjYN87pKjmJultoXVM4mnG
-         Tiwve8thwK39D8yykpWbuYWE1juUcL8UsAss+frof2mdcZmJb/cJZWyJtEe8JBKU0Qry
-         2arFjIT8c6wBr1ZEX0O+ZsZ4N7umqG4oCN8OUEJAA0ZawLz1F2o1eOAMrzhDNlpMyG4L
-         9z7LoOTrBPvXmKafgXDYStxi6lv8gy/lmK9XmeoagdJL2DUxs/3mWcxf88uUFTkx06yd
-         u9zw==
-X-Gm-Message-State: AFqh2kquv0h80YVRSWW24KesVvJ+CgiZooYNZ5yQ5Hfr405m5dN4uvxE
-        Pn1IXU5hcIx/bWJtjQmrGVG88GFyRYO2DNpEyK0=
-X-Google-Smtp-Source: AMrXdXvY/st+xuDrW4znKkHpZttsCvsZGZkx5Bw3ldG/KbixkSHtRzf/+VMAvkN/c9NxoWqjkDvGG4OpHXXkd75XJ3w=
-X-Received: by 2002:a81:484f:0:b0:3ed:90d2:2ab8 with SMTP id
- v76-20020a81484f000000b003ed90d22ab8mr582273ywa.67.1673125369382; Sat, 07 Jan
- 2023 13:02:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-12-1bd9bafb351f@ravnborg.org>
-In-Reply-To: <20230107-sam-video-backlight-drop-fb_blank-v1-12-1bd9bafb351f@ravnborg.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 Jan 2023 22:02:38 +0100
-Message-ID: <CANiq72mFMJuec+r=T6xYtLpuU+a1rOrAhrHiecy_1Jpj2m4J=g@mail.gmail.com>
-Subject: Re: [PATCH 12/15] auxdisplay: ht16k33: Introduce backlight_get_brightness()
-To:     sam@ravnborg.org, Stephen Kitt <steve@sk2.org>
-Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
+        with ESMTP id S230363AbjAHIWo (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 8 Jan 2023 03:22:44 -0500
+X-Greylist: delayed 141315 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Jan 2023 00:22:43 PST
+Received: from 18.mo582.mail-out.ovh.net (18.mo582.mail-out.ovh.net [46.105.73.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F201572C
+        for <linux-fbdev@vger.kernel.org>; Sun,  8 Jan 2023 00:22:42 -0800 (PST)
+Received: from director3.ghost.mail-out.ovh.net (unknown [10.109.143.232])
+        by mo582.mail-out.ovh.net (Postfix) with ESMTP id 4B11C23BC3
+        for <linux-fbdev@vger.kernel.org>; Sun,  8 Jan 2023 07:45:54 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-dlrtv (unknown [10.109.156.99])
+        by director3.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 9B5F31FEF4;
+        Sun,  8 Jan 2023 07:45:49 +0000 (UTC)
+Received: from sk2.org ([37.59.142.106])
+        by ghost-submission-6684bf9d7b-dlrtv with ESMTPSA
+        id XCz1Hq10umNDGgAAuoryaQ
+        (envelope-from <steve@sk2.org>); Sun, 08 Jan 2023 07:45:49 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-106R0063ead8ad9-a798-4b11-941a-dcd5f5867b68,
+                    5128B599F7D401446F64D4771BE19AB2B9CD7A8B) smtp.auth=steve@sk2.org
+X-OVh-ClientIp: 37.167.47.239
+Date:   Sun, 08 Jan 2023 08:45:46 +0100
+From:   Stephen Kitt <steve@sk2.org>
+To:     Sam Ravnborg <sam@ravnborg.org>
+CC:     Sam Ravnborg via B4 Submission Endpoint 
+        <devnull+sam.ravnborg.org@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Helge Deller <deller@gmx.de>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
@@ -70,39 +49,85 @@ Cc:     Nicolas Ferre <nicolas.ferre@microchip.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
         linuxppc-dev@lists.ozlabs.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_01/15=5D_video=3A_fbdev=3A_atm?= =?US-ASCII?Q?el=5Flcdfb=3A_Rework_backlight_handling?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <Y7nb2q6SDota/rTU@ravnborg.org>
+References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org> <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org> <553AE999-CAF1-4E59-9F3F-68591ED192DE@sk2.org> <Y7nb2q6SDota/rTU@ravnborg.org>
+Message-ID: <366FC0B8-21E2-4642-A5A5-CF4B6AB046B0@sk2.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Ovh-Tracer-Id: 8408783456216778374
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeefgdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevufgfjghfkfggtgfgsehtqhhmtddtreejnecuhfhrohhmpefuthgvphhhvghnucfmihhtthcuoehsthgvvhgvsehskhdvrdhorhhgqeenucggtffrrghtthgvrhhnpeevieelieekfeelhfduffdvgfduvdegkeeljeejhfdtkeeujeeileekgeeugefhhfenucffohhmrghinheplhhkmhhlrdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehsthgvvhgvsehskhdvrdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhfsgguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehkedvpdhmohguvgepshhmthhpohhuth
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jan 7, 2023 at 7:26 PM Sam Ravnborg via B4 Submission Endpoint
-<devnull+sam.ravnborg.org@kernel.org> wrote:
+On 7 January 2023 21:53:46 CET, Sam Ravnborg <sam@ravnborg.org> wrote:
+>Hi Stephen.
 >
-> Introduce backlight_get_brightness() to simplify logic
-> and avoid direct access to backlight properties.
+>On Sat, Jan 07, 2023 at 09:36:47PM +0100, Stephen Kitt wrote:
+>> On 7 January 2023 19:26:15 CET, Sam Ravnborg via B4 Submission Endpoint <devnull+sam.ravnborg.org@kernel.org> wrote:
+>> >From: Sam Ravnborg <sam@ravnborg.org>
+>> >
+>> >The atmel_lcdfb had code to save/restore power state.
+>> >This is not needed so drop it.
+>> >
+>> >Introduce backlight_is_brightness() to make logic simpler.
+>> >
+>> >Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>> >Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+>> >Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+>> >Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+>> >Cc: linux-fbdev@vger.kernel.org
+>> >Cc: linux-arm-kernel@lists.infradead.org
+>> >---
+>> > drivers/video/fbdev/atmel_lcdfb.c | 24 +++---------------------
+>> > 1 file changed, 3 insertions(+), 21 deletions(-)
+>...
+>> 
+>> Hi Sam,
+>> 
+>> I’d submitted quite a few more of these previously (and you’d reviewed them), see e.g. the thread starting at https://lkml.org/lkml/2022/6/7/4365, and yesterday, https://lkml.org/lkml/2023/1/6/520, https://lkml.org/lkml/2023/1/6/656, https://lkml.org/lkml/2023/1/6/970, https://lkml.org/lkml/2023/1/6/643, and https://lkml.org/lkml/2023/1/6/680. There are a few more, I can find them if it’s any use.
+>
+>The patches from yesterday was what triggered me to resurrect an old
+>branch of mine where I had done something similar. I had lost all
+>memory of reviewing similar patches from you.
+>
+>
+>Helge - could you pick the reviewed patches from:
+>https://lore.kernel.org/all/20220607192335.1137249-1-steve@sk2.org/
+>[This is the same mail as Stephen refer to above - looked up via lore].
+>
+>Stephen - I expect Daniel/Lee to take care of the patches from yesterday.
+>If you can look up other pending patches from you please do so, so we
+>can have them applied.
+>Preferably with links to lore - as this makes it easier to apply them.
+>
+>Review of what is unique in this set would be appreciated.
+>
+>	Sam
 
-Note: Stephen sent this one too a while ago (with some more details in
-the commit message, which is always nice); and then he sent yesterday
-v2 [1] (to mention the functional change with `BL_CORE_SUSPENDED`
-[2]).
+Hi Sam,
 
-Anyway, if it goes via drm-misc, feel free to have my:
+Here are my pending patches from last June on lore:
 
-    Acked-by: Miguel Ojeda <ojeda@kernel.org>
+* https://lore.kernel.org/lkml/20220607190925.1134737-1-steve@sk2.org/
+* https://lore.kernel.org/lkml/20220608205623.2106113-1-steve@sk2.org/
+* https://lore.kernel.org/lkml/20220607192335.1137249-1-steve@sk2.org/
+* https://lore.kernel.org/lkml/20220616170425.1346081-1-steve@sk2.org/
 
-Though it would be nice to have Robin test the change.
+I’ll send reviews of your other patches later today or tomorrow.
 
-Thanks!
+Regards,
 
-[1] https://lore.kernel.org/lkml/20230106143002.1434266-1-steve@sk2.org/
-[2] https://lore.kernel.org/lkml/CANiq72kRhmT37H1FAGYGny83ONYXeqJuO8ZPbym0ajQOWKY4Kw@mail.gmail.com/
-
-Cheers,
-Miguel
+Stephen
