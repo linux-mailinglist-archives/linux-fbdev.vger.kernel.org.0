@@ -2,106 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A2C662332
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Jan 2023 11:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEFB6622F7
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Jan 2023 11:18:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231126AbjAIK2S (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Jan 2023 05:28:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48378 "EHLO
+        id S234430AbjAIKR4 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 9 Jan 2023 05:17:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235213AbjAIK2M (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Jan 2023 05:28:12 -0500
-X-Greylist: delayed 964 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Jan 2023 02:28:11 PST
-Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [IPv6:2a02:9e0:8000::27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94380634F
-        for <linux-fbdev@vger.kernel.org>; Mon,  9 Jan 2023 02:28:11 -0800 (PST)
+        with ESMTP id S237076AbjAIKQu (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Jan 2023 05:16:50 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D023614E
+        for <linux-fbdev@vger.kernel.org>; Mon,  9 Jan 2023 02:16:42 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id m3so5898333wmq.0
+        for <linux-fbdev@vger.kernel.org>; Mon, 09 Jan 2023 02:16:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=protonic.nl; s=202111;
-        h=message-id:references:in-reply-to:reply-to:subject:cc:to:from:date:
-         content-transfer-encoding:content-type:mime-version:from;
-        bh=DpADeRqnpOK1INfFn7yqaglpmahJbhY8EX582Bmd3SY=;
-        b=I1ZQK8QX3QZlT2tEUahNaplPFpvXCyeS9V/mlZDOYwtUI7pmVX0sulujmgh+iZCm0yNHQ1CTJAwCO
-         2UD84ZVaPxKibdiTFen6jJJA2ngMcKk/YHCQvNir+vGDtmvCc+hbDtExXjzCYs9bVKLFKyFV1eEJ5e
-         H2GU3TJKh5rN41xWmbjpij5cdo5TqQRuuL92xrGuPFof4+3q3YAS+D54SAV1xmAjAY/OoBcZQ1gtVH
-         KGf56rbaDfz4I/xH6cWK5TwxYW5NoBO4LWgqyeST3CQWbwwlCFWMjUa04Elb/KRVqS6BfSBrc4Vy70
-         Ca3+4vIXUqVfvBYHz0i1DjTMhZyLfmQ==
-X-MSG-ID: 0f6a649e-9006-11ed-8e79-0050569d2c73
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mH4f9OANiE6I82Rid3V8ENaOi03PPyxh8l5jpzwCQ2g=;
+        b=moQWNsgTXKScXgCJUB9sQ+uMKOIfJExITq8dYoMSPNwcVjlG8F3+FhYxyVh4mGab5D
+         WPiXjNjY6lbEwvUtN9024Wrnx3OUzFIw0m/ZG8q1W6rCDpa1OoN0eTzHWcgTYugr7EDL
+         YuY02QZRv0AJ8p+UNO/6Ogy0wV3o+Iz78jfaTQzZ7ei9W5SH4b6Rj2NS4RVOQ1RmtqYD
+         AwOrO3RLmFBkhvmD+X+7RozXxiVNmh0qKURl1hGhMdJYI4NTFZPDH0blYgsP/9otzFgP
+         K01EH5s5q7BmAd84+euEhlkabIW9Ub+SNuvUL391QaNXzwQqDIupg5ItSsvCS8YlK+/2
+         oHXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mH4f9OANiE6I82Rid3V8ENaOi03PPyxh8l5jpzwCQ2g=;
+        b=j40r9juXE6xJajlJlb9gecqfvc3oHJCG/ru6ZqGonbUhajocOFRm5OaS3ZkQLNWRRA
+         Kv+AAGBHrvNHlT117VejQJoBZ4PIDyfZWJALx0A6qX0jiMgGwbiak4BEfitFqs2N6j6g
+         E9c2RaGKoMyZ5lS3Ik2/q84xqOSEPSKA2kj/GgUDI7jp9VhkDbsMvJbE0BFmqnbL4JP6
+         HVZG3T1rBuGfrBIaym2sZ2o1GjLDThfHugL5qGxFd2badwO0d26BrEzwhPD4v9Hp/ExS
+         pCIkQXWWD61+v4RMd1Q+jrWuNzPJFzKyMLez2bJLrFjyl3kkLIL7mM+tOK9FW0iNVWIl
+         QiDA==
+X-Gm-Message-State: AFqh2kpWV0E35Q6wtj3Ry16/PzxdyAVXPFQCLxjFc7REFwdZx2mk1sp5
+        OBiRxMI47k2AmIOjJ2FWjXml1g==
+X-Google-Smtp-Source: AMrXdXsACLbkYa2fzH0tS4O/LJpxq4OHjiRZNRCmRiAMjrrNnwIY8/sgFFZXOY2oEtev7X11zGWG7Q==
+X-Received: by 2002:a05:600c:220c:b0:3d2:3831:e5c4 with SMTP id z12-20020a05600c220c00b003d23831e5c4mr49516520wml.40.1673259400970;
+        Mon, 09 Jan 2023 02:16:40 -0800 (PST)
+Received: from aspen.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id u8-20020a05600c19c800b003d9780466b0sm11970130wmq.31.2023.01.09.02.16.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jan 2023 02:16:39 -0800 (PST)
+Date:   Mon, 9 Jan 2023 10:16:37 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Stephen Kitt <steve@sk2.org>
+Cc:     Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>, Helge Deller <deller@gmx.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND 1/4] backlight: aat2870: Use backlight helper
+Message-ID: <Y7vphX2Ohyv/xZz7@aspen.lan>
+References: <20230106164856.1453819-2-steve@sk2.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 09 Jan 2023 11:12:02 +0100
-From:   Robin van der Gracht <robin@protonic.nl>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Stephen Kitt <steve@sk2.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Helge Deller <deller@gmx.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>, Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 12/15] auxdisplay: ht16k33: Introduce
- backlight_get_brightness()
-Organization: Protonic Holland
-Reply-To: robin@protonic.nl
-Mail-Reply-To: robin@protonic.nl
-In-Reply-To: <Y7qM+ZlG5gQiOW4K@ravnborg.org>
-References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
- <20230107-sam-video-backlight-drop-fb_blank-v1-12-1bd9bafb351f@ravnborg.org>
- <CANiq72mFMJuec+r=T6xYtLpuU+a1rOrAhrHiecy_1Jpj2m4J=g@mail.gmail.com>
- <Y7qM+ZlG5gQiOW4K@ravnborg.org>
-Message-ID: <2857575f6ec206f79cc21d423fde7d17@protonic.nl>
-X-Sender: robin@protonic.nl
-User-Agent: Roundcube Webmail/1.3.1 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230106164856.1453819-2-steve@sk2.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Sam,
+On Fri, Jan 06, 2023 at 05:48:52PM +0100, Stephen Kitt wrote:
+> Instead of retrieving the backlight brightness in struct
+> backlight_properties manually, and then checking whether the backlight
+> should be on at all, use backlight_get_brightness() which does all
+> this and insulates this from future changes.
+>
+> Signed-off-by: Stephen Kitt <steve@sk2.org>
 
-On 2023-01-08 10:29, Sam Ravnborg wrote:
-> Hi Robin.
-> 
-> On Sat, Jan 07, 2023 at 10:02:38PM +0100, Miguel Ojeda wrote:
->> On Sat, Jan 7, 2023 at 7:26 PM Sam Ravnborg via B4 Submission Endpoint
->> <devnull+sam.ravnborg.org@kernel.org> wrote:
->> >
->> > Introduce backlight_get_brightness() to simplify logic
->> > and avoid direct access to backlight properties.
->> 
->> Note: Stephen sent this one too a while ago (with some more details in
->> the commit message, which is always nice); and then he sent yesterday
->> v2 [1] (to mention the functional change with `BL_CORE_SUSPENDED`
->> [2]).
-> Thanks for the pointers. I will try to move forward with Stephen's
-> patches.
->> 
->> Anyway, if it goes via drm-misc, feel free to have my:
->> 
->>     Acked-by: Miguel Ojeda <ojeda@kernel.org>
->> 
->> Though it would be nice to have Robin test the change.
-> 
-> Robin - can I get your ack to apply Stephen's original v2 patch to
-> drm-misc?
+This RESEND seems to have dropped the Reviewed-By tags provided the
+last time is was circulated:
+https://lore.kernel.org/all/20220608143233.l5pbopafqc4n6uwq@maple.lan/
 
-done! see: 
-https://lore.kernel.org/lkml/0b16391f997e6ed005a326e4e48f2033@protonic.nl/
+There's only four patches so I guess I can add them again so the tools
+can pick them up.
 
-- Robin
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+
+
+Daniel.
