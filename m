@@ -2,86 +2,163 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0276631D1
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Jan 2023 21:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0A1663440
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Jan 2023 23:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230179AbjAIUsi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 9 Jan 2023 15:48:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57748 "EHLO
+        id S237486AbjAIWq7 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 9 Jan 2023 17:46:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234895AbjAIUsR (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Jan 2023 15:48:17 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F30142E3D
-        for <linux-fbdev@vger.kernel.org>; Mon,  9 Jan 2023 12:48:16 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pEz3y-0000Nu-Kz; Mon, 09 Jan 2023 21:48:10 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pEz3x-004vYW-WB; Mon, 09 Jan 2023 21:48:09 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pEz3w-00BVa9-Tf; Mon, 09 Jan 2023 21:48:08 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee@kernel.org>,
+        with ESMTP id S231358AbjAIWq6 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 9 Jan 2023 17:46:58 -0500
+X-Greylist: delayed 7799 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Jan 2023 14:46:57 PST
+Received: from 12.mo583.mail-out.ovh.net (12.mo583.mail-out.ovh.net [46.105.39.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BA61C13E
+        for <linux-fbdev@vger.kernel.org>; Mon,  9 Jan 2023 14:46:56 -0800 (PST)
+Received: from director2.ghost.mail-out.ovh.net (unknown [10.109.156.76])
+        by mo583.mail-out.ovh.net (Postfix) with ESMTP id 3165424A4F
+        for <linux-fbdev@vger.kernel.org>; Mon,  9 Jan 2023 20:19:08 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-frlns (unknown [10.109.138.190])
+        by director2.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 7D9691FEFE;
+        Mon,  9 Jan 2023 20:19:04 +0000 (UTC)
+Received: from sk2.org ([37.59.142.110])
+        by ghost-submission-6684bf9d7b-frlns with ESMTPSA
+        id 3/0OF7h2vGMDvxAAlD46gA
+        (envelope-from <steve@sk2.org>); Mon, 09 Jan 2023 20:19:04 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-110S004842627ec-d049-43fb-8f4c-5212fa5a1396,
+                    796317D5D98EA53ED2B7ABF3FE0FDD27B7A2AA3D) smtp.auth=steve@sk2.org
+X-OVh-ClientIp: 82.65.25.201
+Date:   Mon, 9 Jan 2023 21:18:57 +0100
+From:   Stephen Kitt <steve@sk2.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Sam Ravnborg <sam@ravnborg.org>,
+        Sam Ravnborg via B4 Submission Endpoint 
+        <devnull+sam.ravnborg.org@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Miguel Ojeda <ojeda@kernel.org>, Lee Jones <lee@kernel.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>
-Cc:     linux-pwm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 2/2] backlight: pwm_bl: Don't disable the PWM to disable the backlight
-Date:   Mon,  9 Jan 2023 21:47:58 +0100
-Message-Id: <20230109204758.610400-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230109204758.610400-1-u.kleine-koenig@pengutronix.de>
-References: <20230109204758.610400-1-u.kleine-koenig@pengutronix.de>
+        Jingoo Han <jingoohan1@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+Subject: Re: [PATCH 01/15] video: fbdev: atmel_lcdfb: Rework backlight
+ handling
+Message-ID: <20230109211857.79856bcf@heffalump.sk2.org>
+In-Reply-To: <811a392a-d634-5557-dd58-57f1580e28f2@gmx.de>
+References: <20230107-sam-video-backlight-drop-fb_blank-v1-0-1bd9bafb351f@ravnborg.org>
+        <20230107-sam-video-backlight-drop-fb_blank-v1-1-1bd9bafb351f@ravnborg.org>
+        <553AE999-CAF1-4E59-9F3F-68591ED192DE@sk2.org>
+        <Y7nb2q6SDota/rTU@ravnborg.org>
+        <811a392a-d634-5557-dd58-57f1580e28f2@gmx.de>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=946; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=K182eXs0FIJkxQAaRAKrrXsKyv+L1JtRVd73xZhidGE=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjvH17hfZUIb1uV/8b1gFdT4Y1akwDIWdJGLGRG7SU FFufiY2JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY7x9ewAKCRDB/BR4rcrsCcJLB/ 4nj26IEAvX2aZRvaG1eNO7r9knhkFvIFMDbgs53nU1is2FVVI2Uo+tRqgE8sX0EhMhWEycVAAYli7u /a5LKL/oDPaX4W9w8WLxW/z4EVtjYPf0lcXTaMiKUif3Cuzi1bnYCJUXU0bogsS4cMSnN4Olv2chWP 2EUxAAfNslEcznjR0kioW0T19AZM1IqukxtRD5QA9JmEM6Xgjre58kzJEykC/U0rqo46F86S2GTNDU KoEnY1BgEKBW/pidmr/MhcNajx+HdLZ4JBcHxGaj9zMAK9970K3st/SKmYOsyBpefelEycRdeCsX0I KFAy+CjptU7QDJp5gBLgsMMCvHNClU
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/JDvLw33J.MlCnUHZ=3B.xEG";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Ovh-Tracer-Id: 8555713393067591302
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrkeeigddufeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgesghdtreerredtjeenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecuggftrfgrthhtvghrnhepfeeljeehvdeuheejudetvdfggfdutdekledvuddthedtkeehhfejffefudegveelnecuffhomhgrihhnpehlkhhmlhdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdduuddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoshhtvghvvgesshhkvddrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqfhgsuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheekfedpmhhouggvpehsmhhtphhouhht
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Most but not all PWMs drive the PWM pin to its inactive state when
-disabled. Rely on the lowlevel PWM implementation to implement
-duty_cycle = 0 in an energy efficient way and don't disable the PWM.
+--Sig_/JDvLw33J.MlCnUHZ=3B.xEG
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-This fixes backlight disabling e.g. on i.MX6 when an inverted PWM is
-used.
+On Sun, 8 Jan 2023 18:26:12 +0100, Helge Deller <deller@gmx.de> wrote:
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/video/backlight/pwm_bl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On 1/7/23 21:53, Sam Ravnborg wrote:
+> > Hi Stephen.
+> >
+> > On Sat, Jan 07, 2023 at 09:36:47PM +0100, Stephen Kitt wrote: =20
+> >> On 7 January 2023 19:26:15 CET, Sam Ravnborg via B4 Submission Endpoint
+> >> <devnull+sam.ravnborg.org@kernel.org> wrote: =20
+> >>> From: Sam Ravnborg <sam@ravnborg.org>
+> >>>
+> >>> The atmel_lcdfb had code to save/restore power state.
+> >>> This is not needed so drop it.
+> >>>
+> >>> Introduce backlight_is_brightness() to make logic simpler.
+> >>>
+> >>> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+> >>> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+> >>> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> >>> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+> >>> Cc: linux-fbdev@vger.kernel.org
+> >>> Cc: linux-arm-kernel@lists.infradead.org
+> >>> ---
+> >>> drivers/video/fbdev/atmel_lcdfb.c | 24 +++---------------------
+> >>> 1 file changed, 3 insertions(+), 21 deletions(-) =20
+> > ... =20
+> >>
+> >> Hi Sam,
+> >>
+> >> I=E2=80=99d submitted quite a few more of these previously (and you=E2=
+=80=99d reviewed
+> >> them), see e.g. the thread starting at
+> >> https://lkml.org/lkml/2022/6/7/4365, and yesterday,
+> >> https://lkml.org/lkml/2023/1/6/520, https://lkml.org/lkml/2023/1/6/656,
+> >> https://lkml.org/lkml/2023/1/6/970, https://lkml.org/lkml/2023/1/6/643,
+> >> and https://lkml.org/lkml/2023/1/6/680. There are a few more, I can fi=
+nd
+> >> them if it=E2=80=99s any use. =20
+> >
+> > The patches from yesterday was what triggered me to resurrect an old
+> > branch of mine where I had done something similar. I had lost all
+> > memory of reviewing similar patches from you.
+> >
+> >
+> > Helge - could you pick the reviewed patches from:
+> > https://lore.kernel.org/all/20220607192335.1137249-1-steve@sk2.org/
+> > [This is the same mail as Stephen refer to above - looked up via lore].=
+ =20
+>=20
+> I just pulled those 7 patches into fbdev/for-next.
+> If you need more, please let me know,
 
-diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
-index 0509fecd5715..7bdc5d570a12 100644
---- a/drivers/video/backlight/pwm_bl.c
-+++ b/drivers/video/backlight/pwm_bl.c
-@@ -109,7 +109,7 @@ static int pwm_backlight_update_status(struct backlight_device *bl)
- 		pwm_backlight_power_off(pb);
- 
- 		pwm_get_state(pb->pwm, &state);
--		state.enabled = false;
-+		state.enabled = true;
- 		state.duty_cycle = 0;
- 		pwm_apply_state(pb->pwm, &state);
- 	}
--- 
-2.39.0
+Please pull
+https://lore.kernel.org/lkml/20230109200239.1850611-1-steve@sk2.org/ too, it
+completes the fbdev set. (It=E2=80=99s a re-send of
+https://lore.kernel.org/lkml/20220609180440.3138625-1-steve@sk2.org/).
 
+Thanks,
+
+Stephen
+
+--Sig_/JDvLw33J.MlCnUHZ=3B.xEG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmO8drEACgkQgNMC9Yht
+g5xaOhAAjf3wpZqPQkXA+OJq7x3rFQCxDxu+EC9QfKpc+GTyKDeYUp1CiCaMACTm
+CmEva3GpgKshfkWam50r0elXs+IKPn9/Bwu7aoFot55EumgQp5Tbep2Bmzq92XPu
+oFvKrneavKK3Zc0y8tMyqnY44egaf1p5ngnCL9KWvgtSxSdqUUc7h1rp8Uevxc16
+Svpv5x8AaWNjvHqexEWU7DPoGzWwhCJosdFfzE0E/b5oamL3bCpniVgqvrhZ3XNh
+xDDLZsUQPWx6h51ndY44PfUUaF93mHtXo678mlOXIBK4Eb+GCQUTu6FUgWsbIYL9
+3zS7n+hYOgrAcvjXD+Kj2EwGAkfAkySAOs98SZYc/P9qzdEPZ7SIA2FbLbXyqf6x
+oO7qJlb7PLYCro4L6uSzBYJHK9or4nFh/K0sjWlJMCu3BSHtuDBxpU1+ajilEZYw
+GCN2Or9X+vFwQm0GtdpnbwRXutktuUmyEiaTZ0SRswPuK/8o/gc4BjaNdVm7xGld
+Yite9fSnhZsSwrT+TsCmoZw4m3W43c5zNs35lcw2LlhZEFnMNhYPAOd6I5zJPKno
+SgxxN7R6BxWIiXk7uEt+3CR745R6yGebDDD2G5cR1LtilzKWaj49g4ChgwAjsN5t
+uicuFMKEruILdqw6DfjJ5cDi+/1Db3pnP0mdjoiHWmrgigU6wD0=
+=3DFt
+-----END PGP SIGNATURE-----
+
+--Sig_/JDvLw33J.MlCnUHZ=3B.xEG--
