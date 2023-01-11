@@ -2,127 +2,123 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726686649A0
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Jan 2023 19:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D09665F55
+	for <lists+linux-fbdev@lfdr.de>; Wed, 11 Jan 2023 16:41:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239150AbjAJSXr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 10 Jan 2023 13:23:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36040 "EHLO
+        id S235219AbjAKPl3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 11 Jan 2023 10:41:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239348AbjAJSWv (ORCPT
+        with ESMTP id S233605AbjAKPlZ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 10 Jan 2023 13:22:51 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7168F6F96D;
-        Tue, 10 Jan 2023 10:20:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673374841; x=1704910841;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=gEDEe6v6P56XKTKVod6hHvBcJizZdWIOCj+46/uxJjc=;
-  b=Agjq5E3iXs4cTLas1xFngzftUT+M/SYy0IGoYl+pp1WDIZ9E4u9oyklg
-   SMIiL7BEsn3whY//FnKNsMU4hceeWszUGRjHz6aD6ceoUcb7x9WBtW/nL
-   /+0UZZkg/nDSMB09k+zUhfYGmTSQXafr5ReOdnfXPe36RYq0LlsTiokuD
-   HqpNR7/NhqK1tkmQMW5ZHjFTbeQ72d+P2Sb6Tkoke7tb1viWfXAA4kbvB
-   GEMi01SAV7u0HCoJy3rZty5IVIMExIAEpUOiuL6bpsnarT0CYonWPQYPi
-   6nGbA0xRipm4kLBvjiP/hv+SRtYklwXcOp0ynUpGtIKiX65Pk1oJh4pcZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="311025545"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="311025545"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 10:20:40 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="657139780"
-X-IronPort-AV: E=Sophos;i="5.96,315,1665471600"; 
-   d="scan'208";a="657139780"
-Received: from drooney-mobl.ger.corp.intel.com (HELO localhost) ([10.252.11.80])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2023 10:20:37 -0800
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     linux-fbdev@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Bernard Zhao <bernard@vivo.com>, Helge Deller <deller@gmx.de>,
-        linux-kernel@vger.kernel.org,
-        Hans Verkuil <hans.verkuil@cisco.com>,
-        ville.syrjala@linux.intel.com
-Subject: Re: [PATCH v1 RFC] video/hdmi: Fix HDMI_VENDOR_INFOFRAME_SIZE
-In-Reply-To: <20230109223110.1165433-1-martin.blumenstingl@googlemail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230109223110.1165433-1-martin.blumenstingl@googlemail.com>
-Date:   Tue, 10 Jan 2023 20:20:34 +0200
-Message-ID: <87lemai74d.fsf@intel.com>
+        Wed, 11 Jan 2023 10:41:25 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFA4386
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 Jan 2023 07:41:22 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id bi26-20020a05600c3d9a00b003d3404a89faso2639153wmb.1
+        for <linux-fbdev@vger.kernel.org>; Wed, 11 Jan 2023 07:41:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OGvydfcnswB5kCTr6pgmQFxcgFjCL3fOh+5DF0n/kHQ=;
+        b=MlaP4iz9T5QOEdEs7QRCj0LRht0gbuOE12jC5lqdYaja6OmWEu3x44yTN6+eBPdseA
+         ZRP3gRxjIwfx/RvbvL1abOvvxn4IUBTB76ngU0gOrbj6czdukqRxbFjuguKcKlCvBiAi
+         OIRDopYxEw1xY1T5KE6yRdOqY5ob94mIqBzMI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OGvydfcnswB5kCTr6pgmQFxcgFjCL3fOh+5DF0n/kHQ=;
+        b=S4IhIkWqQEpcW4c17rVDIJ+urGWO+j2iki9t/Kfl8zYYbyhOC/XK97DXrSdU55U4BV
+         89jfM0RftiWUj8Y9iVXX0vYXj/OeryOx+e0kxKRh7FvBksMGrzrurjXr+zYtsFDHSd5P
+         JtX0XUHetkQX7uaEMKtGpYac/nq97Iggdy8hBZ7E3iXW7rsrw/tPmQ27QBm6e8xoGfZJ
+         3a8aGeuUEzdnXpGn7rihVO6BjuKe6f+z6J5bGFGaGHwRh9rNC9q1Z8tkNDh7J1DgOFon
+         7sH/UmP/jYEUjN7cU73PAeT8k1qJ6u0b1VV35d9gjPoa/hFaEirZwO49430SGAMWEWuF
+         QEiA==
+X-Gm-Message-State: AFqh2koa3SalOTHn8M829kWDOyk7Je/a9VM4n/ElwTkLY5DhiLm+nMO0
+        XXNof/SYwCmGj4t9jzijpGiH0Q==
+X-Google-Smtp-Source: AMrXdXvZL6+Fq4x6+s6c1TzAuUbbiOvtCaS9MpQRLMdhQaJKNpbYwvT73xPCftXvxiNmLgwrl3Fc5Q==
+X-Received: by 2002:a05:600c:3482:b0:3d3:4f56:62e1 with SMTP id a2-20020a05600c348200b003d34f5662e1mr51193693wmq.27.1673451681375;
+        Wed, 11 Jan 2023 07:41:21 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b003d9e74dd9b2sm15936149wmq.9.2023.01.11.07.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jan 2023 07:41:20 -0800 (PST)
+From:   Daniel Vetter <daniel.vetter@ffwll.ch>
+To:     DRI Development <dri-devel@lists.freedesktop.org>
+Cc:     Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Daniel Vetter <daniel.vetter@intel.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org
+Subject: [PATCH 01/11] drm/ast: Use drm_aperture_remove_conflicting_pci_framebuffers
+Date:   Wed, 11 Jan 2023 16:41:02 +0100
+Message-Id: <20230111154112.90575-1-daniel.vetter@ffwll.ch>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 09 Jan 2023, Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
-> When support for the HDMI vendor infoframe was introduced back with
-> commit 7d27becb3532 ("video/hdmi: Introduce helpers for the HDMI vendor
-> specific infoframe") it's payload size was either 5 or 6 bytes,
-> depending on:
->   if (frame->s3d_struct >= HDMI_3D_STRUCTURE_SIDE_BY_SIDE_HALF)
-> When true the size was 6 bytes, otherwise 5 bytes.
->
-> Drivers that are using hdmi_infoframe_pack() are reserving 10 bytes (4
-> bytes for the header and up to 6 bytes for the infoframe payload data)
-> or more (exynos_hdmi reserves 25 bytes).
->
-> Over time the frame payload length was reduced to 4 bytes. This however
-> does not match the code from hdmi_hdmi_infoframe_pack() where ptr[8] and
-> ptr[9] are written, which means the infoframe has to allow up to 6 bytes
-> of payload data (considering that the header takes 4 bytes).
->
-> Change HDMI_VENDOR_INFOFRAME_SIZE to 6 bytes so
-> hdmi_vendor_infoframe_pack_only() can properly check the passed buffer
-> size and avoid an out of bounds write to ptr[8] or ptr[9].
->
-> Fixes: c5e69ab35c0d ("video/hdmi: Constify infoframe passed to the pack functions")
-> Fixes: d43be2554b58 ("drivers: video: hdmi: cleanup coding style in video a bit")
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> ---
-> I'm not an expert on this topic and I'm not sure if the size still
-> depends on that if condition from long time ago. So please share your
-> thoughts.
+It's just open coded and matches.
 
-I tried to look at this quickly, but it makes my brain hurt. I don't
-think simply changing the size here is right either.
+Note that Thomas said that his version apparently failed for some
+reason, but hey maybe we should try again.
 
-Cc: Ville.
+Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+---
+ drivers/gpu/drm/ast/ast_drv.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-BR,
-Jani.
-
-
-
->
->
->  include/linux/hdmi.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/hdmi.h b/include/linux/hdmi.h
-> index 2f4dcc8d060e..026c5ef5a1a5 100644
-> --- a/include/linux/hdmi.h
-> +++ b/include/linux/hdmi.h
-> @@ -57,7 +57,7 @@ enum hdmi_infoframe_type {
->  #define HDMI_SPD_INFOFRAME_SIZE    25
->  #define HDMI_AUDIO_INFOFRAME_SIZE  10
->  #define HDMI_DRM_INFOFRAME_SIZE    26
-> -#define HDMI_VENDOR_INFOFRAME_SIZE  4
-> +#define HDMI_VENDOR_INFOFRAME_SIZE  6
->  
->  #define HDMI_INFOFRAME_SIZE(type)	\
->  	(HDMI_INFOFRAME_HEADER_SIZE + HDMI_ ## type ## _INFOFRAME_SIZE)
-
+diff --git a/drivers/gpu/drm/ast/ast_drv.c b/drivers/gpu/drm/ast/ast_drv.c
+index 420fc75c240e..3ac24a780f50 100644
+--- a/drivers/gpu/drm/ast/ast_drv.c
++++ b/drivers/gpu/drm/ast/ast_drv.c
+@@ -90,27 +90,13 @@ static const struct pci_device_id ast_pciidlist[] = {
+ 
+ MODULE_DEVICE_TABLE(pci, ast_pciidlist);
+ 
+-static int ast_remove_conflicting_framebuffers(struct pci_dev *pdev)
+-{
+-	bool primary = false;
+-	resource_size_t base, size;
+-
+-	base = pci_resource_start(pdev, 0);
+-	size = pci_resource_len(pdev, 0);
+-#ifdef CONFIG_X86
+-	primary = pdev->resource[PCI_ROM_RESOURCE].flags & IORESOURCE_ROM_SHADOW;
+-#endif
+-
+-	return drm_aperture_remove_conflicting_framebuffers(base, size, primary, &ast_driver);
+-}
+-
+ static int ast_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct ast_private *ast;
+ 	struct drm_device *dev;
+ 	int ret;
+ 
+-	ret = ast_remove_conflicting_framebuffers(pdev);
++	ret = drm_aperture_remove_conflicting_pci_framebuffers(pdev, &ast_driver);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.39.0
+
