@@ -2,93 +2,92 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2239B669DFA
-	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Jan 2023 17:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 299E366A119
+	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Jan 2023 18:49:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjAMQ1S (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 13 Jan 2023 11:27:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
+        id S229819AbjAMRta (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 13 Jan 2023 12:49:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbjAMQ0z (ORCPT
+        with ESMTP id S230148AbjAMRsv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 13 Jan 2023 11:26:55 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C5814D25
-        for <linux-fbdev@vger.kernel.org>; Fri, 13 Jan 2023 08:20:38 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so14309965wma.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 13 Jan 2023 08:20:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=06yrgHLtubzlVTv8ZMuuqpVVcPSwyPWQD3kou2AtPjE=;
-        b=zrFZvqQmSdfN3TP96rg+qCC38kwG2a2tGbIWZCtwPBWu8b5rqlJQvUvwbz0absrUWq
-         f2+HygAJ12mlVvFSqx5TBpNtotqYmdNXLnWPsyUwqDE4juqk6dOAqUAhRGf5GL0e94KH
-         uzEZ3POXerO0a+xZDIfgQWArn/AsWjsYAtu1sIIUgH6/kNROx4bjNPrfb7N+hpQoyKlD
-         SERj4Nc4CMz1D2EZoS9m/34CnijnEtcMHAuuqvQJSu3FKT7sfu7K7pWtby2Jr1l+P2Aa
-         zq1w9VM80VOnZ2aN+htvT+5myf2YfzmqW1g4jKu7mfbIMZlsNXgN9wv2uplydNx6tZ8S
-         jbIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=06yrgHLtubzlVTv8ZMuuqpVVcPSwyPWQD3kou2AtPjE=;
-        b=UTa3oBmv1DIhR1zsmEn21eQj/4uvUrVUwVFkqSFDYxqOQEBVcFCyAYDF3vktF3QubH
-         IFdD1lj4a6Xx6b3aA0CooEfPrRnBuMXQr/UhmtRXniFL6cpnY/VjuLnQZauD6Ag75uex
-         FmLbnursVYusnrxywWKTQ+lAXhpVNDa0hdqD6ECAI+gM+fX89p2u/UkRDz9TyT09A/0K
-         OBZD4bZ4QAlSXWhGrK9qUswUM585WSHga8iVkAFfoGSXCCn8t/KuDpvqqLCbh3mn+RjX
-         uh6hoZ508iliZkyDhXcA/r/6OU2XfsNa+XsW8AbY/IgzqMNk+KLAL2aGn6izBt/oxIkT
-         rC/Q==
-X-Gm-Message-State: AFqh2kpmfzvOQA1ImSi2/Cms66qn5sbAvNqQUk+BJxip3gHzeeTp3Het
-        6YKkxVvfcwAiU2KuT5647BRIew==
-X-Google-Smtp-Source: AMrXdXv/fkkqVwAy0FAec0vYcCM6E9mSl/Oq7DvCSvQ2RbgiZMu2Av6NkgVtbj85zzZkDZtaY/excg==
-X-Received: by 2002:a05:600c:1d10:b0:3d9:ef75:ea6e with SMTP id l16-20020a05600c1d1000b003d9ef75ea6emr188418wms.38.1673626836588;
-        Fri, 13 Jan 2023 08:20:36 -0800 (PST)
-Received: from aspen.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id v10-20020a05600c444a00b003d998412db6sm32412208wmn.28.2023.01.13.08.20.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Jan 2023 08:20:36 -0800 (PST)
-Date:   Fri, 13 Jan 2023 16:20:34 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] backlight: sky81452: fix sky81452_bl_platform_data
- kernel-doc
-Message-ID: <Y8GE0kEJdQpM9M4L@aspen.lan>
-References: <20230113064118.30169-1-rdunlap@infradead.org>
+        Fri, 13 Jan 2023 12:48:51 -0500
+X-Greylist: delayed 1940 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 13 Jan 2023 09:39:55 PST
+Received: from mail.dmbarone.com (mail.dmbarone.com [5.181.144.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2120E8D5FC
+        for <linux-fbdev@vger.kernel.org>; Fri, 13 Jan 2023 09:39:54 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dmbarone.com (Postfix) with ESMTP id C32582A4DD3;
+        Fri, 13 Jan 2023 17:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673629322; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=elBvMTUAIdMhgd3JLoULnrqtb85dN3qy6uY4yBhzS9XVafISy/H7N3iEibgbgBiJ0
+         imeOABG7PpBMu9XxZAABIxLbCnEyr2QXAB/HtB0sro6lHhZ8Cxxf/nMgeooNCCfr8e
+         VLxj2VnBbEe3OAQwrmZI7iSvW+FU04teqB2x/4rM=
+X-Virus-Scanned: Debian amavisd-new at ispdmbarone.kubeitalia.it
+Received: from mail.dmbarone.com ([127.0.0.1])
+        by localhost (ispdmbarone.kubeitalia.it [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id JoqsoeD2RQoI; Fri, 13 Jan 2023 17:02:02 +0000 (UTC)
+Received: from [172.20.10.6] (unknown [129.205.124.225])
+        (Authenticated sender: admin@dmbarone.com)
+        by mail.dmbarone.com (Postfix) with ESMTPSA id EE5822A6005;
+        Fri, 13 Jan 2023 17:01:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dmbarone.com; s=mail;
+        t=1673629322; bh=QIjTgWBPcZMVeqZovj8WAOWgI9bu1lFe9hdim3iQkyQ=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=elBvMTUAIdMhgd3JLoULnrqtb85dN3qy6uY4yBhzS9XVafISy/H7N3iEibgbgBiJ0
+         imeOABG7PpBMu9XxZAABIxLbCnEyr2QXAB/HtB0sro6lHhZ8Cxxf/nMgeooNCCfr8e
+         VLxj2VnBbEe3OAQwrmZI7iSvW+FU04teqB2x/4rM=
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230113064118.30169-1-rdunlap@infradead.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeit!!?=
+To:     Recipients <admi@dmbarone.com>
+From:   <admi@dmbarone.com>
+Date:   Fri, 13 Jan 2023 18:01:46 +0100
+Reply-To: theresasteven225@gmail.com
+X-Antivirus: Avast (VPS 230113-2, 1/13/2023), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20230113170202.C32582A4DD3@mail.dmbarone.com>
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_95,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_SBL,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [129.205.124.225 listed in zen.spamhaus.org]
+        *  3.0 BAYES_95 BODY: Bayes spam probability is 95 to 99%
+        *      [score: 0.9616]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [5.181.144.66 listed in bl.score.senderscore.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [theresasteven225[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 10:41:18PM -0800, Randy Dunlap wrote:
-> Correct the struct name and add a short struct description to fix the
-> kernel-doc notation.
->
-> Prevents this kernel-doc warning:
-> drivers/video/backlight/sky81452-backlight.c:64: warning: expecting prototype for struct sky81452_platform_data. Prototype was for struct sky81452_bl_platform_data instead
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
+Eine Spende wurde an Sie get=E4tigt, antworten Sie f=FCr weitere Einzelheit=
+en.
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Gr=FC=DFe
+Theresia Steven
 
-
-Daniel.
+-- 
+This email has been checked for viruses by Avast antivirus software.
+www.avast.com
