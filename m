@@ -2,192 +2,412 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56EC1671F4A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Jan 2023 15:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3D667275D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Jan 2023 19:45:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbjAROTh (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 18 Jan 2023 09:19:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48468 "EHLO
+        id S230330AbjARSpO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 18 Jan 2023 13:45:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbjAROTH (ORCPT
+        with ESMTP id S230119AbjARSov (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 18 Jan 2023 09:19:07 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C3FF62D3E;
-        Wed, 18 Jan 2023 06:00:39 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id k18so12943682pll.5;
-        Wed, 18 Jan 2023 06:00:39 -0800 (PST)
+        Wed, 18 Jan 2023 13:44:51 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E194A37B44
+        for <linux-fbdev@vger.kernel.org>; Wed, 18 Jan 2023 10:44:47 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id d2so14780024wrp.8
+        for <linux-fbdev@vger.kernel.org>; Wed, 18 Jan 2023 10:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=X9t7ufkd2EkdshQLKnA3SFrv5rmVPIr/Hi7nOCZDw5c=;
-        b=EBzEL7qb0k674EUQUfYhxoHectKIbEkxILdLeZMsthCgCpqziD8YYeh+ISEUK+H0rt
-         yBKg4w6JKskKG3aMTV3z48OBmalZW41eI3ToSjmxoFpQ0whb7zsYF9YWGQkN1tXYd+5r
-         3WQFY0AFq8KERF8NYtUVrOnjYyU0VhhJfALB99l+6dS1xm3NV+HvawPJiPfZp1Xqgi5T
-         FEGZ5aG/7aOHKbUpnFmyj0vKL3IY8j91QYHRYQsGpLGKiFXiP/MZp4A39UwHNGtjVREj
-         YE2+vwyFcC2uj+L/dLo8y0j4rDaTtxKtreqinNPoMrred0acZ74OWjTaolWQS9d1vtRy
-         +UDQ==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=51TEnoWg+r6F1+/BdxbyNrnSbBYgYodHFxrZC/pGotw=;
+        b=EEMZVvNvViFCtB8B+1Xv5v7x3yhjw8gqXh38XhlgBHd1nIlNjcHpLM05FnlXjZlNwW
+         BQgeP6Gxv5YPE9Z9ZWoQlmzzK5xdNOvSrANZARI6sdTpybHVoS9vVQj26t8DdvgNB1cT
+         fWr7/5/nKgMiyyLpo4FnBzH5JHcsvOE7KQP+hC8IzuXLSdHhUfjNppd0WsNf5T5I1Yy0
+         hPoKCivzDFgA7gH6OKwjn5wpQ1MoYrqTd9/uC0ud7l6NSWZJ6g/aBcSDw8hRP1PVWpF+
+         +pGy6CcyqUerc279MlWTA4MYsuSt0s07gHKXz3O6Zxl02gGR15uXIz4pYWkGHjaGZrjE
+         86kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9t7ufkd2EkdshQLKnA3SFrv5rmVPIr/Hi7nOCZDw5c=;
-        b=Ap/ViVwZUPqgBWEjJlhuiQfdzdkQRgeKbe8EUIFp2p+WJU6uS0rlt5kH1n4qjOxvuM
-         nQK0N6nokWl7OV1VidUF/zj1QY5LbMC8EvEiszfZp2Zf3nhFW+VsQk5CEpp4YRirpmyJ
-         pP19i+VDmb0HNt3fI6A4IlEpA8zk1D2z2Cn86ftcMkicy5VsJ3kOGZLxXzmdG3t/LpTN
-         BQgxOx+hX7ug5l3BkUwvrqn79L7A1b1YY9QoaCOEHw5upt5meSn/fUEKfD9vPekOSsLI
-         30/AvwWgxp4n9lBimy89zpsiNQUUp2NVctoqC+nJsPvrcMhzz86Hy+D3Zq1CPcEnEa4U
-         zQhA==
-X-Gm-Message-State: AFqh2kri9SjDfWeTBJTZLJ48XhvDZTP/h/mlpynGGDb4v00UYr2QZ94s
-        jy17Z5roN7B3kj+kwSpOb92HkP8XwwHH8A==
-X-Google-Smtp-Source: AMrXdXuhQmSrA8Cqhd01EKQ9K+DXdyRft3dUY4vZYmOODnEXwQbp2dOgQ3iZ3YnS/+ERzdF/gwlF0A==
-X-Received: by 2002:a17:90b:3586:b0:229:772c:a00b with SMTP id mm6-20020a17090b358600b00229772ca00bmr7100810pjb.14.1674050438708;
-        Wed, 18 Jan 2023 06:00:38 -0800 (PST)
-Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id w7-20020a17090a4f4700b002298e0641b6sm1357081pjl.27.2023.01.18.06.00.33
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=51TEnoWg+r6F1+/BdxbyNrnSbBYgYodHFxrZC/pGotw=;
+        b=SGZPdWia8Lzb1gDVfmi0D/iIgpm3r2wmKPX0h0eaamKgyNgTFSO+/gV8l5csgFeu11
+         b+giRlSGj2/CqCslAxP9VPNmJwG3r7+eamG4bO3KvYJQZyOdW+uP3SFDHrcGDsn5//qv
+         4+7RgzKGjv+UsTKx/hjIGq3RlxJHJlzSfHhLCZIei/pyyHeag4f1KjD8jLMKu3trOjAD
+         wZfrayAtEzJHTRvWv30g5deYwgRuCePqgdOR0fQeCnhjWvcNbIEN7nc/Gupvf8VPyRpE
+         Bixd1CwwY3UZkYYrktMD8sojErXRNbIc3W+ZgXY1YelmiJNF0QpYmZE3J1F5y6gjTbi5
+         NoiA==
+X-Gm-Message-State: AFqh2krjP+I0/S0A2oseb/9cFYSBOjhLw6YiewakPJbc6ZNE/shLyH2P
+        KKPbOu/6yqnFp+rQoQrUlDK6KA==
+X-Google-Smtp-Source: AMrXdXtho7wKqo/gqrqDo6MYsO14I9DU93Q+0he/iDHK3GHj3kga/MxQinOSPsFWQHqX7MjEeCNVxQ==
+X-Received: by 2002:adf:ea8e:0:b0:242:1926:783c with SMTP id s14-20020adfea8e000000b002421926783cmr3211460wrm.58.1674067486387;
+        Wed, 18 Jan 2023 10:44:46 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id g1-20020a5d46c1000000b00241cfe6e286sm31640325wrs.98.2023.01.18.10.44.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jan 2023 06:00:37 -0800 (PST)
-Date:   Wed, 18 Jan 2023 22:00:29 +0800
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Wed, 18 Jan 2023 10:44:45 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: leds: backlight: Add Kinetic KTZ8866
- backlight
-Message-ID: <Y8f7fbEJ0E6QQ0lZ@Gentoo>
-References: <20230118131002.15453-1-lujianhua000@gmail.com>
- <1a8c006d-c9b9-9fd0-147e-7e511cb236fe@linaro.org>
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Renato Lui Geh <renatogeh@gmail.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Andreas Klinger <ak@it-klinger.de>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Nishant Malpani <nish.malpani25@gmail.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Robert Yang <decatf@gmail.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Stefan Agner <stefan@agner.ch>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Harald Geyer <harald@ccbib.org>,
+        Eugene Zaikonnikov <ez@norophonic.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        chrome-platform@lists.linux.dev
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/5] dt-bindings: iio: drop unneeded quotes
+Date:   Wed, 18 Jan 2023 19:44:09 +0100
+Message-Id: <20230118184413.395820-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1a8c006d-c9b9-9fd0-147e-7e511cb236fe@linaro.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 02:40:00PM +0100, Krzysztof Kozlowski wrote:
-> On 18/01/2023 14:10, Jianhua Lu wrote:
-> > Add Kinetic KTZ8866 backlight binding documentation.
-> > 
-> > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> > ---
-> > Changes in v2:
-> >   - Remove "items" between "compatible" and "const: kinetic,ktz8866"
-> >   - Change "additionalProperties" to "unevaluatedProperties"
-> > 
-> > Changes in v3:
-> >   - Add Krzysztof's R-b
-> > 
-> > Changes in v4:
-> >   - Drop Krzysztof's R-b
-> >   - Add some new properties
-> > 
-> > Changes in v5:
-> >   - Add missing enum under property description.
-> >   - Rename uncorrect properties.
-> > 
-> > Changes in v6:
-> >   - Correct wrong property suffix and description.
-> > 
-> >  .../leds/backlight/kinetic,ktz8866.yaml       | 59 +++++++++++++++++++
-> >  1 file changed, 59 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml b/Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
-> > new file mode 100644
-> > index 000000000000..ca0deba14523
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
-> > @@ -0,0 +1,59 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/leds/backlight/kinetic,ktz8866.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Kinetic Technologies KTZ8866 backlight
-> > +
-> > +maintainers:
-> > +  - Jianhua Lu <lujianhua000@gmail.com>
-> > +
-> > +description: |
-> > +  The Kinetic Technologies KTZ8866 is a high efficiency 6-sinks led backlight
-> > +  with dual lcd bias power.
-> > +  https://www.kinet-ic.com/ktz8866/
-> > +
-> > +allOf:
-> > +  - $ref: common.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: kinetic,ktz8866
-> > +
-> > +  current-num-sinks:
-> > +    description: Number of LED current sinks.
-> > +    enum: [1, 2, 3, 4, 5, 6]
-> > +
-> > +  current-ramping-time-ms:
-> > +    description: LED current ramping time in milliseconds.
-> > +    enum: [2, 4, 8, 16, 32, 64, 128, 192, 256, 320, 384, 448, 512, 576, 640]
-> > +
-> > +  led-ramping-time-ms:
-> > +    description: |
-> > +      LED on/off ramping time in milliseconds, note that the case 0 will be mapped
-> > +      to 512μs because ktz8866 can't ramp faster than it.
-> 
-> Aren't you just missing supplies here and their ramp up time?
->
-backlight ic supply bias power to panel, but downsteam devicetree adds power supplies node to panel node, 
-so I'm not sure if need to add power supplies to backlight node.
-> > +    enum: [0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]
-> > +
-> > +  enable-lcd-bias:
-> > +    description: Set if we want to output bias power supply for LCD.
-> 
-> Is it a generic property? I don't see any other users, so this looks
-> device specific thus needs vendor prefix.
-> 
-> This applies to all of the properties. They might be generic or might
-> not, I don't know the backlight hardware that much.
-It surely is device specific, thanks.
-> 
-> > +    type: boolean
-> > +
-> > +required:
-> > +  - compatible
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    backlight {
-> > +        compatible = "kinetic,ktz8866";
-> > +
-> > +        pinctrl-names = "default";
-> > +        pinctrl-0 = <&bl_en_default>;
-> > +
-> > +        current-num-sinks = <5>;
-> > +        current-ramping-time-ms = <128>;
-> > +        led-ramping-time-ms = <1>;
-> > +        enable-lcd-bias;
-> > +    };
-> 
-> Best regards,
-> Krzysztof
-> 
+Cleanup by removing unneeded quotes from refs and redundant blank lines.
+No functional impact except adjusting to preferred coding style.
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../devicetree/bindings/iio/accel/memsensing,msa311.yaml  | 5 ++---
+ Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml | 2 +-
+ Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml | 2 +-
+ .../devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml    | 2 +-
+ Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml | 4 ++--
+ .../devicetree/bindings/iio/adc/ingenic,adc.yaml          | 4 ++--
+ .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml    | 4 ++--
+ .../devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml    | 2 +-
+ .../devicetree/bindings/iio/adc/samsung,exynos-adc.yaml   | 2 +-
+ .../devicetree/bindings/iio/adc/st,stm32-adc.yaml         | 8 ++++----
+ .../devicetree/bindings/iio/adc/ti,ads131e08.yaml         | 2 +-
+ Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml | 2 +-
+ .../devicetree/bindings/iio/dac/lltc,ltc1660.yaml         | 4 ++--
+ .../devicetree/bindings/iio/dac/lltc,ltc2632.yaml         | 4 ++--
+ .../devicetree/bindings/iio/dac/st,stm32-dac.yaml         | 4 ++--
+ Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 2 +-
+ .../devicetree/bindings/iio/temperature/ti,tmp117.yaml    | 6 +++---
+ 17 files changed, 29 insertions(+), 30 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
+index 23528dcaa073..d530ec041fe7 100644
+--- a/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
+@@ -1,9 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+-
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: MEMSensing digital 3-Axis accelerometer
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+index 75a7184a4735..35ed04350e28 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
+@@ -61,7 +61,7 @@ required:
+ 
+ patternProperties:
+   "^channel@([0-9]|1[0-5])$":
+-    $ref: "adc.yaml"
++    $ref: adc.yaml
+     type: object
+     description: |
+       Represents the external channels which are connected to the ADC.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+index 1bfbeed6f299..7cc4ddc4e9b7 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7292.yaml
+@@ -43,7 +43,7 @@ required:
+ 
+ patternProperties:
+   "^channel@[0-7]$":
+-    $ref: "adc.yaml"
++    $ref: adc.yaml
+     type: object
+     description: |
+       Represents the external channels which are connected to the ADC.
+diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
+index 31f840d59303..4817b840977a 100644
+--- a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
+@@ -41,7 +41,7 @@ properties:
+     description: Startup time expressed in ms, it depends on SoC.
+ 
+   atmel,trigger-edge-type:
+-    $ref: '/schemas/types.yaml#/definitions/uint32'
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       One of possible edge types for the ADTRG hardware trigger pin.
+       When the specific edge type is detected, the conversion will
+diff --git a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
+index 77605f17901c..9c57eb13f892 100644
+--- a/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/avia-hx711.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/adc/avia-hx711.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/adc/avia-hx711.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: AVIA HX711 ADC chip for weight cells
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+index 517e8b1fcb73..b71c951e6d02 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ingenic,adc.yaml
+@@ -2,8 +2,8 @@
+ # Copyright 2019-2020 Artur Rojek
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/adc/ingenic,adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Ingenic JZ47xx ADC controller IIO
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+index 2c93fb41f172..f7b3fde4115a 100644
+--- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+@@ -2,8 +2,8 @@
+ # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/adc/microchip,mcp3911.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Microchip MCP3911 Dual channel analog front end (ADC)
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+index 8b743742a5f9..ba86c7b7d622 100644
+--- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+@@ -69,7 +69,7 @@ required:
+ 
+ patternProperties:
+   "^channel@[0-7]$":
+-    $ref: "adc.yaml"
++    $ref: adc.yaml
+     type: object
+     description: |
+       Represents the external channels which are connected to the ADC.
+diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+index 81c87295912c..e27d094cfa05 100644
+--- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
+@@ -52,7 +52,7 @@ properties:
+   vdd-supply: true
+ 
+   samsung,syscon-phandle:
+-    $ref: '/schemas/types.yaml#/definitions/phandle'
++    $ref: /schemas/types.yaml#/definitions/phandle
+     description:
+       Phandle to the PMU system controller node (to access the ADC_PHY
+       register on Exynos3250/4x12/5250/5420/5800).
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+index 1c340c95df16..995cbf8cefc6 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/adc/st,stm32-adc.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/adc/st,stm32-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: STMicroelectronics STM32 ADC
+ 
+@@ -80,7 +80,7 @@ properties:
+     description:
+       Phandle to system configuration controller. It can be used to control the
+       analog circuitry on stm32mp1.
+-    $ref: "/schemas/types.yaml#/definitions/phandle-array"
++    $ref: /schemas/types.yaml#/definitions/phandle-array
+ 
+   interrupt-controller: true
+ 
+@@ -341,7 +341,7 @@ patternProperties:
+     patternProperties:
+       "^channel@([0-9]|1[0-9])$":
+         type: object
+-        $ref: "adc.yaml"
++        $ref: adc.yaml
+         description: Represents the external channels which are connected to the ADC.
+ 
+         properties:
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
+index 55c2c73626f4..890f125d422c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads131e08.yaml
+@@ -77,7 +77,7 @@ required:
+ 
+ patternProperties:
+   "^channel@([0-7])$":
+-    $ref: "adc.yaml"
++    $ref: adc.yaml
+     type: object
+     description: |
+       Represents the external channels which are connected to the ADC.
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+index bdf3bba2d750..32c52f9fe18b 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+@@ -41,7 +41,7 @@ required:
+ 
+ patternProperties:
+   "^channel@[0-7]$":
+-    $ref: "adc.yaml"
++    $ref: adc.yaml
+     type: object
+ 
+     properties:
+diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+index 133b0f867992..c9f51d00fa8f 100644
+--- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+@@ -2,8 +2,8 @@
+ # Copyright 2019 Marcus Folkesson <marcus.folkesson@gmail.com>
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/dac/lltc,ltc1660.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Linear Technology Micropower octal 8-Bit and 10-Bit DACs
+ 
+diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
+index b1eb77335d05..c9e3be3b5754 100644
+--- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/dac/lltc,ltc2632.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Linear Technology LTC263x 12-/10-/8-Bit Rail-to-Rail DAC
+ 
+diff --git a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+index 0f1bf1110122..04045b932bd2 100644
+--- a/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/st,stm32-dac.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/dac/st,stm32-dac.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/dac/st,stm32-dac.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: STMicroelectronics STM32 DAC
+ 
+diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+index 68b481c63318..decf022335d8 100644
+--- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
+@@ -63,7 +63,7 @@ properties:
+     description: if defined provides VDD IO power to the sensor.
+ 
+   st,drdy-int-pin:
+-    $ref: '/schemas/types.yaml#/definitions/uint32'
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description: |
+       The pin on the package that will be used to signal data ready
+     enum:
+diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+index 347bc16a4671..c4f1c69f9330 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+@@ -1,10 +1,10 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/iio/temperature/ti,tmp117.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/iio/temperature/ti,tmp117.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: "TI TMP117 - Digital temperature sensor with integrated NV memory"
++title: TI TMP117 - Digital temperature sensor with integrated NV memory
+ 
+ description: |
+     TI TMP117 - Digital temperature sensor with integrated NV memory that supports
+-- 
+2.34.1
+
