@@ -2,97 +2,131 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C638673DEC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Jan 2023 16:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26BDA674111
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Jan 2023 19:36:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbjASPtt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 19 Jan 2023 10:49:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
+        id S229773AbjASSgg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 19 Jan 2023 13:36:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbjASPtR (ORCPT
+        with ESMTP id S229544AbjASSge (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 19 Jan 2023 10:49:17 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78708758B
-        for <linux-fbdev@vger.kernel.org>; Thu, 19 Jan 2023 07:48:11 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id c10-20020a05600c0a4a00b003db0636ff84so1594921wmq.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 19 Jan 2023 07:48:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=SmzMUzwoLkvlVGy+BLrKpUL90vuQ/Du4wcaIfwpFEvnqT+Pr0XrAwkWii0TgOBP52q
-         J98pVDlCvVTDZN6u2+N5L8nzRV1PSZBA8C7RqTEXEaatDbgg+luSvmTm2YXbD2qEvejK
-         iFaKvKwM3xp3NBlNPR6n/F+OVmkl6HYRpXPBTDyQ58bddi1jG+rVw2LAOeTPxyiHyd+a
-         bpUEH1jy3oUDMoQ/BAWSN/PJ2IfPrxBI8h7KPEhm8ldrGzvxyTECqRTIiCUxINwgjW4y
-         EGICs/pgdu347jL8KPCuO+KgScYwPsgoczZWG+Zbw9bF2O37Znoeo3fnvdliFW/siayx
-         N3uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=qD6xq4hjrtkD+Lv5W+eZT6uESpDfld6V2MtRPKLuQ6BcxEsd5QLzJ6L2Y5sWS5Kv3q
-         ZoOe7G/pf9duIpzrzJADjgRIZUMKk8ywBYeI0vgOJ9KYhaRoAMuwV3Viaq+y/8lWEyPy
-         072nuSd8ZonBPqyitAFUBOqMoRjfG+PaxvKw39PhM+rPexLzhS5tsZAvBp4mOU/EegFC
-         9U/seKVXBmANRwtGGQKOPphWgqd+5pCZKAwcu4uJ3jG1bw/fTnr6z2dVn6gz7N3P4kke
-         IlIoYIWvescie1SJNzWyXUO9om5rz2X01Dl/+UU2g8IdnQp7PR+NDJGyzd08ZVtJUH+v
-         CQ5g==
-X-Gm-Message-State: AFqh2kov4fslb1qkruY9XvPVwC6hZNgSKTnKS5InJMQK/ndxtr1S3R1Q
-        0tfdrxlonMAmWWIFZsYJH/sHZ8hVUliS4ll9xXE=
-X-Google-Smtp-Source: AMrXdXs8v4C0pTf+LRKpZGBBMmWiYeGk2ezj1yrI0a1O7mnMMoMDOf1ZCoVMQCoqCoR8D1dJF3jM3eA74y4O2pVquZE=
-X-Received: by 2002:a05:600c:180a:b0:3d0:a089:4d6b with SMTP id
- n10-20020a05600c180a00b003d0a0894d6bmr668230wmp.78.1674143288731; Thu, 19 Jan
- 2023 07:48:08 -0800 (PST)
+        Thu, 19 Jan 2023 13:36:34 -0500
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D2866033;
+        Thu, 19 Jan 2023 10:36:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674153393; x=1705689393;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zwVVjUESJIESReT22YjiSWRMur/H9GgTgPJMfoIT7L0=;
+  b=KWphWsiCioYMECx6nzJITeyUJJQuDX/swYpZgLsElr+y+knr6YER8gWU
+   2fExfoMTHUfJYfan5o1vdIw4nGW1hmvLejw61cF7l3Ks6Mc5dCG69qMHq
+   mEgphmjDSbMuzJNX8SftxL40XMSwGF4Y2fLhVbL54UUzlHNijhPLl6EJs
+   qv8SY0IqFQ+xa64hU1az9Fc/7jE8ZDM2H0P97+/KAVK77W4kH507EjBv5
+   41DUvK41HuC3ZLPIA/dn8DaEBVBQ8OIzRlsgf1HmBSnFQnpThYh8N3OID
+   5JLlT/+OcrEYeQMdZXlB80keCTAnDU8rEjEak6F/izI+ekTIM/eZrlV/z
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="389895167"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="389895167"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2023 10:36:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10595"; a="768345053"
+X-IronPort-AV: E=Sophos;i="5.97,229,1669104000"; 
+   d="scan'208";a="768345053"
+Received: from lkp-server01.sh.intel.com (HELO 5646d64e7320) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 19 Jan 2023 10:36:06 -0800
+Received: from kbuild by 5646d64e7320 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pIZld-0001jS-1k;
+        Thu, 19 Jan 2023 18:36:05 +0000
+Date:   Fri, 20 Jan 2023 02:35:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jianhua Lu <lujianhua000@gmail.com>, Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Helge Deller <deller@gmx.de>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: Re: [PATCH v6 2/2] backlight: ktz8866: Add support for Kinetic
+ KTZ8866 backlight
+Message-ID: <202301200239.m4ZDprWz-lkp@intel.com>
+References: <20230118131002.15453-2-lujianhua000@gmail.com>
 MIME-Version: 1.0
-Received: by 2002:adf:ed86:0:0:0:0:0 with HTTP; Thu, 19 Jan 2023 07:48:08
- -0800 (PST)
-Reply-To: kl145177@gmail.com
-From:   Ken Lawson <i41600633@gmail.com>
-Date:   Thu, 19 Jan 2023 15:48:08 +0000
-Message-ID: <CAMue4Qiw0JmxokqafCi91iqvBLVZVpynnZLRp4V5bqFyUPCu7Q@mail.gmail.com>
-Subject: =?UTF-8?B?RG9icsO9IGRlbiwgc3TDoWxlIG/EjWVrw6F2w6FtIFZhxaFpIG9kcG92xJvEjy4=?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,EMPTY_MESSAGE,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:335 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4984]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [i41600633[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [kl145177[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [i41600633[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230118131002.15453-2-lujianhua000@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Hi Jianhua,
 
+I love your patch! Perhaps something to improve:
+
+[auto build test WARNING on lee-backlight/for-backlight-next]
+[also build test WARNING on lee-backlight/for-backlight-fixes lee-leds/for-leds-next pavel-leds/for-next linus/master v6.2-rc4 next-20230119]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jianhua-Lu/backlight-ktz8866-Add-support-for-Kinetic-KTZ8866-backlight/20230118-214354
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight.git for-backlight-next
+patch link:    https://lore.kernel.org/r/20230118131002.15453-2-lujianhua000%40gmail.com
+patch subject: [PATCH v6 2/2] backlight: ktz8866: Add support for Kinetic KTZ8866 backlight
+config: parisc-randconfig-r031-20230119 (https://download.01.org/0day-ci/archive/20230120/202301200239.m4ZDprWz-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/b862510e8bf9eb34db9d71a372b9de05682cb8ad
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jianhua-Lu/backlight-ktz8866-Add-support-for-Kinetic-KTZ8866-backlight/20230118-214354
+        git checkout b862510e8bf9eb34db9d71a372b9de05682cb8ad
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc SHELL=/bin/bash drivers/video/backlight/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/bits.h:6,
+                    from include/linux/ratelimit_types.h:5,
+                    from include/linux/ratelimit.h:5,
+                    from include/linux/dev_printk.h:16,
+                    from include/linux/device.h:15,
+                    from include/linux/backlight.h:12,
+                    from drivers/video/backlight/ktz8866.c:8:
+   include/vdso/bits.h: In function 'ktz8866_init':
+>> include/vdso/bits.h:7:40: warning: 'val' is used uninitialized [-Wuninitialized]
+       7 | #define BIT(nr)                 (UL(1) << (nr))
+         |                                        ^~
+   drivers/video/backlight/ktz8866.c:98:22: note: 'val' was declared here
+      98 |         unsigned int val;
+         |                      ^~~
+
+
+vim +/val +7 include/vdso/bits.h
+
+3945ff37d2f48d Vincenzo Frascino 2020-03-20  6  
+3945ff37d2f48d Vincenzo Frascino 2020-03-20 @7  #define BIT(nr)			(UL(1) << (nr))
+3945ff37d2f48d Vincenzo Frascino 2020-03-20  8  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
