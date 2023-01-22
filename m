@@ -2,128 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A97A676872
-	for <lists+linux-fbdev@lfdr.de>; Sat, 21 Jan 2023 20:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD36677029
+	for <lists+linux-fbdev@lfdr.de>; Sun, 22 Jan 2023 16:31:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjAUT0U (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 21 Jan 2023 14:26:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57428 "EHLO
+        id S231475AbjAVPbq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 22 Jan 2023 10:31:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbjAUT0P (ORCPT
+        with ESMTP id S231468AbjAVPbq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 21 Jan 2023 14:26:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 127F22B0AF
-        for <linux-fbdev@vger.kernel.org>; Sat, 21 Jan 2023 11:25:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1674329088;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5yb3FH8jX0MWRXyzAKd1yTC1HwTjMT1KOtJHzdpTmLM=;
-        b=JoSuW22kD4TqqlrfuHNe42PBpjKHYTsC1g9ogMSXkOL6chSmXJuGZ8XYBNsyBPNrWiBJbT
-        0XbURgn32N0X58rZpypWRPxu9EyDUG78ZYWwyoU5hq8Fio5x9gNZVufHPcc/YT9FEuqbI/
-        Bte3HR08zhhdT1+7wrPcpiDMrpGv6M8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-187-WbY8f10iMyaN3fcdWhfXGg-1; Sat, 21 Jan 2023 14:24:47 -0500
-X-MC-Unique: WbY8f10iMyaN3fcdWhfXGg-1
-Received: by mail-wr1-f70.google.com with SMTP id v15-20020adfe4cf000000b002bf9413bc50so627731wrm.16
-        for <linux-fbdev@vger.kernel.org>; Sat, 21 Jan 2023 11:24:46 -0800 (PST)
+        Sun, 22 Jan 2023 10:31:46 -0500
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3126A23322;
+        Sun, 22 Jan 2023 07:31:38 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id v17so8414401oie.5;
+        Sun, 22 Jan 2023 07:31:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5yb3FH8jX0MWRXyzAKd1yTC1HwTjMT1KOtJHzdpTmLM=;
-        b=qsOOsM+8mzlh5A8SvlfHNnRQ8odXdZedf/cjw7rkGrzP6oa9DTCYYzHIL7bGirioad
-         PZwtlUa56Qqn8V0U5ffrDNQS3TFhfKuqLGH7BHvU3VnZQxhd5Z63bWQfMo4Ji3ZQM2Gl
-         yB5LsY2CmYYVPPixTKqbc4ZNLkgq20yqeCsNVLc7ZqvPVH7w6HhspA5V7wHssHLubOrc
-         5zBCepBGC/6236YYhGYnVX/ADuI+WD7kvJ0acvGMMX1mm8NV/FLVT9bvAbT3rUKXtHT5
-         glD/HiZhX2iKZ5ctMGfyc9lprwUl556tl2ofXP04mvCyeL0pm19E63mQb7hJsPC243ep
-         IYrw==
-X-Gm-Message-State: AFqh2kplVu/Uu+j8yo581WFxQ1V4MmbH5bsoWMgLGznhWcLlO0uR8S7m
-        gNbQUXw+8AA07xRXTfVIM50Q0dJ94ePBrY9/SgMhnXGIbYJLaiVMrXQyjmZQPEaLH1lbVpI7Wjg
-        Wu36K7+vGZ9Num1Vregus1k0=
-X-Received: by 2002:a05:600c:2255:b0:3da:f950:8168 with SMTP id a21-20020a05600c225500b003daf9508168mr17593294wmm.35.1674329085898;
-        Sat, 21 Jan 2023 11:24:45 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXu7/XGYvbQvHdPX4KdE971lVGAfQ0ExgfrXkYtLzVOSmg7BGN71xkjtA3ao8ZGPeTndCrBicQ==
-X-Received: by 2002:a05:600c:2255:b0:3da:f950:8168 with SMTP id a21-20020a05600c225500b003daf9508168mr17593290wmm.35.1674329085743;
-        Sat, 21 Jan 2023 11:24:45 -0800 (PST)
-Received: from minerva.home (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id f14-20020a05600c154e00b003daff80f16esm8544321wmg.27.2023.01.21.11.24.44
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FZkzDMS1ZlJGneVFTqUpOfvr7Yi2qPmA1JudWoB5Wqg=;
+        b=nNKsSB5TugDXqkh8lLiYb739wt+tyIaR7+t9Ab8wFgX6BWz7oWmj8kXnrRujCMIHe+
+         qhRZItbGdsVKh0Rc+2yqEV7M5KNbv2CddLlHASGqCOAHxDlEhWqDRCVFgGARnKP9ej7E
+         1wEj6hIlEzB+I7Bj0VyjoQicjrw+oq69z2ouLDccmwKhd9zHUJ6lcYQq7hmE92nM5Cn1
+         TtAtAGqYEoFfWquQtz6aNlxfWnTgoNj8IH+xqFXEUqCtfjPEfS38mGzpVvHDTkQByBLI
+         rErgv6nZJqU71+5j9yod52ebQ7wdRq7C3tqGUFcd3zU07zkBeXdHaSTVGgZDhIyTFfE8
+         3a0A==
+X-Gm-Message-State: AFqh2kobre0RzGTBx/DiXcsws7po8pfDyi0xWyNrzXkymm3SpwyWisfK
+        9K1blrbFoRIPrORYVUq81Q==
+X-Google-Smtp-Source: AMrXdXs6x0mubg9C92n0oqZLWm6BQqgv4Go44B2qICGsMrS6njK5eu8A1Orc0x+NYVCJMr9qIjOXdQ==
+X-Received: by 2002:a05:6808:189d:b0:364:d523:e138 with SMTP id bi29-20020a056808189d00b00364d523e138mr11734098oib.32.1674401497338;
+        Sun, 22 Jan 2023 07:31:37 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id 2-20020aca0602000000b0036508145326sm10737337oig.9.2023.01.22.07.31.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Jan 2023 11:24:45 -0800 (PST)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
-        Jaya Kumar <jayalk@intworks.biz>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v2 1/3] fbdev: Remove unused struct fb_deferred_io .first_io field
-Date:   Sat, 21 Jan 2023 20:24:16 +0100
-Message-Id: <20230121192418.2814955-2-javierm@redhat.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230121192418.2814955-1-javierm@redhat.com>
-References: <20230121192418.2814955-1-javierm@redhat.com>
-MIME-Version: 1.0
+        Sun, 22 Jan 2023 07:31:36 -0800 (PST)
+Received: (nullmailer pid 2288127 invoked by uid 1000);
+        Sun, 22 Jan 2023 15:31:35 -0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Rayyan Ansari <rayyan@ansari.sh>
+Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        David Airlie <airlied@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>, janne@jannau.net,
+        asahi@lists.linux.dev,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+In-Reply-To: <20230121153544.467126-3-rayyan@ansari.sh>
+References: <20230121153544.467126-1-rayyan@ansari.sh>
+ <20230121153544.467126-3-rayyan@ansari.sh>
+Message-Id: <167440123887.2283488.2841716718270566192.robh@kernel.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: display: simple-framebuffer: Document
+ physical width and height properties
+Date:   Sun, 22 Jan 2023 09:31:35 -0600
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This optional callback was added in the commit 1f45f9dbb392 ("fb_defio:
-add first_io callback") but it was never used by a driver. Let's remove
-it since it's unlikely that will be used after a decade that was added.
 
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
----
+On Sat, 21 Jan 2023 15:35:44 +0000, Rayyan Ansari wrote:
+> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+> ---
+>  .../devicetree/bindings/display/simple-framebuffer.yaml   | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
 
-(no changes since v1)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
- drivers/video/fbdev/core/fb_defio.c | 4 ----
- include/linux/fb.h                  | 1 -
- 2 files changed, 5 deletions(-)
+yamllint warnings/errors:
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index c730253ab85c..1b680742b7f3 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -157,10 +157,6 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
- 	/* protect against the workqueue changing the page list */
- 	mutex_lock(&fbdefio->lock);
- 
--	/* first write in this cycle, notify the driver */
--	if (fbdefio->first_io && list_empty(&fbdefio->pagereflist))
--		fbdefio->first_io(info);
--
- 	pageref = fb_deferred_io_pageref_get(info, offset, page);
- 	if (WARN_ON_ONCE(!pageref)) {
- 		ret = VM_FAULT_OOM;
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 30183fd259ae..daf336385613 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -215,7 +215,6 @@ struct fb_deferred_io {
- 	struct mutex lock; /* mutex that protects the pageref list */
- 	struct list_head pagereflist; /* list of pagerefs for touched pages */
- 	/* callback */
--	void (*first_io)(struct fb_info *info);
- 	void (*deferred_io)(struct fb_info *info, struct list_head *pagelist);
- };
- #endif
--- 
-2.39.0
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/simple-framebuffer.yaml: properties:width-mm: '$ref' should not be valid under {'const': '$ref'}
+	hint: Standard unit suffix properties don't need a type $ref
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/simple-framebuffer.yaml: properties:height-mm: '$ref' should not be valid under {'const': '$ref'}
+	hint: Standard unit suffix properties don't need a type $ref
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230121153544.467126-3-rayyan@ansari.sh
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
