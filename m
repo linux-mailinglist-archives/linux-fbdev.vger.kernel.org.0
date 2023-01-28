@@ -2,148 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D2F67F886
-	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Jan 2023 15:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D641467F979
+	for <lists+linux-fbdev@lfdr.de>; Sat, 28 Jan 2023 17:16:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbjA1OOW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 28 Jan 2023 09:14:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
+        id S230096AbjA1QQ1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 28 Jan 2023 11:16:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232037AbjA1OOV (ORCPT
+        with ESMTP id S229619AbjA1QQ0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 28 Jan 2023 09:14:21 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5260822DE8
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Jan 2023 06:14:18 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id z1-20020a17090a66c100b00226f05b9595so7295486pjl.0
-        for <linux-fbdev@vger.kernel.org>; Sat, 28 Jan 2023 06:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vcgL8SdpnxRsXHVcNTMAFxs4sTzc2o5ZQi6m3PVqUzI=;
-        b=MvVYsT2ll7BqSiHFoXFdmjtRJlIYjvOZ3Tw0MD1ie55Ld04C6LqnyY2Is+GZmAKX59
-         0Be39rasBg6kmi6TygnzNCks2eelJ+9/zV2x49Iq8+oP/RH8hwZLzt5d4zlgvC8/1Ps5
-         gQlC5QUPMZaxt/4qQIelVnL9ipULadnVPLk9KSHOqoEPLhj4DaO9zeHZZJSx/6tVAqxj
-         02arQwEpI5hXPEdp4TlOITrh0+XY8PXbWhnyBd/+UJ5aDAGVM23dnDIzhSACYbo1KNUh
-         E3wwVyq+uwnVGhQJBp+jCLQfPr9AqFuWR1QXnfxIWaQSbGN/u6A7En8I8acUPfTQzyDm
-         G+XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vcgL8SdpnxRsXHVcNTMAFxs4sTzc2o5ZQi6m3PVqUzI=;
-        b=XNFGh42515RY6T1oBC8U76Dnsxq33dH/egjsr5EZ1xN2ULTZoieFqgfkxHkv0tS0FT
-         G1AF/y0Y25HgnkCvFonqZETzIFsRyluzuIm2NF+zYO1k2YYFHrDDJoGO/rmdK03o/SO3
-         YJREk43XJ0EYvDMwkJ8bfX4pk3KsLsDrb2Y0mmKbOJ5DgVqoUBWq/ChQyrPIoKsTsb/m
-         G6pzKYDicpGpsdaSXoKvfebAUhL9YzPqeacP2eA37EhhwINntQVNnJ4Glz2kIQbK5FZu
-         VMsqDVEJmEdASQCgfk2/eItGIEwqoZggJvVLAJnBMQEb5+viqcf8n63J4MHQVRPS3+XW
-         dNpQ==
-X-Gm-Message-State: AFqh2koPhaLycqw+rPEGHaxhVSswyNB6TdZ72ELPCRa5ahoPUJTkvoS8
-        wrmSrBfyxK9CI3Jv3Cd+RdgrDLQD+GD+xg==
-X-Google-Smtp-Source: AMrXdXsXWzoBxbwbN7xeHbxeAhi+J3eAuA7zq84kXi9P8o8Rrp64f2ipuiw/n1L/mXacwxSx0GOLRw==
-X-Received: by 2002:a05:6a20:4657:b0:b8:8208:a837 with SMTP id eb23-20020a056a20465700b000b88208a837mr40088810pzb.22.1674915257780;
-        Sat, 28 Jan 2023 06:14:17 -0800 (PST)
-Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id x189-20020a6386c6000000b004a281fb63c3sm3958223pgd.87.2023.01.28.06.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jan 2023 06:14:17 -0800 (PST)
-Date:   Sat, 28 Jan 2023 22:14:09 +0800
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
+        Sat, 28 Jan 2023 11:16:26 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2690E18160
+        for <linux-fbdev@vger.kernel.org>; Sat, 28 Jan 2023 08:16:25 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pLnsL-0001oA-TX; Sat, 28 Jan 2023 17:16:21 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pLnsL-0012wE-GU; Sat, 28 Jan 2023 17:16:20 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1pLnsJ-00GZdu-RG; Sat, 28 Jan 2023 17:16:19 +0100
+Date:   Sat, 28 Jan 2023 17:16:13 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Jianhua Lu <lujianhua000@gmail.com>
 Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, Lee Jones <lee@kernel.org>,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         kernel@pengutronix.de
 Subject: Re: [PATCH] backlight: ktz8866: Convert to i2c's .probe_new()
-Message-ID: <Y9Utsbi5PYZ26m9j@Gentoo>
+Message-ID: <20230128161613.zx24zhdqj66vxhcz@pengutronix.de>
 References: <20230127152639.1347229-1-u.kleine-koenig@pengutronix.de>
  <Y9RuDM9VAMBzj4vd@Gentoo>
  <20230128133239.ndanz4gzm73wwaiv@pengutronix.de>
+ <Y9Utsbi5PYZ26m9j@Gentoo>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cgcc2i37kj2jwq4r"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230128133239.ndanz4gzm73wwaiv@pengutronix.de>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Y9Utsbi5PYZ26m9j@Gentoo>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Sat, Jan 28, 2023 at 02:32:39PM +0100, Uwe Kleine-König wrote:
-> Hello,
-> 
-> On Sat, Jan 28, 2023 at 08:36:28AM +0800, Jianhua Lu wrote:
-> > On Fri, Jan 27, 2023 at 04:26:39PM +0100, Uwe Kleine-König wrote:
-> > > The probe function doesn't make use of the i2c_device_id * parameter so
-> > > it can be trivially converted.
-> > > 
-> > > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > ---
-> > > Hello,
-> > > 
-> > > there is an ongoing effort to convert all drivers to .probe_new to
-> > > eventually drop .probe with the i2c_device_id parameter. This driver
-> > > currently sits in next so wasn't on my radar before.
-> > > 
-> > > My plan is to tackle that after the next merge window. So I ask you to
-> > > either apply this patch during the next merge window or accept that it
-> > > will go in via the i2c tree together with the patch that drops .probe().
-> > > 
-> > > Best regards
-> > > Uwe
-> > > 
-> > >  drivers/video/backlight/ktz8866.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/video/backlight/ktz8866.c b/drivers/video/backlight/ktz8866.c
-> > > index 97b723719e13..d38c13ad39c7 100644
-> > > --- a/drivers/video/backlight/ktz8866.c
-> > > +++ b/drivers/video/backlight/ktz8866.c
-> > > @@ -124,8 +124,7 @@ static void ktz8866_init(struct ktz8866 *ktz)
-> > >  		ktz8866_write(ktz, LCD_BIAS_CFG1, LCD_BIAS_EN);
-> > >  }
-> > >  
-> > > -static int ktz8866_probe(struct i2c_client *client,
-> > > -			 const struct i2c_device_id *id)
-> > > +static int ktz8866_probe(struct i2c_client *client)
-> > >  {
-> > >  	struct backlight_device *backlight_dev;
-> > >  	struct backlight_properties props;
-> > > @@ -197,7 +196,7 @@ static struct i2c_driver ktz8866_driver = {
-> > >  		.name = "ktz8866",
-> > >  		.of_match_table = ktz8866_match_table,
-> > >  	},
-> > > -	.probe = ktz8866_probe,
-> > > +	.probe_new = ktz8866_probe,
-> > 
-> > I think .probe_new() will be renamed to new .probe() again when there are
-> > patches dropping old .probe().
-> 
-> Right, the plan is to reintroduce .probe with the prototype that
-> .probe_new has today.
-> 
-> > I prefer that you pack this commit to the i2c-tree commit that drops
-> > old .probe(). 
-> 
-> That's fine for me. Can I interpret this as an Ack for this patch?
-Yes, but can't get my A-b directly, this patch should be ignored and 
-resend it within the i2c-tree patch series or split it to two patch
-series.
-> 
-> Best regards
-> Uwe
-> 
-> -- 
-> Pengutronix e.K.                           | Uwe Kleine-König            |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
+--cgcc2i37kj2jwq4r
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hello,
+
+On Sat, Jan 28, 2023 at 10:14:09PM +0800, Jianhua Lu wrote:
+> On Sat, Jan 28, 2023 at 02:32:39PM +0100, Uwe Kleine-K=F6nig wrote:
+> > On Sat, Jan 28, 2023 at 08:36:28AM +0800, Jianhua Lu wrote:
+> > > I prefer that you pack this commit to the i2c-tree commit that drops
+> > > old .probe().=20
+> >=20
+> > That's fine for me. Can I interpret this as an Ack for this patch?
+>=20
+> Yes, but can't get my A-b directly, this patch should be ignored and=20
+> resend it within the i2c-tree patch series or split it to two patch
+> series.
+
+I'm not sure if I understand you correctly. Up to know I though you want
+the patch as is go in together with the patch that modifies struct
+i2c_driver such that the PR has in two separate commits:
+
+	i2c: Modify .probe() to not take an id parameter
+	backlight: ktz8866: Convert to i2c's .probe_new()
+
+Did I understand that right?
+
+In that case an Ack by you would be fine and welcome.
+
+I don't want to squash the changes to the ktz8866 driver into the patch
+that modifies struct i2c_driver, as this needlessly clutters the commit,
+if it's that what you wanted. (There are more than 1000 i2c drivers and
+the others are not converted in a single lockstep, too.)
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--cgcc2i37kj2jwq4r
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmPVSkoACgkQwfwUeK3K
+7AnyLQf+KhM4gbai5n99iFIxc2w4KYcqIZRqq5U31k1oq15zBHQmwLiyc0bDmufi
+P46aoBe4VwvWPp1IAW3P8cZv3fyN4AkvYIXOTd884BIxosV16ogwF3e7+btKLK4j
+vxb3ENqJqYonbV7xJqHW/jLGqFx2AU2m8H3g2ZiOKmYijuUU4rn4x3SEUeOKlnLB
+/SWCZVKgASinO+kN1kgRr1IkJMDfboUYC+QkweFzz5Sl4IAqiMkEXZyOORVaXOCh
+KA0fG8UD+jTRH1XGjSTACVGhEzLwhQfETwRWxtZ0VJLUPHRdmbHfAr9H7phKd+c6
+0g2A66S5DfoB1Q7ucf0bHZ4ZILCQwg==
+=Q5qy
+-----END PGP SIGNATURE-----
+
+--cgcc2i37kj2jwq4r--
