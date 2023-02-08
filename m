@@ -2,143 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2D668F066
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Feb 2023 15:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE3568F8CD
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Feb 2023 21:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230487AbjBHOND (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 8 Feb 2023 09:13:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60798 "EHLO
+        id S230411AbjBHU2z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 8 Feb 2023 15:28:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230351AbjBHONB (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Feb 2023 09:13:01 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC5437F1E;
-        Wed,  8 Feb 2023 06:12:21 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 99DC5B81C76;
-        Wed,  8 Feb 2023 14:12:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EF7C4339C;
-        Wed,  8 Feb 2023 14:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675865539;
-        bh=CM9X2AuKUJbsYimacCNPKUAK4TpbgQFBIKIrx7h4lJw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LVucjxu+REx2vxJaU73V9LeqN0VfNlpVqOVjlgapAR7+Js6CJh2wUlBGjryat06Mx
-         D9i30JRbIJdOspvFUtAoFUTSjc7q9zKrJAeQbeBiwFIiiX8euIEbk0Ty1Tz6V657+T
-         FLA5gRRVsKUOtlkaWGYAvOyX2NIaQlgKRJiFZbCRwtUw7qjRf/eGTg/jPYZv/0q1tt
-         FcUOC2BCeTia4s8YYIZRIs5mKBJvajFbiu7xD8C4mv+0OOcBl6e5vyuvgWOBBh+MUZ
-         xz5q4YEAPB/J4RrPpxV69F8ll/mVwhh9Od/sV4/BiL8f+TOBF8F2/I8j5Fv6bLISdE
-         LVYCGEEzxvGgw==
-Date:   Wed, 8 Feb 2023 15:12:16 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Huacai Chen <chenhuacai@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-sh@vger.kernel.org
-Subject: Re: remove arch/sh
-Message-ID: <Y+OtwCqt26UjCwkZ@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-sh@vger.kernel.org
-References: <20230113062339.1909087-1-hch@lst.de>
- <11e2e0a8-eabe-2d8c-d612-9cdd4bcc3648@physik.fu-berlin.de>
- <20230116071306.GA15848@lst.de>
- <40dc1bc1-d9cd-d9be-188e-5167ebae235c@physik.fu-berlin.de>
- <20230203071423.GA24833@lst.de>
- <60ed320c8f5286e8dbbf71be29b760339fd25069.camel@physik.fu-berlin.de>
- <0e26bf17-864e-eb22-0d07-5b91af4fde92@infradead.org>
- <f6317e9073362b13b10df57de23e63945becea32.camel@physik.fu-berlin.de>
- <CAAhV-H57bV855SMr6iBqoQzdak5QSnaRLjQ9oAbOtYZnik5SoQ@mail.gmail.com>
- <91be7f6b52d8ed74798e86270d59bc5cddefe130.camel@physik.fu-berlin.de>
+        with ESMTP id S229479AbjBHU2y (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Feb 2023 15:28:54 -0500
+Received: from sp13.canonet.ne.jp (sp13.canonet.ne.jp [210.134.168.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE0B81E9DD;
+        Wed,  8 Feb 2023 12:28:52 -0800 (PST)
+Received: from csp13.canonet.ne.jp (unknown [172.21.160.133])
+        by sp13.canonet.ne.jp (Postfix) with ESMTP id BBB871E058A;
+        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
+Received: from echeck13.canonet.ne.jp ([172.21.160.123])
+        by csp3 with ESMTP
+        id Pr3jpA4GixJr5Pr3jpoD6Q; Thu, 09 Feb 2023 05:28:51 +0900
+X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=S49nfKgP c=1 sm=1 tr=0
+ ts=63e40603 cx=g_jp:t_eml p=mma4DOr-2TkA:10 p=FYAhlTQRCH2TXxF9pwWT:22
+ a=c8wCX2VJ6RehaN9m5YqYzw==:117 a=yr9NA9NbXb0B05yJHQEWeQ==:17
+ a=PlGk70OYzacA:10 a=8nJEP1OIZ-IA:10 a=m04uMKEZRckA:10 a=Mrz3sjv-sVQA:10
+ a=x7bEGLp0ZPQA:10 a=YtQNzjfyrWE1PQnbW48A:9 a=wPNLvfGTeEIA:10"
+X-CNT-CMCheck-Score: 100.00
+Received: from echeck13.canonet.ne.jp (localhost [127.0.0.1])
+        by esets.canonet.ne.jp (Postfix) with ESMTP id 77C6B1C0246;
+        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
+X-Virus-Scanner: This message was checked by ESET Mail Security
+        for Linux/BSD. For more information on ESET Mail Security,
+        please, visit our website: http://www.eset.com/.
+Received: from smtp13.canonet.ne.jp (unknown [172.21.160.103])
+        by echeck13.canonet.ne.jp (Postfix) with ESMTP id 49FCA1C024D;
+        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
+Received: from nakazatokoumuten.co.jp (webmail.canonet.ne.jp [210.134.169.250])
+        by smtp13.canonet.ne.jp (Postfix) with ESMTPA id E08CB15F962;
+        Thu,  9 Feb 2023 05:28:50 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="H/y3lZ2MEalioY2m"
-Content-Disposition: inline
-In-Reply-To: <91be7f6b52d8ed74798e86270d59bc5cddefe130.camel@physik.fu-berlin.de>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <20230208202850.00007EE5.0209@nakazatokoumuten.co.jp>
+Date:   Thu, 09 Feb 2023 05:28:50 +0900
+From:   "Attoh Mensah" <web@nakazatokoumuten.co.jp>
+To:     <andrew.ejiro01@gmail.com>
+Reply-To: <barrattohmensahlawfirm@gmail.com>
+Subject: =?ISO-8859-1?B?T2zhIFNhdWRh5/Vlcw==?= meu amigo
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: base64
+X-Priority: 3
+ORGANIZATION: Attoh Mensah
+X-MAILER: Active! mail
+X-EsetResult: clean, %VIRUSNAME%
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1675888131;VERSION=7944;MC=515598722;TRN=0;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
+X-I-ESET-AS: RN=0;RNP=
+X-ESET-Antispam: OK
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,HK_SCAM,RCVD_IN_MSPIKE_H2,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,UNRESOLVED_TEMPLATE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [210.134.168.90 listed in bl.score.senderscore.com]
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [210.134.168.90 listed in wl.mailspike.net]
+        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  2.0 HK_SCAM No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+T2zhIFNhdWRh5/VlcyBNZXUgQW1pZ28NCg0KRXUgc291IG8gYWR2b2dhZG8gcGVzc29hbCBTeWx2
+YWluIEtvZmZpIEF0dG9oIE1lbnNhaCBBZHZvZ2FkbyBwZXNzb2FsIGRlIA0KdW0gaW52ZXN0aWRv
+ciBkbyBCcmFzaWwgYXF1aSBubyBUb2dvLCBObyBkaWEgMzEgZGUgamFuZWlybyBkZSAyMDEzLCAN
+CmR1cmFudGUgYSBjcmlzZSBkYSBM7WJpYSBtZXUgY2xpZW50ZSBlIHRvZGEgYSBzdWEgZmFt7Wxp
+YSBkb2lzIG1lbmlub3MgDQpjb20gdW1hIG1lbmluYSBlIGVzcG9zYSBmb2kgYXNzYXNzaW5hZG8g
+cG9yIHJlYmVsZGVzIGRvIGztZGVyIGRhIG9wb3Np5+MNCm8gcG9ycXVlIGVsZSBvIHBhdHJvY2lu
+YSBwb2xpdGljYW1lbnRlLiANCg0KQXR1YWxtZW50ZSwgbyBCYW5jbyBvbmRlIG8gZmFsZWNpZG8g
+KG1ldSBjbGllbnRlKSB0aW5oYSB1bSBkZXDzc2l0byANCmF2YWxpYWRvIGVtIFVTJC4gNy4yIE1p
+bGj1ZXMgbWUgZW1pdGlyYW0gdW0gYXZpc28gcGFyYSBmb3JuZWNlciBvIE5leHQgDQpvZiBLaW4g
+YW8gbWV1IGNsaWVudGUgcGFyYSByZWNlYmVyIHNldSBiZW5lZu1jaW8gb3UgdGVyIGEgY29udGEg
+DQpjb25maXNjYWRhLCBlbnTjbyBlbnRyZWkgZW0gY29udGF0byBjb20gdm9j6iBwYXJhIG1lIGFq
+dWRhciBhIHJlcGF0cmlhciANCmVzc2UgYmVuZWbtY2lvIGRlaXhhZG8gcGFyYSB0cuFzIHBlbG8g
+bWV1IGNsaWVudGUgYW50ZXMgcXVlIGVsZXMgc2VqYW0gDQpjb25maXNjYWRvcyBwZWxvIEJhbmNv
+LiANCg0KR2FyYW50byBxdWUgaXNzbyBzZXLhIGV4ZWN1dGFkbyBzb2IgdW0gYWNvcmRvIGxlZ+10
+aW1vIHF1ZSBvIHByb3RlZ2Vy4SANCmRlIHF1YWxxdWVyIHZpb2xh5+NvIGRhIGxlaS4NCnZvY+og
+ZSBldSBwb2RlbW9zIGNvbXBhcnRpbGjhLWxvOyA1MCUgcGFyYSBtaW0sIDUwJSBwYXJhIHZvY+ou
+DQoNClBvciBmYXZvciwgdm9sdGUgc2Ugdm9j6iBlc3RpdmVyIGludGVyZXNzYWRvLiANCg0KQXRl
+bmNpb3NhbWVudGUNCkJhcnIuIFN5bHZhaW4gS29mZmkgQXR0b2ggTWVuc2FoIChFc3EuKQ0K
 
---H/y3lZ2MEalioY2m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
-> Yes, that's the plan. We're collecting the various patches people have se=
-nt
-> in for arch/sh, review and test them and apply them.
->=20
-> My test board is running the latest kernel now, so I can test new patches=
-, too.
-
-I am just witnessing this development, but I want to say thanks for your
-effort and congrats on your progress. Looks like you do the right things
-correctly, cool! Kudos also to Geert and others for their assistance.
-
-
---H/y3lZ2MEalioY2m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmPjrbwACgkQFA3kzBSg
-KbYHCw//YV/RG0PWJ1txmpgpA0mLX7EfhxqJS6vwNlqziCSd910A+/ZNL7p2Q5Hx
-wVdeRoLHd9OcZFYXr0HLH0VCIJUYpr57DCy0AoIKL9q9CWET1hAMZjsIv5Kx2uVa
-1obdyCX46XEMqpSBhcsq8Vsq0TMQ4sCLdpVq/wPqBEDGUBGAIhkWX1UMQv2kiS1T
-uuYPKgsFmI2kl52owcOU2yZ42SVZNTEWiO2A8/4BXFfhhzKLWVcZQpEV9OInJ30n
-iXm6abMFAsFavgI90NZl1H4UKKLOzD5Jgr9Rv6DfYuyeADsKe2oQN1NvioHHVqvm
-qWG2b2UnZ7oS+dXxhS7YsQeiiTyZP/mpUprmrCrm0HMsl6iKCgCU8ceuRzy80Obt
-7u9CpA+ceRJ05Gfgo18YElk42l4Qhwk4zSWDQdOwtOlk1FpX9TBxOtOVngYEprMM
-UDRSSXFIJZTEyUAbqWqsMDuGRVcq3S9XAPYINbzig3H+Iy7an/wpxWBnYrRm+eCz
-/eb7eQ/iQYmBd7Zn8XO74E6vvH+pG8f9nqr2sRPpk89ZDPsZEk0wFCHpJQShIYJt
-iSeMDaLVGP+e+YlW7qvKavsdPISxlLhNFA1kj66ccHNZVbNQ5xyGhps/8qefpitG
-nN9N+KCLmNvyC8QCuMiMRDD9RVq8OSQ3VcL2zT8pj3XuJo2po4s=
-=9hIS
------END PGP SIGNATURE-----
-
---H/y3lZ2MEalioY2m--
