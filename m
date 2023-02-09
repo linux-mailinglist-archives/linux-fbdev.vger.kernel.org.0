@@ -2,97 +2,227 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE3568F8CD
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Feb 2023 21:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 463A668FD6E
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Feb 2023 03:57:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjBHU2z (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 8 Feb 2023 15:28:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44990 "EHLO
+        id S232499AbjBIC5D (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 8 Feb 2023 21:57:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjBHU2y (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Feb 2023 15:28:54 -0500
-Received: from sp13.canonet.ne.jp (sp13.canonet.ne.jp [210.134.168.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE0B81E9DD;
-        Wed,  8 Feb 2023 12:28:52 -0800 (PST)
-Received: from csp13.canonet.ne.jp (unknown [172.21.160.133])
-        by sp13.canonet.ne.jp (Postfix) with ESMTP id BBB871E058A;
-        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
-Received: from echeck13.canonet.ne.jp ([172.21.160.123])
-        by csp3 with ESMTP
-        id Pr3jpA4GixJr5Pr3jpoD6Q; Thu, 09 Feb 2023 05:28:51 +0900
-X-CNT-CMCheck-Reason: "undefined", "v=2.4 cv=S49nfKgP c=1 sm=1 tr=0
- ts=63e40603 cx=g_jp:t_eml p=mma4DOr-2TkA:10 p=FYAhlTQRCH2TXxF9pwWT:22
- a=c8wCX2VJ6RehaN9m5YqYzw==:117 a=yr9NA9NbXb0B05yJHQEWeQ==:17
- a=PlGk70OYzacA:10 a=8nJEP1OIZ-IA:10 a=m04uMKEZRckA:10 a=Mrz3sjv-sVQA:10
- a=x7bEGLp0ZPQA:10 a=YtQNzjfyrWE1PQnbW48A:9 a=wPNLvfGTeEIA:10"
-X-CNT-CMCheck-Score: 100.00
-Received: from echeck13.canonet.ne.jp (localhost [127.0.0.1])
-        by esets.canonet.ne.jp (Postfix) with ESMTP id 77C6B1C0246;
-        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
-X-Virus-Scanner: This message was checked by ESET Mail Security
-        for Linux/BSD. For more information on ESET Mail Security,
-        please, visit our website: http://www.eset.com/.
-Received: from smtp13.canonet.ne.jp (unknown [172.21.160.103])
-        by echeck13.canonet.ne.jp (Postfix) with ESMTP id 49FCA1C024D;
-        Thu,  9 Feb 2023 05:28:51 +0900 (JST)
-Received: from nakazatokoumuten.co.jp (webmail.canonet.ne.jp [210.134.169.250])
-        by smtp13.canonet.ne.jp (Postfix) with ESMTPA id E08CB15F962;
-        Thu,  9 Feb 2023 05:28:50 +0900 (JST)
+        with ESMTP id S231776AbjBICzw (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 8 Feb 2023 21:55:52 -0500
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56089A276
+        for <linux-fbdev@vger.kernel.org>; Wed,  8 Feb 2023 18:53:23 -0800 (PST)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-169ba826189so1007976fac.2
+        for <linux-fbdev@vger.kernel.org>; Wed, 08 Feb 2023 18:53:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uim76Lm5dMHI6OEZRl5dYh1Pi4k74h79vxsD8ejV228=;
+        b=cGJLZWh92YeqRetjDZ7mm7cWN9+7V9DkC4NxT3TFyzxOr/dT+y9RySdTXQJoGNFodj
+         Lhk5mURgRjvFpcDTTz997u4uYb5mXXSYufkvOHW16uecAigBafpKfrfPhjupqfB69TqU
+         CpdJtnnu16tBfQsfiDPbx5CJt8woI9p/61QJECQkg6ib53DsbPoG/6qEIFtT82h7XZEd
+         bH7zIZ7zeIu+guqsHWHH7HwzmCW5uJfaHSVq8vhoIZZxTs9cCuui2tEeecApAXxH34Kl
+         VCUo/SLo54vsVKd1HLhUdcTfFi+wK+KZOUpQFgXm1zVH8Gmha3IwtqAbksT7XdA8QMjg
+         0+9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uim76Lm5dMHI6OEZRl5dYh1Pi4k74h79vxsD8ejV228=;
+        b=4YNW4D7s7jt6qOAknKmx0nrRXjqO1gHDdhhFhueISyI78AH2etDUGW7oa7T7nh80sx
+         lzHO9+H63K6e38in6UGpNS76y8fBBfuey2oTjlpCxAAxmy2LByYXAdP9JGd34nP3hcZ/
+         SqNaXHyHrtV6EycB8dcbSEOXqP1j5NzWqFfW6lYVu0dIVWo7IUjE53XN51SOI2HUkYTC
+         iUW3SwjBVyI/3/mI4J6pSdR+zoajot0kl3F1lxm3Vh76FZUKTMUlTkWI69Opl4Lut/N+
+         HJsqV14EkuM09S8dJU2lvFi1k0w9kYIRWubu5JrNNuz6MLr1+P+sftA6xHjwKaKAltm2
+         Nm8A==
+X-Gm-Message-State: AO0yUKXAwJMJgYZMUQLGIlQCava7OxrP5HLc73PM/y6XxBXKEUI5q7LR
+        j9cgkSCLXcxNdy2l1p9tuUGWRw==
+X-Google-Smtp-Source: AK7set/IY8hpNoA4Lil9GPnYxD0kM8QMzh26dc48QApuMMt+T/W+mzLQoVZI9oh721NfnL8VF3E7Fg==
+X-Received: by 2002:a05:6870:7386:b0:163:ad96:f89c with SMTP id z6-20020a056870738600b00163ad96f89cmr5551951oam.15.1675911202632;
+        Wed, 08 Feb 2023 18:53:22 -0800 (PST)
+Received: from [192.168.86.224] ([136.62.38.22])
+        by smtp.gmail.com with ESMTPSA id v6-20020a4a5a06000000b00517b076e071sm100253ooa.47.2023.02.08.18.53.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Feb 2023 18:53:21 -0800 (PST)
+Message-ID: <b394bf10-2fc5-6498-955f-a904a756e0c9@landley.net>
+Date:   Wed, 8 Feb 2023 21:06:19 -0600
 MIME-Version: 1.0
-Message-ID: <20230208202850.00007EE5.0209@nakazatokoumuten.co.jp>
-Date:   Thu, 09 Feb 2023 05:28:50 +0900
-From:   "Attoh Mensah" <web@nakazatokoumuten.co.jp>
-To:     <andrew.ejiro01@gmail.com>
-Reply-To: <barrattohmensahlawfirm@gmail.com>
-Subject: =?ISO-8859-1?B?T2zhIFNhdWRh5/Vlcw==?= meu amigo
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: base64
-X-Priority: 3
-ORGANIZATION: Attoh Mensah
-X-MAILER: Active! mail
-X-EsetResult: clean, %VIRUSNAME%
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1675888131;VERSION=7944;MC=515598722;TRN=0;CRV=0;IPC=210.134.169.250;SP=4;SIPS=1;PI=5;F=0
-X-I-ESET-AS: RN=0;RNP=
-X-ESET-Antispam: OK
-X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,HK_SCAM,RCVD_IN_MSPIKE_H2,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,UNRESOLVED_TEMPLATE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [210.134.168.90 listed in bl.score.senderscore.com]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [210.134.168.90 listed in wl.mailspike.net]
-        *  1.3 UNRESOLVED_TEMPLATE Headers contain an unresolved template
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.0 HK_SCAM No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: remove arch/sh
+Content-Language: en-US
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-sh@vger.kernel.org
+References: <20230113062339.1909087-1-hch@lst.de>
+ <11e2e0a8-eabe-2d8c-d612-9cdd4bcc3648@physik.fu-berlin.de>
+ <20230116071306.GA15848@lst.de>
+ <40dc1bc1-d9cd-d9be-188e-5167ebae235c@physik.fu-berlin.de>
+ <20230203071423.GA24833@lst.de>
+ <afd056a95d21944db1dc0c9708f692dd1f7bb757.camel@physik.fu-berlin.de>
+ <20230203083037.GA30738@lst.de>
+ <d10fe31b2af6cf4e03618f38ca9d3ca5c72601ed.camel@physik.fu-berlin.de>
+ <CAMuHMdUitVfW088YOmqYm4kwbKwkwb22fAakHcu6boxv7dXDfQ@mail.gmail.com>
+ <f6a60193-a5d1-c42c-158a-4b0bfe9c7538@infradead.org>
+From:   Rob Landley <rob@landley.net>
+In-Reply-To: <f6a60193-a5d1-c42c-158a-4b0bfe9c7538@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-T2zhIFNhdWRh5/VlcyBNZXUgQW1pZ28NCg0KRXUgc291IG8gYWR2b2dhZG8gcGVzc29hbCBTeWx2
-YWluIEtvZmZpIEF0dG9oIE1lbnNhaCBBZHZvZ2FkbyBwZXNzb2FsIGRlIA0KdW0gaW52ZXN0aWRv
-ciBkbyBCcmFzaWwgYXF1aSBubyBUb2dvLCBObyBkaWEgMzEgZGUgamFuZWlybyBkZSAyMDEzLCAN
-CmR1cmFudGUgYSBjcmlzZSBkYSBM7WJpYSBtZXUgY2xpZW50ZSBlIHRvZGEgYSBzdWEgZmFt7Wxp
-YSBkb2lzIG1lbmlub3MgDQpjb20gdW1hIG1lbmluYSBlIGVzcG9zYSBmb2kgYXNzYXNzaW5hZG8g
-cG9yIHJlYmVsZGVzIGRvIGztZGVyIGRhIG9wb3Np5+MNCm8gcG9ycXVlIGVsZSBvIHBhdHJvY2lu
-YSBwb2xpdGljYW1lbnRlLiANCg0KQXR1YWxtZW50ZSwgbyBCYW5jbyBvbmRlIG8gZmFsZWNpZG8g
-KG1ldSBjbGllbnRlKSB0aW5oYSB1bSBkZXDzc2l0byANCmF2YWxpYWRvIGVtIFVTJC4gNy4yIE1p
-bGj1ZXMgbWUgZW1pdGlyYW0gdW0gYXZpc28gcGFyYSBmb3JuZWNlciBvIE5leHQgDQpvZiBLaW4g
-YW8gbWV1IGNsaWVudGUgcGFyYSByZWNlYmVyIHNldSBiZW5lZu1jaW8gb3UgdGVyIGEgY29udGEg
-DQpjb25maXNjYWRhLCBlbnTjbyBlbnRyZWkgZW0gY29udGF0byBjb20gdm9j6iBwYXJhIG1lIGFq
-dWRhciBhIHJlcGF0cmlhciANCmVzc2UgYmVuZWbtY2lvIGRlaXhhZG8gcGFyYSB0cuFzIHBlbG8g
-bWV1IGNsaWVudGUgYW50ZXMgcXVlIGVsZXMgc2VqYW0gDQpjb25maXNjYWRvcyBwZWxvIEJhbmNv
-LiANCg0KR2FyYW50byBxdWUgaXNzbyBzZXLhIGV4ZWN1dGFkbyBzb2IgdW0gYWNvcmRvIGxlZ+10
-aW1vIHF1ZSBvIHByb3RlZ2Vy4SANCmRlIHF1YWxxdWVyIHZpb2xh5+NvIGRhIGxlaS4NCnZvY+og
-ZSBldSBwb2RlbW9zIGNvbXBhcnRpbGjhLWxvOyA1MCUgcGFyYSBtaW0sIDUwJSBwYXJhIHZvY+ou
-DQoNClBvciBmYXZvciwgdm9sdGUgc2Ugdm9j6iBlc3RpdmVyIGludGVyZXNzYWRvLiANCg0KQXRl
-bmNpb3NhbWVudGUNCkJhcnIuIFN5bHZhaW4gS29mZmkgQXR0b2ggTWVuc2FoIChFc3EuKQ0K
+On 2/3/23 09:57, Randy Dunlap wrote:
+> Hi--
+> 
+> On 2/3/23 02:33, Geert Uytterhoeven wrote:
+>> Hi Adrian,
+>> 
+>> On Fri, Feb 3, 2023 at 11:29 AM John Paul Adrian Glaubitz
+>> <glaubitz@physik.fu-berlin.de> wrote:
+>>> On Fri, 2023-02-03 at 09:30 +0100, Christoph Hellwig wrote:
+>>>> On Fri, Feb 03, 2023 at 09:24:46AM +0100, John Paul Adrian Glaubitz wrote:
+>>>>> Since this is my very first time stepping up as a kernel maintainer, I was hoping
+>>>>> to get some pointers on what to do to make this happen.
+>>>>>
+>>>>> So far, we have set up a new kernel tree and I have set up a local development and
+>>>>> test environment for SH kernels using my SH7785LCR board as the target platform.
+>>>>>
+>>>>> Do I just need to send a patch asking to change the corresponding entry in the
+>>>>> MAINTAINERS file?
+>>>>
+>>>> I'm not sure a there is a document, but:
+>>>>
+>>>>  - add the MAINTAINERS change to your tree
+>>>>  - ask Stephen to get your tree included in linux-next
+>>>>
+>>>> then eventually send a pull request to Linus with all of that.  Make
+>>>> sure it's been in linux-next for a while.
+>>>
+>>> OK, thanks for the pointers! Will try to get this done by next week.
+>>>
+>>> We're still discussing among SuperH developer community whether there will be a second
+>>> maintainer, so please bear with us a few more days. I will collect patches in the
+>>> meantime.
+>> 
+>> Thanks a lot!
+>> 
+>> If you need any help with process, setup, ... don't hesitate to ask
+>> (on e.g. #renesas-soc on Libera).
+> 
+> While Adrian and Geert are reading this, I have a question:
+> 
+> Is this "sh64" still accurate and applicable?
 
+I hadn't noticed it was there... Randy Dunlap added that in 2018 (commit
+09b1565324cba). I wonder why?
+
+> from Documentation/kbuild/kbuild.rst:
+
+There isn't an active 64 bit superh architecture for the moment: sh5 was a
+prototype that never shipped in volume, and support was removed in commit
+37744feebc08. From the j-core side j64 hasn't shipped yet either (still planned
+last I heard, but j-core went downmarket first instead due to customer demand,
+and multi-issue is on the roadmap before 64 bit address space).
+
+The general trend in linux kernel architectures has been to merge 32 and 64 bit
+anyway, and just have the .config set CONFIG_64BIT to distinguish: arch/x86 was
+created by merging arch/i386 and arch/x86_64 in 2007, arch/powerpc merged the 32
+and 64 bit directories in 2005, arch/s390 and s390x are in the same dir,
+arch/mips... (For some reason arm and arm64 are still split, but that might be
+fallout from Arm Ltd trying to distinguish aarrcchh6644 from "arm" for some
+reason? Dunno.)
+
+I wonder why is this going the other way? I thought $ARCH mostly just specified
+the subdirectory under arch/ with a few historical aliases in the top level
+Makefile:
+
+# Additional ARCH settings for x86
+ifeq ($(ARCH),i386)
+        SRCARCH := x86
+endif
+ifeq ($(ARCH),x86_64)
+        SRCARCH := x86
+endif
+
+# Additional ARCH settings for sparc
+ifeq ($(ARCH),sparc32)
+       SRCARCH := sparc
+endif
+ifeq ($(ARCH),sparc64)
+       SRCARCH := sparc
+endif
+
+# Additional ARCH settings for parisc
+ifeq ($(ARCH),parisc64)
+       SRCARCH := parisc
+endif
+
+But you could always just specify the correct ARCH directory directly and it
+would work. (Always did when I tried it, although I haven't built sparc in years
+because there's no musl-libc support, and never built parisc64 because I
+couldn't get it to work with uClibc even before musl. I _am_ still building both
+32 bit and 64 bit x86 with ARCH=x86 both times...)
+
+> But some architectures such as x86 and sparc have aliases.
+> 
+> - x86: i386 for 32 bit, x86_64 for 64 bit
+> - sh: sh for 32 bit, sh64 for 64 bit <<<<<<<<<<<<<<<
+> - sparc: sparc32 for 32 bit, sparc64 for 64 bit
+
+Randy also added the sparc alias in commit 5ba800962a80. That at least exists in
+the top level Makefile.
+
+Did he mean parisc64 and typoed sh64? Because that's the only other alias in the
+top level Makefile...
+
+In any case, these are historical aliases for old builds, which can probably get
+yanked because it should be a trivial fix to use the right ARCH= value for
+modern builds? (I'd think?)
+
+You'd even be able to build a 64 bit version of ARCH=i386 just fine if it wasn't
+for the ONE place in arch/x86/Kconfig that actually checks:
+
+config 64BIT
+        bool "64-bit kernel" if "$(ARCH)" = "x86"
+        default "$(ARCH)" != "i386"
+
+Same for arch/sparc/Kconfig:
+
+config 64BIT
+        bool "64-bit kernel" if "$(ARCH)" = "sparc"
+        default "$(ARCH)" = "sparc64"
+
+Nothing else anywhere seems to care...
+
+> Thanks.
+
+Rob
