@@ -2,153 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDE9769AA40
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Feb 2023 12:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D3169B51C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Feb 2023 22:51:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjBQLYd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Feb 2023 06:24:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40368 "EHLO
+        id S229578AbjBQVv1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 17 Feb 2023 16:51:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbjBQLYc (ORCPT
+        with ESMTP id S229605AbjBQVv0 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Feb 2023 06:24:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F20AE627E6
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 03:23:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1676633022;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=seb+UnT6fXFwECQkziBuKI673IsXhXzJa3B+Rdcr3n8=;
-        b=D2CJIZGXp8ohHiV17PZaxvN+DDgNmqgPizx+e31NNY0wtDq1a/xld7GlH1NHJ3FRFA22Qi
-        Xywmw0gLKim3UQtQYqA+Iw1bC4i4yyKDg0GLLxgLui3FziV3l/xJB1m/+DNgQZj4D8Uq0r
-        EX7kOfN1lv/d5kbTNFYh4jhlFARI+/8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-190-Hs12ZteyPNG13wrwvfnRSg-1; Fri, 17 Feb 2023 06:23:41 -0500
-X-MC-Unique: Hs12ZteyPNG13wrwvfnRSg-1
-Received: by mail-wm1-f71.google.com with SMTP id n6-20020a05600c500600b003e2036a1516so533337wmr.7
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 03:23:40 -0800 (PST)
+        Fri, 17 Feb 2023 16:51:26 -0500
+Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C7B4AFF1
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 13:51:24 -0800 (PST)
+Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-535a11239faso44714917b3.13
+        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 13:51:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gV7232FeLNy4yd+DHC1nJA77lI8+9CkkdqtUh8CTXGY=;
+        b=oiG4jIqAYwj1biMQGsII4JsqJEiCN9EJ2ifvgw1p2bQmNF+66YrcgErGGCDU43TdTf
+         TRHMxAEGbjfiBx30ILBncZrwP6LT51kQhVaBmymQ5KmyatYrhBoO1vmmdRbARtSvSC1d
+         Lm1ULntHyc43kinoFYHxGqhnJSGKKFueSOa37lYUtFdLXN3L3oGxWZvJs7LDgLlmYbrx
+         x5i840aXP1FFlVEiIBOZdTkvj7dIEPc66Ky1ojS1Q39wn6Fn0UDIiQJTQWPBPo1uFmhD
+         9bgB8F/FVg17ff63/nQP2GJGl+GjTjNXGNGc4dOS3uD7FGtKar/W0/XFM8ANFtHEoy+2
+         Bvtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=seb+UnT6fXFwECQkziBuKI673IsXhXzJa3B+Rdcr3n8=;
-        b=PPQgHd4mb2XvE7GaWlxN89GtxV3s/N+QG/ISUJF9NImafo/5LU2X+FVf75Vd5gl7ay
-         uuaEHEHSVVOp4rt5G8fY897yDbAnVREs2qaG5iZ5k/UvW9t8r0EO+n6XELpDtOIMt4Dg
-         fo0TbKcMbFBkok8MFvfQu2gCoFPt+dCToLwA2dq3N6wwx03LGHjCFW7x431Rptttx/GI
-         WwgH982rNP18ShRFnmOsxF43drdwJSuFfePxbfMHJgPvW9/sq5rOEsw4COK2KdsMhssn
-         3Itwzk/KjtxOXjBJ9aeXsE3GpdIP1pmFcQxPsuD5TMkr2cMcQxXY6mAerqJm/5Zr5jYW
-         uZYQ==
-X-Gm-Message-State: AO0yUKXH/SOlIKywtQIHh2FdCgG3RBabqiQnZIlsryUKmNbRznUngZl4
-        9H+lwpbR+odMAm3bDgaXBUeQQ38/ewPdXoTYSoke4auuPn4Hho38wmS53o1w5b5qJl6AX9RbLiQ
-        tJPM79eSzLRV1v5Pcw96lt3A=
-X-Received: by 2002:a5d:49c4:0:b0:2c5:5f95:7746 with SMTP id t4-20020a5d49c4000000b002c55f957746mr7312221wrs.56.1676633019925;
-        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
-X-Google-Smtp-Source: AK7set9EFBEl4WDoRU8Iwut2hV1mfRRFMcd1jJye0+8k8u1HqbEZwr9yUu/4Qf4uxNyoSAl+SsFhNg==
-X-Received: by 2002:a5d:49c4:0:b0:2c5:5f95:7746 with SMTP id t4-20020a5d49c4000000b002c55f957746mr7312210wrs.56.1676633019651;
-        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id n18-20020a5d6612000000b002c551f7d452sm3893041wru.98.2023.02.17.03.23.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Feb 2023 03:23:39 -0800 (PST)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, daniel@ffwll.ch,
-        airlied@gmail.com, deller@gmx.de,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        geoff@infradead.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 02/11] fbdev: Transfer video= option strings to caller;
- clarify ownership
-In-Reply-To: <2c589464-bc37-4138-d9a6-b38cd05e5f99@suse.de>
-References: <20230209135509.7786-1-tzimmermann@suse.de>
- <20230209135509.7786-3-tzimmermann@suse.de>
- <87a61cy9et.fsf@minerva.mail-host-address-is-not-set>
- <2c589464-bc37-4138-d9a6-b38cd05e5f99@suse.de>
-Date:   Fri, 17 Feb 2023 12:23:37 +0100
-Message-ID: <87y1ow4jt2.fsf@minerva.mail-host-address-is-not-set>
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gV7232FeLNy4yd+DHC1nJA77lI8+9CkkdqtUh8CTXGY=;
+        b=CvKmkQvMkH8RzMcC/rsoK8yn04vlP0ZrPiVeOreYSVh88fjAnw6pAgxA6VvrywPCfu
+         rugG6Jj36mJ6I2HhF8TXtlI6A1iVdU0AdYuE3kD+/P2K2aS4Gc9gE3ycxwmuomIXchsO
+         4OOaBiCkglMTi0F2BZgh1lFVPgASwU+UE3LeZQvXwupecQQhzIf63XXpgwAlhN2MLFus
+         TqAbCSy2drYS6Nq0ZRI/rmYDFhZcGWuK1Tft3PYwWGAeYFbTkiKKZGUjUF3VSJWJx81C
+         J9JQLSfLcvnrubT6JVHAnRAxTliNx+tldI70TMKkoy+L9+vf3gAqrRugqf3pXk6HForR
+         RJTw==
+X-Gm-Message-State: AO0yUKWa9Ax9joVVyGgA8zDZIOFATLU4LYYTnyuVdOsU5/8X/QZUS9Ja
+        uUu71+N3GzmsY9MR0PHVy3o6Jtb/QUcFrPlA3rM=
+X-Google-Smtp-Source: AK7set8OiaiqPU6hIMRjHy5ft+4EbtHxNxKzUzUc4inCyFKbyQ4S0fZINim5a5CilWRdG5BosDHVDdD24ogcIV9nK7Q=
+X-Received: by 2002:a81:ad22:0:b0:533:9ffb:cb12 with SMTP id
+ l34-20020a81ad22000000b005339ffbcb12mr4939ywh.10.1676670683221; Fri, 17 Feb
+ 2023 13:51:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Received: by 2002:a05:6918:290d:b0:12f:b462:d22a with HTTP; Fri, 17 Feb 2023
+ 13:51:22 -0800 (PST)
+Reply-To: chesterreaaa@gmail.com
+From:   "Chester R. Ellis" <officemuub@gmail.com>
+Date:   Fri, 17 Feb 2023 22:51:22 +0100
+Message-ID: <CALioM71gYmYoXA4w=PNyhpTet=H4a1-QfRgm7UsE1xrcOiiS7Q@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+Greetings
 
-> Hi
->
-> Am 17.02.23 um 09:37 schrieb Javier Martinez Canillas:
->> Thomas Zimmermann <tzimmermann@suse.de> writes:
->> 
->>> In fb_get_options(), always duplicate the returned option string and
->>> transfer ownership of the memory to the function's caller.
->>>
->>> Until now, only the global option string got duplicated and transferred
->>> to the caller; the per-driver options were owned by fb_get_options().
->>> In the end, it was impossible for the function's caller to detect if
->>> it had to release the string's memory buffer. Hence, all calling drivers
->>> leak the memory buffer. The leaks have existed ever since, but drivers
->>> only call fb_get_option() once as part of module initialization. So the
->>> amount of leaked memory is not significant.
->>>
->>> Fix the semantics of fb_get_option() by unconditionally transferring
->>> ownership of the memory buffer to the caller. Later patches can resolve
->>> the memory leaks in the fbdev drivers.
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> ---
->> 
->> [...]
->> 
->>> +	if (option) {
->>> +		if (options)
->>> +			*option = kstrdup(options, GFP_KERNEL);
->>> +		else
->>> +			*option = NULL;
->>> +	}
->>>
->> 
->> I know the old code wasn't checking if kstrdup() succeeded, but you should
->
-> Kstrdup uses kmalloc, which already warns about failed allocations. I 
-> think it's discouraged to warn again. (Wasn't there a warning in sparse 
-> or checkpatch?)  So I'd rather leave it as is.
->
+I have sent you mails, but still have not received a response. Kindly
+get back to me for a mutual benefit transaction.
 
-I didn't mean to warn but to return an error code.
-
->> do it here and let the caller know. And same if (!options). So I guess the
->> following check can be added (to be consistent with the rest of the code):
->> 
->> 	if (!*option)
->> 		retval = 1;
->
-> Why is that needed for consistency?
->
-> Retval is the state of the output: enabled or not. If there are no 
-> options, retval should be 0(=enabled). 1(=disabled) is only set by 
-> video=off or that ofonly thing.
->
-
-Ah, I see. I misundertood what retval was about. Forget this comment then.
-
-Maybe while you are there could have another patch to document the return
-value in the fb_get_options() kernel-doc?
-
-And this patch looks good to me too after your explanations.
-
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-
-Best regards,
-Javier
-
+Thank you.
+Chester R. Ellis
