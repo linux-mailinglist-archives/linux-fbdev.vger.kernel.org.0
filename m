@@ -2,74 +2,102 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D3169B51C
-	for <lists+linux-fbdev@lfdr.de>; Fri, 17 Feb 2023 22:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4113A69BABC
+	for <lists+linux-fbdev@lfdr.de>; Sat, 18 Feb 2023 16:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229578AbjBQVv1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 17 Feb 2023 16:51:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58478 "EHLO
+        id S229441AbjBRPeK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 18 Feb 2023 10:34:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjBQVv0 (ORCPT
+        with ESMTP id S229476AbjBRPeJ (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 17 Feb 2023 16:51:26 -0500
-Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01C7B4AFF1
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 13:51:24 -0800 (PST)
-Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-535a11239faso44714917b3.13
-        for <linux-fbdev@vger.kernel.org>; Fri, 17 Feb 2023 13:51:23 -0800 (PST)
+        Sat, 18 Feb 2023 10:34:09 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13A617153;
+        Sat, 18 Feb 2023 07:34:08 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id eq13so3543877edb.11;
+        Sat, 18 Feb 2023 07:34:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gV7232FeLNy4yd+DHC1nJA77lI8+9CkkdqtUh8CTXGY=;
-        b=oiG4jIqAYwj1biMQGsII4JsqJEiCN9EJ2ifvgw1p2bQmNF+66YrcgErGGCDU43TdTf
-         TRHMxAEGbjfiBx30ILBncZrwP6LT51kQhVaBmymQ5KmyatYrhBoO1vmmdRbARtSvSC1d
-         Lm1ULntHyc43kinoFYHxGqhnJSGKKFueSOa37lYUtFdLXN3L3oGxWZvJs7LDgLlmYbrx
-         x5i840aXP1FFlVEiIBOZdTkvj7dIEPc66Ky1ojS1Q39wn6Fn0UDIiQJTQWPBPo1uFmhD
-         9bgB8F/FVg17ff63/nQP2GJGl+GjTjNXGNGc4dOS3uD7FGtKar/W0/XFM8ANFtHEoy+2
-         Bvtg==
+        d=googlemail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=whvjdDNL0YyihGiScLJpuUiNsWaIXqPHSQ+hAFVaT/o=;
+        b=hfCRopqQcvYe0p1NI/OnI0Asw7RK8dQG5GwB8iUEm7S86KQ3sogc8ptsBp/zppu7LU
+         i1siVZxe14sq04QMCn/k8ZBI6WN4yQe5KI2o019L4PbCIhP0CMtuotM/mJ/g4XVuAuKW
+         CJk3ESbIluAB34DjHZztYhby968kkDAqPqef7RBDePZ1sYc0b3DmHzrQRbw5CIzlDN5A
+         ArZMX2prYjp7oy43pO6ROeEvJYybyoOk86sNh018m5lDqNE25awOPeEZogPjk9e13LWv
+         DUQ8vBpgVqh5RhRK+LLvEAojVflWJbyML817mnm6dqGhApLMPxhjeX+zKUGKfzPcxJIe
+         e9yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gV7232FeLNy4yd+DHC1nJA77lI8+9CkkdqtUh8CTXGY=;
-        b=CvKmkQvMkH8RzMcC/rsoK8yn04vlP0ZrPiVeOreYSVh88fjAnw6pAgxA6VvrywPCfu
-         rugG6Jj36mJ6I2HhF8TXtlI6A1iVdU0AdYuE3kD+/P2K2aS4Gc9gE3ycxwmuomIXchsO
-         4OOaBiCkglMTi0F2BZgh1lFVPgASwU+UE3LeZQvXwupecQQhzIf63XXpgwAlhN2MLFus
-         TqAbCSy2drYS6Nq0ZRI/rmYDFhZcGWuK1Tft3PYwWGAeYFbTkiKKZGUjUF3VSJWJx81C
-         J9JQLSfLcvnrubT6JVHAnRAxTliNx+tldI70TMKkoy+L9+vf3gAqrRugqf3pXk6HForR
-         RJTw==
-X-Gm-Message-State: AO0yUKWa9Ax9joVVyGgA8zDZIOFATLU4LYYTnyuVdOsU5/8X/QZUS9Ja
-        uUu71+N3GzmsY9MR0PHVy3o6Jtb/QUcFrPlA3rM=
-X-Google-Smtp-Source: AK7set8OiaiqPU6hIMRjHy5ft+4EbtHxNxKzUzUc4inCyFKbyQ4S0fZINim5a5CilWRdG5BosDHVDdD24ogcIV9nK7Q=
-X-Received: by 2002:a81:ad22:0:b0:533:9ffb:cb12 with SMTP id
- l34-20020a81ad22000000b005339ffbcb12mr4939ywh.10.1676670683221; Fri, 17 Feb
- 2023 13:51:23 -0800 (PST)
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=whvjdDNL0YyihGiScLJpuUiNsWaIXqPHSQ+hAFVaT/o=;
+        b=nOWOGwGMTD6vOU/iC3wDn1BwdqU3epC350wypTAkydS4yGizFBa/0iNlLiYuwJgf+W
+         M4wb8FSkEP7FwIKvozKRmiH1cBOZ8eE9ADGBxUJR7WdzvCZM+yc+7EbAibL+Ija3Z/6p
+         oGPSbecaAQ+36c9qtXZm1PP6tT0Isb93dPuIDvp9Q1GeFISGaSaZ26cUrHA0FBifVqMR
+         bxaccOCSGOqP56VreDN+qI9xFDurb5Gn4xZzQYxBpiAFUz7fxzRmBiVohA+URKtwrqiv
+         mCmjlvPxlO+4USw08IzmEUiEVaQnvu1RA2OqWvolExRItWPaqXGclNYTI/RxTxE8+jwM
+         mLrA==
+X-Gm-Message-State: AO0yUKVvp8arlHUMdOgctanYvdVUDSHWE5ouArQOe6O2UljNOR92PvXe
+        8+DcTGCMXEN4UJktnoHkNf2iv8gMOy+0HEng5ohYZAGWSyA=
+X-Google-Smtp-Source: AK7set9Tuyg7KuTgdoHJxdFQUaB/2dr0ffoue42nj2SuS5ryAeoWm2tBfUGhw5vYZutZ4hccrYOmriLPrj7eG6rP15w=
+X-Received: by 2002:a50:8add:0:b0:4ad:274:cf12 with SMTP id
+ k29-20020a508add000000b004ad0274cf12mr253734edk.4.1676734447404; Sat, 18 Feb
+ 2023 07:34:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6918:290d:b0:12f:b462:d22a with HTTP; Fri, 17 Feb 2023
- 13:51:22 -0800 (PST)
-Reply-To: chesterreaaa@gmail.com
-From:   "Chester R. Ellis" <officemuub@gmail.com>
-Date:   Fri, 17 Feb 2023 22:51:22 +0100
-Message-ID: <CALioM71gYmYoXA4w=PNyhpTet=H4a1-QfRgm7UsE1xrcOiiS7Q@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20230109223110.1165433-1-martin.blumenstingl@googlemail.com>
+ <Y+DPQjukgC0BELkN@intel.com> <CAFBinCBpbRu9xfCEfZJfT7t3doV=+CX03+h7W+HsoW5T4X0W0w@mail.gmail.com>
+ <Y+oa6O6+s5UXvOP6@intel.com> <CAFBinCC6RRiN0=XYNw464omzjHrRcNZn39i3_Ztfq6M2xMpgRw@mail.gmail.com>
+ <Y+v+jFKiQ3Rj2aYL@intel.com>
+In-Reply-To: <Y+v+jFKiQ3Rj2aYL@intel.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Sat, 18 Feb 2023 16:33:56 +0100
+Message-ID: <CAFBinCARqY5K6r_9WcKvBnVfUJuFv78ZYk6D0UiA7FYaA4Kkog@mail.gmail.com>
+Subject: Re: [PATCH v1 RFC] video/hdmi: Fix HDMI_VENDOR_INFOFRAME_SIZE
+To:     =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc:     dri-devel@lists.freedesktop.org, Helge Deller <deller@gmx.de>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Hans Verkuil <hans.verkuil@cisco.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Bernard Zhao <bernard@vivo.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Greetings
+On Tue, Feb 14, 2023 at 10:35 PM Ville Syrj=C3=A4l=C3=A4
+<ville.syrjala@linux.intel.com> wrote:
+[...]
+> > > We should perhaps just get rid of HDMI_VENDOR_INFOFRAME_SIZE
+> > > entirely.
+> > My thought was to make it the correct size for
+> > drm_hdmi_vendor_infoframe_from_display_mode(). Then developers using
+> > this "common" vendor infoframe don't have to worry much.
+> > If there's another vendor infoframe implementation (which I'm not
+> > aware of, but it may exist - since as you point out: it's vendor
+> > specific) then the driver code shouldn't use
+> > drm_hdmi_vendor_infoframe_from_display_mode() but rather implement
+> > something custom. At that point the person implementing that will also
+> > need to know their specific infoframe maximum size.
+>
+> Yes but that other infoframe will still have
+> type=3D=3DHDMI_INFOFRAME_TYPE_VENDOR, and
+> HDMI_INFOFRAME_SIZE(VENDOR) would again
+> give the wrong answer.
+So this means the way forward is to remove HDMI_VENDOR_INFOFRAME_SIZE?
+That means it's up to the (HDMI) driver developers to use a big enough
+buffer (by hard-coding the size). Last time I checked all drivers did.
 
-I have sent you mails, but still have not received a response. Kindly
-get back to me for a mutual benefit transaction.
 
-Thank you.
-Chester R. Ellis
+Best regards,
+Martin
