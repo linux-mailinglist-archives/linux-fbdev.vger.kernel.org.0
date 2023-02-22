@@ -2,114 +2,63 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D7169CAE4
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Feb 2023 13:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89DE769F102
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Feb 2023 10:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232112AbjBTM0o (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 20 Feb 2023 07:26:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
+        id S231611AbjBVJLK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 22 Feb 2023 04:11:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbjBTM0j (ORCPT
+        with ESMTP id S231620AbjBVJLH (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 20 Feb 2023 07:26:39 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B4E1C30E
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Feb 2023 04:25:53 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id j2-20020a05600c1c0200b003e1e754657aso923865wms.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 20 Feb 2023 04:25:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZhuNX7zk4hZihBAY5sZG0csyVV6AYylCGdugAnsAC6c=;
-        b=bPba3qLwuP3pL5YFqhCwvExtNWIznWHdFR4XAXSWPf0VlwLp3X4gk+vhiYZBF3OCJB
-         +4ozenOOlX3dJ/BMfSl1I7nbv+4Wwr8BGYHqFrEq6/zebScqZhGU7To/OG33/EIlPRT7
-         M+9e/UeO0I0d2UIeOy+DsB19ih2wSBOe8cRr0z1lTPt5VdBO5JdBzoebAvZnImBSg23A
-         yK4OMN0MfJlj0WW4lStMk5mkiowmWQnxJ7CXOZT7yMuChSPRjKzssAqWKgPqqP6loVUg
-         zuJEUUlNrRfJDRKiIE8sEXk2EDL6lrTw+gRTiWg1S6zzPItFUW1sJ/tohDunfoSjrsL8
-         biaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZhuNX7zk4hZihBAY5sZG0csyVV6AYylCGdugAnsAC6c=;
-        b=s93D3ZZB593zBQNlQZVT7wj/xu5L/EDn6dSYSwefOYXFplP18Ftj+PtmFF5hz3EoF6
-         68FWBkMJ6ZoFdWGq2B4MFnTU/LXXlk0/uXCtYR2xlBcZXV0aT+uj/iqL24JxJHFJjA7n
-         +zrS29wbu9A3tAFdTvqLFR/B6ymLhAvsP7cFrGAJJSWsNrsZN51AlNe+pzAE2F1IngDg
-         f4UvSRztOiDoAO/rxn9gCi5iKkxqIttKY7cW/xinmJ4Oc+dN+fTqX+fCDixYFHXa8Mc/
-         FxvXbVF0iuxCQvv1Cx7z93epP6LanwCiKxWuO1v0QjpLzkFki+SZ1oKvn6+zSNYSYGpv
-         Q8fw==
-X-Gm-Message-State: AO0yUKW3FNLoFmbkw8BWQZmzyLDSJrGXIlEyjsTlCG3g6RGdZbpcH37i
-        IL39sK7GO+16ZYYF6p7WrLH4Zw==
-X-Google-Smtp-Source: AK7set8fM14qE0F61S6lht5sfkP3yhezdAmuiQBgst8exmUIwWFYJljR5sQgrg0d08gSACnwp/jIVA==
-X-Received: by 2002:a05:600c:1d9c:b0:3df:9858:c032 with SMTP id p28-20020a05600c1d9c00b003df9858c032mr716208wms.7.1676895945499;
-        Mon, 20 Feb 2023 04:25:45 -0800 (PST)
-Received: from aspen.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id e16-20020adfe390000000b002c54c8e70b1sm1542169wrm.9.2023.02.20.04.25.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Feb 2023 04:25:44 -0800 (PST)
-Date:   Mon, 20 Feb 2023 12:25:42 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: qcom-wled: Add PMI8950 compatible
-Message-ID: <Y/NmxjZgo9V6Enad@aspen.lan>
-References: <20221226-msm8953-6-2-wled-v1-1-e318d4c71d05@z3ntu.xyz>
+        Wed, 22 Feb 2023 04:11:07 -0500
+Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2712537B63
+        for <linux-fbdev@vger.kernel.org>; Wed, 22 Feb 2023 01:11:07 -0800 (PST)
+Received: by mail.corrib.pl (Postfix, from userid 1001)
+        id 29B6DA375F; Wed, 22 Feb 2023 09:10:55 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
+        t=1677057071; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
+        h=Date:From:To:Subject:From;
+        b=ihaX2eCiY1LZRJX315fOiXPaMULH3FAftVbyY4tZ5SWJHnWa1Sl5sWGqql32yaFtA
+         aFnEZSusIUeoTBt8jx2uH53SkVUx0tREWwR/CyOL2ubqI48RAxw6goQWjIHUuyqig7
+         /snh7QrjSFpJZK6Z5QS+OUtpryFZ+MGqK+vba7ZzkX/XuYDYcq76/KUedFvW+QNmox
+         1qapA2ZbXvxxDee0Wt67hBECVr0CjUgeFvv9linDhvoHopQMOUKJrjisXI103uRBnq
+         LJCbS4ZM7CcHg/NdsermwmugWResr5XjcSsoxP/5tsHGNwWVpZAg3xEJu4HhCZI4Jm
+         cT09uUxpej2Jg==
+Received: by mail.corrib.pl for <linux-fbdev@vger.kernel.org>; Wed, 22 Feb 2023 09:10:40 GMT
+Message-ID: <20230222074502-0.1.5n.hczf.0.w58q3anep6@corrib.pl>
+Date:   Wed, 22 Feb 2023 09:10:40 GMT
+From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
+        <szczepan.kielbasa@corrib.pl>
+To:     <linux-fbdev@vger.kernel.org>
+Subject: Faktoring
+X-Mailer: mail.corrib.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221226-msm8953-6-2-wled-v1-1-e318d4c71d05@z3ntu.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, Feb 06, 2023 at 08:58:30PM +0100, Luca Weiss wrote:
-> PMI8950 contains WLED of version 4. Add support for it to the driver.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Dzie=C5=84 dobry,
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
+
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
 
-> ---
-> While adding dt-bindings and dts in a previous series I forgot to add the
-> compatible to the driver. Fix that now.
-> ---
->  drivers/video/backlight/qcom-wled.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 527210e85795..5f504883aca5 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -1731,6 +1731,7 @@ static int wled_remove(struct platform_device *pdev)
->
->  static const struct of_device_id wled_match_table[] = {
->  	{ .compatible = "qcom,pm8941-wled", .data = (void *)3 },
-> +	{ .compatible = "qcom,pmi8950-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pmi8994-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pmi8998-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pm660l-wled", .data = (void *)4 },
->
-> ---
-> base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
-> change-id: 20221226-msm8953-6-2-wled-5f966bfa4db3
->
-> Best regards,
-> --
-> Luca Weiss <luca@z3ntu.xyz>
->
+Pozdrawiam
+Szczepan Kie=C5=82basa
