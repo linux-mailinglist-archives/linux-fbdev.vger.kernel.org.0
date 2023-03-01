@@ -2,110 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 816ED6A6D35
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Mar 2023 14:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 653206A7409
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Mar 2023 20:07:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjCANlp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 1 Mar 2023 08:41:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34962 "EHLO
+        id S229451AbjCATHq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 1 Mar 2023 14:07:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjCANlo (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Mar 2023 08:41:44 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144703E09A
-        for <linux-fbdev@vger.kernel.org>; Wed,  1 Mar 2023 05:41:44 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id k17so146873iob.1
-        for <linux-fbdev@vger.kernel.org>; Wed, 01 Mar 2023 05:41:44 -0800 (PST)
+        with ESMTP id S229730AbjCATHp (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 1 Mar 2023 14:07:45 -0500
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BF64DBDA
+        for <linux-fbdev@vger.kernel.org>; Wed,  1 Mar 2023 11:07:34 -0800 (PST)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-172a623ad9aso15480259fac.13
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Mar 2023 11:07:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kq5OR9hoC260+bemchGBNuQjrNOZhrK9iuZRCuifkTs=;
-        b=RNGjW0fKHBPVSu32cnLyQ80bXdFmMDWGyWr8DyQlkX0JakbZI256w+r+tZD8H5sgLv
-         Mv93XNX6nbqefYx/euZAMec/fMtwLa6mGSn4k3ROmTxw2u0ojuqabJH+jtV4tzRPAMKB
-         Sf4KhzQY2gByZpvCMeUGD+L6zbuVQ94yycdGRyqLMeZsxotjVaKc1YYEOfw+n4dN1ZvQ
-         Fgf2sYQftnkmbDAqBSJbZxAR34gndmTIaEgKOwgBjqv+i0tZaPptUnvevGUMUG3iHXCh
-         bev3NxJ2B5iVDweZuR2h4Wenct2gS8Uo/P9mjYJ37PUqnG+cmME2c1cqJdMTE6E2Xg2W
-         lHkg==
+        d=gmail.com; s=20210112; t=1677697653;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B81xlViOcuY3fmYoSsyw/29AhQDJsJw7S4k495w2qRw=;
+        b=LdZ2W4gvf4/lFGiC/gFHzI/D3oKtH/AhIHrxUHWpBkOfeJ+/OyHpsrni0kqgDmr0Qn
+         IzzOWkH9A+crEGol3QH+pbewoKz1rBnEMqhEZxLB1ndK80Px4gkyokC7mfd26FQ4FwFQ
+         USQDBqvdEC7ZZ/ySTz/tkjujo7fUOoyOr61RnLly6D3wHMR9SOdMuGXGHg011UuFalqW
+         f6/KjUVAPL7V7F9APkE/17bS+czMrJq9XZE+0jKU+RvUXA/4RBAqTyMt4vF6OuXQ5lvt
+         qsd+YPmpP+gKxumzvstUCmnGE0+3dFvVwbFL2czOOxeR32RSJgXGDWCMw52uUcdZK5YP
+         D/CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kq5OR9hoC260+bemchGBNuQjrNOZhrK9iuZRCuifkTs=;
-        b=LuurM0gUWr8H5D6oiKpxhwWalrUrPbQMC29DHOqkU4yUlwIWzGs2Xd8REVHCWmBZj1
-         sGUAKwBZdUvv+kl35uHLuQZDiJdgjCbpfs7E1CulNS0m8m6xGX+Hgsji4p9pkGRItC0/
-         d0tGKkPpcSEv27x2hPhDqgVJ5QCC6rJMJnfXKa87qk9IOakeUDnLY9dqmA7egc6abaL9
-         bvaTfXFSbZNShYDzVmyNkv03Xrio3wxetIqz5oF/ElZSraWuvuXSB+anj5PThYaHkKxV
-         Tanfv4Ea2YFJ13gi24MInnX/v/ctzv2MSLOxGyWFefuP/dWVglQ2p4r95K4zMG4YECCu
-         KiVg==
-X-Gm-Message-State: AO0yUKUFus6bg+W0bUc9ysY5Zpzxx324RLmxdZfjfBBQQQy7m0i4sMRt
-        uvMIFlJY3JQhgWNg4iIxogydvE6oo041KAL+fONl2w==
-X-Google-Smtp-Source: AK7set+BWIITMwStn5iOknYU9Ytckv0R80OlViWQC7TNRL095p3FTuT9mKhGhMd4MFbc9GXISWxJtJVx+O7r52M/2LM=
-X-Received: by 2002:a02:85cb:0:b0:3c5:b47:539a with SMTP id
- d69-20020a0285cb000000b003c50b47539amr2818912jai.5.1677678103307; Wed, 01 Mar
- 2023 05:41:43 -0800 (PST)
+        d=1e100.net; s=20210112; t=1677697653;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B81xlViOcuY3fmYoSsyw/29AhQDJsJw7S4k495w2qRw=;
+        b=4HUdcjK9JVdPYcJ0yLJfST5gsy76msGWP6mXWVGqJ7sqdgHeJNVlLGXz7N3noGbqI6
+         YFn3sShP6Qmtjh7np/qT1wZ3ZfDSRR9v0apMIGfO0Ln8/FDubE41te4n0aflF3zAUrCb
+         iqBqp2bvJKTAYNyMS2Q8ODKCCKyoqBzjU7t00ot5a7mk8KCTaGzOtaMT8EGWB23DeOPc
+         93VZ/Htz+BnaEln2GickM0Eq2y8778ieJAlf1aJbaQKKv+O+Ogh4irQ0SYGI+/YuHD5i
+         3yJyoT69bPVCznGf5XeWS/jswMpyVF110RpPvQ4YP0mSxi1OdIirfWFw3OgK/pBWqb7K
+         TyAg==
+X-Gm-Message-State: AO0yUKUXqBD2BrYW55dnXT9F9+D6NfzfOf6RdPupRZ+aiZsJCrg+NlMa
+        3QWIqy6YDGlLM6l2aXY6vqYJwhDy4fuZgA0oGEs=
+X-Google-Smtp-Source: AK7set/EJM+a59HZ9/ZcYfcgsPzzPlyujjOqczwg1J7UzxKyBKk5fILHjPEsUrJC27YGZbGK5UBme80GaKz1tD0xijo=
+X-Received: by 2002:a05:6870:d1ce:b0:16d:cb48:e195 with SMTP id
+ b14-20020a056870d1ce00b0016dcb48e195mr7775237oac.3.1677697653433; Wed, 01 Mar
+ 2023 11:07:33 -0800 (PST)
 MIME-Version: 1.0
-References: <cad03d25-0ea0-32c4-8173-fd1895314bce@I-love.SAKURA.ne.jp>
- <CAMuHMdUH4CU9EfoirSxjivg08FDimtstn7hizemzyQzYeq6b6g@mail.gmail.com>
- <86bdfea2-7125-2e54-c2c0-920f28ff80ce@I-love.SAKURA.ne.jp>
- <CAG_fn=VJrJDNSea6DksLt5uBe_sDu0+8Ofg+ifscOyDdMKj3XQ@mail.gmail.com>
- <Y7a6XkCNTkxxGMNC@phenom.ffwll.local> <032386fc-fffb-1f17-8cfd-94b35b6947ee@I-love.SAKURA.ne.jp>
-In-Reply-To: <032386fc-fffb-1f17-8cfd-94b35b6947ee@I-love.SAKURA.ne.jp>
-From:   Alexander Potapenko <glider@google.com>
-Date:   Wed, 1 Mar 2023 14:41:06 +0100
-Message-ID: <CAG_fn=V4-zzo+6HFG+wCbJRYHRh+Xx=r1weyCBJG-afpaG4Hag@mail.gmail.com>
-Subject: Re: [PATCH] fbcon: Use kzalloc() in fbcon_prepare_logo()
-To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Marco Elver <elver@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        kasan-dev <kasan-dev@googlegroups.com>,
-        Helge Deller <deller@gmx.de>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        DRI <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>
+Received: by 2002:a05:6840:5810:b0:122d:2058:f64d with HTTP; Wed, 1 Mar 2023
+ 11:07:33 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <davidkekeli001@gmail.com>
+Date:   Wed, 1 Mar 2023 20:07:33 +0100
+Message-ID: <CAD7994dyYoYqwwKGjpZ6OJPfZpfpNV+-VGWnZTZaEXzjRpdTdw@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2001:4860:4864:20:0:0:0:35 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4997]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [davidkekeli001[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [davidkekeli001[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
->
-> I'd like to avoid touching per-arch asm/string.h files if possible.
->
-> Can't we do like below (i.e. keep asm implementations as-is, but
-> automatically redirect to __msan_memset()) ? If yes, we could move all
-> __msan_*() redirection from per-arch asm/string.h files to the common
-> linux/string.h file?
->
-> diff --git a/include/linux/string.h b/include/linux/string.h
-> index c062c581a98b..403813b04e00 100644
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -360,4 +360,15 @@ static __always_inline size_t str_has_prefix(const char *str, const char *prefix
->         return strncmp(str, prefix, len) == 0 ? len : 0;
->  }
->
-> +#if defined(__SANITIZE_MEMORY__) && defined(__NO_FORTIFY)
-> +#undef memset
-> +#define memset(dest, src, count) __msan_memset((dest), (src), (count))
-> +#undef memset16
-> +#define memset16(dest, src, count) __msan_memset((dest), (src), (count) << 1)
-> +#undef memset32
-> +#define memset32(dest, src, count) __msan_memset((dest), (src), (count) << 2)
-> +#undef memset64
-> +#define memset64(dest, src, count) __msan_memset((dest), (src), (count) << 3)
-> +#endif
-
-The problem with this approach is that it can only work for
-memset/memcpy/memmove, whereas any function that is implemented in
-lib/string.c may require undefining the respective __HAVE_ARCH_FNAME
-so that KMSAN can instrument it.
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham,
