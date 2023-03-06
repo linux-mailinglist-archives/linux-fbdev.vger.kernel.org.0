@@ -2,100 +2,75 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B6D66ABA51
-	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Mar 2023 10:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC8F6ABC4C
+	for <lists+linux-fbdev@lfdr.de>; Mon,  6 Mar 2023 11:26:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbjCFJt0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 6 Mar 2023 04:49:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35926 "EHLO
+        id S230515AbjCFK0j (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 6 Mar 2023 05:26:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjCFJtZ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Mar 2023 04:49:25 -0500
-Received: from sonata.ens-lyon.org (sonata.ens-lyon.org [140.77.166.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE608C651;
-        Mon,  6 Mar 2023 01:49:24 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by sonata.ens-lyon.org (Postfix) with ESMTP id BFA9E20137;
-        Mon,  6 Mar 2023 10:49:22 +0100 (CET)
-Received: from sonata.ens-lyon.org ([127.0.0.1])
-        by localhost (sonata.ens-lyon.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hErAdg_uF3sj; Mon,  6 Mar 2023 10:49:22 +0100 (CET)
-Received: from begin (nat-inria-interne-52-gw-01-bso.bordeaux.inria.fr [194.199.1.52])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by sonata.ens-lyon.org (Postfix) with ESMTPSA id 455092012C;
-        Mon,  6 Mar 2023 10:49:22 +0100 (CET)
-Received: from samy by begin with local (Exim 4.96)
-        (envelope-from <samuel.thibault@ens-lyon.org>)
-        id 1pZ7T7-0001Rf-1i;
-        Mon, 06 Mar 2023 10:49:21 +0100
-Date:   Mon, 6 Mar 2023 10:49:21 +0100
-From:   Samuel Thibault <samuel.thibault@ens-lyon.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Sanan Hasanov <sanan.hasanov@Knights.ucf.edu>,
-        Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        keescook@chromium.org,
-        syzbot+3af17071816b61e807ed@syzkaller.appspotmail.com,
-        akpm@linux-foundation.org, linux-hardening@vger.kernel.org,
-        linux-mm@kvack.org, syzkaller-bugs@googlegroups.com,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH] VT: Protect KD_FONT_OP_GET_TALL from unbound access
-Message-ID: <20230306094921.tik5ewne4ft6mfpo@begin>
-Mail-Followup-To: Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        gregkh@linuxfoundation.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Sanan Hasanov <sanan.hasanov@Knights.ucf.edu>,
-        keescook@chromium.org,
-        syzbot+3af17071816b61e807ed@syzkaller.appspotmail.com,
-        akpm@linux-foundation.org, linux-hardening@vger.kernel.org,
-        linux-mm@kvack.org, syzkaller-bugs@googlegroups.com,
-        Jiri Slaby <jirislaby@kernel.org>
+        with ESMTP id S231124AbjCFK0Z (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 6 Mar 2023 05:26:25 -0500
+Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E032659A
+        for <linux-fbdev@vger.kernel.org>; Mon,  6 Mar 2023 02:25:54 -0800 (PST)
+Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-176261d7f45so10778645fac.11
+        for <linux-fbdev@vger.kernel.org>; Mon, 06 Mar 2023 02:25:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678098351;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
+        b=EDbhPO1WKzSJy97Cp1KR4Ue1wIcLFSscoH9L1E67CyPoJvstONJwP7RxKCqsDiuar/
+         4XZc6UhnyOFrEHlIQ3KmGU6oX8xWOyZpiVA4bD6F27cjopM5KQeiwoXnQq1r2hu/0hkW
+         LgiQ9FGonNq8AsMsEKBqZEvtwgOfW2lv3iUKapY2ocqE+LRWfsVifUNA3eNbIcULbvPT
+         nBBU0ns0xWwmvS7ETCAh5Z5lhdCiLVSRis+m63aq8CObwyUrMLAjGQpDeSf4OVAOQav5
+         5TuEH4NOUnTGCqcHGRIE0/tBavRRplzW4HaWY1DRs+pas+nyfL/37adPjYmqfexbl/Di
+         PS3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678098351;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vh7FN/ulAdnmY8O0LKz7bqpIFk4oOSQ9iCZ8VQ/AkNo=;
+        b=KSOVsK3uc0c9tsz2aADb03Q4oY55zQ3BEJNvG55KRHeyd3D7GiZqrEmKZsJXK1i0Dy
+         2bshhvVnUCmhMAcg3DEY39DLoWj8dg1He0AOFqVna3aL9HO4DQ1D4fdk1sKNJV72q/jn
+         dQGeaNw9b54JSIKM95depFQCyDz7i1CCOaEDzI4ikwj1RNuByII9S7qwVzXF1ZxHarIX
+         +UwqlV6AYlW02nn3D0g1Sq3aLPSo4Tjf0Yi12OltntZzSdjpWTjmF6PgD/kcg8YlcEeT
+         R+fIwSzmxvITuDirK3tw5TCcWPQbKzfu6Ei1qK4ymLcRkYe74OaLjGvWLJsnRFjJ79fq
+         EHrQ==
+X-Gm-Message-State: AO0yUKXezZ6XBKhdnYSY25I+GQoFFMIRrBCPg8QPMP0E0O6Dwc2Dsl0e
+        6Wv1wOycQ67Ul1RUZMZsOCM0J9MSHBImmWA34LbjzyRFgiw=
+X-Google-Smtp-Source: AK7set9YqazPiOkBuGm+YrFZOLe51O90+qKBrIr6WBjXtnVrmZ9RIOYyWRLBWcHI+/rsVoNhMQhwnCpcR6G8n2Z6mzE=
+X-Received: by 2002:a05:6102:e44:b0:402:999f:44d3 with SMTP id
+ p4-20020a0561020e4400b00402999f44d3mr6975472vst.1.1678098330725; Mon, 06 Mar
+ 2023 02:25:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: I am not organized
-User-Agent: NeoMutt/20170609 (1.8.3)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a59:ce6f:0:b0:3ae:930b:3e70 with HTTP; Mon, 6 Mar 2023
+ 02:25:30 -0800 (PST)
+Reply-To: madis.scarl@terlera.it
+From:   "Ms Eve from U.N" <denisagotou@gmail.com>
+Date:   Mon, 6 Mar 2023 11:25:30 +0100
+Message-ID: <CAD6bNBi6bPCYboaF4-xBgmeUTFn6JMXqU6TNepQig=NRMqhdUg@mail.gmail.com>
+Subject: Re: Claim of Fund:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_SCAM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-In ioctl(KD_FONT_OP_GET_TALL), userland tells through op->height which
-vpitch should be used to copy over the font. In con_font_get, we were
-not checking that it is within the maximum height value, and thus
-userland could make the vc->vc_sw->con_font_get(vc, &font, vpitch);
-call possibly overflow the allocated max_font_size bytes, and the
-copy_to_user(op->data, font.data, c) call possibly read out of that
-allocated buffer.
+Hello Good Morning,
+This is to bring to your notice that all our efforts to contact you
+through this your email ID failed Please Kindly contact Barrister.
+Steven Mike { mbarrsteven@gmail.com } on his private email for the
+claim of your compensation entitlement
 
-By checking vpitch against max_font_height, the max_font_size buffer
-will always be large enough for the vc->vc_sw->con_font_get(vc, &font,
-vpitch) call (since we already prevent loading a font larger than that),
-and c = (font.width+7)/8 * vpitch * font.charcount will always remain
-below max_font_size.
-
-Fixes: 24d69384bcd3 ("VT: Add KD_FONT_OP_SET/GET_TALL operations")
-Reported-by: syzbot+3af17071816b61e807ed@syzkaller.appspotmail.com
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 57a5c23b51d4..3c2ea9c098f7 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -4545,6 +4545,9 @@ static int con_font_get(struct vc_data *vc, struct console_font_op *op)
- 	int c;
- 	unsigned int vpitch = op->op == KD_FONT_OP_GET_TALL ? op->height : 32;
- 
-+	if (vpitch > max_font_height)
-+		return -EINVAL;
-+
- 	if (op->data) {
- 		font.data = kvmalloc(max_font_size, GFP_KERNEL);
- 		if (!font.data)
+Note: You have to pay for the delivery fee.
+Yours Sincerely
+Mrs EVE LEWIS
