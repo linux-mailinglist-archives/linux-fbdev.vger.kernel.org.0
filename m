@@ -2,195 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B396B4475
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Mar 2023 15:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C0BF6B47BD
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Mar 2023 15:53:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232341AbjCJOY0 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 10 Mar 2023 09:24:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
+        id S233541AbjCJOxw (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 10 Mar 2023 09:53:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232307AbjCJOYC (ORCPT
+        with ESMTP id S233403AbjCJOx2 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 10 Mar 2023 09:24:02 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D925222118;
-        Fri, 10 Mar 2023 06:23:12 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id EA9DB21E0E;
-        Fri, 10 Mar 2023 14:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1678458189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FJDTvuxhTkLLSmPLCWi9Bm1SOFEXifdFoDHTO4x6g8s=;
-        b=xQ7J2242aZMpvDO7f3UxdGfWHyPnIMq21SZ63vrnZqfaSeCwpZm5s/bj1vJglL4ngmFll2
-        tlMyEyEXkJdZnbYul7GXXv481a7tbCWZStrM/CGIIaSSvnenAWOiJfpd/8weOFGzfFsg3v
-        HCY0cTeZdjLvwfsWpaIfxXbRZi7m6/U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1678458189;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FJDTvuxhTkLLSmPLCWi9Bm1SOFEXifdFoDHTO4x6g8s=;
-        b=IICZv/P3TNfBehXsq5arOMeYsWvkNlDLQQ6B17+1URYGTN8y2gMv3MO/9qb1i474fZGHf2
-        BG+iDlCXMRgC+dBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6FCE213592;
-        Fri, 10 Mar 2023 14:23:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id QmoMFU09C2TIXgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 10 Mar 2023 14:23:09 +0000
-Message-ID: <9860f1e9-5ad0-ea11-a098-2ff3eb4409f8@suse.de>
-Date:   Fri, 10 Mar 2023 15:23:08 +0100
+        Fri, 10 Mar 2023 09:53:28 -0500
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B67B125AF9;
+        Fri, 10 Mar 2023 06:49:27 -0800 (PST)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-17671fb717cso6053250fac.8;
+        Fri, 10 Mar 2023 06:49:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678459709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5ABh9MagjDNyGivJ3oT/1DUZHeIg4J1qNxCI1uEPy4Q=;
+        b=xduS1bTaK+w0+UU0Zy70jd4Utq3VZsmT4t/6+RVgE2t9PaaGgjQAyrCJ1sfaMNbzsN
+         ETnHC6owPUuov1UUWfS30ivGbsOaFWv57M0/CvqxTyIgbQH9cGqdaF88er+Ix5e8g6s4
+         VNE8Yc8f4xZ6GOJ0uYhdeKHy8045VQtenTbWeGe8Y8bqYdgZuubm1DvWqHlIUJ1jJ/xX
+         2FnX3Gvaiaxe5hlNuYAH1E/yT4iuJN12H//Iuh0IAMYpg1+rA4R/PxcnWUIKxSxKjSx5
+         +qF1KVGcHB/wwTtV0QCJ4smmaVhmKMm9o1K+qwggIOI2ljGM9pHSQW747ttMWwLQ/Mb1
+         1m7Q==
+X-Gm-Message-State: AO0yUKVNpG0riEZo8LJljPV2I/in+4lScZ/rAT/MKVC6Sa4T6QIrdJpK
+        ydU291gcQeOIebN7cJjhCA==
+X-Google-Smtp-Source: AK7set/3qtl4P82g+jyKy/zqrO1gocYbHRAq7O166an25I6PVtSxchhQQDghw8aD3mFYHy2oBhVb6g==
+X-Received: by 2002:a05:6870:a68c:b0:16e:8d40:b5ec with SMTP id i12-20020a056870a68c00b0016e8d40b5ecmr16859362oam.50.1678459708772;
+        Fri, 10 Mar 2023 06:48:28 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id z21-20020a056870515500b001728d38a41asm71779oak.55.2023.03.10.06.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Mar 2023 06:48:28 -0800 (PST)
+Received: (nullmailer pid 1545988 invoked by uid 1000);
+        Fri, 10 Mar 2023 14:47:29 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Russell King <linux@armlinux.org.uk>, Helge Deller <deller@gmx.de>
+Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
+Date:   Fri, 10 Mar 2023 08:47:29 -0600
+Message-Id: <20230310144729.1545943-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2] fbdev: Fix incorrect page mapping clearance at
- fb_deferred_io_release()
-Content-Language: en-US
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        Patrik Jakobsson <pjakobsson@suse.de>,
-        Helge Deller <deller@gmx.de>,
-        Miko Larsson <mikoxyzzz@gmail.com>
-References: <20230308105012.1845-1-tiwai@suse.de>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230308105012.1845-1-tiwai@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------WN90O91OjnVFzjRm0Unwppqp"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------WN90O91OjnVFzjRm0Unwppqp
-Content-Type: multipart/mixed; boundary="------------YpSIrhqbG8h9R53oB55Tn8ZY";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Patrik Jakobsson <pjakobsson@suse.de>,
- Helge Deller <deller@gmx.de>, Miko Larsson <mikoxyzzz@gmail.com>
-Message-ID: <9860f1e9-5ad0-ea11-a098-2ff3eb4409f8@suse.de>
-Subject: Re: [PATCH v2] fbdev: Fix incorrect page mapping clearance at
- fb_deferred_io_release()
-References: <20230308105012.1845-1-tiwai@suse.de>
-In-Reply-To: <20230308105012.1845-1-tiwai@suse.de>
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties. As
+part of this, convert of_get_property/of_find_property calls to the
+recently added of_property_present() helper when we just want to test
+for presence of a property and nothing more.
 
---------------YpSIrhqbG8h9R53oB55Tn8ZY
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/video/fbdev/amba-clcd.c                          | 2 +-
+ drivers/video/fbdev/bw2.c                                | 2 +-
+ drivers/video/fbdev/cg3.c                                | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-QWRkZWQgdG8gZHJtLW1pc2MtZml4ZXMuIFRoYW5rcyBhIGxvdCBmb3IgdGhlIHBhdGNoLg0K
-DQpBbSAwOC4wMy4yMyB1bSAxMTo1MCBzY2hyaWViIFRha2FzaGkgSXdhaToNCj4gVGhlIHJl
-Y2VudCBmaXggZm9yIHRoZSBkZWZlcnJlZCBJL08gYnkgdGhlIGNvbW1pdA0KPiAgICAzZWZj
-NjFkOTUyNTkgKCJmYmRldjogRml4IGludmFsaWQgcGFnZSBhY2Nlc3MgYWZ0ZXIgY2xvc2lu
-ZyBkZWZlcnJlZCBJL08gZGV2aWNlcyIpDQo+IGNhdXNlZCBhIHJlZ3Jlc3Npb24gd2hlbiB0
-aGUgc2FtZSBmYiBkZXZpY2UgaXMgb3BlbmVkL2Nsb3NlZCB3aGlsZQ0KPiBpdCdzIGJlaW5n
-IHVzZWQuICBJdCByZXN1bHRlZCBpbiBhIGZyb3plbiBzY3JlZW4gZXZlbiBpZiBzb21ldGhp
-bmcNCj4gaXMgcmVkcmF3biB0aGVyZSBhZnRlciB0aGUgY2xvc2UuICBUaGUgYnJlYWthZ2Ug
-aXMgYmVjYXVzZSB0aGUgcGF0Y2gNCj4gd2FzIG1hZGUgdW5kZXIgYSB3cm9uZyBhc3N1bXB0
-aW9uIG9mIGEgc2luZ2xlIG9wZW47IGluIHRoZSBjdXJyZW50DQo+IGNvZGUsIGZiX2RlZmVy
-cmVkX2lvX3JlbGVhc2UoKSBjbGVhbnMgdXAgdGhlIHBhZ2UgbWFwcGluZyBvZiB0aGUNCj4g
-cGFnZXJlZiBsaXN0IGFuZCBpdCBjYWxscyBjYW5jZWxfZGVsYXllZF93b3JrX3N5bmMoKSB1
-bmNvbmRpdGlvbmFsbHksDQo+IHdoZXJlIGJvdGggYXJlIG5vIGNvcnJlY3QgYmVoYXZpb3Ig
-Zm9yIG11bHRpcGxlIG9wZW5zLg0KPiANCj4gVGhpcyBwYXRjaCBhZGRzIGEgcmVmY291bnQg
-Zm9yIHRoZSBvcGVucyBvZiB0aGUgZGV2aWNlLCBhbmQgYXBwbGllcw0KPiB0aGUgY2xlYW51
-cCBvbmx5IHdoZW4gYWxsIGZpbGVzIGdldCBjbG9zZWQuDQo+IA0KPiBBcyBib3RoIGZiX2Rl
-ZmVycmVkX2lvX29wZW4oKSBhbmQgX2Nsb3NlKCkgYXJlIGNhbGxlZCBhbHdheXMgaW4gdGhl
-DQo+IGZiX2luZm8gbG9jayAobXV0ZXgpLCBpdCdzIHNhZmUgdG8gdXNlIHRoZSBub3JtYWwg
-aW50IGZvciB0aGUNCj4gcmVmY291bnRpbmcuDQo+IA0KPiBBbHNvLCBhIHVzZWxlc3MgQlVH
-X09OKCkgaXMgZHJvcHBlZC4NCj4gDQo+IEZpeGVzOiAzZWZjNjFkOTUyNTkgKCJmYmRldjog
-Rml4IGludmFsaWQgcGFnZSBhY2Nlc3MgYWZ0ZXIgY2xvc2luZyBkZWZlcnJlZCBJL08gZGV2
-aWNlcyIpDQo+IENjOiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4gU2lnbmVkLW9mZi1i
-eTogVGFrYXNoaSBJd2FpIDx0aXdhaUBzdXNlLmRlPg0KPiAtLS0NCj4gdjEtPnYyOg0KPiAq
-IFJlbmFtZSB0byBmYl9kZWZlcnJlZF9pb19sYXN0Y2xvc2UoKQ0KPiAqIFJlbmFtZSB0aGUg
-bmV3IGZpZWxkIGZyb20gb3BlbnMgdG8gb3Blbl9jb3VudA0KPiAqIFJlbW92ZWQgdW51c2Vk
-IHZhcmlhYmxlDQo+ICogTW9yZSBjb21tZW50cyBhYm91dCBmYl9pbmZvIGxvY2tpbmcNCj4g
-DQo+ICAgZHJpdmVycy92aWRlby9mYmRldi9jb3JlL2ZiX2RlZmlvLmMgfCAxNyArKysrKysr
-KysrKysrLS0tLQ0KPiAgIGluY2x1ZGUvbGludXgvZmIuaCAgICAgICAgICAgICAgICAgIHwg
-IDEgKw0KPiAgIDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlv
-bnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L2NvcmUvZmJf
-ZGVmaW8uYyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9mYl9kZWZpby5jDQo+IGluZGV4
-IGFhNWYwNTlkMDIyMi4uMjc0ZjVkMGZhMjQ3IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3Zp
-ZGVvL2ZiZGV2L2NvcmUvZmJfZGVmaW8uYw0KPiArKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2
-L2NvcmUvZmJfZGVmaW8uYw0KPiBAQCAtMzA1LDE3ICszMDUsMTggQEAgdm9pZCBmYl9kZWZl
-cnJlZF9pb19vcGVuKHN0cnVjdCBmYl9pbmZvICppbmZvLA0KPiAgIAkJCSBzdHJ1Y3QgaW5v
-ZGUgKmlub2RlLA0KPiAgIAkJCSBzdHJ1Y3QgZmlsZSAqZmlsZSkNCj4gICB7DQo+ICsJc3Ry
-dWN0IGZiX2RlZmVycmVkX2lvICpmYmRlZmlvID0gaW5mby0+ZmJkZWZpbzsNCj4gKw0KPiAg
-IAlmaWxlLT5mX21hcHBpbmctPmFfb3BzID0gJmZiX2RlZmVycmVkX2lvX2FvcHM7DQo+ICsJ
-ZmJkZWZpby0+b3Blbl9jb3VudCsrOw0KPiAgIH0NCj4gICBFWFBPUlRfU1lNQk9MX0dQTChm
-Yl9kZWZlcnJlZF9pb19vcGVuKTsNCj4gICANCj4gLXZvaWQgZmJfZGVmZXJyZWRfaW9fcmVs
-ZWFzZShzdHJ1Y3QgZmJfaW5mbyAqaW5mbykNCj4gK3N0YXRpYyB2b2lkIGZiX2RlZmVycmVk
-X2lvX2xhc3RjbG9zZShzdHJ1Y3QgZmJfaW5mbyAqaW5mbykNCj4gICB7DQo+IC0Jc3RydWN0
-IGZiX2RlZmVycmVkX2lvICpmYmRlZmlvID0gaW5mby0+ZmJkZWZpbzsNCj4gICAJc3RydWN0
-IHBhZ2UgKnBhZ2U7DQo+ICAgCWludCBpOw0KPiAgIA0KPiAtCUJVR19PTighZmJkZWZpbyk7
-DQo+ICAgCWNhbmNlbF9kZWxheWVkX3dvcmtfc3luYygmaW5mby0+ZGVmZXJyZWRfd29yayk7
-DQo+ICAgDQo+ICAgCS8qIGNsZWFyIG91dCB0aGUgbWFwcGluZyB0aGF0IHdlIHNldHVwICov
-DQo+IEBAIC0zMjQsMTMgKzMyNSwyMSBAQCB2b2lkIGZiX2RlZmVycmVkX2lvX3JlbGVhc2Uo
-c3RydWN0IGZiX2luZm8gKmluZm8pDQo+ICAgCQlwYWdlLT5tYXBwaW5nID0gTlVMTDsNCj4g
-ICAJfQ0KPiAgIH0NCj4gKw0KPiArdm9pZCBmYl9kZWZlcnJlZF9pb19yZWxlYXNlKHN0cnVj
-dCBmYl9pbmZvICppbmZvKQ0KPiArew0KPiArCXN0cnVjdCBmYl9kZWZlcnJlZF9pbyAqZmJk
-ZWZpbyA9IGluZm8tPmZiZGVmaW87DQo+ICsNCj4gKwlpZiAoIS0tZmJkZWZpby0+b3Blbl9j
-b3VudCkNCj4gKwkJZmJfZGVmZXJyZWRfaW9fbGFzdGNsb3NlKGluZm8pOw0KPiArfQ0KPiAg
-IEVYUE9SVF9TWU1CT0xfR1BMKGZiX2RlZmVycmVkX2lvX3JlbGVhc2UpOw0KPiAgIA0KPiAg
-IHZvaWQgZmJfZGVmZXJyZWRfaW9fY2xlYW51cChzdHJ1Y3QgZmJfaW5mbyAqaW5mbykNCj4g
-ICB7DQo+ICAgCXN0cnVjdCBmYl9kZWZlcnJlZF9pbyAqZmJkZWZpbyA9IGluZm8tPmZiZGVm
-aW87DQo+ICAgDQo+IC0JZmJfZGVmZXJyZWRfaW9fcmVsZWFzZShpbmZvKTsNCj4gKwlmYl9k
-ZWZlcnJlZF9pb19sYXN0Y2xvc2UoaW5mbyk7DQo+ICAgDQo+ICAgCWt2ZnJlZShpbmZvLT5w
-YWdlcmVmcyk7DQo+ICAgCW11dGV4X2Rlc3Ryb3koJmZiZGVmaW8tPmxvY2spOw0KPiBkaWZm
-IC0tZ2l0IGEvaW5jbHVkZS9saW51eC9mYi5oIGIvaW5jbHVkZS9saW51eC9mYi5oDQo+IGlu
-ZGV4IGQ4ZDIwNTE0ZWEwNS4uMDJkMDljYjU3ZjZjIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRl
-L2xpbnV4L2ZiLmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC9mYi5oDQo+IEBAIC0yMTIsNiAr
-MjEyLDcgQEAgc3RydWN0IGZiX2RlZmVycmVkX2lvIHsNCj4gICAJLyogZGVsYXkgYmV0d2Vl
-biBta3dyaXRlIGFuZCBkZWZlcnJlZCBoYW5kbGVyICovDQo+ICAgCXVuc2lnbmVkIGxvbmcg
-ZGVsYXk7DQo+ICAgCWJvb2wgc29ydF9wYWdlcmVmbGlzdDsgLyogc29ydCBwYWdlbGlzdCBi
-eSBvZmZzZXQgKi8NCj4gKwlpbnQgb3Blbl9jb3VudDsgLyogbnVtYmVyIG9mIG9wZW5lZCBm
-aWxlczsgcHJvdGVjdGVkIGJ5IGZiX2luZm8gbG9jayAqLw0KPiAgIAlzdHJ1Y3QgbXV0ZXgg
-bG9jazsgLyogbXV0ZXggdGhhdCBwcm90ZWN0cyB0aGUgcGFnZXJlZiBsaXN0ICovDQo+ICAg
-CXN0cnVjdCBsaXN0X2hlYWQgcGFnZXJlZmxpc3Q7IC8qIGxpc3Qgb2YgcGFnZXJlZnMgZm9y
-IHRvdWNoZWQgcGFnZXMgKi8NCj4gICAJLyogY2FsbGJhY2sgKi8NCg0KLS0gDQpUaG9tYXMg
-WmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBT
-b2x1dGlvbnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcs
-IEdlcm1hbnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6RmdHNmw7xocmVy
-OiBJdm8gVG90ZXYNCg==
+diff --git a/drivers/video/fbdev/amba-clcd.c b/drivers/video/fbdev/amba-clcd.c
+index f65c96d1394d..e45338227be6 100644
+--- a/drivers/video/fbdev/amba-clcd.c
++++ b/drivers/video/fbdev/amba-clcd.c
+@@ -854,7 +854,7 @@ static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
+ 	board->caps = CLCD_CAP_ALL;
+ 	board->check = clcdfb_check;
+ 	board->decode = clcdfb_decode;
+-	if (of_find_property(node, "memory-region", NULL)) {
++	if (of_property_present(node, "memory-region")) {
+ 		board->setup = clcdfb_of_vram_setup;
+ 		board->mmap = clcdfb_of_vram_mmap;
+ 		board->remove = clcdfb_of_vram_remove;
+diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
+index 6403ae07970d..9cbadcd18b25 100644
+--- a/drivers/video/fbdev/bw2.c
++++ b/drivers/video/fbdev/bw2.c
+@@ -306,7 +306,7 @@ static int bw2_probe(struct platform_device *op)
+ 	if (!par->regs)
+ 		goto out_release_fb;
+ 
+-	if (!of_find_property(dp, "width", NULL)) {
++	if (!of_property_present(dp, "width")) {
+ 		err = bw2_do_default_mode(par, info, &linebytes);
+ 		if (err)
+ 			goto out_unmap_regs;
+diff --git a/drivers/video/fbdev/cg3.c b/drivers/video/fbdev/cg3.c
+index bdcc3f6ab666..3a37fff4df36 100644
+--- a/drivers/video/fbdev/cg3.c
++++ b/drivers/video/fbdev/cg3.c
+@@ -393,7 +393,7 @@ static int cg3_probe(struct platform_device *op)
+ 
+ 	cg3_blank(FB_BLANK_UNBLANK, info);
+ 
+-	if (!of_find_property(dp, "width", NULL)) {
++	if (!of_property_present(dp, "width")) {
+ 		err = cg3_do_default_mode(par);
+ 		if (err)
+ 			goto out_unmap_screen;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c b/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
+index 0ae0cab252d3..09f719af0d0c 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/omapdss-boot-init.c
+@@ -192,7 +192,7 @@ static int __init omapdss_boot_init(void)
+ 	omapdss_walk_device(dss, true);
+ 
+ 	for_each_available_child_of_node(dss, child) {
+-		if (!of_find_property(child, "compatible", NULL))
++		if (!of_property_present(child, "compatible"))
+ 			continue;
+ 
+ 		omapdss_walk_device(child, true);
+-- 
+2.39.2
 
---------------YpSIrhqbG8h9R53oB55Tn8ZY--
-
---------------WN90O91OjnVFzjRm0Unwppqp
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmQLPUwFAwAAAAAACgkQlh/E3EQov+CU
-9Q//XjNw8h7KM1/IefFZ4loLe6NPkejow0rEyghdW+DM9YkUsnosuK0tbfVnBabd+j0JAKCXympk
-IGslIHqvyedTY4ZxR7gW6SasgQZnG+ObvWEWdPjbA7QRycNJFBnSV2pj09FHwyLgYKuIIDVoUXK6
-Ffp++AsfWj556Ou34ZufPsf0K6RE1ZIe0safWj2EMUnfTduHnut+UgJcccUD4fPkCVplas7mxcLs
-0WHHIn5540QPSplnQsox1mh3O11wg1oWW3U0l8MaSRMKzq+FqDOfN+d++pzNHZEogiwGwKivLnF5
-2uc4/isK9dXU+n+F1wOMwJMR+mNnjNAswYH8IxyXy/zfvrl6aoxhf3j39lqHn+2H9CWmyIgU7XLZ
-0+cv9TxcIEJ7knZkzK2fU1j3RS5aJJxAJQBi0W7SoiTIyZcEAom6KsRaQZIwXL0VsjS33lmm/uoi
-nDTCn5j/iVMhbZALi2CvK/xv6himXgs+i/6EsFIXFX7239nuT5Ub4HOQv9ylvD9ZLyNfvTOM8Chk
-qHp35noGo4cDYNC/POfpXPbRyrszwCCWkfJxOCe4fNWNT80ezsx0Z1/RuwscKGnOtnvt+eYcjFFb
-XtnuspYRPFjbAaidc/AvZP4JPC0AhHZp92BbAmph7UZWyq4wlEWL9jf74qdyist4L27rleaxw7bf
-JnA=
-=jxq2
------END PGP SIGNATURE-----
-
---------------WN90O91OjnVFzjRm0Unwppqp--
