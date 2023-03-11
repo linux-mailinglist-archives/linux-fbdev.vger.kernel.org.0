@@ -2,153 +2,155 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD04E6B4797
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Mar 2023 15:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F8B76B5833
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Mar 2023 05:41:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233477AbjCJOvv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 10 Mar 2023 09:51:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41980 "EHLO
+        id S229589AbjCKElp (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 10 Mar 2023 23:41:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233405AbjCJOvP (ORCPT
+        with ESMTP id S229530AbjCKElo (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 10 Mar 2023 09:51:15 -0500
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC0C822C82;
-        Fri, 10 Mar 2023 06:48:22 -0800 (PST)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-176e43eb199so6065283fac.7;
-        Fri, 10 Mar 2023 06:48:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678459678;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ETxKkA0CWLBgbyAgVLy9qpug2yXjisvnXqA0S7RLTqY=;
-        b=DJame3m7PqWK8sdB3UPaLWRzGJma/YN6N0VeQFs9Tl3DQijuIuo3+1kU5aVvDeU6H+
-         Dsnykr1axowfIPQn6PMV34wg4OyyMcpOQgEnIjUe+Uam+f/xrvwKzhZEr2aAKREmWuvP
-         eL7V7mWe2Bzt3U8xOc9+mMWxuxVazIrIUn/mLHRvv2u8I/ov+lPMgxNUq78sDWri+pAm
-         54HvuB1GZ7IfRBgXNQrn/Uc6iLYh49DWm/IAu6b/CvyXl3eItjNRdKiwPh37fAzlUcCp
-         rY3hXIfnlBdCEFdMbfXYAQc3AZmTw8XhNocHKrkphpM2wulBop8qpMLYGXT/NOPv5oeH
-         rbHA==
-X-Gm-Message-State: AO0yUKW3nJVMq7oUZecFa84DtS1FpAEvknI5ZtuJGHvEGdfH2QOBy19G
-        +G9AQ1EhCop9GXMSfaJLCw==
-X-Google-Smtp-Source: AK7set/1ag3y6dD1QRTKVA81xe6JG5qypBhJeLO+p+L0vkyaAbWPH0yMo54nh3CufsknS4wbkcE54A==
-X-Received: by 2002:a05:6870:219d:b0:163:b0c5:8730 with SMTP id l29-20020a056870219d00b00163b0c58730mr15337879oae.12.1678459678109;
-        Fri, 10 Mar 2023 06:47:58 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id zf30-20020a0568716a9e00b0017299192eb1sm97370oab.25.2023.03.10.06.47.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 06:47:57 -0800 (PST)
-Received: (nullmailer pid 1546216 invoked by uid 1000);
-        Fri, 10 Mar 2023 14:47:31 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
-Cc:     devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] backlight: as3711: Use of_property_read_bool() for boolean properties
-Date:   Fri, 10 Mar 2023 08:47:31 -0600
-Message-Id: <20230310144731.1546190-1-robh@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        Fri, 10 Mar 2023 23:41:44 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410E01C303;
+        Fri, 10 Mar 2023 20:41:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678509703; x=1710045703;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C+Y5bxY9qe45ry63psa0DIaiA7c2eI/wBZK0raAHYVQ=;
+  b=Duo1TnOZ4UAMdph5almpr8MOKGBcF7dCNbi5lf+2lAeQZdYETiUl7aly
+   DIDAI2jhMI/Oj3TDRAQ4P2cvTm3wFaJT/d6qb1FQP+1/8TgFIkKiiGA6P
+   /kXSePdF8Sl2ZMp+L94V2XHlS/fkpJSDvrMSLMoZ+qL5RTOlarr03rMoL
+   PndSgQ4vIzc+ZjzgYlj7Wc+g+dJld6Kl5xeLO+CEoPYW3nvysNa9Fb0BV
+   x00a/PIy1kia/+n+uS63JTIOB0ii/OKI3x5ZUns+Zra9PXZga9Jj0j+qR
+   SgEASVVimtQenwA47Pxl4W4DYZwnTEr/wyaWmsblFcUSysrk0O3P7yE0R
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="316522271"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="316522271"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 20:41:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="680435840"
+X-IronPort-AV: E=Sophos;i="5.98,251,1673942400"; 
+   d="scan'208";a="680435840"
+Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 10 Mar 2023 20:41:40 -0800
+Received: from kbuild by b613635ddfff with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1par35-0004Kd-2k;
+        Sat, 11 Mar 2023 04:41:39 +0000
+Date:   Sat, 11 Mar 2023 12:40:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Helge Deller <deller@gmx.de>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] fbdev: Use of_property_present() for testing DT property
+ presence
+Message-ID: <202303111229.3Uuc8JQV-lkp@intel.com>
+References: <20230310144729.1545943-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230310144729.1545943-1-robh@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties.
-Convert reading boolean properties to to of_property_read_bool().
+Hi Rob,
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- drivers/video/backlight/as3711_bl.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+I love your patch! Yet something to improve:
 
-diff --git a/drivers/video/backlight/as3711_bl.c b/drivers/video/backlight/as3711_bl.c
-index 3b60019cdc2b..28437c2da0f5 100644
---- a/drivers/video/backlight/as3711_bl.c
-+++ b/drivers/video/backlight/as3711_bl.c
-@@ -286,23 +286,23 @@ static int as3711_backlight_parse_dt(struct device *dev)
- 		if (ret < 0)
- 			goto err_put_bl;
- 
--		if (of_find_property(bl, "su2-feedback-voltage", NULL)) {
-+		if (of_property_read_bool(bl, "su2-feedback-voltage")) {
- 			pdata->su2_feedback = AS3711_SU2_VOLTAGE;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-feedback-curr1", NULL)) {
-+		if (of_property_read_bool(bl, "su2-feedback-curr1")) {
- 			pdata->su2_feedback = AS3711_SU2_CURR1;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-feedback-curr2", NULL)) {
-+		if (of_property_read_bool(bl, "su2-feedback-curr2")) {
- 			pdata->su2_feedback = AS3711_SU2_CURR2;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-feedback-curr3", NULL)) {
-+		if (of_property_read_bool(bl, "su2-feedback-curr3")) {
- 			pdata->su2_feedback = AS3711_SU2_CURR3;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-feedback-curr-auto", NULL)) {
-+		if (of_property_read_bool(bl, "su2-feedback-curr-auto")) {
- 			pdata->su2_feedback = AS3711_SU2_CURR_AUTO;
- 			count++;
- 		}
-@@ -312,19 +312,19 @@ static int as3711_backlight_parse_dt(struct device *dev)
- 		}
- 
- 		count = 0;
--		if (of_find_property(bl, "su2-fbprot-lx-sd4", NULL)) {
-+		if (of_property_read_bool(bl, "su2-fbprot-lx-sd4")) {
- 			pdata->su2_fbprot = AS3711_SU2_LX_SD4;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-fbprot-gpio2", NULL)) {
-+		if (of_property_read_bool(bl, "su2-fbprot-gpio2")) {
- 			pdata->su2_fbprot = AS3711_SU2_GPIO2;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-fbprot-gpio3", NULL)) {
-+		if (of_property_read_bool(bl, "su2-fbprot-gpio3")) {
- 			pdata->su2_fbprot = AS3711_SU2_GPIO3;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-fbprot-gpio4", NULL)) {
-+		if (of_property_read_bool(bl, "su2-fbprot-gpio4")) {
- 			pdata->su2_fbprot = AS3711_SU2_GPIO4;
- 			count++;
- 		}
-@@ -334,15 +334,15 @@ static int as3711_backlight_parse_dt(struct device *dev)
- 		}
- 
- 		count = 0;
--		if (of_find_property(bl, "su2-auto-curr1", NULL)) {
-+		if (of_property_read_bool(bl, "su2-auto-curr1")) {
- 			pdata->su2_auto_curr1 = true;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-auto-curr2", NULL)) {
-+		if (of_property_read_bool(bl, "su2-auto-curr2")) {
- 			pdata->su2_auto_curr2 = true;
- 			count++;
- 		}
--		if (of_find_property(bl, "su2-auto-curr3", NULL)) {
-+		if (of_property_read_bool(bl, "su2-auto-curr3")) {
- 			pdata->su2_auto_curr3 = true;
- 			count++;
- 		}
+[auto build test ERROR on drm-misc/drm-misc-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
+base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+patch link:    https://lore.kernel.org/r/20230310144729.1545943-1-robh%40kernel.org
+patch subject: [PATCH] fbdev: Use of_property_present() for testing DT property presence
+config: arm64-randconfig-r032-20230310 (https://download.01.org/0day-ci/archive/20230311/202303111229.3Uuc8JQV-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 67409911353323ca5edf2049ef0df54132fa1ca7)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install arm64 cross compiling tool for clang build
+        # apt-get install binutils-aarch64-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/c013f4111f36b0b4327e7fbf46c0dd93399e9209
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Rob-Herring/fbdev-Use-of_property_present-for-testing-DT-property-presence/20230310-225754
+        git checkout c013f4111f36b0b4327e7fbf46c0dd93399e9209
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/video/fbdev/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Link: https://lore.kernel.org/oe-kbuild-all/202303111229.3Uuc8JQV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/video/fbdev/amba-clcd.c:857:6: error: call to undeclared function 'of_property_present'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+           if (of_property_present(node, "memory-region")) {
+               ^
+   drivers/video/fbdev/amba-clcd.c:857:6: note: did you mean 'fwnode_property_present'?
+   include/linux/property.h:59:6: note: 'fwnode_property_present' declared here
+   bool fwnode_property_present(const struct fwnode_handle *fwnode,
+        ^
+   1 error generated.
+
+
+vim +/of_property_present +857 drivers/video/fbdev/amba-clcd.c
+
+   843	
+   844	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
+   845	{
+   846		struct clcd_board *board = devm_kzalloc(&dev->dev, sizeof(*board),
+   847				GFP_KERNEL);
+   848		struct device_node *node = dev->dev.of_node;
+   849	
+   850		if (!board)
+   851			return NULL;
+   852	
+   853		board->name = of_node_full_name(node);
+   854		board->caps = CLCD_CAP_ALL;
+   855		board->check = clcdfb_check;
+   856		board->decode = clcdfb_decode;
+ > 857		if (of_property_present(node, "memory-region")) {
+   858			board->setup = clcdfb_of_vram_setup;
+   859			board->mmap = clcdfb_of_vram_mmap;
+   860			board->remove = clcdfb_of_vram_remove;
+   861		} else {
+   862			board->setup = clcdfb_of_dma_setup;
+   863			board->mmap = clcdfb_of_dma_mmap;
+   864			board->remove = clcdfb_of_dma_remove;
+   865		}
+   866	
+   867		return board;
+   868	}
+   869	#else
+   870	static struct clcd_board *clcdfb_of_get_board(struct amba_device *dev)
+   871	{
+   872		return NULL;
+   873	}
+   874	#endif
+   875	
+
 -- 
-2.39.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
