@@ -2,90 +2,97 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27916C8D11
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Mar 2023 11:19:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE466C93C6
+	for <lists+linux-fbdev@lfdr.de>; Sun, 26 Mar 2023 12:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231912AbjCYKT3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Sat, 25 Mar 2023 06:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
+        id S229763AbjCZKms (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 26 Mar 2023 06:42:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjCYKT2 (ORCPT
+        with ESMTP id S229483AbjCZKmr (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 25 Mar 2023 06:19:28 -0400
-Received: from mail.inea.gob.ve (mail.inea.gob.ve [201.248.92.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B668286AA;
-        Sat, 25 Mar 2023 03:18:56 -0700 (PDT)
-Received: from mail.inea.gob.ve (localhost.localdomain [127.0.0.1])
-        by mail.inea.gob.ve (Proxmox) with ESMTP id DAB57494FD;
-        Sat, 25 Mar 2023 05:22:51 -0400 (-04)
-Received: from correo.inea.gob.ve (unknown [10.10.0.61])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.inea.gob.ve (Proxmox) with ESMTPS id 52840481B7;
-        Sat, 25 Mar 2023 05:22:51 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.inea.gob.ve (Postfix) with ESMTP id AB2056E40511;
-        Sat, 25 Mar 2023 05:22:50 -0400 (EDT)
-Received: from correo.inea.gob.ve ([127.0.0.1])
-        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 51qGtr3M244P; Sat, 25 Mar 2023 05:22:50 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.inea.gob.ve (Postfix) with ESMTP id 03B596E40525;
-        Sat, 25 Mar 2023 05:22:50 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at inea.gob.ve
-Received: from correo.inea.gob.ve ([127.0.0.1])
-        by localhost (correo.inea.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 86ao9qZAtDyQ; Sat, 25 Mar 2023 05:22:49 -0400 (EDT)
-Received: from correo.inea.gob.ve (correo.inea.gob.ve [10.10.0.61])
-        by correo.inea.gob.ve (Postfix) with ESMTP id 8A1E76E40514;
-        Sat, 25 Mar 2023 05:22:47 -0400 (EDT)
-Date:   Sat, 25 Mar 2023 05:22:47 -0400 (EDT)
-From:   Euro Millions <pledezma@inea.gob.ve>
-Reply-To: Euro Millions <3249735289@qq.com>
-Message-ID: <81292979.944147.1679736167547.JavaMail.zimbra@inea.gob.ve>
-Subject: Lottogewinn
+        Sun, 26 Mar 2023 06:42:47 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D09017EDB
+        for <linux-fbdev@vger.kernel.org>; Sun, 26 Mar 2023 03:42:42 -0700 (PDT)
+Received: from ramsan.of.borg ([84.195.187.55])
+        by xavier.telenet-ops.be with bizsmtp
+        id cyif290091C8whw01yifpp; Sun, 26 Mar 2023 12:42:39 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1pgNox-00Et68-TB;
+        Sun, 26 Mar 2023 12:42:39 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1pgNpf-00D0Fi-6J;
+        Sun, 26 Mar 2023 12:42:39 +0200
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     linux-fbdev@vger.kernel.org
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH fbtest] pnmtohex: Optionally use pkg-config for netpbm
+Date:   Sun, 26 Mar 2023 12:42:32 +0200
+Message-Id: <20230326104232.3099222-1-geert@linux-m68k.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [176.42.137.72]
-X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
-Thread-Index: fmbQxTnIlrJ4SDBi9/mBLvyn368NTA==
-Thread-Topic: Lottogewinn
-X-Spam-Status: Yes, score=7.2 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,RCVD_IN_BL_SPAMCOP_NET,
-        REPLYTO_WITHOUT_TO_CC,T_SPF_HELO_TEMPERROR,T_SPF_TEMPERROR
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.2 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?201.248.92.151>]
-        *  0.0 T_SPF_HELO_TEMPERROR SPF: test of HELO record failed
-        *      (temperror)
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [3249735289[at]qq.com]
-        *  0.0 T_SPF_TEMPERROR SPF: test of record failed (temperror)
-        *  1.2 MISSING_HEADERS Missing To: header
-        *  1.9 REPLYTO_WITHOUT_TO_CC No description available.
-        *  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.7 required=5.0 tests=RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Herzlichen Glückwunsch, Sie haben €650.000,00 bei den monatlichen Gewinnspielen von Euro Millions / Google Promo am 23.März 2023 gewonnen.
+As of libnetpbm11 in Debian/Ubuntu, the netpbm header files are no
+longer located in the root include directory, but in a netbpm
+subdirectory.  Fortunately the same version added support for
+pkg-config.
 
-Bitte geben Sie die folgenden Informationen ein, damit Ihr Gewinnbetrag an Sie überwiesen werden kann.
+Support both old and new systems by using pkg-config, when available.
 
-Vollständiger Name:
-Heimatadresse:
-Geschlecht:
-Alter:
-Telefon:
+Reported-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+Helge: Does this fix the issue for you. I don't have a system with
+       libnetpbm11 handy yet.
 
-John Andrew
-Online-Koordinator
+ Rules.make        | 2 +-
+ pnmtohex/Makefile | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Rules.make b/Rules.make
+index 51c4e9431699d2f3..b9a098d5e0f409cb 100644
+--- a/Rules.make
++++ b/Rules.make
+@@ -5,7 +5,7 @@ HOSTCC = gcc
+ IFLAGS = -I$(TOPDIR)/include
+ #DFLAGS = -g
+ OFLAGS = -O3 -fomit-frame-pointer
+-CFLAGS = -Wall -Werror $(IFLAGS) $(DFLAGS) $(OFLAGS)
++CFLAGS += -Wall -Werror $(IFLAGS) $(DFLAGS) $(OFLAGS)
+ 
+ SRCS += $(wildcard *.c)
+ OBJS += $(subst .c,.o,$(SRCS))
+diff --git a/pnmtohex/Makefile b/pnmtohex/Makefile
+index d89c8e448db0c527..642a26f0c10c3bc2 100644
+--- a/pnmtohex/Makefile
++++ b/pnmtohex/Makefile
+@@ -3,9 +3,12 @@ TOPDIR = ..
+ 
+ HOST_TARGET = pnmtohex
+ 
++CFLAGS += $(shell pkg-config --exists netpbm && pkg-config --cflags netpbm)
++
+ # Modern distro's (e.g. Debian, Fedora Core) seem to have -lnetpbm only
+ #LIBS += -lnetpnm -lnetpbm -lnetpgm -lnetppm
+ LIBS += -lnetpbm
++LIBS += $(shell pkg-config --exists netpbm && pkg-config --libs netpbm)
+ 
+ include $(TOPDIR)/Rules.make
+ 
+-- 
+2.34.1
 
