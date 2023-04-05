@@ -2,102 +2,108 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 472C66D6ED0
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Apr 2023 23:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C266D75F7
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Apr 2023 09:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235997AbjDDVUe (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Apr 2023 17:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59728 "EHLO
+        id S237197AbjDEH45 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 5 Apr 2023 03:56:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjDDVUd (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Apr 2023 17:20:33 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CB044AE;
-        Tue,  4 Apr 2023 14:20:32 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id fi11so12592485edb.10;
-        Tue, 04 Apr 2023 14:20:32 -0700 (PDT)
+        with ESMTP id S237113AbjDEH4v (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Wed, 5 Apr 2023 03:56:51 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97BA649FA
+        for <linux-fbdev@vger.kernel.org>; Wed,  5 Apr 2023 00:56:47 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id eh3so138890797edb.11
+        for <linux-fbdev@vger.kernel.org>; Wed, 05 Apr 2023 00:56:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112; t=1680643230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q5+FAUacxS+s9wS9+WZNPmawepdrV15aiNOEp44JCVM=;
-        b=La2q1cdEt1u8ad1MBI9z/YWXhjb1ddmFhaPLuOFZUYuelVrfE8HIhxNPyvFClV0P7g
-         svtJ9lEKx+c3VSuhd0Oz8p5I/gXLjPr7+DglxX6aD7V5k0vz++j4xeNMqMgquRg3AEv3
-         4y4BFu26N3/RiY4pKwASDwLAlCj7SrYCR+5KaJHbmQQzEQUeT2zoiOUeE0TkZcOSvoLC
-         Z38gr3u/CJgZr4/T46A4/jqp+5gxiDeMV+GgKpmdtndU+NCKQVBh1OgsPzu2NOAn8FYW
-         Bej2iZ9mMb+l4XonfKUVNMU/JWDiqiU4JrOABkvWWYqw8U+GKBEdUHA0SZjHpeTvE4Kn
-         ffXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680643230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20210112; t=1680681406;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q5+FAUacxS+s9wS9+WZNPmawepdrV15aiNOEp44JCVM=;
-        b=2K8HugRNbznLmRZGIIpZqDt6jQRbpbEtdlx5oXK4QWwfFzqk8dj02eIVmEvEmKt6tk
-         W9cTDVZpcCiwAxCLtfoKVbStatvUBqqCiEiaXD5lO5wyhPqBjGgPGNpEtk1m8omZ6+1L
-         n/YwncvEyGAAa6RhirHAU6Qt+dUhknwHQLX++CSb1gd6Ir+pY1JWvNTUJLKBuR+GqQFV
-         0l/dFUQkPaoA42EcFIsxr1VTT196dz0XJyNcj/LtBw0uT6suK3NC/AE1xZfSe1OvixCi
-         gN/SG0n8BVQdb7IL5gGW1YmXfTNTqle+0pZEOvpM0ZWCiDDppAbvNXUDKxtq3m6DVZj6
-         0MTA==
-X-Gm-Message-State: AAQBX9d9QLrxCkz1HO9waF5rHX6+RU5tWBB9kmFbZTd8RPHzK/Qn1+07
-        Up2QvPoODH6HudAJIOA21ltweh5q25s9HgDOkig=
-X-Google-Smtp-Source: AKy350YQ8eox73r1Pc5Z61GA80cewysG9JVXMIiHYkLb+7yCzu/Auu3EHBU62rmW7kSappwZiTuB5zbuMVnl6rg80/s=
-X-Received: by 2002:a17:907:c80b:b0:8f5:2e0e:6def with SMTP id
- ub11-20020a170907c80b00b008f52e0e6defmr565741ejc.0.1680643230540; Tue, 04 Apr
- 2023 14:20:30 -0700 (PDT)
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=TbfE/M3KLTLcH5vT2Fre6fZYOYPWvvtxQkGTov6z1yTYm3WWX0o+lTIhTOG+wcSwIr
+         Shh1zY364kogmQhRAc0fmFUnYMo7ZU5Ky8ffXUG3ryGAwkPV8ypCT8eTFfjq9CYDvF34
+         wd9tQF0WuIJQpr3lhmr30HlFr0l1LwFrvYdgr8mH0O6e9FfWr5OPxhkLBM/13q30F9ig
+         EG1EUr+OVaWTOJKmPFrxHNqGlS+65K8SsVkrarg61QTLcPElkQBRwd5OoyrukvetA/wf
+         Vqy9Mst7SvFcranOTqZhNf+dN08TZqf8qZtRsH7Kuac3IsmXwWAy0wOKyifHo22AsbGf
+         ub3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680681406;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2eIUIgQam+Znm92t75ub3SSql/5kD/CSnGjaZOIeRE=;
+        b=P8w30pgdi1x5JVU+QJUo1AbvQ/drOJBcTcATEERGZRDVSor3dZ61tGcBl3MYqHBJ++
+         V7mXZ8xswntSDKKPfAp5dDftke5JOgyiZWV6RIk9qAOOyBF6vubmdpF0EDODh3x/1J99
+         tLB0GUY5Vv1BR+e89r/nz7WM4bkHnh6kmHv7qHFFfN0zB9CgByWHoUXwVvgrbfWKx7KA
+         086hGOcVmZ0pMcFqL3q8K0HLNCKTM8kCDRdvqCa2bgas6juHHEW0P7MPzfDjeIuVZIA0
+         97pzcy3ZVduB1MhS1A1UVVM7Ct45h315Pn3vz6bcJ8u4QWpDFTCH41QFDjKCaWrRolAa
+         tcFw==
+X-Gm-Message-State: AAQBX9fcRgAQ1CpH/s81ejMMAvFrbjN6aIwpBpNOFxerlUY9TL0BUlri
+        Ge1FLHmiiLGh0cnOwFuuwrrlNKO9q0APUShLJTE=
+X-Google-Smtp-Source: AKy350aKLqDIJOBs2+w17/O65tIzNsWo0HsCJMoNyTEOl6/xftBTjTFN3K+wYTFKjUWLGLXPGVtupVTP2HNAQxlPhhQ=
+X-Received: by 2002:a17:906:f8db:b0:92b:ec37:e4b7 with SMTP id
+ lh27-20020a170906f8db00b0092bec37e4b7mr1145683ejb.14.1680681406051; Wed, 05
+ Apr 2023 00:56:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230404201842.567344-1-daniel.vetter@ffwll.ch> <20230404201842.567344-3-daniel.vetter@ffwll.ch>
-In-Reply-To: <20230404201842.567344-3-daniel.vetter@ffwll.ch>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 4 Apr 2023 23:20:19 +0200
-Message-ID: <CAFBinCCQ+DRZ-T8rBO=fpP8s47X11iM4oZ5=LEjp_HqjAFSivg@mail.gmail.com>
-Subject: Re: [PATCH 3/8] drm/aperture: Remove primary argument
-To:     Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc:     DRI Development <dri-devel@lists.freedesktop.org>,
-        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Deepak Rawat <drawat.floss@gmail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Emma Anholt <emma@anholt.net>, Helge Deller <deller@gmx.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-hyperv@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
+Received: by 2002:a05:7208:2202:b0:65:e547:3943 with HTTP; Wed, 5 Apr 2023
+ 00:56:45 -0700 (PDT)
+Reply-To: tamimbinhamadalthani00@gmail.com
+From:   Tamim Mohammed Taher <cisskhadidiatou890@gmail.com>
+Date:   Wed, 5 Apr 2023 00:56:45 -0700
+Message-ID: <CAAYY=dY1_XALb_mD3qTfxhx_hk9X7aOuccJ_bL2QrungoJAyKA@mail.gmail.com>
+Subject: RE:Saudi Arabia-Inquiry about your products.!!
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=DEAR_SOMETHING,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:536 listed in]
+        [list.dnswl.org]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [tamimbinhamadalthani00[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [cisskhadidiatou890[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.7 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, Apr 4, 2023 at 10:18=E2=80=AFPM Daniel Vetter <daniel.vetter@ffwll.=
-ch> wrote:
->
-> Only really pci devices have a business setting this - it's for
-> figuring out whether the legacy vga stuff should be nuked too. And
-> with the preceeding two patches those are all using the pci version of
-I think it's spelled "preceding"
-
-[...]
->  drivers/gpu/drm/meson/meson_drv.c           |  2 +-
-for the meson driver:
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Dear Sir/Madam,
 
 
-Thank you and best regards,
-Martin
+
+Can you supply your products to  the government of (Saudi Arabia). We
+buy in larger quantity if your company can supply please reply with
+your products detail for more information.
+
+Looking forward to hearing from you.
+
+Thanks and Regards
+
+ Mr.Tamim Mohammed Taher
+
+Email:tamimbinhamadalthani00@gmail.com
