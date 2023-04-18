@@ -2,33 +2,33 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AAA26E62D4
-	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Apr 2023 14:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25BF76E645A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 18 Apr 2023 14:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230471AbjDRMft (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 18 Apr 2023 08:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50466 "EHLO
+        id S232072AbjDRMs1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 18 Apr 2023 08:48:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231701AbjDRMfs (ORCPT
+        with ESMTP id S232096AbjDRMsW (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 18 Apr 2023 08:35:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEB5D338;
-        Tue, 18 Apr 2023 05:35:47 -0700 (PDT)
+        Tue, 18 Apr 2023 08:48:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E443313877;
+        Tue, 18 Apr 2023 05:48:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9685863228;
-        Tue, 18 Apr 2023 12:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883EEC433EF;
-        Tue, 18 Apr 2023 12:35:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4B5B633D3;
+        Tue, 18 Apr 2023 12:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF790C4339B;
+        Tue, 18 Apr 2023 12:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1681821346;
+        s=korg; t=1681822093;
         bh=h7FEIe8ca7zvfq0mrRQUgHsit2vQHJj7yXRHnFW3K+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uLTNZVj6LfvEzuM32WH5Ybdio4XXNO52JO4/0FuGU94DC3Eqda5+ES3VPGiyJ4iOD
-         E2tgN10/htk7rd3GL26xhLns+yev5hZlgyEdZXjBzkRqz14Qiq9rIz3RUtAF68g7Cz
-         vMV7qs6Fnu3sO/T304qu77shnzUsxgZn2dxpYcFw=
+        b=FRvu5hM4c+E6o9PoWHxvZkPuXCw3znbhSd2Yw+VN7iZARyPCLjDQuqJ12qIDpTpWp
+         B/u3BCWVK2E+4YyvieOMc7Leb5e4ajQErP8c+3wTIoV+qKxPSzEtkDMBITTzCZGA0a
+         QV+FVO6nGFFD3eXqPveuVA4u94V5hq0MVswXPv7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,18 +54,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Samuel Thibault <samuel.thibault@ens-lyon.org>,
         Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
         Shigeru Yoshida <syoshida@redhat.com>
-Subject: [PATCH 5.10 063/124] fbmem: Reject FB_ACTIVATE_KD_TEXT from userspace
-Date:   Tue, 18 Apr 2023 14:21:22 +0200
-Message-Id: <20230418120312.152461472@linuxfoundation.org>
+Subject: [PATCH 6.2 020/139] fbmem: Reject FB_ACTIVATE_KD_TEXT from userspace
+Date:   Tue, 18 Apr 2023 14:21:25 +0200
+Message-Id: <20230418120314.413344564@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230418120309.539243408@linuxfoundation.org>
-References: <20230418120309.539243408@linuxfoundation.org>
+In-Reply-To: <20230418120313.725598495@linuxfoundation.org>
+References: <20230418120313.725598495@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
