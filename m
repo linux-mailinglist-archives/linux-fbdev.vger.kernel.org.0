@@ -2,105 +2,50 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6326EC957
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Apr 2023 11:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 523716ED50A
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Apr 2023 21:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231410AbjDXJqy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Apr 2023 05:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44186 "EHLO
+        id S229688AbjDXTFl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Mon, 24 Apr 2023 15:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231436AbjDXJqy (ORCPT
+        with ESMTP id S231481AbjDXTFk (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Apr 2023 05:46:54 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFC13C11;
-        Mon, 24 Apr 2023 02:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1682329558; i=deller@gmx.de;
-        bh=r8d1kBsYn2Vsg1ZsATwHy91SjqfepNuA5xgDrCumwfk=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=dRDV8HlXQrskUZk9ZO2np4z+diAwOGcC0PhuyIKt4VM1A3ztdn3ya6zR9865/lqWU
-         ALgbODoXl7r5IJyA/S7UzHQigKEV8C3Di+U46VmgYozZI6X+w7uw5PRRuteq9rxwCF
-         q9rRF1LkdH0HQsf1Mlv3IAUtDQuCsx8OBIsFqtu+FfTWenIhercIoGj2Kf7uDw0hdE
-         QXS8RrSdf7eUxvt29JIxXV8yCrFzzaHwEUzz7FDoMyiQCjdx9yd4L9SB8GImDEjApD
-         RZKHjha64fCzyxldolpw+PVi3fzTND8EmyXEcC+Py2R//SGZa0h6WiJWtk7RHIB/EJ
-         7sww68a60woCA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.153.242]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MHXFx-1q4PIa3mQz-00DZsq; Mon, 24
- Apr 2023 11:45:57 +0200
-Message-ID: <838c028d-92fe-df48-739e-d097ec2630c1@gmx.de>
-Date:   Mon, 24 Apr 2023 11:45:57 +0200
+        Mon, 24 Apr 2023 15:05:40 -0400
+X-Greylist: delayed 106412 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 24 Apr 2023 12:05:39 PDT
+Received: from mail.qrec.gov.qa (mail.qrec.gov.qa [78.100.68.234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D974C23
+        for <linux-fbdev@vger.kernel.org>; Mon, 24 Apr 2023 12:05:38 -0700 (PDT)
+Received: from [45.80.158.229] ([45.80.158.229])
+        by mail.qrec.gov.qa  with ESMTP id 33NDKhnQ017757-33NDKhnZ017757
+        (version=TLSv1.0 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Sun, 23 Apr 2023 16:25:10 +0300
+Message-Id: <202304231325.33NDKhnQ017757-33NDKhnZ017757@mail.qrec.gov.qa>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] MAINTAINERS: Remove rage128 framebuffer driver maintainer
-Content-Language: en-US
-To:     Paul Mackerras <paulus@ozlabs.org>, linux-fbdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Michael Ellerman <michael@ellerman.id.au>
-References: <ZEW4REOoU8XuT6sS@cleo>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <ZEW4REOoU8XuT6sS@cleo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IhVTtWYWLo15a0H4EdmZfeiNy6lP3gADo9lTVBufmIyu5b5SqJM
- mfWtfIzZhMBacVTbAHAMljACfe33kb0o4xPvTN+4Y8Ikv/n+HFKIgCTuy5FtQpJMgSQYklb
- JPHFE4PFcr1x/qLPE7ZUFPoQDxai9C8VOzl+C9JEnLQMkJ5MaDJEqwx45+mrYJk1fwrbDLd
- thwWbwuZy5AMSwir/XJwg==
-UI-OutboundReport: notjunk:1;M01:P0:gQVko6niNME=;HvAg/wG+HJsCeIfrVvEemQ6KIo+
- 5kNhhBP1wOLbbk0TLPx6WadSitADpEF1JKNQIK8vSN1gd5ZyNaSJmcoBo6wYSQUE0/oSNY6Pi
- 7R9t/LMA5nwVOaeeqs2W/WPmklNwWR2QF5+JfW+2BaVnp8ME1UE6xQm9fOLdRY6EHxr7DAkub
- vztRVmB59EdDnzSlPRUQwzmy2S46fHZ38v0pIRWbfecV2EwQakrtPp790LBcaZBnxwHyIUSX5
- Vr5p0ypq2ZV43DeK3M0bsFUz7BXGiSiXPLdenw68t035s7kpekjI+7n4dwYOX8PH7QFI561Xl
- TQwnl4u7nfTBM8hunMSoVl9vuHtW4QNL38RTkaii5QzcquXmJ1yYB5/qZotzCG1hHub0p/xqn
- O/NvtWK5iQp4a8AxgtfwlmxVUVjBgTMlvuBiNueudvYGat9UCa1Iv3rKAldFUtWH2dxK02NLm
- QTDXIupi005ZrDb+obKxNglGlptCjrvyMab24VHdxYjl1httAf/7pTub7hNKdk8g8LpA2zlKq
- Tls/iXfWOj91M4QJjY3n629WqdrQm0+lknC7hpWG5rbPN4gR2cqgSN3a4DRCFOQOT55R7tPKP
- pHt6Q2Og3T8zgLwACnQUUbjZ3BQ8qqpxhELQfOxB0YC4Sp9fRofxEpFlVPQEmRKSfoFpDtdDD
- X7/U40fhUD1Fz83SoiO9mwuh4Q6qTkOee4Ss+QY+2Cw4oWDU+6HCBgmwMvtTBfzdnWS3e+YWm
- ++ekZqlDYKFSK4IcfGr5ogLiruh8jIjwkVBS2jS8zU8WSwqsrShBem3fBIeAZUk96FF1saZ/e
- TvKtTgqeSq3YaZP8tO5Vg2wrugtk4CAszwq/1xmaFJBNm0i1m0Q/jVgpwoPhbAONUgoGbWqOh
- V6FwHRsx8ikiU4n59jjSLbTGuWyQlCiv+ZIaU/Nz/h0jcLNMQ/g8NNwxHYw/QyfjiTQSVXA+w
- QMjQy0gh43teEJEQ/VcqVJHCypQ=
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?BITTE_ERNEUT_BEST=C3=84TIGEN?=
+To:     Recipients <qahr@qrec.gov.qa>
+From:   "Manuel Franco" <qahr@qrec.gov.qa>
+Date:   Sun, 23 Apr 2023 15:22:20 +0200
+Reply-To: manuelfranco193332@gmail.com
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_20,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        REPTO_419_FRAUD_GM_LOOSE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 4/24/23 00:59, Paul Mackerras wrote:
-> I have not worked on this code for years, so remove my name as
-> maintainer.
->
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Hallo,
 
-applied.
+Wie geht es Ihnen heute, das ist Manuel Franco und ich würde gerne wissen, ob Sie immer noch an dieser Spende interessiert sind. Beachten Sie, dass Sie Ihre Spende jetzt erhalten können, da ich aufgrund so vieler Beschwerden die zuständige Bank des Begünstigten wechseln muss.
 
-Thanks!
-Helge
+Wenden Sie sich für Ihren Anspruch an Via: manuelfranco193332@gmail.com
 
-> ---
->   MAINTAINERS | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c6545eb54104..d79bae5590f8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17462,9 +17462,8 @@ F:	drivers/block/rbd.c
->   F:	drivers/block/rbd_types.h
->
->   RAGE128 FRAMEBUFFER DISPLAY DRIVER
-> -M:	Paul Mackerras <paulus@samba.org>
->   L:	linux-fbdev@vger.kernel.org
-> -S:	Maintained
-> +S:	Orphan
->   F:	drivers/video/fbdev/aty/aty128fb.c
->
->   RAINSHADOW-CEC DRIVER
-
+Die einzige Antwort, die an diese E-Mail gesendet wird, wird erkannt: manuelfranco193332@gmail.com
+Manuel.
