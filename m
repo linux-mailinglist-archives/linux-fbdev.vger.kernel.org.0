@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CDDE6EC82C
+	by mail.lfdr.de (Postfix) with ESMTP id A11276EC82D
 	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Apr 2023 10:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjDXI6a (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 24 Apr 2023 04:58:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41422 "EHLO
+        id S229841AbjDXI6b (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 24 Apr 2023 04:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229841AbjDXI63 (ORCPT
+        with ESMTP id S230235AbjDXI6a (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 24 Apr 2023 04:58:29 -0400
+        Mon, 24 Apr 2023 04:58:30 -0400
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066B5E5E
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 652B1E66
         for <linux-fbdev@vger.kernel.org>; Mon, 24 Apr 2023 01:58:29 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id B7EFD1FD7B;
-        Mon, 24 Apr 2023 08:58:27 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 065C41FD7D;
+        Mon, 24 Apr 2023 08:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1682326707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1682326708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2KsN1V3LZEtdFqq36eDVk4nfUTrXtItgjE/Q0UzO78c=;
-        b=sjYBGC5tRcaRbxsA0CbMhwi5UJ/73GQmAvfX+FQdgdg6yjeUA7hpEc3l3aU72HBjLNMdsk
-        kW0o3nstNkyPoUv1p+3/D9g+HJLRiC03MzUJDvFnrpA0sG30UwZm92GZIBFkX3rSzz1hcM
-        0mTidvlMkJONGtc3IwswNns4HLZxurE=
+        bh=Q5qi3O2aD7rdQoBAZWbZmBTd/WmQHLMl1hHZDUbTNtE=;
+        b=hWANSOtgxyn3ZNoTcRSEc/O5/Oo2oB4fBC3JSH0R1tvF7+vQfT/OjqR9YLMt0QTWOz27VX
+        YAxu93Hjj+e4bASRIDMUcQy7aSlY3+/EbLEFzrC44CI1ei0OrMZfmnUj3kT6Ix5FBH3mFm
+        tcJtTW/FwT18rj8pDhIQev+mjj0NEpo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1682326707;
+        s=susede2_ed25519; t=1682326708;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=2KsN1V3LZEtdFqq36eDVk4nfUTrXtItgjE/Q0UzO78c=;
-        b=XCAwZFYnqzDJjsVExF5zNxPQcqXS00+Je86sHFdRXlHUJ9zCjrFRjtCAxO4s29ZqpCxyQe
-        j/gs37RoafugclDA==
+        bh=Q5qi3O2aD7rdQoBAZWbZmBTd/WmQHLMl1hHZDUbTNtE=;
+        b=bxkYG1tZc12Cp9Xm2FMtZGWzZt2B4oY9WD2lpM0S/4OQwd4CgyjxKbouDi0Hqi4zjCzTdo
+        GCyoQlXE4n8ERZCA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 793141391A;
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BC09A13780;
         Mon, 24 Apr 2023 08:58:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id CI+wHLNERmQneQAAMHmgww
+        id aPXjLLNERmQneQAAMHmgww
         (envelope-from <tzimmermann@suse.de>); Mon, 24 Apr 2023 08:58:27 +0000
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
@@ -55,9 +55,9 @@ To:     deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
 Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linuxppc-dev@lists.ozlabs.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 1/3] fbdev/68328fb: Init owner field of struct fb_ops
-Date:   Mon, 24 Apr 2023 10:58:23 +0200
-Message-Id: <20230424085825.18287-2-tzimmermann@suse.de>
+Subject: [PATCH 2/3] fbdev/ps3fb: Init owner field of struct fb_ops
+Date:   Mon, 24 Apr 2023 10:58:24 +0200
+Message-Id: <20230424085825.18287-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230424085825.18287-1-tzimmermann@suse.de>
 References: <20230424085825.18287-1-tzimmermann@suse.de>
@@ -78,21 +78,21 @@ module unloading while the driver is in use.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/68328fb.c | 1 +
+ drivers/video/fbdev/ps3fb.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/68328fb.c b/drivers/video/fbdev/68328fb.c
-index ef49cdfb7dd2..07d6e8dc686b 100644
---- a/drivers/video/fbdev/68328fb.c
-+++ b/drivers/video/fbdev/68328fb.c
-@@ -94,6 +94,7 @@ static int mc68x328fb_pan_display(struct fb_var_screeninfo *var,
- static int mc68x328fb_mmap(struct fb_info *info, struct vm_area_struct *vma);
+diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+index 2fe08b67eda7..98aaa330a193 100644
+--- a/drivers/video/fbdev/ps3fb.c
++++ b/drivers/video/fbdev/ps3fb.c
+@@ -936,6 +936,7 @@ static irqreturn_t ps3fb_vsync_interrupt(int irq, void *ptr)
  
- static const struct fb_ops mc68x328fb_ops = {
+ 
+ static const struct fb_ops ps3fb_ops = {
 +	.owner		= THIS_MODULE,
- 	.fb_check_var	= mc68x328fb_check_var,
- 	.fb_set_par	= mc68x328fb_set_par,
- 	.fb_setcolreg	= mc68x328fb_setcolreg,
+ 	.fb_open	= ps3fb_open,
+ 	.fb_release	= ps3fb_release,
+ 	.fb_read        = fb_sys_read,
 -- 
 2.40.0
 
