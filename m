@@ -2,121 +2,114 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49ACD6EE0C0
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Apr 2023 12:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D686EE3E7
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Apr 2023 16:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbjDYK7f (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 25 Apr 2023 06:59:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51250 "EHLO
+        id S229490AbjDYO2y (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 25 Apr 2023 10:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbjDYK7e (ORCPT
+        with ESMTP id S233893AbjDYO2w (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 25 Apr 2023 06:59:34 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3DD4EE2;
-        Tue, 25 Apr 2023 03:59:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682420373; x=1713956373;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9V0kiViF+fuD1yE1n1hdum9lKWWC9d3vUEFpqJiMr8c=;
-  b=fqkSdJABy+QWHAuwkpi6YXU5CjPomGcrjvxqJ836E+P7hVd/KBgpprtd
-   ru2gwQktOVUGgMv/so5tdJQQ5dNnkZfK4842+HNDy7XccasJbl9oJpM2M
-   fJcSmv2LT8+GMQdN4Pvkz9DlLT4chX2iTwqaXLCPIYhSchiZIGLp/iZ5l
-   NdMOhJDTXDxfA8UZgOpdKKE9LlQcnwY66UdkeZq4WsLT46gmlnKSSXVQK
-   W2OtcE9RDNufe7tIATEu1U8VUgxf9ykAwX1TUlLg0npVQWx8wSekoCZgp
-   QSB+YELC6lNjy6wfTCMuVl8pjWff//rEwFzwIYq/A1w4682WNPcJpa5OS
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="432991911"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="432991911"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 03:59:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10690"; a="726067587"
-X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
-   d="scan'208";a="726067587"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 25 Apr 2023 03:59:31 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1prGOQ-000jKG-2L;
-        Tue, 25 Apr 2023 10:59:30 +0000
-Date:   Tue, 25 Apr 2023 18:58:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, Sven Schnelle <svens@stackframe.org>
-Subject: Re: [PATCH v3] fbdev: visfxfb: HP Visualize-FX framebufffer driver
-Message-ID: <202304251827.bmcNCFkF-lkp@intel.com>
-References: <ZEWqkJekzyIlhBlW@p100>
+        Tue, 25 Apr 2023 10:28:52 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9548C3AAD
+        for <linux-fbdev@vger.kernel.org>; Tue, 25 Apr 2023 07:28:50 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 2EAF71FDA6;
+        Tue, 25 Apr 2023 14:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1682432929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=kZb5AYHxFFhMP6xupqT3f9APNbR+VPklPqZGgGYTKfI=;
+        b=0Mj9n6wBn4SHKpT4eCOVFBMmTftdf/ReCwrlams1QkKx87RUQJQMRLW/n7sdNAcL6MKDbN
+        ROUdSJOYsKmNB3ADdvlnKzRBs7cOVfger4qaqzy9CyXnsa/IYvp+CEMe8HKA3f5XkQR2B5
+        XDrVwy7y2TjekhwYZiO+hPUFhiqxe4U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1682432929;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=kZb5AYHxFFhMP6xupqT3f9APNbR+VPklPqZGgGYTKfI=;
+        b=mhE25a2KwJng+5pys70nA8p7WOQ4/6Tn57fu5rOANHwOPwY+HhDwM3ces6XfbI2Qrujjzv
+        nX3jQEGrnlc5oiCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D894B138E3;
+        Tue, 25 Apr 2023 14:28:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id NrXtM6DjR2ReOgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 25 Apr 2023 14:28:48 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        airlied@gmail.com, daniel@ffwll.ch, javierm@redhat.com,
+        deller@gmx.de, geert@linux-m68k.org, sudipm.mukherjee@gmail.com,
+        teddy.wang@siliconmotion.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/6] drm,fbdev: Use fbdev's I/O helpers
+Date:   Tue, 25 Apr 2023 16:28:40 +0200
+Message-Id: <20230425142846.730-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZEWqkJekzyIlhBlW@p100>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Helge,
+Make fbdev's built-in helpers for reading and writing I/O and system
+memory available to DRM. Replace DRM's internal helpers.
 
-kernel test robot noticed the following build warnings:
+The first patch resolves a bug that's been in the fbdev code for
+more than 15 years. Makes the read/write helpers work successfully
+with the IGT tests.
 
-[auto build test WARNING on deller-parisc/for-next]
-[also build test WARNING on linus/master v6.3 next-20230424]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Patches 2 to 4 streamline fbdev's file-I/O code and remove a few
+duplicate checks.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Helge-Deller/fbdev-visfxfb-HP-Visualize-FX-framebufffer-driver/20230424-060227
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git for-next
-patch link:    https://lore.kernel.org/r/ZEWqkJekzyIlhBlW%40p100
-patch subject: [PATCH v3] fbdev: visfxfb: HP Visualize-FX framebufffer driver
-config: parisc-allyesconfig (https://download.01.org/0day-ci/archive/20230425/202304251827.bmcNCFkF-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/96fac55bbf4fc2930b24f7a757369196a5d4940c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Helge-Deller/fbdev-visfxfb-HP-Visualize-FX-framebufffer-driver/20230424-060227
-        git checkout 96fac55bbf4fc2930b24f7a757369196a5d4940c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=parisc SHELL=/bin/bash drivers/video/fbdev/
+Patch 5 moves the default-I/O code into the new helpers fb_cfb_read()
+and fb_cfb_write(); patch 6 uses them in DRM. This allows us to remove
+quite a bit of code from DRM's internal fbdev helpers.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304251827.bmcNCFkF-lkp@intel.com/
+Tested with i915 and simpledrm.
 
-All warnings (new ones prefixed by >>):
+The next step here is to remove the drm_fb_helper_{cfb,sys}_*()
+entirely. They where mostly introduced because fbdev doesn't protect
+it's public interfaces with an CONFIG_FB preprocessor guards. But all
+of DRM driver's fbdev emulation won't be build without CONFIG_FB, so
+this is not an issue in practice. Removing the DRM wrappers will
+further simplify the DRM code.
 
->> drivers/video/fbdev/visfxfb.c:1067:5: warning: no previous prototype for 'visfx_sync' [-Wmissing-prototypes]
-    1067 | int visfx_sync(struct fb_info *info)
-         |     ^~~~~~~~~~
->> drivers/video/fbdev/visfxfb.c:1431:5: warning: no previous prototype for 'visfx_set_default_mode' [-Wmissing-prototypes]
-    1431 | int visfx_set_default_mode(struct fb_info *info)
-         |     ^~~~~~~~~~~~~~~~~~~~~~
+Thomas Zimmermann (6):
+  fbdev: Return number of bytes read or written
+  fbdev: Use screen_buffer in fb_sys_{read,write}()
+  fbdev: Don't re-validate info->state in fb_ops implementations
+  fbdev: Validate info->screen_{base,buffer} in fb_ops implementations
+  fbdev: Move CFB read and write code into helper functions
+  drm/fb-helper: Use fb_{cfb,sys}_{read, write}()
 
-
-vim +/visfx_sync +1067 drivers/video/fbdev/visfxfb.c
-
-  1066	
-> 1067	int visfx_sync(struct fb_info *info)
-  1068	{
-  1069		visfx_wait_write_pipe_empty(info);
-  1070		return 0;
-  1071	}
-  1072	
+ drivers/gpu/drm/drm_fb_helper.c        | 174 +------------------------
+ drivers/video/fbdev/cobalt_lcdfb.c     |   6 +
+ drivers/video/fbdev/core/Makefile      |   2 +-
+ drivers/video/fbdev/core/fb_cfb_fops.c | 126 ++++++++++++++++++
+ drivers/video/fbdev/core/fb_sys_fops.c |  36 ++---
+ drivers/video/fbdev/core/fbmem.c       | 111 +---------------
+ drivers/video/fbdev/sm712fb.c          |  10 +-
+ include/linux/fb.h                     |  10 ++
+ 8 files changed, 173 insertions(+), 302 deletions(-)
+ create mode 100644 drivers/video/fbdev/core/fb_cfb_fops.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.40.0
+
