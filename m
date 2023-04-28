@@ -2,52 +2,52 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9421A6F17B5
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 14:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7E926F17B3
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 14:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345946AbjD1MZE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Apr 2023 08:25:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
+        id S1346023AbjD1MZH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Apr 2023 08:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346087AbjD1MY7 (ORCPT
+        with ESMTP id S1346086AbjD1MY7 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
         Fri, 28 Apr 2023 08:24:59 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A8924699
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BF346A0
         for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 05:24:58 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id D229521F58;
-        Fri, 28 Apr 2023 12:24:56 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 21F4620087;
+        Fri, 28 Apr 2023 12:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1682684696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1682684697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wLWuGCUCtLFjHCc+Azt5ygcchweoqpbB1KeKuZbqua4=;
-        b=xCi+dWd/o4Ijb0RqswEuDZTQ4boaVuMS0605usGbdwfF3hL/D1Z6QfMTH2NbatQlvyebQP
-        y4oAjFmw/HMxPokARhZriB2v4WsvTarGaBymmciKV1lG/AfdKJMu8RA51tGIBOACdTOO9B
-        GVg0uAp39yI0ESh58k4X7xLv4vRqYVI=
+        bh=amHolSZHaVcUFO0UkCs0vi0NGTcjryrQs08HGxKJg+k=;
+        b=CCysNg3/rHEKzyNjzqb3nUNM7T/FE7ECt48opY7ubBcWMrzoR5HGLR9ENqKsu6mqAFpU4u
+        Me5L6kquluVmyiBgCltnckdvFfBxEf++AexdDZi/JONt+u37Uc2JnyDzy4Un0xolsjIe7j
+        kQj/hDXbxq2vLs23CmJrcOH+oongiSE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1682684696;
+        s=susede2_ed25519; t=1682684697;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wLWuGCUCtLFjHCc+Azt5ygcchweoqpbB1KeKuZbqua4=;
-        b=y0c/jgfjY2bsav2KS8eyKFAzPeJd9qm53OhcstdGoWo2yVBdvmcCFA+pNDbYRd77AIgKi/
-        pJ7MHLKNdgC4IHCg==
+        bh=amHolSZHaVcUFO0UkCs0vi0NGTcjryrQs08HGxKJg+k=;
+        b=fqsxn8FlnwyEWBZjejw1B4uHMg0JTqXOk5Zb9fQDXfl8YclzkXppCbKh0iFCxLC/Df8CCk
+        M+kU1uN6H3Sew8AQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 902B21390E;
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D0E0F139C3;
         Fri, 28 Apr 2023 12:24:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id AFJKIhi7S2RgeAAAMHmgww
+        id YOcNMhi7S2RgeAAAMHmgww
         (envelope-from <tzimmermann@suse.de>); Fri, 28 Apr 2023 12:24:56 +0000
 From:   Thomas Zimmermann <tzimmermann@suse.de>
 To:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
@@ -56,9 +56,9 @@ To:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
         teddy.wang@siliconmotion.com
 Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 04/19] fbdev/arcfb: Use struct fb_info.screen_buffer
-Date:   Fri, 28 Apr 2023 14:24:37 +0200
-Message-Id: <20230428122452.4856-5-tzimmermann@suse.de>
+Subject: [PATCH v2 05/19] fbdev/au1200fb: Use struct fb_info.screen_buffer
+Date:   Fri, 28 Apr 2023 14:24:38 +0200
+Message-Id: <20230428122452.4856-6-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230428122452.4856-1-tzimmermann@suse.de>
 References: <20230428122452.4856-1-tzimmermann@suse.de>
@@ -87,49 +87,22 @@ rid of casting needed due to not using the correct data type.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/arcfb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/au1200fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
-index 45e64016db32..088c4b30fd31 100644
---- a/drivers/video/fbdev/arcfb.c
-+++ b/drivers/video/fbdev/arcfb.c
-@@ -260,7 +260,7 @@ static void arcfb_lcd_update_page(struct arcfb_par *par, unsigned int upper,
- 	ks108_set_yaddr(par, chipindex, upper/8);
+diff --git a/drivers/video/fbdev/au1200fb.c b/drivers/video/fbdev/au1200fb.c
+index b6b22fa4a8a0..847f82ed52ff 100644
+--- a/drivers/video/fbdev/au1200fb.c
++++ b/drivers/video/fbdev/au1200fb.c
+@@ -1568,7 +1568,7 @@ static int au1200fb_init_fbinfo(struct au1200fb_device *fbdev)
+ 	fbi->fix.mmio_len = 0;
+ 	fbi->fix.accel = FB_ACCEL_NONE;
  
- 	linesize = par->info->var.xres/8;
--	src = (unsigned char __force *) par->info->screen_base + (left/8) +
-+	src = (unsigned char *)par->info->screen_buffer + (left/8) +
- 		(upper * linesize);
- 	ks108_set_xaddr(par, chipindex, left);
+-	fbi->screen_base = (char __iomem *) fbdev->fb_mem;
++	fbi->screen_buffer = fbdev->fb_mem;
  
-@@ -468,7 +468,7 @@ static ssize_t arcfb_write(struct fb_info *info, const char __user *buf,
- 	if (count) {
- 		char *base_addr;
+ 	au1200fb_update_fbinfo(fbi);
  
--		base_addr = (char __force *)info->screen_base;
-+		base_addr = info->screen_buffer;
- 		count -= copy_from_user(base_addr + p, buf, count);
- 		*ppos += count;
- 		err = -EFAULT;
-@@ -525,7 +525,7 @@ static int arcfb_probe(struct platform_device *dev)
- 	if (!info)
- 		goto err;
- 
--	info->screen_base = (char __iomem *)videomemory;
-+	info->screen_buffer = videomemory;
- 	info->fbops = &arcfb_ops;
- 
- 	info->var = arcfb_var;
-@@ -595,7 +595,7 @@ static int arcfb_remove(struct platform_device *dev)
- 		unregister_framebuffer(info);
- 		if (irq)
- 			free_irq(((struct arcfb_par *)(info->par))->irq, info);
--		vfree((void __force *)info->screen_base);
-+		vfree(info->screen_buffer);
- 		framebuffer_release(info);
- 	}
- 	return 0;
 -- 
 2.40.0
 
