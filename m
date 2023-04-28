@@ -2,191 +2,169 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 636156F141C
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 11:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A596F167B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 13:20:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345675AbjD1J1X (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Apr 2023 05:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48830 "EHLO
+        id S1345558AbjD1LUv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Apr 2023 07:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345592AbjD1J1S (ORCPT
+        with ESMTP id S230226AbjD1LUu (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Apr 2023 05:27:18 -0400
+        Fri, 28 Apr 2023 07:20:50 -0400
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74944496;
-        Fri, 28 Apr 2023 02:27:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE9B49D5
+        for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 04:20:49 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 580052002E;
-        Fri, 28 Apr 2023 09:27:15 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 2ADE720063;
+        Fri, 28 Apr 2023 11:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1682674035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+        t=1682680848; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=5VYWy/AvbpTwYMUvgq/Qf7JvO1LdK29uHbuVPQM8w+I=;
-        b=GVDAylSdFB2aC8MzuHMzQQpnFsJO4b+FYu4OUDiHDHTyD+mATNULQ82rwHCWtJJ2n7oa4O
-        wmtSxgAGOys9EGQlQlyGj32QskSRu6EmzTrpvbR8TcTaUiGEWxITGrBNjm9U13oGsvKd9E
-        L3rjOzqF3CBsko70lonU/BQKqTYWGMo=
+        bh=QrtKnpdRDgv74PsteMB1h862ewsUQ8sKRPoN4ICARQI=;
+        b=d5cvE3uw8jvhrvK+4srmRrhf9ewj5UCue9Sr8y342sxz0PyhhSLBdzLoctq4uAMDgp3xKR
+        rhPlkTrglVnlOP969u6BZIAbIHubaslJAec+okpEE0ugwjVgpzFbX10utFBHFQ68tjr6+R
+        Z1Vmp5B0EcHyBVdsjrHIbq7+4TDNLg0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1682674035;
+        s=susede2_ed25519; t=1682680848;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=5VYWy/AvbpTwYMUvgq/Qf7JvO1LdK29uHbuVPQM8w+I=;
-        b=OVW7mKvhPqZ91zi25yBTo9BJR5O4Kqqzh5IohkbwFTzfRAquwndXbRpfe1BoyZ0d8UJeDt
-        2gGjf0nPmiJngkBg==
+        bh=QrtKnpdRDgv74PsteMB1h862ewsUQ8sKRPoN4ICARQI=;
+        b=NLQKfFZYbtnPNtbkZcXBVG97tcm2taj9Zm6mLrzA4TlKnaXU14gIR7UaDMVRQw+vIdkfwk
+        6iKAlEAr8zcUG4Cg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EE31E139C3;
-        Fri, 28 Apr 2023 09:27:14 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E806A138FA;
+        Fri, 28 Apr 2023 11:20:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id 0HViOXKRS2ReFwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 28 Apr 2023 09:27:14 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
-        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
-        kernel@xen0n.name, davem@davemloft.net,
-        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
-        sam@ravnborg.org
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 5/5] fbdev: Define framebuffer I/O from Linux' I/O functions
-Date:   Fri, 28 Apr 2023 11:27:11 +0200
-Message-Id: <20230428092711.406-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230428092711.406-1-tzimmermann@suse.de>
-References: <20230428092711.406-1-tzimmermann@suse.de>
+        id dZyxNw+sS2SHVQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 28 Apr 2023 11:20:47 +0000
+Message-ID: <b7c09aa8-ce41-9c9a-062f-e652ea92f8a8@suse.de>
+Date:   Fri, 28 Apr 2023 13:20:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 5/6] fbdev: Move CFB read and write code into helper
+ functions
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        airlied@gmail.com, daniel@ffwll.ch, javierm@redhat.com,
+        deller@gmx.de, sudipm.mukherjee@gmail.com,
+        teddy.wang@siliconmotion.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+References: <20230425142846.730-1-tzimmermann@suse.de>
+ <20230425142846.730-6-tzimmermann@suse.de>
+ <CAMuHMdU-_w9yQHYhOCD3cz4CEY6ag-dTXjuHSLnzty0hAMBbXw@mail.gmail.com>
+ <1d81e4cc-5079-12a7-4cf5-c31879396e56@suse.de>
+ <CAMuHMdWDyabYxtRHtvuNZy8BjoukRdycAMK2jX+qmgc51HU5Xw@mail.gmail.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <CAMuHMdWDyabYxtRHtvuNZy8BjoukRdycAMK2jX+qmgc51HU5Xw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------PKunuI7hCDAL7YvCcakm6Fur"
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Implement framebuffer I/O helpers, such as fb_read*() and fb_write*()
-with Linux' regular I/O functions. Remove all ifdef cases for the
-various architectures.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------PKunuI7hCDAL7YvCcakm6Fur
+Content-Type: multipart/mixed; boundary="------------BD8I5i0oJElOlFpWEE3yMs2v";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ daniel@ffwll.ch, javierm@redhat.com, deller@gmx.de,
+ sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Message-ID: <b7c09aa8-ce41-9c9a-062f-e652ea92f8a8@suse.de>
+Subject: Re: [PATCH 5/6] fbdev: Move CFB read and write code into helper
+ functions
+References: <20230425142846.730-1-tzimmermann@suse.de>
+ <20230425142846.730-6-tzimmermann@suse.de>
+ <CAMuHMdU-_w9yQHYhOCD3cz4CEY6ag-dTXjuHSLnzty0hAMBbXw@mail.gmail.com>
+ <1d81e4cc-5079-12a7-4cf5-c31879396e56@suse.de>
+ <CAMuHMdWDyabYxtRHtvuNZy8BjoukRdycAMK2jX+qmgc51HU5Xw@mail.gmail.com>
+In-Reply-To: <CAMuHMdWDyabYxtRHtvuNZy8BjoukRdycAMK2jX+qmgc51HU5Xw@mail.gmail.com>
 
-Most of the supported architectures use __raw_() I/O functions or treat
-framebuffer memory like regular memory. This is also implemented by the
-architectures' I/O function, so we can use them instead.
+--------------BD8I5i0oJElOlFpWEE3yMs2v
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Sparc uses SBus to connect to framebuffer devices. It provides respective
-implementations of the framebuffer I/O helpers. The involved sbus_()
-I/O helpers map to the same code as Sparc's regular I/O functions. As
-with other platforms, we can use those instead.
+SGkNCg0KQW0gMjYuMDQuMjMgdW0gMTc6MjEgc2NocmllYiBHZWVydCBVeXR0ZXJob2V2ZW46
+DQo+IEhpIFRob21hcywNCj4gDQo+IE9uIFdlZCwgQXByIDI2LCAyMDIzIGF0IDU6MDbigK9Q
+TSBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JvdGU6DQo+PiBB
+bSAyNi4wNC4yMyB1bSAxNzowMSBzY2hyaWViIEdlZXJ0IFV5dHRlcmhvZXZlbjoNCj4+PiBP
+biBUdWUsIEFwciAyNSwgMjAyMyBhdCA0OjI44oCvUE0gVGhvbWFzIFppbW1lcm1hbm4gPHR6
+aW1tZXJtYW5uQHN1c2UuZGU+IHdyb3RlOg0KPj4+PiBNb3ZlIHRoZSBleGlzdGluZyBDRkIg
+cmVhZCBhbmQgd3JpdGUgY29kZSBmb3IgSS9PIG1lbW9yeSBpbnRvDQo+Pj4+IHRoZSBuZXcg
+aGVscGVycyBmYl9jZmJfcmVhZCgpIGFuZCBmYl9jZmJfd3JpdGUoKS4gTWFrZSB0aGVtIHRo
+ZQ0KPj4+PiBkZWZhdWx0IGZwX29wcy4gTm8gZnVuY3Rpb25hbCBjaGFuZ2VzLg0KPj4+Pg0K
+Pj4+PiBTaWduZWQtb2ZmLWJ5OiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3Vz
+ZS5kZT4NCj4+Pj4gLS0tDQo+Pj4+ICAgIGRyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9NYWtl
+ZmlsZSAgICAgIHwgICAyICstDQo+Pj4+ICAgIGRyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9m
+Yl9jZmJfZm9wcy5jIHwgMTI2ICsrKysrKysrKysrKysrKysrKysrKysrKysNCj4+Pj4gICAg
+ZHJpdmVycy92aWRlby9mYmRldi9jb3JlL2ZibWVtLmMgICAgICAgfCAxMTMgKy0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQ0KPj4+PiAgICBpbmNsdWRlL2xpbnV4L2ZiLmggICAgICAgICAgICAg
+ICAgICAgICB8ICAxMCArKw0KPj4+PiAgICA0IGZpbGVzIGNoYW5nZWQsIDEzOSBpbnNlcnRp
+b25zKCspLCAxMTIgZGVsZXRpb25zKC0pDQo+Pj4+ICAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
+cml2ZXJzL3ZpZGVvL2ZiZGV2L2NvcmUvZmJfY2ZiX2ZvcHMuYw0KPj4+DQo+Pj4gV2hpbGUg
+dGhlIGdlbmVyYWwgaWRlYSBpcyBmaW5lLCBwbGVhc2UgZG8gbm90IGNhbGwgYW55IG9mIHRo
+aXMgImNmYiIsDQo+Pj4gYXMgaXQgaXMgbm90IHJlbGF0ZWQgdG8gY2h1bmt5IGNvbG9yIGZy
+YW1lIGJ1ZmZlciBmb3JtYXRzLg0KPj4+IEFsbCBvZiB0aGVzZSBvcGVyYXRlIG9uIHRoZSBy
+YXcgZnJhbWUgYnVmZmVyIGNvbnRlbnRzLg0KPj4NCj4+IFNoYWxsIEkgY2FsbCBpdCBmYl9y
+YXdfKCkgb3IgZmJfaW9fKCk/DQo+IA0KPiBHaXZlbiBmYl9tZW1jcHlfZnJvbWZiKCkgaXMg
+bWFwcGVkIHRvIG1lbWNweV9mcm9taW8oKSBvbg0KPiBtb3N0IGFyY2hpdGVjdHVyZXMsIEkn
+ZCBnbyBmb3IgZmJfaW9fKigpLg0KDQpPaywgbWFrZXMgc2Vuc2UuDQoNCj4gDQo+PiBDRkIg
+aXMgdXNlZCBieSB0aGUgZHJhd2luZyBoZWxwZXJzLCB3aGljaCBhcmUgdXN1YWxseSB1c2Vk
+IHRvZ2V0aGVyIHdpdGgNCj4+IHRoaXMgY29kZS4gSGVuY2UgdGhlIGN1cnJlbnQgbmFtaW5n
+Lg0KPiANCj4gVGhhdCdzIGJlY2F1c2UgeW91ciBkcmF3aW5nIGhlbHBlcnMgb3BlcmF0ZSAo
+b25seSkgb24gY2h1bmt5IGNvbG9yDQo+IGZyYW1lIGJ1ZmZlciBmb3JtYXRzIDstKQ0KDQpT
+aG91bGQgd2UgcmVuYW1lIHRoZSBDRkIgZHJhd2luZyBmdW5jdGlvbnMgdG8gZmJfaW9fIHRo
+ZW4/IEFGQUlDVCB0aGV5IA0KYXJlIHRoZSBzYW1lIGFsZ29yaXRobXMgYXMgaW4gdGhlIGZi
+X3N5c18gZnVuY3Rpb25zOyBqdXN0IHdpdGggSS9PIG1lbW9yeS4NCg0KQmVzdCByZWdhcmRz
+DQpUaG9tYXMNCg0KPiANCj4gR3J7b2V0amUsZWV0aW5nfXMsDQo+IA0KPiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgR2VlcnQNCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdy
+YXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1h
+bnkgR21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkN
+CkdGOiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVu
+IE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
-We leave a TODO item to replace all fb_() functions with their regular
-I/O counterparts throughout the fbdev drivers.
+--------------BD8I5i0oJElOlFpWEE3yMs2v--
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- include/linux/fb.h | 63 +++++++++++-----------------------------------
- 1 file changed, 15 insertions(+), 48 deletions(-)
+--------------PKunuI7hCDAL7YvCcakm6Fur
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 08cb47da71f8..4aa9e90edd17 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -15,7 +15,6 @@
- #include <linux/list.h>
- #include <linux/backlight.h>
- #include <linux/slab.h>
--#include <asm/io.h>
- 
- struct vm_area_struct;
- struct fb_info;
-@@ -511,58 +510,26 @@ struct fb_info {
-  */
- #define STUPID_ACCELF_TEXT_SHIT
- 
--// This will go away
--#if defined(__sparc__)
--
--/* We map all of our framebuffers such that big-endian accesses
-- * are what we want, so the following is sufficient.
-+/*
-+ * TODO: Update fbdev drivers to call the I/O helpers directly and
-+ *       remove the fb_() tokens.
-  */
--
--// This will go away
--#define fb_readb sbus_readb
--#define fb_readw sbus_readw
--#define fb_readl sbus_readl
--#define fb_readq sbus_readq
--#define fb_writeb sbus_writeb
--#define fb_writew sbus_writew
--#define fb_writel sbus_writel
--#define fb_writeq sbus_writeq
--#define fb_memset sbus_memset_io
--#define fb_memcpy_fromfb sbus_memcpy_fromio
--#define fb_memcpy_tofb sbus_memcpy_toio
--
--#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) ||	\
--	defined(__hppa__) || defined(__sh__) || defined(__powerpc__) ||	\
--	defined(__arm__) || defined(__aarch64__) || defined(__mips__)
--
--#define fb_readb __raw_readb
--#define fb_readw __raw_readw
--#define fb_readl __raw_readl
--#define fb_readq __raw_readq
--#define fb_writeb __raw_writeb
--#define fb_writew __raw_writew
--#define fb_writel __raw_writel
--#define fb_writeq __raw_writeq
-+#define fb_readb readb
-+#define fb_readw readw
-+#define fb_readl readl
-+#if defined(CONFIG_64BIT)
-+#define fb_readq readq
-+#endif
-+#define fb_writeb writeb
-+#define fb_writew writew
-+#define fb_writel writel
-+#if defined(CONFIG_64BIT)
-+#define fb_writeq writeq
-+#endif
- #define fb_memset memset_io
- #define fb_memcpy_fromfb memcpy_fromio
- #define fb_memcpy_tofb memcpy_toio
- 
--#else
--
--#define fb_readb(addr) (*(volatile u8 *) (addr))
--#define fb_readw(addr) (*(volatile u16 *) (addr))
--#define fb_readl(addr) (*(volatile u32 *) (addr))
--#define fb_readq(addr) (*(volatile u64 *) (addr))
--#define fb_writeb(b,addr) (*(volatile u8 *) (addr) = (b))
--#define fb_writew(b,addr) (*(volatile u16 *) (addr) = (b))
--#define fb_writel(b,addr) (*(volatile u32 *) (addr) = (b))
--#define fb_writeq(b,addr) (*(volatile u64 *) (addr) = (b))
--#define fb_memset memset
--#define fb_memcpy_fromfb memcpy
--#define fb_memcpy_tofb memcpy
--
--#endif
--
- #define FB_LEFT_POS(p, bpp)          (fb_be_math(p) ? (32 - (bpp)) : 0)
- #define FB_SHIFT_HIGH(p, val, bits)  (fb_be_math(p) ? (val) >> (bits) : \
- 						      (val) << (bits))
--- 
-2.40.0
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRLrA8FAwAAAAAACgkQlh/E3EQov+C9
+gg/8DGXMz4p119UZcQ0ohO5aR8bvE039ZU1PhYCVUinCdR2N/cluyabB76RLMa3G6qcG4mS5MXmu
+rjrpz9VMg/oBUtCZ4P6CzajIxQHifqavNwuWHdq4q7HOXB4yoqCy67rYYvhqC4Ah9gldTSPINtuC
+iIkEGXxhryUoYGNC2/AKqlGOramLNSV8dzzPn7QaxcnYmYHYsFaTFTLC7MjKgY3NQ+Gch/zmU0F9
+NubU3wF0pF3rzd82oBkTgNoD7kBzUmb1JOb3aAuccw82uEvxljX4ylyLgAG4Ob+fIaeAuezoazTj
+BDRlo0ObvuO+ixri4jIJxV8x9fbZ5Z2JVB6ouYKcSykmMJ+wiAo3wrSUTLR5WVoyzidszbaPxqoa
+cfszC9As/o6DS9ug7ACIuvlRsIirxAzXxY94C/7p4Ts5OIRv2yYkcJE0hOZWOEhUM4vk9Ky6Yx1G
+qa8sl9Rlu+O+pGA61AobktAlTBLBC0KURTp6+eAadfojf0v2qAWrWrh4VwmhTLyi/Ox8Kz0ow3XM
+Z/5cgd9EbzDrYDyfQKq0bq4nYxmDO/V2laaM7xAHACFcQlvCC3PSJF5lLhSYip2hj61Npp/hIxB1
+bUjYoeMYgzfMqkv2CsFANulqJW0EXrI4uPqzuRoH2dDP7XxtKwIcWE/SOlQ5oQ3NMJvrV2ihyCmW
+tNI=
+=myGY
+-----END PGP SIGNATURE-----
+
+--------------PKunuI7hCDAL7YvCcakm6Fur--
