@@ -2,130 +2,152 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0E5A6F1793
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 14:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 491796F17B4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Apr 2023 14:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjD1MUk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Fri, 28 Apr 2023 08:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59686 "EHLO
+        id S1345520AbjD1MZG (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Apr 2023 08:25:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346055AbjD1MUg (ORCPT
+        with ESMTP id S1346077AbjD1MY6 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Apr 2023 08:20:36 -0400
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783F85FD0
-        for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 05:20:20 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-54fc1824f0bso113187437b3.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 05:20:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682684419; x=1685276419;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7o32H4PTL3mzxqBzaVY0LbmteAecqwupnN7CxCbojaQ=;
-        b=NJVXG1YEct+w15MNlyCPFT1p0Km7Jgiqs/hjkjohK3c6KUVFkG5NMCqUj1RaQB7ixE
-         EK/ry00SS8lrHWifuCO5yAn7fiygta0WVfTupElsalNXd4qxTwvwX2ulWkfownkG2Fad
-         GsLqCqwdfvdkNnpEwemfnGdhckPUiXN6xv/46IUhbR/vuBRTXxARwkBDI3FR5Go3UqMF
-         Hc0y8vt1NHSKAVHsSLoYkK/cS2rA0yTqVWtszOMmNPU/CcZMP0KSDNGvjeamc9+bIhvW
-         Xgf50SHEfIrGSYQMpcNuj0g1YxHUErNtwYKAXzU5OH1fB6MAfSR1IzNqgY63mwtBLzGN
-         W47w==
-X-Gm-Message-State: AC+VfDzsH/KNT9cEhziW78aTvAOHTvJUJyvKhVUAoTnvDuc9kkqSkgw+
-        N2INH9/tNoSxyp7mvtoQ6jEXRBgfxlA7pg==
-X-Google-Smtp-Source: ACHHUZ7WZAwnuo9qhG7p6+Pvz/Gx932Ml6UZPMjpGP2Zqd4kW4kFka+dcIIf3XxuYEiuMErOKzsMrA==
-X-Received: by 2002:a81:8782:0:b0:54f:e1ac:96a with SMTP id x124-20020a818782000000b0054fe1ac096amr3811757ywf.7.1682684419356;
-        Fri, 28 Apr 2023 05:20:19 -0700 (PDT)
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
-        by smtp.gmail.com with ESMTPSA id w202-20020a0dd4d3000000b00545a081848bsm5401422ywd.27.2023.04.28.05.20.18
-        for <linux-fbdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 05:20:18 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-b8f5121503eso14625888276.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 05:20:18 -0700 (PDT)
-X-Received: by 2002:a25:782:0:b0:b97:1e2e:a4e5 with SMTP id
- 124-20020a250782000000b00b971e2ea4e5mr3739275ybh.40.1682684417838; Fri, 28
- Apr 2023 05:20:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230425142846.730-1-tzimmermann@suse.de> <20230425142846.730-6-tzimmermann@suse.de>
- <CAMuHMdU-_w9yQHYhOCD3cz4CEY6ag-dTXjuHSLnzty0hAMBbXw@mail.gmail.com>
- <1d81e4cc-5079-12a7-4cf5-c31879396e56@suse.de> <CAMuHMdWDyabYxtRHtvuNZy8BjoukRdycAMK2jX+qmgc51HU5Xw@mail.gmail.com>
- <b7c09aa8-ce41-9c9a-062f-e652ea92f8a8@suse.de>
-In-Reply-To: <b7c09aa8-ce41-9c9a-062f-e652ea92f8a8@suse.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 28 Apr 2023 14:20:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUq_bkCWQJfe=j+RAC8s6Ce9KPROy7RxaoPGpUX70+EXw@mail.gmail.com>
-Message-ID: <CAMuHMdUq_bkCWQJfe=j+RAC8s6Ce9KPROy7RxaoPGpUX70+EXw@mail.gmail.com>
-Subject: Re: [PATCH 5/6] fbdev: Move CFB read and write code into helper functions
-To:     Thomas Zimmermann <tzimmermann@suse.de>
-Cc:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        Fri, 28 Apr 2023 08:24:58 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5A12709
+        for <linux-fbdev@vger.kernel.org>; Fri, 28 Apr 2023 05:24:57 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id B6A2A20085;
+        Fri, 28 Apr 2023 12:24:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1682684695; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=CPsrpmI15kdAMdZDSgdd2i0u00cenKxKta4utAInOB4=;
+        b=1U5g2FHBPgdFc8BjkA72LpXUE+encLy3h7SferVC2YH8jMUC6OPqYawxicvvHnqh1crtWa
+        UWDqcl/vQjSkUmxBO5CjERu/L7y1oSyxY2a/Dbvds+rXcJbVQJmmszrzn3705NS027JgOx
+        X4hpGQWx9wPqSyjFrkP2mOqI+6dl75E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1682684695;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=CPsrpmI15kdAMdZDSgdd2i0u00cenKxKta4utAInOB4=;
+        b=qvqZ8yR4D3vFbJ7b3cMz2Wgf87osCNq0XI47D1zPxlk9WSUDhV7yX91KS4QoC8pnvRYCpt
+        LFn4/0oyahTNfyCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 795661390E;
+        Fri, 28 Apr 2023 12:24:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id T6GrHBe7S2RgeAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 28 Apr 2023 12:24:55 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     maarten.lankhorst@linux.intel.com, mripard@kernel.org,
         airlied@gmail.com, daniel@ffwll.ch, javierm@redhat.com,
-        deller@gmx.de, sudipm.mukherjee@gmail.com,
-        teddy.wang@siliconmotion.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        deller@gmx.de, geert@linux-m68k.org, sudipm.mukherjee@gmail.com,
+        teddy.wang@siliconmotion.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/19] drm,fbdev: Use fbdev's I/O helpers
+Date:   Fri, 28 Apr 2023 14:24:33 +0200
+Message-Id: <20230428122452.4856-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Thomas,
+Make fbdev's built-in helpers for reading and writing I/O and system
+memory available to DRM. Replace DRM's internal helpers.
 
-On Fri, Apr 28, 2023 at 1:20 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> Am 26.04.23 um 17:21 schrieb Geert Uytterhoeven:
-> > On Wed, Apr 26, 2023 at 5:06 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> >> Am 26.04.23 um 17:01 schrieb Geert Uytterhoeven:
-> >>> On Tue, Apr 25, 2023 at 4:28 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> >>>> Move the existing CFB read and write code for I/O memory into
-> >>>> the new helpers fb_cfb_read() and fb_cfb_write(). Make them the
-> >>>> default fp_ops. No functional changes.
-> >>>>
-> >>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> >>>> ---
-> >>>>    drivers/video/fbdev/core/Makefile      |   2 +-
-> >>>>    drivers/video/fbdev/core/fb_cfb_fops.c | 126 +++++++++++++++++++++++++
-> >>>>    drivers/video/fbdev/core/fbmem.c       | 113 +---------------------
-> >>>>    include/linux/fb.h                     |  10 ++
-> >>>>    4 files changed, 139 insertions(+), 112 deletions(-)
-> >>>>    create mode 100644 drivers/video/fbdev/core/fb_cfb_fops.c
-> >>>
-> >>> While the general idea is fine, please do not call any of this "cfb",
-> >>> as it is not related to chunky color frame buffer formats.
-> >>> All of these operate on the raw frame buffer contents.
-> >>
-> >> Shall I call it fb_raw_() or fb_io_()?
-> >
-> > Given fb_memcpy_fromfb() is mapped to memcpy_fromio() on
-> > most architectures, I'd go for fb_io_*().
->
-> Ok, makes sense.
->
-> >> CFB is used by the drawing helpers, which are usually used together with
-> >> this code. Hence the current naming.
-> >
-> > That's because your drawing helpers operate (only) on chunky color
-> > frame buffer formats ;-)
->
-> Should we rename the CFB drawing functions to fb_io_ then? AFAICT they
-> are the same algorithms as in the fb_sys_ functions; just with I/O memory.
+The first 13 patches and patch 15 fix the use of screen_base and
+screen_buffer. A number of drivers mix them up.
 
-I don't know if that's worth the churn.
-Historically, the frame buffer was usually located in dedicated memory,
-hence the drawing operations operated on I/O memory.
-With the advent of unified memory architectures, the fb_sys_*()
-functions were introduced.
+Patch 14 resolves a bug that's been in the fbdev code for more than
+15 years. Makes the read/write helpers work successfully with the IGT
+tests.
 
-Gr{oetje,eeting}s,
+Patches 16 and 17 streamline fbdev's file-I/O code and remove a few
+duplicate checks.
 
-                        Geert
+Patch 18 moves the default-I/O code into the new helpers fb_io_read()
+and fb_io_write(); patch 19 uses them in DRM. This allows us to remove
+quite a bit of code from DRM's internal fbdev helpers.
+
+Tested with i915 and simpledrm.
+
+The next step here is to remove the drm_fb_helper_{cfb,sys}_*()
+entirely. They where mostly introduced because fbdev doesn't protect
+it's public interfaces with an CONFIG_FB preprocessor guards. But all
+of DRM driver's fbdev emulation won't be build without CONFIG_FB, so
+this is not an issue in practice. Removing the DRM wrappers will
+further simplify the DRM code.
+
+v2:
+	* fix screen_base vs. screen_buffer usage
+	* fix copy_{from,to}_user() return value (Geert)
+	* use fb_io_() prefix (Geert)
+	* improved commit messages
+
+Thomas Zimmermann (19):
+  auxdisplay/cfag12864bfb: Use struct fb_info.screen_buffer
+  auxdisplay/ht16k33: Use struct fb_info.screen_buffer
+  hid/hid-picolcd_fb: Use struct fb_info.screen_buffer
+  fbdev/arcfb: Use struct fb_info.screen_buffer
+  fbdev/au1200fb: Use struct fb_info.screen_buffer
+  fbdev/broadsheetfb: Use struct fb_info.screen_buffer
+  fbdev/hecubafb: Use struct fb_info.screen_buffer
+  fbdev/metronomefb: Use struct fb_info.screen_buffer
+  fbdev/ps3fb: Use struct fb_info.screen_buffer
+  fbdev/smscufx: Use struct fb_info.screen_buffer
+  fbdev/udlfb: Use struct fb_info.screen_buffer
+  fbdev/vfb: Use struct fb_info.screen_buffer
+  fbdev/xen-fbfront: Use struct fb_info.screen_buffer
+  fbdev: Return number of bytes read or written
+  fbdev: Use screen_buffer in fb_sys_{read,write}()
+  fbdev: Don't re-validate info->state in fb_ops implementations
+  fbdev: Validate info->screen_{base,buffer} in fb_ops implementations
+  fbdev: Move I/O read and write code into helper functions
+  drm/fb-helper: Use fb_{cfb,sys}_{read, write}()
+
+ drivers/auxdisplay/cfag12864bfb.c      |   2 +-
+ drivers/auxdisplay/ht16k33.c           |   2 +-
+ drivers/gpu/drm/drm_fb_helper.c        | 174 +------------------------
+ drivers/hid/hid-picolcd_fb.c           |   4 +-
+ drivers/media/pci/ivtv/ivtvfb.c        |   4 +-
+ drivers/video/fbdev/arcfb.c            |  11 +-
+ drivers/video/fbdev/au1200fb.c         |   2 +-
+ drivers/video/fbdev/broadsheetfb.c     |  16 +--
+ drivers/video/fbdev/cobalt_lcdfb.c     |   6 +
+ drivers/video/fbdev/core/Makefile      |   2 +-
+ drivers/video/fbdev/core/fb_io_fops.c  | 133 +++++++++++++++++++
+ drivers/video/fbdev/core/fb_sys_fops.c |  36 ++---
+ drivers/video/fbdev/core/fbmem.c       | 111 +---------------
+ drivers/video/fbdev/hecubafb.c         |  12 +-
+ drivers/video/fbdev/metronomefb.c      |  16 +--
+ drivers/video/fbdev/ps3fb.c            |   4 +-
+ drivers/video/fbdev/pvr2fb.c           |   3 +
+ drivers/video/fbdev/sm712fb.c          |  10 +-
+ drivers/video/fbdev/smscufx.c          |  14 +-
+ drivers/video/fbdev/ssd1307fb.c        |   3 +
+ drivers/video/fbdev/udlfb.c            |  12 +-
+ drivers/video/fbdev/vfb.c              |   2 +-
+ drivers/video/fbdev/xen-fbfront.c      |   2 +-
+ include/linux/fb.h                     |  10 ++
+ 24 files changed, 239 insertions(+), 352 deletions(-)
+ create mode 100644 drivers/video/fbdev/core/fb_io_fops.c
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.40.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
