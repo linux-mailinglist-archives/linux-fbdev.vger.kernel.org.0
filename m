@@ -2,80 +2,86 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F19B06F7D6B
-	for <lists+linux-fbdev@lfdr.de>; Fri,  5 May 2023 09:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5505D6F7EE1
+	for <lists+linux-fbdev@lfdr.de>; Fri,  5 May 2023 10:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230099AbjEEHCz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 5 May 2023 03:02:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40994 "EHLO
+        id S231430AbjEEIYD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 5 May 2023 04:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbjEEHCy (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 May 2023 03:02:54 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04FF21AE;
-        Fri,  5 May 2023 00:02:52 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id AC6F81F8C1;
-        Fri,  5 May 2023 07:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1683270171; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=gOrOGx3lMD1w9ofRRYAf49PbmfCwS48eXyJm0E0pD1c=;
-        b=Ecrw1DAzmwxX/uqKs8Vom1VVBmDqZPvG3WS4lCSmKveqOyfAXCIDHtn8iL3hofoxL0EqGf
-        cXoxqEv30OrnapC3xS3MDFjm6hFLaH6e7p0lWeBwQfo+h+QpXqxXpUhFKNqVeqL8pHT2+S
-        6MC0uW83/f+o1bFy1PNxCrG3usE/lYA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1683270171;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=gOrOGx3lMD1w9ofRRYAf49PbmfCwS48eXyJm0E0pD1c=;
-        b=GstDDcCGpClaxlkDLaX8l2KxRaTEym4X010TtMsx+1N5klHo2Oq/RL4t4d3F4uBZA+A4YJ
-        0IiOapld3hUTMpDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F193113488;
-        Fri,  5 May 2023 07:02:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id nevqORqqVGQUEgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 05 May 2023 07:02:50 +0000
-Message-ID: <54679884-9307-f828-dca4-34cb781dc463@suse.de>
-Date:   Fri, 5 May 2023 09:02:50 +0200
+        with ESMTP id S230460AbjEEIX1 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 5 May 2023 04:23:27 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EEB11887F
+        for <linux-fbdev@vger.kernel.org>; Fri,  5 May 2023 01:23:06 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4ec8148f73eso1649582e87.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 05 May 2023 01:23:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683274984; x=1685866984;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wnd/xQ9KZ246IQDxJ2NOt5q5tpp1CWxMQbhMQ4P/5po=;
+        b=iTkAyCNQZIDmc7TsUIJSK2Z751T4I7mzLgK0CQ4gMufVO4DZ3YIUcqyRAYY6pvbTWj
+         zhv08bKk2h3HMZMhokO2mX3ooVPioEum5wcb7WZmIVj6Fjn5rwgHknTUbSXIsUWrn6SF
+         c0QoKwwnVoNoSjl7FeewCQLx3tEwn+CozU09keA8foFgOx/WruDRUZyC7Dsr0w4NaFeG
+         sFAS/r4ItUvq8jJgN0H5Y3tsHHds4dq1945O4WyF7GPHu0Y6S4R4lqM+6IbI62WI68aa
+         BiePUnvCYwvxJ40PA8E4RGNVc8WGFZIky57bNprYuBJVw1XB2sOKGCHdxGIWOH0Hgceh
+         +zmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683274984; x=1685866984;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wnd/xQ9KZ246IQDxJ2NOt5q5tpp1CWxMQbhMQ4P/5po=;
+        b=V3fV2bDOvRlWV1RploFoGCZQZq0rqn7h4FkAnO5sZgSmrNE4+82R8uGxJ6WQYeT5CU
+         KMdBKf0Vpqh9XHurkz6GvEnMoysqJ6gXjRPHy48uWw6T9eT5EVOsVy5DXTwO8EOOMMyt
+         VXlUjPdfk91owGuYTrVzilCM+kGjmJoPfT1Xbtcb4Lo1zFi/qtXQuHHOJUmqMIDAt6nw
+         HkzwqqOD8pHCXFLbLOF/V8oV+BuhfDlO2GlNgofdxrXwcI2dhgkf82y57wjjQ6NOfjDw
+         glcE0EMB8i/bgr6fwS50wfnyy9ickNMPIx9997S5yMkXlwFH+i+rvjKK0CHdduwk+VcL
+         jFpA==
+X-Gm-Message-State: AC+VfDyQPJ2Ft1WFq5ZbTBbcYfSyBBLF1Or1ZG/VVfBYzJWoENqc2LUC
+        VKp22go4DxMqh8zhI9CizTxbzUvw5yo3JrlP3mU=
+X-Google-Smtp-Source: ACHHUZ72VNoJxBvksLAw/aSFYz4OGaMDpRtLO5cqt4SyXRbTqQwJbV+BjsXJPzKO1UcDj5nh4IOjIg==
+X-Received: by 2002:ac2:5990:0:b0:4ed:d5b0:7fd9 with SMTP id w16-20020ac25990000000b004edd5b07fd9mr281906lfn.19.1683274984113;
+        Fri, 05 May 2023 01:23:04 -0700 (PDT)
+Received: from [127.0.1.1] ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id h8-20020ac250c8000000b004d023090504sm200647lfm.84.2023.05.05.01.23.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 May 2023 01:23:03 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v2 0/3] Fix up Nokia 770 regression
+Date:   Fri, 05 May 2023 10:22:59 +0200
+Message-Id: <20230430-nokia770-regression-v2-0-984ed3ca5444@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4 4/6] fbdev: Include <linux/fb.h> instead of <asm/fb.h>
-Content-Language: en-US
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        arnd@arndb.de, deller@gmx.de, chenhuacai@kernel.org,
-        javierm@redhat.com, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        James.Bottomley@hansenpartnership.com,
-        linux-m68k@lists.linux-m68k.org, geert@linux-m68k.org,
-        linux-parisc@vger.kernel.org, vgupta@kernel.org,
-        sparclinux@vger.kernel.org, kernel@xen0n.name,
-        linux-snps-arc@lists.infradead.org, davem@davemloft.net,
-        linux-arm-kernel@lists.infradead.org
-References: <20230504074539.8181-1-tzimmermann@suse.de>
- <20230504074539.8181-5-tzimmermann@suse.de>
- <20230504153710.GA518522@ravnborg.org>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230504153710.GA518522@ravnborg.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------OVNAYynKUsk0MtSxKZ0ZybeJ"
-X-Spam-Status: No, score=-8.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOO8VGQC/32NTQ7CIBBGr9KwdgylKMGV9zBdDHVsJyqYoWk0T
+ e8ueACX7/vJW1UmYcrq1KxKaOHMKRYwu0YNE8aRgK+FldGm07bTENOd0TkNQqNQrnsw4YDaWe9
+ o8Ko8A2aCIBiHqX6fmGeSWryEbvz+6S594YnznOTzsy9tTf+LlhY0+BJa6o5Be3t+cERJ+ySj6
+ rdt+wI3YvGW0AAAAA==
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Helge Deller <deller@gmx.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-mmc@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,72 +89,48 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------OVNAYynKUsk0MtSxKZ0ZybeJ
-Content-Type: multipart/mixed; boundary="------------w56d0we4Beh0uPurMRS337ha";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, arnd@arndb.de,
- deller@gmx.de, chenhuacai@kernel.org, javierm@redhat.com,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- James.Bottomley@hansenpartnership.com, linux-m68k@lists.linux-m68k.org,
- geert@linux-m68k.org, linux-parisc@vger.kernel.org, vgupta@kernel.org,
- sparclinux@vger.kernel.org, kernel@xen0n.name,
- linux-snps-arc@lists.infradead.org, davem@davemloft.net,
- linux-arm-kernel@lists.infradead.org
-Message-ID: <54679884-9307-f828-dca4-34cb781dc463@suse.de>
-Subject: Re: [PATCH v4 4/6] fbdev: Include <linux/fb.h> instead of <asm/fb.h>
-References: <20230504074539.8181-1-tzimmermann@suse.de>
- <20230504074539.8181-5-tzimmermann@suse.de>
- <20230504153710.GA518522@ravnborg.org>
-In-Reply-To: <20230504153710.GA518522@ravnborg.org>
+A recent change to use dynamic GPIO base allocation in the
+OMAP GPIO driver caused a regression in some OMAP1 boards.
+This series fixes up the Nokia 770 board from 2005:
+https://en.wikipedia.org/wiki/Nokia_770_Internet_Tablet
 
---------------w56d0we4Beh0uPurMRS337ha
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I don't know how urgent the fix is, you decide. For me,
+it is fair if fringe systems get fixed in due time, as
+they are hardly anyones main development laptop.
 
-SGkNCg0KQW0gMDQuMDUuMjMgdW0gMTc6Mzcgc2NocmllYiBTYW0gUmF2bmJvcmc6DQo+IEhp
-IFRob21hcywNCj4gDQo+IE9uIFRodSwgTWF5IDA0LCAyMDIzIGF0IDA5OjQ1OjM3QU0gKzAy
-MDAsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0KPj4gUmVwbGFjZSBpbmNsdWRlIHN0YXRl
-bWVudHMgZm9yIDxhc20vZmIuaD4gd2l0aCA8bGludXgvZmIuaD4uIEZpeGVzDQo+PiB0aGUg
-Y29kaW5nIHN0eWxlOiBpZiBhIGhlYWRlciBpcyBhdmFpbGFibGUgaW4gYXNtLyBhbmQgbGlu
-dXgvLCBpdA0KPj4gaXMgcHJlZmVyYWJsZSB0byBpbmNsdWRlIHRoZSBoZWFkZXIgZnJvbSBs
-aW51eC8uIFRoaXMgb25seSBhZmZlY3RzDQo+PiBhIGZldyBzb3VyY2UgZmlsZXMsIG1vc3Qg
-b2Ygd2hpY2ggYWxyZWFkeSBpbmNsdWRlIDxsaW51eC9mYi5oPi4NCj4+DQo+PiBTdWdnZXN0
-ZWQtYnk6IFNhbSBSYXZuYm9yZyA8c2FtQHJhdm5ib3JnLm9yZz4NCj4+IFNpZ25lZC1vZmYt
-Ynk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0KPiANCj4gVGhh
-bmtzLA0KPiBSZXZpZXdlZC1ieTogU2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJvcmcub3JnPg0K
-DQpUaGFua3MgZm9yIHJldmlld2luZy4gSSBpbnRlbnQgdG8gbWVyZ2UgdGhpcyBlYXJseSBu
-ZXh0IHdlZWsgYWZ0ZXIgdGhlIA0KdXBjb21pbmcgLXJjMSBoYXMgbGFuZGVkIGluIHRoZSBE
-Uk0gbWlzYyB0cmVlcy4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KLS0gDQpUaG9tYXMg
-WmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBT
-b2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJu
-YmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNE
-b25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v2:
+- Thoroughly rewrote the approach taken for the ADS7846 touchscreen
+  following Dmitry's ambition to go a step further and take a swnode
+  approach to this conversion: I'm fine with that, the patch just
+  get a bit bigger.
+- Picked up Ulf's ACK on the MMC patch.
+- Link to v1: https://lore.kernel.org/r/20230430-nokia770-regression-v1-0-97704e36b094@linaro.org
 
---------------w56d0we4Beh0uPurMRS337ha--
+---
+Linus Walleij (3):
+      Input: ads7846 - Convert to use software nodes
+      ARM/mmc: Convert old mmci-omap to GPIO descriptors
+      ARM: omap1: Fix up the Nokia 770 board device IRQs
 
---------------OVNAYynKUsk0MtSxKZ0ZybeJ
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+ arch/arm/mach-omap1/board-nokia770.c    | 198 +++++++++++++++++++-------------
+ arch/arm/mach-omap1/board-sx1-mmc.c     |   1 -
+ arch/arm/mach-omap2/board-n8x0.c        |  85 +++++---------
+ arch/arm/mach-pxa/spitz.c               |  11 +-
+ arch/mips/alchemy/devboards/db1000.c    |  11 +-
+ drivers/input/touchscreen/ads7846.c     | 101 +++++++---------
+ drivers/mmc/host/omap.c                 |  46 +++++++-
+ drivers/video/fbdev/omap/lcd_mipid.c    |  10 ++
+ include/linux/platform_data/lcd-mipid.h |   2 -
+ include/linux/platform_data/mmc-omap.h  |   2 -
+ include/linux/spi/ads7846.h             |   2 -
+ 11 files changed, 260 insertions(+), 209 deletions(-)
+---
+base-commit: 348551ddaf311c76b01cdcbaf61b6fef06a49144
+change-id: 20230430-nokia770-regression-2b5a07497ec9
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmRUqhoFAwAAAAAACgkQlh/E3EQov+BS
-ExAAk6joIh9cdDj+QXWNzSZK8ZvX7kdroXQJShSXL0qeH/0/Enm5utlSP6lnNpxO8utZSygCPx49
-5is8IZ12TOOMwPuoe7jmbepPlRg9oI33B/ch5GRPT6JBRu4YkQgnMrI2xD8m/ENCIRkDcQsXl5b8
-xzdrSxUySEZxtFHABCXVVNffMqzDpeC7FdfplfsCtPKk2DS3XxAOEw6hvG9f6zdasELsMFGL+5wO
-yYdOKyV7FPkZoHmMXxLdAgUjDd0oLshyzmDnPcPSQbrdsdh9Sj/jJpUAPHtohndBXzCHd+69zNIV
-s0Z5ScYl03jlO1Tue7ggA9GDMb6vTEG7mmc70m1bROeLrzxjChbzEJFqDZKxPKPrCRtIeRTWgIcM
-HdEX9R75aaLlikt+eAyc2eL4LRUPKOMDmJqiPp7r/RzLbFbxcDLjeTkzBvWOBM4OWfI+5K9ad/xL
-L7/vFBoXsfGl96dULvEzu5wPX9KESYeEu4u5hby2jwtN5FpUH5JewvTkdZNjk35Ad0awpDC2qt4h
-aZtYGMplwRguhc06s7GEAehycRuhld/IQdlOEQgOEoM8OT8qSnVKj+uBEG6Hkzda0eEGY+xlzUTA
-Dh7H8V6PqhvFIj1FA+DRzw/XE9xWO0uBFv/mLu5DWE7hRph1xfBkDPExqayoPjQqBXRVoFAx+ZSe
-QdM=
-=z1Er
------END PGP SIGNATURE-----
-
---------------OVNAYynKUsk0MtSxKZ0ZybeJ--
