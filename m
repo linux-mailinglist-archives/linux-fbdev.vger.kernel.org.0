@@ -2,111 +2,145 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE84B6FAE35
-	for <lists+linux-fbdev@lfdr.de>; Mon,  8 May 2023 13:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3F6F6FAEE7
+	for <lists+linux-fbdev@lfdr.de>; Mon,  8 May 2023 13:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236236AbjEHLma (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 8 May 2023 07:42:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37556 "EHLO
+        id S236375AbjEHLss (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 8 May 2023 07:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236219AbjEHLmJ (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 May 2023 07:42:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1785426B3;
-        Mon,  8 May 2023 04:41:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S234059AbjEHLso (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 8 May 2023 07:48:44 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2029843BB5;
+        Mon,  8 May 2023 04:48:33 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA27763518;
-        Mon,  8 May 2023 11:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFA6C4339E;
-        Mon,  8 May 2023 11:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683546091;
-        bh=GnuTKGySGlfr07daI7HAiFk0boCdBF/4zjHSMFSEV+4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vqCDbTPU0RoZO64dkpHWaFwMKk6BTd3yaAe5ynvnI3MiY9Y/3t9NAK0m0X423/8C8
-         VPgc+Yxo2McceqpKoL0W9sDLApAGnR1r5J8wH2/VMMdd5WgmWsK7wDt9dUyWFCCwFK
-         0Fge8wpWB8keNT+8VCRzFYytj4BOY2HUN+NO2z8w=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 252/371] linux/vt_buffer.h: allow either builtin or modular for macros
-Date:   Mon,  8 May 2023 11:47:33 +0200
-Message-Id: <20230508094822.072995883@linuxfoundation.org>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id EB97C21D1E;
+        Mon,  8 May 2023 11:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683546511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=9Sebc4x1LtKsCXOKUFkPrRuThN42LEoCL9B7L3OU8Kc=;
+        b=iq8iKwt6Ve77LLPIfH0nlw1Lw3NCgGCEf77dia+bCG7rwiu8ivTHobHUsQrHNkgAB07b3J
+        UFHQ0HM0eoTujpICjcoHcZVkpDnfDEXP5h4uTvIyc288DUNI7YFU8tau8LLYnoabaED30i
+        8DLC9MXQKzQPx8rDMNkVHrgQO2HcZ18=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683546511;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=9Sebc4x1LtKsCXOKUFkPrRuThN42LEoCL9B7L3OU8Kc=;
+        b=6ioBTZWbuMAZgGUHWtl0jsPX1qOMJtBJsYg0JblVAjrrxM7pNYcYez/6zX0ce0wgibhl4W
+        /te6CT8S5sKG4wDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 874881346B;
+        Mon,  8 May 2023 11:48:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id klD5H4/hWGQvNwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 08 May 2023 11:48:31 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
+        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, davem@davemloft.net,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
+        sam@ravnborg.org, suijingfeng@loongson.cn
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v5 0/6] fbdev: Move framebuffer I/O helpers to <asm/fb.h>
+Date:   Mon,  8 May 2023 13:48:24 +0200
+Message-Id: <20230508114830.28182-1-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230508094811.912279944@linuxfoundation.org>
-References: <20230508094811.912279944@linuxfoundation.org>
-User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Fbdev provides helpers for framebuffer I/O, such as fb_readl(),
+fb_writel() or fb_memcpy_to_fb(). The implementation of each helper
+depends on the architecture, but they are all equivalent to regular
+I/O functions of similar names. So use regular functions instead and
+move all helpers into <asm-generic/fb.h>
 
-[ Upstream commit 2b76ffe81e32afd6d318dc4547e2ba8c46207b77 ]
+The first patch a simple whitespace cleanup.
 
-Fix build errors on ARCH=alpha when CONFIG_MDA_CONSOLE=m.
-This allows the ARCH macros to be the only ones defined.
+Until now, <linux/fb.h> contained an include of <asm/io.h>. As this
+will go away, patches 2 to 4 prepare include statements in the various
+drivers. Source files that use regular I/O helpers, such as readl(),
+now include <linux/io.h>. Source files that use framebuffer I/O
+helpers, such as fb_readl(), now include <linux/fb.h>.
 
-In file included from ../drivers/video/console/mdacon.c:37:
-../arch/alpha/include/asm/vga.h:17:40: error: expected identifier or '(' before 'volatile'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                                        ^~~~~~~~
-../include/linux/vt_buffer.h:24:34: note: in definition of macro 'scr_writew'
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                  ^~~~
-../include/linux/vt_buffer.h:24:40: error: expected ')' before '=' token
-   24 | #define scr_writew(val, addr) (*(addr) = (val))
-      |                                        ^
-../arch/alpha/include/asm/vga.h:17:20: note: in expansion of macro 'scr_writew'
-   17 | static inline void scr_writew(u16 val, volatile u16 *addr)
-      |                    ^~~~~~~~~~
-../arch/alpha/include/asm/vga.h:25:29: error: expected identifier or '(' before 'volatile'
-   25 | static inline u16 scr_readw(volatile const u16 *addr)
-      |                             ^~~~~~~~
+Patch 5 replaces the architecture-based if-else branching in 
+<linux/fb.h> by helpers in <asm-generic/fb.h>. All helpers use Linux'
+existing I/O functions.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Link: https://lore.kernel.org/r/20230329021529.16188-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/vt_buffer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch 6 harmonizes naming among fbdev and existing I/O functions.
 
-diff --git a/include/linux/vt_buffer.h b/include/linux/vt_buffer.h
-index 848db1b1569ff..919d999a8c1db 100644
---- a/include/linux/vt_buffer.h
-+++ b/include/linux/vt_buffer.h
-@@ -16,7 +16,7 @@
- 
- #include <linux/string.h>
- 
--#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
-+#if IS_ENABLED(CONFIG_VGA_CONSOLE) || IS_ENABLED(CONFIG_MDA_CONSOLE)
- #include <asm/vga.h>
- #endif
- 
+The patchset has been built for a variety of platforms, such as x86-64,
+arm, aarch64, ppc64, parisc, m64k, mips and sparc.
+
+v5:
+	* fix build on s390
+v4:
+	* keep fb_mem*() as-is on ia64, loongarch, sparc64 (Arnd)
+	* don't include <asm/fb.h> (Sam)
+v3:
+	* add the new helpers in <asm-generic/fb.h>
+	* support reordering and native byte order (Geert, Arnd)
+v2:
+	* use Linux I/O helpers (Sam, Arnd)
+
+Thomas Zimmermann (6):
+  fbdev/matrox: Remove trailing whitespaces
+  ipu-v3: Include <linux/io.h>
+  fbdev: Include <linux/io.h> in various drivers
+  fbdev: Include <linux/fb.h> instead of <asm/fb.h>
+  fbdev: Move framebuffer I/O helpers into <asm/fb.h>
+  fbdev: Rename fb_mem*() helpers
+
+ arch/ia64/include/asm/fb.h                  |  20 ++++
+ arch/loongarch/include/asm/fb.h             |  21 ++++
+ arch/parisc/video/fbdev.c                   |   3 +-
+ arch/sparc/include/asm/fb.h                 |  20 ++++
+ arch/sparc/video/fbdev.c                    |   1 -
+ arch/x86/video/fbdev.c                      |   2 -
+ drivers/gpu/ipu-v3/ipu-prv.h                |   1 +
+ drivers/staging/sm750fb/sm750.c             |   2 +-
+ drivers/video/fbdev/arcfb.c                 |   1 +
+ drivers/video/fbdev/aty/atyfb.h             |   2 +
+ drivers/video/fbdev/aty/mach64_cursor.c     |   2 +-
+ drivers/video/fbdev/chipsfb.c               |   2 +-
+ drivers/video/fbdev/core/fbcon.c            |   1 -
+ drivers/video/fbdev/core/fbmem.c            |   6 +-
+ drivers/video/fbdev/kyro/fbdev.c            |   2 +-
+ drivers/video/fbdev/matrox/matroxfb_accel.c |   6 +-
+ drivers/video/fbdev/matrox/matroxfb_base.h  |   4 +-
+ drivers/video/fbdev/pvr2fb.c                |   2 +-
+ drivers/video/fbdev/sstfb.c                 |   2 +-
+ drivers/video/fbdev/stifb.c                 |   4 +-
+ drivers/video/fbdev/tdfxfb.c                |   2 +-
+ drivers/video/fbdev/wmt_ge_rops.c           |   2 +
+ include/asm-generic/fb.h                    | 102 ++++++++++++++++++++
+ include/linux/fb.h                          |  55 +----------
+ 24 files changed, 188 insertions(+), 77 deletions(-)
+
 -- 
-2.39.2
-
-
+2.40.1
 
