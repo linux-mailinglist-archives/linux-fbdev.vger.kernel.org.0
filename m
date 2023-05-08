@@ -2,78 +2,68 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0717F6FBF8C
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 May 2023 08:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87D9D6FC196
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 May 2023 10:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235025AbjEIGtv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 9 May 2023 02:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52532 "EHLO
+        id S234758AbjEIIWM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 9 May 2023 04:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235041AbjEIGto (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 May 2023 02:49:44 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D86810EA;
-        Mon,  8 May 2023 23:49:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=PbZUIlEwLxdApfWlTodlcMm6K5WCErVJpDX/q+SYV/o=; b=P6C0II8T3ToIDwdqzyhUAGJI/D
-        ZCNC7WWDlvhvS9TP8hS5heFGY2y1fn4CvmpBwZRLK/SUhz7LqJX/4Qa45fz11oJU8k/AMFOhAHEr3
-        +EWXJyg4O3XLRiADhyF/ipdHNeGii9lWT9BzHXZHp5pkptpBYBW632Ra0BctIfX/yhlj0k+Agmbuu
-        LnutvhNKYS+hmxC+61WS22dWlvIlP1iAdbPbzVHNi/48lEfafUa14tSUupbJbAoyuFdZn3h3yMAsC
-        ibLMeiZxLLk++miuJUDtabe5m1vwyoCbIE9NkFMB3XCQMNvk3dPsbTLKInjxivBc8zcfYlbVarwGF
-        n4DvmLgg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1pwHA6-0060xC-0Z;
-        Tue, 09 May 2023 06:49:26 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 04BA530026A;
-        Tue,  9 May 2023 08:49:25 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id E121A2B0DE80F; Tue,  9 May 2023 08:49:24 +0200 (CEST)
-Date:   Tue, 9 May 2023 08:49:24 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Corentin Labbe <clabbe.montjoie@gmail.com>
-Cc:     tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        pjones@redhat.com, deller@gmx.de, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: Cannot boot an i386-UEFI thinkpad lenovo tablet-2
-Message-ID: <20230509064924.GB2065796@hirez.programming.kicks-ass.net>
-References: <ZFnoXiZGGhuWDl2S@Red>
+        with ESMTP id S234793AbjEIIWK (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 May 2023 04:22:10 -0400
+X-Greylist: delayed 88201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 01:22:07 PDT
+Received: from mail.rawlinsfis.com (mail.rawlinsfis.com [89.40.118.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ABFBF4
+        for <linux-fbdev@vger.kernel.org>; Tue,  9 May 2023 01:22:07 -0700 (PDT)
+Received: by mail.rawlinsfis.com (Postfix, from userid 1001)
+        id 5733181EED; Mon,  8 May 2023 08:46:02 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rawlinsfis.com;
+        s=mail; t=1683531965;
+        bh=lDo1OjfzzJ3sOfR9tSDg5RMmT4aDyBP45hIVJCLtIrE=;
+        h=Date:From:To:Subject:From;
+        b=lnlznuurYqozeJDxcEIyUnYlsGybe2dUZDaGZy7t8yCCBNeAAfQsYuuRaKHdqoTE3
+         JzkYWpX49HPBUnDowBdqdW1N60KZ8g7OvmeTAKjSXWvwoDSDdivamzoExxguI2OUBn
+         Ic03GJGICw3IghDvFHi7wIXwy21hKbhneTS8Em+KWDBg74ki6Ns6CC0rXIW9HDGgb+
+         Ml6yHXq4klZDTQSVf6klg1uia7HldIIuA2cfqbzhe7YljBuYnFVOnz0A55bymsU6Wk
+         H3TODMazkQy28XWBQcAmBSCelCp45mRmsrB7y6Z1zR9HWqNBA7dlMISvmUACna0ES+
+         1azyJbWrAZbHQ==
+Received: by mail.rawlinsfis.com for <linux-fbdev@vger.kernel.org>; Mon,  8 May 2023 07:45:54 GMT
+Message-ID: <20230508074500-0.1.3d.5min.0.jay9j12lh5@rawlinsfis.com>
+Date:   Mon,  8 May 2023 07:45:54 GMT
+From:   "Damian Hordych" <damian.hordych@rawlinsfis.com>
+To:     <linux-fbdev@vger.kernel.org>
+Subject: =?UTF-8?Q?Pompy_ciep=C5=82a_-_nowe_warunki_?=
+X-Mailer: mail.rawlinsfis.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZFnoXiZGGhuWDl2S@Red>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Tue, May 09, 2023 at 08:29:50AM +0200, Corentin Labbe wrote:
+Dzie=C5=84 dobry,
 
-> The bios speak about a debug port, but I found nothing which seems a
-> physical debug port output.  I tried to wire the microusb power port
-> on a USB host, but the host fail to enumerate any device (I tried also
-> a spetial USB cable with data/power separated to be sure the problem
-> was not the host failling to give enough power)
-> 
-> The tablet has only one port, so I use a hub for keyboard and USB key.
+w ramach nowej edycji programu Czyste Powietrze dla klient=C3=B3w indywid=
+ualnych mog=C4=85 otrzyma=C4=87 Pa=C5=84stwo do 135 tys. z=C5=82 wsparcia=
+ na zakup pompy ciep=C5=82a.
 
-USB debug port is probably that one port, USB debug also does not work
-through a hub :/
+Pr=C3=B3cz wy=C5=BCszego dofinansowania program zak=C5=82ada m.in. podwy=C5=
+=BCszenie prog=C3=B3w dochodowych oraz mo=C5=BCliwo=C5=9B=C4=87 z=C5=82o=C5=
+=BCenia kolejnego wniosku o dofinansowanie dla tych, kt=C3=B3rzy ju=C5=BC=
+ wcze=C5=9Bniej skorzystali z Programu.
 
-USB debug in general is a giant pain in the rear and I've never had much
-luck with is. If it's that old to still need a i386 kernel then it's
-probably USB2 at best and that requires a special magical cable too :-(
+Jako firma specjalizuj=C4=85ca si=C4=99 w dostawie, monta=C5=BCu i serwis=
+ie pomp ciep=C5=82a pomo=C5=BCemy Pa=C5=84stwu w uzyskaniu dofinansowania=
+ wraz z kompleksow=C4=85 realizacj=C4=85 ca=C5=82ego projektu.
 
+S=C4=85 Pa=C5=84stwo zainteresowani?
+
+Pozdrawiam
+Damian Hordych
