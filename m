@@ -2,83 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F5166FD414
-	for <lists+linux-fbdev@lfdr.de>; Wed, 10 May 2023 05:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C17D06FD9FC
+	for <lists+linux-fbdev@lfdr.de>; Wed, 10 May 2023 10:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234932AbjEJDNx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 9 May 2023 23:13:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
+        id S236639AbjEJIwW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Wed, 10 May 2023 04:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230188AbjEJDNw (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 9 May 2023 23:13:52 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7B335B7
-        for <linux-fbdev@vger.kernel.org>; Tue,  9 May 2023 20:13:49 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id 6a1803df08f44-61cd6191a62so31292626d6.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 09 May 2023 20:13:49 -0700 (PDT)
+        with ESMTP id S236767AbjEJIwK (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>);
+        Wed, 10 May 2023 04:52:10 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549FC7ED5;
+        Wed, 10 May 2023 01:51:39 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3f195b164c4so45553435e9.1;
+        Wed, 10 May 2023 01:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683688428; x=1686280428;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T66vvnxTdj2cLyhEViaZZN8WST3UIVtt5NHHph0IAcE=;
-        b=FhYzMUSG23YXL+rg7JAB9TM+zAGjwOqSF+3DXK1Tf5N8DoOVJcPN7uA3ajAlMVSm3t
-         wfdPA5r2fA4iDZkO35gnWnXRXzq5fA2dES6LTn5CmH1sU3zXAcc/lo2iGyP5XHTcXjHE
-         iJZvdH5HOfUOQmMQ6Epzfg7qDTdZJyuS5W2VvHdbcxCjEtNc4dlz5/8bsUR/vuQ1HFVe
-         zkLHl9U2i4eKy0dwiM8gSALT9nzLXyk1v8g0Tt9E2EJDZoZ5fdtEsYxE2Y5EbLWlf1TT
-         FCyOkR8JaH8xdE7nWAhag+aA4qKpdme44mxCX0pjAlERCG3AbOqQijg74oHucXBJjvfa
-         YKNA==
+        d=gmail.com; s=20221208; t=1683708698; x=1686300698;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Dlbrk4ZPhxYJQ2iwlQYUgs1YMic9U6ZFVKSub2IU5aA=;
+        b=Yp8TzKP3TmqtoNZ+fCizpDtzsNuLZntoDVf8jYnpn9qBGzOCC7t/hwHmQBX3wV/ns8
+         kySBKurqNOP4UJQGYmQ0WaW/LSziLYl5JVvzVzJwXkdxR2U44bplU/5IGsy+VoN0frEM
+         gMooL/sEXvab+yLWktPd+iW7AQKIcBzV1nIupZqU5wnqlDFXJJAR33zfGr+1fPCdWiys
+         LYNtW4YfILFX/wB5JuvE+Im8c7O7XbHODq4wDlxObrLPR9PHnww+Sn5SAgGB5bXud38u
+         MTlB8+FvvuCbMP5zDJ+mHQilzaSyS5DEU4k7as1Q9Rd1Aj8Fe1VZORR7Gy58EBUwFFha
+         UcWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683688428; x=1686280428;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        d=1e100.net; s=20221208; t=1683708698; x=1686300698;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T66vvnxTdj2cLyhEViaZZN8WST3UIVtt5NHHph0IAcE=;
-        b=DQE5nkvcgABfXbIclocpT3oX+ZVF6QqkWb2EbulC8GTZPkQlEKMqP+9viNUxunyhOG
-         4Tv4Pv4Ygu4uKg1/dPMXrVs191EIOkXhn3WeOt2+XYp84rlcl2jiS37X0BOk8HmKF4d0
-         KNRF7q5CQgDVVn/mCcZYvZb0+reZDJafzLGsDN02OLV9Q/c0DsZbLaXjCZ4MVE1fHWYk
-         d8HyRBMiMTwQ3+9mPkNOdl0q5IQjy+VNrs8kDW3G4aOZxVgaSXjvZPXd+RgfPMSSM5qy
-         EQvt17Bkudj8wywGxO90AuUDXA3zpN7bXK5cH3pA711pu0bqpzf0mqHWP50RXZ+gwbxK
-         o96Q==
-X-Gm-Message-State: AC+VfDxiXWxDH7432oGJ1jMNnYbJxvTAmgOKf7KSQ42E3pIt/HsgqNBO
-        j12eRYxIT1l70rJ69M2/T18YlwOVtspU5RrZlvQ=
-X-Google-Smtp-Source: ACHHUZ6fOPzv+qaG/bKOnKDwwpOu2rh7rTttcvYKGShomthRhxp51skD7TNJZLPZVUhLnJ9w8D2uGogNzCd/n+BelDc=
-X-Received: by 2002:a05:6214:e66:b0:61b:7625:160e with SMTP id
- jz6-20020a0562140e6600b0061b7625160emr24402109qvb.21.1683688427568; Tue, 09
- May 2023 20:13:47 -0700 (PDT)
+        bh=Dlbrk4ZPhxYJQ2iwlQYUgs1YMic9U6ZFVKSub2IU5aA=;
+        b=VQuV522rrBxZlQrm/mBYGYrV3cAEhvTEkSyVpdDHTCgk85TN4fgUuGafwoz9vftzut
+         bsRI7gURVAodFZtw74r7AzEMqBuicOQ6J6NyZ9OAx723E2/NR5TILTVwVKqcaTbiLc3D
+         qxoMOZxZj21AHGQBjTjPcJ9ocMrKJdH9lIZ/6tZ4r1/E1mX+d/fWXUbDJ5EH/K6aBRt3
+         2blv+fEb+G8O0bbFDK9w4kAHbRInSz1zkEo1WWNU9yS5qH84EafnONs5s3SsPvr45LAX
+         rw59u87gv8SAQ4Z5hk3iq7XViC47b/SqLAdUeqP0Qj4dFgHIdC2KIrLxeFr/y90so5jl
+         rueA==
+X-Gm-Message-State: AC+VfDxPDmRqCGGmfEQyfaKc0+Whbk/RH20Q7Kzg/N2ygLTfz89PijEF
+        mY/pGL8yp0KaUhYxIFaPW8U=
+X-Google-Smtp-Source: ACHHUZ4AeXulhEHTiTvL5HA71WfLqKjAEc3fIwJyAKBWxzr5/LME6Z9PVS3weTa+vNfic/xkXytfZw==
+X-Received: by 2002:a7b:ca4c:0:b0:3f4:2819:7777 with SMTP id m12-20020a7bca4c000000b003f428197777mr5585021wml.38.1683708697661;
+        Wed, 10 May 2023 01:51:37 -0700 (PDT)
+Received: from [192.168.1.131] (cgn-89-1-213-9.nc.de. [89.1.213.9])
+        by smtp.gmail.com with ESMTPSA id h1-20020a5d5481000000b0030647d1f34bsm16850080wrv.1.2023.05.10.01.51.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 May 2023 01:51:37 -0700 (PDT)
+Message-ID: <9b89164a-bd8a-bdea-2c17-101428aba98f@gmail.com>
+Date:   Wed, 10 May 2023 10:51:34 +0200
 MIME-Version: 1.0
-Received: by 2002:a0c:e50a:0:b0:61b:5f2d:371e with HTTP; Tue, 9 May 2023
- 20:13:46 -0700 (PDT)
-Reply-To: fcmb.b@aol.com
-From:   Mr Douglas Smith <dpbruceanderson@gmail.com>
-Date:   Wed, 10 May 2023 04:13:46 +0100
-Message-ID: <CAMKiCjtgR+RUZ_9sxgL1k6pY-sjRWpD3xchFKO5y7jKH4n0rpQ@mail.gmail.com>
-Subject: BETALINGSMACHTIGINGSOPDRACHT,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UPPERCASE_75_100 autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v1] backlight: lm3630a: turn off both led strings when
+ display is blank
+Content-Language: en-US
+To:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Maximilian Weigand <mweigand2017@gmail.com>
+Cc:     Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20230505185752.969476-1-mweigand2017@gmail.com>
+ <20230509132735.GA31274@aspen.lan>
+From:   Maximilian Weigand <mweigand2017@gmail.com>
+In-Reply-To: <20230509132735.GA31274@aspen.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-BETALINGSMACHTIGINGSOPDRACHT,
 
-BESTE BEGUNSTIGDE,
 
-UW VERLATEN ERFENISFONDS, TER WAARDE VAN $ 23,5 MILJOEN, IS GEWEEST
-GOEDGEKEURD DOOR DE VERENIGDE NATIES OM U VIA FCMB BANK IN DE
-NIGERIA. OM DEZE REDEN MOET U ONMIDDELLIJK CONTACT MET ONS OPNEMEN @
-fcmb.b@aol.com ZODAT WE U RECHTSTREEKS MET DE BANKEN KUNNEN VERBINDEN
-KLANTENSERVICE VOOR DE BETALING MET ATM MASTER CARD OF ONLINE BANKING
-,
+>> Use display_is_blank() to determine if the led strings should be turned
+> 
+> Shouldn't this be backlight_is_blank()?
 
-CONTACTEER ONS ONMIDDELLIJK NA ONTVANGST VAN DIT BERICHT VOOR MEER DETAILS.
-IN AFWACHTING VAN UW DRINGEND ANTWOORD.
-GROETEN
-Dhr. DOUGLAS SMITH
-fcmb.b@aol.com
+Yes, indeed. Thanks for pointing this out. Fixed in v2.
