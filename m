@@ -2,54 +2,53 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE1470AA29
-	for <lists+linux-fbdev@lfdr.de>; Sat, 20 May 2023 20:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7442970AA3A
+	for <lists+linux-fbdev@lfdr.de>; Sat, 20 May 2023 20:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232034AbjETSZK (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 20 May 2023 14:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43774 "EHLO
+        id S232237AbjETS1d (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 20 May 2023 14:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232215AbjETSYt (ORCPT
+        with ESMTP id S232138AbjETS1O (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 20 May 2023 14:24:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D75A61BDB;
-        Sat, 20 May 2023 11:24:10 -0700 (PDT)
+        Sat, 20 May 2023 14:27:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD5A10F5;
+        Sat, 20 May 2023 11:26:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3BAB60F97;
-        Sat, 20 May 2023 18:23:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5BAC433D2;
-        Sat, 20 May 2023 18:23:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8974616DA;
+        Sat, 20 May 2023 18:23:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F626C433EF;
+        Sat, 20 May 2023 18:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684606987;
-        bh=IxY9yD28x09t6EP3qwL6MxSZUKwa8NFQn8cpurereZI=;
+        s=k20201202; t=1684607021;
+        bh=+c/hg+pn6YqJJKirv+KPqU8DGCISXulUy2B44R/iVk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eimFAZ5tETb9nxsw1Nwjk4sMj1O6+Mg0tUWm2hagTKKgz/JUR4vA6ZB9+3XEEMa7g
-         x7/RgQr+25xhKQ1N7nZVhITJCtDe6l2rejI2IctLDTobm/hMO2OiPBYCUA8NR8cFen
-         wVCAnoNNkj3JNsvRm31m6KzXWX12C499WtlCGL+uIZZA+iWa0MO2QdMFzAtnSzMjdH
-         dxqBdFBBcHoqFcPo8XsxoiaSmgSCrybKDGK7Ndia5hMeiMTKVJCd1JrgCEnt7s/P/O
-         e+sQhMm3//LayUlkdKGZiFHX2zL+4wp9AUjDIuOtcoGaf86K8pfb0+HA5oKCNvTRHd
-         ULz4kER0NI73Q==
+        b=U3HB/hSy/VT6zEmgkX2/jaE90i/RZBjzLenfvxmf7/Jf6SPIfKQvzJQMbNRytS/X0
+         XwIW5XosqRSH0wx3S2FLJlK3CwWRJWEY5QAVdm8SgwbQIWsCFHMYzkVRjUApaljcyH
+         EVIvDlXWGqC9ZE9GqMd40OsIzePHZ2fVpUYJNz1pCHyOk9gIAGvB7NHF26ajzWrKIj
+         +cFHgRndxqse2l7MpQDbnJpzayOr0dCttHyH3eknm/o4zykTSYHigfv6n2nnrP/W72
+         VBylc0R1sMEA/7K8Iit6La/pvpINHSglbB7LnRaV5nxQw7LWEu5KBFyxfMvBlss6C/
+         RD0DbO4qy8EXg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com,
-        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 09/11] fbdev: stifb: Fix info entry in sti_struct on error path
-Date:   Sat, 20 May 2023 14:22:12 -0400
-Message-Id: <20230520182215.845131-9-sashal@kernel.org>
+        daniel@ffwll.ch, tzimmermann@suse.de, javierm@redhat.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 5/8] fbdev: modedb: Add 1920x1080 at 60 Hz video mode
+Date:   Sat, 20 May 2023 14:23:09 -0400
+Message-Id: <20230520182312.851751-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230520182215.845131-1-sashal@kernel.org>
-References: <20230520182215.845131-1-sashal@kernel.org>
+In-Reply-To: <20230520182312.851751-1-sashal@kernel.org>
+References: <20230520182312.851751-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,28 +59,32 @@ X-Mailing-List: linux-fbdev@vger.kernel.org
 
 From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 0bdf1ad8d10bd4e50a8b1a2c53d15984165f7fea ]
+[ Upstream commit c8902258b2b8ecaa1b8d88c312853c5b14c2553d ]
 
-Minor fix to reset the info field to NULL in case of error.
+Add typical resolution for Full-HD monitors.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/stifb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/core/modedb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
-index ef8a4c5fc6875..63f51783352dc 100644
---- a/drivers/video/fbdev/stifb.c
-+++ b/drivers/video/fbdev/stifb.c
-@@ -1413,6 +1413,7 @@ static int __init stifb_init_fb(struct sti_struct *sti, int bpp_pref)
- 	iounmap(info->screen_base);
- out_err0:
- 	kfree(fb);
-+	sti->info = NULL;
- 	return -ENXIO;
- }
+diff --git a/drivers/video/fbdev/core/modedb.c b/drivers/video/fbdev/core/modedb.c
+index 6473e0dfe1464..e78ec7f728463 100644
+--- a/drivers/video/fbdev/core/modedb.c
++++ b/drivers/video/fbdev/core/modedb.c
+@@ -257,6 +257,11 @@ static const struct fb_videomode modedb[] = {
+ 	{ NULL, 72, 480, 300, 33386, 40, 24, 11, 19, 80, 3, 0,
+ 		FB_VMODE_DOUBLE },
  
++	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
++	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
++		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
++		FB_VMODE_NONINTERLACED },
++
+ 	/* 1920x1200 @ 60 Hz, 74.5 Khz hsync */
+ 	{ NULL, 60, 1920, 1200, 5177, 128, 336, 1, 38, 208, 3,
+ 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
 -- 
 2.39.2
 
