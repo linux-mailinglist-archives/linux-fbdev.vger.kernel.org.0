@@ -2,116 +2,141 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B1170BB29
-	for <lists+linux-fbdev@lfdr.de>; Mon, 22 May 2023 13:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA6570BC16
+	for <lists+linux-fbdev@lfdr.de>; Mon, 22 May 2023 13:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbjEVLIg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 22 May 2023 07:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53976 "EHLO
+        id S233348AbjEVLog (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 22 May 2023 07:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233118AbjEVLH5 (ORCPT
+        with ESMTP id S232427AbjEVLog (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 22 May 2023 07:07:57 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDD5FE43
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 May 2023 04:03:06 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f417ea5252so39973225e9.0
-        for <linux-fbdev@vger.kernel.org>; Mon, 22 May 2023 04:03:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684753350; x=1687345350;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XzkOlJkL0xv5A0elXPgvm4hIibRPFdeBQcjY85MGTHg=;
-        b=YpWQlbeQBknOJNcNvixUy5XcxwaulDkWGtKnZC2mgcWARNbP7s0naqRRsEBMU3kmK5
-         aWrda2pHtaEhLRSi6KQBqXXsx/hjzdlBgTqbkTPM4tCYahx0e/MYoBuETHkHEm9fU/Gr
-         Xn5f8AsYryILt7PF4sXWyhOygQ8zHDSg/omYeGbIu02iVb656UjcwmEHHss1TWmjcUv8
-         jshCiGFNArerSIWQ9GlYMRMjhTxCiAcaJeK+6p1GFWp//Ry1J9kgXx7pxCXMvdWh0B1i
-         4K/uED4p2azk9+pcdv7QIMdGDktuPsYx5jTYaVvt6Z2FodCp2WoRrUMdkP0X/tuhZDhf
-         1dAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684753350; x=1687345350;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XzkOlJkL0xv5A0elXPgvm4hIibRPFdeBQcjY85MGTHg=;
-        b=haivWjDQxbjpyulaK4JEZP0jyqCxKKEnNfui5fM7kaE7aBt3m4FvePVm8SXNE9df0U
-         CUrqQXz/L3CSlJzdUera+IhFAKhR45pGjxIcBdfzEA5tXerzOgjgQsE55MXtwRv9KP8c
-         W2m+I30UMsoDl1DRnMYatu3LW3ul2aYUtFSQOFrPDruME2m/5gNxqAU6bN01j17Rx/Ga
-         7z3Y8wsym5PB9vUHYcB+jf8BtWzCUByeM/+aUbJRaKXO3sXKmaZe+BMYdYgZON4ce+Ld
-         1hw5iFhdX4ql7RMLTR+SttpMaFW7inOe5Wckjat7FWZ7TjvIvFsYjxDmbkJuUvThsFMW
-         C41Q==
-X-Gm-Message-State: AC+VfDxDpYoxhGGWFuighK11u9aTY7jRd5mHiWx1QqaPuBFgKr3+/6Dy
-        d/EAyCpR1CJOZlPqZOWbuNy+4C65KQNgjCItuoc=
-X-Google-Smtp-Source: ACHHUZ51eDyf510Z/A8Epqh5R3twZA6dBjo5fqmcYGrdIVabXrmA7G/IeQZHkTdi39kD3ui+AlyMwPrGE+qJrvcWYtw=
-X-Received: by 2002:a1c:7209:0:b0:3f5:fb83:62b0 with SMTP id
- n9-20020a1c7209000000b003f5fb8362b0mr3919122wmc.36.1684753350148; Mon, 22 May
- 2023 04:02:30 -0700 (PDT)
+        Mon, 22 May 2023 07:44:36 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0A299;
+        Mon, 22 May 2023 04:44:33 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 2645C1FE83;
+        Mon, 22 May 2023 11:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1684755872; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RXgpxboI1bw9eXRQKxoN/Zr/TelBo2erFp+oCAN6jQ4=;
+        b=xshnHi/ZPGtf5PnerhW07I/ZJ3gtuXaQXOMW1lqWJPHulL6JCwemBTdT6hrFHwIIHSed4v
+        ea2F1eVZy8EXq+1FsNxVQTtwHaY1yz1Ptq/ScwtUkJim3RYiBlETvetX0UbmO4Ety9M0ni
+        hwzOSYQrMj/LOTJYuPl9EjduENWCBiQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1684755872;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=RXgpxboI1bw9eXRQKxoN/Zr/TelBo2erFp+oCAN6jQ4=;
+        b=VCaQEPWIJMQFKfvjU2QqgEyFocOltgb1T0Aku6lMo9jnDOFeFltWYrRg398m5sQNJb9NTE
+        E4mo0IqKd9uklYBQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id D0A092C141;
+        Mon, 22 May 2023 11:44:31 +0000 (UTC)
+Date:   Mon, 22 May 2023 13:44:30 +0200
+From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Cyril Brulebois <cyril@debamax.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 2/2] drm/ofdrm: Update expected device name
+Message-ID: <20230522114430.GA15906@kitsune.suse.cz>
+References: <20230412095509.2196162-1-cyril@debamax.com>
+ <20230412095509.2196162-3-cyril@debamax.com>
+ <CAMuHMdW4rZn4p=gQZRWQQSEbQPmzZUd5eN+kP_Yr7bLgTHyvig@mail.gmail.com>
+ <5694a9ab-d474-c101-9398-eea55aab29df@suse.de>
 MIME-Version: 1.0
-Reply-To: abebeaemro99@gmail.com
-Sender: dr.bashamaugustin@gmail.com
-Received: by 2002:a05:6020:61c8:b0:27b:3b8f:c90 with HTTP; Mon, 22 May 2023
- 04:02:29 -0700 (PDT)
-From:   Abebe Aemro Selassie <abebeaemro99@gmail.com>
-Date:   Mon, 22 May 2023 04:02:29 -0700
-X-Google-Sender-Auth: ypZaGnPhFTcNlXzEQcie6hBndkg
-Message-ID: <CAAkDsN4OpqfyWFY+dVz=J3tcD9pVrCMsRHg-DQrEd4KBbbYPFg@mail.gmail.com>
-Subject: Dear Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.1 required=5.0 tests=BAYES_50,DEAR_FRIEND,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5694a9ab-d474-c101-9398-eea55aab29df@suse.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:330 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [abebeaemro99[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abebeaemro99[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  2.6 DEAR_FRIEND BODY: Dear Friend? That's not very dear!
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Greetings From Mr. Abebe Aemro Selassie
+On Mon, Apr 24, 2023 at 11:07:45AM +0200, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 24.04.23 um 09:33 schrieb Geert Uytterhoeven:
+> > Hi Cyril,
+> > 
+> > CC DT
+> > 
+> > On Wed, Apr 12, 2023 at 12:05 PM Cyril Brulebois <cyril@debamax.com> wrote:
+> > > Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
+> > > as spotted by Frédéric Bonnard, the historical "of-display" device is
+> > > gone: the updated logic creates "of-display.0" instead, then as many
+> > > "of-display.N" as required.
+> > > 
+> > > This means that offb no longer finds the expected device, which prevents
+> > > the Debian Installer from setting up its interface, at least on ppc64el.
+> > > 
+> > > Given the code similarity it is likely to affect ofdrm in the same way.
+> > > 
+> > > It might be better to iterate on all possible nodes, but updating the
+> > > hardcoded device from "of-display" to "of-display.0" is likely to help
+> > > as a first step.
+> > > 
+> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=217328
+> > > Link: https://bugs.debian.org/1033058
+> > > Fixes: 241d2fb56a18 ("of: Make OF framebuffer device names unique")
+> > > Cc: stable@vger.kernel.org # v6.2+
+> > > Signed-off-by: Cyril Brulebois <cyril@debamax.com>
+> > 
+> > Thanks for your patch, which is now commit 3a9d8ea2539ebebd
+> > ("drm/ofdrm: Update expected device name") in fbdev/for-next.
+> > 
+> > > --- a/drivers/gpu/drm/tiny/ofdrm.c
+> > > +++ b/drivers/gpu/drm/tiny/ofdrm.c
+> > > @@ -1390,7 +1390,7 @@ MODULE_DEVICE_TABLE(of, ofdrm_of_match_display);
+> > > 
+> > >   static struct platform_driver ofdrm_platform_driver = {
+> > >          .driver = {
+> > > -               .name = "of-display",
+> > > +               .name = "of-display.0",
+> > >                  .of_match_table = ofdrm_of_match_display,
+> > >          },
+> > >          .probe = ofdrm_probe,
+> > 
+> > Same comment as for "[PATCH 1/2] fbdev/offb: Update expected device
+> > name".
+> > 
+> > https://lore.kernel.org/r/CAMuHMdVGEeAsmb4tAuuqqGJ-4+BBETwEwYJA+M9NyJv0BJ_hNg@mail.gmail.com
+> 
+> Sorry that I missed this patch. I agree that it's probably not correct. At
+> least in ofdrm, we want to be able to use multiple framebuffers at the same
+> time; a feature that has been broken by this change.
 
-I have a Mutual/Beneficial Business Project that would be beneficial
-to you. I only have two questions to ask of you, if you are
-interested.
+How did it work before, though?
 
-1. Can you handle this project?
-2. Can I give you this trust?
+We did not have this device name clash, then we did, and it was solved
+by renaming the devices to numnered.
 
-Please note that the deal requires high level of maturity, honesty and
-secrecy. This will involve moving some money from my office, on trust
-to your hands or bank account. Also note that i will do everything to
-make sure that the money is moved as a purely legitimate fund, so you
-will not be exposed to any risk.
+Now matching the first device should restore the previously available
+functionality, mathing any of the numbered devices would potentially
+allow to use multiple devices.
 
-I request for your full co-operation. I will give you details and
-procedure when I receive your reply, to commence this transaction, I
-require you to immediately indicate your interest by a return reply. I
-will be waiting for your response in a timely manner.
+Or am I missing something?
 
-Best Regard,
-Mr. Abebe Aemro Selassie
+Thanks
+
+Michal
