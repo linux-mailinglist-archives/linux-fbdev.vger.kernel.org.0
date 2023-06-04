@@ -2,69 +2,91 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D38DD720EFE
-	for <lists+linux-fbdev@lfdr.de>; Sat,  3 Jun 2023 11:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE669721848
+	for <lists+linux-fbdev@lfdr.de>; Sun,  4 Jun 2023 17:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjFCJfD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 3 Jun 2023 05:35:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41938 "EHLO
+        id S231828AbjFDPuH (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 4 Jun 2023 11:50:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231567AbjFCJez (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 3 Jun 2023 05:34:55 -0400
-X-Greylist: delayed 89346 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 03 Jun 2023 02:34:53 PDT
-Received: from mail.webtopbits.pl (mail.webtopbits.pl [195.231.64.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB56FE5B
-        for <linux-fbdev@vger.kernel.org>; Sat,  3 Jun 2023 02:34:53 -0700 (PDT)
-Received: by mail.webtopbits.pl (Postfix, from userid 1001)
-        id 4366AA3909; Fri,  2 Jun 2023 09:45:41 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=webtopbits.pl;
-        s=mail; t=1685695546;
-        bh=Eh8ECMiYd4baGAwPAzhz8mhJACXX7NSRkYjh+plaY18=;
-        h=Date:From:To:Subject:From;
-        b=XqcLOCZEtegxa7PZdQnNpEV7cHzAF0BN1ZRAE7i1vf9rHASJyMgrYlWL29OvrWgnl
-         6GYlCezeQcBPsCsSxCSm137GaLINVj+kU97PPcHc+Zu5AScEQmE/zzeALcjuHM5w6I
-         hxvA2JGqPE5zEktH+nrTxbTqpvglNg3xcNl2A0VWTv6ra/NQ7RRWw1xYGL+WY/y8KC
-         p+2zUvri2B1YS0Ui7zLqvIAdUPnO5xgkgC1UJWHGBzHKzs2lQ+wJiU4/IgPHYIBFZU
-         TtwNyjHqEggz+TMjxBnNp0o0BPvRgbu7BuateFwbvtwylphW9UEHe/10g4mPYxPx0+
-         AuCQjgkUe5pfg==
-Received: by mail.webtopbits.pl for <linux-fbdev@vger.kernel.org>; Fri,  2 Jun 2023 08:45:39 GMT
-Message-ID: <20230602085530-0.1.8w.5kjn.0.hj75cnhq1b@webtopbits.pl>
-Date:   Fri,  2 Jun 2023 08:45:39 GMT
-From:   "Kamil Durjasz" <kamil.durjasz@webtopbits.pl>
-To:     <linux-fbdev@vger.kernel.org>
-Subject: =?UTF-8?Q?Wy=C5=BCsza_konwersja_w_e-sklepie_?=
-X-Mailer: mail.webtopbits.pl
+        with ESMTP id S231355AbjFDPuH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 4 Jun 2023 11:50:07 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 04 Jun 2023 08:50:06 PDT
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 99A7EDB
+        for <linux-fbdev@vger.kernel.org>; Sun,  4 Jun 2023 08:50:06 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id 5psGqNLaQt9zc5psGqXS2j; Sun, 04 Jun 2023 17:42:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1685893355;
+        bh=KSBCYH83xSlnxT9AqAr79v1PKm1DqpwXR0ggzhv2kFU=;
+        h=From:To:Cc:Subject:Date;
+        b=ZnL1ytK8458koQso49BCpWyOcEi755OnD8/aYZ70UWHbQUaXQ+XkwqFZLGG5+hG3Z
+         yaXTsYtK78QlhCXUpeznPk5AA2jU+eMpncJPkdKMUeAq8OcE53BPbyQ+T7f6CiQ7YP
+         zaQ6Wn66OPz1XYNoYQZH1LfM5PZRmm/Xg+BUaWjIxN9fHA97i0qZD7zpcpg7E+8+LX
+         UULF2+Wtpp9xj9ZFJyAa0pMqitEleMxEPKAUnIVNlsEpfr3PmbaXLiDiLnHrLjkNkk
+         Z6TIBh6/JrK674jq06KhMIcKUqxWNsn5aFWtT93SOOx+NN4lk8Ao7QlFbeKf9msp5Y
+         m4SnGCinLe35A==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 04 Jun 2023 17:42:35 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Helge Deller <deller@gmx.de>, Imre Deak <imre.deak@nokia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Krzysztof Helt <krzysztof.h1@wp.pl>,
+        Juha Yrjola <juha.yrjola@solidboot.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH] video: fbdev: omapfb: lcd_mipid: Fix an error handling path in mipid_spi_probe()
+Date:   Sun,  4 Jun 2023 17:42:28 +0200
+Message-Id: <f17221571f619c0829db56354f2b74d22f6702a7.1685893329.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Dzie=C5=84 dobry,
+If 'mipid_detect()' fails, we must free 'md' to avoid a memory leak.
 
-w jaki spos=C3=B3b docieraj=C4=85 Pa=C5=84stwo do odbiorc=C3=B3w?
+Fixes: 66d2f99d0bb5 ("omapfb: add support for MIPI-DCS compatible LCDs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/video/fbdev/omap/lcd_mipid.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Tworzymy pot=C4=99=C5=BCne narz=C4=99dzia sprzeda=C5=BCy, kt=C3=B3re pozw=
-alaj=C4=85 kompleksowo rozwi=C4=85za=C4=87 problemy potencjalnych klient=C3=
-=B3w i skutecznie wp=C5=82yn=C4=85=C4=87 na ich decyzje zakupowe.=20
+diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
+index e4a7f0b824ff..a0fc4570403b 100644
+--- a/drivers/video/fbdev/omap/lcd_mipid.c
++++ b/drivers/video/fbdev/omap/lcd_mipid.c
+@@ -571,11 +571,15 @@ static int mipid_spi_probe(struct spi_device *spi)
+ 
+ 	r = mipid_detect(md);
+ 	if (r < 0)
+-		return r;
++		goto free_md;
+ 
+ 	omapfb_register_panel(&md->panel);
+ 
+ 	return 0;
++
++free_md:
++	kfree(md);
++	return r;
+ }
+ 
+ static void mipid_spi_remove(struct spi_device *spi)
+-- 
+2.34.1
 
-Skupiamy si=C4=99 na Pa=C5=84stwa potrzebach zwi=C4=85zanych z obs=C5=82u=
-g=C4=85 sklepu, oczekiwaniach i planach sprzeda=C5=BCowych. Szczeg=C3=B3=C5=
-=82owo dopasowujemy grafik=C4=99, funkcjonalno=C5=9Bci, struktur=C4=99 i =
-mikrointerakcje do Pa=C5=84stwa grupy docelowej, co przek=C5=82ada si=C4=99=
- na oczekiwane rezultaty.
-
-Ch=C4=99tnie przedstawi=C4=99 dotychczasowe realizacje, aby mogli Pa=C5=84=
-stwo przekona=C4=87 si=C4=99 o naszych mo=C5=BCliwo=C5=9Bciach. Mog=C4=99=
- si=C4=99 skontaktowa=C4=87?
-
-
-Pozdrawiam
-Kamil Durjasz
