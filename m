@@ -2,192 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2DDE72183F
-	for <lists+linux-fbdev@lfdr.de>; Sun,  4 Jun 2023 17:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F213722251
+	for <lists+linux-fbdev@lfdr.de>; Mon,  5 Jun 2023 11:36:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbjFDPoy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 4 Jun 2023 11:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42922 "EHLO
+        id S230322AbjFEJgL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 5 Jun 2023 05:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbjFDPov (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sun, 4 Jun 2023 11:44:51 -0400
-Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FD9DA
-        for <linux-fbdev@vger.kernel.org>; Sun,  4 Jun 2023 08:44:49 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id 5puJqUJl3xbtx5puJqV5WT; Sun, 04 Jun 2023 17:44:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1685893488;
-        bh=4MVPujWGEC2Hbr//Xyamq+0YVn6N8CNGZocur4O5qgA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=WgnLOsZnQ0uUapvPl9OVnQvD2I/zNbKmRWJ1GXclXg7Alpp8751PpITUE4RtsSJiL
-         InZLFVeCEtJkJbUNxjf1E+WS6aLhATHITZHgD3PAp4frjWOlMqrEO53s6Eef8MUuNC
-         wD+Bjg7O6kI76uiHo5rRAy/4pj8zQfBmwVcCK1Css5Sg5Xd5f7Edq4/Ub1k35j7J6T
-         ph8kLyzqzPL+yOukLEJr/PjtMLLpuxjz4JvgWAbivPVrkyET0WPlot4QKe/4B2W/VN
-         Gmxhe28+9GYJ3BjflsZZdPm/Kr5ZWPcMapN6YNjDGe5+VCHdwdITzd9IJT/wPBl5Qp
-         KmTbuW2T35xIQ==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 04 Jun 2023 17:44:48 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <ac6ef7f2-0d7a-ba43-4b63-0a23d899230f@wanadoo.fr>
-Date:   Sun, 4 Jun 2023 17:44:39 +0200
+        with ESMTP id S229572AbjFEJgJ (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Mon, 5 Jun 2023 05:36:09 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB066D3;
+        Mon,  5 Jun 2023 02:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1685957758; x=1686562558; i=deller@gmx.de;
+ bh=4aZGFNHaqYts9HJGEBYu/SzlFrcSqs2ONdbIPv8h5ts=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=r+z4B2tupxVHJ63m3lXNOwXDv699zPSioDJ/oxQ5xFu2aTUX5146vaOrLKh47Lp3+qGQUo9
+ OpOojKAaC8qwv2KkgOhLsrjAFQl/vLMeXes1RBy1F6zIujFqtvMLpQqSct/9PB9w8mWplGC8z
+ m9TAbFcgnV/WRBVm9LA/kRbO+Vv8dZAgMQnEuFWOL6kQDRnzmJBDI3TWeP0Wn0AzvNjSPVt6a
+ eN6PS0gxAUrpL3ASnlHToctdozh9CbA6k0+1QHiCc8VvC++HCTcWKcg97Aj1rwMH/8l/AZSXx
+ aeSUtl1GS5ALxFhCDmQSPGmC8/ofE6j0jaYb1zae1j/hKB6xq2Lw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.56.61] ([109.43.115.72]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MiacH-1qZxSj0dCJ-00flAb; Mon, 05
+ Jun 2023 11:35:58 +0200
+Message-ID: <848956d2-cf95-bd6a-1292-272438b0d860@gmx.de>
+Date:   Mon, 5 Jun 2023 11:35:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 1/4] Input: ads7846 - Convert to use software nodes
-Content-Language: fr
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Helge Deller <deller@gmx.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mmc@vger.kernel.org
-References: <20230430-nokia770-regression-v4-0-9b6dc5536b17@linaro.org>
- <20230430-nokia770-regression-v4-1-9b6dc5536b17@linaro.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20230430-nokia770-regression-v4-1-9b6dc5536b17@linaro.org>
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] video: fbdev: omapfb: lcd_mipid: Fix an error handling
+ path in mipid_spi_probe()
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Imre Deak <imre.deak@nokia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Krzysztof Helt <krzysztof.h1@wp.pl>,
+        Juha Yrjola <juha.yrjola@solidboot.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+References: <f17221571f619c0829db56354f2b74d22f6702a7.1685893329.git.christophe.jaillet@wanadoo.fr>
+Content-Language: en-US
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <f17221571f619c0829db56354f2b74d22f6702a7.1685893329.git.christophe.jaillet@wanadoo.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:O8jINPdRRRhdW6K/VPuIluO4TUz2RA7GWy7BS61PiwwjuaBm3oe
+ xRlo+MX+oafQs54E/0uFtXBCfZw5grNtmkqDxHj6wY9m9btw8xD6T7Olg2so3cLBrN/Zo74
+ cCewQOuFiAiYVTs/LQHBGZLCdQtHbocA0NpihSdNtkGutMHBukCis8UDnmtGt9UOLFweO98
+ a0PowgyQXZCQkLEk0eJng==
+UI-OutboundReport: notjunk:1;M01:P0:v7du267JY28=;ZwxfR0dFKojHp9ugRWseiTBAr+f
+ 23jU7ZfKH2FbkJvd9851IpoF7wmhSZj80LleRmWrnnMt4/7HyEz8L3a+y9CC4doJl9NGY0epA
+ BiOhlf94atBk8WYxMVeBVIijVG3DMRNzPQK0rBevUF5h+VYN/5yQnVAXm+ORvF2NmkKFPYA3Z
+ RsisHuM8OaM2mD+C+HD1UyAWdsWFYNyZtEZ6tuY0wNqiyNTBy3FGYuApK0HRM4l/Wlx4DY+/r
+ NHsd+z3DN9/oNIWNNF/8SdyaTQqUqNpFcbgs+zD+s6cXbYSaZLo/GMaWnvzQvtTNyMZgInDSr
+ 4YeeUIyx08aVcXmByeMsErm5Z5PAFw/ZC4/3o2qdAmNVqxRM74O677Vvspzhyg6i7BZ7px1os
+ /iGiaCsvKzVunj7ZQx1uMC5Fa1ZDZmSG2JKT0mi55fvEICsd20Ef1kiTtawoAjEz5vxKEQeK0
+ 76ql7QWVFZk1Fe2lsd7pym7UoE8e3liOFBK/ohkCnRJqdMbmi96Smj3qqkFlcuW/JFCG9qItI
+ ZO58VAnaUg0gwQIi9bRo1oV6O618aCdmkbtdGs0xASCK6HYNpq1qCrhxGZP0zxq3QNm1tBspa
+ MSDa3Ma6RazZqbSOE/nqKuMurQh75cX6KvRB5K32lpGER5YLkEzuXRh/c1Fdxa8yxLHWW6BjM
+ 7N2khHDlI5cNnW+6FP79RTBa9/QCPffMZ9SfMiYol0JedxLb/GsfXSfTc/k2daPXxsKqHllxR
+ F5blRYIkhnVqAVnQW6tRCqIE4UQbhsYM6MzpLs97eGwMs0J5rqqLpZD4V+Tb/ADTWmiab+rsH
+ O23y4a0T0T4kX8kfOOLwO25LTf9ZrogjxGGxXvGcJ4xvdLvrScEdMSYo7KtJdp+G66HP6AIF7
+ Pww05UlUo/yqMcikZKE9l/tJY+3daL5vncoQKyoZ44NFGrLL804cs/gwinhUyWfkqLAhitnKK
+ g9Tn3r41ZqctGPMTgzZGiZC1++Q=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Le 08/05/2023 à 23:20, Linus Walleij a écrit :
-> The Nokia 770 is using GPIOs from the global numberspace on the
-> CBUS node to pass down to the LCD controller. This regresses when we
-> let the OMAP GPIO driver use dynamic GPIO base.
-> 
-> The Nokia 770 now has dynamic allocation of IRQ numbers, so this
-> needs to be fixed for it to work.
-> 
-> As this is the only user of LCD MIPID we can easily augment the
-> driver to use a GPIO descriptor instead and resolve the issue.
-> 
-> The platform data .shutdown() callback wasn't even used in the
-> code, but we encode a shutdown asserting RESET in the remove()
-> callback for completeness sake.
-> 
-> The CBUS also has the ADS7846 touchscreen attached.
-> 
-> Populate the devices on the Nokia 770 CBUS I2C using software
-> nodes instead of platform data quirks. This includes the LCD
-> and the ADS7846 touchscreen so the conversion just brings the LCD
-> along with it as software nodes is an all-or-nothing design
-> pattern.
-> 
-> The ADS7846 has some limited support for using GPIO descriptors,
-> let's convert it over completely to using device properties and then
-> fix all remaining boardfile users to provide all platform data using
-> software nodes.
-> 
-> Dump the of includes and of_match_ptr() in the ADS7846 driver as part
-> of the job.
-> 
-> Since we have to move ADS7846 over to obtaining the GPIOs it is
-> using exclusively from descriptors, we provide descriptor tables
-> for the two remaining in-kernel boardfiles using ADS7846:
-> 
-> - PXA Spitz
-> - MIPS Alchemy DB1000 development board
-> 
-> It was too hard for me to include software node conversion of
-> these two remaining users at this time: the spitz is using a
-> hscync callback in the platform data that would require further
-> GPIO descriptor conversion of the Spitz, and moving the hsync
-> callback down into the driver: it will just become too big of
-> a job, but it can be done separately.
-> 
-> The MIPS Alchemy DB1000 is simply something I cannot test, so take
-> the easier approach of just providing some GPIO descriptors in
-> this case as I don't want the patch to grow too intrusive.
-> 
-> As we see that several device trees have incorrect polarity flags
-> and just expect to bypass the gpiolib polarity handling, fix up
-> all device trees too, in a separate patch.
-> 
-> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Fixes: 92bf78b33b0b ("gpio: omap: use dynamic allocation of base")
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+On 6/4/23 17:42, Christophe JAILLET wrote:
+> If 'mipid_detect()' fails, we must free 'md' to avoid a memory leak.
+>
+> Fixes: 66d2f99d0bb5 ("omapfb: add support for MIPI-DCS compatible LCDs")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+applied.
+
+Thanks!
+Helge
+
 > ---
-
-[...]
-
-> diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
-> index 03cff39d392d..e4a7f0b824ff 100644
+>   drivers/video/fbdev/omap/lcd_mipid.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/=
+omap/lcd_mipid.c
+> index e4a7f0b824ff..a0fc4570403b 100644
 > --- a/drivers/video/fbdev/omap/lcd_mipid.c
 > +++ b/drivers/video/fbdev/omap/lcd_mipid.c
-> @@ -7,6 +7,7 @@
->    */
->   #include <linux/device.h>
->   #include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
->   #include <linux/slab.h>
->   #include <linux/workqueue.h>
->   #include <linux/spi/spi.h>
-> @@ -41,6 +42,7 @@ struct mipid_device {
->   						   when we can issue the
->   						   next sleep in/out command */
->   	unsigned long	hw_guard_wait;		/* max guard time in jiffies */
-> +	struct gpio_desc	*reset;
->   
->   	struct omapfb_device	*fbdev;
->   	struct spi_device	*spi;
-> @@ -556,6 +558,12 @@ static int mipid_spi_probe(struct spi_device *spi)
->   		return -ENOMEM;
->   	}
->   
-> +	/* This will de-assert RESET if active */
-> +	md->reset = gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
-> +	if (IS_ERR(md->reset))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(md->reset),
-> +				     "no reset GPIO line\n");
+> @@ -571,11 +571,15 @@ static int mipid_spi_probe(struct spi_device *spi)
+>
+>   	r =3D mipid_detect(md);
+>   	if (r < 0)
+> -		return r;
+> +		goto free_md;
+>
+>   	omapfb_register_panel(&md->panel);
+>
+>   	return 0;
 > +
->   	spi->mode = SPI_MODE_0;
->   	md->spi = spi;
->   	dev_set_drvdata(&spi->dev, md);
-> @@ -574,6 +582,8 @@ static void mipid_spi_remove(struct spi_device *spi)
->   {
->   	struct mipid_device *md = dev_get_drvdata(&spi->dev);
->   
-> +	/* Asserts RESET */
-> +	gpiod_set_value(md->reset, 1);
-
-Hi,
-
-should this also be done in the probe if mipid_detect() fails?
-
-If yes, please also look at [1], that I've just sent, which introduces 
-an error handling path in the probe.
-
-CJ
-
-[1]: 
-https://lore.kernel.org/all/8b82e34724755b69f34f15dddb288cd373080390.1620505229.git.christophe.jaillet@wanadoo.fr/
-
->   	mipid_disable(&md->panel);
->   	kfree(md);
+> +free_md:
+> +	kfree(md);
+> +	return r;
 >   }
+>
+>   static void mipid_spi_remove(struct spi_device *spi)
 
-[...]
