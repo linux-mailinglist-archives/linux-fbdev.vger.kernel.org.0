@@ -2,119 +2,87 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54ADF7307D7
-	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Jun 2023 21:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A41B0731091
+	for <lists+linux-fbdev@lfdr.de>; Thu, 15 Jun 2023 09:30:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236006AbjFNTJd (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Wed, 14 Jun 2023 15:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42112 "EHLO
+        id S243792AbjFOHap (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 15 Jun 2023 03:30:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235333AbjFNTJI (ORCPT
+        with ESMTP id S238540AbjFOHan (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Wed, 14 Jun 2023 15:09:08 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4384D213F;
-        Wed, 14 Jun 2023 12:09:05 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-30fba11b1ceso4329611f8f.1;
-        Wed, 14 Jun 2023 12:09:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686769743; x=1689361743;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5u9vHxVGrzBlNg97U37WfCH1VZYMHPccfRdk0EIgi0Q=;
-        b=CpgQ+Kp063bXwmLKcP1EEsFKM93bGnY15ULSzxfxUlpJLR6gAyb4oeXYPjqoQUm1Qh
-         kHc+Ueb4SiOE+/bHeahP/YzEp4jLn6ikXcfMAlgRRiQV+sBkHYwFpjdNXjkOsMvCRpUi
-         2Jb1+Go+ysqeLQxKvH0let+oPsNKRlCFj1nQL9S5ZsjhYwW+J7uflIfyuyXjNdTLvfzG
-         0Q3jbptnO63W0s2Kp2zPcEmszKHZ4i4SAg6G7taC8/t7agm9MGmGOJWKsg0iNceDD1Yi
-         xnjkmJNOjCwEz+99cd4NwBByCBeI0xLzscMFpyO9RUZzCr2+s4nj7LRAa3JSvCc/Aohl
-         0Bfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686769743; x=1689361743;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5u9vHxVGrzBlNg97U37WfCH1VZYMHPccfRdk0EIgi0Q=;
-        b=hB8oMvaHCA/hFk8/wttd6jkFXrFhEZHC0Okhpo9R4bCPwxSAuD3DFkztGcbm5rVeM1
-         Rl8bI8vU8VD5gJPmXc5QB37AVwEe5/iD2bVeMQJbjGMO9rWraA6p1HYanTuz7jEqWCRq
-         teAsTy/coETMqpXFVaRB8aGh32AGgTpB2wtF4ToL8hrz5yXG3tvceIoMzuQHVkY9LAi5
-         e6ZwXqx3V9s5M/Q1lgZebajL2/rc3qDqEuMWiCBWzQjSrCMoMgPT8S9XA8501io8R+4Q
-         C6A1mxR8Fu6aQutk7kBFfVwPaBpu0TVlnBnuNnygDBBIjZCdC0gb0GX2xbAOpzCaD9BQ
-         SjbA==
-X-Gm-Message-State: AC+VfDxDadHYx/O98tUhhQXuw5zdYSWank2WpSHaOpqk9PzrlIQhjiD8
-        iMRmB38AACg/e8IEv8WNXnE=
-X-Google-Smtp-Source: ACHHUZ4WcZukf0p1Xe7srG7EpSfRIc8i1xLVw2rVsv9fLH+mSROtW2rbeQ6y/IwrGmrmgOtHgQBd0Q==
-X-Received: by 2002:a5d:4009:0:b0:30d:673e:1547 with SMTP id n9-20020a5d4009000000b0030d673e1547mr12367726wrp.41.1686769743534;
-        Wed, 14 Jun 2023 12:09:03 -0700 (PDT)
-Received: from [127.0.1.1] (2001-4dd6-393b-ff-f59e-4402-63f8-7ff5.ipv6dyn.netcologne.de. [2001:4dd6:393b:ff:f59e:4402:63f8:7ff5])
-        by smtp.gmail.com with ESMTPSA id e6-20020a5d5306000000b003110ab70a4fsm2341094wrv.83.2023.06.14.12.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 12:09:03 -0700 (PDT)
-From:   Maximilian Weigand <mweigand2017@gmail.com>
-Date:   Wed, 14 Jun 2023 21:08:54 +0200
-Subject: [PATCH 3/3] arm64: dts: rockchip: shift boost frequency for
- rk3566-pinenote backlight
-MIME-Version: 1.0
+        Thu, 15 Jun 2023 03:30:43 -0400
+X-Greylist: delayed 10287 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 00:30:41 PDT
+Received: from mail.sitirkam.com (mail.aurorateknoglobal.com [103.126.10.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2898312E;
+        Thu, 15 Jun 2023 00:30:41 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.sitirkam.com (Postfix) with ESMTP id 137E24E7BE86;
+        Thu, 15 Jun 2023 08:32:09 +0700 (WIB)
+Received: from mail.sitirkam.com ([127.0.0.1])
+        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id TI0pmiUZZ583; Thu, 15 Jun 2023 08:32:08 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.sitirkam.com (Postfix) with ESMTP id 9AE184E7B19D;
+        Thu, 15 Jun 2023 08:32:03 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.sitirkam.com 9AE184E7B19D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitirkam.com;
+        s=B8AB377C-ED3B-11EA-8736-9248CAEF674E; t=1686792723;
+        bh=q7vDHy+gLAr4GKZUDI+hjt8I93kvW09nNmGJORUTyfg=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=dFdTPJycpJmgou/MhEbWyDym6M0WdU7NrsxT8ZckOfUSB2oGAZE0XYGX/SF+sDMxv
+         4eitajis0BU5mQm3ZSquoz13vgtOn6XXefenT3O7CdhmzdL/uPYXXfg/2d3MXc9aZK
+         OOmEzeXxeB/9bw3LwcawQuNVjyyTJdN1zs9HyzUsINWKOgW4TmpOfMgciHQYg3GbUB
+         sJ/xiki6lWhxJRs7M+vfnQxi8d8IF82+vIcxJXMPou7rOG6G9QT+/dJVRMnDU5xTHg
+         55V8oKqEZu8Ws1oCurj43MyJqDsrnfLSlgpQQCsDrAWnkTbP3tSRecNiuybK3gGO17
+         9DcgiALydjzGA==
+X-Virus-Scanned: amavisd-new at mail.sitirkam.com
+Received: from mail.sitirkam.com ([127.0.0.1])
+        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 09RgNCqtcJrY; Thu, 15 Jun 2023 08:32:03 +0700 (WIB)
+Received: from [185.169.4.111] (unknown [185.169.4.111])
+        by mail.sitirkam.com (Postfix) with ESMTPSA id D830A4E7ACFF;
+        Thu, 15 Jun 2023 08:31:55 +0700 (WIB)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230602-lm3630a_boost_frequency-v1-3-076472036d1a@mweigand.net>
-References: <20230602-lm3630a_boost_frequency-v1-0-076472036d1a@mweigand.net>
-In-Reply-To: <20230602-lm3630a_boost_frequency-v1-0-076472036d1a@mweigand.net>
-To:     Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        Maximilian Weigand <mweigand@mweigand.net>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1686769738; l=833;
- i=mweigand@mweigand.net; s=20230601; h=from:subject:message-id;
- bh=68FCYhe2/70pszTO5OdRKpvXw9/fY4xli3NXD6/hP14=;
- b=S4CP5nzsXth0E8aD8pqpP1sl8cO7kQrQEa7HRD5BrzLuryOjSI3/PCNUZyOKG9OtVCheLd/e+
- i6pmW/zckRjBf6ve1+/wKCo4UP/YGxbpdycIp3O6ibe+0ai9w0SVaYb
-X-Developer-Key: i=mweigand@mweigand.net; a=ed25519;
- pk=Tjuj6PXmCCxzGTRw+9suZuZ41q/etgDHrIbPdkAaTpM=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Spende
+To:     Recipients <admin@sitirkam.com>
+From:   "Maria-Elisabeth Schaeffler" <admin@sitirkam.com>
+Date:   Wed, 14 Jun 2023 18:34:03 -0700
+Reply-To: schaefflermariaelisabeth1941@gmail.com
+Message-Id: <20230615013155.D830A4E7ACFF@mail.sitirkam.com>
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,NIXSPAM_IXHASH,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [schaefflermariaelisabeth1941[at]gmail.com]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Maximilian Weigand <mweigand@mweigand.net>
+Your email account has been selected for a donation of =E2=82=AC1,700,000. =
+Please contact me for more information.
 
-The PineNote exhibits visible flickering of its backlight for certain
-brightness settings. Alleviate this by enabling a frequency shift from
-500 kHz to 560 kHz for the boost converter of the led driver.
-
-Signed-off-by: Maximilian Weigand <mweigand@mweigand.net>
----
- arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-index 8d61f824c12d..4e4b3bbaa157 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-pinenote.dtsi
-@@ -453,6 +453,7 @@ led-controller@36 {
- 		pinctrl-names = "default";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-+		ti,boost_frequency_shift;
- 
- 		led@0 {
- 			reg = <0>;
-
--- 
-2.39.2
-
+Mrs Maria Elisabeth Schaeffler
+CEO SCHAEFFLER.
