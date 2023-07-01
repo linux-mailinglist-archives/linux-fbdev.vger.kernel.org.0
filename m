@@ -2,320 +2,464 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5AA744B2D
-	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jul 2023 23:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94B9D744B8D
+	for <lists+linux-fbdev@lfdr.de>; Sun,  2 Jul 2023 00:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjGAVqD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 1 Jul 2023 17:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
+        id S229671AbjGAWAx (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jul 2023 18:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjGAVqC (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 17:46:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45AE9171B
-        for <linux-fbdev@vger.kernel.org>; Sat,  1 Jul 2023 14:45:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688247916;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CVp6/k8iItY4Fh6tN5JBgOkeUtA2k8q9cd5KwLvRASM=;
-        b=eQh6g9WMHzalF5+MuTk5vXUs48/u42il59kWIJFrnP9bnI+6JQGYMBm/8TUEeVRnDxEdu1
-        zxV7WZTATuDSAbrFL1bjBr87ZjSt2doffsp4wmDlfebC2QJxe+PhXv/qw1+pumIvz/oxSf
-        vnrhpHnxU2xr+Y+p55NDNBCytaro+0g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-4ZFoJ9p7PUSrVp1E-mu6EQ-1; Sat, 01 Jul 2023 17:45:15 -0400
-X-MC-Unique: 4ZFoJ9p7PUSrVp1E-mu6EQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f9bef91aa4so18319885e9.3
-        for <linux-fbdev@vger.kernel.org>; Sat, 01 Jul 2023 14:45:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688247914; x=1690839914;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CVp6/k8iItY4Fh6tN5JBgOkeUtA2k8q9cd5KwLvRASM=;
-        b=Rj6d+A5Zivrqt/v50wWJZi90z81zhFgNOnBSAmp+BnbD9X5+NSKkjRhUCxFPKyb0AY
-         fpdwko+0cU3/BKmKmwkUHOhJfw4vKXs7VXTtFKCXnTDCmJZ11pk5uS8VSgmoKNlNJPDD
-         C7h/xPx4/1d2Fw3Ol9y8Jr8mARes1pnY95S50Zjt41VAmFzDxQV26AC+Z6kNfCjSr7A5
-         kO1kr0xCn+ZFfKxNUI2dqWUN6Dd7CeHUpLsh5bNb5ZVAw6Ym8YxDMHPcW2kySIifyTUP
-         hlLPHG3Ed5MNQAgcfEicq7+eegsFdxnTF14J5bLZ+GUrcCW7ASY/7ygvuH0nKmoL/QQG
-         UWTg==
-X-Gm-Message-State: AC+VfDy1vsqguWG6kvs5+doMTODR1oCqhlQaWszeragtTjqzc/AoozOx
-        +93vprNI7YkpApaLr1X3YOKbkd8UNi0dx4PYKZQcRHyJ/jPGE7wa0rYceHia62bfz42dkDp4c7/
-        15wgU4hGU8QU8fwp6lccPa0w=
-X-Received: by 2002:a1c:7706:0:b0:3fb:b61f:c719 with SMTP id t6-20020a1c7706000000b003fbb61fc719mr4959573wmi.33.1688247914152;
-        Sat, 01 Jul 2023 14:45:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5WtvTVFU6XcG3QtAxzUOBs4bnSkgPG7Dra6Iy7iETJyiZfrdtFMs1g1wQAz4NSuuTBGfeRFg==
-X-Received: by 2002:a1c:7706:0:b0:3fb:b61f:c719 with SMTP id t6-20020a1c7706000000b003fbb61fc719mr4959554wmi.33.1688247913775;
-        Sat, 01 Jul 2023 14:45:13 -0700 (PDT)
-Received: from minerva.home (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id o10-20020a1c750a000000b003fbc0ea491dsm6913800wmc.40.2023.07.01.14.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jul 2023 14:45:13 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        x86@kernel.org
-Subject: [PATCH v2 1/2] fbdev: Split frame buffer support in FB and FB_CORE symbols
-Date:   Sat,  1 Jul 2023 23:44:50 +0200
-Message-ID: <20230701214503.550549-2-javierm@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230701214503.550549-1-javierm@redhat.com>
-References: <20230701214503.550549-1-javierm@redhat.com>
+        with ESMTP id S229502AbjGAWAx (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 18:00:53 -0400
+Received: from mailrelay6-1.pub.mailoutpod2-cph3.one.com (mailrelay6-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:405::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889E3171D
+        for <linux-fbdev@vger.kernel.org>; Sat,  1 Jul 2023 15:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
+         message-id:subject:cc:to:from:date:from;
+        bh=sx3fLtLVDPTdDaRV0K8KJy2IRkT3MV5SEVMqYRR+bv4=;
+        b=k9FSQ+kspUKgHzfKvedy2gxIWVV/pZuVuLP+szjpWDH32SguYGWvKLYuFHLc0jaYF8eYBJdo87Z/z
+         B7kl+a87yscSUIdomOP6980TfiHY5joVq0+x8PQ1iMB5PWT0SgGH2H6YJfGgztj5Kn37sTeAmobM6P
+         Ipvb1lodVaaoouZRsLZNAAgtgXr6tYKU6cXxF1oBqAiNpyu6ZL6Efb/bxFOOjKkydV33pC/7N6eSJC
+         yzZnP3HajH4TFewr0sjbbzt6Xz4P4ru8a5Hzz/2r2tfdryPDSgQSTE+Z87fL9ylkgChIOFkGfHVyos
+         DvTmSQr1iPZ+Wm/aCq3V/Syf++3luCw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
+         message-id:subject:cc:to:from:date:from;
+        bh=sx3fLtLVDPTdDaRV0K8KJy2IRkT3MV5SEVMqYRR+bv4=;
+        b=6BhoTTFNKWRZw2MvPvyoCIultXLHsj7xN+Ik3IJM10OL4GK8ulhZgXO42rr4Y7nBWEnT7NHaTh3R5
+         jTseMswAQ==
+X-HalOne-ID: bb1b1ba4-185a-11ee-a2ac-6f01c1d0a443
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay6 (Halon) with ESMTPSA
+        id bb1b1ba4-185a-11ee-a2ac-6f01c1d0a443;
+        Sat, 01 Jul 2023 22:00:47 +0000 (UTC)
+Date:   Sun, 2 Jul 2023 00:00:46 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Julius Zint <julius@zint.sh>
+Cc:     Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 1/1] backlight: apple_bl_usb: Add Apple Studio Display
+ support
+Message-ID: <20230701220046.GA605951@ravnborg.org>
+References: <20230701120806.11812-1-julius@zint.sh>
+ <20230701120806.11812-2-julius@zint.sh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230701120806.11812-2-julius@zint.sh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Currently the CONFIG_FB option has to be enabled even if no legacy fbdev
-drivers are needed (e.g: only to have support for framebuffer consoles).
+Hi Julius.
 
-The DRM subsystem has a fbdev emulation layer, but depends on CONFIG_FB
-and so it can only be enabled if that dependency is enabled as well.
+Thanks for posting this. I few nits in the following where you as the
+author decide what to ignore and what to update.
 
-That means fbdev drivers have to be explicitly disabled if users want to
-enable CONFIG_FB, only to use fbcon and/or the DRM fbdev emulation layer.
+	Sam
 
-This patch introduces a non-visible CONFIG_FB_CORE symbol that could be
-enabled just to have core support needed for CONFIG_DRM_FBDEV_EMULATION,
-allowing CONFIG_FB to be disabled (and automatically disabling all the
-fbdev drivers).
 
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
----
+On Sat, Jul 01, 2023 at 02:08:03PM +0200, Julius Zint wrote:
+> The Apple Studio Display does not have any physical buttons and the only
+> way to get or set the brightness is by sending USB control transfers to a
+> HID device exposed by the display.
+> 
+> These control transfers take the form of a HID_(GET|SET)_REPORT request
+> and the payload looks like this:
+> 
+>     struct brightness_ctrl_message_data {
+>            u8 unknown_1;
+>            __le16 brightness;
+>            u8 unkown_2[4];
+>     } __packed;
+> 
+> When compiled as a module this driver needs to be part of the early boot
+> environment, otherwise the generic USB HID driver will claim the device.
 
-Changes in v2:
-- Keep "depends on FB" for FB_DDC, FB_HECUBA, FB_SVGALIB, FB_MACMODES,
-  FB_BACKLIGHT, FB_MODE_HELPERS and FB_TILEBLITTING (Arnd Bergmann).
-- Don't change the fb.o object name (Arnd Bergmann).
-- Make FB_CORE a non-visible Kconfig symbol instead (Thomas Zimmermann).
+I hope someone else can help here, as I have no clue.
 
- arch/x86/Makefile                 |  2 +-
- arch/x86/video/Makefile           |  2 +-
- drivers/video/console/Kconfig     |  2 +-
- drivers/video/fbdev/Kconfig       | 40 +++++++++++++++++++------------
- drivers/video/fbdev/core/Makefile |  2 +-
- 5 files changed, 29 insertions(+), 19 deletions(-)
+> 
+> Signed-off-by: Julius Zint <julius@zint.sh>
+> ---
+>  drivers/video/backlight/Kconfig        |   8 +
+>  drivers/video/backlight/Makefile       |   1 +
+>  drivers/video/backlight/apple_bl_usb.c | 264 +++++++++++++++++++++++++
+>  3 files changed, 273 insertions(+)
+>  create mode 100644 drivers/video/backlight/apple_bl_usb.c
+> 
+> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+> index 51387b1ef012..9383d402ebed 100644
+> --- a/drivers/video/backlight/Kconfig
+> +++ b/drivers/video/backlight/Kconfig
+> @@ -290,6 +290,14 @@ config BACKLIGHT_APPLE
+>  	  If you have an Intel-based Apple say Y to enable a driver for its
+>  	  backlight.
+>  
+> +config BACKLIGHT_APPLE_USB
+> +	tristate "Apple USB Backlight Driver"
+> +	depends on USB
+> +	help
+> +	  If you have an external display from Apple that is attached via USB
+> +	  say Y to enable a driver for its backlight. Currently it supports the
+> +	  Apple Studio Display.
+> +
+>  config BACKLIGHT_QCOM_WLED
+>  	tristate "Qualcomm PMIC WLED Driver"
+>  	select REGMAP
+> diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+> index f72e1c3c59e9..c42880655113 100644
+> --- a/drivers/video/backlight/Makefile
+> +++ b/drivers/video/backlight/Makefile
+> @@ -23,6 +23,7 @@ obj-$(CONFIG_BACKLIGHT_ADP5520)		+= adp5520_bl.o
+>  obj-$(CONFIG_BACKLIGHT_ADP8860)		+= adp8860_bl.o
+>  obj-$(CONFIG_BACKLIGHT_ADP8870)		+= adp8870_bl.o
+>  obj-$(CONFIG_BACKLIGHT_APPLE)		+= apple_bl.o
+> +obj-$(CONFIG_BACKLIGHT_APPLE_USB)	+= apple_bl_usb.o
+>  obj-$(CONFIG_BACKLIGHT_AS3711)		+= as3711_bl.o
+>  obj-$(CONFIG_BACKLIGHT_BD6107)		+= bd6107.o
+>  obj-$(CONFIG_BACKLIGHT_CARILLO_RANCH)	+= cr_bllcd.o
+> diff --git a/drivers/video/backlight/apple_bl_usb.c b/drivers/video/backlight/apple_bl_usb.c
+> new file mode 100644
+> index 000000000000..b746b7822974
+> --- /dev/null
+> +++ b/drivers/video/backlight/apple_bl_usb.c
+> @@ -0,0 +1,264 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +#include <linux/init.h>
+> +#include <linux/module.h>
+> +#include <linux/usb.h>
+> +#include <linux/backlight.h>
+> +#include <asm/byteorder.h>
+> +
+> +#define APPLE_STUDIO_DISPLAY_VENDOR_ID  0x05ac
+> +#define APPLE_STUDIO_DISPLAY_PRODUCT_ID 0x1114
+> +
+> +#define HID_GET_REPORT 0x01
+> +#define HID_SET_REPORT 0x09
+> +
+> +#define HID_REPORT_TYPE_FEATURE 0x0300
+> +
+> +struct apple_bl_usb_data {
+> +	struct usb_interface *usb_interface;
+> +	struct usb_device *usb_dev;
+> +};
+> +
+> +struct brightness_ctrl_message_data {
+> +	u8 unknown_1;
+> +	__le16 brightness;
+> +	u8 unkown_2[4];
+> +} __packed;
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index b39975977c03..89a02e69be5f 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -259,7 +259,7 @@ drivers-$(CONFIG_PCI)            += arch/x86/pci/
- # suspend and hibernation support
- drivers-$(CONFIG_PM) += arch/x86/power/
- 
--drivers-$(CONFIG_FB) += arch/x86/video/
-+drivers-$(CONFIG_FB_CORE) += arch/x86/video/
- 
- ####
- # boot loader support. Several targets are kept for legacy purposes
-diff --git a/arch/x86/video/Makefile b/arch/x86/video/Makefile
-index 11640c116115..5ebe48752ffc 100644
---- a/arch/x86/video/Makefile
-+++ b/arch/x86/video/Makefile
-@@ -1,2 +1,2 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_FB)               += fbdev.o
-+obj-$(CONFIG_FB_CORE)		+= fbdev.o
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index a2a88d42edf0..1b5a319971ed 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -72,7 +72,7 @@ config DUMMY_CONSOLE_ROWS
- 
- config FRAMEBUFFER_CONSOLE
- 	bool "Framebuffer Console support"
--	depends on FB && !UML
-+	depends on FB_CORE && !UML
- 	select VT_HW_CONSOLE_BINDING
- 	select CRC32
- 	select FONT_SUPPORT
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index cecf15418632..da6f7d588f17 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -6,8 +6,12 @@
- config FB_NOTIFY
- 	bool
- 
-+menuconfig FB_CORE
-+	tristate "Core support for frame buffer devices"
-+
- menuconfig FB
--	tristate "Support for frame buffer devices"
-+	tristate "Support for frame buffer device drivers"
-+	select FB_CORE
- 	select FB_NOTIFY
- 	select VIDEO_CMDLINE
- 	help
-@@ -33,6 +37,12 @@ menuconfig FB
- 	  <http://www.munted.org.uk/programming/Framebuffer-HOWTO-1.3.html> for more
- 	  information.
- 
-+	  This enables support for native frame buffer device (fbdev) drivers.
-+
-+	  The DRM subsystem provides support for emulated frame buffer devices
-+	  on top of KMS drivers, but this option allows legacy fbdev drivers to
-+	  be enabled as well.
-+
- 	  Say Y here and to the driver for your graphics board below if you
- 	  are compiling a kernel for a non-x86 architecture.
- 
-@@ -44,7 +54,7 @@ menuconfig FB
- 
- config FIRMWARE_EDID
- 	bool "Enable firmware EDID"
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  This enables access to the EDID transferred from the firmware.
- 	  On the i386, this is from the Video BIOS. Enable this if DDC/I2C
-@@ -59,7 +69,7 @@ config FIRMWARE_EDID
- 
- config FB_DEVICE
- 	bool "Provide legacy /dev/fb* device"
--	depends on FB
-+	select FB_CORE
- 	default y
- 	help
- 	  Say Y here if you want the legacy /dev/fb* device file and
-@@ -75,7 +85,7 @@ config FB_DDC
- 
- config FB_CFB_FILLRECT
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the cfb_fillrect function for generic software rectangle
- 	  filling. This is used by drivers that don't provide their own
-@@ -83,7 +93,7 @@ config FB_CFB_FILLRECT
- 
- config FB_CFB_COPYAREA
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the cfb_copyarea function for generic software area copying.
- 	  This is used by drivers that don't provide their own (accelerated)
-@@ -91,7 +101,7 @@ config FB_CFB_COPYAREA
- 
- config FB_CFB_IMAGEBLIT
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the cfb_imageblit function for generic software image
- 	  blitting. This is used by drivers that don't provide their own
-@@ -99,7 +109,7 @@ config FB_CFB_IMAGEBLIT
- 
- config FB_CFB_REV_PIXELS_IN_BYTE
- 	bool
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Allow generic frame-buffer functions to work on displays with 1, 2
- 	  and 4 bits per pixel depths which has opposite order of pixels in
-@@ -107,7 +117,7 @@ config FB_CFB_REV_PIXELS_IN_BYTE
- 
- config FB_SYS_FILLRECT
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the sys_fillrect function for generic software rectangle
- 	  filling. This is used by drivers that don't provide their own
-@@ -115,7 +125,7 @@ config FB_SYS_FILLRECT
- 
- config FB_SYS_COPYAREA
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the sys_copyarea function for generic software area copying.
- 	  This is used by drivers that don't provide their own (accelerated)
-@@ -123,7 +133,7 @@ config FB_SYS_COPYAREA
- 
- config FB_SYS_IMAGEBLIT
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 	help
- 	  Include the sys_imageblit function for generic software image
- 	  blitting. This is used by drivers that don't provide their own
-@@ -162,22 +172,22 @@ endchoice
- 
- config FB_SYS_FOPS
- 	tristate
--	depends on FB
-+	depends on FB_CORE
- 
- config FB_DEFERRED_IO
- 	bool
--	depends on FB
-+	depends on FB_CORE
- 
- config FB_IO_HELPERS
- 	bool
--	depends on FB
-+	depends on FB_CORE
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_IMAGEBLIT
- 
- config FB_SYS_HELPERS
- 	bool
--	depends on FB
-+	depends on FB_CORE
- 	select FB_SYS_COPYAREA
- 	select FB_SYS_FILLRECT
- 	select FB_SYS_FOPS
-@@ -185,7 +195,7 @@ config FB_SYS_HELPERS
- 
- config FB_SYS_HELPERS_DEFERRED
- 	bool
--	depends on FB
-+	depends on FB_CORE
- 	select FB_DEFERRED_IO
- 	select FB_SYS_HELPERS
- 
-diff --git a/drivers/video/fbdev/core/Makefile b/drivers/video/fbdev/core/Makefile
-index 9150bafd9e89..4c2e4a026d12 100644
---- a/drivers/video/fbdev/core/Makefile
-+++ b/drivers/video/fbdev/core/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_FB_NOTIFY)           += fb_notify.o
--obj-$(CONFIG_FB)                  += fb.o
-+obj-$(CONFIG_FB_CORE)             += fb.o
- fb-y                              := fb_backlight.o \
-                                      fb_info.o \
-                                      fbmem.o fbmon.o fbcmap.o \
--- 
-2.41.0
+A different way to set the brightness value could be:
+struct brightness_ctrl_message_data {
+	u8 cmd;
+	u8[2] brightness;
+	u8 unknown[4];
+} __packed;
 
+static void set_ctrl_message_brightness(struct brightness_ctrl_message_data *msg,
+					u16 brightness_value)
+{
+	u16 brightness = brightness_value + 400;
+	msg->brightness[0] = brightness & 0xff;
+	msg->brightness[2] = brightness >> 8;
+}
+
+This is similar to what is done in drm_mipi_dsi.
+Other backlight drivers (except one) uses similar tricks to handle when
+the brightness is more than one byte.
+
+The magic number 400 would be better represented by a constant like:
+#define BACKLIGHT_INTENSITY_OFFSET	400
+Or something like this.
+
+It also from the code looks like unknown_1 is a command byte.
+#define GET_BACKLIGHT_INTENSITY 0x0
+#define SET_BACKLIGHT_INTENSITY	0x1
+
+Looks more descriptive than the current hard coding, implicit via memset
+or explicit.
+
+> +void init_ctrl_msg_data(struct brightness_ctrl_message_data *msg)
+> +{
+> +	memset(msg, 0, sizeof(struct brightness_ctrl_message_data));
+> +	msg->unknown_1 = 0x01;
+> +}
+As the build bot already told you, please use static everywhere
+possible.
+In this case just drop the helper as it has only one user.
+
+> +
+> +void set_ctrl_message_brightness(struct brightness_ctrl_message_data *msg,
+> +				 u16 brightness_value)
+> +{
+> +	msg->brightness = cpu_to_le16(brightness_value + 400);
+> +}
+> +
+> +u16 get_ctrl_message_brightness(struct brightness_ctrl_message_data *msg)
+> +{
+> +	return le16_to_cpu(msg->brightness) - 400;
+> +}
+> +
+> +int apple_bl_usb_usb_get_brightness(struct usb_interface *interface,
+> +				    struct usb_device *usb_dev,
+> +				    int *brightness)
+> +{
+> +	int err;
+> +	u16 interface_nr;
+> +	int msg_data_size;
+> +	struct brightness_ctrl_message_data *msg_data;
+> +
+> +	msg_data_size = sizeof(struct brightness_ctrl_message_data);
+> +	msg_data = kzalloc(msg_data_size, GFP_KERNEL);
+The struct is so small that you can safely have it as a local variable.
+The pointer is almost the same size. And then there is no need to check
+for failing allocations.
+
+> +	memset(msg_data, 0x00, msg_data_size);
+> +	interface_nr = interface->cur_altsetting->desc.bInterfaceNumber;
+> +
+> +	err = usb_control_msg(usb_dev,
+> +			      usb_rcvctrlpipe(usb_dev, 0),
+> +			      HID_GET_REPORT,
+> +			      USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
+> +			      /* wValue: HID-Report Type and Report ID */
+> +			      HID_REPORT_TYPE_FEATURE | 0x01,
+> +			      interface_nr /* wIndex */,
+> +			      msg_data,
+> +			      msg_data_size,
+> +			      HZ);
+Consider specifying the number of msec to wait, rather than the platform
+dependent HZ value that may or may not work.
+I found:
+#define USB_CTRL_GET_TIMEOUT	5000
+#define USB_CTRL_SET_TIMEOUT	5000
+
+They look like the right choices here.
+
+> +	if (err < 0) {
+> +		dev_err(&interface->dev,
+> +			"get: usb control message err: %d\n",
+> +			err);
+> +	}
+> +	*brightness = get_ctrl_message_brightness(msg_data);
+Should this check the first byte that I assume is a command byte?
+
+> +	kfree(msg_data);
+> +	dev_dbg(&interface->dev, "get brightness: %d\n", *brightness);
+> +	return 0;
+> +}
+> +
+> +int apple_bl_usb_usb_set_brightness(struct usb_interface *interface,
+> +				    struct usb_device *usb_dev,
+> +				    int brightness)
+> +{
+> +	int err;
+> +	u16 interface_nr;
+> +	struct brightness_ctrl_message_data *msg_data;
+> +
+> +	msg_data = kzalloc(sizeof(struct brightness_ctrl_message_data), GFP_KERNEL);
+As above, declare it on the stack.
+
+> +	interface_nr = interface->cur_altsetting->desc.bInterfaceNumber;
+> +	init_ctrl_msg_data(msg_data);
+> +	set_ctrl_message_brightness(msg_data, brightness);
+> +
+> +	err = usb_control_msg(usb_dev,
+> +			      usb_sndctrlpipe(usb_dev, 0),
+> +			      HID_SET_REPORT,
+> +			      USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
+> +			      /* wValue: HID-Report Type and Report ID */
+> +			      HID_REPORT_TYPE_FEATURE | 0x01,
+> +			      interface_nr /* wIndex */,
+> +			      msg_data,
+> +			      sizeof(struct brightness_ctrl_message_data),
+> +			      HZ);
+> +	kfree(msg_data);
+> +	if (err < 0) {
+> +		dev_err(&interface->dev,
+> +			"set: usb control message err: %d\n",
+> +			err);
+> +		return err;
+> +	}
+> +	dev_dbg(&interface->dev, "set brightness: %d\n", brightness);
+> +	return 0;
+> +}
+> +
+> +int apple_bl_usb_check_fb(struct backlight_device *bd, struct fb_info *info)
+> +{
+> +	dev_info(&bd->dev, "check fb\n");
+> +	return 0;
+> +}
+> +
+> +int apple_bl_usb_get_brightness(struct backlight_device *bl)
+> +{
+> +	int ret;
+> +	struct apple_bl_usb_data *data;
+> +	int hw_brightness;
+> +
+> +	data = bl_get_data(bl);
+> +	ret = apple_bl_usb_usb_get_brightness(data->usb_interface,
+> +					      data->usb_dev,
+> +					      &hw_brightness);
+> +	if (!ret)
+> +		ret = hw_brightness;
+> +
+> +	return ret;
+> +}
+> +
+> +int apple_bl_usb_update_status(struct backlight_device *bl)
+> +{
+> +	int err;
+> +	struct apple_bl_usb_data *data;
+> +
+> +	data = bl_get_data(bl);
+> +	err = apple_bl_usb_usb_set_brightness(data->usb_interface,
+> +					      data->usb_dev,
+> +					      bl->props.brightness);
+Here you should replace bl->props.brightness with
+backlight_get_brightness(bl).
+This will give you the value 0 when the backlight device is power down
+or blank which is often the right thing.
+
+> +	return err;
+> +}
+> +
+> +static const struct backlight_ops apple_bl_usb_ops = {
+> +	.update_status  = apple_bl_usb_update_status,
+> +	.get_brightness = apple_bl_usb_get_brightness,
+> +	.check_fb       = apple_bl_usb_check_fb,
+> +};
+> +
+> +static void apple_bl_usb_disconnect(struct usb_interface *interface)
+> +{
+> +	struct backlight_device *bl;
+> +
+> +	dev_dbg(&interface->dev, "disconnect\n");
+> +
+> +	bl = usb_get_intfdata(interface);
+> +	usb_set_intfdata(interface, NULL);
+> +	backlight_device_unregister(bl);
+> +}
+> +
+> +static int apple_bl_usb_probe(struct usb_interface *interface,
+> +			      const struct usb_device_id *id)
+> +{
+> +	struct backlight_properties props;
+> +	struct backlight_device *bl;
+> +	struct usb_device *usb_dev;
+> +	struct device *dev;
+> +	struct apple_bl_usb_data *data;
+> +	int brightness_interface_nr;
+> +
+> +	dev_dbg(&interface->dev, "probe\n");
+> +
+> +	dev = &interface->dev;
+> +	usb_dev = interface_to_usbdev(interface);
+> +
+> +	switch (usb_dev->config->desc.bConfigurationValue) {
+> +	case 1:
+> +		brightness_interface_nr = 0x7;
+> +		break;
+> +	case 2:
+> +		brightness_interface_nr = 0x9;
+> +		break;
+> +	case 3:
+> +		brightness_interface_nr = 0xc;
+> +		break;
+> +	default:
+> +		dev_err(dev,
+> +			"unexpected configuration value: %d\n",
+> +			usb_dev->config->desc.bConfigurationValue);
+> +		return -EINVAL;
+Use dev_err_probe() here.
+> +	}
+> +
+> +	if (interface->cur_altsetting->desc.bInterfaceNumber != brightness_interface_nr)
+> +		return -ENODEV;
+Same here, so you also log something.
+> +
+> +	data = devm_kzalloc(dev,
+> +			    sizeof(struct apple_bl_usb_data),
+> +			    GFP_KERNEL);
+> +	if (IS_ERR(data)) {
+> +		dev_err(dev, "failed to allocate memory\n");
+> +		return PTR_ERR(bl);
+Same here.
+> +	}
+> +	data->usb_interface = interface;
+> +	data->usb_dev = usb_dev;
+> +
+> +	// Valid brightness values for the apple studio display range from 400
+> +	// to 60000. Since the backlight subsystem´s brightness value starts
+> +	// from 0, we use 0 to 59600 and offset it by the minimum value.
+> +	memset(&props, 0, sizeof(props));
+> +	props.type = BACKLIGHT_RAW;
+> +	props.max_brightness = 59600;
+> +
+> +	bl = backlight_device_register("apple_studio_display",
+> +				       dev,
+> +				       data,
+> +				       &apple_bl_usb_ops,
+> +				       &props);
+Any particular reason NOT to use devm_backlight_device_register()?
+
+> +	if (IS_ERR(bl)) {
+> +		dev_err(dev, "failed to register backlight\n");
+> +		return PTR_ERR(bl);
+> +	}
+> +	usb_set_intfdata(interface, bl);
+> +	return 0;
+> +}
+> +
+> +static int apple_bl_usb_suspend(struct usb_interface *interface,
+> +				pm_message_t message)
+> +{
+> +	dev_dbg(&interface->dev, "suspend\n");
+> +	return 0;
+> +}
+> +
+> +static int apple_bl_usb_resume(struct usb_interface *interface)
+> +{
+> +	dev_dbg(&interface->dev, "resume\n");
+> +	return 0;
+> +}
+> +
+> +static const struct usb_device_id id_table[] = {
+> +	{
+> +		.idVendor    = APPLE_STUDIO_DISPLAY_VENDOR_ID,
+> +		.idProduct   = APPLE_STUDIO_DISPLAY_PRODUCT_ID,
+> +	},
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(usb, id_table);
+> +
+> +static struct usb_driver usb_asdbl_driver = {
+> +	.name         = "apple_bl_usb",
+> +	.probe        = apple_bl_usb_probe,
+> +	.disconnect   = apple_bl_usb_disconnect,
+> +	.id_table     = id_table,
+> +	.suspend      = apple_bl_usb_suspend,
+> +	.resume       = apple_bl_usb_resume,
+> +	.reset_resume = apple_bl_usb_resume
+> +};
+> +module_usb_driver(usb_asdbl_driver);
+> +
+> +MODULE_AUTHOR("Julius Zint <julius@zint.sh>");
+> +MODULE_LICENSE("Dual MIT/GPL");
+> +MODULE_DESCRIPTION("Backlight control for USB-C Thunderbolt Apple displays");
+> -- 
+> 2.41.0
