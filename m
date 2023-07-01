@@ -2,135 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA9E744AF8
-	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jul 2023 21:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3879744B01
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jul 2023 22:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229618AbjGATuf (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 1 Jul 2023 15:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        id S229572AbjGAUFU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jul 2023 16:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjGATuf (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 15:50:35 -0400
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DE2126;
-        Sat,  1 Jul 2023 12:50:33 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailnew.west.internal (Postfix) with ESMTP id 878362B001A6;
-        Sat,  1 Jul 2023 15:50:28 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 01 Jul 2023 15:50:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1688241028; x=1688248228; bh=6d
-        Cnl4ZTF8uORmf2fPXyceI7W8KdAWxXDE+eMKfbdsc=; b=EuPIMujiOgmweN5zQ4
-        crII5t37NrRYoCFwz4GJsEYoKiAGWvT1g++SGSNqLDkEvTtMQCLftzB8zZ8iQiEc
-        Tp5RvpBkZVIjB6ZZMeS2qCXCefqV/aROpQrh4BuXQc6n3voGGct0P2d82XfxnWTT
-        u8cf5F91Wxo0ikIcjH1/1W5Uqbx+8XjJxGoiGNCze7gotZsEzFbEonoJzoSuckrv
-        LRKn1bA5FFZoEXdHvrz/Y2FUUZrOStJaCDVjW/Txr+rC68+RuEeQ96UfhGdrotKX
-        z7qKHmoP9u+3xMUWEJYm3WP2rXZ23NaID4aUT93u8cG2KtkeDF6bLTbDqJJHv4h4
-        W1Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688241028; x=1688248228; bh=6dCnl4ZTF8uOR
-        mf2fPXyceI7W8KdAWxXDE+eMKfbdsc=; b=lNLk9ZpKQ9qyqC/7+FaBoP8KOZ8C4
-        6Z2C8ka1Gru6VrqNUvo3gCUmuiWqCB56jEFH68ZHGbgd4Swlgqcv7cs32C1zodJg
-        p9bBET9HQU/spwrIENIcD9bmgxUk6e8vKyJIWFgosVtsOd+UltkPnYSqNlTM3v/c
-        HPoDxRKvGSJxxGnOVf0UilsmgfTdN/Q9r9cWB8w0SkMqMWRzxtI4SGP4ZYZYk5xU
-        zxUeAjF8UR1DBQuDGAqGsfYep05Ip8VFE+rM0LXKOYh0nTovu2Z37cfTQoSYdAHC
-        hUn57cMYqgDTjpRn0AttzGJzKbXbAFi6MWmZ4U8GMLwRBPZU9nPI2Z4Og==
-X-ME-Sender: <xms:goOgZI2UG6wH86x7mQuPgLfnF-OPVD97GEllQ3wFbgXHtcAd6tjjtQ>
-    <xme:goOgZDEKJ4-GWsl1Cdr8huqVPa1g6taEVaQdJGdK1ZC6enqFdV3p1yajz1FcO_db5
-    ldb8GWA9gOJHuXyknM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdekgddufeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:goOgZA61U-H1IUVUUERsQrRuoc3g_kUE4nCZpeoONghOGzme-gLV8A>
-    <xmx:goOgZB0XGncFROqierv-5lhHrE1kH7xt7utf33Cv70ZgQGBSZvtjOw>
-    <xmx:goOgZLGp39fIVlyHgl3l2ILPbCxyxF_SN2lwX_vZs478_DtWnAfqcA>
-    <xmx:hIOgZJ9k9iVSIXXK-_Bxysyn0-cEbs86ejTx0hSHiMnGhQWEKcrXtYLJZUc>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 68FE3B60086; Sat,  1 Jul 2023 15:50:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
-Mime-Version: 1.0
-Message-Id: <956bbdce-c766-4fba-9a71-3d6a388b258b@app.fastmail.com>
-In-Reply-To: <d231d0fe-c5f5-073a-3b8c-9441e1674c24@suse.de>
-References: <20230629225113.297512-1-javierm@redhat.com>
- <d231d0fe-c5f5-073a-3b8c-9441e1674c24@suse.de>
-Date:   Sat, 01 Jul 2023 21:49:56 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Thomas Zimmermann" <tzimmermann@suse.de>,
-        "Javier Martinez Canillas" <javierm@redhat.com>,
-        linux-kernel@vger.kernel.org
-Cc:     "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        "Borislav Petkov" <bp@alien8.de>,
-        "Daniel Vetter" <daniel@ffwll.ch>,
-        "Dave Hansen" <dave.hansen@linux.intel.com>,
-        "Dave Airlie" <airlied@gmail.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, "Helge Deller" <deller@gmx.de>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-        "Maxime Ripard" <mripard@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Sam Ravnborg" <sam@ravnborg.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH 0/2] Allow disabling all native fbdev drivers and only keeping DRM
- emulation
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        with ESMTP id S229477AbjGAUFT (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 16:05:19 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7781999
+        for <linux-fbdev@vger.kernel.org>; Sat,  1 Jul 2023 13:05:18 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b69923a715so48325921fa.0
+        for <linux-fbdev@vger.kernel.org>; Sat, 01 Jul 2023 13:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688241917; x=1690833917;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
+        b=iGilhQpN+Xp9qjblubJi7hO9s7jYESrw9G9iOnn8wlZP5fEU0Mink+bJuD5itJ/HuO
+         w2Q2h1gr2Y+TdwfDfHAFJwCmji8UV7M8SRY5/qmF+TvzpbkrpLR4NhJQzFnR/q3gP8PR
+         nAdfhmRsLbBqF6t5Tbyl6a8gPfrGsR5wfAxiVQ0TVEzKq4S3zsDa8f+8EsdUOXd5l0lX
+         pvZYwQFQ835oCkCWc1fnPIKdXCNxNs+eZWLrQCyW76dchCVpWK5C80KzrzBUIfhe8dML
+         NMdWE2uv4Im3eFYsQL/uSbwnKmIPZ8mZyJoVS4dbIrHczrl+b6hijhh03OYbkAsW2FBQ
+         DM0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688241917; x=1690833917;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
+        b=Jb7yAvDpscSxXAUiaukwDyLGLl3/JNcpD+6CFHPBalwKXaynv5ZUJGR8AY0rW64Qny
+         w5B0CQWyujLqPC+nmtJXFMaaQf6YXjx9cd+fKMKsia/j4zEA0nxCy+fVD/cDD86TMa8+
+         HFVFceaJntQogMhuWazBBACqhN/nFBNcNiJEksYTQXynawEuWBSSpIW9vjCzFcKKIcd3
+         tSey3FAd92tH6pW6K6Lp18EbHQB9ydVvdNJb+Vn2Vm46PfBT0C6p4hvNANHK7FoXQa/6
+         VCygq6PY1h/6E+12V7P46iziENuudnnBfrJPDIrMfJ9wcz1mTZo+7qfvEGlnr6NmZCrZ
+         IBCA==
+X-Gm-Message-State: ABy/qLZQHu2CUPcuhkcaG9GWlkrYLhCymOM2ju2ApOeawz+U9RRzRWhc
+        Wf1vU+h0Srju/muxlWTSx9oY3u8k4H3YO+4a0Lc=
+X-Google-Smtp-Source: APBJJlEt4T835SYvN3Y5ck7fL9F3cwXhmszGaPDCg/bxiFY2At5sneRZ0hcc8WoDALZLuUNa/WnJ64McvVX5OD4/Qb0=
+X-Received: by 2002:a2e:9209:0:b0:2b4:490a:66b7 with SMTP id
+ k9-20020a2e9209000000b002b4490a66b7mr4826097ljg.12.1688241916422; Sat, 01 Jul
+ 2023 13:05:16 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a2e:2e0b:0:b0:2b6:d63d:cc29 with HTTP; Sat, 1 Jul 2023
+ 13:05:15 -0700 (PDT)
+Reply-To: osbornemichel438@gmail.com
+From:   John T <lmas93352@gmail.com>
+Date:   Sat, 1 Jul 2023 21:05:15 +0100
+Message-ID: <CAJvcsdew8WJRp8p+2NFvK99F8MuWXDpOQBqT4d8jv8wA8c4BsA@mail.gmail.com>
+Subject: Hallow und wie geht es dir heute?
+To:     osbornemichel438@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FORM_SHORT,
+        MONEY_FRAUD_3,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Jun 30, 2023, at 13:19, Thomas Zimmermann wrote:
-> Am 30.06.23 um 00:51 schrieb Javier Martinez Canillas:
->> This patch series splits the fbdev core support in two different Kconfig
->> symbols: FB and FB_CORE. The motivation for this is to allow CONFIG_FB to
->> be disabled, while still having the the core fbdev support needed for the
->> CONFIG_DRM_FBDEV_EMULATION to be enabled. The motivation is automatically
->> disabling all fbdev drivers instead of having to be disabled individually.
->> 
->> The reason for doing this is that now with simpledrm, there's no need for
->> the legacy fbdev (e.g: efifb or vesafb) drivers anymore and many distros
->> now disable them. But it would simplify the config a lot fo have a single
->> Kconfig symbol to disable all fbdev drivers.
->
-> I still don't get the point of this change. We've disabled the fbdev 
-> drivers once. And they are off now and remain off.
->
-> The patchset now introduces FB_CORE, which just adds more options. But 
-> you're not reducing the code or compile time or any thing similar.
->
-> I'd like to suggest a change to these patches: rather then making FB and 
-> DRM_FBDEV_EMULATION depend on FB_CORE, make them select FB_CORE. That 
-> will allow the DRM subsystem to enable framebuffer emulation 
-> independently from framebuffer devices. If either has been set, the 
-> fbdev core will be selected.
+Hallow und wie geht es dir heute?
 
-I agree with making FB_CORE a hidden option that gets selected by FB
-and DRM_FBDEV_EMULATION, without that we will get a whole lot of new
-build regressions for people that don't update their defconfigs,
-like we had when we removed the 'select FB' in DRM.
+Ich m=C3=B6chte, dass Ihre Partnerschaft Sie als Subunternehmer
+pr=C3=A4sentiert, damit Sie in meinem Namen 8,6 Millionen US-Dollar aus
+=C3=9Cberrechnungsvertr=C3=A4gen erhalten k=C3=B6nnen, die wir zu 65 % und =
+35 %
+aufteilen k=C3=B6nnen.
 
-Aside from that, the changes look very useful to me.
+Diese Transaktion ist 100 % risikofrei; Du brauchst keine Angst zu haben.
 
-      Arnd
+Bitte senden Sie mir eine E-Mail an (osbornemichel438@gmail.com), um
+ausf=C3=BChrliche Informationen zu erhalten und bei Interesse zu erfahren,
+wie wir dies gemeinsam bew=C3=A4ltigen k=C3=B6nnen.
+
+Sie m=C3=BCssen es mir also weiterleiten
+Ihr vollst=C3=A4ndiger Name.........................
+Telefon.............
+Geburtsdatum .........................
+Staatsangeh=C3=B6rigkeit .................................
+
+Mit freundlichen Gr=C3=BC=C3=9Fe,
+Osborne Michel.
+
+Hallow and how are you today?
+
+I seek for your partnership to present  you as a sub-contractor so
+that you can receive 8.6M Over-Invoice contract fund on my behalf and
+we can split it 65% 35%.
+
+This transaction is 100% risk -free; you need not to be afraid.
+
+Please email me at ( osbornemichel438@gmail.com ) for comprehensive
+details and how we can handle this together if interested.
+
+So I need you to forward it to me
+your full name.........................
+Telephone.............
+Date of  Birth .........................
+Nationality .................................
+
+Kind Regards,
+Osborne Michel.
