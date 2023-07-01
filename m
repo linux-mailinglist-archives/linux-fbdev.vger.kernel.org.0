@@ -2,113 +2,141 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3879744B01
-	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jul 2023 22:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55E80744B31
+	for <lists+linux-fbdev@lfdr.de>; Sat,  1 Jul 2023 23:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjGAUFU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 1 Jul 2023 16:05:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
+        id S229755AbjGAVqP (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 1 Jul 2023 17:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjGAUFT (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 16:05:19 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7781999
-        for <linux-fbdev@vger.kernel.org>; Sat,  1 Jul 2023 13:05:18 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b69923a715so48325921fa.0
-        for <linux-fbdev@vger.kernel.org>; Sat, 01 Jul 2023 13:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688241917; x=1690833917;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
-        b=iGilhQpN+Xp9qjblubJi7hO9s7jYESrw9G9iOnn8wlZP5fEU0Mink+bJuD5itJ/HuO
-         w2Q2h1gr2Y+TdwfDfHAFJwCmji8UV7M8SRY5/qmF+TvzpbkrpLR4NhJQzFnR/q3gP8PR
-         nAdfhmRsLbBqF6t5Tbyl6a8gPfrGsR5wfAxiVQ0TVEzKq4S3zsDa8f+8EsdUOXd5l0lX
-         pvZYwQFQ835oCkCWc1fnPIKdXCNxNs+eZWLrQCyW76dchCVpWK5C80KzrzBUIfhe8dML
-         NMdWE2uv4Im3eFYsQL/uSbwnKmIPZ8mZyJoVS4dbIrHczrl+b6hijhh03OYbkAsW2FBQ
-         DM0Q==
+        with ESMTP id S229502AbjGAVqH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 1 Jul 2023 17:46:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5261717
+        for <linux-fbdev@vger.kernel.org>; Sat,  1 Jul 2023 14:45:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688247916;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ixfgD95cECm9IJRwnBAQBSBQpbSMzbZAJ/z6SVP266o=;
+        b=DnHoLUHbHYE6h6eDw5tRySeASE/OSY3gTDS2yJGtEr845KelDnonfF8zY6WDc5gb6QU1rb
+        W3HwDxC2Y21Cj3hNmF5no0yq9ABZusPbi4k0o1FIL1L+gLc9o2dCOf3W6sGPOwbew+xmtR
+        jCmhQ8jdKYVSY5TrDlIiaMobxyU71bI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-W4qkQlRBPCW2Om6F42fKIQ-1; Sat, 01 Jul 2023 17:45:13 -0400
+X-MC-Unique: W4qkQlRBPCW2Om6F42fKIQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fa871e1eaaso38697785e9.3
+        for <linux-fbdev@vger.kernel.org>; Sat, 01 Jul 2023 14:45:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688241917; x=1690833917;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1688247912; x=1690839912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=On9FXbz/4p6uZeLAq7sP25Q5Nd8OJiKjb1ZpXex+CRI=;
-        b=Jb7yAvDpscSxXAUiaukwDyLGLl3/JNcpD+6CFHPBalwKXaynv5ZUJGR8AY0rW64Qny
-         w5B0CQWyujLqPC+nmtJXFMaaQf6YXjx9cd+fKMKsia/j4zEA0nxCy+fVD/cDD86TMa8+
-         HFVFceaJntQogMhuWazBBACqhN/nFBNcNiJEksYTQXynawEuWBSSpIW9vjCzFcKKIcd3
-         tSey3FAd92tH6pW6K6Lp18EbHQB9ydVvdNJb+Vn2Vm46PfBT0C6p4hvNANHK7FoXQa/6
-         VCygq6PY1h/6E+12V7P46iziENuudnnBfrJPDIrMfJ9wcz1mTZo+7qfvEGlnr6NmZCrZ
-         IBCA==
-X-Gm-Message-State: ABy/qLZQHu2CUPcuhkcaG9GWlkrYLhCymOM2ju2ApOeawz+U9RRzRWhc
-        Wf1vU+h0Srju/muxlWTSx9oY3u8k4H3YO+4a0Lc=
-X-Google-Smtp-Source: APBJJlEt4T835SYvN3Y5ck7fL9F3cwXhmszGaPDCg/bxiFY2At5sneRZ0hcc8WoDALZLuUNa/WnJ64McvVX5OD4/Qb0=
-X-Received: by 2002:a2e:9209:0:b0:2b4:490a:66b7 with SMTP id
- k9-20020a2e9209000000b002b4490a66b7mr4826097ljg.12.1688241916422; Sat, 01 Jul
- 2023 13:05:16 -0700 (PDT)
+        bh=ixfgD95cECm9IJRwnBAQBSBQpbSMzbZAJ/z6SVP266o=;
+        b=irDAlg2Dsqx0gTZWl4x8MJwFXkb2fNXSlN8OmoRBB8wOhwkgaHaPWxBf04fdrQnjez
+         J7VYFTGYBMJkxaWPqrXJ7nK3Ndq9PWHqWMiaPwKfSXMwaj9/zOfNX5nYVeIBh4RIVgCh
+         FECDu0ThLffkfzPGkd/J6iay8iUxzOrhl4nbtCNH+Y6cqlOE6TP6Op73UdFbANr3zcwi
+         ruhlfo3FFtvFx9dDQDoOoyG0zB5t1IlVAy8FcGLjQidmMIJbYZHP/kCb/HQQkhEgr/ef
+         1jj+AZlP/sp5StKbkkoAfQiJU3z5B88j7oWHcx3qrMFOkRwreBx/d0loKkgcMC3kLBFr
+         An0Q==
+X-Gm-Message-State: AC+VfDzuPc0ZlAWGgV9LeU/Hl6h9v+Oc49QdoGOwd+7g6lUqbdL0jHKv
+        eh4F7TSbmwGUGGp3C6P88JTF9rHzPqp26lNj2SeLnRuTVEu0H/Yo29qFhKm5fQwuCr3POI1W+Sl
+        HEiNbgyKV7uI04XQLxMIlYzI=
+X-Received: by 2002:a7b:cd8e:0:b0:3fa:8aed:d57f with SMTP id y14-20020a7bcd8e000000b003fa8aedd57fmr6784944wmj.24.1688247912608;
+        Sat, 01 Jul 2023 14:45:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4VVFAC+mKe4oPCU8/6h1nc/0/NeVojU7eqWExkSndccFGWikoSilyCREx/O03MkmAP6nkbXg==
+X-Received: by 2002:a7b:cd8e:0:b0:3fa:8aed:d57f with SMTP id y14-20020a7bcd8e000000b003fa8aedd57fmr6784914wmj.24.1688247912252;
+        Sat, 01 Jul 2023 14:45:12 -0700 (PDT)
+Received: from minerva.home (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id o10-20020a1c750a000000b003fbc0ea491dsm6913800wmc.40.2023.07.01.14.45.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Jul 2023 14:45:11 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        x86@kernel.org
+Subject: [PATCH v2 0/2] Allow disabling all native fbdev drivers and only keeping DRM emulation
+Date:   Sat,  1 Jul 2023 23:44:49 +0200
+Message-ID: <20230701214503.550549-1-javierm@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Received: by 2002:a2e:2e0b:0:b0:2b6:d63d:cc29 with HTTP; Sat, 1 Jul 2023
- 13:05:15 -0700 (PDT)
-Reply-To: osbornemichel438@gmail.com
-From:   John T <lmas93352@gmail.com>
-Date:   Sat, 1 Jul 2023 21:05:15 +0100
-Message-ID: <CAJvcsdew8WJRp8p+2NFvK99F8MuWXDpOQBqT4d8jv8wA8c4BsA@mail.gmail.com>
-Subject: Hallow und wie geht es dir heute?
-To:     osbornemichel438@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FORM_SHORT,
-        MONEY_FRAUD_3,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hallow und wie geht es dir heute?
+This patch series splits the fbdev core support in two different Kconfig
+symbols: FB and FB_CORE. The motivation for this is to allow CONFIG_FB to
+be disabled, while still having the the core fbdev support needed for the
+CONFIG_DRM_FBDEV_EMULATION to be enabled. The motivation is automatically
+disabling all fbdev drivers instead of having to be disabled individually.
 
-Ich m=C3=B6chte, dass Ihre Partnerschaft Sie als Subunternehmer
-pr=C3=A4sentiert, damit Sie in meinem Namen 8,6 Millionen US-Dollar aus
-=C3=9Cberrechnungsvertr=C3=A4gen erhalten k=C3=B6nnen, die wir zu 65 % und =
-35 %
-aufteilen k=C3=B6nnen.
+The reason for doing this is that now with simpledrm, there's no need for
+the legacy fbdev (e.g: efifb or vesafb) drivers anymore and many distros
+now disable them. But it would simplify the config a lot fo have a single
+Kconfig symbol to disable all fbdev drivers.
 
-Diese Transaktion ist 100 % risikofrei; Du brauchst keine Angst zu haben.
+I've built tested with possible combinations of CONFIG_FB, CONFIG_FB_CORE,
+CONFIG_DRM_FBDEV_EMULATION and CONFIG_FB_DEVICE symbols set to 'y' or 'n'.
 
-Bitte senden Sie mir eine E-Mail an (osbornemichel438@gmail.com), um
-ausf=C3=BChrliche Informationen zu erhalten und bei Interesse zu erfahren,
-wie wir dies gemeinsam bew=C3=A4ltigen k=C3=B6nnen.
+Patch 1/2 makes the CONFIG_FB split that is mentioned above and patch 2/2
+makes the DRM fbdev emulation to select the new FB_CORE symbol instead of
+depending on FB.
 
-Sie m=C3=BCssen es mir also weiterleiten
-Ihr vollst=C3=A4ndiger Name.........................
-Telefon.............
-Geburtsdatum .........................
-Staatsangeh=C3=B6rigkeit .................................
+This is a v2 of the patch-set that addresses issues pointed out by Arnd
+Bergmann and Thomas Zimmermann in the previous version:
 
-Mit freundlichen Gr=C3=BC=C3=9Fe,
-Osborne Michel.
+https://lists.freedesktop.org/archives/dri-devel/2023-June/411435.html
 
-Hallow and how are you today?
 
-I seek for your partnership to present  you as a sub-contractor so
-that you can receive 8.6M Over-Invoice contract fund on my behalf and
-we can split it 65% 35%.
+Changes in v2:
+- Keep "depends on FB" for FB_DDC, FB_HECUBA, FB_SVGALIB, FB_MACMODES,
+  FB_BACKLIGHT, FB_MODE_HELPERS and FB_TILEBLITTING (Arnd Bergmann).
+- Don't change the fb.o object name (Arnd Bergmann).
+- Make FB_CORE a non-visible Kconfig symbol instead (Thomas Zimmermann).
+- Make CONFIG_DRM_FBDEV_EMULATION to select FB_CORE (Thomas Zimmermann).
 
-This transaction is 100% risk -free; you need not to be afraid.
+Javier Martinez Canillas (2):
+  fbdev: Split frame buffer support in FB and FB_CORE symbols
+  drm: Make fbdev emulation select FB_CORE instead of depends on FB
 
-Please email me at ( osbornemichel438@gmail.com ) for comprehensive
-details and how we can handle this together if interested.
+ arch/x86/Makefile                 |  2 +-
+ arch/x86/video/Makefile           |  2 +-
+ drivers/gpu/drm/Kconfig           |  2 +-
+ drivers/video/console/Kconfig     |  2 +-
+ drivers/video/fbdev/Kconfig       | 40 +++++++++++++++++++------------
+ drivers/video/fbdev/core/Makefile |  2 +-
+ 6 files changed, 30 insertions(+), 20 deletions(-)
 
-So I need you to forward it to me
-your full name.........................
-Telephone.............
-Date of  Birth .........................
-Nationality .................................
 
-Kind Regards,
-Osborne Michel.
+base-commit: 270689d257c88fd1ad7050041ed196a8188e6914
+-- 
+2.41.0
+
