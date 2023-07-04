@@ -2,127 +2,102 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902A87476B8
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jul 2023 18:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D44747779
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jul 2023 19:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231582AbjGDQ3E (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Jul 2023 12:29:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39058 "EHLO
+        id S231491AbjGDRHg (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Jul 2023 13:07:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231620AbjGDQ2w (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Jul 2023 12:28:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3168D173F
-        for <linux-fbdev@vger.kernel.org>; Tue,  4 Jul 2023 09:27:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688488067;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=gHdgPj1Wm2IgY2fHBO70NHanGv82Rz5Bml4kSaFfUEk=;
-        b=jCwEbiV78yYy+2kz0mYUu/xOOcW+HRcoh9pUaVZwoqlbjPJvwYbCxtM6W+gIlxzoWzWLS4
-        ps5qQSQ5akNYq/4k0kjIe16br+5UpnRkhVPLhy5CYcq4IwE52oXCwHsMOm82YH0YBy3RRG
-        Plv0smLrvJIEcqFXxNmcA/XrMEG9LjQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-hdRHiMJQOpGIDkFSnUyJKg-1; Tue, 04 Jul 2023 12:27:46 -0400
-X-MC-Unique: hdRHiMJQOpGIDkFSnUyJKg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fbdde92299so9103765e9.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 04 Jul 2023 09:27:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688488065; x=1691080065;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gHdgPj1Wm2IgY2fHBO70NHanGv82Rz5Bml4kSaFfUEk=;
-        b=Vt3SCm8hWNGsuOHZ7SkB+++SG6p/a4n4E1FvB/8K7RNUn4StwMSXIrjlZ/7qkUzL8S
-         fkTXzQuhvgFfUhBqyZTnKpIm5rK1jU92pKT0mYULog8vEuxFozwmr+OIf59f1pCJyNdK
-         lj2znJueINypTEd7YAkCdXoq5efFZZNKR3v2YAAyipftXnjFJZ4w7iOpa/Bb51vUNnOr
-         17Cxr2MoO98uCUVBcYWWdwpsj4U8s4hjRAVtnmkQlTQlocc2+JedG2Jm0yNLCjNh7W60
-         T4sSHb613hbXq6K6RtJWC7ykfu3jUyzfNdNoLDjegATzb3vFhZUAup6W6Uollb4fmemi
-         gTaA==
-X-Gm-Message-State: AC+VfDx/nOfIVtbUcJAXIdYlS7AjsXFLxDA0ndSpFw+tOQIY2AJAxYbo
-        38NF4R6rPb56NPu1RQx7aVIQiw5iJxl6KisG7DclNJo1z7jvcL6TTo1T8LTcgup+keJG5MHaLfx
-        7a6lOgY3ric9PNmTSvzdsd60=
-X-Received: by 2002:a05:600c:2181:b0:3fa:96ae:fd78 with SMTP id e1-20020a05600c218100b003fa96aefd78mr12439025wme.29.1688488065020;
-        Tue, 04 Jul 2023 09:27:45 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ76jB5JrX6TXp/j+SpnZTGNMceWk0U9GUm8msLFZPg0J8xzTJ2Ph/XYxtIjAMzvUbO/YmFVwQ==
-X-Received: by 2002:a05:600c:2181:b0:3fa:96ae:fd78 with SMTP id e1-20020a05600c218100b003fa96aefd78mr12439000wme.29.1688488064598;
-        Tue, 04 Jul 2023 09:27:44 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id s24-20020a7bc398000000b003fb9ebb6b88sm22214385wmj.39.2023.07.04.09.27.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jul 2023 09:27:44 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
-        deller@gmx.de, daniel@ffwll.ch, airlied@gmail.com
-Cc:     linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-mips@vger.kernel.org, Rich Felker <dalias@libc.org>,
-        sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-arch@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-csky@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Zi Yan <ziy@nvidia.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        loongarch@lists.linux.dev,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Arnd Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-alpha@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 05/12] arch: Remove trailing whitespaces
-In-Reply-To: <20230629121952.10559-6-tzimmermann@suse.de>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-6-tzimmermann@suse.de>
-Date:   Tue, 04 Jul 2023 18:27:43 +0200
-Message-ID: <877crflk00.fsf@minerva.mail-host-address-is-not-set>
+        with ESMTP id S231482AbjGDRHf (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Jul 2023 13:07:35 -0400
+Received: from mailrelay3-1.pub.mailoutpod2-cph3.one.com (mailrelay3-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:402::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 012D8E76
+        for <linux-fbdev@vger.kernel.org>; Tue,  4 Jul 2023 10:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=R1ftX/nJ28RCUlvCxqfDZHT0ym06Es3SsEj3om09Vrs=;
+        b=mFMBx5NkiSByK1HMjoIkzQWNmb/ecgu4OOhkDtUvQth7NKdDRhm3aIp5s8eso3WdLAB+9xiBPbmSt
+         PA3WhzFS9ZgVq2RloHgeFfgZ/NFVjPtgR+YEMQeC/6OM40w1LuQTKek+MlpIRwyDxL6tWPQAs6ZJgE
+         VPloanifqZ0Kpn16QDQRettF7Yffput5jWae6HWTFbdQJ0O7HJCiR9EAWZAg2OvcA0CJtCElPD/h2c
+         IEuuVxok7/fSaC2Krc7/yMkaLKGY5KaKVOIdBcI2Qckntdn8h5ZUiZFJLdCzZxdE9fXzXeToS5HZt1
+         2A8rIjpoUk4iTafFGT1fxcFbgp045ZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=R1ftX/nJ28RCUlvCxqfDZHT0ym06Es3SsEj3om09Vrs=;
+        b=toRiw7qMpH7Z7h0WvXiLqGcMRtSWVEuTV0dLMJp/Y5OSdD/HkZxSQEK+aO01h63/4SliBFN0BR4Ib
+         6F8dl2YAw==
+X-HalOne-ID: 428b86cc-1a8d-11ee-8bd0-b90637070a9d
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+        by mailrelay3 (Halon) with ESMTPSA
+        id 428b86cc-1a8d-11ee-8bd0-b90637070a9d;
+        Tue, 04 Jul 2023 17:07:32 +0000 (UTC)
+Date:   Tue, 4 Jul 2023 19:07:31 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Mans Rullgard <mans@mansr.com>, linux-fbdev@vger.kernel.org,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: Re: [PATCH] backlight: led_bl: fix initial power state
+Message-ID: <20230704170731.GB940443@ravnborg.org>
+References: <20230704140750.25799-1-mans@mansr.com>
+ <20230704150310.GA385243@aspen.lan>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704150310.GA385243@aspen.lan>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+Hi Daniel,
 
-> Fix coding style. No functional changes.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Arnd Bergmann <arnd@kernel.org>
-> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> ---
+> > @@ -200,8 +200,8 @@ static int led_bl_probe(struct platform_device *pdev)
+> >  	props.type = BACKLIGHT_RAW;
+> >  	props.max_brightness = priv->max_brightness;
+> >  	props.brightness = priv->default_brightness;
+> > -	props.power = (priv->default_brightness > 0) ? FB_BLANK_POWERDOWN :
+> > -		      FB_BLANK_UNBLANK;
+> > +	props.power = (priv->default_brightness > 0) ? FB_BLANK_UNBLANK :
+> > +		      FB_BLANK_POWERDOWN;
+> 
+> The logic was wrong before but I think will still be wrong after the
+> change too (e.g. the bogus logic is probably avoiding backlight flicker
+> in some use cases).
+> 
+> The logic here needs to be similar to what pwm_bl.c implements in
+> pwm_backlight_initial_power_state(). Whilst it might be better
+> to implement this in led_bl_get_leds() let me show what I mean
+> in code that fits in the current line:
+> 
+> 	/*
+> 	 * Activate the backlight if the LEDs are already lit *or*
+> 	 * there is no phandle link (meaning the backlight power
+> 	 * state cannot be synced with the display state).
+> 	 */
+> 	props.power = (active_at_boot || !dev->node->phandle) ?
+> 			FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
+> 
+The following code does the same using helpers:
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+	if (active_at_boot || !dev->node->phandle))
+		backlight_enable(bd);
+	else
+		backlight_disable(bd);
 
--- 
-Best regards,
+The code needs to execute after backlight_device_register() so maybe not
+so great an idea?!?
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+	Sam
