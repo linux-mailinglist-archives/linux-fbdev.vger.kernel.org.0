@@ -2,107 +2,96 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4129B7475EE
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jul 2023 18:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39AD17476C6
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Jul 2023 18:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231349AbjGDQBn (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 4 Jul 2023 12:01:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56280 "EHLO
+        id S231159AbjGDQaV (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 4 Jul 2023 12:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230357AbjGDQBk (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Jul 2023 12:01:40 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B92110CA;
-        Tue,  4 Jul 2023 09:01:39 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id B6F30228A8;
-        Tue,  4 Jul 2023 16:01:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1688486497; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IfwJgZyv25fxiVPt+iHQRuM1nZU+g6MMG8wm6mkt5SY=;
-        b=UicRG1HJiXmMFkgsLRTd1l5SC+SVv4dVJTlVfDnrGzShNVLTm2IWhonLrvJardHroRUY3B
-        CV5BF7Yg6PnP2ee16FRLHZ9Dm7Xux14XOiZ8JV9M3LGsPdMHgEjTMSGOiqRabeDXKrZqX5
-        aWMJmzsLKpHw2wbGnwOaGhcrLGOBW7o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1688486497;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IfwJgZyv25fxiVPt+iHQRuM1nZU+g6MMG8wm6mkt5SY=;
-        b=ZSqriK1WLiZyG9FfQQknzF9dhWWA0xjFDZICN6JlsEVTJpFPebmXy3+lX8vU6wcYhHSmhN
-        NpIYxH70VLLb72CA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F5B7133F7;
-        Tue,  4 Jul 2023 16:01:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id UEIdHmFCpGTzLwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 04 Jul 2023 16:01:37 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     javierm@redhat.com, maarten.lankhorst@linux.intel.com,
-        mripard@kernel.org
-Cc:     dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-fbdev@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 10/10] fbdev: Remove FB_DEFAULT_SYS_OPS
-Date:   Tue,  4 Jul 2023 17:50:07 +0200
-Message-ID: <20230704160133.20261-11-tzimmermann@suse.de>
+        with ESMTP id S231154AbjGDQaV (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Tue, 4 Jul 2023 12:30:21 -0400
+Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0603EE3;
+        Tue,  4 Jul 2023 09:30:20 -0700 (PDT)
+Received: from raven.mansr.com (raven.mansr.com [81.2.72.235])
+        by unicorn.mansr.com (Postfix) with ESMTPS id ACE5315360;
+        Tue,  4 Jul 2023 17:30:16 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+        id 9E919219FC1; Tue,  4 Jul 2023 17:30:16 +0100 (BST)
+From:   Mans Rullgard <mans@mansr.com>
+To:     Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     Helge Deller <deller@gmx.de>, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] backlight: led_bl: fix initial power state
+Date:   Tue,  4 Jul 2023 17:19:52 +0100
+Message-ID: <20230704163013.21097-1-mans@mansr.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230704160133.20261-1-tzimmermann@suse.de>
-References: <20230704160133.20261-1-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Remove the initializer macro FB_DEFAULT_SYS_OPS and its helper macro
-__FB_DEFAULT_SYS_OPS_MMAP. There are no users.
+The condition for the initial power state based on the default
+brightness value is reversed.  Fix it.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Helge Deller <deller@gmx.de> (maintainer:FRAMEBUFFER LAYER)
+Furthermore, use the actual state of the LEDs rather than the default
+brightness specified in the devicetree as the latter should not cause
+the backlight to be automatically turned on.
+
+If the backlight device is not linked to any display, set the initial
+power to on unconditionally.
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Signed-off-by: Mans Rullgard <mans@mansr.com>
 ---
- include/linux/fb.h | 8 --------
- 1 file changed, 8 deletions(-)
+Changes in v2:
+- Use the reported LED state to set initial power state
+- Always power on if no phandle in DT
+---
+ drivers/video/backlight/led_bl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 1191a78c5289..d370f84fbca9 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -586,14 +586,6 @@ extern ssize_t fb_sys_write(struct fb_info *info, const char __user *buf,
- 	.fb_copyarea	= sys_copyarea, \
- 	.fb_imageblit	= sys_imageblit
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index 3259292fda76..bbf1673b1fb0 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -176,6 +176,7 @@ static int led_bl_probe(struct platform_device *pdev)
+ {
+ 	struct backlight_properties props;
+ 	struct led_bl_data *priv;
++	int init_brightness;
+ 	int ret, i;
  
--#define __FB_DEFAULT_SYS_OPS_MMAP \
--	.fb_mmap	= NULL /* default implementation */
--
--#define FB_DEFAULT_SYS_OPS \
--	__FB_DEFAULT_SYS_OPS_RDWR, \
--	__FB_DEFAULT_SYS_OPS_DRAW, \
--	__FB_DEFAULT_SYS_OPS_MMAP
--
- /*
-  * Helpers for framebuffers in DMA-able memory
-  */
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+@@ -190,6 +191,8 @@ static int led_bl_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	init_brightness = priv->default_brightness;
++
+ 	ret = led_bl_parse_levels(&pdev->dev, priv);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to parse DT data\n");
+@@ -200,8 +203,8 @@ static int led_bl_probe(struct platform_device *pdev)
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = priv->max_brightness;
+ 	props.brightness = priv->default_brightness;
+-	props.power = (priv->default_brightness > 0) ? FB_BLANK_POWERDOWN :
+-		      FB_BLANK_UNBLANK;
++	props.power = (init_brightness || !pdev->dev.of_node->phandle) ?
++		FB_BLANK_UNBLANK : FB_BLANK_POWERDOWN;
+ 	priv->bl_dev = backlight_device_register(dev_name(&pdev->dev),
+ 			&pdev->dev, priv, &led_bl_ops, &props);
+ 	if (IS_ERR(priv->bl_dev)) {
 -- 
 2.41.0
 
