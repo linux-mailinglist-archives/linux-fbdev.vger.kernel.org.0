@@ -2,168 +2,130 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAD7749C4A
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jul 2023 14:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF59A749C8B
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jul 2023 14:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbjGFMpO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 6 Jul 2023 08:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
+        id S232308AbjGFMuD (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 6 Jul 2023 08:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232369AbjGFMpL (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jul 2023 08:45:11 -0400
+        with ESMTP id S232373AbjGFMtz (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 6 Jul 2023 08:49:55 -0400
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C109125;
-        Thu,  6 Jul 2023 05:44:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6A11BD3;
+        Thu,  6 Jul 2023 05:49:35 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 286591FE6D;
-        Thu,  6 Jul 2023 12:44:21 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 49FC41FE7B;
+        Thu,  6 Jul 2023 12:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1688647461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Rez+t/cz9CKyN/38VFk9tu5ZqWuRS5ScM+thjGOJuig=;
-        b=1ETDg5NqSjyf9i/Br3thlZUyvaF5U5WDvpwvuwT9eBqUe64nIPQybzJaEnuUoID5Z660Zg
-        SDog7Jbnby2Jb6was8XIu/n2MuZu7O9CUu64NV/n4kkT4wHW3rFmiRqWg50dYXoE6K2UJp
-        a1nVGYbF8UaF/v0cMFLnoU5bRkCNu9A=
+        t=1688647747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=wg/jKgVOvScklcFceYa+q6oTO7GnzG6ukG3hy+E8U84=;
+        b=ewxeSIsrzJdnad57RPZaRj6uX/zhKJ6VI5rR5wrTwxyqYdFmTAh+3rh1pglr/VHTVPxTur
+        QWa7eB8P8PY/iX1G/rIGngDc9tuRICAXy1T1oHKqhNgJ46+1nAWfasvX6Y9BEWYiJF317j
+        o3rZgXpZoZaYbUDgZdZjKKRiOhNkNDE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1688647461;
+        s=susede2_ed25519; t=1688647747;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Rez+t/cz9CKyN/38VFk9tu5ZqWuRS5ScM+thjGOJuig=;
-        b=Ipe4z56fppT6rauLuZ3QFZpXsQh+FyXsjt8ZNM/X1iXYNINlw6QYjl33GWsnKOpVtUaWGJ
-        sCs2naQZ6jKM7gBA==
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=wg/jKgVOvScklcFceYa+q6oTO7GnzG6ukG3hy+E8U84=;
+        b=Svbue0Y6YlEv97YJRY9vL11Vmf6g8HciT6eyRM0FYq+5MfU/3LaLF17vuRfUbH3brwJ4Qg
+        yzc7JHeA9fHq5KAw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E7A38138FC;
-        Thu,  6 Jul 2023 12:44:20 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 161CD138FC;
+        Thu,  6 Jul 2023 12:49:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id MPidNyS3pmQUQAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 06 Jul 2023 12:44:20 +0000
-Message-ID: <5555bc4d-14bb-c59b-728f-4e91a24f9a73@suse.de>
-Date:   Thu, 6 Jul 2023 14:44:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 04/10] drm/tegra: Set fbdev flags
-Content-Language: en-US
-To:     Javier Martinez Canillas <javierm@redhat.com>,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org
+        id nnx1BEO4pmS7QgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 06 Jul 2023 12:49:07 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     javierm@redhat.com, maarten.lankhorst@linux.intel.com,
+        mripard@kernel.org
 Cc:     dri-devel@lists.freedesktop.org,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-fbdev@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>
-References: <20230704160133.20261-1-tzimmermann@suse.de>
- <20230704160133.20261-5-tzimmermann@suse.de>
- <87wmzerc2s.fsf@minerva.mail-host-address-is-not-set>
- <f82635d8-4500-d420-f6ba-65aa515017e4@suse.de>
- <87a5war9b2.fsf@minerva.mail-host-address-is-not-set>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <87a5war9b2.fsf@minerva.mail-host-address-is-not-set>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------92fr0P30faZJglhuhuUQZMxz"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/11] drm: Improve fbdev emulation for DMA-able framebuffers
+Date:   Thu,  6 Jul 2023 14:46:38 +0200
+Message-ID: <20230706124905.15134-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------92fr0P30faZJglhuhuUQZMxz
-Content-Type: multipart/mixed; boundary="------------19Vd7cn9nFaJpJuQADTH0WVV";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Javier Martinez Canillas <javierm@redhat.com>,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-fbdev@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>,
- Mikko Perttunen <mperttunen@nvidia.com>
-Message-ID: <5555bc4d-14bb-c59b-728f-4e91a24f9a73@suse.de>
-Subject: Re: [PATCH 04/10] drm/tegra: Set fbdev flags
-References: <20230704160133.20261-1-tzimmermann@suse.de>
- <20230704160133.20261-5-tzimmermann@suse.de>
- <87wmzerc2s.fsf@minerva.mail-host-address-is-not-set>
- <f82635d8-4500-d420-f6ba-65aa515017e4@suse.de>
- <87a5war9b2.fsf@minerva.mail-host-address-is-not-set>
-In-Reply-To: <87a5war9b2.fsf@minerva.mail-host-address-is-not-set>
+Add fbdev helpers for framebuffers in DMA-able memory and update
+fbdev emulation in the respective DRM drivers. DMA memory used to
+handled as system memory. Improve this and prepare for possible
+future changes.
 
---------------19Vd7cn9nFaJpJuQADTH0WVV
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Patch 1 adds initializer macros for struct fb_ops and a Kconfig
+token for framebuffers in DMA memory.
 
-SGkNCg0KQW0gMDUuMDcuMjMgdW0gMTE6MzQgc2NocmllYiBKYXZpZXIgTWFydGluZXogQ2Fu
-aWxsYXM6DQo+IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPiB3cml0
-ZXM6DQo+IA0KPiBbLi4uXQ0KPiAgICAgDQo+Pj4+ICsJaW5mby0+ZmxhZ3MgfD0gRkJJTkZP
-X1ZJUlRGQjsNCj4+Pg0KPj4+IEkgc2VlIHRoYXQgYWxsIGZiZGV2IGRyaXZlcnMganVzdCBk
-bzogaW5mby0+ZmxhZ3MgPSBGQklORk9fRkxBR19ERUZBVUxUIHwgRkJJTkZPX1ZJUlRGQg0K
-Pj4+DQo+Pj4gR3Vlc3MgeW91IGFyZSBkb2luZyBpbiB0d28gYXNzaWdubWVudHMgdG8gYmUg
-Y29uc2lzdGVudCB3aXRoIGRybV9mYmRldl9kbWEuYyA/DQo+Pj4gSSB3YXMganVzdCBjdXJp
-b3VzIGFib3V0IHRoZSByYXRpb25hbGUgZm9yIHNldHRpbmcgdGhlIGZsYWdzIGluIHR3byBz
-dGVwcy4NCj4+DQo+PiBUaGUgX0RFRkFVTFQgZmxhZyBpcyByZWFsbHkganVzdCBhIHplcm8u
-IEFuZCB0aGUgb3RoZXIgZmxhZ3MgZGVzY3JpYmUNCj4+IGRpZmZlcmVudCBhc3BlY3RzIG9m
-IHRoZSBmcmFtZWJ1ZmZlci4gIEkgdGhpbmsgaXQgbWFrZXMgc2Vuc2UgdG8gc2V0IHRoZQ0K
-Pj4gZmxhZ3MgdG9nZXRoZXIgd2l0aCB0aGUgcmVzcGVjdGl2ZSBzdGF0ZS4gRm9yIGV4YW1w
-bGUsIF9WSVJURkIgaXMgc2V0DQo+PiBuZXh0IHRvIC0+c2NyZWVuX2J1ZmZlciwgYmVjYXVz
-ZSB0aGV5IGJlbG9uZyB0b2dldGhlci4NCj4+DQo+IA0KPiBZZXMsIHRoYXQgbWFrZXMgc2Vu
-c2UuDQo+IA0KPj4gX1ZJUlRGQiBpcyBjdXJyZW50bHkgb25seSB1c2VkIGluIGRlZmlvIGNv
-ZGUgYXQNCj4+DQo+PiBodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC9sYXRlc3Qv
-c291cmNlL2RyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9mYl9kZWZpby5jI0wyMzINCj4+DQo+
-PiBJIHRoaW5rIHRoZSBmYmRldiBJL08gaGVscGVycyBzaG91bGQgYWxzbyB0ZXN0IHRoaXMg
-ZmxhZyBhZnRlciBhbGwNCj4+IGRyaXZlcnMgaGF2ZSBiZWVuIGFubm90YXRlZCBjb3JyZWN0
-bHkuIEZvciBleGFtcGxlLCBmYl9pb19yZWFkKCkgd291bGQNCj4+IFdBUk5fT05DRSBpZiB0
-aGUgX1ZJUlRGQiBmbGFnIGhhcyBiZWVuIHNldDsgYW5kIGZiX3N5c19yZWFkKCkgd291bGQg
-d2Fybg0KPj4gaWYgaXQgaGFzbid0IGJlZW4gc2V0LiAgRm9yIHRoZSByZWFkIGhlbHBlcnMs
-IGl0IGFsc28gbWFrZXMgc2Vuc2UgdG8NCj4+IFdBUk5fT05DRSBpZiB0aGUgX1JFQURTX0ZB
-U1QgZmxhZyBoYXMgbm90IGJlZW4gc2V0Lg0KPj4NCj4gDQo+IEFncmVlZC4gTWF5YmUgeW91
-IGNvdWxkIGFkZCB0aG9zZSB3YXJuIChvciBhdCBsZWFzdCBpbmZvIG9yIGRlYnVnPykgZXZl
-bg0KPiBpZiBub3QgYWxsIGRyaXZlcnMgaGF2ZSBiZWVuIGFubm90YXRlZCBjb3JyZWN0bHku
-IFRoYXQgd2F5IHBlb3BsZSBjYW4gYmUNCj4gYXdhcmUgdGhhdCBpcyBtaXNzaW5nIGFuZCBm
-aXggaWYgdGhlcmUgYXJlIHJlbWFpbmluZyBkcml2ZXJzLg0KDQpZZXMsIHdlIGNvdWxkIGRv
-IHRoYXQuIEkgd2FudCB0byBnbyB0aHJvdWdoIGRyaXZlcnMgZmlyc3QgYW5kIGZpeCB0aGUg
-DQpsb3ctaGFuZ2luZyBmcnVpdHMuIFNvbWUgb2YgdGhlIG9sZCBmYmRldiBkcml2ZXJzIHVz
-ZSBlaXRoZXIgRE1BIG9yIEkvTyANCm1lbW9yeS4gVGhleSB3b3VsZCBvbmx5IGJlIGZpeC13
-b3J0aHkgaWYgc29tZW9uZSBjb21wbGFpbnMuDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoN
-Cj4gDQo+PiBCZXN0IHJlZ2FyZHMNCj4+IFRob21hcw0KPj4NCj4gDQoNCi0tIA0KVGhvbWFz
-IFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUg
-U29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVy
-bmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1j
-RG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
+Patches 2 to 4 update fbdev-dma and tegra. No functional changes
+are expected as both used system memory before.
 
---------------19Vd7cn9nFaJpJuQADTH0WVV--
+Patches 5 and 6 update exynos to use DMA helpers. Exynos incorrectly
+used fbdev's I/O-memory helpers. Fix this.
 
---------------92fr0P30faZJglhuhuUQZMxz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Patches 7 to 9 update omapdrm to use DMA helpers. Patch 7 first
+reworks the driver's mmap to current best practices. This also makes
+it suitable for use with fbdev, which patches 8 and 9 implement.
 
------BEGIN PGP SIGNATURE-----
+Patchies 10 removes some fbdev macros for system memory that are now
+unused; patch 11 fixes some comments.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSmtyQFAwAAAAAACgkQlh/E3EQov+As
-6A//UyRKRwH44s8E7eViZYmCVyjBk6RElYXS4ZYsslGdCi73Ko+cxder/WeUYXIPJhevscWAF3mP
-MPpIIYcyYW6v6wt5H4M9d75LqX3CQjW5CObDfk0f+iKzzcTpTZNHMxzrpKiL/QUFTYrqlNXfvfus
-iunQ4JnIiu47YgB4XcK/XqXIPLTHLabn/yjC5EjlZDBRfQBIhEa/QWJL1P2GYfs3/O9beMhRGACH
-DyhRcLcPb2cARld01b1qxE3ytVZnbdUw+E7S2wpyDDRKBoMSmEfh0AeEmfo5MUrycjl0DQHXVpQg
-9kqiJfNzk+tq2rG+XtW8jPyeMLQDBQAymcXiMaDHYB4WZ/zFdpMHVBiV0jgLKP8CdPB6zLmbBSqP
-Dm97lImYPVYEIHpuoQD/hNf1KM0rJHpAR/+bYMrTF9ept4m7iLRhXYSZWtokDtZwnn3zvmZ+HQ0W
-6DDmVsNzv9PV1UiOmeg7SFeZCefaMPV4D7666DVu8/zJA9FIwlXrS+1yX9FnWuU2viiYGwPki6/T
-s9zzaiDEhcOOYVF0ASIUQ2zwf2vec4cxqDRxdONffGUeMHo9cC+a4kTSJ774enjF+pUvK/6MemKA
-DAecF7Em0/q1C3usSlWaoXSiyYz0KISr39Me2sXRcqV3QeWVZ06bzsFxrGIMlAesuFS5vSaTF6+7
-5L0=
-=Bknk
------END PGP SIGNATURE-----
+The patchset would ideally go through drm-misc-next. Future patches
+can build upon it and update fbdev drivers in similar ways.
 
---------------92fr0P30faZJglhuhuUQZMxz--
+v2:
+	* fix omap mmap flags
+	* drop FBINFO_DEFAULT from patches
+	* minor cleanups
+
+Thomas Zimmermann (11):
+  fbdev: Add fb_ops init macros for framebuffers in DMA-able memory
+  drm/fbdev-dma: Use fbdev DMA helpers
+  drm/tegra: Use fbdev DMA helpers
+  drm/tegra: Set fbdev FBINFO_VIRTFB flag
+  drm/exynos: Use fbdev DMA helpers
+  drm/exynos: Set fbdev FBINFO_VIRTFB flag
+  drm/omapdrm: Set VM flags in GEM-object mmap function
+  drm/omapdrm: Use GEM mmap for fbdev emulation
+  drm/omapdrm: Set fbdev FBINFO_VIRTFB flag
+  fbdev: Remove FB_DEFAULT_SYS_OPS
+  fbdev: Harmonize some comments in <linux/fb.h>
+
+ drivers/gpu/drm/Kconfig                   |  2 +-
+ drivers/gpu/drm/drm_fbdev_dma.c           |  4 ++--
+ drivers/gpu/drm/exynos/Kconfig            |  2 +-
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  5 ++--
+ drivers/gpu/drm/omapdrm/Kconfig           |  2 +-
+ drivers/gpu/drm/omapdrm/omap_drv.c        | 12 +---------
+ drivers/gpu/drm/omapdrm/omap_fbdev.c      | 16 +++++++++++--
+ drivers/gpu/drm/omapdrm/omap_gem.c        | 24 +++++--------------
+ drivers/gpu/drm/omapdrm/omap_gem.h        |  3 ---
+ drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c |  7 +-----
+ drivers/gpu/drm/tegra/Kconfig             |  2 +-
+ drivers/gpu/drm/tegra/fbdev.c             |  5 ++--
+ drivers/video/fbdev/Kconfig               |  8 +++++++
+ include/linux/fb.h                        | 29 ++++++++++-------------
+ 14 files changed, 55 insertions(+), 66 deletions(-)
+
+-- 
+2.41.0
+
