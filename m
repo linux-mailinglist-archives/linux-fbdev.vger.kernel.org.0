@@ -2,156 +2,133 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED39C74AC0B
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jul 2023 09:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE9974ACF8
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jul 2023 10:34:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232470AbjGGHiO (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 7 Jul 2023 03:38:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
+        id S232608AbjGGIe3 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 7 Jul 2023 04:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbjGGHiN (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jul 2023 03:38:13 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E611BDB
-        for <linux-fbdev@vger.kernel.org>; Fri,  7 Jul 2023 00:38:12 -0700 (PDT)
+        with ESMTP id S231461AbjGGIe2 (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jul 2023 04:34:28 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC6B90;
+        Fri,  7 Jul 2023 01:34:27 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 05B3F22487;
-        Fri,  7 Jul 2023 07:38:11 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 7989C227B0;
+        Fri,  7 Jul 2023 08:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1688715491; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=F36gO1AIjWSom4BofC9EDwp7MTdtMD0LArwcqibCWEs=;
-        b=gu6aUFwaHz2F1nuOb94T3ubZp2ch0lw2m7gesT7r+zPsZP/fpkP2cujPdb1MFnXg50gHTD
-        8lR68UJeFL4m+D9qRuYp+wSFcGj8W1KDDfDU5Z5SW8JucgvefMx6cBmoLRCnHN4U+HPMwg
-        B3UeepOJDcWwg5TCSC7l/eFCP5uTbBo=
+        t=1688718866; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Pvfj/OY6eCHI5adzX5a09+e+OBxPRPHmLMKqJIGthDI=;
+        b=1GFi3pIGlBjSZkCD/VYvTY5TMcveaTo2LhruYtHhaMYNkMV8bjN6ZvuZScTeBSuIj1N951
+        S3p7n9wct/WmCXVSVsJwYTbsHbMY7Ph3loJvwC9HKAfMc99osCFJJ0uLMtoDdTQAxL57JT
+        Kgy4uydqkc5Ah9uaFHeNHY9ziHw1P8c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1688715491;
+        s=susede2_ed25519; t=1688718866;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=F36gO1AIjWSom4BofC9EDwp7MTdtMD0LArwcqibCWEs=;
-        b=wcv9ZDcVXE5ddVLknCubPotGV5WRtkqSYmNb60AC3c9m0HklaUSH3a3fq/JYp1/yUioDwY
-        bIJgyb7H01iCm9Aw==
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Pvfj/OY6eCHI5adzX5a09+e+OBxPRPHmLMKqJIGthDI=;
+        b=3ZFfdrcNBnX0QGiMOP/uCo/tK0c3jzRLvVLQMdkCfhlkjQGhUmk/NQ1hsItKS5pHpbvyme
+        02tuatFhYQSDuQCg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E0A08139E0;
-        Fri,  7 Jul 2023 07:38:10 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4697B1346D;
+        Fri,  7 Jul 2023 08:34:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id p7ztNeLAp2QsIgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 07 Jul 2023 07:38:10 +0000
-Message-ID: <208dc0f5-0b7c-0ca9-665e-72d0e154226c@suse.de>
-Date:   Fri, 7 Jul 2023 09:38:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 01/10] fbdev/broadsheetfb: Select FB_SYS_HELPERS_DEFERRED
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, javierm@redhat.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20230706151432.20674-1-tzimmermann@suse.de>
- <20230706151432.20674-2-tzimmermann@suse.de>
- <57cd2e4b-fcfc-587d-4b1b-eefad5416b61@gmx.de>
+        id 0qwgEBLOp2RdQAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 07 Jul 2023 08:34:26 +0000
 From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <57cd2e4b-fcfc-587d-4b1b-eefad5416b61@gmx.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0HLmc2htMoWD3sXp4CD1cEgB"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     javierm@redhat.com, maarten.lankhorst@linux.intel.com,
+        mripard@kernel.org
+Cc:     dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 00/12] drm: Improve fbdev emulation for DMA-able framebuffers
+Date:   Fri,  7 Jul 2023 10:31:51 +0200
+Message-ID: <20230707083422.18691-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0HLmc2htMoWD3sXp4CD1cEgB
-Content-Type: multipart/mixed; boundary="------------kNDiVmaVXCdRefq87bEjif9W";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Helge Deller <deller@gmx.de>, javierm@redhat.com
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Message-ID: <208dc0f5-0b7c-0ca9-665e-72d0e154226c@suse.de>
-Subject: Re: [PATCH 01/10] fbdev/broadsheetfb: Select FB_SYS_HELPERS_DEFERRED
-References: <20230706151432.20674-1-tzimmermann@suse.de>
- <20230706151432.20674-2-tzimmermann@suse.de>
- <57cd2e4b-fcfc-587d-4b1b-eefad5416b61@gmx.de>
-In-Reply-To: <57cd2e4b-fcfc-587d-4b1b-eefad5416b61@gmx.de>
+Add fbdev helpers for framebuffers in DMA-able memory and update
+fbdev emulation in the respective DRM drivers. DMA memory used to
+handled as system memory. Improve this and prepare for possible
+future changes.
 
---------------kNDiVmaVXCdRefq87bEjif9W
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Patch 1 adds initializer macros for struct fb_ops and a Kconfig
+token for framebuffers in DMA memory.
 
-SGkNCg0KQW0gMDYuMDcuMjMgdW0gMjE6MTMgc2NocmllYiBIZWxnZSBEZWxsZXI6DQo+IE9u
-IDcvNi8yMyAxNzowOCwgVGhvbWFzIFppbW1lcm1hbm4gd3JvdGU6DQo+PiBUaGUgS2NvbmZp
-ZyB0b2tlbiBGQl9TWVNfSEVMUEVSU19ERUZFUlJFRCBzZWxlY3RzIGV2ZXJ5dGhpbmcgdGhh
-dA0KPj4gaXMgcmVxdWlyZWQgZm9yIGRlZmVycmVkIEkvTyBvbiBzeXN0ZW0tbWVtb3J5IGZy
-YW1lYnVmZmVycy4gU2VsZWN0DQo+PiBpdCBmcm9tIEZCX0JST0FEU0hFRVQgaW4gZmF2b3Ig
-b2YgdGhlIGV4aXN0aW5nIGlkZW50aWNhbCBzZWxlY3Rpb24uDQo+Pg0KPj4gU2lnbmVkLW9m
-Zi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+DQo+IA0KPiBJ
-J20gYWN0dWFsbHkgbm90IGEgZmFuIG9mIGRlZmVycmVkLUlPIGZvciBvbGRlciBkcml2ZXJz
-LCBidXQNCj4gaW4gdGhpcyBjYXNlIHdoZXJlIHRoZSBkcml2ZXJzIG9wZXJhdGUgb24gc3lz
-dGVtIG1lbW9yeSBhbnl3YXksDQo+IHRoaXMgaXMgdGhlIHJpZ2h0IGFwcHJvYWNoLg0KDQpZ
-ZWFoLCBkZWZlcnJlZCBJL08gaGFzIGEgY2VydGFpbiBvdmVyaGVhZC4gQnV0IGZvciB0aGlz
-IGtpbmQgb2YgaGFyZHdhcmUgDQp0aGVyZSdzIG5vIGdvb2Qgd2F5IHRvIG1ha2UgbW1hcCB3
-b3JrIHJlbGlhYmx5IHdpdGhvdXQuIChXZWxsLCB0aGVyZSdzIA0KbXN5bmMoKSwgYnV0IHdo
-byB1c2VzIHRoYXQ/KSBUaGVzZSBkcml2ZXJzIGFscmVhZHkgaW1wbGVtZW50IGRlZmlvLCBz
-byANCml0J3Mgbm90IHJlYWxseSBhIGNoYW5nZSwganVzdCBhIGNsZWFudXAuDQoNCj4gDQo+
-IFRoZSBzZXJpZXMgbG9va3MgZ29vZDoNCj4gDQo+IEFja2VkLWJ5OiBIZWxnZSBEZWxsZXIg
-PGRlbGxlckBnbXguZGU+DQoNClRoYW5rcyBhIGxvdC4NCg0KQmVzdCByZWdhcmRzDQpUaG9t
-YXMNCg0KPiANCj4gSGVsZ2UNCj4gDQo+PiAtLS0NCj4+IMKgIGRyaXZlcnMvdmlkZW8vZmJk
-ZXYvS2NvbmZpZyB8IDYgKy0tLS0tDQo+PiDCoCAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
-b24oKyksIDUgZGVsZXRpb25zKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlk
-ZW8vZmJkZXYvS2NvbmZpZyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvS2NvbmZpZw0KPj4gaW5k
-ZXggZjE0MjI5NzU3MzExLi5mZDg2MmZhYWZlNjYgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJz
-L3ZpZGVvL2ZiZGV2L0tjb25maWcNCj4+ICsrKyBiL2RyaXZlcnMvdmlkZW8vZmJkZXYvS2Nv
-bmZpZw0KPj4gQEAgLTIxNzksMTEgKzIxNzksNyBAQCBjb25maWcgRkJfTVgzDQo+PiDCoCBj
-b25maWcgRkJfQlJPQURTSEVFVA0KPj4gwqDCoMKgwqDCoCB0cmlzdGF0ZSAiRS1JbmsgQnJv
-YWRzaGVldC9FcHNvbiBTMUQxMzUyMSBjb250cm9sbGVyIHN1cHBvcnQiDQo+PiDCoMKgwqDC
-oMKgIGRlcGVuZHMgb24gRkIgJiYgKEFSQ0hfUFhBIHx8IENPTVBJTEVfVEVTVCkNCj4+IC3C
-oMKgwqAgc2VsZWN0IEZCX1NZU19GSUxMUkVDVA0KPj4gLcKgwqDCoCBzZWxlY3QgRkJfU1lT
-X0NPUFlBUkVBDQo+PiAtwqDCoMKgIHNlbGVjdCBGQl9TWVNfSU1BR0VCTElUDQo+PiAtwqDC
-oMKgIHNlbGVjdCBGQl9TWVNfRk9QUw0KPj4gLcKgwqDCoCBzZWxlY3QgRkJfREVGRVJSRURf
-SU8NCj4+ICvCoMKgwqAgc2VsZWN0IEZCX1NZU19IRUxQRVJTX0RFRkVSUkVEDQo+PiDCoMKg
-wqDCoMKgIGhlbHANCj4+IMKgwqDCoMKgwqDCoMKgIFRoaXMgZHJpdmVyIGltcGxlbWVudHMg
-c3VwcG9ydCBmb3IgdGhlIEUtSW5rIEJyb2Fkc2hlZXQNCj4+IMKgwqDCoMKgwqDCoMKgIGNv
-bnRyb2xsZXIuIFRoZSByZWxlYXNlIG5hbWUgZm9yIHRoaXMgZGV2aWNlIHdhcyBFcHNvbiBT
-MUQxMzUyMQ0KPiANCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVy
-IERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFu
-a2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3Rl
-diwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJC
-IDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+Patches 2 to 5 update fbdev-dma and tegra. No functional changes
+are expected as both used system memory before.
 
---------------kNDiVmaVXCdRefq87bEjif9W--
+Patches 6 and 7 update exynos to use DMA helpers. Exynos incorrectly
+used fbdev's I/O-memory helpers. Fix this.
 
---------------0HLmc2htMoWD3sXp4CD1cEgB
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Patches 8 to 10 update omapdrm to use DMA helpers. Patch 7 first
+reworks the driver's mmap to current best practices. This also makes
+it suitable for use with fbdev, which patches 8 and 9 implement.
 
------BEGIN PGP SIGNATURE-----
+Patchies 11 removes some fbdev macros for system memory that are now
+unused; patch 12 fixes some comments.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSnwOIFAwAAAAAACgkQlh/E3EQov+B9
-nQ//X4R+B6egBQh9Ua5bHteBe4gEJZZsW47tvRIM738uRmhxWV/FR152UDv4eNSV9wdfeDViUMD6
-bF/UIU9B+Vy01UJw/YF6un7PtA6hFMXYh6rI7QcWz/M+448ubVVgtAmo56ZaZh0IH2ifP3vq4Wq7
-/VwMN8kPJcm8mfufZWEDRnN6l01DbTgL5/7zlr0JyQurSRTh4aAe1QfrXncyBJAs1dn30DZU2GiV
-unMU/GBUk1EdKGYAaTTuPrj83zGxl4g+2TnLaCPHWEWLGxgAsIJTMVW9V8M5lorZl1oHD2Yzf1QB
-jV3lWDsi5sGhiDmkNGYL1uMyLQhDbRv/C3OIWZdn2lnCyOaWv3R1CbpEzYrhApjGKbuQTKc4nKZh
-WeV5Wi/Au+JJfhs8Eje3aynmWDryY0cJEDnpPVUbXbVi+6TvjLyrGu7q7gZ0uCfjwUpwkIHISRzP
-vaj42yIKbAbinb7quEa5UaoiWxw5F1vOT6OteynHMnk+5z6pwujcgMlZ+ZgGSBl4/nq0M+MUYIOu
-ruDKaa4COAJuya/GUXz9hBnLSAbfy4bLOf6aJAn90AVrivb60iQNO4/u8gz9E2FNPjJkEZQyKOJt
-2CLJLMTxEuZ8VqGKhxv1F3HtOmu1SR4gdrctwxHpfw73OfJsP8pG+5AEkXSLnsz3R6fsn09vhsvz
-K5g=
-=uz6b
------END PGP SIGNATURE-----
+The patchset would ideally go through drm-misc-next. Future patches
+can build upon it and update fbdev drivers in similar ways.
 
---------------0HLmc2htMoWD3sXp4CD1cEgB--
+v3:
+	* set screen_buffer in tegra (Thierry)
+v2:
+	* fix omap mmap flags
+	* drop FBINFO_DEFAULT from patches
+	* minor cleanups
+
+Thomas Zimmermann (12):
+  fbdev: Add fb_ops init macros for framebuffers in DMA-able memory
+  drm/fbdev-dma: Use fbdev DMA helpers
+  drm/tegra: Use fbdev DMA helpers
+  drm/tegra: Set fbdev FBINFO_VIRTFB flag
+  drm/tegra: Store pointer to vmap'ed framebuffer in screen_buffer
+  drm/exynos: Use fbdev DMA helpers
+  drm/exynos: Set fbdev FBINFO_VIRTFB flag
+  drm/omapdrm: Set VM flags in GEM-object mmap function
+  drm/omapdrm: Use GEM mmap for fbdev emulation
+  drm/omapdrm: Set fbdev FBINFO_VIRTFB flag
+  fbdev: Remove FB_DEFAULT_SYS_OPS
+  fbdev: Harmonize some comments in <linux/fb.h>
+
+ drivers/gpu/drm/Kconfig                   |  2 +-
+ drivers/gpu/drm/drm_fbdev_dma.c           |  4 ++--
+ drivers/gpu/drm/exynos/Kconfig            |  2 +-
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c |  5 ++--
+ drivers/gpu/drm/omapdrm/Kconfig           |  2 +-
+ drivers/gpu/drm/omapdrm/omap_drv.c        | 12 +---------
+ drivers/gpu/drm/omapdrm/omap_fbdev.c      | 16 +++++++++++--
+ drivers/gpu/drm/omapdrm/omap_gem.c        | 24 +++++--------------
+ drivers/gpu/drm/omapdrm/omap_gem.h        |  3 ---
+ drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c |  7 +-----
+ drivers/gpu/drm/tegra/Kconfig             |  2 +-
+ drivers/gpu/drm/tegra/fbdev.c             |  7 +++---
+ drivers/video/fbdev/Kconfig               |  8 +++++++
+ include/linux/fb.h                        | 29 ++++++++++-------------
+ 14 files changed, 56 insertions(+), 67 deletions(-)
+
+-- 
+2.41.0
+
