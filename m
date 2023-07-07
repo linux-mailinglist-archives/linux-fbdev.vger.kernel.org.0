@@ -2,100 +2,80 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9372C74AE2E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jul 2023 11:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9F274AE9A
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Jul 2023 12:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232833AbjGGJyi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 7 Jul 2023 05:54:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32854 "EHLO
+        id S232507AbjGGKOi (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 7 Jul 2023 06:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232779AbjGGJyf (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jul 2023 05:54:35 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9811FC9;
-        Fri,  7 Jul 2023 02:54:31 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 15BFF5C00FE;
-        Fri,  7 Jul 2023 05:54:31 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 07 Jul 2023 05:54:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1688723671; x=1688810071; bh=6X
-        C0Wg3ewP983KQo8iZVYJNXYqhyj/JCtouCPSrRJR8=; b=SiHISIGeprZW8TfAXm
-        scuKV2FcQSvigS+oHDr1qrsHA+cZ8xsBUy9NibPZKzcFtbUaQKsHl8D4ACfN4ZK2
-        RR5Pf/Q8ixQInXaGU299P/H1ZtITQQzaRJX1pWGvn3y/Uue0sbq7Mmo5bkN7L0aR
-        MJQbmVlFPI3Ic02b3ZC+WYpaO1oWSU9Be2mc3JUqIKJCRWf3AtIPufI+G4oe/z1p
-        ZAr3ft3JMUK6xobZSTIBfYOohdVJJnyYJu4DkBpPqqLZHvXarQRoYin1HXkbqQ8O
-        R+isPyFEQM5np2U+BQBLk5jHLnW7qNZPJyB9kjzyLJHa1Y5h8skufzr7BBoK8D+w
-        u4mA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1688723671; x=1688810071; bh=6XC0Wg3ewP983
-        KQo8iZVYJNXYqhyj/JCtouCPSrRJR8=; b=otU0ea29ZNcdReu7aQRT+XjJV/YoC
-        PQ6SElyG6RSHMrhoITEVG8rrm0ECTIzGl7Ww1VYB4rQGhglPRC5e8hfj5gAbpx2f
-        wRsw+DWe437MdwxbA2JmYUXYnve0g4NNgaQx4WSCzOs1vkYPRTVKW7cAYlMEpDqg
-        BSUvzrP97YZRwueEltKqEVA9nPQ/uxzovIJmGRR8tp8hGBDWr0ToeyXIY8zDrK59
-        VkTYscq6juW+22/pqDYCYSYUznXN2k5U066fFlVKi/f701+Frtdie1fxYMkzw6R4
-        Pk7LPjM2yBbxW77AeiVqG7NLjETEe2NvJk/oGKZqu+HOLea9LUXay85vQ==
-X-ME-Sender: <xms:1OCnZD70dqB9vQoz6ajAH3tFzzeJWHRbtXSW2yCdwTIvKLdjRUbYPg>
-    <xme:1OCnZI7OM2d6eWnYmSJZUiRk_pd_2XPKp0ZLCGIvgygk3PxmKiwXOXQD08beRdRW1
-    6grwCMvIu2eKXULZLY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrvddugddvudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:1OCnZKfe6gKQbUt5HJGuarbSCpVB0h47GqtggPjidRh81zzxxLdyIQ>
-    <xmx:1OCnZEJD4prfrTYRJMjNAb5XU05ONXaiv7icxC-BNfPZcsYm0_xJAw>
-    <xmx:1OCnZHKz37MVzq28papqDe0ATgbaiAMjrgT_Yodb6JI5KAg_5mhzhA>
-    <xmx:1-CnZE4gQQBjWOms_HdHq7Ni3Zu17sB5gQd8fxfIgNtRgM8QDVtk5g>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 5ED25B60089; Fri,  7 Jul 2023 05:54:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
-Mime-Version: 1.0
-Message-Id: <981234cb-5b23-4751-a539-918a686d526b@app.fastmail.com>
-In-Reply-To: <20230707095144.1378789-1-arnd@kernel.org>
-References: <20230707095144.1378789-1-arnd@kernel.org>
-Date:   Fri, 07 Jul 2023 11:54:07 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Arnd Bergmann" <arnd@kernel.org>,
-        "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc:     "Javier Martinez Canillas" <javierm@redhat.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Russell King" <linux@armlinux.org.uk>,
-        dri-devel@lists.freedesktop.org,
-        "Ard Biesheuvel" <ardb@kernel.org>, "Helge Deller" <deller@gmx.de>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Richard Henderson" <richard.henderson@linaro.org>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        "Matt Turner" <mattst88@gmail.com>,
-        "WANG Xuerui" <kernel@xen0n.name>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Nicholas Piggin" <npiggin@gmail.com>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Albert Ou" <aou@eecs.berkeley.edu>, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 1/3] vgacon: rework screen_info #ifdef checks
+        with ESMTP id S232915AbjGGKOH (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 7 Jul 2023 06:14:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D5830D7
+        for <linux-fbdev@vger.kernel.org>; Fri,  7 Jul 2023 03:12:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1688724749;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=DlW1R/8hRwezlWgbC+wvZSXHhVUh/eG+VQMZJgN0Tvc=;
+        b=SKvhzrwoSXjEeAVCIGLfT5B6/Ux74RR+4qclTt80kZw2qgHW+ph0GeZ+BZJdiml1m1mkVO
+        Qm95Bq+9Xw04mzOS7EH849Oq9qjkGgT+lq+VE8KrkO5mvGDffZGf8nSfdBhYQ+KyTP7dav
+        QkxCazsX36QdyvZtGIq4cq6Q8MS7Dhc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-134-nXTbHQs3O0mtFu0jaaA5AQ-1; Fri, 07 Jul 2023 06:12:27 -0400
+X-MC-Unique: nXTbHQs3O0mtFu0jaaA5AQ-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3158a22534aso115025f8f.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 07 Jul 2023 03:12:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688724746; x=1691316746;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DlW1R/8hRwezlWgbC+wvZSXHhVUh/eG+VQMZJgN0Tvc=;
+        b=aPeXHATpeIl/sTHupK0v3HstQvmlABSVMzt15dIV7iWH4S5PN1SzFVNQAevFV6pWEU
+         csQC5Y771VOGU8f0G6dEHqyG7Nxz7Z6OnGP9tz9uLqU6z3BaFa7YpLpNYGEFNYtPW6At
+         uoFwnRjsVuu5EsoOwaapR9gr5x0a2l8K69zOFyJtsNb9JANlBXoTK54OiVB5DRcy4nBO
+         BBVKG35j7bT1uSNBnvCuPGysX8kItoC2BL7RJDdahahu+quaXUm/cBAKwRIbiGOkhHFH
+         WC9eBWnUjx64dqh8DalGRP7N57A4LLTtziB9lEI/wcCR5a7KgfiHlbZWm4Xn1/muMdJE
+         8bqQ==
+X-Gm-Message-State: ABy/qLZc+QxsH/Txg2M+OSmG3N9xn0+KRfNLQ2g9vNKlXfvVkWMMjjG+
+        TMY5pWALILy8uMOdQugG8Xu/kkUOOPFOP4xBEOIIveL5TsuY2ICA1mhoeOX5X+p6jFgc7Hx6428
+        kR7RMDP6sYyMhxBRQfkK+WOo=
+X-Received: by 2002:adf:e40b:0:b0:313:f02f:be7f with SMTP id g11-20020adfe40b000000b00313f02fbe7fmr3429135wrm.55.1688724746545;
+        Fri, 07 Jul 2023 03:12:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEl0rRQx8YRJhH9y3kGM2crHvIosSMl2yPsiQFeLRX1mWJpZ5P5lO4jWKSG6bWALHyxhssqPQ==
+X-Received: by 2002:adf:e40b:0:b0:313:f02f:be7f with SMTP id g11-20020adfe40b000000b00313f02fbe7fmr3429126wrm.55.1688724746175;
+        Fri, 07 Jul 2023 03:12:26 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id m5-20020adfe945000000b00313f9085119sm4031028wrn.113.2023.07.07.03.12.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jul 2023 03:12:25 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org
+Cc:     dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>
+Subject: Re: [PATCH v3 05/12] drm/tegra: Store pointer to vmap'ed
+ framebuffer in screen_buffer
+In-Reply-To: <20230707083422.18691-6-tzimmermann@suse.de>
+References: <20230707083422.18691-1-tzimmermann@suse.de>
+ <20230707083422.18691-6-tzimmermann@suse.de>
+Date:   Fri, 07 Jul 2023 12:12:19 +0200
+Message-ID: <87pm54xc70.fsf@minerva.mail-host-address-is-not-set>
+MIME-Version: 1.0
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -103,15 +83,25 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Jul 7, 2023, at 11:50, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> On non-x86 architectures, the screen_info variable is generally only
-> used for the VGA console where supported, and in some cases the EFI
-> framebuffer or vga16fb.
->
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-This should have been patch 2/4, not 1/3, please ignore this one and
-look at the new version.
+> Tegra uses DMA-able memory, which has to be acessed with CPU ops
+> for system-memory. Store the framebuffer's vmap address in struct
+> fb_info.screen_buffer. The currently used field 'screen_base' is
+> for I/O memory.
+>
+> Suggested-by: Thierry Reding <thierry.reding@gmail.com>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Mikko Perttunen <mperttunen@nvidia.com>
+> ---
 
-      Arnd
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
