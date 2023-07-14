@@ -2,76 +2,74 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51B71754050
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jul 2023 19:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1712F754052
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jul 2023 19:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235987AbjGNRRm (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jul 2023 13:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44794 "EHLO
+        id S235771AbjGNRSL (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jul 2023 13:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235965AbjGNRRm (ORCPT
+        with ESMTP id S236024AbjGNRRv (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jul 2023 13:17:42 -0400
+        Fri, 14 Jul 2023 13:17:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80FA13594
-        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31FF35A4
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1689355015;
+        s=mimecast20190719; t=1689355018;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Mf75CzVatbv3pQWH8r83ggHJgBXSpuprGf6QjemCQEc=;
-        b=EQ4qIt1136QBA4QNpxW6KIY7vys1mhFt4qMKsZgFTx2f2nae43LGqyBhgP3QlE10aVtSq4
-        7G5cVf12myaNQcqNmbySqXY85JEjXZ/wN5w/+unXRn7M76W1Lf6wRoWWn3JO8Whk9o+nQU
-        L4jQ9Au+VNIeNTCUVG4JOVTM7H5PM+g=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=H3RubCoS5fodtVjbVQMhDpySdYC1/vabLgYbQkOImtE=;
+        b=Ez3/FoQhZlXxQz4Pv9RqvpjoQXJEE5h298bWgvjZ5R3A6gUH4vOV6JddSRIiVbJNj7e77Z
+        ZGFU76JaS/1ddcvnHh8jTr0ZlOb3Ee9yzujMC81ZLN8SvKY1j6kWei8VWfCcBcAqSqT3Uh
+        tCNg5PgR7paVNVkWwlUenPBnuUneYUo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-DfGXFvWgO6S1T--6sR1Btg-1; Fri, 14 Jul 2023 13:16:54 -0400
-X-MC-Unique: DfGXFvWgO6S1T--6sR1Btg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-313c930ee0eso1252206f8f.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:54 -0700 (PDT)
+ us-mta-335-TEIN5iadMGGutlOYbSy_-w-1; Fri, 14 Jul 2023 13:16:57 -0400
+X-MC-Unique: TEIN5iadMGGutlOYbSy_-w-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3142665f122so1226717f8f.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689355013; x=1691947013;
+        d=1e100.net; s=20221208; t=1689355016; x=1691947016;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mf75CzVatbv3pQWH8r83ggHJgBXSpuprGf6QjemCQEc=;
-        b=K/wq+tK7a5gBEDE7R19jZk9ot3YR+8TUZ878QuSUJlBab8uX86s76AXvam3jT0t5bI
-         aiE+dK/UZAtIUIGovxcjHbUG4iMj2tm5LK6MRQR/VAG6M1r1BwIEI4NCa318rzFuUciU
-         7Ngq4h1JpAY3uvKYDm0mso/LPvVX+UiNv4BuOwP+xByrdJoBRa9+6B4THbK0B9JEALy0
-         xsA5gIhGOcmu/tU6C97/mjekC5EYCbsUBdQaKiYp4N335A06IxxuZ0rk2RXHBKgo5W2n
-         xDova5Lsxh9xs2gXdd0gSJE3zu9fszyA3Nzt4BBxNPoKVUjU29J8YMxbSwNJ1hqj4H7v
-         RJBg==
-X-Gm-Message-State: ABy/qLa0B+buYgHqy373mFyjg7kNmVDjYq0jDO6dgSyUUmRfuHWa7nqN
-        iiLAYprg8jYgN7xLLcUGFBsYDXHj4iD/4iS8xAgQ6eHVYtGUV0V5ACocIFdqX/acc4VUMpWon+q
-        6LpxHVTLI6flIuEVO04VZCZc=
-X-Received: by 2002:adf:e952:0:b0:30e:5bd0:21a2 with SMTP id m18-20020adfe952000000b0030e5bd021a2mr4555833wrn.52.1689355013351;
-        Fri, 14 Jul 2023 10:16:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHHYMLvriZ/ew3fit58RdAJhlMPoyTBoUoDcI2u13QGKOg6uAz3m3L/7sXIDsUPeQ4e8DoUOA==
-X-Received: by 2002:adf:e952:0:b0:30e:5bd0:21a2 with SMTP id m18-20020adfe952000000b0030e5bd021a2mr4555827wrn.52.1689355013182;
-        Fri, 14 Jul 2023 10:16:53 -0700 (PDT)
+        bh=H3RubCoS5fodtVjbVQMhDpySdYC1/vabLgYbQkOImtE=;
+        b=XZPqnEIKxO6uvufkZ/75+HxBIlgxRdHXBkyPIak5nitRYcZXlCCTtsSU1hgejGf4oZ
+         C3f+1gD2BCPw60L+ymH3Urh9G40utlikznxuJ21iMDacR1FBQAUxuoofY/ePyF/HXW/U
+         LT91Y4+H422aLQ6ikhavI8bsWcOWxlfPSb0z6Yur2/Zx/Zb7JBryXVSQMPEjRU29cKc/
+         TJITHIB/5wRVM+v5NfSqGk+y9uP8K44CX/Pwcs6mQM8O0txELR8utDAwlvKpkOG2VddX
+         fUsSvi9EM9JS/Ub3M5xHqQ4oE3jt7ebV1NQ7HtbAWt6ZXvsnlOpIjLPNuLsMxW18LUg9
+         hH3w==
+X-Gm-Message-State: ABy/qLaze+UMb0Ts1yK2h0V7Vq0Hn1BCXS0W7atTKCLW6oVaHV0+cJ8E
+        xvQ3Vt3eRmJoV3fBzbkPJhikz7PmisUVAcXh3NIUvW1AhPW1zqawwXP6l62rDJgk+KfpcKZcwDK
+        l88MVLlD6unzHpbGPj6GlMGg=
+X-Received: by 2002:a5d:54c1:0:b0:314:1fdc:796d with SMTP id x1-20020a5d54c1000000b003141fdc796dmr4676263wrv.70.1689355015683;
+        Fri, 14 Jul 2023 10:16:55 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHHRAZzujl/c94U93qNlIMOzU61fF0eAqU8YJ67U+TsF0tH5w8Qj94bAtQ9nJJP8hnNd9iXZg==
+X-Received: by 2002:a5d:54c1:0:b0:314:1fdc:796d with SMTP id x1-20020a5d54c1000000b003141fdc796dmr4676244wrv.70.1689355015281;
+        Fri, 14 Jul 2023 10:16:55 -0700 (PDT)
 Received: from minerva.home (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id d17-20020adfe891000000b003143cdc5949sm11620842wrm.9.2023.07.14.10.16.52
+        by smtp.gmail.com with ESMTPSA id d17-20020adfe891000000b003143cdc5949sm11620842wrm.9.2023.07.14.10.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 10:16:52 -0700 (PDT)
+        Fri, 14 Jul 2023 10:16:54 -0700 (PDT)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Arnd Bergmann <arnd@arndb.de>,
         Javier Martinez Canillas <javierm@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Helge Deller <deller@gmx.de>,
-        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        Melissa Wen <mwen@igalia.com>,
-        Nipun Gupta <nipun.gupta@amd.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v5 1/4] video: Add auxiliary display drivers to Graphics support menu
-Date:   Fri, 14 Jul 2023 19:16:29 +0200
-Message-ID: <20230714171642.91185-2-javierm@redhat.com>
+Subject: [PATCH v5 2/4] fbdev: Move core fbdev symbols to a separate Kconfig file
+Date:   Fri, 14 Jul 2023 19:16:30 +0200
+Message-ID: <20230714171642.91185-3-javierm@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230714171642.91185-1-javierm@redhat.com>
 References: <20230714171642.91185-1-javierm@redhat.com>
@@ -80,54 +78,464 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The drivers in this subsystem are for character-based LCD displays, which
-can fall into the same category of the DRM/KMS and fbdev drivers that are
-located under the "Graphics support" menu. Add auxdisplay there as well.
+The drivers/video/fbdev/Kconfig defines both symbols for fbdev drivers and
+core fbdev symbols, that can be enabled independently of the fbdev drivers.
 
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Split the Kconfig in two, one that only has the symbols for fbdev drivers
+and another one that contains the fbdev core symbols.
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
 
-Changes in v5:
-- Take the auxdisplay/Kconfig source out of "if HAS_IOMEM" (Geert Uytterhoeven).
+(no changes since v1)
 
- drivers/Kconfig       | 2 --
- drivers/video/Kconfig | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/Kconfig      | 203 +------------------------------
+ drivers/video/fbdev/core/Kconfig | 202 ++++++++++++++++++++++++++++++
+ 2 files changed, 204 insertions(+), 201 deletions(-)
+ create mode 100644 drivers/video/fbdev/core/Kconfig
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 514ae6b24cb2..496ca02ee18f 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -129,8 +129,6 @@ source "drivers/dma-buf/Kconfig"
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index c12c166be7d1..ec4068abeb8e 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -3,9 +3,6 @@
+ # fbdev configuration
+ #
  
- source "drivers/dca/Kconfig"
- 
--source "drivers/auxdisplay/Kconfig"
+-config FB_NOTIFY
+-	bool
 -
- source "drivers/uio/Kconfig"
+ menuconfig FB
+ 	tristate "Support for frame buffer devices"
+ 	select FB_NOTIFY
+@@ -42,204 +39,6 @@ menuconfig FB
+ 	  (e.g. an accelerated X server) and that are not frame buffer
+ 	  device-aware may cause unexpected results. If unsure, say N.
  
- source "drivers/vfio/Kconfig"
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 8b2b9ac37c3d..e5b1cc54cafa 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -25,6 +25,8 @@ config VIDEO_NOMODESET
- 	bool
- 	default n
- 
-+source "drivers/auxdisplay/Kconfig"
+-config FIRMWARE_EDID
+-	bool "Enable firmware EDID"
+-	depends on FB
+-	help
+-	  This enables access to the EDID transferred from the firmware.
+-	  On the i386, this is from the Video BIOS. Enable this if DDC/I2C
+-	  transfers do not work for your driver and if you are using
+-	  nvidiafb, i810fb or savagefb.
+-
+-	  In general, choosing Y for this option is safe.  If you
+-	  experience extremely long delays while booting before you get
+-	  something on your display, try setting this to N.  Matrox cards in
+-	  combination with certain motherboards and monitors are known to
+-	  suffer from this problem.
+-
+-config FB_DEVICE
+-	bool "Provide legacy /dev/fb* device"
+-	depends on FB
+-	default y
+-	help
+-	  Say Y here if you want the legacy /dev/fb* device file and
+-	  interfaces within sysfs anc procfs. It is only required if you
+-	  have userspace programs that depend on fbdev for graphics output.
+-	  This does not affect the framebuffer console. If unsure, say N.
+-
+-config FB_DDC
+-	tristate
+-	depends on FB
+-	select I2C_ALGOBIT
+-	select I2C
+-
+-config FB_CFB_FILLRECT
+-	tristate
+-	depends on FB
+-	help
+-	  Include the cfb_fillrect function for generic software rectangle
+-	  filling. This is used by drivers that don't provide their own
+-	  (accelerated) version.
+-
+-config FB_CFB_COPYAREA
+-	tristate
+-	depends on FB
+-	help
+-	  Include the cfb_copyarea function for generic software area copying.
+-	  This is used by drivers that don't provide their own (accelerated)
+-	  version.
+-
+-config FB_CFB_IMAGEBLIT
+-	tristate
+-	depends on FB
+-	help
+-	  Include the cfb_imageblit function for generic software image
+-	  blitting. This is used by drivers that don't provide their own
+-	  (accelerated) version.
+-
+-config FB_CFB_REV_PIXELS_IN_BYTE
+-	bool
+-	depends on FB
+-	help
+-	  Allow generic frame-buffer functions to work on displays with 1, 2
+-	  and 4 bits per pixel depths which has opposite order of pixels in
+-	  byte order to bytes in long order.
+-
+-config FB_SYS_FILLRECT
+-	tristate
+-	depends on FB
+-	help
+-	  Include the sys_fillrect function for generic software rectangle
+-	  filling. This is used by drivers that don't provide their own
+-	  (accelerated) version and the framebuffer is in system RAM.
+-
+-config FB_SYS_COPYAREA
+-	tristate
+-	depends on FB
+-	help
+-	  Include the sys_copyarea function for generic software area copying.
+-	  This is used by drivers that don't provide their own (accelerated)
+-	  version and the framebuffer is in system RAM.
+-
+-config FB_SYS_IMAGEBLIT
+-	tristate
+-	depends on FB
+-	help
+-	  Include the sys_imageblit function for generic software image
+-	  blitting. This is used by drivers that don't provide their own
+-	  (accelerated) version and the framebuffer is in system RAM.
+-
+-config FB_PROVIDE_GET_FB_UNMAPPED_AREA
+-	bool
+-	depends on FB
+-	help
+-	  Allow generic frame-buffer to provide get_fb_unmapped_area
+-	  function to provide shareable character device support on nommu.
+-
+-menuconfig FB_FOREIGN_ENDIAN
+-	bool "Framebuffer foreign endianness support"
+-	depends on FB
+-	help
+-	  This menu will let you enable support for the framebuffers with
+-	  non-native endianness (e.g. Little-Endian framebuffer on a
+-	  Big-Endian machine). Most probably you don't have such hardware,
+-	  so it's safe to say "n" here.
+-
+-choice
+-	prompt "Choice endianness support"
+-	depends on FB_FOREIGN_ENDIAN
+-
+-config FB_BOTH_ENDIAN
+-	bool "Support for Big- and Little-Endian framebuffers"
+-
+-config FB_BIG_ENDIAN
+-	bool "Support for Big-Endian framebuffers only"
+-
+-config FB_LITTLE_ENDIAN
+-	bool "Support for Little-Endian framebuffers only"
+-
+-endchoice
+-
+-config FB_SYS_FOPS
+-	tristate
+-	depends on FB
+-
+-config FB_DEFERRED_IO
+-	bool
+-	depends on FB
+-
+-config FB_IO_HELPERS
+-	bool
+-	depends on FB
+-	select FB_CFB_COPYAREA
+-	select FB_CFB_FILLRECT
+-	select FB_CFB_IMAGEBLIT
+-
+-config FB_SYS_HELPERS
+-	bool
+-	depends on FB
+-	select FB_SYS_COPYAREA
+-	select FB_SYS_FILLRECT
+-	select FB_SYS_FOPS
+-	select FB_SYS_IMAGEBLIT
+-
+-config FB_SYS_HELPERS_DEFERRED
+-	bool
+-	depends on FB
+-	select FB_DEFERRED_IO
+-	select FB_SYS_HELPERS
+-
+-config FB_HECUBA
+-	tristate
+-	depends on FB
+-	select FB_SYS_HELPERS_DEFERRED
+-
+-config FB_SVGALIB
+-	tristate
+-	depends on FB
+-	help
+-	  Common utility functions useful to fbdev drivers of VGA-based
+-	  cards.
+-
+-config FB_MACMODES
+-	tristate
+-	depends on FB
+-
+-config FB_BACKLIGHT
+-	tristate
+-	depends on FB
+-	select BACKLIGHT_CLASS_DEVICE
+-
+-config FB_MODE_HELPERS
+-	bool "Enable Video Mode Handling Helpers"
+-	depends on FB
+-	help
+-	  This enables functions for handling video modes using the
+-	  Generalized Timing Formula and the EDID parser. A few drivers rely
+-	  on this feature such as the radeonfb, rivafb, and the i810fb. If
+-	  your driver does not take advantage of this feature, choosing Y will
+-	  just increase the kernel size by about 5K.
+-
+-config FB_TILEBLITTING
+-	bool "Enable Tile Blitting Support"
+-	depends on FB
+-	help
+-	  This enables tile blitting.  Tile blitting is a drawing technique
+-	  where the screen is divided into rectangular sections (tiles), whereas
+-	  the standard blitting divides the screen into pixels. Because the
+-	  default drawing element is a tile, drawing functions will be passed
+-	  parameters in terms of number of tiles instead of number of pixels.
+-	  For example, to draw a single character, instead of using bitmaps,
+-	  an index to an array of bitmaps will be used.  To clear or move a
+-	  rectangular section of a screen, the rectangle will be described in
+-	  terms of number of tiles in the x- and y-axis.
+-
+-	  This is particularly important to one driver, matroxfb.  If
+-	  unsure, say N.
+-
+-comment "Frame buffer hardware drivers"
+-	depends on FB
+-
+ config FB_GRVGA
+ 	tristate "Aeroflex Gaisler framebuffer support"
+ 	depends on FB && SPARC
+@@ -2223,3 +2022,5 @@ config FB_SM712
+ source "drivers/video/fbdev/omap/Kconfig"
+ source "drivers/video/fbdev/omap2/Kconfig"
+ source "drivers/video/fbdev/mmp/Kconfig"
 +
- if HAS_IOMEM
- 
- config HAVE_FB_ATMEL
++source "drivers/video/fbdev/core/Kconfig"
+diff --git a/drivers/video/fbdev/core/Kconfig b/drivers/video/fbdev/core/Kconfig
+new file mode 100644
+index 000000000000..8e308d12c57b
+--- /dev/null
++++ b/drivers/video/fbdev/core/Kconfig
+@@ -0,0 +1,202 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# fbdev core configuration
++#
++
++config FB_NOTIFY
++	bool
++
++config FIRMWARE_EDID
++	bool "Enable firmware EDID"
++	depends on FB
++	help
++	  This enables access to the EDID transferred from the firmware.
++	  On the i386, this is from the Video BIOS. Enable this if DDC/I2C
++	  transfers do not work for your driver and if you are using
++	  nvidiafb, i810fb or savagefb.
++
++	  In general, choosing Y for this option is safe.  If you
++	  experience extremely long delays while booting before you get
++	  something on your display, try setting this to N.  Matrox cards in
++	  combination with certain motherboards and monitors are known to
++	  suffer from this problem.
++
++config FB_DEVICE
++	bool "Provide legacy /dev/fb* device"
++	depends on FB
++	default y
++	help
++	  Say Y here if you want the legacy /dev/fb* device file and
++	  interfaces within sysfs anc procfs. It is only required if you
++	  have userspace programs that depend on fbdev for graphics output.
++	  This does not affect the framebuffer console. If unsure, say N.
++
++config FB_DDC
++	tristate
++	depends on FB
++	select I2C_ALGOBIT
++	select I2C
++
++config FB_CFB_FILLRECT
++	tristate
++	depends on FB
++	help
++	  Include the cfb_fillrect function for generic software rectangle
++	  filling. This is used by drivers that don't provide their own
++	  (accelerated) version.
++
++config FB_CFB_COPYAREA
++	tristate
++	depends on FB
++	help
++	  Include the cfb_copyarea function for generic software area copying.
++	  This is used by drivers that don't provide their own (accelerated)
++	  version.
++
++config FB_CFB_IMAGEBLIT
++	tristate
++	depends on FB
++	help
++	  Include the cfb_imageblit function for generic software image
++	  blitting. This is used by drivers that don't provide their own
++	  (accelerated) version.
++
++config FB_CFB_REV_PIXELS_IN_BYTE
++	bool
++	depends on FB
++	help
++	  Allow generic frame-buffer functions to work on displays with 1, 2
++	  and 4 bits per pixel depths which has opposite order of pixels in
++	  byte order to bytes in long order.
++
++config FB_SYS_FILLRECT
++	tristate
++	depends on FB
++	help
++	  Include the sys_fillrect function for generic software rectangle
++	  filling. This is used by drivers that don't provide their own
++	  (accelerated) version and the framebuffer is in system RAM.
++
++config FB_SYS_COPYAREA
++	tristate
++	depends on FB
++	help
++	  Include the sys_copyarea function for generic software area copying.
++	  This is used by drivers that don't provide their own (accelerated)
++	  version and the framebuffer is in system RAM.
++
++config FB_SYS_IMAGEBLIT
++	tristate
++	depends on FB
++	help
++	  Include the sys_imageblit function for generic software image
++	  blitting. This is used by drivers that don't provide their own
++	  (accelerated) version and the framebuffer is in system RAM.
++
++config FB_PROVIDE_GET_FB_UNMAPPED_AREA
++	bool
++	depends on FB
++	help
++	  Allow generic frame-buffer to provide get_fb_unmapped_area
++	  function to provide shareable character device support on nommu.
++
++menuconfig FB_FOREIGN_ENDIAN
++	bool "Framebuffer foreign endianness support"
++	depends on FB
++	help
++	  This menu will let you enable support for the framebuffers with
++	  non-native endianness (e.g. Little-Endian framebuffer on a
++	  Big-Endian machine). Most probably you don't have such hardware,
++	  so it's safe to say "n" here.
++
++choice
++	prompt "Choice endianness support"
++	depends on FB_FOREIGN_ENDIAN
++
++config FB_BOTH_ENDIAN
++	bool "Support for Big- and Little-Endian framebuffers"
++
++config FB_BIG_ENDIAN
++	bool "Support for Big-Endian framebuffers only"
++
++config FB_LITTLE_ENDIAN
++	bool "Support for Little-Endian framebuffers only"
++
++endchoice
++
++config FB_SYS_FOPS
++	tristate
++	depends on FB
++
++config FB_DEFERRED_IO
++	bool
++	depends on FB
++
++config FB_IO_HELPERS
++	bool
++	depends on FB
++	select FB_CFB_COPYAREA
++	select FB_CFB_FILLRECT
++	select FB_CFB_IMAGEBLIT
++
++config FB_SYS_HELPERS
++	bool
++	depends on FB
++	select FB_SYS_COPYAREA
++	select FB_SYS_FILLRECT
++	select FB_SYS_FOPS
++	select FB_SYS_IMAGEBLIT
++
++config FB_SYS_HELPERS_DEFERRED
++	bool
++	depends on FB
++	select FB_DEFERRED_IO
++	select FB_SYS_HELPERS
++
++config FB_HECUBA
++	tristate
++	depends on FB
++	depends on FB_DEFERRED_IO
++
++config FB_SVGALIB
++	tristate
++	depends on FB
++	help
++	  Common utility functions useful to fbdev drivers of VGA-based
++	  cards.
++
++config FB_MACMODES
++	tristate
++	depends on FB
++
++config FB_BACKLIGHT
++	tristate
++	depends on FB
++	select BACKLIGHT_CLASS_DEVICE
++
++config FB_MODE_HELPERS
++	bool "Enable Video Mode Handling Helpers"
++	depends on FB
++	help
++	  This enables functions for handling video modes using the
++	  Generalized Timing Formula and the EDID parser. A few drivers rely
++	  on this feature such as the radeonfb, rivafb, and the i810fb. If
++	  your driver does not take advantage of this feature, choosing Y will
++	  just increase the kernel size by about 5K.
++
++config FB_TILEBLITTING
++	bool "Enable Tile Blitting Support"
++	depends on FB
++	help
++	  This enables tile blitting.  Tile blitting is a drawing technique
++	  where the screen is divided into rectangular sections (tiles), whereas
++	  the standard blitting divides the screen into pixels. Because the
++	  default drawing element is a tile, drawing functions will be passed
++	  parameters in terms of number of tiles instead of number of pixels.
++	  For example, to draw a single character, instead of using bitmaps,
++	  an index to an array of bitmaps will be used.  To clear or move a
++	  rectangular section of a screen, the rectangle will be described in
++	  terms of number of tiles in the x- and y-axis.
++
++	  This is particularly important to one driver, matroxfb.  If
++	  unsure, say N.
 -- 
 2.41.0
 
