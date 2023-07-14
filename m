@@ -2,140 +2,176 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E25753A80
-	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jul 2023 14:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D12754056
+	for <lists+linux-fbdev@lfdr.de>; Fri, 14 Jul 2023 19:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235750AbjGNMOy (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 14 Jul 2023 08:14:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
+        id S236023AbjGNRRv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 14 Jul 2023 13:17:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235752AbjGNMOw (ORCPT
+        with ESMTP id S235865AbjGNRRu (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 14 Jul 2023 08:14:52 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B900830C6;
-        Fri, 14 Jul 2023 05:14:50 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51e99584a82so2322995a12.1;
-        Fri, 14 Jul 2023 05:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689336889; x=1691928889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TgPMyqhcYOSoB/wLOssO63qlIlM49Q140+nxqiBvG58=;
-        b=EbmcQKgul6r57U77VkLKxO0Std3+UK3ldoAw+5il/pbmMcEIV1j+yevY/ZXv9VkR1J
-         +/4YKAtOae75xN9J3tA3yU6G/kVO8Gp0bFwl5dIJuAwF2wZIh3TyV4U7YEdginHL/7Wb
-         7Q1POHwuTeLeqtDaHV/M3Jf86N/52phGiATyqOFX3N/F+/oJdH8fEQuZ8P4tssx7VF0i
-         cnKyIvsUWZ8cnnyPsUwLjS0mxRidx3JCST4tNTSARsNIg+Uq4qVposX3W9wSB2mTqIYb
-         deDgxSM8kXx180pIPlKeKPAAvQEkHfxRwlsp0RxiOIOL/chzdSVfhdoEG8qejnhK4qJg
-         EGMA==
+        Fri, 14 Jul 2023 13:17:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9212B3593
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1689355014;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2kL6s2iGtpGIjyrMzCwNbgQ+dYlVfsjyP7TiMQdzptE=;
+        b=RwCADI+K+SPY3f0tcCk7DuZVmQ+CBWHdRCFkKLjDPu78R0hIUVWp4ZFWotain8Y0nfIWmp
+        XlDHoI/X6ipD7E7gwQ4drQFGO+b35KKjkiKQugkYPOe8n6p2RXS78CSGEUKzf5arrmj09Y
+        rKNKq0TsV4gSiIgdFePMF30mPWNv61A=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-269-BQ5dPLIEPfmdrxtOnJ2ZtA-1; Fri, 14 Jul 2023 13:16:53 -0400
+X-MC-Unique: BQ5dPLIEPfmdrxtOnJ2ZtA-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-315935c808bso893716f8f.1
+        for <linux-fbdev@vger.kernel.org>; Fri, 14 Jul 2023 10:16:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689336889; x=1691928889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TgPMyqhcYOSoB/wLOssO63qlIlM49Q140+nxqiBvG58=;
-        b=J4m0ASrhAdtqOWC6961OqdEcxQowHTt9QXvx0HHbSuvhn9IYW5OcOBuzXbZ6c0NxlV
-         aKrx/enIQwN+7KRk7ugmf+P3YeTQuXaWGFLQ95VYFWRj/lnmdq1kmWoTomHShvOQrKV/
-         YYiV2ZgFVcA+McNU8TX9fjhrsydLnWgdez8uqVebnXqRy4satd3Anx1jzVTkaQC0f5QK
-         6h2s2+8jIjaT/0EwQsvA+sFw/zotM/7ocluprpYdfi/jKk3UDxMkxgApizievSljDlEB
-         O6qpWMiwzFPle7LwSuD6L6ORnzrZLg63HSO69xw3d6o2ei4OExf+Ml0nFWcRtCBF9tm1
-         PvtA==
-X-Gm-Message-State: ABy/qLaHEic7zGGanZgnK7Y6qDVw4Iz3WrtPcEdPFjNkrGkR5an0zAW3
-        CIn8xsx0leEvs9FcgHTbPxg=
-X-Google-Smtp-Source: APBJJlGCZk5eIAzsAIRe5sakyckPhJ0aqKFTBus5ia20xD48WrEFzxV5rsu/e+vLMLzskRlnKNWdwQ==
-X-Received: by 2002:a50:fa98:0:b0:51e:4bc7:3976 with SMTP id w24-20020a50fa98000000b0051e4bc73976mr5022133edr.10.1689336888953;
-        Fri, 14 Jul 2023 05:14:48 -0700 (PDT)
-Received: from tablet.my.domain (ip-37-248-157-105.multi.internet.cyfrowypolsat.pl. [37.248.157.105])
-        by smtp.gmail.com with ESMTPSA id r16-20020aa7d150000000b0051e19bf66a4sm5680666edo.83.2023.07.14.05.14.47
+        d=1e100.net; s=20221208; t=1689355012; x=1691947012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2kL6s2iGtpGIjyrMzCwNbgQ+dYlVfsjyP7TiMQdzptE=;
+        b=KwOi1VQzXWjhEzE9tsfZcCBcOD/IqCa6joXrWWQwSZCH6VYZcAgMT/buQv+Sp/YM3K
+         gqWSQPxb9hCUdXJO7nwbLKuMiKfPr0kPU94A65D/zr7x13TvKtEn7bIpujeoyyA9h61o
+         TuXBlOM2Isten4Ks1RSfQHFjgWliWkbES6lpodZ6KQQl/3EqBfAm2BbzSGcdiFG2VXjO
+         Li3DsLOWEqls2BzV5HE4NxDzvo2Cuhq0FJ1Cdz4emkwtS3yIwXi3jZMJYJykordIwfEj
+         AJuThLKY4nGmYP2zriCMcVZ9pQl8ANF5Pa6mN6YHFrMNll4ewGGtafkpgs3EnJxekUR8
+         B01Q==
+X-Gm-Message-State: ABy/qLZ3Y4Re+XlVDROJAvjmag2QZnfQboEVcoaLJyJsNVHJHOCH0a43
+        yGV7j8803AneSsk/Jy1qqIbjI1Lf9fLrZ8c22qx90QncviK1wCt7K13R7Acv2DbgsjpZVe5uv+9
+        KyhlacrUXH0Fk2e8WpTWveFk=
+X-Received: by 2002:adf:f04f:0:b0:314:3108:500a with SMTP id t15-20020adff04f000000b003143108500amr3012599wro.0.1689355012083;
+        Fri, 14 Jul 2023 10:16:52 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG+Si2gkk224xulr2GYQ3B2/NaZI0tm53emCdaXDgKsHXxBVo/NNGKHPxSgoWGegYqwn2oCFg==
+X-Received: by 2002:adf:f04f:0:b0:314:3108:500a with SMTP id t15-20020adff04f000000b003143108500amr3012588wro.0.1689355011770;
+        Fri, 14 Jul 2023 10:16:51 -0700 (PDT)
+Received: from minerva.home (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id d17-20020adfe891000000b003143cdc5949sm11620842wrm.9.2023.07.14.10.16.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jul 2023 05:14:48 -0700 (PDT)
-From:   Artur Weber <aweber.kernel@gmail.com>
-To:     Lee Jones <lee@kernel.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Artur Weber <aweber.kernel@gmail.com>,
+        Fri, 14 Jul 2023 10:16:51 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+        Jingoo Han <jingoohan1@gmail.com>, Lee Jones <lee@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Melissa Wen <mwen@igalia.com>,
+        Nipun Gupta <nipun.gupta@amd.com>,
+        Oded Gabbay <ogabbay@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH 2/2] backlight: lp855x: Catch errors when changing brightness
-Date:   Fri, 14 Jul 2023 14:14:40 +0200
-Message-ID: <20230714121440.7717-3-aweber.kernel@gmail.com>
+        x86@kernel.org
+Subject: [PATCH v5 0/4] Allow disabling all native fbdev drivers and only keeping DRM emulation
+Date:   Fri, 14 Jul 2023 19:16:28 +0200
+Message-ID: <20230714171642.91185-1-javierm@redhat.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230714121440.7717-1-aweber.kernel@gmail.com>
-References: <20230714121440.7717-1-aweber.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The lp855x_bl_update_status function's return type is int, but
-it always returns 0, without checking for the results of the
-write_byte/pwm_ctrl functions called within.
+This patch series splits the fbdev core support in two different Kconfig
+symbols: FB and FB_CORE. The motivation for this is to allow CONFIG_FB to
+be disabled, while still having the the core fbdev support needed for the
+CONFIG_DRM_FBDEV_EMULATION to be enabled. The motivation is automatically
+disabling all fbdev drivers instead of having to be disabled individually.
 
-Make this function return the return values of the functions it
-calls, and modify the lp855x_pwm_ctrl function to return errors.
+The reason for doing this is that now with simpledrm, there's no need for
+the legacy fbdev (e.g: efifb or vesafb) drivers anymore and many distros
+now disable them. But it would simplify the config a lot fo have a single
+Kconfig symbol to disable all fbdev drivers.
 
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
----
- drivers/video/backlight/lp855x_bl.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+I've built tested with possible combinations of CONFIG_FB, CONFIG_FB_CORE,
+CONFIG_DRM_FBDEV_EMULATION and CONFIG_FB_DEVICE symbols set to 'y' or 'n'.
 
-diff --git a/drivers/video/backlight/lp855x_bl.c b/drivers/video/backlight/lp855x_bl.c
-index 349ec324bc1e..61a7f45bfad8 100644
---- a/drivers/video/backlight/lp855x_bl.c
-+++ b/drivers/video/backlight/lp855x_bl.c
-@@ -217,7 +217,7 @@ static int lp855x_configure(struct lp855x *lp)
- 	return ret;
- }
- 
--static void lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
-+static int lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
- {
- 	struct pwm_state state;
- 
-@@ -234,23 +234,26 @@ static void lp855x_pwm_ctrl(struct lp855x *lp, int br, int max_br)
- 	state.duty_cycle = div_u64(br * state.period, max_br);
- 	state.enabled = state.duty_cycle;
- 
--	pwm_apply_state(lp->pwm, &state);
-+	return pwm_apply_state(lp->pwm, &state);
- }
- 
- static int lp855x_bl_update_status(struct backlight_device *bl)
- {
- 	struct lp855x *lp = bl_get_data(bl);
- 	int brightness = bl->props.brightness;
-+	int ret;
- 
- 	if (bl->props.state & (BL_CORE_SUSPENDED | BL_CORE_FBBLANK))
- 		brightness = 0;
- 
- 	if (lp->mode == PWM_BASED)
--		lp855x_pwm_ctrl(lp, brightness, bl->props.max_brightness);
-+		ret = lp855x_pwm_ctrl(lp, brightness,
-+				      bl->props.max_brightness);
- 	else if (lp->mode == REGISTER_BASED)
--		lp855x_write_byte(lp, lp->cfg->reg_brightness, (u8)brightness);
-+		ret = lp855x_write_byte(lp, lp->cfg->reg_brightness,
-+					(u8)brightness);
- 
--	return 0;
-+	return ret;
- }
- 
- static const struct backlight_ops lp855x_bl_ops = {
+Patch #1 moves the auxdisplay drivers to "Graphics support" Kconfig menu,
+patch #2 moves the core fbdev Kconfig symbols to a separate Kconfig file,
+patch #3 does the FB symbol split and introduces the FB_CORE symbol and
+finally patch #4 makes the DRM symbol to select FB_CORE if the DRM fbdev
+emualtion support was enabled.
+
+Since this series touches three subsystems (auxdisplay, fbdev and DRM),
+I would like to merge it through DRM with the acks of these maintainers.
+
+This is a v5 of the patch-set that addresses issues pointed out by Arnd
+Bergmann, Thomas Zimmermann and Geert Uytterhoeven in the previous v4:
+
+https://lists.freedesktop.org/archives/dri-devel/2023-July/411842.html
+
+Changes in v5:
+- Take the auxdisplay/Kconfig source out of "if HAS_IOMEM" (Geert Uytterhoeven).
+- Fix ifdef guard check in drivers/video/backlight/backlight.c (Arnd Bergmann).
+
+Changes in v4:
+- Fix menuconfig hierarchy that was broken in v3 (Arnd Bergmann).
+
+Changes in v3:
+- Really make a hidden symbol by removing the prompt (Arnd Bergmann).
+- Change FB_CORE to config instead of menuconfig (Arnd Bergmann).
+- Keep "depends on FB" for FIRMWARE_EDID (Arnd Bergmann).
+- Compile out fb_backlight.o and fbmon.o that are only needed for FB
+  (Arnd Bergmann).
+- Make FB_DEVICE to depend on FB_CORE instead of selecting it.
+- Make the DRM symbol to select FB_CORE if DRM_FBDEV_EMULATION is
+  enabled (Arnd Bergmann).
+- Also make DRM select FB_SYS_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
+- Make DRM_FBDEV_EMULATION to depend on DRM instead of DRM_KMS_HELPER.
+
+Changes in v2:
+- Keep "depends on FB" for FB_DDC, FB_HECUBA, FB_SVGALIB, FB_MACMODES,
+  FB_BACKLIGHT, FB_MODE_HELPERS and FB_TILEBLITTING (Arnd Bergmann).
+- Don't change the fb.o object name (Arnd Bergmann).
+- Make FB_CORE a non-visible Kconfig symbol instead (Thomas Zimmermann).
+- Make CONFIG_DRM_FBDEV_EMULATION to select FB_CORE (Thomas Zimmermann).
+
+Javier Martinez Canillas (4):
+  video: Add auxiliary display drivers to Graphics support menu
+  fbdev: Move core fbdev symbols to a separate Kconfig file
+  fbdev: Split frame buffer support in FB and FB_CORE symbols
+  drm: Make FB_CORE to be selected if DRM fbdev emulation is enabled
+
+ arch/x86/Makefile                   |   2 +-
+ arch/x86/video/Makefile             |   2 +-
+ drivers/Kconfig                     |   2 -
+ drivers/gpu/drm/Kconfig             |   7 +-
+ drivers/video/Kconfig               |   2 +
+ drivers/video/backlight/backlight.c |   6 +-
+ drivers/video/console/Kconfig       |   2 +-
+ drivers/video/fbdev/Kconfig         | 213 ++--------------------------
+ drivers/video/fbdev/core/Kconfig    | 206 +++++++++++++++++++++++++++
+ drivers/video/fbdev/core/Makefile   |   8 +-
+ 10 files changed, 232 insertions(+), 218 deletions(-)
+ create mode 100644 drivers/video/fbdev/core/Kconfig
+
 -- 
 2.41.0
 
