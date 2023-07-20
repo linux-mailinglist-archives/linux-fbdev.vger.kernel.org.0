@@ -2,122 +2,151 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A60BD75B42F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jul 2023 18:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B13C75B7E5
+	for <lists+linux-fbdev@lfdr.de>; Thu, 20 Jul 2023 21:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjGTQ3K (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 20 Jul 2023 12:29:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
+        id S230257AbjGTTYM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 20 Jul 2023 15:24:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjGTQ3G (ORCPT
+        with ESMTP id S229684AbjGTTYM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 20 Jul 2023 12:29:06 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A82E75;
-        Thu, 20 Jul 2023 09:29:04 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b74310566cso15339521fa.2;
-        Thu, 20 Jul 2023 09:29:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689870543; x=1690475343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ocSaHX5NIVFNKYOsfv6n0BEBaxKRDPz0bQ1Rbnsgza0=;
-        b=mpxA7JkBj7jv1YVESB2ckxNUJcbRn22fEA0Jt09Oc9l3ibYw+ondIl8GseInFHhKsa
-         LeYX0PQppKzyQtELehqZgaU8ouenxWto3oAzXI/94CCi/2L3DKNAtlj0+IXG6ySgYAlI
-         8Yv75xKwwNy11tuj5/6WnHqgRqdcGP940Iz5wkO0iqtCQKAg6kDJt/gR7/Izd7Z8A3q8
-         KmcSaPZ4ZKjhtXZW7ZIkDOcCcOVhEXflJQek0j8b1LU+/nbwV8/KYp1+qOy4Ph13m0vK
-         FnH6qIuLD27RUDxhT/KmsXHT7TzzZSQULB3yZ8d1noJ6p+u9QOp7P+mW9jgyk5RqzX7A
-         wliA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689870543; x=1690475343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ocSaHX5NIVFNKYOsfv6n0BEBaxKRDPz0bQ1Rbnsgza0=;
-        b=K7cwng99GC1lvlPhosqcGWfqwK310g3v2ZrJmweVdGsRWqdUFDpGJVTg3zuuKiXscq
-         HFZ5xg8wwx8jP9+AFGFV3K+zVuOhb1MBHP7LeD8EQz3YsMJkH23NOjpRwde5TDh9p5Pb
-         h1560kcDMSI3zxqOPpv+kdEqFJVDb5B+k7jarzj3IIGF3DduaFNlAEdy2XlmY4aVYJw2
-         oab+uXGcKjhyWROA81R7lv9pQu5sRkperfnxdCfdyfCfBt0MMyni6d+BcnrORCrmcOGZ
-         aIY0YDRNAwxs/ScHnKDL5CWKIVDtEBaI0fBudDjC9HonfcAVmXoZrIQymJ+1vDf0azyY
-         1asQ==
-X-Gm-Message-State: ABy/qLatirkETS1Mq2iROuLLds6g6Q2ADiuZ7Tn4at5oVcIUeFgDwp1/
-        xB7bfa/39xn2gJi2y48b5cUgrluocpatu1cbuE8=
-X-Google-Smtp-Source: APBJJlECZqwpsuvvsnL5OMKuLs00FpsDWt0kR1bFClLwdqeW+ShzMPTJAas1gJeKMsPx8ihKs6Tx3kyhZzIqiVctg/8=
-X-Received: by 2002:a2e:3203:0:b0:2b6:e105:6174 with SMTP id
- y3-20020a2e3203000000b002b6e1056174mr2751836ljy.47.1689870542887; Thu, 20 Jul
- 2023 09:29:02 -0700 (PDT)
+        Thu, 20 Jul 2023 15:24:12 -0400
+Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1B7171D;
+        Thu, 20 Jul 2023 12:24:09 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mailout.easymail.ca (Postfix) with ESMTP id 479C0623ED;
+        Thu, 20 Jul 2023 18:48:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at emo07-pco.easydns.vpn
+Received: from mailout.easymail.ca ([127.0.0.1])
+        by localhost (emo07-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id YkMMq7FPWqRc; Thu, 20 Jul 2023 18:48:49 +0000 (UTC)
+Received: from mail.gonehiking.org (unknown [38.15.45.1])
+        by mailout.easymail.ca (Postfix) with ESMTPA id C8ABC61E38;
+        Thu, 20 Jul 2023 18:48:49 +0000 (UTC)
+Received: from [192.168.1.4] (internal [192.168.1.4])
+        by mail.gonehiking.org (Postfix) with ESMTP id CC21F3EED6;
+        Thu, 20 Jul 2023 12:48:47 -0600 (MDT)
+Message-ID: <aea82980-358a-863f-d6a0-66f4ce3f87b7@gonehiking.org>
+Date:   Thu, 20 Jul 2023 12:48:47 -0600
 MIME-Version: 1.0
-References: <20230720061105.154821-1-victor.liu@nxp.com> <20230720112742.GA2525277@aspen.lan>
-In-Reply-To: <20230720112742.GA2525277@aspen.lan>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 20 Jul 2023 19:28:26 +0300
-Message-ID: <CAHp75Vdw_-nKUdNm0TNRnMFLhUEoFAtTpt4ApVNmeHFOi_16Xg@mail.gmail.com>
-Subject: Re: [PATCH] backlight: gpio_backlight: Drop output gpio direction
- check for initial power state
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Ying Liu <victor.liu@nxp.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lee@kernel.org" <lee@kernel.org>,
-        "jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-        "deller@gmx.de" <deller@gmx.de>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Reply-To: khalid@gonehiking.org
+Subject: Re: [PATCH v2 1/9] vgacon: rework Kconfig dependencies
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Helge Deller <deller@gmx.de>,
+        Javier Martinez Canillas <javierm@redhat.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Deepak Rawat <drawat.floss@gmail.com>,
+        Dexuan Cui <decui@microsoft.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guo Ren <guoren@kernel.org>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        WANG Xuerui <kernel@xen0n.name>, Wei Liu <wei.liu@kernel.org>,
+        Will Deacon <will@kernel.org>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+References: <20230719123944.3438363-1-arnd@kernel.org>
+ <20230719123944.3438363-2-arnd@kernel.org>
+From:   Khalid Aziz <khalid@gonehiking.org>
+In-Reply-To: <20230719123944.3438363-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 2:27=E2=80=AFPM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
->
-> On Thu, Jul 20, 2023 at 06:06:27AM +0000, Ying Liu wrote:
-> > Bootloader may leave gpio direction as input and gpio value as logical =
-low.
-> > It hints that initial backlight power state should be FB_BLANK_POWERDOW=
-N
-> > since the gpio value is literally logical low.
->
-> To be honest this probably "hints" that the bootloader simply didn't
-> consider the backlight at all :-) . I'd rather the patch description
-> focus on what circumstances lead to the current code making a bad
-> decision. More like:
->
->   If the GPIO pin is in the input state but the backlight is currently
->   off due to default pull downs then ...
->
-> > So, let's drop output gpio
-> > direction check and only check gpio value to set the initial power stat=
-e.
->
-> This check was specifically added by Bartosz so I'd be interested in his
-> opinion of this change (especially since he is now a GPIO maintainer)!
->
-> What motivates (or motivated) the need to check the direction rather
-> than just read that current logic level on the pin?
+On 7/19/23 6:39 AM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The list of dependencies here is phrased as an opt-out, but this is missing
+> a lot of architectures that don't actually support VGA consoles, and some
+> of the entries are stale:
+> 
+>   - powerpc used to support VGA consoles in the old arch/ppc codebase, but
+>     the merged arch/powerpc never did
+> 
+>   - arm lists footbridge, integrator and netwinder, but netwinder is actually
+>     part of footbridge, and integrator does not appear to have an actual
+>     VGA hardware, or list it in its ATAG or DT.
+> 
+>   - mips has a few platforms (malta, sibyte, and sni) that initialize
+>     screen_info, on everything else the console is selected but cannot
+>     actually work.
+> 
+>   - csky, hexgagon, loongarch, nios2, riscv and xtensa are not listed
+>     in the opt-out table and declare a screen_info to allow building
+>     vga_con, but this cannot work because the console is never selected.
+> 
+> Replace this with an opt-in table that lists only the platforms that
+> remain. This is effectively x86, plus a couple of historic workstation
+> and server machines that reused parts of the x86 system architecture.
+> 
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-...
 
-> > -     else if (gpiod_get_direction(gbl->gpiod) =3D=3D 0 &&
-> > -              gpiod_get_value_cansleep(gbl->gpiod) =3D=3D 0)
-> > +     else if (gpiod_get_value_cansleep(gbl->gpiod) =3D=3D 0)
-> >               bl->props.power =3D FB_BLANK_POWERDOWN;
+Reviewed-by: Khalid Aziz <khalid@gonehiking.org>
 
-The code before this patch needs a bit of elaboration. There is no
-prohibition on reading value for the pin that is in any direction.
-I.o.w. if the direction here is a problem it should have been
-configured beforehand.
 
---=20
-With Best Regards,
-Andy Shevchenko
+> ---
+>   drivers/video/console/Kconfig | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+> index 1b5a319971ed0..6af90db6d2da9 100644
+> --- a/drivers/video/console/Kconfig
+> +++ b/drivers/video/console/Kconfig
+> @@ -7,9 +7,9 @@ menu "Console display driver support"
+>   
+>   config VGA_CONSOLE
+>   	bool "VGA text console" if EXPERT || !X86
+> -	depends on !4xx && !PPC_8xx && !SPARC && !M68K && !PARISC &&  !SUPERH && \
+> -		(!ARM || ARCH_FOOTBRIDGE || ARCH_INTEGRATOR || ARCH_NETWINDER) && \
+> -		!ARM64 && !ARC && !MICROBLAZE && !OPENRISC && !S390 && !UML
+> +	depends on ALPHA || IA64 || X86 || \
+> +		(ARM && ARCH_FOOTBRIDGE) || \
+> +		(MIPS && (MIPS_MALTA || SIBYTE_BCM112X || SIBYTE_SB1250 || SIBYTE_BCM1x80 || SNI_RM))
+>   	select APERTURE_HELPERS if (DRM || FB || VFIO_PCI_CORE)
+>   	default y
+>   	help
+
