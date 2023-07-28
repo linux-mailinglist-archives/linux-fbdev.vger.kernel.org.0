@@ -2,74 +2,99 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D058A766B82
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jul 2023 13:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15E41766FF0
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jul 2023 16:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234983AbjG1LOz (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 28 Jul 2023 07:14:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58994 "EHLO
+        id S234787AbjG1O6r (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 28 Jul 2023 10:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236196AbjG1LOz (ORCPT
+        with ESMTP id S235290AbjG1O6q (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 28 Jul 2023 07:14:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8830F2723;
-        Fri, 28 Jul 2023 04:14:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26233620CD;
-        Fri, 28 Jul 2023 11:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690B9C433C8;
-        Fri, 28 Jul 2023 11:14:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690542893;
-        bh=WS0nmvdraHwRzCUZAn+1znFrZP3+1jWKj9lAGH87O1o=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=vCV6Vamz2Z+3PEuVoJUo0O5Oos52qqZfLuBps7e/4zzDo5/NSWbWx0ndFx80nzT1r
-         pSNFH0M8nirFkAzVZHTvI6T0M8NTAA/sfeWWmF/JJ3XIzGMVz/13rRA8QWef/0GH9z
-         s3hneMinEtTZa6iF7V/YJGCKD22oibVNQ5Rpjlw+HiQaYUnEqEvEWqGVUhyCE0Ct15
-         dQrB27GPQf8dzxKrbep2TTx1wxG60BDJiUJh7QkWCOuuotUsmyIHIRPnYHLV6zVFOW
-         AkKZOWbzvfgbfrOY2G34IF/RYC7vYamySUDQ9LvJ4MoDTnTvcSXkQXXdfyrUbEOdyI
-         inaIrG0mMYfDQ==
-From:   Lee Jones <lee@kernel.org>
-To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ying Liu <victor.liu@nxp.com>
-Cc:     lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        deller@gmx.de, andy@kernel.org, linus.walleij@linaro.org,
-        brgl@bgdev.pl
-In-Reply-To: <20230721093342.1532531-1-victor.liu@nxp.com>
-References: <20230721093342.1532531-1-victor.liu@nxp.com>
-Subject: Re: (subset) [PATCH v4] backlight: gpio_backlight: Drop output
- GPIO direction check for initial power state
-Message-Id: <169054289117.346169.12583682764198130810.b4-ty@kernel.org>
-Date:   Fri, 28 Jul 2023 12:14:51 +0100
+        Fri, 28 Jul 2023 10:58:46 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D94462696
+        for <linux-fbdev@vger.kernel.org>; Fri, 28 Jul 2023 07:58:45 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qPOvL-00030M-Om; Fri, 28 Jul 2023 16:58:36 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qPOvH-002jO6-Bc; Fri, 28 Jul 2023 16:58:31 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qPOvG-008WkJ-Mm; Fri, 28 Jul 2023 16:58:30 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Javier Martinez Canillas <javierm@redhat.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jilin Yuan <yuanjilin@cdjrlc.com>,
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
+        linux-fbdev@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: [PATCH 0/3] pwm: Drop useless member "pwm" from struct pwm_device
+Date:   Fri, 28 Jul 2023 16:58:21 +0200
+Message-Id: <20230728145824.616687-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1462; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=GgA+H1Gx/aannDv0LuSsWcVQWboA8zqkq9tUQR7Z/Sw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkw9eH3uUGN77+Vb2x0Jv1uy0u6Gs5UinZWoelT nMFN7o49rSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZMPXhwAKCRCPgPtYfRL+ TlJOB/45E9Q/4YPkfxStlxoyeLTuVRuH3gCksc56vWUC2p4S/LuW3GOQQzq1xi2EwE66OsCSdi5 oE2B1dcsd31s5x+P4tB+7A5+Jsjq/x4VCYiYn9BlFnVIHYIMrqKBrwFY5AZMl55B53uEa/ynhLD JEf0q4Frgt5btp9o90ShFYe7OpSv0fdbzB3evwhMLclXCgwP+DfsKys6+3BcIOhgx7BwvICH4RD 81/v6GV0JYh5qDmjAzXB7NYl0fMsp5Gv0qtIb4qLsKen6I6N84u0smJOeslMRHdplem6tIlCLYr rLyh0AiI1GHnbAtO3h5JMge8iikd4V1ytdj0ss/OOMvnJvQR
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, 21 Jul 2023 09:29:03 +0000, Ying Liu wrote:
-> So, let's drop output GPIO direction check and only check GPIO value to set
-> the initial power state.
-> 
-> 
+Hello,
 
-Applied, thanks!
+there are only two users of struct pwm_device::pwm in the tree; both use
+it for some dev_dbg output. While this number allows to identify the
+PWM, it's not trivial, for example the data currently available in
+/sys/kernel/debug/pwm isn't enough. (You have to look in /sys/class/pwm,
+pick the pwmchip with the highest number that isn't bigger than the
+PWM's number.)
 
-[1/1] backlight: gpio_backlight: Drop output GPIO direction check for initial power state
-      commit: fe1328b5b2a087221e31da77e617f4c2b70f3b7f
+To be honest the label isn't always usefull either, but it's easy to use
+and should be enough to identify the used PWM. The parent device + hwid
+might be more useful?! On the other hand using that for a dev_dbg that
+is probably only looked at by someone debugging the driver and thus
+knowing the used PWM anyhow is of little value either.
 
---
-Lee Jones [李琼斯]
+Assuming this change is still considered worthwile I suggest that patches #1
+and #2 go in via their respective maintainer trees and I resend patch #3 to go
+via the pwm tree once these two are "in".
+
+Best regards
+Uwe
+
+Uwe Kleine-König (3):
+  drm/ssd130x: Print the PWM's label instead of its number
+  video: fbdev: ssd1307fb: Print the PWM's label instead of its number
+  pwm: Drop unused member "pwm" from struct pwm_device
+
+ drivers/gpu/drm/solomon/ssd130x.c | 4 ++--
+ drivers/pwm/core.c                | 1 -
+ drivers/video/fbdev/ssd1307fb.c   | 4 ++--
+ include/linux/pwm.h               | 1 -
+ 4 files changed, 4 insertions(+), 6 deletions(-)
+
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+-- 
+2.39.2
 
