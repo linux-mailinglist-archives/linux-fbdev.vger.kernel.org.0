@@ -2,227 +2,113 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1D7767FC1
-	for <lists+linux-fbdev@lfdr.de>; Sat, 29 Jul 2023 15:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E11768167
+	for <lists+linux-fbdev@lfdr.de>; Sat, 29 Jul 2023 21:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231207AbjG2NyA (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sat, 29 Jul 2023 09:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
+        id S229483AbjG2TcE (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 29 Jul 2023 15:32:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjG2NyA (ORCPT
+        with ESMTP id S229493AbjG2TcC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Sat, 29 Jul 2023 09:54:00 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3773F1BFC;
-        Sat, 29 Jul 2023 06:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690638821; x=1691243621; i=deller@gmx.de;
- bh=SF33N+Kpc/wyG9nSqcNT0LlTEH8fet6dIuByUxd0Cic=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=c7PuZP+dLY/6HRY5CvV47NQ/1RIsow3/wc19NKo0POC7seqZVHaGzIFSamX7HNh7XnPjnSl
- F1MjawpMBcXcdnzTMza184dmiHLoQ0U6JClins9LfVaqdEEXJIiVRsLOJPbISJGXixgWyiYW5
- QSCNlgYwZKRbyksX0e07YuKZKvhr6qIZZbPMkcJc1RfRDke8eTiQJ5dVQil7Hb1lhCdC0ZDYw
- EuoP6E4A4w8cOBbsm77c8riEbqlmGF7Ua9nyI1lRkpsxqdHdT86QKTbxQ+ENcb4kAvujtb7+7
- ehwn+6Pu39M6L8reSF9pRmdeci20dg3mLS1LApTYJ9Bm64IqawMA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.147.68]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MzQg6-1pdXSH2mXY-00vLlS; Sat, 29
- Jul 2023 15:53:41 +0200
-Message-ID: <1ab418ae-592f-4347-fa75-bf9b00115afe@gmx.de>
-Date:   Sat, 29 Jul 2023 15:53:40 +0200
+        Sat, 29 Jul 2023 15:32:02 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECF0170F
+        for <linux-fbdev@vger.kernel.org>; Sat, 29 Jul 2023 12:32:00 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 82F481FE99;
+        Sat, 29 Jul 2023 19:31:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1690659119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Gnmpdvsr88StgXvE9YePSotJhqeLmb0MGwWW956LeGM=;
+        b=JeuHxT0TcjJ3qq5+iRSj6132VV2LM+sdeZGHCSpFcpNr4R9EliQvAYFPq3qD2DN97GIm4i
+        VihV3pb1mWmaBd7Vc7BSneJmM7i2AQZMvOuYBk7atwJuf7PmOiEhJnedL3zIkcSlsdTxEW
+        wgztb6MsUyWCBuPXhTaLRL3d5JHQRC4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1690659119;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=Gnmpdvsr88StgXvE9YePSotJhqeLmb0MGwWW956LeGM=;
+        b=/aDIrKIYnkrJEev0Opj3BSLkjMkb0U3JJpiCfvNAxOBVTOvbf5Ykm+hVbCWLb7yE8d7lQU
+        Xddm0H8t89bVyuBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 56C4013596;
+        Sat, 29 Jul 2023 19:31:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id UXOPEy9pxWSGGgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Sat, 29 Jul 2023 19:31:59 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, sam@ravnborg.org, javierm@redhat.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/4] fbdev: Rename helpers for struct fb_ops
+Date:   Sat, 29 Jul 2023 21:26:45 +0200
+Message-ID: <20230729193157.15446-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 00/47] fbdev: Use I/O helpers
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>
-Cc:     javierm@redhat.com, linux-media@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org,
-        kvm@vger.kernel.org
-References: <20230728182234.10680-1-tzimmermann@suse.de>
- <c1a4b7c9-50f2-c43f-277d-c2af9ccc0b50@gmx.de>
- <20230728210127.GA1156027@ravnborg.org>
- <78da21f8-7d00-797e-363a-736ee53b2eb6@gmx.de>
- <126ac851-2f81-4cfd-b06a-774f8428cc93@suse.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <126ac851-2f81-4cfd-b06a-774f8428cc93@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6NOl6qf6INO7VOFdQE2JnRYWdtQDNRo6M9Ca0Q2Is8v9m4IHvfQ
- ua61qy3N+QL+ov3IpkAlBqWzpRLUFIs6319HjFbUd9mLzNsO+tOGAf1YOPOOClcXwlM6iSp
- kqWdFK7mJFVa4iGcdOkTd27JYbqIFT2XR9R2NcEgYG99BLVOTU1kMY1lltzGzVz3OWKFPW0
- zncOfO05x8K5vTsSIA1Nw==
-UI-OutboundReport: notjunk:1;M01:P0:BEPvo3atSHo=;8ZJQxXtTgZ/i8YZdeod/v+Sx78d
- sV7QGqx5P+XbbewQrCUuMM2mIUX57WAhxzXzPwb8HZtWALbUvGqjBKEquCKElhDra9J1W4FsW
- RSbH37IgKyiEPUuLhO3hYhjxJ1OESVY9l46kaw6MCW9UdBOZL0QiCLmw/NgpdUWUkbmqozflr
- By7lwt8Jh04wVLXvhb6zuHhVkqn+x8zyP1dSWKEmjqz7SAJqedZ6dFLka4W1uQIBQeajseAWd
- 5ukRIAAbk7QTSjOlfu28AH0ZYXZQYZBq87n7EpBjmNO7omIBL2l4LLbYkJ+FR17J03p9rJNY2
- N+ptylEF2CfmhShVYEK3IUGwR89DB6qc1VQFMNgE2YLeo3NzyKMUc8owaCPcxVJ0XlqQXqUdW
- 2h7TrrlowCT34sYOoTuVhJgvPpp2xqvGH7HVOEu3yt0araUQULvDoWaZdHuA6YQOZDQ9duzca
- e8l5pfYPEoRqsaE3V9+PGRcw29X6ajx84Cfbrl/57KlvpV7zNrusmfz5fkcWOCTTVgRmsa95W
- DhCT16EIP6TBdqS89NaaLaZfVXjZ6PsCmx0XvivgFHHxj9urbbRgZnnHEnRN4Qb1AJYl5NsQk
- 6ChMZ/3d1cL6STQ8mKyN1gRVln7d/80QWP3TsmFb/U6U+6pyhQa34AFjePb8AyTuVi1IctBdh
- ySFP8XAk/xMXeMTEuovcs1ejQ+l+yFsPmzQwLZkJDJXang0Ap099PVacpsxmtuD0xzYo223VE
- Zg2DpdJpT+UbYxiYbDB2tFbIO0Yux5/Hcv6cO4F0MpAUCQFScJl3WJ2usEQxHolmDaVeuIcM+
- 4V+NxQDfqrxB31DHnYrS6btho99ZsNzVUsn3i58StsPbsHHis35HLMYnWp5M4Qd/2v/bafmss
- mTwVw/Arwed7vSe6A1gNwVgYmS1esFcNDY+01azGbDr82SsBybEYbP2/sRxiLZBqdwQTLylVg
- uuxFsRNLE56F12ao/HwpC6fJMfA=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On 7/29/23 15:21, Thomas Zimmermann wrote:
-> Hi Helge
->
-> Am 29.07.23 um 08:51 schrieb Helge Deller:
->> On 7/28/23 23:01, Sam Ravnborg wrote:
->>> Hi Helge,
->>>
->>> On Fri, Jul 28, 2023 at 08:46:59PM +0200, Helge Deller wrote:
->>>> On 7/28/23 18:39, Thomas Zimmermann wrote:
->>>>> Most fbdev drivers operate on I/O memory.
->>>>
->>>> Just nitpicking here:
->>>> What is I/O memory?
->>>> Isn't it either memory, or I/O ?
->>>> I mean, I would never think of the cfb* draw functions under I/O.
->>>>
->>>>> And most of those use the
->>>>> default implementations for file I/O and console drawing. Convert al=
-l
->>>>> these low-hanging fruits to the fb_ops initializer macro and Kconfig
->>>>> token for fbdev I/O helpers.
->>>>
->>>> I do see the motivation for your patch, but I think the
->>>> macro names are very misleading.
->>>>
->>>> You have:
->>>> #define __FB_DEFAULT_IO_OPS_RDWR \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_read=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D fb_io_read, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_write=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D fb_io_write
->>>>
->>>> #define __FB_DEFAULT_IO_OPS_DRAW \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_fillrect=C2=A0=
-=C2=A0=C2=A0 =3D cfb_fillrect, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_copyarea=C2=A0=
-=C2=A0=C2=A0 =3D cfb_copyarea, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_imageblit=C2=A0=
-=C2=A0 =3D cfb_imageblit
->>>>
->>>> #define __FB_DEFAULT_IO_OPS_MMAP \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_mmap=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =3D NULL /* default implementation */
->>>>
->>>> #define FB_DEFAULT_IO_OPS \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __FB_DEFAULT_IO_OPS_=
-RDWR, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __FB_DEFAULT_IO_OPS_=
-DRAW, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __FB_DEFAULT_IO_OPS_=
-MMAP
->>>>
->>>> I think FB_DEFAULT_IO_OPS is OK for read/write/mmap.
->>>> But I would suggest to split out __FB_DEFAULT_IO_OPS_DRAW.
->>>> Something like:
->>>> #define FB_DEFAULT_IO_OPS \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __FB_DEFAULT_IO_OPS_=
-RDWR, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __FB_DEFAULT_IO_OPS_=
-MMAP
->>>
->>>
->>>> #define FB_DEFAULT_CFB_OPS \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_fillrect=C2=A0=
-=C2=A0=C2=A0 =3D cfb_fillrect, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_copyarea=C2=A0=
-=C2=A0=C2=A0 =3D cfb_copyarea, \
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .fb_imageblit=C2=A0=
-=C2=A0 =3D cfb_imageblit
->>>
->>> The prefix cfb, I have recently learned, equals color frame buffer.
->>
->> correct.
->>
->>> They are named such for purely historical reasons.
->>
->> well, they operate on MEMORY which represents a (color) frame buffer,
->> either in host memory or memory on some card on some bus.
->> So, the naming cfb is not historical, but even today correct.
->>
->>> What is important is where the data are copied as we have two
->>> implementations of for example copyarea - one using system memory, the
->>> other using IO memory.
->>
->> sys_copyarea() and cfb_copyarea().
->>
->>> The naming FB_DEFAULT_IO_OPS says this is the defaults to IO memory
->>> operations, which tell what they do
->>
->> This is exactly what I find misleading. IO_OPS sounds that it operates
->> on file I/O (like file read/write), but not on iomem.
->>
->>> and avoid the strange cfb acronym.
->>
->>> Reserve cfb for color frame buffers only - and maybe in the end rename
->>> the three cfbcopyarea, cfbfillrect, cfbimgblt to use the io prefix.
->>
->> Again, the io prefix is what I think is misleading.
->> Why not name it what it really is and what is used in the kernel alread=
-y, e.g.
->> iomem_copyarea() and sysmem_copyarea().
->> which would lead to
->> FB_DEFAULT_IOMEM_OPS and FB_DEFAULT_SYSMEM_OPS.
->
-> Yes there's been a bit of confusion and discussion on the naming before.=
- I'd be happy if we can standardize on sysmem and iomem.
->
-> I can add a patch to this patchset to rename the _IO_ macros and tokens =
-to use _IOMEM_. That's not too much change. A later patchset can address s=
-ysmem and deferred I/O helpers separately.
+As discussed at [1], rename helpers for struct fb_ops to include
+'MEM' in their name to signal that these helpers operate on a
+certain type of memory address; either I/O, system or DMA-able
+ranges. These are trival renames without any functional changes.
 
-Sound good.
+[1] https://lore.kernel.org/dri-devel/1ab418ae-592f-4347-fa75-bf9b00115afe@gmx.de/T/#mcb92691d6131333782cc83190a5fc00bd575a0c5
 
-> On motivation: for now it's a cleanup to make the a bit code easier to u=
-nderstand. But once all drivers set their callbacks correctly, we can make=
- the I/O mem code optional. It's currently the default and built-in uncond=
-itionally. But it's not uncommon that it's unused entirely.
+Thomas Zimmermann (4):
+  fbdev: Use _IOMEM_ infix for I/O-memory helpers
+  fbdev: Use _SYSMEM_ infix for system-memory helpers
+  fbdev: Use _DMAMEM_ infix for DMA-memory helpers
+  fbdev: Align deferred I/O with naming of helpers
 
-Probably true for x86, on others it might be useful to make the sysmem opt=
-ional as well. I did not checked.
+ drivers/gpu/drm/Kconfig                    |  4 ++--
+ drivers/gpu/drm/armada/Kconfig             |  2 +-
+ drivers/gpu/drm/armada/armada_fbdev.c      |  2 +-
+ drivers/gpu/drm/drm_fbdev_dma.c            |  4 ++--
+ drivers/gpu/drm/drm_fbdev_generic.c        |  6 ++---
+ drivers/gpu/drm/exynos/Kconfig             |  2 +-
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c  |  4 ++--
+ drivers/gpu/drm/gma500/Kconfig             |  2 +-
+ drivers/gpu/drm/gma500/fbdev.c             |  4 ++--
+ drivers/gpu/drm/i915/Kconfig               |  2 +-
+ drivers/gpu/drm/i915/display/intel_fbdev.c |  6 ++---
+ drivers/gpu/drm/msm/Kconfig                |  2 +-
+ drivers/gpu/drm/msm/msm_fbdev.c            |  6 ++---
+ drivers/gpu/drm/omapdrm/Kconfig            |  2 +-
+ drivers/gpu/drm/omapdrm/omap_fbdev.c       |  4 ++--
+ drivers/gpu/drm/radeon/Kconfig             |  2 +-
+ drivers/gpu/drm/radeon/radeon_fbdev.c      |  2 +-
+ drivers/gpu/drm/tegra/Kconfig              |  2 +-
+ drivers/gpu/drm/tegra/fbdev.c              |  4 ++--
+ drivers/video/fbdev/Kconfig                | 10 ++++-----
+ drivers/video/fbdev/broadsheetfb.c         |  6 ++---
+ drivers/video/fbdev/core/Kconfig           | 10 ++++-----
+ drivers/video/fbdev/hecubafb.c             |  6 ++---
+ drivers/video/fbdev/metronomefb.c          |  6 ++---
+ drivers/video/fbdev/ssd1307fb.c            |  6 ++---
+ drivers/video/fbdev/xen-fbfront.c          |  6 ++---
+ include/linux/fb.h                         | 26 +++++++++++-----------
+ 27 files changed, 69 insertions(+), 69 deletions(-)
 
-Anyway, thanks for your work!
 
-Helge
-
->
-> Best regards
-> Thomas
->
->>
->>> Which is much simpler to do after this series - and nice extra benefit=
-.
->>>
->>> I hope this properly explains why I like the current naming and
->>> acked it when the macros were introduced.
->>
->> IMHO the naming isn't perfect, but that's just nitpicking.
->> Besides that, Thomas' patches are a nice cleanup.
->> So, if you want add a
->> Acked-by: Helge Deller <deller@gmx.de>
->> to the series.
->>
->> Helge
->
+base-commit: fba8a13ec9ae1a7175cc0dda7235b3d2df0f0f90
+-- 
+2.41.0
 
