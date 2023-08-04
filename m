@@ -2,131 +2,111 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5E576F269
-	for <lists+linux-fbdev@lfdr.de>; Thu,  3 Aug 2023 20:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248B376F8C6
+	for <lists+linux-fbdev@lfdr.de>; Fri,  4 Aug 2023 06:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232170AbjHCSlU (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 3 Aug 2023 14:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57788 "EHLO
+        id S231803AbjHDEH1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 4 Aug 2023 00:07:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234435AbjHCSk5 (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 3 Aug 2023 14:40:57 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9B030FD;
-        Thu,  3 Aug 2023 11:40:51 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id CF0AA1F749;
-        Thu,  3 Aug 2023 18:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1691088049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WeUy/I5U34Io9kcxfPpjNFkinx60WBKK80NcAN1tePA=;
-        b=iVQpx+6gwrGgLQIjhmf4LcCZh2MAhs1PmdDKmkmXjcugAKS2g//dHfp89KqeLYbsTxf6Aq
-        dep3c10oQ6iCY/1F1+N+wmOXUP9BvwaC03xT3svJQ5zOX9akHpItVcfOJIEaEw/SsGJljg
-        mV7cJVayKJ+qrlloI2IirAcecWCA19M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1691088049;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WeUy/I5U34Io9kcxfPpjNFkinx60WBKK80NcAN1tePA=;
-        b=EDeh0+8nIAcYgaxWyC2jv2ZyGVHoaPs2AmiAEnlHyvkT+sKNVSv6QuI8B7B5QNQuvy+989
-        Qz+hf/9EpO5K7UBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 944751333C;
-        Thu,  3 Aug 2023 18:40:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id iAw+I7H0y2TLGAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 03 Aug 2023 18:40:49 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, javierm@redhat.com, sam@ravnborg.org
-Cc:     linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org,
-        kvm@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
-        Kirti Wankhede <kwankhede@nvidia.com>
-Subject: [PATCH v3 47/47] vfio-dev/mdpy-fb: Use fbdev I/O helpers
-Date:   Thu,  3 Aug 2023 20:36:12 +0200
-Message-ID: <20230803184034.6456-48-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230803184034.6456-1-tzimmermann@suse.de>
-References: <20230803184034.6456-1-tzimmermann@suse.de>
+        with ESMTP id S233110AbjHDEHY (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Fri, 4 Aug 2023 00:07:24 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861AF3C28;
+        Thu,  3 Aug 2023 21:07:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691122042; x=1722658042;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Nct1OPaQWyF0NLQQ6u7Wq7eG9CS3igaS6y0hh8xq7cc=;
+  b=P+mTRk0pXznlqitB1u0k4IgWqFzHW6Q69Y7LD1EgJiZ8s32Wnp8jexBh
+   Q6npLYLmmP8Zcu0bFVOGXi0sO06FlbQ9qliXd2+TXhQ0CA0Jr4qf1QaRC
+   EgHc8X+NyeUeWym7wWggt60pVhftfk+EEQA3d1x1JezGZM60vivSeIlu/
+   CId8NjVOlGe+KCrhctoIsk5z8z5NikS9P+c7dIjCrcxzn7Gms3NCjzjPE
+   fQrBvR3KjCSkL3CO0XxZ7JzWT7pCCc2z60e9Y6DVv4zTKaNiQOxWePeQS
+   Oaxvh5VVxvvBYG6abP4ob7hwKQRoVC30JXaN74Poyk6wZTevn0Kxx3mIb
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="368962279"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
+   d="scan'208";a="368962279"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 21:07:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="679758521"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
+   d="scan'208";a="679758521"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP; 03 Aug 2023 21:07:16 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qRm5q-008pgS-0y;
+        Fri, 04 Aug 2023 07:07:14 +0300
+Date:   Fri, 4 Aug 2023 07:07:14 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Jani Nikula <jani.nikula@intel.com>,
+        Imre Deak <imre.deak@intel.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: Re: [PATCH v4 1/1] drm/i915: Move abs_diff() to math.h
+Message-ID: <ZMx5cp1u5noAH0Zg@smile.fi.intel.com>
+References: <20230803131918.53727-1-andriy.shevchenko@linux.intel.com>
+ <20230803102446.8edf94acc77e81ab2e09cee3@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230803102446.8edf94acc77e81ab2e09cee3@linux-foundation.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Set struct fb_ops and with FB_DEFAULT_IOMEM_OPS, fbdev's initializer
-for I/O memory. Sets the callbacks to the cfb_ and fb_io_ functions.
-Select the correct modules with Kconfig's FB_IOMEM_HELPERS token.
+On Thu, Aug 03, 2023 at 10:24:46AM -0700, Andrew Morton wrote:
+> On Thu,  3 Aug 2023 16:19:18 +0300 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-The macro and token set the currently selected values, so there is
-no functional change.
+...
 
-v3:
-	* use _IOMEM_ in commit message
-v2:
-	* updated to use _IOMEM_ tokens
+> > +#define abs_diff(a, b) ({			\
+> > +	typeof(a) __a = (a);			\
+> > +	typeof(b) __b = (b);			\
+> > +	(void)(&__a == &__b);			\
+> > +	__a > __b ? (__a - __b) : (__b - __a);	\
+> > +})
+> 
+> Can we document it please?
+> 
+> Also, the open-coded type comparison could be replaced with __typecheck()?
+> 
+> And why the heck isn't __typecheck() in typecheck.h, to be included by
+> minmax.h.
+> 
+> etcetera.  Sigh.  I'll grab it, but please at least send along some
+> kerneldoc?
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Acked-by: Helge Deller <deller@gmx.de>
-Cc: Kirti Wankhede <kwankhede@nvidia.com>
----
- samples/Kconfig             | 4 +---
- samples/vfio-mdev/mdpy-fb.c | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+Sure and thank you!
 
-diff --git a/samples/Kconfig b/samples/Kconfig
-index bf49ed0d7362..b0ddf5f36738 100644
---- a/samples/Kconfig
-+++ b/samples/Kconfig
-@@ -210,9 +210,7 @@ config SAMPLE_VFIO_MDEV_MDPY
- config SAMPLE_VFIO_MDEV_MDPY_FB
- 	tristate "Build VFIO mdpy example guest fbdev driver"
- 	depends on FB
--	select FB_CFB_FILLRECT
--	select FB_CFB_COPYAREA
--	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_HELPERS
- 	help
- 	  Guest fbdev driver for the virtual display sample driver.
- 
-diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
-index cda477b28685..4598bc28acd9 100644
---- a/samples/vfio-mdev/mdpy-fb.c
-+++ b/samples/vfio-mdev/mdpy-fb.c
-@@ -88,11 +88,9 @@ static void mdpy_fb_destroy(struct fb_info *info)
- 
- static const struct fb_ops mdpy_fb_ops = {
- 	.owner		= THIS_MODULE,
-+	FB_DEFAULT_IOMEM_OPS,
- 	.fb_destroy	= mdpy_fb_destroy,
- 	.fb_setcolreg	= mdpy_fb_setcolreg,
--	.fb_fillrect	= cfb_fillrect,
--	.fb_copyarea	= cfb_copyarea,
--	.fb_imageblit	= cfb_imageblit,
- };
- 
- static int mdpy_fb_probe(struct pci_dev *pdev,
 -- 
-2.41.0
+With Best Regards,
+Andy Shevchenko
+
 
