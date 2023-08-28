@@ -2,129 +2,127 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AA6978A830
-	for <lists+linux-fbdev@lfdr.de>; Mon, 28 Aug 2023 10:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 217E378AB5E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 28 Aug 2023 12:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbjH1Ivt (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Mon, 28 Aug 2023 04:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
+        id S231373AbjH1KaR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjH1IvZ (ORCPT
+        with ESMTP id S231461AbjH1KaI (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Mon, 28 Aug 2023 04:51:25 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62802BF;
-        Mon, 28 Aug 2023 01:51:22 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        Mon, 28 Aug 2023 06:30:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7766DA7;
+        Mon, 28 Aug 2023 03:30:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 1AD3821B1B;
-        Mon, 28 Aug 2023 08:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1693212680; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YS8e1L8fy8R+sqnpecFZuJkMlDaGs4krtp7hLbupfhU=;
-        b=NGdBZbIVbLoDS1hdYNZ4txHl5sQMhDEj/CIY7pV9LRNv6BJTAER97LTge1U7QpkmXtRq4V
-        UsOvu/ZLoAXfLmFiXREoy5pdZlyzQlccCQcDwurzUPp/z1+4Oubxd/CeWbgxyEfdLuRMee
-        80JpQbRYFuRhpw1ZtuUnGtHeq0cfoFE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1693212680;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YS8e1L8fy8R+sqnpecFZuJkMlDaGs4krtp7hLbupfhU=;
-        b=yCmaCWLpzpXD1boOA3nxaat3edYySBThLzegU2aJgd5ZcPzQ5lU1+mnAwM+yk18J+Nhj9A
-        xQ2GRIyoC2DphqCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E855F13A11;
-        Mon, 28 Aug 2023 08:51:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id no2tNwdg7GT7fAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Mon, 28 Aug 2023 08:51:19 +0000
-Message-ID: <b439219a-037a-5641-de9d-adf5eca363ff@suse.de>
-Date:   Mon, 28 Aug 2023 10:51:19 +0200
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CEAA63C13;
+        Mon, 28 Aug 2023 10:30:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8E7C433C7;
+        Mon, 28 Aug 2023 10:30:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693218604;
+        bh=hiKwYpczDxwqi8bNwU8u9fgLtGHIjMwArskL5ZT09OI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=jNZfBJFWBFzcTou1nbDGIeqaE8hLKZyM1RUI0otV5+TsN0J7sqRLMq7Z+nTMnYvx7
+         apeKuZLBNDxEIg6hK1n11V0ndjb+OJv0HnIJw6VyEgmmQPNRAUeZK9aGb5jF0SS07e
+         Vn8E/L5BLphGPXsTnmL0iVuP9Jq5wgcMp8TWibRA=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Dave Airlie <airlied@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 004/122] drm/ast: Use drm_aperture_remove_conflicting_pci_framebuffers
+Date:   Mon, 28 Aug 2023 12:11:59 +0200
+Message-ID: <20230828101156.626841490@linuxfoundation.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 00/11] fbdev/sbus: Initializers for struct fb_ops
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     linux-fbdev@vger.kernel.org, deller@gmx.de, javierm@redhat.com,
-        dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
-        davem@davemloft.net
-References: <20230806120926.5368-1-tzimmermann@suse.de>
- <20230807171101.GB281773@ravnborg.org>
-Content-Language: en-US
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230807171101.GB281773@ravnborg.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0NZ0NHtVPQWE2ThqtYmgtPGF"
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0NZ0NHtVPQWE2ThqtYmgtPGF
-Content-Type: multipart/mixed; boundary="------------UIgAg7MKP0T1ayQXZWd9iPlo";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-fbdev@vger.kernel.org, deller@gmx.de, javierm@redhat.com,
- dri-devel@lists.freedesktop.org, sparclinux@vger.kernel.org,
- davem@davemloft.net
-Message-ID: <b439219a-037a-5641-de9d-adf5eca363ff@suse.de>
-Subject: Re: [PATCH 00/11] fbdev/sbus: Initializers for struct fb_ops
-References: <20230806120926.5368-1-tzimmermann@suse.de>
- <20230807171101.GB281773@ravnborg.org>
-In-Reply-To: <20230807171101.GB281773@ravnborg.org>
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
---------------UIgAg7MKP0T1ayQXZWd9iPlo
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+------------------
 
-SGkgU2FtDQoNCkFtIDA3LjA4LjIzIHVtIDE5OjExIHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0K
-Li4uDQo+IFJldmlld2VkLWJ5OiBTYW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+DQoN
-CkkgY29tcGxldGVseSBtaXNzZWQgeW91ciByZXZpZXcuIFRoYW5rcyBhIGxvdC4gSSd2ZSBu
-b3cgcHVzaGVkIHRoZSANCnBhdGNoZXMgdG8gZHJtLW1pc2MtbmV4dC4NCg0KQmVzdCByZWdh
-cmRzDQpUaG9tYXMNCg0KPiANCj4gCVNhbQ0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpH
-cmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJt
-YW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55
-DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGll
-biBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
---------------UIgAg7MKP0T1ayQXZWd9iPlo--
+[ Upstream commit c1ebead36099deb85384f6fb262fe619a04cee73 ]
 
---------------0NZ0NHtVPQWE2ThqtYmgtPGF
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+It's just open coded and matches.
 
------BEGIN PGP SIGNATURE-----
+Note that Thomas said that his version apparently failed for some
+reason, but hey maybe we should try again.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTsYAcFAwAAAAAACgkQlh/E3EQov+Bu
-Ig//Y4T+G5nfOjVSa9mGMYv222Anwt0XOZxngCo/HW9T9OdO0Xua/RfzsoTK8zmKaSaCDMPfEeGy
-IhGA+FZ0SOZ00JQkWRpWFRiwDVKeAGERwEx5fedthnkk7xG81eGiAzupVumZTjA/s6CAmnZ4yrzJ
-+8muTcRM4c/BsxhCqz+/+NzYP5BcGEL9Pv9N+UvipP1V9MSKO75qSTCbR22wA3dT2N1c65mkT86w
-tkJDtKl/MErB8d3iqTQnoP+xH9yBM/zvFNWtoDBYflyjiekZt6qiFuTb4Mw0/OdxcxMrZpsKGSkV
-DOJn+NjbgEGDCn9dRPiigU6ZMWyV9j2qMz2wSoN4jG3EWw2i/kCN8s1xQLeDYJR8u89o4ms8Si2p
-GO/mLERAF5eqiEk+ixVHjANbDdw+063iaHRO2Lh3DUL1AUx59F6oi08FNXxoo6VnVRBNXEpEKydU
-75+Qvwad4RaJn27Cwl+UHY06bBiTDPYZJCfGsQkI4BWUhXNM7kt7+le9F519pJPdpot9hEPAUVfh
-pv73GUupfgKU03PRUXmtDnuHHLgoMtd6xI8t4ML3Q/fEt5cp9ENLhEfOq7sqsByxo7lNokeREfCC
-6pDYWqXlSzVbl0mTTb95BsOGz6AV1oDz85mUE6UBn7M21xFtS4D+uu98nfYfbtJvvNZBlqbDZ6a8
-Qgs=
-=xy4u
------END PGP SIGNATURE-----
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Tested-by: Thomas Zimmmermann <tzimmermann@suse.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230111154112.90575-1-daniel.vetter@ffwll.ch
+Stable-dep-of: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/ast/ast_drv.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
---------------0NZ0NHtVPQWE2ThqtYmgtPGF--
+diff --git a/drivers/gpu/drm/ast/ast_drv.c b/drivers/gpu/drm/ast/ast_drv.c
+index b9392f31e6291..800471f2a2037 100644
+--- a/drivers/gpu/drm/ast/ast_drv.c
++++ b/drivers/gpu/drm/ast/ast_drv.c
+@@ -89,27 +89,13 @@ static const struct pci_device_id ast_pciidlist[] = {
+ 
+ MODULE_DEVICE_TABLE(pci, ast_pciidlist);
+ 
+-static int ast_remove_conflicting_framebuffers(struct pci_dev *pdev)
+-{
+-	bool primary = false;
+-	resource_size_t base, size;
+-
+-	base = pci_resource_start(pdev, 0);
+-	size = pci_resource_len(pdev, 0);
+-#ifdef CONFIG_X86
+-	primary = pdev->resource[PCI_ROM_RESOURCE].flags & IORESOURCE_ROM_SHADOW;
+-#endif
+-
+-	return drm_aperture_remove_conflicting_framebuffers(base, size, primary, &ast_driver);
+-}
+-
+ static int ast_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct ast_private *ast;
+ 	struct drm_device *dev;
+ 	int ret;
+ 
+-	ret = ast_remove_conflicting_framebuffers(pdev);
++	ret = drm_aperture_remove_conflicting_pci_framebuffers(pdev, &ast_driver);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.40.1
+
+
+
