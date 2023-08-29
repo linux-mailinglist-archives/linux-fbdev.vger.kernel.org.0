@@ -2,55 +2,63 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07CA678C58C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Aug 2023 15:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B06F78C764
+	for <lists+linux-fbdev@lfdr.de>; Tue, 29 Aug 2023 16:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236113AbjH2Ndr (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Tue, 29 Aug 2023 09:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59632 "EHLO
+        id S236705AbjH2OVv (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Tue, 29 Aug 2023 10:21:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236209AbjH2Ndd (ORCPT
+        with ESMTP id S236752AbjH2OVj (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Tue, 29 Aug 2023 09:33:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8AACD3;
-        Tue, 29 Aug 2023 06:33:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        Tue, 29 Aug 2023 10:21:39 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DBF1A3;
+        Tue, 29 Aug 2023 07:21:30 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36ED86575D;
-        Tue, 29 Aug 2023 13:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E552DC433C9;
-        Tue, 29 Aug 2023 13:32:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693315958;
-        bh=VPzsTuzuRVs4PH5orOjSLTMnSeozDKlpRLSI7sv5Nmo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BKkUWTjt2PIJob3VBPcg9ewE6mDETO7xCLvsRqK5PmtW8mNJYZWFxxidDuxlWEnGP
-         LWfBL+wP3z0UPrN3FsCL6EWAegwNrpi1KsM+I8nKcVP/Gvz8bjA5w/HeYiue0v88+U
-         0gNRQ/RxiAcLtQ0SDcZS9h6+i5V+K2iZP9zH77G4dS27NuE6+WbdSZgmz8Zta5OgWx
-         vGnzcOlMvChYxtaMf2jk1EN/vzP2XRWI3J8wL+ZnlN+5RhDkeKDj7uo7lMarQVWPqb
-         qDGs7a+ocR8QV2+LeEfDpprGx6MA2hcYBnc+QukhJlTd+lFVweSqes2Rs0Tx3IrWd1
-         zUOj4ImoIITZQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Zhu Wang <wangzhu9@huawei.com>, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org,
+        by smtp-out1.suse.de (Postfix) with ESMTPS id BF1D821852;
+        Tue, 29 Aug 2023 14:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1693318888; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=oHxOxL/1egaGXDwHf1bGqXTPMgGpjhtV5fYRp+DeRzQ=;
+        b=vG0N6gdK6Rr6aFpRFOs0d4GM+EMoR/nIkJZIvZxp0d9y/1ZrTZKNc66ovHOXjjcMolYuaJ
+        EtdWzzis3s6HvsckwFy2eUCFugPH5V14j3yiIucxj2Xq/ixZGX0CYimaKSt1IhIxubFkeI
+        Mof9NVLJEAhQ5SpPvC67Q/l6+lrGVoo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1693318888;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=oHxOxL/1egaGXDwHf1bGqXTPMgGpjhtV5fYRp+DeRzQ=;
+        b=PxfSSy24/ZVMovXysk6HY6nuve7RlW/8QwrrW64wVMEUwnd5Zp7Ap8Vjlnf1GuYRj0IytX
+        wb04wXyNpnu9eaCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8F7F4138E2;
+        Tue, 29 Aug 2023 14:21:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id HsL5Iej+7WREewAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 29 Aug 2023 14:21:28 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, daniel@ffwll.ch, javierm@redhat.com,
+        sam@ravnborg.org, linux-fbdev@vger.kernel.org,
         dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.4 14/17] fbdev: goldfishfb: Do not check 0 for platform_get_irq()
-Date:   Tue, 29 Aug 2023 09:32:01 -0400
-Message-Id: <20230829133211.519957-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230829133211.519957-1-sashal@kernel.org>
-References: <20230829133211.519957-1-sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/7] fbdev: Split off code for boot-up logo
+Date:   Tue, 29 Aug 2023 16:15:39 +0200
+Message-ID: <20230829142109.4521-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.12
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,40 +66,40 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Zhu Wang <wangzhu9@huawei.com>
+The boot-up logo is a feature of the fbcon console; with only a few
+external callers. Move it from the core fbdev code into its own file.
 
-[ Upstream commit 0650d5098f8b6b232cd5ea0e15437fc38f7d63ba ]
+Patches 1 and 2 remove the logo setup from fbdev drivers. The logo
+requires a configured output, which is provided by the framebuffer
+console. Drivers should not implement their own logo.
 
-Since platform_get_irq() never returned zero, so it need not to check
-whether it returned zero, and we use the return error code of
-platform_get_irq() to replace the current return error code.
+Patches 3 to 6 move the code for the boot-up logo into its own file
+and add a number of simple cleanups. It's now separate from the core
+fbdev code that maintains the display framebuffers.
 
-Please refer to the commit a85a6c86c25b ("driver core: platform: Clarify
-that IRQ 0 is invalid") to get that platform_get_irq() never returned
-zero.
+Patch 7 then removes a number of unecessary include statements from
+fbmem.c.
 
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/goldfishfb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thomas Zimmermann (7):
+  fbdev/au1200fb: Do not display boot-up logo
+  fbdev/mmp/mmpfb: Do not display boot-up logo
+  fbdev/core: Fix style of code for boot-up logo
+  fbdev/core: Move logo functions into separate source file
+  fbdev/core: Build fb_logo iff CONFIG_LOGO has been selected
+  fbdev/core: Remove empty internal helpers from fb_logo.c
+  fbdev/core: Clean up include statements in fbmem.c
 
-diff --git a/drivers/video/fbdev/goldfishfb.c b/drivers/video/fbdev/goldfishfb.c
-index 6fa2108fd912d..e41c9fef4a3b6 100644
---- a/drivers/video/fbdev/goldfishfb.c
-+++ b/drivers/video/fbdev/goldfishfb.c
-@@ -203,8 +203,8 @@ static int goldfish_fb_probe(struct platform_device *pdev)
- 	}
- 
- 	fb->irq = platform_get_irq(pdev, 0);
--	if (fb->irq <= 0) {
--		ret = -ENODEV;
-+	if (fb->irq < 0) {
-+		ret = fb->irq;
- 		goto err_no_irq;
- 	}
- 
+ drivers/video/fbdev/au1200fb.c         |   9 -
+ drivers/video/fbdev/core/Makefile      |   2 +
+ drivers/video/fbdev/core/fb_internal.h |  17 +
+ drivers/video/fbdev/core/fb_logo.c     | 509 +++++++++++++++++++++++
+ drivers/video/fbdev/core/fbcon.c       |   4 +
+ drivers/video/fbdev/core/fbmem.c       | 542 +------------------------
+ drivers/video/fbdev/mmp/fb/mmpfb.c     |   7 -
+ include/linux/fb.h                     |   5 -
+ 8 files changed, 533 insertions(+), 562 deletions(-)
+ create mode 100644 drivers/video/fbdev/core/fb_logo.c
+
 -- 
-2.40.1
+2.41.0
 
