@@ -2,120 +2,110 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16CF7797BB7
-	for <lists+linux-fbdev@lfdr.de>; Thu,  7 Sep 2023 20:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A88F77999A1
+	for <lists+linux-fbdev@lfdr.de>; Sat,  9 Sep 2023 18:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241981AbjIGS1A (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 7 Sep 2023 14:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56634 "EHLO
+        id S232969AbjIIQZ1 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 9 Sep 2023 12:25:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbjIGS1A (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>); Thu, 7 Sep 2023 14:27:00 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B6861A8;
-        Thu,  7 Sep 2023 11:26:45 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 05DBA21864;
-        Thu,  7 Sep 2023 08:54:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1694076852; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
+        with ESMTP id S1346464AbjIIOjS (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 9 Sep 2023 10:39:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1844188
+        for <linux-fbdev@vger.kernel.org>; Sat,  9 Sep 2023 07:38:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694270312;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=E4B1OE7yKWqlV3goj2C/YTh/xuKA45lLwm9oARh4/H4=;
-        b=PwNT75lztJ5BNelcSODug76J/bAGpitxTDk7mBKjhVutw7JDmHB25xN1HQDLuPRrA6S/rN
-        nmCZgtdGHr/DNjWYk+aa3BW40//x6z8+a478JsXq6NmFpSVpCTyMrQnPU4DqrI4vezPP/U
-        U85XMyvs0ZJgY2phMIkbjMcGFopM/LU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1694076852;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=E4B1OE7yKWqlV3goj2C/YTh/xuKA45lLwm9oARh4/H4=;
-        b=0t0X/KyJEEcLFPyvD61i/HcmKEjl1DePe4g9Om0D5aoG0cPkyQos0RE9BPXfRIy4ypnsWL
-        xBIa7X5qIHFmnPDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CD60C138FA;
-        Thu,  7 Sep 2023 08:54:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id WJQoMbOP+WT6JgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 07 Sep 2023 08:54:11 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, daniel@ffwll.ch, javierm@redhat.com,
-        sam@ravnborg.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     linux-kernel@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 7/7] fbdev/core: Clean up include statements in fbmem.c
-Date:   Thu,  7 Sep 2023 10:52:06 +0200
-Message-ID: <20230907085408.9354-8-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230907085408.9354-1-tzimmermann@suse.de>
-References: <20230907085408.9354-1-tzimmermann@suse.de>
+        bh=0+4HcA1k/8qF1IXNw0Bg9+Q9i2TWOoU8T7hDCYKbYZ0=;
+        b=G14NTEOIVYciUIIIDstqiysVj4XiQr+7voS9d7sscsNa/hX8czG0fQTbU35NKVBLWmNSfY
+        0PkM6jMZNp4oObshsDJxXMRqAMjurT/yd6wUSqB6SDxEh166RIxAMZJLKqQHbCMfTc/P8C
+        tQEu7+h2McPo4TRYExNYBxgJ8UVBP5Y=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-UjF59EsUNcmUQEQvaqHkpA-1; Sat, 09 Sep 2023 10:38:30 -0400
+X-MC-Unique: UjF59EsUNcmUQEQvaqHkpA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-401c4f03b00so23297155e9.1
+        for <linux-fbdev@vger.kernel.org>; Sat, 09 Sep 2023 07:38:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694270309; x=1694875109;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0+4HcA1k/8qF1IXNw0Bg9+Q9i2TWOoU8T7hDCYKbYZ0=;
+        b=r3rnxrg61iOFxlh3neolhr0CGxinbxg7pv60jT2GQ0ZQrT+xFpTqJbSGZJpxP6PfhB
+         BulnT4yBRQaCQ+Ec8iBpM10d/Xu1oMHB5RCzkUZVddYO/LYgk1UxpZz3NPC4vI0bKN4e
+         RtLEB157S6HIi/vSTvMLohDMSsQz+mtxjTRFq3Mgs8Ph2cOOy44ufkMNeVKs3tidYkVd
+         5X6DDlbCB7dhNCFgQts4ZrVe67YIjTF/ahMFu16ntwziyW7aM/S98C1zDu9jiUNuE48N
+         4osd8lwn5REcdjOl0YEGuzBjTmiokNDzPymjLuO32PvaUPI3j662iVPn7Om6DZEPIS1l
+         gr/A==
+X-Gm-Message-State: AOJu0YxBnO3eKm8IMBFTFnS2VNr4npqOBz6RS5jTj8glW/z0DKNxV/M9
+        36P9ZbwEwSFJlHzcccWH5b6r3Kj7FqP3uqCS+ixVRVeAj8TiOyT9JF7SyWV3ydMC/YF0wYrANtH
+        W18cvSwBXty8OdEpaJ+Fp0EU=
+X-Received: by 2002:a1c:ed08:0:b0:401:d803:6242 with SMTP id l8-20020a1ced08000000b00401d8036242mr4639447wmh.27.1694270309542;
+        Sat, 09 Sep 2023 07:38:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOej/d14sWmLizTh2i9esPauTJp58e7fPOscywQN9ddxhYmMXBFm9Ht5FE7LNRjGS+PLhdRQ==
+X-Received: by 2002:a1c:ed08:0:b0:401:d803:6242 with SMTP id l8-20020a1ced08000000b00401d8036242mr4639434wmh.27.1694270309221;
+        Sat, 09 Sep 2023 07:38:29 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id h19-20020a05600c315300b00402bda974ddsm4869260wmo.6.2023.09.09.07.38.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Sep 2023 07:38:28 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jilin Yuan <yuanjilin@cdjrlc.com>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        kernel@pengutronix.de
+Subject: Re: [PATCH 2/3] video: fbdev: ssd1307fb: Print the PWM's label
+ instead of its number
+In-Reply-To: <87lef0xcw4.fsf@minerva.mail-host-address-is-not-set>
+References: <20230728145824.616687-1-u.kleine-koenig@pengutronix.de>
+ <20230728145824.616687-3-u.kleine-koenig@pengutronix.de>
+ <87lef0xcw4.fsf@minerva.mail-host-address-is-not-set>
+Date:   Sat, 09 Sep 2023 16:38:28 +0200
+Message-ID: <87zg1vif8b.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Remove all unnecessary include statements from fbmem.c. Most of
-them were for functionality that has meanwhile been moved into
-other files.
+Javier Martinez Canillas <javierm@redhat.com> writes:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/video/fbdev/core/fbmem.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
+>
+>> struct pwm_device::pwm is a write-only variable in the pwm core and used
+>> nowhere apart from this and another dev_dbg. So it isn't useful to
+>> identify the used PWM. Emit the PWM's label instead in the debug
+>> message.
+>>
+>> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+>> ---
+>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+>
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 1a662a606ba6..fc206755f5f6 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -11,29 +11,12 @@
-  * for more details.
-  */
- 
--#include <linux/module.h>
--
--#include <linux/types.h>
--#include <linux/errno.h>
--#include <linux/kernel.h>
--#include <linux/slab.h>
--#include <linux/mm.h>
--#include <linux/mman.h>
--#include <linux/vt.h>
--#include <linux/init.h>
--#include <linux/platform_device.h>
- #include <linux/console.h>
--#include <linux/kmod.h>
--#include <linux/err.h>
--#include <linux/device.h>
--#include <linux/efi.h>
-+#include <linux/export.h>
- #include <linux/fb.h>
- #include <linux/fbcon.h>
--#include <linux/mem_encrypt.h>
--#include <linux/pci.h>
- 
- #include <video/nomodeset.h>
--#include <video/vga.h>
- 
- #include "fb_internal.h"
- 
--- 
-2.42.0
+Pushed to drm-misc (drm-misc-next). Thanks!
+
+--=20
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
