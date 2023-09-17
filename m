@@ -2,182 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40F017A22ED
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 Sep 2023 17:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 109EA7A356F
+	for <lists+linux-fbdev@lfdr.de>; Sun, 17 Sep 2023 14:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbjIOPtc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 15 Sep 2023 11:49:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53274 "EHLO
+        id S231899AbjIQMET (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sun, 17 Sep 2023 08:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236260AbjIOPtD (ORCPT
+        with ESMTP id S229972AbjIQMER (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 15 Sep 2023 11:49:03 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43D6A2711;
-        Fri, 15 Sep 2023 08:48:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CB4C433C8;
-        Fri, 15 Sep 2023 15:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694792923;
-        bh=sOwpmNRFVnGigJMQ+ZdHsMJYHy/EbqpeUv7bUvvmRaE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mGaHVCjjcF+i8dJ3eDD3xDgzW8bUZ/mziODR02cl3jT83hZE14zonQZxdO4PVWAnx
-         X91ofFeXMH87QO39wBdAYpeX2hbDeGdNLaQXlr1hIK0uCcpOfRfyHnE7A4s8l85/U4
-         flwLjbnhsc/pKqNbRhcaGcrpedGKzBEVL18xxpkM87EhuDjeuD9cx74vvj5QvFwAn1
-         SmLj4zI/Mp1/JLwksdu8Ow5+4cAKbWfekluMfH+z2wszUfsu/tEnQFWpmPZQqUF/rc
-         4Go8cOxJomE0yVdVFRf3rKDSvSu+QKCWucJiEydCuQBM4GpCGXo69+ailwPisYUlfo
-         5bnS4c26BYPsg==
-Received: (nullmailer pid 3779770 invoked by uid 1000);
-        Fri, 15 Sep 2023 15:48:41 -0000
-Date:   Fri, 15 Sep 2023 10:48:41 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Flavio Suligoi <f.suligoi@asem.it>
-Cc:     Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>, Pavel Machek <pavel@ucw.cz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: backlight: Add MPS MP3309C
-Message-ID: <20230915154841.GA3776155-robh@kernel.org>
-References: <20230915140516.1294925-1-f.suligoi@asem.it>
+        Sun, 17 Sep 2023 08:04:17 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EFA8112B;
+        Sun, 17 Sep 2023 05:04:11 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38HC40nk026906
+          ; Sun, 17 Sep 2023 14:04:05 +0200 (CEST)
+X-Ids:  168
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id 78A06C062BC0;
+        Sun, 17 Sep 2023 13:58:50 +0200 (CEST)
+Received: from [105.112.96.211] ([105.112.96.211]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sun, 17 Sep 2023
+ 11:58:50 +0000
+Date:   Sun, 17 Sep 2023 11:58:50 +0000
+Message-ID: <20230917115850.Horde.nDVhVuZCMbI1tdSrz7hexww@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <wajdi.chaabani@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: CHAABANI
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230915140516.1294925-1-f.suligoi@asem.it>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 6506EB30.005 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 6506EB30.005 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<wajdi.chaabani@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Fri, Sep 15, 2023 at 04:05:15PM +0200, Flavio Suligoi wrote:
-> The Monolithic Power (MPS) MP3309C is a WLED step-up converter, featuring a
-> programmable switching frequency to optimize efficiency.
-> The brightness can be controlled either by I2C commands (called "analog"
-> mode) or by a PWM input signal (PWM mode).
-> This driver supports both modes.
-> 
-> For device driver details, please refer to:
-> - drivers/video/backlight/mp3309c_bl.c
-> 
-> The datasheet is available at:
-> - https://www.monolithicpower.com/en/mp3309c.html
-> 
-> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
-> ---
-> 
-> v2:
->  - remove useless properties (dimming-mode, pinctrl-names, pinctrl-0,
->    switch-on-delay-ms, switch-off-delay-ms, reset-gpios, reset-on-delay-ms,
->    reset-on-length-ms)
->  - add common.yaml#
->  - remove already included properties (default-brightness, max-brightness)
->  - substitute three boolean properties, used for the overvoltage-protection
->    values, with a single enum property
->  - remove some conditional definitions
->  - remove the 2nd example
-> v1:
->  - first version
-> 
->  .../bindings/leds/backlight/mps,mp3309c.yaml  | 73 +++++++++++++++++++
->  1 file changed, 73 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/backlight/mps,mp3309c.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/leds/backlight/mps,mp3309c.yaml b/Documentation/devicetree/bindings/leds/backlight/mps,mp3309c.yaml
-> new file mode 100644
-> index 000000000000..99ccdba2c08f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/backlight/mps,mp3309c.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/backlight/mps,mp3309c.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: MPS MP3309C backlight
-> +
-> +maintainers:
-> +  - Flavio Suligoi <f.suligoi@asem.it>
-> +
-> +description: |
-> +  The Monolithic Power (MPS) MP3309C is a WLED step-up converter, featuring a
-> +  programmable switching frequency to optimize efficiency.
-> +  It supports two different dimming modes:
-> +
-> +  - analog mode, via I2C commands (default)
-> +  - PWM controlled mode.
-> +
-> +  The datasheet is available at:
-> +  https://www.monolithicpower.com/en/mp3309c.html
-> +
-> +allOf:
-> +  - $ref: common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: mps,mp3309c
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  pwms:
-> +    description: if present, the backlight is controlled in PWM mode.
-> +    maxItems: 1
-> +
-> +  enable-gpios:
-> +    description: GPIO used to enable the backlight in "analog-i2c" dimming mode.
-> +    maxItems: 1
-> +
-> +  mps,overvoltage-protection-microvolt:
-> +    description: Overvoltage protection (13.5V, 24V or 35.5V). If missing, the
-> +      hardware default of 35.5V is used.
 
-default: 35500000
+17. September 2023.
 
-instead of prose saying the same thing.
+Hallo,
 
-With that,
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretär: Wajdi Chaabani
 
-> +    enum: [ 13500000, 24000000, 35500000 ]
-> +
-> +  mps,no-sync-mode:
-> +    description: disable synchronous rectification mode
-> +    type: boolean
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - max-brightness
-> +  - default-brightness
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        /* Backlight with PWM control */
-> +        backlight_pwm: backlight@17 {
-> +            compatible = "mps,mp3309c-backlight";
-> +            reg = <0x17>;
-> +            pwms = <&pwm1 0 3333333 0>; /* 300 Hz --> (1/f) * 1*10^9 */
-> +            max-brightness = <100>;
-> +            default-brightness = <80>;
-> +            overvoltage-protection-microvolt = <24000000>;
-> +        };
-> +    };
-> -- 
-> 2.34.1
-> 
