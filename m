@@ -2,114 +2,117 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B0E7A9935
-	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Sep 2023 20:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABA787A9EDA
+	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Sep 2023 22:13:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbjIUSMc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 21 Sep 2023 14:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
+        id S229909AbjIUUNR (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 21 Sep 2023 16:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjIUSLY (ORCPT
+        with ESMTP id S229708AbjIUUNC (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 21 Sep 2023 14:11:24 -0400
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003A788485;
-        Thu, 21 Sep 2023 10:38:54 -0700 (PDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1qjDkX-003HZ5-Oh; Thu, 21 Sep 2023 09:05:21 +0200
-Received: from p5b13a40a.dip0.t-ipconnect.de ([91.19.164.10] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1qjDkX-0029eD-7S; Thu, 21 Sep 2023 09:05:21 +0200
-Message-ID: <cea63c1eb47c9a438d21bc1fce5a48e4b3235342.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH] fbdev: sh7760fb: require FB=y to build cleanly
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-sh@vger.kernel.org
-Date:   Thu, 21 Sep 2023 09:05:20 +0200
-In-Reply-To: <20230921060228.29041-1-rdunlap@infradead.org>
-References: <20230921060228.29041-1-rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 
+        Thu, 21 Sep 2023 16:13:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F8256D14
+        for <linux-fbdev@vger.kernel.org>; Thu, 21 Sep 2023 10:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695317218;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8AP4WAkfm0g8fnMPEPLH78szMDWqxElEcpAiYehWd/g=;
+        b=Folh+jQJL/OPeBidcyITKXn5+93z3abMwWsAZPaYio+MDo3UHBrZKqDdVNgHHx5/zw4XFe
+        3WMUpfTNcfMCCZx7ChpDd+HmEr6p1ibwYwaPxRgaoDb0dtL0irXRF3it3xDXLUCxPEXxrX
+        VDaNTolBD+nRIPGeO1IqbFRoxKy/kt4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-584-Ku-6zn3_OjOqTQ_ymnSqzQ-1; Thu, 21 Sep 2023 07:04:42 -0400
+X-MC-Unique: Ku-6zn3_OjOqTQ_ymnSqzQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6C410185A79B;
+        Thu, 21 Sep 2023 11:04:41 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.40])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C03FF2156711;
+        Thu, 21 Sep 2023 11:04:34 +0000 (UTC)
+From:   Baoquan He <bhe@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        akpm@linux-foundation.org, arnd@arndb.de, jiaxun.yang@flygoat.com,
+        mpe@ellerman.id.au, geert@linux-m68k.org, mcgrof@kernel.org,
+        hch@infradead.org, tsbogend@alpha.franken.de, f.fainelli@gmail.com,
+        deller@gmx.de, Baoquan He <bhe@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH v5 1/4] video: fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+Date:   Thu, 21 Sep 2023 19:04:21 +0800
+Message-ID: <20230921110424.215592-2-bhe@redhat.com>
+In-Reply-To: <20230921110424.215592-1-bhe@redhat.com>
+References: <20230921110424.215592-1-bhe@redhat.com>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.164.10
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Randy!
+From: Arnd Bergmann <arnd@arndb.de>
 
-On Wed, 2023-09-20 at 23:02 -0700, Randy Dunlap wrote:
-> Fix build errors when CONFIG_FB=m and CONFIG_FB_SH7760=y:
-> 
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
-> sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
-> sh2-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
-> sh2-linux-ld: sh7760fb.c:(.text+0x3a0): undefined reference to `fb_alloc_cmap'
-> sh2-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
-> sh2-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
-> sh2-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
-> sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
-> sh2-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
-> sh2-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
-> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
-> 
-> Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Cc: linux-sh@vger.kernel.org
-> ---
->  drivers/video/fbdev/Kconfig |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -1762,7 +1762,7 @@ config FB_COBALT
->  
->  config FB_SH7760
->  	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
-> -	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-> +	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
->  		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
->  	select FB_IOMEM_HELPERS
->  	help
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-Actually, Thomas Zimmermann already posted the same patch already on Monday ;-).
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
 
-See [1].
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
 
-Adrian
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+---
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> [1] https://marc.info/?l=dri-devel&m=169502772500717&w=2
-
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 5c87817a4f4c..3dcf83f5e7b4 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3440,11 +3440,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
+ 	}
+ 
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
+ 	/*
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
+ 	 */
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
+ 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+2.41.0
+
