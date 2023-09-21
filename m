@@ -2,43 +2,41 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF787A9AD5
-	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Sep 2023 20:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B0E7A9935
+	for <lists+linux-fbdev@lfdr.de>; Thu, 21 Sep 2023 20:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbjIUSvD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 21 Sep 2023 14:51:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46450 "EHLO
+        id S229477AbjIUSMc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-fbdev@lfdr.de>); Thu, 21 Sep 2023 14:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbjIUSur (ORCPT
+        with ESMTP id S229821AbjIUSLY (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 21 Sep 2023 14:50:47 -0400
+        Thu, 21 Sep 2023 14:11:24 -0400
 Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BD2788490;
-        Thu, 21 Sep 2023 10:38:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003A788485;
+        Thu, 21 Sep 2023 10:38:54 -0700 (PDT)
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.95)
           with esmtps (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1qjDgo-003G9s-Fd; Thu, 21 Sep 2023 09:01:30 +0200
+          id 1qjDkX-003HZ5-Oh; Thu, 21 Sep 2023 09:05:21 +0200
 Received: from p5b13a40a.dip0.t-ipconnect.de ([91.19.164.10] helo=[192.168.178.81])
           by inpost2.zedat.fu-berlin.de (Exim 4.95)
           with esmtpsa (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1qjDgo-0028oM-87; Thu, 21 Sep 2023 09:01:30 +0200
-Message-ID: <a720e92592db824e65d0fcc03d89e20ea59b11a6.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH] fbdev/sh7760fb: Depend on FB=y
+          id 1qjDkX-0029eD-7S; Thu, 21 Sep 2023 09:05:21 +0200
+Message-ID: <cea63c1eb47c9a438d21bc1fce5a48e4b3235342.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH] fbdev: sh7760fb: require FB=y to build cleanly
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
-        sam@ravnborg.org, arnd@arndb.de, javierm@redhat.com,
-        rdunlap@infradead.org
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
-        kernel test robot <lkp@intel.com>
-Date:   Thu, 21 Sep 2023 09:01:29 +0200
-In-Reply-To: <20230918090400.13264-1-tzimmermann@suse.de>
-References: <20230918090400.13264-1-tzimmermann@suse.de>
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-sh@vger.kernel.org
+Date:   Thu, 21 Sep 2023 09:05:20 +0200
+In-Reply-To: <20230921060228.29041-1-rdunlap@infradead.org>
+References: <20230921060228.29041-1-rdunlap@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 User-Agent: Evolution 3.48.4 
@@ -47,51 +45,52 @@ X-Original-Sender: glaubitz@physik.fu-berlin.de
 X-Originating-IP: 91.19.164.10
 X-ZEDAT-Hint: PO
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-On Mon, 2023-09-18 at 11:03 +0200, Thomas Zimmermann wrote:
-> Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
-> linker's error message suggests that this config setting has already
-> been broken for other symbols.
+Hi Randy!
+
+On Wed, 2023-09-20 at 23:02 -0700, Randy Dunlap wrote:
+> Fix build errors when CONFIG_FB=m and CONFIG_FB_SH7760=y:
 > 
->   All errors (new ones prefixed by >>):
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
+> sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
+> sh2-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
+> sh2-linux-ld: sh7760fb.c:(.text+0x3a0): undefined reference to `fb_alloc_cmap'
+> sh2-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
+> sh2-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
+> sh2-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
+> sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
+> sh2-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
+> sh2-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
+> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
 > 
->      sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
->      sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
->      sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
->      sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
->      sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
->      sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
->      sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
->      sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
->      sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
->      sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
->      sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
->   >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
->   >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
->      sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
->      sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
->      sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
-> 
-> Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
 > ---
->  drivers/video/fbdev/Kconfig | 2 +-
+>  drivers/video/fbdev/Kconfig |    2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> index 4455bfd57f0ec..64ccb34d882dd 100644
+> diff -- a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
 > --- a/drivers/video/fbdev/Kconfig
 > +++ b/drivers/video/fbdev/Kconfig
-> @@ -1756,7 +1756,7 @@ config FB_COBALT
+> @@ -1762,7 +1762,7 @@ config FB_COBALT
 >  
 >  config FB_SH7760
 >  	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
@@ -101,7 +100,13 @@ On Mon, 2023-09-18 at 11:03 +0200, Thomas Zimmermann wrote:
 >  	select FB_IOMEM_HELPERS
 >  	help
 
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Actually, Thomas Zimmermann already posted the same patch already on Monday ;-).
+
+See [1].
+
+Adrian
+
+> [1] https://marc.info/?l=dri-devel&m=169502772500717&w=2
 
 -- 
  .''`.  John Paul Adrian Glaubitz
