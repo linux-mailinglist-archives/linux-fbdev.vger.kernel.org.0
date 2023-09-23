@@ -2,111 +2,84 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056947ABC44
-	for <lists+linux-fbdev@lfdr.de>; Sat, 23 Sep 2023 01:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 348547ABE93
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 Sep 2023 09:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230120AbjIVX1V (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 22 Sep 2023 19:27:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47934 "EHLO
+        id S230222AbjIWHvM (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 23 Sep 2023 03:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbjIVX1U (ORCPT
+        with ESMTP id S229808AbjIWHvM (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 22 Sep 2023 19:27:20 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 903001A5;
-        Fri, 22 Sep 2023 16:27:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=e8yFnfvH8JKoyp3aR9fSLHVbC7SF8CuDkjkUeoufqfk=; b=JGXd2C0i6TG9hdIvK+EcQwcxjZ
-        e2EbPtXPYbToivjN0PcBI+CpyX1tperD4GPzxUU0nQMjl6QpkTBufReIFGz4l8vL0UwsT8qPyJxKP
-        d4qD20U98UCtEhtkJmFG8Vr+n0QAp5bB0jkdG7FR4yRr6UN1kTefoIJlauqPymdQk0rYsgiTkP5KN
-        Vm5UhTOBP0QVNA0Blua6DaZnYsf8+bSTAdJQPxyDVDUVRqJuXcgN080eZGHlxEJDDeeb+j2PiszA+
-        pOQEVatXhfFi9NAVF24VDGZZmFa9RtAFq1Z6B8Sp5S5zEfP3LELwI15MND2XhKIgU8WXKnjMwzBWW
-        muRgYyKg==;
-Received: from [2601:1c2:980:9ec0::9fed]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qjpYG-009yq5-19;
-        Fri, 22 Sep 2023 23:27:12 +0000
-Message-ID: <a2537bfc-d7c6-4afc-acb3-f049ba82249e@infradead.org>
-Date:   Fri, 22 Sep 2023 16:27:11 -0700
+        Sat, 23 Sep 2023 03:51:12 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
+        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
+          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
+X-Ids:  164
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
+        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
+Received: from [105.112.214.216] ([105.112.214.216]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
+ 07:48:08 +0000
+Date:   Sat, 23 Sep 2023 07:48:08 +0000
+Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: essaoui
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: sh7760fb: require FB=y to build cleanly
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-sh@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>
-References: <20230921060228.29041-1-rdunlap@infradead.org>
- <CAMuHMdWBhCcUJw00ZzeHJ=x62RGP2MJ8H-AXRHxBrfOaGeU8Dw@mail.gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CAMuHMdWBhCcUJw00ZzeHJ=x62RGP2MJ8H-AXRHxBrfOaGeU8Dw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Hi Geert,
 
+23. September 2023.
 
-On 9/22/23 00:23, Geert Uytterhoeven wrote:
-> Hi Randy,
-> 
-> On Thu, Sep 21, 2023 at 10:43 PM Randy Dunlap <rdunlap@infradead.org> wrote:
->> Fix build errors when CONFIG_FB=m and CONFIG_FB_SH7760=y:
->>
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
->> sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
->> sh2-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
->> sh2-linux-ld: sh7760fb.c:(.text+0x3a0): undefined reference to `fb_alloc_cmap'
->> sh2-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
->> sh2-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
->> sh2-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
->> sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
->> sh2-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
->> sh2-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
->> sh2-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
->>
->> Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> 
-> Thanks for your patch!
-> 
->> --- a/drivers/video/fbdev/Kconfig
->> +++ b/drivers/video/fbdev/Kconfig
->> @@ -1762,7 +1762,7 @@ config FB_COBALT
->>
->>  config FB_SH7760
->>         bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
->> -       depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
->> +       depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
->>                 || CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
->>         select FB_IOMEM_HELPERS
->>         help
-> 
-> Any reason this can't become tristate instead?
-> drivers/video/fbdev/sh7760fb.c uses module_platform_driver(), and
-> already has all needed MODULE_*().
+Hallo,
 
-That's what I tried to ask here:
-  https://lore.kernel.org/all/feadd6a5-0f56-4575-9891-3a7d88e69e64@infradead.org/
-but nobody replied to that.
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
--- 
-~Randy
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretärin: Lamya Essaoui
+
