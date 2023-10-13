@@ -2,30 +2,32 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A04B97C8E7F
-	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Oct 2023 22:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AA67C8E80
+	for <lists+linux-fbdev@lfdr.de>; Fri, 13 Oct 2023 22:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229891AbjJMUup (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 13 Oct 2023 16:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60730 "EHLO
+        id S229679AbjJMUuq (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Fri, 13 Oct 2023 16:50:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbjJMUuo (ORCPT
+        with ESMTP id S229704AbjJMUuq (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 13 Oct 2023 16:50:44 -0400
+        Fri, 13 Oct 2023 16:50:46 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614F9A9
-        for <linux-fbdev@vger.kernel.org>; Fri, 13 Oct 2023 13:50:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D165BB
+        for <linux-fbdev@vger.kernel.org>; Fri, 13 Oct 2023 13:50:43 -0700 (PDT)
 Received: from localhost.localdomain (178.176.73.157) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Fri, 13 Oct
- 2023 23:50:30 +0300
+ 2023 23:50:36 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Daniel Vetter <daniel@ffwll.ch>, Helge Deller <deller@gmx.de>,
         <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-Subject: [PATCH v2 0/2] Fix sloppy typing in the FB area copying routines
-Date:   Fri, 13 Oct 2023 23:50:22 +0300
-Message-ID: <20231013205024.8099-1-s.shtylyov@omp.ru>
+Subject: [PATCH v2 1/2] video: fbdev: core: cfbcopyarea: fix sloppy typing
+Date:   Fri, 13 Oct 2023 23:50:23 +0300
+Message-ID: <20231013205024.8099-2-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20231013205024.8099-1-s.shtylyov@omp.ru>
+References: <20231013205024.8099-1-s.shtylyov@omp.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -78,22 +80,33 @@ Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-Here are 2 patches against the 'master' branch of Linus' 'linux.git' repo...
-
-In {cfb|sys}_copyarea(), the local variable bits_per_line is needlessly typed
-as *unsigned long* -- which is a 32-bit type on the 32-bit arches and a 64-bit
-type on the 64-bit arches;; that variable's value is derived from the __u32
+In cfb_copyarea(), the local variable bits_per_line is needlessly typed as
+*unsigned long* -- which is a 32-bit type on the 32-bit arches and a 64-bit
+type on the 64-bit arches; that variable's value is derived from the __u32
 typed fb_fix_screeninfo::line_length field (multiplied by 8u) and a 32-bit
 *unsigned int* type should still be enough to store the # of bits per line.
 
-Sergey Shtylyov (2):
-  video: fbdev: core: cfbcopyarea: fix sloppy typing
-  video: fbdev: core: syscopyarea: fix sloppy typing
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+---
  drivers/video/fbdev/core/cfbcopyarea.c | 2 +-
- drivers/video/fbdev/core/syscopyarea.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/video/fbdev/core/cfbcopyarea.c b/drivers/video/fbdev/core/cfbcopyarea.c
+index 6d4bfeecee35..5b80bf3dae50 100644
+--- a/drivers/video/fbdev/core/cfbcopyarea.c
++++ b/drivers/video/fbdev/core/cfbcopyarea.c
+@@ -382,7 +382,7 @@ void cfb_copyarea(struct fb_info *p, const struct fb_copyarea *area)
+ {
+ 	u32 dx = area->dx, dy = area->dy, sx = area->sx, sy = area->sy;
+ 	u32 height = area->height, width = area->width;
+-	unsigned long const bits_per_line = p->fix.line_length*8u;
++	unsigned int const bits_per_line = p->fix.line_length * 8u;
+ 	unsigned long __iomem *base = NULL;
+ 	int bits = BITS_PER_LONG, bytes = bits >> 3;
+ 	unsigned dst_idx = 0, src_idx = 0, rev_copy = 0;
 -- 
 2.26.3
 
