@@ -2,93 +2,90 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 044337D1955
-	for <lists+linux-fbdev@lfdr.de>; Sat, 21 Oct 2023 00:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1FA7D1B73
+	for <lists+linux-fbdev@lfdr.de>; Sat, 21 Oct 2023 09:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjJTWw2 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Fri, 20 Oct 2023 18:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
+        id S229500AbjJUHBQ (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 21 Oct 2023 03:01:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjJTWw1 (ORCPT
+        with ESMTP id S229472AbjJUHBP (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Fri, 20 Oct 2023 18:52:27 -0400
-Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38DB41A3
-        for <linux-fbdev@vger.kernel.org>; Fri, 20 Oct 2023 15:52:26 -0700 (PDT)
-Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-57b5ef5b947so749253eaf.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 20 Oct 2023 15:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697842345; x=1698447145; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yuu2LnwrVChltM5hXO2qRpyS1f/5ZYqe8k43OYq/VaU=;
-        b=hTQmk7/lnjT8p+UIWxjW7/EgWBi+FfizqHy8ZE3AHfZPRH42wRcuuUYGX1iTC4giwM
-         WYyLRIFaVEL+FiS6ZIjhhIcBiM7p/cGaID5kQfNNeUdH/JXUyCxXfpIN1A80PvuJEGMt
-         2Sc5w7qju1NqCu4h9JlXaOljTH0Xq7EhYrE6mv19OeeWmMMJs3p59f3x7UdFae6vnNgm
-         UlnLXgv22JaICW2d4T7KQWAaUdHiJXb+gJaWB70eNHmuO8RHj3d0CgAb3rOkCKGgmLwv
-         jFc3i1R/aAwaUXlTLOZEHghdfPSo2sLeKSNaIVVvxwCSlG8PPngJ94SkrXRPn2po3sMg
-         WSJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697842345; x=1698447145;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yuu2LnwrVChltM5hXO2qRpyS1f/5ZYqe8k43OYq/VaU=;
-        b=NP0z7aqDgc34fmUZTlMApn3T5GhuJYLD8DJhW51gC/g2eFn1ISyYJ/NOXMrJq2o+4U
-         dAz7OD8AsTM+Y5mxu0uJ4fuMafBdd36D9U6c22+Rwx+ia/nmDfgOgfpZgs6v9Bwqriuy
-         Bw74bdskqlHqkcAoho4sLBo3KVtCO+2hycK6em+zDgZtQYIWPdv8ZltiiVFYDUHLQ0lp
-         SoDDW6xueJ3tTP/dIyTpInw2KgGMlnQewVi6bhcgIHGoAjlqvU84yIolNtQ+D12+ZNL8
-         /R3LSnOKYhQFbjdFPZdEYauVWgOVCWOIoxM/i+jAeBM/e9oYSVanFH1lq9KWwDQBWI/P
-         /4GA==
-X-Gm-Message-State: AOJu0Yx44JtTnl5T+G9/YsFwKhnvor2HKv5OdNdokp4uS3WkT+uwBqDb
-        r0KM7sxvAxOO/jUMqTblwWlJ74cj+PMn+44kmow=
-X-Google-Smtp-Source: AGHT+IG4qK4UIE4LGSav/d7vvkT5nCMF4MdKFuefELvh+kN8sIBU8fbx1akXRbZlrDO7JT1OmA6N1OOXmU5Q6Phsx64=
-X-Received: by 2002:a05:6358:418d:b0:168:ab50:b90b with SMTP id
- w13-20020a056358418d00b00168ab50b90bmr3683085rwc.17.1697842345499; Fri, 20
- Oct 2023 15:52:25 -0700 (PDT)
+        Sat, 21 Oct 2023 03:01:15 -0400
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 Oct 2023 00:01:13 PDT
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8B880D6E
+        for <linux-fbdev@vger.kernel.org>; Sat, 21 Oct 2023 00:01:13 -0700 (PDT)
+Received: from pop-os.home ([86.243.2.178])
+        by smtp.orange.fr with ESMTPA
+        id u5reqyZLtd4Wtu5rfqqNO4; Sat, 21 Oct 2023 08:53:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+        s=t20230301; t=1697871220;
+        bh=q+6YiMf4FjJqpY2woNDtEvfJ1SZWEDzhFtZ1+ypv620=;
+        h=From:To:Cc:Subject:Date;
+        b=EysZyvuNjvivikTZz1HV6uPNxwar1FxYeIW3ZPl6RB94dHadJkAhx/cMu/4K4ad/V
+         N1VEKRFwKHTh8ZUL5HRXQptbuvrhFE3V+gUP/lZ+2mpFJoKjKpgpcB9uEdNttXL8dW
+         FEYGs7+OdgBqoZ86yNQ6UFX0tz2V0Lky44jfLSnysdNY4nth95725mV4TlqLVEiToW
+         fvX6Z+teSxGjh1Tb5asFg2GSfGrbpwongRfMXRnXjDc4vAWv8GbbK2jydBIPoNdnTe
+         0vl8DSe2v/n3hiR7lqTtgo/V7vctb5Qjlzc55Nkmgqm66B2/+EDwU8wGR/38okyH8y
+         hSOtX7pWH5BaA==
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 21 Oct 2023 08:53:40 +0200
+X-ME-IP: 86.243.2.178
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH] fbdev/offb: Simplify offb_init_fb()
+Date:   Sat, 21 Oct 2023 08:53:37 +0200
+Message-Id: <1c94c99117617c1a844f6551b7bca27f23c5f0c8.1697871190.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:7022:608c:b0:69:a266:169a with HTTP; Fri, 20 Oct 2023
- 15:52:24 -0700 (PDT)
-Reply-To: tchalimbenson@gmail.com
-From:   Benson Tchalim <qaijio702@gmail.com>
-Date:   Fri, 20 Oct 2023 22:52:24 +0000
-Message-ID: <CAHhoKfTziJBAyfJZkW=638zW-CHo27sAyjRo7A74BU3z1HMRwQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6962]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:c2c listed in]
-        [list.dnswl.org]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [qaijio702[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [qaijio702[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
+Turn a strcpy()+strncat()+'\0' into an equivalent snprintf().
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is *not* even compile tested because cross-compiling leads to
+some errors like on my machine:
+   cc1: error: cannot load plugin ./scripts/gcc-plugins/randomize_layout_plugin.so: ./scripts/gcc-plugins/randomize_layout_plugin.so: undefined symbol: _ZNK6frange6acceptERK14vrange_visitor
+
+So review with care!
+---
+ drivers/video/fbdev/offb.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+index dcb1b81d35db..b421b46d88ef 100644
+--- a/drivers/video/fbdev/offb.c
++++ b/drivers/video/fbdev/offb.c
+@@ -423,11 +423,9 @@ static void offb_init_fb(struct platform_device *parent, const char *name,
+ 	fix = &info->fix;
+ 	var = &info->var;
+ 
+-	if (name) {
+-		strcpy(fix->id, "OFfb ");
+-		strncat(fix->id, name, sizeof(fix->id) - sizeof("OFfb "));
+-		fix->id[sizeof(fix->id) - 1] = '\0';
+-	} else
++	if (name)
++		snprintf(fix->id, sizeof(fix->id), "OFfb %s", name);
++	else
+ 		snprintf(fix->id, sizeof(fix->id), "OFfb %pOFn", dp);
+ 
+ 
 -- 
-I wrote you a message since then no response what happens?
+2.34.1
+
