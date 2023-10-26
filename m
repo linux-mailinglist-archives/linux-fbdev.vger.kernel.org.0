@@ -2,105 +2,69 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59CF17D8ACD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Oct 2023 23:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2461B7D8BFD
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Oct 2023 00:59:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344860AbjJZVoc (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Thu, 26 Oct 2023 17:44:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41498 "EHLO
+        id S232007AbjJZW75 (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Thu, 26 Oct 2023 18:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344913AbjJZVo2 (ORCPT
+        with ESMTP id S231410AbjJZW74 (ORCPT
         <rfc822;linux-fbdev@vger.kernel.org>);
-        Thu, 26 Oct 2023 17:44:28 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD231BC
-        for <linux-fbdev@vger.kernel.org>; Thu, 26 Oct 2023 14:44:25 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qw89O-0007cQ-WA; Thu, 26 Oct 2023 23:44:23 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qw89O-004Ura-AM; Thu, 26 Oct 2023 23:44:22 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qw89O-006rNS-16; Thu, 26 Oct 2023 23:44:22 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, kernel@pengutronix.de
-Subject: [PATCH] staging: fbtft: Convert to platform remove callback returning void
-Date:   Thu, 26 Oct 2023 23:44:08 +0200
-Message-ID: <20231026214407.2508590-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.42.0.482.g2e8e77cbac8a.dirty
+        Thu, 26 Oct 2023 18:59:56 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44649D47
+        for <linux-fbdev@vger.kernel.org>; Thu, 26 Oct 2023 15:59:54 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-35743e88193so4590505ab.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 26 Oct 2023 15:59:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698361193; x=1698965993; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KeB/ZSHr6R6wT9r5elgpvYu0BvcBbmEWFK91KTfeu88=;
+        b=emtqW9mAbgbn5AutW0pvhSTSzg90cNGAIjGJfjqpWb1Oblae0xF8NK3NjfxeKEysPf
+         DgzcF7LGN3jVr5PZ0nKOJaxI8GFDbo0EQDVCTNatBhTnn7u0XMcWz2+xJGMNw0M/LIAC
+         zMFKLuae2cT8T6ymIgesbBIkxO8LO7avktQ7eINs8pkW83R+XgkiDZxBHKSjpAiskpEO
+         Mz22IppCu8etB4OOMqxP8OU7t+Iw/I/0FFSkgqjj4w9cmH58Md4F945BjpCZ38C1XArr
+         AzFIpgHij4R56MOQcw89hGjjhnIDh7cHd4HobPbEeSDjx1sbgTyw4rCxr4BS7uY5cCfU
+         JevA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698361193; x=1698965993;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KeB/ZSHr6R6wT9r5elgpvYu0BvcBbmEWFK91KTfeu88=;
+        b=vuBMrbm+V7Ow6A9fzQwv5xrZVJGkn4+JFiEgWwVMZUiorZ+lA48qYU5DU4H+e6fEVW
+         kY8vy7y8Ksb8BSM3wHSdVyfS3u+xKMD1QxXwbCRqK/2vzvKa1H/j6eoBhy5l8czrh7xA
+         OS5/DJyv/6mYXuxlA09dyAkO843bZuoo5O3u4ivxP4MWHLkY86JU5zJ+MHeRfvadALh8
+         DglYwFnkwwrDEHWFPXQLJbwKEqtQrpO3cwOXVscWwfKj/J1OxSjDnuVoMNyNzruOTmpM
+         XzSnbpdfFuH9J44XyVrOngu6FUK5747qVrkMVWH2UxwPpDJiDJUdocij/KC6PU+OD5FO
+         fZ/w==
+X-Gm-Message-State: AOJu0Yz0efUsh09U1EWhOG+U9YcVPWzIUTwZ7udCyzHgjo4SjHNa2OHY
+        Lotl0lnsAtViPU2deoIvK4OEAMdLIS9ZaM49g0s=
+X-Google-Smtp-Source: AGHT+IHACwJpP6J1T1KU5IC0+YrksUZYRp1iFyJ7YZl9cJy5Dxyps0lQ6AMZ8zx321Mz6tuwKBw4ROCfJROjJL754EY=
+X-Received: by 2002:a05:6e02:1689:b0:357:68ac:c440 with SMTP id
+ f9-20020a056e02168900b0035768acc440mr1419094ila.7.1698361193550; Thu, 26 Oct
+ 2023 15:59:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2581; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=G+dezbZcw7p8pj0N/5GvouqBNElTWjWFFFROrY2tH/s=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlSruyu69j2OvejzZcehad9XB2vUzpYz6Jnn5HPK7LxhY X/vIqfbnYzGLAyMXAyyYoos9o1rMq2q5CI71/67DDOIlQlkCgMXpwBM5Jo8+3+H77KmE+JO+hS/ 45qYt7qHc0q32Mw77AURYvsUzipwGUim87RMuyKRafj39f7KwPDwRmley+AFojKMLfnlMheVp+l P+jLdJaYpJucPt63vXU77bdwJcboVm7v3JW+6fCGqklEu9OVfox7P30opq6Y1p5vuSwk2rkgpUy reIn/K8Pymth8VkctK2SsLxTU/n4ldt8HO+duTrhZJ9cBVLJdjlaI4vQXy7tWmC/WlF2ao3qh6f /dr7pYnp8yOMPec2vYqe+272VsT5xR3dTz9cPua6bbuUgMm2fi+zVcbN/Cahk9Yuk+qf38iS2OS pupvTb4dBg+9ai6JXKk+uqSFsc1ULCSX1X6XiIL7By4A
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a92:c10e:0:b0:357:6121:a444 with HTTP; Thu, 26 Oct 2023
+ 15:59:53 -0700 (PDT)
+Reply-To: tchalimbenson@gmail.com
+From:   Benson Tchalim <robertwilson.daniel221@gmail.com>
+Date:   Thu, 26 Oct 2023 22:59:53 +0000
+Message-ID: <CAFFQHMiKpUaiO3_he6PhbmnZBpcFock6dz8qvKfnpK+CeQAUYw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
-
-The function fbtft_driver_remove_pdev() (that exists several times as it's
-part of a macro expansion) returns zero unconditionally, so it can be
-trivially converted to return void without semantic changes.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/staging/fbtft/fbtft.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/fbtft/fbtft.h b/drivers/staging/fbtft/fbtft.h
-index 2c2b5f1c1df3..f86ed9d470b8 100644
---- a/drivers/staging/fbtft/fbtft.h
-+++ b/drivers/staging/fbtft/fbtft.h
-@@ -310,12 +310,11 @@ static int fbtft_driver_probe_pdev(struct platform_device *pdev)           \
- 	return fbtft_probe_common(_display, NULL, pdev);                   \
- }                                                                          \
- 									   \
--static int fbtft_driver_remove_pdev(struct platform_device *pdev)          \
-+static void fbtft_driver_remove_pdev(struct platform_device *pdev)	   \
- {                                                                          \
- 	struct fb_info *info = platform_get_drvdata(pdev);                 \
- 									   \
- 	fbtft_remove_common(&pdev->dev, info);                             \
--	return 0;                                                          \
- }                                                                          \
- 									   \
- FBTFT_DT_TABLE(_compatible)						   \
-@@ -329,7 +328,7 @@ static struct platform_driver fbtft_driver_platform_driver = {             \
- 		.of_match_table = dt_ids,                                  \
- 	},                                                                 \
- 	.probe  = fbtft_driver_probe_pdev,                                 \
--	.remove = fbtft_driver_remove_pdev,                                \
-+	.remove_new = fbtft_driver_remove_pdev,				   \
- };                                                                         \
- 									   \
- static int __init fbtft_driver_module_init(void)                           \
-
-base-commit: 2ef7141596eed0b4b45ef18b3626f428a6b0a822
 -- 
-2.42.0.482.g2e8e77cbac8a.dirty
-
+Do you see my message and what was your response?
