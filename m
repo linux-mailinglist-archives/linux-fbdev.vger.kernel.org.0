@@ -2,90 +2,94 @@ Return-Path: <linux-fbdev-owner@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 408067DB167
-	for <lists+linux-fbdev@lfdr.de>; Mon, 30 Oct 2023 00:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C667E0DC5
+	for <lists+linux-fbdev@lfdr.de>; Sat,  4 Nov 2023 05:29:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231224AbjJ2XEW (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
-        Sun, 29 Oct 2023 19:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35102 "EHLO
+        id S229634AbjKDE3G (ORCPT <rfc822;lists+linux-fbdev@lfdr.de>);
+        Sat, 4 Nov 2023 00:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbjJ2XDy (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org>);
-        Sun, 29 Oct 2023 19:03:54 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C1683C1;
-        Sun, 29 Oct 2023 16:02:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78181C4AF5C;
-        Sun, 29 Oct 2023 23:02:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620553;
-        bh=V3MW3HlJw0Dv/VdEsrQyNiXGgZkXx8rL2UAla9DTeeg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l7fYfT2b1XwGFoc9ipAAgnP9se37ARj88PGce2a2NyXkJP0bfnOsHyIvO8YVOCcWs
-         gTQ3O374rUHP7Rt2q4nmieu2n1ezL744j/kU3aO28OQPzyZ+eF3JU1hm3qXvbMqIw1
-         xMLN4UTeTFr2kG9jNx7N7G0EG6vstT8Un3Tfzed3n4mVbdhRm0dNKjA83t27xn4kZC
-         EGOymGcBG4V0I0hAhfQMnYzXhcYpD0abMeHP8vWfFj3kDfHqqqKeQDhhOSy7ebwWOB
-         jNNYsHYAu69ftDd8b4QaJqxvlC5Qx7Bydppi1EpEuBhjNa51vmj33ccsXl9+MS0Y/A
-         nbHm94jxSZf9Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>, daniel@ffwll.ch,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.14 09/11] fbdev: core: syscopyarea: fix sloppy typing
-Date:   Sun, 29 Oct 2023 19:02:00 -0400
-Message-ID: <20231029230213.793581-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231029230213.793581-1-sashal@kernel.org>
-References: <20231029230213.793581-1-sashal@kernel.org>
+        with ESMTP id S229509AbjKDE3F (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org>); Sat, 4 Nov 2023 00:29:05 -0400
+X-Greylist: delayed 4182 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Nov 2023 21:29:03 PDT
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBA2D44
+        for <linux-fbdev@vger.kernel.org>; Fri,  3 Nov 2023 21:29:03 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id E3CFD4F2CA; Mon, 30 Oct 2023 08:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1698654847;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=JxcCJSywO2oQNeMbi+1oAC5mMpRM9yD0C+kdX9u1mpkUf+PlfsVQLyrLgVlADXJqD
+         4CZZAxShofxJB4Bs6KWHeVfgfYH6c+bqeLCo/5AfogxCqS6BDo8rYnuoJQcmY0nAL4
+         9KkcLZRQqLtklFsU23URSrZDG9Jj125QFtn6N76WsxIU2ZtRA5O5xm8h0IiHJnSjuh
+         MQVqb3yGy6OTNT0Doy/oNjThw3FfxYWZuY6q227VlOaCu+e89y6qpxYyK6Vw3Fj4Mw
+         yWyMNK6OkKf/1S2EKBxpj2/oEtekRofMKTrkbC2dYHIjslixV0Nd+twJGy9qWDRs1m
+         J5zicJRq/x17A==
+Received: by mail.profitpathwaygo.com for <linux-fbdev@vger.kernel.org>; Mon, 30 Oct 2023 08:30:28 GMT
+Message-ID: <20231030074500-0.1.2s.155al.0.b7dnau9sbl@profitpathwaygo.com>
+Date:   Mon, 30 Oct 2023 08:30:28 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-fbdev@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.328
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: profitpathwaygo.com]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: profitpathwaygo.com]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.238 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: profitpathwaygo.com]
+        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
+        *      [score: 0.0476]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [141.94.21.238 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-fbdev.vger.kernel.org>
 X-Mailing-List: linux-fbdev@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Dzie=C5=84 dobry,
 
-[ Upstream commit e8e4a470b677511f9d1ad4f3cef32adc1d9a60ca ]
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-In sys_copyarea(), the local variable bits_per_line is needlessly typed as
-*unsigned long* -- which is a 32-bit type on the 32-bit arches and a 64-bit
-type on the 64-bit arches; that variable's value is derived from the __u32
-typed fb_fix_screeninfo::line_length field (multiplied by 8u) and a 32-bit
-*unsigned int* type should still be enough to store the # of bits per line.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/core/syscopyarea.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/syscopyarea.c b/drivers/video/fbdev/core/syscopyarea.c
-index c1eda31909682..7b8bd3a2bedc5 100644
---- a/drivers/video/fbdev/core/syscopyarea.c
-+++ b/drivers/video/fbdev/core/syscopyarea.c
-@@ -316,7 +316,7 @@ void sys_copyarea(struct fb_info *p, const struct fb_copyarea *area)
- {
- 	u32 dx = area->dx, dy = area->dy, sx = area->sx, sy = area->sy;
- 	u32 height = area->height, width = area->width;
--	unsigned long const bits_per_line = p->fix.line_length*8u;
-+	unsigned int const bits_per_line = p->fix.line_length * 8u;
- 	unsigned long *base = NULL;
- 	int bits = BITS_PER_LONG, bytes = bits >> 3;
- 	unsigned dst_idx = 0, src_idx = 0, rev_copy = 0;
--- 
-2.42.0
-
+Pozdrawiam serdecznie
+Adam Charachuta
