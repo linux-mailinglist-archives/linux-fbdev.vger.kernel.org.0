@@ -1,90 +1,93 @@
-Return-Path: <linux-fbdev+bounces-9-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44FC97E7F2C
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:50:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516427E7F0E
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36C2281B48
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:50:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D332DB221B8
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6F3D383;
-	Fri, 10 Nov 2023 17:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC043D391;
+	Fri, 10 Nov 2023 17:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552623D970
-	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:47:05 +0000 (UTC)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D08148875
-	for <linux-fbdev@vger.kernel.org>; Thu,  9 Nov 2023 23:58:49 -0800 (PST)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5bf58204b7aso17354727b3.3
-        for <linux-fbdev@vger.kernel.org>; Thu, 09 Nov 2023 23:58:49 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426603B2B8
+	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:46:55 +0000 (UTC)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DDA8869
+	for <linux-fbdev@vger.kernel.org>; Thu,  9 Nov 2023 23:59:33 -0800 (PST)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5be6d6c04bfso20457877b3.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 09 Nov 2023 23:59:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699603129; x=1700207929;
+        d=1e100.net; s=20230601; t=1699603172; x=1700207972;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oBIgmcUo+FfrCy6Q7WzCcYAi+ZlA4gIfvuq2kYbfJSw=;
-        b=CGylfiqedCaAW3PhCoAiKIUyXYOYWgi1ikHGdr2/Sn+VYrfzIlvsF7Ph0MT2Sshcv0
-         oDmIcEl+hMV7AKExtNDZlAi3Cckl59g+1MzTVUPZTIM/MEqQnFlsgfck4/kgkC5t3tLJ
-         Ca1cvlPxgsX7SJgvRIARo8Yud2gMo9THjSW6u8Ff+v0ipjHKvmbAF4Hm0jQVdt+P+hlV
-         WegqG/K6V4cYCrClbf9IRCHg81EQIb2w5A3YtIi/G8/Pt1pANChrLfI08RZ3+C02SR8U
-         fwqRt14kejgEcpVIf2968BBc8efqus7cqlYy7TNP28FmY/tXdn0uh7hgTSGDmk/MRuHh
-         lz2w==
-X-Gm-Message-State: AOJu0YwXdZ72dWP/QII+gWHTwGrIz43fuVCHupDusxpMXFzgQIn1ka1v
-	jPluZGAUdWB+ZcHsz5dW2VGbi/Wq2fou4w==
-X-Google-Smtp-Source: AGHT+IG8aP5Sp6a349eJeQJPq8WFJzxB9RGB/SVWt5eKF/XZRmPEWMJokaRCi6CK+qsWtB49b56YzQ==
-X-Received: by 2002:a81:494b:0:b0:59f:72a6:da0e with SMTP id w72-20020a81494b000000b0059f72a6da0emr8290747ywa.41.1699603128841;
-        Thu, 09 Nov 2023 23:58:48 -0800 (PST)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id u82-20020a816055000000b0059c0629d59csm8543622ywb.115.2023.11.09.23.58.48
+        bh=V8V5kC4IHcPdk1CWqhFLtS9k05ixlcMjlfh6q5y52Wo=;
+        b=An0u9iYZx43QfPM021EezeseKs6lTnW6v2pfvFTBJ57eZkjXBiiEWdIc6S4VrBViEB
+         SeIJPrZ8vWEav1bJ0GpaVe9SVtQXP/zU3xZOaurt5XGc/pOWY8T56SfXtiGOC+Q5XPP6
+         FPHF/dIpTmBiDOF96fgiS3Hpg6Rr3t+cJ21GawoWUrYQdALgRnxDr4RgVOUMIO9HTO+E
+         8TR1V6SAx3p1M0EybWdpeRM08agsFAK2ihC7wpvCgnJKwNpthZDuLu/AVUNYw0jJ/PGr
+         ypxRjqvKtenNCcPqAduMo7JVj0lv+3bMEZIvsT0xZ7o17Cg3DHf11PZp3tQfiUpT9+CR
+         71IQ==
+X-Gm-Message-State: AOJu0YwsFA75209I4bvNmIYVCn1aSbr8RhrO1ZYms9Z6tW44NIGw8874
+	nceN6S1RUjiJ8wHvvRX+G2bSZ0albT6EZw==
+X-Google-Smtp-Source: AGHT+IFyrGz+Lx/G+WRE6Cop9a+KmuGSY55PZAqoqT7M7FiRKnsIt+Aq8RehpLAbzwaw8rjpnqSFZQ==
+X-Received: by 2002:a0d:eb50:0:b0:5a7:aa7f:17d5 with SMTP id u77-20020a0deb50000000b005a7aa7f17d5mr7012844ywe.11.1699603172596;
+        Thu, 09 Nov 2023 23:59:32 -0800 (PST)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
+        by smtp.gmail.com with ESMTPSA id g200-20020a0dddd1000000b00583f8f41cb8sm8501045ywe.63.2023.11.09.23.59.32
         for <linux-fbdev@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Nov 2023 23:58:48 -0800 (PST)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5bf5d6eaf60so17060697b3.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 09 Nov 2023 23:58:48 -0800 (PST)
-X-Received: by 2002:a25:ce02:0:b0:dae:b67e:7cd4 with SMTP id
- x2-20020a25ce02000000b00daeb67e7cd4mr7422482ybe.46.1699603128113; Thu, 09 Nov
- 2023 23:58:48 -0800 (PST)
+        Thu, 09 Nov 2023 23:59:32 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5be6d6c04bfso20457677b3.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 09 Nov 2023 23:59:32 -0800 (PST)
+X-Received: by 2002:a81:5b07:0:b0:5a7:fae6:1cc6 with SMTP id
+ p7-20020a815b07000000b005a7fae61cc6mr6505478ywb.24.1699603171811; Thu, 09 Nov
+ 2023 23:59:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231109220151.10654-1-u.kleine-koenig@pengutronix.de> <20231109220151.10654-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20231109220151.10654-2-u.kleine-koenig@pengutronix.de>
+References: <20231109220151.10654-1-u.kleine-koenig@pengutronix.de> <20231109220151.10654-3-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20231109220151.10654-3-u.kleine-koenig@pengutronix.de>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 10 Nov 2023 08:58:37 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWEGxU8STZrv4q3JgT+U=+Vyr4w_e_VnN23f36kBRBJXA@mail.gmail.com>
-Message-ID: <CAMuHMdWEGxU8STZrv4q3JgT+U=+Vyr4w_e_VnN23f36kBRBJXA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] fb: amifb: Mark driver struct with __refdata to
- prevent section mismatch warning
+Date: Fri, 10 Nov 2023 08:59:20 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX6=wNfX+zo3-8a=wLUDzWux1f83=Z9J30kyE4jk1hwoA@mail.gmail.com>
+Message-ID: <CAMuHMdX6=wNfX+zo3-8a=wLUDzWux1f83=Z9J30kyE4jk1hwoA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] fb: amifb: Convert to platform remove callback
+ returning void
 To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Helge Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>, Sam Ravnborg <sam@ravnborg.org>, 
-	Javier Martinez Canillas <javierm@redhat.com>, Atul Raut <rauji.raut@gmail.com>, linux-fbdev@vger.kernel.org, 
+Cc: Helge Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>, Atul Raut <rauji.raut@gmail.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, Javier Martinez Canillas <javierm@redhat.com>, linux-fbdev@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, kernel@pengutronix.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Uwe,
-
 On Thu, Nov 9, 2023 at 11:02=E2=80=AFPM Uwe Kleine-K=C3=B6nig
 <u.kleine-koenig@pengutronix.de> wrote:
-> As described in the added code comment, a reference to .exit.text is ok
-> for drivers registered via module_platform_driver_probe(). Make this
-> explicit to prevent a section mismatch warning.
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+>
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
+>
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
 >
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-
-Thanks for your patch!
-Why am I not seeing the actual section mismatch warning, not even
-with W=3D1?
 
 Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
@@ -92,8 +95,7 @@ Gr{oetje,eeting}s,
 
                         Geert
 
-
---
+--=20
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
 .org
 
