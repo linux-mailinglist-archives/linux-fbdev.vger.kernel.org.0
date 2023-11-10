@@ -1,108 +1,164 @@
-Return-Path: <linux-fbdev+bounces-4-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-8-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41E47E7EF4
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:48:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9513D7E7F1F
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF63B1C20EC0
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:48:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E58B5B21834
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33B38DD6;
-	Fri, 10 Nov 2023 17:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BtDnA1vf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B193C695;
+	Fri, 10 Nov 2023 17:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30603B79A
-	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:46:49 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECBA4328BE
-	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 04:11:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699618265;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7fCuXz89goAk8Vt7qNUZu+b7kKfusXy0WvYDR11XmRk=;
-	b=BtDnA1vfr4LpOiKWP73xgnG7lO91XjkBAmLrqZ6j1LzTc8tJxFLXw2jH8cvbBTAB6v2LLa
-	3ocIG6gE59g4ng4AA+QZN+NDaI/LowhE2yRgD6OqBvSQeymmtwckfAOOh9tIyW8dA8+nOD
-	KNesiZCjGKI7XB9lQY+QdhZgIuvFG/c=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571-gVKEyLWVMPaQYwOx_Mo2JQ-1; Fri, 10 Nov 2023 07:11:03 -0500
-X-MC-Unique: gVKEyLWVMPaQYwOx_Mo2JQ-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-408524e2368so12751025e9.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 04:11:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699618262; x=1700223062;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7fCuXz89goAk8Vt7qNUZu+b7kKfusXy0WvYDR11XmRk=;
-        b=dUr4AECI1EGNEZBhZT4XrxL1+Qk4giBLorz7MrpxSNLJw/PY9uv9iNJdIzA/ZLiWLn
-         rn4CWkS/mzS3qew+imE8hnFXWzuaV9FKNBZe3rnmmmOjx93u6dLetzx9dkuRPMh8rz8p
-         LcbnVs5QW6r1Qi3k4GEalw+WUYU0P5c2FUX1fwEaCJ/towfNRhw0Mn4e4qtBhGerhej1
-         F/uu01E9xstZZ5f+87PDRRyVG7mWgjxP2fomyaoBqFEjZM0xBx9BiV913uVuAQEMPMFx
-         Glo2HfzdhW9VJ6cEdtBq8QU7gtRrwH1gOtYZey8cugwY/RaxuZi09E5LTWNvIRiAQTx9
-         E4kA==
-X-Gm-Message-State: AOJu0YzJ+E8kdezABYyz8xFlLwWDnVzodr9RFKBl1g74Dc8kuDZUEcpW
-	lTm8N0V+3/Us2xT2sIQfFp9ofO+0oRB3VZ+/edI5yAMeyU2s8hr9AXSa79A6jCfiU0ltd/k692G
-	pV9Ps/o/hgvTGiWa2K71qyVU=
-X-Received: by 2002:a05:600c:190d:b0:408:4d0e:68b2 with SMTP id j13-20020a05600c190d00b004084d0e68b2mr6677893wmq.36.1699618262547;
-        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHnQ+ojOf2ajiSmBmN3mG/STAgZbDHejKyB0rLbX5CDgW3NWQYnPG6aNRfVTdkRaPHIh/mwvQ==
-X-Received: by 2002:a05:600c:190d:b0:408:4d0e:68b2 with SMTP id j13-20020a05600c190d00b004084d0e68b2mr6677880wmq.36.1699618262272;
-        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
-Received: from localhost ([90.167.86.3])
-        by smtp.gmail.com with ESMTPSA id j10-20020a05600c300a00b0040773c69fc0sm4867955wmh.11.2023.11.10.04.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller
- <deller@gmx.de>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vgacon: drop IA64 reference in VGA_CONSOLE dependency list
-In-Reply-To: <20231110114400.30882-1-lukas.bulwahn@gmail.com>
-References: <20231110114400.30882-1-lukas.bulwahn@gmail.com>
-Date: Fri, 10 Nov 2023 13:11:00 +0100
-Message-ID: <87v8a9ajvv.fsf@minerva.mail-host-address-is-not-set>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7BA3D398
+	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:47:01 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46AD34827
+	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 04:45:02 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r1Qqm-0008RY-G3; Fri, 10 Nov 2023 13:43:04 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r1Qqd-0081VE-CM; Fri, 10 Nov 2023 13:42:55 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r1Qqd-00Gimy-0Z; Fri, 10 Nov 2023 13:42:55 +0100
+Date: Fri, 10 Nov 2023 13:41:23 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Guo Ren <guoren@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Greg Ungerer <gerg@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Geoff Levand <geoff@infradead.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+	Helge Deller <deller@gmx.de>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Timur Tabi <timur@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-bcachefs@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 04/22] [RESEND] time: make sysfs_get_uname() function
+ visible in header
+Message-ID: <20231110124123.5mado2cc5vnywqfx@pengutronix.de>
+References: <20231108125843.3806765-1-arnd@kernel.org>
+ <20231108125843.3806765-5-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ljpauxr7qypfgjtq"
+Content-Disposition: inline
+In-Reply-To: <20231108125843.3806765-5-arnd@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 
-Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
 
-> Commit e9e3300b6e77 ("vgacon: rework Kconfig dependencies") turns the
-> dependencies into a positive list of supported architectures, which
-> includes the IA64 architecture, but in the meantime, this architecture is
-> removed in commit cf8e8658100d ("arch: Remove Itanium (IA-64)
-> architecture").
->
-> Drop the reference to IA64 architecture in the dependency list of the
-> VGA_CONSOLE config definition.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
+--ljpauxr7qypfgjtq
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Hello Arnd,
 
--- 
-Best regards,
+On Wed, Nov 08, 2023 at 01:58:25PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> This function is defined globally in clocksource.c and used conditionally
+> in clockevent.c, which the declaration hidden when clockevent support
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+s/which/with/ ?
 
+> is disabled. This causes a harmless warning in the definition:
+>=20
+> kernel/time/clocksource.c:1324:9: warning: no previous prototype for 'sys=
+fs_get_uname' [-Wmissing-prototypes]
+>  1324 | ssize_t sysfs_get_uname(const char *buf, char *dst, size_t cnt)
+>=20
+> Move the declaration out of the #ifdef so it is always visible.
+>=20
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Other than that:
+
+Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ljpauxr7qypfgjtq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVOJO4ACgkQj4D7WH0S
+/k65EAf/UjDsSsmivHFeg9uWSJLPICzRXZuL3swrSrbDypaI8PuJaX8767ZWsiYT
+oDeWDpXzpAvyvz7WUCuFkRJIytR6EpscoR2t39XsflnxAYmcgYmiBDesY/A6xtuZ
+k2ZldHp9NVszzJP3PiXQ8JOcEFA1LEc08SjHzEz4F6QAsno6WZD/do4yBIU+ikEg
+57Rbk4CJghGfXhgOAmwcWrN91qOFQwhPpKHHDgFfYSZ3zLo+f6H9hSUkzOuLGDhx
+zbK1UnRCuRi3iiJlIqS2LzaSySmRQ9tsbtjk9aQx7+GqdGprHajLMikxQ13xn8jh
+U+F4kOqRAwsIV6i5/GUFGEGtLnMsSQ==
+=9raj
+-----END PGP SIGNATURE-----
+
+--ljpauxr7qypfgjtq--
 
