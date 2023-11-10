@@ -1,108 +1,108 @@
-Return-Path: <linux-fbdev+bounces-2-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1687E7EA5
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:46:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41E47E7EF4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 18:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0716C280F8A
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:46:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF63B1C20EC0
+	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Nov 2023 17:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6791D38DD5;
-	Fri, 10 Nov 2023 17:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33B38DD6;
+	Fri, 10 Nov 2023 17:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cce5gxPR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BtDnA1vf"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81DA31A9E
-	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:46:29 +0000 (UTC)
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D7C13119F;
-	Fri, 10 Nov 2023 03:44:11 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-53e751aeb3cso3125875a12.2;
-        Fri, 10 Nov 2023 03:44:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699616649; x=1700221449; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ls+i1gmtLBTSrDfIDCKkUwn7wVHegofzcMpwXT7w+4A=;
-        b=Cce5gxPRibYbOcM20d+4cd2ZoeaRJuAq8WgCtnwg8EdN9Pgk3o8wW3rVVv/sJevWfO
-         X+sjQZbsUckL/3EYaSIQtH0C2jBqbkhu/9fxU4LkVeKlabCGIeq+py02X140ptga8ghd
-         qyWIrbdIU4/+QYOZ8kndIgdTONT0+QtHLe9CyOF8HaaqTuh3FsdZqeHmeeMxAF6nPgz/
-         +v5JDYByB6mzMVTeN9ezeNvNkoJlqWCyREhfDvD1ONUt1+Qk6DXdxEhtMHjo+LGr/Kq+
-         ADsEK7I+WqO3IDiArCHmbFcjx174LiJAaZY/jiMJU4scMfp+z5TqPAzLgJVRfmnhJQaz
-         Kymg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30603B79A
+	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 17:46:49 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECBA4328BE
+	for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 04:11:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1699618265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7fCuXz89goAk8Vt7qNUZu+b7kKfusXy0WvYDR11XmRk=;
+	b=BtDnA1vfr4LpOiKWP73xgnG7lO91XjkBAmLrqZ6j1LzTc8tJxFLXw2jH8cvbBTAB6v2LLa
+	3ocIG6gE59g4ng4AA+QZN+NDaI/LowhE2yRgD6OqBvSQeymmtwckfAOOh9tIyW8dA8+nOD
+	KNesiZCjGKI7XB9lQY+QdhZgIuvFG/c=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-571-gVKEyLWVMPaQYwOx_Mo2JQ-1; Fri, 10 Nov 2023 07:11:03 -0500
+X-MC-Unique: gVKEyLWVMPaQYwOx_Mo2JQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-408524e2368so12751025e9.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 10 Nov 2023 04:11:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699616649; x=1700221449;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ls+i1gmtLBTSrDfIDCKkUwn7wVHegofzcMpwXT7w+4A=;
-        b=LQpUykiHadaZTpOAR26RTAhWW19oDnwbhyTbDgMlMrsN88acMU6I4hl2+2tk02/SRq
-         JioO3xjBysKCen07WDqlutF/EER1J+wcgA9ypeO0CBUpeSAfkd9KK54Oivr/WsF2cSiE
-         14kPDEJ4SEKbpPz/q7oQb2ere7bacCz+iOEubeClepi4aaZXYdhZpIp0mjQ+7gNFvJjm
-         0lpIHwZR+JP7ZLvyN9aIjVNI4jPcPTBJFq54KUKp7pp4qWxKu/CvFYAHs4AclStbZlyp
-         DNi79rKaVCwO25l03HTE4SGjiWnJExzgXluktLssYByg8PPDom2aPt8tslaq1kDCvKRX
-         6Hrg==
-X-Gm-Message-State: AOJu0YwevJutcQHcDgmrF7uYy6hxilrKOhp/I9H+ABXFCG4zd94qtern
-	ikPgpKuFfUwCACGPBlBSjNA=
-X-Google-Smtp-Source: AGHT+IEDZNf7fK3SBH4Gvbr9dwhXqJGG5/7RAug27JiRlcTC2LXd/5Y7qKKS4jMCJMa8w2p8UhXYcg==
-X-Received: by 2002:a50:d554:0:b0:543:5886:71c3 with SMTP id f20-20020a50d554000000b00543588671c3mr6540595edj.25.1699616649333;
-        Fri, 10 Nov 2023 03:44:09 -0800 (PST)
-Received: from felia.fritz.box ([2a02:810d:7e40:14b0:cd7:bb15:91b6:862d])
-        by smtp.gmail.com with ESMTPSA id cm7-20020a0564020c8700b005400dc94f43sm1018916edb.45.2023.11.10.03.44.08
+        d=1e100.net; s=20230601; t=1699618262; x=1700223062;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7fCuXz89goAk8Vt7qNUZu+b7kKfusXy0WvYDR11XmRk=;
+        b=dUr4AECI1EGNEZBhZT4XrxL1+Qk4giBLorz7MrpxSNLJw/PY9uv9iNJdIzA/ZLiWLn
+         rn4CWkS/mzS3qew+imE8hnFXWzuaV9FKNBZe3rnmmmOjx93u6dLetzx9dkuRPMh8rz8p
+         LcbnVs5QW6r1Qi3k4GEalw+WUYU0P5c2FUX1fwEaCJ/towfNRhw0Mn4e4qtBhGerhej1
+         F/uu01E9xstZZ5f+87PDRRyVG7mWgjxP2fomyaoBqFEjZM0xBx9BiV913uVuAQEMPMFx
+         Glo2HfzdhW9VJ6cEdtBq8QU7gtRrwH1gOtYZey8cugwY/RaxuZi09E5LTWNvIRiAQTx9
+         E4kA==
+X-Gm-Message-State: AOJu0YzJ+E8kdezABYyz8xFlLwWDnVzodr9RFKBl1g74Dc8kuDZUEcpW
+	lTm8N0V+3/Us2xT2sIQfFp9ofO+0oRB3VZ+/edI5yAMeyU2s8hr9AXSa79A6jCfiU0ltd/k692G
+	pV9Ps/o/hgvTGiWa2K71qyVU=
+X-Received: by 2002:a05:600c:190d:b0:408:4d0e:68b2 with SMTP id j13-20020a05600c190d00b004084d0e68b2mr6677893wmq.36.1699618262547;
+        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHnQ+ojOf2ajiSmBmN3mG/STAgZbDHejKyB0rLbX5CDgW3NWQYnPG6aNRfVTdkRaPHIh/mwvQ==
+X-Received: by 2002:a05:600c:190d:b0:408:4d0e:68b2 with SMTP id j13-20020a05600c190d00b004084d0e68b2mr6677880wmq.36.1699618262272;
+        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
+Received: from localhost ([90.167.86.3])
+        by smtp.gmail.com with ESMTPSA id j10-20020a05600c300a00b0040773c69fc0sm4867955wmh.11.2023.11.10.04.11.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 03:44:08 -0800 (PST)
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] vgacon: drop IA64 reference in VGA_CONSOLE dependency list
-Date: Fri, 10 Nov 2023 12:44:00 +0100
-Message-Id: <20231110114400.30882-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 10 Nov 2023 04:11:02 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller
+ <deller@gmx.de>, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vgacon: drop IA64 reference in VGA_CONSOLE dependency list
+In-Reply-To: <20231110114400.30882-1-lukas.bulwahn@gmail.com>
+References: <20231110114400.30882-1-lukas.bulwahn@gmail.com>
+Date: Fri, 10 Nov 2023 13:11:00 +0100
+Message-ID: <87v8a9ajvv.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Commit e9e3300b6e77 ("vgacon: rework Kconfig dependencies") turns the
-dependencies into a positive list of supported architectures, which
-includes the IA64 architecture, but in the meantime, this architecture is
-removed in commit cf8e8658100d ("arch: Remove Itanium (IA-64)
-architecture").
+Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
 
-Drop the reference to IA64 architecture in the dependency list of the
-VGA_CONSOLE config definition.
+> Commit e9e3300b6e77 ("vgacon: rework Kconfig dependencies") turns the
+> dependencies into a positive list of supported architectures, which
+> includes the IA64 architecture, but in the meantime, this architecture is
+> removed in commit cf8e8658100d ("arch: Remove Itanium (IA-64)
+> architecture").
+>
+> Drop the reference to IA64 architecture in the dependency list of the
+> VGA_CONSOLE config definition.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> ---
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
- drivers/video/console/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index 83c2d7329ca5..bc31db6ef7d2 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -7,7 +7,7 @@ menu "Console display driver support"
- 
- config VGA_CONSOLE
- 	bool "VGA text console" if EXPERT || !X86
--	depends on ALPHA || IA64 || X86 || \
-+	depends on ALPHA || X86 || \
- 		(ARM && ARCH_FOOTBRIDGE) || \
- 		(MIPS && (MIPS_MALTA || SIBYTE_BCM112X || SIBYTE_SB1250 || SIBYTE_BCM1x80 || SNI_RM))
- 	select APERTURE_HELPERS if (DRM || FB || VFIO_PCI_CORE)
 -- 
-2.17.1
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
