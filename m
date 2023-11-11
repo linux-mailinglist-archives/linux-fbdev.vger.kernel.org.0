@@ -1,60 +1,60 @@
-Return-Path: <linux-fbdev+bounces-17-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-19-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE907E8A42
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Nov 2023 11:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7F87E8A45
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Nov 2023 11:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E7771C208E1
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Nov 2023 10:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10E31C208ED
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Nov 2023 10:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBB512B61;
-	Sat, 11 Nov 2023 10:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16727F;
+	Sat, 11 Nov 2023 10:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="j9/uP+Xd"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="GrCfM2er"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4021B12B7D
-	for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 10:42:44 +0000 (UTC)
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE733C05
-	for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 02:42:42 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9e5dd91b0acso267640266b.1
-        for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 02:42:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9692D12B7D
+	for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 10:42:46 +0000 (UTC)
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA7A4228
+	for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 02:42:44 -0800 (PST)
+Received: by mail-ej1-x642.google.com with SMTP id a640c23a62f3a-9be02fcf268so441630066b.3
+        for <linux-fbdev@vger.kernel.org>; Sat, 11 Nov 2023 02:42:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1699699361; x=1700304161; darn=vger.kernel.org;
+        d=amarulasolutions.com; s=google; t=1699699363; x=1700304163; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZuBW6agG70lIoCkGnVCWEFfcl6uwNB9B1+pa2Yxc8Go=;
-        b=j9/uP+Xdw1Pq1sOD1h6jzT5RhRDbh7QbdYHMsw0DFpoZJwoJziQuHef1h0jrjFE5O1
-         WjTyTx93aPwRDuSOGHMq/qIRSEQUQOSX0FT8FN7o3TEEwNMqp+hVKAuUdAMbRJL2g5LJ
-         qWjxsbHnyCLi610M+A9iCZdBac+AZ/WG/hXQU=
+        bh=VfR080tdra7BLhUIWSvcaEDMSQNVyZv5MjwAaJaquw0=;
+        b=GrCfM2erwPgk4/3+nyPnjZ2JFTv3Wwvd+P8cfyzcebe4TdbGQuwMOCiL2NeTI/cPZn
+         HntLgdH0GyHiyjjlgnFbRK1YPaxn8YeRBiiYwIOCJgXuYnCl12mTsX2sEWy1vCWl5g5B
+         dSN2gymXCMVjLelNQ55s8bWQTTUCeLODdZvkw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699699361; x=1700304161;
+        d=1e100.net; s=20230601; t=1699699363; x=1700304163;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZuBW6agG70lIoCkGnVCWEFfcl6uwNB9B1+pa2Yxc8Go=;
-        b=b53ZC+OoSbzF8DKp6rmX4nhzacVP43euTVi+K+X5MdHK3jWkpZcimXBLFUVLRviZeH
-         MMRneWic4dyHzUxdhxOT2t58jrbNqs7iTVDah7N1BsfG28m+Vhhcl1Szro+Cg8CvtOQ7
-         IvLcQfOz/4BLUXs0NWoKYGeQgxlbvvW+Z6dUAbydPRuvlxrVKvMXg3+bPc2UccXxq5tV
-         6S0vyNsjuwUHy69HIWcAkqmUOwK0QAshJNJM6fRucuFwz8iNNX90WOOzDnyScMSr/Adf
-         r3FAhxNhiHz0cViJ0RY/vvg0kNarFSgWWJrRl5kG/e92gsvWzXRy+AI01QdejbQq4+3Z
-         J8fQ==
-X-Gm-Message-State: AOJu0YyHHiVk7fiRKWvypg+bLQztKisUhG2ODL8YEslHPbxtxNGPqFTv
-	NbOFMGc1SCGrJrv7J+4qLBsLSg==
-X-Google-Smtp-Source: AGHT+IFbVhFnBfDEfeThETUmx79l/FqCUdUKdBP1kZUSVO8UVeOwurpqW+LCgtJFLlAn08avd0DyXw==
-X-Received: by 2002:a17:906:3c9:b0:9e6:59d5:7a86 with SMTP id c9-20020a17090603c900b009e659d57a86mr915376eja.57.1699699361285;
-        Sat, 11 Nov 2023 02:42:41 -0800 (PST)
+        bh=VfR080tdra7BLhUIWSvcaEDMSQNVyZv5MjwAaJaquw0=;
+        b=pkFgOSbiip3vsAiPEXS5C4CTLd3QrD22M2aCmQfosaDNz7lcNtATV1zJHmRW8oh5sw
+         cNcNpnLT7c7G4Go1zldqjOHXfRJBpREWh2gQ7ds5A65JT3pz6ZiwRTLo4X4KKVSF2nuH
+         XomDpx3/MQ4YFLI4zF6Vb5Qcjm/lj24uirq00sTxCm1TODMkPqwuH6WsXu/LnZPMd1bk
+         af8BRuyJax1F4wGyIgLuYEvbZVHARV8K6fcqqwQiTn/YnsD7qabZ0lzam6HWaCplykZT
+         WNIgFfnmbn4JL3svyMBaEqjgN6OlwqB/uPP62aMY39rL/tkFlTEVeniC34Kt9aZnQiEX
+         P3HA==
+X-Gm-Message-State: AOJu0Yx684Vhxfc4ALtdFNGWuho8mRZ1Y0OXCXSEiPmp66dFLt4DwMBX
+	b2TBNajivaL2dvhFu1BRg8YxIg==
+X-Google-Smtp-Source: AGHT+IERVItiW0QNcc7Itc1tQ63vCmzWRiYW8aKUXkxzrDZclJWRXQE4ZuhMCcTgFOSgvNri9tEQNA==
+X-Received: by 2002:a17:906:32d9:b0:9cc:97b:5a15 with SMTP id k25-20020a17090632d900b009cc097b5a15mr963727ejk.64.1699699362713;
+        Sat, 11 Nov 2023 02:42:42 -0800 (PST)
 Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-79-20-97-182.retail.telecomitalia.it. [79.20.97.182])
-        by smtp.gmail.com with ESMTPSA id ga33-20020a1709070c2100b0099e12a49c8fsm872183ejc.173.2023.11.11.02.42.40
+        by smtp.gmail.com with ESMTPSA id ga33-20020a1709070c2100b0099e12a49c8fsm872183ejc.173.2023.11.11.02.42.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Nov 2023 02:42:41 -0800 (PST)
+        Sat, 11 Nov 2023 02:42:42 -0800 (PST)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
@@ -68,9 +68,9 @@ Cc: linux-amarula@amarulasolutions.com,
 	dri-devel@lists.freedesktop.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-fbdev@vger.kernel.org
-Subject: [PATCH 04/10] fbdev: imxfb: replace some magic numbers with constants
-Date: Sat, 11 Nov 2023 11:41:53 +0100
-Message-ID: <20231111104225.136512-5-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH 05/10] fbdev: imxfb: add missing SPDX tag
+Date: Sat, 11 Nov 2023 11:41:54 +0100
+Message-ID: <20231111104225.136512-6-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231111104225.136512-1-dario.binacchi@amarulasolutions.com>
 References: <20231111104225.136512-1-dario.binacchi@amarulasolutions.com>
@@ -82,47 +82,38 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patch gets rid of magic numbers replacing them with appropriate
-macros.
+Resolve the following warning reported by checkpatch.pl:
+
+WARNING: Missing or malformed SPDX-License-Identifier tag in line 1
+
+The patch also removes some license info made redundant by the addition
+of the SPDX tag.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 ---
 
- drivers/video/fbdev/imxfb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/imxfb.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index b7ef43a7930a..485e57fa9389 100644
+index 485e57fa9389..de1434069530 100644
 --- a/drivers/video/fbdev/imxfb.c
 +++ b/drivers/video/fbdev/imxfb.c
-@@ -89,6 +89,7 @@ struct imx_fb_videomode {
- #define PCR_BPIX_12	4
- #define PCR_BPIX_16	5
- #define PCR_BPIX_18	6
-+#define PCR_PCD_MASK	GENMASK(5, 0)
- 
- #define LCDC_HCR	0x1C
- #define HCR_H_WIDTH_MASK	GENMASK(31, 26)
-@@ -414,8 +415,8 @@ static int imxfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
- 
- 	pcr = (unsigned int)tmp;
- 
--	if (--pcr > 0x3F) {
--		pcr = 0x3F;
-+	if (--pcr > PCR_PCD_MASK) {
-+		pcr = PCR_PCD_MASK;
- 		printk(KERN_WARNING "Must limit pixel clock to %luHz\n",
- 				lcd_clk / pcr);
- 	}
-@@ -444,7 +445,7 @@ static int imxfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
- 	}
- 
- 	/* add sync polarities */
--	pcr |= imxfb_mode->pcr & ~(0x3f | (7 << 25));
-+	pcr |= imxfb_mode->pcr & ~(PCR_PCD_MASK | PCR_BPIX_MASK);
- 
- 	fbi->pcr = pcr;
- 	/*
+@@ -1,13 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0-only
+ /*
+  *  Freescale i.MX Frame Buffer device driver
+  *
+  *  Copyright (C) 2004 Sascha Hauer, Pengutronix
+  *   Based on acornfb.c Copyright (C) Russell King.
+  *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file COPYING in the main directory of this archive for
+- * more details.
+- *
+  * Please direct your questions and comments on this driver to the following
+  * email address:
+  *
 -- 
 2.42.0
 
