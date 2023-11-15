@@ -1,72 +1,72 @@
-Return-Path: <linux-fbdev+bounces-69-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-73-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717127EC084
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E0C7EC08D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915981C209C4
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEEFB2810EA
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2131134D0;
-	Wed, 15 Nov 2023 10:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D17FBE9;
+	Wed, 15 Nov 2023 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zpl+vBbV";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kvBrnSPT"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zLui5LNH";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ijN9x6wa"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44D9101DA
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:04 +0000 (UTC)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D1310F
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 02:30:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EC7DDA3
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:06 +0000 (UTC)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0652A130
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 02:30:02 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1CE5F2050A;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 430522290C;
 	Wed, 15 Nov 2023 10:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1700044200; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=60NOlKzejuIpjFMtB7Q2mKbU2OJUEja/5u23Dpm1wn8=;
-	b=Zpl+vBbVsQK6OO3rM8rRDV8f5HDOHkOidl5vj4GnxJ8IpnHg7L/Hx0rb9m1C1pp2DKl+4P
-	PWUWBKFSK03RuNEm24aDR9DvS/AExqJ07xChAvM+9QSnzZvAazFoBSWp/3rudWky1IaNoy
-	KOs5mnqlprzD76O6/slyVP/UtRGLNBY=
+	bh=FZo9+M4c13V0p2zDC5L2BeMgstGimngcFXTqT9Wacuw=;
+	b=zLui5LNH9Wh12/x/yaTo1Gl/8Cw4zEXhtwCn3yruwUlDcEv6Fn854ylCkzmVfE4nh+adg0
+	t7Cv+KYbQ19/YVB1Jziqs5XaBkwktP47Ihqi/AeRN3fWdNA5t4O7rFwWzMxIjB5lgJjSjD
+	LoGihXAiLf6XOPreRt9fDk2gf2QLlSc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1700044200;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=60NOlKzejuIpjFMtB7Q2mKbU2OJUEja/5u23Dpm1wn8=;
-	b=kvBrnSPTjHvOz9aIT+R5vpSeFrgJnCUBQd51mhVyhOWwwACN1dT5J0HNxvkz1YdNSSp6OH
-	gZBaeM5DyxliFkAw==
+	bh=FZo9+M4c13V0p2zDC5L2BeMgstGimngcFXTqT9Wacuw=;
+	b=ijN9x6wa0iBeil0Ur10r2+DQY2GtuajBVX0omfoIxnmkj85+c4LcxyWYuRncrFwYSrsnKp
+	xoyeCIXZrMdEX8Bw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EF8F513ACD;
-	Wed, 15 Nov 2023 10:29:59 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 20EC513592;
+	Wed, 15 Nov 2023 10:30:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 0LSWOaedVGV+UAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:59 +0000
+	id uJwmB6idVGV+UAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:30:00 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
 	javierm@redhat.com
 Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 21/32] fbdev/clps711x-fb: Initialize fb_ops with fbdev macros
-Date: Wed, 15 Nov 2023 11:19:26 +0100
-Message-ID: <20231115102954.7102-22-tzimmermann@suse.de>
+Subject: [PATCH 22/32] fbdev/vt8500lcdfb: Initialize fb_ops with fbdev macros
+Date: Wed, 15 Nov 2023 11:19:27 +0100
+Message-ID: <20231115102954.7102-23-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231115102954.7102-1-tzimmermann@suse.de>
 References: <20231115102954.7102-1-tzimmermann@suse.de>
@@ -77,7 +77,7 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
 X-Spam-Level: 
 X-Spam-Score: -6.10
@@ -107,12 +107,10 @@ X-Spamd-Result: default: False [-6.10 / 50.00];
 	 BAYES_HAM(-3.00)[100.00%]
 
 Initialize the instance of struct fb_ops with fbdev initializer
-macros for framebuffers in I/O address space. Set the read/write,
-draw and mmap callbacks to the correct implementation and avoid
-implicit defaults. Also select the necessary helpers in Kconfig.
-
-The driver previously selected drawing ops for system memory
-although it operates on I/O memory. Fixed now.
+macros for framebuffers in DMA-able virtual address space. Set the
+read/write, draw and mmap callbacks to the correct implementation
+and avoid implicit defaults. Also select the necessary helpers in
+Kconfig.
 
 Fbdev drivers sometimes rely on the callbacks being NULL for a
 default I/O-memory-based implementation to be invoked; hence
@@ -123,45 +121,51 @@ functions.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/Kconfig       | 4 +---
- drivers/video/fbdev/clps711x-fb.c | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/Kconfig       | 1 +
+ drivers/video/fbdev/vt8500lcdfb.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 812b3a9a49507..76dc1a0081c17 100644
+index 76dc1a0081c17..658848475fa7a 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
-@@ -146,10 +146,8 @@ config FB_ACORN
- config FB_CLPS711X
- 	tristate "CLPS711X LCD support"
- 	depends on FB && (ARCH_CLPS711X || COMPILE_TEST)
-+	select FB_IOMEM_HELPERS
+@@ -1467,6 +1467,7 @@ config FB_VT8500
+ 	select FB_SYS_FILLRECT if (!FB_WMT_GE_ROPS)
+ 	select FB_SYS_COPYAREA if (!FB_WMT_GE_ROPS)
+ 	select FB_SYS_IMAGEBLIT
++	select FB_SYS_FOPS
  	select FB_MODE_HELPERS
--	select FB_SYS_FILLRECT
--	select FB_SYS_COPYAREA
--	select FB_SYS_IMAGEBLIT
- 	select LCD_CLASS_DEVICE
  	select VIDEOMODE_HELPERS
  	help
-diff --git a/drivers/video/fbdev/clps711x-fb.c b/drivers/video/fbdev/clps711x-fb.c
-index e956c90efcdcc..dcfd1fbbc7e10 100644
---- a/drivers/video/fbdev/clps711x-fb.c
-+++ b/drivers/video/fbdev/clps711x-fb.c
-@@ -155,13 +155,11 @@ static int clps711x_fb_blank(int blank, struct fb_info *info)
+diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
+index 42d39a9d5130f..42c25dc851976 100644
+--- a/drivers/video/fbdev/vt8500lcdfb.c
++++ b/drivers/video/fbdev/vt8500lcdfb.c
+@@ -241,6 +241,7 @@ static int vt8500lcd_blank(int blank, struct fb_info *info)
  
- static const struct fb_ops clps711x_fb_ops = {
+ static const struct fb_ops vt8500lcd_ops = {
  	.owner		= THIS_MODULE,
-+	FB_DEFAULT_IOMEM_OPS,
- 	.fb_setcolreg	= clps711x_fb_setcolreg,
- 	.fb_check_var	= clps711x_fb_check_var,
- 	.fb_set_par	= clps711x_fb_set_par,
- 	.fb_blank	= clps711x_fb_blank,
--	.fb_fillrect	= sys_fillrect,
--	.fb_copyarea	= sys_copyarea,
--	.fb_imageblit	= sys_imageblit,
++	__FB_DEFAULT_DMAMEM_OPS_RDWR,
+ 	.fb_set_par	= vt8500lcd_set_par,
+ 	.fb_setcolreg	= vt8500lcd_setcolreg,
+ 	.fb_fillrect	= wmt_ge_fillrect,
+@@ -250,6 +251,7 @@ static const struct fb_ops vt8500lcd_ops = {
+ 	.fb_ioctl	= vt8500lcd_ioctl,
+ 	.fb_pan_display	= vt8500lcd_pan_display,
+ 	.fb_blank	= vt8500lcd_blank,
++	// .fb_mmap needs DMA mmap
  };
  
- static int clps711x_lcd_check_fb(struct lcd_device *lcddev, struct fb_info *fi)
+ static irqreturn_t vt8500lcd_handle_irq(int irq, void *dev_id)
+@@ -357,7 +359,7 @@ static int vt8500lcd_probe(struct platform_device *pdev)
+ 
+ 	fbi->fb.fix.smem_start	= fb_mem_phys;
+ 	fbi->fb.fix.smem_len	= fb_mem_len;
+-	fbi->fb.screen_base	= fb_mem_virt;
++	fbi->fb.screen_buffer	= fb_mem_virt;
+ 
+ 	fbi->palette_size	= PAGE_ALIGN(512);
+ 	fbi->palette_cpu	= dma_alloc_coherent(&pdev->dev,
 -- 
 2.42.0
 
