@@ -1,62 +1,62 @@
-Return-Path: <linux-fbdev+bounces-59-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-63-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDD37EC07A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE597EC085
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4891F2194B
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9488CB20BD6
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BE7111A5;
-	Wed, 15 Nov 2023 10:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D22DF51;
+	Wed, 15 Nov 2023 10:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zQ+H8utR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NiFladlc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eYJLgBlV";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NjXWWLr7"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBFEDDA3
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C956FBEC
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:03 +0000 (UTC)
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA0411D
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692C6124
 	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 02:30:00 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DC01522912;
-	Wed, 15 Nov 2023 10:29:58 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 09EFA2290F;
+	Wed, 15 Nov 2023 10:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1700044198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1700044199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l/qWz8j2bTeGkP09Q9dF/ZlGee1SBtpn3xS2Y8mCG/0=;
-	b=zQ+H8utRnP95tFaxL6AoCESZivqdvYC2cf28b9Uj0OBlK8m4zTOfdL54qD3fCDdFjCvPle
-	woI4rinb8pqUL9mlZcIu9T7y2Pdiuw3+3euOunr/+4PYTkUJQiHPDzu/v9FYMwqfGsTc9q
-	mu9lyI1IehKTapjY54DuFyHHrXL0eFU=
+	bh=j+CZwINqaB15sG1Ll+iVRNt++nqOVtiohekzZq1vSRU=;
+	b=eYJLgBlVxQ4lMEIJLrxo5kBgwXtvFm5X0WrFgDkE9YLitBTygvyrO9IU21LtfcLg+qJC13
+	UhYDE1ox3pfIAVvheJrWQxXa62pkcmh6TZrLN3k/FkBBEjSbko3OGLC9jOf0j4+Ofc3DGt
+	00v4lJQHhkQtWSVQugzI6/H09bIbkNI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1700044198;
+	s=susede2_ed25519; t=1700044199;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l/qWz8j2bTeGkP09Q9dF/ZlGee1SBtpn3xS2Y8mCG/0=;
-	b=NiFladlc1CtvUjZLHelUOIV0wJtaQqY+eRnlr0TmwRFu9hD4m8YUqRiXt8gt0MBUEb3L40
-	NJCKzWULNmnx1MDA==
+	bh=j+CZwINqaB15sG1Ll+iVRNt++nqOVtiohekzZq1vSRU=;
+	b=NjXWWLr7rCcaGNLjbqP692xrQgM2Q801FSnhFKOhsryXoL/O7XRhOZToJZKVsxGlZW5yQq
+	3581Nt4fiwoZZZAA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BB1C413592;
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DCB17139B7;
 	Wed, 15 Nov 2023 10:29:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id KOLhLKadVGV+UAAAMHmgww
+	id uCsKNaadVGV+UAAAMHmgww
 	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:58 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -64,9 +64,9 @@ To: deller@gmx.de,
 Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 14/32] fbdev/smscufx: Select correct helpers
-Date: Wed, 15 Nov 2023 11:19:19 +0100
-Message-ID: <20231115102954.7102-15-tzimmermann@suse.de>
+Subject: [PATCH 15/32] fbdev/udlfb: Select correct helpers
+Date: Wed, 15 Nov 2023 11:19:20 +0100
+Message-ID: <20231115102954.7102-16-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231115102954.7102-1-tzimmermann@suse.de>
 References: <20231115102954.7102-1-tzimmermann@suse.de>
@@ -103,7 +103,7 @@ X-Spamd-Result: default: False [-3.10 / 50.00];
 	 MIME_TRACE(0.00)[0:+];
 	 RCVD_COUNT_TWO(0.00)[2];
 	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[39.25%]
+	 BAYES_HAM(-0.00)[40.48%]
 
 The driver uses deferred I/O. Select the correct helpers via
 FB_SYSMEM_HELPERS_DEFERRED in the Kconfig file.
@@ -114,12 +114,12 @@ Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
  1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 409e02130be0f..e234e90d06b83 100644
+index e234e90d06b83..8c38969e9468a 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
-@@ -1683,11 +1683,7 @@ config FB_SMSCUFX
- 	tristate "SMSC UFX6000/7000 USB Framebuffer support"
+@@ -1696,11 +1696,7 @@ config FB_UDL
  	depends on FB && USB
+ 	depends on FB_DEVICE
  	select FB_MODE_HELPERS
 -	select FB_SYS_FILLRECT
 -	select FB_SYS_COPYAREA
@@ -128,7 +128,7 @@ index 409e02130be0f..e234e90d06b83 100644
 -	select FB_DEFERRED_IO
 +	select FB_SYSMEM_HELPERS_DEFERRED
  	help
- 	  This is a kernel framebuffer driver for SMSC UFX USB devices.
+ 	  This is a kernel framebuffer driver for DisplayLink USB devices.
  	  Supports fbdev clients like xf86-video-fbdev, kdrive, fbi, and
 -- 
 2.42.0
