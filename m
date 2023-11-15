@@ -1,63 +1,63 @@
-Return-Path: <linux-fbdev+bounces-66-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-57-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910247EC081
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4552B7EC077
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 11:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170112810BF
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0076B280235
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Nov 2023 10:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5C6E56A;
-	Wed, 15 Nov 2023 10:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614E6FBFC;
+	Wed, 15 Nov 2023 10:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WZMbebSC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zzwAgM26"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TjdEENA6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nXrLw2kU"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9A1FBF0
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:03 +0000 (UTC)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A5B109
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 02:30:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95895DF68
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 10:30:01 +0000 (UTC)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DAF12F
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Nov 2023 02:29:59 -0800 (PST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 161B3204FF;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4591A22911;
 	Wed, 15 Nov 2023 10:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1700044198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Orj4vGhr+P7BDyqCW687puFmuzZSeHm9MaHohWWzkqs=;
-	b=WZMbebSCrvOpqPaIenSv/6m1nJhcGOoVDOBC/1aRzyQvU84I+mdRVRyxsZ4uny3Wi+tLJN
-	uVko95Rz5tC6kA9riGp0oXUcfcR4K0QquEfluYDFFikI13AxDwfVt+S0i4BtHeJNP+ryem
-	YK0CQjkfc5Nuo146J4WVJTR7TTQjqnw=
+	bh=CTVRgSX7DWHhpq8nVficdMO8TCwGgz2rVan9bypZqd0=;
+	b=TjdEENA6xYbGuJEYPVVDHzRj3+ohaQH8M4SE4OcAFle//ad0pgfjMKyzN2BKkPBWJ6PFRm
+	7B8Zpmb2ajcjCvKxOXrones4GwnhI2VT0AZi1FceqDECkm2dpwyvhdntlrqo2dCM73qJY8
+	UzDJwnBYw6usdTuT5rh3jQIZOnTdE5Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1700044198;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Orj4vGhr+P7BDyqCW687puFmuzZSeHm9MaHohWWzkqs=;
-	b=zzwAgM26QOYpJU4CfayhwuOszSCgVz/akdzw0FeXUHHdyEIva74H619AxFw5BKupeIgMet
-	Kn1gaxFlUV/tmUBQ==
+	bh=CTVRgSX7DWHhpq8nVficdMO8TCwGgz2rVan9bypZqd0=;
+	b=nXrLw2kUc47MFqUhhMivM8hV4fUtcQBZtY4ZqQXWXHPaF9rKleRyqyl8YVvugXcm42V/Tr
+	55BJ+oMjKrPuQ8AQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E18BF13592;
-	Wed, 15 Nov 2023 10:29:57 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1B449139B7;
+	Wed, 15 Nov 2023 10:29:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id ODMiNqWdVGV+UAAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:57 +0000
+	id GLvRBaadVGV+UAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:58 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
 	javierm@redhat.com
@@ -66,9 +66,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Robin van der Gracht <robin@protonic.nl>
-Subject: [PATCH 09/32] auxdisplay/ht16k33: Set FBINFO_VIRTFB flag
-Date: Wed, 15 Nov 2023 11:19:14 +0100
-Message-ID: <20231115102954.7102-10-tzimmermann@suse.de>
+Subject: [PATCH 10/32] auxdisplay/ht16k33: Initialize fb_ops with fbdev macros
+Date: Wed, 15 Nov 2023 11:19:15 +0100
+Message-ID: <20231115102954.7102-11-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231115102954.7102-1-tzimmermann@suse.de>
 References: <20231115102954.7102-1-tzimmermann@suse.de>
@@ -79,11 +79,11 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
 X-Spam-Level: 
-X-Spam-Score: -3.11
-X-Spamd-Result: default: False [-3.11 / 50.00];
+X-Spam-Score: -6.10
+X-Spamd-Result: default: False [-6.10 / 50.00];
 	 ARC_NA(0.00)[];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
 	 FROM_HAS_DN(0.00)[];
@@ -105,31 +105,63 @@ X-Spamd-Result: default: False [-3.11 / 50.00];
 	 MIME_TRACE(0.00)[0:+];
 	 RCVD_COUNT_TWO(0.00)[2];
 	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.01)[46.22%]
+	 BAYES_HAM(-3.00)[100.00%]
 
-The ht16k33 driver operates on system memory. Mark the framebuffer
-accordingly. Helpers operating on the framebuffer memory will test
-for the presence of this flag.
+Initialize the instance of struct fb_ops with fbdev initializer
+macros for framebuffers in virtual address space. Set the read/write,
+draw and mmap callbacks to the correct implementation and avoid
+implicit defaults. Also select the necessary helpers in Kconfig.
+
+Fbdev drivers sometimes rely on the callbacks being NULL for a
+default I/O-memory-based implementation to be invoked; hence
+requiring the I/O helpers to be built in any case. Setting all
+callbacks in all drivers explicitly will allow to make the I/O
+helpers optional. This benefits systems that do not use these
+functions.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>
 Cc: Robin van der Gracht <robin@protonic.nl>
 ---
- drivers/auxdisplay/ht16k33.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/auxdisplay/Kconfig   | 5 +----
+ drivers/auxdisplay/ht16k33.c | 7 ++-----
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
+index 4377e53f8f572..d944d5298eca8 100644
+--- a/drivers/auxdisplay/Kconfig
++++ b/drivers/auxdisplay/Kconfig
+@@ -167,10 +167,7 @@ config IMG_ASCII_LCD
+ config HT16K33
+ 	tristate "Holtek Ht16K33 LED controller with keyscan"
+ 	depends on FB && I2C && INPUT
+-	select FB_SYS_FOPS
+-	select FB_SYS_FILLRECT
+-	select FB_SYS_COPYAREA
+-	select FB_SYS_IMAGEBLIT
++	select FB_SYSMEM_HELPERS
+ 	select INPUT_MATRIXKMAP
+ 	select FB_BACKLIGHT
+ 	select NEW_LEDS
 diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
-index 3a2d883872249..f1716e3ce6a92 100644
+index f1716e3ce6a92..2f1dc6b4e2765 100644
 --- a/drivers/auxdisplay/ht16k33.c
 +++ b/drivers/auxdisplay/ht16k33.c
-@@ -640,6 +640,7 @@ static int ht16k33_fbdev_probe(struct device *dev, struct ht16k33_priv *priv,
+@@ -356,12 +356,9 @@ static int ht16k33_mmap(struct fb_info *info, struct vm_area_struct *vma)
  
- 	INIT_DELAYED_WORK(&priv->work, ht16k33_fb_update);
- 	fbdev->info->fbops = &ht16k33_fb_ops;
-+	fbdev->info->flags |= FBINFO_VIRTFB;
- 	fbdev->info->screen_buffer = fbdev->buffer;
- 	fbdev->info->screen_size = HT16K33_FB_SIZE;
- 	fbdev->info->fix = ht16k33_fb_fix;
+ static const struct fb_ops ht16k33_fb_ops = {
+ 	.owner = THIS_MODULE,
+-	.fb_read = fb_sys_read,
+-	.fb_write = fb_sys_write,
++	__FB_DEFAULT_SYSMEM_OPS_RDWR,
+ 	.fb_blank = ht16k33_blank,
+-	.fb_fillrect = sys_fillrect,
+-	.fb_copyarea = sys_copyarea,
+-	.fb_imageblit = sys_imageblit,
++	__FB_DEFAULT_SYSMEM_OPS_DRAW,
+ 	.fb_mmap = ht16k33_mmap,
+ };
+ 
 -- 
 2.42.0
 
