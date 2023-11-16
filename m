@@ -1,74 +1,74 @@
-Return-Path: <linux-fbdev+bounces-110-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-113-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E387EDEEE
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Nov 2023 11:53:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C857EDFC9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Nov 2023 12:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CC3E1F23A2B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Nov 2023 10:53:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD3E280FC6
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Nov 2023 11:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EACB2D61E;
-	Thu, 16 Nov 2023 10:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9732E418;
+	Thu, 16 Nov 2023 11:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gjywyrj8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LKXPr3po"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47611AE
-	for <linux-fbdev@vger.kernel.org>; Thu, 16 Nov 2023 02:53:33 -0800 (PST)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ECD1187
+	for <linux-fbdev@vger.kernel.org>; Thu, 16 Nov 2023 03:26:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700132013;
+	s=mimecast20190719; t=1700133988;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tuX86pnoqOc9Lm4Xg+0oGA/Hd0KoSUsDWQB7iIHvV00=;
-	b=gjywyrj8hvJx6px8JYsBAtgV4baarzZpYIaolmPmXdtyylTRTY3NY5NECgBfhJIQZ50CLG
-	B1yHXaJwQDCwEW1Gi7ZCn3io9ewg8ek4eQU2VzwE62wAQwDxqSPhIW+d1i97iL/eQTw/y7
-	JJKvHt7yGKG/uXTO7YfcoqXLXCoSNSc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xhfIum68/LfGGlKZxKOpUyUVoYt3PypwKYYqLYNBIe4=;
+	b=LKXPr3poCS0Jvwqk31sYxbtX4gHmsXQ3+H40DISKO50Nw/5togLZ4lN4mw2tZan/tG2eVV
+	KVz8sT1jSe/FivlukqSx7fLktEbrzfA9mXZb5oTTrGkVnBvIjJ0QREVE/rDoUwUecIJm7e
+	E8QZPQzmYGerQJbzB7C220J6lXfVBtA=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-4nupMvgjPRWb0LBxL4CT1w-1; Thu, 16 Nov 2023 05:53:31 -0500
-X-MC-Unique: 4nupMvgjPRWb0LBxL4CT1w-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-408374a3d6bso3479995e9.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 Nov 2023 02:53:31 -0800 (PST)
+ us-mta-295-9Yn46j9GPGavzw3y1BPfyg-1; Thu, 16 Nov 2023 06:26:27 -0500
+X-MC-Unique: 9Yn46j9GPGavzw3y1BPfyg-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2c50bebd8dfso5924101fa.3
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 Nov 2023 03:26:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700132010; x=1700736810;
+        d=1e100.net; s=20230601; t=1700133985; x=1700738785;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tuX86pnoqOc9Lm4Xg+0oGA/Hd0KoSUsDWQB7iIHvV00=;
-        b=KalR44t3z7I41vxMruv1eWR9n+XbXAXNbtQa7RWLw6uLggzB5cNcJXNvyuQiAq/6u4
-         WMSBQfGouNqqxle2bBhLRXIUAugvo5bZbzwRYa3fiMUDmEDE42rINxjJSHRaZ6p2J4YN
-         zS2NWioMPD3Bj61VPzmPj9uBkskR1HX+iWLu29KibNb4DliEl4KTmvCTdjdgSXRrpFW0
-         s5D6QZAC/qgp0G6Modwm4e4lLqRBlsUSk8CiROJCEax/BIUjE3yNrEft72TC0+cJ8pmE
-         DJhAwWmj9VqmlvncsoCG3L9bZQj2ZgBeO35WommoZDpWJl9XJawCPaqbn2aC0ekF2+VV
-         6a+w==
-X-Gm-Message-State: AOJu0Yy/b8gjkhUlEuo8Oroiq39NZ0wdyyhi8SGqIterVEH+5xL5/UcH
-	PlN3lKe6U4OQF5ap0BkC/s/4/NK0wNYU8z7avSkl5wqyx0CkPq7mNdX2VP2UcCjxFS6EXFNnI3v
-	K8eZMgMVHV+hDcOxqE6OMIro=
-X-Received: by 2002:a05:600c:524c:b0:3fd:2e89:31bd with SMTP id fc12-20020a05600c524c00b003fd2e8931bdmr1701737wmb.14.1700132010303;
-        Thu, 16 Nov 2023 02:53:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGxYqt6JEW+U1HNFI57UlEcmFdgsubjyvb53Do4Fx+Au2XkUvyLPoKV7okM0NVKFoXjgldOnw==
-X-Received: by 2002:a05:600c:524c:b0:3fd:2e89:31bd with SMTP id fc12-20020a05600c524c00b003fd2e8931bdmr1701718wmb.14.1700132009917;
-        Thu, 16 Nov 2023 02:53:29 -0800 (PST)
+        bh=xhfIum68/LfGGlKZxKOpUyUVoYt3PypwKYYqLYNBIe4=;
+        b=jooGRdvhQaQDaUdhmu2MBG20VxKzZK/WIURPydBwhJbRnE3usARAeMfTNY4hakXppk
+         xM9utErN+7gBWNPhdlYag1NBXuK5+BrnkxePEYmDcQuSvx/QEAnxL8xOgsUy1zL+gnqh
+         8YOSCO0+vcRdBE9cOx7kTZzvNvLPlGiR3AJGXqeFsDc7VuLkf4kR7TInmkO70hgrdEzk
+         wWQ3dLIY9n6NoTzXZs4jSKCYO0c/HQ1X+PbvA35AYnCpp81LDvgnQ6HARV9VwCYE+Uiy
+         Vxl6YZd0x+XWR4l33VKJM8SWu9NfJjDb42eAKmtVhFGOFbdicHTrDym1px806yA498dQ
+         OGUw==
+X-Gm-Message-State: AOJu0Yz67TJ4uZcCdhpE9SJFMP08LsxE2B1k+EtcRSvFNCu4jkN6Li0/
+	zGzpMgV05dY7pqEmmCmijrW2JIAfHY8qGbaZDIWcAiBWVKw+zG4OcDrv2F1/i/zrhxo8ntiv0UY
+	ncOlL5lHGQ5UkLETCGU/cEk4=
+X-Received: by 2002:a2e:a4cb:0:b0:2c5:5926:de52 with SMTP id p11-20020a2ea4cb000000b002c55926de52mr5121265ljm.53.1700133985732;
+        Thu, 16 Nov 2023 03:26:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEJnR2iDTGVBiyLONW/q3XfA8jLqJYND8GKOCtotFp7WUFdUTultF747i6hHAkQad7D5Wm1Ng==
+X-Received: by 2002:a2e:a4cb:0:b0:2c5:5926:de52 with SMTP id p11-20020a2ea4cb000000b002c55926de52mr5121250ljm.53.1700133985429;
+        Thu, 16 Nov 2023 03:26:25 -0800 (PST)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id s9-20020a05600c45c900b0040651505684sm3086548wmo.29.2023.11.16.02.53.29
+        by smtp.gmail.com with ESMTPSA id k42-20020a05600c1caa00b003feae747ff2sm3302601wms.35.2023.11.16.03.26.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Nov 2023 02:53:29 -0800 (PST)
+        Thu, 16 Nov 2023 03:26:25 -0800 (PST)
 From: Javier Martinez Canillas <javierm@redhat.com>
 To: Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Thomas
- Zimmermann <tzimmermann@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 19/32] fbdev/ps3fb: Initialize fb_ops with fbdev macros
-In-Reply-To: <20231115102954.7102-20-tzimmermann@suse.de>
+Cc: linux-fbdev@vger.kernel.org, Andy Walls <awalls@md.metrocast.net>,
+ dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org
+Subject: Re: [PATCH 20/32] media/ivtvfb: Initialize fb_ops to fbdev
+ I/O-memory helpers
+In-Reply-To: <20231115102954.7102-21-tzimmermann@suse.de>
 References: <20231115102954.7102-1-tzimmermann@suse.de>
- <20231115102954.7102-20-tzimmermann@suse.de>
-Date: Thu, 16 Nov 2023 11:53:29 +0100
-Message-ID: <871qcq3r6e.fsf@minerva.mail-host-address-is-not-set>
+ <20231115102954.7102-21-tzimmermann@suse.de>
+Date: Thu, 16 Nov 2023 12:26:24 +0100
+Message-ID: <87y1ey2b33.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -80,27 +80,23 @@ Content-Type: text/plain
 Thomas Zimmermann <tzimmermann@suse.de> writes:
 
 > Initialize the instance of struct fb_ops with fbdev initializer
-> macros for framebuffers in virtual address space. Set the read/write,
-> draw and mmap callbacks to the correct implementation and avoid
-> implicit defaults. Also select the necessary helpers in Kconfig.
+> macros for framebuffers in I/O address space. This explictily sets
+> the read/write, draw and mmap callbacks to the correct default
+> implementation.
 >
 > Fbdev drivers sometimes rely on the callbacks being NULL for a
-> default I/O-memory-based implementation to be invoked; hence
-> requiring the I/O helpers to be built in any case. Setting all
-> callbacks in all drivers explicitly will allow to make the I/O
-> helpers optional. This benefits systems that do not use these
-> functions.
+> default implementation to be invoked; hence requireing the I/O
+> helpers to be built in any case. Setting all callbacks in all
+> drivers explicitly will allow to make the I/O helpers optional.
+> This benefits systems that do not use these functions.
+>
+> Set the callbacks via macros. No functional changes.
 >
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Andy Walls <awalls@md.metrocast.net>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: linux-media@vger.kernel.org
 > ---
->  drivers/video/fbdev/Kconfig | 5 +----
->  drivers/video/fbdev/ps3fb.c | 7 ++-----
->  2 files changed, 3 insertions(+), 9 deletions(-)
->
 
 Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
