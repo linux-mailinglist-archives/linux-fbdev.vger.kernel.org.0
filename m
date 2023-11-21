@@ -1,41 +1,41 @@
-Return-Path: <linux-fbdev+bounces-170-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-171-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D157F218B
-	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Nov 2023 00:42:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5947A7F21E7
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Nov 2023 01:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35E762826A7
-	for <lists+linux-fbdev@lfdr.de>; Mon, 20 Nov 2023 23:42:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B74E1C219A7
+	for <lists+linux-fbdev@lfdr.de>; Tue, 21 Nov 2023 00:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C853B2B1;
-	Mon, 20 Nov 2023 23:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742E164D;
+	Tue, 21 Nov 2023 00:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="A8C6XWEn"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Tt415sad"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id EA80BC7;
-	Mon, 20 Nov 2023 15:42:39 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5010CAC;
+	Mon, 20 Nov 2023 16:01:35 -0800 (PST)
 Received: from skinsburskii. (c-67-170-100-148.hsd1.wa.comcast.net [67.170.100.148])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 59E2020B74C0;
-	Mon, 20 Nov 2023 15:42:39 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 59E2020B74C0
+	by linux.microsoft.com (Postfix) with ESMTPSA id AC31C20B74C0;
+	Mon, 20 Nov 2023 16:01:34 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AC31C20B74C0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1700523759;
-	bh=7L+TOsdX+tZkVHKWORc7I4/cc04Er/+p3FqDJzAROJw=;
+	s=default; t=1700524894;
+	bh=sQWhnXGgZQ7YwEyDzOAZTBFetm3LSSh/DiSLoL2dKqE=;
 	h=Subject:From:To:Date:From;
-	b=A8C6XWEn7vVZ6AbgF1p5O0/7OzH6a9ONdOP2k0oKBDb0/fVJEasAtzXqzVzqEqfPr
-	 Wzw1H5M0X9XtzuzI9TGWi53kh2mho3zuT+IKOH9eDPhQ31FjNoGM6Mx37rQazyc8Xh
-	 7+NMw3g2aLRU0bldqlQNMzaCFGIBmeCpiAnvm8bY=
-Subject: [PATCH] fbdev/fsl-diu-fb: Fix srapse warning due to virt_to_phys()
+	b=Tt415sadYnFe4NBgqwsRCPkCLeRUKOn3XqjaDydH4QAJdXH9xdsUY5SsN/SELu9J4
+	 s3rMxB+2wEDz89WuprBgypyckXddwep97UmAEafieFG/qyex/Mq1RcjFkdCbvVbV1d
+	 6oQ972xRFkX8WrRoxLoh8mX1ZAQ7OjLSLq6y/fiQ=
+Subject: [PATCH v2] fbdev/fsl-diu-fb: Fix srapse warning due to virt_to_phys()
  prototype change
 From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
 To: timur@kernel.org, deller@gmx.de, linux-fbdev@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Date: Mon, 20 Nov 2023 15:42:38 -0800
-Message-ID: <170052375352.21405.5715750058235741780.stgit@skinsburskii.>
+Date: Mon, 20 Nov 2023 16:01:33 -0800
+Message-ID: <170052488691.21532.13211751644917367476.stgit@skinsburskii.>
 User-Agent: StGit/0.19
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -54,6 +54,8 @@ following warning:
       got char [noderef] __iomem *screen_base
 
 Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311161120.BgyxTBMQ-lkp@intel.com/
 ---
  drivers/video/fbdev/fsl-diu-fb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
