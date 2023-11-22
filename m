@@ -1,104 +1,85 @@
-Return-Path: <linux-fbdev+bounces-185-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-187-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84277F3AEC
-	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Nov 2023 01:58:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4C37F3F5E
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Nov 2023 08:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611CD2829EE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Nov 2023 00:58:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE4E1C20957
+	for <lists+linux-fbdev@lfdr.de>; Wed, 22 Nov 2023 07:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE5415A0;
-	Wed, 22 Nov 2023 00:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ABA20B11;
+	Wed, 22 Nov 2023 07:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQyaFcGy"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="VF5AqAqq"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A0F197
-	for <linux-fbdev@vger.kernel.org>; Tue, 21 Nov 2023 16:58:02 -0800 (PST)
-Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-7788f727dd7so388467885a.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 21 Nov 2023 16:58:02 -0800 (PST)
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [IPv6:2a02:9e0:8000::40])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333879D
+	for <linux-fbdev@vger.kernel.org>; Tue, 21 Nov 2023 23:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700614681; x=1701219481; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MFz25rhV/tQYJ/usJamHobIxJPBWkC1P9QKNu6+n9H0=;
-        b=RQyaFcGy1L7mKR3OeWs2VDs5rwyQLmOgjOVuvLXDYwjctKynqb6HLMdxvPF2S2zxvZ
-         iU15zO1YwWhdcoW22vzveet7H1czi54KDFThNLPyj1LSIqf9DR9bS7qw/L17itlIYYug
-         GPZoqDNJurcqYsm6YVZeiD1fyQpVTo340NgyAb8QNe45LTdtlZakVFzujoyoPtR8Duj7
-         P8ONOu1EKoa/G3dx9yXI1iui3VqbCt36tQYtQUwYRuIQ3PuPgjSEQ8dd4/s7majz8AyU
-         bAL/KRA7mRhb5W0SWpdeeIhg3zMfRrOZ2WwYg11+dAbh6UN6a+FS6tshBEHQP1hK56/E
-         4O1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700614681; x=1701219481;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MFz25rhV/tQYJ/usJamHobIxJPBWkC1P9QKNu6+n9H0=;
-        b=ffB5NYefyyP58KQGNEEye9ww81c2OjkF8aAaGr4idYMLn5fghDkZDWuQ8grkw96e9L
-         wTldXYt2h8xCzP+Azbn1OEDEWuBZ5uwKoWY4Bei/pmUfMYkz6yyD5qwNs8HHUrRo/IAJ
-         C7AWdQ3Xbsox3ebx/2NlzVJY6AGrd/5fHtoE4lwwtX2iY68hk02nc8hki/GyQJI/j+ny
-         nFHFqVkUKNs4XSfmdGH3sAk/ut9krmzp+WnQorBIsZHorz9b6xXU2waOWjGny6feQ/5D
-         ox0j/7E7jFkRe/Y6EHBJOV6+/2NNkuseNubpygwwN1ZWIQibOoVDKIAaTepv9sjR5Fg8
-         KXYQ==
-X-Gm-Message-State: AOJu0YygiEle9RVsymqP2NGnE/sIgyWrq5rOak30nFtg7R7gtdcaK7BH
-	DBvoFssfEmMdcrOaQP7djMg=
-X-Google-Smtp-Source: AGHT+IHK5zmXtx2CrzmRrXrePJ8VaQvJ/bDCoqi8nx/Atu1M6AvENNujwhGE+whhP3wVQywcUytgug==
-X-Received: by 2002:a05:6214:c41:b0:66d:12b5:68c1 with SMTP id r1-20020a0562140c4100b0066d12b568c1mr923386qvj.59.1700614681132;
-        Tue, 21 Nov 2023 16:58:01 -0800 (PST)
-Received: from localhost ([2607:fea8:529e:7800::80ec])
-        by smtp.gmail.com with ESMTPSA id j2-20020ad453a2000000b0066d32666a20sm4427293qvv.71.2023.11.21.16.57.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 16:58:00 -0800 (PST)
-From: Richard Acayan <mailingradian@gmail.com>
-To: Hans de Goede <hdegoede@redhat.com>,
-	Helge Deller <deller@gmx.de>,
-	Thierry Reding <treding@nvidia.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: Richard Acayan <mailingradian@gmail.com>
-Subject: [PATCH] fbdev/simplefb: Suppress error on missing power domains
-Date: Tue, 21 Nov 2023 19:54:59 -0500
-Message-ID: <20231122005457.330066-3-mailingradian@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	d=protonic.nl; s=202111;
+	h=message-id:references:in-reply-to:reply-to:subject:cc:to:from:date:
+	 content-transfer-encoding:content-type:mime-version:from;
+	bh=SC0Nw0my4KjFTp1RacZCDCq2iioSI8JO41AN2e4nWTY=;
+	b=VF5AqAqqnjRkem47thuhhInpkmmmxgG7odln5T5AkNXvm1TP8Q4p9OflI7MFxN79WsXgeFj8FLpR0
+	 1Px4GtAvbH9I1n4mgnI89TidxsqnvShDMljdpTIcJIJxk+zRyXT86oqhCZ1SfUUXTtqriUayBvGrkF
+	 grRvewyPVP2aM3iKlenteSYJQWhzohl+Gd8YTVHCLcW4zUxbHXTWbLAU5oG3jaKC2lOjwtn4ZDGRci
+	 9tZQ4hYrJhUI3eghqgcA84E7vx159IIvJHpi8qoutHtSrvwdgyr0lt0k19qAmcMtd2Pwi9Dpcoso88
+	 xHpN81P9EgYThVmsNWYmAMcDIXUL2AQ==
+X-MSG-ID: c1304799-890a-11ee-893f-0050568164d1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Wed, 22 Nov 2023 08:42:57 +0100
+From: Robin van der Gracht <robin@protonic.nl>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: deller@gmx.de, javierm@redhat.com, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 09/32] auxdisplay/ht16k33: Set FBINFO_VIRTFB flag
+Organization: Protonic Holland
+Reply-To: robin@protonic.nl
+Mail-Reply-To: robin@protonic.nl
+In-Reply-To: <20231115102954.7102-10-tzimmermann@suse.de>
+References: <20231115102954.7102-1-tzimmermann@suse.de>
+ <20231115102954.7102-10-tzimmermann@suse.de>
+Message-ID: <6eacca1f78abb718ed1b5bb8b37b6e95@protonic.nl>
+X-Sender: robin@protonic.nl
+User-Agent: Roundcube Webmail/1.3.1 
 
-When the power domains are missing, the call to of_count_phandle_with_args
-fails with -ENOENT. The power domains are not required and there are
-some device trees that do not specify them. Suppress this error to fix
-devices without power domains attached to simplefb.
+On 2023-11-15 11:19, Thomas Zimmermann wrote:
+> The ht16k33 driver operates on system memory. Mark the framebuffer
+> accordingly. Helpers operating on the framebuffer memory will test
+> for the presence of this flag.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Cc: Robin van der Gracht <robin@protonic.nl>
+> ---
+>  drivers/auxdisplay/ht16k33.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/auxdisplay/ht16k33.c 
+> b/drivers/auxdisplay/ht16k33.c
+> index 3a2d883872249..f1716e3ce6a92 100644
+> --- a/drivers/auxdisplay/ht16k33.c
+> +++ b/drivers/auxdisplay/ht16k33.c
+> @@ -640,6 +640,7 @@ static int ht16k33_fbdev_probe(struct device *dev,
+> struct ht16k33_priv *priv,
+> 
+>  	INIT_DELAYED_WORK(&priv->work, ht16k33_fb_update);
+>  	fbdev->info->fbops = &ht16k33_fb_ops;
+> +	fbdev->info->flags |= FBINFO_VIRTFB;
+>  	fbdev->info->screen_buffer = fbdev->buffer;
+>  	fbdev->info->screen_size = HT16K33_FB_SIZE;
+>  	fbdev->info->fix = ht16k33_fb_fix;
 
-Fixes: 92a511a568e4 ("fbdev/simplefb: Add support for generic power-domains")
-Closes: https://lore.kernel.org/linux-fbdev/ZVwFNfkqjrvhFHM0@radian
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
----
- drivers/video/fbdev/simplefb.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index fe682af63827..6f58ee276ad1 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -466,6 +466,10 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 	err = of_count_phandle_with_args(dev->of_node, "power-domains",
- 					 "#power-domain-cells");
- 	if (err < 0) {
-+		/* Nothing wrong if optional PDs are missing */
-+		if (err == -ENOENT)
-+			return 0;
-+
- 		dev_info(dev, "failed to parse power-domains: %d\n", err);
- 		return err;
- 	}
--- 
-2.43.0
-
+Acked-by: Robin van der Gracht <robin@protonic.nl>
 
