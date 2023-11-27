@@ -1,211 +1,71 @@
-Return-Path: <linux-fbdev+bounces-245-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-250-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3719D7FA099
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Nov 2023 14:17:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0429A7FA17A
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Nov 2023 14:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685041C20F04
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Nov 2023 13:17:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63BC4B20FF6
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Nov 2023 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992C92E632;
-	Mon, 27 Nov 2023 13:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAF630343;
+	Mon, 27 Nov 2023 13:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxS9hJoP"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A3DD56
-	for <linux-fbdev@vger.kernel.org>; Mon, 27 Nov 2023 05:17:08 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 164BF20407;
-	Mon, 27 Nov 2023 13:17:07 +0000 (UTC)
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id E7A3613B3A;
-	Mon, 27 Nov 2023 13:17:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id qKt0N9KWZGUhLQAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Mon, 27 Nov 2023 13:17:06 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD353033F;
+	Mon, 27 Nov 2023 13:54:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCFAC433C9;
+	Mon, 27 Nov 2023 13:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701093251;
+	bh=HndP7kMXn51lK3Jva+NBlGfD5QReY9K9C8oB1c8J5F8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cxS9hJoPFPRbEyqh+oWQyk0yNzXtrRvykVN1klQqYitHYieP7b673yHpCfzMUNgQG
+	 IbEx0KSA0SoSHl5Q43WfL78AZ8f4Q0kPnvmXLv4Jrm5crXkFlLSlcB53klG6zuvURS
+	 ZEecMvXhzfqBdCdyaTnGZdEXS0fm/DE1IhRyN8P0=
+Date: Mon, 27 Nov 2023 13:29:58 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: javierm@redhat.com, deller@gmx.de, linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 32/32] fbdev: Remove default file-I/O implementations
-Date: Mon, 27 Nov 2023 14:16:01 +0100
-Message-ID: <20231127131655.4020-33-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231127131655.4020-1-tzimmermann@suse.de>
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH v2 25/32] staging/sm750fb: Declare fb_ops as constant
+Message-ID: <2023112750-ditzy-scrutiny-f105@gregkh>
 References: <20231127131655.4020-1-tzimmermann@suse.de>
+ <20231127131655.4020-26-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++++
-X-Spam-Score: 7.72
-X-Rspamd-Server: rspamd1
-Authentication-Results: smtp-out2.suse.de;
-	dkim=none;
-	spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of tzimmermann@suse.de) smtp.mailfrom=tzimmermann@suse.de;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de (policy=none)
-X-Rspamd-Queue-Id: 164BF20407
-X-Spamd-Result: default: False [7.72 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 R_SPF_SOFTFAIL(4.60)[~all:c];
-	 RCPT_COUNT_FIVE(0.00)[5];
-	 R_RATELIMIT(0.00)[to_ip_from(RLd5zd8tio7mptchx3z93fk9kq)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.17)[-0.862];
-	 FREEMAIL_TO(0.00)[redhat.com,gmx.de];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 R_DKIM_NA(2.20)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-3.00)[100.00%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-0.90)[-0.895];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231127131655.4020-26-tzimmermann@suse.de>
 
-Drop the default implementations for file read, write and mmap
-operations. Each fbdev driver must now provide an implementation
-and select any necessary helpers. If no implementation has been
-set, fbdev returns an errno code to user space. The code is the
-same as if the operation had not been set in the file_operations
-struct.
+On Mon, Nov 27, 2023 at 02:15:54PM +0100, Thomas Zimmermann wrote:
+> Split up lynxfb_ops and declare each as constant. The fb_ops
+> instance used to be modified while initializing the driver. It is
+> now constant and the driver picks the correct instance, depending
+> on the settings for acceleration and cursor support.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-staging@lists.linux.dev
+> Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+> ---
+>  drivers/staging/sm750fb/sm750.c | 59 +++++++++++++++++++++++++++------
+>  1 file changed, 49 insertions(+), 10 deletions(-)
 
-This change makes the fbdev helpers for I/O memory optional. Most
-systems only use system-memory framebuffers via DRM's fbdev emulation.
-
-v2:
-	* warn once if I/O callbacks are missing (Javier)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/video/fbdev/core/Kconfig     |  1 -
- drivers/video/fbdev/core/fb_chrdev.c | 37 +++++++++-------------------
- include/linux/fb.h                   |  5 ++++
- 3 files changed, 17 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/video/fbdev/core/Kconfig b/drivers/video/fbdev/core/Kconfig
-index faab5d50cac3c..21053bf00dc58 100644
---- a/drivers/video/fbdev/core/Kconfig
-+++ b/drivers/video/fbdev/core/Kconfig
-@@ -4,7 +4,6 @@
- #
- 
- config FB_CORE
--	select FB_IOMEM_FOPS
- 	select VIDEO_CMDLINE
- 	tristate
- 
-diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_chrdev.c
-index 089441c9d810f..4ebd16b7e3b8d 100644
---- a/drivers/video/fbdev/core/fb_chrdev.c
-+++ b/drivers/video/fbdev/core/fb_chrdev.c
-@@ -34,13 +34,13 @@ static ssize_t fb_read(struct file *file, char __user *buf, size_t count, loff_t
- 	if (!info)
- 		return -ENODEV;
- 
-+	if (fb_WARN_ON_ONCE(info, !info->fbops->fb_read))
-+		return -EINVAL;
-+
- 	if (info->state != FBINFO_STATE_RUNNING)
- 		return -EPERM;
- 
--	if (info->fbops->fb_read)
--		return info->fbops->fb_read(info, buf, count, ppos);
--
--	return fb_io_read(info, buf, count, ppos);
-+	return info->fbops->fb_read(info, buf, count, ppos);
- }
- 
- static ssize_t fb_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
-@@ -50,13 +50,13 @@ static ssize_t fb_write(struct file *file, const char __user *buf, size_t count,
- 	if (!info)
- 		return -ENODEV;
- 
-+	if (fb_WARN_ON_ONCE(info, !info->fbops->fb_write))
-+		return -EINVAL;
-+
- 	if (info->state != FBINFO_STATE_RUNNING)
- 		return -EPERM;
- 
--	if (info->fbops->fb_write)
--		return info->fbops->fb_write(info, buf, count, ppos);
--
--	return fb_io_write(info, buf, count, ppos);
-+	return info->fbops->fb_write(info, buf, count, ppos);
- }
- 
- static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
-@@ -319,24 +319,11 @@ static int fb_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (!info)
- 		return -ENODEV;
- 
--	mutex_lock(&info->mm_lock);
--
--	if (info->fbops->fb_mmap) {
--
--		res = info->fbops->fb_mmap(info, vma);
--#if IS_ENABLED(CONFIG_FB_DEFERRED_IO)
--	} else if (info->fbdefio) {
--		/*
--		 * FB deferred I/O wants you to handle mmap in your drivers. At a
--		 * minimum, point struct fb_ops.fb_mmap to fb_deferred_io_mmap().
--		 */
--		dev_warn_once(info->dev, "fbdev mmap not set up for deferred I/O.\n");
--		res = -ENODEV;
--#endif
--	} else {
--		res = fb_io_mmap(info, vma);
--	}
-+	if (fb_WARN_ON_ONCE(info, !info->fbops->fb_mmap))
-+		return -ENODEV;
- 
-+	mutex_lock(&info->mm_lock);
-+	res = info->fbops->fb_mmap(info, vma);
- 	mutex_unlock(&info->mm_lock);
- 
- 	return res;
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 24f0ec3662352..05dc9624897df 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -867,4 +867,9 @@ static inline bool fb_modesetting_disabled(const char *drvname)
- #define fb_warn_once(fb_info, fmt, ...)					\
- 	pr_warn_once("fb%d: " fmt, (fb_info)->node, ##__VA_ARGS__)
- 
-+#define fb_WARN_ONCE(fb_info, condition, fmt, ...) \
-+	WARN_ONCE(condition, "fb%d: " fmt, (fb_info)->node, ##__VA_ARGS__)
-+#define fb_WARN_ON_ONCE(fb_info, x) \
-+	fb_WARN_ONCE(fb_info, (x), "%s", "fb_WARN_ON_ONCE(" __stringify(x) ")")
-+
- #endif /* _LINUX_FB_H */
--- 
-2.43.0
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
