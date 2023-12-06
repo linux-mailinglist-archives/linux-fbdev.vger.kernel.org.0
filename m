@@ -1,154 +1,116 @@
-Return-Path: <linux-fbdev+bounces-352-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-355-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3228480713A
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Dec 2023 14:52:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A11807552
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Dec 2023 17:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3E3A1F21442
-	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Dec 2023 13:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06DF1C20C83
+	for <lists+linux-fbdev@lfdr.de>; Wed,  6 Dec 2023 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167063BB3D;
-	Wed,  6 Dec 2023 13:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C2A46442;
+	Wed,  6 Dec 2023 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="P6aKd4VK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="AwCtuVm5"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nYqRKlq2"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AC8D4B
-	for <linux-fbdev@vger.kernel.org>; Wed,  6 Dec 2023 05:51:58 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3C8D21FD11;
-	Wed,  6 Dec 2023 13:51:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1701870717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UPAqGWJPTkUEbNdycRnvjHfrmf791D8Z57JHNYLG2/w=;
-	b=P6aKd4VKfom77PiUC8i4RvI3P9irr2XvTLUBuvE+z2B4OnZBA8xYl2MJ0nXZG6sYmf481d
-	leKOZlbq7C+T3nqsZ8so2LUKNiqpqclYchLSNGBwczwDb23MBkCWRlzNn4b1cvZHRvVh94
-	pH3SXcSf3gRY6KJhEn0cREKDKVngKpM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1701870717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UPAqGWJPTkUEbNdycRnvjHfrmf791D8Z57JHNYLG2/w=;
-	b=AwCtuVm5OZwxibhRD+X3pTUl5zXlAmaTi5r2fklF2tia+h2cMBwBVQcu74BPiDZhdJ8EB7
-	XDyrG/DuN4BSw+Dg==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 0581813B6E;
-	Wed,  6 Dec 2023 13:51:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id 0MWoOXx8cGWVBgAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Wed, 06 Dec 2023 13:51:56 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	deller@gmx.de,
-	pjones@redhat.com,
-	sui.jingfeng@linux.dev
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 4/4] fbdev/vesafb: Use screen_info pointer from device
-Date: Wed,  6 Dec 2023 14:50:29 +0100
-Message-ID: <20231206135153.2599-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231206135153.2599-1-tzimmermann@suse.de>
-References: <20231206135153.2599-1-tzimmermann@suse.de>
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0FDD49
+	for <linux-fbdev@vger.kernel.org>; Wed,  6 Dec 2023 08:39:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=3cq9uVBBQoMhBc6XCuXixVk8zZ9aaLq+WupbYXg8tJg=; b=nYqRKlq2R6C9KBQQPlB/IZEacn
+	LbaIZxsSJGB5n7RzzbNTZicpeqcpWHhE6n6oZGSW6OF5CKGJ68h9y/xGRUl3mo3nZWNOAexvDsDRC
+	+eh4Tm/Y/H2nmFpxPfkkmG8Vi4cp7bRi1MgclcrFOpNoF2Solq6MTSIQPGTQQraMwQ24nn9N8KqKC
+	heBs7ElvTlQ7hLE+oevXbLio3jv1oMh/XCL+iNxSjcInPQByasKMVrmlAWadBqQlu/CX+Vt8oCsPn
+	o3GvYVcPXMk9+oicgj/eXyZ6QAoIkxw114iBSRqolutGFR7Y/44Dn2rJpxmJ98gxOIbrEdn9v4bpb
+	IyhTq5kw==;
+Received: from [50.53.46.231] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rAuvR-00Amj8-1C;
+	Wed, 06 Dec 2023 16:39:05 +0000
+Message-ID: <2c676d1f-5e1d-44a5-814a-e8ccac78743a@infradead.org>
+Date: Wed, 6 Dec 2023 08:39:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -1.72
-X-Spamd-Result: default: False [-1.72 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 R_MISSING_CHARSET(2.50)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 REPLY(-4.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FREEMAIL_TO(0.00)[redhat.com,gmx.de,linux.dev];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-2.42)[97.36%]
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] backlight: ili922x: fix W=1 kernel-doc warnings
+Content-Language: en-US
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, Jingoo Han <jingoohan1@gmail.com>,
+ Helge Deller <deller@gmx.de>, linux-fbdev@vger.kernel.org
+References: <20231205225638.32563-1-rdunlap@infradead.org>
+ <20231206112645.GA81045@aspen.lan> <20231206132516.GB3375667@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20231206132516.GB3375667@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Use the screen_info instance from the device instead of dereferencing
-the global screen_info state. Decouples the driver from per-architecture
-code. Duplicated the screen_info data, so that vesafb can modify it at
-will.
 
-v2:
-	* comment on devm_kmemdup() usage (Javier)
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/video/fbdev/vesafb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+On 12/6/23 05:25, Lee Jones wrote:
+> On Wed, 06 Dec 2023, Daniel Thompson wrote:
+> 
+>> On Tue, Dec 05, 2023 at 02:56:38PM -0800, Randy Dunlap wrote:
+>>> Fix kernel-doc warnings found when using "W=1".
+>>>
+>>> ili922x.c:85: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>>> ili922x.c:85: warning: missing initial short description on line:
+>>>  * START_BYTE(id, rs, rw)
+>>> ili922x.c:91: warning: contents before sections
+>>> ili922x.c:118: warning: expecting prototype for CHECK_FREQ_REG(spi_device s, spi_transfer x)(). Prototype was for CHECK_FREQ_REG() instead
+>>>
+>>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>>> Cc: Lee Jones <lee@kernel.org>
+>>> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+>>> Cc: Jingoo Han <jingoohan1@gmail.com>
+>>> Cc: Helge Deller <deller@gmx.de>
+>>> Cc: linux-fbdev@vger.kernel.org
+>>> ---
+>>>  drivers/video/backlight/ili922x.c |    9 ++++-----
+>>>  1 file changed, 4 insertions(+), 5 deletions(-)
+>>>
+>>> diff -- a/drivers/video/backlight/ili922x.c b/drivers/video/backlight/ili922x.c
+>>> --- a/drivers/video/backlight/ili922x.c
+>>> +++ b/drivers/video/backlight/ili922x.c
+>>> @@ -82,13 +82,12 @@
+>>>  #define START_RW_READ		1
+>>>
+>>>  /**
+>>> - * START_BYTE(id, rs, rw)
+>>> - *
+>>> - * Set the start byte according to the required operation.
+>>> + * START_BYTE() - Set the start byte according to the required operation.
+>>>   * The start byte is defined as:
+>>>   *   ----------------------------------
+>>>   *  | 0 | 1 | 1 | 1 | 0 | ID | RS | RW |
+>>>   *   ----------------------------------
+>>
+>> I'm not sure we want "The start byte is defined as" in the brief
+>> description. Needs a blank line between the brief and full description
+>> (or hoist the argument descriptions up to match the idiomatic
+>> form for a kernel-doc comment in the docs if you prefer).
+> 
+> I'd consider dropping the kernel-docness of this header entirely.
+> Kerneldoc is designed for documenting exported (or at least externally
+> available) functions and data structures, with allowances for static
+> functions in the name of consistency or in cases of excessive
+> complication.  I've fixed A LOT of kernel-doc headers in my time and I
+> can't say I remember coming across MACROs being documented this way
+> before now.
+> 
 
-diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.c
-index ea89accbec38..8ab64ae4cad3 100644
---- a/drivers/video/fbdev/vesafb.c
-+++ b/drivers/video/fbdev/vesafb.c
-@@ -243,7 +243,7 @@ static int vesafb_setup(char *options)
- 
- static int vesafb_probe(struct platform_device *dev)
- {
--	struct screen_info *si = &screen_info;
-+	struct screen_info *si;
- 	struct fb_info *info;
- 	struct vesafb_par *par;
- 	int i, err;
-@@ -252,6 +252,18 @@ static int vesafb_probe(struct platform_device *dev)
- 	unsigned int size_total;
- 	char *option = NULL;
- 
-+	/*
-+	 * If we fail probing the device, the kernel might try a different
-+	 * driver. We get a copy of the attached screen_info, so that we can
-+	 * modify its values without affecting later drivers.
-+	 */
-+	si = dev_get_platdata(&dev->dev);
-+	if (!si)
-+		return -ENODEV;
-+	si = devm_kmemdup(&dev->dev, si, sizeof(*si), GFP_KERNEL);
-+	if (!si)
-+		return -ENOMEM;
-+
- 	/* ignore error return of fb_get_options */
- 	fb_get_options("vesafb", &option);
- 	vesafb_setup(option);
+I've seen several macros that are documented, but I am happy to just drop
+the kernel-doc for these local macros.  I'll send a patch for that.
+
+Thanks.
 -- 
-2.43.0
-
+~Randy
 
