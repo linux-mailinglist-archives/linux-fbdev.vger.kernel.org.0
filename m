@@ -1,53 +1,53 @@
-Return-Path: <linux-fbdev+bounces-558-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-560-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F220D82D138
-	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Jan 2024 16:28:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2C782D13A
+	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Jan 2024 16:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E94A1C20CED
-	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Jan 2024 15:28:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8765282245
+	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Jan 2024 15:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A18567F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B026127;
 	Sun, 14 Jan 2024 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gixEha1f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P6vUiQ/z"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78433D65;
-	Sun, 14 Jan 2024 15:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E94524B;
+	Sun, 14 Jan 2024 15:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705246087; x=1736782087;
+  t=1705246088; x=1736782088;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KtcwDtLKAtATSufVVVCnn6c5MCnYP7WhV++Dk6UXa9k=;
-  b=gixEha1f9cr4TByba64mmJewzG5z+e+4cYiXZhbaW+QIoSFmjduCgzob
-   qnftY0v7QYFfqJwyt1knS+mjJ6+C1Un7awmgieKkiYWbtOLKGoaSWOauU
-   2x3vmo6yakdqwJOZtmjPT4pFPF8fybCmFu/jskDghqXYf09LEcj/I/PH9
-   pRBqfXgxNLalqG++LNiKDC98T/vdt+ZxFervB/JM4hVibLGfU1NY551hx
-   amMGKaVxLpK6igaa6CZkY2IgOZutjcCYYF4/uwxhJ7Hb3fAvFVWx+ioPv
-   IqeVmW8VRgYlSVhuwRk7TESF3HuEoZ5sr0Ud7gZYmgLYFwMxmjjD67aFt
+  bh=HHwu/+ttKG6+gQ16tPnQoTnLOBcKuPt3xGBj8B08rW8=;
+  b=P6vUiQ/z8+ClUM7MsCyEGN1OUnmuQNa+KxhMopg0SkJM7RyQ1FN1GqF3
+   Ex1g8eIOQ9PaRBJcqw1TcR+o+ZsZwyxbwVsqoPSIasDp/waa+jcW+hplO
+   d7sYUA+ThVp8OJjgm4p13DLOqskf2zNKPLb2O8Cv1g9tIcuM0TZWru2xe
+   HeV1jOnkYfdogEmVIIAyUR8GU6wjumRzPs/ioJT2RytNlhyxEg+jC/gLY
+   S37Sa0beihIys/vdVatI5QWqxFp6C/sYqRX2yvA7M+QVYp46WW0QvGVV5
+   4NVvBnJwR4x7ppM9i1W0JACCBHYzZk/8p6F4NPfkHw74IlfKSlpmiQnYW
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="12835866"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="6829681"
 X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; 
-   d="scan'208";a="12835866"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2024 07:28:05 -0800
+   d="scan'208";a="6829681"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2024 07:28:06 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="1030429355"
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="956601547"
 X-IronPort-AV: E=Sophos;i="6.04,194,1695711600"; 
-   d="scan'208";a="1030429355"
+   d="scan'208";a="956601547"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 14 Jan 2024 07:28:03 -0800
+  by orsmga005.jf.intel.com with ESMTP; 14 Jan 2024 07:28:03 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 47AC83EA; Sun, 14 Jan 2024 17:28:02 +0200 (EET)
+	id 4D3D039B; Sun, 14 Jan 2024 17:28:02 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	dri-devel@lists.freedesktop.org,
@@ -57,9 +57,9 @@ Cc: Lee Jones <lee@kernel.org>,
 	Daniel Thompson <daniel.thompson@linaro.org>,
 	Jingoo Han <jingoohan1@gmail.com>,
 	Helge Deller <deller@gmx.de>
-Subject: [PATCH v1 3/4] backlight: hx8357: Make use of dev_err_probe()
-Date: Sun, 14 Jan 2024 17:25:10 +0200
-Message-ID: <20240114152759.1040563-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 4/4] backlight: hx8357: Utilise temporary variable for struct device
+Date: Sun, 14 Jan 2024 17:25:11 +0200
+Message-ID: <20240114152759.1040563-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 In-Reply-To: <20240114152759.1040563-1-andriy.shevchenko@linux.intel.com>
 References: <20240114152759.1040563-1-andriy.shevchenko@linux.intel.com>
@@ -71,44 +71,46 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Simplify the error handling in probe function by switching from
-dev_err() to dev_err_probe().
+We have a temporary variable to keep pointer to struct device.
+Utilise it inside the ->probe() implementation.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/video/backlight/hx8357.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/video/backlight/hx8357.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/video/backlight/hx8357.c b/drivers/video/backlight/hx8357.c
-index 8709d9141cfb..fbe02fd73272 100644
+index fbe02fd73272..e4dc76f25f8e 100644
 --- a/drivers/video/backlight/hx8357.c
 +++ b/drivers/video/backlight/hx8357.c
-@@ -579,10 +579,8 @@ static int hx8357_probe(struct spi_device *spi)
+@@ -574,7 +574,7 @@ static int hx8357_probe(struct spi_device *spi)
+ 	hx8357_init init;
+ 	int i, ret;
+ 
+-	lcd = devm_kzalloc(&spi->dev, sizeof(*lcd), GFP_KERNEL);
++	lcd = devm_kzalloc(dev, sizeof(*lcd), GFP_KERNEL);
+ 	if (!lcd)
  		return -ENOMEM;
  
- 	ret = spi_setup(spi);
--	if (ret < 0) {
--		dev_err(&spi->dev, "SPI setup failed.\n");
--		return ret;
--	}
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "SPI setup failed.\n");
+@@ -604,8 +604,7 @@ static int hx8357_probe(struct spi_device *spi)
+ 			gpiod_set_consumer_name(lcd->im_pins->desc[i], "im_pins");
+ 	}
  
- 	lcd->spi = spi;
+-	lcdev = devm_lcd_device_register(&spi->dev, "mxsfb", &spi->dev, lcd,
+-					&hx8357_ops);
++	lcdev = devm_lcd_device_register(dev, "mxsfb", dev, lcd, &hx8357_ops);
+ 	if (IS_ERR(lcdev)) {
+ 		ret = PTR_ERR(lcdev);
+ 		return ret;
+@@ -618,7 +617,7 @@ static int hx8357_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Couldn't initialize panel\n");
  
-@@ -617,10 +615,8 @@ static int hx8357_probe(struct spi_device *spi)
- 	hx8357_lcd_reset(lcdev);
+-	dev_info(&spi->dev, "Panel probed\n");
++	dev_info(dev, "Panel probed\n");
  
- 	ret = init(lcdev);
--	if (ret) {
--		dev_err(&spi->dev, "Couldn't initialize panel\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Couldn't initialize panel\n");
- 
- 	dev_info(&spi->dev, "Panel probed\n");
- 
+ 	return 0;
+ }
 -- 
 2.43.0.rc1.1.gbec44491f096
 
