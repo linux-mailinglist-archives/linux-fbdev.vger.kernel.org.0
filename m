@@ -1,267 +1,152 @@
-Return-Path: <linux-fbdev+bounces-566-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-569-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C5382D663
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 10:53:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3C182D6D6
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 11:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793791F22322
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 09:53:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1129EB2122E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 10:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DDCE541;
-	Mon, 15 Jan 2024 09:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4ADF9D3;
+	Mon, 15 Jan 2024 10:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DqUhaBZT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="klLfxqK4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DqUhaBZT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="klLfxqK4"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54944FC11;
-	Mon, 15 Jan 2024 09:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-5e76948cda7so77666167b3.3;
-        Mon, 15 Jan 2024 01:52:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705312368; x=1705917168;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wsMhOFSC0mxjAJYvrikbFmAm65pBG0U6QI3j9yJqaic=;
-        b=NqW2mCDtcUyTwgZFAA/rkTMwmahWtBYNzWc32YZPKxNlkm0yMW0+8HOjveMxShuxBy
-         CQcHx+Msh/CWIuQxKxaPkIPXMN/G+5Z2e8g8ISXK/Yjc4+w8vNr3nUS9fgey+uTk+fK2
-         oZzyLlN2CaMWRWehm60qBBYaXqBTu1GEtBVOQH0QeL96x1EN+koc3aPHVxdo6atY5h3R
-         LRf/i8kG84+bhDXyaHj+Lu81cV0ZSKJV8bSKDsaOSjH7n/TWEOtQPeuM8nTNKWhFKvGX
-         Zo7uJl/lwyrGDQzCIk5PIReijBY10X23ny24PH0mO2I69pGmfNF7H7iMjU1mI4muKq8b
-         i7qA==
-X-Gm-Message-State: AOJu0YyjDcFNHqPCE7Bn5PhldVqqWrg8jbyb6Z/+i9fnqy8Rf+XHhjUe
-	lVw2vQYIGyA0BD9THlzr3wSSNvnngfGL5A==
-X-Google-Smtp-Source: AGHT+IEX6uvZVQqpdyFdUkuf26ZeiFhzlynOzPs10JRGhXeNHWRABsgvivhCcxnO9Zwq6nEck/W7MQ==
-X-Received: by 2002:a81:7613:0:b0:5f7:b18e:9298 with SMTP id r19-20020a817613000000b005f7b18e9298mr3674121ywc.67.1705312368108;
-        Mon, 15 Jan 2024 01:52:48 -0800 (PST)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id l6-20020a0de206000000b005ff3b4a89a8sm271889ywe.107.2024.01.15.01.52.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jan 2024 01:52:47 -0800 (PST)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-5e76948cda7so77665967b3.3;
-        Mon, 15 Jan 2024 01:52:47 -0800 (PST)
-X-Received: by 2002:a81:6d41:0:b0:5f6:46b:b0be with SMTP id
- i62-20020a816d41000000b005f6046bb0bemr2963784ywc.61.1705312367679; Mon, 15
- Jan 2024 01:52:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5BAF9C7
+	for <linux-fbdev@vger.kernel.org>; Mon, 15 Jan 2024 10:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A27F1FD2D;
+	Mon, 15 Jan 2024 10:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1705313381; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=aiip1690qBwMDq5oi95TJnhRlEt1LO5F56bqZ+XW3ew=;
+	b=DqUhaBZTGK4SWNZc5dRdThM1HPC6huUG5gcdjmWlF9VGLlwvB3uLf1KPKFv3Nmr5WbXi0A
+	aAt+UK8REoDwjGaXgG9TsjTbfHLsf5TFGDzqa9hnoRK37oxZdi3/aZshzB+/bfD1LbiGKs
+	kYmfpi0f5YtedKd9UZEEiqZdT/8jHWY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1705313381;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=aiip1690qBwMDq5oi95TJnhRlEt1LO5F56bqZ+XW3ew=;
+	b=klLfxqK4/2I3Ux9Ww2oO1raXJ56S5wQgKjJlwLjngbpLO/1kxoFAefkkX/utvycngyZKje
+	6V0UVW29KFiwiuDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1705313381; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=aiip1690qBwMDq5oi95TJnhRlEt1LO5F56bqZ+XW3ew=;
+	b=DqUhaBZTGK4SWNZc5dRdThM1HPC6huUG5gcdjmWlF9VGLlwvB3uLf1KPKFv3Nmr5WbXi0A
+	aAt+UK8REoDwjGaXgG9TsjTbfHLsf5TFGDzqa9hnoRK37oxZdi3/aZshzB+/bfD1LbiGKs
+	kYmfpi0f5YtedKd9UZEEiqZdT/8jHWY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1705313381;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=aiip1690qBwMDq5oi95TJnhRlEt1LO5F56bqZ+XW3ew=;
+	b=klLfxqK4/2I3Ux9Ww2oO1raXJ56S5wQgKjJlwLjngbpLO/1kxoFAefkkX/utvycngyZKje
+	6V0UVW29KFiwiuDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EAAE6132FA;
+	Mon, 15 Jan 2024 10:09:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 86AcOGQEpWWeJAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 15 Jan 2024 10:09:40 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	deller@gmx.de,
+	daniel@ffwll.ch,
+	airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/3] video: Simplify Kconfig options
+Date: Mon, 15 Jan 2024 10:54:02 +0100
+Message-ID: <20240115100939.21562-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1704788539.git.ysato@users.sourceforge.jp> <9c3a9caaa1e2fc7e515cac67f07a20af071bd1be.1704788539.git.ysato@users.sourceforge.jp>
-In-Reply-To: <9c3a9caaa1e2fc7e515cac67f07a20af071bd1be.1704788539.git.ysato@users.sourceforge.jp>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 15 Jan 2024 10:52:36 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWSR3ikL7VZYkNOb1Y8mPU5LaUnc8+WLj-Ec99EOWxs_w@mail.gmail.com>
-Message-ID: <CAMuHMdWSR3ikL7VZYkNOb1Y8mPU5LaUnc8+WLj-Ec99EOWxs_w@mail.gmail.com>
-Subject: Re: [DO NOT MERGE v6 22/37] dt-bindings: display: smi,sm501: SMI
- SM501 binding json-schema
-To: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: linux-sh@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Thomas Gleixner <tglx@linutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Lee Jones <lee@kernel.org>, 
-	Helge Deller <deller@gmx.de>, Heiko Stuebner <heiko@sntech.de>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Chris Morgan <macromorgan@hotmail.com>, 
-	Yang Xiwen <forbidden405@foxmail.com>, Sebastian Reichel <sre@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@suse.cz>, Hyeonggon Yoo <42.hyeyoo@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Baoquan He <bhe@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Azeem Shaikh <azeemshaikh38@gmail.com>, 
-	Javier Martinez Canillas <javierm@redhat.com>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Palmer Dabbelt <palmer@rivosinc.com>, Bin Meng <bmeng@tinylab.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Jacky Huang <ychuang3@nuvoton.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	Sam Ravnborg <sam@ravnborg.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, 
-	Michael Karcher <kernel@mkarcher.dialup.fu-berlin.de>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, linux-ide@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: ***
+X-Spam-Score: 3.70
+X-Spamd-Result: default: False [3.70 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[redhat.com,gmx.de,ffwll.ch,gmail.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
 
-Hi Sato-san,
+Replace CONFIG_VIDEO_CMDLINE and CONFIG_VIDEO_NOMODESET by the single
+option CONFIG_VIDEO. Select the latter for DRM or fbdev. Both original
+options used to be selected in most cases, so this change simplifies
+the Kconfig rules.
 
-On Tue, Jan 9, 2024 at 9:24=E2=80=AFAM Yoshinori Sato
-<ysato@users.sourceforge.jp> wrote:
-> Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+Since commit ca6c080eef42 ("arch/parisc: Detect primary video device
+from device instance") architecture helpers for fbdev do not longer
+require fbdev in their implementation and could be used for non-fbdev
+code as well. Eventually guarding them with CONFIG_VIDEO will make
+them available to any subsystem.
 
-Thanks for your patch!
+Thomas Zimmermann (3):
+  video/cmdline: Introduce CONFIG_VIDEO for video= parameter
+  video/cmdline: Hide __video_get_options() behind CONFIG_FB_CORE
+  video/nomodeset: Select nomodeset= parameter with CONFIG_VIDEO
 
-> ---
->  .../bindings/display/smi,sm501.yaml           | 417 ++++++++++++++++++
->  1 file changed, 417 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/smi,sm501.y=
-aml
+ drivers/gpu/drm/Kconfig           |  3 +--
+ drivers/staging/sm750fb/Kconfig   |  1 -
+ drivers/video/Kconfig             |  5 +----
+ drivers/video/Makefile            |  3 +--
+ drivers/video/cmdline.c           |  2 ++
+ drivers/video/fbdev/Kconfig       | 37 -------------------------------
+ drivers/video/fbdev/core/Kconfig  |  2 +-
+ drivers/video/fbdev/core/fbmem.c  |  2 --
+ drivers/video/fbdev/geode/Kconfig |  3 ---
+ include/linux/fb.h                |  7 ------
+ include/video/cmdline.h           |  7 +-----
+ 11 files changed, 7 insertions(+), 65 deletions(-)
 
-Surely Documentation/devicetree/bindings/display/sm501fb.txt should
-be removed, too?
 
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/smi,sm501.yaml
+base-commit: 05b317e8457c8e2bd1a797c9440ec07b7f341584
+-- 
+2.43.0
 
-> +  crt:
-> +    type: object
-> +    description: CRT output control
-> +    properties:
-> +      edid:
-> +        $ref: /schemas/types.yaml#/definitions/uint8-array
-> +        description: |
-> +          verbatim EDID data block describing attached display.
-> +          Data from the detailed timing descriptor will be used to
-> +          program the display controller.
-> +
-> +      smi,flags:
-> +        $ref: /schemas/types.yaml#/definitions/string-array
-> +        description: Display control flags.
-> +        items:
-> +          anyOf:
-> +            - const: use-init-done
-> +            - const: disable-at-exit
-> +            - const: use-hwcursor
-> +            - const: use-hwaccel
-
-The "use-*" flags look like software policy, not hardware description,
-and thus do not belong in DT?
-
-> +            - const: panel-no-fpen
-> +            - const: panel-no-vbiasen
-> +            - const: panel-inv-fpen
-> +            - const: panel-inv-vbiasen
-> +        maxItems: 8
-> +
-> +      bpp:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description: Color depth
-> +
-> +  panel:
-> +    type: object
-> +    description: Panel output control
-> +    properties:
-> +      edid:
-> +        $ref: /schemas/types.yaml#/definitions/uint8-array
-> +        description: |
-> +          verbatim EDID data block describing attached display.
-> +          Data from the detailed timing descriptor will be used to
-> +          program the display controller.
-> +
-> +      smi,flags:
-> +        $ref: /schemas/types.yaml#/definitions/string-array
-> +        description: Display control flags.
-> +        items:
-> +          anyOf:
-> +            - const: use-init-done
-> +            - const: disable-at-exit
-> +            - const: use-hwcursor
-> +            - const: use-hwaccel
-
-The "use-*" flags look like software policy, not hardware description,
-and thus do not belong in DT?
-
-> +            - const: panel-no-fpen
-> +            - const: panel-no-vbiasen
-> +            - const: panel-inv-fpen
-> +            - const: panel-inv-vbiasen
-> +        maxItems: 8
-> +
-> +      bpp:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description: Color depth
-> +
-> +  smi,devices:
-> +    $ref: /schemas/types.yaml#/definitions/string-array
-> +    description: Select SM501 device functions.
-> +    items:
-> +      anyOf:
-> +        - const: usb-host
-> +        - const: usb-slave
-> +        - const: ssp0
-> +        - const: ssp1
-> +        - const: uart0
-> +        - const: uart1
-> +        - const: fbaccel
-> +        - const: ac97
-> +        - const: i2s
-> +        - const: gpio
-> +    minItems: 1
-> +    maxItems: 10
-
-I think it would be better to have individual subnodes for the sub devices,
-with status =3D "ok"/"disabled".
-
-If you go that route, you do need some fallback code to handle the lack
-of subnodes in the existing user in arch/powerpc/boot/dts/charon.dts.
-
-BTW, why can sm501_pci_initdata get away with setting ".devices
-=3D SM501_USE_ALL"?  Or, would it hurt to enable all subdevices
-unconditionally?
-
-> +
-> +  smi,mclk:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: mclk frequency.
-> +
-> +  smi,m1xclk:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: m1xclk frequency.
-
-These two should be clock specifiers (i.e. phandles pointing to clock
-nodes + optional clock indices).
-
-> +
-> +  misc-timing:
-> +    type: object
-> +    description: Miscellaneous Timing register values.
-> +    properties:
-> +      ex:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description: Extend bus holding time.
-> +        enum: [0, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, =
-208, 224, 240]
-> +
-> +      xc:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        description: Xscale clock input select.
-> +        items:
-> +          enum:
-> +            - internal-pll
-> +            - hclk
-> +            - gpio33
-
-Software policy instead of hardware description again?
-
-I am not familiar with how the SM501 works, so I cannot comment on
-the other properties, but several of them look like they need rework.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
