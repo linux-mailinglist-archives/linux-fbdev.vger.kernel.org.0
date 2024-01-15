@@ -1,92 +1,263 @@
-Return-Path: <linux-fbdev+bounces-574-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-577-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C137E82DE63
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 18:21:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C4E82E1C5
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 21:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF9891C21EE9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 17:21:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A2C3B20C9C
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jan 2024 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DAA1804F;
-	Mon, 15 Jan 2024 17:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ii4ZQbpN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5D319474;
+	Mon, 15 Jan 2024 20:23:51 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6FE17C7B
-	for <linux-fbdev@vger.kernel.org>; Mon, 15 Jan 2024 17:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e7e2e04f0so6981035e9.1
-        for <linux-fbdev@vger.kernel.org>; Mon, 15 Jan 2024 09:21:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705339289; x=1705944089; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IjkFYZF4OJsSCux1ae0KuULOn1wykr+CXrlgMJayfq0=;
-        b=ii4ZQbpNn+VpHZoDLjK3ZkDmdggSBxUJ+uid6MeMEI2OL9Of/yRkoklnBdiYtvNdwO
-         6hvvn0zrrNshMmIglQW6EZOPwFxPZewGScw+yGEdzp6gw0QkE2MRrp+8CmiiLSsEdYPF
-         ZXbfq6sSyp8xXrfIiTw1B0kzAaQ1at62qeoi5LGQ+YgVlfp5QvR4lufoljfKAf1OO1Jo
-         tt+voRkrCFGdKXqjPazTnHU432acDA+JQMHlRGaHb4MiXURe4U7avEnaeitHQ3Y56p7i
-         XsY64A+wTC2a3Nf3P/W6EXrKPL7Dq4/bgO8ZKjIDlVyDEZ8k9pHzOTd+yE9nQ8JQc6CT
-         MPMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705339289; x=1705944089;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IjkFYZF4OJsSCux1ae0KuULOn1wykr+CXrlgMJayfq0=;
-        b=ekjfJ94rze62wMfE1qifrr6K+I54UTPuALqQShusq5xz9/NH/jCWTd+Aqnr+JhUTzH
-         aOpsVUwK8jcDya7YpKvXHmuY+5Ixs+G1FFeUIDpaB04ZRdylO7QVgRx9Nxntou8p4uvu
-         aJk8krdMJbKcqF0alntZ/Sjq7bR9TezJMn4klXLstu1yFuFOLdJjNBCKs+h5095pagaR
-         D+Hi1JB3vG6Zyp7Aqyu+BJj+lVgQf8U8BEtc+y1emVwsWyC4zQbLLQct3SmFSpc2WExs
-         juzvN45eYl4i4czf6wa1u5YkbIPMy5D5LEATNdoNlnU9py+WxZPZ4jNopltVQoxtLa6u
-         58kw==
-X-Gm-Message-State: AOJu0YwFVbdrLAK7lY34JOYPEWhhK19GPQAHynyfal+vx4I46UWGizpB
-	shqJQqkpg4ee//aI9GEXwd5O+U9viUSAdQ==
-X-Google-Smtp-Source: AGHT+IGEIWTLvbhgXwT8d2oD5iyG6zHn0v20sib1KcKMQWPEWI9LPUGG9Iy5hCJrKDalyprRbZDANg==
-X-Received: by 2002:a05:600c:44f:b0:40d:3fee:97f6 with SMTP id s15-20020a05600c044f00b0040d3fee97f6mr3339548wmb.34.1705339288709;
-        Mon, 15 Jan 2024 09:21:28 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id l6-20020a7bc346000000b0040d81ca11casm16167428wmj.28.2024.01.15.09.21.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 09:21:28 -0800 (PST)
-Date: Mon, 15 Jan 2024 17:21:26 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH v1 1/1] backlight: hx8357: Fix potential NULL pointer
- dereference
-Message-ID: <20240115172126.GA31203@aspen.lan>
-References: <20240114143921.550736-1-andriy.shevchenko@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A63C18C08
+	for <linux-fbdev@vger.kernel.org>; Mon, 15 Jan 2024 20:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rPTSJ-0004fv-Vc; Mon, 15 Jan 2024 21:21:12 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rPTSC-0005fw-T0; Mon, 15 Jan 2024 21:21:04 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rPTSC-000N73-2E;
+	Mon, 15 Jan 2024 21:21:04 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-spi@vger.kernel.org,
+	kernel@pengutronix.de,
+	Moritz Fischer <mdf@kernel.org>,
+	Wu Hao <hao.wu@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	linux-fpga@vger.kernel.org,
+	Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rayyan Ansari <rayyan@ansari.sh>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Martin Tuma <martin.tuma@digiteqautomotive.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	Sergey Kozlov <serjk@netup.ru>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	linux-mmc@vger.kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Amit Kumar Mahapatra via Alsa-devel <alsa-devel@alsa-project.org>,
+	Rob Herring <robh@kernel.org>,
+	linux-mtd@lists.infradead.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	=?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev,
+	Michal Simek <michal.simek@amd.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	greybus-dev@lists.linaro.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	linux-integrity@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-usb@vger.kernel.org,
+	Helge Deller <deller@gmx.de>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	libertas-dev@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	James Clark <james.clark@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-doc@vger.kernel.org
+Subject: [PATCH 00/33] spi: get rid of some legacy macros
+Date: Mon, 15 Jan 2024 21:12:46 +0100
+Message-ID: <cover.1705348269.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240114143921.550736-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6320; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=4XhGTLODNw8yhIWMecN5LnSB/9sNwzZ7ZtVxoa/j52s=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlpZHAtVz/M7HYOTe/qdG2V00aOQMH7pbvHciH8 Vd+hMtY79eJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZaWRwAAKCRCPgPtYfRL+ TmMcB/9KE9qwNyMSSIfdofdQbKyCv4Jl+hXy0kKEYM/VNzbklICtWwj9498FhxF8B9thFSDK3gp DulZCe7rJn+MKx/eJphonzR1LVWev1YTJ2kkqaeBZRIN4i1mYHInwS35ESw2q+zwzVxxA5C1ESX kW25rOyy4D74faKClkI6O9XJ8+8hTw+2V1FDTJCM3vzxmqJnOLbi+YQW48FklGIPMoSqjx8aCyd SI61u1H7VyOe/EymwrynrT3G6SCnlHBYtfL1qLmsfALHT2BaON0BD/T5W5/wZjxuPBbtdlD253K rqyhVZMP3ez427R7zZKU1qhJqs7O6YTGrydt0et9PARzYGe0
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-fbdev@vger.kernel.org
 
-On Sun, Jan 14, 2024 at 04:39:21PM +0200, Andy Shevchenko wrote:
-> The "im" pins are optional. Add missing check in the hx8357_probe().
->
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/r/642e1230-3358-4006-a17f-3f297897ae74@moroto.mountain
-> Fixes: 7d84a63a39b7 ("backlight: hx8357: Convert to agnostic GPIO API")
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hello,
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+In commit 8caab75fd2c2 ("spi: Generalize SPI "master" to "controller"")
+some functions were renamed. Further some compat defines were introduced
+to map the old names to the new ones.
+
+In this series all drivers still using the old names are changed to use
+the new ones and then in patch #32 the compat defines are dropped.
+Variables and struct members of type pointer to struct spi_controller that were
+named "master" (matching the old name of spi_controller) were renamed to
+"ctlr", which slightly increased the count of touched lines, but is nice
+for consistency.
+
+Patch #18 and #19 touch the same driver, otherwise the patches #1 - #31
+are pairwise independent and could be applied by their respective
+maintainers. The alternative is to let all patches go via the spi tree.
+Mark, what's your preference here?
+
+Patch #33 updates the documentation. (This one is a bit fuzzy, because
+it also does some s/master/host/ which doesn't match the remainder of
+the series). Also patch #18 is an improvement I noticed while touching
+this driver that doesn't match the series' topic. I still kept it
+included here. If you should not like it, it can just be dropped.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (33):
+  fpga: ice40-spi: Follow renaming of SPI "master" to "controller"
+  ieee802154: ca8210: Follow renaming of SPI "master" to "controller"
+  iio: adc: ad_sigma_delta: Follow renaming of SPI "master" to "controller"
+  Input: pxspad - follow renaming of SPI "master" to "controller"
+  Input: synaptics-rmi4 - follow renaming of SPI "master" to "controller"
+  media: mgb4: Follow renaming of SPI "master" to "controller"
+  media: netup_unidvb: Follow renaming of SPI "master" to "controller"
+  media: usb/msi2500: Follow renaming of SPI "master" to "controller"
+  media: v4l2-subdev: Follow renaming of SPI "master" to "controller"
+  misc: gehc-achc: Follow renaming of SPI "master" to "controller"
+  mmc: mmc_spi: Follow renaming of SPI "master" to "controller"
+  mtd: dataflash: Follow renaming of SPI "master" to "controller"
+  mtd: rawnand: fsl_elbc: Let .probe retry if local bus is missing
+  net: ks8851: Follow renaming of SPI "master" to "controller"
+  net: vertexcom: mse102x: Follow renaming of SPI "master" to "controller"
+  platform/chrome: cros_ec_spi: Follow renaming of SPI "master" to "controller"
+  spi: bitbang: Follow renaming of SPI "master" to "controller"
+  spi: cadence-quadspi: Don't emit error message on allocation error
+  spi: cadence-quadspi: Follow renaming of SPI "master" to "controller"
+  spi: cavium: Follow renaming of SPI "master" to "controller"
+  spi: geni-qcom: Follow renaming of SPI "master" to "controller"
+  spi: loopback-test: Follow renaming of SPI "master" to "controller"
+  spi: slave-mt27xx: Follow renaming of SPI "master" to "controller"
+  spi: spidev: Follow renaming of SPI "master" to "controller"
+  staging: fbtft: Follow renaming of SPI "master" to "controller"
+  staging: greybus: spi: Follow renaming of SPI "master" to "controller"
+  tpm_tis_spi: Follow renaming of SPI "master" to "controller"
+  usb: gadget: max3420_udc: Follow renaming of SPI "master" to "controller"
+  video: fbdev: mmp: Follow renaming of SPI "master" to "controller"
+  wifi: libertas: Follow renaming of SPI "master" to "controller"
+  spi: fsl-lib: Follow renaming of SPI "master" to "controller"
+  spi: Drop compat layer from renaming "master" to "controller"
+  Documentation: spi: Update documentation for renaming "master" to "controller"
+
+ .../driver-api/driver-model/devres.rst        |  2 +-
+ Documentation/spi/spi-summary.rst             | 74 +++++++++----------
+ drivers/char/tpm/tpm_tis_spi_main.c           |  4 +-
+ drivers/fpga/ice40-spi.c                      |  4 +-
+ drivers/iio/adc/ad_sigma_delta.c              | 14 ++--
+ drivers/input/joystick/psxpad-spi.c           |  4 +-
+ drivers/input/rmi4/rmi_spi.c                  |  2 +-
+ drivers/media/pci/mgb4/mgb4_core.c            | 14 ++--
+ .../media/pci/netup_unidvb/netup_unidvb_spi.c | 48 ++++++------
+ drivers/media/usb/msi2500/msi2500.c           | 38 +++++-----
+ drivers/media/v4l2-core/v4l2-spi.c            |  4 +-
+ drivers/misc/gehc-achc.c                      |  8 +-
+ drivers/mmc/host/mmc_spi.c                    |  6 +-
+ drivers/mtd/devices/mtd_dataflash.c           |  2 +-
+ drivers/mtd/nand/raw/fsl_elbc_nand.c          |  3 +-
+ drivers/net/ethernet/micrel/ks8851_spi.c      |  4 +-
+ drivers/net/ethernet/vertexcom/mse102x.c      |  2 +-
+ drivers/net/ieee802154/ca8210.c               |  2 +-
+ .../net/wireless/marvell/libertas/if_spi.c    |  2 +-
+ drivers/platform/chrome/cros_ec_spi.c         |  8 +-
+ drivers/spi/spi-ath79.c                       |  4 +-
+ drivers/spi/spi-bitbang.c                     | 64 ++++++++--------
+ drivers/spi/spi-butterfly.c                   |  6 +-
+ drivers/spi/spi-cadence-quadspi.c             |  7 +-
+ drivers/spi/spi-cavium.c                      |  6 +-
+ drivers/spi/spi-cavium.h                      |  2 +-
+ drivers/spi/spi-davinci.c                     |  6 +-
+ drivers/spi/spi-fsl-lib.c                     | 14 ++--
+ drivers/spi/spi-geni-qcom.c                   |  2 +-
+ drivers/spi/spi-gpio.c                        |  2 +-
+ drivers/spi/spi-lm70llp.c                     |  6 +-
+ drivers/spi/spi-loopback-test.c               |  4 +-
+ drivers/spi/spi-oc-tiny.c                     |  6 +-
+ drivers/spi/spi-omap-uwire.c                  |  4 +-
+ drivers/spi/spi-slave-mt27xx.c                |  2 +-
+ drivers/spi/spi-xilinx.c                      |  4 +-
+ drivers/spi/spi-xtensa-xtfpga.c               |  2 +-
+ drivers/spi/spi.c                             |  2 +-
+ drivers/spi/spidev.c                          |  2 +-
+ drivers/staging/fbtft/fbtft-core.c            |  4 +-
+ drivers/staging/greybus/spilib.c              | 66 ++++++++---------
+ drivers/usb/gadget/udc/max3420_udc.c          |  2 +-
+ drivers/video/fbdev/mmp/hw/mmp_spi.c          | 26 +++----
+ include/linux/spi/spi.h                       | 20 +----
+ include/linux/spi/spi_bitbang.h               |  2 +-
+ include/media/v4l2-common.h                   |  6 +-
+ 46 files changed, 249 insertions(+), 267 deletions(-)
 
 
-Daniel.
+base-commit: 8d04a7e2ee3fd6aabb8096b00c64db0d735bc874
+-- 
+2.43.0
+
 
