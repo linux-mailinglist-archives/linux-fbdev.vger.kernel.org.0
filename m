@@ -1,93 +1,51 @@
-Return-Path: <linux-fbdev+bounces-591-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-588-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAA983063A
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jan 2024 13:55:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3972830637
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jan 2024 13:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07097283121
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jan 2024 12:55:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C5E1C2175F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jan 2024 12:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426AF1EB34;
-	Wed, 17 Jan 2024 12:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VnYxQ0Jt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eg0+W26G";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VnYxQ0Jt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eg0+W26G"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00541EA78;
+	Wed, 17 Jan 2024 12:55:33 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE691EA76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95441EA8A
 	for <linux-fbdev@vger.kernel.org>; Wed, 17 Jan 2024 12:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705496134; cv=none; b=E5qb8hqo+TEPo6sFFKq9UVnO6vEODEM0bjNW7Lju1hZQ2OiaoYYPKQto4+VTZtzHIr61seRttnOYAtbxC0w44riilqyNTBm63m3bQlGg+Psdr6pv6xJR6AevcVVRnTwW8sEAmZ7PTqAWHjImhbq32j7yC+FPOPPKlgk7Mg1fFZ0=
+	t=1705496133; cv=none; b=Ds+Rw38U5BkO6OvuN8zf3LQehZ86Fk2Jz2IeJLw/nZpn/dWLOi6vE5pmMpo7SNFIHS5CG4PGGWlt/mTx2Ymev4Bpe9pZJmzy7Qv2jQ+B3WW5+ZNNDNNIwvgutrU3TsNwR5cAVU5lEBlQdqOmA15z0iph6WmXcol+7IG54S/JNF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705496134; c=relaxed/simple;
-	bh=2ioc/nBUnTw+J9CSHz8leecvf/NCGCMYoPTp0hDByUA=;
-	h=Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Spamd-Result:X-Spam-Level:X-Spam-Flag:
-	 X-Spam-Score; b=Z4kjhDFhf44GPKu6CrKZv7dJgZVb6kzWuq1EJ7K6wK48PdU8Vpi2iRO1cPsAbmt5a18hduO+/pZ+YV6hNOBsl7KfpIqCYAoyCZXBHuFbYxWS0AcAXEez5y/hKVn8/0bwwqS+E8iu5KxUkRr1zfHhlpjEkNRe/LnqK8JMGN7oPkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VnYxQ0Jt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eg0+W26G; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VnYxQ0Jt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eg0+W26G; arc=none smtp.client-ip=195.135.223.131
+	s=arc-20240116; t=1705496133; c=relaxed/simple;
+	bh=iWs3Ncu9ylSTdel4X2uBeU0/S/euKktQTEClzQBwuio=;
+	h=Received:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spamd-Result:X-Rspamd-Server:
+	 X-Rspamd-Queue-Id:X-Spam-Level:X-Spam-Score:X-Spam-Flag; b=c3JkIrZVan6zni0MVkPNLwZWYggAgu6dgZCzulfhT1esVEhcAe7q27RziYw2850e0KOVPOGvVjgvzVE9VYhaH2qMF8SpGDC2MRTILZuv3oXpI0yR7LletSBpgm8LUio/yWp56p7xByephpJXMAMTGXmEn55f+sFrrWhirgWRoes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E30131FC26;
-	Wed, 17 Jan 2024 12:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705496129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQcZUTO3WquCwuulOA8KUsIRasUGv4XllHdCGQ7mvHk=;
-	b=VnYxQ0JtMQzS325Q50T8aZ3daTsarq39KL+2d9vilLLF2spcciEfRXUyhNtlzKBL8/EUbM
-	HqARjbhiQYK1Fg+hVB+R71yQGULl5fnDMhRg3mLc3nvUXlV23HKtkZrDpojdcwGwUZJgGD
-	gk1zw46lCI9htHTTPGQd7tMI3fo8jqA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705496129;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQcZUTO3WquCwuulOA8KUsIRasUGv4XllHdCGQ7mvHk=;
-	b=eg0+W26G1DTab0lI5MWEGQ+Xpjq0n2MmweM7jWb+fs8TWXfa1jBoCT8dHsRy6BhRUAWqIh
-	wN4qHkNr+HBvJmBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705496129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQcZUTO3WquCwuulOA8KUsIRasUGv4XllHdCGQ7mvHk=;
-	b=VnYxQ0JtMQzS325Q50T8aZ3daTsarq39KL+2d9vilLLF2spcciEfRXUyhNtlzKBL8/EUbM
-	HqARjbhiQYK1Fg+hVB+R71yQGULl5fnDMhRg3mLc3nvUXlV23HKtkZrDpojdcwGwUZJgGD
-	gk1zw46lCI9htHTTPGQd7tMI3fo8jqA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705496129;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQcZUTO3WquCwuulOA8KUsIRasUGv4XllHdCGQ7mvHk=;
-	b=eg0+W26G1DTab0lI5MWEGQ+Xpjq0n2MmweM7jWb+fs8TWXfa1jBoCT8dHsRy6BhRUAWqIh
-	wN4qHkNr+HBvJmBw==
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 23FDE22267;
+	Wed, 17 Jan 2024 12:55:30 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5E0313808;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E9DAE13800;
 	Wed, 17 Jan 2024 12:55:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qP5GK0HOp2X1YQAAD6G6ig
+	id +Cb+N0HOp2X1YQAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Wed, 17 Jan 2024 12:55:29 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
@@ -97,9 +55,9 @@ To: javierm@redhat.com,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 3/8] firmware/sysfb: Set firmware-framebuffer parent device
-Date: Wed, 17 Jan 2024 13:39:07 +0100
-Message-ID: <20240117125527.23324-4-tzimmermann@suse.de>
+Subject: [PATCH 4/8] fbdev/efifb: Remove PM for parent device
+Date: Wed, 17 Jan 2024 13:39:08 +0100
+Message-ID: <20240117125527.23324-5-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240117125527.23324-1-tzimmermann@suse.de>
 References: <20240117125527.23324-1-tzimmermann@suse.de>
@@ -110,129 +68,77 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spamd-Result: default: False [0.90 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 R_MISSING_CHARSET(2.50)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 REPLY(-4.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FREEMAIL_TO(0.00)[redhat.com,gmx.de,kernel.org];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[]
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	 REPLY(-4.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 23FDE22267
 X-Spam-Level: 
+X-Spam-Score: -4.00
 X-Spam-Flag: NO
-X-Spam-Score: 0.90
 
-Set the firmware framebuffer's parent device, which usually is the
-graphics hardware's physical device. Integrates the framebuffer in
-the Linux device hierarchy and lets Linux handle dependencies among
-devices. For example, the graphics hardware won't be suspended while
-the firmware device is still active.
+The EFI device has the correct parent device set. This allows Linux
+to handle the power management internally. Hence, remove the manual
+PM management for the parent device from efifb.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/firmware/sysfb.c          | 11 ++++++++++-
- drivers/firmware/sysfb_simplefb.c |  5 ++++-
- include/linux/sysfb.h             |  3 ++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/efifb.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
-index 19706bd2642a..8a42da3f67a9 100644
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -29,6 +29,7 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/mm.h>
-+#include <linux/pci.h>
- #include <linux/platform_data/simplefb.h>
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index 10fc14ad5d12..e66ef35fa6b6 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -17,7 +17,6 @@
  #include <linux/platform_device.h>
+ #include <linux/printk.h>
  #include <linux/screen_info.h>
-@@ -72,6 +73,8 @@ EXPORT_SYMBOL_GPL(sysfb_disable);
- static __init int sysfb_init(void)
+-#include <linux/pm_runtime.h>
+ #include <video/vga.h>
+ #include <asm/efi.h>
+ #include <drm/drm_utils.h> /* For drm_get_panel_orientation_quirk */
+@@ -258,9 +257,6 @@ static void efifb_destroy(struct fb_info *info)
  {
- 	const struct screen_info *si = &screen_info;
-+	struct device *parent = NULL;
-+	struct pci_dev *pparent;
- 	struct simplefb_platform_data mode;
- 	const char *name;
- 	bool compatible;
-@@ -83,10 +86,14 @@ static __init int sysfb_init(void)
+ 	struct efifb_par *par = info->par;
  
- 	sysfb_apply_efi_quirks();
- 
-+	pparent = screen_info_pci_dev(si);
-+	if (pparent)
-+		parent = &pparent->dev;
-+
- 	/* try to create a simple-framebuffer device */
- 	compatible = sysfb_parse_mode(si, &mode);
- 	if (compatible) {
--		pd = sysfb_create_simplefb(si, &mode);
-+		pd = sysfb_create_simplefb(si, &mode, parent);
- 		if (!IS_ERR(pd))
- 			goto unlock_mutex;
- 	}
-@@ -109,6 +116,8 @@ static __init int sysfb_init(void)
- 		goto unlock_mutex;
+-	if (efifb_pci_dev)
+-		pm_runtime_put(&efifb_pci_dev->dev);
+-
+ 	if (info->screen_base) {
+ 		if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
+ 			iounmap(info->screen_base);
+@@ -598,26 +594,20 @@ static int efifb_probe(struct platform_device *dev)
+ 		goto err_groups;
  	}
  
-+	pd->dev.parent = parent;
-+
- 	sysfb_set_efifb_fwnode(pd);
+-	if (efifb_pci_dev)
+-		WARN_ON(pm_runtime_get_sync(&efifb_pci_dev->dev) < 0);
+-
+ 	err = devm_aperture_acquire_for_platform_device(dev, par->base, par->size);
+ 	if (err) {
+ 		pr_err("efifb: cannot acquire aperture\n");
+-		goto err_put_rpm_ref;
++		goto err_fb_dealloc_cmap;
+ 	}
+ 	err = register_framebuffer(info);
+ 	if (err < 0) {
+ 		pr_err("efifb: cannot register framebuffer\n");
+-		goto err_put_rpm_ref;
++		goto err_fb_dealloc_cmap;
+ 	}
+ 	fb_info(info, "%s frame buffer device\n", info->fix.id);
+ 	return 0;
  
- 	ret = platform_device_add_data(pd, si, sizeof(*si));
-diff --git a/drivers/firmware/sysfb_simplefb.c b/drivers/firmware/sysfb_simplefb.c
-index 74363ed7501f..75a186bf8f8e 100644
---- a/drivers/firmware/sysfb_simplefb.c
-+++ b/drivers/firmware/sysfb_simplefb.c
-@@ -91,7 +91,8 @@ __init bool sysfb_parse_mode(const struct screen_info *si,
- }
- 
- __init struct platform_device *sysfb_create_simplefb(const struct screen_info *si,
--						     const struct simplefb_platform_data *mode)
-+						     const struct simplefb_platform_data *mode,
-+						     struct device *parent)
- {
- 	struct platform_device *pd;
- 	struct resource res;
-@@ -143,6 +144,8 @@ __init struct platform_device *sysfb_create_simplefb(const struct screen_info *s
- 	if (!pd)
- 		return ERR_PTR(-ENOMEM);
- 
-+	pd->dev.parent = parent;
-+
- 	sysfb_set_efifb_fwnode(pd);
- 
- 	ret = platform_device_add_resources(pd, &res, 1);
-diff --git a/include/linux/sysfb.h b/include/linux/sysfb.h
-index 19cb803dd5ec..6ee3ade3f8b0 100644
---- a/include/linux/sysfb.h
-+++ b/include/linux/sysfb.h
-@@ -91,7 +91,8 @@ static inline void sysfb_set_efifb_fwnode(struct platform_device *pd)
- bool sysfb_parse_mode(const struct screen_info *si,
- 		      struct simplefb_platform_data *mode);
- struct platform_device *sysfb_create_simplefb(const struct screen_info *si,
--					      const struct simplefb_platform_data *mode);
-+					      const struct simplefb_platform_data *mode,
-+					      struct device *parent);
- 
- #else /* CONFIG_SYSFB_SIMPLE */
- 
+-err_put_rpm_ref:
+-	if (efifb_pci_dev)
+-		pm_runtime_put(&efifb_pci_dev->dev);
+-
++err_fb_dealloc_cmap:
+ 	fb_dealloc_cmap(&info->cmap);
+ err_groups:
+ 	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
 -- 
 2.43.0
 
