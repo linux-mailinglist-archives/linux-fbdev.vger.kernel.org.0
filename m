@@ -1,294 +1,155 @@
-Return-Path: <linux-fbdev+bounces-662-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-664-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0854833676
-	for <lists+linux-fbdev@lfdr.de>; Sat, 20 Jan 2024 22:27:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101638354DB
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 09:02:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B7E1C20E54
-	for <lists+linux-fbdev@lfdr.de>; Sat, 20 Jan 2024 21:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9DA1F22B3B
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 08:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F46214F75;
-	Sat, 20 Jan 2024 21:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EF4364A9;
+	Sun, 21 Jan 2024 08:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Q24U5l1W"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B725A13FE2;
-	Sat, 20 Jan 2024 21:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AB514F61;
+	Sun, 21 Jan 2024 08:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705786050; cv=none; b=fGvzQEsxgh/B3zV6Pi3rd4vVuaykYlQBE2bAogcukFmILpJc+xDEIEUvJybEokrh7XgadjbOvlT+ZI3RCHVKpikA5zupVCCD4GPcoi8HxRtdJcxBXPZkqqRfykBbiajoFbiN7KVrwF6lorUpTPdPZYXO/zRff4L95q457Rey0bE=
+	t=1705824136; cv=none; b=Y3Bq6fFEZ5V4ZpF3oxp24sKqHB9EeW6U5WUgehRo0iAApTDWlmhS4dvvcqTesqoNx+sCv0vHO7pyLMfchXddEDpqk1/dY/HbnDz3ISiFQfjLMZGEXU3g8bYarsmLRD7FSnzCFbXOjtYLtLuYZhmhLZFyzf0p/7DWT+9DWnMtoE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705786050; c=relaxed/simple;
-	bh=FC1EjKKMu309UuB+RKeyqY3SuL54ONyCm0c9CWTGi94=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AlPdDDYRYd1ZbRQ3BjHdGTXHls9i+8vpUxgOGclZQaCCgzUhkGGvqqy+K2NJ8eUDVm0UQiESbKiYuj36lgSSA5i5R+naDNRShAE1MsrsEfvcj0e9WBk9UoJnqu2iQNpQCQZPCRMmmRD1/c+xxUzPiqLedJ8jYyY9wfgGHkHdQIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id A801786C62;
-	Sat, 20 Jan 2024 22:27:26 +0100 (CET)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date: Sat, 20 Jan 2024 22:26:45 +0100
-Subject: [PATCH v3 3/3] backlight: Add Kinetic KTD2801 backlight support
+	s=arc-20240116; t=1705824136; c=relaxed/simple;
+	bh=lmEl2d7HAt/XbGIN81juIpgwCW99VwCJsVaLTSFIR8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uzmbajFjaU5SF8DRBZtU/Mq+jxwML1i1gcqAEm8MH5YRO5OYIAnz5KhvZeWQ6qrckBQWwCseYwUn80NuCD+zovdVRaHZKBepRljZxv9FFdgmQwko+cxG8RIQaSi5tLfLc5rHeSSxN7L5UNHOLbbe2dOeJrpg/QLqz54/8XobyuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Q24U5l1W; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1705824117; x=1706428917; i=deller@gmx.de;
+	bh=lmEl2d7HAt/XbGIN81juIpgwCW99VwCJsVaLTSFIR8Y=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=Q24U5l1WuGkPh74jae0sAt++EHF353b9Nqzp/snjJj6RD1RKPu2X5HPab3vkJePK
+	 kQbIyXyWSJA8wTLhP3GJJFZB4hfIGuNa+9AytxoWMc+hHnKMip7HKX74mscIJLXRV
+	 rsHG1hfjK6gq9RJOp/Qu8l8E1H0ymdEyPAZ2P+xgm9yoxbaaIVUUOohT+xoRuxjkh
+	 egaqadmuN5+5t9twjl0qAMrIjvV5N7Kwq8QBmdUCrAWKrZbLiLuOn6sTZwxsI8J36
+	 efzV16qLOuaVBRIEybZfMWi5WggDRJ/PZp3MUm8iX7UL5Ls/ODbOl58PSpBpmzbJI
+	 UfESlxeEjPs9LmkCAw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.154.190]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUGiJ-1rb38I1faF-00REM1; Sun, 21
+ Jan 2024 09:01:57 +0100
+Message-ID: <fb18e94f-3254-48d1-b260-1c3a7514bd8f@gmx.de>
+Date: Sun, 21 Jan 2024 09:01:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240120-ktd2801-v3-3-fe2cbafffb21@skole.hr>
-References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
-In-Reply-To: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
-To: Lee Jones <lee@kernel.org>, 
- Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7161;
- i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=FC1EjKKMu309UuB+RKeyqY3SuL54ONyCm0c9CWTGi94=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlrDqXA8eeM1rneiarkBVOYjFzaCB2FaXFAQs9p
- n+qHN5uiYaJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZaw6lwAKCRCaEZ6wQi2W
- 4UJkD/4tqCl58QQWHnetlBPLGttzp8B5bT6TS+OcDmEDyNHEPkSX5ZHB0YikL/Yiy1huO4s5phO
- jekA5tYJjzS3OnhWWiwCpd1+cFrp+htdAsrS9ab1lwCFFR9Om6nwoSaJuQ3AhtwKH1u4qgvClnJ
- FzRbQcrxk1qaWJy5ssxTEMXgI0pkUZEEqUa/3JYjDj6t9rofP8DImLvoo+aGvktm72qLJssnLWF
- QhoPQJaL8+A5VNk4R5AJA2EcDjgAHDFyG/eJTzA0mEYC51icvdS8LQJ9pKkPQ1jA/Lrymdldfqf
- 7EoGK9JlUGlNnN3sqHiHAWmxe6HBWLfveV5kkjMe7AdwUwRQzUFqogMZceoOQHi9R9/ph2rga2q
- kL4LqZyaavvNMvaDJFO0y82q1cWLegOArF2DLT3I8yIrbmXQM4gBCKI30M63uOfwgAQIlNYnswM
- xAbnvJJZpObm/CRepA4Mo9upFFXXn8i0MiR8QgBO9V2xSfS+3zABMTqcgn/x2oEXth35TmqiC9D
- cpAe3Q6kNYwQZSHS3J5Bo19z6JIdRs9kSp7UBlhNe2P/NE4EtC21zOTyCX82d086EMg3fHHJSnN
- A7+Lue2TziTrHn1OHESMWw+F+ZaB2AauFVfmnOmU0J0PvAE5v0XzZ51unNvKUV/6yGg2f2da1l8
- ZrdFrpCM+ld7VcA==
-X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
- fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] video: fbdev: sis: Error out if pixclock equals zero
+Content-Language: en-US
+To: Fullway Wang <fullwaywang@outlook.com>, tzimmermann@suse.de,
+ sam@ravnborg.org, javierm@redhat.com
+Cc: linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ fullwaywang@tencent.com
+References: <PH7PR20MB5925C492B7F8CDACB2386DB4BF712@PH7PR20MB5925.namprd20.prod.outlook.com>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <PH7PR20MB5925C492B7F8CDACB2386DB4BF712@PH7PR20MB5925.namprd20.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rPKVCaXb0ndO2tg3vgAi1V42uGT3otTXDBMHqCejyzRXKpSEwZl
+ wrBIS0IrqQ0kGRVowQuILGo5vUcd/uXFtbPMqpWHsTc6s5Ahf1asxcU7dqYNVivdH1+1nK/
+ MO4l8gdOaWGjkX/YMgbnxElXpkqLK2iT7AGNWBPJf7VAjl0uEk6QyNapl8wAW5UxH7A9flZ
+ XTEL4vOBYaps/A1OczL4g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:U+LjjRAcEUk=;1D46GZPLBjz3tYeDKRVyT3rZXNG
+ Cy7gdqKck1qX+M3pAlK8zBuGdyhA7m31D7W2OclwfiBuBM6aZr25NFo9isLq1zjr3q353ZjeI
+ /1lGrm7bkQ6cxWeJuwTNC7MZyLsQzLP0mP9ipT1RkWO+Ncan4g5U+wYYr9dJIDudGcEmn+hsc
+ tPwbQWkh+CjIe9Lgag/IXVvIDlsF2sDKY33rQxgdzIZKI0sLWfceYS6tw/TOtbu5ZmlOB16wF
+ aXcGOIOINvGBqV0xInOXdIWd6egqLnQitaEL0UAVrCTKqU4si6jbMgcSF9ilUNyfOn5ZrJRUO
+ yjMNxrqCQpRPegbEe3ABIeI4ttCEvbuFtKRksM3xFc6Bj1mJX9szHFDS08O01AYxgLnDqPSSz
+ H7bAdABJnfH1u1GCZ19HJnfp0YL1NAOkhMXIyugZy1QwcN7kIGJxDP0qQg+SZo2eZneXrKvB9
+ S8xBHTj/fhCMpgPMkgv2JVJLtdNvgynZJiFw74t+XW8KZvgFemjGp/T0j+7IsMm8oeMoOofR7
+ vaSPI7EfsrCFXQgjceo0qc2C3z4usCnzPtxam2aMM8wxVMF0YmcuTq8Jg5nsNLuVZJPXikjbe
+ kyI6J7sEHj8Oi38j4Wo4avJwcZpIOlrErKDka+igCUYZ1jiXA1BJpdD6EHCT4sCq9R5aONldz
+ o6wZ4N4RQxh6OjMf+j4SRWexL/RQwTULfHvDRTxoTyaYOURNTS+EiKcQVIp4GLtUBjjnhBl7E
+ 12D2iElcn83atAxlC/agxh/0YhiQnvux3ck3+9FLbWK5fXoyao+LUjoVizr9gw9SLd7d4OKml
+ 5L7begdQ2+ivPF48hJ7EDoSXzA/JbMszxHJe3tuw/z8wHWvHLWcD8gkpl5ajc4AFIH4H4KJJE
+ nghxVjlWq+uSxNr/j9QczbsMDmzGMHtyIH63On3MV0KuG0euk6mKpC3CQYVLEGOeV8BOmpnQc
+ vOl0Jg==
 
-KTD2801 is a LED backlight driver IC found in samsung,coreprimevelte.
-The brightness can be set using PWM or the ExpressWire protocol. Add
-support for the KTD2801.
+On 1/18/24 07:24, Fullway Wang wrote:
+> The userspace program could pass any values to the driver through
+> ioctl() interface. If the driver doesn't check the value of pixclock,
+> it may cause divide-by-zero error.
+>
+> In sisfb_check_var(), var->pixclock is used as a divisor to caculate
+> drate before it is checked against zero. Fix this by checking it
+> at the beginning.
+>
+> This is similar to CVE-2022-3061 in i740fb which was fixed by
+> commit 15cf0b8.
+>
+> Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+> ---
+>   drivers/video/fbdev/sis/sis_main.c | 2 ++
+>   1 file changed, 2 insertions(+)
 
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
- MAINTAINERS                                 |   6 ++
- drivers/video/backlight/Kconfig             |   8 ++
- drivers/video/backlight/Makefile            |   1 +
- drivers/video/backlight/ktd2801-backlight.c | 143 ++++++++++++++++++++++++++++
- 4 files changed, 158 insertions(+)
+I've applied this patch and your savage patch to fbdev git tree.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 87b12d2448a0..dddffbd8d2a0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11891,6 +11891,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktd253.yaml
- F:	drivers/video/backlight/ktd253-backlight.c
- 
-+KTD2801 BACKLIGHT DRIVER
-+M:	Duje Mihanović <duje.mihanovic@skole.hr>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2801.yaml
-+F:	drivers/video/backlight/ktd2801-backlight.c
-+
- KTEST
- M:	Steven Rostedt <rostedt@goodmis.org>
- M:	John Hawley <warthog9@eaglescrag.net>
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 51387b1ef012..585a5a713759 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -183,6 +183,14 @@ config BACKLIGHT_KTD253
- 	  which is a 1-wire GPIO-controlled backlight found in some mobile
- 	  phones.
- 
-+config BACKLIGHT_KTD2801
-+	tristate "Backlight Driver for Kinetic KTD2801"
-+	depends on GPIOLIB || COMPILE_TEST
-+	select LEDS_EXPRESSWIRE
-+	help
-+	  Say Y to enable the backlight driver for the Kinetic KTD2801 1-wire
-+	  GPIO-controlled backlight found in Samsung Galaxy Core Prime VE LTE.
-+
- config BACKLIGHT_KTZ8866
- 	tristate "Backlight Driver for Kinetic KTZ8866"
- 	depends on I2C
-diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
-index f72e1c3c59e9..b33b647f31ca 100644
---- a/drivers/video/backlight/Makefile
-+++ b/drivers/video/backlight/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_BACKLIGHT_HP680)		+= hp680_bl.o
- obj-$(CONFIG_BACKLIGHT_HP700)		+= jornada720_bl.o
- obj-$(CONFIG_BACKLIGHT_IPAQ_MICRO)	+= ipaq_micro_bl.o
- obj-$(CONFIG_BACKLIGHT_KTD253)		+= ktd253-backlight.o
-+obj-$(CONFIG_BACKLIGHT_KTD2801)		+= ktd2801-backlight.o
- obj-$(CONFIG_BACKLIGHT_KTZ8866)		+= ktz8866.o
- obj-$(CONFIG_BACKLIGHT_LM3533)		+= lm3533_bl.o
- obj-$(CONFIG_BACKLIGHT_LM3630A)		+= lm3630a_bl.o
-diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
-new file mode 100644
-index 000000000000..7b9d1a93aa71
---- /dev/null
-+++ b/drivers/video/backlight/ktd2801-backlight.c
-@@ -0,0 +1,143 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Datasheet:
-+ * https://www.kinet-ic.com/uploads/web/KTD2801/KTD2801-04b.pdf
-+ */
-+#include <linux/backlight.h>
-+#include <linux/bits.h>
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/leds-expresswire.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+
-+/* These values have been extracted from Samsung's driver. */
-+#define KTD2801_EXPRESSWIRE_DETECT_DELAY_US	150
-+#define KTD2801_EXPRESSWIRE_DETECT_US		270
-+#define KTD2801_SHORT_BITSET_US			5
-+#define KTD2801_LONG_BITSET_US			(3 * KTD2801_SHORT_BITSET_US)
-+#define KTD2801_DATA_START_US			5
-+#define KTD2801_END_OF_DATA_LOW_US		10
-+#define KTD2801_END_OF_DATA_HIGH_US		350
-+#define KTD2801_PWR_DOWN_DELAY_US		2600
-+
-+#define KTD2801_DEFAULT_BRIGHTNESS	100
-+#define KTD2801_MAX_BRIGHTNESS		255
-+
-+const struct expresswire_timing ktd2801_timing = {
-+	.poweroff_us = KTD2801_PWR_DOWN_DELAY_US,
-+	.detect_delay_us = KTD2801_EXPRESSWIRE_DETECT_DELAY_US,
-+	.detect_us = KTD2801_EXPRESSWIRE_DETECT_US,
-+	.data_start_us = KTD2801_DATA_START_US,
-+	.short_bitset_us = KTD2801_SHORT_BITSET_US,
-+	.long_bitset_us = KTD2801_LONG_BITSET_US,
-+	.end_of_data_low_us = KTD2801_END_OF_DATA_LOW_US,
-+	.end_of_data_high_us = KTD2801_END_OF_DATA_HIGH_US
-+};
-+
-+struct ktd2801_backlight {
-+	struct expresswire_common_props props;
-+	struct backlight_device *bd;
-+	bool was_on;
-+};
-+
-+static int ktd2801_update_status(struct backlight_device *bd)
-+{
-+	struct ktd2801_backlight *ktd2801 = bl_get_data(bd);
-+	u8 brightness = (u8) backlight_get_brightness(bd);
-+
-+	if (backlight_is_blank(bd)) {
-+		expresswire_power_off(&ktd2801->props);
-+		ktd2801->was_on = false;
-+		return 0;
-+	}
-+
-+	if (!ktd2801->was_on) {
-+		expresswire_enable(&ktd2801->props);
-+		ktd2801->was_on = true;
-+	}
-+
-+	expresswire_start(&ktd2801->props);
-+
-+	for (int i = 7; i >= 0; i--)
-+		expresswire_set_bit(&ktd2801->props, !!(brightness & BIT(i)));
-+
-+	expresswire_end(&ktd2801->props);
-+	return 0;
-+}
-+
-+static const struct backlight_ops ktd2801_backlight_ops = {
-+	.update_status = ktd2801_update_status,
-+};
-+
-+static int ktd2801_backlight_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct backlight_device *bd;
-+	struct ktd2801_backlight *ktd2801;
-+	u32 brightness, max_brightness;
-+	int ret;
-+
-+	ktd2801 = devm_kzalloc(dev, sizeof(*ktd2801), GFP_KERNEL);
-+	if (!ktd2801)
-+		return -ENOMEM;
-+	ktd2801->was_on = true;
-+	ktd2801->props.timing = ktd2801_timing;
-+
-+	ret = device_property_read_u32(dev, "max-brightness", &max_brightness);
-+	if (ret)
-+		max_brightness = KTD2801_MAX_BRIGHTNESS;
-+	if (max_brightness > KTD2801_MAX_BRIGHTNESS) {
-+		dev_err(dev, "illegal max brightness specified\n");
-+		max_brightness = KTD2801_MAX_BRIGHTNESS;
-+	}
-+
-+	ret = device_property_read_u32(dev, "default-brightness", &brightness);
-+	if (ret)
-+		brightness = KTD2801_DEFAULT_BRIGHTNESS;
-+	if (brightness > max_brightness) {
-+		dev_err(dev, "default brightness exceeds max\n");
-+		brightness = max_brightness;
-+	}
-+
-+	ktd2801->props.ctrl_gpio = devm_gpiod_get(dev, "ctrl", GPIOD_OUT_HIGH);
-+	if (IS_ERR(ktd2801->props.ctrl_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ktd2801->props.ctrl_gpio),
-+				"failed to get backlight GPIO");
-+	gpiod_set_consumer_name(ktd2801->props.ctrl_gpio, dev_name(dev));
-+
-+	bd = devm_backlight_device_register(dev, dev_name(dev), dev, ktd2801,
-+			&ktd2801_backlight_ops, NULL);
-+	if (IS_ERR(bd))
-+		return dev_err_probe(dev, PTR_ERR(bd),
-+				"failed to register backlight");
-+
-+	bd->props.max_brightness = max_brightness;
-+	bd->props.brightness = brightness;
-+
-+	ktd2801->bd = bd;
-+	platform_set_drvdata(pdev, bd);
-+	backlight_update_status(bd);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id ktd2801_of_match[] = {
-+	{ .compatible = "kinetic,ktd2801" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ktd2801_of_match);
-+
-+static struct platform_driver ktd2801_backlight_driver = {
-+	.driver = {
-+		.name = "ktd2801-backlight",
-+		.of_match_table = ktd2801_of_match,
-+	},
-+	.probe = ktd2801_backlight_probe,
-+};
-+module_platform_driver(ktd2801_backlight_driver);
-+
-+MODULE_IMPORT_NS(EXPRESSWIRE);
-+MODULE_AUTHOR("Duje Mihanović <duje.mihanovic@skole.hr>");
-+MODULE_DESCRIPTION("Kinetic KTD2801 Backlight Driver");
-+MODULE_LICENSE("GPL");
-
--- 
-2.43.0
-
+Thanks!
+Helge
 
 
