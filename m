@@ -1,108 +1,124 @@
-Return-Path: <linux-fbdev+bounces-665-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-667-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725EB835600
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 14:55:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73733835621
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 15:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2B7B22EA8
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 13:55:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74F3C1C213D1
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jan 2024 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCBD374F1;
-	Sun, 21 Jan 2024 13:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD46376E2;
+	Sun, 21 Jan 2024 14:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HYYgPYo6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tZXCaw6p"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667DA374F0;
-	Sun, 21 Jan 2024 13:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599C12628C
+	for <linux-fbdev@vger.kernel.org>; Sun, 21 Jan 2024 14:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705845306; cv=none; b=bkJoG5uCaKUyMrXFZhFEVAnPFFsowItacgs05oQDeSN4OV+tMG0WBBgLCUkIOQsfeO43qDjOmrbGYqc4qQ0AwjbrKejaUg58ieyqbxARIwsEL40qnldzB+wCrKx1KfC7TXXoKrt/0b2GODfGV5SLxBABxC8FJXCbKFaK2CydvH4=
+	t=1705847761; cv=none; b=ezzH4m77sfA0HQWEyVw4Tfn3onEY/0FoNisnWsCiSTZ29zmkk7K7rg/DWYDgD5oeoAxuSGN/Ke09PH06zJ/7c1TjBZU0cEMwz4vvW2ddPrEL2qqask4cOWYCKQ4oay1w+twdJiIKgZnMnMlrX7U5SZi0NDwt1LyC2j87OAJkWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705845306; c=relaxed/simple;
-	bh=R48NpmG84koS2tGZXQk7+5epMId7bmv44QQnOetSWZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H2YSja7A6ugCwS1Rm8BFKZ3OY2HRYrGNZWj9HeqPzvlP3mGZeIadbGUbjroPHDkDhxk7Mtv+PUQZXKD+xOrrDKEzqEmEiZ9kA1sLhNq+QL7Bp0+AuoHS2beKeY19n+1NQPnq1WwbScaeKN4sZMNJ9P//KHo1n16egEscxr0h0EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HYYgPYo6; arc=none smtp.client-ip=192.55.52.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705845305; x=1737381305;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=R48NpmG84koS2tGZXQk7+5epMId7bmv44QQnOetSWZ8=;
-  b=HYYgPYo6q4vC38shYL09M0TM6CjIeWtQHBoLPPTtnZOn2r7MMeHI5KtT
-   Avvx0UrMCZPu95AK144VZCILR5r7GLRaAuyUhPTTlZsfvqd6hRj/qcJJD
-   nkKTXax7fUiKyIRuMFe2NK16B2qIis6+1DA3kWdKWKxBf5Tvs17kfiZ11
-   zSLeh/MNqh0ovI7w8MIS6dIDh/4h2G/GGlkDW7NdlxqSaSv7QBFICzh50
-   FUiWySdjOwM45AtrNatrzGLPTHPsNcEVXkA+M0YsyOnOPvqx6KbdLOHCY
-   vuhOMKBohrKFbRfK5iRPVOUlMhh40j/A8MlsH2O6iy39WzCNykDEFpuN7
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="398192245"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="398192245"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 05:55:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="778363190"
-X-IronPort-AV: E=Sophos;i="6.05,209,1701158400"; 
-   d="scan'208";a="778363190"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 05:55:00 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rRYCR-0000000FunQ-24vF;
-	Sun, 21 Jan 2024 15:49:23 +0200
-Date: Sun, 21 Jan 2024 15:49:23 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Javier Martinez Canillas <javierm@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Lee Jones <lee@kernel.org>, Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH v1 2/4] backlight: hx8357: Move OF table closer to its
- consumer
-Message-ID: <Za0g47CgOH4MhdRe@smile.fi.intel.com>
-References: <20240114152759.1040563-1-andriy.shevchenko@linux.intel.com>
- <20240114152759.1040563-3-andriy.shevchenko@linux.intel.com>
- <878r4rovk4.fsf@minerva.mail-host-address-is-not-set>
+	s=arc-20240116; t=1705847761; c=relaxed/simple;
+	bh=872rfjy39rwVRPIkk3ndSS0WStZElYm0Qg/+47Tr7M4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ESei2Kj/Xd6fs6E2+oi3Iilf9BcpEsQhKHNkmDadPJ/7JzA0cXW+pjbBTvtgMKRUiryxhWBh6xeh8swKe/Ui+ccBsXEnB8saq9LAOzjgGPfkfEHdjlPsQWKV62FyNX07MSi+TSIQBE9Qefp+5JmEmk2nPXENqTgDThxHr09Rdz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tZXCaw6p; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-5ffb07bdce2so8406267b3.2
+        for <linux-fbdev@vger.kernel.org>; Sun, 21 Jan 2024 06:35:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705847757; x=1706452557; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=872rfjy39rwVRPIkk3ndSS0WStZElYm0Qg/+47Tr7M4=;
+        b=tZXCaw6pMVa+X8oQTbA5GeBwbEEniZAqVwpANtGp2WRTt4H1BmEHGPW9h8XI8fVaj2
+         QPkS7gx7yqMPVzupWMlfUTaSFiHeOKZjh5aK9HzyB/LdcghER1Z0ibSnzC4x5JQAJipg
+         Fg/DaoywD/98zdtutlIXAiBMcXYq65Hvzi8XE7/jZrm+hZM/Gdckl9czCxf8pOXZtjk4
+         RbF6bEksWScllJR8VcUVrohzLBdcZbJaVRxVUKXlLd9WVagSUE+IowLH4ye+eHolTfYT
+         TlUd5HrcW/FUPirKZ2wljOI/LiFt1SQfLgh0ccFhZD9rFaPU7ftGM5xZugw27Qnpv0+5
+         faqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705847757; x=1706452557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=872rfjy39rwVRPIkk3ndSS0WStZElYm0Qg/+47Tr7M4=;
+        b=F4aDxWT5OA+V0M8JdEbWDobddwu1bYKyi7ERIrl4wCTR+ZrC65SFerBAnetf9trUHz
+         9n7aJKKVBV46JY1Bn4m8eMRObeCl4NljK/gbf2Vqes2Wd8deCx+djz444VeHBoX1WR+f
+         y98bZhuz/fp7mIfvmRjzh2jRbj2mNc+8NP4BDooKwZqinwTVl/2SJwPMQdO/Gilod2r/
+         ChV3vasm8mFzNMHwRm/k48dcHQ2kBFTe0dLIYaMHlMzPJ/C983z6vvq+ogdTmdmzCHc6
+         x5nBBaTnJ+rLqZUAdtL1vbFXDFFJ7yeQBGN6km37eDMu3lG7WNGH1uN7lMP6ip5HnloJ
+         P0Fg==
+X-Gm-Message-State: AOJu0Yy/nZBYrXJEsgKp04SbYpCzNZmT0rH4NumPr2GE/1pxGsrt60Dr
+	sZBIRi8lUM9QLXD+G65SbI0VEw/0CEvhPfOFxhED2VtAefX+aekLA9oQJ/JhHZWv3JPc5MAUVSv
+	F0Iz6mACmvOKEAzr3f/R11y9CTlpqTVyFrpkDbg==
+X-Google-Smtp-Source: AGHT+IGJ2DYegRgTTs8ZHsk79g8rkAhLXrTgdRS3BTZclQzp+PaNFA6RmnfZAQEkPgtQz0pMrsua29Q2IC4VA5JrGXc=
+X-Received: by 2002:a81:9c52:0:b0:5ff:96b8:f0b9 with SMTP id
+ n18-20020a819c52000000b005ff96b8f0b9mr2720698ywa.90.1705847757431; Sun, 21
+ Jan 2024 06:35:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878r4rovk4.fsf@minerva.mail-host-address-is-not-set>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr> <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
+In-Reply-To: <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Sun, 21 Jan 2024 15:35:46 +0100
+Message-ID: <CACRpkdZJyY9oYMt3TvDEGthN-Wvz3t_40t9P-VsgTKCJQaD=pw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] leds: ktd2692: move ExpressWire code to library
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, 
+	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Helge Deller <deller@gmx.de>, Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 15, 2024 at 09:22:19AM +0100, Javier Martinez Canillas wrote:
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+On Sat, Jan 20, 2024 at 10:27=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovi=
+c@skole.hr> wrote:
 
-...
+> The ExpressWire protocol is shared between at least KTD2692 and KTD2801
+> with slight differences such as timings and the former not having a
+> defined set of pulses for enabling the protocol (possibly because it
+> does not support PWM unlike KTD2801). Despite these differences the
+> ExpressWire handling code can be shared between the two, so move it into
+> a library in preparation for adding KTD2801 support.
+>
+> Suggested-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
 
-> > +	{}
-> 
-> While at it, maybe add the { /* sentinel */ } convention to the last entry ?
+This is great stuff.
+I looked at my KTD253 driver but AFAICT it uses a different method:
+instead of transferring a numeral, it increases/decreases a counter, so
+it can't use the library.
 
-Maybe. Is it a common for this subsystem?
+> +extern void expresswire_power_off(struct expresswire_common_props *props=
+);
+> +extern void expresswire_enable(struct expresswire_common_props *props);
+> +extern void expresswire_start(struct expresswire_common_props *props);
+> +extern void expresswire_end(struct expresswire_common_props *props);
+> +extern void expresswire_set_bit(struct expresswire_common_props *props, =
+bool bit);
 
-...
+I would skip the keyword "extern" since it is default I think even
+checkpatch complains about it these days?
 
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Anyway, no big deal:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thank you for the review!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Yours,
+Linus Walleij
 
