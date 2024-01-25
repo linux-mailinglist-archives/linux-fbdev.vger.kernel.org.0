@@ -1,280 +1,156 @@
-Return-Path: <linux-fbdev+bounces-756-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-758-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B8083C6B6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jan 2024 16:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8F983C7E8
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jan 2024 17:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05731F21D36
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jan 2024 15:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C821F278F3
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jan 2024 16:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B7C745FA;
-	Thu, 25 Jan 2024 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B43129A7D;
+	Thu, 25 Jan 2024 16:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hck4aF7H"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89A73172;
-	Thu, 25 Jan 2024 15:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B335573177;
+	Thu, 25 Jan 2024 16:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706196728; cv=none; b=J5qnrB/PfaGfvsLBkntqHS9HWE7opC3+vhn86F8lw2W3hMBDCXJ7t5d25hpvs01OsCVUUtDiCkyJOgXYbv552zsr/jbQ/A1Vuv9HtZwJCqw2g7Ch/HdwvaQpiQogYJnyatBd+WzYmFz5ubKKlJ3pR8B+YqVTwsl+0z5jJs/neXk=
+	t=1706200092; cv=none; b=iLn/TdK9YBE/aiHDqBpHTcFfktty1OU4sLicvIxrHH4XHOJI+ycwgJ+A+oOi7/p2dU5Mbk2KRDGnKvnIGRs80ZQZBV6m3pyFj736wldBxRfdgbhE8oQiBxTbTv/6vNeaIFr+BBp3LplHgI8jU8gaRffiMRWC3r+fGmf8rQV2l4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706196728; c=relaxed/simple;
-	bh=9oIB83pc/ZyTg66e328/z4fCGwof+pG+pI1cGESw4c0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bta8KBPLbDARKgtIsjJLTe7SaB6I1CzA+APybOFnA8zslX8LsonUz7qQhba5KF2K9tuZL+geRDR8V/sBsPF1GpGlx20dLv2VANoMryL6+z5Jh9cOtf10B16outRryPQ+zqtFBEVs+WgIcXt+1gSb1n49bk+KL4xjwbiEQhS7rq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id 10732862B0;
-	Thu, 25 Jan 2024 16:31:58 +0100 (CET)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date: Thu, 25 Jan 2024 16:30:56 +0100
-Subject: [PATCH v5 4/4] backlight: Add Kinetic KTD2801 backlight support
+	s=arc-20240116; t=1706200092; c=relaxed/simple;
+	bh=CKkmBUyrGKT7WEXHgCcuZ9+Ns5iuzV63djC+5Ja6ZoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=leOczJezXoEqwpRd5ecJt6S4naWJRq9BjjAqHK88Bal/THJYw+YjNukXym4/2XKQkRnMTRUxS8AbyEYEBfV2sD1s9Vsg9ZAPx77vAEh1vVqR+G8aImHWnFPmxrv/pgxTrKl+L4UNCWLQ2iF4V+emhjgXoGQ1hueM1Ov7cv6NsWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hck4aF7H; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706200090; x=1737736090;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CKkmBUyrGKT7WEXHgCcuZ9+Ns5iuzV63djC+5Ja6ZoU=;
+  b=Hck4aF7HffONCk7xZzKOVMv8A2Et6FAAypStGW1B9gmKodAbZo5lwXqc
+   9f/2b7rsKyYK9c6fosfuFrKT1VSawein1nwOCdqZDy01iQ8bm5fLUljCH
+   bZQAuvy6/M56OPkwRAocPriWurTVFsZaixNrreUOb3Q5holezVd76VbVs
+   BgfkZkEPYa9SkLoq9et32MKdjmj3SkqvByJqGdO7V2bEegi4Hskg0kbD+
+   O5ewLrwG4J751FgVbhOFAz+0BeOK2GcPT93YzIX3z7tc8EmZaPj55utRX
+   Svb+VHS4Sl5F1ruKPlOISwi9fR4BBXipYM687tROhtInSB3IjzxwGK7YD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="15575268"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="15575268"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 08:28:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="2309411"
+Received: from lkp-server01.sh.intel.com (HELO 370188f8dc87) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 25 Jan 2024 08:28:04 -0800
+Received: from kbuild by 370188f8dc87 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rT2a9-0000C0-0i;
+	Thu, 25 Jan 2024 16:28:01 +0000
+Date: Fri, 26 Jan 2024 00:27:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Frank Rowand <frowand.list@gmail.com>, Helge Deller <deller@gmx.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>, Michal Simek <monstr@monstr.eu>,
+	Rob Herring <robh+dt@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
+	alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 03/13] of: property: add of_graph_get_next_endpoint_raw()
+Message-ID: <202401260024.txulvo50-lkp@intel.com>
+References: <87fryoud8t.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240125-ktd2801-v5-4-e22da232a825@skole.hr>
-References: <20240125-ktd2801-v5-0-e22da232a825@skole.hr>
-In-Reply-To: <20240125-ktd2801-v5-0-e22da232a825@skole.hr>
-To: Lee Jones <lee@kernel.org>, 
- Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6508;
- i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=9oIB83pc/ZyTg66e328/z4fCGwof+pG+pI1cGESw4c0=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlsn7DzGjopG3zagxQdzO39RFkWfcgbL98E7cgE
- 6mQxJ+xqCuJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZbJ+wwAKCRCaEZ6wQi2W
- 4bK2EACrKqCjTzyf6knLrx0GBqRH1F4B3CAYyruA8cUQExJQWc5jI0nAF1hRrrfw3Z6OebH2Rmx
- mKQkFb9+2KL5Snf9cikzqHaIKj8ZyDhtUFqQKd4S0U8PRv+xWe8ieAb+rX/EoVnLZmDurNXTCnm
- vp/4PmXtd6swUY3Y0mge+QhwrBbmi3UQujerDHnDK+BoKnsTcdDFBqd20O+rFtsrXQeIqWIo8aY
- yhTHJCf1rvy3bTDg+s3jXxC9CRM7pyVhqpmfKSXnuvi24fobYkhMDB2EmiR0didy4CDlJavj3m+
- VvLZSlUyCMwlVy+eXj80A2KmsEf3RiaNZs7gxvaLjdTV8Z8+T3GEMa3/uPetlIApW4sEWiYKoDf
- ldHYX4m+Th2wIACdQbiDdclikspvaAGuzEluBgGT1DjeprvNfosTH5MRZLsN2Q0WIOYTh3suKPk
- HYLjnqaFZdYDkIkN0x4Pc8DQh5xLQ8Sl6OaRuajwDdy0hXLroFeLy0HSTpPiOW8UONZNA68XBCn
- wQadc/JfOJBQCgkwRiktmqAQgoUHsDufOpzWM+CpvI2HM7o9NpsMhRWd3gT8NuvMHjFTOfLGoue
- EvcvxhVf9phmwsSh1FErev7VBrRuTn1Lknu1sPpLD74CelV4mz3mwu4wcreCaPSvuxiCIQWHPBM
- 7YZDuatn7GBvkhA==
-X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
- fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87fryoud8t.wl-kuninori.morimoto.gx@renesas.com>
 
-KTD2801 is a LED backlight driver IC found in samsung,coreprimevelte.
-The brightness can be set using PWM or the ExpressWire protocol. Add
-support for the KTD2801.
+Hi Kuninori,
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
- MAINTAINERS                                 |   6 ++
- drivers/video/backlight/Kconfig             |   7 ++
- drivers/video/backlight/Makefile            |   1 +
- drivers/video/backlight/ktd2801-backlight.c | 128 ++++++++++++++++++++++++++++
- 4 files changed, 142 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e1c83e0e837a..01cd1a460907 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12052,6 +12052,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktd253.yaml
- F:	drivers/video/backlight/ktd253-backlight.c
- 
-+KTD2801 BACKLIGHT DRIVER
-+M:	Duje Mihanović <duje.mihanovic@skole.hr>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2801.yaml
-+F:	drivers/video/backlight/ktd2801-backlight.c
-+
- KTEST
- M:	Steven Rostedt <rostedt@goodmis.org>
- M:	John Hawley <warthog9@eaglescrag.net>
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index ea2d0d69bd8c..230bca07b09d 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -183,6 +183,13 @@ config BACKLIGHT_KTD253
- 	  which is a 1-wire GPIO-controlled backlight found in some mobile
- 	  phones.
- 
-+config BACKLIGHT_KTD2801
-+	tristate "Backlight Driver for Kinetic KTD2801"
-+	select LEDS_EXPRESSWIRE
-+	help
-+	  Say Y to enable the backlight driver for the Kinetic KTD2801 1-wire
-+	  GPIO-controlled backlight found in Samsung Galaxy Core Prime VE LTE.
-+
- config BACKLIGHT_KTZ8866
- 	tristate "Backlight Driver for Kinetic KTZ8866"
- 	depends on I2C
-diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
-index 06966cb20459..8d2cb252042d 100644
---- a/drivers/video/backlight/Makefile
-+++ b/drivers/video/backlight/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_BACKLIGHT_HP680)		+= hp680_bl.o
- obj-$(CONFIG_BACKLIGHT_HP700)		+= jornada720_bl.o
- obj-$(CONFIG_BACKLIGHT_IPAQ_MICRO)	+= ipaq_micro_bl.o
- obj-$(CONFIG_BACKLIGHT_KTD253)		+= ktd253-backlight.o
-+obj-$(CONFIG_BACKLIGHT_KTD2801)		+= ktd2801-backlight.o
- obj-$(CONFIG_BACKLIGHT_KTZ8866)		+= ktz8866.o
- obj-$(CONFIG_BACKLIGHT_LM3533)		+= lm3533_bl.o
- obj-$(CONFIG_BACKLIGHT_LM3630A)		+= lm3630a_bl.o
-diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
-new file mode 100644
-index 000000000000..c020acff40f1
---- /dev/null
-+++ b/drivers/video/backlight/ktd2801-backlight.c
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Datasheet:
-+ * https://www.kinet-ic.com/uploads/web/KTD2801/KTD2801-04b.pdf
-+ */
-+#include <linux/backlight.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/leds-expresswire.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+
-+#define KTD2801_DEFAULT_BRIGHTNESS	100
-+#define KTD2801_MAX_BRIGHTNESS		255
-+
-+/* These values have been extracted from Samsung's driver. */
-+const struct expresswire_timing ktd2801_timing = {
-+	.poweroff_us = 2600,
-+	.detect_delay_us = 150,
-+	.detect_us = 270,
-+	.data_start_us = 5,
-+	.short_bitset_us = 5,
-+	.long_bitset_us = 15,
-+	.end_of_data_low_us = 10,
-+	.end_of_data_high_us = 350
-+};
-+
-+struct ktd2801_backlight {
-+	struct expresswire_common_props props;
-+	struct backlight_device *bd;
-+	bool was_on;
-+};
-+
-+static int ktd2801_update_status(struct backlight_device *bd)
-+{
-+	struct ktd2801_backlight *ktd2801 = bl_get_data(bd);
-+	u8 brightness = (u8) backlight_get_brightness(bd);
-+
-+	if (backlight_is_blank(bd)) {
-+		expresswire_power_off(&ktd2801->props);
-+		ktd2801->was_on = false;
-+		return 0;
-+	}
-+
-+	if (!ktd2801->was_on) {
-+		expresswire_enable(&ktd2801->props);
-+		ktd2801->was_on = true;
-+	}
-+
-+	expresswire_write_u8(&ktd2801->props, brightness);
-+
-+	return 0;
-+}
-+
-+static const struct backlight_ops ktd2801_backlight_ops = {
-+	.update_status = ktd2801_update_status,
-+};
-+
-+static int ktd2801_backlight_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct backlight_device *bd;
-+	struct ktd2801_backlight *ktd2801;
-+	u32 brightness, max_brightness;
-+	int ret;
-+
-+	ktd2801 = devm_kzalloc(dev, sizeof(*ktd2801), GFP_KERNEL);
-+	if (!ktd2801)
-+		return -ENOMEM;
-+	ktd2801->was_on = true;
-+	ktd2801->props.timing = ktd2801_timing;
-+
-+	ret = device_property_read_u32(dev, "max-brightness", &max_brightness);
-+	if (ret)
-+		max_brightness = KTD2801_MAX_BRIGHTNESS;
-+	if (max_brightness > KTD2801_MAX_BRIGHTNESS) {
-+		dev_err(dev, "illegal max brightness specified\n");
-+		max_brightness = KTD2801_MAX_BRIGHTNESS;
-+	}
-+
-+	ret = device_property_read_u32(dev, "default-brightness", &brightness);
-+	if (ret)
-+		brightness = KTD2801_DEFAULT_BRIGHTNESS;
-+	if (brightness > max_brightness) {
-+		dev_err(dev, "default brightness exceeds max\n");
-+		brightness = max_brightness;
-+	}
-+
-+	ktd2801->props.ctrl_gpio = devm_gpiod_get(dev, "ctrl", GPIOD_OUT_HIGH);
-+	if (IS_ERR(ktd2801->props.ctrl_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ktd2801->props.ctrl_gpio),
-+				"failed to get backlight GPIO");
-+	gpiod_set_consumer_name(ktd2801->props.ctrl_gpio, dev_name(dev));
-+
-+	bd = devm_backlight_device_register(dev, dev_name(dev), dev, ktd2801,
-+			&ktd2801_backlight_ops, NULL);
-+	if (IS_ERR(bd))
-+		return dev_err_probe(dev, PTR_ERR(bd),
-+				"failed to register backlight");
-+
-+	bd->props.max_brightness = max_brightness;
-+	bd->props.brightness = brightness;
-+
-+	ktd2801->bd = bd;
-+	platform_set_drvdata(pdev, bd);
-+	backlight_update_status(bd);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id ktd2801_of_match[] = {
-+	{ .compatible = "kinetic,ktd2801" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ktd2801_of_match);
-+
-+static struct platform_driver ktd2801_backlight_driver = {
-+	.driver = {
-+		.name = "ktd2801-backlight",
-+		.of_match_table = ktd2801_of_match,
-+	},
-+	.probe = ktd2801_backlight_probe,
-+};
-+module_platform_driver(ktd2801_backlight_driver);
-+
-+MODULE_IMPORT_NS(EXPRESSWIRE);
-+MODULE_AUTHOR("Duje Mihanović <duje.mihanovic@skole.hr>");
-+MODULE_DESCRIPTION("Kinetic KTD2801 Backlight Driver");
-+MODULE_LICENSE("GPL");
+[auto build test WARNING on broonie-sound/for-next]
+[also build test WARNING on drm-misc/drm-misc-next linus/master v6.8-rc1 next-20240125]
+[cannot apply to robh/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Kuninori-Morimoto/of-property-add-port-base-loop/20240123-081427
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/87fryoud8t.wl-kuninori.morimoto.gx%40renesas.com
+patch subject: [PATCH 03/13] of: property: add of_graph_get_next_endpoint_raw()
+config: i386-buildonly-randconfig-002-20240125 (https://download.01.org/0day-ci/archive/20240126/202401260024.txulvo50-lkp@intel.com/config)
+compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240126/202401260024.txulvo50-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401260024.txulvo50-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/of/property.c:681: warning: Function parameter or struct member 'port' not described in 'of_graph_get_next_endpoint_raw'
+>> drivers/of/property.c:681: warning: Excess function parameter 'parent' description in 'of_graph_get_next_endpoint_raw'
+
+
+vim +681 drivers/of/property.c
+
+   670	
+   671	/**
+   672	 * of_graph_get_next_endpoint_raw() - get next endpoint node
+   673	 * @parent: pointer to the target port node
+   674	 * @endpoint: current endpoint node, or NULL to get first
+   675	 *
+   676	 * Return: An 'endpoint' node pointer with refcount incremented. Refcount
+   677	 * of the passed @prev node is decremented.
+   678	 */
+   679	struct device_node *of_graph_get_next_endpoint_raw(const struct device_node *port,
+   680							   struct device_node *endpoint)
+ > 681	{
+   682		if (!port)
+   683			return NULL;
+   684	
+   685		do {
+   686			endpoint = of_get_next_child(port, endpoint);
+   687			if (!endpoint)
+   688				break;
+   689		} while (!of_node_name_eq(endpoint, "endpoint"));
+   690	
+   691		return endpoint;
+   692	}
+   693	EXPORT_SYMBOL(of_graph_get_next_endpoint_raw);
+   694	
 
 -- 
-2.43.0
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
