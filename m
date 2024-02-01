@@ -1,62 +1,62 @@
-Return-Path: <linux-fbdev+bounces-862-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-866-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD464845B57
-	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Feb 2024 16:24:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77751845D7D
+	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Feb 2024 17:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8875A294539
-	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Feb 2024 15:24:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FA49B365F1
+	for <lists+linux-fbdev@lfdr.de>; Thu,  1 Feb 2024 16:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A87D77A17;
-	Thu,  1 Feb 2024 15:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609407E0F4;
+	Thu,  1 Feb 2024 16:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nvwjmWx9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6zOFB0Y"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B174A62160;
-	Thu,  1 Feb 2024 15:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184364C6C;
+	Thu,  1 Feb 2024 16:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706800911; cv=none; b=RlZEckPWSxwVfxpyE6fcj5LKYZ4DPjwZetbAmoyffp6oCJXuH18hG/JUzV+iO2ZGjbh4n2S6TBE50CObxhYvS7YwUWjustKB8XT5f6fzvsBDwjboQUS7LjYx7N2B/OhyKx+yYcns8U7ow0chH8MUl7tyG8KgFGfZ1SihBSUvbjM=
+	t=1706805235; cv=none; b=lbnAhJSXsSq9PwPEH1xdi5cMoRq7olYqYW/V9VrFyzcLJvfPDfOvzx2O1YIZ7evEheE/rAMuxx9G8vq31KDb16m5srrKWY21tRp5BDNQMvMiTmiasFdAavbjoWMlkOgB+M9tg9itv8TAeoz6eN0An6kK8lwS1Y9Ww7RwmceuN6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706800911; c=relaxed/simple;
-	bh=WQWD/KmFc0zx5MOPqiRy9ksCicyxu+6xfyIr/wR/bkY=;
+	s=arc-20240116; t=1706805235; c=relaxed/simple;
+	bh=Y4tGleDCKLWtxFwW/vft+m/ukBpChbYl89eQXzMV72U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSI00uikfDdZI8FFIzw/5mlCz9o5SJcIUlkafSocmpkq9utaBAqwopsW32C3Ookf3rLDcs2SpslcopcQ1X3fXaLDtDtBN/Mojxho2nGeN146TGUT8lFwtXW9Xnjm/FjQkB08dDApdstUkIVFxfUgak9PY+33K7yS0NV472rW6GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nvwjmWx9; arc=none smtp.client-ip=192.55.52.120
+	 MIME-Version; b=FnjqWufN4tUas0/aivIHPHuR+uy5acHsIxeWJimZk+Fx2XAKrVyAJihKd7c2l97pMTyK4sHm/x7daJodbYmjtzNzSJhXOpsGBv5CoXLKbNnmgHKbMGmZe7aqZcsP14+j/cb4iYNravYS63l7iKHA5ypDUah4BX8Wrg/AEpdtynI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6zOFB0Y; arc=none smtp.client-ip=134.134.136.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706800909; x=1738336909;
+  t=1706805233; x=1738341233;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WQWD/KmFc0zx5MOPqiRy9ksCicyxu+6xfyIr/wR/bkY=;
-  b=nvwjmWx9PGRKI1zvShK8l1eXlj5P0OPZmO4PZWQRcR2iGOK9yX2W6m8d
-   w0ReZGcaulfKfcDKLcusKfhZ9I1bvme3TZRsYYZJXziOABb/xh0lUC3e+
-   hR/2rX5GQfoFwn5PxmS019XtEjRe/s+zBNGN2UEbuKYNwtBwDzS5IR807
-   yrJffSEn36JaI8YiWy4kfZcPvKDNIjBlbPfh4I6Zx4sm54fq8Nm+9gJR8
-   8A9VhLsd4HqTq07kB63JJj039aAvz9/S1KlRaKuJWXxbdfTlZogr+X96O
-   KRHUgtgG3+0q0MBK+qektJl/3ErF6ZiZDFyJdj0SJtyriez2iH93NG9J8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="402762439"
+  bh=Y4tGleDCKLWtxFwW/vft+m/ukBpChbYl89eQXzMV72U=;
+  b=a6zOFB0YS7Xb50kcscGV0/RRu/D6+hjzoZtuEsRPxizC0n/QrHTbHNsv
+   HBFGnwnbHN3p2p8yuTH0t3hMoygjN92CPqu8KXqXxcETdVGo/Io+BkFph
+   wqPzLfjV6NANyF7qhgPEhAk+yZWpPycHSX230pMZApcvliWe/5j0NPO3D
+   3+r8zWksdCiNaLVbAPHmmnMnxAgGtN7QFCFBIG4KKawyJLCHAq1n4QT1z
+   nQIpMknsG/FEbOSEcGokczCpcafs0+sQbxNLJBLnIIcUKkU/zHh0Jb4Rg
+   Op+3/pJKqH+vi2zFMu0kMoiSaLYZOMQ43uw6Pp9q9EbK6u3cHG6BKluT9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="468167634"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="402762439"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 07:21:48 -0800
+   d="scan'208";a="468167634"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 08:31:45 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="788953700"
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="908292478"
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="788953700"
+   d="scan'208";a="908292478"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 01 Feb 2024 07:21:41 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 01 Feb 2024 08:31:41 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id D646EC07; Thu,  1 Feb 2024 17:15:42 +0200 (EET)
+	id DEA06C41; Thu,  1 Feb 2024 17:15:42 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Flavio Suligoi <f.suligoi@asem.it>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -67,9 +67,9 @@ Cc: Lee Jones <lee@kernel.org>,
 	Daniel Thompson <daniel.thompson@linaro.org>,
 	Jingoo Han <jingoohan1@gmail.com>,
 	Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 2/3] backlight: mp3309c: use dev_err_probe() instead of dev_err()
-Date: Thu,  1 Feb 2024 17:14:14 +0200
-Message-ID: <20240201151537.367218-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 3/3] backlight: mp3309c: Utilise temporary variable for struct device
+Date: Thu,  1 Feb 2024 17:14:15 +0200
+Message-ID: <20240201151537.367218-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 In-Reply-To: <20240201151537.367218-1-andriy.shevchenko@linux.intel.com>
 References: <20240201151537.367218-1-andriy.shevchenko@linux.intel.com>
@@ -81,63 +81,107 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace dev_err() with dev_err_probe().
+We have a temporary variable to keep pointer to struct device.
+Utilise it where it makes sense.
 
-This helps in simplifing code and standardizing the error output.
-
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Tested-by: Flavio Suligoi <f.suligoi@asem.it>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/video/backlight/mp3309c.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/video/backlight/mp3309c.c | 30 ++++++++++++------------------
+ 1 file changed, 12 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/video/backlight/mp3309c.c b/drivers/video/backlight/mp3309c.c
-index 762bd738c903..2d6bd1a180b3 100644
+index 2d6bd1a180b3..e7abefd175a4 100644
 --- a/drivers/video/backlight/mp3309c.c
 +++ b/drivers/video/backlight/mp3309c.c
-@@ -208,10 +208,8 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
- 	unsigned int num_levels, tmp_value;
- 	struct device *dev = chip->dev;
+@@ -222,10 +222,9 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
+ 	 */
+ 	pdata->dimming_mode = DIMMING_ANALOG_I2C;
+ 	if (device_property_present(dev, "pwms")) {
+-		chip->pwmd = devm_pwm_get(chip->dev, NULL);
++		chip->pwmd = devm_pwm_get(dev, NULL);
+ 		if (IS_ERR(chip->pwmd))
+-			return dev_err_probe(chip->dev, PTR_ERR(chip->pwmd),
+-					     "error getting pwm data\n");
++			return dev_err_probe(dev, PTR_ERR(chip->pwmd), "error getting pwm data\n");
+ 		pdata->dimming_mode = DIMMING_PWM;
+ 		pwm_apply_args(chip->pwmd);
+ 	}
+@@ -243,11 +242,9 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
+ 		num_levels = ANALOG_I2C_NUM_LEVELS;
  
--	if (!dev_fwnode(dev)) {
--		dev_err(dev, "failed to get firmware node\n");
--		return -ENODEV;
--	}
-+	if (!dev_fwnode(dev))
-+		return dev_err_probe(dev, -ENODEV, "failed to get firmware node\n");
- 
- 	/*
- 	 * Dimming mode: the MP3309C provides two dimming control mode:
-@@ -287,8 +285,7 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
- 	if (ret)
- 		pdata->default_brightness = pdata->max_brightness;
- 	if (pdata->default_brightness > pdata->max_brightness) {
--		dev_err(chip->dev,
--			"default brightness exceeds max brightness\n");
-+		dev_err_probe(dev, -ERANGE, "default brightness exceeds max brightness\n");
- 		pdata->default_brightness = pdata->max_brightness;
+ 		/* Enable GPIO used in I2C dimming mode only */
+-		chip->enable_gpio = devm_gpiod_get(chip->dev, "enable",
+-						   GPIOD_OUT_HIGH);
++		chip->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
+ 		if (IS_ERR(chip->enable_gpio))
+-			return dev_err_probe(chip->dev,
+-					     PTR_ERR(chip->enable_gpio),
++			return dev_err_probe(dev, PTR_ERR(chip->enable_gpio),
+ 					     "error getting enable gpio\n");
+ 	} else {
+ 		/*
+@@ -265,8 +262,7 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
  	}
  
-@@ -329,16 +326,15 @@ static int mp3309c_parse_fwnode(struct mp3309c_chip *chip,
+ 	/* Fill brightness levels array */
+-	pdata->levels = devm_kcalloc(chip->dev, num_levels,
+-				     sizeof(*pdata->levels), GFP_KERNEL);
++	pdata->levels = devm_kcalloc(dev, num_levels, sizeof(*pdata->levels), GFP_KERNEL);
+ 	if (!pdata->levels)
+ 		return -ENOMEM;
+ 	if (device_property_present(dev, "brightness-levels")) {
+@@ -336,21 +332,21 @@ static int mp3309c_probe(struct i2c_client *client)
+ 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
+ 		return dev_err_probe(dev, -EOPNOTSUPP, "failed to check i2c functionality\n");
  
- static int mp3309c_probe(struct i2c_client *client)
- {
--	struct mp3309c_platform_data *pdata = dev_get_platdata(&client->dev);
-+	struct device *dev = &client->dev;
-+	struct mp3309c_platform_data *pdata = dev_get_platdata(dev);
- 	struct mp3309c_chip *chip;
- 	struct backlight_properties props;
- 	struct pwm_state pwmstate;
- 	int ret;
- 
--	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
--		dev_err(&client->dev, "failed to check i2c functionality\n");
--		return -EOPNOTSUPP;
--	}
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-+		return dev_err_probe(dev, -EOPNOTSUPP, "failed to check i2c functionality\n");
- 
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+-	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
++	chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
  	if (!chip)
+ 		return -ENOMEM;
+ 
+-	chip->dev = &client->dev;
++	chip->dev = dev;
+ 
+ 	chip->regmap = devm_regmap_init_i2c(client, &mp3309c_regmap);
+ 	if (IS_ERR(chip->regmap))
+-		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
++		return dev_err_probe(dev, PTR_ERR(chip->regmap),
+ 				     "failed to allocate register map\n");
+ 
+ 	i2c_set_clientdata(client, chip);
+ 
+ 	if (!pdata) {
+-		pdata = devm_kzalloc(chip->dev, sizeof(*pdata), GFP_KERNEL);
++		pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+ 		if (!pdata)
+ 			return -ENOMEM;
+ 
+@@ -367,11 +363,10 @@ static int mp3309c_probe(struct i2c_client *client)
+ 	props.type = BACKLIGHT_RAW;
+ 	props.power = FB_BLANK_UNBLANK;
+ 	props.fb_blank = FB_BLANK_UNBLANK;
+-	chip->bl = devm_backlight_device_register(chip->dev, "mp3309c",
+-						  chip->dev, chip,
++	chip->bl = devm_backlight_device_register(dev, "mp3309c", dev, chip,
+ 						  &mp3309c_bl_ops, &props);
+ 	if (IS_ERR(chip->bl))
+-		return dev_err_probe(chip->dev, PTR_ERR(chip->bl),
++		return dev_err_probe(dev, PTR_ERR(chip->bl),
+ 				     "error registering backlight device\n");
+ 
+ 	/* In PWM dimming mode, enable pwm device */
+@@ -383,8 +378,7 @@ static int mp3309c_probe(struct i2c_client *client)
+ 		pwmstate.enabled = true;
+ 		ret = pwm_apply_state(chip->pwmd, &pwmstate);
+ 		if (ret)
+-			return dev_err_probe(chip->dev, ret,
+-					     "error setting pwm device\n");
++			return dev_err_probe(dev, ret, "error setting pwm device\n");
+ 	}
+ 
+ 	chip->pdata->status = FIRST_POWER_ON;
 -- 
 2.43.0.rc1.1.gbec44491f096
 
