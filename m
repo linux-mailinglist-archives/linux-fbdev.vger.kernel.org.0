@@ -1,163 +1,195 @@
-Return-Path: <linux-fbdev+bounces-875-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-881-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739C7846E4E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Feb 2024 11:52:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7707846FB2
+	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Feb 2024 13:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9727F1C25FBF
-	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Feb 2024 10:52:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA9FDB24E66
+	for <lists+linux-fbdev@lfdr.de>; Fri,  2 Feb 2024 12:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F607A732;
-	Fri,  2 Feb 2024 10:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A8613E226;
+	Fri,  2 Feb 2024 12:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=asem.it header.i=@asem.it header.b="KzwB9xIq"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XF1FUfhi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2PL2445C";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XF1FUfhi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2PL2445C"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2132.outbound.protection.outlook.com [40.107.21.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CDEF508;
-	Fri,  2 Feb 2024 10:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706871158; cv=fail; b=Q+pu1Yju+nl9hI5FuHSKHxNowmxKZw4x/KoLogcZnmwcQY3tjUr9naV15ewvts/3Mwn83indyy/CTzWpa02DI/dqFDi/OB1XjJhRbIcpsgD5rZ2DQaYiYebUa/Iuq2DiOQlPSDNxhaBkcSuVNaSCdFs/Ic6rJin+FIh4Cs8yEtw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706871158; c=relaxed/simple;
-	bh=hFz6nkb4Sc4H5bDlodOrbTXbjuA840k/wLNGSV8EMCA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=c96IBbjOaHK5G3QQbbzDqKAxXomIlIgI9i0LTfWRy2PjaF+xFicN+01wLVE7xFqasrMCzTnKYiFOa8rwSZFHWtCwQBjBHuf80KulVFIrEzpt4ILoR0EQKZ3F/Z6QG7KZ8MhsB/1LB30gQ2f5vmwDM2NGSWyfIgPfOawDBEH03Jc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it; spf=pass smtp.mailfrom=asem.it; dkim=pass (1024-bit key) header.d=asem.it header.i=@asem.it header.b=KzwB9xIq; arc=fail smtp.client-ip=40.107.21.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asem.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asem.it
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=asIQyp/KXci3lyxrQB27/MOEqBMDRmtXTFE5l0PvZxikcTzRp+YfpVeTVdVlKKSUX6YLZQ/zpZk5kdaLfYfIkomKgU+itxsXfFMg5+c1BmSyM/aIFzkAhNGhsD5C/Cj2+vJoqlPEzX5If0t//HP2Mk3oB3yxgKuwxYM6IDNpFksXJI3oSAAVsDbyG63iTGByfYxzB+IfrBS30OTzks7/9YPBYFcMPNeSNa+QBDuh5FmyCfeM3G5IvWGrZwFfwsM1tucNTWSOLs137xUNTKAl+x4m180+BkWlrJMP6HuEtk0By87Cg1trN3F3oD5TC367cyo5bTAdYwutJ0zDhzV4tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NCPjBpPE4EcVfMwTYFY6l2PdmyqghoBqOhtsWHsePiI=;
- b=lL+L6n+4QQzfDyKUSE2tZRLQZOyFnv0AknmsNpO+UIUjRhqzK9zxdKHvgILbnt3xKj4gXuhkmLw7y8xZjNksoTFKBxttk6sI+T9Dvd1P+5CEj/x8GMdbwQclQUC4acbTy1vBQrxwxfjdfaWXI6HmTGPI/DLYYqOxqDzhMynE1Jn4/z4DWpcNRcbwLAhxXxJK14vsWS1rj1aeXCEYOwv5xqaXvApg+7/gLAWDkhGhQHdi2TMBfASRMqfDx71Sacg4wLu7mCHqxtxxiBdjx6KNWuU40T64yc/D3pbU48mB32TPl+iDNINV+zOV64i34CBeADhDx1Tz/GyrSMp5+RO53A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=asem.it; dmarc=pass action=none header.from=asem.it; dkim=pass
- header.d=asem.it; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=asem.it; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NCPjBpPE4EcVfMwTYFY6l2PdmyqghoBqOhtsWHsePiI=;
- b=KzwB9xIqTpihSMwwQMyF94ICfnxPeOwsnK2GJLtL/JoiwwsmvZGMlCH+FYIQnzEYSi1Or/s3aUnDEroBl0gO3p8fg5nWg0S1GKZTO+wDe9okHDSSyo7P0/5aE3Bw2lF8tEsBpUVxYdel+vkj/1sSXeE/4NJN7KK02ElF2hM0Jgo=
-Received: from DU2PR01MB8034.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:273::14) by AS2PR01MB10291.eurprd01.prod.exchangelabs.com
- (2603:10a6:20b:5e9::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.30; Fri, 2 Feb
- 2024 10:52:32 +0000
-Received: from DU2PR01MB8034.eurprd01.prod.exchangelabs.com
- ([fe80::f272:d554:d6b7:13cd]) by DU2PR01MB8034.eurprd01.prod.exchangelabs.com
- ([fe80::f272:d554:d6b7:13cd%7]) with mapi id 15.20.7249.027; Fri, 2 Feb 2024
- 10:52:32 +0000
-From: Flavio Suligoi <f.suligoi@asem.it>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: Lee Jones <lee@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
-Subject: RE: [PATCH v2 0/3] backlight: mp3309c: Allow to use on non-OF
- platforms
-Thread-Topic: [PATCH v2 0/3] backlight: mp3309c: Allow to use on non-OF
- platforms
-Thread-Index: AQHaVSJj4ATnO/nYS0S6xCnSjXvlN7D24Lmw
-Date: Fri, 2 Feb 2024 10:52:32 +0000
-Message-ID:
- <DU2PR01MB80349345B0C1757C6958107FF9422@DU2PR01MB8034.eurprd01.prod.exchangelabs.com>
-References: <20240201151537.367218-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240201151537.367218-1-andriy.shevchenko@linux.intel.com>
-Accept-Language: it-IT, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=asem.it;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU2PR01MB8034:EE_|AS2PR01MB10291:EE_
-x-ms-office365-filtering-correlation-id: cddaaef1-4806-4485-0075-08dc23dd0ef5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- vQ/EZrqfCfoSW7UeFruqeNgsksEY1/vxFJBc7DjRa03xzJmjTwGexGhz6pbB0BQke8sW4xITAei9ZbTejF+RwtbxgnPMX91uJPGYmaN7VCEwTFiasTfa2gaONaQVaQy0WJACPfVLld45JrM5yGay1v6KvefXXk7XG8UPH7sdOaJyzYA8RoVm5LT9kI1BSkXZZ05WjpfbolpQEvhdVNonurO+d1NH0xIRRw3/zeGbgQs3Z6CEQ9rvZbLNr8CRMd7OTTB9f0tSAultWCSHpbbDL0GbNw1U/JgsRrM7WPdmxOGyKqvUIJE+nJseu1WG5wBzhT0SdAHLGlXdsbmT4Buxcq+HQFyK0ElNMx0P/hyw3GeweiaoMqQiVAjk2SuRPwBJUiloveIbT8pkoJVWE5ZKmThZGFO6/p9K5F+qUBVIHfXZU8OIM9RnOOPWbv7ImWY1U3sNAJTt2P23WxUTASas+VM3Xrur26ijeup8vOdipUS5aPGsJo/uCaXNLlP8eIcrxvXDu40V26pco7VfAdCw6rTTieECHTnXUy22TJ8pbTC97K/pkKHd0b5JeL71SJnehosoabm+VWpRfeKCLpC2KW5SHlAjarYX625l/wzyUK2JZv9S+LZ2cD8ZkBIGM8Lj
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR01MB8034.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(396003)(39850400004)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(5660300002)(4744005)(478600001)(8676002)(33656002)(86362001)(6506007)(71200400001)(7696005)(4326008)(66446008)(66556008)(66476007)(110136005)(76116006)(66946007)(8936002)(64756008)(54906003)(316002)(122000001)(38100700002)(41300700001)(26005)(52536014)(9686003)(38070700009)(55016003)(2906002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?kULOdlY9Wd1CsIA96Lhkp+6/R+JfcHUKnBXBbrnhRQE3BDxrh3HhExrG26tv?=
- =?us-ascii?Q?sl3AMpMY+fKKDGQJcnaewNI+ZF324lrDurF/PBea3OPmFnD4i+JatU65KXxE?=
- =?us-ascii?Q?AqfGNKbHdIl7mHZIqrtyEFqobn2cGx1KZBGW9wetvK1L60WYcPYXwDbzhWXS?=
- =?us-ascii?Q?moW0fBwczTY3KpR12irSusdl/Ic2RYEmK44bRpVTxGlxl14Lpzxp8t/n6bI5?=
- =?us-ascii?Q?JR6jaqFZyI+gckpPUVIkiANgIoed3ZzjtYUuOw5CgVRIHRTsjZ2l37e9Zq07?=
- =?us-ascii?Q?O3qC9DubTTUaAAsowr9m/QmEWrtddGtjEWYFOEczH9KAHa6VZbjwkh5AQrhH?=
- =?us-ascii?Q?7ijm5bStT3SxPdWEJEwvkUAnrltFCfMlfmDPVKLTMWPCxAdtoSL2Edj959gt?=
- =?us-ascii?Q?OE/qyGjE2AN8iwRjwl7U3QZZS1LOs2/apbs++2MMdoovfXlJUmmgjYYOIEAm?=
- =?us-ascii?Q?qpBPeR4ySPkkmCdi9VkMzo7gLVYEVTD/as2/3+ggFLlR7j/ze8X0LMtFSStv?=
- =?us-ascii?Q?jwF+92h0sRsj3+gxkHfpCo7D4g/cFRTuTbdidOOkM45FdZcg6J23x3SRxidW?=
- =?us-ascii?Q?zmNVotmia2wRBQb0BFbkBqGUWnCSd4URt4Jl4XxP8wzLieH5wKh5GituzNIJ?=
- =?us-ascii?Q?9u0bt3P2U6FmfCDQ/VqHfIUK3mEUD7LNYVVxPHqd7k4Eyw79bVT7cNjRpStF?=
- =?us-ascii?Q?klcBkDu/3NfR6Vqs6fNRhdIYiX4VjbIYCUGXYuxKDtCW81YxxnFrWDgMyNf2?=
- =?us-ascii?Q?PEJH2CWJGKkPuGhvDTd+8kCORXRvFdAdxcd1UtDwJl16PrKwqfSS7HjuWn8z?=
- =?us-ascii?Q?TjYXkJb0kI7ldRJpoVUCb0BvxoiCE5CYNG35PcT/ZaGHDA6nnseJ5sQYEJSw?=
- =?us-ascii?Q?4pP42xiVfZ3kXqx0JYX+6b7Jq1wUjuB4hRWEyY2GsiQpVscz6Se/yBAbaAjQ?=
- =?us-ascii?Q?rQ5dU93CRrjosA1s37RA53oX40iRZ8G2SJow41v9zycij4kPs9RFZLRRnZpn?=
- =?us-ascii?Q?mRduMu4l51qIJ1rSDTrfxuAiDyu09x7EeVmKPsGGwdokEzyBac+jIRaiyi12?=
- =?us-ascii?Q?+uuOdOlgmJbc6/+gSpha30YDKd+a3WKCSsVBKnFc/wgCrb9GNC1VO4IRyrhZ?=
- =?us-ascii?Q?ZIn7jAFLnkUuy3TqlfXWvUzlJ310GfCT2JSbAHJivwq09jshMhxIXVe13+zA?=
- =?us-ascii?Q?AKIHEDfgOWlp4DMqJz5FVtCbb5EDxtVuDjFCLlZC8ncPqNQW3vR03dnwYuLT?=
- =?us-ascii?Q?b60G9M5Fu21g55gYnkuyCSHEOkG9mbeP6SFlfQcRg7P1sDes7htRyXwiJW46?=
- =?us-ascii?Q?GGClPGXAhwyVBzqVZ4fZg+tW/jLlHFOuM+rAb+8UWPIkATTdU5PLOY9HqDhX?=
- =?us-ascii?Q?Lca8+5S39tupfQS3cS3jzt4fFN2GFxjdw+XKubaV7D6JhgPuPKm4vDbE6ceZ?=
- =?us-ascii?Q?GxmMXqu3AhfrRJp9Z9C9voijMjLuMVaXrl8L/vMLUZdgN0AlENiTjsmQuR9n?=
- =?us-ascii?Q?O81ot8jYtlz16OXMGBXABlW4RT88Pdx1R3DBPJO/cn45KOyQuqZMNkk40v0C?=
- =?us-ascii?Q?fTbcRvg61oipprW79Aw=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290822067
+	for <linux-fbdev@vger.kernel.org>; Fri,  2 Feb 2024 12:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706875308; cv=none; b=BkqlU2npv9x+CjSmHNAuag4PPm2WUjJfyzrlzEfV1tXvXzWeX9ZDZQTk6ECbgcy/dCKXc/p7QEr5e4V+KdCo4S8dCeScytf63LhNreeP0ovVlAEEYXQs3eKJuLjW3h89/myBVAWyWkrBRzq6kfd4s6W+ZzB9+jor1l3e/vWc/gc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706875308; c=relaxed/simple;
+	bh=BPuyv1+QkAFGhfvH8ry0LwzZjIIeYLUzu9h3EckZANI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Du8x0S+KOvpylxN/Dwkl5ES18IYHppbhyf2FEzrbRws4H2L42m/MeMLmGje7KGkmGapmkbJcvJRQAACV7zR1fUtMUrSfSiCzqDqhc8dc+7N2zPEdMkUCrNdathWIxd5iQKos+O/d8HrPb3oJu17bV4ea7+8nxOs/J1ehnSxXNq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XF1FUfhi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2PL2445C; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XF1FUfhi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2PL2445C; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C61321C0D;
+	Fri,  2 Feb 2024 12:01:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1706875303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZbxhHAoZ9bg8jxuHcZosFggE6/XnxqgtERLEBbxYTBQ=;
+	b=XF1FUfhiBDX4sqvo3Zjn94CNbYEEnELyPaRler3Dm2WeaU72cUpE1dAdFQxrvFQq0wg6TF
+	pwyqPIAQt6nLMfje0MyhnvY82DPGj7ChY4AAheRhXTm0QqbOw5xk3xhU9BfqhbR3VmXi0p
+	z/KvKCSCwT1Y5HAwHlqPOMnCJml6VSI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1706875303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZbxhHAoZ9bg8jxuHcZosFggE6/XnxqgtERLEBbxYTBQ=;
+	b=2PL2445C7lU5VbCZgivZZGB22wL4TQeptYs3MO7lRH483Go9Mr/x7aNJpH2vDYoOxK5tLP
+	I3xui7f2wqi8zuCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1706875303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZbxhHAoZ9bg8jxuHcZosFggE6/XnxqgtERLEBbxYTBQ=;
+	b=XF1FUfhiBDX4sqvo3Zjn94CNbYEEnELyPaRler3Dm2WeaU72cUpE1dAdFQxrvFQq0wg6TF
+	pwyqPIAQt6nLMfje0MyhnvY82DPGj7ChY4AAheRhXTm0QqbOw5xk3xhU9BfqhbR3VmXi0p
+	z/KvKCSCwT1Y5HAwHlqPOMnCJml6VSI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1706875303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZbxhHAoZ9bg8jxuHcZosFggE6/XnxqgtERLEBbxYTBQ=;
+	b=2PL2445C7lU5VbCZgivZZGB22wL4TQeptYs3MO7lRH483Go9Mr/x7aNJpH2vDYoOxK5tLP
+	I3xui7f2wqi8zuCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF94F13A58;
+	Fri,  2 Feb 2024 12:01:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id toZuNabZvGWfeAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 02 Feb 2024 12:01:42 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	pjones@redhat.com,
+	deller@gmx.de,
+	ardb@kernel.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 0/8] firmware/sysfb: Track parent device for screen_info
+Date: Fri,  2 Feb 2024 12:58:41 +0100
+Message-ID: <20240202120140.3517-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: asem.it
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR01MB8034.eurprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cddaaef1-4806-4485-0075-08dc23dd0ef5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2024 10:52:32.5402
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d0a766c6-7992-4344-a4a2-a467a7bb1ed2
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8vidHsdALLsQwJwA9vKX+KYWSllFN8ZcdvE0K0+SUbE4FxBXVXDtb6g77LJ8BQgws+vgviqIWnMue+0HOM5oOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR01MB10291
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XF1FUfhi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2PL2445C
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FREEMAIL_TO(0.00)[redhat.com,gmx.de,kernel.org];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:97:from];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -3.01
+X-Rspamd-Queue-Id: 2C61321C0D
+X-Spam-Flag: NO
 
-Hi Andy,
+Detect the firmware framebuffer's parent device from the global
+screen_info state and set up the framebuffer's device accordingly.
+Remove the equivalent functionality from efifb. Other drivers for
+firmware framebuffers, such as simpledrm or vesafb, now add these
+new features.
 
-...
+Patches 1 and 2 provide a set of helper functions to avoid parsing
+the screen_info values manually. Decoding screen_info is fragile and
+many drivers get it wrong. We should later adopt these helpers in
+existing drivers, such as efifb, vesafb, as well.
 
-> Subject: [PATCH v2 0/3] backlight: mp3309c: Allow to use on non-OF
-> platforms
->=20
-> Allow to use driver on non-OF platforms and other cleanups.
->=20
-> Changelog v2:
-> - rename pm3309c_parse_dt_node() --> mp3309c_parse_fwnode() (Daniel)
-> - add tags (Daniel, Flavio)
-> - new patch 2
->=20
-> Andy Shevchenko (3):
->   backlight: mp3309c: Make use of device properties
->   backlight: mp3309c: use dev_err_probe() instead of dev_err()
->   backlight: mp3309c: Utilise temporary variable for struct device
-...
-I've just tested again all your three patches (using the last 8.8.0-rc1 for=
--backlight-next )  on my board and all is ok.
+Patches 3 and 4 set the firmware framebuffer's parent device. There
+is code in efifb to do something similar for power management. That
+is now obsolete and being cleaned up. Setting the parent device makes
+Linux track the power management correctly.
 
-Thanks,
-Flavio
+Patches 5 and 6 track the parent device's enable state. We don't
+create framebuffer devices if the underlying hardware device has been
+disabled. Remove the functionality from efifb.
+
+Patches 7 and 8 track the parent device's PCI BAR location. It can
+happen on aarch64 that the firmware framebuffer moves its location
+during the kernel's boot. We now fix up the screen_info state to
+point to the correct location. Again remove such functionality from
+efifb.
+
+v2:
+	* small refactorings throughout the patchset
+
+Thomas Zimmermann (8):
+  video: Add helpers for decoding screen_info
+  video: Provide screen_info_get_pci_dev() to find screen_info's PCI
+    device
+  firmware/sysfb: Set firmware-framebuffer parent device
+  fbdev/efifb: Remove PM for parent device
+  firmware/sysfb: Create firmware device only for enabled PCI devices
+  fbdev/efifb: Do not track parent device status
+  firmware/sysfb: Update screen_info for relocated EFI framebuffers
+  fbdev/efifb: Remove framebuffer relocation tracking
+
+ drivers/firmware/Kconfig            |   1 +
+ drivers/firmware/sysfb.c            |  49 +++++++++-
+ drivers/firmware/sysfb_simplefb.c   |   5 +-
+ drivers/video/Kconfig               |   4 +
+ drivers/video/Makefile              |   4 +
+ drivers/video/fbdev/efifb.c         |  97 +-----------------
+ drivers/video/screen_info_generic.c | 146 ++++++++++++++++++++++++++++
+ drivers/video/screen_info_pci.c     | 140 ++++++++++++++++++++++++++
+ include/linux/screen_info.h         | 126 ++++++++++++++++++++++++
+ include/linux/sysfb.h               |   3 +-
+ 10 files changed, 480 insertions(+), 95 deletions(-)
+ create mode 100644 drivers/video/screen_info_generic.c
+ create mode 100644 drivers/video/screen_info_pci.c
+
+-- 
+2.43.0
+
 
