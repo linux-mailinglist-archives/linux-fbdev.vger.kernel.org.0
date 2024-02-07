@@ -1,90 +1,90 @@
-Return-Path: <linux-fbdev+bounces-965-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-967-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D5084CBFC
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Feb 2024 14:50:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2E684CBFE
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Feb 2024 14:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A413290162
-	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Feb 2024 13:50:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 332E11C21296
+	for <lists+linux-fbdev@lfdr.de>; Wed,  7 Feb 2024 13:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F53977F08;
-	Wed,  7 Feb 2024 13:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D62B78B6B;
+	Wed,  7 Feb 2024 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4iNwKD9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Xbbr9DHZ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J4iNwKD9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Xbbr9DHZ"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zV6RQpW3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Z9jG/9eF";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zV6RQpW3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Z9jG/9eF"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992779DB0
-	for <linux-fbdev@vger.kernel.org>; Wed,  7 Feb 2024 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D466977F23
+	for <linux-fbdev@vger.kernel.org>; Wed,  7 Feb 2024 13:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707313781; cv=none; b=oVBrSKe3P/JRUvcdMs8J0BsbbkN2Z6L55Fsi+BC8ixgqrKV9Iyp6/ykKj0rUFaBE2Z32XsDW4mL34hFIDIdTMiUXC5YxUq497VbHUWsz9jS1LeTviVUCs80wsBGCxmkboJ0xYp8AUcHG+yeXbKtj8wmVnqx38jdEiGTjIO2q+ic=
+	t=1707313782; cv=none; b=ryNavYUGQsQelcFDREnH2OtNLzC7GPlyN58e8r/N7LXvFsCfqf8vAZa5rP7QMNDhEHhjeF7h401qGlqtnMd6PZM8cmC3AG2Lns9R4EgXfAosM5N9u9UeBcZ1+ajs+xkKSOqhq0HPpZBfi4xZuyOZfIS4QfluLxU5rNcjAw/bAg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707313781; c=relaxed/simple;
-	bh=MmhISpMQjOh9iF3YA5AGHDBYW8eZIyK5iS7qAJIndU0=;
+	s=arc-20240116; t=1707313782; c=relaxed/simple;
+	bh=Aq7rHZDXrNzFCFawuZKxq2ZLrmcpCprahXFUyK8W/fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecBS9IZVDy0arlTs53YwhHCDOTV5Uc8PfYimBwdW5myddsZpFaNjMpcwJtf9qTuOOB/JGc1HyYsSMhoE6bC90ygkkY8gBaDfRj5Dw+Vv2iK85wXyaHHLaPGtfj70Pc/YuSZPlOFciGDmericyz445hOMkeCSr0P7fWT2Z25kNLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4iNwKD9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Xbbr9DHZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J4iNwKD9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Xbbr9DHZ; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=bKeg163bopICQ9YC8Oh1ZhQh7kpxgUdhYh6TE0doYOm3PGvCZcZnmdzK5OwCY9w9OLANGYdhGU2xiyUurGDHiuwE001Rpo38Q21ThvnqOeMO2XgYLFZA4/9030kFuIL4BgTjirPfNA90lsQAIOivecTv/Wpc6ULl4RQSQRmSeE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zV6RQpW3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Z9jG/9eF; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zV6RQpW3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Z9jG/9eF; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7EC08222F4;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CBDA422305;
 	Wed,  7 Feb 2024 13:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1707313777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3d7gVlRG/XQ0QcwGiaeZtTKnZoQ37mzsLRQShJRbrqc=;
-	b=J4iNwKD93ZLUYzoXu2X9MwYkuWRL48qO9XTI06ebPsFFyFTCheDoWRTYHgrae5zNXGUBWa
-	N5+JmveEtAS/rCyCuhzkJ7V3Sgb4QEajV0tBh4+DrxhzNXXNx2WeSpLskP2UYk8/+vZrCi
-	32YUREH7ByforsHtgV2dBzLSDfh1U9o=
+	bh=l7/m6ngH/9vR7GU3dOozu7ziOJrbdZSSV92eIclE80M=;
+	b=zV6RQpW3bKTOS2uqTULwl9TSW9yvpF9M9zEuQOIeJUD95IzdCqGK4Y7A+QWI1/P6DzkvZW
+	qbK1OdzU5y3/j3n9XeHLg/gay4ACx7ajikyAB7SptNLQHp3/d+T0obqbD3rJ6Q9lkSabn6
+	XVtspSFwHTkf1eOZDqXqFtnlHi3H6RA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1707313777;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3d7gVlRG/XQ0QcwGiaeZtTKnZoQ37mzsLRQShJRbrqc=;
-	b=Xbbr9DHZKfssJFGPAnm1VlYmL1QsXA2nJM7U7vwQw8jx+C4ITEZKb48T+8vLn29Az9XERn
-	Vyz7tjf5/NF7aeCw==
+	bh=l7/m6ngH/9vR7GU3dOozu7ziOJrbdZSSV92eIclE80M=;
+	b=Z9jG/9eF86O+xymlhlBRWA1t2cXILrJ6pvphGXtZnktaT1bjk+1hZszBisOtJfrARUK7CF
+	pQyI08KzBxQKlnAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1707313777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3d7gVlRG/XQ0QcwGiaeZtTKnZoQ37mzsLRQShJRbrqc=;
-	b=J4iNwKD93ZLUYzoXu2X9MwYkuWRL48qO9XTI06ebPsFFyFTCheDoWRTYHgrae5zNXGUBWa
-	N5+JmveEtAS/rCyCuhzkJ7V3Sgb4QEajV0tBh4+DrxhzNXXNx2WeSpLskP2UYk8/+vZrCi
-	32YUREH7ByforsHtgV2dBzLSDfh1U9o=
+	bh=l7/m6ngH/9vR7GU3dOozu7ziOJrbdZSSV92eIclE80M=;
+	b=zV6RQpW3bKTOS2uqTULwl9TSW9yvpF9M9zEuQOIeJUD95IzdCqGK4Y7A+QWI1/P6DzkvZW
+	qbK1OdzU5y3/j3n9XeHLg/gay4ACx7ajikyAB7SptNLQHp3/d+T0obqbD3rJ6Q9lkSabn6
+	XVtspSFwHTkf1eOZDqXqFtnlHi3H6RA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1707313777;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3d7gVlRG/XQ0QcwGiaeZtTKnZoQ37mzsLRQShJRbrqc=;
-	b=Xbbr9DHZKfssJFGPAnm1VlYmL1QsXA2nJM7U7vwQw8jx+C4ITEZKb48T+8vLn29Az9XERn
-	Vyz7tjf5/NF7aeCw==
+	bh=l7/m6ngH/9vR7GU3dOozu7ziOJrbdZSSV92eIclE80M=;
+	b=Z9jG/9eF86O+xymlhlBRWA1t2cXILrJ6pvphGXtZnktaT1bjk+1hZszBisOtJfrARUK7CF
+	pQyI08KzBxQKlnAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 396F3139D8;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 870A2139B9;
 	Wed,  7 Feb 2024 13:49:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kG2HDHGKw2V7IQAAD6G6ig
+	id aL1qH3GKw2V7IQAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Wed, 07 Feb 2024 13:49:37 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
@@ -95,9 +95,9 @@ To: javierm@redhat.com,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 7/8] firmware/sysfb: Update screen_info for relocated EFI framebuffers
-Date: Wed,  7 Feb 2024 14:47:16 +0100
-Message-ID: <20240207134932.7321-8-tzimmermann@suse.de>
+Subject: [PATCH v3 8/8] fbdev/efifb: Remove framebuffer relocation tracking
+Date: Wed,  7 Feb 2024 14:47:17 +0100
+Message-ID: <20240207134932.7321-9-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207134932.7321-1-tzimmermann@suse.de>
 References: <20240207134932.7321-1-tzimmermann@suse.de>
@@ -110,19 +110,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spamd-Result: default: False [1.90 / 50.00];
+X-Spam-Level: ***
+X-Spam-Score: 3.70
+X-Spamd-Result: default: False [3.70 / 50.00];
 	 ARC_NA(0.00)[];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
 	 FROM_HAS_DN(0.00)[];
 	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
 	 R_MISSING_CHARSET(2.50)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
 	 MIME_GOOD(-0.10)[text/plain];
 	 TO_MATCH_ENVRCPT_ALL(0.00)[];
 	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
 	 R_RATELIMIT(0.00)[to_ip_from(RL4936hw7dbgk3hb39jfn1xy19)];
 	 RCVD_COUNT_THREE(0.00)[3];
 	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
 	 RCPT_COUNT_SEVEN(0.00)[8];
 	 MID_CONTAINS_FROM(1.00)[];
 	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
@@ -131,187 +135,133 @@ X-Spamd-Result: default: False [1.90 / 50.00];
 	 FROM_EQ_ENVFROM(0.00)[];
 	 MIME_TRACE(0.00)[0:+];
 	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Level: *
-X-Spam-Score: 1.90
+	 BAYES_HAM(-0.00)[26.53%]
 X-Spam-Flag: NO
 
-On ARM PCI systems, the PCI hierarchy might be reconfigured during
-boot and the firmware framebuffer might move as a result of that.
-The values in screen_info will then be invalid.
-
-Work around this problem by tracking the framebuffer's initial
-location before it get relocated; then fix the screen_info state
-between reloaction and creating the firmware framebuffer's device.
-
-This functionality has been lifted from efifb. See the commit message
-of commit 55d728a40d36 ("efi/fb: Avoid reconfiguration of BAR that
-covers the framebuffer") for more information.
+If the firmware framebuffer has been reloacted, the sysfb code
+fixes the screen_info state before it creates the framebuffer's
+platform device. Efifb will automatically receive a screen_info
+with updated values. Hence remove the tracking from efifb.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Sui Jingfeng <sui.jingfeng@linux.dev>
 ---
- drivers/firmware/sysfb.c        |  2 +
- drivers/video/screen_info_pci.c | 88 +++++++++++++++++++++++++++++++++
- include/linux/screen_info.h     | 16 ++++++
- 3 files changed, 106 insertions(+)
+ drivers/video/fbdev/efifb.c | 76 +------------------------------------
+ 1 file changed, 1 insertion(+), 75 deletions(-)
 
-diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
-index 170b7cd0cfcbf..a6b48703dc9e9 100644
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -118,6 +118,8 @@ static __init int sysfb_init(void)
- 	bool compatible;
- 	int ret = 0;
- 
-+	screen_info_apply_fixups();
-+
- 	mutex_lock(&disable_lock);
- 	if (disabled)
- 		goto unlock_mutex;
-diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
-index d8985a54ce717..6c58335171410 100644
---- a/drivers/video/screen_info_pci.c
-+++ b/drivers/video/screen_info_pci.c
-@@ -1,7 +1,95 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/pci.h>
-+#include <linux/printk.h>
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index f76b7ae007518..8dd82afb3452b 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -13,7 +13,6 @@
+ #include <linux/efi-bgrt.h>
+ #include <linux/errno.h>
+ #include <linux/fb.h>
+-#include <linux/pci.h>
+ #include <linux/platform_device.h>
+ #include <linux/printk.h>
  #include <linux/screen_info.h>
-+#include <linux/string.h>
-+
-+static struct pci_dev *screen_info_lfb_pdev;
-+static size_t screen_info_lfb_bar;
-+static resource_size_t screen_info_lfb_offset;
-+static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
-+
-+static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
-+{
-+	u64 size = __screen_info_lfb_size(si, screen_info_video_type(si));
-+
-+	if (screen_info_lfb_offset > resource_size(pr))
-+		return false;
-+	if (size > resource_size(pr))
-+		return false;
-+	if (resource_size(pr) - size < screen_info_lfb_offset)
-+		return false;
-+
-+	return true;
-+}
-+
-+void screen_info_apply_fixups(void)
-+{
-+	struct screen_info *si = &screen_info;
-+
-+	if (screen_info_lfb_pdev) {
-+		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
-+
-+		if (pr->start != screen_info_lfb_res.start) {
-+			if (__screen_info_relocation_is_valid(si, pr)) {
-+				/*
-+				 * Only update base if we have an actual
-+				 * relocation to a valid I/O range.
-+				 */
-+				__screen_info_set_lfb_base(si, pr->start + screen_info_lfb_offset);
-+				pr_info("Relocating firmware framebuffer to offset %pa[d] within %pr\n",
-+					&screen_info_lfb_offset, pr);
-+			} else {
-+				pr_warn("Invalid relocating, disabling firmware framebuffer\n");
-+			}
-+		}
-+	}
-+}
-+
-+static void screen_info_fixup_lfb(struct pci_dev *pdev)
-+{
-+	unsigned int type;
-+	struct resource res[SCREEN_INFO_MAX_RESOURCES];
-+	size_t i, numres;
-+	int ret;
-+	const struct screen_info *si = &screen_info;
-+
-+	if (screen_info_lfb_pdev)
-+		return; // already found
-+
-+	type = screen_info_video_type(si);
-+	if (type != VIDEO_TYPE_EFI)
-+		return; // only applies to EFI
-+
-+	ret = screen_info_resources(si, res, ARRAY_SIZE(res));
-+	if (ret < 0)
-+		return;
-+	numres = ret;
-+
-+	for (i = 0; i < numres; ++i) {
-+		struct resource *r = &res[i];
-+		const struct resource *pr;
-+
-+		if (!(r->flags & IORESOURCE_MEM))
-+			continue;
-+		pr = pci_find_resource(pdev, r);
-+		if (!pr)
-+			continue;
-+
-+		/*
-+		 * We've found a PCI device with the framebuffer
-+		 * resource. Store away the parameters to track
-+		 * relocation of the framebuffer aperture.
-+		 */
-+		screen_info_lfb_pdev = pdev;
-+		screen_info_lfb_bar = pr - pdev->resource;
-+		screen_info_lfb_offset = r->start - pr->start;
-+		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
-+	}
-+}
-+DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
-+			       screen_info_fixup_lfb);
+@@ -47,8 +46,6 @@ static bool use_bgrt = true;
+ static bool request_mem_succeeded = false;
+ static u64 mem_flags = EFI_MEMORY_WC | EFI_MEMORY_UC;
  
- static struct pci_dev *__screen_info_pci_dev(struct resource *res)
+-static struct pci_dev *efifb_pci_dev;	/* dev with BAR covering the efifb */
+-
+ struct efifb_par {
+ 	u32 pseudo_palette[16];
+ 	resource_size_t base;
+@@ -348,9 +345,6 @@ static struct attribute *efifb_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(efifb);
+ 
+-static struct resource *bar_resource;
+-static u64 bar_offset;
+-
+ static int efifb_probe(struct platform_device *dev)
  {
-diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
-index 0eae08e3c6f90..75303c126285a 100644
---- a/include/linux/screen_info.h
-+++ b/include/linux/screen_info.h
-@@ -4,6 +4,8 @@
+ 	struct screen_info *si;
+@@ -411,21 +405,7 @@ static int efifb_probe(struct platform_device *dev)
+ 		si->rsvd_pos = 24;
+ 	}
  
- #include <uapi/linux/screen_info.h>
+-	efifb_fix.smem_start = si->lfb_base;
+-
+-	if (si->capabilities & VIDEO_CAPABILITY_64BIT_BASE) {
+-		u64 ext_lfb_base;
+-
+-		ext_lfb_base = (u64)(unsigned long)si->ext_lfb_base << 32;
+-		efifb_fix.smem_start |= ext_lfb_base;
+-	}
+-
+-	if (bar_resource &&
+-	    bar_resource->start + bar_offset != efifb_fix.smem_start) {
+-		dev_info(&efifb_pci_dev->dev,
+-			 "BAR has moved, updating efifb address\n");
+-		efifb_fix.smem_start = bar_resource->start + bar_offset;
+-	}
++	efifb_fix.smem_start = __screen_info_lfb_base(si);
  
-+#include <linux/bits.h>
-+
- /**
-  * SCREEN_INFO_MAX_RESOURCES - maximum number of resources per screen_info
-  */
-@@ -27,6 +29,17 @@ static inline u64 __screen_info_lfb_base(const struct screen_info *si)
- 	return lfb_base;
- }
+ 	efifb_defined.bits_per_pixel = si->lfb_depth;
+ 	efifb_defined.xres = si->lfb_width;
+@@ -640,57 +620,3 @@ static struct platform_driver efifb_driver = {
+ };
  
-+static inline void __screen_info_set_lfb_base(struct screen_info *si, u64 lfb_base)
-+{
-+	si->lfb_base = lfb_base & GENMASK_ULL(31, 0);
-+	si->ext_lfb_base = (lfb_base & GENMASK_ULL(63, 32)) >> 32;
-+
-+	if (si->ext_lfb_base)
-+		si->capabilities |= VIDEO_CAPABILITY_64BIT_BASE;
-+	else
-+		si->capabilities &= ~VIDEO_CAPABILITY_64BIT_BASE;
-+}
-+
- static inline u64 __screen_info_lfb_size(const struct screen_info *si, unsigned int type)
- {
- 	u64 lfb_size = si->lfb_size;
-@@ -106,8 +119,11 @@ static inline unsigned int screen_info_video_type(const struct screen_info *si)
- ssize_t screen_info_resources(const struct screen_info *si, struct resource *r, size_t num);
- 
- #if defined(CONFIG_PCI)
-+void screen_info_apply_fixups(void);
- struct pci_dev *screen_info_pci_dev(const struct screen_info *si);
- #else
-+static inline void screen_info_apply_fixups(void)
-+{ }
- static inline struct pci_dev *screen_info_pci_dev(const struct screen_info *si)
- {
- 	return NULL;
+ builtin_platform_driver(efifb_driver);
+-
+-#if defined(CONFIG_PCI)
+-
+-static void record_efifb_bar_resource(struct pci_dev *dev, int idx, u64 offset)
+-{
+-	u16 word;
+-
+-	efifb_pci_dev = dev;
+-
+-	pci_read_config_word(dev, PCI_COMMAND, &word);
+-	if (!(word & PCI_COMMAND_MEMORY)) {
+-		dev_err(&dev->dev,
+-			"BAR %d: assigned to efifb but device is disabled!\n",
+-			idx);
+-		return;
+-	}
+-
+-	bar_resource = &dev->resource[idx];
+-	bar_offset = offset;
+-
+-	dev_info(&dev->dev, "BAR %d: assigned to efifb\n", idx);
+-}
+-
+-static void efifb_fixup_resources(struct pci_dev *dev)
+-{
+-	u64 base = screen_info.lfb_base;
+-	u64 size = screen_info.lfb_size;
+-	int i;
+-
+-	if (efifb_pci_dev || screen_info.orig_video_isVGA != VIDEO_TYPE_EFI)
+-		return;
+-
+-	if (screen_info.capabilities & VIDEO_CAPABILITY_64BIT_BASE)
+-		base |= (u64)screen_info.ext_lfb_base << 32;
+-
+-	if (!base)
+-		return;
+-
+-	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+-		struct resource *res = &dev->resource[i];
+-
+-		if (!(res->flags & IORESOURCE_MEM))
+-			continue;
+-
+-		if (res->start <= base && res->end >= base + size - 1) {
+-			record_efifb_bar_resource(dev, i, base - res->start);
+-			break;
+-		}
+-	}
+-}
+-DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY,
+-			       16, efifb_fixup_resources);
+-
+-#endif
 -- 
 2.43.0
 
