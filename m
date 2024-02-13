@@ -1,122 +1,111 @@
-Return-Path: <linux-fbdev+bounces-1076-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1078-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49088852B82
-	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Feb 2024 09:44:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE9A85319B
+	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Feb 2024 14:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755201C22633
-	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Feb 2024 08:44:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4EDBB217C0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 13 Feb 2024 13:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C852208A;
-	Tue, 13 Feb 2024 08:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179D65578B;
+	Tue, 13 Feb 2024 13:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="SYASL+WP"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE0A20309
-	for <linux-fbdev@vger.kernel.org>; Tue, 13 Feb 2024 08:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0787F55764
+	for <linux-fbdev@vger.kernel.org>; Tue, 13 Feb 2024 13:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707813852; cv=none; b=c8p1AnU3ZspVQmat1Sf68fFfQKoDvneSERkLLqZHRO1q8Vq7YOgQvMm3eIDATNFH9wZkKa3jOTIykHLmhqTrHDrRqZ876CvJ4I1G+/9DTcTMfBrqgGJBqra5A8hXNI3HaE69xjxxKqh96jWOwI3jnIVDUbJMPJQu+mSdgW2mIlg=
+	t=1707830317; cv=none; b=f6WTB07VCimC/BZvJW3i4rRDNWigdirW6eQV+5mem0y3reivR97+X52AOc/1uiLicJQxh4oGWM6y+g9zaj1IksgwBGXEIwcRiMXnraR6TnY99YaH8rDkEdfvr5fa7ASNzUjlyalnJbBsN+c97SabdtkqCerbPzm2a8DhuoX60+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707813852; c=relaxed/simple;
-	bh=cN+lcT7N8MxRb/OQTw9ViPg9nRteKmgAhWpKOdaCaQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gi+S9MGMb2GKh4oMQ/ueV1kDomayHvsajmKskHGbBdhdLW9XuH8kgTKWQzKdeBRoTJsmkvNNDHx6kr3Uw/JhsNOjrSDR65w3Mi5MEOE6yH42R/kDtBRDvv2HhFL8uAu0enjtYli/HOBWPePWPEAkWdVs5f+WF0+VYHr4kvBt940=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7BEFA1FC31;
-	Tue, 13 Feb 2024 08:44:09 +0000 (UTC)
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 225DD1329E;
-	Tue, 13 Feb 2024 08:44:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id OHYiB9kry2VOFwAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Tue, 13 Feb 2024 08:44:09 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: deller@gmx.de,
-	kherbst@redhat.com,
-	lyude@redhat.com,
-	dakr@redhat.com,
-	jani.nikula@linux.intel.com,
-	daniel@ffwll.ch,
-	airlied@gmail.com,
-	gregkh@linuxfoundation.org
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-staging@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH v2 8/8] fbdev: Clean up include statements in header file
-Date: Tue, 13 Feb 2024 09:42:26 +0100
-Message-ID: <20240213084403.20995-9-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213084403.20995-1-tzimmermann@suse.de>
-References: <20240213084403.20995-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1707830317; c=relaxed/simple;
+	bh=g/CFTesJKrk4NlM0Wg2NNjSEoTPolXNO4mHWIBPE2DI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mAQnoqBTH2GSU4XgfttwFpRiIiqpO++j2QMBsIyBBbapqctGeAhhAWheVCdLyoWPldyy/ZQdY/6qjJOVi6iNJK6fdgMawnkJroS/P8+FBoLWAJQqAEziydJFFZzCH4zluCRiQl1wviah7zHAcOQ9sY7rezvvTggRY7Ls+BI12BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=SYASL+WP; arc=none smtp.client-ip=94.124.121.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=3SqP4dG1tq+TGDU5Zf/cjAiZPv2I7xysnRYtNRsJZg8=;
+	b=SYASL+WPVjjWM85nIJ3YyBPVcxZkjRdNZbuZQmNeduW+QOqL+VHR7nSWt4euxWt92KyJwIZdZwWTq
+	 eaeLYlwX22GWEYsdFAwVYuNXeDYH+ri2KQnfboya8D4QggmEqaz+nXX+bJH3LPIiL+AB8dk3DZ+CXg
+	 QIVBtfApRikahNSjJ1+zSyk8OCHO11bL2jYbeqnEycYtKL/Iulq2kWdjazmHjRi2FSYxh62/zNCl/P
+	 /ZnBHGu2tpcVF23ifZPzfuc/nCBG/zsuUM6kiJX5n/1hIlIidHY57q8q/WqXkUK6HD3x4qA0DjqEHk
+	 dXd0zgDF37DvKGPmmYbQY78i+WHGjPw==
+X-MSG-ID: 38c347f3-ca72-11ee-ba6d-0050568164d1
+Date: Tue, 13 Feb 2024 14:17:21 +0100
+From: Robin van der Gracht <robin@protonic.nl>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
+ deller@gmx.de, javierm@redhat.com, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 02/10] auxdisplay/ht16k33: Remove struct
+ backlight_ops.check_fb
+Message-ID: <20240213141721.29eb6ce0@ERD993>
+In-Reply-To: <20240212162645.5661-3-tzimmermann@suse.de>
+References: <20240212162645.5661-1-tzimmermann@suse.de>
+	<20240212162645.5661-3-tzimmermann@suse.de>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 7BEFA1FC31
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Include mutex.h, printk.h and types.h, remove several unnecessary
-include statements, and sort the list alphabetically.
+On Mon, 12 Feb 2024 17:16:35 +0100
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
----
- include/linux/fb.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> The driver sets struct fb_info.bl_dev to the correct backlight
+> device. Thus rely on the backlight core code to match backlight
+> and framebuffer devices, and remove the extra check_fb function
+> from struct backlight_ops.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Robin van der Gracht <robin@protonic.nl>
+> ---
+>  drivers/auxdisplay/ht16k33.c | 8 --------
+>  1 file changed, 8 deletions(-)
+> 
+> diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
+> index a90430b7d07ba..0a858db32486b 100644
+> --- a/drivers/auxdisplay/ht16k33.c
+> +++ b/drivers/auxdisplay/ht16k33.c
+> @@ -325,16 +325,8 @@ static int ht16k33_bl_update_status(struct backlight_device *bl)
+>  	return ht16k33_brightness_set(priv, brightness);
+>  }
+>  
+> -static int ht16k33_bl_check_fb(struct backlight_device *bl, struct fb_info *fi)
+> -{
+> -	struct ht16k33_priv *priv = bl_get_data(bl);
+> -
+> -	return (fi == NULL) || (fi->par == priv);
+> -}
+> -
+>  static const struct backlight_ops ht16k33_bl_ops = {
+>  	.update_status	= ht16k33_bl_update_status,
+> -	.check_fb	= ht16k33_bl_check_fb,
+>  };
 
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 8f70ca727a30d..708e6a177b1be 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -2,15 +2,15 @@
- #ifndef _LINUX_FB_H
- #define _LINUX_FB_H
- 
--#include <linux/refcount.h>
--#include <linux/kgdb.h>
- #include <uapi/linux/fb.h>
- 
- #define FBIO_CURSOR            _IOWR('F', 0x08, struct fb_cursor_user)
- 
--#include <linux/init.h>
-+#include <linux/mutex.h>
-+#include <linux/printk.h>
-+#include <linux/refcount.h>
-+#include <linux/types.h>
- #include <linux/workqueue.h>
--#include <linux/list.h>
- 
- #include <asm/fb.h>
- 
--- 
-2.43.0
+When combined with the previous patch:
+[01/10] backlight: Match backlight device against struct fb_info.bl_dev
+
+(I wasn't in the CC)
+
+Acked-By: Robin van der Gracht <robin@protonic.nl>
+
 
 
