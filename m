@@ -1,207 +1,207 @@
-Return-Path: <linux-fbdev+bounces-1083-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1085-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F27D854256
-	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Feb 2024 06:25:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F052854E93
+	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Feb 2024 17:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81E76B241E5
-	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Feb 2024 05:25:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C28CB1F223BC
+	for <lists+linux-fbdev@lfdr.de>; Wed, 14 Feb 2024 16:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6041AC147;
-	Wed, 14 Feb 2024 05:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C41612FE;
+	Wed, 14 Feb 2024 16:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="jmn+rSKV"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UefkOkDz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P+QCd7ji";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vYwgz8uS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="11p/XmV+"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFA510A01;
-	Wed, 14 Feb 2024 05:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE064CF8
+	for <linux-fbdev@vger.kernel.org>; Wed, 14 Feb 2024 16:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707888327; cv=none; b=ALeoEngWsaYOHbLxy32XnlNz7YVqg3VP3svVzMu5a2gTI5ed+GcPIhruDTpyS0Qmov/S9ilI0ctBhKb9ikqfQo/kxfS7mGoPdKTiuVGMIo5rH4QqvwbbCVfDpKXZRJe6a/XRAy91/B+xQR4tL6bR9nJvh3Lg5mbfbZn605hE2d8=
+	t=1707928198; cv=none; b=FlO7QfQxjq1fAEkWj8dfGHMYjfOXk3UF34+0XTeaxrKSDdp6wUcWR2rigXWBRQMFyvmXtmuPTjG3cRYpZpkvbVincjHIT6zz7FaXCznhjV6XINQ6Tk+I2p7yb2M4l3eDUP3ar/5NCIrPNFoGHfahltPxKoeNK2E+Mm+JjNdbc9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707888327; c=relaxed/simple;
-	bh=/SNJH5mi3cLJUn0gkt7Dk+vu0AREXHUs/+p3bdoRMj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prWWnvsh2ZbBUpO3b2gSTrxoqkpiUrGmyXufOgEWGJtH9L0OCtpIS5uA+MvoVcR64XThXb0j5AE27s1ExV6iaGS1oYekOKszjG6PGBlXG6/X2aUl/mnTe+75m0+SDiZKRyC+QrKJ0ye19L6NUJ6oDBOCQaftaihWQlyBxWhok3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=jmn+rSKV; arc=none smtp.client-ip=185.125.188.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from dragon.fritz.box (unknown [58.7.187.102])
+	s=arc-20240116; t=1707928198; c=relaxed/simple;
+	bh=bB2HNyXUd0n3ZuGVQZQcHi6j4fmv+bmJjKr5EkZ72FQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E+y9TQIGJnGHK+zkCjr5yjgxUa5RcB9TPHQCpmpmHYq69dy+g10bJZTBeSGje+5a/2m6eVxety6U+jiMN45bL4Rh91GzcuBHViVCy1LYe8SpPfSueuChk1HTqqyT+4rbV28ZI2kW/rsaJAVxg5FFdUFx97ItXaTutFHeh5S9U68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UefkOkDz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P+QCd7ji; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vYwgz8uS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=11p/XmV+; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 6213043A13;
-	Wed, 14 Feb 2024 05:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1707888320;
-	bh=F7tGUbYrO0LaqqLDslIXG8EpJYmwDVj8pxAuB9hurBw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version;
-	b=jmn+rSKV1GWw4BbgEKt8LV0gNWtSCrzaGYl4SnNBs2cJc0IEZ4eWfCctqqyFJxbw/
-	 mbdu/f/ACZQSi11bX5Me0YKaPIIT2/VNp2nAB5GkytNwkvtnZuKDvIdswItJK1WhPz
-	 4yn8Wi7iWb3Vi/4/UxzLO/mlokW6YDLZVN5rLeTM6z46xBtMHs62bMf0LY4SrPuiMC
-	 iBEKbjZ4gp+jCKngdWFB9EI1VEpjnYLcXg1EwgX4iDO8RJxwFjeAkTq4Yox11zfhC6
-	 pnsv7zgs1a5gbeN0oJc6dHTE3VIHF/CHCfvjT1ggMLYbrgMZue6rXJrSNOKgko+x/6
-	 Q0TQjSF2rf6Bg==
-From: Daniel van Vugt <daniel.van.vugt@canonical.com>
-To: 
-Cc: Daniel van Vugt <daniel.van.vugt@canonical.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Helge Deller <deller@gmx.de>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] fbcon: Defer console takeover for splash screens to first switch
-Date: Wed, 14 Feb 2024 13:24:07 +0800
-Message-ID: <20240214052412.22770-2-daniel.van.vugt@canonical.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240214052412.22770-1-daniel.van.vugt@canonical.com>
-References: <f2c54ff7-d601-49d0-b5ad-9b111d743ded@canonical.com>
- <20240214052412.22770-1-daniel.van.vugt@canonical.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C50531F811;
+	Wed, 14 Feb 2024 16:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707928195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7/ppbFXNXonNNZUwDojNhS3+Ukg7Qi/xh6UIL1idgJ8=;
+	b=UefkOkDz9eycCwJuQcNLYlkKLLsvVt/W+2JrRO5ODKpxm6QsAk0E92hQjRhzwl2+RkCWDV
+	y/irulCU3nBJVEcakSggMFRDRM8nBIyWSK/DrQ7z9e8Gi/ejyDrY71DIyi/quYrZRhQM3a
+	KM9Y3z1zcKecpPj1U1pMae3akslBZGQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707928195;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7/ppbFXNXonNNZUwDojNhS3+Ukg7Qi/xh6UIL1idgJ8=;
+	b=P+QCd7jiXep2ELM6yQ4ERDG9zCQgD1H0PXfAc/rYh5e7RNWl/gaMMnMOspYwDe54KNJU8h
+	629UfvuYHqQoEHDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1707928194; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7/ppbFXNXonNNZUwDojNhS3+Ukg7Qi/xh6UIL1idgJ8=;
+	b=vYwgz8uSs9RKjQxx0qQeysuiCk+eERXMuOwDajHHS/prCLVcEQqlL0FkkFoauf+uA1rhsj
+	4n14kwRMy9c01f2qGzyr8flHArtcv2yn1ndB3fu4zJ291M8Yyr2TPATUYOIYnG+9H7flkZ
+	RWZzDF8PeCYka3IUTE9B5Y1dK9JdfkE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1707928194;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7/ppbFXNXonNNZUwDojNhS3+Ukg7Qi/xh6UIL1idgJ8=;
+	b=11p/XmV+PXcyTwBMflhlkf5HEsmc4sfk1HTYp7Uo9saeBxA3Lmcfq1HRosO42UyqTucorF
+	wnebDQxwZOnzpTBg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 783F413A0B;
+	Wed, 14 Feb 2024 16:29:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id +IIhHILqzGUILQAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Wed, 14 Feb 2024 16:29:54 +0000
+Message-ID: <c3d4f26e-3c5b-4cb2-8e69-806c10d595ae@suse.de>
+Date: Wed, 14 Feb 2024 17:29:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] staging/fbtft: Include <linux/backlight.h>
+Content-Language: en-US
+To: deller@gmx.de, kherbst@redhat.com, lyude@redhat.com, dakr@redhat.com,
+ jani.nikula@linux.intel.com, daniel@ffwll.ch, airlied@gmail.com,
+ gregkh@linuxfoundation.org
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-staging@lists.linux.dev
+References: <20240213084403.20995-1-tzimmermann@suse.de>
+ <20240213084403.20995-3-tzimmermann@suse.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20240213084403.20995-3-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vYwgz8uS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="11p/XmV+"
+X-Spamd-Result: default: False [-1.67 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_NONE(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 FREEMAIL_TO(0.00)[gmx.de,redhat.com,linux.intel.com,ffwll.ch,gmail.com,linuxfoundation.org];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-1.37)[90.64%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[12];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:dkim,suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: C50531F811
+X-Spam-Level: 
+X-Spam-Score: -1.67
+X-Spam-Flag: NO
 
-Until now, deferred console takeover only meant defer until there is
-output. But that risks stepping on the toes of userspace splash screens,
-as console messages may appear before the splash screen. So check the
-command line for the expectation of userspace splash and if present then
-extend the deferral until the first switch.
 
-v2: Added Kconfig option instead of hard coding "splash".
-v3: Default to disabled, not "splash". If enabled then take over on
-    switch rather than on first output after switch.
 
-Closes: https://bugs.launchpad.net/bugs/1970069
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Daniel van Vugt <daniel.van.vugt@canonical.com>
----
- drivers/video/console/Kconfig    | 12 +++++++++
- drivers/video/fbdev/core/fbcon.c | 44 +++++++++++++++++++++++++++++---
- 2 files changed, 52 insertions(+), 4 deletions(-)
+Am 13.02.24 um 09:42 schrieb Thomas Zimmermann:
+> Resolved the proxy include via <linux/fb.h>, which does not require the
+> backlight header.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
-index bc31db6ef7..2f9435335f 100644
---- a/drivers/video/console/Kconfig
-+++ b/drivers/video/console/Kconfig
-@@ -138,6 +138,18 @@ config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
- 	  by the firmware in place, rather then replacing the contents with a
- 	  black screen as soon as fbcon loads.
- 
-+config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION
-+	string "Command line parameter to defer takeover to first switch"
-+	depends on FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
-+	default ""
-+	help
-+	  If enabled this defers further the framebuffer console taking over
-+	  until the first console switch has occurred. And even then only if
-+	  the specified parameter is found on the command line. This ensures
-+	  fbcon does not interrupt userspace splash screens such as Plymouth
-+	  which may be yet to start rendering at the time of the first console
-+	  output.
-+
- config STI_CONSOLE
- 	bool "STI text console"
- 	depends on PARISC && HAS_IOMEM
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 1183e7a871..e5d841ab03 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -76,6 +76,7 @@
- #include <linux/crc32.h> /* For counting font checksums */
- #include <linux/uaccess.h>
- #include <asm/irq.h>
-+#include <asm/cmdline.h>
- 
- #include "fbcon.h"
- #include "fb_internal.h"
-@@ -3348,7 +3349,7 @@ static int fbcon_output_notifier(struct notifier_block *nb,
- {
- 	WARN_CONSOLE_UNLOCKED();
- 
--	pr_info("fbcon: Taking over console\n");
-+	pr_info("fbcon: Taking over console for output\n");
- 
- 	dummycon_unregister_output_notifier(&fbcon_output_nb);
- 
-@@ -3357,6 +3358,27 @@ static int fbcon_output_notifier(struct notifier_block *nb,
- 
- 	return NOTIFY_OK;
- }
-+
-+#ifdef CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION
-+static int initial_console;
-+static struct notifier_block fbcon_switch_nb;
-+
-+static int fbcon_switch_notifier(struct notifier_block *nb,
-+				 unsigned long action, void *data)
-+{
-+	struct vc_data *vc = data;
-+
-+	WARN_CONSOLE_UNLOCKED();
-+
-+	if (vc->vc_num != initial_console) {
-+		pr_info("fbcon: Taking over console for switch\n");
-+		dummycon_unregister_switch_notifier(&fbcon_switch_nb);
-+		schedule_work(&fbcon_deferred_takeover_work);
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+#endif
- #endif
- 
- static void fbcon_start(void)
-@@ -3368,8 +3390,18 @@ static void fbcon_start(void)
- 		deferred_takeover = false;
- 
- 	if (deferred_takeover) {
--		fbcon_output_nb.notifier_call = fbcon_output_notifier;
--		dummycon_register_output_notifier(&fbcon_output_nb);
-+#ifdef CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION
-+		if (cmdline_find_option_bool(boot_command_line,
-+		      CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION)) {
-+			initial_console = fg_console;
-+			fbcon_switch_nb.notifier_call = fbcon_switch_notifier;
-+			dummycon_register_switch_notifier(&fbcon_switch_nb);
-+		} else
-+#endif
-+		{
-+			fbcon_output_nb.notifier_call = fbcon_output_notifier;
-+			dummycon_register_output_notifier(&fbcon_output_nb);
-+		}
- 		return;
- 	}
- #endif
-@@ -3416,8 +3448,12 @@ void __exit fb_console_exit(void)
- {
- #ifdef CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
- 	console_lock();
--	if (deferred_takeover)
-+	if (deferred_takeover) {
- 		dummycon_unregister_output_notifier(&fbcon_output_nb);
-+#ifdef CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION
-+		dummycon_unregister_switch_notifier(&fbcon_switch_nb);
-+#endif
-+	}
- 	console_unlock();
- 
- 	cancel_work_sync(&fbcon_deferred_takeover_work);
+Acked by Jani via IRC
+
+Acked-by: Jani Nikula<jani.nikula@intel.com>
+
+
+
+> ---
+>   drivers/staging/fbtft/fb_ssd1351.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/staging/fbtft/fb_ssd1351.c b/drivers/staging/fbtft/fb_ssd1351.c
+> index b8d55aa8c5c75..72172e870007e 100644
+> --- a/drivers/staging/fbtft/fb_ssd1351.c
+> +++ b/drivers/staging/fbtft/fb_ssd1351.c
+> @@ -1,4 +1,6 @@
+>   // SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/backlight.h>
+>   #include <linux/module.h>
+>   #include <linux/kernel.h>
+>   #include <linux/init.h>
+
 -- 
-2.43.0
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
