@@ -1,142 +1,108 @@
-Return-Path: <linux-fbdev+bounces-1121-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1124-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CE18583CF
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 18:15:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187D0858807
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 22:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9827F1C230A6
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 17:15:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36363B2B58A
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 21:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1BE134CEA;
-	Fri, 16 Feb 2024 17:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="LvF0Ltoo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1427145B07;
+	Fri, 16 Feb 2024 21:16:57 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083B9130E34;
-	Fri, 16 Feb 2024 17:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FFF1419BF;
+	Fri, 16 Feb 2024 21:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708103553; cv=none; b=Hy1qt8Bj7w2BWRquCDOlC6JcKGz6e/QuZs7lOfbXobgU4N7lqCmZ9uR/fcWIvr0hIipkWkqnBOLDYe1mEj6q4KZRnurJS9ia+qr/8gtSPGbs/8cp6vevkK11jhajv/Ikfq0c3fNwoHdDOZJ+WsSBOTXgofi5rgZi6+E2XtYd1sM=
+	t=1708118217; cv=none; b=rMl7kEQ/uUAic6C6FDZcrrSP7rCfLyW6SQ5MbPfoE0r7qdSuji6NaZWmjk/+5giTpERj11nrsLJ0x3nSuKUzuCfjHEAFhgejKc0lVl/ZHD9gRUBTKHvNdORAQbahL6ofU7ROpdW+iJbSw0FQr2E9aOoaeFeSxIoo/8gCAVo9hA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708103553; c=relaxed/simple;
-	bh=oDdva2PT7Y0RL4gg8yCp3llIbKMFmAymSKDhJUcZrGg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=edgIMhWvJaTEhsTqv8nUUuQ0AU4DU1ycw1wPGEKoYu8yY5e4DEKlR6xjz6VcZfCtIms15nigsfoOguV0pGHj6CU0719/NpYEDqF0IG+zbtqV+tIcTQ3Q0wa8zIfs2pRk5ffNLsmVLCmES9wk96ly/f5JNxaPq02xIp2nOcdujjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=pass (1024-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=LvF0Ltoo; arc=none smtp.client-ip=94.231.106.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gaisler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4Tbz561RHNz681Q;
-	Fri, 16 Feb 2024 18:12:26 +0100 (CET)
-Received: from [10.10.15.23] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4Tbz4p2Grxz6809;
-	Fri, 16 Feb 2024 18:12:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=unoeuro; t=1708103546;
-	bh=u+7m0ysgFtgrkmEJrdGpb8Y0tCuVXhfQeXNdhjpOpRg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LvF0LtooPcEev2leFNAATsWRlCRiYxAr394TZe6xxrQk5VXnG8GBTyznzXodihQYD
-	 Re3Zm+zbYB5EoQJb/luHksSy6mmQhREXwvAwGPaK8l8eOib+DoTGuyeR2OYIeehkhy
-	 WUiK38+WhtZe9JyMy01b9fRPn2umDHWqIdScoqyw=
-Message-ID: <d1a616f1-0fd2-4af0-8b89-e0d0a8842a6d@gaisler.com>
-Date: Fri, 16 Feb 2024 18:12:08 +0100
+	s=arc-20240116; t=1708118217; c=relaxed/simple;
+	bh=vsUzdyJf3pTQ7iUhH2zrKBom94/d9kxFvZKujmQlDa8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=C47endjyJfvtxLwdkGL3+1z4KV31SIg5yumN+xQixIaIif88+oHxyS7awHNN9atRmtlV2YcjAk8cIUNAdfiIOP69j5Ne8b8lZ3Lawfn/l9oF9xqo/xWh5UXdhmxXoYhskPpKpLwi1tBYEIp2u4XyWWyqn6/o57N3D0qV/vQekHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id AA20687245;
+	Fri, 16 Feb 2024 22:16:45 +0100 (CET)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Subject: [PATCH v2 0/2] leds: expresswire: Fix dependencies
+Date: Fri, 16 Feb 2024 22:15:42 +0100
+Message-Id: <20240216-expresswire-deps-v2-0-8be59c4a75f5@skole.hr>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/27] sparc32: Drop run-time patching of ASI instructions
-Content-Language: en-US
-To: sam@ravnborg.org, "David S. Miller" <davem@davemloft.net>,
- Arnd Bergmann <arnd@kernel.org>
-Cc: Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Alan Stern <stern@rowland.harvard.edu>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-sound@vger.kernel.org
-References: <20231219-sam-sparc32-sunset-v3-v1-0-64bb44b598c5@ravnborg.org>
- <20231219-sam-sparc32-sunset-v3-v1-17-64bb44b598c5@ravnborg.org>
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <20231219-sam-sparc32-sunset-v3-v1-17-64bb44b598c5@ravnborg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAH7Qz2UC/32NQQrCMBBFr1JmbSRJbUldeQ/pIjSjGZSmzEisl
+ Nzd2AO4fP/z399AkAkFzs0GjJmE0lzBHhqYop/vqChUBqvtSVtjFa4Lo8ibGFXARRS6oUMXvEP
+ fQp3V+kbrrryOlSPJK/Fnf8jml/6RZaO06l3ng9FT6If2Io/0xGNkGEspX9WBO7uvAAAA
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Flavio Suligoi <f.suligoi@asem.it>, Hans de Goede <hdegoede@redhat.com>, 
+ Jianhua Lu <lujianhua000@gmail.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Helge Deller <deller@gmx.de>, Jingoo Han <jingoohan1@gmail.com>, 
+ Karel Balej <balejk@matfyz.cz>, dri-devel@lists.freedesktop.org, 
+ linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-leds@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
+ kernel test robot <lkp@intel.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=846;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=vsUzdyJf3pTQ7iUhH2zrKBom94/d9kxFvZKujmQlDa8=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlz9CFR8jXTTpNjeM5Z13FI+8f8Uv4Ix9lAQpaT
+ Jn64esMzpWJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZc/QhQAKCRCaEZ6wQi2W
+ 4RfwEACDN/l5D7tzp7o766y36S3GhsHIEtzUEBCRk0smhUo5lpciXjTWgIQ6I+0jjopw+PcFgIG
+ keEipaCgUGqaHg5rT3DMbhUYiQlloAX+Il3q4dXGtQPa66bp5+LAkMSyLiiFJd5jYNYlDED3vg5
+ PDxTaXZxFKf437PJv0/9XwzMVhuDScudoKLp05K1rzil3WWxjqRnh9ljn/wlUDYZzKvnrYU73tb
+ 8utBDSnh7YF8/o7MLJrhH53zTya1Qd9LYXJiXcVMTG0fNaWWQLnse0LKnzjhMAL4nNiF32Uxi+h
+ te2BisSHEzflz04dBfXWT3VUQZzuz5nzUDJvfSz08Hm7E9yxBLPV/bg2yhUlXkrvt1qGX2oLxQA
+ iNOap3FLdazQfgl9sUPcVh6HazF9grJQ3Uo08ZQW/y00HdBgkOTtP3RIMLAt0qZIVdc3NSe0nRy
+ dGARsxhrs3BzXZqh9CpZdEDP2m1xEK1Ywx8zXksC8n0Dd1+MwymROLay2ut/6i1Qxm2XN0UWovi
+ HB0d+iE9JiFYKTmA9rsdpz0H8izcEbwrmonCYFiv0PywgcYqtgrzsdVeruX3qWCEu/8a9Im4Ker
+ hEoPoIWK3sSX4gXRUbNs6QGiw2E5xtTiU2ztPMyerPn7Rb5OSRVV1ChUEf0xbsq2TA4h1Z86dM1
+ duaZbd+56zSXTCg==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 
-On 2023-12-19 23:03, Sam Ravnborg via B4 Relay wrote:
-> From: Sam Ravnborg <sam@ravnborg.org>
-> 
-> With only LEON supported there is no need to run-time patch
-> the instructions to match ASI.
-> 
-> Move a few functions back to C with inline asm, now that
-> run-time patching is not needed.
-> 
-> Deleted a few functions that turns out not to be used rather
-> than re-implement them in C.
-...
-> diff --git a/arch/sparc/include/asm/sections.h b/arch/sparc/include/asm/sections.h
-> index 08f833453ab3..e9d28148850b 100644
-> --- a/arch/sparc/include/asm/sections.h
-> +++ b/arch/sparc/include/asm/sections.h
-> @@ -8,7 +8,4 @@
->  /* sparc entry point */
->  extern char _start[];
->  
-> -extern char __leon_1insn_patch[];
-> -extern char __leon_1insn_patch_end[];
-> -
->  #endif
-> diff --git a/arch/sparc/include/asm/winmacro.h b/arch/sparc/include/asm/winmacro.h
-> index b6e911f5d93c..c496b04cdfaf 100644
-> --- a/arch/sparc/include/asm/winmacro.h
-> +++ b/arch/sparc/include/asm/winmacro.h
-> @@ -108,18 +108,11 @@
->  661:	rd	%tbr, %idreg;				\
->  	srl	%idreg, 10, %idreg;			\
->  	and	%idreg, 0xc, %idreg;			\
+LEDS_EXPRESSWIRE does not depend on NEW_LEDS in practice but still does
+in Kconfig. Fix up its Kconfig entry to reflect this and fix a Kconfig
+warning.
 
-These three lines, including the label, should also be removed as they
-are not for LEON. Additionally, I think it would be best to split out
-removing the cpuid instruction fixups to one patch and the MMU ASI
-instruction fixups to another patch.
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+---
+Changes in v2:
+- Fix checkpatch errors
+- Pull Daniel's Reviewed-by
+- Link to v1: https://lore.kernel.org/r/20240212-expresswire-deps-v1-0-685ad10cd693@skole.hr
 
-> -	.section	.cpuid_patch, "ax";		\
-> -	/* Instruction location. */			\
-> -	.word		661b;				\
-> -	/* SUN4D implementation. */			\
-> -	lda	 [%g0] ASI_M_VIKING_TMP1, %idreg;	\
-> -	sll	 %idreg, 2, %idreg;			\
-> -	nop;						\
-> -	/* LEON implementation. */			\
-> +							\
->  	rd 	%asr17, %idreg;				\
->  	srl	%idreg, 0x1c, %idreg;			\
->  	sll	%idreg, 0x02, %idreg;			\
-> -	.previous;					\
-> +							\
->  	sethi    %hi(current_set), %dest_reg; 		\
->  	or       %dest_reg, %lo(current_set), %dest_reg;\
->  	ld       [%idreg + %dest_reg], %dest_reg;
-> diff --git a/arch/sparc/kernel/entry.S b/arch/sparc/kernel/entry.S
-> index 0f2417ee3f95..9cf8f87e8c42 100644
-> --- a/arch/sparc/kernel/entry.S
-> +++ b/arch/sparc/kernel/entry.S
+---
+Duje Mihanović (2):
+      Revert "leds: Only descend into leds directory when CONFIG_NEW_LEDS is set"
+      leds: expresswire: don't depend on NEW_LEDS
 
-The hard_smp_processor_id function also needs to be reduced to just the
-LEON code. With the patching removed, SMP otherwise breaks with CPUs
-other than CPU 0 getting stuck.
+ drivers/Makefile     |  2 +-
+ drivers/leds/Kconfig | 10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+---
+base-commit: ae00c445390b349e070a64dc62f08aa878db7248
+change-id: 20240212-expresswire-deps-e895e8da8ea3
 
-Thanks,
-Andreas
+Best regards,
+-- 
+Duje Mihanović <duje.mihanovic@skole.hr>
+
+
 
